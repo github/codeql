@@ -562,6 +562,21 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
+        private int getAnApLengthLowerBound(Ap ap) {
+          accessPathLimit() > 1 and // `accessPathLimit() <= 1` is already checked in stages 1 and 2
+          ap instanceof ApNil and
+          result = 0
+          or
+          exists(Content c, Ap tail |
+            ap = apCons(c, tail) and
+            fwdFlowConsCand(_, ap, c, _, tail) and
+            ap != tail and // no need to report a longer length
+            result = 1 + getAnApLengthLowerBound(tail) and
+            result <= accessPathLimit()
+          )
+        }
+
+        pragma[nomagic]
         private predicate fwdFlow0(
           Nd node, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa, TypOption stored
         ) {
@@ -594,7 +609,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           exists(Content c, Ap ap0 |
             fwdFlowStore(_, _, ap0, _, c, t, stored, node, cc, summaryCtx) and
             ap = apCons(c, ap0) and
-            apa = getApprox(ap)
+            apa = getApprox(ap) and
+            if accessPathLimit() > 1
+            then getAnApLengthLowerBound(ap0) < accessPathLimit()
+            else any()
           )
           or
           // read
@@ -1321,6 +1339,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
+        private int getAnApLengthLowerBoundRev(Ap ap) {
+          accessPathLimit() > 1 and // `accessPathLimit() <= 1` is already checked in stages 1 and 2
+          ap instanceof ApNil and
+          result = 0
+          or
+          exists(Ap tail |
+            revFlowConsCand(ap, _, tail) and
+            ap != tail and // no need to report a longer length
+            result = 1 + getAnApLengthLowerBoundRev(tail) and
+            result <= accessPathLimit()
+          )
+        }
+
+        pragma[nomagic]
         private predicate revFlow0(Nd node, ReturnCtx returnCtx, ApOption returnAp, Ap ap) {
           fwdFlow(node, _, any(SummaryCtx sinkCtx | sinkCtx.isASinkCtx()), _, ap, _) and
           sinkNode(node) and
@@ -1356,7 +1388,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           // read
           exists(Nd mid, Ap ap0 |
             revFlow(mid, returnCtx, returnAp, ap0) and
-            readStepFwd(node, ap, _, mid, ap0)
+            readStepFwd(node, ap, _, mid, ap0) and
+            if accessPathLimit() > 1
+            then getAnApLengthLowerBoundRev(ap0) < accessPathLimit()
+            else any()
           )
           or
           // flow into a callable
