@@ -8,9 +8,9 @@ function getSecret() {
 }
 
 app.get('/jose1', (req, res) => {
-    const UserToken = req.headers.authorization;
+    const UserToken = req.headers.authorization; // $ Alert
     // no signature verification
-    jose.decodeJwt(UserToken) // NOT OK
+    jose.decodeJwt(UserToken) // $ Sink // NOT OK
 })
 
 

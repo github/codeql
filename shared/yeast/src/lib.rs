@@ -15,10 +15,31 @@ pub mod schema;
 pub mod tree_builder;
 mod visitor;
 
+pub use range::{Point, Range};
 pub use yeast_macros::{query, rule, rules, tree, trees};
 
 use captures::Captures;
 use query::QueryNode;
+
+impl From<tree_sitter::Point> for Point {
+    fn from(p: tree_sitter::Point) -> Self {
+        Point {
+            row: p.row,
+            column: p.column,
+        }
+    }
+}
+
+impl From<tree_sitter::Range> for Range {
+    fn from(r: tree_sitter::Range) -> Self {
+        Range {
+            start_byte: r.start_byte,
+            end_byte: r.end_byte,
+            start_point: r.start_point.into(),
+            end_point: r.end_point.into(),
+        }
+    }
+}
 
 /// Node id: an index into the [`Ast`] arena. A newtype around `usize`
 /// rather than a bare alias so that it can carry its own
@@ -96,6 +117,11 @@ where
 /// All standard primitive and string types implement [`YeastDisplay`] via
 /// the [`impl_yeast_display_via_display`] macro below. Coherence prevents a
 /// blanket `impl<T: Display>`, so additional types must be added explicitly.
+#[diagnostic::on_unimplemented(
+    message = "`{Self}` cannot be interpolated with `#{{...}}`",
+    note = "if the value is optional, mark the enclosing field's value with `?` to leave \
+            that field unset when it is absent, as in `label: (identifier #{{lbl}})?`"
+)]
 pub trait YeastDisplay {
     fn yeast_to_string(&self, ast: &Ast) -> String;
 }
@@ -106,7 +132,7 @@ pub trait YeastDisplay {
 /// rule's source range. `Id` returns the referenced node's range, letting
 /// `(kind #{capture})` carry the captured node's location.
 pub trait YeastSourceRange {
-    fn yeast_source_range(&self, ast: &Ast) -> Option<tree_sitter::Range>;
+    fn yeast_source_range(&self, ast: &Ast) -> Option<Range>;
 }
 
 impl YeastDisplay for Id {
@@ -116,9 +142,9 @@ impl YeastDisplay for Id {
 }
 
 impl YeastSourceRange for Id {
-    fn yeast_source_range(&self, ast: &Ast) -> Option<tree_sitter::Range> {
+    fn yeast_source_range(&self, ast: &Ast) -> Option<Range> {
         ast.get_node(*self).and_then(|n| match &n.content {
-            NodeContent::Range(r) => Some(r.clone()),
+            NodeContent::Range(r) => Some(*r),
             _ => n.source_range,
         })
     }
@@ -134,7 +160,7 @@ macro_rules! impl_yeast_display_via_display {
             }
 
             impl YeastSourceRange for $t {
-                fn yeast_source_range(&self, _ast: &Ast) -> Option<tree_sitter::Range> {
+                fn yeast_source_range(&self, _ast: &Ast) -> Option<Range> {
                     None
                 }
             }
@@ -157,8 +183,83 @@ impl<T: YeastDisplay + ?Sized> YeastDisplay for &T {
 }
 
 impl<T: YeastSourceRange + ?Sized> YeastSourceRange for &T {
-    fn yeast_source_range(&self, ast: &Ast) -> Option<tree_sitter::Range> {
+    fn yeast_source_range(&self, ast: &Ast) -> Option<Range> {
         (**self).yeast_source_range(ast)
+    }
+}
+
+/// Normalizes a `#{expr}` interpolation to an optional value, so that a
+/// fallible field — `field: (kind #{expr})?` — can tell "there is a value to
+/// interpolate" apart from "there is none, so leave the field unset".
+///
+/// Implemented for every [`YeastDisplay`] type, which always yields a value,
+/// and for `Option` of the same, which yields one only when it is `Some`.
+///
+/// The implementations are enumerated rather than blanket: a blanket
+/// `impl<T: YeastDisplay>` would overlap with the `Option<T>` impl, since
+/// coherence cannot rule out a future `impl YeastDisplay for Option<T>`.
+/// [`YeastDisplay`] itself is enumerated for the same reason.
+///
+/// Note that this is used *only* inside a fallible field. Elsewhere `#{expr}`
+/// still goes directly through [`YeastDisplay`], so interpolating an `Option`
+/// without a `?` remains a compile error rather than silently dropping a node.
+pub trait MaybeYeastValue {
+    /// The interpolated value's type, which knows how to render itself.
+    type Value: YeastDisplay + YeastSourceRange + ?Sized;
+
+    /// Returns the value to interpolate, or `None` to leave the field unset.
+    fn maybe_yeast_value(&self) -> Option<&Self::Value>;
+}
+
+macro_rules! impl_maybe_yeast_value {
+    ($($t:ty),* $(,)?) => {
+        $(
+            impl MaybeYeastValue for $t {
+                type Value = $t;
+                fn maybe_yeast_value(&self) -> Option<&$t> {
+                    Some(self)
+                }
+            }
+
+            impl MaybeYeastValue for Option<$t> {
+                type Value = $t;
+                fn maybe_yeast_value(&self) -> Option<&$t> {
+                    self.as_ref()
+                }
+            }
+        )*
+    };
+}
+
+impl_maybe_yeast_value! {
+    Id,
+    i8, i16, i32, i64, i128, isize,
+    u8, u16, u32, u64, u128, usize,
+    f32, f64,
+    bool, char,
+    String,
+}
+
+// `str` is unsized, so it has no `Option<str>` counterpart; `Option<&str>` is
+// covered by the reference impls below.
+impl MaybeYeastValue for str {
+    type Value = str;
+    fn maybe_yeast_value(&self) -> Option<&str> {
+        Some(self)
+    }
+}
+
+impl<T: MaybeYeastValue + ?Sized> MaybeYeastValue for &T {
+    type Value = T::Value;
+    fn maybe_yeast_value(&self) -> Option<&T::Value> {
+        (**self).maybe_yeast_value()
+    }
+}
+
+impl<T: MaybeYeastValue + ?Sized> MaybeYeastValue for Option<&T> {
+    type Value = T::Value;
+    fn maybe_yeast_value(&self) -> Option<&T::Value> {
+        (*self).and_then(MaybeYeastValue::maybe_yeast_value)
     }
 }
 
@@ -333,13 +434,41 @@ impl Ast {
         ast
     }
 
+    /// Construct an empty AST backed by `schema`, for building a tree
+    /// programmatically from a source other than a tree-sitter parse (e.g. an
+    /// external parser's output). Populate it with [`Ast::create_node`] /
+    /// [`Ast::create_node_with_range`] and then designate the root with
+    /// [`Ast::set_root`].
+    ///
+    /// Node kind and field names may be registered in `schema` up front, or on
+    /// demand while building via [`Ast::register_kind`],
+    /// [`Ast::register_unnamed_kind`], and [`Ast::register_field`] (which return
+    /// the ids to pass to [`Ast::create_node_with_range`]). Passing a fresh
+    /// [`schema::Schema::new`] and registering names during construction is
+    /// therefore fine — see the swift-syntax adapter for an example.
+    pub fn with_schema(schema: schema::Schema) -> Self {
+        Self {
+            root: Id(0),
+            nodes: Vec::new(),
+            schema,
+            source: Vec::new(),
+        }
+    }
+
+    /// Set the original source bytes, used to resolve `NodeContent::Range`
+    /// nodes to text. Nodes built with inline `NodeContent::DynamicString`
+    /// content do not require this.
+    pub fn set_source(&mut self, source: Vec<u8>) {
+        self.source = source;
+    }
+
     /// Returns the source text for `id`, resolving `NodeContent::Range`
     /// against the stored source bytes when available.
     pub fn source_text(&self, id: Id) -> String {
         let Some(node) = self.get_node(id) else {
             return String::new();
         };
-        let read_range = |range: &tree_sitter::Range| {
+        let read_range = |range: &Range| {
             let start = range.start_byte;
             let end = range.end_byte;
             if end <= self.source.len() && start <= end {
@@ -363,7 +492,7 @@ impl Ast {
         }
     }
 
-    pub fn walk(&self) -> AstCursor {
+    pub fn walk(&self) -> AstCursor<'_> {
         AstCursor::new(self)
     }
 
@@ -437,7 +566,7 @@ impl Ast {
         content: NodeContent,
         fields: BTreeMap<FieldId, Vec<Id>>,
         is_named: bool,
-        source_range: Option<tree_sitter::Range>,
+        source_range: Option<Range>,
     ) -> Id {
         let source_range = match &content {
             // Parsed nodes already carry an exact source range in their content.
@@ -463,14 +592,37 @@ impl Ast {
         Id(id)
     }
 
-    fn union_source_range_of_children(
-        &self,
-        fields: &BTreeMap<FieldId, Vec<Id>>,
-    ) -> Option<tree_sitter::Range> {
+    /// Register a named node kind, returning its id (idempotent). Lets callers
+    /// build an AST in a single pass, registering kinds as nodes are created
+    /// rather than pre-populating the schema.
+    pub fn register_kind(&mut self, name: &str) -> KindId {
+        self.schema.register_kind(name)
+    }
+
+    /// Register an anonymous (unnamed) token kind, returning its id
+    /// (idempotent). Anonymous tokens are keyed by their text (e.g. `"func"`).
+    pub fn register_unnamed_kind(&mut self, name: &str) -> KindId {
+        self.schema.register_unnamed_kind(name)
+    }
+
+    /// Register a field name, returning its id (idempotent).
+    pub fn register_field(&mut self, name: &str) -> FieldId {
+        self.schema.register_field(name)
+    }
+
+    /// Register every kind and field name from `schema` into this AST's schema
+    /// (idempotent). Used before desugaring an externally-built AST so that
+    /// rules can build output nodes whose kind/field names come from the
+    /// desugarer's output schema.
+    pub fn register_names_from_schema(&mut self, schema: &schema::Schema) {
+        self.schema.register_names_from(schema);
+    }
+
+    fn union_source_range_of_children(&self, fields: &BTreeMap<FieldId, Vec<Id>>) -> Option<Range> {
         let mut start_byte: Option<usize> = None;
         let mut end_byte: Option<usize> = None;
-        let mut start_point = tree_sitter::Point { row: 0, column: 0 };
-        let mut end_point = tree_sitter::Point { row: 0, column: 0 };
+        let mut start_point = Point { row: 0, column: 0 };
+        let mut end_point = Point { row: 0, column: 0 };
 
         for child_ids in fields.values() {
             for &child_id in child_ids {
@@ -513,7 +665,7 @@ impl Ast {
         }
 
         match (start_byte, end_byte) {
-            (Some(start_byte), Some(end_byte)) => Some(tree_sitter::Range {
+            (Some(start_byte), Some(end_byte)) => Some(Range {
                 start_byte,
                 end_byte,
                 start_point,
@@ -531,7 +683,7 @@ impl Ast {
         &mut self,
         kind: &'static str,
         content: String,
-        source_range: Option<tree_sitter::Range>,
+        source_range: Option<Range>,
     ) -> Id {
         let kind_id = self.schema.id_for_node_kind(kind).unwrap_or_else(|| {
             panic!("create_named_token: node kind '{kind}' not found in schema")
@@ -604,7 +756,7 @@ impl Ast {
         }
     }
 
-    fn id_for_unnamed_node_kind(&self, kind: &str) -> Option<KindId> {
+    pub fn id_for_unnamed_node_kind(&self, kind: &str) -> Option<KindId> {
         let id = self.schema.id_for_unnamed_node_kind(kind).unwrap_or(0);
         if id == 0 {
             None
@@ -624,7 +776,7 @@ pub struct Node {
     /// For synthetic nodes, the source range of the original node they
     /// were desugared from. Used for location information in TRAP output.
     #[serde(skip)]
-    source_range: Option<tree_sitter::Range>,
+    source_range: Option<Range>,
     is_named: bool,
     is_missing: bool,
     is_extra: bool,
@@ -652,11 +804,11 @@ impl Node {
         self.is_error
     }
 
-    fn fake_point(&self) -> tree_sitter::Point {
-        tree_sitter::Point { row: 0, column: 0 }
+    fn fake_point(&self) -> Point {
+        Point { row: 0, column: 0 }
     }
 
-    pub fn start_position(&self) -> tree_sitter::Point {
+    pub fn start_position(&self) -> Point {
         match self.content {
             NodeContent::Range(range) => range.start_point,
             _ => self
@@ -665,7 +817,7 @@ impl Node {
         }
     }
 
-    pub fn end_position(&self) -> tree_sitter::Point {
+    pub fn end_position(&self) -> Point {
         match self.content {
             NodeContent::Range(range) => range.end_point,
             _ => self
@@ -714,7 +866,7 @@ impl Node {
 /// or a new string if the node is synthesized.
 #[derive(PartialEq, Eq, Debug, Clone, Serialize)]
 pub enum NodeContent {
-    Range(#[serde(with = "range::Range")] tree_sitter::Range),
+    Range(Range),
     String(&'static str),
     DynamicString(String),
 }
@@ -727,7 +879,7 @@ impl From<&'static str> for NodeContent {
 
 impl From<tree_sitter::Range> for NodeContent {
     fn from(value: tree_sitter::Range) -> Self {
-        NodeContent::Range(value)
+        NodeContent::Range(value.into())
     }
 }
 
@@ -854,7 +1006,7 @@ pub type Transform<C = ()> = Box<
             &mut Ast,
             Captures,
             &tree_builder::FreshScope,
-            Option<tree_sitter::Range>,
+            Option<Range>,
             &mut C,
             TranslatorHandle<'_, C>,
         ) -> Result<Vec<Id>, String>
@@ -1257,10 +1409,27 @@ impl<C> DesugaringConfig<C> {
             None => Ok(schema::from_language(language)),
         }
     }
+
+    /// Build the yeast `Schema` from the output YAML alone, with no input
+    /// tree-sitter grammar. Requires `output_node_types_yaml` to be set (there
+    /// is no grammar to fall back to). Used by custom (non-tree-sitter)
+    /// front-ends whose input schema is supplied by their own parser/adapter.
+    pub fn build_schema_no_language(&self) -> Result<schema::Schema, String> {
+        match self.output_node_types_yaml {
+            Some(yaml) => node_types_yaml::schema_from_yaml(yaml),
+            None => Err(
+                "a language-free desugarer requires output_node_types_yaml to be set".to_string(),
+            ),
+        }
+    }
 }
 
 pub struct Runner<'a, C = ()> {
-    language: tree_sitter::Language,
+    /// The input tree-sitter language, used only when parsing (`run_from_tree`
+    /// / `run`). `None` for pipelines that only ever run over an
+    /// externally-built AST (`run_from_ast`), so no tree-sitter grammar is
+    /// required.
+    language: Option<tree_sitter::Language>,
     schema: schema::Schema,
     phases: &'a [Phase<C>],
 }
@@ -1270,7 +1439,7 @@ impl<'a, C> Runner<'a, C> {
     pub fn new(language: tree_sitter::Language, phases: &'a [Phase<C>]) -> Self {
         let schema = schema::from_language(&language);
         Self {
-            language,
+            language: Some(language),
             schema,
             phases,
         }
@@ -1283,7 +1452,18 @@ impl<'a, C> Runner<'a, C> {
         phases: &'a [Phase<C>],
     ) -> Self {
         Self {
-            language,
+            language: Some(language),
+            schema: schema.clone(),
+            phases,
+        }
+    }
+
+    /// Create a runner with no input tree-sitter language, for pipelines that
+    /// only run over an externally-built AST (`run_from_ast`). The parsing
+    /// entry points (`run_from_tree` / `run`) will error if called.
+    pub fn with_schema_no_language(schema: &schema::Schema, phases: &'a [Phase<C>]) -> Self {
+        Self {
+            language: None,
             schema: schema.clone(),
             phases,
         }
@@ -1296,7 +1476,7 @@ impl<'a, C> Runner<'a, C> {
     ) -> Result<Self, String> {
         let schema = config.build_schema(&language)?;
         Ok(Self {
-            language,
+            language: Some(language),
             schema,
             phases: &config.phases,
         })
@@ -1316,7 +1496,9 @@ impl<'a, C: Clone> Runner<'a, C> {
         let mut ast = Ast::from_tree_with_schema_and_source(
             self.schema.clone(),
             tree,
-            &self.language,
+            self.language
+                .as_ref()
+                .ok_or("run_from_tree requires a tree-sitter language")?,
             source.to_vec(),
         );
         self.run_phases(&mut ast, user_ctx)?;
@@ -1326,9 +1508,13 @@ impl<'a, C: Clone> Runner<'a, C> {
     /// Parse `input` and run all phases, threading `user_ctx` through
     /// every rule transform. The caller owns the initial context state.
     pub fn run_with_ctx(&self, input: &str, user_ctx: &mut C) -> Result<Ast, String> {
+        let language = self
+            .language
+            .as_ref()
+            .ok_or("run requires a tree-sitter language")?;
         let mut parser = tree_sitter::Parser::new();
         parser
-            .set_language(&self.language)
+            .set_language(language)
             .map_err(|e| format!("Failed to set language: {e}"))?;
         let tree = parser
             .parse(input, None)
@@ -1336,7 +1522,7 @@ impl<'a, C: Clone> Runner<'a, C> {
         let mut ast = Ast::from_tree_with_schema_and_source(
             self.schema.clone(),
             &tree,
-            &self.language,
+            language,
             input.as_bytes().to_vec(),
         );
         self.run_phases(&mut ast, user_ctx)?;
@@ -1387,6 +1573,18 @@ impl<'a, C: Clone + Default> Runner<'a, C> {
         let mut user_ctx = C::default();
         self.run_with_ctx(input, &mut user_ctx)
     }
+
+    /// Run all phases over an already-built `ast`, using the default context
+    /// (`C::default()`). Unlike [`run_from_tree`](Self::run_from_tree), the AST
+    /// is supplied by the caller (e.g. built from an external parser's output)
+    /// rather than constructed from a tree-sitter tree. The caller is
+    /// responsible for ensuring the AST's schema knows any output kind/field
+    /// names the rules will build (see [`Ast::register_names_from_schema`]).
+    pub fn run_from_ast(&self, mut ast: Ast) -> Result<Ast, String> {
+        let mut user_ctx = C::default();
+        self.run_phases(&mut ast, &mut user_ctx)?;
+        Ok(ast)
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -1409,6 +1607,12 @@ pub trait Desugarer: Send + Sync {
     /// Parse `tree` against `source` and run the desugaring pipeline.
     /// Each call constructs a fresh default user context internally.
     fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<Ast, String>;
+
+    /// Run the desugaring pipeline over an already-built `ast` (e.g. produced
+    /// by an external parser rather than tree-sitter). The desugarer ensures
+    /// the AST's schema knows its output kind/field names before running the
+    /// rules. Each call constructs a fresh default user context internally.
+    fn run_from_ast(&self, ast: Ast) -> Result<Ast, String>;
 }
 
 /// A concrete [`Desugarer`] backed by a [`DesugaringConfig<C>`] for a
@@ -1416,7 +1620,10 @@ pub trait Desugarer: Send + Sync {
 /// schema so that per-call cost is bounded to constructing a transient
 /// [`Runner`] and cloning the schema (no YAML re-parsing).
 pub struct ConcreteDesugarer<C: Default + Clone + Send + Sync + 'static> {
-    language: tree_sitter::Language,
+    /// The input tree-sitter language, or `None` for a custom (non-tree-sitter)
+    /// front-end that only ever desugars an externally-built AST
+    /// (`run_from_ast`).
+    language: Option<tree_sitter::Language>,
     schema: schema::Schema,
     config: DesugaringConfig<C>,
 }
@@ -1430,7 +1637,20 @@ impl<C: Default + Clone + Send + Sync + 'static> ConcreteDesugarer<C> {
     ) -> Result<Self, String> {
         let schema = config.build_schema(&language)?;
         Ok(Self {
-            language,
+            language: Some(language),
+            schema,
+            config,
+        })
+    }
+
+    /// Build a desugarer with no input tree-sitter language, for a custom
+    /// front-end whose parser supplies the input AST directly. Only
+    /// [`run_from_ast`](Desugarer::run_from_ast) is supported; the schema comes
+    /// from the config's `output_node_types_yaml` (which must be set).
+    pub fn without_language(config: DesugaringConfig<C>) -> Result<Self, String> {
+        let schema = config.build_schema_no_language()?;
+        Ok(Self {
+            language: None,
             schema,
             config,
         })
@@ -1443,7 +1663,20 @@ impl<C: Default + Clone + Send + Sync + 'static> Desugarer for ConcreteDesugarer
     }
 
     fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<Ast, String> {
-        let runner = Runner::with_schema(self.language.clone(), &self.schema, &self.config.phases);
+        let language = self
+            .language
+            .clone()
+            .ok_or("run_from_tree requires a tree-sitter language")?;
+        let runner = Runner::with_schema(language, &self.schema, &self.config.phases);
         runner.run_from_tree(tree, source)
+    }
+
+    fn run_from_ast(&self, mut ast: Ast) -> Result<Ast, String> {
+        // The AST was built against its own (external) schema; make sure the
+        // output kind/field names the rules build are resolvable in it.
+        ast.register_names_from_schema(&self.schema);
+        // `run_from_ast` never parses, so no tree-sitter language is needed.
+        let runner = Runner::with_schema_no_language(&self.schema, &self.config.phases);
+        runner.run_from_ast(ast)
     }
 }

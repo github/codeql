@@ -1,3 +1,19 @@
+## 7.2.3
+
+No user-facing changes.
+
+## 7.2.2
+
+### Minor Analysis Improvements
+
+* The function `Rel` in `path/filepath` was incorrectly considered a sanitizer for `go/path-injection` and `go/zipslip`. This has now been fixed, which may lead to more results for those queries.
+
+## 7.2.1
+
+### Minor Analysis Improvements
+
+ * Improved models for the `log/slog` package (Go 1.21+), including `*slog.Logger` methods, `With`/`WithGroup`, and `Attr`/`Value` helpers, improving coverage for the `go/log-injection` and `go/clear-text-logging` queries.
+
 ## 7.2.0
 
 ### Deprecated APIs

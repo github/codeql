@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::captures::Captures;
 use crate::tree_builder::FreshScope;
-use crate::{Ast, FieldId, Id, NodeContent, TranslatorHandle};
+use crate::{Ast, FieldId, Id, NodeContent, Range, TranslatorHandle};
 
 /// Context for building new AST nodes during a transformation.
 ///
@@ -34,7 +34,7 @@ pub struct BuildCtx<'a, C: 'a = ()> {
     pub captures: &'a Captures,
     pub fresh: &'a FreshScope,
     /// Source range of the matched node, inherited by synthetic nodes.
-    pub source_range: Option<tree_sitter::Range>,
+    pub source_range: Option<Range>,
     /// User-supplied context, accessible directly via `ctx.field` (via Deref).
     pub user_ctx: &'a mut C,
     /// Optional translator handle, populated when the context is built by
@@ -63,7 +63,7 @@ impl<'a, C> BuildCtx<'a, C> {
         ast: &'a mut Ast,
         captures: &'a Captures,
         fresh: &'a FreshScope,
-        source_range: Option<tree_sitter::Range>,
+        source_range: Option<Range>,
         user_ctx: &'a mut C,
     ) -> Self {
         Self {
@@ -82,7 +82,7 @@ impl<'a, C> BuildCtx<'a, C> {
         ast: &'a mut Ast,
         captures: &'a Captures,
         fresh: &'a FreshScope,
-        source_range: Option<tree_sitter::Range>,
+        source_range: Option<Range>,
         user_ctx: &'a mut C,
         translator: TranslatorHandle<'a, C>,
     ) -> Self {
@@ -106,6 +106,17 @@ impl<'a, C> BuildCtx<'a, C> {
     /// Get all values of a repeated capture variable.
     pub fn capture_all(&self, name: &str) -> Vec<Id> {
         self.captures.get_all(name)
+    }
+
+    /// Read the source text of a captured (or any other) node.
+    ///
+    /// Convenience for the common `ctx.ast.source_text(id)` reach-through used
+    /// by Rust-block rules that branch on, or embed, a raw capture's spelling
+    /// (e.g. an operator or keyword token). Resolves against the stored source
+    /// bytes, so it works for both parsed nodes and synthesized ones (via their
+    /// inherited source range).
+    pub fn source_text(&self, id: Id) -> String {
+        self.ast.source_text(id)
     }
 
     /// Create a named AST node with the given kind and fields.
@@ -143,7 +154,7 @@ impl<'a, C> BuildCtx<'a, C> {
         &mut self,
         kind: &'static str,
         value: &str,
-        source_range: Option<tree_sitter::Range>,
+        source_range: Option<Range>,
     ) -> Id {
         self.ast.create_named_token_with_range(
             kind,

@@ -2,11 +2,16 @@
 
 ---
 
-source_file
-  statement:
-    prefix_expression
-      operation: -
-      target: integer_literal "7"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        prefixOperatorExpr
+          expression:
+            integerLiteralExpr
+              literal: integerLiteral "7"
+          operator: prefixOperator "-"
 
 ---
 

@@ -21,7 +21,7 @@
         controller: notInjected7
     };
 
-    function injected8(name){} // OK - false negative: we do not track through properties
+    function injected8(name){} // $ MISSING: Alert // false negative: we do not track through properties
     var obj8 = {
         controller: injected8
     };

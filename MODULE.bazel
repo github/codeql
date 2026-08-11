@@ -19,18 +19,25 @@ bazel_dep(name = "rules_cc", version = "0.2.17")
 bazel_dep(name = "rules_go", version = "0.60.0")
 bazel_dep(name = "rules_java", version = "9.6.1")
 bazel_dep(name = "rules_pkg", version = "1.2.0")
-bazel_dep(name = "rules_nodejs", version = "6.7.3")
+bazel_dep(name = "rules_nodejs", version = "6.7.5")
 bazel_dep(name = "rules_python", version = "1.9.0")
 bazel_dep(name = "rules_shell", version = "0.7.1")
 bazel_dep(name = "bazel_skylib", version = "1.9.0")
 bazel_dep(name = "abseil-cpp", version = "20260107.1", repo_name = "absl")
-bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
+bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.1", repo_name = "json")
 bazel_dep(name = "fmt", version = "12.1.0-codeql.1")
 bazel_dep(name = "rules_kotlin", version = "2.2.2-codeql.1")
 bazel_dep(name = "gazelle", version = "0.50.0")
 bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.1")
 bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_rust", version = "0.69.0")
+bazel_dep(name = "rules_swift", version = "4.0.0-rc4")
+bazel_dep(name = "swift-syntax", version = "603.0.2")
+
+# Needed so we can `use_repo` `local_config_xcode` and
+# `local_config_apple_cc_toolchains` below (referenced by the per-target
+# Xcode-config transition in `unified/swift-syntax-rs/xcode_transition.bzl`).
+bazel_dep(name = "apple_support", version = "2.6.1")
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
@@ -102,7 +109,6 @@ use_repo(
     tree_sitter_extractors_deps,
     "vendor_ts__anyhow-1.0.100",
     "vendor_ts__argfile-0.2.1",
-    "vendor_ts__cc-1.2.61",
     "vendor_ts__chalk-ir-0.104.0",
     "vendor_ts__chrono-0.4.42",
     "vendor_ts__clap-4.5.48",
@@ -150,9 +156,7 @@ use_repo(
     "vendor_ts__tracing-subscriber-0.3.20",
     "vendor_ts__tree-sitter-0.26.8",
     "vendor_ts__tree-sitter-embedded-template-0.25.0",
-    "vendor_ts__tree-sitter-generate-0.26.8",
     "vendor_ts__tree-sitter-json-0.24.8",
-    "vendor_ts__tree-sitter-language-0.1.5",
     "vendor_ts__tree-sitter-python-0.23.6",
     "vendor_ts__tree-sitter-ql-0.23.1",
     "vendor_ts__tree-sitter-ruby-0.23.1",
@@ -219,6 +223,41 @@ use_repo(
     "swift-resource-dir-macos",
 )
 
+# Swift toolchain for building `unified/swift-syntax-rs`. On Linux we register
+# a hermetic swift.org toolchain as the exec toolchain; on macOS `rules_swift`
+# auto-registers `xcode_swift_toolchain` (host Xcode + OS-provided Swift
+# runtime), which is not hermetic.
+#
+# The version is pinned as a literal rather than read from
+# `unified/swift-syntax-rs/.swift-version` via `swift_version_file`: the latter
+# makes the extension `module_ctx.read` a `//unified/...` label, which fails to
+# resolve when this repo is consumed as a dependency module (`@@ql+`) whose
+# `unified/swift-syntax-rs` package is not loadable in that context. Keep this
+# in sync with `unified/swift-syntax-rs/.swift-version` (used by the `cargo`
+# build) and the `swift-syntax` release in `swift/Package.swift`.
+swift = use_extension("@rules_swift//swift:extensions.bzl", "swift")
+swift.toolchain(
+    name = "swift_toolchain",
+    swift_version = "6.3.2",
+)
+use_repo(
+    swift,
+    "swift_toolchain",
+    "swift_toolchain_ubuntu22.04",
+)
+
+register_toolchains(
+    "@swift_toolchain//:swift_toolchain_exec_ubuntu22.04",
+)
+
+# `apple_support`'s xcode_config and CC toolchains, needed by the Xcode
+# transition in `unified/swift-syntax-rs/xcode_transition.bzl`.
+xcode_configure = use_extension("@apple_support//xcode:xcode_configure.bzl", "xcode_configure_extension")
+use_repo(xcode_configure, "local_config_xcode")
+
+apple_cc_configure = use_extension("@apple_support//crosstool:setup.bzl", "apple_cc_configure_extension")
+use_repo(apple_cc_configure, "local_config_apple_cc_toolchains")
+
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
 node.toolchain(
     name = "nodejs",
@@ -276,21 +315,22 @@ use_repo(
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.26.4")
+go_sdk.download(version = "1.26.5")
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//go/extractor:go.mod")
-use_repo(go_deps, "com_github_stretchr_testify", "org_golang_x_mod", "org_golang_x_tools")
+use_repo(go_deps, "com_github_stretchr_testify", "org_golang_x_mod", "org_golang_x_sys", "org_golang_x_tools")
 
 ripunzip_archive = use_repo_rule("//misc/ripunzip:ripunzip.bzl", "ripunzip_archive")
 
 # go to https://github.com/GoogleChrome/ripunzip/releases to find latest version and corresponding sha256s
 ripunzip_archive(
     name = "ripunzip",
-    sha256_linux = "71482d7a7e4ea9176d5596161c49250c34b136b157c45f632b1111323fbfc0de",
-    sha256_macos_arm = "604194ab13f0aba3972995d995f11002b8fc285c8170401fcd46655065df20c9",
-    sha256_macos_intel = "65367b94fd579d93d46f2d2595cc4c9a60cfcf497e3c824f9d1a7b80fa8bd38a",
-    sha256_windows = "ac3874075def2b9e5074a3b5945005ab082cc6e689e1de658da8965bc23e643e",
+    sha256_linux_arm64 = "a282740ef376ff8dc0de3c589b7457598db15cc045b7daa688f15531612e0bbe",
+    sha256_linux_x64 = "71482d7a7e4ea9176d5596161c49250c34b136b157c45f632b1111323fbfc0de",
+    sha256_macos_arm64 = "604194ab13f0aba3972995d995f11002b8fc285c8170401fcd46655065df20c9",
+    sha256_macos_x64 = "65367b94fd579d93d46f2d2595cc4c9a60cfcf497e3c824f9d1a7b80fa8bd38a",
+    sha256_windows_x64 = "ac3874075def2b9e5074a3b5945005ab082cc6e689e1de658da8965bc23e643e",
     version = "2.0.4",
 )
 

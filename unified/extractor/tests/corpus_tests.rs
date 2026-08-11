@@ -1,8 +1,8 @@
 use std::fs;
 use std::path::Path;
 
-use codeql_extractor::extractor::simple;
-use yeast::{Runner, dump::dump_ast, dump::dump_ast_with_type_errors};
+use codeql_extractor::extractor::desugaring;
+use yeast::{dump::dump_ast, dump::dump_ast_with_type_errors};
 
 #[path = "../src/languages/mod.rs"]
 mod languages;
@@ -28,7 +28,7 @@ fn update_mode_enabled() -> bool {
 ///
 /// ---
 ///
-/// <raw tree-sitter parse tree>
+/// <raw swift-syntax AST (the yeast tree the adapter builds, pre-desugaring)>
 ///
 /// ---
 ///
@@ -59,40 +59,21 @@ fn render_corpus(case: &CorpusCase) -> String {
     )
 }
 
-fn run_desugaring(lang: &simple::LanguageSpec, input: &str) -> Result<yeast::Ast, String> {
-    match lang.desugar.as_deref() {
-        Some(desugarer) => {
-            // Parse the input ourselves so we don't depend on the desugarer
-            // knowing about the language.
-            let mut parser = tree_sitter::Parser::new();
-            parser
-                .set_language(&lang.ts_language)
-                .map_err(|e| format!("Failed to set language: {e}"))?;
-            let tree = parser
-                .parse(input, None)
-                .ok_or_else(|| "Failed to parse input".to_string())?;
-            desugarer
-                .run_from_tree(&tree, input.as_bytes())
-                .map_err(|e| format!("Desugaring failed: {e}"))
-        }
-        None => {
-            let runner: Runner = Runner::new(lang.ts_language.clone(), &[]);
-            runner
-                .run(input)
-                .map_err(|e| format!("Failed to parse input: {e}"))
-        }
-    }
+/// Parse `input` through the language's parser and desugar it, returning the
+/// mapped AST.
+fn run_desugaring(lang: &desugaring::LanguageSpec, input: &str) -> Result<yeast::Ast, String> {
+    let parsed = (lang.parser)(input.as_bytes())?;
+    lang.desugarer
+        .run_from_ast(parsed.ast)
+        .map_err(|e| format!("Desugaring failed: {e}"))
 }
 
-/// Produce the raw tree-sitter parse tree dump for `input`, with no
-/// desugaring rules applied. Uses a `Runner` with an empty phase list and
-/// the input grammar's own schema.
-fn dump_raw_parse(lang: &simple::LanguageSpec, input: &str) -> Result<String, String> {
-    let runner: Runner = Runner::new(lang.ts_language.clone(), &[]);
-    let ast = runner
-        .run(input)
-        .map_err(|e| format!("Failed to parse input: {e}"))?;
-    Ok(dump_ast(&ast, ast.get_root(), input))
+/// Produce the raw (pre-desugar) parse tree dump for `input` — the `yeast::Ast`
+/// the language's parser builds, before any desugaring rules. Useful for seeing
+/// what the mapping rules operate on.
+fn dump_raw_parse(lang: &desugaring::LanguageSpec, input: &str) -> Result<String, String> {
+    let parsed = (lang.parser)(input.as_bytes())?;
+    Ok(dump_ast(&parsed.ast, parsed.ast.get_root(), input))
 }
 
 /// Collect the set of corpus test "stems" (paths without an extension) under
@@ -115,18 +96,33 @@ fn collect_corpus_stems(dir: &Path, out: &mut Vec<std::path::PathBuf>) {
     }
 }
 
+#[cfg(bazel)]
+fn corpus_dir() -> std::path::PathBuf {
+    let base = std::path::PathBuf::from(
+         std::env::var("RUNFILES_DIR").expect("RUNFILES_DIR not set"),
+    );
+    std::fs::read_dir(&base)
+        .expect("failed to read RUNFILES_DIR")
+        .filter_map(Result::ok)
+        .map(|entry| entry.path().join("unified/extractor/tests/corpus"))
+        .find(|path| path.exists())
+        .expect("corpus not found under any runfiles repo root")
+}
+
+#[cfg(not(bazel))]
+fn corpus_dir() -> std::path::PathBuf {
+    std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/corpus")
+}
+
 #[test]
 fn test_corpus() {
     let update_mode = update_mode_enabled();
     let all_languages = languages::all_language_specs();
-    let corpus_dir = Path::new("tests/corpus");
+    let corpus_dir = corpus_dir();
 
     for lang in all_languages {
-        let output_schema = yeast::node_types_yaml::schema_from_yaml_with_language(
-            languages::OUTPUT_AST_SCHEMA,
-            &lang.ts_language,
-        )
-        .expect("Failed to parse OUTPUT_AST_SCHEMA YAML");
+        let output_schema = yeast::node_types_yaml::schema_from_yaml(languages::OUTPUT_AST_SCHEMA)
+            .expect("Failed to parse OUTPUT_AST_SCHEMA YAML");
 
         let lang_corpus_dir = corpus_dir.join(&lang.prefix);
         if !lang_corpus_dir.exists() {
@@ -236,8 +232,7 @@ fn test_corpus() {
                         );
                         if update_mode {
                             case.expected = actual_dump.trim().to_string();
-                        } else if output_path.exists()
-                            && case.expected.trim() != actual_dump.trim()
+                        } else if output_path.exists() && case.expected.trim() != actual_dump.trim()
                         {
                             failures.push(format!(
                                 "Test failed in {}:\nEXPECTED:\n\n{}\n\nACTUAL:\n\n{}",

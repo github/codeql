@@ -8,7 +8,7 @@
  * @id cpp/new-free-mismatch
  * @tags reliability
  *       security
- *       external/cwe/cwe-401
+ *       external/cwe/cwe-762
  */
 
 import NewDelete

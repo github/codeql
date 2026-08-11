@@ -1,3 +1,30 @@
+## 0.6.33
+
+### Query Metadata Changes
+
+* The name and alert message of the `actions/cache-poisoning/code-injection` query have been reworded for clarity.
+
+### Minor Analysis Improvements
+
+* The `actions/output-clobbering/high` query no longer reports simple `jq` path filters when their output remains JSON-encoded. Raw-output modes, complex filters, and unrecognized options remain reportable.
+* GitHub Actions queries now correctly classify the `schedule` event when determining whether a workflow is externally triggerable.
+* The `actions/envvar-injection/critical` query now requires the untrusted source and privileged context to originate from the same trigger event. The environment variable injection queries also no longer treat pull request head labels as injection-capable because they cannot contain newlines.
+* The `actions/cache-poisoning/code-injection`, `actions/cache-poisoning/direct-cache`, and `actions/cache-poisoning/poisonable-step` queries now account for read-only cache access on low-trust triggers that run in the default branch scope. Results are retained for triggers that GitHub allows to write to that cache scope.
+
+### Bug Fixes
+
+* The `actions/output-clobbering/high` query now provides messages tailored to the affected output channel and includes expanded documentation and recommendations.
+* The `actions/cache-poisoning/poisonable-step` and `actions/untrusted-checkout/critical` queries now start paths at the expressions that control untrusted checkouts and link their alert messages to those expressions.
+* Fixed a performance issue in the `actions/output-clobbering/high` query caused by using unescaped source-code input in a regular expression.
+
+## 0.6.32
+
+No user-facing changes.
+
+## 0.6.31
+
+No user-facing changes.
+
 ## 0.6.30
 
 ### Query Metadata Changes

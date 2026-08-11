@@ -34,6 +34,19 @@ extensions:
       - ["", "", False, "HttpReceiveHttpRequest", "", "", "Argument[*3]", "remote", "manual"]
       - ["", "", False, "HttpReceiveRequestEntityBody", "", "", "Argument[*3]", "remote", "manual"]
       - ["", "", False, "HttpReceiveClientCertificate", "", "", "Argument[*3]", "remote", "manual"]
+      # winreg.h
+      - ["", "", False, "RegQueryValueA", "", "", "Argument[*2]", "windows-registry", "manual"]
+      - ["", "", False, "RegQueryValueExA", "", "", "Argument[*4]", "windows-registry", "manual"]
+      - ["", "", False, "RegQueryValueW", "", "", "Argument[*2]", "windows-registry", "manual"]
+      - ["", "", False, "RegQueryValueExW", "", "", "Argument[*4]", "windows-registry", "manual"]
+      - ["", "", False, "RegGetValueA", "", "", "Argument[*5]", "windows-registry", "manual"]
+      - ["", "", False, "RegGetValueW", "", "", "Argument[*5]", "windows-registry", "manual"]
+      # TODO: Once we support access paths at sources we should also mark Argument[*1].Field[*ve_valueptr]
+      - ["", "", False, "RegQueryMultipleValuesA", "", "", "Argument[*3]", "windows-registry", "manual"]
+      # TODO: Once we support access paths at sources we should also mark Argument[*1].Field[*ve_valueptr]
+      - ["", "", False, "RegQueryMultipleValuesW", "", "", "Argument[*3]", "windows-registry", "manual"]
+      - ["", "", False, "RegEnumValueA", "", "", "Argument[*2,*6]", "windows-registry", "manual"]
+      - ["", "", False, "RegEnumValueW", "", "", "Argument[*2,*6]", "windows-registry", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: summaryModel
@@ -59,3 +72,12 @@ extensions:
       - ["", "", False, "RtlInitUnicodeString", "", "", "Argument[*1]", "Argument[*0].Field[*Buffer]", "value", "manual"]
       # winhttp.h
       - ["", "", False, "WinHttpCrackUrl", "", "", "Argument[*0]", "Argument[*3]", "taint", "manual"]
+      # combaseapi.h
+      - ["", "", False, "IIDFromString", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "StringFromIID", "", "", "Argument[*0]", "Argument[**1]", "taint", "manual"]
+      - ["", "", False, "ProgIDFromCLSID", "", "", "Argument[*0]", "Argument[**1]", "taint", "manual"]
+      - ["", "", False, "CLSIDFromProgID", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "CLSIDFromString", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "StringFromCLSID", "", "", "Argument[*0]", "Argument[**1]", "taint", "manual"]
+      - ["", "", False, "GUIDFromString", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "StringFromGUID2", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]

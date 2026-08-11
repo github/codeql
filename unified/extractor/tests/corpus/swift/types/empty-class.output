@@ -2,13 +2,21 @@ class Foo {}
 
 ---
 
-source_file
-  statement:
-    class_declaration
-      body:
-        class_body
-      declaration_kind: class
-      name: type_identifier "Foo"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Foo"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+          modifiers:
+          classKeyword: class
 
 ---
 

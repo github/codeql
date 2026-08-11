@@ -1,3 +1,17 @@
+## 2.4.3
+
+### Minor Analysis Improvements
+
+* The `js/missing-rate-limiting` query now recognizes the `@fastify/rate-limit` package as a rate limiter.
+
+## 2.4.2
+
+No user-facing changes.
+
+## 2.4.1
+
+No user-facing changes.
+
 ## 2.4.0
 
 ### New Queries

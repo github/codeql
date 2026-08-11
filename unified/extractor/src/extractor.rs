@@ -2,7 +2,7 @@ use clap::Args;
 use std::path::PathBuf;
 
 use crate::languages;
-use codeql_extractor::extractor::simple;
+use codeql_extractor::extractor::desugaring;
 use codeql_extractor::trap;
 
 #[derive(Args)]
@@ -31,7 +31,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
         lang.prefix = "unified";
     }
 
-    let extractor = simple::Extractor {
+    let extractor = desugaring::Extractor {
         prefix: "unified".to_string(),
         languages,
         trap_dir: options.output_dir,

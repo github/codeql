@@ -94,7 +94,9 @@ pub fn run(options: Options) -> std::io::Result<()> {
         node_types::read_node_types_str("erb", tree_sitter_embedded_template::NODE_TYPES)?;
     let lines: std::io::Result<Vec<String>> = std::io::BufReader::new(file_list).lines().collect();
     let lines = lines?;
-    let source_root = std::env::current_dir().ok().and_then(|d| d.canonicalize().ok());
+    let source_root = std::env::current_dir()
+        .ok()
+        .and_then(|d| d.canonicalize().ok());
     lines
         .par_iter()
         .try_for_each(|line| {
@@ -126,7 +128,6 @@ pub fn run(options: Options) -> std::io::Result<()> {
                     &path,
                     &source,
                     &[],
-                    None,
                 );
 
                 let (ranges, line_breaks) = scan_erb(
@@ -215,7 +216,6 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 &path,
                 &source,
                 &code_ranges,
-                None,
             );
             std::fs::create_dir_all(src_archive_file.parent().unwrap())?;
             if needs_conversion {

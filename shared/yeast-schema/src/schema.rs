@@ -44,6 +44,11 @@ pub struct Schema {
     field_types: BTreeMap<(String, FieldId), Vec<NodeType>>,
     field_cardinalities: BTreeMap<(String, FieldId), FieldCardinality>,
     supertypes: BTreeMap<String, Vec<NodeType>>,
+    /// Per-node-kind declared field order (named fields only), as written in
+    /// the source node-types YAML. Field ids are not a stable ordering key
+    /// across front-ends, so this preserves the authored order for
+    /// presentation (see the AST dump).
+    field_order: BTreeMap<String, Vec<FieldId>>,
 }
 
 impl Default for Schema {
@@ -65,6 +70,7 @@ impl Schema {
             field_types: BTreeMap::new(),
             field_cardinalities: BTreeMap::new(),
             supertypes: BTreeMap::new(),
+            field_order: BTreeMap::new(),
         }
     }
 
@@ -167,6 +173,28 @@ impl Schema {
         id
     }
 
+    /// Register every kind (named and unnamed) and field *name* from `other`
+    /// into this schema (idempotent). Ids are assigned in this schema's own id
+    /// space; existing ids are unchanged.
+    ///
+    /// This is used when running desugaring rules over an AST that was built
+    /// against a different schema (e.g. from an external parser): the rules
+    /// build output nodes whose kind/field names come from `other`, and those
+    /// names must resolve in the AST's own schema. Only names are needed — the
+    /// rule engine resolves kinds/fields by name and does not consult
+    /// `other`'s field-type or supertype information.
+    pub fn register_names_from(&mut self, other: &Schema) {
+        for name in other.kind_ids.keys() {
+            self.register_kind(name);
+        }
+        for name in other.unnamed_kind_ids.keys() {
+            self.register_unnamed_kind(name);
+        }
+        for name in other.field_ids.keys() {
+            self.register_field(name);
+        }
+    }
+
     /// Track a name for a kind ID without registering it as named or
     /// unnamed. Useful when importing tree-sitter ID tables that may
     /// contain duplicate IDs across the named/unnamed split.
@@ -245,6 +273,17 @@ impl Schema {
     ) -> Option<&Vec<NodeType>> {
         self.field_types
             .get(&(parent_kind.to_string(), field_id))
+    }
+
+    /// Record the declared (named) field order for a node kind, as authored in
+    /// the source node-types YAML.
+    pub fn set_field_order(&mut self, kind: &str, field_ids: Vec<FieldId>) {
+        self.field_order.insert(kind.to_string(), field_ids);
+    }
+
+    /// The declared (named) field order for a node kind, if known.
+    pub fn field_order(&self, kind: &str) -> Option<&Vec<FieldId>> {
+        self.field_order.get(kind)
     }
 
     pub fn set_field_cardinality(

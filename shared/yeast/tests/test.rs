@@ -267,6 +267,59 @@ fn test_query_match() {
 }
 
 #[test]
+fn test_run_from_ast_desugars_hand_built_tree() {
+    use std::collections::BTreeMap;
+
+    // Output schema for the desugared tree. Its kind/field names must become
+    // resolvable in the hand-built AST's schema for the rule to build them.
+    let schema_yaml = r#"
+named:
+    assignment:
+        left: leaf
+    leaf:
+"#;
+
+    // A rule over an *input* kind (`wrapper`) that is not in the output schema,
+    // rewriting to an output `assignment` node.
+    let rules: Vec<Rule> = vec![yeast::rule!(
+        (wrapper)
+        =>
+        (assignment left: (leaf "lit"))
+    )];
+
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let config = DesugaringConfig::<()>::new()
+        .add_phase("test", PhaseKind::OneShot, rules)
+        .with_output_node_types_yaml(schema_yaml);
+    let desugarer = ConcreteDesugarer::new(lang, config).unwrap();
+
+    // Build the input AST by hand, as an external parser adapter would. The
+    // schema starts empty and gains the `wrapper` input kind on the fly.
+    let mut ast = Ast::with_schema(yeast::schema::Schema::new());
+    let wrapper_kind = ast.register_kind("wrapper");
+    let root = ast.create_node_with_range(
+        wrapper_kind,
+        NodeContent::DynamicString(String::new()),
+        BTreeMap::new(),
+        true,
+        None,
+    );
+    ast.set_root(root);
+
+    // Desugaring the hand-built AST applies the rule, producing `assignment`
+    // even though the AST was built against a schema with no output kinds.
+    let out = desugarer
+        .run_from_ast(ast)
+        .expect("run_from_ast should succeed");
+    let out_root = out.get_node(out.get_root()).expect("root exists");
+    assert_eq!(out_root.kind_name(), "assignment");
+    let dump = dump_ast(&out, out.get_root(), "");
+    assert!(dump.contains("assignment"), "unexpected dump: {dump}");
+    assert!(dump.contains("left"), "unexpected dump: {dump}");
+    assert!(dump.contains("leaf"), "unexpected dump: {dump}");
+}
+
+#[test]
 fn test_query_no_match() {
     let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
     let ast = runner.run("x = 1").unwrap();
@@ -617,6 +670,117 @@ fn test_tree_builder() {
           assignment
             left: integer "1"
             right: identifier "x"
+    "#,
+    );
+}
+
+/// Builds `(assignment left: … right: (integer #{value})?)`, where a `None`
+/// `value` leaves `right` unset rather than producing an `integer` with no
+/// content.
+fn build_optional_right(ast: &mut Ast, value: Option<yeast::Id>) -> (yeast::Id, yeast::Id) {
+    let captures = yeast::captures::Captures::new();
+    let fresh = yeast::tree_builder::FreshScope::new();
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(ast, &captures, &fresh, &mut user_ctx);
+    let left = yeast::tree!(ctx, (identifier "x"));
+    let root = yeast::tree!(ctx,
+        (assignment
+            left: {left}
+            right: (integer #{value})?
+        )
+    );
+    (root, left)
+}
+
+#[test]
+fn test_optional_field_is_set_when_the_value_is_present() {
+    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let mut ast = runner.run("x = 1").unwrap();
+
+    // Any node will do as the interpolated value; `#{…}` renders its source text.
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let some = cursor.node_id();
+
+    let (root, _) = build_optional_right(&mut ast, Some(some));
+    assert_dump_eq(
+        &dump_ast(&ast, root, "x = 1"),
+        r#"
+        assignment
+          left: identifier "x"
+          right: integer "x = 1"
+    "#,
+    );
+}
+
+#[test]
+fn test_optional_field_is_unset_when_the_value_is_absent() {
+    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let mut ast = runner.run("x = 1").unwrap();
+
+    let (root, _) = build_optional_right(&mut ast, None);
+    assert_dump_eq(
+        &dump_ast(&ast, root, "x = 1"),
+        r#"
+        assignment
+          left: identifier "x"
+    "#,
+    );
+}
+
+#[test]
+fn test_optional_field_propagates_through_nested_nodes() {
+    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let mut ast = runner.run("x = 1").unwrap();
+
+    let captures = yeast::captures::Captures::new();
+    let fresh = yeast::tree_builder::FreshScope::new();
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &fresh, &mut user_ctx);
+
+    // The absent value sits two levels below the `?`, so the whole
+    // `left_assignment_list` subtree is abandoned along with it.
+    let absent: Option<yeast::Id> = None;
+    let right = yeast::tree!(ctx, (integer "1"));
+    let root = yeast::tree!(ctx,
+        (assignment
+            left: (left_assignment_list child: (identifier #{absent}))?
+            right: {right}
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(&ast, root, "x = 1"),
+        r#"
+        assignment
+          right: integer "1"
+    "#,
+    );
+}
+
+#[test]
+fn test_innermost_optional_field_catches_first() {
+    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let mut ast = runner.run("x = 1").unwrap();
+
+    let captures = yeast::captures::Captures::new();
+    let fresh = yeast::tree_builder::FreshScope::new();
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &fresh, &mut user_ctx);
+
+    // The inner `?` catches, so only `child` is dropped; `left` survives.
+    let absent: Option<yeast::Id> = None;
+    let root = yeast::tree!(ctx,
+        (assignment
+            left: (left_assignment_list child: (identifier #{absent})?)?
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(&ast, root, "x = 1"),
+        r#"
+        assignment
+          left: left_assignment_list
     "#,
     );
 }

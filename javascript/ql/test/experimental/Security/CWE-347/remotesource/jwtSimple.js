@@ -7,10 +7,10 @@ function getSecret() {
     return "A Safe generated random key"
 }
 app.get('/jwtSimple1', (req, res) => {
-    const UserToken = req.headers.authorization;
+    const UserToken = req.headers.authorization; // $ Alert
 
     // no signature verification
-    jwt_simple.decode(UserToken, getSecret(), true); // NOT OK
+    jwt_simple.decode(UserToken, getSecret(), true); // $ Sink // NOT OK
 })
 
 app.get('/jwtSimple2', (req, res) => {
