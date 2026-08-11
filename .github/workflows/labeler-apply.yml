@@ -41,16 +41,16 @@ jobs:
           pr_number=$(jq -r 'if (.pull_requests | length) == 1 then .pull_requests[0].number else empty end' <<<"$run_json")
 
           if [ -z "$pr_number" ]; then
-            prs_json=$(gh api -H 'Accept: application/vnd.github+json' "repos/$REPO/commits/$head_sha/pulls")
-            pr_number=$(jq -r 'map(select(.state == "open")) | if length == 1 then .[0].number else empty end' <<<"$prs_json")
+            prs_json=$(gh api -H 'Accept: application/vnd.github+json' "repos/$REPO/commits/$head_sha/pulls" || echo '[]')
+            pr_number=$(jq -r 'map(select(.state == "open")) | if length == 1 then .[0].number else empty end' <<<"$prs_json" 2>/dev/null || true)
           fi
 
           if [ -z "$pr_number" ]; then
             head_owner=$(jq -r '.head_repository.owner.login // empty' <<<"$run_json")
             head_branch=$(jq -r '.head_branch // empty' <<<"$run_json")
             if [ -n "$head_owner" ] && [ -n "$head_branch" ]; then
-              prs_json=$(gh api --method GET "repos/$REPO/pulls" -f state=open -f head="$head_owner:$head_branch")
-              pr_number=$(jq -r 'if length == 1 then .[0].number else empty end' <<<"$prs_json")
+              prs_json=$(gh api --method GET "repos/$REPO/pulls" -f state=open -f head="$head_owner:$head_branch" || echo '[]')
+              pr_number=$(jq -r 'if length == 1 then .[0].number else empty end' <<<"$prs_json" 2>/dev/null || true)
             fi
           fi
 
@@ -60,11 +60,23 @@ jobs:
             exit 0
           fi
 
-          pr_json=$(gh api "repos/$REPO/pulls/$pr_number")
-          state=$(jq -r '.state' <<<"$pr_json")
-          base_repo=$(jq -r '.base.repo.full_name' <<<"$pr_json")
-          pr_head_sha=$(jq -r '.head.sha' <<<"$pr_json")
-          pr_head_repo=$(jq -r '.head.repo.full_name // empty' <<<"$pr_json")
+          pr_json=$(gh api "repos/$REPO/pulls/$pr_number" || true)
+          if [ -z "$pr_json" ]; then
+            echo "Pull request #$pr_number could not be fetched; skipping."
+            echo "apply=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          state=$(jq -r '.state // empty' <<<"$pr_json" 2>/dev/null || true)
+          base_repo=$(jq -r '.base.repo.full_name // empty' <<<"$pr_json" 2>/dev/null || true)
+          pr_head_sha=$(jq -r '.head.sha // empty' <<<"$pr_json" 2>/dev/null || true)
+          pr_head_repo=$(jq -r '.head.repo.full_name // empty' <<<"$pr_json" 2>/dev/null || true)
+
+          if [ -z "$state" ]; then
+            echo "Pull request #$pr_number could not be parsed; skipping."
+            echo "apply=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           if [ "$state" != "open" ] || [ "$base_repo" != "$REPO" ]; then
             echo "Pull request #$pr_number is no longer an open pull request against $REPO; skipping."
