@@ -3,7 +3,7 @@ public class A {
 
   void sink(Object o) {}
 
-  void m(char[] cs, char c, Object obj) {
+  void m() {
     String s = source();
 
     sink(String.valueOf(s)); // $ hasTaintFlow
