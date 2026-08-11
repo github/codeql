@@ -53,22 +53,7 @@ private module CfgInput implements InputSig<Location> {
   int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
 }
 
-private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {
-  private import Splitting as S
-
-  class SplitKindBase = S::TSplitKind;
-
-  class Split = S::Split;
-}
-
-private module ConditionalCompletionSplittingInput implements
-  ConditionalCompletionSplittingInputSig<Location, CfgInput, CfgSplittingInput>
-{
-  import Splitting::ConditionalCompletionSplitting::ConditionalCompletionSplittingInput
-}
-
-private module CfgImpl =
-  MakeWithSplitting<Location, CfgInput, CfgSplittingInput, ConditionalCompletionSplittingInput>;
+private module CfgImpl = Make<Location, CfgInput>;
 
 import CfgImpl
 
@@ -206,7 +191,7 @@ module ExprTrees {
   class InvocationExprTree extends StandardPostOrderTree instanceof InvocationExpr {
     InvocationExprTree() {
       not this instanceof CallExpr and
-      not this instanceof BinaryLogicalOperation
+      not this instanceof LogicalOperation
     }
 
     override AstNode getChildNode(int i) {
@@ -217,49 +202,75 @@ module ExprTrees {
     }
   }
 
-  class LogicalOrExprTree extends PostOrderTree, LogicalOrExpr {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAnOperand() }
+  /**
+   * A binary logical operation, `&&` or `||`.
+   *
+   * Since the value of such an operation is the value of one of its operands,
+   * it is modeled in pre-order, and the last nodes are the last nodes of the
+   * operands. This means that the Boolean value of the operation is reflected
+   * directly in the completions of the operands, and hence no splitting is
+   * needed in order to get precise conditional successors.
+   */
+  abstract private class BinaryLogicalOperationTree extends PreOrderTree instanceof BinaryLogicalOperation
+  {
+    /**
+     * Gets the Boolean value of the left-hand side for which the right-hand
+     * side is evaluated.
+     */
+    abstract boolean getContinueValue();
 
-    override predicate first(AstNode node) { first(this.getLhs(), node) }
+    final override predicate propagatesAbnormal(AstNode child) { child = super.getAnOperand() }
 
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Edge from this to lhs
+      pred = this and first(super.getLhs(), succ) and completionIsSimple(c)
+      or
       // Edge from lhs to rhs
-      last(this.getLhs(), pred, c) and
-      c.(BooleanCompletion).failed() and
-      first(this.getRhs(), succ)
+      last(super.getLhs(), pred, c) and
+      c.(ConditionalCompletion).getValue() = this.getContinueValue() and
+      first(super.getRhs(), succ)
+    }
+
+    final override predicate last(AstNode node, Completion c) {
+      // The lhs short-circuits the operation
+      last(super.getLhs(), node, c) and
+      c.(ConditionalCompletion).getValue() = this.getContinueValue().booleanNot()
       or
-      // Edge from lhs to this
-      last(this.getLhs(), pred, c) and
-      c.(BooleanCompletion).succeeded() and
-      succ = this
-      or
-      // Edge from rhs to this
-      last(this.getRhs(), pred, c) and
-      succ = this and
+      // The rhs determines the value of the operation
+      last(super.getRhs(), node, c) and
       completionIsNormal(c)
     }
   }
 
-  class LogicalAndExprTree extends PostOrderTree, LogicalAndExpr {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAnOperand() }
+  private class LogicalOrExprTree extends BinaryLogicalOperationTree instanceof LogicalOrExpr {
+    override boolean getContinueValue() { result = false }
+  }
 
-    override predicate first(AstNode node) { first(this.getLhs(), node) }
+  private class LogicalAndExprTree extends BinaryLogicalOperationTree instanceof LogicalAndExpr {
+    override boolean getContinueValue() { result = true }
+  }
+
+  /**
+   * A logical negation, `!`.
+   *
+   * Like the binary logical operations, this is modeled in pre-order, with the
+   * last nodes being the last nodes of the operand. Any conditional completion
+   * of the operand is dualized, which means that no splitting is needed in
+   * order to get precise conditional successors.
+   */
+  private class LogicalNotExprTree extends PreOrderTree, LogicalNotExpr {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getExpr() }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      // Edge from lhs to rhs
-      last(this.getLhs(), pred, c) and
-      c.(BooleanCompletion).succeeded() and
-      first(this.getRhs(), succ)
-      or
-      // Edge from lhs to this
-      last(this.getLhs(), pred, c) and
-      c.(BooleanCompletion).failed() and
-      succ = this
-      or
-      // Edge from rhs to this
-      last(this.getRhs(), pred, c) and
-      succ = this and
-      completionIsNormal(c)
+      pred = this and first(this.getExpr(), succ) and completionIsSimple(c)
+    }
+
+    override predicate last(AstNode node, Completion c) {
+      exists(Completion c0 | last(this.getExpr(), node, c0) and completionIsNormal(c0) |
+        c = c0.(ConditionalCompletion).getDual()
+        or
+        not c0 instanceof ConditionalCompletion and c = c0
+      )
     }
   }
 

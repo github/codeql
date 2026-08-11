@@ -14,6 +14,8 @@ private import codeql.rust.Diagnostics
 private predicate nonPostOrderExpr(Expr e) {
   not e instanceof LetExpr and
   not e instanceof ParenExpr and
+  // logical operations are `PreOrderTree`s
+  not e instanceof LogicalOperation and
   exists(AstNode last, Completion c |
     CfgImpl::last(e, last, c) and
     last != e and
@@ -65,8 +67,8 @@ query predicate missingCfgChild(CfgNode parent, string pred, int i, AstNode chil
   CfgNodes::missingCfgChild(parent, pred, i, child) and
   successfullyExtractedFile(child.getLocation().getFile()) and
   not exists(AstNode last, CfgImpl::Completion c | CfgImpl::last(child, last, c) |
-    // In for example `if (a && true) ...`, there is no edge from the CFG node
-    // for `true` into the `[false] a && true` node.
+    // In for example `if (a && true) ...`, there is no false edge out of the
+    // CFG node for `true`.
     strictcount(ConditionalSuccessor cs | exists(last.getACfgNode().getASuccessor(cs)) | cs) = 1
     or
     // In for example `x && return`, there is no edge from the node for
@@ -82,21 +84,6 @@ int getCfgInconsistencyCounts(string type) {
   // total results from all the CFG consistency query predicates in:
   //  - `codeql.rust.controlflow.internal.CfgConsistency` (this file)
   //  - `shared.controlflow.codeql.controlflow.Cfg`
-  type = "Non-unique set representation" and
-  result = count(CfgImpl::Splits ss | nonUniqueSetRepresentation(ss, _) | ss)
-  or
-  type = "Splitting invariant 2" and
-  result = count(AstNode n | breakInvariant2(n, _, _, _, _, _) | n)
-  or
-  type = "Splitting invariant 3" and
-  result = count(AstNode n | breakInvariant3(n, _, _, _, _, _) | n)
-  or
-  type = "Splitting invariant 4" and
-  result = count(AstNode n | breakInvariant4(n, _, _, _, _, _) | n)
-  or
-  type = "Splitting invariant 5" and
-  result = count(AstNode n | breakInvariant5(n, _, _, _, _, _) | n)
-  or
   type = "Multiple successors of the same type" and
   result = count(CfgNode n | multipleSuccessors(n, _, _) | n)
   or
@@ -105,12 +92,6 @@ int getCfgInconsistencyCounts(string type) {
   or
   type = "Dead end" and
   result = count(CfgNode n | deadEnd(n) | n)
-  or
-  type = "Non-unique split kind" and
-  result = count(CfgImpl::SplitImpl si | nonUniqueSplitKind(si, _) | si)
-  or
-  type = "Non-unique list order" and
-  result = count(CfgImpl::SplitKind sk | nonUniqueListOrder(sk, _) | sk)
   or
   type = "Multiple toStrings" and
   result = count(CfgNode n | multipleToString(n) | n)

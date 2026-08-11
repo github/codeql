@@ -7,7 +7,9 @@ private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.internal.CachedStages
 
 private predicate isPostOrder(AstNode n) {
-  n instanceof Expr
+  n instanceof Expr and
+  // logical operations are modeled in pre-order
+  not n instanceof LogicalOperation
   or
   n instanceof OrPat
   or
