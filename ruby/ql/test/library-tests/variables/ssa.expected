@@ -99,11 +99,15 @@ definition
 | scopes.rb:13:11:13:11 | c | scopes.rb:13:11:13:11 | c |
 | scopes.rb:13:14:13:14 | d | scopes.rb:13:14:13:14 | d |
 | scopes.rb:13:19:13:32 | __synth__3 | scopes.rb:13:4:13:32 | __synth__3 |
+| scopes.rb:26:1:26:12 | self (A) | scopes.rb:26:1:26:12 | self |
 | scopes.rb:27:1:27:1 | x | scopes.rb:27:1:27:1 | x |
+| scopes.rb:28:1:30:3 | self (B) | scopes.rb:28:1:30:3 | self |
+| scopes.rb:34:1:36:3 | self (C) | scopes.rb:34:1:36:3 | self |
 | scopes.rb:41:1:49:3 | self (M) | scopes.rb:41:1:49:3 | self |
 | scopes.rb:42:2:42:4 | var | scopes.rb:42:2:42:4 | var |
 | scopes.rb:46:5:46:8 | var2 | scopes.rb:46:5:46:8 | var2 |
 | scopes.rb:51:1:64:3 | self (ExceptionVariable) | scopes.rb:51:1:64:3 | self |
+| scopes.rb:52:3:53:5 | self (MyException) | scopes.rb:52:3:53:5 | self |
 | scopes.rb:55:3:55:3 | x | scopes.rb:55:3:55:3 | x |
 | scopes.rb:60:25:60:25 | x | scopes.rb:55:3:55:3 | x |
 | scopes.rb:66:1:73:3 | self (ParameterShadowing) | scopes.rb:66:1:73:3 | self |
