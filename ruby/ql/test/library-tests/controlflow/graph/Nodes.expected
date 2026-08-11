@@ -107,6 +107,7 @@ positionalArguments
 | cfg.rb:9:1:9:21 | call to [] | cfg.rb:9:14:9:20 | "another" |
 | cfg.rb:12:3:12:8 | call to puts | cfg.rb:12:8:12:8 | 4 |
 | cfg.rb:16:3:16:14 | call to puts | cfg.rb:16:8:16:14 | "hello" |
+| cfg.rb:20:3:20:14 | call to puts | cfg.rb:20:8:20:14 | "world" |
 | cfg.rb:23:1:23:6 | ... + ... | cfg.rb:23:6:23:6 | 1 |
 | cfg.rb:25:15:25:20 | call to puts | cfg.rb:25:20:25:20 | x |
 | cfg.rb:27:1:27:11 | call to puts | cfg.rb:27:6:27:11 | &... |
