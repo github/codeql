@@ -1,6 +1,8 @@
 switch event {
 case let .received(.some(value), timestamp):
   print(value, timestamp)
+case Type.some(let value):
+  print(value)
 default:
   break
 }
@@ -90,6 +92,54 @@ sourceFile
                               baseName: identifier "print"
                 switchCase
                   label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                    labeledExpr
+                                      expression:
+                                        patternExpr
+                                          pattern:
+                                            valueBindingPattern
+                                              pattern:
+                                                identifierPattern
+                                                  identifier: identifier "value"
+                                              bindingSpecifier: let
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "some"
+                                      base:
+                                        declReferenceExpr
+                                          baseName: identifier "Type"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "value"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
                     switchDefaultLabel
                       colon: :
                       defaultKeyword: default
@@ -154,6 +204,34 @@ top_level
                           value:
                             name_expr
                               identifier: identifier "timestamp"
+            switch_case
+              pattern:
+                constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base:
+                        expr_equality_pattern <-- ERROR: The field member_access_expr.base should contain expr_or_type, but got expr_equality_pattern
+                          expr:
+                            name_expr
+                              identifier: identifier "Type"
+                      member: identifier "some"
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "value"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "value"
             switch_case
               body:
                 block
