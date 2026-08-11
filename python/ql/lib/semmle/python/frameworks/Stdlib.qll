@@ -4906,11 +4906,6 @@ module StdlibPrivate {
       ) and
       output = "Argument[self].ListElement" and
       preservesValue = true
-      or
-      // transfer taint from new iterable to this (TODO: remove in future when taint-handling is more in line with other languages)
-      input = "Argument[0]" and
-      output = "Argument[self]" and
-      preservesValue = false
     }
   }
 
@@ -4935,11 +4930,6 @@ module StdlibPrivate {
       input = "Argument[1]" and
       output = "Argument[self].ListElement" and
       preservesValue = true
-      or
-      // transfer taint from new element to this (TODO: remove in future when taint-handling is more in line with other languages)
-      input = "Argument[1]" and
-      output = "Argument[self]" and
-      preservesValue = false
     }
   }
 
