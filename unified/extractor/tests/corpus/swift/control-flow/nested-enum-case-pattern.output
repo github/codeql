@@ -210,10 +210,8 @@ top_level
                   constructor:
                     member_access_expr
                       base:
-                        expr_equality_pattern <-- ERROR: The field member_access_expr.base should contain expr_or_type, but got expr_equality_pattern
-                          expr:
-                            name_expr
-                              identifier: identifier "Type"
+                        name_expr
+                          identifier: identifier "Type"
                       member: identifier "some"
                   element:
                     pattern_element

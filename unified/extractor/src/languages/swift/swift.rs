@@ -655,9 +655,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (call_expr callee: {callee} argument: {args} argument: (argument value: {tc}))
         ),
         rule!(
-            (functionCallExpr calledExpression: @callee arguments: _* @args)
+            (functionCallExpr calledExpression: @@rawCallee arguments: _* @args)
             =>
             expr {
+                // Always translate the callee in non-pattern context.
+                let callee = ctx.scoped(|ctx| {
+                    ctx.in_pattern = false;
+                    ctx.translate(rawCallee)
+                })?;
                 if ctx.in_pattern {
                     tree!((constructor_pattern constructor: {callee} element: {args}))
                 } else {
