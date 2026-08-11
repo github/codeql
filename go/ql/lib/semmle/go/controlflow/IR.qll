@@ -360,9 +360,9 @@ module IR {
 
     override ControlFlow::Root getRoot() { result.isRootOf(e) }
 
-    override string toString() { result = "implicit read of field " + field.toString() }
+    override string toString() { result = "implicit-field:" + index + " " + e }
 
-    override Location getLocation() { result = e.getBase().getLocation() }
+    override Location getLocation() { result = e.getLocation() }
   }
 
   /**
@@ -482,7 +482,7 @@ module IR {
 
     override ControlFlow::Root getRoot() { result.isRootOf(elt) }
 
-    override string toString() { result = "init of " + elt }
+    override string toString() { result = "lit-init " + elt }
 
     override Location getLocation() { result = elt.getLocation() }
   }
@@ -673,9 +673,9 @@ module IR {
 
     override ControlFlow::Root getRoot() { result.isRootOf(assgn) }
 
-    override string toString() { result = "assignment to " + this.getLhs() }
+    override string toString() { result = "assign:" + i + " " + assgn }
 
-    override Location getLocation() { result = this.getLhs().getLocation() }
+    override Location getLocation() { result = assgn.getLocation() }
   }
 
   /** An instruction computing the value of the right-hand side of a compound assignment. */
@@ -691,7 +691,7 @@ module IR {
 
     override ControlFlow::Root getRoot() { result.isRootOf(assgn) }
 
-    override string toString() { result = assgn.toString() }
+    override string toString() { result = "compound-rhs " + assgn }
 
     override Location getLocation() { result = assgn.getLocation() }
   }
@@ -771,7 +771,7 @@ module IR {
 
     override ControlFlow::Root getRoot() { result.isRootOf(s) }
 
-    override string toString() { result = s + "[" + i + "]" }
+    override string toString() { result = "extract:" + i + " " + s }
 
     override Location getLocation() { result = s.getLocation() }
   }
@@ -815,9 +815,28 @@ module IR {
 
     override predicate isPlatformIndependentConstant() { any() }
 
-    override string toString() { result = "zero value for " + v }
+    override string toString() {
+      exists(ValueSpec spec, int i |
+        spec.getNameExpr(i) = v.getDeclaration() and
+        result = "zero-init:" + i + " " + spec
+      )
+      or
+      exists(ResultVariable res, FuncDef fd, int i |
+        v = res and
+        res = fd.getResultVar(i) and
+        result = "result-zero-init:" + i + " " + fd.getBody()
+      )
+    }
 
-    override Location getLocation() { result = v.getDeclaration().getLocation() }
+    override Location getLocation() {
+      exists(ValueSpec spec, int i |
+        spec.getNameExpr(i) = v.getDeclaration() and result = spec.getLocation()
+      )
+      or
+      exists(ResultVariable res, FuncDef fd |
+        v = res and res = fd.getAResultVar() and result = fd.getBody().getLocation()
+      )
+    }
   }
 
   /**
@@ -898,7 +917,7 @@ module IR {
 
     override ControlFlow::Root getRoot() { result.isRootOf(ids) }
 
-    override string toString() { result = "rhs of " + ids }
+    override string toString() { result = "incdec-rhs " + ids }
 
     override Location getLocation() { result = ids.getLocation() }
   }
@@ -991,9 +1010,9 @@ module IR {
 
     override ControlFlow::Root getRoot() { var = result.(FuncDef).getAResultVar() }
 
-    override string toString() { result = "implicit write of " + var }
+    override string toString() { result = "result-write:" + i + " " + ret.getReturnStmt() }
 
-    override Location getLocation() { result = ret.getResult(i).getLocation() }
+    override Location getLocation() { result = ret.getReturnStmt().getLocation() }
   }
 
   /**
@@ -1011,9 +1030,15 @@ module IR {
 
     override ControlFlow::Root getRoot() { var = result.(FuncDef).getAResultVar() }
 
-    override string toString() { result = "implicit read of " + var }
+    override string toString() {
+      exists(FuncDef fd, int i |
+        var = fd.getResultVar(i) and result = "result-read:" + i + " " + fd.getBody()
+      )
+    }
 
-    override Location getLocation() { result = var.getDeclaration().getLocation() }
+    override Location getLocation() {
+      exists(FuncDef fd | var = fd.getAResultVar() | result = fd.getBody().getLocation())
+    }
   }
 
   /**
@@ -1058,7 +1083,7 @@ module IR {
 
     override ControlFlow::Root getRoot() { result = parm.getFunction() }
 
-    override string toString() { result = "initialization of " + parm }
+    override string toString() { result = parm.toString() }
 
     override Location getLocation() { result = parm.getDeclaration().getLocation() }
   }
@@ -1075,7 +1100,7 @@ module IR {
 
     override ControlFlow::Root getRoot() { result = parm.getFunction() }
 
-    override string toString() { result = "argument corresponding to " + parm }
+    override string toString() { result = parm.toString() }
 
     override Location getLocation() { result = parm.getDeclaration().getLocation() }
   }
@@ -1092,9 +1117,13 @@ module IR {
 
     override ControlFlow::Root getRoot() { result = res.getFunction() }
 
-    override string toString() { result = "initialization of " + res }
+    override string toString() {
+      exists(FuncDef fd, int i |
+        res = fd.getResultVar(i) and result = "result-init:" + i + " " + fd.getBody()
+      )
+    }
 
-    override Location getLocation() { result = res.getDeclaration().getLocation() }
+    override Location getLocation() { result = res.getFunction().getBody().getLocation() }
   }
 
   /**
@@ -1168,7 +1197,7 @@ module IR {
 
     override string toString() { result = "case " + cc.getExpr(i) }
 
-    override Location getLocation() { result = cc.getExpr(i).getLocation() }
+    override Location getLocation() { result = cc.getLocation() }
   }
 
   /**
@@ -1293,7 +1322,7 @@ module IR {
 
     override ControlFlow::Root getRoot() { result.isRootOf(e) }
 
-    override string toString() { result = "implicit dereference" }
+    override string toString() { result = "implicit-deref " + e }
 
     override Location getLocation() { result = e.getLocation() }
   }
