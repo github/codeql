@@ -1269,6 +1269,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         result = block.(Switch).getStmt(_)
       }
 
+      private predicate callableHasParamDefault(Callable c, Expr defaultValue) {
+        exists(Parameter p | p.getDefaultValue() = defaultValue and c = getEnclosingCallable(p))
+      }
+
       /**
        * Holds if an abrupt completion `c` from within `ast` is caught with
        * flow continuing at `n`.
@@ -1276,7 +1280,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       private predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
         Input2::endAbruptCompletion(ast, n, c)
         or
-        exists(Callable callable | callableHasBodyPart(callable, ast) |
+        exists(Callable callable |
+          callableHasBodyPart(callable, ast) or callableHasParamDefault(callable, ast)
+        |
           c.getSuccessorType() instanceof ReturnSuccessor and
           n.(NormalExitNodeImpl).getEnclosingCallable() = callable
           or
@@ -1737,6 +1743,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
               not exists(trystmt.getFinally()) and beforeFinally.isAfter(trystmt)
             )
           |
+            not exists(trystmt.getBody(_)) and
+            n1.isBefore(trystmt) and
+            n2 = beforeElse
+            or
             exists(int i |
               n1.isAfter(trystmt.getBody(i)) and
               not exists(trystmt.getBody(i + 1)) and
