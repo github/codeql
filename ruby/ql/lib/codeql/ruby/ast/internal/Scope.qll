@@ -19,7 +19,8 @@ private class TBlockLike = TDoBlock or TLambda or TBlock or TEndBlock;
 
 private class TModuleLike = TToplevel or TModuleDeclaration or TClassDeclaration or TSingletonClass;
 
-private class TScopeReal = TMethodBase or TModuleLike or TDoBlock or TLambda or TBraceBlock;
+private class TScopeReal =
+  TMethodBase or TModuleLike or TDoBlock or TLambda or TBraceBlock or TEndBlock;
 
 module Scope {
   class TypeRange = Callable::TypeRange or ModuleBase::TypeRange or @ruby_end_block;
