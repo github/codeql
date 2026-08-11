@@ -97,6 +97,8 @@ private module RegexConfig implements DataFlow::StateConfigSig {
         node2.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
     )
   }
+
+  int accessPathLimit() { result = 1 }
 }
 
 private module RegexTracking = DataFlow::GlobalWithState<RegexConfig>;
