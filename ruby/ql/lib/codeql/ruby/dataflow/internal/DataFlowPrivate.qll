@@ -1653,16 +1653,24 @@ private module ReturnNodes {
     }
   }
 
-  pragma[noinline]
-  private AstNode implicitReturn(Callable c, ExprNode n) {
-    exists(CfgNodes::ExprCfgNode en |
-      en = n.getExprNode() and
-      en.getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
-      n.(NodeImpl).getCfgScope() = c and
-      result = en.getExpr()
-    )
+  private AstNode desugar(AstNode n) {
+    result = n.getDesugared()
     or
-    result = implicitReturn(c, n).getParent()
+    not exists(n.getDesugared()) and
+    result = n
+  }
+
+  private Expr getLast(StmtSequence s) {
+    result = getLast(s.(BodyStmt).getElse())
+    or
+    result = getLast(s.(BodyStmt).getARescue().getBody())
+    or
+    not exists(s.(BodyStmt).getElse()) and
+    exists(Stmt last | last = s.getLastStmt() |
+      result = getLast(last)
+      or
+      result = last and not last instanceof StmtSequence
+    )
   }
 
   /**
@@ -1671,7 +1679,7 @@ private module ReturnNodes {
    * last thing that is evaluated in the body of the callable.
    */
   class ExprReturnNode extends SourceReturnNode, ExprNode {
-    ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = c.getBody().getAStmt()) }
+    ExprReturnNode() { this.getExprNode().getExpr() = desugar(getLast(any(Callable c).getBody())) }
 
     override ReturnKind getKindSource() {
       exists(CfgScope scope | scope = this.(NodeImpl).getCfgScope() |
