@@ -1,15 +1,16 @@
 name: "Pull Request Labeler"
+
 on:
-- pull_request_target
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
-  pull-requests: write
+  pull-requests: read
 
 jobs:
-  triage:
+  request-labels:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/labeler@v4
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Request privileged labeling
+        run: echo "Labels are applied by the workflow_run writer after re-validating the pull request."
