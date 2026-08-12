@@ -142,7 +142,8 @@ predicate extractionStats(string key, int value) {
   key = "Extraction warnings" and
   value = count(ExtractionWarning w | not exists(w.getLocation()) or w.getLocation().fromSource())
   or
-  key = "Files extracted - total user" and value = count(ExtractedFile f | exists(f.getRelativePath()))
+  key = "Files extracted - total user" and
+  value = count(ExtractedFile f | exists(f.getRelativePath()))
   or
   key = "Files extracted - with errors" and
   value =
@@ -219,7 +220,8 @@ predicate taintStats(string key, int value) {
   or
   key = "Taint reach - per million nodes" and value = getTaintReach().floor()
   or
-  key = "Taint nodes - highly colocated nodes" and value = count(DataFlow::Node n | isColocated10(n))
+  key = "Taint nodes - highly colocated nodes" and
+  value = count(DataFlow::Node n | isColocated10(n))
   or
   key = "Taint sinks - query sinks" and value = getQuerySinksCount()
   or
