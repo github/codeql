@@ -453,8 +453,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 if (shouldAddNugetConfigFeeds && ExplicitFeeds.Count > 0)
                 {
-                    // Feeds in `ExplicitFeeds` may already been checked for reachability.
-                    // But we might use different responsiveness testing settings when we try them in the fallback logic, so checking them again.
+                    // Feeds in `ExplicitFeeds` may already have been checked for reachability.
+                    // However, the fallback logic may use different responsiveness settings, so check them again.
                     fallbackFeeds.UnionWith(ExplicitFeeds);
                     logger.LogInfo($"Using NuGet feeds from nuget.config files as fallback feeds: {string.Join(", ", ExplicitFeeds.OrderBy(f => f))}");
                 }

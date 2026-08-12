@@ -473,8 +473,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (!feedManager.CheckNugetFeedResponsiveness && res.HasNugetPackageSourceError && nugetSources is not null)
             {
-                logger.LogDebug($"Trying to restore '{package}' without nuget.config.");
-                // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
+                logger.LogDebug($"Trying to restore '{package}' without explicitly providing NuGet sources.");
+                // Restore could not be completed because the listed source is unavailable. Try without an explicit restore source argument.
                 res = TryRestorePackageManually(package, nugetSources: null, tempDir, tryPrereleaseVersion);
                 if (res.Success)
                 {
