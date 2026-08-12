@@ -14,6 +14,8 @@ swift_runtime_libs(
 
 swift_runtime_linking(
     name = "_swift_runtime_cc_info",
+    target_compatible_with = ["@platforms//os:linux"],
+    visibility = ["//visibility:private"],
 )
 
 # On Linux, provide the downloaded Swift runtime at link time and look beside
