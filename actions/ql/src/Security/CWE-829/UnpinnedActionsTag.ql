@@ -43,9 +43,8 @@ private predicate hasUsesContainerName(Uses uses, string name) {
     )
   )
   or
-  exists(UsesStep step, CompositeAction action |
-    uses = step and
-    step.getEnclosingCompositeAction() = action and
+  exists(CompositeAction action |
+    uses.getEnclosingCompositeAction() = action and
     name = action.getLocation().getFile().getBaseName()
   )
 }
