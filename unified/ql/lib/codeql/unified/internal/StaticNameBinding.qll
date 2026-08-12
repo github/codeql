@@ -16,6 +16,7 @@ private newtype TNameBindingNode =
     n instanceof ClassLikeDeclaration
   } or
   TModuleScope(ModuleScopeRepr repr) or
+  TFolderScope(Folder folder) or
   TModuleRoot()
 
 /**
@@ -38,6 +39,9 @@ class NameBindingNode extends TNameBindingNode {
 
   /** Holds if this represents the given module scope. */
   predicate isModuleScopeNode(ModuleScopeRepr repr) { this = TModuleScope(repr) }
+
+  /** Holds if this represents the set of members that can be accessed unqualified within the given folder and subfolders. */
+  predicate isFolderScope(Folder folder) { this = TFolderScope(folder) }
 
   /** Holds if this represents the root namespace in which all named modules are members. */
   predicate isModuleRoot() { this = TModuleRoot() }
@@ -75,6 +79,8 @@ class NameBindingNode extends TNameBindingNode {
     exists(ModuleScopeRepr repr |
       this.isModuleScopeNode(repr) and result = "ModuleScope(" + repr + ")"
     )
+    or
+    exists(Folder folder | this.isFolderScope(folder) and result = "FolderScope(" + folder + ")")
     or
     this.isModuleRoot() and result = "ModuleRoot"
   }
@@ -173,6 +179,8 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
     mod.hasImportableName(name) and
     node2.isModuleRoot()
   )
+  or
+  FolderHeuristic::storeStep(node1, name, node2)
 }
 
 predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
@@ -224,6 +232,8 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     node1 = getNodeFromRef(p) and
     node2 = getNodeFromRef(p.getSubPattern())
   )
+  or
+  FolderHeuristic::valueStep(node1, node2)
 }
 
 private predicate isImportPrefix(Expr e) {
@@ -400,6 +410,99 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
       or
       inheritanceStep(node1, node2) and
       value = "inheritedBy"
+    )
+  }
+}
+
+/**
+ * Implements a folder-based heuristic to linking up top-level names
+ * between files that are not included in any module scope.
+ */
+private module FolderHeuristic {
+  private predicate topLevelNameDef(File file, string name, NameBindingNode node) {
+    exists(TopLevel top, Stmt stmt, NameDeclaration nameDecl |
+      top.getFile() = file and
+      stmt = top.getBody().getAStmt() and
+      not stmt.(ClassLikeDeclaration).hasModifier("extension") and // TODO: target of type extensions should not be seen as a NameDeclaration
+      not isPrivateToLocalScope(nameDecl) and
+      nameDecl.getDeclaration() = stmt and
+      name = nameDecl.getName() and
+      node.isIdentifier(nameDecl)
+    )
+  }
+
+  private predicate uniqueTopLevelName(File file, string name) {
+    file = unique(File f | topLevelNameDef(f, name, _))
+  }
+
+  /**
+   * Holds if `file` has a one of the definitions of the given ambiguous name.
+   *
+   * A name is considered "ambiguous" if there is more than one file exporting it.
+   */
+  private predicate ambiguousTopLevelName(File file, string name) {
+    topLevelNameDef(file, name, _) and
+    not uniqueTopLevelName(file, name)
+  }
+
+  /** Holds if `folder` contains one or more definitions of the given ambiguous name */
+  private predicate containsDef(Folder folder, string name) {
+    exists(File f |
+      ambiguousTopLevelName(f, name) and
+      folder = f.getParentContainer+()
+    )
+  }
+
+  /**
+   * Holds if `folder` has two or more subfolders containing a definition of `name`.
+   */
+  private predicate hasConflictingDefs(Folder folder, string name) {
+    containsDef(folder, name) and
+    not exists(unique(Folder child | child = folder.getAFolder() and containsDef(child, name)))
+  }
+
+  /**
+   * Holds if `folder` is an outermost folder containing exactly one definition of `name`.
+   *
+   * This means `folder` should act as the scope of that definition.
+   */
+  private predicate isOutermostNonConflictingScope(Folder folder, string name) {
+    containsDef(folder, name) and
+    hasConflictingDefs(folder.getParentContainer(), name) and
+    not hasConflictingDefs(folder, name)
+  }
+
+  /**
+   * Gets the scope into which a definition of `name` appearing in `folder` should target.
+   */
+  private Folder getOutermostNonConflictingScope(Folder folder, string name) {
+    isOutermostNonConflictingScope(folder, name) and
+    result = folder
+    or
+    result = getOutermostNonConflictingScope(folder.getParentContainer(), name) and
+    not isOutermostNonConflictingScope(folder, name) and
+    containsDef(folder, name) // Prune to the subfolder actually containing the definition
+  }
+
+  predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
+    exists(File file | topLevelNameDef(file, name, node1) |
+      node2.isFolderScope(getOutermostNonConflictingScope(file.getParentContainer(), name))
+      or
+      uniqueTopLevelName(file, name) and
+      node2.isFolderScope(any(Folder f | f.getRelativePath() = ""))
+    )
+  }
+
+  predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
+    exists(TopLevel top |
+      node1.isFolderScope(top.getFile().getParentContainer()) and
+      node2.isLocalNamespace(top.getBody()) and
+      not top.getFile() = any(ModuleScopeRepr r).getAnIncludedFile()
+    )
+    or
+    exists(Folder folder |
+      node1.isFolderScope(folder.getParentContainer()) and
+      node2.isFolderScope(folder)
     )
   }
 }
