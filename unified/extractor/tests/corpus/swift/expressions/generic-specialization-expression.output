@@ -53,4 +53,11 @@ top_level
               identifier: identifier "numbers"
           value:
             call_expr
-              callee: unsupported_node "Array<Int>"
+              callee:
+                generic_type_expr
+                  base:
+                    named_type_expr
+                      name: identifier "Array"
+                  type_argument:
+                    named_type_expr
+                      name: identifier "Int"

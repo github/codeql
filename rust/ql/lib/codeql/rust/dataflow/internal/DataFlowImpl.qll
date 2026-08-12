@@ -440,7 +440,7 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
       or
       result = "self" and this.isSelf()
       or
-      result = "closure self" and this.isClosureSelf()
+      result = "closure-self" and this.isClosureSelf()
     }
 
     ParamBase getParameterIn(ParamList ps) {
