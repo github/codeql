@@ -13,7 +13,10 @@ private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
-  MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
+  MkImplicitVarargsSlice(IR::EvalInstruction ins) {
+    // We only use CallExprs with an EvalInstruction to guarantee reachability.
+    ins.getExpr().(CallExpr).hasImplicitVarargs()
+  } or
   MkSliceElementNode(SliceExpr se) or
   MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
   MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) }
@@ -430,7 +433,7 @@ module Public {
   class ImplicitVarargsSlice extends Node, MkImplicitVarargsSlice {
     CallNode call;
 
-    ImplicitVarargsSlice() { this = MkImplicitVarargsSlice(call.getCall()) }
+    ImplicitVarargsSlice() { this = MkImplicitVarargsSlice(call.asInstruction()) }
 
     override ControlFlow::Root getRoot() { result = call.getRoot() }
 
