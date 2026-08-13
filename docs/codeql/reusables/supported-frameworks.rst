@@ -357,6 +357,7 @@ and the CodeQL library pack ``codeql/rust-all`` (`changelog <https://github.com/
    `sqlx <https://crates.io/crates/sqlx>`__, Database
    `tokio <https://crates.io/crates/tokio>`__, Asynchronous IO
    `tokio-postgres <https://crates.io/crates/tokio-postgres>`__, Database
+   `tracing <https://crates.io/crates/tracing>`__, Logging library
    `url <https://crates.io/crates/url>`__, Utility library
    `warp <https://crates.io/crates/warp>`__, Web framework
 
