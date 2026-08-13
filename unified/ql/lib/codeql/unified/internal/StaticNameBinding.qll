@@ -153,8 +153,7 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
     member = cls.getAMember() and
     not isInstanceMember(member) and
     not isPrivateToLocalScope(member) and
-    nameDecl.getDeclaration() = member
-  |
+    nameDecl.getDeclaration() = member and
     node1.isIdentifier(nameDecl) and
     name = nameDecl.getName() and
     node2.isExportedNamespace(cls)
@@ -163,8 +162,7 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   exists(TopLevel top, Stmt stmt, NameDeclaration nameDecl |
     stmt = top.getBody().getAStmt() and
     not isPrivateToLocalScope(stmt) and
-    nameDecl.getDeclaration() = stmt
-  |
+    nameDecl.getDeclaration() = stmt and
     node1.isIdentifier(nameDecl) and
     name = nameDecl.getName() and
     node2 = getModuleNodeFromFile(top.getFile())
