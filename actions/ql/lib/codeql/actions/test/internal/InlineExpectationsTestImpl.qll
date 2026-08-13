@@ -21,4 +21,10 @@ module Impl implements InlineExpectationsTestSig {
           ":" + endColumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    relativePath.regexpMatch(".*\\.ya?ml") and
+    result = "#"
+  }
 }
