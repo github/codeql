@@ -35,4 +35,11 @@ module Impl implements InlineExpectationsTestSig {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // The Swift extractor only ingests Swift sources (no XML/YAML/HTML in its dbscheme), so a
+    // constant marker is safe; revisit if Swift ever gains extraction of another file type.
+    exists(relativePath) and result = "//"
+  }
 }
