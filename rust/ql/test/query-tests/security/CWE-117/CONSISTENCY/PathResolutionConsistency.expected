@@ -1,2 +1,21 @@
 multipleResolvedTargets
-| main.rs:123:28:123:48 | ...::from(...) |
+| main.rs:128:28:128:48 | ...::from(...) |
+multiplePathResolutions
+| main.rs:122:9:122:23 | ...::__macro_support |
+| main.rs:122:9:122:23 | ...::__macro_support |
+| main.rs:122:9:122:23 | ...::__macro_support |
+| main.rs:122:9:122:23 | ...::__macro_support |
+| main.rs:122:9:122:23 | ...::__macro_support |
+| main.rs:122:9:122:23 | ...::field |
+| main.rs:123:9:123:22 | ...::__macro_support |
+| main.rs:123:9:123:22 | ...::__macro_support |
+| main.rs:123:9:123:22 | ...::__macro_support |
+| main.rs:123:9:123:22 | ...::__macro_support |
+| main.rs:123:9:123:22 | ...::__macro_support |
+| main.rs:123:9:123:22 | ...::field |
+| main.rs:124:9:124:23 | ...::__macro_support |
+| main.rs:124:9:124:23 | ...::__macro_support |
+| main.rs:124:9:124:23 | ...::__macro_support |
+| main.rs:124:9:124:23 | ...::__macro_support |
+| main.rs:124:9:124:23 | ...::__macro_support |
+| main.rs:124:9:124:23 | ...::field |
