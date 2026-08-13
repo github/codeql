@@ -7,5 +7,7 @@ let package = Package(
     targets: [
         .target(name: "Target1"),
         .target(name: "Target2"),
+        .target(name: "Target3"),
+        .target(name: "Target4"),
     ]
 )
