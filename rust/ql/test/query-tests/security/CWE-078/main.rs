@@ -47,6 +47,12 @@ fn test_std_command_injection() {
         .args(&["-c", remote_string.as_str()]) // $ Alert[rust/command-line-injection]=remote1
         .output()
         .expect("failed");
+
+    // Remote input concatenated into a command
+    let concatenated_command = format!("sh -c echo {}", remote_string);
+    Command::new(concatenated_command.as_str()) // $ Alert[rust/command-line-injection]=remote1
+        .output()
+        .expect("failed");
 }
 
 async fn test_tokio_command_injection() {
@@ -72,4 +78,5 @@ async fn test_tokio_command_injection() {
 
 fn main() {
     test_std_command_injection();
+    test_tokio_command_injection();
 }
