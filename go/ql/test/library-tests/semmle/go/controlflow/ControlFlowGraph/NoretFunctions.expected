@@ -16,7 +16,8 @@
 | noretfunctions.go:8:6:8:12 | isNoRet | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.isNoRet |
 | noretfunctions.go:20:6:20:22 | noRetUsesLogFatal | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.noRetUsesLogFatal |
 | noretfunctions.go:24:6:24:23 | noRetUsesLogFatalf | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.noRetUsesLogFatalf |
-| stmts7.go:10:6:10:15 | canRecover | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.canRecover |
+| stmts7.go:13:6:13:15 | canRecover | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.canRecover |
+| stmts7.go:33:6:33:20 | deferBeforeExit | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.deferBeforeExit |
 | stmts.go:10:6:10:10 | test5 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.test5 |
 | stmts.go:46:6:46:10 | test6 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.test6 |
 | stmts.go:112:6:112:10 | test9 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.test9 |
