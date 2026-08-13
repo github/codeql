@@ -567,8 +567,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ap instanceof ApNil and
           result = 0
           or
-          exists(Content c, Ap tail |
-            fwdFlowConsCand(_, ap, c, _, tail) and
+          exists(Ap tail |
+            fwdFlowConsCand(_, ap, _, _, tail) and
             ap != tail and // no need to report a longer length
             result = 1 + getAnApLengthLowerBound(tail) and
             result <= accessPathLimit()
