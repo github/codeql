@@ -42,6 +42,23 @@ class NameBindingNode extends TNameBindingNode {
   /** Holds if this represents the root namespace in which all named modules are members. */
   predicate isModuleRoot() { this = TModuleRoot() }
 
+  /**
+   * Gets an AST node wrapped by this name-binding node, if such a node exists.
+   *
+   * Mainly for debugging purposes.
+   */
+  AstNode getWrappedAstNode() {
+    this.isIdentifier(result)
+    or
+    this.isBulkImport(result)
+    or
+    this.isExportedNamespace(result)
+    or
+    this.isLocalNamespace(result)
+    or
+    this.isModuleScopeNode(result)
+  }
+
   string toString() {
     exists(Identifier n | this.isIdentifier(n) and result = "Identifier(" + n + ")")
     or
@@ -351,21 +368,32 @@ NameBindingNode trackNameDeclaration(NameDeclaration decl) {
 }
 
 /** Holds if `node` should be included in the debug view. */
-private signature predicate relevantFileSig(File node);
+private signature predicate relevantNodeSig(AstNode node);
 
-module DebugGraph<relevantFileSig/1 relevantFile> {
-  private predicate relevantNode(NameBindingNode node) {
-    relevantFile(node.getLocation().getFile())
+module DebugGraph<relevantNodeSig/1 relevantNode> {
+  private predicate relevantNameBindingNode(NameBindingNode node) {
+    relevantNode(node.getWrappedAstNode())
+    or
+    // Also consider LocalName to be relevant if any of its accesses are relevant
+    exists(LocalName name |
+      node.isLocalName(name) and
+      relevantNode(any(PotentialLocalNameAccess ac | ac.getLocalName() = name))
+    )
+    or
+    // Always include module root
+    node.isModuleRoot()
   }
 
   query predicate nodes(NameBindingNode node, string key, string value) {
-    relevantNode(node) and
+    relevantNameBindingNode(node) and
     key = "semmle.label" and
     value = node.toString()
   }
 
   query predicate edges(NameBindingNode node1, NameBindingNode node2, string key, string value) {
     key = "semmle.label" and
+    relevantNameBindingNode(node1) and
+    relevantNameBindingNode(node2) and
     (
       valueStep(node1, node2) and value = ""
       or

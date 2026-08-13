@@ -9,8 +9,11 @@ private import unified
 private import codeql.unified.internal.StaticNameBinding
 
 /**
- * Holds if graphs related to `file` should be shown in the graph.
+ * Holds if `node` should be shown in the graph.
  */
-predicate relevantFile(File file) { file.getBaseName() = "test.swift" }
+predicate relevantNode(AstNode node) {
+  // Match an ancestor node by location so its whole subtree is shown.
+  node.getParent*().getLocation().toString().matches("%test.swift@13:%")
+}
 
-import DebugGraph<relevantFile/1>
+import DebugGraph<relevantNode/1>
