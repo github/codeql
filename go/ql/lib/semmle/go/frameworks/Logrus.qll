@@ -29,11 +29,9 @@ module Logrus {
       )
     }
 
-    override predicate mustNotReturnNormally() {
-      exists(string level, string suffix | level = ["Fatal", "Panic"] |
-        this.getName() = level + suffix
-      )
-    }
+    override predicate mustNotReturnNormally() { this.getName() = "Fatal" + any(string suffix) }
+
+    override predicate mustPanic() { this.getName() = "Panic" + any(string suffix) }
   }
 
   private class StringFormatters extends StringOps::Formatting::Range instanceof LogFunction {
