@@ -1,0 +1,103 @@
+diff --git a/swift/internal/extensions/toolchains.bzl b/swift/internal/extensions/toolchains.bzl
+--- a/swift/internal/extensions/toolchains.bzl
++++ b/swift/internal/extensions/toolchains.bzl
+@@ -132,12 +132,11 @@ def toolchains_for_platform(platform, toolchain_repository):
+         toolchain_repository = toolchain_repository,
+     )
+ 
+-    if platform != "xcode":
+-        content += _EXEC_TOOLCHAIN_PLATFORM.format(
+-            exec_compatible_with = _exec_compatible_with_for_platform(platform),
+-            platform = platform,
+-            toolchain_repository = toolchain_repository,
+-        )
++    content += _EXEC_TOOLCHAIN_PLATFORM.format(
++        exec_compatible_with = _exec_compatible_with_for_platform(platform),
++        platform = platform,
++        toolchain_repository = toolchain_repository,
++    )
+ 
+     if platform in (
+         "ubuntu22.04",
+diff --git a/swift/toolchains/swift_toolchain.bzl b/swift/toolchains/swift_toolchain.bzl
+--- a/swift/toolchains/swift_toolchain.bzl
++++ b/swift/toolchains/swift_toolchain.bzl
+@@ -605,10 +605,14 @@ def _parse_target_system_name(*, arch, os, target_system_name):
+     """Returns the target system name set by the CC toolchain or attempts to create one based on the OS and arch."""
+ 
+     if target_system_name and target_system_name != "local":
++        if os == "macos" and target_system_name.endswith(("-macos", "-macosx")):
++            return target_system_name + "10.15"
+         return target_system_name
+ 
+     if os == "linux":
+         return "%s-unknown-linux-gnu" % arch
++    elif os == "macos":
++        return "%s-apple-macos10.15" % arch
+     elif os == "windows":
+         # The MSVC cc toolchain reports a `target_gnu_system_name` of "local",
+         # so synthesize the triple.
+@@ -706,5 +710,16 @@ def _swift_toolchain_impl(ctx):
+     elif ctx.attr.os == "none":
+         swift_linkopts_cc_info = CcInfo()
++    elif ctx.attr.os == "macos":
++        macos_linkopts = ["-L{}".format(paths.join(toolchain_root, "lib/swift/macosx"))]
++        if sdkroot:
++            macos_linkopts.append("-L{}".format(paths.join(sdkroot, "usr/lib/swift")))
++        swift_linkopts_cc_info = _swift_sdk_linkopts_cc_info(
++            ctx.label,
++            macos_linkopts,
++            ctx.attr.swift_tools[SwiftToolsInfo].additional_inputs if ctx.attr.swift_tools else [],
++        )
++        dynamic_runtime_cc_info = None
++        static_runtime_cc_info = None
+     elif ctx.attr.os == "android":
+         if not sdkroot:
+             fail("Android toolchain requires a sysroot to be set, either via the `sdkroot` attribute or by using a CC toolchain that provides one.")
+diff --git a/swift/internal/extensions/toolchain.BUILD b/swift/internal/extensions/toolchain.BUILD
+--- a/swift/internal/extensions/toolchain.BUILD
++++ b/swift/internal/extensions/toolchain.BUILD
+@@ -333,17 +333,22 @@ swift_toolchain(
+     features = [
+         "swift._supports_upcoming_features",
+         "swift.no_embed_debug_module",
+-        "swift.use_autolink_extract",
+-        "swift.lld_gc_workaround",
+-        "swift.use_module_wrap",
+         # TODO: This should be removed so that private headers can be used with
+         # explicit modules, but the build targets for CgRPC need to be cleaned up
+         # first because they contain C++ code.
+         "swift.module_map_no_private_headers",
+-    ],
++    ] + select({
++        "@platforms//os:linux": [
++            "swift.lld_gc_workaround",
++            "swift.use_autolink_extract",
++            "swift.use_module_wrap",
++        ],
++        "//conditions:default": [],
++    }),
+     os = select({
+         "@platforms//os:linux": "linux",
+         "@platforms//os:macos": "macos",
+     }),
+     parsed_version = "{swift_version}",
++    sdkroot = "{macos_sdkroot}",
+     static_runtime = select({
+diff --git a/swift/internal/extensions/standalone_toolchain.bzl b/swift/internal/extensions/standalone_toolchain.bzl
+--- a/swift/internal/extensions/standalone_toolchain.bzl
++++ b/swift/internal/extensions/standalone_toolchain.bzl
+@@ -91,11 +91,13 @@ def _standalone_toolchain_impl(repository_ctx):
+             strip_prefix = filename.removesuffix(".tar.gz"),
+         )
+ 
++    macos_sdkroot = _run(repository_ctx, ["xcrun", "--sdk", "macosx", "--show-sdk-path"]) if repository_ctx.attr.platform == "xcode" else ""
+     repository_ctx.file(".swift-version", repository_ctx.attr.swift_version)
+     repository_ctx.template(
+         "BUILD.bazel",
+         repository_ctx.attr._build_template,
+         substitutions = {
++            "{macos_sdkroot}": macos_sdkroot,
+             "{swift_version}": repository_ctx.attr.swift_version,
+         },
+     )
