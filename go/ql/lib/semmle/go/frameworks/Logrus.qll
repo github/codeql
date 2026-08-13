@@ -44,4 +44,11 @@ module Logrus {
 
     override int getFormatStringIndex() { result = argOffset }
   }
+
+  /** The `Exit` function, which ends the process. */
+  private class Exit extends Function {
+    Exit() { this.hasQualifiedName(packagePath(), "Exit") }
+
+    override predicate mustNotReturnNormally() { any() }
+  }
 }
