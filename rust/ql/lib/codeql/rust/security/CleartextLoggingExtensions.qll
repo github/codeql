@@ -10,6 +10,7 @@ private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.security.SensitiveData
 private import codeql.rust.Concepts
 private import codeql.rust.security.Barriers as Barriers
+private import codeql.rust.security.LogInjectionExtensions
 
 /**
  * Provides default sources, sinks and barriers for detecting cleartext logging
@@ -46,22 +47,9 @@ module CleartextLogging {
   }
 
   /**
-   * A sink for the logging macros of the `tracing` crate, such as
-   * `tracing::info!`. The underlying function calls are difficult to
-   * identify reliably, so we treat any expression inside the expansion
-   * of such a macro call as a sink.
+   * A sink for the logging macros of the `tracing` crate.
    */
-  private class TracingMacroSink extends Sink {
-    TracingMacroSink() {
-      exists(Crate c, MacroRules m, MacroCall mc |
-        c.getName() = "tracing" and
-        m.getName().getText() = ["trace", "debug", "info", "warn", "error", "event", "span"] and
-        m.getLocation().getFile() = c.getASourceFile().getFile() and
-        mc.resolveMacro() = m and
-        this.asExpr().getParentNode*() = mc.getMacroCallExpansion()
-      )
-    }
-  }
+  private class TracingMacroSink extends Sink instanceof LogInjection::TracingMacroSink { }
 
   /**
    * A barrier for logging from model data.
