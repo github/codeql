@@ -20,6 +20,12 @@ private module Impl implements T::InlineExpectationsTestSig {
     )
   }
 
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    relativePath.regexpMatch(".*\\.ya?ml") and
+    result = "#"
+  }
+
   class ExpectationComment extends Yaml::YamlComment {
     string getContents() { result = this.getText() }
   }
