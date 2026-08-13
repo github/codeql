@@ -6,6 +6,8 @@
 | main.rs:53:5:53:16 | ...::new | main.rs:5:25:5:46 | ...::get | main.rs:53:5:53:16 | ...::new | This command line depends on a $@. | main.rs:5:25:5:46 | ...::get | user-provided value |
 | main.rs:65:19:65:46 | ...::new | main.rs:59:25:59:46 | ...::get | main.rs:65:19:65:46 | ...::new | This command line depends on a $@. | main.rs:59:25:59:46 | ...::get | user-provided value |
 | main.rs:73:10:73:12 | arg | main.rs:59:25:59:46 | ...::get | main.rs:73:10:73:12 | arg | This command line depends on a $@. | main.rs:59:25:59:46 | ...::get | user-provided value |
+| main.rs:86:14:86:16 | arg | main.rs:108:22:108:35 | ...::args | main.rs:86:14:86:16 | arg | This command line depends on a $@. | main.rs:108:22:108:35 | ...::args | user-provided value |
+| main.rs:100:18:100:20 | arg | main.rs:108:22:108:35 | ...::args | main.rs:100:18:100:20 | arg | This command line depends on a $@. | main.rs:108:22:108:35 | ...::args | user-provided value |
 edges
 | main.rs:4:9:4:18 | arg_string | main.rs:27:18:27:27 | arg_string | provenance |  |
 | main.rs:4:9:4:18 | arg_string | main.rs:40:14:40:23 | arg_string | provenance |  |
@@ -50,6 +52,20 @@ edges
 | main.rs:65:48:65:69 | remote_string.as_str() [&ref] | main.rs:65:19:65:46 | ...::new | provenance | MaD:5 Sink:MaD:5 |
 | main.rs:73:14:73:26 | remote_string | main.rs:73:14:73:35 | remote_string.as_str() [&ref] | provenance | MaD:9 |
 | main.rs:73:14:73:35 | remote_string.as_str() [&ref] | main.rs:73:10:73:12 | arg | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:82:27:82:42 | ...: ... [&ref] | main.rs:86:18:86:27 | user_input [&ref] | provenance |  |
+| main.rs:86:18:86:27 | user_input [&ref] | main.rs:86:14:86:16 | arg | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:95:27:95:40 | ...: ... [&ref] | main.rs:100:22:100:29 | filename [&ref] | provenance |  |
+| main.rs:100:22:100:29 | filename [&ref] | main.rs:100:18:100:20 | arg | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:108:9:108:18 | arg_string | main.rs:112:39:112:48 | arg_string | provenance |  |
+| main.rs:108:9:108:18 | arg_string | main.rs:113:40:113:49 | arg_string | provenance |  |
+| main.rs:108:22:108:35 | ...::args | main.rs:108:22:108:37 | ...::args(...) [element] | provenance | Src:MaD:7  |
+| main.rs:108:22:108:37 | ...::args(...) [element] | main.rs:108:22:108:44 | ... .nth(...) [Some] | provenance | MaD:8 |
+| main.rs:108:22:108:44 | ... .nth(...) [Some] | main.rs:108:22:108:74 | ... .unwrap_or(...) | provenance | MaD:10 |
+| main.rs:108:22:108:74 | ... .unwrap_or(...) | main.rs:108:9:108:18 | arg_string | provenance |  |
+| main.rs:112:39:112:48 | arg_string | main.rs:112:39:112:57 | arg_string.as_str() [&ref] | provenance | MaD:9 |
+| main.rs:112:39:112:57 | arg_string.as_str() [&ref] | main.rs:82:27:82:42 | ...: ... [&ref] | provenance |  |
+| main.rs:113:40:113:49 | arg_string | main.rs:113:40:113:58 | arg_string.as_str() [&ref] | provenance | MaD:9 |
+| main.rs:113:40:113:58 | arg_string.as_str() [&ref] | main.rs:95:27:95:40 | ...: ... [&ref] | provenance |  |
 models
 | 1 | Sink: <std::process::Command>::arg; Argument[0]; command-injection |
 | 2 | Sink: <std::process::Command>::args; Argument[0]; command-injection |
@@ -112,4 +128,19 @@ nodes
 | main.rs:73:10:73:12 | arg | semmle.label | arg |
 | main.rs:73:14:73:26 | remote_string | semmle.label | remote_string |
 | main.rs:73:14:73:35 | remote_string.as_str() [&ref] | semmle.label | remote_string.as_str() [&ref] |
+| main.rs:82:27:82:42 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| main.rs:86:14:86:16 | arg | semmle.label | arg |
+| main.rs:86:18:86:27 | user_input [&ref] | semmle.label | user_input [&ref] |
+| main.rs:95:27:95:40 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| main.rs:100:18:100:20 | arg | semmle.label | arg |
+| main.rs:100:22:100:29 | filename [&ref] | semmle.label | filename [&ref] |
+| main.rs:108:9:108:18 | arg_string | semmle.label | arg_string |
+| main.rs:108:22:108:35 | ...::args | semmle.label | ...::args |
+| main.rs:108:22:108:37 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| main.rs:108:22:108:44 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| main.rs:108:22:108:74 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:112:39:112:48 | arg_string | semmle.label | arg_string |
+| main.rs:112:39:112:57 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
+| main.rs:113:40:113:49 | arg_string | semmle.label | arg_string |
+| main.rs:113:40:113:58 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
 subpaths

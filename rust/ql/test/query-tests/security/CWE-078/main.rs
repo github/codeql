@@ -76,7 +76,39 @@ async fn test_tokio_command_injection() {
         .expect("failed");
 }
 
+mod qhelp_example_bad {
+    use std::process::Command;
+
+    pub fn handle_request(user_input: &str) {
+        // BAD
+        Command::new("sh")
+            .arg("-c")
+            .arg(user_input) // $ Alert[rust/command-line-injection]=args2
+            .output()
+            .expect("failed to execute");
+    }
+}
+
+mod qhelp_example_good {
+    use std::process::Command;
+
+    pub fn handle_request(filename: &str) {
+        // GOOD
+        let allowed_names = ["report.pdf", "summary.txt", "data.csv"];
+        if allowed_names.contains(&filename) {
+            Command::new("cat")
+                .arg(filename) // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+                .output()
+                .expect("failed to execute");
+        }
+    }
+}
+
 fn main() {
+    let arg_string = std::env::args().nth(1).unwrap_or(String::from("ls")); // $ Source=args2
+
     test_std_command_injection();
     test_tokio_command_injection();
+    qhelp_example_bad::handle_request(arg_string.as_str());
+    qhelp_example_good::handle_request(arg_string.as_str());
 }
