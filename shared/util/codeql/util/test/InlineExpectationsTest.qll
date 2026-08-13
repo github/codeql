@@ -125,6 +125,8 @@ signature module InlineExpectationsTestSig {
  * Module implementing inline expectations.
  */
 module Make<InlineExpectationsTestSig Impl> {
+  private import ExpectationParser<Impl>
+
   /**
    * A signature specifying the required parts of an inline expectation test.
    */
@@ -378,32 +380,6 @@ module Make<InlineExpectationsTestSig Impl> {
     }
   }
 
-  private predicate getAnExpectation(
-    Impl::ExpectationComment comment, TColumn column, string expectation, string tags, string value
-  ) {
-    exists(string content |
-      content = comment.getContents().regexpCapture(expectationCommentPattern(), 1) and
-      (
-        column = TDefaultColumn() and
-        exists(int end |
-          end = getEndOfColumnPosition(0, content) and
-          expectation = content.prefix(end).regexpFind(expectationPattern(), _, _).trim()
-        )
-        or
-        exists(string name, int start, int end |
-          column = TNamedColumn(name) and
-          start = content.indexOf(name + ":") + name.length() + 1 and
-          end = getEndOfColumnPosition(start, content) and
-          expectation = content.substring(start, end).regexpFind(expectationPattern(), _, _).trim()
-        )
-      )
-    ) and
-    tags = expectation.regexpCapture(expectationPattern(), 1) and
-    if exists(expectation.regexpCapture(expectationPattern(), 2))
-    then value = expectation.regexpCapture(expectationPattern(), 2)
-    else value = ""
-  }
-
   /**
    * A module that merges two test signatures.
    *
@@ -581,6 +557,50 @@ private string expectationPattern() {
 
 /** Gets the string `#select` or `problems`, which are equivalent result sets for a `problem` or `path-problem` query. */
 private string mainResultSet() { result = ["#select", "problems"] }
+
+/**
+ * Provides the low-level parse of an inline expectation comment, shared by the expectation classes
+ * in `Make<Impl>::MakeTest` and by the `--learn` postprocessing in `TestPostProcessing`.
+ *
+ * It is a separate module so that both consumers can `private import` it without either exposing
+ * the parse as part of a `MakeTest` consumer's API or forcing the postprocessing to reach into
+ * `MakeTest`'s internals.
+ */
+private module ExpectationParser<InlineExpectationsTestSig Impl> {
+  /**
+   * Holds if `comment` carries the expectation `expectation` (its verbatim text, for example
+   * `Alert[q]=v`) in `column` (`TDefaultColumn`, or a `TNamedColumn` such as `MISSING`/`SPURIOUS`),
+   * whose comma-separated tags are `tags` and whose expected value is `value` (`""` if none).
+   *
+   * The `--learn` postprocessing needs to see *every* parsed expectation on a comment - including
+   * ones the running test ignores - so it can preserve them when rewriting.
+   */
+  predicate getAnExpectation(
+    Impl::ExpectationComment comment, TColumn column, string expectation, string tags, string value
+  ) {
+    exists(string content |
+      content = comment.getContents().regexpCapture(expectationCommentPattern(), 1) and
+      (
+        column = TDefaultColumn() and
+        exists(int end |
+          end = getEndOfColumnPosition(0, content) and
+          expectation = content.prefix(end).regexpFind(expectationPattern(), _, _).trim()
+        )
+        or
+        exists(string name, int start, int end |
+          column = TNamedColumn(name) and
+          start = content.indexOf(name + ":") + name.length() + 1 and
+          end = getEndOfColumnPosition(start, content) and
+          expectation = content.substring(start, end).regexpFind(expectationPattern(), _, _).trim()
+        )
+      )
+    ) and
+    tags = expectation.regexpCapture(expectationPattern(), 1) and
+    if exists(expectation.regexpCapture(expectationPattern(), 2))
+    then value = expectation.regexpCapture(expectationPattern(), 2)
+    else value = ""
+  }
+}
 
 /**
  * Provides logic for creating a `@kind test-postprocess` query that checks
