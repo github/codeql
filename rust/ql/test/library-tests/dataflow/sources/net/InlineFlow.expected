@@ -32,47 +32,48 @@ models
 | 31 | Summary: <http::response::Response>::body; Argument[self].Reference.Field[http::response::Response::body]; ReturnValue.Reference; value |
 | 32 | Summary: <http::response::Response>::body_mut; Argument[self].Reference.Field[http::response::Response::body]; ReturnValue.Reference; value |
 | 33 | Summary: <http::response::Response>::into_body; Argument[self].Field[http::response::Response::body]; ReturnValue; value |
-| 34 | Summary: <reqwest::async_impl::response::Response>::bytes; Argument[self]; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
-| 35 | Summary: <reqwest::async_impl::response::Response>::chunk; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)].Field[core::option::Option::Some(0)]; taint |
-| 36 | Summary: <reqwest::async_impl::response::Response>::text; Argument[self]; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
-| 37 | Summary: <reqwest::blocking::response::Response>::bytes; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 38 | Summary: <reqwest::blocking::response::Response>::text; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 39 | Summary: <reqwest::blocking::response::Response>::text_with_charset; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 40 | Summary: <std::io::buffered::bufreader::BufReader>::new; Argument[0]; ReturnValue; taint |
-| 41 | Summary: <std::net::tcp::TcpStream>::try_clone; Argument[self].Reference; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 42 | Summary: <tokio::net::tcp::stream::TcpStream>::peek; Argument[self].Reference; Argument[0].Reference; taint |
-| 43 | Summary: <tokio::net::tcp::stream::TcpStream>::try_read; Argument[self].Reference; Argument[0].Reference; taint |
-| 44 | Summary: <tokio::net::tcp::stream::TcpStream>::try_read_buf; Argument[self].Reference; Argument[0].Reference; taint |
+| 34 | Summary: <native_tls::TlsConnector>::connect; Argument[1]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 35 | Summary: <reqwest::async_impl::response::Response>::bytes; Argument[self]; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
+| 36 | Summary: <reqwest::async_impl::response::Response>::chunk; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)].Field[core::option::Option::Some(0)]; taint |
+| 37 | Summary: <reqwest::async_impl::response::Response>::text; Argument[self]; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
+| 38 | Summary: <reqwest::blocking::response::Response>::bytes; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 39 | Summary: <reqwest::blocking::response::Response>::text; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 40 | Summary: <reqwest::blocking::response::Response>::text_with_charset; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 41 | Summary: <std::io::buffered::bufreader::BufReader>::new; Argument[0]; ReturnValue; taint |
+| 42 | Summary: <std::net::tcp::TcpStream>::try_clone; Argument[self].Reference; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 43 | Summary: <tokio::net::tcp::stream::TcpStream>::peek; Argument[self].Reference; Argument[0].Reference; taint |
+| 44 | Summary: <tokio::net::tcp::stream::TcpStream>::try_read; Argument[self].Reference; Argument[0].Reference; taint |
+| 45 | Summary: <tokio::net::tcp::stream::TcpStream>::try_read_buf; Argument[self].Reference; Argument[0].Reference; taint |
 edges
 | test.rs:11:9:11:22 | remote_string1 | test.rs:12:10:12:23 | remote_string1 | provenance |  |
 | test.rs:11:26:11:62 | ...::get(...) | test.rs:11:26:11:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
 | test.rs:11:26:11:62 | ...::get(...) [Ok] | test.rs:11:26:11:63 | TryExpr | provenance |  |
-| test.rs:11:26:11:63 | TryExpr | test.rs:11:26:11:70 | ... .text() [Ok] | provenance | MaD:38 |
+| test.rs:11:26:11:63 | TryExpr | test.rs:11:26:11:70 | ... .text() [Ok] | provenance | MaD:39 |
 | test.rs:11:26:11:70 | ... .text() [Ok] | test.rs:11:26:11:71 | TryExpr | provenance |  |
 | test.rs:11:26:11:71 | TryExpr | test.rs:11:9:11:22 | remote_string1 | provenance |  |
 | test.rs:14:9:14:22 | remote_string2 | test.rs:15:10:15:23 | remote_string2 | provenance |  |
 | test.rs:14:26:14:62 | ...::get(...) | test.rs:14:26:14:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
 | test.rs:14:26:14:62 | ...::get(...) [Ok] | test.rs:14:26:14:71 | ... .unwrap() | provenance | MaD:28 |
-| test.rs:14:26:14:71 | ... .unwrap() | test.rs:14:26:14:78 | ... .text() [Ok] | provenance | MaD:38 |
+| test.rs:14:26:14:71 | ... .unwrap() | test.rs:14:26:14:78 | ... .text() [Ok] | provenance | MaD:39 |
 | test.rs:14:26:14:78 | ... .text() [Ok] | test.rs:14:26:14:87 | ... .unwrap() | provenance | MaD:28 |
 | test.rs:14:26:14:87 | ... .unwrap() | test.rs:14:9:14:22 | remote_string2 | provenance |  |
 | test.rs:17:9:17:22 | remote_string3 | test.rs:18:10:18:23 | remote_string3 | provenance |  |
 | test.rs:17:26:17:62 | ...::get(...) | test.rs:17:26:17:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
 | test.rs:17:26:17:62 | ...::get(...) [Ok] | test.rs:17:26:17:71 | ... .unwrap() | provenance | MaD:28 |
-| test.rs:17:26:17:71 | ... .unwrap() | test.rs:17:26:17:98 | ... .text_with_charset(...) [Ok] | provenance | MaD:39 |
+| test.rs:17:26:17:71 | ... .unwrap() | test.rs:17:26:17:98 | ... .text_with_charset(...) [Ok] | provenance | MaD:40 |
 | test.rs:17:26:17:98 | ... .text_with_charset(...) [Ok] | test.rs:17:26:17:107 | ... .unwrap() | provenance | MaD:28 |
 | test.rs:17:26:17:107 | ... .unwrap() | test.rs:17:9:17:22 | remote_string3 | provenance |  |
 | test.rs:20:9:20:22 | remote_string4 | test.rs:21:10:21:23 | remote_string4 | provenance |  |
 | test.rs:20:26:20:62 | ...::get(...) | test.rs:20:26:20:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
 | test.rs:20:26:20:62 | ...::get(...) [Ok] | test.rs:20:26:20:71 | ... .unwrap() | provenance | MaD:28 |
-| test.rs:20:26:20:71 | ... .unwrap() | test.rs:20:26:20:79 | ... .bytes() [Ok] | provenance | MaD:37 |
+| test.rs:20:26:20:71 | ... .unwrap() | test.rs:20:26:20:79 | ... .bytes() [Ok] | provenance | MaD:38 |
 | test.rs:20:26:20:79 | ... .bytes() [Ok] | test.rs:20:26:20:88 | ... .unwrap() | provenance | MaD:28 |
 | test.rs:20:26:20:88 | ... .unwrap() | test.rs:20:9:20:22 | remote_string4 | provenance |  |
 | test.rs:23:9:23:22 | remote_string5 | test.rs:24:10:24:23 | remote_string5 | provenance |  |
 | test.rs:23:26:23:52 | ...::get(...) | test.rs:23:26:23:52 | ...::get(...) [future, Ok] | provenance | Src:MaD:8  |
 | test.rs:23:26:23:52 | ...::get(...) [future, Ok] | test.rs:23:26:23:58 | await ... [Ok] | provenance |  |
 | test.rs:23:26:23:58 | await ... [Ok] | test.rs:23:26:23:59 | TryExpr | provenance |  |
-| test.rs:23:26:23:59 | TryExpr | test.rs:23:26:23:66 | ... .text() [future, Ok] | provenance | MaD:36 |
+| test.rs:23:26:23:59 | TryExpr | test.rs:23:26:23:66 | ... .text() [future, Ok] | provenance | MaD:37 |
 | test.rs:23:26:23:66 | ... .text() [future, Ok] | test.rs:23:26:23:72 | await ... [Ok] | provenance |  |
 | test.rs:23:26:23:72 | await ... [Ok] | test.rs:23:26:23:73 | TryExpr | provenance |  |
 | test.rs:23:26:23:73 | TryExpr | test.rs:23:9:23:22 | remote_string5 | provenance |  |
@@ -80,7 +81,7 @@ edges
 | test.rs:26:26:26:52 | ...::get(...) | test.rs:26:26:26:52 | ...::get(...) [future, Ok] | provenance | Src:MaD:8  |
 | test.rs:26:26:26:52 | ...::get(...) [future, Ok] | test.rs:26:26:26:58 | await ... [Ok] | provenance |  |
 | test.rs:26:26:26:58 | await ... [Ok] | test.rs:26:26:26:59 | TryExpr | provenance |  |
-| test.rs:26:26:26:59 | TryExpr | test.rs:26:26:26:67 | ... .bytes() [future, Ok] | provenance | MaD:34 |
+| test.rs:26:26:26:59 | TryExpr | test.rs:26:26:26:67 | ... .bytes() [future, Ok] | provenance | MaD:35 |
 | test.rs:26:26:26:67 | ... .bytes() [future, Ok] | test.rs:26:26:26:73 | await ... [Ok] | provenance |  |
 | test.rs:26:26:26:73 | await ... [Ok] | test.rs:26:26:26:74 | TryExpr | provenance |  |
 | test.rs:26:26:26:74 | TryExpr | test.rs:26:9:26:22 | remote_string6 | provenance |  |
@@ -90,13 +91,13 @@ edges
 | test.rs:29:24:29:50 | ...::get(...) [future, Ok] | test.rs:29:24:29:56 | await ... [Ok] | provenance |  |
 | test.rs:29:24:29:56 | await ... [Ok] | test.rs:29:24:29:57 | TryExpr | provenance |  |
 | test.rs:29:24:29:57 | TryExpr | test.rs:29:9:29:20 | mut request1 | provenance |  |
-| test.rs:30:10:30:17 | request1 | test.rs:30:10:30:25 | request1.chunk() [future, Ok, Some] | provenance | MaD:35 |
+| test.rs:30:10:30:17 | request1 | test.rs:30:10:30:25 | request1.chunk() [future, Ok, Some] | provenance | MaD:36 |
 | test.rs:30:10:30:25 | request1.chunk() [future, Ok, Some] | test.rs:30:10:30:31 | await ... [Ok, Some] | provenance |  |
 | test.rs:30:10:30:31 | await ... [Ok, Some] | test.rs:30:10:30:32 | TryExpr [Some] | provenance |  |
 | test.rs:30:10:30:32 | TryExpr [Some] | test.rs:30:10:30:41 | ... .unwrap() | provenance | MaD:25 |
 | test.rs:31:15:31:25 | Some(...) [Some] | test.rs:31:20:31:24 | chunk | provenance |  |
 | test.rs:31:20:31:24 | chunk | test.rs:32:14:32:18 | chunk | provenance |  |
-| test.rs:31:29:31:36 | request1 | test.rs:31:29:31:44 | request1.chunk() [future, Ok, Some] | provenance | MaD:35 |
+| test.rs:31:29:31:36 | request1 | test.rs:31:29:31:44 | request1.chunk() [future, Ok, Some] | provenance | MaD:36 |
 | test.rs:31:29:31:44 | request1.chunk() [future, Ok, Some] | test.rs:31:29:31:50 | await ... [Ok, Some] | provenance |  |
 | test.rs:31:29:31:50 | await ... [Ok, Some] | test.rs:31:29:31:51 | TryExpr [Some] | provenance |  |
 | test.rs:31:29:31:51 | TryExpr [Some] | test.rs:31:15:31:25 | Some(...) [Some] | provenance |  |
@@ -140,7 +141,7 @@ edges
 | test.rs:182:21:182:30 | mut reader | test.rs:185:27:185:32 | reader | provenance |  |
 | test.rs:182:34:182:64 | ...::new(...) | test.rs:182:34:182:74 | ... .take(...) | provenance | MaD:23 |
 | test.rs:182:34:182:74 | ... .take(...) | test.rs:182:21:182:30 | mut reader | provenance |  |
-| test.rs:182:58:182:63 | stream | test.rs:182:34:182:64 | ...::new(...) | provenance | MaD:40 |
+| test.rs:182:58:182:63 | stream | test.rs:182:34:182:64 | ...::new(...) | provenance | MaD:41 |
 | test.rs:185:27:185:32 | reader | test.rs:185:44:185:52 | [post] &mut line [&ref] | provenance | MaD:19 |
 | test.rs:185:44:185:52 | [post] &mut line [&ref] | test.rs:185:49:185:52 | [post] line | provenance |  |
 | test.rs:185:49:185:52 | [post] line | test.rs:192:35:192:38 | line | provenance |  |
@@ -148,9 +149,9 @@ edges
 | test.rs:203:21:203:26 | reader | test.rs:204:29:204:34 | reader | provenance |  |
 | test.rs:203:30:203:73 | ...::new(...) | test.rs:203:30:203:83 | ... .take(...) | provenance | MaD:23 |
 | test.rs:203:30:203:83 | ... .take(...) | test.rs:203:21:203:26 | reader | provenance |  |
-| test.rs:203:54:203:59 | stream | test.rs:203:54:203:71 | stream.try_clone() [Ok] | provenance | MaD:41 |
+| test.rs:203:54:203:59 | stream | test.rs:203:54:203:71 | stream.try_clone() [Ok] | provenance | MaD:42 |
 | test.rs:203:54:203:71 | stream.try_clone() [Ok] | test.rs:203:54:203:72 | TryExpr | provenance |  |
-| test.rs:203:54:203:72 | TryExpr | test.rs:203:30:203:73 | ...::new(...) | provenance | MaD:40 |
+| test.rs:203:54:203:72 | TryExpr | test.rs:203:30:203:73 | ...::new(...) | provenance | MaD:41 |
 | test.rs:204:29:204:34 | reader | test.rs:204:29:204:42 | reader.lines() | provenance | MaD:18 |
 | test.rs:204:29:204:42 | reader.lines() | test.rs:205:28:205:37 | Ok(...) | provenance |  |
 | test.rs:205:28:205:37 | Ok(...) | test.rs:207:30:207:35 | string | provenance |  |
@@ -162,7 +163,7 @@ edges
 | test.rs:224:28:224:66 | ...::connect(...) [future, Ok] | test.rs:224:28:224:72 | await ... [Ok] | provenance |  |
 | test.rs:224:28:224:72 | await ... [Ok] | test.rs:224:28:224:73 | TryExpr | provenance |  |
 | test.rs:224:28:224:73 | TryExpr | test.rs:224:9:224:24 | mut tokio_stream | provenance |  |
-| test.rs:232:17:232:28 | tokio_stream | test.rs:232:35:232:46 | [post] &mut buffer1 [&ref] | provenance | MaD:42 |
+| test.rs:232:17:232:28 | tokio_stream | test.rs:232:35:232:46 | [post] &mut buffer1 [&ref] | provenance | MaD:43 |
 | test.rs:232:35:232:46 | [post] &mut buffer1 [&ref] | test.rs:232:40:232:46 | [post] buffer1 | provenance |  |
 | test.rs:232:40:232:46 | [post] buffer1 | test.rs:239:15:239:21 | buffer1 | provenance |  |
 | test.rs:232:40:232:46 | [post] buffer1 | test.rs:240:14:240:20 | buffer1 | provenance |  |
@@ -174,11 +175,11 @@ edges
 | test.rs:240:14:240:20 | buffer1 | test.rs:240:14:240:23 | buffer1[0] | provenance | MaD:10 |
 | test.rs:243:15:243:21 | buffer2 | test.rs:243:14:243:21 | &buffer2 | provenance |  |
 | test.rs:244:14:244:20 | buffer2 | test.rs:244:14:244:23 | buffer2[0] | provenance | MaD:10 |
-| test.rs:252:19:252:30 | tokio_stream | test.rs:252:41:252:51 | [post] &mut buffer [&ref] | provenance | MaD:43 |
+| test.rs:252:19:252:30 | tokio_stream | test.rs:252:41:252:51 | [post] &mut buffer [&ref] | provenance | MaD:44 |
 | test.rs:252:41:252:51 | [post] &mut buffer [&ref] | test.rs:252:46:252:51 | [post] buffer | provenance |  |
 | test.rs:252:46:252:51 | [post] buffer | test.rs:259:27:259:32 | buffer | provenance |  |
 | test.rs:259:27:259:32 | buffer | test.rs:259:26:259:32 | &buffer | provenance |  |
-| test.rs:275:19:275:30 | tokio_stream | test.rs:275:45:275:55 | [post] &mut buffer [&ref] | provenance | MaD:44 |
+| test.rs:275:19:275:30 | tokio_stream | test.rs:275:45:275:55 | [post] &mut buffer [&ref] | provenance | MaD:45 |
 | test.rs:275:45:275:55 | [post] &mut buffer [&ref] | test.rs:275:50:275:55 | [post] buffer | provenance |  |
 | test.rs:275:50:275:55 | [post] buffer | test.rs:282:27:282:32 | buffer | provenance |  |
 | test.rs:282:27:282:32 | buffer | test.rs:282:26:282:32 | &buffer | provenance |  |
@@ -205,6 +206,26 @@ edges
 | test.rs:350:44:350:54 | [post] &mut buffer [&ref] | test.rs:350:49:350:54 | [post] buffer | provenance |  |
 | test.rs:350:49:350:54 | [post] buffer | test.rs:351:15:351:20 | buffer | provenance |  |
 | test.rs:351:15:351:20 | buffer | test.rs:351:14:351:20 | &buffer | provenance |  |
+| test.rs:359:9:359:14 | stream | test.rs:361:59:361:64 | stream | provenance |  |
+| test.rs:359:18:359:54 | ...::connect(...) | test.rs:359:18:359:54 | ...::connect(...) [Ok] | provenance | Src:MaD:4  |
+| test.rs:359:18:359:54 | ...::connect(...) [Ok] | test.rs:359:18:359:55 | TryExpr | provenance |  |
+| test.rs:359:18:359:55 | TryExpr | test.rs:359:9:359:14 | stream | provenance |  |
+| test.rs:361:9:361:18 | mut stream | test.rs:362:11:362:16 | stream | provenance |  |
+| test.rs:361:9:361:18 | mut stream | test.rs:367:22:367:27 | stream | provenance |  |
+| test.rs:361:9:361:18 | mut stream | test.rs:373:5:373:10 | stream | provenance |  |
+| test.rs:361:22:361:65 | connector.connect(...) [Ok] | test.rs:361:22:361:66 | TryExpr | provenance |  |
+| test.rs:361:22:361:66 | TryExpr | test.rs:361:9:361:18 | mut stream | provenance |  |
+| test.rs:361:59:361:64 | stream | test.rs:361:22:361:65 | connector.connect(...) [Ok] | provenance | MaD:34 |
+| test.rs:362:11:362:16 | stream | test.rs:362:10:362:16 | &stream | provenance |  |
+| test.rs:367:22:367:27 | stream | test.rs:367:34:367:44 | [post] &mut buffer [&ref] | provenance | MaD:20 |
+| test.rs:367:34:367:44 | [post] &mut buffer [&ref] | test.rs:367:39:367:44 | [post] buffer | provenance |  |
+| test.rs:367:39:367:44 | [post] buffer | test.rs:370:11:370:16 | buffer | provenance |  |
+| test.rs:367:39:367:44 | [post] buffer | test.rs:370:11:370:30 | buffer[...] | provenance |  |
+| test.rs:370:11:370:16 | buffer | test.rs:370:11:370:30 | buffer[...] | provenance | MaD:10 |
+| test.rs:370:11:370:30 | buffer[...] | test.rs:370:10:370:30 | &... | provenance |  |
+| test.rs:373:5:373:10 | stream | test.rs:373:27:373:39 | [post] &mut response [&ref] | provenance | MaD:22 |
+| test.rs:373:27:373:39 | [post] &mut response [&ref] | test.rs:373:32:373:39 | [post] response | provenance |  |
+| test.rs:373:32:373:39 | [post] response | test.rs:375:10:375:17 | response | provenance |  |
 | test.rs:396:13:396:15 | tcp | test.rs:397:15:397:17 | tcp | provenance |  |
 | test.rs:396:13:396:15 | tcp | test.rs:403:57:403:59 | tcp | provenance |  |
 | test.rs:396:19:396:41 | ...::connect(...) | test.rs:396:19:396:41 | ...::connect(...) [future, Ok] | provenance | Src:MaD:1  |
@@ -543,6 +564,26 @@ nodes
 | test.rs:350:49:350:54 | [post] buffer | semmle.label | [post] buffer |
 | test.rs:351:14:351:20 | &buffer | semmle.label | &buffer |
 | test.rs:351:15:351:20 | buffer | semmle.label | buffer |
+| test.rs:359:9:359:14 | stream | semmle.label | stream |
+| test.rs:359:18:359:54 | ...::connect(...) | semmle.label | ...::connect(...) |
+| test.rs:359:18:359:54 | ...::connect(...) [Ok] | semmle.label | ...::connect(...) [Ok] |
+| test.rs:359:18:359:55 | TryExpr | semmle.label | TryExpr |
+| test.rs:361:9:361:18 | mut stream | semmle.label | mut stream |
+| test.rs:361:22:361:65 | connector.connect(...) [Ok] | semmle.label | connector.connect(...) [Ok] |
+| test.rs:361:22:361:66 | TryExpr | semmle.label | TryExpr |
+| test.rs:361:59:361:64 | stream | semmle.label | stream |
+| test.rs:362:10:362:16 | &stream | semmle.label | &stream |
+| test.rs:362:11:362:16 | stream | semmle.label | stream |
+| test.rs:367:22:367:27 | stream | semmle.label | stream |
+| test.rs:367:34:367:44 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:367:39:367:44 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:370:10:370:30 | &... | semmle.label | &... |
+| test.rs:370:11:370:16 | buffer | semmle.label | buffer |
+| test.rs:370:11:370:30 | buffer[...] | semmle.label | buffer[...] |
+| test.rs:373:5:373:10 | stream | semmle.label | stream |
+| test.rs:373:27:373:39 | [post] &mut response [&ref] | semmle.label | [post] &mut response [&ref] |
+| test.rs:373:32:373:39 | [post] response | semmle.label | [post] response |
+| test.rs:375:10:375:17 | response | semmle.label | response |
 | test.rs:396:13:396:15 | tcp | semmle.label | tcp |
 | test.rs:396:19:396:41 | ...::connect(...) | semmle.label | ...::connect(...) |
 | test.rs:396:19:396:41 | ...::connect(...) [future, Ok] | semmle.label | ...::connect(...) [future, Ok] |
@@ -728,6 +769,9 @@ testFailures
 | test.rs:339:14:339:20 | &buffer | test.rs:332:22:332:75 | ...::new(...) | test.rs:339:14:339:20 | &buffer | $@ | test.rs:332:22:332:75 | ...::new(...) | ...::new(...) |
 | test.rs:345:14:345:20 | &buffer | test.rs:332:22:332:75 | ...::new(...) | test.rs:345:14:345:20 | &buffer | $@ | test.rs:332:22:332:75 | ...::new(...) | ...::new(...) |
 | test.rs:351:14:351:20 | &buffer | test.rs:332:22:332:75 | ...::new(...) | test.rs:351:14:351:20 | &buffer | $@ | test.rs:332:22:332:75 | ...::new(...) | ...::new(...) |
+| test.rs:362:10:362:16 | &stream | test.rs:359:18:359:54 | ...::connect(...) | test.rs:362:10:362:16 | &stream | $@ | test.rs:359:18:359:54 | ...::connect(...) | ...::connect(...) |
+| test.rs:370:10:370:30 | &... | test.rs:359:18:359:54 | ...::connect(...) | test.rs:370:10:370:30 | &... | $@ | test.rs:359:18:359:54 | ...::connect(...) | ...::connect(...) |
+| test.rs:375:10:375:17 | response | test.rs:359:18:359:54 | ...::connect(...) | test.rs:375:10:375:17 | response | $@ | test.rs:359:18:359:54 | ...::connect(...) | ...::connect(...) |
 | test.rs:397:14:397:17 | &tcp | test.rs:396:19:396:41 | ...::connect(...) | test.rs:397:14:397:17 | &tcp | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
 | test.rs:404:14:404:20 | &reader | test.rs:396:19:396:41 | ...::connect(...) | test.rs:404:14:404:20 | &reader | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
 | test.rs:410:18:410:24 | &pinned | test.rs:396:19:396:41 | ...::connect(...) | test.rs:410:18:410:24 | &pinned | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |

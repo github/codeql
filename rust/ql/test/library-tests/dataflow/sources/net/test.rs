@@ -359,7 +359,7 @@ fn test_native_tls() -> Result<(), Box<dyn std::error::Error>> {
     let stream = std::net::TcpStream::connect(address)?; // $ Alert[rust/summary/taint-sources]
     let connector = native_tls::TlsConnector::new()?;
     let mut stream = connector.connect("www.example.com", stream)?;
-    sink(&stream); // $ MISSING: hasTaintFlow=address
+    sink(&stream); // $ hasTaintFlow=address
 
     stream.write_all(b"GET / HTTP/1.1\r\nHost: www.example.com\r\nConnection: close\r\n\r\n")?;
 
@@ -367,12 +367,12 @@ fn test_native_tls() -> Result<(), Box<dyn std::error::Error>> {
     let bytes_read = stream.read(&mut buffer)?;
     println!("bytes_read = {}", bytes_read);
     println!("buffer = {:?}", &buffer[..bytes_read]);
-    sink(&buffer[..bytes_read]); // $ MISSING: hasTaintFlow=address
+    sink(&buffer[..bytes_read]); // $ hasTaintFlow=address
 
     let mut response = String::new();
     stream.read_to_string(&mut response)?;
     println!("rest of response = '{}'", response);
-    sink(response); // $ MISSING: hasTaintFlow=address
+    sink(response); // $ hasTaintFlow=address
 
     Ok(())
 }
