@@ -8,4 +8,7 @@ private protocol P {
     let x4: Target3.A; // $ access=Target2.A
     let x5: Target3.B.C; // $ access=Target2.B access=Target2.B.C
     let x6: Target3.C; // $ access=Target3.C
+
+    // `@_exported import Target2` should not re-export the local 'Target2' name, only its contents
+    let x7: Target3.Target2.A; // $ SPURIOUS: access=Target2.A
 }
