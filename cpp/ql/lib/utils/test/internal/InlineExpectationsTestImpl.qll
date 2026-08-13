@@ -35,4 +35,14 @@ module Impl implements InlineExpectationsTestSig {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // C/C++ databases can also contain XML (e.g. `.xml`, `.props`), whose block-comment
+    // syntax is not yet supported, so we only render for C/C++ sources.
+    relativePath
+        .toLowerCase()
+        .regexpMatch(".*\\.(c|i|cc|cp|cpp|cxx|c\\+\\+|icc|ipp|ixx|i\\+\\+|ii|h|r|hh|hp|hpp|hxx|h\\+\\+|tcc|tpp|txx|t\\+\\+|inl|cu|cuh)") and
+    result = "//"
+  }
 }

@@ -45,4 +45,12 @@ module Impl implements InlineExpectationsTestSig {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // Java databases can also contain XML; those files use a different (block) comment
+    // syntax that is not yet supported, so we only render for Java and Kotlin sources.
+    relativePath.matches(["%.java", "%.kt"]) and
+    result = "//"
+  }
 }

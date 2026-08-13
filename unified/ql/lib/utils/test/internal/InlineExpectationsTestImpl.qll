@@ -19,4 +19,12 @@ module Impl implements InlineExpectationsTestSig {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // The unified extractor currently ingests only Swift sources, which use `//`. Gating on
+    // the extension keeps this correct if it gains a language with a different comment syntax.
+    relativePath.regexpMatch(".*\\.(swift|swiftinterface)") and
+    result = "//"
+  }
 }
