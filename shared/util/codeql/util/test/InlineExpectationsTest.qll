@@ -655,6 +655,28 @@ module TestPostProcessing {
 
   signature module InputSig<InlineExpectationsTestSig Input> {
     string getRelativeUrl(Input::Location location);
+
+    /**
+     * Gets the marker that starts a line comment (for example `"//"` or `"#"`) in the source
+     * file with the given `relativePath`, provided that `codeql test run --learn` is able to
+     * render inline expectations for that file. Files for which this has no result are left
+     * untouched by `--learn`.
+     *
+     * This is keyed on the file rather than on the analyzed language because a single database
+     * may contain source files in several languages with different comment syntaxes (for
+     * example Java together with XML). `relativePath` is the path reported by `getRelativeUrl`.
+     */
+    bindingset[relativePath]
+    string getStartCommentMarker(string relativePath);
+
+    /**
+     * Gets the marker that ends a comment (for example `"-->"`) in the source file with the
+     * given `relativePath`. Has no result by default, which is correct for languages whose
+     * inline expectations use line comments (so `--learn` renders no closing marker);
+     * block-comment languages can override it so that `--learn` renders a closing marker.
+     */
+    bindingset[relativePath]
+    default string getEndCommentMarker(string relativePath) { none() }
   }
 
   module Make<InlineExpectationsTestSig Input, InputSig<Input> Input2> {

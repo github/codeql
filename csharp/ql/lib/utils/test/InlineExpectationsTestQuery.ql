@@ -18,4 +18,12 @@ private module Input implements T::TestPostProcessing::InputSig<Impl> {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // C# databases can also contain XML (e.g. `.csproj`, `.config`) and Razor markup, whose
+    // comment syntaxes are not yet supported, so we only render for C# sources.
+    relativePath.regexpMatch(".*\\.(cs|csx)") and
+    result = "//"
+  }
 }
