@@ -118,14 +118,7 @@ NameBindingNode getModuleNodeFromFile(File f) {
 }
 
 /** Gets the name-binding node associated with the given uncertain scope node. */
-private NameBindingNode getNodeFromUncertainScope(AstNode n) {
-  exists(ClassLikeDeclaration cls |
-    n = cls.getAMember() and // note: must align with LocalNameBindingInput::uncertainScope
-    result.isLocalNamespace(cls)
-  )
-  or
-  result.isLocalNamespace(n)
-}
+private NameBindingNode getNodeFromUncertainScope(AstNode n) { result.isLocalNamespace(n) }
 
 predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
   exists(MemberAccessExpr expr |
