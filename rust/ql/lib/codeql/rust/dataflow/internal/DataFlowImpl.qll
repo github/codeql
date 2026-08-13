@@ -583,7 +583,7 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
 
   class LambdaCallKind = LambdaCallKindAlias;
 
-  predicate forceHighPrecision(Content c) { none() }
+  predicate forceHighPrecision(Content c) { any() }
 
   class ContentApprox = ContentApproxAlias;
 
