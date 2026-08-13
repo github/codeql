@@ -134,6 +134,7 @@ predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
   )
   or
   exists(PotentialLocalNameAccess access |
+    not access.isDeclarationSite() and
     name = access.getName() and
     node1 = getNodeFromUncertainScope(LocalNameBindingOutput::getAnUncertainScope(access, name)) and
     node2.isIdentifier(access)
@@ -182,6 +183,7 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     node1.isIdentifier(access) and
     node2.isLocalName(access.getLocalName())
     or
+    not access.isDeclarationSite() and
     node1.isLocalName(access.getLocalName()) and
     node2.isIdentifier(access)
   )
