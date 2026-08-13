@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Assignment operators have lower precedence than comparison operators. For example,
+<code>status = read_status() &lt; 0</code> assigns the comparison result (zero or one) to
+<code>status</code>. This can be unintended when the programmer meant to assign the return value
+first and then compare it with zero.</p>
+</overview>
+
+<recommendation>
+<p>Use parentheses to make the intended operation order explicit. To assign first and compare the
+assigned value, parenthesize the assignment. To intentionally assign the comparison result,
+parenthesize the comparison. An explicit cast around the comparison also makes that order clear.</p>
+</recommendation>
+
+<example>
+<p>In the first condition, <code>status</code> receives either zero or one instead of the value
+returned by <code>read_status</code>. The second condition explicitly performs the assignment
+before the comparison.</p>
+<sample src="AmbiguousAssignmentOfComparison.cpp" />
+</example>
+
+<references>
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/EXP00-C.+Use+parentheses+for+precedence+of+operation">EXP00-C. Use parentheses for precedence of operation</a>.</li>
+<li>C++ reference: <a href="https://en.cppreference.com/w/cpp/language/operator_precedence.html">Operator precedence</a>.</li>
+</references>
+
+</qhelp>
