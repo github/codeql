@@ -58,6 +58,14 @@ def conditionals
   sink(keyword_and_value)
 end
 
+def default_parameters(
+  optional = source("optional parameter"),
+  keyword: source("keyword parameter")
+)
+  sink(optional)
+  sink(keyword)
+end
+
 def case_expressions(value)
   when_value =
     case value
