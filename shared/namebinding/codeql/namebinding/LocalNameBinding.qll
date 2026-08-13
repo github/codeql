@@ -376,7 +376,7 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
   }
 
   /**
-   * Gets an uncertain scope that the given `accessCand` pair may resolve to.
+   * Gets an uncertain scope in which the `accessCand` pair may resolve.
    */
   AstNode getAnUncertainScope(AstNode access, string name) {
     exists(Scope lookup |
