@@ -15,9 +15,35 @@
 | main.rs:115:9:115:14 | ...::log | main.rs:109:25:109:38 | ...::args | main.rs:115:9:115:14 | ...::log | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
 | main.rs:116:9:116:14 | ...::log | main.rs:109:25:109:38 | ...::args | main.rs:116:9:116:14 | ...::log | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
 | main.rs:119:9:119:13 | ...::log | main.rs:109:25:109:38 | ...::args | main.rs:119:9:119:13 | ...::log | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
-| main.rs:130:9:130:16 | ...::_print | main.rs:127:25:127:37 | ...::var | main.rs:130:9:130:16 | ...::_print | Log entry depends on a $@. | main.rs:127:25:127:37 | ...::var | user-provided value |
-| main.rs:131:9:131:17 | ...::_eprint | main.rs:127:25:127:37 | ...::var | main.rs:131:9:131:17 | ...::_eprint | Log entry depends on a $@. | main.rs:127:25:127:37 | ...::var | user-provided value |
-| main.rs:143:9:143:16 | ...::_print | main.rs:150:28:150:30 | get | main.rs:143:9:143:16 | ...::_print | Log entry depends on a $@. | main.rs:150:28:150:30 | get | user-provided value |
+| main.rs:122:25:122:46 | &... | main.rs:109:25:109:38 | ...::args | main.rs:122:25:122:46 | &... | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:122:25:122:46 | &... | main.rs:109:25:109:38 | ...::args | main.rs:122:25:122:46 | &... | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:122:25:122:46 | ... as ... | main.rs:109:25:109:38 | ...::args | main.rs:122:25:122:46 | ... as ... | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:122:25:122:46 | ... as ... | main.rs:109:25:109:38 | ...::args | main.rs:122:25:122:46 | ... as ... | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:122:25:122:46 | FormatArgsExpr | main.rs:109:25:109:38 | ...::args | main.rs:122:25:122:46 | FormatArgsExpr | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:122:25:122:46 | FormatArgsExpr | main.rs:109:25:109:38 | ...::args | main.rs:122:25:122:46 | FormatArgsExpr | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:122:25:122:46 | MacroExpr | main.rs:109:25:109:38 | ...::args | main.rs:122:25:122:46 | MacroExpr | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:122:25:122:46 | MacroExpr | main.rs:109:25:109:38 | ...::args | main.rs:122:25:122:46 | MacroExpr | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:122:38:122:46 | user_data | main.rs:109:25:109:38 | ...::args | main.rs:122:38:122:46 | user_data | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:122:38:122:46 | user_data | main.rs:109:25:109:38 | ...::args | main.rs:122:38:122:46 | user_data | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:123:24:123:45 | &... | main.rs:109:25:109:38 | ...::args | main.rs:123:24:123:45 | &... | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:123:24:123:45 | &... | main.rs:109:25:109:38 | ...::args | main.rs:123:24:123:45 | &... | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:123:24:123:45 | ... as ... | main.rs:109:25:109:38 | ...::args | main.rs:123:24:123:45 | ... as ... | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:123:24:123:45 | ... as ... | main.rs:109:25:109:38 | ...::args | main.rs:123:24:123:45 | ... as ... | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:123:24:123:45 | FormatArgsExpr | main.rs:109:25:109:38 | ...::args | main.rs:123:24:123:45 | FormatArgsExpr | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:123:24:123:45 | FormatArgsExpr | main.rs:109:25:109:38 | ...::args | main.rs:123:24:123:45 | FormatArgsExpr | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:123:24:123:45 | MacroExpr | main.rs:109:25:109:38 | ...::args | main.rs:123:24:123:45 | MacroExpr | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:123:24:123:45 | MacroExpr | main.rs:109:25:109:38 | ...::args | main.rs:123:24:123:45 | MacroExpr | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:123:35:123:43 | user_data | main.rs:109:25:109:38 | ...::args | main.rs:123:35:123:43 | user_data | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:123:35:123:43 | user_data | main.rs:109:25:109:38 | ...::args | main.rs:123:35:123:43 | user_data | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:124:70:124:78 | &user_data | main.rs:109:25:109:38 | ...::args | main.rs:124:70:124:78 | &user_data | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:124:70:124:78 | &user_data | main.rs:109:25:109:38 | ...::args | main.rs:124:70:124:78 | &user_data | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:124:70:124:78 | ... as ... | main.rs:109:25:109:38 | ...::args | main.rs:124:70:124:78 | ... as ... | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:124:70:124:78 | ... as ... | main.rs:109:25:109:38 | ...::args | main.rs:124:70:124:78 | ... as ... | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:124:70:124:78 | user_data | main.rs:109:25:109:38 | ...::args | main.rs:124:70:124:78 | user_data | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:124:70:124:78 | user_data | main.rs:109:25:109:38 | ...::args | main.rs:124:70:124:78 | user_data | Log entry depends on a $@. | main.rs:109:25:109:38 | ...::args | user-provided value |
+| main.rs:135:9:135:16 | ...::_print | main.rs:132:25:132:37 | ...::var | main.rs:135:9:135:16 | ...::_print | Log entry depends on a $@. | main.rs:132:25:132:37 | ...::var | user-provided value |
+| main.rs:136:9:136:17 | ...::_eprint | main.rs:132:25:132:37 | ...::var | main.rs:136:9:136:17 | ...::_eprint | Log entry depends on a $@. | main.rs:132:25:132:37 | ...::var | user-provided value |
+| main.rs:148:9:148:16 | ...::_print | main.rs:155:28:155:30 | get | main.rs:148:9:148:16 | ...::_print | Log entry depends on a $@. | main.rs:155:28:155:30 | get | user-provided value |
 edges
 | main.rs:8:9:8:12 | args [element] | main.rs:9:20:9:23 | args [element] | provenance |  |
 | main.rs:8:29:8:37 | ...::args | main.rs:8:29:8:39 | ...::args(...) [element] | provenance | Src:MaD:6  |
@@ -78,6 +104,26 @@ edges
 | main.rs:109:13:109:21 | user_data | main.rs:115:16:115:37 | MacroExpr | provenance |  |
 | main.rs:109:13:109:21 | user_data | main.rs:116:16:116:37 | MacroExpr | provenance |  |
 | main.rs:109:13:109:21 | user_data | main.rs:119:15:119:75 | MacroExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:122:25:122:46 | FormatArgsExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:122:25:122:46 | FormatArgsExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:122:25:122:46 | MacroExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:122:25:122:46 | MacroExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:122:25:122:46 | MacroExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:122:25:122:46 | MacroExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:122:38:122:46 | user_data | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:122:38:122:46 | user_data | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:123:24:123:45 | FormatArgsExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:123:24:123:45 | FormatArgsExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:123:24:123:45 | MacroExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:123:24:123:45 | MacroExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:123:24:123:45 | MacroExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:123:24:123:45 | MacroExpr | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:123:35:123:43 | user_data | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:123:35:123:43 | user_data | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:124:70:124:78 | user_data | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:124:70:124:78 | user_data | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:124:70:124:78 | user_data | provenance |  |
+| main.rs:109:13:109:21 | user_data | main.rs:124:70:124:78 | user_data | provenance |  |
 | main.rs:109:25:109:38 | ...::args | main.rs:109:25:109:40 | ...::args(...) [element] | provenance | Src:MaD:6  |
 | main.rs:109:25:109:40 | ...::args(...) [element] | main.rs:109:25:109:47 | ... .nth(...) [Some] | provenance | MaD:11 |
 | main.rs:109:25:109:47 | ... .nth(...) [Some] | main.rs:109:25:109:67 | ... .unwrap_or_default() | provenance | MaD:17 |
@@ -88,23 +134,41 @@ edges
 | main.rs:115:16:115:37 | MacroExpr | main.rs:115:9:115:14 | ...::log | provenance | MaD:1 Sink:MaD:1 |
 | main.rs:116:16:116:37 | MacroExpr | main.rs:116:9:116:14 | ...::log | provenance | MaD:1 Sink:MaD:1 |
 | main.rs:119:15:119:75 | MacroExpr | main.rs:119:9:119:13 | ...::log | provenance | MaD:1 Sink:MaD:1 |
-| main.rs:127:13:127:21 | user_data | main.rs:130:18:130:38 | MacroExpr | provenance |  |
-| main.rs:127:13:127:21 | user_data | main.rs:131:19:131:49 | MacroExpr | provenance |  |
-| main.rs:127:25:127:37 | ...::var | main.rs:127:25:127:45 | ...::var(...) [Ok] | provenance | Src:MaD:7  |
-| main.rs:127:25:127:45 | ...::var(...) [Ok] | main.rs:127:25:127:65 | ... .unwrap_or_default() | provenance | MaD:20 |
-| main.rs:127:25:127:65 | ... .unwrap_or_default() | main.rs:127:13:127:21 | user_data | provenance |  |
-| main.rs:130:18:130:38 | MacroExpr | main.rs:130:9:130:16 | ...::_print | provenance | MaD:3 Sink:MaD:3 |
-| main.rs:131:19:131:49 | MacroExpr | main.rs:131:9:131:17 | ...::_eprint | provenance | MaD:2 Sink:MaD:2 |
-| main.rs:140:32:140:59 | ...: Option::<...> | main.rs:141:22:141:27 | o_path | provenance |  |
-| main.rs:141:13:141:18 | m_path [Some] | main.rs:143:26:143:31 | m_path [Some] | provenance |  |
-| main.rs:141:22:141:27 | o_path | main.rs:141:22:141:38 | o_path.map(...) [Some] | provenance | MaD:14 |
-| main.rs:141:22:141:27 | o_path | main.rs:141:34:141:34 | ... | provenance | MaD:14 |
-| main.rs:141:22:141:38 | o_path.map(...) [Some] | main.rs:141:13:141:18 | m_path [Some] | provenance |  |
-| main.rs:141:34:141:34 | ... | main.rs:141:37:141:37 | x | provenance |  |
-| main.rs:143:18:143:40 | MacroExpr | main.rs:143:9:143:16 | ...::_print | provenance | MaD:3 Sink:MaD:3 |
-| main.rs:143:26:143:31 | m_path [Some] | main.rs:143:26:143:40 | m_path.unwrap() | provenance | MaD:15 |
-| main.rs:143:26:143:40 | m_path.unwrap() | main.rs:143:18:143:40 | MacroExpr | provenance |  |
-| main.rs:150:28:150:30 | get | main.rs:140:32:140:59 | ...: Option::<...> | provenance | Src:MaD:4  |
+| main.rs:122:25:122:46 | &... [&ref] | main.rs:122:25:122:46 | ... as ... | provenance |  |
+| main.rs:122:25:122:46 | &... [&ref] | main.rs:122:25:122:46 | ... as ... | provenance |  |
+| main.rs:122:25:122:46 | MacroExpr | main.rs:122:25:122:46 | &... | provenance |  |
+| main.rs:122:25:122:46 | MacroExpr | main.rs:122:25:122:46 | &... | provenance |  |
+| main.rs:122:25:122:46 | MacroExpr | main.rs:122:25:122:46 | &... [&ref] | provenance |  |
+| main.rs:122:25:122:46 | MacroExpr | main.rs:122:25:122:46 | &... [&ref] | provenance |  |
+| main.rs:123:24:123:45 | &... [&ref] | main.rs:123:24:123:45 | ... as ... | provenance |  |
+| main.rs:123:24:123:45 | &... [&ref] | main.rs:123:24:123:45 | ... as ... | provenance |  |
+| main.rs:123:24:123:45 | MacroExpr | main.rs:123:24:123:45 | &... | provenance |  |
+| main.rs:123:24:123:45 | MacroExpr | main.rs:123:24:123:45 | &... | provenance |  |
+| main.rs:123:24:123:45 | MacroExpr | main.rs:123:24:123:45 | &... [&ref] | provenance |  |
+| main.rs:123:24:123:45 | MacroExpr | main.rs:123:24:123:45 | &... [&ref] | provenance |  |
+| main.rs:124:70:124:78 | &user_data [&ref] | main.rs:124:70:124:78 | ... as ... | provenance |  |
+| main.rs:124:70:124:78 | &user_data [&ref] | main.rs:124:70:124:78 | ... as ... | provenance |  |
+| main.rs:124:70:124:78 | user_data | main.rs:124:70:124:78 | &user_data | provenance |  |
+| main.rs:124:70:124:78 | user_data | main.rs:124:70:124:78 | &user_data | provenance |  |
+| main.rs:124:70:124:78 | user_data | main.rs:124:70:124:78 | &user_data [&ref] | provenance |  |
+| main.rs:124:70:124:78 | user_data | main.rs:124:70:124:78 | &user_data [&ref] | provenance |  |
+| main.rs:132:13:132:21 | user_data | main.rs:135:18:135:38 | MacroExpr | provenance |  |
+| main.rs:132:13:132:21 | user_data | main.rs:136:19:136:49 | MacroExpr | provenance |  |
+| main.rs:132:25:132:37 | ...::var | main.rs:132:25:132:45 | ...::var(...) [Ok] | provenance | Src:MaD:7  |
+| main.rs:132:25:132:45 | ...::var(...) [Ok] | main.rs:132:25:132:65 | ... .unwrap_or_default() | provenance | MaD:20 |
+| main.rs:132:25:132:65 | ... .unwrap_or_default() | main.rs:132:13:132:21 | user_data | provenance |  |
+| main.rs:135:18:135:38 | MacroExpr | main.rs:135:9:135:16 | ...::_print | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:136:19:136:49 | MacroExpr | main.rs:136:9:136:17 | ...::_eprint | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:145:32:145:59 | ...: Option::<...> | main.rs:146:22:146:27 | o_path | provenance |  |
+| main.rs:146:13:146:18 | m_path [Some] | main.rs:148:26:148:31 | m_path [Some] | provenance |  |
+| main.rs:146:22:146:27 | o_path | main.rs:146:22:146:38 | o_path.map(...) [Some] | provenance | MaD:14 |
+| main.rs:146:22:146:27 | o_path | main.rs:146:34:146:34 | ... | provenance | MaD:14 |
+| main.rs:146:22:146:38 | o_path.map(...) [Some] | main.rs:146:13:146:18 | m_path [Some] | provenance |  |
+| main.rs:146:34:146:34 | ... | main.rs:146:37:146:37 | x | provenance |  |
+| main.rs:148:18:148:40 | MacroExpr | main.rs:148:9:148:16 | ...::_print | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:148:26:148:31 | m_path [Some] | main.rs:148:26:148:40 | m_path.unwrap() | provenance | MaD:15 |
+| main.rs:148:26:148:40 | m_path.unwrap() | main.rs:148:18:148:40 | MacroExpr | provenance |  |
+| main.rs:155:28:155:30 | get | main.rs:145:32:145:59 | ...: Option::<...> | provenance | Src:MaD:4  |
 models
 | 1 | Sink: log::__private_api::log; Argument[0]; log-injection |
 | 2 | Sink: std::io::stdio::_eprint; Argument[0]; log-injection |
@@ -202,24 +266,62 @@ nodes
 | main.rs:116:16:116:37 | MacroExpr | semmle.label | MacroExpr |
 | main.rs:119:9:119:13 | ...::log | semmle.label | ...::log |
 | main.rs:119:15:119:75 | MacroExpr | semmle.label | MacroExpr |
-| main.rs:127:13:127:21 | user_data | semmle.label | user_data |
-| main.rs:127:25:127:37 | ...::var | semmle.label | ...::var |
-| main.rs:127:25:127:45 | ...::var(...) [Ok] | semmle.label | ...::var(...) [Ok] |
-| main.rs:127:25:127:65 | ... .unwrap_or_default() | semmle.label | ... .unwrap_or_default() |
-| main.rs:130:9:130:16 | ...::_print | semmle.label | ...::_print |
-| main.rs:130:18:130:38 | MacroExpr | semmle.label | MacroExpr |
-| main.rs:131:9:131:17 | ...::_eprint | semmle.label | ...::_eprint |
-| main.rs:131:19:131:49 | MacroExpr | semmle.label | MacroExpr |
-| main.rs:140:32:140:59 | ...: Option::<...> | semmle.label | ...: Option::<...> |
-| main.rs:141:13:141:18 | m_path [Some] | semmle.label | m_path [Some] |
-| main.rs:141:22:141:27 | o_path | semmle.label | o_path |
-| main.rs:141:22:141:38 | o_path.map(...) [Some] | semmle.label | o_path.map(...) [Some] |
-| main.rs:141:34:141:34 | ... | semmle.label | ... |
-| main.rs:141:37:141:37 | x | semmle.label | x |
-| main.rs:143:9:143:16 | ...::_print | semmle.label | ...::_print |
-| main.rs:143:18:143:40 | MacroExpr | semmle.label | MacroExpr |
-| main.rs:143:26:143:31 | m_path [Some] | semmle.label | m_path [Some] |
-| main.rs:143:26:143:40 | m_path.unwrap() | semmle.label | m_path.unwrap() |
-| main.rs:150:28:150:30 | get | semmle.label | get |
+| main.rs:122:25:122:46 | &... | semmle.label | &... |
+| main.rs:122:25:122:46 | &... | semmle.label | &... |
+| main.rs:122:25:122:46 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:122:25:122:46 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:122:25:122:46 | ... as ... | semmle.label | ... as ... |
+| main.rs:122:25:122:46 | ... as ... | semmle.label | ... as ... |
+| main.rs:122:25:122:46 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:122:25:122:46 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:122:25:122:46 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:122:25:122:46 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:122:25:122:46 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:122:25:122:46 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:122:38:122:46 | user_data | semmle.label | user_data |
+| main.rs:122:38:122:46 | user_data | semmle.label | user_data |
+| main.rs:123:24:123:45 | &... | semmle.label | &... |
+| main.rs:123:24:123:45 | &... | semmle.label | &... |
+| main.rs:123:24:123:45 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:123:24:123:45 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:123:24:123:45 | ... as ... | semmle.label | ... as ... |
+| main.rs:123:24:123:45 | ... as ... | semmle.label | ... as ... |
+| main.rs:123:24:123:45 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:123:24:123:45 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:123:24:123:45 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:123:24:123:45 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:123:24:123:45 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:123:24:123:45 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:123:35:123:43 | user_data | semmle.label | user_data |
+| main.rs:123:35:123:43 | user_data | semmle.label | user_data |
+| main.rs:124:70:124:78 | &user_data | semmle.label | &user_data |
+| main.rs:124:70:124:78 | &user_data | semmle.label | &user_data |
+| main.rs:124:70:124:78 | &user_data [&ref] | semmle.label | &user_data [&ref] |
+| main.rs:124:70:124:78 | &user_data [&ref] | semmle.label | &user_data [&ref] |
+| main.rs:124:70:124:78 | ... as ... | semmle.label | ... as ... |
+| main.rs:124:70:124:78 | ... as ... | semmle.label | ... as ... |
+| main.rs:124:70:124:78 | user_data | semmle.label | user_data |
+| main.rs:124:70:124:78 | user_data | semmle.label | user_data |
+| main.rs:124:70:124:78 | user_data | semmle.label | user_data |
+| main.rs:124:70:124:78 | user_data | semmle.label | user_data |
+| main.rs:132:13:132:21 | user_data | semmle.label | user_data |
+| main.rs:132:25:132:37 | ...::var | semmle.label | ...::var |
+| main.rs:132:25:132:45 | ...::var(...) [Ok] | semmle.label | ...::var(...) [Ok] |
+| main.rs:132:25:132:65 | ... .unwrap_or_default() | semmle.label | ... .unwrap_or_default() |
+| main.rs:135:9:135:16 | ...::_print | semmle.label | ...::_print |
+| main.rs:135:18:135:38 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:136:9:136:17 | ...::_eprint | semmle.label | ...::_eprint |
+| main.rs:136:19:136:49 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:145:32:145:59 | ...: Option::<...> | semmle.label | ...: Option::<...> |
+| main.rs:146:13:146:18 | m_path [Some] | semmle.label | m_path [Some] |
+| main.rs:146:22:146:27 | o_path | semmle.label | o_path |
+| main.rs:146:22:146:38 | o_path.map(...) [Some] | semmle.label | o_path.map(...) [Some] |
+| main.rs:146:34:146:34 | ... | semmle.label | ... |
+| main.rs:146:37:146:37 | x | semmle.label | x |
+| main.rs:148:9:148:16 | ...::_print | semmle.label | ...::_print |
+| main.rs:148:18:148:40 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:148:26:148:31 | m_path [Some] | semmle.label | m_path [Some] |
+| main.rs:148:26:148:40 | m_path.unwrap() | semmle.label | m_path.unwrap() |
+| main.rs:155:28:155:30 | get | semmle.label | get |
 subpaths
-| main.rs:141:22:141:27 | o_path | main.rs:141:34:141:34 | ... | main.rs:141:37:141:37 | x | main.rs:141:22:141:38 | o_path.map(...) [Some] |
+| main.rs:146:22:146:27 | o_path | main.rs:146:34:146:34 | ... | main.rs:146:37:146:37 | x | main.rs:146:22:146:38 | o_path.map(...) [Some] |
