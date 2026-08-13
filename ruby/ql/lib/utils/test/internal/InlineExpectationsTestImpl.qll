@@ -46,4 +46,12 @@ module Impl implements InlineExpectationsTestSig {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // Ruby databases can also contain ERB, whose comment syntax is not yet supported, so we
+    // only render for plain Ruby sources.
+    relativePath.matches("%.rb") and
+    result = "#"
+  }
 }
