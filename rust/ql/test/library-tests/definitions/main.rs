@@ -1,6 +1,33 @@
+use std::ops::*;
+
+#[derive(Debug, Copy, Clone)]
 struct S;
 
 mod lib;
+
+impl Neg for S {
+    type Output = Self;
+
+    fn neg(self) -> Self {
+        S
+    }
+}
+
+impl Add for S {
+    type Output = Self;
+
+    fn add(self, rhs: Self) -> Self {
+        S
+    }
+}
+
+impl Index<usize> for S {
+    type Output = S;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &S
+    }
+}
 
 mod M1 {
     pub mod M2 {
@@ -37,4 +64,16 @@ fn main() {
     let s = M1::M2::S;
     s.method();
     M1::S2::<S>::new(S);
+    -S;
+    S + S;
+    #[rustfmt::skip]
+    let x = S+S;
+    #[rustfmt::skip]
+    let x = S
+    +S;
+    #[rustfmt::skip]
+    let x = S
+    +
+    S;
+    S[0];
 }
