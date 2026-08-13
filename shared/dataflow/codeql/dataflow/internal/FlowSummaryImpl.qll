@@ -1897,7 +1897,7 @@ module Make<
           not this.isExit(_, _) and
           (
             exists(SummaryComponentStack stack |
-              state_.isSourceOutputState(_, stack, _, _) and
+              state_.isSinkInputState(_, stack, _, _) and
               stack.head() instanceof TContentSummaryComponent
             )
             or
@@ -2412,10 +2412,10 @@ module Make<
               )
             )
             or
-            sourceExitStep(StepsInput::getSummaryNode(pred), succ, false)
-            or
-            sinkEntryStep(pred, StepsInput::getSummaryNode(succ), false)
+            sourceExitStep(predSummary, succ, false)
           )
+          or
+          sinkEntryStep(pred, StepsInput::getSummaryNode(succ), false)
         }
 
         /**
