@@ -212,7 +212,6 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   |
     node2 = getNodeFromUncertainScope(scope)
     or
-    // TODO: Add support for '@_exported' with tests, so this gets exercised
     // Bulk re-exporting declarations
     exists(TopLevel top |
       declaration = top.getBody().getAStmt() and
