@@ -354,11 +354,15 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
     or
     exists(Scope mid |
       lookupInScope(name, lookup, mid) and
-      not declInScope(_, name, mid) and
-      not implicitDeclInScope(name, mid) and
+      not declInScope(name, mid) and
       not isTopScope(mid) and
       scope = getEnclosingScope(mid)
     )
+  }
+
+  private predicate declInScope(string name, AstNode scope) {
+    declInScope(_, name, scope) or
+    implicitDeclInScope(name, scope)
   }
 
   /**
@@ -368,8 +372,7 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
   private predicate lookupInUncertainScope(string name, Scope lookup, Scope scope) {
     lookupInScope(name, lookup, scope) and
     uncertainScope(scope) and
-    not declInScope(_, name, scope) and
-    not implicitDeclInScope(name, scope)
+    not declInScope(name, scope)
   }
 
   /**
