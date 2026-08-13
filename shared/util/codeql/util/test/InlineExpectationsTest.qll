@@ -252,14 +252,14 @@ module Make<InlineExpectationsTestSig Impl> {
         Impl::ExpectationComment comment, string tag, string value, string knownFailure
       ) {
         exists(TColumn column, string tags |
-          getAnExpectation(comment, column, _, tags, value) and
+          hasExpectation(comment, column, _, tags, value) and
           tag = tags.splitAt(",") and
           knownFailure = getColumnString(column) and
           not TestImpl::tagIsIgnored(tag)
         )
       } or
       TInvalidExpectation(Impl::ExpectationComment comment, string expectation) {
-        getAnExpectation(comment, _, expectation, _, _) and
+        hasExpectation(comment, _, expectation, _, _) and
         not expectation.regexpMatch(expectationPattern())
       }
 
@@ -480,7 +480,7 @@ module Make<InlineExpectationsTestSig Impl> {
    */
   predicate hasExpectationWithValue(string tag, string value) {
     exists(string tags |
-      getAnExpectation(_, _, _, tags, value) and
+      hasExpectation(_, _, _, tags, value) and
       tag = tags.splitAt(",")
     )
   }
@@ -575,7 +575,7 @@ private module ExpectationParser<InlineExpectationsTestSig Impl> {
    * The `--learn` postprocessing needs to see *every* parsed expectation on a comment - including
    * ones the running test ignores - so it can preserve them when rewriting.
    */
-  predicate getAnExpectation(
+  predicate hasExpectation(
     Impl::ExpectationComment comment, TColumn column, string expectation, string tags, string value
   ) {
     exists(string content |
@@ -1132,7 +1132,7 @@ module TestPostProcessing {
           invalid.getLocation() = comment.getLocation()
         ) and
         not exists(string tags |
-          getAnExpectation(comment, _, _, tags, _) and
+          hasExpectation(comment, _, _, tags, _) and
           not TestInput::tagIsIgnored(tags.splitAt(",")) and
           TestInput::tagIsIgnored(tags.splitAt(","))
         )
@@ -1152,7 +1152,7 @@ module TestPostProcessing {
         TestImpl2::ExpectationComment comment, string column, string text
       ) {
         exists(TColumn col, string tags |
-          getAnExpectation(comment, col, text, tags, _) and
+          hasExpectation(comment, col, text, tags, _) and
           column = getColumnString(col) and
           forall(string tag | tag = tags.splitAt(",") | TestInput::tagIsIgnored(tag))
         )
@@ -1180,7 +1180,7 @@ module TestPostProcessing {
           result = comment.getContents().regexpCapture("\\s*\\$ (?:[^/]|/[^/])*//(.*)", 1).trim()
           or
           // A plain comment with no expectation of its own: its whole content is the note.
-          not getAnExpectation(comment, _, _, _, _) and
+          not hasExpectation(comment, _, _, _, _) and
           not exists(Test::InvalidTestExpectation invalid |
             invalid.getLocation() = comment.getLocation()
           ) and
