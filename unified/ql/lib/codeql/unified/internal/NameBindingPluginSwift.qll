@@ -13,14 +13,18 @@ class NameBindingPluginSwift extends NameBindingPlugin {
     not member.hasModifier(["static", "class", "enum_case"])
   }
 
-  override predicate isPrivateToLocalScope(Stmt member) {
+  bindingset[member, binding]
+  override predicate isPrivateToLocalScope(Stmt member, AstNode binding) {
     // Private top-level members
     member = any(TopLevel top).getBody().getAStmt() and
     member.hasModifier(["private", "fileprivate"])
     or
     // Imports are always file-local, except `@_exported` import which re-export everything
     member instanceof ImportDeclaration and
-    not member.hasModifier("@_exported")
+    not (
+      member.hasModifier("@_exported") and
+      binding instanceof BulkImportingPattern
+    )
     //
     // Note: Private class members can be seen within type-extensions in the same file,
     // so we can't declare those private to their local scope.

@@ -1,5 +1,6 @@
 private import unified
 private import codeql.util.Unit
+private import codeql.unified.internal.LocalNameBinding
 private import codeql.unified.internal.NameBindingPluginSwift // ensure overrides are seen
 
 /** Extension point for language-specific inputs to name binding. */
@@ -14,13 +15,16 @@ class NameBindingPlugin extends Unit {
   predicate isInstanceMember(ClassLikeDeclaration cls, Member member) { none() }
 
   /**
-   * Holds if `member` is only visible in its local scope, and can thus be entirely resolved
+   * Holds if `binding`, declared by `member` is only visible in its local scope, and can thus be entirely resolved
    * by local name-binding, suppressing any store-steps that would otherwise be induced from the member.
    *
    * Need only be implemented for members that occur in the context of class or top-level, as other
    * contexts are considered local already.
+   *
+   * `binding` refers to an `Identifier` or `BulkImportingPattern` bound by the member.
    */
-  predicate isPrivateToLocalScope(Stmt member) { none() }
+  bindingset[member, binding]
+  predicate isPrivateToLocalScope(Stmt member, AstNode binding) { none() }
 }
 
 /** Holds if `member` is an instance member. */
@@ -31,9 +35,18 @@ predicate isInstanceMember(Member member) {
   )
 }
 
-/** Holds if `member` is only visible in its local scope. */
-predicate isPrivateToLocalScope(Stmt member) {
-  any(NameBindingPlugin p).isPrivateToLocalScope(member)
+/** Holds if `binding` is only visible in its local scope. */
+pragma[nomagic]
+predicate isPrivateToLocalScope(AstNode binding) {
+  exists(Stmt member |
+    bindingContext(binding, _, member) and
+    (
+      member = any(ClassLikeDeclaration cls).getAMember() or
+      member = any(TopLevel t).getBody().getAStmt()
+    ) and
+    (binding instanceof NameDeclaration or binding instanceof BulkImportingPattern) and
+    any(NameBindingPlugin p).isPrivateToLocalScope(member, binding)
+  )
 }
 
 /**
