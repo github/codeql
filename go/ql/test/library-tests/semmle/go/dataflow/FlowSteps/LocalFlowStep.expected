@@ -12,10 +12,10 @@
 | main.go:8:8:8:8 | x | main.go:10:7:10:7 | x |
 | main.go:10:2:10:27 | SSA def(z) | main.go:11:14:11:14 | z |
 | main.go:10:7:10:7 | x | main.go:10:22:10:22 | x |
-| main.go:10:7:10:12 | ...<=... | main.go:10:7:10:27 | ...&&... |
-| main.go:10:7:10:27 | ...&&... | main.go:10:2:10:27 | SSA def(z) |
+| main.go:10:7:10:12 | ...<=... | main.go:10:7:10:27 | After ...&&... |
+| main.go:10:7:10:27 | After ...&&... | main.go:10:2:10:27 | SSA def(z) |
 | main.go:10:12:10:12 | y | main.go:10:17:10:17 | y |
-| main.go:10:17:10:27 | ...>=... | main.go:10:7:10:27 | ...&&... |
+| main.go:10:17:10:27 | ...>=... | main.go:10:7:10:27 | After ...&&... |
 | main.go:11:14:11:14 | z | main.go:11:9:11:15 | type conversion |
 | main.go:15:9:15:9 | 0 | main.go:15:2:15:9 | SSA def(acc) |
 | main.go:16:9:19:2 | SSA def(acc) | main.go:17:3:17:5 | acc |
@@ -55,8 +55,8 @@
 | main.go:46:44:52:1 | result-zero-init:1 block statement | main.go:46:44:52:1 | SSA def(vals) |
 | main.go:47:2:50:2 | SSA def(k) | main.go:49:11:49:11 | k |
 | main.go:47:2:50:2 | SSA def(v) | main.go:48:11:48:11 | v |
-| main.go:47:2:50:2 | extract:0 range statement | main.go:47:2:50:2 | SSA def(k) |
-| main.go:47:2:50:2 | extract:1 range statement | main.go:47:2:50:2 | SSA def(v) |
+| main.go:47:2:50:2 | extract:0 range element | main.go:47:2:50:2 | SSA def(k) |
+| main.go:47:2:50:2 | extract:1 range element | main.go:47:2:50:2 | SSA def(v) |
 | main.go:48:3:48:11 | SSA def(vals) | main.go:46:44:52:1 | result-read:1 block statement |
 | main.go:48:3:48:11 | SSA def(vals) | main.go:48:3:48:6 | vals |
 | main.go:48:3:48:11 | compound-rhs ... += ... | main.go:48:3:48:11 | SSA def(vals) |
