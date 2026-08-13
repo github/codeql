@@ -46,6 +46,24 @@ module CleartextLogging {
   }
 
   /**
+   * A sink for the logging macros of the `tracing` crate, such as
+   * `tracing::info!`. The underlying function calls are difficult to
+   * identify reliably, so we treat any expression inside the expansion
+   * of such a macro call as a sink.
+   */
+  private class TracingMacroSink extends Sink {
+    TracingMacroSink() {
+      exists(Crate c, MacroRules m, MacroCall mc |
+        c.getName() = "tracing" and
+        m.getName().getText() = ["trace", "debug", "info", "warn", "error", "event", "span"] and
+        m.getLocation().getFile() = c.getASourceFile().getFile() and
+        mc.resolveMacro() = m and
+        this.asExpr().getParentNode*() = mc.getMacroCallExpansion()
+      )
+    }
+  }
+
+  /**
    * A barrier for logging from model data.
    */
   private class ModelsAsDataBarrier extends Barrier {

@@ -254,34 +254,34 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
 
 fn test_tracing(password: String) {
     // logging-style macros
-    tracing::debug!("message = {}", password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::error!("message = {}", password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::info!("message = {}", password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::trace!("message = {}", password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::warn!("message = {}", password); // $ MISSING: Alert[rust/cleartext-logging]
+    tracing::debug!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    tracing::error!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    tracing::info!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    tracing::trace!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    tracing::warn!("message = {}", password); // $ Alert[rust/cleartext-logging]
 
     // span and event macros
-    let span = tracing::span!(tracing::Level::INFO, "span = {}", password); // $ MISSING: Alert[rust/cleartext-logging]
+    let span = tracing::span!(tracing::Level::INFO, "span = {}", password); // $ Alert[rust/cleartext-logging]
     let _enter = span.enter();
 
-    tracing::event!(tracing::Level::INFO, "event = {}", password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::event!(tracing::Level::INFO, user = "alice", password = password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::event!(tracing::Level::INFO, user = "bob", user.password = password); // $ MISSING: Alert[rust/cleartext-logging]
+    tracing::event!(tracing::Level::INFO, "event = {}", password); // $ Alert[rust/cleartext-logging]
+    tracing::event!(tracing::Level::INFO, user = "alice", password = password); // $ Alert[rust/cleartext-logging]
+    tracing::event!(tracing::Level::INFO, user = "bob", user.password = password); // $ Alert[rust/cleartext-logging]
 
     // more usage variants
-    tracing::info!(password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::info!(%password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::info!(?password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::info!(password = password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::info!(password = %password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::info!(password = ?password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::info!(target: "app", message = password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::info!(target: "app", message = %password); // $ MISSING: Alert[rust/cleartext-logging]
-    tracing::info!(target: "app", message = ?password); // $ MISSING: Alert[rust/cleartext-logging]
+    tracing::info!(password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(%password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(?password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(password = password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(password = %password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(password = ?password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(target: "app", message = password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(target: "app", message = %password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(target: "app", message = ?password); // $ Alert[rust/cleartext-logging]
 
-    let span2 = tracing::span!(tracing::Level::INFO, "message", message = %password); // $ MISSING: Alert[rust/cleartext-logging]
+    let span2 = tracing::span!(tracing::Level::INFO, "message", message = %password); // $ Alert[rust/cleartext-logging]
     let _enter2 = span2.enter();
-    tracing::event!(tracing::Level::INFO, message = %password); // $ MISSING: Alert[rust/cleartext-logging]
+    tracing::event!(tracing::Level::INFO, message = %password); // $ Alert[rust/cleartext-logging]
 }
 
 fn main() {
