@@ -29,8 +29,8 @@ module Logrus {
       )
     }
 
-    override predicate mayReturnNormally() {
-      not exists(string level, string suffix | level = ["Fatal", "Panic"] |
+    override predicate mustNotReturnNormally() {
+      exists(string level, string suffix | level = ["Fatal", "Panic"] |
         this.getName() = level + suffix
       )
     }
