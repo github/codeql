@@ -2,6 +2,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
 load("//unified:platforms.bzl", "UNIFIED_SUPPORTED_PLATFORMS")
 load(":swift_runtime.bzl", "swift_runtime_libs")
+load(":swift_runtime_linking.bzl", "swift_runtime_linking")
 load(":xcode_transition.bzl", "xcode_transition_swift_library")
 
 package(default_visibility = ["//visibility:public"])
@@ -11,15 +12,25 @@ swift_runtime_libs(
     toolchain = "@swift_toolchain_ubuntu22.04//:files",
 )
 
-# The `$ORIGIN` runpath makes an executable look beside itself instead, so
-# we find the Swift runtime libraries we bundle with the extractor.
+swift_runtime_linking(
+    name = "_swift_runtime_cc_info",
+    target_compatible_with = ["@platforms//os:linux"],
+    visibility = ["//visibility:private"],
+)
+
+# On Linux, provide the downloaded Swift runtime at link time and look beside
+# the executable for the copies bundled with the extractor at runtime.
 cc_library(
-    name = "swift_runtime_rpath",
+    name = "swift_runtime_linking",
     linkopts = select({
         "@platforms//os:linux": ["-Wl,-rpath,$$ORIGIN"],
         "//conditions:default": [],
     }),
     target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
+    deps = select({
+        "@platforms//os:linux": [":_swift_runtime_cc_info"],
+        "//conditions:default": [],
+    }),
 )
 
 # Swift FFI shim: wraps swift-syntax and exposes a small C ABI.
@@ -46,7 +57,7 @@ rust_library(
     edition = "2024",
     target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
     deps = [
-        ":swift_runtime_rpath",
+        ":swift_runtime_linking",
         ":swift_syntax_ffi",
     ],
 )
