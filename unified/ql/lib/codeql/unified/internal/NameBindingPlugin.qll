@@ -37,7 +37,7 @@ predicate isPrivateToLocalScope(Stmt member) {
 }
 
 /**
- * Representative for a module scope.
+ * A representative for a module scope.
  *
  * Module scopes can encompass a set of files, and is the canonical representative
  * for the top-level members collectively exported from those files.
