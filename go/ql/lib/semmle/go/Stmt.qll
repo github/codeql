@@ -1148,11 +1148,14 @@ class ForStmt extends @forstmt, LoopStmt {
  * ```
  */
 class RangeStmt extends @rangestmt, LoopStmt {
+  /** Gets the synthesized node grouping the loop variables of this `range` statement. */
+  RangeElementExpr getPattern() { result = this.getChildExpr(0) }
+
   /** Gets the expression denoting the key of this `range` statement. */
-  Expr getKey() { result = this.getChildExpr(0) }
+  Expr getKey() { result = this.getPattern().getKey() }
 
   /** Get the expression denoting the value of this `range` statement. */
-  Expr getValue() { result = this.getChildExpr(1) }
+  Expr getValue() { result = this.getPattern().getValue() }
 
   /** Gets the domain of this `range` statement. */
   Expr getDomain() { result = this.getChildExpr(2) }
@@ -1164,4 +1167,32 @@ class RangeStmt extends @rangestmt, LoopStmt {
   override string toString() { result = "range statement" }
 
   override string getAPrimaryQlClass() { result = "RangeStmt" }
+}
+
+/**
+ * A synthesized node grouping the loop variables (key and value) bound by a
+ * `range` statement.
+ *
+ * This node acts as the single target of the destructuring performed on each
+ * iteration of the loop, so that a `range` statement can be modelled with a
+ * single loop-variable node in the same way as a `foreach` loop in other
+ * languages. It is present for every `range` statement, even when no loop
+ * variables are bound (as in `for range x`).
+ */
+class RangeElementExpr extends @rangeelementexpr, Expr {
+  /** Gets the `range` statement that this node belongs to. */
+  RangeStmt getRangeStmt() { result = this.getParent() }
+
+  /** Gets the expression denoting the key of the `range` statement. */
+  Expr getKey() { result = this.getChildExpr(0) }
+
+  /** Gets the expression denoting the value of the `range` statement. */
+  Expr getValue() { result = this.getChildExpr(1) }
+
+  /** Gets the domain of the `range` statement. */
+  Expr getDomain() { result = this.getRangeStmt().getDomain() }
+
+  override string toString() { result = "range element" }
+
+  override string getAPrimaryQlClass() { result = "RangeElementExpr" }
 }

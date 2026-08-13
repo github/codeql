@@ -532,6 +532,12 @@ var ChanTypeExprs = map[ast.ChanDir]*BranchType{
 	ast.SEND | ast.RECV: ExprKind.NewBranch("@sendrcvchantypeexpr", ChanTypeExpr),
 }
 
+// RangeElementExpr is the type of the synthesized node representing the loop
+// variables (key and value) bound by a `range` statement. It groups the key and
+// value expressions into a single "tuple pattern" target, mirroring how other
+// languages present a single variable node for a `foreach` loop.
+var RangeElementExpr = ExprKind.NewBranch("@rangeelementexpr")
+
 // StmtKind is a case type for distinguishing different kinds of statement AST nodes
 var StmtKind = NewCaseType(StmtType, "kind")
 
