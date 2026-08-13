@@ -21,4 +21,4 @@ def test(codeql, swift, expected_files):
         hashes.sort()
         for module, hash in hashes:
             print(module, hash, file=actual)
-    expected_files.add("hashes.expected")
+    expected_files.add("hashes.actual")

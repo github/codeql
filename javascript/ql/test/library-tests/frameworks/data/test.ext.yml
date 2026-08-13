@@ -15,6 +15,7 @@ extensions:
       - ['danger-constant', 'Member[danger]', 'test-source']
       - ['testlib', 'Member[middleware].ReturnValue.GuardedRouteHandler.Parameter[0].Member[injectedReqData]', 'test-source']
       - ['testlib', 'Member[middleware].ReturnValue.GuardedRouteHandler.Parameter[1].Member[injectedResData]', 'test-source']
+      - ['file:foo/bar/baz.js', 'Member[customSource].ReturnValue', 'test-source']
 
   - addsTo:
       pack: codeql/javascript-all
