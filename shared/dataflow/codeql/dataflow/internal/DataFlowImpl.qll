@@ -568,7 +568,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           result = 0
           or
           exists(Content c, Ap tail |
-            ap = apCons(c, tail) and
             fwdFlowConsCand(_, ap, c, _, tail) and
             ap != tail and // no need to report a longer length
             result = 1 + getAnApLengthLowerBound(tail) and
