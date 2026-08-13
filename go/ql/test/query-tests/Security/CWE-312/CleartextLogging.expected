@@ -55,10 +55,10 @@
 | passwords.go:131:14:131:21 | selection of y | passwords.go:126:13:126:25 | call to getPassword | passwords.go:131:14:131:21 | selection of y | $@ flows to a logging call. | passwords.go:126:13:126:25 | call to getPassword | Sensitive data returned by a call to getPassword |
 | protobuf.go:14:14:14:35 | call to GetDescription | protobuf.go:9:2:9:23 | SSA def(password) | protobuf.go:14:14:14:35 | call to GetDescription | $@ flows to a logging call. | protobuf.go:9:2:9:23 | SSA def(password) | Sensitive data returned by an access to password |
 edges
-| klog.go:21:3:26:3 | extract:1 range statement | klog.go:22:27:22:33 | headers | provenance |  |
-| klog.go:21:30:21:37 | selection of Header | klog.go:21:3:26:3 | extract:1 range statement | provenance | Src:MaD:11 Config |
-| klog.go:22:4:25:4 | extract:1 range statement | klog.go:23:15:23:20 | header | provenance |  |
-| klog.go:22:27:22:33 | headers | klog.go:22:4:25:4 | extract:1 range statement | provenance | Config |
+| klog.go:21:3:26:3 | extract:1 range element | klog.go:22:27:22:33 | headers | provenance |  |
+| klog.go:21:30:21:37 | selection of Header | klog.go:21:3:26:3 | extract:1 range element | provenance | Src:MaD:11 Config |
+| klog.go:22:4:25:4 | extract:1 range element | klog.go:23:15:23:20 | header | provenance |  |
+| klog.go:22:27:22:33 | headers | klog.go:22:4:25:4 | extract:1 range element | provenance | Config |
 | klog.go:29:13:29:20 | selection of Header | klog.go:29:13:29:41 | call to Get | provenance | Src:MaD:11 Config |
 | main.go:17:2:17:23 | SSA def(password) | main.go:19:12:19:19 | password | provenance |  |
 | main.go:17:2:17:23 | SSA def(password) | main.go:20:19:20:26 | password | provenance |  |
@@ -164,9 +164,9 @@ models
 | 10 | Sink: log; Logger; true; Printf; ; ; Argument[0..1]; log-injection; manual |
 | 11 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
 nodes
-| klog.go:21:3:26:3 | extract:1 range statement | semmle.label | extract:1 range statement |
+| klog.go:21:3:26:3 | extract:1 range element | semmle.label | extract:1 range element |
 | klog.go:21:30:21:37 | selection of Header | semmle.label | selection of Header |
-| klog.go:22:4:25:4 | extract:1 range statement | semmle.label | extract:1 range statement |
+| klog.go:22:4:25:4 | extract:1 range element | semmle.label | extract:1 range element |
 | klog.go:22:27:22:33 | headers | semmle.label | headers |
 | klog.go:23:15:23:20 | header | semmle.label | header |
 | klog.go:29:13:29:20 | selection of Header | semmle.label | selection of Header |

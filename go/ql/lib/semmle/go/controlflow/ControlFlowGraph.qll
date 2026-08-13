@@ -1,17 +1,22 @@
 /**
- * Provides classes for working with a CFG-based program representation.
+ * Provides the public API for working with Go's control-flow graph.
  */
 overlay[local]
 module;
 
 import go
-private import ControlFlowGraphImpl
+private import ControlFlowGraphShared
+private import codeql.controlflow.SuccessorType
 
-/** Provides helper predicates for mapping btween CFG nodes and the AST. */
+/** Provides helper predicates for mapping between CFG nodes and the AST. */
 module ControlFlow {
   /** A file or function with which a CFG is associated. */
   class Root extends AstNode {
-    Root() { exists(this.(File).getADecl()) or exists(this.(FuncDef).getBody()) }
+    Root() {
+      exists(this.(FuncDef).getBody())
+      or
+      exists(this.(File).getADecl())
+    }
 
     /** Holds if `nd` belongs to this file or function. */
     predicate isRootOf(AstNode nd) {
@@ -29,22 +34,15 @@ module ControlFlow {
   }
 
   /**
-   * A node in the intra-procedural control-flow graph of a Go function or file.
+   * A node in the control-flow graph of a Go file or function.
    *
    * Nodes correspond to expressions and statements that compute a value or perform
    * an operation (as opposed to providing syntactic structure or type information).
    *
-   * There are also synthetic entry and exit nodes for each Go function and file
-   * that mark the beginning and the end, respectively, of the execution of the
-   * function and the loading of the file.
+   * There are also synthetic entry and exit nodes for each Go file or function
+   * that mark the beginning and the end, respectively, of its execution.
    */
-  class Node extends TControlFlowNode {
-    /** Gets a node that directly follows this one in the control-flow graph. */
-    Node getASuccessor() { result = CFG::succ(this) }
-
-    /** Gets a node that directly precedes this one in the control-flow graph. */
-    Node getAPredecessor() { this = result.getASuccessor() }
-
+  class Node extends CfgImpl::ControlFlowNode {
     /** Holds if this is a node with more than one successor. */
     predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
 
@@ -52,22 +50,23 @@ module ControlFlow {
     predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }
 
     /** Holds if this is the first control-flow node in `subtree`. */
-    predicate isFirstNodeOf(AstNode subtree) { CFG::firstNode(subtree, this) }
+    predicate isFirstNodeOf(AstNode subtree) {
+      this.isBefore(subtree)
+      or
+      this.injects(subtree)
+    }
 
-    /** Holds if this node is the (unique) entry node of a function or file. */
-    predicate isEntryNode() { this instanceof MkEntryNode }
+    /** Holds if this node is the unique entry node of a file or function. */
+    predicate isEntryNode() { this instanceof CfgImpl::ControlFlow::EntryNode }
 
-    /** Holds if this node is the (unique) exit node of a function or file. */
-    predicate isExitNode() { this instanceof MkExitNode }
-
-    /** Gets the basic block to which this node belongs. */
-    BasicBlock getBasicBlock() { result.getANode() = this }
+    /** Holds if this node is the unique exit node of a file or function. */
+    predicate isExitNode() { this instanceof CfgImpl::ControlFlow::ExitNode }
 
     /** Holds if this node dominates `dominee` in the control-flow graph. */
     overlay[caller?]
     pragma[inline]
     predicate dominatesNode(ControlFlow::Node dominee) {
-      exists(ReachableBasicBlock thisbb, ReachableBasicBlock dbb, int i, int j |
+      exists(CfgImpl::Cfg::BasicBlock thisbb, CfgImpl::Cfg::BasicBlock dbb, int i, int j |
         this = thisbb.getNode(i) and dominee = dbb.getNode(j)
       |
         thisbb.strictlyDominates(dbb)
@@ -76,19 +75,14 @@ module ControlFlow {
       )
     }
 
-    /** Gets the innermost function or file to which this node belongs. */
-    Root getRoot() { none() }
+    /**
+     * Gets the innermost function to which this node belongs, or the file if
+     * it is not inside a function.
+     */
+    Root getRoot() { result = this.getEnclosingCallable() }
 
     /** Gets the file to which this node belongs. */
     File getFile() { result = this.getLocation().getFile() }
-
-    /**
-     * Gets a textual representation of this control flow node.
-     */
-    string toString() { result = "control-flow node" }
-
-    /** Gets the source location for this element. */
-    Location getLocation() { none() }
 
     /**
      * DEPRECATED: Use `getLocation()` instead.
@@ -111,6 +105,26 @@ module ControlFlow {
       endline = 0 and
       endcolumn = 0
     }
+  }
+
+  /** A synthetic entry node for a function or a file. */
+  class EntryNode extends Node instanceof CfgImpl::ControlFlow::EntryNode { }
+
+  /** A synthetic exit node for a function or a file. */
+  class ExitNode extends Node instanceof CfgImpl::ControlFlow::ExitNode { }
+
+  private predicate isConditionGuardRoot(Expr expr) {
+    expr = any(LogicalBinaryExpr lbe).getLeftOperand()
+    or
+    expr = any(ForStmt fs).getCond()
+    or
+    expr = any(IfStmt is).getCond()
+    or
+    isExpressionlessSwitchCaseCondition(expr)
+  }
+
+  private predicate isExpressionlessSwitchCaseCondition(Expr expr) {
+    expr = any(ExpressionSwitchStmt ess | not exists(ess.getExpr())).getACase().getAnExpr()
   }
 
   /**
@@ -172,7 +186,7 @@ module ControlFlow {
       exists(IR::FieldTarget trg | trg = super.getLhs() |
         (
           trg.getBase() = base or
-          trg.getBase() = MkImplicitDeref(base.(IR::EvalInstruction).getExpr())
+          trg.getBase() = IR::implicitDerefInstruction(base.(IR::EvalInstruction).getExpr())
         ) and
         trg.getField() = f and
         super.getRhs() = rhs
@@ -220,7 +234,7 @@ module ControlFlow {
       exists(IR::ElementTarget trg | trg = super.getLhs() |
         (
           trg.getBase() = base or
-          trg.getBase() = MkImplicitDeref(base.(IR::EvalInstruction).getExpr())
+          trg.getBase() = IR::implicitDerefInstruction(base.(IR::EvalInstruction).getExpr())
         ) and
         trg.getIndex() = index and
         super.getRhs() = rhs
@@ -250,11 +264,24 @@ module ControlFlow {
    * A control-flow node recording the fact that a certain expression has a known
    * Boolean value at this point in the program.
    */
-  class ConditionGuardNode extends IR::Instruction, MkConditionGuardNode {
+  class ConditionGuardNode extends IR::Instruction {
     Expr cond;
     boolean outcome;
 
-    ConditionGuardNode() { this = MkConditionGuardNode(cond, outcome) }
+    ConditionGuardNode() {
+      isConditionGuardRoot(cond) and
+      this.isAfterTrue(cond) and
+      outcome = true
+      or
+      isConditionGuardRoot(cond) and
+      this.isAfterFalse(cond) and
+      outcome = false
+      or
+      isExpressionlessSwitchCaseCondition(cond) and
+      exists(MatchingSuccessor successor |
+        this.isAfterValue(cond, successor) and outcome = successor.getValue()
+      )
+    }
 
     private predicate ensuresAux(Expr expr, boolean b) {
       expr = cond and b = outcome
@@ -320,21 +347,17 @@ module ControlFlow {
     boolean getOutcome() { result = outcome }
 
     override Root getRoot() { result.isRootOf(cond) }
-
-    override string toString() { result = cond + " is " + outcome }
-
-    override Location getLocation() { result = cond.getLocation() }
   }
 
   /**
-   * Gets the entry node of function or file `root`.
+   * Gets the entry node of file or function `root`.
    */
-  Node entryNode(Root root) { result = MkEntryNode(root) }
+  EntryNode entryNode(Root root) { result.getEnclosingCallable() = root }
 
   /**
-   * Gets the exit node of function or file `root`.
+   * Gets the exit node of file or function `root`.
    */
-  Node exitNode(Root root) { result = MkExitNode(root) }
+  ExitNode exitNode(Root root) { result.getEnclosingCallable() = root }
 
   /**
    * Holds if the function `f` may return without panicking, exiting the process, or looping forever.
@@ -342,17 +365,35 @@ module ControlFlow {
    * This is defined conservatively, and so may also hold of a function that in fact
    * cannot return normally, but never fails to hold of a function that can return normally.
    */
-  predicate mayReturnNormally(FuncDecl f) { CFG::mayReturnNormally(f.getBody()) }
+  predicate mayReturnNormally(FuncDecl f) {
+    exists(CfgImpl::ControlFlow::NormalExitNode exit |
+      exit.getEnclosingCallable() = f and
+      exists(exit.getAPredecessor())
+    )
+  }
 
   /**
-   * Holds if `pred` is the node for the case `testExpr` in an expression
-   * switch statement which is switching on `switchExpr`, and `succ` is the
-   * node to be executed next if the case test succeeds.
+   * Holds if `pred` is the node reached when a case of the expression switch
+   * statement switching on `switchExpr` matches, `testExpr` is one of that
+   * case's test expressions, and `succ` is the node to be executed next when
+   * the case matches.
+   *
+   * In the control-flow graph the individual case test expressions of a case
+   * clause all funnel into a single "matched" node for the clause, from which
+   * control transfers to the case body. Hence `pred` is that shared matched
+   * node, and the same `(pred, succ)` pair is reported once per test
+   * expression `testExpr` of the clause.
    */
   predicate isSwitchCaseTestPassingEdge(
     ControlFlow::Node pred, ControlFlow::Node succ, Expr switchExpr, Expr testExpr
   ) {
-    CFG::isSwitchCaseTestPassingEdge(pred, succ, switchExpr, testExpr)
+    exists(ExpressionSwitchStmt ess, CaseClause cc, int i |
+      ess.getExpr() = switchExpr and
+      cc = ess.getACase() and
+      testExpr = cc.getExpr(i) and
+      pred.isAfter(cc) and
+      succ.isFirstNodeOf(cc.getStmt(0))
+    )
   }
 }
 

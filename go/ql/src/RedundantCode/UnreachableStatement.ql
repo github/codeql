@@ -14,11 +14,36 @@
 
 import go
 
-ControlFlow::Node nonGuardPredecessor(ControlFlow::Node nd) {
-  exists(ControlFlow::Node pred | pred = nd.getAPredecessor() |
-    if pred instanceof ControlFlow::ConditionGuardNode
-    then result = nonGuardPredecessor(pred)
-    else result = pred
+/**
+ * Holds if `s` is reachable, that is, the control-flow graph contains a node for it.
+ *
+ * The shared control-flow library does not create control-flow nodes for dead code, so an
+ * unreachable statement has no first control-flow node.
+ */
+predicate isReachable(Stmt s) { exists(s.getFirstControlFlowNode()) }
+
+/** Gets the statement immediately preceding `s` in a statement list, if any. */
+Stmt getPreviousStmt(Stmt s) {
+  exists(BlockStmt b, int i | s = b.getStmt(i) and result = b.getStmt(i - 1))
+  or
+  exists(CaseClause c, int i | s = c.getStmt(i) and result = c.getStmt(i - 1))
+  or
+  exists(CommClause c, int i | s = c.getStmt(i) and result = c.getStmt(i - 1))
+}
+
+/**
+ * Holds if `s` is unreachable but the code that would precede it in the control-flow graph is
+ * reachable, so that `s` is the first unreachable statement in a run of dead code.
+ */
+predicate firstUnreachableStmt(Stmt s) {
+  not isReachable(s) and
+  not s instanceof EmptyStmt and
+  (
+    // a statement whose preceding statement in the same list is reachable
+    isReachable(getPreviousStmt(s))
+    or
+    // the post statement of a `for` loop whose body is entered
+    exists(ForStmt f | s = f.getPost() and isReachable(f.getBody().getAStmt()))
   )
 }
 
@@ -63,18 +88,13 @@ predicate allowlist(Stmt s) {
     forall(Expr retval | retval = ret.getAnExpr() | isAllowedReturnValue(retval))
   )
   or
-  // statements in an `if false { ... }` and similar
-  exists(IfStmt is, ControlFlow::ConditionGuardNode iffalse, Expr cond, boolean b |
-    iffalse.getCondition() = is.getCond() and
-    iffalse = s.getFirstControlFlowNode().getAPredecessor() and
-    cond.getBoolValue() = b and
-    iffalse.ensures(DataFlow::exprNode(cond), b.booleanNot())
-  )
+  // statements deliberately made unreachable by a constant condition, such as the code
+  // following `if true { return }`
+  exists(getPreviousStmt(s).(IfStmt).getCond().getBoolValue())
 }
 
-from Stmt s, ControlFlow::Node fst
+from Stmt s
 where
-  fst = s.getFirstControlFlowNode() and
-  not exists(nonGuardPredecessor(fst)) and
+  firstUnreachableStmt(s) and
   not allowlist(s)
 select s, "This statement is unreachable."
