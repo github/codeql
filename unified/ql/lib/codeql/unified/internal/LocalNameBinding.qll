@@ -317,7 +317,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   predicate uncertainScope(AstNode scope) {
     // Classes can have uncertain members due to unqualified access to inherited members.
-    scope = any(ClassLikeDeclaration cls)
+    scope instanceof ClassLikeDeclaration
     or
     scope = any(TopLevel t).getBody() // Imported names are in scope here
     or
