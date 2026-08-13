@@ -1,0 +1,96 @@
+#select
+| main.rs:27:5:27:16 | ...::new | main.rs:4:22:4:35 | ...::args | main.rs:27:5:27:16 | ...::new | This command line depends on a $@. | main.rs:4:22:4:35 | ...::args | user-provided value |
+| main.rs:34:10:34:12 | arg | main.rs:5:25:5:46 | ...::get | main.rs:34:10:34:12 | arg | This command line depends on a $@. | main.rs:5:25:5:46 | ...::get | user-provided value |
+| main.rs:40:10:40:12 | arg | main.rs:4:22:4:35 | ...::args | main.rs:40:10:40:12 | arg | This command line depends on a $@. | main.rs:4:22:4:35 | ...::args | user-provided value |
+| main.rs:47:10:47:13 | args | main.rs:5:25:5:46 | ...::get | main.rs:47:10:47:13 | args | This command line depends on a $@. | main.rs:5:25:5:46 | ...::get | user-provided value |
+| main.rs:59:19:59:46 | ...::new | main.rs:53:25:53:46 | ...::get | main.rs:59:19:59:46 | ...::new | This command line depends on a $@. | main.rs:53:25:53:46 | ...::get | user-provided value |
+| main.rs:67:10:67:12 | arg | main.rs:53:25:53:46 | ...::get | main.rs:67:10:67:12 | arg | This command line depends on a $@. | main.rs:53:25:53:46 | ...::get | user-provided value |
+edges
+| main.rs:4:9:4:18 | arg_string | main.rs:27:18:27:27 | arg_string | provenance |  |
+| main.rs:4:9:4:18 | arg_string | main.rs:40:14:40:23 | arg_string | provenance |  |
+| main.rs:4:22:4:35 | ...::args | main.rs:4:22:4:37 | ...::args(...) [element] | provenance | Src:MaD:7  |
+| main.rs:4:22:4:37 | ...::args(...) [element] | main.rs:4:22:4:44 | ... .nth(...) [Some] | provenance | MaD:8 |
+| main.rs:4:22:4:44 | ... .nth(...) [Some] | main.rs:4:22:4:74 | ... .unwrap_or(...) | provenance | MaD:10 |
+| main.rs:4:22:4:74 | ... .unwrap_or(...) | main.rs:4:9:4:18 | arg_string | provenance |  |
+| main.rs:5:9:5:21 | remote_string | main.rs:34:14:34:26 | remote_string | provenance |  |
+| main.rs:5:9:5:21 | remote_string | main.rs:47:23:47:35 | remote_string | provenance |  |
+| main.rs:5:25:5:46 | ...::get | main.rs:5:25:5:69 | ...::get(...) [Ok] | provenance | Src:MaD:6  |
+| main.rs:5:25:5:69 | ...::get(...) [Ok] | main.rs:5:25:6:17 | ... .unwrap() | provenance | MaD:11 |
+| main.rs:5:25:6:17 | ... .unwrap() | main.rs:5:25:7:15 | ... .text() [Ok] | provenance | MaD:13 |
+| main.rs:5:25:7:15 | ... .text() [Ok] | main.rs:5:25:8:38 | ... .unwrap_or(...) | provenance | MaD:12 |
+| main.rs:5:25:8:38 | ... .unwrap_or(...) | main.rs:5:9:5:21 | remote_string | provenance |  |
+| main.rs:27:18:27:27 | arg_string | main.rs:27:18:27:36 | arg_string.as_str() [&ref] | provenance | MaD:9 |
+| main.rs:27:18:27:36 | arg_string.as_str() [&ref] | main.rs:27:5:27:16 | ...::new | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:34:14:34:26 | remote_string | main.rs:34:14:34:35 | remote_string.as_str() [&ref] | provenance | MaD:9 |
+| main.rs:34:14:34:35 | remote_string.as_str() [&ref] | main.rs:34:10:34:12 | arg | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:40:14:40:23 | arg_string | main.rs:40:14:40:32 | arg_string.as_str() [&ref] | provenance | MaD:9 |
+| main.rs:40:14:40:32 | arg_string.as_str() [&ref] | main.rs:40:10:40:12 | arg | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:47:15:47:45 | &... [&ref, element, &ref] | main.rs:47:10:47:13 | args | provenance | MaD:2 Sink:MaD:2 Sink:MaD:2 |
+| main.rs:47:15:47:45 | &... [&ref, element, &ref] | main.rs:47:10:47:13 | args | provenance | MaD:2 Sink:MaD:2 Sink:MaD:2 Sink:MaD:2 |
+| main.rs:47:16:47:45 | [...] [element, &ref] | main.rs:47:15:47:45 | &... [&ref, element, &ref] | provenance |  |
+| main.rs:47:23:47:35 | remote_string | main.rs:47:23:47:44 | remote_string.as_str() [&ref] | provenance | MaD:9 |
+| main.rs:47:23:47:44 | remote_string.as_str() [&ref] | main.rs:47:16:47:45 | [...] [element, &ref] | provenance |  |
+| main.rs:53:9:53:21 | remote_string | main.rs:59:48:59:60 | remote_string | provenance |  |
+| main.rs:53:9:53:21 | remote_string | main.rs:67:14:67:26 | remote_string | provenance |  |
+| main.rs:53:25:53:46 | ...::get | main.rs:53:25:53:69 | ...::get(...) [Ok] | provenance | Src:MaD:6  |
+| main.rs:53:25:53:69 | ...::get(...) [Ok] | main.rs:53:25:54:17 | ... .unwrap() | provenance | MaD:11 |
+| main.rs:53:25:54:17 | ... .unwrap() | main.rs:53:25:55:15 | ... .text() [Ok] | provenance | MaD:13 |
+| main.rs:53:25:55:15 | ... .text() [Ok] | main.rs:53:25:56:38 | ... .unwrap_or(...) | provenance | MaD:12 |
+| main.rs:53:25:56:38 | ... .unwrap_or(...) | main.rs:53:9:53:21 | remote_string | provenance |  |
+| main.rs:59:48:59:60 | remote_string | main.rs:59:48:59:69 | remote_string.as_str() [&ref] | provenance | MaD:9 |
+| main.rs:59:48:59:69 | remote_string.as_str() [&ref] | main.rs:59:19:59:46 | ...::new | provenance | MaD:5 Sink:MaD:5 |
+| main.rs:67:14:67:26 | remote_string | main.rs:67:14:67:35 | remote_string.as_str() [&ref] | provenance | MaD:9 |
+| main.rs:67:14:67:35 | remote_string.as_str() [&ref] | main.rs:67:10:67:12 | arg | provenance | MaD:4 Sink:MaD:4 |
+models
+| 1 | Sink: <std::process::Command>::arg; Argument[0]; command-injection |
+| 2 | Sink: <std::process::Command>::args; Argument[0]; command-injection |
+| 3 | Sink: <std::process::Command>::new; Argument[0]; command-injection |
+| 4 | Sink: <tokio::process::Command>::arg; Argument[0]; command-injection |
+| 5 | Sink: <tokio::process::Command>::new; Argument[0]; command-injection |
+| 6 | Source: reqwest::blocking::get; ReturnValue.Field[core::result::Result::Ok(0)]; remote |
+| 7 | Source: std::env::args; ReturnValue.Element; commandargs |
+| 8 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Reference.Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 9 | Summary: <alloc::string::String>::as_str; Argument[self].Reference; ReturnValue.Reference; taint |
+| 10 | Summary: <core::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 11 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 12 | Summary: <core::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 13 | Summary: <reqwest::blocking::response::Response>::text; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+nodes
+| main.rs:4:9:4:18 | arg_string | semmle.label | arg_string |
+| main.rs:4:22:4:35 | ...::args | semmle.label | ...::args |
+| main.rs:4:22:4:37 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| main.rs:4:22:4:44 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| main.rs:4:22:4:74 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:5:9:5:21 | remote_string | semmle.label | remote_string |
+| main.rs:5:25:5:46 | ...::get | semmle.label | ...::get |
+| main.rs:5:25:5:69 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| main.rs:5:25:6:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:5:25:7:15 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
+| main.rs:5:25:8:38 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:27:5:27:16 | ...::new | semmle.label | ...::new |
+| main.rs:27:18:27:27 | arg_string | semmle.label | arg_string |
+| main.rs:27:18:27:36 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
+| main.rs:34:10:34:12 | arg | semmle.label | arg |
+| main.rs:34:14:34:26 | remote_string | semmle.label | remote_string |
+| main.rs:34:14:34:35 | remote_string.as_str() [&ref] | semmle.label | remote_string.as_str() [&ref] |
+| main.rs:40:10:40:12 | arg | semmle.label | arg |
+| main.rs:40:14:40:23 | arg_string | semmle.label | arg_string |
+| main.rs:40:14:40:32 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
+| main.rs:47:10:47:13 | args | semmle.label | args |
+| main.rs:47:15:47:45 | &... [&ref, element, &ref] | semmle.label | &... [&ref, element, &ref] |
+| main.rs:47:16:47:45 | [...] [element, &ref] | semmle.label | [...] [element, &ref] |
+| main.rs:47:23:47:35 | remote_string | semmle.label | remote_string |
+| main.rs:47:23:47:44 | remote_string.as_str() [&ref] | semmle.label | remote_string.as_str() [&ref] |
+| main.rs:53:9:53:21 | remote_string | semmle.label | remote_string |
+| main.rs:53:25:53:46 | ...::get | semmle.label | ...::get |
+| main.rs:53:25:53:69 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| main.rs:53:25:54:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:53:25:55:15 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
+| main.rs:53:25:56:38 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:59:19:59:46 | ...::new | semmle.label | ...::new |
+| main.rs:59:48:59:60 | remote_string | semmle.label | remote_string |
+| main.rs:59:48:59:69 | remote_string.as_str() [&ref] | semmle.label | remote_string.as_str() [&ref] |
+| main.rs:67:10:67:12 | arg | semmle.label | arg |
+| main.rs:67:14:67:26 | remote_string | semmle.label | remote_string |
+| main.rs:67:14:67:35 | remote_string.as_str() [&ref] | semmle.label | remote_string.as_str() [&ref] |
+subpaths
