@@ -27,7 +27,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly Lazy<IEnumerable<string>> restoredProjects = new(() => GetFirstGroupOnMatch(RestoredProjectRegex(), Output));
         public IEnumerable<string> RestoredProjects => Success ? restoredProjects.Value : Array.Empty<string>();
 
-        private readonly Lazy<bool> hasNugetPackageSourceError = new(() => Output.Any(s => s.Contains("NU1301")));
+        // NU1301 is the error and NU1801 is the equivalent warning.
+        private readonly Lazy<bool> hasNugetPackageSourceError = new(() => Output.Any(s => s.Contains("NU1301") || s.Contains("NU1801")));
         public bool HasNugetPackageSourceError => hasNugetPackageSourceError.Value;
 
         private readonly Lazy<bool> hasNugetNoStablePackageVersionError = new(() => Output.Any(s => s.Contains("NU1103")));
