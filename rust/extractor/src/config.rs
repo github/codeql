@@ -14,7 +14,9 @@ use ra_ap_ide_db::FxHashMap;
 use ra_ap_intern::Symbol;
 use ra_ap_load_cargo::{LoadCargoConfig, ProcMacroServerChoice};
 use ra_ap_paths::{AbsPath, AbsPathBuf, Utf8PathBuf};
-use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot};
+use ra_ap_project_model::{
+    CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot, TargetDirectoryConfig,
+};
 use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
@@ -171,12 +173,15 @@ impl Config {
                     .iter()
                     .map(|p| join_path_buf(dir, p))
                     .collect(),
-                target_dir: Utf8PathBuf::from_path_buf(
+                target_dir_config: Utf8PathBuf::from_path_buf(
                     self.cargo_target_dir
                         .clone()
                         .unwrap_or_else(|| self.scratch_dir.join("target")),
                 )
-                .ok(),
+                .map_or(
+                    TargetDirectoryConfig::None,
+                    TargetDirectoryConfig::Directory,
+                ),
                 features: self.cargo_features(),
                 target: self.cargo_target.clone(),
                 cfg_overrides: to_cfg_overrides(&self.cargo_cfg_overrides),
@@ -192,6 +197,8 @@ impl Config {
                 load_out_dirs_from_check: true,
                 with_proc_macro_server: self.proc_macro_server_choice(dir),
                 prefill_caches: false,
+                num_worker_threads: 1,
+                proc_macro_processes: 1,
             },
         )
     }

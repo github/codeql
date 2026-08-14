@@ -263,7 +263,7 @@ abstract class ItemNode extends Locatable {
   pragma[nomagic]
   final Attr getAttr(string name) {
     result = this.getAnAttr() and
-    result.getMeta().getPath().(PathExt).isUnqualified(name)
+    result.getMeta().getMetaPath().(PathExt).isUnqualified(name)
   }
 
   final predicate hasAttr(string name) { exists(this.getAttr(name)) }
@@ -1380,7 +1380,7 @@ private predicate fileModuleInlineLate(SourceFile f, string name, Folder folder)
  */
 private Meta getPathAttrMeta(Module m) {
   result = m.getAnAttr().getMeta() and
-  result.getPath().getText() = "path"
+  result.getMetaPath().getText() = "path"
 }
 
 /**
@@ -1441,7 +1441,7 @@ private predicate modImportNestedLookup(Module m, ModuleItemNode ancestor, Folde
 }
 
 private predicate pathAttrImport(Folder f, Module m, string relativePath) {
-  exists(Meta meta |
+  exists(KeyValueMeta meta |
     f = m.getFile().getParentContainer() and
     meta = getPathAttrMeta(m) and
     relativePath = meta.getExpr().(LiteralExpr).getTextValue().regexpCapture("\"(.+)\"", 1)
@@ -1825,7 +1825,7 @@ private module DollarCrateResolution {
     or
     exists(ItemNode type |
       expansion = type.(TypeItem).getDeriveMacroExpansion(_) and
-      macroDefPath = type.getAttr("derive").getMeta().getPath()
+      macroDefPath = type.getAttr("derive").getMeta().getMetaPath()
     )
   }
 
@@ -1984,7 +1984,7 @@ private predicate pathUsesNamespace(PathExt p, Namespace n) {
   (
     p = any(MacroCall mc).getPath()
     or
-    p = any(Meta m).getPath()
+    p = any(Meta m).getMetaPath()
   )
 }
 
