@@ -95,6 +95,6 @@ rust_library(
     }),
     version = "0.3.0",
     deps = [
-        "@vendor_ts__thiserror-2.0.18//:thiserror",
+        "@vendor_ts__thiserror-2.0.20//:thiserror",
     ],
 )

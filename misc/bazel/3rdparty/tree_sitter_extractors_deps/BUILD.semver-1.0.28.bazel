@@ -23,7 +23,7 @@ rust_library(
         allow_empty = True,
     ),
     aliases = {
-        "@vendor_ts__serde_core-1.0.228//:serde_core": "serde",
+        "@vendor_ts__serde_core-1.0.229//:serde_core": "serde",
     },
     compile_data = glob(
         include = ["**"],
@@ -103,6 +103,6 @@ rust_library(
     }),
     version = "1.0.28",
     deps = [
-        "@vendor_ts__serde_core-1.0.228//:serde_core",
+        "@vendor_ts__serde_core-1.0.229//:serde_core",
     ],
 )

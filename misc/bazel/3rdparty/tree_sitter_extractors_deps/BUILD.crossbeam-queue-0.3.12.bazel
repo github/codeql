@@ -100,6 +100,6 @@ rust_library(
     }),
     version = "0.3.12",
     deps = [
-        "@vendor_ts__crossbeam-utils-0.8.21//:crossbeam_utils",
+        "@vendor_ts__crossbeam-utils-0.8.22//:crossbeam_utils",
     ],
 )

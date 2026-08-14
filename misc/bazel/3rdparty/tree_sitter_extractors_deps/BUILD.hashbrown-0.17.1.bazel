@@ -34,6 +34,14 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "allocator-api2",
+        "default",
+        "default-hasher",
+        "equivalent",
+        "inline-more",
+        "raw-entry",
+    ],
     crate_root = "src/lib.rs",
     edition = "2024",
     rustc_env_files = [
@@ -94,4 +102,9 @@ rust_library(
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     version = "0.17.1",
+    deps = [
+        "@vendor_ts__allocator-api2-0.2.21//:allocator_api2",
+        "@vendor_ts__equivalent-1.0.2//:equivalent",
+        "@vendor_ts__foldhash-0.2.0//:foldhash",
+    ],
 )

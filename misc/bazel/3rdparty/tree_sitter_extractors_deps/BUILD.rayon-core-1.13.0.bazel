@@ -99,8 +99,8 @@ rust_library(
     }),
     version = "1.13.0",
     deps = [
-        "@vendor_ts__crossbeam-deque-0.8.6//:crossbeam_deque",
-        "@vendor_ts__crossbeam-utils-0.8.21//:crossbeam_utils",
+        "@vendor_ts__crossbeam-deque-0.8.7//:crossbeam_deque",
+        "@vendor_ts__crossbeam-utils-0.8.22//:crossbeam_utils",
         "@vendor_ts__rayon-core-1.13.0//:build_script_build",
     ],
 )

@@ -95,8 +95,8 @@ rust_library(
     }),
     version = "0.11.1",
     deps = [
-        "@vendor_ts__bitflags-2.11.1//:bitflags",
-        "@vendor_ts__inotify-sys-0.1.5//:inotify_sys",
-        "@vendor_ts__libc-0.2.186//:libc",
+        "@vendor_ts__bitflags-2.13.1//:bitflags",
+        "@vendor_ts__inotify-sys-0.1.8//:inotify_sys",
+        "@vendor_ts__libc-0.2.189//:libc",
     ],
 )

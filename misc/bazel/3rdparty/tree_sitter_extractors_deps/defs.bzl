@@ -295,12 +295,12 @@ def aliases(
 _NORMAL_DEPENDENCIES = {
     "ruby/extractor": {
         _COMMON_CONDITION: {
-            "clap": Label("@vendor_ts__clap-4.6.1//:clap"),
+            "clap": Label("@vendor_ts__clap-4.6.6//:clap"),
             "encoding": Label("@vendor_ts__encoding-0.2.33//:encoding"),
             "lazy_static": Label("@vendor_ts__lazy_static-1.5.0//:lazy_static"),
             "rayon": Label("@vendor_ts__rayon-1.12.0//:rayon"),
-            "regex": Label("@vendor_ts__regex-1.12.3//:regex"),
-            "serde_json": Label("@vendor_ts__serde_json-1.0.150//:serde_json"),
+            "regex": Label("@vendor_ts__regex-1.13.1//:regex"),
+            "serde_json": Label("@vendor_ts__serde_json-1.0.151//:serde_json"),
             "tracing": Label("@vendor_ts__tracing-0.1.44//:tracing"),
             "tracing-subscriber": Label("@vendor_ts__tracing-subscriber-0.3.23//:tracing_subscriber"),
             "tree-sitter": Label("@vendor_ts__tree-sitter-0.26.9//:tree_sitter"),
@@ -310,14 +310,14 @@ _NORMAL_DEPENDENCIES = {
     },
     "rust/ast-generator": {
         _COMMON_CONDITION: {
-            "anyhow": Label("@vendor_ts__anyhow-1.0.102//:anyhow"),
-            "either": Label("@vendor_ts__either-1.16.0//:either"),
-            "itertools": Label("@vendor_ts__itertools-0.14.0//:itertools"),
+            "anyhow": Label("@vendor_ts__anyhow-1.0.104//:anyhow"),
+            "either": Label("@vendor_ts__either-1.17.0//:either"),
+            "itertools": Label("@vendor_ts__itertools-0.15.0//:itertools"),
             "mustache": Label("@vendor_ts__mustache-0.9.0//:mustache"),
-            "proc-macro2": Label("@vendor_ts__proc-macro2-1.0.106//:proc_macro2"),
-            "quote": Label("@vendor_ts__quote-1.0.45//:quote"),
-            "serde": Label("@vendor_ts__serde-1.0.228//:serde"),
-            "stdx": Label("@vendor_ts__ra_ap_stdx-0.0.328//:ra_ap_stdx"),
+            "proc-macro2": Label("@vendor_ts__proc-macro2-1.0.107//:proc_macro2"),
+            "quote": Label("@vendor_ts__quote-1.0.47//:quote"),
+            "serde": Label("@vendor_ts__serde-1.0.229//:serde"),
+            "stdx": Label("@vendor_ts__ra_ap_stdx-0.0.347//:ra_ap_stdx"),
             "ungrammar": Label("@vendor_ts__ungrammar-1.16.1//:ungrammar"),
         },
     },
@@ -325,61 +325,61 @@ _NORMAL_DEPENDENCIES = {
     },
     "rust/extractor": {
         _COMMON_CONDITION: {
-            "anyhow": Label("@vendor_ts__anyhow-1.0.102//:anyhow"),
+            "anyhow": Label("@vendor_ts__anyhow-1.0.104//:anyhow"),
             "argfile": Label("@vendor_ts__argfile-1.0.0//:argfile"),
             "chalk-ir": Label("@vendor_ts__chalk-ir-0.104.0//:chalk_ir"),
-            "chrono": Label("@vendor_ts__chrono-0.4.44//:chrono"),
-            "clap": Label("@vendor_ts__clap-4.6.1//:clap"),
+            "chrono": Label("@vendor_ts__chrono-0.4.45//:chrono"),
+            "clap": Label("@vendor_ts__clap-4.6.6//:clap"),
             "dunce": Label("@vendor_ts__dunce-1.0.5//:dunce"),
             "figment": Label("@vendor_ts__figment-0.10.19//:figment"),
-            "glob": Label("@vendor_ts__glob-0.3.3//:glob"),
-            "itertools": Label("@vendor_ts__itertools-0.14.0//:itertools"),
+            "glob": Label("@vendor_ts__glob-0.3.4//:glob"),
+            "itertools": Label("@vendor_ts__itertools-0.15.0//:itertools"),
             "mustache": Label("@vendor_ts__mustache-0.9.0//:mustache"),
             "num-traits": Label("@vendor_ts__num-traits-0.2.19//:num_traits"),
-            "ra_ap_base_db": Label("@vendor_ts__ra_ap_base_db-0.0.328//:ra_ap_base_db"),
-            "ra_ap_cfg": Label("@vendor_ts__ra_ap_cfg-0.0.328//:ra_ap_cfg"),
-            "ra_ap_hir": Label("@vendor_ts__ra_ap_hir-0.0.328//:ra_ap_hir"),
-            "ra_ap_hir_def": Label("@vendor_ts__ra_ap_hir_def-0.0.328//:ra_ap_hir_def"),
-            "ra_ap_hir_expand": Label("@vendor_ts__ra_ap_hir_expand-0.0.328//:ra_ap_hir_expand"),
-            "ra_ap_hir_ty": Label("@vendor_ts__ra_ap_hir_ty-0.0.328//:ra_ap_hir_ty"),
-            "ra_ap_ide_db": Label("@vendor_ts__ra_ap_ide_db-0.0.328//:ra_ap_ide_db"),
-            "ra_ap_intern": Label("@vendor_ts__ra_ap_intern-0.0.328//:ra_ap_intern"),
-            "ra_ap_load-cargo": Label("@vendor_ts__ra_ap_load-cargo-0.0.328//:ra_ap_load_cargo"),
-            "ra_ap_parser": Label("@vendor_ts__ra_ap_parser-0.0.328//:ra_ap_parser"),
-            "ra_ap_paths": Label("@vendor_ts__ra_ap_paths-0.0.328//:ra_ap_paths"),
-            "ra_ap_project_model": Label("@vendor_ts__ra_ap_project_model-0.0.328//:ra_ap_project_model"),
-            "ra_ap_span": Label("@vendor_ts__ra_ap_span-0.0.328//:ra_ap_span"),
-            "ra_ap_syntax": Label("@vendor_ts__ra_ap_syntax-0.0.328//:ra_ap_syntax"),
-            "ra_ap_syntax-bridge": Label("@vendor_ts__ra_ap_syntax-bridge-0.0.328//:ra_ap_syntax_bridge"),
-            "ra_ap_vfs": Label("@vendor_ts__ra_ap_vfs-0.0.328//:ra_ap_vfs"),
-            "serde": Label("@vendor_ts__serde-1.0.228//:serde"),
-            "serde_json": Label("@vendor_ts__serde_json-1.0.150//:serde_json"),
-            "serde_with": Label("@vendor_ts__serde_with-3.20.0//:serde_with"),
-            "toml": Label("@vendor_ts__toml-1.1.2-spec-1.1.0//:toml"),
+            "ra_ap_base_db": Label("@vendor_ts__ra_ap_base_db-0.0.347//:ra_ap_base_db"),
+            "ra_ap_cfg": Label("@vendor_ts__ra_ap_cfg-0.0.347//:ra_ap_cfg"),
+            "ra_ap_hir": Label("@vendor_ts__ra_ap_hir-0.0.347//:ra_ap_hir"),
+            "ra_ap_hir_def": Label("@vendor_ts__ra_ap_hir_def-0.0.347//:ra_ap_hir_def"),
+            "ra_ap_hir_expand": Label("@vendor_ts__ra_ap_hir_expand-0.0.347//:ra_ap_hir_expand"),
+            "ra_ap_hir_ty": Label("@vendor_ts__ra_ap_hir_ty-0.0.347//:ra_ap_hir_ty"),
+            "ra_ap_ide_db": Label("@vendor_ts__ra_ap_ide_db-0.0.347//:ra_ap_ide_db"),
+            "ra_ap_intern": Label("@vendor_ts__ra_ap_intern-0.0.347//:ra_ap_intern"),
+            "ra_ap_load-cargo": Label("@vendor_ts__ra_ap_load-cargo-0.0.347//:ra_ap_load_cargo"),
+            "ra_ap_parser": Label("@vendor_ts__ra_ap_parser-0.0.347//:ra_ap_parser"),
+            "ra_ap_paths": Label("@vendor_ts__ra_ap_paths-0.0.347//:ra_ap_paths"),
+            "ra_ap_project_model": Label("@vendor_ts__ra_ap_project_model-0.0.347//:ra_ap_project_model"),
+            "ra_ap_span": Label("@vendor_ts__ra_ap_span-0.0.347//:ra_ap_span"),
+            "ra_ap_syntax": Label("@vendor_ts__ra_ap_syntax-0.0.347//:ra_ap_syntax"),
+            "ra_ap_syntax-bridge": Label("@vendor_ts__ra_ap_syntax-bridge-0.0.347//:ra_ap_syntax_bridge"),
+            "ra_ap_vfs": Label("@vendor_ts__ra_ap_vfs-0.0.347//:ra_ap_vfs"),
+            "serde": Label("@vendor_ts__serde-1.0.229//:serde"),
+            "serde_json": Label("@vendor_ts__serde_json-1.0.151//:serde_json"),
+            "serde_with": Label("@vendor_ts__serde_with-3.22.0//:serde_with"),
+            "toml": Label("@vendor_ts__toml-1.1.4-spec-1.1.0//:toml"),
             "tracing": Label("@vendor_ts__tracing-0.1.44//:tracing"),
             "tracing-flame": Label("@vendor_ts__tracing-flame-0.2.0//:tracing_flame"),
             "tracing-subscriber": Label("@vendor_ts__tracing-subscriber-0.3.23//:tracing_subscriber"),
-            "triomphe": Label("@vendor_ts__triomphe-0.1.15//:triomphe"),
+            "triomphe": Label("@vendor_ts__triomphe-0.1.16//:triomphe"),
         },
     },
     "rust/extractor/macros": {
         _COMMON_CONDITION: {
-            "quote": Label("@vendor_ts__quote-1.0.45//:quote"),
-            "syn": Label("@vendor_ts__syn-2.0.117//:syn"),
+            "quote": Label("@vendor_ts__quote-1.0.47//:quote"),
+            "syn": Label("@vendor_ts__syn-3.0.3//:syn"),
         },
     },
     "shared/tree-sitter-extractor": {
         _COMMON_CONDITION: {
-            "chrono": Label("@vendor_ts__chrono-0.4.44//:chrono"),
+            "chrono": Label("@vendor_ts__chrono-0.4.45//:chrono"),
             "encoding": Label("@vendor_ts__encoding-0.2.33//:encoding"),
             "flate2": Label("@vendor_ts__flate2-1.1.9//:flate2"),
             "globset": Label("@vendor_ts__globset-0.4.18//:globset"),
             "lazy_static": Label("@vendor_ts__lazy_static-1.5.0//:lazy_static"),
             "num_cpus": Label("@vendor_ts__num_cpus-1.17.0//:num_cpus"),
             "rayon": Label("@vendor_ts__rayon-1.12.0//:rayon"),
-            "regex": Label("@vendor_ts__regex-1.12.3//:regex"),
-            "serde": Label("@vendor_ts__serde-1.0.228//:serde"),
-            "serde_json": Label("@vendor_ts__serde_json-1.0.150//:serde_json"),
+            "regex": Label("@vendor_ts__regex-1.13.1//:regex"),
+            "serde": Label("@vendor_ts__serde-1.0.229//:serde"),
+            "serde_json": Label("@vendor_ts__serde_json-1.0.151//:serde_json"),
             "tracing": Label("@vendor_ts__tracing-0.1.44//:tracing"),
             "tracing-subscriber": Label("@vendor_ts__tracing-subscriber-0.3.23//:tracing_subscriber"),
             "tree-sitter": Label("@vendor_ts__tree-sitter-0.26.9//:tree_sitter"),
@@ -388,37 +388,37 @@ _NORMAL_DEPENDENCIES = {
     },
     "shared/yeast": {
         _COMMON_CONDITION: {
-            "clap": Label("@vendor_ts__clap-4.6.1//:clap"),
-            "serde": Label("@vendor_ts__serde-1.0.228//:serde"),
-            "serde_json": Label("@vendor_ts__serde_json-1.0.150//:serde_json"),
+            "clap": Label("@vendor_ts__clap-4.6.6//:clap"),
+            "serde": Label("@vendor_ts__serde-1.0.229//:serde"),
+            "serde_json": Label("@vendor_ts__serde_json-1.0.151//:serde_json"),
             "serde_yaml": Label("@vendor_ts__serde_yaml-0.9.34-deprecated//:serde_yaml"),
             "tree-sitter": Label("@vendor_ts__tree-sitter-0.26.9//:tree_sitter"),
-            "tree-sitter-python": Label("@vendor_ts__tree-sitter-python-0.23.6//:tree_sitter_python"),
+            "tree-sitter-python": Label("@vendor_ts__tree-sitter-python-0.25.0//:tree_sitter_python"),
             "tree-sitter-ruby": Label("@vendor_ts__tree-sitter-ruby-0.23.1//:tree_sitter_ruby"),
         },
     },
     "shared/yeast-macros": {
         _COMMON_CONDITION: {
-            "proc-macro2": Label("@vendor_ts__proc-macro2-1.0.106//:proc_macro2"),
-            "quote": Label("@vendor_ts__quote-1.0.45//:quote"),
-            "syn": Label("@vendor_ts__syn-2.0.117//:syn"),
+            "proc-macro2": Label("@vendor_ts__proc-macro2-1.0.107//:proc_macro2"),
+            "quote": Label("@vendor_ts__quote-1.0.47//:quote"),
+            "syn": Label("@vendor_ts__syn-3.0.3//:syn"),
         },
     },
     "shared/yeast-schema": {
         _COMMON_CONDITION: {
-            "serde": Label("@vendor_ts__serde-1.0.228//:serde"),
-            "serde_json": Label("@vendor_ts__serde_json-1.0.150//:serde_json"),
+            "serde": Label("@vendor_ts__serde-1.0.229//:serde"),
+            "serde_json": Label("@vendor_ts__serde_json-1.0.151//:serde_json"),
             "serde_yaml": Label("@vendor_ts__serde_yaml-0.9.34-deprecated//:serde_yaml"),
         },
     },
     "unified/extractor": {
         _COMMON_CONDITION: {
-            "clap": Label("@vendor_ts__clap-4.6.1//:clap"),
+            "clap": Label("@vendor_ts__clap-4.6.6//:clap"),
             "encoding": Label("@vendor_ts__encoding-0.2.33//:encoding"),
             "lazy_static": Label("@vendor_ts__lazy_static-1.5.0//:lazy_static"),
             "rayon": Label("@vendor_ts__rayon-1.12.0//:rayon"),
-            "regex": Label("@vendor_ts__regex-1.12.3//:regex"),
-            "serde_json": Label("@vendor_ts__serde_json-1.0.150//:serde_json"),
+            "regex": Label("@vendor_ts__regex-1.13.1//:regex"),
+            "serde_json": Label("@vendor_ts__serde_json-1.0.151//:serde_json"),
             "tracing": Label("@vendor_ts__tracing-0.1.44//:tracing"),
             "tracing-subscriber": Label("@vendor_ts__tracing-subscriber-0.3.23//:tracing_subscriber"),
         },
@@ -436,7 +436,7 @@ _NORMAL_ALIASES = {
     },
     "rust/ast-generator": {
         _COMMON_CONDITION: {
-            Label("@vendor_ts__ra_ap_stdx-0.0.328//:ra_ap_stdx"): "stdx",
+            Label("@vendor_ts__ra_ap_stdx-0.0.347//:ra_ap_stdx"): "stdx",
         },
     },
     "rust/autobuild": {
@@ -488,7 +488,7 @@ _NORMAL_DEV_DEPENDENCIES = {
     },
     "shared/tree-sitter-extractor": {
         _COMMON_CONDITION: {
-            "rand": Label("@vendor_ts__rand-0.10.1//:rand"),
+            "rand": Label("@vendor_ts__rand-0.10.2//:rand"),
             "tree-sitter-json": Label("@vendor_ts__tree-sitter-json-0.24.8//:tree_sitter_json"),
             "tree-sitter-ql": Label("@vendor_ts__tree-sitter-ql-0.23.1//:tree_sitter_ql"),
         },
@@ -758,8 +758,6 @@ _CONDITIONS = {
     "cfg(all(target_arch = \"aarch64\", target_vendor = \"apple\"))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-sim"],
     "cfg(all(target_arch = \"loongarch64\", target_os = \"linux\"))": [],
     "cfg(all(target_arch = \"wasm32\", target_os = \"unknown\"))": ["@rules_rust//rust/platform:wasm32-unknown-unknown"],
-    "cfg(all(target_arch = \"wasm32\", target_os = \"wasi\", target_env = \"p2\"))": ["@rules_rust//rust/platform:wasm32-wasip2"],
-    "cfg(all(target_arch = \"wasm32\", target_os = \"wasi\", target_env = \"p3\"))": [],
     "cfg(all(target_arch = \"x86\", target_env = \"gnu\", not(target_abi = \"llvm\"), not(windows_raw_dylib)))": ["@rules_rust//rust/platform:i686-unknown-linux-gnu"],
     "cfg(all(target_arch = \"x86\", target_env = \"msvc\", not(windows_raw_dylib)))": ["@rules_rust//rust/platform:i686-pc-windows-msvc"],
     "cfg(all(target_arch = \"x86_64\", target_env = \"gnu\", not(target_abi = \"llvm\"), not(windows_raw_dylib)))": ["@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu"],
@@ -777,8 +775,8 @@ _CONDITIONS = {
     "cfg(any(target_os = \"macos\", target_os = \"openbsd\", target_os = \"vita\", target_os = \"emscripten\"))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:x86_64-apple-darwin"],
     "cfg(any(target_pointer_width = \"8\", target_pointer_width = \"16\", target_pointer_width = \"32\"))": ["@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:arm-unknown-linux-musleabi", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-pc-windows-msvc", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv32imc-unknown-none-elf", "@rules_rust//rust/platform:thumbv7em-none-eabi", "@rules_rust//rust/platform:thumbv8m.main-none-eabi", "@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:wasm32-unknown-unknown", "@rules_rust//rust/platform:wasm32-wasip1", "@rules_rust//rust/platform:wasm32-wasip1-threads", "@rules_rust//rust/platform:wasm32-wasip2"],
     "cfg(any(unix, target_os = \"hermit\", target_os = \"wasi\"))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:aarch64-unknown-fuchsia", "@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710", "@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:arm-unknown-linux-musleabi", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu", "@rules_rust//rust/platform:s390x-unknown-linux-gnu", "@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:wasm32-wasip1", "@rules_rust//rust/platform:wasm32-wasip1-threads", "@rules_rust//rust/platform:wasm32-wasip2", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-fuchsia", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu"],
+    "cfg(not(target_has_atomic = \"ptr\"))": ["@rules_rust//rust/platform:riscv32imc-unknown-none-elf"],
     "cfg(not(windows))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:aarch64-unknown-fuchsia", "@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710", "@rules_rust//rust/platform:aarch64-unknown-uefi", "@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:arm-unknown-linux-musleabi", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv32imc-unknown-none-elf", "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv64gc-unknown-none-elf", "@rules_rust//rust/platform:s390x-unknown-linux-gnu", "@rules_rust//rust/platform:thumbv7em-none-eabi", "@rules_rust//rust/platform:thumbv8m.main-none-eabi", "@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:wasm32-unknown-unknown", "@rules_rust//rust/platform:wasm32-wasip1", "@rules_rust//rust/platform:wasm32-wasip1-threads", "@rules_rust//rust/platform:wasm32-wasip2", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-fuchsia", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu", "@rules_rust//rust/platform:x86_64-unknown-none", "@rules_rust//rust/platform:x86_64-unknown-uefi"],
-    "cfg(target_arch = \"x86_64\")": ["@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-pc-windows-msvc", "@rules_rust//rust/platform:x86_64-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-fuchsia", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu", "@rules_rust//rust/platform:x86_64-unknown-none", "@rules_rust//rust/platform:x86_64-unknown-uefi"],
     "cfg(target_family = \"wasm\")": ["@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:wasm32-unknown-unknown", "@rules_rust//rust/platform:wasm32-wasip1", "@rules_rust//rust/platform:wasm32-wasip1-threads", "@rules_rust//rust/platform:wasm32-wasip2"],
     "cfg(target_os = \"android\")": ["@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:x86_64-linux-android"],
     "cfg(target_os = \"haiku\")": [],
@@ -801,7 +799,6 @@ _CONDITIONS = {
     "i686-unknown-freebsd": ["@rules_rust//rust/platform:i686-unknown-freebsd"],
     "i686-unknown-linux-gnu": ["@rules_rust//rust/platform:i686-unknown-linux-gnu"],
     "powerpc-unknown-linux-gnu": ["@rules_rust//rust/platform:powerpc-unknown-linux-gnu"],
-    "riscv32i-unknown-none-elf": [],
     "riscv32imc-unknown-none-elf": ["@rules_rust//rust/platform:riscv32imc-unknown-none-elf"],
     "riscv64gc-unknown-linux-gnu": ["@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu"],
     "riscv64gc-unknown-none-elf": ["@rules_rust//rust/platform:riscv64gc-unknown-none-elf"],
@@ -824,7 +821,6 @@ _CONDITIONS = {
     "x86_64-unknown-nixos-gnu": ["@rules_rust//rust/platform:x86_64-unknown-nixos-gnu"],
     "x86_64-unknown-none": ["@rules_rust//rust/platform:x86_64-unknown-none"],
     "x86_64-unknown-uefi": ["@rules_rust//rust/platform:x86_64-unknown-uefi"],
-    "xtensa-esp32s2-none-elf": [],
 }
 
 ###############################################################################
@@ -847,12 +843,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__aho-corasick-1.1.4",
-        sha256 = "ddd31a130427c27518df266943a5308ed92d4b226cc639f5a8f1002816174301",
+        name = "vendor_ts__aho-corasick-1.1.5",
+        sha256 = "c982642fa9e8606056828ee9a8505737230110bb1099153c79efe865c59d12ba",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/aho-corasick/1.1.4/download"],
-        strip_prefix = "aho-corasick-1.1.4",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.aho-corasick-1.1.4.bazel"),
+        urls = ["https://static.crates.io/crates/aho-corasick/1.1.5/download"],
+        strip_prefix = "aho-corasick-1.1.5",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.aho-corasick-1.1.5.bazel"),
     )
 
     maybe(
@@ -927,12 +923,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__anyhow-1.0.102",
-        sha256 = "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c",
+        name = "vendor_ts__anyhow-1.0.104",
+        sha256 = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/anyhow/1.0.102/download"],
-        strip_prefix = "anyhow-1.0.102",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.anyhow-1.0.102.bazel"),
+        urls = ["https://static.crates.io/crates/anyhow/1.0.104/download"],
+        strip_prefix = "anyhow-1.0.104",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.anyhow-1.0.104.bazel"),
     )
 
     maybe(
@@ -947,12 +943,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__arrayvec-0.7.6",
-        sha256 = "7c02d123df017efcdfbd739ef81735b36c5ba83ec3c59c80a9d7ecc718f92e50",
+        name = "vendor_ts__arrayvec-0.7.8",
+        sha256 = "d3fb67a6e08acf24fdeccbac2cb6ac4305825bd1f117462e0e6f2f193345ad56",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/arrayvec/0.7.6/download"],
-        strip_prefix = "arrayvec-0.7.6",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.arrayvec-0.7.6.bazel"),
+        urls = ["https://static.crates.io/crates/arrayvec/0.7.8/download"],
+        strip_prefix = "arrayvec-0.7.8",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.arrayvec-0.7.8.bazel"),
     )
 
     maybe(
@@ -963,16 +959,6 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/atomic/0.6.1/download"],
         strip_prefix = "atomic-0.6.1",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.atomic-0.6.1.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__atomic-polyfill-1.0.3",
-        sha256 = "8cf2bce30dfe09ef0bfaef228b9d414faaf7e563035494d7fe092dba54b300f4",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/atomic-polyfill/1.0.3/download"],
-        strip_prefix = "atomic-polyfill-1.0.3",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.atomic-polyfill-1.0.3.bazel"),
     )
 
     maybe(
@@ -997,22 +983,32 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__bitflags-2.11.1",
-        sha256 = "c4512299f36f043ab09a583e57bceb5a5aab7a73db1805848e8fef3c9e8c78b3",
+        name = "vendor_ts__bitflags-1.3.2",
+        sha256 = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/bitflags/2.11.1/download"],
-        strip_prefix = "bitflags-2.11.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bitflags-2.11.1.bazel"),
+        urls = ["https://static.crates.io/crates/bitflags/1.3.2/download"],
+        strip_prefix = "bitflags-1.3.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bitflags-1.3.2.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__borsh-1.6.1",
-        sha256 = "cfd1e3f8955a5d7de9fab72fc8373fade9fb8a703968cb200ae3dc6cf08e185a",
+        name = "vendor_ts__bitflags-2.13.1",
+        sha256 = "b588b76d00fde79687d7646a9b5bdf3cc0f655e0bbd080335a95d7e96f3587da",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/borsh/1.6.1/download"],
-        strip_prefix = "borsh-1.6.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.borsh-1.6.1.bazel"),
+        urls = ["https://static.crates.io/crates/bitflags/2.13.1/download"],
+        strip_prefix = "bitflags-2.13.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bitflags-2.13.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__borsh-1.8.0",
+        sha256 = "a88b7ea17d208c4193f2c1e6de3c35fe71f98c96982d5ced308bdcc749ff6e1f",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/borsh/1.8.0/download"],
+        strip_prefix = "borsh-1.8.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.borsh-1.8.0.bazel"),
     )
 
     maybe(
@@ -1047,12 +1043,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__bumpalo-3.20.2",
-        sha256 = "5d20789868f4b01b2f2caec9f5c4e0213b41e3e5702a50157d699ae31ced2fcb",
+        name = "vendor_ts__bumpalo-3.20.3",
+        sha256 = "72f5acc6cb2ba439de613abc23857ec3d78374d8ed5ac84e9d11336e87da8649",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/bumpalo/3.20.2/download"],
-        strip_prefix = "bumpalo-3.20.2",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bumpalo-3.20.2.bazel"),
+        urls = ["https://static.crates.io/crates/bumpalo/3.20.3/download"],
+        strip_prefix = "bumpalo-3.20.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bumpalo-3.20.3.bazel"),
     )
 
     maybe(
@@ -1067,32 +1063,22 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__byteorder-1.5.0",
-        sha256 = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b",
+        name = "vendor_ts__bytes-1.12.1",
+        sha256 = "fc652a48c352aef3ea3aed32080501cf3ef6ed5da78602a020c991775b0aff04",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/byteorder/1.5.0/download"],
-        strip_prefix = "byteorder-1.5.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.byteorder-1.5.0.bazel"),
+        urls = ["https://static.crates.io/crates/bytes/1.12.1/download"],
+        strip_prefix = "bytes-1.12.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bytes-1.12.1.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__bytes-1.11.1",
-        sha256 = "1e748733b7cbc798e1434b6ac524f0c1ff2ab456fe201501e6497c8417a4fc33",
+        name = "vendor_ts__camino-1.2.5",
+        sha256 = "bb1307f12aa967b5a58416e87b3653360e0fd614a016b6e970db08fecbb1b80d",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/bytes/1.11.1/download"],
-        strip_prefix = "bytes-1.11.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bytes-1.11.1.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__camino-1.2.2",
-        sha256 = "e629a66d692cb9ff1a1c664e41771b3dcaf961985a9774c0eb0bd1b51cf60a48",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/camino/1.2.2/download"],
-        strip_prefix = "camino-1.2.2",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.camino-1.2.2.bazel"),
+        urls = ["https://static.crates.io/crates/camino/1.2.5/download"],
+        strip_prefix = "camino-1.2.5",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.camino-1.2.5.bazel"),
     )
 
     maybe(
@@ -1117,12 +1103,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__cc-1.2.62",
-        sha256 = "a1dce859f0832a7d088c4f1119888ab94ef4b5d6795d1ce05afb7fe159d79f98",
+        name = "vendor_ts__cc-1.4.2",
+        sha256 = "5d262e149917187838d5b42777c8253bcb64500067342904e7d429499a6f277e",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/cc/1.2.62/download"],
-        strip_prefix = "cc-1.2.62",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cc-1.2.62.bazel"),
+        urls = ["https://static.crates.io/crates/cc/1.4.2/download"],
+        strip_prefix = "cc-1.4.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cc-1.4.2.bazel"),
     )
 
     maybe(
@@ -1137,22 +1123,22 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__cfg_aliases-0.2.1",
-        sha256 = "613afe47fcd5fac7ccf1db93babcb082c5994d996f20b8b159f2ad1658eb5724",
+        name = "vendor_ts__cfg_aliases-0.2.2",
+        sha256 = "f079e83a288787bcd14a6aea84cee5c87a67c5a3e660c30f557a3d24761b3527",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/cfg_aliases/0.2.1/download"],
-        strip_prefix = "cfg_aliases-0.2.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cfg_aliases-0.2.1.bazel"),
+        urls = ["https://static.crates.io/crates/cfg_aliases/0.2.2/download"],
+        strip_prefix = "cfg_aliases-0.2.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cfg_aliases-0.2.2.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__chacha20-0.10.0",
-        sha256 = "6f8d983286843e49675a4b7a2d174efe136dc93a18d69130dd18198a6c167601",
+        name = "vendor_ts__chacha20-0.10.1",
+        sha256 = "d524456ba66e72eb8b115ff89e01e497f8e6d11d78b70b1aa13c0fbd97540a81",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/chacha20/0.10.0/download"],
-        strip_prefix = "chacha20-0.10.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.chacha20-0.10.0.bazel"),
+        urls = ["https://static.crates.io/crates/chacha20/0.10.1/download"],
+        strip_prefix = "chacha20-0.10.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.chacha20-0.10.1.bazel"),
     )
 
     maybe(
@@ -1177,42 +1163,42 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__chrono-0.4.44",
-        sha256 = "c673075a2e0e5f4a1dde27ce9dee1ea4558c7ffe648f576438a20ca1d2acc4b0",
+        name = "vendor_ts__chrono-0.4.45",
+        sha256 = "1aa79e62e7697b8e29b513a68abacf485adcd1fe8284a4316c5ae868e6633327",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/chrono/0.4.44/download"],
-        strip_prefix = "chrono-0.4.44",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.chrono-0.4.44.bazel"),
+        urls = ["https://static.crates.io/crates/chrono/0.4.45/download"],
+        strip_prefix = "chrono-0.4.45",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.chrono-0.4.45.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__clap-4.6.1",
-        sha256 = "1ddb117e43bbf7dacf0a4190fef4d345b9bad68dfc649cb349e7d17d28428e51",
+        name = "vendor_ts__clap-4.6.6",
+        sha256 = "473c7e07f409a8d772161724aa8db6a765a2532a70f9667eeb7b49d3d02fbdca",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/clap/4.6.1/download"],
-        strip_prefix = "clap-4.6.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.clap-4.6.1.bazel"),
+        urls = ["https://static.crates.io/crates/clap/4.6.6/download"],
+        strip_prefix = "clap-4.6.6",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.clap-4.6.6.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__clap_builder-4.6.0",
-        sha256 = "714a53001bf66416adb0e2ef5ac857140e7dc3a0c48fb28b2f10762fc4b5069f",
+        name = "vendor_ts__clap_builder-4.6.6",
+        sha256 = "7b48fea5a88e9ae728a2dcbedbfc0e730f7d60da42e1cb049a83c9fb8b789889",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/clap_builder/4.6.0/download"],
-        strip_prefix = "clap_builder-4.6.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.clap_builder-4.6.0.bazel"),
+        urls = ["https://static.crates.io/crates/clap_builder/4.6.6/download"],
+        strip_prefix = "clap_builder-4.6.6",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.clap_builder-4.6.6.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__clap_derive-4.6.1",
-        sha256 = "f2ce8604710f6733aa641a2b3731eaa1e8b3d9973d5e3565da11800813f997a9",
+        name = "vendor_ts__clap_derive-4.6.4",
+        sha256 = "d012d2b9d65aca7f18f4d9878a045bc17899bba951561ba5ec3c2ba1eed9a061",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/clap_derive/4.6.1/download"],
-        strip_prefix = "clap_derive-4.6.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.clap_derive-4.6.1.bazel"),
+        urls = ["https://static.crates.io/crates/clap_derive/4.6.4/download"],
+        strip_prefix = "clap_derive-4.6.4",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.clap_derive-4.6.4.bazel"),
     )
 
     maybe(
@@ -1297,42 +1283,32 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__critical-section-1.2.0",
-        sha256 = "790eea4361631c5e7d22598ecd5723ff611904e3344ce8720784c93e3d83d40b",
+        name = "vendor_ts__crossbeam-channel-0.5.16",
+        sha256 = "d85363c37faeca707aef026efa9f3b34d077bce547e48f770770625c6013679e",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/critical-section/1.2.0/download"],
-        strip_prefix = "critical-section-1.2.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.critical-section-1.2.0.bazel"),
+        urls = ["https://static.crates.io/crates/crossbeam-channel/0.5.16/download"],
+        strip_prefix = "crossbeam-channel-0.5.16",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.crossbeam-channel-0.5.16.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__crossbeam-channel-0.5.15",
-        sha256 = "82b8f8f868b36967f9606790d1903570de9ceaf870a7bf9fbbd3016d636a2cb2",
+        name = "vendor_ts__crossbeam-deque-0.8.7",
+        sha256 = "5181e0de7b61eb03a81e347d6dd8797bae9da5146707b51077e2d71a54ec0ceb",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/crossbeam-channel/0.5.15/download"],
-        strip_prefix = "crossbeam-channel-0.5.15",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.crossbeam-channel-0.5.15.bazel"),
+        urls = ["https://static.crates.io/crates/crossbeam-deque/0.8.7/download"],
+        strip_prefix = "crossbeam-deque-0.8.7",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.crossbeam-deque-0.8.7.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__crossbeam-deque-0.8.6",
-        sha256 = "9dd111b7b7f7d55b72c0a6ae361660ee5853c9af73f70c3c2ef6858b950e2e51",
+        name = "vendor_ts__crossbeam-epoch-0.9.20",
+        sha256 = "2d6914041f254d6e9176c01941b21115dcfb7089e55135a35411081bd106ef3f",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/crossbeam-deque/0.8.6/download"],
-        strip_prefix = "crossbeam-deque-0.8.6",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.crossbeam-deque-0.8.6.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__crossbeam-epoch-0.9.18",
-        sha256 = "5b82ac4a3c2ca9c3460964f020e1402edd5753411d7737aa39c3714ad1b5420e",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/crossbeam-epoch/0.9.18/download"],
-        strip_prefix = "crossbeam-epoch-0.9.18",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.crossbeam-epoch-0.9.18.bazel"),
+        urls = ["https://static.crates.io/crates/crossbeam-epoch/0.9.20/download"],
+        strip_prefix = "crossbeam-epoch-0.9.20",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.crossbeam-epoch-0.9.20.bazel"),
     )
 
     maybe(
@@ -1347,12 +1323,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__crossbeam-utils-0.8.21",
-        sha256 = "d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28",
+        name = "vendor_ts__crossbeam-utils-0.8.22",
+        sha256 = "61803da095bee82a81bb1a452ecc25d3b2f1416d1897eb86430c6159ef717c17",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/crossbeam-utils/0.8.21/download"],
-        strip_prefix = "crossbeam-utils-0.8.21",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.crossbeam-utils-0.8.21.bazel"),
+        urls = ["https://static.crates.io/crates/crossbeam-utils/0.8.22/download"],
+        strip_prefix = "crossbeam-utils-0.8.22",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.crossbeam-utils-0.8.22.bazel"),
     )
 
     maybe(
@@ -1387,12 +1363,42 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__dashmap-6.1.0",
-        sha256 = "5041cc499144891f3790297212f32a74fb938e5136a14943f338ef9e0ae276cf",
+        name = "vendor_ts__dashmap-6.2.1",
+        sha256 = "e6361d5c062261c78a176addb82d4c821ae42bed6089de0e12603cd25de2059c",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/dashmap/6.1.0/download"],
-        strip_prefix = "dashmap-6.1.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.dashmap-6.1.0.bazel"),
+        urls = ["https://static.crates.io/crates/dashmap/6.2.1/download"],
+        strip_prefix = "dashmap-6.2.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.dashmap-6.2.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__defmt-1.1.1",
+        sha256 = "e2953bfe4f93bbd20cc71198842756f77d161884c99ebbabc41d80231ded88d1",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/defmt/1.1.1/download"],
+        strip_prefix = "defmt-1.1.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.defmt-1.1.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__defmt-macros-1.1.1",
+        sha256 = "bad9c72e7ca2137e0dc3813245a0d282fd6daad32fd800af018306a9169b5fe8",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/defmt-macros/1.1.1/download"],
+        strip_prefix = "defmt-macros-1.1.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.defmt-macros-1.1.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__defmt-parser-1.0.0",
+        sha256 = "10d60334b3b2e7c9d91ef8150abfb6fa4c1c39ebbcf4a81c2e346aad939fee3e",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/defmt-parser/1.0.0/download"],
+        strip_prefix = "defmt-parser-1.0.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.defmt-parser-1.0.0.bazel"),
     )
 
     maybe(
@@ -1457,12 +1463,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__either-1.16.0",
-        sha256 = "91622ff5e7162018101f2fea40d6ebf4a78bbe5a49736a2020649edf9693679e",
+        name = "vendor_ts__either-1.17.0",
+        sha256 = "9e5e8f6c15a24b9a3ee5efec809ccd006d3b30e8b3bb63c39af737c7f87daa1d",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/either/1.16.0/download"],
-        strip_prefix = "either-1.16.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.either-1.16.0.bazel"),
+        urls = ["https://static.crates.io/crates/either/1.17.0/download"],
+        strip_prefix = "either-1.17.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.either-1.17.0.bazel"),
     )
 
     maybe(
@@ -1587,12 +1593,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__find-msvc-tools-0.1.9",
-        sha256 = "5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582",
+        name = "vendor_ts__find-msvc-tools-0.1.10",
+        sha256 = "26b73573e6edcd2af0cdf47bd6cb58f0b3839491263c314eaad1ccf24430e1de",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/find-msvc-tools/0.1.9/download"],
-        strip_prefix = "find-msvc-tools-0.1.9",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.find-msvc-tools-0.1.9.bazel"),
+        urls = ["https://static.crates.io/crates/find-msvc-tools/0.1.10/download"],
+        strip_prefix = "find-msvc-tools-0.1.10",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.find-msvc-tools-0.1.10.bazel"),
     )
 
     maybe(
@@ -1627,6 +1633,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__foldhash-0.2.0",
+        sha256 = "77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/foldhash/0.2.0/download"],
+        strip_prefix = "foldhash-0.2.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.foldhash-0.2.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__fs-err-3.3.0",
         sha256 = "73fde052dbfc920003cfd2c8e2c6e6d4cc7c1091538c3a24226cec0665ab08c0",
         type = "tar.gz",
@@ -1657,62 +1673,52 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__futures-core-0.3.32",
-        sha256 = "7e3450815272ef58cec6d564423f6e755e25379b217b0bc688e295ba24df6b1d",
+        name = "vendor_ts__futures-core-0.3.34",
+        sha256 = "92d699e522242e69e3003b94ecc1f960f3a5e015aa7c5d7486e65ad01dd94f5e",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/futures-core/0.3.32/download"],
-        strip_prefix = "futures-core-0.3.32",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.futures-core-0.3.32.bazel"),
+        urls = ["https://static.crates.io/crates/futures-core/0.3.34/download"],
+        strip_prefix = "futures-core-0.3.34",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.futures-core-0.3.34.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__futures-task-0.3.32",
-        sha256 = "037711b3d59c33004d3856fbdc83b99d4ff37a24768fa1be9ce3538a1cde4393",
+        name = "vendor_ts__futures-task-0.3.34",
+        sha256 = "cd417de3d1d015fc3bfd2b1ea46dfc7bab72ef86f1cc7cc9c78e728b34a6d1fd",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/futures-task/0.3.32/download"],
-        strip_prefix = "futures-task-0.3.32",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.futures-task-0.3.32.bazel"),
+        urls = ["https://static.crates.io/crates/futures-task/0.3.34/download"],
+        strip_prefix = "futures-task-0.3.34",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.futures-task-0.3.34.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__futures-util-0.3.32",
-        sha256 = "389ca41296e6190b48053de0321d02a77f32f8a5d2461dd38762c0593805c6d6",
+        name = "vendor_ts__futures-util-0.3.34",
+        sha256 = "0d50a92467f8ba5dd6e3ee5d4bd04d73ab2e4e1c44474a0674821dfce14b79bc",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/futures-util/0.3.32/download"],
-        strip_prefix = "futures-util-0.3.32",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.futures-util-0.3.32.bazel"),
+        urls = ["https://static.crates.io/crates/futures-util/0.3.34/download"],
+        strip_prefix = "futures-util-0.3.34",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.futures-util-0.3.34.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__getrandom-0.3.4",
-        sha256 = "899def5c37c4fd7b2664648c28120ecec138e4d395b459e5ca34f9cce2dd77fd",
+        name = "vendor_ts__getrandom-0.4.3",
+        sha256 = "300e883d756b2e4ec94e02791f39b04b522276138852cfc41d9fb7e904106099",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/getrandom/0.3.4/download"],
-        strip_prefix = "getrandom-0.3.4",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.getrandom-0.3.4.bazel"),
+        urls = ["https://static.crates.io/crates/getrandom/0.4.3/download"],
+        strip_prefix = "getrandom-0.4.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.getrandom-0.4.3.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__getrandom-0.4.2",
-        sha256 = "0de51e6874e94e7bf76d726fc5d13ba782deca734ff60d5bb2fb2607c7406555",
+        name = "vendor_ts__glob-0.3.4",
+        sha256 = "e4eba85ea1d0a966a983acd07deee566e67395d2d96b6fb39e62b5a833f1eb0b",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/getrandom/0.4.2/download"],
-        strip_prefix = "getrandom-0.4.2",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.getrandom-0.4.2.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__glob-0.3.3",
-        sha256 = "0cc23270f6e1808e30a928bdc84dea0b9b4136a8bc82338574f23baf47bbd280",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/glob/0.3.3/download"],
-        strip_prefix = "glob-0.3.3",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.glob-0.3.3.bazel"),
+        urls = ["https://static.crates.io/crates/glob/0.3.4/download"],
+        strip_prefix = "glob-0.3.4",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.glob-0.3.4.bazel"),
     )
 
     maybe(
@@ -1723,16 +1729,6 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/globset/0.4.18/download"],
         strip_prefix = "globset-0.4.18",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.globset-0.4.18.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__hash32-0.2.1",
-        sha256 = "b0c35f58762feb77d74ebe43bdbc3210f09be9fe6742234d573bacc26ed92b67",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/hash32/0.2.1/download"],
-        strip_prefix = "hash32-0.2.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.hash32-0.2.1.bazel"),
     )
 
     maybe(
@@ -1777,22 +1773,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__hashlink-0.10.0",
-        sha256 = "7382cf6263419f2d8df38c55d7da83da5c18aef87fc7a7fc1fb1e344edfe14c1",
+        name = "vendor_ts__hashlink-0.12.1",
+        sha256 = "32069d97bb81e38fa67eab65e3393bf804bb85969f2bc06bf13f64aef5aba248",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/hashlink/0.10.0/download"],
-        strip_prefix = "hashlink-0.10.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.hashlink-0.10.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__heapless-0.7.17",
-        sha256 = "cdc6457c0eb62c71aac4bc17216026d8410337c4126773b9c5daba343f17964f",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/heapless/0.7.17/download"],
-        strip_prefix = "heapless-0.7.17",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.heapless-0.7.17.bazel"),
+        urls = ["https://static.crates.io/crates/hashlink/0.12.1/download"],
+        strip_prefix = "hashlink-0.12.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.hashlink-0.12.1.bazel"),
     )
 
     maybe(
@@ -1827,16 +1813,6 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__home-0.5.12",
-        sha256 = "cc627f471c528ff0c4a49e1d5e60450c8f6461dd6d10ba9dcd3a61d3dff7728d",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/home/0.5.12/download"],
-        strip_prefix = "home-0.5.12",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.home-0.5.12.bazel"),
-    )
-
-    maybe(
-        http_archive,
         name = "vendor_ts__iana-time-zone-0.1.65",
         sha256 = "e31bc9ad994ba00e440a8aa5c9ef0ec67d5cb5e5cb0cc7f8b744a35b389cc470",
         type = "tar.gz",
@@ -1853,16 +1829,6 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/iana-time-zone-haiku/0.1.2/download"],
         strip_prefix = "iana-time-zone-haiku-0.1.2",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.iana-time-zone-haiku-0.1.2.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__id-arena-2.3.0",
-        sha256 = "3d3067d79b975e8844ca9eb072e16b31c3c1c36928edf9c6789548c524d0d954",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/id-arena/2.3.0/download"],
-        strip_prefix = "id-arena-2.3.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.id-arena-2.3.0.bazel"),
     )
 
     maybe(
@@ -1917,22 +1883,22 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__inotify-sys-0.1.5",
-        sha256 = "e05c02b5e89bff3b946cedeca278abc628fe811e604f027c45a8aa3cf793d0eb",
+        name = "vendor_ts__inotify-sys-0.1.8",
+        sha256 = "c033f80b2c113cdf91ab7a33faa9cbc014726dcad99880c8609af2a370edf37d",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/inotify-sys/0.1.5/download"],
-        strip_prefix = "inotify-sys-0.1.5",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.inotify-sys-0.1.5.bazel"),
+        urls = ["https://static.crates.io/crates/inotify-sys/0.1.8/download"],
+        strip_prefix = "inotify-sys-0.1.8",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.inotify-sys-0.1.8.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__intrusive-collections-0.9.7",
-        sha256 = "189d0897e4cbe8c75efedf3502c18c887b05046e59d28404d4d8e46cbc4d1e86",
+        name = "vendor_ts__intrusive-collections-0.10.3",
+        sha256 = "4275b20e6057cd7733fd8df8a5a31701e4fe44497dad0f3fa0e1c4fb971506be",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/intrusive-collections/0.9.7/download"],
-        strip_prefix = "intrusive-collections-0.9.7",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.intrusive-collections-0.9.7.bazel"),
+        urls = ["https://static.crates.io/crates/intrusive-collections/0.10.3/download"],
+        strip_prefix = "intrusive-collections-0.10.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.intrusive-collections-0.10.3.bazel"),
     )
 
     maybe(
@@ -1957,12 +1923,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__itertools-0.14.0",
-        sha256 = "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285",
+        name = "vendor_ts__itertools-0.15.0",
+        sha256 = "8b4baf93f58d4425749ca49a51c50ebab072c5df6994d08fed93541c331481dc",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/itertools/0.14.0/download"],
-        strip_prefix = "itertools-0.14.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.itertools-0.14.0.bazel"),
+        urls = ["https://static.crates.io/crates/itertools/0.15.0/download"],
+        strip_prefix = "itertools-0.15.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.itertools-0.15.0.bazel"),
     )
 
     maybe(
@@ -1977,12 +1943,62 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__jobserver-0.1.34",
-        sha256 = "9afb3de4395d6b3e67a780b6de64b51c978ecf11cb9a462c66be7d4ca9039d33",
+        name = "vendor_ts__jiff-0.2.35",
+        sha256 = "668b7183bd07af9a4885f5c35b0cc5c83c4607a913c16b7e17291832910d2dcc",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/jobserver/0.1.34/download"],
-        strip_prefix = "jobserver-0.1.34",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.jobserver-0.1.34.bazel"),
+        urls = ["https://static.crates.io/crates/jiff/0.2.35/download"],
+        strip_prefix = "jiff-0.2.35",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.jiff-0.2.35.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__jiff-core-0.1.0",
+        sha256 = "7feca88439efe53da3754500c1851dedf3cb36c524dd5cf8225cc0794de95d09",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/jiff-core/0.1.0/download"],
+        strip_prefix = "jiff-core-0.1.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.jiff-core-0.1.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__jiff-static-0.2.35",
+        sha256 = "3a69dcb3a21cfb32ce1cd056169337ca284af0766dd766e7878819b251a49204",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/jiff-static/0.2.35/download"],
+        strip_prefix = "jiff-static-0.2.35",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.jiff-static-0.2.35.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__jiff-tzdb-0.1.8",
+        sha256 = "142bd39932ad231f10513df9ab62661fead8719872150b7ad02a2df79f4e141e",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/jiff-tzdb/0.1.8/download"],
+        strip_prefix = "jiff-tzdb-0.1.8",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.jiff-tzdb-0.1.8.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__jiff-tzdb-platform-0.1.3",
+        sha256 = "875a5a69ac2bab1a891711cf5eccbec1ce0341ea805560dcd90b7a2e925132e8",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/jiff-tzdb-platform/0.1.3/download"],
+        strip_prefix = "jiff-tzdb-platform-0.1.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.jiff-tzdb-platform-0.1.3.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__jobserver-0.1.35",
+        sha256 = "1c00acbd29eabad4a2392fa0e921c874934dbbf4194312ad20f04a0ed67a3cb3",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/jobserver/0.1.35/download"],
+        strip_prefix = "jobserver-0.1.35",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.jobserver-0.1.35.bazel"),
     )
 
     maybe(
@@ -1997,22 +2013,22 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__js-sys-0.3.98",
-        sha256 = "67df7112613f8bfd9150013a0314e196f4800d3201ae742489d999db2f979f08",
+        name = "vendor_ts__js-sys-0.3.103",
+        sha256 = "53b44bfcdb3f8d5837a46dae1ca9660a837176eee74a28b229bc626816589102",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/js-sys/0.3.98/download"],
-        strip_prefix = "js-sys-0.3.98",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.js-sys-0.3.98.bazel"),
+        urls = ["https://static.crates.io/crates/js-sys/0.3.103/download"],
+        strip_prefix = "js-sys-0.3.103",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.js-sys-0.3.103.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__kqueue-1.1.1",
-        sha256 = "eac30106d7dce88daf4a3fcb4879ea939476d5074a9b7ddd0fb97fa4bed5596a",
+        name = "vendor_ts__kqueue-1.2.0",
+        sha256 = "273c0752728918e0ac4976f2b275b6fefb9ecd400585dec929419f3844cd87b5",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/kqueue/1.1.1/download"],
-        strip_prefix = "kqueue-1.1.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.kqueue-1.1.1.bazel"),
+        urls = ["https://static.crates.io/crates/kqueue/1.2.0/download"],
+        strip_prefix = "kqueue-1.2.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.kqueue-1.2.0.bazel"),
     )
 
     maybe(
@@ -2047,22 +2063,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__leb128fmt-0.1.0",
-        sha256 = "09edd9e8b54e49e587e4f6295a7d29c3ea94d469cb40ab8ca70b288248a81db2",
+        name = "vendor_ts__libc-0.2.189",
+        sha256 = "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/leb128fmt/0.1.0/download"],
-        strip_prefix = "leb128fmt-0.1.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.leb128fmt-0.1.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__libc-0.2.186",
-        sha256 = "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/libc/0.2.186/download"],
-        strip_prefix = "libc-0.2.186",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.libc-0.2.186.bazel"),
+        urls = ["https://static.crates.io/crates/libc/0.2.189/download"],
+        strip_prefix = "libc-0.2.189",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.libc-0.2.189.bazel"),
     )
 
     maybe(
@@ -2097,12 +2103,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__log-0.4.29",
-        sha256 = "5e5032e24019045c762d3c0f28f5b6b8bbf38563a65908389bf7978758920897",
+        name = "vendor_ts__log-0.4.33",
+        sha256 = "0ceec5bc11778974d1bcb055b18002eba7f4b3518b6a0081b3af5f21666da9ad",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/log/0.4.29/download"],
-        strip_prefix = "log-0.4.29",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.log-0.4.29.bazel"),
+        urls = ["https://static.crates.io/crates/log/0.4.33/download"],
+        strip_prefix = "log-0.4.33",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.log-0.4.33.bazel"),
     )
 
     maybe(
@@ -2117,12 +2123,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__memchr-2.8.0",
-        sha256 = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79",
+        name = "vendor_ts__memchr-2.8.3",
+        sha256 = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/memchr/2.8.0/download"],
-        strip_prefix = "memchr-2.8.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.memchr-2.8.0.bazel"),
+        urls = ["https://static.crates.io/crates/memchr/2.8.3/download"],
+        strip_prefix = "memchr-2.8.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.memchr-2.8.3.bazel"),
     )
 
     maybe(
@@ -2147,12 +2153,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__mio-1.2.0",
-        sha256 = "50b7e5b27aa02a74bac8c3f23f448f8d87ff11f92d3aac1a6ed369ee08cc56c1",
+        name = "vendor_ts__mio-1.2.2",
+        sha256 = "30d65c71f1ce40ab09135ce117d742b9f8a19ff91a41a8b57ed50bc2de59c427",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/mio/1.2.0/download"],
-        strip_prefix = "mio-1.2.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.mio-1.2.0.bazel"),
+        urls = ["https://static.crates.io/crates/mio/1.2.2/download"],
+        strip_prefix = "mio-1.2.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.mio-1.2.2.bazel"),
     )
 
     maybe(
@@ -2387,12 +2393,22 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__portable-atomic-1.13.1",
-        sha256 = "c33a9471896f1c69cecef8d20cbe2f7accd12527ce60845ff44c153bb2a21b49",
+        name = "vendor_ts__portable-atomic-1.14.0",
+        sha256 = "3d20d5497ef88037a52ff98267d066e7f11fcc5e99bbfbd58a42336193aacec3",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/portable-atomic/1.13.1/download"],
-        strip_prefix = "portable-atomic-1.13.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.portable-atomic-1.13.1.bazel"),
+        urls = ["https://static.crates.io/crates/portable-atomic/1.14.0/download"],
+        strip_prefix = "portable-atomic-1.14.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.portable-atomic-1.14.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__portable-atomic-util-0.2.7",
+        sha256 = "c2a106d1259c23fac8e543272398ae0e3c0b8d33c88ed73d0cc71b0f1d902618",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/portable-atomic-util/0.2.7/download"],
+        strip_prefix = "portable-atomic-util-0.2.7",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.portable-atomic-util-0.2.7.bazel"),
     )
 
     maybe(
@@ -2417,22 +2433,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__prettyplease-0.2.37",
-        sha256 = "479ca8adacdd7ce8f1fb39ce9ecccbfe93a3f1344b3d0d97f20bc0196208f62b",
+        name = "vendor_ts__proc-macro2-1.0.107",
+        sha256 = "985e7ec9bb745e6ce6535b544d84d6cd6f7ad8bd711c398938ae983b91a766d9",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/prettyplease/0.2.37/download"],
-        strip_prefix = "prettyplease-0.2.37",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.prettyplease-0.2.37.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__proc-macro2-1.0.106",
-        sha256 = "8fd00f0bb2e90d81d1044c2b32617f68fcb9fa3bb7640c23e9c748e53fb30934",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/proc-macro2/1.0.106/download"],
-        strip_prefix = "proc-macro2-1.0.106",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.proc-macro2-1.0.106.bazel"),
+        urls = ["https://static.crates.io/crates/proc-macro2/1.0.107/download"],
+        strip_prefix = "proc-macro2-1.0.107",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.proc-macro2-1.0.107.bazel"),
     )
 
     maybe(
@@ -2447,22 +2453,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__quote-1.0.45",
-        sha256 = "41f2619966050689382d2b44f664f4bc593e129785a36d6ee376ddf37259b924",
+        name = "vendor_ts__quote-1.0.47",
+        sha256 = "1fbf4db142a473a8d80c26bbf18454ed458bf8d26c8219c331daecfdbd079001",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/quote/1.0.45/download"],
-        strip_prefix = "quote-1.0.45",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.quote-1.0.45.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__r-efi-5.3.0",
-        sha256 = "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/r-efi/5.3.0/download"],
-        strip_prefix = "r-efi-5.3.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.r-efi-5.3.0.bazel"),
+        urls = ["https://static.crates.io/crates/quote/1.0.47/download"],
+        strip_prefix = "quote-1.0.47",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.quote-1.0.47.bazel"),
     )
 
     maybe(
@@ -2477,402 +2473,392 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra-ap-rustc_abi-0.143.0",
-        sha256 = "1d49dbe5d570793b3c3227972a6ac85fc3e830f09b32c3cb3b68cfceebad3b0a",
+        name = "vendor_ts__ra-ap-rustc_abi-0.166.0",
+        sha256 = "e2cf1b1ffe31b6226c00b40cddfda65002b7729f9f4ed2d547b5856cdab0011c",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra-ap-rustc_abi/0.143.0/download"],
-        strip_prefix = "ra-ap-rustc_abi-0.143.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_abi-0.143.0.bazel"),
+        urls = ["https://static.crates.io/crates/ra-ap-rustc_abi/0.166.0/download"],
+        strip_prefix = "ra-ap-rustc_abi-0.166.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_abi-0.166.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra-ap-rustc_ast_ir-0.143.0",
-        sha256 = "cd0956db62c264a899d15667993cbbd2e8f0b02108712217e2579c61ac30b94b",
+        name = "vendor_ts__ra-ap-rustc_ast_ir-0.166.0",
+        sha256 = "2ef42605e36e1305e815ccfc8830eb870f74d78534bca19a61629149536d8e98",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra-ap-rustc_ast_ir/0.143.0/download"],
-        strip_prefix = "ra-ap-rustc_ast_ir-0.143.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_ast_ir-0.143.0.bazel"),
+        urls = ["https://static.crates.io/crates/ra-ap-rustc_ast_ir/0.166.0/download"],
+        strip_prefix = "ra-ap-rustc_ast_ir-0.166.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_ast_ir-0.166.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra-ap-rustc_hashes-0.143.0",
-        sha256 = "7df512084c24f4c96c8cc9a59cbd264301efbc8913d3759b065398024af316c9",
+        name = "vendor_ts__ra-ap-rustc_hashes-0.166.0",
+        sha256 = "b9f5542968215c17275920791b2fa13a43014287506ed0450777c79845102e86",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra-ap-rustc_hashes/0.143.0/download"],
-        strip_prefix = "ra-ap-rustc_hashes-0.143.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_hashes-0.143.0.bazel"),
+        urls = ["https://static.crates.io/crates/ra-ap-rustc_hashes/0.166.0/download"],
+        strip_prefix = "ra-ap-rustc_hashes-0.166.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_hashes-0.166.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra-ap-rustc_index-0.143.0",
-        sha256 = "bca3a49a928d38ba7927605e5909b6abe77d09ff359e4695c070c3f91d69cc8a",
+        name = "vendor_ts__ra-ap-rustc_index-0.166.0",
+        sha256 = "1d9e47b9ca7d92cfb0d6653503adbabd41938b84474317397a664326b208d6c6",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra-ap-rustc_index/0.143.0/download"],
-        strip_prefix = "ra-ap-rustc_index-0.143.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_index-0.143.0.bazel"),
+        urls = ["https://static.crates.io/crates/ra-ap-rustc_index/0.166.0/download"],
+        strip_prefix = "ra-ap-rustc_index-0.166.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_index-0.166.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra-ap-rustc_index_macros-0.143.0",
-        sha256 = "4463e908a62c64c2a65c1966c2f4995d0e1f8b7dfc85a8b8de2562edf3d89070",
+        name = "vendor_ts__ra-ap-rustc_index_macros-0.166.0",
+        sha256 = "4d744a7a2852a22f06210bcff9e4667ed0cacbfbe94894cc294044d25e876341",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra-ap-rustc_index_macros/0.143.0/download"],
-        strip_prefix = "ra-ap-rustc_index_macros-0.143.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_index_macros-0.143.0.bazel"),
+        urls = ["https://static.crates.io/crates/ra-ap-rustc_index_macros/0.166.0/download"],
+        strip_prefix = "ra-ap-rustc_index_macros-0.166.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_index_macros-0.166.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra-ap-rustc_lexer-0.143.0",
-        sha256 = "228e01e1b237adb4bd8793487e1c37019c1e526a8f93716d99602301be267056",
+        name = "vendor_ts__ra-ap-rustc_lexer-0.166.0",
+        sha256 = "527c12b3731b7d0692498012810b85b2b8dfdb8b514321ed6afc434bd1c70191",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra-ap-rustc_lexer/0.143.0/download"],
-        strip_prefix = "ra-ap-rustc_lexer-0.143.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_lexer-0.143.0.bazel"),
+        urls = ["https://static.crates.io/crates/ra-ap-rustc_lexer/0.166.0/download"],
+        strip_prefix = "ra-ap-rustc_lexer-0.166.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_lexer-0.166.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra-ap-rustc_next_trait_solver-0.143.0",
-        sha256 = "10d6f91143011d474bb844d268b0784c6a4c6db57743558b83f5ad34511627f1",
+        name = "vendor_ts__ra-ap-rustc_next_trait_solver-0.166.0",
+        sha256 = "a7a9663a8d7c369e934aac2b74a638537ad7eb4be75b4530d765384dc071c936",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra-ap-rustc_next_trait_solver/0.143.0/download"],
-        strip_prefix = "ra-ap-rustc_next_trait_solver-0.143.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_next_trait_solver-0.143.0.bazel"),
+        urls = ["https://static.crates.io/crates/ra-ap-rustc_next_trait_solver/0.166.0/download"],
+        strip_prefix = "ra-ap-rustc_next_trait_solver-0.166.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_next_trait_solver-0.166.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra-ap-rustc_parse_format-0.143.0",
-        sha256 = "37fa8effbc436c0ddd9d7b1421aa3cccf8b94566c841c4e4aa3e09063b8f423f",
+        name = "vendor_ts__ra-ap-rustc_parse_format-0.166.0",
+        sha256 = "2c038b7a8b0f784d4e441ad8ab991fbbdaa5e0be482e59c639a846a1c8126951",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra-ap-rustc_parse_format/0.143.0/download"],
-        strip_prefix = "ra-ap-rustc_parse_format-0.143.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_parse_format-0.143.0.bazel"),
+        urls = ["https://static.crates.io/crates/ra-ap-rustc_parse_format/0.166.0/download"],
+        strip_prefix = "ra-ap-rustc_parse_format-0.166.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_parse_format-0.166.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra-ap-rustc_pattern_analysis-0.143.0",
-        sha256 = "883c843fc27847ad03b8e772dd4a2d2728af4333a6d6821a22dfcfe7136dff3e",
+        name = "vendor_ts__ra-ap-rustc_pattern_analysis-0.166.0",
+        sha256 = "42ca286f90e99bb97cd9274c088f3c874a05d1ee90cabf40a3928afedabe99fd",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra-ap-rustc_pattern_analysis/0.143.0/download"],
-        strip_prefix = "ra-ap-rustc_pattern_analysis-0.143.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_pattern_analysis-0.143.0.bazel"),
+        urls = ["https://static.crates.io/crates/ra-ap-rustc_pattern_analysis/0.166.0/download"],
+        strip_prefix = "ra-ap-rustc_pattern_analysis-0.166.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_pattern_analysis-0.166.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra-ap-rustc_type_ir-0.143.0",
-        sha256 = "a86e33c46b2b261a173b23f207461a514812a8b2d2d7935bbc685f733eacce10",
+        name = "vendor_ts__ra-ap-rustc_type_ir-0.166.0",
+        sha256 = "26d6efb6008f665a9485e0afecf9f4950a6c4bedd8ddd330a9df8986a6c0160b",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra-ap-rustc_type_ir/0.143.0/download"],
-        strip_prefix = "ra-ap-rustc_type_ir-0.143.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_type_ir-0.143.0.bazel"),
+        urls = ["https://static.crates.io/crates/ra-ap-rustc_type_ir/0.166.0/download"],
+        strip_prefix = "ra-ap-rustc_type_ir-0.166.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_type_ir-0.166.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra-ap-rustc_type_ir_macros-0.143.0",
-        sha256 = "15034c2fcaa5cf302aea6db20eda0f71fffeb0b372d6073cc50f940e974a2a47",
+        name = "vendor_ts__ra-ap-rustc_type_ir_macros-0.166.0",
+        sha256 = "5f4fd2355e2bbf1f343c730f623596efc6e465b5e3685b606a437567ebb75bf8",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra-ap-rustc_type_ir_macros/0.143.0/download"],
-        strip_prefix = "ra-ap-rustc_type_ir_macros-0.143.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_type_ir_macros-0.143.0.bazel"),
+        urls = ["https://static.crates.io/crates/ra-ap-rustc_type_ir_macros/0.166.0/download"],
+        strip_prefix = "ra-ap-rustc_type_ir_macros-0.166.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra-ap-rustc_type_ir_macros-0.166.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_base_db-0.0.328",
-        sha256 = "b1567168e7c7b50acf2ffb87bde8937986d4f41c777a2c308298ede9d555c96c",
+        name = "vendor_ts__ra_ap_base_db-0.0.347",
+        sha256 = "7ea804efdf7c1fdbdac7c1b08002700a6f2930590399abcf84d55b4d4a894116",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_base_db/0.0.328/download"],
-        strip_prefix = "ra_ap_base_db-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_base_db-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_base_db/0.0.347/download"],
+        strip_prefix = "ra_ap_base_db-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_base_db-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_cfg-0.0.328",
-        sha256 = "1e1fc8d53014b0ec4c06c9dbf0a810ccd67b3a96de4ef06bd1a248c2295b6a37",
+        name = "vendor_ts__ra_ap_cfg-0.0.347",
+        sha256 = "c50ba7c60bc08ef48d2a930c5f897349fb0a72cf53e86c0374476f2583d1f098",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_cfg/0.0.328/download"],
-        strip_prefix = "ra_ap_cfg-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_cfg-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_cfg/0.0.347/download"],
+        strip_prefix = "ra_ap_cfg-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_cfg-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_edition-0.0.328",
-        sha256 = "627a8ce8e870632395b7bf053c93039a3d91dda744ccae166ac83650572cfaa2",
+        name = "vendor_ts__ra_ap_edition-0.0.347",
+        sha256 = "238a2d0108f16fe859e369c5aba251abccd10fae513391ee4d119ac6a48ffec7",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_edition/0.0.328/download"],
-        strip_prefix = "ra_ap_edition-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_edition-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_edition/0.0.347/download"],
+        strip_prefix = "ra_ap_edition-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_edition-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_hir-0.0.328",
-        sha256 = "b77616ef81f690a3eba4befd32112780b99f052676b0e7686a22bf79f3fbe2a8",
+        name = "vendor_ts__ra_ap_hir-0.0.347",
+        sha256 = "9b0ff8d334193f5535c13a6749d2ed8ee4c417f75a2a92ffff24eee475097fdd",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_hir/0.0.328/download"],
-        strip_prefix = "ra_ap_hir-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_hir-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_hir/0.0.347/download"],
+        strip_prefix = "ra_ap_hir-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_hir-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_hir_def-0.0.328",
-        sha256 = "81504dd727efbaf48704a9c0e18e6491cb9848428376ad37146f37f63571ab3c",
+        name = "vendor_ts__ra_ap_hir_def-0.0.347",
+        sha256 = "41d0148d0b1f176f27d55df6ac6dc662ed65c55cae367aeb9f30472879626cd5",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_hir_def/0.0.328/download"],
-        strip_prefix = "ra_ap_hir_def-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_hir_def-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_hir_def/0.0.347/download"],
+        strip_prefix = "ra_ap_hir_def-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_hir_def-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_hir_expand-0.0.328",
-        sha256 = "9980623345a88d4431ce80331e640c494e2e59303e82a2cb1290b4684efdc6e5",
+        name = "vendor_ts__ra_ap_hir_expand-0.0.347",
+        sha256 = "b494d16c4a066ffe135ef730b01806539e87d4e5bb26acbd7cf9ccd2ffb238df",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_hir_expand/0.0.328/download"],
-        strip_prefix = "ra_ap_hir_expand-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_hir_expand-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_hir_expand/0.0.347/download"],
+        strip_prefix = "ra_ap_hir_expand-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_hir_expand-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_hir_ty-0.0.328",
-        sha256 = "b822d1b9f0168281bbba34e0c5abada891fa9fc5e0b54e86493e8b075a877973",
+        name = "vendor_ts__ra_ap_hir_ty-0.0.347",
+        sha256 = "106393ec163f4cb9537721a04cd5e4d5ec642602c46f524e65a31a431be10269",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_hir_ty/0.0.328/download"],
-        strip_prefix = "ra_ap_hir_ty-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_hir_ty-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_hir_ty/0.0.347/download"],
+        strip_prefix = "ra_ap_hir_ty-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_hir_ty-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_ide_db-0.0.328",
-        sha256 = "0e250964a32be6c74f1f72e0fd8aea08aaed0535d85a7fd315fe442942185da0",
+        name = "vendor_ts__ra_ap_ide_db-0.0.347",
+        sha256 = "c3ea305ce763f44928d29766c165982dd0a1c9fdba429296889d9e8e64dd28a5",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_ide_db/0.0.328/download"],
-        strip_prefix = "ra_ap_ide_db-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_ide_db-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_ide_db/0.0.347/download"],
+        strip_prefix = "ra_ap_ide_db-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_ide_db-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_intern-0.0.328",
-        sha256 = "df7edf9d14d093b4314b43ed75eaf56d47d870a09b8d0e0e67d17919c30bfb0f",
+        name = "vendor_ts__ra_ap_intern-0.0.347",
+        sha256 = "0a6be54b5f8a47e4aee183dd985440bb2e46d587270f63a6fcb03409a0de7054",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_intern/0.0.328/download"],
-        strip_prefix = "ra_ap_intern-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_intern-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_intern/0.0.347/download"],
+        strip_prefix = "ra_ap_intern-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_intern-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_load-cargo-0.0.328",
-        sha256 = "184cdaabfb66948938aa4b73ee24f7fa57c1292292c1d87bcad2c616cbd254ea",
+        name = "vendor_ts__ra_ap_load-cargo-0.0.347",
+        sha256 = "96a50dad86901f2f0dab1e54ccf2dd43ce3bcb934bcaae1c3fa4884a1c45f77a",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_load-cargo/0.0.328/download"],
-        strip_prefix = "ra_ap_load-cargo-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_load-cargo-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_load-cargo/0.0.347/download"],
+        strip_prefix = "ra_ap_load-cargo-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_load-cargo-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_macros-0.0.328",
-        sha256 = "fd338f982b2f7438ee89ca2429ad7181f2f0751fa6b98d8275905c97e2fb8361",
+        name = "vendor_ts__ra_ap_macros-0.0.347",
+        sha256 = "478606f8a75d1c4f8e6bfd4874ecf56303a690e270cffbd82e9fb700637500c5",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_macros/0.0.328/download"],
-        strip_prefix = "ra_ap_macros-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_macros-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_macros/0.0.347/download"],
+        strip_prefix = "ra_ap_macros-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_macros-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_mbe-0.0.328",
-        sha256 = "81d4c7114f2363c05b6dc7f5f6cdd6c9d6a1ba63410b0cdc80c81d1414da7c72",
+        name = "vendor_ts__ra_ap_mbe-0.0.347",
+        sha256 = "c8d1b45159a9f2e6d61bec480d49a5d2c4a1c8215a75f01cf1d6ae7042cc0330",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_mbe/0.0.328/download"],
-        strip_prefix = "ra_ap_mbe-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_mbe-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_mbe/0.0.347/download"],
+        strip_prefix = "ra_ap_mbe-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_mbe-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_parser-0.0.328",
-        sha256 = "c9851f3b6e93971e6c3957966a07154bc35e0f91c0a6980ad71965620df6f737",
+        name = "vendor_ts__ra_ap_parser-0.0.347",
+        sha256 = "8bdb9f2e027f40bbaeff62c026e1affabe691467c0553857f6eb7e36093c5b6f",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_parser/0.0.328/download"],
-        strip_prefix = "ra_ap_parser-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_parser-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_parser/0.0.347/download"],
+        strip_prefix = "ra_ap_parser-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_parser-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_paths-0.0.328",
-        sha256 = "506bbef9963ca9275dd50f5876d68e32a58d47a369ea10bce2be1c758b081c42",
+        name = "vendor_ts__ra_ap_paths-0.0.347",
+        sha256 = "36bc14237aa65d051028cbb54b0a0e0a1d53487b3f647c2b11667870720af9db",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_paths/0.0.328/download"],
-        strip_prefix = "ra_ap_paths-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_paths-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_paths/0.0.347/download"],
+        strip_prefix = "ra_ap_paths-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_paths-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_proc_macro_api-0.0.328",
-        sha256 = "18e0229d5c7daa016a8f4f735194e68baf34ca18b73982ae036a8217874f32e9",
+        name = "vendor_ts__ra_ap_proc_macro_api-0.0.347",
+        sha256 = "3c56d7dacb79f01f5d9ab0a25b232acf37d3104d176e67d2985e9e389834c553",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_proc_macro_api/0.0.328/download"],
-        strip_prefix = "ra_ap_proc_macro_api-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_proc_macro_api-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_proc_macro_api/0.0.347/download"],
+        strip_prefix = "ra_ap_proc_macro_api-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_proc_macro_api-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_profile-0.0.328",
-        sha256 = "b251c30d8e4df3902a92d10c4899e43403921f72aef12afa2f027a77e4898950",
+        name = "vendor_ts__ra_ap_profile-0.0.347",
+        sha256 = "6f6a81ebc5ef6f42d86ac8d20c82d4132010f28af93da37f08d127eeea24b852",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_profile/0.0.328/download"],
-        strip_prefix = "ra_ap_profile-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_profile-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_profile/0.0.347/download"],
+        strip_prefix = "ra_ap_profile-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_profile-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_project_model-0.0.328",
-        sha256 = "2b04624412e45c7b0f792859be553182ea2360d8a24bf7162ca212840e683a24",
+        name = "vendor_ts__ra_ap_project_model-0.0.347",
+        sha256 = "9cf562304b786b7fa9089d2e0ae489d73abbda1732b0a820977a6fa7f9f5db0c",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_project_model/0.0.328/download"],
-        strip_prefix = "ra_ap_project_model-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_project_model-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_project_model/0.0.347/download"],
+        strip_prefix = "ra_ap_project_model-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_project_model-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_query-group-macro-0.0.328",
-        sha256 = "770079ca5addde33d31b7f3fa8d399f0dc29c26f69642a9d5c2a5e623d8af64d",
+        name = "vendor_ts__ra_ap_span-0.0.347",
+        sha256 = "6358a99deb3e9564a3702731031bd6a59ab6843258f56697971c2591d142aa8a",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_query-group-macro/0.0.328/download"],
-        strip_prefix = "ra_ap_query-group-macro-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_query-group-macro-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_span/0.0.347/download"],
+        strip_prefix = "ra_ap_span-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_span-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_span-0.0.328",
-        sha256 = "80a523bc8c85155ccd1db35b6855d37729d339c572b7fc0801c459bb8218976b",
+        name = "vendor_ts__ra_ap_stdx-0.0.347",
+        sha256 = "808a663a921ead35b75a74a2eebe7ab84e5ced29c594e9bf3c77914caf8b77c0",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_span/0.0.328/download"],
-        strip_prefix = "ra_ap_span-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_span-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_stdx/0.0.347/download"],
+        strip_prefix = "ra_ap_stdx-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_stdx-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_stdx-0.0.328",
-        sha256 = "eb22b95e21d08060860056c86af1b47b2cecbac5422baa112d9d138e97c3671a",
+        name = "vendor_ts__ra_ap_syntax-0.0.347",
+        sha256 = "733ea008d3847dac53a6463689fd595a1d9459db09b1dc2306f2293dc130f586",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_stdx/0.0.328/download"],
-        strip_prefix = "ra_ap_stdx-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_stdx-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_syntax/0.0.347/download"],
+        strip_prefix = "ra_ap_syntax-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_syntax-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_syntax-0.0.328",
-        sha256 = "ba3d9c469b5635401647b69e01a9930746f08a3cac51d04ad5ae99e66bdd643f",
+        name = "vendor_ts__ra_ap_syntax-bridge-0.0.347",
+        sha256 = "f1ea2603396e114a6db5145508242ce9d238983533e3bdc4019cb473247c5e07",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_syntax/0.0.328/download"],
-        strip_prefix = "ra_ap_syntax-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_syntax-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_syntax-bridge/0.0.347/download"],
+        strip_prefix = "ra_ap_syntax-bridge-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_syntax-bridge-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_syntax-bridge-0.0.328",
-        sha256 = "b4d3f2e2a1836eeedc2ed2810ece4cdf7ea42284f71b7031eac8448c1cb95b09",
+        name = "vendor_ts__ra_ap_test_fixture-0.0.347",
+        sha256 = "77da42ce97d6b9de208c9e9fba23244da564130ee0d892af03d0a6eb72ba8672",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_syntax-bridge/0.0.328/download"],
-        strip_prefix = "ra_ap_syntax-bridge-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_syntax-bridge-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_test_fixture/0.0.347/download"],
+        strip_prefix = "ra_ap_test_fixture-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_test_fixture-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_test_fixture-0.0.328",
-        sha256 = "21d6d353373b4f28f2236ed7843bcee0e4dd0e6a12b339da874460bbefd070ab",
+        name = "vendor_ts__ra_ap_test_utils-0.0.347",
+        sha256 = "fdfcc378493db43a2b837d9cd62c4c91c5d33302ae639b3dbf6d56ed97df6e63",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_test_fixture/0.0.328/download"],
-        strip_prefix = "ra_ap_test_fixture-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_test_fixture-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_test_utils/0.0.347/download"],
+        strip_prefix = "ra_ap_test_utils-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_test_utils-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_test_utils-0.0.328",
-        sha256 = "57d10cbb0402abee7034de5d90ddf7e380d1e21ad0e1dcd2db92c3c87df78723",
+        name = "vendor_ts__ra_ap_toolchain-0.0.347",
+        sha256 = "5f7748b05a913c21f6182b4c2d7c7009251938b8eb01a2b96e61d0c7ca4aacc2",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_test_utils/0.0.328/download"],
-        strip_prefix = "ra_ap_test_utils-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_test_utils-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_toolchain/0.0.347/download"],
+        strip_prefix = "ra_ap_toolchain-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_toolchain-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_toolchain-0.0.328",
-        sha256 = "2fed946c88a9dfa93de7a376a06493c5377a1052ac666ab9e1155f4ea57271c9",
+        name = "vendor_ts__ra_ap_tt-0.0.347",
+        sha256 = "babe00307d454b585a66e51f1fe6ccdfd1f82a200ef75374c80e843520cb3f7f",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_toolchain/0.0.328/download"],
-        strip_prefix = "ra_ap_toolchain-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_toolchain-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_tt/0.0.347/download"],
+        strip_prefix = "ra_ap_tt-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_tt-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_tt-0.0.328",
-        sha256 = "96dfc20add2675d38240a7815755b54f514d91b9dc0336cb3d024901af4faeef",
+        name = "vendor_ts__ra_ap_vfs-0.0.347",
+        sha256 = "a730486f6595655431750c15faf4332603ad30f0460e7c89bbee79880416794b",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_tt/0.0.328/download"],
-        strip_prefix = "ra_ap_tt-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_tt-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_vfs/0.0.347/download"],
+        strip_prefix = "ra_ap_vfs-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_vfs-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_vfs-0.0.328",
-        sha256 = "d69bc10b59435e4d989d10bc0b602a5bd70e1dcc2c5d8513b10585d9e778b440",
+        name = "vendor_ts__ra_ap_vfs-notify-0.0.347",
+        sha256 = "ede5e2c51dd3a138039d2f1c4dc33709cebb1c4e00692f8026de833844ad375f",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_vfs/0.0.328/download"],
-        strip_prefix = "ra_ap_vfs-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_vfs-0.0.328.bazel"),
+        urls = ["https://static.crates.io/crates/ra_ap_vfs-notify/0.0.347/download"],
+        strip_prefix = "ra_ap_vfs-notify-0.0.347",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_vfs-notify-0.0.347.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ra_ap_vfs-notify-0.0.328",
-        sha256 = "07f7f31bb0c5744ba1fe1b1460eeb62274110dfb94e4b6719cf2e7df9410032d",
+        name = "vendor_ts__rand-0.10.2",
+        sha256 = "c7f5fa3a058cd35567ef9bfa5e75732bee0f9e4c55fa90477bef2dfcdbc4be80",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ra_ap_vfs-notify/0.0.328/download"],
-        strip_prefix = "ra_ap_vfs-notify-0.0.328",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ra_ap_vfs-notify-0.0.328.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__rand-0.10.1",
-        sha256 = "d2e8e8bcc7961af1fdac401278c6a831614941f6164ee3bf4ce61b7edb162207",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/rand/0.10.1/download"],
-        strip_prefix = "rand-0.10.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rand-0.10.1.bazel"),
+        urls = ["https://static.crates.io/crates/rand/0.10.2/download"],
+        strip_prefix = "rand-0.10.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rand-0.10.2.bazel"),
     )
 
     maybe(
@@ -2917,62 +2903,62 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__ref-cast-1.0.25",
-        sha256 = "f354300ae66f76f1c85c5f84693f0ce81d747e2c3f21a45fef496d89c960bf7d",
+        name = "vendor_ts__ref-cast-1.0.26",
+        sha256 = "216e8f773d7923bcba9ceb86a86c93cabb3903a11872fc3f138c49630e50b96d",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ref-cast/1.0.25/download"],
-        strip_prefix = "ref-cast-1.0.25",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ref-cast-1.0.25.bazel"),
+        urls = ["https://static.crates.io/crates/ref-cast/1.0.26/download"],
+        strip_prefix = "ref-cast-1.0.26",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ref-cast-1.0.26.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__ref-cast-impl-1.0.25",
-        sha256 = "b7186006dcb21920990093f30e3dea63b7d6e977bf1256be20c3563a5db070da",
+        name = "vendor_ts__ref-cast-impl-1.0.26",
+        sha256 = "2c9283685feec7d69af75fb0e858d5e7378f33fe4fc699383b2916ab9273e03c",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ref-cast-impl/1.0.25/download"],
-        strip_prefix = "ref-cast-impl-1.0.25",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ref-cast-impl-1.0.25.bazel"),
+        urls = ["https://static.crates.io/crates/ref-cast-impl/1.0.26/download"],
+        strip_prefix = "ref-cast-impl-1.0.26",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ref-cast-impl-1.0.26.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__regex-1.12.3",
-        sha256 = "e10754a14b9137dd7b1e3e5b0493cc9171fdd105e0ab477f51b72e7f3ac0e276",
+        name = "vendor_ts__regex-1.13.1",
+        sha256 = "f020237b6c8eed93db2e2cb53c00c60a8e1bc73da7d073199a1180401450218d",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/regex/1.12.3/download"],
-        strip_prefix = "regex-1.12.3",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.regex-1.12.3.bazel"),
+        urls = ["https://static.crates.io/crates/regex/1.13.1/download"],
+        strip_prefix = "regex-1.13.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.regex-1.13.1.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__regex-automata-0.4.14",
-        sha256 = "6e1dd4122fc1595e8162618945476892eefca7b88c52820e74af6262213cae8f",
+        name = "vendor_ts__regex-automata-0.4.18",
+        sha256 = "ad8553b9b26413251cbf30e620595c7a41b3887f03da04579c0e6b0d6a06b4b2",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/regex-automata/0.4.14/download"],
-        strip_prefix = "regex-automata-0.4.14",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.regex-automata-0.4.14.bazel"),
+        urls = ["https://static.crates.io/crates/regex-automata/0.4.18/download"],
+        strip_prefix = "regex-automata-0.4.18",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.regex-automata-0.4.18.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__regex-syntax-0.8.10",
-        sha256 = "dc897dd8d9e8bd1ed8cdad82b5966c3e0ecae09fb1907d58efaa013543185d0a",
+        name = "vendor_ts__regex-syntax-0.8.11",
+        sha256 = "d6f6ff9a378485b298a5286656da665ba74413d36db0979633275d2e708145d4",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/regex-syntax/0.8.10/download"],
-        strip_prefix = "regex-syntax-0.8.10",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.regex-syntax-0.8.10.bazel"),
+        urls = ["https://static.crates.io/crates/regex-syntax/0.8.11/download"],
+        strip_prefix = "regex-syntax-0.8.11",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.regex-syntax-0.8.11.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__rowan-0.15.18",
-        sha256 = "62f509095fc8cc0c8c8564016771d458079c11a8d857e65861f045145c0d3208",
+        name = "vendor_ts__rowan-0.17.0",
+        sha256 = "14b574c58582fa59fa43a2feb6608b8744184659f08a2e0117e4b8224d95ed61",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/rowan/0.15.18/download"],
-        strip_prefix = "rowan-0.15.18",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rowan-0.15.18.bazel"),
+        urls = ["https://static.crates.io/crates/rowan/0.17.0/download"],
+        strip_prefix = "rowan-0.17.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rowan-0.17.0.bazel"),
     )
 
     maybe(
@@ -2987,32 +2973,22 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__rustc-hash-2.1.2",
-        sha256 = "94300abf3f1ae2e2b8ffb7b58043de3d399c73fa6f4b73826402a5c457614dbe",
+        name = "vendor_ts__rustc-hash-2.1.3",
+        sha256 = "6b1e7f9a428571be2dc5bc0505c13fb6bf936822b894ec87abf8a08a4e51742d",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/rustc-hash/2.1.2/download"],
-        strip_prefix = "rustc-hash-2.1.2",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rustc-hash-2.1.2.bazel"),
+        urls = ["https://static.crates.io/crates/rustc-hash/2.1.3/download"],
+        strip_prefix = "rustc-hash-2.1.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rustc-hash-2.1.3.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__rustc-literal-escaper-0.0.4",
-        sha256 = "ab03008eb631b703dd16978282ae36c73282e7922fe101a4bd072a40ecea7b8b",
+        name = "vendor_ts__rustc-literal-escaper-0.0.7",
+        sha256 = "8be87abb9e40db7466e0681dc8ecd9dcfd40360cb10b4c8fe24a7c4c3669b198",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/rustc-literal-escaper/0.0.4/download"],
-        strip_prefix = "rustc-literal-escaper-0.0.4",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rustc-literal-escaper-0.0.4.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__rustc-literal-escaper-0.0.5",
-        sha256 = "e4ee29da77c5a54f42697493cd4c9b9f31b74df666a6c04dfc4fde77abe0438b",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/rustc-literal-escaper/0.0.5/download"],
-        strip_prefix = "rustc-literal-escaper-0.0.5",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rustc-literal-escaper-0.0.5.bazel"),
+        urls = ["https://static.crates.io/crates/rustc-literal-escaper/0.0.7/download"],
+        strip_prefix = "rustc-literal-escaper-0.0.7",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rustc-literal-escaper-0.0.7.bazel"),
     )
 
     maybe(
@@ -3037,22 +3013,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__rustc_version-0.4.1",
-        sha256 = "cfcb3a22ef46e85b45de6ee7e79d063319ebb6594faafcf1c225ea92ab6e9b92",
+        name = "vendor_ts__rustversion-1.0.23",
+        sha256 = "cf54715a573b99ac80df0bc206da022bcd442c974952c7b9720069370852e21f",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/rustc_version/0.4.1/download"],
-        strip_prefix = "rustc_version-0.4.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rustc_version-0.4.1.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__rustversion-1.0.22",
-        sha256 = "b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/rustversion/1.0.22/download"],
-        strip_prefix = "rustversion-1.0.22",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rustversion-1.0.22.bazel"),
+        urls = ["https://static.crates.io/crates/rustversion/1.0.23/download"],
+        strip_prefix = "rustversion-1.0.23",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rustversion-1.0.23.bazel"),
     )
 
     maybe(
@@ -3067,32 +3033,32 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__salsa-0.25.2",
-        sha256 = "e2e2aa2fca57727371eeafc975acc8e6f4c52f8166a78035543f6ee1c74c2dcc",
+        name = "vendor_ts__salsa-0.28.2",
+        sha256 = "cf0e374215cd2db2b5c75d7b3a99cb0cc052c0595335dfdefc03d4eb08f4aa81",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/salsa/0.25.2/download"],
-        strip_prefix = "salsa-0.25.2",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.salsa-0.25.2.bazel"),
+        urls = ["https://static.crates.io/crates/salsa/0.28.2/download"],
+        strip_prefix = "salsa-0.28.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.salsa-0.28.2.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__salsa-macro-rules-0.25.2",
-        sha256 = "1bfc2a1e7bf06964105515451d728f2422dedc3a112383324a00b191a5c397a3",
+        name = "vendor_ts__salsa-macro-rules-0.28.2",
+        sha256 = "85f4b7d4405540bbd6d4ffa52d4322d983f3781954d3073067ac1bdb028459b3",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/salsa-macro-rules/0.25.2/download"],
-        strip_prefix = "salsa-macro-rules-0.25.2",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.salsa-macro-rules-0.25.2.bazel"),
+        urls = ["https://static.crates.io/crates/salsa-macro-rules/0.28.2/download"],
+        strip_prefix = "salsa-macro-rules-0.28.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.salsa-macro-rules-0.28.2.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__salsa-macros-0.25.2",
-        sha256 = "3d844c1aa34946da46af683b5c27ec1088a3d9d84a2b837a108223fd830220e1",
+        name = "vendor_ts__salsa-macros-0.28.2",
+        sha256 = "445be2bfbb2f67cb663225ecd7bc5a25370c0250fca30f9d8cbad9a913650370",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/salsa-macros/0.25.2/download"],
-        strip_prefix = "salsa-macros-0.25.2",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.salsa-macros-0.25.2.bazel"),
+        urls = ["https://static.crates.io/crates/salsa-macros/0.28.2/download"],
+        strip_prefix = "salsa-macros-0.28.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.salsa-macros-0.28.2.bazel"),
     )
 
     maybe(
@@ -3117,12 +3083,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__schemars-1.2.1",
-        sha256 = "a2b42f36aa1cd011945615b92222f6bf73c599a102a300334cd7f8dbeec726cc",
+        name = "vendor_ts__schemars-1.2.2",
+        sha256 = "687274d293b6cdc6e73e0fee520bf2049650090d7164f87672d212a3c530cf4a",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/schemars/1.2.1/download"],
-        strip_prefix = "schemars-1.2.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.schemars-1.2.1.bazel"),
+        urls = ["https://static.crates.io/crates/schemars/1.2.2/download"],
+        strip_prefix = "schemars-1.2.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.schemars-1.2.2.bazel"),
     )
 
     maybe(
@@ -3147,42 +3113,42 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__serde-1.0.228",
-        sha256 = "9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e",
+        name = "vendor_ts__serde-1.0.229",
+        sha256 = "4148590afebada386688f18773da617792bf2ef03ffc1e4cbd2b1d45b023e0ba",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/serde/1.0.228/download"],
-        strip_prefix = "serde-1.0.228",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde-1.0.228.bazel"),
+        urls = ["https://static.crates.io/crates/serde/1.0.229/download"],
+        strip_prefix = "serde-1.0.229",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde-1.0.229.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__serde_core-1.0.228",
-        sha256 = "41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad",
+        name = "vendor_ts__serde_core-1.0.229",
+        sha256 = "67dca2c9c51e58a4791a4b1ed58308b39c64224d349a935ab5039aa360942a48",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/serde_core/1.0.228/download"],
-        strip_prefix = "serde_core-1.0.228",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_core-1.0.228.bazel"),
+        urls = ["https://static.crates.io/crates/serde_core/1.0.229/download"],
+        strip_prefix = "serde_core-1.0.229",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_core-1.0.229.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__serde_derive-1.0.228",
-        sha256 = "d540f220d3187173da220f885ab66608367b6574e925011a9353e4badda91d79",
+        name = "vendor_ts__serde_derive-1.0.229",
+        sha256 = "e7a5d71263a5a7d47b41f6b3f06ba276f10cc18b0931f1799f710578e2309348",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/serde_derive/1.0.228/download"],
-        strip_prefix = "serde_derive-1.0.228",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_derive-1.0.228.bazel"),
+        urls = ["https://static.crates.io/crates/serde_derive/1.0.229/download"],
+        strip_prefix = "serde_derive-1.0.229",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_derive-1.0.229.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__serde_json-1.0.150",
-        sha256 = "e8014e44b4736ed0538adeecded0fce2a272f22dc9578a7eb6b2d9993c74cfb9",
+        name = "vendor_ts__serde_json-1.0.151",
+        sha256 = "c841b55ecdae098c80dcae9cf767f6f8a0c2cdb3416bbef72181df4d0fe73f14",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/serde_json/1.0.150/download"],
-        strip_prefix = "serde_json-1.0.150",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_json-1.0.150.bazel"),
+        urls = ["https://static.crates.io/crates/serde_json/1.0.151/download"],
+        strip_prefix = "serde_json-1.0.151",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_json-1.0.151.bazel"),
     )
 
     maybe(
@@ -3197,22 +3163,22 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__serde_with-3.20.0",
-        sha256 = "e72c1c2cb7b223fafb600a619537a871c2818583d619401b785e7c0b746ccde2",
+        name = "vendor_ts__serde_with-3.22.0",
+        sha256 = "ee78f1fbe43ac4a0e47aadb3dbd357b69eb0d3793e948624cd03dd2750ab1c0a",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/serde_with/3.20.0/download"],
-        strip_prefix = "serde_with-3.20.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_with-3.20.0.bazel"),
+        urls = ["https://static.crates.io/crates/serde_with/3.22.0/download"],
+        strip_prefix = "serde_with-3.22.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_with-3.22.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__serde_with_macros-3.20.0",
-        sha256 = "b90c488738ecb4fb0262f41f43bc40efc5868d9fb744319ddf5f5317f417bfac",
+        name = "vendor_ts__serde_with_macros-3.22.0",
+        sha256 = "8705578779c2b6bd90d84d66eb2e206b708b1a4d7b9f17641b293545bf1c7e46",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/serde_with_macros/3.20.0/download"],
-        strip_prefix = "serde_with_macros-3.20.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_with_macros-3.20.0.bazel"),
+        urls = ["https://static.crates.io/crates/serde_with_macros/3.22.0/download"],
+        strip_prefix = "serde_with_macros-3.22.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_with_macros-3.22.0.bazel"),
     )
 
     maybe(
@@ -3237,12 +3203,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__shlex-1.3.0",
-        sha256 = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64",
+        name = "vendor_ts__shlex-2.0.1",
+        sha256 = "f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/shlex/1.3.0/download"],
-        strip_prefix = "shlex-1.3.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.shlex-1.3.0.bazel"),
+        urls = ["https://static.crates.io/crates/shlex/2.0.1/download"],
+        strip_prefix = "shlex-2.0.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.shlex-2.0.1.bazel"),
     )
 
     maybe(
@@ -3267,12 +3233,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__smallvec-1.15.1",
-        sha256 = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03",
+        name = "vendor_ts__smallvec-1.15.2",
+        sha256 = "8ed6a63f02c8539c91a8685a86f4099661ba3da017932f6ebbea6de3f0fa7c90",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/smallvec/1.15.1/download"],
-        strip_prefix = "smallvec-1.15.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.smallvec-1.15.1.bazel"),
+        urls = ["https://static.crates.io/crates/smallvec/1.15.2/download"],
+        strip_prefix = "smallvec-1.15.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.smallvec-1.15.2.bazel"),
     )
 
     maybe(
@@ -3283,16 +3249,6 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/smol_str/0.3.6/download"],
         strip_prefix = "smol_str-0.3.6",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.smol_str-0.3.6.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__spin-0.9.8",
-        sha256 = "6980e8d7511241f8acf4aebddbb1ff938df5eebe98691418c4468d0b72a96a67",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/spin/0.9.8/download"],
-        strip_prefix = "spin-0.9.8",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.spin-0.9.8.bazel"),
     )
 
     maybe(
@@ -3327,12 +3283,22 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__syn-2.0.117",
-        sha256 = "e665b8803e7b1d2a727f4023456bbbbe74da67099c585258af0ad9c5013b9b99",
+        name = "vendor_ts__syn-2.0.119",
+        sha256 = "872831b642d1a07999a962a351ed35b955ea2cfc8f3862091e2a240a84f17297",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/syn/2.0.117/download"],
-        strip_prefix = "syn-2.0.117",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.syn-2.0.117.bazel"),
+        urls = ["https://static.crates.io/crates/syn/2.0.119/download"],
+        strip_prefix = "syn-2.0.119",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.syn-2.0.119.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__syn-3.0.3",
+        sha256 = "53e9bae58849f64dfa4f5d5ae372c8341f7305f82a3868709269343628b659a3",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/syn/3.0.3/download"],
+        strip_prefix = "syn-3.0.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.syn-3.0.3.bazel"),
     )
 
     maybe(
@@ -3347,12 +3313,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__temp-dir-0.1.16",
-        sha256 = "83176759e9416cf81ee66cb6508dbfe9c96f20b8b56265a39917551c23c70964",
+        name = "vendor_ts__temp-dir-0.2.0",
+        sha256 = "016ef9739649996fcc983b9c588fe3d557cf216d4d98503ce1b057ab5a66d689",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/temp-dir/0.1.16/download"],
-        strip_prefix = "temp-dir-0.1.16",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.temp-dir-0.1.16.bazel"),
+        urls = ["https://static.crates.io/crates/temp-dir/0.2.0/download"],
+        strip_prefix = "temp-dir-0.2.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.temp-dir-0.2.0.bazel"),
     )
 
     maybe(
@@ -3367,82 +3333,82 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__thin-vec-0.2.18",
-        sha256 = "b0f7e269b48f0a7dd0146680fa24b50cc67fc0373f086a5b2f99bd084639b482",
+        name = "vendor_ts__thin-vec-0.2.19",
+        sha256 = "79def32ffcd477db1ff26f76dab9e3a91f0bd42a85ca96577089b24623056f9d",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/thin-vec/0.2.18/download"],
-        strip_prefix = "thin-vec-0.2.18",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thin-vec-0.2.18.bazel"),
+        urls = ["https://static.crates.io/crates/thin-vec/0.2.19/download"],
+        strip_prefix = "thin-vec-0.2.19",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thin-vec-0.2.19.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__thiserror-2.0.18",
-        sha256 = "4288b5bcbc7920c07a1149a35cf9590a2aa808e0bc1eafaade0b80947865fbc4",
+        name = "vendor_ts__thiserror-2.0.20",
+        sha256 = "ec86235f5fcc2a73650310756d2ac5b138a5780bbbdfae3eeccec992c435ba4f",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/thiserror/2.0.18/download"],
-        strip_prefix = "thiserror-2.0.18",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thiserror-2.0.18.bazel"),
+        urls = ["https://static.crates.io/crates/thiserror/2.0.20/download"],
+        strip_prefix = "thiserror-2.0.20",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thiserror-2.0.20.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__thiserror-impl-2.0.18",
-        sha256 = "ebc4ee7f67670e9b64d05fa4253e753e016c6c95ff35b89b7941d6b856dec1d5",
+        name = "vendor_ts__thiserror-impl-2.0.20",
+        sha256 = "bc04cd3e1236dd4a98afca4569f2deb3f120e5422a4023be2cb683f8486292af",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/thiserror-impl/2.0.18/download"],
-        strip_prefix = "thiserror-impl-2.0.18",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thiserror-impl-2.0.18.bazel"),
+        urls = ["https://static.crates.io/crates/thiserror-impl/2.0.20/download"],
+        strip_prefix = "thiserror-impl-2.0.20",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thiserror-impl-2.0.20.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__thread_local-1.1.9",
-        sha256 = "f60246a4944f24f6e018aa17cdeffb7818b76356965d03b07d6a9886e8962185",
+        name = "vendor_ts__thread_local-1.1.10",
+        sha256 = "1ad99c4c6d32803332c548b1af0540b357b3f5fc0be8f6c6bfe8b2e6ae784070",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/thread_local/1.1.9/download"],
-        strip_prefix = "thread_local-1.1.9",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thread_local-1.1.9.bazel"),
+        urls = ["https://static.crates.io/crates/thread_local/1.1.10/download"],
+        strip_prefix = "thread_local-1.1.10",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thread_local-1.1.10.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__time-0.3.47",
-        sha256 = "743bd48c283afc0388f9b8827b976905fb217ad9e647fae3a379a9283c4def2c",
+        name = "vendor_ts__time-0.3.55",
+        sha256 = "cdb87b95ec50ddfa440816d227a17b2ccbdda963a316a727fda0fc4334f7d134",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/time/0.3.47/download"],
-        strip_prefix = "time-0.3.47",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.time-0.3.47.bazel"),
+        urls = ["https://static.crates.io/crates/time/0.3.55/download"],
+        strip_prefix = "time-0.3.55",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.time-0.3.55.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__time-core-0.1.8",
-        sha256 = "7694e1cfe791f8d31026952abf09c69ca6f6fa4e1a1229e18988f06a04a12dca",
+        name = "vendor_ts__time-core-0.1.9",
+        sha256 = "9e1c906769ad99c88eaa54e728060edef082f8e358ff32030cb7c7d315e81109",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/time-core/0.1.8/download"],
-        strip_prefix = "time-core-0.1.8",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.time-core-0.1.8.bazel"),
+        urls = ["https://static.crates.io/crates/time-core/0.1.9/download"],
+        strip_prefix = "time-core-0.1.9",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.time-core-0.1.9.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__time-macros-0.2.27",
-        sha256 = "2e70e4c5a0e0a8a4823ad65dfe1a6930e4f4d756dcd9dd7939022b5e8c501215",
+        name = "vendor_ts__time-macros-0.2.32",
+        sha256 = "7e689342a48d2ea927c87ea50cabf8594854bf940e9310208848d680d668ed85",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/time-macros/0.2.27/download"],
-        strip_prefix = "time-macros-0.2.27",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.time-macros-0.2.27.bazel"),
+        urls = ["https://static.crates.io/crates/time-macros/0.2.32/download"],
+        strip_prefix = "time-macros-0.2.32",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.time-macros-0.2.32.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__tinyvec-1.11.0",
-        sha256 = "3e61e67053d25a4e82c844e8424039d9745781b3fc4f32b8d55ed50f5f667ef3",
+        name = "vendor_ts__tinyvec-1.12.0",
+        sha256 = "bb4ebadaa0af04fab11ae01eb5f9fdb5f9c5b875506e210e71c07873528baa7f",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/tinyvec/1.11.0/download"],
-        strip_prefix = "tinyvec-1.11.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tinyvec-1.11.0.bazel"),
+        urls = ["https://static.crates.io/crates/tinyvec/1.12.0/download"],
+        strip_prefix = "tinyvec-1.12.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tinyvec-1.12.0.bazel"),
     )
 
     maybe(
@@ -3457,32 +3423,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__toml-0.9.12-spec-1.1.0",
-        sha256 = "cf92845e79fc2e2def6a5d828f0801e29a2f8acc037becc5ab08595c7d5e9863",
+        name = "vendor_ts__toml-1.1.4-spec-1.1.0",
+        sha256 = "3aace63f4bbcdfc2c965b059de67119c89c4017a70d633be6c104910f67056f5",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/toml/0.9.12+spec-1.1.0/download"],
-        strip_prefix = "toml-0.9.12+spec-1.1.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml-0.9.12+spec-1.1.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__toml-1.1.2-spec-1.1.0",
-        sha256 = "81f3d15e84cbcd896376e6730314d59fb5a87f31e4b038454184435cd57defee",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/toml/1.1.2+spec-1.1.0/download"],
-        strip_prefix = "toml-1.1.2+spec-1.1.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml-1.1.2+spec-1.1.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__toml_datetime-0.7.5-spec-1.1.0",
-        sha256 = "92e1cfed4a3038bc5a127e35a2d360f145e1f4b971b551a2ba5fd7aedf7e1347",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/toml_datetime/0.7.5+spec-1.1.0/download"],
-        strip_prefix = "toml_datetime-0.7.5+spec-1.1.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml_datetime-0.7.5+spec-1.1.0.bazel"),
+        urls = ["https://static.crates.io/crates/toml/1.1.4+spec-1.1.0/download"],
+        strip_prefix = "toml-1.1.4+spec-1.1.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml-1.1.4+spec-1.1.0.bazel"),
     )
 
     maybe(
@@ -3497,22 +3443,22 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__toml_parser-1.1.2-spec-1.1.0",
-        sha256 = "a2abe9b86193656635d2411dc43050282ca48aa31c2451210f4202550afb7526",
+        name = "vendor_ts__toml_parser-1.1.3-spec-1.1.0",
+        sha256 = "1d38ac1cf9b95face32296c0a3ede1fdc270627c9d9c02a7274dd6d960dc4d56",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/toml_parser/1.1.2+spec-1.1.0/download"],
-        strip_prefix = "toml_parser-1.1.2+spec-1.1.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml_parser-1.1.2+spec-1.1.0.bazel"),
+        urls = ["https://static.crates.io/crates/toml_parser/1.1.3+spec-1.1.0/download"],
+        strip_prefix = "toml_parser-1.1.3+spec-1.1.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml_parser-1.1.3+spec-1.1.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__toml_writer-1.1.1-spec-1.1.0",
-        sha256 = "756daf9b1013ebe47a8776667b466417e2d4c5679d441c26230efd9ef78692db",
+        name = "vendor_ts__toml_writer-1.1.2-spec-1.1.0",
+        sha256 = "7d56353a2a665ad0f41a421187180aab746c8c325620617ad883a99a1cbe66d2",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/toml_writer/1.1.1+spec-1.1.0/download"],
-        strip_prefix = "toml_writer-1.1.1+spec-1.1.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml_writer-1.1.1+spec-1.1.0.bazel"),
+        urls = ["https://static.crates.io/crates/toml_writer/1.1.2+spec-1.1.0/download"],
+        strip_prefix = "toml_writer-1.1.2+spec-1.1.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml_writer-1.1.2+spec-1.1.0.bazel"),
     )
 
     maybe(
@@ -3627,12 +3573,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__tree-sitter-python-0.23.6",
-        sha256 = "3d065aaa27f3aaceaf60c1f0e0ac09e1cb9eb8ed28e7bcdaa52129cffc7f4b04",
+        name = "vendor_ts__tree-sitter-python-0.25.0",
+        sha256 = "6bf85fd39652e740bf60f46f4cda9492c3a9ad75880575bf14960f775cb74a1c",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/tree-sitter-python/0.23.6/download"],
-        strip_prefix = "tree-sitter-python-0.23.6",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-python-0.23.6.bazel"),
+        urls = ["https://static.crates.io/crates/tree-sitter-python/0.25.0/download"],
+        strip_prefix = "tree-sitter-python-0.25.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-python-0.25.0.bazel"),
     )
 
     maybe(
@@ -3657,12 +3603,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__triomphe-0.1.15",
-        sha256 = "dd69c5aa8f924c7519d6372789a74eac5b94fb0f8fcf0d4a97eb0bfc3e785f39",
+        name = "vendor_ts__triomphe-0.1.16",
+        sha256 = "b40688ea6389c8171614b25491f71d4a27946e0c7ce2da1c6de27e25abf1a0ae",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/triomphe/0.1.15/download"],
-        strip_prefix = "triomphe-0.1.15",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.triomphe-0.1.15.bazel"),
+        urls = ["https://static.crates.io/crates/triomphe/0.1.16/download"],
+        strip_prefix = "triomphe-0.1.16",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.triomphe-0.1.16.bazel"),
     )
 
     maybe(
@@ -3673,6 +3619,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/typed-arena/2.0.2/download"],
         strip_prefix = "typed-arena-2.0.2",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.typed-arena-2.0.2.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__typeid-1.0.3",
+        sha256 = "bc7d623258602320d5c55d1bc22793b57daff0ec7efc270ea7d55ce1d5f5471c",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/typeid/1.0.3/download"],
+        strip_prefix = "typeid-1.0.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.typeid-1.0.3.bazel"),
     )
 
     maybe(
@@ -3713,16 +3669,6 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/unicode-properties/0.1.4/download"],
         strip_prefix = "unicode-properties-0.1.4",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.unicode-properties-0.1.4.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__unicode-xid-0.2.6",
-        sha256 = "ebc1c04c71510c7f702b52b7c350734c9ff1295c464a03335b00bb84fc54f853",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/unicode-xid/0.2.6/download"],
-        strip_prefix = "unicode-xid-0.2.6",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.unicode-xid-0.2.6.bazel"),
     )
 
     maybe(
@@ -3787,92 +3733,42 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__wasip2-1.0.3-wasi-0.2.9",
-        sha256 = "20064672db26d7cdc89c7798c48a0fdfac8213434a1186e5ef29fd560ae223d6",
+        name = "vendor_ts__wasm-bindgen-0.2.126",
+        sha256 = "4b067c0c11094aef6b7a801c1e34a26affafdf3d051dba08456b868789aaf9a4",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wasip2/1.0.3+wasi-0.2.9/download"],
-        strip_prefix = "wasip2-1.0.3+wasi-0.2.9",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasip2-1.0.3+wasi-0.2.9.bazel"),
+        urls = ["https://static.crates.io/crates/wasm-bindgen/0.2.126/download"],
+        strip_prefix = "wasm-bindgen-0.2.126",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasm-bindgen-0.2.126.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__wasip3-0.4.0-wasi-0.3.0-rc-2026-01-06",
-        sha256 = "5428f8bf88ea5ddc08faddef2ac4a67e390b88186c703ce6dbd955e1c145aca5",
+        name = "vendor_ts__wasm-bindgen-macro-0.2.126",
+        sha256 = "167ce5e579f6bcf889c4f7175a8a5a585de84e8ff93976ce393efa5f2837aab1",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wasip3/0.4.0+wasi-0.3.0-rc-2026-01-06/download"],
-        strip_prefix = "wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06.bazel"),
+        urls = ["https://static.crates.io/crates/wasm-bindgen-macro/0.2.126/download"],
+        strip_prefix = "wasm-bindgen-macro-0.2.126",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasm-bindgen-macro-0.2.126.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__wasm-bindgen-0.2.121",
-        sha256 = "49ace1d07c165b0864824eee619580c4689389afa9dc9ed3a4c75040d82e6790",
+        name = "vendor_ts__wasm-bindgen-macro-support-0.2.126",
+        sha256 = "f3997c7839262f4ef12cf90b818d6340c18e80f263f1a94bf157d0ec4420380e",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wasm-bindgen/0.2.121/download"],
-        strip_prefix = "wasm-bindgen-0.2.121",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasm-bindgen-0.2.121.bazel"),
+        urls = ["https://static.crates.io/crates/wasm-bindgen-macro-support/0.2.126/download"],
+        strip_prefix = "wasm-bindgen-macro-support-0.2.126",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasm-bindgen-macro-support-0.2.126.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__wasm-bindgen-macro-0.2.121",
-        sha256 = "8e68e6f4afd367a562002c05637acb8578ff2dea1943df76afb9e83d177c8578",
+        name = "vendor_ts__wasm-bindgen-shared-0.2.126",
+        sha256 = "dc1b4cb0cc549fcf58d7dfc081778139b3d283a081644e833e84682ad71cea24",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wasm-bindgen-macro/0.2.121/download"],
-        strip_prefix = "wasm-bindgen-macro-0.2.121",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasm-bindgen-macro-0.2.121.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wasm-bindgen-macro-support-0.2.121",
-        sha256 = "d95a9ec35c64b2a7cb35d3fead40c4238d0940c86d107136999567a4703259f2",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wasm-bindgen-macro-support/0.2.121/download"],
-        strip_prefix = "wasm-bindgen-macro-support-0.2.121",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasm-bindgen-macro-support-0.2.121.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wasm-bindgen-shared-0.2.121",
-        sha256 = "c4e0100b01e9f0d03189a92b96772a1fb998639d981193d7dbab487302513441",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wasm-bindgen-shared/0.2.121/download"],
-        strip_prefix = "wasm-bindgen-shared-0.2.121",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasm-bindgen-shared-0.2.121.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wasm-encoder-0.244.0",
-        sha256 = "990065f2fe63003fe337b932cfb5e3b80e0b4d0f5ff650e6985b1048f62c8319",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wasm-encoder/0.244.0/download"],
-        strip_prefix = "wasm-encoder-0.244.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasm-encoder-0.244.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wasm-metadata-0.244.0",
-        sha256 = "bb0e353e6a2fbdc176932bbaab493762eb1255a7900fe0fea1a2f96c296cc909",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wasm-metadata/0.244.0/download"],
-        strip_prefix = "wasm-metadata-0.244.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasm-metadata-0.244.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wasmparser-0.244.0",
-        sha256 = "47b807c72e1bac69382b3a6fb3dbe8ea4c0ed87ff5629b8685ae6b9a611028fe",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wasmparser/0.244.0/download"],
-        strip_prefix = "wasmparser-0.244.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasmparser-0.244.0.bazel"),
+        urls = ["https://static.crates.io/crates/wasm-bindgen-shared/0.2.126/download"],
+        strip_prefix = "wasm-bindgen-shared-0.2.126",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasm-bindgen-shared-0.2.126.bazel"),
     )
 
     maybe(
@@ -4067,82 +3963,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__winnow-1.0.3",
-        sha256 = "0592e1c9d151f854e6fd382574c3a0855250e1d9b2f99d9281c6e6391af352f1",
+        name = "vendor_ts__winnow-1.0.4",
+        sha256 = "23b97319f7b8343df12cc98938e5c3eb436064524c8d2b4e30a1d3a36eecdf81",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/winnow/1.0.3/download"],
-        strip_prefix = "winnow-1.0.3",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.winnow-1.0.3.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wit-bindgen-0.51.0",
-        sha256 = "d7249219f66ced02969388cf2bb044a09756a083d0fab1e566056b04d9fbcaa5",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wit-bindgen/0.51.0/download"],
-        strip_prefix = "wit-bindgen-0.51.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wit-bindgen-0.51.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wit-bindgen-0.57.1",
-        sha256 = "1ebf944e87a7c253233ad6766e082e3cd714b5d03812acc24c318f549614536e",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wit-bindgen/0.57.1/download"],
-        strip_prefix = "wit-bindgen-0.57.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wit-bindgen-0.57.1.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wit-bindgen-core-0.51.0",
-        sha256 = "ea61de684c3ea68cb082b7a88508a8b27fcc8b797d738bfc99a82facf1d752dc",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wit-bindgen-core/0.51.0/download"],
-        strip_prefix = "wit-bindgen-core-0.51.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wit-bindgen-core-0.51.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wit-bindgen-rust-0.51.0",
-        sha256 = "b7c566e0f4b284dd6561c786d9cb0142da491f46a9fbed79ea69cdad5db17f21",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wit-bindgen-rust/0.51.0/download"],
-        strip_prefix = "wit-bindgen-rust-0.51.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wit-bindgen-rust-0.51.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wit-bindgen-rust-macro-0.51.0",
-        sha256 = "0c0f9bfd77e6a48eccf51359e3ae77140a7f50b1e2ebfe62422d8afdaffab17a",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wit-bindgen-rust-macro/0.51.0/download"],
-        strip_prefix = "wit-bindgen-rust-macro-0.51.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wit-bindgen-rust-macro-0.51.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wit-component-0.244.0",
-        sha256 = "9d66ea20e9553b30172b5e831994e35fbde2d165325bec84fc43dbf6f4eb9cb2",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wit-component/0.244.0/download"],
-        strip_prefix = "wit-component-0.244.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wit-component-0.244.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__wit-parser-0.244.0",
-        sha256 = "ecc8ac4bc1dc3381b7f59c34f00b67e18f910c2c0f50015669dde7def656a736",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/wit-parser/0.244.0/download"],
-        strip_prefix = "wit-parser-0.244.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wit-parser-0.244.0.bazel"),
+        urls = ["https://static.crates.io/crates/winnow/1.0.4/download"],
+        strip_prefix = "winnow-1.0.4",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.winnow-1.0.4.bazel"),
     )
 
     maybe(
@@ -4157,12 +3983,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__zmij-1.0.21",
-        sha256 = "b8848ee67ecc8aedbaf3e4122217aff892639231befc6a1b58d29fff4c2cabaa",
+        name = "vendor_ts__zmij-1.0.23",
+        sha256 = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/zmij/1.0.21/download"],
-        strip_prefix = "zmij-1.0.21",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.zmij-1.0.21.bazel"),
+        urls = ["https://static.crates.io/crates/zmij/1.0.23/download"],
+        strip_prefix = "zmij-1.0.23",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.zmij-1.0.23.bazel"),
     )
 
     maybe(
@@ -4196,61 +4022,61 @@ def crate_repositories():
     )
 
     return [
-        struct(repo = "vendor_ts__anyhow-1.0.102", is_dev_dep = False),
+        struct(repo = "vendor_ts__anyhow-1.0.104", is_dev_dep = False),
         struct(repo = "vendor_ts__argfile-1.0.0", is_dev_dep = False),
         struct(repo = "vendor_ts__chalk-ir-0.104.0", is_dev_dep = False),
-        struct(repo = "vendor_ts__chrono-0.4.44", is_dev_dep = False),
-        struct(repo = "vendor_ts__clap-4.6.1", is_dev_dep = False),
+        struct(repo = "vendor_ts__chrono-0.4.45", is_dev_dep = False),
+        struct(repo = "vendor_ts__clap-4.6.6", is_dev_dep = False),
         struct(repo = "vendor_ts__dunce-1.0.5", is_dev_dep = False),
-        struct(repo = "vendor_ts__either-1.16.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__either-1.17.0", is_dev_dep = False),
         struct(repo = "vendor_ts__encoding-0.2.33", is_dev_dep = False),
         struct(repo = "vendor_ts__figment-0.10.19", is_dev_dep = False),
         struct(repo = "vendor_ts__flate2-1.1.9", is_dev_dep = False),
-        struct(repo = "vendor_ts__glob-0.3.3", is_dev_dep = False),
+        struct(repo = "vendor_ts__glob-0.3.4", is_dev_dep = False),
         struct(repo = "vendor_ts__globset-0.4.18", is_dev_dep = False),
-        struct(repo = "vendor_ts__itertools-0.14.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__itertools-0.15.0", is_dev_dep = False),
         struct(repo = "vendor_ts__lazy_static-1.5.0", is_dev_dep = False),
         struct(repo = "vendor_ts__mustache-0.9.0", is_dev_dep = False),
         struct(repo = "vendor_ts__num-traits-0.2.19", is_dev_dep = False),
         struct(repo = "vendor_ts__num_cpus-1.17.0", is_dev_dep = False),
-        struct(repo = "vendor_ts__proc-macro2-1.0.106", is_dev_dep = False),
-        struct(repo = "vendor_ts__quote-1.0.45", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_base_db-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_cfg-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_hir-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_hir_def-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_hir_expand-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_hir_ty-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_ide_db-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_intern-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_load-cargo-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_parser-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_paths-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_project_model-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_span-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_stdx-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_syntax-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_syntax-bridge-0.0.328", is_dev_dep = False),
-        struct(repo = "vendor_ts__ra_ap_vfs-0.0.328", is_dev_dep = False),
+        struct(repo = "vendor_ts__proc-macro2-1.0.107", is_dev_dep = False),
+        struct(repo = "vendor_ts__quote-1.0.47", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_base_db-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_cfg-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_hir-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_hir_def-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_hir_expand-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_hir_ty-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_ide_db-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_intern-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_load-cargo-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_parser-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_paths-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_project_model-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_span-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_stdx-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_syntax-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_syntax-bridge-0.0.347", is_dev_dep = False),
+        struct(repo = "vendor_ts__ra_ap_vfs-0.0.347", is_dev_dep = False),
         struct(repo = "vendor_ts__rayon-1.12.0", is_dev_dep = False),
-        struct(repo = "vendor_ts__regex-1.12.3", is_dev_dep = False),
-        struct(repo = "vendor_ts__serde-1.0.228", is_dev_dep = False),
-        struct(repo = "vendor_ts__serde_json-1.0.150", is_dev_dep = False),
-        struct(repo = "vendor_ts__serde_with-3.20.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__regex-1.13.1", is_dev_dep = False),
+        struct(repo = "vendor_ts__serde-1.0.229", is_dev_dep = False),
+        struct(repo = "vendor_ts__serde_json-1.0.151", is_dev_dep = False),
+        struct(repo = "vendor_ts__serde_with-3.22.0", is_dev_dep = False),
         struct(repo = "vendor_ts__serde_yaml-0.9.34-deprecated", is_dev_dep = False),
-        struct(repo = "vendor_ts__syn-2.0.117", is_dev_dep = False),
-        struct(repo = "vendor_ts__toml-1.1.2-spec-1.1.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__syn-3.0.3", is_dev_dep = False),
+        struct(repo = "vendor_ts__toml-1.1.4-spec-1.1.0", is_dev_dep = False),
         struct(repo = "vendor_ts__tracing-0.1.44", is_dev_dep = False),
         struct(repo = "vendor_ts__tracing-flame-0.2.0", is_dev_dep = False),
         struct(repo = "vendor_ts__tracing-subscriber-0.3.23", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-0.26.9", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-embedded-template-0.25.0", is_dev_dep = False),
-        struct(repo = "vendor_ts__tree-sitter-python-0.23.6", is_dev_dep = False),
+        struct(repo = "vendor_ts__tree-sitter-python-0.25.0", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-ruby-0.23.1", is_dev_dep = False),
-        struct(repo = "vendor_ts__triomphe-0.1.15", is_dev_dep = False),
+        struct(repo = "vendor_ts__triomphe-0.1.16", is_dev_dep = False),
         struct(repo = "vendor_ts__ungrammar-1.16.1", is_dev_dep = False),
         struct(repo = "vendor_ts__zstd-0.13.3", is_dev_dep = False),
-        struct(repo = "vendor_ts__rand-0.10.1", is_dev_dep = True),
+        struct(repo = "vendor_ts__rand-0.10.2", is_dev_dep = True),
         struct(repo = "vendor_ts__tree-sitter-json-0.24.8", is_dev_dep = True),
         struct(repo = "vendor_ts__tree-sitter-ql-0.23.1", is_dev_dep = True),
     ]

@@ -38,19 +38,19 @@ rust_library(
     edition = "2021",
     proc_macro_deps = select({
         "@rules_rust//rust/platform:wasm32-unknown-emscripten": [
-            "@vendor_ts__rustversion-1.0.22//:rustversion",  # cfg(target_family = "wasm")
+            "@vendor_ts__rustversion-1.0.23//:rustversion",  # cfg(target_family = "wasm")
         ],
         "@rules_rust//rust/platform:wasm32-unknown-unknown": [
-            "@vendor_ts__rustversion-1.0.22//:rustversion",  # cfg(target_family = "wasm")
+            "@vendor_ts__rustversion-1.0.23//:rustversion",  # cfg(target_family = "wasm")
         ],
         "@rules_rust//rust/platform:wasm32-wasip1": [
-            "@vendor_ts__rustversion-1.0.22//:rustversion",  # cfg(target_family = "wasm")
+            "@vendor_ts__rustversion-1.0.23//:rustversion",  # cfg(target_family = "wasm")
         ],
         "@rules_rust//rust/platform:wasm32-wasip1-threads": [
-            "@vendor_ts__rustversion-1.0.22//:rustversion",  # cfg(target_family = "wasm")
+            "@vendor_ts__rustversion-1.0.23//:rustversion",  # cfg(target_family = "wasm")
         ],
         "@rules_rust//rust/platform:wasm32-wasip2": [
-            "@vendor_ts__rustversion-1.0.22//:rustversion",  # cfg(target_family = "wasm")
+            "@vendor_ts__rustversion-1.0.23//:rustversion",  # cfg(target_family = "wasm")
         ],
         "//conditions:default": [],
     }),
