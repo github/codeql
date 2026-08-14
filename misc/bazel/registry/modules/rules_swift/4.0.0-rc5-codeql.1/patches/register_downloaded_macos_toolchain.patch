@@ -87,11 +87,15 @@ diff --git a/swift/internal/extensions/toolchain.BUILD b/swift/internal/extensio
 diff --git a/swift/internal/extensions/standalone_toolchain.bzl b/swift/internal/extensions/standalone_toolchain.bzl
 --- a/swift/internal/extensions/standalone_toolchain.bzl
 +++ b/swift/internal/extensions/standalone_toolchain.bzl
-@@ -91,11 +91,13 @@ def _standalone_toolchain_impl(repository_ctx):
+@@ -91,11 +91,17 @@ def _standalone_toolchain_impl(repository_ctx):
              strip_prefix = filename.removesuffix(".tar.gz"),
          )
  
-+    macos_sdkroot = _run(repository_ctx, ["xcrun", "--sdk", "macosx", "--show-sdk-path"]) if repository_ctx.attr.platform == "xcode" else ""
++    macos_sdkroot = ""
++    if repository_ctx.attr.platform == "xcode":
++        macos_sdkroot = _run(repository_ctx, ["xcrun", "--sdk", "macosx", "--show-sdk-path"])
++        repository_ctx.watch(macos_sdkroot)
++
      repository_ctx.file(".swift-version", repository_ctx.attr.swift_version)
      repository_ctx.template(
          "BUILD.bazel",
@@ -101,3 +105,71 @@ diff --git a/swift/internal/extensions/standalone_toolchain.bzl b/swift/internal
              "{swift_version}": repository_ctx.attr.swift_version,
          },
      )
+@@ -107,19 +109,29 @@ def _standalone_toolchain_impl(repository_ctx):
+-standalone_toolchain = repository_rule(
+-    implementation = _standalone_toolchain_impl,
+-    attrs = {
+-        "_build_template": attr.label(
+-            default = "//swift/internal/extensions:toolchain.BUILD",
+-        ),
+-        "platform": attr.string(
+-            doc = "The host platform name in the swift package download URL",
+-            mandatory = True,
+-        ),
+-        "sha256": attr.string(
+-            doc = "The expected SHA-256 of the file downloaded. This must match the SHA-256 of the file downloaded.",
+-        ),
+-        "swift_version": attr.string(
+-            doc = "Version of the swift toolchain to be installed.",
+-            mandatory = True,
+-        ),
+-    },
++_STANDALONE_TOOLCHAIN_ATTRS = {
++    "_build_template": attr.label(
++        default = "//swift/internal/extensions:toolchain.BUILD",
++    ),
++    "platform": attr.string(
++        doc = "The host platform name in the swift package download URL",
++        mandatory = True,
++    ),
++    "sha256": attr.string(
++        doc = "The expected SHA-256 of the file downloaded. This must match the SHA-256 of the file downloaded.",
++    ),
++    "swift_version": attr.string(
++        doc = "Version of the swift toolchain to be installed.",
++        mandatory = True,
++    ),
++}
++
++standalone_toolchain = repository_rule(
++    implementation = _standalone_toolchain_impl,
++    attrs = _STANDALONE_TOOLCHAIN_ATTRS,
++)
++
++standalone_macos_toolchain = repository_rule(
++    implementation = _standalone_toolchain_impl,
++    attrs = _STANDALONE_TOOLCHAIN_ATTRS,
++    configure = True,
++    environ = ["DEVELOPER_DIR"],
++    local = True,
+ )
+diff --git a/swift/extensions.bzl b/swift/extensions.bzl
+--- a/swift/extensions.bzl
++++ b/swift/extensions.bzl
+@@ -17 +17,5 @@
+-load("//swift/internal/extensions:standalone_toolchain.bzl", "standalone_toolchain")
++load(
++    "//swift/internal/extensions:standalone_toolchain.bzl",
++    "standalone_macos_toolchain",
++    "standalone_toolchain",
++)
+@@ -182,7 +186,8 @@ def _standalone_toolchain_impl(module_ctx):
+         toolchain_releases = toolchain.platform_sha256.items() or swift_releases[swift_version].items()
+         for platform, sha256 in toolchain_releases:
+             repository_name = toolchain.name + "_{}".format(platform)
+-            standalone_toolchain(
++            toolchain_repository = standalone_macos_toolchain if platform == "xcode" else standalone_toolchain
++            toolchain_repository(
+                 name = repository_name,
+                 sha256 = sha256,
+                 platform = platform,
