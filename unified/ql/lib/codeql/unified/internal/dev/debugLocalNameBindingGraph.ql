@@ -1,8 +1,8 @@
 /**
- * @name Debug scope graph
- * @description Renders the graph used to perform local variable lookups
+ * @name Debug local name-binding graph
+ * @description Renders the graph used to perform local name lookups
  * @kind graph
- * @id unified/debug-scope-graph
+ * @id unified/debug-local-name-binding-graph
  */
 
 private import unified
