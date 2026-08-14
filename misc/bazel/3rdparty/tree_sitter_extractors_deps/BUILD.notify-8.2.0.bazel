@@ -57,12 +57,14 @@ rust_library(
     target_compatible_with = select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [],
         "@rules_rust//rust/platform:aarch64-apple-ios": [],
+        "@rules_rust//rust/platform:aarch64-apple-ios-macabi": [],
         "@rules_rust//rust/platform:aarch64-apple-ios-sim": [],
         "@rules_rust//rust/platform:aarch64-linux-android": [],
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [],
         "@rules_rust//rust/platform:aarch64-unknown-fuchsia": [],
         "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [],
+        "@rules_rust//rust/platform:aarch64-unknown-none": [],
         "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710": [],
         "@rules_rust//rust/platform:aarch64-unknown-uefi": [],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [],
@@ -74,13 +76,23 @@ rust_library(
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [],
         "@rules_rust//rust/platform:i686-unknown-freebsd": [],
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [],
+        "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu": [],
+        "@rules_rust//rust/platform:mips-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [],
+        "@rules_rust//rust/platform:riscv32imac-unknown-none-elf": [],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-none-elf": [],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [],
+        "@rules_rust//rust/platform:sparc64-unknown-linux-gnu": [],
+        "@rules_rust//rust/platform:sparc64-unknown-netbsd": [],
+        "@rules_rust//rust/platform:sparc64-unknown-openbsd": [],
+        "@rules_rust//rust/platform:thumbv6m-none-eabi": [],
         "@rules_rust//rust/platform:thumbv7em-none-eabi": [],
+        "@rules_rust//rust/platform:thumbv7em-none-eabihf": [],
+        "@rules_rust//rust/platform:thumbv7m-none-eabi": [],
         "@rules_rust//rust/platform:thumbv8m.main-none-eabi": [],
+        "@rules_rust//rust/platform:thumbv8m.main-none-eabihf": [],
         "@rules_rust//rust/platform:wasm32-unknown-emscripten": [],
         "@rules_rust//rust/platform:wasm32-unknown-unknown": [],
         "@rules_rust//rust/platform:wasm32-wasip1": [],
@@ -88,6 +100,7 @@ rust_library(
         "@rules_rust//rust/platform:wasm32-wasip2": [],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [],
         "@rules_rust//rust/platform:x86_64-apple-ios": [],
+        "@rules_rust//rust/platform:x86_64-apple-ios-macabi": [],
         "@rules_rust//rust/platform:x86_64-linux-android": [],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [],
         "@rules_rust//rust/platform:x86_64-unknown-freebsd": [],
@@ -110,6 +123,10 @@ rust_library(
             "@vendor_ts__fsevent-sys-4.1.0//:fsevent_sys",  # aarch64-apple-darwin
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios": [
+            "@vendor_ts__kqueue-1.2.0//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+            "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+        ],
+        "@rules_rust//rust/platform:aarch64-apple-ios-macabi": [
             "@vendor_ts__kqueue-1.2.0//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
             "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
         ],
@@ -167,6 +184,14 @@ rust_library(
             "@vendor_ts__inotify-0.11.1//:inotify",  # cfg(any(target_os = "linux", target_os = "android"))
             "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
         ],
+        "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu": [
+            "@vendor_ts__inotify-0.11.1//:inotify",  # cfg(any(target_os = "linux", target_os = "android"))
+            "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
+        ],
+        "@rules_rust//rust/platform:mips-unknown-linux-gnu": [
+            "@vendor_ts__inotify-0.11.1//:inotify",  # cfg(any(target_os = "linux", target_os = "android"))
+            "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
+        ],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
             "@vendor_ts__inotify-0.11.1//:inotify",  # cfg(any(target_os = "linux", target_os = "android"))
             "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
@@ -179,11 +204,27 @@ rust_library(
             "@vendor_ts__inotify-0.11.1//:inotify",  # cfg(any(target_os = "linux", target_os = "android"))
             "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
         ],
+        "@rules_rust//rust/platform:sparc64-unknown-linux-gnu": [
+            "@vendor_ts__inotify-0.11.1//:inotify",  # cfg(any(target_os = "linux", target_os = "android"))
+            "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
+        ],
+        "@rules_rust//rust/platform:sparc64-unknown-netbsd": [
+            "@vendor_ts__kqueue-1.2.0//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+            "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+        ],
+        "@rules_rust//rust/platform:sparc64-unknown-openbsd": [
+            "@vendor_ts__kqueue-1.2.0//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+            "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+        ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
             "@vendor_ts__bitflags-2.13.1//:bitflags",  # cfg(target_os = "macos")
             "@vendor_ts__fsevent-sys-4.1.0//:fsevent_sys",  # x86_64-apple-darwin
         ],
         "@rules_rust//rust/platform:x86_64-apple-ios": [
+            "@vendor_ts__kqueue-1.2.0//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+            "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+        ],
+        "@rules_rust//rust/platform:x86_64-apple-ios-macabi": [
             "@vendor_ts__kqueue-1.2.0//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
             "@vendor_ts__mio-1.2.2//:mio",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
         ],

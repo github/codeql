@@ -94,6 +94,7 @@ register_toolchains("@rust_toolchains//:all")
 py_deps = use_extension("//misc/bazel/3rdparty:py_deps_extension.bzl", "p")
 use_repo(
     py_deps,
+    "vendor_py",
     "vendor_py__anyhow-1.0.95",
     "vendor_py__cc-1.2.14",
     "vendor_py__clap-4.5.30",
@@ -107,6 +108,7 @@ use_repo(
 tree_sitter_extractors_deps = use_extension("//misc/bazel/3rdparty:tree_sitter_extractors_extension.bzl", "r")
 use_repo(
     tree_sitter_extractors_deps,
+    "vendor_ts",
     "vendor_ts__anyhow-1.0.104",
     "vendor_ts__argfile-1.0.0",
     "vendor_ts__chalk-ir-0.104.0",
