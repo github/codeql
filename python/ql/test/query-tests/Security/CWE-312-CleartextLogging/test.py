@@ -100,9 +100,9 @@ def FPs(account, account_id):
     import settings
     config = {
         "sleep_timer": 5,
-        "password": settings.password
+        "password": settings.password # $ SPURIOUS: Source
     }
-    print(config["sleep_timer"]) # OK
+    print(config["sleep_timer"]) # $ SPURIOUS: Alert # OK
 
 
 if __name__ == "__main__":
