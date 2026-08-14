@@ -14,7 +14,10 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * The `!null` pattern used in a pattern type to denote a non-null value. For example:
+   * The `!null` pattern used in a pattern type to denote a non-null value. Pattern types
+   * are an experimental, mostly compiler-internal feature (used in the standard library for
+   * types such as `NonZero` and `NonNull`) and cannot be written directly in stable Rust;
+   * the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
    * ```rust
    * type NonNull = builtin#pattern_type(*const () is !null);
    * ```

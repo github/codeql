@@ -15,7 +15,9 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * A deref pattern, matching the value behind a smart pointer. For example:
+   * A deref pattern, matching the value behind a smart pointer. This is an experimental
+   * Rust feature that cannot be written directly in stable Rust; the example below uses
+   * rust-analyzer's canonical `builtin#deref` syntax for such patterns:
    * ```rust
    * match x {
    *     builtin#deref(y) => y,

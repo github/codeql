@@ -1,6 +1,6 @@
 instances
-| gen_pattern_type_repr.rs:5:20:5:51 | PatternTypeRepr |
+| gen_pattern_type_repr.rs:7:20:7:51 | PatternTypeRepr |
 getPat
-| gen_pattern_type_repr.rs:5:20:5:51 | PatternTypeRepr | gen_pattern_type_repr.rs:5:48:5:50 | RangePat |
+| gen_pattern_type_repr.rs:7:20:7:51 | PatternTypeRepr | gen_pattern_type_repr.rs:7:48:7:50 | RangePat |
 getTypeRepr
-| gen_pattern_type_repr.rs:5:20:5:51 | PatternTypeRepr | gen_pattern_type_repr.rs:5:41:5:43 | u32 |
+| gen_pattern_type_repr.rs:7:20:7:51 | PatternTypeRepr | gen_pattern_type_repr.rs:7:41:7:43 | u32 |

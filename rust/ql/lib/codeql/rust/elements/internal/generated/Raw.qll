@@ -3582,7 +3582,9 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A deref pattern, matching the value behind a smart pointer. For example:
+   * A deref pattern, matching the value behind a smart pointer. This is an experimental
+   * Rust feature that cannot be written directly in stable Rust; the example below uses
+   * rust-analyzer's canonical `builtin#deref` syntax for such patterns:
    * ```rust
    * match x {
    *     builtin#deref(y) => y,
@@ -4759,7 +4761,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * The `!null` pattern used in a pattern type to denote a non-null value. For example:
+   * The `!null` pattern used in a pattern type to denote a non-null value. Pattern types
+   * are an experimental, mostly compiler-internal feature (used in the standard library for
+   * types such as `NonZero` and `NonNull`) and cannot be written directly in stable Rust;
+   * the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
    * ```rust
    * type NonNull = builtin#pattern_type(*const () is !null);
    * ```
@@ -5087,7 +5092,9 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A pattern type, constraining a type to values matching a pattern. For example:
+   * A pattern type, constraining a type to values matching a pattern. Pattern types are an
+   * experimental, mostly compiler-internal feature and cannot be written directly in stable
+   * Rust; the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
    * ```rust
    * type NonZero = builtin#pattern_type(u32 is 1..);
    * ```

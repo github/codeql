@@ -13,7 +13,9 @@ private import codeql.rust.elements.internal.generated.PatternTypeRepr
  */
 module Impl {
   /**
-   * A pattern type, constraining a type to values matching a pattern. For example:
+   * A pattern type, constraining a type to values matching a pattern. Pattern types are an
+   * experimental, mostly compiler-internal feature and cannot be written directly in stable
+   * Rust; the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
    * ```rust
    * type NonZero = builtin#pattern_type(u32 is 1..);
    * ```
