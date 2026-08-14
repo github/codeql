@@ -1,4 +1,14 @@
+// Simple interpolation
 "hello \(name)"
+
+// Multiple interpolations
+"hello \(first) \(last)"
+
+// Interpolation with expression
+"result: \(x + y)"
+
+// Plain string before and after interpolation
+"prefix \(value) suffix"
 
 ---
 
@@ -24,10 +34,119 @@ sourceFile
                       baseName: identifier "name"
             stringSegment
               content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "hello "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "first"
+            stringSegment
+              content: stringSegment " "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "last"
+            stringSegment
+              content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "result: "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator "+"
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      rightOperand:
+                        declReferenceExpr
+                          baseName: identifier "y"
+            stringSegment
+              content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "prefix "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "value"
+            stringSegment
+              content: stringSegment " suffix"
 
 ---
 
 top_level
   body:
     block
-      stmt: string_literal "\"hello \\(name)\""
+      stmt:
+        string_interpolation_expr
+          element:
+            string_literal "hello "
+            name_expr
+              identifier: identifier "name"
+            string_literal
+        string_interpolation_expr
+          element:
+            string_literal "hello "
+            name_expr
+              identifier: identifier "first"
+            string_literal " "
+            name_expr
+              identifier: identifier "last"
+            string_literal
+        string_interpolation_expr
+          element:
+            string_literal "result: "
+            binary_expr
+              left:
+                name_expr
+                  identifier: identifier "x"
+              operator: infix_operator "+"
+              right:
+                name_expr
+                  identifier: identifier "y"
+            string_literal
+        string_interpolation_expr
+          element:
+            string_literal "prefix "
+            name_expr
+              identifier: identifier "value"
+            string_literal " suffix"
