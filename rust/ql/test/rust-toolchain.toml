@@ -1,7 +1,12 @@
 # This file specifies the Rust version used to test the rust extractor.
 # IMPORTANT: this can also have an impact on QL test results
-
+#
+# Pinned to 1.95: this is the newest stable that both expands the builtin
+# `format_args!` macro against std (needs >= ~1.94) and still accepts
+# `use SomeStruct::{self};`, which became a hard error (E0432) in 1.96 and is
+# exercised by the path-resolution test. Do not bump past 1.95 without
+# adapting that test.
 [toolchain]
-channel = "1.97"
+channel = "1.95.0"
 profile = "minimal"
 components = [ "rust-src" ]
