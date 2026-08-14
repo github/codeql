@@ -5,7 +5,6 @@ use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use ra_ap_base_db::EditionedFileId;
 use ra_ap_hir::Semantics;
-use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir_expand::builtin::{BuiltinDeriveExpander, find_builtin_derive};
 use ra_ap_hir_expand::span_map::ExpansionSpanMap;
 use ra_ap_hir_expand::{ExpandResult, ExpandTo, HirFileId, InFile, map_node_range_up_rooted};
@@ -22,7 +21,7 @@ use ra_ap_syntax_bridge::{
     DocCommentDesugarMode, syntax_node_to_token_tree, token_tree_to_syntax_node,
 };
 
-impl Emission<ast::Item> for Translator<'_> {
+impl Emission<ast::Item> for Translator<'_, '_> {
     fn pre_emit(&mut self, node: &ast::Item) -> Option<Label<generated::Item>> {
         self.item_pre_emit(node).map(Into::into)
     }
@@ -32,7 +31,7 @@ impl Emission<ast::Item> for Translator<'_> {
     }
 }
 
-impl Emission<ast::AssocItem> for Translator<'_> {
+impl Emission<ast::AssocItem> for Translator<'_, '_> {
     fn pre_emit(&mut self, node: &ast::AssocItem) -> Option<Label<generated::AssocItem>> {
         self.item_pre_emit(&node.clone().into()).map(Into::into)
     }
@@ -42,7 +41,7 @@ impl Emission<ast::AssocItem> for Translator<'_> {
     }
 }
 
-impl Emission<ast::ExternItem> for Translator<'_> {
+impl Emission<ast::ExternItem> for Translator<'_, '_> {
     fn pre_emit(&mut self, node: &ast::ExternItem) -> Option<Label<generated::ExternItem>> {
         self.item_pre_emit(&node.clone().into()).map(Into::into)
     }
@@ -52,7 +51,7 @@ impl Emission<ast::ExternItem> for Translator<'_> {
     }
 }
 
-impl Emission<ast::Meta> for Translator<'_> {
+impl Emission<ast::Meta> for Translator<'_, '_> {
     fn pre_emit(&mut self, _node: &ast::Meta) -> Option<Label<generated::Meta>> {
         self.macro_context_depth += 1;
         None
@@ -63,43 +62,43 @@ impl Emission<ast::Meta> for Translator<'_> {
     }
 }
 
-impl Emission<ast::Fn> for Translator<'_> {
+impl Emission<ast::Fn> for Translator<'_, '_> {
     fn post_emit(&mut self, node: &ast::Fn, label: Label<generated::Function>) {
         self.emit_function_has_implementation(node, label);
     }
 }
 
-impl Emission<ast::Struct> for Translator<'_> {
+impl Emission<ast::Struct> for Translator<'_, '_> {
     fn post_emit(&mut self, node: &ast::Struct, label: Label<generated::Struct>) {
         self.emit_derive_expansion(node, label);
     }
 }
 
-impl Emission<ast::Enum> for Translator<'_> {
+impl Emission<ast::Enum> for Translator<'_, '_> {
     fn post_emit(&mut self, node: &ast::Enum, label: Label<generated::Enum>) {
         self.emit_derive_expansion(node, label);
     }
 }
 
-impl Emission<ast::Union> for Translator<'_> {
+impl Emission<ast::Union> for Translator<'_, '_> {
     fn post_emit(&mut self, node: &ast::Union, label: Label<generated::Union>) {
         self.emit_derive_expansion(node, label);
     }
 }
 
-impl Emission<ast::PathSegment> for Translator<'_> {
+impl Emission<ast::PathSegment> for Translator<'_, '_> {
     fn post_emit(&mut self, node: &ast::PathSegment, label: Label<generated::PathSegment>) {
         self.extract_types_from_path_segment(node, label);
     }
 }
 
-impl Emission<ast::Const> for Translator<'_> {
+impl Emission<ast::Const> for Translator<'_, '_> {
     fn post_emit(&mut self, node: &ast::Const, label: Label<generated::Const>) {
         self.emit_const_has_implementation(node, label);
     }
 }
 
-impl Emission<ast::MacroCall> for Translator<'_> {
+impl Emission<ast::MacroCall> for Translator<'_, '_> {
     fn post_emit(&mut self, node: &ast::MacroCall, label: Label<generated::MacroCall>) {
         self.extract_macro_call_expanded(node, label);
     }
@@ -123,13 +122,16 @@ pub enum SourceKind {
     Library,
 }
 
-pub struct Translator<'a> {
+// `'a` is the (short) lifetime of the borrowed `path`, `'db` the lifetime of the borrowed
+// `Semantics`/database. They must stay separate: `Semantics<'db>` is invariant over `'db`, so
+// coupling it to the shorter `'a` fails to type-check.
+pub struct Translator<'a, 'db> {
     pub trap: TrapFile,
     path: &'a str,
     label: Label<generated::File>,
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
-    pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
+    pub semantics: Option<&'db Semantics<'db, RootDatabase>>,
     source_kind: SourceKind,
     pub(crate) macro_context_depth: usize,
     diagnostic_count: usize,
@@ -144,15 +146,15 @@ const UNKNOWN_LOCATION: (LineCol, LineCol) =
 
 const DIAGNOSTIC_LIMIT_PER_FILE: usize = 100;
 
-impl<'a> Translator<'a> {
+impl<'a, 'db> Translator<'a, 'db> {
     pub fn new(
         trap: TrapFile,
         path: &'a str,
         label: Label<generated::File>,
         line_index: LineIndex,
-        semantic_info: Option<&FileSemanticInformation<'a>>,
+        semantic_info: Option<&FileSemanticInformation<'db>>,
         source_kind: SourceKind,
-    ) -> Translator<'a> {
+    ) -> Translator<'a, 'db> {
         Translator {
             trap,
             path,
@@ -372,7 +374,7 @@ impl<'a> Translator<'a> {
         if let Some(value) = semantics
             .hir_file_for(expanded)
             .macro_file()
-            .and_then(|macro_call_id| semantics.db.parse_macro_expansion_error(macro_call_id))
+            .and_then(|macro_call_id| macro_call_id.parse_macro_expansion_error(semantics.db))
         {
             if let Some(err) = &value.err {
                 let error = err.render_to_string(semantics.db);
@@ -381,9 +383,8 @@ impl<'a> Translator<'a> {
                     == hir_file_id.file_id().map(|f| f.file_id(semantics.db))
                 {
                     let location = err.span().range
-                        + semantics
-                            .db
-                            .ast_id_map(hir_file_id)
+                        + hir_file_id
+                            .ast_id_map(semantics.db)
                             .get_erased(err.span().anchor.ast_id)
                             .text_range()
                             .start();
@@ -515,11 +516,9 @@ impl<'a> Translator<'a> {
                             None => return false,
                         }
                     }
-                    HirFileId::MacroFile(macro_call) => sema
-                        .db
-                        .lookup_intern_macro_call(macro_call)
-                        .krate
-                        .cfg_options(sema.db),
+                    HirFileId::MacroFile(macro_call) => {
+                        macro_call.loc(sema.db).krate.cfg_options(sema.db)
+                    }
                 };
                 cfg_options.check(&cfg_expr) == Some(false)
             })
@@ -755,11 +754,11 @@ impl<'a> Translator<'a> {
         let semantics = self.semantics?;
         let db = semantics.db;
         let file_id = semantics.hir_file_for(adt.syntax());
-        let span_map = db.span_map(file_id);
+        let span_map = file_id.span_map(db);
         let call_site = span_map.span_for_range(adt.syntax().text_range());
         let input = syntax_node_to_token_tree(
             adt.syntax(),
-            span_map.as_ref(),
+            span_map,
             call_site,
             DocCommentDesugarMode::ProcMacro,
         );
