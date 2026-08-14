@@ -62,4 +62,6 @@ top_level
                       identifier: identifier "print"
                   argument:
                     argument
-                      value: string_literal "\"hello\""
+                      value:
+                        string_interpolation_expr
+                          element: string_literal "hello"

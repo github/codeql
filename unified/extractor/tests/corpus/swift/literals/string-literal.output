@@ -19,4 +19,6 @@ sourceFile
 top_level
   body:
     block
-      stmt: string_literal "\"hello\""
+      stmt:
+        string_interpolation_expr
+          element: string_literal "hello"

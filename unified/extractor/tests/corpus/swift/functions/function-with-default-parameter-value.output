@@ -75,7 +75,9 @@ top_level
               pattern:
                 name_pattern
                   identifier: identifier "name"
-              default: string_literal "\"world\""
+              default:
+                string_interpolation_expr
+                  element: string_literal "world"
           body:
             block
               stmt:

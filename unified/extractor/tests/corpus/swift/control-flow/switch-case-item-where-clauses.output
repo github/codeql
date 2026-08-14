@@ -181,7 +181,9 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value: string_literal "\"positive\""
+                          value:
+                            string_interpolation_expr
+                              element: string_literal "positive"
             switch_case
               pattern:
                 or_pattern
@@ -208,7 +210,9 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value: string_literal "\"non-positive\""
+                          value:
+                            string_interpolation_expr
+                              element: string_literal "non-positive"
             switch_case
               body:
                 block
@@ -219,4 +223,6 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value: string_literal "\"other\""
+                          value:
+                            string_interpolation_expr
+                              element: string_literal "other"

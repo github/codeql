@@ -64,4 +64,6 @@ top_level
             block
               stmt:
                 return_expr
-                  value: string_literal "\"\""
+                  value:
+                    string_interpolation_expr
+                      element: string_literal

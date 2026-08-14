@@ -91,4 +91,6 @@ top_level
                       identifier: identifier "print"
                   argument:
                     argument
-                      value: string_literal "\"work\""
+                      value:
+                        string_interpolation_expr
+                          element: string_literal "work"

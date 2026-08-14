@@ -174,10 +174,26 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             let value = tree!((builtin_expr #{node}));
             if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
         }),
-        rule!((stringLiteralExpr) @@node => expr {
+        // Plain string literals (no interpolation)
+        rule!((simpleStringLiteralExpr) @@node => expr {
             let value = tree!((string_literal #{node}));
             if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
         }),
+        // String literals with interpolation
+        rule!(
+            (stringLiteralExpr segments: _* @segs)
+            =>
+            (string_interpolation_expr element: {segs})
+        ),
+        // Map stringSegment to a string_literal for use in string_interpolation_expr
+        rule!((stringSegment content: @@content) => (string_literal #{content})),
+        // In the general case, an expressionSegment results in a call to `appendInterpolation()` which
+        // can take an arbitrary list of  arguments. We model it as a call to a built-in called `interpolation`.
+        rule!(
+            (expressionSegment expressions: _* @exprs)
+            =>
+            (call_expr callee: (builtin_expr "interpolation") argument: {exprs})
+        ),
         rule!((regexLiteralExpr) @@node => expr {
             let value = tree!((regex_literal #{node}));
             if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }

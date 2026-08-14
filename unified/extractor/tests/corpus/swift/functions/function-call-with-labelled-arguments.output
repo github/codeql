@@ -39,4 +39,6 @@ top_level
           argument:
             argument
               name: identifier "person"
-              value: string_literal "\"Bob\""
+              value:
+                string_interpolation_expr
+                  element: string_literal "Bob"

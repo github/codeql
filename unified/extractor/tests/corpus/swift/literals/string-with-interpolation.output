@@ -10,6 +10,12 @@
 // Plain string before and after interpolation
 "prefix \(value) suffix"
 
+// Calls to custom DefaultStringInterpolation.appendInterpolation impls
+"foo \(x, y)"
+"foo \(x, y, z)"
+"foo \(arg: x)"
+"foo \(arg: x, arg2: y)"
+
 ---
 
 sourceFile
@@ -110,6 +116,108 @@ sourceFile
                       baseName: identifier "value"
             stringSegment
               content: stringSegment " suffix"
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "foo "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "x"
+                  trailingComma: ,
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "y"
+            stringSegment
+              content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "foo "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "x"
+                  trailingComma: ,
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "y"
+                  trailingComma: ,
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "z"
+            stringSegment
+              content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "foo "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  colon: :
+                  label: identifier "arg"
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "x"
+            stringSegment
+              content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "foo "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  colon: :
+                  label: identifier "arg"
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "x"
+                  trailingComma: ,
+                labeledExpr
+                  colon: :
+                  label: identifier "arg2"
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "y"
+            stringSegment
+              content: stringSegment
 
 ---
 
@@ -120,33 +228,121 @@ top_level
         string_interpolation_expr
           element:
             string_literal "hello "
-            name_expr
-              identifier: identifier "name"
+            call_expr
+              callee: builtin_expr "interpolation"
+              argument:
+                argument
+                  value:
+                    name_expr
+                      identifier: identifier "name"
             string_literal
         string_interpolation_expr
           element:
             string_literal "hello "
-            name_expr
-              identifier: identifier "first"
+            call_expr
+              callee: builtin_expr "interpolation"
+              argument:
+                argument
+                  value:
+                    name_expr
+                      identifier: identifier "first"
             string_literal " "
-            name_expr
-              identifier: identifier "last"
+            call_expr
+              callee: builtin_expr "interpolation"
+              argument:
+                argument
+                  value:
+                    name_expr
+                      identifier: identifier "last"
             string_literal
         string_interpolation_expr
           element:
             string_literal "result: "
-            binary_expr
-              left:
-                name_expr
-                  identifier: identifier "x"
-              operator: infix_operator "+"
-              right:
-                name_expr
-                  identifier: identifier "y"
+            call_expr
+              callee: builtin_expr "interpolation"
+              argument:
+                argument
+                  value:
+                    binary_expr
+                      left:
+                        name_expr
+                          identifier: identifier "x"
+                      operator: infix_operator "+"
+                      right:
+                        name_expr
+                          identifier: identifier "y"
             string_literal
         string_interpolation_expr
           element:
             string_literal "prefix "
-            name_expr
-              identifier: identifier "value"
+            call_expr
+              callee: builtin_expr "interpolation"
+              argument:
+                argument
+                  value:
+                    name_expr
+                      identifier: identifier "value"
             string_literal " suffix"
+        string_interpolation_expr
+          element:
+            string_literal "foo "
+            call_expr
+              callee: builtin_expr "interpolation"
+              argument:
+                argument
+                  value:
+                    name_expr
+                      identifier: identifier "x"
+                argument
+                  value:
+                    name_expr
+                      identifier: identifier "y"
+            string_literal
+        string_interpolation_expr
+          element:
+            string_literal "foo "
+            call_expr
+              callee: builtin_expr "interpolation"
+              argument:
+                argument
+                  value:
+                    name_expr
+                      identifier: identifier "x"
+                argument
+                  value:
+                    name_expr
+                      identifier: identifier "y"
+                argument
+                  value:
+                    name_expr
+                      identifier: identifier "z"
+            string_literal
+        string_interpolation_expr
+          element:
+            string_literal "foo "
+            call_expr
+              callee: builtin_expr "interpolation"
+              argument:
+                argument
+                  name: identifier "arg"
+                  value:
+                    name_expr
+                      identifier: identifier "x"
+            string_literal
+        string_interpolation_expr
+          element:
+            string_literal "foo "
+            call_expr
+              callee: builtin_expr "interpolation"
+              argument:
+                argument
+                  name: identifier "arg"
+                  value:
+                    name_expr
+                      identifier: identifier "x"
+                argument
+                  name: identifier "arg2"
+                  value:
+                    name_expr
+                      identifier: identifier "y"
+            string_literal

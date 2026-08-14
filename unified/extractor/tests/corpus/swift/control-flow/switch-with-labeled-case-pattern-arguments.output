@@ -154,7 +154,9 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value: string_literal "\"yes\""
+                          value:
+                            string_interpolation_expr
+                              element: string_literal "yes"
             switch_case
               pattern:
                 constructor_pattern
