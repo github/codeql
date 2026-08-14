@@ -1,9 +1,9 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
+load("@rules_swift//swift:swift.bzl", "swift_library")
 load("//unified:platforms.bzl", "UNIFIED_SUPPORTED_PLATFORMS")
 load(":swift_runtime.bzl", "swift_runtime_libs")
 load(":swift_runtime_linking.bzl", "swift_runtime_linking")
-load(":xcode_transition.bzl", "xcode_transition_swift_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -34,7 +34,7 @@ cc_library(
 )
 
 # Swift FFI shim: wraps swift-syntax and exposes a small C ABI.
-xcode_transition_swift_library(
+swift_library(
     name = "swift_syntax_ffi",
     srcs = ["swift/Sources/SwiftSyntaxFFI/SwiftSyntaxFFI.swift"],
     module_name = "SwiftSyntaxFFI",
