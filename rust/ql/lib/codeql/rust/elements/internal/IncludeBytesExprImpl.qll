@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.IncludeBytesExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * An expression produced by the built-in `include_bytes!` macro, embedding the contents of a file as a byte array. For example:
+   * ```rust
+   * let data = include_bytes!("data.bin");
+   * ```
+   */
   class IncludeBytesExpr extends Generated::IncludeBytesExpr { }
 }

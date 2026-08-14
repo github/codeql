@@ -883,6 +883,13 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
+     * A deref pattern, matching the value behind a smart pointer. For example:
+     * ```rust
+     * match x {
+     *     builtin#deref(y) => y,
+     *     _ => 0,
+     * };
+     * ```
      */
     final class DerefPatCfgNode extends CfgNodeFinal, PatCfgNode {
       private DerefPat node;
@@ -1378,6 +1385,10 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
+     * An expression produced by the built-in `include_bytes!` macro, embedding the contents of a file as a byte array. For example:
+     * ```rust
+     * let data = include_bytes!("data.bin");
+     * ```
      */
     final class IncludeBytesExprCfgNode extends CfgNodeFinal, ExprCfgNode {
       private IncludeBytesExpr node;
@@ -2149,6 +2160,10 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
+     * The `!null` pattern used in a pattern type to denote a non-null value. For example:
+     * ```rust
+     * type NonNull = builtin#pattern_type(*const () is !null);
+     * ```
      */
     final class NotNullCfgNode extends CfgNodeFinal, PatCfgNode {
       private NotNull node;

@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.NotNull
  * be referenced directly.
  */
 module Impl {
+  /**
+   * The `!null` pattern used in a pattern type to denote a non-null value. For example:
+   * ```rust
+   * type NonNull = builtin#pattern_type(*const () is !null);
+   * ```
+   */
   class NotNull extends Generated::NotNull { }
 }

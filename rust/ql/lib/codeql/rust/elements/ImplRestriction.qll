@@ -7,4 +7,7 @@ private import internal.ImplRestrictionImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.VisibilityInner
 
+/**
+ * An implementation restriction, limiting where a trait can be implemented. For example the `impl(crate)` restriction (an unstable feature).
+ */
 final class ImplRestriction = Impl::ImplRestriction;

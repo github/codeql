@@ -6,4 +6,10 @@
 private import internal.NotNullImpl
 import codeql.rust.elements.Pat
 
+/**
+ * The `!null` pattern used in a pattern type to denote a non-null value. For example:
+ * ```rust
+ * type NonNull = builtin#pattern_type(*const () is !null);
+ * ```
+ */
 final class NotNull = Impl::NotNull;

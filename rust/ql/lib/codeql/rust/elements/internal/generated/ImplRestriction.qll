@@ -15,6 +15,7 @@ import codeql.rust.elements.VisibilityInner
  */
 module Generated {
   /**
+   * An implementation restriction, limiting where a trait can be implemented. For example the `impl(crate)` restriction (an unstable feature).
    * INTERNAL: Do not reference the `Generated::ImplRestriction` class directly.
    * Use the subclass `ImplRestriction`, where the following predicates are available.
    */

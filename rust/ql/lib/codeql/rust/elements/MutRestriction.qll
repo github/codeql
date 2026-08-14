@@ -7,4 +7,7 @@ private import internal.MutRestrictionImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.VisibilityInner
 
+/**
+ * A mutability restriction, limiting where a field can be mutated. For example the `mut(crate)` restriction (an unstable feature).
+ */
 final class MutRestriction = Impl::MutRestriction;

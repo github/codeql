@@ -7,4 +7,11 @@ private import internal.VisibilityInnerImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Path
 
+/**
+ * The parenthesized inner part of a visibility modifier or restriction, such as the `(in path)` in `pub(in path)`, or the `(crate)` in `pub(crate)`. For example the `(in foo::bar)` in:
+ * ```rust
+ * pub(in foo::bar) struct S;
+ * //  ^^^^^^^^^^^^
+ * ```
+ */
 final class VisibilityInner = Impl::VisibilityInner;

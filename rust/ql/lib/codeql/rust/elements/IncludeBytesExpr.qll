@@ -6,4 +6,10 @@
 private import internal.IncludeBytesExprImpl
 import codeql.rust.elements.Expr
 
+/**
+ * An expression produced by the built-in `include_bytes!` macro, embedding the contents of a file as a byte array. For example:
+ * ```rust
+ * let data = include_bytes!("data.bin");
+ * ```
+ */
 final class IncludeBytesExpr = Impl::IncludeBytesExpr;

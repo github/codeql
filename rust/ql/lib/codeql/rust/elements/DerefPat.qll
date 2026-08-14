@@ -6,4 +6,13 @@
 private import internal.DerefPatImpl
 import codeql.rust.elements.Pat
 
+/**
+ * A deref pattern, matching the value behind a smart pointer. For example:
+ * ```rust
+ * match x {
+ *     builtin#deref(y) => y,
+ *     _ => 0,
+ * };
+ * ```
+ */
 final class DerefPat = Impl::DerefPat;

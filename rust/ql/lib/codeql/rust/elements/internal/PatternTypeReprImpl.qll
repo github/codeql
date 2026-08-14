@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.PatternTypeRepr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A pattern type, constraining a type to values matching a pattern. For example:
+   * ```rust
+   * type NonZero = builtin#pattern_type(u32 is 1..);
+   * ```
+   */
   class PatternTypeRepr extends Generated::PatternTypeRepr { }
 }

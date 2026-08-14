@@ -15,6 +15,13 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
+   * A deref pattern, matching the value behind a smart pointer. For example:
+   * ```rust
+   * match x {
+   *     builtin#deref(y) => y,
+   *     _ => 0,
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::DerefPat` class directly.
    * Use the subclass `DerefPat`, where the following predicates are available.
    */

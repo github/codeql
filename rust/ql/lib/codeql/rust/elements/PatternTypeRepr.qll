@@ -7,4 +7,10 @@ private import internal.PatternTypeReprImpl
 import codeql.rust.elements.Pat
 import codeql.rust.elements.TypeRepr
 
+/**
+ * A pattern type, constraining a type to values matching a pattern. For example:
+ * ```rust
+ * type NonZero = builtin#pattern_type(u32 is 1..);
+ * ```
+ */
 final class PatternTypeRepr = Impl::PatternTypeRepr;

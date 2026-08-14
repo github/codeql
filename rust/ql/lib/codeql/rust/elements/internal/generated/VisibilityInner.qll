@@ -15,6 +15,11 @@ import codeql.rust.elements.Path
  */
 module Generated {
   /**
+   * The parenthesized inner part of a visibility modifier or restriction, such as the `(in path)` in `pub(in path)`, or the `(crate)` in `pub(crate)`. For example the `(in foo::bar)` in:
+   * ```rust
+   * pub(in foo::bar) struct S;
+   * //  ^^^^^^^^^^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::VisibilityInner` class directly.
    * Use the subclass `VisibilityInner`, where the following predicates are available.
    */

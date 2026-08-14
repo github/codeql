@@ -669,6 +669,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An implementation restriction, limiting where a trait can be implemented. For example the `impl(crate)` restriction (an unstable feature).
    */
   class ImplRestriction extends @impl_restriction, AstNode {
     override string toString() { result = "ImplRestriction" }
@@ -1021,6 +1022,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A mutability restriction, limiting where a field can be mutated. For example the `mut(crate)` restriction (an unstable feature).
    */
   class MutRestriction extends @mut_restriction, AstNode {
     override string toString() { result = "MutRestriction" }
@@ -2240,6 +2242,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The parenthesized inner part of a visibility modifier or restriction, such as the `(in path)` in `pub(in path)`, or the `(crate)` in `pub(crate)`. For example the `(in foo::bar)` in:
+   * ```rust
+   * pub(in foo::bar) struct S;
+   * //  ^^^^^^^^^^^^
+   * ```
    */
   class VisibilityInner extends @visibility_inner, AstNode {
     override string toString() { result = "VisibilityInner" }
@@ -3575,6 +3582,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A deref pattern, matching the value behind a smart pointer. For example:
+   * ```rust
+   * match x {
+   *     builtin#deref(y) => y,
+   *     _ => 0,
+   * };
+   * ```
    */
   class DerefPat extends @deref_pat, Pat {
     override string toString() { result = "DerefPat" }
@@ -4034,6 +4048,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression produced by the built-in `include_bytes!` macro, embedding the contents of a file as a byte array. For example:
+   * ```rust
+   * let data = include_bytes!("data.bin");
+   * ```
    */
   class IncludeBytesExpr extends @include_bytes_expr, Expr {
     override string toString() { result = "IncludeBytesExpr" }
@@ -4741,6 +4759,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The `!null` pattern used in a pattern type to denote a non-null value. For example:
+   * ```rust
+   * type NonNull = builtin#pattern_type(*const () is !null);
+   * ```
    */
   class NotNull extends @not_null, Pat {
     override string toString() { result = "NotNull" }
@@ -5065,6 +5087,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A pattern type, constraining a type to values matching a pattern. For example:
+   * ```rust
+   * type NonZero = builtin#pattern_type(u32 is 1..);
+   * ```
    */
   class PatternTypeRepr extends @pattern_type_repr, TypeRepr {
     override string toString() { result = "PatternTypeRepr" }

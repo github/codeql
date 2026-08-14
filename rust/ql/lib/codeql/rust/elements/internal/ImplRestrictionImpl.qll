@@ -12,5 +12,8 @@ private import codeql.rust.elements.internal.generated.ImplRestriction
  * be referenced directly.
  */
 module Impl {
+  /**
+   * An implementation restriction, limiting where a trait can be implemented. For example the `impl(crate)` restriction (an unstable feature).
+   */
   class ImplRestriction extends Generated::ImplRestriction { }
 }

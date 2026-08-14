@@ -15,6 +15,7 @@ import codeql.rust.elements.VisibilityInner
  */
 module Generated {
   /**
+   * A mutability restriction, limiting where a field can be mutated. For example the `mut(crate)` restriction (an unstable feature).
    * INTERNAL: Do not reference the `Generated::MutRestriction` class directly.
    * Use the subclass `MutRestriction`, where the following predicates are available.
    */

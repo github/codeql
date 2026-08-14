@@ -12,5 +12,8 @@ private import codeql.rust.elements.internal.generated.MutRestriction
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A mutability restriction, limiting where a field can be mutated. For example the `mut(crate)` restriction (an unstable feature).
+   */
   class MutRestriction extends Generated::MutRestriction { }
 }

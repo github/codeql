@@ -737,7 +737,7 @@
 /test/extractor-tests/generated/ConstParam/ConstParam.ql linguist-generated
 /test/extractor-tests/generated/ContinueExpr/ContinueExpr.ql linguist-generated
 /test/extractor-tests/generated/Crate/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/DerefPat/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/DerefPat/DerefPat.ql linguist-generated
 /test/extractor-tests/generated/DynTraitTypeRepr/DynTraitTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum.ql linguist-generated
 /test/extractor-tests/generated/ExprStmt/ExprStmt.ql linguist-generated
@@ -762,7 +762,7 @@
 /test/extractor-tests/generated/Impl/Impl.ql linguist-generated
 /test/extractor-tests/generated/ImplRestriction/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/ImplTraitTypeRepr/ImplTraitTypeRepr.ql linguist-generated
-/test/extractor-tests/generated/IncludeBytesExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/IncludeBytesExpr/IncludeBytesExpr.ql linguist-generated
 /test/extractor-tests/generated/IndexExpr/IndexExpr.ql linguist-generated
 /test/extractor-tests/generated/InferTypeRepr/InferTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/ItemList/ItemList.ql linguist-generated
@@ -794,7 +794,7 @@
 /test/extractor-tests/generated/Name/Name.ql linguist-generated
 /test/extractor-tests/generated/NameRef/NameRef.ql linguist-generated
 /test/extractor-tests/generated/NeverTypeRepr/NeverTypeRepr.ql linguist-generated
-/test/extractor-tests/generated/NotNull/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/NotNull/NotNull.ql linguist-generated
 /test/extractor-tests/generated/OffsetOfExpr/OffsetOfExpr.ql linguist-generated
 /test/extractor-tests/generated/OrPat/OrPat.ql linguist-generated
 /test/extractor-tests/generated/Param/Param.ql linguist-generated
@@ -809,7 +809,7 @@
 /test/extractor-tests/generated/Path/PathSegment.ql linguist-generated
 /test/extractor-tests/generated/Path/PathTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/PathMeta/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/PatternTypeRepr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/PatternTypeRepr/PatternTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/PrefixExpr/PrefixExpr.ql linguist-generated
 /test/extractor-tests/generated/PtrTypeRepr/PtrTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/RangeExpr/RangeExpr.ql linguist-generated
@@ -864,7 +864,7 @@
 /test/extractor-tests/generated/Variant/Variant.ql linguist-generated
 /test/extractor-tests/generated/VariantList/VariantList.ql linguist-generated
 /test/extractor-tests/generated/Visibility/Visibility.ql linguist-generated
-/test/extractor-tests/generated/VisibilityInner/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/VisibilityInner/VisibilityInner.ql linguist-generated
 /test/extractor-tests/generated/WhereClause/WhereClause.ql linguist-generated
 /test/extractor-tests/generated/WherePred/WherePred.ql linguist-generated
 /test/extractor-tests/generated/WhileExpr/WhileExpr.ql linguist-generated

@@ -14,6 +14,10 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
+   * An expression produced by the built-in `include_bytes!` macro, embedding the contents of a file as a byte array. For example:
+   * ```rust
+   * let data = include_bytes!("data.bin");
+   * ```
    * INTERNAL: Do not reference the `Generated::IncludeBytesExpr` class directly.
    * Use the subclass `IncludeBytesExpr`, where the following predicates are available.
    */
