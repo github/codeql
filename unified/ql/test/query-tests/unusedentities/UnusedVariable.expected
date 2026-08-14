@@ -1,0 +1,2 @@
+| test.swift:2:9:2:9 | a | Unused local variable 'a' |
+| test.swift:12:9:12:9 | a | Unused local variable 'a' |
