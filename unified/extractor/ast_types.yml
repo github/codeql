@@ -6,6 +6,7 @@ supertypes:
     - boolean_literal
     - string_literal
     - regex_literal
+    - string_interpolation_expr
     - builtin_expr
     - binary_expr
     - unary_expr
@@ -129,6 +130,11 @@ named:
 
   # A regex literal
   regex_literal:
+
+  # A string interpolation expression. Constant parts are stored as string literals.
+  string_interpolation_expr:
+    modifier*: modifier
+    element*: expr
 
   # Application of a binary operator, such as `a + b`
   binary_expr:
