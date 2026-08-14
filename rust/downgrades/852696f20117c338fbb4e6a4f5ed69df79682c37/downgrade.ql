@@ -7,9 +7,10 @@ class Location extends @location_default {
 }
 
 // Genuinely-new node kinds with no representation in the old schema. Their own child relations are
-// dropped via `delete` in upgrade.properties; here we additionally drop their locations so no
-// dangling `locatable_locations` rows remain.
-private predicate deletedElement(Element id) {
+// dropped via `delete` in upgrade.properties; the references to them from `@ast_node`-typed columns
+// (`macro_call_macro_call_expansions`, `comments`) and their `locatable_locations` are scrubbed
+// below.
+private predicate deletedNode(Element id) {
   deref_pats(id) or
   not_nulls(id) or
   include_bytes_exprs(id) or
@@ -17,6 +18,14 @@ private predicate deletedElement(Element id) {
   impl_restrictions(id) or
   mut_restrictions(id) or
   visibility_inners(id)
+}
+
+// A deleted node, plus any comment attached to one: dropping the comment's `comments` row would
+// otherwise leave its `locatable_locations` row dangling.
+private predicate deletedElement(Element id) {
+  deletedNode(id)
+  or
+  exists(Element parent | comments(id, parent, _) and deletedNode(parent))
 }
 
 // A `@name` used as a format argument's name. The old schema represents these as dedicated text-less
@@ -47,4 +56,15 @@ query predicate new_name_texts(Element id, string text) {
 
 query predicate new_locatable_locations(Element id, Location location) {
   locatable_locations(id, location) and not deletedElement(id)
+}
+
+// `macro_call_macro_call_expansions` and `comments` are the only two relations with a generic
+// `@ast_node`-typed value column, so a deleted node reachable through a macro expansion or as a
+// comment's parent would otherwise dangle here.
+query predicate new_macro_call_macro_call_expansions(Element macroCall, Element expansion) {
+  macro_call_macro_call_expansions(macroCall, expansion) and not deletedNode(expansion)
+}
+
+query predicate new_comments(Element id, Element parent, string text) {
+  comments(id, parent, text) and not deletedNode(parent)
 }
