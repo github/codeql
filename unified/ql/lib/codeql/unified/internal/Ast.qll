@@ -1272,6 +1272,32 @@ module Unified {
 
   class Stmt extends @unified_stmt, F::AstNode { }
 
+  /** A class representing `string_interpolation_expr` nodes. */
+  class StringInterpolationExpr extends @unified_string_interpolation_expr, F::Expr {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "StringInterpolationExpr" }
+
+    /** Gets the node corresponding to the field `element`. */
+    final F::Expr getElement(int i) { unified_string_interpolation_expr_element(this, i, result) }
+
+    /** Gets the node corresponding to the field `element`. */
+    final F::Expr getAnElement() { result = this.getElement(_) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getModifier(int i) {
+      unified_string_interpolation_expr_modifier(this, i, result)
+    }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
+    /** Gets a field or child node of this node. */
+    final override F::AstNode getAFieldOrChild() {
+      unified_string_interpolation_expr_element(this, _, result) or
+      unified_string_interpolation_expr_modifier(this, _, result)
+    }
+  }
+
   /** A class representing `string_literal` tokens. */
   class StringLiteral extends @unified_token_string_literal, F::Expr, F::Token {
     /** Gets the name of the primary QL class for this element. */
@@ -1942,6 +1968,10 @@ module Unified {
       or
       result = node.(ReturnExpr).getValue() and i = -1 and name = "getValue"
       or
+      result = node.(StringInterpolationExpr).getElement(i) and name = "getElement"
+      or
+      result = node.(StringInterpolationExpr).getModifier(i) and name = "getModifier"
+      or
       result = node.(SwitchCase).getBody() and i = -1 and name = "getBody"
       or
       result = node.(SwitchCase).getModifier(i) and name = "getModifier"
@@ -2176,6 +2206,8 @@ module UnifiedFinal {
   final class ReturnExpr = F::ReturnExpr;
 
   final class Stmt = F::Stmt;
+
+  final class StringInterpolationExpr = F::StringInterpolationExpr;
 
   final class StringLiteral = F::StringLiteral;
 
