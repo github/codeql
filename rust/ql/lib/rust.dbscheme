@@ -199,11 +199,11 @@ named_crates(
 | @field_list
 | @for_binder
 | @format_args_arg
-| @format_args_arg_name
 | @generic_arg
 | @generic_arg_list
 | @generic_param
 | @generic_param_list
+| @impl_restriction
 | @item_list
 | @label
 | @let_else
@@ -212,6 +212,7 @@ named_crates(
 | @match_arm_list
 | @match_guard
 | @meta
+| @mut_restriction
 | @name
 | @param_base
 | @param_list
@@ -244,6 +245,7 @@ named_crates(
 | @use_tree_list
 | @variant_list
 | @visibility
+| @visibility_inner
 | @where_clause
 | @where_pred
 ;
@@ -429,6 +431,7 @@ callable_attrs(
 | @field_expr
 | @format_args_expr
 | @if_expr
+| @include_bytes_expr
 | @index_expr
 | @labelable_expr
 | @let_expr
@@ -489,19 +492,15 @@ format_args_args(
 );
 
 #keyset[id]
-format_args_arg_arg_names(
-  int id: @format_args_arg ref,
-  int arg_name: @format_args_arg_name ref
-);
-
-#keyset[id]
 format_args_arg_exprs(
   int id: @format_args_arg ref,
   int expr: @expr ref
 );
 
+#keyset[id]
 format_args_arg_names(
-  unique int id: @format_args_arg_name
+  int id: @format_args_arg ref,
+  int name: @name ref
 );
 
 @generic_arg =
@@ -537,6 +536,16 @@ generic_param_list_generic_params(
   int id: @generic_param_list ref,
   int index: int ref,
   int generic_param: @generic_param ref
+);
+
+impl_restrictions(
+  unique int id: @impl_restriction
+);
+
+#keyset[id]
+impl_restriction_visibility_inners(
+  int id: @impl_restriction ref,
+  int visibility_inner: @visibility_inner ref
 );
 
 item_lists(
@@ -654,6 +663,21 @@ match_guard_conditions(
 | @unsafe_meta
 ;
 
+mut_restrictions(
+  unique int id: @mut_restriction
+);
+
+#keyset[id]
+mut_restriction_is_mut(
+  int id: @mut_restriction ref
+);
+
+#keyset[id]
+mut_restriction_visibility_inners(
+  int id: @mut_restriction ref,
+  int visibility_inner: @visibility_inner ref
+);
+
 names(
   unique int id: @name
 );
@@ -713,9 +737,11 @@ parenthesized_arg_list_type_args(
 @pat =
   @box_pat
 | @const_block_pat
+| @deref_pat
 | @ident_pat
 | @literal_pat
 | @macro_pat
+| @not_null
 | @or_pat
 | @paren_pat
 | @path_pat
@@ -947,6 +973,12 @@ struct_field_is_unsafe(
 );
 
 #keyset[id]
+struct_field_mut_restrictions(
+  int id: @struct_field ref,
+  int mut_restriction: @mut_restriction ref
+);
+
+#keyset[id]
 struct_field_names(
   int id: @struct_field ref,
   int name: @name ref
@@ -1039,6 +1071,12 @@ tuple_field_attrs(
 );
 
 #keyset[id]
+tuple_field_mut_restrictions(
+  int id: @tuple_field ref,
+  int mut_restriction: @mut_restriction ref
+);
+
+#keyset[id]
 tuple_field_type_reprs(
   int id: @tuple_field ref,
   int type_repr: @type_repr ref
@@ -1110,6 +1148,7 @@ type_bound_list_bounds(
 | @never_type_repr
 | @paren_type_repr
 | @path_type_repr
+| @pattern_type_repr
 | @ptr_type_repr
 | @ref_type_repr
 | @slice_type_repr
@@ -1186,8 +1225,18 @@ visibilities(
 );
 
 #keyset[id]
-visibility_paths(
+visibility_visibility_inners(
   int id: @visibility ref,
+  int visibility_inner: @visibility_inner ref
+);
+
+visibility_inners(
+  unique int id: @visibility_inner
+);
+
+#keyset[id]
+visibility_inner_paths(
+  int id: @visibility_inner ref,
   int path: @path ref
 );
 
@@ -1273,6 +1322,13 @@ asm_clobber_abis(
   unique int id: @asm_clobber_abi
 );
 
+#keyset[id, index]
+asm_clobber_abi_attrs(
+  int id: @asm_clobber_abi ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
 asm_consts(
   unique int id: @asm_const
 );
@@ -1308,6 +1364,13 @@ asm_operand_named_asm_operands(
   int asm_operand: @asm_operand ref
 );
 
+#keyset[id, index]
+asm_operand_named_attrs(
+  int id: @asm_operand_named ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
 #keyset[id]
 asm_operand_named_names(
   int id: @asm_operand_named ref,
@@ -1323,6 +1386,13 @@ asm_options_list_asm_options(
   int id: @asm_options_list ref,
   int index: int ref,
   int asm_option: @asm_option ref
+);
+
+#keyset[id, index]
+asm_options_list_attrs(
+  int id: @asm_options_list ref,
+  int index: int ref,
+  int attr: @attr ref
 );
 
 asm_reg_operands(
@@ -1722,6 +1792,16 @@ continue_expr_lifetimes(
   int lifetime: @lifetime ref
 );
 
+deref_pats(
+  unique int id: @deref_pat
+);
+
+#keyset[id]
+deref_pat_pats(
+  int id: @deref_pat ref,
+  int pat: @pat ref
+);
+
 dyn_trait_type_reprs(
   unique int id: @dyn_trait_type_repr
 );
@@ -1912,6 +1992,10 @@ impl_trait_type_reprs(
 impl_trait_type_repr_type_bound_lists(
   int id: @impl_trait_type_repr ref,
   int type_bound_list: @type_bound_list ref
+);
+
+include_bytes_exprs(
+  unique int id: @include_bytes_expr
 );
 
 index_exprs(
@@ -2219,6 +2303,10 @@ never_type_reprs(
   unique int id: @never_type_repr
 );
 
+not_nulls(
+  unique int id: @not_null
+);
+
 offset_of_exprs(
   unique int id: @offset_of_expr
 );
@@ -2327,6 +2415,22 @@ path_type_reprs(
 path_type_repr_paths(
   int id: @path_type_repr ref,
   int path: @path ref
+);
+
+pattern_type_reprs(
+  unique int id: @pattern_type_repr
+);
+
+#keyset[id]
+pattern_type_repr_pats(
+  int id: @pattern_type_repr ref,
+  int pat: @pat ref
+);
+
+#keyset[id]
+pattern_type_repr_type_reprs(
+  int id: @pattern_type_repr ref,
+  int type_repr: @type_repr ref
 );
 
 prefix_exprs(
@@ -3173,6 +3277,12 @@ trait_attrs(
 trait_generic_param_lists(
   int id: @trait ref,
   int generic_param_list: @generic_param_list ref
+);
+
+#keyset[id]
+trait_impl_restrictions(
+  int id: @trait ref,
+  int impl_restriction: @impl_restriction ref
 );
 
 #keyset[id]

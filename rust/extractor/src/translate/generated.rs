@@ -82,6 +82,9 @@ impl Translator<'_> {
             ast::Expr::ForExpr(inner) => self.emit_for_expr(inner).map(Into::into),
             ast::Expr::FormatArgsExpr(inner) => self.emit_format_args_expr(inner).map(Into::into),
             ast::Expr::IfExpr(inner) => self.emit_if_expr(inner).map(Into::into),
+            ast::Expr::IncludeBytesExpr(inner) => {
+                self.emit_include_bytes_expr(inner).map(Into::into)
+            }
             ast::Expr::IndexExpr(inner) => self.emit_index_expr(inner).map(Into::into),
             ast::Expr::LetExpr(inner) => self.emit_let_expr(inner).map(Into::into),
             ast::Expr::Literal(inner) => self.emit_literal(inner).map(Into::into),
@@ -180,9 +183,11 @@ impl Translator<'_> {
         let label = match node {
             ast::Pat::BoxPat(inner) => self.emit_box_pat(inner).map(Into::into),
             ast::Pat::ConstBlockPat(inner) => self.emit_const_block_pat(inner).map(Into::into),
+            ast::Pat::DerefPat(inner) => self.emit_deref_pat(inner).map(Into::into),
             ast::Pat::IdentPat(inner) => self.emit_ident_pat(inner).map(Into::into),
             ast::Pat::LiteralPat(inner) => self.emit_literal_pat(inner).map(Into::into),
             ast::Pat::MacroPat(inner) => self.emit_macro_pat(inner).map(Into::into),
+            ast::Pat::NotNull(inner) => self.emit_not_null(inner).map(Into::into),
             ast::Pat::OrPat(inner) => self.emit_or_pat(inner).map(Into::into),
             ast::Pat::ParenPat(inner) => self.emit_paren_pat(inner).map(Into::into),
             ast::Pat::PathPat(inner) => self.emit_path_pat(inner).map(Into::into),
@@ -217,6 +222,7 @@ impl Translator<'_> {
             ast::Type::NeverType(inner) => self.emit_never_type(inner).map(Into::into),
             ast::Type::ParenType(inner) => self.emit_paren_type(inner).map(Into::into),
             ast::Type::PathType(inner) => self.emit_path_type(inner).map(Into::into),
+            ast::Type::PatternType(inner) => self.emit_pattern_type(inner).map(Into::into),
             ast::Type::PtrType(inner) => self.emit_ptr_type(inner).map(Into::into),
             ast::Type::RefType(inner) => self.emit_ref_type(inner).map(Into::into),
             ast::Type::SliceType(inner) => self.emit_slice_type(inner).map(Into::into),
@@ -322,9 +328,14 @@ impl Translator<'_> {
         &mut self,
         node: &ast::AsmClobberAbi,
     ) -> Option<Label<generated::AsmClobberAbi>> {
-        let label = self
-            .trap
-            .emit(generated::AsmClobberAbi { id: TrapId::Star });
+        if self.should_be_excluded(node) {
+            return None;
+        }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let label = self.trap.emit(generated::AsmClobberAbi {
+            id: TrapId::Star,
+            attrs,
+        });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
@@ -408,11 +419,16 @@ impl Translator<'_> {
         &mut self,
         node: &ast::AsmOperandNamed,
     ) -> Option<Label<generated::AsmOperandNamed>> {
+        if self.should_be_excluded(node) {
+            return None;
+        }
         let asm_operand = node.asm_operand().and_then(|x| self.emit_asm_operand(&x));
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
         let name = node.name().and_then(|x| self.emit_name(&x));
         let label = self.trap.emit(generated::AsmOperandNamed {
             id: TrapId::Star,
             asm_operand,
+            attrs,
             name,
         });
         self.emit_location(label, node);
@@ -436,13 +452,18 @@ impl Translator<'_> {
         &mut self,
         node: &ast::AsmOptions,
     ) -> Option<Label<generated::AsmOptionsList>> {
+        if self.should_be_excluded(node) {
+            return None;
+        }
         let asm_options = node
             .asm_options()
             .filter_map(|x| self.emit_asm_option(&x))
             .collect();
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
         let label = self.trap.emit(generated::AsmOptionsList {
             id: TrapId::Star,
             asm_options,
+            attrs,
         });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
@@ -916,6 +937,19 @@ impl Translator<'_> {
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
+    pub(crate) fn emit_deref_pat(
+        &mut self,
+        node: &ast::DerefPat,
+    ) -> Option<Label<generated::DerefPat>> {
+        let pat = node.pat().and_then(|x| self.emit_pat(&x));
+        let label = self.trap.emit(generated::DerefPat {
+            id: TrapId::Star,
+            pat,
+        });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
     pub(crate) fn emit_dyn_trait_type(
         &mut self,
         node: &ast::DynTraitType,
@@ -1190,26 +1224,13 @@ impl Translator<'_> {
         &mut self,
         node: &ast::FormatArgsArg,
     ) -> Option<Label<generated::FormatArgsArg>> {
-        let arg_name = node
-            .arg_name()
-            .and_then(|x| self.emit_format_args_arg_name(&x));
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
+        let name = node.name().and_then(|x| self.emit_name(&x));
         let label = self.trap.emit(generated::FormatArgsArg {
             id: TrapId::Star,
-            arg_name,
             expr,
+            name,
         });
-        self.emit_location(label, node);
-        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
-        Some(label)
-    }
-    pub(crate) fn emit_format_args_arg_name(
-        &mut self,
-        node: &ast::FormatArgsArgName,
-    ) -> Option<Label<generated::FormatArgsArgName>> {
-        let label = self
-            .trap
-            .emit(generated::FormatArgsArgName { id: TrapId::Star });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
@@ -1347,6 +1368,21 @@ impl Translator<'_> {
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
+    pub(crate) fn emit_impl_restriction(
+        &mut self,
+        node: &ast::ImplRestriction,
+    ) -> Option<Label<generated::ImplRestriction>> {
+        let visibility_inner = node
+            .visibility_inner()
+            .and_then(|x| self.emit_visibility_inner(&x));
+        let label = self.trap.emit(generated::ImplRestriction {
+            id: TrapId::Star,
+            visibility_inner,
+        });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
     pub(crate) fn emit_impl_trait_type(
         &mut self,
         node: &ast::ImplTraitType,
@@ -1358,6 +1394,17 @@ impl Translator<'_> {
             id: TrapId::Star,
             type_bound_list,
         });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
+    pub(crate) fn emit_include_bytes_expr(
+        &mut self,
+        node: &ast::IncludeBytesExpr,
+    ) -> Option<Label<generated::IncludeBytesExpr>> {
+        let label = self
+            .trap
+            .emit(generated::IncludeBytesExpr { id: TrapId::Star });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
@@ -1849,6 +1896,23 @@ impl Translator<'_> {
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
+    pub(crate) fn emit_mut_restriction(
+        &mut self,
+        node: &ast::MutRestriction,
+    ) -> Option<Label<generated::MutRestriction>> {
+        let is_mut = node.mut_token().is_some();
+        let visibility_inner = node
+            .visibility_inner()
+            .and_then(|x| self.emit_visibility_inner(&x));
+        let label = self.trap.emit(generated::MutRestriction {
+            id: TrapId::Star,
+            is_mut,
+            visibility_inner,
+        });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
     pub(crate) fn emit_name(&mut self, node: &ast::Name) -> Option<Label<generated::Name>> {
         let text = node.try_get_text();
         let label = self.trap.emit(generated::Name {
@@ -1879,6 +1943,15 @@ impl Translator<'_> {
         let label = self
             .trap
             .emit(generated::NeverTypeRepr { id: TrapId::Star });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
+    pub(crate) fn emit_not_null(
+        &mut self,
+        node: &ast::NotNull,
+    ) -> Option<Label<generated::NotNull>> {
+        let label = self.trap.emit(generated::NotNull { id: TrapId::Star });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
@@ -2112,6 +2185,21 @@ impl Translator<'_> {
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
+    pub(crate) fn emit_pattern_type(
+        &mut self,
+        node: &ast::PatternType,
+    ) -> Option<Label<generated::PatternTypeRepr>> {
+        let pat = node.pat().and_then(|x| self.emit_pat(&x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(&x));
+        let label = self.trap.emit(generated::PatternTypeRepr {
+            id: TrapId::Star,
+            pat,
+            type_repr,
+        });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
     pub(crate) fn emit_prefix_expr(
         &mut self,
         node: &ast::PrefixExpr,
@@ -2258,6 +2346,9 @@ impl Translator<'_> {
         let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
         let default_val = node.default_val().and_then(|x| self.emit_const_arg(&x));
         let is_unsafe = node.unsafe_token().is_some();
+        let mut_restriction = node
+            .mut_restriction()
+            .and_then(|x| self.emit_mut_restriction(&x));
         let name = node.name().and_then(|x| self.emit_name(&x));
         let type_repr = node.ty().and_then(|x| self.emit_type(&x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(&x));
@@ -2266,6 +2357,7 @@ impl Translator<'_> {
             attrs,
             default_val,
             is_unsafe,
+            mut_restriction,
             name,
             type_repr,
             visibility,
@@ -2654,6 +2746,9 @@ impl Translator<'_> {
         let generic_param_list = node
             .generic_param_list()
             .and_then(|x| self.emit_generic_param_list(&x));
+        let impl_restriction = node
+            .impl_restriction()
+            .and_then(|x| self.emit_impl_restriction(&x));
         let is_auto = node.auto_token().is_some();
         let is_unsafe = node.unsafe_token().is_some();
         let name = node.name().and_then(|x| self.emit_name(&x));
@@ -2667,6 +2762,7 @@ impl Translator<'_> {
             assoc_item_list,
             attrs,
             generic_param_list,
+            impl_restriction,
             is_auto,
             is_unsafe,
             name,
@@ -2737,11 +2833,15 @@ impl Translator<'_> {
             return None;
         }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let mut_restriction = node
+            .mut_restriction()
+            .and_then(|x| self.emit_mut_restriction(&x));
         let type_repr = node.ty().and_then(|x| self.emit_type(&x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(&x));
         let label = self.trap.emit(generated::TupleField {
             id: TrapId::Star,
             attrs,
+            mut_restriction,
             type_repr,
             visibility,
         });
@@ -3094,8 +3194,23 @@ impl Translator<'_> {
         &mut self,
         node: &ast::Visibility,
     ) -> Option<Label<generated::Visibility>> {
-        let path = node.path().and_then(|x| self.emit_path(&x));
+        let visibility_inner = node
+            .visibility_inner()
+            .and_then(|x| self.emit_visibility_inner(&x));
         let label = self.trap.emit(generated::Visibility {
+            id: TrapId::Star,
+            visibility_inner,
+        });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
+    pub(crate) fn emit_visibility_inner(
+        &mut self,
+        node: &ast::VisibilityInner,
+    ) -> Option<Label<generated::VisibilityInner>> {
+        let path = node.path().and_then(|x| self.emit_path(&x));
+        let label = self.trap.emit(generated::VisibilityInner {
             id: TrapId::Star,
             path,
         });
