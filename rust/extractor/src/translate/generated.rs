@@ -9,7 +9,7 @@ use ra_ap_syntax::ast::{
 };
 #[rustfmt::skip]
 use ra_ap_syntax::{AstNode, ast};
-impl Translator<'_, '_> {
+impl Translator<'_> {
     pub(crate) fn emit_asm_operand(
         &mut self,
         node: &ast::AsmOperand,
