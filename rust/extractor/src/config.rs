@@ -65,6 +65,7 @@ pub struct Config {
     pub qltest_cargo_check: bool,
     pub qltest_dependencies: Vec<String>,
     pub qltest_use_nightly: bool,
+    pub qltest_edition: Option<String>,
     pub sysroot: Option<PathBuf>,
     pub sysroot_src: Option<PathBuf>,
     pub rustc_src: Option<PathBuf>,
