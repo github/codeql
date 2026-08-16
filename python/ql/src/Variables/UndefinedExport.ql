@@ -76,6 +76,20 @@ predicate contains_unknown_import_star(ModuleValue m) {
   )
 }
 
+/** Holds if `m` can provide missing attributes through a module-level `__getattr__`. */
+private predicate has_dynamic_module_attributes(ModuleValue m) {
+  major_version() = 3 and
+  minor_version() >= 7 and
+  m.hasAttribute("__getattr__") and
+  // If points-to cannot resolve the binding, do not assume it is non-callable.
+  not exists(Value getter, ClassValue cls |
+    getter = m.attr("__getattr__") and
+    cls = getter.getClass() and
+    not cls.isCallable() and
+    not cls.failedInference(_)
+  )
+}
+
 from ModuleValue m, StringLiteral name, string exported_name
 where
   declaredInAll(m.getScope(), name) and
@@ -83,5 +97,6 @@ where
   not m.hasAttribute(exported_name) and
   not is_exported_submodule_name(m, exported_name) and
   not contains_unknown_import_star(m) and
-  not mutates_globals(m)
+  not mutates_globals(m) and
+  not has_dynamic_module_attributes(m)
 select name, "The name '" + exported_name + "' is exported by __all__ but is not defined."
