@@ -10,6 +10,7 @@ private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.security.SensitiveData
 private import codeql.rust.Concepts
 private import codeql.rust.security.Barriers as Barriers
+private import codeql.rust.security.LogInjectionExtensions
 
 /**
  * Provides default sources, sinks and barriers for detecting cleartext logging
@@ -44,6 +45,11 @@ module CleartextLogging {
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "log-injection") }
   }
+
+  /**
+   * A sink for the logging macros of the `tracing` crate.
+   */
+  private class TracingMacroSink extends Sink instanceof LogInjection::TracingMacroSink { }
 
   /**
    * A barrier for logging from model data.

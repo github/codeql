@@ -45,6 +45,7 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     trace!("message = {}", password); // $ Alert[rust/cleartext-logging]
     warn!("message = {}", password); // $ Alert[rust/cleartext-logging]
     log!(Level::Error, "message = {}", password); // $ Alert[rust/cleartext-logging]
+    log::debug!("message = {}", password); // $ Alert[rust/cleartext-logging]
 
     // debug! macro, various formatting
     debug!("message");
@@ -251,6 +252,38 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
     err.write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 }
 
+fn test_tracing(password: String) {
+    // logging-style macros
+    tracing::debug!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    tracing::error!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    tracing::info!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    tracing::trace!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    tracing::warn!("message = {}", password); // $ Alert[rust/cleartext-logging]
+
+    // span and event macros
+    let span = tracing::span!(tracing::Level::INFO, "span = {}", password); // $ Alert[rust/cleartext-logging]
+    let _enter = span.enter();
+
+    tracing::event!(tracing::Level::INFO, "event = {}", password); // $ Alert[rust/cleartext-logging]
+    tracing::event!(tracing::Level::INFO, user = "alice", password = password); // $ Alert[rust/cleartext-logging]
+    tracing::event!(tracing::Level::INFO, user = "bob", user.password = password); // $ Alert[rust/cleartext-logging]
+
+    // more usage variants
+    tracing::info!(password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(%password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(?password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(password = password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(password = %password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(password = ?password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(target: "app", message = password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(target: "app", message = %password); // $ Alert[rust/cleartext-logging]
+    tracing::info!(target: "app", message = ?password); // $ Alert[rust/cleartext-logging]
+
+    let span2 = tracing::span!(tracing::Level::INFO, "message", message = %password); // $ Alert[rust/cleartext-logging]
+    let _enter2 = span2.enter();
+    tracing::event!(tracing::Level::INFO, message = %password); // $ Alert[rust/cleartext-logging]
+}
+
 fn main() {
     simple_logger::SimpleLogger::new().init().unwrap();
 
@@ -260,4 +293,5 @@ fn main() {
         "[encrypted]".to_string(),
     );
     test_std("123456".to_string(), 0, None);
+    test_tracing("123456".to_string());
 }
