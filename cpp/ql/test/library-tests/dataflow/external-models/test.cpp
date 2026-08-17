@@ -240,27 +240,27 @@ using Callback = void(*)(const SourceWrapper*);
 void source_from_callback_ptr(Callback);
 
 void f(const SourceWrapper* s) {
-	ymlSink(s->value); // $ MISSING: ir=250:32 ir=251:27
+	ymlSink(s->value); // $ ir=250:32 ir=251:27
 }
 
 void test_source_access_path() {
 	SourceWrapper wrapper = ymlFieldSource();
-	ymlSink(wrapper.value); // $ MISSING: ir
+	ymlSink(wrapper.value); // $ ir
 
 	source_from_callback_template(f);
 	source_from_callback_ptr(f);
 
 	source_from_callback_template([](const SourceWrapper* s) {
-		ymlSink(s->value); // $ MISSING: ir
+		ymlSink(s->value); // $ ir
 	});
 
 	source_from_callback_ptr([](const SourceWrapper* s) {
-		ymlSink(s->value); // $ MISSING: ir
+		ymlSink(s->value); // $ ir
 	});
 
 	struct S {
 		void operator()(const SourceWrapper* s) {
-			ymlSink(s->value); // $ MISSING: ir
+			ymlSink(s->value); // $ ir
 		}
 	};
 
