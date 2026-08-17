@@ -224,3 +224,45 @@ void test_reverse_flow(unsigned i, unsigned j) {
 		ymlSink(c); // $ ir
 	}
 }
+
+
+struct SourceWrapper {
+	int value;
+};
+
+SourceWrapper ymlFieldSource();
+
+template<typename F>
+void source_from_callback_template(F);
+
+using Callback = void(*)(const SourceWrapper*);
+
+void source_from_callback_ptr(Callback);
+
+void f(const SourceWrapper* s) {
+	ymlSink(s->value); // $ MISSING: ir=250:32 ir=251:27
+}
+
+void test_source_access_path() {
+	SourceWrapper wrapper = ymlFieldSource();
+	ymlSink(wrapper.value); // $ MISSING: ir
+
+	source_from_callback_template(f);
+	source_from_callback_ptr(f);
+
+	source_from_callback_template([](const SourceWrapper* s) {
+		ymlSink(s->value); // $ MISSING: ir
+	});
+
+	source_from_callback_ptr([](const SourceWrapper* s) {
+		ymlSink(s->value); // $ MISSING: ir
+	});
+
+	struct S {
+		void operator()(const SourceWrapper* s) {
+			ymlSink(s->value); // $ MISSING: ir
+		}
+	};
+
+	source_from_callback_template(S());
+}

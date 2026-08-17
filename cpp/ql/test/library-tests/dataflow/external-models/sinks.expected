@@ -23,3 +23,8 @@
 | test.cpp:201:10:201:10 | x | test-sink |
 | test.cpp:218:11:218:11 | x | test-sink |
 | test.cpp:224:11:224:11 | c | test-sink |
+| test.cpp:243:13:243:17 | value | test-sink |
+| test.cpp:248:18:248:22 | value | test-sink |
+| test.cpp:254:14:254:18 | value | test-sink |
+| test.cpp:258:14:258:18 | value | test-sink |
+| test.cpp:263:15:263:19 | value | test-sink |
