@@ -1,0 +1,139 @@
+struct Outer {
+  struct Inner {
+    struct Deep {}
+  }
+}
+
+let value: Outer.Inner
+let nested: Outer.Inner.Deep
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        structDecl
+          attributes:
+          name: identifier "Outer"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    structDecl
+                      attributes:
+                      name: identifier "Inner"
+                      memberBlock:
+                        memberBlock
+                          leftBrace: {
+                          rightBrace: }
+                          members:
+                            memberBlockItem
+                              decl:
+                                structDecl
+                                  attributes:
+                                  name: identifier "Deep"
+                                  memberBlock:
+                                    memberBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      members:
+                                  modifiers:
+                                  structKeyword: struct
+                      modifiers:
+                      structKeyword: struct
+          modifiers:
+          structKeyword: struct
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              pattern:
+                identifierPattern
+                  identifier: identifier "value"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    memberType
+                      name: identifier "Inner"
+                      baseType:
+                        identifierType
+                          name: identifier "Outer"
+                      period: .
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              pattern:
+                identifierPattern
+                  identifier: identifier "nested"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    memberType
+                      name: identifier "Deep"
+                      baseType:
+                        memberType
+                          name: identifier "Inner"
+                          baseType:
+                            identifierType
+                              name: identifier "Outer"
+                          period: .
+                      period: .
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "struct"
+          name: identifier "Outer"
+          member:
+            class_like_declaration
+              modifier: modifier "struct"
+              name: identifier "Inner"
+              member:
+                class_like_declaration
+                  modifier: modifier "struct"
+                  name: identifier "Deep"
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "value"
+          type:
+            named_type_expr
+              qualifier:
+                named_type_expr
+                  name: identifier "Outer"
+              name: identifier "Inner"
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "nested"
+          type:
+            named_type_expr
+              qualifier:
+                named_type_expr
+                  qualifier:
+                    named_type_expr
+                      name: identifier "Outer"
+                  name: identifier "Inner"
+              name: identifier "Deep"

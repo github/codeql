@@ -80,7 +80,6 @@
 /MatchArmList/gen_match_arm_list.rs linguist-generated
 /MatchExpr/gen_match_expr.rs linguist-generated
 /MatchGuard/gen_match_guard.rs linguist-generated
-/Meta/gen_meta.rs linguist-generated
 /MethodCallExpr/gen_method_call_expr.rs linguist-generated
 /Module/gen_module.rs linguist-generated
 /Name/gen_name.rs linguist-generated
@@ -127,7 +126,6 @@
 /StructPatFieldList/gen_struct_pat_field_list.rs linguist-generated
 /TokenTree/gen_token_tree.rs linguist-generated
 /Trait/gen_trait.rs linguist-generated
-/TraitAlias/gen_trait_alias.rs linguist-generated
 /TryExpr/gen_try_expr.rs linguist-generated
 /TupleExpr/gen_tuple_expr.rs linguist-generated
 /TupleField/gen_tuple_field.rs linguist-generated

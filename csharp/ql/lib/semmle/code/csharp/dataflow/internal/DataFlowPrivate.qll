@@ -714,8 +714,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
   ) and
   model = ""
   or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model)
 }
 
 /**
@@ -1778,7 +1777,7 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   }
 
   override DataFlowCallable getEnclosingCallableImpl() {
-    result.asSummarizedCallable() = this.getSummarizedCallable()
+    result = this.getSummaryNode().getEnclosingCallable()
   }
 
   override DataFlowType getDataFlowType() {
@@ -1789,7 +1788,7 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
 
   override ControlFlowNode getControlFlowNodeImpl() { none() }
 
-  override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
+  override Location getLocationImpl() { result = this.getSummaryNode().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 }
@@ -2085,8 +2084,7 @@ predicate jumpStep(Node pred, Node succ) {
     )
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
-    succ.(FlowSummaryNode).getSummaryNode())
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
   or
   succ = pred.(LocalFunctionCreationNode).getAnAccess(false)
 }

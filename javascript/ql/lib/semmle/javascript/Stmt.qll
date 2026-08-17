@@ -475,6 +475,21 @@ module Directive {
   class UseCacheDirective extends KnownDirective {
     UseCacheDirective() { this.getDirectiveText().regexpMatch("use cache(:.*)?") }
   }
+
+  /**
+   * A React Native Worklets worklet directive.
+   *
+   * Example:
+   *
+   * ```
+   * function myWorklet() {
+   *   "worklet";
+   * }
+   * ```
+   */
+  class WorkletDirective extends KnownDirective {
+    WorkletDirective() { this.getDirectiveText() = "worklet" }
+  }
 }
 
 /**
