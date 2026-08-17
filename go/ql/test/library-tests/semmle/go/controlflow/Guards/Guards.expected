@@ -1,0 +1,8 @@
+| guards.go:7:7:7:11 | value | negative | Upper bound -1 |
+| guards.go:7:7:7:15 | ...<... | negative | true |
+| guards.go:7:7:7:15 | ...<... | positive | false |
+| guards.go:7:7:7:15 | ...<... | zero | false |
+| guards.go:9:7:9:11 | value | positive | not 0 |
+| guards.go:9:7:9:11 | value | zero | 0 |
+| guards.go:9:7:9:16 | ...==... | positive | false |
+| guards.go:9:7:9:16 | ...==... | zero | true |
