@@ -323,3 +323,31 @@ module ValidationWrapper<GuardsLogic::guardChecksSig/3 guardChecks> {
  */
 pragma[inline]
 predicate guardEnsures(Expr e, boolean b, BasicBlock bb) { e.(Guard).controls(bb, b) }
+
+/** Holds if `guard` evaluating to `branch` ensures that `i = j` holds. */
+predicate guardEnsuresEq(Guard guard, boolean branch, DataFlow::Node i, DataFlow::Node j) {
+  guard.isEquality(i.asExpr(), j.asExpr(), branch)
+}
+
+/** Holds if `guard` evaluating to `branch` ensures that `i != j` holds. */
+predicate guardEnsuresNeq(Guard guard, boolean branch, DataFlow::Node i, DataFlow::Node j) {
+  exists(boolean eqval |
+    guard.isEquality(i.asExpr(), j.asExpr(), eqval) and
+    branch = eqval.booleanNot()
+  )
+}
+
+/**
+ * Holds if `guard` evaluating to `branch` ensures that `lesser <= greater + bias`
+ * holds.
+ */
+predicate guardEnsuresLeq(
+  Guard guard, boolean branch, DataFlow::Node lesser, DataFlow::Node greater, int bias
+) {
+  exists(DataFlow::RelationalComparisonNode rel |
+    guard = rel.asExpr() and
+    rel.leq(branch, lesser, greater, bias)
+  )
+  or
+  guardEnsuresEq(guard, branch, lesser, greater) and bias = 0
+}

@@ -13,6 +13,7 @@
  */
 
 import go
+private import semmle.go.controlflow.Guards
 
 ControlFlow::Node nonGuardPredecessor(ControlFlow::Node nd) {
   exists(ControlFlow::Node pred | pred = nd.getAPredecessor() |
@@ -64,11 +65,9 @@ predicate allowlist(Stmt s) {
   )
   or
   // statements in an `if false { ... }` and similar
-  exists(IfStmt is, ControlFlow::ConditionGuardNode iffalse, Expr cond, boolean b |
-    iffalse.getCondition() = is.getCond() and
-    iffalse = s.getFirstControlFlowNode().getAPredecessor() and
+  exists(Expr cond, boolean b |
     cond.getBoolValue() = b and
-    iffalse.ensures(DataFlow::exprNode(cond), b.booleanNot())
+    guardEnsures(cond, b.booleanNot(), s.getFirstControlFlowNode().getBasicBlock())
   )
 }
 
