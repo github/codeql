@@ -14,20 +14,18 @@
 
 import go
 import SensitiveConditionBypass
+private import semmle.go.controlflow.Guards
 
 from
-  ControlFlow::ConditionGuardNode guard, DataFlow::Node sensitiveSink,
-  SensitiveExpr::Classification classification, DataFlow::Node source, DataFlow::Node operand,
-  ComparisonExpr comp
+  DataFlow::Node sensitiveSink, SensitiveExpr::Classification classification, DataFlow::Node source,
+  DataFlow::Node operand, ComparisonExpr comp
 where
   // there should be a flow between source and the operand sink
   Flow::flow(source, operand) and
   // both the operand should belong to the same comparison expression
   operand.asExpr() = comp.getAnOperand() and
-  // get the ConditionGuardNode corresponding to the comparison expr.
-  guard.getCondition() = comp and
   // the sink `sensitiveSink` should be sensitive,
   isSensitive(sensitiveSink, classification) and
-  // the guard should control the sink
-  guard.dominates(sensitiveSink.getBasicBlock())
+  // the comparison should control the sink
+  comp.(Guard).controls(sensitiveSink.getBasicBlock(), _)
 select comp, "This sensitive comparision check can potentially be bypassed."
