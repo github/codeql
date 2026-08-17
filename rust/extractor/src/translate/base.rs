@@ -1,3 +1,4 @@
+use super::format_args;
 use super::mappings::Emission;
 use crate::generated::{self};
 use crate::rust_analyzer::FileSemanticInformation;
@@ -462,6 +463,12 @@ impl<'a, 'db> Translator<'a, 'db> {
                 ));
             }
         } else if self.semantics.is_some() {
+            if self.reconstruct_format_args_expansion(mcall, label) {
+                // `rustc <1.94` sysroots no longer expand the format-family macros; we
+                // reconstruct their real expansion (a `FormatArgsExpr`, wrapped in the
+                // callee that carries flow and the sink models) so both are preserved.
+                return;
+            }
             // let's not spam warnings if we don't have semantics, we already emitted one
             let range = self.text_range_for_node(mcall);
             self.emit_parse_error(
@@ -781,6 +788,84 @@ impl<'a, 'db> Translator<'a, 'db> {
         let result = self.emit_macro_items(&items);
         self.builtin_derive_span_map = previous;
         result
+    }
+
+    /// Reconstructs and emits the expansion of a format-family macro (`format!`,
+    /// `println!`, `write!`, `panic!`, ...).
+    ///
+    /// On `rustc <1.94` sysroots these macros no longer resolve, so `expand_macro_call`
+    /// returns `None` and we get a bare unexpanded `MacroCall` with no flow through it.
+    /// We rebuild the token tree of the real expansion ourselves (see
+    /// [`super::format_args`]), parse it, and register the result as the macro
+    /// expansion. Locations of the synthesized nodes are routed through the expansion
+    /// span map via `builtin_derive_span_map`.
+    ///
+    /// Returns `true` when the macro was recognized and an expansion was emitted.
+    fn reconstruct_format_args_expansion(
+        &mut self,
+        mcall: &ast::MacroCall,
+        label: Label<generated::MacroCall>,
+    ) -> bool {
+        let Some(name) = mcall
+            .path()
+            .and_then(|p| p.segment())
+            .and_then(|s| s.name_ref())
+            .map(|n| n.text().to_string())
+        else {
+            return false;
+        };
+        let Some(wrap) = format_args::Wrap::for_macro(&name) else {
+            return false;
+        };
+        let Some(tt_node) = mcall.token_tree() else {
+            return false;
+        };
+        let Some(semantics) = self.semantics else {
+            return false;
+        };
+        let db = semantics.db;
+        let file_id = semantics.hir_file_for(mcall.syntax());
+        let span_map = file_id.span_map(db);
+        let call_site = span_map.span_for_range(mcall.syntax().text_range());
+        let input = syntax_node_to_token_tree(
+            tt_node.syntax(),
+            span_map,
+            call_site,
+            DocCommentDesugarMode::ProcMacro,
+        );
+        let Some(output) = format_args::reconstruct(wrap, &input, call_site) else {
+            return false;
+        };
+
+        let Some(edition) = self.file_id.map(|f| f.edition(db)) else {
+            return false;
+        };
+        let (parsed, output_span_map) =
+            token_tree_to_syntax_node(&output, TopEntryPoint::Expr, &mut |_| edition);
+        let root = parsed.syntax_node();
+        let Some(expr) = ast::Expr::cast(root.clone())
+            .or_else(|| root.descendants().find_map(ast::Expr::cast))
+        else {
+            return false;
+        };
+        // Sanity check: the parsed expression must contain the reconstructed
+        // `FormatArgsExpr` (either directly, or wrapped in the callee above).
+        if expr
+            .syntax()
+            .descendants()
+            .find_map(ast::FormatArgsExpr::cast)
+            .is_none()
+        {
+            return false;
+        }
+        let previous = self.builtin_derive_span_map.replace(output_span_map);
+        let emitted = self.emit_expr(&expr);
+        self.builtin_derive_span_map = previous;
+        let Some(value) = emitted else {
+            return false;
+        };
+        generated::MacroCall::emit_macro_call_expansion(label, value.into(), &mut self.trap.writer);
+        true
     }
 
     pub(crate) fn emit_derive_expansion(
