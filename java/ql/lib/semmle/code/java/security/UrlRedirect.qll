@@ -9,6 +9,7 @@ import semmle.code.java.frameworks.ApacheHttp
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.StringPrefixes
+private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.frameworks.JaxWS
 private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.security.RequestForgery
@@ -52,14 +53,26 @@ private class ApacheUrlRedirectSink extends UrlRedirectSink {
   }
 }
 
-/**
- * An expression appended to a Spring `"redirect:"` view-name prefix from a request handler or a
- * helper called by one.
- */
+/** An expression appended to a Spring `"redirect:"` view-name returned by a request handler. */
 private class SpringUrlRedirectPrefixSink extends UrlRedirectSink {
   SpringUrlRedirectPrefixSink() {
-    isSpringMvcViewResult(this.asExpr()) and
-    appendedToRedirectPrefix(this)
+    appendedToRedirectPrefix(this) and
+    (
+      isSpringMvcReturnedString(this.asExpr())
+      or
+      isSpringModelAndViewName(this.asExpr())
+    )
+  }
+}
+
+/** A call to a helper that returns a Spring `"redirect:"` view name. */
+private class SpringUrlRedirectHelperSink extends UrlRedirectSink {
+  SpringUrlRedirectHelperSink() {
+    exists(MethodCall call |
+      this.asExpr() = call and
+      isSpringMvcViewResult(call) and
+      returnsRedirectViewName(call.getCallee().getSourceDeclaration())
+    )
   }
 }
 
@@ -77,11 +90,15 @@ private class SpringRedirectPrefix extends InterestingPrefix {
 private predicate contributesToReturn(Expr value) {
   exists(ReturnStmt ret |
     ret.getEnclosingCallable() = value.getEnclosingCallable() and
-    (
-      value.getParent*() = ret.getExpr()
-      or
-      DataFlow::localFlow(DataFlow::exprNode(value), DataFlow::exprNode(ret.getExpr()))
-    )
+    DataFlow::localFlow(DataFlow::exprNode(value), DataFlow::exprNode(ret.getExpr()))
+  )
+}
+
+/** Holds if `value` contributes string content to the return value of its callable. */
+private predicate contributesToReturnedString(Expr value) {
+  exists(ReturnStmt ret |
+    ret.getEnclosingCallable() = value.getEnclosingCallable() and
+    TaintTracking::localTaint(DataFlow::exprNode(value), DataFlow::exprNode(ret.getExpr()))
   )
 }
 
@@ -91,25 +108,51 @@ private predicate isSpringMvcViewResult(Expr value) {
   contributesToReturn(value) and
   value.getEnclosingCallable() instanceof SpringRequestMappingMethod and
   not value.getEnclosingCallable().(SpringRequestMappingMethod).isResponseBody()
-  or
-  contributesToReturn(value) and
-  exists(MethodCall call |
-    call.getCallee().getSourceDeclaration() = value.getEnclosingCallable() and
-    isSpringMvcViewResult(call)
+}
+
+/** Holds if `value` contributes string content to a view name returned by a request handler. */
+private predicate isSpringMvcReturnedString(Expr value) {
+  contributesToReturnedString(value) and
+  value.getEnclosingCallable() instanceof SpringRequestMappingMethod and
+  not value.getEnclosingCallable().(SpringRequestMappingMethod).isResponseBody()
+}
+
+/** Holds if `value` contributes to the view name of a returned `ModelAndView`. */
+private predicate isSpringModelAndViewName(Expr value) {
+  exists(ClassInstanceExpr newModelAndView |
+    newModelAndView
+        .getConstructedType()
+        .hasQualifiedName("org.springframework.web.servlet", "ModelAndView") and
+    TaintTracking::localTaint(DataFlow::exprNode(value),
+      DataFlow::exprNode(newModelAndView.getArgument(0))) and
+    isSpringMvcViewResult(newModelAndView)
   )
 }
 
-private class SpringRedirectViewType extends RefType {
-  SpringRedirectViewType() {
-    this.getASupertype*().hasQualifiedName("org.springframework.web.servlet.view", "RedirectView")
-  }
+/** Holds if `callable` returns a view name constructed with the Spring `"redirect:"` prefix. */
+pragma[nomagic]
+private predicate returnsRedirectViewName(Callable callable) {
+  exists(DataFlow::ExprNode appended, ReturnStmt ret |
+    appendedToRedirectPrefix(appended) and
+    appended.asExpr().getEnclosingCallable() = callable and
+    ret.getEnclosingCallable() = callable and
+    TaintTracking::localTaint(appended, DataFlow::exprNode(ret.getExpr()))
+  )
+  or
+  exists(MethodCall call |
+    call.getEnclosingCallable() = callable and
+    contributesToReturn(call) and
+    returnsRedirectViewName(call.getCallee().getSourceDeclaration())
+  )
 }
 
 /** A URL passed to a Spring `RedirectView` constructor. */
 private class SpringRedirectViewSink extends UrlRedirectSink {
   SpringRedirectViewSink() {
     exists(ClassInstanceExpr newRedirectView |
-      newRedirectView.getConstructedType() instanceof SpringRedirectViewType and
+      newRedirectView
+          .getConstructedType()
+          .hasQualifiedName("org.springframework.web.servlet.view", "RedirectView") and
       isSpringMvcViewResult(newRedirectView) and
       this.asExpr() = newRedirectView.getArgument(0)
     )
@@ -120,14 +163,16 @@ private class SpringRedirectViewSink extends UrlRedirectSink {
 private class SpringRedirectViewSetUrlSink extends UrlRedirectSink {
   SpringRedirectViewSetUrlSink() {
     exists(MethodCall setUrl |
-      setUrl.getMethod().hasName("setUrl") and
-      setUrl.getMethod().getNumberOfParameters() = 1 and
       setUrl
           .getMethod()
-          .getDeclaringType()
+          .getSourceDeclaration()
+          .hasQualifiedName("org.springframework.web.servlet.view", "AbstractUrlBasedView", "setUrl") and
+      setUrl
+          .getQualifier()
+          .getType()
+          .(RefType)
           .getASupertype*()
-          .hasQualifiedName("org.springframework.web.servlet.view", "AbstractUrlBasedView") and
-      setUrl.getQualifier().getType() instanceof SpringRedirectViewType and
+          .hasQualifiedName("org.springframework.web.servlet.view", "RedirectView") and
       isSpringMvcViewResult(setUrl.getQualifier()) and
       this.asExpr() = setUrl.getArgument(0)
     )

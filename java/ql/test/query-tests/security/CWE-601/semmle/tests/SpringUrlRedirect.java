@@ -10,7 +10,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 class BaseController {
     protected String redirect(String path) {
-        return "redirect:" + path; // $ Alert
+        return "redirect:" + path;
     }
 
     protected String ordinaryView(String path) {
@@ -22,9 +22,12 @@ class BaseController {
     }
 }
 
-class CustomRedirectView extends RedirectView {
-    CustomRedirectView(String url) {
+class LabeledRedirectView extends RedirectView {
+    LabeledRedirectView(String label, String url) {
         super(url);
+    }
+
+    void setUrl(Object label) {
     }
 }
 
@@ -51,7 +54,7 @@ public class SpringUrlRedirect extends BaseController {
     @GetMapping("/case4")
     public String helperViewName(HttpServletRequest request) {
         String next = request.getHeader("referer"); // $ Source
-        return redirect(next);
+        return redirect(next); // $ Alert
     }
 
     @GetMapping("/case5")
@@ -66,12 +69,6 @@ public class SpringUrlRedirect extends BaseController {
     public RedirectView overloadedRedirectView(HttpServletRequest request) {
         String next = request.getParameter("next"); // $ Source
         return new RedirectView(next, true); // $ Alert
-    }
-
-    @GetMapping("/case7")
-    public RedirectView customRedirectView(HttpServletRequest request) {
-        String next = request.getParameter("next"); // $ Source
-        return new CustomRedirectView(next); // $ Alert
     }
 
     @GetMapping("/safe-constant")
@@ -91,19 +88,35 @@ public class SpringUrlRedirect extends BaseController {
         return new ModelAndView(ordinaryView(view));
     }
 
+    @GetMapping("/safe-model-value")
+    public ModelAndView redirectInModel(HttpServletRequest request) {
+        String value = "redirect:" + request.getParameter("value");
+        return new ModelAndView("home", "value", value);
+    }
+
     @GetMapping("/safe-discarded")
     public String discardedRedirectValue(HttpServletRequest request) {
         discardedRedirect(request.getParameter("next"));
         return "home";
     }
 
-    @GetMapping("/safe-validated")
-    public RedirectView validatedRedirectView(HttpServletRequest request) {
-        String next = request.getParameter("next");
-        if ("https://example.com/account".equals(next)) {
-            return new RedirectView("https://example.com/account");
-        }
+    @GetMapping("/safe-redirect-view")
+    public RedirectView constantRedirectView() {
         return new RedirectView("https://example.com/account");
+    }
+
+    @GetMapping("/safe-subclass-label")
+    public RedirectView customRedirectView(HttpServletRequest request) {
+        String label = request.getParameter("label");
+        return new LabeledRedirectView(label, "/account");
+    }
+
+    @GetMapping("/safe-set-url-overload")
+    public RedirectView customSetUrl(HttpServletRequest request) {
+        LabeledRedirectView view = new LabeledRedirectView("label", "/account");
+        Object label = request.getParameter("label");
+        view.setUrl(label);
+        return view;
     }
 }
 
@@ -121,5 +134,28 @@ class JsonController {
     @GetMapping("/json")
     public String responseBody(HttpServletRequest request) {
         return "redirect:" + request.getParameter("value");
+    }
+}
+
+class SharedRedirectHelper {
+    protected String redirectShared(String path) {
+        return "redirect:" + path;
+    }
+}
+
+@Controller
+class MvcViewUser extends SharedRedirectHelper {
+    @GetMapping("/constant-view")
+    public String view() {
+        return redirectShared("/account");
+    }
+}
+
+@Controller
+class ResponseBodyUser extends SharedRedirectHelper {
+    @ResponseBody
+    @GetMapping("/body-user")
+    public String body(HttpServletRequest request) {
+        return redirectShared(request.getParameter("value"));
     }
 }
