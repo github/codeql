@@ -1655,12 +1655,12 @@ abstract private class AbstractParameterNode extends Node {
    * Holds if this node represents an implicit `this` parameter, if it exists.
    */
   predicate isThis() { none() } // overridden by subclasses
+
+  /** Gets the indirection index of this parameter node. */
+  int getIndirectionIndex() { none() }
 }
 
-abstract private class AbstractIndirectParameterNode extends AbstractParameterNode {
-  /** Gets the indirection index of this parameter node. */
-  abstract int getIndirectionIndex();
-}
+abstract private class AbstractIndirectParameterNode extends AbstractParameterNode { }
 
 pragma[noinline]
 private predicate indirectParameterNodeHasArgumentIndexAndIndex(
@@ -1725,7 +1725,9 @@ private class IndirectInstructionParameterNode extends AbstractIndirectParameter
   final override int getIndirectionIndex() { this.hasInstructionAndIndirectionIndex(init, result) }
 }
 
-abstract private class AbstractDirectParameterNode extends AbstractParameterNode { }
+abstract private class AbstractDirectParameterNode extends AbstractParameterNode {
+  override int getIndirectionIndex() { result = 0 }
+}
 
 /**
  * A non-indirect parameter node that is represented as an `Instruction`.
@@ -1796,6 +1798,8 @@ private class DirectBodyLessParameterNode extends AbstractExplicitParameterNode,
   }
 
   override Parameter getParameter() { result = p }
+
+  final override int getIndirectionIndex() { result = 0 }
 }
 
 private class IndirectBodyLessParameterNode extends AbstractIndirectParameterNode,
