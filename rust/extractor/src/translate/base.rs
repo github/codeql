@@ -843,8 +843,8 @@ impl<'a, 'db> Translator<'a, 'db> {
         let (parsed, output_span_map) =
             token_tree_to_syntax_node(&output, TopEntryPoint::Expr, &mut |_| edition);
         let root = parsed.syntax_node();
-        let Some(expr) = ast::Expr::cast(root.clone())
-            .or_else(|| root.descendants().find_map(ast::Expr::cast))
+        let Some(expr) =
+            ast::Expr::cast(root.clone()).or_else(|| root.descendants().find_map(ast::Expr::cast))
         else {
             return false;
         };

@@ -53,7 +53,11 @@ impl Wrap {
 /// Returns `None` if the input does not match the expected shape (currently only when
 /// a `write!` argument list has no writer/format-args separating comma). `call_site`
 /// is used to span the synthesized tokens; the format arguments keep their own spans.
-pub(crate) fn reconstruct(wrap: Wrap, input: &tt::TopSubtree, call_site: Span) -> Option<tt::TopSubtree> {
+pub(crate) fn reconstruct(
+    wrap: Wrap,
+    input: &tt::TopSubtree,
+    call_site: Span,
+) -> Option<tt::TopSubtree> {
     let (writer, content) = split_arguments(wrap, input)?;
     let emitter = Emitter {
         call_site,
