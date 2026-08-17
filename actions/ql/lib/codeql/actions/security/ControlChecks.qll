@@ -312,17 +312,28 @@ class LabelIfCheck extends LabelCheck instanceof If {
   }
 }
 
+/**
+ * Gets a regular expression matching a condition on an actor field that is
+ * only populated for events whose payload contains the `context_prefix` context.
+ */
+private string eventPayloadActorFieldRegex(string context_prefix) {
+  context_prefix = "github.event.pull_request" and
+  result = "\\bgithub\\.event\\.pull_request\\.user\\.login\\b"
+  or
+  context_prefix = "github.event.head_commit" and
+  result = "\\bgithub\\.event\\.head_commit\\.author\\.name\\b"
+  or
+  context_prefix = "github.event.commits" and
+  result = "\\bgithub\\.event\\.commits.*\\.author\\.name\\b"
+}
+
 class ActorIfCheck extends ActorCheck instanceof If {
   ActorIfCheck() {
     // eg: github.event.pull_request.user.login == 'admin'
     exists(
       normalizeExpr(this.getCondition())
-          .regexpFind([
-              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b",
-              "\\bgithub\\.event\\.head_commit\\.author\\.name\\b",
-              "\\bgithub\\.event\\.commits.*\\.author\\.name\\b",
-              "\\bgithub\\.event\\.sender\\.login\\b"
-            ], _, _)
+          .regexpFind([eventPayloadActorFieldRegex(_), "\\bgithub\\.event\\.sender\\.login\\b"], _,
+            _)
     )
     or
     // eg: github.actor == 'admin'
@@ -332,6 +343,37 @@ class ActorIfCheck extends ActorCheck instanceof If {
           .regexpFind(["\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",], _, _)
     ) and
     not normalizeExpr(this.getCondition()).matches("%[bot]%")
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    ActorCheck.super.protectsCategoryAndEvent(category, event) and
+    (
+      // `github.actor`, `github.triggering_actor` and `github.event.sender.login`
+      // are populated for every event
+      exists(
+        normalizeExpr(this.(If).getCondition())
+            .regexpFind("\\bgithub\\.event\\.sender\\.login\\b", _, _)
+      )
+      or
+      exists(
+        normalizeExpr(this.(If).getCondition())
+            .regexpFind(["\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",], _, _)
+      ) and
+      not normalizeExpr(this.(If).getCondition()).matches("%[bot]%")
+      or
+      // actor fields read from the event payload are only populated for events
+      // whose payload contains the corresponding context. eg: a check on
+      // `github.event.pull_request.user.login` cannot restrict the actor of an
+      // `issues` event since `github.event.pull_request` is not populated there,
+      // which makes the condition vacuous
+      exists(string context_prefix |
+        contextTriggerDataModel(event, context_prefix) and
+        exists(
+          normalizeExpr(this.(If).getCondition())
+              .regexpFind(eventPayloadActorFieldRegex(context_prefix), _, _)
+        )
+      )
+    )
   }
 }
 

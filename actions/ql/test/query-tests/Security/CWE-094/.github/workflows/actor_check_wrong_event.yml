@@ -1,0 +1,20 @@
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  # The `if:` condition compares an actor field that is never populated for
+  # `issues` events, so it is always true and does not protect the injectable step.
+  vacuous-actor-check:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login != 'some-bot[bot]'
+    steps:
+      - run: echo '${{ github.event.issue.title }}'
+
+  # The `if:` condition checks an actor context that is populated for every
+  # event, so the injectable step is protected.
+  valid-actor-check:
+    runs-on: ubuntu-latest
+    if: github.actor == 'trusted-user'
+    steps:
+      - run: echo '${{ github.event.issue.title }}'
