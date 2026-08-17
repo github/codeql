@@ -19,7 +19,10 @@ private import semmle.code.java.frameworks.android.Compose
 class VisibleInstanceField extends Field {
   VisibleInstanceField() {
     not this.isPrivate() and
-    not this.isStatic()
+    not this.isStatic() and
+    // Exclude compiler-generated fields, such as Kotlin scaffolding for
+    // sealed class object subclasses inheriting `open val` constructor parameters.
+    not this.isCompilerGenerated()
   }
 }
 
