@@ -1541,6 +1541,42 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   override Location getLocationImpl() { result = this.getSummaryNode().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
+
+  /** Gets the source element that this node belongs to, if any. */
+  FlowSummaryImpl::Public::SourceElement getSourceElement() {
+    result = this.getSummaryNode().getSourceElement()
+  }
+
+  /** Gets the sink element that this node belongs to, if any. */
+  FlowSummaryImpl::Public::SinkElement getSinkElement() {
+    result = this.getSummaryNode().getSinkElement()
+  }
+
+  /** Holds if this node is a source node of kind `kind`. */
+  predicate isSource(string kind, string model) {
+    this.getSummaryNode().(FlowSummaryImpl::Private::SourceOutputNode).isEntry(kind, model)
+  }
+
+  /** Holds if this node is a sink node of kind `kind`. */
+  predicate isSink(string kind, string model) {
+    this.getSummaryNode().(FlowSummaryImpl::Private::SinkInputNode).isExit(kind, model)
+  }
+}
+
+private class SourceOutputNode extends FlowSummaryImpl::Private::SourceOutputNode {
+  final override string toString() {
+    exists(Call call |
+      this.isOutArgument(call) and
+      result = call.getTarget() + " output argument"
+    )
+    or
+    not this.isOutArgument(_) and
+    result = super.toString()
+  }
+
+  private predicate isOutArgument(Call call) {
+    [call.getAnArgument(), call.getQualifier()] = this.getSourceSinkReportingElement()
+  }
 }
 
 /**
