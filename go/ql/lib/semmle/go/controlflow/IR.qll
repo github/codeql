@@ -59,28 +59,6 @@ module IR {
   }
 
   /**
-   * Holds if `n` is a genuine boolean condition-guard node: an "after" node
-   * that records exactly one of the true/false outcomes of a boolean
-   * condition.
-   *
-   * The shared CFG library's `isAfterTrue`/`isAfterFalse` are deliberately
-   * permissive when used for step-endpoint matching: a plain "after" node (or
-   * a merged leaf node) satisfies both of them. A real guard node is
-   * distinguished by satisfying exactly one of them.
-   */
-  private predicate isConditionGuardNode(ControlFlow::Node n) {
-    n.isAfterTrue(_) and not n.isAfterFalse(_)
-    or
-    n.isAfterFalse(_) and not n.isAfterTrue(_)
-    or
-    exists(Expr condition, MatchingSuccessor successor |
-      condition =
-        any(ExpressionSwitchStmt switch | not exists(switch.getExpr())).getACase().getAnExpr() and
-      n.isAfterValue(condition, successor)
-    )
-  }
-
-  /**
    * An IR instruction.
    */
   class Instruction extends ControlFlow::Node {
@@ -88,8 +66,6 @@ module IR {
       this.isIn(_)
       or
       this.isAdditional(_, _)
-      or
-      isConditionGuardNode(this)
       or
       // The successful-match node of a type-switch case that binds an implicit
       // variable hosts that variable's declaration/assignment (see
@@ -101,8 +77,7 @@ module IR {
       // context (so it has a single combined after-node rather than per-branch
       // value-after-nodes), use that after-node as the value-producing
       // instruction. In conditional contexts the value is already split
-      // across branches and the `ConditionGuardInstruction` for each branch
-      // captures the outcome, so no separate value instruction is needed.
+      // across branches, so no separate value instruction is needed.
       exists(Expr e |
         (e instanceof NotExpr or e instanceof LogicalBinaryExpr) and
         not isInBooleanCondContext(e) and
@@ -199,8 +174,6 @@ module IR {
       or
       this instanceof GoInstruction and result = "go"
       or
-      this instanceof ConditionGuardInstruction and result = "condition guard"
-      or
       this instanceof ReturnInstruction and result = "return"
       or
       this instanceof WriteResultInstruction and result = "result write"
@@ -222,11 +195,6 @@ module IR {
       or
       this instanceof ImplicitFieldReadInstruction and result = "implicit field selection"
     }
-  }
-
-  /** A condition guard instruction, representing a known boolean outcome for a condition. */
-  private class ConditionGuardInstruction extends Instruction {
-    ConditionGuardInstruction() { isConditionGuardNode(this) }
   }
 
   /**
