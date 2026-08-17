@@ -13,6 +13,7 @@
 
 import go
 import semmle.go.security.InsecureFeatureFlag::InsecureFeatureFlag
+private import semmle.go.controlflow.Guards
 
 /**
  * Holds if it is insecure to assign TLS version `val` named `name` to `tls.Config` field `fieldName`.
@@ -247,10 +248,10 @@ class LegacyTlsVersionFlag extends FlagKind {
 }
 
 /**
- * Gets a control-flow node that represents a (likely) flag controlling TLS version selection.
+ * Gets a guard that represents a (likely) flag controlling TLS version selection.
  */
-ControlFlow::ConditionGuardNode getALegacyTlsVersionCheck() {
-  result.ensures(any(LegacyTlsVersionFlag f).getAFlag().getANode(), _)
+Guard getALegacyTlsVersionCheck() {
+  result = any(LegacyTlsVersionFlag f).getAFlag().getANode().asExpr()
 }
 
 /**
@@ -276,7 +277,7 @@ where
   ) and
   // Exclude sources or sinks guarded by a feature or legacy flag
   not [getASecurityFeatureFlagCheck(), getALegacyTlsVersionCheck()]
-      .dominatesNode([source, sink].getNode().asInstruction()) and
+      .controls([source, sink].getNode().getBasicBlock(), _) and
   // Exclude sources or sinks that occur lexically within a block related to a feature or legacy flag
   not astNodeIsFlag([source, sink].getNode().asExpr().getParent*(), securityOrTlsVersionFlag()) and
   // Exclude results in functions whose name documents insecurity
