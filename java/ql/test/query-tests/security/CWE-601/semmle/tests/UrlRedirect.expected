@@ -1,4 +1,11 @@
 #select
+| SpringUrlRedirect.java:13:30:13:33 | path | SpringUrlRedirect.java:53:23:53:50 | getHeader(...) : String | SpringUrlRedirect.java:13:30:13:33 | path | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:53:23:53:50 | getHeader(...) | user-provided value |
+| SpringUrlRedirect.java:36:30:36:33 | next | SpringUrlRedirect.java:35:23:35:50 | getHeader(...) : String | SpringUrlRedirect.java:36:30:36:33 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:35:23:35:50 | getHeader(...) | user-provided value |
+| SpringUrlRedirect.java:42:47:42:50 | next | SpringUrlRedirect.java:41:23:41:50 | getHeader(...) : String | SpringUrlRedirect.java:42:47:42:50 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:41:23:41:50 | getHeader(...) | user-provided value |
+| SpringUrlRedirect.java:48:33:48:36 | next | SpringUrlRedirect.java:47:23:47:50 | getHeader(...) : String | SpringUrlRedirect.java:48:33:48:36 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:47:23:47:50 | getHeader(...) | user-provided value |
+| SpringUrlRedirect.java:61:21:61:24 | next | SpringUrlRedirect.java:59:23:59:50 | getParameter(...) : String | SpringUrlRedirect.java:61:21:61:24 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:59:23:59:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:68:33:68:36 | next | SpringUrlRedirect.java:67:23:67:50 | getParameter(...) : String | SpringUrlRedirect.java:68:33:68:36 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:67:23:67:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:74:39:74:42 | next | SpringUrlRedirect.java:73:23:73:50 | getParameter(...) : String | SpringUrlRedirect.java:74:39:74:42 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:73:23:73:50 | getParameter(...) | user-provided value |
 | UrlRedirect2.java:27:25:27:54 | getParameter(...) | UrlRedirect2.java:27:25:27:54 | getParameter(...) | UrlRedirect2.java:27:25:27:54 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect2.java:27:25:27:54 | getParameter(...) | user-provided value |
 | UrlRedirect.java:23:25:23:54 | getParameter(...) | UrlRedirect.java:23:25:23:54 | getParameter(...) | UrlRedirect.java:23:25:23:54 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:23:25:23:54 | getParameter(...) | user-provided value |
 | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:32:37:32:66 | getParameter(...) | user-provided value |
@@ -6,17 +13,43 @@
 | UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:42:43:42:72 | getParameter(...) | user-provided value |
 | mad/Test.java:14:22:14:38 | (...)... | mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:22:14:38 | (...)... | Untrusted URL redirection depends on a $@. | mad/Test.java:9:16:9:41 | getParameter(...) | user-provided value |
 edges
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance | Src:MaD:2 MaD:3 |
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance | Src:MaD:2  |
+| SpringUrlRedirect.java:12:31:12:41 | path : String | SpringUrlRedirect.java:13:30:13:33 | path | provenance |  |
+| SpringUrlRedirect.java:35:23:35:50 | getHeader(...) : String | SpringUrlRedirect.java:36:30:36:33 | next | provenance | Src:MaD:2  |
+| SpringUrlRedirect.java:41:23:41:50 | getHeader(...) : String | SpringUrlRedirect.java:42:47:42:50 | next | provenance | Src:MaD:2  |
+| SpringUrlRedirect.java:47:23:47:50 | getHeader(...) : String | SpringUrlRedirect.java:48:33:48:36 | next | provenance | Src:MaD:2  |
+| SpringUrlRedirect.java:53:23:53:50 | getHeader(...) : String | SpringUrlRedirect.java:54:25:54:28 | next : String | provenance | Src:MaD:2  |
+| SpringUrlRedirect.java:54:25:54:28 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | provenance |  |
+| SpringUrlRedirect.java:59:23:59:50 | getParameter(...) : String | SpringUrlRedirect.java:61:21:61:24 | next | provenance | Src:MaD:3  |
+| SpringUrlRedirect.java:67:23:67:50 | getParameter(...) : String | SpringUrlRedirect.java:68:33:68:36 | next | provenance | Src:MaD:3  |
+| SpringUrlRedirect.java:73:23:73:50 | getParameter(...) : String | SpringUrlRedirect.java:74:39:74:42 | next | provenance | Src:MaD:3  |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance | Src:MaD:3 MaD:4 |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance | Src:MaD:3  |
 | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:14 | input : String | provenance |  |
-| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance | MaD:3 |
-| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance | Src:MaD:2  |
+| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance | MaD:4 |
+| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance | Src:MaD:3  |
 | mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance | Sink:MaD:1 |
 models
 | 1 | Sink: org.kohsuke.stapler; HttpResponses; true; redirectTo; (String); ; Argument[0]; url-redirection; ai-manual |
-| 2 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
-| 3 | Summary: java.lang; String; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Source: javax.servlet.http; HttpServletRequest; false; getHeader; (String); ; ReturnValue; remote; manual |
+| 3 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 4 | Summary: java.lang; String; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
 nodes
+| SpringUrlRedirect.java:12:31:12:41 | path : String | semmle.label | path : String |
+| SpringUrlRedirect.java:13:30:13:33 | path | semmle.label | path |
+| SpringUrlRedirect.java:35:23:35:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| SpringUrlRedirect.java:36:30:36:33 | next | semmle.label | next |
+| SpringUrlRedirect.java:41:23:41:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| SpringUrlRedirect.java:42:47:42:50 | next | semmle.label | next |
+| SpringUrlRedirect.java:47:23:47:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| SpringUrlRedirect.java:48:33:48:36 | next | semmle.label | next |
+| SpringUrlRedirect.java:53:23:53:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| SpringUrlRedirect.java:54:25:54:28 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:59:23:59:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:61:21:61:24 | next | semmle.label | next |
+| SpringUrlRedirect.java:67:23:67:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:68:33:68:36 | next | semmle.label | next |
+| SpringUrlRedirect.java:73:23:73:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:74:39:74:42 | next | semmle.label | next |
 | UrlRedirect2.java:27:25:27:54 | getParameter(...) | semmle.label | getParameter(...) |
 | UrlRedirect.java:23:25:23:54 | getParameter(...) | semmle.label | getParameter(...) |
 | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | semmle.label | weakCleanup(...) |
