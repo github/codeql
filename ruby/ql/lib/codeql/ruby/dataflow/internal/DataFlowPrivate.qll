@@ -198,7 +198,7 @@ module LocalFlow {
     FlowSummaryNode nodeFrom, FlowSummaryNode nodeTo, FlowSummaryImpl::Public::SummarizedCallable c,
     string model
   ) {
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo.getSummaryNode(), true, model) and
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model) and
     c = nodeFrom.getSummarizedCallable()
   }
 
@@ -1296,10 +1296,10 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   override CfgScope getCfgScopeImpl() { none() }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asLibraryCallable() = this.getSummarizedCallable()
+    result = this.getSummaryNode().getEnclosingCallable()
   }
 
-  override EmptyLocation getLocationImpl() { any() }
+  override Location getLocationImpl() { result = this.getSummaryNode().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 }
@@ -1778,8 +1778,7 @@ import OutNodes
 predicate jumpStep(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
-    succ.(FlowSummaryNode).getSummaryNode())
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
   or
   any(AdditionalJumpStep s).step(pred, succ)
   or

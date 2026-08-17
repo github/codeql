@@ -5,9 +5,12 @@ extensions:
     data:
       - ["main::simple_source", "ReturnValue", "test-source", "manual"]
       - ["main::enum_source", "ReturnValue.Field[main::MyFieldEnum::D::field_d]", "test-source", "manual"]
+      - ["main::enum_source_nested", "ReturnValue.Field[main::MyFieldEnum::E::field_e].Field[core::option::Option::Some(0)]", "test-source", "manual"]
       - ["<main::MyFieldEnum>::source", "ReturnValue.Field[main::MyFieldEnum::C::field_c]", "test-source", "manual"]
       - ["main::arg_source", "Argument[0]", "test-source", "manual"]
+      - ["<_ as main::MyTrait>::test_param_source", "Parameter[0]", "test-source", "manual"]
       - ["main::source_into_function::pass_source", "Argument[1].Parameter[0]", "test-source", "manual"]
+      - ["main::source_into_function::pass_source_nested", "Argument[1].Parameter[0].Field[main::MyFieldEnum::E::field_e].Field[core::option::Option::Some(0)]", "test-source", "manual"]
       - ["main::external_file::generated_source", "ReturnValue", "test-source", "dfc-generated"] # not actually generated, but we want to test behaviour of generated models here.
       - ["main::external_file::neutral_generated_source", "ReturnValue", "test-source", "dfc-generated"]
       - ["main::external_file::neutral_manual_source", "ReturnValue", "test-source", "manual"]
@@ -17,7 +20,10 @@ extensions:
     data:
       - ["main::simple_sink", "Argument[0]", "test-sink", "manual"]
       - ["main::enum_sink", "Argument[0].Field[main::MyFieldEnum::C::field_c]", "test-sink", "manual"]
+      - ["main::enum_sink_nested", "Argument[0].Field[main::MyFieldEnum::E::field_e].Field[core::option::Option::Some(0)]", "test-sink", "manual"]
       - ["<main::MyFieldEnum>::sink", "Argument[self].Field[main::MyFieldEnum::D::field_d]", "test-sink", "manual"]
+      - ["main::sink_out_of_function::pass_sink", "Argument[0].ReturnValue", "test-sink", "manual"]
+      - ["main::sink_out_of_function::pass_sink_nested", "Argument[0].ReturnValue.Field[main::MyFieldEnum::E::field_e].Field[core::option::Option::Some(0)]", "test-sink", "manual"]
       - ["main::external_file::generated_sink", "Argument[0]", "test-sink", "dfc-generated"]
       - ["main::external_file::neutral_generated_sink", "Argument[0]", "test-sink", "dfc-generated"]
       - ["main::external_file::neutral_manual_sink", "Argument[0]", "test-sink", "manual"]
