@@ -36,6 +36,16 @@ private module GuardsInput implements
     CfgImpl::Cfg::BasicBlock getBasicBlock() { result = this.getControlFlowNode().getBasicBlock() }
   }
 
+  predicate additionalBooleanControls(Expr guard, CfgImpl::Cfg::BasicBlock bb, boolean branch) {
+    exists(CfgImpl::Cfg::ControlFlowNode outcomeNode |
+      branch = true and outcomeNode.isAfterTrue(guard)
+      or
+      branch = false and outcomeNode.isAfterFalse(guard)
+    |
+      outcomeNode.getBasicBlock().dominates(bb)
+    )
+  }
+
   private newtype TConstantValue = TStringValue(string s) { s = any(G::Expr e).getStringValue() }
 
   class ConstantValue extends TConstantValue {
