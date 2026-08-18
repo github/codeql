@@ -141,8 +141,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
   any(FunctionModel m).flowStep(nodeFrom, nodeTo) and
   model = "FunctionModel"
   or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model)
 }
 
 /**

@@ -1078,9 +1078,14 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
+    /** Gets the node corresponding to the field `sub_pattern`. */
+    final F::Pattern getSubPattern() { unified_name_pattern_sub_pattern(this, result) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
-      unified_name_pattern_def(this, result) or unified_name_pattern_modifier(this, _, result)
+      unified_name_pattern_def(this, result) or
+      unified_name_pattern_modifier(this, _, result) or
+      unified_name_pattern_sub_pattern(this, result)
     }
   }
 
@@ -1894,6 +1899,8 @@ module Unified {
       result = node.(NamePattern).getIdentifier() and i = -1 and name = "getIdentifier"
       or
       result = node.(NamePattern).getModifier(i) and name = "getModifier"
+      or
+      result = node.(NamePattern).getSubPattern() and i = -1 and name = "getSubPattern"
       or
       result = node.(NamedTypeExpr).getName() and i = -1 and name = "getName"
       or

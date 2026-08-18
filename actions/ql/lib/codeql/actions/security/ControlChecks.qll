@@ -277,6 +277,13 @@ abstract class LabelCheck extends ControlCheck {
 }
 
 class EnvironmentCheck extends ControlCheck instanceof Environment {
+  EnvironmentCheck() {
+    // if there are any custom tuples use those
+    if enabledDeploymentEnvironmentDataModel(_)
+    then enabledDeploymentEnvironmentDataModel(this.(Environment).getName())
+    else this instanceof Environment
+  }
+
   // Environment checks are not effective against any mutable attacks
   // they do actually protect against untrusted code execution (sha)
   override predicate protectsCategoryAndEvent(string category, string event) {

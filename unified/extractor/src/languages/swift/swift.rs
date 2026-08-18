@@ -158,12 +158,30 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // swift-syntax does not distinguish the lexical integer/string forms
         // (hex/binary/octal, single- vs multi-line, raw): each is a single
         // `*LiteralExpr` kind, so one rule per literal type suffices.
-        rule!((integerLiteralExpr) => (int_literal)),
-        rule!((floatLiteralExpr) => (float_literal)),
-        rule!((booleanLiteralExpr) => (boolean_literal)),
-        rule!((nilLiteralExpr) => (builtin_expr)),
-        rule!((stringLiteralExpr) => (string_literal)),
-        rule!((regexLiteralExpr) => (regex_literal)),
+        rule!((integerLiteralExpr) @@node => expr {
+            let value = tree!((int_literal #{node}));
+            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+        }),
+        rule!((floatLiteralExpr) @@node => expr {
+            let value = tree!((float_literal #{node}));
+            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+        }),
+        rule!((booleanLiteralExpr) @@node => expr {
+            let value = tree!((boolean_literal #{node}));
+            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+        }),
+        rule!((nilLiteralExpr) @@node => expr {
+            let value = tree!((builtin_expr #{node}));
+            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+        }),
+        rule!((stringLiteralExpr) @@node => expr {
+            let value = tree!((string_literal #{node}));
+            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+        }),
+        rule!((regexLiteralExpr) @@node => expr {
+            let value = tree!((regex_literal #{node}));
+            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+        }),
         // ---- Names ----
         // A function reference spelled with argument labels (`f(x:y:z:)`) is a
         // `declReferenceExpr` carrying `argumentNames`. Mark it unsupported for
@@ -176,6 +194,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (unsupported_node)
         ),
+        rule!((declReferenceExpr baseName: (identifier) @name) => expr {
+            let name = tree!((name_expr identifier: (identifier #{name})));
+            if ctx.in_pattern {
+                tree!((expr_equality_pattern expr: {name}))
+            } else {
+                name
+            }
+        }),
         // A bare name reference (`x`), and an operator used as a value (`+` in
         // `reduce(0, +)`), are both `declReferenceExpr`; its `baseName` is the
         // referenced identifier / operator symbol.
@@ -507,29 +533,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // introduces a new binding; it unwraps to its inner pattern (a
         // `name_pattern`).
         rule!((valueBindingPattern pattern: @p) => pattern { p }),
-        // An enum-case pattern with associated values (`case .foo(let x)`,
-        // `case Color.foo(let x)`) is an expression pattern wrapping a call of a
-        // member access. It becomes a `constructor_pattern`; its arguments are
-        // translated as pattern elements (see the `labeledExpr` rules, gated by
-        // `ctx.in_pattern`). Matched before the generic `expressionPattern` rule.
-        // The base is optional: a leading-dot form (`.foo`) has none, so the
-        // constructor's base is an `inferred_type_expr`.
-        rule!(
-            (expressionPattern expression: (functionCallExpr
-                calledExpression: (memberAccessExpr base: _? @base period: @dot declName: (declReferenceExpr baseName: @name))
-                arguments: _* @@args))
-            =>
-            constructor_pattern {
-                ctx.in_pattern = true;
-                let elements = ctx.translate(args)?;
-                let base = base.unwrap_or_else(|| tree!((inferred_type_expr #{dot})));
-                tree!((constructor_pattern
-                    constructor: (member_access_expr
-                        base: {base}
-                        member: (identifier #{name}))
-                    element: {elements}))
-            }
-        ),
         // A tuple destructuring pattern (`let (a, b) = …`). A labelled element
         // (`let (x: a) = …`) carries its label through as the `pattern_element`
         // key; unlabelled elements have no key.
@@ -544,36 +547,16 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // handling in the future. (Redundant with the catch-all fallback, but
         // kept as a signpost.)
         rule!((isTypePattern) => (unsupported_node)),
-        // A standalone wildcard pattern (`case _:`, `if case _`): swift-syntax
-        // models the bare `_` as an `expressionPattern` wrapping a
-        // `discardAssignmentExpr`. Matched before the generic `expressionPattern`
-        // rule so `_` becomes an `ignore_pattern` rather than an equality match.
-        // (Wildcards *inside* an enum-case argument list are handled by the
-        // `labeledExpr`/`discardAssignmentExpr` rules.)
-        rule!((expressionPattern expression: (discardAssignmentExpr)) => (ignore_pattern)),
         // A wildcard *binding* pattern (`let _ = x`, `for _ in xs`). swift-syntax
-        // models this as a `wildcardPattern` — distinct from the `_` *match*
-        // pattern above, which is an `expressionPattern` over a
-        // `discardAssignmentExpr`.
+        // models this as a `wildcardPattern`, distinct from the `_` match form
+        // handled by the context-aware `discardAssignmentExpr` rule.
         rule!((wildcardPattern) => (ignore_pattern)),
-        // A tuple pattern in a match position (`case (let a, 3):`) is parsed by
-        // swift-syntax as an `expressionPattern` wrapping a `tupleExpr` — unlike a
-        // binding tuple (`let (a, b)`), which is a real `tuplePattern`. Recognise
-        // it as a `tuple_pattern`; its `labeledExpr` elements translate to
-        // `pattern_element`s under `ctx.in_pattern` (a binding element becomes a
-        // `name_pattern`, any other expression an `expr_equality_pattern`).
-        rule!(
-            (expressionPattern expression: (tupleExpr elements: _* @@els))
-            =>
-            tuple_pattern {
-                ctx.in_pattern = true;
-                let elements = ctx.translate(els)?;
-                tree!((tuple_pattern element: {elements}))
-            }
-        ),
-        // A bare expression pattern (`case 1:`, `case someConstant:`) matches by
-        // equality.
-        rule!((expressionPattern expression: @e) => (expr_equality_pattern expr: {e})),
+        // An expression pattern only establishes pattern context; its child
+        // determines the concrete pattern shape.
+        rule!((expressionPattern expression: @@e) => expr {
+            ctx.in_pattern = true;
+            ctx.translate(e)?.into_iter().next().ok_or("expression pattern has no child")?
+        }),
         // ---- Functions ----
         // A function declaration (parameters/return type/body optional). The
         // parameters and return type nest under `signature`; the body is a
@@ -633,6 +616,35 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     default: {val}))
             }
         ),
+        // Swift's `[T](...)` array-type constructor syntax is parsed as a call
+        // whose callee is an `arrayExpr` containing `T`. For a generic `T`,
+        // translating that callee as an array literal would place a type
+        // expression in an expression-only element field. Normalize it to an
+        // `Array<T>` generic type constructor instead.
+        rule!(
+            (functionCallExpr
+                calledExpression: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                arguments: _* @args
+                trailingClosure: @tc)
+            =>
+            (call_expr
+                callee: (generic_type_expr
+                    base: (named_type_expr name: (identifier "Array"))
+                    type_argument: {element})
+                argument: {args}
+                argument: (argument value: {tc}))
+        ),
+        rule!(
+            (functionCallExpr
+                calledExpression: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                arguments: _* @args)
+            =>
+            (call_expr
+                callee: (generic_type_expr
+                    base: (named_type_expr name: (identifier "Array"))
+                    type_argument: {element})
+                argument: {args})
+        ),
         // A function/method call (`foo(1, 2)`). `calledExpression` is the callee
         // and `arguments` is an (elided) list of `labeledExpr`, each translated
         // to an `argument` below. A trailing closure (`xs.map { … }`) becomes a
@@ -643,9 +655,20 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (call_expr callee: {callee} argument: {args} argument: (argument value: {tc}))
         ),
         rule!(
-            (functionCallExpr calledExpression: @callee arguments: _* @args)
+            (functionCallExpr calledExpression: @@rawCallee arguments: _* @args)
             =>
-            (call_expr callee: {callee} argument: {args})
+            expr {
+                // Always translate the callee in non-pattern context.
+                let callee = ctx.scoped(|ctx| {
+                    ctx.in_pattern = false;
+                    ctx.translate(rawCallee)
+                })?;
+                if ctx.in_pattern {
+                    tree!((constructor_pattern constructor: {callee} element: {args}))
+                } else {
+                    tree!((call_expr callee: {callee} argument: {args}))
+                }
+            }
         ),
         // A call argument or an enum-case pattern argument. When translating an
         // enum-case `constructor_pattern`'s arguments (`ctx.in_pattern`), a
@@ -656,6 +679,27 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // Otherwise the argument keeps its label as the `name` and its value.
         // The pattern-only shapes (`patternExpr`, `discardAssignmentExpr`) are
         // matched first; they never occur as ordinary call arguments.
+        rule!(
+            (labeledExpr
+                label: _? @@lbl
+                expression: (functionCallExpr
+                    calledExpression: @constructor
+                    arguments: _* @elements))
+            =>
+            argument {
+                if ctx.in_pattern {
+                    tree!((pattern_element
+                        key: (identifier #{lbl})?
+                        pattern: (constructor_pattern
+                            constructor: {constructor}
+                            element: {elements})))
+                } else {
+                    tree!((argument
+                        name: (identifier #{lbl})?
+                        value: (call_expr callee: {constructor} argument: {elements})))
+                }
+            }
+        ),
         rule!(
             (labeledExpr label: _? @@lbl expression: (patternExpr pattern: @p))
             =>
@@ -673,7 +717,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 if ctx.in_pattern {
                     tree!((pattern_element
                         key: (identifier #{lbl})?
-                        pattern: (expr_equality_pattern expr: {val})))
+                        pattern: {val}))
                 } else {
                     tree!((argument name: (identifier #{lbl})? value: {val}))
                 }
@@ -683,15 +727,29 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `declReferenceExpr`; pull its `baseName` out as the member identifier.
         // A leading-dot access (`.foo`) has no explicit base — the base is an
         // `inferred_type_expr`. The base-ful form is matched first.
+        // A bracketed generic array type used as a metatype or static-member
+        // base (`[T].self`) is parsed as an `arrayExpr`; preserve its type
+        // meaning as `Array<T>` rather than an array literal.
+        rule!(
+            (memberAccessExpr
+                base: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                declName: (declReferenceExpr baseName: @member))
+            =>
+            (member_access_expr
+                base: (generic_type_expr
+                    base: (named_type_expr name: (identifier "Array"))
+                    type_argument: {element})
+                member: (identifier #{member}))
+        ),
         rule!(
             (memberAccessExpr base: @base declName: (declReferenceExpr baseName: @member))
             =>
             (member_access_expr base: {base} member: (identifier #{member}))
         ),
         rule!(
-            (memberAccessExpr declName: (declReferenceExpr baseName: @member))
+            (memberAccessExpr period: @dot declName: (declReferenceExpr baseName: @member))
             =>
-            (member_access_expr base: (inferred_type_expr) member: (identifier #{member}))
+            (member_access_expr base: (inferred_type_expr #{dot}) member: (identifier #{member}))
         ),
         // Control transfer, one rule per keyword. `return` carries an optional
         // value; `break` / `continue` an optional target label; `throw` its
@@ -903,7 +961,18 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // ---- Optionals and errors ----
         // Optional chaining — unwrap the marker
-        rule!((optionalChainingExpr expression: @inner) => expr { inner }),
+        rule!((optionalChainingExpr expression: @@inner) => expr {
+            let inner = ctx.translate(inner)?.into_iter().next().ok_or("optional chaining expression has no child")?;
+            if ctx.in_pattern {
+                tree!((constructor_pattern
+                    constructor: (member_access_expr
+                        base: (named_type_expr name: (identifier "Optional"))
+                        member: (identifier "some"))
+                    element: (pattern_element pattern: {inner})))
+            } else {
+                inner
+            }
+        }),
         // try/try?/try! expr → unary_expr with operator "try", "try?" or "try!"
         rule!(
             (tryExpr questionOrExclamationMark: _? @@m expression: @e)
@@ -972,13 +1041,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 path: (importPathComponent name: @@parts)*)
             =>
             import_declaration {
-                let pattern = match kind {
-                    Some(_) => {
-                        let last = *parts.last().ok_or("import has no path")?;
-                        tree!((name_pattern identifier: (identifier #{last})))
-                    }
-                    None => tree!((bulk_importing_pattern)),
+                let bulk_import = match kind {
+                    None => Some(tree!((bulk_importing_pattern))),
+                    Some(_) => None, // scoped import, no bulk import
                 };
+                let last = *parts.last().ok_or("import has no path")?;
+                let pattern = tree!((name_pattern identifier: (identifier #{last}) sub_pattern: {bulk_import}));
                 tree!((import_declaration
                     modifier: (modifier #{kind})?
                     modifier: {attrs}
@@ -993,8 +1061,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // becomes a `modifier`; its source text is the modifier spelling.
         rule!((attribute) @m => (modifier #{m})),
         rule!((declModifier) @m => (modifier #{m})),
-        // A `super` expression. (`self` needs no rule: swift-syntax models it as
-        // an ordinary `declReferenceExpr`, already mapped to a `name_expr`.)
+        // A `super` expression.
         rule!((superExpr) => (super_expr)),
         // Type expressions. A generic type applied with explicit arguments
         // (`Set<Int>`) becomes a `generic_type_expr` whose `base` is the type
@@ -1014,9 +1081,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A named type (`Int`). `identifierType.name` is the type-name token.
         rule!((identifierType name: @@n) => (named_type_expr name: (identifier #{n}))),
         // A qualified type (`Outer.Inner`, `NSString.CompareOptions`). swift-syntax
-        // nests these as `memberType` nodes; we keep the whole dotted path as the
-        // opaque `named_type_expr` name.
-        rule!((memberType) @ty => (named_type_expr name: (identifier #{ty}))),
+        // nests these as `memberType` nodes; preserve the nesting in the
+        // named_type_expr qualifier field.
+        rule!(
+            (memberType baseType: @base name: @@name)
+            =>
+            (named_type_expr qualifier: {base} name: (identifier #{name}))
+        ),
         // Sugared types desugar to `generic_type_expr`: `T?` -> Optional<T>,
         // `[T]` -> Array<T>, `[K: V]` -> Dictionary<K, V>.
         rule!(

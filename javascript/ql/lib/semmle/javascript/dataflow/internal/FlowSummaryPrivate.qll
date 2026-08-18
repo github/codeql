@@ -12,18 +12,28 @@ private import sharedlib.FlowSummaryImpl::Private as Private
 private import sharedlib.FlowSummaryImpl::Public
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 private import semmle.javascript.internal.flow_summaries.ExceptionFlow
+private import codeql.util.Void
 
 /**
  * A class of callables that are candidates for flow summary modeling.
  */
-class SummarizedCallableBase = string;
+class SummarizedCallableBase extends string {
+  bindingset[this]
+  SummarizedCallableBase() { exists(this) }
 
-class SourceBase extends Unit {
-  SourceBase() { none() }
+  Location getLocation() { none() }
 }
 
-class SinkBase extends Unit {
-  SinkBase() { none() }
+class SourceBase extends Void {
+  Location getLocation() { none() }
+}
+
+class SinkBase = SourceBase;
+
+class FlowSummaryCallBase = SourceBase;
+
+DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+  result.asLibraryCallable() = c
 }
 
 /** Gets the parameter position representing a callback itself, if any. */
@@ -141,8 +151,22 @@ string encodeArgumentPosition(ArgumentPosition pos) {
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
 ReturnKind getStandardReturnValueKind() { result = MkNormalReturnKind() and Stage::ref() }
 
-private module FlowSummaryStepInput implements Private::StepsInputSig {
-  Private::SummaryNode getSummaryNode(DataFlow::Node n) {
+private module Input2 implements Private::InputSig2 {
+  private import codeql.util.Void
+
+  class SourceSinkReportingElement extends Void {
+    Location getLocation() { none() }
+
+    DataFlowCallable getEnclosingCallable() { none() }
+
+    SourceSinkReportingElement getASuccessor(Private::SummaryComponent sc) { none() }
+  }
+}
+
+import Private::Make2<Input2> as Impl2
+
+private module FlowSummaryStepInput implements Impl2::StepsInputSig {
+  Impl2::SummaryNode getSummaryNode(DataFlow::Node n) {
     result = n.(FlowSummaryNode).getSummaryNode()
   }
 
@@ -156,12 +180,6 @@ private module FlowSummaryStepInput implements Private::StepsInputSig {
         ]
     )
   }
-
-  DataFlowCallable getSourceNodeEnclosingCallable(SourceBase source) { none() }
-
-  DataFlow::Node getSourceNode(SourceBase source, Private::SummaryComponentStack s) { none() }
-
-  DataFlow::Node getSinkNode(SinkBase sink, Private::SummaryComponent sc) { none() }
 }
 
 module Steps = Private::Steps<FlowSummaryStepInput>;
