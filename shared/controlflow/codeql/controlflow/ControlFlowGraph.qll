@@ -1030,27 +1030,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      */
     final class PreControlFlowNode = NodeImpl;
 
-    /**
-     * Holds if `n` is the in-order or post-order control flow node for `ast`.
-     *
-     * Unlike the `PreControlFlowNode.isIn` member predicate, this is computed
-     * structurally (directly from the underlying node representation) and so
-     * does not give rise to a dependency on node reachability. It is intended
-     * for languages implementing `Input2::deferExitStep`, whose definition must
-     * not depend on `reachable` (see `succIgnoringDeferExit`); such languages
-     * can use this to identify nodes inside a negation without introducing a
-     * non-monotonic cycle.
-     */
-    predicate isInOrderNode(PreControlFlowNode n, AstNode ast) { n = TAstNode(ast) }
-
-    /**
-     * Holds if `n` is the exceptional exit node for a callable.
-     *
-     * This is computed structurally so that it can be used while constructing
-     * the CFG without introducing a dependency on node reachability.
-     */
-    predicate isExceptionalExitNode(PreControlFlowNode n) { n = TAnnotatedExitNode(_, false) }
-
     private class BeforeNode extends NodeImpl, TBeforeNode {
       private AstNode n;
 
@@ -1166,7 +1145,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /** A control flow node indicating exceptional termination of a callable. */
-    final private class ExceptionalExitNodeImpl extends AnnotatedExitNodeImpl {
+    final class ExceptionalExitNodeImpl extends AnnotatedExitNodeImpl {
       ExceptionalExitNodeImpl() { this = TAnnotatedExitNode(_, false) }
     }
 
@@ -1748,26 +1727,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n1.isAfterFalse(condexpr.getCondition()) and
           not exists(condexpr.getElse()) and
           n2.isAfter(condexpr)
-        )
-        or
-        exists(PatternMatchExpr pme |
-          n1.isBefore(pme) and
-          n2.isBefore(pme.getExpr())
-          or
-          n1.isAfter(pme.getExpr()) and
-          n2.isIn(pme)
-          or
-          n1.isIn(pme) and
-          n2.isAfterValue(pme, any(BooleanSuccessor s | s.getValue() = false))
-          or
-          n1.isIn(pme) and
-          n2.isAdditional(pme, patternMatchTrueTag())
-          or
-          n1.isAdditional(pme, patternMatchTrueTag()) and
-          n2.isBefore(pme.getPattern())
-          or
-          n1.isAfter(pme.getPattern()) and
-          n2.isAfterValue(pme, any(BooleanSuccessor s | s.getValue() = true))
         )
         or
         exists(PatternMatchExpr pme |
