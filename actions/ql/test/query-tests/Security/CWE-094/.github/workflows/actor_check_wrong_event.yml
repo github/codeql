@@ -18,3 +18,29 @@ jobs:
     if: github.actor == 'trusted-user'
     steps:
       - run: echo '${{ github.event.issue.title }}'
+
+  # The `sender` object is part of every webhook event payload, so this
+  # check is effective and the injectable step is protected.
+  valid-sender-check:
+    runs-on: ubuntu-latest
+    if: github.event.sender.login == 'trusted-user'
+    steps:
+      - run: echo '${{ github.event.issue.title }}'
+
+  # `github.event.head_commit` is only populated for `push` events, so this
+  # condition is always true for `issues` events and does not protect the
+  # injectable step.
+  vacuous-head-commit-check:
+    runs-on: ubuntu-latest
+    if: github.event.head_commit.author.name != 'some-bot'
+    steps:
+      - run: echo '${{ github.event.issue.title }}'
+
+  # `github.event.commits` is only populated for `push` events, so this
+  # condition is always true for `issues` events and does not protect the
+  # injectable step.
+  vacuous-commits-check:
+    runs-on: ubuntu-latest
+    if: github.event.commits[0].author.name != 'some-bot'
+    steps:
+      - run: echo '${{ github.event.issue.title }}'
