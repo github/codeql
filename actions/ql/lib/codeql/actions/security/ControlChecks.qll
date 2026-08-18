@@ -312,6 +312,18 @@ class LabelIfCheck extends LabelCheck instanceof If {
   }
 }
 
+class ActorIfCheck extends ActorCheck instanceof If {
+  ActorIfCheck() {
+    // eg: github.actor == 'admin'
+    // eg: github.triggering_actor == 'admin'
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind(["\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",], _, _)
+    ) and
+    not normalizeExpr(this.getCondition()).matches("%[bot]%")
+  }
+}
+
 /**
  * Gets a regular expression matching a condition on an actor field that is
  * only populated for events whose payload contains the `context_prefix` context.
@@ -325,57 +337,34 @@ private string eventPayloadActorFieldRegex(string context_prefix) {
   or
   context_prefix = "github.event.commits" and
   result = "\\bgithub\\.event\\.commits.*\\.author\\.name\\b"
-}
-
-class ActorIfCheck extends ActorCheck instanceof If {
-  ActorIfCheck() {
-    // eg: github.actor == 'admin'
-    // eg: github.triggering_actor == 'admin'
-    exists(
-      normalizeExpr(this.getCondition())
-          .regexpFind(["\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",], _, _)
-    ) and
-    not normalizeExpr(this.getCondition()).matches("%[bot]%")
-  }
+  or
+  context_prefix = "github.event.sender" and
+  result = "\\bgithub\\.event\\.sender\\.login\\b"
 }
 
 /** An If node that checks an actor field from the event payload */
 class EventActorIfCheck extends ActorCheck instanceof If {
+  string context_prefix;
+
   EventActorIfCheck() {
     // eg: github.event.pull_request.user.login == 'admin'
     exists(
       normalizeExpr(this.getCondition())
-          .regexpFind([eventPayloadActorFieldRegex(_), "\\bgithub\\.event\\.sender\\.login\\b"], _,
-            _)
+          .regexpFind(eventPayloadActorFieldRegex(context_prefix), _, _)
     )
   }
 
   override predicate protectsCategoryAndEvent(string category, string event) {
     ActorCheck.super.protectsCategoryAndEvent(category, event) and
     (
-      // the `sender` object is part of every webhook event payload,
-      // so `github.event.sender.login` is populated for every event
-      exists(
-        normalizeExpr(this.(If).getCondition())
-            .regexpFind("\\bgithub\\.event\\.sender\\.login\\b", _, _)
-      )
+      // the `sender` object is part of every webhook event payload
+      context_prefix = "github.event.sender"
       or
-      // other actor fields are only populated for events whose payload contains
-      // the corresponding context. eg: a check on
-      // `github.event.pull_request.user.login` cannot restrict the actor of an
-      // `issues` event since `github.event.pull_request` is not populated there,
-      // which makes the condition vacuous.
-      // note that `github.event.head_commit` and `github.event.commits` are only
-      // populated for `push` events, which are not protectable by ActorCheck, so
-      // checks on those fields never count as protection here. they are still
-      // matched so that these Ifs keep being classified as actor checks
-      exists(string context_prefix |
-        contextTriggerDataModel(event, context_prefix) and
-        exists(
-          normalizeExpr(this.(If).getCondition())
-              .regexpFind(eventPayloadActorFieldRegex(context_prefix), _, _)
-        )
-      )
+      // other actor fields only restrict events whose payload populates them.
+      // eg: `github.event.pull_request.user.login` cannot restrict the actor
+      // of an `issues` event since `github.event.pull_request` is not
+      // populated there, which makes the condition vacuous
+      contextTriggerDataModel(event, context_prefix)
     )
   }
 }
