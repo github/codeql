@@ -1,5 +1,6 @@
 import java.net.Socket;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
@@ -56,7 +57,7 @@ public class XmlFactoriesTests {
   }
 
   public void hardenedSchema(Socket sock) throws Exception {
-    SchemaFactory factory = XmlFactories.newSchemaFactory();
+    SchemaFactory factory = XmlFactories.newSchemaFactory(XMLConstants.W3C_XML_SCHEMA_NS_URI);
     Schema schema = factory.newSchema(new StreamSource(sock.getInputStream())); // safe
   }
 }

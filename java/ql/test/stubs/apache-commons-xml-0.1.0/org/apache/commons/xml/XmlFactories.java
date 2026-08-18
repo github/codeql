@@ -19,7 +19,7 @@ public final class XmlFactories {
         return null;
     }
 
-    public static SchemaFactory newSchemaFactory() {
+    public static SchemaFactory newSchemaFactory(final String schemaLanguage) {
         return null;
     }
 
