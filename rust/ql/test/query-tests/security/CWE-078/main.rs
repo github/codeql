@@ -104,6 +104,36 @@ mod qhelp_example_good {
     }
 }
 
+fn test_allowlist_sanitizers(command: &str) {
+    let allowed_commands_array = ["cat", "git", "ls"];
+
+    if allowed_commands_array.contains(&command) {
+        Command::new(command).output().expect("failed"); // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+    } else {
+        Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
+    }
+
+    let allowed_commands_vec = vec!["cat", "git", "ls"];
+
+    if allowed_commands_vec.contains(&command) {
+        Command::new(command).output().expect("failed"); // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+    } else {
+        Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
+    }
+
+    if command == "ls" {
+        Command::new(command).output().expect("failed"); // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+    } else {
+        Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
+    }
+
+    if command != "ls" {
+        Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
+    } else {
+        Command::new(command).output().expect("failed"); // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+    }
+}
+
 fn main() {
     let arg_string = std::env::args().nth(1).unwrap_or(String::from("ls")); // $ Source=args2
 
@@ -111,4 +141,5 @@ fn main() {
     test_tokio_command_injection();
     qhelp_example_bad::handle_request(arg_string.as_str());
     qhelp_example_good::handle_request(arg_string.as_str());
+    test_allowlist_sanitizers(arg_string.as_str());
 }
