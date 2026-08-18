@@ -118,7 +118,7 @@ module ControlFlow {
     or
     expr = any(ForStmt fs).getCond()
     or
-    expr = any(IfStmt is).getCond()
+    expr = any(IfStmt is).getCondition()
     or
     isExpressionlessSwitchCaseCondition(expr)
   }

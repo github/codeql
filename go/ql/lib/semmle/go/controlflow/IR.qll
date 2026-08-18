@@ -29,7 +29,7 @@ module IR {
    * `LogicalBinaryExpr`.
    */
   private predicate isInBooleanCondContext(Expr e) {
-    e = any(IfStmt s).getCond()
+    e = any(IfStmt s).getCondition()
     or
     e = any(ForStmt s).getCond()
     or
