@@ -61,4 +61,62 @@ module CommandInjection {
 
   private class FieldlessEnumTypeBarrier extends Barrier instanceof Barriers::FieldlessEnumTypeBarrier
   { }
+
+  /**
+   * A sanitizer guard for command injection vulnerabilities.
+   */
+  class SanitizerGuard extends Barrier {
+    SanitizerGuard() { this = DataFlow::BarrierGuard<sanitizerGuard/3>::getABarrierNode() }
+  }
+}
+
+private predicate sanitizerGuard(AstNode g, Expr e, boolean branch) {
+  g.(SanitizerGuard::Range).checks(e, branch)
+}
+
+/**
+ * Provides a class for modeling new command injection safety checks.
+ */
+module SanitizerGuard {
+  /**
+   * A data-flow node that checks whether a command is safe.
+   */
+  abstract class Range extends AstNode {
+    /**
+     * Holds if this guard validates `e` upon evaluating to `branch`.
+     */
+    abstract predicate checks(Expr e, boolean branch);
+  }
+}
+
+/**
+ * A successful membership check against a (presumed) command allowlist. For example:
+ * ```
+ * if allowlist.contains(&commmand) { ... }
+ * ```
+ */
+private class AllowlistContainsCheck extends SanitizerGuard::Range, MethodCall {
+  AllowlistContainsCheck() { this.getStaticTarget().getName().getText() = "contains" }
+
+  override predicate checks(Expr e, boolean branch) {
+    e.getParentNode*() = this.getPositionalArgument(0) and
+    branch = true
+  }
+}
+
+/**
+ * An equality check against a (presumed) allowed command value. For example:
+ * ```
+ * if command == "ls" { ... }
+ * ```
+ */
+private class AllowlistEqualityCheck extends SanitizerGuard::Range, EqualityOperation {
+  override predicate checks(Expr e, boolean branch) {
+    e = this.getAnOperand() and
+    (
+      this instanceof EqualsOperation and branch = true
+      or
+      this instanceof NotEqualsOperation and branch = false
+    )
+  }
 }

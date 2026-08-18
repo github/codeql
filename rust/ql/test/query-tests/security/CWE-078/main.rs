@@ -116,13 +116,13 @@ fn test_allowlist_sanitizers(command: &str) {
     let allowed_commands_vec = vec!["cat", "git", "ls"];
 
     if allowed_commands_vec.contains(&command) {
-        Command::new(command).output().expect("failed"); // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+        Command::new(command).output().expect("failed");
     } else {
         Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
     }
 
     if command == "ls" {
-        Command::new(command).output().expect("failed"); // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+        Command::new(command).output().expect("failed");
     } else {
         Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
     }
@@ -130,7 +130,7 @@ fn test_allowlist_sanitizers(command: &str) {
     if command != "ls" {
         Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
     } else {
-        Command::new(command).output().expect("failed"); // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+        Command::new(command).output().expect("failed");
     }
 }
 
