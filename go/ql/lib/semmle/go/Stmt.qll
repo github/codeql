@@ -717,7 +717,7 @@ class IfStmt extends @ifstmt, Stmt, ScopeNode {
   Expr getCondition() { result = this.getChildExpr(1) }
 
   /** Gets the "then" branch of this `if` statement. */
-  BlockStmt getThen() { result = this.getChildStmt(2) }
+  Stmt getThen() { result = this.getChildStmt(2) }
 
   /** Gets the "else" branch of this `if` statement, if any. */
   Stmt getElse() { result = this.getChildStmt(3) }
@@ -1085,7 +1085,7 @@ class SelectStmt extends @selectstmt, Stmt {
  */
 class LoopStmt extends @loopstmt, Stmt, ScopeNode {
   /** Gets the body of this loop. */
-  BlockStmt getBody() { none() }
+  Stmt getBody() { none() }
 }
 
 /**
