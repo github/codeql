@@ -710,8 +710,11 @@ class IfStmt extends @ifstmt, Stmt, ScopeNode {
   /** Gets the init statement of this `if` statement, if any. */
   Stmt getInit() { result = this.getChildStmt(0) }
 
+  /** DEPRECATED: Use `getCondition` instead. */
+  deprecated Expr getCond() { result = this.getCondition() }
+
   /** Gets the condition of this `if` statement. */
-  Expr getCond() { result = this.getChildExpr(1) }
+  Expr getCondition() { result = this.getChildExpr(1) }
 
   /** Gets the "then" branch of this `if` statement. */
   BlockStmt getThen() { result = this.getChildStmt(2) }
@@ -721,7 +724,7 @@ class IfStmt extends @ifstmt, Stmt, ScopeNode {
 
   override predicate mayHaveSideEffects() {
     this.getInit().mayHaveSideEffects() or
-    this.getCond().mayHaveSideEffects() or
+    this.getCondition().mayHaveSideEffects() or
     this.getThen().mayHaveSideEffects() or
     this.getElse().mayHaveSideEffects()
   }

@@ -90,7 +90,7 @@ predicate allowlist(Stmt s) {
   or
   // statements deliberately made unreachable by a constant condition, such as the code
   // following `if true { return }`
-  exists(getPreviousStmt(s).(IfStmt).getCond().getBoolValue())
+  exists(getPreviousStmt(s).(IfStmt).getCondition().getBoolValue())
 }
 
 from Stmt s
