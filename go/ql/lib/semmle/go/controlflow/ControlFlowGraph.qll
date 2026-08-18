@@ -50,11 +50,7 @@ module ControlFlow {
     predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }
 
     /** Holds if this is the first control-flow node in `subtree`. */
-    predicate isFirstNodeOf(AstNode subtree) {
-      this.isBefore(subtree)
-      or
-      this.injects(subtree)
-    }
+    predicate isFirstNodeOf(AstNode subtree) { this.isBefore(subtree) }
 
     /** Holds if this node is the unique entry node of a file or function. */
     predicate isEntryNode() { this instanceof CfgImpl::ControlFlow::EntryNode }

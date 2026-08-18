@@ -164,8 +164,6 @@ module CfgImpl {
         not this = any(Go::SelectStmt sel).getBody()
       }
 
-      override Stmt getStmt(int n) { result = Go::BlockStmt.super.getStmt(n) }
-
       Stmt getLastStmt() {
         exists(int last | result = this.getStmt(last) and not exists(this.getStmt(last + 1)))
       }
@@ -183,23 +181,11 @@ module CfgImpl {
       Expr getExpr() { result = Go::ExprStmt.super.getExpr() }
     }
 
-    class IfStmt extends Stmt {
-      IfStmt() { this instanceof Go::IfStmt }
-
-      Expr getCondition() { result = this.(Go::IfStmt).getCond() }
-
-      Stmt getThen() { result = this.(Go::IfStmt).getThen() }
-
-      Stmt getElse() { result = this.(Go::IfStmt).getElse() }
-    }
+    class IfStmt = Go::IfStmt;
 
     AstNode getIfInit(IfStmt ifstmt) { result = ifstmt.(Go::IfStmt).getInit() }
 
-    class LoopStmt extends Stmt {
-      LoopStmt() { this instanceof Go::LoopStmt }
-
-      Stmt getBody() { result = this.(Go::LoopStmt).getBody() }
-    }
+    class LoopStmt = Go::LoopStmt;
 
     class WhileStmt extends LoopStmt {
       WhileStmt() { none() }
@@ -219,9 +205,7 @@ module CfgImpl {
       Expr getCondition() { none() }
     }
 
-    class ForStmt extends LoopStmt {
-      ForStmt() { this instanceof Go::ForStmt }
-
+    class ForStmt extends LoopStmt instanceof Go::ForStmt {
       AstNode getInit(int index) { index = 0 and result = this.(Go::ForStmt).getInit() }
 
       Expr getCondition() { result = this.(Go::ForStmt).getCond() }
@@ -229,9 +213,7 @@ module CfgImpl {
       AstNode getUpdate(int index) { index = 0 and result = this.(Go::ForStmt).getPost() }
     }
 
-    class ForeachStmt extends LoopStmt {
-      ForeachStmt() { this instanceof Go::RangeStmt }
-
+    class ForeachStmt extends LoopStmt instanceof Go::RangeStmt {
       // Go's `range` statement binds its key and value by destructuring the
       // current element. The extractor synthesizes a single "range element"
       // node grouping the key and value (see `Go::RangeElementExpr`), which we
@@ -249,9 +231,7 @@ module CfgImpl {
 
     class GotoStmt = Go::GotoStmt;
 
-    class ReturnStmt extends Go::ReturnStmt {
-      override Expr getExpr() { result = Go::ReturnStmt.super.getExpr() }
-    }
+    class ReturnStmt = Go::ReturnStmt;
 
     class Throw extends AstNode {
       Throw() { none() }
@@ -281,9 +261,7 @@ module CfgImpl {
       Stmt getBody() { none() }
     }
 
-    class Switch extends AstNode {
-      Switch() { this instanceof Go::SwitchStmt }
-
+    class Switch extends AstNode instanceof Go::SwitchStmt {
       Expr getExpr() {
         result = this.(Go::ExpressionSwitchStmt).getExpr()
         or
@@ -837,7 +815,7 @@ module CfgImpl {
       PreControlFlowNode source, PreControlFlowNode target, AbruptCompletion completion
     ) {
       completion.getSuccessorType() instanceof ExceptionSuccessor and
-      isExceptionalExitNode(target) and
+      target instanceof ExceptionalExitNodeImpl and
       exists(PreControlFlowNode nextDefer |
         deferExitStep(source, nextDefer, _) and deferInvoke(nextDefer, _)
       )
@@ -862,14 +840,8 @@ module CfgImpl {
      * Holds if `n` is the registration node of `defer` statement `s` (the
      * post-order node of the statement, reached once its call's arguments have
      * been evaluated).
-     *
-     * This uses the reachability-free `isInOrderNode` rather than `n.isIn(s)`
-     * because it is referenced under negation by `succBeforeNextDeferRegistration`, and must
-     * therefore not depend on `reachable`.
      */
-    private predicate deferRegistration(PreControlFlowNode n, Go::DeferStmt s) {
-      isInOrderNode(n, s)
-    }
+    private predicate deferRegistration(PreControlFlowNode n, Go::DeferStmt s) { n.isIn(s) }
 
     /**
      * Holds if `n` is the deferred-invocation node for `defer` statement `s`,
