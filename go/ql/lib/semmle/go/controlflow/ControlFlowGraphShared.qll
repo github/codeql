@@ -162,6 +162,7 @@ module CfgImpl {
 
     class BlockStmt extends Go::BlockStmt {
       BlockStmt() {
+        not this = any(Go::FuncDef fd).getBody() and
         not this = any(Go::SwitchStmt sw).getBody() and
         not this = any(Go::SelectStmt sel).getBody()
       }
@@ -453,7 +454,7 @@ module CfgImpl {
       // The call of a `defer` statement is not invoked at the statement
       // itself; its callee and arguments are evaluated in place, but the call
       // is only invoked later, at function exit (modelled by the `defer-invoke`
-      // node and `deferExitStep`). Marking it as pre-order means no in-order
+      // node and `additionalSuccessor`). Marking it as pre-order means no in-order
       // "invocation" node (and hence no inline exceptional-exit edge) is
       // created at the `defer` statement.
       e = any(Go::DeferStmt s).getCall()
@@ -603,7 +604,7 @@ module CfgImpl {
           tag = "implicit-field:" + i.toString()
         )
         or
-        // Deferred-call invocation node, placed at function exit by `deferExitStep`
+        // Deferred-call invocation node, placed at function exit by `additionalSuccessor`
         n = any(Go::DeferStmt s).getCall() and tag = "defer-invoke"
       )
     }
@@ -800,40 +801,31 @@ module CfgImpl {
         exists(fd.getResultVar(0)) and
         n.isAdditional(fd.getBody(), "result-read:0")
       )
-    }
-
-    additional predicate overridesCallableEndAbruptCompletion(
-      Ast::Callable c, AbruptCompletion completion
-    ) {
-      // For functions with result variables, the library's default routing of a
-      // `return` straight to the normal exit node is suppressed so that the
-      // return is instead caught by `endAbruptCompletion` above and routed
-      // through the result-read epilogue.
-      //
-      // For functions containing `defer` statements, the default routing is
-      // likewise suppressed so that returns are routed through the deferred-call
-      // epilogue (see `deferExitStep`) instead.
-      (exists(c.(Go::FuncDef).getResultVar(0)) or funcHasDefer(c.(Go::FuncDef))) and
-      completion.getSuccessorType() instanceof ReturnSuccessor
+      or
+      // Function bodies are excluded from `Ast::BlockStmt`, so handle goto
+      // targets among their top-level statements here.
+      exists(Go::FuncDef fd, Go::Stmt target, Label l |
+        ast = fd.getBody() and
+        target = fd.getBody().getAStmt() and
+        not target instanceof Go::GotoStmt and
+        hasLabel(target, l) and
+        n.isBefore(target) and
+        c.getSuccessorType() instanceof GotoSuccessor and
+        c.hasLabel(l)
+      )
     }
 
     additional predicate overridesAbruptCompletionEdge(
       PreControlFlowNode source, PreControlFlowNode target, AbruptCompletion completion
     ) {
+      completion.getSuccessorType() instanceof ReturnSuccessor and
+      target instanceof NormalExitNodeImpl and
+      exists(PreControlFlowNode replacement | additionalSuccessor(source, replacement, _))
+      or
       completion.getSuccessorType() instanceof ExceptionSuccessor and
       target instanceof ExceptionalExitNodeImpl and
       exists(PreControlFlowNode nextDefer |
-        deferExitStep(source, nextDefer, _) and deferInvoke(nextDefer, _)
-      )
-    }
-
-    additional predicate callableExitStep(PreControlFlowNode n, Ast::Callable c, boolean normal) {
-      // The last result-read node of the epilogue steps to the normal exit node.
-      exists(Go::FuncDef fd, int j | fd = c |
-        normal = true and
-        exists(fd.getResultVar(j)) and
-        not exists(fd.getResultVar(j + 1)) and
-        n.isAdditional(fd.getBody(), "result-read:" + j.toString())
+        additionalSuccessor(source, nextDefer, _) and deferInvoke(nextDefer, _)
       )
     }
 
@@ -937,12 +929,12 @@ module CfgImpl {
 
     /**
      * Holds if `n` is a normal-exit predecessor of `fd`: a `return` statement
-     * node, or the fall-through node after the body.
+     * node, or the normal fall-through from the body's last statement.
      */
     private predicate normalExitPred(PreControlFlowNode n, Go::FuncDef fd) {
       exists(Go::ReturnStmt ret | ret.getEnclosingFunction() = fd and n.isIn(ret))
       or
-      n.isAfter(fd.getBody())
+      n.isAfter(getLastRankedChild(fd.getBody()))
     }
 
     /**
@@ -968,17 +960,16 @@ module CfgImpl {
     /**
      * Holds if, after running its deferred calls, `fd` should continue at
      * `target` on a normal exit. For functions with result variables this is
-     * the start of the result-read epilogue; otherwise it is the normal exit
-     * node directly.
+     * the start of the result-read epilogue; otherwise it is the function
+     * body's `After` node.
      */
     private predicate deferChainExitTarget(Go::FuncDef fd, PreControlFlowNode target) {
       exists(fd.getResultVar(0)) and target.isAdditional(fd.getBody(), "result-read:0")
       or
-      not exists(fd.getResultVar(_)) and
-      target.(NormalExitNodeImpl).getEnclosingCallable() = fd
+      not exists(fd.getResultVar(_)) and target.isAfter(fd.getBody())
     }
 
-    additional predicate deferExitStep(
+    additional predicate additionalSuccessor(
       PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType successorType
     ) {
       exists(Go::FuncDef fd | funcHasDefer(fd) |
@@ -1028,10 +1019,6 @@ module CfgImpl {
       )
     }
 
-    additional predicate overridesCallableBodyExit(Ast::Callable c) {
-      funcHasDefer(c.(Go::FuncDef))
-    }
-
     additional predicate overridesDefaultControlFlow(Ast::AstNode ast) {
       exists(Go::SelectStmt sel, Go::RecvStmt recv |
         recv = sel.getACommClause().getComm() and
@@ -1053,6 +1040,10 @@ module CfgImpl {
       Ast::AstNode ast, PreControlFlowNode source, PreControlFlowNode target
     ) {
       ast = any(Go::FuncDef fd | hasFuncDefPrologue(fd)).getBody() and source.isBefore(ast)
+      or
+      ast = any(Go::FuncDef fd | funcHasDefer(fd)).getBody() and
+      source.isAfter(getLastRankedChild(ast)) and
+      target.isAfter(ast)
       or
       exists(getFirstEpilogueTag(ast)) and
       (
@@ -1693,8 +1684,8 @@ module CfgImpl {
      *             variables: zero-init:0 → zero-init:1 → ... → first statement.
      * - Epilogue: return → result-read:0 → result-read:1 → ... → result-read:last
      *
-     * The last result-read node goes to `NormalExit(fd)` via the shared
-     * library's `callableExitStep` hook.
+     * The last result-read node goes to `After(body)`, from which the shared
+     * callable CFG continues to the normal exit.
      */
     private predicate hasFuncDefPrologue(Go::FuncDef fd) { exists(fd.getResultVar(_)) }
 
@@ -1702,12 +1693,7 @@ module CfgImpl {
       n.isBefore(getRankedChild(fd.getBody(), 1))
       or
       not exists(getRankedChild(fd.getBody(), _)) and
-      n.isAfter(fd.getBody()) and
-      // When Before(body) and After(body) are the same node (the shared library's
-      // "simple leaf node" optimization merges them for empty bodies without
-      // additional nodes), don't generate Before→After as it would be a self-loop.
-      // The callable exit mechanism already routes After(body) → NormalExit.
-      not n.isBefore(fd.getBody())
+      n.isAdditional(fd.getBody(), "result-read:0")
     }
 
     private predicate funcDefStep(PreControlFlowNode n1, PreControlFlowNode n2) {
@@ -1737,11 +1723,25 @@ module CfgImpl {
           )
         )
         or
-        // result-read:j → result-read:(j+1); the last result-read node steps to
-        // the normal exit node via the `callableExitStep` hook.
+        // result-read:j → result-read:(j+1)
         exists(int j | exists(fd.getResultVar(j + 1)) |
           n1.isAdditional(fd.getBody(), "result-read:" + j.toString()) and
           n2.isAdditional(fd.getBody(), "result-read:" + (j + 1).toString())
+        )
+        or
+        // Normal fall-through enters the result-read epilogue when there are
+        // named results but no deferred calls.
+        not funcHasDefer(fd) and
+        exists(fd.getResultVar(0)) and
+        n1.isAfter(getLastRankedChild(fd.getBody())) and
+        n2.isAdditional(fd.getBody(), "result-read:0")
+        or
+        // The completed result-read epilogue reaches `After(body)`.
+        exists(int j |
+          exists(fd.getResultVar(j)) and
+          not exists(fd.getResultVar(j + 1)) and
+          n1.isAdditional(fd.getBody(), "result-read:" + j.toString()) and
+          n2.isAfter(fd.getBody())
         )
       )
     }
@@ -1764,15 +1764,6 @@ module CfgImpl {
         exists(fd.getResultVar(0)) and
         n.isAdditional(fd.getBody(), "result-read:0")
       )
-    }
-
-    predicate overridesCallableEndAbruptCompletion(Ast::Callable c, AbruptCompletion completion) {
-      exists(c.(Go::FuncDef).getResultVar(0)) and
-      completion.getSuccessorType() instanceof ReturnSuccessor
-    }
-
-    predicate callableExitStep(PreControlFlowNode n, Ast::Callable c, boolean normal) {
-      Input1::callableExitStep(n, c, normal)
     }
 
     predicate overridesDefaultControlFlow(Ast::AstNode ast) {
@@ -1804,27 +1795,17 @@ module CfgImpl {
       Input1::endAbruptCompletion(ast, n, c)
     }
 
-    predicate overridesCallableEndAbruptCompletion(Ast::Callable c, AbruptCompletion completion) {
-      Input1::overridesCallableEndAbruptCompletion(c, completion)
-    }
-
     predicate overridesAbruptCompletionEdge(
       PreControlFlowNode source, PreControlFlowNode target, AbruptCompletion completion
     ) {
       Input1::overridesAbruptCompletionEdge(source, target, completion)
     }
 
-    predicate callableExitStep(PreControlFlowNode n, Ast::Callable c, boolean normal) {
-      Input1::callableExitStep(n, c, normal)
-    }
-
-    predicate deferExitStep(
+    predicate additionalSuccessor(
       PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType successorType
     ) {
-      Input1::deferExitStep(n1, n2, successorType)
+      Input1::additionalSuccessor(n1, n2, successorType)
     }
-
-    predicate overridesCallableBodyExit(Ast::Callable c) { Input1::overridesCallableBodyExit(c) }
 
     predicate overridesDefaultControlFlow(Ast::AstNode ast) {
       Input1::overridesDefaultControlFlow(ast)
