@@ -244,9 +244,10 @@
 | epilogues.go:42:1:48:1 | Normal Exit | epilogues.go:42:1:48:1 | Exit |
 | epilogues.go:42:1:48:1 | function declaration | epilogues.go:42:1:48:1 | After function declaration |
 | epilogues.go:42:20:42:20 | x | epilogues.go:42:51:48:1 | block statement |
+| epilogues.go:42:51:48:1 | After block statement | epilogues.go:42:1:48:1 | Normal Exit |
 | epilogues.go:42:51:48:1 | block statement | epilogues.go:42:51:48:1 | zero-init:0 block statement |
 | epilogues.go:42:51:48:1 | result-read:0 block statement | epilogues.go:42:51:48:1 | result-read:1 block statement |
-| epilogues.go:42:51:48:1 | result-read:1 block statement | epilogues.go:42:1:48:1 | Normal Exit |
+| epilogues.go:42:51:48:1 | result-read:1 block statement | epilogues.go:42:51:48:1 | After block statement |
 | epilogues.go:42:51:48:1 | zero-init:0 block statement | epilogues.go:42:51:48:1 | zero-init:1 block statement |
 | epilogues.go:42:51:48:1 | zero-init:1 block statement | epilogues.go:43:2:46:2 | if statement |
 | epilogues.go:43:2:46:2 | After if statement | epilogues.go:47:2:47:14 | Before return statement |
@@ -290,8 +291,9 @@
 | epilogues.go:51:1:54:1 | Normal Exit | epilogues.go:51:1:54:1 | Exit |
 | epilogues.go:51:1:54:1 | function declaration | epilogues.go:51:1:54:1 | After function declaration |
 | epilogues.go:51:23:51:23 | x | epilogues.go:51:38:54:1 | block statement |
+| epilogues.go:51:38:54:1 | After block statement | epilogues.go:51:1:54:1 | Normal Exit |
 | epilogues.go:51:38:54:1 | block statement | epilogues.go:51:38:54:1 | zero-init:0 block statement |
-| epilogues.go:51:38:54:1 | result-read:0 block statement | epilogues.go:51:1:54:1 | Normal Exit |
+| epilogues.go:51:38:54:1 | result-read:0 block statement | epilogues.go:51:38:54:1 | After block statement |
 | epilogues.go:51:38:54:1 | zero-init:0 block statement | epilogues.go:52:2:52:10 | ... = ... |
 | epilogues.go:52:2:52:10 | ... = ... | epilogues.go:52:6:52:10 | Before ...+... |
 | epilogues.go:52:2:52:10 | After ... = ... | epilogues.go:53:2:53:7 | Before return statement |
@@ -315,7 +317,7 @@
 | epilogues.go:59:1:62:1 | function declaration | epilogues.go:59:1:62:1 | After function declaration |
 | epilogues.go:59:27:59:27 | l | epilogues.go:59:41:59:45 | items |
 | epilogues.go:59:41:59:45 | items | epilogues.go:59:54:62:1 | block statement |
-| epilogues.go:59:54:62:1 | After block statement | epilogues.go:60:8:60:33 | defer-invoke call to log |
+| epilogues.go:59:54:62:1 | After block statement | epilogues.go:59:1:62:1 | Normal Exit |
 | epilogues.go:59:54:62:1 | block statement | epilogues.go:60:2:60:33 | Before defer statement |
 | epilogues.go:60:2:60:33 | After defer statement | epilogues.go:61:2:61:38 | expression statement |
 | epilogues.go:60:2:60:33 | Before defer statement | epilogues.go:60:8:60:33 | call to log |
@@ -329,7 +331,7 @@
 | epilogues.go:60:8:60:33 | After call to log | epilogues.go:60:2:60:33 | defer statement |
 | epilogues.go:60:8:60:33 | call to log | epilogues.go:60:8:60:12 | Before selection of log |
 | epilogues.go:60:8:60:33 | defer-invoke call to log | epilogues.go:59:1:62:1 | Exceptional Exit |
-| epilogues.go:60:8:60:33 | defer-invoke call to log | epilogues.go:59:1:62:1 | Normal Exit |
+| epilogues.go:60:8:60:33 | defer-invoke call to log | epilogues.go:59:54:62:1 | After block statement |
 | epilogues.go:60:14:60:20 | "count" | epilogues.go:60:14:60:20 | After "count" |
 | epilogues.go:60:14:60:20 | After "count" | epilogues.go:60:23:60:32 | Before call to len |
 | epilogues.go:60:14:60:20 | Before "count" | epilogues.go:60:14:60:20 | "count" |
@@ -346,7 +348,7 @@
 | epilogues.go:61:2:61:12 | Before selection of Println | epilogues.go:61:2:61:12 | selection of Println |
 | epilogues.go:61:2:61:12 | selection of Println | epilogues.go:61:2:61:12 | After selection of Println |
 | epilogues.go:61:2:61:38 | After call to Println | epilogues.go:61:2:61:38 | After expression statement |
-| epilogues.go:61:2:61:38 | After expression statement | epilogues.go:59:54:62:1 | After block statement |
+| epilogues.go:61:2:61:38 | After expression statement | epilogues.go:60:8:60:33 | defer-invoke call to log |
 | epilogues.go:61:2:61:38 | Before call to Println | epilogues.go:61:2:61:12 | Before selection of Println |
 | epilogues.go:61:2:61:38 | call to Println | epilogues.go:60:8:60:33 | defer-invoke call to log |
 | epilogues.go:61:2:61:38 | call to Println | epilogues.go:61:2:61:38 | After call to Println |
@@ -370,7 +372,7 @@
 | epilogues.go:66:1:71:1 | Normal Exit | epilogues.go:66:1:71:1 | Exit |
 | epilogues.go:66:1:71:1 | function declaration | epilogues.go:66:1:71:1 | After function declaration |
 | epilogues.go:66:28:66:33 | prefix | epilogues.go:66:43:71:1 | block statement |
-| epilogues.go:66:43:71:1 | After block statement | epilogues.go:69:8:69:25 | defer-invoke call to log |
+| epilogues.go:66:43:71:1 | After block statement | epilogues.go:66:1:71:1 | Normal Exit |
 | epilogues.go:66:43:71:1 | block statement | epilogues.go:67:2:67:31 | ... := ... |
 | epilogues.go:67:2:67:31 | ... := ... | epilogues.go:67:7:67:31 | Before struct literal |
 | epilogues.go:67:2:67:31 | After ... := ... | epilogues.go:68:2:68:24 | Before defer statement |
@@ -397,7 +399,7 @@
 | epilogues.go:68:8:68:24 | After call to logValue | epilogues.go:68:2:68:24 | defer statement |
 | epilogues.go:68:8:68:24 | call to logValue | epilogues.go:68:8:68:17 | Before selection of logValue |
 | epilogues.go:68:8:68:24 | defer-invoke call to logValue | epilogues.go:66:1:71:1 | Exceptional Exit |
-| epilogues.go:68:8:68:24 | defer-invoke call to logValue | epilogues.go:66:1:71:1 | Normal Exit |
+| epilogues.go:68:8:68:24 | defer-invoke call to logValue | epilogues.go:66:43:71:1 | After block statement |
 | epilogues.go:68:19:68:23 | "bye" | epilogues.go:68:19:68:23 | After "bye" |
 | epilogues.go:68:19:68:23 | After "bye" | epilogues.go:68:8:68:24 | After call to logValue |
 | epilogues.go:68:19:68:23 | Before "bye" | epilogues.go:68:19:68:23 | "bye" |
@@ -428,7 +430,7 @@
 | epilogues.go:70:2:70:12 | Before selection of Println | epilogues.go:70:2:70:12 | selection of Println |
 | epilogues.go:70:2:70:12 | selection of Println | epilogues.go:70:2:70:12 | After selection of Println |
 | epilogues.go:70:2:70:20 | After call to Println | epilogues.go:70:2:70:20 | After expression statement |
-| epilogues.go:70:2:70:20 | After expression statement | epilogues.go:66:43:71:1 | After block statement |
+| epilogues.go:70:2:70:20 | After expression statement | epilogues.go:69:8:69:25 | defer-invoke call to log |
 | epilogues.go:70:2:70:20 | Before call to Println | epilogues.go:70:2:70:12 | Before selection of Println |
 | epilogues.go:70:2:70:20 | call to Println | epilogues.go:69:8:69:25 | defer-invoke call to log |
 | epilogues.go:70:2:70:20 | call to Println | epilogues.go:70:2:70:20 | After call to Println |
@@ -443,7 +445,7 @@
 | epilogues.go:77:1:82:1 | Normal Exit | epilogues.go:77:1:82:1 | Exit |
 | epilogues.go:77:1:82:1 | function declaration | epilogues.go:77:1:82:1 | After function declaration |
 | epilogues.go:77:22:77:22 | x | epilogues.go:77:29:82:1 | block statement |
-| epilogues.go:77:29:82:1 | After block statement | epilogues.go:78:8:80:15 | defer-invoke function call |
+| epilogues.go:77:29:82:1 | After block statement | epilogues.go:77:1:82:1 | Normal Exit |
 | epilogues.go:77:29:82:1 | block statement | epilogues.go:78:2:80:15 | Before defer statement |
 | epilogues.go:78:2:80:15 | After defer statement | epilogues.go:81:2:81:23 | expression statement |
 | epilogues.go:78:2:80:15 | Before defer statement | epilogues.go:78:8:80:15 | function call |
@@ -456,7 +458,7 @@
 | epilogues.go:78:8:80:2 | function literal | epilogues.go:78:8:80:2 | After function literal |
 | epilogues.go:78:8:80:15 | After function call | epilogues.go:78:2:80:15 | defer statement |
 | epilogues.go:78:8:80:15 | defer-invoke function call | epilogues.go:77:1:82:1 | Exceptional Exit |
-| epilogues.go:78:8:80:15 | defer-invoke function call | epilogues.go:77:1:82:1 | Normal Exit |
+| epilogues.go:78:8:80:15 | defer-invoke function call | epilogues.go:77:29:82:1 | After block statement |
 | epilogues.go:78:8:80:15 | function call | epilogues.go:78:8:80:2 | Before function literal |
 | epilogues.go:78:13:78:17 | label | epilogues.go:78:27:78:27 | n |
 | epilogues.go:78:27:78:27 | n | epilogues.go:78:34:80:2 | block statement |
@@ -493,7 +495,7 @@
 | epilogues.go:81:2:81:12 | Before selection of Println | epilogues.go:81:2:81:12 | selection of Println |
 | epilogues.go:81:2:81:12 | selection of Println | epilogues.go:81:2:81:12 | After selection of Println |
 | epilogues.go:81:2:81:23 | After call to Println | epilogues.go:81:2:81:23 | After expression statement |
-| epilogues.go:81:2:81:23 | After expression statement | epilogues.go:77:29:82:1 | After block statement |
+| epilogues.go:81:2:81:23 | After expression statement | epilogues.go:78:8:80:15 | defer-invoke function call |
 | epilogues.go:81:2:81:23 | Before call to Println | epilogues.go:81:2:81:12 | Before selection of Println |
 | epilogues.go:81:2:81:23 | call to Println | epilogues.go:78:8:80:15 | defer-invoke function call |
 | epilogues.go:81:2:81:23 | call to Println | epilogues.go:81:2:81:23 | After call to Println |
@@ -511,8 +513,9 @@
 | epilogues.go:87:1:98:1 | Normal Exit | epilogues.go:87:1:98:1 | Exit |
 | epilogues.go:87:1:98:1 | function declaration | epilogues.go:87:1:98:1 | After function declaration |
 | epilogues.go:87:22:87:22 | x | epilogues.go:87:42:98:1 | block statement |
+| epilogues.go:87:42:98:1 | After block statement | epilogues.go:87:1:98:1 | Normal Exit |
 | epilogues.go:87:42:98:1 | block statement | epilogues.go:87:42:98:1 | zero-init:0 block statement |
-| epilogues.go:87:42:98:1 | result-read:0 block statement | epilogues.go:87:1:98:1 | Normal Exit |
+| epilogues.go:87:42:98:1 | result-read:0 block statement | epilogues.go:87:42:98:1 | After block statement |
 | epilogues.go:87:42:98:1 | zero-init:0 block statement | epilogues.go:88:2:92:4 | Before defer statement |
 | epilogues.go:88:2:92:4 | After defer statement | epilogues.go:93:2:95:2 | if statement |
 | epilogues.go:88:2:92:4 | Before defer statement | epilogues.go:88:8:92:4 | function call |
@@ -606,9 +609,10 @@
 | epilogues.go:102:1:110:1 | Normal Exit | epilogues.go:102:1:110:1 | Exit |
 | epilogues.go:102:1:110:1 | function declaration | epilogues.go:102:1:110:1 | After function declaration |
 | epilogues.go:102:26:102:26 | x | epilogues.go:102:50:110:1 | block statement |
+| epilogues.go:102:50:110:1 | After block statement | epilogues.go:102:1:110:1 | Normal Exit |
 | epilogues.go:102:50:110:1 | block statement | epilogues.go:102:50:110:1 | zero-init:0 block statement |
 | epilogues.go:102:50:110:1 | result-read:0 block statement | epilogues.go:102:50:110:1 | result-read:1 block statement |
-| epilogues.go:102:50:110:1 | result-read:1 block statement | epilogues.go:102:1:110:1 | Normal Exit |
+| epilogues.go:102:50:110:1 | result-read:1 block statement | epilogues.go:102:50:110:1 | After block statement |
 | epilogues.go:102:50:110:1 | zero-init:0 block statement | epilogues.go:102:50:110:1 | zero-init:1 block statement |
 | epilogues.go:102:50:110:1 | zero-init:1 block statement | epilogues.go:103:2:103:19 | Before defer statement |
 | epilogues.go:103:2:103:19 | After defer statement | epilogues.go:104:2:106:2 | if statement |
@@ -657,6 +661,7 @@
 | epilogues.go:115:1:118:1 | Exceptional Exit | epilogues.go:115:1:118:1 | Exit |
 | epilogues.go:115:1:118:1 | Normal Exit | epilogues.go:115:1:118:1 | Exit |
 | epilogues.go:115:1:118:1 | function declaration | epilogues.go:115:1:118:1 | After function declaration |
+| epilogues.go:115:26:118:1 | After block statement | epilogues.go:115:1:118:1 | Normal Exit |
 | epilogues.go:115:26:118:1 | block statement | epilogues.go:116:2:116:19 | Before defer statement |
 | epilogues.go:116:2:116:19 | After defer statement | epilogues.go:117:2:117:14 | expression statement |
 | epilogues.go:116:2:116:19 | Before defer statement | epilogues.go:116:8:116:19 | call to epiRecover |
@@ -667,7 +672,7 @@
 | epilogues.go:116:8:116:19 | After call to epiRecover | epilogues.go:116:2:116:19 | defer statement |
 | epilogues.go:116:8:116:19 | call to epiRecover | epilogues.go:116:8:116:17 | Before epiRecover |
 | epilogues.go:116:8:116:19 | defer-invoke call to epiRecover | epilogues.go:115:1:118:1 | Exceptional Exit |
-| epilogues.go:116:8:116:19 | defer-invoke call to epiRecover | epilogues.go:115:1:118:1 | Normal Exit |
+| epilogues.go:116:8:116:19 | defer-invoke call to epiRecover | epilogues.go:115:26:118:1 | After block statement |
 | epilogues.go:117:2:117:6 | After panic | epilogues.go:117:8:117:13 | Before "boom" |
 | epilogues.go:117:2:117:6 | Before panic | epilogues.go:117:2:117:6 | panic |
 | epilogues.go:117:2:117:6 | panic | epilogues.go:117:2:117:6 | After panic |
@@ -1251,8 +1256,9 @@
 | exprs.go:49:1:54:1 | Normal Exit | exprs.go:49:1:54:1 | Exit |
 | exprs.go:49:1:54:1 | function declaration | exprs.go:49:1:54:1 | After function declaration |
 | exprs.go:49:10:49:11 | xs | exprs.go:49:30:54:1 | block statement |
+| exprs.go:49:30:54:1 | After block statement | exprs.go:49:1:54:1 | Normal Exit |
 | exprs.go:49:30:54:1 | block statement | exprs.go:49:30:54:1 | zero-init:0 block statement |
-| exprs.go:49:30:54:1 | result-read:0 block statement | exprs.go:49:1:54:1 | Normal Exit |
+| exprs.go:49:30:54:1 | result-read:0 block statement | exprs.go:49:30:54:1 | After block statement |
 | exprs.go:49:30:54:1 | zero-init:0 block statement | exprs.go:50:2:52:2 | for statement |
 | exprs.go:50:2:52:2 | After for statement | exprs.go:53:2:53:7 | Before return statement |
 | exprs.go:50:2:52:2 | [LoopHeader] for statement | exprs.go:50:27:50:29 | increment statement |
@@ -2084,8 +2090,9 @@
 | main.go:47:1:50:1 | Entry | main.go:47:25:50:1 | block statement |
 | main.go:47:1:50:1 | Normal Exit | main.go:47:1:50:1 | Exit |
 | main.go:47:1:50:1 | function declaration | main.go:47:1:50:1 | After function declaration |
+| main.go:47:25:50:1 | After block statement | main.go:47:1:50:1 | Normal Exit |
 | main.go:47:25:50:1 | block statement | main.go:47:25:50:1 | zero-init:0 block statement |
-| main.go:47:25:50:1 | result-read:0 block statement | main.go:47:1:50:1 | Normal Exit |
+| main.go:47:25:50:1 | result-read:0 block statement | main.go:47:25:50:1 | After block statement |
 | main.go:47:25:50:1 | zero-init:0 block statement | main.go:48:2:48:12 | ... = ... |
 | main.go:48:2:48:12 | ... = ... | main.go:48:11:48:12 | Before 42 |
 | main.go:48:2:48:12 | After ... = ... | main.go:49:2:49:7 | Before return statement |
@@ -2100,8 +2107,9 @@
 | main.go:52:1:54:1 | Entry | main.go:52:26:54:1 | block statement |
 | main.go:52:1:54:1 | Normal Exit | main.go:52:1:54:1 | Exit |
 | main.go:52:1:54:1 | function declaration | main.go:52:1:54:1 | After function declaration |
+| main.go:52:26:54:1 | After block statement | main.go:52:1:54:1 | Normal Exit |
 | main.go:52:26:54:1 | block statement | main.go:52:26:54:1 | zero-init:0 block statement |
-| main.go:52:26:54:1 | result-read:0 block statement | main.go:52:1:54:1 | Normal Exit |
+| main.go:52:26:54:1 | result-read:0 block statement | main.go:52:26:54:1 | After block statement |
 | main.go:52:26:54:1 | zero-init:0 block statement | main.go:53:2:53:7 | Before return statement |
 | main.go:53:2:53:7 | Before return statement | main.go:53:2:53:7 | return statement |
 | main.go:53:2:53:7 | return statement | main.go:52:26:54:1 | result-read:0 block statement |
@@ -2111,8 +2119,9 @@
 | main.go:56:1:64:1 | Normal Exit | main.go:56:1:64:1 | Exit |
 | main.go:56:1:64:1 | function declaration | main.go:56:1:64:1 | After function declaration |
 | main.go:56:11:56:18 | selector | main.go:56:38:64:1 | block statement |
+| main.go:56:38:64:1 | After block statement | main.go:56:1:64:1 | Normal Exit |
 | main.go:56:38:64:1 | block statement | main.go:56:38:64:1 | zero-init:0 block statement |
-| main.go:56:38:64:1 | result-read:0 block statement | main.go:56:1:64:1 | Normal Exit |
+| main.go:56:38:64:1 | result-read:0 block statement | main.go:56:38:64:1 | After block statement |
 | main.go:56:38:64:1 | zero-init:0 block statement | main.go:57:2:57:11 | ... = ... |
 | main.go:57:2:57:11 | ... = ... | main.go:57:11:57:11 | Before 0 |
 | main.go:57:2:57:11 | After ... = ... | main.go:58:2:62:2 | if statement |
@@ -2312,9 +2321,10 @@
 | main.go:92:1:96:1 | Entry | main.go:92:36:96:1 | block statement |
 | main.go:92:1:96:1 | Normal Exit | main.go:92:1:96:1 | Exit |
 | main.go:92:1:96:1 | function declaration | main.go:92:1:96:1 | After function declaration |
+| main.go:92:36:96:1 | After block statement | main.go:92:1:96:1 | Normal Exit |
 | main.go:92:36:96:1 | block statement | main.go:92:36:96:1 | zero-init:0 block statement |
 | main.go:92:36:96:1 | result-read:0 block statement | main.go:92:36:96:1 | result-read:1 block statement |
-| main.go:92:36:96:1 | result-read:1 block statement | main.go:92:1:96:1 | Normal Exit |
+| main.go:92:36:96:1 | result-read:1 block statement | main.go:92:36:96:1 | After block statement |
 | main.go:92:36:96:1 | zero-init:0 block statement | main.go:92:36:96:1 | zero-init:1 block statement |
 | main.go:92:36:96:1 | zero-init:1 block statement | main.go:93:2:93:8 | ... := ... |
 | main.go:93:2:93:8 | ... := ... | main.go:93:7:93:8 | Before 23 |
@@ -2887,6 +2897,7 @@
 | stmts7.go:13:1:16:1 | Exceptional Exit | stmts7.go:13:1:16:1 | Exit |
 | stmts7.go:13:1:16:1 | Normal Exit | stmts7.go:13:1:16:1 | Exit |
 | stmts7.go:13:1:16:1 | function declaration | stmts7.go:13:1:16:1 | After function declaration |
+| stmts7.go:13:19:16:1 | After block statement | stmts7.go:13:1:16:1 | Normal Exit |
 | stmts7.go:13:19:16:1 | block statement | stmts7.go:14:2:14:21 | Before defer statement |
 | stmts7.go:14:2:14:21 | After defer statement | stmts7.go:15:2:15:10 | expression statement |
 | stmts7.go:14:2:14:21 | Before defer statement | stmts7.go:14:8:14:21 | call to recoverPanic |
@@ -2897,7 +2908,7 @@
 | stmts7.go:14:8:14:21 | After call to recoverPanic | stmts7.go:14:2:14:21 | defer statement |
 | stmts7.go:14:8:14:21 | call to recoverPanic | stmts7.go:14:8:14:19 | Before recoverPanic |
 | stmts7.go:14:8:14:21 | defer-invoke call to recoverPanic | stmts7.go:13:1:16:1 | Exceptional Exit |
-| stmts7.go:14:8:14:21 | defer-invoke call to recoverPanic | stmts7.go:13:1:16:1 | Normal Exit |
+| stmts7.go:14:8:14:21 | defer-invoke call to recoverPanic | stmts7.go:13:19:16:1 | After block statement |
 | stmts7.go:15:2:15:6 | After panic | stmts7.go:15:8:15:9 | Before "" |
 | stmts7.go:15:2:15:6 | Before panic | stmts7.go:15:2:15:6 | panic |
 | stmts7.go:15:2:15:6 | panic | stmts7.go:15:2:15:6 | After panic |
@@ -2939,6 +2950,7 @@
 | stmts7.go:26:1:31:1 | Normal Exit | stmts7.go:26:1:31:1 | Exit |
 | stmts7.go:26:1:31:1 | function declaration | stmts7.go:26:1:31:1 | After function declaration |
 | stmts7.go:26:16:26:23 | callback | stmts7.go:26:40:31:1 | block statement |
+| stmts7.go:26:40:31:1 | After block statement | stmts7.go:26:1:31:1 | Normal Exit |
 | stmts7.go:26:40:31:1 | block statement | stmts7.go:27:2:27:20 | Before defer statement |
 | stmts7.go:27:2:27:20 | After defer statement | stmts7.go:28:2:28:23 | Before defer statement |
 | stmts7.go:27:2:27:20 | Before defer statement | stmts7.go:27:8:27:20 | call to fn |
@@ -2952,7 +2964,7 @@
 | stmts7.go:27:8:27:20 | After call to fn | stmts7.go:27:2:27:20 | defer statement |
 | stmts7.go:27:8:27:20 | call to fn | stmts7.go:27:8:27:18 | Before selection of fn |
 | stmts7.go:27:8:27:20 | defer-invoke call to fn | stmts7.go:26:1:31:1 | Exceptional Exit |
-| stmts7.go:27:8:27:20 | defer-invoke call to fn | stmts7.go:26:1:31:1 | Normal Exit |
+| stmts7.go:27:8:27:20 | defer-invoke call to fn | stmts7.go:26:40:31:1 | After block statement |
 | stmts7.go:28:2:28:23 | After defer statement | stmts7.go:29:2:29:31 | expression statement |
 | stmts7.go:28:2:28:23 | Before defer statement | stmts7.go:28:8:28:23 | call to fn |
 | stmts7.go:28:2:28:23 | defer statement | stmts7.go:28:2:28:23 | After defer statement |
@@ -3017,7 +3029,7 @@
 | stmts7.go:38:1:41:1 | Exceptional Exit | stmts7.go:38:1:41:1 | Exit |
 | stmts7.go:38:1:41:1 | Normal Exit | stmts7.go:38:1:41:1 | Exit |
 | stmts7.go:38:1:41:1 | function declaration | stmts7.go:38:1:41:1 | After function declaration |
-| stmts7.go:38:22:41:1 | After block statement | stmts7.go:40:8:40:30 | defer-invoke call to panic |
+| stmts7.go:38:22:41:1 | After block statement | stmts7.go:38:1:41:1 | Normal Exit |
 | stmts7.go:38:22:41:1 | block statement | stmts7.go:39:2:39:21 | Before defer statement |
 | stmts7.go:39:2:39:21 | After defer statement | stmts7.go:40:2:40:30 | Before defer statement |
 | stmts7.go:39:2:39:21 | Before defer statement | stmts7.go:39:8:39:21 | call to recoverPanic |
@@ -3028,8 +3040,8 @@
 | stmts7.go:39:8:39:21 | After call to recoverPanic | stmts7.go:39:2:39:21 | defer statement |
 | stmts7.go:39:8:39:21 | call to recoverPanic | stmts7.go:39:8:39:19 | Before recoverPanic |
 | stmts7.go:39:8:39:21 | defer-invoke call to recoverPanic | stmts7.go:38:1:41:1 | Exceptional Exit |
-| stmts7.go:39:8:39:21 | defer-invoke call to recoverPanic | stmts7.go:38:1:41:1 | Normal Exit |
-| stmts7.go:40:2:40:30 | After defer statement | stmts7.go:38:22:41:1 | After block statement |
+| stmts7.go:39:8:39:21 | defer-invoke call to recoverPanic | stmts7.go:38:22:41:1 | After block statement |
+| stmts7.go:40:2:40:30 | After defer statement | stmts7.go:40:8:40:30 | defer-invoke call to panic |
 | stmts7.go:40:2:40:30 | Before defer statement | stmts7.go:40:8:40:30 | call to panic |
 | stmts7.go:40:2:40:30 | defer statement | stmts7.go:40:2:40:30 | After defer statement |
 | stmts7.go:40:8:40:12 | After panic | stmts7.go:40:14:40:29 | Before "deferred panic" |
@@ -3046,9 +3058,8 @@
 | stmts7.go:43:1:45:1 | Entry | stmts7.go:43:27:45:1 | block statement |
 | stmts7.go:43:1:45:1 | Exceptional Exit | stmts7.go:43:1:45:1 | Exit |
 | stmts7.go:43:1:45:1 | function declaration | stmts7.go:43:1:45:1 | After function declaration |
-| stmts7.go:43:27:45:1 | After block statement | stmts7.go:44:8:44:36 | defer-invoke call to panic |
 | stmts7.go:43:27:45:1 | block statement | stmts7.go:44:2:44:36 | Before defer statement |
-| stmts7.go:44:2:44:36 | After defer statement | stmts7.go:43:27:45:1 | After block statement |
+| stmts7.go:44:2:44:36 | After defer statement | stmts7.go:44:8:44:36 | defer-invoke call to panic |
 | stmts7.go:44:2:44:36 | Before defer statement | stmts7.go:44:8:44:36 | call to panic |
 | stmts7.go:44:2:44:36 | defer statement | stmts7.go:44:2:44:36 | After defer statement |
 | stmts7.go:44:8:44:12 | After panic | stmts7.go:44:14:44:35 | Before "final deferred panic" |
@@ -3065,7 +3076,6 @@
 | stmts7.go:47:1:50:1 | Entry | stmts7.go:47:35:50:1 | block statement |
 | stmts7.go:47:1:50:1 | Exceptional Exit | stmts7.go:47:1:50:1 | Exit |
 | stmts7.go:47:1:50:1 | function declaration | stmts7.go:47:1:50:1 | After function declaration |
-| stmts7.go:47:35:50:1 | After block statement | stmts7.go:49:8:49:17 | defer-invoke call to Exit |
 | stmts7.go:47:35:50:1 | block statement | stmts7.go:48:2:48:21 | Before defer statement |
 | stmts7.go:48:2:48:21 | After defer statement | stmts7.go:49:2:49:17 | Before defer statement |
 | stmts7.go:48:2:48:21 | Before defer statement | stmts7.go:48:8:48:21 | call to recoverPanic |
@@ -3075,7 +3085,7 @@
 | stmts7.go:48:8:48:19 | recoverPanic | stmts7.go:48:8:48:19 | After recoverPanic |
 | stmts7.go:48:8:48:21 | After call to recoverPanic | stmts7.go:48:2:48:21 | defer statement |
 | stmts7.go:48:8:48:21 | call to recoverPanic | stmts7.go:48:8:48:19 | Before recoverPanic |
-| stmts7.go:49:2:49:17 | After defer statement | stmts7.go:47:35:50:1 | After block statement |
+| stmts7.go:49:2:49:17 | After defer statement | stmts7.go:49:8:49:17 | defer-invoke call to Exit |
 | stmts7.go:49:2:49:17 | Before defer statement | stmts7.go:49:8:49:17 | call to Exit |
 | stmts7.go:49:2:49:17 | defer statement | stmts7.go:49:2:49:17 | After defer statement |
 | stmts7.go:49:8:49:14 | After selection of Exit | stmts7.go:49:16:49:16 | Before 1 |
@@ -3095,7 +3105,7 @@
 | stmts7.go:52:1:55:1 | function declaration | stmts7.go:52:1:55:1 | After function declaration |
 | stmts7.go:52:31:52:36 | values | stmts7.go:52:45:52:49 | index |
 | stmts7.go:52:45:52:49 | index | stmts7.go:52:56:55:1 | block statement |
-| stmts7.go:52:56:55:1 | After block statement | stmts7.go:53:8:53:21 | defer-invoke call to recoverPanic |
+| stmts7.go:52:56:55:1 | After block statement | stmts7.go:52:1:55:1 | Normal Exit |
 | stmts7.go:52:56:55:1 | block statement | stmts7.go:53:2:53:21 | Before defer statement |
 | stmts7.go:53:2:53:21 | After defer statement | stmts7.go:54:2:54:18 | ... = ... |
 | stmts7.go:53:2:53:21 | Before defer statement | stmts7.go:53:8:53:21 | call to recoverPanic |
@@ -3106,9 +3116,9 @@
 | stmts7.go:53:8:53:21 | After call to recoverPanic | stmts7.go:53:2:53:21 | defer statement |
 | stmts7.go:53:8:53:21 | call to recoverPanic | stmts7.go:53:8:53:19 | Before recoverPanic |
 | stmts7.go:53:8:53:21 | defer-invoke call to recoverPanic | stmts7.go:52:1:55:1 | Exceptional Exit |
-| stmts7.go:53:8:53:21 | defer-invoke call to recoverPanic | stmts7.go:52:1:55:1 | Normal Exit |
+| stmts7.go:53:8:53:21 | defer-invoke call to recoverPanic | stmts7.go:52:56:55:1 | After block statement |
 | stmts7.go:54:2:54:18 | ... = ... | stmts7.go:54:6:54:18 | Before index expression |
-| stmts7.go:54:2:54:18 | After ... = ... | stmts7.go:52:56:55:1 | After block statement |
+| stmts7.go:54:2:54:18 | After ... = ... | stmts7.go:53:8:53:21 | defer-invoke call to recoverPanic |
 | stmts7.go:54:6:54:11 | After values | stmts7.go:54:13:54:17 | Before index |
 | stmts7.go:54:6:54:11 | Before values | stmts7.go:54:6:54:11 | values |
 | stmts7.go:54:6:54:11 | values | stmts7.go:54:6:54:11 | After values |
@@ -3127,7 +3137,6 @@
 | stmts7.go:57:1:62:1 | function declaration | stmts7.go:57:1:62:1 | After function declaration |
 | stmts7.go:57:23:57:30 | register | stmts7.go:57:38:62:1 | block statement |
 | stmts7.go:57:38:62:1 | After block statement | stmts7.go:57:1:62:1 | Normal Exit |
-| stmts7.go:57:38:62:1 | After block statement | stmts7.go:59:9:59:22 | defer-invoke call to recoverPanic |
 | stmts7.go:57:38:62:1 | block statement | stmts7.go:58:2:60:2 | if statement |
 | stmts7.go:58:2:60:2 | After if statement | stmts7.go:61:2:61:20 | expression statement |
 | stmts7.go:58:2:60:2 | if statement | stmts7.go:58:5:58:12 | Before register |
@@ -3147,12 +3156,13 @@
 | stmts7.go:59:9:59:22 | After call to recoverPanic | stmts7.go:59:3:59:22 | defer statement |
 | stmts7.go:59:9:59:22 | call to recoverPanic | stmts7.go:59:9:59:20 | Before recoverPanic |
 | stmts7.go:59:9:59:22 | defer-invoke call to recoverPanic | stmts7.go:57:1:62:1 | Exceptional Exit |
-| stmts7.go:59:9:59:22 | defer-invoke call to recoverPanic | stmts7.go:57:1:62:1 | Normal Exit |
+| stmts7.go:59:9:59:22 | defer-invoke call to recoverPanic | stmts7.go:57:38:62:1 | After block statement |
 | stmts7.go:61:2:61:12 | After selection of Println | stmts7.go:61:14:61:19 | Before "done" |
 | stmts7.go:61:2:61:12 | Before selection of Println | stmts7.go:61:2:61:12 | selection of Println |
 | stmts7.go:61:2:61:12 | selection of Println | stmts7.go:61:2:61:12 | After selection of Println |
 | stmts7.go:61:2:61:20 | After call to Println | stmts7.go:61:2:61:20 | After expression statement |
 | stmts7.go:61:2:61:20 | After expression statement | stmts7.go:57:38:62:1 | After block statement |
+| stmts7.go:61:2:61:20 | After expression statement | stmts7.go:59:9:59:22 | defer-invoke call to recoverPanic |
 | stmts7.go:61:2:61:20 | Before call to Println | stmts7.go:61:2:61:12 | Before selection of Println |
 | stmts7.go:61:2:61:20 | call to Println | stmts7.go:59:9:59:22 | defer-invoke call to recoverPanic |
 | stmts7.go:61:2:61:20 | call to Println | stmts7.go:61:2:61:20 | After call to Println |
@@ -3167,9 +3177,9 @@
 | stmts7.go:64:1:68:1 | function declaration | stmts7.go:64:1:68:1 | After function declaration |
 | stmts7.go:64:20:64:24 | count | stmts7.go:64:31:68:1 | block statement |
 | stmts7.go:64:31:68:1 | After block statement | stmts7.go:64:1:68:1 | Normal Exit |
-| stmts7.go:64:31:68:1 | After block statement | stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic |
 | stmts7.go:64:31:68:1 | block statement | stmts7.go:65:2:67:2 | for statement |
 | stmts7.go:65:2:67:2 | After for statement | stmts7.go:64:31:68:1 | After block statement |
+| stmts7.go:65:2:67:2 | After for statement | stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic |
 | stmts7.go:65:2:67:2 | [LoopHeader] for statement | stmts7.go:65:25:65:27 | increment statement |
 | stmts7.go:65:2:67:2 | for statement | stmts7.go:65:6:65:11 | ... := ... |
 | stmts7.go:65:6:65:11 | ... := ... | stmts7.go:65:11:65:11 | Before 0 |
@@ -3205,7 +3215,7 @@
 | stmts7.go:66:9:66:20 | recoverPanic | stmts7.go:66:9:66:20 | After recoverPanic |
 | stmts7.go:66:9:66:22 | After call to recoverPanic | stmts7.go:66:3:66:22 | defer statement |
 | stmts7.go:66:9:66:22 | call to recoverPanic | stmts7.go:66:9:66:20 | Before recoverPanic |
-| stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic | stmts7.go:64:1:68:1 | Normal Exit |
+| stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic | stmts7.go:64:31:68:1 | After block statement |
 | stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic | stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic |
 | stmts7.go:70:1:77:1 | After function declaration | stmts7.go:79:1:85:1 | Before function declaration |
 | stmts7.go:70:1:77:1 | Before function declaration | stmts7.go:70:1:77:1 | function declaration |
@@ -3215,7 +3225,6 @@
 | stmts7.go:70:1:77:1 | function declaration | stmts7.go:70:1:77:1 | After function declaration |
 | stmts7.go:70:20:70:23 | skip | stmts7.go:70:31:77:1 | block statement |
 | stmts7.go:70:31:77:1 | After block statement | stmts7.go:70:1:77:1 | Normal Exit |
-| stmts7.go:70:31:77:1 | After block statement | stmts7.go:74:8:74:21 | defer-invoke call to recoverPanic |
 | stmts7.go:70:31:77:1 | block statement | stmts7.go:71:2:73:2 | if statement |
 | stmts7.go:71:2:73:2 | After if statement | stmts7.go:74:2:74:21 | Before defer statement |
 | stmts7.go:71:2:73:2 | if statement | stmts7.go:71:5:71:8 | Before skip |
@@ -3236,8 +3245,9 @@
 | stmts7.go:74:8:74:21 | After call to recoverPanic | stmts7.go:74:2:74:21 | defer statement |
 | stmts7.go:74:8:74:21 | call to recoverPanic | stmts7.go:74:8:74:19 | Before recoverPanic |
 | stmts7.go:74:8:74:21 | defer-invoke call to recoverPanic | stmts7.go:70:1:77:1 | Exceptional Exit |
-| stmts7.go:74:8:74:21 | defer-invoke call to recoverPanic | stmts7.go:70:1:77:1 | Normal Exit |
+| stmts7.go:74:8:74:21 | defer-invoke call to recoverPanic | stmts7.go:70:31:77:1 | After block statement |
 | stmts7.go:75:1:76:20 | After labeled statement | stmts7.go:70:31:77:1 | After block statement |
+| stmts7.go:75:1:76:20 | After labeled statement | stmts7.go:74:8:74:21 | defer-invoke call to recoverPanic |
 | stmts7.go:75:1:76:20 | labeled statement | stmts7.go:76:2:76:20 | expression statement |
 | stmts7.go:76:2:76:12 | After selection of Println | stmts7.go:76:14:76:19 | Before "done" |
 | stmts7.go:76:2:76:12 | Before selection of Println | stmts7.go:76:2:76:12 | selection of Println |
@@ -3258,6 +3268,7 @@
 | stmts7.go:79:1:85:1 | Normal Exit | stmts7.go:79:1:85:1 | Exit |
 | stmts7.go:79:1:85:1 | function declaration | stmts7.go:79:1:85:1 | After function declaration |
 | stmts7.go:79:23:79:32 | panicEarly | stmts7.go:79:40:85:1 | block statement |
+| stmts7.go:79:40:85:1 | After block statement | stmts7.go:79:1:85:1 | Normal Exit |
 | stmts7.go:79:40:85:1 | block statement | stmts7.go:80:2:82:2 | if statement |
 | stmts7.go:80:2:82:2 | After if statement | stmts7.go:83:2:83:21 | Before defer statement |
 | stmts7.go:80:2:82:2 | if statement | stmts7.go:80:5:80:14 | Before panicEarly |
@@ -3285,7 +3296,7 @@
 | stmts7.go:83:8:83:21 | After call to recoverPanic | stmts7.go:83:2:83:21 | defer statement |
 | stmts7.go:83:8:83:21 | call to recoverPanic | stmts7.go:83:8:83:19 | Before recoverPanic |
 | stmts7.go:83:8:83:21 | defer-invoke call to recoverPanic | stmts7.go:79:1:85:1 | Exceptional Exit |
-| stmts7.go:83:8:83:21 | defer-invoke call to recoverPanic | stmts7.go:79:1:85:1 | Normal Exit |
+| stmts7.go:83:8:83:21 | defer-invoke call to recoverPanic | stmts7.go:79:40:85:1 | After block statement |
 | stmts7.go:84:2:84:6 | After panic | stmts7.go:84:8:84:13 | Before "late" |
 | stmts7.go:84:2:84:6 | Before panic | stmts7.go:84:2:84:6 | panic |
 | stmts7.go:84:2:84:6 | panic | stmts7.go:84:2:84:6 | After panic |
@@ -3651,6 +3662,7 @@
 | stmts.go:65:1:72:1 | Normal Exit | stmts.go:65:1:72:1 | Exit |
 | stmts.go:65:1:72:1 | function declaration | stmts.go:65:1:72:1 | After function declaration |
 | stmts.go:65:12:65:12 | x | stmts.go:65:23:72:1 | block statement |
+| stmts.go:65:23:72:1 | After block statement | stmts.go:65:1:72:1 | Normal Exit |
 | stmts.go:65:23:72:1 | block statement | stmts.go:66:2:70:2 | if statement |
 | stmts.go:66:2:70:2 | After if statement | stmts.go:71:2:71:10 | Before return statement |
 | stmts.go:66:2:70:2 | if statement | stmts.go:66:5:66:9 | Before ...>... |
@@ -3678,7 +3690,7 @@
 | stmts.go:67:9:67:33 | function literal | stmts.go:67:9:67:33 | After function literal |
 | stmts.go:67:9:67:35 | After function call | stmts.go:67:3:67:35 | defer statement |
 | stmts.go:67:9:67:35 | defer-invoke function call | stmts.go:65:1:72:1 | Exceptional Exit |
-| stmts.go:67:9:67:35 | defer-invoke function call | stmts.go:65:1:72:1 | Normal Exit |
+| stmts.go:67:9:67:35 | defer-invoke function call | stmts.go:65:23:72:1 | After block statement |
 | stmts.go:67:9:67:35 | function call | stmts.go:67:9:67:33 | Before function literal |
 | stmts.go:67:16:67:33 | After block statement | stmts.go:67:9:67:33 | Normal Exit |
 | stmts.go:67:16:67:33 | block statement | stmts.go:67:18:67:31 | expression statement |
@@ -3707,7 +3719,7 @@
 | stmts.go:69:9:69:34 | function literal | stmts.go:69:9:69:34 | After function literal |
 | stmts.go:69:9:69:36 | After function call | stmts.go:69:3:69:36 | defer statement |
 | stmts.go:69:9:69:36 | defer-invoke function call | stmts.go:65:1:72:1 | Exceptional Exit |
-| stmts.go:69:9:69:36 | defer-invoke function call | stmts.go:65:1:72:1 | Normal Exit |
+| stmts.go:69:9:69:36 | defer-invoke function call | stmts.go:65:23:72:1 | After block statement |
 | stmts.go:69:9:69:36 | function call | stmts.go:69:9:69:34 | Before function literal |
 | stmts.go:69:16:69:34 | After block statement | stmts.go:69:9:69:34 | Normal Exit |
 | stmts.go:69:16:69:34 | block statement | stmts.go:69:18:69:32 | expression statement |

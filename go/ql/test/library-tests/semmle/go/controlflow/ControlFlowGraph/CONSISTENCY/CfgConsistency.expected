@@ -9,14 +9,14 @@ multipleSuccessors
 | stmts2.go:16:2:26:2 | select statement | successor | stmts2.go:18:2:19:10 | comm clause |
 | stmts2.go:16:2:26:2 | select statement | successor | stmts2.go:20:2:24:10 | comm clause |
 | stmts2.go:16:2:26:2 | select statement | successor | stmts2.go:25:2:25:18 | comm clause |
-| stmts7.go:57:38:62:1 | After block statement | successor | stmts7.go:57:1:62:1 | Normal Exit |
-| stmts7.go:57:38:62:1 | After block statement | successor | stmts7.go:59:9:59:22 | defer-invoke call to recoverPanic |
-| stmts7.go:64:31:68:1 | After block statement | successor | stmts7.go:64:1:68:1 | Normal Exit |
-| stmts7.go:64:31:68:1 | After block statement | successor | stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic |
-| stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic | successor | stmts7.go:64:1:68:1 | Normal Exit |
+| stmts7.go:61:2:61:20 | After expression statement | successor | stmts7.go:57:38:62:1 | After block statement |
+| stmts7.go:61:2:61:20 | After expression statement | successor | stmts7.go:59:9:59:22 | defer-invoke call to recoverPanic |
+| stmts7.go:65:2:67:2 | After for statement | successor | stmts7.go:64:31:68:1 | After block statement |
+| stmts7.go:65:2:67:2 | After for statement | successor | stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic |
+| stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic | successor | stmts7.go:64:31:68:1 | After block statement |
 | stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic | successor | stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic |
-| stmts7.go:70:31:77:1 | After block statement | successor | stmts7.go:70:1:77:1 | Normal Exit |
-| stmts7.go:70:31:77:1 | After block statement | successor | stmts7.go:74:8:74:21 | defer-invoke call to recoverPanic |
+| stmts7.go:75:1:76:20 | After labeled statement | successor | stmts7.go:70:31:77:1 | After block statement |
+| stmts7.go:75:1:76:20 | After labeled statement | successor | stmts7.go:74:8:74:21 | defer-invoke call to recoverPanic |
 | stmts.go:50:2:59:2 | select statement | successor | stmts.go:51:2:52:31 | comm clause |
 | stmts.go:50:2:59:2 | select statement | successor | stmts.go:53:2:55:16 | comm clause |
 | stmts.go:50:2:59:2 | select statement | successor | stmts.go:56:2:57:15 | comm clause |
