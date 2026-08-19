@@ -1575,6 +1575,7 @@ private class SourceOutputNode extends FlowSummaryImpl::Private::SourceOutputNod
   }
 
   private predicate isOutArgument(Call call) {
+    call.getTarget() = this.getSourceElement() and
     [call.getAnArgument(), call.getQualifier()] = this.getSourceSinkReportingElement()
   }
 }

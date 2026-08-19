@@ -122,8 +122,8 @@ edges
 | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | azure.cpp:282:10:282:38 | call to ReadToEnd | provenance |  |
 | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance |  |
 | azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value | provenance | MaD:85 |
-| azure.cpp:289:32:289:40 | Value output argument | azure.cpp:289:32:289:40 | call to GetHeader | provenance | Src:MaD:43  |
 | azure.cpp:289:32:289:40 | call to GetHeader | azure.cpp:289:24:289:56 | call to GetHeader | provenance |  |
+| azure.cpp:289:32:289:40 | call to GetHeader | azure.cpp:289:32:289:40 | call to GetHeader | provenance | Src:MaD:43  |
 | azure.cpp:289:63:289:65 | call to Value | azure.cpp:289:63:289:65 | call to Value | provenance |  |
 | azure.cpp:289:63:289:65 | call to Value | azure.cpp:290:10:290:20 | headerValue | provenance |  |
 | azure.cpp:289:63:289:65 | call to Value | azure.cpp:290:10:290:20 | headerValue | provenance |  |
@@ -467,7 +467,7 @@ nodes
 | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | semmle.label | call to ReadToEnd [element] |
 | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | semmle.label | call to ReadToEnd [element] |
 | azure.cpp:289:24:289:56 | call to GetHeader | semmle.label | call to GetHeader |
-| azure.cpp:289:32:289:40 | Value output argument | semmle.label | Value output argument |
+| azure.cpp:289:32:289:40 | call to GetHeader | semmle.label | call to GetHeader |
 | azure.cpp:289:32:289:40 | call to GetHeader | semmle.label | call to GetHeader |
 | azure.cpp:289:63:289:65 | call to Value | semmle.label | call to Value |
 | azure.cpp:289:63:289:65 | call to Value | semmle.label | call to Value |
