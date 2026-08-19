@@ -1057,8 +1057,6 @@ module CfgImpl {
     additional predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
       rangeStmtStep(n1, n2) or
       selectStmtStep(n1, n2) or
-      deferStmtStep(n1, n2) or
-      goStmtStep(n1, n2) or
       assignmentStep(n1, n2) or
       incDecStep(n1, n2) or
       returnStep(n1, n2) or
@@ -1129,7 +1127,7 @@ module CfgImpl {
       |
         epilogueStep(assgn, n1, n2)
         or
-        // Last epilogue → after the assignment
+        // Last epilogue -> after the assignment
         n1.isAdditional(assgn, getLastEpilogueTag(assgn)) and
         n2.isAfter(assgn)
       )
@@ -1204,13 +1202,7 @@ module CfgImpl {
     }
 
     private string getRankedEpilogueTag(Ast::AstNode node, int rnk) {
-      result =
-        rank[rnk](string tag, int ord |
-          tag = getEpilogueTag(node, ord) and
-          exists(tag)
-        |
-          tag order by ord
-        )
+      result = rank[rnk](string tag, int ord | tag = getEpilogueTag(node, ord) | tag order by ord)
     }
 
     private string getFirstEpilogueTag(Ast::AstNode node) { result = getRankedEpilogueTag(node, 1) }
@@ -1230,7 +1222,7 @@ module CfgImpl {
     }
 
     /**
-     * Increment/decrement: operand → compound-rhs → After(stmt).
+     * Increment/decrement: operand -> compound-rhs -> After(stmt).
      *
      * `x++` is modelled just like the compound assignment `x += 1`: a single
      * `compound-rhs` node computes the updated value and writes it back to the
@@ -1239,13 +1231,10 @@ module CfgImpl {
      */
     private predicate incDecStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::IncDecStmt s |
-        // Before → Before operand
         n1.isBefore(s) and n2.isBefore(s.getOperand())
         or
-        // After operand → compound-rhs (the update value + write)
         n1.isAfter(s.getOperand()) and n2.isAdditional(s, "compound-rhs")
         or
-        // compound-rhs → After(stmt)
         n1.isAdditional(s, "compound-rhs") and n2.isAfter(s)
       )
     }
@@ -1258,7 +1247,7 @@ module CfgImpl {
       exists(Go::ReturnStmt ret |
         epilogueStep(ret, n1, n2)
         or
-        // Last return epilogue → return node
+        // Last return epilogue -> return node
         n1.isAdditional(ret, getLastEpilogueTag(ret)) and
         n2.isIn(ret)
       )
@@ -1267,8 +1256,8 @@ module CfgImpl {
     /**
      * Call with spread arguments, e.g. `f(g())` where the inner call `g`
      * returns multiple results that are passed as the arguments of the outer
-     * call `f`: evaluate the children (callee and inner call), extract each
-     * tuple element of the inner call's result, then invoke the outer call.
+     * call `f`: evaluate the function expression and argument call, extract
+     * each tuple element of the argument's result, then invoke the outer call.
      *
      * The tuple-extraction nodes are additional nodes (see
      * `extractNodeCondition`); without wiring them into the control flow they
@@ -1277,18 +1266,17 @@ module CfgImpl {
     private predicate callExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::CallExpr call |
         // Restrict to ordinary invoked calls; the calls of `defer`/`go`
-        // statements are evaluated in place but invoked later / concurrently,
-        // and are handled by `deferStmtStep`/`goStmtStep` instead.
+        // statements do not use this tuple-extraction override.
         not call = any(Go::DeferStmt s).getCall() and
         not call = any(Go::GoStmt s).getCall() and
         extractNodeCondition(call, _)
       |
         epilogueStep(call, n1, n2)
         or
-        // Last tuple-extraction node → the call's invocation node
+        // Last tuple-extraction node -> the call's invocation node
         n1.isAdditional(call, getLastEpilogueTag(call)) and n2.isIn(call)
         or
-        // Invocation node → after the call (unless the call never returns normally)
+        // Invocation node -> after the call (unless the call never returns normally)
         n1.isIn(call) and
         n2.isAfter(call) and
         not beginAbruptCompletion(call, n1, _, true)
@@ -1296,7 +1284,7 @@ module CfgImpl {
     }
 
     /**
-     * Index expression: base → implicit-deref? → index → In(indexExpr)
+     * Index expression: base -> implicit-deref? -> index -> In(indexExpr)
      */
     private predicate indexExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::IndexExpr ie |
@@ -1347,7 +1335,7 @@ module CfgImpl {
     }
 
     /**
-     * Slice expression: base → implicit-deref? → low? → high? → max? → In(sliceExpr).
+     * Slice expression: base -> implicit-deref? -> low? -> high? -> max? -> In(sliceExpr).
      *
      * Missing (implicit) bounds have no control-flow node of their own; the
      * implicit lower bound of `0` is modelled as a constant on the
@@ -1357,7 +1345,7 @@ module CfgImpl {
       exists(Go::SliceExpr se |
         n1.isBefore(se) and n2.isBefore(se.getBase())
         or
-        // After base → implicit deref, or (if none) the first present bound / slice eval
+        // After base -> implicit deref, or (if none) the first present bound / slice eval
         n1.isAfter(se.getBase()) and
         (
           if implicitDerefCondition(se.getBase())
@@ -1367,7 +1355,7 @@ module CfgImpl {
         or
         n1.isAdditional(se.getBase(), "implicit-deref") and sliceNext(se, -1, n2)
         or
-        // After a present bound → the next present bound / slice eval
+        // After a present bound -> the next present bound / slice eval
         n1.isAfter(se.getLow()) and sliceNext(se, 0, n2)
         or
         n1.isAfter(se.getHigh()) and sliceNext(se, 1, n2)
@@ -1379,8 +1367,8 @@ module CfgImpl {
     }
 
     /**
-     * Selector expression with value base: base → implicit-deref? →
-     * implicit-field-selections → In(selector)
+     * Selector expression with value base: base -> implicit-deref? ->
+     * implicit-field-selections -> In(selector)
      */
     private predicate selectorExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::SelectorExpr sel |
@@ -1393,7 +1381,7 @@ module CfgImpl {
         (
           n1.isBefore(sel) and n2.isBefore(sel.getBase())
           or
-          // After base (no implicit-deref) → first implicit-field or In(sel)
+          // After base (no implicit-deref) -> first implicit-field or In(sel)
           n1.isAfter(sel.getBase()) and
           not implicitDerefCondition(sel.getBase()) and
           (
@@ -1407,12 +1395,12 @@ module CfgImpl {
             not implicitFieldSelection(sel, _, _) and n2.isIn(sel)
           )
           or
-          // After base (has implicit-deref) → implicit-deref node
+          // After base (has implicit-deref) -> implicit-deref node
           n1.isAfter(sel.getBase()) and
           implicitDerefCondition(sel.getBase()) and
           n2.isAdditional(sel.getBase(), "implicit-deref")
           or
-          // After implicit-deref → first implicit-field or In(sel)
+          // After implicit-deref -> first implicit-field or In(sel)
           n1.isAdditional(sel.getBase(), "implicit-deref") and
           (
             exists(int maxIdx |
@@ -1432,7 +1420,7 @@ module CfgImpl {
             n2.isAdditional(sel, "implicit-field:" + (i - 1).toString())
           )
           or
-          // Last implicit field read (index 1) → In(sel)
+          // Last implicit field read (index 1) -> In(sel)
           implicitFieldSelection(sel, 1, _) and
           n1.isAdditional(sel, "implicit-field:1") and
           n2.isIn(sel)
@@ -1443,16 +1431,16 @@ module CfgImpl {
     }
 
     /**
-     * Composite literal: In(lit) → element-init chain → After(lit)
+     * Composite literal: In(lit) -> element-init chain -> After(lit)
      * CompositeLit evaluates the literal (allocation) first (pre-order),
      * then initializes elements.
      */
     private predicate compositeLitStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::CompositeLit lit |
-        // Before → In (the literal allocation)
+        // Before -> In (the literal allocation)
         n1.isBefore(lit) and n2.isIn(lit)
         or
-        // In → first element, or After if no elements
+        // In -> first element, or After if no elements
         n1.isIn(lit) and
         (
           n2.isBefore(lit.getElement(0))
@@ -1460,7 +1448,7 @@ module CfgImpl {
           not exists(lit.getElement(_)) and n2.isAfter(lit)
         )
         or
-        // After element → lit-init → next element or After.
+        // After element -> lit-init -> next element or After.
         // Positional array/slice elements have an implicit index that is
         // modelled on the `lit-init` instruction itself (see
         // `IR::InitLiteralElementInstruction`) rather than as a separate node.
@@ -1479,7 +1467,7 @@ module CfgImpl {
     }
 
     /**
-     * Send statement (outside select): channel → value → In(send)
+     * Send statement (outside select): channel -> value -> In(send)
      */
     private predicate sendStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::SendStmt s | not s = any(Go::CommClause cc).getComm() |
@@ -1656,33 +1644,13 @@ module CfgImpl {
       )
     }
 
-    private predicate deferStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exists(Go::DeferStmt s |
-        n1.isBefore(s) and n2.isBefore(s.getCall())
-        or
-        n1.isAfter(s.getCall()) and n2.isIn(s)
-        or
-        n1.isIn(s) and n2.isAfter(s)
-      )
-    }
-
-    private predicate goStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exists(Go::GoStmt s |
-        n1.isBefore(s) and n2.isBefore(s.getCall())
-        or
-        n1.isAfter(s.getCall()) and n2.isIn(s)
-        or
-        n1.isIn(s) and n2.isAfter(s)
-      )
-    }
-
     /**
      * Function definition prologue and epilogue:
      * - Prologue: parameters are modelled as native CFG nodes by the shared
-     *             library (Entry → param → ... → Before(body)). The remaining
+     *             library (Entry -> param -> ... -> Before(body)). The remaining
      *             prologue on Before(body) zero-initializes any named result
-     *             variables: zero-init:0 → zero-init:1 → ... → first statement.
-     * - Epilogue: return → result-read:0 → result-read:1 → ... → result-read:last
+     *             variables: zero-init:0 -> zero-init:1 -> ... -> first statement.
+     * - Epilogue: return -> result-read:0 -> result-read:1 -> ... -> result-read:last
      *
      * The last result-read node goes to `After(body)`, from which the shared
      * callable CFG continues to the normal exit.
@@ -1698,16 +1666,16 @@ module CfgImpl {
 
     private predicate funcDefStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::FuncDef fd | exists(fd.getBody()) |
-        // Before(body) → first result-var zero-init node. Parameters are
+        // Before(body) -> first result-var zero-init node. Parameters are
         // modelled as native CFG nodes by the shared library and route
-        // Entry → param → ... → Before(body) ahead of this point; the
-        // no-result-variable case (Before(body) → first statement) is handled
+        // Entry -> param -> ... -> Before(body) ahead of this point; the
+        // no-result-variable case (Before(body) -> first statement) is handled
         // by the shared library's default control flow.
         n1.isBefore(fd.getBody()) and
         exists(fd.getResultVar(0)) and
         n2.isAdditional(fd.getBody(), "zero-init:0")
         or
-        // zero-init:j → next: zero-init:(j+1), or Before(body).
+        // zero-init:j -> next: zero-init:(j+1), or Before(body).
         // The zero-init node also writes the result variable (see
         // `IR::EvalImplicitInitInstruction`), so there is no separate result-init node.
         exists(int j | exists(fd.getResultVar(j)) |
@@ -1723,7 +1691,7 @@ module CfgImpl {
           )
         )
         or
-        // result-read:j → result-read:(j+1)
+        // result-read:j -> result-read:(j+1)
         exists(int j | exists(fd.getResultVar(j + 1)) |
           n1.isAdditional(fd.getBody(), "result-read:" + j.toString()) and
           n2.isAdditional(fd.getBody(), "result-read:" + (j + 1).toString())
