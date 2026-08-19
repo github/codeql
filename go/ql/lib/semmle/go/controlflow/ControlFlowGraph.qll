@@ -5,7 +5,7 @@ overlay[local]
 module;
 
 import go
-private import ControlFlowGraphShared
+private import ControlFlowGraphImpl
 private import codeql.controlflow.SuccessorType
 
 /** Provides helper predicates for mapping between CFG nodes and the AST. */
