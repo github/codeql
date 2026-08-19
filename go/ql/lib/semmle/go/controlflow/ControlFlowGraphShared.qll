@@ -82,9 +82,8 @@ module CfgImpl {
       or
       e.getParent*() = any(Go::ArrayTypeExpr ate).getLength()
       or
-      // The body block of a switch (expression or type) is transparent: the
-      // shared switch model wires control flow directly from the switch to its
-      // case clauses (in control-flow order) and between cases, so the
+      // The shared switch model wires control flow directly from the switch to
+      // its case clauses (in control-flow order) and between cases, so the
       // enclosing block must not introduce its own nodes or default
       // left-to-right sequencing of the case clauses.
       e = any(Go::SwitchStmt sw).getBody()
@@ -217,12 +216,6 @@ module CfgImpl {
     }
 
     class ForeachStmt extends LoopStmt instanceof Go::RangeStmt {
-      // Go's `range` statement binds its key and value by destructuring the
-      // current element. The extractor synthesizes a single "range element"
-      // node grouping the key and value (see `Go::RangeElementExpr`), which we
-      // present here as the loop variable. The shared library routes control
-      // flow into and out of this node, and Go wires the destructuring through
-      // it (see `rangeStmtStep`).
       Expr getVariable() { result = this.(Go::RangeStmt).getPattern() }
 
       Expr getCollection() { result = this.(Go::RangeStmt).getDomain() }
@@ -298,18 +291,11 @@ module CfgImpl {
       DefaultCase() { not exists(this.(Go::CaseClause).getAnExpr()) }
     }
 
-    /** Gets the initializer of `switch` statement `switch`, if any. */
     AstNode getSwitchInit(Switch switch) { result = switch.(Go::SwitchStmt).getInit() }
 
-    /**
-     * Go has no implicit fall-through between case clauses; a case that runs to
-     * the end of its body breaks out of the switch. Fall-through only happens
-     * when the case body ends with an explicit `fallthrough` statement, in
-     * which case control transfers to the next case clause's body (in source
-     * order). The shared library models this by chaining the body of such a
-     * case to the body of the following case.
-     */
     predicate fallsThrough(Case c) {
+      // Go has no implicit fall-through between case clauses; an explicit
+      // `fallthrough` statement is required.
       c.(Go::CaseClause).getStmt(max(int i | exists(c.(Go::CaseClause).getStmt(i)))) instanceof
         Go::FallthroughStmt
     }
@@ -444,11 +430,11 @@ module CfgImpl {
 
     predicate preOrderExpr(Ast::Expr e) {
       // The call of a `defer` statement is not invoked at the statement
-      // itself; its callee and arguments are evaluated in place, but the call
-      // is only invoked later, at function exit (modelled by the `defer-invoke`
-      // node and `additionalSuccessor`). Marking it as pre-order means no in-order
-      // "invocation" node (and hence no inline exceptional-exit edge) is
-      // created at the `defer` statement.
+      // itself; its callee expression and arguments are evaluated in place,
+      // but the call is only invoked later, at function exit (modelled by the
+      // `defer-invoke` node and `additionalSuccessor`). Marking it as
+      // pre-order means no in-order "invocation" node (and hence no inline
+      // exceptional-exit edge) is created at the `defer` statement.
       e = any(Go::DeferStmt s).getCall()
       or
       // Parenthesized expressions are value-transparent (via `propagatesValue`)
@@ -963,12 +949,12 @@ module CfgImpl {
       exists(Go::FuncDef fd | funcHasDefer(fd) |
         successorType instanceof DirectSuccessor and
         (
-          // (a) an exit predecessor with no active defer flows straight to the exit target
+          // an exit predecessor with no active defer flows straight to the exit target
           normalExitPred(n1, fd) and
           n1 = reachableBeforeNextDeferRegistration(funcEntry(fd)) and
           deferChainExitTarget(fd, n2)
           or
-          // (b) an exit predecessor flows to the invocation of the last-registered active defer
+          // an exit predecessor flows to the invocation of the last-registered active defer
           exists(Go::DeferStmt d, PreControlFlowNode reg |
             deferRegistration(reg, d) and
             d.getEnclosingFunction() = fd and
@@ -977,7 +963,7 @@ module CfgImpl {
             deferInvoke(n2, d)
           )
           or
-          // (c) deferred invocations chain in last-in-first-out order
+          // deferred invocations chain in last-in-first-out order
           exists(Go::DeferStmt laterRegistered, Go::DeferStmt earlierRegistered |
             laterRegistered.getEnclosingFunction() = fd and
             nextRegisteredDefer(laterRegistered, earlierRegistered) and
@@ -986,7 +972,7 @@ module CfgImpl {
             deferInvoke(n2, earlierRegistered)
           )
           or
-          // (d) the invocation of the first-registered (last to run) defer flows to the exit target
+          // the invocation of the first-registered (last to run) defer flows to the exit target
           exists(Go::DeferStmt firstD |
             firstRegisteredDefer(firstD, fd) and
             deferInvocationMayReturnNormally(firstD) and
@@ -995,7 +981,7 @@ module CfgImpl {
           )
         )
         or
-        // (e) a possible panic with active defers flows to the last-registered active defer
+        // a possible panic with active defers flows to the last-registered active defer
         successorType instanceof ExceptionSuccessor and
         exists(Go::DeferStmt d, PreControlFlowNode reg |
           deferRegistration(reg, d) and
@@ -1113,7 +1099,6 @@ module CfgImpl {
       |
         epilogueStep(assgn, n1, n2)
         or
-        // Last epilogue -> after the assignment
         n1.isAdditional(assgn, getLastEpilogueTag(assgn)) and
         n2.isAfter(assgn)
       )
@@ -1210,7 +1195,6 @@ module CfgImpl {
       exists(Go::ReturnStmt ret |
         epilogueStep(ret, n1, n2)
         or
-        // Last return epilogue -> return node
         n1.isAdditional(ret, getLastEpilogueTag(ret)) and
         n2.isIn(ret)
       )
@@ -1236,10 +1220,8 @@ module CfgImpl {
       |
         epilogueStep(call, n1, n2)
         or
-        // Last tuple-extraction node -> the call's invocation node
         n1.isAdditional(call, getLastEpilogueTag(call)) and n2.isIn(call)
         or
-        // Invocation node -> after the call (unless the call never returns normally)
         n1.isIn(call) and
         n2.isAfter(call) and
         not beginAbruptCompletion(call, n1, _, true)
@@ -1308,7 +1290,6 @@ module CfgImpl {
       exists(Go::SliceExpr se |
         n1.isBefore(se) and n2.isBefore(se.getBase())
         or
-        // After base -> implicit deref, or (if none) the first present bound / slice eval
         n1.isAfter(se.getBase()) and
         (
           if implicitDerefCondition(se.getBase())
@@ -1318,7 +1299,6 @@ module CfgImpl {
         or
         n1.isAdditional(se.getBase(), "implicit-deref") and sliceNext(se, -1, n2)
         or
-        // After a present bound -> the next present bound / slice eval
         n1.isAfter(se.getLow()) and sliceNext(se, 0, n2)
         or
         n1.isAfter(se.getHigh()) and sliceNext(se, 1, n2)
@@ -1344,7 +1324,6 @@ module CfgImpl {
         (
           n1.isBefore(sel) and n2.isBefore(sel.getBase())
           or
-          // After base (no implicit-deref) -> first implicit-field or In(sel)
           n1.isAfter(sel.getBase()) and
           not implicitDerefCondition(sel.getBase()) and
           (
@@ -1358,23 +1337,22 @@ module CfgImpl {
             not implicitFieldSelection(sel, _, _) and n2.isIn(sel)
           )
           or
-          // After base (has implicit-deref) -> implicit-deref node
           n1.isAfter(sel.getBase()) and
           implicitDerefCondition(sel.getBase()) and
           n2.isAdditional(sel.getBase(), "implicit-deref")
           or
-          // After implicit-deref -> first implicit-field or In(sel)
           n1.isAdditional(sel.getBase(), "implicit-deref") and
           (
+            // Has implicit field reads: go to outermost (highest index)
             exists(int maxIdx |
               maxIdx = max(int i | implicitFieldSelection(sel, i, _)) and
               n2.isAdditional(sel, "implicit-field:" + maxIdx.toString())
             )
             or
+            // No implicit field reads: go directly to In(sel)
             not implicitFieldSelection(sel, _, _) and n2.isIn(sel)
           )
           or
-          // Between implicit field reads: descend from index i to i-1
           exists(int i |
             i > 1 and
             implicitFieldSelection(sel, i, _) and
@@ -1383,7 +1361,6 @@ module CfgImpl {
             n2.isAdditional(sel, "implicit-field:" + (i - 1).toString())
           )
           or
-          // Last implicit field read (index 1) -> In(sel)
           implicitFieldSelection(sel, 1, _) and
           n1.isAdditional(sel, "implicit-field:1") and
           n2.isIn(sel)
@@ -1400,10 +1377,8 @@ module CfgImpl {
      */
     private predicate compositeLitStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::CompositeLit lit |
-        // Before -> In (the literal allocation)
         n1.isBefore(lit) and n2.isIn(lit)
         or
-        // In -> first element, or After if no elements
         n1.isIn(lit) and
         (
           n2.isBefore(lit.getElement(0))
@@ -1411,7 +1386,6 @@ module CfgImpl {
           not exists(lit.getElement(_)) and n2.isAfter(lit)
         )
         or
-        // After element -> lit-init -> next element or After.
         // Positional array/slice elements have an implicit index that is
         // modelled on the `lit-init` instruction itself (see
         // `IR::InitLiteralElementInstruction`) rather than as a separate node.
@@ -1607,17 +1581,6 @@ module CfgImpl {
       )
     }
 
-    /**
-     * Function definition prologue and epilogue:
-     * - Prologue: parameters are modelled as native CFG nodes by the shared
-     *             library (Entry -> param -> ... -> Before(body)). The remaining
-     *             prologue on Before(body) zero-initializes any named result
-     *             variables: zero-init:0 -> zero-init:1 -> ... -> first statement.
-     * - Epilogue: return -> result-read:0 -> result-read:1 -> ... -> result-read:last
-     *
-     * The last result-read node goes to `After(body)`, from which the shared
-     * callable CFG continues to the normal exit.
-     */
     private predicate hasFuncDefPrologue(Go::FuncDef fd) { exists(fd.getResultVar(_)) }
 
     private predicate funcDefBodyStart(Go::FuncDef fd, PreControlFlowNode n) {
@@ -1627,47 +1590,41 @@ module CfgImpl {
       n.isAdditional(fd.getBody(), "result-read:0")
     }
 
+    /**
+     * Function body flow for named result variables: `Before(body)` ->
+     * `zero-init:0` -> ... -> first statement -> ... -> `result-read:0` -> ...
+     * -> `After(body)`. Parameters precede `Before(body)` through the shared
+     * callable flow. Return and defer handling route into the result-read
+     * sequence separately; this predicate sequences its nodes and routes
+     * defer-free fall-through into it.
+     */
     private predicate funcDefStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::FuncDef fd | exists(fd.getBody()) |
-        // Before(body) -> first result-var zero-init node. Parameters are
-        // modelled as native CFG nodes by the shared library and route
-        // Entry -> param -> ... -> Before(body) ahead of this point; the
-        // no-result-variable case (Before(body) -> first statement) is handled
-        // by the shared library's default control flow.
         n1.isBefore(fd.getBody()) and
         exists(fd.getResultVar(0)) and
         n2.isAdditional(fd.getBody(), "zero-init:0")
         or
-        // zero-init:j -> next: zero-init:(j+1), or Before(body).
-        // The zero-init node also writes the result variable (see
-        // `IR::EvalImplicitInitInstruction`), so there is no separate result-init node.
         exists(int j | exists(fd.getResultVar(j)) |
           n1.isAdditional(fd.getBody(), "zero-init:" + j.toString()) and
           (
-            // Next result var exists
             exists(fd.getResultVar(j + 1)) and
             n2.isAdditional(fd.getBody(), "zero-init:" + (j + 1).toString())
             or
-            // No next result var: go to Before(body)
             not exists(fd.getResultVar(j + 1)) and
             funcDefBodyStart(fd, n2)
           )
         )
         or
-        // result-read:j -> result-read:(j+1)
         exists(int j | exists(fd.getResultVar(j + 1)) |
           n1.isAdditional(fd.getBody(), "result-read:" + j.toString()) and
           n2.isAdditional(fd.getBody(), "result-read:" + (j + 1).toString())
         )
         or
-        // Normal fall-through enters the result-read epilogue when there are
-        // named results but no deferred calls.
         not funcHasDefer(fd) and
         exists(fd.getResultVar(0)) and
         n1.isAfter(getLastRankedChild(fd.getBody())) and
         n2.isAdditional(fd.getBody(), "result-read:0")
         or
-        // The completed result-read epilogue reaches `After(body)`.
         exists(int j |
           exists(fd.getResultVar(j)) and
           not exists(fd.getResultVar(j + 1)) and
