@@ -517,7 +517,7 @@ abstract class ArgumentNode extends Node {
 
   /**
    * Holds if this argument occurs at the given position in the given call,
-   * and this call part of a summary.
+   * and this call is part of a summary.
    * The instance argument is considered to have index `-1`.
    */
   predicate summaryArgumentOf(FlowSummaryImpl::Public::SummarizedCallable call, ArgumentPosition pos) {
