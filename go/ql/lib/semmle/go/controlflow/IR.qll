@@ -19,32 +19,6 @@ private import codeql.controlflow.SuccessorType
 /** Provides predicates and classes for working with IR constructs. */
 module IR {
   /**
-   * Holds if `e` is in a boolean conditional context, meaning its evaluation
-   * is split across branch successors rather than producing a single value.
-   *
-   * This mirrors the conditions under which the shared CFG library creates
-   * `TAfterValueNode`s instead of a single `TAfterNode` (see
-   * `inConditionalContext` in `shared/controlflow/.../ControlFlowGraph.qll`),
-   * restricted to the Go-relevant cases that affect `NotExpr` and
-   * `LogicalBinaryExpr`.
-   */
-  private predicate isInBooleanCondContext(Expr e) {
-    e = any(IfStmt s).getCondition()
-    or
-    e = any(ForStmt s).getCond()
-    or
-    exists(ExpressionSwitchStmt ess |
-      not exists(ess.getExpr()) and e = ess.getACase().(CaseClause).getExpr(_)
-    )
-    or
-    e = any(LogicalBinaryExpr be | isInBooleanCondContext(be)).getAnOperand()
-    or
-    e = any(NotExpr ne | isInBooleanCondContext(ne)).getOperand()
-    or
-    e = any(ParenExpr pe | isInBooleanCondContext(pe)).getExpr()
-  }
-
-  /**
    * Holds if `n` is the control-flow node representing a successful match of
    * the type-switch case clause `cc` that implicitly declares a variable.
    *
@@ -59,19 +33,13 @@ module IR {
   }
 
   /**
-   * Holds if `n` is a genuine boolean condition-guard node: an "after" node
-   * that records exactly one of the true/false outcomes of a boolean
-   * condition.
-   *
-   * The shared CFG library's `isAfterTrue`/`isAfterFalse` are deliberately
-   * permissive when used for step-endpoint matching: a plain "after" node (or
-   * a merged leaf node) satisfies both of them. A real guard node is
-   * distinguished by satisfying exactly one of them.
+   * Holds if `n` records a boolean outcome, or the matching outcome of an
+   * expressionless switch case condition.
    */
   private predicate isConditionGuardNode(ControlFlow::Node n) {
-    n.isAfterTrue(_) and not n.isAfterFalse(_)
+    n.isAfterTrue(_)
     or
-    n.isAfterFalse(_) and not n.isAfterTrue(_)
+    n.isAfterFalse(_)
     or
     exists(Expr condition, MatchingSuccessor successor |
       condition =
@@ -97,16 +65,13 @@ module IR {
       typeSwitchCaseMatch(this, _)
       or
       // `NotExpr` and `LogicalBinaryExpr` are not in `postOrInOrder`, so they
-      // have no `isIn` node. When such an expression is not in a conditional
-      // context (so it has a single combined after-node rather than per-branch
-      // value-after-nodes), use that after-node as the value-producing
-      // instruction. In conditional contexts the value is already split
-      // across branches and the `ConditionGuardInstruction` for each branch
-      // captures the outcome, so no separate value instruction is needed.
+      // have no `isIn` node. Use their combined after-node as the value-producing
+      // instruction, but not a value-specific after-node, which is already a
+      // `ConditionGuardInstruction`.
       exists(Expr e |
         (e instanceof NotExpr or e instanceof LogicalBinaryExpr) and
-        not isInBooleanCondContext(e) and
-        this.isAfter(e)
+        this.isAfter(e) and
+        not this.isAfterValue(e, _)
       )
       or
       // A named parameter is represented by a single CFG node (the merged
@@ -247,14 +212,12 @@ module IR {
       // `postOrInOrder`, so they don't have an `isIn` node; their value is
       // produced by the after-node. (Constant ones are folded and get a leaf
       // `isIn` node via `constRoot`, handled by the first disjunct above, so
-      // they are excluded here to avoid a duplicate value node.) Only use the
-      // after-node when the expression is not in a conditional context;
-      // otherwise the value is split across `TAfterValueNode`s per branch and
-      // should not be exposed as a single value-producing instruction.
+      // they are excluded here to avoid a duplicate value node.) Value-specific
+      // after-nodes are condition guards rather than expression evaluations.
       (e instanceof NotExpr or e instanceof LogicalBinaryExpr) and
       not e.isConst() and
-      not isInBooleanCondContext(e) and
-      this.isAfter(e)
+      this.isAfter(e) and
+      not this.isAfterValue(_, _)
     }
 
     /** Gets the expression underlying this instruction. */
