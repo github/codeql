@@ -1724,7 +1724,7 @@ private module Input implements InputSig1, InputSig2 {
     always = true
     or
     mayThrow(ast) and
-    n.isIn(ast) and
+    n.injects(ast) and
     c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
     always = false
   }
