@@ -431,7 +431,7 @@ module CfgImpl {
     predicate preOrderExpr(Ast::Expr e) {
       // The call of a `defer` statement is not invoked at the statement
       // itself; its callee expression and arguments are evaluated in place,
-      // but the call is only invoked later, at function exit (modelled by the
+      // but the call is only invoked later, at function exit (modeled by the
       // `defer-invoke` node and `additionalSuccessor`). Marking it as
       // pre-order means no in-order "invocation" node (and hence no inline
       // exceptional-exit edge) is created at the `defer` statement.
@@ -749,7 +749,7 @@ module CfgImpl {
       // A `break` in a communication clause body terminates the enclosing
       // `select` statement, continuing after it. This mirrors the shared
       // library's handling of `break` in a `switch` case body, but `select` is
-      // modelled language-specifically (it is not a `Switch`), so the break
+      // modeled language-specifically (it is not a `Switch`), so the break
       // must be caught here. The break completion bubbles up the AST until it
       // reaches a top-level statement of the comm clause body, at which point
       // flow resumes after the `select`. An unlabeled `break` targets the
@@ -1283,7 +1283,7 @@ module CfgImpl {
      * Slice expression: base -> implicit-deref? -> low? -> high? -> max? -> In(sliceExpr).
      *
      * Missing (implicit) bounds have no control-flow node of their own; the
-     * implicit lower bound of `0` is modelled as a constant on the
+     * implicit lower bound of `0` is modeled as a constant on the
      * `SliceInstruction` rather than as a separate node.
      */
     private predicate sliceExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
@@ -1387,7 +1387,7 @@ module CfgImpl {
         )
         or
         // Positional array/slice elements have an implicit index that is
-        // modelled on the `lit-init` instruction itself (see
+        // modeled on the `lit-init` instruction itself (see
         // `IR::InitLiteralElementInstruction`) rather than as a separate node.
         exists(int i |
           n1.isAfter(lit.getElement(i)) and
