@@ -19,7 +19,7 @@ import RegExpInjectionFlow::PathGraph
 
 predicate stats = RegExpInjectionFlow::Debug::stageStats/10;
 
-predicate foo = RegExpInjectionFlow::Debug::stageStats4/10;
+predicate foo = RegExpInjectionFlow::Debug::stageStats3/10;
 
 predicate bar = RegExpInjectionFlow::Stages::Stage3::fwdFlowStore/12;
 

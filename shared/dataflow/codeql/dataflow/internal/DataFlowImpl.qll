@@ -376,6 +376,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[n, c]
         StoreKind getStoreKind(Node n, Content c);
 
+        StoreKind getInitialStoreKind();
+
         class Ap {
           string toString();
         }
@@ -582,7 +584,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           result = 0
           or
           exists(Ap tail, StoreKindOption headOrigin0 |
-            fwdFlowConsCand(_, ap, _, headOrigin.asSome(), _, tail, headOrigin0) and
+            fwdFlowConsCand(_, ap, _, headOrigin, _, tail, headOrigin0) and
             ap != tail and // no need to report a longer length
             result = 1 + getAnApLengthLowerBound(tail, headOrigin0) and
             result <= accessPathLimit()
@@ -829,7 +831,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             typecheck(t1, getTyp(contentType)) and
             if ap1 instanceof ApNil then stored2.asSome() = t1 else stored2 = stored1
           ) and
-          kind = getStoreKind(node1.getNodeEx().asNode(), c)
+          if ap1 instanceof ApNil
+          then kind = getInitialStoreKind()
+          else kind = getStoreKind(node1.getNodeEx().asNode(), c)
         }
 
         /**
@@ -839,10 +843,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          */
         pragma[nomagic]
         private predicate fwdFlowConsCand(
-          Typ t2, Ap cons, Content c, StoreKind kind2, Typ t1, Ap tail, StoreKindOption headOrigin
+          Typ t2, Ap cons, Content c, StoreKindOption kind2, Typ t1, Ap tail,
+          StoreKindOption headOrigin
         ) {
-          fwdFlowStore(_, t1, tail, headOrigin, _, c, t2, _, _, _, _, kind2) and
-          cons = apCons(c, tail)
+          exists(StoreKind kind1 |
+            fwdFlowStore(_, t1, tail, /*headOrigin*/ _, _, c, t2, _, _, _, _, kind1) and
+            cons = apCons(c, tail) and
+            headOrigin.isNone()
+          |
+            kind2.asSome() = kind1
+            or
+            kind2.isNone()
+          )
         }
 
         pragma[nomagic]
@@ -877,7 +889,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           exists(Typ ct1, Typ ct2 |
             fwdFlowRead0(t1, ap1, headOrigin1, stored1, c, node1, node2, cc, summaryCtx) and
-            fwdFlowConsCand(ct1, ap1, c, headOrigin1.asSome(), ct2, ap2, headOrigin2) and
+            fwdFlowConsCand(ct1, ap1, c, headOrigin1, ct2, ap2, headOrigin2) and
             typecheck(t1, ct1) and
             typecheck(t2, ct2) and
             if ap2 instanceof ApNil
@@ -2851,6 +2863,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[n, c]
       StoreKind getStoreKind(Node n, Content c) { any() }
 
+      StoreKind getInitialStoreKind() { any() }
+
       class Ap = Boolean;
 
       class ApNil extends Ap {
@@ -2932,7 +2946,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       class Typ = Unit;
 
       class StoreKind instanceof int {
-        StoreKind() { this = [0 .. 4] }
+        StoreKind() { this = [-1 .. 4] }
 
         string toString() { result = super.toString() }
       }
@@ -2969,6 +2983,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           result = r % 5
         )
       }
+
+      StoreKind getInitialStoreKind() { result = -1 }
 
       class Ap = ApproxAccessPathFront;
 
@@ -3073,7 +3089,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       class Typ = Unit;
 
       class StoreKind instanceof int {
-        StoreKind() { this = [0 .. 4] }
+        StoreKind() { this = [-1 .. 4] }
 
         string toString() { result = super.toString() }
       }
@@ -3110,6 +3126,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           result = r % 5
         )
       }
+
+      StoreKind getInitialStoreKind() { result = -1 }
 
       class Ap = AccessPathFront;
 
@@ -3386,6 +3404,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[n, c]
       StoreKind getStoreKind(Node n, Content c) { any() }
 
+      StoreKind getInitialStoreKind() { any() }
+
       class Ap = AccessPathApprox;
 
       class ApNil = AccessPathApproxNil;
@@ -3580,6 +3600,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       bindingset[n, c]
       StoreKind getStoreKind(Node n, Content c) { any() }
+
+      StoreKind getInitialStoreKind() { any() }
 
       class Ap = AccessPath;
 
