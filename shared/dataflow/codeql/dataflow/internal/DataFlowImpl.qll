@@ -2859,12 +2859,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       Typ getTyp(Type t) { any() }
 
       bindingset[c, tail]
-      Ap apCons(Content c, Ap tail) { result.getAHead() = c and exists(tail) }
+      Ap apCons(Content c, Ap tail) {
+        exists(boolean isSingleton |
+          result.getAHead(isSingleton) = c and
+          if tail instanceof ApNil then isSingleton = true else isSingleton = false
+        )
+      }
 
       class ApHeadContent = ContentApprox;
 
       pragma[noinline]
-      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
+      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead(_) }
 
       predicate projectToHeadContent = getContentApproxCached/1;
 
@@ -2910,7 +2915,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           PrevStage::revFlow(node) and
           PrevStage::readStepCand(_, c, _) and
           Stage1::expectsContentEx(node, c) and
-          c = ap.getAHead()
+          c = ap.getAHead(_)
         )
       }
 
@@ -2961,12 +2966,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       Typ getTyp(Type t) { any() }
 
       bindingset[c, tail]
-      Ap apCons(Content c, Ap tail) { result.getHead() = c and exists(tail) }
+      Ap apCons(Content c, Ap tail) {
+        exists(boolean isSingleton |
+          result.getHead(isSingleton) = c and
+          if tail instanceof ApNil then isSingleton = true else isSingleton = false
+        )
+      }
 
       class ApHeadContent = Content;
 
       pragma[noinline]
-      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
+      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead(_) }
 
       ApHeadContent projectToHeadContent(Content c) { result = c }
 
@@ -3012,11 +3022,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         // When `node` is the target of a store, we interpret `clearsContent` as
         // only pertaining to _earlier_ store steps. In this case, we need to postpone
         // checking `clearsContent` to the step creation.
-        clearContent(node, ap.getHead(), false)
+        clearContent(node, ap.getHead(_), false)
       }
 
       pragma[nomagic]
-      private predicate clearExceptStore(Nd node, Ap ap) { clearContent(node, ap.getHead(), true) }
+      private predicate clearExceptStore(Nd node, Ap ap) { clearContent(node, ap.getHead(_), true) }
 
       pragma[nomagic]
       private predicate expectsContentCand(Nd node, Ap ap) {
@@ -3024,7 +3034,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           PrevStage::revFlow(node) and
           PrevStage::readStepCand(_, c, _) and
           Stage1::expectsContentEx(node, c) and
-          c = ap.getHead()
+          c = ap.getHead(_)
         )
       }
 
@@ -3059,9 +3069,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         tails = strictcount(AccessPathFront apf | Stage4::consCand(c, apf)) and
         nodes =
           strictcount(Nd n |
-            Stage4::revFlow(n, any(AccessPathFrontHead apf | apf.getHead() = c))
+            Stage4::revFlow(n, any(AccessPathFrontHead apf | apf.getHead(_) = c))
             or
-            Stage4::nodeMayUseSummary(n, any(AccessPathFrontHead apf | apf.getHead() = c))
+            Stage4::nodeMayUseSummary(n, any(AccessPathFrontHead apf | apf.getHead(_) = c))
           ) and
         accessPathApproxCostLimits(apLimit, tupleLimit) and
         apLimit < tails and
@@ -3077,7 +3087,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         not expensiveLen2unfolding(c)
       } or
       TConsCons(Content c1, Content c2, int len) {
-        Stage4::consCand(c1, TFrontHead(c2)) and
+        Stage4::consCand(c1, TFrontHead(c2, _)) and
         len in [2 .. Config::accessPathLimit()] and
         not expensiveLen2unfolding(c1)
       } or
@@ -3131,7 +3141,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override int len() { result = 1 }
 
-      override AccessPathFront getFront() { result = TFrontHead(c) }
+      override AccessPathFront getFront() { result = TFrontHead(c, true) }
 
       override predicate isCons(Content head, AccessPathApprox tail) { head = c and tail = TNil() }
     }
@@ -3153,7 +3163,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override int len() { result = len }
 
-      override AccessPathFront getFront() { result = TFrontHead(c1) }
+      override AccessPathFront getFront() { result = TFrontHead(c1, false) }
 
       override predicate isCons(Content head, AccessPathApprox tail) {
         head = c1 and
@@ -3184,12 +3194,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override int len() { result = len }
 
-      override AccessPathFront getFront() { result = TFrontHead(c) }
+      override AccessPathFront getFront() {
+        if len = 1 then result = TFrontHead(c, true) else result = TFrontHead(c, false)
+      }
 
       override predicate isCons(Content head, AccessPathApprox tail) {
         head = c and
         (
-          exists(Content c2 | Stage4::consCand(c, TFrontHead(c2)) |
+          exists(Content c2, boolean isSingleton |
+            Stage4::consCand(c, TFrontHead(c2, isSingleton)) and
+            if len > 2 then isSingleton = false else isSingleton = true
+          |
             tail = TConsCons(c2, _, len - 1)
             or
             len = 2 and
@@ -3531,7 +3546,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override predicate isCons(Content head, AccessPath tail) { head = head_ and tail = tail_ }
 
-      override AccessPathFrontHead getFront() { result = TFrontHead(head_) }
+      override AccessPathFrontHead getFront() {
+        if this.length() = 1
+        then result = TFrontHead(head_, true)
+        else result = TFrontHead(head_, false)
+      }
 
       override AccessPathApproxCons getApprox() {
         result = TConsNil(head_) and tail_ = TAccessPathNil()
@@ -3586,7 +3605,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         tail.length() = len - 1
       }
 
-      override AccessPathFrontHead getFront() { result = TFrontHead(head1) }
+      override AccessPathFrontHead getFront() { result = TFrontHead(head1, false) }
 
       override AccessPathApproxCons getApprox() {
         result = TConsCons(head1, head2, len) or
@@ -3618,7 +3637,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         tail.length() = len - 1
       }
 
-      override AccessPathFrontHead getFront() { result = TFrontHead(head_) }
+      override AccessPathFrontHead getFront() {
+        if len = 1 then result = TFrontHead(head_, true) else result = TFrontHead(head_, false)
+      }
 
       override AccessPathApproxCons getApprox() { result = TCons1(head_, len) }
 

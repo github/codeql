@@ -1797,12 +1797,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     cached
     newtype TAccessPathFront =
       TFrontNil() or
-      TFrontHead(Content c)
+      TFrontHead(Content c, Boolean isSingleton)
 
     cached
     newtype TApproxAccessPathFront =
       TApproxFrontNil() or
-      TApproxFrontHead(ContentApprox c)
+      TApproxFrontHead(ContentApprox c, Boolean isSingleton)
 
     cached
     newtype TAccessPathFrontOption =
@@ -2505,14 +2505,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     abstract boolean toBoolNonEmpty();
 
-    ContentApprox getHead() { this = TApproxFrontHead(result) }
+    ContentApprox getHead(boolean isSingleton) { this = TApproxFrontHead(result, isSingleton) }
 
     pragma[nomagic]
-    Content getAHead() {
-      exists(ContentApprox cont |
-        this = TApproxFrontHead(cont) and
-        cont = getContentApproxCached(result)
-      )
+    Content getAHead(boolean isSingleton) {
+      this.getHead(isSingleton) = getContentApproxCached(result)
     }
   }
 
@@ -2524,10 +2521,13 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
   class ApproxAccessPathFrontHead extends ApproxAccessPathFront, TApproxFrontHead {
     private ContentApprox c;
+    private boolean isSingleton;
 
-    ApproxAccessPathFrontHead() { this = TApproxFrontHead(c) }
+    ApproxAccessPathFrontHead() { this = TApproxFrontHead(c, isSingleton) }
 
-    override string toString() { result = c.toString() }
+    override string toString() {
+      if isSingleton = true then result = c.toString() + " (singleton)" else result = c.toString()
+    }
 
     override boolean toBoolNonEmpty() { result = true }
   }
@@ -2549,7 +2549,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     abstract ApproxAccessPathFront toApprox();
 
-    Content getHead() { this = TFrontHead(result) }
+    Content getHead(boolean isSingleton) { this = TFrontHead(result, isSingleton) }
   }
 
   class AccessPathFrontNil extends AccessPathFront, TFrontNil {
@@ -2560,12 +2560,15 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
   class AccessPathFrontHead extends AccessPathFront, TFrontHead {
     private Content c;
+    private boolean isSingleton;
 
-    AccessPathFrontHead() { this = TFrontHead(c) }
+    AccessPathFrontHead() { this = TFrontHead(c, isSingleton) }
 
-    override string toString() { result = c.toString() }
+    override string toString() {
+      if isSingleton = true then result = c.toString() + " (singleton)" else result = c.toString()
+    }
 
-    override ApproxAccessPathFront toApprox() { result.getAHead() = c }
+    override ApproxAccessPathFront toApprox() { result.getAHead(isSingleton) = c }
   }
 
   /** An optional access path front. */
