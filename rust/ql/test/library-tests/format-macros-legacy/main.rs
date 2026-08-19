@@ -21,14 +21,8 @@ pub fn format_flow() {
 }
 
 pub fn exercises_reconstruction() {
-    // No flow assertions here: these exercise reconstruction of the rest of the
-    // family, including the writer-argument handling of `write!`/`writeln!`.
-    //
-    // Flow into a writer buffer is not recovered on <1.94 (the
-    // `buf.write_fmt(..)` desugaring is absent), but this matches native
-    // behavior on >=1.94, where the `Write::write_fmt` content-to-self taint
-    // model is also missing. So it is a pre-existing model gap, not a
-    // regression from the reconstruction.
+    // these exercise reconstruction of the rest of the family, including the
+    // writer-argument handling of `write!`/`writeln!`.
     let a = source(4);
     let b = format_args!("{}", a);
     let c = std::fmt::format(b);
