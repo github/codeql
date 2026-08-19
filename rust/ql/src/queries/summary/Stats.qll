@@ -104,17 +104,6 @@ int getTaintEdgesCount() {
  */
 int getQuerySinksCount() { result = count(QuerySink s) }
 
-/**
- * Holds if there are at least 10 data flow nodes in the same location
- * as `n`.
- */
-private predicate isColocated10(DataFlow::Node n) {
-  exists(Location l |
-    l = n.getLocation() and
-    strictcount(DataFlow::Node other | other.getLocation() = l) >= 10
-  )
-}
-
 class CrateElement extends Element {
   CrateElement() {
     this instanceof Crate or
@@ -219,9 +208,6 @@ predicate taintStats(string key, int value) {
   key = "Taint reach - total non-summary nodes" and value = getTotalNodesCount()
   or
   key = "Taint reach - per million nodes" and value = getTaintReach().floor()
-  or
-  key = "Taint nodes - highly colocated nodes" and
-  value = count(DataFlow::Node n | isColocated10(n))
   or
   key = "Taint sinks - query sinks" and value = getQuerySinksCount()
   or
