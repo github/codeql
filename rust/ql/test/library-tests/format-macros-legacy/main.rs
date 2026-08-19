@@ -37,28 +37,28 @@ pub fn exercises_reconstruction() {
     let mut buf1 = String::new();
     let d = source(5);
     let _ = buf1.write_str(d.as_str());
-    sink(buf1); // $ MISSING: hasTaintFlow=5
+    sink(buf1); // $ hasTaintFlow=5
 
     let mut buf2 = String::new();
     let e = source(6);
     let _ = buf2.write_fmt(format_args!("{e}"));
-    sink(buf2); // $ MISSING: hasTaintFlow=6
+    sink(buf2); // $ hasTaintFlow=6
 
     let mut buf3 = String::new();
     let f = source(7);
     let _ = std::fmt::write(&mut buf3, format_args!("{f}"));
-    sink(buf3); // $ MISSING: hasTaintFlow=7
+    sink(buf3); // $ hasTaintFlow=7
 
     use std::fmt::Write;
     let mut buf4 = String::new();
     let g = source(8);
     let _ = write!(buf4, "{}", g);
-    sink(buf4); // $ MISSING: hasTaintFlow=8
+    sink(buf4); // $ hasTaintFlow=8
 
     let mut buf5 = String::new();
     let h = source(9);
     let _ = writeln!(buf5, "{h}");
-    sink(buf5); // $ MISSING: hasTaintFlow=9
+    sink(buf5); // $ hasTaintFlow=9
 }
 
 // The log-injection sinks (`println!`/`eprintln!`/`panic!`) are reconstructed
