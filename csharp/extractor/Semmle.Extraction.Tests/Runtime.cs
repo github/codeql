@@ -25,7 +25,7 @@ namespace Semmle.Extraction.Tests
 
         public IList<string> GetListedSdks() => sdks;
 
-        public bool Exec(string execArgs) => true;
+        public bool Exec(List<string> execArgs) => true;
 
         public IList<string> GetNugetFeeds(string nugetConfig) => [];
 
