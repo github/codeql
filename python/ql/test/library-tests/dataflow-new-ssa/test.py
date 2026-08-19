@@ -16,6 +16,12 @@
 # on its `def` line.
 
 
+if object():  # $ phi=conditional_factory MISSING: exit-use=conditional_factory
+    from primary_backend import Factory as conditional_factory  # $ def=conditional_factory
+else:
+    from fallback_backend import Factory as conditional_factory  # $ def=conditional_factory
+
+
 def basic_param(x):  # $ def=basic_param def=x
     return x  # $ use=x
 
@@ -44,5 +50,3 @@ def if_else_phi(cond):  # $ def=if_else_phi def=cond
 # read resolves to no SSA def, hence there is no `use=` here.
 def use_global():  # $ def=use_global
     return some_undefined
-
-

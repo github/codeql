@@ -10,6 +10,8 @@
  *     of `<var>` reaches the read.
  *   - `phi=<var>`: there is an SSA phi definition of `<var>` whose BB
  *     starts on this line.
+ *   - `exit-use=<var>`: a phi definition of `<var>` reaches the synthetic
+ *     normal-exit read through the ESSA adapter.
  */
 
 import python
@@ -19,7 +21,7 @@ import semmle.python.controlflow.internal.Cfg as Cfg
 import utils.test.InlineExpectationsTest
 
 module SsaTest implements TestSig {
-  string getARelevantTag() { result = ["def", "use", "phi"] }
+  string getARelevantTag() { result = ["def", "use", "phi", "exit-use"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     // A `def=<id>` fires when an SSA WriteDefinition is at a CFG node
@@ -49,6 +51,20 @@ module SsaTest implements TestSig {
     exists(SsaImpl::PhiNode phi, CfgImpl::BasicBlock bb |
       phi.definesAt(_, bb, _) and
       tag = "phi" and
+      location = bb.getNode(0).getLocation() and
+      element = bb.toString() and
+      value = phi.getSourceVariable().(SsaImpl::SsaSourceVariable).getVariable().getId()
+    )
+    or
+    exists(
+      SsaImpl::PhiFunction phi, SsaImpl::EssaVariable variable, CfgImpl::BasicBlock bb,
+      Cfg::ControlFlowNode exit
+    |
+      variable = phi and
+      phi.definesAt(_, bb, _) and
+      variable.getAUse() = exit and
+      exit.isNormalExit() and
+      tag = "exit-use" and
       location = bb.getNode(0).getLocation() and
       element = bb.toString() and
       value = phi.getSourceVariable().(SsaImpl::SsaSourceVariable).getVariable().getId()
