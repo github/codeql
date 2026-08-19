@@ -16,7 +16,7 @@
 | result 1 | main.go:35:1:38:1 | function declaration | main.go:35:29:38:1 | zero-init:1 block statement |
 | result 1 | main.go:35:1:38:1 | function declaration | main.go:36:9:36:10 | 42 |
 | result 1 | main.go:40:1:48:1 | function declaration | main.go:40:33:48:1 | zero-init:1 block statement |
-| result 1 | main.go:40:1:48:1 | function declaration | main.go:42:3:42:5 | compound-rhs increment statement |
+| result 1 | main.go:40:1:48:1 | function declaration | main.go:42:3:42:5 | increment statement |
 | result 1 | main.go:40:1:48:1 | function declaration | main.go:45:13:45:13 | 1 |
 | result 1 | main.go:40:1:48:1 | function declaration | main.go:47:12:47:12 | 4 |
 | result 1 | tst2.go:8:1:12:1 | function declaration | tst2.go:11:12:11:14 | err |
