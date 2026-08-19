@@ -1,0 +1,3 @@
+| SimplifyBoolExpr.cs:10:29:10:56 | !... | The expression '!(A == B)' can be simplified to 'A != B'. |
+| SimplifyBoolExpr.cs:13:33:13:64 | !... | The expression '!(A == B)' can be simplified to 'A != B'. |
+| SimplifyBoolExpr.cs:45:115:45:130 | !... | The expression '!(A == B)' can be simplified to 'A != B'. |

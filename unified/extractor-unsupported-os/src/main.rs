@@ -1,4 +1,4 @@
 fn main() {
-    eprintln!("Unsupported OS. Extraction is not currently supported on Windows.");
+    eprintln!("Unsupported OS. Extraction is not currently supported on this platform.");
     std::process::exit(1);
 }
