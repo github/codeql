@@ -5,7 +5,7 @@ overlay[local]
 module;
 
 import go
-private import ControlFlowGraphShared
+private import ControlFlowGraphImpl
 
 /** A basic block in the control-flow graph. */
 class BasicBlock = CfgImpl::Cfg::BasicBlock;

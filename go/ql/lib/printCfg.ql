@@ -9,7 +9,7 @@
 
 import go
 import semmle.go.controlflow.ControlFlowGraph
-private import semmle.go.controlflow.ControlFlowGraphShared
+private import semmle.go.controlflow.ControlFlowGraphImpl
 
 external string selectedSourceFile();
 

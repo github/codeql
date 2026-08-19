@@ -9,7 +9,7 @@ module;
 import go
 private import codeql.ssa.Ssa as SsaImplCommon
 private import semmle.go.controlflow.BasicBlocks as BasicBlocks
-private import semmle.go.controlflow.ControlFlowGraphShared
+private import semmle.go.controlflow.ControlFlowGraphImpl
 
 private class BasicBlock = BasicBlocks::BasicBlock;
 
