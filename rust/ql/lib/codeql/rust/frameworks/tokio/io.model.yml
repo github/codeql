@@ -43,6 +43,6 @@ extensions:
       - ["tokio::io::util::async_read_ext::AsyncReadExt::read_i128", "Argument[self].Reference", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["tokio::io::util::async_read_ext::AsyncReadExt::read_i128_le", "Argument[self].Reference", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["tokio::io::util::async_read_ext::AsyncReadExt::read_f32", "Argument[self].Reference", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["tokio::io::util::async_read_ext::AsyncReadExt:::read_f32_le", "Argument[self].Reference", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["tokio::io::util::async_read_ext::AsyncReadExt::read_f32_le", "Argument[self].Reference", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["tokio::io::util::async_read_ext::AsyncReadExt::read_f64", "Argument[self].Reference", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["tokio::io::util::async_read_ext::AsyncReadExt::read_f64_le", "Argument[self].Reference", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
