@@ -1558,6 +1558,7 @@ dependencies = [
  "http-body-util",
  "hyper",
  "hyper-util",
+ "native-tls",
  "reqwest",
  "rustls",
  "tokio",

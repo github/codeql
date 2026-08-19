@@ -13,5 +13,6 @@
 | test.rs:224:28:224:66 | ...::connect(...) | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:306:22:306:58 | ...::connect(...) | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:332:22:332:75 | ...::new(...) | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:373:19:373:41 | ...::connect(...) | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:519:16:519:31 | ...::args(...) | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:359:18:359:54 | ...::connect(...) | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:396:19:396:41 | ...::connect(...) | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:542:16:542:31 | ...::args(...) | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
