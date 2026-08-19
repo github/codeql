@@ -1,28 +1,28 @@
 #select
-| main.rs:49:5:49:27 | FormatArgsExpr | main.rs:47:19:47:45 | ...::var(...) | main.rs:49:5:49:27 | FormatArgsExpr | Log entry depends on a $@. | main.rs:47:19:47:45 | ...::var(...) | user-provided value |
-| main.rs:50:5:50:26 | FormatArgsExpr | main.rs:47:19:47:45 | ...::var(...) | main.rs:50:5:50:26 | FormatArgsExpr | Log entry depends on a $@. | main.rs:47:19:47:45 | ...::var(...) | user-provided value |
-| main.rs:51:5:51:25 | FormatArgsExpr | main.rs:47:19:47:45 | ...::var(...) | main.rs:51:5:51:25 | FormatArgsExpr | Log entry depends on a $@. | main.rs:47:19:47:45 | ...::var(...) | user-provided value |
-| main.rs:52:5:52:24 | FormatArgsExpr | main.rs:47:19:47:45 | ...::var(...) | main.rs:52:5:52:24 | FormatArgsExpr | Log entry depends on a $@. | main.rs:47:19:47:45 | ...::var(...) | user-provided value |
+| main.rs:64:5:64:27 | FormatArgsExpr | main.rs:62:19:62:45 | ...::var(...) | main.rs:64:5:64:27 | FormatArgsExpr | Log entry depends on a $@. | main.rs:62:19:62:45 | ...::var(...) | user-provided value |
+| main.rs:65:5:65:26 | FormatArgsExpr | main.rs:62:19:62:45 | ...::var(...) | main.rs:65:5:65:26 | FormatArgsExpr | Log entry depends on a $@. | main.rs:62:19:62:45 | ...::var(...) | user-provided value |
+| main.rs:66:5:66:25 | FormatArgsExpr | main.rs:62:19:62:45 | ...::var(...) | main.rs:66:5:66:25 | FormatArgsExpr | Log entry depends on a $@. | main.rs:62:19:62:45 | ...::var(...) | user-provided value |
+| main.rs:67:5:67:24 | FormatArgsExpr | main.rs:62:19:62:45 | ...::var(...) | main.rs:67:5:67:24 | FormatArgsExpr | Log entry depends on a $@. | main.rs:62:19:62:45 | ...::var(...) | user-provided value |
 edges
-| main.rs:47:9:47:15 | tainted | main.rs:49:5:49:27 | FormatArgsExpr | provenance | Sink:MaD:2 |
-| main.rs:47:9:47:15 | tainted | main.rs:50:5:50:26 | FormatArgsExpr | provenance | Sink:MaD:1 |
-| main.rs:47:9:47:15 | tainted | main.rs:51:5:51:25 | FormatArgsExpr | provenance | Sink:MaD:2 |
-| main.rs:47:9:47:15 | tainted | main.rs:52:5:52:24 | FormatArgsExpr | provenance | Sink:MaD:1 |
-| main.rs:47:19:47:45 | ...::var(...) | main.rs:47:19:47:45 | ...::var(...) [Ok] | provenance | Src:MaD:3  |
-| main.rs:47:19:47:45 | ...::var(...) [Ok] | main.rs:47:19:47:65 | ... .unwrap_or_default() | provenance | MaD:4 |
-| main.rs:47:19:47:65 | ... .unwrap_or_default() | main.rs:47:9:47:15 | tainted | provenance |  |
+| main.rs:62:9:62:15 | tainted | main.rs:64:5:64:27 | FormatArgsExpr | provenance | Sink:MaD:2 |
+| main.rs:62:9:62:15 | tainted | main.rs:65:5:65:26 | FormatArgsExpr | provenance | Sink:MaD:1 |
+| main.rs:62:9:62:15 | tainted | main.rs:66:5:66:25 | FormatArgsExpr | provenance | Sink:MaD:2 |
+| main.rs:62:9:62:15 | tainted | main.rs:67:5:67:24 | FormatArgsExpr | provenance | Sink:MaD:1 |
+| main.rs:62:19:62:45 | ...::var(...) | main.rs:62:19:62:45 | ...::var(...) [Ok] | provenance | Src:MaD:3  |
+| main.rs:62:19:62:45 | ...::var(...) [Ok] | main.rs:62:19:62:65 | ... .unwrap_or_default() | provenance | MaD:4 |
+| main.rs:62:19:62:65 | ... .unwrap_or_default() | main.rs:62:9:62:15 | tainted | provenance |  |
 models
 | 1 | Sink: std::io::stdio::_eprint; Argument[0]; log-injection |
 | 2 | Sink: std::io::stdio::_print; Argument[0]; log-injection |
 | 3 | Source: std::env::var; ReturnValue.Field[core::result::Result::Ok(0)]; environment |
 | 4 | Summary: <core::result::Result>::unwrap_or_default; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 nodes
-| main.rs:47:9:47:15 | tainted | semmle.label | tainted |
-| main.rs:47:19:47:45 | ...::var(...) | semmle.label | ...::var(...) |
-| main.rs:47:19:47:45 | ...::var(...) [Ok] | semmle.label | ...::var(...) [Ok] |
-| main.rs:47:19:47:65 | ... .unwrap_or_default() | semmle.label | ... .unwrap_or_default() |
-| main.rs:49:5:49:27 | FormatArgsExpr | semmle.label | FormatArgsExpr |
-| main.rs:50:5:50:26 | FormatArgsExpr | semmle.label | FormatArgsExpr |
-| main.rs:51:5:51:25 | FormatArgsExpr | semmle.label | FormatArgsExpr |
-| main.rs:52:5:52:24 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:62:9:62:15 | tainted | semmle.label | tainted |
+| main.rs:62:19:62:45 | ...::var(...) | semmle.label | ...::var(...) |
+| main.rs:62:19:62:45 | ...::var(...) [Ok] | semmle.label | ...::var(...) [Ok] |
+| main.rs:62:19:62:65 | ... .unwrap_or_default() | semmle.label | ... .unwrap_or_default() |
+| main.rs:64:5:64:27 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:65:5:65:26 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:66:5:66:25 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:67:5:67:24 | FormatArgsExpr | semmle.label | FormatArgsExpr |
 subpaths

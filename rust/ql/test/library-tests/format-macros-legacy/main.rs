@@ -6,7 +6,7 @@ fn source(i: i64) -> String {
     i.to_string()
 }
 
-fn sink(s: String) {}
+fn sink(_s: String) {}
 
 pub fn format_flow() {
     let a = source(1);
@@ -21,23 +21,38 @@ pub fn format_flow() {
 }
 
 pub fn exercises_reconstruction() {
-    // No flow assertions here: these exercise reconstruction of the rest of the
-    // family, including the writer-argument handling of `write!`/`writeln!`.
-    //
-    // Flow into a writer buffer is not recovered on <1.94 (the
-    // `buf.write_fmt(..)` desugaring is absent), but this matches native
-    // behavior on >=1.94, where the `Write::write_fmt` content-to-self taint
-    // model is also missing. So it is a pre-existing model gap, not a
-    // regression from the reconstruction.
-    let d = source(4);
-    let _ = format_args!("{}", d);
+    // these exercise reconstruction of the rest of the family, including the
+    // writer-argument handling of `write!`/`writeln!`.
+    let a = source(4);
+    let b = format_args!("{}", a);
+    let c = std::fmt::format(b);
+    sink(c); // $ hasTaintFlow=4
+
+    let mut buf1 = String::new();
+    let d = source(5);
+    let _ = buf1.write_str(d.as_str());
+    sink(buf1); // $ hasTaintFlow=5
+
+    let mut buf2 = String::new();
+    let e = source(6);
+    let _ = buf2.write_fmt(format_args!("{e}"));
+    sink(buf2); // $ hasTaintFlow=6
+
+    let mut buf3 = String::new();
+    let f = source(7);
+    let _ = std::fmt::write(&mut buf3, format_args!("{f}"));
+    sink(buf3); // $ hasTaintFlow=7
 
     use std::fmt::Write;
-    let mut buf = String::new();
-    let e = source(5);
-    let _ = write!(buf, "{}", e);
-    let _ = writeln!(buf, "{e}");
-    sink(buf);
+    let mut buf4 = String::new();
+    let g = source(8);
+    let _ = write!(buf4, "{}", g);
+    sink(buf4); // $ hasTaintFlow=8
+
+    let mut buf5 = String::new();
+    let h = source(9);
+    let _ = writeln!(buf5, "{h}");
+    sink(buf5); // $ hasTaintFlow=9
 }
 
 // The log-injection sinks (`println!`/`eprintln!`/`panic!`) are reconstructed

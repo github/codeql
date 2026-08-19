@@ -1,19 +1,51 @@
 models
-| 1 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+| 1 | Summary: <_ as core::fmt::Write>::write_fmt; Argument[0]; Argument[self].Reference; taint |
+| 2 | Summary: <_ as core::fmt::Write>::write_str; Argument[0].Reference; Argument[self].Reference; taint |
+| 3 | Summary: <alloc::string::String>::as_str; Argument[self].Reference; ReturnValue.Reference; taint |
+| 4 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+| 5 | Summary: core::fmt::write; Argument[1]; Argument[0].Reference; taint |
 edges
 | main.rs:12:9:12:9 | a | main.rs:13:10:13:25 | FormatArgsExpr | provenance |  |
 | main.rs:12:13:12:21 | source(...) | main.rs:12:9:12:9 | a | provenance |  |
 | main.rs:13:10:13:25 | ...::format(...) | main.rs:13:10:13:25 | MacroExpr | provenance |  |
-| main.rs:13:10:13:25 | FormatArgsExpr | main.rs:13:10:13:25 | ...::format(...) | provenance | MaD:1 |
+| main.rs:13:10:13:25 | FormatArgsExpr | main.rs:13:10:13:25 | ...::format(...) | provenance | MaD:4 |
 | main.rs:15:9:15:9 | b | main.rs:16:10:16:23 | FormatArgsExpr | provenance |  |
 | main.rs:15:13:15:21 | source(...) | main.rs:15:9:15:9 | b | provenance |  |
 | main.rs:16:10:16:23 | ...::format(...) | main.rs:16:10:16:23 | MacroExpr | provenance |  |
-| main.rs:16:10:16:23 | FormatArgsExpr | main.rs:16:10:16:23 | ...::format(...) | provenance | MaD:1 |
+| main.rs:16:10:16:23 | FormatArgsExpr | main.rs:16:10:16:23 | ...::format(...) | provenance | MaD:4 |
 | main.rs:18:9:18:9 | c | main.rs:19:13:19:36 | FormatArgsExpr | provenance |  |
 | main.rs:18:13:18:21 | source(...) | main.rs:18:9:18:9 | c | provenance |  |
 | main.rs:19:9:19:9 | s | main.rs:20:10:20:10 | s | provenance |  |
 | main.rs:19:13:19:36 | ...::format(...) | main.rs:19:9:19:9 | s | provenance |  |
-| main.rs:19:13:19:36 | FormatArgsExpr | main.rs:19:13:19:36 | ...::format(...) | provenance | MaD:1 |
+| main.rs:19:13:19:36 | FormatArgsExpr | main.rs:19:13:19:36 | ...::format(...) | provenance | MaD:4 |
+| main.rs:26:9:26:9 | a | main.rs:27:9:27:9 | b | provenance |  |
+| main.rs:26:13:26:21 | source(...) | main.rs:26:9:26:9 | a | provenance |  |
+| main.rs:27:9:27:9 | b | main.rs:28:30:28:30 | b | provenance |  |
+| main.rs:28:9:28:9 | c | main.rs:29:10:29:10 | c | provenance |  |
+| main.rs:28:13:28:31 | ...::format(...) | main.rs:28:9:28:9 | c | provenance |  |
+| main.rs:28:30:28:30 | b | main.rs:28:13:28:31 | ...::format(...) | provenance | MaD:4 |
+| main.rs:32:9:32:9 | d | main.rs:33:28:33:28 | d | provenance |  |
+| main.rs:32:13:32:21 | source(...) | main.rs:32:9:32:9 | d | provenance |  |
+| main.rs:33:13:33:16 | [post] buf1 | main.rs:34:10:34:13 | buf1 | provenance |  |
+| main.rs:33:28:33:28 | d | main.rs:33:28:33:37 | d.as_str() [&ref] | provenance | MaD:3 |
+| main.rs:33:28:33:37 | d.as_str() [&ref] | main.rs:33:13:33:16 | [post] buf1 | provenance | MaD:2 |
+| main.rs:37:9:37:9 | e | main.rs:38:28:38:46 | MacroExpr | provenance |  |
+| main.rs:37:13:37:21 | source(...) | main.rs:37:9:37:9 | e | provenance |  |
+| main.rs:38:13:38:16 | [post] buf2 | main.rs:39:10:39:13 | buf2 | provenance |  |
+| main.rs:38:28:38:46 | MacroExpr | main.rs:38:13:38:16 | [post] buf2 | provenance | MaD:1 |
+| main.rs:42:9:42:9 | f | main.rs:43:40:43:58 | MacroExpr | provenance |  |
+| main.rs:42:13:42:21 | source(...) | main.rs:42:9:42:9 | f | provenance |  |
+| main.rs:43:29:43:37 | [post] &mut buf3 [&ref] | main.rs:43:34:43:37 | [post] buf3 | provenance |  |
+| main.rs:43:34:43:37 | [post] buf3 | main.rs:44:10:44:13 | buf3 | provenance |  |
+| main.rs:43:40:43:58 | MacroExpr | main.rs:43:29:43:37 | [post] &mut buf3 [&ref] | provenance | MaD:5 |
+| main.rs:48:9:48:9 | g | main.rs:49:13:49:33 | FormatArgsExpr | provenance |  |
+| main.rs:48:13:48:21 | source(...) | main.rs:48:9:48:9 | g | provenance |  |
+| main.rs:49:13:49:33 | FormatArgsExpr | main.rs:49:20:49:23 | [post] buf4 | provenance | MaD:1 |
+| main.rs:49:20:49:23 | [post] buf4 | main.rs:50:10:50:13 | buf4 | provenance |  |
+| main.rs:53:9:53:9 | h | main.rs:54:13:54:33 | FormatArgsExpr | provenance |  |
+| main.rs:53:13:53:21 | source(...) | main.rs:53:9:53:9 | h | provenance |  |
+| main.rs:54:13:54:33 | FormatArgsExpr | main.rs:54:22:54:25 | [post] buf5 | provenance | MaD:1 |
+| main.rs:54:22:54:25 | [post] buf5 | main.rs:55:10:55:13 | buf5 | provenance |  |
 nodes
 | main.rs:12:9:12:9 | a | semmle.label | a |
 | main.rs:12:13:12:21 | source(...) | semmle.label | source(...) |
@@ -31,9 +63,49 @@ nodes
 | main.rs:19:13:19:36 | ...::format(...) | semmle.label | ...::format(...) |
 | main.rs:19:13:19:36 | FormatArgsExpr | semmle.label | FormatArgsExpr |
 | main.rs:20:10:20:10 | s | semmle.label | s |
+| main.rs:26:9:26:9 | a | semmle.label | a |
+| main.rs:26:13:26:21 | source(...) | semmle.label | source(...) |
+| main.rs:27:9:27:9 | b | semmle.label | b |
+| main.rs:28:9:28:9 | c | semmle.label | c |
+| main.rs:28:13:28:31 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:28:30:28:30 | b | semmle.label | b |
+| main.rs:29:10:29:10 | c | semmle.label | c |
+| main.rs:32:9:32:9 | d | semmle.label | d |
+| main.rs:32:13:32:21 | source(...) | semmle.label | source(...) |
+| main.rs:33:13:33:16 | [post] buf1 | semmle.label | [post] buf1 |
+| main.rs:33:28:33:28 | d | semmle.label | d |
+| main.rs:33:28:33:37 | d.as_str() [&ref] | semmle.label | d.as_str() [&ref] |
+| main.rs:34:10:34:13 | buf1 | semmle.label | buf1 |
+| main.rs:37:9:37:9 | e | semmle.label | e |
+| main.rs:37:13:37:21 | source(...) | semmle.label | source(...) |
+| main.rs:38:13:38:16 | [post] buf2 | semmle.label | [post] buf2 |
+| main.rs:38:28:38:46 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:39:10:39:13 | buf2 | semmle.label | buf2 |
+| main.rs:42:9:42:9 | f | semmle.label | f |
+| main.rs:42:13:42:21 | source(...) | semmle.label | source(...) |
+| main.rs:43:29:43:37 | [post] &mut buf3 [&ref] | semmle.label | [post] &mut buf3 [&ref] |
+| main.rs:43:34:43:37 | [post] buf3 | semmle.label | [post] buf3 |
+| main.rs:43:40:43:58 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:44:10:44:13 | buf3 | semmle.label | buf3 |
+| main.rs:48:9:48:9 | g | semmle.label | g |
+| main.rs:48:13:48:21 | source(...) | semmle.label | source(...) |
+| main.rs:49:13:49:33 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:49:20:49:23 | [post] buf4 | semmle.label | [post] buf4 |
+| main.rs:50:10:50:13 | buf4 | semmle.label | buf4 |
+| main.rs:53:9:53:9 | h | semmle.label | h |
+| main.rs:53:13:53:21 | source(...) | semmle.label | source(...) |
+| main.rs:54:13:54:33 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:54:22:54:25 | [post] buf5 | semmle.label | [post] buf5 |
+| main.rs:55:10:55:13 | buf5 | semmle.label | buf5 |
 subpaths
 testFailures
 #select
 | main.rs:13:10:13:25 | MacroExpr | main.rs:12:13:12:21 | source(...) | main.rs:13:10:13:25 | MacroExpr | $@ | main.rs:12:13:12:21 | source(...) | source(...) |
 | main.rs:16:10:16:23 | MacroExpr | main.rs:15:13:15:21 | source(...) | main.rs:16:10:16:23 | MacroExpr | $@ | main.rs:15:13:15:21 | source(...) | source(...) |
 | main.rs:20:10:20:10 | s | main.rs:18:13:18:21 | source(...) | main.rs:20:10:20:10 | s | $@ | main.rs:18:13:18:21 | source(...) | source(...) |
+| main.rs:29:10:29:10 | c | main.rs:26:13:26:21 | source(...) | main.rs:29:10:29:10 | c | $@ | main.rs:26:13:26:21 | source(...) | source(...) |
+| main.rs:34:10:34:13 | buf1 | main.rs:32:13:32:21 | source(...) | main.rs:34:10:34:13 | buf1 | $@ | main.rs:32:13:32:21 | source(...) | source(...) |
+| main.rs:39:10:39:13 | buf2 | main.rs:37:13:37:21 | source(...) | main.rs:39:10:39:13 | buf2 | $@ | main.rs:37:13:37:21 | source(...) | source(...) |
+| main.rs:44:10:44:13 | buf3 | main.rs:42:13:42:21 | source(...) | main.rs:44:10:44:13 | buf3 | $@ | main.rs:42:13:42:21 | source(...) | source(...) |
+| main.rs:50:10:50:13 | buf4 | main.rs:48:13:48:21 | source(...) | main.rs:50:10:50:13 | buf4 | $@ | main.rs:48:13:48:21 | source(...) | source(...) |
+| main.rs:55:10:55:13 | buf5 | main.rs:53:13:53:21 | source(...) | main.rs:55:10:55:13 | buf5 | $@ | main.rs:53:13:53:21 | source(...) | source(...) |
