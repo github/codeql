@@ -13,7 +13,7 @@ overlay[local]
 module;
 
 import go
-private import ControlFlowGraphShared
+private import ControlFlowGraphImpl
 private import codeql.controlflow.SuccessorType
 
 /** Provides predicates and classes for working with IR constructs. */
