@@ -1261,7 +1261,7 @@
 | exprs.go:49:30:54:1 | result-read:0 block statement | exprs.go:49:30:54:1 | After block statement |
 | exprs.go:49:30:54:1 | zero-init:0 block statement | exprs.go:50:2:52:2 | for statement |
 | exprs.go:50:2:52:2 | After for statement | exprs.go:53:2:53:7 | Before return statement |
-| exprs.go:50:2:52:2 | [LoopHeader] for statement | exprs.go:50:27:50:29 | increment statement |
+| exprs.go:50:2:52:2 | [LoopHeader] for statement | exprs.go:50:27:50:29 | Before increment statement |
 | exprs.go:50:2:52:2 | for statement | exprs.go:50:6:50:11 | ... := ... |
 | exprs.go:50:6:50:11 | ... := ... | exprs.go:50:11:50:11 | Before 0 |
 | exprs.go:50:6:50:11 | After ... := ... | exprs.go:50:14:50:24 | Before ...<... |
@@ -1286,24 +1286,24 @@
 | exprs.go:50:22:50:23 | After xs | exprs.go:50:18:50:24 | call to len |
 | exprs.go:50:22:50:23 | Before xs | exprs.go:50:22:50:23 | xs |
 | exprs.go:50:22:50:23 | xs | exprs.go:50:22:50:23 | After xs |
-| exprs.go:50:27:50:27 | After i | exprs.go:50:27:50:29 | compound-rhs increment statement |
+| exprs.go:50:27:50:27 | After i | exprs.go:50:27:50:29 | increment statement |
 | exprs.go:50:27:50:27 | Before i | exprs.go:50:27:50:27 | i |
 | exprs.go:50:27:50:27 | i | exprs.go:50:27:50:27 | After i |
 | exprs.go:50:27:50:29 | After increment statement | exprs.go:50:14:50:24 | Before ...<... |
-| exprs.go:50:27:50:29 | compound-rhs increment statement | exprs.go:50:27:50:29 | After increment statement |
-| exprs.go:50:27:50:29 | increment statement | exprs.go:50:27:50:27 | Before i |
+| exprs.go:50:27:50:29 | Before increment statement | exprs.go:50:27:50:27 | Before i |
+| exprs.go:50:27:50:29 | increment statement | exprs.go:50:27:50:29 | After increment statement |
 | exprs.go:50:31:52:2 | After block statement | exprs.go:50:2:52:2 | [LoopHeader] for statement |
-| exprs.go:50:31:52:2 | block statement | exprs.go:51:3:51:14 | ... += ... |
+| exprs.go:50:31:52:2 | block statement | exprs.go:51:3:51:14 | Before ... += ... |
 | exprs.go:51:3:51:5 | After res | exprs.go:51:10:51:14 | Before index expression |
 | exprs.go:51:3:51:5 | Before res | exprs.go:51:3:51:5 | res |
 | exprs.go:51:3:51:5 | res | exprs.go:51:3:51:5 | After res |
-| exprs.go:51:3:51:14 | ... += ... | exprs.go:51:3:51:5 | Before res |
+| exprs.go:51:3:51:14 | ... += ... | exprs.go:51:3:51:14 | After ... += ... |
 | exprs.go:51:3:51:14 | After ... += ... | exprs.go:50:31:52:2 | After block statement |
-| exprs.go:51:3:51:14 | compound-rhs ... += ... | exprs.go:51:3:51:14 | After ... += ... |
+| exprs.go:51:3:51:14 | Before ... += ... | exprs.go:51:3:51:5 | Before res |
 | exprs.go:51:10:51:11 | After xs | exprs.go:51:13:51:13 | Before i |
 | exprs.go:51:10:51:11 | Before xs | exprs.go:51:10:51:11 | xs |
 | exprs.go:51:10:51:11 | xs | exprs.go:51:10:51:11 | After xs |
-| exprs.go:51:10:51:14 | After index expression | exprs.go:51:3:51:14 | compound-rhs ... += ... |
+| exprs.go:51:10:51:14 | After index expression | exprs.go:51:3:51:14 | ... += ... |
 | exprs.go:51:10:51:14 | Before index expression | exprs.go:51:10:51:11 | Before xs |
 | exprs.go:51:10:51:14 | index expression | exprs.go:49:1:54:1 | Exceptional Exit |
 | exprs.go:51:10:51:14 | index expression | exprs.go:51:10:51:14 | After index expression |
@@ -1897,15 +1897,15 @@
 | main.go:16:5:16:10 | call to cond | main.go:16:5:16:10 | After call to cond [false] |
 | main.go:16:5:16:10 | call to cond | main.go:16:5:16:10 | After call to cond [true] |
 | main.go:16:12:18:2 | After block statement | main.go:16:2:18:2 | After if statement |
-| main.go:16:12:18:2 | block statement | main.go:17:3:17:9 | ... += ... |
+| main.go:16:12:18:2 | block statement | main.go:17:3:17:9 | Before ... += ... |
 | main.go:17:3:17:3 | After y | main.go:17:8:17:9 | Before 19 |
 | main.go:17:3:17:3 | Before y | main.go:17:3:17:3 | y |
 | main.go:17:3:17:3 | y | main.go:17:3:17:3 | After y |
-| main.go:17:3:17:9 | ... += ... | main.go:17:3:17:3 | Before y |
+| main.go:17:3:17:9 | ... += ... | main.go:17:3:17:9 | After ... += ... |
 | main.go:17:3:17:9 | After ... += ... | main.go:16:12:18:2 | After block statement |
-| main.go:17:3:17:9 | compound-rhs ... += ... | main.go:17:3:17:9 | After ... += ... |
+| main.go:17:3:17:9 | Before ... += ... | main.go:17:3:17:3 | Before y |
 | main.go:17:8:17:9 | 19 | main.go:17:8:17:9 | After 19 |
-| main.go:17:8:17:9 | After 19 | main.go:17:3:17:9 | compound-rhs ... += ... |
+| main.go:17:8:17:9 | After 19 | main.go:17:3:17:9 | ... += ... |
 | main.go:17:8:17:9 | Before 19 | main.go:17:8:17:9 | 19 |
 | main.go:19:2:19:10 | After selection of Print | main.go:19:12:19:12 | Before x |
 | main.go:19:2:19:10 | Before selection of Print | main.go:19:2:19:10 | selection of Print |
@@ -2012,18 +2012,18 @@
 | main.go:34:1:36:1 | function declaration | main.go:34:1:36:1 | After function declaration |
 | main.go:34:11:34:11 | x | main.go:34:19:36:1 | block statement |
 | main.go:34:19:36:1 | After block statement | main.go:34:1:36:1 | Normal Exit |
-| main.go:34:19:36:1 | block statement | main.go:35:2:35:9 | ... += ... |
+| main.go:34:19:36:1 | block statement | main.go:35:2:35:9 | Before ... += ... |
 | main.go:35:2:35:3 | After star expression | main.go:35:8:35:9 | Before 19 |
 | main.go:35:2:35:3 | Before star expression | main.go:35:3:35:3 | Before x |
 | main.go:35:2:35:3 | star expression | main.go:35:2:35:3 | After star expression |
-| main.go:35:2:35:9 | ... += ... | main.go:35:2:35:3 | Before star expression |
+| main.go:35:2:35:9 | ... += ... | main.go:35:2:35:9 | After ... += ... |
 | main.go:35:2:35:9 | After ... += ... | main.go:34:19:36:1 | After block statement |
-| main.go:35:2:35:9 | compound-rhs ... += ... | main.go:35:2:35:9 | After ... += ... |
+| main.go:35:2:35:9 | Before ... += ... | main.go:35:2:35:3 | Before star expression |
 | main.go:35:3:35:3 | After x | main.go:35:2:35:3 | star expression |
 | main.go:35:3:35:3 | Before x | main.go:35:3:35:3 | x |
 | main.go:35:3:35:3 | x | main.go:35:3:35:3 | After x |
 | main.go:35:8:35:9 | 19 | main.go:35:8:35:9 | After 19 |
-| main.go:35:8:35:9 | After 19 | main.go:35:2:35:9 | compound-rhs ... += ... |
+| main.go:35:8:35:9 | After 19 | main.go:35:2:35:9 | ... += ... |
 | main.go:35:8:35:9 | Before 19 | main.go:35:8:35:9 | 19 |
 | main.go:38:1:45:1 | After function declaration | main.go:47:1:50:1 | Before function declaration |
 | main.go:38:1:45:1 | Before function declaration | main.go:38:1:45:1 | function declaration |
@@ -2213,7 +2213,7 @@
 | main.go:73:7:73:7 | After 1 | main.go:73:2:73:7 | assign:0 ... := ... |
 | main.go:73:7:73:7 | Before 1 | main.go:73:7:73:7 | 1 |
 | main.go:74:2:79:2 | After for statement | main.go:80:2:80:13 | expression statement |
-| main.go:74:2:79:2 | [LoopHeader] for statement | main.go:74:16:74:18 | increment statement |
+| main.go:74:2:79:2 | [LoopHeader] for statement | main.go:74:16:74:18 | Before increment statement |
 | main.go:74:2:79:2 | for statement | main.go:74:6:74:11 | ... := ... |
 | main.go:74:6:74:11 | ... := ... | main.go:74:11:74:11 | Before 0 |
 | main.go:74:6:74:11 | After ... := ... | main.go:74:20:79:2 | block statement |
@@ -2221,12 +2221,12 @@
 | main.go:74:11:74:11 | 0 | main.go:74:11:74:11 | After 0 |
 | main.go:74:11:74:11 | After 0 | main.go:74:6:74:11 | assign:0 ... := ... |
 | main.go:74:11:74:11 | Before 0 | main.go:74:11:74:11 | 0 |
-| main.go:74:16:74:16 | After i | main.go:74:16:74:18 | compound-rhs increment statement |
+| main.go:74:16:74:16 | After i | main.go:74:16:74:18 | increment statement |
 | main.go:74:16:74:16 | Before i | main.go:74:16:74:16 | i |
 | main.go:74:16:74:16 | i | main.go:74:16:74:16 | After i |
 | main.go:74:16:74:18 | After increment statement | main.go:74:20:79:2 | block statement |
-| main.go:74:16:74:18 | compound-rhs increment statement | main.go:74:16:74:18 | After increment statement |
-| main.go:74:16:74:18 | increment statement | main.go:74:16:74:16 | Before i |
+| main.go:74:16:74:18 | Before increment statement | main.go:74:16:74:16 | Before i |
+| main.go:74:16:74:18 | increment statement | main.go:74:16:74:18 | After increment statement |
 | main.go:74:20:79:2 | After block statement | main.go:74:2:79:2 | [LoopHeader] for statement |
 | main.go:74:20:79:2 | block statement | main.go:75:3:77:3 | if statement |
 | main.go:75:3:77:3 | After if statement | main.go:78:3:78:7 | ... = ... |
@@ -2268,7 +2268,7 @@
 | main.go:82:7:82:7 | After 1 | main.go:82:2:82:7 | assign:0 ... := ... |
 | main.go:82:7:82:7 | Before 1 | main.go:82:7:82:7 | 1 |
 | main.go:83:2:88:2 | After for statement | main.go:89:2:89:13 | expression statement |
-| main.go:83:2:88:2 | [LoopHeader] for statement | main.go:83:16:83:18 | increment statement |
+| main.go:83:2:88:2 | [LoopHeader] for statement | main.go:83:16:83:18 | Before increment statement |
 | main.go:83:2:88:2 | for statement | main.go:83:6:83:11 | ... := ... |
 | main.go:83:6:83:11 | ... := ... | main.go:83:11:83:11 | Before 0 |
 | main.go:83:6:83:11 | After ... := ... | main.go:83:20:88:2 | block statement |
@@ -2276,12 +2276,12 @@
 | main.go:83:11:83:11 | 0 | main.go:83:11:83:11 | After 0 |
 | main.go:83:11:83:11 | After 0 | main.go:83:6:83:11 | assign:0 ... := ... |
 | main.go:83:11:83:11 | Before 0 | main.go:83:11:83:11 | 0 |
-| main.go:83:16:83:16 | After i | main.go:83:16:83:18 | compound-rhs increment statement |
+| main.go:83:16:83:16 | After i | main.go:83:16:83:18 | increment statement |
 | main.go:83:16:83:16 | Before i | main.go:83:16:83:16 | i |
 | main.go:83:16:83:16 | i | main.go:83:16:83:16 | After i |
 | main.go:83:16:83:18 | After increment statement | main.go:83:20:88:2 | block statement |
-| main.go:83:16:83:18 | compound-rhs increment statement | main.go:83:16:83:18 | After increment statement |
-| main.go:83:16:83:18 | increment statement | main.go:83:16:83:16 | Before i |
+| main.go:83:16:83:18 | Before increment statement | main.go:83:16:83:16 | Before i |
+| main.go:83:16:83:18 | increment statement | main.go:83:16:83:18 | After increment statement |
 | main.go:83:20:88:2 | After block statement | main.go:83:2:88:2 | [LoopHeader] for statement |
 | main.go:83:20:88:2 | block statement | main.go:84:3:84:7 | ... = ... |
 | main.go:84:3:84:7 | ... = ... | main.go:84:7:84:7 | Before 2 |
@@ -2812,17 +2812,17 @@
 | stmts5.go:7:7:7:8 | me | stmts5.go:7:22:7:26 | other |
 | stmts5.go:7:22:7:26 | other | stmts5.go:7:33:9:1 | block statement |
 | stmts5.go:7:33:9:1 | After block statement | stmts5.go:7:1:9:1 | Normal Exit |
-| stmts5.go:7:33:9:1 | block statement | stmts5.go:8:2:8:16 | ... += ... |
+| stmts5.go:7:33:9:1 | block statement | stmts5.go:8:2:8:16 | Before ... += ... |
 | stmts5.go:8:2:8:3 | After me | stmts5.go:8:2:8:7 | selection of val |
 | stmts5.go:8:2:8:3 | Before me | stmts5.go:8:2:8:3 | me |
 | stmts5.go:8:2:8:3 | me | stmts5.go:8:2:8:3 | After me |
 | stmts5.go:8:2:8:7 | After selection of val | stmts5.go:8:12:8:16 | Before other |
 | stmts5.go:8:2:8:7 | Before selection of val | stmts5.go:8:2:8:3 | Before me |
 | stmts5.go:8:2:8:7 | selection of val | stmts5.go:8:2:8:7 | After selection of val |
-| stmts5.go:8:2:8:16 | ... += ... | stmts5.go:8:2:8:7 | Before selection of val |
+| stmts5.go:8:2:8:16 | ... += ... | stmts5.go:8:2:8:16 | After ... += ... |
 | stmts5.go:8:2:8:16 | After ... += ... | stmts5.go:7:33:9:1 | After block statement |
-| stmts5.go:8:2:8:16 | compound-rhs ... += ... | stmts5.go:8:2:8:16 | After ... += ... |
-| stmts5.go:8:12:8:16 | After other | stmts5.go:8:2:8:16 | compound-rhs ... += ... |
+| stmts5.go:8:2:8:16 | Before ... += ... | stmts5.go:8:2:8:7 | Before selection of val |
+| stmts5.go:8:12:8:16 | After other | stmts5.go:8:2:8:16 | ... += ... |
 | stmts5.go:8:12:8:16 | Before other | stmts5.go:8:12:8:16 | other |
 | stmts5.go:8:12:8:16 | other | stmts5.go:8:12:8:16 | After other |
 | stmts5.go:11:1:12:1 | After function declaration | stmts5.go:0:0:0:0 | After stmts5.go |
@@ -3180,7 +3180,7 @@
 | stmts7.go:64:31:68:1 | block statement | stmts7.go:65:2:67:2 | for statement |
 | stmts7.go:65:2:67:2 | After for statement | stmts7.go:64:31:68:1 | After block statement |
 | stmts7.go:65:2:67:2 | After for statement | stmts7.go:66:9:66:22 | defer-invoke call to recoverPanic |
-| stmts7.go:65:2:67:2 | [LoopHeader] for statement | stmts7.go:65:25:65:27 | increment statement |
+| stmts7.go:65:2:67:2 | [LoopHeader] for statement | stmts7.go:65:25:65:27 | Before increment statement |
 | stmts7.go:65:2:67:2 | for statement | stmts7.go:65:6:65:11 | ... := ... |
 | stmts7.go:65:6:65:11 | ... := ... | stmts7.go:65:11:65:11 | Before 0 |
 | stmts7.go:65:6:65:11 | After ... := ... | stmts7.go:65:14:65:22 | Before ...<... |
@@ -3199,12 +3199,12 @@
 | stmts7.go:65:18:65:22 | After count | stmts7.go:65:14:65:22 | ...<... |
 | stmts7.go:65:18:65:22 | Before count | stmts7.go:65:18:65:22 | count |
 | stmts7.go:65:18:65:22 | count | stmts7.go:65:18:65:22 | After count |
-| stmts7.go:65:25:65:25 | After i | stmts7.go:65:25:65:27 | compound-rhs increment statement |
+| stmts7.go:65:25:65:25 | After i | stmts7.go:65:25:65:27 | increment statement |
 | stmts7.go:65:25:65:25 | Before i | stmts7.go:65:25:65:25 | i |
 | stmts7.go:65:25:65:25 | i | stmts7.go:65:25:65:25 | After i |
 | stmts7.go:65:25:65:27 | After increment statement | stmts7.go:65:14:65:22 | Before ...<... |
-| stmts7.go:65:25:65:27 | compound-rhs increment statement | stmts7.go:65:25:65:27 | After increment statement |
-| stmts7.go:65:25:65:27 | increment statement | stmts7.go:65:25:65:25 | Before i |
+| stmts7.go:65:25:65:27 | Before increment statement | stmts7.go:65:25:65:25 | Before i |
+| stmts7.go:65:25:65:27 | increment statement | stmts7.go:65:25:65:27 | After increment statement |
 | stmts7.go:65:29:67:2 | After block statement | stmts7.go:65:2:67:2 | [LoopHeader] for statement |
 | stmts7.go:65:29:67:2 | block statement | stmts7.go:66:3:66:22 | Before defer statement |
 | stmts7.go:66:3:66:22 | After defer statement | stmts7.go:65:29:67:2 | After block statement |
@@ -3435,7 +3435,7 @@
 | stmts.go:23:11:37:2 | After block statement | stmts.go:23:2:37:2 | [LoopHeader] for statement |
 | stmts.go:23:11:37:2 | block statement | stmts.go:24:3:36:3 | for statement |
 | stmts.go:24:3:36:3 | After for statement | stmts.go:23:11:37:2 | After block statement |
-| stmts.go:24:3:36:3 | [LoopHeader] for statement | stmts.go:24:23:24:25 | increment statement |
+| stmts.go:24:3:36:3 | [LoopHeader] for statement | stmts.go:24:23:24:25 | Before increment statement |
 | stmts.go:24:3:36:3 | for statement | stmts.go:24:7:24:12 | ... := ... |
 | stmts.go:24:7:24:12 | ... := ... | stmts.go:24:12:24:12 | Before 0 |
 | stmts.go:24:7:24:12 | After ... := ... | stmts.go:24:15:24:20 | Before ...<... |
@@ -3454,12 +3454,12 @@
 | stmts.go:24:19:24:20 | 10 | stmts.go:24:19:24:20 | After 10 |
 | stmts.go:24:19:24:20 | After 10 | stmts.go:24:15:24:20 | ...<... |
 | stmts.go:24:19:24:20 | Before 10 | stmts.go:24:19:24:20 | 10 |
-| stmts.go:24:23:24:23 | After i | stmts.go:24:23:24:25 | compound-rhs increment statement |
+| stmts.go:24:23:24:23 | After i | stmts.go:24:23:24:25 | increment statement |
 | stmts.go:24:23:24:23 | Before i | stmts.go:24:23:24:23 | i |
 | stmts.go:24:23:24:23 | i | stmts.go:24:23:24:23 | After i |
 | stmts.go:24:23:24:25 | After increment statement | stmts.go:24:15:24:20 | Before ...<... |
-| stmts.go:24:23:24:25 | compound-rhs increment statement | stmts.go:24:23:24:25 | After increment statement |
-| stmts.go:24:23:24:25 | increment statement | stmts.go:24:23:24:23 | Before i |
+| stmts.go:24:23:24:25 | Before increment statement | stmts.go:24:23:24:23 | Before i |
+| stmts.go:24:23:24:25 | increment statement | stmts.go:24:23:24:25 | After increment statement |
 | stmts.go:24:27:36:3 | block statement | stmts.go:25:4:35:4 | if statement |
 | stmts.go:25:4:35:4 | if statement | stmts.go:25:7:25:16 | ... := ... |
 | stmts.go:25:7:25:16 | ... := ... | stmts.go:25:12:25:16 | Before ...-... |

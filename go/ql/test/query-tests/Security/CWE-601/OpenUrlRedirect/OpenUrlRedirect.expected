@@ -30,8 +30,8 @@ edges
 | stdlib.go:71:23:71:37 | ...+... | stdlib.go:71:23:71:40 | ...+... | provenance | Config Sink:MaD:1 |
 | stdlib.go:93:13:93:18 | selection of Form | stdlib.go:93:13:93:32 | call to Get | provenance | Src:MaD:2 Config |
 | stdlib.go:93:13:93:32 | call to Get | stdlib.go:94:3:94:8 | target | provenance |  |
-| stdlib.go:94:3:94:8 | target | stdlib.go:94:3:94:25 | compound-rhs ... += ... | provenance | Config |
-| stdlib.go:94:3:94:25 | compound-rhs ... += ... | stdlib.go:96:23:96:28 | target | provenance | Sink:MaD:1 |
+| stdlib.go:94:3:94:8 | target | stdlib.go:94:3:94:25 | ... += ... | provenance | Config |
+| stdlib.go:94:3:94:25 | ... += ... | stdlib.go:96:23:96:28 | target | provenance | Sink:MaD:1 |
 | stdlib.go:116:4:116:4 | implicit-deref r [postupdate] [URL] | stdlib.go:116:4:116:4 | r [postupdate] [pointer, URL] | provenance |  |
 | stdlib.go:116:4:116:4 | r [postupdate] [pointer, URL] | stdlib.go:117:24:117:24 | r [pointer, URL] | provenance |  |
 | stdlib.go:116:4:116:8 | implicit-deref selection of URL | stdlib.go:116:4:116:8 | selection of URL [postupdate] | provenance | Config |
@@ -118,7 +118,7 @@ nodes
 | stdlib.go:93:13:93:18 | selection of Form | semmle.label | selection of Form |
 | stdlib.go:93:13:93:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:94:3:94:8 | target | semmle.label | target |
-| stdlib.go:94:3:94:25 | compound-rhs ... += ... | semmle.label | compound-rhs ... += ... |
+| stdlib.go:94:3:94:25 | ... += ... | semmle.label | ... += ... |
 | stdlib.go:96:23:96:28 | target | semmle.label | target |
 | stdlib.go:116:4:116:4 | implicit-deref r [postupdate] [URL] | semmle.label | implicit-deref r [postupdate] [URL] |
 | stdlib.go:116:4:116:4 | r [postupdate] [pointer, URL] | semmle.label | r [postupdate] [pointer, URL] |

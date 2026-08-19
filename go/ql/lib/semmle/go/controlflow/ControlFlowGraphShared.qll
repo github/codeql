@@ -499,6 +499,10 @@ module CfgImpl {
       or
       n instanceof Go::GoStmt
       or
+      n instanceof Go::CompoundAssignStmt
+      or
+      n instanceof Go::IncDecStmt
+      or
       n instanceof Go::SelectStmt
       or
       n instanceof Go::SendStmt
@@ -513,9 +517,9 @@ module CfgImpl {
         exists(int i |
           (
             notBlankIdent(n.(Go::Assignment).getLhs(i)) and
-            // A compound assignment (`x += y`) folds its write into the
-            // `compound-rhs` binary-operation instruction rather than emitting a
-            // separate `assign:i` write node (see
+            // A compound assignment (`x += y`) performs its write at its
+            // post-order operation node rather than emitting a separate
+            // `assign:i` write node (see
             // `IR::EvalCompoundAssignRhsInstruction`).
             not n instanceof Go::CompoundAssignStmt and
             // The `y := x.(type)` test statement of a type switch is transparent
@@ -542,9 +546,6 @@ module CfgImpl {
         // Get the next key-value pair produced by a `range` statement.
         n instanceof Go::RangeElementExpr and tag = "next"
         or
-        // Compound assignment implicit RHS
-        n instanceof Go::CompoundAssignStmt and tag = "compound-rhs"
-        or
         // Tuple extraction nodes
         exists(int i |
           extractNodeCondition(n, i) and
@@ -558,11 +559,6 @@ module CfgImpl {
           exists(spec.getNameExpr(i)) and
           tag = "zero-init:" + i.toString()
         )
-        or
-        // Increment/decrement: a single node computes `operand + 1` (or `- 1`)
-        // and writes it back, modelled the same as a compound assignment's
-        // `compound-rhs` node (see `IR::EvalCompoundAssignRhsInstruction`).
-        n instanceof Go::IncDecStmt and tag = "compound-rhs"
         or
         // Result write nodes in return statements
         exists(int i, Go::ReturnStmt ret |
@@ -1058,7 +1054,6 @@ module CfgImpl {
       rangeStmtStep(n1, n2) or
       selectStmtStep(n1, n2) or
       assignmentStep(n1, n2) or
-      incDecStep(n1, n2) or
       returnStep(n1, n2) or
       callExprStep(n1, n2) or
       indexExprStep(n1, n2) or
@@ -1110,8 +1105,7 @@ module CfgImpl {
 
     /**
      * Assignment flow: routes through LHS/RHS children, then through
-     * additional nodes for compound-rhs, extract, zero-init, and assign
-     * operations.
+     * additional nodes for extract, zero-init, and assign operations.
      */
     private predicate assignmentStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Ast::AstNode assgn |
@@ -1144,11 +1138,6 @@ module CfgImpl {
 
     /** Gets an assignment epilogue tag and its order. */
     private string getAssignmentEpilogueTag(Ast::AstNode assgn, int ord) {
-      // Compound RHS comes first
-      assgn instanceof Go::CompoundAssignStmt and
-      ord = -1 and
-      result = "compound-rhs"
-      or
       exists(int j |
         (
           exists(Go::ValueSpec spec |
@@ -1161,8 +1150,8 @@ module CfgImpl {
           or
           (
             notBlankIdent(assgn.(Go::Assignment).getLhs(j)) and
-            // Compound assignments fold their write into `compound-rhs` (ord -1)
-            // above, so they emit no separate `assign:j` node.
+            // Compound assignments perform their write at their post-order
+            // operation node, so they emit no separate `assign:j` node.
             not assgn instanceof Go::CompoundAssignStmt and
             // Tuple-destructuring targets are written by their `extract` node.
             not extractNodeCondition(assgn, j)
@@ -1218,24 +1207,6 @@ module CfgImpl {
       exists(int i |
         tag1 = getRankedEpilogueTag(node, i) and
         tag2 = getRankedEpilogueTag(node, i + 1)
-      )
-    }
-
-    /**
-     * Increment/decrement: operand -> compound-rhs -> After(stmt).
-     *
-     * `x++` is modelled just like the compound assignment `x += 1`: a single
-     * `compound-rhs` node computes the updated value and writes it back to the
-     * operand (see `IR::EvalCompoundAssignRhsInstruction`). The implicit constant
-     * `1` is modelled directly on that node rather than as its own node.
-     */
-    private predicate incDecStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exists(Go::IncDecStmt s |
-        n1.isBefore(s) and n2.isBefore(s.getOperand())
-        or
-        n1.isAfter(s.getOperand()) and n2.isAdditional(s, "compound-rhs")
-        or
-        n1.isAdditional(s, "compound-rhs") and n2.isAfter(s)
       )
     }
 
