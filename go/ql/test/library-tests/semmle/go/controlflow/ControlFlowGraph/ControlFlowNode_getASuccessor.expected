@@ -3214,6 +3214,7 @@
 | stmts7.go:70:1:77:1 | Normal Exit | stmts7.go:70:1:77:1 | Exit |
 | stmts7.go:70:1:77:1 | function declaration | stmts7.go:70:1:77:1 | After function declaration |
 | stmts7.go:70:20:70:23 | skip | stmts7.go:70:31:77:1 | block statement |
+| stmts7.go:70:31:77:1 | After block statement | stmts7.go:70:1:77:1 | Normal Exit |
 | stmts7.go:70:31:77:1 | After block statement | stmts7.go:74:8:74:21 | defer-invoke call to recoverPanic |
 | stmts7.go:70:31:77:1 | block statement | stmts7.go:71:2:73:2 | if statement |
 | stmts7.go:71:2:73:2 | After if statement | stmts7.go:74:2:74:21 | Before defer statement |

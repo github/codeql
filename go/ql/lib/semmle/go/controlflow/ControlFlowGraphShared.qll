@@ -14,9 +14,11 @@ module CfgImpl {
 
   private module Cfg0 = CfgLib::Make0<Go::Location, Ast>;
 
-  private module Cfg1 = Cfg0::Make1<Input>;
+  private module Cfg1 = Cfg0::Make1<Input1>;
 
-  private module Cfg2 = Cfg1::Make2<Input>;
+  private module EarlyCfg2 = Cfg1::Make2<EarlyInput2>;
+
+  private module Cfg2 = Cfg1::Make2<FinalInput2>;
 
   private import Cfg0
   private import Cfg1
@@ -27,7 +29,7 @@ module CfgImpl {
 
   /** Holds if `e` has an implicit field selection at `index` for `implicitField`. */
   predicate implicitFieldSelection(Go::AstNode e, int index, Go::Field implicitField) {
-    Input::implicitFieldSelection(e, index, implicitField)
+    Input1::implicitFieldSelection(e, index, implicitField)
   }
 
   /**
@@ -411,8 +413,8 @@ module CfgImpl {
     }
   }
 
-  /** The Input module implementing InputSig1 and InputSig2 for Go. */
-  private module Input implements Cfg0::InputSig1, Cfg1::InputSig2 {
+  /** Predicates shared by the two stages of Go CFG construction. */
+  private module Input1 implements Cfg0::InputSig1 {
     predicate cfgCachedStageRef() { CfgCachedStage::ref() }
 
     class CallableContext = Void;
@@ -702,7 +704,7 @@ module CfgImpl {
       )
     }
 
-    predicate beginAbruptCompletion(
+    additional predicate beginAbruptCompletion(
       Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
     ) {
       ast instanceof Go::CallExpr and
@@ -759,7 +761,9 @@ module CfgImpl {
       always = false
     }
 
-    predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
+    additional predicate endAbruptCompletion(
+      Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c
+    ) {
       exists(Go::LabeledStmt lbl |
         ast = lbl.getStmt() and
         n.isAfter(lbl) and
@@ -798,7 +802,9 @@ module CfgImpl {
       )
     }
 
-    predicate overridesCallableEndAbruptCompletion(Ast::Callable c, AbruptCompletion completion) {
+    additional predicate overridesCallableEndAbruptCompletion(
+      Ast::Callable c, AbruptCompletion completion
+    ) {
       // For functions with result variables, the library's default routing of a
       // `return` straight to the normal exit node is suppressed so that the
       // return is instead caught by `endAbruptCompletion` above and routed
@@ -811,7 +817,7 @@ module CfgImpl {
       completion.getSuccessorType() instanceof ReturnSuccessor
     }
 
-    predicate overridesAbruptCompletionEdge(
+    additional predicate overridesAbruptCompletionEdge(
       PreControlFlowNode source, PreControlFlowNode target, AbruptCompletion completion
     ) {
       completion.getSuccessorType() instanceof ExceptionSuccessor and
@@ -821,7 +827,7 @@ module CfgImpl {
       )
     }
 
-    predicate callableExitStep(PreControlFlowNode n, Ast::Callable c, boolean normal) {
+    additional predicate callableExitStep(PreControlFlowNode n, Ast::Callable c, boolean normal) {
       // The last result-read node of the epilogue steps to the normal exit node.
       exists(Go::FuncDef fd, int j | fd = c |
         normal = true and
@@ -870,13 +876,17 @@ module CfgImpl {
      * node. Walking this relation from a node stops at the next registration
      * node, which is how the reachability gate for deferred calls is computed.
      *
-     * This is typed over `PreControlFlowNode` and uses `succIgnoringDeferExit`
-     * so that it does not depend on `reachable` (which would otherwise create a
-     * non-monotonic cycle through `deferExitStep`).
+     * This is computed over the early CFG, before deferred-invocation edges are
+     * added to the final CFG.
      */
     private PreControlFlowNode succBeforeNextDeferRegistration(PreControlFlowNode n) {
-      succIgnoringDeferExit(n, result, _) and
+      earlySuccessor(n) = result and
       not deferRegistration(result, _)
+    }
+
+    /** Gets a successor of `n` in the early CFG, before deferred invocations are added. */
+    private PreControlFlowNode earlySuccessor(PreControlFlowNode n) {
+      exists(EarlyCfg2::ControlFlowNode early | early = n and result = early.getASuccessor())
     }
 
     /** Gets a node reachable from `start` over `succBeforeNextDeferRegistration`, reflexively. */
@@ -901,7 +911,7 @@ module CfgImpl {
       exists(PreControlFlowNode reg, PreControlFlowNode m |
         deferRegistration(reg, s) and
         m = reachableBeforeNextDeferRegistration(funcEntry(fd)) and
-        succIgnoringDeferExit(m, reg, _)
+        earlySuccessor(m) = reg
       )
     }
 
@@ -921,7 +931,7 @@ module CfgImpl {
         deferRegistration(laterRegistration, laterRegistered) and
         deferRegistration(earlierRegistration, earlierRegistered) and
         m = reachableBeforeNextDeferRegistration(earlierRegistration) and
-        succIgnoringDeferExit(m, laterRegistration, _)
+        earlySuccessor(m) = laterRegistration
       )
     }
 
@@ -968,7 +978,7 @@ module CfgImpl {
       target.(NormalExitNodeImpl).getEnclosingCallable() = fd
     }
 
-    predicate deferExitStep(
+    additional predicate deferExitStep(
       PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType successorType
     ) {
       exists(Go::FuncDef fd | funcHasDefer(fd) |
@@ -1018,9 +1028,11 @@ module CfgImpl {
       )
     }
 
-    predicate overridesCallableBodyExit(Ast::Callable c) { funcHasDefer(c.(Go::FuncDef)) }
+    additional predicate overridesCallableBodyExit(Ast::Callable c) {
+      funcHasDefer(c.(Go::FuncDef))
+    }
 
-    predicate overridesDefaultControlFlow(Ast::AstNode ast) {
+    additional predicate overridesDefaultControlFlow(Ast::AstNode ast) {
       exists(Go::SelectStmt sel, Go::RecvStmt recv |
         recv = sel.getACommClause().getComm() and
         (ast = recv or ast = recv.getExpr())
@@ -1031,13 +1043,13 @@ module CfgImpl {
       )
     }
 
-    predicate preservesDefaultControlFlow(Ast::AstNode ast) {
+    additional predicate preservesDefaultControlFlow(Ast::AstNode ast) {
       ast = any(Go::FuncDef fd | hasFuncDefPrologue(fd)).getBody()
       or
       exists(getFirstEpilogueTag(ast))
     }
 
-    predicate overridesDefaultControlFlowStep(
+    additional predicate overridesDefaultControlFlowStep(
       Ast::AstNode ast, PreControlFlowNode source, PreControlFlowNode target
     ) {
       ast = any(Go::FuncDef fd | hasFuncDefPrologue(fd)).getBody() and source.isBefore(ast)
@@ -1051,7 +1063,7 @@ module CfgImpl {
       (target.isIn(ast) or target.isAfter(ast))
     }
 
-    predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
+    additional predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
       rangeStmtStep(n1, n2) or
       selectStmtStep(n1, n2) or
       deferStmtStep(n1, n2) or
@@ -1733,5 +1745,101 @@ module CfgImpl {
         )
       )
     }
+  }
+
+  /** Builds the CFG used to determine which `defer` statements have been registered. */
+  private module EarlyInput2 implements Cfg1::InputSig2 {
+    predicate beginAbruptCompletion(
+      Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
+    ) {
+      Input1::beginAbruptCompletion(ast, n, c, always)
+    }
+
+    predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
+      Input1::endAbruptCompletion(ast, n, c)
+      or
+      exists(Go::FuncDef fd |
+        ast = fd.getBody() and
+        c.getSuccessorType() instanceof ReturnSuccessor and
+        exists(fd.getResultVar(0)) and
+        n.isAdditional(fd.getBody(), "result-read:0")
+      )
+    }
+
+    predicate overridesCallableEndAbruptCompletion(Ast::Callable c, AbruptCompletion completion) {
+      exists(c.(Go::FuncDef).getResultVar(0)) and
+      completion.getSuccessorType() instanceof ReturnSuccessor
+    }
+
+    predicate callableExitStep(PreControlFlowNode n, Ast::Callable c, boolean normal) {
+      Input1::callableExitStep(n, c, normal)
+    }
+
+    predicate overridesDefaultControlFlow(Ast::AstNode ast) {
+      Input1::overridesDefaultControlFlow(ast)
+    }
+
+    predicate preservesDefaultControlFlow(Ast::AstNode ast) {
+      Input1::preservesDefaultControlFlow(ast)
+    }
+
+    predicate overridesDefaultControlFlowStep(
+      Ast::AstNode ast, PreControlFlowNode source, PreControlFlowNode target
+    ) {
+      Input1::overridesDefaultControlFlowStep(ast, source, target)
+    }
+
+    predicate step(PreControlFlowNode n1, PreControlFlowNode n2) { Input1::step(n1, n2) }
+  }
+
+  /** Builds the final Go CFG, including deferred invocations. */
+  private module FinalInput2 implements Cfg1::InputSig2 {
+    predicate beginAbruptCompletion(
+      Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
+    ) {
+      Input1::beginAbruptCompletion(ast, n, c, always)
+    }
+
+    predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
+      Input1::endAbruptCompletion(ast, n, c)
+    }
+
+    predicate overridesCallableEndAbruptCompletion(Ast::Callable c, AbruptCompletion completion) {
+      Input1::overridesCallableEndAbruptCompletion(c, completion)
+    }
+
+    predicate overridesAbruptCompletionEdge(
+      PreControlFlowNode source, PreControlFlowNode target, AbruptCompletion completion
+    ) {
+      Input1::overridesAbruptCompletionEdge(source, target, completion)
+    }
+
+    predicate callableExitStep(PreControlFlowNode n, Ast::Callable c, boolean normal) {
+      Input1::callableExitStep(n, c, normal)
+    }
+
+    predicate deferExitStep(
+      PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType successorType
+    ) {
+      Input1::deferExitStep(n1, n2, successorType)
+    }
+
+    predicate overridesCallableBodyExit(Ast::Callable c) { Input1::overridesCallableBodyExit(c) }
+
+    predicate overridesDefaultControlFlow(Ast::AstNode ast) {
+      Input1::overridesDefaultControlFlow(ast)
+    }
+
+    predicate preservesDefaultControlFlow(Ast::AstNode ast) {
+      Input1::preservesDefaultControlFlow(ast)
+    }
+
+    predicate overridesDefaultControlFlowStep(
+      Ast::AstNode ast, PreControlFlowNode source, PreControlFlowNode target
+    ) {
+      Input1::overridesDefaultControlFlowStep(ast, source, target)
+    }
+
+    predicate step(PreControlFlowNode n1, PreControlFlowNode n2) { Input1::step(n1, n2) }
   }
 }
