@@ -27,52 +27,52 @@ edges
 | test_cipher.rs:18:9:18:14 | const1 [&ref] | test_cipher.rs:19:73:19:78 | const1 [&ref] | provenance |  |
 | test_cipher.rs:18:28:18:36 | &... [&ref] | test_cipher.rs:18:9:18:14 | const1 [&ref] | provenance |  |
 | test_cipher.rs:18:29:18:36 | [0u8; 16] | test_cipher.rs:18:28:18:36 | &... [&ref] | provenance |  |
-| test_cipher.rs:19:49:19:79 | ...::from_slice(...) [&ref] | test_cipher.rs:19:49:19:79 | ...::from_slice(...) | provenance | Sink:MaD:3 |
+| test_cipher.rs:19:49:19:79 | ...::from_slice(...) [&ref] | test_cipher.rs:19:49:19:79 | ...::from_slice(...) | provenance | Sink:MaD:2 |
 | test_cipher.rs:19:73:19:78 | const1 [&ref] | test_cipher.rs:19:49:19:79 | ...::from_slice(...) [&ref] | provenance | MaD:13 |
 | test_cipher.rs:25:9:25:14 | const4 [&ref] | test_cipher.rs:26:66:26:71 | const4 [&ref] | provenance |  |
 | test_cipher.rs:25:28:25:36 | &... [&ref] | test_cipher.rs:25:9:25:14 | const4 [&ref] | provenance |  |
 | test_cipher.rs:25:29:25:36 | [0u8; 16] | test_cipher.rs:25:28:25:36 | &... [&ref] | provenance |  |
-| test_cipher.rs:26:42:26:72 | ...::from_slice(...) [&ref] | test_cipher.rs:26:42:26:72 | ...::from_slice(...) | provenance | Sink:MaD:4 |
+| test_cipher.rs:26:42:26:72 | ...::from_slice(...) [&ref] | test_cipher.rs:26:42:26:72 | ...::from_slice(...) | provenance | Sink:MaD:3 |
 | test_cipher.rs:26:66:26:71 | const4 [&ref] | test_cipher.rs:26:42:26:72 | ...::from_slice(...) [&ref] | provenance | MaD:13 |
 | test_cipher.rs:29:9:29:14 | const5 [&ref] | test_cipher.rs:30:95:30:100 | const5 [&ref] | provenance |  |
 | test_cipher.rs:29:28:29:36 | &... [&ref] | test_cipher.rs:29:9:29:14 | const5 [&ref] | provenance |  |
 | test_cipher.rs:29:29:29:36 | [0u8; 16] | test_cipher.rs:29:28:29:36 | &... [&ref] | provenance |  |
-| test_cipher.rs:30:72:30:101 | ...::from_slice(...) [&ref] | test_cipher.rs:30:72:30:101 | ...::from_slice(...) | provenance | Sink:MaD:5 |
+| test_cipher.rs:30:72:30:101 | ...::from_slice(...) [&ref] | test_cipher.rs:30:72:30:101 | ...::from_slice(...) | provenance | Sink:MaD:4 |
 | test_cipher.rs:30:95:30:100 | const5 [&ref] | test_cipher.rs:30:72:30:101 | ...::from_slice(...) [&ref] | provenance | MaD:13 |
 | test_cipher.rs:37:9:37:14 | const7 | test_cipher.rs:38:74:38:79 | const7 | provenance |  |
 | test_cipher.rs:37:27:37:74 | [...] | test_cipher.rs:37:9:37:14 | const7 | provenance |  |
-| test_cipher.rs:38:49:38:80 | ...::from_slice(...) [&ref] | test_cipher.rs:38:49:38:80 | ...::from_slice(...) | provenance | Sink:MaD:3 |
+| test_cipher.rs:38:49:38:80 | ...::from_slice(...) [&ref] | test_cipher.rs:38:49:38:80 | ...::from_slice(...) | provenance | Sink:MaD:2 |
 | test_cipher.rs:38:73:38:79 | &const7 [&ref] | test_cipher.rs:38:49:38:80 | ...::from_slice(...) [&ref] | provenance | MaD:13 |
 | test_cipher.rs:38:74:38:79 | const7 | test_cipher.rs:38:73:38:79 | &const7 [&ref] | provenance |  |
 | test_cipher.rs:41:9:41:14 | const8 [&ref] | test_cipher.rs:42:73:42:78 | const8 [&ref] | provenance |  |
 | test_cipher.rs:41:28:41:76 | &... [&ref] | test_cipher.rs:41:9:41:14 | const8 [&ref] | provenance |  |
 | test_cipher.rs:41:29:41:76 | [...] | test_cipher.rs:41:28:41:76 | &... [&ref] | provenance |  |
-| test_cipher.rs:42:49:42:79 | ...::from_slice(...) [&ref] | test_cipher.rs:42:49:42:79 | ...::from_slice(...) | provenance | Sink:MaD:3 |
+| test_cipher.rs:42:49:42:79 | ...::from_slice(...) [&ref] | test_cipher.rs:42:49:42:79 | ...::from_slice(...) | provenance | Sink:MaD:2 |
 | test_cipher.rs:42:73:42:78 | const8 [&ref] | test_cipher.rs:42:49:42:79 | ...::from_slice(...) [&ref] | provenance | MaD:13 |
 | test_cipher.rs:50:9:50:15 | const10 [element] | test_cipher.rs:51:75:51:81 | const10 [element] | provenance |  |
 | test_cipher.rs:50:37:50:54 | ...::zeroed(...) | test_cipher.rs:50:9:50:15 | const10 [element] | provenance | Src:MaD:7  |
-| test_cipher.rs:51:50:51:82 | ...::from_slice(...) [&ref, element] | test_cipher.rs:51:50:51:82 | ...::from_slice(...) | provenance | Sink:MaD:3 Sink:MaD:3 |
+| test_cipher.rs:51:50:51:82 | ...::from_slice(...) [&ref, element] | test_cipher.rs:51:50:51:82 | ...::from_slice(...) | provenance | Sink:MaD:2 Sink:MaD:2 |
 | test_cipher.rs:51:74:51:81 | &const10 [&ref, element] | test_cipher.rs:51:50:51:82 | ...::from_slice(...) [&ref, element] | provenance | MaD:13 |
 | test_cipher.rs:51:75:51:81 | const10 [element] | test_cipher.rs:51:74:51:81 | &const10 [&ref, element] | provenance |  |
-| test_cipher.rs:73:9:73:14 | const2 [&ref] | test_cipher.rs:74:46:74:51 | const2 | provenance | Sink:MaD:1 |
+| test_cipher.rs:73:9:73:14 | const2 [&ref] | test_cipher.rs:74:46:74:51 | const2 | provenance | Sink:MaD:6 |
 | test_cipher.rs:73:18:73:26 | &... [&ref] | test_cipher.rs:73:9:73:14 | const2 [&ref] | provenance |  |
 | test_cipher.rs:73:19:73:26 | [0u8; 32] | test_cipher.rs:73:18:73:26 | &... [&ref] | provenance |  |
 | test_cookie.rs:17:9:17:14 | array1 | test_cookie.rs:18:27:18:32 | array1 | provenance |  |
 | test_cookie.rs:17:28:17:34 | [0; 64] | test_cookie.rs:17:9:17:14 | array1 | provenance |  |
-| test_cookie.rs:18:26:18:32 | &array1 [&ref] | test_cookie.rs:18:26:18:32 | &array1 | provenance | Sink:MaD:6 |
+| test_cookie.rs:18:26:18:32 | &array1 [&ref] | test_cookie.rs:18:26:18:32 | &array1 | provenance | Sink:MaD:5 |
 | test_cookie.rs:18:27:18:32 | array1 | test_cookie.rs:18:26:18:32 | &array1 [&ref] | provenance |  |
 | test_cookie.rs:21:9:21:14 | array2 | test_cookie.rs:22:27:22:32 | array2 | provenance |  |
 | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:21:9:21:14 | array2 | provenance |  |
-| test_cookie.rs:22:26:22:32 | &array2 [&ref] | test_cookie.rs:22:26:22:32 | &array2 | provenance | Sink:MaD:6 |
+| test_cookie.rs:22:26:22:32 | &array2 [&ref] | test_cookie.rs:22:26:22:32 | &array2 | provenance | Sink:MaD:5 |
 | test_cookie.rs:22:27:22:32 | array2 | test_cookie.rs:22:26:22:32 | &array2 [&ref] | provenance |  |
-| test_cookie.rs:38:9:38:14 | array2 | test_cookie.rs:42:34:42:39 | array2 | provenance | Sink:MaD:2 |
+| test_cookie.rs:38:9:38:14 | array2 | test_cookie.rs:42:34:42:39 | array2 | provenance | Sink:MaD:1 |
 | test_cookie.rs:38:18:38:37 | ...::from(...) | test_cookie.rs:38:9:38:14 | array2 | provenance |  |
 | test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:8 |
 | test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:9 |
 | test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:10 |
 | test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:11 |
 | test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:12 |
-| test_cookie.rs:49:9:49:14 | array3 [element] | test_cookie.rs:53:34:53:39 | array3 | provenance | Sink:MaD:2 |
+| test_cookie.rs:49:9:49:14 | array3 [element] | test_cookie.rs:53:34:53:39 | array3 | provenance | Sink:MaD:1 |
 | test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | provenance | MaD:14 |
 | test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | test_cookie.rs:49:9:49:14 | array3 [element] | provenance |  |
 | test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | provenance |  |
@@ -87,12 +87,12 @@ edges
 | test_heuristic.rs:86:29:86:32 | 1u64 | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | provenance |  |
 | test_heuristic.rs:88:29:88:33 | ... + ... | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | provenance |  |
 models
-| 1 | Sink: <_ as crypto_common::KeyInit>::new_from_slice; Argument[0]; credentials-key |
-| 2 | Sink: <biscotti::crypto::master::Key>::from; Argument[0]; credentials-key |
-| 3 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyInit>::new; Argument[0]; credentials-key |
-| 4 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyIvInit>::new; Argument[0]; credentials-key |
-| 5 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyIvInit>::new; Argument[1]; credentials-iv |
-| 6 | Sink: <cookie::secure::key::Key>::from; Argument[0].Reference; credentials-key |
+| 1 | Sink: <biscotti::crypto::master::Key>::from; Argument[0]; credentials-key |
+| 2 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyInit>::new; Argument[0]; credentials-key |
+| 3 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyIvInit>::new; Argument[0]; credentials-key |
+| 4 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyIvInit>::new; Argument[1]; credentials-iv |
+| 5 | Sink: <cookie::secure::key::Key>::from; Argument[0].Reference; credentials-key |
+| 6 | Sink: crypto_common::KeyInit::new_from_slice; Argument[0]; credentials-key |
 | 7 | Source: core::mem::zeroed; ReturnValue.Element; constant-source |
 | 8 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0].Field[alloc::borrow::Cow::Owned(0)]; ReturnValue; value |
 | 9 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0].Field[alloc::bstr::ByteString(0)]; ReturnValue; value |
