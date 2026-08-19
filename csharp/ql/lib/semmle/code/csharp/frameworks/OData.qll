@@ -20,7 +20,6 @@
 import csharp
 private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.dataflow.FlowSteps
-private import semmle.code.csharp.dataflow.TaintTracking
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 
 /** The `ODataActionParameters` dictionary type, across OData library versions. */
