@@ -33,23 +33,19 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   class SummarizedCallableBase = Function;
 
-  class FlowSummaryCallBase = Void;
+  class FlowSummaryCallBase extends Void {
+    Location getLocation() { none() }
+  }
 
   predicate callableFromSource(SummarizedCallableBase c) { c.fromSource() }
 
-  abstract private class SourceSinkBase extends AstNode {
-    /** Gets the associated call. */
-    abstract Call getCall();
-
-    /** Holds if the associated call resolves to `path`. */
-    final predicate callResolvesTo(string path) {
-      path = this.getCall().getResolvedTarget().getCanonicalPath()
-    }
+  DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+    result.asSummarizedCallable() = c
   }
 
-  abstract class SourceBase extends SourceSinkBase { }
+  class SourceBase = Function;
 
-  abstract class SinkBase extends SourceSinkBase { }
+  class SinkBase = Function;
 
   predicate neutralElement(
     Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
@@ -59,22 +55,6 @@ module Input implements InputSig<Location, RustDataFlow> {
       c.getCanonicalPath() = path and
       isExact = true
     )
-  }
-
-  private class CallExprFunction extends SourceBase, SinkBase {
-    private CallExpr call;
-
-    CallExprFunction() { this = call.getFunction() }
-
-    override Call getCall() { result = call }
-  }
-
-  private class MethodCallExprNameRef extends SourceBase, SinkBase {
-    private MethodCallExpr call;
-
-    MethodCallExprNameRef() { this = call.getIdentifier() }
-
-    override MethodCallExpr getCall() { result = call }
   }
 
   RustDataFlow::ArgumentPosition callbackSelfParameterPosition() { result.isClosureSelf() }
@@ -147,75 +127,109 @@ module Input implements InputSig<Location, RustDataFlow> {
 
 private import Make<Location, RustDataFlow, Input> as Impl
 
-module StepsInput implements Impl::Private::StepsInputSig {
-  Impl::Private::SummaryNode getSummaryNode(RustDataFlow::Node n) {
+/** Gets the argument of `call` described by `sc`, if any. */
+private Expr getArg(Call call, Impl::Private::SummaryComponent sc) {
+  exists(RustDataFlow::ArgumentPosition pos |
+    sc = Impl::Private::SummaryComponent::argument(pos) and
+    result = pos.getArgument(call)
+  )
+}
+
+/** Get the callable that `expr` refers to. */
+private Callable getCallable(Expr expr) {
+  result = resolvePath(expr.(PathExpr).getPath()).(Function)
+  or
+  result = expr.(ClosureExpr)
+  or
+  // The expression is an SSA read of an assignment of a closure
+  exists(Ssa::Definition def |
+    def.getARead() = expr and
+    def.getAnUltimateDefinition().(Ssa::WriteDefinition).assigns(result.(ClosureExpr))
+  )
+}
+
+module Input2 implements Impl::Private::InputSig2 {
+  private import codeql.rust.controlflow.CfgNodes
+
+  class SourceSinkReportingElement extends AstNode {
+    DataFlowCallable getEnclosingCallable() { result.asCfgScope() = this.getEnclosingCfgScope() }
+
+    SourceSinkReportingElement getASuccessor(Impl::Private::SummaryComponent sc) {
+      exists(RustDataFlow::ArgumentPosition pos |
+        sc = Impl::Private::SummaryComponent::parameter(pos) and
+        result = pos.getParameter(getCallable(this))
+      )
+      or
+      exists(Callable c |
+        sc = Impl::Private::SummaryComponent::return(_) and
+        c = getCallable(this) and
+        result.getACfgNode().getASuccessor() instanceof AnnotatedExitCfgNode and
+        result.getEnclosingCfgScope() = c
+      )
+    }
+  }
+
+  SourceSinkReportingElement getASourceReportingElement(
+    Input::SourceBase source, Impl::Private::SummaryComponent sc
+  ) {
+    exists(Call call | call.getResolvedTarget() = source |
+      sc = Impl::Private::SummaryComponent::return(_) and
+      result = call
+      or
+      result = getArg(call, sc)
+    )
+    or
+    exists(RustDataFlow::ArgumentPosition pos |
+      sc = Impl::Private::SummaryComponent::parameter(pos)
+    |
+      exists(Function f |
+        f = source
+        or
+        f.implements(source)
+      |
+        result = pos.getParameter(f)
+      )
+    )
+  }
+
+  bindingset[e, sc]
+  NodePublic getSourceDataFlowNode(SourceSinkReportingElement e, Impl::Private::SummaryComponent sc) {
+    if sc = Impl::Private::SummaryComponent::argument(_)
+    then result.(PostUpdateNode).getPreUpdateNode().(Node).getAstNode() = e
+    else result.(Node).getAstNode() = e
+  }
+
+  SourceSinkReportingElement getASinkReportingElement(
+    Input::SinkBase sink, Impl::Private::SummaryComponent sc
+  ) {
+    exists(Call call |
+      call.getResolvedTarget() = sink and
+      result = getArg(call, sc)
+    )
+  }
+
+  bindingset[e, sc]
+  NodePublic getSinkDataFlowNode(SourceSinkReportingElement e, Impl::Private::SummaryComponent sc) {
+    result.asExpr() = e and
+    exists(sc)
+  }
+}
+
+private import Impl::Private::Make2<Input2> as Impl2
+
+module StepsInput implements Impl2::StepsInputSig {
+  Impl2::SummaryNode getSummaryNode(RustDataFlow::Node n) {
     result = n.(FlowSummaryNode).getSummaryNode()
   }
 
   DataFlowCall getACall(Public::SummarizedCallable sc) { result.asCall().getStaticTarget() = sc }
-
-  /** Gets the argument of `source` described by `sc`, if any. */
-  private Expr getSourceNodeArgument(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
-    exists(RustDataFlow::ArgumentPosition pos |
-      sc = Impl::Private::SummaryComponent::argument(pos) and
-      result = pos.getArgument(source.getCall())
-    )
-  }
-
-  /** Get the callable that `expr` refers to. */
-  private Callable getCallable(Expr expr) {
-    result = resolvePath(expr.(PathExpr).getPath()).(Function)
-    or
-    result = expr.(ClosureExpr)
-    or
-    // The expression is an SSA read of an assignment of a closure
-    exists(Ssa::Definition def |
-      def.getARead() = expr and
-      def.getAnUltimateDefinition().(Ssa::WriteDefinition).assigns(result.(ClosureExpr))
-    )
-  }
-
-  RustDataFlow::DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) {
-    result.asCfgScope() = source.getEnclosingCfgScope()
-  }
-
-  additional RustDataFlow::Node getSourceNode(
-    Input::SourceBase source, Impl::Private::SummaryComponentStack s, boolean isArgPostUpdate
-  ) {
-    s.head() = Impl::Private::SummaryComponent::return(_) and
-    result.asExpr() = source.getCall() and
-    isArgPostUpdate = false
-    or
-    exists(RustDataFlow::ArgumentPosition pos, Expr arg |
-      s.head() = Impl::Private::SummaryComponent::parameter(pos) and
-      arg = getSourceNodeArgument(source, s.tail().headOfSingleton()) and
-      result.asParameter() = getCallable(arg).getParam(pos.getPosition()) and
-      isArgPostUpdate = false
-    )
-    or
-    result.(RustDataFlow::PostUpdateNode).getPreUpdateNode().asExpr() =
-      getSourceNodeArgument(source, s.headOfSingleton()) and
-    isArgPostUpdate = true
-  }
-
-  RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) {
-    result = getSourceNode(source, s, _)
-  }
-
-  RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
-    exists(InvocationExpr call, Expr arg, RustDataFlow::ArgumentPosition pos |
-      result.asExpr() = arg and
-      sc = Impl::Private::SummaryComponent::argument(pos) and
-      call = sink.getCall() and
-      arg = pos.getArgument(call)
-    )
-  }
 }
 
 module Private {
   import Impl::Private
+  import Impl2
 
-  module Steps = Impl::Private::Steps<StepsInput>;
+  module Steps = Impl2::Steps<StepsInput>;
 
   private import codeql.rust.dataflow.FlowSource
   private import codeql.rust.dataflow.FlowSink

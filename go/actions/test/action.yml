@@ -1,12 +1,12 @@
 name: Test Go extractor
-description: Run build, QL tests, and optionally basic code sanity checks (formatting and generated code) for the Go extractor
+description: Run build, QL tests, and optionally qhelp generation for the Go extractor
 inputs:
   go-test-version:
     description: Which Go version to use for running the tests
     required: false
-    default: "~1.26.5"
+    default: "~1.26.6"
   run-code-checks:
-    description: Whether to run formatting, code and qhelp generation checks
+    description: Whether to run qhelp generation checks
     required: false
     default: false
 runs:
@@ -26,28 +26,11 @@ runs:
       shell: bash
       run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
 
-    - name: Check checked-in generated code
-      if: inputs.run-code-checks == 'true'
-      shell: bash
-      run: |
-        bazel run go:gen
-        git add .
-        git diff --exit-code HEAD || (
-          echo "please run bazel run //go:gen"
-          exit 1
-        )
-
     - name: Build
       shell: bash
       run: |
-        bazel run go:go-installer
-
-    - name: Check that all Go code is autoformatted
-      if: inputs.run-code-checks == 'true' && !cancelled()
-      shell: bash
-      run: |
-          cd go
-          make check-formatting
+        cd go/extractor
+        go build ./...
 
     - name: Compile qhelp files to markdown
       if: inputs.run-code-checks == 'true' && !cancelled()

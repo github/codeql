@@ -75,6 +75,7 @@ fn test_set_var_pos() {
 enum MyFieldEnum {
     C { field_c: i64 },
     D { field_d: i64 },
+    E { field_e: Option<i64> },
 }
 
 // has a flow model
@@ -101,6 +102,7 @@ fn test_set_var_field() {
     match e1 {
         MyFieldEnum::C { field_c: i } => sink(i),
         MyFieldEnum::D { field_d: i } => sink(i), // $ hasValueFlow=5
+        MyFieldEnum::E { field_e: o } => ()
     }
 }
 
@@ -246,11 +248,30 @@ fn enum_source(i: i64) -> MyFieldEnum {
     MyFieldEnum::C { field_c: 0 }
 }
 
+// has a source model
+fn enum_source_nested(i: i64) -> MyFieldEnum {
+    MyFieldEnum::C { field_c: 0 }
+}
+
 fn test_enum_source() {
     let s = enum_source(12);
     match s {
         MyFieldEnum::C { field_c: i } => sink(i),
         MyFieldEnum::D { field_d: i } => sink(i), // $ hasValueFlow=12
+        MyFieldEnum::E { field_e: o } => ()
+    }
+
+    let s = enum_source_nested(13);
+    match s {
+        MyFieldEnum::C { field_c: i } => sink(i),
+        MyFieldEnum::D { field_d: i } => sink(i),
+        MyFieldEnum::E { field_e: o } => 
+        { 
+            match o {
+                Some(i) => sink(i), // $ hasValueFlow=13
+                None => ()
+            }
+        }
     }
 }
 
@@ -260,15 +281,22 @@ fn test_enum_method_source() {
     match s {
         MyFieldEnum::C { field_c: i } => sink(i), // $ hasValueFlow=13
         MyFieldEnum::D { field_d: i } => sink(i),
+        MyFieldEnum::E { field_e: o } => ()
     }
 }
 
 mod source_into_function {
+    use crate::MyFieldEnum;
     use super::sink;
 
     // has a source model
     fn pass_source<A>(_i: i64, f: impl FnOnce(i64) -> A) -> A {
         f(42)
+    }
+
+    // has a source model
+    fn pass_source_nested(_i: i64, f: impl FnOnce(MyFieldEnum) -> ()) {
+        f(MyFieldEnum::C { field_c: 0 })
     }
 
     fn test_source_into_function() {
@@ -287,16 +315,57 @@ mod source_into_function {
         pass_source(4, async move |a| {
             sink(a); // $ hasValueFlow=4
         });
+
+        pass_source_nested(5, |e| {
+            match e {
+                MyFieldEnum::C { field_c: i } => sink(i),
+                MyFieldEnum::D { field_d: i } => sink(i),
+                MyFieldEnum::E { field_e: o } => 
+                { 
+                    match o {
+                        Some(i) => sink(i), // $ hasValueFlow=5
+                        None => ()
+                    }
+                }
+            }
+        });
+    }
+}
+
+mod sink_out_of_function {
+    use crate::MyFieldEnum;
+    use super::source;
+
+    // has a sink model
+    fn pass_sink(f: impl FnOnce(()) -> i64) { }
+
+    // has a sink model
+    fn pass_sink_nested(f: impl FnOnce(()) -> MyFieldEnum) { }
+
+    fn test_sink_out_of_function() {
+        let a = |a| source(1);
+        pass_sink(a); // $ hasValueFlow=1
+
+        let b = |_a| {
+            let s = source(2);
+            MyFieldEnum::E { field_e: Option::Some(s) }
+        };
+        pass_sink_nested(b); // $ hasValueFlow=2
     }
 }
 
 // has a sink model
 fn enum_sink(e: MyFieldEnum) {}
 
+// has a sink model
+fn enum_sink_nested(e: MyFieldEnum) {}
+
 fn test_enum_sink() {
     let s = source(14);
     enum_sink(MyFieldEnum::C { field_c: s }); // $ hasValueFlow=14
     enum_sink(MyFieldEnum::D { field_d: s });
+    enum_sink_nested(MyFieldEnum::E { field_e: None });
+    enum_sink_nested(MyFieldEnum::E { field_e: Some(s) }); // $ hasValueFlow=14
 }
 
 fn test_enum_method_sink() {
@@ -330,6 +399,17 @@ fn test_arg_source() {
     let i = 19;
     arg_source(i);
     sink(i) // $ hasValueFlow=i
+}
+
+trait MyTrait {
+    // has a source model
+    fn test_param_source(i: i64);
+}
+
+impl MyTrait for () {
+    fn test_param_source(i: i64) {
+        sink(i) // $ hasValueFlow=i
+    }
 }
 
 struct MyStruct2(i64);

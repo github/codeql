@@ -119,8 +119,7 @@ private module Cached {
     )
     or
     // models-as-data summarized flow
-    FlowSummaryImpl::Private::Steps::summaryJumpStep(n1.(FlowSummaryNode).getSummaryNode(),
-      n2.(FlowSummaryNode).getSummaryNode())
+    FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
   }
 
   /**

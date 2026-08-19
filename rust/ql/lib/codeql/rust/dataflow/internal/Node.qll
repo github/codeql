@@ -93,25 +93,16 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   }
 
   override CfgScope getCfgScope() {
-    result = this.getSummaryNode().getSourceElement().getEnclosingCfgScope()
-    or
-    result = this.getSummaryNode().getSinkElement().getEnclosingCfgScope()
+    result = this.getSummaryNode().getSourceSinkReportingElement().getEnclosingCfgScope()
   }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asCfgScope() = this.getCfgScope()
-    or
-    result.asSummarizedCallable() = this.getSummarizedCallable()
+    result = this.getSummaryNode().getEnclosingCallable()
   }
 
   override Location getLocation() {
     Stages::DataFlowStage::ref() and
-    exists(this.getSummarizedCallable()) and
-    result instanceof EmptyLocation
-    or
-    result = this.getSourceElement().getLocation()
-    or
-    result = this.getSinkElement().getLocation()
+    result = this.getSummaryNode().getLocation()
   }
 
   override string toString() {
@@ -761,9 +752,7 @@ newtype TNode =
   TIndexOutNode(IndexExpr ie, Boolean isPost) or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) {
-    forall(AstNode n | n = sn.getSinkElement() or n = sn.getSourceElement() |
-      n.hasEnclosingCfgScope()
-    )
+    forall(AstNode n | n = sn.getSourceSinkReportingElement() | n.hasEnclosingCfgScope())
   } or
   TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c) } or
   TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
