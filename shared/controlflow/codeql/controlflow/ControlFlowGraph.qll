@@ -684,10 +684,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       not postOrInOrder(n) and
       not additionalNode(n, _, _) and
       not inConditionalContext(n, _) and
-      // A switch is a branching construct with an explicit step from its
-      // "before" node to its "after" node, so it must keep distinct before and
-      // after nodes even when it has no children (e.g. an empty `switch {}`).
-      // Merging them would otherwise turn that step into a spurious self-loop.
+      // An empty switch statement still needs distinct before and after nodes
+      // to avoid a spurious self-loop.
       not n instanceof Switch
     }
 
