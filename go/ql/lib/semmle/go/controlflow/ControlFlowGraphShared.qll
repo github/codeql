@@ -265,15 +265,7 @@ module CfgImpl {
     }
 
     class Switch extends AstNode instanceof Go::SwitchStmt {
-      Expr getExpr() {
-        result = this.(Go::ExpressionSwitchStmt).getExpr()
-        or
-        // For a type switch the "switch expression" is the type-assertion
-        // expression `x.(type)`; evaluating it directly (rather than the
-        // wrapping `y := x.(type)` statement) lets the shared switch model
-        // drive the per-case type tests.
-        result = this.(Go::TypeSwitchStmt).getExpr()
-      }
+      Expr getExpr() { result = this.(Go::SwitchStmt).getExpr() }
 
       Case getCase(int index) { result = this.(Go::SwitchStmt).getCase(index) }
 
