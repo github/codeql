@@ -16,7 +16,7 @@
 # on its `def` line.
 
 
-if object():  # $ phi=conditional_factory MISSING: exit-use=conditional_factory
+if object():  # $ phi=conditional_factory exit-use=conditional_factory
     from primary_backend import Factory as conditional_factory  # $ def=conditional_factory
 else:
     from fallback_backend import Factory as conditional_factory  # $ def=conditional_factory
