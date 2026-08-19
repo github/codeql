@@ -64,6 +64,7 @@ module SsaTest implements TestSig {
       phi.definesAt(_, bb, _) and
       variable.getAUse() = exit and
       exit.isNormalExit() and
+      exit.getScope() instanceof Module and
       tag = "exit-use" and
       location = bb.getNode(0).getLocation() and
       element = bb.toString() and

@@ -546,7 +546,7 @@ class EssaVariable extends Ssa::SsaDefinition {
    */
   Cfg::ControlFlowNode getAUse() {
     exists(CfgImpl::BasicBlock bb, int i |
-      Impl::ssaDefReachesRead(this.getSourceVariable(), this.(Ssa::SsaWriteDefinition), bb, i) and
+      Impl::ssaDefReachesRead(this.getSourceVariable(), this, bb, i) and
       bb.getNode(i) = result
     )
   }
