@@ -615,14 +615,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Returns the full path to a temporary directory with the given subfolder name.
-        /// </summary>
-        private static string ComputeTempDirectoryPath(string subfolderName)
-        {
-            return Path.Join(FileUtils.GetTemporaryWorkingDirectory(out _), subfolderName);
-        }
-
-        /// <summary>
         /// Computes a unique temporary directory path based on the source directory and the subfolder name.
         /// </summary>
         private static string ComputeTempDirectoryPath(string srcDir, string subfolderName)
