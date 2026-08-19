@@ -832,6 +832,12 @@ class SwitchStmt extends @switchstmt, Stmt, ScopeNode {
   /** Gets the init statement of this `switch` statement, if any. */
   Stmt getInit() { result = this.getChildStmt(0) }
 
+  /**
+   * Gets the expression whose value or type is examined by this `switch`
+   * statement, if any.
+   */
+  Expr getExpr() { none() }
+
   /** Gets the body of this `switch` statement. */
   BlockStmt getBody() { result = this.getChildStmt(2) }
 
@@ -880,8 +886,7 @@ class SwitchStmt extends @switchstmt, Stmt, ScopeNode {
  * ```
  */
 class ExpressionSwitchStmt extends @exprswitchstmt, SwitchStmt {
-  /** Gets the switch expression of this `switch` statement. */
-  Expr getExpr() { result = this.getChildExpr(1) }
+  override Expr getExpr() { result = this.getChildExpr(1) }
 
   override predicate mayHaveSideEffects() {
     this.getInit().mayHaveSideEffects() or
@@ -912,14 +917,13 @@ class ExpressionSwitchStmt extends @exprswitchstmt, SwitchStmt {
  * ```
  */
 class TypeSwitchStmt extends @typeswitchstmt, SwitchStmt {
-  /** Gets the assign statement of this type-switch statement. */
   SimpleAssignStmt getAssign() { result = this.getChildStmt(1) }
 
   /** Gets the test statement of this type-switch statement. This is a `SimpleAssignStmt` or `ExprStmt`. */
   Stmt getTest() { result = this.getChildStmt(1) }
 
   /** Gets the expression whose type is examined by this `switch` statement. */
-  Expr getExpr() {
+  override Expr getExpr() {
     result = this.getAssign().getRhs() or result = this.getChildStmt(1).(ExprStmt).getExpr()
   }
 
