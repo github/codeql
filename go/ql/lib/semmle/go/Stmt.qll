@@ -917,6 +917,7 @@ class ExpressionSwitchStmt extends @exprswitchstmt, SwitchStmt {
  * ```
  */
 class TypeSwitchStmt extends @typeswitchstmt, SwitchStmt {
+  /** Gets the assignment statement of this type-switch statement, if any. */
   SimpleAssignStmt getAssign() { result = this.getChildStmt(1) }
 
   /** Gets the test statement of this type-switch statement. This is a `SimpleAssignStmt` or `ExprStmt`. */
