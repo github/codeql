@@ -2,9 +2,11 @@
 | main.rs:16:10:16:23 | FormatArgsExpr | 0 |
 | main.rs:19:13:19:36 | FormatArgsExpr | 1 |
 | main.rs:33:25:33:33 | FormatArgsExpr | 1 |
-| main.rs:38:13:38:32 | FormatArgsExpr | 1 |
-| main.rs:39:13:39:32 | FormatArgsExpr | 0 |
-| main.rs:49:5:49:27 | FormatArgsExpr | 1 |
-| main.rs:50:5:50:26 | FormatArgsExpr | 0 |
-| main.rs:51:5:51:25 | FormatArgsExpr | 1 |
-| main.rs:52:5:52:24 | FormatArgsExpr | 0 |
+| main.rs:44:40:44:46 | FormatArgsExpr | 0 |
+| main.rs:49:52:49:58 | FormatArgsExpr | 0 |
+| main.rs:55:13:55:33 | FormatArgsExpr | 1 |
+| main.rs:60:13:60:33 | FormatArgsExpr | 0 |
+| main.rs:70:5:70:27 | FormatArgsExpr | 1 |
+| main.rs:71:5:71:26 | FormatArgsExpr | 0 |
+| main.rs:72:5:72:25 | FormatArgsExpr | 1 |
+| main.rs:73:5:73:24 | FormatArgsExpr | 0 |
