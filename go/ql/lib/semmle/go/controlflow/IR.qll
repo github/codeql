@@ -656,7 +656,7 @@ module IR {
     AstNode s;
 
     EvalCompoundAssignRhsInstruction() {
-      this.isAdditional(s, "compound-rhs") and
+      this.isIn(s) and
       (s instanceof CompoundAssignStmt or s instanceof IncDecStmt)
     }
 
@@ -1070,13 +1070,9 @@ module IR {
         )
       )
       or
-      exists(CompoundAssignStmt ca | write.isAdditional(ca, "compound-rhs") |
-        lhs = ca.getLhs().stripParens()
-      )
+      exists(CompoundAssignStmt ca | write.isIn(ca) | lhs = ca.getLhs().stripParens())
       or
-      exists(IncDecStmt ids | write.isAdditional(ids, "compound-rhs") |
-        lhs = ids.getOperand().stripParens()
-      )
+      exists(IncDecStmt ids | write.isIn(ids) | lhs = ids.getOperand().stripParens())
       or
       exists(FuncDef fd, int idx |
         write.isBefore(fd.getParameter(idx).getDeclaration()) and
