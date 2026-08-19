@@ -29,27 +29,27 @@ namespace Test
     using Microsoft.AspNet.OData;
     using System.Collections.Generic;
 
-    public class FileMetadata
+    public class EntityMetadata
     {
-        public string Author { get; set; }
+        public string Owner { get; set; }
     }
 
-    public class UploadedFile
+    public class BoundEntity
     {
-        public string FileName { get; set; }
+        public string Name { get; set; }
 
-        public string FileContent { get; set; }
+        public string Content { get; set; }
 
-        public FileMetadata Metadata { get; set; }
+        public EntityMetadata Metadata { get; set; }
 
-        public List<FileMetadata> History { get; set; }
+        public List<EntityMetadata> Revisions { get; set; }
     }
 
-    public class SubscriptionRelation
+    public class RelatedItem
     {
-        public string EventName { get; set; }
+        public string Label { get; set; }
 
-        public string EventType { get; set; }
+        public string Category { get; set; }
     }
 
     public class Widget
@@ -65,37 +65,37 @@ namespace Test
         public string Name { get; set; }
     }
 
-    public class OrderController
+    public class SampleController
     {
         void Sink(object o) { }
 
         void CastFromDictionary(ODataActionParameters parameters)
         {
-            var file = (UploadedFile)parameters["CabFile"];
-            Sink(file);
-            Sink(file.FileName);
-            Sink(file.FileContent);
-            Sink(file.Metadata.Author);
-            foreach (var m in file.History)
+            var entity = (BoundEntity)parameters["Entity"];
+            Sink(entity);
+            Sink(entity.Name);
+            Sink(entity.Content);
+            Sink(entity.Metadata.Owner);
+            foreach (var m in entity.Revisions)
             {
-                Sink(m.Author);
+                Sink(m.Owner);
             }
         }
 
         void IsAsFromDictionary(ODataActionParameters parameters)
         {
-            if (parameters["NewEvents"] is IEnumerable<SubscriptionRelation> relations1)
+            if (parameters["Items"] is IEnumerable<RelatedItem> items1)
             {
-                foreach (var item in relations1)
+                foreach (var item in items1)
                 {
-                    Sink(item.EventName);
+                    Sink(item.Label);
                 }
             }
 
-            var relations2 = parameters["NewEvents"] as IEnumerable<SubscriptionRelation>;
-            foreach (var item in relations2)
+            var items2 = parameters["Items"] as IEnumerable<RelatedItem>;
+            foreach (var item in items2)
             {
-                Sink(item.EventType);
+                Sink(item.Category);
             }
         }
 

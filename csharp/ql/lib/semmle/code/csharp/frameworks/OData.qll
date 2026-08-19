@@ -17,14 +17,14 @@
  * members need to be taint-tracked explicitly.
  */
 
-private import csharp
+import csharp
 private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.dataflow.FlowSteps
 private import semmle.code.csharp.dataflow.TaintTracking
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 
 /** The `ODataActionParameters` dictionary type, across OData library versions. */
-private class ODataActionParametersClass extends Class {
+class ODataActionParametersClass extends Class {
   ODataActionParametersClass() {
     this.hasFullyQualifiedName("Microsoft.AspNet.OData", "ODataActionParameters") or
     this.hasFullyQualifiedName("Microsoft.AspNetCore.OData.Formatter", "ODataActionParameters") or
@@ -32,8 +32,8 @@ private class ODataActionParametersClass extends Class {
   }
 }
 
-/** An indexer read on an `ODataActionParameters` dictionary, e.g. `parameters["CabFile"]`. */
-private class ODataActionParameterRead extends ElementAccess {
+/** An indexer read on an `ODataActionParameters` dictionary, e.g. `parameters["Foo"]`. */
+class ODataActionParameterRead extends ElementAccess {
   ODataActionParameterRead() { this.getQualifier().getType() instanceof ODataActionParametersClass }
 }
 
@@ -43,7 +43,7 @@ private predicate isODataParameterValue(Expr e) {
 }
 
 /** The generic `Delta<TStructuralType>` change-tracking class, across OData library versions. */
-private class DeltaClass extends UnboundGenericClass {
+class DeltaClass extends UnboundGenericClass {
   DeltaClass() {
     this.getNumberOfTypeParameters() = 1 and
     (
@@ -58,7 +58,7 @@ private class DeltaClass extends UnboundGenericClass {
  * or type-tested to -- directly, or wrapped in a collection (`List<T>`,
  * `IEnumerable<T>`, arrays, ...) -- or a type that is tracked by a `Delta<T>`.
  */
-private class ODataBoundType extends ValueOrRefType {
+class ODataBoundType extends ValueOrRefType {
   ODataBoundType() {
     exists(Cast c | isODataParameterValue(c.getExpr()) |
       this = c.getTargetType() or
@@ -76,6 +76,22 @@ private class ODataBoundType extends ValueOrRefType {
     )
     or
     this = any(ConstructedClass c | c.getUnboundGeneric() instanceof DeltaClass).getTypeArgument(0)
+  }
+}
+
+/** The `Patch`, `Put`, `CopyChangedValues`, and `CopyUnchangedValues` methods on `Delta<T>`. */
+class DeltaMutatingMethod extends Method {
+  DeltaMutatingMethod() {
+    this.getDeclaringType() instanceof DeltaClass and
+    this.hasName(["Patch", "Put", "CopyChangedValues", "CopyUnchangedValues"])
+  }
+}
+
+/** The `GetInstance` method on `Delta<T>`. */
+class DeltaGetInstanceMethod extends Method {
+  DeltaGetInstanceMethod() {
+    this.getDeclaringType() instanceof DeltaClass and
+    this.hasName("GetInstance")
   }
 }
 
@@ -118,14 +134,6 @@ private class ODataBoundMember extends TaintTracking::TaintedMember, CandidateOD
   }
 }
 
-/** The `Patch`, `Put`, `CopyChangedValues`, and `CopyUnchangedValues` methods on `Delta<T>`. */
-private class DeltaMutatingMethod extends Method {
-  DeltaMutatingMethod() {
-    this.getDeclaringType() instanceof DeltaClass and
-    this.hasName(["Patch", "Put", "CopyChangedValues", "CopyUnchangedValues"])
-  }
-}
-
 /**
  * A call to `Delta<T>.Patch`/`Put`/`CopyChangedValues`/`CopyUnchangedValues`
  * copies the changes tracked by the `Delta<T>` receiver onto its `original`
@@ -138,14 +146,6 @@ private class DeltaMutatingCallTaintStep extends AdditionalTaintStep {
       node1.asExpr() = mc.getQualifier() and
       node2.(PostUpdateNode).getPreUpdateNode().asExpr() = mc.getArgument(0)
     )
-  }
-}
-
-/** The `GetInstance` method on `Delta<T>`. */
-private class DeltaGetInstanceMethod extends Method {
-  DeltaGetInstanceMethod() {
-    this.getDeclaringType() instanceof DeltaClass and
-    this.hasName("GetInstance")
   }
 }
 

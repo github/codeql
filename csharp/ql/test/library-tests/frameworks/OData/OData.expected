@@ -1,9 +1,9 @@
-| OData.cs:72:55:72:64 | parameters | OData.cs:75:18:75:21 | access to local variable file |
-| OData.cs:72:55:72:64 | parameters | OData.cs:76:18:76:30 | access to property FileName |
-| OData.cs:72:55:72:64 | parameters | OData.cs:77:18:77:33 | access to property FileContent |
-| OData.cs:72:55:72:64 | parameters | OData.cs:78:18:78:37 | access to property Author |
-| OData.cs:72:55:72:64 | parameters | OData.cs:81:22:81:29 | access to property Author |
-| OData.cs:85:55:85:64 | parameters | OData.cs:91:26:91:39 | access to property EventName |
-| OData.cs:85:55:85:64 | parameters | OData.cs:98:22:98:35 | access to property EventType |
+| OData.cs:72:55:72:64 | parameters | OData.cs:75:18:75:23 | access to local variable entity |
+| OData.cs:72:55:72:64 | parameters | OData.cs:76:18:76:28 | access to property Name |
+| OData.cs:72:55:72:64 | parameters | OData.cs:77:18:77:31 | access to property Content |
+| OData.cs:72:55:72:64 | parameters | OData.cs:78:18:78:38 | access to property Owner |
+| OData.cs:72:55:72:64 | parameters | OData.cs:81:22:81:28 | access to property Owner |
+| OData.cs:85:55:85:64 | parameters | OData.cs:91:26:91:35 | access to property Label |
+| OData.cs:85:55:85:64 | parameters | OData.cs:98:22:98:34 | access to property Category |
 | OData.cs:102:39:102:43 | delta | OData.cs:105:18:105:30 | access to property Name |
 | OData.cs:108:45:108:49 | delta | OData.cs:111:18:111:23 | access to property Name |
