@@ -53,3 +53,33 @@ func deferBeforePossiblePanic(values []int, index int) {
 	defer recoverPanic()
 	_ = values[index]
 }
+
+func conditionalDefer(register bool) {
+	if register {
+		defer recoverPanic()
+	}
+	fmt.Println("done")
+}
+
+func repeatedDefer(count int) {
+	for i := 0; i < count; i++ {
+		defer recoverPanic()
+	}
+}
+
+func bypassedDefer(skip bool) {
+	if skip {
+		goto done
+	}
+	defer recoverPanic()
+done:
+	fmt.Println("done")
+}
+
+func panicAroundDefer(panicEarly bool) {
+	if panicEarly {
+		panic("early")
+	}
+	defer recoverPanic()
+	panic("late")
+}
