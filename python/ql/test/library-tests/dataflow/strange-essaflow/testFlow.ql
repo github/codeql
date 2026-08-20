@@ -1,11 +1,12 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.python.dataflow.new.internal.SsaImpl as SsaImpl
 
 /** Gets the `CfgNode` that holds the module imported by the fully qualified module name `name`. */
 DataFlow::CfgNode module_import(string name) {
-  exists(Variable var, AssignmentDefinition def, Import imp, Alias alias |
-    var = def.getSourceVariable() and
+  exists(Variable var, SsaImpl::AssignmentDefinition def, Import imp, Alias alias |
+    var = def.getSourceVariable().getVariable() and
     result.getNode() = def.getDefiningNode() and
     alias = imp.getAName() and
     alias.getAsname() = var.getAStore()

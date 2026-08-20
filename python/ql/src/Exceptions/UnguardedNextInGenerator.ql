@@ -12,6 +12,8 @@
 
 import python
 private import semmle.python.ApiGraphs
+private import semmle.python.controlflow.internal.Cfg as Cfg
+private import semmle.python.Flow as Flow
 
 API::Node iter() { result = API::builtin("iter") }
 
@@ -19,17 +21,17 @@ API::Node next() { result = API::builtin("next") }
 
 API::Node stopIteration() { result = API::builtin("StopIteration") }
 
-predicate call_to_iter(CallNode call, EssaVariable sequence) {
-  call = iter().getACall().asCfgNode() and
+predicate call_to_iter(Flow::CallNode call, EssaVariable sequence) {
+  call.getNode() = iter().getACall().asCfgNode().(Cfg::CallNode).getNode() and
   call.getArg(0) = sequence.getAUse()
 }
 
-predicate call_to_next(CallNode call, ControlFlowNode iter) {
-  call = next().getACall().asCfgNode() and
+predicate call_to_next(Flow::CallNode call, Flow::ControlFlowNode iter) {
+  call.getNode() = next().getACall().asCfgNode().(Cfg::CallNode).getNode() and
   call.getArg(0) = iter
 }
 
-predicate call_to_next_has_default(CallNode call) {
+predicate call_to_next_has_default(Flow::CallNode call) {
   exists(call.getArg(1)) or exists(call.getArgByName("default"))
 }
 
@@ -49,14 +51,14 @@ predicate iter_not_exhausted(EssaVariable iterator) {
   )
 }
 
-predicate stop_iteration_handled(CallNode call) {
+predicate stop_iteration_handled(Flow::CallNode call) {
   exists(Try t |
     t.containsInScope(call.getNode()) and
     t.getAHandler().getType() = stopIteration().getAValueReachableFromSource().asExpr()
   )
 }
 
-from CallNode call
+from Flow::CallNode call
 where
   call_to_next(call, _) and
   not call_to_next_has_default(call) and
