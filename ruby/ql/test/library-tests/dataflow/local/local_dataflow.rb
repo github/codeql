@@ -108,6 +108,13 @@ def and_or
   sink(b) # $ hasValueFlow=8
 end
 
+def begin_expression
+  value = begin
+    source(1)
+  end
+  sink(value) # $ hasValueFlow=1 hasTaintFlow=1
+end
+
 def object_dup
   sink(source(1).dup) # $ hasValueFlow=1
   sink(source(1).dup.dup) # $ hasValueFlow=1
