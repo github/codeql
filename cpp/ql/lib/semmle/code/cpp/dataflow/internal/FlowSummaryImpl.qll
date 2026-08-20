@@ -139,6 +139,28 @@ private class ConversionCall extends Call {
 private module Input2 implements Impl::Private::InputSig2 {
   private import codeql.util.Void
 
+  pragma[nomagic]
+  private predicate hasFunctionAndIndirectionIndex(
+    Function f, int indirectionIndex, Ssa::ExplicitDefinition def
+  ) {
+    def.getFunction() = f and
+    def.getSourceVariable().getIRVariable() instanceof IRReturnVariable and
+    def.getIndirectionIndex() = indirectionIndex
+  }
+
+  /** Holds if `def` defines `e` as a returned value with return kind `rk`. */
+  bindingset[rk, e]
+  private predicate isReturnExpr(Function f, ReturnKind rk, Expr e) {
+    exists(Ssa::ExplicitDefinition def |
+      hasFunctionAndIndirectionIndex(f, rk.getIndirectionIndex(), def) and
+      e =
+        def.getAssignedInstruction()
+            .(StoreInstruction)
+            .getSourceValue()
+            .getUnconvertedResultExpression()
+    )
+  }
+
   class SourceSinkReportingElement extends Element {
     SourceSinkReportingElement() { this instanceof Expr or this instanceof Parameter }
 
@@ -159,13 +181,25 @@ private module Input2 implements Impl::Private::InputSig2 {
       result = this.(ConversionCall).getQualifier().(LambdaExpression).getLambdaFunction()
     }
 
+    /** Gets the function invoked when this element is used as a callback. */
+    private Function getCallbackFunction() {
+      // Taking the address of a function
+      result = this.(FunctionAccess).getTarget()
+      or
+      // Passing an object with an overloaded `operator()`
+      result = this.getOperatorCallFunction()
+    }
+
     SourceSinkReportingElement getASuccessor(Impl::Private::SummaryComponent sc) {
-      exists(ParameterPosition pos | sc = Impl::Private::SummaryComponent::parameter(pos) |
-        // Taking the address of a function
-        result = pos.getParameter(this.(FunctionAccess).getTarget())
+      exists(Function f | f = this.getCallbackFunction() |
+        exists(ParameterPosition pos | sc = Impl::Private::SummaryComponent::parameter(pos) |
+          result = pos.getParameter(f)
+        )
         or
-        // Passing an object with an overloaded `operator()`
-        result = pos.getParameter(this.getOperatorCallFunction())
+        exists(ReturnKind rk |
+          sc = Impl::Private::SummaryComponent::return(rk) and
+          isReturnExpr(f, rk, result)
+        )
       )
     }
   }
@@ -197,6 +231,12 @@ private module Input2 implements Impl::Private::InputSig2 {
       pragma[only_bind_out](rk.getIndirectionIndex())
   }
 
+  pragma[nomagic]
+  private predicate hasKindAndEnclosingFunction(Function f, ReturnKind rk, ReturnNode r) {
+    r.getEnclosingCallable().asSourceCallable() = f and
+    r.getKind() = rk
+  }
+
   bindingset[e, sc]
   Node getSourceDataFlowNode(SourceSinkReportingElement e, Impl::Private::SummaryComponent sc) {
     exists(DataFlowCall call |
@@ -212,6 +252,7 @@ private module Input2 implements Impl::Private::InputSig2 {
       or
       exists(ReturnKind rk |
         sc = Impl::Private::SummaryComponent::return(rk) and
+        // When `e` is a call the node becomes an `OutNode`.
         e = call.asCallInstruction().getUnconvertedResultExpression()
       |
         rk.getIndirectionIndex() = 0 and
@@ -225,6 +266,14 @@ private module Input2 implements Impl::Private::InputSig2 {
       sc = Impl::Private::SummaryComponent::parameter(pos) and
       p.isParameterOf(e.getEnclosingCallable(), pos) and
       result = p
+    )
+    or
+    exists(Function f, ReturnKind rk |
+      sc = Impl::Private::SummaryComponent::return(rk) and
+      // When `e` is the returned expression from a function the node is
+      // the `ReturnNode`.
+      isReturnExpr(f, rk, e) and
+      hasKindAndEnclosingFunction(f, rk, result)
     )
   }
 
@@ -245,6 +294,12 @@ private module Input2 implements Impl::Private::InputSig2 {
       sc = Impl::Private::SummaryComponent::argument(pos) and
       pos.getArgument(call.getUnconvertedResultExpression()) = e and
       result.(ArgumentNode).sourceArgumentOf(call, pos)
+    )
+    or
+    exists(Function f, ReturnKind rk |
+      sc = Impl::Private::SummaryComponent::return(rk) and
+      isReturnExpr(f, rk, e) and
+      hasKindAndEnclosingFunction(f, rk, result)
     )
   }
 }
