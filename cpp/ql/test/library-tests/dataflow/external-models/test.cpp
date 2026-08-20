@@ -293,19 +293,19 @@ void test_callback_return_access_paths() {
 	ymlSink(*ymlSourcePtr()); // $ ir
 
 	source_from_callback_return_template(callback_returning_int);
-	ymlSink(callback_returning_int()); // $ MISSING: ir
+	ymlSink(callback_returning_int()); // $ ir
 
 	source_from_callback_return_ptr(callback_returning_int_2);
-	ymlSink(callback_returning_int_2()); // $ MISSING: ir
+	ymlSink(callback_returning_int_2()); // $ ir
 
 	source_ptr_from_callback_return_ptr(callback_returning_ptr_int);
 	int *ptr = callback_returning_ptr_int();
 	ymlSink((int)ptr); // clean
-	ymlSink(*ptr); // $ MISSING: ir
+	ymlSink(*ptr); // $ ir
 
-	sink_from_callback_return_template([]() { return ymlSource(); }); // $ MISSING: ir
-	sink_from_callback_return_template(return_ymlSource); // $ MISSING: ir
+	sink_from_callback_return_template([]() { return ymlSource(); }); // $ ir
+	sink_from_callback_return_template(return_ymlSource); // $ ir
 
-	sink_ptr_from_callback_return_ptr([]() { return ymlSourcePtr(); }); // $ MISSING: ir
-	sink_ptr_from_callback_return_ptr(return_ptr_to_ymlSource); // $ MISSING: ir
+	sink_ptr_from_callback_return_ptr([]() { return ymlSourcePtr(); }); // $ ir
+	sink_ptr_from_callback_return_ptr(return_ptr_to_ymlSource); // $ ir
 }
