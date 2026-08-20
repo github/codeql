@@ -14,4 +14,4 @@ import codeql.unified.internal.AnalysisQuality
 
 from StaticNameResolutionStats::Candidate c, NameBindingNode target
 where target = c.getTarget()
-select c, "Resolved to $@", target, target.toString()
+select c, "Resolved to $@.", target, target.toString()

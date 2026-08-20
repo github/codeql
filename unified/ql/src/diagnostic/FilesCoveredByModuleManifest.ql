@@ -15,4 +15,4 @@ import codeql.unified.internal.AnalysisQuality
 
 from FilesCoveredByModuleManifestStats::Candidate c, ModuleScopeRepr mod
 where c.isOk() and mod = c.getAModule()
-select c, "File included in $@", mod, mod.toString()
+select c, "File included in $@.", mod, mod.toString()
