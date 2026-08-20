@@ -28,3 +28,9 @@
 | test.cpp:254:14:254:18 | value | test-sink |
 | test.cpp:258:14:258:18 | value | test-sink |
 | test.cpp:263:15:263:19 | value | test-sink |
+| test.cpp:292:15:292:26 | call to ymlSourcePtr | test-sink |
+| test.cpp:293:10:293:24 | * ... | test-sink |
+| test.cpp:296:10:296:31 | call to callback_returning_int | test-sink |
+| test.cpp:299:10:299:33 | call to callback_returning_int_2 | test-sink |
+| test.cpp:303:15:303:17 | ptr | test-sink |
+| test.cpp:304:10:304:13 | * ... | test-sink |
