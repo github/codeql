@@ -48,6 +48,10 @@ module NormalHashFunction {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
+  private class KnownNonSensitiveConfigurationLookupSanitizer extends Sanitizer {
+    KnownNonSensitiveConfigurationLookupSanitizer() { isKnownNonSensitiveConfigurationLookup(this) }
+  }
+
   /**
    * A source of sensitive data, considered as a flow source.
    */
@@ -116,6 +120,10 @@ module ComputationallyExpensiveHashFunction {
    * algorithm on sensitive data" vulnerabilities.
    */
   abstract class Sanitizer extends DataFlow::Node { }
+
+  private class KnownNonSensitiveConfigurationLookupSanitizer extends Sanitizer {
+    KnownNonSensitiveConfigurationLookupSanitizer() { isKnownNonSensitiveConfigurationLookup(this) }
+  }
 
   /**
    * A source of passwords, considered as a flow source.
