@@ -133,3 +133,39 @@ _config = {"sleep_timer": 5, "mysql_password": password}
 
 # since we have precise dictionary content, other items of the config are not tainted
 print(_config["sleep_timer"])
+
+
+# ------------------------------------------------------------------------------
+# cross-talk through configuration getters.
+# ------------------------------------------------------------------------------
+
+class Configuration:
+    def _get_secret_option(self, section, key):
+        if self.is_sensitive(section, key):
+            return load_secret_value() # $ SensitiveDataSource=secret
+        return None
+
+    def get(self, section, key):
+        value = self._get_secret_option(section, key) # $ SensitiveDataSource=secret
+        if value is not None:
+            return value
+        return "default"
+
+    def getlist(self, section, key):
+        return self.get(section, key).split(",")
+
+    def get_mandatory_list_value(self, section, key):
+        return self.getlist(section, key)
+
+
+configuration = Configuration()
+
+executor_name = configuration.get_mandatory_list_value("core", "EXECUTOR")[0]
+print(executor_name) # $ SPURIOUS: SensitiveUse=secret
+
+value2 = configuration.get_mandatory_list_value("database", "PASSWORD")[0]
+print(value2) # $ SensitiveUse=secret
+
+dynamic_key = get_key()
+dynamic_value = configuration.get_mandatory_list_value("core", dynamic_key)[0]
+print(dynamic_value) # $ SensitiveUse=secret
