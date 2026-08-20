@@ -3282,7 +3282,10 @@
 | local_dataflow.rb:152:16:152:16 | r | local_dataflow.rb:152:16:152:16 | r |
 | local_dataflow.rb:152:16:152:16 | r | local_dataflow.rb:154:26:154:26 | r |
 | local_dataflow.rb:153:3:153:3 | x | local_dataflow.rb:161:8:161:8 | x |
+| local_dataflow.rb:153:7:160:9 | begin ...  | local_dataflow.rb:153:3:153:3 | x |
+| local_dataflow.rb:153:7:160:9 | begin ...  | local_dataflow.rb:153:3:160:9 | ... = ... |
 | local_dataflow.rb:154:9:154:21 | [post] self | local_dataflow.rb:157:9:157:17 | self |
+| local_dataflow.rb:154:9:154:21 | call to raise | local_dataflow.rb:154:9:154:26 | ... if ... |
 | local_dataflow.rb:154:9:154:21 | self | local_dataflow.rb:157:9:157:17 | self |
 | local_dataflow.rb:154:26:154:26 | r | local_dataflow.rb:164:26:164:26 | r |
 | local_dataflow.rb:155:9:155:17 | [post] self | local_dataflow.rb:157:9:157:17 | self |
@@ -3300,7 +3303,10 @@
 | local_dataflow.rb:161:3:161:9 | self | local_dataflow.rb:164:9:164:21 | self |
 | local_dataflow.rb:161:3:161:9 | self | local_dataflow.rb:165:9:165:17 | self |
 | local_dataflow.rb:163:3:163:3 | y | local_dataflow.rb:173:8:173:8 | y |
+| local_dataflow.rb:163:7:172:9 | begin ...  | local_dataflow.rb:163:3:163:3 | y |
+| local_dataflow.rb:163:7:172:9 | begin ...  | local_dataflow.rb:163:3:172:9 | ... = ... |
 | local_dataflow.rb:164:9:164:21 | [post] self | local_dataflow.rb:167:9:167:17 | self |
+| local_dataflow.rb:164:9:164:21 | call to raise | local_dataflow.rb:164:9:164:26 | ... if ... |
 | local_dataflow.rb:164:9:164:21 | self | local_dataflow.rb:167:9:167:17 | self |
 | local_dataflow.rb:165:9:165:17 | [post] self | local_dataflow.rb:167:9:167:17 | self |
 | local_dataflow.rb:165:9:165:17 | [post] self | local_dataflow.rb:169:9:169:17 | self |
@@ -3315,3 +3321,4 @@
 | local_dataflow.rb:171:9:171:17 | [post] self | local_dataflow.rb:173:3:173:9 | self |
 | local_dataflow.rb:171:9:171:17 | call to source | local_dataflow.rb:170:7:171:17 | ensure ... |
 | local_dataflow.rb:171:9:171:17 | self | local_dataflow.rb:173:3:173:9 | self |
+| local_dataflow.rb:173:3:173:9 | call to sink | local_dataflow.rb:153:3:173:52 | ... |
