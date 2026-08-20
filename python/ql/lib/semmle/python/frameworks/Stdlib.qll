@@ -4875,6 +4875,60 @@ module StdlibPrivate {
   }
 
   /**
+   * A flow summary for `list.extend`.
+   *
+   * See https://docs.python.org/3.10/library/stdtypes.html#typesseq-mutable
+   */
+  class ListExtend extends SummarizedCallable::Range {
+    ListExtend() { this = "list.extend" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).calls(_, "extend")
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "extend"
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      // elements of the newly added iterable are added to this
+      (
+        input = "Argument[0].ListElement"
+        or
+        input = "Argument[0].SetElement"
+        or
+        input = "Argument[0].AnyTupleElement"
+      ) and
+      output = "Argument[self].ListElement" and
+      preservesValue = true
+    }
+  }
+
+  /**
+   * A flow summary for `list.insert`.
+   *
+   * See https://docs.python.org/3.10/library/stdtypes.html#typesseq-mutable
+   */
+  class ListInsert extends SummarizedCallable::Range {
+    ListInsert() { this = "list.insert" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).calls(_, "insert")
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "insert"
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      // newly added element added to this
+      input = "Argument[1]" and
+      output = "Argument[self].ListElement" and
+      preservesValue = true
+    }
+  }
+
+  /**
    * A flow summary for `set.add`.
    *
    * See https://docs.python.org/3.10/library/stdtypes.html#frozenset.add
