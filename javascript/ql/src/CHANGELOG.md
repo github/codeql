@@ -1,3 +1,9 @@
+## 2.4.4
+
+### Minor Analysis Improvements
+
+* The `js/superfluous-trailing-arguments` query no longer reports valid arguments passed to the `TransformStream` constructor.
+
 ## 2.4.3
 
 ### Minor Analysis Improvements
