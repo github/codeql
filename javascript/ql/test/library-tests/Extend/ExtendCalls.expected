@@ -29,7 +29,7 @@
 | tst.js:64:1:64:48 | checkSh ... arg())) | OK |
 | tst.js:65:1:65:54 | checkSh ... arg())) | OK |
 | tst.js:66:1:66:45 | checkSh ... arg())) | OK |
-| tst.js:67:1:67:57 | checkSh ... arg())) | Not an extend call |
+| tst.js:67:1:67:57 | checkSh ... arg())) | OK |
 | tst.js:68:1:68:52 | checkSh ... arg())) | OK |
 | tst.js:69:1:69:53 | checkSh ... arg())) | OK |
 | tst.js:70:1:70:53 | checkSh ... arg())) | OK |
