@@ -107,6 +107,28 @@ def use_funcs_with_decorators():
     x = get_tracked2() # $ tracked
     y = unrelated_func() # $ SPURIOUS: tracked
 
+# A decorator factory creates a distinct closure each time it is called. The captured
+# callable and data therefore belong to that closure instance, even though every
+# instance comes from the same wrapper AST.
+def make_capturing_wrapper(func, captured): # $ tracked
+    def wrapper():
+        print(captured) # $ tracked
+        return func() # $ tracked
+    return wrapper
+
+def closure_sensitive_func():
+    return tracked # $ tracked
+
+def closure_safe_func():
+    return "safe"
+
+closure_sensitive = make_capturing_wrapper(closure_sensitive_func, tracked) # $ tracked
+closure_safe = make_capturing_wrapper(closure_safe_func, "safe")
+
+def use_capturing_wrappers():
+    sensitive = closure_sensitive() # $ tracked
+    safe = closure_safe() # $ SPURIOUS: tracked
+
 # ------------------------------------------------------------------------------
 
 def expects_int(x): # $ int
