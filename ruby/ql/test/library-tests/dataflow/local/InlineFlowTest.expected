@@ -34,17 +34,17 @@ edges
 | local_dataflow.rb:104:9:104:17 | call to source | local_dataflow.rb:104:3:104:3 | a | provenance |  |
 | local_dataflow.rb:107:3:107:3 | b | local_dataflow.rb:108:8:108:8 | b | provenance |  |
 | local_dataflow.rb:107:9:107:17 | call to source | local_dataflow.rb:107:3:107:3 | b | provenance |  |
-| local_dataflow.rb:112:8:112:16 | call to source | local_dataflow.rb:112:8:112:20 | call to dup | provenance |  |
-| local_dataflow.rb:113:8:113:16 | call to source | local_dataflow.rb:113:8:113:20 | call to dup | provenance |  |
-| local_dataflow.rb:113:8:113:20 | call to dup | local_dataflow.rb:113:8:113:24 | call to dup | provenance |  |
-| local_dataflow.rb:117:8:117:16 | call to source | local_dataflow.rb:117:8:117:23 | call to tap | provenance |  |
-| local_dataflow.rb:118:3:118:11 | call to source | local_dataflow.rb:118:20:118:20 | x | provenance |  |
-| local_dataflow.rb:118:20:118:20 | x | local_dataflow.rb:118:28:118:28 | x | provenance |  |
-| local_dataflow.rb:119:8:119:16 | call to source | local_dataflow.rb:119:8:119:23 | call to tap | provenance |  |
-| local_dataflow.rb:119:8:119:23 | call to tap | local_dataflow.rb:119:8:119:30 | call to tap | provenance |  |
-| local_dataflow.rb:123:8:123:16 | call to source | local_dataflow.rb:123:8:123:20 | call to dup | provenance |  |
-| local_dataflow.rb:123:8:123:20 | call to dup | local_dataflow.rb:123:8:123:45 | call to tap | provenance |  |
-| local_dataflow.rb:123:8:123:45 | call to tap | local_dataflow.rb:123:8:123:49 | call to dup | provenance |  |
+| local_dataflow.rb:119:8:119:16 | call to source | local_dataflow.rb:119:8:119:20 | call to dup | provenance |  |
+| local_dataflow.rb:120:8:120:16 | call to source | local_dataflow.rb:120:8:120:20 | call to dup | provenance |  |
+| local_dataflow.rb:120:8:120:20 | call to dup | local_dataflow.rb:120:8:120:24 | call to dup | provenance |  |
+| local_dataflow.rb:124:8:124:16 | call to source | local_dataflow.rb:124:8:124:23 | call to tap | provenance |  |
+| local_dataflow.rb:125:3:125:11 | call to source | local_dataflow.rb:125:20:125:20 | x | provenance |  |
+| local_dataflow.rb:125:20:125:20 | x | local_dataflow.rb:125:28:125:28 | x | provenance |  |
+| local_dataflow.rb:126:8:126:16 | call to source | local_dataflow.rb:126:8:126:23 | call to tap | provenance |  |
+| local_dataflow.rb:126:8:126:23 | call to tap | local_dataflow.rb:126:8:126:30 | call to tap | provenance |  |
+| local_dataflow.rb:130:8:130:16 | call to source | local_dataflow.rb:130:8:130:20 | call to dup | provenance |  |
+| local_dataflow.rb:130:8:130:20 | call to dup | local_dataflow.rb:130:8:130:45 | call to tap | provenance |  |
+| local_dataflow.rb:130:8:130:45 | call to tap | local_dataflow.rb:130:8:130:49 | call to dup | provenance |  |
 nodes
 | local_dataflow.rb:78:3:78:3 | z | semmle.label | z |
 | local_dataflow.rb:78:12:78:20 | call to source | semmle.label | call to source |
@@ -87,25 +87,27 @@ nodes
 | local_dataflow.rb:107:3:107:3 | b | semmle.label | b |
 | local_dataflow.rb:107:9:107:17 | call to source | semmle.label | call to source |
 | local_dataflow.rb:108:8:108:8 | b | semmle.label | b |
-| local_dataflow.rb:112:8:112:16 | call to source | semmle.label | call to source |
-| local_dataflow.rb:112:8:112:20 | call to dup | semmle.label | call to dup |
-| local_dataflow.rb:113:8:113:16 | call to source | semmle.label | call to source |
-| local_dataflow.rb:113:8:113:20 | call to dup | semmle.label | call to dup |
-| local_dataflow.rb:113:8:113:24 | call to dup | semmle.label | call to dup |
-| local_dataflow.rb:117:8:117:16 | call to source | semmle.label | call to source |
-| local_dataflow.rb:117:8:117:23 | call to tap | semmle.label | call to tap |
-| local_dataflow.rb:118:3:118:11 | call to source | semmle.label | call to source |
-| local_dataflow.rb:118:20:118:20 | x | semmle.label | x |
-| local_dataflow.rb:118:28:118:28 | x | semmle.label | x |
 | local_dataflow.rb:119:8:119:16 | call to source | semmle.label | call to source |
-| local_dataflow.rb:119:8:119:23 | call to tap | semmle.label | call to tap |
-| local_dataflow.rb:119:8:119:30 | call to tap | semmle.label | call to tap |
-| local_dataflow.rb:123:8:123:16 | call to source | semmle.label | call to source |
-| local_dataflow.rb:123:8:123:20 | call to dup | semmle.label | call to dup |
-| local_dataflow.rb:123:8:123:45 | call to tap | semmle.label | call to tap |
-| local_dataflow.rb:123:8:123:49 | call to dup | semmle.label | call to dup |
+| local_dataflow.rb:119:8:119:20 | call to dup | semmle.label | call to dup |
+| local_dataflow.rb:120:8:120:16 | call to source | semmle.label | call to source |
+| local_dataflow.rb:120:8:120:20 | call to dup | semmle.label | call to dup |
+| local_dataflow.rb:120:8:120:24 | call to dup | semmle.label | call to dup |
+| local_dataflow.rb:124:8:124:16 | call to source | semmle.label | call to source |
+| local_dataflow.rb:124:8:124:23 | call to tap | semmle.label | call to tap |
+| local_dataflow.rb:125:3:125:11 | call to source | semmle.label | call to source |
+| local_dataflow.rb:125:20:125:20 | x | semmle.label | x |
+| local_dataflow.rb:125:28:125:28 | x | semmle.label | x |
+| local_dataflow.rb:126:8:126:16 | call to source | semmle.label | call to source |
+| local_dataflow.rb:126:8:126:23 | call to tap | semmle.label | call to tap |
+| local_dataflow.rb:126:8:126:30 | call to tap | semmle.label | call to tap |
+| local_dataflow.rb:130:8:130:16 | call to source | semmle.label | call to source |
+| local_dataflow.rb:130:8:130:20 | call to dup | semmle.label | call to dup |
+| local_dataflow.rb:130:8:130:45 | call to tap | semmle.label | call to tap |
+| local_dataflow.rb:130:8:130:49 | call to dup | semmle.label | call to dup |
 subpaths
 testFailures
+| local_dataflow.rb:115:15:115:47 | # $ hasValueFlow=1 hasTaintFlow=1 | Missing result: hasTaintFlow=1 |
+| local_dataflow.rb:115:15:115:47 | # $ hasValueFlow=1 hasTaintFlow=1 | Missing result: hasValueFlow=1 |
 #select
 | local_dataflow.rb:79:25:79:25 | b | local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:79:25:79:25 | b | $@ | local_dataflow.rb:78:12:78:20 | call to source | call to source |
 | local_dataflow.rb:80:29:80:29 | a | local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:80:29:80:29 | a | $@ | local_dataflow.rb:78:12:78:20 | call to source | call to source |
@@ -125,9 +127,9 @@ testFailures
 | local_dataflow.rb:105:8:105:8 | a | local_dataflow.rb:103:7:103:15 | call to source | local_dataflow.rb:105:8:105:8 | a | $@ | local_dataflow.rb:103:7:103:15 | call to source | call to source |
 | local_dataflow.rb:105:8:105:8 | a | local_dataflow.rb:104:9:104:17 | call to source | local_dataflow.rb:105:8:105:8 | a | $@ | local_dataflow.rb:104:9:104:17 | call to source | call to source |
 | local_dataflow.rb:108:8:108:8 | b | local_dataflow.rb:107:9:107:17 | call to source | local_dataflow.rb:108:8:108:8 | b | $@ | local_dataflow.rb:107:9:107:17 | call to source | call to source |
-| local_dataflow.rb:112:8:112:20 | call to dup | local_dataflow.rb:112:8:112:16 | call to source | local_dataflow.rb:112:8:112:20 | call to dup | $@ | local_dataflow.rb:112:8:112:16 | call to source | call to source |
-| local_dataflow.rb:113:8:113:24 | call to dup | local_dataflow.rb:113:8:113:16 | call to source | local_dataflow.rb:113:8:113:24 | call to dup | $@ | local_dataflow.rb:113:8:113:16 | call to source | call to source |
-| local_dataflow.rb:117:8:117:23 | call to tap | local_dataflow.rb:117:8:117:16 | call to source | local_dataflow.rb:117:8:117:23 | call to tap | $@ | local_dataflow.rb:117:8:117:16 | call to source | call to source |
-| local_dataflow.rb:118:28:118:28 | x | local_dataflow.rb:118:3:118:11 | call to source | local_dataflow.rb:118:28:118:28 | x | $@ | local_dataflow.rb:118:3:118:11 | call to source | call to source |
-| local_dataflow.rb:119:8:119:30 | call to tap | local_dataflow.rb:119:8:119:16 | call to source | local_dataflow.rb:119:8:119:30 | call to tap | $@ | local_dataflow.rb:119:8:119:16 | call to source | call to source |
-| local_dataflow.rb:123:8:123:49 | call to dup | local_dataflow.rb:123:8:123:16 | call to source | local_dataflow.rb:123:8:123:49 | call to dup | $@ | local_dataflow.rb:123:8:123:16 | call to source | call to source |
+| local_dataflow.rb:119:8:119:20 | call to dup | local_dataflow.rb:119:8:119:16 | call to source | local_dataflow.rb:119:8:119:20 | call to dup | $@ | local_dataflow.rb:119:8:119:16 | call to source | call to source |
+| local_dataflow.rb:120:8:120:24 | call to dup | local_dataflow.rb:120:8:120:16 | call to source | local_dataflow.rb:120:8:120:24 | call to dup | $@ | local_dataflow.rb:120:8:120:16 | call to source | call to source |
+| local_dataflow.rb:124:8:124:23 | call to tap | local_dataflow.rb:124:8:124:16 | call to source | local_dataflow.rb:124:8:124:23 | call to tap | $@ | local_dataflow.rb:124:8:124:16 | call to source | call to source |
+| local_dataflow.rb:125:28:125:28 | x | local_dataflow.rb:125:3:125:11 | call to source | local_dataflow.rb:125:28:125:28 | x | $@ | local_dataflow.rb:125:3:125:11 | call to source | call to source |
+| local_dataflow.rb:126:8:126:30 | call to tap | local_dataflow.rb:126:8:126:16 | call to source | local_dataflow.rb:126:8:126:30 | call to tap | $@ | local_dataflow.rb:126:8:126:16 | call to source | call to source |
+| local_dataflow.rb:130:8:130:49 | call to dup | local_dataflow.rb:130:8:130:16 | call to source | local_dataflow.rb:130:8:130:49 | call to dup | $@ | local_dataflow.rb:130:8:130:16 | call to source | call to source |
