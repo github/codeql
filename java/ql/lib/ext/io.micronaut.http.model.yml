@@ -16,14 +16,6 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["io.micronaut.core.convert.value", "ConvertibleMultiValues", True, "get", "", "", "Argument[this].Element.MapValue", "ReturnValue", "taint", "manual"]
-      - ["io.micronaut.core.convert.value", "ConvertibleMultiValues", True, "getAll", "", "", "Argument[this].Element.MapValue", "ReturnValue", "value", "manual"]
-      - ["io.micronaut.core.convert.value", "ConvertibleMultiValues", True, "getFirst", "", "", "Argument[this].Element.MapValue", "ReturnValue", "taint", "manual"]
-      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "asMap", "", "", "Argument[this].Element.MapValue", "ReturnValue.MapValue", "taint", "manual"]
-      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "asProperties", "", "", "Argument[this].Element.MapValue", "ReturnValue.MapValue", "taint", "manual"]
-      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "getValue", "", "", "Argument[this].Element.MapValue", "ReturnValue", "taint", "manual"]
-      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "subMap", "", "", "Argument[this].Element.MapValue", "ReturnValue.MapValue", "taint", "manual"]
-      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "values", "", "", "Argument[this].Element.MapValue", "ReturnValue.Element", "taint", "manual"]
       - ["io.micronaut.http", "HttpRequest", True, "DELETE", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["io.micronaut.http", "HttpRequest", True, "DELETE", "(String,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["io.micronaut.http", "HttpRequest", True, "DELETE", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
@@ -40,13 +32,6 @@ extensions:
       - ["io.micronaut.http", "HttpRequest", True, "POST", "(URI,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["io.micronaut.http", "HttpRequest", True, "PUT", "(String,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["io.micronaut.http", "HttpRequest", True, "PUT", "(URI,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["io.micronaut.http.cookie", "Cookie", True, "getDomain", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["io.micronaut.http.cookie", "Cookie", True, "getName", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["io.micronaut.http.cookie", "Cookie", True, "getPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["io.micronaut.http.cookie", "Cookie", True, "getValue", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["io.micronaut.http.cookie", "Cookies", True, "findCookie", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["io.micronaut.http.cookie", "Cookies", True, "get", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["io.micronaut.http.cookie", "Cookies", True, "getAll", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: sinkModel
