@@ -39,6 +39,7 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
     exists(CfgImpl::Ast::AstNode n | this.injects(n) | result = CfgImpl::astNodeToPyNode(n))
   }
 
+  /** Gets the Python expression corresponding to this flow node, if any. */
   Py::Expr asPyExpr() { result = this.getNode() }
 
   /** Gets a predecessor of this flow node. */
@@ -85,14 +86,14 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
   }
 
   /** Holds if this strictly dominates `other`. */
-  overlay[caller?]
   bindingset[this, other]
+  overlay[caller?]
   pragma[inline_late]
   predicate strictlyDominates(ControlFlowNode other) { super.strictlyDominates(other) }
 
   /** Holds if this dominates `other` (reflexively). */
-  overlay[caller?]
   bindingset[this, other]
+  overlay[caller?]
   pragma[inline_late]
   predicate dominates(ControlFlowNode other) { super.dominates(other) }
 
