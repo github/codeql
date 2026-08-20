@@ -458,6 +458,8 @@ private module FolderHeuristic {
    */
   private predicate hasConflictingDefs(Folder folder, string name) {
     containsDef(folder, name) and
+    // Check for "two or more" using `exists(X) and not exists(unique(X))`
+    containsDef(folder.getAFolder(), name) and
     not exists(unique(Folder child | child = folder.getAFolder() and containsDef(child, name)))
   }
 
