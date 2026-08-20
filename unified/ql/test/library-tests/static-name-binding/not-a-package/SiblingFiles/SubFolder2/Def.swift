@@ -1,3 +1,3 @@
-class DeclaredTwiceInSubFolder {} // name=Subfolder1.DeclaredTwiceInSubFolder
+class DeclaredTwiceInSubFolder {} // name=Subfolder2.DeclaredTwiceInSubFolder
 
 class OnlyInSubFolder1 {}
