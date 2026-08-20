@@ -5,9 +5,9 @@ private import codeql.util.Option
 private import rust
 private import codeql.rust.internal.PathResolution
 private import Type
-private import Type as T
 private import TypeAbstraction
 private import TypeAbstraction as TA
+private import Type as T
 private import TypeMention
 private import codeql.rust.internal.typeinference.DerefChain
 private import FunctionType
@@ -2156,7 +2156,7 @@ private TupleType inferArgList(ArgList args, TypePath path) {
 /** Holds if `n` is implicitly dereferenced and/or borrowed. */
 cached
 predicate implicitDerefChainBorrow(Expr e, DerefChain derefChain, boolean borrow) {
-  M3::CachedStage::ref() and
+  CachedStage::ref() and
   exists(BorrowKind bk |
     any(AssocFunctionResolution::AssocFunctionCall afc)
         .argumentHasImplicitDerefChainBorrow(e, derefChain, bk) and
@@ -2183,7 +2183,7 @@ predicate implicitDerefChainBorrow(Expr e, DerefChain derefChain, boolean borrow
  */
 cached
 Addressable resolveCallTarget(InvocationExpr call, boolean dispatch) {
-  M3::CachedStage::ref() and
+  CachedStage::ref() and
   dispatch = false and
   result = call.(NonAssocCallExpr).resolveCallTargetViaPathResolution()
   or
@@ -2203,7 +2203,7 @@ Addressable resolveCallTarget(InvocationExpr call, boolean dispatch) {
  */
 cached
 StructField resolveStructFieldExpr(FieldExpr fe, DerefChain derefChain) {
-  M3::CachedStage::ref() and
+  CachedStage::ref() and
   exists(string name, DataType ty |
     ty = getFieldExprLookupType(fe, pragma[only_bind_into](name), derefChain)
   |
@@ -2217,7 +2217,7 @@ StructField resolveStructFieldExpr(FieldExpr fe, DerefChain derefChain) {
  */
 cached
 TupleField resolveTupleFieldExpr(FieldExpr fe, DerefChain derefChain) {
-  M3::CachedStage::ref() and
+  CachedStage::ref() and
   exists(int i |
     result =
       getTupleFieldExprLookupType(fe, pragma[only_bind_into](i), derefChain)
@@ -2956,6 +2956,8 @@ private module Input3 implements InputSig3 {
         else prefix2.isEmpty()
       )
     or
+    // Rust closure types like `Fn<(A, B) -> C>` are syntactic sugar for `Fn<Args = (A, B), Output = C>`,
+    // so in calls to a closure, we consider the entire argument list as a single tuple argument.
     exists(CallExprImpl::DynamicCallExpr dce, TupleType tt, int i |
       n1 = dce.getSyntacticPositionalArgument(i) and
       n2 = dce.getArgList() and

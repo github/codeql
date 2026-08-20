@@ -2356,28 +2356,45 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       class Closure extends Callable, Expr;
 
       /**
-       * A special pseudo type representing a particular closure parameter.
+       * A special pseudo type representing a particular closure parameter without
+       * a type annotation.
        *
-       * This is needed in cases where the type of a closure parameter must be
-       * inferred from the inferred _return type_ of the closure. For example,
-       * in
+       * For such parameters, we want to infer the type based on the context in which
+       * the closure occurs, and while we could do this by assigning the parameter the
+       * pseudo type `UnknownType`, this would mean that the parameter type could also
+       * be inferred from _within_ the closure body, which we want to avoid.
+       *
+       * There are two ways for type information to flow contextually into a closure
+       * parameter: (A) either by knowing the types of arguments, or (B) by knowing the
+       * return type. Only case B makes use of `ClosureParameterPseudoType`s.
+       *
+       * ### Case A
+       *
+       * ```rust
+       * let c = |x| (x, false);
+       * let r = c(0);
+       * ```
+       *
+       * 1. `c` is assigned the type `Fn(UnknownType) -> ...`,
+       * 2. since `0` has type `i32`, we can infer the `c` has type `Fn(i32) -> ...`, and
+       * 3. using contextual inference, we conclude that `x` has type `i32`.
+       *
+       * ### Case B
        *
        * ```rust
        * let c = |x| (x, false);
        * let r: i32 = c(Default::default()).0;
        * ```
        *
-       * We
-       *
-       * 1. assign `x` the pseudo type `T_x`,
+       * 1. `x` is assigned the pseudo type `T_x`,
        * 2. infer that the return type of `c` is `(T_x, bool)` and hence that `c` has type
-       *    `Fn(<missing>) -> (T_x, bool)`,
+       *    `Fn(...) -> (T_x, bool)`,
        * 3. this enables us to detect that contextual inference is needed, so we also
-       *    assign `c` the type `Fn(<missing>) -> (UnknownType, bool)`,
+       *    assign `c` the type `Fn(...) -> (UnknownType, bool)`,
        * 4. infer that `c(Default::default()).0` must have `UnknownType`,
-       * 5. infer, using contextual inference, that `c` has type `Fn(<missing>) -> (i32, bool)`,
+       * 5. infer, using contextual inference, that `c` has type `Fn(...) -> (i32, bool)`,
        *    and finally
-       * 6. since `c` also has type `Fn(<missing>) -> (T_x, bool)`, we conclude that `x` has type
+       * 6. since `c` also has type `Fn(...) -> (T_x, bool)`, we conclude that `x` has type
        *    `i32` and hence that `c` has type `Fn(i32) -> (i32, bool)`.
        *
        * Note that steps 2, 4, and 5 are standard inference steps.
@@ -3037,11 +3054,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           // steps are reversed in contextual typing
           exists(TypePath path1, AstNode n2, TypePath path2, TypePath suffix |
             result = inferType(n2, path2.appendInverse(suffix)) and
-            path = path1.append(suffix)
-          |
+            path = path1.append(suffix) and
             step(n, path1, n2, path2)
-            or
-            closureStep(n, path1, n2, path2)
           )
         }
 
@@ -3131,47 +3145,51 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         pragma[nomagic]
         private Type inferClosureParameterTypeCand(AstNode n, TypePath path) {
           result = inferType(n, path) and
-          hasClosureParameterPseudoType(n) and
-          not result instanceof UnknownType
+          hasClosureParameterPseudoType(n)
         }
 
         private Type inferClosureParameterPseudoType(AstNode n, TypePath path) {
-          // The `case X` comments below refer to the cases in the QL doc for
-          // `ClosureParameterPseudoType`.
+          // The `step X` comments below refer to the steps for 'Case B' in the
+          // QL doc for `ClosureParameterPseudoType`.
           exists(Closure c, Parameter p | p = c.getParameter(_) |
-            // case 1
+            // step 1
             n = p.getPattern() and
             path.isEmpty() and
             not exists(p.getType()) and
             result.(ClosureParameterPseudoType).getParameter() = p
             or
-            // case 3
+            // step 3
             hasClosureParameterPseudoType(c, p, path) and
             n = c and
             result instanceof UnknownType
           )
           or
-          // case 6
+          // step 6
           exists(AstNode n0, TypePath path0 |
             hasClosureParameterPseudoType(n0, path0, n, path) and
-            result = inferClosureParameterTypeCand(n0, path0)
+            result = inferClosureParameterTypeCand(n0, path0) and
+            not (path.isEmpty() and result instanceof UnknownType)
           )
         }
 
         Type inferClosureType(AstNode n, TypePath path) {
           result = inferClosureParameterPseudoType(n, path)
           or
+          // The `step X` comments below refer to the steps for 'Case A' in the
+          // QL doc for `ClosureParameterPseudoType`.
           exists(Closure c, Parameter p |
             p = c.getParameter(_) and
             not exists(p.getType())
           |
+            // step 1
             n = c and
             path = getClosureParameterTypePath(p) and
             result instanceof UnknownType
             or
+            // step 3
             n = p.getPattern() and
             result = inferType(c, getClosureParameterTypePath(p).appendInverse(path)) and
-            not result instanceof UnknownType
+            not (path.isEmpty() and result instanceof UnknownType)
           )
         }
       }
@@ -3194,7 +3212,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             n = decl.getPattern() and
             not exists(decl.getInitializer()) and
             not exists(decl.getType()) and
-            not n = any(Parameter p).getPattern() and
+            not n = any(Parameter p).getPattern() and // closure parameters are handled in `ClosureTyping`
             path.isEmpty()
           )
         ) and
