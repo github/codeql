@@ -45,7 +45,7 @@ edges
 | request_forgery_tests.rs:68:42:68:42 | a | request_forgery_tests.rs:68:41:68:42 | &a [&ref] | provenance |  |
 models
 | 1 | Sink: reqwest::get; Argument[0]; request-url |
-| 2 | Source: <_ as warp::filter::Filter>::and_then; Argument[0].Parameter[0..7]; remote |
+| 2 | Source: warp::filter::Filter::and_then; Argument[0].Parameter[0..7]; remote |
 | 3 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
 | 4 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
 nodes

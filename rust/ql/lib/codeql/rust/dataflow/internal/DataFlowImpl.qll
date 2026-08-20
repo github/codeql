@@ -357,7 +357,7 @@ private module Aliases {
  *
  * However, this would require support for [generalized reverse flow][1], which
  * is not yet implemented, so instead we simulate reverse flow where it would
- * have applied via the model for `<_ as core::ops::index::IndexMut>::index_mut`.
+ * have applied via the model for `core::ops::index::IndexMut::index_mut`.
  *
  * The same is the case for compound assignments like `a[i] += rhs`, which are
  * treated as `(*a.index_mut(i)).add_assign(rhs)`.

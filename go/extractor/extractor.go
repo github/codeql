@@ -1657,8 +1657,30 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			// parent scope, so they are not dealt with by `extractScopes`
 			for i := 0; i < origintp.NumMethods(); i++ {
 				meth := origintp.Method(i).Origin()
-
 				extractMethod(tw, meth)
+
+				// Consider a generic struct and a generic method:
+				//
+				//   type S[P any] struct{}
+				//   func (*S[P]) m[Q any](x Q) {}
+				//
+				// If we have a variable 's' of type 'S[int]' and the expression
+				// 's.m[string]("")', then the type of the selector expression 's.m'
+				// is '	func(Q)'. The method 'm' here is an instantiation of the
+				// declaration, which has its own type with type parameter 'Q'.
+				// As we do not extract method instantiations, 'populateTypeParamParents'
+				// does not automatically get called for the type parameter 'Q'
+				// from the instantiation of 'm'. To compensate, we add the type
+				// parameters here.
+				//
+				// As a parent we use the origin method. This suffices, as the name
+				// and index of the type parameter in the instantiation will be
+				// identical to those of the uninstantiated method, and as only
+				// these two properties will be extracted for a type parameter.
+				if tp.Method(i) != meth {
+					signature := tp.Method(i).Type().(*types.Signature)
+					populateTypeParamParents(signature.TypeParams(), meth, false)
+				}
 			}
 
 			underlyingInterface, underlyingIsInterface := underlying.(*types.Interface)
