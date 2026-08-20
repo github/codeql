@@ -424,6 +424,13 @@ module ExprNodes {
 
   /** A control-flow node that wraps a `StmtSequence` AST expression. */
   class StmtSequenceCfgNode extends ExprCfgNode {
+    // TODO: This charpred represents a bug and should be removed when the
+    // resulting additional data flow does not break performance.
+    // The old CFG did not include `BeginExpr` nodes in the CFG, but the
+    // current CFG does. This charpred thus keeps a small subset of the old
+    // behavior in order to avoid regressions.
+    StmtSequenceCfgNode() { not super.getExpr() instanceof BeginExpr }
+
     override string getAPrimaryQlClass() { result = "StmtSequenceCfgNode" }
 
     override StmtSequence e;
