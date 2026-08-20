@@ -6,6 +6,7 @@
 private import python
 private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
 // Need to import `semmle.python.Frameworks` since frameworks can extend `SensitiveDataSource::Range`
 private import semmle.python.Frameworks
 private import codeql.concepts.internal.SensitiveDataHeuristics as SensitiveDataHeuristics
@@ -82,6 +83,87 @@ private module SensitiveDataModeling {
    */
   DataFlow::Node sensitiveFunction(SensitiveDataClassification classification) {
     sensitiveFunction(DataFlow::TypeTracker::end(), classification).flowsTo(result)
+  }
+
+  /** Gets the unique string literal passed to `parameterName`, if all local sources agree. */
+  private string constantArgument(DataFlowDispatch::NormalCall call, string parameterName) {
+    exists(
+      DataFlowDispatch::ArgumentPosition argumentPosition,
+      DataFlowDispatch::ParameterPosition parameterPosition, DataFlow::ArgumentNode argument,
+      DataFlow::LocalSourceNode representative
+    |
+      DataFlowDispatch::parameterMatch(parameterPosition, argumentPosition) and
+      call.getCallable().getParameter(parameterPosition).getParameter().getName() = parameterName and
+      argument = call.getArgument(argumentPosition) and
+      representative = argument.getALocalSource() and
+      result = representative.asExpr().(StringLiteral).getText() and
+      forall(DataFlow::LocalSourceNode source | source = argument.getALocalSource() |
+        source.asExpr().(StringLiteral).getText() = result
+      )
+    )
+  }
+
+  private predicate resolvedConfigurationCall(
+    DataFlowDispatch::NormalCall call, string section, string key
+  ) {
+    section = constantArgument(call, "section") and
+    key = constantArgument(call, "key") and
+    not callNameIndicatesSensitiveData(call) and
+    onlyConfigurationSelectorArguments(call)
+  }
+
+  private predicate onlyConfigurationSelectorArguments(DataFlowDispatch::NormalCall call) {
+    forall(DataFlowDispatch::ArgumentPosition argumentPosition |
+      exists(call.getArgument(argumentPosition))
+    |
+      exists(DataFlowDispatch::ParameterPosition parameterPosition |
+        DataFlowDispatch::parameterMatch(parameterPosition, argumentPosition) and
+        (
+          parameterPosition.isSelf()
+          or
+          call.getCallable().getParameter(parameterPosition).getParameter().getName() in [
+              "section", "key"
+            ]
+        )
+      )
+    )
+  }
+
+  private predicate callNameIndicatesSensitiveData(DataFlowDispatch::NormalCall call) {
+    nameIndicatesSensitiveData(call.getCallable().getScope().(Function).getName())
+    or
+    nameIndicatesSensitiveData(call.getNode().(Cfg::CallNode).getFunction().(Cfg::NameNode).getId())
+    or
+    nameIndicatesSensitiveData(call.getNode()
+          .(Cfg::CallNode)
+          .getFunction()
+          .(Cfg::AttrNode)
+          .getName())
+  }
+
+  bindingset[name]
+  private predicate configurationSelectorIndicatesSensitiveData(string name) {
+    // File, path, and URL suffixes do not make configuration selectors safe: they
+    // commonly identify an indirect secret or a value that embeds credentials.
+    name.regexpMatch(maybeSensitiveRegexp(_))
+    or
+    name.regexpMatch("(?is).*(^|[_-])(secret|auth|salt|bearer|key(tab)?|token|cred(ential)?|conn(ect(ion)?)?|"
+        + "backend|dsn|url|uri|args|kwargs)([_-]|$).*")
+  }
+
+  /**
+   * Holds if every resolved target for `node` has concrete `section` and `key`
+   * arguments whose names do not indicate sensitive data.
+   */
+  predicate knownNonSensitiveConfigurationValue(DataFlow::Node node) {
+    exists(DataFlowDispatch::NormalCall call | call.getNode() = node.asCfgNode()) and
+    forall(DataFlowDispatch::NormalCall call | call.getNode() = node.asCfgNode() |
+      exists(string section, string key |
+        resolvedConfigurationCall(call, section, key) and
+        not configurationSelectorIndicatesSensitiveData(section) and
+        not configurationSelectorIndicatesSensitiveData(key)
+      )
+    )
   }
 
   /**
@@ -335,5 +417,17 @@ private module SensitiveDataModeling {
 }
 
 predicate sensitiveDataExtraStepForCalls = SensitiveDataModeling::extraStepForCalls/2;
+
+/**
+ * Holds if `node` is a resolved configuration lookup whose only inputs are its
+ * receiver and concrete, non-sensitive section and key names.
+ *
+ * This predicate is intended for use as a sensitive-data barrier. It blocks all
+ * flow through the lookup result, so calls with additional value arguments are
+ * deliberately excluded.
+ */
+predicate isKnownNonSensitiveConfigurationLookup(DataFlow::Node node) {
+  SensitiveDataModeling::knownNonSensitiveConfigurationValue(node)
+}
 
 predicate sensitiveLookupStringConst = SensitiveDataModeling::sensitiveLookupStringConst/1;

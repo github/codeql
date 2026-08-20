@@ -133,3 +133,66 @@ _config = {"sleep_timer": 5, "mysql_password": password}
 
 # since we have precise dictionary content, other items of the config are not tainted
 print(_config["sleep_timer"])
+
+
+# ------------------------------------------------------------------------------
+# cross-talk through configuration getters.
+# ------------------------------------------------------------------------------
+
+class Configuration:
+    def _get_secret_option(self, section, key):
+        if self.is_sensitive(section, key):
+            return load_secret_value() # $ SensitiveDataSource=secret
+        return None
+
+    def get(self, section, key, fallback="default"):
+        value = self._get_secret_option(section, key) # $ SensitiveDataSource=secret
+        if value is not None:
+            return value
+        return fallback
+
+    def getlist(self, section, key):
+        return self.get(section, key).split(",")
+
+    def get_mandatory_list_value(self, section, key):
+        return self.getlist(section, key)
+
+
+configuration = Configuration()
+
+executor_name = configuration.get_mandatory_list_value("core", "EXECUTOR")[0]
+print(executor_name)
+
+# A second Airflow-shaped path carries a non-sensitive directory through a helper.
+dags_folder = configuration.get_mandatory_list_value("core", "DAGS_FOLDER")[0]
+
+
+def find_path_from_directory(base_dir_path):
+    print(base_dir_path)
+
+
+find_path_from_directory(dags_folder)
+
+# Concrete sensitive keys remain conservative.
+value2 = configuration.get_mandatory_list_value("database", "PASSWORD")[0]
+print(value2) # $ SensitiveUse=secret
+
+# Configuration key names that can hold or locate secrets remain conservative.
+value_with_key_suffix = configuration.get_mandatory_list_value("crypto", "FERNET_KEY")[0]
+print(value_with_key_suffix) # $ SensitiveUse=secret
+
+value_with_path_suffix = configuration.get_mandatory_list_value("smtp", "PASSWORD_FILE")[0]
+print(value_with_path_suffix) # $ SensitiveUse=secret
+
+# Dynamic keys remain conservative.
+dynamic_key = get_key()
+dynamic_value = configuration.get_mandatory_list_value("core", dynamic_key)[0]
+print(dynamic_value) # $ SensitiveUse=secret
+
+# A sensitive callee name remains a source even with non-sensitive selector names.
+value3 = configuration._get_secret_option("core", "EXECUTOR") # $ SensitiveDataSource=secret
+print(value3) # $ SensitiveUse=secret
+
+# Additional value arguments prevent the call result from becoming a barrier.
+value4 = configuration.get("core", "EXECUTOR", get_password()) # $ SensitiveDataSource=password
+print(value4) # $ SensitiveUse=password SensitiveUse=secret

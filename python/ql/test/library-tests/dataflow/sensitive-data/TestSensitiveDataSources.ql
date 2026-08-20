@@ -40,6 +40,8 @@ module SensitiveUseConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     sensitiveDataExtraStepForCalls(node1, node2)
   }
+
+  predicate isBarrier(DataFlow::Node node) { isKnownNonSensitiveConfigurationLookup(node) }
 }
 
 module SensitiveUseFlow = TaintTracking::Global<SensitiveUseConfig>;
