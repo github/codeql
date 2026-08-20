@@ -415,7 +415,7 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
 }
 
 /**
- * Implements a folder-based heuristic to linking up top-level names
+ * Implements a folder-based heuristic for linking up top-level names
  * between files that are not included in any module scope.
  */
 private module FolderHeuristic {
