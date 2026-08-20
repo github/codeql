@@ -327,6 +327,7 @@ and the CodeQL library pack ``codeql/rust-all`` (`changelog <https://github.com/
    `actix-web <https://crates.io/crates/actix-web>`__, Web framework
    alloc, Standard library
    `async-std <https://crates.io/crates/async-std>`__, Asynchronous programming library
+   `axum <https://crates.io/crates/axum>`__, Web framework
    `biscotti <https://crates.io/crates/biscotti>`__, Cookie management
    `clap <http://crates.io/crates/clap>`__, Utility library
    `cookie <https://crates.io/crates/cookie>`__, Cookie management
@@ -341,6 +342,8 @@ and the CodeQL library pack ``codeql/rust-all`` (`changelog <https://github.com/
    `memchr <https://crates.io/crates/memchr>`__, Utility library
    `mysql <https://crates.io/crates/mysql>`__, Database
    `mysql_async <https://crates.io/crates/mysql_async>`__, Database
+   `native-tls <https://crates.io/crates/native-tls>`__, Network communicator
+   `async-native-tls <https://crates.io/crates/async-native-tls>`__, Network communicator
    `once_cell <https://crates.io/crates/once_cell>`__, Utility library
    `poem <https://crates.io/crates/poem>`__, Web framework
    `postgres <https://crates.io/crates/postgres>`__, Database
