@@ -18,4 +18,12 @@ private module Input implements T::TestPostProcessing::InputSig<Impl> {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // The QL extractor can also extract YAML (e.g. `qlpack.yml`), whose `#` comment syntax
+    // differs, so we only render for QL sources and dbscheme files.
+    relativePath.regexpMatch(".*\\.(ql|qll|dbscheme)") and
+    result = "//"
+  }
 }
