@@ -69,6 +69,15 @@ module Make<LocationSig Location, BB::CfgSig<Location> Cfg, InputSig<Cfg::BasicB
   private import Cfg
   private import Input
 
+  /**
+   * Holds if the edge from `bb1` to `bb2` implies both that `def` evaluates
+   * to `v` and that `g` evaluates to `gv`. The latter implication is also a
+   * biimplication in most cases, except when `g` is a short-circuiting
+   * side-effecting construct.
+   *
+   * Checking that `bb1` to `bb2` is a dominating edge is sufficient to ensure
+   * that the biimplication holds.
+   */
   private predicate ssaControlsGuardEdge(
     SsaDefinition def, GuardValue v, Guard g, BasicBlock bb1, BasicBlock bb2, GuardValue gv
   ) {
@@ -81,9 +90,10 @@ module Make<LocationSig Location, BB::CfgSig<Location> Cfg, InputSig<Cfg::BasicB
   private predicate impossibleValue(
     Guard g, GuardValue gv, SsaDefinition def, BasicBlock bb, GuardValue v2
   ) {
-    exists(GuardValue dual, GuardValue v1 |
-      // If `g` in `bb` evaluates to `gv` then `def` has value `v1`,
-      ssaControlsGuardEdge(def, v1, g, bb, _, gv) and
+    exists(GuardValue dual, GuardValue v1, BasicBlock bb2 |
+      // If `g` evaluates to `gv` and its branch edge `(bb, bb2)` is a dominating edge then `def` has value `v1`,
+      ssaControlsGuardEdge(def, v1, g, bb, bb2, gv) and
+      dominatingEdge(bb, bb2) and
       dual = gv.getDualValue() and
       not gv.isThrowsException() and
       not dual.isThrowsException() and
