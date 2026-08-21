@@ -75,6 +75,10 @@ ordered according to the values in the ``y`` column, in descending order:
 | 3 | 0 | 0       | product: 0 |
 +---+---+---------+------------+
 
+A query may output identically duplicated rows because deduplication is done before ``.toString()``
+is called on the select expressions. If you wish to avoid this, explicitly call ``.toString()`` on the
+values in your select clause.
+
 .. _query-predicates:
 
 Query predicates
