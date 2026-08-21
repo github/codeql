@@ -59,7 +59,7 @@ module Glog {
     /** Holds if this function takes a format string. */
     predicate formatter() { format = "f" }
 
-    override predicate mayReturnNormally() { level != "Fatal" and level != "Exit" }
+    override predicate mustNotReturnNormally() { level = "Fatal" or level = "Exit" }
   }
 
   private class StringFormatter extends StringOps::Formatting::Range instanceof GlogFunction {

@@ -1,0 +1,31 @@
+| guards.go:7:7:7:11 | value | negative | Upper bound -1 |
+| guards.go:7:7:7:11 | value | positive | Lower bound 0 |
+| guards.go:7:7:7:11 | value | zero | Lower bound 0 |
+| guards.go:7:7:7:15 | ...<... | negative | true |
+| guards.go:7:7:7:15 | ...<... | positive | false |
+| guards.go:7:7:7:15 | ...<... | zero | false |
+| guards.go:9:7:9:11 | value | positive | not 0 |
+| guards.go:9:7:9:11 | value | zero | 0 |
+| guards.go:9:7:9:16 | ...==... | positive | false |
+| guards.go:9:7:9:16 | ...==... | zero | true |
+| guards.go:17:5:17:5 | a | compound true | true |
+| guards.go:17:5:17:17 | ...&&... | compound false | false |
+| guards.go:17:5:17:17 | ...&&... | compound true | true |
+| guards.go:17:10:17:17 | (...) | compound true | true |
+| guards.go:17:11:17:16 | ...\|\|... | compound true | true |
+| guards.go:25:5:25:15 | type conversion | upcast | 0 |
+| guards.go:25:5:25:20 | ...==... | upcast | true |
+| guards.go:25:11:25:14 | wide | upcast | 0 |
+| guards.go:28:5:28:14 | type conversion | downcast | 0 |
+| guards.go:28:5:28:19 | ...==... | downcast | true |
+| guards.go:31:5:31:17 | type conversion | upcast narrow | 0 |
+| guards.go:31:5:31:22 | ...==... | upcast narrow | true |
+| guards.go:31:11:31:16 | narrow | upcast narrow | 0 |
+| guards.go:37:5:37:9 | value | above ten | Lower bound 11 |
+| guards.go:37:5:37:9 | value | at most ten | Upper bound 10 |
+| guards.go:37:5:37:15 | ...<=... | above ten | false |
+| guards.go:37:5:37:15 | ...<=... | at most ten | true |
+| guards.go:42:5:42:15 | ...<=... | at least ten | true |
+| guards.go:42:5:42:15 | ...<=... | below ten | false |
+| guards.go:42:11:42:15 | value | at least ten | Lower bound 10 |
+| guards.go:42:11:42:15 | value | below ten | Upper bound 9 |

@@ -24,6 +24,7 @@
 
 import go
 import semmle.go.security.InsecureFeatureFlag::InsecureFeatureFlag
+private import semmle.go.controlflow.Guards
 
 /**
  * Holds if `part` becomes a part of `whole`, either by (local) data flow or by being incorporated
@@ -50,10 +51,10 @@ class InsecureCertificateFlag extends FlagKind {
 }
 
 /**
- * Gets a control-flow node that represents a (likely) flag controlling an insecure certificate setup.
+ * Gets a guard that represents a (likely) flag controlling an insecure certificate setup.
  */
-ControlFlow::ConditionGuardNode getAnInsecureCertificateCheck() {
-  result.ensures(any(InsecureCertificateFlag f).getAFlag().getANode(), _)
+Guard getAnInsecureCertificateCheck() {
+  result = any(InsecureCertificateFlag f).getAFlag().getANode().asExpr()
 }
 
 /**
@@ -80,7 +81,8 @@ where
   f.hasQualifiedName("crypto/tls", "Config", "InsecureSkipVerify") and
   rhs.getBoolValue() = true and
   // exclude writes guarded by a feature flag
-  not [getASecurityFeatureFlagCheck(), getAnInsecureCertificateCheck()].dominatesNode(w) and
+  not [getASecurityFeatureFlagCheck(), getAnInsecureCertificateCheck()]
+      .controls(w.getBasicBlock(), _) and
   // exclude results in functions whose name documents the insecurity
   not exists(FuncDef fn | fn = w.getRoot() |
     isSecurityOrCertificateConfigFlag(fn.getEnclosingFunction*().getName())
