@@ -1,0 +1,4 @@
+import '../../../test.just'
+
+[group('test')]
+test *ARGS=".": (_require_semmle_code "C++ language tests") (_language_tests "cpp" ARGS)
