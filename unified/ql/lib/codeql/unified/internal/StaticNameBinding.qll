@@ -436,7 +436,7 @@ private module FolderHeuristic {
   }
 
   /**
-   * Holds if `file` has a one of the definitions of the given ambiguous name.
+   * Holds if `file` has one of the definitions of the given ambiguous name.
    *
    * A name is considered "ambiguous" if there is more than one file exporting it.
    */
