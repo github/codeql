@@ -1,7 +1,10 @@
+import java.util.Hashtable;
 import java.util.List;
 
+import javax.naming.Context;
 import javax.naming.Name;
 import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
@@ -10,6 +13,8 @@ import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import javax.naming.ldap.LdapName;
 import javax.naming.ldap.Rdn;
+
+import org.apache.shiro.realm.ldap.LdapContextFactory;
 
 import com.unboundid.ldap.sdk.Filter;
 import com.unboundid.ldap.sdk.LDAPConnection;
@@ -379,5 +384,63 @@ public class LdapInjection {
   @RequestMapping
   public void testOk5(@RequestParam String okUnboundEncodeValue, DirContext ctx) throws NamingException {
     ctx.search("ou=system", "(uid=" + Filter.encodeValue(okUnboundEncodeValue) + ")", new SearchControls());
+  }
+
+  // Bind DN injection (CWE-90, RFC 2253). The DN escape set differs from the search
+  // filter escape set, so a DN sink needs a DN escaper (Rdn.escapeValue); a filter
+  // escaper (e.g. LdapEncoder.filterEncode) does NOT sanitize a DN.
+
+  // Context.SECURITY_PRINCIPAL environment value (the bind DN).
+  @RequestMapping
+  public void testBindDnBad1(@RequestParam String bBadPrincipal) // $ Source
+      throws NamingException {
+    Hashtable<String, Object> env = new Hashtable<String, Object>();
+    env.put(Context.SECURITY_PRINCIPAL, "uid=" + bBadPrincipal + ",ou=people,dc=example,dc=com"); // $ Alert
+    new InitialDirContext(env);
+  }
+
+  // Same sink via the literal property key.
+  @RequestMapping
+  public void testBindDnBad2(@RequestParam String bBadPrincipalLiteral) // $ Source
+      throws NamingException {
+    Hashtable<String, Object> env = new Hashtable<String, Object>();
+    env.put("java.naming.security.principal", "uid=" + bBadPrincipalLiteral + ",dc=example,dc=com"); // $ Alert
+    new InitialDirContext(env);
+  }
+
+  // DirContext.bind name argument is interpreted as a DN.
+  @RequestMapping
+  public void testBindDnBad3(@RequestParam String bBadBind, DirContext ctx) // $ Source
+      throws NamingException {
+    ctx.bind("uid=" + bBadBind + ",ou=people", null, new BasicAttributes()); // $ Alert
+  }
+
+  // Context.lookup name argument is interpreted as a DN (also a jndi-injection sink).
+  @RequestMapping
+  public void testBindDnBad4(@RequestParam String bBadLookup, Context ctx) // $ Source
+      throws NamingException {
+    ctx.lookup("uid=" + bBadLookup + ",ou=people"); // $ Alert
+  }
+
+  // Shiro LdapContextFactory.getLdapContext principal argument (CVE-2026-49268 sink).
+  @RequestMapping
+  public LdapContext testBindDnBad5(@RequestParam String bBadShiro, LdapContextFactory factory) // $ Source
+      throws NamingException {
+    return factory.getLdapContext("uid=" + bBadShiro + ",ou=people", "secret"); // $ Alert
+  }
+
+  // GOOD: the principal is escaped with Rdn.escapeValue (the canonical 2.2.1 fix).
+  @RequestMapping
+  public void testBindDnOk1(@RequestParam String bOkPrincipal) throws NamingException {
+    Hashtable<String, Object> env = new Hashtable<String, Object>();
+    env.put(Context.SECURITY_PRINCIPAL,
+        "uid=" + Rdn.escapeValue(bOkPrincipal) + ",ou=people,dc=example,dc=com"); // safe
+    new InitialDirContext(env);
+  }
+
+  // GOOD: bind DN escaped with Rdn.escapeValue.
+  @RequestMapping
+  public void testBindDnOk2(@RequestParam String bOkBind, DirContext ctx) throws NamingException {
+    ctx.bind("uid=" + Rdn.escapeValue(bOkBind) + ",ou=people", null, new BasicAttributes()); // safe
   }
 }
