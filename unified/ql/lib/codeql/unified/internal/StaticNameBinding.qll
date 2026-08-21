@@ -457,7 +457,6 @@ private module FolderHeuristic {
    * Holds if `folder` has two or more subfolders containing a definition of `name`.
    */
   private predicate hasConflictingDefs(Folder folder, string name) {
-    containsDef(folder, name) and
     // Check for "two or more" using `exists(X) and not exists(unique(X))`
     containsDef(folder.getAFolder(), name) and
     not exists(unique(Folder child | child = folder.getAFolder() and containsDef(child, name)))
@@ -482,7 +481,6 @@ private module FolderHeuristic {
     result = folder
     or
     result = getOutermostNonConflictingScope(folder.getParentContainer(), name) and
-    not isOutermostNonConflictingScope(folder, name) and
     containsDef(folder, name) // Prune to the subfolder actually containing the definition
   }
 
