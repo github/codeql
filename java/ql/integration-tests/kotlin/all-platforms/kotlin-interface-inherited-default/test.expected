@@ -6,24 +6,24 @@ callables
 | noforwards.kt:5:3:5:19 | g | noforwards.kt:1:1:10:1 | NoForwards | from source |
 | noforwards.kt:8:5:8:13 | getX | noforwards.kt:1:1:10:1 | NoForwards | from source |
 | noforwards.kt:12:1:12:37 | RealNoForwards | noforwards.kt:12:1:12:37 | RealNoForwards | from source |
+| test.kt:0:0:0:0 | f | test.kt:12:1:12:21 | Real | Forwarder for a Kotlin class inheriting an interface default method |
+| test.kt:0:0:0:0 | f | test.kt:16:1:16:40 | RealIndirect | Forwarder for a Kotlin class inheriting an interface default method |
+| test.kt:0:0:0:0 | g | test.kt:12:1:12:21 | Real | Forwarder for a Kotlin class inheriting an interface default method |
+| test.kt:0:0:0:0 | g | test.kt:16:1:16:40 | RealIndirect | Forwarder for a Kotlin class inheriting an interface default method |
+| test.kt:0:0:0:0 | getX | test.kt:12:1:12:21 | Real | Forwarder for a Kotlin class inheriting an interface default method |
+| test.kt:0:0:0:0 | getX | test.kt:16:1:16:40 | RealIndirect | Forwarder for a Kotlin class inheriting an interface default method |
 | test.kt:3:3:3:13 | f | test.kt:1:1:10:1 | Test | from source |
 | test.kt:5:3:5:19 | g | test.kt:1:1:10:1 | Test | from source |
 | test.kt:8:5:8:13 | getX | test.kt:1:1:10:1 | Test | from source |
 | test.kt:12:1:12:21 | Real | test.kt:12:1:12:21 | Real | from source |
-| test.kt:12:1:12:21 | f | test.kt:12:1:12:21 | Real | Forwarder for a Kotlin class inheriting an interface default method |
-| test.kt:12:1:12:21 | g | test.kt:12:1:12:21 | Real | Forwarder for a Kotlin class inheriting an interface default method |
-| test.kt:12:1:12:21 | getX | test.kt:12:1:12:21 | Real | Forwarder for a Kotlin class inheriting an interface default method |
 | test.kt:16:1:16:40 | RealIndirect | test.kt:16:1:16:40 | RealIndirect | from source |
-| test.kt:16:1:16:40 | f | test.kt:16:1:16:40 | RealIndirect | Forwarder for a Kotlin class inheriting an interface default method |
-| test.kt:16:1:16:40 | g | test.kt:16:1:16:40 | RealIndirect | Forwarder for a Kotlin class inheriting an interface default method |
-| test.kt:16:1:16:40 | getX | test.kt:16:1:16:40 | RealIndirect | Forwarder for a Kotlin class inheriting an interface default method |
 superAccesses
-| test.kt:12:1:12:21 | Test.super | test.kt:12:1:12:21 | Real | test.kt:12:1:12:21 | f | test.kt:12:1:12:21 | Test |
-| test.kt:12:1:12:21 | Test.super | test.kt:12:1:12:21 | Real | test.kt:12:1:12:21 | g | test.kt:12:1:12:21 | Test |
-| test.kt:12:1:12:21 | Test.super | test.kt:12:1:12:21 | Real | test.kt:12:1:12:21 | getX | test.kt:12:1:12:21 | Test |
-| test.kt:16:1:16:40 | MiddleInterface.super | test.kt:16:1:16:40 | RealIndirect | test.kt:16:1:16:40 | f | test.kt:16:1:16:40 | MiddleInterface |
-| test.kt:16:1:16:40 | MiddleInterface.super | test.kt:16:1:16:40 | RealIndirect | test.kt:16:1:16:40 | g | test.kt:16:1:16:40 | MiddleInterface |
-| test.kt:16:1:16:40 | MiddleInterface.super | test.kt:16:1:16:40 | RealIndirect | test.kt:16:1:16:40 | getX | test.kt:16:1:16:40 | MiddleInterface |
+| test.kt:0:0:0:0 | MiddleInterface.super | test.kt:16:1:16:40 | RealIndirect | test.kt:0:0:0:0 | f | test.kt:0:0:0:0 | MiddleInterface |
+| test.kt:0:0:0:0 | MiddleInterface.super | test.kt:16:1:16:40 | RealIndirect | test.kt:0:0:0:0 | g | test.kt:0:0:0:0 | MiddleInterface |
+| test.kt:0:0:0:0 | MiddleInterface.super | test.kt:16:1:16:40 | RealIndirect | test.kt:0:0:0:0 | getX | test.kt:0:0:0:0 | MiddleInterface |
+| test.kt:0:0:0:0 | Test.super | test.kt:12:1:12:21 | Real | test.kt:0:0:0:0 | f | test.kt:0:0:0:0 | Test |
+| test.kt:0:0:0:0 | Test.super | test.kt:12:1:12:21 | Real | test.kt:0:0:0:0 | g | test.kt:0:0:0:0 | Test |
+| test.kt:0:0:0:0 | Test.super | test.kt:12:1:12:21 | Real | test.kt:0:0:0:0 | getX | test.kt:0:0:0:0 | Test |
 #select
 | User.java:12:15:12:15 | 2 | User.java:12:10:12:16 | g(...) |
 | User.java:16:15:16:15 | 5 | User.java:16:10:16:16 | g(...) |
