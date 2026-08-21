@@ -245,6 +245,11 @@ edges
 | test.cpp:250:32:250:32 | source_from_callback_template output argument [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
 | test.cpp:251:27:251:27 | source_from_callback_ptr output argument | test.cpp:251:27:251:27 | source_from_callback_ptr output argument [value] | provenance | Src:MaD:37  |
 | test.cpp:251:27:251:27 | source_from_callback_ptr output argument [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
+| test.cpp:258:12:258:12 | *s [value] | test.cpp:258:15:258:19 | value | provenance |  |
+| test.cpp:258:15:258:19 | value | test.cpp:258:15:258:19 | value | provenance | Sink:MaD:3 |
+| test.cpp:262:27:262:31 | source_from_callback_ptr output argument | test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | provenance | Src:MaD:37  |
+| test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
+| test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | test.cpp:258:12:258:12 | *s [value] | provenance |  |
 | test.cpp:264:32:266:2 | source_from_callback_template output argument | test.cpp:264:32:266:2 | source_from_callback_template output argument [value] | provenance | Src:MaD:40  |
 | test.cpp:264:32:266:2 | source_from_callback_template output argument [value] | test.cpp:265:11:265:11 | *s [value] | provenance |  |
 | test.cpp:265:11:265:11 | *s [value] | test.cpp:265:14:265:18 | value | provenance |  |
@@ -629,6 +634,11 @@ nodes
 | test.cpp:250:32:250:32 | source_from_callback_template output argument [value] | semmle.label | source_from_callback_template output argument [value] |
 | test.cpp:251:27:251:27 | source_from_callback_ptr output argument | semmle.label | source_from_callback_ptr output argument |
 | test.cpp:251:27:251:27 | source_from_callback_ptr output argument [value] | semmle.label | source_from_callback_ptr output argument [value] |
+| test.cpp:258:12:258:12 | *s [value] | semmle.label | *s [value] |
+| test.cpp:258:15:258:19 | value | semmle.label | value |
+| test.cpp:258:15:258:19 | value | semmle.label | value |
+| test.cpp:262:27:262:31 | source_from_callback_ptr output argument | semmle.label | source_from_callback_ptr output argument |
+| test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | semmle.label | source_from_callback_ptr output argument [value] |
 | test.cpp:264:32:266:2 | source_from_callback_template output argument | semmle.label | source_from_callback_template output argument |
 | test.cpp:264:32:266:2 | source_from_callback_template output argument [value] | semmle.label | source_from_callback_template output argument [value] |
 | test.cpp:265:11:265:11 | *s [value] | semmle.label | *s [value] |

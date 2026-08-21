@@ -240,7 +240,7 @@ using Callback = void(*)(const SourceWrapper*);
 void source_from_callback_ptr(Callback);
 
 void f(const SourceWrapper* s) {
-	ymlSink(s->value); // $ ir=250:32 ir=251:27 MISSING: ir=262:27
+	ymlSink(s->value); // $ ir=250:32 ir=251:27 ir=262:27
 }
 
 void test_source_access_path(bool b) {
@@ -255,7 +255,7 @@ void test_source_access_path(bool b) {
 		f_var = f;
 	} else {
 		f_var = [](const SourceWrapper* s) {
-			ymlSink(s->value); // $ MISSING: ir
+			ymlSink(s->value); // $ ir
 		};
 	}
 

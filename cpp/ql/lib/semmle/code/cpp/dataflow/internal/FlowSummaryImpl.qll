@@ -161,6 +161,16 @@ private module Input2 implements Impl::Private::InputSig2 {
     )
   }
 
+  private MemberFunction getFunctionFromType(Expr e) {
+    result.getClassAndName("operator()").getADerivedClass*() = e.getUnspecifiedType()
+  }
+
+  private Function getFunctionFromExpr(Expr e) {
+    result = e.(FunctionAccess).getTarget()
+    or
+    result = e.(ConversionCall).getQualifier().(LambdaExpression).getLambdaFunction()
+  }
+
   class SourceSinkReportingElement extends Element {
     SourceSinkReportingElement() { this instanceof Expr or this instanceof Parameter }
 
@@ -169,29 +179,29 @@ private module Input2 implements Impl::Private::InputSig2 {
         [this.(Expr).getEnclosingFunction(), this.(Parameter).getFunction()]
     }
 
-    /**
-     * Gets the member function corresponding to an overloaded `operator()` when this element is
-     * invoked.
-     */
-    private MemberFunction getOperatorCallFunction() {
-      // An `operator()` on a struct
-      result.getClassAndName("operator()").getADerivedClass*() = this.(Expr).getUnspecifiedType()
-      or
-      // A lambda that has undergone "lambda to function-pointer conversion"
-      result = this.(ConversionCall).getQualifier().(LambdaExpression).getLambdaFunction()
-    }
-
     /** Gets the function invoked when this element is used as a callback. */
-    private Function getCallbackFunction() {
-      // Taking the address of a function
-      result = this.(FunctionAccess).getTarget()
+    private Function getCallable() {
+      // The expression is a struct which implements `operator()`.
+      result = getFunctionFromType(this)
       or
-      // Passing an object with an overloaded `operator()`
-      result = this.getOperatorCallFunction()
+      // The expression is a function pointer
+      result = getFunctionFromExpr(this)
+      or
+      // The expression is an SSA read of an assignment of a callable
+      exists(Ssa::Definition def |
+        def.getAUse().getDef().getUnconvertedResultExpression() = this and
+        result =
+          getFunctionFromExpr(def.getAnUltimateDefinition()
+                .(Ssa::DirectExplicitDefinition)
+                .getAssignedInstruction()
+                .(StoreInstruction)
+                .getSourceValue()
+                .getUnconvertedResultExpression())
+      )
     }
 
     SourceSinkReportingElement getASuccessor(Impl::Private::SummaryComponent sc) {
-      exists(Function f | f = this.getCallbackFunction() |
+      exists(Function f | f = this.getCallable() |
         exists(ParameterPosition pos | sc = Impl::Private::SummaryComponent::parameter(pos) |
           result = pos.getParameter(f)
         )
