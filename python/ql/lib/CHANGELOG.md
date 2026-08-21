@@ -1,3 +1,9 @@
+## 7.2.4
+
+### Minor Analysis Improvements
+
+* Added taint flow through `list.extend` and `list.insert`, matching the existing taint flow through `list.append`.
+
 ## 7.2.3
 
 No user-facing changes.
