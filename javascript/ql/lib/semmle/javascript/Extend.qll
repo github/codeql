@@ -148,9 +148,7 @@ private class ExtendCallShallow extends ExtendCall {
 
 /** A shallow extend call of form `mergeDescriptors(dst, src)`. */
 private class MergeDescriptorsCall extends ExtendCall {
-  MergeDescriptorsCall() {
-    this = DataFlow::moduleImport("merge-descriptors").getACall()
-  }
+  MergeDescriptorsCall() { this = DataFlow::moduleImport("merge-descriptors").getACall() }
 
   override DataFlow::Node getASourceOperand() { result = this.getArgument(1) }
 
