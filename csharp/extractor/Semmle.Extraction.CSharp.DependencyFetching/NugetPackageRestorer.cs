@@ -216,7 +216,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var projects = fileProvider.Solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
-                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArgument(solution);
+                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArguments(solution);
                     var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     if (res.Success)
                     {
@@ -264,7 +264,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 foreach (var project in projectGroup)
                 {
                     logger.LogInfo($"Restoring project {project}...");
-                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArgument(project);
+                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArguments(project);
                     var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     assets.AddDependenciesRange(res.AssetsFilePaths);
                     lock (sync)
@@ -432,7 +432,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
         }
 
-        private bool TryRestorePackageManually(string package, string? nugetSources, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj, bool tryPrereleaseVersion = true)
+        private bool TryRestorePackageManually(string package, List<string> nugetSources, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj, bool tryPrereleaseVersion = true)
         {
             logger.LogInfo($"Restoring package {package}...");
             using var tempDir = new TemporaryDirectory(
@@ -460,11 +460,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return true;
             }
 
-            if (!feedManager.CheckNugetFeedResponsiveness && res.HasNugetPackageSourceError && nugetSources is not null)
+            if (!feedManager.CheckNugetFeedResponsiveness && res.HasNugetPackageSourceError && nugetSources.Count > 0)
             {
                 logger.LogDebug($"Trying to restore '{package}' without explicitly providing NuGet sources.");
                 // Restore could not be completed because the listed source is unavailable. Try without an explicit restore source argument.
-                res = TryRestorePackageManually(package, nugetSources: null, tempDir, tryPrereleaseVersion);
+                res = TryRestorePackageManually(package, [], tempDir, tryPrereleaseVersion);
                 if (res.Success)
                 {
                     return true;
@@ -475,16 +475,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return false;
         }
 
-        private RestoreResult TryRestorePackageManually(string package, string? nugetSources, TemporaryDirectory tempDir, bool tryPrereleaseVersion)
+        private RestoreResult TryRestorePackageManually(string package, List<string> nugetSources, TemporaryDirectory tempDir, bool tryPrereleaseVersion)
         {
-            var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, NugetSources: nugetSources, ForceReevaluation: true));
+            var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, nugetSources, ForceReevaluation: true));
 
             if (!res.Success && tryPrereleaseVersion && res.HasNugetNoStablePackageVersionError)
             {
                 logger.LogDebug($"Failed to restore nuget package {package} because no stable version was found.");
                 TryChangePackageVersion(tempDir.DirInfo, "*-*");
 
-                res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, NugetSources: nugetSources, ForceReevaluation: true));
+                res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, nugetSources, ForceReevaluation: true));
                 if (!res.Success)
                 {
                     TryChangePackageVersion(tempDir.DirInfo, "*");
