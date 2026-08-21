@@ -324,10 +324,12 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
     // nodeFrom is `expr`
     // nodeTo is entry node for `f`
     exists(
-      SsaImpl::ScopeEntryDefinition e, SsaImpl::SsaSourceVariable var, Cfg::DefinitionNode def
+      SsaImpl::ScopeEntryDefinition e, SsaImpl::SsaSourceVariable var,
+      SsaImpl::EssaNodeDefinition write, Cfg::DefinitionNode def
     |
       e.getSourceVariable() = var and
-      def.getNode() = var.getVariable().getAStore()
+      write.getSourceVariable() = var and
+      write.getDefiningNode() = def
     |
       nodeTo.(DataFlowPublic::ScopeEntryDefinitionNode).getDefinition() = e and
       nodeFrom.asCfgNode() = def and

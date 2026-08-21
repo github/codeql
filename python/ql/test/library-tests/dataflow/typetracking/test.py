@@ -86,14 +86,14 @@ def captured_reassignment_tradeoff():
     value = tracked # $ tracked
 
     def read_value():
-        return value # $ tracked
+        return value # $ MISSING: tracked
 
-    before_reassignment = read_value() # $ tracked
+    before_reassignment = read_value() # $ MISSING: tracked
     value = "safe"
-    safe_sibling = read_value() # $ SPURIOUS: tracked
+    safe_sibling = read_value()
 
-    before_reassignment # $ tracked
-    safe_sibling # $ SPURIOUS: tracked
+    before_reassignment # $ MISSING: tracked
+    safe_sibling
 
 
 # ------------------------------------------------------------------------------
