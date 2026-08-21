@@ -981,7 +981,16 @@ class Convertor(ParseTreeVisitor):
         if len(node.children) > 1:
             type = self.visit(node.children[1], LOAD)
         if len(node.children) > 3:
-            name = self.visit(node.children[3], STORE)
+            if is_token(node.children[2], "as"):
+                name = self.visit(node.children[3], STORE)
+            else:
+                # PEP 758 (Python 3.14+): `except A, B:` is an unparenthesized
+                # tuple of exception types, not a Python 2 alias binding. The
+                # grammar rule `'except' [test [(',' | 'as') test]]` is shared
+                # between both readings, so the separator token decides.
+                elts = [type, self.visit(node.children[3], LOAD)]
+                type = ast.Tuple(elts, LOAD)
+                set_location(type, node.children[1].start, node.children[3].end)
         return type, name
 
     def visit_del_stmt(self, node):
