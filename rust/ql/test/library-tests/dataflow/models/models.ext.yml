@@ -54,6 +54,8 @@ extensions:
       - ["main::external_file::generated_summary", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["main::external_file::neutral_generated_summary", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["main::external_file::neutral_manual_summary", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["main::MyTrait2::flow_through2", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["<_ as main::MyTrait3>::flow_through3", "Argument[0]", "ReturnValue", "value", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: neutralModel
