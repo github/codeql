@@ -617,7 +617,7 @@ abstract class Position extends TPosition {
   abstract int getIndirectionIndex();
 
   /**
-   * Gets the parameter associated with this position, if any.
+   * Gets the parameter of `f` associated with this position, if any.
    *
    * Since a `Position` is defined by both an argument index and an
    * indirection multiple `Position`s can be associated with the
@@ -629,7 +629,7 @@ abstract class Position extends TPosition {
   }
 
   /**
-   * Gets the argument (or qualifier) associated with this position, if any.
+   * Gets the argument (or qualifier) of `call` associated with this position, if any.
    *
    * Since a `Position` is defined by both an argument index and an
    * indirection multiple `Position`s can be associated with the
