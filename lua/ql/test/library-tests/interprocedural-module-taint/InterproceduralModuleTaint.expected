@@ -1,0 +1,55 @@
+| ambiguous-unresolved-dynamic-module-negative/left.luac | module.export-return-table | ambiguous-unresolved-dynamic-module-negative/left.luac exports exec -> root.0 |
+| ambiguous-unresolved-dynamic-module-negative/left.luac | module.typed-export | exec root@pc1:r1 -> root.0 |
+| ambiguous-unresolved-dynamic-module-negative/right.luac | module.export-return-table | ambiguous-unresolved-dynamic-module-negative/right.luac exports exec -> root.0 |
+| ambiguous-unresolved-dynamic-module-negative/right.luac | module.typed-export | exec root@pc1:r1 -> root.0 |
+| bc-branch-negative/input.luac | interproc.arg-flow | root@pc9 root@pc9:r5 -> bc-branch-negative/input.luac::root.1:r0 |
+| bc-branch-negative/input.luac | interproc.arg-flow | root@pc13 root@pc13:r5 -> bc-branch-negative/input.luac::root.1:r0 |
+| bc-branch-negative/input.luac | interproc.return-flow | root@pc3 bc-branch-negative/input.luac::root.0@pc1:r0 -> root@pc3:r2 |
+| bc-kill-overwrite/input.luac | interproc.arg-flow | root@pc7 root@pc7:r4 -> bc-kill-overwrite/input.luac::root.1:r0 |
+| bc-kill-overwrite/input.luac | interproc.return-flow | root@pc3 bc-kill-overwrite/input.luac::root.0@pc1:r0 -> root@pc3:r2 |
+| bc-taint-minimal-path/input.luac | generic.interproc-reachable | bc-taint-minimal-path/input.luac::root.0@pc1:r0 -> bc-taint-minimal-path/input.luac::root.1:r0 |
+| bc-taint-minimal-path/input.luac | generic.local-reachable | bc-taint-minimal-path/input.luac::root@pc3:r2 -> bc-taint-minimal-path/input.luac::root@pc6:r4 |
+| bc-taint-minimal-path/input.luac | interproc.arg-flow | root@pc6 root@pc6:r4 -> bc-taint-minimal-path/input.luac::root.1:r0 |
+| bc-taint-minimal-path/input.luac | interproc.return-flow | root@pc3 bc-taint-minimal-path/input.luac::root.0@pc1:r0 -> root@pc3:r2 |
+| callsite-balanced-identity/input.luac | generic.callsite-balanced-positive | root@pc5:r3 -> root@pc5:r2 |
+| callsite-balanced-identity/input.luac | interproc.arg-flow | root@pc5 root@pc5:r3 -> callsite-balanced-identity/input.luac::root.0:r0 |
+| callsite-balanced-identity/input.luac | interproc.arg-flow | root@pc8 root@pc8:r4 -> callsite-balanced-identity/input.luac::root.0:r0 |
+| callsite-balanced-identity/input.luac | interproc.return-flow | root@pc5 callsite-balanced-identity/input.luac::root.0@pc1:r1 -> root@pc5:r2 |
+| callsite-balanced-identity/input.luac | interproc.return-flow | root@pc8 callsite-balanced-identity/input.luac::root.0@pc1:r1 -> root@pc8:r3 |
+| cross-module-webcmd-popen/controller.luac | calltarget.cross-boundary | root.1@pc8 -> cross-module-webcmd-popen/mtkwifi.luac::root.1 |
+| cross-module-webcmd-popen/controller.luac | generic.cross-module-step | cross-module-webcmd-popen/controller.luac::root.1@pc8:r2 -> cross-module-webcmd-popen/mtkwifi.luac::root.1:r0 |
+| cross-module-webcmd-popen/controller.luac | interproc.arg-flow | root.1@pc8 root.1@pc8:r2 -> cross-module-webcmd-popen/mtkwifi.luac::root.1:r0 |
+| cross-module-webcmd-popen/controller.luac | module.field-target | root.1@pc8 func_unknow_0_12 -> cross-module-webcmd-popen/mtkwifi.luac::root.1 via bytecode-only,literal-require,module-return-table |
+| cross-module-webcmd-popen/controller.luac | module.require-resolution | cross-module-webcmd-popen/controller.luac requires mtkwifi -> cross-module-webcmd-popen/mtkwifi.luac |
+| cross-module-webcmd-popen/controller.luac | module.typed-resolution | root@pc10 mtkwifi -> cross-module-webcmd-popen/mtkwifi.luac |
+| cross-module-webcmd-popen/controller.luac | path.cross-module-complete | cross-module-webcmd-popen/controller.luac::root.1@pc4:r0 -> cross-module-webcmd-popen/controller.luac::root.1@pc7:r0 -> cross-module-webcmd-popen/controller.luac::root.1@pc7:r2 -> cross-module-webcmd-popen/controller.luac::root.1@pc8:r2 -> cross-module-webcmd-popen/mtkwifi.luac::root.1:r0 -> cross-module-webcmd-popen/mtkwifi.luac::root.1@pc2:r0 -> cross-module-webcmd-popen/mtkwifi.luac::root.1@pc2:r2 -> cross-module-webcmd-popen/mtkwifi.luac::root.1@pc3:r2 |
+| cross-module-webcmd-popen/mtkwifi.luac | module.export-return-table | cross-module-webcmd-popen/mtkwifi.luac exports func_unknow_0_12 -> root.1 |
+| cross-module-webcmd-popen/mtkwifi.luac | module.typed-export | func_unknow_0_12 root@pc5:r1 -> root.1 |
+| module-missing-field-negative/controller.luac | module.require-resolution | module-missing-field-negative/controller.luac requires missingfn -> module-missing-field-negative/missingfn.luac |
+| module-missing-field-negative/missingfn.luac | module.export-return-table | module-missing-field-negative/missingfn.luac exports run -> root.0 |
+| module-missing-field-negative/missingfn.luac | module.typed-export | run root@pc1:r1 -> root.0 |
+| module-return-table-field-call/controller.luac | calltarget.cross-boundary | root.0@pc10 -> module-return-table-field-call/samplelib.luac::root.0 |
+| module-return-table-field-call/controller.luac | calltarget.cross-boundary | root.1@pc10 -> module-return-table-field-call/samplelib.luac::root.0 |
+| module-return-table-field-call/controller.luac | interproc.arg-flow | root.0@pc10 root.0@pc10:r3 -> module-return-table-field-call/samplelib.luac::root.0:r0 |
+| module-return-table-field-call/controller.luac | interproc.arg-flow | root.1@pc10 root.1@pc10:r2 -> module-return-table-field-call/samplelib.luac::root.0:r0 |
+| module-return-table-field-call/controller.luac | module.export-return-table | module-return-table-field-call/controller.luac exports via_direct -> root.1 |
+| module-return-table-field-call/controller.luac | module.export-return-table | module-return-table-field-call/controller.luac exports via_local -> root.0 |
+| module-return-table-field-call/controller.luac | module.field-target | root.0@pc10 run -> module-return-table-field-call/samplelib.luac::root.0 via bytecode-only,literal-require,module-return-table |
+| module-return-table-field-call/controller.luac | module.field-target | root.1@pc10 run -> module-return-table-field-call/samplelib.luac::root.0 via bytecode-only,literal-require,module-return-table |
+| module-return-table-field-call/controller.luac | module.literal-require | root.0@pc2 requires samplelib via root.0@pc2:r1 |
+| module-return-table-field-call/controller.luac | module.literal-require | root.1@pc7 requires samplelib via root.1@pc7:r2 |
+| module-return-table-field-call/controller.luac | module.require-resolution | module-return-table-field-call/controller.luac requires samplelib -> module-return-table-field-call/samplelib.luac |
+| module-return-table-field-call/controller.luac | module.typed-export | via_direct root@pc1:r1 -> root.1 |
+| module-return-table-field-call/controller.luac | module.typed-export | via_local root@pc0:r0 -> root.0 |
+| module-return-table-field-call/samplelib.luac | module.export-return-table | module-return-table-field-call/samplelib.luac exports run -> root.0 |
+| module-return-table-field-call/samplelib.luac | module.typed-export | run root@pc1:r1 -> root.0 |
+| same-module-formvalue-execute/input.luac | interproc.arg-flow | root@pc18 root@pc18:r4 -> same-module-formvalue-execute/input.luac::root.3:r0 |
+| same-module-formvalue-execute/input.luac | interproc.return-flow | root@pc15 same-module-formvalue-execute/input.luac::root.2@pc4:r0 -> root@pc15:r2 |
+| same-module-formvalue-execute/input.luac | interproc.return-flow | root@pc15 same-module-formvalue-execute/input.luac::root.2@pc4:r1 -> root@pc15:r2 |
+| same-module-formvalue-execute/input.luac | path.same-module-interprocedural-complete | same-module-formvalue-execute/input.luac::root.2@pc4:r0 -> same-module-formvalue-execute/input.luac::root@pc15:r2 -> same-module-formvalue-execute/input.luac::root@pc17:r2 -> same-module-formvalue-execute/input.luac::root@pc17:r4 -> same-module-formvalue-execute/input.luac::root@pc18:r4 -> same-module-formvalue-execute/input.luac::root.3:r0 -> same-module-formvalue-execute/input.luac::root.3@pc2:r0 -> same-module-formvalue-execute/input.luac::root.3@pc2:r2 -> same-module-formvalue-execute/input.luac::root.3@pc3:r2 |
+| unresolved-callee-negative/input.luac | analysis.unresolved-call-boundary | root.2 root.2@pc2 unresolved-call-target param-derived bytecode-only,call-resolution-boundary |
+| unresolved-callee-negative/input.luac | interproc.arg-flow | root@pc8 root@pc8:r5 -> unresolved-callee-negative/input.luac::root.2:r0 |
+| unresolved-callee-negative/input.luac | interproc.arg-flow | root@pc8 root@pc8:r6 -> unresolved-callee-negative/input.luac::root.2:r1 |
+| unresolved-callee-negative/input.luac | interproc.arg-flow | root@pc11 root@pc11:r5 -> unresolved-callee-negative/input.luac::root.1:r0 |
+| unresolved-callee-negative/input.luac | interproc.return-flow | root@pc4 unresolved-callee-negative/input.luac::root.0@pc4:r0 -> root@pc4:r3 |
+| unresolved-callee-negative/input.luac | interproc.return-flow | root@pc4 unresolved-callee-negative/input.luac::root.0@pc4:r1 -> root@pc4:r3 |

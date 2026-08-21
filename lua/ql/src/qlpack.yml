@@ -1,0 +1,12 @@
+name: codeql/lua-queries
+version: 0.1.0-dev
+groups:
+  - lua
+  - queries
+suites: codeql-suites
+defaultSuiteFile: codeql-suites/lua-code-scanning.qls
+dependencies:
+  codeql/lua-all: ${workspace}
+  codeql/suite-helpers: ${workspace}
+extractor: lua
+warnOnImplicitThis: true

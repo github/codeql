@@ -1,0 +1,2 @@
+| cross-module-guard-sanitizer.active-suppression | no active report crosses the validated call boundary |
+| cross-module-guard-sanitizer.classification | caller guard suppresses resolved callee sink |

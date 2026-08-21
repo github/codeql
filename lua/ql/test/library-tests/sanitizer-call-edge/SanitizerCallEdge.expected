@@ -1,0 +1,5 @@
+| sanitizer-call-edge.active-suppression | non-first sanitizer call-edge route has no active report |
+| sanitizer-call-edge.classification | tainted non-first argument crosses the sanitizer call edge into its callee sink |
+| sanitizer-call-edge.sibling-active | ordinary sibling call remains active |
+| sanitizer-call-edge.typed-call | zero-return doShell call is a typed sanitizer |
+| sanitizer-call-edge.unrelated-negative | constant-only sanitizer call does not suppress the tainted sibling route |

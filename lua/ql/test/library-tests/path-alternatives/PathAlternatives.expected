@@ -1,0 +1,8 @@
+| active-only | true-positive |
+| guard-overwritten | sanitized |
+| merged | sanitized |
+| mixed | sanitized |
+| mixed | true-positive |
+| same-route-mixed | true-positive |
+| sanitizer-only | sanitized |
+| sibling-return-active-only | true-positive |
