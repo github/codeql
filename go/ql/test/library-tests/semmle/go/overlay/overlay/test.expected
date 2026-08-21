@@ -1,0 +1,78 @@
+expressions
+| a.go:1:9:1:12 | base |
+| a.go:3:8:3:16 | "strings" |
+| a.go:5:6:5:6 | C |
+| a.go:5:8:5:15 | struct type |
+| a.go:7:6:7:6 | A |
+| a.go:7:8:9:1 | struct type |
+| a.go:8:2:8:5 | name |
+| a.go:8:7:8:12 | string |
+| a.go:11:1:11:33 | function type |
+| a.go:11:7:11:7 | a |
+| a.go:11:9:11:10 | star expression |
+| a.go:11:10:11:10 | A |
+| a.go:11:13:11:24 | GetNameUpper |
+| a.go:11:28:11:33 | string |
+| a.go:12:9:12:15 | strings |
+| a.go:12:9:12:23 | selection of ToUpper |
+| a.go:12:9:12:31 | call to ToUpper |
+| a.go:12:17:12:23 | ToUpper |
+| a.go:12:25:12:25 | a |
+| a.go:12:25:12:30 | selection of name |
+| a.go:12:27:12:30 | name |
+| a.go:19:1:19:28 | function type |
+| a.go:19:7:19:7 | a |
+| a.go:19:9:19:10 | star expression |
+| a.go:19:10:19:10 | A |
+| a.go:19:13:19:19 | GetName |
+| a.go:19:23:19:28 | string |
+| a.go:21:9:21:9 | a |
+| a.go:21:9:21:14 | selection of name |
+| a.go:21:11:21:14 | name |
+| a.go:24:1:24:27 | function type |
+| a.go:24:6:24:7 | Id |
+| a.go:24:9:24:12 | name |
+| a.go:24:14:24:19 | string |
+| a.go:24:22:24:27 | string |
+| a.go:25:9:25:12 | name |
+| a.go:32:1:32:15 | function type |
+| a.go:32:6:32:10 | FuncC |
+| a.go:32:14:32:15 | star expression |
+| a.go:32:15:32:15 | C |
+| a.go:34:9:34:12 | &... |
+| a.go:34:10:34:10 | C |
+| a.go:34:10:34:12 | struct literal |
+statements
+| a.go:11:35:13:1 | block statement |
+| a.go:12:2:12:31 | return statement |
+| a.go:19:30:22:1 | block statement |
+| a.go:21:2:21:14 | return statement |
+| a.go:24:29:26:1 | block statement |
+| a.go:25:2:25:12 | return statement |
+| a.go:32:17:35:1 | block statement |
+| a.go:34:2:34:12 | return statement |
+functions
+| a.go:11:13:11:24 | GetNameUpper |
+| a.go:19:13:19:19 | GetName |
+| a.go:24:6:24:7 | Id |
+| a.go:32:6:32:10 | FuncC |
+types
+| a.go:5:6:5:6 | C |
+| a.go:7:6:7:6 | A |
+parameters
+| a.go:11:7:11:7 | a |
+| a.go:19:7:19:7 | a |
+| a.go:24:9:24:12 | name |
+fields
+| a.go:8:2:8:5 | name |
+commentLines
+| a.go:15:1:18:3 | comment |
+| a.go:20:2:20:19 | comment |
+| a.go:28:1:31:3 | comment |
+| a.go:33:2:33:19 | comment |
+commentBlocks
+| a.go:15:1:18:3 | comment group |
+| a.go:20:2:20:19 | comment group |
+| a.go:28:1:31:3 | comment group |
+| a.go:33:2:33:19 | comment group |
+htmlElements
