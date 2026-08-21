@@ -42,7 +42,7 @@ private predicate isODataParameterValue(Expr e) {
   TaintTracking::localExprTaint(any(ODataActionParameterRead r), e)
 }
 
-/** The generic `Delta<TStructuralType>` change-tracking class, across OData library versions. */
+/** The generic ``Delta`1`` change-tracking class, across OData library versions. */
 class DeltaClass extends UnboundGenericClass {
   DeltaClass() {
     this.getNumberOfTypeParameters() = 1 and
