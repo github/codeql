@@ -4,11 +4,21 @@ extensions:
       extensible: sourceModel
     data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
       - ["", "", False, "ymlSource", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "ymlSourcePtr", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "ymlFieldSource", "", "", "ReturnValue.Field[SourceWrapper::value]", "local", "manual"]
+      - ["", "", False, "source_from_callback_template", "", "", "Argument[0].Parameter[*0].Field[SourceWrapper::value]", "local", "manual"]
+      - ["", "", False, "source_from_callback_ptr", "", "", "Argument[0].Parameter[*0].Field[SourceWrapper::value]", "local", "manual"]
+      - ["", "", False, "source_from_callback_return_template", "", "", "Argument[0].ReturnValue", "local", "manual"]
+      - ["", "", False, "source_from_callback_return_ptr", "", "", "Argument[0].ReturnValue", "local", "manual"]
+      - ["", "", False, "source_ptr_from_callback_return_ptr", "", "", "Argument[0].ReturnValue[*]", "local", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: sinkModel
     data: # namespace, type, subtypes, name, signature, ext, input, kind, provenance
       - ["", "", False, "ymlSink", "", "", "Argument[0]", "test-sink", "manual"]
+      - ["", "", False, "sink_from_callback_return_template", "", "", "Argument[0].ReturnValue", "test-sink", "manual"]
+      - ["", "", False, "sink_from_callback_return_ptr", "", "", "Argument[0].ReturnValue", "test-sink", "manual"]
+      - ["", "", False, "sink_ptr_from_callback_return_ptr", "", "", "Argument[0].ReturnValue[*]", "test-sink", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: summaryModel

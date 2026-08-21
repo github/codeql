@@ -17,11 +17,9 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
   class SummarizedCallableBase = Function;
 
-  class SourceBase extends Void {
-    Location getLocation() { none() }
-  }
+  class SourceBase = Function;
 
-  class SinkBase = SourceBase;
+  class SinkBase = Function;
 
   class FlowSummaryCallBase = CallInstruction;
 
@@ -134,15 +132,185 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
 private import Make<Location, DataFlowImplSpecific::CppDataFlow, Input> as Impl
 
+private class ConversionCall extends Call {
+  ConversionCall() { this.getTarget() instanceof ConversionOperator }
+}
+
 private module Input2 implements Impl::Private::InputSig2 {
   private import codeql.util.Void
 
-  class SourceSinkReportingElement extends Void {
-    Location getLocation() { none() }
+  pragma[nomagic]
+  private predicate hasFunctionAndIndirectionIndex(
+    Function f, int indirectionIndex, Ssa::ExplicitDefinition def
+  ) {
+    def.getFunction() = f and
+    def.getSourceVariable().getIRVariable() instanceof IRReturnVariable and
+    def.getIndirectionIndex() = indirectionIndex
+  }
 
-    DataFlowCallable getEnclosingCallable() { none() }
+  /** Holds if `def` defines `e` as a returned value with return kind `rk`. */
+  bindingset[rk, e]
+  private predicate isReturnExpr(Function f, ReturnKind rk, Expr e) {
+    exists(Ssa::ExplicitDefinition def |
+      hasFunctionAndIndirectionIndex(f, rk.getIndirectionIndex(), def) and
+      e =
+        def.getAssignedInstruction()
+            .(StoreInstruction)
+            .getSourceValue()
+            .getUnconvertedResultExpression()
+    )
+  }
 
-    SourceSinkReportingElement getASuccessor(Impl::Private::SummaryComponent sc) { none() }
+  private MemberFunction getFunctionFromType(Expr e) {
+    result.getClassAndName("operator()").getADerivedClass*() = e.getUnspecifiedType()
+  }
+
+  private Function getFunctionFromExpr(Expr e) {
+    result = e.(FunctionAccess).getTarget()
+    or
+    result = e.(ConversionCall).getQualifier().(LambdaExpression).getLambdaFunction()
+  }
+
+  class SourceSinkReportingElement extends Element {
+    SourceSinkReportingElement() { this instanceof Expr or this instanceof Parameter }
+
+    DataFlowCallable getEnclosingCallable() {
+      result.asSourceCallable() =
+        [this.(Expr).getEnclosingFunction(), this.(Parameter).getFunction()]
+    }
+
+    /** Gets the function invoked when this element is used as a callback. */
+    private Function getCallable() {
+      // The expression is a struct which implements `operator()`.
+      result = getFunctionFromType(this)
+      or
+      // The expression is a function pointer
+      result = getFunctionFromExpr(this)
+      or
+      // The expression is an SSA read of an assignment of a callable
+      exists(Ssa::Definition def |
+        def.getAUse().getDef().getUnconvertedResultExpression() = this and
+        result =
+          getFunctionFromExpr(def.getAnUltimateDefinition()
+                .(Ssa::DirectExplicitDefinition)
+                .getAssignedInstruction()
+                .(StoreInstruction)
+                .getSourceValue()
+                .getUnconvertedResultExpression())
+      )
+    }
+
+    SourceSinkReportingElement getASuccessor(Impl::Private::SummaryComponent sc) {
+      exists(Function f | f = this.getCallable() |
+        exists(ParameterPosition pos | sc = Impl::Private::SummaryComponent::parameter(pos) |
+          result = pos.getParameter(f)
+        )
+        or
+        exists(ReturnKind rk |
+          sc = Impl::Private::SummaryComponent::return(rk) and
+          isReturnExpr(f, rk, result)
+        )
+      )
+    }
+  }
+
+  bindingset[source, sc]
+  SourceSinkReportingElement getASourceReportingElement(
+    Input::SourceBase source, Impl::Private::SummaryComponent sc
+  ) {
+    exists(Call call | call.getTarget() = source |
+      sc = Impl::Private::SummaryComponent::return(_) and
+      result = call
+      or
+      exists(ArgumentPosition pos |
+        sc = Impl::Private::SummaryComponent::argument(pos) and
+        result = pos.getArgument(call)
+      )
+    )
+    or
+    exists(ParameterPosition pos |
+      sc = Impl::Private::SummaryComponent::parameter(pos) and
+      result = pos.getParameter(source)
+    )
+  }
+
+  pragma[nomagic]
+  private IndirectReturnOutNode getIndirectReturn(CallInstruction call, NormalReturnKind rk) {
+    result.getCallInstruction() = call and
+    pragma[only_bind_out](result.getIndirectionIndex()) =
+      pragma[only_bind_out](rk.getIndirectionIndex())
+  }
+
+  pragma[nomagic]
+  private predicate hasKindAndEnclosingFunction(Function f, ReturnKind rk, ReturnNode r) {
+    r.getEnclosingCallable().asSourceCallable() = f and
+    r.getKind() = rk
+  }
+
+  bindingset[e, sc]
+  Node getSourceDataFlowNode(SourceSinkReportingElement e, Impl::Private::SummaryComponent sc) {
+    exists(DataFlowCall call |
+      exists(ArgumentPosition pos |
+        sc = Impl::Private::SummaryComponent::argument(pos) and
+        pos.getArgument(call.asCallInstruction().getUnconvertedResultExpression()) = e
+      |
+        pos.getIndirectionIndex() = 0 and
+        result.(PostUpdateNode).getPreUpdateNode().asExpr() = e
+        or
+        result.(PostUpdateNode).getPreUpdateNode().asIndirectExpr(pos.getIndirectionIndex()) = e
+      )
+      or
+      exists(ReturnKind rk |
+        sc = Impl::Private::SummaryComponent::return(rk) and
+        // When `e` is a call the node becomes an `OutNode`.
+        e = call.asCallInstruction().getUnconvertedResultExpression()
+      |
+        rk.getIndirectionIndex() = 0 and
+        simpleOutNode(result, call.asCallInstruction())
+        or
+        result = getIndirectReturn(call.asCallInstruction(), rk)
+      )
+    )
+    or
+    exists(ParameterPosition pos, ParameterNode p |
+      sc = Impl::Private::SummaryComponent::parameter(pos) and
+      p.isParameterOf(e.getEnclosingCallable(), pos) and
+      result = p
+    )
+    or
+    exists(Function f, ReturnKind rk |
+      sc = Impl::Private::SummaryComponent::return(rk) and
+      // When `e` is the returned expression from a function the node is
+      // the `ReturnNode`.
+      isReturnExpr(f, rk, e) and
+      hasKindAndEnclosingFunction(f, rk, result)
+    )
+  }
+
+  bindingset[sink, sc]
+  SourceSinkReportingElement getASinkReportingElement(
+    Input::SinkBase sink, Impl::Private::SummaryComponent sc
+  ) {
+    exists(Call call, ArgumentPosition pos |
+      call.getTarget() = sink and
+      sc = Impl::Private::SummaryComponent::argument(pos) and
+      result = pos.getArgument(call)
+    )
+  }
+
+  bindingset[e, sc]
+  Node getSinkDataFlowNode(SourceSinkReportingElement e, Impl::Private::SummaryComponent sc) {
+    exists(ArgumentPosition pos, CallInstruction call |
+      sc = Impl::Private::SummaryComponent::argument(pos) and
+      pos.getArgument(call.getUnconvertedResultExpression()) = e and
+      result.(ArgumentNode).sourceArgumentOf(call, pos)
+    )
+    or
+    exists(Function f, ReturnKind rk |
+      sc = Impl::Private::SummaryComponent::return(rk) and
+      isReturnExpr(f, rk, e) and
+      hasKindAndEnclosingFunction(f, rk, result)
+    )
   }
 }
 
@@ -319,3 +487,41 @@ module Private {
 }
 
 module Public = Impl::Public;
+
+private class SourceModelFunction extends Public::SourceElement instanceof Function {
+  private string namespace;
+  private string type;
+  private boolean subtypes;
+  private string name;
+  private string signature;
+  private string ext;
+
+  SourceModelFunction() {
+    sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) and
+    this = interpretElement(namespace, type, subtypes, name, signature, ext)
+  }
+
+  override predicate isSource(
+    string output, string kind, Public::Provenance provenance, string model
+  ) {
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model)
+  }
+}
+
+private class SinkModelFunction extends Public::SinkElement instanceof Function {
+  private string namespace;
+  private string type;
+  private boolean subtypes;
+  private string name;
+  private string signature;
+  private string ext;
+
+  SinkModelFunction() {
+    sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) and
+    this = interpretElement(namespace, type, subtypes, name, signature, ext)
+  }
+
+  override predicate isSink(string input, string kind, Public::Provenance provenance, string model) {
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, model)
+  }
+}
