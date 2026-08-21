@@ -1,29 +1,3 @@
-using System.Collections.Generic;
-
-namespace Microsoft.AspNet.OData
-{
-    public class ODataActionParameters : Dictionary<string, object>
-    {
-    }
-
-    public class Delta<TStructuralType> where TStructuralType : class
-    {
-        private TStructuralType instance;
-
-        public Delta() { instance = default(TStructuralType); }
-
-        public TStructuralType GetInstance() => instance;
-
-        public void Patch(TStructuralType original) { }
-
-        public void Put(TStructuralType original) { }
-
-        public void CopyChangedValues(TStructuralType original) { }
-
-        public void CopyUnchangedValues(TStructuralType original) { }
-    }
-}
-
 namespace Test
 {
     using Microsoft.AspNet.OData;
