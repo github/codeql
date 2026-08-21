@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.description", "AxisService", True, "createClientSideAxisService", "(URL,QName,String,Options)", "", "Argument[0]", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.description", "Parameter", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.description", "ParameterIncludeImpl", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      #- ["org.apache.axis2.description", "WSDL11ToAxisServiceBuilder", True, "populateService", "()", "", "this", "request-forgery", "ai-generated"] # INVALID: Operates on already-loaded WSDL DOM; no URL fetch
+      #- ["org.apache.axis2.description", "WSDLToAxisServiceBuilder", True, "getXMLSchema", "(Element,String)", "", "Argument[1]", "request-forgery", "ai-generated"] # INVALID: Resolves schemas from in-memory DOM element
