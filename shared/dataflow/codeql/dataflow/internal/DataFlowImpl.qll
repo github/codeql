@@ -3092,7 +3092,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         not expensiveLen2unfolding(c)
       } or
       TConsCons(Content c1, Content c2, int len) {
-        Stage4::consCand(c1, TFrontHead(c2, _)) and
+        Stage4::consCand(c1, TFrontHead(c2, len - 1)) and
         len in [2 .. Config::accessPathLimit()] and
         not expensiveLen2unfolding(c1)
       } or
