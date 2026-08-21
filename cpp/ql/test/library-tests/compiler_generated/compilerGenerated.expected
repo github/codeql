@@ -32,21 +32,15 @@
 | cpp.cpp:31:5:33:5 | declaration | Stmt |
 | cpp.cpp:31:5:33:5 | declaration | Stmt |
 | cpp.cpp:31:17:31:18 | (reference to) | Expr |
-| cpp.cpp:31:17:31:18 | vs | Expr |
 | cpp.cpp:34:1:34:1 | return ... | Stmt |
 | file://:0:0:0:0 | (__begin) | Expr |
 | file://:0:0:0:0 | (__begin) | Expr |
 | file://:0:0:0:0 | (__begin) | Expr |
 | file://:0:0:0:0 | (__end) | Expr |
-| file://:0:0:0:0 | (__range) | Expr |
 | file://:0:0:0:0 | (reference dereference) | Expr |
 | file://:0:0:0:0 | (reference dereference) | Expr |
 | file://:0:0:0:0 | * ... | Expr |
-| file://:0:0:0:0 | ... + ... | Expr |
 | file://:0:0:0:0 | array to pointer conversion | Expr |
 | file://:0:0:0:0 | array to pointer conversion | Expr |
-| file://:0:0:0:0 | initializer for (__begin) | Initializer |
-| file://:0:0:0:0 | initializer for (__end) | Initializer |
-| file://:0:0:0:0 | initializer for (__range) | Initializer |
 | file://:0:0:0:0 | operator delete | Function |
 | file://:0:0:0:0 | operator new | Function |
