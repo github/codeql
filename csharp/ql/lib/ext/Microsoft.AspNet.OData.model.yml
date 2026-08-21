@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.AspNet.OData", "Delta<TStructuralType>", True, "GetInstance", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.OData.Deltas", "Delta<T>", True, "GetInstance", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

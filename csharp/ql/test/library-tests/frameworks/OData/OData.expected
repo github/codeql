@@ -1,0 +1,9 @@
+| OData.cs:46:55:46:64 | parameters | OData.cs:49:18:49:23 | access to local variable entity |
+| OData.cs:46:55:46:64 | parameters | OData.cs:50:18:50:28 | access to property Name |
+| OData.cs:46:55:46:64 | parameters | OData.cs:51:18:51:31 | access to property Content |
+| OData.cs:46:55:46:64 | parameters | OData.cs:52:18:52:38 | access to property Owner |
+| OData.cs:46:55:46:64 | parameters | OData.cs:55:22:55:28 | access to property Owner |
+| OData.cs:59:55:59:64 | parameters | OData.cs:65:26:65:35 | access to property Label |
+| OData.cs:59:55:59:64 | parameters | OData.cs:72:22:72:34 | access to property Category |
+| OData.cs:76:39:76:43 | delta | OData.cs:79:18:79:30 | access to property Name |
+| OData.cs:82:45:82:49 | delta | OData.cs:85:18:85:23 | access to property Name |
