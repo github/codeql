@@ -21,6 +21,7 @@ import csharp
 private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.dataflow.FlowSteps
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
+private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
 /** The `ODataActionParameters` dictionary type, across OData library versions. */
 class ODataActionParametersClass extends Class {
@@ -86,23 +87,6 @@ class DeltaMutatingMethod extends Method {
   }
 }
 
-private class CandidateODataMember extends Member {
-  CandidateODataMember() {
-    this.isPublic() and
-    not this.isStatic() and
-    (
-      this =
-        any(Property p |
-          p.isAutoImplemented() and
-          p.getGetter().isPublic() and
-          p.getSetter().isPublic()
-        )
-      or
-      this = any(Field f | f.isPublic())
-    )
-  }
-}
-
 /**
  * Taint members (transitively) on types used in
  * 1. Casts, `as`-conversions, or type tests applied to `ODataActionParameters` values.
@@ -112,7 +96,7 @@ private class CandidateODataMember extends Member {
  * trade-off `AspNetRemoteFlowSourceMember` (`Remote.qll`) makes for ASP.NET
  * action-method parameters.
  */
-private class ODataBoundMember extends TaintTracking::TaintedMember, CandidateODataMember {
+private class ODataBoundMember extends TaintTracking::TaintedMember, CandidateMemberToTaint {
   ODataBoundMember() {
     exists(Type t, Type t0 | t = this.getDeclaringType() |
       (t = t0 or t = t0.(CollectionType).getElementType()) and
