@@ -79,6 +79,24 @@ def from_parameter_default():
 
 
 # ------------------------------------------------------------------------------
+# Captured variable reassignment
+# ------------------------------------------------------------------------------
+
+def captured_reassignment_tradeoff():
+    value = tracked # $ tracked
+
+    def read_value():
+        return value # $ tracked
+
+    before_reassignment = read_value() # $ tracked
+    value = "safe"
+    safe_sibling = read_value() # $ SPURIOUS: tracked
+
+    before_reassignment # $ tracked
+    safe_sibling # $ SPURIOUS: tracked
+
+
+# ------------------------------------------------------------------------------
 # Function decorator
 # ------------------------------------------------------------------------------
 
