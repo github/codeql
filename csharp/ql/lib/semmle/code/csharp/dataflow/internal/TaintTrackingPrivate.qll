@@ -2,6 +2,7 @@ private import csharp
 private import TaintTrackingPublic
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.Caching
+private import semmle.code.csharp.dataflow.FlowSteps
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dispatch.Dispatch
@@ -172,6 +173,8 @@ private module Cached {
     model = ""
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false, model)
+    or
+    any(AdditionalTaintStep a).step(nodeFrom, nodeTo) and model = "AdditionalTaintStep"
   }
 }
 
