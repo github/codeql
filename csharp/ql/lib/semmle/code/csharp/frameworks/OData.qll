@@ -86,14 +86,6 @@ class DeltaMutatingMethod extends Method {
   }
 }
 
-/** The `GetInstance` method on `Delta<T>`. */
-class DeltaGetInstanceMethod extends Method {
-  DeltaGetInstanceMethod() {
-    this.getDeclaringType() instanceof DeltaClass and
-    this.hasName("GetInstance")
-  }
-}
-
 private class CandidateODataMember extends Member {
   CandidateODataMember() {
     this.isPublic() and
@@ -144,17 +136,6 @@ private class DeltaMutatingCallTaintStep extends AdditionalTaintStep {
       mc.getTarget().getUnboundDeclaration() instanceof DeltaMutatingMethod and
       node1.asExpr() = mc.getQualifier() and
       node2.(PostUpdateNode).getPreUpdateNode().asExpr() = mc.getArgument(0)
-    )
-  }
-}
-
-/** `Delta<T>.GetInstance()` returns the tracked entity, carrying the same taint as the `Delta<T>` itself. */
-private class DeltaGetInstanceTaintStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodCall mc |
-      mc.getTarget().getUnboundDeclaration() instanceof DeltaGetInstanceMethod and
-      node1.asExpr() = mc.getQualifier() and
-      node2.asExpr() = mc
     )
   }
 }
