@@ -50,7 +50,7 @@ pub enum DbColumnType {
 
 impl fmt::Display for Case<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        writeln!(f, "case @{}.{} of", &self.name, &self.column)?;
+        writeln!(f, "case @{}.{} of", self.name, self.column)?;
         let mut sep = " ";
         for (c, tp) in &self.branches {
             writeln!(f, "{sep} {c} = @{tp}")?;

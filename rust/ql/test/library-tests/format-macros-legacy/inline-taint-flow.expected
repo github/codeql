@@ -1,0 +1,39 @@
+models
+| 1 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+edges
+| main.rs:12:9:12:9 | a | main.rs:13:10:13:25 | FormatArgsExpr | provenance |  |
+| main.rs:12:13:12:21 | source(...) | main.rs:12:9:12:9 | a | provenance |  |
+| main.rs:13:10:13:25 | ...::format(...) | main.rs:13:10:13:25 | MacroExpr | provenance |  |
+| main.rs:13:10:13:25 | FormatArgsExpr | main.rs:13:10:13:25 | ...::format(...) | provenance | MaD:1 |
+| main.rs:15:9:15:9 | b | main.rs:16:10:16:23 | FormatArgsExpr | provenance |  |
+| main.rs:15:13:15:21 | source(...) | main.rs:15:9:15:9 | b | provenance |  |
+| main.rs:16:10:16:23 | ...::format(...) | main.rs:16:10:16:23 | MacroExpr | provenance |  |
+| main.rs:16:10:16:23 | FormatArgsExpr | main.rs:16:10:16:23 | ...::format(...) | provenance | MaD:1 |
+| main.rs:18:9:18:9 | c | main.rs:19:13:19:36 | FormatArgsExpr | provenance |  |
+| main.rs:18:13:18:21 | source(...) | main.rs:18:9:18:9 | c | provenance |  |
+| main.rs:19:9:19:9 | s | main.rs:20:10:20:10 | s | provenance |  |
+| main.rs:19:13:19:36 | ...::format(...) | main.rs:19:9:19:9 | s | provenance |  |
+| main.rs:19:13:19:36 | FormatArgsExpr | main.rs:19:13:19:36 | ...::format(...) | provenance | MaD:1 |
+nodes
+| main.rs:12:9:12:9 | a | semmle.label | a |
+| main.rs:12:13:12:21 | source(...) | semmle.label | source(...) |
+| main.rs:13:10:13:25 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:13:10:13:25 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:13:10:13:25 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:15:9:15:9 | b | semmle.label | b |
+| main.rs:15:13:15:21 | source(...) | semmle.label | source(...) |
+| main.rs:16:10:16:23 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:16:10:16:23 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:16:10:16:23 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:18:9:18:9 | c | semmle.label | c |
+| main.rs:18:13:18:21 | source(...) | semmle.label | source(...) |
+| main.rs:19:9:19:9 | s | semmle.label | s |
+| main.rs:19:13:19:36 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:19:13:19:36 | FormatArgsExpr | semmle.label | FormatArgsExpr |
+| main.rs:20:10:20:10 | s | semmle.label | s |
+subpaths
+testFailures
+#select
+| main.rs:13:10:13:25 | MacroExpr | main.rs:12:13:12:21 | source(...) | main.rs:13:10:13:25 | MacroExpr | $@ | main.rs:12:13:12:21 | source(...) | source(...) |
+| main.rs:16:10:16:23 | MacroExpr | main.rs:15:13:15:21 | source(...) | main.rs:16:10:16:23 | MacroExpr | $@ | main.rs:15:13:15:21 | source(...) | source(...) |
+| main.rs:20:10:20:10 | s | main.rs:18:13:18:21 | source(...) | main.rs:20:10:20:10 | s | $@ | main.rs:18:13:18:21 | source(...) | source(...) |

@@ -8,6 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.AsmOption
 import codeql.rust.elements.internal.AsmPieceImpl::Impl as AsmPieceImpl
+import codeql.rust.elements.Attr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AsmOptionsList` and should not
@@ -48,5 +49,25 @@ module Generated {
      * Gets the number of asm options of this asm options list.
      */
     final int getNumberOfAsmOptions() { result = count(int i | exists(this.getAsmOption(i))) }
+
+    /**
+     * Gets the `index`th attr of this asm options list (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertAsmOptionsListToRaw(this)
+              .(Raw::AsmOptionsList)
+              .getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this asm options list.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this asm options list.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
   }
 }

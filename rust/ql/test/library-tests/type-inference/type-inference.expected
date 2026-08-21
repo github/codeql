@@ -1023,12 +1023,14 @@ inferCertainType
 | dereference.rs:116:5:116:5 | x |  | dereference.rs:18:1:20:1 | MySmartPointer |
 | dereference.rs:143:19:151:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:144:17:144:26 | key_to_key |  | {EXTERNAL LOCATION} | HashMap |
+| dereference.rs:144:17:144:26 | key_to_key | A | {EXTERNAL LOCATION} | Global |
 | dereference.rs:144:17:144:26 | key_to_key | K | {EXTERNAL LOCATION} | & |
 | dereference.rs:144:17:144:26 | key_to_key | K.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:144:17:144:26 | key_to_key | S | {EXTERNAL LOCATION} | RandomState |
 | dereference.rs:144:17:144:26 | key_to_key | V | {EXTERNAL LOCATION} | & |
 | dereference.rs:144:17:144:26 | key_to_key | V.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:144:30:144:57 | ...::new(...) |  | {EXTERNAL LOCATION} | HashMap |
+| dereference.rs:144:30:144:57 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
 | dereference.rs:144:30:144:57 | ...::new(...) | K | {EXTERNAL LOCATION} | & |
 | dereference.rs:144:30:144:57 | ...::new(...) | K.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:144:30:144:57 | ...::new(...) | S | {EXTERNAL LOCATION} | RandomState |
@@ -1039,6 +1041,7 @@ inferCertainType
 | dereference.rs:145:24:145:29 | Key {...} |  | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:146:9:149:9 | if ... {...} |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:146:32:146:41 | key_to_key |  | {EXTERNAL LOCATION} | HashMap |
+| dereference.rs:146:32:146:41 | key_to_key | A | {EXTERNAL LOCATION} | Global |
 | dereference.rs:146:32:146:41 | key_to_key | K | {EXTERNAL LOCATION} | & |
 | dereference.rs:146:32:146:41 | key_to_key | K.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:146:32:146:41 | key_to_key | S | {EXTERNAL LOCATION} | RandomState |
@@ -1048,6 +1051,7 @@ inferCertainType
 | dereference.rs:146:52:149:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:148:13:148:15 | key |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:150:9:150:18 | key_to_key |  | {EXTERNAL LOCATION} | HashMap |
+| dereference.rs:150:9:150:18 | key_to_key | A | {EXTERNAL LOCATION} | Global |
 | dereference.rs:150:9:150:18 | key_to_key | K | {EXTERNAL LOCATION} | & |
 | dereference.rs:150:9:150:18 | key_to_key | K.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:150:9:150:18 | key_to_key | S | {EXTERNAL LOCATION} | RandomState |
@@ -3598,16 +3602,20 @@ inferCertainType
 | main.rs:2362:13:2363:13 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2362:29:2363:13 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2366:17:2366:20 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2366:17:2366:20 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2366:17:2366:20 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2366:24:2366:55 | ...::new(...) |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2366:24:2366:55 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2366:24:2366:55 | ...::new(...) | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2367:9:2367:12 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2367:9:2367:12 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2367:9:2367:12 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2367:24:2367:38 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
 | main.rs:2367:24:2367:38 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2367:33:2367:37 | "one" |  | {EXTERNAL LOCATION} | & |
 | main.rs:2367:33:2367:37 | "one" | TRef | {EXTERNAL LOCATION} | str |
 | main.rs:2368:9:2368:12 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2368:9:2368:12 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2368:9:2368:12 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2368:24:2368:38 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
 | main.rs:2368:24:2368:38 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
@@ -3615,21 +3623,25 @@ inferCertainType
 | main.rs:2368:33:2368:37 | "two" | TRef | {EXTERNAL LOCATION} | str |
 | main.rs:2369:9:2369:33 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2369:20:2369:23 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2369:20:2369:23 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2369:20:2369:23 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2369:32:2369:33 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2370:9:2370:37 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2370:22:2370:25 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2370:22:2370:25 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2370:22:2370:25 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2370:36:2370:37 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2371:9:2371:42 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2371:13:2371:24 | TuplePat |  | {EXTERNAL LOCATION} | (T_2) |
 | main.rs:2371:29:2371:32 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2371:29:2371:32 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2371:29:2371:32 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2371:41:2371:42 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2372:9:2372:36 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2372:13:2372:24 | TuplePat |  | {EXTERNAL LOCATION} | (T_2) |
 | main.rs:2372:29:2372:33 | &map1 |  | {EXTERNAL LOCATION} | & |
 | main.rs:2372:30:2372:33 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2372:30:2372:33 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2372:30:2372:33 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2372:35:2372:36 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2376:17:2376:17 | a |  | {EXTERNAL LOCATION} | i64 |
@@ -7209,12 +7221,14 @@ inferType
 | dereference.rs:116:12:116:12 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:143:19:151:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:144:17:144:26 | key_to_key |  | {EXTERNAL LOCATION} | HashMap |
+| dereference.rs:144:17:144:26 | key_to_key | A | {EXTERNAL LOCATION} | Global |
 | dereference.rs:144:17:144:26 | key_to_key | K | {EXTERNAL LOCATION} | & |
 | dereference.rs:144:17:144:26 | key_to_key | K.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:144:17:144:26 | key_to_key | S | {EXTERNAL LOCATION} | RandomState |
 | dereference.rs:144:17:144:26 | key_to_key | V | {EXTERNAL LOCATION} | & |
 | dereference.rs:144:17:144:26 | key_to_key | V.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:144:30:144:57 | ...::new(...) |  | {EXTERNAL LOCATION} | HashMap |
+| dereference.rs:144:30:144:57 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
 | dereference.rs:144:30:144:57 | ...::new(...) | K | {EXTERNAL LOCATION} | & |
 | dereference.rs:144:30:144:57 | ...::new(...) | K.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:144:30:144:57 | ...::new(...) | S | {EXTERNAL LOCATION} | RandomState |
@@ -7240,6 +7254,7 @@ inferType
 | dereference.rs:146:21:146:27 | ref_key | TRef | {EXTERNAL LOCATION} | & |
 | dereference.rs:146:21:146:27 | ref_key | TRef.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:146:32:146:41 | key_to_key |  | {EXTERNAL LOCATION} | HashMap |
+| dereference.rs:146:32:146:41 | key_to_key | A | {EXTERNAL LOCATION} | Global |
 | dereference.rs:146:32:146:41 | key_to_key | K | {EXTERNAL LOCATION} | & |
 | dereference.rs:146:32:146:41 | key_to_key | K.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:146:32:146:41 | key_to_key | S | {EXTERNAL LOCATION} | RandomState |
@@ -7265,6 +7280,7 @@ inferType
 | dereference.rs:148:19:148:25 | ref_key | TRef | {EXTERNAL LOCATION} | & |
 | dereference.rs:148:19:148:25 | ref_key | TRef.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:150:9:150:18 | key_to_key |  | {EXTERNAL LOCATION} | HashMap |
+| dereference.rs:150:9:150:18 | key_to_key | A | {EXTERNAL LOCATION} | Global |
 | dereference.rs:150:9:150:18 | key_to_key | K | {EXTERNAL LOCATION} | & |
 | dereference.rs:150:9:150:18 | key_to_key | K.TRef | dereference.rs:122:5:123:21 | Key |
 | dereference.rs:150:9:150:18 | key_to_key | S | {EXTERNAL LOCATION} | RandomState |
@@ -11948,14 +11964,18 @@ inferType
 | main.rs:2336:25:2336:26 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2340:13:2340:17 | vals3 |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2340:13:2340:17 | vals3 | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2340:13:2340:17 | vals3 | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2340:21:2340:33 | MacroExpr |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2340:21:2340:33 | MacroExpr | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2340:21:2340:33 | MacroExpr | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2340:26:2340:26 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2340:29:2340:29 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2340:32:2340:32 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2341:9:2341:25 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2341:13:2341:13 | i |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2341:18:2341:22 | vals3 |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2341:18:2341:22 | vals3 | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2341:18:2341:22 | vals3 | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2341:24:2341:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2343:13:2343:18 | vals4a |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2343:13:2343:18 | vals4a | A | {EXTERNAL LOCATION} | Global |
@@ -12046,28 +12066,49 @@ inferType
 | main.rs:2357:24:2357:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2359:13:2359:19 | matrix1 |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2359:13:2359:19 | matrix1 | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2359:13:2359:19 | matrix1 | T | {EXTERNAL LOCATION} | Vec |
+| main.rs:2359:13:2359:19 | matrix1 | T.A | {EXTERNAL LOCATION} | Global |
+| main.rs:2359:13:2359:19 | matrix1 | T.T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:23:2359:50 | MacroExpr |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2359:23:2359:50 | MacroExpr | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2359:23:2359:50 | MacroExpr | T | {EXTERNAL LOCATION} | Vec |
+| main.rs:2359:23:2359:50 | MacroExpr | T.A | {EXTERNAL LOCATION} | Global |
+| main.rs:2359:23:2359:50 | MacroExpr | T.T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:28:2359:37 | (...) |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2359:28:2359:37 | (...) | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2359:28:2359:37 | (...) | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:28:2359:37 | MacroExpr |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2359:28:2359:37 | MacroExpr | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2359:28:2359:37 | MacroExpr | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:33:2359:33 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:36:2359:36 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:40:2359:49 | (...) |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2359:40:2359:49 | (...) | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2359:40:2359:49 | (...) | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:40:2359:49 | MacroExpr |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2359:40:2359:49 | MacroExpr | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2359:40:2359:49 | MacroExpr | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:45:2359:45 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:48:2359:48 | 4 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2361:13:2361:13 | _ |  | {EXTERNAL LOCATION} | () |
 | main.rs:2361:17:2364:9 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2361:21:2361:23 | row |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2361:21:2361:23 | row | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2361:21:2361:23 | row | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2361:28:2361:34 | matrix1 |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2361:28:2361:34 | matrix1 | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2361:28:2361:34 | matrix1 | T | {EXTERNAL LOCATION} | Vec |
+| main.rs:2361:28:2361:34 | matrix1 | T.A | {EXTERNAL LOCATION} | Global |
+| main.rs:2361:28:2361:34 | matrix1 | T.T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2361:36:2364:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2362:13:2363:13 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2362:17:2362:20 | cell |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2362:25:2362:27 | row |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2362:25:2362:27 | row | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2362:25:2362:27 | row | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2362:29:2363:13 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2366:17:2366:20 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2366:17:2366:20 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2366:17:2366:20 | map1 | K | {EXTERNAL LOCATION} | i32 |
 | main.rs:2366:17:2366:20 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2366:17:2366:20 | map1 | V | {EXTERNAL LOCATION} | Box |
@@ -12075,6 +12116,7 @@ inferType
 | main.rs:2366:17:2366:20 | map1 | V.T | {EXTERNAL LOCATION} | & |
 | main.rs:2366:17:2366:20 | map1 | V.T.TRef | {EXTERNAL LOCATION} | str |
 | main.rs:2366:24:2366:55 | ...::new(...) |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2366:24:2366:55 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2366:24:2366:55 | ...::new(...) | K | {EXTERNAL LOCATION} | i32 |
 | main.rs:2366:24:2366:55 | ...::new(...) | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2366:24:2366:55 | ...::new(...) | V | {EXTERNAL LOCATION} | Box |
@@ -12082,6 +12124,7 @@ inferType
 | main.rs:2366:24:2366:55 | ...::new(...) | V.T | {EXTERNAL LOCATION} | & |
 | main.rs:2366:24:2366:55 | ...::new(...) | V.T.TRef | {EXTERNAL LOCATION} | str |
 | main.rs:2367:9:2367:12 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2367:9:2367:12 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2367:9:2367:12 | map1 | K | {EXTERNAL LOCATION} | i32 |
 | main.rs:2367:9:2367:12 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2367:9:2367:12 | map1 | V | {EXTERNAL LOCATION} | Box |
@@ -12101,6 +12144,7 @@ inferType
 | main.rs:2367:33:2367:37 | "one" |  | {EXTERNAL LOCATION} | & |
 | main.rs:2367:33:2367:37 | "one" | TRef | {EXTERNAL LOCATION} | str |
 | main.rs:2368:9:2368:12 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2368:9:2368:12 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2368:9:2368:12 | map1 | K | {EXTERNAL LOCATION} | i32 |
 | main.rs:2368:9:2368:12 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2368:9:2368:12 | map1 | V | {EXTERNAL LOCATION} | Box |
@@ -12123,6 +12167,7 @@ inferType
 | main.rs:2369:13:2369:15 | key |  | {EXTERNAL LOCATION} | & |
 | main.rs:2369:13:2369:15 | key | TRef | {EXTERNAL LOCATION} | i32 |
 | main.rs:2369:20:2369:23 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2369:20:2369:23 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2369:20:2369:23 | map1 | K | {EXTERNAL LOCATION} | i32 |
 | main.rs:2369:20:2369:23 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2369:20:2369:23 | map1 | V | {EXTERNAL LOCATION} | Box |
@@ -12143,6 +12188,7 @@ inferType
 | main.rs:2370:13:2370:17 | value | TRef.T | {EXTERNAL LOCATION} | & |
 | main.rs:2370:13:2370:17 | value | TRef.T.TRef | {EXTERNAL LOCATION} | str |
 | main.rs:2370:22:2370:25 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2370:22:2370:25 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2370:22:2370:25 | map1 | K | {EXTERNAL LOCATION} | i32 |
 | main.rs:2370:22:2370:25 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2370:22:2370:25 | map1 | V | {EXTERNAL LOCATION} | Box |
@@ -12173,6 +12219,7 @@ inferType
 | main.rs:2371:19:2371:23 | value | TRef.T | {EXTERNAL LOCATION} | & |
 | main.rs:2371:19:2371:23 | value | TRef.T.TRef | {EXTERNAL LOCATION} | str |
 | main.rs:2371:29:2371:32 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2371:29:2371:32 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2371:29:2371:32 | map1 | K | {EXTERNAL LOCATION} | i32 |
 | main.rs:2371:29:2371:32 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2371:29:2371:32 | map1 | V | {EXTERNAL LOCATION} | Box |
@@ -12204,6 +12251,7 @@ inferType
 | main.rs:2372:19:2372:23 | value | TRef.T.TRef | {EXTERNAL LOCATION} | str |
 | main.rs:2372:29:2372:33 | &map1 |  | {EXTERNAL LOCATION} | & |
 | main.rs:2372:29:2372:33 | &map1 | TRef | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2372:29:2372:33 | &map1 | TRef.A | {EXTERNAL LOCATION} | Global |
 | main.rs:2372:29:2372:33 | &map1 | TRef.K | {EXTERNAL LOCATION} | i32 |
 | main.rs:2372:29:2372:33 | &map1 | TRef.S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2372:29:2372:33 | &map1 | TRef.V | {EXTERNAL LOCATION} | Box |
@@ -12211,6 +12259,7 @@ inferType
 | main.rs:2372:29:2372:33 | &map1 | TRef.V.T | {EXTERNAL LOCATION} | & |
 | main.rs:2372:29:2372:33 | &map1 | TRef.V.T.TRef | {EXTERNAL LOCATION} | str |
 | main.rs:2372:30:2372:33 | map1 |  | {EXTERNAL LOCATION} | HashMap |
+| main.rs:2372:30:2372:33 | map1 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2372:30:2372:33 | map1 | K | {EXTERNAL LOCATION} | i32 |
 | main.rs:2372:30:2372:33 | map1 | S | {EXTERNAL LOCATION} | RandomState |
 | main.rs:2372:30:2372:33 | map1 | V | {EXTERNAL LOCATION} | Box |
@@ -15485,8 +15534,10 @@ inferType
 | pattern_matching.rs:792:35:824:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:794:9:794:14 | points |  | {EXTERNAL LOCATION} | Vec |
 | pattern_matching.rs:794:9:794:14 | points | A | {EXTERNAL LOCATION} | Global |
+| pattern_matching.rs:794:9:794:14 | points | T | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:794:18:794:65 | MacroExpr |  | {EXTERNAL LOCATION} | Vec |
 | pattern_matching.rs:794:18:794:65 | MacroExpr | A | {EXTERNAL LOCATION} | Global |
+| pattern_matching.rs:794:18:794:65 | MacroExpr | T | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:794:23:794:42 | (...) |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:794:23:794:42 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:794:34:794:34 | 1 |  | {EXTERNAL LOCATION} | i32 |
@@ -15501,6 +15552,7 @@ inferType
 | pattern_matching.rs:795:20:795:20 | y |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:795:27:795:32 | points |  | {EXTERNAL LOCATION} | Vec |
 | pattern_matching.rs:795:27:795:32 | points | A | {EXTERNAL LOCATION} | Global |
+| pattern_matching.rs:795:27:795:32 | points | T | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:795:34:799:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:796:13:796:18 | loop_x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:796:22:796:22 | x |  | {EXTERNAL LOCATION} | i32 |

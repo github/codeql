@@ -106,11 +106,11 @@ impl<'a> Extractor<'a> {
             .push(ExtractionStep::extract(before_extract, source_kind, file));
     }
 
-    pub fn extract_with_semantics(
+    pub fn extract_with_semantics<'db>(
         &mut self,
         file: &Path,
-        semantics: &Semantics<'_, RootDatabase>,
-        vfs: &Vfs,
+        semantics: &'db Semantics<'db, RootDatabase>,
+        vfs: &'db Vfs,
         source_kind: SourceKind,
     ) {
         self.extract(&RustAnalyzer::new(vfs, semantics), file, source_kind);
