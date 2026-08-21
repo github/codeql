@@ -1,0 +1,153 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The Go module <code>golang.org/x/net/idna</code> implements UTS-46 IDNA
+processing. On the <code>Lookup</code> and <code>Display</code> profiles
+(and any profile constructed via <code>idna.New(idna.MapForLookup(), ...)</code>),
+both <code>(*Profile).ToASCII</code> and <code>(*Profile).ToUnicode</code>
+apply an NFKC-based character map that folds <strong>100 distinct
+non-ASCII Unicode digit codepoints</strong> to their ASCII equivalents.
+The 100 codepoints partition into the following Unicode-block ranges:
+</p>
+<ul>
+  <li>Latin-1 superscripts (U+00B2, U+00B3, U+00B9): 3 codepoints</li>
+  <li>Mathematical superscripts (U+2070, U+2074..U+2079): 7 codepoints</li>
+  <li>Mathematical subscripts (U+2080..U+2089): 10 codepoints</li>
+  <li>Circled digits (U+2460..U+2468, U+24EA): 10 codepoints</li>
+  <li>Fullwidth digits (U+FF10..U+FF19): 10 codepoints</li>
+  <li>Mathematical Alphanumeric Symbols digits, spanning bold,
+      double-struck, sans-serif, sans-serif-bold, and monospace styles
+      (U+1D7CE..U+1D7FF): 50 codepoints</li>
+  <li>Segmented digits (U+1FBF0..U+1FBF9): 10 codepoints</li>
+</ul>
+<p>
+Devanagari digits (U+0966..U+096F) are <strong>not</strong> in scope:
+empirical testing against <code>golang.org/x/net/idna v0.53.0</code>
+confirms they do not fold to ASCII via UTS-46. The
+<code>Registration</code> profile is structurally covered by the rule
+but disallows every fold codepoint at the rune-validation stage, so a
+caller that respects the returned <code>error</code> never sees a
+smuggled literal from that profile in practice.
+</p>
+<p>
+The library contains no IP-literal detection. A caller that applies UTS-46
+mapping to an attacker-controlled host string and consumes the result in a
+network sink without rechecking against IP-literal parsers receives a
+valid ASCII IPv4 literal back as the "domain name" output. Any downstream
+allowlist check, SSRF guard, NoProxy match, or TLS-SNI router that does
+not re-check the post-IDNA result is bypassed. The anti-pattern also
+applies to callers that do a pre-IDNA <code>net.ParseIP</code> check and
+think it is sufficient: the smuggled host is not ASCII, so the pre-IDNA
+check rejects it as non-IP, and the post-IDNA value (now a numeric
+literal) reaches the sink unguarded.
+</p>
+<p>
+IPv6 is out of scope: <code>:</code> is a UTS-46 disallowed character;
+bare-IPv6 inputs are rejected by IDNA rune-validation before any
+digit-fold mapping runs.
+</p>
+<p>
+Sinks where the smuggled literal becomes exploitable include
+<code>net.JoinHostPort</code>, <code>net.Dial</code>,
+<code>(*http.Request).URL.Host</code>, <code>(*tls.Config).ServerName</code>,
+<code>(*http.Cookie).Domain</code>, and any HTTP client request URL
+constructed from the mapped value.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Either:
+</p>
+<ol>
+<li>
+Use a strict IDNA profile option that returns an error if the mapped
+output parses as an IP literal, if your IDNA library exposes one.
+</li>
+<li>
+Apply the explicit safe pattern: after the IDNA mapping call, strip
+trailing dots from the result and parse it. Reject if
+<code>net.ParseIP</code> returns a non-<code>nil</code> address, or if
+<code>netip.ParseAddr</code> returns no error (note the inverted
+convention: <code>netip.ParseAddr</code> reports a successfully parsed
+address via <code>err == nil</code>, not via a non-zero return). The
+trailing-dot strip is required because <code>"0.¹.0.0."</code> maps to
+<code>"0.1.0.0."</code>, which a bare <code>net.ParseIP</code> rejects
+on its own yet is still an IP literal for routing purposes; the strip
+exposes the literal so the parser sees it.
+</li>
+</ol>
+</recommendation>
+
+<example>
+<p>
+Vulnerable pattern. The host string is mapped through the IDNA profile
+and reaches a network sink with no post-IDNA IP-literal recheck:
+</p>
+
+<sample src="IdnaIpLiteralSmuggleBad.go"/>
+
+<p>
+Safe pattern. Post-IDNA trailing-dot strip followed by
+<code>net.ParseIP</code> recheck:
+</p>
+
+<sample src="IdnaIpLiteralSmuggleGood.go"/>
+
+<p>
+The safe pattern accepts three trailing-dot strip forms. They are
+<strong>not</strong> equivalent in coverage:
+</p>
+<ul>
+  <li><code>strings.TrimRight(ace, ".")</code>: strict form. Strips
+      all trailing dots, so the multi-dot residue produced when UTS-46
+      maps the fullwidth dot U+FF0E or the ideographic dot U+3002 next
+      to ASCII dots is fully removed.</li>
+  <li><code>strings.TrimSuffix(ace, ".")</code>: lenient form. Strips
+      only one trailing dot. Sufficient for the canonical
+      <code>"0.1.0.0."</code> shape but leaves residue if multiple
+      trailing dots were produced by mapping.</li>
+  <li><code>if strings.HasSuffix(ace, ".") { ace = ace[:len(ace)-1] }</code>:
+      manual single-dot slice. Behaves identically to
+      <code>TrimSuffix</code> in coverage and inherits the same
+      multi-dot-residue limitation.</li>
+</ul>
+<p>
+Callers whose threat model includes the multi-trailing-dot variant
+should prefer <code>strings.TrimRight</code>. After the strip, parse
+with <code>netip.ParseAddr</code> (preferred) or <code>net.ParseIP</code>
+and reject if the value parses as an IP literal (<code>err == nil</code>
+for the former, non-<code>nil</code> return for the latter).
+</p>
+</example>
+
+<references>
+
+<li>
+Unicode Technical Standard #46 (IDNA Compatibility Processing):
+<a href="https://www.unicode.org/reports/tr46/">https://www.unicode.org/reports/tr46/</a>
+</li>
+<li>
+<code>golang.org/x/net/idna</code> package documentation:
+<a href="https://pkg.go.dev/golang.org/x/net/idna">https://pkg.go.dev/golang.org/x/net/idna</a>
+</li>
+<li>
+WHATWG URL Standard, <code>ends_in_a_number</code> host parser check
+(prior art for IP-literal detection in URL parsers):
+<a href="https://url.spec.whatwg.org/#ends-in-a-number-checker">https://url.spec.whatwg.org/#ends-in-a-number-checker</a>
+</li>
+<li>
+CWE-918: Server-Side Request Forgery (SSRF):
+<a href="https://cwe.mitre.org/data/definitions/918.html">https://cwe.mitre.org/data/definitions/918.html</a>
+</li>
+<li>
+CWE-020: Improper Input Validation:
+<a href="https://cwe.mitre.org/data/definitions/20.html">https://cwe.mitre.org/data/definitions/20.html</a>
+</li>
+
+</references>
+</qhelp>
