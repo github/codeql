@@ -90,3 +90,25 @@ private module SafeDigesterFlowConfig implements DataFlow::ConfigSig {
 }
 
 private module SafeDigesterFlow = DataFlow::Global<SafeDigesterFlowConfig>;
+
+/**
+ * A call to one of the `org.apache.commons.xml.XmlFactories.newXxxFactory()` methods
+ * of the Apache Commons XML library.
+ *
+ * Every such method returns a fresh JAXP factory that has already been hardened against
+ * XML external entity (XXE) attacks, so any parser created from it is treated as safe.
+ *
+ * `newXPathFactory` is matched for completeness, but the XXE model has no `XPathFactory`
+ * safety chain (the XXE sink for XPath is the document being evaluated, not the factory),
+ * so it currently has no effect on XXE results.
+ */
+private class CommonsXmlSafeXmlFactory extends SafeXmlFactorySource, MethodCall {
+  CommonsXmlSafeXmlFactory() {
+    this.getMethod().getDeclaringType().hasQualifiedName("org.apache.commons.xml", "XmlFactories") and
+    this.getMethod()
+        .hasName([
+            "newDocumentBuilderFactory", "newSAXParserFactory", "newXMLInputFactory",
+            "newTransformerFactory", "newSchemaFactory", "newXPathFactory"
+          ])
+  }
+}
