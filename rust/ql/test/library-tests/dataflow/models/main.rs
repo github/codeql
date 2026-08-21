@@ -460,6 +460,27 @@ impl Ord for MyStruct2 {
     }
 }
 
+trait MyTrait2 {
+    fn flow_through2(i: i64) -> i64;
+}
+
+trait MyTrait3 {
+    fn flow_through3(i: i64) -> i64;
+}
+
+impl<T> MyTrait2 for T {
+    fn flow_through2(i: i64) -> i64 {
+        0
+    }
+} 
+
+impl<T> MyTrait3 for T
+{
+    fn flow_through3(i: i64) -> i64 {
+        0
+    }
+}
+
 fn test_trait_model<T: Ord>(x: T) {
     let x1 = source(20).max(0);
     sink(x1); // $ hasValueFlow=20
@@ -488,6 +509,12 @@ fn test_trait_model<T: Ord>(x: T) {
 
     let x7 = (source(28) as i32) < 1;
     sink(x7);
+
+    let x8 = <()>::flow_through2(source(29));
+    sink(x8); // $ hasValueFlow=29
+
+    let x9 = <()>::flow_through3(source(30));
+    sink(x9); // $ hasValueFlow=30
 }
 
 mod external_file;
