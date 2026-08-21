@@ -21,5 +21,9 @@
 | cpp.cpp:19:26:19:44 | initializer for __PRETTY_FUNCTION__ | Initializer |
 | cpp.cpp:19:26:19:44 | void uses_pretty_function() | Expr |
 | cpp.cpp:20:1:20:1 | return ... | Stmt |
+| cpp.cpp:23:29:23:32 | args | Variable |
+| cpp.cpp:23:37:23:37 | return ... | Stmt |
+| cpp.cpp:23:37:23:37 | return ... | Stmt |
+| cpp.cpp:27:1:27:1 | return ... | Stmt |
 | file://:0:0:0:0 | operator delete | Function |
 | file://:0:0:0:0 | operator new | Function |

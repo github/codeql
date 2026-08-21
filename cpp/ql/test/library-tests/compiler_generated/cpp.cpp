@@ -18,3 +18,10 @@ void g1(void) {
 void uses_pretty_function() {
     const char* pretty = __PRETTY_FUNCTION__;
 }
+
+template <typename... Args>
+void parameter_pack(Args... args) { }
+
+void test_parameter_pack() {
+  parameter_pack();
+}
