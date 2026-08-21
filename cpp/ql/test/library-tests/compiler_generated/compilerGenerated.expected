@@ -16,5 +16,10 @@
 | cpp.cpp:15:5:15:12 | call to ~MyClass | Expr |
 | cpp.cpp:15:12:15:12 | reuse of m | Expr |
 | cpp.cpp:16:1:16:1 | return ... | Stmt |
+| cpp.cpp:19:26:19:44 | __PRETTY_FUNCTION__ | Variable |
+| cpp.cpp:19:26:19:44 | array to pointer conversion | Expr |
+| cpp.cpp:19:26:19:44 | initializer for __PRETTY_FUNCTION__ | Initializer |
+| cpp.cpp:19:26:19:44 | void uses_pretty_function() | Expr |
+| cpp.cpp:20:1:20:1 | return ... | Stmt |
 | file://:0:0:0:0 | operator delete | Function |
 | file://:0:0:0:0 | operator new | Function |

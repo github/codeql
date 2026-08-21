@@ -15,3 +15,6 @@ void g1(void) {
     delete m;
 }
 
+void uses_pretty_function() {
+    const char* pretty = __PRETTY_FUNCTION__;
+}
