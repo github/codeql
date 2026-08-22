@@ -19,7 +19,12 @@ import codeql.ruby.ApiGraphs
 
 pragma[nomagic]
 private predicate hasErbResultCall(CfgScope scope) {
-  scope = API::getTopLevelMember("ERB").getInstance().getAMethodCall("result").asExpr().getScope()
+  scope =
+    API::getTopLevelMember("ERB")
+        .getInstance()
+        .getAMethodCall("result")
+        .asExpr()
+        .getEnclosingCallable()
 }
 
 class RelevantLocalVariableWriteAccess extends LocalVariableWriteAccess {
