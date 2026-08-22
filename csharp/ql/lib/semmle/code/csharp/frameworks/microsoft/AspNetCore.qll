@@ -262,13 +262,12 @@ private predicate isMicrosoftAspNetCoreMvcApplicationPart(Compilation applicatio
       assemblyName.getValue() = part.getName()
     )
     or
-    exists(MethodCall addPart, PropertyAccess assemblyAccess, TypeofExpr typeOf, Type partType |
+    exists(MethodCall addPart, PropertyAccess assemblyAccess, Type partType |
       application.getAFileCompiled() = addPart.getFile() and
       isMicrosoftAspNetCoreMvcAddApplicationPart(addPart) and
       assemblyAccess = addPart.getArgumentForName("assembly") and
       assemblyAccess.getTarget().hasName("Assembly") and
-      assemblyAccess.getQualifier() = typeOf and
-      partType = typeOf.getTypeAccess().getTarget() and
+      assemblyAccess.getQualifier().(TypeofExpr).getTypeAccess().getTarget() = partType and
       part = getAnAssemblyFor(partType)
     )
   )
