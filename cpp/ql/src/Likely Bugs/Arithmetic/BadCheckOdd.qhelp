@@ -26,7 +26,7 @@ As a result, this check incorrectly considers all negative numbers as even.
   MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/multiplicative-operators-and-the-modulus-operator">Multiplicative Operators and the Modulus Operator</a>.
 </li>
 <li>
-  Wikipedia: <a href="http://en.wikipedia.org/wiki/Modulo_operation#Common_pitfalls">Modulo Operation - Common pitfalls</a>.
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Modulo_operation#Common_pitfalls">Modulo Operation - Common pitfalls</a>.
 </li>
 
 
