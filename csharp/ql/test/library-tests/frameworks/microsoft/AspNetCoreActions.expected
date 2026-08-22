@@ -13,3 +13,4 @@
 | AspNetCore.cs:171:14:171:35 | ConcreteActionEndpoint | AspNetCore.cs:165:17:165:31 | InheritedAction |
 | AspNetCore.cs:171:14:171:35 | ConcreteActionEndpoint | AspNetCore.cs:173:26:173:39 | AbstractAction |
 | AspNetCore.cs:178:14:178:34 | ActionCasesController | AspNetCore.cs:180:17:180:28 | PublicAction |
+| AspNetCore.cs:200:14:200:33 | NewDisposeController | AspNetCore.cs:202:21:202:27 | Dispose |

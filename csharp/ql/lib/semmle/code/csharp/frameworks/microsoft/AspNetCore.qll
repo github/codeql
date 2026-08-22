@@ -388,6 +388,21 @@ private predicate isDefaultMicrosoftAspNetCoreMvcController(Class controller) {
     MicrosoftAspNetCoreMvcNonControllerAttribute
 }
 
+private predicate isMicrosoftAspNetCoreMvcIDisposableMethod(Method method) {
+  exists(Method baseMethod |
+    baseMethod = method.getOverridee*() and
+    not exists(baseMethod.getOverridee()) and
+    (
+      baseMethod.getExplicitlyImplementedInterface() instanceof SystemIDisposableInterface
+      or
+      baseMethod.getUndecoratedName() = "Dispose" and
+      baseMethod.getNumberOfParameters() = 0 and
+      baseMethod.getReturnType() instanceof VoidType and
+      baseMethod.getDeclaringType().getABaseInterface*() instanceof SystemIDisposableInterface
+    )
+  )
+}
+
 /** A class treated as an owner of ASP.NET Core MVC controller helper methods. */
 class MicrosoftAspNetCoreMvcControllerHelperClass extends Class {
   MicrosoftAspNetCoreMvcControllerHelperClass() {
@@ -424,10 +439,10 @@ class MicrosoftAspNetCoreMvcController extends Class {
     result.isPublic() and
     not result.isStatic() and
     not result.isAbstract() and
-    not result.getUnboundDeclaration() instanceof UnboundGenericMethod and
+    not result instanceof Generic and
     not result.getOverridee*().getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonActionAttribute and
     not result.getOverridee*().getDeclaringType() instanceof ObjectType and
-    not result instanceof DisposeMethod
+    not isMicrosoftAspNetCoreMvcIDisposableMethod(result)
   }
 
   /** Gets a `Redirect*`, `Accepted*`, or `Created*` method. */

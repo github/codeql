@@ -196,3 +196,8 @@ public class ActionCasesController : ControllerBase, System.IDisposable
 
     private void PrivateAction(string input) { }
 }
+
+public class NewDisposeController : Controller
+{
+    public new void Dispose() { }
+}

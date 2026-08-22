@@ -10,3 +10,4 @@
 | AspNetCore.cs:155:14:155:36 | ClosedGenericController |
 | AspNetCore.cs:171:14:171:35 | ConcreteActionEndpoint |
 | AspNetCore.cs:178:14:178:34 | ActionCasesController |
+| AspNetCore.cs:200:14:200:33 | NewDisposeController |
