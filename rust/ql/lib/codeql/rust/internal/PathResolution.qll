@@ -1095,31 +1095,25 @@ final class TraitItemNode extends ImplOrTraitItemNode, NamedItemNode, TypeItemNo
   bindingset[c]
   private string getCanonicalPathPart(Crate c, int i) {
     i = 0 and
-    result = "<_ as "
-    or
-    i = 1 and
     result = this.getCanonicalPathPrefix(c)
     or
-    i = 2 and
+    i = 1 and
     result = "::"
     or
-    i = 3 and
+    i = 2 and
     result = this.getName()
-    or
-    i = 4 and
-    result = ">"
   }
 
   language[monotonicAggregates]
   override string getCanonicalPath(Crate c) {
     this.hasCanonicalPath(c) and
-    result = strictconcat(int i | i in [1 .. 3] | this.getCanonicalPathPart(c, i) order by i)
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
   }
 
   language[monotonicAggregates]
   override string getCanonicalPathPrefixFor(Crate c, ItemNode child) {
     this.providesCanonicalPathPrefixFor(c, child) and
-    result = strictconcat(int i | i in [0 .. 4] | this.getCanonicalPathPart(c, i) order by i)
+    result = this.getCanonicalPath(c)
   }
 }
 
