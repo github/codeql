@@ -12,8 +12,8 @@ edges
 | TaintedPath.go:22:57:22:68 | tainted_path | TaintedPath.go:26:63:26:74 | tainted_path | provenance |  |
 | TaintedPath.go:22:57:22:68 | tainted_path | TaintedPath.go:43:29:43:40 | tainted_path | provenance | Sink:MaD:1 |
 | TaintedPath.go:22:57:22:68 | tainted_path | TaintedPath.go:74:39:74:56 | ...+... | provenance |  |
-| TaintedPath.go:26:2:26:75 | ... := ...[0] | TaintedPath.go:27:28:27:45 | sanitized_filepath | provenance | Sink:MaD:1 |
-| TaintedPath.go:26:63:26:74 | tainted_path | TaintedPath.go:26:2:26:75 | ... := ...[0] | provenance | MaD:4 |
+| TaintedPath.go:26:2:26:75 | extract:0 ... := ... | TaintedPath.go:27:28:27:45 | sanitized_filepath | provenance | Sink:MaD:1 |
+| TaintedPath.go:26:63:26:74 | tainted_path | TaintedPath.go:26:2:26:75 | extract:0 ... := ... | provenance | MaD:4 |
 | TaintedPath.go:74:39:74:56 | ...+... | TaintedPath.go:74:28:74:57 | call to Clean | provenance | MaD:5 Sink:MaD:1 |
 models
 | 1 | Sink: io/ioutil; ; false; ReadFile; ; ; Argument[0]; path-injection; manual |
@@ -27,7 +27,7 @@ nodes
 | TaintedPath.go:18:29:18:40 | tainted_path | semmle.label | tainted_path |
 | TaintedPath.go:22:28:22:69 | call to Join | semmle.label | call to Join |
 | TaintedPath.go:22:57:22:68 | tainted_path | semmle.label | tainted_path |
-| TaintedPath.go:26:2:26:75 | ... := ...[0] | semmle.label | ... := ...[0] |
+| TaintedPath.go:26:2:26:75 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
 | TaintedPath.go:26:63:26:74 | tainted_path | semmle.label | tainted_path |
 | TaintedPath.go:27:28:27:45 | sanitized_filepath | semmle.label | sanitized_filepath |
 | TaintedPath.go:43:29:43:40 | tainted_path | semmle.label | tainted_path |

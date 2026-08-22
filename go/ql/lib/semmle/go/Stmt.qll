@@ -710,18 +710,21 @@ class IfStmt extends @ifstmt, Stmt, ScopeNode {
   /** Gets the init statement of this `if` statement, if any. */
   Stmt getInit() { result = this.getChildStmt(0) }
 
+  /** DEPRECATED: Use `getCondition` instead. */
+  deprecated Expr getCond() { result = this.getCondition() }
+
   /** Gets the condition of this `if` statement. */
-  Expr getCond() { result = this.getChildExpr(1) }
+  Expr getCondition() { result = this.getChildExpr(1) }
 
   /** Gets the "then" branch of this `if` statement. */
-  BlockStmt getThen() { result = this.getChildStmt(2) }
+  Stmt getThen() { result = this.getChildStmt(2) }
 
   /** Gets the "else" branch of this `if` statement, if any. */
   Stmt getElse() { result = this.getChildStmt(3) }
 
   override predicate mayHaveSideEffects() {
     this.getInit().mayHaveSideEffects() or
-    this.getCond().mayHaveSideEffects() or
+    this.getCondition().mayHaveSideEffects() or
     this.getThen().mayHaveSideEffects() or
     this.getElse().mayHaveSideEffects()
   }
@@ -829,6 +832,12 @@ class SwitchStmt extends @switchstmt, Stmt, ScopeNode {
   /** Gets the init statement of this `switch` statement, if any. */
   Stmt getInit() { result = this.getChildStmt(0) }
 
+  /**
+   * Gets the expression whose value or type is examined by this `switch`
+   * statement, if any.
+   */
+  Expr getExpr() { none() }
+
   /** Gets the body of this `switch` statement. */
   BlockStmt getBody() { result = this.getChildStmt(2) }
 
@@ -877,8 +886,7 @@ class SwitchStmt extends @switchstmt, Stmt, ScopeNode {
  * ```
  */
 class ExpressionSwitchStmt extends @exprswitchstmt, SwitchStmt {
-  /** Gets the switch expression of this `switch` statement. */
-  Expr getExpr() { result = this.getChildExpr(1) }
+  override Expr getExpr() { result = this.getChildExpr(1) }
 
   override predicate mayHaveSideEffects() {
     this.getInit().mayHaveSideEffects() or
@@ -909,14 +917,14 @@ class ExpressionSwitchStmt extends @exprswitchstmt, SwitchStmt {
  * ```
  */
 class TypeSwitchStmt extends @typeswitchstmt, SwitchStmt {
-  /** Gets the assign statement of this type-switch statement. */
+  /** Gets the assignment statement of this type-switch statement, if any. */
   SimpleAssignStmt getAssign() { result = this.getChildStmt(1) }
 
   /** Gets the test statement of this type-switch statement. This is a `SimpleAssignStmt` or `ExprStmt`. */
   Stmt getTest() { result = this.getChildStmt(1) }
 
   /** Gets the expression whose type is examined by this `switch` statement. */
-  Expr getExpr() {
+  override Expr getExpr() {
     result = this.getAssign().getRhs() or result = this.getChildStmt(1).(ExprStmt).getExpr()
   }
 
@@ -1082,7 +1090,7 @@ class SelectStmt extends @selectstmt, Stmt {
  */
 class LoopStmt extends @loopstmt, Stmt, ScopeNode {
   /** Gets the body of this loop. */
-  BlockStmt getBody() { none() }
+  Stmt getBody() { none() }
 }
 
 /**
@@ -1148,11 +1156,14 @@ class ForStmt extends @forstmt, LoopStmt {
  * ```
  */
 class RangeStmt extends @rangestmt, LoopStmt {
+  /** Gets the synthesized node grouping the loop variables of this `range` statement. */
+  RangeElementExpr getPattern() { result = this.getChildExpr(0) }
+
   /** Gets the expression denoting the key of this `range` statement. */
-  Expr getKey() { result = this.getChildExpr(0) }
+  Expr getKey() { result = this.getPattern().getKey() }
 
   /** Get the expression denoting the value of this `range` statement. */
-  Expr getValue() { result = this.getChildExpr(1) }
+  Expr getValue() { result = this.getPattern().getValue() }
 
   /** Gets the domain of this `range` statement. */
   Expr getDomain() { result = this.getChildExpr(2) }
@@ -1164,4 +1175,32 @@ class RangeStmt extends @rangestmt, LoopStmt {
   override string toString() { result = "range statement" }
 
   override string getAPrimaryQlClass() { result = "RangeStmt" }
+}
+
+/**
+ * A synthesized node grouping the loop variables (key and value) bound by a
+ * `range` statement.
+ *
+ * This node acts as the single target of the destructuring performed on each
+ * iteration of the loop, so that a `range` statement can be modelled with a
+ * single loop-variable node in the same way as a `foreach` loop in other
+ * languages. It is present for every `range` statement, even when no loop
+ * variables are bound (as in `for range x`).
+ */
+class RangeElementExpr extends @rangeelementexpr, Expr {
+  /** Gets the `range` statement that this node belongs to. */
+  RangeStmt getRangeStmt() { result = this.getParent() }
+
+  /** Gets the expression denoting the key of the `range` statement. */
+  Expr getKey() { result = this.getChildExpr(0) }
+
+  /** Gets the expression denoting the value of the `range` statement. */
+  Expr getValue() { result = this.getChildExpr(1) }
+
+  /** Gets the domain of the `range` statement. */
+  Expr getDomain() { result = this.getRangeStmt().getDomain() }
+
+  override string toString() { result = "range element" }
+
+  override string getAPrimaryQlClass() { result = "RangeElementExpr" }
 }

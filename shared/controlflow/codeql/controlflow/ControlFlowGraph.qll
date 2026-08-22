@@ -284,6 +284,14 @@ signature module AstSig<LocationSig Location> {
     Stmt getStmt(int index);
   }
 
+  /**
+   * Gets the initializer of `switch` statement `switch`, if any.
+   *
+   * Only some languages (e.g. Go) support an initializer that is evaluated
+   * before the switch expression.
+   */
+  default AstNode getSwitchInit(Switch switch) { none() }
+
   /** A case in a switch. */
   class Case extends AstNode {
     /** Gets the pattern being matched by this case at the specified (zero-based) `index`. */
@@ -675,7 +683,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       not exists(getChild(n, _)) and
       not postOrInOrder(n) and
       not additionalNode(n, _, _) and
-      not inConditionalContext(n, _)
+      not inConditionalContext(n, _) and
+      // An empty switch statement still needs distinct before and after nodes
+      // to avoid a spurious self-loop.
+      not n instanceof Switch
     }
 
     private string catchClauseEmptyBodyTag() { result = "[CatchClauseEmptyBody]" }
@@ -1086,7 +1097,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /** The `PreControlFlowNode` at the entry point of a callable. */
-    final private class EntryNodeImpl extends NodeImpl, TEntryNode {
+    final class EntryNodeImpl extends NodeImpl, TEntryNode {
       private Callable c;
 
       EntryNodeImpl() { this = TEntryNode(c) }
@@ -1130,7 +1141,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /** A control flow node indicating exceptional termination of a callable. */
-    final private class ExceptionalExitNodeImpl extends AnnotatedExitNodeImpl {
+    final class ExceptionalExitNodeImpl extends AnnotatedExitNodeImpl {
       ExceptionalExitNodeImpl() { this = TAnnotatedExitNode(_, false) }
     }
 
@@ -1187,7 +1198,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     signature module InputSig2 {
       /**
        * Holds if `ast` may result in an abrupt completion `c` originating at
-       * `n`. The boolean `always`  indicates whether the abrupt completion
+       * `n`. The boolean `always` indicates whether the abrupt completion
        * always occurs or whether `n` may also terminate normally.
        *
        * This predicate is only relevant for AST constructs that are not already
@@ -1205,6 +1216,73 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        * handled by this library.
        */
       predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c);
+
+      /**
+       * Holds if the language-specific implementation replaces the edge from
+       * `source` to `target` for abrupt completion `completion` originating
+       * at `source`.
+       *
+       * This is useful when whether an abrupt completion is intercepted
+       * depends on its source, for example when Go routes a panic through the
+       * deferred calls that are active at that source. The language is
+       * responsible for providing the replacement control-flow edge.
+       *
+       * The default implementation does not override any edges.
+       */
+      default predicate overridesAbruptCompletionEdge(
+        PreControlFlowNode source, PreControlFlowNode target, AbruptCompletion completion
+      ) {
+        none()
+      }
+
+      /**
+       * Holds if there is an additional control-flow edge from `n1` to `n2`
+       * with successor type `t`.
+       *
+       * This is useful for language-specific edges whose successor type cannot
+       * be inferred from their target node.
+       */
+      default predicate additionalSuccessor(
+        PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType t
+      ) {
+        none()
+      }
+
+      /**
+       * Holds if the language-specific implementation provides all control flow
+       * for `ast`, suppressing the default left-to-right evaluation steps.
+       *
+       * This is useful when the language-specific entry point for `ast` is not
+       * an edge from its "before" node, so the presence of an explicit step
+       * cannot itself suppress the default control flow.
+       */
+      default predicate overridesDefaultControlFlow(AstNode ast) { none() }
+
+      /**
+       * Holds if the shared library should preserve its default left-to-right
+       * control flow for `ast` even though the language provides an explicit
+       * step from its "before" node.
+       *
+       * The default implementation preserves the existing behaviour: an
+       * explicit step from the "before" node suppresses all default steps.
+       */
+      default predicate preservesDefaultControlFlow(AstNode ast) { none() }
+
+      /**
+       * Holds if the language-specific implementation replaces the default
+       * control-flow step from `source` to `target` for `ast`.
+       *
+       * This predicate is only consulted when default control flow is enabled
+       * for `ast`. The language is responsible for providing any replacement
+       * step.
+       *
+       * The default implementation does not override any steps.
+       */
+      default predicate overridesDefaultControlFlowStep(
+        AstNode ast, PreControlFlowNode source, PreControlFlowNode target
+      ) {
+        none()
+      }
 
       /**
        * Holds if there is a local non-abrupt step from `n1` to `n2`.
@@ -1281,7 +1359,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         Input2::endAbruptCompletion(ast, n, c)
         or
         exists(Callable callable |
-          callableHasBodyPart(callable, ast) or callableHasParamDefault(callable, ast)
+          not Input2::endAbruptCompletion(ast, _, c) and
+          (callableHasBodyPart(callable, ast) or callableHasParamDefault(callable, ast))
         |
           c.getSuccessorType() instanceof ReturnSuccessor and
           n.(NormalExitNodeImpl).getEnclosingCallable() = callable
@@ -1819,11 +1898,25 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           not exists(getRankedCaseCfgOrder(switch, _)) and firstCase.isAfter(switch)
         |
           n1.isBefore(switch) and
-          n2.isBefore(switch.getExpr())
+          (
+            n2.isBefore(getSwitchInit(switch))
+            or
+            not exists(getSwitchInit(switch)) and
+            (
+              n2.isBefore(switch.getExpr())
+              or
+              not exists(switch.getExpr()) and
+              n2 = firstCase
+            )
+          )
           or
-          n1.isBefore(switch) and
-          not exists(switch.getExpr()) and
-          n2 = firstCase
+          n1.isAfter(getSwitchInit(switch)) and
+          (
+            n2.isBefore(switch.getExpr())
+            or
+            not exists(switch.getExpr()) and
+            n2 = firstCase
+          )
           or
           n1.isAfter(switch.getExpr()) and
           n2 = firstCase
@@ -1894,7 +1987,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        */
       private predicate defaultCfg(AstNode ast) {
         hasCfg(ast) and
-        not explicitStep(any(PreControlFlowNode n | n.isBefore(ast)), _)
+        not Input2::overridesDefaultControlFlow(ast) and
+        (
+          Input2::preservesDefaultControlFlow(ast)
+          or
+          not explicitStep(any(PreControlFlowNode n | n.isBefore(ast)), _)
+        )
       }
 
       private module ChildDenseRankInput implements DenseRankInputSig1 {
@@ -1915,8 +2013,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        * an `AstNode` that does not otherwise have explicitly defined control
        * flow.
        */
-      private predicate defaultStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-        exists(AstNode ast | defaultCfg(ast) |
+      private predicate defaultStepCandidate(
+        AstNode ast, PreControlFlowNode n1, PreControlFlowNode n2
+      ) {
+        defaultCfg(ast) and
+        (
           n1.isBefore(ast) and
           n2.isBefore(getRankedChild(ast, 1))
           or
@@ -1943,6 +2044,17 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
       }
 
+      /**
+       * Holds if `n1` to `n2` is a default left-to-right evaluation step for
+       * an `AstNode` that is not overridden by the language implementation.
+       */
+      private predicate defaultStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+        exists(AstNode ast |
+          defaultStepCandidate(ast, n1, n2) and
+          not Input2::overridesDefaultControlFlowStep(ast, n1, n2)
+        )
+      }
+
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
       private predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
         explicitStep(n1, n2) or defaultStep(n1, n2)
@@ -1956,7 +2068,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         // Require a predecessor as a coarse approximation of reachability.
         // In particular, this prevents a catch-all catch clause preceding a
         // finally block from adding exception edges out of the finally.
-        step(_, last) and
+        (step(_, last) or Input2::additionalSuccessor(_, last, _)) and
         beginAbruptCompletion(ast, last, c, _)
         or
         exists(AstNode child |
@@ -1980,6 +2092,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       }
 
       private predicate preSucc(PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType t) {
+        Input2::additionalSuccessor(n1, n2, t)
+        or
         step(n1, n2) and n2 = TAfterValueNode(_, t)
         or
         step(n1, n2) and n2.(AdditionalNode).getSuccessorType() = t
@@ -1990,7 +2104,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         t instanceof DirectSuccessor
         or
         exists(AstNode ast, AbruptCompletion c |
-          last(ast, n1, c) and endAbruptCompletion(ast, n2, c) and t = c.getSuccessorType()
+          last(ast, n1, c) and
+          endAbruptCompletion(ast, n2, c) and
+          not Input2::overridesAbruptCompletionEdge(n1, n2, c) and
+          t = c.getSuccessorType()
         )
       }
 
