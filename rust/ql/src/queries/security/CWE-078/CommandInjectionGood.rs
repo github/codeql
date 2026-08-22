@@ -1,8 +1,7 @@
 use std::process::Command;
 
 fn handle_request(filename: &str) {
-    // GOOD: use a fixed command with the user input as a separate argument,
-    // avoiding shell interpretation
+    // GOOD: user input is checked against an allowlist before passing into a shell command
     let allowed_names = ["report.pdf", "summary.txt", "data.csv"];
     if allowed_names.contains(&filename) {
         Command::new("cat")
