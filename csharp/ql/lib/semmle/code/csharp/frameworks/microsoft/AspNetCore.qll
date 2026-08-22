@@ -249,30 +249,32 @@ private predicate isMicrosoftAspNetCoreMvcAddApplicationPart(MethodCall call) {
 }
 
 private predicate isMicrosoftAspNetCoreMvcApplicationPart(Compilation application, Assembly part) {
-  part = application.getOutputAssembly()
-  or
-  exists(AssemblyAttribute attr, StringLiteral assemblyName |
-    application.getAFileCompiled() = attr.getFile() and
-    attr.getType()
-        .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.ApplicationParts",
-          "ApplicationPartAttribute") and
-    assemblyName = attr.getArgument(0) and
-    assemblyName.getValue() = part.getName()
-  )
-  or
-  exists(MethodCall addPart, PropertyAccess assemblyAccess, TypeofExpr typeOf, Type partType |
-    application.getAFileCompiled() = addPart.getFile() and
-    isMicrosoftAspNetCoreMvcAddApplicationPart(addPart) and
-    assemblyAccess = addPart.getArgumentForName("assembly") and
-    assemblyAccess.getTarget().hasName("Assembly") and
-    assemblyAccess.getQualifier() = typeOf and
-    partType = typeOf.getTypeAccess().getTarget() and
-    part = getAnAssemblyFor(partType)
+  isMicrosoftAspNetCoreMvcApplication(application) and
+  (
+    part = application.getOutputAssembly()
+    or
+    exists(AssemblyAttribute attr, StringLiteral assemblyName |
+      application.getAFileCompiled() = attr.getFile() and
+      attr.getType()
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.ApplicationParts",
+            "ApplicationPartAttribute") and
+      assemblyName = attr.getArgument(0) and
+      assemblyName.getValue() = part.getName()
+    )
+    or
+    exists(MethodCall addPart, PropertyAccess assemblyAccess, TypeofExpr typeOf, Type partType |
+      application.getAFileCompiled() = addPart.getFile() and
+      isMicrosoftAspNetCoreMvcAddApplicationPart(addPart) and
+      assemblyAccess = addPart.getArgumentForName("assembly") and
+      assemblyAccess.getTarget().hasName("Assembly") and
+      assemblyAccess.getQualifier() = typeOf and
+      partType = typeOf.getTypeAccess().getTarget() and
+      part = getAnAssemblyFor(partType)
+    )
   )
 }
 
 private predicate isInMicrosoftAspNetCoreMvcApplication(Class controller, Compilation application) {
-  isMicrosoftAspNetCoreMvcApplication(application) and
   isMicrosoftAspNetCoreMvcApplicationPart(application, getAnAssemblyFor(controller))
 }
 
