@@ -1,24 +1,36 @@
-| test.c:6:8:6:31 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.c:13:30:13:54 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.c:20:8:20:33 | ... /= ... | The '/=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.c:27:8:27:33 | ... %= ... | The '%=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.c:34:8:34:32 | ... \|= ... | The '\|=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.c:41:8:41:33 | ... >>= ... | The '>>=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.c:51:3:51:26 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:8:8:8:30 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:15:11:15:34 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:22:7:22:29 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:29:11:29:40 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:36:8:36:30 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:43:11:43:33 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:48:8:48:33 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:55:8:55:32 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:64:13:64:35 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:70:29:70:51 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:77:8:77:30 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:84:8:84:38 | ... <<= ... | The '<<=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:91:9:91:31 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:101:3:101:20 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:253:8:253:24 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:280:16:280:38 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
-| test.cpp:287:8:287:30 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison used in a condition. |
+| test.c:6:8:6:31 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.c:13:30:13:54 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.c:20:8:20:33 | ... /= ... | The '/=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.c:27:8:27:33 | ... %= ... | The '%=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.c:34:8:34:32 | ... \|= ... | The '\|=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.c:41:8:41:33 | ... >>= ... | The '>>=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.c:51:3:51:26 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.c:102:28:102:51 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.c:109:15:109:38 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.c:116:49:116:72 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.c:130:11:130:34 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:8:8:8:30 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:15:11:15:34 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:22:7:22:29 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:29:11:29:40 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:36:8:36:30 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:43:11:43:33 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:48:8:48:33 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:55:8:55:32 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:64:13:64:35 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:70:29:70:51 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:77:8:77:30 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:84:8:84:38 | ... <<= ... | The '<<=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:91:9:91:31 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:101:3:101:20 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:253:8:253:24 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:294:27:294:49 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:301:27:301:49 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:308:9:308:31 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:315:15:315:37 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:322:23:322:45 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:329:47:329:69 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:343:47:343:69 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:350:11:350:33 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:355:12:355:34 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |
+| test.cpp:360:14:360:36 | ... = ... | The '=' operation assigns the result of an unparenthesized comparison, and its result is used as a truth value. |

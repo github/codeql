@@ -1,7 +1,8 @@
 /**
- * @name Ambiguous assignment of comparison in condition
- * @description Assigning the result of an unparenthesized comparison in a condition may indicate
- *              that the assignment and comparison are grouped incorrectly.
+ * @name Ambiguous assignment of comparison used as truth value
+ * @description Assigning the result of an unparenthesized comparison when the assignment is used
+ *              as a truth value may indicate that the assignment and comparison are grouped
+ *              incorrectly.
  * @kind problem
  * @problem.severity warning
  * @precision high
@@ -14,23 +15,36 @@
 
 import cpp
 
-/** Gets a condition that controls branching. */
-private Expr getACondition() {
-  result = any(IfStmt s).getCondition()
+/** Holds if the value of `expression` is directly used as a truth value. */
+private predicate isDirectlyUsedAsTruthValue(Expr expression) {
+  expression.isCondition()
   or
-  result = any(Loop s).getCondition()
+  expression = any(UnaryLogicalOperation operation).getAnOperand()
   or
-  result = any(ConditionalExpr e).getCondition()
+  expression = any(BinaryLogicalOperation operation).getAnOperand()
 }
 
 /**
- * Holds if `assignment` occurs within a condition that controls branching.
- *
- * This includes nested expressions, such as function arguments and either operand of a comma
- * expression, because the ambiguous syntax still occurs within the condition.
+ * Holds if the value of `expression` is used as a truth value, possibly after contributing to a
+ * comma, conditional, or comparison expression.
  */
-private predicate occursInCondition(Assignment assignment) {
-  assignment.getParent*() = getACondition()
+private predicate isUsedAsTruthValue(Expr expression) {
+  isDirectlyUsedAsTruthValue(expression)
+  or
+  exists(CommaExpr comma |
+    expression = comma.getRightOperand() and
+    isUsedAsTruthValue(comma)
+  )
+  or
+  exists(ConditionalExpr conditional |
+    expression = [conditional.getThen(), conditional.getElse()] and
+    isUsedAsTruthValue(conditional)
+  )
+  or
+  exists(ComparisonOperation comparison |
+    expression = comparison.getAnOperand() and
+    isUsedAsTruthValue(comparison)
+  )
 }
 
 /**
@@ -46,11 +60,13 @@ from Assignment assignment, ComparisonOperation comparison
 where
   assignment.getRValue() = comparison and
   not isExplicitlyGrouped(comparison) and
-  occursInCondition(assignment) and
-  // Assigning a comparison result to a Boolean is normally intentional.
+  isUsedAsTruthValue(assignment) and
+  // A Boolean lvalue makes assigning the comparison result type-appropriate and normally
+  // intentional.
   not assignment.getLValue().getUnspecifiedType() instanceof BoolType and
   not assignment.isUnevaluated() and
   not assignment.isFromUninstantiatedTemplate(_)
 select assignment,
   "The '" + assignment.getOperator() +
-    "' operation assigns the result of an unparenthesized comparison used in a condition."
+    "' operation assigns the result of an unparenthesized comparison, and its result is used as " +
+    "a truth value."

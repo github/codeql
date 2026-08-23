@@ -1,7 +1,7 @@
 int get_value();
 int get_other_value();
 void *get_pointer();
-bool identity(bool value);
+bool check(int value);
 
 int direct_if() {
   int value;
@@ -74,7 +74,7 @@ int logical_or() {
 
 int nested_comparison() {
   int value;
-  if ((value = get_value() < 0) == 1) // $ Alert // BAD
+  if ((value = get_value() < 0) == false) // $ Alert // BAD
     return value;
   return 0;
 }
@@ -173,7 +173,7 @@ int compound_assignment_without_comparison() {
 
 int switch_expression() {
   int value;
-  switch (value = get_value() < 0) { // GOOD: This query only covers branching conditions.
+  switch (value = get_value() < 0) { // GOOD: The switch operand is not used as a truth value.
   case 0:
     return value;
   default:
@@ -277,14 +277,87 @@ int overloaded_comparison() {
 
 int assignment_as_call_argument() {
   int value;
-  if (identity(value = get_value() < 0)) // $ Alert // BAD: The ambiguous syntax is still in a condition.
+  if (check(value = get_value() < 0)) // GOOD: The assignment only computes an integer argument.
     return value;
   return 0;
 }
 
 int discarded_assignment_in_comma_expression() {
   int value;
-  if ((value = get_value() < 0, get_other_value())) // $ Alert // BAD: Still ambiguous syntax in a condition.
+  if ((value = get_value() < 0, get_other_value())) // GOOD: The assignment result is discarded.
+    return value;
+  return 0;
+}
+
+int truth_valued_assignment_in_comma_expression() {
+  int value;
+  if ((get_other_value(), value = get_value() < 0)) // $ Alert // BAD
+    return value;
+  return 0;
+}
+
+int comma_assignment_under_comparison() {
+  int value;
+  if ((get_other_value(), value = get_value() < 0) == false) // $ Alert // BAD
+    return value;
+  return 0;
+}
+
+int nested_truth_valued_comparisons() {
+  int value;
+  if (((value = get_value() < 0) == false) == false) // $ Alert // BAD
+    return value;
+  return 0;
+}
+
+int truth_valued_conditional_then_arm(bool flag) {
+  int value;
+  if (flag ? (value = get_value() < 0) : false) // $ Alert // BAD
+    return value;
+  return 0;
+}
+
+int truth_valued_conditional_else_arm(bool flag) {
+  int value;
+  if (flag ? false : (value = get_value() < 0)) // $ Alert // BAD
+    return value;
+  return 0;
+}
+
+int nested_truth_valued_comma_expression() {
+  int value;
+  if ((get_other_value(), (get_other_value(), value = get_value() < 0))) // $ Alert // BAD
+    return value;
+  return 0;
+}
+
+int nested_discarded_comma_expression() {
+  int value;
+  if (((get_other_value(), value = get_value() < 0), get_other_value())) // GOOD: Discarded.
+    return value;
+  return 0;
+}
+
+int nested_comma_assignment_under_comparison() {
+  int value;
+  if ((get_other_value(), (get_other_value(), value = get_value() < 0)) == false) // $ Alert // BAD
+    return value;
+  return 0;
+}
+
+bool logical_value_outside_branch() {
+  int value;
+  return (value = get_value() < 0) && get_other_value(); // $ Alert // BAD
+}
+
+bool logical_not_outside_branch() {
+  int value;
+  return !(value = get_value() < 0); // $ Alert // BAD
+}
+
+int truth_valued_assignment_inside_call_argument() {
+  int value;
+  if (check((value = get_value() < 0) && get_other_value())) // $ Alert // BAD
     return value;
   return 0;
 }
