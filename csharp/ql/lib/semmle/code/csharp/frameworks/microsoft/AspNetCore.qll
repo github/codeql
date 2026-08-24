@@ -220,6 +220,8 @@ private predicate isPotentialMicrosoftAspNetCoreMvcController(Class controller) 
     )
 }
 
+bindingset[element]
+pragma[inline_late]
 private Compilation getACompilationFor(Element element) {
   result.getAFileCompiled() = element.getFile()
 }
@@ -351,7 +353,7 @@ private predicate isMicrosoftAspNetCoreMvcFallbackEndpointMapping(MethodCall cal
 private predicate hasMicrosoftAspNetCoreMvcEndpointMapping(Compilation application, Class controller) {
   isInMicrosoftAspNetCoreMvcApplication(controller, application) and
   exists(MethodCall mapping |
-    application.getAFileCompiled() = mapping.getFile() and
+    application = getACompilationFor(mapping) and
     (
       isMicrosoftAspNetCoreMvcConventionalEndpointMapping(mapping)
       or
