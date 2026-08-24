@@ -31,7 +31,7 @@ bazel_dep(name = "gazelle", version = "0.50.0")
 bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.1")
 bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_rust", version = "0.69.0")
-bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.1")
+bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.2")
 bazel_dep(name = "swift-syntax", version = "603.0.2")
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
 
