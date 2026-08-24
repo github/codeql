@@ -535,6 +535,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private string SanitizeFeedForLogging(string feed)
+        {
+
+            try
+            {
+                // If the feed is a URL, log only the scheme, host, port, and absolute path to avoid logging sensitive information such as credentials or tokens.
+                var uri = new Uri(feed);
+                var port = uri.IsDefaultPort ? string.Empty : $":{uri.Port}";
+                return $"{uri.Scheme}://{uri.Host}{port}{uri.AbsolutePath}";
+            }
+            catch
+            {
+                return feed;
+            }
+        }
+
         /// <summary>
         /// If <paramref name="unreachableFeeds"/> is not empty, logs this and emits a diagnostic.
         /// Adds a `CompilationInfos` entry either way.
@@ -544,7 +560,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             if (unreachableFeeds.Count > 0)
             {
-                var orderedUnreachableFeeds = unreachableFeeds.OrderBy(feed => feed).ToList();
+                var orderedUnreachableFeeds = unreachableFeeds
+                    .Select(SanitizeFeedForLogging)
+                    .OrderBy(feed => feed)
+                    .ToList();
                 var unreachableFeedList = string.Join(", ", orderedUnreachableFeeds);
                 logger.LogWarning($"Found unreachable NuGet feeds in C# analysis with build-mode 'none': {unreachableFeedList}. This may cause missing dependencies in the analysis.");
                 compilationInfoContainer.CompilationInfos.Add(("Unreachable NuGet feeds", unreachableFeedList));
