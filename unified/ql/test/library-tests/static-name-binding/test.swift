@@ -51,3 +51,14 @@ class H {
     let x2: G.B = nil; // $ access=G access=A.B
     let x3: G.B.C = nil; // $ access=G access=A.B access=A.B.C
 }
+
+enum I {
+    case one=1, two=2
+    case three=3
+}
+
+func useI() {
+    I.one // $ access=I access=I.one
+    I.two // $ access=I access=I.two
+    I.three // $ access=I access=I.three
+}
