@@ -227,7 +227,7 @@ void test_reverse_flow(unsigned i, unsigned j) {
 
 
 struct SourceWrapper {
-	int value;
+	int value; int* pointer;
 };
 
 SourceWrapper ymlFieldSource();
@@ -319,4 +319,17 @@ void test_callback_return_access_paths() {
 
 	sink_ptr_from_callback_return_ptr([]() { return ymlSourcePtr(); }); // $ ir
 	sink_ptr_from_callback_return_ptr(return_ptr_to_ymlSource); // $ ir
+}
+
+void test_parameter(SourceWrapper* p, SourceWrapper s, int* source) {
+	ymlSink(p->value); // $ ir
+	ymlSink((int)p->pointer); // clean
+	ymlSink(*p->pointer); // $ ir
+
+	ymlSink(s.value); // $ ir
+	ymlSink((int)s.pointer); // clean
+	ymlSink(*s.pointer); // $ ir
+
+	ymlSink((int)source); // clean
+	ymlSink(*source); // $ ir
 }

@@ -11,6 +11,11 @@ extensions:
       - ["", "", False, "source_from_callback_return_template", "", "", "Argument[0].ReturnValue", "local", "manual"]
       - ["", "", False, "source_from_callback_return_ptr", "", "", "Argument[0].ReturnValue", "local", "manual"]
       - ["", "", False, "source_ptr_from_callback_return_ptr", "", "", "Argument[0].ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "test_parameter", "", "", "Parameter[*0].Field[SourceWrapper::value]", "local", "manual"]
+      - ["", "", False, "test_parameter", "", "", "Parameter[*0].Field[*SourceWrapper::pointer]", "local", "manual"]
+      - ["", "", False, "test_parameter", "", "", "Parameter[1].Field[*SourceWrapper::pointer]", "local", "manual"]
+      - ["", "", False, "test_parameter", "", "", "Parameter[1].Field[SourceWrapper::value]", "local", "manual"]
+      - ["", "", False, "test_parameter", "", "", "Parameter[*2]", "local", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: sinkModel

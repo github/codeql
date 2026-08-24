@@ -247,6 +247,14 @@ private module Input2 implements Impl::Private::InputSig2 {
     r.getKind() = rk
   }
 
+  pragma[nomagic]
+  private predicate hasParameterAndIndirectionIndex(
+    Parameter p, int indirectionIndex, ParameterNode n
+  ) {
+    n.getParameter() = p and
+    n.getIndirectionIndex() = indirectionIndex
+  }
+
   bindingset[e, sc]
   Node getSourceDataFlowNode(SourceSinkReportingElement e, Impl::Private::SummaryComponent sc) {
     exists(DataFlowCall call |
@@ -272,10 +280,9 @@ private module Input2 implements Impl::Private::InputSig2 {
       )
     )
     or
-    exists(ParameterPosition pos, ParameterNode p |
+    exists(ParameterPosition pos |
       sc = Impl::Private::SummaryComponent::parameter(pos) and
-      p.isParameterOf(e.getEnclosingCallable(), pos) and
-      result = p
+      hasParameterAndIndirectionIndex(e, pos.getIndirectionIndex(), result)
     )
     or
     exists(Function f, ReturnKind rk |

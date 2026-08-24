@@ -35,3 +35,11 @@
 | test.cpp:310:10:310:33 | call to callback_returning_int_2 | test-sink |
 | test.cpp:314:15:314:17 | ptr | test-sink |
 | test.cpp:315:10:315:13 | * ... | test-sink |
+| test.cpp:325:13:325:17 | value | test-sink |
+| test.cpp:326:18:326:24 | pointer | test-sink |
+| test.cpp:327:10:327:20 | * ... | test-sink |
+| test.cpp:329:12:329:16 | value | test-sink |
+| test.cpp:330:17:330:23 | pointer | test-sink |
+| test.cpp:331:10:331:19 | * ... | test-sink |
+| test.cpp:333:15:333:20 | source | test-sink |
+| test.cpp:334:10:334:16 | * ... | test-sink |
