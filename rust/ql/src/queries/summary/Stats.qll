@@ -131,7 +131,8 @@ predicate extractionStats(string key, int value) {
   key = "Extraction warnings" and
   value = count(ExtractionWarning w | not exists(w.getLocation()) or w.getLocation().fromSource())
   or
-  key = "Files extracted - total" and value = count(ExtractedFile f | exists(f.getRelativePath()))
+  key = "Files extracted - total user" and
+  value = count(ExtractedFile f | exists(f.getRelativePath()))
   or
   key = "Files extracted - with errors" and
   value =
@@ -158,6 +159,13 @@ predicate extractionStats(string key, int value) {
   or
   key = "Macro calls - unresolved" and
   value = count(MacroCall mc | mc.fromSource() and not mc.hasMacroCallExpansion())
+}
+
+/**
+ * Gets further summary statistics about extraction.
+ */
+predicate extractionStatsExtra(string key, int value) {
+  key = "Files extracted - total" and value = count(File f)
 }
 
 /**
