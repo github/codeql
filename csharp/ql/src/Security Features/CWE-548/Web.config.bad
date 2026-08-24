@@ -3,5 +3,5 @@
   <system.webServer>
     <directoryBrowse enabled="true"/>
    ...
-  </system.web>
+  </system.webServer>
 </configuration>
