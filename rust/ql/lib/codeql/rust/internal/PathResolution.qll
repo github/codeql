@@ -874,7 +874,12 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
    */
   predicate isBlanketImplementation() { exists(this.getBlanketImplementationTypeParam()) }
 
-  override predicate hasCanonicalPath(Crate c) { this.resolveSelfTy().hasCanonicalPathPrefix(c) }
+  override predicate hasCanonicalPath(Crate c) {
+    this.resolveSelfTy().hasCanonicalPathPrefix(c)
+    or
+    this.isBlanketImplementation() and
+    c.getASourceFile().getFile() = this.getFile()
+  }
 
   /**
    * Holds if `(c1, c2)` forms a pair of crates for the type and trait
@@ -920,7 +925,12 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
     result = "<"
     or
     i = 1 and
-    result = this.getSelfCanonicalPath(c)
+    (
+      result = this.getSelfCanonicalPath(c)
+      or
+      this.isBlanketImplementation() and
+      result = "_"
+    )
     or
     if exists(this.getTraitPath())
     then
