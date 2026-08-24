@@ -504,7 +504,7 @@ fn test_trait_model<T: Ord>(x: T) {
     sink(x8); // $ hasValueFlow=29
 
     let x9 = <()>::flow_through3(source(30));
-    sink(x9); // $ MISSING: hasValueFlow=30
+    sink(x9); // $ hasValueFlow=30
 }
 
 mod external_file;
