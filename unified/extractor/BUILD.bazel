@@ -13,10 +13,7 @@ codeql_rust_binary(
         "ast_types.yml",
         "swift_node_types.yml",
     ],
-    data = select({
-        "@platforms//os:linux": ["//unified/swift-syntax-rs:swift_runtime_libs"],
-        "//conditions:default": [],
-    }),
+    data = ["//unified/swift-syntax-rs:swift_runtime"],
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
@@ -56,10 +53,7 @@ _TESTS = {
             "swift_node_types.yml",
         ] + spec["compile_data"],
         crate_root = "tests/%s.rs" % test_name,
-        data = spec["data"] + select({
-            "@platforms//os:linux": ["//unified/swift-syntax-rs:swift_runtime_libs"],
-            "//conditions:default": [],
-        }),
+        data = spec["data"] + ["//unified/swift-syntax-rs:swift_runtime"],
         edition = "2024",
         proc_macro_deps = all_crate_deps(
             proc_macro = True,

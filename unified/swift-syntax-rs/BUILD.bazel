@@ -1,36 +1,50 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
 load("@rules_swift//swift:swift.bzl", "swift_library")
+load("@rules_swift//swift/toolchains:swift_toolchain.bzl", "swift_runtime")
 load("//unified:platforms.bzl", "UNIFIED_SUPPORTED_PLATFORMS")
-load(":swift_runtime.bzl", "swift_runtime_libs")
-load(":swift_runtime_linking.bzl", "swift_runtime_linking")
 
 package(default_visibility = ["//visibility:public"])
 
-swift_runtime_libs(
-    name = "swift_runtime_libs",
-    toolchain = "@swift_toolchain_ubuntu22.04//:files",
+config_setting(
+    name = "static_linux_runtime",
+    constraint_values = [
+        "@platforms//os:linux",
+        "//:static_swift_runtime",
+    ],
 )
 
-swift_runtime_linking(
-    name = "_swift_runtime_cc_info",
-    target_compatible_with = ["@platforms//os:linux"],
-    visibility = ["//visibility:private"],
+swift_runtime(
+    name = "_swift_runtime",
 )
 
-# On Linux, provide the downloaded Swift runtime at link time and look beside
-# the executable for the copies bundled with the extractor at runtime.
+filegroup(
+    name = "swift_runtime",
+    srcs = select({
+        ":static_linux_runtime": [],
+        "@platforms//os:linux": [":_swift_runtime"],
+        "//conditions:default": [],
+    }),
+)
+
 cc_library(
-    name = "swift_runtime_linking",
-    linkopts = select({
-        "@platforms//os:linux": ["-Wl,-rpath,$$ORIGIN"],
-        "//conditions:default": [],
-    }),
-    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
-    deps = select({
-        "@platforms//os:linux": [":_swift_runtime_cc_info"],
-        "//conditions:default": [],
-    }),
+    name = "static_runtime_group_start",
+    linkopts = ["-Wl,--start-group"],
+    target_compatible_with = ["@platforms//os:linux"],
+)
+
+cc_library(
+    name = "static_runtime_group_end",
+    linkopts = [
+        "-lc",
+        "-ldl",
+        "-lm",
+        "-lpthread",
+        "-lrt",
+        "-lutil",
+        "-Wl,--end-group",
+    ],
+    target_compatible_with = ["@platforms//os:linux"],
 )
 
 # Swift FFI shim: wraps swift-syntax and exposes a small C ABI.
@@ -56,10 +70,21 @@ rust_library(
     ),
     edition = "2024",
     target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
-    deps = [
-        ":swift_runtime_linking",
-        ":swift_syntax_ffi",
-    ],
+    deps = select({
+        ":static_linux_runtime": [
+            # Keep these in linker order; sorting them produces an invalid group.
+            ":static_runtime_group_start",
+            ":swift_syntax_ffi",
+            ":static_runtime_group_end",
+        ],
+        "@platforms//os:linux": [
+            ":_swift_runtime",
+            ":swift_syntax_ffi",
+        ],
+        "//conditions:default": [
+            ":swift_syntax_ffi",
+        ],
+    }),
 )
 
 # A debugging aid, for looking at the raw swift-syntax JSON for some input:
@@ -68,10 +93,7 @@ rust_library(
 rust_binary(
     name = "swift-syntax-parse",
     srcs = ["src/main.rs"],
-    data = select({
-        "@platforms//os:linux": [":swift_runtime_libs"],
-        "//conditions:default": [],
-    }),
+    data = [":swift_runtime"],
     edition = "2024",
     target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
     deps = [":swift_syntax_rs"],
@@ -81,10 +103,7 @@ rust_test(
     name = "swift_syntax_rs_test",
     size = "small",
     crate = ":swift_syntax_rs",
-    data = select({
-        "@platforms//os:linux": [":swift_runtime_libs"],
-        "//conditions:default": [],
-    }),
+    data = [":swift_runtime"],
     edition = "2024",
     target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
 )
