@@ -1,0 +1,2 @@
+| .github/workflows/unpinned_first_party.yml:9:15:9:42 | actions/first-interaction@v1 | Unpinned 3rd party Action 'Unpinned first-party actions' step $@ uses 'actions/first-interaction' with ref 'v1', not a pinned commit hash | .github/workflows/unpinned_first_party.yml:9:9:11:6 | Uses Step | Uses Step |
+| .github/workflows/unpinned_first_party.yml:13:15:13:24 | foo/bar@v1 | Unpinned 3rd party Action 'Unpinned first-party actions' step $@ uses 'foo/bar' with ref 'v1', not a pinned commit hash | .github/workflows/unpinned_first_party.yml:13:9:13:25 | Uses Step | Uses Step |

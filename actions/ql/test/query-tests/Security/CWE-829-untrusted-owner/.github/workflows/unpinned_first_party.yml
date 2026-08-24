@@ -1,0 +1,13 @@
+name: Unpinned first-party actions
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # `actions` is distrusted via `!actions`, and this action is not immutable,
+      # so this unpinned tag is reported.
+      - uses: actions/first-interaction@v1
+      # `github` remains trusted, so this unpinned tag is not reported.
+      - uses: github/issue-labeler@v3.0
+      # Third-party owner is always reported.
+      - uses: foo/bar@v1
