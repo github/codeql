@@ -830,8 +830,8 @@ impl<'db> Translator<'db> {
         let (parsed, output_span_map) =
             token_tree_to_syntax_node(&output, TopEntryPoint::Expr, &mut |_| edition);
         let root = parsed.syntax_node();
-        let expr =
-            ast::Expr::cast(root.clone()).or_else(|| root.descendants().find_map(ast::Expr::cast))?;
+        let expr = ast::Expr::cast(root.clone())
+            .or_else(|| root.descendants().find_map(ast::Expr::cast))?;
         // Sanity check: the parsed expression must contain the reconstructed
         // `FormatArgsExpr` (either directly, or wrapped in the callee above).
         expr.syntax()
