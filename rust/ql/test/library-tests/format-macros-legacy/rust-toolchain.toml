@@ -4,7 +4,7 @@
 # a std that carries the new lowering (roughly >= 1.94). On older toolchains the
 # format-family macros (`format!`, `println!`, `write!`, ...) fail to expand, so
 # the extractor reconstructs the `FormatArgsExpr` itself. This test exercises that
-# reconstruction path, which the default 1.95 test toolchain never hits.
+# reconstruction path, which the default test toolchain never hits.
 #
 # Any toolchain named here must also be pre-installed in `../setup.sh`, otherwise
 # the parallel QL tests race on `rustup` auto-install.

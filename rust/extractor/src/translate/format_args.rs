@@ -2,11 +2,10 @@
 //!
 //! On `rustc <1.94` sysroots the format-family macros (`format!`, `println!`,
 //! `write!`, `panic!`, ...) no longer resolve, so `expand_macro_call` returns `None`
-//! and we get a bare unexpanded `MacroCall` with no flow through it (flow is modeled
-//! on the `FormatArgsExpr` node, and the security sinks are keyed on the wrapping
-//! callee). The syntactic lowering of these macros is a pure, sysroot-independent
-//! transform, so we rebuild the same token tree the real (>=1.94) expansion has and
-//! parse it ourselves.
+//! and we get a bare unexpanded `MacroCall`. The syntactic lowering of these macros
+//! is a pure, sysroot-independent transform, so we rebuild the same token tree the
+//! real (>=1.94) expansion produces and parse it ourselves, giving pre-1.94
+//! toolchains the same AST as newer ones.
 //!
 //! This module owns the pure token-tree construction; [`super::base::Translator`]
 //! handles parsing the result and emitting it as the macro expansion.
@@ -16,9 +15,8 @@ use ra_ap_hir_expand::tt;
 use ra_ap_span::Span;
 
 /// How a format-family macro wraps its `format_args!`. We rebuild the same shape the
-/// real (>=1.94) expansion has, so that both dataflow and the sink models keyed on
-/// the wrapping callee keep working on older toolchains.
-#[derive(Clone, Copy)]
+/// real (>=1.94) expansion has, so older toolchains get the same AST.
+#[derive(Clone, Copy, PartialEq, Eq)]
 pub(crate) enum Wrap {
     /// `format_args!` and friends are themselves the `FormatArgsExpr`.
     Bare,
@@ -87,9 +85,9 @@ fn split_arguments<'a>(
     wrap: Wrap,
     input: &'a tt::TopSubtree,
 ) -> Option<(Option<tt::TokenTreesView<'a>>, tt::TokenTreesView<'a>)> {
-    let Wrap::WriteMethod = wrap else {
+    if wrap != Wrap::WriteMethod {
         return Some((None, input.view().token_trees()));
-    };
+    }
     let mut iter = input.view().iter();
     let start = iter.savepoint();
     let mut found_comma = false;

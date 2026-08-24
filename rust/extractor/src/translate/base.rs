@@ -22,7 +22,7 @@ use ra_ap_syntax_bridge::{
     DocCommentDesugarMode, syntax_node_to_token_tree, token_tree_to_syntax_node,
 };
 
-impl Emission<ast::Item> for Translator<'_, '_> {
+impl Emission<ast::Item> for Translator<'_> {
     fn pre_emit(&mut self, node: &ast::Item) -> Option<Label<generated::Item>> {
         self.item_pre_emit(node).map(Into::into)
     }
@@ -32,7 +32,7 @@ impl Emission<ast::Item> for Translator<'_, '_> {
     }
 }
 
-impl Emission<ast::AssocItem> for Translator<'_, '_> {
+impl Emission<ast::AssocItem> for Translator<'_> {
     fn pre_emit(&mut self, node: &ast::AssocItem) -> Option<Label<generated::AssocItem>> {
         self.item_pre_emit(&node.clone().into()).map(Into::into)
     }
@@ -42,7 +42,7 @@ impl Emission<ast::AssocItem> for Translator<'_, '_> {
     }
 }
 
-impl Emission<ast::ExternItem> for Translator<'_, '_> {
+impl Emission<ast::ExternItem> for Translator<'_> {
     fn pre_emit(&mut self, node: &ast::ExternItem) -> Option<Label<generated::ExternItem>> {
         self.item_pre_emit(&node.clone().into()).map(Into::into)
     }
@@ -52,7 +52,7 @@ impl Emission<ast::ExternItem> for Translator<'_, '_> {
     }
 }
 
-impl Emission<ast::Meta> for Translator<'_, '_> {
+impl Emission<ast::Meta> for Translator<'_> {
     fn pre_emit(&mut self, _node: &ast::Meta) -> Option<Label<generated::Meta>> {
         self.macro_context_depth += 1;
         None
@@ -63,43 +63,43 @@ impl Emission<ast::Meta> for Translator<'_, '_> {
     }
 }
 
-impl Emission<ast::Fn> for Translator<'_, '_> {
+impl Emission<ast::Fn> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::Fn, label: Label<generated::Function>) {
         self.emit_function_has_implementation(node, label);
     }
 }
 
-impl Emission<ast::Struct> for Translator<'_, '_> {
+impl Emission<ast::Struct> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::Struct, label: Label<generated::Struct>) {
         self.emit_derive_expansion(node, label);
     }
 }
 
-impl Emission<ast::Enum> for Translator<'_, '_> {
+impl Emission<ast::Enum> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::Enum, label: Label<generated::Enum>) {
         self.emit_derive_expansion(node, label);
     }
 }
 
-impl Emission<ast::Union> for Translator<'_, '_> {
+impl Emission<ast::Union> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::Union, label: Label<generated::Union>) {
         self.emit_derive_expansion(node, label);
     }
 }
 
-impl Emission<ast::PathSegment> for Translator<'_, '_> {
+impl Emission<ast::PathSegment> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::PathSegment, label: Label<generated::PathSegment>) {
         self.extract_types_from_path_segment(node, label);
     }
 }
 
-impl Emission<ast::Const> for Translator<'_, '_> {
+impl Emission<ast::Const> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::Const, label: Label<generated::Const>) {
         self.emit_const_has_implementation(node, label);
     }
 }
 
-impl Emission<ast::MacroCall> for Translator<'_, '_> {
+impl Emission<ast::MacroCall> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::MacroCall, label: Label<generated::MacroCall>) {
         self.extract_macro_call_expanded(node, label);
     }
@@ -123,12 +123,9 @@ pub enum SourceKind {
     Library,
 }
 
-// `'a` is the (short) lifetime of the borrowed `path`, `'db` the lifetime of the borrowed
-// `Semantics`/database. They must stay separate: `Semantics<'db>` is invariant over `'db`, so
-// coupling it to the shorter `'a` fails to type-check.
-pub struct Translator<'a, 'db> {
+pub struct Translator<'db> {
     pub trap: TrapFile,
-    path: &'a str,
+    path: String,
     label: Label<generated::File>,
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
@@ -147,18 +144,18 @@ const UNKNOWN_LOCATION: (LineCol, LineCol) =
 
 const DIAGNOSTIC_LIMIT_PER_FILE: usize = 100;
 
-impl<'a, 'db> Translator<'a, 'db> {
+impl<'db> Translator<'db> {
     pub fn new(
         trap: TrapFile,
-        path: &'a str,
+        path: &str,
         label: Label<generated::File>,
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'db>>,
         source_kind: SourceKind,
-    ) -> Translator<'a, 'db> {
+    ) -> Translator<'db> {
         Translator {
             trap,
-            path,
+            path: path.to_owned(),
             label,
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
@@ -464,9 +461,6 @@ impl<'a, 'db> Translator<'a, 'db> {
             }
         } else if self.semantics.is_some() {
             if self.reconstruct_format_args_expansion(mcall, label) {
-                // `rustc <1.94` sysroots no longer expand the format-family macros; we
-                // reconstruct their real expansion (a `FormatArgsExpr`, wrapped in the
-                // callee that carries flow and the sink models) so both are preserved.
                 return;
             }
             // let's not spam warnings if we don't have semantics, we already emitted one
@@ -806,23 +800,20 @@ impl<'a, 'db> Translator<'a, 'db> {
         mcall: &ast::MacroCall,
         label: Label<generated::MacroCall>,
     ) -> bool {
-        let Some(name) = mcall
-            .path()
-            .and_then(|p| p.segment())
-            .and_then(|s| s.name_ref())
-            .map(|n| n.text().to_string())
-        else {
-            return false;
-        };
-        let Some(wrap) = format_args::Wrap::for_macro(&name) else {
-            return false;
-        };
-        let Some(tt_node) = mcall.token_tree() else {
-            return false;
-        };
-        let Some(semantics) = self.semantics else {
-            return false;
-        };
+        self.try_reconstruct_format_args_expansion(mcall, label)
+            .is_some()
+    }
+
+    /// Attempts to reconstruct and emit a format-family macro expansion.
+    fn try_reconstruct_format_args_expansion(
+        &mut self,
+        mcall: &ast::MacroCall,
+        label: Label<generated::MacroCall>,
+    ) -> Option<()> {
+        let name = mcall.path()?.segment()?.name_ref()?.text().to_string();
+        let wrap = format_args::Wrap::for_macro(&name)?;
+        let tt_node = mcall.token_tree()?;
+        let semantics = self.semantics?;
         let db = semantics.db;
         let file_id = semantics.hir_file_for(mcall.syntax());
         let span_map = file_id.span_map(db);
@@ -833,39 +824,25 @@ impl<'a, 'db> Translator<'a, 'db> {
             call_site,
             DocCommentDesugarMode::ProcMacro,
         );
-        let Some(output) = format_args::reconstruct(wrap, &input, call_site) else {
-            return false;
-        };
+        let output = format_args::reconstruct(wrap, &input, call_site)?;
 
-        let Some(edition) = self.file_id.map(|f| f.edition(db)) else {
-            return false;
-        };
+        let edition = self.file_id.map(|f| f.edition(db))?;
         let (parsed, output_span_map) =
             token_tree_to_syntax_node(&output, TopEntryPoint::Expr, &mut |_| edition);
         let root = parsed.syntax_node();
-        let Some(expr) =
-            ast::Expr::cast(root.clone()).or_else(|| root.descendants().find_map(ast::Expr::cast))
-        else {
-            return false;
-        };
+        let expr =
+            ast::Expr::cast(root.clone()).or_else(|| root.descendants().find_map(ast::Expr::cast))?;
         // Sanity check: the parsed expression must contain the reconstructed
         // `FormatArgsExpr` (either directly, or wrapped in the callee above).
-        if expr
-            .syntax()
+        expr.syntax()
             .descendants()
-            .find_map(ast::FormatArgsExpr::cast)
-            .is_none()
-        {
-            return false;
-        }
+            .find_map(ast::FormatArgsExpr::cast)?;
         let previous = self.builtin_derive_span_map.replace(output_span_map);
         let emitted = self.emit_expr(&expr);
         self.builtin_derive_span_map = previous;
-        let Some(value) = emitted else {
-            return false;
-        };
+        let value = emitted?;
         generated::MacroCall::emit_macro_call_expansion(label, value.into(), &mut self.trap.writer);
-        true
+        Some(())
     }
 
     pub(crate) fn emit_derive_expansion(
