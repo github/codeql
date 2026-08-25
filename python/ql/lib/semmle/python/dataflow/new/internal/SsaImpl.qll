@@ -564,8 +564,10 @@ class EssaVariable extends Ssa::SsaDefinition {
  * library. Provides the same interface as legacy
  * `semmle.python.essa.SsaCompute::AdjacentUses`.
  */
+cached
 module AdjacentUses {
   /** Holds if `nodeFrom` and `nodeTo` are adjacent uses of the same SSA variable. */
+  cached
   predicate adjacentUseUse(Cfg::NameNode nodeFrom, Cfg::NameNode nodeTo) {
     exists(CfgImpl::BasicBlock bb1, int i1, CfgImpl::BasicBlock bb2, int i2 |
       Impl::adjacentUseUse(bb1, i1, bb2, i2, _, _) and
@@ -575,6 +577,7 @@ module AdjacentUses {
   }
 
   /** Holds if `use` is a first use of definition `def`. */
+  cached
   predicate firstUse(Ssa::SsaDefinition def, Cfg::NameNode use) {
     exists(CfgImpl::BasicBlock bb, int i |
       Impl::firstUse(def, bb, i, _) and
@@ -586,6 +589,7 @@ module AdjacentUses {
    * Holds if `use` is any reachable use of definition `def`. Combines
    * `firstUse` with transitive use-use adjacency.
    */
+  cached
   predicate useOfDef(Ssa::SsaDefinition def, Cfg::NameNode use) {
     firstUse(def, use)
     or
