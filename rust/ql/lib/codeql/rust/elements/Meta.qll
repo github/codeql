@@ -5,9 +5,6 @@
 
 private import internal.MetaImpl
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.Expr
-import codeql.rust.elements.Path
-import codeql.rust.elements.TokenTree
 
 /**
  * A meta item in an attribute.
