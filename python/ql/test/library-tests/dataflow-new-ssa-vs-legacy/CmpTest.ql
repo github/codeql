@@ -1,0 +1,61 @@
+/**
+ * Compares the new-CFG SSA against the legacy ESSA on the same Python
+ * sources. Reports definitions present in one implementation but not
+ * the other, identified by variable name + source position.
+ *
+ * The `.expected` file records the current diff as a snapshot: as the
+ * new SSA matures (closing captured-variable gap, exception bindings,
+ * etc.) and tracks more variables, the snapshot should monotonically
+ * shrink.
+ *
+ * Known categories of `def-only-old` mismatches:
+ *   - Function / class / global definitions with no in-scope read
+ *     (intentional: SSA is liveness-pruned, write-only variables are
+ *     not tracked).
+ *   - Captured / closure variables (if any remain; the new SSA inserts scope-entry
+ *     definitions for non-local reads, but legacy ESSA may still differ in corner cases).
+ *   - Module variables `__name__`, `__package__`, `$` (legacy ESSA
+ *     adds implicit bindings the new SSA does not).
+ *   - Exception-handler `as` bindings (depend on raise modeling).
+ *
+ * `def-only-new` mismatches would indicate the new SSA produces spurious
+ * definitions; currently none are expected.
+ */
+
+import python
+import semmle.python.dataflow.new.internal.SsaImpl as NewSsa
+import semmle.python.controlflow.internal.Cfg as Cfg
+import semmle.python.essa.Essa
+
+string newDefSig(NewSsa::EssaNodeDefinition def) {
+  exists(Cfg::ControlFlowNode n | n = def.getDefiningNode() |
+    result =
+      def.getVariable().getVariable().getId() + ":" + n.getLocation().getStartLine() + ":" +
+        n.getLocation().getStartColumn()
+  )
+}
+
+string legacyDefSig(EssaNodeDefinition def) {
+  exists(ControlFlowNode n | n = def.getDefiningNode() |
+    result =
+      def.getSourceVariable().getName() + ":" + n.getLocation().getStartLine() + ":" +
+        n.getLocation().getStartColumn()
+  )
+}
+
+from string kind, string sig
+where
+  kind = "def-only-new" and
+  sig = newDefSig(_) and
+  not sig = legacyDefSig(_)
+  or
+  kind = "def-only-old" and
+  sig = legacyDefSig(_) and
+  not sig = newDefSig(_)
+  or
+  kind = "constant-variable" and
+  exists(NewSsa::SsaSourceVariable v |
+    v.getVariable().getALoad() instanceof NameConstant and
+    sig = v.getName()
+  )
+select kind, sig
