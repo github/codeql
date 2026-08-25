@@ -11,6 +11,7 @@ private newtype TNameBindingNode =
   TBulkImport(BulkImportingPattern p) or
   TLocalName(LocalName local) or
   TStaticMemberNamespace(ClassLikeDeclaration cls) or
+  TInstanceMemberNamespace(ClassLikeDeclaration cls) or
   TLocalNamespace(AstNode n) {
     n = any(TopLevel t).getBody() or // Imported names come in scope here
     n instanceof ClassLikeDeclaration
@@ -33,6 +34,11 @@ class NameBindingNode extends TNameBindingNode {
 
   /** Holds if this represents the set of static members available in the given class. */
   predicate isStaticMemberNamespace(ClassLikeDeclaration cls) { this = TStaticMemberNamespace(cls) }
+
+  /** Holds if this represents the set of instance members available in the given class. */
+  predicate isInstanceMemberNamespace(ClassLikeDeclaration cls) {
+    this = TInstanceMemberNamespace(cls)
+  }
 
   /** Holds if this represents the set of members that can be accessed unqualified within the given scope. */
   predicate isLocalNamespace(AstNode n) { this = TLocalNamespace(n) }
@@ -74,6 +80,10 @@ class NameBindingNode extends TNameBindingNode {
       this.isStaticMemberNamespace(cls) and result = "StaticMemberNamespace(" + cls + ")"
     )
     or
+    exists(ClassLikeDeclaration cls |
+      this.isInstanceMemberNamespace(cls) and result = "InstanceMemberNamespace(" + cls + ")"
+    )
+    or
     exists(AstNode n | this.isLocalNamespace(n) and result = "LocalNamespace(" + n + ")")
     or
     exists(ModuleScopeRepr repr |
@@ -94,6 +104,10 @@ class NameBindingNode extends TNameBindingNode {
     or
     exists(ClassLikeDeclaration cls |
       this.isStaticMemberNamespace(cls) and result = cls.getLocation()
+    )
+    or
+    exists(ClassLikeDeclaration cls |
+      this.isInstanceMemberNamespace(cls) and result = cls.getLocation()
     )
     or
     exists(AstNode n | this.isLocalNamespace(n) and result = n.getLocation())
