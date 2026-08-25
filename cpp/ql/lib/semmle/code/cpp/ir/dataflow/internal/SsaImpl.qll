@@ -1477,7 +1477,7 @@ module Public {
 
 import Public
 
-/** An static single assignment (SSA) definition. */
+/** A static single assignment (SSA) definition. */
 class Definition extends SsaImpl::Definition {
   /**
    * Holds if this SSA definition is live at the end of basic block `bb`.
