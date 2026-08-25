@@ -150,7 +150,7 @@ private module Ast implements AstSig<Location> {
       or
       findpattern.getElement(index) = result
       or
-      index = 1 + max(int i | exists(findpattern.getElement(i))) and
+      index = count(findpattern.getElement(_)) and
       findpattern.getSuffixVariableAccess() = result
     )
     or
@@ -198,9 +198,13 @@ private module Ast implements AstSig<Location> {
     Callable() { this instanceof R::Ast::Toplevel or this instanceof R::Ast::Callable }
   }
 
+  additional AstNode toplevelBody(R::Ast::Toplevel t, int index) {
+    result = t.getBeginBlock(index) or
+    result = desugar(t.getStmt(index - count(t.getABeginBlock())))
+  }
+
   AstNode callableGetBody(Callable c) {
-    result = c.(R::Ast::Toplevel).getABeginBlock() or
-    result = c.(R::Ast::Toplevel).getAStmt() or
+    result = toplevelBody(c, _) or
     result = c.(R::Ast::Callable).getBody()
   }
 
@@ -482,13 +486,8 @@ private module Input implements InputSig1, InputSig2 {
   class CallableContext = Unit;
 
   Ast::AstNode callableGetBodyPart(Ast::Callable c, CallableContext ctx, int index) {
-    exists(R::Ast::Toplevel t |
-      c = t and
-      exists(ctx)
-    |
-      result = t.getBeginBlock(index) or
-      result = desugar(t.getStmt(index - count(t.getABeginBlock())))
-    )
+    result = Ast::toplevelBody(c, index) and
+    exists(ctx)
   }
 
   predicate catchAll(Ast::CatchClause catch) {
@@ -546,12 +545,6 @@ private module Input implements InputSig1, InputSig2 {
   }
 
   predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
-    exists(Ast::ConditionalExpr ce |
-      n1.isAfterTrue(ce.getCondition()) and not exists(ce.getThen()) and n2.isAfter(ce)
-      or
-      n1.isAfterFalse(ce.getCondition()) and not exists(ce.getElse()) and n2.isAfter(ce)
-    )
-    or
     exists(R::Ast::RescueModifierExpr rescueModifier |
       n1.isBefore(rescueModifier) and
       n2.isBefore(desugar(rescueModifier.getBody()))
