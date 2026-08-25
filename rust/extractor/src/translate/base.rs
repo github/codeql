@@ -131,6 +131,7 @@ pub struct Translator<'db> {
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'db Semantics<'db, RootDatabase>>,
     source_kind: SourceKind,
+    library_diagnostics: bool,
     pub(crate) macro_context_depth: usize,
     diagnostic_count: usize,
     /// When emitting a reconstructed built-in derive expansion, holds the span map of the
@@ -152,6 +153,7 @@ impl<'db> Translator<'db> {
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'db>>,
         source_kind: SourceKind,
+        library_diagnostics: bool,
     ) -> Translator<'db> {
         Translator {
             trap,
@@ -161,11 +163,17 @@ impl<'db> Translator<'db> {
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
             source_kind,
+            library_diagnostics,
             macro_context_depth: 0,
             diagnostic_count: 0,
             builtin_derive_span_map: None,
         }
     }
+
+    pub fn detailed_diagnostics_enabled(&self) -> bool {
+        self.source_kind == SourceKind::Source || self.library_diagnostics
+    }
+
     fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
         let start = self.line_index.try_line_col(range.start())?;
         let range_end = range.end();
@@ -368,6 +376,9 @@ impl<'db> Translator<'db> {
         node: &impl ast::AstNode,
         expanded: &SyntaxNode,
     ) {
+        if !self.detailed_diagnostics_enabled() {
+            return;
+        }
         let semantics = self.semantics.as_ref().unwrap();
         if let Some(value) = semantics
             .hir_file_for(expanded)
@@ -448,7 +459,7 @@ impl<'db> Translator<'db> {
                     value,
                     &mut self.trap.writer,
                 );
-            } else {
+            } else if self.detailed_diagnostics_enabled() {
                 let range = self.text_range_for_node(mcall);
                 self.emit_parse_error(mcall, &SyntaxError::new(
                     format!(
@@ -463,18 +474,20 @@ impl<'db> Translator<'db> {
             if self.reconstruct_format_args_expansion(mcall, label) {
                 return;
             }
-            // let's not spam warnings if we don't have semantics, we already emitted one
-            let range = self.text_range_for_node(mcall);
-            self.emit_parse_error(
-                mcall,
-                &SyntaxError::new(
-                    format!(
-                        "macro expansion failed for '{}'",
-                        mcall.path().map(|p| p.to_string()).unwrap_or_default()
+            if self.detailed_diagnostics_enabled() {
+                // let's not spam warnings if we don't have semantics, we already emitted one
+                let range = self.text_range_for_node(mcall);
+                self.emit_parse_error(
+                    mcall,
+                    &SyntaxError::new(
+                        format!(
+                            "macro expansion failed for '{}'",
+                            mcall.path().map(|p| p.to_string()).unwrap_or_default()
+                        ),
+                        range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
                     ),
-                    range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
-                ),
-            );
+                );
+            }
         }
     }
 
@@ -633,7 +646,9 @@ impl<'db> Translator<'db> {
     ) -> Option<Label<generated::MacroItems>> {
         let semantics = self.semantics.unwrap(); // if we are here, we have semantics
         self.emit_macro_expansion_parse_errors(node, &value);
-        if let Some(err) = err {
+        if let Some(err) = err
+            && self.detailed_diagnostics_enabled()
+        {
             let rendered = err.render_to_string(semantics.db);
             self.emit_diagnostic_for_node(
                 node,
@@ -645,7 +660,7 @@ impl<'db> Translator<'db> {
         }
         if let Some(items) = ast::MacroItems::cast(value) {
             self.emit_macro_items(&items)
-        } else {
+        } else if self.detailed_diagnostics_enabled() {
             let message =
                 "attribute or derive macro expansion cannot be cast to MacroItems".to_owned();
             self.emit_diagnostic_for_node(
@@ -655,6 +670,8 @@ impl<'db> Translator<'db> {
                 message.clone(),
                 message,
             );
+            None
+        } else {
             None
         }
     }
@@ -768,7 +785,9 @@ impl<'db> Translator<'db> {
         let (parsed, output_span_map) =
             token_tree_to_syntax_node(&output, TopEntryPoint::MacroItems, &mut |_| edition);
         let items = ast::MacroItems::cast(parsed.syntax_node())?;
-        if let Some(err) = err {
+        if let Some(err) = err
+            && self.detailed_diagnostics_enabled()
+        {
             let rendered = err.render_to_string(db);
             self.emit_diagnostic_for_node(
                 adt,

@@ -73,6 +73,7 @@ pub struct Config {
     pub extra_includes: Vec<PathBuf>,
     pub proc_macro_server: Option<PathBuf>,
     pub extract_dependencies_as_source: bool,
+    pub library_diagnostics: bool,
     pub force_library_mode: bool, // for testing purposes
 }
 
