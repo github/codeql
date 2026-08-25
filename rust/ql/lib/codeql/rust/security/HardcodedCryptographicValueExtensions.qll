@@ -71,6 +71,11 @@ module HardcodedCryptographicValue {
     or
     isConstant(e.(ArrayRepeatExpr).getRepeatOperand()) // e.g. `[0; 10]`
     or
+    // a match expression with one or more constant arms; taint would reach here
+    // anyway, but we make it a source to avoid reporting many similar results
+    // on each match arm.
+    isConstant(e.(MatchExpr).getMatchArmList().getAnArm().getExpr())
+    or
     // e.g. `const MY_CONST: u64 = ...`
     // the constant initializer / body is the preferred source location for flow paths, when available.
     e = any(Const c).getBody()

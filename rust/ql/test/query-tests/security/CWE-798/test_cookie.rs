@@ -23,10 +23,10 @@ fn test_cookie_jar(array_var: &[u8], val: u64) {
     _ = jar.private_mut(&key2);
 
     let str3 = match(val) {
-        0 => "one", // $ Alert[rust/hard-coded-cryptographic-value]
-        1 => "two", // $ Alert[rust/hard-coded-cryptographic-value]
-        _ => "many" // $ Alert[rust/hard-coded-cryptographic-value]
-    };
+        0 => "one",
+        1 => "two",
+        _ => "many"
+    }; // $ Alert[rust/hard-coded-cryptographic-value]
     let key3 = Key::from(str3.as_bytes()); // $ Sink
     _ = jar.signed_mut(&key3);
 }
