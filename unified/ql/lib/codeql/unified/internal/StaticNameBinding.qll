@@ -316,7 +316,12 @@ private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode no
 
 /** A name-binding node that has members. */
 class NamespaceNode extends NameBindingNode {
-  NamespaceNode() { storeStep(_, _, this) or inheritanceStep(_, this) }
+  NamespaceNode() {
+    storeStep(_, _, this) or
+    inheritanceStep(_, this) or
+    this.isInstanceMemberNamespace(_) or
+    this.isStaticMemberNamespace(_)
+  }
 
   /** Gets a name-binding node that may refer to this namespace. */
   NameBindingNode ref() { result = TrackNamespace::track(this) }
