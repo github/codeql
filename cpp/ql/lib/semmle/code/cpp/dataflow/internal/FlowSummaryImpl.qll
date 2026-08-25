@@ -171,21 +171,26 @@ private module Input2 implements Impl::Private::InputSig2 {
     result = e.(ConversionCall).getQualifier().(LambdaExpression).getLambdaFunction()
   }
 
+  private predicate isRelevantUltimateDefinition(Ssa::DirectExplicitDefinition def, Function f) {
+    f =
+      getFunctionFromExpr(def.getAssignedInstruction()
+            .(StoreInstruction)
+            .getSourceValue()
+            .getUnconvertedResultExpression())
+  }
+
   private module GetAnUltimateDefinitionInput implements Ssa::GetAnUltimateDefinitionSig {
     predicate isRelevantUltimateDefinition(Ssa::Definition def) {
-      exists(
-        getFunctionFromExpr(def.(Ssa::DirectExplicitDefinition)
-              .getAssignedInstruction()
-              .(StoreInstruction)
-              .getSourceValue()
-              .getUnconvertedResultExpression())
-      )
+      isRelevantUltimateDefinition(def, _)
     }
   }
 
-  private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
-    result =
-      Ssa::GetAnUltimateDefinition<GetAnUltimateDefinitionInput>::getAnUltimateDefinition(def)
+  private predicate hasAnUltimateFunctionAccessDefinition(Ssa::Definition def, Function f) {
+    exists(Ssa::Definition ultimate |
+      ultimate =
+        Ssa::GetAnUltimateDefinition<GetAnUltimateDefinitionInput>::getAnUltimateDefinition(def) and
+      isRelevantUltimateDefinition(ultimate, f)
+    )
   }
 
   class SourceSinkReportingElement extends Element {
@@ -207,13 +212,7 @@ private module Input2 implements Impl::Private::InputSig2 {
       // The expression is an SSA read of an assignment of a callable
       exists(Ssa::Definition def |
         def.getAUse().getDef().getUnconvertedResultExpression() = this and
-        result =
-          getFunctionFromExpr(getAnUltimateDefinition(def)
-                .(Ssa::DirectExplicitDefinition)
-                .getAssignedInstruction()
-                .(StoreInstruction)
-                .getSourceValue()
-                .getUnconvertedResultExpression())
+        hasAnUltimateFunctionAccessDefinition(def, result)
       )
     }
 
