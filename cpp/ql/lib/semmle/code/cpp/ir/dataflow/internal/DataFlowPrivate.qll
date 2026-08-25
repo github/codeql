@@ -1977,13 +1977,23 @@ module IteratorFlow {
     }
 
     /**
-     * Gets an ultimate definition of `def`.
-     *
-     * Note: Unlike `def.getAnUltimateDefinition()` this predicate also
-     * traverses back through iterator increment and decrement operations.
+     * Holds if `write` is an instruction that writes to address `address`
      */
-    private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
-      result = def.getAnUltimateDefinition()
+    private predicate isIteratorWrite(Instruction write, Operand address) {
+      exists(Ssa::DefImpl writeDef, IRBlock bb, int i |
+        writeDef.hasIndexInBlock(_, bb, i) and
+        bb.getInstruction(i) = write and
+        address = writeDef.getAddressOperand()
+      )
+    }
+
+    private module GetAnUltimateDefinitionInput implements Ssa::GetAnUltimateDefinitionSig {
+      predicate isRelevantUltimateDefinition(Ssa::Definition def) { fwd(_, def) }
+    }
+
+    private Ssa::Definition getAnUltimateDefinitionStep(Ssa::Definition def) {
+      result =
+        Ssa::GetAnUltimateDefinition<GetAnUltimateDefinitionInput>::getAnUltimateDefinition(def)
       or
       exists(IRBlock bb, int i, IteratorCrementCall crementCall, Ssa::SourceVariable sv |
         crementCall = def.getValue().asInstruction().(StoreInstruction).getSourceValue() and
@@ -1993,14 +2003,28 @@ module IteratorFlow {
       )
     }
 
-    /**
-     * Holds if `write` is an instruction that writes to address `address`
-     */
-    private predicate isIteratorWrite(Instruction write, Operand address) {
-      exists(Ssa::DefImpl writeDef, IRBlock bb, int i |
-        writeDef.hasIndexInBlock(_, bb, i) and
-        bb.getInstruction(i) = write and
-        address = writeDef.getAddressOperand()
+    private predicate isSource(GetsIteratorCall beginCall, Ssa::Definition def) {
+      exists(StoreInstruction beginStore |
+        beginStore = def.getValue().asInstruction() and
+        operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)
+      )
+    }
+
+    private predicate isSink(Instruction writeToDeref, Ssa::Definition def) {
+      exists(IteratorPointerDereferenceCall starCall, Operand address, IRBlock bbStar, int iStar |
+        isIteratorWrite(writeToDeref, address) and
+        operandForFullyConvertedCall(address, starCall) and
+        bbStar.getInstruction(iStar) = starCall and
+        Ssa::ssaDefReachesRead(_, def, bbStar, iStar)
+      )
+    }
+
+    private predicate fwd(GetsIteratorCall beginCall, Ssa::Definition def) {
+      isSource(beginCall, def)
+      or
+      exists(Ssa::Definition def0 |
+        fwd(beginCall, def0) and
+        def0 = getAnUltimateDefinitionStep(def)
       )
     }
 
@@ -2016,17 +2040,9 @@ module IteratorFlow {
     private predicate isIteratorStoreInstruction(
       GetsIteratorCall beginCall, Instruction writeToDeref
     ) {
-      exists(
-        StoreInstruction beginStore, IRBlock bbStar, int iStar, Ssa::Definition def,
-        IteratorPointerDereferenceCall starCall, Ssa::Definition ultimate, Operand address
-      |
-        isIteratorWrite(writeToDeref, address) and
-        operandForFullyConvertedCall(address, starCall) and
-        bbStar.getInstruction(iStar) = starCall and
-        Ssa::ssaDefReachesRead(_, def, bbStar, iStar) and
-        ultimate = getAnUltimateDefinition*(def) and
-        beginStore = ultimate.getValue().asInstruction() and
-        operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)
+      exists(Ssa::Definition def |
+        fwd(beginCall, def) and
+        isSink(writeToDeref, def)
       )
     }
 
