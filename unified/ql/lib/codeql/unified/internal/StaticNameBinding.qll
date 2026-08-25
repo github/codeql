@@ -640,3 +640,13 @@ class UnqualifiedMemberAccess extends Identifier {
   /** Holds if this is an instance access on the accessing class. */
   predicate isInstanceAccess() { instanceAccess = true }
 }
+
+/** Gets the declaration being accessed by `access`, as determined by static name binding. */
+NameDeclaration getStaticBindingTarget(Identifier access) {
+  // For unqualified accesses, use the shadowing-aware lookup
+  result = access.(UnqualifiedMemberAccess).getTarget()
+  or
+  // For others, just follow the name binding graph
+  not access instanceof UnqualifiedMemberAccess and
+  trackNameDeclaration(result).asIdentifier() = access
+}
