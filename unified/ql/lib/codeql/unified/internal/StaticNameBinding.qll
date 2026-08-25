@@ -559,3 +559,84 @@ private module FolderHeuristic {
     )
   }
 }
+
+/**
+ * Holds if `access` may resolve to `target` through the enclosing `accessingClass`.
+ *
+ * `instanceAccess` indicates if this this member should be accessed as an instance of `accessingClass`
+ * or as a static member.
+ */
+private predicate unqualifiedMemberAccessCand(
+  PotentialLocalNameAccess access, boolean instanceAccess, NameDeclaration target,
+  ClassLikeDeclaration accessingClass
+) {
+  not access instanceof NameDeclaration and
+  (
+    // Resolved by local scoping
+    exists(LocalName local |
+      target.getLocalName() = local and
+      access.getLocalName() = local and
+      target.getDeclaration() = accessingClass.getAMember()
+    |
+      instanceAccess = true and
+      isInstanceMember(target.getDeclaration())
+      or
+      instanceAccess = false and
+      isStaticMember(target.getDeclaration())
+    )
+    or
+    // Resolved in an uncertain scope
+    exists(NamespaceNode namespace, string name |
+      name = access.getName() and
+      accessingClass = LocalNameBindingOutput::getAnUncertainScope(access, name)
+    |
+      instanceAccess = true and
+      namespace.isInstanceMemberNamespace(accessingClass) and
+      namespace.getMember(name).isIdentifier(target)
+      or
+      instanceAccess = false and
+      namespace.isStaticMemberNamespace(accessingClass) and
+      namespace.getMember(name).isIdentifier(target)
+    )
+  )
+}
+
+private int unqualifiedMemberAccessDepth(PotentialLocalNameAccess access) {
+  result = max(AstNode scope | unqualifiedMemberAccessCand(access, _, _, scope) | scope.getDepth())
+}
+
+/**
+ * Holds if `access` is an unqualified access to `target`.
+ *
+ * `accessingClass` is the enclosing class in which the member was found, and
+ * `instanceAccess` indicates if it is an instance member or static member.
+ */
+predicate unqualifiedMemberAccess(
+  PotentialLocalNameAccess access, boolean instanceAccess, NameDeclaration target,
+  ClassLikeDeclaration accessingClass
+) {
+  unqualifiedMemberAccessCand(access, instanceAccess, target, accessingClass) and
+  accessingClass.getDepth() = unqualifiedMemberAccessDepth(access)
+}
+
+/**
+ * An identifier appearing in a unqualified position, referring to a member of an enclosing class.
+ */
+class UnqualifiedMemberAccess extends Identifier {
+  private boolean instanceAccess;
+  private NameDeclaration target;
+  private ClassLikeDeclaration accessingClass;
+
+  UnqualifiedMemberAccess() {
+    unqualifiedMemberAccess(this, instanceAccess, target, accessingClass)
+  }
+
+  /** Gets the name declaration of the member being accessed. */
+  NameDeclaration getTarget() { result = target }
+
+  /** Gets the enclosing class whose (possibly inherited) member is being accessed. */
+  ClassLikeDeclaration getAccessingClass() { result = accessingClass }
+
+  /** Holds if this is an instance access on the accessing class. */
+  predicate isInstanceAccess() { instanceAccess = true }
+}
