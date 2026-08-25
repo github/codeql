@@ -4,4 +4,12 @@ extensions:
       extensible: summaryModel
     data:
       - ["Microsoft.AspNet.OData", "Delta<TStructuralType>", True, "GetInstance", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNet.OData", "Delta<TStructuralType>", True, "Patch", "(TStructuralType)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+      - ["Microsoft.AspNet.OData", "Delta<TStructuralType>", True, "Put", "(TStructuralType)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+      - ["Microsoft.AspNet.OData", "Delta<TStructuralType>", True, "CopyChangedValues", "(TStructuralType)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+      - ["Microsoft.AspNet.OData", "Delta<TStructuralType>", True, "CopyUnchangedValues", "(TStructuralType)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["Microsoft.AspNetCore.OData.Deltas", "Delta<T>", True, "GetInstance", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.OData.Deltas", "Delta<T>", True, "Patch", "(T)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+      - ["Microsoft.AspNetCore.OData.Deltas", "Delta<T>", True, "Put", "(T)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+      - ["Microsoft.AspNetCore.OData.Deltas", "Delta<T>", True, "CopyChangedValues", "(T)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+      - ["Microsoft.AspNetCore.OData.Deltas", "Delta<T>", True, "CopyUnchangedValues", "(T)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
