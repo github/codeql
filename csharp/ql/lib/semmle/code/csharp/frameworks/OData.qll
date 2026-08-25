@@ -9,8 +9,9 @@
  *   values are cast, `as`-converted, or type-tested to arbitrary model types
  *   by the action method body.
  * - `Delta<T>`, a change-tracking wrapper for PATCH/PUT requests, whose
- *   tracked property values are exposed via `GetInstance()` or copied onto an
- *   existing entity via `Patch`/`Put`/`CopyChangedValues`/`CopyUnchangedValues`.
+ *   tracked property values are exposed via `GetInstance()` (`GetEntity()` in
+ *   the older `System.Web.Http.OData`) or copied onto an existing entity via
+ *   `Patch`/`Put`/`CopyChangedValues`/`CopyUnchangedValues`.
  *
  * In both cases the type that ends up holding the client-controlled data has
  * no static relationship to the action method's parameter types, so its
@@ -20,7 +21,6 @@
 import csharp
 private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.dataflow.FlowSteps
-private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
 /** The `ODataActionParameters` dictionary type, across OData library versions. */
@@ -32,14 +32,43 @@ class ODataActionParametersClass extends Class {
   }
 }
 
-/** An indexer read on an `ODataActionParameters` dictionary, e.g. `parameters["Foo"]`. */
+/**
+ * Holds if `e` is (or, via local flow -- e.g. an upcast to `IDictionary<string, object>`
+ * -- may hold the value of) an `ODataActionParameters` dictionary.
+ */
+private predicate isODataActionParametersValue(Expr e) {
+  e.getType() instanceof ODataActionParametersClass
+  or
+  DataFlow::localExprFlow(any(Expr e0 | isODataActionParametersValue(e0)), e)
+}
+
+/**
+ * An indexer read on an `ODataActionParameters` dictionary, e.g. `parameters["Foo"]`
+ * (including through an upcast to a base dictionary type/interface).
+ */
 class ODataActionParameterRead extends ElementAccess {
-  ODataActionParameterRead() { this.getQualifier().getType() instanceof ODataActionParametersClass }
+  ODataActionParameterRead() { isODataActionParametersValue(this.getQualifier()) }
+}
+
+/**
+ * A call to `TryGetValue` on an `ODataActionParameters` dictionary copies the value
+ * of the looked-up entry into the `out` argument.
+ */
+private class ODataActionParametersTryGetValueTaintStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(MethodCall mc, AssignableDefinitions::OutRefDefinition def |
+      mc.getTarget().hasName("TryGetValue") and
+      isODataActionParametersValue(mc.getQualifier()) and
+      node1.asExpr() = mc.getQualifier() and
+      def.getTargetAccess() = mc.getArgumentForName("value") and
+      node2 = DataFlow::assignableDefinitionNode(def)
+    )
+  }
 }
 
 /** Holds if `e` may (locally) hold the value of an `ODataActionParameters` entry. */
 private predicate isODataParameterValue(Expr e) {
-  TaintTracking::localExprTaint(any(ODataActionParameterRead r), e)
+  DataFlow::localExprFlow(any(ODataActionParameterRead r), e)
 }
 
 /** The generic ``Delta`1`` change-tracking class, across OData library versions. */
@@ -48,7 +77,8 @@ class DeltaClass extends UnboundGenericClass {
     this.getNumberOfTypeParameters() = 1 and
     (
       this.hasFullyQualifiedName("Microsoft.AspNet.OData", "Delta`1") or
-      this.hasFullyQualifiedName("Microsoft.AspNetCore.OData.Deltas", "Delta`1")
+      this.hasFullyQualifiedName("Microsoft.AspNetCore.OData.Deltas", "Delta`1") or
+      this.hasFullyQualifiedName("System.Web.Http.OData", "Delta`1")
     )
   }
 }

@@ -6,6 +6,8 @@ module TaintConfig implements DataFlow::ConfigSig {
       p.getType().hasFullyQualifiedName("Microsoft.AspNet.OData", "ODataActionParameters")
       or
       p.getType().getUnboundDeclaration().hasFullyQualifiedName("Microsoft.AspNet.OData", "Delta`1")
+      or
+      p.getType().getUnboundDeclaration().hasFullyQualifiedName("System.Web.Http.OData", "Delta`1")
     )
   }
 

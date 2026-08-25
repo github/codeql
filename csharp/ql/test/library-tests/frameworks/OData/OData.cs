@@ -73,6 +73,22 @@ namespace Test
             }
         }
 
+        void TryGetValueFromDictionary(ODataActionParameters parameters)
+        {
+            if (parameters.TryGetValue("Entity", out var value))
+            {
+                var entity = (BoundEntity)value;
+                Sink(entity.Name);
+            }
+        }
+
+        void UpcastThenIndex(ODataActionParameters parameters)
+        {
+            IDictionary<string, object> dict = parameters;
+            var entity = (BoundEntity)dict["Entity"];
+            Sink(entity.Name);
+        }
+
         void DeltaPatch(Delta<Widget> delta, Widget original)
         {
             delta.Patch(original);
@@ -82,6 +98,30 @@ namespace Test
         void DeltaGetInstance(Delta<Widget> delta)
         {
             var w = delta.GetInstance();
+            Sink(w.Name);
+        }
+
+        void DeltaPatchReturnValue(Delta<Widget> delta, Widget original)
+        {
+            var updated = delta.Patch(original);
+            Sink(updated.Name);
+        }
+
+        void DeltaCopyChangedValuesReturnValue(Delta<Widget> delta, Widget original)
+        {
+            var updated = delta.CopyChangedValues(original);
+            Sink(updated.Name);
+        }
+
+        void LegacyDeltaPatch(System.Web.Http.OData.Delta<Widget> delta, Widget original)
+        {
+            delta.Patch(original);
+            Sink(original.Name);
+        }
+
+        void LegacyDeltaGetEntity(System.Web.Http.OData.Delta<Widget> delta)
+        {
+            var w = delta.GetEntity();
             Sink(w.Name);
         }
 
