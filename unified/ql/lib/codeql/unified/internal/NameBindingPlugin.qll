@@ -25,6 +25,15 @@ class NameBindingPlugin extends Unit {
    */
   bindingset[member, binding]
   predicate isPrivateToLocalScope(Stmt member, AstNode binding) { none() }
+
+  /**
+   * Holds if `member` can be inherited by subclasses of `cls`.
+   *
+   * The caller has already restricted `member` to be a member of `cls`, and
+   * ensured that `member` is a `VariableDeclaration` or `FunctionDeclaration`.
+   */
+  bindingset[cls, member]
+  predicate isInheritableMember(ClassLikeDeclaration cls, Member member) { none() }
 }
 
 /** Holds if `member` is an instance member. */
@@ -32,6 +41,24 @@ predicate isInstanceMember(Member member) {
   (member instanceof VariableDeclaration or member instanceof FunctionDeclaration) and
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
     any(NameBindingPlugin p).isInstanceMember(cls, member)
+  )
+}
+
+/**
+ * Holds if `member` is a non-instance member declared in the context of a class or top-level.
+ */
+predicate isStaticMember(Member member) {
+  exists(ClassLikeDeclaration cls | cls.getAMember() = member |
+    not any(NameBindingPlugin p).isInstanceMember(cls, member)
+  )
+  or
+  member = any(TopLevel t).getBody().getAStmt()
+}
+
+/** Holds if `member` is an inheritable member. */
+predicate isInheritableMember(Member member) {
+  exists(ClassLikeDeclaration cls | cls.getAMember() = member |
+    any(NameBindingPlugin p).isInheritableMember(cls, member)
   )
 }
 

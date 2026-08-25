@@ -314,6 +314,15 @@ private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode no
   )
 }
 
+/** Holds if the member represented by `node` cannot be inherited. */
+pragma[nomagic]
+private predicate isInheritableMemberNode(NameBindingNode node) {
+  exists(NameDeclaration decl |
+    node.isIdentifier(decl) and
+    isInheritableMember(decl.getDeclaration())
+  )
+}
+
 /** A name-binding node that has members. */
 class NamespaceNode extends NameBindingNode {
   NamespaceNode() {
@@ -363,7 +372,8 @@ class NamespaceNode extends NameBindingNode {
     result = this.getOwnMember(name)
     or
     not this.hasOwnMember(name) and
-    result = this.getAnInheritanceParent().getMember(name)
+    result = this.getAnInheritanceParent().getMember(name) and
+    isInheritableMemberNode(result)
   }
 }
 
