@@ -79,14 +79,6 @@ class ODataBoundType extends ValueOrRefType {
   }
 }
 
-/** The `Patch`, `Put`, `CopyChangedValues`, and `CopyUnchangedValues` methods on `Delta<T>`. */
-class DeltaMutatingMethod extends Method {
-  DeltaMutatingMethod() {
-    this.getDeclaringType() instanceof DeltaClass and
-    this.hasName(["Patch", "Put", "CopyChangedValues", "CopyUnchangedValues"])
-  }
-}
-
 /**
  * Taint members (transitively) on types used in
  * 1. Casts, `as`-conversions, or type tests applied to `ODataActionParameters` values.
