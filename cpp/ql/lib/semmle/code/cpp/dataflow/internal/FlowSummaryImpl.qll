@@ -171,6 +171,23 @@ private module Input2 implements Impl::Private::InputSig2 {
     result = e.(ConversionCall).getQualifier().(LambdaExpression).getLambdaFunction()
   }
 
+  private module GetAnUltimateDefinitionInput implements Ssa::GetAnUltimateDefinitionSig {
+    predicate isRelevantUltimateDefinition(Ssa::Definition def) {
+      exists(
+        getFunctionFromExpr(def.(Ssa::DirectExplicitDefinition)
+              .getAssignedInstruction()
+              .(StoreInstruction)
+              .getSourceValue()
+              .getUnconvertedResultExpression())
+      )
+    }
+  }
+
+  private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
+    result =
+      Ssa::GetAnUltimateDefinition<GetAnUltimateDefinitionInput>::getAnUltimateDefinition(def)
+  }
+
   class SourceSinkReportingElement extends Element {
     SourceSinkReportingElement() { this instanceof Expr or this instanceof Parameter }
 
@@ -191,7 +208,7 @@ private module Input2 implements Impl::Private::InputSig2 {
       exists(Ssa::Definition def |
         def.getAUse().getDef().getUnconvertedResultExpression() = this and
         result =
-          getFunctionFromExpr(def.getAnUltimateDefinition()
+          getFunctionFromExpr(getAnUltimateDefinition(def)
                 .(Ssa::DirectExplicitDefinition)
                 .getAssignedInstruction()
                 .(StoreInstruction)
