@@ -8,7 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Attr
-import codeql.rust.elements.Expr
+import codeql.rust.elements.ConstArg
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
@@ -53,19 +53,19 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the default of this struct field, if it exists.
+     * Gets the default val of this struct field, if it exists.
      */
-    Expr getDefault() {
+    ConstArg getDefaultVal() {
       result =
-        Synth::convertExprFromRaw(Synth::convertStructFieldToRaw(this)
+        Synth::convertConstArgFromRaw(Synth::convertStructFieldToRaw(this)
               .(Raw::StructField)
-              .getDefault())
+              .getDefaultVal())
     }
 
     /**
-     * Holds if `getDefault()` exists.
+     * Holds if `getDefaultVal()` exists.
      */
-    final predicate hasDefault() { exists(this.getDefault()) }
+    final predicate hasDefaultVal() { exists(this.getDefaultVal()) }
 
     /**
      * Holds if this struct field is unsafe.

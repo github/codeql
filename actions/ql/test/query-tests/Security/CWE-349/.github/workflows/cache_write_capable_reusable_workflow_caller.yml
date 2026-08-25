@@ -1,0 +1,16 @@
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      head_sha:
+        description: Commit SHA to test
+        required: true
+        type: string
+
+jobs:
+  reusable:
+    permissions: {}
+    uses: ./.github/workflows/cache_write_capable_reusable_workflow.yml
+    with:
+      head_sha: ${{ github.event.inputs.head_sha }}

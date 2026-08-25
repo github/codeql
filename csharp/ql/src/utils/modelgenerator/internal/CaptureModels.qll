@@ -213,7 +213,8 @@ module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
   }
 
   private Callable getARelevantOverrideeOrImplementee(Overridable m) {
-    m.overridesOrImplements(result) and relevant(result)
+    exists(Callable c | m.overridesOrImplements(c) and result = c.getUnboundDeclaration()) and
+    relevant(result)
   }
 
   /**

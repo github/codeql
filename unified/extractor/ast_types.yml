@@ -413,6 +413,7 @@ named:
   name_pattern:
     modifier*: modifier
     identifier: identifier
+    sub_pattern?: pattern
 
   # A pattern matching anything, binding no variables, usually using the syntax "_"
   ignore_pattern:

@@ -52,29 +52,43 @@ class GitHubCtxSource extends RemoteFlowSource {
   override string getEventName() { result = event }
 }
 
+bindingset[expression]
+pragma[inline_late]
+private predicate untrustedEventProperty(Expression expression, string kind) {
+  exists(string regexp |
+    untrustedEventPropertiesDataModel(regexp, kind) and
+    kind != "json" and
+    normalizeExpr(expression.getExpression()).regexpMatch("(?i)\\s*" + wrapRegexp(regexp) + ".*")
+  )
+}
+
+bindingset[expression, event]
+pragma[inline_late]
+private predicate expressionContainsEventContext(Expression expression, string event) {
+  exists(string contextPrefix |
+    contextTriggerDataModel(event, contextPrefix) and
+    normalizeExpr(expression.getExpression()).matches("%" + contextPrefix + "%")
+  )
+}
+
 class GitHubEventCtxSource extends RemoteFlowSource {
   string flag;
   string context;
   string event;
 
   GitHubEventCtxSource() {
-    exists(Expression e, string regexp |
+    exists(Expression e |
       this.asExpr() = e and
       context = e.getExpression() and
       (
         // the context is available for the job trigger events
         event = e.getATriggerEvent().getName() and
-        exists(string context_prefix |
-          contextTriggerDataModel(event, context_prefix) and
-          normalizeExpr(context).matches("%" + context_prefix + "%")
-        )
+        expressionContainsEventContext(e, event)
         or
         not exists(e.getATriggerEvent()) and
         event = "unknown"
       ) and
-      untrustedEventPropertiesDataModel(regexp, flag) and
-      not flag = "json" and
-      normalizeExpr(context).regexpMatch("(?i)\\s*" + wrapRegexp(regexp) + ".*")
+      untrustedEventProperty(e, flag)
     )
   }
 
@@ -177,32 +191,41 @@ class GitHubEventPathSource extends RemoteFlowSource, CommandSource {
   override Run getEnclosingRun() { result = run }
 }
 
+bindingset[expression, event]
+pragma[inline_late]
+private predicate jsonSourceForEvent(Expression expression, string event) {
+  exists(string context, string regexp, string contextPrefix |
+    context = expression.getExpression() and
+    untrustedEventPropertiesDataModel(regexp, _) and
+    contextTriggerDataModel(event, contextPrefix) and
+    normalizeExpr(context).matches("%" + contextPrefix + "%") and
+    normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp(regexp) + ".*")
+  )
+  or
+  exists(string context |
+    context = expression.getExpression() and
+    untrustedEventPropertiesDataModel(_, _) and
+    contextTriggerDataModel(event, _) and
+    normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp("\\bgithub.event\\b") + ".*")
+  )
+}
+
 class GitHubEventJsonSource extends RemoteFlowSource {
   string flag;
   string event;
 
   GitHubEventJsonSource() {
-    exists(Expression e, string context, string regexp |
+    exists(Expression e |
       this.asExpr() = e and
-      context = e.getExpression() and
-      untrustedEventPropertiesDataModel(regexp, _) and
       (
         // only contexts for the triggering events are considered tainted.
         // eg: for `pull_request`, we only consider `github.event.pull_request`
         event = e.getEnclosingWorkflow().getATriggerEvent().getName() and
-        exists(string context_prefix |
-          contextTriggerDataModel(event, context_prefix) and
-          normalizeExpr(context).matches("%" + context_prefix + "%")
-        ) and
-        normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp(regexp) + ".*")
-        or
-        // github.event is tainted for all triggers
-        event = e.getEnclosingWorkflow().getATriggerEvent().getName() and
-        contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), _) and
-        normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp("\\bgithub.event\\b") + ".*")
+        jsonSourceForEvent(e, event)
         or
         not exists(e.getATriggerEvent()) and
-        event = "unknown"
+        event = "unknown" and
+        untrustedEventPropertiesDataModel(_, _)
       ) and
       flag = "json"
     )

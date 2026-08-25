@@ -1,3 +1,18 @@
+## 2.9.0
+
+### Major Analysis Improvements
+
+* It is now possible for custom models to refer to specific files in the codebase, using a package name of the form `file:<path>`. The model should describe the public exports
+  of that file. This can be used to derive sources and sinks in code that imports the file, but note that sources and sinks will not generally be placed within the file itself.
+  For example, a source model `['file:lib/service.js', 'Member[getData].ReturnValue', 'remote']` could identify `require('../lib/service').getData()` as a source.
+
+### Minor Analysis Improvements
+
+* JavaScript security queries using the `response` threat model now track promise-wrapped client response data into promise fulfillment values. This may improve results for queries such as `js/xss` when response data is consumed through `.then(...)` chains.
+* The route object returned by Vue Router's `useRoute()` Composition API is now recognized as a client-side remote flow source, covering its `query`, `params`, `path`, `fullPath`, and `hash` members. These members are additionally reported under the `browser-url-query`, `browser-url-path`, and `browser-url-fragment` threat models.
+* Added flow models for Vue's `ref`, `shallowRef`, `toRef`, `reactive`, and `computed` Composition API helpers.
+* Added support for treating declared `inputs` properties in Sails Action2 controller files as remote flow sources. This may improve results for security queries such as `js/path-injection`.
+
 ## 2.8.2
 
 No user-facing changes.

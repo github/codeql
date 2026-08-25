@@ -1,3 +1,13 @@
+## 0.5.0
+
+### Breaking Changes
+
+* The `codeql.actions.security.SelfHostedQuery` module has been removed because runner labels do not reliably distinguish self-hosted runners from managed runners.
+
+### Minor Analysis Improvements
+
+* GitHub Actions analysis now recognizes untrusted data in `github.event.merge_group` for workflows triggered by the `merge_group` event.
+
 ## 0.4.40
 
 ### Minor Analysis Improvements
