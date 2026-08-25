@@ -44,6 +44,6 @@ class RelevantLocalVariableWriteAccess extends LocalVariableWriteAccess {
 from RelevantLocalVariableWriteAccess write, LocalVariable v
 where
   v = write.getVariable() and
-  exists(write.getAControlFlowNode()) and
+  exists(write.getControlFlowNode()) and
   not exists(Ssa::WriteDefinition def | def.getWriteAccess().getAstNode() = write)
 select write, "This assignment to $@ is useless, since its value is never read.", v, v.getName()

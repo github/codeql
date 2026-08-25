@@ -16,8 +16,12 @@ class Stmt extends AstNode, TStmt {
   /** Gets the control-flow node for this statement, if any. */
   ControlFlowNode getControlFlowNode() { result.injects(this) }
 
-  /** Gets a control-flow node for this statement, if any. */
-  CfgNodes::AstCfgNode getAControlFlowNode() { result.getAstNode() = this }
+  /**
+   * DEPRECATED: Use `getControlFlowNode()` instead.
+   *
+   * Gets a control-flow node for this statement, if any.
+   */
+  deprecated CfgNodes::AstCfgNode getAControlFlowNode() { result.getAstNode() = this }
 
   /** Gets the control-flow scope of this statement, if any. */
   CfgScope getCfgScope() { result = getEnclosingCallable(this) }
