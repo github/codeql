@@ -100,18 +100,3 @@ private class ODataBoundMember extends TaintTracking::TaintedMember, CandidateMe
     )
   }
 }
-
-/**
- * A call to `Delta<T>.Patch`/`Put`/`CopyChangedValues`/`CopyUnchangedValues`
- * copies the changes tracked by the `Delta<T>` receiver onto its `original`
- * entity argument.
- */
-private class DeltaMutatingCallTaintStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodCall mc |
-      mc.getTarget().getUnboundDeclaration() instanceof DeltaMutatingMethod and
-      node1.asExpr() = mc.getQualifier() and
-      node2.(PostUpdateNode).getPreUpdateNode().asExpr() = mc.getArgument(0)
-    )
-  }
-}
