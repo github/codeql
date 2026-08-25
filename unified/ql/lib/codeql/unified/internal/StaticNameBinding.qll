@@ -327,8 +327,27 @@ class NamespaceNode extends NameBindingNode {
   /** Holds if this namespace has an own-member of the given name */
   predicate hasOwnMember(string name) { exists(this.getOwnMember(name)) }
 
+  /** If this is the static namespace for a class, gets the corresponding instance namespace. */
+  NamespaceNode toInstanceNamespace() {
+    exists(ClassLikeDeclaration cls |
+      this.isStaticMemberNamespace(cls) and
+      result.isInstanceMemberNamespace(cls)
+    )
+  }
+
+  /** If this is the instance namespace for a class, gets the corresponding static namespace. */
+  NamespaceNode toStaticNamespace() { result.toInstanceNamespace() = this }
+
+  private NamespaceNode getAnInheritanceParent1() { inheritanceStep(result.ref(), this) }
+
   /** Gets a namespace from which this namespace inherits directly. */
-  NamespaceNode getAnInheritanceParent() { inheritanceStep(result.ref(), this) }
+  NamespaceNode getAnInheritanceParent() {
+    result = this.getAnInheritanceParent1()
+    or
+    // `inheritanceStep` connects the static namespaces of classes.
+    // Add the corresponding inheritance relation between the instance namespaces.
+    result = this.toStaticNamespace().getAnInheritanceParent1().toInstanceNamespace()
+  }
 
   /** Gets a namespace that directly inherits from this one. */
   NamespaceNode getAnInheritanceChild() { result.getAnInheritanceParent() = this }
