@@ -31,7 +31,7 @@ bazel_dep(name = "gazelle", version = "0.50.0")
 bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.1")
 bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_rust", version = "0.69.0")
-bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.1")
+bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.2")
 bazel_dep(name = "swift-syntax", version = "603.0.2")
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
 
@@ -228,7 +228,7 @@ use_repo(
 # `unified/swift-syntax-rs` package is not loadable in that context. Keep this
 # in sync with `unified/swift-syntax-rs/.swift-version` (used by the `cargo`
 # build) and the `swift-syntax` release in `swift/Package.swift`.
-swift = use_extension("@rules_swift//swift:extensions.bzl", "swift")
+swift = use_extension("@rules_swift//swift:extensions.bzl", "swift", dev_dependency = True)
 swift.toolchain(
     name = "swift_toolchain",
     swift_version = "6.3.3",
@@ -243,6 +243,7 @@ use_repo(
 register_toolchains(
     "@swift_toolchain//:swift_toolchain_exec_ubuntu22.04",
     "@swift_toolchain//:swift_toolchain_exec_xcode",
+    dev_dependency = True,
 )
 
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
