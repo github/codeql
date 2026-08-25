@@ -1,0 +1,12 @@
+exposed_first_use_count
+| 9 |
+exposed_adjacent_use_count
+| 1 |
+exposed_use_of_def_count
+| 10 |
+first_use_projection_mismatch_count
+| 0 |
+adjacent_use_projection_mismatch_count
+| 0 |
+use_of_def_expansion_mismatch_count
+| 0 |
