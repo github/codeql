@@ -10,7 +10,7 @@ private newtype TNameBindingNode =
   TIdentifier(Identifier n) or
   TBulkImport(BulkImportingPattern p) or
   TLocalName(LocalName local) or
-  TExportedNamespace(ClassLikeDeclaration cls) or
+  TStaticMemberNamespace(ClassLikeDeclaration cls) or
   TLocalNamespace(AstNode n) {
     n = any(TopLevel t).getBody() or // Imported names come in scope here
     n instanceof ClassLikeDeclaration
@@ -31,8 +31,8 @@ class NameBindingNode extends TNameBindingNode {
 
   predicate isLocalName(LocalName local) { this = TLocalName(local) }
 
-  /** Holds if this represents the set of static members available in the given namespace. */
-  predicate isExportedNamespace(ClassLikeDeclaration cls) { this = TExportedNamespace(cls) }
+  /** Holds if this represents the set of static members available in the given class. */
+  predicate isStaticMemberNamespace(ClassLikeDeclaration cls) { this = TStaticMemberNamespace(cls) }
 
   /** Holds if this represents the set of members that can be accessed unqualified within the given scope. */
   predicate isLocalNamespace(AstNode n) { this = TLocalNamespace(n) }
@@ -56,7 +56,7 @@ class NameBindingNode extends TNameBindingNode {
     or
     this.isBulkImport(result)
     or
-    this.isExportedNamespace(result)
+    this.isStaticMemberNamespace(result)
     or
     this.isLocalNamespace(result)
     or
@@ -71,7 +71,7 @@ class NameBindingNode extends TNameBindingNode {
     exists(LocalName local | this.isLocalName(local) and result = "LocalName(" + local + ")")
     or
     exists(ClassLikeDeclaration cls |
-      this.isExportedNamespace(cls) and result = "ExportedNamespace(" + cls + ")"
+      this.isStaticMemberNamespace(cls) and result = "StaticMemberNamespace(" + cls + ")"
     )
     or
     exists(AstNode n | this.isLocalNamespace(n) and result = "LocalNamespace(" + n + ")")
@@ -92,7 +92,9 @@ class NameBindingNode extends TNameBindingNode {
     or
     exists(LocalName local | this.isLocalName(local) and result = local.getLocation())
     or
-    exists(ClassLikeDeclaration cls | this.isExportedNamespace(cls) and result = cls.getLocation())
+    exists(ClassLikeDeclaration cls |
+      this.isStaticMemberNamespace(cls) and result = cls.getLocation()
+    )
     or
     exists(AstNode n | this.isLocalNamespace(n) and result = n.getLocation())
     or
@@ -162,7 +164,7 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
     nameDecl.getDeclaration() = member and
     node1.isIdentifier(nameDecl) and
     name = nameDecl.getName() and
-    node2.isExportedNamespace(cls)
+    node2.isStaticMemberNamespace(cls)
   )
   or
   exists(TopLevel top, Stmt stmt, NameDeclaration nameDecl |
@@ -195,12 +197,12 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   )
   or
   exists(ClassLikeDeclaration cls |
-    node1.isExportedNamespace(cls) and
+    node1.isStaticMemberNamespace(cls) and
     node2.isIdentifier(cls.getName())
   )
   or
   exists(ClassLikeDeclaration cls |
-    node1.isExportedNamespace(cls) and
+    node1.isStaticMemberNamespace(cls) and
     node2.isLocalNamespace(cls)
   )
   or
@@ -249,7 +251,7 @@ predicate inheritanceStep(NameBindingNode supertype, NameBindingNode subtype) {
   exists(ClassLikeDeclaration cls, BaseType base |
     base = cls.getABaseType() and
     supertype = getNodeFromRef(base.getType()) and
-    subtype.isExportedNamespace(cls)
+    subtype.isStaticMemberNamespace(cls)
   )
 }
 
