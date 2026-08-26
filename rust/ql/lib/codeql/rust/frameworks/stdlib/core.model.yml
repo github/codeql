@@ -7,6 +7,8 @@ extensions:
       - ["<& as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue", "value", "manual"]
       - ["<&mut as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue", "value", "manual"]
       - ["core::ops::deref::Deref::deref", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
+        # for the pseudo implementation in `builtins/types.rs`
+      - ["<[;] as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue.Reference", "value", "manual"]
       # Index
       - ["core::ops::index::Index::index", "Argument[self].Reference.Element", "ReturnValue.Reference", "value", "manual"]
       - ["core::ops::index::IndexMut::index_mut", "Argument[self].Reference.Element", "ReturnValue.Reference", "value", "manual"]
@@ -135,6 +137,7 @@ extensions:
       - ["core::cmp::Ord::clamp", "Argument[self,0,1]", "ReturnValue", "value", "manual"]
       # Slice
       - ["<[]>::get", "Argument[self].Reference.Element", "ReturnValue.Field[core::option::Option::Some(0)].Reference", "value", "manual"]
+      - ["<[]>::iter", "Argument[self].Reference.Element", "ReturnValue.Element.Reference", "value", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel

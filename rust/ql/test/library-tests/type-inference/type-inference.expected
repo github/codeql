@@ -3455,15 +3455,9 @@ inferCertainType
 | main.rs:2336:25:2336:26 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2341:9:2341:25 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2341:24:2341:25 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2343:13:2343:18 | vals4a |  | {EXTERNAL LOCATION} | Vec |
-| main.rs:2343:13:2343:18 | vals4a | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2343:13:2343:18 | vals4a | T | {EXTERNAL LOCATION} | u16 |
-| main.rs:2343:32:2343:43 | [...] |  | {EXTERNAL LOCATION} | [;] |
-| main.rs:2343:33:2343:36 | 1u16 |  | {EXTERNAL LOCATION} | u16 |
+| main.rs:2343:22:2343:33 | [...] |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2343:23:2343:26 | 1u16 |  | {EXTERNAL LOCATION} | u16 |
 | main.rs:2344:9:2344:26 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2344:18:2344:23 | vals4a |  | {EXTERNAL LOCATION} | Vec |
-| main.rs:2344:18:2344:23 | vals4a | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2344:18:2344:23 | vals4a | T | {EXTERNAL LOCATION} | u16 |
 | main.rs:2344:25:2344:26 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2346:22:2346:33 | [...] |  | {EXTERNAL LOCATION} | [;] |
 | main.rs:2346:23:2346:26 | 1u16 |  | {EXTERNAL LOCATION} | u16 |
@@ -9887,9 +9881,13 @@ inferType
 | main.rs:1414:26:1414:30 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | main.rs:1414:26:1414:30 | SelfParam | TRef | {EXTERNAL LOCATION} | [;] |
 | main.rs:1414:26:1414:30 | SelfParam | TRef.TArray | main.rs:1413:14:1413:23 | T |
+| main.rs:1414:39:1416:13 | { ... } |  | {EXTERNAL LOCATION} | & |
 | main.rs:1415:17:1415:20 | self |  | {EXTERNAL LOCATION} | & |
 | main.rs:1415:17:1415:20 | self | TRef | {EXTERNAL LOCATION} | [;] |
 | main.rs:1415:17:1415:20 | self | TRef.TArray | main.rs:1413:14:1413:23 | T |
+| main.rs:1415:17:1415:27 | self.get(...) |  | {EXTERNAL LOCATION} | Option |
+| main.rs:1415:17:1415:27 | self.get(...) | T | {EXTERNAL LOCATION} | & |
+| main.rs:1415:17:1415:36 | ... .unwrap() |  | {EXTERNAL LOCATION} | & |
 | main.rs:1415:26:1415:26 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1418:31:1420:13 | { ... } |  | main.rs:1413:14:1413:23 | T |
 | main.rs:1419:17:1419:28 | ...::default(...) |  | main.rs:1413:14:1413:23 | T |
@@ -11563,26 +11561,47 @@ inferType
 | main.rs:2341:24:2341:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2343:13:2343:18 | vals4a |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2343:13:2343:18 | vals4a | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2343:13:2343:18 | vals4a | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2343:13:2343:18 | vals4a | T | {EXTERNAL LOCATION} | u16 |
-| main.rs:2343:32:2343:43 | [...] |  | {EXTERNAL LOCATION} | [;] |
-| main.rs:2343:32:2343:43 | [...] | TArray | {EXTERNAL LOCATION} | i32 |
-| main.rs:2343:32:2343:43 | [...] | TArray | {EXTERNAL LOCATION} | u16 |
-| main.rs:2343:33:2343:36 | 1u16 |  | {EXTERNAL LOCATION} | u16 |
-| main.rs:2343:39:2343:39 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2343:42:2343:42 | 3 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2343:22:2343:33 | [...] |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2343:22:2343:33 | [...] | TArray | {EXTERNAL LOCATION} | i32 |
+| main.rs:2343:22:2343:33 | [...] | TArray | {EXTERNAL LOCATION} | u16 |
+| main.rs:2343:22:2343:42 | ... .to_vec() |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2343:22:2343:42 | ... .to_vec() | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2343:22:2343:42 | ... .to_vec() | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2343:22:2343:42 | ... .to_vec() | T | {EXTERNAL LOCATION} | u16 |
+| main.rs:2343:23:2343:26 | 1u16 |  | {EXTERNAL LOCATION} | u16 |
+| main.rs:2343:29:2343:29 | 2 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2343:32:2343:32 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2344:9:2344:26 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2344:13:2344:13 | u |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2344:13:2344:13 | u |  | {EXTERNAL LOCATION} | u16 |
 | main.rs:2344:18:2344:23 | vals4a |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2344:18:2344:23 | vals4a | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2344:18:2344:23 | vals4a | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2344:18:2344:23 | vals4a | T | {EXTERNAL LOCATION} | u16 |
 | main.rs:2344:25:2344:26 | { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2346:13:2346:18 | vals4b |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2346:13:2346:18 | vals4b | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2346:13:2346:18 | vals4b | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2346:13:2346:18 | vals4b | T | {EXTERNAL LOCATION} | u16 |
 | main.rs:2346:22:2346:33 | [...] |  | {EXTERNAL LOCATION} | [;] |
 | main.rs:2346:22:2346:33 | [...] | TArray | {EXTERNAL LOCATION} | i32 |
 | main.rs:2346:22:2346:33 | [...] | TArray | {EXTERNAL LOCATION} | u16 |
+| main.rs:2346:22:2346:42 | ... .to_vec() |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2346:22:2346:42 | ... .to_vec() | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2346:22:2346:42 | ... .to_vec() | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2346:22:2346:42 | ... .to_vec() | T | {EXTERNAL LOCATION} | u16 |
 | main.rs:2346:23:2346:26 | 1u16 |  | {EXTERNAL LOCATION} | u16 |
 | main.rs:2346:29:2346:29 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2346:32:2346:32 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2347:9:2347:26 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2347:13:2347:13 | u |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2347:13:2347:13 | u |  | {EXTERNAL LOCATION} | u16 |
+| main.rs:2347:18:2347:23 | vals4b |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2347:18:2347:23 | vals4b | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2347:18:2347:23 | vals4b | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2347:18:2347:23 | vals4b | T | {EXTERNAL LOCATION} | u16 |
 | main.rs:2347:25:2347:26 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2349:13:2349:17 | vals5 |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2349:13:2349:17 | vals5 | A | {EXTERNAL LOCATION} | Global |
@@ -11613,6 +11632,14 @@ inferType
 | main.rs:2352:32:2352:43 | [...] |  | {EXTERNAL LOCATION} | [;] |
 | main.rs:2352:32:2352:43 | [...] | TArray | {EXTERNAL LOCATION} | i32 |
 | main.rs:2352:32:2352:43 | [...] | TArray | {EXTERNAL LOCATION} | u64 |
+| main.rs:2352:32:2352:50 | ... .iter() |  | {EXTERNAL LOCATION} | Iter |
+| main.rs:2352:32:2352:50 | ... .iter() | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2352:32:2352:50 | ... .iter() | T | {EXTERNAL LOCATION} | u64 |
+| main.rs:2352:32:2352:60 | ... .collect() |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2352:32:2352:60 | ... .collect() | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2352:32:2352:60 | ... .collect() | T | {EXTERNAL LOCATION} | & |
+| main.rs:2352:32:2352:60 | ... .collect() | T.TRef | {EXTERNAL LOCATION} | i32 |
+| main.rs:2352:32:2352:60 | ... .collect() | T.TRef | {EXTERNAL LOCATION} | u64 |
 | main.rs:2352:33:2352:36 | 1u64 |  | {EXTERNAL LOCATION} | u64 |
 | main.rs:2352:39:2352:39 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2352:42:2352:42 | 3 |  | {EXTERNAL LOCATION} | i32 |

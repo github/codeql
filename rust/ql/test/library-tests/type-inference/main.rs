@@ -1412,7 +1412,7 @@ mod builtins {
 
         impl<T: Default, const N: usize> MyTrait<T> for [T; N] {
             fn my_method(&self) -> &T {
-                self.get(0).unwrap() // $ MISSING: target=get target=unwrap
+                self.get(0).unwrap() // $ target=get target=unwrap
             }
 
             fn my_func() -> T {
@@ -2340,16 +2340,16 @@ mod loops {
         let vals3 = vec![1, 2, 3]; // $ type=vals3:Vec $ MISSING: type=vals3@Vec<T>:i32
         for i in vals3 {} // $ MISSING: type=i:i32
 
-        let vals4a: Vec<u16> = [1u16, 2, 3].to_vec(); // $ certainType=vals4a@Vec<T>:u16
+        let vals4a = [1u16, 2, 3].to_vec(); // $ type=vals4a@Vec<T>:u16 target=to_vec
         for u in vals4a {} // $ type=u:u16
 
-        let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec type=vals4b@Vec<T>:u16
-        for u in vals4b {} // $ MISSING: type=u:u16
+        let vals4b = [1u16, 2, 3].to_vec(); // $ type=vals4b@Vec<T>:u16 target=to_vec
+        for u in vals4b {} // $ type=u:u16
 
         let vals5 = Vec::from([1u32, 2, 3]); // $ target=from type=vals5@Vec<T>:u32
         for u in vals5 {} // $ type=u:u32
 
-        let vals6: Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ certainType=vals6@Vec<T>.&<TRef>:u64
+        let vals6: Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ certainType=vals6@Vec<T>.&<TRef>:u64 target=iter target=collect
         for u in vals6 {} // $ type=u@&<TRef>:u64
 
         let mut vals7 = Vec::new(); // $ target=new type=vals7@Vec<T>:u8
