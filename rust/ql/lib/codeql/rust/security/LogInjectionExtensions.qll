@@ -53,8 +53,9 @@ module LogInjection {
   class TracingMacroSink extends Sink {
     TracingMacroSink() {
       exists(Crate c, MacroRules m, MacroCall mc |
+        // `c` is a tracing macro of interest
         c.getName() = "tracing" and
-        m.getName().getText() = ["trace", "debug", "info", "warn", "error", "event", "span"] and
+        m.getName().getText() = ["event", "span"] and
         m.getLocation().getFile() = c.getASourceFile().getFile() and
         mc.resolveMacro() = m and
         this.asExpr().getParentNode*() = mc.getMacroCallExpansion()
