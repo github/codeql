@@ -6,7 +6,7 @@
    Operating system,Supported versions,Supported CPU architectures
    Linux,"Ubuntu 22.04
 
-   Ubuntu 24.04","x86-64"
+   Ubuntu 24.04","x86-64, arm64 [1]_"
    Windows,"Windows 10 / Windows Server 2019
 
    Windows 11 / Windows Server 2022/2025","x86-64"
@@ -14,8 +14,10 @@
 
    macOS 15 Sequoia
 
-   macOS 26 Tahoe","x86-64, arm64 (Apple Silicon) [1]_"
+   macOS 26 Tahoe","x86-64, arm64 (Apple Silicon) [2]_"
 
 .. container:: footnote-group
 
-    .. [1] Support for Apple Silicon is currently in beta.
+    .. [1] Support for Linux on arm64 is currently in beta.
+
+    .. [2] Support for Apple Silicon is currently in beta.
