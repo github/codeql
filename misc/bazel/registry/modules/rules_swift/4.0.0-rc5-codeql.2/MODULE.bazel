@@ -2,7 +2,7 @@
 
 module(
     name = "rules_swift",
-    version = "4.0.0-rc5-codeql.1",
+    version = "4.0.0-rc5-codeql.2",
     bazel_compatibility = [">=8.0.0"],
     compatibility_level = 3,
 )

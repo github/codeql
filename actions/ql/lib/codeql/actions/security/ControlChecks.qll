@@ -408,16 +408,37 @@ class WorkflowRunRepositoryIfCheck extends RepositoryCheck instanceof If {
   }
 }
 
+/**
+ * Gets a regular expression matching a condition on an author association field
+ * that is only populated for events whose payload contains the `context_prefix`
+ * context.
+ */
+private string eventPayloadAssociationFieldRegex(string context_prefix) {
+  context_prefix = "github.event.comment" and
+  result = "\\bgithub\\.event\\.comment\\.author_association\\b"
+  or
+  context_prefix = "github.event.issue" and
+  result = "\\bgithub\\.event\\.issue\\.author_association\\b"
+  or
+  context_prefix = "github.event.pull_request" and
+  result = "\\bgithub\\.event\\.pull_request\\.author_association\\b"
+}
+
 class AssociationIfCheck extends AssociationCheck instanceof If {
+  string context_prefix;
+
   AssociationIfCheck() {
     // eg: contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association)
-    normalizeExpr(this.getCondition())
-        .splitAt("\n")
-        .regexpMatch([
-            ".*\\bgithub\\.event\\.comment\\.author_association\\b.*",
-            ".*\\bgithub\\.event\\.issue\\.author_association\\b.*",
-            ".*\\bgithub\\.event\\.pull_request\\.author_association\\b.*",
-          ])
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind(eventPayloadAssociationFieldRegex(context_prefix), _, _)
+    )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    AssociationCheck.super.protectsCategoryAndEvent(category, event) and
+    // association fields only restrict events whose payload populates them
+    contextTriggerDataModel(event, context_prefix)
   }
 }
 

@@ -1,4 +1,5 @@
 import rust
+private import codeql.rust.internal.PathResolution
 
 /**
  * A deliberately unused variable, for example `_` or `_x`.
@@ -23,9 +24,13 @@ predicate isUnused(Variable v) {
  */
 class IncompleteCallable extends Callable {
   IncompleteCallable() {
-    exists(MacroExpr me |
-      me.getEnclosingCallable() = this and
+    exists(MacroExpr me | me.getEnclosingCallable() = this |
       not me.getMacroCall().hasMacroCallExpansion()
+      or
+      exists(ItemNode i |
+        i.getCanonicalPath(_) = ["core::macros::unimplemented", "core::macros::todo"] and
+        me.getMacroCall().resolveMacro() = i
+      )
     )
   }
 }

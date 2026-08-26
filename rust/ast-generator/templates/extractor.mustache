@@ -11,7 +11,7 @@ use ra_ap_syntax::ast::{
 #[rustfmt::skip]
 use ra_ap_syntax::{AstNode, ast};
 
-impl Translator<'_, '_> {
+impl Translator<'_> {
     {{#enums}}
 
     pub(crate) fn emit_{{snake_case_name}}(&mut self, node: &ast::{{ast_name}}) -> Option<Label<generated::{{name}}>> {
