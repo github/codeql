@@ -1,4 +1,9 @@
+/**
+ * @kind path-problem
+ */
+
 import csharp
+import Taint::PathGraph
 
 module TaintConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
@@ -18,6 +23,6 @@ module TaintConfig implements DataFlow::ConfigSig {
 
 module Taint = TaintTracking::Global<TaintConfig>;
 
-from DataFlow::Node source, DataFlow::Node sink
-where Taint::flow(source, sink)
-select source, sink
+from Taint::PathNode source, Taint::PathNode sink
+where Taint::flowPath(source, sink)
+select source, source, sink, "$@", sink, sink.toString()

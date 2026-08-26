@@ -73,15 +73,6 @@ namespace Test
             }
         }
 
-        void TryGetValueFromDictionary(ODataActionParameters parameters)
-        {
-            if (parameters.TryGetValue("Entity", out var value))
-            {
-                var entity = (BoundEntity)value;
-                Sink(entity.Name);
-            }
-        }
-
         void UpcastThenIndex(ODataActionParameters parameters)
         {
             IDictionary<string, object> dict = parameters;
@@ -99,18 +90,6 @@ namespace Test
         {
             var w = delta.GetInstance();
             Sink(w.Name);
-        }
-
-        void DeltaPatchReturnValue(Delta<Widget> delta, Widget original)
-        {
-            var updated = delta.Patch(original);
-            Sink(updated.Name);
-        }
-
-        void DeltaCopyChangedValuesReturnValue(Delta<Widget> delta, Widget original)
-        {
-            var updated = delta.CopyChangedValues(original);
-            Sink(updated.Name);
         }
 
         void LegacyDeltaPatch(System.Web.Http.OData.Delta<Widget> delta, Widget original)

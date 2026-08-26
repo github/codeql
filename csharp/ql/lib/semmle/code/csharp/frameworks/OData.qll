@@ -20,7 +20,6 @@
 
 import csharp
 private import semmle.code.csharp.commons.Collections
-private import semmle.code.csharp.dataflow.FlowSteps
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
 /** The `ODataActionParameters` dictionary type, across OData library versions. */
@@ -48,22 +47,6 @@ private predicate isODataActionParametersValue(Expr e) {
  */
 class ODataActionParameterRead extends ElementAccess {
   ODataActionParameterRead() { isODataActionParametersValue(this.getQualifier()) }
-}
-
-/**
- * A call to `TryGetValue` on an `ODataActionParameters` dictionary copies the value
- * of the looked-up entry into the `out` argument.
- */
-private class ODataActionParametersTryGetValueTaintStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodCall mc, AssignableDefinitions::OutRefDefinition def |
-      mc.getTarget().hasName("TryGetValue") and
-      isODataActionParametersValue(mc.getQualifier()) and
-      node1.asExpr() = mc.getQualifier() and
-      def.getTargetAccess() = mc.getArgumentForName("value") and
-      node2 = DataFlow::assignableDefinitionNode(def)
-    )
-  }
 }
 
 /** Holds if `e` may (locally) hold the value of an `ODataActionParameters` entry. */

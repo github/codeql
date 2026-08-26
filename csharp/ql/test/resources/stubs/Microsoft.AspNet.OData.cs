@@ -9,9 +9,9 @@ namespace Microsoft.AspNet.OData
     {
         public Delta() => throw null;
         public TStructuralType GetInstance() => throw null;
-        public TStructuralType Patch(TStructuralType original) => throw null;
+        public void Patch(TStructuralType original) => throw null;
         public void Put(TStructuralType original) => throw null;
-        public TStructuralType CopyChangedValues(TStructuralType original) => throw null;
+        public void CopyChangedValues(TStructuralType original) => throw null;
         public void CopyUnchangedValues(TStructuralType original) => throw null;
     }
 }
