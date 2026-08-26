@@ -874,7 +874,12 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
    */
   predicate isBlanketImplementation() { exists(this.getBlanketImplementationTypeParam()) }
 
-  override predicate hasCanonicalPath(Crate c) { this.resolveSelfTy().hasCanonicalPathPrefix(c) }
+  override predicate hasCanonicalPath(Crate c) {
+    this.resolveSelfTy().hasCanonicalPathPrefix(c)
+    or
+    this.isBlanketImplementation() and
+    c.getASourceFile().getFile() = this.getFile()
+  }
 
   /**
    * Holds if `(c1, c2)` forms a pair of crates for the type and trait
@@ -920,7 +925,12 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
     result = "<"
     or
     i = 1 and
-    result = this.getSelfCanonicalPath(c)
+    (
+      result = this.getSelfCanonicalPath(c)
+      or
+      this.isBlanketImplementation() and
+      result = "_"
+    )
     or
     if exists(this.getTraitPath())
     then
@@ -1095,31 +1105,25 @@ final class TraitItemNode extends ImplOrTraitItemNode, NamedItemNode, TypeItemNo
   bindingset[c]
   private string getCanonicalPathPart(Crate c, int i) {
     i = 0 and
-    result = "<_ as "
-    or
-    i = 1 and
     result = this.getCanonicalPathPrefix(c)
     or
-    i = 2 and
+    i = 1 and
     result = "::"
     or
-    i = 3 and
+    i = 2 and
     result = this.getName()
-    or
-    i = 4 and
-    result = ">"
   }
 
   language[monotonicAggregates]
   override string getCanonicalPath(Crate c) {
     this.hasCanonicalPath(c) and
-    result = strictconcat(int i | i in [1 .. 3] | this.getCanonicalPathPart(c, i) order by i)
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
   }
 
   language[monotonicAggregates]
   override string getCanonicalPathPrefixFor(Crate c, ItemNode child) {
     this.providesCanonicalPathPrefixFor(c, child) and
-    result = strictconcat(int i | i in [0 .. 4] | this.getCanonicalPathPart(c, i) order by i)
+    result = this.getCanonicalPath(c)
   }
 }
 

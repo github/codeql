@@ -1,14 +1,14 @@
 models
-| 1 | Source: <_ as warp::filter::Filter>::and_then; Argument[0].Parameter[0..7]; remote |
-| 2 | Source: <_ as warp::filter::Filter>::map; Argument[0].Parameter[0..7]; remote |
-| 3 | Source: <_ as warp::filter::Filter>::then; Argument[0].Parameter[0..7]; remote |
-| 4 | Source: <actix_web::resource::Resource>::to; Argument[0].Parameter[0..7]; remote |
-| 5 | Source: <actix_web::route::Route>::to; Argument[0].Parameter[0..7]; remote |
-| 6 | Source: <axum::routing::method_routing::MethodRouter>::get; Argument[0].Parameter[0..7]; remote |
-| 7 | Source: <axum::routing::method_routing::MethodRouter>::on; Argument[1].Parameter[0..7]; remote |
-| 8 | Source: axum::routing::method_routing::get; Argument[0].Parameter[0..7]; remote |
-| 9 | Source: axum::routing::method_routing::post; Argument[0].Parameter[0..7]; remote |
-| 10 | Source: axum::routing::method_routing::put; Argument[0].Parameter[0..7]; remote |
+| 1 | Source: <actix_web::resource::Resource>::to; Argument[0].Parameter[0..7]; remote |
+| 2 | Source: <actix_web::route::Route>::to; Argument[0].Parameter[0..7]; remote |
+| 3 | Source: <axum::routing::method_routing::MethodRouter>::get; Argument[0].Parameter[0..7]; remote |
+| 4 | Source: <axum::routing::method_routing::MethodRouter>::on; Argument[1].Parameter[0..7]; remote |
+| 5 | Source: axum::routing::method_routing::get; Argument[0].Parameter[0..7]; remote |
+| 6 | Source: axum::routing::method_routing::post; Argument[0].Parameter[0..7]; remote |
+| 7 | Source: axum::routing::method_routing::put; Argument[0].Parameter[0..7]; remote |
+| 8 | Source: warp::filter::Filter::and_then; Argument[0].Parameter[0..7]; remote |
+| 9 | Source: warp::filter::Filter::map; Argument[0].Parameter[0..7]; remote |
+| 10 | Source: warp::filter::Filter::then; Argument[0].Parameter[0..7]; remote |
 | 11 | Summary: <actix_web::types::path::Path>::into_inner; Argument[self]; ReturnValue; taint |
 | 12 | Summary: <alloc::string::String>::as_bytes; Argument[self].Reference; ReturnValue.Reference.Element; taint |
 | 13 | Summary: <alloc::string::String>::as_str; Argument[self].Reference; ReturnValue.Reference; taint |
@@ -36,29 +36,29 @@ edges
 | test.rs:107:13:107:18 | TuplePat | test.rs:110:14:110:14 | b | provenance |  |
 | test.rs:107:22:107:25 | path | test.rs:107:22:107:38 | path.into_inner() | provenance | MaD:11 |
 | test.rs:107:22:107:38 | path.into_inner() | test.rs:107:13:107:18 | TuplePat | provenance |  |
-| test.rs:122:14:122:31 | my_actix_handler_4 | test.rs:123:17:123:20 | path | provenance | Src:MaD:4  |
+| test.rs:122:14:122:31 | my_actix_handler_4 | test.rs:123:17:123:20 | path | provenance | Src:MaD:1  |
 | test.rs:123:13:123:13 | a | test.rs:124:14:124:14 | a | provenance |  |
 | test.rs:123:17:123:20 | path | test.rs:123:17:123:33 | path.into_inner() | provenance | MaD:11 |
 | test.rs:123:17:123:33 | path.into_inner() | test.rs:123:13:123:13 | a | provenance |  |
-| test.rs:131:44:131:61 | my_actix_handler_1 | test.rs:98:17:98:20 | path | provenance | Src:MaD:5  |
-| test.rs:132:48:132:65 | my_actix_handler_2 | test.rs:107:22:107:25 | path | provenance | Src:MaD:5  |
-| test.rs:133:44:133:61 | my_actix_handler_3 | test.rs:116:14:116:14 | a | provenance | Src:MaD:5  |
+| test.rs:131:44:131:61 | my_actix_handler_1 | test.rs:98:17:98:20 | path | provenance | Src:MaD:2  |
+| test.rs:132:48:132:65 | my_actix_handler_2 | test.rs:107:22:107:25 | path | provenance | Src:MaD:2  |
+| test.rs:133:44:133:61 | my_actix_handler_3 | test.rs:116:14:116:14 | a | provenance | Src:MaD:2  |
 | test.rs:148:14:148:14 | a | test.rs:148:14:148:23 | a.as_str() | provenance | MaD:13 |
 | test.rs:149:14:149:14 | a | test.rs:149:14:149:25 | a.as_bytes() | provenance | MaD:12 |
-| test.rs:200:34:200:50 | my_axum_handler_1 | test.rs:148:14:148:14 | a | provenance | Src:MaD:8  |
-| test.rs:200:34:200:50 | my_axum_handler_1 | test.rs:149:14:149:14 | a | provenance | Src:MaD:8  |
-| test.rs:200:34:200:50 | my_axum_handler_1 | test.rs:150:14:150:14 | a | provenance | Src:MaD:8  |
-| test.rs:201:39:201:55 | my_axum_handler_2 | test.rs:156:14:156:14 | a | provenance | Src:MaD:9  |
-| test.rs:201:39:201:55 | my_axum_handler_2 | test.rs:157:14:157:14 | b | provenance | Src:MaD:9  |
-| test.rs:202:33:202:49 | my_axum_handler_3 | test.rs:164:18:164:20 | key | provenance | Src:MaD:10  |
-| test.rs:202:33:202:49 | my_axum_handler_3 | test.rs:165:18:165:22 | value | provenance | Src:MaD:10  |
-| test.rs:205:65:205:81 | my_axum_handler_5 | test.rs:181:14:181:20 | payload | provenance | Src:MaD:7  |
-| test.rs:207:33:207:49 | my_axum_handler_6 | test.rs:187:14:187:17 | body | provenance | Src:MaD:8  |
-| test.rs:207:56:207:72 | my_axum_handler_7 | test.rs:193:14:193:17 | body | provenance | Src:MaD:6  |
-| test.rs:222:37:227:9 | \|...\| ... | test.rs:224:18:224:18 | a | provenance | Src:MaD:2  |
-| test.rs:231:13:235:13 | \|...\| ... | test.rs:232:22:232:22 | a | provenance | Src:MaD:3  |
-| test.rs:240:13:248:9 | \|...\| ... | test.rs:243:22:243:23 | id | provenance | Src:MaD:1  |
-| test.rs:253:13:258:14 | \|...\| ... | test.rs:255:22:255:22 | a | provenance | Src:MaD:2  |
+| test.rs:200:34:200:50 | my_axum_handler_1 | test.rs:148:14:148:14 | a | provenance | Src:MaD:5  |
+| test.rs:200:34:200:50 | my_axum_handler_1 | test.rs:149:14:149:14 | a | provenance | Src:MaD:5  |
+| test.rs:200:34:200:50 | my_axum_handler_1 | test.rs:150:14:150:14 | a | provenance | Src:MaD:5  |
+| test.rs:201:39:201:55 | my_axum_handler_2 | test.rs:156:14:156:14 | a | provenance | Src:MaD:6  |
+| test.rs:201:39:201:55 | my_axum_handler_2 | test.rs:157:14:157:14 | b | provenance | Src:MaD:6  |
+| test.rs:202:33:202:49 | my_axum_handler_3 | test.rs:164:18:164:20 | key | provenance | Src:MaD:7  |
+| test.rs:202:33:202:49 | my_axum_handler_3 | test.rs:165:18:165:22 | value | provenance | Src:MaD:7  |
+| test.rs:205:65:205:81 | my_axum_handler_5 | test.rs:181:14:181:20 | payload | provenance | Src:MaD:4  |
+| test.rs:207:33:207:49 | my_axum_handler_6 | test.rs:187:14:187:17 | body | provenance | Src:MaD:5  |
+| test.rs:207:56:207:72 | my_axum_handler_7 | test.rs:193:14:193:17 | body | provenance | Src:MaD:3  |
+| test.rs:222:37:227:9 | \|...\| ... | test.rs:224:18:224:18 | a | provenance | Src:MaD:9  |
+| test.rs:231:13:235:13 | \|...\| ... | test.rs:232:22:232:22 | a | provenance | Src:MaD:10  |
+| test.rs:240:13:248:9 | \|...\| ... | test.rs:243:22:243:23 | id | provenance | Src:MaD:8  |
+| test.rs:253:13:258:14 | \|...\| ... | test.rs:255:22:255:22 | a | provenance | Src:MaD:9  |
 nodes
 | test.rs:11:31:11:31 | a | semmle.label | a |
 | test.rs:13:14:13:14 | a | semmle.label | a |
