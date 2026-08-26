@@ -2497,6 +2497,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               )
             }
 
+            /** Holds if `n1.getASuccessor() = n2` and `n2` can reach a sink. */
+            private predicate pathSucc(PathNodeImpl n1, PathNodeImpl n2) {
+              n1.getANonHiddenSuccessor(_) = n2 and directReach(n2)
+            }
+
+            private predicate tcSrc(PathNodeImpl n) { n.isSource() }
+
+            private predicate tcSink(PathNodeImpl n) { n.isSink() }
+
+            private predicate pathSuccPlus(PathNodeImpl n1, PathNodeImpl n2) =
+              doublyBoundedFastTC(pathSucc/2, tcSrc/1, tcSink/1)(n1, n2)
+
             private module DistancePruning {
               private predicate isAnySource(PathNodeImpl n) { n.isArbitrarySource() }
 
@@ -2520,15 +2532,25 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
               private int sinkDist(PathNodeImpl n) { result = sinkDist1(n) - 1 }
 
-              private int pathLength() {
-                exists(int fwdLen, int revLen |
-                  result = fwdLen.maximum(revLen) and
-                  fwdLen = max(PathNodeImpl n | n.isSink() | srcDist(n)) and
-                  revLen = max(PathNodeImpl n | n.isSource() | sinkDist(n))
+              private int srcSinkDiff() {
+                exists(PathNodeImpl src, PathNodeImpl sink |
+                  pathSuccPlus(src, sink) and
+                  result = sinkDist(src) - srcDist(sink)
                 )
               }
 
-              private int slack() { result = 15 }
+              private int pathLength() {
+                exists(int fwdLen, int revLen, int srcSpread, int sinkSpread |
+                  // result = fwdLen.maximum(revLen) and
+                  result = (fwdLen + revLen + srcSpread + sinkSpread) / 2 and
+                  fwdLen = max(PathNodeImpl n | n.isSink() | srcDist(n)) and
+                  revLen = max(PathNodeImpl n | n.isSource() | sinkDist(n)) and
+                  srcSpread = max(srcSinkDiff()) and
+                  sinkSpread = max(-srcSinkDiff())
+                )
+              }
+
+              private int slack() { result = 0 }
 
               predicate nearShortestDirectReach(PathNodeImpl n) {
                 directReach(n) and
@@ -2609,16 +2631,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             }
 
             /** Holds if `n1.getASuccessor() = n2` and `n2` can reach a sink. */
-            private predicate pathSucc(PathNodeImpl n1, PathNodeImpl n2) {
+            private predicate pathSucc_2(PathNodeImpl n1, PathNodeImpl n2) {
               n1.getANonHiddenSuccessor(_) = n2 and directReach_2(n2)
             }
 
-            private predicate tcSrc(PathNodeImpl n) { n.isSource() }
-
-            private predicate tcSink(PathNodeImpl n) { n.isSink() }
-
-            private predicate pathSuccPlus(PathNodeImpl n1, PathNodeImpl n2) =
-              doublyBoundedFastTC(pathSucc/2, tcSrc/1, tcSink/1)(n1, n2)
+            private predicate pathSuccPlus_2(PathNodeImpl n1, PathNodeImpl n2) =
+              doublyBoundedFastTC(pathSucc_2/2, tcSrc/1, tcSink/1)(n1, n2)
 
             /**
              * Holds if data can flow from `source` to `sink`.
@@ -2642,7 +2660,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 source = flowsource and sink = flowsink
               |
                 flowsource.isSource() and
-                (flowsource = flowsink or pathSuccPlus(flowsource, flowsink)) and
+                (flowsource = flowsink or pathSuccPlus_2(flowsource, flowsink)) and
                 flowsink.isSink()
               )
             }
