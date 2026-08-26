@@ -3,6 +3,14 @@ case .circle(let r):
   print(r)
 case .square(let s):
   print(s)
+case .foo:
+  print("foo")
+case T.foo:
+  print("foo")
+// Ambiguous reference to a static property on the Array<T> type, or an instance property on Array<S> where S is the type of the expression T.
+// The parser can't tell the difference.
+case [T].foo:
+  print("foo")
 }
 
 ---
@@ -108,6 +116,120 @@ sourceFile
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "foo"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "foo"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "foo"
+                                  base:
+                                    declReferenceExpr
+                                      baseName: identifier "T"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "foo"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "foo"
+                                  base:
+                                    arrayExpr
+                                      elements:
+                                        arrayElement
+                                          expression:
+                                            declReferenceExpr
+                                              baseName: identifier "T"
+                                      leftSquare: [
+                                      rightSquare: ]
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "foo"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
               subject:
                 declReferenceExpr
                   baseName: identifier "shape"
@@ -172,3 +294,64 @@ top_level
                           value:
                             name_expr
                               identifier: identifier "s"
+            switch_case
+              pattern:
+                member_access_expr <-- ERROR: The field switch_case.pattern should contain pattern, but got member_access_expr
+                  base: inferred_type_expr "."
+                  member: identifier "foo"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            string_interpolation_expr
+                              element: string_literal "foo"
+            switch_case
+              pattern:
+                member_access_expr <-- ERROR: The field switch_case.pattern should contain pattern, but got member_access_expr
+                  base:
+                    expr_equality_pattern <-- ERROR: The field member_access_expr.base should contain expr_or_type, but got expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "T"
+                  member: identifier "foo"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            string_interpolation_expr
+                              element: string_literal "foo"
+            switch_case
+              pattern:
+                member_access_expr <-- ERROR: The field switch_case.pattern should contain pattern, but got member_access_expr
+                  base:
+                    array_literal
+                      element:
+                        expr_equality_pattern <-- ERROR: The field array_literal.element should contain expr, but got expr_equality_pattern
+                          expr:
+                            name_expr
+                              identifier: identifier "T"
+                  member: identifier "foo"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            string_interpolation_expr
+                              element: string_literal "foo"
