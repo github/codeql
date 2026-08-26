@@ -2528,7 +2528,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 )
               }
 
-              private int slack() { result = 0 }
+              private int slack() { result = 15 }
 
               predicate nearShortestDirectReach(PathNodeImpl n) {
                 directReach(n) and
