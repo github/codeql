@@ -29,6 +29,14 @@ fn test_cookie_jar(array_var: &[u8], val: u64) {
     }; // $ Alert[rust/hard-coded-cryptographic-value]
     let key3 = Key::from(str3.as_bytes()); // $ Sink
     _ = jar.signed_mut(&key3);
+
+    let array4: [u8; 3] = [
+        1, // $ Alert[rust/hard-coded-cryptographic-value]
+        2, // $ Alert[rust/hard-coded-cryptographic-value]
+        val as u8
+    ];
+    let key4 = Key::from(&array4); // $ Sink
+    _ = jar.signed_mut(&key4);
 }
 
 fn test_biscotti_crypto(array_var: &[u8]) {

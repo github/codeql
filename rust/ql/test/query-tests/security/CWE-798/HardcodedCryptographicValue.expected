@@ -9,8 +9,10 @@
 | test_cookie.rs:17:28:17:34 | [0; 64] | test_cookie.rs:17:28:17:34 | [0; 64] | test_cookie.rs:18:26:18:32 | &array1 | This hard-coded value is used as $@. | test_cookie.rs:18:26:18:32 | &array1 | a key |
 | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:22:26:22:32 | &array2 | This hard-coded value is used as $@. | test_cookie.rs:22:26:22:32 | &array2 | a key |
 | test_cookie.rs:25:16:29:5 | match ... { ... } | test_cookie.rs:25:16:29:5 | match ... { ... } | test_cookie.rs:30:26:30:40 | str3.as_bytes() | This hard-coded value is used as $@. | test_cookie.rs:30:26:30:40 | str3.as_bytes() | a key |
-| test_cookie.rs:46:28:46:36 | [0u8; 64] | test_cookie.rs:46:28:46:36 | [0u8; 64] | test_cookie.rs:50:34:50:39 | array2 | This hard-coded value is used as $@. | test_cookie.rs:50:34:50:39 | array2 | a key |
-| test_cookie.rs:57:23:57:25 | 0u8 | test_cookie.rs:57:23:57:25 | 0u8 | test_cookie.rs:61:34:61:39 | array3 | This hard-coded value is used as $@. | test_cookie.rs:61:34:61:39 | array3 | a key |
+| test_cookie.rs:34:9:34:9 | 1 | test_cookie.rs:34:9:34:9 | 1 | test_cookie.rs:38:26:38:32 | &array4 | This hard-coded value is used as $@. | test_cookie.rs:38:26:38:32 | &array4 | a key |
+| test_cookie.rs:35:9:35:9 | 2 | test_cookie.rs:35:9:35:9 | 2 | test_cookie.rs:38:26:38:32 | &array4 | This hard-coded value is used as $@. | test_cookie.rs:38:26:38:32 | &array4 | a key |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:58:34:58:39 | array2 | This hard-coded value is used as $@. | test_cookie.rs:58:34:58:39 | array2 | a key |
+| test_cookie.rs:65:23:65:25 | 0u8 | test_cookie.rs:65:23:65:25 | 0u8 | test_cookie.rs:69:34:69:39 | array3 | This hard-coded value is used as $@. | test_cookie.rs:69:34:69:39 | array3 | a key |
 | test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | This hard-coded value is used as $@. | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | a salt |
 | test_heuristic.rs:39:25:39:59 | ... as u64 | test_heuristic.rs:39:25:39:59 | ... as u64 | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | This hard-coded value is used as $@. | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | a salt |
 | test_heuristic.rs:40:27:40:32 | 0xFFFF | test_heuristic.rs:40:27:40:32 | 0xFFFF | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | This hard-coded value is used as $@. | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | a salt |
@@ -70,16 +72,22 @@ edges
 | test_cookie.rs:25:16:29:5 | match ... { ... } | test_cookie.rs:25:9:25:12 | str3 | provenance |  |
 | test_cookie.rs:30:26:30:29 | str3 | test_cookie.rs:30:26:30:40 | str3.as_bytes() [&ref] | provenance | MaD:13 |
 | test_cookie.rs:30:26:30:40 | str3.as_bytes() [&ref] | test_cookie.rs:30:26:30:40 | str3.as_bytes() | provenance | Sink:MaD:5 |
-| test_cookie.rs:46:9:46:14 | array2 | test_cookie.rs:50:34:50:39 | array2 | provenance | Sink:MaD:1 |
-| test_cookie.rs:46:18:46:37 | ...::from(...) | test_cookie.rs:46:9:46:14 | array2 | provenance |  |
-| test_cookie.rs:46:28:46:36 | [0u8; 64] | test_cookie.rs:46:18:46:37 | ...::from(...) | provenance | MaD:8 |
-| test_cookie.rs:46:28:46:36 | [0u8; 64] | test_cookie.rs:46:18:46:37 | ...::from(...) | provenance | MaD:9 |
-| test_cookie.rs:46:28:46:36 | [0u8; 64] | test_cookie.rs:46:18:46:37 | ...::from(...) | provenance | MaD:10 |
-| test_cookie.rs:46:28:46:36 | [0u8; 64] | test_cookie.rs:46:18:46:37 | ...::from(...) | provenance | MaD:11 |
-| test_cookie.rs:46:28:46:36 | [0u8; 64] | test_cookie.rs:46:18:46:37 | ...::from(...) | provenance | MaD:12 |
-| test_cookie.rs:57:9:57:14 | array3 [element] | test_cookie.rs:61:34:61:39 | array3 | provenance | Sink:MaD:1 |
-| test_cookie.rs:57:23:57:25 | 0u8 | test_cookie.rs:57:23:57:29 | ...::from_elem(...) [element] | provenance | MaD:15 |
-| test_cookie.rs:57:23:57:29 | ...::from_elem(...) [element] | test_cookie.rs:57:9:57:14 | array3 [element] | provenance |  |
+| test_cookie.rs:33:9:33:14 | array4 [element] | test_cookie.rs:38:27:38:32 | array4 [element] | provenance |  |
+| test_cookie.rs:33:27:37:5 | [...] [element] | test_cookie.rs:33:9:33:14 | array4 [element] | provenance |  |
+| test_cookie.rs:34:9:34:9 | 1 | test_cookie.rs:33:27:37:5 | [...] [element] | provenance |  |
+| test_cookie.rs:35:9:35:9 | 2 | test_cookie.rs:33:27:37:5 | [...] [element] | provenance |  |
+| test_cookie.rs:38:26:38:32 | &array4 [&ref, element] | test_cookie.rs:38:26:38:32 | &array4 | provenance | Sink:MaD:5 |
+| test_cookie.rs:38:27:38:32 | array4 [element] | test_cookie.rs:38:26:38:32 | &array4 [&ref, element] | provenance |  |
+| test_cookie.rs:54:9:54:14 | array2 | test_cookie.rs:58:34:58:39 | array2 | provenance | Sink:MaD:1 |
+| test_cookie.rs:54:18:54:37 | ...::from(...) | test_cookie.rs:54:9:54:14 | array2 | provenance |  |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:18:54:37 | ...::from(...) | provenance | MaD:8 |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:18:54:37 | ...::from(...) | provenance | MaD:9 |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:18:54:37 | ...::from(...) | provenance | MaD:10 |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:18:54:37 | ...::from(...) | provenance | MaD:11 |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:18:54:37 | ...::from(...) | provenance | MaD:12 |
+| test_cookie.rs:65:9:65:14 | array3 [element] | test_cookie.rs:69:34:69:39 | array3 | provenance | Sink:MaD:1 |
+| test_cookie.rs:65:23:65:25 | 0u8 | test_cookie.rs:65:23:65:29 | ...::from_elem(...) [element] | provenance | MaD:15 |
+| test_cookie.rs:65:23:65:29 | ...::from_elem(...) [element] | test_cookie.rs:65:9:65:14 | array3 [element] | provenance |  |
 | test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | provenance |  |
 | test_heuristic.rs:39:25:39:59 | ... as u64 | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | provenance |  |
 | test_heuristic.rs:39:62:40:33 | static MY_STATIC_3 | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | provenance |  |
@@ -163,14 +171,21 @@ nodes
 | test_cookie.rs:30:26:30:29 | str3 | semmle.label | str3 |
 | test_cookie.rs:30:26:30:40 | str3.as_bytes() | semmle.label | str3.as_bytes() |
 | test_cookie.rs:30:26:30:40 | str3.as_bytes() [&ref] | semmle.label | str3.as_bytes() [&ref] |
-| test_cookie.rs:46:9:46:14 | array2 | semmle.label | array2 |
-| test_cookie.rs:46:18:46:37 | ...::from(...) | semmle.label | ...::from(...) |
-| test_cookie.rs:46:28:46:36 | [0u8; 64] | semmle.label | [0u8; 64] |
-| test_cookie.rs:50:34:50:39 | array2 | semmle.label | array2 |
-| test_cookie.rs:57:9:57:14 | array3 [element] | semmle.label | array3 [element] |
-| test_cookie.rs:57:23:57:25 | 0u8 | semmle.label | 0u8 |
-| test_cookie.rs:57:23:57:29 | ...::from_elem(...) [element] | semmle.label | ...::from_elem(...) [element] |
-| test_cookie.rs:61:34:61:39 | array3 | semmle.label | array3 |
+| test_cookie.rs:33:9:33:14 | array4 [element] | semmle.label | array4 [element] |
+| test_cookie.rs:33:27:37:5 | [...] [element] | semmle.label | [...] [element] |
+| test_cookie.rs:34:9:34:9 | 1 | semmle.label | 1 |
+| test_cookie.rs:35:9:35:9 | 2 | semmle.label | 2 |
+| test_cookie.rs:38:26:38:32 | &array4 | semmle.label | &array4 |
+| test_cookie.rs:38:26:38:32 | &array4 [&ref, element] | semmle.label | &array4 [&ref, element] |
+| test_cookie.rs:38:27:38:32 | array4 [element] | semmle.label | array4 [element] |
+| test_cookie.rs:54:9:54:14 | array2 | semmle.label | array2 |
+| test_cookie.rs:54:18:54:37 | ...::from(...) | semmle.label | ...::from(...) |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | semmle.label | [0u8; 64] |
+| test_cookie.rs:58:34:58:39 | array2 | semmle.label | array2 |
+| test_cookie.rs:65:9:65:14 | array3 [element] | semmle.label | array3 [element] |
+| test_cookie.rs:65:23:65:25 | 0u8 | semmle.label | 0u8 |
+| test_cookie.rs:65:23:65:29 | ...::from_elem(...) [element] | semmle.label | ...::from_elem(...) [element] |
+| test_cookie.rs:69:34:69:39 | array3 | semmle.label | array3 |
 | test_heuristic.rs:38:25:38:30 | 0xFFFF | semmle.label | 0xFFFF |
 | test_heuristic.rs:39:25:39:59 | ... as u64 | semmle.label | ... as u64 |
 | test_heuristic.rs:39:62:40:33 | static MY_STATIC_3 | semmle.label | static MY_STATIC_3 |
