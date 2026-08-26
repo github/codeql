@@ -2497,6 +2497,48 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               )
             }
 
+            private module DistancePruning {
+              private predicate isAnySource(PathNodeImpl n) { n.isArbitrarySource() }
+
+              private predicate isAnySink(PathNodeImpl n) { n.isArbitrarySink() }
+
+              private predicate directStep(PathNodeImpl n1, PathNodeImpl n2) {
+                n1.getANonHiddenSuccessor(_) = n2 and directReach(n2)
+              }
+
+              private predicate directStepRev(PathNodeImpl n1, PathNodeImpl n2) {
+                directStep(n2, n1)
+              }
+
+              private int srcDist1(PathNodeImpl n) =
+                shortestDistances(isAnySource/1, directStep/2)(_, n, result)
+
+              private int sinkDist1(PathNodeImpl n) =
+                shortestDistances(isAnySink/1, directStepRev/2)(_, n, result)
+
+              private int srcDist(PathNodeImpl n) { result = srcDist1(n) - 1 }
+
+              private int sinkDist(PathNodeImpl n) { result = sinkDist1(n) - 1 }
+
+              private int pathLength() {
+                exists(int fwdLen, int revLen |
+                  result = fwdLen.maximum(revLen) and
+                  fwdLen = max(PathNodeImpl n | n.isSink() | srcDist(n)) and
+                  revLen = max(PathNodeImpl n | n.isSource() | sinkDist(n))
+                )
+              }
+
+              private int slack() { result = 0 }
+
+              predicate nearShortestDirectReach(PathNodeImpl n) {
+                directReach(n) and
+                srcDist(n) + sinkDist(n) <= pathLength() + slack()
+              }
+            }
+
+            // private predicate directReach_2 = directReach/1;
+            private predicate directReach_2 = DistancePruning::nearShortestDirectReach/1;
+
             /**
              * Holds if `n` can reach a return node in a summarized subpath that can reach a sink.
              */
@@ -2504,7 +2546,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               fwdReach(n) and
               (
                 exists(PathNodeImpl out | subpaths2(_, _, n, out) |
-                  directReach(out) or retReach(out)
+                  directReach_2(out) or retReach(out)
                 )
                 or
                 exists(PathNodeImpl mid |
@@ -2516,7 +2558,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             }
 
             /** Holds if `n` can reach a sink or is used in a subpath that can reach a sink. */
-            private predicate reach(PathNodeImpl n) { directReach(n) or retReach(n) }
+            private predicate reach(PathNodeImpl n) { directReach_2(n) or retReach(n) }
 
             /**
              * A `Node` augmented with a call context (except for sinks) and an access path.
@@ -2568,7 +2610,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             /** Holds if `n1.getASuccessor() = n2` and `n2` can reach a sink. */
             private predicate pathSucc(PathNodeImpl n1, PathNodeImpl n2) {
-              n1.getANonHiddenSuccessor(_) = n2 and directReach(n2)
+              n1.getANonHiddenSuccessor(_) = n2 and directReach_2(n2)
             }
 
             private predicate tcSrc(PathNodeImpl n) { n.isSource() }
