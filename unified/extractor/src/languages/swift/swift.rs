@@ -107,6 +107,31 @@ fn make_or_pattern(
     }
 }
 
+/// If `els` contains a single `labeledExpr` node with no label, returns the
+/// ID of its inner expression node.
+fn get_single_unlabeled_tuple_expr(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    els: &[yeast::Id],
+) -> Option<yeast::Id> {
+    if els.len() != 1 {
+        return None;
+    }
+    let single = els[0];
+    let label_field = ctx.ast.field_id_for_name("label")?;
+    let expr_field = ctx.ast.field_id_for_name("expression")?;
+    let node = ctx.ast.get_node(single)?;
+
+    if node.kind_name() != "labeledExpr" {
+        return None;
+    }
+
+    if !node.field_children(label_field).is_empty() {
+        return None;
+    }
+
+    node.field_children(expr_field).first().copied()
+}
+
 /// Translate `node` in pattern context (`ctx.in_pattern = true`).
 fn translate_pattern(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
@@ -335,17 +360,21 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // Prefix unary operators (`!a`, `-x`).
         rule!((prefixOperatorExpr operator: @op expression: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
         // A `tupleExpr` is a tuple literal (`(a, b)`) or a parenthesised
-        // expression (`(x)`). For now it is kept as an opaque `tuple_expr` leaf
-        // (its source text); its elements are not descended into.
-        //
-        // TODO: a parenthesised single-element `tupleExpr` is really a grouping
-        // expression and should be elided (unwrapped to its inner expression)
-        // rather than modelled as a tuple.
-        rule!((tupleExpr elements: _* @els) => expr {
-            if ctx.in_pattern {
-                tree!((tuple_pattern element: {els}))
+        // expression (`(x)`). A single-element unlabeled tuple expression is
+        // a grouping expression and unwraps to its inner expression.
+        rule!((tupleExpr elements: _* @@els) => expr {
+            if let Some(inner_e) = get_single_unlabeled_tuple_expr(&mut ctx, &els) {
+                ctx.translate(inner_e)?.into_iter().next().ok_or("tupleExpr element has no child")?
             } else {
-                tree!((tuple_expr element: {els}))
+                let mut out = Vec::new();
+                for elem in els {
+                    out.extend(ctx.translate(elem)?);
+                }
+                if ctx.in_pattern {
+                    tree!((tuple_pattern element: {out}))
+                } else {
+                    tree!((tuple_expr element: {out}))
+                }
             }
         }),
         // A code block contains its statements directly.
