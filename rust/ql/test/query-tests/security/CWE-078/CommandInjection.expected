@@ -7,8 +7,6 @@
 | main.rs:65:48:65:69 | remote_string.as_str() | main.rs:59:25:59:69 | ...::get(...) | main.rs:65:48:65:69 | remote_string.as_str() | This command line depends on a $@. | main.rs:59:25:59:69 | ...::get(...) | user-provided value |
 | main.rs:73:14:73:35 | remote_string.as_str() | main.rs:59:25:59:69 | ...::get(...) | main.rs:73:14:73:35 | remote_string.as_str() | This command line depends on a $@. | main.rs:59:25:59:69 | ...::get(...) | user-provided value |
 | main.rs:86:18:86:27 | user_input | main.rs:138:22:138:37 | ...::args(...) | main.rs:86:18:86:27 | user_input | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
-| main.rs:100:22:100:29 | filename | main.rs:138:22:138:37 | ...::args(...) | main.rs:100:22:100:29 | filename | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
-| main.rs:111:22:111:28 | command | main.rs:138:22:138:37 | ...::args(...) | main.rs:111:22:111:28 | command | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
 | main.rs:113:22:113:28 | command | main.rs:138:22:138:37 | ...::args(...) | main.rs:113:22:113:28 | command | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
 | main.rs:121:22:121:28 | command | main.rs:138:22:138:37 | ...::args(...) | main.rs:121:22:121:28 | command | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
 | main.rs:127:22:127:28 | command | main.rs:138:22:138:37 | ...::args(...) | main.rs:127:22:127:28 | command | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
@@ -58,14 +56,11 @@ edges
 | main.rs:73:14:73:26 | remote_string | main.rs:73:14:73:35 | remote_string.as_str() [&ref] | provenance | MaD:8 |
 | main.rs:73:14:73:35 | remote_string.as_str() [&ref] | main.rs:73:14:73:35 | remote_string.as_str() | provenance | Sink:MaD:4 |
 | main.rs:82:27:82:42 | ...: ... [&ref] | main.rs:86:18:86:27 | user_input | provenance | Sink:MaD:1 |
-| main.rs:95:27:95:40 | ...: ... [&ref] | main.rs:100:22:100:29 | filename | provenance | Sink:MaD:1 |
-| main.rs:107:30:107:42 | ...: ... [&ref] | main.rs:111:22:111:28 | command | provenance | Sink:MaD:3 |
 | main.rs:107:30:107:42 | ...: ... [&ref] | main.rs:113:22:113:28 | command | provenance | Sink:MaD:3 |
 | main.rs:107:30:107:42 | ...: ... [&ref] | main.rs:121:22:121:28 | command | provenance | Sink:MaD:3 |
 | main.rs:107:30:107:42 | ...: ... [&ref] | main.rs:127:22:127:28 | command | provenance | Sink:MaD:3 |
 | main.rs:107:30:107:42 | ...: ... [&ref] | main.rs:131:22:131:28 | command | provenance | Sink:MaD:3 |
 | main.rs:138:9:138:18 | arg_string | main.rs:142:39:142:48 | arg_string | provenance |  |
-| main.rs:138:9:138:18 | arg_string | main.rs:143:40:143:49 | arg_string | provenance |  |
 | main.rs:138:9:138:18 | arg_string | main.rs:144:31:144:40 | arg_string | provenance |  |
 | main.rs:138:22:138:37 | ...::args(...) | main.rs:138:22:138:37 | ...::args(...) [element] | provenance | Src:MaD:7  |
 | main.rs:138:22:138:37 | ...::args(...) [element] | main.rs:138:22:138:44 | ... .nth(...) [Some] | provenance | MaD:9 |
@@ -73,8 +68,6 @@ edges
 | main.rs:138:22:138:74 | ... .unwrap_or(...) | main.rs:138:9:138:18 | arg_string | provenance |  |
 | main.rs:142:39:142:48 | arg_string | main.rs:142:39:142:57 | arg_string.as_str() [&ref] | provenance | MaD:8 |
 | main.rs:142:39:142:57 | arg_string.as_str() [&ref] | main.rs:82:27:82:42 | ...: ... [&ref] | provenance |  |
-| main.rs:143:40:143:49 | arg_string | main.rs:143:40:143:58 | arg_string.as_str() [&ref] | provenance | MaD:8 |
-| main.rs:143:40:143:58 | arg_string.as_str() [&ref] | main.rs:95:27:95:40 | ...: ... [&ref] | provenance |  |
 | main.rs:144:31:144:40 | arg_string | main.rs:144:31:144:49 | arg_string.as_str() [&ref] | provenance | MaD:8 |
 | main.rs:144:31:144:49 | arg_string.as_str() [&ref] | main.rs:107:30:107:42 | ...: ... [&ref] | provenance |  |
 models
@@ -141,10 +134,7 @@ nodes
 | main.rs:73:14:73:35 | remote_string.as_str() [&ref] | semmle.label | remote_string.as_str() [&ref] |
 | main.rs:82:27:82:42 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
 | main.rs:86:18:86:27 | user_input | semmle.label | user_input |
-| main.rs:95:27:95:40 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
-| main.rs:100:22:100:29 | filename | semmle.label | filename |
 | main.rs:107:30:107:42 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
-| main.rs:111:22:111:28 | command | semmle.label | command |
 | main.rs:113:22:113:28 | command | semmle.label | command |
 | main.rs:121:22:121:28 | command | semmle.label | command |
 | main.rs:127:22:127:28 | command | semmle.label | command |
@@ -156,8 +146,6 @@ nodes
 | main.rs:138:22:138:74 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
 | main.rs:142:39:142:48 | arg_string | semmle.label | arg_string |
 | main.rs:142:39:142:57 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
-| main.rs:143:40:143:49 | arg_string | semmle.label | arg_string |
-| main.rs:143:40:143:58 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
 | main.rs:144:31:144:40 | arg_string | semmle.label | arg_string |
 | main.rs:144:31:144:49 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
 subpaths
