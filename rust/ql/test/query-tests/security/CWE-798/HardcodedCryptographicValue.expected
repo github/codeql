@@ -9,8 +9,7 @@
 | test_cookie.rs:17:28:17:34 | [0; 64] | test_cookie.rs:17:28:17:34 | [0; 64] | test_cookie.rs:18:26:18:32 | &array1 | This hard-coded value is used as $@. | test_cookie.rs:18:26:18:32 | &array1 | a key |
 | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:22:26:22:32 | &array2 | This hard-coded value is used as $@. | test_cookie.rs:22:26:22:32 | &array2 | a key |
 | test_cookie.rs:25:16:29:5 | match ... { ... } | test_cookie.rs:25:16:29:5 | match ... { ... } | test_cookie.rs:30:26:30:40 | str3.as_bytes() | This hard-coded value is used as $@. | test_cookie.rs:30:26:30:40 | str3.as_bytes() | a key |
-| test_cookie.rs:34:9:34:9 | 1 | test_cookie.rs:34:9:34:9 | 1 | test_cookie.rs:38:26:38:32 | &array4 | This hard-coded value is used as $@. | test_cookie.rs:38:26:38:32 | &array4 | a key |
-| test_cookie.rs:35:9:35:9 | 2 | test_cookie.rs:35:9:35:9 | 2 | test_cookie.rs:38:26:38:32 | &array4 | This hard-coded value is used as $@. | test_cookie.rs:38:26:38:32 | &array4 | a key |
+| test_cookie.rs:33:27:37:5 | [...] | test_cookie.rs:33:27:37:5 | [...] | test_cookie.rs:38:26:38:32 | &array4 | This hard-coded value is used as $@. | test_cookie.rs:38:26:38:32 | &array4 | a key |
 | test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:58:34:58:39 | array2 | This hard-coded value is used as $@. | test_cookie.rs:58:34:58:39 | array2 | a key |
 | test_cookie.rs:65:23:65:25 | 0u8 | test_cookie.rs:65:23:65:25 | 0u8 | test_cookie.rs:69:34:69:39 | array3 | This hard-coded value is used as $@. | test_cookie.rs:69:34:69:39 | array3 | a key |
 | test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | This hard-coded value is used as $@. | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | a salt |
@@ -72,12 +71,10 @@ edges
 | test_cookie.rs:25:16:29:5 | match ... { ... } | test_cookie.rs:25:9:25:12 | str3 | provenance |  |
 | test_cookie.rs:30:26:30:29 | str3 | test_cookie.rs:30:26:30:40 | str3.as_bytes() [&ref] | provenance | MaD:13 |
 | test_cookie.rs:30:26:30:40 | str3.as_bytes() [&ref] | test_cookie.rs:30:26:30:40 | str3.as_bytes() | provenance | Sink:MaD:5 |
-| test_cookie.rs:33:9:33:14 | array4 [element] | test_cookie.rs:38:27:38:32 | array4 [element] | provenance |  |
-| test_cookie.rs:33:27:37:5 | [...] [element] | test_cookie.rs:33:9:33:14 | array4 [element] | provenance |  |
-| test_cookie.rs:34:9:34:9 | 1 | test_cookie.rs:33:27:37:5 | [...] [element] | provenance |  |
-| test_cookie.rs:35:9:35:9 | 2 | test_cookie.rs:33:27:37:5 | [...] [element] | provenance |  |
-| test_cookie.rs:38:26:38:32 | &array4 [&ref, element] | test_cookie.rs:38:26:38:32 | &array4 | provenance | Sink:MaD:5 |
-| test_cookie.rs:38:27:38:32 | array4 [element] | test_cookie.rs:38:26:38:32 | &array4 [&ref, element] | provenance |  |
+| test_cookie.rs:33:9:33:14 | array4 | test_cookie.rs:38:27:38:32 | array4 | provenance |  |
+| test_cookie.rs:33:27:37:5 | [...] | test_cookie.rs:33:9:33:14 | array4 | provenance |  |
+| test_cookie.rs:38:26:38:32 | &array4 [&ref] | test_cookie.rs:38:26:38:32 | &array4 | provenance | Sink:MaD:5 |
+| test_cookie.rs:38:27:38:32 | array4 | test_cookie.rs:38:26:38:32 | &array4 [&ref] | provenance |  |
 | test_cookie.rs:54:9:54:14 | array2 | test_cookie.rs:58:34:58:39 | array2 | provenance | Sink:MaD:1 |
 | test_cookie.rs:54:18:54:37 | ...::from(...) | test_cookie.rs:54:9:54:14 | array2 | provenance |  |
 | test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:18:54:37 | ...::from(...) | provenance | MaD:8 |
@@ -171,13 +168,11 @@ nodes
 | test_cookie.rs:30:26:30:29 | str3 | semmle.label | str3 |
 | test_cookie.rs:30:26:30:40 | str3.as_bytes() | semmle.label | str3.as_bytes() |
 | test_cookie.rs:30:26:30:40 | str3.as_bytes() [&ref] | semmle.label | str3.as_bytes() [&ref] |
-| test_cookie.rs:33:9:33:14 | array4 [element] | semmle.label | array4 [element] |
-| test_cookie.rs:33:27:37:5 | [...] [element] | semmle.label | [...] [element] |
-| test_cookie.rs:34:9:34:9 | 1 | semmle.label | 1 |
-| test_cookie.rs:35:9:35:9 | 2 | semmle.label | 2 |
+| test_cookie.rs:33:9:33:14 | array4 | semmle.label | array4 |
+| test_cookie.rs:33:27:37:5 | [...] | semmle.label | [...] |
 | test_cookie.rs:38:26:38:32 | &array4 | semmle.label | &array4 |
-| test_cookie.rs:38:26:38:32 | &array4 [&ref, element] | semmle.label | &array4 [&ref, element] |
-| test_cookie.rs:38:27:38:32 | array4 [element] | semmle.label | array4 [element] |
+| test_cookie.rs:38:26:38:32 | &array4 [&ref] | semmle.label | &array4 [&ref] |
+| test_cookie.rs:38:27:38:32 | array4 | semmle.label | array4 |
 | test_cookie.rs:54:9:54:14 | array2 | semmle.label | array2 |
 | test_cookie.rs:54:18:54:37 | ...::from(...) | semmle.label | ...::from(...) |
 | test_cookie.rs:54:28:54:36 | [0u8; 64] | semmle.label | [0u8; 64] |

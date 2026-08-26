@@ -31,10 +31,10 @@ fn test_cookie_jar(array_var: &[u8], val: u64) {
     _ = jar.signed_mut(&key3);
 
     let array4: [u8; 3] = [
-        1, // $ Alert[rust/hard-coded-cryptographic-value]
-        2, // $ Alert[rust/hard-coded-cryptographic-value]
+        1,
+        2,
         val as u8
-    ];
+    ]; // $ Alert[rust/hard-coded-cryptographic-value]
     let key4 = Key::from(&array4); // $ Sink
     _ = jar.signed_mut(&key4);
 }

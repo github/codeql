@@ -62,12 +62,15 @@ module HardcodedCryptographicValue {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * Holds if `e` is a literal or a combination of literals that may be a constant.
+   * Holds if `e` is a literal or an expression that contains a constant. For example:
+   * ```
+   * ["hello", "world", s]
+   * ```
    */
   private predicate hasConstant(Expr e) {
     e instanceof LiteralExpr // e.g. `0`
     or
-    forex(Expr elem | elem = e.(ArrayListExpr).getExpr(_) | hasConstant(elem)) // e.g. `[0, 0, 0, 0]`
+    exists(Expr elem | elem = e.(ArrayListExpr).getExpr(_) | hasConstant(elem)) // e.g. `[0, 0, 0, 0]`
     or
     hasConstant(e.(ArrayRepeatExpr).getRepeatOperand()) // e.g. `[0; 10]`
     or
