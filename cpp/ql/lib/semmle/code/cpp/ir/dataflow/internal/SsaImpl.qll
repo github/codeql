@@ -1446,15 +1446,31 @@ module Public {
       not def instanceof PhiNode
     }
 
+    /**
+     * The `getAnUltimateDefinition` predicate uses an optimized step relation
+     * which is pruned to only those uncertain steps which lead back to a
+     * definition which satisfies `relevantUltimateDefinition`. This predicate
+     * computes the subset of `Definition`s which can lead back to definitions
+     * which satisfy `relevantUltimateDefinition`.
+     */
     private predicate fwd(Definition def) {
+      // Base case: This definition is a relevant definition
       relevantUltimateDefinition(def)
       or
       exists(Definition def0 |
+        // Recursive case: `def0` is a relevant definition, and
+        // `def` is an uncertain step which takes us back to `def0`.
         fwd(def0) and
         def0 = getAPhiInputOrPriorDefinition(def)
       )
     }
 
+    /**
+     * Holds if `def1 = getAPhiInputOrPriorDefinition(def2)`, and
+     * both `def1` and `def2` are part of a sequence of uncertain
+     * steps which lead back to a `Definition` which
+     * satisfies `relevantUltimateDefinition`.
+     */
     private predicate step(Definition def1, Definition def2) {
       fwd(def1) and
       fwd(def2) and
