@@ -306,7 +306,19 @@ class AspNetCoreActionMethodParameter extends AspNetCoreRemoteFlowSource, DataFl
   AspNetCoreActionMethodParameter() {
     exists(Parameter p |
       p = this.getParameter() and
-      p.fromSource()
+      p.fromSource() and
+      not exists(Attribute attr, ValueOrRefType attributeBase | attr = p.getAnAttribute() |
+        attributeBase = attr.getType().getABaseType*() and
+        (
+          attributeBase
+              .getABaseInterface*()
+              .hasFullyQualifiedName("Microsoft.AspNetCore.Http.Metadata", "IFromServiceMetadata")
+          or
+          attributeBase
+              .hasFullyQualifiedName("Microsoft.Extensions.DependencyInjection",
+                "FromKeyedServicesAttribute")
+        )
+      )
     |
       p = any(MicrosoftAspNetCoreMvcController c).getAnActionMethod().getAParameter()
     )

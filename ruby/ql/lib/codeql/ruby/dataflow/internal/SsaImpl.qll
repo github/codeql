@@ -4,13 +4,11 @@ module;
 private import codeql.ssa.Ssa as SsaImplCommon
 private import codeql.ruby.AST
 private import codeql.ruby.CFG as Cfg
-private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
-private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.Variable
 private import Cfg::CfgNodes::ExprNodes
 
-private class BasicBlock = BasicBlocks::Cfg::BasicBlock;
+private class BasicBlock = Cfg::BasicBlock;
 
 module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   private import codeql.ruby.controlflow.ControlFlowGraph as Cfg
@@ -25,11 +23,11 @@ module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
     (
       exists(Scope scope | scope = v.(SelfVariable).getDeclaringScope() |
         // We consider the `self` variable to have a single write at the entry to a method block...
-        scope = bb.(BasicBlocks::EntryBasicBlock).getScope() and
+        scope = bb.(Cfg::EntryBasicBlock).getScope() and
         i = 0
         or
         // ...or a class or module block.
-        bb.getNode(i).getAstNode() = scope.(ModuleBase).getAControlFlowEntryNode() and
+        bb.getNode(i).isBefore(scope.(ModuleBase)) and
         not scope instanceof Toplevel // handled by case above
       )
       or
@@ -60,7 +58,7 @@ module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   }
 }
 
-import SsaImplCommon::Make<Location, BasicBlocks::Cfg, SsaInput> as Impl
+import SsaImplCommon::Make<Location, Cfg::Cfg, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -98,12 +96,17 @@ private predicate writesCapturedVariable(Cfg::BasicBlock bb, LocalVariable v) {
   )
 }
 
+private predicate isAnnotatedExitBlock(BasicBlock bb) {
+  bb.getANode() instanceof Cfg::ControlFlow::AnnotatedExitNode
+}
+
 /**
  * Holds if a pseudo read of captured variable `v` should be inserted
  * at index `i` in exit block `bb`.
  */
-private predicate capturedExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, LocalVariable v) {
+private predicate capturedExitRead(BasicBlock bb, int i, LocalVariable v) {
   writesCapturedVariable(bb.getAPredecessor*(), v) and
+  isAnnotatedExitBlock(bb) and
   i = bb.length()
 }
 
@@ -112,13 +115,11 @@ private predicate capturedExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, Local
  * at index `i` in basic block `bb`. We do this to ensure that namespace
  * self-variables always get an SSA definition.
  */
-private predicate namespaceSelfExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, SelfVariable v) {
-  exists(Namespace ns, AstNode last |
+private predicate namespaceSelfExitRead(BasicBlock bb, int i, SelfVariable v) {
+  exists(Namespace ns, Cfg::ControlFlowNode n |
     v.getDeclaringScope() = ns and
-    last = ControlFlowGraphImpl::getAControlFlowExitNode(ns) and
-    if last = ns
-    then bb.getNode(i).getAPredecessor().getAstNode() = last
-    else bb.getNode(i).getAstNode() = last
+    n.isAfter(ns) and
+    if n.isBefore(ns) then bb.getNode(i - 1) = n else bb.getNode(i) = n
   )
 }
 
@@ -129,7 +130,8 @@ private predicate namespaceSelfExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, 
 pragma[noinline]
 private predicate hasCapturedRead(Variable v, Cfg::CfgScope scope) {
   any(LocalVariableReadAccessCfgNode read |
-    read.getVariable() = v and scope = read.getScope().getOuterCfgScope*()
+    read.getVariable() = v and
+    scope = read.getEnclosingCallable().(Cfg::CfgScope).getOuterCfgScope*()
   ).getExpr().isCapturedAccess()
 }
 
@@ -177,7 +179,7 @@ private predicate capturedCallRead(CallCfgNode call, Cfg::BasicBlock bb, int i, 
 private predicate variableReadActual(Cfg::BasicBlock bb, int i, LocalVariable v) {
   exists(VariableReadAccess read |
     read.getVariable() = v and
-    read = bb.getNode(i).getAstNode()
+    bb.getNode(i).injects(read)
   )
 }
 
@@ -188,7 +190,8 @@ private predicate variableReadActual(Cfg::BasicBlock bb, int i, LocalVariable v)
 pragma[noinline]
 private predicate hasCapturedWrite(Variable v, Cfg::CfgScope scope) {
   any(LocalVariableWriteAccessCfgNode write |
-    write.getVariable() = v and scope = write.getScope().getOuterCfgScope*()
+    write.getVariable() = v and
+    scope = write.getEnclosingCallable().(Cfg::CfgScope).getOuterCfgScope*()
   ).getExpr().isCapturedAccess()
 }
 
@@ -393,7 +396,7 @@ class NormalParameter extends Parameter {
 pragma[nomagic]
 Definition getParameterDef(NamedParameter p) {
   exists(Cfg::BasicBlock bb, int i |
-    bb.getNode(i).getAstNode() = p.getDefiningAccess() and
+    bb.getNode(i).injects(p.getDefiningAccess()) and
     result.definesAt(_, bb, i)
   )
 }
