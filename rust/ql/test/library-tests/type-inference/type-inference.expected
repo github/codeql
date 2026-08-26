@@ -3982,48 +3982,64 @@ inferCertainType
 | main.rs:2796:15:2800:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2799:17:2799:26 | my_get(...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2799:24:2799:25 | &g |  | {EXTERNAL LOCATION} | & |
-| main.rs:2803:11:2838:1 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2804:5:2804:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2805:5:2805:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2806:5:2806:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2806:20:2806:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2806:41:2806:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2807:5:2807:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2808:5:2808:41 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2809:5:2809:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2810:5:2810:30 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2811:5:2811:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2812:5:2812:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2813:5:2813:32 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2814:5:2814:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2815:5:2815:36 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2803:18:2810:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2804:9:2804:12 | arr1 |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2804:9:2804:12 | arr1 | TArray | {EXTERNAL LOCATION} | i32 |
+| main.rs:2804:26:2804:27 | [...] |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2805:9:2805:12 | arr2 |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2805:16:2805:24 | [true; 0] |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2805:17:2805:20 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:2806:9:2806:12 | arr3 |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2806:16:2806:17 | [...] |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2808:21:2808:23 | arr |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2808:21:2808:23 | arr | TArray | main.rs:2808:18:2808:18 | T |
+| main.rs:2808:34:2808:34 | x |  | main.rs:2808:18:2808:18 | T |
+| main.rs:2808:40:2808:41 | { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2809:5:2809:22 | pin_array(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2809:15:2809:18 | arr3 |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2812:11:2848:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2813:5:2813:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2814:5:2814:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2815:5:2815:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2815:20:2815:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2815:41:2815:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
 | main.rs:2816:5:2816:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2817:5:2817:29 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2818:5:2818:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2819:5:2819:24 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2820:5:2820:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2821:5:2821:18 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2822:5:2822:15 | ...::f(...) |  | {EXTERNAL LOCATION} | dyn Future |
-| main.rs:2822:5:2822:15 | ...::f(...) | dyn(Output) | {EXTERNAL LOCATION} | () |
-| main.rs:2823:5:2823:19 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2824:5:2824:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2825:5:2825:14 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2826:5:2826:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2827:5:2827:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2828:5:2828:43 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2829:5:2829:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2830:5:2830:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2831:5:2831:28 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2832:5:2832:23 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2833:5:2833:41 | ...::test_all_patterns(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2834:5:2834:49 | ...::box_patterns(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2835:5:2835:20 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2836:5:2836:20 | ...::f(...) |  | {EXTERNAL LOCATION} | Box |
-| main.rs:2836:5:2836:20 | ...::f(...) | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2836:5:2836:20 | ...::f(...) | T | main.rs:2564:5:2566:5 | dyn MyTrait |
-| main.rs:2836:5:2836:20 | ...::f(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
-| main.rs:2836:16:2836:19 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:2837:5:2837:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2817:5:2817:41 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2818:5:2818:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2819:5:2819:30 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2820:5:2820:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2821:5:2821:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2822:5:2822:32 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2823:5:2823:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2824:5:2824:36 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2825:5:2825:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2826:5:2826:29 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2827:5:2827:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2828:5:2828:24 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2829:5:2829:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2830:5:2830:18 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2831:5:2831:15 | ...::f(...) |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2831:5:2831:15 | ...::f(...) | dyn(Output) | {EXTERNAL LOCATION} | () |
+| main.rs:2832:5:2832:19 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2833:5:2833:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2834:5:2834:14 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2835:5:2835:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2836:5:2836:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2837:5:2837:43 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2838:5:2838:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2839:5:2839:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2840:5:2840:28 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2841:5:2841:23 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2842:5:2842:41 | ...::test_all_patterns(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2843:5:2843:49 | ...::box_patterns(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2844:5:2844:20 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2845:5:2845:20 | ...::f(...) |  | {EXTERNAL LOCATION} | Box |
+| main.rs:2845:5:2845:20 | ...::f(...) | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2845:5:2845:20 | ...::f(...) | T | main.rs:2564:5:2566:5 | dyn MyTrait |
+| main.rs:2845:5:2845:20 | ...::f(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
+| main.rs:2845:16:2845:19 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:2846:5:2846:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2847:5:2847:17 | empty_array(...) |  | {EXTERNAL LOCATION} | () |
 | overloading.rs:4:19:4:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | overloading.rs:4:19:4:23 | SelfParam | TRef | overloading.rs:2:5:11:5 | Self [trait FirstTrait] |
 | overloading.rs:4:34:6:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
@@ -12988,48 +13004,71 @@ inferType
 | main.rs:2799:24:2799:25 | &g | TRef.T | {EXTERNAL LOCATION} | i64 |
 | main.rs:2799:25:2799:25 | g |  | main.rs:2780:5:2780:21 | Gen |
 | main.rs:2799:25:2799:25 | g | T | {EXTERNAL LOCATION} | i64 |
-| main.rs:2803:11:2838:1 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2804:5:2804:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2805:5:2805:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2806:5:2806:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2806:20:2806:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2806:41:2806:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2807:5:2807:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2808:5:2808:41 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2809:5:2809:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2810:5:2810:30 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2811:5:2811:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2812:5:2812:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2813:5:2813:32 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2814:5:2814:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2815:5:2815:36 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2803:18:2810:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2804:9:2804:12 | arr1 |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2804:9:2804:12 | arr1 | TArray | {EXTERNAL LOCATION} | i32 |
+| main.rs:2804:21:2804:21 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2804:26:2804:27 | [...] |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2804:26:2804:27 | [...] | TArray | {EXTERNAL LOCATION} | i32 |
+| main.rs:2805:9:2805:12 | arr2 |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2805:9:2805:12 | arr2 | TArray | {EXTERNAL LOCATION} | bool |
+| main.rs:2805:16:2805:24 | [true; 0] |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2805:16:2805:24 | [true; 0] | TArray | {EXTERNAL LOCATION} | bool |
+| main.rs:2805:17:2805:20 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:2805:23:2805:23 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2806:9:2806:12 | arr3 |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2806:16:2806:17 | [...] |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2808:21:2808:23 | arr |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2808:21:2808:23 | arr | TArray | main.rs:2808:18:2808:18 | T |
+| main.rs:2808:30:2808:30 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2808:34:2808:34 | x |  | main.rs:2808:18:2808:18 | T |
+| main.rs:2808:40:2808:41 | { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2809:5:2809:22 | pin_array(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2809:15:2809:18 | arr3 |  | {EXTERNAL LOCATION} | [;] |
+| main.rs:2809:21:2809:21 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2812:11:2848:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2813:5:2813:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2814:5:2814:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2815:5:2815:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2815:20:2815:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2815:41:2815:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
 | main.rs:2816:5:2816:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2817:5:2817:29 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2818:5:2818:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2819:5:2819:24 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2820:5:2820:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2821:5:2821:18 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2822:5:2822:15 | ...::f(...) |  | {EXTERNAL LOCATION} | dyn Future |
-| main.rs:2822:5:2822:15 | ...::f(...) | dyn(Output) | {EXTERNAL LOCATION} | () |
-| main.rs:2823:5:2823:19 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2824:5:2824:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2825:5:2825:14 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2826:5:2826:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2827:5:2827:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2828:5:2828:43 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2829:5:2829:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2830:5:2830:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2831:5:2831:28 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2832:5:2832:23 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2833:5:2833:41 | ...::test_all_patterns(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2834:5:2834:49 | ...::box_patterns(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2835:5:2835:20 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2836:5:2836:20 | ...::f(...) |  | {EXTERNAL LOCATION} | Box |
-| main.rs:2836:5:2836:20 | ...::f(...) | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2836:5:2836:20 | ...::f(...) | T | main.rs:2564:5:2566:5 | dyn MyTrait |
-| main.rs:2836:5:2836:20 | ...::f(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
-| main.rs:2836:16:2836:19 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:2837:5:2837:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2817:5:2817:41 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2818:5:2818:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2819:5:2819:30 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2820:5:2820:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2821:5:2821:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2822:5:2822:32 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2823:5:2823:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2824:5:2824:36 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2825:5:2825:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2826:5:2826:29 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2827:5:2827:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2828:5:2828:24 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2829:5:2829:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2830:5:2830:18 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2831:5:2831:15 | ...::f(...) |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2831:5:2831:15 | ...::f(...) | dyn(Output) | {EXTERNAL LOCATION} | () |
+| main.rs:2832:5:2832:19 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2833:5:2833:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2834:5:2834:14 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2835:5:2835:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2836:5:2836:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2837:5:2837:43 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2838:5:2838:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2839:5:2839:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2840:5:2840:28 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2841:5:2841:23 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2842:5:2842:41 | ...::test_all_patterns(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2843:5:2843:49 | ...::box_patterns(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2844:5:2844:20 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2845:5:2845:20 | ...::f(...) |  | {EXTERNAL LOCATION} | Box |
+| main.rs:2845:5:2845:20 | ...::f(...) | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2845:5:2845:20 | ...::f(...) | T | main.rs:2564:5:2566:5 | dyn MyTrait |
+| main.rs:2845:5:2845:20 | ...::f(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
+| main.rs:2845:16:2845:19 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:2846:5:2846:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2847:5:2847:17 | empty_array(...) |  | {EXTERNAL LOCATION} | () |
 | overloading.rs:4:19:4:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | overloading.rs:4:19:4:23 | SelfParam | TRef | overloading.rs:2:5:11:5 | Self [trait FirstTrait] |
 | overloading.rs:4:34:6:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
