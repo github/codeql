@@ -36,8 +36,6 @@ private Method getAStartedMethod() {
 
 /**
  * Holds if the project has a global anti forgery filter.
- *
- * No AspNetCore case here as the corresponding class doesn't seem to exist.
  */
 predicate hasGlobalAntiForgeryFilter() {
   // A global filter added
@@ -48,6 +46,18 @@ predicate hasGlobalAntiForgeryFilter() {
     addGlobalFilter.getArgumentForName("filter").getType() instanceof AntiForgeryAuthorizationFilter and
     // The filter is added by the Application_Start() method
     getAStartedMethod() = addGlobalFilter.getEnclosingCallable()
+  )
+  or
+  exists(MethodCall addGlobalFilter, MethodCall registrationCall |
+    addGlobalFilter.getTarget() =
+      any(AspNetCore::MicrosoftAspNetCoreMvcFilterCollection collection).getAddMethod() and
+    // The filter is the `AutoValidateAntiforgeryTokenAttribute` filter.
+    addGlobalFilter.getArgument(0).getType() instanceof
+      AspNetCore::AutoValidateAntiforgeryTokenAttribute and
+    // The filter is added in an ASP.NET Core registration call, which is provided as a lambda argument
+    // to the Mvc registration method.
+    registrationCall.getTarget() instanceof AspNetCore::MicrosoftAspNetCoreMvcRegistration and
+    registrationCall.getAnArgument() = addGlobalFilter.getEnclosingCallable()
   )
 }
 

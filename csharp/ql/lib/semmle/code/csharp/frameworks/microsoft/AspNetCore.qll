@@ -145,6 +145,15 @@ class ValidateAntiForgeryAttribute extends Attribute {
 }
 
 /**
+ * The `Microsoft.AspNetCore.Mvc.AutoValidateAntiforgeryTokenAttribute` class.
+ */
+class AutoValidateAntiforgeryTokenAttribute extends Class {
+  AutoValidateAntiforgeryTokenAttribute() {
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "AutoValidateAntiforgeryTokenAttribute")
+  }
+}
+
+/**
  * A class that has a name like `[Auto...]Validate[...]Anti[Ff]orgery[...Token]` and implements `IFilterMetadata` interface
  * This class can be added to a collection of global `MvcOptions.Filters` collection.
  */
@@ -230,11 +239,20 @@ private Assembly getAnAssemblyFor(Type type) {
   result = getACompilationFor(type).getOutputAssembly()
 }
 
-private predicate isMicrosoftAspNetCoreMvcRegistration(MethodCall call) {
-  call.getTarget()
-      .hasFullyQualifiedName("Microsoft.Extensions.DependencyInjection",
-        ["MvcServiceCollectionExtensions", "MvcCoreServiceCollectionExtensions"],
-        ["AddControllers", "AddControllersWithViews", "AddMvc", "AddMvcCore"])
+/**
+ * A method that is a registration of an ASP.NET Core MVC service, i.e. `AddControllers`, `AddControllersWithViews`, `AddMvc`, or `AddMvcCore`.
+ */
+class MicrosoftAspNetCoreMvcRegistration extends Method {
+  MicrosoftAspNetCoreMvcRegistration() {
+    this.hasFullyQualifiedName("Microsoft.Extensions.DependencyInjection",
+      ["MvcServiceCollectionExtensions", "MvcCoreServiceCollectionExtensions"],
+      ["AddControllers", "AddControllersWithViews", "AddMvc", "AddMvcCore"])
+  }
+}
+
+/** Holds if the method call is a registration of an ASP.NET Core MVC service. */
+predicate isMicrosoftAspNetCoreMvcRegistration(MethodCall call) {
+  call.getTarget() instanceof MicrosoftAspNetCoreMvcRegistration
 }
 
 private predicate isMicrosoftAspNetCoreMvcApplication(Compilation compilation) {
