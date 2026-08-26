@@ -780,7 +780,7 @@ unified_parameter_def(
   unique int id: @unified_parameter
 );
 
-@unified_pattern = @unified_bulk_importing_pattern | @unified_conditional_pattern | @unified_constructor_pattern | @unified_expr_equality_pattern | @unified_name_pattern | @unified_or_pattern | @unified_token_ignore_pattern | @unified_token_unsupported_node | @unified_tuple_pattern
+@unified_pattern = @unified_bulk_importing_pattern | @unified_conditional_pattern | @unified_constructor_pattern | @unified_expr_equality_pattern | @unified_name_pattern | @unified_or_pattern | @unified_token_ignore_pattern | @unified_token_unsupported_node | @unified_tuple_pattern | @unified_type_test_pattern
 
 unified_pattern_element_key(
   unique int unified_pattern_element: @unified_pattern_element ref,
@@ -907,7 +907,7 @@ unified_try_expr_def(
 unified_tuple_expr_element(
   int unified_tuple_expr: @unified_tuple_expr ref,
   int index: int ref,
-  unique int element: @unified_expr ref
+  unique int element: @unified_argument ref
 );
 
 unified_tuple_expr_def(

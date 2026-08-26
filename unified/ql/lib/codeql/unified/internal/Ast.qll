@@ -1421,10 +1421,10 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "TupleExpr" }
 
     /** Gets the node corresponding to the field `element`. */
-    final F::Expr getElement(int i) { unified_tuple_expr_element(this, i, result) }
+    final F::Argument getElement(int i) { unified_tuple_expr_element(this, i, result) }
 
     /** Gets the node corresponding to the field `element`. */
-    final F::Expr getAnElement() { result = this.getElement(_) }
+    final F::Argument getAnElement() { result = this.getElement(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_tuple_expr_element(this, _, result) }
@@ -1607,7 +1607,7 @@ module Unified {
   }
 
   /** A class representing `type_test_pattern` nodes. */
-  class TypeTestPattern extends @unified_type_test_pattern, F::AstNode {
+  class TypeTestPattern extends @unified_type_test_pattern, F::Pattern {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeTestPattern" }
 

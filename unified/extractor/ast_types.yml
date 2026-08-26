@@ -231,7 +231,7 @@ named:
 
   # A tuple expression, such as `(a, b, c)`.
   tuple_expr:
-    element*: expr
+    element*: argument
 
   # A parameter.
   #
