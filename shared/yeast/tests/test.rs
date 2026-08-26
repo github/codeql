@@ -918,6 +918,104 @@ fn test_shorthand_rule() {
     );
 }
 
+#[derive(Clone, Default)]
+struct GuardTestContext {
+    enabled: bool,
+    selected: bool,
+}
+
+fn guarded_integer_rules() -> Vec<Rule<GuardTestContext>> {
+    vec![
+        yeast::rule!(
+            (integer) @@raw
+            where {
+                ctx.selected = ctx.enabled && ast.source_text(raw) == "1";
+                ctx.selected
+            }
+            =>
+            identifier {
+                assert!(ctx.selected);
+                tree!((identifier "guarded"))
+            }
+        ),
+        yeast::rule!((integer) => (identifier "fallback")),
+    ]
+}
+
+#[test]
+fn test_rule_guard_reads_raw_capture_and_user_context() {
+    fn run(input: &str, enabled: bool) -> String {
+        let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+        let schema =
+            yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang)
+                .unwrap();
+        let phases = vec![Phase::new(
+            "test",
+            PhaseKind::Repeating,
+            guarded_integer_rules(),
+        )];
+        let runner = Runner::with_schema(lang, &schema, &phases);
+        let mut user_ctx = GuardTestContext {
+            enabled,
+            selected: false,
+        };
+        let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
+        dump_ast(&ast, ast.get_root(), input)
+    }
+
+    assert_dump_eq(
+        &run("1", true),
+        r#"
+        program
+          identifier "guarded"
+    "#,
+    );
+    assert_dump_eq(
+        &run("2", true),
+        r#"
+        program
+          identifier "fallback"
+    "#,
+    );
+    assert_dump_eq(
+        &run("1", false),
+        r#"
+        program
+          identifier "fallback"
+    "#,
+    );
+}
+
+#[test]
+fn test_rule_guard_binds_optional_and_repeated_raw_captures() {
+    fn rules() -> Vec<Rule> {
+        vec![
+            yeast::rule!(
+                (array (_)? @@first (_)* @@rest)
+                where first.is_some() && rest.is_empty()
+                =>
+                (identifier "single")
+            ),
+            yeast::rule!((array) => (identifier "multiple")),
+        ]
+    }
+
+    assert_dump_eq(
+        &run_and_dump("[1]", rules()),
+        r#"
+        program
+          identifier "single"
+    "#,
+    );
+    assert_dump_eq(
+        &run_and_dump("[1, 2]", rules()),
+        r#"
+        program
+          identifier "multiple"
+    "#,
+    );
+}
+
 #[test]
 fn test_chained_rules_output_only_kind() {
     // Exercise rule chaining where an intermediate kind exists only in the
@@ -1131,6 +1229,84 @@ fn test_one_shot_phase_errors_when_no_rule_matches() {
     assert!(
         err.contains("no rule matched") && err.contains("integer"),
         "error should describe the unmatched node kind, got: {err}"
+    );
+}
+
+#[test]
+fn test_one_shot_guard_runs_before_capture_translation() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let rules: Vec<Rule> = vec![
+        yeast::rule!(
+            (program (_)* @stmts)
+            =>
+            (program stmt: {stmts})
+        ),
+        // There is deliberately no OneShot rule for `identifier`. If this
+        // rule translated `@left` before binding it raw in the guard, the run
+        // would fail instead of evaluating the guard and falling through to
+        // the next assignment rule.
+        yeast::rule!(
+            (assignment left: (_) @left)
+            where ast.source_text(left) == "not-x"
+            =>
+            (first_node left: {left})
+        ),
+        yeast::rule!((assignment) => (identifier "fallback")),
+    ];
+    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+
+    let input = "x = 1";
+    let ast = runner.run(input).unwrap();
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          stmt: identifier "fallback"
+    "#,
+    );
+}
+
+#[test]
+fn test_one_shot_guard_context_mutation_is_visible_to_transform() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let rules: Vec<Rule<GuardTestContext>> = vec![
+        yeast::rule!(
+            (program (_)* @stmts)
+            =>
+            (program stmt: {stmts})
+        ),
+        yeast::rule!(
+            (integer)
+            where {
+                ctx.selected = true;
+                true
+            }
+            =>
+            identifier {
+                assert!(ctx.selected);
+                tree!((identifier "guarded"))
+            }
+        ),
+    ];
+    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let runner = Runner::with_schema(lang, &schema, &phases);
+    let mut user_ctx = GuardTestContext::default();
+
+    let input = "1";
+    let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          stmt: identifier "guarded"
+    "#,
     );
 }
 
@@ -1545,6 +1721,31 @@ fn test_rules_macro_accepts_bare_shorthand_form() {
           call
             method: identifier "x"
             receiver: integer "1"
+    "#,
+    );
+}
+
+#[test]
+fn test_rules_macro_accepts_bare_guarded_rule() {
+    let rules: Vec<Rule> = yeast::rules! {
+        input: "tests/input-types.yml",
+        output: "tests/node-types.yml",
+        [
+            (integer) @@raw
+            where ast.source_text(raw) == "1"
+            =>
+            (identifier "guarded"),
+
+            (integer) => (identifier "fallback"),
+        ]
+    };
+
+    let dump = run_and_dump("1", rules);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          identifier "guarded"
     "#,
     );
 }
