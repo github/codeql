@@ -64,6 +64,8 @@ class NameBindingNode extends TNameBindingNode {
     or
     this.isStaticMemberNamespace(result)
     or
+    this.isInstanceMemberNamespace(result)
+    or
     this.isLocalNamespace(result)
     or
     this.isModuleScopeNode(result)
@@ -314,7 +316,7 @@ private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode no
   )
 }
 
-/** Holds if the member represented by `node` cannot be inherited. */
+/** Holds if the member represented by `node` can be inherited. */
 pragma[nomagic]
 private predicate isInheritableMemberNode(NameBindingNode node) {
   exists(NameDeclaration decl |
@@ -563,7 +565,7 @@ private module FolderHeuristic {
 /**
  * Holds if `access` may resolve to `target` through the enclosing `accessingClass`.
  *
- * `instanceAccess` indicates if this this member should be accessed as an instance of `accessingClass`
+ * `instanceAccess` indicates whether this member should be accessed as an instance of `accessingClass`
  * or as a static member.
  */
 private predicate unqualifiedMemberAccessCand(

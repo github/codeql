@@ -29,8 +29,7 @@ class NameBindingPlugin extends Unit {
   /**
    * Holds if `member` can be inherited by subclasses of `cls`.
    *
-   * The caller has already restricted `member` to be a member of `cls`, and
-   * ensured that `member` is a `VariableDeclaration` or `FunctionDeclaration`.
+   * The caller has already restricted `member` to be a member of `cls`.
    */
   bindingset[cls, member]
   predicate isInheritableMember(ClassLikeDeclaration cls, Member member) { none() }

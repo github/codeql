@@ -7,8 +7,8 @@ private import codeql.unified.internal.NameBindingPlugin
 /** Stats about identifiers that static name binding could resolve. */
 module StaticNameResolutionStats implements EntityStatsSig {
   /**
-   * Holds if `name` has been positively identified as something that refer to a value, and static name binding
-   * is thus not expected to resolve its members.
+   * Holds if `name` has been positively identified as referring to a value, so static name binding
+   * is not expected to resolve its members.
    */
   private predicate resolvesToValue(Identifier name) {
     exists(AstNode decl |
