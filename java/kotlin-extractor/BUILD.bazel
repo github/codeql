@@ -107,6 +107,8 @@ kt_javac_options(
                 ("IrSymbolInternals" if version_less(v, "2.0.0") else "UnsafeDuringIrConstructionAPI"),
             ] + (
                 [] if version_less(v, "2.2.20") else ["org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi"]
+            ) + (
+                [] if version_less(v, "2.4.20") else ["org.jetbrains.kotlin.K1Deprecation"]
             ),
             x_suppress_version_warnings = True,
         ),
