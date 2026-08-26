@@ -118,6 +118,29 @@ fn translate_pattern(
     })
 }
 
+/// Translate `node` in non-pattern context (`ctx.in_pattern = false`).
+fn translate_non_pattern(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    node: yeast::Id,
+) -> Result<Vec<yeast::Id>, String> {
+    ctx.scoped(|ctx| {
+        ctx.in_pattern = false;
+        ctx.translate(node)
+    })
+}
+
+/// Wrap an expression in an `expr_equality_pattern` if `ctx.in_pattern` is true.
+fn wrap_pattern_expr(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    expr: yeast::Id,
+) -> yeast::Id {
+    if ctx.in_pattern {
+        tree!((expr_equality_pattern expr: {expr}))
+    } else {
+        expr
+    }
+}
+
 /// Translate a multi-part identifier (for example `Foo.Bar.Baz`) into a
 /// `member_access_expr` chain rooted at a `name_expr` over the first
 /// part. Panics on an empty input because the grammar's `_+` quantifier
@@ -171,24 +194,24 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `*LiteralExpr` kind, so one rule per literal type suffices.
         rule!((integerLiteralExpr) @@node => expr {
             let value = tree!((int_literal #{node}));
-            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+            wrap_pattern_expr(&mut ctx, value)
         }),
         rule!((floatLiteralExpr) @@node => expr {
             let value = tree!((float_literal #{node}));
-            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+            wrap_pattern_expr(&mut ctx, value)
         }),
         rule!((booleanLiteralExpr) @@node => expr {
             let value = tree!((boolean_literal #{node}));
-            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+            wrap_pattern_expr(&mut ctx, value)
         }),
         rule!((nilLiteralExpr) @@node => expr {
             let value = tree!((builtin_expr #{node}));
-            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+            wrap_pattern_expr(&mut ctx, value)
         }),
         // Plain string literals (no interpolation)
         rule!((simpleStringLiteralExpr) @@node => expr {
             let value = tree!((string_literal #{node}));
-            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+            wrap_pattern_expr(&mut ctx, value)
         }),
         // String literals with interpolation
         rule!(
@@ -207,7 +230,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         rule!((regexLiteralExpr) @@node => expr {
             let value = tree!((regex_literal #{node}));
-            if ctx.in_pattern { tree!((expr_equality_pattern expr: {value})) } else { value }
+            wrap_pattern_expr(&mut ctx, value)
         }),
         // ---- Names ----
         // A function reference spelled with argument labels (`f(x:y:z:)`) is a
@@ -223,11 +246,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         rule!((declReferenceExpr baseName: (identifier) @name) => expr {
             let name = tree!((name_expr identifier: (identifier #{name})));
-            if ctx.in_pattern {
-                tree!((expr_equality_pattern expr: {name}))
-            } else {
-                name
-            }
+            wrap_pattern_expr(&mut ctx, name)
         }),
         // A bare name reference (`x`), and an operator used as a value (`+` in
         // `reduce(0, +)`), are both `declReferenceExpr`; its `baseName` is the
@@ -685,10 +704,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             expr {
                 // Always translate the callee in non-pattern context.
-                let callee = ctx.scoped(|ctx| {
-                    ctx.in_pattern = false;
-                    ctx.translate(rawCallee)
-                })?;
+                let callee = translate_non_pattern(&mut ctx, rawCallee)?;
                 if ctx.in_pattern {
                     tree!((constructor_pattern constructor: {callee} element: {args}))
                 } else {
@@ -709,10 +725,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (labeledExpr
                 label: _? @@lbl
                 expression: (functionCallExpr
-                    calledExpression: @constructor
+                    calledExpression: @@constructor
                     arguments: _* @elements))
             =>
             argument {
+                let constructor = translate_non_pattern(&mut ctx, constructor)?;
                 if ctx.in_pattern {
                     tree!((pattern_element
                         key: (identifier #{lbl})?
@@ -758,24 +775,35 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // meaning as `Array<T>` rather than an array literal.
         rule!(
             (memberAccessExpr
-                base: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                base: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @@element))
                 declName: (declReferenceExpr baseName: @member))
             =>
-            (member_access_expr
-                base: (generic_type_expr
-                    base: (named_type_expr name: (identifier "Array"))
-                    type_argument: {element})
-                member: (identifier #{member}))
+            expr {
+                let element = translate_non_pattern(&mut ctx, element)?;
+                let node = tree!((member_access_expr
+                    base: (generic_type_expr
+                        base: (named_type_expr name: (identifier "Array"))
+                        type_argument: {element})
+                    member: (identifier #{member})));
+                wrap_pattern_expr(&mut ctx, node)
+            }
         ),
         rule!(
-            (memberAccessExpr base: @base declName: (declReferenceExpr baseName: @member))
+            (memberAccessExpr base: @@base declName: (declReferenceExpr baseName: @member))
             =>
-            (member_access_expr base: {base} member: (identifier #{member}))
+            expr {
+                let base = translate_non_pattern(&mut ctx, base)?;
+                let node = tree!((member_access_expr base: {base} member: (identifier #{member})));
+                wrap_pattern_expr(&mut ctx, node)
+            }
         ),
         rule!(
             (memberAccessExpr period: @dot declName: (declReferenceExpr baseName: @member))
             =>
-            (member_access_expr base: (inferred_type_expr #{dot}) member: (identifier #{member}))
+            expr {
+                let node = tree!((member_access_expr base: (inferred_type_expr #{dot}) member: (identifier #{member})));
+                wrap_pattern_expr(&mut ctx, node)
+            }
         ),
         // Control transfer, one rule per keyword. `return` carries an optional
         // value; `break` / `continue` an optional target label; `throw` its

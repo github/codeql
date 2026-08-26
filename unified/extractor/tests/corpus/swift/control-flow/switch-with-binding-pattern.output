@@ -296,9 +296,11 @@ top_level
                               identifier: identifier "s"
             switch_case
               pattern:
-                member_access_expr <-- ERROR: The field switch_case.pattern should contain pattern, but got member_access_expr
-                  base: inferred_type_expr "."
-                  member: identifier "foo"
+                expr_equality_pattern
+                  expr:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "foo"
               body:
                 block
                   stmt:
@@ -313,13 +315,13 @@ top_level
                               element: string_literal "foo"
             switch_case
               pattern:
-                member_access_expr <-- ERROR: The field switch_case.pattern should contain pattern, but got member_access_expr
-                  base:
-                    expr_equality_pattern <-- ERROR: The field member_access_expr.base should contain expr_or_type, but got expr_equality_pattern
-                      expr:
+                expr_equality_pattern
+                  expr:
+                    member_access_expr
+                      base:
                         name_expr
                           identifier: identifier "T"
-                  member: identifier "foo"
+                      member: identifier "foo"
               body:
                 block
                   stmt:
@@ -334,15 +336,15 @@ top_level
                               element: string_literal "foo"
             switch_case
               pattern:
-                member_access_expr <-- ERROR: The field switch_case.pattern should contain pattern, but got member_access_expr
-                  base:
-                    array_literal
-                      element:
-                        expr_equality_pattern <-- ERROR: The field array_literal.element should contain expr, but got expr_equality_pattern
-                          expr:
+                expr_equality_pattern
+                  expr:
+                    member_access_expr
+                      base:
+                        array_literal
+                          element:
                             name_expr
                               identifier: identifier "T"
-                  member: identifier "foo"
+                      member: identifier "foo"
               body:
                 block
                   stmt:
