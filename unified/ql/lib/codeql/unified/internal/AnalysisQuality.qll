@@ -49,10 +49,7 @@ module StaticNameResolutionStats implements EntityStatsSig {
 
     NameBindingNode getTarget() {
       (
-        exists(NameDeclaration decl |
-          result.isIdentifier(decl) and
-          trackNameDeclaration(decl).isIdentifier(this)
-        )
+        result.asIdentifier() = getStaticBindingTarget(this)
         or
         result.isModuleScopeNode(_) and
         result.(NamespaceNode).ref().isIdentifier(this)
