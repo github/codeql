@@ -51,6 +51,7 @@ supertypes:
     - constructor_pattern
     - or_pattern
     - conditional_pattern
+    - type_test_pattern
     - ignore_pattern
     - expr_equality_pattern
     - bulk_importing_pattern
