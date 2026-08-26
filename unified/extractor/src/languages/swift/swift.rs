@@ -107,6 +107,17 @@ fn make_or_pattern(
     }
 }
 
+/// Translate `node` in pattern context (`ctx.in_pattern = true`).
+fn translate_pattern(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    node: yeast::Id,
+) -> Result<Vec<yeast::Id>, String> {
+    ctx.scoped(|ctx| {
+        ctx.in_pattern = true;
+        ctx.translate(node)
+    })
+}
+
 /// Translate a multi-part identifier (for example `Foo.Bar.Baz`) into a
 /// `member_access_expr` chain rooted at a `name_expr` over the first
 /// part. Panics on an empty input because the grammar's `_+` quantifier
@@ -438,14 +449,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // as a binding.
         rule!(
             (patternBinding
-                pattern: @pattern
+                pattern: @@pattern
                 typeAnnotation: (typeAnnotation type: @ty)?
                 initializer: (initializerClause value: @@val)?)
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
                 modifier: {chained_modifier(&mut ctx)}
-                pattern: {pattern}
+                pattern: {translate_pattern(&mut ctx, pattern)?}
                 type: {ty}
                 value: {ctx.reset(); ctx.translate(val)?})
         ),
@@ -570,8 +581,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // An expression pattern only establishes pattern context; its child
         // determines the concrete pattern shape.
         rule!((expressionPattern expression: @@e) => expr {
-            ctx.in_pattern = true;
-            ctx.translate(e)?.into_iter().next().ok_or("expression pattern has no child")?
+            translate_pattern(&mut ctx, e)?
         }),
         // ---- Functions ----
         // A function declaration (parameters/return type/body optional). The
@@ -877,15 +887,19 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (switch_case body: (block stmt: {body}))
         ),
         // A single case item unwraps to its pattern, possibly boxed in conditional_pattern
-        rule!((switchCaseItem pattern: @p whereClause: (whereClause condition: @cond)) => (conditional_pattern pattern: { p } condition: {cond})),
-        rule!((switchCaseItem pattern: @p) => pattern { p }),
+        rule!(
+            (switchCaseItem pattern: @@p whereClause: (whereClause condition: @cond))
+            =>
+            (conditional_pattern pattern: {translate_pattern(&mut ctx, p)?} condition: {cond})
+        ),
+        rule!((switchCaseItem pattern: @@p) => pattern { translate_pattern(&mut ctx, p)? }),
         // A pattern-matching condition (`if case let x = e`, `if case .foo(let x)
         // = e`) becomes a `pattern_guard_expr`: the matched pattern and the
         // scrutinee value are translated recursively.
         rule!(
-            (matchingPatternCondition pattern: @pat initializer: (initializerClause value: @val))
+            (matchingPatternCondition pattern: @@pat initializer: (initializerClause value: @val))
             =>
-            (pattern_guard_expr pattern: {pat} value: {val})
+            (pattern_guard_expr pattern: {translate_pattern(&mut ctx, pat)?} value: {val})
         ),
         // Optional binding (`if let x = foo`, or shorthand `if let x`) desugars
         // to a `pattern_guard_expr` matching `Optional.some(x)`. The initialized
@@ -921,13 +935,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A `for`-`in` loop. The optional `where` clause becomes the `guard`.
         rule!(
             (forStmt
-                pattern: @pat
+                pattern: @@pat
                 sequence: @iter
                 whereClause: (whereClause condition: @guard)?
                 body: @body)
             =>
             (for_each_stmt
-                pattern: {pat}
+                pattern: {translate_pattern(&mut ctx, pat)?}
                 iterable: {iter}
                 guard: {guard}
                 body: {body})
@@ -1007,14 +1021,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 catch_clause: {catches})
         ),
         rule!(
-            (catchItem pattern: @pattern whereClause: (whereClause condition: @guard))
+            (catchItem pattern: @@pattern whereClause: (whereClause condition: @guard))
             =>
-            (conditional_pattern pattern: {pattern} condition: {guard})
+            (conditional_pattern pattern: {translate_pattern(&mut ctx, pattern)?} condition: {guard})
         ),
         rule!(
-            (catchItem pattern: @pattern)
+            (catchItem pattern: @@pattern)
             =>
-            pattern {pattern}
+            pattern { translate_pattern(&mut ctx, pattern)? }
         ),
         // Catch block with one or more patterns (which have been translated by the catchItem rules)
         rule!(
