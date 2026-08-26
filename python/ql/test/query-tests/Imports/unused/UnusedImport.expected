@@ -6,4 +6,4 @@
 | imports_test.py:27:1:27:25 | Import | Import of 'func2' is not used. |
 | imports_test.py:34:1:34:14 | Import | Import of 'module2' is not used. |
 | imports_test.py:116:1:116:41 | Import | Import of 'not_a_fixture' is not used. |
-| relaxed_except.py:12:1:12:68 | Import | Import of 'NeverUsed' is not used. |
+| relaxed_except.py:3:1:3:55 | Import | Import of 'NeverUsed' is not used. |

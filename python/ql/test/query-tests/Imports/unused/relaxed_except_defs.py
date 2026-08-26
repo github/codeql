@@ -1,11 +1,3 @@
-class Alpha(Exception):
-    pass
-
-
-class Beta(Exception):
-    pass
-
-
 class Gamma(Exception):
     pass
 
