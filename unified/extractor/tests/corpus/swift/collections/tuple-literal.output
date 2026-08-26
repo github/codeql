@@ -54,4 +54,14 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "t"
-          value: tuple_expr "(1, \"two\", 3.0)"
+          value:
+            tuple_expr
+              element:
+                argument
+                  value: int_literal "1"
+                argument
+                  value:
+                    string_interpolation_expr
+                      element: string_literal "two"
+                argument
+                  value: float_literal "3.0"

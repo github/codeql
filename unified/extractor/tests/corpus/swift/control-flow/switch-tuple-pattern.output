@@ -1,0 +1,183 @@
+switch point {
+case (let x, let y):
+  print(x, y)
+case (0, 0):
+  print("origin")
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            switchExpr
+              leftBrace: {
+              rightBrace: }
+              cases:
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                tupleExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  elements:
+                                    labeledExpr
+                                      expression:
+                                        patternExpr
+                                          pattern:
+                                            valueBindingPattern
+                                              pattern:
+                                                identifierPattern
+                                                  identifier: identifier "x"
+                                              bindingSpecifier: let
+                                      trailingComma: ,
+                                    labeledExpr
+                                      expression:
+                                        patternExpr
+                                          pattern:
+                                            valueBindingPattern
+                                              pattern:
+                                                identifierPattern
+                                                  identifier: identifier "y"
+                                              bindingSpecifier: let
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "x"
+                              trailingComma: ,
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "y"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                tupleExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  elements:
+                                    labeledExpr
+                                      expression:
+                                        integerLiteralExpr
+                                          literal: integerLiteral "0"
+                                      trailingComma: ,
+                                    labeledExpr
+                                      expression:
+                                        integerLiteralExpr
+                                          literal: integerLiteral "0"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "origin"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              subject:
+                declReferenceExpr
+                  baseName: identifier "point"
+              switchKeyword: switch
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        switch_expr
+          value:
+            name_expr
+              identifier: identifier "point"
+          case:
+            switch_case
+              pattern:
+                tuple_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "x"
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "y"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "x"
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "y"
+            switch_case
+              pattern:
+                tuple_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        expr_equality_pattern
+                          expr: int_literal "0"
+                    pattern_element
+                      pattern:
+                        expr_equality_pattern
+                          expr: int_literal "0"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            string_interpolation_expr
+                              element: string_literal "origin"

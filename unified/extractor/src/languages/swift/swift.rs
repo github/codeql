@@ -341,7 +341,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // TODO: a parenthesised single-element `tupleExpr` is really a grouping
         // expression and should be elided (unwrapped to its inner expression)
         // rather than modelled as a tuple.
-        rule!((tupleExpr) => (tuple_expr)),
+        rule!((tupleExpr elements: _* @els) => expr {
+            if ctx.in_pattern {
+                tree!((tuple_pattern element: {els}))
+            } else {
+                tree!((tuple_expr element: {els}))
+            }
+        }),
         // A code block contains its statements directly.
         rule!((codeBlock statements: _* @stmts) => (block stmt: {stmts})),
         // ---- Properties with accessors ----
