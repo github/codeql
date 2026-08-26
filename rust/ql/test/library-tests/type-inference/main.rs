@@ -2800,6 +2800,15 @@ mod arg_trait_bounds {
     }
 }
 
+fn empty_array() {
+    let arr1: [i32; 0] = []; // $ type=arr1@[;]<TArray>:i32
+    let arr2 = [true; 0]; // $ type=arr2@[;]<TArray>:bool
+    let arr3 = []; // $ MISSING: type=arr3@[;]<TArray>:i32
+
+    fn pin_array<T>(arr: [T; 0], x: T) {}
+    pin_array(arr3, 1); // $ target=pin_array
+}
+
 fn main() {
     field_access::f(); // $ target=f
     method_impl::f(); // $ target=f
@@ -2835,4 +2844,5 @@ fn main() {
     dyn_type::test(); // $ target=test
     if_expr::f(true); // $ target=f
     local_function::f(); // $ target=f
+    empty_array(); // $ target=empty_array
 }
