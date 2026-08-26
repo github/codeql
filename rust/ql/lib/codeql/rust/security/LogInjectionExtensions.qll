@@ -57,8 +57,17 @@ module LogInjection {
         c.getName() = "tracing" and
         m.getName().getText() = ["event", "span"] and
         m.getLocation().getFile() = c.getASourceFile().getFile() and
+        // candidate sinks are expressions inside the expansion of a call to `c`
         mc.resolveMacro() = m and
-        this.asExpr().getParentNode*() = mc.getMacroCallExpansion()
+        this.asExpr().getParentNode*() = mc.getMacroCallExpansion() and
+        // limit sinks to places that may have to do with producing a log message
+        (
+          this.asExpr().getParentNode() instanceof FormatArgsArg
+          or
+          this.asExpr().getParentNode() instanceof FormatArgsExpr
+          or
+          exists(ArgList al | al.getAnArg() = this.asExpr().getParentNode())
+        )
       )
     }
   }
