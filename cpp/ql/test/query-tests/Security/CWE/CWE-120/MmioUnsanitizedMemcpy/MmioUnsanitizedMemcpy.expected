@@ -1,0 +1,22 @@
+#select
+| test.c:21:3:21:8 | call to memcpy | test.c:20:18:20:37 | * ... | test.c:21:20:21:22 | len | Memory copy size argument is derived from $@ without sufficient bounds validation. | test.c:20:18:20:37 | * ... | an MMIO/DMA hardware register read |
+| test.c:26:3:26:9 | call to memmove | test.c:25:18:25:25 | call to GET_MMIO | test.c:26:21:26:23 | len | Memory copy size argument is derived from $@ without sufficient bounds validation. | test.c:25:18:25:25 | call to GET_MMIO | an MMIO/DMA hardware register read |
+| test.c:31:3:31:9 | call to strncpy | test.c:30:18:30:29 | mmio_len_reg | test.c:31:21:31:23 | len | Memory copy size argument is derived from $@ without sufficient bounds validation. | test.c:30:18:30:29 | mmio_len_reg | an MMIO/DMA hardware register read |
+edges
+| test.c:20:18:20:37 | * ... | test.c:20:18:20:37 | * ... | provenance |  |
+| test.c:20:18:20:37 | * ... | test.c:21:20:21:22 | len | provenance |  |
+| test.c:25:18:25:25 | call to GET_MMIO | test.c:25:18:25:25 | call to GET_MMIO | provenance |  |
+| test.c:25:18:25:25 | call to GET_MMIO | test.c:26:21:26:23 | len | provenance |  |
+| test.c:30:18:30:29 | mmio_len_reg | test.c:30:18:30:29 | mmio_len_reg | provenance |  |
+| test.c:30:18:30:29 | mmio_len_reg | test.c:31:21:31:23 | len | provenance |  |
+nodes
+| test.c:20:18:20:37 | * ... | semmle.label | * ... |
+| test.c:20:18:20:37 | * ... | semmle.label | * ... |
+| test.c:21:20:21:22 | len | semmle.label | len |
+| test.c:25:18:25:25 | call to GET_MMIO | semmle.label | call to GET_MMIO |
+| test.c:25:18:25:25 | call to GET_MMIO | semmle.label | call to GET_MMIO |
+| test.c:26:21:26:23 | len | semmle.label | len |
+| test.c:30:18:30:29 | mmio_len_reg | semmle.label | mmio_len_reg |
+| test.c:30:18:30:29 | mmio_len_reg | semmle.label | mmio_len_reg |
+| test.c:31:21:31:23 | len | semmle.label | len |
+subpaths
