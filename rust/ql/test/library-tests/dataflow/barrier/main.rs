@@ -46,3 +46,25 @@ fn with_barrier_guard() {
         sink(s);
     }
 }
+
+mod external_file;
+use external_file::*;
+
+trait MyBarrierTrait3 {
+    fn sanitize3(s: &str);
+}
+
+impl<T> MyBarrierTrait3 for T {
+    // has an explicit model
+    fn sanitize3(s: &str) {}
+}
+
+fn with_trait_barriers() {
+    let s = source(2);
+    <()>::sanitize2(s);
+    sink(s); // $ SPURIOUS: hasValueFlow=2
+
+    let s = source(3);
+    <()>::sanitize3(s);
+    sink(s);
+}
