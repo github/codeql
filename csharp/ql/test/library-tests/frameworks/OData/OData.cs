@@ -46,13 +46,13 @@ namespace Test
         void CastFromDictionary(ODataActionParameters parameters)
         {
             var entity = (BoundEntity)parameters["Entity"];
-            Sink(entity);
-            Sink(entity.Name);
-            Sink(entity.Content);
-            Sink(entity.Metadata.Owner);
+            Sink(entity); // $ hasTaintFlow=line:46
+            Sink(entity.Name); // $ hasTaintFlow=line:46
+            Sink(entity.Content); // $ hasTaintFlow=line:46
+            Sink(entity.Metadata.Owner); // $ hasTaintFlow=line:46
             foreach (var m in entity.Revisions)
             {
-                Sink(m.Owner);
+                Sink(m.Owner); // $ hasTaintFlow=line:46
             }
         }
 
@@ -62,14 +62,14 @@ namespace Test
             {
                 foreach (var item in items1)
                 {
-                    Sink(item.Label);
+                    Sink(item.Label); // $ hasTaintFlow=line:59
                 }
             }
 
             var items2 = parameters["Items"] as IEnumerable<RelatedItem>;
             foreach (var item in items2)
             {
-                Sink(item.Category);
+                Sink(item.Category); // $ hasTaintFlow=line:59
             }
         }
 
@@ -77,31 +77,31 @@ namespace Test
         {
             IDictionary<string, object> dict = parameters;
             var entity = (BoundEntity)dict["Entity"];
-            Sink(entity.Name);
+            Sink(entity.Name); // $ hasTaintFlow=line:76
         }
 
         void DeltaPatch(Delta<Widget> delta, Widget original)
         {
             delta.Patch(original);
-            Sink(original.Name);
+            Sink(original.Name); // $ hasTaintFlow=line:83
         }
 
         void DeltaGetInstance(Delta<Widget> delta)
         {
             var w = delta.GetInstance();
-            Sink(w.Name);
+            Sink(w.Name); // $ hasTaintFlow=line:89
         }
 
         void LegacyDeltaPatch(System.Web.Http.OData.Delta<Widget> delta, Widget original)
         {
             delta.Patch(original);
-            Sink(original.Name);
+            Sink(original.Name); // $ hasTaintFlow=line:95
         }
 
         void LegacyDeltaGetEntity(System.Web.Http.OData.Delta<Widget> delta)
         {
             var w = delta.GetEntity();
-            Sink(w.Name);
+            Sink(w.Name); // $ hasTaintFlow=line:101
         }
 
         void Untainted()
