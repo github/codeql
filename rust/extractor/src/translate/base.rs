@@ -21,6 +21,7 @@ use ra_ap_syntax::{
 use ra_ap_syntax_bridge::{
     DocCommentDesugarMode, syntax_node_to_token_tree, token_tree_to_syntax_node,
 };
+use std::path::{Path, PathBuf};
 
 impl Emission<ast::Item> for Translator<'_> {
     fn pre_emit(&mut self, node: &ast::Item) -> Option<Label<generated::Item>> {
@@ -125,7 +126,7 @@ pub enum SourceKind {
 
 pub struct Translator<'db> {
     pub trap: TrapFile,
-    path: String,
+    path: PathBuf,
     label: Label<generated::File>,
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
@@ -147,7 +148,7 @@ const DIAGNOSTIC_LIMIT_PER_FILE: usize = 100;
 impl<'db> Translator<'db> {
     pub fn new(
         trap: TrapFile,
-        path: &str,
+        path: &Path,
         label: Label<generated::File>,
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'db>>,
@@ -155,7 +156,7 @@ impl<'db> Translator<'db> {
     ) -> Translator<'db> {
         Translator {
             trap,
-            path: path.to_owned(),
+            path: path.to_path_buf(),
             label,
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
@@ -293,7 +294,7 @@ impl<'db> Translator<'db> {
         dispatch_to_tracing!(
             severity,
             "{}:{}:{}: {}",
-            self.path,
+            self.path.display(),
             start.line + 1,
             start.col + 1,
             &full_message,
