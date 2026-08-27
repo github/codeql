@@ -25,4 +25,5 @@ module Taint = TaintTracking::Global<TaintConfig>;
 
 from Taint::PathNode source, Taint::PathNode sink
 where Taint::flowPath(source, sink)
-select source, source, sink, "$@", sink, sink.toString()
+select sink.getNode(), source, sink, "This path depends on an $@.", source.getNode(),
+  "ODataParameters value"
