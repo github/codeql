@@ -709,16 +709,17 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         rule!(
             (functionCallExpr calledExpression: @@rawCallee arguments: _* @args)
+            where ctx.in_pattern
             =>
-            expr {
-                // Always translate the callee in non-pattern context.
+            pattern {
                 let callee = translate_non_pattern(&mut ctx, rawCallee)?;
-                if ctx.in_pattern {
-                    tree!((constructor_pattern constructor: {callee} element: {args}))
-                } else {
-                    tree!((call_expr callee: {callee} argument: {args}))
-                }
+                tree!((constructor_pattern constructor: {callee} element: {args}))
             }
+        ),
+        rule!(
+            (functionCallExpr calledExpression: @callee arguments: _* @args)
+            =>
+            (call_expr callee: {callee} argument: {args})
         ),
         // A call argument or an enum-case pattern argument. When translating an
         // enum-case `constructor_pattern`'s arguments (`ctx.in_pattern`), a
