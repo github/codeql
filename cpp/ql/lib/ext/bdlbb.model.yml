@@ -1,0 +1,20 @@
+# Model of the BDE bdlbb::Blob segmented byte buffer (BloombergLP::bdlbb).
+# Lets taint reach a blob's payload bytes, e.g. a message body filled by bmqa::Message::getData.
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      # Accessor chain: a tainted blob taints its buffers, and a tainted buffer taints its bytes.
+      - ["BloombergLP::bdlbb", "Blob", true, "buffer", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::bdlbb", "BlobBuffer", true, "data", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      # BlobUtil read-out: the source blob (Argument[*1]) taints the destination buffer (and the
+      # returned contiguous range).
+      - ["BloombergLP::bdlbb", "BlobUtil", true, "copy", "(char *,const Blob &,int,int)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlbb", "BlobUtil", true, "getContiguousRangeOrCopy", "", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlbb", "BlobUtil", true, "getContiguousRangeOrCopy", "", "", "Argument[*1]", "ReturnValue[*]", "taint", "manual"]
+      # BlobUtil write-in: the source (Argument[*2]) taints the destination blob. `copy` has two
+      # write-in overloads, one taking a raw byte buffer and one taking another blob as the source;
+      # each row pins the exact signature so the int offset/length arguments are never tainted.
+      - ["BloombergLP::bdlbb", "BlobUtil", true, "copy", "(Blob *,int,const char *,int)", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlbb", "BlobUtil", true, "copy", "(Blob *,int,const Blob &,int,int)", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
