@@ -8,7 +8,7 @@ namespace Test
         public string Owner { get; set; }
     }
 
-    public class BoundEntity
+    public class BoundEntity1
     {
         public string Name { get; set; }
 
@@ -17,6 +17,11 @@ namespace Test
         public EntityMetadata Metadata { get; set; }
 
         public List<EntityMetadata> Revisions { get; set; }
+    }
+
+    public class BoundEntity2
+    {
+        public string Name { get; set; }
     }
 
     public class RelatedItem
@@ -45,14 +50,14 @@ namespace Test
 
         void CastFromDictionary(ODataActionParameters parameters)
         {
-            var entity = (BoundEntity)parameters["Entity"];
-            Sink(entity); // $ hasTaintFlow=line:46
-            Sink(entity.Name); // $ hasTaintFlow=line:46
-            Sink(entity.Content); // $ hasTaintFlow=line:46
-            Sink(entity.Metadata.Owner); // $ hasTaintFlow=line:46
+            var entity = (BoundEntity1)parameters["Entity"];
+            Sink(entity); // $ hasTaintFlow=line:51
+            Sink(entity.Name); // $ hasTaintFlow=line:51
+            Sink(entity.Content); // $ hasTaintFlow=line:51
+            Sink(entity.Metadata.Owner); // $ hasTaintFlow=line:51
             foreach (var m in entity.Revisions)
             {
-                Sink(m.Owner); // $ hasTaintFlow=line:46
+                Sink(m.Owner); // $ hasTaintFlow=line:51
             }
         }
 
@@ -62,46 +67,46 @@ namespace Test
             {
                 foreach (var item in items1)
                 {
-                    Sink(item.Label); // $ hasTaintFlow=line:59
+                    Sink(item.Label); // $ hasTaintFlow=line:64
                 }
             }
 
             var items2 = parameters["Items"] as IEnumerable<RelatedItem>;
             foreach (var item in items2)
             {
-                Sink(item.Category); // $ hasTaintFlow=line:59
+                Sink(item.Category); // $ hasTaintFlow=line:64
             }
         }
 
         void UpcastThenIndex(ODataActionParameters parameters)
         {
-            IDictionary<string, object> dict = parameters;
-            var entity = (BoundEntity)dict["Entity"];
-            Sink(entity.Name); // $ hasTaintFlow=line:76
+            var dict = (IDictionary<string, object>)parameters;
+            var entity = (BoundEntity2)dict["Entity"];
+            Sink(entity.Name); // $ hasTaintFlow=line:81
         }
 
         void DeltaPatch(Delta<Widget> delta, Widget original)
         {
             delta.Patch(original);
-            Sink(original.Name); // $ hasTaintFlow=line:83
+            Sink(original.Name); // $ hasTaintFlow=line:88
         }
 
         void DeltaGetInstance(Delta<Widget> delta)
         {
             var w = delta.GetInstance();
-            Sink(w.Name); // $ hasTaintFlow=line:89
+            Sink(w.Name); // $ hasTaintFlow=line:94
         }
 
         void LegacyDeltaPatch(System.Web.Http.OData.Delta<Widget> delta, Widget original)
         {
             delta.Patch(original);
-            Sink(original.Name); // $ hasTaintFlow=line:95
+            Sink(original.Name); // $ hasTaintFlow=line:100
         }
 
         void LegacyDeltaGetEntity(System.Web.Http.OData.Delta<Widget> delta)
         {
             var w = delta.GetEntity();
-            Sink(w.Name); // $ hasTaintFlow=line:101
+            Sink(w.Name); // $ hasTaintFlow=line:106
         }
 
         void Untainted()
