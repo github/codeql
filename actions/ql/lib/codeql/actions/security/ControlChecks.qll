@@ -278,7 +278,7 @@ abstract class LabelCheck extends ControlCheck {
 
 /**
  * This type represents deployment environments that may serve as sanitizers for
- * various vunlerabilities.
+ * various vulnerabilities.
  *
  * It is possible to customize which deployment environments apply. The default behavior
  * of this model is for any environment to be considered a sanitizer.
