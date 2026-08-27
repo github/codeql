@@ -721,37 +721,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (call_expr callee: {callee} argument: {args})
         ),
-        // A call argument or an enum-case pattern argument. When translating an
-        // enum-case `constructor_pattern`'s arguments (`ctx.in_pattern`), a
-        // `patternExpr` argument (`let x`) becomes a bound `name_pattern`, a
-        // wildcard (`_`) becomes an `ignore_pattern`, and any other expression
-        // becomes an `expr_equality_pattern`; each is wrapped in a
-        // `pattern_element` carrying the optional argument label as its `key`.
-        // Otherwise the argument keeps its label as the `name` and its value.
-        // The pattern-only shapes (`patternExpr`, `discardAssignmentExpr`) are
-        // matched first; they never occur as ordinary call arguments.
-        rule!(
-            (labeledExpr
-                label: _? @@lbl
-                expression: (functionCallExpr
-                    calledExpression: @@constructor
-                    arguments: _* @elements))
-            =>
-            argument {
-                let constructor = translate_non_pattern(&mut ctx, constructor)?;
-                if ctx.in_pattern {
-                    tree!((pattern_element
-                        key: (identifier #{lbl})?
-                        pattern: (constructor_pattern
-                            constructor: {constructor}
-                            element: {elements})))
-                } else {
-                    tree!((argument
-                        name: (identifier #{lbl})?
-                        value: (call_expr callee: {constructor} argument: {elements})))
-                }
-            }
-        ),
         rule!(
             (patternExpr pattern: @@p)
             =>
