@@ -95,7 +95,16 @@ models
 | 94 | Summary: Azure::Core::IO; BodyStream; true; ReadToCount; ; ; Argument[-1]; Argument[*0]; taint; manual |
 | 95 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
 | 96 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 97 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 97 | Summary: BloombergLP::bslx::InStreamFunctions; ; false; bdexStreamIn; ; ; Argument[*0]; Argument[*1]; taint; manual |
+| 98 | Summary: BloombergLP::bslx; ByteInStream; true; ByteInStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 99 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayInt8; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 100 | Summary: BloombergLP::bslx; ByteInStream; true; getInt32; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 101 | Summary: BloombergLP::bslx; ByteInStream; true; getInt32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 102 | Summary: BloombergLP::bslx; ByteInStream; true; getString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 103 | Summary: BloombergLP::bslx; ByteInStream; true; reset; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 104 | Summary: BloombergLP::bslx; GenericInStream; true; GenericInStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 105 | Summary: BloombergLP::bslx; GenericInStream; true; getInt32; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 106 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
 edges
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:56  |
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
@@ -104,7 +113,7 @@ edges
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:100:44:100:62 | call to buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:101:7:101:17 | send_buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | send_buffer | provenance | Sink:MaD:4 |
-| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:97 |
+| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:106 |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:257:5:257:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:262:5:262:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:266:38:266:41 | *resp | provenance |  |
@@ -144,6 +153,44 @@ edges
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:295:10:295:20 | contentType | azure.cpp:295:10:295:20 | contentType | provenance |  |
+| bslx.cpp:141:33:141:40 | call to source | bslx.cpp:142:46:142:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:142:34:142:39 | call to ByteInStream | bslx.cpp:144:2:144:7 | *stream | provenance |  |
+| bslx.cpp:142:46:142:49 | *call to data | bslx.cpp:142:34:142:39 | call to ByteInStream | provenance | MaD:98 |
+| bslx.cpp:144:2:144:7 | *stream | bslx.cpp:144:18:144:18 | getInt32 output argument | provenance | MaD:100 |
+| bslx.cpp:144:18:144:18 | getInt32 output argument | bslx.cpp:145:7:145:7 | x | provenance |  |
+| bslx.cpp:149:33:149:40 | call to source | bslx.cpp:150:46:150:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:150:34:150:39 | call to ByteInStream | bslx.cpp:152:2:152:7 | *stream | provenance |  |
+| bslx.cpp:150:46:150:49 | *call to data | bslx.cpp:150:34:150:39 | call to ByteInStream | provenance | MaD:98 |
+| bslx.cpp:152:2:152:7 | *stream | bslx.cpp:152:22:152:24 | getArrayInt8 output argument | provenance | MaD:99 |
+| bslx.cpp:152:22:152:24 | getArrayInt8 output argument | bslx.cpp:153:7:153:10 | * ... | provenance |  |
+| bslx.cpp:157:33:157:40 | call to source | bslx.cpp:158:46:158:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:158:34:158:39 | call to ByteInStream | bslx.cpp:160:2:160:7 | *stream | provenance |  |
+| bslx.cpp:158:46:158:49 | *call to data | bslx.cpp:158:34:158:39 | call to ByteInStream | provenance | MaD:98 |
+| bslx.cpp:160:2:160:7 | *stream | bslx.cpp:160:19:160:21 | getString output argument | provenance | MaD:102 |
+| bslx.cpp:160:19:160:21 | getString output argument | bslx.cpp:161:7:161:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:165:33:165:40 | call to source | bslx.cpp:166:46:166:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:166:34:166:39 | call to ByteInStream | bslx.cpp:169:2:169:7 | *stream | provenance |  |
+| bslx.cpp:166:46:166:49 | *call to data | bslx.cpp:166:34:166:39 | call to ByteInStream | provenance | MaD:98 |
+| bslx.cpp:169:2:169:7 | *stream | bslx.cpp:169:17:169:20 | *call to getInt32 | provenance | MaD:101 |
+| bslx.cpp:169:17:169:20 | *call to getInt32 | bslx.cpp:169:30:169:30 | getInt32 output argument | provenance | MaD:100 |
+| bslx.cpp:169:30:169:30 | getInt32 output argument | bslx.cpp:170:7:170:7 | b | provenance |  |
+| bslx.cpp:175:33:175:40 | call to source | bslx.cpp:176:20:176:23 | *call to data | provenance | TaintFunction |
+| bslx.cpp:176:2:176:7 | reset output argument | bslx.cpp:178:2:178:7 | *stream | provenance |  |
+| bslx.cpp:176:20:176:23 | *call to data | bslx.cpp:176:2:176:7 | reset output argument | provenance | MaD:103 |
+| bslx.cpp:178:2:178:7 | *stream | bslx.cpp:178:18:178:18 | getInt32 output argument | provenance | MaD:100 |
+| bslx.cpp:178:18:178:18 | getInt32 output argument | bslx.cpp:179:7:179:7 | x | provenance |  |
+| bslx.cpp:183:33:183:40 | call to source | bslx.cpp:184:20:184:45 | *call to data | provenance | TaintFunction |
+| bslx.cpp:184:20:184:45 | *call to data | bslx.cpp:185:57:185:58 | *sb | provenance |  |
+| bslx.cpp:184:20:184:45 | *call to data | bslx.cpp:187:2:187:7 | *stream | provenance | TaintFunction |
+| bslx.cpp:185:50:185:55 | call to GenericInStream | bslx.cpp:187:2:187:7 | *stream | provenance |  |
+| bslx.cpp:185:57:185:58 | *sb | bslx.cpp:185:50:185:55 | call to GenericInStream | provenance | MaD:104 |
+| bslx.cpp:187:2:187:7 | *stream | bslx.cpp:187:18:187:18 | getInt32 output argument | provenance | MaD:105 |
+| bslx.cpp:187:18:187:18 | getInt32 output argument | bslx.cpp:188:7:188:7 | x | provenance |  |
+| bslx.cpp:192:33:192:40 | call to source | bslx.cpp:193:46:193:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:193:34:193:39 | call to ByteInStream | bslx.cpp:195:53:195:58 | *stream | provenance |  |
+| bslx.cpp:193:46:193:49 | *call to data | bslx.cpp:193:34:193:39 | call to ByteInStream | provenance | MaD:98 |
+| bslx.cpp:195:53:195:58 | *stream | bslx.cpp:195:61:195:63 | bdexStreamIn output argument | provenance | MaD:97 |
+| bslx.cpp:195:61:195:63 | bdexStreamIn output argument | bslx.cpp:196:7:196:9 | obj | provenance |  |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:48  |
@@ -532,6 +579,50 @@ nodes
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
+| bslx.cpp:141:33:141:40 | call to source | semmle.label | call to source |
+| bslx.cpp:142:34:142:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:142:46:142:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:144:2:144:7 | *stream | semmle.label | *stream |
+| bslx.cpp:144:18:144:18 | getInt32 output argument | semmle.label | getInt32 output argument |
+| bslx.cpp:145:7:145:7 | x | semmle.label | x |
+| bslx.cpp:149:33:149:40 | call to source | semmle.label | call to source |
+| bslx.cpp:150:34:150:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:150:46:150:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:152:2:152:7 | *stream | semmle.label | *stream |
+| bslx.cpp:152:22:152:24 | getArrayInt8 output argument | semmle.label | getArrayInt8 output argument |
+| bslx.cpp:153:7:153:10 | * ... | semmle.label | * ... |
+| bslx.cpp:157:33:157:40 | call to source | semmle.label | call to source |
+| bslx.cpp:158:34:158:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:158:46:158:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:160:2:160:7 | *stream | semmle.label | *stream |
+| bslx.cpp:160:19:160:21 | getString output argument | semmle.label | getString output argument |
+| bslx.cpp:161:7:161:17 | * ... | semmle.label | * ... |
+| bslx.cpp:165:33:165:40 | call to source | semmle.label | call to source |
+| bslx.cpp:166:34:166:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:166:46:166:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:169:2:169:7 | *stream | semmle.label | *stream |
+| bslx.cpp:169:17:169:20 | *call to getInt32 | semmle.label | *call to getInt32 |
+| bslx.cpp:169:30:169:30 | getInt32 output argument | semmle.label | getInt32 output argument |
+| bslx.cpp:170:7:170:7 | b | semmle.label | b |
+| bslx.cpp:175:33:175:40 | call to source | semmle.label | call to source |
+| bslx.cpp:176:2:176:7 | reset output argument | semmle.label | reset output argument |
+| bslx.cpp:176:20:176:23 | *call to data | semmle.label | *call to data |
+| bslx.cpp:178:2:178:7 | *stream | semmle.label | *stream |
+| bslx.cpp:178:18:178:18 | getInt32 output argument | semmle.label | getInt32 output argument |
+| bslx.cpp:179:7:179:7 | x | semmle.label | x |
+| bslx.cpp:183:33:183:40 | call to source | semmle.label | call to source |
+| bslx.cpp:184:20:184:45 | *call to data | semmle.label | *call to data |
+| bslx.cpp:185:50:185:55 | call to GenericInStream | semmle.label | call to GenericInStream |
+| bslx.cpp:185:57:185:58 | *sb | semmle.label | *sb |
+| bslx.cpp:187:2:187:7 | *stream | semmle.label | *stream |
+| bslx.cpp:187:18:187:18 | getInt32 output argument | semmle.label | getInt32 output argument |
+| bslx.cpp:188:7:188:7 | x | semmle.label | x |
+| bslx.cpp:192:33:192:40 | call to source | semmle.label | call to source |
+| bslx.cpp:193:34:193:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:193:46:193:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:195:53:195:58 | *stream | semmle.label | *stream |
+| bslx.cpp:195:61:195:63 | bdexStreamIn output argument | semmle.label | bdexStreamIn output argument |
+| bslx.cpp:196:7:196:9 | obj | semmle.label | obj |
 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | semmle.label | *ymlStepGenerated_with_body |
 | test.cpp:7:47:7:52 | value2 | semmle.label | value2 |
 | test.cpp:7:64:7:69 | value2 | semmle.label | value2 |
