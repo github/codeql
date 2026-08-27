@@ -4,84 +4,86 @@ models
 | 3 | Summary: System.Web.Http.OData; Delta<TEntityType>; true; GetEntity; (); ; Argument[this]; ReturnValue; taint; manual |
 | 4 | Summary: System.Web.Http.OData; Delta<TEntityType>; true; Patch; (TEntityType); ; Argument[this]; Argument[0]; taint; manual |
 edges
-| OData.cs:46:55:46:64 | parameters : ODataActionParameters | OData.cs:48:26:48:58 | (...) ... : BoundEntity | provenance |  |
-| OData.cs:48:17:48:22 | access to local variable entity : BoundEntity | OData.cs:49:18:49:23 | access to local variable entity | provenance |  |
-| OData.cs:48:17:48:22 | access to local variable entity : BoundEntity | OData.cs:50:18:50:28 | access to property Name | provenance |  |
-| OData.cs:48:17:48:22 | access to local variable entity : BoundEntity | OData.cs:51:18:51:31 | access to property Content | provenance |  |
-| OData.cs:48:17:48:22 | access to local variable entity : BoundEntity | OData.cs:52:18:52:38 | access to property Owner | provenance |  |
-| OData.cs:48:17:48:22 | access to local variable entity : BoundEntity | OData.cs:55:22:55:28 | access to property Owner | provenance |  |
-| OData.cs:48:26:48:58 | (...) ... : BoundEntity | OData.cs:48:17:48:22 | access to local variable entity : BoundEntity | provenance |  |
-| OData.cs:59:55:59:64 | parameters : ODataActionParameters | OData.cs:65:26:65:35 | access to property Label | provenance |  |
-| OData.cs:59:55:59:64 | parameters : ODataActionParameters | OData.cs:69:26:69:72 | ... as ... : IEnumerable<RelatedItem> | provenance |  |
-| OData.cs:69:17:69:22 | access to local variable items2 : IEnumerable<RelatedItem> | OData.cs:72:22:72:34 | access to property Category | provenance |  |
-| OData.cs:69:26:69:72 | ... as ... : IEnumerable<RelatedItem> | OData.cs:69:17:69:22 | access to local variable items2 : IEnumerable<RelatedItem> | provenance |  |
-| OData.cs:76:52:76:61 | parameters : ODataActionParameters | OData.cs:78:41:78:44 | access to local variable dict : ODataActionParameters | provenance |  |
-| OData.cs:78:41:78:44 | access to local variable dict : ODataActionParameters | OData.cs:79:26:79:52 | (...) ... : BoundEntity | provenance |  |
-| OData.cs:79:17:79:22 | access to local variable entity : BoundEntity | OData.cs:80:18:80:28 | access to property Name | provenance |  |
-| OData.cs:79:26:79:52 | (...) ... : BoundEntity | OData.cs:79:17:79:22 | access to local variable entity : BoundEntity | provenance |  |
-| OData.cs:83:39:83:43 | delta : Delta<Widget> | OData.cs:85:13:85:17 | access to parameter delta : Delta<Widget> | provenance |  |
-| OData.cs:85:13:85:17 | access to parameter delta : Delta<Widget> | OData.cs:85:25:85:32 | [post] access to parameter original : Widget | provenance | MaD:2 |
-| OData.cs:85:25:85:32 | [post] access to parameter original : Widget | OData.cs:86:18:86:30 | access to property Name | provenance |  |
-| OData.cs:89:45:89:49 | delta : Delta<Widget> | OData.cs:91:21:91:25 | access to parameter delta : Delta<Widget> | provenance |  |
-| OData.cs:91:17:91:17 | access to local variable w : Widget | OData.cs:92:18:92:23 | access to property Name | provenance |  |
-| OData.cs:91:21:91:25 | access to parameter delta : Delta<Widget> | OData.cs:91:21:91:39 | call to method GetInstance : Widget | provenance | MaD:1 |
-| OData.cs:91:21:91:39 | call to method GetInstance : Widget | OData.cs:91:17:91:17 | access to local variable w : Widget | provenance |  |
-| OData.cs:95:67:95:71 | delta : Delta<Widget> | OData.cs:97:13:97:17 | access to parameter delta : Delta<Widget> | provenance |  |
-| OData.cs:97:13:97:17 | access to parameter delta : Delta<Widget> | OData.cs:97:25:97:32 | [post] access to parameter original : Widget | provenance | MaD:4 |
-| OData.cs:97:25:97:32 | [post] access to parameter original : Widget | OData.cs:98:18:98:30 | access to property Name | provenance |  |
-| OData.cs:101:71:101:75 | delta : Delta<Widget> | OData.cs:103:21:103:25 | access to parameter delta : Delta<Widget> | provenance |  |
-| OData.cs:103:17:103:17 | access to local variable w : Widget | OData.cs:104:18:104:23 | access to property Name | provenance |  |
-| OData.cs:103:21:103:25 | access to parameter delta : Delta<Widget> | OData.cs:103:21:103:37 | call to method GetEntity : Widget | provenance | MaD:3 |
-| OData.cs:103:21:103:37 | call to method GetEntity : Widget | OData.cs:103:17:103:17 | access to local variable w : Widget | provenance |  |
+| OData.cs:51:55:51:64 | parameters : ODataActionParameters | OData.cs:53:26:53:59 | (...) ... : BoundEntity1 | provenance |  |
+| OData.cs:53:17:53:22 | access to local variable entity : BoundEntity1 | OData.cs:54:18:54:23 | access to local variable entity | provenance |  |
+| OData.cs:53:17:53:22 | access to local variable entity : BoundEntity1 | OData.cs:55:18:55:28 | access to property Name | provenance |  |
+| OData.cs:53:17:53:22 | access to local variable entity : BoundEntity1 | OData.cs:56:18:56:31 | access to property Content | provenance |  |
+| OData.cs:53:17:53:22 | access to local variable entity : BoundEntity1 | OData.cs:57:18:57:38 | access to property Owner | provenance |  |
+| OData.cs:53:17:53:22 | access to local variable entity : BoundEntity1 | OData.cs:60:22:60:28 | access to property Owner | provenance |  |
+| OData.cs:53:26:53:59 | (...) ... : BoundEntity1 | OData.cs:53:17:53:22 | access to local variable entity : BoundEntity1 | provenance |  |
+| OData.cs:64:55:64:64 | parameters : ODataActionParameters | OData.cs:70:26:70:35 | access to property Label | provenance |  |
+| OData.cs:64:55:64:64 | parameters : ODataActionParameters | OData.cs:74:26:74:72 | ... as ... : IEnumerable<RelatedItem> | provenance |  |
+| OData.cs:74:17:74:22 | access to local variable items2 : IEnumerable<RelatedItem> | OData.cs:77:22:77:34 | access to property Category | provenance |  |
+| OData.cs:74:26:74:72 | ... as ... : IEnumerable<RelatedItem> | OData.cs:74:17:74:22 | access to local variable items2 : IEnumerable<RelatedItem> | provenance |  |
+| OData.cs:81:52:81:61 | parameters : ODataActionParameters | OData.cs:83:24:83:62 | (...) ... : ODataActionParameters | provenance |  |
+| OData.cs:83:17:83:20 | access to local variable dict : ODataActionParameters | OData.cs:84:26:84:53 | (...) ... : BoundEntity2 | provenance |  |
+| OData.cs:83:24:83:62 | (...) ... : ODataActionParameters | OData.cs:83:17:83:20 | access to local variable dict : ODataActionParameters | provenance |  |
+| OData.cs:84:17:84:22 | access to local variable entity : BoundEntity2 | OData.cs:85:18:85:28 | access to property Name | provenance |  |
+| OData.cs:84:26:84:53 | (...) ... : BoundEntity2 | OData.cs:84:17:84:22 | access to local variable entity : BoundEntity2 | provenance |  |
+| OData.cs:88:39:88:43 | delta : Delta<Widget> | OData.cs:90:13:90:17 | access to parameter delta : Delta<Widget> | provenance |  |
+| OData.cs:90:13:90:17 | access to parameter delta : Delta<Widget> | OData.cs:90:25:90:32 | [post] access to parameter original : Widget | provenance | MaD:2 |
+| OData.cs:90:25:90:32 | [post] access to parameter original : Widget | OData.cs:91:18:91:30 | access to property Name | provenance |  |
+| OData.cs:94:45:94:49 | delta : Delta<Widget> | OData.cs:96:21:96:25 | access to parameter delta : Delta<Widget> | provenance |  |
+| OData.cs:96:17:96:17 | access to local variable w : Widget | OData.cs:97:18:97:23 | access to property Name | provenance |  |
+| OData.cs:96:21:96:25 | access to parameter delta : Delta<Widget> | OData.cs:96:21:96:39 | call to method GetInstance : Widget | provenance | MaD:1 |
+| OData.cs:96:21:96:39 | call to method GetInstance : Widget | OData.cs:96:17:96:17 | access to local variable w : Widget | provenance |  |
+| OData.cs:100:67:100:71 | delta : Delta<Widget> | OData.cs:102:13:102:17 | access to parameter delta : Delta<Widget> | provenance |  |
+| OData.cs:102:13:102:17 | access to parameter delta : Delta<Widget> | OData.cs:102:25:102:32 | [post] access to parameter original : Widget | provenance | MaD:4 |
+| OData.cs:102:25:102:32 | [post] access to parameter original : Widget | OData.cs:103:18:103:30 | access to property Name | provenance |  |
+| OData.cs:106:71:106:75 | delta : Delta<Widget> | OData.cs:108:21:108:25 | access to parameter delta : Delta<Widget> | provenance |  |
+| OData.cs:108:17:108:17 | access to local variable w : Widget | OData.cs:109:18:109:23 | access to property Name | provenance |  |
+| OData.cs:108:21:108:25 | access to parameter delta : Delta<Widget> | OData.cs:108:21:108:37 | call to method GetEntity : Widget | provenance | MaD:3 |
+| OData.cs:108:21:108:37 | call to method GetEntity : Widget | OData.cs:108:17:108:17 | access to local variable w : Widget | provenance |  |
 nodes
-| OData.cs:46:55:46:64 | parameters : ODataActionParameters | semmle.label | parameters : ODataActionParameters |
-| OData.cs:48:17:48:22 | access to local variable entity : BoundEntity | semmle.label | access to local variable entity : BoundEntity |
-| OData.cs:48:26:48:58 | (...) ... : BoundEntity | semmle.label | (...) ... : BoundEntity |
-| OData.cs:49:18:49:23 | access to local variable entity | semmle.label | access to local variable entity |
-| OData.cs:50:18:50:28 | access to property Name | semmle.label | access to property Name |
-| OData.cs:51:18:51:31 | access to property Content | semmle.label | access to property Content |
-| OData.cs:52:18:52:38 | access to property Owner | semmle.label | access to property Owner |
-| OData.cs:55:22:55:28 | access to property Owner | semmle.label | access to property Owner |
-| OData.cs:59:55:59:64 | parameters : ODataActionParameters | semmle.label | parameters : ODataActionParameters |
-| OData.cs:65:26:65:35 | access to property Label | semmle.label | access to property Label |
-| OData.cs:69:17:69:22 | access to local variable items2 : IEnumerable<RelatedItem> | semmle.label | access to local variable items2 : IEnumerable<RelatedItem> |
-| OData.cs:69:26:69:72 | ... as ... : IEnumerable<RelatedItem> | semmle.label | ... as ... : IEnumerable<RelatedItem> |
-| OData.cs:72:22:72:34 | access to property Category | semmle.label | access to property Category |
-| OData.cs:76:52:76:61 | parameters : ODataActionParameters | semmle.label | parameters : ODataActionParameters |
-| OData.cs:78:41:78:44 | access to local variable dict : ODataActionParameters | semmle.label | access to local variable dict : ODataActionParameters |
-| OData.cs:79:17:79:22 | access to local variable entity : BoundEntity | semmle.label | access to local variable entity : BoundEntity |
-| OData.cs:79:26:79:52 | (...) ... : BoundEntity | semmle.label | (...) ... : BoundEntity |
-| OData.cs:80:18:80:28 | access to property Name | semmle.label | access to property Name |
-| OData.cs:83:39:83:43 | delta : Delta<Widget> | semmle.label | delta : Delta<Widget> |
-| OData.cs:85:13:85:17 | access to parameter delta : Delta<Widget> | semmle.label | access to parameter delta : Delta<Widget> |
-| OData.cs:85:25:85:32 | [post] access to parameter original : Widget | semmle.label | [post] access to parameter original : Widget |
-| OData.cs:86:18:86:30 | access to property Name | semmle.label | access to property Name |
-| OData.cs:89:45:89:49 | delta : Delta<Widget> | semmle.label | delta : Delta<Widget> |
-| OData.cs:91:17:91:17 | access to local variable w : Widget | semmle.label | access to local variable w : Widget |
-| OData.cs:91:21:91:25 | access to parameter delta : Delta<Widget> | semmle.label | access to parameter delta : Delta<Widget> |
-| OData.cs:91:21:91:39 | call to method GetInstance : Widget | semmle.label | call to method GetInstance : Widget |
-| OData.cs:92:18:92:23 | access to property Name | semmle.label | access to property Name |
-| OData.cs:95:67:95:71 | delta : Delta<Widget> | semmle.label | delta : Delta<Widget> |
-| OData.cs:97:13:97:17 | access to parameter delta : Delta<Widget> | semmle.label | access to parameter delta : Delta<Widget> |
-| OData.cs:97:25:97:32 | [post] access to parameter original : Widget | semmle.label | [post] access to parameter original : Widget |
-| OData.cs:98:18:98:30 | access to property Name | semmle.label | access to property Name |
-| OData.cs:101:71:101:75 | delta : Delta<Widget> | semmle.label | delta : Delta<Widget> |
-| OData.cs:103:17:103:17 | access to local variable w : Widget | semmle.label | access to local variable w : Widget |
-| OData.cs:103:21:103:25 | access to parameter delta : Delta<Widget> | semmle.label | access to parameter delta : Delta<Widget> |
-| OData.cs:103:21:103:37 | call to method GetEntity : Widget | semmle.label | call to method GetEntity : Widget |
-| OData.cs:104:18:104:23 | access to property Name | semmle.label | access to property Name |
+| OData.cs:51:55:51:64 | parameters : ODataActionParameters | semmle.label | parameters : ODataActionParameters |
+| OData.cs:53:17:53:22 | access to local variable entity : BoundEntity1 | semmle.label | access to local variable entity : BoundEntity1 |
+| OData.cs:53:26:53:59 | (...) ... : BoundEntity1 | semmle.label | (...) ... : BoundEntity1 |
+| OData.cs:54:18:54:23 | access to local variable entity | semmle.label | access to local variable entity |
+| OData.cs:55:18:55:28 | access to property Name | semmle.label | access to property Name |
+| OData.cs:56:18:56:31 | access to property Content | semmle.label | access to property Content |
+| OData.cs:57:18:57:38 | access to property Owner | semmle.label | access to property Owner |
+| OData.cs:60:22:60:28 | access to property Owner | semmle.label | access to property Owner |
+| OData.cs:64:55:64:64 | parameters : ODataActionParameters | semmle.label | parameters : ODataActionParameters |
+| OData.cs:70:26:70:35 | access to property Label | semmle.label | access to property Label |
+| OData.cs:74:17:74:22 | access to local variable items2 : IEnumerable<RelatedItem> | semmle.label | access to local variable items2 : IEnumerable<RelatedItem> |
+| OData.cs:74:26:74:72 | ... as ... : IEnumerable<RelatedItem> | semmle.label | ... as ... : IEnumerable<RelatedItem> |
+| OData.cs:77:22:77:34 | access to property Category | semmle.label | access to property Category |
+| OData.cs:81:52:81:61 | parameters : ODataActionParameters | semmle.label | parameters : ODataActionParameters |
+| OData.cs:83:17:83:20 | access to local variable dict : ODataActionParameters | semmle.label | access to local variable dict : ODataActionParameters |
+| OData.cs:83:24:83:62 | (...) ... : ODataActionParameters | semmle.label | (...) ... : ODataActionParameters |
+| OData.cs:84:17:84:22 | access to local variable entity : BoundEntity2 | semmle.label | access to local variable entity : BoundEntity2 |
+| OData.cs:84:26:84:53 | (...) ... : BoundEntity2 | semmle.label | (...) ... : BoundEntity2 |
+| OData.cs:85:18:85:28 | access to property Name | semmle.label | access to property Name |
+| OData.cs:88:39:88:43 | delta : Delta<Widget> | semmle.label | delta : Delta<Widget> |
+| OData.cs:90:13:90:17 | access to parameter delta : Delta<Widget> | semmle.label | access to parameter delta : Delta<Widget> |
+| OData.cs:90:25:90:32 | [post] access to parameter original : Widget | semmle.label | [post] access to parameter original : Widget |
+| OData.cs:91:18:91:30 | access to property Name | semmle.label | access to property Name |
+| OData.cs:94:45:94:49 | delta : Delta<Widget> | semmle.label | delta : Delta<Widget> |
+| OData.cs:96:17:96:17 | access to local variable w : Widget | semmle.label | access to local variable w : Widget |
+| OData.cs:96:21:96:25 | access to parameter delta : Delta<Widget> | semmle.label | access to parameter delta : Delta<Widget> |
+| OData.cs:96:21:96:39 | call to method GetInstance : Widget | semmle.label | call to method GetInstance : Widget |
+| OData.cs:97:18:97:23 | access to property Name | semmle.label | access to property Name |
+| OData.cs:100:67:100:71 | delta : Delta<Widget> | semmle.label | delta : Delta<Widget> |
+| OData.cs:102:13:102:17 | access to parameter delta : Delta<Widget> | semmle.label | access to parameter delta : Delta<Widget> |
+| OData.cs:102:25:102:32 | [post] access to parameter original : Widget | semmle.label | [post] access to parameter original : Widget |
+| OData.cs:103:18:103:30 | access to property Name | semmle.label | access to property Name |
+| OData.cs:106:71:106:75 | delta : Delta<Widget> | semmle.label | delta : Delta<Widget> |
+| OData.cs:108:17:108:17 | access to local variable w : Widget | semmle.label | access to local variable w : Widget |
+| OData.cs:108:21:108:25 | access to parameter delta : Delta<Widget> | semmle.label | access to parameter delta : Delta<Widget> |
+| OData.cs:108:21:108:37 | call to method GetEntity : Widget | semmle.label | call to method GetEntity : Widget |
+| OData.cs:109:18:109:23 | access to property Name | semmle.label | access to property Name |
 subpaths
 testFailures
 #select
-| OData.cs:49:18:49:23 | access to local variable entity | OData.cs:46:55:46:64 | parameters : ODataActionParameters | OData.cs:49:18:49:23 | access to local variable entity | This path depends on an $@. | OData.cs:46:55:46:64 | parameters | ODataParameters value |
-| OData.cs:50:18:50:28 | access to property Name | OData.cs:46:55:46:64 | parameters : ODataActionParameters | OData.cs:50:18:50:28 | access to property Name | This path depends on an $@. | OData.cs:46:55:46:64 | parameters | ODataParameters value |
-| OData.cs:51:18:51:31 | access to property Content | OData.cs:46:55:46:64 | parameters : ODataActionParameters | OData.cs:51:18:51:31 | access to property Content | This path depends on an $@. | OData.cs:46:55:46:64 | parameters | ODataParameters value |
-| OData.cs:52:18:52:38 | access to property Owner | OData.cs:46:55:46:64 | parameters : ODataActionParameters | OData.cs:52:18:52:38 | access to property Owner | This path depends on an $@. | OData.cs:46:55:46:64 | parameters | ODataParameters value |
-| OData.cs:55:22:55:28 | access to property Owner | OData.cs:46:55:46:64 | parameters : ODataActionParameters | OData.cs:55:22:55:28 | access to property Owner | This path depends on an $@. | OData.cs:46:55:46:64 | parameters | ODataParameters value |
-| OData.cs:65:26:65:35 | access to property Label | OData.cs:59:55:59:64 | parameters : ODataActionParameters | OData.cs:65:26:65:35 | access to property Label | This path depends on an $@. | OData.cs:59:55:59:64 | parameters | ODataParameters value |
-| OData.cs:72:22:72:34 | access to property Category | OData.cs:59:55:59:64 | parameters : ODataActionParameters | OData.cs:72:22:72:34 | access to property Category | This path depends on an $@. | OData.cs:59:55:59:64 | parameters | ODataParameters value |
-| OData.cs:80:18:80:28 | access to property Name | OData.cs:76:52:76:61 | parameters : ODataActionParameters | OData.cs:80:18:80:28 | access to property Name | This path depends on an $@. | OData.cs:76:52:76:61 | parameters | ODataParameters value |
-| OData.cs:86:18:86:30 | access to property Name | OData.cs:83:39:83:43 | delta : Delta<Widget> | OData.cs:86:18:86:30 | access to property Name | This path depends on an $@. | OData.cs:83:39:83:43 | delta | ODataParameters value |
-| OData.cs:92:18:92:23 | access to property Name | OData.cs:89:45:89:49 | delta : Delta<Widget> | OData.cs:92:18:92:23 | access to property Name | This path depends on an $@. | OData.cs:89:45:89:49 | delta | ODataParameters value |
-| OData.cs:98:18:98:30 | access to property Name | OData.cs:95:67:95:71 | delta : Delta<Widget> | OData.cs:98:18:98:30 | access to property Name | This path depends on an $@. | OData.cs:95:67:95:71 | delta | ODataParameters value |
-| OData.cs:104:18:104:23 | access to property Name | OData.cs:101:71:101:75 | delta : Delta<Widget> | OData.cs:104:18:104:23 | access to property Name | This path depends on an $@. | OData.cs:101:71:101:75 | delta | ODataParameters value |
+| OData.cs:54:18:54:23 | access to local variable entity | OData.cs:51:55:51:64 | parameters : ODataActionParameters | OData.cs:54:18:54:23 | access to local variable entity | This path depends on an $@. | OData.cs:51:55:51:64 | parameters | ODataParameters value |
+| OData.cs:55:18:55:28 | access to property Name | OData.cs:51:55:51:64 | parameters : ODataActionParameters | OData.cs:55:18:55:28 | access to property Name | This path depends on an $@. | OData.cs:51:55:51:64 | parameters | ODataParameters value |
+| OData.cs:56:18:56:31 | access to property Content | OData.cs:51:55:51:64 | parameters : ODataActionParameters | OData.cs:56:18:56:31 | access to property Content | This path depends on an $@. | OData.cs:51:55:51:64 | parameters | ODataParameters value |
+| OData.cs:57:18:57:38 | access to property Owner | OData.cs:51:55:51:64 | parameters : ODataActionParameters | OData.cs:57:18:57:38 | access to property Owner | This path depends on an $@. | OData.cs:51:55:51:64 | parameters | ODataParameters value |
+| OData.cs:60:22:60:28 | access to property Owner | OData.cs:51:55:51:64 | parameters : ODataActionParameters | OData.cs:60:22:60:28 | access to property Owner | This path depends on an $@. | OData.cs:51:55:51:64 | parameters | ODataParameters value |
+| OData.cs:70:26:70:35 | access to property Label | OData.cs:64:55:64:64 | parameters : ODataActionParameters | OData.cs:70:26:70:35 | access to property Label | This path depends on an $@. | OData.cs:64:55:64:64 | parameters | ODataParameters value |
+| OData.cs:77:22:77:34 | access to property Category | OData.cs:64:55:64:64 | parameters : ODataActionParameters | OData.cs:77:22:77:34 | access to property Category | This path depends on an $@. | OData.cs:64:55:64:64 | parameters | ODataParameters value |
+| OData.cs:85:18:85:28 | access to property Name | OData.cs:81:52:81:61 | parameters : ODataActionParameters | OData.cs:85:18:85:28 | access to property Name | This path depends on an $@. | OData.cs:81:52:81:61 | parameters | ODataParameters value |
+| OData.cs:91:18:91:30 | access to property Name | OData.cs:88:39:88:43 | delta : Delta<Widget> | OData.cs:91:18:91:30 | access to property Name | This path depends on an $@. | OData.cs:88:39:88:43 | delta | ODataParameters value |
+| OData.cs:97:18:97:23 | access to property Name | OData.cs:94:45:94:49 | delta : Delta<Widget> | OData.cs:97:18:97:23 | access to property Name | This path depends on an $@. | OData.cs:94:45:94:49 | delta | ODataParameters value |
+| OData.cs:103:18:103:30 | access to property Name | OData.cs:100:67:100:71 | delta : Delta<Widget> | OData.cs:103:18:103:30 | access to property Name | This path depends on an $@. | OData.cs:100:67:100:71 | delta | ODataParameters value |
+| OData.cs:109:18:109:23 | access to property Name | OData.cs:106:71:106:75 | delta : Delta<Widget> | OData.cs:109:18:109:23 | access to property Name | This path depends on an $@. | OData.cs:106:71:106:75 | delta | ODataParameters value |
