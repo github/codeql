@@ -2409,4 +2409,10 @@ private module Debug {
     result = i.getCanonicalPath(c) and
     i = getRelevantLocatable()
   }
+
+  predicate debugCallTargetCanonicalPath(Call call, Function f, string path) {
+    call = getRelevantLocatable() and
+    f = call.getStaticTarget() and
+    path = f.getCanonicalPath()
+  }
 }

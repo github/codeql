@@ -62,7 +62,7 @@ impl<T> MyBarrierTrait3 for T {
 fn with_trait_barriers() {
     let s = source(2);
     <()>::sanitize2(s);
-    sink(s); // $ SPURIOUS: hasValueFlow=2
+    sink(s);
 
     let s = source(3);
     <()>::sanitize3(s);

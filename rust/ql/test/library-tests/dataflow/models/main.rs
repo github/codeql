@@ -527,12 +527,12 @@ fn test_trait_model<T: Ord>(x: T) {
     sink(x9); // $ hasValueFlow=30
 
     let x10 = <()>::produce2(31);
-    sink(x10); // $ MISSING: hasValueFlow=31
+    sink(x10); // $ hasValueFlow=31
 
     let x11 = <()>::produce3(32);
     sink(x11); // $ hasValueFlow=32
 
-    <()>::consume2(source(33)); // $ MISSING: hasValueFlow=33
+    <()>::consume2(source(33)); // $ hasValueFlow=33
 
     <()>::consume3(source(34)); // $ hasValueFlow=34
 }
