@@ -1,3 +1,7 @@
+#-----| [RegExpConstant, RegExpNormalChars] xabc3x
+
+#-----| [RegExpConstant, RegExpNormalChars] abc2
+
 regexp.cpp:
 #   19| [RegExpConstant, RegExpNormalChars] abc
 
@@ -647,3 +651,5 @@ regexp.cpp:
 #  125| [RegExpConstant, RegExpEscape] \n
 
 #  125| [RegExpConstant, RegExpNormalChars] c
+
+#  130| [RegExpConstant, RegExpNormalChars] abc1

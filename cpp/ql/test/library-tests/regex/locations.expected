@@ -63,3 +63,4 @@
 | regexp.cpp:123:41:123:44 | a\\nc | regexp.cpp | 123 | 41 | 123 | 44 |
 | regexp.cpp:124:25:124:28 | a\\nc | regexp.cpp | 124 | 25 | 124 | 28 |
 | regexp.cpp:125:29:125:32 | a\\nc | regexp.cpp | 125 | 29 | 125 | 32 |
+| regexp.cpp:130:29:130:32 | abc1 | regexp.cpp | 130 | 29 | 130 | 32 |

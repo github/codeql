@@ -123,3 +123,10 @@ std::basic_regex<char16_t> r_loc_uR(uR"(a\nc)");
 std::basic_regex<char32_t> r_loc_UR(UR"(a\nc)");
 std::regex r_loc_Rx(R"x(a\nc)x");
 std::regex r_loc_Rfoo(R"foo(a\nc)foo");
+
+// Composite and stringified string literals
+#define STRINGIFY(str) #str
+#define WRAP(str) "x" #str "x"
+std::regex r_loc_composite("ab" "c1");
+std::regex r_loc_macro1(STRINGIFY(abc2));
+std::regex r_loc_macro2(WRAP(abc3));
