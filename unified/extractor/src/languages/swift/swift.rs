@@ -728,16 +728,16 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         rule!(
             (labeledExpr label: _? @@lbl expression: @val)
+            where ctx.in_pattern
             =>
-            argument {
-                if ctx.in_pattern {
-                    tree!((pattern_element
-                        key: (identifier #{lbl})?
-                        pattern: {val}))
-                } else {
-                    tree!((argument name: (identifier #{lbl})? value: {val}))
-                }
-            }
+            (pattern_element
+                key: (identifier #{lbl})?
+                pattern: {val})
+        ),
+        rule!(
+            (labeledExpr label: _? @@lbl expression: @val)
+            =>
+            (argument name: (identifier #{lbl})? value: {val})
         ),
         // Member access (`list.append`). The `declName` is itself a
         // `declReferenceExpr`; pull its `baseName` out as the member identifier.
