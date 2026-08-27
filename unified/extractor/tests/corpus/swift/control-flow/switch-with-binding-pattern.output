@@ -11,6 +11,8 @@ case T.foo:
 // The parser can't tell the difference.
 case [T].foo:
   print("foo")
+case .foo(let x as T):
+  print(x)
 }
 
 ---
@@ -230,6 +232,61 @@ sourceFile
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                    labeledExpr
+                                      expression:
+                                        patternExpr
+                                          pattern:
+                                            valueBindingPattern
+                                              pattern:
+                                                expressionPattern
+                                                  expression:
+                                                    asExpr
+                                                      expression:
+                                                        patternExpr
+                                                          pattern:
+                                                            identifierPattern
+                                                              identifier: identifier "x"
+                                                      asKeyword: as
+                                                      type:
+                                                        identifierType
+                                                          name: identifier "T"
+                                              bindingSpecifier: let
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "foo"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "x"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
               subject:
                 declReferenceExpr
                   baseName: identifier "shape"
@@ -357,3 +414,32 @@ top_level
                           value:
                             string_interpolation_expr
                               element: string_literal "foo"
+            switch_case
+              pattern:
+                constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "foo"
+                  element:
+                    pattern_element
+                      pattern:
+                        type_test_pattern
+                          pattern:
+                            name_pattern
+                              identifier: identifier "x"
+                          type:
+                            named_type_expr
+                              name: identifier "T"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "x"

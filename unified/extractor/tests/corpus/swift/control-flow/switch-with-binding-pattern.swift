@@ -11,4 +11,6 @@ case T.foo:
 // The parser can't tell the difference.
 case [T].foo:
   print("foo")
+case .foo(let x as T):
+  print(x)
 }

@@ -1097,8 +1097,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((catchClause body: @body) => (catch_clause body: {body})),
         // As expression (type cast) — as?, as!
         rule!((asExpr expression: @val questionOrExclamationMark: _? @@mark type: @ty) => type_cast_expr {
-            let op = format!("as{}", mark.map(|m| ctx.source_text(m)).unwrap_or_default());
-            tree!((type_cast_expr expr: {val} operator: (infix_operator #{op}) type: {ty}))
+            if ctx.in_pattern {
+                tree!((type_test_pattern pattern: {val} type: {ty}))
+            } else {
+                let op = format!("as{}", mark.map(|m| ctx.source_text(m)).unwrap_or_default());
+                tree!((type_cast_expr expr: {val} operator: (infix_operator #{op}) type: {ty}))
+            }
         }),
         // Check expression (`x is T`) → type_test_expr
         rule!((isExpr expression: @val type: @ty) => (type_test_expr expr: {val} operator: (infix_operator "is") type: {ty})),
