@@ -246,17 +246,35 @@ private class SummarizedCallableWithCallback extends SummarizedCallable::Range {
 
 private class FlowSourceFromModel extends FlowSource::Range {
   private string path;
+  private string output_;
+  private string kind_;
+  private Provenance provenance_;
+  private QlBuiltins::ExtensionId madId;
 
   FlowSourceFromModel() {
-    sourceModel(path, _, _, _, _) and
-    this.getCanonicalPath() = path
+    exists(string output, string kind, Function f, Provenance p |
+      sourceModel(path, output, kind, p, madId) and
+      f.getCanonicalPath() = path
+    |
+      output_ = output and
+      kind_ = kind and
+      (
+        this = f and
+        provenance_ = p
+        or
+        this.implements(f) and
+        not this.getCanonicalPath() = path and
+        this.getCanonicalPath().matches("<_ as %") and
+        provenance_ = "hq-generated"
+      )
+    )
   }
 
   override predicate isSource(string output, string kind, Provenance provenance, string model) {
-    exists(QlBuiltins::ExtensionId madId |
-      sourceModel(path, output, kind, provenance, madId) and
-      model = "MaD:" + madId.toString()
-    ) and
+    output = output_ and
+    kind = kind_ and
+    provenance = provenance_ and
+    model = "MaD:" + madId.toString() and
     // Only apply generated models when no neutral model exists
     // (the shared code only applies neutral models to summaries at present)
     not (
@@ -268,17 +286,35 @@ private class FlowSourceFromModel extends FlowSource::Range {
 
 private class FlowSinkFromModel extends FlowSink::Range {
   private string path;
+  private string input_;
+  private string kind_;
+  private Provenance provenance_;
+  private QlBuiltins::ExtensionId madId;
 
   FlowSinkFromModel() {
-    sinkModel(path, _, _, _, _) and
-    this.getCanonicalPath() = path
+    exists(string input, string kind, Function f, Provenance p |
+      sinkModel(path, input, kind, p, madId) and
+      f.getCanonicalPath() = path
+    |
+      input_ = input and
+      kind_ = kind and
+      (
+        this = f and
+        provenance_ = p
+        or
+        this.implements(f) and
+        not this.getCanonicalPath() = path and
+        this.getCanonicalPath().matches("<_ as %") and
+        provenance_ = "hq-generated"
+      )
+    )
   }
 
   override predicate isSink(string input, string kind, Provenance provenance, string model) {
-    exists(QlBuiltins::ExtensionId madId |
-      sinkModel(path, input, kind, provenance, madId) and
-      model = "MaD:" + madId.toString()
-    ) and
+    input = input_ and
+    kind = kind_ and
+    provenance = provenance_ and
+    model = "MaD:" + madId.toString() and
     // Only apply generated models when no neutral model exists
     // (the shared code only applies neutral models to summaries at present)
     not (
@@ -290,35 +326,74 @@ private class FlowSinkFromModel extends FlowSink::Range {
 
 private class FlowBarrierFromModel extends FlowBarrier::Range {
   private string path;
+  private string output_;
+  private string kind_;
+  private Provenance provenance_;
+  private QlBuiltins::ExtensionId madId;
 
   FlowBarrierFromModel() {
-    barrierModel(path, _, _, _, _) and
-    this.getCanonicalPath() = path
+    exists(string output, string kind, Function f, Provenance p |
+      barrierModel(path, output, kind, p, madId) and
+      f.getCanonicalPath() = path
+    |
+      output_ = output and
+      kind_ = kind and
+      (
+        this = f and
+        provenance_ = p
+        or
+        this.implements(f) and
+        not this.getCanonicalPath() = path and
+        this.getCanonicalPath().matches("<_ as %") and
+        provenance_ = "hq-generated"
+      )
+    )
   }
 
   override predicate isBarrier(string output, string kind, Provenance provenance, string model) {
-    exists(QlBuiltins::ExtensionId madId |
-      barrierModel(path, output, kind, provenance, madId) and
-      model = "MaD:" + madId.toString()
-    )
+    output = output_ and
+    kind = kind_ and
+    provenance = provenance_ and
+    model = "MaD:" + madId.toString()
   }
 }
 
 private class FlowBarrierGuardFromModel extends FlowBarrierGuard::Range {
   private string path;
+  private string input_;
+  private string acceptingValue_;
+  private string kind_;
+  private Provenance provenance_;
+  private QlBuiltins::ExtensionId madId;
 
   FlowBarrierGuardFromModel() {
-    barrierGuardModel(path, _, _, _, _, _) and
-    this.getCanonicalPath() = path
+    exists(string input, string acceptingValue, string kind, Function f, Provenance p |
+      barrierGuardModel(path, input, acceptingValue, kind, p, madId) and
+      f.getCanonicalPath() = path
+    |
+      input_ = input and
+      acceptingValue_ = acceptingValue and
+      kind_ = kind and
+      (
+        this = f and
+        provenance_ = p
+        or
+        this.implements(f) and
+        not this.getCanonicalPath() = path and
+        this.getCanonicalPath().matches("<_ as %") and
+        provenance_ = "hq-generated"
+      )
+    )
   }
 
   override predicate isBarrierGuard(
     string input, string acceptingValue, string kind, Provenance provenance, string model
   ) {
-    exists(QlBuiltins::ExtensionId madId |
-      barrierGuardModel(path, input, acceptingValue, kind, provenance, madId) and
-      model = "MaD:" + madId.toString()
-    )
+    input = input_ and
+    acceptingValue = acceptingValue_ and
+    kind = kind_ and
+    provenance = provenance_ and
+    model = "MaD:" + madId.toString()
   }
 }
 

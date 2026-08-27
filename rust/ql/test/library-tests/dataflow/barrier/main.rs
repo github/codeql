@@ -46,3 +46,31 @@ fn with_barrier_guard() {
         sink(s);
     }
 }
+
+trait MyTraitBarrier {
+    fn sanitize_trait(s: &str) -> &str;
+    fn verify_safe_trait(s: &str) -> bool;
+}
+
+impl<T> MyTraitBarrier for T {
+    fn sanitize_trait(s: &str) -> &str {
+        sanitize(s)
+    }
+
+    fn verify_safe_trait(s: &str) -> bool {
+        verify_safe(s)
+    }
+}
+
+fn with_trait_barrier() {
+    let s = source(1);
+    let s = <()>::sanitize_trait(s);
+    sink(s);
+}
+
+fn with_trait_barrier_guard() {
+    let s = source(1);
+    if <()>::verify_safe_trait(s) {
+        sink(s);
+    }
+}

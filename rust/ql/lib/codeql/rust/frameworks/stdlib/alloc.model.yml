@@ -15,6 +15,7 @@ extensions:
       - ["alloc::alloc::realloc", "Argument[2]", "alloc-size", "manual"]
       - ["core::alloc::global::GlobalAlloc::alloc", "Argument[0]", "alloc-layout", "manual"]
       - ["core::alloc::global::GlobalAlloc::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["core::alloc::global::GlobalAlloc::realloc", "Argument[2]", "alloc-size", "manual"]
       - ["core::alloc::Allocator::allocate", "Argument[0]", "alloc-layout", "manual"]
       - ["core::alloc::Allocator::allocate_zeroed", "Argument[0]", "alloc-layout", "manual"]
       - ["core::alloc::Allocator::grow", "Argument[2]", "alloc-layout", "manual"]
