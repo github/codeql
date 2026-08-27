@@ -56,7 +56,6 @@ pub(crate) fn reconstruct(
     input: &tt::TopSubtree,
     call_site: Span,
 ) -> Option<tt::TopSubtree> {
-    let (writer, content) = split_arguments(wrap, input)?;
     let emitter = Emitter {
         call_site,
         format_args_parens: input.view().top_subtree().delimiter,
@@ -64,13 +63,14 @@ pub(crate) fn reconstruct(
 
     let mut builder = tt::TopSubtreeBuilder::new(tt::Delimiter::invisible_spanned(call_site));
     match wrap {
-        Wrap::Bare => emitter.push_format_args(&mut builder, content),
+        Wrap::Bare => emitter.push_format_args(&mut builder, input.view().token_trees()),
         Wrap::Call(path) => {
             emitter.push_path(&mut builder, path);
-            emitter.push_parenthesized_format_args(&mut builder, content);
+            emitter.push_parenthesized_format_args(&mut builder, input.view().token_trees());
         }
         Wrap::WriteMethod => {
-            builder.extend_with_tt(writer.expect("write! split always yields a writer"));
+            let (writer, content) = split_arguments(input)?;
+            builder.extend_with_tt(writer);
             builder.push(emitter.punct('.', tt::Spacing::Alone));
             builder.push(emitter.ident("write_fmt"));
             emitter.push_parenthesized_format_args(&mut builder, content);
@@ -82,12 +82,8 @@ pub(crate) fn reconstruct(
 /// Splits the macro argument list into the leading writer (for `write!`/`writeln!`,
 /// everything up to the first top-level comma) and the format arguments.
 fn split_arguments<'a>(
-    wrap: Wrap,
     input: &'a tt::TopSubtree,
-) -> Option<(Option<tt::TokenTreesView<'a>>, tt::TokenTreesView<'a>)> {
-    if wrap != Wrap::WriteMethod {
-        return Some((None, input.view().token_trees()));
-    }
+) -> Option<(tt::TokenTreesView<'a>, tt::TokenTreesView<'a>)> {
     let mut iter = input.view().iter();
     let start = iter.savepoint();
     let mut found_comma = false;
@@ -105,7 +101,7 @@ fn split_arguments<'a>(
     }
     let writer = iter.from_savepoint(start);
     iter.next(); // consume the comma
-    Some((Some(writer), iter.remaining()))
+    Some((writer, iter.remaining()))
 }
 
 /// Emits the synthesized tokens, tagging them with the macro call site span.
