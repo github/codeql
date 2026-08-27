@@ -3,3 +3,6 @@
 - apply: security-extended-selectors.yml
   from: codeql/suite-helpers
 - apply: codeql-suites/exclude-slow-queries.yml
+# CWE-120: MMIO/DMA unsanitized memcpy (also selected by metadata; explicit for review)
+- include:
+    id: cpp/mmio-unsanitized-memcpy
