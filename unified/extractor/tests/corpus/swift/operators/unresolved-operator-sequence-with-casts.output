@@ -117,8 +117,7 @@ top_level
               stmt:
                 unresolved_operator_sequence
                   element:
-                    name_expr
-                      identifier: identifier "_"
+                    ignore_pattern "_"
                     infix_operator "="
                     name_expr
                       identifier: identifier "a"
@@ -129,8 +128,7 @@ top_level
                       identifier: identifier "b"
                 unresolved_operator_sequence
                   element:
-                    name_expr
-                      identifier: identifier "_"
+                    ignore_pattern "_"
                     infix_operator "="
                     name_expr
                       identifier: identifier "a"

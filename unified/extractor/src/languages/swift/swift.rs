@@ -277,11 +277,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `reduce(0, +)`), are both `declReferenceExpr`; its `baseName` is the
         // referenced identifier / operator symbol.
         rule!((declReferenceExpr baseName: @name) => (name_expr identifier: (identifier #{name}))),
-        // A discard `_` used as an expression — e.g. the target of a discarding
-        // assignment `_ = x`. swift-syntax models it as a `discardAssignmentExpr`;
-        // the target AST has no expression-level discard (only `ignore_pattern`,
-        // which is a pattern), so it becomes a `name_expr` over the `_` token.
-        rule!((discardAssignmentExpr wildcard: @@w) => (name_expr identifier: (identifier #{w}))),
+        // A discard `_` used as the target of an assignment becomes an `ignore_pattern`.
+        rule!((discardAssignmentExpr wildcard: @@w) => (ignore_pattern #{w})),
         // A generic specialization in expression position (`C<Foo>`,
         // `Array<Int>`) is represented by swift-syntax as a
         // `genericSpecializationExpr`. When used as a call target
@@ -628,9 +625,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // handling in the future. (Redundant with the catch-all fallback, but
         // kept as a signpost.)
         rule!((isTypePattern) => (unsupported_node)),
-        // A wildcard *binding* pattern (`let _ = x`, `for _ in xs`). swift-syntax
-        // models this as a `wildcardPattern`, distinct from the `_` match form
-        // handled by the context-aware `discardAssignmentExpr` rule.
+        // A wildcard *binding* pattern (`let _ = x`, `for _ in xs`).
         rule!((wildcardPattern) => (ignore_pattern)),
         // An expression pattern only establishes pattern context; its child
         // determines the concrete pattern shape.
@@ -779,14 +774,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         rule!(
-            (labeledExpr label: _? @@lbl expression: (patternExpr pattern: @p))
+            (patternExpr pattern: @@p)
             =>
-            (pattern_element key: (identifier #{lbl})? pattern: {p})
-        ),
-        rule!(
-            (labeledExpr label: _? @@lbl expression: (discardAssignmentExpr) @@wildcard)
-            =>
-            (pattern_element key: (identifier #{lbl})? pattern: (ignore_pattern #{wildcard}))
+            pattern { translate_pattern(&mut ctx, p)? }
         ),
         rule!(
             (labeledExpr label: _? @@lbl expression: @val)
