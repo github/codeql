@@ -37,26 +37,34 @@ class RustEscapeTest(unittest.TestCase):
         self.assertEqual(rust_to_python_escapes(r'"\01"'), r'"\x001"')
 
     def test_every_escape_shape_round_trips(self):
-        # Rust's `Debug for str` only ever emits these shapes. Checked exhaustively against every
-        # Unicode scalar value, each also paired with every printable ASCII neighbour.
-        for rendered, expected in [
-            (r'"\0"', "\x00"),
-            (r'"\t"', "\t"),
-            (r'"\n"', "\n"),
-            (r'"\r"', "\r"),
-            (r'"\\"', "\\"),
-            (r'"\""', '"'),
-            (r'"\u{1}"', "\u0001"),
-            (r'"\u{1f}"', "\u001f"),
-            (r'"\u{300}"', "\u0300"),
-            (r'"\u{fe0f}"', "\ufe0f"),
-            (r'"\u{e0100}"', "\U000e0100"),
-            (r'"\u{10fffe}"', "\U0010fffe"),
+        # Rust's `Debug for str` only ever emits these escape shapes. Check that each round-trips
+        # with every printable ASCII neighbour before and after it.
+        for escape_shape, expected in [
+            (r'\0', "\x00"),
+            (r'\t', "\t"),
+            (r'\n', "\n"),
+            (r'\r', "\r"),
+            (r'\\', "\\"),
+            (r'\"', '"'),
+            (r'\u{1}', "\u0001"),
+            (r'\u{1f}', "\u001f"),
+            (r'\u{300}', "\u0300"),
+            (r'\u{fe0f}', "\ufe0f"),
+            (r'\u{e0100}', "\U000e0100"),
+            (r'\u{10fffe}', "\U0010fffe"),
         ]:
-            for neighbour in ["", "0", "7", "9", "f", "u", "{"]:
-                with self.subTest(rendered=rendered, neighbour=neighbour):
-                    text = rendered[:-1] + neighbour + '"'
-                    self.assertEqual(literal_eval(rust_to_python_escapes(text)), expected + neighbour)
+            for neighbour in map(chr, range(0x20, 0x7F)):
+                rendered_neighbour = {"\\": r"\\", '"': r'\"'}.get(neighbour, neighbour)
+                for position, text, expected_value in [
+                    ("before", '"' + rendered_neighbour + escape_shape + '"', neighbour + expected),
+                    ("after", '"' + escape_shape + rendered_neighbour + '"', expected + neighbour),
+                ]:
+                    with self.subTest(
+                        escape_shape=escape_shape,
+                        neighbour=neighbour,
+                        position=position,
+                    ):
+                        self.assertEqual(literal_eval(rust_to_python_escapes(text)), expected_value)
 
     def test_evaluate_string_on_reported_value(self):
         # The exact value from https://github.com/github/codeql/issues/22435 that used to raise

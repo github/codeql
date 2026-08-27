@@ -179,7 +179,8 @@ def read_tsg_python_output(path, logger):
 #    variation selector, U+200D zero width joiner and combining accents -- are rendered as `\u{...}`,
 #    a syntax Python does not know at all;
 #  - NUL is rendered as `\0`, which Python reads as the start of an *octal* escape, silently
-#    swallowing up to two more digits (`"\0" + "1"` would decode to `\x01`).
+#    swallowing up to two more digits (NUL followed by `1` is emitted as `"\01"`, which decodes
+#    to `\x01`).
 # Everything else Rust emits (`\t`, `\r`, `\n`, `\\`, `\"`, and unescaped characters) is read back
 # identically by `literal_eval`, as verified exhaustively over every Unicode scalar value.
 _RUST_ESCAPE = re.compile(r"\\(?:u\{([0-9a-fA-F]{1,6})\}|.)", re.DOTALL)
