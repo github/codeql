@@ -1,29 +1,16 @@
 package autobuilder
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/github/codeql-go/extractor/util"
 )
-
-func addMinorVersions(t *testing.T, version util.SemVer, count int) string {
-	t.Helper()
-
-	var major, minor int
-	if _, err := fmt.Sscanf(version.StandardSemVer(), "%d.%d", &major, &minor); err != nil {
-		t.Fatalf("Unable to parse Go version %q: %s", version, err)
-	}
-	return fmt.Sprintf("%d.%d", major, minor+count)
-}
 
 func TestGetVersionToInstall(t *testing.T) {
 	type inputVersions struct {
 		modVersion string
 		envVersion string
 	}
-	versionAboveMax := addMinorVersions(t, maxGoVersion, 1)
-	versionTwoAboveMax := addMinorVersions(t, maxGoVersion, 2)
 	tests := map[inputVersions]string{
 		// getVersionWhenGoModVersionNotFound()
 		{"", ""}:         maxGoVersion.String(),
@@ -33,13 +20,13 @@ func TestGetVersionToInstall(t *testing.T) {
 		{"", "1.20.3"}:   "",
 
 		// getVersionWhenGoModVersionTooHigh()
-		{versionAboveMax, ""}:                    versionAboveMax,
-		{versionAboveMax, "1.1"}:                 versionAboveMax,
-		{versionAboveMax, minGoVersion.String()}: versionAboveMax,
-		{versionAboveMax, maxGoVersion.String()}: versionAboveMax,
-		{versionTwoAboveMax, versionAboveMax}:    versionTwoAboveMax,
-		{versionAboveMax, versionAboveMax}:       "",
-		{versionAboveMax, versionTwoAboveMax}:    "",
+		{"9999.0", ""}:                    "9999.0",
+		{"9999.0", "1.1"}:                 "9999.0",
+		{"9999.0", minGoVersion.String()}: "9999.0",
+		{"9999.0", maxGoVersion.String()}: "9999.0",
+		{"9999.1", "9999.0"}:              "9999.1",
+		{"9999.0", "9999.0"}:              "",
+		{"9999.0", "9999.1"}:              "",
 
 		// getVersionWhenGoModVersionTooLow()
 		{"0.0", ""}:       minGoVersion.String(),
