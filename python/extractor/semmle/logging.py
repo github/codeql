@@ -65,6 +65,14 @@ def write_message_with_proc(level, proc_id, text):
 
 _logging_process = None
 
+def format_message(fmt, args):
+    '''Applies `%`-formatting to `fmt`, but only when there are arguments to interpolate.
+
+    This mirrors the standard library's `logging` behaviour, and means that a message that has
+    already been formatted -- and may therefore contain arbitrary `%` directives coming from the
+    code being analysed -- is passed through unharmed.'''
+    return fmt % args if args else fmt
+
 def stop():
     _logging_process.join()
 
@@ -105,7 +113,7 @@ class Logger(object):
         '''Log a message in a process safe fashion.
         Message will be of the form [level] fmt%args.'''
         if level <= self.level:
-            txt = fmt % args
+            txt = format_message(fmt, args)
             try:
                 self.queue.put((self.color | level, self.proc_id, txt), False)
             except Exception:
