@@ -276,9 +276,19 @@ abstract class LabelCheck extends ControlCheck {
   }
 }
 
+/**
+ * This type represents deployment environments that may serve as sanitizers for
+ * various vunlerabilities.
+ *
+ * It is possible to customize which deployment environments apply. The default behavior
+ * of this model is for any environment to be considered a sanitizer.
+ * If values are (currently manually/externally) provided in `actions/ql/lib/ext/config/deployment_environment.yml`
+ * then those names will be used to define the valid sanitizer set.
+ * To create a default of "no default saniziter environment" one can add an
+ * empty string to the data array in `deployment_environment.yml`.
+ */
 class EnvironmentCheck extends ControlCheck instanceof Environment {
   EnvironmentCheck() {
-    // if there are any custom tuples use those
     if enabledDeploymentEnvironmentDataModel(_)
     then enabledDeploymentEnvironmentDataModel(this.(Environment).getName())
     else this instanceof Environment
