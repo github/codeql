@@ -3,7 +3,8 @@
  */
 
 import csharp
-import Taint::PathGraph
+import utils.test.InlineFlowTest
+import PathGraph
 
 module TaintConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
@@ -21,9 +22,9 @@ module TaintConfig implements DataFlow::ConfigSig {
   }
 }
 
-module Taint = TaintTracking::Global<TaintConfig>;
+import TaintFlowTest<TaintConfig>
 
-from Taint::PathNode source, Taint::PathNode sink
-where Taint::flowPath(source, sink)
+from PathNode source, PathNode sink
+where flowPath(source, sink)
 select sink.getNode(), source, sink, "This path depends on an $@.", source.getNode(),
   "ODataParameters value"
