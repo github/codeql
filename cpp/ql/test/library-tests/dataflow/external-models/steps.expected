@@ -4,6 +4,21 @@
 | azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument |
 | azure.cpp:287:79:287:98 | call to string | azure.cpp:287:62:287:99 | call to Url |
 | azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value |
+| protobuf.cpp:76:22:76:25 | *data | protobuf.cpp:76:2:76:4 | ParseFromString output argument |
+| protobuf.cpp:78:2:78:4 | *msg | protobuf.cpp:78:23:78:25 | SerializeToArray output argument |
+| protobuf.cpp:85:21:85:31 | *call to data | protobuf.cpp:85:2:85:4 | ParseFromArray output argument |
+| protobuf.cpp:87:2:87:4 | *msg | protobuf.cpp:87:23:87:25 | SerializeToArray output argument |
+| protobuf.cpp:96:22:96:25 | *data | protobuf.cpp:96:2:96:4 | ParseFromString output argument |
+| protobuf.cpp:98:23:98:25 | *msg | protobuf.cpp:98:27:98:43 | call to SerializeAsString |
+| protobuf.cpp:98:23:98:45 | call to SerializeAsString | protobuf.cpp:98:2:98:5 | ParseFromString output argument |
+| protobuf.cpp:100:2:100:5 | *msg2 | protobuf.cpp:100:24:100:26 | SerializeToArray output argument |
+| protobuf.cpp:109:22:109:25 | *data | protobuf.cpp:109:2:109:4 | MergeFromString output argument |
+| protobuf.cpp:110:29:110:32 | *data | protobuf.cpp:110:2:110:4 | ParsePartialFromString output argument |
+| protobuf.cpp:113:23:113:25 | *& ... | protobuf.cpp:113:2:113:4 | ParseFromIstream output argument |
+| protobuf.cpp:116:2:116:4 | *msg | protobuf.cpp:116:24:116:27 | SerializeToString output argument |
+| protobuf.cpp:117:2:117:4 | *msg | protobuf.cpp:117:31:117:34 | SerializePartialToString output argument |
+| protobuf.cpp:118:2:118:4 | *msg | protobuf.cpp:118:21:118:24 | AppendToString output argument |
+| protobuf.cpp:121:2:121:4 | *msg | protobuf.cpp:121:25:121:27 | SerializeToOstream output argument |
 | test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual |
 | test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated |
 | test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body |

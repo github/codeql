@@ -1,0 +1,58 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      # Flow summaries for the Protocol Buffers C++ API. All of these methods are declared on
+      # `google::protobuf::MessageLite`; `subtypes` covers `Message` and every generated message.
+      #
+      # File-descriptor variants (`{Parse,Serialize}*FromFileDescriptor`) are intentionally omitted:
+      # the descriptor is an `int`, not a data buffer, so there is no buffer argument to model.
+
+      # Deserialization: the encoded input (`Argument[*0]`) taints the message (`this`).
+      - ["google::protobuf", "MessageLite", True, "ParseFromString", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParsePartialFromString", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergeFromString", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergePartialFromString", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParseFromArray", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParsePartialFromArray", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParseFromCord", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParsePartialFromCord", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergeFromCord", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergePartialFromCord", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParseFromIstream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParsePartialFromIstream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParseFromZeroCopyStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParsePartialFromZeroCopyStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParseFromBoundedZeroCopyStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParsePartialFromBoundedZeroCopyStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergeFromBoundedZeroCopyStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergePartialFromBoundedZeroCopyStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParseFromCodedStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParsePartialFromCodedStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergeFromCodedStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergePartialFromCodedStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+
+      # Serialization into an output buffer/stream: the message (`this`) taints `Argument[*0]`.
+      - ["google::protobuf", "MessageLite", True, "SerializeToString", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializePartialToString", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "AppendToString", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "AppendPartialToString", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializeToArray", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializePartialToArray", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializeToCord", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializePartialToCord", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "AppendToCord", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "AppendPartialToCord", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializeToOstream", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializePartialToOstream", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializeToZeroCopyStream", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializePartialToZeroCopyStream", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializeToCodedStream", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializePartialToCodedStream", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+
+      # Serialization returning the bytes: the message (`this`) taints the (by-value) return value.
+      - ["google::protobuf", "MessageLite", True, "SerializeAsString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializePartialAsString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializeAsCord", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "SerializePartialAsCord", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

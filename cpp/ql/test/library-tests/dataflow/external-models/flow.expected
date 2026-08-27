@@ -96,6 +96,10 @@ models
 | 95 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
 | 96 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
 | 97 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 98 | Summary: google::protobuf; MessageLite; true; ParseFromArray; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 99 | Summary: google::protobuf; MessageLite; true; ParseFromString; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 100 | Summary: google::protobuf; MessageLite; true; SerializeAsString; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 101 | Summary: google::protobuf; MessageLite; true; SerializeToArray; ; ; Argument[-1]; Argument[*0]; taint; manual |
 edges
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:56  |
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
@@ -144,6 +148,26 @@ edges
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:295:10:295:20 | contentType | azure.cpp:295:10:295:20 | contentType | provenance |  |
+| protobuf.cpp:75:33:75:40 | call to source | protobuf.cpp:76:22:76:25 | *data | provenance | TaintFunction |
+| protobuf.cpp:76:2:76:4 | ParseFromString output argument | protobuf.cpp:78:2:78:4 | *msg | provenance |  |
+| protobuf.cpp:76:22:76:25 | *data | protobuf.cpp:76:2:76:4 | ParseFromString output argument | provenance | MaD:99 |
+| protobuf.cpp:78:2:78:4 | *msg | protobuf.cpp:78:23:78:25 | SerializeToArray output argument | provenance | MaD:101 |
+| protobuf.cpp:78:23:78:25 | SerializeToArray output argument | protobuf.cpp:79:7:79:10 | * ... | provenance |  |
+| protobuf.cpp:84:33:84:40 | call to source | protobuf.cpp:85:21:85:31 | *call to data | provenance | TaintFunction |
+| protobuf.cpp:85:2:85:4 | ParseFromArray output argument | protobuf.cpp:87:2:87:4 | *msg | provenance |  |
+| protobuf.cpp:85:21:85:31 | *call to data | protobuf.cpp:85:2:85:4 | ParseFromArray output argument | provenance | MaD:98 |
+| protobuf.cpp:87:2:87:4 | *msg | protobuf.cpp:87:23:87:25 | SerializeToArray output argument | provenance | MaD:101 |
+| protobuf.cpp:87:23:87:25 | SerializeToArray output argument | protobuf.cpp:88:7:88:10 | * ... | provenance |  |
+| protobuf.cpp:95:33:95:40 | call to source | protobuf.cpp:96:22:96:25 | *data | provenance | TaintFunction |
+| protobuf.cpp:96:2:96:4 | ParseFromString output argument | protobuf.cpp:98:23:98:25 | *msg | provenance |  |
+| protobuf.cpp:96:22:96:25 | *data | protobuf.cpp:96:2:96:4 | ParseFromString output argument | provenance | MaD:99 |
+| protobuf.cpp:98:2:98:5 | ParseFromString output argument | protobuf.cpp:100:2:100:5 | *msg2 | provenance |  |
+| protobuf.cpp:98:23:98:25 | *msg | protobuf.cpp:98:27:98:43 | call to SerializeAsString | provenance | MaD:100 |
+| protobuf.cpp:98:23:98:45 | call to SerializeAsString | protobuf.cpp:98:2:98:5 | ParseFromString output argument | provenance | MaD:99 |
+| protobuf.cpp:98:27:98:43 | call to SerializeAsString | protobuf.cpp:98:23:98:45 | call to SerializeAsString | provenance |  |
+| protobuf.cpp:98:27:98:43 | call to SerializeAsString | protobuf.cpp:98:27:98:43 | call to SerializeAsString | provenance |  |
+| protobuf.cpp:100:2:100:5 | *msg2 | protobuf.cpp:100:24:100:26 | SerializeToArray output argument | provenance | MaD:101 |
+| protobuf.cpp:100:24:100:26 | SerializeToArray output argument | protobuf.cpp:101:7:101:10 | * ... | provenance |  |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:48  |
@@ -532,6 +556,29 @@ nodes
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
+| protobuf.cpp:75:33:75:40 | call to source | semmle.label | call to source |
+| protobuf.cpp:76:2:76:4 | ParseFromString output argument | semmle.label | ParseFromString output argument |
+| protobuf.cpp:76:22:76:25 | *data | semmle.label | *data |
+| protobuf.cpp:78:2:78:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:78:23:78:25 | SerializeToArray output argument | semmle.label | SerializeToArray output argument |
+| protobuf.cpp:79:7:79:10 | * ... | semmle.label | * ... |
+| protobuf.cpp:84:33:84:40 | call to source | semmle.label | call to source |
+| protobuf.cpp:85:2:85:4 | ParseFromArray output argument | semmle.label | ParseFromArray output argument |
+| protobuf.cpp:85:21:85:31 | *call to data | semmle.label | *call to data |
+| protobuf.cpp:87:2:87:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:87:23:87:25 | SerializeToArray output argument | semmle.label | SerializeToArray output argument |
+| protobuf.cpp:88:7:88:10 | * ... | semmle.label | * ... |
+| protobuf.cpp:95:33:95:40 | call to source | semmle.label | call to source |
+| protobuf.cpp:96:2:96:4 | ParseFromString output argument | semmle.label | ParseFromString output argument |
+| protobuf.cpp:96:22:96:25 | *data | semmle.label | *data |
+| protobuf.cpp:98:2:98:5 | ParseFromString output argument | semmle.label | ParseFromString output argument |
+| protobuf.cpp:98:23:98:25 | *msg | semmle.label | *msg |
+| protobuf.cpp:98:23:98:45 | call to SerializeAsString | semmle.label | call to SerializeAsString |
+| protobuf.cpp:98:27:98:43 | call to SerializeAsString | semmle.label | call to SerializeAsString |
+| protobuf.cpp:98:27:98:43 | call to SerializeAsString | semmle.label | call to SerializeAsString |
+| protobuf.cpp:100:2:100:5 | *msg2 | semmle.label | *msg2 |
+| protobuf.cpp:100:24:100:26 | SerializeToArray output argument | semmle.label | SerializeToArray output argument |
+| protobuf.cpp:101:7:101:10 | * ... | semmle.label | * ... |
 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | semmle.label | *ymlStepGenerated_with_body |
 | test.cpp:7:47:7:52 | value2 | semmle.label | value2 |
 | test.cpp:7:64:7:69 | value2 | semmle.label | value2 |
