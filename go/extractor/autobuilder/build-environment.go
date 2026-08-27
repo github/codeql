@@ -83,54 +83,63 @@ func getVersionWhenGoModVersionNotFound(v versionInfo) (msg string, version util
 func getVersionWhenGoModVersionTooHigh(v versionInfo) (msg string, version util.SemVer) {
 	if v.goEnvVersion == nil {
 		// The version in the `go.mod` file is above the supported range. There is no Go version
-		// installed. We install the maximum supported version as a best effort.
+		// installed. We request the version required by the project.
 		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion.String() +
 			") is above the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
-			"). No version of Go installed. Requesting the maximum supported version of Go (" +
-			maxGoVersion.String() + ")."
-		version = maxGoVersion
+			"). No version of Go installed. Requesting the version required by the project (" +
+			v.goModVersion.String() + ")."
+		version = v.goModVersion
 		diagnostics.EmitGoModVersionTooHighAndNoGoEnv(msg)
-	} else if aboveSupportedRange(v.goEnvVersion) {
+	} else if !v.goModVersion.IsNewerThan(v.goEnvVersion) {
 		// The version in the `go.mod` file is above the supported range. The version of Go that
-		// is installed is above the supported range. We do not install a version of Go.
+		// is installed is high enough for the project. We do not install a version of Go.
 		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion.String() +
 			") is above the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
 			"). The version of Go installed in the environment (" + v.goEnvVersion.String() +
-			") is above the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
-			"). Not requesting any version of Go."
+			") is high enough for the version required by the project. Not requesting any version of Go."
 		version = nil
+		diagnostics.EmitGoModVersionTooHighAndEnvVersionTooHigh(msg)
+	} else if aboveSupportedRange(v.goEnvVersion) {
+		// The installed version is above the supported range, but lower than the version required
+		// by the project. We request the version required by the project.
+		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion.String() +
+			") is above the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
+			"). The version of Go installed in the environment (" + v.goEnvVersion.String() +
+			") is lower than the version required by the project. Requesting the version required by the project (" +
+			v.goModVersion.String() + ")."
+		version = v.goModVersion
 		diagnostics.EmitGoModVersionTooHighAndEnvVersionTooHigh(msg)
 	} else if belowSupportedRange(v.goEnvVersion) {
 		// The version in the `go.mod` file is above the supported range. The version of Go that
-		// is installed is below the supported range. We install the maximum supported version as
-		// a best effort.
+		// is installed is below the supported range. We request the version required by the project.
 		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion.String() +
 			") is above the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
 			"). The version of Go installed in the environment (" + v.goEnvVersion.String() +
 			") is below the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
-			"). Requesting the maximum supported version of Go (" + maxGoVersion.String() + ")."
-		version = maxGoVersion
+			"). Requesting the version required by the project (" + v.goModVersion.String() + ")."
+		version = v.goModVersion
 		diagnostics.EmitGoModVersionTooHighAndEnvVersionTooLow(msg)
 	} else if maxGoVersion.IsNewerThan(v.goEnvVersion) {
 		// The version in the `go.mod` file is above the supported range. The version of Go that
-		// is installed is supported and below the maximum supported version. We install the
-		// maximum supported version as a best effort.
+		// is installed is supported and below the maximum supported version. We request the version
+		// required by the project.
 		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion.String() +
 			") is above the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
 			"). The version of Go installed in the environment (" + v.goEnvVersion.String() +
 			") is below the maximum supported version (" + maxGoVersion.String() +
-			"). Requesting the maximum supported version of Go (" + maxGoVersion.String() + ")."
-		version = maxGoVersion
+			"). Requesting the version required by the project (" + v.goModVersion.String() + ")."
+		version = v.goModVersion
 		diagnostics.EmitGoModVersionTooHighAndEnvVersionBelowMax(msg)
 	} else {
 		// The version in the `go.mod` file is above the supported range. The version of Go that
-		// is installed is the maximum supported version. We do not install a version of Go.
+		// is installed is the maximum supported version. We request the version required by the
+		// project.
 		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion.String() +
 			") is above the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
 			"). The version of Go installed in the environment (" + v.goEnvVersion.String() +
 			") is the maximum supported version (" + maxGoVersion.String() +
-			"). Not requesting any version of Go."
-		version = nil
+			"). Requesting the version required by the project (" + v.goModVersion.String() + ")."
+		version = v.goModVersion
 		diagnostics.EmitGoModVersionTooHighAndEnvVersionMax(msg)
 	}
 
@@ -218,16 +227,17 @@ func getVersionWhenGoModVersionSupported(v versionInfo) (msg string, version uti
 
 // Check the versions of Go found in the environment and in the `go.mod` file, and return a
 // version to install. If the version is the empty string then no installation is required.
-// We never return a version of Go that is outside of the supported range.
+// If the version required by the project is above the supported range, we return that version when
+// it is newer than the installed version.
 //
 // +-----------------------+-----------------------+-----------------------+-----------------------------------------------------+------------------------------------------------+
 // | Found in go.mod >     | *None*                | *Below min supported* | *In supported range*                                | *Above max supported                           |
 // | Installed \/          |                       |                       |                                                     |                                                |
 // |-----------------------|-----------------------|-----------------------|-----------------------------------------------------|------------------------------------------------|
-// | *None*                | Install max supported | Install min supported | Install version from go.mod                         | Install max supported                          |
-// | *Below min supported* | Install max supported | Install min supported | Install version from go.mod                         | Install max supported                          |
-// | *In supported range*  | No action             | No action             | Install version from go.mod if newer than installed | Install max supported if newer than installed  |
-// | *Above max supported* | Install max supported | Install min supported | Install version from go.mod                         | No action                                      |
+// | *None*                | Install max supported | Install min supported | Install version from go.mod                         | Install version from go.mod                    |
+// | *Below min supported* | Install max supported | Install min supported | Install version from go.mod                         | Install version from go.mod                    |
+// | *In supported range*  | No action             | No action             | Install version from go.mod if newer than installed | Install version from go.mod                    |
+// | *Above max supported* | Install max supported | Install min supported | Install version from go.mod                         | Install version from go.mod if newer than installed |
 // +-----------------------+-----------------------+-----------------------+-----------------------------------------------------+------------------------------------------------+
 func getVersionToInstall(v versionInfo) (msg string, version util.SemVer) {
 	if v.goModVersion == nil {
