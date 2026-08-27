@@ -466,7 +466,7 @@ named:
   # In Swift: `if let y = x as? Foo` is a pattern_guard_expr containing a type_test_pattern
   # In Java: `x instanceof Foo y` is a type_test_pattern wrapping a name_pattern
   type_test_pattern:
-    pattern: pattern
+    pattern?: pattern
     type: type_expr
 
   # A '*' pattern that imports all members of the incoming value into the local scope

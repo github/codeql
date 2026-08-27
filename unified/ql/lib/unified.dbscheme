@@ -1013,9 +1013,13 @@ unified_type_test_expr_def(
   int type__: @unified_type_expr ref
 );
 
+unified_type_test_pattern_pattern(
+  unique int unified_type_test_pattern: @unified_type_test_pattern ref,
+  unique int pattern: @unified_pattern ref
+);
+
 unified_type_test_pattern_def(
   unique int id: @unified_type_test_pattern,
-  int pattern: @unified_pattern ref,
   int type__: @unified_type_expr ref
 );
 

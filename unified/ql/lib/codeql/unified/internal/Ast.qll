@@ -1608,15 +1608,14 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "TypeTestPattern" }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_type_test_pattern_def(this, result, _) }
+    final F::Pattern getPattern() { unified_type_test_pattern_pattern(this, result) }
 
     /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_type_test_pattern_def(this, _, result) }
+    final F::TypeExpr getType() { unified_type_test_pattern_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
-      unified_type_test_pattern_def(this, result, _) or
-      unified_type_test_pattern_def(this, _, result)
+      unified_type_test_pattern_pattern(this, result) or unified_type_test_pattern_def(this, result)
     }
   }
 
