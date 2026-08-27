@@ -991,19 +991,17 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (call_expr callee: {callee} argument: {args})
         ),
         // ---- Optionals and errors ----
-        // Optional chaining — unwrap the marker
-        rule!((optionalChainingExpr expression: @@inner) => expr {
-            let inner = ctx.translate(inner)?.into_iter().next().ok_or("optional chaining expression has no child")?;
-            if ctx.in_pattern {
-                tree!((constructor_pattern
-                    constructor: (member_access_expr
-                        base: (named_type_expr name: (identifier "Optional"))
-                        member: (identifier "some"))
-                    element: (pattern_element pattern: {inner})))
-            } else {
-                inner
-            }
-        }),
+        // Postfix `?` in a pattern means `Optional.some`. E.g: `(x,y)?` -> `Optional.some((x,y))`
+        rule!((optionalChainingExpr expression: @inner)
+            where ctx.in_pattern =>
+            (constructor_pattern
+                constructor: (member_access_expr
+                    base: (named_type_expr name: (identifier "Optional"))
+                    member: (identifier "some"))
+                element: (pattern_element pattern: {inner}))
+        ),
+        // TODO: handle suffix "?" in expr and type contexts
+        rule!((optionalChainingExpr expression: @inner) => expr { inner }),
         // try/try?/try! expr → unary_expr with operator "try", "try?" or "try!"
         rule!(
             (tryExpr questionOrExclamationMark: _? @@m expression: @e)
