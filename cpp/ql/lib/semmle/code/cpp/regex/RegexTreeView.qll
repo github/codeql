@@ -222,6 +222,11 @@ private module Impl implements RegexTreeViewSig {
         // Find the opening '"'.
         not re instanceof RawStringLiteral and
         result = 1 + min(int i | vt.charAt(i) = "\"")
+        or
+        // No opening '"'.
+        not re instanceof RawStringLiteral and
+        not exists(int i | vt.charAt(i) = "\"") and
+        result = 0
       )
     }
 

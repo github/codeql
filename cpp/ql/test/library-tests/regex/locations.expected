@@ -64,3 +64,5 @@
 | regexp.cpp:124:25:124:28 | a\\nc | regexp.cpp | 124 | 25 | 124 | 28 |
 | regexp.cpp:125:29:125:32 | a\\nc | regexp.cpp | 125 | 29 | 125 | 32 |
 | regexp.cpp:130:29:130:32 | abc1 | regexp.cpp | 130 | 29 | 130 | 32 |
+| regexp.cpp:131:35:131:38 | abc2 | regexp.cpp | 131 | 35 | 131 | 38 |
+| regexp.cpp:132:25:132:30 | xabc3x | regexp.cpp | 132 | 25 | 132 | 30 |
