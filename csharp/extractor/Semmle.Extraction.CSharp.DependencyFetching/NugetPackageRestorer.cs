@@ -127,8 +127,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     compilationInfoContainer.CompilationInfos.Add(("Inherited NuGet feed count", inheritedFeeds.Count.ToString()));
                 }
 
-                var allExplicitReachable = explicitFeeds.Count == feedManager.ReachableExplicitFeeds.Count;
-                EmitUnreachableFeedsDiagnostics(allExplicitReachable);
+                var unreachableExplicitFeeds = explicitFeeds.Except(feedManager.ReachableExplicitFeeds).ToImmutableHashSet();
+                EmitFeedReachabilityDiagnostics(unreachableExplicitFeeds);
             }
 
             try
@@ -535,26 +535,51 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private string SanitizeFeedForLogging(string feed)
+        {
+
+            try
+            {
+                // If the feed is a URL, log only the scheme, host, port, and absolute path to avoid logging sensitive information such as credentials or tokens.
+                var uri = new Uri(feed);
+                var port = uri.IsDefaultPort ? string.Empty : $":{uri.Port}";
+                return $"{uri.Scheme}://{uri.Host}{port}{uri.AbsolutePath}";
+            }
+            catch
+            {
+                return feed;
+            }
+        }
+
         /// <summary>
-        /// If <paramref name="allFeedsReachable"/> is `false`, logs this and emits a diagnostic.
+        /// If <paramref name="unreachableFeeds"/> is not empty, logs this and emits a diagnostic.
         /// Adds a `CompilationInfos` entry either way.
         /// </summary>
-        /// <param name="allFeedsReachable">Whether all feeds were reachable or not.</param>
-        private void EmitUnreachableFeedsDiagnostics(bool allFeedsReachable)
+        /// <param name="unreachableFeeds">The feeds that were not reachable.</param>
+        private void EmitFeedReachabilityDiagnostics(ImmutableHashSet<string> unreachableFeeds)
         {
-            if (!allFeedsReachable)
+            if (unreachableFeeds.Count > 0)
             {
-                logger.LogWarning("Found unreachable NuGet feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.");
+                var orderedUnreachableFeeds = unreachableFeeds
+                    .Select(SanitizeFeedForLogging)
+                    .OrderBy(feed => feed)
+                    .ToList();
+                var unreachableFeedList = string.Join(", ", orderedUnreachableFeeds);
+                logger.LogWarning($"Found unreachable NuGet feeds in C# analysis with build-mode 'none': {unreachableFeedList}. This may cause missing dependencies in the analysis.");
+                compilationInfoContainer.CompilationInfos.Add(("Unreachable NuGet feeds", unreachableFeedList));
                 diagnosticsWriter.AddEntry(new DiagnosticMessage(
                     Language.CSharp,
                     "buildless/unreachable-feed",
-                    "Found unreachable NuGet feed in C# analysis with build-mode 'none'",
+                    "Found unreachable NuGet feeds in C# analysis with build-mode 'none'",
                     visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
-                    markdownMessage: "Found unreachable NuGet feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.",
+                    markdownMessage: string.Format(
+                        "Found unreachable NuGet feeds in C# analysis with build-mode 'none':\n\n{0}\n\nThis may cause missing dependencies in the analysis.",
+                        string.Join("\n", orderedUnreachableFeeds.Select(feed => $"- `{feed}`"))
+                    ),
                     severity: DiagnosticMessage.TspSeverity.Note
                 ));
             }
-            compilationInfoContainer.CompilationInfos.Add(("All NuGet feeds reachable", allFeedsReachable ? "1" : "0"));
+            compilationInfoContainer.CompilationInfos.Add(("All NuGet feeds reachable", unreachableFeeds.Count == 0 ? "1" : "0"));
         }
 
         private void EmitNugetConfigDiagnostics()
