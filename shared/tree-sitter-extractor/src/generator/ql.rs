@@ -332,11 +332,11 @@ impl fmt::Display for Predicate<'_> {
         if self.is_final {
             write!(f, "final ")?;
         }
-        if self.overridden {
-            write!(f, "override ")?;
-        }
         if self.body.is_none() {
             write!(f, "abstract ")?;
+        }
+        if self.overridden {
+            write!(f, "override ")?;
         }
         match &self.return_type {
             None => write!(f, "predicate ")?,

@@ -979,32 +979,18 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     // corresponding predicates on its members becoming `override`s.
     let mut exposed_predicates_cache: BTreeMap<node_types::TypeName, Vec<ql::Predicate<'_>>> =
         BTreeMap::new();
+    let mut exposed_by_class_name: BTreeMap<&str, Vec<ql::Predicate<'_>>> = BTreeMap::new();
     for (type_name, node) in nodes {
         if let node_types::EntryKind::Union { .. } = &node.kind {
-            compute_exposed_predicates(
+            let exposed = compute_exposed_predicates(
                 type_name,
                 nodes,
                 &field_predicates,
                 &mut exposed_predicates_cache,
             );
+            exposed_by_class_name.insert(node.ql_class_name.as_str(), exposed);
         }
     }
-    let exposed_by_class_name: BTreeMap<&str, Vec<ql::Predicate<'_>>> = nodes
-        .iter()
-        .filter_map(|(type_name, node)| {
-            if let node_types::EntryKind::Union { .. } = &node.kind {
-                Some((
-                    node.ql_class_name.as_str(),
-                    exposed_predicates_cache
-                        .get(type_name)
-                        .cloned()
-                        .unwrap_or_default(),
-                ))
-            } else {
-                None
-            }
-        })
-        .collect();
 
     for (type_name, node) in nodes {
         match &node.kind {
