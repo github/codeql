@@ -36,9 +36,9 @@ class ODataActionParametersClass extends Class {
  * -- may hold the value of) an `ODataActionParameters` dictionary.
  */
 private predicate isODataActionParametersValue(Expr e) {
-  e.getType() instanceof ODataActionParametersClass
-  or
-  DataFlow::localExprFlow(any(Expr e0 | isODataActionParametersValue(e0)), e)
+  exists(ParameterAccess e0 | e0.getType() instanceof ODataActionParametersClass |
+    e0 = e or DataFlow::localExprFlow(e0, e)
+  )
 }
 
 /**
