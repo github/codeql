@@ -150,6 +150,20 @@ cargo test
 
 The first build compiles `swift-syntax` and can take several minutes.
 
+## Regenerating the extractor node types
+
+After updating the pinned swift-syntax version, regenerate the unified
+extractor's input schema:
+
+```sh
+../scripts/regenerate-node-types.sh
+```
+
+The script uses swift-syntax's authoritative `SyntaxSupport` definitions and
+requires the local Swift toolchain pinned by [`.swift-version`](.swift-version).
+Review the resulting `extractor/swift_node_types.yml` diff alongside the Swift
+mapping rules. See [`schemagen/README.md`](schemagen/README.md) for details.
+
 ## Building with Bazel (CI)
 
 CI builds this crate hermetically with Bazel. A Swift toolchain is downloaded
