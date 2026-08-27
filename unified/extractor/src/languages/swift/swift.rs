@@ -620,11 +620,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (pattern_element key: (identifier #{label})? pattern: {p})
         ),
-        // A type-casting pattern (`case is T`). Not yet supported, so it is
-        // mapped to `unsupported_node` — an explicit reminder that this needs
-        // handling in the future. (Redundant with the catch-all fallback, but
-        // kept as a signpost.)
-        rule!((isTypePattern) => (unsupported_node)),
+        // A type-casting pattern (`case is T`).
+        rule!((isTypePattern type: @@ty) => (type_test_pattern type: { translate_non_pattern(&mut ctx, ty)? } )),
         // A wildcard *binding* pattern (`let _ = x`, `for _ in xs`).
         rule!((wildcardPattern) => (ignore_pattern)),
         // An expression pattern only establishes pattern context; its child

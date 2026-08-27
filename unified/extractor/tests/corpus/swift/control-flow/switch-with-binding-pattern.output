@@ -13,6 +13,8 @@ case [T].foo:
   print("foo")
 case .foo(let x as T):
   print(x)
+case is T:
+  print("is T")
 }
 
 ---
@@ -287,6 +289,38 @@ sourceFile
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            isTypePattern
+                              type:
+                                identifierType
+                                  name: identifier "T"
+                              isKeyword: is
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "is T"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
               subject:
                 declReferenceExpr
                   baseName: identifier "shape"
@@ -443,3 +477,21 @@ top_level
                           value:
                             name_expr
                               identifier: identifier "x"
+            switch_case
+              pattern:
+                type_test_pattern
+                  type:
+                    named_type_expr
+                      name: identifier "T"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            string_interpolation_expr
+                              element: string_literal "is T"

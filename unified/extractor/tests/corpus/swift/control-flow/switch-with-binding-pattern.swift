@@ -13,4 +13,6 @@ case [T].foo:
   print("foo")
 case .foo(let x as T):
   print(x)
+case is T:
+  print("is T")
 }
