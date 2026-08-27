@@ -107,31 +107,6 @@ fn make_or_pattern(
     }
 }
 
-/// If `els` contains a single `labeledExpr` node with no label, returns the
-/// ID of its inner expression node.
-fn get_single_unlabeled_tuple_expr(
-    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
-    els: &[yeast::Id],
-) -> Option<yeast::Id> {
-    if els.len() != 1 {
-        return None;
-    }
-    let single = els[0];
-    let label_field = ctx.ast.field_id_for_name("label")?;
-    let expr_field = ctx.ast.field_id_for_name("expression")?;
-    let node = ctx.ast.get_node(single)?;
-
-    if node.kind_name() != "labeledExpr" {
-        return None;
-    }
-
-    if !node.field_children(label_field).is_empty() {
-        return None;
-    }
-
-    node.field_children(expr_field).first().copied()
-}
-
 /// Translate `node` in pattern context (`ctx.in_pattern = true`).
 fn translate_pattern(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
@@ -356,24 +331,30 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((sequenceExpr elements: _* @els) => (unresolved_operator_sequence element: {els})),
         // Prefix unary operators (`!a`, `-x`).
         rule!((prefixOperatorExpr operator: @op expression: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
-        // A `tupleExpr` is a tuple literal (`(a, b)`) or a parenthesised
-        // expression (`(x)`). A single-element unlabeled tuple expression is
-        // a grouping expression and unwraps to its inner expression.
-        rule!((tupleExpr elements: _* @@els) => expr {
-            if let Some(inner_e) = get_single_unlabeled_tuple_expr(&mut ctx, &els) {
-                ctx.translate(inner_e)?.into_iter().next().ok_or("tupleExpr element has no child")?
-            } else {
-                let mut out = Vec::new();
-                for elem in els {
-                    out.extend(ctx.translate(elem)?);
-                }
-                if ctx.in_pattern {
-                    tree!((tuple_pattern element: {out}))
-                } else {
-                    tree!((tuple_expr element: {out}))
-                }
-            }
-        }),
+        // A tuple with a single unlabeled element is a grouping expression.
+        rule!(
+            (tupleExpr
+                elements: (labeledExpr
+                    label: _? @label
+                    expression: @inner)
+                elements: _* @rest)
+            where label.is_none() && rest.is_empty()
+            =>
+            expr { inner }
+        ),
+        // Other tuple expressions in pattern context become tuple patterns.
+        rule!(
+            (tupleExpr elements: _* @elements)
+            where ctx.in_pattern
+            =>
+            (tuple_pattern element: {elements})
+        ),
+        // Otherwise, preserve the tuple expression.
+        rule!(
+            (tupleExpr elements: _* @elements)
+            =>
+            (tuple_expr element: {elements})
+        ),
         // A code block contains its statements directly.
         rule!((codeBlock statements: _* @stmts) => (block stmt: {stmts})),
         // ---- Properties with accessors ----
