@@ -15,6 +15,8 @@
 | regular.rs:13:5:13:18 | fn g | <test::regular::Struct>::g |
 | regular.rs:16:1:18:1 | trait TraitWithBlanketImpl | test::regular::TraitWithBlanketImpl |
 | regular.rs:17:5:17:16 | fn h | test::regular::TraitWithBlanketImpl::h |
+| regular.rs:20:1:22:1 | impl TraitWithBlanketImpl for T { ... } | <_ as test::regular::TraitWithBlanketImpl> |
+| regular.rs:21:5:21:18 | fn h | <_ as test::regular::TraitWithBlanketImpl>::h |
 | regular.rs:24:1:24:12 | fn free | test::regular::free |
 | regular.rs:26:1:32:1 | fn usage | test::regular::usage |
 | regular.rs:34:1:38:1 | enum MyEnum | test::regular::MyEnum |

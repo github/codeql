@@ -39,7 +39,7 @@ class ModuleImportGraph(object):
                     changed_paths = data.get('changes', [])
                     self.overlay_changes = { os.path.abspath(p) for p in changed_paths }
             except (IOError, ValueError) as e:
-                logger.warn("Failed to read overlay changes from '%s' (falling back to full extraction): %s", overlay_changes_file, e)
+                logger.warning("Failed to read overlay changes from '%s' (falling back to full extraction): %s", overlay_changes_file, e)
                 self.overlay_changes = None
 
     def add_root(self, mod):

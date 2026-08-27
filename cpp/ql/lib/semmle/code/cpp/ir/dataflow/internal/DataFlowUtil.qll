@@ -1018,4 +1018,6 @@ module Ssa {
   class IndirectExplicitDefinition = SsaImpl::IndirectExplicitDefinition;
 
   class PhiNode = SsaImpl::PhiNode;
+
+  import SsaImpl::Public
 }

@@ -99,12 +99,12 @@ class AstDumper(object):
 class StdoutLogger(logging.Logger):
     error_count = 0
     def log(self, level, fmt, *args):
-        sys.stdout.write(fmt % args + "\n")
+        sys.stdout.write(logging.format_message(fmt, args) + "\n")
 
     def info(self, fmt, *args):
         self.log(logging.INFO, fmt, *args)
 
-    def warn(self, fmt, *args):
+    def warning(self, fmt, *args):
         self.log(logging.WARN, fmt, *args)
         self.error_count += 1
 
