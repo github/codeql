@@ -652,7 +652,7 @@ module Unified {
     }
   }
 
-  class Expr extends @unified_expr, F::ExprOrOperator, F::ExprOrPattern, F::ExprOrType, F::Stmt { }
+  class Expr extends @unified_expr, F::ExprOrPattern, F::ExprOrType, F::Stmt { }
 
   /** A class representing `expr_equality_pattern` nodes. */
   class ExprEqualityPattern extends @unified_expr_equality_pattern, F::Pattern {
@@ -665,8 +665,6 @@ module Unified {
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_expr_equality_pattern_def(this, result) }
   }
-
-  class ExprOrOperator extends @unified_expr_or_operator, F::AstNode { }
 
   class ExprOrPattern extends @unified_expr_or_pattern, F::AstNode { }
 
@@ -941,9 +939,7 @@ module Unified {
   }
 
   /** A class representing `infix_operator` tokens. */
-  class InfixOperator extends @unified_token_infix_operator, F::ExprOrOperator, F::Operator,
-    F::Token
-  {
+  class InfixOperator extends @unified_token_infix_operator, F::Operator, F::Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InfixOperator" }
   }
@@ -1647,12 +1643,12 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "UnresolvedOperatorSequence" }
 
     /** Gets the node corresponding to the field `element`. */
-    final F::ExprOrOperator getElement(int i) {
+    final F::AstNode getElement(int i) {
       unified_unresolved_operator_sequence_element(this, i, result)
     }
 
     /** Gets the node corresponding to the field `element`. */
-    final F::ExprOrOperator getAnElement() { result = this.getElement(_) }
+    final F::AstNode getAnElement() { result = this.getElement(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -2126,8 +2122,6 @@ module UnifiedFinal {
   final class Expr = F::Expr;
 
   final class ExprEqualityPattern = F::ExprEqualityPattern;
-
-  final class ExprOrOperator = F::ExprOrOperator;
 
   final class ExprOrPattern = F::ExprOrPattern;
 

@@ -467,8 +467,6 @@ unified_expr_equality_pattern_def(
   int expr: @unified_expr ref
 );
 
-@unified_expr_or_operator = @unified_expr | @unified_token_infix_operator
-
 @unified_expr_or_pattern = @unified_expr | @unified_pattern
 
 @unified_expr_or_type = @unified_expr | @unified_type_expr
@@ -1027,11 +1025,13 @@ unified_unary_expr_def(
   int operator: @unified_operator ref
 );
 
+@unified_unresolved_operator_sequence_element_type = @unified_expr | @unified_pattern | @unified_token_infix_operator
+
 #keyset[unified_unresolved_operator_sequence, index]
 unified_unresolved_operator_sequence_element(
   int unified_unresolved_operator_sequence: @unified_unresolved_operator_sequence ref,
   int index: int ref,
-  unique int element: @unified_expr_or_operator ref
+  unique int element: @unified_unresolved_operator_sequence_element_type ref
 );
 
 unified_unresolved_operator_sequence_def(
