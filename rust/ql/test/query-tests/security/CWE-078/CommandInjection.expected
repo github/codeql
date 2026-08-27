@@ -1,0 +1,163 @@
+#select
+| main.rs:27:18:27:36 | arg_string.as_str() | main.rs:4:22:4:37 | ...::args(...) | main.rs:27:18:27:36 | arg_string.as_str() | This command line depends on a $@. | main.rs:4:22:4:37 | ...::args(...) | user-provided value |
+| main.rs:34:14:34:35 | remote_string.as_str() | main.rs:5:25:5:69 | ...::get(...) | main.rs:34:14:34:35 | remote_string.as_str() | This command line depends on a $@. | main.rs:5:25:5:69 | ...::get(...) | user-provided value |
+| main.rs:40:14:40:32 | arg_string.as_str() | main.rs:4:22:4:37 | ...::args(...) | main.rs:40:14:40:32 | arg_string.as_str() | This command line depends on a $@. | main.rs:4:22:4:37 | ...::args(...) | user-provided value |
+| main.rs:47:15:47:45 | &... | main.rs:5:25:5:69 | ...::get(...) | main.rs:47:15:47:45 | &... | This command line depends on a $@. | main.rs:5:25:5:69 | ...::get(...) | user-provided value |
+| main.rs:53:18:53:46 | concatenated_command.as_str() | main.rs:5:25:5:69 | ...::get(...) | main.rs:53:18:53:46 | concatenated_command.as_str() | This command line depends on a $@. | main.rs:5:25:5:69 | ...::get(...) | user-provided value |
+| main.rs:65:48:65:69 | remote_string.as_str() | main.rs:59:25:59:69 | ...::get(...) | main.rs:65:48:65:69 | remote_string.as_str() | This command line depends on a $@. | main.rs:59:25:59:69 | ...::get(...) | user-provided value |
+| main.rs:73:14:73:35 | remote_string.as_str() | main.rs:59:25:59:69 | ...::get(...) | main.rs:73:14:73:35 | remote_string.as_str() | This command line depends on a $@. | main.rs:59:25:59:69 | ...::get(...) | user-provided value |
+| main.rs:86:18:86:27 | user_input | main.rs:138:22:138:37 | ...::args(...) | main.rs:86:18:86:27 | user_input | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
+| main.rs:100:22:100:29 | filename | main.rs:138:22:138:37 | ...::args(...) | main.rs:100:22:100:29 | filename | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
+| main.rs:111:22:111:28 | command | main.rs:138:22:138:37 | ...::args(...) | main.rs:111:22:111:28 | command | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
+| main.rs:113:22:113:28 | command | main.rs:138:22:138:37 | ...::args(...) | main.rs:113:22:113:28 | command | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
+| main.rs:121:22:121:28 | command | main.rs:138:22:138:37 | ...::args(...) | main.rs:121:22:121:28 | command | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
+| main.rs:127:22:127:28 | command | main.rs:138:22:138:37 | ...::args(...) | main.rs:127:22:127:28 | command | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
+| main.rs:131:22:131:28 | command | main.rs:138:22:138:37 | ...::args(...) | main.rs:131:22:131:28 | command | This command line depends on a $@. | main.rs:138:22:138:37 | ...::args(...) | user-provided value |
+edges
+| main.rs:4:9:4:18 | arg_string | main.rs:27:18:27:27 | arg_string | provenance |  |
+| main.rs:4:9:4:18 | arg_string | main.rs:40:14:40:23 | arg_string | provenance |  |
+| main.rs:4:22:4:37 | ...::args(...) | main.rs:4:22:4:37 | ...::args(...) [element] | provenance | Src:MaD:7  |
+| main.rs:4:22:4:37 | ...::args(...) [element] | main.rs:4:22:4:44 | ... .nth(...) [Some] | provenance | MaD:15 |
+| main.rs:4:22:4:44 | ... .nth(...) [Some] | main.rs:4:22:4:74 | ... .unwrap_or(...) | provenance | MaD:9 |
+| main.rs:4:22:4:74 | ... .unwrap_or(...) | main.rs:4:9:4:18 | arg_string | provenance |  |
+| main.rs:5:9:5:21 | remote_string | main.rs:34:14:34:26 | remote_string | provenance |  |
+| main.rs:5:9:5:21 | remote_string | main.rs:47:23:47:35 | remote_string | provenance |  |
+| main.rs:5:9:5:21 | remote_string | main.rs:52:40:52:69 | MacroExpr | provenance |  |
+| main.rs:5:25:5:69 | ...::get(...) | main.rs:5:25:5:69 | ...::get(...) [Ok] | provenance | Src:MaD:6  |
+| main.rs:5:25:5:69 | ...::get(...) [Ok] | main.rs:5:25:6:17 | ... .unwrap() | provenance | MaD:10 |
+| main.rs:5:25:6:17 | ... .unwrap() | main.rs:5:25:7:15 | ... .text() [Ok] | provenance | MaD:12 |
+| main.rs:5:25:7:15 | ... .text() [Ok] | main.rs:5:25:8:38 | ... .unwrap_or(...) | provenance | MaD:11 |
+| main.rs:5:25:8:38 | ... .unwrap_or(...) | main.rs:5:9:5:21 | remote_string | provenance |  |
+| main.rs:27:18:27:27 | arg_string | main.rs:27:18:27:36 | arg_string.as_str() [&ref] | provenance | MaD:8 |
+| main.rs:27:18:27:36 | arg_string.as_str() [&ref] | main.rs:27:18:27:36 | arg_string.as_str() | provenance | Sink:MaD:3 |
+| main.rs:34:14:34:26 | remote_string | main.rs:34:14:34:35 | remote_string.as_str() [&ref] | provenance | MaD:8 |
+| main.rs:34:14:34:35 | remote_string.as_str() [&ref] | main.rs:34:14:34:35 | remote_string.as_str() | provenance | Sink:MaD:1 |
+| main.rs:40:14:40:23 | arg_string | main.rs:40:14:40:32 | arg_string.as_str() [&ref] | provenance | MaD:8 |
+| main.rs:40:14:40:32 | arg_string.as_str() [&ref] | main.rs:40:14:40:32 | arg_string.as_str() | provenance | Sink:MaD:1 |
+| main.rs:47:15:47:45 | &... [&ref, element, &ref] | main.rs:47:15:47:45 | &... | provenance | Sink:MaD:2 Sink:MaD:2 |
+| main.rs:47:15:47:45 | &... [&ref, element, &ref] | main.rs:47:15:47:45 | &... | provenance | Sink:MaD:2 Sink:MaD:2 Sink:MaD:2 |
+| main.rs:47:16:47:45 | [...] [element, &ref] | main.rs:47:15:47:45 | &... [&ref, element, &ref] | provenance |  |
+| main.rs:47:23:47:35 | remote_string | main.rs:47:23:47:44 | remote_string.as_str() [&ref] | provenance | MaD:8 |
+| main.rs:47:23:47:44 | remote_string.as_str() [&ref] | main.rs:47:16:47:45 | [...] [element, &ref] | provenance |  |
+| main.rs:52:9:52:28 | concatenated_command | main.rs:53:18:53:37 | concatenated_command | provenance |  |
+| main.rs:52:40:52:69 | ...::format(...) | main.rs:52:40:52:69 | { ... } | provenance |  |
+| main.rs:52:40:52:69 | ...::must_use(...) | main.rs:52:9:52:28 | concatenated_command | provenance |  |
+| main.rs:52:40:52:69 | MacroExpr | main.rs:52:40:52:69 | ...::format(...) | provenance | MaD:13 |
+| main.rs:52:40:52:69 | { ... } | main.rs:52:40:52:69 | ...::must_use(...) | provenance | MaD:14 |
+| main.rs:53:18:53:37 | concatenated_command | main.rs:53:18:53:46 | concatenated_command.as_str() [&ref] | provenance | MaD:8 |
+| main.rs:53:18:53:46 | concatenated_command.as_str() [&ref] | main.rs:53:18:53:46 | concatenated_command.as_str() | provenance | Sink:MaD:3 |
+| main.rs:59:9:59:21 | remote_string | main.rs:65:48:65:60 | remote_string | provenance |  |
+| main.rs:59:9:59:21 | remote_string | main.rs:73:14:73:26 | remote_string | provenance |  |
+| main.rs:59:25:59:69 | ...::get(...) | main.rs:59:25:59:69 | ...::get(...) [Ok] | provenance | Src:MaD:6  |
+| main.rs:59:25:59:69 | ...::get(...) [Ok] | main.rs:59:25:60:17 | ... .unwrap() | provenance | MaD:10 |
+| main.rs:59:25:60:17 | ... .unwrap() | main.rs:59:25:61:15 | ... .text() [Ok] | provenance | MaD:12 |
+| main.rs:59:25:61:15 | ... .text() [Ok] | main.rs:59:25:62:38 | ... .unwrap_or(...) | provenance | MaD:11 |
+| main.rs:59:25:62:38 | ... .unwrap_or(...) | main.rs:59:9:59:21 | remote_string | provenance |  |
+| main.rs:65:48:65:60 | remote_string | main.rs:65:48:65:69 | remote_string.as_str() [&ref] | provenance | MaD:8 |
+| main.rs:65:48:65:69 | remote_string.as_str() [&ref] | main.rs:65:48:65:69 | remote_string.as_str() | provenance | Sink:MaD:5 |
+| main.rs:73:14:73:26 | remote_string | main.rs:73:14:73:35 | remote_string.as_str() [&ref] | provenance | MaD:8 |
+| main.rs:73:14:73:35 | remote_string.as_str() [&ref] | main.rs:73:14:73:35 | remote_string.as_str() | provenance | Sink:MaD:4 |
+| main.rs:82:27:82:42 | ...: ... [&ref] | main.rs:86:18:86:27 | user_input | provenance | Sink:MaD:1 |
+| main.rs:95:27:95:40 | ...: ... [&ref] | main.rs:100:22:100:29 | filename | provenance | Sink:MaD:1 |
+| main.rs:107:30:107:42 | ...: ... [&ref] | main.rs:111:22:111:28 | command | provenance | Sink:MaD:3 |
+| main.rs:107:30:107:42 | ...: ... [&ref] | main.rs:113:22:113:28 | command | provenance | Sink:MaD:3 |
+| main.rs:107:30:107:42 | ...: ... [&ref] | main.rs:121:22:121:28 | command | provenance | Sink:MaD:3 |
+| main.rs:107:30:107:42 | ...: ... [&ref] | main.rs:127:22:127:28 | command | provenance | Sink:MaD:3 |
+| main.rs:107:30:107:42 | ...: ... [&ref] | main.rs:131:22:131:28 | command | provenance | Sink:MaD:3 |
+| main.rs:138:9:138:18 | arg_string | main.rs:142:39:142:48 | arg_string | provenance |  |
+| main.rs:138:9:138:18 | arg_string | main.rs:143:40:143:49 | arg_string | provenance |  |
+| main.rs:138:9:138:18 | arg_string | main.rs:144:31:144:40 | arg_string | provenance |  |
+| main.rs:138:22:138:37 | ...::args(...) | main.rs:138:22:138:37 | ...::args(...) [element] | provenance | Src:MaD:7  |
+| main.rs:138:22:138:37 | ...::args(...) [element] | main.rs:138:22:138:44 | ... .nth(...) [Some] | provenance | MaD:15 |
+| main.rs:138:22:138:44 | ... .nth(...) [Some] | main.rs:138:22:138:74 | ... .unwrap_or(...) | provenance | MaD:9 |
+| main.rs:138:22:138:74 | ... .unwrap_or(...) | main.rs:138:9:138:18 | arg_string | provenance |  |
+| main.rs:142:39:142:48 | arg_string | main.rs:142:39:142:57 | arg_string.as_str() [&ref] | provenance | MaD:8 |
+| main.rs:142:39:142:57 | arg_string.as_str() [&ref] | main.rs:82:27:82:42 | ...: ... [&ref] | provenance |  |
+| main.rs:143:40:143:49 | arg_string | main.rs:143:40:143:58 | arg_string.as_str() [&ref] | provenance | MaD:8 |
+| main.rs:143:40:143:58 | arg_string.as_str() [&ref] | main.rs:95:27:95:40 | ...: ... [&ref] | provenance |  |
+| main.rs:144:31:144:40 | arg_string | main.rs:144:31:144:49 | arg_string.as_str() [&ref] | provenance | MaD:8 |
+| main.rs:144:31:144:49 | arg_string.as_str() [&ref] | main.rs:107:30:107:42 | ...: ... [&ref] | provenance |  |
+models
+| 1 | Sink: <std::process::Command>::arg; Argument[0]; command-injection |
+| 2 | Sink: <std::process::Command>::args; Argument[0]; command-injection |
+| 3 | Sink: <std::process::Command>::new; Argument[0]; command-injection |
+| 4 | Sink: <tokio::process::Command>::arg; Argument[0]; command-injection |
+| 5 | Sink: <tokio::process::Command>::new; Argument[0]; command-injection |
+| 6 | Source: reqwest::blocking::get; ReturnValue.Field[core::result::Result::Ok(0)]; remote |
+| 7 | Source: std::env::args; ReturnValue.Element; commandargs |
+| 8 | Summary: <alloc::string::String>::as_str; Argument[self].Reference; ReturnValue.Reference; taint |
+| 9 | Summary: <core::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 10 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 11 | Summary: <core::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 12 | Summary: <reqwest::blocking::response::Response>::text; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 13 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+| 14 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
+| 15 | Summary: core::iter::traits::iterator::Iterator::nth; Argument[self].Reference.Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+nodes
+| main.rs:4:9:4:18 | arg_string | semmle.label | arg_string |
+| main.rs:4:22:4:37 | ...::args(...) | semmle.label | ...::args(...) |
+| main.rs:4:22:4:37 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| main.rs:4:22:4:44 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| main.rs:4:22:4:74 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:5:9:5:21 | remote_string | semmle.label | remote_string |
+| main.rs:5:25:5:69 | ...::get(...) | semmle.label | ...::get(...) |
+| main.rs:5:25:5:69 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| main.rs:5:25:6:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:5:25:7:15 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
+| main.rs:5:25:8:38 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:27:18:27:27 | arg_string | semmle.label | arg_string |
+| main.rs:27:18:27:36 | arg_string.as_str() | semmle.label | arg_string.as_str() |
+| main.rs:27:18:27:36 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
+| main.rs:34:14:34:26 | remote_string | semmle.label | remote_string |
+| main.rs:34:14:34:35 | remote_string.as_str() | semmle.label | remote_string.as_str() |
+| main.rs:34:14:34:35 | remote_string.as_str() [&ref] | semmle.label | remote_string.as_str() [&ref] |
+| main.rs:40:14:40:23 | arg_string | semmle.label | arg_string |
+| main.rs:40:14:40:32 | arg_string.as_str() | semmle.label | arg_string.as_str() |
+| main.rs:40:14:40:32 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
+| main.rs:47:15:47:45 | &... | semmle.label | &... |
+| main.rs:47:15:47:45 | &... [&ref, element, &ref] | semmle.label | &... [&ref, element, &ref] |
+| main.rs:47:16:47:45 | [...] [element, &ref] | semmle.label | [...] [element, &ref] |
+| main.rs:47:23:47:35 | remote_string | semmle.label | remote_string |
+| main.rs:47:23:47:44 | remote_string.as_str() [&ref] | semmle.label | remote_string.as_str() [&ref] |
+| main.rs:52:9:52:28 | concatenated_command | semmle.label | concatenated_command |
+| main.rs:52:40:52:69 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:52:40:52:69 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:52:40:52:69 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:52:40:52:69 | { ... } | semmle.label | { ... } |
+| main.rs:53:18:53:37 | concatenated_command | semmle.label | concatenated_command |
+| main.rs:53:18:53:46 | concatenated_command.as_str() | semmle.label | concatenated_command.as_str() |
+| main.rs:53:18:53:46 | concatenated_command.as_str() [&ref] | semmle.label | concatenated_command.as_str() [&ref] |
+| main.rs:59:9:59:21 | remote_string | semmle.label | remote_string |
+| main.rs:59:25:59:69 | ...::get(...) | semmle.label | ...::get(...) |
+| main.rs:59:25:59:69 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| main.rs:59:25:60:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:59:25:61:15 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
+| main.rs:59:25:62:38 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:65:48:65:60 | remote_string | semmle.label | remote_string |
+| main.rs:65:48:65:69 | remote_string.as_str() | semmle.label | remote_string.as_str() |
+| main.rs:65:48:65:69 | remote_string.as_str() [&ref] | semmle.label | remote_string.as_str() [&ref] |
+| main.rs:73:14:73:26 | remote_string | semmle.label | remote_string |
+| main.rs:73:14:73:35 | remote_string.as_str() | semmle.label | remote_string.as_str() |
+| main.rs:73:14:73:35 | remote_string.as_str() [&ref] | semmle.label | remote_string.as_str() [&ref] |
+| main.rs:82:27:82:42 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| main.rs:86:18:86:27 | user_input | semmle.label | user_input |
+| main.rs:95:27:95:40 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| main.rs:100:22:100:29 | filename | semmle.label | filename |
+| main.rs:107:30:107:42 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| main.rs:111:22:111:28 | command | semmle.label | command |
+| main.rs:113:22:113:28 | command | semmle.label | command |
+| main.rs:121:22:121:28 | command | semmle.label | command |
+| main.rs:127:22:127:28 | command | semmle.label | command |
+| main.rs:131:22:131:28 | command | semmle.label | command |
+| main.rs:138:9:138:18 | arg_string | semmle.label | arg_string |
+| main.rs:138:22:138:37 | ...::args(...) | semmle.label | ...::args(...) |
+| main.rs:138:22:138:37 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| main.rs:138:22:138:44 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| main.rs:138:22:138:74 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:142:39:142:48 | arg_string | semmle.label | arg_string |
+| main.rs:142:39:142:57 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
+| main.rs:143:40:143:49 | arg_string | semmle.label | arg_string |
+| main.rs:143:40:143:58 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
+| main.rs:144:31:144:40 | arg_string | semmle.label | arg_string |
+| main.rs:144:31:144:49 | arg_string.as_str() [&ref] | semmle.label | arg_string.as_str() [&ref] |
+subpaths
