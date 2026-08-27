@@ -129,6 +129,11 @@ extensions:
       - ["<core::str>::parse", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<core::str>::trim", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
       - ["<core::str>::to_string", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
+      # Fmt
+      - ["core::fmt::Write::write_fmt", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["core::fmt::Write::write_str", "Argument[0].Reference", "Argument[self].Reference", "taint", "manual"]
+      - ["core::fmt::Write::write_char", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["core::fmt::write", "Argument[1]", "Argument[0].Reference", "taint", "manual"]
       # Ord
       - ["core::cmp::Ord::min", "Argument[self,0]", "ReturnValue", "value", "manual"]
       - ["core::cmp::Ord::max", "Argument[self,0]", "ReturnValue", "value", "manual"]
