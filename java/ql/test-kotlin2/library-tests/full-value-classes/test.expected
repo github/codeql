@@ -1,0 +1,17 @@
+classes
+| test.kt:3:1:5:1 | Base | abstract, public |
+| test.kt:7:1:9:1 | PairValue | final, public |
+supertypes
+| test.kt:7:1:9:1 | PairValue | test.kt:3:1:5:1 | Base |
+properties
+| test.kt:4:14:4:27 | value | int | public | test.kt:4:14:4:27 | getValue | <none> |
+| test.kt:7:32:7:45 | value | int | public | test.kt:7:32:7:45 | getValue | value |
+| test.kt:7:48:7:64 | label | String | public | test.kt:7:48:7:64 | getLabel | label |
+constructors
+| test.kt:3:1:5:1 | Base | Base() |
+| test.kt:7:22:7:65 | PairValue | PairValue(int,java.lang.String) |
+| test.kt:8:5:8:68 | PairValue | PairValue(long) |
+constructorCalls
+| test.kt:7:1:9:1 | super(...) | test.kt:3:1:5:1 | Base |
+| test.kt:8:32:8:68 | this(...) | test.kt:7:22:7:65 | PairValue |
+| test.kt:11:40:11:55 | new PairValue(...) | test.kt:8:5:8:68 | PairValue |
