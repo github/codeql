@@ -1238,7 +1238,7 @@ private module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * Holds if `root` has the `s` flag for multi-line matching.
+   * Holds if `root` has the `s` flag for dot-all matching.
    */
   predicate isDotAll(RegExpTerm root) {
     root.isRootTerm() and

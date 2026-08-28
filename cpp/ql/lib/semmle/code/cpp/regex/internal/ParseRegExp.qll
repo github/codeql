@@ -14,7 +14,7 @@ private import semmle.code.cpp.exprs.Literal
  */
 abstract class RegExp extends StringLiteral {
   /**
-   * Holds if this `RegExp` has the `s` flag for multi-line matching.
+   * Holds if this `RegExp` has the `s` flag for dot-all matching.
    */
   predicate isDotAll() { none() }
 
