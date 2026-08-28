@@ -80,6 +80,7 @@ std::regex r_posix3("[A-F[:digit:]a-f]");
 // POSIX collating symbols
 std::regex r_posix_coll1("[[.a.]]");
 std::regex r_posix_coll2("[A-F[.b.]a-f]");
+std::regex r_posix_coll3("[[.ch.]]");
 
 // POSIX equivalence classes
 std::regex r_posix_equiv1("[[=a=]]");
