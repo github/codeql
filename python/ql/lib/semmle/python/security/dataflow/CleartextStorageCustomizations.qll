@@ -35,6 +35,10 @@ module CleartextStorage {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
+  private class KnownNonSensitiveConfigurationLookupSanitizer extends Sanitizer {
+    KnownNonSensitiveConfigurationLookupSanitizer() { isKnownNonSensitiveConfigurationLookup(this) }
+  }
+
   /**
    * A source of sensitive data, considered as a flow source.
    */
