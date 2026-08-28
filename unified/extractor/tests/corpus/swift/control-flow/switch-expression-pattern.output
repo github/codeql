@@ -1,0 +1,420 @@
+// Arbitrary expressions may appear in pattern context
+switch x {
+case y, y + 1, -y, y...z, "foo", 4, foo().bar, .baz, [42], ["a": 1], try y, y!, y is T, await y:
+    print("expr")
+case true ? y : z:
+    print("ternary is also valid")
+default:
+    break
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            switchExpr
+              leftBrace: {
+              rightBrace: }
+              cases:
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "y"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator "+"
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "1"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                prefixOperatorExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  operator: prefixOperator "-"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator "..."
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  rightOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "z"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "foo"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                integerLiteralExpr
+                                  literal: integerLiteral "4"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "bar"
+                                  base:
+                                    functionCallExpr
+                                      leftParen: (
+                                      rightParen: )
+                                      arguments:
+                                      additionalTrailingClosures:
+                                      calledExpression:
+                                        declReferenceExpr
+                                          baseName: identifier "foo"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "baz"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                arrayExpr
+                                  elements:
+                                    arrayElement
+                                      expression:
+                                        integerLiteralExpr
+                                          literal: integerLiteral "42"
+                                  leftSquare: [
+                                  rightSquare: ]
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                dictionaryExpr
+                                  leftSquare: [
+                                  rightSquare: ]
+                                  content:
+                                    dictionaryElement
+                                      colon: :
+                                      value:
+                                        integerLiteralExpr
+                                          literal: integerLiteral "1"
+                                      key:
+                                        stringLiteralExpr
+                                          closingQuote: "
+                                          openingQuote: "
+                                          segments:
+                                            stringSegment
+                                              content: stringSegment "a"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                tryExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  tryKeyword: try
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                forceUnwrapExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  exclamationMark: !
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                isExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  type:
+                                    identifierType
+                                      name: identifier "T"
+                                  isKeyword: is
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                awaitExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  awaitKeyword: await
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "expr"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                ternaryExpr
+                                  colon: :
+                                  condition:
+                                    booleanLiteralExpr
+                                      literal: true
+                                  questionMark: ?
+                                  elseExpression:
+                                    declReferenceExpr
+                                      baseName: identifier "z"
+                                  thenExpression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "ternary is also valid"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchDefaultLabel
+                      colon: :
+                      defaultKeyword: default
+                  statements:
+                    codeBlockItem
+                      item:
+                        breakStmt
+                          breakKeyword: break
+              subject:
+                declReferenceExpr
+                  baseName: identifier "x"
+              switchKeyword: switch
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        switch_expr
+          value:
+            name_expr
+              identifier: identifier "x"
+          case:
+            switch_case
+              pattern:
+                or_pattern
+                  pattern:
+                    expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "y"
+                    binary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got binary_expr
+                      left:
+                        expr_equality_pattern <-- ERROR: The field binary_expr.left should contain expr, but got expr_equality_pattern
+                          expr:
+                            name_expr
+                              identifier: identifier "y"
+                      operator: infix_operator "+"
+                      right:
+                        expr_equality_pattern <-- ERROR: The field binary_expr.right should contain expr, but got expr_equality_pattern
+                          expr: int_literal "1"
+                    unary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got unary_expr
+                      operand:
+                        expr_equality_pattern <-- ERROR: The field unary_expr.operand should contain expr, but got expr_equality_pattern
+                          expr:
+                            name_expr
+                              identifier: identifier "y"
+                      operator: prefix_operator "-"
+                    binary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got binary_expr
+                      left:
+                        expr_equality_pattern <-- ERROR: The field binary_expr.left should contain expr, but got expr_equality_pattern
+                          expr:
+                            name_expr
+                              identifier: identifier "y"
+                      operator: infix_operator "..."
+                      right:
+                        expr_equality_pattern <-- ERROR: The field binary_expr.right should contain expr, but got expr_equality_pattern
+                          expr:
+                            name_expr
+                              identifier: identifier "z"
+                    string_interpolation_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got string_interpolation_expr
+                      element: string_literal "foo"
+                    expr_equality_pattern
+                      expr: int_literal "4"
+                    expr_equality_pattern
+                      expr:
+                        member_access_expr
+                          base:
+                            call_expr
+                              callee:
+                                name_expr
+                                  identifier: identifier "foo"
+                          member: identifier "bar"
+                    expr_equality_pattern
+                      expr:
+                        member_access_expr
+                          base: inferred_type_expr "."
+                          member: identifier "baz"
+                    array_literal <-- ERROR: The field or_pattern.pattern should contain pattern, but got array_literal
+                      element:
+                        expr_equality_pattern <-- ERROR: The field array_literal.element should contain expr, but got expr_equality_pattern
+                          expr: int_literal "42"
+                    map_literal "[\"a\": 1]" <-- ERROR: The field or_pattern.pattern should contain pattern, but got map_literal
+                    unary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got unary_expr
+                      operand:
+                        expr_equality_pattern <-- ERROR: The field unary_expr.operand should contain expr, but got expr_equality_pattern
+                          expr:
+                            name_expr
+                              identifier: identifier "y"
+                      operator: prefix_operator "try"
+                    unary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got unary_expr
+                      operand:
+                        expr_equality_pattern <-- ERROR: The field unary_expr.operand should contain expr, but got expr_equality_pattern
+                          expr:
+                            name_expr
+                              identifier: identifier "y"
+                      operator: postfix_operator "!"
+                    type_test_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got type_test_expr
+                      expr:
+                        expr_equality_pattern <-- ERROR: The field type_test_expr.expr should contain expr, but got expr_equality_pattern
+                          expr:
+                            name_expr
+                              identifier: identifier "y"
+                      operator: infix_operator "is"
+                      type:
+                        named_type_expr
+                          name: identifier "T"
+                    unary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got unary_expr
+                      operand:
+                        expr_equality_pattern <-- ERROR: The field unary_expr.operand should contain expr, but got expr_equality_pattern
+                          expr:
+                            name_expr
+                              identifier: identifier "y"
+                      operator: prefix_operator "await"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            string_interpolation_expr
+                              element: string_literal "expr"
+            switch_case
+              pattern:
+                if_expr <-- ERROR: The field switch_case.pattern should contain pattern, but got if_expr
+                  condition:
+                    expr_equality_pattern <-- ERROR: The field if_expr.condition should contain expr, but got expr_equality_pattern
+                      expr: boolean_literal "true"
+                  then:
+                    expr_equality_pattern <-- ERROR: The field if_expr.then should contain expr, but got expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "y"
+                  else:
+                    expr_equality_pattern <-- ERROR: The field if_expr.else should contain expr, but got expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "z"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            string_interpolation_expr
+                              element: string_literal "ternary is also valid"
+            switch_case
+              body:
+                block
+                  stmt: break_expr "break"
