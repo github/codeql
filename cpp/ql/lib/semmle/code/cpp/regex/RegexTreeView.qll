@@ -225,7 +225,7 @@ private module Impl implements RegexTreeViewSig {
         or
         // No opening '"'.
         not re instanceof RawStringLiteral and
-        not exists(int i | vt.charAt(i) = "\"") and
+        not vt.charAt(_) = "\"" and
         result = 0
       )
     }
@@ -811,7 +811,7 @@ private module Impl implements RegexTreeViewSig {
 
   /**
    * A normal-character term in a regular expression, that is, a sequence
-    * of characters without special meaning or a single escaped character.
+   * of characters without special meaning or a single escaped character.
    *
    * Examples:
    * ```
