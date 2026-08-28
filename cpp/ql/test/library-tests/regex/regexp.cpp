@@ -32,8 +32,8 @@ std::regex r_cc2("[a-fA-F0-9_]");
 std::regex r_cc3("[\\w]+");
 std::regex r_cc4("\\[\\][123]");
 std::regex r_cc5("[^A-Z]");
-std::regex r_cc6("[]]");   // MRI gives a warning, but accepts this as matching ']'
-std::regex r_cc7("[^]]"); // MRI gives a warning, but accepts this as matching anything except ']'
+std::regex r_cc6("[]]");  // Not a valid regex
+std::regex r_cc7("[^]]"); // Not a valid regex
 std::regex r_cc8("[^-]");
 std::regex r_cc9("[|]");
 std::regex r_cc10("[\\b]");
