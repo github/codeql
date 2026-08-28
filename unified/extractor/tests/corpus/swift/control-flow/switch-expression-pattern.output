@@ -425,17 +425,15 @@ top_level
                                     name_expr
                                       identifier: identifier "y"
                             string_literal
-                    call_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got call_expr
-                      callee:
-                        expr_equality_pattern <-- ERROR: The field call_expr.callee should contain expr_or_type, but got expr_equality_pattern
-                          expr:
+                    expr_equality_pattern
+                      expr:
+                        call_expr
+                          callee:
                             name_expr
                               identifier: identifier "y"
-                      argument:
-                        pattern_element <-- ERROR: The field call_expr.argument should contain argument, but got pattern_element
-                          pattern:
-                            expr_equality_pattern
-                              expr: int_literal "4"
+                          argument:
+                            argument
+                              value: int_literal "4"
               body:
                 block
                   stmt:

@@ -1005,6 +1005,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // report a distinct `subscriptCallExpr`, so giving
         // subscripts their own shape needs only a `subscript_expr` node in
         // ast_types.yml and a remap here.
+        coerce_to_pattern!(subscriptCallExpr),
         rule!(
             (subscriptCallExpr calledExpression: @callee arguments: _* @args)
             =>
