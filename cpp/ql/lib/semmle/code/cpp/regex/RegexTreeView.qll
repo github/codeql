@@ -573,9 +573,6 @@ private module Impl implements RegexTreeViewSig {
      * TODO: Handle named escapes.
      */
     override string getValue() {
-      not this.isUnicode() and
-      not this.isHex() and
-      not this.isControl() and
       this.isIdentityEscape() and
       result = this.getUnescaped()
       or
