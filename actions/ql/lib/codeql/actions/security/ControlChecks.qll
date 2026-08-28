@@ -284,7 +284,7 @@ abstract class LabelCheck extends ControlCheck {
  * of this model is for any environment to be considered a sanitizer.
  * If values are (currently manually/externally) provided in `actions/ql/lib/ext/config/deployment_environment.yml`
  * then those names will be used to define the valid sanitizer set.
- * To create a default of "no default saniziter environment" one can add an
+ * To create a default of "no default sanitizer environment" one can add an
  * empty string to the data array in `deployment_environment.yml`.
  */
 class EnvironmentCheck extends ControlCheck instanceof Environment {
