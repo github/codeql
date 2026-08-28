@@ -6,6 +6,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.dataflow.new.internal.SsaImpl as SsaImpl
 private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /**
@@ -142,26 +143,28 @@ module ModificationOfParameterWithDefault {
     }
   }
 
-  /**
-   * Holds if `g` is a direct truthiness check that proves its (single
-   * operand-and-result) value truthy on the `true` branch — i.e. `if g:`.
-   */
-  private predicate truthyGuard(DataFlow::GuardNode g, Cfg::ControlFlowNode node, boolean branch) {
-    node = g and branch = true
-  }
-
-  /** Holds if `g` is a direct falsiness check — i.e. `if g:` taken to the false branch. */
-  private predicate falseyGuard(DataFlow::GuardNode g, Cfg::ControlFlowNode node, boolean branch) {
-    node = g and branch = false
+  /** Holds if `barrier` is a use guarded by a direct truthiness check on `branch`. */
+  private predicate directGuardedUse(DataFlow::ExprNode barrier, boolean branch) {
+    exists(
+      DataFlow::GuardNode guard, SsaImpl::EssaDefinition def, Cfg::NameNode checked,
+      Cfg::NameNode use
+    |
+      checked = guard and
+      SsaImpl::AdjacentUses::useOfDef(def, checked) and
+      SsaImpl::AdjacentUses::useOfDef(def, use) and
+      checked != use and
+      guard.controlsBlock(use.getBasicBlock(), branch) and
+      barrier.asCfgNode() = use
+    )
   }
 
   /** Simple guard detecting truthy values. */
   private class MustBeTruthy extends MustBeNonEmpty {
-    MustBeTruthy() { this = DataFlow::BarrierGuard<truthyGuard/3>::getABarrierNode() }
+    MustBeTruthy() { directGuardedUse(this, true) }
   }
 
   /** Simple guard detecting falsey values. */
   private class MustBeFalsey extends MustBeEmpty {
-    MustBeFalsey() { this = DataFlow::BarrierGuard<falseyGuard/3>::getABarrierNode() }
+    MustBeFalsey() { directGuardedUse(this, false) }
   }
 }
