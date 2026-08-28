@@ -1,0 +1,38 @@
+test.kt:
+#    0| [CompilationUnit] test
+#    0|   1: [Class] TestKt
+#    3|     1: [Method] classify
+#    3|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#    3|         0: [Parameter] value
+#    3|           0: [TypeAccess] Object
+#    4|       5: [BlockStmt] { ... }
+#    8|         0: [ReturnStmt] return ...
+#    4|           0: [StmtExpr] <Stmt>
+#    4|             0: [BlockStmt] { ... }
+#    4|               0: [LocalVariableDeclStmt] var ...;
+#    4|                 1: [LocalVariableDeclExpr] tmp0_subject
+#    4|                   0: [VarAccess] value
+#    4|               1: [ExprStmt] <Expr>;
+#    4|                 0: [WhenExpr] when ...
+#    5|                   0: [WhenBranch] ... -> ...
+#    5|                     0: [InstanceOfExpr] ...instanceof...
+#    5|                       0: [VarAccess] tmp0_subject
+#    5|                       1: [TypeAccess] String
+#    5|                     1: [ExprStmt] <Expr>;
+#    5|                       0: [MethodCall] length(...)
+#    5|                         -1: [ImplicitCastExpr] <implicit cast>
+#    5|                           0: [TypeAccess] String
+#    5|                           1: [VarAccess] value
+#    6|                   1: [WhenBranch] ... -> ...
+#    6|                     0: [InstanceOfExpr] ...instanceof...
+#    6|                       0: [VarAccess] tmp0_subject
+#    6|                       1: [TypeAccess] int
+#    6|                     1: [ExprStmt] <Expr>;
+#    6|                       0: [ImplicitCastExpr] <implicit cast>
+#    6|                         0: [TypeAccess] int
+#    6|                         1: [VarAccess] value
+#    7|                   2: [WhenBranch] ... -> ...
+#    7|                     0: [BooleanLiteral] true
+#    7|                     1: [ExprStmt] <Expr>;
+#    7|                       0: [IntegerLiteral] -1
