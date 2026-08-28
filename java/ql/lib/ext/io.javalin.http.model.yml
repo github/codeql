@@ -22,4 +22,3 @@ extensions:
       - ["io.javalin.http", "Context", true, "queryParamsAsClass", "", "", "ReturnValue", "remote", "manual"]
       - ["io.javalin.http", "Context", true, "queryParamMap", "", "", "ReturnValue", "remote", "manual"]
       - ["io.javalin.http", "Context", true, "queryString", "", "", "ReturnValue", "remote", "manual"]
-      - ["io.javalin.http", "Context", true, "sessionAttribute", "", "", "ReturnValue", "remote", "manual"]
