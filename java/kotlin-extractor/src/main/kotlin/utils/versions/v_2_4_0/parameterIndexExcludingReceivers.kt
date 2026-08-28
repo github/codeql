@@ -5,9 +5,15 @@ import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 
 fun parameterIndexExcludingReceivers(vp: IrValueParameter): Int {
-    val offset =
-        (vp.parent as? IrFunction)?.let { f ->
-            f.parameters.count { it.kind == IrParameterKind.DispatchReceiver || it.kind == IrParameterKind.ExtensionReceiver || it.kind == IrParameterKind.Context }
-        } ?: 0
-    return vp.indexInParameters - offset
+    if (
+        vp.kind == IrParameterKind.DispatchReceiver ||
+            vp.kind == IrParameterKind.ExtensionReceiver
+    ) {
+        return -1
+    }
+    return (vp.parent as? IrFunction)
+        ?.parameters
+        ?.take(vp.indexInParameters)
+        ?.count { it.kind == IrParameterKind.Context || it.kind == IrParameterKind.Regular }
+        ?: vp.indexInParameters
 }
