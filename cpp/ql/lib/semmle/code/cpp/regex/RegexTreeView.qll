@@ -40,7 +40,7 @@ private newtype TRegExpParent =
   /** A special character */
   TRegExpSpecialChar(RegExp re, int start, int end) { re.specialCharacter(start, end, _) } or
   /** A normal character */
-  TRegExpNormalChar(RegExp re, int start, int end) {
+  TRegExpNormalChars(RegExp re, int start, int end) {
     re.normalCharacterSequence(start, end)
     or
     re.escapedCharacter(start, end) and
@@ -129,7 +129,7 @@ private module Impl implements RegexTreeViewSig {
       or
       this = TRegExpCharacterRange(re, start, end)
       or
-      this = TRegExpNormalChar(re, start, end)
+      this = TRegExpNormalChars(re, start, end)
       or
       this = TRegExpGroup(re, start, end)
       or
@@ -172,7 +172,7 @@ private module Impl implements RegexTreeViewSig {
       or
       result = this.(RegExpCharacterRange).getChild(i)
       or
-      result = this.(RegExpNormalChar).getChild(i)
+      result = this.(RegExpNormalChars).getChild(i)
       or
       result = this.(RegExpGroup).getChild(i)
       or
@@ -570,7 +570,7 @@ private module Impl implements RegexTreeViewSig {
    * \w
    * ```
    */
-  class RegExpEscape extends RegExpNormalChar {
+  class RegExpEscape extends RegExpNormalChars {
     RegExpEscape() { re.escapedCharacter(start, end) }
 
     /**
@@ -805,30 +805,30 @@ private module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * A normal character in a regular expression, that is, a character
-   * without special meaning. This includes escaped characters.
+   * A normal-character term in a regular expression, that is, a sequence
+    * of characters without special meaning or a single escaped character.
    *
    * Examples:
    * ```
-   * t
+   * abc
    * \t
    * ```
    */
-  additional class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
-    RegExpNormalChar() { this = TRegExpNormalChar(re, start, end) }
+  additional class RegExpNormalChars extends RegExpTerm, TRegExpNormalChars {
+    RegExpNormalChars() { this = TRegExpNormalChars(re, start, end) }
 
     /**
-     * Holds if this constant represents a valid Unicode character (as opposed
+     * Holds if this constant consists of a valid Unicode character (as opposed
      * to a surrogate code point that does not correspond to a character by itself.)
      */
     predicate isCharacter() { any() }
 
-    /** Gets the string representation of the char matched by this term. */
+    /** Gets the string representation of this term. */
     string getValue() { result = re.getText().substring(start, end) }
 
     override RegExpTerm getChild(int i) { none() }
 
-    override string getAPrimaryQlClass() { result = "RegExpNormalChar" }
+    override string getAPrimaryQlClass() { result = "RegExpNormalChars" }
   }
 
   /**
@@ -845,14 +845,14 @@ private module Impl implements RegexTreeViewSig {
     string value;
 
     RegExpConstant() {
-      this = TRegExpNormalChar(re, start, end) and
+      this = TRegExpNormalChars(re, start, end) and
       not this instanceof RegExpCharacterClassEscape and
       // exclude chars in qualifiers
       // TODO: push this into regex library
       not exists(int qstart, int qend | re.qualifiedPart(_, qstart, qend, _, _) |
         qstart <= start and end <= qend
       ) and
-      value = this.(RegExpNormalChar).getValue()
+      value = this.(RegExpNormalChars).getValue()
       or
       this = TRegExpSpecialChar(re, start, end) and
       re.inCharSet(start) and
