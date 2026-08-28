@@ -90,7 +90,7 @@ top_level
               stmt:
                 unresolved_operator_sequence
                   element:
-                    ignore_pattern "_"
+                    builtin_expr "_"
                     infix_operator "="
                     name_expr
                       identifier: identifier "a"

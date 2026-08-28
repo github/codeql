@@ -267,8 +267,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `reduce(0, +)`), are both `declReferenceExpr`; its `baseName` is the
         // referenced identifier / operator symbol.
         rule!((declReferenceExpr baseName: @name) => (name_expr identifier: (identifier #{name}))),
-        // A discard `_` used as the target of an assignment becomes an `ignore_pattern`.
-        rule!((discardAssignmentExpr wildcard: @@w) => (ignore_pattern #{w})),
+        // A discard `_` used as the target of an assignment becomes a `builtin_expr` because the LHS of a
+        // tuple-assignment such as `(foo.x, _) = ...` can't contain a mix of patterns and exprs. So we consistently
+        // use exprs.
+        rule!((discardAssignmentExpr wildcard: @@w) where ctx.in_pattern => (ignore_pattern #{w})),
+        rule!((discardAssignmentExpr wildcard: @@w) => (builtin_expr #{w})),
         // A generic specialization in expression position (`C<Foo>`,
         // `Array<Int>`) is represented by swift-syntax as a
         // `genericSpecializationExpr`. When used as a call target
