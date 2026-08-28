@@ -228,6 +228,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             wrap_pattern_expr(&mut ctx, value)
         }),
         // String literals with interpolation
+        coerce_to_pattern!(stringLiteralExpr),
         rule!(
             (stringLiteralExpr segments: _* @segs)
             =>
@@ -247,6 +248,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             wrap_pattern_expr(&mut ctx, value)
         }),
         // ---- Names ----
+        coerce_to_pattern!(prefixOperatorExpr),
         // A function reference spelled with argument labels (`f(x:y:z:)`) is a
         // `declReferenceExpr` carrying `argumentNames`. Mark it unsupported for
         // now (rather than let the bare-name rule below treat it as a plain
@@ -875,6 +877,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 else: {else_stmts})
         ),
         // Ternary (`c ? a : b`) desugars to an `if_expr`.
+        coerce_to_pattern!(ternaryExpr),
         rule!(
             (ternaryExpr condition: @cond thenExpression: @then_val elseExpression: @else_val)
             =>
@@ -987,6 +990,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // ---- Collections ----
         // An array literal (`[1, 2, 3]`). Each `arrayElement` unwraps to its
         // contained expression.
+        coerce_to_pattern!(arrayExpr),
         rule!(
             (arrayExpr elements: _* @els)
             =>
@@ -995,6 +999,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((arrayElement expression: @e) => expr { e }),
         // A dictionary literal (`["a": 1]`) is kept as an opaque `map_literal`
         // leaf (its source span).
+        coerce_to_pattern!(dictionaryExpr),
         rule!((dictionaryExpr) => (map_literal)),
         // A subscript access (`xs[0]`) is modelled as a call. swift-syntax does
         // report a distinct `subscriptCallExpr`, so giving
@@ -1018,6 +1023,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // TODO: handle suffix "?" in expr and type contexts
         rule!((optionalChainingExpr expression: @inner) => expr { inner }),
         // try/try?/try! expr → unary_expr with operator "try", "try?" or "try!"
+        coerce_to_pattern!(tryExpr),
         rule!(
             (tryExpr questionOrExclamationMark: _? @@m expression: @e)
             =>
@@ -1072,11 +1078,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         // Check expression (`x is T`) → type_test_expr
+        coerce_to_pattern!(isExpr),
         rule!((isExpr expression: @val type: @ty) => (type_test_expr expr: {val} operator: (infix_operator "is") type: {ty})),
         // Await expression → unary_expr with operator "await"
+        coerce_to_pattern!(awaitExpr),
         rule!((awaitExpr expression: @val) => (unary_expr operator: (prefix_operator "await") operand: {val})),
         // Force-unwrap (`x!`) → postfix unary_expr, via swift-syntax's dedicated
         // `forceUnwrapExpr` node.
+        coerce_to_pattern!(forceUnwrapExpr),
         rule!((forceUnwrapExpr expression: @e) => (unary_expr operator: (postfix_operator "!") operand: {e})),
         // ---- Imports ----
         // An import declaration. The dotted path (a list of

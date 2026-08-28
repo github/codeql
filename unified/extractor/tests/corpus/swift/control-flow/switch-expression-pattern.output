@@ -299,13 +299,13 @@ top_level
                               identifier: identifier "y"
                           operator: infix_operator "+"
                           right: int_literal "1"
-                    unary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got unary_expr
-                      operand:
-                        expr_equality_pattern <-- ERROR: The field unary_expr.operand should contain expr, but got expr_equality_pattern
-                          expr:
+                    expr_equality_pattern
+                      expr:
+                        unary_expr
+                          operand:
                             name_expr
                               identifier: identifier "y"
-                      operator: prefix_operator "-"
+                          operator: prefix_operator "-"
                     expr_equality_pattern
                       expr:
                         binary_expr
@@ -316,8 +316,10 @@ top_level
                           right:
                             name_expr
                               identifier: identifier "z"
-                    string_interpolation_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got string_interpolation_expr
-                      element: string_literal "foo"
+                    expr_equality_pattern
+                      expr:
+                        string_interpolation_expr
+                          element: string_literal "foo"
                     expr_equality_pattern
                       expr: int_literal "4"
                     expr_equality_pattern
@@ -334,42 +336,43 @@ top_level
                         member_access_expr
                           base: inferred_type_expr "."
                           member: identifier "baz"
-                    array_literal <-- ERROR: The field or_pattern.pattern should contain pattern, but got array_literal
-                      element:
-                        expr_equality_pattern <-- ERROR: The field array_literal.element should contain expr, but got expr_equality_pattern
-                          expr: int_literal "42"
-                    map_literal "[\"a\": 1]" <-- ERROR: The field or_pattern.pattern should contain pattern, but got map_literal
-                    unary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got unary_expr
-                      operand:
-                        expr_equality_pattern <-- ERROR: The field unary_expr.operand should contain expr, but got expr_equality_pattern
-                          expr:
-                            name_expr
-                              identifier: identifier "y"
-                      operator: prefix_operator "try"
-                    unary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got unary_expr
-                      operand:
-                        expr_equality_pattern <-- ERROR: The field unary_expr.operand should contain expr, but got expr_equality_pattern
-                          expr:
-                            name_expr
-                              identifier: identifier "y"
-                      operator: postfix_operator "!"
-                    type_test_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got type_test_expr
+                    expr_equality_pattern
                       expr:
-                        expr_equality_pattern <-- ERROR: The field type_test_expr.expr should contain expr, but got expr_equality_pattern
+                        array_literal
+                          element: int_literal "42"
+                    expr_equality_pattern
+                      expr: map_literal "[\"a\": 1]"
+                    expr_equality_pattern
+                      expr:
+                        unary_expr
+                          operand:
+                            name_expr
+                              identifier: identifier "y"
+                          operator: prefix_operator "try"
+                    expr_equality_pattern
+                      expr:
+                        unary_expr
+                          operand:
+                            name_expr
+                              identifier: identifier "y"
+                          operator: postfix_operator "!"
+                    expr_equality_pattern
+                      expr:
+                        type_test_expr
                           expr:
                             name_expr
                               identifier: identifier "y"
-                      operator: infix_operator "is"
-                      type:
-                        named_type_expr
-                          name: identifier "T"
-                    unary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got unary_expr
-                      operand:
-                        expr_equality_pattern <-- ERROR: The field unary_expr.operand should contain expr, but got expr_equality_pattern
-                          expr:
+                          operator: infix_operator "is"
+                          type:
+                            named_type_expr
+                              name: identifier "T"
+                    expr_equality_pattern
+                      expr:
+                        unary_expr
+                          operand:
                             name_expr
                               identifier: identifier "y"
-                      operator: prefix_operator "await"
+                          operator: prefix_operator "await"
               body:
                 block
                   stmt:
@@ -384,18 +387,14 @@ top_level
                               element: string_literal "expr"
             switch_case
               pattern:
-                if_expr <-- ERROR: The field switch_case.pattern should contain pattern, but got if_expr
-                  condition:
-                    expr_equality_pattern <-- ERROR: The field if_expr.condition should contain expr, but got expr_equality_pattern
-                      expr: boolean_literal "true"
-                  then:
-                    expr_equality_pattern <-- ERROR: The field if_expr.then should contain expr, but got expr_equality_pattern
-                      expr:
+                expr_equality_pattern
+                  expr:
+                    if_expr
+                      condition: boolean_literal "true"
+                      then:
                         name_expr
                           identifier: identifier "y"
-                  else:
-                    expr_equality_pattern <-- ERROR: The field if_expr.else should contain expr, but got expr_equality_pattern
-                      expr:
+                      else:
                         name_expr
                           identifier: identifier "z"
               body:
