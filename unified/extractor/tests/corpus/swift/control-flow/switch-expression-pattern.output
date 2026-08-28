@@ -291,16 +291,14 @@ top_level
                       expr:
                         name_expr
                           identifier: identifier "y"
-                    binary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got binary_expr
-                      left:
-                        expr_equality_pattern <-- ERROR: The field binary_expr.left should contain expr, but got expr_equality_pattern
-                          expr:
+                    expr_equality_pattern
+                      expr:
+                        binary_expr
+                          left:
                             name_expr
                               identifier: identifier "y"
-                      operator: infix_operator "+"
-                      right:
-                        expr_equality_pattern <-- ERROR: The field binary_expr.right should contain expr, but got expr_equality_pattern
-                          expr: int_literal "1"
+                          operator: infix_operator "+"
+                          right: int_literal "1"
                     unary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got unary_expr
                       operand:
                         expr_equality_pattern <-- ERROR: The field unary_expr.operand should contain expr, but got expr_equality_pattern
@@ -308,16 +306,14 @@ top_level
                             name_expr
                               identifier: identifier "y"
                       operator: prefix_operator "-"
-                    binary_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got binary_expr
-                      left:
-                        expr_equality_pattern <-- ERROR: The field binary_expr.left should contain expr, but got expr_equality_pattern
-                          expr:
+                    expr_equality_pattern
+                      expr:
+                        binary_expr
+                          left:
                             name_expr
                               identifier: identifier "y"
-                      operator: infix_operator "..."
-                      right:
-                        expr_equality_pattern <-- ERROR: The field binary_expr.right should contain expr, but got expr_equality_pattern
-                          expr:
+                          operator: infix_operator "..."
+                          right:
                             name_expr
                               identifier: identifier "z"
                     string_interpolation_expr <-- ERROR: The field or_pattern.pattern should contain pattern, but got string_interpolation_expr

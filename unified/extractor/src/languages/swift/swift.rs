@@ -283,6 +283,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // can't match on token text, so a small Rust block reads the spelling
         // and routes to `compound_assign_expr` or `binary_expr`. The operator
         // is captured raw (`@@op`) to read its spelling.
+        rule!((infixOperatorExpr) @@expr where ctx.in_pattern =>
+            pattern {
+                ctx.in_pattern = false;
+                tree!((expr_equality_pattern expr: {ctx.translate(expr)?}))
+            }
+        ),
         rule!(
             (infixOperatorExpr leftOperand: @l operator: (binaryOperatorExpr) @@op rightOperand: @r)
             =>
