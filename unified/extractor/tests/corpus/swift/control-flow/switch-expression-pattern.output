@@ -426,14 +426,7 @@ top_level
                                       identifier: identifier "y"
                             string_literal
                     expr_equality_pattern
-                      expr:
-                        call_expr
-                          callee:
-                            name_expr
-                              identifier: identifier "y"
-                          argument:
-                            argument
-                              value: int_literal "4"
+                      expr: unsupported_node "y[4]"
               body:
                 block
                   stmt:

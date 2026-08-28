@@ -1009,7 +1009,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (subscriptCallExpr calledExpression: @callee arguments: _* @args)
             =>
-            (call_expr callee: {callee} argument: {args})
+            (unsupported_node)
         ),
         // ---- Optionals and errors ----
         // Postfix `?` in a pattern means `Optional.some`. E.g: `(x,y)?` -> `Optional.some((x,y))`
