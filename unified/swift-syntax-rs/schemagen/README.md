@@ -54,14 +54,14 @@ swift-syntax's tree verbatim, so `main.swift` mirrors what
 - Abstract base kinds become `supertypes:` entries rather than node kinds.
 - Collection nodes are dropped, and a collection-typed child is recorded as
   its element kinds, because the adapter elides collections into JSON arrays.
-- `unexpectedBeforeX` and `unexpectedBetweenXAndY` error-recovery children are
-  dropped; no rule matches them. This filters on the child name:
-  `unexpectedCodeDecl` is a real node kind and is retained.
+- `unexpectedBeforeX`, `unexpectedBetweenXAndY`, and `unexpectedAfterX`
+  error-recovery children are dropped; no rule matches them. This filters on
+  the child name: `unexpectedCodeDecl` is a real node kind and is retained.
 - Token-typed children become the synthetic `_token` kind. Only the varying
-  token kinds whose text is not implied by the kind, listed in
-  `VARYING_TOKEN_KINDS` in `adapter.rs`, are emitted as kinds of their own.
-  Fixed tokens are anonymous and keyed by their text, so no rule can name
-  them.
+  token kinds whose `TokenSpec` is `.other` and has no fixed text are emitted
+  as kinds of their own. These are derived from `Token.allCases` and should match
+  `VARYING_TOKEN_KINDS` in `adapter.rs`. Fixed tokens are anonymous and keyed
+  by their text, so no rule can name them.
 
 Setting `EMIT_SUPERTYPES=0` omits the `supertypes:` section, which can be useful
 when diffing two versions for kind and field changes alone.

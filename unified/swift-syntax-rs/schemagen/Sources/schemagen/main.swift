@@ -4,15 +4,17 @@ import SyntaxSupport
 // Named-leaf ("varying") token kinds, mirroring the extractor adapter's
 // VARYING_TOKEN_KINDS. Fixed tokens are anonymous (keyed by text) and are not
 // matched by any rule, so they are not emitted here.
-let varyingTokens = [
-    "identifier", "integerLiteral", "floatLiteral", "stringSegment",
-    "binaryOperator", "prefixOperator", "postfixOperator", "dollarIdentifier",
-    "regexLiteralPattern", "rawStringPoundDelimiter", "regexPoundDelimiter",
-    "shebang", "unknown",
-]
+let varyingTokens = Token.allCases.compactMap { token -> String? in
+    let spec = token.spec
+    guard spec.text == nil else { return nil }
+    // The generic `keyword` token has no `TokenSpec.text`, but each concrete
+    // keyword has a fixed spelling carried by its associated value.
+    guard case .other = spec.kind else { return nil }
+    return spec.identifier.text
+}
 
-// The yeast type references a child maps to. A collection wrapper is elided by
-// the adapter, so a collection child maps to its element kinds.
+// The yeast type references that a child maps to. A collection wrapper is
+// elided by the adapter, so a collection child maps to its element kinds.
 func typeRefs(_ child: Child) -> [String] {
     switch child.kind {
     case .node(let kind):
@@ -68,8 +70,9 @@ output += "named:\n"
 for (kind, children) in named.sorted(by: { $0.0 < $1.0 }) {
     output += "  \(kind):\n"
     for child in children {
-        // swift-syntax error-recovery slots (`unexpectedBeforeX` and
-        // `unexpectedBetweenXAndY`) are never matched by rules.
+        // swift-syntax error-recovery slots (`unexpectedBeforeX`,
+        // `unexpectedBetweenXAndY`, and `unexpectedAfterX`) are never matched
+        // by rules.
         if child.name.hasPrefix("unexpected") {
             continue
         }
