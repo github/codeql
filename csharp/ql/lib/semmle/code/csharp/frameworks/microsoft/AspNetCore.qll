@@ -173,8 +173,8 @@ class MicrosoftAspNetCoreMvcFilterCollection extends Class {
 
   /** Gets an `Add` method. */
   Method getAddMethod() {
-    result = this.getAMethod("Add") or
-    result = this.getABaseType().getAMethod("Add")
+    result = this.getAMethod(["Add", "Add`1"]) or
+    result = this.getABaseType().getAMethod(["Add", "Add`1"])
   }
 }
 

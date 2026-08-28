@@ -49,11 +49,22 @@ private predicate hasGlobalWebMvcAntiforgeryFilter(Compilation compilation) {
 
 predicate hasGlobalAspNetMvcAntiForgeryFilter(Compilation compilation) {
   exists(MethodCall addGlobalFilter, MethodCall registrationCall |
-    addGlobalFilter.getTarget() =
-      any(AspNetCore::MicrosoftAspNetCoreMvcFilterCollection collection).getAddMethod() and
-    // The filter is the `AutoValidateAntiforgeryTokenAttribute` filter.
-    addGlobalFilter.getArgument(0).getType() instanceof
-      AspNetCore::AutoValidateAntiforgeryTokenAttribute and
+    (
+      // The filter is the `AutoValidateAntiforgeryTokenAttribute` filter.
+      addGlobalFilter.getTarget() =
+        any(AspNetCore::MicrosoftAspNetCoreMvcFilterCollection collection).getAddMethod() and
+      (
+        addGlobalFilter.getArgument(0).getType() instanceof
+          AspNetCore::AutoValidateAntiforgeryTokenAttribute or
+        addGlobalFilter.getArgument(0).(TypeofExpr).getTypeAccess().getTarget() instanceof
+          AspNetCore::AutoValidateAntiforgeryTokenAttribute
+      )
+      or
+      addGlobalFilter.getTarget().getUnboundDeclaration() =
+        any(AspNetCore::MicrosoftAspNetCoreMvcFilterCollection collection).getAddMethod() and
+      addGlobalFilter.getTarget().(ConstructedGeneric).getTypeArgument(0) instanceof
+        AspNetCore::AutoValidateAntiforgeryTokenAttribute
+    ) and
     // The filter is added in an ASP.NET Core registration call, which is provided as a lambda argument
     // to the Mvc registration method.
     registrationCall.getTarget() instanceof AspNetCore::MicrosoftAspNetCoreMvcRegistration and
