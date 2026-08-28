@@ -66,6 +66,7 @@ std::regex r_prop1("[[:alnum:]]*");
 std::regex r_prop2("[[:digit:]]+");
 std::regex r_prop3("[[:alnum:]]{2,3}");
 std::regex r_prop4("[a-f[:digit:]]+"); // Also valid inside character classes
+std::regex r_prop5("[^[:digit:]]");
 
 // Two separate character classes, each containing a single POSIX bracket expression
 std::regex r_posix1("[[:alpha:]][[:digit:]]");
