@@ -39,5 +39,5 @@ top_level
               identifier: identifier "x"
           value:
             member_access_expr
-              base: inferred_type_expr ".foo"
+              base: inferred_type_expr "."
               member: identifier "foo"

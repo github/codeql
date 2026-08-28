@@ -95,7 +95,7 @@ CfgNodes::ExprCfgNode getPostUpdateReverseStep(CfgNodes::ExprCfgNode e) {
 pragma[nomagic]
 Ssa::Definition getParameterDef(NamedParameter p) {
   exists(BasicBlock bb, int i |
-    bb.getNode(i).getAstNode() = p.getDefiningAccess() and
+    bb.getNode(i).injects(p.getDefiningAccess()) and
     result.definesAt(_, bb, i)
   )
 }
@@ -159,7 +159,7 @@ module LocalFlow {
       exprTo = nodeTo.asExpr() and
       n.getReturningNode().getAstNode() instanceof BreakStmt and
       exprTo.getAstNode() instanceof Loop and
-      nodeTo.asExpr().getAPredecessor(any(BreakSuccessor s)) = n.getReturningNode()
+      n.getReturningNode().getASuccessor(any(BreakSuccessor s)).getAstNode() = exprTo.getAstNode()
     )
     or
     nodeFrom.asExpr() = nodeTo.(ReturningStatementNode).getReturningNode().getReturnedValueNode()
@@ -198,7 +198,7 @@ module LocalFlow {
     FlowSummaryNode nodeFrom, FlowSummaryNode nodeTo, FlowSummaryImpl::Public::SummarizedCallable c,
     string model
   ) {
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo.getSummaryNode(), true, model) and
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model) and
     c = nodeFrom.getSummarizedCallable()
   }
 
@@ -285,7 +285,6 @@ predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
 /** Provides logic related to captured variables. */
 module VariableCapture {
   private import codeql.dataflow.VariableCapture as Shared
-  private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
 
   private predicate closureFlowStep(CfgNodes::ExprCfgNode e1, CfgNodes::ExprCfgNode e2) {
     e1 = getALastEvalNode(e2)
@@ -296,13 +295,11 @@ module VariableCapture {
     )
   }
 
-  private module CaptureInput implements Shared::InputSig<Location, BasicBlocks::Cfg::BasicBlock> {
+  private module CaptureInput implements Shared::InputSig<Location, BasicBlock> {
     private import codeql.ruby.controlflow.ControlFlowGraph as Cfg
     private import TaintTrackingPrivate as TaintTrackingPrivate
 
-    Callable basicBlockGetEnclosingCallable(BasicBlocks::Cfg::BasicBlock bb) {
-      result = bb.getScope()
-    }
+    Callable basicBlockGetEnclosingCallable(BasicBlock bb) { result = bb.getScope() }
 
     class CapturedVariable extends LocalVariable {
       CapturedVariable() {
@@ -374,7 +371,7 @@ module VariableCapture {
 
   class ClosureExpr = CaptureInput::ClosureExpr;
 
-  module Flow = Shared::Flow<Location, BasicBlocks::Cfg, CaptureInput>;
+  module Flow = Shared::Flow<Location, Cfg, CaptureInput>;
 
   private Flow::ClosureNode asClosureNode(Node n) {
     result = n.(CaptureNode).getSynthesizedCaptureNode()
@@ -676,26 +673,28 @@ private module Cached {
     )
   }
 
+  private predicate fieldName(string name) {
+    name = any(InstanceVariable v).getName()
+    or
+    name = "@" + any(SetterMethodCall c).getTargetName()
+    or
+    // The following equation unfortunately leads to a non-monotonic recursion error:
+    //    name = any(AccessPathToken a).getAnArgument("Field")
+    // Therefore, we use the following instead to extract the field names from the
+    // external model data. This, unfortunately, does not included any field names used
+    // in models defined in QL code.
+    exists(string input, string output |
+      ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
+    |
+      name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
+    )
+  }
+
   cached
   newtype TContent =
     TKnownElementContent(ConstantValue cv) { trackKnownValue(cv) } or
     TUnknownElementContent() or
-    TFieldContent(string name) {
-      name = any(InstanceVariable v).getName()
-      or
-      name = "@" + any(SetterMethodCall c).getTargetName()
-      or
-      // The following equation unfortunately leads to a non-monotonic recursion error:
-      //    name = any(AccessPathToken a).getAnArgument("Field")
-      // Therefore, we use the following instead to extract the field names from the
-      // external model data. This, unfortunately, does not included any field names used
-      // in models defined in QL code.
-      exists(string input, string output |
-        ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
-      |
-        name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
-      )
-    } or
+    TFieldContent(string name) { fieldName(name) } or
     deprecated TSplatContent(int i, Boolean shifted) { i in [0 .. 10] } or
     deprecated THashSplatContent(ConstantValue::ConstantSymbolValue cv) or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
@@ -717,11 +716,19 @@ private module Cached {
   }
 
   cached
+  int fieldNameBucket(string name) {
+    exists(int r | name = rank[r](string n | fieldName(n)) and result = r % 30)
+  }
+
+  cached
   newtype TContentApprox =
     TUnknownElementContentApprox() or
     TKnownIntegerElementContentApprox() or
     TKnownElementContentApprox(string approx) { approx = approxKnownElementIndex(_) } or
-    TNonElementContentApprox(Content c) { not c instanceof Content::ElementContent } or
+    TFieldContentApprox(int bucket) { bucket = fieldNameBucket(_) } or
+    TNonElementContentApprox(Content c) {
+      not c instanceof Content::ElementContent and not c instanceof Content::FieldContent
+    } or
     TCapturedVariableContentApprox(VariableCapture::CapturedVariable v)
 
   cached
@@ -854,7 +861,7 @@ class ReturningStatementNode extends NodeImpl, TReturningNode {
   /** Gets the expression corresponding to this node. */
   CfgNodes::ReturningCfgNode getReturningNode() { result = n }
 
-  override CfgScope getCfgScopeImpl() { result = n.getScope() }
+  override CfgScope getCfgScopeImpl() { result = n.getEnclosingCallable() }
 
   override Location getLocationImpl() { result = n.getLocation() }
 
@@ -1286,10 +1293,10 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   override CfgScope getCfgScopeImpl() { none() }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asLibraryCallable() = this.getSummarizedCallable()
+    result = this.getSummaryNode().getEnclosingCallable()
   }
 
-  override EmptyLocation getLocationImpl() { any() }
+  override Location getLocationImpl() { result = this.getSummaryNode().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 }
@@ -1354,7 +1361,7 @@ module ArgumentNodes {
       this.sourceArgumentOf(call.asCall(), pos)
     }
 
-    override CfgScope getCfgScopeImpl() { result = yield.getScope() }
+    override CfgScope getCfgScopeImpl() { result = yield.getEnclosingCallable() }
 
     override Location getLocationImpl() { result = yield.getLocation() }
   }
@@ -1384,7 +1391,7 @@ module ArgumentNodes {
       this.sourceArgumentOf(call.asCall(), pos)
     }
 
-    override CfgScope getCfgScopeImpl() { result = sup.getScope() }
+    override CfgScope getCfgScopeImpl() { result = sup.getEnclosingCallable() }
 
     override Location getLocationImpl() { result = sup.getLocation() }
   }
@@ -1607,7 +1614,7 @@ private module ReturnNodes {
   private predicate isValid(CfgNodes::ReturningCfgNode node) {
     exists(ReturningStmt stmt, Callable scope |
       stmt = node.getAstNode() and
-      scope = node.getScope()
+      scope = node.getEnclosingCallable()
     |
       stmt instanceof ReturnStmt and
       (scope instanceof Method or scope instanceof SingletonMethod or scope instanceof Lambda)
@@ -1627,8 +1634,8 @@ private module ReturnNodes {
   class ExplicitReturnNode extends SourceReturnNode, ReturningStatementNode {
     ExplicitReturnNode() {
       isValid(n) and
-      n.getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
-      n.getScope() instanceof Callable
+      n.getASuccessor() instanceof ControlFlow::NormalExitNode and
+      n.getEnclosingCallable() instanceof Callable
     }
 
     override ReturnKind getKindSource() {
@@ -1643,16 +1650,24 @@ private module ReturnNodes {
     }
   }
 
-  pragma[noinline]
-  private AstNode implicitReturn(Callable c, ExprNode n) {
-    exists(CfgNodes::ExprCfgNode en |
-      en = n.getExprNode() and
-      en.getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
-      n.(NodeImpl).getCfgScope() = c and
-      result = en.getExpr()
-    )
+  private AstNode desugar(AstNode n) {
+    result = n.getDesugared()
     or
-    result = implicitReturn(c, n).getParent()
+    not exists(n.getDesugared()) and
+    result = n
+  }
+
+  private Expr getLast(StmtSequence s) {
+    result = getLast(s.(BodyStmt).getElse())
+    or
+    result = getLast(s.(BodyStmt).getARescue().getBody())
+    or
+    not exists(s.(BodyStmt).getElse()) and
+    exists(Stmt last | last = s.getLastStmt() |
+      result = getLast(last)
+      or
+      result = last and not last instanceof StmtSequence
+    )
   }
 
   /**
@@ -1661,7 +1676,7 @@ private module ReturnNodes {
    * last thing that is evaluated in the body of the callable.
    */
   class ExprReturnNode extends SourceReturnNode, ExprNode {
-    ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = c.getBody().getAStmt()) }
+    ExprReturnNode() { this.getExprNode().getExpr() = desugar(getLast(any(Callable c).getBody())) }
 
     override ReturnKind getKindSource() {
       exists(CfgScope scope | scope = this.(NodeImpl).getCfgScope() |
@@ -1760,8 +1775,7 @@ import OutNodes
 predicate jumpStep(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
-    succ.(FlowSummaryNode).getSummaryNode())
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
   or
   any(AdditionalJumpStep s).step(pred, succ)
   or
@@ -2268,6 +2282,10 @@ class ContentApprox extends TContentApprox {
       result = "approximated element " + approx
     )
     or
+    exists(int bucket |
+      this = TFieldContentApprox(bucket) and result = "field bucket " + bucket.toString()
+    )
+    or
     exists(Content c |
       this = TNonElementContentApprox(c) and
       result = c.toString()
@@ -2306,6 +2324,8 @@ ContentApprox getContentApprox(Content c) {
   or
   result =
     TKnownElementContentApprox(approxKnownElementIndex(c.(Content::KnownElementContent).getIndex()))
+  or
+  result = TFieldContentApprox(fieldNameBucket(c.(Content::FieldContent).getName()))
   or
   result = TNonElementContentApprox(c)
 }
@@ -2391,9 +2411,7 @@ module TypeInference {
   private predicate hasTypeCheckedRead(
     Ssa::Definition def, CfgNodes::ExprCfgNode caseRead, CfgNodes::ExprCfgNode read, Module m
   ) {
-    exists(
-      CfgNodes::ExprCfgNode pattern, ConditionBlock cb, CfgNodes::ExprNodes::CaseExprCfgNode case
-    |
+    exists(CfgNodes::ExprCfgNode pattern, BasicBlock cb, CfgNodes::ExprNodes::CaseExprCfgNode case |
       m = resolveConstantReadAccess(pattern.getExpr()) and
       cb.getLastNode() = pattern and
       cb.edgeDominates(read.getBasicBlock(), any(MatchingSuccessor match | match.getValue() = true)) and

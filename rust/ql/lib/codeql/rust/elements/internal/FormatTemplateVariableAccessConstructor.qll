@@ -35,8 +35,8 @@ private predicate formatArgsHasArg(
 }
 
 pragma[nomagic]
-private predicate formatArgsHasArgName(Raw::FormatArgsExpr parent, string name) {
-  parent.getArg(_).getName().getText() = name
+private predicate formatArgsHasArgName(Raw::FormatArgsExpr parent) {
+  exists(parent.getArg(_).getArgName())
 }
 
 /**
@@ -48,6 +48,6 @@ predicate unboundNamedFormatArgument(
 ) {
   exists(string name |
     formatArgsHasArg(parent, arg, name, index, kind) and
-    not formatArgsHasArgName(parent, name)
+    not formatArgsHasArgName(parent)
   )
 }

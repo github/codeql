@@ -1,16 +1,16 @@
 module github.com/github/codeql-go/extractor
 
-go 1.26
+go 1.27
 
-toolchain go1.26.5
+toolchain go1.27.0
 
 // when updating this, run
 //    bazel run @rules_go//go -- mod tidy
 // when adding or removing dependencies, run
 //    bazel mod tidy
 require (
-	golang.org/x/mod v0.38.0
-	golang.org/x/tools v0.48.0
+	golang.org/x/mod v0.40.0
+	golang.org/x/tools v0.49.0
 )
 
 require (

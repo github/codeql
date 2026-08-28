@@ -148,3 +148,27 @@ def use_use_madness
     use(x)
   end
 end
+
+def begin_expr r
+  x = begin
+        raise "error" if r
+        source(1)
+      rescue
+        source(2)
+      ensure
+        source(3)
+      end
+  sink(x) # $ MISSING: hasValueFlow=1 hasValueFlow=2
+
+  y = begin
+        raise "error" if r
+        source(4)
+      rescue
+        source(5)
+      else
+        source(6)
+      ensure
+        source(7)
+      end
+  sink(y) # $ MISSING: hasValueFlow=5 hasValueFlow=6
+end

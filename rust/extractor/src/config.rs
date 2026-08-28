@@ -14,7 +14,9 @@ use ra_ap_ide_db::FxHashMap;
 use ra_ap_intern::Symbol;
 use ra_ap_load_cargo::{LoadCargoConfig, ProcMacroServerChoice};
 use ra_ap_paths::{AbsPath, AbsPathBuf, Utf8PathBuf};
-use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot};
+use ra_ap_project_model::{
+    CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot, TargetDirectoryConfig,
+};
 use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
@@ -26,9 +28,9 @@ use std::path::{Path, PathBuf};
 #[serde(rename_all = "lowercase")]
 #[clap(rename_all = "lowercase")]
 pub enum Compression {
-    #[default] // TODO make gzip default
     None,
     Gzip,
+    #[default]
     Zstd,
 }
 
@@ -106,14 +108,23 @@ impl Config {
         figment.extract().context("loading configuration")
     }
 
+    fn get_extra_env(&self) -> FxHashMap<String, Option<String>> {
+        let mut extra_env = FxHashMap::default();
+        // RUSTUP_AUTO_INSTALL is set to 0 by rust-analyzer (https://github.com/rust-lang/rust-analyzer/issues/20719),
+        // but we do want to allow rustup to auto-install toolchains if needed, so we set it to 1 here.
+        extra_env.insert("RUSTUP_AUTO_INSTALL".to_owned(), Some("1".to_owned()));
+        extra_env.extend(self.cargo_extra_env.clone());
+        extra_env
+    }
+
     fn sysroot(&self, dir: &AbsPath) -> Sysroot {
         let sysroot_input = self.sysroot.as_ref().map(|p| join_path_buf(dir, p));
         let sysroot_src_input = self.sysroot_src.as_ref().map(|p| join_path_buf(dir, p));
         match (sysroot_input, sysroot_src_input) {
-            (None, None) => Sysroot::discover(dir, &self.cargo_extra_env),
+            (None, None) => Sysroot::discover(dir, &self.get_extra_env()),
             (Some(sysroot), None) => Sysroot::discover_rust_lib_src_dir(sysroot),
             (None, Some(sysroot_src)) => {
-                Sysroot::discover_with_src_override(dir, &self.cargo_extra_env, sysroot_src)
+                Sysroot::discover_with_src_override(dir, &self.get_extra_env(), sysroot_src)
             }
             (Some(sysroot), Some(sysroot_src)) => Sysroot::new(Some(sysroot), Some(sysroot_src)),
         }
@@ -164,19 +175,22 @@ impl Config {
                     .map(ToOwned::to_owned)
                     .map(RustLibSource::Path),
 
-                extra_env: self.cargo_extra_env.clone(),
+                extra_env: self.get_extra_env(),
                 extra_args: self.cargo_extra_args.clone(),
                 extra_includes: self
                     .extra_includes
                     .iter()
                     .map(|p| join_path_buf(dir, p))
                     .collect(),
-                target_dir: Utf8PathBuf::from_path_buf(
+                target_dir_config: Utf8PathBuf::from_path_buf(
                     self.cargo_target_dir
                         .clone()
                         .unwrap_or_else(|| self.scratch_dir.join("target")),
                 )
-                .ok(),
+                .map_or(
+                    TargetDirectoryConfig::None,
+                    TargetDirectoryConfig::Directory,
+                ),
                 features: self.cargo_features(),
                 target: self.cargo_target.clone(),
                 cfg_overrides: to_cfg_overrides(&self.cargo_cfg_overrides),
@@ -192,6 +206,8 @@ impl Config {
                 load_out_dirs_from_check: true,
                 with_proc_macro_server: self.proc_macro_server_choice(dir),
                 prefill_caches: false,
+                num_worker_threads: 1,
+                proc_macro_processes: 1,
             },
         )
     }

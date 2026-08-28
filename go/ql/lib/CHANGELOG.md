@@ -1,3 +1,9 @@
+## 7.3.0
+
+### Major Analysis Improvements
+
+* Go 1.27 is now supported.
+
 ## 7.2.3
 
 No user-facing changes.

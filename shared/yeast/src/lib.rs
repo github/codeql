@@ -1014,8 +1014,16 @@ pub type Transform<C = ()> = Box<
         + Sync,
 >;
 
+/// Predicate evaluated after a rule's query matches and before its transform
+/// runs. Returning `false` makes the rule behave as if its query did not
+/// match, so the driver continues to the next rule. The user context is a
+/// private clone for this rule attempt; mutations are retained for the
+/// transform when the guard succeeds and discarded when it fails.
+pub type Guard<C = ()> = Box<dyn Fn(&Ast, &Captures, &mut C) -> Result<bool, String> + Send + Sync>;
+
 pub struct Rule<C = ()> {
     query: QueryNode,
+    guard: Option<Guard<C>>,
     transform: Transform<C>,
     /// If true, after this rule fires on a node the engine will try to
     /// re-apply this same rule on the result root. Defaults to false:
@@ -1025,9 +1033,22 @@ pub struct Rule<C = ()> {
 }
 
 impl<C> Rule<C> {
+    /// Construct an unguarded rule from its query and transform.
     pub fn new(query: QueryNode, transform: Transform<C>) -> Self {
         Self {
             query,
+            guard: None,
+            transform,
+            repeated: false,
+        }
+    }
+
+    /// Construct a guarded rule. The guard sees raw captures and shares its
+    /// private user-context clone with the transform when it succeeds.
+    pub fn guarded(query: QueryNode, guard: Guard<C>, transform: Transform<C>) -> Self {
+        Self {
+            query,
+            guard: Some(guard),
             transform,
             repeated: false,
         }
@@ -1042,30 +1063,29 @@ impl<C> Rule<C> {
         self
     }
 
-    fn try_rule(
-        &self,
-        ast: &mut Ast,
-        node: Id,
-        fresh: &tree_builder::FreshScope,
-        user_ctx: &mut C,
-        translator: TranslatorHandle<'_, C>,
-    ) -> Result<Option<Vec<Id>>, String> {
-        match self.try_match(ast, node)? {
-            Some(captures) => Ok(Some(
-                self.run_transform(ast, captures, node, fresh, user_ctx, translator)?,
-            )),
-            None => Ok(None),
+    /// Attempt to match this rule's query against `node`, returning the raw
+    /// captures on success. Does not evaluate the guard or invoke the
+    /// transform.
+    fn match_query(&self, ast: &Ast, node: Id) -> Result<Option<Captures>, String> {
+        let mut captures = Captures::new();
+        if !self.query.do_match(ast, node, &mut captures)? {
+            return Ok(None);
         }
+        Ok(Some(captures))
     }
 
-    /// Attempt to match this rule's query against `node`, returning the
-    /// resulting captures on success. Does not invoke the transform.
-    fn try_match(&self, ast: &Ast, node: Id) -> Result<Option<Captures>, String> {
-        let mut captures = Captures::new();
-        if self.query.do_match(ast, node, &mut captures)? {
-            Ok(Some(captures))
+    /// Evaluate this rule's guard against a successful query match. An
+    /// unguarded rule always succeeds.
+    fn guard_matches(
+        &self,
+        ast: &Ast,
+        captures: &Captures,
+        user_ctx: &mut C,
+    ) -> Result<bool, String> {
+        if let Some(guard) = &self.guard {
+            guard(ast, captures, user_ctx)
         } else {
-            Ok(None)
+            Ok(true)
         }
     }
 
@@ -1154,13 +1174,19 @@ fn apply_repeating_rules_inner<C: Clone>(
         if Some(rule_ptr) == skip_rule {
             continue;
         }
-        // Give each rule attempt a private clone of the user context.
-        // Any mutations the rule makes are visible to its transform and
-        // to the recursive translation of its result, but never leak
-        // back to the parent — the clone is simply dropped when we
-        // return. This is also `?`-safe: an error return drops `local`
-        // without touching the caller's `user_ctx`.
+        let Some(captures) = rule.match_query(ast, id)? else {
+            continue;
+        };
+
+        // Give each structurally-matching rule a private clone of the user
+        // context before its guard runs. Guard mutations are visible to the
+        // transform and recursive translation when the guard succeeds, but a
+        // failed guard drops the clone before trying the next rule.
         let mut local = user_ctx.clone();
+        if !rule.guard_matches(ast, &captures, &mut local)? {
+            continue;
+        }
+
         // Repeating rules don't need a real translator: their captures
         // aren't auto-translated (Repeating preserves the input schema),
         // and `ctx.translate(id)` errors if invoked from a Repeating
@@ -1168,29 +1194,25 @@ fn apply_repeating_rules_inner<C: Clone>(
         let translator = TranslatorHandle {
             inner: TranslatorImpl::Repeating,
         };
-        let try_result = rule.try_rule(ast, id, fresh, &mut local, translator)?;
-        if let Some(result_node) = try_result {
-            // For non-repeated rules, suppress further application of *this*
-            // rule on the result root, so a rule whose output matches its own
-            // query doesn't loop. Other rules and child traversal are
-            // unaffected.
-            let next_skip = if rule.repeated { None } else { Some(rule_ptr) };
-            let mut results = Vec::new();
-            for node in result_node {
-                results.extend(apply_repeating_rules_inner(
-                    index,
-                    ast,
-                    &mut local,
-                    node,
-                    fresh,
-                    rewrite_depth + 1,
-                    next_skip,
-                )?);
-            }
-            return Ok(results);
+        let result_nodes = rule.run_transform(ast, captures, id, fresh, &mut local, translator)?;
+
+        // For non-repeated rules, suppress further application of *this*
+        // rule on the result root, so a rule whose output matches its own
+        // query doesn't loop. Other rules and child traversal are unaffected.
+        let next_skip = if rule.repeated { None } else { Some(rule_ptr) };
+        let mut results = Vec::new();
+        for node in result_nodes {
+            results.extend(apply_repeating_rules_inner(
+                index,
+                ast,
+                &mut local,
+                node,
+                fresh,
+                rewrite_depth + 1,
+                next_skip,
+            )?);
         }
-        // Rule didn't match; `local` is dropped as we loop to the next
-        // rule.
+        return Ok(results);
     }
 
     // Take the parent's fields by ownership: the recursion will rewrite
@@ -1271,29 +1293,33 @@ fn apply_one_shot_rules_inner<C: Clone>(
     let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
 
     for rule in index.rules_for_kind(node_kind) {
-        if let Some(captures) = rule.try_match(ast, id)? {
-            // Give the rule a private clone of the user context. Any
-            // mutations the rule (or its transitively-translated
-            // captures) make are visible during this rule's transform,
-            // but never leak back — the clone is dropped when we
-            // return. `?`-safe: an error return drops `local` without
-            // touching the caller's `user_ctx`.
-            let mut local = user_ctx.clone();
-            // Build the translator handle the transform will use to
-            // recursively translate captures (or, for macro-generated
-            // rules, the auto-translate prefix uses it to translate every
-            // capture up front, preserving the legacy behavior).
-            let translator = TranslatorHandle {
-                inner: TranslatorImpl::OneShot {
-                    index,
-                    fresh,
-                    rewrite_depth,
-                    matched_root: id,
-                },
-            };
-            let result = rule.run_transform(ast, captures, id, fresh, &mut local, translator)?;
-            return Ok(result);
+        let Some(captures) = rule.match_query(ast, id)? else {
+            continue;
+        };
+
+        // Clone only after the query matches, but before the guard runs.
+        // Guard mutations are visible to the transform and transitively-
+        // translated captures when the guard succeeds; a failed guard drops
+        // the clone before trying the next rule.
+        let mut local = user_ctx.clone();
+        if !rule.guard_matches(ast, &captures, &mut local)? {
+            continue;
         }
+
+        // Build the translator handle the transform will use to recursively
+        // translate captures (or, for macro-generated rules, the
+        // auto-translate prefix uses it to translate every capture up front,
+        // preserving the legacy behavior).
+        let translator = TranslatorHandle {
+            inner: TranslatorImpl::OneShot {
+                index,
+                fresh,
+                rewrite_depth,
+                matched_root: id,
+            },
+        };
+        let result = rule.run_transform(ast, captures, id, fresh, &mut local, translator)?;
+        return Ok(result);
     }
 
     Err(format!(

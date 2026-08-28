@@ -184,79 +184,92 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     override AstNode getElse() { none() }
   }
 
-  additional predicate bindingContext(AstNode pattern, AstNode scope) {
+  additional predicate bindingContext(AstNode pattern, AstNode scope, AstNode declaration) {
     exists(SiblingShadowingDecl decl |
       scope = decl and
-      pattern = decl.getPattern()
+      pattern = decl.getPattern() and
+      declaration = decl
     )
     or
     exists(VariableDeclaration decl |
       not decl instanceof SiblingShadowingDecl and
       getChild(scope, _) = decl and
-      pattern = decl.getPattern()
+      pattern = decl.getPattern() and
+      declaration = decl
     )
     or
     exists(FunctionDeclaration func |
       getChild(scope, _) = func and
-      pattern = func.getName()
+      pattern = func.getName() and
+      declaration = func
     )
     or
     exists(Parameter param |
       scope = param.getParent() and // TODO: add SourceCallable and use .getParameter() instead
-      pattern = param.getPattern()
+      pattern = param.getPattern() and
+      declaration = param
     )
     or
     exists(CatchClause catch |
       scope = catch and // ensure both body and pattern are in scope
-      pattern = catch.getPattern()
+      pattern = catch.getPattern() and
+      declaration = catch
     )
     or
     exists(SwitchCase case |
       scope = case and // ensure both body and pattern are in scope
-      pattern = case.getPattern()
+      pattern = case.getPattern() and
+      declaration = case
     )
     or
     exists(ForEachStmt stmt |
       scope = stmt and // ensure both 'body' and 'guard' are in scope
-      pattern = stmt.getPattern()
+      pattern = stmt.getPattern() and
+      declaration = stmt
     )
     or
     exists(ClassLikeDeclaration cls |
       getChild(scope, _) = cls and
-      pattern = cls.getName()
+      pattern = cls.getName() and
+      declaration = cls
     )
     or
     exists(TypeAliasDeclaration decl |
       getChild(scope, _) = decl and
-      pattern = decl.getName()
+      pattern = decl.getName() and
+      declaration = decl
     )
     or
     exists(TypeParameter param |
       scope = param.getParent() and
-      pattern = param.getName()
+      pattern = param.getName() and
+      declaration = param
     )
     or
     exists(AssociatedTypeDeclaration decl |
       getChild(scope, _) = decl and
-      pattern = decl.getName()
+      pattern = decl.getName() and
+      declaration = decl
     )
     or
     exists(AccessorDeclaration decl |
       getChild(scope, _) = decl and
-      pattern = decl.getName()
+      pattern = decl.getName() and
+      declaration = decl
     )
     or
     exists(ImportDeclaration imprt |
       getChild(scope, _) = imprt and
-      pattern = imprt.getPattern()
+      pattern = imprt.getPattern() and
+      declaration = imprt
     )
     or
     exists(NamePattern p |
-      bindingContext(p, scope) and
+      bindingContext(p, scope, declaration) and
       pattern = p.getIdentifier()
     )
     or
-    bindingContext(pattern.(Pattern).getEnclosingPattern(), scope)
+    bindingContext(pattern.(Pattern).getEnclosingPattern(), scope, declaration)
   }
 
   /**
@@ -284,7 +297,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   predicate declInScope(AstNode definingNode, string name, AstNode scope) {
     exists(AstNode pattern |
-      bindingContext(pattern, scope) and
+      bindingContext(pattern, scope, _) and
       pattern.(Identifier).getValue() = name and
       (
         definingNode = getEnclosingOrPatternFromIdentifier(pattern)
@@ -301,7 +314,19 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   }
 
   predicate accessCand(AstNode n, string name) { n.(PotentialLocalNameAccess).getName() = name }
+
+  predicate uncertainScope(AstNode scope) {
+    // Classes can have uncertain members due to unqualified access to inherited members.
+    scope instanceof ClassLikeDeclaration
+    or
+    scope = any(TopLevel t).getBody() // Imported names are in scope here
+    or
+    // Scopes with a bulk-import have uncertain members
+    bindingContext(any(BulkImportingPattern b), scope, _)
+  }
 }
+
+import LocalNameBindingInput
 
 module LocalNameBindingOutput = LocalNameBinding<Location, LocalNameBindingInput>;
 
@@ -318,6 +343,20 @@ module Public {
 
     /** Gets the name of this local, as a string. */
     string getName() { result = super.getName() }
+  }
+
+  /** An identifier that appears as the declaration site of a name, such as the `x` in `let x = 123`. */
+  class NameDeclaration extends Identifier {
+    NameDeclaration() { LocalNameBindingInput::bindingContext(this, _, _) }
+
+    /** Gets the statement-like node declaring this name, such as a `VariableDeclaration` or `CatchClause`. */
+    AstNode getDeclaration() { LocalNameBindingInput::bindingContext(this, _, result) }
+
+    /** Gets the name being declared. */
+    string getName() { result = this.getValue() }
+
+    /** Gets the representative for the local name introduced by this declaration. */
+    LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
   }
 }
 
@@ -342,7 +381,7 @@ class PotentialLocalNameAccess extends Identifier {
     or
     this = any(NamedTypeExpr e | not exists(e.getQualifier())).getName()
     or
-    LocalNameBindingInput::bindingContext(this, _)
+    this instanceof NameDeclaration
   }
 
   LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
@@ -350,5 +389,5 @@ class PotentialLocalNameAccess extends Identifier {
   string getName() { result = this.getValue() }
 
   /** Holds if this is one of the declaration sites for a name, such as the `x` in `let x = 123`. */
-  predicate isDeclarationSite() { LocalNameBindingInput::bindingContext(this, _) }
+  predicate isDeclarationSite() { this instanceof NameDeclaration }
 }
