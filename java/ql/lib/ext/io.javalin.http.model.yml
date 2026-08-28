@@ -27,3 +27,18 @@ extensions:
       - ["io.javalin.http", "Context", true, "queryParamsAsClass", "", "", "ReturnValue", "remote", "manual"]
       - ["io.javalin.http", "Context", true, "queryParamMap", "", "", "ReturnValue", "remote", "manual"]
       - ["io.javalin.http", "Context", true, "queryString", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "uploadedFile", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "uploadedFiles", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "uploadedFileMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "url", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "fullUrl", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "contentType", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "userAgent", "", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.javalin.http", "UploadedFile", True, "content", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.javalin.http", "UploadedFile", True, "contentType", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.javalin.http", "UploadedFile", True, "extension", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.javalin.http", "UploadedFile", True, "filename", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
