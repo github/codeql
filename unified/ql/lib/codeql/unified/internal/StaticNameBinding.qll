@@ -179,11 +179,9 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
     nameDecl.getDeclaration() = member and
     node1.isIdentifier(nameDecl) and
     name = nameDecl.getName() and
-    (
-      if isInstanceMember(member)
-      then node2.isInstanceMemberNamespace(cls)
-      else node2.isStaticMemberNamespace(cls)
-    )
+    if isInstanceMember(member)
+    then node2.isInstanceMemberNamespace(cls)
+    else node2.isStaticMemberNamespace(cls)
   )
   or
   exists(TopLevel top, Stmt stmt, NameDeclaration nameDecl |
