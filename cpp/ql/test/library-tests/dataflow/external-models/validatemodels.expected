@@ -3164,6 +3164,7 @@
 | Dubious signature "(const CURLU *,CURLUPart,char **,unsigned int)" in summary model. |
 | Dubious signature "(const ComPtr &)" in summary model. |
 | Dubious signature "(const Command *,const size_t,const BlockSplit *,const BlockSplit *,const BlockSplit *,const uint8_t *,size_t,size_t,uint8_t,uint8_t,const ContextType *,HistogramLiteral *,HistogramCommand *,HistogramDistance *)" in summary model. |
+| Dubious signature "(const Cord &)" in summary model. |
 | Dubious signature "(const Curl_easy *,const connectdata *,int)" in summary model. |
 | Dubious signature "(const DH *)" in summary model. |
 | Dubious signature "(const DH *,const BIGNUM *)" in summary model. |

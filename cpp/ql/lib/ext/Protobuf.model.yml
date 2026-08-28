@@ -9,11 +9,18 @@ extensions:
       # File-descriptor variants (`{Parse,Serialize}*FromFileDescriptor`) are intentionally omitted:
       # the descriptor is an `int`, not a data buffer, so there is no buffer argument to model.
 
-      # Deserialization: the encoded input (`Argument[*0]`) taints the message (`this`).
-      - ["google::protobuf", "MessageLite", True, "ParseFromString", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
-      - ["google::protobuf", "MessageLite", True, "ParsePartialFromString", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
-      - ["google::protobuf", "MessageLite", True, "MergeFromString", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
-      - ["google::protobuf", "MessageLite", True, "MergePartialFromString", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      # Deserialization: the encoded input taints the message (`this`). The `*FromString` methods each
+      # have a `string_view` overload (the buffer is the by-value argument, so `Argument[0]`) and a
+      # `const Cord &` overload (the buffer is behind a reference, so `Argument[*0]`). The remaining
+      # inputs below are pointers or references, so they take `Argument[*0]`.
+      - ["google::protobuf", "MessageLite", True, "ParseFromString", "(string_view)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParseFromString", "(const Cord &)", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParsePartialFromString", "(string_view)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "ParsePartialFromString", "(const Cord &)", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergeFromString", "(string_view)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergeFromString", "(const Cord &)", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergePartialFromString", "(string_view)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["google::protobuf", "MessageLite", True, "MergePartialFromString", "(const Cord &)", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
       - ["google::protobuf", "MessageLite", True, "ParseFromArray", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
       - ["google::protobuf", "MessageLite", True, "ParsePartialFromArray", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
       - ["google::protobuf", "MessageLite", True, "ParseFromCord", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
