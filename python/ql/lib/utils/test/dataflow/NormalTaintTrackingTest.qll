@@ -1,4 +1,5 @@
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import utils.test.dataflow.FlowTest
 import utils.test.dataflow.testTaintConfig
 private import semmle.python.dataflow.new.internal.PrintNode
@@ -18,7 +19,7 @@ query predicate missingAnnotationOnSink(Location location, string error, string 
   exists(DataFlow::Node sink |
     exists(DataFlow::CallCfgNode call |
       // note: we only care about `SINK` and not `SINK_F`, so we have to reconstruct manually.
-      call.getFunction().asCfgNode().(NameNode).getId() = "SINK" and
+      call.getFunction().asCfgNode().(Cfg::NameNode).getId() = "SINK" and
       (sink = call.getArg(_) or sink = call.getArgByName(_))
     ) and
     location = sink.getLocation() and
