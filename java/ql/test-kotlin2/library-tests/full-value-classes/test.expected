@@ -10,8 +10,8 @@ properties
 constructors
 | test.kt:3:1:5:1 | Base | Base() |
 | test.kt:7:22:7:65 | PairValue | PairValue(int,java.lang.String) |
-| test.kt:8:5:8:68 | PairValue | PairValue(long) |
+| test.kt:8:5:8:58 | PairValue | PairValue(java.lang.String) |
 constructorCalls
 | test.kt:7:1:9:1 | super(...) | test.kt:3:1:5:1 | Base |
-| test.kt:8:32:8:68 | this(...) | test.kt:7:22:7:65 | PairValue |
-| test.kt:11:40:11:55 | new PairValue(...) | test.kt:8:5:8:68 | PairValue |
+| test.kt:8:34:8:58 | this(...) | test.kt:7:22:7:65 | PairValue |
+| test.kt:11:42:11:57 | new PairValue(...) | test.kt:8:5:8:58 | PairValue |

@@ -5,7 +5,7 @@ abstract value class Base {
 }
 
 value class PairValue(override val value: Int, val label: String) : Base() {
-    constructor(value: Long) : this(value.toInt(), value.toString())
+    constructor(value: String) : this(value.length, value)
 }
 
-fun makePairValue(value: Long): Base = PairValue(value)
+fun makePairValue(value: String): Base = PairValue(value)
