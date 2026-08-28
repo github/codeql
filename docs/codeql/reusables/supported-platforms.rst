@@ -19,5 +19,4 @@
 .. container:: footnote-group
 
     .. [1] Support for Linux on arm64 is currently in beta.
-
     .. [2] On Apple Silicon, building your code during analysis requires Rosetta 2; analyzing an interpreted language or using build mode ``none`` runs natively.
