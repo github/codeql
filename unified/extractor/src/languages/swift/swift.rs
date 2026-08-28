@@ -167,6 +167,20 @@ const COMPOUND_ASSIGN_OPS: &[&str] = &[
     "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "|=", "^=", "&+=", "&-=", "&*=",
 ];
 
+/// `coerce_to_pattern!(exprKind)` generates a rule to ensure that if the given node kind appears in a pattern context,
+/// it is translated as an expression and wrapped in an `expr_equality_pattern`.
+/// Must appear before the other rules in order to apply first.
+macro_rules! coerce_to_pattern {
+    ($kind:ident) => {
+        rule!(($kind) @@expr where ctx.in_pattern =>
+            pattern {
+                ctx.in_pattern = false;
+                tree!((expr_equality_pattern expr: {ctx.translate(expr)?}))
+            }
+        )
+    };
+}
+
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
     vec![
         // ---- Top-level ----
@@ -283,12 +297,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // can't match on token text, so a small Rust block reads the spelling
         // and routes to `compound_assign_expr` or `binary_expr`. The operator
         // is captured raw (`@@op`) to read its spelling.
-        rule!((infixOperatorExpr) @@expr where ctx.in_pattern =>
-            pattern {
-                ctx.in_pattern = false;
-                tree!((expr_equality_pattern expr: {ctx.translate(expr)?}))
-            }
-        ),
+        coerce_to_pattern!(infixOperatorExpr),
         rule!(
             (infixOperatorExpr leftOperand: @l operator: (binaryOperatorExpr) @@op rightOperand: @r)
             =>
