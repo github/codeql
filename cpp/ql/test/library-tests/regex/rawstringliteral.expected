@@ -1,0 +1,7 @@
+| regexp.cpp:116:20:116:28 | a\\nc |
+| regexp.cpp:117:36:117:45 | a\\nc |
+| regexp.cpp:118:37:118:47 | a\\nc |
+| regexp.cpp:119:37:119:46 | a\\nc |
+| regexp.cpp:120:37:120:46 | a\\nc |
+| regexp.cpp:121:21:121:31 | a\\nc |
+| regexp.cpp:122:23:122:37 | a\\nc |
