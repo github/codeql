@@ -325,7 +325,7 @@ private predicate isInheritableMemberNode(NameBindingNode node) {
   )
 }
 
-/** A name-binding node that has members. */
+/** A name-binding node that can have members. */
 class NamespaceNode extends NameBindingNode {
   NamespaceNode() {
     storeStep(_, _, this) or
