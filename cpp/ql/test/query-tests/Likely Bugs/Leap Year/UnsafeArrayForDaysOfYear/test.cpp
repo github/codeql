@@ -75,5 +75,5 @@ void f_______________________________________________________this_name_must_be_e
   // and `()`). in this case, this adds up to exactly 364 characters.
   // The initializer for `__PRETTY_FUNCTION__` thus initializes an array of
   // length 365 (because the null-terminator adds another character).
-  auto x = __PRETTY_FUNCTION__; // $ SPURIOUS: Alert
+  auto x = __PRETTY_FUNCTION__; // clean
 }
