@@ -8,9 +8,14 @@ context(logger: Logger)
 fun logged(value: String) = logger.log(value)
 
 context(logger: Logger)
-val String.logged: String
+var String.logged: String
     get() = logger.log(this)
+    set(value) {
+        logger.log(value)
+    }
 
 fun use(logger: Logger) = context(logger) {
-    logged("message").logged
+    val value = logged("message").logged
+    "target".logged = value
+    value
 }

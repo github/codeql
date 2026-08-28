@@ -1,6 +1,6 @@
 import java
 
-predicate isContextCallable(Callable c) { c.getName() = ["logged", "getLogged"] }
+predicate isContextCallable(Callable c) { c.getName() = ["logged", "getLogged", "setLogged"] }
 
 query predicate parameters(Callable callable, Parameter parameter, int index, string parameterType) {
   isContextCallable(callable) and
