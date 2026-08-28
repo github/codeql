@@ -9,6 +9,7 @@ namespace std {
     basic_regex &assign(const CharT *s) { return *this; }
   };
   typedef basic_regex<char> regex;
+  typedef basic_regex<wchar_t> wregex;
 } // namespace std
 
 // Empty
@@ -114,7 +115,7 @@ std::basic_regex<char8_t> r_loc_u8(u8"a\\nc");
 std::basic_regex<char16_t> r_loc_u(u"a\\nc");
 std::basic_regex<char32_t> r_loc_U(U"a\\nc");
 std::regex r_loc_R(R"(a\nc)");
-std::basic_regex<wchar_t> r_loc_LR(LR"(a\nc)");
+std::wregex r_loc_LR(LR"(a\nc)");
 std::basic_regex<char8_t> r_loc_u8R(u8R"(a\nc)");
 std::basic_regex<char16_t> r_loc_uR(uR"(a\nc)");
 std::basic_regex<char32_t> r_loc_UR(UR"(a\nc)");
