@@ -1,0 +1,13 @@
+parameters
+| test.kt:8:1:8:45 | logged | test.kt:7:9:7:22 | logger | 0 | Logger |
+| test.kt:8:1:8:45 | logged | test.kt:8:12:8:24 | value | 1 | String |
+| test.kt:12:5:12:28 | getLogged | test.kt:10:9:10:22 | logger | 1 | Logger |
+| test.kt:12:5:12:28 | getLogged | test.kt:11:5:11:10 | <this> | 0 | String |
+calls
+| test.kt:15:5:15:21 | logged(...) | test.kt:14:43:16:1 | invoke | test.kt:8:1:8:45 | logged | test.kt:15:5:15:21 | TestKt | 2 |
+| test.kt:15:5:15:28 | getLogged(...) | test.kt:14:43:16:1 | invoke | test.kt:12:5:12:28 | getLogged | test.kt:15:5:15:28 | TestKt | 2 |
+arguments
+| test.kt:15:5:15:21 | logged(...) | 0 | test.kt:0:0:0:0 | p0 |
+| test.kt:15:5:15:21 | logged(...) | 1 | test.kt:15:12:15:20 | "message" |
+| test.kt:15:5:15:28 | getLogged(...) | 0 | test.kt:15:5:15:21 | logged(...) |
+| test.kt:15:5:15:28 | getLogged(...) | 1 | test.kt:0:0:0:0 | p0 |
