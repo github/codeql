@@ -12,6 +12,7 @@
  */
 
 import csharp
+import semmle.code.csharp.commons.Compilation
 import semmle.code.csharp.frameworks.system.Web
 import semmle.code.csharp.frameworks.system.web.Helpers
 import semmle.code.csharp.frameworks.system.web.Mvc
@@ -34,20 +35,19 @@ private Method getAStartedMethod() {
   getAStartedMethod().calls(result)
 }
 
-/**
- * Holds if the project has a global anti forgery filter.
- */
-predicate hasGlobalAntiForgeryFilter() {
-  // A global filter added
+private predicate hasGlobalWebMvcAntiforgeryFilter(Compilation compilation) {
   exists(MethodCall addGlobalFilter |
     // addGlobalFilter adds a filter to the global filter collection
     addGlobalFilter.getTarget() = any(GlobalFilterCollection gfc).getAddMethod() and
     // The filter is an antiforgery filter
     addGlobalFilter.getArgumentForName("filter").getType() instanceof AntiForgeryAuthorizationFilter and
     // The filter is added by the Application_Start() method
-    getAStartedMethod() = addGlobalFilter.getEnclosingCallable()
+    getAStartedMethod() = addGlobalFilter.getEnclosingCallable() and
+    addGlobalFilter.getFile() = compilation.getAFileCompiled()
   )
-  or
+}
+
+predicate hasGlobalAspNetMvcAntiForgeryFilter(Compilation compilation) {
   exists(MethodCall addGlobalFilter, MethodCall registrationCall |
     addGlobalFilter.getTarget() =
       any(AspNetCore::MicrosoftAspNetCoreMvcFilterCollection collection).getAddMethod() and
@@ -57,7 +57,8 @@ predicate hasGlobalAntiForgeryFilter() {
     // The filter is added in an ASP.NET Core registration call, which is provided as a lambda argument
     // to the Mvc registration method.
     registrationCall.getTarget() instanceof AspNetCore::MicrosoftAspNetCoreMvcRegistration and
-    registrationCall.getAnArgument() = addGlobalFilter.getEnclosingCallable()
+    registrationCall.getAnArgument() = addGlobalFilter.getEnclosingCallable() and
+    addGlobalFilter.getFile() = compilation.getAFileCompiled()
   )
 }
 
@@ -77,11 +78,12 @@ private class RequireAntiforgeryTokenAttribute extends Attribute {
   }
 }
 
-private predicate hasAspNetCoreAntiForgeryMiddleware() {
+private predicate hasAspNetCoreAntiForgeryMiddleware(Compilation compilation) {
   exists(MethodCall call |
     call.getTarget()
         .hasFullyQualifiedName("Microsoft.AspNetCore.Builder",
-          "AntiforgeryApplicationBuilderExtensions", "UseAntiforgery")
+          "AntiforgeryApplicationBuilderExtensions", "UseAntiforgery") and
+    call.getFile() = compilation.getAFileCompiled()
   )
 }
 
@@ -116,7 +118,12 @@ private RequireAntiforgeryTokenAttribute getEffectiveRequireAntiforgeryTokenAttr
 class MvcControllerPostMethod extends Method {
   private Controller controller;
 
-  MvcControllerPostMethod() { controller.getAPostActionMethod() = this }
+  MvcControllerPostMethod() {
+    controller.getAPostActionMethod() = this and
+    exists(Compilation compilation | compilation.getAFileCompiled() = this.getFile() |
+      not hasGlobalWebMvcAntiforgeryFilter(compilation)
+    )
+  }
 
   predicate hasValidateAntiForgeryAttribute() {
     this.getAnAttribute() instanceof ValidateAntiForgeryTokenAttribute or
@@ -126,10 +133,13 @@ class MvcControllerPostMethod extends Method {
 
 class AspNetCoreControllerPostMethod extends Method {
   private AspNetCore::MicrosoftAspNetCoreMvcController controller;
+  private Compilation compilation;
 
   AspNetCoreControllerPostMethod() {
     controller.getAnActionMethod() = this and
-    this.getAnAttribute() instanceof AspNetCore::MicrosoftAspNetCoreMvcHttpPostAttribute
+    this.getAnAttribute() instanceof AspNetCore::MicrosoftAspNetCoreMvcHttpPostAttribute and
+    compilation.getAFileCompiled() = this.getFile() and
+    not hasGlobalAspNetMvcAntiForgeryFilter(compilation)
   }
 
   predicate hasValidateAntiForgeryAttribute() {
@@ -138,7 +148,7 @@ class AspNetCoreControllerPostMethod extends Method {
   }
 
   predicate hasRequireAntiForgeryAttribute() {
-    hasAspNetCoreAntiForgeryMiddleware() and
+    hasAspNetCoreAntiForgeryMiddleware(compilation) and
     (
       getEffectiveRequireAntiforgeryTokenAttributeOnMethod(this).requiresValidation()
       or
@@ -167,7 +177,7 @@ Element getAValidatedElement() {
   or
   any(AspNetCore::ValidateAntiForgeryAttribute a).getTarget() = result
   or
-  hasAspNetCoreAntiForgeryMiddleware() and
+  hasAspNetCoreAntiForgeryMiddleware(_) and
   any(RequireAntiforgeryTokenAttribute a | a.requiresValidation()).getTarget() = result
 }
 
@@ -177,9 +187,7 @@ where
   // Verify that validate anti forgery token attributes are used somewhere within this project, to
   // avoid reporting false positives on projects that use an alternative approach to mitigate CSRF
   // issues.
-  exists(getAValidatedElement()) and
-  // Also ignore cases where a global anti forgery filter is in use.
-  not hasGlobalAntiForgeryFilter()
+  exists(getAValidatedElement())
 select postMethod,
   "Method '" + postMethod.getName() +
     "' handles a POST request without performing CSRF token validation."
