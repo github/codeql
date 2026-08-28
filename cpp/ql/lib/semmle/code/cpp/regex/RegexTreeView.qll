@@ -225,7 +225,12 @@ private module Impl implements RegexTreeViewSig {
       )
     }
 
-    /** Holds if this term is found at the specified location offsets. */
+    /**
+     * Holds if this term is found at the specified location offsets.
+     *
+     * Note: these locations may not be accurate when the regex was not defined as a raw string
+     * and contains `\`-escaped characters.
+     */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
