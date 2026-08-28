@@ -248,7 +248,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             wrap_pattern_expr(&mut ctx, value)
         }),
         // ---- Names ----
-        coerce_to_pattern!(prefixOperatorExpr),
         // A function reference spelled with argument labels (`f(x:y:z:)`) is a
         // `declReferenceExpr` carrying `argumentNames`. Mark it unsupported for
         // now (rather than let the bare-name rule below treat it as a plain
@@ -347,6 +346,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // infix operators, rather than guessing a structure.
         rule!((sequenceExpr elements: _* @els) => (unresolved_operator_sequence element: {els})),
         // Prefix unary operators (`!a`, `-x`).
+        coerce_to_pattern!(prefixOperatorExpr),
         rule!((prefixOperatorExpr operator: @op expression: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
         // A tuple with a single unlabeled element is a grouping expression.
         rule!(
