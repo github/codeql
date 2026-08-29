@@ -1,7 +1,7 @@
 load("@rules_rust//rust:defs.bzl", "rust_binary")
 load("@semmle_code//buildutils-internal:glibc_symbols_check.bzl", "glibc_symbols_check")
 load("@semmle_code//buildutils-internal:lipo.bzl", "universal_binary")
-load("@semmle_code//buildutils-internal:transitions.bzl", "forward_binary_from_transition", "get_transition_attrs")
+load("//misc/bazel:transitions.bzl", "forward_binary_from_transition", "get_transition_attrs")
 
 def _full_lto_transition_impl(_settings, _attr):
     return {"@rules_rust//rust/settings:lto": "fat"}
@@ -27,6 +27,9 @@ def codeql_rust_binary(
     rust_label_name = "single_arch/" + name
     binary_dep = ":" + rust_label_name
     if full_lto:
+        # rustc must consume the LLVM bitcode because the C++ linker may use an
+        # incompatible LLVM version.
+        kwargs["experimental_use_cc_common_link"] = 0
         lto_label_name = "full_lto/" + name
         _full_lto_binary(
             name = lto_label_name,
