@@ -1,0 +1,20 @@
+| new_tests.py:49:32:49:49 | Comment # $ getSql=raw_sql | Missing result: getSql=raw_sql |
+| new_tests.py:51:42:51:59 | Comment # $ getSql=raw_sql | Missing result: getSql=raw_sql |
+| new_tests.py:54:33:54:51 | Comment # $ getSql=text_sql | Missing result: getSql=text_sql |
+| new_tests.py:56:43:56:61 | Comment # $ getSql=text_sql | Missing result: getSql=text_sql |
+| new_tests.py:60:38:60:55 | Comment # $ getSql=raw_sql | Missing result: getSql=raw_sql |
+| new_tests.py:62:46:62:63 | Comment # $ getSql=raw_sql | Missing result: getSql=raw_sql |
+| new_tests.py:65:39:65:57 | Comment # $ getSql=text_sql | Missing result: getSql=text_sql |
+| new_tests.py:67:47:67:65 | Comment # $ getSql=text_sql | Missing result: getSql=text_sql |
+| new_tests.py:72:40:72:57 | Comment # $ getSql=raw_sql | Missing result: getSql=raw_sql |
+| new_tests.py:268:31:268:58 | Comment # $ SPURIOUS: getSql=raw_sql | Fixed spurious result: getSql=raw_sql |
+| new_tests.py:273:37:273:55 | Comment # $ getSql=text_sql | Missing result: getSql=text_sql |
+| new_tests.py:275:47:275:65 | Comment # $ getSql=text_sql | Missing result: getSql=text_sql |
+| new_tests.py:278:44:278:61 | Comment # $ getSql=raw_sql | Missing result: getSql=raw_sql |
+| new_tests.py:282:40:282:57 | Comment # $ getSql=raw_sql | Missing result: getSql=raw_sql |
+| new_tests.py:294:58:294:76 | Comment # $ getSql=text_sql | Missing result: getSql=text_sql |
+| new_tests.py:299:30:299:57 | Comment # $ SPURIOUS: getSql=raw_sql | Fixed spurious result: getSql=raw_sql |
+| new_tests.py:302:43:302:61 | Comment # $ getSql=text_sql | Missing result: getSql=text_sql |
+| new_tests.py:304:53:304:71 | Comment # $ getSql=text_sql | Missing result: getSql=text_sql |
+| new_tests.py:309:35:309:51 | Comment # $ getSql=select | Missing result: getSql=select |
+| new_tests.py:314:35:314:51 | Comment # $ getSql=select | Missing result: getSql=select |

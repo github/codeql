@@ -4,6 +4,7 @@ module;
 import python
 private import semmle.python.types.Builtins
 private import semmle.python.internal.CachedStages
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /**
  * An alias in an import statement, the `mod as name` part of `import mod as name`. May be artificial;
@@ -163,7 +164,7 @@ class ImportMember extends ImportMember_ {
     result = this.getModule().(ImportExpr).getImportedModuleName() + "." + this.getName()
   }
 
-  deprecated override ImportMemberNode getAFlowNode() { result = super.getAFlowNode() }
+  deprecated override Cfg::ImportMemberNode getAFlowNode() { result = super.getAFlowNode() }
 }
 
 /** An import statement */

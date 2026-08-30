@@ -1,3 +1,7 @@
 argumentToEnsureNotTaintedNotMarkedAsSpurious
 untaintedArgumentToEnsureTaintedNotMarkedAsMissing
+| http_server.py:43:9:43:54 | http_server.py:43 | ERROR, you should add `# $ MISSING: tainted` annotation | ListComp |
+| test_re.py:46:5:46:49 | test_re.py:46 | ERROR, you should add `# $ MISSING: tainted` annotation | ListComp |
 testFailures
+| http_server.py:43:57:43:67 | Comment # $ tainted | Missing result: tainted |
+| test_re.py:46:52:46:62 | Comment # $ tainted | Missing result: tainted |
