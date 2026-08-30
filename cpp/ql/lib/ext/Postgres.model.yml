@@ -4,10 +4,10 @@ extensions:
       pack: codeql/cpp-all
       extensible: sinkModel
     data: # namespace, type, subtypes, name, signature, ext, input, kind, provenance
-      # Functions that take a raw SQL command string. The `*Params`/`*Prepare` forms still
-      # interpret their command/query text as SQL, so injection into that text is a sink even
-      # though the parameter *values* are passed separately. The `*Prepared` forms take a
-      # prepared-statement name rather than SQL text and are therefore not modeled here.
+      # The `*Params`/`*Prepare` functions interpret their command/query text as SQL,
+      # so injection into that text is a sink even though the parameter values are
+      # passed separately. The `*Prepared` functions take a prepared-statement name
+      # rather than SQL text and are therefore not modeled here.
       - ["", "", False, "PQexec", "", "", "Argument[*1]", "sql-injection", "manual"]
       - ["", "", False, "PQexecParams", "", "", "Argument[*1]", "sql-injection", "manual"]
       - ["", "", False, "PQprepare", "", "", "Argument[*2]", "sql-injection", "manual"]

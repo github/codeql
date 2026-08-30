@@ -1,6 +1,3 @@
-// Test case for the PostgreSQL libpq SQL-injection sinks modeled in Postgres.model.yml.
-// Associated with CWE-089: SQL injection.
-
 typedef unsigned long size_t;
 typedef unsigned int Oid;
 typedef struct pg_conn PGconn;
