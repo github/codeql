@@ -256,7 +256,7 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Py::Location, Cfg
   }
 }
 
-import SsaImplCommon::Make<Py::Location, CfgImpl::Cfg, SsaImplInput> as Impl
+import SsaImplCommon::MakeWithCachedLiveness<Py::Location, CfgImpl::Cfg, SsaImplInput> as Impl
 
 // Matching the cases in `SsaImplInput.variableWrite` above
 newtype TVariableWrite =
