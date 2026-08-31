@@ -1,7 +1,7 @@
 load("@rules_rust//rust:defs.bzl", "rust_binary")
 load("@semmle_code//buildutils-internal:glibc_symbols_check.bzl", "glibc_symbols_check")
 load("@semmle_code//buildutils-internal:lipo.bzl", "universal_binary")
-load("//misc/bazel:transitions.bzl", "forward_binary_from_transition", "get_transition_attrs")
+load("@semmle_code//buildutils-internal:transitions.bzl", "forward_binary_from_transition", "get_transition_attrs")
 
 def _full_lto_transition_impl(_settings, _attr):
     return {"@rules_rust//rust/settings:lto": "fat"}
