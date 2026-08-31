@@ -1,3 +1,4 @@
+use super::format_args;
 use super::mappings::Emission;
 use crate::generated::{self};
 use crate::rust_analyzer::FileSemanticInformation;
@@ -5,7 +6,6 @@ use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use ra_ap_base_db::EditionedFileId;
 use ra_ap_hir::Semantics;
-use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir_expand::builtin::{BuiltinDeriveExpander, find_builtin_derive};
 use ra_ap_hir_expand::span_map::ExpansionSpanMap;
 use ra_ap_hir_expand::{ExpandResult, ExpandTo, HirFileId, InFile, map_node_range_up_rooted};
@@ -123,14 +123,15 @@ pub enum SourceKind {
     Library,
 }
 
-pub struct Translator<'a> {
+pub struct Translator<'db> {
     pub trap: TrapFile,
-    path: &'a str,
+    path: String,
     label: Label<generated::File>,
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
-    pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
+    pub semantics: Option<&'db Semantics<'db, RootDatabase>>,
     source_kind: SourceKind,
+    library_diagnostics: bool,
     pub(crate) macro_context_depth: usize,
     diagnostic_count: usize,
     /// When emitting a reconstructed built-in derive expansion, holds the span map of the
@@ -144,28 +145,35 @@ const UNKNOWN_LOCATION: (LineCol, LineCol) =
 
 const DIAGNOSTIC_LIMIT_PER_FILE: usize = 100;
 
-impl<'a> Translator<'a> {
+impl<'db> Translator<'db> {
     pub fn new(
         trap: TrapFile,
-        path: &'a str,
+        path: &str,
         label: Label<generated::File>,
         line_index: LineIndex,
-        semantic_info: Option<&FileSemanticInformation<'a>>,
+        semantic_info: Option<&FileSemanticInformation<'db>>,
         source_kind: SourceKind,
-    ) -> Translator<'a> {
+        library_diagnostics: bool,
+    ) -> Translator<'db> {
         Translator {
             trap,
-            path,
+            path: path.to_owned(),
             label,
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
             source_kind,
+            library_diagnostics,
             macro_context_depth: 0,
             diagnostic_count: 0,
             builtin_derive_span_map: None,
         }
     }
+
+    pub fn detailed_diagnostics_enabled(&self) -> bool {
+        self.source_kind == SourceKind::Source || self.library_diagnostics
+    }
+
     fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
         let start = self.line_index.try_line_col(range.start())?;
         let range_end = range.end();
@@ -368,11 +376,14 @@ impl<'a> Translator<'a> {
         node: &impl ast::AstNode,
         expanded: &SyntaxNode,
     ) {
+        if !self.detailed_diagnostics_enabled() {
+            return;
+        }
         let semantics = self.semantics.as_ref().unwrap();
         if let Some(value) = semantics
             .hir_file_for(expanded)
             .macro_file()
-            .and_then(|macro_call_id| semantics.db.parse_macro_expansion_error(macro_call_id))
+            .and_then(|macro_call_id| macro_call_id.parse_macro_expansion_error(semantics.db))
         {
             if let Some(err) = &value.err {
                 let error = err.render_to_string(semantics.db);
@@ -381,9 +392,8 @@ impl<'a> Translator<'a> {
                     == hir_file_id.file_id().map(|f| f.file_id(semantics.db))
                 {
                     let location = err.span().range
-                        + semantics
-                            .db
-                            .ast_id_map(hir_file_id)
+                        + hir_file_id
+                            .ast_id_map(semantics.db)
                             .get_erased(err.span().anchor.ast_id)
                             .text_range()
                             .start();
@@ -449,7 +459,7 @@ impl<'a> Translator<'a> {
                     value,
                     &mut self.trap.writer,
                 );
-            } else {
+            } else if self.detailed_diagnostics_enabled() {
                 let range = self.text_range_for_node(mcall);
                 self.emit_parse_error(mcall, &SyntaxError::new(
                     format!(
@@ -461,18 +471,23 @@ impl<'a> Translator<'a> {
                 ));
             }
         } else if self.semantics.is_some() {
-            // let's not spam warnings if we don't have semantics, we already emitted one
-            let range = self.text_range_for_node(mcall);
-            self.emit_parse_error(
-                mcall,
-                &SyntaxError::new(
-                    format!(
-                        "macro expansion failed for '{}'",
-                        mcall.path().map(|p| p.to_string()).unwrap_or_default()
+            if self.reconstruct_format_args_expansion(mcall, label) {
+                return;
+            }
+            if self.detailed_diagnostics_enabled() {
+                // let's not spam warnings if we don't have semantics, we already emitted one
+                let range = self.text_range_for_node(mcall);
+                self.emit_parse_error(
+                    mcall,
+                    &SyntaxError::new(
+                        format!(
+                            "macro expansion failed for '{}'",
+                            mcall.path().map(|p| p.to_string()).unwrap_or_default()
+                        ),
+                        range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
                     ),
-                    range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
-                ),
-            );
+                );
+            }
         }
     }
 
@@ -515,11 +530,9 @@ impl<'a> Translator<'a> {
                             None => return false,
                         }
                     }
-                    HirFileId::MacroFile(macro_call) => sema
-                        .db
-                        .lookup_intern_macro_call(macro_call)
-                        .krate
-                        .cfg_options(sema.db),
+                    HirFileId::MacroFile(macro_call) => {
+                        macro_call.loc(sema.db).krate.cfg_options(sema.db)
+                    }
                 };
                 cfg_options.check(&cfg_expr) == Some(false)
             })
@@ -633,7 +646,9 @@ impl<'a> Translator<'a> {
     ) -> Option<Label<generated::MacroItems>> {
         let semantics = self.semantics.unwrap(); // if we are here, we have semantics
         self.emit_macro_expansion_parse_errors(node, &value);
-        if let Some(err) = err {
+        if let Some(err) = err
+            && self.detailed_diagnostics_enabled()
+        {
             let rendered = err.render_to_string(semantics.db);
             self.emit_diagnostic_for_node(
                 node,
@@ -645,7 +660,7 @@ impl<'a> Translator<'a> {
         }
         if let Some(items) = ast::MacroItems::cast(value) {
             self.emit_macro_items(&items)
-        } else {
+        } else if self.detailed_diagnostics_enabled() {
             let message =
                 "attribute or derive macro expansion cannot be cast to MacroItems".to_owned();
             self.emit_diagnostic_for_node(
@@ -655,6 +670,8 @@ impl<'a> Translator<'a> {
                 message.clone(),
                 message,
             );
+            None
+        } else {
             None
         }
     }
@@ -755,11 +772,11 @@ impl<'a> Translator<'a> {
         let semantics = self.semantics?;
         let db = semantics.db;
         let file_id = semantics.hir_file_for(adt.syntax());
-        let span_map = db.span_map(file_id);
+        let span_map = file_id.span_map(db);
         let call_site = span_map.span_for_range(adt.syntax().text_range());
         let input = syntax_node_to_token_tree(
             adt.syntax(),
-            span_map.as_ref(),
+            span_map,
             call_site,
             DocCommentDesugarMode::ProcMacro,
         );
@@ -768,7 +785,9 @@ impl<'a> Translator<'a> {
         let (parsed, output_span_map) =
             token_tree_to_syntax_node(&output, TopEntryPoint::MacroItems, &mut |_| edition);
         let items = ast::MacroItems::cast(parsed.syntax_node())?;
-        if let Some(err) = err {
+        if let Some(err) = err
+            && self.detailed_diagnostics_enabled()
+        {
             let rendered = err.render_to_string(db);
             self.emit_diagnostic_for_node(
                 adt,
@@ -782,6 +801,67 @@ impl<'a> Translator<'a> {
         let result = self.emit_macro_items(&items);
         self.builtin_derive_span_map = previous;
         result
+    }
+
+    /// Reconstructs and emits the expansion of a format-family macro (`format!`,
+    /// `println!`, `write!`, `panic!`, ...).
+    ///
+    /// On `rustc <1.94` sysroots these macros no longer resolve, so `expand_macro_call`
+    /// returns `None` and we get a bare unexpanded `MacroCall` with no flow through it.
+    /// We rebuild the token tree of the real expansion ourselves (see
+    /// [`super::format_args`]), parse it, and register the result as the macro
+    /// expansion. Locations of the synthesized nodes are routed through the expansion
+    /// span map via `builtin_derive_span_map`.
+    ///
+    /// Returns `true` when the macro was recognized and an expansion was emitted.
+    fn reconstruct_format_args_expansion(
+        &mut self,
+        mcall: &ast::MacroCall,
+        label: Label<generated::MacroCall>,
+    ) -> bool {
+        self.try_reconstruct_format_args_expansion(mcall, label)
+            .is_some()
+    }
+
+    /// Attempts to reconstruct and emit a format-family macro expansion.
+    fn try_reconstruct_format_args_expansion(
+        &mut self,
+        mcall: &ast::MacroCall,
+        label: Label<generated::MacroCall>,
+    ) -> Option<()> {
+        let name = mcall.path()?.segment()?.name_ref()?.text().to_string();
+        let wrap = format_args::Wrap::for_macro(&name)?;
+        let tt_node = mcall.token_tree()?;
+        let semantics = self.semantics?;
+        let db = semantics.db;
+        let file_id = semantics.hir_file_for(mcall.syntax());
+        let span_map = file_id.span_map(db);
+        let call_site = span_map.span_for_range(mcall.syntax().text_range());
+        let input = syntax_node_to_token_tree(
+            tt_node.syntax(),
+            span_map,
+            call_site,
+            DocCommentDesugarMode::ProcMacro,
+        );
+        let output = format_args::reconstruct(wrap, &input, call_site)?;
+
+        let edition = self.file_id.map(|f| f.edition(db))?;
+        let (parsed, output_span_map) =
+            token_tree_to_syntax_node(&output, TopEntryPoint::Expr, &mut |_| edition);
+        let root = parsed.syntax_node();
+        let expr = ast::Expr::cast(root.clone())
+            .or_else(|| root.descendants().find_map(ast::Expr::cast))?;
+        // Sanity check: the parsed expression must contain the reconstructed
+        // `FormatArgsExpr` (either directly, or wrapped in the callee above).
+        expr.syntax()
+            .descendants()
+            .find_map(ast::FormatArgsExpr::cast)?;
+        let previous = self.builtin_derive_span_map.replace(output_span_map);
+        let emitted = self.emit_expr(&expr);
+        self.builtin_derive_span_map = previous;
+        let value = emitted?;
+        generated::MacroCall::emit_macro_call_expansion(label, value.into(), &mut self.trap.writer);
+        Some(())
     }
 
     pub(crate) fn emit_derive_expansion(

@@ -88,3 +88,10 @@ options:
       Extract the full source code of dependencies instead of only extracting signatures.
     type: string
     pattern: "^(false|true)$"
+  library_diagnostics:
+    title: Emit dependency library diagnostics
+    description: >
+      Collect and emit detailed parse and macro-expansion diagnostics for dependency libraries.
+      This can substantially increase extraction time.
+    type: string
+    pattern: "^(false|true)$"

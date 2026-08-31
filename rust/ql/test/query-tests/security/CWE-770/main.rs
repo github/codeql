@@ -190,8 +190,10 @@ unsafe fn test_system_alloc(v: usize) {
     let _ = std::alloc::Global.allocate_zeroed(l1).unwrap();
 
     let l2 = std::alloc::Layout::array::<u8>(v).unwrap();
-    let _ = std::alloc::System.alloc(l2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
-    let _ = std::alloc::System.alloc_zeroed(l2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    // `GlobalAlloc` is a legacy trait, blanket-implemented for `GlobalAllocator` types, so these
+    // resolve to the blanket impl whose methods have no canonical path; the sink models miss them.
+    let _ = std::alloc::System.alloc(l2); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::System.alloc_zeroed(l2); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
     let _ = std::alloc::System.allocate(l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let _ = std::alloc::System.allocate_zeroed(l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let _ = std::alloc::Global.allocate(l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
@@ -199,7 +201,8 @@ unsafe fn test_system_alloc(v: usize) {
 
     let l3 = std::alloc::Layout::array::<u8>(10).unwrap();
     let m3 = std::alloc::System.alloc(l3);
-    let _ = std::alloc::System.realloc(m3, l3, v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    // `System.realloc` resolves to that same `GlobalAlloc` blanket impl (see above); MISSING.
+    let _ = std::alloc::System.realloc(m3, l3, v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l4 = std::alloc::Layout::array::<u8>(10).unwrap();
     let m4 = std::ptr::NonNull::<u8>::new(std::alloc::alloc(l4)).unwrap();

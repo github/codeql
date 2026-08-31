@@ -38,14 +38,20 @@ pub mod trap;
 struct Extractor<'a> {
     archiver: &'a Archiver,
     traps: &'a trap::TrapFileProvider,
+    library_diagnostics: bool,
     steps: Vec<ExtractionStep>,
 }
 
 impl<'a> Extractor<'a> {
-    pub fn new(archiver: &'a Archiver, traps: &'a trap::TrapFileProvider) -> Self {
+    pub fn new(
+        archiver: &'a Archiver,
+        traps: &'a trap::TrapFileProvider,
+        library_diagnostics: bool,
+    ) -> Self {
         Self {
             archiver,
             traps,
+            library_diagnostics,
             steps: Vec::new(),
         }
     }
@@ -74,10 +80,13 @@ impl<'a> Extractor<'a> {
             line_index,
             semantics_info.as_ref().ok(),
             source_kind,
+            self.library_diagnostics,
         );
 
-        for err in errors {
-            translator.emit_parse_error(&ast, &err);
+        if translator.detailed_diagnostics_enabled() {
+            for err in errors {
+                translator.emit_parse_error(&ast, &err);
+            }
         }
         let no_location = (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
         if let Err(RustAnalyzerNoSemantics { severity, reason }) = semantics_info
@@ -106,11 +115,11 @@ impl<'a> Extractor<'a> {
             .push(ExtractionStep::extract(before_extract, source_kind, file));
     }
 
-    pub fn extract_with_semantics(
+    pub fn extract_with_semantics<'db>(
         &mut self,
         file: &Path,
-        semantics: &Semantics<'_, RootDatabase>,
-        vfs: &Vfs,
+        semantics: &'db Semantics<'db, RootDatabase>,
+        vfs: &'db Vfs,
         source_kind: SourceKind,
     ) {
         self.extract(&RustAnalyzer::new(vfs, semantics), file, source_kind);
@@ -238,7 +247,7 @@ fn main() -> anyhow::Result<()> {
     let archiver = archive::Archiver {
         root: cfg.source_archive_dir.clone(),
     };
-    let mut extractor = Extractor::new(&archiver, &traps);
+    let mut extractor = Extractor::new(&archiver, &traps, cfg.library_diagnostics);
     let files: Vec<PathBuf> = cfg
         .inputs
         .iter()
