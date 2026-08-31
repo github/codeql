@@ -8,7 +8,7 @@ models
 | 7 | Sink: main::sink_out_of_function::pass_sink; Argument[0].ReturnValue; test-sink |
 | 8 | Sink: main::sink_out_of_function::pass_sink_nested; Argument[0].ReturnValue.Field[main::MyFieldEnum::E::field_e].Field[core::option::Option::Some(0)]; test-sink |
 | 9 | Source: <main::MyFieldEnum>::source; ReturnValue.Field[main::MyFieldEnum::C::field_c]; test-source |
-| 10 | Source: main::MyTrait::test_param_source; Parameter[0]; test-source |
+| 10 | Source: <main::MyTrait>::test_param_source; Parameter[0]; test-source |
 | 11 | Source: main::arg_source; Argument[0]; test-source |
 | 12 | Source: main::enum_source; ReturnValue.Field[main::MyFieldEnum::D::field_d]; test-source |
 | 13 | Source: main::enum_source_nested; ReturnValue.Field[main::MyFieldEnum::E::field_e].Field[core::option::Option::Some(0)]; test-source |
@@ -18,13 +18,13 @@ models
 | 17 | Source: main::source_into_function::pass_source; Argument[1].Parameter[0]; test-source |
 | 18 | Source: main::source_into_function::pass_source_nested; Argument[1].Parameter[0].Field[main::MyFieldEnum::E::field_e].Field[core::option::Option::Some(0)]; test-source |
 | 19 | Summary: <_ as main::MyTrait3>::flow_through3; Argument[0]; ReturnValue; value |
-| 20 | Summary: core::cmp::Ord::max; Argument[self,0]; ReturnValue; value |
-| 21 | Summary: core::cmp::PartialOrd::lt; Argument[self].Reference; ReturnValue; taint |
-| 22 | Summary: core::ops::index::Index::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
-| 23 | Summary: main::apply; Argument[0]; Argument[1].Parameter[0]; value |
-| 24 | Summary: main::apply; Argument[1].ReturnValue; ReturnValue; value |
-| 25 | Summary: main::coerce; Argument[0]; ReturnValue; taint |
-| 26 | Summary: main::external_file::MyTrait2::flow_through2; Argument[0]; ReturnValue; value |
+| 20 | Summary: <core::cmp::Ord>::max; Argument[self,0]; ReturnValue; value |
+| 21 | Summary: <core::cmp::PartialOrd>::lt; Argument[self].Reference; ReturnValue; taint |
+| 22 | Summary: <core::ops::index::Index>::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
+| 23 | Summary: <main::external_file::MyTrait2>::flow_through2; Argument[0]; ReturnValue; value |
+| 24 | Summary: main::apply; Argument[0]; Argument[1].Parameter[0]; value |
+| 25 | Summary: main::apply; Argument[1].ReturnValue; ReturnValue; value |
+| 26 | Summary: main::coerce; Argument[0]; ReturnValue; taint |
 | 27 | Summary: main::external_file::generated_summary; Argument[0]; ReturnValue; value |
 | 28 | Summary: main::external_file::neutral_manual_summary; Argument[0]; ReturnValue; value |
 | 29 | Summary: main::get_array_element; Argument[0].Element; ReturnValue; value |
@@ -48,7 +48,7 @@ edges
 | main.rs:16:19:16:19 | s | main.rs:16:10:16:20 | identity(...) | provenance | QL |
 | main.rs:25:9:25:9 | s | main.rs:26:17:26:17 | s | provenance |  |
 | main.rs:25:13:25:22 | source(...) | main.rs:25:9:25:9 | s | provenance |  |
-| main.rs:26:17:26:17 | s | main.rs:26:10:26:18 | coerce(...) | provenance | MaD:25 |
+| main.rs:26:17:26:17 | s | main.rs:26:10:26:18 | coerce(...) | provenance | MaD:26 |
 | main.rs:41:9:41:10 | s1 | main.rs:42:17:42:18 | s1 | provenance |  |
 | main.rs:41:9:41:10 | s1 | main.rs:42:17:42:18 | s1 | provenance |  |
 | main.rs:41:14:41:23 | source(...) | main.rs:41:9:41:10 | s1 | provenance |  |
@@ -185,8 +185,8 @@ edges
 | main.rs:203:13:203:22 | source(...) | main.rs:203:9:203:9 | s | provenance |  |
 | main.rs:204:14:204:14 | ... | main.rs:205:14:205:14 | n | provenance |  |
 | main.rs:204:14:204:14 | ... | main.rs:205:14:205:14 | n | provenance |  |
-| main.rs:208:11:208:11 | s | main.rs:204:14:204:14 | ... | provenance | MaD:23 |
-| main.rs:208:11:208:11 | s | main.rs:204:14:204:14 | ... | provenance | MaD:23 |
+| main.rs:208:11:208:11 | s | main.rs:204:14:204:14 | ... | provenance | MaD:24 |
+| main.rs:208:11:208:11 | s | main.rs:204:14:204:14 | ... | provenance | MaD:24 |
 | main.rs:212:13:212:22 | source(...) | main.rs:214:23:214:23 | f [captured s] | provenance |  |
 | main.rs:212:13:212:22 | source(...) | main.rs:214:23:214:23 | f [captured s] | provenance |  |
 | main.rs:213:40:213:40 | s | main.rs:213:17:213:42 | if ... {...} else {...} | provenance |  |
@@ -195,14 +195,14 @@ edges
 | main.rs:214:9:214:9 | t | main.rs:215:10:215:10 | t | provenance |  |
 | main.rs:214:13:214:24 | apply(...) | main.rs:214:9:214:9 | t | provenance |  |
 | main.rs:214:13:214:24 | apply(...) | main.rs:214:9:214:9 | t | provenance |  |
-| main.rs:214:23:214:23 | f [captured s] | main.rs:213:40:213:40 | s | provenance | MaD:23 |
-| main.rs:214:23:214:23 | f [captured s] | main.rs:213:40:213:40 | s | provenance | MaD:23 |
 | main.rs:214:23:214:23 | f [captured s] | main.rs:213:40:213:40 | s | provenance | MaD:24 |
 | main.rs:214:23:214:23 | f [captured s] | main.rs:213:40:213:40 | s | provenance | MaD:24 |
-| main.rs:214:23:214:23 | f [captured s] | main.rs:214:13:214:24 | apply(...) | provenance | MaD:23 |
-| main.rs:214:23:214:23 | f [captured s] | main.rs:214:13:214:24 | apply(...) | provenance | MaD:23 |
+| main.rs:214:23:214:23 | f [captured s] | main.rs:213:40:213:40 | s | provenance | MaD:25 |
+| main.rs:214:23:214:23 | f [captured s] | main.rs:213:40:213:40 | s | provenance | MaD:25 |
 | main.rs:214:23:214:23 | f [captured s] | main.rs:214:13:214:24 | apply(...) | provenance | MaD:24 |
 | main.rs:214:23:214:23 | f [captured s] | main.rs:214:13:214:24 | apply(...) | provenance | MaD:24 |
+| main.rs:214:23:214:23 | f [captured s] | main.rs:214:13:214:24 | apply(...) | provenance | MaD:25 |
+| main.rs:214:23:214:23 | f [captured s] | main.rs:214:13:214:24 | apply(...) | provenance | MaD:25 |
 | main.rs:219:9:219:9 | s | main.rs:221:19:221:19 | s | provenance |  |
 | main.rs:219:9:219:9 | s | main.rs:221:19:221:19 | s | provenance |  |
 | main.rs:219:13:219:22 | source(...) | main.rs:219:9:219:9 | s | provenance |  |
@@ -213,10 +213,10 @@ edges
 | main.rs:221:9:221:9 | t | main.rs:222:10:222:10 | t | provenance |  |
 | main.rs:221:13:221:23 | apply(...) | main.rs:221:9:221:9 | t | provenance |  |
 | main.rs:221:13:221:23 | apply(...) | main.rs:221:9:221:9 | t | provenance |  |
-| main.rs:221:19:221:19 | s | main.rs:220:14:220:14 | ... | provenance | MaD:23 |
-| main.rs:221:19:221:19 | s | main.rs:220:14:220:14 | ... | provenance | MaD:23 |
-| main.rs:221:19:221:19 | s | main.rs:221:13:221:23 | apply(...) | provenance | MaD:23 |
-| main.rs:221:19:221:19 | s | main.rs:221:13:221:23 | apply(...) | provenance | MaD:23 |
+| main.rs:221:19:221:19 | s | main.rs:220:14:220:14 | ... | provenance | MaD:24 |
+| main.rs:221:19:221:19 | s | main.rs:220:14:220:14 | ... | provenance | MaD:24 |
+| main.rs:221:19:221:19 | s | main.rs:221:13:221:23 | apply(...) | provenance | MaD:24 |
+| main.rs:221:19:221:19 | s | main.rs:221:13:221:23 | apply(...) | provenance | MaD:24 |
 | main.rs:231:9:231:9 | s | main.rs:232:30:232:30 | s | provenance |  |
 | main.rs:231:9:231:9 | s | main.rs:232:30:232:30 | s | provenance |  |
 | main.rs:231:13:231:22 | source(...) | main.rs:231:9:231:9 | s | provenance |  |
@@ -373,8 +373,8 @@ edges
 | main.rs:503:9:503:10 | x8 | main.rs:504:10:504:11 | x8 | provenance |  |
 | main.rs:503:14:503:44 | ...::flow_through2(...) | main.rs:503:9:503:10 | x8 | provenance |  |
 | main.rs:503:14:503:44 | ...::flow_through2(...) | main.rs:503:9:503:10 | x8 | provenance |  |
-| main.rs:503:34:503:43 | source(...) | main.rs:503:14:503:44 | ...::flow_through2(...) | provenance | MaD:26 |
-| main.rs:503:34:503:43 | source(...) | main.rs:503:14:503:44 | ...::flow_through2(...) | provenance | MaD:26 |
+| main.rs:503:34:503:43 | source(...) | main.rs:503:14:503:44 | ...::flow_through2(...) | provenance | MaD:23 |
+| main.rs:503:34:503:43 | source(...) | main.rs:503:14:503:44 | ...::flow_through2(...) | provenance | MaD:23 |
 | main.rs:506:9:506:10 | x9 | main.rs:507:10:507:11 | x9 | provenance |  |
 | main.rs:506:9:506:10 | x9 | main.rs:507:10:507:11 | x9 | provenance |  |
 | main.rs:506:14:506:44 | ...::flow_through3(...) | main.rs:506:9:506:10 | x9 | provenance |  |

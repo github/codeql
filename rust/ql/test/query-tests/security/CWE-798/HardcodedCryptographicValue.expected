@@ -102,7 +102,7 @@ models
 | 3 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyIvInit>::new; Argument[0]; credentials-key |
 | 4 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyIvInit>::new; Argument[1]; credentials-iv |
 | 5 | Sink: <cookie::secure::key::Key>::from; Argument[0].Reference; credentials-key |
-| 6 | Sink: crypto_common::KeyInit::new_from_slice; Argument[0]; credentials-key |
+| 6 | Sink: <crypto_common::KeyInit>::new_from_slice; Argument[0]; credentials-key |
 | 7 | Source: core::mem::zeroed; ReturnValue.Element; constant-source |
 | 8 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0].Field[alloc::borrow::Cow::Owned(0)]; ReturnValue; value |
 | 9 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0].Field[alloc::bstr::ByteString(0)]; ReturnValue; value |
