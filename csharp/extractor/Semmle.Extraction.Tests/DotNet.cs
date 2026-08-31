@@ -148,7 +148,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, ["-s", "https://my.nuget.source1"], true));
+            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, ["https://my.nuget.source1"], true));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
@@ -166,7 +166,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            var res = dotnet.Restore(new("mysolution.sln", "mypackages", false, ["-s", "https://my.nuget.source1", "-s", "https://my.nuget.source2"]));
+            var res = dotnet.Restore(new("mysolution.sln", "mypackages", false, ["https://my.nuget.source1", "https://my.nuget.source2"]));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
