@@ -3592,7 +3592,7 @@ open class KotlinFileExtractor(
                         enclosingCallable,
                         idxOffset,
                         valueParameters = syntacticCallTarget.codeQlValueParameters,
-                        invalidArgumentLocation = tw.getWholeFileLocation()
+                        contextArgumentLocation = tw.getWholeFileLocation()
                     )
                 },
                 dispatchReceiver?.type,
@@ -3814,7 +3814,7 @@ open class KotlinFileExtractor(
             enclosingCallable,
             idxOffset,
             valueParameters = call.symbol.owner.codeQlValueParameters,
-            invalidArgumentLocation = tw.getWholeFileLocation()
+            contextArgumentLocation = tw.getWholeFileLocation()
         )
     }
 
@@ -3826,7 +3826,7 @@ open class KotlinFileExtractor(
         idxOffset: Int,
         extractVarargAsArray: Boolean = false,
         valueParameters: List<IrValueParameter>? = null,
-        invalidArgumentLocation: Label<DbLocation>? = null
+        contextArgumentLocation: Label<DbLocation>? = null
     ) {
         var i = 0
         valueArguments.forEachIndexed { argumentIndex, arg ->
@@ -3835,13 +3835,12 @@ open class KotlinFileExtractor(
                 if (
                     parameter?.isCodeQlContextParameter() == true &&
                         arg is IrGetValue &&
-                        (arg.startOffset < 0 || arg.endOffset < 0) &&
-                        invalidArgumentLocation != null
+                        contextArgumentLocation != null
                 ) {
                     extractVariableAccess(
                         useValueDeclaration(arg.symbol.owner),
                         arg.type,
-                        invalidArgumentLocation,
+                        contextArgumentLocation,
                         callId,
                         i++ + idxOffset,
                         enclosingCallable,
