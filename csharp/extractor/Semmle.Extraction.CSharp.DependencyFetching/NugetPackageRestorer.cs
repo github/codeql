@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal sealed partial class NugetPackageRestorer : IDisposable
     {
-        private readonly FileProvider fileProvider;
+        private readonly IFileProvider fileProvider;
         private readonly FileContent fileContent;
         private readonly IDotNet dotnet;
         private readonly IDiagnosticsWriter diagnosticsWriter;
@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
 
         public NugetPackageRestorer(
-            FileProvider fileProvider,
+            IFileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
             DependabotProxy? dependabotProxy,

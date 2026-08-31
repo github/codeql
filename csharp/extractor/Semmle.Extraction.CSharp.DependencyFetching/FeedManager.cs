@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private readonly ILogger logger;
         private readonly IDotNet dotnet;
-        private readonly FileProvider fileProvider;
+        private readonly IFileProvider fileProvider;
         private readonly DependabotProxy? dependabotProxy;
         private readonly DependencyDirectory emptyPackageDirectory;
         private readonly ImmutableHashSet<string> privateRegistryFeeds;
@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public ImmutableHashSet<string> ReachableFallbackFeeds => lazyReachableFallbackFeeds.Value;
 
-        public FeedManager(ILogger logger, IDotNet dotnet, DependabotProxy? dependabotProxy, FileProvider fileProvider)
+        public FeedManager(ILogger logger, IDotNet dotnet, DependabotProxy? dependabotProxy, IFileProvider fileProvider)
         {
             this.logger = logger;
             this.dotnet = dotnet;

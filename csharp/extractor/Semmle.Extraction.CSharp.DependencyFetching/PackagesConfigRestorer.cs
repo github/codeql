@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class PackagesConfigRestoreFactory
     {
-        public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
+        public static IPackagesConfigRestore Create(IFileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
         {
             if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMonoInstalled())
             {
@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             public int PackageCount => fileProvider.PackagesConfigs.Count;
 
-            private readonly FileProvider fileProvider;
+            private readonly IFileProvider fileProvider;
 
             /// <summary>
             /// The packages directory.
@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             /// <summary>
             /// Create the package manager for a specified source tree.
             /// </summary>
-            public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
+            public NugetExeWrapper(IFileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
             {
                 this.fileProvider = fileProvider;
                 this.packageDirectory = packageDirectory;
