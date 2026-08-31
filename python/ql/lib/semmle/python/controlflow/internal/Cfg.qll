@@ -68,6 +68,7 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
   BasicBlock getBasicBlock() { result = super.getBasicBlock() }
 
   /** Gets the scope containing this flow node. */
+  cached
   Py::Scope getScope() { result = super.getEnclosingCallable().asScope() }
 
   /** Gets the enclosing module. */
