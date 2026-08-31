@@ -129,28 +129,23 @@ The build does not depend on any particular version manager. You need:
 - **Rust** — pinned to `1.88` by the repo-root [`rust-toolchain.toml`](../../rust-toolchain.toml),
   which `rustup` picks up automatically.
 - **Swift** — pinned to the version in [`.swift-version`](.swift-version)
-  (currently `6.3.2`), used to build `swift-syntax` `603.0.2`. Install it any way
+  (currently `6.3.3`), used to build `swift-syntax` `603.0.2`. Install it any way
   you like — [swift.org](https://www.swift.org/install/) or
   [swiftly](https://www.swift.org/swiftly/) (which reads `.swift-version`), or a
-  system package. Just make sure `swift` is on your `PATH` (or point `build.rs`
-  at it with the `SWIFT` environment variable).
+  system package. Just make sure `swift` (and `swiftc`) are on your `PATH` —
+  `build.rs` invokes them directly and does not read any environment variable
+  to locate them.
 
 On Debian/Ubuntu the Swift runtime also needs `libncurses6` (and related libs)
 available on the system.
 
 ## Building & testing
 
-With `cargo` and `swift` on `PATH`:
+With `cargo` and `swift`/`swiftc` on `PATH`:
 
 ```sh
 cargo build
 cargo test
-```
-
-If your `swift`/`swiftc` are not on `PATH`, point the build at them explicitly:
-
-```sh
-SWIFT=/path/to/swift SWIFTC=/path/to/swiftc cargo build
 ```
 
 The first build compiles `swift-syntax` and can take several minutes.
@@ -170,31 +165,29 @@ bazel test  //unified/swift-syntax-rs:swift_syntax_rs_test
 bazel run   //unified/swift-syntax-rs:swift-syntax-parse < some.swift
 ```
 
+The `swift-syntax-parse` binary is a debugging aid for looking at the raw
+swift-syntax JSON for some input; it is not shipped as part of the extractor
+pack, which links `swift-syntax-rs` directly instead.
+
 Requirements:
 
 - **`clang`** must be installed on the runner. `rules_swift` requires the Bazel
   CC toolchain to use clang; the repo's `.bazelrc` already sets
   `--repo_env=CC=clang`, so no extra flags are needed.
-- The registered Swift toolchains cover **ubuntu24.04 / x86_64** and
-  **macOS / `xcode`** (Apple Silicon and Intel). Bazel selects the toolchain
-  matching the host. Targets are marked `target_compatible_with` these two
-  OSes, so on Windows Bazel skips them cleanly.
-- **macOS only:** the Swift toolchain comes from the host Xcode installation
-  (`rules_swift` auto-registers `xcode_swift_toolchain`), which also needs
-  Xcode's CC toolchain and xcode_config; these are applied to the Swift
-  target via an incoming-edge Starlark transition (see
-  [`xcode_transition.bzl`](xcode_transition.bzl)), so other targets on macOS
-  keep using Bazel's default CC toolchain.
+- The registered Swift toolchains cover **ubuntu22.04 / x86_64** and
+  **macOS** (Apple Silicon and Intel). Bazel selects the toolchain matching the
+  host. Targets are marked `target_compatible_with` these two OSes, so on
+  Windows Bazel skips them cleanly.
+- **macOS only:** `rules_swift` downloads the pinned Swift toolchain from
+  swift.org. The Bazel C++ toolchain must still provide the macOS SDK, but a
+  full Xcode installation is not required.
 
 The Swift compiler version is kept in sync across three places: the
 [`.swift-version`](.swift-version) file (read by the local `cargo`/`swift build`
 and by [swiftly](https://www.swift.org/swiftly/)), the literal `swift_version`
 pinned on `swift.toolchain(...)` in the root `MODULE.bazel` (the hermetic
-swift.org **Linux** Bazel toolchain), and the `swift-syntax` release in
-`swift/Package.swift`. On **macOS** the version is *not* pinned by the Bazel
-build: `rules_swift` auto-registers the host `xcode_swift_toolchain`, which uses
-whichever Swift ships with the installed Xcode. So the pin governs Linux (and
-local) builds, while the macOS compiler version depends on the host Xcode.
+swift.org Bazel toolchain), and the `swift-syntax` release in
+`swift/Package.swift`.
 
 (The Bazel toolchain pins a literal rather than reading `.swift-version` via
 `swift_version_file`, because the latter makes the module extension read a
@@ -221,9 +214,9 @@ echo 'let x = 1' | cargo run --bin swift-syntax-parse
 The JSON tree is consumed by the CodeQL extractor, which converts it into a
 [`yeast::Ast`](../../shared/yeast) — the in-memory format its rewrite rules
 operate on. That adapter is a pure-Rust module living in the extractor
-(`unified/extractor/src/languages/swift/adapter.rs`), so the extractor never
-needs the Swift toolchain: it consumes the JSON produced out-of-process by this
-crate's `parse_to_json` / the `swift-syntax-parse` binary.
+(`unified/extractor/src/languages/swift/adapter.rs`). The extractor links
+`swift-syntax-rs` directly and consumes the JSON produced in-process by this
+crate's `parse_to_json`.
 
 ## Layout
 

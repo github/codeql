@@ -1,3 +1,7 @@
+## 1.8.8
+
+No user-facing changes.
+
 ## 1.8.7
 
 No user-facing changes.

@@ -1,6 +1,6 @@
 load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup")
+load("//misc/bazel:os.bzl", "codeql_platform_select")
 load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pkg_files")
-load("//misc/bazel:utils.bzl", "select_os")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -41,21 +41,11 @@ codeql_pkg_files(
 
 codeql_pkg_files(
     name = "extractor-arch",
-    exes = [
-        "//unified/extractor",
-    ],
-    prefix = "tools/{CODEQL_PLATFORM}",
-)
-
-# The Swift front-end parser (wrapper + real binary + bundled Swift runtime),
-# shipped next to the extractor. Only on platforms where swift-syntax builds
-# (Linux/macOS); elsewhere the group is empty so the pack still builds (Swift
-# extraction is simply unavailable there).
-pkg_filegroup(
-    name = "swift-syntax-parse-arch",
-    srcs = select_os(
-        otherwise = [],
-        posix = ["//unified/swift-syntax-rs:swift-syntax-parse-pkg"],
+    exes = codeql_platform_select(
+        linux64 = ["//unified/extractor"],
+        linux_arm64 = ["//unified/extractor-unsupported-os:extractor"],
+        osx64 = ["//unified/extractor"],
+        win64 = ["//unified/extractor-unsupported-os:extractor"],
     ),
     prefix = "tools/{CODEQL_PLATFORM}",
 )
@@ -66,7 +56,6 @@ codeql_pack(
         ":codeql-extractor-yml",
         ":dbscheme-group",
         ":extractor-arch",
-        ":swift-syntax-parse-arch",
         "//unified/tools",
     ],
 )

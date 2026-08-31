@@ -50,17 +50,7 @@ where
   job.getATriggerEvent() = event and
   // job can be triggered by an external user
   event.isExternallyTriggerable() and
-  (
-    // the workflow runs in the context of the default branch
-    runsOnDefaultBranch(event)
-    or
-    // the workflow's caller runs in the context of the default branch
-    event.getName() = "workflow_call" and
-    exists(ExternalJob caller |
-      caller.getCallee() = job.getLocation().getFile().getRelativePath() and
-      runsOnDefaultBranch(caller.getATriggerEvent())
-    )
-  ) and
+  hasDefaultBranchCacheWriteAccess(job, event) and
   // the job executes checked-out code
   // (The cache specific token can be leaked even for non-privileged workflows)
   source.getAFollowingStep() = step and

@@ -834,10 +834,10 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     let mut token_kinds = BTreeSet::new();
     let direct_supertypes = compute_direct_supertypes(nodes);
     for (type_name, node) in nodes {
-        if let node_types::EntryKind::Token { .. } = &node.kind {
-            if type_name.named {
-                token_kinds.insert(&type_name.kind);
-            }
+        if let node_types::EntryKind::Token { .. } = &node.kind
+            && type_name.named
+        {
+            token_kinds.insert(&type_name.kind);
         }
     }
 

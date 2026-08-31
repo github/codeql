@@ -65,6 +65,9 @@ top_level
       stmt:
         function_declaration
           name: identifier "identity"
+          type_parameter:
+            type_parameter
+              name: identifier "T"
           parameter:
             parameter
               external_name: identifier "_"

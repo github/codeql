@@ -1,7 +1,7 @@
 use crate::{generated, trap};
 
 use itertools::Itertools;
-use ra_ap_base_db::{Crate, RootQueryDb};
+use ra_ap_base_db::Crate;
 use ra_ap_cfg::CfgAtom;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_vfs::{Vfs, VfsPath};
@@ -12,7 +12,7 @@ use std::{cmp::Ordering, collections::HashMap, path::PathBuf};
 use tracing::error;
 
 pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootDatabase, vfs: &Vfs) {
-    let crate_graph = db.all_crates();
+    let crate_graph = ra_ap_base_db::all_crates(db);
 
     // According to the documentation of `CrateGraph`:
     // Each crate is defined by the `FileId` of its root module, the set of enabled

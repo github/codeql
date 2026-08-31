@@ -4,6 +4,7 @@ description = "Rust wrapper around the swift-syntax package for parsing Swift so
 version = "0.1.0"
 authors = ["GitHub"]
 edition = "2024"
+links = "SwiftSyntaxFFI"
 
 [lib]
 name = "swift_syntax_rs"

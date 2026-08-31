@@ -355,10 +355,10 @@ fn escape_name(name: &str) -> String {
     let mut result = String::new();
 
     // If there's a leading underscore, replace it with 'underscore_'.
-    if let Some(c) = name.chars().next() {
-        if c == '_' {
-            result.push_str("underscore");
-        }
+    if let Some(c) = name.chars().next()
+        && c == '_'
+    {
+        result.push_str("underscore");
     }
     for c in name.chars() {
         match c {
