@@ -3590,7 +3590,9 @@ open class KotlinFileExtractor(
                         valueArguments,
                         enclosingStmt,
                         enclosingCallable,
-                        idxOffset
+                        idxOffset,
+                        valueParameters = syntacticCallTarget.codeQlValueParameters,
+                        invalidArgumentLocation = tw.getWholeFileLocation()
                     )
                 },
                 dispatchReceiver?.type,
@@ -3804,14 +3806,17 @@ open class KotlinFileExtractor(
         enclosingStmt: Label<out DbStmt>,
         enclosingCallable: Label<out DbCallable>,
         idxOffset: Int
-    ) =
+    ) {
         extractCallValueArguments(
             callId,
             (0 until call.codeQlValueArgumentsCount).map { call.codeQlGetValueArgument(it) },
             enclosingStmt,
             enclosingCallable,
-            idxOffset
+            idxOffset,
+            valueParameters = call.symbol.owner.codeQlValueParameters,
+            invalidArgumentLocation = tw.getWholeFileLocation()
         )
+    }
 
     private fun extractCallValueArguments(
         callId: Label<out DbExprparent>,
@@ -3819,33 +3824,73 @@ open class KotlinFileExtractor(
         enclosingStmt: Label<out DbStmt>,
         enclosingCallable: Label<out DbCallable>,
         idxOffset: Int,
-        extractVarargAsArray: Boolean = false
+        extractVarargAsArray: Boolean = false,
+        valueParameters: List<IrValueParameter>? = null,
+        invalidArgumentLocation: Label<DbLocation>? = null
     ) {
         var i = 0
-        valueArguments.forEach { arg ->
+        valueArguments.forEachIndexed { argumentIndex, arg ->
             if (arg != null) {
-                if (arg is IrVararg && !extractVarargAsArray) {
-                    arg.elements.forEachIndexed { varargNo, vararg ->
-                        extractVarargElement(
-                            vararg,
-                            enclosingCallable,
-                            callId,
-                            i + idxOffset + varargNo,
-                            enclosingStmt
-                        )
-                    }
-                    i += arg.elements.size
-                } else {
-                    extractExpressionExpr(
-                        arg,
-                        enclosingCallable,
+                val parameter = valueParameters?.getOrNull(argumentIndex)
+                if (
+                    parameter?.isCodeQlContextParameter() == true &&
+                        arg is IrGetValue &&
+                        (arg.startOffset < 0 || arg.endOffset < 0) &&
+                        invalidArgumentLocation != null
+                ) {
+                    extractVariableAccess(
+                        useValueDeclaration(arg.symbol.owner),
+                        arg.type,
+                        invalidArgumentLocation,
                         callId,
-                        (i++) + idxOffset,
+                        i++ + idxOffset,
+                        enclosingCallable,
                         enclosingStmt
                     )
+                } else {
+                    i +=
+                        extractCallValueArgument(
+                            callId,
+                            arg,
+                            enclosingStmt,
+                            enclosingCallable,
+                            i + idxOffset,
+                            extractVarargAsArray
+                        )
                 }
             }
         }
+    }
+
+    private fun extractCallValueArgument(
+        callId: Label<out DbExprparent>,
+        argument: IrExpression,
+        enclosingStmt: Label<out DbStmt>,
+        enclosingCallable: Label<out DbCallable>,
+        outputIndex: Int,
+        extractVarargAsArray: Boolean = false
+    ): Int {
+        if (argument is IrVararg && !extractVarargAsArray) {
+            argument.elements.forEachIndexed { varargIndex, element ->
+                extractVarargElement(
+                    element,
+                    enclosingCallable,
+                    callId,
+                    outputIndex + varargIndex,
+                    enclosingStmt
+                )
+            }
+            return argument.elements.size
+        }
+
+        extractExpressionExpr(
+            argument,
+            enclosingCallable,
+            callId,
+            outputIndex,
+            enclosingStmt
+        )
+        return 1
     }
 
     private fun findFunction(cls: IrClass, name: String): IrFunction? =
