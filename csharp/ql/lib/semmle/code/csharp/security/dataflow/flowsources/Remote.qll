@@ -117,7 +117,8 @@ class AspNetServiceRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::Pa
   override string getSourceType() { result = "ASP.NET web service input" }
 }
 
-private class CandidateMemberToTaint extends Member {
+/** A public, non-static, auto-implemented property or field, candidate for taint-tracking. */
+class CandidateMemberToTaint extends Member {
   CandidateMemberToTaint() {
     this.isPublic() and
     not this.isStatic() and
