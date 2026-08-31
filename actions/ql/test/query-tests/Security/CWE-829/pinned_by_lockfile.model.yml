@@ -2,12 +2,8 @@ extensions:
   - addsTo:
       pack: codeql/actions-all
       extensible: pinnedByLockfileDataModel
-    # Test data standing in for what the CodeQL Actions extractor will emit from
-    # `.github/workflows/actions.lock`. Records `some-owner/pinned-action@v1` in
-    # `lockfile_pinned.yml` as pinned by the lockfile so the `actions/unpinned-tag`
-    # query suppresses it.
+    # Canonical lockfile pin rows supplied by an external model pack.
     data:
       - [".github/workflows/lockfile_pinned.yml", "some-owner/pinned-action", "v1"]
-      # Lower-cased form of `Mixed-Owner/Pinned-Action@v1`, as the extractor emits it. Exercises the
-      # case-insensitive owner/repo match in the `actions/unpinned-tag` query.
+      # Owner/repo is canonicalized; ref casing is preserved.
       - [".github/workflows/lockfile_pinned.yml", "mixed-owner/pinned-action", "v1"]

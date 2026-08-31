@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* The `actions/unpinned-tag` query no longer reports `uses:` references that are recorded as pinned by a repository's Actions lockfile (`.github/workflows/actions.lock`) via the new `pinnedByLockfileDataModel` extensible predicate. The CodeQL Actions extractor generates this data at database-creation time into a database-local model pack (`codeql/actions-lockfile-pins`); references are suppressed only when that pack is supplied to analysis (for example via `--model-packs`), so behavior is unchanged for repositories without a lockfile or analyses that do not opt in. Because the lockfile keys its pins transitively by workflow path, a stale lockfile could in rare cases suppress a directly-written unpinned tag that shares an action and major version with a transitively-pinned dependency of the same workflow; keeping the lockfile current avoids this.
+* The `actions/unpinned-tag` query no longer reports `uses:` references recorded by the new `pinnedByLockfileDataModel` extensible predicate. Lockfile pins match repository sub-actions while preserving ref casing.

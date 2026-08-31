@@ -73,17 +73,14 @@ extensible predicate trustedActionsOwnerDataModel(string owner);
  * `workflow_path` is pinned by an entry in the repository's Actions lockfile
  * (`.github/workflows/actions.lock`).
  *
- * This predicate is intended to be populated by the CodeQL Actions extractor, which parses
- * `actions.lock` at database-creation time using the canonical lockfile parser at
- * `github.com/github/actions-lockfile/go`. Each lockfile entry binds an `nwo`@`ref` to a
- * verified commit SHA, which is exactly the pinning evidence the `actions/unpinned-tag` query
- * otherwise lacks. Until the extractor populates this predicate it is empty, so any clause that
- * consumes it is a clean no-op and behavior is unchanged for repositories without a lockfile.
+ * Supply rows from a model pack generated with the canonical parser at
+ * `github.com/github/actions-lockfile/go/pkg/lockfile`. Each lockfile entry binds an `nwo`@`ref`
+ * to a verified commit SHA. Without such a model pack this predicate is empty.
  *
  * Fields:
  *  - `workflow_path`: repo-relative path of the file containing the `uses:` reference,
  *    e.g. `.github/workflows/ci.yml`.
- *  - `nwo`: owner and name of the referenced action, e.g. `actions/checkout`.
+ *  - `nwo`: canonical owner and repository from the lockfile pin, e.g. `actions/cache`.
  *  - `ref`: the ref (tag or branch) as written in `uses:`, e.g. `v4`.
  */
 extensible predicate pinnedByLockfileDataModel(string workflow_path, string nwo, string ref);
