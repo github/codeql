@@ -197,7 +197,7 @@ mod axum_test {
     }
 
     async fn my_axum_handler_8(state: State<()>, body: String) -> &'static str {
-        sink(state.0); // $ SPURIOUS: hasTaintFlow=my_axum_handler_8
+        sink(state.0);
         sink(body); // $ hasTaintFlow=my_axum_handler_8
 
         ""

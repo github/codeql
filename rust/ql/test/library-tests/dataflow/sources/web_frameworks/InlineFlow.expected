@@ -59,7 +59,6 @@ edges
 | test.rs:180:32:180:69 | ...: Json::<...> | test.rs:182:14:182:20 | payload | provenance |  |
 | test.rs:187:32:187:43 | ...: String | test.rs:188:14:188:17 | body | provenance |  |
 | test.rs:193:32:193:43 | ...: String | test.rs:194:14:194:17 | body | provenance |  |
-| test.rs:199:32:199:47 | ...: State::<...> | test.rs:200:14:200:20 | state.0 | provenance |  |
 | test.rs:199:50:199:61 | ...: String | test.rs:201:14:201:17 | body | provenance |  |
 | test.rs:208:34:208:50 | my_axum_handler_1 | test.rs:148:32:148:52 | ...: Path::<...> | provenance | Src:MaD:8  |
 | test.rs:209:39:209:55 | my_axum_handler_2 | test.rs:156:32:156:67 | ...: Path::<...> | provenance | Src:MaD:9  |
@@ -67,7 +66,6 @@ edges
 | test.rs:213:65:213:81 | my_axum_handler_5 | test.rs:180:32:180:69 | ...: Json::<...> | provenance | Src:MaD:4  |
 | test.rs:215:33:215:49 | my_axum_handler_6 | test.rs:187:32:187:43 | ...: String | provenance | Src:MaD:8  |
 | test.rs:215:56:215:72 | my_axum_handler_7 | test.rs:193:32:193:43 | ...: String | provenance | Src:MaD:3  |
-| test.rs:216:33:216:49 | my_axum_handler_8 | test.rs:199:32:199:47 | ...: State::<...> | provenance | Src:MaD:8  |
 | test.rs:216:33:216:49 | my_axum_handler_8 | test.rs:199:50:199:61 | ...: String | provenance | Src:MaD:8  |
 | test.rs:231:37:236:9 | \|...\| ... | test.rs:231:38:231:46 | ...: String | provenance | Src:MaD:6  |
 | test.rs:231:38:231:46 | ...: String | test.rs:233:18:233:18 | a | provenance |  |
@@ -139,9 +137,7 @@ nodes
 | test.rs:188:14:188:17 | body | semmle.label | body |
 | test.rs:193:32:193:43 | ...: String | semmle.label | ...: String |
 | test.rs:194:14:194:17 | body | semmle.label | body |
-| test.rs:199:32:199:47 | ...: State::<...> | semmle.label | ...: State::<...> |
 | test.rs:199:50:199:61 | ...: String | semmle.label | ...: String |
-| test.rs:200:14:200:20 | state.0 | semmle.label | state.0 |
 | test.rs:201:14:201:17 | body | semmle.label | body |
 | test.rs:208:34:208:50 | my_axum_handler_1 | semmle.label | my_axum_handler_1 |
 | test.rs:209:39:209:55 | my_axum_handler_2 | semmle.label | my_axum_handler_2 |
@@ -149,7 +145,6 @@ nodes
 | test.rs:213:65:213:81 | my_axum_handler_5 | semmle.label | my_axum_handler_5 |
 | test.rs:215:33:215:49 | my_axum_handler_6 | semmle.label | my_axum_handler_6 |
 | test.rs:215:56:215:72 | my_axum_handler_7 | semmle.label | my_axum_handler_7 |
-| test.rs:216:33:216:49 | my_axum_handler_8 | semmle.label | my_axum_handler_8 |
 | test.rs:216:33:216:49 | my_axum_handler_8 | semmle.label | my_axum_handler_8 |
 | test.rs:231:37:236:9 | \|...\| ... | semmle.label | \|...\| ... |
 | test.rs:231:38:231:46 | ...: String | semmle.label | ...: String |
@@ -193,7 +188,6 @@ testFailures
 | test.rs:182:14:182:20 | payload | test.rs:213:65:213:81 | my_axum_handler_5 | test.rs:182:14:182:20 | payload | $@ | test.rs:213:65:213:81 | my_axum_handler_5 | my_axum_handler_5 |
 | test.rs:188:14:188:17 | body | test.rs:215:33:215:49 | my_axum_handler_6 | test.rs:188:14:188:17 | body | $@ | test.rs:215:33:215:49 | my_axum_handler_6 | my_axum_handler_6 |
 | test.rs:194:14:194:17 | body | test.rs:215:56:215:72 | my_axum_handler_7 | test.rs:194:14:194:17 | body | $@ | test.rs:215:56:215:72 | my_axum_handler_7 | my_axum_handler_7 |
-| test.rs:200:14:200:20 | state.0 | test.rs:216:33:216:49 | my_axum_handler_8 | test.rs:200:14:200:20 | state.0 | $@ | test.rs:216:33:216:49 | my_axum_handler_8 | my_axum_handler_8 |
 | test.rs:201:14:201:17 | body | test.rs:216:33:216:49 | my_axum_handler_8 | test.rs:201:14:201:17 | body | $@ | test.rs:216:33:216:49 | my_axum_handler_8 | my_axum_handler_8 |
 | test.rs:233:18:233:18 | a | test.rs:231:37:236:9 | \|...\| ... | test.rs:233:18:233:18 | a | $@ | test.rs:231:37:236:9 | \|...\| ... | \|...\| ... |
 | test.rs:241:22:241:22 | a | test.rs:240:13:244:13 | \|...\| ... | test.rs:241:22:241:22 | a | $@ | test.rs:240:13:244:13 | \|...\| ... | \|...\| ... |
