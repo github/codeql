@@ -137,15 +137,22 @@ predicate trustedActionsOwnerDataModel(string owner) {
 
 /**
  * MaD models for `uses` references pinned by the repository's Actions lockfile
- * (`.github/workflows/actions.lock`). Populated by the CodeQL Actions extractor; see
- * `pinnedByLockfileDataModel` in `ConfigExtensions.qll`.
+ * (`.github/workflows/actions.lock`).
  * Fields:
  *    - workflow_path: repo-relative path of the file containing the `uses:` reference
- *    - nwo: owner and name of the referenced action (e.g. `actions/checkout`)
+ *    - nwo: referenced action, optionally including a sub-action path (e.g. `actions/cache/save`)
  *    - ref: the ref as written in `uses:` (e.g. `v4`)
  */
+bindingset[nwo]
 predicate pinnedByLockfileDataModel(string workflow_path, string nwo, string ref) {
-  Extensions::pinnedByLockfileDataModel(workflow_path, nwo, ref)
+  exists(string pinnedNwo |
+    Extensions::pinnedByLockfileDataModel(workflow_path, pinnedNwo, ref) and
+    (
+      nwo.toLowerCase() = pinnedNwo
+      or
+      nwo.toLowerCase().prefix(pinnedNwo.length() + 1) = pinnedNwo + "/"
+    )
+  )
 }
 
 /**
