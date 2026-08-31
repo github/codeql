@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    public class DependabotProxy : IDisposable
+    public class DependabotProxy : IDependabotProxy
     {
         /// <summary>
         /// Represents configurations for package registries.
@@ -21,24 +21,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly string host;
         private readonly string port;
 
-        /// <summary>
-        /// The full address of the Dependabot proxy, if available.
-        /// </summary>
-        internal string Address { get; }
-        /// <summary>
-        /// The URLs of package registries that are configured for the proxy.
-        /// </summary>
-        internal HashSet<string> RegistryURLs { get; }
-        /// <summary>
-        /// The path to the temporary file where the certificate is stored.
-        /// </summary>
-        internal string? CertificatePath { get; private set; }
-        /// <summary>
-        /// The certificate used for the Dependabot proxy.
-        /// </summary>
-        internal X509Certificate2? Certificate { get; private set; }
+        public string Address { get; }
 
-        internal static DependabotProxy? GetDependabotProxy(
+        public HashSet<string> RegistryURLs { get; }
+
+        public string? CertificatePath { get; private set; }
+
+        public X509Certificate2? Certificate { get; private set; }
+
+        internal static IDependabotProxy? GetDependabotProxy(
             ILogger logger, IDiagnosticsWriter diagnosticsWriter, TemporaryDirectory tempWorkingDirectory)
         {
             // Setting HTTP(S)_PROXY and SSL_CERT_FILE have no effect on Windows or macOS,

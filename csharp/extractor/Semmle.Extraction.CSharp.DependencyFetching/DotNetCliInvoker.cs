@@ -12,11 +12,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal sealed class DotNetCliInvoker : IDotNetCliInvoker
     {
         private readonly ILogger logger;
-        private readonly DependabotProxy? proxy;
+        private readonly IDependabotProxy? proxy;
 
         public string Exec { get; }
 
-        public DotNetCliInvoker(ILogger logger, string exec, DependabotProxy? dependabotProxy)
+        public DotNetCliInvoker(ILogger logger, string exec, IDependabotProxy? dependabotProxy)
         {
             this.logger = logger;
             this.proxy = dependabotProxy;

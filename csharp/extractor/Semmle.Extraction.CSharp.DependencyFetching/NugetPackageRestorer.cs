@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             IFileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
-            DependabotProxy? dependabotProxy,
+            IDependabotProxy? dependabotProxy,
             IDiagnosticsWriter diagnosticsWriter,
             ILogger logger,
             ICompilationInfoContainer compilationInfoContainer)

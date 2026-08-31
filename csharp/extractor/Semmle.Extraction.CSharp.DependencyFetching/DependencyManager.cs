@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly ILogger logger;
         private readonly IDiagnosticsWriter diagnosticsWriter;
         private readonly NugetPackageRestorer nugetPackageRestorer;
-        private readonly DependabotProxy? dependabotProxy;
+        private readonly IDependabotProxy? dependabotProxy;
         private readonly IDotNet dotnet;
         private readonly FileContent fileContent;
         private readonly IFileProvider fileProvider;
