@@ -96,7 +96,7 @@ module Unified {
   }
 
   /** A class representing `accessor_declaration` nodes. */
-  class AccessorDeclaration extends @unified_accessor_declaration, F::Member, F::Stmt {
+  class AccessorDeclaration extends @unified_accessor_declaration, F::Callable, F::Member, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AccessorDeclaration" }
 
@@ -373,6 +373,8 @@ module Unified {
     }
   }
 
+  class Callable extends @unified_callable, F::AstNode { }
+
   /** A class representing `catch_clause` nodes. */
   class CatchClause extends @unified_catch_clause, F::AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -503,7 +505,9 @@ module Unified {
   }
 
   /** A class representing `constructor_declaration` nodes. */
-  class ConstructorDeclaration extends @unified_constructor_declaration, F::Member, F::Stmt {
+  class ConstructorDeclaration extends @unified_constructor_declaration, F::Callable, F::Member,
+    F::Stmt
+  {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ConstructorDeclaration" }
 
@@ -581,7 +585,9 @@ module Unified {
   }
 
   /** A class representing `destructor_declaration` nodes. */
-  class DestructorDeclaration extends @unified_destructor_declaration, F::Member, F::Stmt {
+  class DestructorDeclaration extends @unified_destructor_declaration, F::Callable, F::Member,
+    F::Stmt
+  {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DestructorDeclaration" }
 
@@ -718,7 +724,7 @@ module Unified {
   }
 
   /** A class representing `function_declaration` nodes. */
-  class FunctionDeclaration extends @unified_function_declaration, F::Member, F::Stmt {
+  class FunctionDeclaration extends @unified_function_declaration, F::Callable, F::Member, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionDeclaration" }
 
@@ -774,7 +780,7 @@ module Unified {
   }
 
   /** A class representing `function_expr` nodes. */
-  class FunctionExpr extends @unified_function_expr, F::Expr {
+  class FunctionExpr extends @unified_function_expr, F::Callable, F::Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionExpr" }
 
@@ -949,7 +955,7 @@ module Unified {
   }
 
   /** A class representing `initializer_declaration` nodes. */
-  class InitializerDeclaration extends @unified_initializer_declaration, F::Member {
+  class InitializerDeclaration extends @unified_initializer_declaration, F::Callable, F::Member {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InitializerDeclaration" }
 
@@ -1350,7 +1356,7 @@ module Unified {
   }
 
   /** A class representing `top_level` nodes. */
-  class TopLevel extends @unified_top_level, F::AstNode {
+  class TopLevel extends @unified_top_level, F::Callable {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TopLevel" }
 
@@ -2070,6 +2076,8 @@ module UnifiedFinal {
   final class BulkImportingPattern = F::BulkImportingPattern;
 
   final class CallExpr = F::CallExpr;
+
+  final class Callable = F::Callable;
 
   final class CatchClause = F::CatchClause;
 
