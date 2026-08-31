@@ -77,6 +77,21 @@ pub struct Config {
 }
 
 impl Config {
+    /// Returns the directory where Cargo should place its build cache.
+    pub(crate) fn cargo_target_dir(&self) -> PathBuf {
+        self.cargo_target_dir.clone().unwrap_or_else(|| {
+            // When the `target` directory is not explicitly set, we default to
+            // the relative `target` directory (cargo's default) when running
+            // qltests. This directory is preserved, so subsequent builds
+            // benefit from the cache.
+            if self.qltest {
+                PathBuf::from("target")
+            } else {
+                self.scratch_dir.join("target")
+            }
+        })
+    }
+
     pub fn extract() -> anyhow::Result<Config> {
         let args = argfile::expand_args(argfile::parse_fromfile, argfile::PREFIX)
             .context("expanding parameter files")?;
@@ -109,11 +124,21 @@ impl Config {
         figment.extract().context("loading configuration")
     }
 
-    fn get_extra_env(&self) -> FxHashMap<String, Option<String>> {
+    pub(crate) fn get_extra_env(&self) -> FxHashMap<String, Option<String>> {
         let mut extra_env = FxHashMap::default();
         // RUSTUP_AUTO_INSTALL is set to 0 by rust-analyzer (https://github.com/rust-lang/rust-analyzer/issues/20719),
         // but we do want to allow rustup to auto-install toolchains if needed, so we set it to 1 here.
         extra_env.insert("RUSTUP_AUTO_INSTALL".to_owned(), Some("1".to_owned()));
+        if self.qltest_cargo_check {
+            // Match the `cargo check` invocation in `cargo_check` so Cargo reuses its
+            // cache (it does not when `RUSTFLAGS` differ). `--cap-lints=allow` keeps
+            // deny-by-default lints (e.g. `dangerous_implicit_autorefs` on recent
+            // toolchains) from failing extraction of otherwise valid test sources.
+            extra_env.insert(
+                "RUSTFLAGS".to_owned(),
+                Some("-Awarnings --cap-lints=allow".to_owned()),
+            );
+        }
         extra_env.extend(self.cargo_extra_env.clone());
         extra_env
     }
@@ -183,12 +208,7 @@ impl Config {
                     .iter()
                     .map(|p| join_path_buf(dir, p))
                     .collect(),
-                target_dir_config: Utf8PathBuf::from_path_buf(
-                    self.cargo_target_dir
-                        .clone()
-                        .unwrap_or_else(|| self.scratch_dir.join("target")),
-                )
-                .map_or(
+                target_dir_config: Utf8PathBuf::from_path_buf(self.cargo_target_dir()).map_or(
                     TargetDirectoryConfig::None,
                     TargetDirectoryConfig::Directory,
                 ),

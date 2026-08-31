@@ -90,6 +90,29 @@ fn set_sources(config: &mut Config) -> anyhow::Result<()> {
     Ok(())
 }
 
+fn cargo_check(config: &Config) -> anyhow::Result<()> {
+    let mut command = Command::new("cargo");
+    command.env("CARGO_TARGET_DIR", config.cargo_target_dir());
+    // Pass the extra environment variables to the initial `cargo check`.
+    for (key, value) in config.get_extra_env() {
+        match value {
+            Some(value) => command.env(key, value),
+            None => command.env_remove(key),
+        };
+    }
+    let status = command
+        .arg("check")
+        .arg("-q")
+        .status()
+        .context("spawning cargo check")?;
+    if status.success() {
+        info!("cargo check successful");
+        Ok(())
+    } else {
+        anyhow::bail!("requested cargo check failed");
+    }
+}
+
 pub(crate) fn prepare(config: &mut Config) -> anyhow::Result<()> {
     dump_lib()?;
     set_sources(config)?;
@@ -99,19 +122,7 @@ pub(crate) fn prepare(config: &mut Config) -> anyhow::Result<()> {
         dump_nightly_toolchain()?;
     }
     if config.qltest_cargo_check {
-        // `--cap-lints=allow` keeps deny-by-default lints (e.g. `dangerous_implicit_autorefs`
-        // on recent toolchains) from failing extraction of otherwise valid test sources.
-        let status = Command::new("cargo")
-            .env("RUSTFLAGS", "-Awarnings --cap-lints=allow")
-            .arg("check")
-            .arg("-q")
-            .status()
-            .context("spawning cargo check")?;
-        if status.success() {
-            info!("cargo check successful");
-        } else {
-            anyhow::bail!("requested cargo check failed");
-        }
-    };
+        cargo_check(config)?;
+    }
     Ok(())
 }
