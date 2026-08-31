@@ -36,7 +36,9 @@ cc_library(
 cc_library(
     name = "static_runtime_group_end",
     linkopts = [
+        "-lBlocksRuntime",
         "-lc",
+        "-ldispatch",
         "-ldl",
         "-lm",
         "-lpthread",

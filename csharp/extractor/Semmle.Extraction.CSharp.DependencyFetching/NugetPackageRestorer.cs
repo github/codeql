@@ -127,8 +127,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     compilationInfoContainer.CompilationInfos.Add(("Inherited NuGet feed count", inheritedFeeds.Count.ToString()));
                 }
 
-                var allExplicitReachable = explicitFeeds.Count == feedManager.ReachableExplicitFeeds.Count;
-                EmitUnreachableFeedsDiagnostics(allExplicitReachable);
+                var unreachableExplicitFeeds = explicitFeeds.Except(feedManager.ReachableExplicitFeeds).ToImmutableHashSet();
+                EmitFeedReachabilityDiagnostics(unreachableExplicitFeeds);
             }
 
             try
@@ -216,7 +216,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var projects = fileProvider.Solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
-                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArgument(solution);
+                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArguments(solution);
                     var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     if (res.Success)
                     {
@@ -264,7 +264,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 foreach (var project in projectGroup)
                 {
                     logger.LogInfo($"Restoring project {project}...");
-                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArgument(project);
+                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArguments(project);
                     var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     assets.AddDependenciesRange(res.AssetsFilePaths);
                     lock (sync)
@@ -432,7 +432,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
         }
 
-        private bool TryRestorePackageManually(string package, string? nugetSources, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj, bool tryPrereleaseVersion = true)
+        private bool TryRestorePackageManually(string package, List<string> nugetSources, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj, bool tryPrereleaseVersion = true)
         {
             logger.LogInfo($"Restoring package {package}...");
             using var tempDir = new TemporaryDirectory(
@@ -460,11 +460,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return true;
             }
 
-            if (!feedManager.CheckNugetFeedResponsiveness && res.HasNugetPackageSourceError && nugetSources is not null)
+            if (!feedManager.CheckNugetFeedResponsiveness && res.HasNugetPackageSourceError && nugetSources.Count > 0)
             {
                 logger.LogDebug($"Trying to restore '{package}' without explicitly providing NuGet sources.");
                 // Restore could not be completed because the listed source is unavailable. Try without an explicit restore source argument.
-                res = TryRestorePackageManually(package, nugetSources: null, tempDir, tryPrereleaseVersion);
+                res = TryRestorePackageManually(package, [], tempDir, tryPrereleaseVersion);
                 if (res.Success)
                 {
                     return true;
@@ -475,16 +475,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return false;
         }
 
-        private RestoreResult TryRestorePackageManually(string package, string? nugetSources, TemporaryDirectory tempDir, bool tryPrereleaseVersion)
+        private RestoreResult TryRestorePackageManually(string package, List<string> nugetSources, TemporaryDirectory tempDir, bool tryPrereleaseVersion)
         {
-            var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, NugetSources: nugetSources, ForceReevaluation: true));
+            var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, nugetSources, ForceReevaluation: true));
 
             if (!res.Success && tryPrereleaseVersion && res.HasNugetNoStablePackageVersionError)
             {
                 logger.LogDebug($"Failed to restore nuget package {package} because no stable version was found.");
                 TryChangePackageVersion(tempDir.DirInfo, "*-*");
 
-                res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, NugetSources: nugetSources, ForceReevaluation: true));
+                res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, nugetSources, ForceReevaluation: true));
                 if (!res.Success)
                 {
                     TryChangePackageVersion(tempDir.DirInfo, "*");
@@ -535,26 +535,51 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private string SanitizeFeedForLogging(string feed)
+        {
+
+            try
+            {
+                // If the feed is a URL, log only the scheme, host, port, and absolute path to avoid logging sensitive information such as credentials or tokens.
+                var uri = new Uri(feed);
+                var port = uri.IsDefaultPort ? string.Empty : $":{uri.Port}";
+                return $"{uri.Scheme}://{uri.Host}{port}{uri.AbsolutePath}";
+            }
+            catch
+            {
+                return feed;
+            }
+        }
+
         /// <summary>
-        /// If <paramref name="allFeedsReachable"/> is `false`, logs this and emits a diagnostic.
+        /// If <paramref name="unreachableFeeds"/> is not empty, logs this and emits a diagnostic.
         /// Adds a `CompilationInfos` entry either way.
         /// </summary>
-        /// <param name="allFeedsReachable">Whether all feeds were reachable or not.</param>
-        private void EmitUnreachableFeedsDiagnostics(bool allFeedsReachable)
+        /// <param name="unreachableFeeds">The feeds that were not reachable.</param>
+        private void EmitFeedReachabilityDiagnostics(ImmutableHashSet<string> unreachableFeeds)
         {
-            if (!allFeedsReachable)
+            if (unreachableFeeds.Count > 0)
             {
-                logger.LogWarning("Found unreachable NuGet feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.");
+                var orderedUnreachableFeeds = unreachableFeeds
+                    .Select(SanitizeFeedForLogging)
+                    .OrderBy(feed => feed)
+                    .ToList();
+                var unreachableFeedList = string.Join(", ", orderedUnreachableFeeds);
+                logger.LogWarning($"Found unreachable NuGet feeds in C# analysis with build-mode 'none': {unreachableFeedList}. This may cause missing dependencies in the analysis.");
+                compilationInfoContainer.CompilationInfos.Add(("Unreachable NuGet feeds", unreachableFeedList));
                 diagnosticsWriter.AddEntry(new DiagnosticMessage(
                     Language.CSharp,
                     "buildless/unreachable-feed",
-                    "Found unreachable NuGet feed in C# analysis with build-mode 'none'",
+                    "Found unreachable NuGet feeds in C# analysis with build-mode 'none'",
                     visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
-                    markdownMessage: "Found unreachable NuGet feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.",
+                    markdownMessage: string.Format(
+                        "Found unreachable NuGet feeds in C# analysis with build-mode 'none':\n\n{0}\n\nThis may cause missing dependencies in the analysis.",
+                        string.Join("\n", orderedUnreachableFeeds.Select(feed => $"- `{feed}`"))
+                    ),
                     severity: DiagnosticMessage.TspSeverity.Note
                 ));
             }
-            compilationInfoContainer.CompilationInfos.Add(("All NuGet feeds reachable", allFeedsReachable ? "1" : "0"));
+            compilationInfoContainer.CompilationInfos.Add(("All NuGet feeds reachable", unreachableFeeds.Count == 0 ? "1" : "0"));
         }
 
         private void EmitNugetConfigDiagnostics()

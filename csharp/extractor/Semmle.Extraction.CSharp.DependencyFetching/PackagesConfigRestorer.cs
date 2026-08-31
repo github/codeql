@@ -168,7 +168,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 logger.LogInfo($"Restoring file \"{packagesConfig}\"...");
 
-                var sourcesArgument = "";
+                List<string> sourcesArgument = [];
                 var feedsToUse = feedManager.FeedsToUse(packagesConfig).ToList();
                 var useDefaultFeed = feedsToUse.Count == 0 && IsDefaultFeedReachable;
 
@@ -189,16 +189,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                  * really unwieldy and this solution works for now.
                  */
 
-                string exe, args;
+                string exe;
+                List<string> args;
+
                 if (RunWithMono)
                 {
                     exe = "mono";
-                    args = $"\"{nugetExe}\" install -OutputDirectory \"{packageDirectory}\" {sourcesArgument} \"{packagesConfig}\"";
+                    args = [nugetExe!, "install", "-OutputDirectory", packageDirectory.ToString(), .. sourcesArgument, packagesConfig];
                 }
                 else
                 {
                     exe = nugetExe!;
-                    args = $"install -OutputDirectory \"{packageDirectory}\" {sourcesArgument} \"{packagesConfig}\"";
+                    args = ["install", "-OutputDirectory", packageDirectory.ToString(), .. sourcesArgument, packagesConfig];
                 }
 
                 var pi = new ProcessStartInfo(exe, args)
@@ -214,7 +216,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var exitCode = pi.ReadOutput(out _, onOut, onError);
                 if (exitCode != 0)
                 {
-                    logger.LogError($"Command {pi.FileName} {pi.Arguments} failed with exit code {exitCode}");
+                    logger.LogError($"Command {pi.FileName} {string.Join(" ", pi.ArgumentList)} failed with exit code {exitCode}");
                     return false;
                 }
                 else

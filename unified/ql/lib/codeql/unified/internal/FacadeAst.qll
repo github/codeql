@@ -30,6 +30,13 @@ module Unified {
       not this instanceof ClassLikeDeclaration and
       result = this.getParent().getEnclosingClass()
     }
+
+    /** Gets the depth of this node in the AST. The root node has a depth of 0. */
+    int getDepth() {
+      not exists(this.getParent()) and result = 0
+      or
+      result = this.getParent().getDepth() + 1
+    }
   }
 
   /** An expression */

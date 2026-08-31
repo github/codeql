@@ -8,7 +8,7 @@ extensions:
       - ["main::enum_source_nested", "ReturnValue.Field[main::MyFieldEnum::E::field_e].Field[core::option::Option::Some(0)]", "test-source", "manual"]
       - ["<main::MyFieldEnum>::source", "ReturnValue.Field[main::MyFieldEnum::C::field_c]", "test-source", "manual"]
       - ["main::arg_source", "Argument[0]", "test-source", "manual"]
-      - ["main::MyTrait::test_param_source", "Parameter[0]", "test-source", "manual"]
+      - ["<main::MyTrait>::test_param_source", "Parameter[0]", "test-source", "manual"]
       - ["main::source_into_function::pass_source", "Argument[1].Parameter[0]", "test-source", "manual"]
       - ["main::source_into_function::pass_source_nested", "Argument[1].Parameter[0].Field[main::MyFieldEnum::E::field_e].Field[core::option::Option::Some(0)]", "test-source", "manual"]
       - ["main::external_file::generated_source", "ReturnValue", "test-source", "dfc-generated"] # not actually generated, but we want to test behaviour of generated models here.
@@ -48,13 +48,13 @@ extensions:
       - ["main::apply", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
       - ["main::apply", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]
       - ["main::get_async_number", "Argument[0]", "ReturnValue.Future", "value", "manual"]
-      - ["core::cmp::PartialOrd::lt", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
+      - ["<core::cmp::PartialOrd>::lt", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
       # Overwrites the generic trait model for i32
       - ["<core::i32 as core::cmp::PartialOrd>::lt", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["main::external_file::generated_summary", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["main::external_file::neutral_generated_summary", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["main::external_file::neutral_manual_summary", "Argument[0]", "ReturnValue", "value", "manual"]
-      - ["main::external_file::MyTrait2::flow_through2", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["<main::external_file::MyTrait2>::flow_through2", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["<_ as main::MyTrait3>::flow_through3", "Argument[0]", "ReturnValue", "value", "manual"]
   - addsTo:
       pack: codeql/rust-all
