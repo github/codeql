@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public string? TryRestore(string package)
         {
             var feeds = feedManager.CheckNugetFeedResponsiveness ? feedManager.ReachableFeeds : feedManager.AllFeeds;
-            var nugetSources = feedManager.FeedsToDotnetRestoreArgument(feeds);
+            var nugetSources = feedManager.RestoreFeeds(feeds);
             if (TryRestorePackageManually(package, nugetSources))
             {
                 var packageDir = DependencyManager.GetPackageDirectory(package, missingPackageDirectory.DirInfo);
@@ -216,7 +216,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var projects = fileProvider.Solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
-                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArguments(solution);
+                    var nugetSources = feedManager.MakeRestoreFeeds(solution);
                     var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     if (res.Success)
                     {
@@ -264,7 +264,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 foreach (var project in projectGroup)
                 {
                     logger.LogInfo($"Restoring project {project}...");
-                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArguments(project);
+                    var nugetSources = feedManager.MakeRestoreFeeds(project);
                     var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     assets.AddDependenciesRange(res.AssetsFilePaths);
                     lock (sync)
@@ -312,7 +312,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 feeds = feedManager.AllFeeds;
             }
 
-            var nugetSources = feedManager.FeedsToDotnetRestoreArgument(feeds);
+            var nugetSources = feedManager.RestoreFeeds(feeds);
             var alreadyDownloadedPackages = usedPackageNames.Select(p => p.ToLowerInvariant());
             var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -180,7 +179,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     {
                         feedsToUse.Add(FeedManager.PublicNugetOrgFeed);
                     }
-                    sourcesArgument = feedManager.FeedsToRestoreArgument(feedsToUse, "-Source");
+                    var restoreFeeds = feedManager.RestoreFeeds(feedsToUse);
+                    sourcesArgument = restoreFeeds.SelectMany<string, string>(feed => ["-Source", feed]).ToList();
                 }
 
                 /* Use nuget.exe to install a package.

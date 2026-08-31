@@ -90,7 +90,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args.Add("/p:EnableWindowsTargeting=true");
             }
 
-            args.AddRange(restoreSettings.NugetSources);
+            var nugetSources = restoreSettings.NugetSources.SelectMany<string, string>(source => ["-s", source]).ToList();
+            args.AddRange(nugetSources);
 
             return args;
         }

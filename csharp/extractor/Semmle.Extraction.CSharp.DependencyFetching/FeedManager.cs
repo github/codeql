@@ -157,19 +157,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// If there are no feeds, a dummy source argument is added to override any default feeds that `restore` would use.
         /// </summary>
         /// <param name="feeds">The list of feeds to use for the restore command.</param>
-        /// <param name="sourceArgumentPrefix">The prefix to use for each source argument (e.g., "-s").</param>
         /// <returns>The list of NuGet sources arguments for the restore command.</returns>
-        public List<string> FeedsToRestoreArgument(IEnumerable<string> feeds, string sourceArgumentPrefix)
+        public List<string> RestoreFeeds(IEnumerable<string> feeds)
         {
             // If there are no feeds, we want to override any default feeds that `restore` would use by passing a dummy source argument.
             if (!feeds.Any())
             {
-                return [sourceArgumentPrefix, emptyPackageDirectory.DirInfo.FullName];
+                return [emptyPackageDirectory.DirInfo.FullName];
             }
 
-            // Add package sources. If any are present, they override all sources specified in
-            // the configuration file(s).
-            return feeds.SelectMany<string, string>(feed => [sourceArgumentPrefix, feed]).ToList();
+            return feeds.ToList();
         }
 
         private IEnumerable<string> FeedsToUseAux(HashSet<string> feedsToConsider)
@@ -203,23 +200,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Constructs the NuGet sources argument for the `dotnet restore` command based on the given feeds.
-        /// </summary>
-        /// <param name="feeds">The list of NuGet feeds to use for the restore command.</param>
-        /// <returns>A list representing the NuGet sources arguments for the `dotnet restore` command.</returns>
-        public List<string> FeedsToDotnetRestoreArgument(IEnumerable<string> feeds)
-        {
-            return FeedsToRestoreArgument(feeds, "-s");
-        }
-
-        /// <summary>
         /// Constructs the list of NuGet sources to use for dotnet restore.
         /// (1) Use the feeds we get from `dotnet nuget list source`
         /// (2) Use private registries, if they are configured
         /// </summary>
         /// <param name="path">Path to project/solution</param>
         /// <returns>A list representing the NuGet sources arguments for the `dotnet restore` command.</returns>
-        public List<string> MakeDotnetRestoreSourcesArguments(string path)
+        public List<string> MakeRestoreFeeds(string path)
         {
             // Do not construct a set of explicit NuGet sources to use for restore.
             if (!CheckNugetFeedResponsiveness && !HasPrivateRegistryFeeds)
@@ -229,7 +216,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var feedsToUse = FeedsToUse(path);
 
-            return FeedsToDotnetRestoreArgument(feedsToUse);
+            return RestoreFeeds(feedsToUse);
         }
 
         private (int initialTimeout, int tryCount) GetFeedRequestSettings(bool isFallback)
