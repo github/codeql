@@ -39,23 +39,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // instance of `DependabotProxy` on those platforms.
             if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMacOs()) return null;
 
-            // Obtain and store the address of the Dependabot proxy, if available.
-            var host = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyHost);
-            var port = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyPort);
+            var proxyConfig = new DependabotProxyConfiguration();
 
-            if (string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(port))
+            if (string.IsNullOrWhiteSpace(proxyConfig.Host) || string.IsNullOrWhiteSpace(proxyConfig.Port))
             {
                 logger.LogInfo("No Dependabot proxy credentials are configured.");
                 return null;
             }
 
-            var result = new DependabotProxy(host, port);
+            var result = new DependabotProxy(proxyConfig.Host, proxyConfig.Port);
             logger.LogInfo($"Dependabot proxy configured at {result.Address}");
 
-            // Obtain and store the proxy's certificate, if available.
-            var cert = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyCertificate);
-
-            if (!string.IsNullOrWhiteSpace(cert))
+            if (!string.IsNullOrWhiteSpace(proxyConfig.Certificate))
             {
                 var certDirPath = new DirectoryInfo(Path.Join(tempWorkingDirectory.DirInfo.FullName, ".dependabot-proxy"));
                 Directory.CreateDirectory(certDirPath.FullName);
@@ -64,24 +59,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var certFile = new FileInfo(result.CertificatePath);
 
                 using var writer = certFile.CreateText();
-                writer.Write(cert);
+                writer.Write(proxyConfig.Certificate);
                 writer.Close();
 
                 logger.LogInfo($"Stored Dependabot proxy certificate at {result.CertificatePath}");
 
-                result.Certificate = X509Certificate2.CreateFromPem(cert);
+                result.Certificate = X509Certificate2.CreateFromPem(proxyConfig.Certificate);
             }
 
-            // Try to obtain the list of private registry URLs.
-            var registryURLs = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyURLs);
-
-            if (!string.IsNullOrWhiteSpace(registryURLs))
+            if (!string.IsNullOrWhiteSpace(proxyConfig.RegistryURLs))
             {
                 try
                 {
                     // The value of the environment variable should be a JSON array of objects, such as:
                     // [ { "type": "nuget_feed", "url": "https://nuget.pkg.github.com/org/index.json" } ]
-                    var array = JsonConvert.DeserializeObject<List<RegistryConfig>>(registryURLs);
+                    var array = JsonConvert.DeserializeObject<List<RegistryConfig>>(proxyConfig.RegistryURLs);
                     if (array is not null)
                     {
                         foreach (RegistryConfig config in array)
