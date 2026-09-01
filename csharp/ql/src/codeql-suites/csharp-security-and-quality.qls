@@ -51,6 +51,7 @@
       - cs/linq/inconsistent-enumeration
       - cs/linq/missed-all
       - cs/linq/missed-cast
+      - cs/linq/missed-firstordefault
       - cs/linq/missed-oftype
       - cs/linq/missed-select
       - cs/linq/missed-where

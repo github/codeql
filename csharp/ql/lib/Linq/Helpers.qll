@@ -20,6 +20,17 @@ private int numStmts(ForeachStmt fes) {
   else result = 1
 }
 
+private predicate returnsLoopVariable(ForeachStmt fes, Stmt s, ReturnStmt ret) {
+  ret = s.stripSingletonBlocks() and
+  ret.getExpr().stripCasts().(VariableAccess).getTarget() = fes.getVariable()
+}
+
+private predicate returnsDefaultValue(ReturnStmt ret) {
+  ret.getExpr().stripCasts() instanceof NullLiteral
+  or
+  ret.getExpr().stripCasts() instanceof DefaultValueExpr
+}
+
 /** Holds if the type's qualified name is "System.Linq.Enumerable" */
 predicate isEnumerableType(ValueOrRefType t) {
   t.hasFullyQualifiedName("System.Linq", "Enumerable")
@@ -153,6 +164,32 @@ predicate missedWhereOpportunity(ForeachStmtGenericEnumerable fes, IfStmt is) {
     or
     not exists(is.getElse()) and
     numStmts(fes) = 1
+  )
+}
+
+/**
+ * Holds if `foreach` statement `fes` could be converted to a `.FirstOrDefault()` call.
+ * That is, the loop contains a single `if` statement that accesses the loop variable,
+ * returns the loop variable when the condition matches, and is followed by a default return.
+ */
+predicate missedFirstOrDefaultOpportunity(
+  ForeachStmtGenericEnumerable fes, IfStmt is, ReturnStmt ret, ReturnStmt defaultRet
+) {
+  // The loop only checks whether the current element is the first match.
+  is = firstStmt(fes) and
+  not exists(is.getElse()) and
+  numStmts(fes) = 1 and
+  exists(VariableAccess va |
+    va.getTarget() = fes.getVariable() and
+    va = is.getCondition().getAChildExpr*()
+  ) and
+  not is.getCondition().getAChildExpr*() instanceof AwaitExpr and
+  returnsLoopVariable(fes, is.getThen(), ret) and
+  // If no element matches, the method returns the same value that FirstOrDefault would.
+  returnsDefaultValue(defaultRet) and
+  exists(BlockStmt enclosingBlock, int i |
+    enclosingBlock.getStmt(i) = fes and
+    enclosingBlock.getStmt(i + 1) = defaultRet
   )
 }
 

@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Programmers sometimes search a sequence by iterating over each element, testing it, and returning
+the first element that satisfies the test. If the loop completes without finding a match, the method
+then returns a default value such as <code>null</code> or <code>default</code>.</p>
+
+</overview>
+<recommendation>
+<p>This pattern is directly available as the <code>FirstOrDefault</code> method in LINQ. Using the
+library method makes the search intent explicit and avoids manually spelling out the loop and
+fallback return.</p>
+
+</recommendation>
+<example>
+<p>In this example the method searches a list of operations for the first operation with a matching
+identifier, returning <code>null</code> if no match is found.</p>
+<sample src="MissedFirstOrDefaultOpportunity.cs" />
+
+<p>The LINQ <code>FirstOrDefault</code> method can express this search more directly.</p>
+<sample src="MissedFirstOrDefaultOpportunityFix.cs" />
+
+<p>The following examples should not use <code>FirstOrDefault</code>, because they do more than
+return the matching element or because the fallback value is not the default value.</p>
+<sample src="MissedFirstOrDefaultOpportunityGood.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="https://learn.microsoft.com/dotnet/api/system.linq.enumerable.firstordefault">Enumerable.FirstOrDefault Method</a>.</li>
+
+
+</references>
+</qhelp>
