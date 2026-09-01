@@ -42,8 +42,8 @@ codeql_pkg_files(
 codeql_pkg_files(
     name = "extractor-arch",
     exes = codeql_platform_select(
-        win64 = ["//unified/extractor-unsupported-os:extractor"],
         otherwise = ["//unified/extractor"],
+        win64 = ["//unified/extractor-unsupported-os:extractor"],
     ),
     prefix = "tools/{CODEQL_PLATFORM}",
 )
