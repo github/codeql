@@ -126,6 +126,42 @@ class MissedWhereOpportunity
         } // $ Alert
     }
 
+    public int M10(IEnumerable<int> elements)
+    {
+        // GOOD: The filtered case ends with a return from the method instead of continuing the loop.
+        foreach (var element in elements)
+        {
+            if (element.GetHashCode() % 2 == 0)
+            {
+                Console.WriteLine(element);
+                return element;
+            }
+        }
+
+        return 0;
+    }
+
+    public int M11(IEnumerable<int> elements)
+    {
+        // GOOD: Both nested filtered cases return from the method instead of continuing the loop.
+        foreach (var element in elements)
+        {
+            if (element.GetHashCode() % 2 == 0)
+            {
+                if (element > 10)
+                {
+                    return element;
+                }
+                else
+                {
+                    return 10;
+                }
+            }
+        }
+
+        return 0;
+    }
+
     public class NonEnumerableClass
     {
         public IEnumerator<int> GetEnumerator() => throw null;
