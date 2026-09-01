@@ -10,10 +10,10 @@ testing the variable each iteration to determine whether or not it is even. This
 using either <code>if(!condition(var)) continue;</code> as the initial statement in the loop, or by
 enclosing the entire loop body with <code>if(condition(var))</code>.</p>
 
-<p>This recommendation does not apply when the matching branch exits the loop by exiting the current
-method or iterator, such as with a full <code>return</code>, <code>yield break</code>, or
-<code>throw</code>. In those cases the loop is searching for a terminal condition rather than
-filtering the remaining loop body.</p>
+<p>This recommendation does not apply when the matching branch exits the loop without continuing to
+later iterations, such as with <code>return</code>, <code>yield break</code>, or <code>throw</code>.
+In those cases the loop is searching for a terminal condition rather than filtering the remaining
+loop body.</p>
 
 </overview>
 <recommendation>
