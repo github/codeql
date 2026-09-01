@@ -206,27 +206,17 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // swift-syntax does not distinguish the lexical integer/string forms
         // (hex/binary/octal, single- vs multi-line, raw): each is a single
         // `*LiteralExpr` kind, so one rule per literal type suffices.
-        rule!((integerLiteralExpr) @@node => expr {
-            let value = tree!((int_literal #{node}));
-            wrap_pattern_expr(&mut ctx, value)
-        }),
-        rule!((floatLiteralExpr) @@node => expr {
-            let value = tree!((float_literal #{node}));
-            wrap_pattern_expr(&mut ctx, value)
-        }),
-        rule!((booleanLiteralExpr) @@node => expr {
-            let value = tree!((boolean_literal #{node}));
-            wrap_pattern_expr(&mut ctx, value)
-        }),
-        rule!((nilLiteralExpr) @@node => expr {
-            let value = tree!((builtin_expr #{node}));
-            wrap_pattern_expr(&mut ctx, value)
-        }),
+        coerce_to_pattern!(integerLiteralExpr),
+        rule!((integerLiteralExpr) @@node => (int_literal #{node})),
+        coerce_to_pattern!(floatLiteralExpr),
+        rule!((floatLiteralExpr) @@node => (float_literal #{node})),
+        coerce_to_pattern!(booleanLiteralExpr),
+        rule!((booleanLiteralExpr) @@node => (boolean_literal #{node})),
+        coerce_to_pattern!(nilLiteralExpr),
+        rule!((nilLiteralExpr) @@node => (builtin_expr #{node})),
         // Plain string literals (no interpolation)
-        rule!((simpleStringLiteralExpr) @@node => expr {
-            let value = tree!((string_literal #{node}));
-            wrap_pattern_expr(&mut ctx, value)
-        }),
+        coerce_to_pattern!(simpleStringLiteralExpr),
+        rule!((simpleStringLiteralExpr) @@node => (string_literal #{node})),
         // String literals with interpolation
         coerce_to_pattern!(stringLiteralExpr),
         rule!(
@@ -243,10 +233,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (call_expr callee: (builtin_expr "interpolation") argument: {exprs})
         ),
-        rule!((regexLiteralExpr) @@node => expr {
-            let value = tree!((regex_literal #{node}));
-            wrap_pattern_expr(&mut ctx, value)
-        }),
+        coerce_to_pattern!(regexLiteralExpr),
+        rule!((regexLiteralExpr) @@node => (regex_literal #{node})),
         // ---- Names ----
         // A function reference spelled with argument labels (`f(x:y:z:)`) is a
         // `declReferenceExpr` carrying `argumentNames`. Mark it unsupported for
