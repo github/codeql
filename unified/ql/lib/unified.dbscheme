@@ -292,6 +292,8 @@ unified_call_expr_def(
   int callee: @unified_expr_or_type ref
 );
 
+@unified_callable = @unified_accessor_declaration | @unified_constructor_declaration | @unified_destructor_declaration | @unified_function_declaration | @unified_function_expr | @unified_initializer_declaration | @unified_top_level
+
 #keyset[unified_catch_clause, index]
 unified_catch_clause_modifier(
   int unified_catch_clause: @unified_catch_clause ref,
