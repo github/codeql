@@ -101,7 +101,7 @@ lfs_archive = repository_rule(
                                                 "Either build_file or build_file_content can be specified, but not both."),
         "build_file": attr.label(doc = "The file to use as the BUILD file for this repository. " +
                                        "Either build_file or build_file_content can be specified, but not both."),
-        "strip_prefix": attr.string(default = "", doc = "A directory prefix to strip from the extracted files. "),
+        "strip_prefix": attr.string(default = "", doc = "A directory prefix to strip from the extracted files."),
     },
 )
 
@@ -114,7 +114,7 @@ lfs_archives = repository_rule(
             doc = "Local paths to the LFS archives to extract in order.",
             mandatory = True,
         ),
-        "strip_prefix": attr.string(default = "", doc = "A directory prefix to strip from the extracted files. "),
+        "strip_prefix": attr.string(default = "", doc = "A directory prefix to strip from the extracted files."),
     },
 )
 
