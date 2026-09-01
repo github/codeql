@@ -25,10 +25,24 @@ private predicate returnsLoopVariable(ForeachStmt fes, Stmt s, ReturnStmt ret) {
   ret.getExpr().stripCasts().(VariableAccess).getTarget() = fes.getVariable()
 }
 
-private predicate returnsDefaultValue(ReturnStmt ret) {
-  ret.getExpr().stripCasts() instanceof NullLiteral
-  or
-  ret.getExpr().stripCasts() instanceof DefaultValueExpr
+private predicate hasNullDefault(Type t) { t.isRefType() or t instanceof NullableType }
+
+private predicate returnsDefaultValue(ForeachStmt fes, ReturnStmt ret) {
+  exists(Type elementType |
+    elementType = fes.getVariable().getType() |
+    ret.getExpr().stripCasts() instanceof NullLiteral and
+    hasNullDefault(elementType)
+    or
+    exists(DefaultValueExpr defaultValue |
+      defaultValue = ret.getExpr().stripCasts() and
+      (
+        defaultValue.getType() = elementType
+        or
+        hasNullDefault(elementType) and
+        hasNullDefault(defaultValue.getType())
+      )
+    )
+  )
 }
 
 /** Holds if the type's qualified name is "System.Linq.Enumerable" */
@@ -186,7 +200,7 @@ predicate missedFirstOrDefaultOpportunity(
   not is.getCondition().getAChildExpr*() instanceof AwaitExpr and
   returnsLoopVariable(fes, is.getThen(), ret) and
   // If no element matches, the method returns the same value that FirstOrDefault would.
-  returnsDefaultValue(defaultRet) and
+  returnsDefaultValue(fes, defaultRet) and
   exists(BlockStmt enclosingBlock, int i |
     enclosingBlock.getStmt(i) = fes and
     enclosingBlock.getStmt(i + 1) = defaultRet

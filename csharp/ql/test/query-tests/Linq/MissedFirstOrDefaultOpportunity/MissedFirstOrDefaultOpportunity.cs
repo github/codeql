@@ -119,6 +119,54 @@ class MissedFirstOrDefaultOpportunity
         return null;
     }
 
+    public object M10(IEnumerable<int> values)
+    {
+        // GOOD: FirstOrDefault would return boxed 0 when no match is found, not null.
+        foreach (var value in values)
+        {
+            if (value > 0)
+                return value;
+        }
+
+        return null;
+    }
+
+    public object M11(IEnumerable<int> values)
+    {
+        // GOOD: FirstOrDefault would return boxed 0 when no match is found, not default(object).
+        foreach (var value in values)
+        {
+            if (value > 0)
+                return value;
+        }
+
+        return default(object);
+    }
+
+    public object M12(IEnumerable<string> values)
+    {
+        // BAD: FirstOrDefault returns null for missing reference-type elements, matching the fallback.
+        foreach (var value in values)
+        {
+            if (value.Length > 0)
+                return value;
+        } // $ Alert
+
+        return null;
+    }
+
+    public object M13(IEnumerable<int> values)
+    {
+        // BAD: FirstOrDefault returns 0 for missing int elements, matching the fallback before boxing.
+        foreach (var value in values)
+        {
+            if (value > 0)
+                return value;
+        } // $ Alert
+
+        return default(int);
+    }
+
     private static Task<bool> IsMatch(Operation operation, string operationId) =>
         Task.FromResult(string.Equals(operation.OperationId, operationId, StringComparison.Ordinal));
 }
