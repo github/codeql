@@ -35,6 +35,7 @@ private import codeql.controlflow.SuccessorType
  */
 class ControlFlowNode extends CfgImpl::ControlFlowNode {
   /** Gets the syntactic element corresponding to this flow node, if any. */
+  cached
   Py::AstNode getNode() {
     exists(CfgImpl::Ast::AstNode n | this.injects(n) | result = CfgImpl::astNodeToPyNode(n))
   }
