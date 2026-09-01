@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal class RazorGenerator : DotnetSourceGeneratorBase<Razor>
     {
         public RazorGenerator(
-            FileProvider fileProvider,
+            IFileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
             ICompilationInfoContainer compilationInfoContainer,
