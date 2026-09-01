@@ -18,16 +18,64 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="URL">The URL of the package registry.</param>
         public record class RegistryConfig(string Type, string URL);
 
-        private readonly string host;
-        private readonly string port;
-
         public string Address { get; }
 
-        public HashSet<string> RegistryURLs { get; }
+        public HashSet<string> RegistryURLs { get; } = [];
 
         public string? CertificatePath { get; private set; }
 
         public X509Certificate2? Certificate { get; private set; }
+
+        private DependabotProxy(IDependabotProxyConfiguration config, ILogger logger, TemporaryDirectory tempWorkingDirectory)
+        {
+            Address = $"http://{config.Host}:{config.Port}";
+
+            if (!string.IsNullOrWhiteSpace(config.Certificate))
+            {
+                var certDirPath = new DirectoryInfo(Path.Join(tempWorkingDirectory.DirInfo.FullName, ".dependabot-proxy"));
+                Directory.CreateDirectory(certDirPath.FullName);
+
+                CertificatePath = Path.Join(certDirPath.FullName, "proxy.crt");
+                var certFile = new FileInfo(CertificatePath);
+
+                using var writer = certFile.CreateText();
+                writer.Write(config.Certificate);
+                writer.Close();
+
+                logger.LogInfo($"Stored Dependabot proxy certificate at {CertificatePath}");
+
+                Certificate = X509Certificate2.CreateFromPem(config.Certificate);
+            }
+
+            if (!string.IsNullOrWhiteSpace(config.RegistryURLs))
+            {
+                try
+                {
+                    var array = JsonConvert.DeserializeObject<List<RegistryConfig>>(config.RegistryURLs);
+                    if (array is not null)
+                    {
+                        foreach (RegistryConfig registry in array)
+                        {
+                            // The array contains all configured private registries, not just ones for C#.
+                            // We ignore the non-C# ones here.
+                            if (!registry.Type.Equals("nuget_feed"))
+                            {
+                                logger.LogDebug($"Ignoring registry at '{registry.URL}' since it is not of type 'nuget_feed'.");
+                                continue;
+                            }
+
+                            logger.LogInfo($"Found private registry at '{registry.URL}'");
+                            RegistryURLs.Add(registry.URL);
+                        }
+                    }
+                }
+                catch (JsonException ex)
+                {
+                    logger.LogError($"Unable to parse '{EnvironmentVariableNames.ProxyURLs}': {ex.Message}");
+                }
+            }
+        }
+
 
         internal static IDependabotProxy? GetDependabotProxy(
             ILogger logger, IDiagnosticsWriter diagnosticsWriter, TemporaryDirectory tempWorkingDirectory)
@@ -37,7 +85,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // This would result in us discovering that the feeds are reachable, but `dotnet` would
             // fail to connect to them. To prevent this from happening, we do not initialise an
             // instance of `DependabotProxy` on those platforms.
-            if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMacOs()) return null;
+            if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMacOs())
+            {
+                return null;
+            }
 
             var proxyConfig = new DependabotProxyConfiguration();
 
@@ -47,55 +98,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return null;
             }
 
-            var result = new DependabotProxy(proxyConfig.Host, proxyConfig.Port);
+            var result = new DependabotProxy(proxyConfig, logger, tempWorkingDirectory);
             logger.LogInfo($"Dependabot proxy configured at {result.Address}");
-
-            if (!string.IsNullOrWhiteSpace(proxyConfig.Certificate))
-            {
-                var certDirPath = new DirectoryInfo(Path.Join(tempWorkingDirectory.DirInfo.FullName, ".dependabot-proxy"));
-                Directory.CreateDirectory(certDirPath.FullName);
-
-                result.CertificatePath = Path.Join(certDirPath.FullName, "proxy.crt");
-                var certFile = new FileInfo(result.CertificatePath);
-
-                using var writer = certFile.CreateText();
-                writer.Write(proxyConfig.Certificate);
-                writer.Close();
-
-                logger.LogInfo($"Stored Dependabot proxy certificate at {result.CertificatePath}");
-
-                result.Certificate = X509Certificate2.CreateFromPem(proxyConfig.Certificate);
-            }
-
-            if (!string.IsNullOrWhiteSpace(proxyConfig.RegistryURLs))
-            {
-                try
-                {
-                    // The value of the environment variable should be a JSON array of objects, such as:
-                    // [ { "type": "nuget_feed", "url": "https://nuget.pkg.github.com/org/index.json" } ]
-                    var array = JsonConvert.DeserializeObject<List<RegistryConfig>>(proxyConfig.RegistryURLs);
-                    if (array is not null)
-                    {
-                        foreach (RegistryConfig config in array)
-                        {
-                            // The array contains all configured private registries, not just ones for C#.
-                            // We ignore the non-C# ones here.
-                            if (!config.Type.Equals("nuget_feed"))
-                            {
-                                logger.LogDebug($"Ignoring registry at '{config.URL}' since it is not of type 'nuget_feed'.");
-                                continue;
-                            }
-
-                            logger.LogInfo($"Found private registry at '{config.URL}'");
-                            result.RegistryURLs.Add(config.URL);
-                        }
-                    }
-                }
-                catch (JsonException ex)
-                {
-                    logger.LogError($"Unable to parse '{EnvironmentVariableNames.ProxyURLs}': {ex.Message}");
-                }
-            }
 
             // Emit a diagnostic for the discovered private registries, so that it is easy
             // for users to see that they were picked up.
@@ -117,17 +121,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return result;
         }
 
-        private DependabotProxy(string host, string port)
-        {
-            this.host = host;
-            this.port = port;
-            this.Address = $"http://{this.host}:{this.port}";
-            this.RegistryURLs = new HashSet<string>();
-        }
-
         public void Dispose()
         {
-            this.Certificate?.Dispose();
+            Certificate?.Dispose();
         }
     }
 }
