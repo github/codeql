@@ -76,9 +76,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-
-        internal static IDependabotProxy? GetDependabotProxy(
-            ILogger logger, IDiagnosticsWriter diagnosticsWriter, TemporaryDirectory tempWorkingDirectory)
+        internal static IDependabotProxy? Make(ILogger logger, IDiagnosticsWriter diagnosticsWriter, TemporaryDirectory tempWorkingDirectory)
         {
             // Setting HTTP(S)_PROXY and SSL_CERT_FILE have no effect on Windows or macOS,
             // but we would still end up using the Dependabot proxy to check for feed reachability.
@@ -90,8 +88,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return null;
             }
 
-            var proxyConfig = new DependabotProxyConfiguration();
+            return MakeAux(new DependabotProxyConfiguration(), logger, diagnosticsWriter, tempWorkingDirectory);
+        }
 
+        internal static IDependabotProxy? MakeAux(
+            IDependabotProxyConfiguration proxyConfig, ILogger logger, IDiagnosticsWriter diagnosticsWriter, TemporaryDirectory tempWorkingDirectory)
+        {
             if (string.IsNullOrWhiteSpace(proxyConfig.Host) || string.IsNullOrWhiteSpace(proxyConfig.Port))
             {
                 logger.LogInfo("No Dependabot proxy credentials are configured.");
