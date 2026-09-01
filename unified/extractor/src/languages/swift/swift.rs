@@ -217,8 +217,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // Plain string literals (no interpolation)
         coerce_to_pattern!(simpleStringLiteralExpr),
         rule!((simpleStringLiteralExpr) @@node => (string_literal #{node})),
-        // String literals with interpolation
+        // String literals, possibly with interpolation. Flatten to string_literal if no interpolation.
         coerce_to_pattern!(stringLiteralExpr),
+        rule!(
+            (stringLiteralExpr segments: (stringSegment) segments: _* @@rest) @@node
+            where rest.is_empty()
+            =>
+            (string_literal #{node}) // Note: capture entire 'stringLiteralExpr' to preserve quotation marks
+        ),
         rule!(
             (stringLiteralExpr segments: _* @segs)
             =>

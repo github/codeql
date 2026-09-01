@@ -60,8 +60,6 @@ top_level
                 argument
                   value: int_literal "1"
                 argument
-                  value:
-                    string_interpolation_expr
-                      element: string_literal "two"
+                  value: string_literal "\"two\""
                 argument
                   value: float_literal "3.0"

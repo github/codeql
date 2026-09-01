@@ -356,9 +356,7 @@ top_level
                             name_expr
                               identifier: identifier "z"
                     expr_equality_pattern
-                      expr:
-                        string_interpolation_expr
-                          element: string_literal "foo"
+                      expr: string_literal "\"foo\""
                     expr_equality_pattern
                       expr: int_literal "4"
                     expr_equality_pattern
@@ -436,9 +434,7 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value:
-                            string_interpolation_expr
-                              element: string_literal "expr"
+                          value: string_literal "\"expr\""
             switch_case
               pattern:
                 expr_equality_pattern
@@ -460,9 +456,7 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value:
-                            string_interpolation_expr
-                              element: string_literal "ternary is also valid"
+                          value: string_literal "\"ternary is also valid\""
             switch_case
               body:
                 block

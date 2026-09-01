@@ -142,9 +142,7 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value:
-                            string_interpolation_expr
-                              element: string_literal "one"
+                          value: string_literal "\"one\""
             switch_case
               pattern:
                 or_pattern
@@ -162,9 +160,7 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value:
-                            string_interpolation_expr
-                              element: string_literal "two or three"
+                          value: string_literal "\"two or three\""
             switch_case
               body:
                 block
@@ -175,6 +171,4 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value:
-                            string_interpolation_expr
-                              element: string_literal "other"
+                          value: string_literal "\"other\""

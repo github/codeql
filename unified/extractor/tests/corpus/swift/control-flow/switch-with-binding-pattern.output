@@ -401,9 +401,7 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value:
-                            string_interpolation_expr
-                              element: string_literal "foo"
+                          value: string_literal "\"foo\""
             switch_case
               pattern:
                 expr_equality_pattern
@@ -422,9 +420,7 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value:
-                            string_interpolation_expr
-                              element: string_literal "foo"
+                          value: string_literal "\"foo\""
             switch_case
               pattern:
                 expr_equality_pattern
@@ -445,9 +441,7 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value:
-                            string_interpolation_expr
-                              element: string_literal "foo"
+                          value: string_literal "\"foo\""
             switch_case
               pattern:
                 constructor_pattern
@@ -492,6 +486,4 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value:
-                            string_interpolation_expr
-                              element: string_literal "is T"
+                          value: string_literal "\"is T\""

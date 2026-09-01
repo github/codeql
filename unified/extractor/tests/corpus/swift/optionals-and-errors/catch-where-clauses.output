@@ -193,9 +193,7 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value:
-                            string_interpolation_expr
-                              element: string_literal "retry"
+                          value: string_literal "\"retry\""
             catch_clause
               body:
                 block
@@ -206,6 +204,4 @@ top_level
                           identifier: identifier "print"
                       argument:
                         argument
-                          value:
-                            string_interpolation_expr
-                              element: string_literal "fallback"
+                          value: string_literal "\"fallback\""
