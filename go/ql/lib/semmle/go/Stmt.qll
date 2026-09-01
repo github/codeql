@@ -1182,7 +1182,7 @@ class RangeStmt extends @rangestmt, LoopStmt {
  * `range` statement.
  *
  * This node acts as the single target of the destructuring performed on each
- * iteration of the loop, so that a `range` statement can be modelled with a
+ * iteration of the loop, so that a `range` statement can be modeled with a
  * single loop-variable node in the same way as a `foreach` loop in other
  * languages. It is present for every `range` statement, even when no loop
  * variables are bound (as in `for range x`).
