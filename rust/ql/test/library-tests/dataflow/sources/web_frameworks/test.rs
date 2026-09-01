@@ -118,6 +118,7 @@ mod actix_test {
         "".to_string()
     }
 
+    #[rustfmt::skip]
     #[get("/4/{a}")]
     async fn my_actix_handler_4(path: web::Path<String>) -> String { // $ Alert[rust/summary/taint-sources]
         let a = path.into_inner();
@@ -139,7 +140,7 @@ mod actix_test {
 
 mod axum_test {
     use super::sink;
-    use axum::extract::{Json, Path, Query, Request};
+    use axum::extract::{Json, Path, Query, Request, State};
     use axum::routing::{get, post, put, MethodFilter};
     use axum::Router;
     use std::collections::HashMap;
@@ -195,6 +196,13 @@ mod axum_test {
         ""
     }
 
+    async fn my_axum_handler_8(state: State<()>, body: String) -> &'static str {
+        sink(state.0); // $ SPURIOUS: hasTaintFlow=my_axum_handler_8
+        sink(body); // $ hasTaintFlow=my_axum_handler_8
+
+        ""
+    }
+
     async fn test_axum() {
         let app = Router::<()>::new()
             .route("/1/{a}", get(my_axum_handler_1)) // $ Alert[rust/summary/taint-sources])
@@ -204,7 +212,8 @@ mod axum_test {
                 "/4/:a",
                 get(my_axum_handler_4).on(MethodFilter::DELETE, my_axum_handler_5), // $ Alert[rust/summary/taint-sources])
             )
-            .route("/5/:a", get(my_axum_handler_6).get(my_axum_handler_7)); // $ Alert[rust/summary/taint-sources])
+            .route("/5/:a", get(my_axum_handler_6).get(my_axum_handler_7)) // $ Alert[rust/summary/taint-sources])
+            .route("/6/:a", get(my_axum_handler_8)); // $ Alert[rust/summary/taint-sources])
 
         // ...
     }
