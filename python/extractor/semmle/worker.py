@@ -10,7 +10,7 @@ from queue import Full as _Full
 from semmle.extractors import SuperExtractor, ModulePrinter, SkippedBuiltin
 from semmle.profiling import get_profiler
 from semmle.path_rename import renamer_from_options_and_env
-from semmle.logging import WARN, recursion_error_message, internal_error_message, Logger
+from semmle.logging import WARN, recursion_error_message, internal_error_message, extractor_telemetry_message, Logger
 from semmle.util import FileExtractable, FolderExtractable
 
 class ExtractorFailure(Exception):
@@ -239,6 +239,12 @@ def _drain_queue(queue):
         #Emptied queue as best we can.
         pass
 
+def _write_extractor_telemetry(diagnostics_writer, logger: Logger):
+    try:
+        diagnostics_writer.write(extractor_telemetry_message())
+    except OSError as ex:
+        logger.warning("Failed to write extractor telemetry: %s", ex)
+
 class DiagnosticsWriter(object):
     def __init__(self, proc_id):
         self.proc_id = proc_id
@@ -276,6 +282,8 @@ def _extract_loop(proc_id, queue, trap_dir, archive, options, reply_queue, logge
         reply_queue.put(("INTERRUPT", None, None))
         sys.exit(2)
     logger.set_process_id(proc_id)
+    if write_global_data:
+        _write_extractor_telemetry(diagnostics_writer, logger)
     try:
         if options.trace_only:
             extractor = ModulePrinter(options, trap_dir, archive, renamer, logger)

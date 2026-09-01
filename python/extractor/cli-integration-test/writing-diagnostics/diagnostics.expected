@@ -161,3 +161,23 @@
     "telemetry": true
   }
 }
+{
+  "attributes": {
+    "extractor_version": "7.1.10",
+    "python_analysis_version": "3.12",
+    "python_runtime_version": "3.12.3"
+  },
+  "markdownMessage": "Internal telemetry for the Python extractor.\n\nNo action needed.",
+  "severity": "note",
+  "source": {
+    "extractorName": "python",
+    "id": "py/extractor/summary",
+    "name": "Python extractor telemetry"
+  },
+  "timestamp": "2026-09-01T13:41:33.056818Z",
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

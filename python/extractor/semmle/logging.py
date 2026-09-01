@@ -8,6 +8,9 @@ import traceback
 import multiprocessing
 import enum
 import datetime
+import platform
+
+from semmle.util import VERSION, get_analysis_version
 
 
 #Use standard Semmle logging levels
@@ -354,6 +357,15 @@ class DiagnosticMessage(StructuredLogObject):
     def with_timestamp(self, timestamp):
         self.timestamp = timestamp
         return self
+
+def extractor_telemetry_message():
+    return (DiagnosticMessage(Source("py/extractor/summary", "Python extractor telemetry"), Severity.NOTE)
+            .markdown("Internal telemetry for the Python extractor.\n\nNo action needed.")
+            .attribute("python_analysis_version", get_analysis_version())
+            .attribute("python_runtime_version", platform.python_version())
+            .attribute("extractor_version", VERSION)
+            .telemetry()
+    )
 
 def get_stack_trace_lines():
     """Creates a stack trace for inclusion into the `attributes` part of a diagnostic message.
