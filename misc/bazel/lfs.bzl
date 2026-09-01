@@ -28,19 +28,19 @@ def lfs_smudge(repository_ctx, srcs, *, extract = False, stripPrefix = None, exe
             res = repository_ctx.download([], src.basename, sha256 = info, allow_fail = True, executable = executable)
             if not res.success:
                 remote.append(src)
-        if remote:
-            infos = probe(remote)
-            for src, info in zip(remote, infos):
-                sha256, _, url = info.partition(" ")
-                repository_ctx.report_progress("downloading remote %s" % src.basename)
-                repository_ctx.download(url, src.basename, sha256 = sha256, executable = executable)
-        if extract:
-            for src in srcs:
-                repository_ctx.report_progress("extracting %s" % src.basename)
-                repository_ctx.extract(src.basename, stripPrefix = stripPrefix)
-                repository_ctx.delete(src.basename)
+    if remote:
+        infos = probe(remote)
+        for src, info in zip(remote, infos):
+            sha256, _, url = info.partition(" ")
+            repository_ctx.report_progress("downloading remote %s" % src.basename)
+            repository_ctx.download(url, src.basename, sha256 = sha256, executable = executable)
+    if extract:
+        for src in srcs:
+            repository_ctx.report_progress("extracting %s" % src.basename)
+            repository_ctx.extract(src.basename, stripPrefix = stripPrefix)
+            repository_ctx.delete(src.basename)
 
-def _download_and_extract_lfs(repository_ctx):
+def _download_and_extract_lfs_archive(repository_ctx):
     attr = repository_ctx.attr
     src = repository_ctx.path(attr.src)
     if attr.build_file_content and attr.build_file:
@@ -50,6 +50,14 @@ def _download_and_extract_lfs(repository_ctx):
         repository_ctx.file("BUILD.bazel", attr.build_file_content)
     elif attr.build_file:
         repository_ctx.symlink(attr.build_file, "BUILD.bazel")
+
+def _download_and_extract_lfs_archives(repository_ctx):
+    lfs_smudge(
+        repository_ctx,
+        [repository_ctx.path(src) for src in repository_ctx.attr.srcs],
+        extract = True,
+        stripPrefix = repository_ctx.attr.strip_prefix,
+    )
 
 def _download_lfs(repository_ctx):
     attr = repository_ctx.attr
@@ -86,13 +94,26 @@ def _download_lfs(repository_ctx):
 lfs_archive = repository_rule(
     doc = "Export the contents from an on-demand LFS archive. The corresponding path should be added to be ignored " +
           "in `.lfsconfig`.",
-    implementation = _download_and_extract_lfs,
+    implementation = _download_and_extract_lfs_archive,
     attrs = {
         "src": attr.label(mandatory = True, doc = "Local path to the LFS archive to extract."),
         "build_file_content": attr.string(doc = "The content for the BUILD file for this repository. " +
                                                 "Either build_file or build_file_content can be specified, but not both."),
         "build_file": attr.label(doc = "The file to use as the BUILD file for this repository. " +
                                        "Either build_file or build_file_content can be specified, but not both."),
+        "strip_prefix": attr.string(default = "", doc = "A directory prefix to strip from the extracted files. "),
+    },
+)
+
+lfs_archives = repository_rule(
+    doc = "Overlay the contents from on-demand LFS archives. The corresponding paths should be added to be ignored " +
+          "in `.lfsconfig`.",
+    implementation = _download_and_extract_lfs_archives,
+    attrs = {
+        "srcs": attr.label_list(
+            doc = "Local paths to the LFS archives to extract in order.",
+            mandatory = True,
+        ),
         "strip_prefix": attr.string(default = "", doc = "A directory prefix to strip from the extracted files. "),
     },
 )
