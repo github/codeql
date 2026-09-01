@@ -49,6 +49,11 @@ module Unified {
     }
   }
 
+  /** A binary expression. */
+  class BinaryExpr extends G::BinaryExpr {
+    Expr getAnOperand() { result = [this.getLeft(), this.getRight()] }
+  }
+
   /** A function call */
   class CallExpr extends G::CallExpr {
     /** Gets the named argument with the given `name`. */

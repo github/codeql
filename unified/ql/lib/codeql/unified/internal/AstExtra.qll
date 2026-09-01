@@ -10,8 +10,6 @@ module Public {
    */
   class LogicalAndExpr extends BinaryExpr {
     LogicalAndExpr() { this.getOperator().getValue() = "&&" }
-
-    Expr getAnOperand() { result = [this.getLeft(), this.getRight()] }
   }
 
   /**
