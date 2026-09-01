@@ -162,6 +162,18 @@ class MissedWhereOpportunity
         return 0;
     }
 
+    public void M12(IEnumerable<int> elements)
+    {
+        // GOOD: The filtered case exits the loop instead of continuing with filtered loop work.
+        foreach (var element in elements)
+        {
+            if (element.GetHashCode() % 2 == 0)
+            {
+                break;
+            }
+        }
+    }
+
     public class NonEnumerableClass
     {
         public IEnumerator<int> GetEnumerator() => throw null;
