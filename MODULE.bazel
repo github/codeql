@@ -237,11 +237,13 @@ use_repo(
     swift,
     "swift_toolchain",
     "swift_toolchain_ubuntu22.04",
+    "swift_toolchain_ubuntu22.04-aarch64",
     "swift_toolchain_xcode",
 )
 
 register_toolchains(
     "@swift_toolchain//:swift_toolchain_exec_ubuntu22.04",
+    "@swift_toolchain//:swift_toolchain_exec_ubuntu22.04-aarch64",
     "@swift_toolchain//:swift_toolchain_exec_xcode",
     dev_dependency = True,
 )
