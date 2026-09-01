@@ -27,6 +27,8 @@ private predicate terminatesCallable(Stmt s) {
   or
   s.stripSingletonBlocks() instanceof ThrowStmt
   or
+  s.stripSingletonBlocks() instanceof BreakStmt
+  or
   exists(BlockStmt b | b = s.stripSingletonBlocks() | terminatesCallable(b.getLastStmt()))
   or
   exists(IfStmt nested |
