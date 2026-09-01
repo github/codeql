@@ -53,12 +53,6 @@ module StaticNameResolutionStats implements EntityStatsSig {
         or
         result.isModuleScopeNode(_) and
         result.(NamespaceNode).ref().isIdentifier(this)
-      ) and
-      // Do not consider a type extension to be a valid target
-      // TODO: Fix in the AST mapping: type extensions should reference their type, not declare it
-      not exists(ClassLikeDeclaration cls |
-        cls.hasModifier("extension") and
-        result.isIdentifier(cls.getName())
       )
     }
 
