@@ -40,24 +40,29 @@ def lfs_smudge(repository_ctx, srcs, *, extract = False, stripPrefix = None, exe
             repository_ctx.extract(src.basename, stripPrefix = stripPrefix)
             repository_ctx.delete(src.basename)
 
-def _download_and_extract_lfs_archive(repository_ctx):
+def _add_build_file(repository_ctx):
     attr = repository_ctx.attr
-    src = repository_ctx.path(attr.src)
     if attr.build_file_content and attr.build_file:
         fail("You should specify only one among build_file_content and build_file for rule @%s" % repository_ctx.name)
-    lfs_smudge(repository_ctx, [src], extract = True, stripPrefix = attr.strip_prefix)
     if attr.build_file_content:
         repository_ctx.file("BUILD.bazel", attr.build_file_content)
     elif attr.build_file:
         repository_ctx.symlink(attr.build_file, "BUILD.bazel")
 
+def _download_and_extract_lfs_archive(repository_ctx):
+    attr = repository_ctx.attr
+    lfs_smudge(repository_ctx, [repository_ctx.path(attr.src)], extract = True, stripPrefix = attr.strip_prefix)
+    _add_build_file(repository_ctx)
+
 def _download_and_extract_lfs_archives(repository_ctx):
-    lfs_smudge(
-        repository_ctx,
-        [repository_ctx.path(src) for src in repository_ctx.attr.srcs],
-        extract = True,
-        stripPrefix = repository_ctx.attr.strip_prefix,
-    )
+    for src in repository_ctx.attr.srcs:
+        lfs_smudge(
+            repository_ctx,
+            [repository_ctx.path(src)],
+            extract = True,
+            stripPrefix = repository_ctx.attr.strip_prefix,
+        )
+    _add_build_file(repository_ctx)
 
 def _download_lfs(repository_ctx):
     attr = repository_ctx.attr
@@ -110,10 +115,11 @@ lfs_archives = repository_rule(
           "in `.lfsconfig`.",
     implementation = _download_and_extract_lfs_archives,
     attrs = {
-        "srcs": attr.label_list(
-            doc = "Local paths to the LFS archives to extract in order.",
-            mandatory = True,
-        ),
+        "build_file": attr.label(doc = "The file to use as the BUILD file for this repository. " +
+                                       "Either build_file or build_file_content can be specified, but not both."),
+        "build_file_content": attr.string(doc = "The content for the BUILD file for this repository. " +
+                                                "Either build_file or build_file_content can be specified, but not both."),
+        "srcs": attr.label_list(doc = "Local paths to the LFS archives to extract in order.", mandatory = True),
         "strip_prefix": attr.string(default = "", doc = "A directory prefix to strip from the extracted files."),
     },
 )
