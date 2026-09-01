@@ -5,11 +5,24 @@
 private import unified
 
 module Public {
-  /**
-   * A logical 'and' expression with short-circuiting.
-   */
+  /** A short-circuiting logical AND expression. */
   class LogicalAndExpr extends BinaryExpr {
     LogicalAndExpr() { this.getOperator().getValue() = "&&" }
+  }
+
+  /** A short-circuiting logical OR expression. */
+  class LogicalOrExpr extends BinaryExpr {
+    LogicalOrExpr() { this.getOperator().getValue() = "||" }
+  }
+
+  /** A short-circuiting null-coalescing expression. */
+  class NullCoalescingExpr extends BinaryExpr {
+    NullCoalescingExpr() { this.getOperator().getValue() = "??" }
+  }
+
+  /** A logical NOT expression. */
+  class LogicalNotExpr extends UnaryExpr {
+    LogicalNotExpr() { this.getOperator().(PrefixOperator).getValue() = "!" }
   }
 
   /**
