@@ -168,7 +168,7 @@ top_level
                                 name_expr
                                   identifier: identifier "e"
                       pattern:
-                        name_pattern
+                        named_pattern
                           identifier: identifier "e"
                     conditional_pattern
                       condition:
@@ -182,7 +182,7 @@ top_level
                                 name_expr
                                   identifier: identifier "f"
                       pattern:
-                        name_pattern
+                        named_pattern
                           identifier: identifier "f"
               body:
                 block

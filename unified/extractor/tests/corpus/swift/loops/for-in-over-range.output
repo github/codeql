@@ -54,7 +54,7 @@ top_level
       stmt:
         for_each_stmt
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "i"
           iterable:
             binary_expr

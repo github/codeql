@@ -121,11 +121,9 @@ class NameBindingNode extends TNameBindingNode {
 Identifier getIdentifierFromRef(AstNode n) {
   result = n.(NameExpr).getIdentifier()
   or
-  result = n.(NamePattern).getIdentifier()
+  result = n.(NamedPattern).getIdentifier()
   or
   result = n.(MemberAccessExpr).getMember()
-  or
-  result = n.(NamedTypeExpr).getName()
 }
 
 NameBindingNode getNodeFromRef(AstNode n) {
@@ -148,12 +146,6 @@ predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
   exists(MemberAccessExpr expr |
     node1 = getNodeFromRef(expr.getBase()) and
     name = expr.getMember().getValue() and
-    node2 = getNodeFromRef(expr)
-  )
-  or
-  exists(NamedTypeExpr expr |
-    node1 = getNodeFromRef(expr.getQualifier()) and
-    name = expr.getName().getValue() and
     node2 = getNodeFromRef(expr)
   )
   or
@@ -247,7 +239,7 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     )
   )
   or
-  exists(NamePattern p |
+  exists(NamedPattern p |
     node1 = getNodeFromRef(p) and
     node2 = getNodeFromRef(p.getSubPattern())
   )

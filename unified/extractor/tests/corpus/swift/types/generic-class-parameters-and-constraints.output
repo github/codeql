@@ -73,22 +73,22 @@ top_level
             type_parameter
               name: identifier "T"
               bound:
-                named_type_expr
-                  name: identifier "Equatable"
+                name_expr
+                  identifier: identifier "Equatable"
             type_parameter
               name: identifier "U"
           type_constraint:
             bound_type_constraint
               type:
-                named_type_expr
-                  name: identifier "U"
+                name_expr
+                  identifier: identifier "U"
               bound:
-                named_type_expr
-                  name: identifier "Equatable"
+                name_expr
+                  identifier: identifier "Equatable"
             equality_type_constraint
               left:
-                named_type_expr
-                  name: identifier "U"
+                name_expr
+                  identifier: identifier "U"
               right:
-                named_type_expr
-                  name: identifier "T"
+                name_expr
+                  identifier: identifier "T"

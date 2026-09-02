@@ -105,38 +105,38 @@ top_level
             parameter
               external_name: identifier "_"
               type:
-                named_type_expr
-                  name: identifier "Bool"
+                name_expr
+                  identifier: identifier "Bool"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "c"
             parameter
               external_name: identifier "_"
               type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "a"
             parameter
               external_name: identifier "_"
               type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "b"
             parameter
               external_name: identifier "_"
               type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "d"
           return_type:
-            named_type_expr
-              name: identifier "Int"
+            name_expr
+              identifier: identifier "Int"
           body:
             block
               stmt:

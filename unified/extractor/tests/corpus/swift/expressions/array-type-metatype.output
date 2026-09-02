@@ -55,21 +55,21 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "type"
           value:
             member_access_expr
               base:
                 generic_type_expr
                   base:
-                    named_type_expr
-                      name: identifier "Array"
+                    name_expr
+                      identifier: identifier "Array"
                   type_argument:
                     generic_type_expr
                       base:
-                        named_type_expr
-                          name: identifier "Result"
+                        name_expr
+                          identifier: identifier "Result"
                       type_argument:
-                        named_type_expr
-                          name: identifier "Void"
+                        name_expr
+                          identifier: identifier "Void"
               member: identifier "self"

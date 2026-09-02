@@ -115,7 +115,7 @@ top_level
                 modifier "var"
                 modifier "private"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "_v"
               value: int_literal "0"
             accessor_declaration
@@ -123,8 +123,8 @@ top_level
               name: identifier "v"
               accessor_kind: accessor_kind "get"
               type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"
               body:
                 block
                   stmt:
@@ -139,8 +139,8 @@ top_level
               name: identifier "v"
               accessor_kind: accessor_kind "set"
               type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"
               body:
                 block
                   stmt:

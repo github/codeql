@@ -35,7 +35,7 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "n"
           value:
             unary_expr

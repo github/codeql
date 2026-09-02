@@ -70,10 +70,10 @@ top_level
           parameter:
             parameter
               type:
-                named_type_expr
-                  name: identifier "String"
+                name_expr
+                  identifier: identifier "String"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "name"
               default: string_literal "\"world\""
           body:

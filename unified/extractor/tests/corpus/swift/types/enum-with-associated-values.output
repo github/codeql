@@ -81,10 +81,10 @@ top_level
                   parameter:
                     parameter
                       type:
-                        named_type_expr
-                          name: identifier "Double"
+                        name_expr
+                          identifier: identifier "Double"
                       pattern:
-                        name_pattern
+                        named_pattern
                           identifier: identifier "radius"
                   body: block "circle(radius: Double)"
             class_like_declaration
@@ -95,9 +95,9 @@ top_level
                   parameter:
                     parameter
                       type:
-                        named_type_expr
-                          name: identifier "Double"
+                        name_expr
+                          identifier: identifier "Double"
                       pattern:
-                        name_pattern
+                        named_pattern
                           identifier: identifier "side"
                   body: block "square(side: Double)"

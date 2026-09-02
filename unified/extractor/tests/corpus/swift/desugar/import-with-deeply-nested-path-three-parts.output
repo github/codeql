@@ -38,6 +38,6 @@ top_level
                   member: identifier "Networking"
               member: identifier "URLSession"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "URLSession"
               sub_pattern: bulk_importing_pattern "import Foundation.Networking.URLSession"

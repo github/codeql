@@ -68,16 +68,16 @@ top_level
             variable_declaration
               modifier: modifier "var"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "x"
               type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"
             variable_declaration
               modifier: modifier "var"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "y"
               type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"

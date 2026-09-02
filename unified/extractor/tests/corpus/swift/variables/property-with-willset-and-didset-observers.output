@@ -108,11 +108,11 @@ top_level
             variable_declaration
               modifier: modifier "var"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "x"
               type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"
               value: int_literal "0"
             accessor_declaration
               modifier:

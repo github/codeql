@@ -43,7 +43,7 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "x"
           value: int_literal "1"
         variable_declaration
@@ -51,6 +51,6 @@ top_level
             modifier "let"
             modifier "chained_declaration"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "y"
           value: int_literal "2"

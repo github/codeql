@@ -34,5 +34,5 @@ top_level
                   identifier: identifier "Foundation"
               member: identifier "Date"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "Date"

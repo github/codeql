@@ -131,43 +131,43 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "values"
           value:
             call_expr
               callee:
                 generic_type_expr
                   base:
-                    named_type_expr
-                      name: identifier "Array"
+                    name_expr
+                      identifier: identifier "Array"
                   type_argument:
                     generic_type_expr
                       base:
-                        named_type_expr
-                          name: identifier "Result"
+                        name_expr
+                          identifier: identifier "Result"
                       type_argument:
-                        named_type_expr
-                          name: identifier "Void"
+                        name_expr
+                          identifier: identifier "Void"
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "initialized"
           value:
             call_expr
               callee:
                 generic_type_expr
                   base:
-                    named_type_expr
-                      name: identifier "Array"
+                    name_expr
+                      identifier: identifier "Array"
                   type_argument:
                     generic_type_expr
                       base:
-                        named_type_expr
-                          name: identifier "Result"
+                        name_expr
+                          identifier: identifier "Result"
                       type_argument:
-                        named_type_expr
-                          name: identifier "Void"
+                        name_expr
+                          identifier: identifier "Void"
               argument:
                 argument
                   name: identifier "unsafeUninitializedCapacity"
@@ -178,11 +178,11 @@ top_level
                       parameter:
                         parameter
                           pattern:
-                            name_pattern
+                            named_pattern
                               identifier: identifier "_"
                         parameter
                           pattern:
-                            name_pattern
+                            named_pattern
                               identifier: identifier "count"
                       body:
                         block

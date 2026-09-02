@@ -67,7 +67,7 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "f"
           value:
             function_expr
@@ -75,7 +75,7 @@ top_level
                 variable_declaration
                   modifier: modifier "weak"
                   pattern:
-                    name_pattern
+                    named_pattern
                       identifier: identifier "self"
               body:
                 block

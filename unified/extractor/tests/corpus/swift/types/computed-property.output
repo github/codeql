@@ -108,26 +108,26 @@ top_level
             variable_declaration
               modifier: modifier "var"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "w"
               type:
-                named_type_expr
-                  name: identifier "Double"
+                name_expr
+                  identifier: identifier "Double"
             variable_declaration
               modifier: modifier "var"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "h"
               type:
-                named_type_expr
-                  name: identifier "Double"
+                name_expr
+                  identifier: identifier "Double"
             accessor_declaration
               modifier: modifier "var"
               name: identifier "area"
               accessor_kind: accessor_kind "get"
               type:
-                named_type_expr
-                  name: identifier "Double"
+                name_expr
+                  identifier: identifier "Double"
               body:
                 block
                   stmt:

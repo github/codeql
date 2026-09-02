@@ -170,7 +170,7 @@ top_level
                       operator: infix_operator ">"
                       right: int_literal "0"
                   pattern:
-                    name_pattern
+                    named_pattern
                       identifier: identifier "x"
               body:
                 block
@@ -195,10 +195,9 @@ top_level
                           operator: infix_operator "<"
                           right: int_literal "0"
                       pattern:
-                        name_pattern
+                        named_pattern
                           identifier: identifier "y"
-                    expr_equality_pattern
-                      expr: int_literal "0"
+                    int_literal "0"
               body:
                 block
                   stmt:

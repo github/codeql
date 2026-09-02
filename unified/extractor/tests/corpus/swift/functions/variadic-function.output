@@ -83,14 +83,14 @@ top_level
             parameter
               external_name: identifier "_"
               type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "values"
           return_type:
-            named_type_expr
-              name: identifier "Int"
+            name_expr
+              identifier: identifier "Int"
           body:
             block
               stmt:

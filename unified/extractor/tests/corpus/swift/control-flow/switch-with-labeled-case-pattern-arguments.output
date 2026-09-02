@@ -134,17 +134,15 @@ top_level
           case:
             switch_case
               pattern:
-                constructor_pattern
-                  constructor:
+                call_expr
+                  callee:
                     member_access_expr
                       base: inferred_type_expr "."
                       member: identifier "implicit"
-                  element:
-                    pattern_element
-                      key: identifier "isAcknowledged"
-                      pattern:
-                        expr_equality_pattern
-                          expr: boolean_literal "false"
+                  argument:
+                    argument
+                      name: identifier "isAcknowledged"
+                      value: boolean_literal "false"
               body:
                 block
                   stmt:
@@ -157,18 +155,20 @@ top_level
                           value: string_literal "\"yes\""
             switch_case
               pattern:
-                constructor_pattern
-                  constructor:
+                call_expr
+                  callee:
                     member_access_expr
                       base: inferred_type_expr "."
                       member: identifier "thread"
-                  element:
-                    pattern_element
-                      key: identifier "threadRowId"
-                      pattern: ignore_pattern "_"
-                    pattern_element
-                      pattern:
-                        name_pattern
+                  argument:
+                    argument
+                      name: identifier "threadRowId"
+                      value:
+                        name_expr
+                          identifier: identifier "_"
+                    argument
+                      value:
+                        named_pattern
                           identifier: identifier "rowId"
               body:
                 block

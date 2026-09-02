@@ -92,10 +92,10 @@ top_level
             parameter
               external_name: identifier "_"
               type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "x"
           body:
             block
@@ -106,9 +106,7 @@ top_level
                       identifier: identifier "x"
                   case:
                     switch_case
-                      pattern:
-                        expr_equality_pattern
-                          expr: int_literal "1"
+                      pattern: int_literal "1"
                       body:
                         block
                           stmt: unsupported_node "fallthrough"

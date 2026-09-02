@@ -51,26 +51,26 @@ top_level
             variable_declaration
               modifier: modifier "enum_case"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "clubs"
             variable_declaration
               modifier:
                 modifier "chained_declaration"
                 modifier "enum_case"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "diamonds"
             variable_declaration
               modifier:
                 modifier "chained_declaration"
                 modifier "enum_case"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "hearts"
             variable_declaration
               modifier:
                 modifier "chained_declaration"
                 modifier "enum_case"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "spades"

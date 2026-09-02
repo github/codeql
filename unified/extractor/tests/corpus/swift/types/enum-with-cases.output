@@ -72,20 +72,20 @@ top_level
             variable_declaration
               modifier: modifier "enum_case"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "north"
             variable_declaration
               modifier: modifier "enum_case"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "south"
             variable_declaration
               modifier: modifier "enum_case"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "east"
             variable_declaration
               modifier: modifier "enum_case"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "west"

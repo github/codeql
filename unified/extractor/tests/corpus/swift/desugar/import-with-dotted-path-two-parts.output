@@ -32,6 +32,6 @@ top_level
                   identifier: identifier "Foundation"
               member: identifier "Networking"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "Networking"
               sub_pattern: bulk_importing_pattern "import Foundation.Networking"

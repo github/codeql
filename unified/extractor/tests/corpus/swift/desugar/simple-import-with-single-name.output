@@ -26,6 +26,6 @@ top_level
             name_expr
               identifier: identifier "Foundation"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "Foundation"
               sub_pattern: bulk_importing_pattern "import Foundation"

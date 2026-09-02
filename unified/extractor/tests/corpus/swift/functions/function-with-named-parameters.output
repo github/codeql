@@ -62,10 +62,10 @@ top_level
             parameter
               external_name: identifier "person"
               type:
-                named_type_expr
-                  name: identifier "String"
+                name_expr
+                  identifier: identifier "String"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "name"
           body:
             block

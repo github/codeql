@@ -49,15 +49,15 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "numbers"
           value:
             call_expr
               callee:
                 generic_type_expr
                   base:
-                    named_type_expr
-                      name: identifier "Array"
+                    name_expr
+                      identifier: identifier "Array"
                   type_argument:
-                    named_type_expr
-                      name: identifier "Int"
+                    name_expr
+                      identifier: identifier "Int"

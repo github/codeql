@@ -69,21 +69,21 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "f"
           value:
             function_expr
               parameter:
                 parameter
                   type:
-                    named_type_expr
-                      name: identifier "Int"
+                    name_expr
+                      identifier: identifier "Int"
                   pattern:
-                    name_pattern
+                    named_pattern
                       identifier: identifier "x"
               return_type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"
               body:
                 block
                   stmt:

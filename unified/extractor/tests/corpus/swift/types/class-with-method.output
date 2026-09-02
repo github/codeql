@@ -84,7 +84,7 @@ top_level
             variable_declaration
               modifier: modifier "var"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "n"
               value: int_literal "0"
             function_declaration

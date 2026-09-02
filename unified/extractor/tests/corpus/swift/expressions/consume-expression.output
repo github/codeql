@@ -69,7 +69,7 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "original"
           value:
             array_literal
@@ -80,6 +80,6 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "consumed"
           value: unsupported_node "consume original"

@@ -101,8 +101,8 @@ top_level
           name: identifier "p"
           accessor_kind: accessor_kind "get"
           type:
-            named_type_expr
-              name: identifier "Int"
+            name_expr
+              identifier: identifier "Int"
           body:
             block
               stmt:
@@ -113,10 +113,8 @@ top_level
                   case:
                     switch_case
                       pattern:
-                        expr_equality_pattern
-                          expr:
-                            name_expr
-                              identifier: identifier "someConstant"
+                        name_expr
+                          identifier: identifier "someConstant"
                       body:
                         block
                           stmt:

@@ -128,7 +128,6 @@ private module Ast implements AstSig<Location> {
 
     // TODO support foreach guard
     //
-    // TODO: Expr != Pattern
     Expr getVariable() { result = super.getPattern() }
 
     Expr getCollection() { result = super.getIterable() }

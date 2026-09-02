@@ -166,27 +166,27 @@ top_level
           case:
             switch_case
               pattern:
-                constructor_pattern
-                  constructor:
+                call_expr
+                  callee:
                     member_access_expr
                       base: inferred_type_expr "."
                       member: identifier "received"
-                  element:
-                    pattern_element
-                      pattern:
-                        constructor_pattern
-                          constructor:
+                  argument:
+                    argument
+                      value:
+                        call_expr
+                          callee:
                             member_access_expr
                               base: inferred_type_expr "."
                               member: identifier "some"
-                          element:
-                            pattern_element
-                              pattern:
-                                name_pattern
+                          argument:
+                            argument
+                              value:
+                                named_pattern
                                   identifier: identifier "value"
-                    pattern_element
-                      pattern:
-                        name_pattern
+                    argument
+                      value:
+                        named_pattern
                           identifier: identifier "timestamp"
               body:
                 block
@@ -206,17 +206,17 @@ top_level
                               identifier: identifier "timestamp"
             switch_case
               pattern:
-                constructor_pattern
-                  constructor:
+                call_expr
+                  callee:
                     member_access_expr
                       base:
                         name_expr
                           identifier: identifier "Type"
                       member: identifier "some"
-                  element:
-                    pattern_element
-                      pattern:
-                        name_pattern
+                  argument:
+                    argument
+                      value:
+                        named_pattern
                           identifier: identifier "value"
               body:
                 block

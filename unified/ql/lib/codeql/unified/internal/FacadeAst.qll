@@ -74,14 +74,4 @@ module Unified {
       )
     }
   }
-
-  /** The base class for all patterns. */
-  class Pattern extends G::Pattern {
-    /** Gets the immediately-enclosing pattern in which this is a nested pattern. */
-    Pattern getEnclosingPattern() {
-      result = this.getParent()
-      or
-      result = this.getParent().(PatternElement).getParent()
-    }
-  }
 }

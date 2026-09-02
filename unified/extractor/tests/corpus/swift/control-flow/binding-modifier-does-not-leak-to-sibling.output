@@ -91,7 +91,7 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "x"
           value: int_literal "1"
         switch_expr
@@ -101,10 +101,8 @@ top_level
           case:
             switch_case
               pattern:
-                expr_equality_pattern
-                  expr:
-                    name_expr
-                      identifier: identifier "someConstant"
+                name_expr
+                  identifier: identifier "someConstant"
               body:
                 block
                   stmt:

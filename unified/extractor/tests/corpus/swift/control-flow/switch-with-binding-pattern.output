@@ -126,15 +126,15 @@ top_level
           case:
             switch_case
               pattern:
-                constructor_pattern
-                  constructor:
+                call_expr
+                  callee:
                     member_access_expr
                       base: inferred_type_expr "."
                       member: identifier "circle"
-                  element:
-                    pattern_element
-                      pattern:
-                        name_pattern
+                  argument:
+                    argument
+                      value:
+                        named_pattern
                           identifier: identifier "r"
               body:
                 block
@@ -150,15 +150,15 @@ top_level
                               identifier: identifier "r"
             switch_case
               pattern:
-                constructor_pattern
-                  constructor:
+                call_expr
+                  callee:
                     member_access_expr
                       base: inferred_type_expr "."
                       member: identifier "square"
-                  element:
-                    pattern_element
-                      pattern:
-                        name_pattern
+                  argument:
+                    argument
+                      value:
+                        named_pattern
                           identifier: identifier "s"
               body:
                 block

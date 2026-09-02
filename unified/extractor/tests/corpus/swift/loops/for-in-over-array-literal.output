@@ -62,7 +62,7 @@ top_level
       stmt:
         for_each_stmt
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "x"
           iterable:
             array_literal

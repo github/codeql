@@ -44,17 +44,17 @@ top_level
           condition:
             pattern_guard_expr
               pattern:
-                constructor_pattern
-                  constructor:
+                call_expr
+                  callee:
                     member_access_expr
                       base:
-                        named_type_expr
-                          name: identifier "Optional"
+                        name_expr
+                          identifier: identifier "Optional"
                       member: identifier "some"
-                  element:
-                    pattern_element
-                      pattern:
-                        name_pattern
+                  argument:
+                    argument
+                      value:
+                        named_pattern
                           identifier: identifier "value"
               value:
                 name_expr

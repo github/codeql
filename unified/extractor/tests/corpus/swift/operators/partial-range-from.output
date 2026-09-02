@@ -35,6 +35,6 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            name_pattern
+            named_pattern
               identifier: identifier "range"
           value: unsupported_node "3..."

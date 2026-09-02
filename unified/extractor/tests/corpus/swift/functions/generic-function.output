@@ -72,14 +72,14 @@ top_level
             parameter
               external_name: identifier "_"
               type:
-                named_type_expr
-                  name: identifier "T"
+                name_expr
+                  identifier: identifier "T"
               pattern:
-                name_pattern
+                named_pattern
                   identifier: identifier "x"
           return_type:
-            named_type_expr
-              name: identifier "T"
+            name_expr
+              identifier: identifier "T"
           body:
             block
               stmt:

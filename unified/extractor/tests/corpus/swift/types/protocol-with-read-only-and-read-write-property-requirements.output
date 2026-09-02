@@ -88,18 +88,18 @@ top_level
               name: identifier "foo"
               accessor_kind: accessor_kind "get"
               type:
-                named_type_expr
-                  name: identifier "Int"
+                name_expr
+                  identifier: identifier "Int"
             accessor_declaration
               name: identifier "bar"
               accessor_kind: accessor_kind "get"
               type:
-                named_type_expr
-                  name: identifier "String"
+                name_expr
+                  identifier: identifier "String"
             accessor_declaration
               modifier: modifier "chained_declaration"
               name: identifier "bar"
               accessor_kind: accessor_kind "set"
               type:
-                named_type_expr
-                  name: identifier "String"
+                name_expr
+                  identifier: identifier "String"

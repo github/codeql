@@ -43,15 +43,15 @@ top_level
         variable_declaration
           modifier: modifier "let"
           pattern:
-            tuple_pattern
+            tuple_expr
               element:
-                pattern_element
-                  pattern:
-                    name_pattern
+                argument
+                  value:
+                    named_pattern
                       identifier: identifier "a"
-                pattern_element
-                  pattern:
-                    name_pattern
+                argument
+                  value:
+                    named_pattern
                       identifier: identifier "b"
           value:
             name_expr

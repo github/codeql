@@ -168,7 +168,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   {
     LocalVariableDeclarationSiblingShadowingDecl() { not this instanceof TopLevelStmt }
 
-    override Pattern getPattern() { result = LocalVariableDeclaration.super.getPattern() }
+    override Expr getPattern() { result = LocalVariableDeclaration.super.getPattern() }
 
     override AstNode getRhs() { result = LocalVariableDeclaration.super.getValue() }
 
@@ -177,7 +177,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   private class PatternGuardExprSiblingShadowingDecl extends SiblingShadowingDecl instanceof PatternGuardExpr
   {
-    override Pattern getPattern() { result = PatternGuardExpr.super.getPattern() }
+    override Expr getPattern() { result = PatternGuardExpr.super.getPattern() }
 
     override AstNode getRhs() { result = PatternGuardExpr.super.getValue() }
 
@@ -265,12 +265,31 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       declaration = imprt
     )
     or
-    exists(NamePattern p |
+    exists(NamedPattern p |
       bindingContext(p, scope, declaration) and
       pattern = p.getIdentifier()
     )
     or
-    bindingContext(pattern.(Pattern).getEnclosingPattern(), scope, declaration)
+    bindingContext(getEnclosingPatternExpr(pattern.(Expr)), scope, declaration)
+  }
+
+  private Expr getEnclosingPatternExpr(Expr child) {
+    exists(OrPattern parent | result = parent and child = parent.getAPattern())
+    or
+    exists(ConditionalPattern parent | result = parent and child = parent.getPattern())
+    or
+    exists(Argument arg |
+      child = arg.getValue() and
+      result = arg.getParent().(Expr)
+    )
+    or
+    exists(NamedPattern parent | result = parent and child = parent.getSubPattern())
+    or
+    exists(TypeTestExpr parent |
+      result = parent and
+      not exists(parent.getOperator()) and
+      child = parent.getExpr()
+    )
   }
 
   /**
@@ -282,15 +301,15 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
    * At the moment no further checks are needed since the Swift compiler enforces that
    * variable names bound in any branch are bound in all branches.
    */
-  private OrPattern getEnclosingOrPattern(Pattern p) {
+  private OrPattern getEnclosingOrPattern(Expr p) {
     p = result.getPattern(_)
     or
     not p instanceof OrPattern and
-    result = getEnclosingOrPattern(p.getEnclosingPattern())
+    result = getEnclosingOrPattern(getEnclosingPatternExpr(p))
   }
 
   private OrPattern getEnclosingOrPatternFromIdentifier(Identifier id) {
-    exists(NamePattern p |
+    exists(NamedPattern p |
       id = p.getIdentifier() and
       result = getEnclosingOrPattern(p)
     )
@@ -377,10 +396,6 @@ module Public {
 class PotentialLocalNameAccess extends Identifier {
   PotentialLocalNameAccess() {
     this = any(NameExpr e).getIdentifier()
-    or
-    this = any(NamePattern e).getIdentifier()
-    or
-    this = any(NamedTypeExpr e | not exists(e.getQualifier())).getName()
     or
     this instanceof NameDeclaration
     or
