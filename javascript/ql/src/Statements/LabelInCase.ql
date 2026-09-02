@@ -13,6 +13,7 @@
 
 import javascript
 
+pragma[no_dynamic_join_order]
 from LabeledStmt l, Case c
 where
   l = c.getAChildStmt+() and

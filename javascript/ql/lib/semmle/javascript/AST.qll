@@ -123,6 +123,7 @@ class AstNode extends @ast_node, NodeInStmtContainer {
   AstNode getParent() { Stages::Ast::ref() and this = result.getAChild() }
 
   /** Gets the first control flow node belonging to this syntactic entity. */
+  pragma[no_dynamic_join_order]
   ControlFlowNode getFirstControlFlowNode() { result = this }
 
   /** Holds if this syntactic entity belongs to an externs file. */
