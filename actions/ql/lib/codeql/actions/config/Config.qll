@@ -136,26 +136,6 @@ predicate trustedActionsOwnerDataModel(string owner) {
 }
 
 /**
- * MaD models for `uses` references pinned by the repository's Actions lockfile
- * (`.github/workflows/actions.lock`).
- * Fields:
- *    - workflow_path: repo-relative path of the file containing the `uses:` reference
- *    - nwo: referenced action, optionally including a sub-action path (e.g. `actions/cache/save`)
- *    - ref: the ref as written in `uses:` (e.g. `v4`)
- */
-bindingset[nwo]
-predicate pinnedByLockfileDataModel(string workflow_path, string nwo, string ref) {
-  exists(string pinnedNwo |
-    Extensions::pinnedByLockfileDataModel(workflow_path, pinnedNwo, ref) and
-    (
-      nwo.toLowerCase() = pinnedNwo
-      or
-      nwo.toLowerCase().prefix(pinnedNwo.length() + 1) = pinnedNwo + "/"
-    )
-  )
-}
-
-/**
  * MaD models for untrusted git commands
  * Fields:
  *    - cmd_regex: Regular expression for matching untrusted git commands

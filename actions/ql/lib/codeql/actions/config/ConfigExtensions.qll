@@ -69,23 +69,6 @@ extensible predicate immutableActionsDataModel(string action);
 extensible predicate trustedActionsOwnerDataModel(string owner);
 
 /**
- * Holds if the `uses` reference `nwo`@`ref` in the workflow or composite action file at
- * `workflow_path` is pinned by an entry in the repository's Actions lockfile
- * (`.github/workflows/actions.lock`).
- *
- * Supply rows from a model pack generated with the canonical parser at
- * `github.com/github/actions-lockfile/go/pkg/lockfile`. Each lockfile entry binds an `nwo`@`ref`
- * to a verified commit SHA. Without such a model pack this predicate is empty.
- *
- * Fields:
- *  - `workflow_path`: repo-relative path of the file containing the `uses:` reference,
- *    e.g. `.github/workflows/ci.yml`.
- *  - `nwo`: canonical owner and repository from the lockfile pin, e.g. `actions/cache`.
- *  - `ref`: the ref (tag or branch) as written in `uses:`, e.g. `v4`.
- */
-extensible predicate pinnedByLockfileDataModel(string workflow_path, string nwo, string ref);
-
-/**
  * Holds for git commands that may introduce untrusted data when called on an attacker controlled branch.
  */
 extensible predicate untrustedGitCommandDataModel(string cmd_regex, string flag);

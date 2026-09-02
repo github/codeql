@@ -64,7 +64,9 @@ where
   not isSelfRepository(nwo) and
   not exists(UsesStep step |
     uses = step and
-    pinnedByLockfileDataModel(step.getLocation().getFile().getRelativePath(), nwo, version)
+    exists(ActionsLock lock |
+      lock.pins(step.getLocation().getFile().getRelativePath(), nwo, version)
+    )
   ) and
   not (
     if uses instanceof UsesStep and isContainerImage(nwo)

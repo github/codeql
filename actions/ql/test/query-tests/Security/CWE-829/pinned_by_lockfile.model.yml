@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/actions-all
-      extensible: pinnedByLockfileDataModel
-    # Canonical lockfile pin rows supplied by an external model pack.
-    data:
-      - [".github/workflows/lockfile_pinned.yml", "some-owner/pinned-action", "v1"]
-      # Owner/repo is canonicalized; ref casing is preserved.
-      - [".github/workflows/lockfile_pinned.yml", "mixed-owner/pinned-action", "v1"]
