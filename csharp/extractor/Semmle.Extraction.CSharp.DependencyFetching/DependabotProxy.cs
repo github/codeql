@@ -88,15 +88,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return null;
             }
 
-            return MakeAux(new DependabotProxyConfiguration(), logger, diagnosticsWriter, tempWorkingDirectory);
+            return Make(new DependabotProxyConfiguration(), logger, diagnosticsWriter, tempWorkingDirectory);
         }
 
-        internal static IDependabotProxy? MakeAux(
+        /// <summary>
+        /// Creates an instance of the Dependabot proxy using the specified configuration.
+        /// Returns null if the proxy cannot be created.
+        /// This overload is exposed primarily to enable platform-independent unit testing.
+        /// </summary>
+        internal static IDependabotProxy? Make(
             IDependabotProxyConfiguration proxyConfig, ILogger logger, IDiagnosticsWriter diagnosticsWriter, TemporaryDirectory tempWorkingDirectory)
         {
             if (string.IsNullOrWhiteSpace(proxyConfig.Host) || string.IsNullOrWhiteSpace(proxyConfig.Port))
             {
-                logger.LogInfo("No Dependabot proxy credentials are configured.");
+                logger.LogDebug("No Dependabot proxy credentials are configured.");
                 return null;
             }
 

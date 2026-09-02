@@ -34,13 +34,13 @@ namespace Semmle.Extraction.Tests
             // Setup
             var config = new DependabotConfigurationStub
             {
-                Host = "my.private.server",
+                Host = "localhost",
                 Port = "",
             };
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.MakeAux(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.Null(proxy);
@@ -57,7 +57,7 @@ namespace Semmle.Extraction.Tests
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.MakeAux(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.Null(proxy);
@@ -103,17 +103,17 @@ namespace Semmle.Extraction.Tests
             var config = new DependabotConfigurationStub
             {
                 Port = "8080",
-                Host = "my.private.server",
+                Host = "localhost",
                 Certificate = ExampleCertificate
             };
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.MakeAux(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.NotNull(proxy);
-            Assert.Equal("http://my.private.server:8080", proxy.Address);
+            Assert.Equal("http://localhost:8080", proxy.Address);
             Assert.NotNull(proxy.Certificate);
             Assert.NotNull(proxy.CertificatePath);
         }
@@ -125,13 +125,13 @@ namespace Semmle.Extraction.Tests
             var config = new DependabotConfigurationStub
             {
                 Port = "8080",
-                Host = "my.private.server",
+                Host = "localhost",
                 RegistryURLs = "Doesn't parse as a JSON list"
             };
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.MakeAux(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.NotNull(proxy);
@@ -145,13 +145,13 @@ namespace Semmle.Extraction.Tests
             var config = new DependabotConfigurationStub
             {
                 Port = "8080",
-                Host = "my.private.server",
+                Host = "localhost",
                 RegistryURLs = "[ { \"type\": \"nuget_feed\", \"url\": \"https://nuget.pkg.github.com/org/index.json\" } ]"
             };
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.MakeAux(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.NotNull(proxy);
@@ -167,13 +167,13 @@ namespace Semmle.Extraction.Tests
             var config = new DependabotConfigurationStub
             {
                 Port = "8080",
-                Host = "my.private.server",
+                Host = "localhost",
                 RegistryURLs = "[ { \"type\": \"nuget_feed\", \"url\": \"https://example.com/org/index.json\" }, { \"type\": \"wrong_type\", \"url\": \"https://nuget.pkg.github.com/org/index.json\" } ]"
             };
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.MakeAux(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.NotNull(proxy);
