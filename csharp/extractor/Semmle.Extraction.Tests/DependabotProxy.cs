@@ -135,7 +135,8 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             Assert.NotNull(proxy);
-            Assert.Equal([], proxy.RegistryURLs);
+            Assert.Empty(proxy.RegistryURLs);
+            Assert.Empty(proxy.RegistryBaseURLs);
         }
 
         [Fact]
@@ -158,6 +159,7 @@ namespace Semmle.Extraction.Tests
             Assert.Equal([
                 "https://nuget.pkg.github.com/org/index.json"
             ], proxy.RegistryURLs);
+            Assert.Empty(proxy.RegistryBaseURLs);
         }
 
         [Fact]
@@ -180,6 +182,33 @@ namespace Semmle.Extraction.Tests
             Assert.Equal([
                 "https://example.com/org/index.json"
             ], proxy.RegistryURLs);
+            Assert.Empty(proxy.RegistryBaseURLs);
+        }
+
+        [Fact]
+        public void TestDependabotReplacesBase1()
+        {
+            // Setup
+            var config = new DependabotConfigurationStub
+            {
+                Port = "8080",
+                Host = "localhost",
+                RegistryURLs = "[ { \"type\": \"nuget_feed\", \"url\": \"https://example.com/org/index.json\", \"replaces-base\": true }, { \"type\": \"nuget_feed\", \"url\": \"https://example2.com/org/index.json\", \"replaces-base\": false } ]"
+            };
+
+            // Execute
+            using var tempWorkingDirectory = MakeTemporaryDirectory();
+            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+
+            // Verify
+            Assert.NotNull(proxy);
+            Assert.Equal([
+                "https://example.com/org/index.json",
+                "https://example2.com/org/index.json"
+            ], proxy.RegistryURLs);
+            Assert.Equal([
+                "https://example.com/org/index.json",
+            ], proxy.RegistryBaseURLs);
         }
     }
 }

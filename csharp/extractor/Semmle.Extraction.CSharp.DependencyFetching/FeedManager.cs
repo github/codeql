@@ -78,7 +78,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.dotnet = dotnet;
             this.fileProvider = fileProvider;
             this.feedManagerIo = feedManagerIo;
-            privateRegistryFeeds = dependabotProxy?.RegistryURLs.ToImmutableHashSet() ?? [];
+            privateRegistryFeeds = dependabotProxy?.RegistryURLs ?? [];
             HasPrivateRegistryFeeds = privateRegistryFeeds.Count > 0;
             emptyPackageDirectory = new DependencyDirectory("empty", "empty package", logger);
 
