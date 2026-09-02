@@ -67,10 +67,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             private bool IsWindows => SystemBuildActions.Instance.IsWindows();
 
-            private bool? isDefaultFeedReachable;
-            private bool IsDefaultFeedReachable =>
-                isDefaultFeedReachable ??= feedManager.IsDefaultFeedReachable();
-
             /// <summary>
             /// Create the package manager for a specified source tree.
             /// </summary>
@@ -169,15 +165,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 List<string> sourcesArgument = [];
                 var feedsToUse = feedManager.FeedsToUse(packagesConfig).ToList();
-                var useDefaultFeed = feedsToUse.Count == 0 && IsDefaultFeedReachable;
+                var useDefaultFeeds = feedsToUse.Count == 0 && feedManager.ReachableDefaultFeeds.Count > 0;
 
                 // Explicitly construct the sources to be used for the restore command when checking feed
-                // responsiveness, using private registries, or falling back to nuget.org.
-                if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds || useDefaultFeed)
+                // responsiveness, using private registries, or falling back to default feeds.
+                if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds || useDefaultFeeds)
                 {
-                    if (useDefaultFeed)
+                    if (useDefaultFeeds)
                     {
-                        feedsToUse.Add(FeedManager.PublicNugetOrgFeed);
+                        feedsToUse.AddRange(feedManager.ReachableDefaultFeeds);
                     }
                     var restoreFeeds = feedManager.RestoreFeeds(feedsToUse);
                     sourcesArgument = restoreFeeds.SelectMany<string, string>(feed => ["-Source", feed]).ToList();

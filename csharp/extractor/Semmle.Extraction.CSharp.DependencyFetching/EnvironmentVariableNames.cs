@@ -56,7 +56,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         /// <summary>
         /// Specifies the NuGet feeds to use for fallback NuGet dependency fetching. The value is a space-separated list of feed URLs.
-        /// The default value is `https://api.nuget.org/v3/index.json`.
         /// </summary>
         public const string FallbackNugetFeeds = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_FALLBACK";
 
