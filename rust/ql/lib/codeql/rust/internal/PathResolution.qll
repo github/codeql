@@ -568,6 +568,16 @@ class CrateItemNode extends NamedItemNode instanceof Crate {
     )
   }
 
+  pragma[nomagic]
+  predicate isLatestVersion(string name) {
+    this =
+      max(CrateItemNode c, string ver |
+        name = c.getName() and ver = c.(Crate).getVersion()
+      |
+        c order by ver
+      )
+  }
+
   override string getName() { result = Crate.super.getName() }
 
   override Namespace getNamespace() {
@@ -1529,11 +1539,11 @@ private predicate crateDependencyEdge(SourceFileItemNode file, string name, Crat
   crateDependency(file, name, dep)
   or
   // As a fallback, give all files access to crates that do not conflict with known dependencies
-  // and declarations. This is in order to workaround incomplete crate dependency information
-  // provided by the extractor, as well as `CrateItemNode.getASourceFile()` being unable to map
-  // a given file to its crate (for example, if the file is `mod` imported inside a macro that the
-  // extractor is unable to expand).
-  name = dep.getName() and
+  // and declarations, as long as those crates have a unique latest version.
+  // This is in order to workaround incomplete crate dependency information provided by the extractor,
+  // as well as `CrateItemNode.getASourceFile()` being unable to map a given file to its crate (for
+  // example, if the file is `mod` imported inside a macro that the extractor is unable to expand).
+  dep = unique(CrateItemNode dep0 | dep0.isLatestVersion(name)) and
   not hasDeclOrDep(file, name)
 }
 
@@ -2383,6 +2393,11 @@ private module Debug {
   predicate debugUseImportEdge(Use use, string name, ItemNode item, SuccessorKind kind) {
     use = getRelevantLocatable() and
     useImportEdge(use, name, item, kind)
+  }
+
+  predicate debugCrateDependencyEdge(SourceFileItemNode file, string name, CrateItemNode dep) {
+    file = getRelevantLocatable() and
+    crateDependencyEdge(file, name, dep)
   }
 
   ItemNode debugGetASuccessor(ItemNode i, string name, SuccessorKind kind) {
