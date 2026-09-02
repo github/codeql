@@ -10,24 +10,4 @@ class MissedWhereOpportunityGood
 
         return null;
     }
-
-    public System.Collections.Generic.IEnumerable<int> ValuesUntilFirstEven(System.Collections.Generic.IEnumerable<int> values)
-    {
-        foreach (int value in values)
-        {
-            if (value % 2 == 0)
-                yield break;
-
-            yield return value;
-        }
-    }
-
-    public void ThrowOnFirstEven(System.Collections.Generic.IEnumerable<int> values)
-    {
-        foreach (int value in values)
-        {
-            if (value % 2 == 0)
-                throw new System.InvalidOperationException("Unexpected even value.");
-        }
-    }
 }

@@ -31,7 +31,7 @@ on the even ones.</p>
 <p>This is far better expressed using the <code>Where</code> method.</p>
 <sample src="MissedWhereOpportunityFix.cs" />
 
-<p>The following examples should not use <code>Where</code>, because the matching branch exits the
+<p>The following example should not use <code>Where</code>, because the matching branch exits the
 method or iterator instead of continuing with filtered loop work.</p>
 <sample src="MissedWhereOpportunityGood.cs" />
 
