@@ -5,7 +5,6 @@ use itertools::Itertools;
 use std::ffi::OsStr;
 use std::fs;
 use std::path::Path;
-use std::process::Command;
 use tracing::info;
 
 const DEFAULT_EDITION: &str = "2021";
@@ -91,15 +90,8 @@ fn set_sources(config: &mut Config) -> anyhow::Result<()> {
 }
 
 fn cargo_check(config: &Config) -> anyhow::Result<()> {
-    let mut command = Command::new("cargo");
+    let mut command = ra_ap_toolchain::command("cargo", ".", &config.get_extra_env());
     command.env("CARGO_TARGET_DIR", config.cargo_target_dir());
-    // Pass the extra environment variables to the initial `cargo check`.
-    for (key, value) in config.get_extra_env() {
-        match value {
-            Some(value) => command.env(key, value),
-            None => command.env_remove(key),
-        };
-    }
     let status = command
         .arg("check")
         .arg("-q")

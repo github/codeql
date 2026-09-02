@@ -1,5 +1,6 @@
 use crate::diagnostics::{ExtractionStep, emit_extraction_diagnostics};
 use crate::rust_analyzer::{RustAnalyzerNoSemantics, path_to_file_id};
+use crate::toolchain::log_project_toolchain;
 use crate::translate::SourceKind;
 use crate::trap::TrapId;
 use anyhow::Context;
@@ -32,6 +33,7 @@ mod diagnostics;
 pub mod generated;
 mod qltest;
 mod rust_analyzer;
+mod toolchain;
 mod translate;
 pub mod trap;
 
@@ -269,6 +271,7 @@ fn main() -> anyhow::Result<()> {
         );
     }
     let cwd = cwd()?;
+    log_project_toolchain();
     let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
     let library_mode = if cfg.extract_dependencies_as_source {
         SourceKind::Source

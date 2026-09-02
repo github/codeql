@@ -455,6 +455,7 @@ dependencies = [
  "ra_ap_span",
  "ra_ap_syntax",
  "ra_ap_syntax-bridge",
+ "ra_ap_toolchain",
  "ra_ap_vfs",
  "rust-extractor-macros",
  "serde",

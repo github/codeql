@@ -24,6 +24,8 @@ use std::fmt::Debug;
 use std::ops::Not;
 use std::path::{Path, PathBuf};
 
+use crate::toolchain::select_toolchain;
+
 #[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, clap::ValueEnum)]
 #[serde(rename_all = "lowercase")]
 #[clap(rename_all = "lowercase")]
@@ -140,6 +142,7 @@ impl Config {
             );
         }
         extra_env.extend(self.cargo_extra_env.clone());
+        extra_env.insert("RUSTUP_TOOLCHAIN".to_owned(), Some(select_toolchain()));
         extra_env
     }
 
