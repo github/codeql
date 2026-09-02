@@ -1220,37 +1220,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c);
 
       /**
-       * Holds if the language-specific implementation replaces the edge from
-       * `source` to `target` for abrupt completion `completion` originating
-       * at `source`.
-       *
-       * This is useful when whether an abrupt completion is intercepted
-       * depends on its source, for example when Go routes a panic through the
-       * deferred calls that are active at that source. The language is
-       * responsible for providing the replacement control-flow edge.
-       *
-       * The default implementation does not override any edges.
-       */
-      default predicate overridesAbruptCompletionEdge(
-        PreControlFlowNode source, PreControlFlowNode target, AbruptCompletion completion
-      ) {
-        none()
-      }
-
-      /**
-       * Holds if there is an additional control-flow edge from `n1` to `n2`
-       * with successor type `t`.
-       *
-       * This is useful for language-specific edges whose successor type cannot
-       * be inferred from their target node.
-       */
-      default predicate additionalSuccessor(
-        PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType t
-      ) {
-        none()
-      }
-
-      /**
        * Holds if the language-specific implementation provides all control flow
        * for `ast`, suppressing the default left-to-right evaluation steps.
        *
@@ -2078,8 +2047,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         // Require a predecessor as a coarse approximation of reachability.
         // In particular, this prevents a catch-all catch clause preceding a
         // finally block from adding exception edges out of the finally.
-        (step(_, last) or Input2::additionalSuccessor(_, last, _)) and
-        beginAbruptCompletion(ast, last, c, _)
+        step(_, last) and beginAbruptCompletion(ast, last, c, _)
         or
         exists(AstNode child |
           getChild(ast, _) = child and
@@ -2102,8 +2070,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       }
 
       private predicate preSucc(PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType t) {
-        Input2::additionalSuccessor(n1, n2, t)
-        or
         step(n1, n2) and n2 = TAfterValueNode(_, t)
         or
         step(n1, n2) and n2.(AdditionalNode).getSuccessorType() = t
@@ -2116,7 +2082,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         exists(AstNode ast, AbruptCompletion c |
           last(ast, n1, c) and
           endAbruptCompletion(ast, n2, c) and
-          not Input2::overridesAbruptCompletionEdge(n1, n2, c) and
           t = c.getSuccessorType()
         )
       }
