@@ -123,7 +123,7 @@ private module Ast implements AstSig<Location> {
     AstNode getUpdate(int index) { none() }
   }
 
-  class ForeachStmt extends LoopStmt instanceof U::ForEachStmt {
+  class ForEachStmt extends LoopStmt instanceof U::ForEachStmt {
     override Stmt getBody() { result = U::ForEachStmt.super.getBody() }
 
     // TODO support foreach guard

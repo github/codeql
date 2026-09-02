@@ -147,7 +147,7 @@ signature module AstSig<LocationSig Location> {
   }
 
   /** A for-loop that iterates over the elements of a collection. */
-  class ForeachStmt extends LoopStmt {
+  class ForEachStmt extends LoopStmt {
     /** Gets the variable declaration of this `foreach` loop. */
     Expr getVariable();
 
@@ -650,7 +650,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         any(Case case).getGuard() = n
       )
       or
-      any(ForeachStmt foreachstmt).getCollection() = n and kind.isEmptiness()
+      any(ForEachStmt foreachstmt).getCollection() = n and kind.isEmptiness()
       or
       kind.isMatching() and
       (
@@ -1656,7 +1656,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfter(loopstmt)
         )
         or
-        exists(ForeachStmt foreachstmt |
+        exists(ForEachStmt foreachstmt |
           n1.isBefore(foreachstmt) and
           n2.isBefore(foreachstmt.getCollection())
           or
@@ -2401,7 +2401,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             // allow for loop headers in foreach loops (they're checking emptiness on the iterator, not the collection)
             not (
               t instanceof DirectSuccessor and
-              node.isAdditional(any(ForeachStmt foreach), loopHeaderTag())
+              node.isAdditional(any(ForEachStmt foreach), loopHeaderTag())
             ) and
             // allow for functions with multiple bodies
             not exists(Callable c |
