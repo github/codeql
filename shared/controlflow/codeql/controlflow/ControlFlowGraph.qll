@@ -685,10 +685,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       not exists(getChild(n, _)) and
       not postOrInOrder(n) and
       not additionalNode(n, _, _) and
-      not inConditionalContext(n, _) and
-      // An empty switch statement still needs distinct before and after nodes
-      // to avoid a spurious self-loop.
-      not n instanceof Switch
+      not inConditionalContext(n, _)
     }
 
     private string catchClauseEmptyBodyTag() { result = "[CatchClauseEmptyBody]" }
@@ -1838,7 +1835,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         exists(Switch switch, PreControlFlowNode firstCase |
           firstCase.isBefore(getRankedCaseCfgOrder(switch, 1))
           or
-          not exists(getRankedCaseCfgOrder(switch, _)) and firstCase.isAfter(switch)
+          not exists(getRankedCaseCfgOrder(switch, _)) and
+          not simpleLeafNode(switch) and
+          firstCase.isAfter(switch)
         |
           n1.isBefore(switch) and
           (
