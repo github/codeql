@@ -5,10 +5,9 @@
 <overview>
 <p>
 Firmware and embedded drivers often copy data into buffers using lengths read from
-memory-mapped I/O (MMIO) registers or DMA descriptor fields. When those lengths are not
-validated against the destination buffer size, an attacker who can influence hardware
-registers or DMA metadata can trigger buffer overflows and potentially achieve remote
-code execution on microcontrollers, WiFi stacks, and cellular basebands.
+allowlisted MMIO register macros such as <code>READ_REG</code> or <code>GET_MMIO</code>.
+When those lengths are not validated against the destination buffer size, an attacker who
+can influence hardware registers or DMA metadata can trigger buffer overflows.
 </p>
 </overview>
 <recommendation>

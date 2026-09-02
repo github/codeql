@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-120/MmioUnsanitizedMemcpy.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
