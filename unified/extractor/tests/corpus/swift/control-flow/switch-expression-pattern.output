@@ -1,0 +1,463 @@
+// Arbitrary expressions may appear in pattern context
+switch x {
+case y, y + 1, -y, y...z, "foo", 4, foo().bar, .baz, [42], ["a": 1], try y, y!, y is T, await y, "interpolate \(y)", y[4]:
+    print("expr")
+case true ? y : z:
+    print("ternary is also valid")
+default:
+    break
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            switchExpr
+              leftBrace: {
+              rightBrace: }
+              cases:
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "y"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator "+"
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "1"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                prefixOperatorExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  operator: prefixOperator "-"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator "..."
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  rightOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "z"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "foo"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                integerLiteralExpr
+                                  literal: integerLiteral "4"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "bar"
+                                  base:
+                                    functionCallExpr
+                                      leftParen: (
+                                      rightParen: )
+                                      arguments:
+                                      additionalTrailingClosures:
+                                      calledExpression:
+                                        declReferenceExpr
+                                          baseName: identifier "foo"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "baz"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                arrayExpr
+                                  elements:
+                                    arrayElement
+                                      expression:
+                                        integerLiteralExpr
+                                          literal: integerLiteral "42"
+                                  leftSquare: [
+                                  rightSquare: ]
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                dictionaryExpr
+                                  leftSquare: [
+                                  rightSquare: ]
+                                  content:
+                                    dictionaryElement
+                                      colon: :
+                                      value:
+                                        integerLiteralExpr
+                                          literal: integerLiteral "1"
+                                      key:
+                                        stringLiteralExpr
+                                          closingQuote: "
+                                          openingQuote: "
+                                          segments:
+                                            stringSegment
+                                              content: stringSegment "a"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                tryExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  tryKeyword: try
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                forceUnwrapExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  exclamationMark: !
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                isExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  type:
+                                    identifierType
+                                      name: identifier "T"
+                                  isKeyword: is
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                awaitExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  awaitKeyword: await
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "interpolate "
+                                    expressionSegment
+                                      leftParen: (
+                                      rightParen: )
+                                      backslash: \
+                                      expressions:
+                                        labeledExpr
+                                          expression:
+                                            declReferenceExpr
+                                              baseName: identifier "y"
+                                    stringSegment
+                                      content: stringSegment
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                subscriptCallExpr
+                                  leftSquare: [
+                                  rightSquare: ]
+                                  arguments:
+                                    labeledExpr
+                                      expression:
+                                        integerLiteralExpr
+                                          literal: integerLiteral "4"
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "expr"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                ternaryExpr
+                                  colon: :
+                                  condition:
+                                    booleanLiteralExpr
+                                      literal: true
+                                  questionMark: ?
+                                  elseExpression:
+                                    declReferenceExpr
+                                      baseName: identifier "z"
+                                  thenExpression:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "ternary is also valid"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchDefaultLabel
+                      colon: :
+                      defaultKeyword: default
+                  statements:
+                    codeBlockItem
+                      item:
+                        breakStmt
+                          breakKeyword: break
+              subject:
+                declReferenceExpr
+                  baseName: identifier "x"
+              switchKeyword: switch
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        switch_expr
+          value:
+            name_expr
+              identifier: identifier "x"
+          case:
+            switch_case
+              pattern:
+                or_pattern
+                  pattern:
+                    expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "y"
+                    expr_equality_pattern
+                      expr:
+                        binary_expr
+                          left:
+                            name_expr
+                              identifier: identifier "y"
+                          operator: infix_operator "+"
+                          right: int_literal "1"
+                    expr_equality_pattern
+                      expr:
+                        unary_expr
+                          operand:
+                            name_expr
+                              identifier: identifier "y"
+                          operator: prefix_operator "-"
+                    expr_equality_pattern
+                      expr:
+                        binary_expr
+                          left:
+                            name_expr
+                              identifier: identifier "y"
+                          operator: infix_operator "..."
+                          right:
+                            name_expr
+                              identifier: identifier "z"
+                    expr_equality_pattern
+                      expr: string_literal "\"foo\""
+                    expr_equality_pattern
+                      expr: int_literal "4"
+                    expr_equality_pattern
+                      expr:
+                        member_access_expr
+                          base:
+                            call_expr
+                              callee:
+                                name_expr
+                                  identifier: identifier "foo"
+                          member: identifier "bar"
+                    expr_equality_pattern
+                      expr:
+                        member_access_expr
+                          base: inferred_type_expr "."
+                          member: identifier "baz"
+                    expr_equality_pattern
+                      expr:
+                        array_literal
+                          element: int_literal "42"
+                    expr_equality_pattern
+                      expr: map_literal "[\"a\": 1]"
+                    expr_equality_pattern
+                      expr:
+                        unary_expr
+                          operand:
+                            name_expr
+                              identifier: identifier "y"
+                          operator: prefix_operator "try"
+                    expr_equality_pattern
+                      expr:
+                        unary_expr
+                          operand:
+                            name_expr
+                              identifier: identifier "y"
+                          operator: postfix_operator "!"
+                    expr_equality_pattern
+                      expr:
+                        type_test_expr
+                          expr:
+                            name_expr
+                              identifier: identifier "y"
+                          operator: infix_operator "is"
+                          type:
+                            named_type_expr
+                              name: identifier "T"
+                    expr_equality_pattern
+                      expr:
+                        unary_expr
+                          operand:
+                            name_expr
+                              identifier: identifier "y"
+                          operator: prefix_operator "await"
+                    expr_equality_pattern
+                      expr:
+                        string_interpolation_expr
+                          element:
+                            string_literal "interpolate "
+                            call_expr
+                              callee: builtin_expr "interpolation"
+                              argument:
+                                argument
+                                  value:
+                                    name_expr
+                                      identifier: identifier "y"
+                            string_literal
+                    expr_equality_pattern
+                      expr: unsupported_node "y[4]"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value: string_literal "\"expr\""
+            switch_case
+              pattern:
+                expr_equality_pattern
+                  expr:
+                    if_expr
+                      condition: boolean_literal "true"
+                      then:
+                        name_expr
+                          identifier: identifier "y"
+                      else:
+                        name_expr
+                          identifier: identifier "z"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value: string_literal "\"ternary is also valid\""
+            switch_case
+              body:
+                block
+                  stmt: break_expr "break"

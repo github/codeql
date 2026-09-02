@@ -6,6 +6,7 @@ supertypes:
     - boolean_literal
     - string_literal
     - regex_literal
+    - string_interpolation_expr
     - builtin_expr
     - binary_expr
     - unary_expr
@@ -39,17 +40,13 @@ supertypes:
   expr_or_type:
     - expr
     - type_expr
-  # An element of an `unresolved_operator_sequence`: either an operand (`expr`)
-  # or one of the infix operators separating the operands.
-  expr_or_operator:
-    - expr
-    - infix_operator
   pattern:
     - name_pattern
     - tuple_pattern
     - constructor_pattern
     - or_pattern
     - conditional_pattern
+    - type_test_pattern
     - ignore_pattern
     - expr_equality_pattern
     - bulk_importing_pattern
@@ -138,6 +135,11 @@ named:
   # A regex literal
   regex_literal:
 
+  # A string interpolation expression. Constant parts are stored as string literals.
+  string_interpolation_expr:
+    modifier*: modifier
+    element*: expr
+
   # Application of a binary operator, such as `a + b`
   binary_expr:
     left: expr
@@ -159,11 +161,13 @@ named:
   # determine (e.g. one imported from another module), it leaves that chain
   # unresolved and emits it here rather than guessing a (possibly wrong)
   # structure. The `element`s alternate operands (`expr`) and infix operators.
+  # Note that these can contain assignment operators, and the LHS of an assignment operator can be a pattern
   unresolved_operator_sequence:
-    element*: expr_or_operator
+    # An inline union is used here to avoid generating a somewhat Swift-specific and not-that-useful union type in the public AST
+    element*: [expr, pattern, infix_operator]
 
-  # Plain assignment
   assign_expr:
+  # Plain assignment
     target: expr_or_pattern
     value: expr
 
@@ -232,7 +236,7 @@ named:
 
   # A tuple expression, such as `(a, b, c)`.
   tuple_expr:
-    element*: expr
+    element*: argument
 
   # A parameter.
   #
@@ -470,7 +474,7 @@ named:
   # In Swift: `if let y = x as? Foo` is a pattern_guard_expr containing a type_test_pattern
   # In Java: `x instanceof Foo y` is a type_test_pattern wrapping a name_pattern
   type_test_pattern:
-    pattern: pattern
+    pattern?: pattern
     type: type_expr
 
   # A '*' pattern that imports all members of the incoming value into the local scope

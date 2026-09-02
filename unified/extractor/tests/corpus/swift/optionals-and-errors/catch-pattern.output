@@ -1,0 +1,128 @@
+do {
+  try foo()
+} catch MyError.someError(let msg) {
+  print(msg)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        doStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    tryExpr
+                      expression:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "foo"
+                      tryKeyword: try
+          catchClauses:
+            catchClause
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "msg"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              catchItems:
+                catchItem
+                  pattern:
+                    expressionPattern
+                      expression:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                patternExpr
+                                  pattern:
+                                    valueBindingPattern
+                                      pattern:
+                                        identifierPattern
+                                          identifier: identifier "msg"
+                                      bindingSpecifier: let
+                          additionalTrailingClosures:
+                          calledExpression:
+                            memberAccessExpr
+                              period: .
+                              declName:
+                                declReferenceExpr
+                                  baseName: identifier "someError"
+                              base:
+                                declReferenceExpr
+                                  baseName: identifier "MyError"
+              catchKeyword: catch
+          doKeyword: do
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        try_expr
+          body:
+            block
+              stmt:
+                unary_expr
+                  operand:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "foo"
+                  operator: prefix_operator "try"
+          catch_clause:
+            catch_clause
+              pattern:
+                constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base:
+                        name_expr
+                          identifier: identifier "MyError"
+                      member: identifier "someError"
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "msg"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "msg"

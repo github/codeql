@@ -1,0 +1,126 @@
+(x, _) = (1, 2)
+(foo.x, _) = (1, 2)
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            assignmentExpr
+              equal: =
+          leftOperand:
+            tupleExpr
+              leftParen: (
+              rightParen: )
+              elements:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "x"
+                  trailingComma: ,
+                labeledExpr
+                  expression:
+                    discardAssignmentExpr
+                      wildcard: _
+          rightOperand:
+            tupleExpr
+              leftParen: (
+              rightParen: )
+              elements:
+                labeledExpr
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "1"
+                  trailingComma: ,
+                labeledExpr
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "2"
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            assignmentExpr
+              equal: =
+          leftOperand:
+            tupleExpr
+              leftParen: (
+              rightParen: )
+              elements:
+                labeledExpr
+                  expression:
+                    memberAccessExpr
+                      period: .
+                      declName:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      base:
+                        declReferenceExpr
+                          baseName: identifier "foo"
+                  trailingComma: ,
+                labeledExpr
+                  expression:
+                    discardAssignmentExpr
+                      wildcard: _
+          rightOperand:
+            tupleExpr
+              leftParen: (
+              rightParen: )
+              elements:
+                labeledExpr
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "1"
+                  trailingComma: ,
+                labeledExpr
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "2"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        assign_expr
+          target:
+            tuple_expr
+              element:
+                argument
+                  value:
+                    name_expr
+                      identifier: identifier "x"
+                argument
+                  value: builtin_expr "_"
+          value:
+            tuple_expr
+              element:
+                argument
+                  value: int_literal "1"
+                argument
+                  value: int_literal "2"
+        assign_expr
+          target:
+            tuple_expr
+              element:
+                argument
+                  value:
+                    member_access_expr
+                      base:
+                        name_expr
+                          identifier: identifier "foo"
+                      member: identifier "x"
+                argument
+                  value: builtin_expr "_"
+          value:
+            tuple_expr
+              element:
+                argument
+                  value: int_literal "1"
+                argument
+                  value: int_literal "2"

@@ -18,22 +18,20 @@ nameExpr
 | test.swift:48:15:48:19 | NameExpr | index |
 | test.swift:48:29:48:33 | NameExpr | index |
 | test.swift:48:37:48:40 | NameExpr | data |
-| test.swift:49:16:49:19 | NameExpr | data |
-| test.swift:49:21:49:25 | NameExpr | index |
 | test.swift:53:9:53:12 | NameExpr | data |
 | test.swift:53:21:53:24 | NameExpr | item |
 | test.swift:63:16:63:19 | NameExpr | self |
 | test.swift:65:29:65:37 | NameExpr | transform |
 | test.swift:65:39:65:43 | NameExpr | value |
 | test.swift:67:29:67:33 | NameExpr | error |
-| test.swift:76:16:76:19 | NameExpr | self |
-| test.swift:76:21:76:21 | NameExpr | i |
-| test.swift:76:26:76:29 | NameExpr | self |
-| test.swift:76:31:76:31 | NameExpr | i |
+| test.swift:75:23:75:27 | NameExpr | count |
 | test.swift:86:12:86:17 | NameExpr | values |
 | test.swift:87:12:87:17 | NameExpr | values |
-| test.swift:87:38:87:43 | NameExpr | values |
 | test.swift:87:49:87:57 | NameExpr | transform |
 unsupported
+| test.swift:49:16:49:26 |  |  |
+| test.swift:76:16:76:22 |  |  |
+| test.swift:76:26:76:36 |  |  |
+| test.swift:87:38:87:46 |  |  |
 stringValue
 | strings.swift:1:9:1:15 | "hello" | "hello" |

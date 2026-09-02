@@ -658,7 +658,7 @@ module Unified {
     }
   }
 
-  class Expr extends @unified_expr, F::ExprOrOperator, F::ExprOrPattern, F::ExprOrType, F::Stmt { }
+  class Expr extends @unified_expr, F::ExprOrPattern, F::ExprOrType, F::Stmt { }
 
   /** A class representing `expr_equality_pattern` nodes. */
   class ExprEqualityPattern extends @unified_expr_equality_pattern, F::Pattern {
@@ -671,8 +671,6 @@ module Unified {
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_expr_equality_pattern_def(this, result) }
   }
-
-  class ExprOrOperator extends @unified_expr_or_operator, F::AstNode { }
 
   class ExprOrPattern extends @unified_expr_or_pattern, F::AstNode { }
 
@@ -947,9 +945,7 @@ module Unified {
   }
 
   /** A class representing `infix_operator` tokens. */
-  class InfixOperator extends @unified_token_infix_operator, F::ExprOrOperator, F::Operator,
-    F::Token
-  {
+  class InfixOperator extends @unified_token_infix_operator, F::Operator, F::Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InfixOperator" }
   }
@@ -1278,6 +1274,32 @@ module Unified {
 
   class Stmt extends @unified_stmt, F::AstNode { }
 
+  /** A class representing `string_interpolation_expr` nodes. */
+  class StringInterpolationExpr extends @unified_string_interpolation_expr, F::Expr {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "StringInterpolationExpr" }
+
+    /** Gets the node corresponding to the field `element`. */
+    final F::Expr getElement(int i) { unified_string_interpolation_expr_element(this, i, result) }
+
+    /** Gets the node corresponding to the field `element`. */
+    final F::Expr getAnElement() { result = this.getElement(_) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getModifier(int i) {
+      unified_string_interpolation_expr_modifier(this, i, result)
+    }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
+    /** Gets a field or child node of this node. */
+    final override F::AstNode getAFieldOrChild() {
+      unified_string_interpolation_expr_element(this, _, result) or
+      unified_string_interpolation_expr_modifier(this, _, result)
+    }
+  }
+
   /** A class representing `string_literal` tokens. */
   class StringLiteral extends @unified_token_string_literal, F::Expr, F::Token {
     /** Gets the name of the primary QL class for this element. */
@@ -1401,10 +1423,10 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "TupleExpr" }
 
     /** Gets the node corresponding to the field `element`. */
-    final F::Expr getElement(int i) { unified_tuple_expr_element(this, i, result) }
+    final F::Argument getElement(int i) { unified_tuple_expr_element(this, i, result) }
 
     /** Gets the node corresponding to the field `element`. */
-    final F::Expr getAnElement() { result = this.getElement(_) }
+    final F::Argument getAnElement() { result = this.getElement(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_tuple_expr_element(this, _, result) }
@@ -1587,20 +1609,19 @@ module Unified {
   }
 
   /** A class representing `type_test_pattern` nodes. */
-  class TypeTestPattern extends @unified_type_test_pattern, F::AstNode {
+  class TypeTestPattern extends @unified_type_test_pattern, F::Pattern {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeTestPattern" }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_type_test_pattern_def(this, result, _) }
+    final F::Pattern getPattern() { unified_type_test_pattern_pattern(this, result) }
 
     /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_type_test_pattern_def(this, _, result) }
+    final F::TypeExpr getType() { unified_type_test_pattern_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
-      unified_type_test_pattern_def(this, result, _) or
-      unified_type_test_pattern_def(this, _, result)
+      unified_type_test_pattern_pattern(this, result) or unified_type_test_pattern_def(this, result)
     }
   }
 
@@ -1627,12 +1648,12 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "UnresolvedOperatorSequence" }
 
     /** Gets the node corresponding to the field `element`. */
-    final F::ExprOrOperator getElement(int i) {
+    final F::AstNode getElement(int i) {
       unified_unresolved_operator_sequence_element(this, i, result)
     }
 
     /** Gets the node corresponding to the field `element`. */
-    final F::ExprOrOperator getAnElement() { result = this.getElement(_) }
+    final F::AstNode getAnElement() { result = this.getElement(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1948,6 +1969,10 @@ module Unified {
       or
       result = node.(ReturnExpr).getValue() and i = -1 and name = "getValue"
       or
+      result = node.(StringInterpolationExpr).getElement(i) and name = "getElement"
+      or
+      result = node.(StringInterpolationExpr).getModifier(i) and name = "getModifier"
+      or
       result = node.(SwitchCase).getBody() and i = -1 and name = "getBody"
       or
       result = node.(SwitchCase).getModifier(i) and name = "getModifier"
@@ -2105,8 +2130,6 @@ module UnifiedFinal {
 
   final class ExprEqualityPattern = F::ExprEqualityPattern;
 
-  final class ExprOrOperator = F::ExprOrOperator;
-
   final class ExprOrPattern = F::ExprOrPattern;
 
   final class ExprOrType = F::ExprOrType;
@@ -2184,6 +2207,8 @@ module UnifiedFinal {
   final class ReturnExpr = F::ReturnExpr;
 
   final class Stmt = F::Stmt;
+
+  final class StringInterpolationExpr = F::StringInterpolationExpr;
 
   final class StringLiteral = F::StringLiteral;
 
