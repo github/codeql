@@ -657,10 +657,10 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** A for-each loop (`for x in iterable:`). */
-  class ForeachStmt extends LoopStmtImpl {
+  class ForEachStmt extends LoopStmtImpl {
     private Py::For forStmt;
 
-    ForeachStmt() { this = TPyStmt(forStmt) }
+    ForEachStmt() { this = TPyStmt(forStmt) }
 
     /** Gets the loop variable. */
     Expr getVariable() { result.asExpr() = forStmt.getTarget() }
@@ -898,7 +898,7 @@ module Ast implements AstSig<Py::Location> {
   AstNode getLoopElse(LoopStmt loop) {
     result = loop.(WhileStmt).getElse()
     or
-    result = loop.(ForeachStmt).getElse()
+    result = loop.(ForEachStmt).getElse()
   }
 
   /** An exception handler (`except` or `except*`). */
