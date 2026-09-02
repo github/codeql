@@ -15,12 +15,13 @@ use ra_ap_vfs::Vfs;
 use rust_analyzer::{ParseResult, RustAnalyzer};
 use std::collections::HashSet;
 use std::hash::RandomState;
+use std::io;
 use std::time::Instant;
 use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
-use std::{env, fs};
+use std::{env, fs, process};
 use tracing::{error, info, warn};
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -34,6 +35,39 @@ mod qltest;
 mod rust_analyzer;
 mod translate;
 pub mod trap;
+
+/// The toolchain target by the extractor. When rust-analyzer is updated this
+/// number should be bumped to the last Rust toolchain release that preceedes
+/// the rust-analyzer release.
+const DEFAULT_RUST_TOOLCHAIN: &str = "1.97.0";
+
+/// The command output of asking `rustup` which toolchain is used by the Rust
+/// project in `dir`.
+///
+/// Examples of what the stdout might look like when the command is successful:
+/// - `nightly-aarch64-apple-darwin (overridden by '/path/to/project/rust-toolchain.toml')`
+/// - `stable-aarch64-apple-darwin (default)`
+/// - `1.80.1-aarch64-apple-darwin (overridden by '/path/to/project/rust-toolchain.toml')`
+fn project_toolchain(dir: impl AsRef<Path>) -> io::Result<process::Output> {
+    process::Command::new("rustup")
+        .current_dir(dir)
+        .args(["show", "active-toolchain"])
+        .output()
+}
+
+fn select_toolchain() -> &'static str {
+    let uses_nightly = project_toolchain(".")
+        .ok()
+        .filter(|output| output.status.success())
+        .and_then(|output| String::from_utf8(output.stdout).ok())
+        .is_some_and(|toolchain| toolchain.starts_with("nightly"));
+
+    if uses_nightly {
+        "nightly"
+    } else {
+        DEFAULT_RUST_TOOLCHAIN
+    }
+}
 
 struct Extractor<'a> {
     archiver: &'a Archiver,
@@ -269,6 +303,7 @@ fn main() -> anyhow::Result<()> {
         );
     }
     let cwd = cwd()?;
+    cfg.log_project_toolchain(&cwd);
     let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
     let library_mode = if cfg.extract_dependencies_as_source {
         SourceKind::Source

@@ -23,6 +23,7 @@ use std::collections::HashSet;
 use std::fmt::Debug;
 use std::ops::Not;
 use std::path::{Path, PathBuf};
+use tracing::{info, warn};
 
 #[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, clap::ValueEnum)]
 #[serde(rename_all = "lowercase")]
@@ -140,7 +141,25 @@ impl Config {
             );
         }
         extra_env.extend(self.cargo_extra_env.clone());
+        extra_env.insert(
+            "RUSTUP_TOOLCHAIN".to_owned(),
+            Some(crate::select_toolchain().to_owned()),
+        );
         extra_env
+    }
+
+    pub(crate) fn log_project_toolchain(&self, dir: &AbsPath) {
+        match crate::project_toolchain(dir.as_str()) {
+            Ok(output) if output.status.success() => info!(
+                "project Rust toolchain: {}",
+                String::from_utf8_lossy(&output.stdout).trim()
+            ),
+            Ok(output) => warn!(
+                "unable to determine project Rust toolchain: {}",
+                String::from_utf8_lossy(&output.stderr).trim()
+            ),
+            Err(error) => warn!("unable to determine project Rust toolchain: {error}"),
+        }
     }
 
     fn sysroot(&self, dir: &AbsPath) -> Sysroot {
@@ -186,6 +205,7 @@ impl Config {
 
     pub fn to_cargo_config(&self, dir: &AbsPath) -> (CargoConfig, LoadCargoConfig) {
         let sysroot = self.sysroot(dir);
+        info!("Using sysroot: {:?}", sysroot.root());
         (
             CargoConfig {
                 all_targets: self.cargo_all_targets,

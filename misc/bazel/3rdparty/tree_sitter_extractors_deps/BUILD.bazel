@@ -458,6 +458,18 @@ alias(
 )
 
 alias(
+    name = "ra_ap_toolchain-0.0.347",
+    actual = "@vendor_ts__ra_ap_toolchain-0.0.347//:ra_ap_toolchain",
+    tags = ["manual"],
+)
+
+alias(
+    name = "ra_ap_toolchain",
+    actual = "@vendor_ts__ra_ap_toolchain-0.0.347//:ra_ap_toolchain",
+    tags = ["manual"],
+)
+
+alias(
     name = "ra_ap_vfs-0.0.347",
     actual = "@vendor_ts__ra_ap_vfs-0.0.347//:ra_ap_vfs",
     tags = ["manual"],

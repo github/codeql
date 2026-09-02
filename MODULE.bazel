@@ -139,6 +139,7 @@ use_repo(
     "vendor_ts__ra_ap_stdx-0.0.347",
     "vendor_ts__ra_ap_syntax-0.0.347",
     "vendor_ts__ra_ap_syntax-bridge-0.0.347",
+    "vendor_ts__ra_ap_toolchain-0.0.347",
     "vendor_ts__ra_ap_vfs-0.0.347",
     "vendor_ts__rand-0.10.2",
     "vendor_ts__rayon-1.12.0",
