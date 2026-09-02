@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Semmle.Extraction.CSharp.DependencyFetching;
+using System.Collections.Immutable;
 
 namespace Semmle.Extraction.Tests
 {
     public class DependabotProxyStub : IDependabotProxy
     {
         public string Address { get; } = "";
-        public HashSet<string> RegistryURLs { get; } = ["https://example.com/registry1", "https://example.com/registry2"];
+        public ImmutableHashSet<string> RegistryURLs { get; } = ["https://example.com/registry1", "https://example.com/registry2"];
+        public ImmutableHashSet<string> RegistryBaseURLs { get; } = [];
         public string? CertificatePath { get; } = null;
         public System.Security.Cryptography.X509Certificates.X509Certificate2? Certificate { get; } = null;
 
