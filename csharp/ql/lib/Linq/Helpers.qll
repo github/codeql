@@ -28,9 +28,7 @@ private predicate returnsLoopVariable(ForeachStmt fes, Stmt s, ReturnStmt ret) {
 private predicate hasNullDefault(Type t) { t.isRefType() or t instanceof NullableType }
 
 private predicate returnsDefaultValue(ForeachStmt fes, ReturnStmt ret) {
-   exists(BlockStmt enclosingBlock, int i, Type elementType |
-    enclosingBlock.getStmt(i) = fes and
-    enclosingBlock.getStmt(i + 1) = ret and
+  exists(Type elementType |
     elementType = fes.getVariable().getType()
   |
     ret.getExpr().stripCasts() instanceof NullLiteral and
@@ -189,9 +187,7 @@ predicate missedWhereOpportunity(ForeachStmtGenericEnumerable fes, IfStmt is) {
  * That is, the loop contains a single `if` statement that accesses the loop variable,
  * returns the loop variable when the condition matches, and is followed by a default return.
  */
-predicate missedFirstOrDefaultOpportunity(
-  ForeachStmtGenericEnumerable fes, IfStmt is, ReturnStmt ret, ReturnStmt defaultRet
-) {
+predicate missedFirstOrDefaultOpportunity(ForeachStmtGenericEnumerable fes, IfStmt is) {
   // The loop only checks whether the current element is the first match.
   is = firstStmt(fes) and
   not exists(is.getElse()) and
@@ -201,10 +197,10 @@ predicate missedFirstOrDefaultOpportunity(
     va = is.getCondition().getAChildExpr*()
   ) and
   not is.getCondition().getAChildExpr*() instanceof AwaitExpr and
-  returnsLoopVariable(fes, is.getThen(), ret) and
-  // If no element matches, the method returns the same value that FirstOrDefault would.
-  returnsDefaultValue(fes, defaultRet) and
-  exists(BlockStmt enclosingBlock, int i |
+  exists(ReturnStmt ret, ReturnStmt defaultRet, BlockStmt enclosingBlock, int i |
+    returnsLoopVariable(fes, is.getThen(), ret) and
+    // If no element matches, the method returns the same value that FirstOrDefault would.
+    returnsDefaultValue(fes, defaultRet) and
     enclosingBlock.getStmt(i) = fes and
     enclosingBlock.getStmt(i + 1) = defaultRet
   )
