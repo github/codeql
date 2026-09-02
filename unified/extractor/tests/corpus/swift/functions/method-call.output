@@ -35,9 +35,7 @@ top_level
         call_expr
           callee:
             member_access_expr
-              base:
-                name_expr
-                  identifier: identifier "list"
+              base: identifier "list"
               member: identifier "append"
           argument:
             argument

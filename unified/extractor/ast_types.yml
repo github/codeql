@@ -1,6 +1,6 @@
 supertypes:
   expr:
-    - name_expr
+    - identifier
     - named_pattern
     - expr_pattern
     - int_literal
@@ -97,15 +97,11 @@ named:
   top_level:
     body: block
 
-  # An identifier used as a name reference.
-  name_expr:
-    identifier: identifier
-
-  # An identifier that introduces a binding, optionally applying a nested pattern.
+  # An identifier pattern that applies a nested pattern. Used for scoped imports.
   named_pattern:
     modifier*: modifier
     identifier: identifier
-    sub_pattern?: expr
+    sub_pattern: expr
 
   # A pattern expression with modifiers, such as `let x` or `var x`.
   expr_pattern:
@@ -313,7 +309,7 @@ named:
   #
   import_declaration:
     modifier*: modifier
-    imported_expr: expr # Qualified names are encoded as a chain of member_access_expr ending with a name_expr
+    imported_expr: expr # Qualified names are encoded as a chain of member_access_expr ending with an identifier
     pattern?: expr # Binds local names in scope (possibly via bulk_importing_pattern)
 
   # `typealias Name = Type`

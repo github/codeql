@@ -119,11 +119,29 @@ class NameBindingNode extends TNameBindingNode {
 }
 
 Identifier getIdentifierFromRef(AstNode n) {
-  result = n.(NameExpr).getIdentifier()
-  or
-  result = n.(NamedPattern).getIdentifier()
+  result = n.(Identifier)
   or
   result = n.(MemberAccessExpr).getMember()
+}
+
+private Identifier getImportBindingIdentifier(ImportDeclaration imprt) {
+  result = imprt.getPattern().(Identifier)
+  or
+  result = imprt.getPattern().(NamedPattern).getIdentifier()
+}
+
+/** Holds if `binding` is only visible in its local scope. */
+pragma[nomagic]
+private predicate isPrivateToLocalScope(AstNode binding) {
+  exists(Stmt member |
+    bindingContext(binding, _, member) and
+    (
+      member = any(ClassLikeDeclaration cls).getAMember() or
+      member = any(TopLevel t).getBody().getAStmt()
+    ) and
+    (binding instanceof NameDeclaration or binding instanceof BulkImportingPattern) and
+    any(NameBindingPlugin p).isPrivateToLocalScope(member, binding)
+  )
 }
 
 NameBindingNode getNodeFromRef(AstNode n) {
@@ -156,10 +174,10 @@ predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
     node2.isIdentifier(access)
   )
   or
-  exists(NameExpr expr |
+  exists(Identifier expr |
     isImportPrefix(expr) and
     node1.isModuleRoot() and
-    name = expr.getIdentifier().getValue() and
+    name = expr.getValue() and
     node2 = getNodeFromRef(expr)
   )
 }
@@ -222,7 +240,7 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   or
   exists(ImportDeclaration imprt |
     node1 = getNodeFromRef(imprt.getImportedExpr()) and
-    node2 = getNodeFromRef(imprt.getPattern())
+    node2 = getNodeFromRef(getImportBindingIdentifier(imprt))
   )
   or
   exists(BulkImportingPattern p, AstNode scope, AstNode declaration |
@@ -240,7 +258,7 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   )
   or
   exists(NamedPattern p |
-    node1 = getNodeFromRef(p) and
+    node1 = getNodeFromRef(p.getIdentifier()) and
     node2 = getNodeFromRef(p.getSubPattern())
   )
   or
@@ -391,7 +409,7 @@ private module TrackNamespace = Track<TrackNamespaceInput>;
  */
 predicate isTrivialNameAlias(NameDeclaration decl) {
   exists(ImportDeclaration imprt |
-    decl = getIdentifierFromRef(imprt.getPattern()) and
+    decl = getImportBindingIdentifier(imprt) and
     decl.getName() = getIdentifierFromRef(imprt.getImportedExpr()).getValue()
   )
 }

@@ -87,19 +87,13 @@ top_level
             accessor_declaration
               name: identifier "foo"
               accessor_kind: accessor_kind "get"
-              type:
-                name_expr
-                  identifier: identifier "Int"
+              type: identifier "Int"
             accessor_declaration
               name: identifier "bar"
               accessor_kind: accessor_kind "get"
-              type:
-                name_expr
-                  identifier: identifier "String"
+              type: identifier "String"
             accessor_declaration
               modifier: modifier "chained_declaration"
               name: identifier "bar"
               accessor_kind: accessor_kind "set"
-              type:
-                name_expr
-                  identifier: identifier "String"
+              type: identifier "String"

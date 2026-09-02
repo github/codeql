@@ -80,12 +80,8 @@ top_level
                 constructor_declaration
                   parameter:
                     parameter
-                      type:
-                        name_expr
-                          identifier: identifier "Double"
-                      pattern:
-                        named_pattern
-                          identifier: identifier "radius"
+                      type: identifier "Double"
+                      pattern: identifier "radius"
                   body: block "circle(radius: Double)"
             class_like_declaration
               modifier: modifier "enum_case"
@@ -94,10 +90,6 @@ top_level
                 constructor_declaration
                   parameter:
                     parameter
-                      type:
-                        name_expr
-                          identifier: identifier "Double"
-                      pattern:
-                        named_pattern
-                          identifier: identifier "side"
+                      type: identifier "Double"
+                      pattern: identifier "side"
                   body: block "square(side: Double)"

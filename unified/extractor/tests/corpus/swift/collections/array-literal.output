@@ -47,9 +47,7 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "xs"
+          pattern: identifier "xs"
           value:
             array_literal
               element:

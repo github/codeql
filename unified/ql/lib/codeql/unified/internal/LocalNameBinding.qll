@@ -5,6 +5,7 @@
 private import unified
 private import unified as U
 private import codeql.namebinding.LocalNameBinding
+private import codeql.unified.internal.NameBindingPlugin
 
 private module LocalNameBindingInput implements LocalNameBindingInputSig<Location> {
   class AstNode = U::AstNode;
@@ -188,6 +189,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     exists(SiblingShadowingDecl decl |
       scope = decl and
       pattern = decl.getPattern() and
+      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
       declaration = decl
     )
     or
@@ -195,6 +197,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       not decl instanceof SiblingShadowingDecl and
       getChild(scope, _) = decl and
       pattern = decl.getPattern() and
+      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
       declaration = decl
     )
     or
@@ -207,24 +210,28 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     exists(Parameter param |
       scope = param.getParent() and // TODO: add SourceCallable and use .getParameter() instead
       pattern = param.getPattern() and
+      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
       declaration = param
     )
     or
     exists(CatchClause catch |
       scope = catch and // ensure both body and pattern are in scope
       pattern = catch.getPattern() and
+      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
       declaration = catch
     )
     or
     exists(SwitchCase case |
       scope = case and // ensure both body and pattern are in scope
       pattern = case.getPattern() and
+      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
       declaration = case
     )
     or
     exists(ForEachStmt stmt |
       scope = stmt and // ensure both 'body' and 'guard' are in scope
       pattern = stmt.getPattern() and
+      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
       declaration = stmt
     )
     or
@@ -270,7 +277,8 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       pattern = p.getIdentifier()
     )
     or
-    bindingContext(getEnclosingPatternExpr(pattern.(Expr)), scope, declaration)
+    bindingContext(getEnclosingPatternExpr(pattern.(Expr)), scope, declaration) and
+    (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern))
   }
 
   private Expr getEnclosingPatternExpr(Expr child) {
@@ -311,10 +319,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   }
 
   private OrPattern getEnclosingOrPatternFromIdentifier(Identifier id) {
-    exists(NamedPattern p |
-      id = p.getIdentifier() and
-      result = getEnclosingOrPattern(p)
-    )
+    result = getEnclosingOrPattern(id)
   }
 
   predicate declInScope(AstNode definingNode, string name, AstNode scope) {
@@ -397,11 +402,17 @@ module Public {
  */
 class PotentialLocalNameAccess extends Identifier {
   PotentialLocalNameAccess() {
-    this = any(NameExpr e).getIdentifier()
-    or
     this instanceof NameDeclaration
     or
-    this = any(ClassLikeDeclaration cls | cls.hasModifier("extension")).getName() // TODO: Fix in the AST mapping: type extensions should reference their type, not declare it
+    not this instanceof NameDeclaration and
+    not any(NameBindingPlugin p).isNameDeclaration(this) and
+    not this = any(NamedPattern p).getIdentifier() and
+    not this = any(MemberAccessExpr e).getMember() and
+    not this = any(Argument a).getName() and
+    not this = any(Parameter p).getExternalName() and
+    not this = any(LabeledStmt stmt).getLabel() and
+    not this = any(BreakExpr expr).getLabel() and
+    not this = any(ContinueExpr expr).getLabel()
   }
 
   LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }

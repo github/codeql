@@ -37,6 +37,4 @@ top_level
           name: identifier "Dog"
           base_type:
             base_type
-              type:
-                name_expr
-                  identifier: identifier "Animal"
+              type: identifier "Animal"

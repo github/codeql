@@ -98,44 +98,30 @@ top_level
           parameter:
             parameter
               external_name: identifier "_"
-              type:
-                name_expr
-                  identifier: identifier "Any"
-              pattern:
-                named_pattern
-                  identifier: identifier "a"
+              type: identifier "Any"
+              pattern: identifier "a"
             parameter
               external_name: identifier "_"
-              type:
-                name_expr
-                  identifier: identifier "Int"
-              pattern:
-                named_pattern
-                  identifier: identifier "b"
+              type: identifier "Int"
+              pattern: identifier "b"
           body:
             block
               stmt:
                 unresolved_operator_sequence
                   element:
-                    name_expr
-                      identifier: identifier "_"
+                    identifier "_"
                     infix_operator "="
-                    name_expr
-                      identifier: identifier "a"
+                    identifier "a"
                     infix_operator "as"
                     unsupported_node "Int"
                     infix_operator ".&"
-                    name_expr
-                      identifier: identifier "b"
+                    identifier "b"
                 unresolved_operator_sequence
                   element:
-                    name_expr
-                      identifier: identifier "_"
+                    identifier "_"
                     infix_operator "="
-                    name_expr
-                      identifier: identifier "a"
+                    identifier "a"
                     infix_operator "is"
                     unsupported_node "Int"
                     infix_operator ".&"
-                    name_expr
-                      identifier: identifier "b"
+                    identifier "b"

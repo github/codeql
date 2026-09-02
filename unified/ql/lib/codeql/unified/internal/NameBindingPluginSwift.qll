@@ -2,10 +2,13 @@
  * Provides Swift-specific name binding rules.
  */
 
-private import unified
+private import codeql.files.FileSystem
+private import codeql.unified.internal.FacadeAst::Unified
 private import codeql.unified.internal.NameBindingPlugin
 
 class NameBindingPluginSwift extends NameBindingPlugin {
+  override predicate isNameDeclaration(Identifier identifier) { isInsideBindingPattern(identifier) }
+
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
   bindingset[cls, member]
   override predicate isInstanceMember(ClassLikeDeclaration cls, Member member) {
@@ -35,6 +38,42 @@ class NameBindingPluginSwift extends NameBindingPlugin {
     exists(cls) and
     not member.hasModifier("private")
   }
+}
+
+private predicate isInsideBindingPattern(AstNode child) {
+  exists(ExprPattern parent |
+    child = parent.getExpr() and
+    parent.hasModifier(["let", "var"])
+  )
+  or
+  exists(VariableDeclaration parent |
+    child = parent.getPattern() and
+    parent.hasModifier(["let", "var", "enum_case"])
+  )
+  or
+  child = any(Parameter parent).getPattern()
+  or
+  child = any(ForEachStmt parent).getPattern()
+  or
+  child = any(CatchClause parent).getPattern()
+  or
+  exists(OrPattern parent | child = parent.getAPattern() and isInsideBindingPattern(parent))
+  or
+  exists(ConditionalPattern parent | child = parent.getPattern() and isInsideBindingPattern(parent))
+  or
+  exists(Argument parent | child = parent.getValue() and isInsideBindingPattern(parent.getParent()))
+  or
+  exists(TupleExpr parent, Argument element |
+    element = parent.getAnElement() and
+    child = element.getValue() and
+    isInsideBindingPattern(parent)
+  )
+  or
+  exists(TypeTestExpr parent |
+    not exists(parent.getOperator()) and
+    child = parent.getExpr() and
+    isInsideBindingPattern(parent)
+  )
 }
 
 private predicate predefinedSourceFolders(string folder, int ordering) {

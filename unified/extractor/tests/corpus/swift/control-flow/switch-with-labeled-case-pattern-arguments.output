@@ -128,9 +128,7 @@ top_level
     block
       stmt:
         switch_expr
-          value:
-            name_expr
-              identifier: identifier "x"
+          value: identifier "x"
           case:
             switch_case
               pattern:
@@ -147,9 +145,7 @@ top_level
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: string_literal "\"yes\""
@@ -163,25 +159,17 @@ top_level
                   argument:
                     argument
                       name: identifier "threadRowId"
-                      value:
-                        name_expr
-                          identifier: identifier "_"
+                      value: identifier "_"
                     argument
                       value:
                         expr_pattern
                           modifier: modifier "let"
-                          expr:
-                            named_pattern
-                              identifier: identifier "rowId"
+                          expr: identifier "rowId"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "rowId"
+                          value: identifier "rowId"

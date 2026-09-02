@@ -22,9 +22,7 @@ top_level
     block
       stmt:
         import_declaration
-          imported_expr:
-            name_expr
-              identifier: identifier "Foundation"
+          imported_expr: identifier "Foundation"
           pattern:
             named_pattern
               identifier: identifier "Foundation"

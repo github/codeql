@@ -58,7 +58,5 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "d"
+          pattern: identifier "d"
           value: map_literal "[\"a\": 1, \"b\": 2]"

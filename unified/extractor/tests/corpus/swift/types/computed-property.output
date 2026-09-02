@@ -107,37 +107,23 @@ top_level
           member:
             variable_declaration
               modifier: modifier "var"
-              pattern:
-                named_pattern
-                  identifier: identifier "w"
-              type:
-                name_expr
-                  identifier: identifier "Double"
+              pattern: identifier "w"
+              type: identifier "Double"
             variable_declaration
               modifier: modifier "var"
-              pattern:
-                named_pattern
-                  identifier: identifier "h"
-              type:
-                name_expr
-                  identifier: identifier "Double"
+              pattern: identifier "h"
+              type: identifier "Double"
             accessor_declaration
               modifier: modifier "var"
               name: identifier "area"
               accessor_kind: accessor_kind "get"
-              type:
-                name_expr
-                  identifier: identifier "Double"
+              type: identifier "Double"
               body:
                 block
                   stmt:
                     return_expr
                       value:
                         binary_expr
-                          left:
-                            name_expr
-                              identifier: identifier "w"
+                          left: identifier "w"
                           operator: infix_operator "*"
-                          right:
-                            name_expr
-                              identifier: identifier "h"
+                          right: identifier "h"

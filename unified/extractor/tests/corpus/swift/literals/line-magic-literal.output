@@ -34,7 +34,5 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "currentLine"
+          pattern: identifier "currentLine"
           value: unsupported_node "#line"

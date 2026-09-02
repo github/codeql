@@ -835,7 +835,7 @@ module Unified {
   }
 
   /** A class representing `identifier` tokens. */
-  class Identifier extends @unified_token_identifier, F::AstNode, F::Token {
+  class Identifier extends @unified_token_identifier, F::Expr, F::Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Identifier" }
   }
@@ -1005,25 +1005,13 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "Modifier" }
   }
 
-  /** A class representing `name_expr` nodes. */
-  class NameExpr extends @unified_name_expr, F::Expr {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "NameExpr" }
-
-    /** Gets the node corresponding to the field `identifier`. */
-    final F::Identifier getIdentifier() { unified_name_expr_def(this, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() { unified_name_expr_def(this, result) }
-  }
-
   /** A class representing `named_pattern` nodes. */
   class NamedPattern extends @unified_named_pattern, F::Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "NamedPattern" }
 
     /** Gets the node corresponding to the field `identifier`. */
-    final F::Identifier getIdentifier() { unified_named_pattern_def(this, result) }
+    final F::Identifier getIdentifier() { unified_named_pattern_def(this, result, _) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_named_pattern_modifier(this, i, result) }
@@ -1032,13 +1020,13 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `sub_pattern`. */
-    final F::Expr getSubPattern() { unified_named_pattern_sub_pattern(this, result) }
+    final F::Expr getSubPattern() { unified_named_pattern_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
-      unified_named_pattern_def(this, result) or
+      unified_named_pattern_def(this, result, _) or
       unified_named_pattern_modifier(this, _, result) or
-      unified_named_pattern_sub_pattern(this, result)
+      unified_named_pattern_def(this, _, result)
     }
   }
 
@@ -1715,8 +1703,6 @@ module Unified {
       or
       result = node.(MemberAccessExpr).getMember() and i = -1 and name = "getMember"
       or
-      result = node.(NameExpr).getIdentifier() and i = -1 and name = "getIdentifier"
-      or
       result = node.(NamedPattern).getIdentifier() and i = -1 and name = "getIdentifier"
       or
       result = node.(NamedPattern).getModifier(i) and name = "getModifier"
@@ -1935,8 +1921,6 @@ module UnifiedFinal {
   final class MemberAccessExpr = F::MemberAccessExpr;
 
   final class Modifier = F::Modifier;
-
-  final class NameExpr = F::NameExpr;
 
   final class NamedPattern = F::NamedPattern;
 

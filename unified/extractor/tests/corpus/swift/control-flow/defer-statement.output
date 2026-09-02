@@ -86,9 +86,7 @@ top_level
               stmt:
                 unsupported_node "defer { print(\"cleanup\") }"
                 call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                  callee: identifier "print"
                   argument:
                     argument
                       value: string_literal "\"work\""

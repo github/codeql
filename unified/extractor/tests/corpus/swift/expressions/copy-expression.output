@@ -68,9 +68,7 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "original"
+          pattern: identifier "original"
           value:
             array_literal
               element:
@@ -79,7 +77,5 @@ top_level
                 int_literal "3"
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "copied"
+          pattern: identifier "copied"
           value: unsupported_node "copy original"

@@ -57,9 +57,7 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "handler"
+          pattern: identifier "handler"
           type: unsupported_node "@Sendable () -> Void"
           value:
             function_expr

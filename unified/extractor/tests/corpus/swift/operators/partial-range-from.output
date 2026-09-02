@@ -34,7 +34,5 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "range"
+          pattern: identifier "range"
           value: unsupported_node "3..."

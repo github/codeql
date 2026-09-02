@@ -75,20 +75,14 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "var"
-          pattern:
-            named_pattern
-              identifier: identifier "a"
+          pattern: identifier "a"
           value: int_literal "1"
         variable_declaration
           modifier: modifier "var"
-          pattern:
-            named_pattern
-              identifier: identifier "b"
+          pattern: identifier "b"
           value: int_literal "2"
         call_expr
-          callee:
-            name_expr
-              identifier: identifier "swap"
+          callee: identifier "swap"
           argument:
             argument
               value: unsupported_node "&a"

@@ -100,21 +100,15 @@ top_level
           modifier: modifier "var"
           name: identifier "p"
           accessor_kind: accessor_kind "get"
-          type:
-            name_expr
-              identifier: identifier "Int"
+          type: identifier "Int"
           body:
             block
               stmt:
                 switch_expr
-                  value:
-                    name_expr
-                      identifier: identifier "y"
+                  value: identifier "y"
                   case:
                     switch_case
-                      pattern:
-                        name_expr
-                          identifier: identifier "someConstant"
+                      pattern: identifier "someConstant"
                       body:
                         block
                           stmt:

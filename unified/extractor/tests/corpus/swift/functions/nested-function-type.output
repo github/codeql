@@ -114,15 +114,9 @@ top_level
                     function_expr
                       parameter:
                         parameter
-                          type:
-                            name_expr
-                              identifier: identifier "Int"
-                      return_type:
-                        name_expr
-                          identifier: identifier "Bool"
-              return_type:
-                name_expr
-                  identifier: identifier "Bool"
+                          type: identifier "Int"
+                      return_type: identifier "Bool"
+              return_type: identifier "Bool"
         type_alias_declaration
           name: identifier "MixedParametersAndTuples"
           type:
@@ -133,24 +127,14 @@ top_level
                     function_expr
                       parameter:
                         parameter
-                          type:
-                            name_expr
-                              identifier: identifier "Int"
-                      return_type:
-                        name_expr
-                          identifier: identifier "Bool"
+                          type: identifier "Int"
+                      return_type: identifier "Bool"
                 parameter
-                  type:
-                    name_expr
-                      identifier: identifier "String"
+                  type: identifier "String"
               return_type:
                 tuple_expr
                   element:
                     argument
-                      value:
-                        name_expr
-                          identifier: identifier "Bool"
+                      value: identifier "Bool"
                     argument
-                      value:
-                        name_expr
-                          identifier: identifier "Int"
+                      value: identifier "Int"

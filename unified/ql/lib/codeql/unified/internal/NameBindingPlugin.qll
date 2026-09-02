@@ -1,10 +1,13 @@
-private import unified
+private import codeql.files.FileSystem
 private import codeql.util.Unit
-private import codeql.unified.internal.LocalNameBinding
+private import codeql.unified.internal.FacadeAst::Unified
 private import codeql.unified.internal.NameBindingPluginSwift // ensure overrides are seen
 
 /** Extension point for language-specific inputs to name binding. */
 class NameBindingPlugin extends Unit {
+  /** Holds if `identifier`, occurring in pattern context, introduces a name. */
+  predicate isNameDeclaration(Identifier identifier) { none() }
+
   /**
    * Holds if `member` is an instance member.
    *
@@ -58,20 +61,6 @@ predicate isStaticMember(Member member) {
 predicate isInheritableMember(Member member) {
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
     any(NameBindingPlugin p).isInheritableMember(cls, member)
-  )
-}
-
-/** Holds if `binding` is only visible in its local scope. */
-pragma[nomagic]
-predicate isPrivateToLocalScope(AstNode binding) {
-  exists(Stmt member |
-    bindingContext(binding, _, member) and
-    (
-      member = any(ClassLikeDeclaration cls).getAMember() or
-      member = any(TopLevel t).getBody().getAStmt()
-    ) and
-    (binding instanceof NameDeclaration or binding instanceof BulkImportingPattern) and
-    any(NameBindingPlugin p).isPrivateToLocalScope(member, binding)
   )
 }
 

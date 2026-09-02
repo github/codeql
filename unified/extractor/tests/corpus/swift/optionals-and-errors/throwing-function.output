@@ -57,9 +57,7 @@ top_level
       stmt:
         function_declaration
           name: identifier "read"
-          return_type:
-            name_expr
-              identifier: identifier "String"
+          return_type: identifier "String"
           body:
             block
               stmt:

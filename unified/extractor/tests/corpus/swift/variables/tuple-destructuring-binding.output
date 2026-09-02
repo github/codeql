@@ -46,13 +46,7 @@ top_level
             tuple_expr
               element:
                 argument
-                  value:
-                    named_pattern
-                      identifier: identifier "a"
+                  value: identifier "a"
                 argument
-                  value:
-                    named_pattern
-                      identifier: identifier "b"
-          value:
-            name_expr
-              identifier: identifier "pair"
+                  value: identifier "b"
+          value: identifier "pair"

@@ -54,22 +54,14 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "type"
+          pattern: identifier "type"
           value:
             member_access_expr
               base:
                 generic_type_expr
-                  base:
-                    name_expr
-                      identifier: identifier "Array"
+                  base: identifier "Array"
                   type_argument:
                     generic_type_expr
-                      base:
-                        name_expr
-                          identifier: identifier "Result"
-                      type_argument:
-                        name_expr
-                          identifier: identifier "Void"
+                      base: identifier "Result"
+                      type_argument: identifier "Void"
               member: identifier "self"

@@ -91,19 +91,13 @@ top_level
           parameter:
             parameter
               external_name: identifier "_"
-              type:
-                name_expr
-                  identifier: identifier "Int"
-              pattern:
-                named_pattern
-                  identifier: identifier "x"
+              type: identifier "Int"
+              pattern: identifier "x"
           body:
             block
               stmt:
                 switch_expr
-                  value:
-                    name_expr
-                      identifier: identifier "x"
+                  value: identifier "x"
                   case:
                     switch_case
                       pattern: int_literal "1"

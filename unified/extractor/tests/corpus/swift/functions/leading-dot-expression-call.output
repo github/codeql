@@ -44,9 +44,7 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "y"
+          pattern: identifier "y"
           value:
             call_expr
               callee:

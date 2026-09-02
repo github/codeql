@@ -71,19 +71,11 @@ top_level
           parameter:
             parameter
               external_name: identifier "_"
-              type:
-                name_expr
-                  identifier: identifier "T"
-              pattern:
-                named_pattern
-                  identifier: identifier "x"
-          return_type:
-            name_expr
-              identifier: identifier "T"
+              type: identifier "T"
+              pattern: identifier "x"
+          return_type: identifier "T"
           body:
             block
               stmt:
                 return_expr
-                  value:
-                    name_expr
-                      identifier: identifier "x"
+                  value: identifier "x"

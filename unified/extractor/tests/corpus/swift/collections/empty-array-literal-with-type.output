@@ -43,15 +43,9 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "xs"
+          pattern: identifier "xs"
           type:
             generic_type_expr
-              base:
-                name_expr
-                  identifier: identifier "Array"
-              type_argument:
-                name_expr
-                  identifier: identifier "Int"
+              base: identifier "Array"
+              type_argument: identifier "Int"
           value: array_literal "[]"

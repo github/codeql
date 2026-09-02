@@ -130,44 +130,28 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "values"
+          pattern: identifier "values"
           value:
             call_expr
               callee:
                 generic_type_expr
-                  base:
-                    name_expr
-                      identifier: identifier "Array"
+                  base: identifier "Array"
                   type_argument:
                     generic_type_expr
-                      base:
-                        name_expr
-                          identifier: identifier "Result"
-                      type_argument:
-                        name_expr
-                          identifier: identifier "Void"
+                      base: identifier "Result"
+                      type_argument: identifier "Void"
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "initialized"
+          pattern: identifier "initialized"
           value:
             call_expr
               callee:
                 generic_type_expr
-                  base:
-                    name_expr
-                      identifier: identifier "Array"
+                  base: identifier "Array"
                   type_argument:
                     generic_type_expr
-                      base:
-                        name_expr
-                          identifier: identifier "Result"
-                      type_argument:
-                        name_expr
-                          identifier: identifier "Void"
+                      base: identifier "Result"
+                      type_argument: identifier "Void"
               argument:
                 argument
                   name: identifier "unsafeUninitializedCapacity"
@@ -177,18 +161,12 @@ top_level
                     function_expr
                       parameter:
                         parameter
-                          pattern:
-                            named_pattern
-                              identifier: identifier "_"
+                          pattern: identifier "_"
                         parameter
-                          pattern:
-                            named_pattern
-                              identifier: identifier "count"
+                          pattern: identifier "count"
                       body:
                         block
                           stmt:
                             assign_expr
-                              target:
-                                name_expr
-                                  identifier: identifier "count"
+                              target: identifier "count"
                               value: int_literal "0"

@@ -33,9 +33,7 @@ top_level
     block
       stmt:
         call_expr
-          callee:
-            name_expr
-              identifier: identifier "greet"
+          callee: identifier "greet"
           argument:
             argument
               name: identifier "person"

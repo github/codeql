@@ -160,9 +160,7 @@ top_level
     block
       stmt:
         switch_expr
-          value:
-            name_expr
-              identifier: identifier "event"
+          value: identifier "event"
           case:
             switch_case
               pattern:
@@ -184,58 +182,40 @@ top_level
                                   member: identifier "some"
                               argument:
                                 argument
-                                  value:
-                                    named_pattern
-                                      identifier: identifier "value"
+                                  value: identifier "value"
                         argument
-                          value:
-                            named_pattern
-                              identifier: identifier "timestamp"
+                          value: identifier "timestamp"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "value"
+                          value: identifier "value"
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "timestamp"
+                          value: identifier "timestamp"
             switch_case
               pattern:
                 call_expr
                   callee:
                     member_access_expr
-                      base:
-                        name_expr
-                          identifier: identifier "Type"
+                      base: identifier "Type"
                       member: identifier "some"
                   argument:
                     argument
                       value:
                         expr_pattern
                           modifier: modifier "let"
-                          expr:
-                            named_pattern
-                              identifier: identifier "value"
+                          expr: identifier "value"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "value"
+                          value: identifier "value"
             switch_case
               body:
                 block

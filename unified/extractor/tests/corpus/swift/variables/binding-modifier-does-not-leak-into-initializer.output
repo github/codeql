@@ -67,19 +67,13 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "x"
+          pattern: identifier "x"
           value:
             switch_expr
-              value:
-                name_expr
-                  identifier: identifier "y"
+              value: identifier "y"
               case:
                 switch_case
-                  pattern:
-                    name_expr
-                      identifier: identifier "someConstant"
+                  pattern: identifier "someConstant"
                   body:
                     block
                       stmt: int_literal "1"

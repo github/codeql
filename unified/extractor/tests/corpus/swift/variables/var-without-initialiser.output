@@ -31,9 +31,5 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "var"
-          pattern:
-            named_pattern
-              identifier: identifier "x"
-          type:
-            name_expr
-              identifier: identifier "Int"
+          pattern: identifier "x"
+          type: identifier "Int"

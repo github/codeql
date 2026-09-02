@@ -122,50 +122,36 @@ top_level
               pattern:
                 expr_pattern
                   modifier: modifier "let"
-                  expr:
-                    named_pattern
-                      identifier: identifier "x"
+                  expr: identifier "x"
               value:
                 binary_expr
-                  left:
-                    name_expr
-                      identifier: identifier "x"
+                  left: identifier "x"
                   operator: infix_operator "+"
                   right: int_literal "10"
           then:
             block
               stmt:
                 call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                  callee: identifier "print"
                   argument:
                     argument
-                      value:
-                        name_expr
-                          identifier: identifier "x"
+                      value: identifier "x"
         if_expr
           condition:
             pattern_guard_expr
               pattern:
                 expr_pattern
                   modifier: modifier "var"
-                  expr:
-                    named_pattern
-                      identifier: identifier "y"
+                  expr: identifier "y"
               value:
                 binary_expr
-                  left:
-                    name_expr
-                      identifier: identifier "y"
+                  left: identifier "y"
                   operator: infix_operator "+"
                   right: int_literal "10"
           then:
             block
               stmt:
                 compound_assign_expr
-                  target:
-                    name_expr
-                      identifier: identifier "y"
+                  target: identifier "y"
                   operator: infix_operator "+="
                   value: int_literal "1"

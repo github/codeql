@@ -42,10 +42,6 @@ top_level
           name: identifier "Button"
           base_type:
             base_type
-              type:
-                name_expr
-                  identifier: identifier "Control"
+              type: identifier "Control"
             base_type
-              type:
-                name_expr
-                  identifier: identifier "Drawable"
+              type: identifier "Drawable"

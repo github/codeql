@@ -64,9 +64,7 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "callback"
+          pattern: identifier "callback"
           type: unsupported_node "@convention(c) () -> Void"
           value:
             function_expr

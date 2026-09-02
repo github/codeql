@@ -71,18 +71,10 @@ top_level
               parameter:
                 parameter
                   external_name: identifier "width"
-                  type:
-                    name_expr
-                      identifier: identifier "Int"
-                  pattern:
-                    named_pattern
-                      identifier: identifier "w"
+                  type: identifier "Int"
+                  pattern: identifier "w"
                 parameter
                   external_name: identifier "height"
-                  type:
-                    name_expr
-                      identifier: identifier "Int"
-                  pattern:
-                    named_pattern
-                      identifier: identifier "h"
+                  type: identifier "Int"
+                  pattern: identifier "h"
               body: block "init(width w: Int, height h: Int) {}"

@@ -52,16 +52,12 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "y"
+          pattern: identifier "y"
           value:
             if_expr
               condition:
                 binary_expr
-                  left:
-                    name_expr
-                      identifier: identifier "x"
+                  left: identifier "x"
                   operator: infix_operator ">"
                   right: int_literal "0"
               then: int_literal "1"

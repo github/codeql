@@ -83,9 +83,7 @@ top_level
                 call_expr
                   callee:
                     member_access_expr
-                      base:
-                        name_expr
-                          identifier: identifier "Optional"
+                      base: identifier "Optional"
                       member: identifier "some"
                   argument:
                     argument
@@ -100,21 +98,13 @@ top_level
                               value:
                                 expr_pattern
                                   modifier: modifier "let"
-                                  expr:
-                                    named_pattern
-                                      identifier: identifier "value"
-              value:
-                name_expr
-                  identifier: identifier "input"
+                                  expr: identifier "value"
+              value: identifier "input"
           then:
             block
               stmt:
                 call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                  callee: identifier "print"
                   argument:
                     argument
-                      value:
-                        name_expr
-                          identifier: identifier "value"
+                      value: identifier "value"

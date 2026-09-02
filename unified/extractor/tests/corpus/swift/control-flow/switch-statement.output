@@ -125,9 +125,7 @@ top_level
     block
       stmt:
         switch_expr
-          value:
-            name_expr
-              identifier: identifier "x"
+          value: identifier "x"
           case:
             switch_case
               pattern: int_literal "1"
@@ -135,9 +133,7 @@ top_level
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: string_literal "\"one\""
@@ -151,9 +147,7 @@ top_level
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: string_literal "\"two or three\""
@@ -162,9 +156,7 @@ top_level
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: string_literal "\"other\""

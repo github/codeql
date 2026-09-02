@@ -63,9 +63,5 @@ top_level
           member:
             variable_declaration
               modifier: modifier "let"
-              pattern:
-                named_pattern
-                  identifier: identifier "descriptor"
-              type:
-                name_expr
-                  identifier: identifier "Int"
+              pattern: identifier "descriptor"
+              type: identifier "Int"

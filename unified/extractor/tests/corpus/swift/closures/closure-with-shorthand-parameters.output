@@ -45,19 +45,13 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "f"
+          pattern: identifier "f"
           value:
             function_expr
               body:
                 block
                   stmt:
                     binary_expr
-                      left:
-                        name_expr
-                          identifier: identifier "$0"
+                      left: identifier "$0"
                       operator: infix_operator "+"
-                      right:
-                        name_expr
-                          identifier: identifier "$1"
+                      right: identifier "$1"

@@ -147,9 +147,7 @@ top_level
                 unary_expr
                   operand:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "foo"
+                      callee: identifier "foo"
                   operator: prefix_operator "try"
           catch_clause:
             catch_clause
@@ -159,44 +157,30 @@ top_level
                     conditional_pattern
                       condition:
                         call_expr
-                          callee:
-                            name_expr
-                              identifier: identifier "isNetworkError"
+                          callee: identifier "isNetworkError"
                           argument:
                             argument
-                              value:
-                                name_expr
-                                  identifier: identifier "e"
+                              value: identifier "e"
                       pattern:
                         expr_pattern
                           modifier: modifier "let"
-                          expr:
-                            named_pattern
-                              identifier: identifier "e"
+                          expr: identifier "e"
                     conditional_pattern
                       condition:
                         call_expr
-                          callee:
-                            name_expr
-                              identifier: identifier "isTimeout"
+                          callee: identifier "isTimeout"
                           argument:
                             argument
-                              value:
-                                name_expr
-                                  identifier: identifier "f"
+                              value: identifier "f"
                       pattern:
                         expr_pattern
                           modifier: modifier "let"
-                          expr:
-                            named_pattern
-                              identifier: identifier "f"
+                          expr: identifier "f"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: string_literal "\"retry\""
@@ -205,9 +189,7 @@ top_level
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: string_literal "\"fallback\""

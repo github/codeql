@@ -25,8 +25,6 @@ top_level
     block
       stmt:
         compound_assign_expr
-          target:
-            name_expr
-              identifier: identifier "x"
+          target: identifier "x"
           operator: infix_operator "+="
           value: int_literal "1"

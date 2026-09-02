@@ -47,18 +47,15 @@ top_level
                 call_expr
                   callee:
                     member_access_expr
-                      base:
-                        name_expr
-                          identifier: identifier "Optional"
+                      base: identifier "Optional"
                       member: identifier "some"
                   argument:
                     argument
                       value:
-                        named_pattern
-                          identifier: identifier "value"
-              value:
-                name_expr
-                  identifier: identifier "optional"
+                        expr_pattern
+                          modifier: modifier "let"
+                          expr: identifier "value"
+              value: identifier "optional"
           else:
             block
               stmt: return_expr "return"

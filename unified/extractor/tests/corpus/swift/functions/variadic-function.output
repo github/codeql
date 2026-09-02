@@ -82,15 +82,9 @@ top_level
           parameter:
             parameter
               external_name: identifier "_"
-              type:
-                name_expr
-                  identifier: identifier "Int"
-              pattern:
-                named_pattern
-                  identifier: identifier "values"
-          return_type:
-            name_expr
-              identifier: identifier "Int"
+              type: identifier "Int"
+              pattern: identifier "values"
+          return_type: identifier "Int"
           body:
             block
               stmt:
@@ -99,14 +93,10 @@ top_level
                     call_expr
                       callee:
                         member_access_expr
-                          base:
-                            name_expr
-                              identifier: identifier "values"
+                          base: identifier "values"
                           member: identifier "reduce"
                       argument:
                         argument
                           value: int_literal "0"
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "+"
+                          value: identifier "+"

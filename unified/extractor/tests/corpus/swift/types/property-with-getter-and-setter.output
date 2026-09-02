@@ -114,40 +114,28 @@ top_level
               modifier:
                 modifier "var"
                 modifier "private"
-              pattern:
-                named_pattern
-                  identifier: identifier "_v"
+              pattern: identifier "_v"
               value: int_literal "0"
             accessor_declaration
               modifier: modifier "var"
               name: identifier "v"
               accessor_kind: accessor_kind "get"
-              type:
-                name_expr
-                  identifier: identifier "Int"
+              type: identifier "Int"
               body:
                 block
                   stmt:
                     return_expr
-                      value:
-                        name_expr
-                          identifier: identifier "_v"
+                      value: identifier "_v"
             accessor_declaration
               modifier:
                 modifier "var"
                 modifier "chained_declaration"
               name: identifier "v"
               accessor_kind: accessor_kind "set"
-              type:
-                name_expr
-                  identifier: identifier "Int"
+              type: identifier "Int"
               body:
                 block
                   stmt:
                     assign_expr
-                      target:
-                        name_expr
-                          identifier: identifier "_v"
-                      value:
-                        name_expr
-                          identifier: identifier "newValue"
+                      target: identifier "_v"
+                      value: identifier "newValue"

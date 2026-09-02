@@ -91,16 +91,10 @@ top_level
               name: identifier "T"
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            named_pattern
-              identifier: identifier "x"
+          pattern: identifier "x"
           value:
             call_expr
               callee:
                 generic_type_expr
-                  base:
-                    name_expr
-                      identifier: identifier "C"
-                  type_argument:
-                    name_expr
-                      identifier: identifier "Foo"
+                  base: identifier "C"
+                  type_argument: identifier "Foo"

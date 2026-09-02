@@ -107,12 +107,8 @@ top_level
           member:
             variable_declaration
               modifier: modifier "var"
-              pattern:
-                named_pattern
-                  identifier: identifier "x"
-              type:
-                name_expr
-                  identifier: identifier "Int"
+              pattern: identifier "x"
+              type: identifier "Int"
               value: int_literal "0"
             accessor_declaration
               modifier:
@@ -124,14 +120,10 @@ top_level
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "newValue"
+                          value: identifier "newValue"
             accessor_declaration
               modifier:
                 modifier "var"
@@ -142,11 +134,7 @@ top_level
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "oldValue"
+                          value: identifier "oldValue"

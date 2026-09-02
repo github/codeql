@@ -74,19 +74,13 @@ top_level
           member:
             function_declaration
               name: identifier "squared"
-              return_type:
-                name_expr
-                  identifier: identifier "Int"
+              return_type: identifier "Int"
               body:
                 block
                   stmt:
                     return_expr
                       value:
                         binary_expr
-                          left:
-                            name_expr
-                              identifier: identifier "self"
+                          left: identifier "self"
                           operator: infix_operator "*"
-                          right:
-                            name_expr
-                              identifier: identifier "self"
+                          right: identifier "self"

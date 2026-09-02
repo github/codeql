@@ -120,9 +120,7 @@ top_level
     block
       stmt:
         switch_expr
-          value:
-            name_expr
-              identifier: identifier "shape"
+          value: identifier "shape"
           case:
             switch_case
               pattern:
@@ -136,21 +134,15 @@ top_level
                       value:
                         expr_pattern
                           modifier: modifier "let"
-                          expr:
-                            named_pattern
-                              identifier: identifier "r"
+                          expr: identifier "r"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "r"
+                          value: identifier "r"
             switch_case
               pattern:
                 call_expr
@@ -163,18 +155,12 @@ top_level
                       value:
                         expr_pattern
                           modifier: modifier "let"
-                          expr:
-                            named_pattern
-                              identifier: identifier "s"
+                          expr: identifier "s"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "s"
+                          value: identifier "s"
