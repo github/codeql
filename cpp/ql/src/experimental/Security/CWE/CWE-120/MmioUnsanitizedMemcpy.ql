@@ -1,14 +1,14 @@
 /**
  * @name MMIO/DMA unsanitized memory copy
- * @description Memory copy sizes derived from memory-mapped I/O or DMA
- *              descriptor fields without bounds validation may overflow
- *              destination buffers.
+ * @description Memory copy sizes derived from allowlisted MMIO/DMA register-read
+ *              macros without bounds validation may overflow destination buffers.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.6
- * @precision medium
- * @id cpp/mmio-unsanitized-memcpy
+ * @precision low
+ * @id cpp/experimental/mmio-unsanitized-memcpy
  * @tags security
+ *       experimental
  *       external/cwe/cwe-120
  *       external/cwe/cwe-787
  */
@@ -18,27 +18,8 @@ import semmle.code.cpp.dataflow.new.TaintTracking
 import semmle.code.cpp.controlflow.IRGuards
 import MmioFlow::PathGraph
 
-/** Holds if `e` is an expression that reads MMIO/DMA hardware state. */
-predicate isMmioExpr(Expr e) {
-  exists(VariableAccess va | va = e and va.getTarget().isVolatile())
-  or
-  exists(FieldAccess fa | fa = e and fa.getTarget().getType().isVolatile())
-  or
-  exists(FunctionCall call |
-    call = e and
-    call.getTarget().hasName(["READ_REG", "GET_MMIO", "REG_READ", "DMA_READ"])
-  )
-  or
-  exists(PointerDereferenceExpr deref |
-    deref = e and
-    deref.getOperand().getUnspecifiedType() instanceof PointerType and
-    deref.getOperand().getUnspecifiedType().(PointerType).getBaseType().isVolatile()
-  )
-}
-
+/** Holds if `source` reads MMIO/DMA state through an allowlisted register macro. */
 predicate isMmioSource(DataFlow::Node source) {
-  isMmioExpr(source.asExpr())
-  or
   exists(MacroInvocation mi |
     mi.getMacro().hasName(["READ_REG", "GET_MMIO", "REG_READ", "DMA_READ"]) and
     source.asExpr() = mi.getExpr()
