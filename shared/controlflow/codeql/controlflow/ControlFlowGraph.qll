@@ -1220,32 +1220,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c);
 
       /**
-       * Holds if the shared library should preserve its default left-to-right
-       * control flow for `ast` even though the language provides an explicit
-       * step from its "before" node.
-       *
-       * The default implementation preserves the existing behaviour: an
-       * explicit step from the "before" node suppresses all default steps.
-       */
-      default predicate preservesDefaultControlFlow(AstNode ast) { none() }
-
-      /**
-       * Holds if the language-specific implementation replaces the default
-       * control-flow step from `source` to `target` for `ast`.
-       *
-       * This predicate is only consulted when default control flow is enabled
-       * for `ast`. The language is responsible for providing any replacement
-       * step.
-       *
-       * The default implementation does not override any steps.
-       */
-      default predicate overridesDefaultControlFlowStep(
-        AstNode ast, PreControlFlowNode source, PreControlFlowNode target
-      ) {
-        none()
-      }
-
-      /**
        * Holds if there is a local non-abrupt step from `n1` to `n2`.
        *
        * This predicate is only relevant for AST constructs that are not already
@@ -1956,11 +1930,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        */
       private predicate defaultCfg(AstNode ast) {
         hasCfg(ast) and
-        (
-          Input2::preservesDefaultControlFlow(ast)
-          or
-          not explicitStep(any(PreControlFlowNode n | n.isBefore(ast)), _)
-        )
+        not explicitStep(any(PreControlFlowNode n | n.isBefore(ast)), _)
       }
 
       private module ChildDenseRankInput implements DenseRankInputSig1 {
@@ -2012,15 +1982,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
       }
 
-      /**
-       * Holds if `n1` to `n2` is a default left-to-right evaluation step for
-       * an `AstNode` that is not overridden by the language implementation.
-       */
+      /** Holds if `n1` to `n2` is a default left-to-right evaluation step. */
       private predicate defaultStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-        exists(AstNode ast |
-          defaultStepCandidate(ast, n1, n2) and
-          not Input2::overridesDefaultControlFlowStep(ast, n1, n2)
-        )
+        defaultStepCandidate(_, n1, n2)
       }
 
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
