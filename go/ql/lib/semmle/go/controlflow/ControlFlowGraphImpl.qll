@@ -432,7 +432,7 @@ module CfgImpl {
       // The call of a `defer` statement is not invoked at the statement
       // itself; its callee expression and arguments are evaluated in place,
       // but the call is only invoked later, at function exit (modeled by the
-      // `defer-invoke` node and `additionalSuccessor`). Marking it as
+      // `defer-invoke` node and the final-stage defer steps). Marking it as
       // pre-order means no in-order "invocation" node (and hence no inline
       // exceptional-exit edge) is created at the `defer` statement.
       e = any(Go::DeferStmt s).getCall()
@@ -578,8 +578,17 @@ module CfgImpl {
           tag = "implicit-field:" + i.toString()
         )
         or
-        // Deferred-call invocation node, placed at function exit by `additionalSuccessor`
+        // Deferred-call invocation node, placed at function exit by the final-stage defer steps
         n = any(Go::DeferStmt s).getCall() and tag = "defer-invoke"
+        or
+        n instanceof Go::DeferStmt and tag = "catch-defer-panic"
+        or
+        not n instanceof Go::DeferStmt and
+        mayPanic(n) and
+        mayDeferParent(n) and
+        tag = "catch-panic"
+        or
+        mayReturn(n) and mayDeferParent(n) and tag = "catch-return"
       )
     }
 
@@ -687,7 +696,16 @@ module CfgImpl {
         not exists(ast.(Go::CallExpr).getTarget()) or
         ast.(Go::CallExpr).getTarget().mayPanic()
       ) and
-      (n.isIn(ast) or n.isAdditional(ast, "defer-invoke")) and
+      n.isIn(ast) and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = false
+      or
+      ast instanceof Go::DeferStmt and
+      (
+        not exists(ast.(Go::DeferStmt).getCall().getTarget()) or
+        ast.(Go::DeferStmt).getCall().getTarget().mayPanic()
+      ) and
+      n.isAdditional(ast.(Go::DeferStmt).getCall(), "defer-invoke") and
       c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
       always = false
       or
@@ -699,7 +717,15 @@ module CfgImpl {
       exists(Go::Function target | target = ast.(Go::CallExpr).getTarget() |
         target.mustPanic() or target.mustNotReturnNormally()
       ) and
-      (n.isIn(ast) or n.isAdditional(ast, "defer-invoke")) and
+      n.isIn(ast) and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = true
+      or
+      ast instanceof Go::DeferStmt and
+      exists(Go::Function target | target = ast.(Go::DeferStmt).getCall().getTarget() |
+        target.mustPanic() or target.mustNotReturnNormally()
+      ) and
+      n.isAdditional(ast.(Go::DeferStmt).getCall(), "defer-invoke") and
       c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
       always = true
       or
@@ -739,6 +765,21 @@ module CfgImpl {
     additional predicate endAbruptCompletion(
       Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c
     ) {
+      ast instanceof Go::DeferStmt and
+      n.isAdditional(ast, "catch-defer-panic") and
+      c.getSuccessorType() instanceof ExceptionSuccessor
+      or
+      not ast instanceof Go::DeferStmt and
+      mayPanic(ast) and
+      mayDeferParent(ast) and
+      n.isAdditional(ast, "catch-panic") and
+      c.getSuccessorType() instanceof ExceptionSuccessor
+      or
+      mayReturn(ast) and
+      mayDeferParent(ast) and
+      n.isAdditional(ast, "catch-return") and
+      c.getSuccessorType() instanceof ReturnSuccessor
+      or
       exists(Go::LabeledStmt lbl |
         ast = lbl.getStmt() and
         n.isAfter(lbl) and
@@ -789,18 +830,51 @@ module CfgImpl {
       )
     }
 
-    additional predicate overridesAbruptCompletionEdge(
-      PreControlFlowNode source, PreControlFlowNode target, AbruptCompletion completion
-    ) {
-      completion.getSuccessorType() instanceof ReturnSuccessor and
-      target instanceof NormalExitNodeImpl and
-      exists(PreControlFlowNode replacement | additionalSuccessor(source, replacement, _))
-      or
-      completion.getSuccessorType() instanceof ExceptionSuccessor and
-      target instanceof ExceptionalExitNodeImpl and
-      exists(PreControlFlowNode nextDefer |
-        additionalSuccessor(source, nextDefer, _) and deferInvoke(nextDefer, _)
+    /** Holds if `ast` or one of its CFG children may panic. */
+    private predicate mayPanic(Ast::AstNode ast) {
+      ast instanceof Go::CallExpr and
+      not ast = any(Go::DeferStmt s).getCall() and
+      (not exists(ast.(Go::CallExpr).getTarget()) or ast.(Go::CallExpr).getTarget().mayPanic()) and
+      not exists(Go::Function target | target = ast.(Go::CallExpr).getTarget() |
+        target.mustNotReturnNormally() and not target.mustPanic()
       )
+      or
+      ast instanceof Go::DivExpr and not ast.(Go::Expr).isConst()
+      or
+      ast instanceof Go::DerefExpr
+      or
+      ast instanceof Go::TypeAssertExpr and
+      not exists(Go::Assignment assgn |
+        assgn.getNumLhs() = 2 and ast = assgn.getRhs().stripParens()
+      ) and
+      not exists(Go::ValueSpec vs | vs.getNumName() = 2 and ast = vs.getInit().stripParens()) and
+      not exists(Go::TypeSwitchStmt ts | ast = ts.getExpr())
+      or
+      ast instanceof Go::IndexExpr
+      or
+      ast instanceof Go::ConversionExpr and
+      ast.(Go::ConversionExpr).getType().(Go::PointerType).getBaseType() instanceof Go::ArrayType
+      or
+      mayPanic(Ast::getChild(ast, _))
+    }
+
+    /** Holds if `ast` or one of its CFG children may return abruptly. */
+    private predicate mayReturn(Ast::AstNode ast) {
+      ast instanceof Go::ReturnStmt
+      or
+      mayReturn(Ast::getChild(ast, _))
+    }
+
+    /** Holds if `ast` or one of its CFG children registers a deferred call. */
+    private predicate mayDefer(Ast::AstNode ast) {
+      ast instanceof Go::DeferStmt
+      or
+      mayDefer(Ast::getChild(ast, _))
+    }
+
+    /** Holds if the CFG parent of `ast` may register a deferred call. */
+    private predicate mayDeferParent(Ast::AstNode ast) {
+      exists(Ast::AstNode parent | ast = Ast::getChild(parent, _) and mayDefer(parent))
     }
 
     /** Holds if `fd` contains at least one `defer` statement. */
@@ -906,7 +980,9 @@ module CfgImpl {
      * node, or the normal fall-through from the body's last statement.
      */
     private predicate normalExitPred(PreControlFlowNode n, Go::FuncDef fd) {
-      exists(Go::ReturnStmt ret | ret.getEnclosingFunction() = fd and n.isIn(ret))
+      exists(Ast::AstNode ast |
+        ast.getEnclosingFunction() = fd and n.isAdditional(ast, "catch-return")
+      )
       or
       n.isAfter(getLastRankedChild(fd.getBody()))
     }
@@ -918,16 +994,8 @@ module CfgImpl {
      * nonreturning calls, such as `os.Exit`, do not run deferred functions.
      */
     private predicate exceptionalExitPred(PreControlFlowNode n, Go::FuncDef fd) {
-      exists(Ast::AstNode ast, AbruptCompletion c |
-        ast.getEnclosingFunction() = fd and
-        n.isIn(ast) and
-        beginAbruptCompletion(ast, n, c, false) and
-        c.getSuccessorType() instanceof ExceptionSuccessor and
-        not exists(Go::CallExpr call |
-          ast = call and
-          call.getTarget().mustNotReturnNormally() and
-          not call.getTarget().mustPanic()
-        )
+      exists(Ast::AstNode ast |
+        ast.getEnclosingFunction() = fd and n.isAdditional(ast, "catch-panic")
       )
     }
 
@@ -943,46 +1011,64 @@ module CfgImpl {
       not exists(fd.getResultVar(_)) and target.isAfter(fd.getBody())
     }
 
-    additional predicate additionalSuccessor(
-      PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType successorType
-    ) {
+    additional predicate finalDeferStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::FuncDef fd | funcHasDefer(fd) |
-        successorType instanceof DirectSuccessor and
-        (
-          // an exit predecessor with no active defer flows straight to the exit target
+        // an exit predecessor with no active defer flows straight to the exit target
+        normalExitPred(n1, fd) and
+        n1 = reachableBeforeNextDeferRegistration(funcEntry(fd)) and
+        deferChainExitTarget(fd, n2)
+        or
+        // an exit predecessor flows to the invocation of the last-registered active defer
+        exists(Go::DeferStmt d, PreControlFlowNode reg |
+          deferRegistration(reg, d) and
+          d.getEnclosingFunction() = fd and
           normalExitPred(n1, fd) and
-          n1 = reachableBeforeNextDeferRegistration(funcEntry(fd)) and
+          n1 = reachableBeforeNextDeferRegistration(reg) and
+          deferInvoke(n2, d)
+        )
+        or
+        // deferred invocations chain in last-in-first-out order
+        exists(Go::DeferStmt laterRegistered, Go::DeferStmt earlierRegistered |
+          laterRegistered.getEnclosingFunction() = fd and
+          nextRegisteredDefer(laterRegistered, earlierRegistered) and
+          not deferInvocationStopsUnwinding(laterRegistered) and
+          deferInvoke(n1, laterRegistered) and
+          deferInvoke(n2, earlierRegistered)
+        )
+        or
+        // a panic in a deferred invocation continues unwinding through earlier defers
+        exists(Go::DeferStmt laterRegistered, Go::DeferStmt earlierRegistered |
+          laterRegistered.getEnclosingFunction() = fd and
+          nextRegisteredDefer(laterRegistered, earlierRegistered) and
+          not deferInvocationStopsUnwinding(laterRegistered) and
+          n1.isAdditional(laterRegistered, "catch-defer-panic") and
+          deferInvoke(n2, earlierRegistered)
+        )
+        or
+        // the invocation of the first-registered (last to run) defer flows to the exit target
+        exists(Go::DeferStmt firstD |
+          firstRegisteredDefer(firstD, fd) and
+          deferInvocationMayReturnNormally(firstD) and
+          deferInvoke(n1, firstD) and
           deferChainExitTarget(fd, n2)
-          or
-          // an exit predecessor flows to the invocation of the last-registered active defer
-          exists(Go::DeferStmt d, PreControlFlowNode reg |
-            deferRegistration(reg, d) and
-            d.getEnclosingFunction() = fd and
-            normalExitPred(n1, fd) and
-            n1 = reachableBeforeNextDeferRegistration(reg) and
-            deferInvoke(n2, d)
-          )
-          or
-          // deferred invocations chain in last-in-first-out order
-          exists(Go::DeferStmt laterRegistered, Go::DeferStmt earlierRegistered |
-            laterRegistered.getEnclosingFunction() = fd and
-            nextRegisteredDefer(laterRegistered, earlierRegistered) and
-            not deferInvocationStopsUnwinding(laterRegistered) and
-            deferInvoke(n1, laterRegistered) and
-            deferInvoke(n2, earlierRegistered)
-          )
-          or
-          // the invocation of the first-registered (last to run) defer flows to the exit target
-          exists(Go::DeferStmt firstD |
-            firstRegisteredDefer(firstD, fd) and
-            deferInvocationMayReturnNormally(firstD) and
-            deferInvoke(n1, firstD) and
-            deferChainExitTarget(fd, n2)
-          )
+        )
+        or
+        // a panic in the first-registered defer finishes at the exceptional exit
+        exists(Go::DeferStmt firstD |
+          firstRegisteredDefer(firstD, fd) and
+          n1.isAdditional(firstD, "catch-defer-panic") and
+          n2.(ExceptionalExitNodeImpl).getEnclosingCallable() = fd
+        )
+        or
+        // a non-panicking, non-returning deferred call stops unwinding immediately
+        exists(Go::DeferStmt d |
+          d.getEnclosingFunction() = fd and
+          deferInvocationStopsUnwinding(d) and
+          n1.isAdditional(d, "catch-defer-panic") and
+          n2.(ExceptionalExitNodeImpl).getEnclosingCallable() = fd
         )
         or
         // a possible panic with active defers flows to the last-registered active defer
-        successorType instanceof ExceptionSuccessor and
         exists(Go::DeferStmt d, PreControlFlowNode reg |
           deferRegistration(reg, d) and
           d.getEnclosingFunction() = fd and
@@ -990,6 +1076,11 @@ module CfgImpl {
           n1 = reachableBeforeNextDeferRegistration(reg) and
           deferInvoke(n2, d)
         )
+        or
+        // a possible panic with no active defer flows to the exceptional exit
+        exceptionalExitPred(n1, fd) and
+        n1 = reachableBeforeNextDeferRegistration(funcEntry(fd)) and
+        n2.(ExceptionalExitNodeImpl).getEnclosingCallable() = fd
       )
     }
 
@@ -1683,18 +1774,6 @@ module CfgImpl {
       Input1::endAbruptCompletion(ast, n, c)
     }
 
-    predicate overridesAbruptCompletionEdge(
-      PreControlFlowNode source, PreControlFlowNode target, AbruptCompletion completion
-    ) {
-      Input1::overridesAbruptCompletionEdge(source, target, completion)
-    }
-
-    predicate additionalSuccessor(
-      PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType successorType
-    ) {
-      Input1::additionalSuccessor(n1, n2, successorType)
-    }
-
     predicate overridesDefaultControlFlow(Ast::AstNode ast) {
       Input1::overridesDefaultControlFlow(ast)
     }
@@ -1709,6 +1788,8 @@ module CfgImpl {
       Input1::overridesDefaultControlFlowStep(ast, source, target)
     }
 
-    predicate step(PreControlFlowNode n1, PreControlFlowNode n2) { Input1::step(n1, n2) }
+    predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
+      Input1::step(n1, n2) or Input1::finalDeferStep(n1, n2)
+    }
   }
 }

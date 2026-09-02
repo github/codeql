@@ -8,5 +8,5 @@ multipleSuccessors
 | input.go:50:2:59:2 | select statement | successor | input.go:53:2:55:16 | comm clause |
 | input.go:50:2:59:2 | select statement | successor | input.go:56:2:57:15 | comm clause |
 | input.go:50:2:59:2 | select statement | successor | input.go:58:2:58:16 | comm clause |
-| input.go:71:2:71:10 | return statement | successor | input.go:67:9:67:35 | defer-invoke function call |
-| input.go:71:2:71:10 | return statement | successor | input.go:69:9:69:36 | defer-invoke function call |
+| input.go:71:2:71:10 | catch-return return statement | successor | input.go:67:9:67:35 | defer-invoke function call |
+| input.go:71:2:71:10 | catch-return return statement | successor | input.go:69:9:69:36 | defer-invoke function call |
