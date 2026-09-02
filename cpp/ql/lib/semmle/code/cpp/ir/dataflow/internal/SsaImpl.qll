@@ -1405,14 +1405,96 @@ private class PhiCycle extends PhiCycleEquivalence::EquivalenceClass {
   }
 }
 
-/** An static single assignment (SSA) definition. */
-class Definition extends SsaImpl::Definition {
-  private Definition getAPhiInputOrPriorDefinition() {
-    result = this.(PhiNode).getAnInput()
-    or
-    uncertainWriteDefinitionInput(this, result)
+private Definition getAPhiInputOrPriorDefinition(Definition def) {
+  result = def.(PhiNode).getAnInput()
+  or
+  uncertainWriteDefinitionInput(def, result)
+}
+
+module Public {
+  /**
+   * A module signature to define relevant ultimate definitions for an
+   * optimized version of `Definition.getAnUltimateDefinition`.
+   */
+  signature module GetAnUltimateDefinitionSig {
+    /**
+     * Holds if `def` is a relevant definition. This defines the set
+     * of `Definition`s which may be returned by
+     * `GetAnUltimateDefinition::getAnUltimateDefinition`.
+     */
+    predicate isRelevantUltimateDefinition(Definition def);
   }
 
+  /**
+   * A module which constructs an optimized version of
+   * ```
+   * Definition.getAnUltimateDefinition
+   * ```
+   * by restricting the set of possible ultimate definitions.
+   *
+   * Use this module by defining a module `M` which implements
+   * `GetAnUltimateDefinitionSig` and then call:
+   * ```
+   * GetAnUltimateDefinition<M>::getAnUltimateDefinition
+   * ```
+   */
+  module GetAnUltimateDefinition<GetAnUltimateDefinitionSig Sig> {
+    private import Sig
+
+    private predicate relevantUltimateDefinition(Definition def) {
+      isRelevantUltimateDefinition(def) and
+      not def instanceof PhiNode
+    }
+
+    /**
+     * The `getAnUltimateDefinition` predicate uses an optimized step relation
+     * which is pruned to only those uncertain steps which lead back to a
+     * definition which satisfies `relevantUltimateDefinition`. This predicate
+     * computes the subset of `Definition`s which can lead back to definitions
+     * which satisfy `relevantUltimateDefinition`.
+     */
+    private predicate fwd(Definition def) {
+      // Base case: This definition is a relevant definition
+      relevantUltimateDefinition(def)
+      or
+      exists(Definition def0 |
+        // Recursive case: `def0` is a relevant definition, and
+        // `def` is an uncertain step which takes us back to `def0`.
+        fwd(def0) and
+        def0 = getAPhiInputOrPriorDefinition(def)
+      )
+    }
+
+    /**
+     * Holds if `def1 = getAPhiInputOrPriorDefinition(def2)`, and
+     * both `def1` and `def2` are part of a sequence of uncertain
+     * steps which lead back to a `Definition` which
+     * satisfies `relevantUltimateDefinition`.
+     */
+    private predicate step(Definition def1, Definition def2) {
+      fwd(def1) and
+      fwd(def2) and
+      def1 = getAPhiInputOrPriorDefinition(def2)
+    }
+
+    /**
+     * Gets a definition that ultimately defines this SSA definition and is
+     * not itself a phi node.
+     *
+     * This predicate is restricted to ultimate definitions which
+     * satisfy `isRelevantUltimateDefinition`.
+     */
+    Definition getAnUltimateDefinition(Definition def) {
+      step*(result, def) and
+      relevantUltimateDefinition(result)
+    }
+  }
+}
+
+import Public
+
+/** A static single assignment (SSA) definition. */
+class Definition extends SsaImpl::Definition {
   /**
    * Holds if this SSA definition is live at the end of basic block `bb`.
    * That is, this definition reaches the end of basic block `bb`, at which
@@ -1424,9 +1506,13 @@ class Definition extends SsaImpl::Definition {
   /**
    * Gets a definition that ultimately defines this SSA definition and is
    * not itself a phi node.
+   *
+   * Note: A more efficient implementation of this predicate exists. See the
+   * `GetAnUltimateDefinition` module for a description of how to access
+   * the more efficient implementation.
    */
   final Definition getAnUltimateDefinition() {
-    result = this.getAPhiInputOrPriorDefinition*() and
+    result = getAPhiInputOrPriorDefinition*(this) and
     not result instanceof PhiNode
   }
 

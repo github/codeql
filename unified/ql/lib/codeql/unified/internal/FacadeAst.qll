@@ -30,6 +30,13 @@ module Unified {
       not this instanceof ClassLikeDeclaration and
       result = this.getParent().getEnclosingClass()
     }
+
+    /** Gets the depth of this node in the AST. The root node has a depth of 0. */
+    int getDepth() {
+      not exists(this.getParent()) and result = 0
+      or
+      result = this.getParent().getDepth() + 1
+    }
   }
 
   /** An expression */
@@ -40,6 +47,12 @@ module Unified {
       // just strip the quotes here and ignore escape sequences.
       result = this.(StringLiteral).getValue().regexpCapture("\"(.*)\"", 1)
     }
+  }
+
+  /** A binary expression. */
+  class BinaryExpr extends G::BinaryExpr {
+    /** Gets an operand of this binary expression. */
+    Expr getAnOperand() { result = [this.getLeft(), this.getRight()] }
   }
 
   /** A function call */

@@ -458,6 +458,54 @@ yeast::rule!(
 The shorthand `=> kind` form auto-generates the template, mapping each
 capture name to a field of the same name on the output node.
 
+### Guards
+
+A rule may include a Rust guard between its query and `=>`. The guard runs
+after the query matches but before any captures are translated. If it returns
+`false`, the rule is treated as a non-match and the driver tries the next rule.
+Omitting the guard is equivalent to writing `where true`:
+
+```rust
+rule!(
+    (tupleExpr
+        elements: (labeledExpr
+            label: _? @label
+            expression: @inner)
+        elements: _* @rest)
+    where label.is_none() && rest.is_empty()
+    =>
+    expr { inner }
+)
+```
+
+Every capture is a raw input-schema id in the guard, regardless of whether it
+uses `@` or `@@`, because the guard runs before translation. The marker controls
+the transform binding only: `@inner` is translated after the guard accepts the
+rule, while a capture marked `@@` would remain raw in the transform as well.
+In this example `label` and `rest` are empty whenever the guard succeeds, so
+there is nothing to translate for those captures.
+
+Guards receive the mutable user context as `ctx` and the raw AST as `ast`.
+The framework clones the user context before evaluating each guard. If the
+guard succeeds, its context mutations are visible to the rule transform and
+recursive translation; if it fails, the clone is discarded before the next
+rule is tried:
+
+```rust
+rule!(
+    (tupleExpr elements: _* @elements)
+    where {
+        ctx.in_pattern = true;
+        elements
+            .first()
+            .and_then(|element| ast.get_node(*element))
+            .is_some()
+    }
+    =>
+    (tuple_pattern element: {elements})
+)
+```
+
 ### Annotation form
 
 Rules that need imperative logic — mutating [`BuildCtx`] state per

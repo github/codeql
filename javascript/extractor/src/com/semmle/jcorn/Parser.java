@@ -118,6 +118,9 @@ import com.semmle.util.io.WholeIO;
  * 4.0.3</a>, but does not support plugins, and always tracks full source locations.
  */
 public class Parser {
+  private static final Pattern LEGACY_MODULE_IMPORT_TAIL =
+      Pattern.compile("\\s+[A-Za-z_$][A-Za-z0-9_$]*\\s+from\\s*['\"]");
+
   protected final Options options;
   protected final Set<String> keywords;
   private final Set<String> reservedWords, reservedWordsStrict, reservedWordsStrictBind;
@@ -2719,6 +2722,18 @@ public class Parser {
   }
 
   /**
+   * Checks for the abandoned ES6 draft namespace-import syntax:
+   * {@code module namespace from "module-name";}.
+   */
+  boolean isLegacyModuleImport() {
+    if (this.type != TokenType.name || !this.value.equals("module")) return false;
+
+    Matcher matcher = LEGACY_MODULE_IMPORT_TAIL.matcher(this.input);
+    matcher.region(this.pos, this.input.length());
+    return matcher.lookingAt();
+  }
+
+  /**
    * Parse a single statement.
    *
    * <p>If expecting a statement and finding a slash operator, parse a regular expression literal.
@@ -2780,6 +2795,10 @@ public class Parser {
       return this.parseBlock(false);
     } else if (starttype == TokenType.semi) {
       return this.parseEmptyStatement(startLoc);
+    } else if (topLevel && this.isLegacyModuleImport()) {
+      if (!this.options.allowImportExportEverywhere() && !this.inModule)
+        this.raise(this.start, "Legacy module imports may appear only with 'sourceType: module'");
+      return this.parseLegacyModuleImport(startLoc);
     } else if (starttype == TokenType._export || starttype == TokenType._import) {
       if (!this.options.allowImportExportEverywhere()) {
         if (!topLevel)
@@ -3575,6 +3594,29 @@ public class Parser {
     SourceLocation loc = new SourceLocation(startLoc);
     this.next();
     return parseImportRest(loc);
+  }
+
+  /**
+   * Parses {@code module namespace from "module-name";} as the equivalent namespace import
+   * {@code import * as namespace from "module-name";}.
+   */
+  protected ImportDeclaration parseLegacyModuleImport(Position startLoc) {
+    SourceLocation loc = new SourceLocation(startLoc);
+    this.next();
+
+    SourceLocation specifierLoc = new SourceLocation(this.startLoc);
+    Identifier local = this.parseIdent(false);
+    this.checkLVal(local, true, null);
+    this.expectContextual("from");
+    if (this.type != TokenType.string) this.unexpected();
+    Literal source = (Literal) this.parseExprAtom(null);
+    this.semicolon();
+
+    List<ImportSpecifier> specifiers = new ArrayList<ImportSpecifier>();
+    specifiers.add(this.finishNode(new ImportNamespaceSpecifier(specifierLoc, local)));
+    return this.finishNode(
+        new ImportDeclaration(
+            loc, specifiers, source, null, ImportPhaseModifier.NONE));
   }
 
   protected Expression parseImportOrExportAttributesAndSemicolon() {

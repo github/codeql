@@ -17,10 +17,6 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
   class SummarizedCallableBase = Function;
 
-  class SourceBase = Function;
-
-  class SinkBase = Function;
-
   class FlowSummaryCallBase = CallInstruction;
 
   predicate callableFromSource(SummarizedCallableBase c) { exists(c.getBlock()) }
@@ -171,6 +167,28 @@ private module Input2 implements Impl::Private::InputSig2 {
     result = e.(ConversionCall).getQualifier().(LambdaExpression).getLambdaFunction()
   }
 
+  private predicate isRelevantUltimateDefinition(Ssa::DirectExplicitDefinition def, Function f) {
+    f =
+      getFunctionFromExpr(def.getAssignedInstruction()
+            .(StoreInstruction)
+            .getSourceValue()
+            .getUnconvertedResultExpression())
+  }
+
+  private module GetAnUltimateDefinitionInput implements Ssa::GetAnUltimateDefinitionSig {
+    predicate isRelevantUltimateDefinition(Ssa::Definition def) {
+      isRelevantUltimateDefinition(def, _)
+    }
+  }
+
+  private predicate hasAnUltimateFunctionAccessDefinition(Ssa::Definition def, Function f) {
+    exists(Ssa::Definition ultimate |
+      ultimate =
+        Ssa::GetAnUltimateDefinition<GetAnUltimateDefinitionInput>::getAnUltimateDefinition(def) and
+      isRelevantUltimateDefinition(ultimate, f)
+    )
+  }
+
   class SourceSinkReportingElement extends Element {
     SourceSinkReportingElement() { this instanceof Expr or this instanceof Parameter }
 
@@ -190,13 +208,7 @@ private module Input2 implements Impl::Private::InputSig2 {
       // The expression is an SSA read of an assignment of a callable
       exists(Ssa::Definition def |
         def.getAUse().getDef().getUnconvertedResultExpression() = this and
-        result =
-          getFunctionFromExpr(def.getAnUltimateDefinition()
-                .(Ssa::DirectExplicitDefinition)
-                .getAssignedInstruction()
-                .(StoreInstruction)
-                .getSourceValue()
-                .getUnconvertedResultExpression())
+        hasAnUltimateFunctionAccessDefinition(def, result)
       )
     }
 
@@ -216,7 +228,7 @@ private module Input2 implements Impl::Private::InputSig2 {
 
   bindingset[source, sc]
   SourceSinkReportingElement getASourceReportingElement(
-    Input::SourceBase source, Impl::Private::SummaryComponent sc
+    Input::SummarizedCallableBase source, Impl::Private::SummaryComponent sc
   ) {
     exists(Call call | call.getTarget() = source |
       sc = Impl::Private::SummaryComponent::return(_) and
@@ -296,7 +308,7 @@ private module Input2 implements Impl::Private::InputSig2 {
 
   bindingset[sink, sc]
   SourceSinkReportingElement getASinkReportingElement(
-    Input::SinkBase sink, Impl::Private::SummaryComponent sc
+    Input::SummarizedCallableBase sink, Impl::Private::SummaryComponent sc
   ) {
     exists(Call call, ArgumentPosition pos |
       call.getTarget() = sink and
@@ -509,9 +521,10 @@ private class SourceModelFunction extends Public::SourceElement instanceof Funct
   }
 
   override predicate isSource(
-    string output, string kind, Public::Provenance provenance, string model
+    string output, string kind, Public::Provenance provenance, boolean isExact, string model
   ) {
-    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model)
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model) and
+    isExact = true
   }
 }
 
@@ -528,7 +541,10 @@ private class SinkModelFunction extends Public::SinkElement instanceof Function 
     this = interpretElement(namespace, type, subtypes, name, signature, ext)
   }
 
-  override predicate isSink(string input, string kind, Public::Provenance provenance, string model) {
-    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, model)
+  override predicate isSink(
+    string input, string kind, Public::Provenance provenance, boolean isExact, string model
+  ) {
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, model) and
+    isExact = true
   }
 }

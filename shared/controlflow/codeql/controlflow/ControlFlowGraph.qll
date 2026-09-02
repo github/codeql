@@ -571,7 +571,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       not n instanceof LogicalNotExpr and
       not n instanceof ConditionalExpr and
       not n instanceof Switch and
-      not n instanceof Case
+      not n instanceof Case and
+      not n instanceof BlockStmt and
+      not n instanceof TryStmt
     }
 
     /**
@@ -1549,8 +1551,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n1.isAfterTrue(condexpr.getCondition()) and
           n2.isBefore(condexpr.getThen())
           or
+          n1.isAfterTrue(condexpr.getCondition()) and
+          not exists(condexpr.getThen()) and
+          n2.isAfter(condexpr)
+          or
           n1.isAfterFalse(condexpr.getCondition()) and
           n2.isBefore(condexpr.getElse())
+          or
+          n1.isAfterFalse(condexpr.getCondition()) and
+          not exists(condexpr.getElse()) and
+          n2.isAfter(condexpr)
         )
         or
         exists(PatternMatchExpr pme |

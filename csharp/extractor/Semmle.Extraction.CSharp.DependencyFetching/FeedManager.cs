@@ -1,15 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -21,10 +14,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private readonly ILogger logger;
         private readonly IDotNet dotnet;
-        private readonly FileProvider fileProvider;
-        private readonly DependabotProxy? dependabotProxy;
+        private readonly IFileProvider fileProvider;
         private readonly DependencyDirectory emptyPackageDirectory;
         private readonly ImmutableHashSet<string> privateRegistryFeeds;
+        private readonly IFeedManagerIO feedManagerIo;
 
         /// <summary>
         /// Gets whether there are private package registries configured for C#.
@@ -79,12 +72,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public ImmutableHashSet<string> ReachableFallbackFeeds => lazyReachableFallbackFeeds.Value;
 
-        public FeedManager(ILogger logger, IDotNet dotnet, DependabotProxy? dependabotProxy, FileProvider fileProvider)
+        public FeedManager(ILogger logger, IDotNet dotnet, IDependabotProxy? dependabotProxy, IFileProvider fileProvider, IFeedManagerIO feedManagerIo)
         {
             this.logger = logger;
             this.dotnet = dotnet;
-            this.dependabotProxy = dependabotProxy;
             this.fileProvider = fileProvider;
+            this.feedManagerIo = feedManagerIo;
             privateRegistryFeeds = dependabotProxy?.RegistryURLs.ToImmutableHashSet() ?? [];
             HasPrivateRegistryFeeds = privateRegistryFeeds.Count > 0;
             emptyPackageDirectory = new DependencyDirectory("empty", "empty package", logger);
@@ -105,17 +98,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             });
         }
 
-        private string? GetDirectoryName(string path)
+        public FeedManager(ILogger logger, IDotNet dotnet, IDependabotProxy? dependabotProxy, IFileProvider fileProvider)
+            : this(logger, dotnet, dependabotProxy, fileProvider, new FeedManagerIO(logger, dependabotProxy))
         {
-            try
-            {
-                return new FileInfo(path).Directory?.FullName;
-            }
-            catch (Exception exc)
-            {
-                logger.LogWarning($"Failed to get directory of '{path}': {exc}");
-            }
-            return null;
         }
 
         private IEnumerable<string> GetFeeds(Func<IList<string>> getNugetFeeds)
@@ -157,25 +142,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// If there are no feeds, a dummy source argument is added to override any default feeds that `restore` would use.
         /// </summary>
         /// <param name="feeds">The list of feeds to use for the restore command.</param>
-        /// <param name="sourceArgumentPrefix">The prefix to use for each source argument (e.g., "-s").</param>
-        /// <returns>The constructed NuGet sources argument for the restore command.</returns>
-        public string FeedsToRestoreArgument(IEnumerable<string> feeds, string sourceArgumentPrefix)
+        /// <returns>The list of NuGet sources arguments for the restore command.</returns>
+        public List<string> RestoreFeeds(IEnumerable<string> feeds)
         {
             // If there are no feeds, we want to override any default feeds that `restore` would use by passing a dummy source argument.
             if (!feeds.Any())
             {
-                return $" {sourceArgumentPrefix} \"{emptyPackageDirectory.DirInfo.FullName}\"";
+                return [emptyPackageDirectory.DirInfo.FullName];
             }
 
-            // Add package sources. If any are present, they override all sources specified in
-            // the configuration file(s).
-            var feedArgs = new StringBuilder();
-            foreach (var feed in feeds)
-            {
-                feedArgs.Append($" {sourceArgumentPrefix} \"{feed}\"");
-            }
-
-            return feedArgs.ToString();
+            return feeds.ToList();
         }
 
         private IEnumerable<string> FeedsToUseAux(HashSet<string> feedsToConsider)
@@ -202,20 +178,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public IEnumerable<string> FeedsToUse(string path)
         {
             // Find the path specific feeds.
-            var folder = GetDirectoryName(path);
+            var folder = feedManagerIo.GetDirectoryName(path);
             var feedsToConsider = folder is not null ? GetFeedsFromFolder(folder).ToHashSet() : new HashSet<string>();
 
             return FeedsToUseAux(feedsToConsider);
-        }
-
-        /// <summary>
-        /// Constructs the NuGet sources argument for the `dotnet restore` command based on the given feeds.
-        /// </summary>
-        /// <param name="feeds">The list of NuGet feeds to use for the restore command.</param>
-        /// <returns>A string representing the NuGet sources argument for the `dotnet restore` command.</returns>
-        public string FeedsToDotnetRestoreArgument(IEnumerable<string> feeds)
-        {
-            return FeedsToRestoreArgument(feeds, "-s");
         }
 
         /// <summary>
@@ -224,18 +190,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// (2) Use private registries, if they are configured
         /// </summary>
         /// <param name="path">Path to project/solution</param>
-        /// <returns>A string representing the NuGet sources argument for the `dotnet restore` command.</returns>
-        public string? MakeDotnetRestoreSourcesArgument(string path)
+        /// <returns>A list representing the NuGet sources arguments for the `dotnet restore` command.</returns>
+        public List<string> MakeRestoreFeeds(string path)
         {
             // Do not construct a set of explicit NuGet sources to use for restore.
             if (!CheckNugetFeedResponsiveness && !HasPrivateRegistryFeeds)
             {
-                return null;
+                return [];
             }
 
             var feedsToUse = FeedsToUse(path);
 
-            return FeedsToDotnetRestoreArgument(feedsToUse);
+            return RestoreFeeds(feedsToUse);
         }
 
         private (int initialTimeout, int tryCount) GetFeedRequestSettings(bool isFallback)
@@ -255,76 +221,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             logger.LogDebug($"Number of tries for NuGet feed reachability check is {tryCount}.");
 
             return (timeoutMilliSeconds, tryCount);
-        }
-
-        private static async Task<HttpResponseMessage> ExecuteGetRequest(string address, HttpClient httpClient, CancellationToken cancellationToken)
-        {
-            return await httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-        }
-
-        private bool IsFeedReachable(string feed, int timeoutMilliSeconds, int tryCount)
-        {
-            logger.LogInfo($"Checking if NuGet feed '{feed}' is reachable...");
-
-            // Configure the HttpClient to be aware of the Dependabot Proxy, if used.
-            HttpClientHandler httpClientHandler = new();
-            if (dependabotProxy != null)
-            {
-                httpClientHandler.Proxy = new WebProxy(dependabotProxy.Address);
-
-                if (dependabotProxy.Certificate != null)
-                {
-                    httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, _) =>
-                    {
-                        if (chain is null || cert is null)
-                        {
-                            var msg = cert is null && chain is null
-                                ? "certificate and chain"
-                                : chain is null
-                                    ? "chain"
-                                    : "certificate";
-                            logger.LogWarning($"Dependabot proxy certificate validation failed due to missing {msg}");
-                            return false;
-                        }
-                        chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
-                        chain.ChainPolicy.CustomTrustStore.Add(dependabotProxy.Certificate);
-                        return chain.Build(cert);
-                    };
-                }
-            }
-
-            using HttpClient client = new(httpClientHandler);
-
-            for (var i = 0; i < tryCount; i++)
-            {
-                using var cts = new CancellationTokenSource();
-                cts.CancelAfter(timeoutMilliSeconds);
-                try
-                {
-                    logger.LogInfo($"Attempt {i + 1}/{tryCount} to reach NuGet feed '{feed}'.");
-                    using var response = ExecuteGetRequest(feed, client, cts.Token).GetAwaiter().GetResult();
-                    response.EnsureSuccessStatusCode();
-                    logger.LogInfo($"Querying NuGet feed '{feed}' succeeded.");
-                    return true;
-                }
-                catch (Exception exc)
-                {
-                    if (exc is TaskCanceledException tce &&
-                        tce.CancellationToken == cts.Token &&
-                        cts.Token.IsCancellationRequested)
-                    {
-                        logger.LogInfo($"Didn't receive answer from NuGet feed '{feed}' in {timeoutMilliSeconds}ms.");
-                        timeoutMilliSeconds *= 2;
-                        continue;
-                    }
-
-                    logger.LogInfo($"Querying NuGet feed '{feed}' failed. The reason for the failure: {exc.Message}");
-                    return false;
-                }
-            }
-
-            logger.LogWarning($"Didn't receive answer from NuGet feed '{feed}'. Tried it {tryCount} times.");
-            return false;
         }
 
         /// <summary>
@@ -380,7 +276,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (CheckNugetFeedResponsiveness)
             {
                 var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback: false);
-                return IsFeedReachable(PublicNugetOrgFeed, initialTimeout, tryCount);
+                return feedManagerIo.IsFeedReachable(PublicNugetOrgFeed, initialTimeout, tryCount);
             }
 
             return true;
@@ -399,7 +295,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback);
             var reachableFeeds = feedsToCheck
-                .Where(feed => IsFeedReachable(feed, initialTimeout, tryCount))
+                .Where(feed => feedManagerIo.IsFeedReachable(feed, initialTimeout, tryCount))
                 .ToList();
 
             if (reachableFeeds.Count == 0)
@@ -483,7 +379,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (nugetConfigs.Count > 0)
             {
                 var nugetConfigFeeds = nugetConfigs
-                    .Select(GetDirectoryName)
+                    .Select(feedManagerIo.GetDirectoryName)
                     .Where(folder => folder != null)
                     .SelectMany(folder => GetFeedsFromFolder(folder!))
                     .ToHashSet();

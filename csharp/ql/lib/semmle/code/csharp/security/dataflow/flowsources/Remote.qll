@@ -117,7 +117,8 @@ class AspNetServiceRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::Pa
   override string getSourceType() { result = "ASP.NET web service input" }
 }
 
-private class CandidateMemberToTaint extends Member {
+/** A public, non-static, auto-implemented property or field, candidate for taint-tracking. */
+class CandidateMemberToTaint extends Member {
   CandidateMemberToTaint() {
     this.isPublic() and
     not this.isStatic() and
@@ -306,7 +307,19 @@ class AspNetCoreActionMethodParameter extends AspNetCoreRemoteFlowSource, DataFl
   AspNetCoreActionMethodParameter() {
     exists(Parameter p |
       p = this.getParameter() and
-      p.fromSource()
+      p.fromSource() and
+      not exists(Attribute attr, ValueOrRefType attributeBase | attr = p.getAnAttribute() |
+        attributeBase = attr.getType().getABaseType*() and
+        (
+          attributeBase
+              .getABaseInterface*()
+              .hasFullyQualifiedName("Microsoft.AspNetCore.Http.Metadata", "IFromServiceMetadata")
+          or
+          attributeBase
+              .hasFullyQualifiedName("Microsoft.Extensions.DependencyInjection",
+                "FromKeyedServicesAttribute")
+        )
+      )
     |
       p = any(MicrosoftAspNetCoreMvcController c).getAnActionMethod().getAParameter()
     )

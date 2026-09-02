@@ -20,13 +20,9 @@ module Input implements InputSig<Location, DataFlowImplSpecific::RubyDataFlow> {
     Location getLocation() { result instanceof EmptyLocation }
   }
 
-  class SourceBase extends Void {
+  class FlowSummaryCallBase extends Void {
     Location getLocation() { none() }
   }
-
-  class SinkBase = SourceBase;
-
-  class FlowSummaryCallBase = SourceBase;
 
   predicate callableFromSource(SummarizedCallableBase c) { none() }
 

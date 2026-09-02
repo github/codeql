@@ -1,3 +1,13 @@
+## 7.2.0
+
+### New Features
+
+* Added the `AdditionalTaintStep` extension point (`semmle.code.csharp.dataflow.FlowSteps`). Extend this class to add additional taint steps that apply to all taint-tracking configurations.
+
+### Major Analysis Improvements
+
+* Simplified and streamlined the use of NuGet sources when downloading dependencies. In fallback scenarios and specialized package downloads, NuGet sources are now passed directly to `dotnet restore` via the CLI. Furthermore, no `nuget.config` files are created for fallback scenarios, and private registries are used when attempting to download missing packages that were not restored as part of the normal `dotnet restore` process.
+
 ## 7.1.2
 
 No user-facing changes.
