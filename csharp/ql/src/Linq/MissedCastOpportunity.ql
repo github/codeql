@@ -15,7 +15,7 @@
 import csharp
 import Linq.Helpers
 
-from ForeachStmtEnumerable fes, LocalVariableDeclStmt s
+from ForEachStmtEnumerable fes, LocalVariableDeclStmt s
 where missedCastOpportunity(fes, s)
 select fes,
   "This foreach loop immediately $@ - consider casting the sequence explicitly using '.Cast(...)'.",
