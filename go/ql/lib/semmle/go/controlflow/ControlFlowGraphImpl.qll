@@ -1084,21 +1084,11 @@ module CfgImpl {
       )
     }
 
-    additional predicate overridesDefaultControlFlow(Ast::AstNode ast) {
-      exists(Go::SelectStmt sel, Go::RecvStmt recv |
-        recv = sel.getACommClause().getComm() and
-        (ast = recv or ast = recv.getExpr())
-      )
-      or
-      exists(Go::SelectStmt sel, Go::SendStmt send |
-        send = sel.getACommClause().getComm() and ast = send
-      )
-    }
-
     additional predicate preservesDefaultControlFlow(Ast::AstNode ast) {
       ast = any(Go::FuncDef fd | hasFuncDefPrologue(fd)).getBody()
       or
-      exists(getFirstEpilogueTag(ast))
+      exists(getFirstEpilogueTag(ast)) and
+      not ast = any(Go::SelectStmt sel).getACommClause().getComm().(Go::RecvStmt)
     }
 
     additional predicate overridesDefaultControlFlowStep(
@@ -1569,19 +1559,17 @@ module CfgImpl {
      * The channel operands (and, for a send, the value) of every clause are
      * evaluated up front in the prep phase (see `selectCommPrepStart` and
      * friends), and the `select` then non-deterministically dispatches to one
-     * clause via `In(sel) -> Before(cc)`. The communication node itself
-     * (`In(recv.getExpr())` for a receive, `In(send)` for a send) is therefore
-     * only reached through that dispatch, never by ordinary left-to-right
-     * evaluation of the clause.
-     *
-     * Default sequencing for the communication statements is suppressed by
-     * `overridesDefaultControlFlow` above, so the communication can only be
-     * reached through the select dispatch.
+     * clause via `In(sel) -> Before(cc) -> Before(comm)`. Explicit steps from
+     * the communication statement's `Before` node then skip the operands that
+     * were already evaluated during preparation and perform the selected
+     * communication.
      */
     private predicate selectedCommStep(
       Go::SelectStmt sel, PreControlFlowNode n1, PreControlFlowNode n2
     ) {
       exists(Go::SendStmt send | send = sel.getACommClause().getComm() |
+        n1.isBefore(send) and n2.isIn(send)
+        or
         // The send communication happens at `In(send)`; flow then continues to
         // the clause body via `selectStmtStep`.
         n1.isIn(send) and n2.isAfter(send)
@@ -1595,6 +1583,10 @@ module CfgImpl {
       cc = sel.getACommClause() and
       recv = cc.getComm() and
       (
+        n1.isBefore(recv) and n2.isBefore(recv.getExpr())
+        or
+        n1.isBefore(recv.getExpr()) and n2.isIn(recv.getExpr())
+        or
         n1.isIn(recv.getExpr()) and
         (
           n2.isBefore(recv.getLhs(0))
@@ -1650,9 +1642,7 @@ module CfgImpl {
         exists(Go::CommClause cc | sel.getACommClause() = cc |
           n1.isBefore(cc) and
           (
-            n2.isIn(cc.getComm().(Go::RecvStmt).getExpr())
-            or
-            n2.isIn(cc.getComm().(Go::SendStmt))
+            n2.isBefore(cc.getComm())
             or
             not exists(cc.getComm()) and commClauseBodyStart(sel, cc, n2)
           )
@@ -1745,10 +1735,6 @@ module CfgImpl {
       )
     }
 
-    predicate overridesDefaultControlFlow(Ast::AstNode ast) {
-      Input1::overridesDefaultControlFlow(ast)
-    }
-
     predicate preservesDefaultControlFlow(Ast::AstNode ast) {
       Input1::preservesDefaultControlFlow(ast)
     }
@@ -1772,10 +1758,6 @@ module CfgImpl {
 
     predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
       Input1::endAbruptCompletion(ast, n, c)
-    }
-
-    predicate overridesDefaultControlFlow(Ast::AstNode ast) {
-      Input1::overridesDefaultControlFlow(ast)
     }
 
     predicate preservesDefaultControlFlow(Ast::AstNode ast) {
