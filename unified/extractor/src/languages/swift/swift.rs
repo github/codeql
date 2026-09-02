@@ -515,8 +515,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (named_pattern identifier: (identifier #{name}))
         ),
         // A `let`/`var` value-binding pattern (`let x`) inside a case or `if case`
-        // introduces a new binding; it unwraps to its inner expression.
-        rule!((valueBindingPattern pattern: @p) => pattern { p }),
+        // preserves the binding specifier around its inner pattern.
+        rule!(
+            (valueBindingPattern bindingSpecifier: @@spec pattern: @p)
+            =>
+            (expr_pattern modifier: (modifier #{spec}) expr: {p})
+        ),
         // A tuple destructuring pattern (`let (a, b) = …`). A labelled element
         // (`let (x: a) = …`) carries its label through as the `argument` name;
         // unlabelled elements have no name.

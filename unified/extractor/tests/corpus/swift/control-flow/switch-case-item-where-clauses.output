@@ -170,8 +170,11 @@ top_level
                       operator: infix_operator ">"
                       right: int_literal "0"
                   pattern:
-                    named_pattern
-                      identifier: identifier "x"
+                    expr_pattern
+                      modifier: modifier "let"
+                      expr:
+                        named_pattern
+                          identifier: identifier "x"
               body:
                 block
                   stmt:
@@ -195,8 +198,11 @@ top_level
                           operator: infix_operator "<"
                           right: int_literal "0"
                       pattern:
-                        named_pattern
-                          identifier: identifier "y"
+                        expr_pattern
+                          modifier: modifier "let"
+                          expr:
+                            named_pattern
+                              identifier: identifier "y"
                     int_literal "0"
               body:
                 block

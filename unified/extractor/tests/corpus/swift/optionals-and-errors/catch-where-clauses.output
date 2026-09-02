@@ -168,8 +168,11 @@ top_level
                                 name_expr
                                   identifier: identifier "e"
                       pattern:
-                        named_pattern
-                          identifier: identifier "e"
+                        expr_pattern
+                          modifier: modifier "let"
+                          expr:
+                            named_pattern
+                              identifier: identifier "e"
                     conditional_pattern
                       condition:
                         call_expr
@@ -182,8 +185,11 @@ top_level
                                 name_expr
                                   identifier: identifier "f"
                       pattern:
-                        named_pattern
-                          identifier: identifier "f"
+                        expr_pattern
+                          modifier: modifier "let"
+                          expr:
+                            named_pattern
+                              identifier: identifier "f"
               body:
                 block
                   stmt:

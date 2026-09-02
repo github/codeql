@@ -98,8 +98,11 @@ top_level
                           argument:
                             argument
                               value:
-                                named_pattern
-                                  identifier: identifier "value"
+                                expr_pattern
+                                  modifier: modifier "let"
+                                  expr:
+                                    named_pattern
+                                      identifier: identifier "value"
               value:
                 name_expr
                   identifier: identifier "input"

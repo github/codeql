@@ -166,28 +166,31 @@ top_level
           case:
             switch_case
               pattern:
-                call_expr
-                  callee:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member: identifier "received"
-                  argument:
-                    argument
-                      value:
-                        call_expr
-                          callee:
-                            member_access_expr
-                              base: inferred_type_expr "."
-                              member: identifier "some"
-                          argument:
-                            argument
-                              value:
-                                named_pattern
-                                  identifier: identifier "value"
-                    argument
-                      value:
-                        named_pattern
-                          identifier: identifier "timestamp"
+                expr_pattern
+                  modifier: modifier "let"
+                  expr:
+                    call_expr
+                      callee:
+                        member_access_expr
+                          base: inferred_type_expr "."
+                          member: identifier "received"
+                      argument:
+                        argument
+                          value:
+                            call_expr
+                              callee:
+                                member_access_expr
+                                  base: inferred_type_expr "."
+                                  member: identifier "some"
+                              argument:
+                                argument
+                                  value:
+                                    named_pattern
+                                      identifier: identifier "value"
+                        argument
+                          value:
+                            named_pattern
+                              identifier: identifier "timestamp"
               body:
                 block
                   stmt:
@@ -216,8 +219,11 @@ top_level
                   argument:
                     argument
                       value:
-                        named_pattern
-                          identifier: identifier "value"
+                        expr_pattern
+                          modifier: modifier "let"
+                          expr:
+                            named_pattern
+                              identifier: identifier "value"
               body:
                 block
                   stmt:

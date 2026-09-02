@@ -285,6 +285,8 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     or
     exists(NamedPattern parent | result = parent and child = parent.getSubPattern())
     or
+    exists(ExprPattern parent | result = parent and child = parent.getExpr())
+    or
     exists(TypeTestExpr parent |
       result = parent and
       not exists(parent.getOperator()) and

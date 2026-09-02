@@ -2,6 +2,7 @@ supertypes:
   expr:
     - name_expr
     - named_pattern
+    - expr_pattern
     - int_literal
     - float_literal
     - boolean_literal
@@ -105,6 +106,11 @@ named:
     modifier*: modifier
     identifier: identifier
     sub_pattern?: expr
+
+  # A pattern expression with modifiers, such as `let x` or `var x`.
+  expr_pattern:
+    modifier*: modifier
+    expr: expr
 
   # An integer literal
   int_literal:

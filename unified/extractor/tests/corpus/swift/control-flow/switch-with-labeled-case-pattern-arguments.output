@@ -168,8 +168,11 @@ top_level
                           identifier: identifier "_"
                     argument
                       value:
-                        named_pattern
-                          identifier: identifier "rowId"
+                        expr_pattern
+                          modifier: modifier "let"
+                          expr:
+                            named_pattern
+                              identifier: identifier "rowId"
               body:
                 block
                   stmt:

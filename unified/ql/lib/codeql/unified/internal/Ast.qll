@@ -632,6 +632,26 @@ module Unified {
 
   class ExprOrOperator extends @unified_expr_or_operator, F::AstNode { }
 
+  /** A class representing `expr_pattern` nodes. */
+  class ExprPattern extends @unified_expr_pattern, F::Expr {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ExprPattern" }
+
+    /** Gets the node corresponding to the field `expr`. */
+    final F::Expr getExpr() { unified_expr_pattern_def(this, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getModifier(int i) { unified_expr_pattern_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
+    /** Gets a field or child node of this node. */
+    final override F::AstNode getAFieldOrChild() {
+      unified_expr_pattern_def(this, result) or unified_expr_pattern_modifier(this, _, result)
+    }
+  }
+
   /** A class representing `fixity` tokens. */
   class Fixity extends @unified_token_fixity, F::AstNode, F::Token {
     /** Gets the name of the primary QL class for this element. */
@@ -1619,6 +1639,10 @@ module Unified {
       or
       result = node.(EqualityTypeConstraint).getRight() and i = -1 and name = "getRight"
       or
+      result = node.(ExprPattern).getExpr() and i = -1 and name = "getExpr"
+      or
+      result = node.(ExprPattern).getModifier(i) and name = "getModifier"
+      or
       result = node.(ForEachStmt).getBody() and i = -1 and name = "getBody"
       or
       result = node.(ForEachStmt).getGuard() and i = -1 and name = "getGuard"
@@ -1869,6 +1893,8 @@ module UnifiedFinal {
   final class Expr = F::Expr;
 
   final class ExprOrOperator = F::ExprOrOperator;
+
+  final class ExprPattern = F::ExprPattern;
 
   final class Fixity = F::Fixity;
 

@@ -134,8 +134,11 @@ top_level
                   argument:
                     argument
                       value:
-                        named_pattern
-                          identifier: identifier "r"
+                        expr_pattern
+                          modifier: modifier "let"
+                          expr:
+                            named_pattern
+                              identifier: identifier "r"
               body:
                 block
                   stmt:
@@ -158,8 +161,11 @@ top_level
                   argument:
                     argument
                       value:
-                        named_pattern
-                          identifier: identifier "s"
+                        expr_pattern
+                          modifier: modifier "let"
+                          expr:
+                            named_pattern
+                              identifier: identifier "s"
               body:
                 block
                   stmt:

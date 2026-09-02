@@ -2,6 +2,10 @@ if case let x = x + 10 {
   print(x)
 }
 
+if case var y = y + 10 {
+  y += 1
+}
+
 ---
 
 sourceFile
@@ -57,6 +61,54 @@ sourceFile
                           bindingSpecifier: let
                       caseKeyword: case
               ifKeyword: if
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            ifExpr
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        infixOperatorExpr
+                          operator:
+                            binaryOperatorExpr
+                              operator: binaryOperator "+="
+                          leftOperand:
+                            declReferenceExpr
+                              baseName: identifier "y"
+                          rightOperand:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+              conditions:
+                conditionElement
+                  condition:
+                    matchingPatternCondition
+                      initializer:
+                        initializerClause
+                          equal: =
+                          value:
+                            infixOperatorExpr
+                              operator:
+                                binaryOperatorExpr
+                                  operator: binaryOperator "+"
+                              leftOperand:
+                                declReferenceExpr
+                                  baseName: identifier "y"
+                              rightOperand:
+                                integerLiteralExpr
+                                  literal: integerLiteral "10"
+                      pattern:
+                        valueBindingPattern
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "y"
+                          bindingSpecifier: var
+                      caseKeyword: case
+              ifKeyword: if
 
 ---
 
@@ -68,8 +120,11 @@ top_level
           condition:
             pattern_guard_expr
               pattern:
-                named_pattern
-                  identifier: identifier "x"
+                expr_pattern
+                  modifier: modifier "let"
+                  expr:
+                    named_pattern
+                      identifier: identifier "x"
               value:
                 binary_expr
                   left:
@@ -89,3 +144,28 @@ top_level
                       value:
                         name_expr
                           identifier: identifier "x"
+        if_expr
+          condition:
+            pattern_guard_expr
+              pattern:
+                expr_pattern
+                  modifier: modifier "var"
+                  expr:
+                    named_pattern
+                      identifier: identifier "y"
+              value:
+                binary_expr
+                  left:
+                    name_expr
+                      identifier: identifier "y"
+                  operator: infix_operator "+"
+                  right: int_literal "10"
+          then:
+            block
+              stmt:
+                compound_assign_expr
+                  target:
+                    name_expr
+                      identifier: identifier "y"
+                  operator: infix_operator "+="
+                  value: int_literal "1"
