@@ -1,10 +1,11 @@
 using Xunit;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Semmle.Extraction.CSharp.DependencyFetching;
-using System.Collections.Immutable;
 
 namespace Semmle.Extraction.Tests
 {
@@ -14,7 +15,18 @@ namespace Semmle.Extraction.Tests
         public ImmutableHashSet<string> RegistryURLs { get; } = ["https://example.com/registry1", "https://example.com/registry2"];
         public ImmutableHashSet<string> RegistryBaseURLs { get; } = [];
         public string? CertificatePath { get; } = null;
-        public System.Security.Cryptography.X509Certificates.X509Certificate2? Certificate { get; } = null;
+        public X509Certificate2? Certificate { get; } = null;
+
+        public void Dispose() { }
+    }
+
+    public class DependabotProxyStubWithBaseUrls : IDependabotProxy
+    {
+        public string Address { get; } = "";
+        public ImmutableHashSet<string> RegistryURLs { get; } = ["https://example.com/registry1", "https://example.com/registry2", "https://example.com/base1", "https://example.com/base2"];
+        public ImmutableHashSet<string> RegistryBaseURLs { get; } = ["https://example.com/base1", "https://example.com/base2"];
+        public string? CertificatePath { get; } = null;
+        public X509Certificate2? Certificate { get; } = null;
 
         public void Dispose() { }
     }
@@ -184,6 +196,46 @@ namespace Semmle.Extraction.Tests
                 "https://example.com/registry2",
                 "https://feed.from/folder1"
             ], feedsToUse);
+        }
+
+        [Fact]
+        public void TestDefaultFeeds1()
+        {
+            // Setup
+            var feedManager = MakeFeedManager();
+
+            // Execute
+            var reachableDefault = feedManager.ReachableDefaultFeeds;
+
+            // Verify
+            Assert.Equal([
+                "https://api.nuget.org/v3/index.json"
+            ], reachableDefault);
+        }
+
+        [Fact]
+        public void TestDefaultFeeds2()
+        {
+            // Setup
+            var logger = new LoggerStub();
+            var dotnet = new DotNetStub([], [], [], []);
+            var dependabotProxy = new DependabotProxyStubWithBaseUrls();
+            var fileProvider = new FileProviderStub();
+            var feedManagerIo = new FeedManagerIOStub(["https://example.com/registry2", "https://example.com/base1"]);
+            var feedManager = new FeedManager(logger, dotnet, dependabotProxy, fileProvider, feedManagerIo);
+
+            // Execute
+            var reachableDefault = feedManager.ReachableDefaultFeeds;
+            var reachableFallback = feedManager.ReachableFallbackFeeds;
+
+            // Verify
+            Assert.Equal([
+                "https://example.com/base2"
+            ], reachableDefault);
+            Assert.Equal([
+                "https://example.com/registry1",
+                "https://example.com/base2"
+            ], reachableFallback);
         }
     }
 }
