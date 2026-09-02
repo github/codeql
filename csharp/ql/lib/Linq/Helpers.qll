@@ -28,8 +28,11 @@ private predicate returnsLoopVariable(ForeachStmt fes, Stmt s, ReturnStmt ret) {
 private predicate hasNullDefault(Type t) { t.isRefType() or t instanceof NullableType }
 
 private predicate returnsDefaultValue(ForeachStmt fes, ReturnStmt ret) {
-  exists(Type elementType |
-    elementType = fes.getVariable().getType() |
+   exists(BlockStmt enclosingBlock, int i, Type elementType |
+    enclosingBlock.getStmt(i) = fes and
+    enclosingBlock.getStmt(i + 1) = ret and
+    elementType = fes.getVariable().getType()
+  |
     ret.getExpr().stripCasts() instanceof NullLiteral and
     hasNullDefault(elementType)
     or
