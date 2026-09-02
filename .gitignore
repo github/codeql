@@ -79,3 +79,6 @@ node_modules/
 
 # Mergetool files
 *.orig
+
+# Local CodeQL harness database cache (veraptos TP/TN validation)
+codeql_harness_dbs/
