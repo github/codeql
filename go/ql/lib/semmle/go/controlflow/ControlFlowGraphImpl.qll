@@ -1084,31 +1084,6 @@ module CfgImpl {
       )
     }
 
-    additional predicate preservesDefaultControlFlow(Ast::AstNode ast) {
-      ast = any(Go::FuncDef fd | hasFuncDefPrologue(fd)).getBody()
-      or
-      exists(getFirstEpilogueTag(ast)) and
-      not ast = any(Go::SelectStmt sel).getACommClause().getComm().(Go::RecvStmt)
-    }
-
-    additional predicate overridesDefaultControlFlowStep(
-      Ast::AstNode ast, PreControlFlowNode source, PreControlFlowNode target
-    ) {
-      ast = any(Go::FuncDef fd | hasFuncDefPrologue(fd)).getBody() and source.isBefore(ast)
-      or
-      ast = any(Go::FuncDef fd | funcHasDefer(fd)).getBody() and
-      source.isAfter(getLastRankedChild(ast)) and
-      target.isAfter(ast)
-      or
-      exists(getFirstEpilogueTag(ast)) and
-      (
-        source.isAfter(getLastRankedChild(ast))
-        or
-        not exists(getRankedChild(ast, _)) and source.isBefore(ast)
-      ) and
-      (target.isIn(ast) or target.isAfter(ast))
-    }
-
     additional predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
       rangeStmtStep(n1, n2) or
       selectStmtStep(n1, n2) or
@@ -1139,6 +1114,17 @@ module CfgImpl {
       )
     }
 
+    /** Routes into and between the children of `parent` in evaluation order. */
+    private predicate childSequenceStep(
+      Ast::AstNode parent, PreControlFlowNode n1, PreControlFlowNode n2
+    ) {
+      n1.isBefore(parent) and n2.isBefore(getRankedChild(parent, 1))
+      or
+      exists(int i |
+        n1.isAfter(getRankedChild(parent, i)) and n2.isBefore(getRankedChild(parent, i + 1))
+      )
+    }
+
     /** Routes between consecutive epilogue nodes of `parent`. */
     private predicate epilogueSequenceStep(
       Ast::AstNode parent, PreControlFlowNode n1, PreControlFlowNode n2
@@ -1152,6 +1138,8 @@ module CfgImpl {
 
     /** Routes into and between the epilogue nodes of `parent`. */
     private predicate epilogueStep(Ast::AstNode parent, PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(getFirstEpilogueTag(parent)) and childSequenceStep(parent, n1, n2)
+      or
       n1.isAfter(getLastRankedChild(parent)) and
       n2.isAdditional(parent, getFirstEpilogueTag(parent))
       or
@@ -1681,6 +1669,17 @@ module CfgImpl {
      */
     private predicate funcDefStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::FuncDef fd | exists(fd.getBody()) |
+        funcHasDefer(fd) and
+        not hasFuncDefPrologue(fd) and
+        n1.isBefore(fd.getBody()) and
+        n2.isBefore(getRankedChild(fd.getBody(), 1))
+        or
+        (hasFuncDefPrologue(fd) or funcHasDefer(fd)) and
+        exists(int i |
+          n1.isAfter(getRankedChild(fd.getBody(), i)) and
+          n2.isBefore(getRankedChild(fd.getBody(), i + 1))
+        )
+        or
         n1.isBefore(fd.getBody()) and
         exists(fd.getResultVar(0)) and
         n2.isAdditional(fd.getBody(), "zero-init:0")
@@ -1735,16 +1734,6 @@ module CfgImpl {
       )
     }
 
-    predicate preservesDefaultControlFlow(Ast::AstNode ast) {
-      Input1::preservesDefaultControlFlow(ast)
-    }
-
-    predicate overridesDefaultControlFlowStep(
-      Ast::AstNode ast, PreControlFlowNode source, PreControlFlowNode target
-    ) {
-      Input1::overridesDefaultControlFlowStep(ast, source, target)
-    }
-
     predicate step(PreControlFlowNode n1, PreControlFlowNode n2) { Input1::step(n1, n2) }
   }
 
@@ -1758,16 +1747,6 @@ module CfgImpl {
 
     predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
       Input1::endAbruptCompletion(ast, n, c)
-    }
-
-    predicate preservesDefaultControlFlow(Ast::AstNode ast) {
-      Input1::preservesDefaultControlFlow(ast)
-    }
-
-    predicate overridesDefaultControlFlowStep(
-      Ast::AstNode ast, PreControlFlowNode source, PreControlFlowNode target
-    ) {
-      Input1::overridesDefaultControlFlowStep(ast, source, target)
     }
 
     predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
