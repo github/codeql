@@ -367,6 +367,14 @@ def extractor_telemetry_message():
             .telemetry()
     )
 
+def parser_statistics_telemetry_message(old_parser_file_count, tree_sitter_parser_file_count):
+    return (DiagnosticMessage(Source("py/extractor/parser-statistics", "Python parser statistics"), Severity.NOTE)
+            .markdown("Internal parser telemetry for the Python extractor.\n\nNo action needed.")
+            .attribute("old_parser_file_count", old_parser_file_count)
+            .attribute("tree_sitter_parser_file_count", tree_sitter_parser_file_count)
+            .telemetry()
+    )
+
 def get_stack_trace_lines():
     """Creates a stack trace for inclusion into the `attributes` part of a diagnostic message.
     Limits the size of the stack trace to 5000 characters, so as to not make the SARIF file overly big.
