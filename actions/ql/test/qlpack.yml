@@ -11,5 +11,4 @@ extractor: actions
 tests: .
 warnOnImplicitThis: true
 dataExtensions:
-  - query-tests/Security/CWE-829/*.model.yml
   - output-clobbering.model.yml

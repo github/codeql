@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* The `actions/unpinned-tag` query no longer reports `uses:` references recorded by the new `pinnedByLockfileDataModel` extensible predicate. Lockfile pins match repository sub-actions while preserving ref casing.
+* The `actions/unpinned-tag` query no longer reports action references pinned by a valid v0.0.2 `.github/workflows/actions.lock` entry for the enclosing workflow.

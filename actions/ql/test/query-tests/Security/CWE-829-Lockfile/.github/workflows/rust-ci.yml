@@ -1,0 +1,16 @@
+on:
+  pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: dtolnay/rust-toolchain@v1
+    - uses: DToLnAy/RuSt-ToOlChAiN/save@v1
+    - uses: dtolnay/rust-toolchain@V1
+    - uses: other-workflow/action@v1
+    - uses: mismatched/action@v1
+    - uses: malformed/action@v1
+    - uses: missing/action@v1
+  reusable:
+    uses: dtolnay/rust-toolchain/.github/workflows/reusable.yml@v1
