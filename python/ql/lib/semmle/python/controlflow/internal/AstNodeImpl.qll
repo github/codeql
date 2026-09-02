@@ -1657,7 +1657,7 @@ private module Input implements InputSig1, InputSig2 {
     or
     e instanceof Py::Subscript
     or
-    e instanceof Py::BinaryExpr and e.(Py::BinaryExpr).getOp() instanceof Py::Div
+    e.(Py::BinaryExpr).getOp() instanceof Py::Div
     or
     e instanceof Py::ImportExpr
     or
