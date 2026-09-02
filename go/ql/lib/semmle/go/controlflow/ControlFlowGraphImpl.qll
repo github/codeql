@@ -215,7 +215,7 @@ module CfgImpl {
       AstNode getUpdate(int index) { index = 0 and result = this.(Go::ForStmt).getPost() }
     }
 
-    class ForeachStmt extends LoopStmt instanceof Go::RangeStmt {
+    class ForEachStmt extends LoopStmt instanceof Go::RangeStmt {
       Expr getVariable() { result = this.(Go::RangeStmt).getPattern() }
 
       Expr getCollection() { result = this.(Go::RangeStmt).getDomain() }
@@ -1489,7 +1489,7 @@ module CfgImpl {
 
     private predicate rangeStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::RangeElementExpr p |
-        // The shared `ForeachStmt` model owns the loop skeleton (testing the
+        // The shared `ForEachStmt` model owns the loop skeleton (testing the
         // domain for emptiness, the `[LoopHeader]` join/branch point, and the
         // loop exit) and routes control flow into `Before(p)` and out of
         // `After(p)`, where `p` is the synthesized "range element" loop
