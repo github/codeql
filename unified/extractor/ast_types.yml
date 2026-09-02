@@ -33,8 +33,6 @@ supertypes:
     - switch_expr
     - unresolved_operator_sequence
     - unsupported_node
-  expr_or_pattern:
-    - expr
     - pattern
   expr_or_type:
     - expr
@@ -164,7 +162,7 @@ named:
 
   # Plain assignment
   assign_expr:
-    target: expr_or_pattern
+    target: expr
     value: expr
 
   # Compound assignment
