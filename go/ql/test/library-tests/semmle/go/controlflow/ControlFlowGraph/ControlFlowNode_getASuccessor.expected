@@ -2618,24 +2618,28 @@
 | stmts2.go:16:2:26:2 | select statement | stmts2.go:18:2:19:10 | comm clause |
 | stmts2.go:16:2:26:2 | select statement | stmts2.go:20:2:24:10 | comm clause |
 | stmts2.go:16:2:26:2 | select statement | stmts2.go:25:2:25:18 | comm clause |
-| stmts2.go:17:2:17:15 | comm clause | stmts2.go:17:11:17:14 | <-... |
+| stmts2.go:17:2:17:15 | comm clause | stmts2.go:17:7:17:14 | ... = ... |
 | stmts2.go:17:7:17:7 | After _ | stmts2.go:16:2:26:2 | After select statement |
 | stmts2.go:17:7:17:7 | Before _ | stmts2.go:17:7:17:7 | _ |
 | stmts2.go:17:7:17:7 | _ | stmts2.go:17:7:17:7 | After _ |
+| stmts2.go:17:7:17:14 | ... = ... | stmts2.go:17:11:17:14 | Before <-... |
 | stmts2.go:17:11:17:14 | <-... | stmts2.go:17:7:17:7 | Before _ |
+| stmts2.go:17:11:17:14 | Before <-... | stmts2.go:17:11:17:14 | <-... |
 | stmts2.go:17:13:17:14 | After ch | stmts2.go:18:17:18:18 | Before ch |
 | stmts2.go:17:13:17:14 | Before ch | stmts2.go:17:13:17:14 | ch |
 | stmts2.go:17:13:17:14 | ch | stmts2.go:17:13:17:14 | After ch |
-| stmts2.go:18:2:19:10 | comm clause | stmts2.go:18:15:18:18 | <-... |
+| stmts2.go:18:2:19:10 | comm clause | stmts2.go:18:7:18:18 | ... := ... |
 | stmts2.go:18:7:18:7 | After x | stmts2.go:18:10:18:10 | Before _ |
 | stmts2.go:18:7:18:7 | Before x | stmts2.go:18:7:18:7 | x |
 | stmts2.go:18:7:18:7 | x | stmts2.go:18:7:18:7 | After x |
+| stmts2.go:18:7:18:18 | ... := ... | stmts2.go:18:15:18:18 | Before <-... |
 | stmts2.go:18:7:18:18 | extract:0 ... := ... | stmts2.go:18:7:18:18 | extract:1 ... := ... |
 | stmts2.go:18:7:18:18 | extract:1 ... := ... | stmts2.go:19:3:19:10 | Before return statement |
 | stmts2.go:18:10:18:10 | After _ | stmts2.go:18:7:18:18 | extract:0 ... := ... |
 | stmts2.go:18:10:18:10 | Before _ | stmts2.go:18:10:18:10 | _ |
 | stmts2.go:18:10:18:10 | _ | stmts2.go:18:10:18:10 | After _ |
 | stmts2.go:18:15:18:18 | <-... | stmts2.go:18:7:18:7 | Before x |
+| stmts2.go:18:15:18:18 | Before <-... | stmts2.go:18:15:18:18 | <-... |
 | stmts2.go:18:17:18:18 | After ch | stmts2.go:20:17:20:18 | Before ch |
 | stmts2.go:18:17:18:18 | Before ch | stmts2.go:18:17:18:18 | ch |
 | stmts2.go:18:17:18:18 | ch | stmts2.go:18:17:18:18 | After ch |
@@ -2644,16 +2648,18 @@
 | stmts2.go:19:10:19:10 | After x | stmts2.go:19:3:19:10 | return statement |
 | stmts2.go:19:10:19:10 | Before x | stmts2.go:19:10:19:10 | x |
 | stmts2.go:19:10:19:10 | x | stmts2.go:19:10:19:10 | After x |
-| stmts2.go:20:2:24:10 | comm clause | stmts2.go:20:15:20:18 | <-... |
+| stmts2.go:20:2:24:10 | comm clause | stmts2.go:20:7:20:18 | ... := ... |
 | stmts2.go:20:7:20:7 | After _ | stmts2.go:20:10:20:10 | Before y |
 | stmts2.go:20:7:20:7 | Before _ | stmts2.go:20:7:20:7 | _ |
 | stmts2.go:20:7:20:7 | _ | stmts2.go:20:7:20:7 | After _ |
+| stmts2.go:20:7:20:18 | ... := ... | stmts2.go:20:15:20:18 | Before <-... |
 | stmts2.go:20:7:20:18 | extract:0 ... := ... | stmts2.go:20:7:20:18 | extract:1 ... := ... |
 | stmts2.go:20:7:20:18 | extract:1 ... := ... | stmts2.go:21:3:23:3 | if statement |
 | stmts2.go:20:10:20:10 | After y | stmts2.go:20:7:20:18 | extract:0 ... := ... |
 | stmts2.go:20:10:20:10 | Before y | stmts2.go:20:10:20:10 | y |
 | stmts2.go:20:10:20:10 | y | stmts2.go:20:10:20:10 | After y |
 | stmts2.go:20:15:20:18 | <-... | stmts2.go:20:7:20:7 | Before _ |
+| stmts2.go:20:15:20:18 | Before <-... | stmts2.go:20:15:20:18 | <-... |
 | stmts2.go:20:17:20:18 | After ch | stmts2.go:25:16:25:17 | Before ch |
 | stmts2.go:20:17:20:18 | Before ch | stmts2.go:20:17:20:18 | ch |
 | stmts2.go:20:17:20:18 | ch | stmts2.go:20:17:20:18 | After ch |
@@ -2672,16 +2678,18 @@
 | stmts2.go:24:10:24:10 | 0 | stmts2.go:24:10:24:10 | After 0 |
 | stmts2.go:24:10:24:10 | After 0 | stmts2.go:24:3:24:10 | return statement |
 | stmts2.go:24:10:24:10 | Before 0 | stmts2.go:24:10:24:10 | 0 |
-| stmts2.go:25:2:25:18 | comm clause | stmts2.go:25:14:25:17 | <-... |
+| stmts2.go:25:2:25:18 | comm clause | stmts2.go:25:7:25:17 | ... = ... |
 | stmts2.go:25:7:25:7 | After _ | stmts2.go:25:10:25:10 | Before _ |
 | stmts2.go:25:7:25:7 | Before _ | stmts2.go:25:7:25:7 | _ |
 | stmts2.go:25:7:25:7 | _ | stmts2.go:25:7:25:7 | After _ |
+| stmts2.go:25:7:25:17 | ... = ... | stmts2.go:25:14:25:17 | Before <-... |
 | stmts2.go:25:7:25:17 | extract:0 ... = ... | stmts2.go:25:7:25:17 | extract:1 ... = ... |
 | stmts2.go:25:7:25:17 | extract:1 ... = ... | stmts2.go:16:2:26:2 | After select statement |
 | stmts2.go:25:10:25:10 | After _ | stmts2.go:25:7:25:17 | extract:0 ... = ... |
 | stmts2.go:25:10:25:10 | Before _ | stmts2.go:25:10:25:10 | _ |
 | stmts2.go:25:10:25:10 | _ | stmts2.go:25:10:25:10 | After _ |
 | stmts2.go:25:14:25:17 | <-... | stmts2.go:25:7:25:7 | Before _ |
+| stmts2.go:25:14:25:17 | Before <-... | stmts2.go:25:14:25:17 | <-... |
 | stmts2.go:25:16:25:17 | After ch | stmts2.go:16:2:26:2 | select statement |
 | stmts2.go:25:16:25:17 | Before ch | stmts2.go:25:16:25:17 | ch |
 | stmts2.go:25:16:25:17 | ch | stmts2.go:25:16:25:17 | After ch |
@@ -3617,8 +3625,10 @@
 | stmts.go:50:2:59:2 | select statement | stmts.go:53:2:55:16 | comm clause |
 | stmts.go:50:2:59:2 | select statement | stmts.go:56:2:57:15 | comm clause |
 | stmts.go:50:2:59:2 | select statement | stmts.go:58:2:58:16 | comm clause |
-| stmts.go:51:2:52:31 | comm clause | stmts.go:51:7:51:11 | <-... |
+| stmts.go:51:2:52:31 | comm clause | stmts.go:51:7:51:11 | expression statement |
 | stmts.go:51:7:51:11 | <-... | stmts.go:52:3:52:31 | expression statement |
+| stmts.go:51:7:51:11 | Before <-... | stmts.go:51:7:51:11 | <-... |
+| stmts.go:51:7:51:11 | expression statement | stmts.go:51:7:51:11 | Before <-... |
 | stmts.go:51:9:51:11 | After ch1 | stmts.go:53:19:53:21 | Before ch2 |
 | stmts.go:51:9:51:11 | Before ch1 | stmts.go:51:9:51:11 | ch1 |
 | stmts.go:51:9:51:11 | ch1 | stmts.go:51:9:51:11 | After ch1 |
@@ -3634,7 +3644,7 @@
 | stmts.go:52:15:52:30 | "Heard from ch1" | stmts.go:52:15:52:30 | After "Heard from ch1" |
 | stmts.go:52:15:52:30 | After "Heard from ch1" | stmts.go:52:3:52:31 | call to Println |
 | stmts.go:52:15:52:30 | Before "Heard from ch1" | stmts.go:52:15:52:30 | "Heard from ch1" |
-| stmts.go:53:2:55:16 | comm clause | stmts.go:53:17:53:21 | <-... |
+| stmts.go:53:2:55:16 | comm clause | stmts.go:53:7:53:21 | ... = ... |
 | stmts.go:53:7:53:7 | After a | stmts.go:53:9:53:9 | Before 0 |
 | stmts.go:53:7:53:7 | Before a | stmts.go:53:7:53:7 | a |
 | stmts.go:53:7:53:7 | a | stmts.go:53:7:53:7 | After a |
@@ -3642,6 +3652,7 @@
 | stmts.go:53:7:53:10 | Before index expression | stmts.go:53:7:53:7 | Before a |
 | stmts.go:53:7:53:10 | index expression | stmts.go:46:1:62:1 | Exceptional Exit |
 | stmts.go:53:7:53:10 | index expression | stmts.go:53:7:53:10 | After index expression |
+| stmts.go:53:7:53:21 | ... = ... | stmts.go:53:17:53:21 | Before <-... |
 | stmts.go:53:7:53:21 | extract:0 ... = ... | stmts.go:53:7:53:21 | extract:1 ... = ... |
 | stmts.go:53:7:53:21 | extract:1 ... = ... | stmts.go:54:3:54:16 | expression statement |
 | stmts.go:53:9:53:9 | 0 | stmts.go:53:9:53:9 | After 0 |
@@ -3651,6 +3662,7 @@
 | stmts.go:53:13:53:13 | Before w | stmts.go:53:13:53:13 | w |
 | stmts.go:53:13:53:13 | w | stmts.go:53:13:53:13 | After w |
 | stmts.go:53:17:53:21 | <-... | stmts.go:53:7:53:10 | Before index expression |
+| stmts.go:53:17:53:21 | Before <-... | stmts.go:53:17:53:21 | <-... |
 | stmts.go:53:19:53:21 | After ch2 | stmts.go:58:7:58:9 | Before ch1 |
 | stmts.go:53:19:53:21 | Before ch2 | stmts.go:53:19:53:21 | ch2 |
 | stmts.go:53:19:53:21 | ch2 | stmts.go:53:19:53:21 | After ch2 |
@@ -3688,11 +3700,12 @@
 | stmts.go:57:3:57:15 | call to Println | stmts.go:46:1:62:1 | Exceptional Exit |
 | stmts.go:57:3:57:15 | call to Println | stmts.go:57:3:57:15 | After call to Println |
 | stmts.go:57:3:57:15 | expression statement | stmts.go:57:3:57:15 | Before call to Println |
-| stmts.go:58:2:58:16 | comm clause | stmts.go:58:7:58:15 | send statement |
+| stmts.go:58:2:58:16 | comm clause | stmts.go:58:7:58:15 | Before send statement |
 | stmts.go:58:7:58:9 | After ch1 | stmts.go:58:14:58:15 | Before 42 |
 | stmts.go:58:7:58:9 | Before ch1 | stmts.go:58:7:58:9 | ch1 |
 | stmts.go:58:7:58:9 | ch1 | stmts.go:58:7:58:9 | After ch1 |
 | stmts.go:58:7:58:15 | After send statement | stmts.go:50:2:59:2 | After select statement |
+| stmts.go:58:7:58:15 | Before send statement | stmts.go:58:7:58:15 | send statement |
 | stmts.go:58:7:58:15 | send statement | stmts.go:58:7:58:15 | After send statement |
 | stmts.go:58:14:58:15 | 42 | stmts.go:58:14:58:15 | After 42 |
 | stmts.go:58:14:58:15 | After 42 | stmts.go:50:2:59:2 | select statement |
