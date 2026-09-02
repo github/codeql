@@ -4370,8 +4370,7 @@
 | tst.go:23:1:26:1 | function declaration | tst.go:23:1:26:1 | After function declaration |
 | tst.go:23:15:26:1 | After block statement | tst.go:23:1:26:1 | Normal Exit |
 | tst.go:23:15:26:1 | block statement | tst.go:24:2:25:2 | expression-switch statement |
-| tst.go:24:2:25:2 | After expression-switch statement | tst.go:23:15:26:1 | After block statement |
-| tst.go:24:2:25:2 | expression-switch statement | tst.go:24:2:25:2 | After expression-switch statement |
+| tst.go:24:2:25:2 | expression-switch statement | tst.go:23:15:26:1 | After block statement |
 | tst.go:28:1:32:1 | After function declaration | tst.go:0:0:0:0 | After tst.go |
 | tst.go:28:1:32:1 | Before function declaration | tst.go:28:1:32:1 | function declaration |
 | tst.go:28:1:32:1 | Entry | tst.go:28:15:32:1 | block statement |
