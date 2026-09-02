@@ -4,7 +4,7 @@
 overlay[local?]
 module;
 
-import unified
+private import unified
 private import codeql.controlflow.ControlFlowGraph
 private import codeql.controlflow.SuccessorType
 
