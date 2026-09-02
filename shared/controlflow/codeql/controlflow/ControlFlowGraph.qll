@@ -1220,16 +1220,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c);
 
       /**
-       * Holds if the language-specific implementation provides all control flow
-       * for `ast`, suppressing the default left-to-right evaluation steps.
-       *
-       * This is useful when the language-specific entry point for `ast` is not
-       * an edge from its "before" node, so the presence of an explicit step
-       * cannot itself suppress the default control flow.
-       */
-      default predicate overridesDefaultControlFlow(AstNode ast) { none() }
-
-      /**
        * Holds if the shared library should preserve its default left-to-right
        * control flow for `ast` even though the language provides an explicit
        * step from its "before" node.
@@ -1966,7 +1956,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        */
       private predicate defaultCfg(AstNode ast) {
         hasCfg(ast) and
-        not Input2::overridesDefaultControlFlow(ast) and
         (
           Input2::preservesDefaultControlFlow(ast)
           or
