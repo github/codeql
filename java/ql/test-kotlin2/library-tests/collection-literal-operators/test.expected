@@ -1,0 +1,7 @@
+literalCall
+| test.kt:14:24:14:40 | of(...) | test.kt:5:18:5:62 | of | Words | test.kt:14:24:14:40 | Companion | 2 |
+literalArguments
+| test.kt:14:24:14:40 | of(...) | 0 | test.kt:14:25:14:32 | source(...) |
+| test.kt:14:24:14:40 | of(...) | 1 | test.kt:14:35:14:39 | "two" |
+#select
+| test.kt:14:25:14:32 | source(...) | test.kt:15:10:15:24 | ...[...] |

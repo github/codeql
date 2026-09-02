@@ -1,0 +1,4 @@
+selectedProperty
+| test.kt:10:10:10:17 | currency | test.kt:10:10:10:17 | getCurrency(...) | test.kt:3:36:3:55 | getCurrency |
+#select
+| test.kt:14:28:14:35 | source(...) | test.kt:11:10:11:17 | currency |

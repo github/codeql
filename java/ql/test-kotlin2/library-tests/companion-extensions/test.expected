@@ -1,0 +1,11 @@
+declarations
+| test.kt:5:9:5:29 | empty | test.kt:3:1:7:1 | Box | Method | empty() |
+| test.kt:9:11:9:52 | create | test.kt:0:0:0:0 | TestKt | Method | create(java.lang.String) |
+| test.kt:12:5:12:19 | getDefault | test.kt:0:0:0:0 | TestKt | Method | getDefault() |
+calls
+| test.kt:19:14:19:29 | create(...) | test.kt:18:1:21:1 | test | test.kt:9:11:9:52 | create | test.kt:19:14:19:29 | TestKt |
+| test.kt:20:14:20:20 | getDefault(...) | test.kt:18:1:21:1 | test | test.kt:12:5:12:19 | getDefault | test.kt:20:14:20:20 | TestKt |
+properties
+| test.kt:11:11:12:19 | default | test.kt:0:0:0:0 | TestKt | test.kt:12:5:12:19 | getDefault |
+#select
+| test.kt:19:21:19:28 | source(...) | test.kt:19:14:19:35 | getValue(...) |

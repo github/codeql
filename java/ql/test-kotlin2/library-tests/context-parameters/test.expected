@@ -1,0 +1,20 @@
+parameters
+| test.kt:8:1:8:45 | logged | test.kt:7:9:7:22 | logger | 0 | Logger |
+| test.kt:8:1:8:45 | logged | test.kt:8:12:8:24 | value | 1 | String |
+| test.kt:12:5:12:28 | getLogged | test.kt:10:9:10:22 | logger | 1 | Logger |
+| test.kt:12:5:12:28 | getLogged | test.kt:11:5:11:10 | <this> | 0 | String |
+| test.kt:13:5:15:5 | setLogged | test.kt:10:9:10:22 | logger | 1 | Logger |
+| test.kt:13:5:15:5 | setLogged | test.kt:11:5:11:10 | <this> | 0 | String |
+| test.kt:13:5:15:5 | setLogged | test.kt:13:9:13:13 | value | 2 | String |
+calls
+| test.kt:18:17:18:33 | logged(...) | test.kt:17:43:21:1 | invoke | test.kt:8:1:8:45 | logged | test.kt:18:17:18:33 | TestKt | 2 |
+| test.kt:18:17:18:40 | getLogged(...) | test.kt:17:43:21:1 | invoke | test.kt:12:5:12:28 | getLogged | test.kt:18:17:18:40 | TestKt | 2 |
+| test.kt:19:5:19:27 | setLogged(...) | test.kt:17:43:21:1 | invoke | test.kt:13:5:15:5 | setLogged | test.kt:19:5:19:27 | TestKt | 3 |
+arguments
+| test.kt:18:17:18:33 | logged(...) | 0 | test.kt:0:0:0:0 | p0 |
+| test.kt:18:17:18:33 | logged(...) | 1 | test.kt:18:24:18:32 | "message" |
+| test.kt:18:17:18:40 | getLogged(...) | 0 | test.kt:18:17:18:33 | logged(...) |
+| test.kt:18:17:18:40 | getLogged(...) | 1 | test.kt:0:0:0:0 | p0 |
+| test.kt:19:5:19:27 | setLogged(...) | 0 | test.kt:19:5:19:12 | "target" |
+| test.kt:19:5:19:27 | setLogged(...) | 1 | test.kt:0:0:0:0 | p0 |
+| test.kt:19:5:19:27 | setLogged(...) | 2 | test.kt:19:23:19:27 | value |
