@@ -18,5 +18,5 @@ import Linq.Helpers
 from ForeachStmtGenericEnumerable fes, IfStmt is, ReturnStmt ret, ReturnStmt defaultRet
 where missedFirstOrDefaultOpportunity(fes, is, ret, defaultRet)
 select fes,
-  "This foreach loop $@ - consider finding the element explicitly using '.FirstOrDefault(...)'.",
-  is.getCondition(), "returns the first sequence element satisfying a predicate"
+  "This foreach loop returns the first sequence element satisfying a $@ - consider finding the element explicitly using '.FirstOrDefault(...)'.",
+  is.getCondition(), "predicate"
