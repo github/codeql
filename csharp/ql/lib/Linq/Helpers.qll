@@ -21,21 +21,23 @@ private int numStmts(ForeachStmt fes) {
 }
 
 private predicate terminatesCallable(Stmt s) {
-  s.stripSingletonBlocks() instanceof ReturnStmt
-  or
-  s.stripSingletonBlocks() instanceof YieldBreakStmt
-  or
-  s.stripSingletonBlocks() instanceof ThrowStmt
-  or
-  s.stripSingletonBlocks() instanceof BreakStmt
-  or
-  exists(BlockStmt b | b = s.stripSingletonBlocks() | terminatesCallable(b.getLastStmt()))
-  or
-  exists(IfStmt nested |
-    nested = s.stripSingletonBlocks() and
-    exists(nested.getElse()) and
-    terminatesCallable(nested.getThen()) and
-    terminatesCallable(nested.getElse())
+  exists(Stmt stripped | stripped = s.stripSingletonBlocks() |
+    stripped instanceof ReturnStmt
+    or
+    stripped instanceof YieldBreakStmt
+    or
+    stripped instanceof ThrowStmt
+    or
+    stripped instanceof BreakStmt
+    or
+    stripped = any(BlockStmt b | terminatesCallable(b.getLastStmt()))
+    or
+    stripped =
+      any(IfStmt nested |
+        exists(nested.getElse()) and
+        terminatesCallable(nested.getThen()) and
+        terminatesCallable(nested.getElse())
+      )
   )
 }
 
