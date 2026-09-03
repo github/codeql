@@ -35,11 +35,11 @@ private predicate returnsDefaultValueAfterForeach(ForeachStmt fes) {
     enclosingBlock.getStmt(i + 1) = ret and
     elementType = fes.getVariable().getType()
   |
-    ret.getExpr().stripCasts() instanceof NullLiteral and
+    ret.getExpr().stripImplicit() instanceof NullLiteral and
     hasNullDefault(elementType)
     or
     exists(DefaultValueExpr defaultValue |
-      defaultValue = ret.getExpr().stripCasts() and
+      defaultValue = ret.getExpr().stripImplicit() and
       (
         defaultValue.getType() = elementType
         or
@@ -202,6 +202,7 @@ predicate missedFirstOrDefaultOpportunity(ForeachStmtGenericEnumerable fes, IfSt
     va = is.getCondition().getAChildExpr*()
   ) and
   not is.getCondition().getAChildExpr*() instanceof AwaitExpr and
+  not fes.isAsync() and
   returnsLoopVariable(fes, is.getThen()) and
   returnsDefaultValueAfterForeach(fes)
 }
