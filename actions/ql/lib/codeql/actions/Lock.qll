@@ -9,8 +9,8 @@ class ActionsLock extends YamlDocument {
   ActionsLock() { this.getFile().getBaseName() = "actions.lock" }
 
   /**
-   * Holds if the v0.0.2 lockfile records `nwo` at `ref` for `workflowPath` with a full commit
-   * digest. Repository pins also cover sub-actions such as `actions/cache/save`.
+   * Holds if the lockfile records `nwo` at `ref` for `workflowPath` with a full commit digest.
+   * Repository pins also cover sub-actions such as `actions/cache/save`.
    */
   bindingset[nwo]
   predicate pins(string workflowPath, string nwo, string ref) {
@@ -20,7 +20,6 @@ class ActionsLock extends YamlDocument {
       string pin, string pinnedNwo
     |
       root = this and
-      root.lookup("version").(YamlScalar).getValue() = "v0.0.2" and
       root.lookup("workflows").(YamlMapping).lookup(workflowPath) = workflowPins and
       workflowPins.getElement(_) = pinNode and
       pin = pinNode.getValue() and
