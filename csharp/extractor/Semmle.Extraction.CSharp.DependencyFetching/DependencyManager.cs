@@ -106,7 +106,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return BuildScript.Success;
             }).Run(SystemBuildActions.Instance, startCallback, exitCallback);
 
-            dependabotProxy = DependabotProxy.GetDependabotProxy(logger, diagnosticsWriter, tempWorkingDirectory);
+            dependabotProxy = DependabotProxy.Make(logger, diagnosticsWriter, tempWorkingDirectory);
 
             try
             {
