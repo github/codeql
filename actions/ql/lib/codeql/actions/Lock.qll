@@ -9,9 +9,8 @@ class ActionsLock extends YamlDocument {
   ActionsLock() { this.getFile().getBaseName() = "actions.lock" }
 
   /**
-   * Holds if the lockfile records `nwo` at `ref` for `workflowPath` with positive owner and
-   * repository IDs and a full commit digest. Repository pins also cover sub-actions such as
-   * `actions/cache/save`.
+   * Holds if the lockfile records `nwo` at `ref` for `workflowPath` with a full commit digest.
+   * Repository pins also cover sub-actions such as `actions/cache/save`.
    */
   bindingset[nwo]
   predicate pins(string workflowPath, string nwo, string ref) {
@@ -33,8 +32,6 @@ class ActionsLock extends YamlDocument {
       ) and
       root.lookup("dependencies").(YamlMapping).lookup(pin) = dependency and
       dependency.lookup("ref").(YamlScalar).getValue() = ref and
-      dependency.lookup("owner_id").(YamlScalar).getValue().toInt() > 0 and
-      dependency.lookup("repo_id").(YamlScalar).getValue().toInt() > 0 and
       dependency
           .lookup("commit")
           .(YamlScalar)

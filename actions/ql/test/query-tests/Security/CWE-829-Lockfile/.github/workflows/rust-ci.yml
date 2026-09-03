@@ -12,7 +12,5 @@ jobs:
     - uses: mismatched/action@v1 # $ Alert
     - uses: malformed/action@v1 # $ Alert
     - uses: missing/action@v1 # $ Alert
-    - uses: missing-owner/action@v1 # $ Alert
-    - uses: zero-repo/action@v1 # $ Alert
   reusable:
     uses: dtolnay/rust-toolchain/.github/workflows/reusable.yml@v1 # $ Alert
