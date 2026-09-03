@@ -23,7 +23,7 @@ private int numStmts(ForeachStmt fes) {
 private predicate returnsLoopVariable(ForeachStmt fes, Stmt s) {
   exists(ReturnStmt ret |
     ret = s.stripSingletonBlocks() and
-    ret.getExpr().stripCasts().(VariableAccess).getTarget() = fes.getVariable()
+    ret.getExpr().stripImplicit().(VariableAccess).getTarget() = fes.getVariable()
   )
 }
 
