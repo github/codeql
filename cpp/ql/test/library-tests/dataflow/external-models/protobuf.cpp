@@ -33,7 +33,6 @@ namespace std {
 }
 
 namespace absl {
-	// `absl::string_view` is passed by value; `absl::Cord` is passed by const reference.
 	class string_view {
 	public:
 		string_view();
@@ -56,12 +55,8 @@ namespace protobuf {
 		class CodedOutputStream {};
 	}
 
-	// A faithful subset of `MessageLite`. The string/Cord/stream signatures mirror the real
-	// `message_lite.h`; the iostream-based methods are declared on `Message` in the real headers
-	// but are modeled here on `MessageLite` (with `subtypes` covering `Message`).
 	class MessageLite {
 	public:
-		// Deserialization: input taints the message.
 		bool ParseFromString(absl::string_view data);
 		bool ParseFromString(const absl::Cord &data);
 		bool ParsePartialFromString(absl::string_view data);
@@ -89,11 +84,14 @@ namespace protobuf {
 		bool MergeFromCodedStream(io::CodedInputStream *input);
 		bool MergePartialFromCodedStream(io::CodedInputStream *input);
 
-		// Serialization into an output buffer/stream: the message taints the output argument.
 		bool SerializeToString(std::string *output) const;
 		bool SerializePartialToString(std::string *output) const;
 		bool AppendToString(std::string *output) const;
 		bool AppendPartialToString(std::string *output) const;
+		bool SerializeToString(absl::Cord *output) const;
+		bool SerializePartialToString(absl::Cord *output) const;
+		bool AppendToString(absl::Cord *output) const;
+		bool AppendPartialToString(absl::Cord *output) const;
 		bool SerializeToArray(void *data, int size) const;
 		bool SerializePartialToArray(void *data, int size) const;
 		bool SerializeToCord(absl::Cord *output) const;
@@ -107,7 +105,6 @@ namespace protobuf {
 		bool SerializeToCodedStream(io::CodedOutputStream *output) const;
 		bool SerializePartialToCodedStream(io::CodedOutputStream *output) const;
 
-		// Serialization returning the bytes.
 		std::string SerializeAsString() const;
 		std::string SerializePartialAsString() const;
 		absl::Cord SerializeAsCord() const;
@@ -125,110 +122,367 @@ class Person : public google::protobuf::Message {
 
 // --- test code ---
 
-char *source();
-void sink(char);
+template<typename T> T source();
+void sink(...);
 
-// End-to-end flow is demonstrated through the pointer-to-buffer methods, where content taint
-// flows naturally: `ParseFromArray` reads a tainted buffer into the message, and `SerializeToArray`
-// writes the message back out to a scalar buffer that reaches the sink. The `string_view`, `Cord`,
-// and stream overloads do not carry content taint through their argument conversions without further
-// library models, so they are exercised for summary-step coverage (`steps.ql`) rather than flow.
+using namespace google::protobuf::io;
 
-// Deserialization: the encoded input taints the message (`this`).
+// Deserialization: the input taints the message.
+
+void test_ParseFromString_string_view() {
+	Person msg;
+	absl::string_view data = source<absl::string_view>();
+	msg.ParseFromString(data);
+	sink(msg); // $ ir
+}
+
+void test_ParseFromString_Cord() {
+	Person msg;
+	absl::Cord data = source<absl::Cord>();
+	msg.ParseFromString(data);
+	sink(msg); // $ ir
+}
+
+void test_ParsePartialFromString_string_view() {
+	Person msg;
+	absl::string_view data = source<absl::string_view>();
+	msg.ParsePartialFromString(data);
+	sink(msg); // $ ir
+}
+
+void test_ParsePartialFromString_Cord() {
+	Person msg;
+	absl::Cord data = source<absl::Cord>();
+	msg.ParsePartialFromString(data);
+	sink(msg); // $ ir
+}
+
+void test_MergeFromString_string_view() {
+	Person msg;
+	absl::string_view data = source<absl::string_view>();
+	msg.MergeFromString(data);
+	sink(msg); // $ ir
+}
+
+void test_MergeFromString_Cord() {
+	Person msg;
+	absl::Cord data = source<absl::Cord>();
+	msg.MergeFromString(data);
+	sink(msg); // $ ir
+}
+
+void test_MergePartialFromString_string_view() {
+	Person msg;
+	absl::string_view data = source<absl::string_view>();
+	msg.MergePartialFromString(data);
+	sink(msg); // $ ir
+}
+
+void test_MergePartialFromString_Cord() {
+	Person msg;
+	absl::Cord data = source<absl::Cord>();
+	msg.MergePartialFromString(data);
+	sink(msg); // $ ir
+}
+
 void test_ParseFromArray() {
 	Person msg;
-	std::string data = std::string(source());
+	std::string data(source<const char *>());
 	msg.ParseFromArray(data.data(), data.size());
+	sink(msg); // $ ir
+}
+
+void test_ParsePartialFromArray() {
+	Person msg;
+	std::string data(source<const char *>());
+	msg.ParsePartialFromArray(data.data(), data.size());
+	sink(msg); // $ ir
+}
+
+void test_ParseFromCord() {
+	Person msg;
+	absl::Cord data = source<absl::Cord>();
+	msg.ParseFromCord(data);
+	sink(msg); // $ ir
+}
+
+void test_ParsePartialFromCord() {
+	Person msg;
+	absl::Cord data = source<absl::Cord>();
+	msg.ParsePartialFromCord(data);
+	sink(msg); // $ ir
+}
+
+void test_MergeFromCord() {
+	Person msg;
+	absl::Cord data = source<absl::Cord>();
+	msg.MergeFromCord(data);
+	sink(msg); // $ ir
+}
+
+void test_MergePartialFromCord() {
+	Person msg;
+	absl::Cord data = source<absl::Cord>();
+	msg.MergePartialFromCord(data);
+	sink(msg); // $ ir
+}
+
+void test_ParseFromIstream() {
+	Person msg;
+	std::istream in = source<std::istream>();
+	msg.ParseFromIstream(&in);
+	sink(msg); // $ ir
+}
+
+void test_ParsePartialFromIstream() {
+	Person msg;
+	std::istream in = source<std::istream>();
+	msg.ParsePartialFromIstream(&in);
+	sink(msg); // $ ir
+}
+
+void test_ParseFromZeroCopyStream() {
+	Person msg;
+	ZeroCopyInputStream in = source<ZeroCopyInputStream>();
+	msg.ParseFromZeroCopyStream(&in);
+	sink(msg); // $ ir
+}
+
+void test_ParsePartialFromZeroCopyStream() {
+	Person msg;
+	ZeroCopyInputStream in = source<ZeroCopyInputStream>();
+	msg.ParsePartialFromZeroCopyStream(&in);
+	sink(msg); // $ ir
+}
+
+void test_ParseFromBoundedZeroCopyStream() {
+	Person msg;
+	ZeroCopyInputStream in = source<ZeroCopyInputStream>();
+	msg.ParseFromBoundedZeroCopyStream(&in, 1);
+	sink(msg); // $ ir
+}
+
+void test_ParsePartialFromBoundedZeroCopyStream() {
+	Person msg;
+	ZeroCopyInputStream in = source<ZeroCopyInputStream>();
+	msg.ParsePartialFromBoundedZeroCopyStream(&in, 1);
+	sink(msg); // $ ir
+}
+
+void test_MergeFromBoundedZeroCopyStream() {
+	Person msg;
+	ZeroCopyInputStream in = source<ZeroCopyInputStream>();
+	msg.MergeFromBoundedZeroCopyStream(&in, 1);
+	sink(msg); // $ ir
+}
+
+void test_MergePartialFromBoundedZeroCopyStream() {
+	Person msg;
+	ZeroCopyInputStream in = source<ZeroCopyInputStream>();
+	msg.MergePartialFromBoundedZeroCopyStream(&in, 1);
+	sink(msg); // $ ir
+}
+
+void test_ParseFromCodedStream() {
+	Person msg;
+	CodedInputStream in = source<CodedInputStream>();
+	msg.ParseFromCodedStream(&in);
+	sink(msg); // $ ir
+}
+
+void test_ParsePartialFromCodedStream() {
+	Person msg;
+	CodedInputStream in = source<CodedInputStream>();
+	msg.ParsePartialFromCodedStream(&in);
+	sink(msg); // $ ir
+}
+
+void test_MergeFromCodedStream() {
+	Person msg;
+	CodedInputStream in = source<CodedInputStream>();
+	msg.MergeFromCodedStream(&in);
+	sink(msg); // $ ir
+}
+
+void test_MergePartialFromCodedStream() {
+	Person msg;
+	CodedInputStream in = source<CodedInputStream>();
+	msg.MergePartialFromCodedStream(&in);
+	sink(msg); // $ ir
+}
+
+void test_untainted_input() {
+	Person msg;
+	absl::Cord data;
+	msg.ParseFromString(data);
+	sink(msg); // clean
+}
+
+// Serialization: the message taints the output argument.
+
+void test_SerializeToString() {
+	Person msg = source<Person>();
+	std::string out;
+	msg.SerializeToString(&out);
+	sink(out); // $ ir
+}
+
+void test_SerializePartialToString() {
+	Person msg = source<Person>();
+	std::string out;
+	msg.SerializePartialToString(&out);
+	sink(out); // $ ir
+}
+
+void test_AppendToString() {
+	Person msg = source<Person>();
+	std::string out;
+	msg.AppendToString(&out);
+	sink(out); // $ ir
+}
+
+void test_AppendPartialToString() {
+	Person msg = source<Person>();
+	std::string out;
+	msg.AppendPartialToString(&out);
+	sink(out); // $ ir
+}
+
+void test_SerializeToString_Cord() {
+	Person msg = source<Person>();
+	absl::Cord out;
+	msg.SerializeToString(&out);
+	sink(out); // $ ir
+}
+
+void test_SerializePartialToString_Cord() {
+	Person msg = source<Person>();
+	absl::Cord out;
+	msg.SerializePartialToString(&out);
+	sink(out); // $ ir
+}
+
+void test_AppendToString_Cord() {
+	Person msg = source<Person>();
+	absl::Cord out;
+	msg.AppendToString(&out);
+	sink(out); // $ ir
+}
+
+void test_AppendPartialToString_Cord() {
+	Person msg = source<Person>();
+	absl::Cord out;
+	msg.AppendPartialToString(&out);
+	sink(out); // $ ir
+}
+
+void test_SerializeToArray() {
+	Person msg = source<Person>();
 	char buf[64];
 	msg.SerializeToArray(buf, sizeof(buf));
 	sink(*buf); // $ ir
 }
 
-// Serialization returning the bytes: the message taints the returned string, observed by parsing it
-// into a second message and serializing that back out.
-void test_SerializeAsString() {
-	Person msg;
-	std::string data = std::string(source());
-	msg.ParseFromArray(data.data(), data.size());
-	std::string s = msg.SerializeAsString();
-	Person msg2;
-	msg2.ParseFromArray(s.data(), s.size());
+void test_SerializePartialToArray() {
+	Person msg = source<Person>();
 	char buf[64];
-	msg2.SerializeToArray(buf, sizeof(buf));
+	msg.SerializePartialToArray(buf, sizeof(buf));
 	sink(*buf); // $ ir
 }
 
-// Every modeled method is called below so its summary step is covered by `steps.ql`. Endpoint
-// mistakes and rows that fail to bind show up as missing lines in `steps.expected`.
-void test_step_coverage() {
+void test_SerializeToCord() {
+	Person msg = source<Person>();
+	absl::Cord out;
+	msg.SerializeToCord(&out);
+	sink(out); // $ ir
+}
+
+void test_SerializePartialToCord() {
+	Person msg = source<Person>();
+	absl::Cord out;
+	msg.SerializePartialToCord(&out);
+	sink(out); // $ ir
+}
+
+void test_AppendToCord() {
+	Person msg = source<Person>();
+	absl::Cord out;
+	msg.AppendToCord(&out);
+	sink(out); // $ ir
+}
+
+void test_AppendPartialToCord() {
+	Person msg = source<Person>();
+	absl::Cord out;
+	msg.AppendPartialToCord(&out);
+	sink(out); // $ ir
+}
+
+void test_SerializeToOstream() {
+	Person msg = source<Person>();
+	std::ostream out;
+	msg.SerializeToOstream(&out);
+	sink(out); // $ ir
+}
+
+void test_SerializePartialToOstream() {
+	Person msg = source<Person>();
+	std::ostream out;
+	msg.SerializePartialToOstream(&out);
+	sink(out); // $ ir
+}
+
+void test_SerializeToZeroCopyStream() {
+	Person msg = source<Person>();
+	ZeroCopyOutputStream out;
+	msg.SerializeToZeroCopyStream(&out);
+	sink(out); // $ ir
+}
+
+void test_SerializePartialToZeroCopyStream() {
+	Person msg = source<Person>();
+	ZeroCopyOutputStream out;
+	msg.SerializePartialToZeroCopyStream(&out);
+	sink(out); // $ ir
+}
+
+void test_SerializeToCodedStream() {
+	Person msg = source<Person>();
+	CodedOutputStream out;
+	msg.SerializeToCodedStream(&out);
+	sink(out); // $ ir
+}
+
+void test_SerializePartialToCodedStream() {
+	Person msg = source<Person>();
+	CodedOutputStream out;
+	msg.SerializePartialToCodedStream(&out);
+	sink(out); // $ ir
+}
+
+// Serialization: the message taints the returned bytes.
+
+void test_SerializeAsString() {
+	Person msg = source<Person>();
+	sink(msg.SerializeAsString()); // $ ir
+}
+
+void test_SerializePartialAsString() {
+	Person msg = source<Person>();
+	sink(msg.SerializePartialAsString()); // $ ir
+}
+
+void test_SerializeAsCord() {
+	Person msg = source<Person>();
+	sink(msg.SerializeAsCord()); // $ ir
+}
+
+void test_SerializePartialAsCord() {
+	Person msg = source<Person>();
+	sink(msg.SerializePartialAsCord()); // $ ir
+}
+
+void test_untainted_message() {
 	Person msg;
-	std::string data = std::string(source());
-	absl::string_view sv = data;
-	absl::Cord cord;
-
-	msg.ParseFromString(sv);
-	msg.ParseFromString(cord);
-	msg.ParsePartialFromString(sv);
-	msg.ParsePartialFromString(cord);
-	msg.MergeFromString(sv);
-	msg.MergeFromString(cord);
-	msg.MergePartialFromString(sv);
-	msg.MergePartialFromString(cord);
-
-	msg.ParsePartialFromArray(data.data(), data.size());
-
-	msg.ParseFromCord(cord);
-	msg.ParsePartialFromCord(cord);
-	msg.MergeFromCord(cord);
-	msg.MergePartialFromCord(cord);
-
-	std::istream in;
-	msg.ParseFromIstream(&in);
-	msg.ParsePartialFromIstream(&in);
-
-	google::protobuf::io::ZeroCopyInputStream zin;
-	msg.ParseFromZeroCopyStream(&zin);
-	msg.ParsePartialFromZeroCopyStream(&zin);
-	msg.ParseFromBoundedZeroCopyStream(&zin, 1);
-	msg.ParsePartialFromBoundedZeroCopyStream(&zin, 1);
-	msg.MergeFromBoundedZeroCopyStream(&zin, 1);
-	msg.MergePartialFromBoundedZeroCopyStream(&zin, 1);
-
-	google::protobuf::io::CodedInputStream cin;
-	msg.ParseFromCodedStream(&cin);
-	msg.ParsePartialFromCodedStream(&cin);
-	msg.MergeFromCodedStream(&cin);
-	msg.MergePartialFromCodedStream(&cin);
-
-	std::string out;
-	msg.SerializeToString(&out);
-	msg.SerializePartialToString(&out);
-	msg.AppendToString(&out);
-	msg.AppendPartialToString(&out);
-
-	char buf[64];
-	msg.SerializePartialToArray(buf, sizeof(buf));
-
-	absl::Cord cordout;
-	msg.SerializeToCord(&cordout);
-	msg.SerializePartialToCord(&cordout);
-	msg.AppendToCord(&cordout);
-	msg.AppendPartialToCord(&cordout);
-
-	std::ostream os;
-	msg.SerializeToOstream(&os);
-	msg.SerializePartialToOstream(&os);
-
-	google::protobuf::io::ZeroCopyOutputStream zout;
-	msg.SerializeToZeroCopyStream(&zout);
-	msg.SerializePartialToZeroCopyStream(&zout);
-
-	google::protobuf::io::CodedOutputStream cout;
-	msg.SerializeToCodedStream(&cout);
-	msg.SerializePartialToCodedStream(&cout);
-
-	msg.SerializeAsString();
-	msg.SerializePartialAsString();
-	msg.SerializeAsCord();
-	msg.SerializePartialAsCord();
+	sink(msg.SerializeAsString()); // clean
 }
