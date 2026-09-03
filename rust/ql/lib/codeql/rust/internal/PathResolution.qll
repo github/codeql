@@ -48,6 +48,7 @@ private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 private import codeql.rust.internal.CachedStages
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.util.Option
+private import codeql.util.SemVer
 
 private newtype TNamespace =
   TTypeNamespace() or
@@ -572,7 +573,7 @@ class CrateItemNode extends NamedItemNode instanceof Crate {
   predicate isLatestVersion(string name) {
     this =
       max(CrateItemNode c, string ver |
-        name = c.getName() and ver = c.(Crate).getVersion()
+        name = c.getName() and ver = normalizeSemVer(c.(Crate).getVersion())
       |
         c order by ver
       )
