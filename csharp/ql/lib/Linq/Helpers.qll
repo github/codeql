@@ -20,15 +20,19 @@ private int numStmts(ForeachStmt fes) {
   else result = 1
 }
 
-private predicate returnsLoopVariable(ForeachStmt fes, Stmt s, ReturnStmt ret) {
-  ret = s.stripSingletonBlocks() and
-  ret.getExpr().stripCasts().(VariableAccess).getTarget() = fes.getVariable()
+private predicate returnsLoopVariable(ForeachStmt fes, Stmt s) {
+  exists(ReturnStmt ret |
+    ret = s.stripSingletonBlocks() and
+    ret.getExpr().stripCasts().(VariableAccess).getTarget() = fes.getVariable()
+  )
 }
 
 private predicate hasNullDefault(Type t) { t.isRefType() or t instanceof NullableType }
 
-private predicate returnsDefaultValue(ForeachStmt fes, ReturnStmt ret) {
-  exists(Type elementType |
+private predicate returnsDefaultValueAfterForeach(ForeachStmt fes) {
+  exists(BlockStmt enclosingBlock, int i, Type elementType, ReturnStmt ret |
+    enclosingBlock.getStmt(i) = fes and
+    enclosingBlock.getStmt(i + 1) = ret and
     elementType = fes.getVariable().getType()
   |
     ret.getExpr().stripCasts() instanceof NullLiteral and
@@ -192,18 +196,14 @@ predicate missedFirstOrDefaultOpportunity(ForeachStmtGenericEnumerable fes, IfSt
   is = firstStmt(fes) and
   not exists(is.getElse()) and
   numStmts(fes) = 1 and
+  // Condition relies on loop variable.
   exists(VariableAccess va |
     va.getTarget() = fes.getVariable() and
     va = is.getCondition().getAChildExpr*()
   ) and
   not is.getCondition().getAChildExpr*() instanceof AwaitExpr and
-  exists(ReturnStmt ret, ReturnStmt defaultRet, BlockStmt enclosingBlock, int i |
-    returnsLoopVariable(fes, is.getThen(), ret) and
-    // If no element matches, the method returns the same value that FirstOrDefault would.
-    returnsDefaultValue(fes, defaultRet) and
-    enclosingBlock.getStmt(i) = fes and
-    enclosingBlock.getStmt(i + 1) = defaultRet
-  )
+  returnsLoopVariable(fes, is.getThen()) and
+  returnsDefaultValueAfterForeach(fes)
 }
 
 //#################### CLASSES ####################
