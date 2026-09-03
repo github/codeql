@@ -1,14 +1,14 @@
 version: future-version
 workflows:
   .github/workflows/rust-ci.yml:
-    - dtolnay/rust-toolchain@v1
+    - DToLnAy/RuSt-ToOlChAiN@v1
     - mismatched/action@v1
     - malformed/action@v1
     - missing/action@v1
   .github/workflows/other.yml:
     - other-workflow/action@v1
 dependencies:
-  dtolnay/rust-toolchain@v1:
+  DToLnAy/RuSt-ToOlChAiN@v1:
     ref: v1
     commit: sha1-6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772
     owner_id: 1940490

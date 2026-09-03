@@ -25,11 +25,10 @@ class ActionsLock extends YamlDocument {
       pin = pinNode.getValue() and
       pinnedNwo = pin.regexpCapture("^([^/@:]+/[^/@:]+)@([^:]+)$", 1) and
       ref = pin.regexpCapture("^([^/@:]+/[^/@:]+)@([^:]+)$", 2) and
-      pinnedNwo = pinnedNwo.toLowerCase() and
       (
-        nwo.toLowerCase() = pinnedNwo
+        nwo.toLowerCase() = pinnedNwo.toLowerCase()
         or
-        nwo.toLowerCase().prefix(pinnedNwo.length() + 1) = pinnedNwo + "/"
+        nwo.toLowerCase().prefix(pinnedNwo.length() + 1) = pinnedNwo.toLowerCase() + "/"
       ) and
       root.lookup("dependencies").(YamlMapping).lookup(pin) = dependency and
       dependency.lookup("ref").(YamlScalar).getValue() = ref and
