@@ -1,5 +1,5 @@
 name: codeql/rust-queries
-version: 0.1.42-dev
+version: 0.1.42
 groups:
   - rust
   - queries

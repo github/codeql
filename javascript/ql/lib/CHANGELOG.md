@@ -1,3 +1,7 @@
+## 2.10.1
+
+No user-facing changes.
+
 ## 2.10.0
 
 ### New Features
