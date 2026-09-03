@@ -34,7 +34,6 @@ private predicate terminatesCallable(Stmt s) {
     or
     stripped =
       any(IfStmt nested |
-        exists(nested.getElse()) and
         terminatesCallable(nested.getThen()) and
         terminatesCallable(nested.getElse())
       )
