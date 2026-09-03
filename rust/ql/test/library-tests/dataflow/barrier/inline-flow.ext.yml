@@ -4,8 +4,16 @@ extensions:
       extensible: barrierModel
     data:
       - ["main::sanitize", "ReturnValue", "test-barrier", "manual"]
+      - ["<main::external_file::MyBarrierTrait2>::sanitize2", "Argument[0]", "test-barrier", "manual"]
+      - ["<_ as main::MyBarrierTrait3>::sanitize3", "Argument[0]", "test-barrier", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: barrierGuardModel
     data:
       - ["main::verify_safe", "Argument[0]", "true", "test-barrier", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: additionalExternalFile
+    data:
+      - ["external_file.rs"]
+

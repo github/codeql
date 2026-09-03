@@ -47,27 +47,31 @@ edges
 | test.rs:41:14:41:61 | ... .get(...) [Some] | test.rs:41:14:41:70 | ... .unwrap() | provenance | MaD:13 |
 | test.rs:42:13:42:15 | row | test.rs:44:22:44:22 | v | provenance |  |
 | test.rs:42:20:42:21 | t1 [element] | test.rs:42:13:42:15 | row | provenance |  |
-| test.rs:50:13:52:13 | \|...\| ... | test.rs:51:22:51:27 | values | provenance | Src:MaD:4  |
-| test.rs:57:13:61:13 | \|...\| ... | test.rs:58:22:58:29 | values.0 | provenance | Src:MaD:4  |
-| test.rs:57:13:61:13 | \|...\| ... | test.rs:59:22:59:29 | values.1 | provenance | Src:MaD:4  |
-| test.rs:57:13:61:13 | \|...\| ... | test.rs:60:22:60:29 | values.2 | provenance | Src:MaD:4  |
+| test.rs:50:13:52:13 | \|...\| ... | test.rs:50:14:50:24 | ...: i64 | provenance | Src:MaD:4  |
+| test.rs:50:14:50:24 | ...: i64 | test.rs:51:22:51:27 | values | provenance |  |
+| test.rs:57:13:61:13 | \|...\| ... | test.rs:57:14:57:39 | ...: ... | provenance | Src:MaD:4  |
+| test.rs:57:14:57:39 | ...: ... | test.rs:58:22:58:29 | values.0 | provenance |  |
+| test.rs:57:14:57:39 | ...: ... | test.rs:59:22:59:29 | values.1 | provenance |  |
+| test.rs:57:14:57:39 | ...: ... | test.rs:60:22:60:29 | values.2 | provenance |  |
 | test.rs:64:13:64:17 | total | test.rs:68:14:68:18 | total | provenance |  |
 | test.rs:64:13:64:17 | total [Wrapping] | test.rs:68:14:68:18 | total | provenance |  |
 | test.rs:64:21:67:10 | conn.query_fold(...) [Ok, Wrapping] | test.rs:64:21:67:11 | TryExpr [Wrapping] | provenance |  |
 | test.rs:64:21:67:10 | conn.query_fold(...) [Ok] | test.rs:64:21:67:11 | TryExpr | provenance |  |
 | test.rs:64:21:67:11 | TryExpr | test.rs:64:13:64:17 | total | provenance |  |
 | test.rs:64:21:67:11 | TryExpr [Wrapping] | test.rs:64:13:64:17 | total [Wrapping] | provenance |  |
-| test.rs:64:65:67:9 | \|...\| ... | test.rs:65:18:65:20 | row | provenance | Src:MaD:3  |
-| test.rs:64:65:67:9 | \|...\| ... | test.rs:66:19:66:21 | row | provenance | Src:MaD:3  |
+| test.rs:64:65:67:9 | \|...\| ... | test.rs:64:76:64:83 | ...: i64 | provenance | Src:MaD:3  |
+| test.rs:64:76:64:83 | ...: i64 | test.rs:65:18:65:20 | row | provenance |  |
+| test.rs:64:76:64:83 | ...: i64 | test.rs:66:19:66:21 | row | provenance |  |
 | test.rs:64:86:67:9 | { ... } | test.rs:64:21:67:10 | conn.query_fold(...) [Ok] | provenance | MaD:15 |
 | test.rs:64:86:67:9 | { ... } [Wrapping] | test.rs:64:21:67:10 | conn.query_fold(...) [Ok, Wrapping] | provenance | MaD:15 |
 | test.rs:66:13:66:21 | ... + ... | test.rs:64:86:67:9 | { ... } | provenance |  |
 | test.rs:66:13:66:21 | ... + ... [Wrapping] | test.rs:64:86:67:9 | { ... } [Wrapping] | provenance |  |
 | test.rs:66:19:66:21 | row | test.rs:66:13:66:21 | ... + ... | provenance | MaD:12 |
 | test.rs:66:19:66:21 | row | test.rs:66:13:66:21 | ... + ... [Wrapping] | provenance | MaD:11 |
-| test.rs:70:72:78:9 | \|...\| ... | test.rs:71:17:71:18 | id | provenance | Src:MaD:3  |
-| test.rs:70:72:78:9 | \|...\| ... | test.rs:72:17:72:20 | name | provenance | Src:MaD:3  |
-| test.rs:70:72:78:9 | \|...\| ... | test.rs:73:17:73:19 | age | provenance | Src:MaD:3  |
+| test.rs:70:72:78:9 | \|...\| ... | test.rs:70:83:70:105 | ...: ... | provenance | Src:MaD:3  |
+| test.rs:70:83:70:105 | ...: ... | test.rs:71:17:71:18 | id | provenance |  |
+| test.rs:70:83:70:105 | ...: ... | test.rs:72:17:72:20 | name | provenance |  |
+| test.rs:70:83:70:105 | ...: ... | test.rs:73:17:73:19 | age | provenance |  |
 | test.rs:71:17:71:18 | id | test.rs:74:18:74:19 | id | provenance |  |
 | test.rs:72:17:72:20 | name | test.rs:75:18:75:21 | name | provenance |  |
 | test.rs:73:17:73:19 | age | test.rs:76:18:76:20 | age | provenance |  |
@@ -89,10 +93,12 @@ edges
 | test.rs:114:24:114:38 | row.take_opt(...) [Some, Ok] | test.rs:114:24:114:47 | ... .unwrap() [Ok] | provenance | MaD:13 |
 | test.rs:114:24:114:47 | ... .unwrap() [Ok] | test.rs:114:24:114:56 | ... .unwrap() | provenance | MaD:14 |
 | test.rs:114:24:114:56 | ... .unwrap() | test.rs:114:13:114:14 | v4 | provenance |  |
-| test.rs:137:13:139:13 | \|...\| ... | test.rs:138:22:138:27 | values | provenance | Src:MaD:6  |
-| test.rs:144:13:148:13 | \|...\| ... | test.rs:145:22:145:29 | values.0 | provenance | Src:MaD:6  |
-| test.rs:144:13:148:13 | \|...\| ... | test.rs:146:22:146:29 | values.1 | provenance | Src:MaD:6  |
-| test.rs:144:13:148:13 | \|...\| ... | test.rs:147:22:147:29 | values.2 | provenance | Src:MaD:6  |
+| test.rs:137:13:139:13 | \|...\| ... | test.rs:137:14:137:24 | ...: i64 | provenance | Src:MaD:6  |
+| test.rs:137:14:137:24 | ...: i64 | test.rs:138:22:138:27 | values | provenance |  |
+| test.rs:144:13:148:13 | \|...\| ... | test.rs:144:14:144:39 | ...: ... | provenance | Src:MaD:6  |
+| test.rs:144:14:144:39 | ...: ... | test.rs:145:22:145:29 | values.0 | provenance |  |
+| test.rs:144:14:144:39 | ...: ... | test.rs:146:22:146:29 | values.1 | provenance |  |
+| test.rs:144:14:144:39 | ...: ... | test.rs:147:22:147:29 | values.2 | provenance |  |
 | test.rs:151:13:151:17 | total | test.rs:155:14:155:18 | total | provenance |  |
 | test.rs:151:13:151:17 | total [Wrapping] | test.rs:155:14:155:18 | total | provenance |  |
 | test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok, Wrapping] | test.rs:151:21:154:16 | await ... [Ok, Wrapping] | provenance |  |
@@ -101,17 +107,19 @@ edges
 | test.rs:151:21:154:16 | await ... [Ok] | test.rs:151:21:154:17 | TryExpr | provenance |  |
 | test.rs:151:21:154:17 | TryExpr | test.rs:151:13:151:17 | total | provenance |  |
 | test.rs:151:21:154:17 | TryExpr [Wrapping] | test.rs:151:13:151:17 | total [Wrapping] | provenance |  |
-| test.rs:151:65:154:9 | \|...\| ... | test.rs:152:18:152:20 | row | provenance | Src:MaD:5  |
-| test.rs:151:65:154:9 | \|...\| ... | test.rs:153:19:153:21 | row | provenance | Src:MaD:5  |
+| test.rs:151:65:154:9 | \|...\| ... | test.rs:151:76:151:83 | ...: i64 | provenance | Src:MaD:5  |
+| test.rs:151:76:151:83 | ...: i64 | test.rs:152:18:152:20 | row | provenance |  |
+| test.rs:151:76:151:83 | ...: i64 | test.rs:153:19:153:21 | row | provenance |  |
 | test.rs:151:86:154:9 | { ... } | test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok] | provenance | MaD:16 |
 | test.rs:151:86:154:9 | { ... } [Wrapping] | test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok, Wrapping] | provenance | MaD:16 |
 | test.rs:153:13:153:21 | ... + ... | test.rs:151:86:154:9 | { ... } | provenance |  |
 | test.rs:153:13:153:21 | ... + ... [Wrapping] | test.rs:151:86:154:9 | { ... } [Wrapping] | provenance |  |
 | test.rs:153:19:153:21 | row | test.rs:153:13:153:21 | ... + ... | provenance | MaD:12 |
 | test.rs:153:19:153:21 | row | test.rs:153:13:153:21 | ... + ... [Wrapping] | provenance | MaD:11 |
-| test.rs:157:72:165:9 | \|...\| ... | test.rs:158:17:158:18 | id | provenance | Src:MaD:5  |
-| test.rs:157:72:165:9 | \|...\| ... | test.rs:159:17:159:20 | name | provenance | Src:MaD:5  |
-| test.rs:157:72:165:9 | \|...\| ... | test.rs:160:17:160:19 | age | provenance | Src:MaD:5  |
+| test.rs:157:72:165:9 | \|...\| ... | test.rs:157:83:157:105 | ...: ... | provenance | Src:MaD:5  |
+| test.rs:157:83:157:105 | ...: ... | test.rs:158:17:158:18 | id | provenance |  |
+| test.rs:157:83:157:105 | ...: ... | test.rs:159:17:159:20 | name | provenance |  |
+| test.rs:157:83:157:105 | ...: ... | test.rs:160:17:160:19 | age | provenance |  |
 | test.rs:158:17:158:18 | id | test.rs:161:18:161:19 | id | provenance |  |
 | test.rs:159:17:159:20 | name | test.rs:162:18:162:21 | name | provenance |  |
 | test.rs:160:17:160:19 | age | test.rs:163:18:163:20 | age | provenance |  |
@@ -155,8 +163,10 @@ nodes
 | test.rs:42:20:42:21 | t1 [element] | semmle.label | t1 [element] |
 | test.rs:44:22:44:22 | v | semmle.label | v |
 | test.rs:50:13:52:13 | \|...\| ... | semmle.label | \|...\| ... |
+| test.rs:50:14:50:24 | ...: i64 | semmle.label | ...: i64 |
 | test.rs:51:22:51:27 | values | semmle.label | values |
 | test.rs:57:13:61:13 | \|...\| ... | semmle.label | \|...\| ... |
+| test.rs:57:14:57:39 | ...: ... | semmle.label | ...: ... |
 | test.rs:58:22:58:29 | values.0 | semmle.label | values.0 |
 | test.rs:59:22:59:29 | values.1 | semmle.label | values.1 |
 | test.rs:60:22:60:29 | values.2 | semmle.label | values.2 |
@@ -167,6 +177,7 @@ nodes
 | test.rs:64:21:67:11 | TryExpr | semmle.label | TryExpr |
 | test.rs:64:21:67:11 | TryExpr [Wrapping] | semmle.label | TryExpr [Wrapping] |
 | test.rs:64:65:67:9 | \|...\| ... | semmle.label | \|...\| ... |
+| test.rs:64:76:64:83 | ...: i64 | semmle.label | ...: i64 |
 | test.rs:64:86:67:9 | { ... } | semmle.label | { ... } |
 | test.rs:64:86:67:9 | { ... } [Wrapping] | semmle.label | { ... } [Wrapping] |
 | test.rs:65:18:65:20 | row | semmle.label | row |
@@ -175,6 +186,7 @@ nodes
 | test.rs:66:19:66:21 | row | semmle.label | row |
 | test.rs:68:14:68:18 | total | semmle.label | total |
 | test.rs:70:72:78:9 | \|...\| ... | semmle.label | \|...\| ... |
+| test.rs:70:83:70:105 | ...: ... | semmle.label | ...: ... |
 | test.rs:71:17:71:18 | id | semmle.label | id |
 | test.rs:72:17:72:20 | name | semmle.label | name |
 | test.rs:73:17:73:19 | age | semmle.label | age |
@@ -204,8 +216,10 @@ nodes
 | test.rs:114:24:114:56 | ... .unwrap() | semmle.label | ... .unwrap() |
 | test.rs:115:14:115:15 | v4 | semmle.label | v4 |
 | test.rs:137:13:139:13 | \|...\| ... | semmle.label | \|...\| ... |
+| test.rs:137:14:137:24 | ...: i64 | semmle.label | ...: i64 |
 | test.rs:138:22:138:27 | values | semmle.label | values |
 | test.rs:144:13:148:13 | \|...\| ... | semmle.label | \|...\| ... |
+| test.rs:144:14:144:39 | ...: ... | semmle.label | ...: ... |
 | test.rs:145:22:145:29 | values.0 | semmle.label | values.0 |
 | test.rs:146:22:146:29 | values.1 | semmle.label | values.1 |
 | test.rs:147:22:147:29 | values.2 | semmle.label | values.2 |
@@ -218,6 +232,7 @@ nodes
 | test.rs:151:21:154:17 | TryExpr | semmle.label | TryExpr |
 | test.rs:151:21:154:17 | TryExpr [Wrapping] | semmle.label | TryExpr [Wrapping] |
 | test.rs:151:65:154:9 | \|...\| ... | semmle.label | \|...\| ... |
+| test.rs:151:76:151:83 | ...: i64 | semmle.label | ...: i64 |
 | test.rs:151:86:154:9 | { ... } | semmle.label | { ... } |
 | test.rs:151:86:154:9 | { ... } [Wrapping] | semmle.label | { ... } [Wrapping] |
 | test.rs:152:18:152:20 | row | semmle.label | row |
@@ -226,6 +241,7 @@ nodes
 | test.rs:153:19:153:21 | row | semmle.label | row |
 | test.rs:155:14:155:18 | total | semmle.label | total |
 | test.rs:157:72:165:9 | \|...\| ... | semmle.label | \|...\| ... |
+| test.rs:157:83:157:105 | ...: ... | semmle.label | ...: ... |
 | test.rs:158:17:158:18 | id | semmle.label | id |
 | test.rs:159:17:159:20 | name | semmle.label | name |
 | test.rs:160:17:160:19 | age | semmle.label | age |

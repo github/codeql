@@ -38,3 +38,23 @@ impl<T> MyTrait2 for T {
         0
     }
 }
+
+pub trait MySourceTrait2 {
+    fn produce2(i: i64) -> i64;
+}
+
+impl<T> MySourceTrait2 for T {
+    // inherits model from the trait function
+    fn produce2(i: i64) -> i64 {
+        0
+    }
+}
+
+pub trait MySinkTrait2 {
+    fn consume2(i: i64);
+}
+
+impl<T> MySinkTrait2 for T {
+    // inherits model from the trait function
+    fn consume2(i: i64) {}
+}

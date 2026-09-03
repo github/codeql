@@ -190,7 +190,7 @@ module Ast implements AstSig<Location> {
 
   final private class FinalForeachStmt = CS::ForeachStmt;
 
-  class ForeachStmt extends FinalForeachStmt {
+  class ForEachStmt extends FinalForeachStmt {
     Expr getVariable() {
       result = this.getVariableDeclExpr() or result = this.getVariableDeclTuple()
     }

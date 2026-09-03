@@ -189,7 +189,7 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "AssignExpr" }
 
     /** Gets the node corresponding to the field `target`. */
-    final F::ExprOrPattern getTarget() { unified_assign_expr_def(this, result, _) }
+    final F::Expr getTarget() { unified_assign_expr_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
     final F::Expr getValue() { unified_assign_expr_def(this, _, result) }
@@ -658,7 +658,7 @@ module Unified {
     }
   }
 
-  class Expr extends @unified_expr, F::ExprOrOperator, F::ExprOrPattern, F::ExprOrType, F::Stmt { }
+  class Expr extends @unified_expr, F::ExprOrOperator, F::ExprOrType, F::Stmt { }
 
   /** A class representing `expr_equality_pattern` nodes. */
   class ExprEqualityPattern extends @unified_expr_equality_pattern, F::Pattern {
@@ -673,8 +673,6 @@ module Unified {
   }
 
   class ExprOrOperator extends @unified_expr_or_operator, F::AstNode { }
-
-  class ExprOrPattern extends @unified_expr_or_pattern, F::AstNode { }
 
   class ExprOrType extends @unified_expr_or_type, F::AstNode { }
 
@@ -1201,7 +1199,7 @@ module Unified {
     }
   }
 
-  class Pattern extends @unified_pattern, F::ExprOrPattern { }
+  class Pattern extends @unified_pattern, F::Expr { }
 
   /** A class representing `pattern_element` nodes. */
   class PatternElement extends @unified_pattern_element, F::AstNode {
@@ -2106,8 +2104,6 @@ module UnifiedFinal {
   final class ExprEqualityPattern = F::ExprEqualityPattern;
 
   final class ExprOrOperator = F::ExprOrOperator;
-
-  final class ExprOrPattern = F::ExprOrPattern;
 
   final class ExprOrType = F::ExprOrType;
 
