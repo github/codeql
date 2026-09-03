@@ -16,35 +16,35 @@ class DependencySemVer extends string {
 
   DependencySemVer() {
     dep.info(_, this) and
-    normalized = normalizeSemVer(this)
+    normalized = padSemVer(this)
   }
 
   /**
    * Holds if this version may be before `last`.
    */
   bindingset[last]
-  predicate maybeBefore(string last) { normalized < normalizeSemVer(last) }
+  predicate maybeBefore(string last) { normalized < padSemVer(last) }
 
   /**
    * Holds if this version may be after `first`.
    */
   bindingset[first]
-  predicate maybeAfter(string first) { normalizeSemVer(first) < normalized }
+  predicate maybeAfter(string first) { padSemVer(first) < normalized }
 
   /**
    * Holds if this version may be between `first` (inclusive) and `last` (exclusive).
    */
   bindingset[first, last]
   predicate maybeBetween(string first, string last) {
-    normalizeSemVer(first) <= normalized and
-    normalized < normalizeSemVer(last)
+    padSemVer(first) <= normalized and
+    normalized < padSemVer(last)
   }
 
   /**
    * Holds if this version is equivalent to `other`.
    */
   bindingset[other]
-  predicate is(string other) { normalized = normalizeSemVer(other) }
+  predicate is(string other) { normalized = padSemVer(other) }
 
   /**
    * Gets the dependency that uses this string.

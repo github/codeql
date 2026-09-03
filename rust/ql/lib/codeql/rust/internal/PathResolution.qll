@@ -573,7 +573,7 @@ class CrateItemNode extends NamedItemNode instanceof Crate {
   predicate isLatestVersion(string name) {
     this =
       max(CrateItemNode c, string ver |
-        name = c.getName() and ver = normalizeSemVer(c.(Crate).getVersion())
+        name = c.getName() and ver = padSemVer(c.(Crate).getVersion())
       |
         c order by ver
       )
