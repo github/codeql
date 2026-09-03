@@ -34,16 +34,17 @@ products. SwiftPM can only depend on products, and Bazel's swift-syntax module
 does not export the `CodeGeneration` sources, so neither build system can
 reach it directly.
 
-The regeneration script therefore copies those sources out of the resolved
-swift-syntax checkout into `Sources/SyntaxSupport`, where this package builds
-them as its own. That directory is git-ignored and refreshed on every run, so
-it always matches the pinned version rather than drifting as a stale vendored
-copy would.
+The regeneration script therefore resolves this package's swift-syntax
+dependency and copies its `CodeGeneration/Sources/SyntaxSupport` sources into
+`Sources/SyntaxSupport`, where this package builds them as its own. That
+directory is git-ignored and refreshed on every run, so it always matches
+schemagen's pin rather than drifting as a stale vendored copy would.
 
-For the same reason this package takes swift-syntax as a path dependency on the
-checkout the neighbouring FFI package resolved, rather than declaring a second
-pinned dependency of its own. The schema must describe exactly the
-swift-syntax version linked by `swift-syntax-rs`.
+Schemagen has its own exact swift-syntax pin in `Package.swift`. Keep it
+synchronized with the SwiftPM parser pin in `../swift/Package.swift` and the
+Bazel pin in the repository's `MODULE.bazel`. The build systems resolve these
+independently, so regeneration does not itself guarantee that all three pins
+match.
 
 ## What is filtered out
 

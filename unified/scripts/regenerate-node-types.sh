@@ -17,7 +17,6 @@ IFS=$'\n\t'
 
 root=$(cd "$(dirname "$0")/.." && pwd)
 swift_syntax_rs_dir="$root/swift-syntax-rs"
-ffi_dir="$swift_syntax_rs_dir/swift"
 schemagen_dir="$swift_syntax_rs_dir/schemagen"
 output="$root/extractor/swift_node_types.yml"
 
@@ -38,14 +37,12 @@ run_swift() {
     fi
 }
 
-# `schemagen` takes swift-syntax as a path dependency on this checkout, so that
-# the schema describes exactly the version the parser links.
 echo "Resolving swift-syntax..." >&2
 (
-    cd "$ffi_dir"
+    cd "$schemagen_dir"
     run_swift package resolve >&2
 )
-checkout="$ffi_dir/.build/checkouts/swift-syntax"
+checkout="$schemagen_dir/.build/checkouts/swift-syntax"
 syntax_support="$checkout/CodeGeneration/Sources/SyntaxSupport"
 if [[ ! -d $syntax_support ]]; then
     echo "error: $syntax_support not found after resolving swift-syntax." >&2

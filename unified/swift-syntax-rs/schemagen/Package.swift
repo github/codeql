@@ -17,11 +17,12 @@ let package = Package(
         .macOS(.v10_15),
     ],
     dependencies: [
-        // Deliberately a path dependency on the checkout the neighbouring FFI
-        // package resolved, rather than a second URL/exact pin: the schema has
-        // to describe the very swift-syntax that the parser links, and a
-        // single pin cannot drift from itself.
-        .package(name: "swift-syntax", path: "../swift/.build/checkouts/swift-syntax"),
+        // Keep this independent pin synchronized with the swift-syntax pins in
+        // `../swift/Package.swift` and the repository's `MODULE.bazel`.
+        .package(
+            url: "https://github.com/swiftlang/swift-syntax.git",
+            exact: "603.0.2"
+        ),
     ],
     targets: [
         // `SyntaxSupport` is a target of swift-syntax's separate
