@@ -93,6 +93,7 @@ ql/csharp/ql/src/Likely Bugs/UncheckedCastInEquals.ql
 ql/csharp/ql/src/Linq/BadMultipleIteration.ql
 ql/csharp/ql/src/Linq/MissedAllOpportunity.ql
 ql/csharp/ql/src/Linq/MissedCastOpportunity.ql
+ql/csharp/ql/src/Linq/MissedFirstOrDefaultOpportunity.ql
 ql/csharp/ql/src/Linq/MissedOfTypeOpportunity.ql
 ql/csharp/ql/src/Linq/MissedSelectOpportunity.ql
 ql/csharp/ql/src/Linq/MissedWhereOpportunity.ql
