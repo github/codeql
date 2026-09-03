@@ -1950,11 +1950,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        * an `AstNode` that does not otherwise have explicitly defined control
        * flow.
        */
-      private predicate defaultStepCandidate(
-        AstNode ast, PreControlFlowNode n1, PreControlFlowNode n2
-      ) {
-        defaultCfg(ast) and
-        (
+      private predicate defaultStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+        exists(AstNode ast | defaultCfg(ast) |
           n1.isBefore(ast) and
           n2.isBefore(getRankedChild(ast, 1))
           or
@@ -1979,11 +1976,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfter(ast) and
           not beginAbruptCompletion(ast, n1, _, true)
         )
-      }
-
-      /** Holds if `n1` to `n2` is a default left-to-right evaluation step. */
-      private predicate defaultStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-        defaultStepCandidate(_, n1, n2)
       }
 
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
@@ -2032,9 +2024,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         t instanceof DirectSuccessor
         or
         exists(AstNode ast, AbruptCompletion c |
-          last(ast, n1, c) and
-          endAbruptCompletion(ast, n2, c) and
-          t = c.getSuccessorType()
+          last(ast, n1, c) and endAbruptCompletion(ast, n2, c) and t = c.getSuccessorType()
         )
       }
 
