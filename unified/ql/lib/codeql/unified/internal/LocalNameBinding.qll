@@ -186,119 +186,94 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   }
 
   additional predicate bindingContext(AstNode pattern, AstNode scope, AstNode declaration) {
-    exists(SiblingShadowingDecl decl |
-      scope = decl and
-      pattern = decl.getPattern() and
-      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
-      declaration = decl
-    )
-    or
-    exists(VariableDeclaration decl |
-      not decl instanceof SiblingShadowingDecl and
-      getChild(scope, _) = decl and
-      pattern = decl.getPattern() and
-      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
-      declaration = decl
-    )
-    or
-    exists(FunctionDeclaration func |
-      getChild(scope, _) = func and
-      pattern = func.getName() and
-      declaration = func
-    )
-    or
-    exists(Parameter param |
-      scope = param.getParent() and // TODO: add SourceCallable and use .getParameter() instead
-      pattern = param.getPattern() and
-      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
-      declaration = param
-    )
-    or
-    exists(CatchClause catch |
-      scope = catch and // ensure both body and pattern are in scope
-      pattern = catch.getPattern() and
-      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
-      declaration = catch
-    )
-    or
-    exists(SwitchCase case |
-      scope = case and // ensure both body and pattern are in scope
-      pattern = case.getPattern() and
-      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
-      declaration = case
-    )
-    or
-    exists(ForEachStmt stmt |
-      scope = stmt and // ensure both 'body' and 'guard' are in scope
-      pattern = stmt.getPattern() and
-      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
-      declaration = stmt
-    )
-    or
-    exists(ClassLikeDeclaration cls |
-      getChild(scope, _) = cls and
-      pattern = cls.getName() and
-      not cls.hasModifier("extension") and // TODO: Fix in the AST mapping: type extensions should reference their type, not declare it
-      declaration = cls
-    )
-    or
-    exists(TypeAliasDeclaration decl |
-      getChild(scope, _) = decl and
-      pattern = decl.getName() and
-      declaration = decl
-    )
-    or
-    exists(TypeParameter param |
-      scope = param.getParent() and
-      pattern = param.getName() and
-      declaration = param
-    )
-    or
-    exists(AssociatedTypeDeclaration decl |
-      getChild(scope, _) = decl and
-      pattern = decl.getName() and
-      declaration = decl
-    )
-    or
-    exists(AccessorDeclaration decl |
-      getChild(scope, _) = decl and
-      pattern = decl.getName() and
-      declaration = decl
-    )
-    or
-    exists(ImportDeclaration imprt |
-      getChild(scope, _) = imprt and
-      pattern = imprt.getPattern() and
-      declaration = imprt
-    )
-    or
-    exists(NamedPattern p |
-      bindingContext(p, scope, declaration) and
-      pattern = p.getIdentifier()
-    )
-    or
-    bindingContext(getEnclosingPatternExpr(pattern.(Expr)), scope, declaration) and
-    not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern)
-  }
-
-  private Expr getEnclosingPatternExpr(Expr child) {
-    exists(OrPattern parent | result = parent and child = parent.getAPattern())
-    or
-    exists(ConditionalPattern parent | result = parent and child = parent.getPattern())
-    or
-    exists(Argument arg |
-      child = arg.getValue() and
-      result = arg.getParent().(Expr)
-    )
-    or
-    exists(NamedPattern parent | result = parent and child = parent.getSubPattern())
-    or
-    exists(ExprPattern parent | result = parent and child = parent.getExpr())
-    or
-    exists(TypeTestExpr parent |
-      result = parent and
-      not exists(parent.getOperator()) and
-      child = parent.getExpr()
+    not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
+    (
+      exists(SiblingShadowingDecl decl |
+        scope = decl and
+        pattern = decl.getPattern() and
+        declaration = decl
+      )
+      or
+      exists(VariableDeclaration decl |
+        not decl instanceof SiblingShadowingDecl and
+        getChild(scope, _) = decl and
+        pattern = decl.getPattern() and
+        declaration = decl
+      )
+      or
+      exists(FunctionDeclaration func |
+        getChild(scope, _) = func and
+        pattern = func.getName() and
+        declaration = func
+      )
+      or
+      exists(Parameter param |
+        scope = param.getParent() and // TODO: add SourceCallable and use .getParameter() instead
+        pattern = param.getPattern() and
+        declaration = param
+      )
+      or
+      exists(CatchClause catch |
+        scope = catch and // ensure both body and pattern are in scope
+        pattern = catch.getPattern() and
+        declaration = catch
+      )
+      or
+      exists(SwitchCase case |
+        scope = case and // ensure both body and pattern are in scope
+        pattern = case.getPattern() and
+        declaration = case
+      )
+      or
+      exists(ForEachStmt stmt |
+        scope = stmt and // ensure both 'body' and 'guard' are in scope
+        pattern = stmt.getPattern() and
+        declaration = stmt
+      )
+      or
+      exists(ClassLikeDeclaration cls |
+        getChild(scope, _) = cls and
+        pattern = cls.getName() and
+        not cls.hasModifier("extension") and // TODO: Fix in the AST mapping: type extensions should reference their type, not declare it
+        declaration = cls
+      )
+      or
+      exists(TypeAliasDeclaration decl |
+        getChild(scope, _) = decl and
+        pattern = decl.getName() and
+        declaration = decl
+      )
+      or
+      exists(TypeParameter param |
+        scope = param.getParent() and
+        pattern = param.getName() and
+        declaration = param
+      )
+      or
+      exists(AssociatedTypeDeclaration decl |
+        getChild(scope, _) = decl and
+        pattern = decl.getName() and
+        declaration = decl
+      )
+      or
+      exists(AccessorDeclaration decl |
+        getChild(scope, _) = decl and
+        pattern = decl.getName() and
+        declaration = decl
+      )
+      or
+      exists(ImportDeclaration imprt |
+        getChild(scope, _) = imprt and
+        pattern = imprt.getPattern() and
+        declaration = imprt
+      )
+      or
+      exists(NamedPattern p |
+        bindingContext(p, scope, declaration) and
+        pattern = p.getIdentifier()
+      )
+      or
+      bindingContext(pattern.(Expr).getEnclosingExpr(), scope, declaration)
     )
   }
 
@@ -315,7 +290,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     p = result.getPattern(_)
     or
     not p instanceof OrPattern and
-    result = getEnclosingOrPattern(getEnclosingPatternExpr(p))
+    result = getEnclosingOrPattern(p.getEnclosingExpr())
   }
 
   private OrPattern getEnclosingOrPatternFromIdentifier(Identifier id) {

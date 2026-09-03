@@ -2,13 +2,13 @@
  * Provides Swift-specific name binding rules.
  */
 
-private import codeql.files.FileSystem
-private import codeql.unified.internal.FacadeAst::Unified
+private import unified
 private import codeql.unified.internal.NameBindingPlugin
 
 class NameBindingPluginSwift extends NameBindingPlugin {
+  bindingset[identifier]
   override predicate isNameReferenceInPatternContext(Identifier identifier) {
-    not isInsideBindingPattern(identifier)
+    isUnboundPattern(identifier)
   }
 
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
@@ -42,37 +42,17 @@ class NameBindingPluginSwift extends NameBindingPlugin {
   }
 }
 
-private predicate isInsideBindingPattern(AstNode child) {
-  exists(ExprPattern parent |
-    child = parent.getExpr() and
-    parent.hasModifier(["let", "var"])
-  )
-  or
-  child = any(VariableDeclaration parent).getPattern()
-  or
-  child = any(Parameter parent).getPattern()
-  or
-  child = any(ForEachStmt parent).getPattern()
-  or
-  child = any(CatchClause parent).getPattern()
-  or
-  exists(OrPattern parent | child = parent.getAPattern() and isInsideBindingPattern(parent))
-  or
-  exists(ConditionalPattern parent | child = parent.getPattern() and isInsideBindingPattern(parent))
-  or
-  exists(Argument parent | child = parent.getValue() and isInsideBindingPattern(parent.getParent()))
-  or
-  exists(TupleExpr parent, Argument element |
-    element = parent.getAnElement() and
-    child = element.getValue() and
-    isInsideBindingPattern(parent)
-  )
-  or
-  exists(TypeTestExpr parent |
-    not exists(parent.getOperator()) and
-    child = parent.getExpr() and
-    isInsideBindingPattern(parent)
-  )
+/** Holds if `node` is in a context where a bare identifier should be seen as a reference rather than a declaration. */
+private predicate isUnboundPattern(Expr node) {
+  // 'case/catch' start an unbound-pattern context, 'let/var' terminate it
+  (
+    node = any(SwitchCase c).getPattern()
+    or
+    node = any(CatchClause c).getPattern()
+    or
+    isUnboundPattern(node.(Expr).getEnclosingExpr())
+  ) and
+  not node.(ExprPattern).hasModifier(["let", "var"])
 }
 
 private predicate predefinedSourceFolders(string folder, int ordering) {

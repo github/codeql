@@ -1,11 +1,15 @@
-private import codeql.files.FileSystem
+private import unified
 private import codeql.util.Unit
-private import codeql.unified.internal.FacadeAst::Unified
 private import codeql.unified.internal.NameBindingPluginSwift // ensure overrides are seen
 
 /** Extension point for language-specific inputs to name binding. */
 class NameBindingPlugin extends Unit {
-  /** Holds if `identifier`, occurring in pattern context, refers to an existing name. */
+  /**
+   * Holds if `identifier`, occurring in pattern context, refers to an existing name.
+   *
+   * The caller has already restricted `identifier` to one that appears in pattern context.
+   */
+  bindingset[identifier]
   predicate isNameReferenceInPatternContext(Identifier identifier) { none() }
 
   /**

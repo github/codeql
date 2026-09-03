@@ -55,6 +55,14 @@ module Unified {
       // just strip the quotes here and ignore escape sequences.
       result = this.(StringLiteral).getValue().regexpCapture("\"(.*)\"", 1)
     }
+
+    /** Gets the immediately-enclosing expression, skipping over intermediate sub-nodes like `Argument`, and without crossing a function boundary. */
+    Expr getEnclosingExpr() {
+      result = this.getParent() and
+      not result instanceof Callable
+      or
+      result = this.getParent().(Argument).getParent()
+    }
   }
 
   /** A binary expression. */
