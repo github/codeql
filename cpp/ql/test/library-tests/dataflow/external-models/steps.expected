@@ -4,17 +4,20 @@
 | azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument |
 | azure.cpp:287:79:287:98 | call to string | azure.cpp:287:62:287:99 | call to Url |
 | azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value |
-| bdlbb.cpp:50:49:50:52 | *call to data | bdlbb.cpp:50:37:50:41 | copy output argument |
-| bdlbb.cpp:52:42:52:45 | *blob | bdlbb.cpp:52:37:52:39 | copy output argument |
-| bdlbb.cpp:59:49:59:52 | *call to data | bdlbb.cpp:59:37:59:41 | copy output argument |
-| bdlbb.cpp:60:18:60:21 | *blob | bdlbb.cpp:60:29:60:32 | *call to buffer |
-| bdlbb.cpp:60:29:60:32 | *call to buffer | bdlbb.cpp:60:18:60:38 | *call to data |
-| bdlbb.cpp:67:49:67:52 | *call to data | bdlbb.cpp:67:37:67:41 | copy output argument |
-| bdlbb.cpp:69:72:69:75 | *blob | bdlbb.cpp:69:12:69:65 | *call to getContiguousRangeOrCopy |
-| bdlbb.cpp:69:72:69:75 | *blob | bdlbb.cpp:69:67:69:69 | getContiguousRangeOrCopy output argument |
-| bdlbb.cpp:77:48:77:51 | *call to data | bdlbb.cpp:77:37:77:40 | copy output argument |
-| bdlbb.cpp:79:46:79:48 | *src | bdlbb.cpp:79:37:79:40 | copy output argument |
-| bdlbb.cpp:81:42:81:44 | *dst | bdlbb.cpp:81:37:81:39 | copy output argument |
+| bdlbb.cpp:56:49:56:52 | *call to data | bdlbb.cpp:56:37:56:41 | copy output argument |
+| bdlbb.cpp:58:42:58:45 | *blob | bdlbb.cpp:58:37:58:39 | copy output argument |
+| bdlbb.cpp:65:49:65:52 | *call to data | bdlbb.cpp:65:37:65:41 | copy output argument |
+| bdlbb.cpp:66:18:66:21 | *blob | bdlbb.cpp:66:29:66:32 | *call to buffer |
+| bdlbb.cpp:66:29:66:32 | *call to buffer | bdlbb.cpp:66:18:66:38 | *call to data |
+| bdlbb.cpp:74:49:74:52 | *call to data | bdlbb.cpp:74:37:74:41 | copy output argument |
+| bdlbb.cpp:75:18:75:21 | *blob | bdlbb.cpp:75:29:75:32 | *call to buffer |
+| bdlbb.cpp:75:29:75:32 | *call to buffer | bdlbb.cpp:75:39:75:41 | *call to buffer |
+| bdlbb.cpp:82:49:82:52 | *call to data | bdlbb.cpp:82:37:82:41 | copy output argument |
+| bdlbb.cpp:84:72:84:75 | *blob | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy |
+| bdlbb.cpp:84:72:84:75 | *blob | bdlbb.cpp:84:67:84:69 | getContiguousRangeOrCopy output argument |
+| bdlbb.cpp:92:48:92:51 | *call to data | bdlbb.cpp:92:37:92:40 | copy output argument |
+| bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument |
+| bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument |
 | test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual |
 | test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated |
 | test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body |

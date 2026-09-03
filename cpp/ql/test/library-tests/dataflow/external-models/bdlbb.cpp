@@ -13,6 +13,10 @@ namespace bsl {
 		size_t size() const;
 	};
 	typedef basic_string<char> string;
+	template <class T> class shared_ptr {
+	public:
+		T *get() const;
+	};
 }
 
 namespace BloombergLP {
@@ -20,6 +24,8 @@ namespace bdlbb {
 	class BlobBuffer {
 	public:
 		char *data() const;
+		bsl::shared_ptr<char> &buffer();
+		const bsl::shared_ptr<char> &buffer() const;
 	};
 
 	class Blob {
@@ -58,6 +64,15 @@ void test_accessor_chain() {
 	BloombergLP::bdlbb::Blob blob;
 	BloombergLP::bdlbb::BlobUtil::copy(&blob, 0, s.data(), s.size());
 	const char *p = blob.buffer(0).data();
+	sink(*p); // $ ir
+}
+
+// The get() step comes from the built-in smart pointer model, not from bdlbb.model.yml.
+void test_accessor_chain_shared_ptr() {
+	bsl::string s(source());
+	BloombergLP::bdlbb::Blob blob;
+	BloombergLP::bdlbb::BlobUtil::copy(&blob, 0, s.data(), s.size());
+	const char *p = blob.buffer(0).buffer().get();
 	sink(*p); // $ ir
 }
 
