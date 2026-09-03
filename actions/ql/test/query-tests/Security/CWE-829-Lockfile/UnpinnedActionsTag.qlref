@@ -1,2 +1,2 @@
 query: Security/CWE-829/UnpinnedActionsTag.ql
-postprocess: utils/test/ActionsInlineExpectationsTestQuery.ql
+postprocess: utils/ActionsInlineExpectationsTestQuery.ql
