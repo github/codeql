@@ -147,7 +147,7 @@ signature module AstSig<LocationSig Location> {
   }
 
   /** A for-loop that iterates over the elements of a collection. */
-  class ForeachStmt extends LoopStmt {
+  class ForEachStmt extends LoopStmt {
     /** Gets the variable declaration of this `foreach` loop. */
     Expr getVariable();
 
@@ -571,7 +571,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       not n instanceof LogicalNotExpr and
       not n instanceof ConditionalExpr and
       not n instanceof Switch and
-      not n instanceof Case
+      not n instanceof Case and
+      not n instanceof BlockStmt and
+      not n instanceof TryStmt
     }
 
     /**
@@ -648,7 +650,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         any(Case case).getGuard() = n
       )
       or
-      any(ForeachStmt foreachstmt).getCollection() = n and kind.isEmptiness()
+      any(ForEachStmt foreachstmt).getCollection() = n and kind.isEmptiness()
       or
       kind.isMatching() and
       (
@@ -1654,7 +1656,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfter(loopstmt)
         )
         or
-        exists(ForeachStmt foreachstmt |
+        exists(ForEachStmt foreachstmt |
           n1.isBefore(foreachstmt) and
           n2.isBefore(foreachstmt.getCollection())
           or
@@ -2262,6 +2264,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             query = "ambiguousAdditionalNode" and
             results = strictcount(AstNode n, string tag | ambiguousAdditionalNode(n, tag))
             or
+            query = "invalidAbruptCompletionOrigin" and
+            results =
+              strictcount(AstNode ast, PreControlFlowNode node |
+                invalidAbruptCompletionOrigin(ast, node)
+              )
+            or
             query = "missingInNodeForPostOrInOrder" and
             results = strictcount(AstNode ast | missingInNodeForPostOrInOrder(ast))
             or
@@ -2350,6 +2358,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           }
 
           /**
+           * Holds if the language-specific CFG input supplies an abrupt completion for `ast` whose
+           * origin `node` does not belong to `ast`.
+           */
+          query predicate invalidAbruptCompletionOrigin(AstNode ast, PreControlFlowNode node) {
+            Input2::beginAbruptCompletion(ast, node, _, _) and
+            not node.isIn(ast) and
+            not node.isAdditional(ast, _)
+          }
+
+          /**
            * Holds if the "in" node is unreachable for a post-or-in-order AST node.
            *
            * If the "before" node of a post-or-in-order AST node is reachable,
@@ -2399,7 +2417,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             // allow for loop headers in foreach loops (they're checking emptiness on the iterator, not the collection)
             not (
               t instanceof DirectSuccessor and
-              node.isAdditional(any(ForeachStmt foreach), loopHeaderTag())
+              node.isAdditional(any(ForEachStmt foreach), loopHeaderTag())
             ) and
             // allow for functions with multiple bodies
             not exists(Callable c |

@@ -150,6 +150,20 @@ cargo test
 
 The first build compiles `swift-syntax` and can take several minutes.
 
+## Regenerating the extractor node types
+
+After updating the pinned swift-syntax version, regenerate the unified
+extractor's input schema:
+
+```sh
+../scripts/regenerate-node-types.sh
+```
+
+The script uses swift-syntax's authoritative `SyntaxSupport` definitions and
+requires the local Swift toolchain pinned by [`.swift-version`](.swift-version).
+Review the resulting `extractor/swift_node_types.yml` diff alongside the Swift
+mapping rules. See [`schemagen/README.md`](schemagen/README.md) for details.
+
 ## Building with Bazel (CI)
 
 CI builds this crate hermetically with Bazel. A Swift toolchain is downloaded
@@ -182,12 +196,15 @@ Requirements:
   swift.org. The Bazel C++ toolchain must still provide the macOS SDK, but a
   full Xcode installation is not required.
 
-The Swift compiler version is kept in sync across three places: the
+The Swift compiler version is kept in sync between the
 [`.swift-version`](.swift-version) file (read by the local `cargo`/`swift build`
-and by [swiftly](https://www.swift.org/swiftly/)), the literal `swift_version`
-pinned on `swift.toolchain(...)` in the root `MODULE.bazel` (the hermetic
-swift.org Bazel toolchain), and the `swift-syntax` release in
-`swift/Package.swift`.
+and by [swiftly](https://www.swift.org/swiftly/)) and the literal
+`swift_version` pinned on `swift.toolchain(...)` in the root `MODULE.bazel`
+(the hermetic swift.org Bazel toolchain).
+
+The swift-syntax version is independently pinned in the root `MODULE.bazel`,
+[`swift/Package.swift`](swift/Package.swift), and
+[`schemagen/Package.swift`](schemagen/Package.swift). Update all three together.
 
 (The Bazel toolchain pins a literal rather than reading `.swift-version` via
 `swift_version_file`, because the latter makes the module extension read a

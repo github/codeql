@@ -33,8 +33,6 @@ supertypes:
     - switch_expr
     - unresolved_operator_sequence
     - unsupported_node
-  expr_or_pattern:
-    - expr
     - pattern
   expr_or_type:
     - expr
@@ -73,6 +71,14 @@ supertypes:
     - while_stmt
     - do_while_stmt
     - labeled_stmt
+  callable:
+    - top_level
+    - function_expr
+    - function_declaration
+    - constructor_declaration
+    - destructor_declaration
+    - accessor_declaration
+    - initializer_declaration
   # A member is anything that can appear in the body of a class-like declaration
   member:
     - constructor_declaration
@@ -156,7 +162,7 @@ named:
 
   # Plain assignment
   assign_expr:
-    target: expr_or_pattern
+    target: expr
     value: expr
 
   # Compound assignment

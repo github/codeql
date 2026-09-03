@@ -43,17 +43,12 @@ module Input implements InputSig<Location, RustDataFlow> {
     result.asSummarizedCallable() = c
   }
 
-  class SourceBase = Function;
-
-  class SinkBase = Function;
-
   predicate neutralElement(
     Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
   ) {
-    exists(string path |
-      neutralModel(path, kind, provenance, _) and
-      c.getCanonicalPath() = path and
-      isExact = true
+    exists(string path, Provenance orig |
+      neutralModel(path, kind, orig, _) and
+      interpretPath(path, c, orig, provenance, isExact)
     )
   }
 
@@ -170,7 +165,7 @@ module Input2 implements Impl::Private::InputSig2 {
   }
 
   SourceSinkReportingElement getASourceReportingElement(
-    Input::SourceBase source, Impl::Private::SummaryComponent sc
+    Input::SummarizedCallableBase source, Impl::Private::SummaryComponent sc
   ) {
     exists(Call call | call.getResolvedTarget() = source |
       sc = Impl::Private::SummaryComponent::return(_) and
@@ -200,7 +195,7 @@ module Input2 implements Impl::Private::InputSig2 {
   }
 
   SourceSinkReportingElement getASinkReportingElement(
-    Input::SinkBase sink, Impl::Private::SummaryComponent sc
+    Input::SummarizedCallableBase sink, Impl::Private::SummaryComponent sc
   ) {
     exists(Call call |
       call.getResolvedTarget() = sink and

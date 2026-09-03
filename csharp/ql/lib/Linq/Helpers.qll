@@ -20,6 +20,26 @@ private int numStmts(ForeachStmt fes) {
   else result = 1
 }
 
+private predicate terminatesCallable(Stmt s) {
+  exists(Stmt stripped | stripped = s.stripSingletonBlocks() |
+    stripped instanceof ReturnStmt
+    or
+    stripped instanceof YieldBreakStmt
+    or
+    stripped instanceof ThrowStmt
+    or
+    stripped instanceof BreakStmt
+    or
+    stripped = any(BlockStmt b | terminatesCallable(b.getLastStmt()))
+    or
+    stripped =
+      any(IfStmt nested |
+        terminatesCallable(nested.getThen()) and
+        terminatesCallable(nested.getElse())
+      )
+  )
+}
+
 /** Holds if the type's qualified name is "System.Linq.Enumerable" */
 predicate isEnumerableType(ValueOrRefType t) {
   t.hasFullyQualifiedName("System.Linq", "Enumerable")
@@ -152,7 +172,8 @@ predicate missedWhereOpportunity(ForeachStmtGenericEnumerable fes, IfStmt is) {
     is.getThen() instanceof ContinueStmt
     or
     not exists(is.getElse()) and
-    numStmts(fes) = 1
+    numStmts(fes) = 1 and
+    not terminatesCallable(is.getThen())
   )
 }
 
