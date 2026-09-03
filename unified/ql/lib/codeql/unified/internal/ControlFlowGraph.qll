@@ -239,9 +239,9 @@ private module Input implements InputSig1, InputSig2 {
 
   class Label extends string {
     Label() {
-      any(LabeledStmt l).getLabelNameNode().getValue() = this or
-      any(BreakExpr b).getLabelNameNode().getValue() = this or
-      any(ContinueExpr c).getLabelNameNode().getValue() = this
+      any(LabeledStmt l).getLabelName() = this or
+      any(BreakExpr b).getLabelName() = this or
+      any(ContinueExpr c).getLabelName() = this
     }
 
     string toString() { result = this }
@@ -249,7 +249,7 @@ private module Input implements InputSig1, InputSig2 {
 
   private Label getLabelOfStmt(Stmt s) {
     exists(LabeledStmt l | s = l.getStmt() |
-      result = l.getLabelNameNode().getValue() or
+      result = l.getLabelName() or
       result = getLabelOfStmt(l)
     )
   }
@@ -257,9 +257,9 @@ private module Input implements InputSig1, InputSig2 {
   predicate hasLabel(Ast::AstNode n, Label l) {
     l = getLabelOfStmt(n)
     or
-    l = n.(BreakExpr).getLabelNameNode().getValue()
+    l = n.(BreakExpr).getLabelName()
     or
-    l = n.(ContinueExpr).getLabelNameNode().getValue()
+    l = n.(ContinueExpr).getLabelName()
   }
 
   class CallableContext = Void;

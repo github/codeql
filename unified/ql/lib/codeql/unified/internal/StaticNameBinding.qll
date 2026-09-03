@@ -163,7 +163,7 @@ private NameBindingNode getNodeFromUncertainScope(AstNode n) { result.isLocalNam
 predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
   exists(MemberAccessExpr expr |
     node1 = getNodeFromRef(expr.getBase()) and
-    name = expr.getMemberNameNode().getValue() and
+    name = expr.getMemberName() and
     node2 = getNodeFromRef(expr)
   )
   or

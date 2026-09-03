@@ -81,7 +81,7 @@ class SwiftPackageTarget extends ModuleScopeRepr, CallExpr {
 
   SwiftPackageTarget() {
     this.getFile().getBaseName() = "Package.swift" and
-    this.getCallee().(MemberAccessExpr).getMemberNameNode().getValue() = targetKind and
+    this.getCallee().(MemberAccessExpr).getMemberName() = targetKind and
     targetKind =
       [
         "target", "executableTarget", "testTarget", "systemLibrary", "binaryTarget", "plugin",
