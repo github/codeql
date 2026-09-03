@@ -1,4 +1,4 @@
-version: v0.0.2
+version: future-version
 workflows:
   .github/workflows/rust-ci.yml:
     - dtolnay/rust-toolchain@v1
