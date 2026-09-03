@@ -240,9 +240,9 @@ def _drain_queue(queue):
         #Emptied queue as best we can.
         pass
 
-def _write_extractor_telemetry(diagnostics_writer, logger: Logger):
+def _write_extractor_telemetry(diagnostics_writer, logger: Logger, extractor_flags):
     try:
-        diagnostics_writer.write(extractor_telemetry_message())
+        diagnostics_writer.write(extractor_telemetry_message(extractor_flags))
     except OSError as ex:
         logger.warning("Failed to write extractor telemetry: %s", ex)
 
@@ -304,7 +304,7 @@ def _extract_loop(proc_id, queue, trap_dir, archive, options, reply_queue, logge
         sys.exit(2)
     logger.set_process_id(proc_id)
     if write_global_data:
-        _write_extractor_telemetry(diagnostics_writer, logger)
+        _write_extractor_telemetry(diagnostics_writer, logger, options.extractor_flags)
     try:
         if options.trace_only:
             extractor = ModulePrinter(options, trap_dir, archive, renamer, logger, diagnostics_writer)

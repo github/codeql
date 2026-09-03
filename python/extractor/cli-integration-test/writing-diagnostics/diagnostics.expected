@@ -163,6 +163,7 @@
 }
 {
   "attributes": {
+    "extractor_flags": "default",
     "extractor_version": "7.1.10",
     "python_analysis_version": "3.12",
     "python_runtime_version": "3.12.3"

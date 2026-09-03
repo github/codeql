@@ -358,12 +358,13 @@ class DiagnosticMessage(StructuredLogObject):
         self.timestamp = timestamp
         return self
 
-def extractor_telemetry_message():
+def extractor_telemetry_message(extractor_flags):
     return (DiagnosticMessage(Source("py/extractor/summary", "Python extractor telemetry"), Severity.NOTE)
             .markdown("Internal telemetry for the Python extractor.\n\nNo action needed.")
             .attribute("python_analysis_version", get_analysis_version())
             .attribute("python_runtime_version", platform.python_version())
             .attribute("extractor_version", VERSION)
+            .attribute("extractor_flags", " ".join(extractor_flags) or "default")
             .telemetry()
     )
 
