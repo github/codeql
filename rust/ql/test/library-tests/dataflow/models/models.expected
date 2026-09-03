@@ -269,18 +269,28 @@ edges
 | main.rs:281:9:281:37 | ...::C {...} [C] | main.rs:281:35:281:35 | i | provenance |  |
 | main.rs:281:35:281:35 | i | main.rs:281:47:281:47 | i | provenance |  |
 | main.rs:281:35:281:35 | i | main.rs:281:47:281:47 | i | provenance |  |
-| main.rs:303:24:303:24 | a | main.rs:302:26:302:26 | a | provenance | Src:MaD:21  |
-| main.rs:303:24:303:24 | a | main.rs:302:26:302:26 | a | provenance | Src:MaD:21  |
-| main.rs:305:24:307:9 | \|...\| ... | main.rs:306:18:306:18 | a | provenance | Src:MaD:21  |
-| main.rs:305:24:307:9 | \|...\| ... | main.rs:306:18:306:18 | a | provenance | Src:MaD:21  |
-| main.rs:312:24:312:24 | f | main.rs:310:18:310:18 | a | provenance | Src:MaD:21  |
-| main.rs:312:24:312:24 | f | main.rs:310:18:310:18 | a | provenance | Src:MaD:21  |
-| main.rs:314:24:316:9 | \|...\| ... | main.rs:315:18:315:18 | a | provenance | Src:MaD:21  |
-| main.rs:314:24:316:9 | \|...\| ... | main.rs:315:18:315:18 | a | provenance | Src:MaD:21  |
+| main.rs:302:18:302:18 | ... | main.rs:302:26:302:26 | a | provenance |  |
+| main.rs:302:18:302:18 | ... | main.rs:302:26:302:26 | a | provenance |  |
+| main.rs:303:24:303:24 | a | main.rs:302:18:302:18 | ... | provenance | Src:MaD:21  |
+| main.rs:303:24:303:24 | a | main.rs:302:18:302:18 | ... | provenance | Src:MaD:21  |
+| main.rs:305:24:307:9 | \|...\| ... | main.rs:305:25:305:25 | ... | provenance | Src:MaD:21  |
+| main.rs:305:24:307:9 | \|...\| ... | main.rs:305:25:305:25 | ... | provenance | Src:MaD:21  |
+| main.rs:305:25:305:25 | ... | main.rs:306:18:306:18 | a | provenance |  |
+| main.rs:305:25:305:25 | ... | main.rs:306:18:306:18 | a | provenance |  |
+| main.rs:309:14:309:19 | ...: i64 | main.rs:310:18:310:18 | a | provenance |  |
+| main.rs:309:14:309:19 | ...: i64 | main.rs:310:18:310:18 | a | provenance |  |
+| main.rs:312:24:312:24 | f | main.rs:309:14:309:19 | ...: i64 | provenance | Src:MaD:21  |
+| main.rs:312:24:312:24 | f | main.rs:309:14:309:19 | ...: i64 | provenance | Src:MaD:21  |
+| main.rs:314:24:316:9 | \|...\| ... | main.rs:314:36:314:36 | ... | provenance | Src:MaD:21  |
+| main.rs:314:24:316:9 | \|...\| ... | main.rs:314:36:314:36 | ... | provenance | Src:MaD:21  |
+| main.rs:314:36:314:36 | ... | main.rs:315:18:315:18 | a | provenance |  |
+| main.rs:314:36:314:36 | ... | main.rs:315:18:315:18 | a | provenance |  |
 | main.rs:318:31:329:9 | \|...\| ... | main.rs:318:31:329:9 | \|...\| ... [E, Some] | provenance | Src:MaD:22  |
 | main.rs:318:31:329:9 | \|...\| ... | main.rs:318:31:329:9 | \|...\| ... [E, Some] | provenance | Src:MaD:22  |
-| main.rs:318:31:329:9 | \|...\| ... [E, Some] | main.rs:319:19:319:19 | e [E, Some] | provenance |  |
-| main.rs:318:31:329:9 | \|...\| ... [E, Some] | main.rs:319:19:319:19 | e [E, Some] | provenance |  |
+| main.rs:318:31:329:9 | \|...\| ... [E, Some] | main.rs:318:32:318:32 | ... [E, Some] | provenance |  |
+| main.rs:318:31:329:9 | \|...\| ... [E, Some] | main.rs:318:32:318:32 | ... [E, Some] | provenance |  |
+| main.rs:318:32:318:32 | ... [E, Some] | main.rs:319:19:319:19 | e [E, Some] | provenance |  |
+| main.rs:318:32:318:32 | ... [E, Some] | main.rs:319:19:319:19 | e [E, Some] | provenance |  |
 | main.rs:319:19:319:19 | e [E, Some] | main.rs:322:17:322:45 | ...::E {...} [E, Some] | provenance |  |
 | main.rs:319:19:319:19 | e [E, Some] | main.rs:322:17:322:45 | ...::E {...} [E, Some] | provenance |  |
 | main.rs:322:17:322:45 | ...::E {...} [E, Some] | main.rs:322:43:322:43 | o [Some] | provenance |  |
@@ -295,12 +305,14 @@ edges
 | main.rs:324:30:324:30 | i | main.rs:324:41:324:41 | i | provenance |  |
 | main.rs:344:21:344:29 | source(...) | main.rs:345:19:345:19 | a | provenance | Sink:MaD:9 |
 | main.rs:344:21:344:29 | source(...) | main.rs:345:19:345:19 | a | provenance | Sink:MaD:9 |
+| main.rs:347:22:352:9 | { ... } [E, Some] | main.rs:353:26:353:26 | b [E, Some] | provenance |  |
+| main.rs:347:22:352:9 | { ... } [E, Some] | main.rs:353:26:353:26 | b [E, Some] | provenance |  |
 | main.rs:348:17:348:17 | s | main.rs:350:39:350:39 | s | provenance |  |
 | main.rs:348:17:348:17 | s | main.rs:350:39:350:39 | s | provenance |  |
 | main.rs:348:21:348:29 | source(...) | main.rs:348:17:348:17 | s | provenance |  |
 | main.rs:348:21:348:29 | source(...) | main.rs:348:17:348:17 | s | provenance |  |
-| main.rs:349:13:351:13 | ...::E {...} [E, Some] | main.rs:353:26:353:26 | b [E, Some] | provenance |  |
-| main.rs:349:13:351:13 | ...::E {...} [E, Some] | main.rs:353:26:353:26 | b [E, Some] | provenance |  |
+| main.rs:349:13:351:13 | ...::E {...} [E, Some] | main.rs:347:22:352:9 | { ... } [E, Some] | provenance |  |
+| main.rs:349:13:351:13 | ...::E {...} [E, Some] | main.rs:347:22:352:9 | { ... } [E, Some] | provenance |  |
 | main.rs:350:26:350:40 | ...::Some(...) [Some] | main.rs:349:13:351:13 | ...::E {...} [E, Some] | provenance |  |
 | main.rs:350:26:350:40 | ...::Some(...) [Some] | main.rs:349:13:351:13 | ...::E {...} [E, Some] | provenance |  |
 | main.rs:350:39:350:39 | s | main.rs:350:26:350:40 | ...::Some(...) [Some] | provenance |  |
@@ -670,26 +682,36 @@ nodes
 | main.rs:281:35:281:35 | i | semmle.label | i |
 | main.rs:281:47:281:47 | i | semmle.label | i |
 | main.rs:281:47:281:47 | i | semmle.label | i |
+| main.rs:302:18:302:18 | ... | semmle.label | ... |
+| main.rs:302:18:302:18 | ... | semmle.label | ... |
 | main.rs:302:26:302:26 | a | semmle.label | a |
 | main.rs:302:26:302:26 | a | semmle.label | a |
 | main.rs:303:24:303:24 | a | semmle.label | a |
 | main.rs:303:24:303:24 | a | semmle.label | a |
 | main.rs:305:24:307:9 | \|...\| ... | semmle.label | \|...\| ... |
 | main.rs:305:24:307:9 | \|...\| ... | semmle.label | \|...\| ... |
+| main.rs:305:25:305:25 | ... | semmle.label | ... |
+| main.rs:305:25:305:25 | ... | semmle.label | ... |
 | main.rs:306:18:306:18 | a | semmle.label | a |
 | main.rs:306:18:306:18 | a | semmle.label | a |
+| main.rs:309:14:309:19 | ...: i64 | semmle.label | ...: i64 |
+| main.rs:309:14:309:19 | ...: i64 | semmle.label | ...: i64 |
 | main.rs:310:18:310:18 | a | semmle.label | a |
 | main.rs:310:18:310:18 | a | semmle.label | a |
 | main.rs:312:24:312:24 | f | semmle.label | f |
 | main.rs:312:24:312:24 | f | semmle.label | f |
 | main.rs:314:24:316:9 | \|...\| ... | semmle.label | \|...\| ... |
 | main.rs:314:24:316:9 | \|...\| ... | semmle.label | \|...\| ... |
+| main.rs:314:36:314:36 | ... | semmle.label | ... |
+| main.rs:314:36:314:36 | ... | semmle.label | ... |
 | main.rs:315:18:315:18 | a | semmle.label | a |
 | main.rs:315:18:315:18 | a | semmle.label | a |
 | main.rs:318:31:329:9 | \|...\| ... | semmle.label | \|...\| ... |
 | main.rs:318:31:329:9 | \|...\| ... | semmle.label | \|...\| ... |
 | main.rs:318:31:329:9 | \|...\| ... [E, Some] | semmle.label | \|...\| ... [E, Some] |
 | main.rs:318:31:329:9 | \|...\| ... [E, Some] | semmle.label | \|...\| ... [E, Some] |
+| main.rs:318:32:318:32 | ... [E, Some] | semmle.label | ... [E, Some] |
+| main.rs:318:32:318:32 | ... [E, Some] | semmle.label | ... [E, Some] |
 | main.rs:319:19:319:19 | e [E, Some] | semmle.label | e [E, Some] |
 | main.rs:319:19:319:19 | e [E, Some] | semmle.label | e [E, Some] |
 | main.rs:322:17:322:45 | ...::E {...} [E, Some] | semmle.label | ...::E {...} [E, Some] |
@@ -708,6 +730,8 @@ nodes
 | main.rs:344:21:344:29 | source(...) | semmle.label | source(...) |
 | main.rs:345:19:345:19 | a | semmle.label | a |
 | main.rs:345:19:345:19 | a | semmle.label | a |
+| main.rs:347:22:352:9 | { ... } [E, Some] | semmle.label | { ... } [E, Some] |
+| main.rs:347:22:352:9 | { ... } [E, Some] | semmle.label | { ... } [E, Some] |
 | main.rs:348:17:348:17 | s | semmle.label | s |
 | main.rs:348:17:348:17 | s | semmle.label | s |
 | main.rs:348:21:348:29 | source(...) | semmle.label | source(...) |
