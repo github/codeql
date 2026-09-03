@@ -197,8 +197,8 @@ predicate missedFirstOrDefaultOpportunity(ForeachStmtGenericEnumerable fes, IfSt
     va = is.getCondition().getAChildExpr*()
   ) and
   not is.getCondition().getAChildExpr*() instanceof AwaitExpr and
-  exists(ReturnStmt ret, ReturnStmt defaultRet, BlockStmt enclosingBlock, int i |
-    returnsLoopVariable(fes, is.getThen(), ret) and
+  exists(ReturnStmt defaultRet, BlockStmt enclosingBlock, int i |
+    returnsLoopVariable(fes, is.getThen(), _) and
     // If no element matches, the method returns the same value that FirstOrDefault would.
     returnsDefaultValue(fes, defaultRet) and
     enclosingBlock.getStmt(i) = fes and
