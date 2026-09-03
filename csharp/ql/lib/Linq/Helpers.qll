@@ -20,6 +20,36 @@ private int numStmts(ForeachStmt fes) {
   else result = 1
 }
 
+private predicate returnsLoopVariable(ForeachStmt fes, Stmt s) {
+  exists(ReturnStmt ret |
+    ret = s.stripSingletonBlocks() and
+    ret.getExpr().stripCasts().(VariableAccess).getTarget() = fes.getVariable()
+  )
+}
+
+private predicate hasNullDefault(Type t) { t.isRefType() or t instanceof NullableType }
+
+private predicate returnsDefaultValueAfterForeach(ForeachStmt fes) {
+  exists(BlockStmt enclosingBlock, int i, Type elementType, ReturnStmt ret |
+    enclosingBlock.getStmt(i) = fes and
+    enclosingBlock.getStmt(i + 1) = ret and
+    elementType = fes.getVariable().getType()
+  |
+    ret.getExpr().stripCasts() instanceof NullLiteral and
+    hasNullDefault(elementType)
+    or
+    exists(DefaultValueExpr defaultValue |
+      defaultValue = ret.getExpr().stripCasts() and
+      (
+        defaultValue.getType() = elementType
+        or
+        hasNullDefault(elementType) and
+        hasNullDefault(defaultValue.getType())
+      )
+    )
+  )
+}
+
 /** Holds if the type's qualified name is "System.Linq.Enumerable" */
 predicate isEnumerableType(ValueOrRefType t) {
   t.hasFullyQualifiedName("System.Linq", "Enumerable")
@@ -154,6 +184,26 @@ predicate missedWhereOpportunity(ForeachStmtGenericEnumerable fes, IfStmt is) {
     not exists(is.getElse()) and
     numStmts(fes) = 1
   )
+}
+
+/**
+ * Holds if `foreach` statement `fes` could be converted to a `.FirstOrDefault()` call.
+ * That is, the loop contains a single `if` statement that accesses the loop variable,
+ * returns the loop variable when the condition matches, and is followed by a default return.
+ */
+predicate missedFirstOrDefaultOpportunity(ForeachStmtGenericEnumerable fes, IfStmt is) {
+  // The loop only checks whether the current element is the first match.
+  is = firstStmt(fes) and
+  not exists(is.getElse()) and
+  numStmts(fes) = 1 and
+  // Condition relies on loop variable.
+  exists(VariableAccess va |
+    va.getTarget() = fes.getVariable() and
+    va = is.getCondition().getAChildExpr*()
+  ) and
+  not is.getCondition().getAChildExpr*() instanceof AwaitExpr and
+  returnsLoopVariable(fes, is.getThen()) and
+  returnsDefaultValueAfterForeach(fes)
 }
 
 //#################### CLASSES ####################
