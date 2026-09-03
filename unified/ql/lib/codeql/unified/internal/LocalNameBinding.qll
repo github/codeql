@@ -189,7 +189,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     exists(SiblingShadowingDecl decl |
       scope = decl and
       pattern = decl.getPattern() and
-      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
+      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
       declaration = decl
     )
     or
@@ -197,7 +197,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       not decl instanceof SiblingShadowingDecl and
       getChild(scope, _) = decl and
       pattern = decl.getPattern() and
-      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
+      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
       declaration = decl
     )
     or
@@ -210,28 +210,28 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     exists(Parameter param |
       scope = param.getParent() and // TODO: add SourceCallable and use .getParameter() instead
       pattern = param.getPattern() and
-      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
+      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
       declaration = param
     )
     or
     exists(CatchClause catch |
       scope = catch and // ensure both body and pattern are in scope
       pattern = catch.getPattern() and
-      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
+      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
       declaration = catch
     )
     or
     exists(SwitchCase case |
       scope = case and // ensure both body and pattern are in scope
       pattern = case.getPattern() and
-      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
+      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
       declaration = case
     )
     or
     exists(ForEachStmt stmt |
       scope = stmt and // ensure both 'body' and 'guard' are in scope
       pattern = stmt.getPattern() and
-      (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern)) and
+      not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
       declaration = stmt
     )
     or
@@ -278,7 +278,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     )
     or
     bindingContext(getEnclosingPatternExpr(pattern.(Expr)), scope, declaration) and
-    (not pattern instanceof Identifier or any(NameBindingPlugin p).isNameDeclaration(pattern))
+    not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern)
   }
 
   private Expr getEnclosingPatternExpr(Expr child) {
@@ -405,7 +405,6 @@ class PotentialLocalNameAccess extends Identifier {
     this instanceof NameDeclaration
     or
     not this instanceof NameDeclaration and
-    not any(NameBindingPlugin p).isNameDeclaration(this) and
     not this = any(NamedPattern p).getIdentifier() and
     not this = any(MemberAccessExpr e).getMember() and
     not this = any(Argument a).getName() and

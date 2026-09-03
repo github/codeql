@@ -7,7 +7,9 @@ private import codeql.unified.internal.FacadeAst::Unified
 private import codeql.unified.internal.NameBindingPlugin
 
 class NameBindingPluginSwift extends NameBindingPlugin {
-  override predicate isNameDeclaration(Identifier identifier) { isInsideBindingPattern(identifier) }
+  override predicate isNameReferenceInPatternContext(Identifier identifier) {
+    not isInsideBindingPattern(identifier)
+  }
 
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
   bindingset[cls, member]
@@ -46,10 +48,7 @@ private predicate isInsideBindingPattern(AstNode child) {
     parent.hasModifier(["let", "var"])
   )
   or
-  exists(VariableDeclaration parent |
-    child = parent.getPattern() and
-    parent.hasModifier(["let", "var", "enum_case"])
-  )
+  child = any(VariableDeclaration parent).getPattern()
   or
   child = any(Parameter parent).getPattern()
   or
