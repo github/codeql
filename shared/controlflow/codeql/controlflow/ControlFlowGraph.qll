@@ -2254,14 +2254,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             query = "ambiguousAdditionalNode" and
             results = strictcount(AstNode n, string tag | ambiguousAdditionalNode(n, tag))
             or
-            query = "missingInNodeForPostOrInOrder" and
-            results = strictcount(AstNode ast | missingInNodeForPostOrInOrder(ast))
-            or
             query = "invalidAbruptCompletionOrigin" and
             results =
               strictcount(AstNode ast, PreControlFlowNode node |
                 invalidAbruptCompletionOrigin(ast, node)
               )
+            or
+            query = "missingInNodeForPostOrInOrder" and
+            results = strictcount(AstNode ast | missingInNodeForPostOrInOrder(ast))
             or
             query = "multipleSuccessors" and
             results =
