@@ -21,13 +21,13 @@
    Java,"Java 7 to 26 [5]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [6]_",``.java``
-   Kotlin [13]_,"Kotlin 1.8.0 to 2.4.20-RC2","kotlinc",``.kt``
-   JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [7]_"
-   Python [8]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13, 3.14",Not applicable,``.py``
+   Kotlin,"Kotlin 1.8.0 to 2.4.20 [7]_","kotlinc",``.kt``
+   JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [8]_"
+   Python [9]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13, 3.14",Not applicable,``.py``
    Ruby,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
-   Rust [9]_,"Rust editions 2021 and 2024","Rust compiler","``.rs``, ``Cargo.toml``"
-   Swift [10]_ [11]_,"Swift 5.4-6.3","Swift compiler","``.swift``"
-   TypeScript [12]_,"2.6-7.0",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   Rust [10]_,"Rust editions 2021 and 2024","Rust compiler","``.rs``, ``Cargo.toml``"
+   Swift [11]_ [12]_,"Swift 5.4-6.3","Swift compiler","``.swift``"
+   TypeScript [13]_,"2.6-7.0",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 
@@ -37,10 +37,10 @@
     .. [4] Support for the Arm Compiler (armcc) is preliminary.
     .. [5] Builds that execute on Java 7 to 26 can be analyzed. The analysis understands standard language features in Java 8 to 26; "preview" and "incubator" features are not supported. Source code using Java language versions older than Java 8 are analyzed as Java 8 code.
     .. [6] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
-    .. [7] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
-    .. [8] The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.
-    .. [9] Requires ``rustup`` and ``cargo`` to be installed. Features from nightly toolchains are not supported.
-    .. [10] Support for the analysis of Swift requires macOS.
-    .. [11] Embedded Swift is not supported.
-    .. [12] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
-    .. [13] Support for Kotlin 2.4.20-RC2 is preliminary.
+    .. [7] Support for Kotlin 2.4.20 is preliminary.
+    .. [8] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
+    .. [9] The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.
+    .. [10] Requires ``rustup`` and ``cargo`` to be installed. Features from nightly toolchains are not supported.
+    .. [11] Support for the analysis of Swift requires macOS.
+    .. [12] Embedded Swift is not supported.
+    .. [13] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
