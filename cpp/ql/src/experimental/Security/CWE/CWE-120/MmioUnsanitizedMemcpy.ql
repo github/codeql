@@ -4,9 +4,8 @@
  *              macros without bounds validation may overflow destination buffers.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 8.6
  * @precision low
- * @id cpp/experimental/mmio-unsanitized-memcpy
+ * @id cpp/mmio-unsanitized-memcpy
  * @tags security
  *       experimental
  *       external/cwe/cwe-120
