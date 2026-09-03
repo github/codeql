@@ -3,7 +3,7 @@ import unified
 query predicate identifier(Identifier node, string value) { value = node.getValue() }
 
 query predicate namedPattern(NamedPattern node, string value) {
-  value = node.getIdentifier().getValue()
+  value = node.getNameNode().getValue()
 }
 
 query predicate unsupported(UnsupportedNode node, string value) { value = node.getValue() }

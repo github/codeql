@@ -4,9 +4,9 @@ private import codeql.unified.internal.StaticNameBinding
 
 private string deriveClassName(ClassLikeDeclaration cls) {
   not exists(cls.getParent().getEnclosingClass()) and
-  result = cls.getName().getValue()
+  result = cls.getNameNode().getValue()
   or
-  result = deriveClassName(cls.getParent().getEnclosingClass()) + "." + cls.getName().getValue()
+  result = deriveClassName(cls.getParent().getEnclosingClass()) + "." + cls.getNameNode().getValue()
 }
 
 private string defaultName(NameDeclaration decl) {

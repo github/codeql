@@ -80,4 +80,4 @@ top_level
                       callee:
                         member_access_expr
                           base: identifier "self"
-                          member: identifier "doThing"
+                          member_name_node: identifier "doThing"

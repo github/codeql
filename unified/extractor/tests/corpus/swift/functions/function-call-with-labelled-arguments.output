@@ -36,5 +36,5 @@ top_level
           callee: identifier "greet"
           argument:
             argument
-              name: identifier "person"
+              name_node: identifier "person"
               value: string_literal "\"Bob\""

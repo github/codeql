@@ -34,7 +34,7 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "Dog"
+          name_node: identifier "Dog"
           base_type:
             base_type
               type: identifier "Animal"

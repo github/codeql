@@ -77,7 +77,7 @@ module Unified {
     Expr getNamedArgument(string name) {
       exists(Argument arg |
         arg = this.getAnArgument() and
-        arg.getName().getValue() = name and
+        arg.getNameNode().getValue() = name and
         result = arg.getValue()
       )
     }

@@ -82,13 +82,13 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "Foo"
+          name_node: identifier "Foo"
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "C"
+          name_node: identifier "C"
           type_parameter:
             type_parameter
-              name: identifier "T"
+              name_node: identifier "T"
         variable_declaration
           modifier: modifier "let"
           pattern: identifier "x"

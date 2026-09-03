@@ -103,7 +103,7 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "C"
+          name_node: identifier "C"
           member:
             variable_declaration
               modifier: modifier "var"
@@ -114,7 +114,7 @@ top_level
               modifier:
                 modifier "var"
                 modifier "chained_declaration"
-              name: identifier "x"
+              name_node: identifier "x"
               accessor_kind: accessor_kind "willSet"
               body:
                 block
@@ -128,7 +128,7 @@ top_level
               modifier:
                 modifier "var"
                 modifier "chained_declaration"
-              name: identifier "x"
+              name_node: identifier "x"
               accessor_kind: accessor_kind "didSet"
               body:
                 block

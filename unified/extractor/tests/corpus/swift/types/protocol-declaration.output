@@ -42,8 +42,8 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "protocol"
-          name: identifier "Drawable"
+          name_node: identifier "Drawable"
           member:
             function_declaration
-              name: identifier "draw"
+              name_node: identifier "draw"
               body: block "func draw()"

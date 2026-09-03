@@ -65,16 +65,16 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "struct"
-          name: identifier "Size"
+          name_node: identifier "Size"
           member:
             constructor_declaration
               parameter:
                 parameter
-                  external_name: identifier "width"
+                  external_name_node: identifier "width"
                   type: identifier "Int"
                   pattern: identifier "w"
                 parameter
-                  external_name: identifier "height"
+                  external_name_node: identifier "height"
                   type: identifier "Int"
                   pattern: identifier "h"
               body: block "init(width w: Int, height h: Int) {}"

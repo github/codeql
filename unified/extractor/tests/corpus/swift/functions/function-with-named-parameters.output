@@ -57,10 +57,10 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "greet"
+          name_node: identifier "greet"
           parameter:
             parameter
-              external_name: identifier "person"
+              external_name_node: identifier "person"
               type: identifier "String"
               pattern: identifier "name"
           body:

@@ -154,7 +154,7 @@ top_level
                       type_argument: identifier "Void"
               argument:
                 argument
-                  name: identifier "unsafeUninitializedCapacity"
+                  name_node: identifier "unsafeUninitializedCapacity"
                   value: int_literal "1"
                 argument
                   value:

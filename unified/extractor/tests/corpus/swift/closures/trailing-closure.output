@@ -47,7 +47,7 @@ top_level
           callee:
             member_access_expr
               base: identifier "xs"
-              member: identifier "map"
+              member_name_node: identifier "map"
           argument:
             argument
               value:

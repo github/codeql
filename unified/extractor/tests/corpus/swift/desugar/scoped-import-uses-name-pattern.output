@@ -30,5 +30,5 @@ top_level
           imported_expr:
             member_access_expr
               base: identifier "Foundation"
-              member: identifier "Date"
+              member_name_node: identifier "Date"
           pattern: identifier "Date"

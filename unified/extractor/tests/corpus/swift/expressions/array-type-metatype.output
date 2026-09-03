@@ -64,4 +64,4 @@ top_level
                     generic_type_expr
                       base: identifier "Result"
                       type_argument: identifier "Void"
-              member: identifier "self"
+              member_name_node: identifier "self"

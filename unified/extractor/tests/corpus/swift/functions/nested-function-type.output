@@ -105,7 +105,7 @@ top_level
     block
       stmt:
         type_alias_declaration
-          name: identifier "NestedFunction"
+          name_node: identifier "NestedFunction"
           type:
             function_expr
               parameter:
@@ -118,7 +118,7 @@ top_level
                       return_type: identifier "Bool"
               return_type: identifier "Bool"
         type_alias_declaration
-          name: identifier "MixedParametersAndTuples"
+          name_node: identifier "MixedParametersAndTuples"
           type:
             function_expr
               parameter:

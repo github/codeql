@@ -67,7 +67,7 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "enum"
-          name: identifier "Direction"
+          name_node: identifier "Direction"
           member:
             variable_declaration
               modifier: modifier "enum_case"

@@ -63,7 +63,7 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "struct"
-          name: identifier "Point"
+          name_node: identifier "Point"
           member:
             variable_declaration
               modifier: modifier "let"

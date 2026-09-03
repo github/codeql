@@ -97,10 +97,10 @@ named:
   top_level:
     body: block
 
-  # An identifier pattern that applies a nested pattern. Used for scoped imports.
+  # A name pattern that applies a nested pattern. Used for scoped imports.
   named_pattern:
     modifier*: modifier
-    identifier: identifier
+    name_node: identifier
     sub_pattern: expr
 
   # A pattern expression with modifiers, such as `let x` or `var x`.
@@ -176,7 +176,7 @@ named:
 
   argument:
     modifier*: modifier
-    name?: identifier
+    name_node?: identifier
     value: expr
 
   # Member access, such as `obj.member`.
@@ -184,7 +184,7 @@ named:
   # For `super.x` the base will be an instance of `super_expr`.
   member_access_expr:
     base: expr
-    member: identifier
+    member_name_node: identifier
 
   # A type expression that refers to a type inferred from the contextual type.
   # This is used to translate Swift's leading-dot syntax, `.foo`, which means `T.foo` where
@@ -232,7 +232,7 @@ named:
   # would have `person` as the external name and a `named_pattern` wrapping `id` as the parameter's pattern.
   parameter:
     modifier*: modifier
-    external_name?: identifier
+    external_name_node?: identifier
     type?: expr
     pattern?: expr
     default?: expr
@@ -279,17 +279,17 @@ named:
 
   # `break` (with optional label)
   break_expr:
-    label?: identifier
+    label_name_node?: identifier
 
   # `continue` (with optional label)
   continue_expr:
-    label?: identifier
+    label_name_node?: identifier
 
   # A labeled statement, such as `outer: for ... { ... }`. The labeled
   # statement appears as the `stmt` field; `break`/`continue` may target
   # the label.
   labeled_stmt:
-    label: identifier
+    label_name_node: identifier
     stmt: stmt
 
   # `return value` or bare `return`
@@ -315,7 +315,7 @@ named:
   # `typealias Name = Type`
   type_alias_declaration:
     modifier*: modifier
-    name: identifier
+    name_node: identifier
     type_parameter*: type_parameter
     type_constraint*: type_constraint
     type: expr
@@ -323,7 +323,7 @@ named:
   # A top-level function declaration.
   function_declaration:
     modifier*: modifier
-    name: identifier
+    name_node: identifier
     type_parameter*: type_parameter
     type_constraint*: type_constraint
     parameter*: parameter
@@ -418,7 +418,7 @@ named:
   bulk_importing_pattern:
     modifier*: modifier
 
-  # An simple unqualified identifier token
+  # A simple unqualified name token
   identifier:
 
   # A node that we don't yet translate
@@ -436,7 +436,7 @@ named:
 
   type_parameter:
     modifier*: modifier
-    name: identifier
+    name_node: identifier
     bound?: expr
 
   # A generic constraint of the form `T == U`, requiring two types to be
@@ -456,7 +456,7 @@ named:
   # `infix operator +++` (and the like) — a declaration of a custom operator.
   operator_syntax_declaration:
     modifier*: modifier
-    name: identifier
+    name_node: identifier
     # The fixity specifier (`prefix`, `infix`, `postfix`), when applicable.
     fixity?: fixity
     # The declared precedence level, when present (e.g. Swift's
@@ -471,7 +471,7 @@ named:
   # no `name`; the extended type appears as a `base_type`.
   class_like_declaration:
     modifier*: modifier
-    name?: identifier
+    name_node?: identifier
     type_parameter*: type_parameter
     type_constraint*: type_constraint
     base_type*: base_type
@@ -487,7 +487,7 @@ named:
 
   constructor_declaration:
     modifier*: modifier
-    name?: identifier
+    name_node?: identifier
     parameter*: parameter
     body: block
 
@@ -507,7 +507,7 @@ named:
   # (each observer also tagged with `chained_declaration`).
   accessor_declaration:
     modifier*: modifier
-    name: identifier
+    name_node: identifier
     accessor_kind: accessor_kind
     parameter*: parameter
     type?: expr
@@ -523,7 +523,7 @@ named:
 
   associated_type_declaration:
     modifier*: modifier
-    name: identifier
+    name_node: identifier
     bound?: expr
 
   generic_type_expr:

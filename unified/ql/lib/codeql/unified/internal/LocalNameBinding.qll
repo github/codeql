@@ -102,7 +102,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
    */
   private predicate relocatedClassMember(Identifier className, Member member) {
     exists(ClassLikeDeclaration cls |
-      className = cls.getName() and
+      className = cls.getNameNode() and
       member = cls.getAMember()
     )
   }
@@ -203,7 +203,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       or
       exists(FunctionDeclaration func |
         getChild(scope, _) = func and
-        pattern = func.getName() and
+        pattern = func.getNameNode() and
         declaration = func
       )
       or
@@ -233,32 +233,32 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       or
       exists(ClassLikeDeclaration cls |
         getChild(scope, _) = cls and
-        pattern = cls.getName() and
+        pattern = cls.getNameNode() and
         not cls.hasModifier("extension") and // TODO: Fix in the AST mapping: type extensions should reference their type, not declare it
         declaration = cls
       )
       or
       exists(TypeAliasDeclaration decl |
         getChild(scope, _) = decl and
-        pattern = decl.getName() and
+        pattern = decl.getNameNode() and
         declaration = decl
       )
       or
       exists(TypeParameter param |
         scope = param.getParent() and
-        pattern = param.getName() and
+        pattern = param.getNameNode() and
         declaration = param
       )
       or
       exists(AssociatedTypeDeclaration decl |
         getChild(scope, _) = decl and
-        pattern = decl.getName() and
+        pattern = decl.getNameNode() and
         declaration = decl
       )
       or
       exists(AccessorDeclaration decl |
         getChild(scope, _) = decl and
-        pattern = decl.getName() and
+        pattern = decl.getNameNode() and
         declaration = decl
       )
       or
@@ -270,7 +270,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       or
       exists(NamedPattern p |
         bindingContext(p, scope, declaration) and
-        pattern = p.getIdentifier()
+        pattern = p.getNameNode()
       )
       or
       bindingContext(pattern.(Expr).getEnclosingExpr(), scope, declaration)
@@ -293,8 +293,8 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     result = getEnclosingOrPattern(p.getEnclosingExpr())
   }
 
-  private OrPattern getEnclosingOrPatternFromIdentifier(Identifier id) {
-    result = getEnclosingOrPattern(id)
+  private OrPattern getEnclosingOrPatternFromIdentifier(Identifier identifier) {
+    result = getEnclosingOrPattern(identifier)
   }
 
   predicate declInScope(AstNode definingNode, string name, AstNode scope) {
@@ -347,7 +347,7 @@ module Public {
     string getName() { result = super.getName() }
   }
 
-  /** An identifier that appears as the declaration site of a name, such as the `x` in `let x = 123`. */
+  /** A name node that appears as the declaration site of a name, such as the `x` in `let x = 123`. */
   class NameDeclaration extends Identifier {
     NameDeclaration() { LocalNameBindingInput::bindingContext(this, _, _) }
 
@@ -363,7 +363,7 @@ module Public {
 }
 
 /**
- * An identifier node that is possibly a reference to a local name, but could also refer to a member
+ * A name node that is possibly a reference to a local name, but could also refer to a member
  * visible through imports or inheritance.
  *
  * For example, the type annotation `C` below is a potential access to `class C`, but could
@@ -380,13 +380,12 @@ class PotentialLocalNameAccess extends Identifier {
     this instanceof NameDeclaration
     or
     not this instanceof NameDeclaration and
-    not this = any(NamedPattern p).getIdentifier() and
-    not this = any(MemberAccessExpr e).getMember() and
-    not this = any(Argument a).getName() and
-    not this = any(Parameter p).getExternalName() and
-    not this = any(LabeledStmt stmt).getLabel() and
-    not this = any(BreakExpr expr).getLabel() and
-    not this = any(ContinueExpr expr).getLabel()
+    not this = any(MemberAccessExpr e).getMemberNameNode() and
+    not this = any(Argument a).getNameNode() and
+    not this = any(Parameter p).getExternalNameNode() and
+    not this = any(LabeledStmt stmt).getLabelNameNode() and
+    not this = any(BreakExpr expr).getLabelNameNode() and
+    not this = any(ContinueExpr expr).getLabelNameNode()
   }
 
   LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }

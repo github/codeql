@@ -56,7 +56,7 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "struct"
-          name: identifier "FileHandle"
+          name_node: identifier "FileHandle"
           base_type:
             base_type
               type: unsupported_node "~Copyable"

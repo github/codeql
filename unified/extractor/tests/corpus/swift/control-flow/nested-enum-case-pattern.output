@@ -171,7 +171,7 @@ top_level
                       callee:
                         member_access_expr
                           base: inferred_type_expr "."
-                          member: identifier "received"
+                          member_name_node: identifier "received"
                       argument:
                         argument
                           value:
@@ -179,7 +179,7 @@ top_level
                               callee:
                                 member_access_expr
                                   base: inferred_type_expr "."
-                                  member: identifier "some"
+                                  member_name_node: identifier "some"
                               argument:
                                 argument
                                   value: identifier "value"
@@ -201,7 +201,7 @@ top_level
                   callee:
                     member_access_expr
                       base: identifier "Type"
-                      member: identifier "some"
+                      member_name_node: identifier "some"
                   argument:
                     argument
                       value:

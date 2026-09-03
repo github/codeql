@@ -36,7 +36,7 @@ top_level
           callee:
             member_access_expr
               base: identifier "list"
-              member: identifier "append"
+              member_name_node: identifier "append"
           argument:
             argument
               value: int_literal "1"

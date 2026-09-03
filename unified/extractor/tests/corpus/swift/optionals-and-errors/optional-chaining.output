@@ -55,5 +55,5 @@ top_level
               base:
                 member_access_expr
                   base: identifier "obj"
-                  member: identifier "foo"
-              member: identifier "bar"
+                  member_name_node: identifier "foo"
+              member_name_node: identifier "bar"

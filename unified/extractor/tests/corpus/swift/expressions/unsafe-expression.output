@@ -46,6 +46,6 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "doWork"
+          name_node: identifier "doWork"
           body: block "func doWork() {}"
         unsupported_node "unsafe doWork()"

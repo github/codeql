@@ -41,4 +41,4 @@ top_level
           value:
             member_access_expr
               base: identifier "t"
-              member: identifier "0"
+              member_name_node: identifier "0"

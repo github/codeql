@@ -121,13 +121,13 @@ class NameBindingNode extends TNameBindingNode {
 Identifier getIdentifierFromRef(AstNode n) {
   result = n.(Identifier)
   or
-  result = n.(MemberAccessExpr).getMember()
+  result = n.(MemberAccessExpr).getMemberNameNode()
 }
 
 private Identifier getImportBindingIdentifier(ImportDeclaration imprt) {
   result = imprt.getPattern().(Identifier)
   or
-  result = imprt.getPattern().(NamedPattern).getIdentifier()
+  result = imprt.getPattern().(NamedPattern).getNameNode()
 }
 
 /** Holds if `binding` is only visible in its local scope. */
@@ -163,7 +163,7 @@ private NameBindingNode getNodeFromUncertainScope(AstNode n) { result.isLocalNam
 predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
   exists(MemberAccessExpr expr |
     node1 = getNodeFromRef(expr.getBase()) and
-    name = expr.getMember().getValue() and
+    name = expr.getMemberNameNode().getValue() and
     node2 = getNodeFromRef(expr)
   )
   or
@@ -225,7 +225,7 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   or
   exists(ClassLikeDeclaration cls |
     node1.isStaticMemberNamespace(cls) and
-    node2.isIdentifier(cls.getName())
+    node2.isIdentifier(cls.getNameNode())
   )
   or
   exists(ClassLikeDeclaration cls |
@@ -258,7 +258,7 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   )
   or
   exists(NamedPattern p |
-    node1 = getNodeFromRef(p.getIdentifier()) and
+    node1 = getNodeFromRef(p.getNameNode()) and
     node2 = getNodeFromRef(p.getSubPattern())
   )
   or
@@ -394,7 +394,7 @@ private module TrackNamespaceInput implements TrackInputSig {
     // Namespace-tracking goes through aliases, but declaration-tracking does not
     exists(TypeAliasDeclaration decl |
       node1 = getNodeFromRef(decl.getType()) and
-      node2.isIdentifier(decl.getName())
+      node2.isIdentifier(decl.getNameNode())
     )
   }
 }
@@ -629,7 +629,7 @@ predicate unqualifiedMemberAccess(
 }
 
 /**
- * An identifier appearing in a unqualified position, referring to a member of an enclosing class.
+ * A name node appearing in an unqualified position, referring to a member of an enclosing class.
  */
 class UnqualifiedMemberAccess extends Identifier {
   private boolean instanceAccess;

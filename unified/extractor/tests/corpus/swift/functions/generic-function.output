@@ -64,13 +64,13 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "identity"
+          name_node: identifier "identity"
           type_parameter:
             type_parameter
-              name: identifier "T"
+              name_node: identifier "T"
           parameter:
             parameter
-              external_name: identifier "_"
+              external_name_node: identifier "_"
               type: identifier "T"
               pattern: identifier "x"
           return_type: identifier "T"

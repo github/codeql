@@ -103,22 +103,22 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "struct"
-          name: identifier "Outer"
+          name_node: identifier "Outer"
           member:
             class_like_declaration
               modifier: modifier "struct"
-              name: identifier "Inner"
+              name_node: identifier "Inner"
               member:
                 class_like_declaration
                   modifier: modifier "struct"
-                  name: identifier "Deep"
+                  name_node: identifier "Deep"
         variable_declaration
           modifier: modifier "let"
           pattern: identifier "value"
           type:
             member_access_expr
               base: identifier "Outer"
-              member: identifier "Inner"
+              member_name_node: identifier "Inner"
         variable_declaration
           modifier: modifier "let"
           pattern: identifier "nested"
@@ -127,5 +127,5 @@ top_level
               base:
                 member_access_expr
                   base: identifier "Outer"
-                  member: identifier "Inner"
-              member: identifier "Deep"
+                  member_name_node: identifier "Inner"
+              member_name_node: identifier "Deep"

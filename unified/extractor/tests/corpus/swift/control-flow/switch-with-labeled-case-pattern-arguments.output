@@ -136,10 +136,10 @@ top_level
                   callee:
                     member_access_expr
                       base: inferred_type_expr "."
-                      member: identifier "implicit"
+                      member_name_node: identifier "implicit"
                   argument:
                     argument
-                      name: identifier "isAcknowledged"
+                      name_node: identifier "isAcknowledged"
                       value: boolean_literal "false"
               body:
                 block
@@ -155,10 +155,10 @@ top_level
                   callee:
                     member_access_expr
                       base: inferred_type_expr "."
-                      member: identifier "thread"
+                      member_name_node: identifier "thread"
                   argument:
                     argument
-                      name: identifier "threadRowId"
+                      name_node: identifier "threadRowId"
                       value: identifier "_"
                     argument
                       value:

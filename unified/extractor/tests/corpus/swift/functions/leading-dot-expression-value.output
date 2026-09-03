@@ -38,4 +38,4 @@ top_level
           value:
             member_access_expr
               base: inferred_type_expr "."
-              member: identifier "foo"
+              member_name_node: identifier "foo"

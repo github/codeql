@@ -70,10 +70,10 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "extension"
-          name: identifier "Int"
+          name_node: identifier "Int"
           member:
             function_declaration
-              name: identifier "squared"
+              name_node: identifier "squared"
               return_type: identifier "Int"
               body:
                 block

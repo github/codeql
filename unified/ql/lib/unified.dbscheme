@@ -163,7 +163,7 @@ unified_accessor_declaration_type(
 unified_accessor_declaration_def(
   unique int id: @unified_accessor_declaration,
   int accessor_kind: @unified_token_accessor_kind ref,
-  int name: @unified_token_identifier ref
+  int name_node: @unified_token_identifier ref
 );
 
 #keyset[unified_argument, index]
@@ -173,9 +173,9 @@ unified_argument_modifier(
   unique int modifier: @unified_token_modifier ref
 );
 
-unified_argument_name(
+unified_argument_name_node(
   unique int unified_argument: @unified_argument ref,
-  unique int name: @unified_token_identifier ref
+  unique int name_node: @unified_token_identifier ref
 );
 
 unified_argument_def(
@@ -214,7 +214,7 @@ unified_associated_type_declaration_modifier(
 
 unified_associated_type_declaration_def(
   unique int id: @unified_associated_type_declaration,
-  int name: @unified_token_identifier ref
+  int name_node: @unified_token_identifier ref
 );
 
 #keyset[unified_base_type, index]
@@ -253,9 +253,9 @@ unified_bound_type_constraint_def(
   int type__: @unified_expr ref
 );
 
-unified_break_expr_label(
+unified_break_expr_label_name_node(
   unique int unified_break_expr: @unified_break_expr ref,
-  unique int label: @unified_token_identifier ref
+  unique int label_name_node: @unified_token_identifier ref
 );
 
 unified_break_expr_def(
@@ -332,9 +332,9 @@ unified_class_like_declaration_modifier(
   unique int modifier: @unified_token_modifier ref
 );
 
-unified_class_like_declaration_name(
+unified_class_like_declaration_name_node(
   unique int unified_class_like_declaration: @unified_class_like_declaration ref,
-  unique int name: @unified_token_identifier ref
+  unique int name_node: @unified_token_identifier ref
 );
 
 #keyset[unified_class_like_declaration, index]
@@ -382,9 +382,9 @@ unified_constructor_declaration_modifier(
   unique int modifier: @unified_token_modifier ref
 );
 
-unified_constructor_declaration_name(
+unified_constructor_declaration_name_node(
   unique int unified_constructor_declaration: @unified_constructor_declaration ref,
-  unique int name: @unified_token_identifier ref
+  unique int name_node: @unified_token_identifier ref
 );
 
 #keyset[unified_constructor_declaration, index]
@@ -399,9 +399,9 @@ unified_constructor_declaration_def(
   int body: @unified_block ref
 );
 
-unified_continue_expr_label(
+unified_continue_expr_label_name_node(
   unique int unified_continue_expr: @unified_continue_expr ref,
-  unique int label: @unified_token_identifier ref
+  unique int label_name_node: @unified_token_identifier ref
 );
 
 unified_continue_expr_def(
@@ -522,7 +522,7 @@ unified_function_declaration_type_parameter(
 
 unified_function_declaration_def(
   unique int id: @unified_function_declaration,
-  int name: @unified_token_identifier ref
+  int name_node: @unified_token_identifier ref
 );
 
 unified_function_expr_body(
@@ -630,7 +630,7 @@ unified_key_value_pair_def(
 
 unified_labeled_stmt_def(
   unique int id: @unified_labeled_stmt,
-  int label: @unified_token_identifier ref,
+  int label_name_node: @unified_token_identifier ref,
   int stmt: @unified_stmt ref
 );
 
@@ -650,7 +650,7 @@ unified_map_literal_def(
 unified_member_access_expr_def(
   unique int id: @unified_member_access_expr,
   int base: @unified_expr ref,
-  int member: @unified_token_identifier ref
+  int member_name_node: @unified_token_identifier ref
 );
 
 #keyset[unified_named_pattern, index]
@@ -662,7 +662,7 @@ unified_named_pattern_modifier(
 
 unified_named_pattern_def(
   unique int id: @unified_named_pattern,
-  int identifier: @unified_token_identifier ref,
+  int name_node: @unified_token_identifier ref,
   int sub_pattern: @unified_expr ref
 );
 
@@ -687,7 +687,7 @@ unified_operator_syntax_declaration_precedence(
 
 unified_operator_syntax_declaration_def(
   unique int id: @unified_operator_syntax_declaration,
-  int name: @unified_token_identifier ref
+  int name_node: @unified_token_identifier ref
 );
 
 #keyset[unified_or_pattern, index]
@@ -713,9 +713,9 @@ unified_parameter_default(
   unique int default: @unified_expr ref
 );
 
-unified_parameter_external_name(
+unified_parameter_external_name_node(
   unique int unified_parameter: @unified_parameter ref,
-  unique int external_name: @unified_token_identifier ref
+  unique int external_name_node: @unified_token_identifier ref
 );
 
 #keyset[unified_parameter, index]
@@ -859,7 +859,7 @@ unified_type_alias_declaration_type_parameter(
 
 unified_type_alias_declaration_def(
   unique int id: @unified_type_alias_declaration,
-  int name: @unified_token_identifier ref,
+  int name_node: @unified_token_identifier ref,
   int type__: @unified_expr ref
 );
 
@@ -886,7 +886,7 @@ unified_type_parameter_modifier(
 
 unified_type_parameter_def(
   unique int id: @unified_type_parameter,
-  int name: @unified_token_identifier ref
+  int name_node: @unified_token_identifier ref
 );
 
 unified_type_test_expr_operator(

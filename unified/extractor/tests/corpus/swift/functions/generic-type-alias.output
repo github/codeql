@@ -56,13 +56,13 @@ top_level
     block
       stmt:
         type_alias_declaration
-          name: identifier "Box"
+          name_node: identifier "Box"
           type_parameter:
             type_parameter
-              name: identifier "T"
+              name_node: identifier "T"
               bound: identifier "Equatable"
             type_parameter
-              name: identifier "U"
+              name_node: identifier "U"
           type:
             generic_type_expr
               base: identifier "Dictionary"

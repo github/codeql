@@ -33,9 +33,9 @@ top_level
               base:
                 member_access_expr
                   base: identifier "Foundation"
-                  member: identifier "Networking"
-              member: identifier "URLSession"
+                  member_name_node: identifier "Networking"
+              member_name_node: identifier "URLSession"
           pattern:
             named_pattern
-              identifier: identifier "URLSession"
+              name_node: identifier "URLSession"
               sub_pattern: bulk_importing_pattern "import Foundation.Networking.URLSession"

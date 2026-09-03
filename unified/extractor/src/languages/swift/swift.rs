@@ -8,10 +8,10 @@ use yeast::{ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule, rule, tree};
 /// post-hoc mutation.
 #[derive(Clone, Default)]
 struct SwiftContext {
-    /// Identifier node for the property name. Set by the accessor-bearing
+    /// Name node for the property name. Set by the accessor-bearing
     /// `variableDecl` rule before translating the accessor block; read by the
     /// inner `accessorDecl` rules to name each `accessor_declaration`.
-    property_name: Option<yeast::Id>,
+    property_name_node: Option<yeast::Id>,
     /// Translated type node for the property type. Set (for computed
     /// properties) by the accessor-bearing `variableDecl` rule; read by the
     /// inner `accessorDecl` rules. Left `None` for stored properties with
@@ -105,7 +105,7 @@ fn make_or_pattern(
 }
 
 /// Translate a multi-part identifier (for example `Foo.Bar.Baz`) into a
-/// `member_access_expr` chain rooted at an `identifier` for the first
+/// `member_access_expr` chain rooted at a `name_node` for the first
 /// part. Panics on an empty input because the grammar's `_+` quantifier
 /// guarantees at least one part.
 fn member_chain(
@@ -119,7 +119,7 @@ fn member_chain(
     let init = tree!((identifier #{first}));
     iter.fold(
         init,
-        |acc, elem| tree!((member_access_expr base: {acc} member: (identifier #{elem}))),
+        |acc, elem| tree!((member_access_expr base: {acc} member_name_node: (identifier #{elem}))),
     )
 }
 
@@ -194,7 +194,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((declReferenceExpr baseName: @name) => (identifier #{name})),
         // A discard `_` used as an expression — e.g. the target of a discarding
         // assignment `_ = x`. swift-syntax models it as a `discardAssignmentExpr`;
-        // the target AST represents it as an `identifier` over the `_` token.
+        // the target AST represents it as a `name_node` over the `_` token.
         rule!((discardAssignmentExpr wildcard: @@w) => (identifier #{w})),
         // A generic specialization in expression position (`C<Foo>`,
         // `Array<Int>`) is represented by swift-syntax as a
@@ -299,7 +299,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (accessor_declaration
                 modifier: (modifier #{spec})
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 type: {ty}
                 accessor_kind: (accessor_kind "get")
                 body: (block stmt: {body}))
@@ -330,7 +330,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             member* {
                 ctx.outer_modifiers = vec![tree!((modifier #{spec}))];
-                ctx.property_name = Some(tree!((identifier #{name})));
+                ctx.property_name_node = Some(tree!((identifier #{name})));
                 let mut result = Vec::new();
                 if let Some(val) = val {
                     // Stored property with observers: the initializer is not part
@@ -377,7 +377,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 };
                 let chained = chained_modifier(&mut ctx);
                 let name = ctx
-                    .property_name
+                    .property_name_node
                     .ok_or("accessor outside property context")?;
                 let ty = ctx.property_type;
                 let body = match body {
@@ -391,7 +391,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     (accessor_declaration
                         modifier: {binding}
                         modifier: {chained}
-                        name: {name}
+                        name_node: {name}
                         type: {ty}
                         accessor_kind: (accessor_kind #{spec})
                         body: {body})
@@ -466,7 +466,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: {ctx.outer_modifiers.clone()}
                 modifier: {chained_modifier(&mut ctx)}
                 modifier: (modifier "enum_case")
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 member: (constructor_declaration parameter: {params} body: (block)))
         ),
         rule!(
@@ -528,7 +528,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (tuplePatternElement label: _? @@label pattern: @p)
             =>
-            (argument name: (identifier #{label})? value: {p})
+            (argument name_node: (identifier #{label})? value: {p})
         ),
         // A type-casting pattern (`case is T`). Not yet supported, so it is
         // mapped to `unsupported_node` — an explicit reminder that this needs
@@ -560,7 +560,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 body: (codeBlock statements: _* @body))
             =>
             (function_declaration
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 type_parameter: {type_params}
                 parameter: {params}
                 return_type: {ret}
@@ -575,7 +575,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     returnClause: (returnClause type: @ret)?))
             =>
             (function_declaration
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 type_parameter: {type_params}
                 parameter: {params}
                 return_type: {ret}
@@ -598,7 +598,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     None => (None, first),
                 };
                 tree!((parameter
-                    external_name: {external}
+                    external_name_node: {external}
                     pattern: (identifier #{name})
                     type: {ty}
                     default: {val}))
@@ -667,25 +667,25 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             argument {
                 tree!((argument
-                    name: (identifier #{lbl})?
+                    name_node: (identifier #{lbl})?
                     value: (call_expr callee: {constructor} argument: {elements})))
             }
         ),
         rule!(
             (labeledExpr label: _? @@lbl expression: (patternExpr pattern: @p))
             =>
-            (argument name: (identifier #{lbl})? value: {p})
+            (argument name_node: (identifier #{lbl})? value: {p})
         ),
         rule!(
             (labeledExpr label: _? @@lbl expression: (discardAssignmentExpr) @@wildcard)
             =>
-            (argument name: (identifier #{lbl})? value: (identifier #{wildcard}))
+            (argument name_node: (identifier #{lbl})? value: (identifier #{wildcard}))
         ),
         rule!(
             (labeledExpr label: _? @@lbl expression: @val)
             =>
             argument {
-                tree!((argument name: (identifier #{lbl})? value: {val}))
+                tree!((argument name_node: (identifier #{lbl})? value: {val}))
             }
         ),
         // Member access (`list.append`). The `declName` is itself a
@@ -704,24 +704,24 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 base: (generic_type_expr
                     base: (identifier "Array")
                     type_argument: {element})
-                member: (identifier #{member}))
+                member_name_node: (identifier #{member}))
         ),
         rule!(
             (memberAccessExpr base: @base declName: (declReferenceExpr baseName: @member))
             =>
-            (member_access_expr base: {base} member: (identifier #{member}))
+            (member_access_expr base: {base} member_name_node: (identifier #{member}))
         ),
         rule!(
             (memberAccessExpr period: @dot declName: (declReferenceExpr baseName: @member))
             =>
-            (member_access_expr base: (inferred_type_expr #{dot}) member: (identifier #{member}))
+            (member_access_expr base: (inferred_type_expr #{dot}) member_name_node: (identifier #{member}))
         ),
         // Control transfer, one rule per keyword. `return` carries an optional
         // value; `break` / `continue` an optional target label; `throw` its
         // thrown expression.
         rule!((returnStmt expression: _? @val) => (return_expr value: {val})),
-        rule!((breakStmt label: _? @@lbl) => (break_expr label: (identifier #{lbl})?)),
-        rule!((continueStmt label: _? @@lbl) => (continue_expr label: (identifier #{lbl})?)),
+        rule!((breakStmt label: _? @@lbl) => (break_expr label_name_node: (identifier #{lbl})?)),
+        rule!((continueStmt label: _? @@lbl) => (continue_expr label_name_node: (identifier #{lbl})?)),
         rule!((throwStmt expression: @val) => (throw_expr value: {val})),
         // ---- Closures ----
         // A closure (`{ (x: Int) -> Int in … }`) becomes a `function_expr`. The
@@ -748,7 +748,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // A closure capture (`[weak self]`, `[x]`, `[y = expr]`). The optional
         // ownership specifier (`weak`/`unowned`) becomes a modifier; the
-        // captured name becomes the bound `identifier`; an explicit capture
+        // captured name becomes the bound `name_node`; an explicit capture
         // initializer (`[y = expr]`) becomes the bound value.
         rule!(
             (closureCapture
@@ -847,7 +847,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (pattern_guard_expr
                 value: {val}
                 pattern: (call_expr
-                    callee: (member_access_expr base: (identifier "Optional") member: (identifier "some"))
+                    callee: (member_access_expr base: (identifier "Optional") member_name_node: (identifier "some"))
                     argument: (argument value: (expr_pattern
                         modifier: (modifier "let")
                         expr: (identifier #{name})))))
@@ -858,7 +858,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (pattern_guard_expr
                 value: (identifier #{name})
                 pattern: (call_expr
-                    callee: (member_access_expr base: (identifier "Optional") member: (identifier "some"))
+                    callee: (member_access_expr base: (identifier "Optional") member_name_node: (identifier "some"))
                     argument: (argument value: (expr_pattern
                         modifier: (modifier "let")
                         expr: (identifier #{name})))))
@@ -905,7 +905,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (labeledStmt label: @@lbl statement: @stmt)
             =>
-            (labeled_stmt label: (identifier #{lbl}) stmt: {stmt})
+            (labeled_stmt label_name_node: (identifier #{lbl}) stmt: {stmt})
         ),
         // ---- Collections ----
         // An array literal (`[1, 2, 3]`). Each `arrayElement` unwraps to its
@@ -936,7 +936,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 tree!((call_expr
                     callee: (member_access_expr
                         base: (identifier "Optional")
-                        member: (identifier "some"))
+                        member_name_node: (identifier "some"))
                     argument: (argument value: {inner})))
             } else {
                 inner
@@ -995,10 +995,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((forceUnwrapExpr expression: @e) => (unary_expr operator: (postfix_operator "!") operand: {e})),
         // ---- Imports ----
         // An import declaration. The dotted path (a list of
-        // `importPathComponent`s) becomes an `identifier`/`member_access_expr`
+        // `importPathComponent`s) becomes a `name_node`/`member_access_expr`
         // chain (via `member_chain`). A scoped import (`import struct Foo.Bar`)
         // has an `importKindSpecifier` and binds the last path component as a
-        // raw identifier; a plain import (`import Foundation`) has none and uses
+        // raw name node; a plain import (`import Foundation`) has none and uses
         // a `bulk_importing_pattern` spanning the whole declaration. Any leading
         // attributes (`@_exported`) and access modifiers (`public`) become
         // `modifier`s.
@@ -1013,7 +1013,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let last = *parts.last().ok_or("import has no path")?;
                 let pattern = match kind {
                     None => tree!((named_pattern
-                        identifier: (identifier #{last})
+                        name_node: (identifier #{last})
                         sub_pattern: (bulk_importing_pattern))),
                     Some(_) => tree!((identifier #{last})),
                 };
@@ -1056,7 +1056,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (memberType baseType: @base name: @@name)
             =>
-            (member_access_expr base: {base} member: (identifier #{name}))
+            (member_access_expr base: {base} member_name_node: (identifier #{name}))
         ),
         // Sugared types desugar to `generic_type_expr`: `T?` -> Optional<T>,
         // `[T]` -> Array<T>, `[K: V]` -> Dictionary<K, V>.
@@ -1111,9 +1111,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             argument {
                 if ctx.in_function_type {
-                    tree!((parameter external_name: (identifier #{name})? type: {ty}))
+                    tree!((parameter external_name_node: (identifier #{name})? type: {ty}))
                 } else {
-                    tree!((argument name: (identifier #{name})? value: {ty}))
+                    tree!((argument name_node: (identifier #{name})? value: {ty}))
                 }
             }
         ),
@@ -1134,7 +1134,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (type_parameter
                 modifier: {attrs}
                 modifier: (modifier #{spec})?
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 bound: {bound})
         ),
         rule!(
@@ -1165,7 +1165,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 type_parameter: {params}
                 type_constraint: {parameter_constraints}
                 type_constraint: {declaration_constraints}
@@ -1188,7 +1188,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 type_parameter: {params}
                 type_constraint: {parameter_constraints}
                 type_constraint: {declaration_constraints}
@@ -1211,7 +1211,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 type_parameter: {params}
                 type_constraint: {parameter_constraints}
                 type_constraint: {declaration_constraints}
@@ -1232,7 +1232,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 type_parameter: {params}
                 type_constraint: {declaration_constraints}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
@@ -1253,7 +1253,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
@@ -1294,7 +1294,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (type_alias_declaration
                 modifier: {mods}
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 type_parameter: {type_params}
                 r#type: {val})
         ),
@@ -1307,7 +1307,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (associated_type_declaration
                 modifier: {mods}
-                name: (identifier #{name})
+                name_node: (identifier #{name})
                 bound: {bound})
         ),
         // ---- Fallbacks ----

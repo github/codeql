@@ -74,14 +74,14 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "add"
+          name_node: identifier "add"
           parameter:
             parameter
-              external_name: identifier "_"
+              external_name_node: identifier "_"
               type: identifier "Int"
               pattern: identifier "a"
             parameter
-              external_name: identifier "_"
+              external_name_node: identifier "_"
               type: identifier "Int"
               pattern: identifier "b"
           return_type: identifier "Int"

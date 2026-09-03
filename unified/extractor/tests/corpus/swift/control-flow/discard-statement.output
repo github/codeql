@@ -69,13 +69,13 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "struct"
-          name: identifier "Resource"
+          name_node: identifier "Resource"
           base_type:
             base_type
               type: unsupported_node "~Copyable"
           member:
             function_declaration
-              name: identifier "close"
+              name_node: identifier "close"
               body:
                 block
                   stmt: unsupported_node "discard self"

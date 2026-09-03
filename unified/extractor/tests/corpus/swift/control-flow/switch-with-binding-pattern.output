@@ -128,7 +128,7 @@ top_level
                   callee:
                     member_access_expr
                       base: inferred_type_expr "."
-                      member: identifier "circle"
+                      member_name_node: identifier "circle"
                   argument:
                     argument
                       value:
@@ -149,7 +149,7 @@ top_level
                   callee:
                     member_access_expr
                       base: inferred_type_expr "."
-                      member: identifier "square"
+                      member_name_node: identifier "square"
                   argument:
                     argument
                       value:

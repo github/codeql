@@ -42,7 +42,7 @@ class NameBindingPluginSwift extends NameBindingPlugin {
   }
 }
 
-/** Holds if `node` is in a context where a bare identifier should be seen as a reference rather than a declaration. */
+/** Holds if `node` is in a context where a bare name node should be seen as a reference rather than a declaration. */
 private predicate isUnboundPattern(Expr node) {
   // 'case/catch' start an unbound-pattern context, 'let/var' terminate it
   (
@@ -81,7 +81,7 @@ class SwiftPackageTarget extends ModuleScopeRepr, CallExpr {
 
   SwiftPackageTarget() {
     this.getFile().getBaseName() = "Package.swift" and
-    this.getCallee().(MemberAccessExpr).getMember().getValue() = targetKind and
+    this.getCallee().(MemberAccessExpr).getMemberNameNode().getValue() = targetKind and
     targetKind =
       [
         "target", "executableTarget", "testTarget", "systemLibrary", "binaryTarget", "plugin",

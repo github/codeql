@@ -98,7 +98,7 @@ top_level
       stmt:
         accessor_declaration
           modifier: modifier "var"
-          name: identifier "p"
+          name_node: identifier "p"
           accessor_kind: accessor_kind "get"
           type: identifier "Int"
           body:

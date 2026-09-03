@@ -108,7 +108,7 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "Box"
+          name_node: identifier "Box"
           member:
             variable_declaration
               modifier:
@@ -118,7 +118,7 @@ top_level
               value: int_literal "0"
             accessor_declaration
               modifier: modifier "var"
-              name: identifier "v"
+              name_node: identifier "v"
               accessor_kind: accessor_kind "get"
               type: identifier "Int"
               body:
@@ -130,7 +130,7 @@ top_level
               modifier:
                 modifier "var"
                 modifier "chained_declaration"
-              name: identifier "v"
+              name_node: identifier "v"
               accessor_kind: accessor_kind "set"
               type: identifier "Int"
               body:

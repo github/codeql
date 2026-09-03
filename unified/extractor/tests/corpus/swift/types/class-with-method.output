@@ -79,14 +79,14 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "Counter"
+          name_node: identifier "Counter"
           member:
             variable_declaration
               modifier: modifier "var"
               pattern: identifier "n"
               value: int_literal "0"
             function_declaration
-              name: identifier "bump"
+              name_node: identifier "bump"
               body:
                 block
                   stmt:

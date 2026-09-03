@@ -103,7 +103,7 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "Rect"
+          name_node: identifier "Rect"
           member:
             variable_declaration
               modifier: modifier "var"
@@ -115,7 +115,7 @@ top_level
               type: identifier "Double"
             accessor_declaration
               modifier: modifier "var"
-              name: identifier "area"
+              name_node: identifier "area"
               accessor_kind: accessor_kind "get"
               type: identifier "Double"
               body:

@@ -84,7 +84,7 @@ top_level
                   callee:
                     member_access_expr
                       base: identifier "Optional"
-                      member: identifier "some"
+                      member_name_node: identifier "some"
                   argument:
                     argument
                       value:
@@ -92,7 +92,7 @@ top_level
                           callee:
                             member_access_expr
                               base: inferred_type_expr "."
-                              member: identifier "some"
+                              member_name_node: identifier "some"
                           argument:
                             argument
                               value:

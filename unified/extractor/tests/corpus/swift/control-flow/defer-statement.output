@@ -80,7 +80,7 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "withCleanup"
+          name_node: identifier "withCleanup"
           body:
             block
               stmt:

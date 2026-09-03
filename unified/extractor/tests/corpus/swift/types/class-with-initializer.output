@@ -92,7 +92,7 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "Point"
+          name_node: identifier "Point"
           member:
             variable_declaration
               modifier: modifier "var"
@@ -110,5 +110,5 @@ top_level
                       target:
                         member_access_expr
                           base: identifier "self"
-                          member: identifier "x"
+                          member_name_node: identifier "x"
                       value: identifier "x"

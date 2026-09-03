@@ -78,10 +78,10 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "sum"
+          name_node: identifier "sum"
           parameter:
             parameter
-              external_name: identifier "_"
+              external_name_node: identifier "_"
               type: identifier "Int"
               pattern: identifier "values"
           return_type: identifier "Int"
@@ -94,7 +94,7 @@ top_level
                       callee:
                         member_access_expr
                           base: identifier "values"
-                          member: identifier "reduce"
+                          member_name_node: identifier "reduce"
                       argument:
                         argument
                           value: int_literal "0"
