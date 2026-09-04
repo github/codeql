@@ -4,6 +4,58 @@
 | azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument |
 | azure.cpp:287:79:287:98 | call to string | azure.cpp:287:62:287:99 | call to Url |
 | azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value |
+| protobuf.cpp:135:22:135:25 | data | protobuf.cpp:135:2:135:4 | ParseFromString output argument |
+| protobuf.cpp:142:22:142:25 | *data | protobuf.cpp:142:2:142:4 | ParseFromString output argument |
+| protobuf.cpp:149:29:149:32 | data | protobuf.cpp:149:2:149:4 | ParsePartialFromString output argument |
+| protobuf.cpp:156:29:156:32 | *data | protobuf.cpp:156:2:156:4 | ParsePartialFromString output argument |
+| protobuf.cpp:163:22:163:25 | data | protobuf.cpp:163:2:163:4 | MergeFromString output argument |
+| protobuf.cpp:170:22:170:25 | *data | protobuf.cpp:170:2:170:4 | MergeFromString output argument |
+| protobuf.cpp:177:29:177:32 | data | protobuf.cpp:177:2:177:4 | MergePartialFromString output argument |
+| protobuf.cpp:184:29:184:32 | *data | protobuf.cpp:184:2:184:4 | MergePartialFromString output argument |
+| protobuf.cpp:191:21:191:31 | *call to data | protobuf.cpp:191:2:191:4 | ParseFromArray output argument |
+| protobuf.cpp:198:28:198:38 | *call to data | protobuf.cpp:198:2:198:4 | ParsePartialFromArray output argument |
+| protobuf.cpp:205:20:205:23 | *data | protobuf.cpp:205:2:205:4 | ParseFromCord output argument |
+| protobuf.cpp:212:27:212:30 | *data | protobuf.cpp:212:2:212:4 | ParsePartialFromCord output argument |
+| protobuf.cpp:219:20:219:23 | *data | protobuf.cpp:219:2:219:4 | MergeFromCord output argument |
+| protobuf.cpp:226:27:226:30 | *data | protobuf.cpp:226:2:226:4 | MergePartialFromCord output argument |
+| protobuf.cpp:233:23:233:25 | *& ... | protobuf.cpp:233:2:233:4 | ParseFromIstream output argument |
+| protobuf.cpp:240:30:240:32 | *& ... | protobuf.cpp:240:2:240:4 | ParsePartialFromIstream output argument |
+| protobuf.cpp:247:30:247:32 | *& ... | protobuf.cpp:247:2:247:4 | ParseFromZeroCopyStream output argument |
+| protobuf.cpp:254:37:254:39 | *& ... | protobuf.cpp:254:2:254:4 | ParsePartialFromZeroCopyStream output argument |
+| protobuf.cpp:261:37:261:39 | *& ... | protobuf.cpp:261:2:261:4 | ParseFromBoundedZeroCopyStream output argument |
+| protobuf.cpp:268:44:268:46 | *& ... | protobuf.cpp:268:2:268:4 | ParsePartialFromBoundedZeroCopyStream output argument |
+| protobuf.cpp:275:37:275:39 | *& ... | protobuf.cpp:275:2:275:4 | MergeFromBoundedZeroCopyStream output argument |
+| protobuf.cpp:282:44:282:46 | *& ... | protobuf.cpp:282:2:282:4 | MergePartialFromBoundedZeroCopyStream output argument |
+| protobuf.cpp:289:27:289:29 | *& ... | protobuf.cpp:289:2:289:4 | ParseFromCodedStream output argument |
+| protobuf.cpp:296:34:296:36 | *& ... | protobuf.cpp:296:2:296:4 | ParsePartialFromCodedStream output argument |
+| protobuf.cpp:303:27:303:29 | *& ... | protobuf.cpp:303:2:303:4 | MergeFromCodedStream output argument |
+| protobuf.cpp:310:34:310:36 | *& ... | protobuf.cpp:310:2:310:4 | MergePartialFromCodedStream output argument |
+| protobuf.cpp:317:22:317:25 | *data | protobuf.cpp:317:2:317:4 | ParseFromString output argument |
+| protobuf.cpp:326:2:326:4 | *msg | protobuf.cpp:326:24:326:27 | SerializeToString output argument |
+| protobuf.cpp:333:2:333:4 | *msg | protobuf.cpp:333:31:333:34 | SerializePartialToString output argument |
+| protobuf.cpp:340:2:340:4 | *msg | protobuf.cpp:340:21:340:24 | AppendToString output argument |
+| protobuf.cpp:347:2:347:4 | *msg | protobuf.cpp:347:28:347:31 | AppendPartialToString output argument |
+| protobuf.cpp:354:2:354:4 | *msg | protobuf.cpp:354:24:354:27 | SerializeToString output argument |
+| protobuf.cpp:361:2:361:4 | *msg | protobuf.cpp:361:31:361:34 | SerializePartialToString output argument |
+| protobuf.cpp:368:2:368:4 | *msg | protobuf.cpp:368:21:368:24 | AppendToString output argument |
+| protobuf.cpp:375:2:375:4 | *msg | protobuf.cpp:375:28:375:31 | AppendPartialToString output argument |
+| protobuf.cpp:382:2:382:4 | *msg | protobuf.cpp:382:23:382:25 | SerializeToArray output argument |
+| protobuf.cpp:389:2:389:4 | *msg | protobuf.cpp:389:30:389:32 | SerializePartialToArray output argument |
+| protobuf.cpp:396:2:396:4 | *msg | protobuf.cpp:396:22:396:25 | SerializeToCord output argument |
+| protobuf.cpp:403:2:403:4 | *msg | protobuf.cpp:403:29:403:32 | SerializePartialToCord output argument |
+| protobuf.cpp:410:2:410:4 | *msg | protobuf.cpp:410:19:410:22 | AppendToCord output argument |
+| protobuf.cpp:417:2:417:4 | *msg | protobuf.cpp:417:26:417:29 | AppendPartialToCord output argument |
+| protobuf.cpp:424:2:424:4 | *msg | protobuf.cpp:424:25:424:28 | SerializeToOstream output argument |
+| protobuf.cpp:431:2:431:4 | *msg | protobuf.cpp:431:32:431:35 | SerializePartialToOstream output argument |
+| protobuf.cpp:438:2:438:4 | *msg | protobuf.cpp:438:32:438:35 | SerializeToZeroCopyStream output argument |
+| protobuf.cpp:445:2:445:4 | *msg | protobuf.cpp:445:39:445:42 | SerializePartialToZeroCopyStream output argument |
+| protobuf.cpp:452:2:452:4 | *msg | protobuf.cpp:452:29:452:32 | SerializeToCodedStream output argument |
+| protobuf.cpp:459:2:459:4 | *msg | protobuf.cpp:459:36:459:39 | SerializePartialToCodedStream output argument |
+| protobuf.cpp:467:7:467:9 | *msg | protobuf.cpp:467:11:467:27 | call to SerializeAsString |
+| protobuf.cpp:472:7:472:9 | *msg | protobuf.cpp:472:11:472:34 | call to SerializePartialAsString |
+| protobuf.cpp:477:7:477:9 | *msg | protobuf.cpp:477:11:477:25 | call to SerializeAsCord |
+| protobuf.cpp:482:7:482:9 | *msg | protobuf.cpp:482:11:482:32 | call to SerializePartialAsCord |
+| protobuf.cpp:487:7:487:9 | *msg | protobuf.cpp:487:11:487:27 | call to SerializeAsString |
 | test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual |
 | test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated |
 | test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body |

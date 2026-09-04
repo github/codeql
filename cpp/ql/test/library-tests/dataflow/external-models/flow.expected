@@ -96,6 +96,52 @@ models
 | 95 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
 | 96 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
 | 97 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 98 | Summary: google::protobuf; MessageLite; true; AppendPartialToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 99 | Summary: google::protobuf; MessageLite; true; AppendPartialToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 100 | Summary: google::protobuf; MessageLite; true; AppendToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 101 | Summary: google::protobuf; MessageLite; true; AppendToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 102 | Summary: google::protobuf; MessageLite; true; MergeFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 103 | Summary: google::protobuf; MessageLite; true; MergeFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 104 | Summary: google::protobuf; MessageLite; true; MergeFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 105 | Summary: google::protobuf; MessageLite; true; MergeFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 106 | Summary: google::protobuf; MessageLite; true; MergeFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 107 | Summary: google::protobuf; MessageLite; true; MergePartialFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 108 | Summary: google::protobuf; MessageLite; true; MergePartialFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 109 | Summary: google::protobuf; MessageLite; true; MergePartialFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 110 | Summary: google::protobuf; MessageLite; true; MergePartialFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 111 | Summary: google::protobuf; MessageLite; true; MergePartialFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 112 | Summary: google::protobuf; MessageLite; true; ParseFromArray; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 113 | Summary: google::protobuf; MessageLite; true; ParseFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 114 | Summary: google::protobuf; MessageLite; true; ParseFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 115 | Summary: google::protobuf; MessageLite; true; ParseFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 116 | Summary: google::protobuf; MessageLite; true; ParseFromIstream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 117 | Summary: google::protobuf; MessageLite; true; ParseFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 118 | Summary: google::protobuf; MessageLite; true; ParseFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 119 | Summary: google::protobuf; MessageLite; true; ParseFromZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 120 | Summary: google::protobuf; MessageLite; true; ParsePartialFromArray; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 121 | Summary: google::protobuf; MessageLite; true; ParsePartialFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 122 | Summary: google::protobuf; MessageLite; true; ParsePartialFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 123 | Summary: google::protobuf; MessageLite; true; ParsePartialFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 124 | Summary: google::protobuf; MessageLite; true; ParsePartialFromIstream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 125 | Summary: google::protobuf; MessageLite; true; ParsePartialFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 126 | Summary: google::protobuf; MessageLite; true; ParsePartialFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 127 | Summary: google::protobuf; MessageLite; true; ParsePartialFromZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 128 | Summary: google::protobuf; MessageLite; true; SerializeAsCord; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 129 | Summary: google::protobuf; MessageLite; true; SerializeAsString; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 130 | Summary: google::protobuf; MessageLite; true; SerializePartialAsCord; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 131 | Summary: google::protobuf; MessageLite; true; SerializePartialAsString; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 132 | Summary: google::protobuf; MessageLite; true; SerializePartialToArray; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 133 | Summary: google::protobuf; MessageLite; true; SerializePartialToCodedStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 134 | Summary: google::protobuf; MessageLite; true; SerializePartialToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 135 | Summary: google::protobuf; MessageLite; true; SerializePartialToOstream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 136 | Summary: google::protobuf; MessageLite; true; SerializePartialToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 137 | Summary: google::protobuf; MessageLite; true; SerializePartialToZeroCopyStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 138 | Summary: google::protobuf; MessageLite; true; SerializeToArray; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 139 | Summary: google::protobuf; MessageLite; true; SerializeToCodedStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 140 | Summary: google::protobuf; MessageLite; true; SerializeToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 141 | Summary: google::protobuf; MessageLite; true; SerializeToOstream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 142 | Summary: google::protobuf; MessageLite; true; SerializeToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 143 | Summary: google::protobuf; MessageLite; true; SerializeToZeroCopyStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
 edges
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:56  |
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
@@ -144,6 +190,200 @@ edges
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:295:10:295:20 | contentType | azure.cpp:295:10:295:20 | contentType | provenance |  |
+| protobuf.cpp:134:27:134:51 | call to source | protobuf.cpp:134:27:134:51 | call to source | provenance |  |
+| protobuf.cpp:134:27:134:51 | call to source | protobuf.cpp:135:22:135:25 | data | provenance |  |
+| protobuf.cpp:135:2:135:4 | ParseFromString output argument | protobuf.cpp:136:7:136:9 | msg | provenance |  |
+| protobuf.cpp:135:22:135:25 | data | protobuf.cpp:135:2:135:4 | ParseFromString output argument | provenance | MaD:118 |
+| protobuf.cpp:141:20:141:37 | call to source | protobuf.cpp:141:20:141:37 | call to source | provenance |  |
+| protobuf.cpp:141:20:141:37 | call to source | protobuf.cpp:142:22:142:25 | *data | provenance |  |
+| protobuf.cpp:142:2:142:4 | ParseFromString output argument | protobuf.cpp:143:7:143:9 | msg | provenance |  |
+| protobuf.cpp:142:22:142:25 | *data | protobuf.cpp:142:2:142:4 | ParseFromString output argument | provenance | MaD:117 |
+| protobuf.cpp:148:27:148:51 | call to source | protobuf.cpp:148:27:148:51 | call to source | provenance |  |
+| protobuf.cpp:148:27:148:51 | call to source | protobuf.cpp:149:29:149:32 | data | provenance |  |
+| protobuf.cpp:149:2:149:4 | ParsePartialFromString output argument | protobuf.cpp:150:7:150:9 | msg | provenance |  |
+| protobuf.cpp:149:29:149:32 | data | protobuf.cpp:149:2:149:4 | ParsePartialFromString output argument | provenance | MaD:126 |
+| protobuf.cpp:155:20:155:37 | call to source | protobuf.cpp:155:20:155:37 | call to source | provenance |  |
+| protobuf.cpp:155:20:155:37 | call to source | protobuf.cpp:156:29:156:32 | *data | provenance |  |
+| protobuf.cpp:156:2:156:4 | ParsePartialFromString output argument | protobuf.cpp:157:7:157:9 | msg | provenance |  |
+| protobuf.cpp:156:29:156:32 | *data | protobuf.cpp:156:2:156:4 | ParsePartialFromString output argument | provenance | MaD:125 |
+| protobuf.cpp:162:27:162:51 | call to source | protobuf.cpp:162:27:162:51 | call to source | provenance |  |
+| protobuf.cpp:162:27:162:51 | call to source | protobuf.cpp:163:22:163:25 | data | provenance |  |
+| protobuf.cpp:163:2:163:4 | MergeFromString output argument | protobuf.cpp:164:7:164:9 | msg | provenance |  |
+| protobuf.cpp:163:22:163:25 | data | protobuf.cpp:163:2:163:4 | MergeFromString output argument | provenance | MaD:106 |
+| protobuf.cpp:169:20:169:37 | call to source | protobuf.cpp:169:20:169:37 | call to source | provenance |  |
+| protobuf.cpp:169:20:169:37 | call to source | protobuf.cpp:170:22:170:25 | *data | provenance |  |
+| protobuf.cpp:170:2:170:4 | MergeFromString output argument | protobuf.cpp:171:7:171:9 | msg | provenance |  |
+| protobuf.cpp:170:22:170:25 | *data | protobuf.cpp:170:2:170:4 | MergeFromString output argument | provenance | MaD:105 |
+| protobuf.cpp:176:27:176:51 | call to source | protobuf.cpp:176:27:176:51 | call to source | provenance |  |
+| protobuf.cpp:176:27:176:51 | call to source | protobuf.cpp:177:29:177:32 | data | provenance |  |
+| protobuf.cpp:177:2:177:4 | MergePartialFromString output argument | protobuf.cpp:178:7:178:9 | msg | provenance |  |
+| protobuf.cpp:177:29:177:32 | data | protobuf.cpp:177:2:177:4 | MergePartialFromString output argument | provenance | MaD:111 |
+| protobuf.cpp:183:20:183:37 | call to source | protobuf.cpp:183:20:183:37 | call to source | provenance |  |
+| protobuf.cpp:183:20:183:37 | call to source | protobuf.cpp:184:29:184:32 | *data | provenance |  |
+| protobuf.cpp:184:2:184:4 | MergePartialFromString output argument | protobuf.cpp:185:7:185:9 | msg | provenance |  |
+| protobuf.cpp:184:29:184:32 | *data | protobuf.cpp:184:2:184:4 | MergePartialFromString output argument | provenance | MaD:110 |
+| protobuf.cpp:190:19:190:38 | call to source | protobuf.cpp:191:21:191:31 | *call to data | provenance | TaintFunction |
+| protobuf.cpp:191:2:191:4 | ParseFromArray output argument | protobuf.cpp:192:7:192:9 | msg | provenance |  |
+| protobuf.cpp:191:21:191:31 | *call to data | protobuf.cpp:191:2:191:4 | ParseFromArray output argument | provenance | MaD:112 |
+| protobuf.cpp:197:19:197:38 | call to source | protobuf.cpp:198:28:198:38 | *call to data | provenance | TaintFunction |
+| protobuf.cpp:198:2:198:4 | ParsePartialFromArray output argument | protobuf.cpp:199:7:199:9 | msg | provenance |  |
+| protobuf.cpp:198:28:198:38 | *call to data | protobuf.cpp:198:2:198:4 | ParsePartialFromArray output argument | provenance | MaD:120 |
+| protobuf.cpp:204:20:204:37 | call to source | protobuf.cpp:204:20:204:37 | call to source | provenance |  |
+| protobuf.cpp:204:20:204:37 | call to source | protobuf.cpp:205:20:205:23 | *data | provenance |  |
+| protobuf.cpp:205:2:205:4 | ParseFromCord output argument | protobuf.cpp:206:7:206:9 | msg | provenance |  |
+| protobuf.cpp:205:20:205:23 | *data | protobuf.cpp:205:2:205:4 | ParseFromCord output argument | provenance | MaD:115 |
+| protobuf.cpp:211:20:211:37 | call to source | protobuf.cpp:211:20:211:37 | call to source | provenance |  |
+| protobuf.cpp:211:20:211:37 | call to source | protobuf.cpp:212:27:212:30 | *data | provenance |  |
+| protobuf.cpp:212:2:212:4 | ParsePartialFromCord output argument | protobuf.cpp:213:7:213:9 | msg | provenance |  |
+| protobuf.cpp:212:27:212:30 | *data | protobuf.cpp:212:2:212:4 | ParsePartialFromCord output argument | provenance | MaD:123 |
+| protobuf.cpp:218:20:218:37 | call to source | protobuf.cpp:218:20:218:37 | call to source | provenance |  |
+| protobuf.cpp:218:20:218:37 | call to source | protobuf.cpp:219:20:219:23 | *data | provenance |  |
+| protobuf.cpp:219:2:219:4 | MergeFromCord output argument | protobuf.cpp:220:7:220:9 | msg | provenance |  |
+| protobuf.cpp:219:20:219:23 | *data | protobuf.cpp:219:2:219:4 | MergeFromCord output argument | provenance | MaD:104 |
+| protobuf.cpp:225:20:225:37 | call to source | protobuf.cpp:225:20:225:37 | call to source | provenance |  |
+| protobuf.cpp:225:20:225:37 | call to source | protobuf.cpp:226:27:226:30 | *data | provenance |  |
+| protobuf.cpp:226:2:226:4 | MergePartialFromCord output argument | protobuf.cpp:227:7:227:9 | msg | provenance |  |
+| protobuf.cpp:226:27:226:30 | *data | protobuf.cpp:226:2:226:4 | MergePartialFromCord output argument | provenance | MaD:109 |
+| protobuf.cpp:232:20:232:39 | call to source | protobuf.cpp:232:20:232:39 | call to source | provenance |  |
+| protobuf.cpp:232:20:232:39 | call to source | protobuf.cpp:233:23:233:25 | *& ... | provenance |  |
+| protobuf.cpp:233:2:233:4 | ParseFromIstream output argument | protobuf.cpp:234:7:234:9 | msg | provenance |  |
+| protobuf.cpp:233:23:233:25 | *& ... | protobuf.cpp:233:2:233:4 | ParseFromIstream output argument | provenance | MaD:116 |
+| protobuf.cpp:239:20:239:39 | call to source | protobuf.cpp:239:20:239:39 | call to source | provenance |  |
+| protobuf.cpp:239:20:239:39 | call to source | protobuf.cpp:240:30:240:32 | *& ... | provenance |  |
+| protobuf.cpp:240:2:240:4 | ParsePartialFromIstream output argument | protobuf.cpp:241:7:241:9 | msg | provenance |  |
+| protobuf.cpp:240:30:240:32 | *& ... | protobuf.cpp:240:2:240:4 | ParsePartialFromIstream output argument | provenance | MaD:124 |
+| protobuf.cpp:246:27:246:53 | call to source | protobuf.cpp:246:27:246:53 | call to source | provenance |  |
+| protobuf.cpp:246:27:246:53 | call to source | protobuf.cpp:247:30:247:32 | *& ... | provenance |  |
+| protobuf.cpp:247:2:247:4 | ParseFromZeroCopyStream output argument | protobuf.cpp:248:7:248:9 | msg | provenance |  |
+| protobuf.cpp:247:30:247:32 | *& ... | protobuf.cpp:247:2:247:4 | ParseFromZeroCopyStream output argument | provenance | MaD:119 |
+| protobuf.cpp:253:27:253:53 | call to source | protobuf.cpp:253:27:253:53 | call to source | provenance |  |
+| protobuf.cpp:253:27:253:53 | call to source | protobuf.cpp:254:37:254:39 | *& ... | provenance |  |
+| protobuf.cpp:254:2:254:4 | ParsePartialFromZeroCopyStream output argument | protobuf.cpp:255:7:255:9 | msg | provenance |  |
+| protobuf.cpp:254:37:254:39 | *& ... | protobuf.cpp:254:2:254:4 | ParsePartialFromZeroCopyStream output argument | provenance | MaD:127 |
+| protobuf.cpp:260:27:260:53 | call to source | protobuf.cpp:260:27:260:53 | call to source | provenance |  |
+| protobuf.cpp:260:27:260:53 | call to source | protobuf.cpp:261:37:261:39 | *& ... | provenance |  |
+| protobuf.cpp:261:2:261:4 | ParseFromBoundedZeroCopyStream output argument | protobuf.cpp:262:7:262:9 | msg | provenance |  |
+| protobuf.cpp:261:37:261:39 | *& ... | protobuf.cpp:261:2:261:4 | ParseFromBoundedZeroCopyStream output argument | provenance | MaD:113 |
+| protobuf.cpp:267:27:267:53 | call to source | protobuf.cpp:267:27:267:53 | call to source | provenance |  |
+| protobuf.cpp:267:27:267:53 | call to source | protobuf.cpp:268:44:268:46 | *& ... | provenance |  |
+| protobuf.cpp:268:2:268:4 | ParsePartialFromBoundedZeroCopyStream output argument | protobuf.cpp:269:7:269:9 | msg | provenance |  |
+| protobuf.cpp:268:44:268:46 | *& ... | protobuf.cpp:268:2:268:4 | ParsePartialFromBoundedZeroCopyStream output argument | provenance | MaD:121 |
+| protobuf.cpp:274:27:274:53 | call to source | protobuf.cpp:274:27:274:53 | call to source | provenance |  |
+| protobuf.cpp:274:27:274:53 | call to source | protobuf.cpp:275:37:275:39 | *& ... | provenance |  |
+| protobuf.cpp:275:2:275:4 | MergeFromBoundedZeroCopyStream output argument | protobuf.cpp:276:7:276:9 | msg | provenance |  |
+| protobuf.cpp:275:37:275:39 | *& ... | protobuf.cpp:275:2:275:4 | MergeFromBoundedZeroCopyStream output argument | provenance | MaD:102 |
+| protobuf.cpp:281:27:281:53 | call to source | protobuf.cpp:281:27:281:53 | call to source | provenance |  |
+| protobuf.cpp:281:27:281:53 | call to source | protobuf.cpp:282:44:282:46 | *& ... | provenance |  |
+| protobuf.cpp:282:2:282:4 | MergePartialFromBoundedZeroCopyStream output argument | protobuf.cpp:283:7:283:9 | msg | provenance |  |
+| protobuf.cpp:282:44:282:46 | *& ... | protobuf.cpp:282:2:282:4 | MergePartialFromBoundedZeroCopyStream output argument | provenance | MaD:107 |
+| protobuf.cpp:288:24:288:47 | call to source | protobuf.cpp:288:24:288:47 | call to source | provenance |  |
+| protobuf.cpp:288:24:288:47 | call to source | protobuf.cpp:289:27:289:29 | *& ... | provenance |  |
+| protobuf.cpp:289:2:289:4 | ParseFromCodedStream output argument | protobuf.cpp:290:7:290:9 | msg | provenance |  |
+| protobuf.cpp:289:27:289:29 | *& ... | protobuf.cpp:289:2:289:4 | ParseFromCodedStream output argument | provenance | MaD:114 |
+| protobuf.cpp:295:24:295:47 | call to source | protobuf.cpp:295:24:295:47 | call to source | provenance |  |
+| protobuf.cpp:295:24:295:47 | call to source | protobuf.cpp:296:34:296:36 | *& ... | provenance |  |
+| protobuf.cpp:296:2:296:4 | ParsePartialFromCodedStream output argument | protobuf.cpp:297:7:297:9 | msg | provenance |  |
+| protobuf.cpp:296:34:296:36 | *& ... | protobuf.cpp:296:2:296:4 | ParsePartialFromCodedStream output argument | provenance | MaD:122 |
+| protobuf.cpp:302:24:302:47 | call to source | protobuf.cpp:302:24:302:47 | call to source | provenance |  |
+| protobuf.cpp:302:24:302:47 | call to source | protobuf.cpp:303:27:303:29 | *& ... | provenance |  |
+| protobuf.cpp:303:2:303:4 | MergeFromCodedStream output argument | protobuf.cpp:304:7:304:9 | msg | provenance |  |
+| protobuf.cpp:303:27:303:29 | *& ... | protobuf.cpp:303:2:303:4 | MergeFromCodedStream output argument | provenance | MaD:103 |
+| protobuf.cpp:309:24:309:47 | call to source | protobuf.cpp:309:24:309:47 | call to source | provenance |  |
+| protobuf.cpp:309:24:309:47 | call to source | protobuf.cpp:310:34:310:36 | *& ... | provenance |  |
+| protobuf.cpp:310:2:310:4 | MergePartialFromCodedStream output argument | protobuf.cpp:311:7:311:9 | msg | provenance |  |
+| protobuf.cpp:310:34:310:36 | *& ... | protobuf.cpp:310:2:310:4 | MergePartialFromCodedStream output argument | provenance | MaD:108 |
+| protobuf.cpp:324:15:324:28 | call to source | protobuf.cpp:324:15:324:28 | call to source | provenance |  |
+| protobuf.cpp:324:15:324:28 | call to source | protobuf.cpp:326:2:326:4 | *msg | provenance |  |
+| protobuf.cpp:326:2:326:4 | *msg | protobuf.cpp:326:24:326:27 | SerializeToString output argument | provenance | MaD:142 |
+| protobuf.cpp:326:24:326:27 | SerializeToString output argument | protobuf.cpp:327:7:327:9 | out | provenance |  |
+| protobuf.cpp:331:15:331:28 | call to source | protobuf.cpp:331:15:331:28 | call to source | provenance |  |
+| protobuf.cpp:331:15:331:28 | call to source | protobuf.cpp:333:2:333:4 | *msg | provenance |  |
+| protobuf.cpp:333:2:333:4 | *msg | protobuf.cpp:333:31:333:34 | SerializePartialToString output argument | provenance | MaD:136 |
+| protobuf.cpp:333:31:333:34 | SerializePartialToString output argument | protobuf.cpp:334:7:334:9 | out | provenance |  |
+| protobuf.cpp:338:15:338:28 | call to source | protobuf.cpp:338:15:338:28 | call to source | provenance |  |
+| protobuf.cpp:338:15:338:28 | call to source | protobuf.cpp:340:2:340:4 | *msg | provenance |  |
+| protobuf.cpp:340:2:340:4 | *msg | protobuf.cpp:340:21:340:24 | AppendToString output argument | provenance | MaD:101 |
+| protobuf.cpp:340:21:340:24 | AppendToString output argument | protobuf.cpp:341:7:341:9 | out | provenance |  |
+| protobuf.cpp:345:15:345:28 | call to source | protobuf.cpp:345:15:345:28 | call to source | provenance |  |
+| protobuf.cpp:345:15:345:28 | call to source | protobuf.cpp:347:2:347:4 | *msg | provenance |  |
+| protobuf.cpp:347:2:347:4 | *msg | protobuf.cpp:347:28:347:31 | AppendPartialToString output argument | provenance | MaD:99 |
+| protobuf.cpp:347:28:347:31 | AppendPartialToString output argument | protobuf.cpp:348:7:348:9 | out | provenance |  |
+| protobuf.cpp:352:15:352:28 | call to source | protobuf.cpp:352:15:352:28 | call to source | provenance |  |
+| protobuf.cpp:352:15:352:28 | call to source | protobuf.cpp:354:2:354:4 | *msg | provenance |  |
+| protobuf.cpp:354:2:354:4 | *msg | protobuf.cpp:354:24:354:27 | SerializeToString output argument | provenance | MaD:142 |
+| protobuf.cpp:354:24:354:27 | SerializeToString output argument | protobuf.cpp:355:7:355:9 | out | provenance |  |
+| protobuf.cpp:359:15:359:28 | call to source | protobuf.cpp:359:15:359:28 | call to source | provenance |  |
+| protobuf.cpp:359:15:359:28 | call to source | protobuf.cpp:361:2:361:4 | *msg | provenance |  |
+| protobuf.cpp:361:2:361:4 | *msg | protobuf.cpp:361:31:361:34 | SerializePartialToString output argument | provenance | MaD:136 |
+| protobuf.cpp:361:31:361:34 | SerializePartialToString output argument | protobuf.cpp:362:7:362:9 | out | provenance |  |
+| protobuf.cpp:366:15:366:28 | call to source | protobuf.cpp:366:15:366:28 | call to source | provenance |  |
+| protobuf.cpp:366:15:366:28 | call to source | protobuf.cpp:368:2:368:4 | *msg | provenance |  |
+| protobuf.cpp:368:2:368:4 | *msg | protobuf.cpp:368:21:368:24 | AppendToString output argument | provenance | MaD:101 |
+| protobuf.cpp:368:21:368:24 | AppendToString output argument | protobuf.cpp:369:7:369:9 | out | provenance |  |
+| protobuf.cpp:373:15:373:28 | call to source | protobuf.cpp:373:15:373:28 | call to source | provenance |  |
+| protobuf.cpp:373:15:373:28 | call to source | protobuf.cpp:375:2:375:4 | *msg | provenance |  |
+| protobuf.cpp:375:2:375:4 | *msg | protobuf.cpp:375:28:375:31 | AppendPartialToString output argument | provenance | MaD:99 |
+| protobuf.cpp:375:28:375:31 | AppendPartialToString output argument | protobuf.cpp:376:7:376:9 | out | provenance |  |
+| protobuf.cpp:380:15:380:28 | call to source | protobuf.cpp:380:15:380:28 | call to source | provenance |  |
+| protobuf.cpp:380:15:380:28 | call to source | protobuf.cpp:382:2:382:4 | *msg | provenance |  |
+| protobuf.cpp:382:2:382:4 | *msg | protobuf.cpp:382:23:382:25 | SerializeToArray output argument | provenance | MaD:138 |
+| protobuf.cpp:382:23:382:25 | SerializeToArray output argument | protobuf.cpp:383:7:383:10 | * ... | provenance |  |
+| protobuf.cpp:387:15:387:28 | call to source | protobuf.cpp:387:15:387:28 | call to source | provenance |  |
+| protobuf.cpp:387:15:387:28 | call to source | protobuf.cpp:389:2:389:4 | *msg | provenance |  |
+| protobuf.cpp:389:2:389:4 | *msg | protobuf.cpp:389:30:389:32 | SerializePartialToArray output argument | provenance | MaD:132 |
+| protobuf.cpp:389:30:389:32 | SerializePartialToArray output argument | protobuf.cpp:390:7:390:10 | * ... | provenance |  |
+| protobuf.cpp:394:15:394:28 | call to source | protobuf.cpp:394:15:394:28 | call to source | provenance |  |
+| protobuf.cpp:394:15:394:28 | call to source | protobuf.cpp:396:2:396:4 | *msg | provenance |  |
+| protobuf.cpp:396:2:396:4 | *msg | protobuf.cpp:396:22:396:25 | SerializeToCord output argument | provenance | MaD:140 |
+| protobuf.cpp:396:22:396:25 | SerializeToCord output argument | protobuf.cpp:397:7:397:9 | out | provenance |  |
+| protobuf.cpp:401:15:401:28 | call to source | protobuf.cpp:401:15:401:28 | call to source | provenance |  |
+| protobuf.cpp:401:15:401:28 | call to source | protobuf.cpp:403:2:403:4 | *msg | provenance |  |
+| protobuf.cpp:403:2:403:4 | *msg | protobuf.cpp:403:29:403:32 | SerializePartialToCord output argument | provenance | MaD:134 |
+| protobuf.cpp:403:29:403:32 | SerializePartialToCord output argument | protobuf.cpp:404:7:404:9 | out | provenance |  |
+| protobuf.cpp:408:15:408:28 | call to source | protobuf.cpp:408:15:408:28 | call to source | provenance |  |
+| protobuf.cpp:408:15:408:28 | call to source | protobuf.cpp:410:2:410:4 | *msg | provenance |  |
+| protobuf.cpp:410:2:410:4 | *msg | protobuf.cpp:410:19:410:22 | AppendToCord output argument | provenance | MaD:100 |
+| protobuf.cpp:410:19:410:22 | AppendToCord output argument | protobuf.cpp:411:7:411:9 | out | provenance |  |
+| protobuf.cpp:415:15:415:28 | call to source | protobuf.cpp:415:15:415:28 | call to source | provenance |  |
+| protobuf.cpp:415:15:415:28 | call to source | protobuf.cpp:417:2:417:4 | *msg | provenance |  |
+| protobuf.cpp:417:2:417:4 | *msg | protobuf.cpp:417:26:417:29 | AppendPartialToCord output argument | provenance | MaD:98 |
+| protobuf.cpp:417:26:417:29 | AppendPartialToCord output argument | protobuf.cpp:418:7:418:9 | out | provenance |  |
+| protobuf.cpp:422:15:422:28 | call to source | protobuf.cpp:422:15:422:28 | call to source | provenance |  |
+| protobuf.cpp:422:15:422:28 | call to source | protobuf.cpp:424:2:424:4 | *msg | provenance |  |
+| protobuf.cpp:424:2:424:4 | *msg | protobuf.cpp:424:25:424:28 | SerializeToOstream output argument | provenance | MaD:141 |
+| protobuf.cpp:424:25:424:28 | SerializeToOstream output argument | protobuf.cpp:425:7:425:9 | out | provenance |  |
+| protobuf.cpp:429:15:429:28 | call to source | protobuf.cpp:429:15:429:28 | call to source | provenance |  |
+| protobuf.cpp:429:15:429:28 | call to source | protobuf.cpp:431:2:431:4 | *msg | provenance |  |
+| protobuf.cpp:431:2:431:4 | *msg | protobuf.cpp:431:32:431:35 | SerializePartialToOstream output argument | provenance | MaD:135 |
+| protobuf.cpp:431:32:431:35 | SerializePartialToOstream output argument | protobuf.cpp:432:7:432:9 | out | provenance |  |
+| protobuf.cpp:436:15:436:28 | call to source | protobuf.cpp:436:15:436:28 | call to source | provenance |  |
+| protobuf.cpp:436:15:436:28 | call to source | protobuf.cpp:438:2:438:4 | *msg | provenance |  |
+| protobuf.cpp:438:2:438:4 | *msg | protobuf.cpp:438:32:438:35 | SerializeToZeroCopyStream output argument | provenance | MaD:143 |
+| protobuf.cpp:438:32:438:35 | SerializeToZeroCopyStream output argument | protobuf.cpp:439:7:439:9 | out | provenance |  |
+| protobuf.cpp:443:15:443:28 | call to source | protobuf.cpp:443:15:443:28 | call to source | provenance |  |
+| protobuf.cpp:443:15:443:28 | call to source | protobuf.cpp:445:2:445:4 | *msg | provenance |  |
+| protobuf.cpp:445:2:445:4 | *msg | protobuf.cpp:445:39:445:42 | SerializePartialToZeroCopyStream output argument | provenance | MaD:137 |
+| protobuf.cpp:445:39:445:42 | SerializePartialToZeroCopyStream output argument | protobuf.cpp:446:7:446:9 | out | provenance |  |
+| protobuf.cpp:450:15:450:28 | call to source | protobuf.cpp:450:15:450:28 | call to source | provenance |  |
+| protobuf.cpp:450:15:450:28 | call to source | protobuf.cpp:452:2:452:4 | *msg | provenance |  |
+| protobuf.cpp:452:2:452:4 | *msg | protobuf.cpp:452:29:452:32 | SerializeToCodedStream output argument | provenance | MaD:139 |
+| protobuf.cpp:452:29:452:32 | SerializeToCodedStream output argument | protobuf.cpp:453:7:453:9 | out | provenance |  |
+| protobuf.cpp:457:15:457:28 | call to source | protobuf.cpp:457:15:457:28 | call to source | provenance |  |
+| protobuf.cpp:457:15:457:28 | call to source | protobuf.cpp:459:2:459:4 | *msg | provenance |  |
+| protobuf.cpp:459:2:459:4 | *msg | protobuf.cpp:459:36:459:39 | SerializePartialToCodedStream output argument | provenance | MaD:133 |
+| protobuf.cpp:459:36:459:39 | SerializePartialToCodedStream output argument | protobuf.cpp:460:7:460:9 | out | provenance |  |
+| protobuf.cpp:466:15:466:28 | call to source | protobuf.cpp:466:15:466:28 | call to source | provenance |  |
+| protobuf.cpp:466:15:466:28 | call to source | protobuf.cpp:467:7:467:9 | *msg | provenance |  |
+| protobuf.cpp:467:7:467:9 | *msg | protobuf.cpp:467:11:467:27 | call to SerializeAsString | provenance | MaD:129 |
+| protobuf.cpp:471:15:471:28 | call to source | protobuf.cpp:471:15:471:28 | call to source | provenance |  |
+| protobuf.cpp:471:15:471:28 | call to source | protobuf.cpp:472:7:472:9 | *msg | provenance |  |
+| protobuf.cpp:472:7:472:9 | *msg | protobuf.cpp:472:11:472:34 | call to SerializePartialAsString | provenance | MaD:131 |
+| protobuf.cpp:476:15:476:28 | call to source | protobuf.cpp:476:15:476:28 | call to source | provenance |  |
+| protobuf.cpp:476:15:476:28 | call to source | protobuf.cpp:477:7:477:9 | *msg | provenance |  |
+| protobuf.cpp:477:7:477:9 | *msg | protobuf.cpp:477:11:477:25 | call to SerializeAsCord | provenance | MaD:128 |
+| protobuf.cpp:481:15:481:28 | call to source | protobuf.cpp:481:15:481:28 | call to source | provenance |  |
+| protobuf.cpp:481:15:481:28 | call to source | protobuf.cpp:482:7:482:9 | *msg | provenance |  |
+| protobuf.cpp:482:7:482:9 | *msg | protobuf.cpp:482:11:482:32 | call to SerializePartialAsCord | provenance | MaD:130 |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:48  |
@@ -541,6 +781,250 @@ nodes
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
+| protobuf.cpp:134:27:134:51 | call to source | semmle.label | call to source |
+| protobuf.cpp:134:27:134:51 | call to source | semmle.label | call to source |
+| protobuf.cpp:135:2:135:4 | ParseFromString output argument | semmle.label | ParseFromString output argument |
+| protobuf.cpp:135:22:135:25 | data | semmle.label | data |
+| protobuf.cpp:136:7:136:9 | msg | semmle.label | msg |
+| protobuf.cpp:141:20:141:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:141:20:141:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:142:2:142:4 | ParseFromString output argument | semmle.label | ParseFromString output argument |
+| protobuf.cpp:142:22:142:25 | *data | semmle.label | *data |
+| protobuf.cpp:143:7:143:9 | msg | semmle.label | msg |
+| protobuf.cpp:148:27:148:51 | call to source | semmle.label | call to source |
+| protobuf.cpp:148:27:148:51 | call to source | semmle.label | call to source |
+| protobuf.cpp:149:2:149:4 | ParsePartialFromString output argument | semmle.label | ParsePartialFromString output argument |
+| protobuf.cpp:149:29:149:32 | data | semmle.label | data |
+| protobuf.cpp:150:7:150:9 | msg | semmle.label | msg |
+| protobuf.cpp:155:20:155:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:155:20:155:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:156:2:156:4 | ParsePartialFromString output argument | semmle.label | ParsePartialFromString output argument |
+| protobuf.cpp:156:29:156:32 | *data | semmle.label | *data |
+| protobuf.cpp:157:7:157:9 | msg | semmle.label | msg |
+| protobuf.cpp:162:27:162:51 | call to source | semmle.label | call to source |
+| protobuf.cpp:162:27:162:51 | call to source | semmle.label | call to source |
+| protobuf.cpp:163:2:163:4 | MergeFromString output argument | semmle.label | MergeFromString output argument |
+| protobuf.cpp:163:22:163:25 | data | semmle.label | data |
+| protobuf.cpp:164:7:164:9 | msg | semmle.label | msg |
+| protobuf.cpp:169:20:169:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:169:20:169:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:170:2:170:4 | MergeFromString output argument | semmle.label | MergeFromString output argument |
+| protobuf.cpp:170:22:170:25 | *data | semmle.label | *data |
+| protobuf.cpp:171:7:171:9 | msg | semmle.label | msg |
+| protobuf.cpp:176:27:176:51 | call to source | semmle.label | call to source |
+| protobuf.cpp:176:27:176:51 | call to source | semmle.label | call to source |
+| protobuf.cpp:177:2:177:4 | MergePartialFromString output argument | semmle.label | MergePartialFromString output argument |
+| protobuf.cpp:177:29:177:32 | data | semmle.label | data |
+| protobuf.cpp:178:7:178:9 | msg | semmle.label | msg |
+| protobuf.cpp:183:20:183:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:183:20:183:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:184:2:184:4 | MergePartialFromString output argument | semmle.label | MergePartialFromString output argument |
+| protobuf.cpp:184:29:184:32 | *data | semmle.label | *data |
+| protobuf.cpp:185:7:185:9 | msg | semmle.label | msg |
+| protobuf.cpp:190:19:190:38 | call to source | semmle.label | call to source |
+| protobuf.cpp:191:2:191:4 | ParseFromArray output argument | semmle.label | ParseFromArray output argument |
+| protobuf.cpp:191:21:191:31 | *call to data | semmle.label | *call to data |
+| protobuf.cpp:192:7:192:9 | msg | semmle.label | msg |
+| protobuf.cpp:197:19:197:38 | call to source | semmle.label | call to source |
+| protobuf.cpp:198:2:198:4 | ParsePartialFromArray output argument | semmle.label | ParsePartialFromArray output argument |
+| protobuf.cpp:198:28:198:38 | *call to data | semmle.label | *call to data |
+| protobuf.cpp:199:7:199:9 | msg | semmle.label | msg |
+| protobuf.cpp:204:20:204:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:204:20:204:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:205:2:205:4 | ParseFromCord output argument | semmle.label | ParseFromCord output argument |
+| protobuf.cpp:205:20:205:23 | *data | semmle.label | *data |
+| protobuf.cpp:206:7:206:9 | msg | semmle.label | msg |
+| protobuf.cpp:211:20:211:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:211:20:211:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:212:2:212:4 | ParsePartialFromCord output argument | semmle.label | ParsePartialFromCord output argument |
+| protobuf.cpp:212:27:212:30 | *data | semmle.label | *data |
+| protobuf.cpp:213:7:213:9 | msg | semmle.label | msg |
+| protobuf.cpp:218:20:218:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:218:20:218:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:219:2:219:4 | MergeFromCord output argument | semmle.label | MergeFromCord output argument |
+| protobuf.cpp:219:20:219:23 | *data | semmle.label | *data |
+| protobuf.cpp:220:7:220:9 | msg | semmle.label | msg |
+| protobuf.cpp:225:20:225:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:225:20:225:37 | call to source | semmle.label | call to source |
+| protobuf.cpp:226:2:226:4 | MergePartialFromCord output argument | semmle.label | MergePartialFromCord output argument |
+| protobuf.cpp:226:27:226:30 | *data | semmle.label | *data |
+| protobuf.cpp:227:7:227:9 | msg | semmle.label | msg |
+| protobuf.cpp:232:20:232:39 | call to source | semmle.label | call to source |
+| protobuf.cpp:232:20:232:39 | call to source | semmle.label | call to source |
+| protobuf.cpp:233:2:233:4 | ParseFromIstream output argument | semmle.label | ParseFromIstream output argument |
+| protobuf.cpp:233:23:233:25 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:234:7:234:9 | msg | semmle.label | msg |
+| protobuf.cpp:239:20:239:39 | call to source | semmle.label | call to source |
+| protobuf.cpp:239:20:239:39 | call to source | semmle.label | call to source |
+| protobuf.cpp:240:2:240:4 | ParsePartialFromIstream output argument | semmle.label | ParsePartialFromIstream output argument |
+| protobuf.cpp:240:30:240:32 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:241:7:241:9 | msg | semmle.label | msg |
+| protobuf.cpp:246:27:246:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:246:27:246:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:247:2:247:4 | ParseFromZeroCopyStream output argument | semmle.label | ParseFromZeroCopyStream output argument |
+| protobuf.cpp:247:30:247:32 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:248:7:248:9 | msg | semmle.label | msg |
+| protobuf.cpp:253:27:253:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:253:27:253:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:254:2:254:4 | ParsePartialFromZeroCopyStream output argument | semmle.label | ParsePartialFromZeroCopyStream output argument |
+| protobuf.cpp:254:37:254:39 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:255:7:255:9 | msg | semmle.label | msg |
+| protobuf.cpp:260:27:260:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:260:27:260:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:261:2:261:4 | ParseFromBoundedZeroCopyStream output argument | semmle.label | ParseFromBoundedZeroCopyStream output argument |
+| protobuf.cpp:261:37:261:39 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:262:7:262:9 | msg | semmle.label | msg |
+| protobuf.cpp:267:27:267:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:267:27:267:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:268:2:268:4 | ParsePartialFromBoundedZeroCopyStream output argument | semmle.label | ParsePartialFromBoundedZeroCopyStream output argument |
+| protobuf.cpp:268:44:268:46 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:269:7:269:9 | msg | semmle.label | msg |
+| protobuf.cpp:274:27:274:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:274:27:274:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:275:2:275:4 | MergeFromBoundedZeroCopyStream output argument | semmle.label | MergeFromBoundedZeroCopyStream output argument |
+| protobuf.cpp:275:37:275:39 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:276:7:276:9 | msg | semmle.label | msg |
+| protobuf.cpp:281:27:281:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:281:27:281:53 | call to source | semmle.label | call to source |
+| protobuf.cpp:282:2:282:4 | MergePartialFromBoundedZeroCopyStream output argument | semmle.label | MergePartialFromBoundedZeroCopyStream output argument |
+| protobuf.cpp:282:44:282:46 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:283:7:283:9 | msg | semmle.label | msg |
+| protobuf.cpp:288:24:288:47 | call to source | semmle.label | call to source |
+| protobuf.cpp:288:24:288:47 | call to source | semmle.label | call to source |
+| protobuf.cpp:289:2:289:4 | ParseFromCodedStream output argument | semmle.label | ParseFromCodedStream output argument |
+| protobuf.cpp:289:27:289:29 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:290:7:290:9 | msg | semmle.label | msg |
+| protobuf.cpp:295:24:295:47 | call to source | semmle.label | call to source |
+| protobuf.cpp:295:24:295:47 | call to source | semmle.label | call to source |
+| protobuf.cpp:296:2:296:4 | ParsePartialFromCodedStream output argument | semmle.label | ParsePartialFromCodedStream output argument |
+| protobuf.cpp:296:34:296:36 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:297:7:297:9 | msg | semmle.label | msg |
+| protobuf.cpp:302:24:302:47 | call to source | semmle.label | call to source |
+| protobuf.cpp:302:24:302:47 | call to source | semmle.label | call to source |
+| protobuf.cpp:303:2:303:4 | MergeFromCodedStream output argument | semmle.label | MergeFromCodedStream output argument |
+| protobuf.cpp:303:27:303:29 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:304:7:304:9 | msg | semmle.label | msg |
+| protobuf.cpp:309:24:309:47 | call to source | semmle.label | call to source |
+| protobuf.cpp:309:24:309:47 | call to source | semmle.label | call to source |
+| protobuf.cpp:310:2:310:4 | MergePartialFromCodedStream output argument | semmle.label | MergePartialFromCodedStream output argument |
+| protobuf.cpp:310:34:310:36 | *& ... | semmle.label | *& ... |
+| protobuf.cpp:311:7:311:9 | msg | semmle.label | msg |
+| protobuf.cpp:324:15:324:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:324:15:324:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:326:2:326:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:326:24:326:27 | SerializeToString output argument | semmle.label | SerializeToString output argument |
+| protobuf.cpp:327:7:327:9 | out | semmle.label | out |
+| protobuf.cpp:331:15:331:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:331:15:331:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:333:2:333:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:333:31:333:34 | SerializePartialToString output argument | semmle.label | SerializePartialToString output argument |
+| protobuf.cpp:334:7:334:9 | out | semmle.label | out |
+| protobuf.cpp:338:15:338:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:338:15:338:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:340:2:340:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:340:21:340:24 | AppendToString output argument | semmle.label | AppendToString output argument |
+| protobuf.cpp:341:7:341:9 | out | semmle.label | out |
+| protobuf.cpp:345:15:345:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:345:15:345:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:347:2:347:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:347:28:347:31 | AppendPartialToString output argument | semmle.label | AppendPartialToString output argument |
+| protobuf.cpp:348:7:348:9 | out | semmle.label | out |
+| protobuf.cpp:352:15:352:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:352:15:352:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:354:2:354:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:354:24:354:27 | SerializeToString output argument | semmle.label | SerializeToString output argument |
+| protobuf.cpp:355:7:355:9 | out | semmle.label | out |
+| protobuf.cpp:359:15:359:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:359:15:359:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:361:2:361:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:361:31:361:34 | SerializePartialToString output argument | semmle.label | SerializePartialToString output argument |
+| protobuf.cpp:362:7:362:9 | out | semmle.label | out |
+| protobuf.cpp:366:15:366:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:366:15:366:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:368:2:368:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:368:21:368:24 | AppendToString output argument | semmle.label | AppendToString output argument |
+| protobuf.cpp:369:7:369:9 | out | semmle.label | out |
+| protobuf.cpp:373:15:373:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:373:15:373:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:375:2:375:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:375:28:375:31 | AppendPartialToString output argument | semmle.label | AppendPartialToString output argument |
+| protobuf.cpp:376:7:376:9 | out | semmle.label | out |
+| protobuf.cpp:380:15:380:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:380:15:380:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:382:2:382:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:382:23:382:25 | SerializeToArray output argument | semmle.label | SerializeToArray output argument |
+| protobuf.cpp:383:7:383:10 | * ... | semmle.label | * ... |
+| protobuf.cpp:387:15:387:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:387:15:387:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:389:2:389:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:389:30:389:32 | SerializePartialToArray output argument | semmle.label | SerializePartialToArray output argument |
+| protobuf.cpp:390:7:390:10 | * ... | semmle.label | * ... |
+| protobuf.cpp:394:15:394:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:394:15:394:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:396:2:396:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:396:22:396:25 | SerializeToCord output argument | semmle.label | SerializeToCord output argument |
+| protobuf.cpp:397:7:397:9 | out | semmle.label | out |
+| protobuf.cpp:401:15:401:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:401:15:401:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:403:2:403:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:403:29:403:32 | SerializePartialToCord output argument | semmle.label | SerializePartialToCord output argument |
+| protobuf.cpp:404:7:404:9 | out | semmle.label | out |
+| protobuf.cpp:408:15:408:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:408:15:408:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:410:2:410:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:410:19:410:22 | AppendToCord output argument | semmle.label | AppendToCord output argument |
+| protobuf.cpp:411:7:411:9 | out | semmle.label | out |
+| protobuf.cpp:415:15:415:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:415:15:415:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:417:2:417:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:417:26:417:29 | AppendPartialToCord output argument | semmle.label | AppendPartialToCord output argument |
+| protobuf.cpp:418:7:418:9 | out | semmle.label | out |
+| protobuf.cpp:422:15:422:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:422:15:422:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:424:2:424:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:424:25:424:28 | SerializeToOstream output argument | semmle.label | SerializeToOstream output argument |
+| protobuf.cpp:425:7:425:9 | out | semmle.label | out |
+| protobuf.cpp:429:15:429:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:429:15:429:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:431:2:431:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:431:32:431:35 | SerializePartialToOstream output argument | semmle.label | SerializePartialToOstream output argument |
+| protobuf.cpp:432:7:432:9 | out | semmle.label | out |
+| protobuf.cpp:436:15:436:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:436:15:436:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:438:2:438:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:438:32:438:35 | SerializeToZeroCopyStream output argument | semmle.label | SerializeToZeroCopyStream output argument |
+| protobuf.cpp:439:7:439:9 | out | semmle.label | out |
+| protobuf.cpp:443:15:443:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:443:15:443:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:445:2:445:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:445:39:445:42 | SerializePartialToZeroCopyStream output argument | semmle.label | SerializePartialToZeroCopyStream output argument |
+| protobuf.cpp:446:7:446:9 | out | semmle.label | out |
+| protobuf.cpp:450:15:450:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:450:15:450:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:452:2:452:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:452:29:452:32 | SerializeToCodedStream output argument | semmle.label | SerializeToCodedStream output argument |
+| protobuf.cpp:453:7:453:9 | out | semmle.label | out |
+| protobuf.cpp:457:15:457:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:457:15:457:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:459:2:459:4 | *msg | semmle.label | *msg |
+| protobuf.cpp:459:36:459:39 | SerializePartialToCodedStream output argument | semmle.label | SerializePartialToCodedStream output argument |
+| protobuf.cpp:460:7:460:9 | out | semmle.label | out |
+| protobuf.cpp:466:15:466:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:466:15:466:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:467:7:467:9 | *msg | semmle.label | *msg |
+| protobuf.cpp:467:11:467:27 | call to SerializeAsString | semmle.label | call to SerializeAsString |
+| protobuf.cpp:471:15:471:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:471:15:471:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:472:7:472:9 | *msg | semmle.label | *msg |
+| protobuf.cpp:472:11:472:34 | call to SerializePartialAsString | semmle.label | call to SerializePartialAsString |
+| protobuf.cpp:476:15:476:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:476:15:476:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:477:7:477:9 | *msg | semmle.label | *msg |
+| protobuf.cpp:477:11:477:25 | call to SerializeAsCord | semmle.label | call to SerializeAsCord |
+| protobuf.cpp:481:15:481:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:481:15:481:28 | call to source | semmle.label | call to source |
+| protobuf.cpp:482:7:482:9 | *msg | semmle.label | *msg |
+| protobuf.cpp:482:11:482:32 | call to SerializePartialAsCord | semmle.label | call to SerializePartialAsCord |
 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | semmle.label | *ymlStepGenerated_with_body |
 | test.cpp:7:47:7:52 | value2 | semmle.label | value2 |
 | test.cpp:7:64:7:69 | value2 | semmle.label | value2 |
