@@ -59,6 +59,6 @@ from FunctionCall memcpyCall, MmioFlow::PathNode source, MmioFlow::PathNode sink
 where
   MmioFlow::flowPath(source, sink) and
   isMemcpySizeSink(sink.getNode(), memcpyCall)
-select memcpyCall, source, sink,
+select sink.getNode(), source, sink,
   "Memory copy size argument is derived from $@ without sufficient bounds validation.",
   source.getNode(), "an MMIO/DMA hardware register read"
