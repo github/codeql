@@ -46,15 +46,7 @@ private module Ast implements AstSig<Location> {
 
   class Callable = U::Callable;
 
-  AstNode callableGetBody(Callable c) {
-    result = c.(AccessorDeclaration).getBody() or
-    result = c.(ConstructorDeclaration).getBody() or
-    result = c.(DestructorDeclaration).getBody() or
-    result = c.(FunctionDeclaration).getBody() or
-    result = c.(FunctionExpr).getBody() or
-    result = c.(InitializerDeclaration).getBody() or
-    result = c.(TopLevel).getBody()
-  }
+  AstNode callableGetBody(Callable c) { result = c.getBody() }
 
   class Parameter extends U::Parameter {
     Expr getDefaultValue() { result = super.getDefault() }

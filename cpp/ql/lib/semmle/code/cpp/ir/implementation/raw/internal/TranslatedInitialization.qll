@@ -618,6 +618,11 @@ class TranslatedExplicitFieldInitialization extends TranslatedNonDefaultFieldIni
   override int getPosition() { result = position }
 }
 
+pragma[nomagic]
+private Instruction getCallInstruction(TranslatedDefaultFieldInitialization tdfi) {
+  result = tdfi.getInstruction(CallTag())
+}
+
 /**
  * The IR translation of the initialization of a field from an element of an initializer
  * list where default initialization is used.
@@ -642,7 +647,7 @@ class TranslatedDefaultFieldInitialization extends TranslatedFieldInitialization
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = CallTargetTag() and
-    result = this.getInstruction(CallTag())
+    result = getCallInstruction(this)
     or
     tag = CallTag() and
     result = this.getSideEffects().getFirstInstruction(kind)

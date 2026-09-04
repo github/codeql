@@ -104,7 +104,7 @@ module Unified {
     final F::AccessorKind getAccessorKind() { unified_accessor_declaration_def(this, result, _) }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_accessor_declaration_body(this, result) }
+    final override F::Block getBody() { unified_accessor_declaration_body(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_accessor_declaration_modifier(this, i, result) }
@@ -375,7 +375,10 @@ module Unified {
     }
   }
 
-  class Callable extends @unified_callable, F::AstNode { }
+  class Callable extends @unified_callable, F::AstNode {
+    /** Gets the node corresponding to the field `body`. */
+    abstract F::Block getBody();
+  }
 
   /** A class representing `catch_clause` nodes. */
   class CatchClause extends @unified_catch_clause, F::AstNode {
@@ -514,7 +517,7 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "ConstructorDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_constructor_declaration_def(this, result) }
+    final override F::Block getBody() { unified_constructor_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
@@ -566,7 +569,7 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "DestructorDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_destructor_declaration_def(this, result) }
+    final override F::Block getBody() { unified_destructor_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
@@ -707,7 +710,7 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "FunctionDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_function_declaration_body(this, result) }
+    final override F::Block getBody() { unified_function_declaration_body(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_function_declaration_modifier(this, i, result) }
@@ -763,7 +766,7 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "FunctionExpr" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_function_expr_body(this, result) }
+    final override F::Block getBody() { unified_function_expr_body(this, result) }
 
     /** Gets the node corresponding to the field `capture_declaration`. */
     final F::VariableDeclaration getCaptureDeclaration(int i) {
@@ -911,7 +914,7 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "InitializerDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_initializer_declaration_def(this, result) }
+    final override F::Block getBody() { unified_initializer_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
@@ -1256,7 +1259,7 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "TopLevel" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_top_level_def(this, result) }
+    final override F::Block getBody() { unified_top_level_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_top_level_def(this, result) }

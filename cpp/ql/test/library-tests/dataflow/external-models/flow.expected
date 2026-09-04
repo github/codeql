@@ -240,6 +240,7 @@ edges
 | test.cpp:223:12:223:12 | *s | test.cpp:223:13:223:15 | call to operator[] | provenance | MaD:87 |
 | test.cpp:223:13:223:15 | call to operator[] | test.cpp:223:13:223:15 | call to operator[] | provenance |  |
 | test.cpp:223:13:223:15 | call to operator[] | test.cpp:224:11:224:11 | c | provenance | Sink:MaD:3 |
+| test.cpp:242:29:242:29 | *s [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
 | test.cpp:243:10:243:10 | *s [value] | test.cpp:243:13:243:17 | value | provenance |  |
 | test.cpp:243:13:243:17 | value | test.cpp:243:13:243:17 | value | provenance | Sink:MaD:3 |
 | test.cpp:247:26:247:39 | call to ymlFieldSource | test.cpp:247:26:247:39 | call to ymlFieldSource [value] | provenance | Src:MaD:47  |
@@ -247,35 +248,41 @@ edges
 | test.cpp:248:10:248:16 | *wrapper [value] | test.cpp:248:18:248:22 | value | provenance |  |
 | test.cpp:248:18:248:22 | value | test.cpp:248:18:248:22 | value | provenance | Sink:MaD:3 |
 | test.cpp:250:32:250:32 | source_from_callback_template output argument | test.cpp:250:32:250:32 | source_from_callback_template output argument [value] | provenance | Src:MaD:40  |
-| test.cpp:250:32:250:32 | source_from_callback_template output argument [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
+| test.cpp:250:32:250:32 | source_from_callback_template output argument [value] | test.cpp:242:29:242:29 | *s [value] | provenance |  |
 | test.cpp:251:27:251:27 | source_from_callback_ptr output argument | test.cpp:251:27:251:27 | source_from_callback_ptr output argument [value] | provenance | Src:MaD:37  |
-| test.cpp:251:27:251:27 | source_from_callback_ptr output argument [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
+| test.cpp:251:27:251:27 | source_from_callback_ptr output argument [value] | test.cpp:242:29:242:29 | *s [value] | provenance |  |
+| test.cpp:257:35:257:35 | *s [value] | test.cpp:258:12:258:12 | *s [value] | provenance |  |
 | test.cpp:258:12:258:12 | *s [value] | test.cpp:258:15:258:19 | value | provenance |  |
 | test.cpp:258:15:258:19 | value | test.cpp:258:15:258:19 | value | provenance | Sink:MaD:3 |
 | test.cpp:262:27:262:31 | source_from_callback_ptr output argument | test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | provenance | Src:MaD:37  |
-| test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
-| test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | test.cpp:258:12:258:12 | *s [value] | provenance |  |
+| test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | test.cpp:242:29:242:29 | *s [value] | provenance |  |
+| test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | test.cpp:257:35:257:35 | *s [value] | provenance |  |
 | test.cpp:264:32:266:2 | source_from_callback_template output argument | test.cpp:264:32:266:2 | source_from_callback_template output argument [value] | provenance | Src:MaD:40  |
-| test.cpp:264:32:266:2 | source_from_callback_template output argument [value] | test.cpp:265:11:265:11 | *s [value] | provenance |  |
+| test.cpp:264:32:266:2 | source_from_callback_template output argument [value] | test.cpp:264:56:264:56 | *s [value] | provenance |  |
+| test.cpp:264:56:264:56 | *s [value] | test.cpp:265:11:265:11 | *s [value] | provenance |  |
 | test.cpp:265:11:265:11 | *s [value] | test.cpp:265:14:265:18 | value | provenance |  |
 | test.cpp:265:14:265:18 | value | test.cpp:265:14:265:18 | value | provenance | Sink:MaD:3 |
 | test.cpp:268:27:268:27 | source_from_callback_ptr output argument | test.cpp:268:27:268:27 | source_from_callback_ptr output argument [value] | provenance | Src:MaD:37  |
-| test.cpp:268:27:268:27 | source_from_callback_ptr output argument [value] | test.cpp:269:11:269:11 | *s [value] | provenance |  |
+| test.cpp:268:27:268:27 | source_from_callback_ptr output argument [value] | test.cpp:268:51:268:51 | *s [value] | provenance |  |
+| test.cpp:268:51:268:51 | *s [value] | test.cpp:269:11:269:11 | *s [value] | provenance |  |
 | test.cpp:269:11:269:11 | *s [value] | test.cpp:269:14:269:18 | value | provenance |  |
 | test.cpp:269:14:269:18 | value | test.cpp:269:14:269:18 | value | provenance | Sink:MaD:3 |
+| test.cpp:273:40:273:40 | *s [value] | test.cpp:274:12:274:12 | *s [value] | provenance |  |
 | test.cpp:274:12:274:12 | *s [value] | test.cpp:274:15:274:19 | value | provenance |  |
 | test.cpp:274:15:274:19 | value | test.cpp:274:15:274:19 | value | provenance | Sink:MaD:3 |
 | test.cpp:278:32:278:34 | source_from_callback_template output argument | test.cpp:278:32:278:34 | source_from_callback_template output argument [value] | provenance | Src:MaD:40  |
-| test.cpp:278:32:278:34 | source_from_callback_template output argument [value] | test.cpp:274:12:274:12 | *s [value] | provenance |  |
+| test.cpp:278:32:278:34 | source_from_callback_template output argument [value] | test.cpp:273:40:273:40 | *s [value] | provenance |  |
 | test.cpp:293:5:293:26 | *callback_returning_int | test.cpp:307:10:307:31 | call to callback_returning_int | provenance |  |
 | test.cpp:294:5:294:28 | *callback_returning_int_2 | test.cpp:310:10:310:33 | call to callback_returning_int_2 | provenance |  |
 | test.cpp:295:6:295:31 | **callback_returning_ptr_int | test.cpp:313:13:313:38 | *call to callback_returning_ptr_int | provenance |  |
+| test.cpp:297:5:297:20 | *return_ymlSource | test.cpp:318:37:318:52 | return_ymlSource | provenance | Sink:MaD:1 |
+| test.cpp:297:33:297:41 | call to ymlSource | test.cpp:297:5:297:20 | *return_ymlSource | provenance |  |
+| test.cpp:297:33:297:41 | call to ymlSource | test.cpp:297:5:297:20 | *return_ymlSource | provenance | Src:MaD:48  |
 | test.cpp:297:33:297:41 | call to ymlSource | test.cpp:297:33:297:41 | call to ymlSource | provenance | Src:MaD:48  |
-| test.cpp:297:33:297:41 | call to ymlSource | test.cpp:318:37:318:52 | return_ymlSource | provenance | Sink:MaD:1 |
-| test.cpp:297:33:297:41 | call to ymlSource | test.cpp:318:37:318:52 | return_ymlSource | provenance | Src:MaD:48  Sink:MaD:1 |
-| test.cpp:299:41:299:52 | *call to ymlSourcePtr | test.cpp:321:36:321:58 | return_ptr_to_ymlSource | provenance | Sink:MaD:2 |
+| test.cpp:299:6:299:28 | **return_ptr_to_ymlSource | test.cpp:321:36:321:58 | return_ptr_to_ymlSource | provenance | Sink:MaD:2 |
+| test.cpp:299:41:299:52 | *call to ymlSourcePtr | test.cpp:299:6:299:28 | **return_ptr_to_ymlSource | provenance |  |
+| test.cpp:299:41:299:52 | call to ymlSourcePtr | test.cpp:299:6:299:28 | **return_ptr_to_ymlSource | provenance | Src:MaD:49  |
 | test.cpp:299:41:299:52 | call to ymlSourcePtr | test.cpp:299:41:299:52 | *call to ymlSourcePtr | provenance | Src:MaD:49  |
-| test.cpp:299:41:299:52 | call to ymlSourcePtr | test.cpp:321:36:321:58 | return_ptr_to_ymlSource | provenance | Src:MaD:49  Sink:MaD:2 |
 | test.cpp:304:11:304:22 | call to ymlSourcePtr | test.cpp:304:10:304:24 | * ... | provenance | Src:MaD:49 Sink:MaD:3 |
 | test.cpp:306:39:306:60 | source_from_callback_return_template output argument | test.cpp:293:5:293:26 | *callback_returning_int | provenance | Src:MaD:39  |
 | test.cpp:307:10:307:31 | call to callback_returning_int | test.cpp:307:10:307:31 | call to callback_returning_int | provenance | Sink:MaD:3 |
@@ -284,11 +291,13 @@ edges
 | test.cpp:312:38:312:63 | source_ptr_from_callback_return_ptr output argument | test.cpp:295:6:295:31 | **callback_returning_ptr_int | provenance | Src:MaD:41  |
 | test.cpp:313:13:313:38 | *call to callback_returning_ptr_int | test.cpp:313:13:313:38 | *call to callback_returning_ptr_int | provenance |  |
 | test.cpp:313:13:313:38 | *call to callback_returning_ptr_int | test.cpp:315:10:315:13 | * ... | provenance | Sink:MaD:3 |
-| test.cpp:317:51:317:59 | call to ymlSource | test.cpp:317:37:317:64 | [...](...){...} | provenance | Sink:MaD:1 |
-| test.cpp:317:51:317:59 | call to ymlSource | test.cpp:317:37:317:64 | [...](...){...} | provenance | Src:MaD:48  Sink:MaD:1 |
+| test.cpp:317:39:317:39 | *operator() | test.cpp:317:37:317:64 | [...](...){...} | provenance | Sink:MaD:1 |
+| test.cpp:317:51:317:59 | call to ymlSource | test.cpp:317:39:317:39 | *operator() | provenance |  |
+| test.cpp:317:51:317:59 | call to ymlSource | test.cpp:317:39:317:39 | *operator() | provenance | Src:MaD:48  |
 | test.cpp:317:51:317:59 | call to ymlSource | test.cpp:317:51:317:59 | call to ymlSource | provenance | Src:MaD:48  |
-| test.cpp:320:50:320:61 | *call to ymlSourcePtr | test.cpp:320:36:320:36 | call to operator int *(*)() | provenance | Sink:MaD:2 |
-| test.cpp:320:50:320:61 | call to ymlSourcePtr | test.cpp:320:36:320:36 | call to operator int *(*)() | provenance | Src:MaD:49  Sink:MaD:2 |
+| test.cpp:320:38:320:38 | **operator() | test.cpp:320:36:320:36 | call to operator int *(*)() | provenance | Sink:MaD:2 |
+| test.cpp:320:50:320:61 | *call to ymlSourcePtr | test.cpp:320:38:320:38 | **operator() | provenance |  |
+| test.cpp:320:50:320:61 | call to ymlSourcePtr | test.cpp:320:38:320:38 | **operator() | provenance | Src:MaD:49  |
 | test.cpp:320:50:320:61 | call to ymlSourcePtr | test.cpp:320:50:320:61 | *call to ymlSourcePtr | provenance | Src:MaD:49  |
 | test.cpp:324:36:324:36 | p | test.cpp:325:10:325:10 | *p [value] | provenance | Src:MaD:43  |
 | test.cpp:324:36:324:36 | p | test.cpp:327:11:327:11 | *p [*pointer] | provenance | Src:MaD:42  |
@@ -640,6 +649,7 @@ nodes
 | test.cpp:223:13:223:15 | call to operator[] | semmle.label | call to operator[] |
 | test.cpp:223:13:223:15 | call to operator[] | semmle.label | call to operator[] |
 | test.cpp:224:11:224:11 | c | semmle.label | c |
+| test.cpp:242:29:242:29 | *s [value] | semmle.label | *s [value] |
 | test.cpp:243:10:243:10 | *s [value] | semmle.label | *s [value] |
 | test.cpp:243:13:243:17 | value | semmle.label | value |
 | test.cpp:243:13:243:17 | value | semmle.label | value |
@@ -652,6 +662,7 @@ nodes
 | test.cpp:250:32:250:32 | source_from_callback_template output argument [value] | semmle.label | source_from_callback_template output argument [value] |
 | test.cpp:251:27:251:27 | source_from_callback_ptr output argument | semmle.label | source_from_callback_ptr output argument |
 | test.cpp:251:27:251:27 | source_from_callback_ptr output argument [value] | semmle.label | source_from_callback_ptr output argument [value] |
+| test.cpp:257:35:257:35 | *s [value] | semmle.label | *s [value] |
 | test.cpp:258:12:258:12 | *s [value] | semmle.label | *s [value] |
 | test.cpp:258:15:258:19 | value | semmle.label | value |
 | test.cpp:258:15:258:19 | value | semmle.label | value |
@@ -659,14 +670,17 @@ nodes
 | test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | semmle.label | source_from_callback_ptr output argument [value] |
 | test.cpp:264:32:266:2 | source_from_callback_template output argument | semmle.label | source_from_callback_template output argument |
 | test.cpp:264:32:266:2 | source_from_callback_template output argument [value] | semmle.label | source_from_callback_template output argument [value] |
+| test.cpp:264:56:264:56 | *s [value] | semmle.label | *s [value] |
 | test.cpp:265:11:265:11 | *s [value] | semmle.label | *s [value] |
 | test.cpp:265:14:265:18 | value | semmle.label | value |
 | test.cpp:265:14:265:18 | value | semmle.label | value |
 | test.cpp:268:27:268:27 | source_from_callback_ptr output argument | semmle.label | source_from_callback_ptr output argument |
 | test.cpp:268:27:268:27 | source_from_callback_ptr output argument [value] | semmle.label | source_from_callback_ptr output argument [value] |
+| test.cpp:268:51:268:51 | *s [value] | semmle.label | *s [value] |
 | test.cpp:269:11:269:11 | *s [value] | semmle.label | *s [value] |
 | test.cpp:269:14:269:18 | value | semmle.label | value |
 | test.cpp:269:14:269:18 | value | semmle.label | value |
+| test.cpp:273:40:273:40 | *s [value] | semmle.label | *s [value] |
 | test.cpp:274:12:274:12 | *s [value] | semmle.label | *s [value] |
 | test.cpp:274:15:274:19 | value | semmle.label | value |
 | test.cpp:274:15:274:19 | value | semmle.label | value |
@@ -675,8 +689,10 @@ nodes
 | test.cpp:293:5:293:26 | *callback_returning_int | semmle.label | *callback_returning_int |
 | test.cpp:294:5:294:28 | *callback_returning_int_2 | semmle.label | *callback_returning_int_2 |
 | test.cpp:295:6:295:31 | **callback_returning_ptr_int | semmle.label | **callback_returning_ptr_int |
+| test.cpp:297:5:297:20 | *return_ymlSource | semmle.label | *return_ymlSource |
 | test.cpp:297:33:297:41 | call to ymlSource | semmle.label | call to ymlSource |
 | test.cpp:297:33:297:41 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:299:6:299:28 | **return_ptr_to_ymlSource | semmle.label | **return_ptr_to_ymlSource |
 | test.cpp:299:41:299:52 | *call to ymlSourcePtr | semmle.label | *call to ymlSourcePtr |
 | test.cpp:299:41:299:52 | call to ymlSourcePtr | semmle.label | call to ymlSourcePtr |
 | test.cpp:304:10:304:24 | * ... | semmle.label | * ... |
@@ -692,10 +708,12 @@ nodes
 | test.cpp:313:13:313:38 | *call to callback_returning_ptr_int | semmle.label | *call to callback_returning_ptr_int |
 | test.cpp:315:10:315:13 | * ... | semmle.label | * ... |
 | test.cpp:317:37:317:64 | [...](...){...} | semmle.label | [...](...){...} |
+| test.cpp:317:39:317:39 | *operator() | semmle.label | *operator() |
 | test.cpp:317:51:317:59 | call to ymlSource | semmle.label | call to ymlSource |
 | test.cpp:317:51:317:59 | call to ymlSource | semmle.label | call to ymlSource |
 | test.cpp:318:37:318:52 | return_ymlSource | semmle.label | return_ymlSource |
 | test.cpp:320:36:320:36 | call to operator int *(*)() | semmle.label | call to operator int *(*)() |
+| test.cpp:320:38:320:38 | **operator() | semmle.label | **operator() |
 | test.cpp:320:50:320:61 | *call to ymlSourcePtr | semmle.label | *call to ymlSourcePtr |
 | test.cpp:320:50:320:61 | call to ymlSourcePtr | semmle.label | call to ymlSourcePtr |
 | test.cpp:321:36:321:58 | return_ptr_to_ymlSource | semmle.label | return_ptr_to_ymlSource |

@@ -2264,6 +2264,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             query = "ambiguousAdditionalNode" and
             results = strictcount(AstNode n, string tag | ambiguousAdditionalNode(n, tag))
             or
+            query = "invalidAbruptCompletionOrigin" and
+            results =
+              strictcount(AstNode ast, PreControlFlowNode node |
+                invalidAbruptCompletionOrigin(ast, node)
+              )
+            or
             query = "missingInNodeForPostOrInOrder" and
             results = strictcount(AstNode ast | missingInNodeForPostOrInOrder(ast))
             or
@@ -2349,6 +2355,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
            */
           query predicate ambiguousAdditionalNode(AstNode n, string tag) {
             1 < strictcount(NormalSuccessor t | additionalNode(n, tag, t))
+          }
+
+          /**
+           * Holds if the language-specific CFG input supplies an abrupt completion for `ast` whose
+           * origin `node` does not belong to `ast`.
+           */
+          query predicate invalidAbruptCompletionOrigin(AstNode ast, PreControlFlowNode node) {
+            Input2::beginAbruptCompletion(ast, node, _, _) and
+            not node.isIn(ast) and
+            not node.isAdditional(ast, _)
           }
 
           /**

@@ -2292,20 +2292,24 @@ module Make<
       /** Provides a compilation of flow summaries to atomic data-flow steps. */
       module Steps<StepsInputSig StepsInput> {
         private predicate sourceExitStep(SourceOutputNode nodeFrom, Node nodeTo, boolean local) {
-          exists(SummaryComponent sc, SourceSinkReportingElement e |
-            nodeFrom.isExit(_, sc, e, _) and
+          exists(SummaryComponent sc, SourceSinkReportingElement e, string model |
+            nodeFrom.isExit(_, sc, e, model) and
             nodeTo = getSourceDataFlowNode(e, sc) and
-            if e.getEnclosingCallable() = getNodeEnclosingCallable(nodeTo)
+            if
+              e.getEnclosingCallable() = getNodeEnclosingCallable(nodeTo) and
+              (nodeFrom.isEntry(_, model) or summaryStoreStep(_, _, nodeFrom))
             then local = true
             else local = false
           )
         }
 
         private predicate sinkEntryStep(Node nodeFrom, SinkInputNode nodeTo, boolean local) {
-          exists(SummaryComponent sc, SourceSinkReportingElement e |
-            nodeTo.isEntry(_, sc, e, _) and
+          exists(SummaryComponent sc, SourceSinkReportingElement e, string model |
+            nodeTo.isEntry(_, sc, e, model) and
             nodeFrom = getSinkDataFlowNode(e, sc) and
-            if e.getEnclosingCallable() = getNodeEnclosingCallable(nodeFrom)
+            if
+              e.getEnclosingCallable() = getNodeEnclosingCallable(nodeFrom) and
+              (nodeTo.isExit(_, model) or summaryReadStep(nodeTo, _, _))
             then local = true
             else local = false
           )

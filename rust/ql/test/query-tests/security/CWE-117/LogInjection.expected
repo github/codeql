@@ -78,6 +78,7 @@ edges
 | main.rs:127:25:127:45 | ...::var(...) | main.rs:127:25:127:45 | ...::var(...) [Ok] | provenance | Src:MaD:7  |
 | main.rs:127:25:127:45 | ...::var(...) [Ok] | main.rs:127:25:127:65 | ... .unwrap_or_default() | provenance | MaD:20 |
 | main.rs:127:25:127:65 | ... .unwrap_or_default() | main.rs:127:13:127:21 | user_data | provenance |  |
+| main.rs:140:32:140:59 | ...: Option::<...> | main.rs:141:22:141:27 | o_path | provenance |  |
 | main.rs:141:13:141:18 | m_path [Some] | main.rs:143:26:143:31 | m_path [Some] | provenance |  |
 | main.rs:141:22:141:27 | o_path | main.rs:141:22:141:38 | o_path.map(...) [Some] | provenance | MaD:14 |
 | main.rs:141:22:141:27 | o_path | main.rs:141:34:141:34 | ... | provenance | MaD:14 |
@@ -85,7 +86,7 @@ edges
 | main.rs:141:34:141:34 | ... | main.rs:141:37:141:37 | x | provenance |  |
 | main.rs:143:26:143:31 | m_path [Some] | main.rs:143:26:143:40 | m_path.unwrap() | provenance | MaD:15 |
 | main.rs:143:26:143:40 | m_path.unwrap() | main.rs:143:18:143:40 | MacroExpr | provenance | Sink:MaD:3 |
-| main.rs:150:32:150:48 | my_axum_handler_1 | main.rs:141:22:141:27 | o_path | provenance | Src:MaD:4  |
+| main.rs:150:32:150:48 | my_axum_handler_1 | main.rs:140:32:140:59 | ...: Option::<...> | provenance | Src:MaD:4  |
 models
 | 1 | Sink: log::__private_api::log; Argument[0]; log-injection |
 | 2 | Sink: std::io::stdio::_eprint; Argument[0]; log-injection |
@@ -174,6 +175,7 @@ nodes
 | main.rs:127:25:127:65 | ... .unwrap_or_default() | semmle.label | ... .unwrap_or_default() |
 | main.rs:130:18:130:38 | MacroExpr | semmle.label | MacroExpr |
 | main.rs:131:19:131:49 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:140:32:140:59 | ...: Option::<...> | semmle.label | ...: Option::<...> |
 | main.rs:141:13:141:18 | m_path [Some] | semmle.label | m_path [Some] |
 | main.rs:141:22:141:27 | o_path | semmle.label | o_path |
 | main.rs:141:22:141:38 | o_path.map(...) [Some] | semmle.label | o_path.map(...) [Some] |
