@@ -862,6 +862,9 @@ fn compute_exposed_predicates<'a, 'b>(
     let node = nodes.get(type_name);
     let class_name = node.map_or(type_name.kind.as_str(), |node| node.ql_class_name.as_str());
     if !cache.contains_key(class_name) {
+        // Supertype declarations that recursively refer to themselves are a mistake, but we don't
+        // want to cause infinite recursion, so we insert a temporary sentinel.
+        cache.insert(class_name, Vec::new());
         let exposed = match node.map(|node| &node.kind) {
             Some(node_types::EntryKind::Table { .. }) => {
                 field_predicates.get(type_name).cloned().unwrap_or_default()
