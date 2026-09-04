@@ -205,9 +205,13 @@ namespace Semmle.Extraction.Tests
             var feedManager = MakeFeedManager();
 
             // Execute
+            var defaultFeeds = feedManager.DefaultFeeds;
             var reachableDefault = feedManager.ReachableDefaultFeeds;
 
             // Verify
+            Assert.Equal([
+                "https://api.nuget.org/v3/index.json"
+            ], defaultFeeds);
             Assert.Equal([
                 "https://api.nuget.org/v3/index.json"
             ], reachableDefault);
@@ -225,10 +229,15 @@ namespace Semmle.Extraction.Tests
             var feedManager = new FeedManager(logger, dotnet, dependabotProxy, fileProvider, feedManagerIo);
 
             // Execute
+            var defaultFeeds = feedManager.DefaultFeeds;
             var reachableDefault = feedManager.ReachableDefaultFeeds;
             var reachableFallback = feedManager.ReachableFallbackFeeds;
 
             // Verify
+            Assert.Equal([
+                "https://example.com/base1",
+                "https://example.com/base2"
+            ], defaultFeeds);
             Assert.Equal([
                 "https://example.com/base2"
             ], reachableDefault);

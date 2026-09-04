@@ -165,7 +165,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 List<string> sourcesArgument = [];
                 var feedsToUse = feedManager.FeedsToUse(packagesConfig).ToList();
-                var useDefaultFeeds = feedsToUse.Count == 0 && feedManager.ReachableDefaultFeeds.Count > 0;
+                var defaultFeeds = feedManager.CheckNugetFeedResponsiveness
+                    ? feedManager.ReachableDefaultFeeds
+                    : feedManager.DefaultFeeds;
+                var useDefaultFeeds = feedsToUse.Count == 0 && defaultFeeds.Count > 0;
 
                 // Explicitly construct the sources to be used for the restore command when checking feed
                 // responsiveness, using private registries, or falling back to default feeds.
@@ -173,7 +176,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     if (useDefaultFeeds)
                     {
-                        feedsToUse.AddRange(feedManager.ReachableDefaultFeeds);
+                        feedsToUse.AddRange(defaultFeeds);
                     }
                     var restoreFeeds = feedManager.RestoreFeeds(feedsToUse);
                     sourcesArgument = restoreFeeds.SelectMany<string, string>(feed => ["-Source", feed]).ToList();
