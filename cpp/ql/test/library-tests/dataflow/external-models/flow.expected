@@ -95,7 +95,14 @@ models
 | 94 | Summary: Azure::Core::IO; BodyStream; true; ReadToCount; ; ; Argument[-1]; Argument[*0]; taint; manual |
 | 95 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
 | 96 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 97 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 97 | Summary: BloombergLP::bdlbb; Blob; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 98 | Summary: BloombergLP::bdlbb; BlobBuffer; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 99 | Summary: BloombergLP::bdlbb; BlobBuffer; true; data; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 100 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const Blob &,int,int); ; Argument[*2]; Argument[*0]; taint; manual |
+| 101 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const char *,int); ; Argument[*2]; Argument[*0]; taint; manual |
+| 102 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (char *,const Blob &,int,int); ; Argument[*1]; Argument[*0]; taint; manual |
+| 103 | Summary: BloombergLP::bdlbb; BlobUtil; true; getContiguousRangeOrCopy; ; ; Argument[*1]; ReturnValue[*]; taint; manual |
+| 104 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
 edges
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:56  |
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
@@ -104,7 +111,7 @@ edges
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:100:44:100:62 | call to buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:101:7:101:17 | send_buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | send_buffer | provenance | Sink:MaD:4 |
-| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:97 |
+| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:104 |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:257:5:257:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:262:5:262:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:266:38:266:41 | *resp | provenance |  |
@@ -144,6 +151,38 @@ edges
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:295:10:295:20 | contentType | azure.cpp:295:10:295:20 | contentType | provenance |  |
+| bdlbb.cpp:54:16:54:23 | call to source | bdlbb.cpp:56:49:56:52 | *call to data | provenance | TaintFunction |
+| bdlbb.cpp:56:37:56:41 | copy output argument | bdlbb.cpp:58:42:58:45 | *blob | provenance |  |
+| bdlbb.cpp:56:49:56:52 | *call to data | bdlbb.cpp:56:37:56:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:58:37:58:39 | copy output argument | bdlbb.cpp:59:7:59:10 | * ... | provenance |  |
+| bdlbb.cpp:58:42:58:45 | *blob | bdlbb.cpp:58:37:58:39 | copy output argument | provenance | MaD:102 |
+| bdlbb.cpp:63:16:63:23 | call to source | bdlbb.cpp:65:49:65:52 | *call to data | provenance | TaintFunction |
+| bdlbb.cpp:65:37:65:41 | copy output argument | bdlbb.cpp:66:18:66:21 | *blob | provenance |  |
+| bdlbb.cpp:65:49:65:52 | *call to data | bdlbb.cpp:65:37:65:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:66:18:66:21 | *blob | bdlbb.cpp:66:29:66:32 | *call to buffer | provenance | MaD:97 |
+| bdlbb.cpp:66:18:66:38 | *call to data | bdlbb.cpp:66:18:66:38 | *call to data | provenance |  |
+| bdlbb.cpp:66:18:66:38 | *call to data | bdlbb.cpp:67:7:67:8 | * ... | provenance |  |
+| bdlbb.cpp:66:29:66:32 | *call to buffer | bdlbb.cpp:66:18:66:38 | *call to data | provenance | MaD:99 |
+| bdlbb.cpp:72:16:72:23 | call to source | bdlbb.cpp:74:49:74:52 | *call to data | provenance | TaintFunction |
+| bdlbb.cpp:74:37:74:41 | copy output argument | bdlbb.cpp:75:18:75:21 | *blob | provenance |  |
+| bdlbb.cpp:74:49:74:52 | *call to data | bdlbb.cpp:74:37:74:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:75:18:75:21 | *blob | bdlbb.cpp:75:29:75:32 | *call to buffer | provenance | MaD:97 |
+| bdlbb.cpp:75:18:75:46 | call to get | bdlbb.cpp:76:7:76:8 | * ... | provenance |  |
+| bdlbb.cpp:75:29:75:32 | *call to buffer | bdlbb.cpp:75:39:75:41 | *call to buffer | provenance | MaD:98 |
+| bdlbb.cpp:75:39:75:41 | *call to buffer | bdlbb.cpp:75:18:75:46 | call to get | provenance | DataFlowFunction |
+| bdlbb.cpp:80:16:80:23 | call to source | bdlbb.cpp:82:49:82:52 | *call to data | provenance | TaintFunction |
+| bdlbb.cpp:82:37:82:41 | copy output argument | bdlbb.cpp:84:72:84:75 | *blob | provenance |  |
+| bdlbb.cpp:82:49:82:52 | *call to data | bdlbb.cpp:82:37:82:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | provenance |  |
+| bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | bdlbb.cpp:85:7:85:8 | * ... | provenance |  |
+| bdlbb.cpp:84:72:84:75 | *blob | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | provenance | MaD:103 |
+| bdlbb.cpp:90:16:90:23 | call to source | bdlbb.cpp:92:48:92:51 | *call to data | provenance | TaintFunction |
+| bdlbb.cpp:92:37:92:40 | copy output argument | bdlbb.cpp:94:46:94:48 | *src | provenance |  |
+| bdlbb.cpp:92:48:92:51 | *call to data | bdlbb.cpp:92:37:92:40 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:94:37:94:40 | copy output argument | bdlbb.cpp:96:42:96:44 | *dst | provenance |  |
+| bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument | provenance | MaD:100 |
+| bdlbb.cpp:96:37:96:39 | copy output argument | bdlbb.cpp:97:7:97:10 | * ... | provenance |  |
+| bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument | provenance | MaD:102 |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:48  |
@@ -541,6 +580,43 @@ nodes
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
+| bdlbb.cpp:54:16:54:23 | call to source | semmle.label | call to source |
+| bdlbb.cpp:56:37:56:41 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:56:49:56:52 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:58:37:58:39 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:58:42:58:45 | *blob | semmle.label | *blob |
+| bdlbb.cpp:59:7:59:10 | * ... | semmle.label | * ... |
+| bdlbb.cpp:63:16:63:23 | call to source | semmle.label | call to source |
+| bdlbb.cpp:65:37:65:41 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:65:49:65:52 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:66:18:66:21 | *blob | semmle.label | *blob |
+| bdlbb.cpp:66:18:66:38 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:66:18:66:38 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:66:29:66:32 | *call to buffer | semmle.label | *call to buffer |
+| bdlbb.cpp:67:7:67:8 | * ... | semmle.label | * ... |
+| bdlbb.cpp:72:16:72:23 | call to source | semmle.label | call to source |
+| bdlbb.cpp:74:37:74:41 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:74:49:74:52 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:75:18:75:21 | *blob | semmle.label | *blob |
+| bdlbb.cpp:75:18:75:46 | call to get | semmle.label | call to get |
+| bdlbb.cpp:75:29:75:32 | *call to buffer | semmle.label | *call to buffer |
+| bdlbb.cpp:75:39:75:41 | *call to buffer | semmle.label | *call to buffer |
+| bdlbb.cpp:76:7:76:8 | * ... | semmle.label | * ... |
+| bdlbb.cpp:80:16:80:23 | call to source | semmle.label | call to source |
+| bdlbb.cpp:82:37:82:41 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:82:49:82:52 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | semmle.label | *call to getContiguousRangeOrCopy |
+| bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | semmle.label | *call to getContiguousRangeOrCopy |
+| bdlbb.cpp:84:72:84:75 | *blob | semmle.label | *blob |
+| bdlbb.cpp:85:7:85:8 | * ... | semmle.label | * ... |
+| bdlbb.cpp:90:16:90:23 | call to source | semmle.label | call to source |
+| bdlbb.cpp:92:37:92:40 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:92:48:92:51 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:94:37:94:40 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:94:46:94:48 | *src | semmle.label | *src |
+| bdlbb.cpp:96:37:96:39 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:96:42:96:44 | *dst | semmle.label | *dst |
+| bdlbb.cpp:97:7:97:10 | * ... | semmle.label | * ... |
 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | semmle.label | *ymlStepGenerated_with_body |
 | test.cpp:7:47:7:52 | value2 | semmle.label | value2 |
 | test.cpp:7:64:7:69 | value2 | semmle.label | value2 |
