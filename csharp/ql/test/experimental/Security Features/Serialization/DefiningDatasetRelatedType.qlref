@@ -1,1 +1,2 @@
-experimental/Security Features/Serialization/DefiningDatasetRelatedType.ql
+query: experimental/Security Features/Serialization/DefiningDatasetRelatedType.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

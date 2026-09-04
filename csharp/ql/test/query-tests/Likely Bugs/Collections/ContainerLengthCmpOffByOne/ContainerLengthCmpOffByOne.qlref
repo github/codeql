@@ -1,1 +1,2 @@
-Likely Bugs/Collections/ContainerLengthCmpOffByOne.ql
+query: Likely Bugs/Collections/ContainerLengthCmpOffByOne.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -6,12 +6,12 @@ class Program
 
     bool Prop1
     {
-        set { x = true; } // BAD
+        set { x = true; } // $ Alert // BAD
     }
 
     bool Prop2
     {
-        set { } // BAD
+        set { } // $ Alert // BAD
     }
 
     bool Prop3
@@ -55,7 +55,7 @@ class C3 : C2
 {
     public bool Prop1
     {
-        set { } // BAD: not override
+        set { } // $ Alert // BAD: not override
     }
 
     public override bool Prop2

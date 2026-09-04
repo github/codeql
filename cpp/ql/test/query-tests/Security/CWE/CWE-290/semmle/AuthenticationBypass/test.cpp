@@ -11,53 +11,53 @@ extern char *getenv(const char *name);
 
 int isServer;
 
-void processRequest1() 
+void processRequest1()
 {
-  const char *address = getenv("SERVERIP");
+  const char *address = getenv("SERVERIP"); // $ Source
 
   // BAD: the address is controllable by the user, so it
   // could be spoofed to bypass the security check.
-  if (strcmp(address, "127.0.0.1")) {
+  if (strcmp(address, "127.0.0.1")) { // $ Alert
     isServer = 1;
   }
 }
 
-void processRequest2() 
+void processRequest2()
 {
-  const char *address = getenv("SERVERIP");
+  const char *address = getenv("SERVERIP"); // $ Source
 
   // BAD: the address is controllable by the user, so it
   // could be spoofed to bypass the security check.
-  if (strcmp(address, "www.mycompany.com")) {
+  if (strcmp(address, "www.mycompany.com")) { // $ Alert
     isServer = 1;
   }
 }
 
-void processRequest3() 
+void processRequest3()
 {
-  const char *address = getenv("SERVERIP");
+  const char *address = getenv("SERVERIP"); // $ Source
 
   // BAD: the address is controllable by the user, so it
   // could be spoofed to bypass the security check.
-  if (strcmp(address, "www.mycompany.co.uk")) {
+  if (strcmp(address, "www.mycompany.co.uk")) { // $ Alert
     isServer = 1;
   }
 }
 
-void processRequest4() 
+void processRequest4()
 {
-  const char *address = getenv("SERVERIP");
+  const char *address = getenv("SERVERIP"); // $ Source
   bool cond = false;
 
-  if (strcmp(address, "127.0.0.1")) { cond = true; } // BAD
+  if (strcmp(address, "127.0.0.1")) { cond = true; } // $ Alert // BAD
   if (strcmp(address, "127_0_0_1")) { cond = true; } // GOOD (not an IP)
   if (strcmp(address, "127.0.0")) { cond = true; } // GOOD (not an IP)
   if (strcmp(address, "127.0.0.0.1")) { cond = true; } // GOOD (not an IP)
-  if (strcmp(address, "http://mycompany")) { cond = true; } // BAD
+  if (strcmp(address, "http://mycompany")) { cond = true; } // $ Alert // BAD
   if (strcmp(address, "http_//mycompany")) { cond = true; } // GOOD (not an address)
   if (strcmp(address, "htt://mycompany")) { cond = true; } // GOOD (not an address)
   if (strcmp(address, "httpp://mycompany")) { cond = true; } // GOOD (not an address)
-  if (strcmp(address, "mycompany.com")) { cond = true; } // BAD
+  if (strcmp(address, "mycompany.com")) { cond = true; } // $ Alert // BAD
   if (strcmp(address, "mycompany_com")) { cond = true; } // GOOD (not an address)
   if (strcmp(address, "mycompany.c")) { cond = true; } // GOOD (not an address)
   if (strcmp(address, "mycompany.comm")) { cond = true; } // GOOD (not an address)
@@ -66,4 +66,3 @@ void processRequest4()
     isServer = 1;
   }
 }
-

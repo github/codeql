@@ -4,7 +4,7 @@ class Bad
 {
     void M()
     {
-        Logger.Log("Hello, World!");
+        Logger.Log("Hello, World!"); // $ Alert
     }
 
     static class Logger

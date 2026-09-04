@@ -9,7 +9,7 @@ class Test {
   List<String> someStrings;
 
   void m() {
-    useIterable(new Iterable<String>() {
+    useIterable(new Iterable<String>() { // $ Alert[java/iterable-wraps-iterator]
       final Iterator<String> i = someStrings.iterator(); // bad
       
       @Override
@@ -72,7 +72,7 @@ class Test {
     public void remove() { }
   }
 
-  protected class ValueIterableBad implements Iterable<Value> {
+  protected class ValueIterableBad implements Iterable<Value> { // $ Alert[java/iterable-wraps-iterator]
     private ValueIterator iterator = new ValueIterator(); // bad
     @Override
     public Iterator<Value> iterator() {
@@ -105,7 +105,7 @@ class Test {
     }
   }
 
-  class IntIteratorBad implements Iterable<Integer>, Iterator<Integer> {
+  class IntIteratorBad implements Iterable<Integer>, Iterator<Integer> { // $ Alert[java/iterator-implements-iterable]
     private int[] ints;
     private int idx = 0;
     IntIteratorBad(int[] ints) {

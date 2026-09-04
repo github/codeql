@@ -11,7 +11,7 @@ void g(void) {
     f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f();
 }
 
-void h(void) {
+void h(void) { // $ Alert
     f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f();
     f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f();
     f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f(); f();

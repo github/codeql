@@ -24,11 +24,13 @@ predicate func_with_side_effects(Expr e) {
 }
 
 predicate call_with_side_effect(Call e) {
-  e.getAFlowNode() =
-    API::moduleImport("subprocess")
-        .getMember(["call", "check_call", "check_output"])
-        .getACall()
-        .asCfgNode()
+  exists(ControlFlowNode eCfg | eCfg.getNode() = e |
+    eCfg =
+      API::moduleImport("subprocess")
+          .getMember(["call", "check_call", "check_output"])
+          .getACall()
+          .asCfgNode()
+  )
 }
 
 predicate probable_side_effect(Expr e) {

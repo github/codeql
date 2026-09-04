@@ -5,7 +5,7 @@ int f1(void) {
 }
 
 int f2(void) {
-    int x = 1;
+    int x = 1; // $ Alert
 } // BAD
 
 int f3(int b) {
@@ -22,7 +22,7 @@ int f3(int b) {
 int f4(int b) {
     int x;
     if (b) {
-        x = 1;
+        x = 1; // $ Alert
     } else {
         x = 3;
         return 4;
@@ -36,7 +36,7 @@ int f5(void) {
 int f6(int b) {
     int x;
     if (b) {
-        x = 1;
+        x = 1; // $ Alert
     } else {
         __builtin_unreachable();
     }

@@ -3,7 +3,7 @@ package main
 import "regexp"
 
 func broken(hostNames []byte) string {
-	var hostRe = regexp.MustCompile("\bforbidden.host.org")
+	var hostRe = regexp.MustCompile("\bforbidden.host.org") // $ Alert
 	if hostRe.Match(hostNames) {
 		return "Must not target forbidden.host.org"
 	} else {

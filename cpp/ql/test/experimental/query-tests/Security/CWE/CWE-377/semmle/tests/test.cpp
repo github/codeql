@@ -13,7 +13,7 @@ int fclose(FILE *stream);
 int funcTest1()
 {
   FILE *fp;
-  char *filename = tmpnam(NULL); // BAD
+  char *filename = tmpnam(NULL); // $ Alert // BAD
   fp = fopen(filename,"w");
   fprintf(fp,"%s\n","data to file");
   fclose(fp);
@@ -39,7 +39,7 @@ int funcTest3()
   FILE *fp;
   char filename[80];
   strcat(filename, "/tmp/tmp.name");
-  fp = fopen(filename,"w"); // BAD [NOT DETECTED]
+  fp = fopen(filename,"w"); // $ MISSING: Alert // BAD [NOT DETECTED]
   fprintf(fp,"%s\n","data to file");
   fclose(fp);
   return 0;

@@ -19,6 +19,7 @@ predicate virtualCallToSelfInConstructor(Expr e) {
     (c instanceof Constructor or c instanceof Destructor) and
     t = c.getDeclaringType() and
     virtualAccessWithThisQualifier(e, d) and
+    not e = any(NameOfExpr ne).getAccess().getAChildExpr*() and
     t.getABaseType*() = d.getDeclaringType() and
     not t.isSealed() and
     not overriddenSealed(t.getABaseType*(), d)
@@ -34,17 +35,15 @@ predicate overriddenSealed(RefType t, Virtualizable d) {
 }
 
 predicate virtualAccessWithThisQualifier(Expr e, Member d) {
-  exists(VirtualMethodCall c |
-    c = e and c.getTarget() = d and c.hasThisQualifier() and not c.isImplicit()
-  )
+  e = any(VirtualMethodCall c | c.getTarget() = d and c.hasThisQualifier() and not c.isImplicit())
   or
-  exists(VirtualMethodAccess c | c = e and c.getTarget() = d and c.hasThisQualifier())
+  e = any(VirtualMethodAccess c | c.getTarget() = d and c.hasThisQualifier())
   or
-  exists(VirtualPropertyAccess c | c = e and c.getTarget() = d and c.hasThisQualifier())
+  e = any(VirtualPropertyAccess c | c.getTarget() = d and c.hasThisQualifier())
   or
-  exists(VirtualIndexerAccess c | c = e and c.getTarget() = d and c.hasThisQualifier())
+  e = any(VirtualIndexerAccess c | c.getTarget() = d and c.hasThisQualifier())
   or
-  exists(VirtualEventAccess c | c = e and c.getTarget() = d and c.hasThisQualifier())
+  e = any(VirtualEventAccess c | c.getTarget() = d and c.hasThisQualifier())
 }
 
 from Expr e

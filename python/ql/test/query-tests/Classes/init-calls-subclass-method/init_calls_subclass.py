@@ -5,7 +5,7 @@ def bad1():
 
         def __init__(self, arg):
             self._state = "Not OK"
-            self.set_up(arg) # BAD: set_up is overriden.
+            self.set_up(arg) # $ Alert # BAD: set_up is overriden.
             self._state = "OK"
 
         def set_up(self, arg):
@@ -29,7 +29,7 @@ def bad2():
             self.a = arg 
             # BAD: postproc is called after initialization. This is still an issue 
             #      since it may still occur before all initialization on a subclass is complete.
-            self.postproc() 
+            self.postproc()  # $ Alert
 
         def postproc(self):
             if self.a == 1:

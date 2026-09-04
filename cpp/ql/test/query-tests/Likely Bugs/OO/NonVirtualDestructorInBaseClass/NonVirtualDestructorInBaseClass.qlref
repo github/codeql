@@ -1,1 +1,2 @@
-Likely Bugs/OO/NonVirtualDestructorInBaseClass.ql
+query: Likely Bugs/OO/NonVirtualDestructorInBaseClass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

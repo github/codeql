@@ -21,13 +21,27 @@ file_coverage_languages:
     scc_languages:
       - TypeScript
       - TypeScript Typings
+  - name: vue
+    display_name: Vue.js component
+    scc_languages:
+      - Vue
+  - name: html
+    display_name: HTML
+    scc_languages:
+      - HTML
+      - XHTML
 github_api_languages:
   - JavaScript
   - TypeScript
+  - Vue
+  - HTML
 scc_languages:
   - JavaScript
   - TypeScript
   - TypeScript Typings
+  - Vue
+  - HTML
+  - XHTML
 file_types:
   - name: javascript
     display_name: JavaScript

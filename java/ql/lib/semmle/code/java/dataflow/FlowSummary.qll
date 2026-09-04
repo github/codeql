@@ -8,14 +8,6 @@ import java
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowUtil
 
-deprecated class SummaryComponent = Impl::Private::SummaryComponent;
-
-deprecated module SummaryComponent = Impl::Private::SummaryComponent;
-
-deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
-
-deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
-
 /** A synthetic callable with a set of concrete call sites and a flow summary. */
 abstract class SyntheticCallable extends string {
   bindingset[this]
@@ -52,6 +44,7 @@ private module SyntheticCallables {
   private import semmle.code.java.dispatch.WrappedInvocation
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.Stream
+  private import semmle.code.java.frameworks.Strings
 }
 
 private newtype TSummarizedCallableBase =
@@ -147,5 +140,3 @@ private class SummarizedSyntheticCallableAdapter extends SummarizedCallable::Ran
     )
   }
 }
-
-deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;

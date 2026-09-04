@@ -360,3 +360,57 @@ indexers.cs:
 #  130|         4: [BlockStmt] {...}
 #  130|           0: [ReturnStmt] return ...;
 #  130|             0: [IntLiteral] 0
+#  134|   5: [RefStruct] S
+#  136|     6: [Field] x
+#  136|       -1: [TypeMention] int
+#  138|     7: [InstanceConstructor] S
+#-----|       2: (Parameters)
+#  138|         0: [Parameter] v
+#  138|           -1: [TypeMention] int
+#  139|       4: [BlockStmt] {...}
+#  140|         0: [ExprStmt] ...;
+#  140|           0: [AssignExpr] ... = ...
+#  140|             0: [FieldAccess] access to field x
+#  140|             1: [RefExpr] ref ...
+#  140|               0: [ParameterAccess] access to parameter v
+#  143|     8: [Indexer] Item
+#  143|       -1: [TypeMention] int
+#-----|       1: (Parameters)
+#  143|         0: [Parameter] i
+#  143|           -1: [TypeMention] int
+#  145|       3: [Getter] get_Item
+#-----|         2: (Parameters)
+#  143|           0: [Parameter] i
+#  145|         4: [BlockStmt] {...}
+#  145|           0: [ReturnStmt] return ...;
+#  145|             0: [RefExpr] ref ...
+#  145|               0: [FieldAccess] access to field x
+#  149|   6: [Class] TestRefReturns
+#  151|     6: [Method] M
+#  151|       -1: [TypeMention] Void
+#  152|       4: [BlockStmt] {...}
+#  153|         0: [LocalVariableDeclStmt] ... ...;
+#  153|           0: [LocalVariableDeclAndInitExpr] Int32 a = ...
+#  153|             -1: [TypeMention] int
+#  153|             0: [LocalVariableAccess] access to local variable a
+#  153|             1: [IntLiteral] 0
+#  155|         1: [LocalVariableDeclStmt] ... ...;
+#  155|           0: [LocalVariableDeclAndInitExpr] S s = ...
+#  155|             -1: [TypeMention] S
+#  155|             0: [LocalVariableAccess] access to local variable s
+#  155|             1: [ObjectCreation] object creation of type S
+#  155|               -1: [TypeMention] S
+#  155|               0: [LocalVariableAccess] access to local variable a
+#  156|         2: [ExprStmt] ...;
+#  156|           0: [AssignExpr] ... = ...
+#  156|             0: [IndexerCall] access to indexer
+#  156|               -1: [LocalVariableAccess] access to local variable s
+#  156|               0: [IntLiteral] 0
+#  156|             1: [IntLiteral] 1
+#  157|         3: [LocalVariableDeclStmt] ... ...;
+#  157|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#  157|             -1: [TypeMention] int
+#  157|             0: [LocalVariableAccess] access to local variable x
+#  157|             1: [IndexerCall] access to indexer
+#  157|               -1: [LocalVariableAccess] access to local variable s
+#  157|               0: [IntLiteral] 0

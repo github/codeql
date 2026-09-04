@@ -1,1 +1,2 @@
-Bad Practices/Declarations/NoConstantsOnly.ql
+query: Bad Practices/Declarations/NoConstantsOnly.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

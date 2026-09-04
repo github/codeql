@@ -2,6 +2,6 @@
 static void f(void) {
     int i;
 
-    i = 123;
+    i = 123; // $ Alert
 }
 

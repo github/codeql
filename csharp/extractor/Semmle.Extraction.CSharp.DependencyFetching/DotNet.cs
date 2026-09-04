@@ -31,11 +31,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Combine(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
+        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, IDependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Join(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
 
         internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, bool runDotnetInfo) => new DotNet(dotnetCliInvoker, logger, runDotnetInfo);
 
-        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) => new DotNet(logger, dotNetPath, tempWorkingDirectory, dependabotProxy);
+        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, IDependabotProxy? dependabotProxy) => new DotNet(logger, dotNetPath, tempWorkingDirectory, dependabotProxy);
 
         private static void HandleRetryExitCode143(string dotnet, int attempt, ILogger logger)
         {
@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Allow up to four attempts (with up to three retries) to run `dotnet --info`, to mitigate transient issues
             for (int attempt = 0; attempt < 4; attempt++)
             {
-                var exitCode = dotnetCliInvoker.RunCommandExitCode("--info", silent: false);
+                var exitCode = dotnetCliInvoker.RunCommandExitCode(["--info"], silent: false);
                 switch (exitCode)
                 {
                     case 0:
@@ -63,9 +63,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private string GetRestoreArgs(RestoreSettings restoreSettings)
+        private List<string> GetRestoreArgs(RestoreSettings restoreSettings)
         {
-            var args = $"restore --no-dependencies \"{restoreSettings.File}\" --packages \"{restoreSettings.PackageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal";
+            List<string> args = ["restore", "--no-dependencies", restoreSettings.File, "--packages", restoreSettings.PackageDirectory, "/p:DisableImplicitNuGetFallbackFolder=true", "--verbosity", "normal"];
 
             if (restoreSettings.ForceDotnetRefAssemblyFetching)
             {
@@ -73,32 +73,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var path = ".empty";
                 if (tempWorkingDirectory != null)
                 {
-                    path = Path.Combine(tempWorkingDirectory.ToString(), "emptyFakeDotnetRoot");
+                    path = Path.Join(tempWorkingDirectory.ToString(), "emptyFakeDotnetRoot");
                     Directory.CreateDirectory(path);
                 }
 
-                args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\" /p:AllowMissingPrunePackageData=true";
-            }
-
-            if (restoreSettings.PathToNugetConfig != null)
-            {
-                args += $" --configfile \"{restoreSettings.PathToNugetConfig}\"";
+                args.AddRange([$"/p:TargetFrameworkRootPath={path}", $"/p:NetCoreTargetingPackRoot={path}", "/p:AllowMissingPrunePackageData=true"]);
             }
 
             if (restoreSettings.ForceReevaluation)
             {
-                args += " --force";
+                args.Add("--force");
             }
 
             if (restoreSettings.TargetWindows)
             {
-                args += " /p:EnableWindowsTargeting=true";
+                args.Add("/p:EnableWindowsTargeting=true");
             }
 
-            if (restoreSettings.NugetSources is not null)
-            {
-                args += $" {restoreSettings.NugetSources}";
-            }
+            var nugetSources = restoreSettings.NugetSources.SelectMany<string, string>(source => ["-s", source]).ToList();
+            args.AddRange(nugetSources);
 
             return args;
         }
@@ -112,48 +105,48 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public bool New(string folder)
         {
-            var args = $"new console --no-restore --output \"{folder}\"";
+            List<string> args = ["new", "console", "--no-restore", "--output", folder];
             return dotnetCliInvoker.RunCommand(args);
         }
 
         public bool AddPackage(string folder, string package)
         {
-            var args = $"add \"{folder}\" package \"{package}\" --no-restore";
+            List<string> args = ["add", folder, "package", package, "--no-restore"];
             return dotnetCliInvoker.RunCommand(args);
         }
 
-        public IList<string> GetListedRuntimes() => GetResultList("--list-runtimes");
+        public IList<string> GetListedRuntimes() => GetResultList(["--list-runtimes"]);
 
-        public IList<string> GetListedSdks() => GetResultList("--list-sdks");
+        public IList<string> GetListedSdks() => GetResultList(["--list-sdks"]);
 
-        private IList<string> GetResultList(string args, string? workingDirectory = null, bool silent = true)
+        private IList<string> GetResultList(List<string> args, string? workingDirectory = null, bool silent = true)
         {
             if (dotnetCliInvoker.RunCommand(args, workingDirectory, out var results, silent))
             {
                 return results;
             }
-            logger.LogWarning($"Running 'dotnet {args}' failed.");
+            logger.LogWarning($"Running 'dotnet {string.Join(" ", args)}' failed.");
             return [];
         }
 
-        public bool Exec(string execArgs)
+        public bool Exec(List<string> execArgs)
         {
-            var args = $"exec {execArgs}";
+            List<string> args = ["exec", .. execArgs];
             return dotnetCliInvoker.RunCommand(args);
         }
 
-        private const string nugetListSourceCommand = "nuget list source --format Short";
+        private static readonly IReadOnlyList<string> nugetListSourceCommandArgs = ["nuget", "list", "source", "--format", "Short"];
 
         public IList<string> GetNugetFeeds(string nugetConfig)
         {
             logger.LogInfo($"Getting NuGet feeds from '{nugetConfig}'...");
-            return GetResultList($"{nugetListSourceCommand} --configfile \"{nugetConfig}\"");
+            return GetResultList([.. nugetListSourceCommandArgs, "--configfile", nugetConfig]);
         }
 
         public IList<string> GetNugetFeedsFromFolder(string folderPath)
         {
             logger.LogInfo($"Getting NuGet feeds in folder '{folderPath}'...");
-            return GetResultList(nugetListSourceCommand, folderPath);
+            return GetResultList(nugetListSourceCommandArgs.ToList(), folderPath);
         }
 
         // The version number should be kept in sync with the version .NET version used for building the application.
@@ -303,7 +296,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
                 else
                 {
-                    var dotnetInstallPath = actions.PathCombine(tempWorkingDirectory, ".dotnet", "dotnet-install.sh");
+                    var dotnetInstallPath = actions.PathJoin(tempWorkingDirectory, ".dotnet", "dotnet-install.sh");
                     var downloadDotNetInstallSh = BuildScript.DownloadFile(
                         "https://dot.net/v1/dotnet-install.sh",
                         dotnetInstallPath,
@@ -339,7 +332,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     };
                 }
 
-                var dotnetInfo = InfoScript(actions, actions.PathCombine(path, "dotnet"), MinimalEnvironment.ToDictionary(), logger);
+                var dotnetInfo = InfoScript(actions, actions.PathJoin(path, "dotnet"), MinimalEnvironment.ToDictionary(), logger);
 
                 Func<string, BuildScript> getInstallAndVerify = version =>
                     // run `dotnet --info` after install, to check that it executes successfully
@@ -384,7 +377,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public static BuildScript WithDotNet(IBuildActions actions, ILogger logger, IEnumerable<string> files, string tempWorkingDirectory, bool shouldCleanUp, bool ensureDotNetAvailable, string? version, Func<string?, BuildScript> f)
         {
-            var installDir = actions.PathCombine(tempWorkingDirectory, ".dotnet");
+            var installDir = actions.PathJoin(tempWorkingDirectory, ".dotnet");
             var installScript = DownloadDotNet(actions, logger, files, tempWorkingDirectory, shouldCleanUp, installDir, version, ensureDotNetAvailable);
             return BuildScript.Bind(installScript, installed =>
             {

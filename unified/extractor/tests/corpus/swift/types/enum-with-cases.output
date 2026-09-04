@@ -1,0 +1,91 @@
+enum Direction {
+  case north
+  case south
+  case east
+  case west
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        enumDecl
+          attributes:
+          name: identifier "Direction"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "north"
+                      caseKeyword: case
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "south"
+                      caseKeyword: case
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "east"
+                      caseKeyword: case
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "west"
+                      caseKeyword: case
+          modifiers:
+          enumKeyword: enum
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "enum"
+          name: identifier "Direction"
+          member:
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "north"
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "south"
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "east"
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "west"

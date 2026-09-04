@@ -158,8 +158,7 @@ private module Cached {
     model = ""
     or
     // models-as-data summarized flow
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-      nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model)
   }
 
   private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
@@ -1019,4 +1018,6 @@ module Ssa {
   class IndirectExplicitDefinition = SsaImpl::IndirectExplicitDefinition;
 
   class PhiNode = SsaImpl::PhiNode;
+
+  import SsaImpl::Public
 }

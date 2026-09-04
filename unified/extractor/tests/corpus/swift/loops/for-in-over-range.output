@@ -1,0 +1,75 @@
+for i in 0..<10 {
+  print(i)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        forStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "i"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          pattern:
+            identifierPattern
+              identifier: identifier "i"
+          inKeyword: in
+          forKeyword: for
+          sequence:
+            infixOperatorExpr
+              operator:
+                binaryOperatorExpr
+                  operator: binaryOperator "..<"
+              leftOperand:
+                integerLiteralExpr
+                  literal: integerLiteral "0"
+              rightOperand:
+                integerLiteralExpr
+                  literal: integerLiteral "10"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        for_each_stmt
+          pattern:
+            name_pattern
+              identifier: identifier "i"
+          iterable:
+            binary_expr
+              left: int_literal "0"
+              operator: infix_operator "..<"
+              right: int_literal "10"
+          body:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "i"

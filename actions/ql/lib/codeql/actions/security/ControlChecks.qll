@@ -42,6 +42,15 @@ string actor_not_attacker_event() {
     ]
 }
 
+/**
+ * Gets the outer caller of `ej`, i.e. the `ExternalJob` that calls the
+ * reusable workflow containing `ej`. Used with transitive closure to
+ * walk up nested reusable workflow chains.
+ */
+private ExternalJob getAnOuterCaller(ExternalJob ej) {
+  result = ej.getEnclosingWorkflow().(ReusableWorkflow).getACaller()
+}
+
 /** An If node that contains an actor, user or label check */
 abstract class ControlCheck extends AstNode {
   ControlCheck() {
@@ -53,41 +62,168 @@ abstract class ControlCheck extends AstNode {
 
   predicate protects(AstNode node, Event event, string category) {
     // The check dominates the step it should protect
-    this.dominates(node) and
+    this.dominates(node, event) and
     // The check is effective against the event and category
     this.protectsCategoryAndEvent(category, event.getName()) and
     // The check can be triggered by the event
-    this.getATriggerEvent() = event
+    this.getATriggerEvent() = event and
+    // For reusable workflows, there must be no unprotected caller chain for this event.
+    (
+      not node.getEnclosingWorkflow() instanceof ReusableWorkflow
+      or
+      this.dominatesSameWorkflow(node, event)
+      or
+      not exists(ExternalJob directCaller |
+        directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
+        unprotectedCallerChain(directCaller, event, category)
+      )
+    )
   }
 
-  predicate dominates(AstNode node) {
+  /**
+   * Holds if this control check must execute and pass before `node` can run.
+   */
+  predicate dominates(AstNode node, Event event) {
+    this.dominatesSameWorkflow(node, event)
+    or
+    // When the node is inside a reusable workflow,
+    // this check dominates via at least one caller chain.
+    this.dominatesViaCaller(node, event, _)
+  }
+
+  /**
+   * Holds if this control check dominates `node` within the same workflow.
+   */
+  predicate dominatesSameWorkflow(AstNode node, Event event) {
+    this.getATriggerEvent() = event and
+    (
+      // Step-level: the check is an `if:` on the step containing `node`,
+      // or on the enclosing job, or on a needed job/step.
+      this instanceof If and
+      (
+        node.getEnclosingStep().getIf() = this or
+        node.getEnclosingJob().getIf() = this or
+        node.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this or
+        node.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this
+      )
+      or
+      // Job-level: the check is an environment on the enclosing job or a needed job.
+      this instanceof Environment and
+      (
+        node.getEnclosingJob().getEnvironment() = this
+        or
+        node.getEnclosingJob().getANeededJob().getEnvironment() = this
+      )
+      or
+      // Step-level: the check is a Run/UsesStep that precedes `node`'s step
+      // in the same job, or is a step in a needed job.
+      (
+        this instanceof Run or
+        this instanceof UsesStep
+      ) and
+      (
+        this.(Step).getAFollowingStep() = node.getEnclosingStep()
+        or
+        node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this
+      )
+    )
+  }
+
+  /**
+   * Holds if this control check dominates `node` in a reusable workflow
+   * via the caller chain starting at `directCaller`.
+   */
+  predicate dominatesViaCaller(AstNode node, Event event, ExternalJob directCaller) {
+    directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
+    directCaller.getATriggerEvent() = event and
+    exists(ExternalJob caller |
+      caller = getAnOuterCaller*(directCaller) and
+      this.dominatesCaller(caller)
+    )
+  }
+
+  /**
+   * Holds if this control check directly dominates `caller`.
+   */
+  predicate dominatesCaller(ExternalJob caller) {
     this instanceof If and
     (
-      node.getEnclosingStep().getIf() = this or
-      node.getEnclosingJob().getIf() = this or
-      node.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this or
-      node.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this
+      caller.getIf() = this or
+      caller.getANeededJob().(LocalJob).getIf() = this or
+      caller.getANeededJob().(LocalJob).getAStep().getIf() = this
     )
     or
     this instanceof Environment and
     (
-      node.getEnclosingJob().getEnvironment() = this
-      or
-      node.getEnclosingJob().getANeededJob().getEnvironment() = this
+      caller.getEnvironment() = this or
+      caller.getANeededJob().getEnvironment() = this
     )
     or
-    (
-      this instanceof Run or
-      this instanceof UsesStep
-    ) and
-    (
-      this.(Step).getAFollowingStep() = node.getEnclosingStep()
-      or
-      node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this.(Step)
-    )
+    (this instanceof Run or this instanceof UsesStep) and
+    caller.getANeededJob().(LocalJob).getAStep() = this
   }
 
   abstract predicate protectsCategoryAndEvent(string category, string event);
+}
+
+/**
+ * Holds if this control check directly protects `caller`.
+ */
+bindingset[caller, event, category]
+private predicate protectedCaller(ExternalJob caller, Event event, string category) {
+  exists(ControlCheck check |
+    check.protectsCategoryAndEvent(category, event.getName()) and
+    check.getATriggerEvent() = event and
+    check.dominatesCaller(caller)
+  )
+}
+
+cached
+private newtype TCallerState =
+  MkCallerState(ExternalJob caller, Event event, string category) {
+    caller.getATriggerEvent() = event and
+    category = any_category()
+  }
+
+private class CallerState extends TCallerState, MkCallerState {
+  ExternalJob caller;
+  Event event;
+  string category;
+
+  CallerState() { this = MkCallerState(caller, event, category) }
+
+  ExternalJob getCaller() { result = caller }
+
+  Event getEvent() { result = event }
+
+  string getCategory() { result = category }
+
+  /**
+   * Gets an outer caller state if this caller is not protected.
+   */
+  CallerState getUnprotectedOuterState() {
+    not protectedCaller(this.getCaller(), this.getEvent(), this.getCategory()) and
+    result = MkCallerState(getAnOuterCaller(this.getCaller()), this.getEvent(), this.getCategory())
+  }
+
+  predicate isUnprotectedOutermost() {
+    not protectedCaller(this.getCaller(), this.getEvent(), this.getCategory()) and
+    not exists(getAnOuterCaller(this.getCaller()))
+  }
+
+  string toString() { result = caller + " / " + event + " / " + category }
+}
+
+/**
+ * Holds if there is a caller path from `caller` to an outer workflow that has no protection.
+ */
+bindingset[caller, event, category]
+private predicate unprotectedCallerChain(ExternalJob caller, Event event, string category) {
+  exists(CallerState start, CallerState outermost |
+    start = MkCallerState(caller, event, category) and
+    outermost = start.getUnprotectedOuterState*() and
+    outermost.isUnprotectedOutermost()
+  )
 }
 
 abstract class AssociationCheck extends ControlCheck {
@@ -141,12 +277,18 @@ abstract class LabelCheck extends ControlCheck {
 }
 
 class EnvironmentCheck extends ControlCheck instanceof Environment {
+  EnvironmentCheck() {
+    // if there are any custom tuples use those
+    if enabledDeploymentEnvironmentDataModel(_)
+    then enabledDeploymentEnvironmentDataModel(this.(Environment).getName())
+    else this instanceof Environment
+  }
+
   // Environment checks are not effective against any mutable attacks
   // they do actually protect against untrusted code execution (sha)
   override predicate protectsCategoryAndEvent(string category, string event) {
-    event = actor_is_attacker_event() and category = any_category()
-    or
-    event = actor_not_attacker_event() and category = non_toctou_category()
+    event = [actor_is_attacker_event(), actor_not_attacker_event()] and
+    category = non_toctou_category()
   }
 }
 
@@ -172,17 +314,6 @@ class LabelIfCheck extends LabelCheck instanceof If {
 
 class ActorIfCheck extends ActorCheck instanceof If {
   ActorIfCheck() {
-    // eg: github.event.pull_request.user.login == 'admin'
-    exists(
-      normalizeExpr(this.getCondition())
-          .regexpFind([
-              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b",
-              "\\bgithub\\.event\\.head_commit\\.author\\.name\\b",
-              "\\bgithub\\.event\\.commits.*\\.author\\.name\\b",
-              "\\bgithub\\.event\\.sender\\.login\\b"
-            ], _, _)
-    )
-    or
     // eg: github.actor == 'admin'
     // eg: github.triggering_actor == 'admin'
     exists(
@@ -190,6 +321,51 @@ class ActorIfCheck extends ActorCheck instanceof If {
           .regexpFind(["\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",], _, _)
     ) and
     not normalizeExpr(this.getCondition()).matches("%[bot]%")
+  }
+}
+
+/**
+ * Gets a regular expression matching a condition on an actor field that is
+ * only populated for events whose payload contains the `context_prefix` context.
+ */
+private string eventPayloadActorFieldRegex(string context_prefix) {
+  context_prefix = "github.event.pull_request" and
+  result = "\\bgithub\\.event\\.pull_request\\.user\\.login\\b"
+  or
+  context_prefix = "github.event.head_commit" and
+  result = "\\bgithub\\.event\\.head_commit\\.author\\.name\\b"
+  or
+  context_prefix = "github.event.commits" and
+  result = "\\bgithub\\.event\\.commits.*\\.author\\.name\\b"
+  or
+  context_prefix = "github.event.sender" and
+  result = "\\bgithub\\.event\\.sender\\.login\\b"
+}
+
+/** An If node that checks an actor field from the event payload */
+class EventActorIfCheck extends ActorCheck instanceof If {
+  string context_prefix;
+
+  EventActorIfCheck() {
+    // eg: github.event.pull_request.user.login == 'admin'
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind(eventPayloadActorFieldRegex(context_prefix), _, _)
+    )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    ActorCheck.super.protectsCategoryAndEvent(category, event) and
+    (
+      // the `sender` object is part of every webhook event payload
+      context_prefix = "github.event.sender"
+      or
+      // other actor fields only restrict events whose payload populates them.
+      // eg: `github.event.pull_request.user.login` cannot restrict the actor
+      // of an `issues` event since `github.event.pull_request` is not
+      // populated there, which makes the condition vacuous
+      contextTriggerDataModel(event, context_prefix)
+    )
   }
 }
 
@@ -232,16 +408,37 @@ class WorkflowRunRepositoryIfCheck extends RepositoryCheck instanceof If {
   }
 }
 
+/**
+ * Gets a regular expression matching a condition on an author association field
+ * that is only populated for events whose payload contains the `context_prefix`
+ * context.
+ */
+private string eventPayloadAssociationFieldRegex(string context_prefix) {
+  context_prefix = "github.event.comment" and
+  result = "\\bgithub\\.event\\.comment\\.author_association\\b"
+  or
+  context_prefix = "github.event.issue" and
+  result = "\\bgithub\\.event\\.issue\\.author_association\\b"
+  or
+  context_prefix = "github.event.pull_request" and
+  result = "\\bgithub\\.event\\.pull_request\\.author_association\\b"
+}
+
 class AssociationIfCheck extends AssociationCheck instanceof If {
+  string context_prefix;
+
   AssociationIfCheck() {
     // eg: contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association)
-    normalizeExpr(this.getCondition())
-        .splitAt("\n")
-        .regexpMatch([
-            ".*\\bgithub\\.event\\.comment\\.author_association\\b.*",
-            ".*\\bgithub\\.event\\.issue\\.author_association\\b.*",
-            ".*\\bgithub\\.event\\.pull_request\\.author_association\\b.*",
-          ])
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind(eventPayloadAssociationFieldRegex(context_prefix), _, _)
+    )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    AssociationCheck.super.protectsCategoryAndEvent(category, event) and
+    // association fields only restrict events whose payload populates them
+    contextTriggerDataModel(event, context_prefix)
   }
 }
 

@@ -1,26 +1,26 @@
 class FooController < ActionController::Base
   # BAD
   def route0
-    name = params[:name]
-    regex = /#{name}/
+    name = params[:name] # $ Source
+    regex = /#{name}/ # $ Alert
   end
 
   # BAD
   def route1
-    name = params[:name]
-    regex = /foo#{name}bar/
+    name = params[:name] # $ Source
+    regex = /foo#{name}bar/ # $ Alert
   end
 
   # BAD
   def route2
-    name = params[:name]
-    regex = Regexp.new(name)
+    name = params[:name] # $ Source
+    regex = Regexp.new(name) # $ Alert
   end
 
   # BAD
   def route3
-    name = params[:name]
-    regex = Regexp.new("@" + name)
+    name = params[:name] # $ Source
+    regex = Regexp.new("@" + name) # $ Alert
   end
 
   # GOOD - string is compared against a constant string
@@ -51,7 +51,7 @@ class FooController < ActionController::Base
 
   # BAD
   def route8
-    name = params[:name]
-    regex = Regexp.compile("@" + name)
+    name = params[:name] # $ Source
+    regex = Regexp.compile("@" + name) # $ Alert
   end
 end

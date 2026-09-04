@@ -21,19 +21,19 @@
             <name>Insecure Repository Releases</name>
             <!-- BAD! Use HTTPS -->
             <url>http://insecure-repository.example</url>
-        </repository>
+        </repository> <!-- $ Alert -->
         <snapshotRepository>
             <id>insecure-snapshots</id>
             <name>Insecure Repository Snapshots</name>
             <!-- BAD! Use HTTPS -->
             <url>http://insecure-repository.example</url>
-        </snapshotRepository>
+        </snapshotRepository> <!-- $ Alert -->
         <snapshotRepository>
             <id>insecure-snapshots</id>
             <name>Insecure Repository Snapshots</name>
             <!-- BAD! Use HTTPS -->
             <url>http://localhost.example</url>
-        </snapshotRepository>
+        </snapshotRepository> <!-- $ Alert -->
     </distributionManagement>
     <repositories>
         <repository>
@@ -41,7 +41,7 @@
             <name>Insecure Repository</name>
             <!-- BAD! Use HTTPS -->
             <url>http://insecure-repository.example</url>
-        </repository>
+        </repository> <!-- $ Alert -->
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -49,6 +49,6 @@
             <name>Insecure Repository Releases</name>
             <!-- BAD! Use HTTPS -->
             <url>http://insecure-repository.example</url>
-        </pluginRepository>
+        </pluginRepository> <!-- $ Alert -->
     </pluginRepositories>
 </project>

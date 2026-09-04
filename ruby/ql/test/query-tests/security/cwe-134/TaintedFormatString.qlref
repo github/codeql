@@ -1,1 +1,2 @@
-queries/security/cwe-134/TaintedFormatString.ql
+query: queries/security/cwe-134/TaintedFormatString.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

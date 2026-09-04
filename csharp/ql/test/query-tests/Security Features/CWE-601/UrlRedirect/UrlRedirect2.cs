@@ -11,7 +11,7 @@ public class UrlRedirectHandler2 : IHttpHandler
     public void ProcessRequest(HttpContext ctx)
     {
         // BAD: a request parameter is incorporated without validation into a URL redirect
-        ctx.Response.Redirect(ctx.Request.QueryString["page"]);
+        ctx.Response.Redirect(ctx.Request.QueryString["page"]); // $ Alert=r1 $ Alert=r1
 
         var redirectUrl = ctx.Request.QueryString["page"];
         if (VALID_REDIRECTS.Contains(redirectUrl))

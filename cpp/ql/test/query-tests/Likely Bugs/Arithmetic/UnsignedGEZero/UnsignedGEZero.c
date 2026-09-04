@@ -37,7 +37,7 @@ void myFunction() {
 	myEnum1 e1;
 	myEnum2 e2;
 
-	if (ui >= 0) { // violation
+	if (ui >= 0) { // $ Alert // violation
 	}
 	if (ui >= 1) {
 	}
@@ -45,21 +45,21 @@ void myFunction() {
 	}
 	if (ui < 0) {
 	}
-	if (UI >= ZERO) { // violation
+	if (UI >= ZERO) { // $ Alert // violation
 	}
 	if (si >= 0) {
 	}
 	if (ui_ptr >= NULL) { // unsafe, but not a violation of UnsignedGEZero.ql
 	}
-	if (uc >= 0) { // violation
+	if (uc >= 0) { // $ Alert // violation
 	}
 	if (sc >= 0) {
 	}
-	if (u16 >= 0) { // violation
+	if (u16 >= 0) { // $ Alert // violation
 	}
 	if (s16 >= 0) {
 	}
-	if (ull >= 0) { // violation
+	if (ull >= 0) { // $ Alert // violation
 	}
 	if (sll >= 0) {
 	}
@@ -72,33 +72,33 @@ void myFunction() {
 	if (e2 >= 0) {
 	}
 
-	if (ui >= const_zero) { // violation
+	if (ui >= const_zero) { // $ Alert // violation
 	}
 	if (ui >= maybe_zero) {
 	}
 
-	if ((unsigned int)si >= 0) { // violation
+	if ((unsigned int)si >= 0) { // $ Alert // violation
 	}
 	if ((signed int)ui >= 0) {
 	}
-	if ((unsigned char)ui >= 0) { // violation
+	if ((unsigned char)ui >= 0) { // $ Alert // violation
 	}
 	if ((signed char)ui >= 0) {
 	}
-	if ((unsigned char)si >= 0) { // violation
+	if ((unsigned char)si >= 0) { // $ Alert // violation
 	}
 	if ((signed char)si >= 0) {
 	}
-	if ((signed int)uc >= 0) { // violation
+	if ((signed int)uc >= 0) { // $ Alert // violation
 	}
-	if ((unsigned int)uc >= 0) { // violation
+	if ((unsigned int)uc >= 0) { // $ Alert // violation
 	}
 	if ((signed int)sc >= 0) {
 	}
-	if ((unsigned int)sc >= 0) { // violation
+	if ((unsigned int)sc >= 0) { // $ Alert // violation
 	}
 
-	assert(ui >= 0); // violation
+	assert(ui >= 0); // $ Alert // violation
 	assert(si >= 0);
 
 	CHECK_RANGE(ui, 0, 10); // reasonable use
@@ -108,32 +108,32 @@ void myFunction() {
 	CHECK_RANGE(e2, BANANA, PEAR);
 	CHECK_RANGE(e2, 0, PEAR);
 
-	assert(ui >= 0 && ui <= 100); // violation
+	assert(ui >= 0 && ui <= 100); // $ Alert // violation
 	assert(CHECK_RANGE(ui, 0, 10)); // reasonable use
 	assert(UI >= ZERO); // violation (not detected)
-	assert(ui GE 0); // violation
+	assert(ui GE 0); // $ Alert // violation
 
-	if ((unsigned char)si >= 0) { // violation
+	if ((unsigned char)si >= 0) { // $ Alert // violation
 	}
-	if ((unsigned char)(signed int)si >= 0) { // violation
+	if ((unsigned char)(signed int)si >= 0) { // $ Alert // violation
 	}
-	if ((signed int)(unsigned char)si >= 0) { // violation
+	if ((signed int)(unsigned char)si >= 0) { // $ Alert // violation
 	}
-	if ((unsigned char)(signed char)si >= 0) { // violation
+	if ((unsigned char)(signed char)si >= 0) { // $ Alert // violation
 	}
 	if ((signed char)(unsigned char)si >= 0) {
 	}
 
-	if ((signed int)(unsigned char)(signed int)si >= 0) { // violation
+	if ((signed int)(unsigned char)(signed int)si >= 0) { // $ Alert // violation
 	}
 	if ((signed char)(unsigned char)(signed int)si >= 0) {
 	}
-	if ((signed int)(unsigned char)(signed char)si >= 0) { // violation
+	if ((signed int)(unsigned char)(signed char)si >= 0) { // $ Alert // violation
 	}
 
 	if (ui <= 0) {
 	}
-	if (0 <= ui) { // violation
+	if (0 <= ui) { // $ Alert // violation
 	}
 	if (0 < ui) {
 	}

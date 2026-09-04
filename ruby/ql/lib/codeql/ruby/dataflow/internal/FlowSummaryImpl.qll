@@ -12,13 +12,23 @@ private import DataFlowImplSpecific::Public
 module Input implements InputSig<Location, DataFlowImplSpecific::RubyDataFlow> {
   private import codeql.util.Void
 
-  class SummarizedCallableBase = string;
+  class SummarizedCallableBase extends string {
+    bindingset[this]
+    SummarizedCallableBase() { exists(this) }
 
-  class SourceBase = Void;
+    bindingset[this]
+    Location getLocation() { result instanceof EmptyLocation }
+  }
 
-  class SinkBase = Void;
+  class FlowSummaryCallBase extends Void {
+    Location getLocation() { none() }
+  }
 
   predicate callableFromSource(SummarizedCallableBase c) { none() }
+
+  DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+    result.asLibraryCallable() = c
+  }
 
   ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
 
@@ -156,24 +166,35 @@ module Input implements InputSig<Location, DataFlowImplSpecific::RubyDataFlow> {
 
 private import Make<Location, DataFlowImplSpecific::RubyDataFlow, Input> as Impl
 
-private module StepsInput implements Impl::Private::StepsInputSig {
+private module Input2 implements Impl::Private::InputSig2 {
+  private import codeql.util.Void
+
+  class SourceSinkReportingElement extends Void {
+    Location getLocation() { none() }
+
+    DataFlowCallable getEnclosingCallable() { none() }
+
+    SourceSinkReportingElement getASuccessor(Impl::Private::SummaryComponent sc) { none() }
+  }
+}
+
+private import Impl::Private::Make2<Input2> as Impl2
+
+private module StepsInput implements Impl2::StepsInputSig {
+  Impl2::SummaryNode getSummaryNode(Node n) { result = n.(FlowSummaryNode).getSummaryNode() }
+
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result.asCall().getAstNode() = sc.(LibraryCallable).getACall()
     or
     result.asCall().getAstNode() = sc.(LibraryCallable).getACallSimple()
   }
-
-  DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) { none() }
-
-  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) { none() }
-
-  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module Private {
   import Impl::Private
+  import Impl2
 
-  module Steps = Impl::Private::Steps<StepsInput>;
+  module Steps = Impl2::Steps<StepsInput>;
 
   /**
    * Provides predicates for constructing summary components.

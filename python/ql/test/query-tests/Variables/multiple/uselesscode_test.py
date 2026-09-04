@@ -1,8 +1,8 @@
 
 #Multiple declarations
 
-def mult(a):
-    x = 1
+def mult(a): # $ Alert
+    x = 1 # $ Alert
     y = a
     x = 2
     #Need to use x, otherwise it is ignored
@@ -25,7 +25,7 @@ def _double_loop(seq):
     for i in seq:
         pass
 
-class Mult(object):
+class Mult(object): # $ Alert
 
     pass
 
@@ -49,7 +49,7 @@ def isStr(s):
 # 'bad' actually *is* always redefined before being read.
 def have_nosmp():
     try:
-        bad = os.environ['NPY_NOSMP']
+        bad = os.environ['NPY_NOSMP'] # $ Alert
         bad = 1
     except KeyError:
         bad = 0
@@ -64,7 +64,7 @@ def simple_try(foo):
 
 def try_with_else(foo):
     try:
-        bad = foo.bar
+        bad = foo.bar # $ Alert
     except AttributeError:
         raise
     else:
@@ -114,7 +114,7 @@ def odasa4166(cond):
 def odasa5315():
     x, y = foo() # OK as y is used
     use(y)
-    x, y = bar() # Not OK as neither x nor y are used.
+    x, y = bar() # $ Alert # Not OK as neither x nor y are used.
     x, y = baz() # OK as both used
     return x + y
 

@@ -11,7 +11,7 @@ class Test
         foreach (var arg in args)
         {
             // BAD: Storing a delegate in an event.
-            event1 += () => arg;
+            event1 += () => arg; // $ Alert
 
             // GOOD: Make a copy of the loop variable.
             var argCopy = arg;
@@ -21,7 +21,7 @@ class Test
             goodUseOfDelegate(() => arg);
 
             // BAD: Calling a function which stores the delegate
-            badUseOfDelegate(() => arg);
+            badUseOfDelegate(() => arg); // $ Alert
 
             // GOOD: The delegate does not escape the loop
             Del d = () => arg;

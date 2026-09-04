@@ -16,6 +16,9 @@ func FunctionWithVarArgsParameter(s ...string) string {
 	return ""
 }
 
+func FunctionWithVarArgsOutParameter(in string, out ...*string) {
+}
+
 func FunctionWithSliceOfStructsParameter(s []A) string {
 	return ""
 }

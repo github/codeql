@@ -28,7 +28,7 @@ func test1(input string) error {
 	}
 	if ok2, _ := f2(input); !ok2 {
 		// BAD: Wrapped error is always nil
-		return errors.Wrap(err, "")
+		return errors.Wrap(err, "") // $ Alert
 	}
 	return nil
 }
@@ -38,13 +38,13 @@ func test2(err error) {
 	errors.Wrap(err, "")
 
 	// BAD: Wrapped error is always nil
-	errors.Wrap(nil, "")
+	errors.Wrap(nil, "") // $ Alert
 
 	err = nil
 	// BAD: Wrapped error is always nil
-	errors.Wrap(err, "")
+	errors.Wrap(err, "") // $ Alert
 
 	var localErr error = nil
 	// BAD: Wrapped error is always nil
-	errors.Wrap(localErr, "")
+	errors.Wrap(localErr, "") // $ Alert
 }

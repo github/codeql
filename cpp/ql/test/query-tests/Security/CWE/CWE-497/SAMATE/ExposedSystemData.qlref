@@ -1,1 +1,2 @@
-Security/CWE/CWE-497/ExposedSystemData.ql
+query: Security/CWE/CWE-497/ExposedSystemData.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

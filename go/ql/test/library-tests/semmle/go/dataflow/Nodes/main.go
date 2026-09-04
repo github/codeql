@@ -18,5 +18,5 @@ func f() {
 }
 
 func test() (int, int) {
-	return 23, 42
+	return 23, 42 // $ Alert[result-node]
 }

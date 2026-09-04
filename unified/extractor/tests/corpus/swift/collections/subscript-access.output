@@ -1,0 +1,57 @@
+// TODO: `xs[0]` is mapped to a call_expr, even though swift-syntax reports a
+// distinct subscriptCallExpr. Giving subscripts their own shape needs only a
+// subscript_expr node in ast_types.yml and a remap.
+let first = xs[0]
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    subscriptCallExpr
+                      leftSquare: [
+                      rightSquare: ]
+                      arguments:
+                        labeledExpr
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "0"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "xs"
+              pattern:
+                identifierPattern
+                  identifier: identifier "first"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "first"
+          value:
+            call_expr
+              callee:
+                name_expr
+                  identifier: identifier "xs"
+              argument:
+                argument
+                  value: int_literal "0"

@@ -1,1 +1,2 @@
-Likely Bugs/Arithmetic/BadAdditionOverflowCheck.ql
+query: Likely Bugs/Arithmetic/BadAdditionOverflowCheck.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

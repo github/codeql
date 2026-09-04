@@ -48,6 +48,7 @@ private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 private import codeql.rust.internal.CachedStages
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.util.Option
+private import codeql.util.SemVer
 
 private newtype TNamespace =
   TTypeNamespace() or
@@ -263,7 +264,7 @@ abstract class ItemNode extends Locatable {
   pragma[nomagic]
   final Attr getAttr(string name) {
     result = this.getAnAttr() and
-    result.getMeta().getPath().(PathExt).isUnqualified(name)
+    result.getMeta().getMetaPath().(PathExt).isUnqualified(name)
   }
 
   final predicate hasAttr(string name) { exists(this.getAttr(name)) }
@@ -568,6 +569,16 @@ class CrateItemNode extends NamedItemNode instanceof Crate {
     )
   }
 
+  pragma[nomagic]
+  predicate isLatestVersion(string name) {
+    this =
+      max(CrateItemNode c, string ver |
+        name = c.getName() and ver = padSemVer(c.(Crate).getVersion())
+      |
+        c order by ver
+      )
+  }
+
   override string getName() { result = Crate.super.getName() }
 
   override Namespace getNamespace() {
@@ -657,6 +668,38 @@ private class ConstItemNode extends AssocItemNode instanceof Const {
   override Attr getAnAttr() { result = Const.super.getAnAttr() }
 
   override TypeParam getTypeParam(int i) { none() }
+}
+
+private class StaticItemNode extends ItemNode instanceof Static {
+  override string getName() { result = Static.super.getName().getText() }
+
+  override Namespace getNamespace() { result.isValue() }
+
+  override Visibility getVisibility() { result = Static.super.getVisibility() }
+
+  override Attr getAnAttr() { result = Static.super.getAnAttr() }
+
+  override TypeParam getTypeParam(int i) { none() }
+
+  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
+
+  bindingset[c]
+  private string getCanonicalPathPart(Crate c, int i) {
+    i = 0 and
+    result = this.getCanonicalPathPrefix(c)
+    or
+    i = 1 and
+    result = "::"
+    or
+    i = 2 and
+    result = this.getName()
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPath(Crate c) {
+    this.hasCanonicalPath(c) and
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+  }
 }
 
 private class TypeItemTypeItemNode extends NamedItemNode, TypeItemNode instanceof TypeItem {
@@ -806,7 +849,7 @@ private TypeItemNode resolveBuiltin(TypeRepr tr) {
 final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   Path getSelfPath() { result = super.getSelfTy().(PathTypeRepr).getPath() }
 
-  Path getTraitPath() { result = super.getTrait().(PathTypeRepr).getPath() }
+  Path getTraitPath() { result = super.getTraitTy().(PathTypeRepr).getPath() }
 
   TypeItemNode resolveSelfTyBuiltin() { result = resolveBuiltin(this.(Impl).getSelfTy()) }
 
@@ -842,7 +885,12 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
    */
   predicate isBlanketImplementation() { exists(this.getBlanketImplementationTypeParam()) }
 
-  override predicate hasCanonicalPath(Crate c) { this.resolveSelfTy().hasCanonicalPathPrefix(c) }
+  override predicate hasCanonicalPath(Crate c) {
+    this.resolveSelfTy().hasCanonicalPathPrefix(c)
+    or
+    this.isBlanketImplementation() and
+    c.getASourceFile().getFile() = this.getFile()
+  }
 
   /**
    * Holds if `(c1, c2)` forms a pair of crates for the type and trait
@@ -888,7 +936,12 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
     result = "<"
     or
     i = 1 and
-    result = this.getSelfCanonicalPath(c)
+    (
+      result = this.getSelfCanonicalPath(c)
+      or
+      this.isBlanketImplementation() and
+      result = "_"
+    )
     or
     if exists(this.getTraitPath())
     then
@@ -1063,7 +1116,7 @@ final class TraitItemNode extends ImplOrTraitItemNode, NamedItemNode, TypeItemNo
   bindingset[c]
   private string getCanonicalPathPart(Crate c, int i) {
     i = 0 and
-    result = "<_ as "
+    result = "<"
     or
     i = 1 and
     result = this.getCanonicalPathPrefix(c)
@@ -1348,7 +1401,7 @@ private predicate fileModuleInlineLate(SourceFile f, string name, Folder folder)
  */
 private Meta getPathAttrMeta(Module m) {
   result = m.getAnAttr().getMeta() and
-  result.getPath().getText() = "path"
+  result.getMetaPath().getText() = "path"
 }
 
 /**
@@ -1409,7 +1462,7 @@ private predicate modImportNestedLookup(Module m, ModuleItemNode ancestor, Folde
 }
 
 private predicate pathAttrImport(Folder f, Module m, string relativePath) {
-  exists(Meta meta |
+  exists(KeyValueMeta meta |
     f = m.getFile().getParentContainer() and
     meta = getPathAttrMeta(m) and
     relativePath = meta.getExpr().(LiteralExpr).getTextValue().regexpCapture("\"(.+)\"", 1)
@@ -1487,11 +1540,11 @@ private predicate crateDependencyEdge(SourceFileItemNode file, string name, Crat
   crateDependency(file, name, dep)
   or
   // As a fallback, give all files access to crates that do not conflict with known dependencies
-  // and declarations. This is in order to workaround incomplete crate dependency information
-  // provided by the extractor, as well as `CrateItemNode.getASourceFile()` being unable to map
-  // a given file to its crate (for example, if the file is `mod` imported inside a macro that the
-  // extractor is unable to expand).
-  name = dep.getName() and
+  // and declarations, as long as those crates have a unique latest version.
+  // This is in order to workaround incomplete crate dependency information provided by the extractor,
+  // as well as `CrateItemNode.getASourceFile()` being unable to map a given file to its crate (for
+  // example, if the file is `mod` imported inside a macro that the extractor is unable to expand).
+  dep = unique(CrateItemNode dep0 | dep0.isLatestVersion(name)) and
   not hasDeclOrDep(file, name)
 }
 
@@ -1793,7 +1846,7 @@ private module DollarCrateResolution {
     or
     exists(ItemNode type |
       expansion = type.(TypeItem).getDeriveMacroExpansion(_) and
-      macroDefPath = type.getAttr("derive").getMeta().getPath()
+      macroDefPath = type.getAttr("derive").getMeta().getMetaPath()
     )
   }
 
@@ -1952,7 +2005,7 @@ private predicate pathUsesNamespace(PathExt p, Namespace n) {
   (
     p = any(MacroCall mc).getPath()
     or
-    p = any(Meta m).getPath()
+    p = any(Meta m).getMetaPath()
   )
 }
 
@@ -2343,6 +2396,11 @@ private module Debug {
     useImportEdge(use, name, item, kind)
   }
 
+  predicate debugCrateDependencyEdge(SourceFileItemNode file, string name, CrateItemNode dep) {
+    file = getRelevantLocatable() and
+    crateDependencyEdge(file, name, dep)
+  }
+
   ItemNode debugGetASuccessor(ItemNode i, string name, SuccessorKind kind) {
     i = getRelevantLocatable() and
     result = i.getASuccessor(name, kind, _)
@@ -2366,5 +2424,11 @@ private module Debug {
   string debugGetCanonicalPath(ItemNode i, Crate c) {
     result = i.getCanonicalPath(c) and
     i = getRelevantLocatable()
+  }
+
+  predicate debugCallTargetCanonicalPath(Call call, Function f, string path) {
+    call = getRelevantLocatable() and
+    f = call.getStaticTarget() and
+    path = f.getCanonicalPath()
   }
 }

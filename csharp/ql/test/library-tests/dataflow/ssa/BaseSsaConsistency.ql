@@ -8,12 +8,8 @@ where
   ar = ssaDef.getARead() and
   def = ssaDef.getDefinition() and
   v = def.getTarget() and
-  not exists(Ssa::ExplicitDefinition edef |
-    edef.getADefinition() = def and
-    edef.getARead() = ar
-  ) and
-  not exists(Ssa::ParameterDefinition edef |
-    edef.getParameter() = def.(AssignableDefinitions::ImplicitParameterDefinition).getParameter() and
+  not exists(SsaExplicitWrite edef |
+    edef.getDefinition() = def and
     edef.getARead() = ar
   )
 select ar, def

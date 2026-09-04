@@ -1,1 +1,2 @@
-Likely Bugs/RedundantNullCheckSimple.ql
+query: Likely Bugs/RedundantNullCheckSimple.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

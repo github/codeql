@@ -46,10 +46,10 @@ int Foo::test(int (*baz)(int))
 
 	if (i)
 		(void)i,	// BAD
-	(void)j;
+	(void)j; // $ Alert
 
 	if (1) FOO(i),
-	(void)x.foo(j); // BAD
+	(void)x.foo(j); // $ Alert // BAD
 
 	// Parenthesized comma (borderline example):
 
@@ -157,13 +157,13 @@ int Foo::test(int (*baz)(int))
 
 	if (i)
 	    (void)i,	    // GOOD if tab >= 4 spaces else BAD -- can't exclude w/o source code text :/
-		(void)j;
+		(void)j; // $ Alert
 
 	// LHS ends on same line RHS begins on:
 
 	if (1) foo(
 		i++
-	), j++; // GOOD? [FALSE POSITIVE]
+	), j++; // $ SPURIOUS: Alert // GOOD? [FALSE POSITIVE]
 
 	if (1) baz(
 		i++
@@ -175,7 +175,7 @@ int Foo::test(int (*baz)(int))
 		return i++
 			, i++ // GOOD(?) [FALSE POSITIVE] -- can't exclude w/o source code text :/
 			? 1
-			: 2;
+			: 2; // $ SPURIOUS: Alert
 
     int quux =
       (tata->titi.tutu(),

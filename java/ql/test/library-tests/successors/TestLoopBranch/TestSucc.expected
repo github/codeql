@@ -148,8 +148,8 @@
 | TestLoopBranch.java:62:3:62:12 | switch (...) | TestLoopBranch.java:62:11:62:11 | x |
 | TestLoopBranch.java:62:11:62:11 | x | TestLoopBranch.java:64:3:64:9 | case ... |
 | TestLoopBranch.java:64:3:64:9 | case ... | TestLoopBranch.java:64:8:64:8 | 1 |
-| TestLoopBranch.java:64:3:64:9 | case ... | TestLoopBranch.java:67:3:67:9 | case ... |
 | TestLoopBranch.java:64:8:64:8 | 1 | TestLoopBranch.java:65:4:65:13 | <Expr>; |
+| TestLoopBranch.java:64:8:64:8 | 1 | TestLoopBranch.java:67:3:67:9 | case ... |
 | TestLoopBranch.java:65:4:65:4 | x | TestLoopBranch.java:65:8:65:8 | x |
 | TestLoopBranch.java:65:4:65:12 | ...=... | TestLoopBranch.java:66:4:66:13 | <Expr>; |
 | TestLoopBranch.java:65:4:65:13 | <Expr>; | TestLoopBranch.java:65:4:65:4 | x |
@@ -163,8 +163,8 @@
 | TestLoopBranch.java:66:8:66:12 | ... + ... | TestLoopBranch.java:66:4:66:12 | ...=... |
 | TestLoopBranch.java:66:12:66:12 | 1 | TestLoopBranch.java:66:8:66:12 | ... + ... |
 | TestLoopBranch.java:67:3:67:9 | case ... | TestLoopBranch.java:67:8:67:8 | 2 |
-| TestLoopBranch.java:67:3:67:9 | case ... | TestLoopBranch.java:71:3:71:9 | case ... |
 | TestLoopBranch.java:67:8:67:8 | 2 | TestLoopBranch.java:68:4:68:13 | <Expr>; |
+| TestLoopBranch.java:67:8:67:8 | 2 | TestLoopBranch.java:71:3:71:9 | case ... |
 | TestLoopBranch.java:68:4:68:4 | x | TestLoopBranch.java:68:8:68:8 | x |
 | TestLoopBranch.java:68:4:68:12 | ...=... | TestLoopBranch.java:69:4:69:13 | <Expr>; |
 | TestLoopBranch.java:68:4:68:13 | <Expr>; | TestLoopBranch.java:68:4:68:4 | x |
@@ -179,11 +179,11 @@
 | TestLoopBranch.java:69:12:69:12 | 2 | TestLoopBranch.java:69:8:69:12 | ... + ... |
 | TestLoopBranch.java:70:4:70:9 | break | TestLoopBranch.java:86:3:86:11 | switch (...) |
 | TestLoopBranch.java:71:3:71:9 | case ... | TestLoopBranch.java:71:8:71:8 | 3 |
-| TestLoopBranch.java:71:3:71:9 | case ... | TestLoopBranch.java:72:3:72:9 | case ... |
+| TestLoopBranch.java:71:8:71:8 | 3 | TestLoopBranch.java:72:3:72:9 | case ... |
 | TestLoopBranch.java:71:8:71:8 | 3 | TestLoopBranch.java:73:4:73:13 | <Expr>; |
 | TestLoopBranch.java:72:3:72:9 | case ... | TestLoopBranch.java:72:8:72:8 | 4 |
-| TestLoopBranch.java:72:3:72:9 | case ... | TestLoopBranch.java:76:3:76:9 | case ... |
 | TestLoopBranch.java:72:8:72:8 | 4 | TestLoopBranch.java:73:4:73:13 | <Expr>; |
+| TestLoopBranch.java:72:8:72:8 | 4 | TestLoopBranch.java:76:3:76:9 | case ... |
 | TestLoopBranch.java:73:4:73:4 | x | TestLoopBranch.java:73:8:73:8 | x |
 | TestLoopBranch.java:73:4:73:12 | ...=... | TestLoopBranch.java:74:4:74:13 | <Expr>; |
 | TestLoopBranch.java:73:4:73:13 | <Expr>; | TestLoopBranch.java:73:4:73:4 | x |
@@ -198,11 +198,11 @@
 | TestLoopBranch.java:74:12:74:12 | 4 | TestLoopBranch.java:74:8:74:12 | ... + ... |
 | TestLoopBranch.java:75:4:75:9 | break | TestLoopBranch.java:86:3:86:11 | switch (...) |
 | TestLoopBranch.java:76:3:76:9 | case ... | TestLoopBranch.java:76:8:76:8 | 5 |
-| TestLoopBranch.java:76:3:76:9 | case ... | TestLoopBranch.java:77:3:77:9 | case ... |
+| TestLoopBranch.java:76:8:76:8 | 5 | TestLoopBranch.java:77:3:77:9 | case ... |
 | TestLoopBranch.java:76:8:76:8 | 5 | TestLoopBranch.java:78:4:78:13 | <Expr>; |
 | TestLoopBranch.java:77:3:77:9 | case ... | TestLoopBranch.java:77:8:77:8 | 6 |
-| TestLoopBranch.java:77:3:77:9 | case ... | TestLoopBranch.java:80:3:80:10 | default |
 | TestLoopBranch.java:77:8:77:8 | 6 | TestLoopBranch.java:78:4:78:13 | <Expr>; |
+| TestLoopBranch.java:77:8:77:8 | 6 | TestLoopBranch.java:80:3:80:10 | default |
 | TestLoopBranch.java:78:4:78:4 | x | TestLoopBranch.java:78:8:78:8 | x |
 | TestLoopBranch.java:78:4:78:12 | ...=... | TestLoopBranch.java:79:4:79:13 | <Expr>; |
 | TestLoopBranch.java:78:4:78:13 | <Expr>; | TestLoopBranch.java:78:4:78:4 | x |
@@ -227,16 +227,16 @@
 | TestLoopBranch.java:86:3:86:11 | switch (...) | TestLoopBranch.java:86:10:86:10 | x |
 | TestLoopBranch.java:86:10:86:10 | x | TestLoopBranch.java:88:3:88:9 | case ... |
 | TestLoopBranch.java:88:3:88:9 | case ... | TestLoopBranch.java:88:8:88:8 | 1 |
-| TestLoopBranch.java:88:3:88:9 | case ... | TestLoopBranch.java:91:3:91:9 | case ... |
 | TestLoopBranch.java:88:8:88:8 | 1 | TestLoopBranch.java:89:4:89:9 | <Expr>; |
+| TestLoopBranch.java:88:8:88:8 | 1 | TestLoopBranch.java:91:3:91:9 | case ... |
 | TestLoopBranch.java:89:4:89:4 | x | TestLoopBranch.java:89:8:89:8 | 1 |
 | TestLoopBranch.java:89:4:89:8 | ...=... | TestLoopBranch.java:90:4:90:9 | break |
 | TestLoopBranch.java:89:4:89:9 | <Expr>; | TestLoopBranch.java:89:4:89:4 | x |
 | TestLoopBranch.java:89:8:89:8 | 1 | TestLoopBranch.java:89:4:89:8 | ...=... |
 | TestLoopBranch.java:90:4:90:9 | break | TestLoopBranch.java:96:3:102:4 | var ...; |
 | TestLoopBranch.java:91:3:91:9 | case ... | TestLoopBranch.java:91:8:91:8 | 2 |
-| TestLoopBranch.java:91:3:91:9 | case ... | TestLoopBranch.java:96:3:102:4 | var ...; |
 | TestLoopBranch.java:91:8:91:8 | 2 | TestLoopBranch.java:92:4:92:9 | <Expr>; |
+| TestLoopBranch.java:91:8:91:8 | 2 | TestLoopBranch.java:96:3:102:4 | var ...; |
 | TestLoopBranch.java:92:4:92:4 | x | TestLoopBranch.java:92:8:92:8 | 2 |
 | TestLoopBranch.java:92:4:92:8 | ...=... | TestLoopBranch.java:93:4:93:9 | break |
 | TestLoopBranch.java:92:4:92:9 | <Expr>; | TestLoopBranch.java:92:4:92:4 | x |

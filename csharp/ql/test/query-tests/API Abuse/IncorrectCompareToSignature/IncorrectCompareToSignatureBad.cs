@@ -2,5 +2,5 @@ using System;
 
 class Bad
 {
-    public int CompareTo(Bad b) => 0;
+    public int CompareTo(Bad b) => 0; // $ Alert
 }

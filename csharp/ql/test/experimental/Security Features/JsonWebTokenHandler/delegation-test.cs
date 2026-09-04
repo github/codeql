@@ -98,8 +98,8 @@ namespace JsonWebTokenHandlerTest
                 SaveSigninToken = true
             };
 
-            tokenValidationParamsBaseline.LifetimeValidator = (notBefore, expires, securityToken, validationParameters) => ValidateLifetimeAlwaysTrue(securityToken, validationParameters); // BUG delegated-security-validations-always-return-true
-            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => true; // BUG delegated-security-validations-always-return-true
+            tokenValidationParamsBaseline.LifetimeValidator = (notBefore, expires, securityToken, validationParameters) => ValidateLifetimeAlwaysTrue(securityToken, validationParameters); // $ Alert[cs/json-webtoken-handler/delegated-security-validations-always-return-true]
+            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => true; // $ Alert[cs/json-webtoken-handler/delegated-security-validations-always-return-true]
             tokenValidationParamsBaseline.TokenReplayValidator = (DateTime? expirationTime, string securityToken, TokenValidationParameters validationParameters) =>    // GOOD
                 {
                     if (securityToken is null)
@@ -111,12 +111,12 @@ namespace JsonWebTokenHandlerTest
 
             tokenValidationParamsBaseline.LifetimeValidator = (notBefore, expires, securityToken, validationParameters) => ValidateLifetime02(securityToken, validationParameters); // GOOD
             tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => {return securityToken is null?false:true; }; // GOOD
-            
-            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => { return true; }; // BUG 
-            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => !false ; // BUG
-            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => { return securityToken is null?true:true; }; // BUG
-            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => { return ValidateLifetimeAlwaysTrue(securityToken, validationParameters);}; //BUG
-            tokenValidationParamsBaseline.AudienceValidator = (audiences, securityToken, validationParameters) => ValidateLifetimeAlwaysTrue(securityToken, validationParameters); //BUG
+
+            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => { return true; }; // $ Alert[cs/json-webtoken-handler/delegated-security-validations-always-return-true] // BUG
+            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => !false ; // $ Alert[cs/json-webtoken-handler/delegated-security-validations-always-return-true] // BUG
+            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => { return securityToken is null?true:true; }; // $ Alert[cs/json-webtoken-handler/delegated-security-validations-always-return-true] // BUG
+            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => { return ValidateLifetimeAlwaysTrue(securityToken, validationParameters);}; // $ Alert[cs/json-webtoken-handler/delegated-security-validations-always-return-true] //BUG
+            tokenValidationParamsBaseline.AudienceValidator = (audiences, securityToken, validationParameters) => ValidateLifetimeAlwaysTrue(securityToken, validationParameters); // $ Alert[cs/json-webtoken-handler/delegated-security-validations-always-return-true] //BUG
 
         }
 

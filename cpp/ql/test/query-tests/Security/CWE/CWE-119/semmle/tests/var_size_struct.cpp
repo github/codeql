@@ -51,8 +51,8 @@ void testVarString(int n) {
     s1->str[1] = '?'; // GOOD
     s2->str[1] = '?'; // GOOD
     s3->str[1] = '?'; // GOOD
-    s4->str[1] = '?'; // BAD [NOT DETECTED]
-    s5->str[1] = '?'; // BAD [NOT DETECTED]
+    s4->str[1] = '?'; // $ MISSING: Alert // BAD [NOT DETECTED]
+    s5->str[1] = '?'; // $ MISSING: Alert // BAD [NOT DETECTED]
   }
 }
 
@@ -68,9 +68,9 @@ void testVarStruct1() {
 
   vs1->amount = 1024;
   memset(vs1->data, 0, 1024); // GOOD
-  memset(vs1->data, 0, 1025); // BAD: buffer overflow
+  memset(vs1->data, 0, 1025); // $ Alert[cpp/overflow-buffer] // BAD: buffer overflow
   strncpy(vs1->data, "Hello, world!", 1024); // GOOD
-  strncpy(vs1->data, "Hello, world!", 1025); // BAD
+  strncpy(vs1->data, "Hello, world!", 1025); // $ Alert[cpp/badly-bounded-write] Alert[cpp/overflow-buffer] // BAD
 }
 
 struct varStruct2 {
@@ -84,7 +84,7 @@ void testVarStruct2() {
 
   vs2->size = 16;
   vs2->elements[15] = 0; // GOOD
-  vs2->elements[16] = 0; // BAD: buffer overflow
+  vs2->elements[16] = 0; // $ Alert[cpp/overflow-buffer] // BAD: buffer overflow
 }
 
 struct notVarStruct1 {
@@ -96,11 +96,11 @@ void testNotVarStruct1() {
   notVarStruct1 *nvs1 = (notVarStruct1 *)malloc(sizeof(notVarStruct1) * 2);
 
   memset(nvs1->str, 0, 128); // GOOD
-  memset(nvs1->str, 0, 129); // DUBIOUS: buffer overflow (overflows nvs1->str but not nvs1 overall)
+  memset(nvs1->str, 0, 129); // $ Alert[cpp/overflow-buffer] // DUBIOUS: buffer overflow (overflows nvs1->str but not nvs1 overall)
   memset(nvs1[1].str, 0, 128); // GOOD
   memset(nvs1[1].str, 0, 129); // BAD: buffer overflow [NOT DETECTED]
   strncpy(nvs1->str, "Hello, world!", 128); // GOOD
-  strncpy(nvs1->str, "Hello, world!", 129); // BAD
+  strncpy(nvs1->str, "Hello, world!", 129); // $ Alert[cpp/badly-bounded-write] Alert[cpp/overflow-buffer] Alert[cpp/static-buffer-overflow] // BAD
 }
 
 struct notVarStruct2 {

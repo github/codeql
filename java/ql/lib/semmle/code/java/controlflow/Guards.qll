@@ -168,14 +168,20 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
       )
     }
 
+    private ControlFlowNode getPatternNode() {
+      result = this.(J::PatternCase).getUniquePattern().getControlFlowNode()
+      or
+      result = unique(Expr e | this.(J::ConstCase).getValue(_) = e).getControlFlowNode()
+    }
+
     predicate matchEdge(BasicBlock bb1, BasicBlock bb2) {
       bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = true)) = bb2 and
-      bb1.getLastNode() = super.getControlFlowNode()
+      bb1.getLastNode() = this.getPatternNode()
     }
 
     predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2) {
       bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = false)) = bb2 and
-      bb1.getLastNode() = super.getControlFlowNode()
+      bb1.getLastNode() = this.getPatternNode()
     }
   }
 

@@ -12,12 +12,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         bool AddPackage(string folder, string package);
         IList<string> GetListedRuntimes();
         IList<string> GetListedSdks();
-        bool Exec(string execArgs);
+        bool Exec(List<string> execArgs);
         IList<string> GetNugetFeeds(string nugetConfig);
         IList<string> GetNugetFeedsFromFolder(string folderPath);
     }
 
-    public record class RestoreSettings(string File, string PackageDirectory, bool ForceDotnetRefAssemblyFetching, string? NugetSources = null, string? PathToNugetConfig = null, bool ForceReevaluation = false, bool TargetWindows = false);
+    public record class RestoreSettings(string File, string PackageDirectory, bool ForceDotnetRefAssemblyFetching, List<string> NugetSources, bool ForceReevaluation = false, bool TargetWindows = false);
 
     public partial record class RestoreResult(bool Success, IList<string> Output)
     {

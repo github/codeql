@@ -35,7 +35,8 @@ final class CallableScope extends CfgScopeImpl, Callable {
   CallableScope() {
     // A function without a body corresponds to a trait method signature and
     // should not have a CFG scope.
-    this.hasBody()
+    this.hasBody() and
+    this.fromSource() // exclude stubs in tests defined using `additionalExternalFile`
   }
 
   override predicate scopeFirst(AstNode first) {
@@ -44,4 +45,15 @@ final class CallableScope extends CfgScopeImpl, Callable {
 
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */
   override predicate scopeLast(AstNode last, Completion c) { last(this.getBody(), last, c) }
+}
+
+/**
+ * A special scope used to represent the context in which `const`s and
+ * `static`s are initialized. We do not actually compute a CFG for such
+ * scopes.
+ */
+final class SourceFileScope extends CfgScopeImpl, SourceFile {
+  override predicate scopeFirst(AstNode first) { none() }
+
+  override predicate scopeLast(AstNode last, Completion c) { none() }
 }

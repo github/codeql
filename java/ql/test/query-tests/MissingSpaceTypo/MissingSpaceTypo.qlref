@@ -1,1 +1,2 @@
-Likely Bugs/Likely Typos/MissingSpaceTypo.ql
+query: Likely Bugs/Likely Typos/MissingSpaceTypo.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

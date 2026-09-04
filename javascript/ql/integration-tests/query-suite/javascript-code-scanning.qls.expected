@@ -41,6 +41,7 @@ ql/javascript/ql/src/Security/CWE-116/IncompleteMultiCharacterSanitization.ql
 ql/javascript/ql/src/Security/CWE-116/IncompleteSanitization.ql
 ql/javascript/ql/src/Security/CWE-116/UnsafeHtmlExpansion.ql
 ql/javascript/ql/src/Security/CWE-134/TaintedFormatString.ql
+ql/javascript/ql/src/Security/CWE-1427/SystemPromptInjection.ql
 ql/javascript/ql/src/Security/CWE-178/CaseSensitiveMiddlewarePath.ql
 ql/javascript/ql/src/Security/CWE-200/PrivateFileExposure.ql
 ql/javascript/ql/src/Security/CWE-201/PostMessageStar.ql

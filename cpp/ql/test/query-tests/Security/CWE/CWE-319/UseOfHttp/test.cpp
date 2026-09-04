@@ -12,7 +12,7 @@ void openUrl(const char *url)
 {
 	// ...
 
-	host myHost = gethostbyname(url);
+	host myHost = gethostbyname(url); // $ Sink
 
 	// ...
 }
@@ -21,19 +21,19 @@ void doNothing(char *url)
 {
 }
 
-const char *url_g = "http://example.com"; // BAD
+const char *url_g = "http://example.com"; // $ Alert // BAD
 
 void test()
 {
-	openUrl("http://example.com"); // BAD
+	openUrl("http://example.com"); // $ Alert // BAD
 	openUrl("https://example.com"); // GOOD (https)
 	openUrl("http://localhost/example"); // GOOD (localhost)
 	openUrl("https://localhost/example"); // GOOD (https, localhost)
 	doNothing("http://example.com"); // GOOD (URL not used)
 
 	{
-		const char *url_l = "http://example.com"; // BAD
-		const char *urls[] = { "http://example.com" }; // BAD
+		const char *url_l = "http://example.com"; // $ Alert // BAD
+		const char *urls[] = { "http://example.com" }; // $ Alert // BAD
 
 		openUrl(url_g);
 		openUrl(url_l);
@@ -43,7 +43,7 @@ void test()
 	{
 		char buffer[1024];
 
-		strcpy(buffer, "http://"); // BAD
+		strcpy(buffer, "http://"); // $ Alert // BAD
 		strcat(buffer, "example.com");
 
 		openUrl(buffer);
@@ -107,7 +107,7 @@ void test4(char *url)
 
 void test5()
 {
-	char *url_string = "http://example.com"; // BAD
+	char *url_string = "http://example.com"; // $ Alert // BAD
 	char *ptr;
 
 	ptr = strstr(url_string, "https://"); // GOOD (https)

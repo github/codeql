@@ -11,6 +11,7 @@ import codeql.rust.elements.AssignmentOperation
 import codeql.rust.elements.BitwiseOperation
 import codeql.rust.elements.ComparisonOperation
 import codeql.rust.elements.ConstAccess
+import codeql.rust.elements.StaticAccess
 import codeql.rust.elements.DerefExpr
 import codeql.rust.elements.LiteralExprExt
 import codeql.rust.elements.LogicalOperation

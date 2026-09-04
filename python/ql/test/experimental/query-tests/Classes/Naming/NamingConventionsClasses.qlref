@@ -1,1 +1,2 @@
-experimental/Classes/NamingConventionsClasses.ql
+query: experimental/Classes/NamingConventionsClasses.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

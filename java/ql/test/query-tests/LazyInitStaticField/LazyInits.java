@@ -95,7 +95,7 @@ public class LazyInits {
 	private static LazyInits bad1;
 	public static LazyInits getBad1() {
 		if (bad1 == null)
-			bad1 = new LazyInits();
+			bad1 = new LazyInits(); // $ Alert
 		return bad1;
 	}
 	
@@ -105,7 +105,7 @@ public class LazyInits {
 		if (bad2 == null) {
 			synchronized(bad2) {
 				if (bad2 == null)
-					bad2 = new LazyInits();
+					bad2 = new LazyInits(); // $ Alert
 			}
 		}
 		return bad2;
@@ -117,7 +117,7 @@ public class LazyInits {
 		if (bad3 == null) {
 			synchronized(Object.class) {
 				if (bad3 == null)
-					bad3 = new LazyInits();
+					bad3 = new LazyInits(); // $ Alert
 			}
 		}
 		return bad3;
@@ -129,7 +129,7 @@ public class LazyInits {
 		if (bad4 == null) {
 			synchronized(LazyInits.class) {
 				if (bad4 == null)
-					bad4 = new LazyInits();
+					bad4 = new LazyInits(); // $ Alert
 			}
 		}
 		return bad4;
@@ -141,7 +141,7 @@ public class LazyInits {
 		if (bad5 == null) {
 			synchronized(lock) {
 				if (bad5 == null)
-					bad5 = new LazyInits();
+					bad5 = new LazyInits(); // $ Alert
 			}
 		}
 		return bad5;
@@ -153,7 +153,7 @@ public class LazyInits {
 		if (bad6 == null) {
 			synchronized(badLock) {
 				if (bad6 == null)
-					bad6 = new LazyInits();
+					bad6 = new LazyInits(); // $ Alert
 			}
 		}
 		return bad6;

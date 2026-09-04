@@ -7,7 +7,7 @@ class NotifyWithoutSynch {
 	}
 
 	public void fail_unqualified_wait() throws InterruptedException {
-		wait();
+		wait(); // $ Alert
 	}
 
 	public synchronized void pass_unqualified_notify() throws InterruptedException {
@@ -15,7 +15,7 @@ class NotifyWithoutSynch {
 	}
 
 	public void fail_unqualified_notify() throws InterruptedException {
-		notify();
+		notify(); // $ Alert
 	}
 
 	public synchronized void pass_unqualified_notifyAll() throws InterruptedException {
@@ -23,7 +23,7 @@ class NotifyWithoutSynch {
 	}
 
 	public void fail_unqualified_notifyAll() throws InterruptedException {
-		notifyAll();
+		notifyAll(); // $ Alert
 	}
 
 	public void pass_unqualified_wait2() throws InterruptedException {
@@ -49,32 +49,32 @@ class NotifyWithoutSynch {
 	}
 
 	public void fail_qualified_wait01() throws InterruptedException {
-		this.wait();
+		this.wait(); // $ Alert
 	}
 
 	public void fail_qualified_wait02() throws InterruptedException {
-		this.wait();
+		this.wait(); // $ Alert
 	}
 
 	public void fail_qualified_wait03() throws InterruptedException {
 		synchronized(obj1) {
-			this.wait();
+			this.wait(); // $ Alert
 		}
 	}
 
 	public void fail_qualified_wait04() throws InterruptedException {
 		synchronized(this) {
-			obj1.wait();
+			obj1.wait(); // $ Alert
 		}
 	}
 
 	public synchronized void fail_qualified_wait05() throws InterruptedException {
-		obj1.wait();
+		obj1.wait(); // $ Alert
 	}
 
 	public synchronized void fail_qualified_wait06() throws InterruptedException {
 		synchronized(obj1) {
-			obj2.wait();
+			obj2.wait(); // $ Alert
 		}
 	}
 
@@ -111,7 +111,7 @@ class NotifyWithoutSynch {
 	}
 
 	private void fail_indirect_callee14() throws InterruptedException {
-		wait();
+		wait(); // $ Alert
 	}
 
 	public void fail_indirect_caller15() throws InterruptedException {

@@ -31,11 +31,11 @@ void tests2(int case_num)
 		case 1:
 			buffer = (char *)malloc(strlen(str1) + 1); // BAD
 			strcpy(buffer, str1);
-			strcat(buffer, str2);
+			strcat(buffer, str2); // $ Alert[cpp/overflow-calculated]
 			break;
 
 		case 2:
-			buffer = (char *)malloc(strlen(str1) + strlen(str2)); // BAD [NOT DETECTED]
+			buffer = (char *)malloc(strlen(str1) + strlen(str2)); // $ MISSING: Alert // BAD [NOT DETECTED]
 			strcpy(buffer, str1);
 			strcat(buffer, str2);
 			break;
@@ -49,11 +49,11 @@ void tests2(int case_num)
 		case 4:
 			buffer = (char *)malloc((strlen(str1) + 1) * sizeof(char)); // BAD
 			strcpy(buffer, str1);
-			strcat(buffer, str2);
+			strcat(buffer, str2); // $ Alert[cpp/overflow-calculated]
 			break;
 
 		case 5:
-			buffer = (char *)malloc((strlen(str1) + strlen(str2)) * sizeof(char)); // BAD [NOT DETECTED]
+			buffer = (char *)malloc((strlen(str1) + strlen(str2)) * sizeof(char)); // $ MISSING: Alert // BAD [NOT DETECTED]
 			strcpy(buffer, str1);
 			strcat(buffer, str2);
 			break;
@@ -65,7 +65,7 @@ void tests2(int case_num)
 			break;
 
 		case 7:
-			buffer = (char *)malloc((strlen(str1) + strlen(str2) + 1) * sizeof(char)); // BAD [NOT DETECTED]
+			buffer = (char *)malloc((strlen(str1) + strlen(str2) + 1) * sizeof(char)); // $ MISSING: Alert // BAD [NOT DETECTED]
 			strcpy(buffer, str1);
 			strcat(buffer, str2);
 			strcat(buffer, str3);
@@ -79,24 +79,24 @@ void tests2(int case_num)
 			break;
 
 		case 101:
-			wbuffer = (wchar_t *)malloc((wcslen(wstr1) + 1) * sizeof(wchar_t)); // BAD [NOT DETECTED]
+			wbuffer = (wchar_t *)malloc((wcslen(wstr1) + 1) * sizeof(wchar_t)); // $ MISSING: Alert // BAD [NOT DETECTED]
 			wcscpy(wbuffer, wstr1);
 			wcscat(wbuffer, wstr2);
 			break;
-		
+
 		case 102:
-			wbuffer = (wchar_t *)malloc((wcslen(wstr1) + wcslen(wstr2)) * sizeof(wchar_t)); // BAD [NOT DETECTED]
+			wbuffer = (wchar_t *)malloc((wcslen(wstr1) + wcslen(wstr2)) * sizeof(wchar_t)); // $ MISSING: Alert // BAD [NOT DETECTED]
 			wcscpy(wbuffer, wstr1);
 			wcscat(wbuffer, wstr2);
 			break;
-			
+
 		case 103:
 			wbuffer = (wchar_t *)malloc((wcslen(wstr1) + wcslen(wstr2) + 1) * sizeof(wchar_t)); // GOOD
 			wcscpy(wbuffer, wstr1);
 			wcscat(wbuffer, wstr2);
 			break;
 	}
-	
+
 	if (buffer != 0)
 	{
 		free(buffer);

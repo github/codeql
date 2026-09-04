@@ -14,13 +14,13 @@ public class UnreadLocals
 
   public UnreadLocals ()
   {
-    int alpha = 2;
+    int alpha = 2; // $ Alert[java/local-variable-is-never-read]
     int _beta = 4;
     this.alpha = 3;
     beta = _beta;
 
     Something something1 = new Something();
-    Something something2 = new Something();
+    Something something2 = new Something(); // $ Alert[java/local-variable-is-never-read]
     
     something = something1;
     

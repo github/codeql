@@ -14,13 +14,13 @@ namespace ConsoleApplication2
             int a = 2;
 
             // BAD
-            if (a % 2 == 1)
+            if (a % 2 == 1) // $ Alert
                 Console.Out.WriteLine("a is odd");
-            if (a % 2 != 1)
+            if (a % 2 != 1) // $ Alert
                 Console.Out.WriteLine("a is even");
-            if (a % 2 > 0)
+            if (a % 2 > 0) // $ Alert
                 Console.Out.WriteLine("a is odd");
-            if ((a % 2) > 0)
+            if ((a % 2) > 0) // $ Alert
                 Console.Out.WriteLine("a is odd");
 
             // GOOD

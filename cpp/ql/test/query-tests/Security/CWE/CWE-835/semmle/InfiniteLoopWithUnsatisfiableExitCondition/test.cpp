@@ -5,7 +5,7 @@ void test00(int n) {
   }
   while (1) {
     // BAD: condition is never true, so loop will not terminate.
-    if (i == n) {
+    if (i == n) { // $ Alert
       break;
     }
   }
@@ -18,7 +18,7 @@ void test01(int n) {
   }
   for (;;) {
     // BAD: condition is never true, so loop will not terminate.
-    if (i == n) {
+    if (i == n) { // $ Alert
       break;
     }
   }
@@ -59,7 +59,7 @@ int test05() {
   int result = 0;
 
   // BAD: loop condition is always true.
-  for (i = 0; i >= 0; i = (i + 1) % 256)
+  for (i = 0; i >= 0; i = (i + 1) % 256) // $ Alert
   {
     result++;
   }
@@ -108,7 +108,7 @@ void test08(int n) {
 
   for (i = 0;;) {
     // BAD: condition is never true, so loop will not terminate.
-    if (i == n) {
+    if (i == n) { // $ Alert
       break;
     }
 
@@ -124,7 +124,7 @@ void test09(char *str) {
   {
     c = *(str++);
 
-    if (c < 'a' && c > 'z') // BAD: this condition is always false.
+    if (c < 'a' && c > 'z') // $ Alert // BAD: this condition is always false.
       return;
   }
 }

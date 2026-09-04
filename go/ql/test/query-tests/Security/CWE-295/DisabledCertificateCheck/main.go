@@ -6,7 +6,7 @@ import (
 )
 
 func bad1(cfg *tls.Config) {
-	cfg.InsecureSkipVerify = true // NOT OK
+	cfg.InsecureSkipVerify = true // $ Alert // NOT OK
 }
 
 func good1(cfg *tls.Config) {
@@ -54,12 +54,12 @@ func makeInsecureConfig() *tls.Config {
 }
 
 func makeConfig() *tls.Config {
-	return &tls.Config{InsecureSkipVerify: true} // NOT OK
+	return &tls.Config{InsecureSkipVerify: true} // $ Alert // NOT OK
 }
 
 func bad3() *http.Transport {
 	transport := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // NOT OK
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // $ Alert // NOT OK
 	}
 	return transport
 }

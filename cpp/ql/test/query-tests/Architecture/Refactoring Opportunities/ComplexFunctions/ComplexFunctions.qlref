@@ -1,1 +1,2 @@
-Architecture/Refactoring Opportunities/ComplexFunctions.ql
+query: Architecture/Refactoring Opportunities/ComplexFunctions.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

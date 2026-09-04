@@ -62,24 +62,42 @@ module HardcodedCryptographicValue {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * A literal, considered as a flow source.
+   * Holds if `e` is a literal or an expression that contains a constant. For example:
+   * ```
+   * ["hello", "world", s]
+   * ```
    */
-  private class LiteralSource extends Source {
-    LiteralSource() { this.asExpr() instanceof LiteralExpr }
+  private predicate hasConstant(Expr e) {
+    e instanceof LiteralExpr // e.g. `0`
+    or
+    exists(Expr elem | elem = e.(ArrayListExpr).getExpr(_) | hasConstant(elem)) // e.g. `[0, 0, 0, 0]`
+    or
+    hasConstant(e.(ArrayRepeatExpr).getRepeatOperand()) // e.g. `[0; 10]`
+    or
+    // a match expression with one or more constant arms; taint would reach here
+    // anyway, but we make it a source to avoid reporting many similar results
+    // on each match arm.
+    hasConstant(e.(MatchExpr).getMatchArmList().getAnArm().getExpr())
+    or
+    // e.g. `const MY_CONST: u64 = ...`
+    // the constant initializer / body is the preferred source location for flow paths, when available.
+    e = any(Const c).getBody()
+    or
+    // e.g. `u64::MAX`
+    // when the constant initializer is not available as a source location (case above), use the access instead.
+    e instanceof ConstAccess and
+    not exists(e.(ConstAccess).getConst().getBody())
+    or
+    // e.g. `1 << 4`
+    hasConstant(e.(BinaryExpr).getLhs()) and
+    hasConstant(e.(BinaryExpr).getRhs())
   }
 
   /**
-   * An array initialized from a list of literals, considered as a single flow source. For example:
-   * ```
-   * [0, 0, 0, 0]
-   * [0; 10]
-   * ```
+   * A constant, considered as a flow source.
    */
-  private class ArrayListSource extends Source {
-    ArrayListSource() {
-      this.asExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr or
-      this.asExpr().(ArrayRepeatExpr).getRepeatOperand() instanceof LiteralExpr
-    }
+  private class ConstantSource extends Source {
+    ConstantSource() { hasConstant(this.asExpr()) }
   }
 
   /**
@@ -108,8 +126,9 @@ module HardcodedCryptographicValue {
 
     HeuristicSinks() {
       // any argument going to a parameter whose name matches a credential name
-      exists(Call c, Function f, int argIndex, string argName |
-        c.getPositionalArgument(argIndex) = this.asExpr() and
+      exists(Call c, Function f, Expr arg, int argIndex, string argName |
+        arg = this.asExpr() and
+        c.getPositionalArgument(argIndex) = arg and
         c.getStaticTarget() = f and
         f.getParam(argIndex).getPat().(IdentPat).getName().getText() = argName and
         (
@@ -124,7 +143,9 @@ module HardcodedCryptographicValue {
           // note: matching "key" results in too many false positives
         ) and
         // don't duplicate modeled sinks
-        not exists(ModelsAsDataSinks s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = c)
+        not exists(ModelsAsDataSinks s |
+          s.(Node::FlowSummaryNode).getSummaryNode().getSourceSinkReportingElement() = arg
+        )
       )
     }
 
@@ -153,6 +174,26 @@ module HardcodedCryptographicValue {
         call.getStaticTarget().getCanonicalPath() = ["getrandom::fill", "getrandom::getrandom"] and
         this.asExpr().getParentNode*() = call.getPositionalArgument(0)
       )
+    }
+  }
+
+  /**
+   * An arithmetic or bitwise operation that acts as a barrier.
+   *
+   * This prevents false positives where a hard-coded value is combined with
+   * non-constant data through operations like `+`, `^`, or `+=` (including string concatenation).
+   */
+  private class ArithmeticOperationBarrier extends Barrier {
+    ArithmeticOperationBarrier() {
+      // binary operations (e.g. `a + b`, `a ^ b`)
+      this.asExpr() = any(BinaryArithmeticOperation a).getAnOperand()
+      or
+      this.asExpr() = any(BinaryBitwiseOperation a).getAnOperand()
+      or
+      // compound assignments (e.g. `a += b`, `a ^= b`)
+      this.asExpr() = any(AssignArithmeticOperation a).getAnOperand()
+      or
+      this.asExpr() = any(AssignBitwiseOperation a).getAnOperand()
     }
   }
 }

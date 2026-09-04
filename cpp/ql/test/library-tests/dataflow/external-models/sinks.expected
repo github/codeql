@@ -1,5 +1,5 @@
-| asio_streams.cpp:93:29:93:39 | *recv_buffer | remote-sink |
-| asio_streams.cpp:103:29:103:39 | *send_buffer | remote-sink |
+| asio_streams.cpp:93:29:93:39 | recv_buffer | remote-sink |
+| asio_streams.cpp:103:29:103:39 | send_buffer | remote-sink |
 | test.cpp:12:10:12:10 | 0 | test-sink |
 | test.cpp:14:10:14:10 | x | test-sink |
 | test.cpp:18:10:18:10 | y | test-sink |
@@ -15,3 +15,31 @@
 | test.cpp:89:11:89:11 | y | test-sink |
 | test.cpp:116:10:116:11 | y1 | test-sink |
 | test.cpp:119:10:119:11 | y2 | test-sink |
+| test.cpp:135:10:135:10 | y | test-sink |
+| test.cpp:149:10:149:10 | z | test-sink |
+| test.cpp:158:10:158:10 | z | test-sink |
+| test.cpp:173:10:173:10 | y | test-sink |
+| test.cpp:188:10:188:10 | x | test-sink |
+| test.cpp:201:10:201:10 | x | test-sink |
+| test.cpp:218:11:218:11 | x | test-sink |
+| test.cpp:224:11:224:11 | c | test-sink |
+| test.cpp:243:13:243:17 | value | test-sink |
+| test.cpp:248:18:248:22 | value | test-sink |
+| test.cpp:258:15:258:19 | value | test-sink |
+| test.cpp:265:14:265:18 | value | test-sink |
+| test.cpp:269:14:269:18 | value | test-sink |
+| test.cpp:274:15:274:19 | value | test-sink |
+| test.cpp:303:15:303:26 | call to ymlSourcePtr | test-sink |
+| test.cpp:304:10:304:24 | * ... | test-sink |
+| test.cpp:307:10:307:31 | call to callback_returning_int | test-sink |
+| test.cpp:310:10:310:33 | call to callback_returning_int_2 | test-sink |
+| test.cpp:314:15:314:17 | ptr | test-sink |
+| test.cpp:315:10:315:13 | * ... | test-sink |
+| test.cpp:325:13:325:17 | value | test-sink |
+| test.cpp:326:18:326:24 | pointer | test-sink |
+| test.cpp:327:10:327:20 | * ... | test-sink |
+| test.cpp:329:12:329:16 | value | test-sink |
+| test.cpp:330:17:330:23 | pointer | test-sink |
+| test.cpp:331:10:331:19 | * ... | test-sink |
+| test.cpp:333:15:333:20 | source | test-sink |
+| test.cpp:334:10:334:16 | * ... | test-sink |

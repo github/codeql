@@ -1,1 +1,2 @@
-Likely Bugs/Memory Management/UnsafeUseOfStrcat.ql
+query: Likely Bugs/Memory Management/UnsafeUseOfStrcat.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

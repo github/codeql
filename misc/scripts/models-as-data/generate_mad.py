@@ -67,7 +67,8 @@ class Generator:
         self.database = database or self.database
         self.folder = folder or self.folder
         self.generated_frameworks = os.path.join(
-            self.codeql_root, f"{self.language}/ql/lib/ext/generated/modelgenerator/{self.folder}"
+            self.codeql_root,
+            f"{self.language}/ql/lib/ext/generated/modelgenerator/{self.folder}",
         )
         self.workDir = tempfile.mkdtemp()
         if self.ram is None:

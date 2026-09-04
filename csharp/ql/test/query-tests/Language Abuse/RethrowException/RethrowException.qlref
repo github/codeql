@@ -1,1 +1,2 @@
-Language Abuse/RethrowException.ql
+query: Language Abuse/RethrowException.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

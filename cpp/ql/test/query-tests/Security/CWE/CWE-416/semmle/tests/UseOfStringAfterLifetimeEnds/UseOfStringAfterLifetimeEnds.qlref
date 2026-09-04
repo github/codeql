@@ -1,2 +1,2 @@
-
-Security/CWE/CWE-416/UseOfStringAfterLifetimeEnds.ql
+query: Security/CWE/CWE-416/UseOfStringAfterLifetimeEnds.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

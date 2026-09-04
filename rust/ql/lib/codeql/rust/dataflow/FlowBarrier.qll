@@ -44,9 +44,9 @@ module FlowBarrier {
     Range() { any() }
 
     override predicate isBarrier(
-      string output, string kind, Impl::Public::Provenance provenance, string model
+      string output, string kind, Impl::Public::Provenance provenance, boolean isExact, string model
     ) {
-      this.isBarrier(output, kind) and provenance = "manual" and model = ""
+      this.isBarrier(output, kind) and provenance = "manual" and isExact = true and model = ""
     }
 
     /**
@@ -67,9 +67,13 @@ module FlowBarrierGuard {
     Range() { any() }
 
     override predicate isBarrierGuard(
-      string input, string branch, string kind, Impl::Public::Provenance provenance, string model
+      string input, string branch, string kind, Impl::Public::Provenance provenance,
+      boolean isExact, string model
     ) {
-      this.isBarrierGuard(input, branch, kind) and provenance = "manual" and model = ""
+      this.isBarrierGuard(input, branch, kind) and
+      provenance = "manual" and
+      isExact = true and
+      model = ""
     }
 
     /**

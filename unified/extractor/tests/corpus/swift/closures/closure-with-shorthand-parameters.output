@@ -1,0 +1,63 @@
+let f = { $0 + $1 }
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      statements:
+                        codeBlockItem
+                          item:
+                            infixOperatorExpr
+                              operator:
+                                binaryOperatorExpr
+                                  operator: binaryOperator "+"
+                              leftOperand:
+                                declReferenceExpr
+                                  baseName: dollarIdentifier "$0"
+                              rightOperand:
+                                declReferenceExpr
+                                  baseName: dollarIdentifier "$1"
+              pattern:
+                identifierPattern
+                  identifier: identifier "f"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    binary_expr
+                      left:
+                        name_expr
+                          identifier: identifier "$0"
+                      operator: infix_operator "+"
+                      right:
+                        name_expr
+                          identifier: identifier "$1"

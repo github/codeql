@@ -93,25 +93,16 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   }
 
   override CfgScope getCfgScope() {
-    result = this.getSummaryNode().getSourceElement().getEnclosingCfgScope()
-    or
-    result = this.getSummaryNode().getSinkElement().getEnclosingCfgScope()
+    result = this.getSummaryNode().getSourceSinkReportingElement().getEnclosingCfgScope()
   }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asCfgScope() = this.getCfgScope()
-    or
-    result.asSummarizedCallable() = this.getSummarizedCallable()
+    result = this.getSummaryNode().getEnclosingCallable()
   }
 
   override Location getLocation() {
     Stages::DataFlowStage::ref() and
-    exists(this.getSummarizedCallable()) and
-    result instanceof EmptyLocation
-    or
-    result = this.getSourceElement().getLocation()
-    or
-    result = this.getSinkElement().getLocation()
+    result = this.getSummaryNode().getLocation()
   }
 
   override string toString() {
@@ -704,6 +695,17 @@ final class CastNode extends ExprNode {
   CastNode() { none() }
 }
 
+/**
+ * A node in the data flow graph that corresponds to a `static`.
+ */
+class StaticNode extends AstNodeNode, TStaticNode {
+  override Static n;
+
+  StaticNode() { this = TStaticNode(n) }
+
+  Static getStatic() { result = n }
+}
+
 cached
 newtype TNode =
   TExprNode(Expr e) { e.hasEnclosingCfgScope() and Stages::DataFlowStage::ref() } or
@@ -750,9 +752,8 @@ newtype TNode =
   TIndexOutNode(IndexExpr ie, Boolean isPost) or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) {
-    forall(AstNode n | n = sn.getSinkElement() or n = sn.getSourceElement() |
-      n.hasEnclosingCfgScope()
-    )
+    forall(AstNode n | n = sn.getSourceSinkReportingElement() | n.hasEnclosingCfgScope())
   } or
   TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c) } or
-  TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
+  TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+  TStaticNode(Static s)

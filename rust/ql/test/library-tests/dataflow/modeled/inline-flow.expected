@@ -1,15 +1,15 @@
 models
 | 1 | Summary: <& as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue; value |
-| 2 | Summary: <_ as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 3 | Summary: <_ as core::cmp::Ord>::clamp; Argument[self,0,1]; ReturnValue; value |
-| 4 | Summary: <_ as core::cmp::Ord>::max; Argument[self,0]; ReturnValue; value |
-| 5 | Summary: <_ as core::cmp::Ord>::min; Argument[self,0]; ReturnValue; value |
-| 6 | Summary: <_ as core::ops::arith::Add>::add; Argument[self,0]; ReturnValue; taint |
-| 7 | Summary: <alloc::boxed::Box>::into_pin; Argument[0]; ReturnValue.Field[core::pin::Pin::pointer]; value |
-| 8 | Summary: <alloc::boxed::Box>::new; Argument[0]; ReturnValue.Field[alloc::boxed::Box(0)]; value |
-| 9 | Summary: <alloc::boxed::Box>::pin; Argument[0]; ReturnValue.Field[core::pin::Pin::pointer].Field[alloc::boxed::Box(0)]; value |
-| 10 | Summary: <core::i64 as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 11 | Summary: <core::i64 as core::clone::Clone>::clone; Argument[self]; ReturnValue; value |
+| 2 | Summary: <alloc::boxed::Box>::into_pin; Argument[0]; ReturnValue.Field[core::pin::Pin::pointer]; value |
+| 3 | Summary: <alloc::boxed::Box>::new; Argument[0]; ReturnValue.Field[alloc::boxed::Box(0)]; value |
+| 4 | Summary: <alloc::boxed::Box>::pin; Argument[0]; ReturnValue.Field[core::pin::Pin::pointer].Field[alloc::boxed::Box(0)]; value |
+| 5 | Summary: <core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 6 | Summary: <core::cmp::Ord>::clamp; Argument[self,0,1]; ReturnValue; value |
+| 7 | Summary: <core::cmp::Ord>::max; Argument[self,0]; ReturnValue; value |
+| 8 | Summary: <core::cmp::Ord>::min; Argument[self,0]; ReturnValue; value |
+| 9 | Summary: <core::i64 as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 10 | Summary: <core::i64 as core::clone::Clone>::clone; Argument[self]; ReturnValue; value |
+| 11 | Summary: <core::ops::arith::Add>::add; Argument[self,0]; ReturnValue; taint |
 | 12 | Summary: <core::option::Option>::map_or; Argument[1].ReturnValue; ReturnValue; value |
 | 13 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 14 | Summary: <core::option::Option>::zip; Argument[0].Field[core::option::Option::Some(0)]; ReturnValue.Field[core::option::Option::Some(0)].Field[1]; value |
@@ -30,7 +30,7 @@ edges
 | main.rs:12:18:12:27 | source(...) | main.rs:12:13:12:28 | Some(...) [Some] | provenance |  |
 | main.rs:13:10:13:10 | a [Some] | main.rs:13:10:13:19 | a.unwrap() | provenance | MaD:13 |
 | main.rs:14:9:14:9 | b [Some] | main.rs:15:10:15:10 | b [Some] | provenance |  |
-| main.rs:14:13:14:13 | a [Some] | main.rs:14:13:14:21 | a.clone() [Some] | provenance | MaD:2 |
+| main.rs:14:13:14:13 | a [Some] | main.rs:14:13:14:21 | a.clone() [Some] | provenance | MaD:5 |
 | main.rs:14:13:14:21 | a.clone() [Some] | main.rs:14:9:14:9 | b [Some] | provenance |  |
 | main.rs:15:10:15:10 | b [Some] | main.rs:15:10:15:19 | b.unwrap() | provenance | MaD:13 |
 | main.rs:19:9:19:9 | a [Ok] | main.rs:20:10:20:10 | a [Ok] | provenance |  |
@@ -39,7 +39,7 @@ edges
 | main.rs:19:34:19:43 | source(...) | main.rs:19:31:19:44 | Ok(...) [Ok] | provenance |  |
 | main.rs:20:10:20:10 | a [Ok] | main.rs:20:10:20:19 | a.unwrap() | provenance | MaD:22 |
 | main.rs:21:9:21:9 | b [Ok] | main.rs:22:10:22:10 | b [Ok] | provenance |  |
-| main.rs:21:13:21:13 | a [Ok] | main.rs:21:13:21:21 | a.clone() [Ok] | provenance | MaD:2 |
+| main.rs:21:13:21:13 | a [Ok] | main.rs:21:13:21:21 | a.clone() [Ok] | provenance | MaD:5 |
 | main.rs:21:13:21:21 | a.clone() [Ok] | main.rs:21:9:21:9 | b [Ok] | provenance |  |
 | main.rs:22:10:22:10 | b [Ok] | main.rs:22:10:22:19 | b.unwrap() | provenance | MaD:22 |
 | main.rs:26:9:26:9 | a | main.rs:27:10:27:10 | a | provenance |  |
@@ -47,8 +47,8 @@ edges
 | main.rs:26:13:26:22 | source(...) | main.rs:26:9:26:9 | a | provenance |  |
 | main.rs:28:9:28:9 | b | main.rs:29:10:29:10 | b | provenance |  |
 | main.rs:28:9:28:9 | b [&ref] | main.rs:29:10:29:10 | b | provenance |  |
-| main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | MaD:10 |
-| main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() [&ref] | provenance | MaD:11 |
+| main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | MaD:9 |
+| main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() [&ref] | provenance | MaD:10 |
 | main.rs:28:13:28:21 | a.clone() | main.rs:28:9:28:9 | b | provenance |  |
 | main.rs:28:13:28:21 | a.clone() [&ref] | main.rs:28:9:28:9 | b [&ref] | provenance |  |
 | main.rs:43:18:43:22 | SelfParam [&ref, Wrapper] | main.rs:44:26:44:31 | self.n | provenance |  |
@@ -81,7 +81,7 @@ edges
 | main.rs:79:13:79:13 | b | main.rs:80:14:80:14 | b | provenance |  |
 | main.rs:79:17:79:47 | a.map_or(...) | main.rs:79:13:79:13 | b | provenance |  |
 | main.rs:79:33:79:46 | ... + ... | main.rs:79:17:79:47 | a.map_or(...) | provenance | MaD:12 |
-| main.rs:79:37:79:46 | source(...) | main.rs:79:33:79:46 | ... + ... | provenance | MaD:6 |
+| main.rs:79:37:79:46 | source(...) | main.rs:79:33:79:46 | ... + ... | provenance | MaD:11 |
 | main.rs:92:29:92:29 | [post] y [&ref] | main.rs:93:33:93:33 | y [&ref] | provenance |  |
 | main.rs:92:32:92:41 | source(...) | main.rs:92:29:92:29 | [post] y [&ref] | provenance | MaD:24 |
 | main.rs:93:33:93:33 | y [&ref] | main.rs:93:18:93:34 | ...::read(...) | provenance | MaD:23 |
@@ -102,11 +102,11 @@ edges
 | main.rs:109:34:109:34 | i | main.rs:109:33:109:34 | &i [&ref] | provenance |  |
 | main.rs:110:13:110:20 | mut pin2 [Pin, Box(0)] | main.rs:116:15:116:18 | pin2 [Pin, Box(0)] | provenance |  |
 | main.rs:110:24:110:34 | ...::pin(...) [Pin, Box(0)] | main.rs:110:13:110:20 | mut pin2 [Pin, Box(0)] | provenance |  |
-| main.rs:110:33:110:33 | i | main.rs:110:24:110:34 | ...::pin(...) [Pin, Box(0)] | provenance | MaD:9 |
+| main.rs:110:33:110:33 | i | main.rs:110:24:110:34 | ...::pin(...) [Pin, Box(0)] | provenance | MaD:4 |
 | main.rs:111:13:111:20 | mut pin3 [Pin, Box(0)] | main.rs:117:15:117:18 | pin3 [Pin, Box(0)] | provenance |  |
 | main.rs:111:24:111:49 | ...::into_pin(...) [Pin, Box(0)] | main.rs:111:13:111:20 | mut pin3 [Pin, Box(0)] | provenance |  |
-| main.rs:111:38:111:48 | ...::new(...) [Box(0)] | main.rs:111:24:111:49 | ...::into_pin(...) [Pin, Box(0)] | provenance | MaD:7 |
-| main.rs:111:47:111:47 | i | main.rs:111:38:111:48 | ...::new(...) [Box(0)] | provenance | MaD:8 |
+| main.rs:111:38:111:48 | ...::new(...) [Box(0)] | main.rs:111:24:111:49 | ...::into_pin(...) [Pin, Box(0)] | provenance | MaD:2 |
+| main.rs:111:47:111:47 | i | main.rs:111:38:111:48 | ...::new(...) [Box(0)] | provenance | MaD:3 |
 | main.rs:112:13:112:20 | mut pin4 [Pin, &ref] | main.rs:118:15:118:18 | pin4 [Pin, &ref] | provenance |  |
 | main.rs:112:24:112:27 | &mut pinned [&ref] | main.rs:112:24:112:27 | ...::new_unchecked(...) [Pin, &ref] | provenance | MaD:21 |
 | main.rs:112:24:112:27 | ...::new_unchecked(...) [Pin, &ref] | main.rs:112:13:112:20 | mut pin4 [Pin, &ref] | provenance |  |
@@ -147,17 +147,17 @@ edges
 | main.rs:154:9:154:9 | b | main.rs:155:19:155:19 | b | provenance |  |
 | main.rs:154:13:154:22 | source(...) | main.rs:154:9:154:9 | b | provenance |  |
 | main.rs:155:9:155:9 | c | main.rs:156:10:156:10 | c | provenance |  |
-| main.rs:155:13:155:13 | a | main.rs:155:13:155:20 | a.min(...) | provenance | MaD:5 |
+| main.rs:155:13:155:13 | a | main.rs:155:13:155:20 | a.min(...) | provenance | MaD:8 |
 | main.rs:155:13:155:20 | a.min(...) | main.rs:155:9:155:9 | c | provenance |  |
-| main.rs:155:19:155:19 | b | main.rs:155:13:155:20 | a.min(...) | provenance | MaD:5 |
+| main.rs:155:19:155:19 | b | main.rs:155:13:155:20 | a.min(...) | provenance | MaD:8 |
 | main.rs:158:9:158:9 | d | main.rs:160:13:160:13 | d | provenance |  |
 | main.rs:158:13:158:22 | source(...) | main.rs:158:9:158:9 | d | provenance |  |
 | main.rs:159:9:159:9 | e | main.rs:160:19:160:19 | e | provenance |  |
 | main.rs:159:13:159:22 | source(...) | main.rs:159:9:159:9 | e | provenance |  |
 | main.rs:160:9:160:9 | f | main.rs:161:10:161:10 | f | provenance |  |
-| main.rs:160:13:160:13 | d | main.rs:160:13:160:20 | d.max(...) | provenance | MaD:4 |
+| main.rs:160:13:160:13 | d | main.rs:160:13:160:20 | d.max(...) | provenance | MaD:7 |
 | main.rs:160:13:160:20 | d.max(...) | main.rs:160:9:160:9 | f | provenance |  |
-| main.rs:160:19:160:19 | e | main.rs:160:13:160:20 | d.max(...) | provenance | MaD:4 |
+| main.rs:160:19:160:19 | e | main.rs:160:13:160:20 | d.max(...) | provenance | MaD:7 |
 | main.rs:163:9:163:9 | g | main.rs:166:13:166:13 | g | provenance |  |
 | main.rs:163:13:163:22 | source(...) | main.rs:163:9:163:9 | g | provenance |  |
 | main.rs:164:9:164:9 | h | main.rs:166:21:166:21 | h | provenance |  |
@@ -165,10 +165,10 @@ edges
 | main.rs:165:9:165:9 | i | main.rs:166:24:166:24 | i | provenance |  |
 | main.rs:165:13:165:22 | source(...) | main.rs:165:9:165:9 | i | provenance |  |
 | main.rs:166:9:166:9 | j | main.rs:167:10:167:10 | j | provenance |  |
-| main.rs:166:13:166:13 | g | main.rs:166:13:166:25 | g.clamp(...) | provenance | MaD:3 |
+| main.rs:166:13:166:13 | g | main.rs:166:13:166:25 | g.clamp(...) | provenance | MaD:6 |
 | main.rs:166:13:166:25 | g.clamp(...) | main.rs:166:9:166:9 | j | provenance |  |
-| main.rs:166:21:166:21 | h | main.rs:166:13:166:25 | g.clamp(...) | provenance | MaD:3 |
-| main.rs:166:24:166:24 | i | main.rs:166:13:166:25 | g.clamp(...) | provenance | MaD:3 |
+| main.rs:166:21:166:21 | h | main.rs:166:13:166:25 | g.clamp(...) | provenance | MaD:6 |
+| main.rs:166:24:166:24 | i | main.rs:166:13:166:25 | g.clamp(...) | provenance | MaD:6 |
 nodes
 | main.rs:12:9:12:9 | a [Some] | semmle.label | a [Some] |
 | main.rs:12:13:12:28 | Some(...) [Some] | semmle.label | Some(...) [Some] |

@@ -65,6 +65,8 @@ class FlowSummaryNode extends DataFlow::Node, TFlowSummaryNode {
 
   cached
   override string toString() { result = this.getSummaryNode().toString() }
+
+  override Location getLocation() { result = this.getSummaryNode().getLocation() }
 }
 
 class FlowSummaryDynamicParameterArrayNode extends DataFlow::Node,
@@ -541,7 +543,7 @@ predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos
 DataFlowCallable nodeGetEnclosingCallable(Node node) {
   result.asSourceCallable() = node.getContainer()
   or
-  result.asLibraryCallable() = node.(FlowSummaryNode).getSummarizedCallable()
+  result = node.(FlowSummaryNode).getSummaryNode().getEnclosingCallable()
   or
   result.asLibraryCallable() = node.(FlowSummaryDynamicParameterArrayNode).getSummarizedCallable()
   or
@@ -1212,8 +1214,7 @@ private predicate valuePreservingStep(Node node1, Node node2) {
   or
   node2 = FlowSteps::getThrowTarget(node1)
   or
-  FlowSummaryPrivate::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
-    node2.(FlowSummaryNode).getSummaryNode(), true, _) // TODO: preserve 'model'
+  FlowSummaryPrivate::Steps::summaryLocalStep(node1, node2, true, _) // TODO: preserve 'model'
 }
 
 predicate knownSourceModel(Node sink, string model) { none() }
@@ -1365,8 +1366,7 @@ predicate jumpStep(Node node1, Node node2) {
   node1.getContainer() != node2.getContainer() and
   not excludedJumpStep(node1, node2)
   or
-  FlowSummaryPrivate::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
-    node2.(FlowSummaryNode).getSummaryNode())
+  FlowSummaryPrivate::Steps::summaryJumpStep(node1, node2)
   or
   DataFlow::AdditionalFlowStep::jumpStep(node1, node2)
 }

@@ -1,5 +1,5 @@
 class C1 extends int {
-  int field; // BAD
+  int field; // $ Alert // BAD
 
   C1() {
     this = field and

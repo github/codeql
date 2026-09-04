@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-502/UnsafeSpringExporterInConfigurationClass.ql
+query: experimental/Security/CWE/CWE-502/UnsafeSpringExporterInConfigurationClass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

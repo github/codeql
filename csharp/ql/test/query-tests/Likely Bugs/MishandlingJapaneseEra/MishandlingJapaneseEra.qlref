@@ -1,1 +1,2 @@
-Likely Bugs/MishandlingJapaneseEra.ql
+query: Likely Bugs/MishandlingJapaneseEra.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

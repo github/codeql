@@ -1,0 +1,42 @@
+class Dog: Animal {}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Dog"
+          inheritanceClause:
+            inheritanceClause
+              colon: :
+              inheritedTypes:
+                inheritedType
+                  type:
+                    identifierType
+                      name: identifier "Animal"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Dog"
+          base_type:
+            base_type
+              type:
+                named_type_expr
+                  name: identifier "Animal"

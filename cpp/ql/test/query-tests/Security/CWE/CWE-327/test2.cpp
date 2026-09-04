@@ -46,7 +46,7 @@ void encrypt_bad(char *data, size_t amount, keytype key, int algo)
 	{
 	case ALGO_DES:
 		{
-			my_des_implementation(data, amount, key); // BAD
+			my_des_implementation(data, amount, key); // $ Alert // BAD
 		} break;
 
 	case ALGO_AES:
@@ -173,13 +173,13 @@ const char *get_algorithm3();
 
 void do_unseen_encrypts(char *data, size_t amount, keytype key)
 {
-	set_encryption_algorithm1(ALGO_DES); // BAD [NOT DETECTED]
+	set_encryption_algorithm1(ALGO_DES); // $ MISSING: Alert // BAD [NOT DETECTED]
 	set_encryption_algorithm1(ALGO_AES); // GOOD
 
-	set_encryption_algorithm2(USE_DES); // BAD [NOT DETECTED]
+	set_encryption_algorithm2(USE_DES); // $ MISSING: Alert // BAD [NOT DETECTED]
 	set_encryption_algorithm2(USE_AES); // GOOD
 
-	set_encryption_algorithm3("DES"); // BAD [NOT DETECTED]
+	set_encryption_algorithm3("DES"); // $ MISSING: Alert // BAD [NOT DETECTED]
 	set_encryption_algorithm3("AES"); // GOOD
 	set_encryption_algorithm3("AES-256"); // GOOD
 
@@ -189,7 +189,7 @@ void do_unseen_encrypts(char *data, size_t amount, keytype key)
 	encryption_with2(data, amount, key, USE_DES); // BAD
 	encryption_with2(data, amount, key, USE_AES); // GOOD
 
-	encryption_with3(data, amount, key, "DES"); // BAD [NOT DETECTED]
+	encryption_with3(data, amount, key, "DES"); // $ MISSING: Alert // BAD [NOT DETECTED]
 	encryption_with3(data, amount, key, "AES"); // GOOD
 	encryption_with3(data, amount, key, "AES-256"); // GOOD
 
@@ -258,7 +258,7 @@ void do_fn_ptr(char *data, size_t amount, keytype key)
 {
 	implementation_fn_ptr impl;
 
-	impl = &my_des_implementation; // BAD [NOT DETECTED]
+	impl = &my_des_implementation; // $ MISSING: Alert // BAD [NOT DETECTED]
 	impl(data, amount, key);
 
 	impl = &my_aes_implementation; // GOOD
@@ -302,12 +302,12 @@ public:
 void do_template_classes(char *data)
 {
 	desEncryptor *p = new desEncryptor(); // BAD
-	container<desEncryptor> c; // BAD [NOT DETECTED]
-	templateDesEncryptor<char *> t; // BAD [NOT DETECTED]
+	container<desEncryptor> c; // $ MISSING: Alert // BAD [NOT DETECTED]
+	templateDesEncryptor<char *> t; // $ MISSING: Alert // BAD [NOT DETECTED]
 
 	p->doDesEncryption(data); // BAD
 	c.obj->doDesEncryption(data); // BAD
-	t.doDesEncryption(data); // BAD [NOT DETECTED]
+	t.doDesEncryption(data); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 // --- assert ---

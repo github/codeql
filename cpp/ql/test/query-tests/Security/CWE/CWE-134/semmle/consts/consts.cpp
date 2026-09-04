@@ -82,65 +82,65 @@ void a() {
   
  // BAD: v1 value came from the user
  char v1[100];
- gets(v1);
- printf(v1);
+ gets(v1); // $ Source
+ printf(v1); // $ Alert
  
  // BAD: v2 value came from the user
  char *v2;
- v2 = gets(v1);
- printf(v2);
+ v2 = gets(v1); // $ Source
+ printf(v2); // $ Alert
   
  // BAD: v3 value is copied from v1, which came from the user
  char *v3 = v1;
- printf(v3);
+ printf(v3); // $ Alert
   
  // BAD: v4 value is copied from v1, which came from the user
  char *v4;
  v4 = v1;
- printf(v4);
+ printf(v4); // $ Alert
   
  // BAD: varFunc() is not defined, so it may not be constant
- printf(varFunc());
+ printf(varFunc()); // $ Alert
   
  // BAD: varFunc() is not defined, so it may not be constant
- char *v5 = varFunc();
- printf(v5);
+ char *v5 = varFunc(); // $ Source
+ printf(v5); // $ Alert
  
  // BAD: varFunc() is not defined, so it may not be constant
  char *v6;
- v6 = varFunc();
- printf(v6);
+ v6 = varFunc(); // $ Source
+ printf(v6); // $ Alert
  
  // BAD: all elements of v7 came from the user
  char *v7[] = { v1, v2 };
- printf(v7[0]);
+ printf(v7[0]); // $ Alert
   
  // BAD: v8 started as constant, but changed to a value that came from the user
  char *v8 = "a";
  v8 = v7[1];
- printf(v8);
+ printf(v8); // $ Alert
   
  gv1[1] = v1;
   
  // BAD: nonConstFuncToArray() always returns a value from gv1, which is started as constant but was changed to a value that came from the user
- printf(nonConstFuncToArray(0));
+ printf(nonConstFuncToArray(0)); // $ Alert
   
  // BAD: v9 value is copied from v1, which came from the user
  const char *v9 = v1;
- printf(v9);
+ printf(v9); // $ Alert
   
  // BAD: v10 value is derived from values that are not constant
  char v10[10];
  sprintf(v10, "%s", v1);
- printf(v10);
+ printf(v10); // $ Alert
  
  // BAD: v11 is initialized via a pointer
  char *v11;
- readString(&v11);
- printf(v11);
+ readString(&v11); // $ Source
+ printf(v11); // $ Alert
 
  // BAD: v12 is initialized via a reference
  char *v12;
- readStringRef(v12);
- printf(v12);
+ readStringRef(v12); // $ Source
+ printf(v12); // $ Alert
 }

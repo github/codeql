@@ -42,7 +42,7 @@ private predicate hasFirstNonTrivialTraitBound(TypeParamItemNode tp, Path traitB
  */
 pragma[nomagic]
 predicate isBlanketLike(ImplItemNode i, TypePath blanketSelfPath, TypeParam blanketTypeParam) {
-  i.(Impl).hasTrait() and
+  i.(Impl).hasTraitTy() and
   (
     blanketTypeParam = i.getBlanketImplementationTypeParam() and
     blanketSelfPath.isEmpty()

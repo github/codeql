@@ -1,1 +1,2 @@
-Likely Bugs/AmbiguouslySignedBitField.ql
+query: Likely Bugs/AmbiguouslySignedBitField.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

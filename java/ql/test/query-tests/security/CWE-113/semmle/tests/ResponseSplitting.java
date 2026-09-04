@@ -19,14 +19,14 @@ public class ResponseSplitting extends HttpServlet {
 		// BAD: setting a cookie with an unvalidated parameter
 		// can lead to HTTP splitting
 		{
-			Cookie cookie = new Cookie("name", request.getParameter("name"));
-			response.addCookie(cookie);
+			Cookie cookie = new Cookie("name", request.getParameter("name")); // $ Source
+			response.addCookie(cookie); // $ Alert
 		}
 
 		// BAD: setting a header with an unvalidated parameter
 		// can lead to HTTP splitting
-		response.addHeader("Content-type", request.getParameter("contentType"));
-		response.setHeader("Content-type", request.getParameter("contentType"));
+		response.addHeader("Content-type", request.getParameter("contentType")); // $ Alert
+		response.setHeader("Content-type", request.getParameter("contentType")); // $ Alert
 
 		// GOOD: remove special characters before putting them in the header
 		{
@@ -50,22 +50,22 @@ public class ResponseSplitting extends HttpServlet {
 	}
 
 	public void sanitizerTests(HttpServletRequest request, HttpServletResponse response){
-		String t = request.getParameter("contentType");
+		String t = request.getParameter("contentType"); // $ Source
 
 		// GOOD: whitelist-based sanitization
 		response.setHeader("h", t.replaceAll("[^a-zA-Z]", ""));
 
 		// BAD: not replacing all problematic characters
-		response.setHeader("h", t.replaceFirst("[^a-zA-Z]", ""));
+		response.setHeader("h", t.replaceFirst("[^a-zA-Z]", "")); // $ Alert
 
 		// GOOD: replace all line breaks
 		response.setHeader("h", t.replace('\n', ' ').replace('\r', ' '));
 
 		// FALSE NEGATIVE: replace only some line breaks
-		response.setHeader("h", t.replace('\n', ' '));
+		response.setHeader("h", t.replace('\n', ' ')); // $ MISSING: Alert
 
 		// FALSE NEGATIVE: replace only some line breaks
-		response.setHeader("h", t.replaceAll("\r", ""));
+		response.setHeader("h", t.replaceAll("\r", "")); // $ MISSING: Alert
 
 		// GOOD: replace all linebreaks with a simple regex
 		response.setHeader("h", t.replaceAll("\n", "").replaceAll("\r", ""));

@@ -9,7 +9,7 @@ class EmptyCatchBlock
         }
         catch (Exception)
         {
-        }
+        } // $ Alert
     }
 
     void good()

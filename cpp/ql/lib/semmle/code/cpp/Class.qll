@@ -856,8 +856,10 @@ class AbstractClass extends Class {
 
 /**
  * A class template (this class also finds partial specializations
- * of class templates).  For example in the following code there is a
- * `MyTemplateClass<T>` template:
+ * of class templates).
+ *
+ * For example in the following code there is a `MyTemplateClass<T>`
+ * template:
  * ```
  * template<class T>
  * class MyTemplateClass {
@@ -893,6 +895,29 @@ class TemplateClass extends Class {
   }
 
   override string getAPrimaryQlClass() { result = "TemplateClass" }
+
+  /**
+   * Gets the class member template this template was generated from.
+   *
+   * This predicate only has results for templates that are members of class
+   * template instantiations. For example, for `MyTemplateClass<int>::C<S>`
+   * in the following code, the result is `MyTemplateClass<T>::C<S>`.
+   * ```cpp
+   * template<class T>
+   * class MyTemplateClass {
+   *   template<class S>
+   *   class C {
+   *     ...
+   *   };
+   * };
+   *
+   * template
+   * class MyTemplateClass<int>;
+   * ```
+   */
+  TemplateClass getOriginalTemplate() {
+    class_template_generated_from(underlyingElement(this), unresolveElement(result))
+  }
 }
 
 /**

@@ -1,1 +1,2 @@
-Likely Bugs/Arithmetic/ComparisonPrecedence.ql
+query: Likely Bugs/Arithmetic/ComparisonPrecedence.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

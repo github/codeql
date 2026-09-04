@@ -1,186 +1,319 @@
 #select
-| test_cipher.rs:18:29:18:36 | [0u8; 16] | test_cipher.rs:18:29:18:36 | [0u8; 16] | test_cipher.rs:19:30:19:47 | ...::new | This hard-coded value is used as $@. | test_cipher.rs:19:30:19:47 | ...::new | a key |
-| test_cipher.rs:25:29:25:36 | [0u8; 16] | test_cipher.rs:25:29:25:36 | [0u8; 16] | test_cipher.rs:26:30:26:40 | ...::new | This hard-coded value is used as $@. | test_cipher.rs:26:30:26:40 | ...::new | a key |
-| test_cipher.rs:29:29:29:36 | [0u8; 16] | test_cipher.rs:29:29:29:36 | [0u8; 16] | test_cipher.rs:30:30:30:40 | ...::new | This hard-coded value is used as $@. | test_cipher.rs:30:30:30:40 | ...::new | an initialization vector |
-| test_cipher.rs:37:27:37:74 | [...] | test_cipher.rs:37:27:37:74 | [...] | test_cipher.rs:38:30:38:47 | ...::new | This hard-coded value is used as $@. | test_cipher.rs:38:30:38:47 | ...::new | a key |
-| test_cipher.rs:41:29:41:76 | [...] | test_cipher.rs:41:29:41:76 | [...] | test_cipher.rs:42:30:42:47 | ...::new | This hard-coded value is used as $@. | test_cipher.rs:42:30:42:47 | ...::new | a key |
-| test_cipher.rs:50:37:50:52 | ...::zeroed | test_cipher.rs:50:37:50:52 | ...::zeroed | test_cipher.rs:51:31:51:48 | ...::new | This hard-coded value is used as $@. | test_cipher.rs:51:31:51:48 | ...::new | a key |
-| test_cipher.rs:73:19:73:26 | [0u8; 32] | test_cipher.rs:73:19:73:26 | [0u8; 32] | test_cipher.rs:74:23:74:44 | ...::new_from_slice | This hard-coded value is used as $@. | test_cipher.rs:74:23:74:44 | ...::new_from_slice | a key |
-| test_cookie.rs:17:28:17:34 | [0; 64] | test_cookie.rs:17:28:17:34 | [0; 64] | test_cookie.rs:18:16:18:24 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:18:16:18:24 | ...::from | a key |
-| test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:22:16:22:24 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:22:16:22:24 | ...::from | a key |
-| test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:42:14:42:32 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:42:14:42:32 | ...::from | a key |
-| test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:53:14:53:32 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:53:14:53:32 | ...::from | a key |
-| test_heuristic.rs:44:31:44:38 | [0u8; 16] | test_heuristic.rs:44:31:44:38 | [0u8; 16] | test_heuristic.rs:45:41:45:48 | const_iv | This hard-coded value is used as $@. | test_heuristic.rs:45:41:45:48 | const_iv | an initialization vector |
-| test_heuristic.rs:63:30:63:37 | "secret" | test_heuristic.rs:63:30:63:37 | "secret" | test_heuristic.rs:63:30:63:37 | "secret" | This hard-coded value is used as $@. | test_heuristic.rs:63:30:63:37 | "secret" | a password |
-| test_heuristic.rs:64:20:64:27 | [0u8; 16] | test_heuristic.rs:64:20:64:27 | [0u8; 16] | test_heuristic.rs:64:19:64:27 | &... | This hard-coded value is used as $@. | test_heuristic.rs:64:19:64:27 | &... | a nonce |
-| test_heuristic.rs:65:31:65:38 | [0u8; 16] | test_heuristic.rs:65:31:65:38 | [0u8; 16] | test_heuristic.rs:65:30:65:38 | &... | This hard-coded value is used as $@. | test_heuristic.rs:65:30:65:38 | &... | a salt |
-| test_heuristic.rs:67:22:67:22 | 0 | test_heuristic.rs:67:22:67:22 | 0 | test_heuristic.rs:67:22:67:22 | 0 | This hard-coded value is used as $@. | test_heuristic.rs:67:22:67:22 | 0 | a salt |
-| test_heuristic.rs:69:32:69:32 | 1 | test_heuristic.rs:69:32:69:32 | 1 | test_heuristic.rs:69:22:69:32 | ... + ... | This hard-coded value is used as $@. | test_heuristic.rs:69:22:69:32 | ... + ... | a salt |
-| test_heuristic.rs:70:34:70:35 | 32 | test_heuristic.rs:70:34:70:35 | 32 | test_heuristic.rs:70:22:70:62 | ... ^ ... | This hard-coded value is used as $@. | test_heuristic.rs:70:22:70:62 | ... ^ ... | a salt |
-| test_heuristic.rs:70:52:70:61 | 0xFFFFFFFF | test_heuristic.rs:70:52:70:61 | 0xFFFFFFFF | test_heuristic.rs:70:22:70:62 | ... ^ ... | This hard-coded value is used as $@. | test_heuristic.rs:70:22:70:62 | ... ^ ... | a salt |
+| test_cipher.rs:18:29:18:36 | [0u8; 16] | test_cipher.rs:18:29:18:36 | [0u8; 16] | test_cipher.rs:19:49:19:79 | ...::from_slice(...) | This hard-coded value is used as $@. | test_cipher.rs:19:49:19:79 | ...::from_slice(...) | a key |
+| test_cipher.rs:25:29:25:36 | [0u8; 16] | test_cipher.rs:25:29:25:36 | [0u8; 16] | test_cipher.rs:26:42:26:72 | ...::from_slice(...) | This hard-coded value is used as $@. | test_cipher.rs:26:42:26:72 | ...::from_slice(...) | a key |
+| test_cipher.rs:29:29:29:36 | [0u8; 16] | test_cipher.rs:29:29:29:36 | [0u8; 16] | test_cipher.rs:30:72:30:101 | ...::from_slice(...) | This hard-coded value is used as $@. | test_cipher.rs:30:72:30:101 | ...::from_slice(...) | an initialization vector |
+| test_cipher.rs:37:27:37:74 | [...] | test_cipher.rs:37:27:37:74 | [...] | test_cipher.rs:38:49:38:80 | ...::from_slice(...) | This hard-coded value is used as $@. | test_cipher.rs:38:49:38:80 | ...::from_slice(...) | a key |
+| test_cipher.rs:41:29:41:76 | [...] | test_cipher.rs:41:29:41:76 | [...] | test_cipher.rs:42:49:42:79 | ...::from_slice(...) | This hard-coded value is used as $@. | test_cipher.rs:42:49:42:79 | ...::from_slice(...) | a key |
+| test_cipher.rs:50:37:50:54 | ...::zeroed(...) | test_cipher.rs:50:37:50:54 | ...::zeroed(...) | test_cipher.rs:51:50:51:82 | ...::from_slice(...) | This hard-coded value is used as $@. | test_cipher.rs:51:50:51:82 | ...::from_slice(...) | a key |
+| test_cipher.rs:66:19:66:26 | [0u8; 32] | test_cipher.rs:66:19:66:26 | [0u8; 32] | test_cipher.rs:67:35:67:47 | const2.into() | This hard-coded value is used as $@. | test_cipher.rs:67:35:67:47 | const2.into() | a key |
+| test_cipher.rs:73:19:73:26 | [0u8; 32] | test_cipher.rs:73:19:73:26 | [0u8; 32] | test_cipher.rs:74:46:74:51 | const2 | This hard-coded value is used as $@. | test_cipher.rs:74:46:74:51 | const2 | a key |
+| test_cipher.rs:80:19:80:26 | [0u8; 32] | test_cipher.rs:80:19:80:26 | [0u8; 32] | test_cipher.rs:81:63:81:75 | const6.into() | This hard-coded value is used as $@. | test_cipher.rs:81:63:81:75 | const6.into() | a key |
+| test_cipher.rs:84:19:84:27 | [0u8; 16] | test_cipher.rs:84:19:84:27 | [0u8; 16] | test_cipher.rs:85:75:85:87 | const7.into() | This hard-coded value is used as $@. | test_cipher.rs:85:75:85:87 | const7.into() | an initialization vector |
+| test_cipher.rs:94:23:94:40 | "1234567890123456" | test_cipher.rs:94:23:94:40 | "1234567890123456" | test_cipher.rs:95:63:95:73 | key9.into() | This hard-coded value is used as $@. | test_cipher.rs:95:63:95:73 | key9.into() | a key |
+| test_cipher.rs:124:25:124:30 | [0; 32] | test_cipher.rs:124:25:124:30 | [0; 32] | test_cipher.rs:126:34:126:45 | &... | This hard-coded value is used as $@. | test_cipher.rs:126:34:126:45 | &... | a key |
+| test_cipher.rs:125:18:125:23 | [0; 12] | test_cipher.rs:125:18:125:23 | [0; 12] | test_cipher.rs:127:29:127:42 | &... | This hard-coded value is used as $@. | test_cipher.rs:127:29:127:42 | &... | a nonce |
+| test_cipher.rs:129:33:129:41 | [0xff; 32] | test_cipher.rs:129:33:129:41 | [0xff; 32] | test_cipher.rs:132:34:132:38 | &key3 | This hard-coded value is used as $@. | test_cipher.rs:132:34:132:38 | &key3 | a key |
+| test_cipher.rs:131:27:131:35 | [0xff; 12] | test_cipher.rs:131:27:131:35 | [0xff; 12] | test_cipher.rs:133:29:133:42 | &... | This hard-coded value is used as $@. | test_cipher.rs:133:29:133:42 | &... | a nonce |
+| test_cookie.rs:17:28:17:34 | [0; 64] | test_cookie.rs:17:28:17:34 | [0; 64] | test_cookie.rs:18:26:18:32 | &array1 | This hard-coded value is used as $@. | test_cookie.rs:18:26:18:32 | &array1 | a key |
+| test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:22:26:22:32 | &array2 | This hard-coded value is used as $@. | test_cookie.rs:22:26:22:32 | &array2 | a key |
+| test_cookie.rs:25:16:29:5 | match ... { ... } | test_cookie.rs:25:16:29:5 | match ... { ... } | test_cookie.rs:30:26:30:40 | str3.as_bytes() | This hard-coded value is used as $@. | test_cookie.rs:30:26:30:40 | str3.as_bytes() | a key |
+| test_cookie.rs:33:27:37:5 | [...] | test_cookie.rs:33:27:37:5 | [...] | test_cookie.rs:38:26:38:32 | &array4 | This hard-coded value is used as $@. | test_cookie.rs:38:26:38:32 | &array4 | a key |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:58:34:58:39 | array2 | This hard-coded value is used as $@. | test_cookie.rs:58:34:58:39 | array2 | a key |
+| test_cookie.rs:65:23:65:25 | 0u8 | test_cookie.rs:65:23:65:25 | 0u8 | test_cookie.rs:69:34:69:39 | array3 | This hard-coded value is used as $@. | test_cookie.rs:69:34:69:39 | array3 | a key |
+| test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | This hard-coded value is used as $@. | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | a salt |
+| test_heuristic.rs:39:25:39:59 | ... as u64 | test_heuristic.rs:39:25:39:59 | ... as u64 | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | This hard-coded value is used as $@. | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | a salt |
+| test_heuristic.rs:40:27:40:32 | 0xFFFF | test_heuristic.rs:40:27:40:32 | 0xFFFF | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | This hard-coded value is used as $@. | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | a salt |
+| test_heuristic.rs:49:31:49:38 | [0u8; 16] | test_heuristic.rs:49:31:49:38 | [0u8; 16] | test_heuristic.rs:50:41:50:48 | const_iv | This hard-coded value is used as $@. | test_heuristic.rs:50:41:50:48 | const_iv | an initialization vector |
+| test_heuristic.rs:68:30:68:37 | "secret" | test_heuristic.rs:68:30:68:37 | "secret" | test_heuristic.rs:68:30:68:37 | "secret" | This hard-coded value is used as $@. | test_heuristic.rs:68:30:68:37 | "secret" | a password |
+| test_heuristic.rs:69:20:69:27 | [0u8; 16] | test_heuristic.rs:69:20:69:27 | [0u8; 16] | test_heuristic.rs:69:19:69:27 | &... | This hard-coded value is used as $@. | test_heuristic.rs:69:19:69:27 | &... | a nonce |
+| test_heuristic.rs:70:31:70:38 | [0u8; 16] | test_heuristic.rs:70:31:70:38 | [0u8; 16] | test_heuristic.rs:70:30:70:38 | &... | This hard-coded value is used as $@. | test_heuristic.rs:70:30:70:38 | &... | a salt |
+| test_heuristic.rs:72:22:72:22 | 0 | test_heuristic.rs:72:22:72:22 | 0 | test_heuristic.rs:72:22:72:22 | 0 | This hard-coded value is used as $@. | test_heuristic.rs:72:22:72:22 | 0 | a salt |
+| test_heuristic.rs:76:22:76:27 | ... << ... | test_heuristic.rs:76:22:76:27 | ... << ... | test_heuristic.rs:76:22:76:27 | ... << ... | This hard-coded value is used as $@. | test_heuristic.rs:76:22:76:27 | ... << ... | a salt |
+| test_heuristic.rs:78:22:78:29 | ...::MAX | test_heuristic.rs:78:22:78:29 | ...::MAX | test_heuristic.rs:78:22:78:29 | ...::MAX | This hard-coded value is used as $@. | test_heuristic.rs:78:22:78:29 | ...::MAX | a salt |
+| test_heuristic.rs:79:22:79:33 | ... / ... | test_heuristic.rs:79:22:79:33 | ... / ... | test_heuristic.rs:79:22:79:33 | ... / ... | This hard-coded value is used as $@. | test_heuristic.rs:79:22:79:33 | ... / ... | a salt |
+| test_heuristic.rs:86:29:86:32 | 1u64 | test_heuristic.rs:86:29:86:32 | 1u64 | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | This hard-coded value is used as $@. | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | a salt |
+| test_heuristic.rs:88:29:88:33 | ... + ... | test_heuristic.rs:88:29:88:33 | ... + ... | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | This hard-coded value is used as $@. | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | a salt |
 edges
 | test_cipher.rs:18:9:18:14 | const1 [&ref] | test_cipher.rs:19:73:19:78 | const1 [&ref] | provenance |  |
 | test_cipher.rs:18:28:18:36 | &... [&ref] | test_cipher.rs:18:9:18:14 | const1 [&ref] | provenance |  |
 | test_cipher.rs:18:29:18:36 | [0u8; 16] | test_cipher.rs:18:28:18:36 | &... [&ref] | provenance |  |
-| test_cipher.rs:19:49:19:79 | ...::from_slice(...) [&ref] | test_cipher.rs:19:30:19:47 | ...::new | provenance | MaD:3 Sink:MaD:3 |
-| test_cipher.rs:19:73:19:78 | const1 [&ref] | test_cipher.rs:19:49:19:79 | ...::from_slice(...) [&ref] | provenance | MaD:17 |
+| test_cipher.rs:19:49:19:79 | ...::from_slice(...) [&ref] | test_cipher.rs:19:49:19:79 | ...::from_slice(...) | provenance | Sink:MaD:3 |
+| test_cipher.rs:19:73:19:78 | const1 [&ref] | test_cipher.rs:19:49:19:79 | ...::from_slice(...) [&ref] | provenance | MaD:20 |
 | test_cipher.rs:25:9:25:14 | const4 [&ref] | test_cipher.rs:26:66:26:71 | const4 [&ref] | provenance |  |
 | test_cipher.rs:25:28:25:36 | &... [&ref] | test_cipher.rs:25:9:25:14 | const4 [&ref] | provenance |  |
 | test_cipher.rs:25:29:25:36 | [0u8; 16] | test_cipher.rs:25:28:25:36 | &... [&ref] | provenance |  |
-| test_cipher.rs:26:42:26:72 | ...::from_slice(...) [&ref] | test_cipher.rs:26:30:26:40 | ...::new | provenance | MaD:4 Sink:MaD:4 |
-| test_cipher.rs:26:66:26:71 | const4 [&ref] | test_cipher.rs:26:42:26:72 | ...::from_slice(...) [&ref] | provenance | MaD:17 |
+| test_cipher.rs:26:42:26:72 | ...::from_slice(...) [&ref] | test_cipher.rs:26:42:26:72 | ...::from_slice(...) | provenance | Sink:MaD:4 |
+| test_cipher.rs:26:66:26:71 | const4 [&ref] | test_cipher.rs:26:42:26:72 | ...::from_slice(...) [&ref] | provenance | MaD:20 |
 | test_cipher.rs:29:9:29:14 | const5 [&ref] | test_cipher.rs:30:95:30:100 | const5 [&ref] | provenance |  |
 | test_cipher.rs:29:28:29:36 | &... [&ref] | test_cipher.rs:29:9:29:14 | const5 [&ref] | provenance |  |
 | test_cipher.rs:29:29:29:36 | [0u8; 16] | test_cipher.rs:29:28:29:36 | &... [&ref] | provenance |  |
-| test_cipher.rs:30:72:30:101 | ...::from_slice(...) [&ref] | test_cipher.rs:30:30:30:40 | ...::new | provenance | MaD:5 Sink:MaD:5 |
-| test_cipher.rs:30:95:30:100 | const5 [&ref] | test_cipher.rs:30:72:30:101 | ...::from_slice(...) [&ref] | provenance | MaD:17 |
+| test_cipher.rs:30:72:30:101 | ...::from_slice(...) [&ref] | test_cipher.rs:30:72:30:101 | ...::from_slice(...) | provenance | Sink:MaD:5 |
+| test_cipher.rs:30:95:30:100 | const5 [&ref] | test_cipher.rs:30:72:30:101 | ...::from_slice(...) [&ref] | provenance | MaD:20 |
 | test_cipher.rs:37:9:37:14 | const7 | test_cipher.rs:38:74:38:79 | const7 | provenance |  |
 | test_cipher.rs:37:27:37:74 | [...] | test_cipher.rs:37:9:37:14 | const7 | provenance |  |
-| test_cipher.rs:38:49:38:80 | ...::from_slice(...) [&ref] | test_cipher.rs:38:30:38:47 | ...::new | provenance | MaD:3 Sink:MaD:3 |
-| test_cipher.rs:38:73:38:79 | &const7 [&ref] | test_cipher.rs:38:49:38:80 | ...::from_slice(...) [&ref] | provenance | MaD:17 |
+| test_cipher.rs:38:49:38:80 | ...::from_slice(...) [&ref] | test_cipher.rs:38:49:38:80 | ...::from_slice(...) | provenance | Sink:MaD:3 |
+| test_cipher.rs:38:73:38:79 | &const7 [&ref] | test_cipher.rs:38:49:38:80 | ...::from_slice(...) [&ref] | provenance | MaD:20 |
 | test_cipher.rs:38:74:38:79 | const7 | test_cipher.rs:38:73:38:79 | &const7 [&ref] | provenance |  |
 | test_cipher.rs:41:9:41:14 | const8 [&ref] | test_cipher.rs:42:73:42:78 | const8 [&ref] | provenance |  |
 | test_cipher.rs:41:28:41:76 | &... [&ref] | test_cipher.rs:41:9:41:14 | const8 [&ref] | provenance |  |
 | test_cipher.rs:41:29:41:76 | [...] | test_cipher.rs:41:28:41:76 | &... [&ref] | provenance |  |
-| test_cipher.rs:42:49:42:79 | ...::from_slice(...) [&ref] | test_cipher.rs:42:30:42:47 | ...::new | provenance | MaD:3 Sink:MaD:3 |
-| test_cipher.rs:42:73:42:78 | const8 [&ref] | test_cipher.rs:42:49:42:79 | ...::from_slice(...) [&ref] | provenance | MaD:17 |
+| test_cipher.rs:42:49:42:79 | ...::from_slice(...) [&ref] | test_cipher.rs:42:49:42:79 | ...::from_slice(...) | provenance | Sink:MaD:3 |
+| test_cipher.rs:42:73:42:78 | const8 [&ref] | test_cipher.rs:42:49:42:79 | ...::from_slice(...) [&ref] | provenance | MaD:20 |
 | test_cipher.rs:50:9:50:15 | const10 [element] | test_cipher.rs:51:75:51:81 | const10 [element] | provenance |  |
-| test_cipher.rs:50:37:50:52 | ...::zeroed | test_cipher.rs:50:37:50:54 | ...::zeroed(...) [element] | provenance | Src:MaD:7  |
-| test_cipher.rs:50:37:50:54 | ...::zeroed(...) [element] | test_cipher.rs:50:9:50:15 | const10 [element] | provenance |  |
-| test_cipher.rs:51:50:51:82 | ...::from_slice(...) [&ref, element] | test_cipher.rs:51:31:51:48 | ...::new | provenance | MaD:3 Sink:MaD:3 Sink:MaD:3 |
-| test_cipher.rs:51:74:51:81 | &const10 [&ref, element] | test_cipher.rs:51:50:51:82 | ...::from_slice(...) [&ref, element] | provenance | MaD:17 |
+| test_cipher.rs:50:37:50:54 | ...::zeroed(...) | test_cipher.rs:50:9:50:15 | const10 [element] | provenance | Src:MaD:11  |
+| test_cipher.rs:51:50:51:82 | ...::from_slice(...) [&ref, element] | test_cipher.rs:51:50:51:82 | ...::from_slice(...) | provenance | Sink:MaD:3 Sink:MaD:3 |
+| test_cipher.rs:51:74:51:81 | &const10 [&ref, element] | test_cipher.rs:51:50:51:82 | ...::from_slice(...) [&ref, element] | provenance | MaD:20 |
 | test_cipher.rs:51:75:51:81 | const10 [element] | test_cipher.rs:51:74:51:81 | &const10 [&ref, element] | provenance |  |
-| test_cipher.rs:73:9:73:14 | const2 [&ref] | test_cipher.rs:74:46:74:51 | const2 [&ref] | provenance |  |
+| test_cipher.rs:66:9:66:14 | const2 [&ref] | test_cipher.rs:67:35:67:40 | const2 [&ref] | provenance |  |
+| test_cipher.rs:66:18:66:26 | &... [&ref] | test_cipher.rs:66:9:66:14 | const2 [&ref] | provenance |  |
+| test_cipher.rs:66:19:66:26 | [0u8; 32] | test_cipher.rs:66:18:66:26 | &... [&ref] | provenance |  |
+| test_cipher.rs:67:35:67:40 | const2 [&ref] | test_cipher.rs:67:35:67:47 | const2.into() [element] | provenance | MaD:18 |
+| test_cipher.rs:67:35:67:47 | const2.into() [element] | test_cipher.rs:67:35:67:47 | const2.into() | provenance | Sink:MaD:7 |
+| test_cipher.rs:73:9:73:14 | const2 [&ref] | test_cipher.rs:74:46:74:51 | const2 | provenance | Sink:MaD:8 |
 | test_cipher.rs:73:18:73:26 | &... [&ref] | test_cipher.rs:73:9:73:14 | const2 [&ref] | provenance |  |
 | test_cipher.rs:73:19:73:26 | [0u8; 32] | test_cipher.rs:73:18:73:26 | &... [&ref] | provenance |  |
-| test_cipher.rs:74:46:74:51 | const2 [&ref] | test_cipher.rs:74:23:74:44 | ...::new_from_slice | provenance | MaD:1 Sink:MaD:1 |
+| test_cipher.rs:80:9:80:14 | const6 [&ref] | test_cipher.rs:81:63:81:68 | const6 [&ref] | provenance |  |
+| test_cipher.rs:80:18:80:26 | &... [&ref] | test_cipher.rs:80:9:80:14 | const6 [&ref] | provenance |  |
+| test_cipher.rs:80:19:80:26 | [0u8; 32] | test_cipher.rs:80:18:80:26 | &... [&ref] | provenance |  |
+| test_cipher.rs:81:63:81:68 | const6 [&ref] | test_cipher.rs:81:63:81:75 | const6.into() [element] | provenance | MaD:18 |
+| test_cipher.rs:81:63:81:75 | const6.into() [element] | test_cipher.rs:81:63:81:75 | const6.into() | provenance | Sink:MaD:9 |
+| test_cipher.rs:84:9:84:14 | const7 [&ref] | test_cipher.rs:85:75:85:80 | const7 [&ref] | provenance |  |
+| test_cipher.rs:84:18:84:27 | &... [&ref] | test_cipher.rs:84:9:84:14 | const7 [&ref] | provenance |  |
+| test_cipher.rs:84:19:84:27 | [0u8; 16] | test_cipher.rs:84:18:84:27 | &... [&ref] | provenance |  |
+| test_cipher.rs:85:75:85:80 | const7 [&ref] | test_cipher.rs:85:75:85:87 | const7.into() [element] | provenance | MaD:18 |
+| test_cipher.rs:85:75:85:87 | const7.into() [element] | test_cipher.rs:85:75:85:87 | const7.into() | provenance | Sink:MaD:10 |
+| test_cipher.rs:94:9:94:12 | key9 [&ref] | test_cipher.rs:95:63:95:66 | key9 [&ref] | provenance |  |
+| test_cipher.rs:94:23:94:40 | "1234567890123456" | test_cipher.rs:94:23:94:51 | "1234567890123456".as_bytes() [&ref] | provenance | MaD:19 |
+| test_cipher.rs:94:23:94:51 | "1234567890123456".as_bytes() [&ref] | test_cipher.rs:94:9:94:12 | key9 [&ref] | provenance |  |
+| test_cipher.rs:95:63:95:66 | key9 [&ref] | test_cipher.rs:95:63:95:73 | key9.into() [element] | provenance | MaD:18 |
+| test_cipher.rs:95:63:95:73 | key9.into() [element] | test_cipher.rs:95:63:95:73 | key9.into() | provenance | Sink:MaD:9 |
+| test_cipher.rs:124:9:124:12 | key2 | test_cipher.rs:126:35:126:38 | key2 | provenance |  |
+| test_cipher.rs:124:25:124:30 | [0; 32] | test_cipher.rs:124:9:124:12 | key2 | provenance |  |
+| test_cipher.rs:125:9:125:14 | nonce2 | test_cipher.rs:127:30:127:35 | nonce2 | provenance |  |
+| test_cipher.rs:125:18:125:23 | [0; 12] | test_cipher.rs:125:9:125:14 | nonce2 | provenance |  |
+| test_cipher.rs:126:34:126:45 | &... [&ref, element] | test_cipher.rs:126:34:126:45 | &... | provenance | Sink:MaD:7 Sink:MaD:7 |
+| test_cipher.rs:126:35:126:38 | key2 | test_cipher.rs:126:35:126:45 | key2.into() [element] | provenance | MaD:17 |
+| test_cipher.rs:126:35:126:38 | key2 | test_cipher.rs:126:35:126:45 | key2.into() [element] | provenance | MaD:18 |
+| test_cipher.rs:126:35:126:45 | key2.into() [element] | test_cipher.rs:126:34:126:45 | &... [&ref, element] | provenance |  |
+| test_cipher.rs:127:29:127:42 | &... [&ref, element] | test_cipher.rs:127:29:127:42 | &... | provenance | Sink:MaD:1 Sink:MaD:1 |
+| test_cipher.rs:127:30:127:35 | nonce2 | test_cipher.rs:127:30:127:42 | nonce2.into() [element] | provenance | MaD:17 |
+| test_cipher.rs:127:30:127:35 | nonce2 | test_cipher.rs:127:30:127:42 | nonce2.into() [element] | provenance | MaD:18 |
+| test_cipher.rs:127:30:127:42 | nonce2.into() [element] | test_cipher.rs:127:29:127:42 | &... [&ref, element] | provenance |  |
+| test_cipher.rs:129:9:129:18 | key3_array [&ref] | test_cipher.rs:130:45:130:54 | key3_array [&ref] | provenance |  |
+| test_cipher.rs:129:32:129:41 | &... [&ref] | test_cipher.rs:129:9:129:18 | key3_array [&ref] | provenance |  |
+| test_cipher.rs:129:33:129:41 | [0xff; 32] | test_cipher.rs:129:32:129:41 | &... [&ref] | provenance |  |
+| test_cipher.rs:130:9:130:12 | key3 [&ref] | test_cipher.rs:132:35:132:38 | key3 [&ref] | provenance |  |
+| test_cipher.rs:130:16:130:55 | ...::from_slice(...) [&ref] | test_cipher.rs:130:9:130:12 | key3 [&ref] | provenance |  |
+| test_cipher.rs:130:45:130:54 | key3_array [&ref] | test_cipher.rs:130:16:130:55 | ...::from_slice(...) [&ref] | provenance | MaD:20 |
+| test_cipher.rs:131:9:131:14 | nonce3 | test_cipher.rs:133:30:133:35 | nonce3 | provenance |  |
+| test_cipher.rs:131:27:131:35 | [0xff; 12] | test_cipher.rs:131:9:131:14 | nonce3 | provenance |  |
+| test_cipher.rs:132:34:132:38 | &key3 [&ref, &ref] | test_cipher.rs:132:34:132:38 | &key3 | provenance | Sink:MaD:7 Sink:MaD:7 |
+| test_cipher.rs:132:35:132:38 | key3 [&ref] | test_cipher.rs:132:34:132:38 | &key3 [&ref, &ref] | provenance |  |
+| test_cipher.rs:133:29:133:42 | &... [&ref, element] | test_cipher.rs:133:29:133:42 | &... | provenance | Sink:MaD:1 Sink:MaD:1 |
+| test_cipher.rs:133:30:133:35 | nonce3 | test_cipher.rs:133:30:133:42 | nonce3.into() [element] | provenance | MaD:17 |
+| test_cipher.rs:133:30:133:35 | nonce3 | test_cipher.rs:133:30:133:42 | nonce3.into() [element] | provenance | MaD:18 |
+| test_cipher.rs:133:30:133:42 | nonce3.into() [element] | test_cipher.rs:133:29:133:42 | &... [&ref, element] | provenance |  |
 | test_cookie.rs:17:9:17:14 | array1 | test_cookie.rs:18:27:18:32 | array1 | provenance |  |
 | test_cookie.rs:17:28:17:34 | [0; 64] | test_cookie.rs:17:9:17:14 | array1 | provenance |  |
-| test_cookie.rs:18:26:18:32 | &array1 [&ref] | test_cookie.rs:18:16:18:24 | ...::from | provenance | MaD:6 Sink:MaD:6 |
+| test_cookie.rs:18:26:18:32 | &array1 [&ref] | test_cookie.rs:18:26:18:32 | &array1 | provenance | Sink:MaD:6 |
 | test_cookie.rs:18:27:18:32 | array1 | test_cookie.rs:18:26:18:32 | &array1 [&ref] | provenance |  |
 | test_cookie.rs:21:9:21:14 | array2 | test_cookie.rs:22:27:22:32 | array2 | provenance |  |
 | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:21:9:21:14 | array2 | provenance |  |
-| test_cookie.rs:22:26:22:32 | &array2 [&ref] | test_cookie.rs:22:16:22:24 | ...::from | provenance | MaD:6 Sink:MaD:6 |
+| test_cookie.rs:22:26:22:32 | &array2 [&ref] | test_cookie.rs:22:26:22:32 | &array2 | provenance | Sink:MaD:6 |
 | test_cookie.rs:22:27:22:32 | array2 | test_cookie.rs:22:26:22:32 | &array2 [&ref] | provenance |  |
-| test_cookie.rs:38:9:38:14 | array2 | test_cookie.rs:42:34:42:39 | array2 | provenance |  |
-| test_cookie.rs:38:18:38:37 | ...::from(...) | test_cookie.rs:38:9:38:14 | array2 | provenance |  |
-| test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:12 |
-| test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:13 |
-| test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:14 |
-| test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:15 |
-| test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:16 |
-| test_cookie.rs:42:34:42:39 | array2 | test_cookie.rs:42:14:42:32 | ...::from | provenance | MaD:2 Sink:MaD:2 |
-| test_cookie.rs:49:9:49:14 | array3 [element] | test_cookie.rs:53:34:53:39 | array3 [element] | provenance |  |
-| test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | provenance | MaD:18 |
-| test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | test_cookie.rs:49:9:49:14 | array3 [element] | provenance |  |
-| test_cookie.rs:53:34:53:39 | array3 [element] | test_cookie.rs:53:14:53:32 | ...::from | provenance | MaD:2 Sink:MaD:2 |
-| test_heuristic.rs:44:9:44:16 | const_iv [&ref] | test_heuristic.rs:45:41:45:48 | const_iv | provenance |  |
-| test_heuristic.rs:44:30:44:38 | &... [&ref] | test_heuristic.rs:44:9:44:16 | const_iv [&ref] | provenance |  |
-| test_heuristic.rs:44:31:44:38 | [0u8; 16] | test_heuristic.rs:44:30:44:38 | &... [&ref] | provenance |  |
-| test_heuristic.rs:64:20:64:27 | [0u8; 16] | test_heuristic.rs:64:19:64:27 | &... | provenance |  |
-| test_heuristic.rs:65:31:65:38 | [0u8; 16] | test_heuristic.rs:65:30:65:38 | &... | provenance |  |
-| test_heuristic.rs:69:32:69:32 | 1 | test_heuristic.rs:69:22:69:32 | ... + ... | provenance | MaD:8 |
-| test_heuristic.rs:70:23:70:35 | ... << ... | test_heuristic.rs:70:22:70:62 | ... ^ ... | provenance | MaD:10 |
-| test_heuristic.rs:70:34:70:35 | 32 | test_heuristic.rs:70:23:70:35 | ... << ... | provenance | MaD:11 |
-| test_heuristic.rs:70:41:70:61 | ... & ... | test_heuristic.rs:70:22:70:62 | ... ^ ... | provenance | MaD:10 |
-| test_heuristic.rs:70:52:70:61 | 0xFFFFFFFF | test_heuristic.rs:70:41:70:61 | ... & ... | provenance | MaD:9 |
+| test_cookie.rs:25:9:25:12 | str3 | test_cookie.rs:30:26:30:29 | str3 | provenance |  |
+| test_cookie.rs:25:16:29:5 | match ... { ... } | test_cookie.rs:25:9:25:12 | str3 | provenance |  |
+| test_cookie.rs:30:26:30:29 | str3 | test_cookie.rs:30:26:30:40 | str3.as_bytes() [&ref] | provenance | MaD:19 |
+| test_cookie.rs:30:26:30:40 | str3.as_bytes() [&ref] | test_cookie.rs:30:26:30:40 | str3.as_bytes() | provenance | Sink:MaD:6 |
+| test_cookie.rs:33:9:33:14 | array4 | test_cookie.rs:38:27:38:32 | array4 | provenance |  |
+| test_cookie.rs:33:27:37:5 | [...] | test_cookie.rs:33:9:33:14 | array4 | provenance |  |
+| test_cookie.rs:38:26:38:32 | &array4 [&ref] | test_cookie.rs:38:26:38:32 | &array4 | provenance | Sink:MaD:6 |
+| test_cookie.rs:38:27:38:32 | array4 | test_cookie.rs:38:26:38:32 | &array4 [&ref] | provenance |  |
+| test_cookie.rs:54:9:54:14 | array2 | test_cookie.rs:58:34:58:39 | array2 | provenance | Sink:MaD:2 |
+| test_cookie.rs:54:18:54:37 | ...::from(...) | test_cookie.rs:54:9:54:14 | array2 | provenance |  |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:18:54:37 | ...::from(...) | provenance | MaD:12 |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:18:54:37 | ...::from(...) | provenance | MaD:13 |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:18:54:37 | ...::from(...) | provenance | MaD:14 |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:18:54:37 | ...::from(...) | provenance | MaD:15 |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | test_cookie.rs:54:18:54:37 | ...::from(...) | provenance | MaD:16 |
+| test_cookie.rs:65:9:65:14 | array3 [element] | test_cookie.rs:69:34:69:39 | array3 | provenance | Sink:MaD:2 |
+| test_cookie.rs:65:23:65:25 | 0u8 | test_cookie.rs:65:23:65:29 | ...::from_elem(...) [element] | provenance | MaD:21 |
+| test_cookie.rs:65:23:65:29 | ...::from_elem(...) [element] | test_cookie.rs:65:9:65:14 | array3 [element] | provenance |  |
+| test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | provenance |  |
+| test_heuristic.rs:39:25:39:59 | ... as u64 | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | provenance |  |
+| test_heuristic.rs:39:62:40:33 | static MY_STATIC_3 | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | provenance |  |
+| test_heuristic.rs:40:27:40:32 | 0xFFFF | test_heuristic.rs:39:62:40:33 | static MY_STATIC_3 | provenance |  |
+| test_heuristic.rs:49:9:49:16 | const_iv [&ref] | test_heuristic.rs:50:41:50:48 | const_iv | provenance |  |
+| test_heuristic.rs:49:30:49:38 | &... [&ref] | test_heuristic.rs:49:9:49:16 | const_iv [&ref] | provenance |  |
+| test_heuristic.rs:49:31:49:38 | [0u8; 16] | test_heuristic.rs:49:30:49:38 | &... [&ref] | provenance |  |
+| test_heuristic.rs:69:20:69:27 | [0u8; 16] | test_heuristic.rs:69:19:69:27 | &... | provenance |  |
+| test_heuristic.rs:70:31:70:38 | [0u8; 16] | test_heuristic.rs:70:30:70:38 | &... | provenance |  |
+| test_heuristic.rs:86:29:86:32 | 1u64 | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | provenance |  |
+| test_heuristic.rs:88:29:88:33 | ... + ... | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | provenance |  |
 models
-| 1 | Sink: <_ as crypto_common::KeyInit>::new_from_slice; Argument[0]; credentials-key |
+| 1 | Sink: <aead::Aead>::encrypt; Argument[0]; credentials-nonce |
 | 2 | Sink: <biscotti::crypto::master::Key>::from; Argument[0]; credentials-key |
 | 3 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyInit>::new; Argument[0]; credentials-key |
 | 4 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyIvInit>::new; Argument[0]; credentials-key |
 | 5 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyIvInit>::new; Argument[1]; credentials-iv |
 | 6 | Sink: <cookie::secure::key::Key>::from; Argument[0].Reference; credentials-key |
-| 7 | Source: core::mem::zeroed; ReturnValue.Element; constant-source |
-| 8 | Summary: <_ as core::ops::arith::Add>::add; Argument[self,0]; ReturnValue; taint |
-| 9 | Summary: <_ as core::ops::bit::BitAnd>::bitand; Argument[self,0]; ReturnValue; taint |
-| 10 | Summary: <_ as core::ops::bit::BitXor>::bitxor; Argument[self,0]; ReturnValue; taint |
-| 11 | Summary: <_ as core::ops::bit::Shl>::shl; Argument[self,0]; ReturnValue; taint |
+| 7 | Sink: <crypto_common::KeyInit>::new; Argument[0]; credentials-key |
+| 8 | Sink: <crypto_common::KeyInit>::new_from_slice; Argument[0]; credentials-key |
+| 9 | Sink: <crypto_common::KeyIvInit>::new; Argument[0]; credentials-key |
+| 10 | Sink: <crypto_common::KeyIvInit>::new; Argument[1]; credentials-iv |
+| 11 | Source: core::mem::zeroed; ReturnValue.Element; constant-source |
 | 12 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0].Field[alloc::borrow::Cow::Owned(0)]; ReturnValue; value |
 | 13 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0].Field[alloc::bstr::ByteString(0)]; ReturnValue; value |
 | 14 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0].Field[alloc::collections::binary_heap::BinaryHeap::data]; ReturnValue; value |
 | 15 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0].Field[alloc::string::String::vec]; ReturnValue; value |
 | 16 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0]; ReturnValue; taint |
-| 17 | Summary: <generic_array::GenericArray>::from_slice; Argument[0].Reference; ReturnValue.Reference; value |
-| 18 | Summary: alloc::vec::from_elem; Argument[0]; ReturnValue.Element; value |
+| 17 | Summary: <core::convert::Into>::into; Argument[self].Element; ReturnValue.Element; taint |
+| 18 | Summary: <core::convert::Into>::into; Argument[self].Reference.Element; ReturnValue.Element; taint |
+| 19 | Summary: <core::str>::as_bytes; Argument[self].Reference; ReturnValue.Reference; taint |
+| 20 | Summary: <generic_array::GenericArray>::from_slice; Argument[0].Reference; ReturnValue.Reference; value |
+| 21 | Summary: alloc::vec::from_elem; Argument[0]; ReturnValue.Element; value |
 nodes
 | test_cipher.rs:18:9:18:14 | const1 [&ref] | semmle.label | const1 [&ref] |
 | test_cipher.rs:18:28:18:36 | &... [&ref] | semmle.label | &... [&ref] |
 | test_cipher.rs:18:29:18:36 | [0u8; 16] | semmle.label | [0u8; 16] |
-| test_cipher.rs:19:30:19:47 | ...::new | semmle.label | ...::new |
+| test_cipher.rs:19:49:19:79 | ...::from_slice(...) | semmle.label | ...::from_slice(...) |
 | test_cipher.rs:19:49:19:79 | ...::from_slice(...) [&ref] | semmle.label | ...::from_slice(...) [&ref] |
 | test_cipher.rs:19:73:19:78 | const1 [&ref] | semmle.label | const1 [&ref] |
 | test_cipher.rs:25:9:25:14 | const4 [&ref] | semmle.label | const4 [&ref] |
 | test_cipher.rs:25:28:25:36 | &... [&ref] | semmle.label | &... [&ref] |
 | test_cipher.rs:25:29:25:36 | [0u8; 16] | semmle.label | [0u8; 16] |
-| test_cipher.rs:26:30:26:40 | ...::new | semmle.label | ...::new |
+| test_cipher.rs:26:42:26:72 | ...::from_slice(...) | semmle.label | ...::from_slice(...) |
 | test_cipher.rs:26:42:26:72 | ...::from_slice(...) [&ref] | semmle.label | ...::from_slice(...) [&ref] |
 | test_cipher.rs:26:66:26:71 | const4 [&ref] | semmle.label | const4 [&ref] |
 | test_cipher.rs:29:9:29:14 | const5 [&ref] | semmle.label | const5 [&ref] |
 | test_cipher.rs:29:28:29:36 | &... [&ref] | semmle.label | &... [&ref] |
 | test_cipher.rs:29:29:29:36 | [0u8; 16] | semmle.label | [0u8; 16] |
-| test_cipher.rs:30:30:30:40 | ...::new | semmle.label | ...::new |
+| test_cipher.rs:30:72:30:101 | ...::from_slice(...) | semmle.label | ...::from_slice(...) |
 | test_cipher.rs:30:72:30:101 | ...::from_slice(...) [&ref] | semmle.label | ...::from_slice(...) [&ref] |
 | test_cipher.rs:30:95:30:100 | const5 [&ref] | semmle.label | const5 [&ref] |
 | test_cipher.rs:37:9:37:14 | const7 | semmle.label | const7 |
 | test_cipher.rs:37:27:37:74 | [...] | semmle.label | [...] |
-| test_cipher.rs:38:30:38:47 | ...::new | semmle.label | ...::new |
+| test_cipher.rs:38:49:38:80 | ...::from_slice(...) | semmle.label | ...::from_slice(...) |
 | test_cipher.rs:38:49:38:80 | ...::from_slice(...) [&ref] | semmle.label | ...::from_slice(...) [&ref] |
 | test_cipher.rs:38:73:38:79 | &const7 [&ref] | semmle.label | &const7 [&ref] |
 | test_cipher.rs:38:74:38:79 | const7 | semmle.label | const7 |
 | test_cipher.rs:41:9:41:14 | const8 [&ref] | semmle.label | const8 [&ref] |
 | test_cipher.rs:41:28:41:76 | &... [&ref] | semmle.label | &... [&ref] |
 | test_cipher.rs:41:29:41:76 | [...] | semmle.label | [...] |
-| test_cipher.rs:42:30:42:47 | ...::new | semmle.label | ...::new |
+| test_cipher.rs:42:49:42:79 | ...::from_slice(...) | semmle.label | ...::from_slice(...) |
 | test_cipher.rs:42:49:42:79 | ...::from_slice(...) [&ref] | semmle.label | ...::from_slice(...) [&ref] |
 | test_cipher.rs:42:73:42:78 | const8 [&ref] | semmle.label | const8 [&ref] |
 | test_cipher.rs:50:9:50:15 | const10 [element] | semmle.label | const10 [element] |
-| test_cipher.rs:50:37:50:52 | ...::zeroed | semmle.label | ...::zeroed |
-| test_cipher.rs:50:37:50:54 | ...::zeroed(...) [element] | semmle.label | ...::zeroed(...) [element] |
-| test_cipher.rs:51:31:51:48 | ...::new | semmle.label | ...::new |
+| test_cipher.rs:50:37:50:54 | ...::zeroed(...) | semmle.label | ...::zeroed(...) |
+| test_cipher.rs:51:50:51:82 | ...::from_slice(...) | semmle.label | ...::from_slice(...) |
 | test_cipher.rs:51:50:51:82 | ...::from_slice(...) [&ref, element] | semmle.label | ...::from_slice(...) [&ref, element] |
 | test_cipher.rs:51:74:51:81 | &const10 [&ref, element] | semmle.label | &const10 [&ref, element] |
 | test_cipher.rs:51:75:51:81 | const10 [element] | semmle.label | const10 [element] |
+| test_cipher.rs:66:9:66:14 | const2 [&ref] | semmle.label | const2 [&ref] |
+| test_cipher.rs:66:18:66:26 | &... [&ref] | semmle.label | &... [&ref] |
+| test_cipher.rs:66:19:66:26 | [0u8; 32] | semmle.label | [0u8; 32] |
+| test_cipher.rs:67:35:67:40 | const2 [&ref] | semmle.label | const2 [&ref] |
+| test_cipher.rs:67:35:67:47 | const2.into() | semmle.label | const2.into() |
+| test_cipher.rs:67:35:67:47 | const2.into() [element] | semmle.label | const2.into() [element] |
 | test_cipher.rs:73:9:73:14 | const2 [&ref] | semmle.label | const2 [&ref] |
 | test_cipher.rs:73:18:73:26 | &... [&ref] | semmle.label | &... [&ref] |
 | test_cipher.rs:73:19:73:26 | [0u8; 32] | semmle.label | [0u8; 32] |
-| test_cipher.rs:74:23:74:44 | ...::new_from_slice | semmle.label | ...::new_from_slice |
-| test_cipher.rs:74:46:74:51 | const2 [&ref] | semmle.label | const2 [&ref] |
+| test_cipher.rs:74:46:74:51 | const2 | semmle.label | const2 |
+| test_cipher.rs:80:9:80:14 | const6 [&ref] | semmle.label | const6 [&ref] |
+| test_cipher.rs:80:18:80:26 | &... [&ref] | semmle.label | &... [&ref] |
+| test_cipher.rs:80:19:80:26 | [0u8; 32] | semmle.label | [0u8; 32] |
+| test_cipher.rs:81:63:81:68 | const6 [&ref] | semmle.label | const6 [&ref] |
+| test_cipher.rs:81:63:81:75 | const6.into() | semmle.label | const6.into() |
+| test_cipher.rs:81:63:81:75 | const6.into() [element] | semmle.label | const6.into() [element] |
+| test_cipher.rs:84:9:84:14 | const7 [&ref] | semmle.label | const7 [&ref] |
+| test_cipher.rs:84:18:84:27 | &... [&ref] | semmle.label | &... [&ref] |
+| test_cipher.rs:84:19:84:27 | [0u8; 16] | semmle.label | [0u8; 16] |
+| test_cipher.rs:85:75:85:80 | const7 [&ref] | semmle.label | const7 [&ref] |
+| test_cipher.rs:85:75:85:87 | const7.into() | semmle.label | const7.into() |
+| test_cipher.rs:85:75:85:87 | const7.into() [element] | semmle.label | const7.into() [element] |
+| test_cipher.rs:94:9:94:12 | key9 [&ref] | semmle.label | key9 [&ref] |
+| test_cipher.rs:94:23:94:40 | "1234567890123456" | semmle.label | "1234567890123456" |
+| test_cipher.rs:94:23:94:51 | "1234567890123456".as_bytes() [&ref] | semmle.label | "1234567890123456".as_bytes() [&ref] |
+| test_cipher.rs:95:63:95:66 | key9 [&ref] | semmle.label | key9 [&ref] |
+| test_cipher.rs:95:63:95:73 | key9.into() | semmle.label | key9.into() |
+| test_cipher.rs:95:63:95:73 | key9.into() [element] | semmle.label | key9.into() [element] |
+| test_cipher.rs:124:9:124:12 | key2 | semmle.label | key2 |
+| test_cipher.rs:124:25:124:30 | [0; 32] | semmle.label | [0; 32] |
+| test_cipher.rs:125:9:125:14 | nonce2 | semmle.label | nonce2 |
+| test_cipher.rs:125:18:125:23 | [0; 12] | semmle.label | [0; 12] |
+| test_cipher.rs:126:34:126:45 | &... | semmle.label | &... |
+| test_cipher.rs:126:34:126:45 | &... [&ref, element] | semmle.label | &... [&ref, element] |
+| test_cipher.rs:126:35:126:38 | key2 | semmle.label | key2 |
+| test_cipher.rs:126:35:126:45 | key2.into() [element] | semmle.label | key2.into() [element] |
+| test_cipher.rs:127:29:127:42 | &... | semmle.label | &... |
+| test_cipher.rs:127:29:127:42 | &... [&ref, element] | semmle.label | &... [&ref, element] |
+| test_cipher.rs:127:30:127:35 | nonce2 | semmle.label | nonce2 |
+| test_cipher.rs:127:30:127:42 | nonce2.into() [element] | semmle.label | nonce2.into() [element] |
+| test_cipher.rs:129:9:129:18 | key3_array [&ref] | semmle.label | key3_array [&ref] |
+| test_cipher.rs:129:32:129:41 | &... [&ref] | semmle.label | &... [&ref] |
+| test_cipher.rs:129:33:129:41 | [0xff; 32] | semmle.label | [0xff; 32] |
+| test_cipher.rs:130:9:130:12 | key3 [&ref] | semmle.label | key3 [&ref] |
+| test_cipher.rs:130:16:130:55 | ...::from_slice(...) [&ref] | semmle.label | ...::from_slice(...) [&ref] |
+| test_cipher.rs:130:45:130:54 | key3_array [&ref] | semmle.label | key3_array [&ref] |
+| test_cipher.rs:131:9:131:14 | nonce3 | semmle.label | nonce3 |
+| test_cipher.rs:131:27:131:35 | [0xff; 12] | semmle.label | [0xff; 12] |
+| test_cipher.rs:132:34:132:38 | &key3 | semmle.label | &key3 |
+| test_cipher.rs:132:34:132:38 | &key3 [&ref, &ref] | semmle.label | &key3 [&ref, &ref] |
+| test_cipher.rs:132:35:132:38 | key3 [&ref] | semmle.label | key3 [&ref] |
+| test_cipher.rs:133:29:133:42 | &... | semmle.label | &... |
+| test_cipher.rs:133:29:133:42 | &... [&ref, element] | semmle.label | &... [&ref, element] |
+| test_cipher.rs:133:30:133:35 | nonce3 | semmle.label | nonce3 |
+| test_cipher.rs:133:30:133:42 | nonce3.into() [element] | semmle.label | nonce3.into() [element] |
 | test_cookie.rs:17:9:17:14 | array1 | semmle.label | array1 |
 | test_cookie.rs:17:28:17:34 | [0; 64] | semmle.label | [0; 64] |
-| test_cookie.rs:18:16:18:24 | ...::from | semmle.label | ...::from |
+| test_cookie.rs:18:26:18:32 | &array1 | semmle.label | &array1 |
 | test_cookie.rs:18:26:18:32 | &array1 [&ref] | semmle.label | &array1 [&ref] |
 | test_cookie.rs:18:27:18:32 | array1 | semmle.label | array1 |
 | test_cookie.rs:21:9:21:14 | array2 | semmle.label | array2 |
 | test_cookie.rs:21:28:21:34 | [0; 64] | semmle.label | [0; 64] |
-| test_cookie.rs:22:16:22:24 | ...::from | semmle.label | ...::from |
+| test_cookie.rs:22:26:22:32 | &array2 | semmle.label | &array2 |
 | test_cookie.rs:22:26:22:32 | &array2 [&ref] | semmle.label | &array2 [&ref] |
 | test_cookie.rs:22:27:22:32 | array2 | semmle.label | array2 |
-| test_cookie.rs:38:9:38:14 | array2 | semmle.label | array2 |
-| test_cookie.rs:38:18:38:37 | ...::from(...) | semmle.label | ...::from(...) |
-| test_cookie.rs:38:28:38:36 | [0u8; 64] | semmle.label | [0u8; 64] |
-| test_cookie.rs:42:14:42:32 | ...::from | semmle.label | ...::from |
-| test_cookie.rs:42:34:42:39 | array2 | semmle.label | array2 |
-| test_cookie.rs:49:9:49:14 | array3 [element] | semmle.label | array3 [element] |
-| test_cookie.rs:49:23:49:25 | 0u8 | semmle.label | 0u8 |
-| test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | semmle.label | ...::from_elem(...) [element] |
-| test_cookie.rs:53:14:53:32 | ...::from | semmle.label | ...::from |
-| test_cookie.rs:53:34:53:39 | array3 [element] | semmle.label | array3 [element] |
-| test_heuristic.rs:44:9:44:16 | const_iv [&ref] | semmle.label | const_iv [&ref] |
-| test_heuristic.rs:44:30:44:38 | &... [&ref] | semmle.label | &... [&ref] |
-| test_heuristic.rs:44:31:44:38 | [0u8; 16] | semmle.label | [0u8; 16] |
-| test_heuristic.rs:45:41:45:48 | const_iv | semmle.label | const_iv |
-| test_heuristic.rs:63:30:63:37 | "secret" | semmle.label | "secret" |
-| test_heuristic.rs:64:19:64:27 | &... | semmle.label | &... |
-| test_heuristic.rs:64:20:64:27 | [0u8; 16] | semmle.label | [0u8; 16] |
-| test_heuristic.rs:65:30:65:38 | &... | semmle.label | &... |
-| test_heuristic.rs:65:31:65:38 | [0u8; 16] | semmle.label | [0u8; 16] |
-| test_heuristic.rs:67:22:67:22 | 0 | semmle.label | 0 |
-| test_heuristic.rs:69:22:69:32 | ... + ... | semmle.label | ... + ... |
-| test_heuristic.rs:69:32:69:32 | 1 | semmle.label | 1 |
-| test_heuristic.rs:70:22:70:62 | ... ^ ... | semmle.label | ... ^ ... |
-| test_heuristic.rs:70:23:70:35 | ... << ... | semmle.label | ... << ... |
-| test_heuristic.rs:70:34:70:35 | 32 | semmle.label | 32 |
-| test_heuristic.rs:70:41:70:61 | ... & ... | semmle.label | ... & ... |
-| test_heuristic.rs:70:52:70:61 | 0xFFFFFFFF | semmle.label | 0xFFFFFFFF |
+| test_cookie.rs:25:9:25:12 | str3 | semmle.label | str3 |
+| test_cookie.rs:25:16:29:5 | match ... { ... } | semmle.label | match ... { ... } |
+| test_cookie.rs:30:26:30:29 | str3 | semmle.label | str3 |
+| test_cookie.rs:30:26:30:40 | str3.as_bytes() | semmle.label | str3.as_bytes() |
+| test_cookie.rs:30:26:30:40 | str3.as_bytes() [&ref] | semmle.label | str3.as_bytes() [&ref] |
+| test_cookie.rs:33:9:33:14 | array4 | semmle.label | array4 |
+| test_cookie.rs:33:27:37:5 | [...] | semmle.label | [...] |
+| test_cookie.rs:38:26:38:32 | &array4 | semmle.label | &array4 |
+| test_cookie.rs:38:26:38:32 | &array4 [&ref] | semmle.label | &array4 [&ref] |
+| test_cookie.rs:38:27:38:32 | array4 | semmle.label | array4 |
+| test_cookie.rs:54:9:54:14 | array2 | semmle.label | array2 |
+| test_cookie.rs:54:18:54:37 | ...::from(...) | semmle.label | ...::from(...) |
+| test_cookie.rs:54:28:54:36 | [0u8; 64] | semmle.label | [0u8; 64] |
+| test_cookie.rs:58:34:58:39 | array2 | semmle.label | array2 |
+| test_cookie.rs:65:9:65:14 | array3 [element] | semmle.label | array3 [element] |
+| test_cookie.rs:65:23:65:25 | 0u8 | semmle.label | 0u8 |
+| test_cookie.rs:65:23:65:29 | ...::from_elem(...) [element] | semmle.label | ...::from_elem(...) [element] |
+| test_cookie.rs:69:34:69:39 | array3 | semmle.label | array3 |
+| test_heuristic.rs:38:25:38:30 | 0xFFFF | semmle.label | 0xFFFF |
+| test_heuristic.rs:39:25:39:59 | ... as u64 | semmle.label | ... as u64 |
+| test_heuristic.rs:39:62:40:33 | static MY_STATIC_3 | semmle.label | static MY_STATIC_3 |
+| test_heuristic.rs:40:27:40:32 | 0xFFFF | semmle.label | 0xFFFF |
+| test_heuristic.rs:49:9:49:16 | const_iv [&ref] | semmle.label | const_iv [&ref] |
+| test_heuristic.rs:49:30:49:38 | &... [&ref] | semmle.label | &... [&ref] |
+| test_heuristic.rs:49:31:49:38 | [0u8; 16] | semmle.label | [0u8; 16] |
+| test_heuristic.rs:50:41:50:48 | const_iv | semmle.label | const_iv |
+| test_heuristic.rs:68:30:68:37 | "secret" | semmle.label | "secret" |
+| test_heuristic.rs:69:19:69:27 | &... | semmle.label | &... |
+| test_heuristic.rs:69:20:69:27 | [0u8; 16] | semmle.label | [0u8; 16] |
+| test_heuristic.rs:70:30:70:38 | &... | semmle.label | &... |
+| test_heuristic.rs:70:31:70:38 | [0u8; 16] | semmle.label | [0u8; 16] |
+| test_heuristic.rs:72:22:72:22 | 0 | semmle.label | 0 |
+| test_heuristic.rs:76:22:76:27 | ... << ... | semmle.label | ... << ... |
+| test_heuristic.rs:78:22:78:29 | ...::MAX | semmle.label | ...::MAX |
+| test_heuristic.rs:79:22:79:33 | ... / ... | semmle.label | ... / ... |
+| test_heuristic.rs:81:22:81:31 | MY_CONST_1 | semmle.label | MY_CONST_1 |
+| test_heuristic.rs:82:22:82:31 | MY_CONST_2 | semmle.label | MY_CONST_2 |
+| test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | semmle.label | MY_STATIC_3 |
+| test_heuristic.rs:86:29:86:32 | 1u64 | semmle.label | 1u64 |
+| test_heuristic.rs:87:22:87:31 | MY_CONST_5 | semmle.label | MY_CONST_5 |
+| test_heuristic.rs:88:29:88:33 | ... + ... | semmle.label | ... + ... |
+| test_heuristic.rs:89:22:89:31 | MY_CONST_6 | semmle.label | MY_CONST_6 |
 subpaths

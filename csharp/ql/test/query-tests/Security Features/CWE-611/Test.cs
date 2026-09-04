@@ -8,7 +8,7 @@ public class XMLHandler : IHttpHandler
     public void ProcessRequest(HttpContext ctx)
     {
         // BAD: XmlTextReader is insecure with these options, using user-provided data
-        XmlTextReader reader = new XmlTextReader(ctx.Request.QueryString["document"]) { DtdProcessing = DtdProcessing.Parse, XmlResolver = new XmlUrlResolver() };
+        XmlTextReader reader = new XmlTextReader(ctx.Request.QueryString["document"]) { DtdProcessing = DtdProcessing.Parse, XmlResolver = new XmlUrlResolver() }; // $ Alert[cs/xml/insecure-dtd-handling]=r1 $ Alert[cs/xml/insecure-dtd-handling]=r1 $ Alert[cs/insecure-xml-read]
     }
 
     public void insecureXMLBad(string content)
@@ -18,10 +18,10 @@ public class XMLHandler : IHttpHandler
         settings.XmlResolver = new XmlUrlResolver();
 
         // BAD: insecure settings
-        XmlReader reader1 = XmlReader.Create(content, settings);
+        XmlReader reader1 = XmlReader.Create(content, settings); // $ Alert[cs/insecure-xml-read]
 
         // BAD: XmlTextReader is insecure with these options
-        XmlTextReader reader2 = new XmlTextReader(content) { DtdProcessing = DtdProcessing.Parse, XmlResolver = new XmlUrlResolver() };
+        XmlTextReader reader2 = new XmlTextReader(content) { DtdProcessing = DtdProcessing.Parse, XmlResolver = new XmlUrlResolver() }; // $ Alert[cs/insecure-xml-read]
     }
 
     public void insecureXMLGood(string content)

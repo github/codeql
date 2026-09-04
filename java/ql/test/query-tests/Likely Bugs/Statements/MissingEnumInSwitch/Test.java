@@ -5,32 +5,32 @@ public class Test {
   }
 
   public void use(MyEnum e) {
-    switch(e) {
+    switch(e) { // $ Alert
       case A: break;
     }
-    switch(e) {
+    switch(e) { // $ Alert
       case A: break;
       case B: break;
     }
-    switch(e) {
+    switch(e) { // $ Alert
       case A: break;
       case B: break;
       case C: break;
     }
-    switch(e) {
+    switch(e) { // $ Alert
       case A: break;
       case B: break;
       case C: break;
       case D: break;
     }
-    switch(e) {
+    switch(e) { // $ Alert
       case A: break;
       case B: break;
       case C: break;
       case D: break;
       case E: break;
     }
-    switch(e) {
+    switch(e) { // $ Alert
       case A: break;
       case B: break;
       case C: break;
@@ -53,7 +53,7 @@ public class Test {
       case T: break;
       case U: break;
     }
-    switch(e) {
+    switch(e) { // $ Alert
       case A: break;
       case B: break;
       case C: break;
@@ -77,7 +77,7 @@ public class Test {
       case U: break;
       case V: break;
     }
-    switch(e) {
+    switch(e) { // $ Alert
       case A: break;
       case B: break;
       case C: break;
@@ -102,7 +102,7 @@ public class Test {
       case V: break;
       case W: break;
     }
-    switch(e) {
+    switch(e) { // $ Alert
       case A: break;
       case B: break;
       case C: break;
@@ -128,7 +128,7 @@ public class Test {
       case W: break;
       case X: break;
     }
-    switch(e) {
+    switch(e) { // $ Alert
       case A: break;
       case B: break;
       case C: break;

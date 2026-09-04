@@ -384,20 +384,7 @@ module Ssa {
       inp = SsaImpl::phiHasInputFromBlock(this, bb)
     }
 
-    private string getSplitString() {
-      result = this.getBasicBlock().getFirstNode().(CfgNodes::AstCfgNode).getSplitsString()
-    }
-
-    override string toString() {
-      exists(string prefix |
-        prefix = "[" + this.getSplitString() + "] "
-        or
-        not exists(this.getSplitString()) and
-        prefix = ""
-      |
-        result = prefix + "phi"
-      )
-    }
+    override string toString() { result = "phi" }
 
     /*
      * The location of a phi node is the same as the location of the first node

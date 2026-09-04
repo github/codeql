@@ -5,14 +5,14 @@ using System.Xml;
 
 public class XMLInjectionHandler : IHttpHandler {
   public void ProcessRequest(HttpContext ctx) {
-    string employeeName = ctx.Request.QueryString["employeeName"];
+    string employeeName = ctx.Request.QueryString["employeeName"]; // $ Source=r1
 
     using (XmlWriter writer = XmlWriter.Create("employees.xml"))
     {
         writer.WriteStartDocument();
 
         // BAD: Insert user input directly into XML
-        writer.WriteRaw("<employee><name>" + employeeName + "</name></employee>");
+        writer.WriteRaw("<employee><name>" + employeeName + "</name></employee>"); // $ Alert=r1
 
         // GOOD: Escape user input before inserting into string
         writer.WriteRaw("<employee><name>" + SecurityElement.Escape(employeeName) + "</name></employee>");

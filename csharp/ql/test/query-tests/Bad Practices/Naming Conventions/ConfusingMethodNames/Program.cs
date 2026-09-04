@@ -1,6 +1,6 @@
 class C1
 {
-    int F() => 0;       // BAD: Confusing
+    int F() => 0;       // $ Alert // BAD: Confusing
     int f() => 0;
     int G() => 0;       // GOOD: Same name
     int G(int x) => x;

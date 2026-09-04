@@ -1,1 +1,2 @@
-queries/security/cwe-020/IncompleteUrlSubstringSanitization.ql
+query: queries/security/cwe-020/IncompleteUrlSubstringSanitization.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

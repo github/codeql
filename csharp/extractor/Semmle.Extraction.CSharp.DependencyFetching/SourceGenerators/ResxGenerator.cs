@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly string? sourceGeneratorFolder = null;
 
         public ResxGenerator(
-            FileProvider fileProvider,
+            IFileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
             ICompilationInfoContainer compilationInfoContainer,
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var nugetFolder = nugetPackageRestorer.TryRestore("Microsoft.CodeAnalysis.ResxSourceGenerator");
                 if (nugetFolder is not null)
                 {
-                    sourceGeneratorFolder = System.IO.Path.Combine(nugetFolder, "analyzers", "dotnet", "cs");
+                    sourceGeneratorFolder = System.IO.Path.Join(nugetFolder, "analyzers", "dotnet", "cs");
                 }
             }
             catch (Exception e)

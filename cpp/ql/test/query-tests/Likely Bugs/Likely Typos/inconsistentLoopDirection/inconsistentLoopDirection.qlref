@@ -1,1 +1,2 @@
-Likely Bugs/Likely Typos/inconsistentLoopDirection.ql
+query: Likely Bugs/Likely Typos/inconsistentLoopDirection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

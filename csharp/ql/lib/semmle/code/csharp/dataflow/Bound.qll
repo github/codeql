@@ -4,67 +4,31 @@
 overlay[local?]
 module;
 
-private import internal.rangeanalysis.BoundSpecific
+private import csharp as CS
+private import semmle.code.csharp.dataflow.SSA::Ssa
+private import semmle.code.csharp.dataflow.internal.rangeanalysis.ConstantUtils as CU
+private import semmle.code.csharp.dataflow.internal.rangeanalysis.RangeUtils as RU
+private import semmle.code.csharp.dataflow.internal.rangeanalysis.SsaUtils as SU
+private import codeql.rangeanalysis.Bound as SharedBound
 
-private newtype TBound =
-  TBoundZero() or
-  TBoundSsa(SsaVariable v) { v.getSourceVariable().getType() instanceof IntegralType } or
-  TBoundExpr(Expr e) {
-    interestingExprBound(e) and
-    not exists(SsaVariable v | e = v.getAUse())
-  }
+/** Provides C#-specific definitions for bounds. */
+private module BoundDefs implements SharedBound::BoundDefinitions<CS::Location> {
+  class Type = CS::Type;
 
-/**
- * A bound that may be inferred for an expression plus/minus an integer delta.
- */
-abstract class Bound extends TBound {
-  /** Gets a textual representation of this bound. */
-  abstract string toString();
+  class SsaVariable = SU::SsaVariable;
 
-  /** Gets an expression that equals this bound plus `delta`. */
-  abstract Expr getExpr(int delta);
+  class SsaSourceVariable = SourceVariable;
 
-  /** Gets an expression that equals this bound. */
-  Expr getExpr() { result = this.getExpr(0) }
+  class Expr = CS::ControlFlowNodes::ExprNode;
 
-  /** Gets the location of this bound. */
-  abstract Location getLocation();
+  class IntegralType = CS::IntegralType;
+
+  class ConstantIntegerExpr = CU::ConstantIntegerExpr;
+
+  /** Holds if `e` is a bound expression and it is not an SSA variable read. */
+  predicate interestingExprBound(Expr e) { CU::systemArrayLengthAccess(e.getExpr()) }
 }
 
-/**
- * The bound that corresponds to the integer 0. This is used to represent all
- * integer bounds as bounds are always accompanied by an added integer delta.
- */
-class ZeroBound extends Bound, TBoundZero {
-  override string toString() { result = "0" }
+module BoundImpl = SharedBound::Bound<CS::Location, BoundDefs>;
 
-  override Expr getExpr(int delta) { result.(ConstantIntegerExpr).getIntValue() = delta }
-
-  override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
-}
-
-/**
- * A bound corresponding to the value of an SSA variable.
- */
-class SsaBound extends Bound, TBoundSsa {
-  /** Gets the SSA variable that equals this bound. */
-  SsaVariable getSsa() { this = TBoundSsa(result) }
-
-  override string toString() { result = this.getSsa().toString() }
-
-  override Expr getExpr(int delta) { result = this.getSsa().getAUse() and delta = 0 }
-
-  override Location getLocation() { result = this.getSsa().getLocation() }
-}
-
-/**
- * A bound that corresponds to the value of a specific expression that might be
- * interesting, but isn't otherwise represented by the value of an SSA variable.
- */
-class ExprBound extends Bound, TBoundExpr {
-  override string toString() { result = this.getExpr().toString() }
-
-  override Expr getExpr(int delta) { this = TBoundExpr(result) and delta = 0 }
-
-  override Location getLocation() { result = this.getExpr().getLocation() }
-}
+import BoundImpl

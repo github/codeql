@@ -11,7 +11,7 @@ void workFunction_0(char *s) {
   while(intIndex > 2)
   {
     buf[intIndex] = 1;
-    int intIndex; // BAD
+    int intIndex; // $ Alert // BAD
     intIndex--;
   }
   intIndex = 10;

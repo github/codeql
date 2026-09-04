@@ -21,14 +21,14 @@ int strcmp(const char *s1, const char *s2);
 
 static void bad1(wchar_t *wstr) {
     // BAD -- Not allocating space for '\0' terminator
-    wchar_t *wbuffer = (wchar_t *)malloc(wcslen(wstr));
+    wchar_t *wbuffer = (wchar_t *)malloc(wcslen(wstr)); // $ Alert
     wcscpy(wbuffer, wstr);
     free(wbuffer);
 }
 
 static void bad2(wchar_t *wstr) {
     // BAD -- Not allocating space for '\0' terminator
-    wchar_t *wbuffer = (wchar_t *)malloc(wcslen(wstr) * sizeof(wchar_t));
+    wchar_t *wbuffer = (wchar_t *)malloc(wcslen(wstr) * sizeof(wchar_t)); // $ Alert
     wcscpy(wbuffer, wstr);
     free(wbuffer);
 }
@@ -42,7 +42,7 @@ static void good1(wchar_t *wstr) {
 
 static void bad3(char *str) {
     // BAD -- zero-termination proved by sprintf (as destination)
-    char *buffer = (char *)malloc(strlen(str));
+    char *buffer = (char *)malloc(strlen(str)); // $ Alert
     sprintf(buffer, "%s", str);
     free(buffer);
 }
@@ -52,7 +52,7 @@ void wdecode(wchar_t *dest, wchar_t *src);
 
 static void bad4(char *str) {
     // BAD -- zero-termination proved by wprintf (as parameter)
-    char *buffer = (char *)malloc(strlen(str));
+    char *buffer = (char *)malloc(strlen(str)); // $ Alert
     decode(buffer, str);
     wprintf(L"%s", buffer);
     free(buffer);
@@ -60,7 +60,7 @@ static void bad4(char *str) {
 
 static void bad5(char *str) {
     // BAD -- zero-termination proved by strcat (as destination)
-    char *buffer = (char *)malloc(strlen(str));
+    char *buffer = (char *)malloc(strlen(str)); // $ Alert
     buffer[0] = 0;
     strcat(buffer, str);
     free(buffer);
@@ -68,7 +68,7 @@ static void bad5(char *str) {
 
 static void bad6(char *str, char *dest) {
     // BAD -- zero-termination proved by strcat (as source)
-    char *buffer = (char *)malloc(strlen(str));
+    char *buffer = (char *)malloc(strlen(str)); // $ Alert
     decode(buffer, str);
     strcat(dest, buffer);
     free(buffer);
@@ -76,7 +76,7 @@ static void bad6(char *str, char *dest) {
 
 static void bad7(char *str, char *str2) {
     // BAD -- zero-termination proved by strcmp
-    char *buffer = (char *)malloc(strlen(str));
+    char *buffer = (char *)malloc(strlen(str)); // $ Alert
     decode(buffer, str);
     if (strcmp(buffer, str2) == 0) {
         // ...
@@ -86,7 +86,7 @@ static void bad7(char *str, char *str2) {
 
 static void bad8(wchar_t *str) {
     // BAD -- zero-termination proved by wcslen
-    wchar_t *wbuffer = (wchar_t *)malloc(wcslen(str));
+    wchar_t *wbuffer = (wchar_t *)malloc(wcslen(str)); // $ Alert
     wdecode(wbuffer, str);
     if (wcslen(wbuffer) == 0) {
         // ...
@@ -103,7 +103,7 @@ static void good2(char *str, char *dest) {
 
 static void bad9(wchar_t *wstr) {
     // BAD -- using new
-    wchar_t *wbuffer = new wchar_t[wcslen(wstr)];
+    wchar_t *wbuffer = new wchar_t[wcslen(wstr)]; // $ Alert
     wcscpy(wbuffer, wstr);
     delete wbuffer;
 }

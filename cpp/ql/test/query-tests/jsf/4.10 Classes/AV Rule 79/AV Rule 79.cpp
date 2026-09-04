@@ -2,7 +2,7 @@
 // library
 typedef unsigned int size_t;
 void *malloc(size_t size);
-void *calloc(size_t nmemb, size_t size); 
+void *calloc(size_t nmemb, size_t size);
 void *realloc(void *ptr, size_t size);
 void free(void* ptr);
 
@@ -43,25 +43,25 @@ public:
 	MyClass()
 	{
 		myPtr1 = new int; // GOOD
-		myPtr2 = new int; // BAD: not deleted in destructor
+		myPtr2 = new int; // $ Alert // BAD: not deleted in destructor
 		myPtr3 = (int *)malloc(sizeof(int)); // GOOD
-		myPtr4 = (int *)malloc(sizeof(int)); // BAD: not freed in destructor
-		myPtr5 = new int; // BAD: deleted in close but not in destructor
-		myPtr6 = (int *)malloc(sizeof(int)); // BAD: freed in close but not in destructor
+		myPtr4 = (int *)malloc(sizeof(int)); // $ Alert // BAD: not freed in destructor
+		myPtr5 = new int; // $ Alert // BAD: deleted in close but not in destructor
+		myPtr6 = (int *)malloc(sizeof(int)); // $ Alert // BAD: freed in close but not in destructor
 
 		myAutoPtr = new int; // GOOD
 
 		myFile1 = fopen("file1.txt", "rt"); // GOOD
-		myFile2 = fopen("file2.txt", "rt"); // BAD: not closed in destructor
+		myFile2 = fopen("file2.txt", "rt"); // $ Alert // BAD: not closed in destructor
 
-		myArray1 = (int *)calloc(100, sizeof(int)); // BAD: not freed in destructor
-		myArray2 = new int[100]; // BAD: not deleted in destructor
+		myArray1 = (int *)calloc(100, sizeof(int)); // $ Alert // BAD: not freed in destructor
+		myArray2 = new int[100]; // $ Alert // BAD: not deleted in destructor
 		myArray3 = new int[100]; // GOOD: deleted in destructor
 
 		myPtr7 = (int*)realloc(0, sizeof(int)); // GOOD: freed below (assuming the realloc succeeds)
-		myPtr8 = (int*)realloc(myPtr7, sizeof(int)); // BAD: not freed in destructor
+		myPtr8 = (int*)realloc(myPtr7, sizeof(int)); // $ Alert // BAD: not freed in destructor
 	}
-	
+
 	~MyClass()
 	{
 		delete myPtr1;

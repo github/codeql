@@ -19,7 +19,7 @@ class Test
         for (int i=0; i<10; ++i)
         {
             // BAD: considered to be a different condition
-            for (; 10>i; ++i)
+            for (; 10>i; ++i) // $ Alert
             {
                 Console.WriteLine(i);
             }
@@ -31,7 +31,7 @@ class Test
         for (int i=0; i<10; ++i)
         {
             // BAD: different condition
-            for (; i<9; ++i)
+            for (; i<9; ++i) // $ Alert
             {
                 Console.WriteLine(i);
             }
@@ -43,7 +43,7 @@ class Test
         for (int i=0; i<10; ++i)
         {
             // BAD: different condition
-            for (; i<=10; ++i)
+            for (; i<=10; ++i) // $ Alert
             {
                 Console.WriteLine(i);
             }
@@ -54,7 +54,7 @@ class Test
     {
         for (int i=0; i<10; ++i)
         {
-            for (; i<10; ++i)
+            for (; i<10; ++i) // $ Alert
             {
             }
 

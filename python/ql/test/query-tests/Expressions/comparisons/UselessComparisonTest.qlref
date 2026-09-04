@@ -1,1 +1,2 @@
-Expressions/Comparisons/UselessComparisonTest.ql
+query: Expressions/Comparisons/UselessComparisonTest.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

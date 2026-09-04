@@ -14,21 +14,21 @@ namespace HardcodedSymmetricEncryptionKey
             var a = new AesCryptoServiceProvider();
 
             // BAD: explicit key assignment, hard-coded value
-            a.Key = new byte[] { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 };
+            a.Key = new byte[] { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 }; // $ Alert=r1
 
             var b = new AesCryptoServiceProvider()
             {
                 // BAD: explicit key assignment, hard-coded value
-                Key = new byte[] { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 }
+                Key = new byte[] { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 } // $ Alert=r2
             };
 
-            var c = new byte[] { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 };
+            var c = new byte[] { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 }; // $ Source=r3 Source=r4 Source=r5 Source=r6
             var d = c;
 
-            var byteArrayFromString = Encoding.UTF8.GetBytes("Hello, world: here is a very bad way to create a key");
+            var byteArrayFromString = Encoding.UTF8.GetBytes("Hello, world: here is a very bad way to create a key"); // $ Source=r7
 
             // BAD: key assignment via variable, from hard-coded value
-            a.Key = d;
+            a.Key = d; // $ Alert=r3 Alert=r4 Alert=r5 Alert=r6
 
             // GOOD (not really, but better than hard coding)
             a.Key = File.ReadAllBytes("secret.key");
@@ -65,7 +65,7 @@ namespace HardcodedSymmetricEncryptionKey
             {
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, aes.CreateDecryptor(password, IV), CryptoStreamMode.Write))
+                    using (CryptoStream cs = new CryptoStream(ms, aes.CreateDecryptor(password, IV), CryptoStreamMode.Write)) // $ Alert=r3 Alert=r4 Alert=r5 Alert=r6
                     {
                         cs.Write(cipherText, 0, cipherText.Length);
                     }
@@ -105,7 +105,7 @@ namespace HardcodedSymmetricEncryptionKey
             return new AesManaged()
             {
                 // BAD: assignment from parameter
-                Key = key
+                Key = key // $ Alert=r3 Alert=r4 Alert=r5 Alert=r6
             };
         }
 
@@ -118,7 +118,7 @@ namespace HardcodedSymmetricEncryptionKey
                 using (MemoryStream ms = new MemoryStream())
                 {
                     // BAD: flow of hardcoded key to CreateEncryptor constructor
-                    using (CryptoStream cs = new CryptoStream(ms, aes.CreateEncryptor(key, IV), CryptoStreamMode.Write))
+                    using (CryptoStream cs = new CryptoStream(ms, aes.CreateEncryptor(key, IV), CryptoStreamMode.Write)) // $ Alert=r3 Alert=r4 Alert=r5 Alert=r6 Alert=r7
                     {
                         cs.Write(rawPlaintext, 0, rawPlaintext.Length);
                     }

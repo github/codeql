@@ -1,1 +1,2 @@
-Language Abuse/UnusedPropertyValue.ql
+query: Language Abuse/UnusedPropertyValue.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,1 +1,2 @@
-Concurrency/LockedWait.ql
+query: Concurrency/LockedWait.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

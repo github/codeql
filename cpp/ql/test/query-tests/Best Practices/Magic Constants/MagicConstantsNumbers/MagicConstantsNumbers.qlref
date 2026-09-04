@@ -1,1 +1,2 @@
-Best Practices/Magic Constants/MagicConstantsNumbers.ql
+query: Best Practices/Magic Constants/MagicConstantsNumbers.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

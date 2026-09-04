@@ -5,7 +5,7 @@ class Bad
     public static void Main(string[] args)
     {
         var names = GetNames();
-        var list = (List<string>) names;
+        var list = (List<string>) names; // $ Alert
         list.Add("Eve");
     }
 

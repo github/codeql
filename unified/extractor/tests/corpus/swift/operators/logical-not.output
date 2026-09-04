@@ -1,0 +1,26 @@
+!a
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        prefixOperatorExpr
+          expression:
+            declReferenceExpr
+              baseName: identifier "a"
+          operator: prefixOperator "!"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        unary_expr
+          operand:
+            name_expr
+              identifier: identifier "a"
+          operator: prefix_operator "!"

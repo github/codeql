@@ -3,7 +3,7 @@ int test1(int i) {
   int *intPointer = intArray;
   // BAD: the offset is already automatically scaled by sizeof(int),
   // so this code will compute the wrong offset.
-  return *(intPointer + (i * sizeof(int)));
+  return *(intPointer + (i * sizeof(int))); // $ Alert
 }
 
 int test2(int i) {
@@ -11,7 +11,7 @@ int test2(int i) {
   int *intPointer = intArray;
   // BAD: the offset is already automatically scaled by sizeof(int),
   // so this code will compute the wrong offset.
-  return *(intPointer - (i * sizeof(int)));
+  return *(intPointer - (i * sizeof(int))); // $ Alert
 }
 
 int test3(int i) {
@@ -19,7 +19,7 @@ int test3(int i) {
   int *intPointer = intArray;
   // BAD: the offset is already automatically scaled by sizeof(int),
   // so this code will compute the wrong offset.
-  return *(intPointer + sizeof(int));
+  return *(intPointer + sizeof(int)); // $ Alert
 }
 
 int test4(int i) {
@@ -27,7 +27,7 @@ int test4(int i) {
   int *intPointer = intArray;
   // BAD: the offset is already automatically scaled by sizeof(int),
   // so this code will compute the wrong offset.
-  return *(intPointer - sizeof(int));
+  return *(intPointer - sizeof(int)); // $ Alert
 }
 
 int test5(int i, int j) {
@@ -35,7 +35,7 @@ int test5(int i, int j) {
   int *intPointer = intArray;
   // BAD: the offset is already automatically scaled by sizeof(int),
   // so this code will compute the wrong offset.
-  return *(intPointer + (i * sizeof(int) * j));
+  return *(intPointer + (i * sizeof(int) * j)); // $ Alert
 }
 
 void test6(int i) {
@@ -58,7 +58,7 @@ void test7(int i) {
   int v;
 
   v = *(intPointer + i); // GOOD
-  v = *(intPointer + (i * sizeof(int))); // BAD: scaled twice by sizeof(int)
+  v = *(intPointer + (i * sizeof(int))); // $ Alert // BAD: scaled twice by sizeof(int)
   v = *(charPointer + i); // GOOD (actually rather dubious, but this could be correct code)
   v = *(charPointer + (i * sizeof(int))); // GOOD
   v = *(int *)(voidPointer + i); // GOOD (actually rather dubious, but this could be correct code)
@@ -86,7 +86,7 @@ public:
     myIntsPointer((myInt *)malloc(sizeof(MyABC) * 2))
   {
     myChar *secondPtr = myCharsPointer + sizeof(MyABC); // GOOD
-    myInt *secondPtrInt = myIntsPointer + sizeof(MyABC); // BAD
+    myInt *secondPtrInt = myIntsPointer + sizeof(MyABC); // $ Alert // BAD
   }
 
 private:

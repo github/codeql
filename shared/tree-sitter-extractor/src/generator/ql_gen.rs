@@ -48,7 +48,7 @@ pub fn create_ast_node_class<'a>(
         Some(String::from("Gets a field or child node of this node.")),
         "getAFieldOrChild",
         false,
-        Some(ql::Type::Normal("AstNode")),
+        Some(ql::Type::Facade("AstNode")),
     );
     let get_parent = ql::Predicate {
         qldoc: Some(String::from("Gets the parent of this element.")),
@@ -56,7 +56,7 @@ pub fn create_ast_node_class<'a>(
         overridden: false,
         is_private: false,
         is_final: true,
-        return_type: Some(ql::Type::Normal("AstNode")),
+        return_type: Some(ql::Type::Facade("AstNode")),
         formal_parameters: vec![],
         body: ql::Expression::Pred(
             node_parent_table,
@@ -136,6 +136,9 @@ pub fn create_ast_node_class<'a>(
         qldoc: Some(String::from("The base class for all AST nodes")),
         name: "AstNode",
         is_abstract: false,
+        is_final: false,
+        is_private: false,
+        alias: None,
         supertypes: vec![ql::Type::At(ast_node)].into_iter().collect(),
         characteristic_predicate: None,
         predicates: vec![
@@ -187,7 +190,10 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
         qldoc: Some(String::from("A token.")),
         name: "Token",
         is_abstract: false,
-        supertypes: vec![ql::Type::At(token_type), ql::Type::Normal("AstNode")]
+        is_final: false,
+        is_private: false,
+        alias: None,
+        supertypes: vec![ql::Type::At(token_type), ql::Type::Facade("AstNode")]
             .into_iter()
             .collect(),
         characteristic_predicate: None,
@@ -195,6 +201,73 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
             get_value,
             to_string,
             create_get_a_primary_ql_class("Token", false),
+        ],
+    }
+}
+
+/// Creates the `TriviaToken` class. Trivia tokens (e.g. comments) are
+/// `extra` nodes preserved from the original parse tree even when the tree has
+/// been rewritten by a desugaring pass. They are not part of the regular
+/// `Token` hierarchy because they do not appear in the (possibly desugared)
+/// output schema.
+pub fn create_trivia_token_class<'a>(
+    trivia_token_type: &'a str,
+    trivia_tokeninfo: &'a str,
+) -> ql::Class<'a> {
+    let trivia_tokeninfo_arity = 3; // id, kind, value
+    let get_value = ql::Predicate {
+        qldoc: Some(String::from("Gets the source text of this trivia token.")),
+        name: "getValue",
+        overridden: false,
+        is_private: false,
+        is_final: true,
+        return_type: Some(ql::Type::String),
+        formal_parameters: vec![],
+        body: create_get_field_expr_for_column_storage(
+            "result",
+            trivia_tokeninfo,
+            1,
+            trivia_tokeninfo_arity,
+        ),
+        overlay: None,
+    };
+    let to_string = ql::Predicate {
+        qldoc: Some(String::from(
+            "Gets a string representation of this element.",
+        )),
+        name: "toString",
+        overridden: true,
+        is_private: false,
+        is_final: true,
+        return_type: Some(ql::Type::String),
+        formal_parameters: vec![],
+        body: ql::Expression::Equals(
+            Box::new(ql::Expression::Var("result")),
+            Box::new(ql::Expression::Dot(
+                Box::new(ql::Expression::Var("this")),
+                "getValue",
+                vec![],
+            )),
+        ),
+        overlay: None,
+    };
+    ql::Class {
+        qldoc: Some(String::from(
+            "A trivia token, such as a comment, preserved from the original parse tree.",
+        )),
+        name: "TriviaToken",
+        is_abstract: false,
+        is_final: false,
+        is_private: false,
+        alias: None,
+        supertypes: vec![ql::Type::At(trivia_token_type), ql::Type::Facade("AstNode")]
+            .into_iter()
+            .collect(),
+        characteristic_predicate: None,
+        predicates: vec![
+            get_value,
+            to_string,
+            create_get_a_primary_ql_class("TriviaToken", false),
         ],
     }
 }
@@ -207,7 +280,10 @@ pub fn create_reserved_word_class(db_name: &str) -> ql::Class<'_> {
         qldoc: Some(String::from("A reserved word.")),
         name: class_name,
         is_abstract: false,
-        supertypes: vec![ql::Type::At(db_name), ql::Type::Normal("Token")]
+        is_final: false,
+        is_private: false,
+        alias: None,
+        supertypes: vec![ql::Type::At(db_name), ql::Type::Facade("Token")]
             .into_iter()
             .collect(),
         characteristic_predicate: None,
@@ -530,10 +606,11 @@ fn create_get_field_expr_for_table_storage<'a>(
     )
 }
 
-/// Creates a pair consisting of a predicate to get the given field, and an
-/// optional expression that will get the same field. When the field can occur
-/// multiple times, the predicate will take an index argument, while the
-/// expression will use the "don't care" expression to hold for all occurrences.
+/// Creates a list of predicates to get the given field, and an optional
+/// expression that will get the same field. When the field can occur multiple
+/// times, this includes an indexed getter and a convenience getter that returns
+/// any member; the expression uses the "don't care" expression to hold for all
+/// occurrences.
 ///
 /// # Arguments
 ///
@@ -551,16 +628,16 @@ fn create_field_getters<'a>(
     main_table_column_index: &mut usize,
     field: &'a node_types::Field,
     nodes: &'a node_types::NodeTypeMap,
-) -> (ql::Predicate<'a>, Option<ql::Expression<'a>>) {
+) -> (Vec<ql::Predicate<'a>>, Option<ql::Expression<'a>>) {
     let return_type = match &field.type_info {
         node_types::FieldTypeInfo::Single(t) => {
-            Some(ql::Type::Normal(&nodes.get(t).unwrap().ql_class_name))
+            Some(ql::Type::Facade(&nodes.get(t).unwrap().ql_class_name))
         }
         node_types::FieldTypeInfo::Multiple {
             types: _,
             dbscheme_union: _,
             ql_class,
-        } => Some(ql::Type::Normal(ql_class)),
+        } => Some(ql::Type::Facade(ql_class)),
         node_types::FieldTypeInfo::ReservedWordInt(_) => Some(ql::Type::String),
     };
     let formal_parameters = match &field.storage {
@@ -641,7 +718,7 @@ fn create_field_getters<'a>(
                         ),
                         ql::Expression::Equals(
                             Box::new(ql::Expression::Var("value")),
-                            Box::new(ql::Expression::Integer(*value)),
+                            Box::new(ql::Expression::Integer(*value as i64)),
                         ),
                     ])
                 })
@@ -675,31 +752,92 @@ fn create_field_getters<'a>(
             }
         }
     };
-    (
-        ql::Predicate {
-            qldoc: Some(qldoc),
-            name: &field.getter_name,
+    let mut predicates = vec![ql::Predicate {
+        qldoc: Some(qldoc.clone()),
+        name: &field.getter_name,
+        overridden: false,
+        is_private: false,
+        is_final: true,
+        return_type: return_type.clone(),
+        formal_parameters,
+        body,
+        overlay: None,
+    }];
+
+    if let Some(any_getter_name) = &field.any_getter_name {
+        predicates.push(ql::Predicate {
+            qldoc: Some(qldoc.clone()),
+            name: any_getter_name,
             overridden: false,
             is_private: false,
             is_final: true,
             return_type,
-            formal_parameters,
-            body,
+            formal_parameters: vec![],
+            body: ql::Expression::Equals(
+                Box::new(ql::Expression::Var("result")),
+                Box::new(ql::Expression::Dot(
+                    Box::new(ql::Expression::Var("this")),
+                    &field.getter_name,
+                    vec![ql::Expression::Var("_")],
+                )),
+            ),
             overlay: None,
-        },
-        optional_expr,
-    )
+        });
+    }
+
+    (predicates, optional_expr)
+}
+
+fn compute_direct_supertypes(
+    nodes: &node_types::NodeTypeMap,
+) -> std::collections::BTreeMap<node_types::TypeName, BTreeSet<&str>> {
+    let mut supertypes = std::collections::BTreeMap::new();
+    for node in nodes.values() {
+        if let node_types::EntryKind::Union { members } = &node.kind {
+            for member in members {
+                supertypes
+                    .entry(member.clone())
+                    .or_insert_with(BTreeSet::new)
+                    .insert(node.ql_class_name.as_str());
+            }
+        }
+    }
+    supertypes
+}
+
+fn ast_base_types<'a>(
+    type_name: &node_types::TypeName,
+    direct_supertypes: &std::collections::BTreeMap<node_types::TypeName, BTreeSet<&'a str>>,
+) -> BTreeSet<ql::Type<'a>> {
+    match direct_supertypes.get(type_name) {
+        Some(supertypes) if !supertypes.is_empty() => supertypes
+            .iter()
+            .map(|name| ql::Type::Facade(name))
+            .collect(),
+        _ => vec![ql::Type::Facade("AstNode")].into_iter().collect(),
+    }
+}
+
+fn class_supertypes<'a>(
+    type_name: &node_types::TypeName,
+    dbscheme_name: &'a str,
+    direct_supertypes: &std::collections::BTreeMap<node_types::TypeName, BTreeSet<&'a str>>,
+) -> BTreeSet<ql::Type<'a>> {
+    let mut supertypes = ast_base_types(type_name, direct_supertypes);
+    supertypes.insert(ql::Type::At(dbscheme_name));
+    supertypes
 }
 
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
 pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     let mut classes = Vec::new();
     let mut token_kinds = BTreeSet::new();
+    let direct_supertypes = compute_direct_supertypes(nodes);
     for (type_name, node) in nodes {
-        if let node_types::EntryKind::Token { .. } = &node.kind {
-            if type_name.named {
-                token_kinds.insert(&type_name.kind);
-            }
+        if let node_types::EntryKind::Token { .. } = &node.kind
+            && type_name.named
+        {
+            token_kinds.insert(&type_name.kind);
         }
     }
 
@@ -709,13 +847,16 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                 if type_name.named {
                     let get_a_primary_ql_class =
                         create_get_a_primary_ql_class(&node.ql_class_name, true);
-                    let mut supertypes: BTreeSet<ql::Type> = BTreeSet::new();
-                    supertypes.insert(ql::Type::At(&node.dbscheme_name));
-                    supertypes.insert(ql::Type::Normal("Token"));
+                    let mut supertypes =
+                        class_supertypes(type_name, &node.dbscheme_name, &direct_supertypes);
+                    supertypes.insert(ql::Type::Facade("Token"));
                     classes.push(ql::TopLevel::Class(ql::Class {
                         qldoc: Some(format!("A class representing `{}` tokens.", type_name.kind)),
                         name: &node.ql_class_name,
                         is_abstract: false,
+                        is_final: false,
+                        is_private: false,
+                        alias: None,
                         supertypes,
                         characteristic_predicate: None,
                         predicates: vec![get_a_primary_ql_class],
@@ -729,12 +870,14 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     qldoc: None,
                     name: &node.ql_class_name,
                     is_abstract: false,
-                    supertypes: vec![
-                        ql::Type::At(&node.dbscheme_name),
-                        ql::Type::Normal("AstNode"),
-                    ]
-                    .into_iter()
-                    .collect(),
+                    is_final: false,
+                    is_private: false,
+                    alias: None,
+                    supertypes: class_supertypes(
+                        type_name,
+                        &node.dbscheme_name,
+                        &direct_supertypes,
+                    ),
                     characteristic_predicate: None,
                     predicates: vec![],
                 }));
@@ -760,12 +903,14 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     qldoc: Some(format!("A class representing `{}` nodes.", type_name.kind)),
                     name: main_class_name,
                     is_abstract: false,
-                    supertypes: vec![
-                        ql::Type::At(&node.dbscheme_name),
-                        ql::Type::Normal("AstNode"),
-                    ]
-                    .into_iter()
-                    .collect(),
+                    is_final: false,
+                    is_private: false,
+                    alias: None,
+                    supertypes: class_supertypes(
+                        type_name,
+                        &node.dbscheme_name,
+                        &direct_supertypes,
+                    ),
                     characteristic_predicate: None,
                     predicates: vec![create_get_a_primary_ql_class(main_class_name, true)],
                 };
@@ -778,14 +923,14 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                 // - predicates to access the fields,
                 // - the QL expressions to access the fields that will be part of getAFieldOrChild.
                 for field in fields {
-                    let (get_pred, get_child_expr) = create_field_getters(
+                    let (get_preds, get_child_expr) = create_field_getters(
                         main_table_name,
                         main_table_arity,
                         &mut main_table_column_index,
                         field,
                         nodes,
                     );
-                    main_class.predicates.push(get_pred);
+                    main_class.predicates.extend(get_preds);
                     if let Some(get_child_expr) = get_child_expr {
                         get_child_exprs.push(get_child_expr)
                     }
@@ -797,7 +942,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     overridden: true,
                     is_private: false,
                     is_final: true,
-                    return_type: Some(ql::Type::Normal("AstNode")),
+                    return_type: Some(ql::Type::Facade("AstNode")),
                     formal_parameters: vec![],
                     body: ql::Expression::Or(get_child_exprs),
                     overlay: None,
@@ -809,4 +954,100 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     }
 
     classes
+}
+
+/// Creates a `PrintAst` module containing a `getChild` predicate that maps each
+/// AST node to its children together with the name of the member predicate that
+/// produced them (and, for indexed fields, the index). This mirrors the
+/// information exposed by `getAFieldOrChild`, but keeps the member predicate
+/// name and index so that an AST printer can render labelled edges.
+pub fn create_print_ast_module(nodes: &node_types::NodeTypeMap) -> ql::TopLevel<'_> {
+    let mut disjuncts: Vec<ql::Expression> = Vec::new();
+    for node in nodes.values() {
+        if let node_types::EntryKind::Table { name: _, fields } = &node.kind {
+            for field in fields {
+                // `ReservedWordInt` fields have string-valued getters, so they
+                // are not children and are excluded (just as they are from
+                // `getAFieldOrChild`).
+                if matches!(
+                    field.type_info,
+                    node_types::FieldTypeInfo::ReservedWordInt(_)
+                ) {
+                    continue;
+                }
+                let has_index = matches!(
+                    field.storage,
+                    node_types::Storage::Table {
+                        has_index: true,
+                        ..
+                    }
+                );
+                let getter_call = ql::Expression::Dot(
+                    Box::new(ql::Expression::Cast(
+                        Box::new(ql::Expression::Var("node")),
+                        &node.ql_class_name,
+                    )),
+                    &field.getter_name,
+                    if has_index {
+                        vec![ql::Expression::Var("i")]
+                    } else {
+                        vec![]
+                    },
+                );
+                let mut conjuncts = vec![ql::Expression::Equals(
+                    Box::new(ql::Expression::Var("result")),
+                    Box::new(getter_call),
+                )];
+                if !has_index {
+                    conjuncts.push(ql::Expression::Equals(
+                        Box::new(ql::Expression::Var("i")),
+                        Box::new(ql::Expression::Integer(-1)),
+                    ));
+                }
+                conjuncts.push(ql::Expression::Equals(
+                    Box::new(ql::Expression::Var("name")),
+                    Box::new(ql::Expression::String(&field.getter_name)),
+                ));
+                disjuncts.push(ql::Expression::And(conjuncts));
+            }
+        }
+    }
+
+    let get_child = ql::Predicate {
+        qldoc: Some(String::from(
+            "Gets a child of `node` returned by the member predicate with the given `name`. \
+             If the predicate takes an index argument, `i` is bound to that index, otherwise \
+             `i` is `-1` (which is never a valid index).",
+        )),
+        name: "getChild",
+        overridden: false,
+        is_private: false,
+        is_final: false,
+        return_type: Some(ql::Type::Facade("AstNode")),
+        formal_parameters: vec![
+            ql::FormalParameter {
+                name: "node",
+                param_type: ql::Type::Facade("AstNode"),
+            },
+            ql::FormalParameter {
+                name: "name",
+                param_type: ql::Type::String,
+            },
+            ql::FormalParameter {
+                name: "i",
+                param_type: ql::Type::Int,
+            },
+        ],
+        body: ql::Expression::Or(disjuncts),
+        overlay: None,
+    };
+
+    ql::TopLevel::Module(ql::Module {
+        qldoc: Some(String::from(
+            "Provides predicates for mapping AST nodes to their named children.",
+        )),
+        name: "PrintAst",
+        body: vec![ql::TopLevel::Predicate(get_child)],
+        overlay: None,
+    })
 }

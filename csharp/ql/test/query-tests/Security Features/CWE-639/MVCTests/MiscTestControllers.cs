@@ -23,7 +23,7 @@ public class AController : BaseController {
 public class BaseAuthController : Controller {
     // BAD - A subclass of AllowAnonymous is used
     [MyAllowAnonymous]
-    public virtual ActionResult EditAnon(int id) { return View(); }
+    public virtual ActionResult EditAnon(int id) { return View(); } // $ Alert
 }
 
 public class BController : BaseAuthController {
@@ -31,7 +31,7 @@ public class BController : BaseAuthController {
     public ActionResult Edit3(int id) { return View(); }
 
     // BAD - MyAllowAnonymous is inherited from overridden method
-    public override ActionResult EditAnon(int id) { return View(); }
+    public override ActionResult EditAnon(int id) { return View(); } // $ Alert
 }
 
 [AllowAnonymous]
@@ -42,7 +42,7 @@ public class BaseAnonController : Controller {
 public class CController : BaseAnonController {
     // BAD - AllowAnonymous is inherited from base class and overrides Authorize
     [Authorize]
-    public ActionResult Edit4(int id) { return View(); }
+    public ActionResult Edit4(int id) { return View(); } // $ Alert
 }
 
 [Authorize]

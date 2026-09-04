@@ -31,12 +31,12 @@ public:
 	{
 		(*this).Release();
 	}
-	
+
 	void DeleteOther(MyClass2 *other)
 	{
 		delete other;
 	}
-	
+
 	void ReleaseOther(MyClass2 *other)
 	{
 		other->Release();
@@ -53,15 +53,15 @@ public:
 		ptr3 = new MyClass2(); // GOOD
 		ptr4 = new MyClass2(); // GOOD
 		ptr5 = new MyClass2(); // GOOD
-		ptr10 = new MyClass2(); // BAD: not deleted in destructor
+		ptr10 = new MyClass2(); // $ Alert // BAD: not deleted in destructor
 		ptr11 = new MyClass2(); // GOOD
-		ptr12 = new MyClass2(); // BAD: not deleted in destructor
+		ptr12 = new MyClass2(); // $ Alert // BAD: not deleted in destructor
 		ptr13 = new MyClass2(); // GOOD
-		ptr14 = new MyClass2(); // BAD: not deleted in destructor
+		ptr14 = new MyClass2(); // $ Alert // BAD: not deleted in destructor
 		ptr15 = new MyClass2(); // GOOD
 		ptr20 = new MyClass2(); // GOOD
 	}
-	
+
 	~MyClass3()
 	{
 		delete ptr1;
@@ -124,9 +124,9 @@ public:
 		b = new MyClass5(); // GOOD
 		c = new MyClass6(); // GOOD
 
-		d = new MyClass7(); // BAD
-		e = new MyClass7(); // BAD [NOT DETECTED]
-		f = new MyClass8(); // BAD [NOT DETECTED]
+		d = new MyClass7(); // $ Alert // BAD
+		e = new MyClass7(); // $ MISSING: Alert // BAD [NOT DETECTED]
+		f = new MyClass8(); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
  	~MyClass9()
 	{
@@ -136,7 +136,7 @@ public:
 
 		d->Release(); // MyClass7::Release()
 		e->Release(); // MyClass7::Release()
-		f->Release(); // MyClass7::Release() 
+		f->Release(); // MyClass7::Release()
 	}
  	MyClass5 *a;
 	MyClass4 *b;

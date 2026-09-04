@@ -24,15 +24,15 @@ public:
 };
 
 void dereference_base(Base *b) {
-	b[2].x;
+	b[2].x; // $ Alert
 }
 
 void dereference_array_base(Base b[]) {
-	b[2].x;
+	b[2].x; // $ Alert
 }
 
 void pointer_arith_base(Base *b) {
-	b + 2;
+	b + 2; // $ Alert
 }
 
 void dereference_derived(Derived *d) {
@@ -54,9 +54,9 @@ void char_pointer_arith(Base *b) {
 void test () {
 	Derived d[4];
 
-	dereference_base(d); // BAD: implicit conversion to Base*
-	dereference_array_base(d); // BAD: implicit conversion to Base*
-	pointer_arith_base(d); // BAD: implicit conversion to Base*
+	dereference_base(d); // $ Source // BAD: implicit conversion to Base*
+	dereference_array_base(d); // $ Source // BAD: implicit conversion to Base*
+	pointer_arith_base(d); // $ Source // BAD: implicit conversion to Base*
 
 	dereference_derived(d); // GOOD: implicit conversion to Derived*, which will be the right size
 	dereference_array_derived(d); // GOOD: implicit conversion to Derived*, which will be the right size
@@ -71,9 +71,9 @@ void test () {
 
 	DerivedSameSize dss[4];
 
-	dereference_base(dss); // BAD: same size on Linux but different on Windows
-	dereference_array_base(dss); // BAD: same size on Linux but different on Windows
-	pointer_arith_base(dss); // BAD: same size on Linux but different on Windows
+	dereference_base(dss); // $ Source // BAD: same size on Linux but different on Windows
+	dereference_array_base(dss); // $ Source // BAD: same size on Linux but different on Windows
+	pointer_arith_base(dss); // $ Source // BAD: same size on Linux but different on Windows
 
 	DerivedNoField dnf[4];
 
@@ -83,9 +83,9 @@ void test () {
 
 	Derived2 d2[4];
 
-	dereference_base(d2); // BAD: implicit conversion to Base*
-	dereference_array_base(d2); // BAD: implicit conversion to Base*
-	pointer_arith_base(d2); // BAD: implicit conversion to Base*
+	dereference_base(d2); // $ Source // BAD: implicit conversion to Base*
+	dereference_array_base(d2); // $ Source // BAD: implicit conversion to Base*
+	pointer_arith_base(d2); // $ Source // BAD: implicit conversion to Base*
 
 	dereference_derived(d2); // GOOD: implicit conversion to Derived*, which will be the right size
 	dereference_array_derived(d2); // GOOD: implicit conversion to Derived*, which will be the right size

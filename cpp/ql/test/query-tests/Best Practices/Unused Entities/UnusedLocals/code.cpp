@@ -14,9 +14,9 @@ private:
 
 MyClass :: MyClass()
 {
-	int a, b, c, d, e; // BAD: 'e' is unused
+	int a, b, c, d, e; // $ Alert // BAD: 'e' is unused
 	int &f = d;
-	
+
 	write_ref(a);
 	val = b + f;
 	throw c;
@@ -29,8 +29,8 @@ MyClass :: ~MyClass()
 void test()
 {
 	MyClass mc; // GOOD: constructor and destructor may have side-effects
-	MyClass *mc_ptr; // BAD: 'mc_ptr' is unused
-	MyClass &mc_ref = mc; // BAD: 'mc_ref' is unused
+	MyClass *mc_ptr; // $ Alert // BAD: 'mc_ptr' is unused
+	MyClass &mc_ref = mc; // $ Alert // BAD: 'mc_ref' is unused
 }
 
 // ---
@@ -101,7 +101,7 @@ template<typename T> void *instantiatedTemplateFunction3()
 // static unused int variable in twice instantiated template function
 template<typename T> void *instantiatedTemplateFunction4()
 {
-    static int my_static; // BAD
+    static int my_static; // $ Alert // BAD
     static void* my_ptr = 0;
     return my_ptr;
 }
@@ -129,7 +129,7 @@ void *nonTemplateFunction()
 // This is a non-template version of the above.
 void *nonTemplateFunction2()
 {
-    static int *my_static; // BAD
+    static int *my_static; // $ Alert // BAD
     static void* my_ptr = 0;
     return my_ptr;
 }
@@ -245,7 +245,7 @@ private:
 
 void testFunction()
 {
-	MyMethodClass mmc; // BAD: unused
+	MyMethodClass mmc; // $ Alert // BAD: unused
 	MyConstructorClass mcc; // GOOD
 	MyDerivedClass mdc; // GOOD
 	MyContainingClass mcc2; // GOOD

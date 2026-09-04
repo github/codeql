@@ -15,10 +15,10 @@ void add_100(int);
 void randomTester() {
   int i;
   for (i = 0; i < 1000; i++) {
-    int r = rand();
-    
-    // BAD: The return from rand() is unbounded 
-    trySlice(r, r+100);
+    int r = rand(); // $ Source
+
+    // BAD: The return from rand() is unbounded
+    trySlice(r, r+100); // $ Alert
   }
 
   for (i = 0; i < 1000; i++) {
@@ -31,8 +31,8 @@ void randomTester() {
   }
 
   {
-    int r = RAND();
-    r += 100; // BAD: The return from RAND() is unbounded
+    int r = RAND(); // $ Source
+    r += 100; // $ Alert // BAD: The return from RAND() is unbounded
   }
 
   {
@@ -41,63 +41,63 @@ void randomTester() {
   }
 
   {
-    int r = rand();
-    r += 100; // BAD
+    int r = rand(); // $ Source
+    r += 100; // $ Alert // BAD
   }
-  
+
   {
     int r = rand() / 10;
     r += 100; // GOOD
   }
-  
+
   {
     int r = rand();
     r = r / 10;
     r += 100; // GOOD
   }
-  
+
   {
     int r = rand();
     r /= 10;
     r += 100; // GOOD
   }
-  
+
   {
     int r = rand() & 0xFF;
     r += 100; // GOOD
   }
 
   {
-    int r = rand() + 100; // BAD [NOT DETECTED]
+    int r = rand() + 100; // $ MISSING: Alert // BAD [NOT DETECTED]
   }
 
   {
-    int r = RAND2();
+    int r = RAND2(); // $ Source
 
-    r = r + 100; // BAD
+    r = r + 100; // $ Alert // BAD
   }
 
   {
-    int r = (rand() ^ rand());
+    int r = (rand() ^ rand()); // $ Source
 
-    r = r + 100; // BAD
+    r = r + 100; // $ Alert // BAD
   }
 
   {
-    int r = RAND2() + 100; // BAD [NOT DETECTED]
+    int r = RAND2() + 100; // $ MISSING: Alert // BAD [NOT DETECTED]
   }
 
   {
     int r = RAND();
     int *ptr_r = &r;
-    *ptr_r += 100; // BAD [NOT DETECTED]
+    *ptr_r += 100; // $ MISSING: Alert // BAD [NOT DETECTED]
   }
 
   {
     int r = 0;
     int *ptr_r = &r;
     *ptr_r = RAND();
-    r += 100; // BAD [NOT DETECTED]
+    r += 100; // $ MISSING: Alert // BAD [NOT DETECTED]
   }
 
   {
@@ -122,39 +122,39 @@ void randomTester2(int bound, int min, int max) {
 
 void moreTests() {
   {
-    int r = rand();
-    
-    r = r * 100; // BAD
+    int r = rand(); // $ Source
+
+    r = r * 100; // $ Alert // BAD
   }
 
   {
-    int r = rand();
-    
-    r *= 100; // BAD
+    int r = rand(); // $ Source
+
+    r *= 100; // $ Alert // BAD
   }
 
   {
-    int r = rand();
+    int r = rand(); // $ Source
     int v = 100;
-    v *= r; // BAD
+    v *= r; // $ Alert // BAD
   }
 
   {
     int r = rand();
-    
-    r <<= 8; // BAD [NOT DETECTED]
+
+    r <<= 8; // $ MISSING: Alert // BAD [NOT DETECTED]
   }
 
   {
     int r = rand();
-    
+
     r = r - 100; // GOOD
   }
 
   {
-    unsigned int r = rand();
-    
-    r = r - 100; // BAD
+    unsigned int r = rand(); // $ Source
+
+    r = r - 100; // $ Alert // BAD
   }
 }
 

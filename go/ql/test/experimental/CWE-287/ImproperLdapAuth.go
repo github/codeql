@@ -15,7 +15,7 @@ func bad(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 	ldapServer := "ldap.example.com"
 	ldapPort := 389
 	bindDN := "cn=admin,dc=example,dc=com"
-	bindPassword := req.URL.Query()["password"][0]
+	bindPassword := req.URL.Query()["password"][0] // $ Source
 
 	// Connect to the LDAP server
 	l, err := ldap.Dial("tcp", fmt.Sprintf("%s:%d", ldapServer, ldapPort))
@@ -25,7 +25,7 @@ func bad(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 	defer l.Close()
 
 	// BAD: user input is not sanetized
-	err = l.Bind(bindDN, bindPassword)
+	err = l.Bind(bindDN, bindPassword) // $ Alert
 	if err != nil {
 		return fmt.Errorf("LDAP bind failed: %v", err), err
 	}
@@ -84,7 +84,7 @@ func bad2(req *http.Request) {
 	ldapPort := 389
 	bindDN := "cn=admin,dc=example,dc=com"
 	// BAD : empty password
-	bindPassword := ""
+	bindPassword := "" // $ Source
 
 	// Connect to the LDAP server
 	l, err := ldap.Dial("tcp", fmt.Sprintf("%s:%d", ldapServer, ldapPort))
@@ -94,7 +94,7 @@ func bad2(req *http.Request) {
 	defer l.Close()
 
 	// BAD : bindPassword is empty
-	err = l.Bind(bindDN, bindPassword)
+	err = l.Bind(bindDN, bindPassword) // $ Alert
 	if err != nil {
 		log.Fatalf("LDAP bind failed: %v", err)
 	}

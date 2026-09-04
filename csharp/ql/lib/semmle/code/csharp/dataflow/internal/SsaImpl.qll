@@ -9,7 +9,7 @@ private import semmle.code.csharp.controlflow.Guards as Guards
 private import semmle.code.csharp.dataflow.internal.BaseSSA
 private import semmle.code.csharp.internal.Location
 
-private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
+private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   class SourceVariable = Ssa::SourceVariable;
 
   /**
@@ -41,15 +41,52 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock>
   }
 }
 
-import SsaImplCommon::Make<Location, Cfg, SsaInput> as Impl
+import SsaImplCommon::Make<Location, Cfg, SsaImplInput> as Impl
+
+private module SsaInput implements Impl::SsaInputSig {
+  private import csharp as CS
+
+  class Expr = CS::Expr;
+
+  class Parameter = CS::Parameter;
+
+  class VariableWrite extends AssignableDefinition {
+    Expr asExpr() { result = this.getExpr() }
+
+    Expr getValue() { result = this.getSource() }
+
+    predicate isParameterInit(Parameter p) { this.(ImplicitParameterDefinition).getParameter() = p }
+  }
+
+  predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SsaImplInput::SourceVariable v) {
+    exists(AssignableDefinition ad | variableDefinition(bb, i, v, ad) |
+      w = ad or
+      w = getASameOutRefDefAfter(v, ad)
+    )
+    or
+    exists(Parameter p |
+      implicitEntryDefinition(bb, v) and
+      i = -1 and
+      p = v.getAssignable() and
+      pragma[only_bind_out](p.getCallable()) = pragma[only_bind_out](v.getEnclosingCallable()) and
+      w.isParameterInit(p)
+    )
+  }
+}
+
+module Ssa_ = Impl::MakeSsa<SsaInput>;
 
 class Definition = Impl::Definition;
 
-class WriteDefinition = Impl::WriteDefinition;
+private class SsaDefinitionToStringProxy extends Definition {
+  override string toString() { result = this.(SsaDefinition).toString() }
+}
 
-class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
+deprecated class WriteDefinition = Impl::WriteDefinition;
 
-class PhiNode = Impl::PhiNode;
+deprecated class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
+
+deprecated class PhiNode = Impl::PhiNode;
 
 module Consistency = Impl::Consistency;
 
@@ -791,14 +828,6 @@ private module Cached {
     )
   }
 
-  cached
-  AssignableDefinition getADefinition(Ssa::ExplicitDefinition def) {
-    exists(Ssa::SourceVariable v, AssignableDefinition ad | explicitDefinition(def, v, ad) |
-      result = ad or
-      result = getASameOutRefDefAfter(v, ad)
-    )
-  }
-
   /**
    * Holds if `call` may change the value of field or property `fp`. The actual
    * update occurs in `setter`.
@@ -815,7 +844,7 @@ private module Cached {
   predicate variableWriteQualifier(
     BasicBlock bb, int i, QualifiedFieldOrPropSourceVariable v, boolean certain
   ) {
-    SsaInput::variableWrite(bb, i, v.getQualifier(), certain) and
+    SsaImplInput::variableWrite(bb, i, v.getQualifier(), certain) and
     // Eliminate corner case where a call definition can overlap with a
     // qualifier definition: if method `M` updates field `F`, then a call
     // to `M` is both an update of `x.M` and `x.M.M`, so the former call
@@ -824,41 +853,15 @@ private module Cached {
     not updatesNamedFieldOrProp(bb, i, _, v, _)
   }
 
-  cached
-  predicate explicitDefinition(WriteDefinition def, Ssa::SourceVariable v, AssignableDefinition ad) {
-    exists(BasicBlock bb, int i |
-      def.definesAt(v, bb, i) and
-      variableDefinition(bb, i, v, ad)
-    )
-  }
-
-  cached
-  predicate isLiveAtEndOfBlock(Definition def, BasicBlock bb) {
-    Impl::ssaDefReachesEndOfBlock(bb, def, _)
-  }
-
-  cached
-  Definition phiHasInputFromBlock(Ssa::PhiNode phi, BasicBlock bb) {
-    Impl::phiHasInputFromBlock(phi, result, bb)
-  }
-
-  cached
-  AssignableRead getAReadAtNode(Definition def, ControlFlowNode cfn) {
-    exists(Ssa::SourceVariable v, BasicBlock bb, int i |
-      Impl::ssaDefReachesRead(v, def, bb, i) and
-      variableReadActual(bb, i, v) and
-      cfn = bb.getNode(i) and
-      result.getControlFlowNode() = cfn
-    )
-  }
-
   /**
-   * Holds if the value defined at SSA definition `def` can reach a read at `cfn`,
+   * Holds if the value defined at SSA definition `def` can reach a read `read`,
    * without passing through any other read.
    */
   cached
-  predicate firstReadSameVar(Definition def, ControlFlowNode cfn) {
-    exists(BasicBlock bb, int i | Impl::firstUse(def, bb, i, true) and cfn = bb.getNode(i))
+  predicate firstReadSameVar(Definition def, AssignableRead read) {
+    exists(BasicBlock bb, int i |
+      Impl::firstUse(def, bb, i, true) and read.getControlFlowNode() = bb.getNode(i)
+    )
   }
 
   /**
@@ -876,15 +879,14 @@ private module Cached {
     )
   }
 
+  /**
+   * Holds if the SSA definition `def` assigns to `out`/`ref` parameter `p`, and the
+   * parameter may remain unchanged throughout the rest of the enclosing callable.
+   */
   cached
-  Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
-    Impl::uncertainWriteDefinitionInput(def, result)
-  }
-
-  cached
-  predicate isLiveOutRefParameterDefinition(Ssa::Definition def, Parameter p) {
+  predicate isLiveOutRefParameterDefinition(SsaDefinition def, Parameter p) {
     p.isOutOrRef() and
-    exists(Ssa::SourceVariable v, Ssa::Definition def0, BasicBlock bb, int i |
+    exists(Ssa::SourceVariable v, SsaDefinition def0, BasicBlock bb, int i |
       v = def.getSourceVariable() and
       p = v.getAssignable() and
       def = def0.getAnUltimateDefinition() and
@@ -966,6 +968,43 @@ private module Cached {
 
 import Cached
 
+deprecated AssignableDefinition getADefinition(Ssa::ExplicitDefinition def) {
+  exists(Ssa::SourceVariable v, AssignableDefinition ad | explicitDefinition(def, v, ad) |
+    result = ad or
+    result = getASameOutRefDefAfter(v, ad)
+  )
+}
+
+deprecated predicate explicitDefinition(
+  WriteDefinition def, Ssa::SourceVariable v, AssignableDefinition ad
+) {
+  exists(BasicBlock bb, int i |
+    def.definesAt(v, bb, i) and
+    variableDefinition(bb, i, v, ad)
+  )
+}
+
+deprecated predicate isLiveAtEndOfBlock(Definition def, BasicBlock bb) {
+  Impl::ssaDefReachesEndOfBlock(bb, def, _)
+}
+
+deprecated Definition phiHasInputFromBlock(Ssa::PhiNode phi, BasicBlock bb) {
+  Impl::phiHasInputFromBlock(phi, result, bb)
+}
+
+deprecated AssignableRead getAReadAtNode(Definition def, ControlFlowNode cfn) {
+  exists(Ssa::SourceVariable v, BasicBlock bb, int i |
+    Impl::ssaDefReachesRead(v, def, bb, i) and
+    variableReadActual(bb, i, v) and
+    cfn = bb.getNode(i) and
+    result.getControlFlowNode() = cfn
+  )
+}
+
+deprecated Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
+  Impl::uncertainWriteDefinitionInput(def, result)
+}
+
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
 
@@ -973,20 +1012,20 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
-  Expr getARead(Definition def) { exists(getAReadAtNode(def, result)) }
+  Expr getARead(Definition def) { def.(SsaDefinition).getARead().getControlFlowNode() = result }
 
-  predicate ssaDefHasSource(WriteDefinition def) {
+  predicate ssaDefHasSource(Impl::WriteDefinition def) {
     // exclude flow directly from RHS to SSA definition, as we instead want to
     // go from RHS to matching assignable definition, and from there to SSA definition
-    def instanceof Ssa::ParameterDefinition
+    def instanceof SsaParameterInit
   }
 
   /**
-   * Allows for flow into uncertain defintions that are not call definitions,
+   * Allows for flow into uncertain definitions that are not call definitions,
    * as we, conservatively, consider such definitions to be certain.
    */
-  predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
-    def instanceof Ssa::ExplicitDefinition
+  predicate allowFlowIntoUncertainDef(Impl::UncertainWriteDefinition def) {
+    def instanceof SsaExplicitWrite
     or
     def =
       any(Ssa::ImplicitQualifierDefinition qdef |
@@ -1011,7 +1050,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
 private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;
 
-private module MultiBodyNearestLocationInput implements NearestLocationInputSig {
+deprecated private module MultiBodyNearestLocationInput implements NearestLocationInputSig {
   class C = MultiBodyParameterDefinition;
 
   predicate relevantLocations(MultiBodyParameterDefinition def, Location l1, Location l2) {
@@ -1025,7 +1064,7 @@ private module MultiBodyNearestLocationInput implements NearestLocationInputSig 
 }
 
 pragma[nomagic]
-private predicate implicitEntryDef(
+deprecated private predicate implicitEntryDef(
   Ssa::ImplicitEntryDefinition def, Ssa::SourceVariable v, Callable c
 ) {
   v = def.getSourceVariable() and
@@ -1036,7 +1075,7 @@ private predicate implicitEntryDef(
  * An SSA definition representing the implicit initialization of a parameter
  * at the beginning of a callable.
  */
-abstract class ParameterDefinitionImpl extends Ssa::Definition {
+abstract deprecated class ParameterDefinitionImpl extends Ssa::Definition {
   /** Gets the parameter that this definition represents. */
   abstract Parameter getParameter();
 
@@ -1045,7 +1084,9 @@ abstract class ParameterDefinitionImpl extends Ssa::Definition {
   }
 }
 
-class MultiBodyParameterDefinition extends ParameterDefinitionImpl, Ssa::ImplicitEntryDefinition {
+deprecated class MultiBodyParameterDefinition extends ParameterDefinitionImpl,
+  Ssa::ImplicitEntryDefinition
+{
   private Parameter p;
 
   MultiBodyParameterDefinition() {

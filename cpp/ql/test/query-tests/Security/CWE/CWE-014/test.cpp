@@ -42,10 +42,10 @@ char *func2(char buff[128], unsigned long long sz) {
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.22: deleted
-void func3(unsigned long long sz) { 
+void func3(unsigned long long sz) {
     char buff[128];
 		gets(buff);
-    memset(buff, 0, PW_SIZE); // BAD
+    memset(buff, 0, PW_SIZE); // $ Alert // BAD
 }
 
 // x86-64 gcc 9.2: deleted
@@ -54,7 +54,7 @@ void func3(unsigned long long sz) {
 void func4(unsigned long long sz) {
     char buff[128];
 		gets(buff);
-    memset(buff, 0, PW_SIZE); // BAD [NOT DETECTED]
+    memset(buff, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
     strcpy(buff, "Hello");
 }
 
@@ -64,7 +64,7 @@ void func4(unsigned long long sz) {
 void func5(unsigned long long sz) {
     char buff[128];
 		gets(buff);
-    memset(buff, 0, PW_SIZE); // BAD [NOT DETECTED]
+    memset(buff, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
     if (sz > 5) {
         strcpy(buff, "Hello");
     }
@@ -76,16 +76,16 @@ void func5(unsigned long long sz) {
 void func6(unsigned long long sz) {
     struct mem m;
 		gets(m.b);
-    memset(&m, 0, PW_SIZE); // BAD
+    memset(&m, 0, PW_SIZE); // $ Alert // BAD
 }
 
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.22: deleted
-void func7(unsigned long long sz) { 
+void func7(unsigned long long sz) {
     struct mem m;
-		gets(m.b); 
-    memset(&m, 0, PW_SIZE); // BAD [NOT DETECTED]
+		gets(m.b);
+    memset(&m, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
     m.a = 15;
 }
 
@@ -95,7 +95,7 @@ void func7(unsigned long long sz) {
 void func8(unsigned long long sz) {
     struct mem *m = (struct mem *)malloc(sizeof(struct mem));
 		gets(m->b);
-    memset(m, 0, PW_SIZE); // BAD [NOT DETECTED]
+    memset(m, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 // x86-64 gcc 9.2: deleted
@@ -104,7 +104,7 @@ void func8(unsigned long long sz) {
 void func9(unsigned long long sz) {
     struct mem *m = (struct mem *)malloc(sizeof(struct mem));
 		gets(m->b);
-    memset(m, 0, PW_SIZE); // BAD [NOT DETECTED]
+    memset(m, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
     free(m);
 }
 
@@ -114,9 +114,9 @@ void func9(unsigned long long sz) {
 void func10(unsigned long long sz) {
     struct mem *m = (struct mem *)malloc(sizeof(struct mem));
 		gets(m->b);
-    memset(m, 0, PW_SIZE); // BAD [NOT DETECTED]
+    memset(m, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
     m->a = sz;
-    m->c = m->a + 1; 
+    m->c = m->a + 1;
 }
 
 // x86-64 gcc 9.2: deleted
@@ -125,7 +125,7 @@ void func10(unsigned long long sz) {
 void func11(unsigned long long sz) {
     struct mem *m = (struct mem *)malloc(sizeof(struct mem));
 		gets(m->b);
-    ::memset(m, 0, PW_SIZE); // BAD [NOT DETECTED]
+    ::memset(m, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
     if (sz > 5) {
     	strcpy(m->b, "Hello");
     }
@@ -205,26 +205,26 @@ void badFunc0_0(){
 	for(int i = 0; i < PW_SIZE; i++) {
 		buff1[i] = 13;
 	}
-	memset(buff1, 0, PW_SIZE); // BAD
+	memset(buff1, 0, PW_SIZE); // $ Alert // BAD
 }
 
 void nobadFunc1_0() {
 	char* buff1 = (char *) malloc(PW_SIZE);
 	gets(buff1);
-	memset(buff1, 0, PW_SIZE); // BAD [NOT DETECTED]
+	memset(buff1, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 void badFunc1_0(){
 	char * buff1 = (char *) malloc(PW_SIZE);
 	gets(buff1);
-	memset(buff1, 0, PW_SIZE); // BAD [NOT DETECTED]
+	memset(buff1, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
 	free(buff1);
 }
 void badFunc1_1(){
 	unsigned char buff1[PW_SIZE];
 	for(int i = 0; i < PW_SIZE; i++) {
-		buff1[i] = 'a' + i;	
+		buff1[i] = 'a' + i;
 	}
-	memset(buff1, 0, PW_SIZE); // BAD [NOT DETECTED]
+	memset(buff1, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
 	free(buff1);
 }
 void nobadFunc2_0_0(){
@@ -301,7 +301,7 @@ bool nobadFunc2_1_0(unsigned char ch){
 void nobadFunc2_1_2(){
 	char buff1[PW_SIZE];
 	gets(buff1);
-	memset(buff1, 0, PW_SIZE); // BAD [NOT DETECTED]
+	memset(buff1, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
 	buff1[2] = 5;
 }
 

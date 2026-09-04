@@ -95,7 +95,7 @@ private module Propagation {
     or
     isIntExpr(e.(ConstantReadAccess).getValue(), i)
     or
-    forex(ExprCfgNode n | n = e.getAControlFlowNode() | isInt(n, i))
+    isInt(e.getControlFlowNode(), i)
   }
 
   predicate isFloat(ExprCfgNode e, float f) {
@@ -153,7 +153,7 @@ private module Propagation {
     or
     isFloatExpr(e.(ConstantReadAccess).getValue(), f)
     or
-    forex(ExprCfgNode n | n = e.getAControlFlowNode() | isFloat(n, f))
+    isFloat(e.getControlFlowNode(), f)
   }
 
   predicate isRational(ExprCfgNode e, int numerator, int denominator) {
@@ -175,7 +175,7 @@ private module Propagation {
     or
     isRationalExpr(e.(ConstantReadAccess).getValue(), numerator, denominator)
     or
-    forex(ExprCfgNode n | n = e.getAControlFlowNode() | isRational(n, numerator, denominator))
+    isRational(e.getControlFlowNode(), numerator, denominator)
   }
 
   predicate isComplex(ExprCfgNode e, float real, float imaginary) {
@@ -197,7 +197,7 @@ private module Propagation {
     or
     isComplexExpr(e.(ConstantReadAccess).getValue(), real, imaginary)
     or
-    forex(ExprCfgNode n | n = e.getAControlFlowNode() | isComplex(n, real, imaginary))
+    isComplex(e.getControlFlowNode(), real, imaginary)
   }
 
   overlay[local]
@@ -309,7 +309,7 @@ private module Propagation {
     or
     isStringExpr(e.(ConstantReadAccess).getValue(), s)
     or
-    forex(ExprCfgNode n | n = e.getAControlFlowNode() | isString(n, s))
+    isString(e.getControlFlowNode(), s)
   }
 
   predicate isSymbol(ExprCfgNode e, string s) {
@@ -334,7 +334,7 @@ private module Propagation {
     or
     isSymbolExpr(e.(ConstantReadAccess).getValue(), s)
     or
-    forex(ExprCfgNode n | n = e.getAControlFlowNode() | isSymbol(n, s))
+    isSymbol(e.getControlFlowNode(), s)
   }
 
   predicate isRegExp(ExprCfgNode e, string s, string flags) {
@@ -359,7 +359,7 @@ private module Propagation {
     or
     isRegExpExpr(e.(ConstantReadAccess).getValue(), s, flags)
     or
-    forex(ExprCfgNode n | n = e.getAControlFlowNode() | isRegExp(n, s, flags))
+    isRegExp(e.getControlFlowNode(), s, flags)
   }
 
   predicate isBoolean(ExprCfgNode e, boolean b) {
@@ -381,7 +381,7 @@ private module Propagation {
     or
     isBooleanExpr(e.(ConstantReadAccess).getValue(), b)
     or
-    forex(ExprCfgNode n | n = e.getAControlFlowNode() | isBoolean(n, b))
+    isBoolean(e.getControlFlowNode(), b)
   }
 
   predicate isNil(ExprCfgNode e) {
@@ -403,7 +403,7 @@ private module Propagation {
     or
     isNilExpr(e.(ConstantReadAccess).getValue())
     or
-    forex(ExprCfgNode n | n = e.getAControlFlowNode() | isNil(n))
+    isNil(e.getControlFlowNode())
   }
 }
 
@@ -566,7 +566,7 @@ private predicate isArrayExpr(Expr e, ArrayLiteralCfgNode arr) {
   // control flow paths.
   // Note(hmac): I don't think this is necessary, as `getSource` will not return
   // results if the source is a phi node.
-  forex(ExprCfgNode n | n = e.getAControlFlowNode() | isArrayConstant(n, arr))
+  isArrayConstant(e.getControlFlowNode(), arr)
   or
   // if `e` is an array, then `e.freeze` is also an array
   e.(MethodCall).getMethodName() = "freeze" and

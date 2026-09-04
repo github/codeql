@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.hpsf.extractor", "HPSFPropertiesExtractor", True, "HPSFPropertiesExtractor", "(POIDocument)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hpsf.extractor.HPSFPropertiesExtractor.document]", "value", "dfc-generated"]
+      - ["org.apache.poi.hpsf.extractor", "HPSFPropertiesExtractor", True, "HPSFPropertiesExtractor", "(POIFSFileSystem)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hpsf.extractor", "HPSFPropertiesExtractor", True, "HPSFPropertiesExtractor", "(POIOLE2TextExtractor)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hpsf.extractor", "HPSFPropertiesExtractor", True, "getDocument", "()", "", "Argument[this].SyntheticField[org.apache.poi.hpsf.extractor.HPSFPropertiesExtractor.document]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hpsf.extractor", "HPSFPropertiesExtractor", True, "getFilesystem", "()", "", "Argument[this].SyntheticField[org.apache.poi.hpsf.extractor.HPSFPropertiesExtractor.document]", "ReturnValue", "value", "dfc-generated"]

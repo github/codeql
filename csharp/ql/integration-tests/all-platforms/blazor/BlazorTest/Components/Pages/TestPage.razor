@@ -8,7 +8,7 @@
     <h3>Route parameter</h3>
     <p>Go to: <a href="/test/@XssUrl">/test/@XssUrl</a></p>
     <p>Parameter from URL: @UrlParam</p>
-    <p>Raw parameter from URL: @((MarkupString)UrlParam)</p>
+    <p>Raw parameter from URL: @((MarkupString)UrlParam)</p> @* $ Alert[cs/web/xss]=r2 $ Alert[cs/web/xss]=r2 *@
 </div>
 
 <hr />
@@ -17,7 +17,7 @@
     <h3>Query parameter</h3>
     <p>Go to: <a href="/test/?qs=@XssUrl">/test/?qs=@XssUrl</a></p>
     <p>Parameter from query string: @QueryParam</p>
-    <p>Raw parameter from query string: @(new MarkupString(QueryParam))</p>
+    <p>Raw parameter from query string: @(new MarkupString(QueryParam))</p> @* $ Alert[cs/web/xss]=r3 $ Alert[cs/web/xss]=r3 *@
 </div>
 
 <hr />
@@ -82,7 +82,7 @@
 </div>
 
 <div>
-    <MyOutput Value="@QueryParam" />
+    <MyOutput Value="@QueryParam" /> @* $ Source[cs/web/xss]=r1 *@
 </div>
 
 @code {

@@ -60,7 +60,7 @@ namespace Semmle.Autobuild.Shared
             // Use `nuget.exe` from source code repo, if present, otherwise first attempt with global
             // `nuget` command, and if that fails, attempt to download `nuget.exe` from nuget.org
             var nuget = builder.GetFilename("nuget.exe").Select(t => t.Item1).FirstOrDefault() ?? "nuget";
-            var nugetDownloadPath = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out _), ".nuget", "nuget.exe");
+            var nugetDownloadPath = builder.Actions.PathJoin(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out _), ".nuget", "nuget.exe");
             var nugetDownloaded = false;
 
             var ret = BuildScript.Success;

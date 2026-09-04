@@ -4928,6 +4928,8 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | stl.h:95:69:95:69 | x | stl.h:96:42:96:42 | x |  |
 | stl.h:96:42:96:42 | ref arg x | stl.h:95:69:95:69 | x |  |
 | stl.h:96:42:96:42 | ref arg x | stl.h:95:69:95:69 | x |  |
+| stl.h:292:30:292:40 | 0 | file://:0:0:0:0 | noexcept(...) | TAINT |
+| stl.h:292:30:292:40 | 0 | file://:0:0:0:0 | noexcept(...) | TAINT |
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |

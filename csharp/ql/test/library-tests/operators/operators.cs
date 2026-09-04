@@ -48,6 +48,15 @@ namespace Operators
         public void operator >>>=(IntVector n) { }
     }
 
+    public class C
+    {
+        // Unary instance operators.
+        public void operator checked ++() { }
+        public void operator ++() { }
+        public void operator checked --() { }
+        public void operator --() { }
+    }
+
     class TestOperator
     {
         void Main()
@@ -79,41 +88,55 @@ namespace Operators
                 iv3 *= iv2;
                 iv3 /= iv2;
             }
+
+            var c = new C();
+            c++;
+            ++c;
+            c--;
+            --c;
+
+            checked
+            {
+                c++;
+                ++c;
+                c--;
+                --c;
+            }
         }
+
+        public struct Digit
+        {
+            byte value;
+
+            public Digit(byte value)
+            {
+                if (value < 0 || value > 9)
+                    throw new ArgumentException();
+                this.value = value;
+            }
+
+            public static implicit operator byte(Digit d)
+            {
+                return d.value;
+            }
+
+            public static explicit operator Digit(byte b)
+            {
+                return new Digit(b);
+            }
+
+        }
+
+        class TestConversionOperator
+        {
+
+            void Main()
+            {
+                Digit d = (Digit)8;
+                byte b = d;
+            }
+
+        }
+
     }
-
-    public struct Digit
-    {
-        byte value;
-
-        public Digit(byte value)
-        {
-            if (value < 0 || value > 9)
-                throw new ArgumentException();
-            this.value = value;
-        }
-
-        public static implicit operator byte(Digit d)
-        {
-            return d.value;
-        }
-
-        public static explicit operator Digit(byte b)
-        {
-            return new Digit(b);
-        }
-
-    }
-
-    class TestConversionOperator
-    {
-
-        void Main()
-        {
-            Digit d = (Digit)8;
-            byte b = d;
-        }
-
-    }
-
 }

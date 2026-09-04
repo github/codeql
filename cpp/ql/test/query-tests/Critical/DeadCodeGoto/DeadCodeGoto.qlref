@@ -1,1 +1,2 @@
-Critical/DeadCodeGoto.ql
+query: Critical/DeadCodeGoto.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

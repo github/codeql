@@ -30,33 +30,33 @@ void test1()
 		setPosInt(getInt());
 		setPosFloat(getInt());
 	}
-	if (getFloat()) // BAD
+	if (getFloat()) // $ Alert // BAD
 	{
-		setPosInt(getFloat()); // BAD
+		setPosInt(getFloat()); // $ Alert // BAD
 		setPosFloat(getFloat());
 	}
-	if (getDouble()) // BAD
+	if (getDouble()) // $ Alert // BAD
 	{
-		setPosInt(getDouble()); // BAD
+		setPosInt(getDouble()); // $ Alert // BAD
 		setPosFloat(getDouble());
 	}
-	if (getMyLD()) // BAD
+	if (getMyLD()) // $ Alert // BAD
 	{
-		setPosInt(getMyLD()); // BAD
+		setPosInt(getMyLD()); // $ Alert // BAD
 		setPosFloat(getMyLD());
 	}
 	if (getFloatPtr())
 	{
 		// ...
 	}
-	if (getFloatRef()) // BAD [NOT DETECTED]
+	if (getFloatRef()) // $ MISSING: Alert // BAD [NOT DETECTED]
 	{
-		setPosInt(getFloatRef()); // BAD [NOT DETECTED]
+		setPosInt(getFloatRef()); // $ MISSING: Alert // BAD [NOT DETECTED]
 		setPosFloat(getFloatRef());
 	}
-	if (getConstFloatRef()) // BAD [NOT DETECTED]
+	if (getConstFloatRef()) // $ MISSING: Alert // BAD [NOT DETECTED]
 	{
-		setPosInt(getConstFloatRef()); // BAD [NOT DETECTED]
+		setPosInt(getConstFloatRef()); // $ MISSING: Alert // BAD [NOT DETECTED]
 		setPosFloat(getConstFloatRef());
 	}
 
@@ -98,11 +98,11 @@ int test2(double v, double w, int n)
 	case 2:
 		return pow(10, v); // GOOD
 	case 3:
-		return pow(2.5, v); // BAD
+		return pow(2.5, v); // $ Alert // BAD
 	case 4:
-		return pow(v, 2); // BAD
+		return pow(v, 2); // $ Alert // BAD
 	case 5:
-		return pow(v, w); // BAD
+		return pow(v, w); // $ Alert // BAD
 	};
 }
 

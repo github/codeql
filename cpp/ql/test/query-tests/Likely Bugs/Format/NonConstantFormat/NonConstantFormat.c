@@ -25,9 +25,9 @@ extern char *any_random_function(const char *);
 #define NULL ((void*)0)
 #define _(X) gettext(X)
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) { // $ Source
 	if(argc > 1)
-		printf(argv[1]);                   // BAD
+		printf(argv[1]);                   // $ Alert // BAD
 	else
 		printf("No argument supplied.\n"); // GOOD
 
@@ -38,11 +38,11 @@ int main(int argc, char **argv) {
 	printf(ngettext("One argument\n", "%d arguments\n", argc-1), argc-1); // GOOD
 
 	printf(gettext("%d arguments\n"), argc-1); // GOOD
-	printf(any_random_function("%d arguments\n"), argc-1); // BAD
+	printf(any_random_function("%d arguments\n"), argc-1); // $ Alert // BAD
 
 
 
-	printf(_(any_random_function("%d arguments\n")), argc-1); // BAD
+	printf(_(any_random_function("%d arguments\n")), argc-1); // $ Alert // BAD
 
 	return 0;
 }

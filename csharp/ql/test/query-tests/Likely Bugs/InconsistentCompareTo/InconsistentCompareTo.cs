@@ -31,25 +31,25 @@ abstract class GoodComparableAbstract : IComparable
     public abstract int CompareTo(object other);
 }
 
-class BadComparable : IComparable
+class BadComparable : IComparable // $ Alert
 {
     public int CompareTo(object other) { return 0; }
     public override int GetHashCode() { return 0; }
 }
 
-class BadComparableInt : IComparable<int>
+class BadComparableInt : IComparable<int> // $ Alert
 {
     public int CompareTo(int x) { return 0; }
     public override int GetHashCode() { return 0; }
 }
 
-class BadComparableT<T> : IComparable<T>
+class BadComparableT<T> : IComparable<T> // $ Alert
 {
     public int CompareTo(T t) { return 0; }
     public override int GetHashCode() { return 0; }
 }
 
-class BadComparableNewEquals : IComparable
+class BadComparableNewEquals : IComparable // $ Alert
 {
     public int CompareTo(object other) { return 0; }
     public new bool Equals(object other) { return false; }

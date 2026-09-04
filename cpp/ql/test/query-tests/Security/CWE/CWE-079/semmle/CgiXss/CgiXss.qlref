@@ -1,1 +1,2 @@
-Security/CWE/CWE-079/CgiXss.ql
+query: Security/CWE/CWE-079/CgiXss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -21,7 +21,7 @@ namespace std {
 
 const char* bad000() {
   std::string localStr("Test string");
-  return localStr.c_str();
+  return localStr.c_str(); // $ Alert
 }
 
 const char* good001(const std::string& p) {
@@ -29,7 +29,7 @@ const char* good001(const std::string& p) {
 }
 
 const char* bad001() {
-  return std::string("Test string").c_str();
+  return std::string("Test string").c_str(); // $ Alert
 }
 
 
@@ -42,7 +42,7 @@ public:
 
 jstring get_hello(_JNIEnv *env) {
   std::string hello = "Hello world";
-  return env->NewStringUTF(hello.c_str());
+  return env->NewStringUTF(hello.c_str()); // $ Alert
 }
 
 void good002_helper(std::string*);

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 class Test : IComparer<string>
 {
     // this is really dead
-    private string dead = "Actual dead field";
+    private string dead = "Actual dead field"; // $ Alert[cs/unused-field]
 
     private static void Main(string[] args)
     {
@@ -48,7 +48,7 @@ class Test : IComparer<string>
     }
 
     // this is really dead
-    private void ActualDeadMethod() { }
+    private void ActualDeadMethod() { } // $ Alert[cs/unused-method]
 
     // this is live
     private void DynamicSig(dynamic d) { }
@@ -57,7 +57,7 @@ class Test : IComparer<string>
     private void DynamicallyCalled(int i) { }
 
     // this is dead
-    private void NotDynamicallyCalled(int i) { }
+    private void NotDynamicallyCalled(int i) { } // $ Alert[cs/unused-method]
 
     // this is live
     private void DynamicallyCalledOnDynamicType(int i) { }
@@ -74,14 +74,14 @@ class Test : IComparer<string>
     static int liveFieldAccessedFromGeneric;
 
     // BAD: This is dead
-    void DeadCaller()
+    void DeadCaller() // $ Alert[cs/unused-method]
     {
         DeadGeneric(0);
         DeadGeneric(0.0);
     }
 
     // BAD: This is dead (called from dead)
-    void DeadGeneric<V>(V a) { }
+    void DeadGeneric<V>(V a) { } // $ Alert[cs/unused-method]
 }
 
 class GenericClass<T>
@@ -102,18 +102,18 @@ class GenericClass<T>
     int liveField;
 
     // BAD: These are not live
-    void DeadGeneric1()
+    void DeadGeneric1() // $ Alert[cs/unused-method]
     {
         DeadGeneric2(0);
         DeadGeneric2(1.0);
     }
-    void DeadGeneric2<V>(V v) { }
+    void DeadGeneric2<V>(V v) { } // $ Alert[cs/unused-method]
 
     // BAD: This is dead (never accessed)
-    int deadField;
+    int deadField; // $ Alert[cs/unused-field]
 
     // BAD: This is dead (only ever written)
-    int deadWrittenField;
+    int deadWrittenField; // $ Alert[cs/unused-field]
 }
 
 class MemberInitialization
@@ -126,7 +126,7 @@ class MemberInitialization
 public class FieldOutParam
 {
     // BAD: Only written (by an out param)
-    int deadField;
+    int deadField; // $ Alert[cs/unused-field]
 
     public void Test()
     {

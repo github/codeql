@@ -20,11 +20,11 @@ namespace std
 	template <class Mutex1, class Mutex2, class... Mutexes> void unlock (Mutex1& a, Mutex2& b, Mutexes&... cde);
 }
 
-std::mutex fork1;
-std::mutex fork2;
-std::mutex fork3;
-std::mutex fork4;
-std::mutex fork5;
+std::mutex fork1; // $ Alert[cpp/lock-order-cycle]
+std::mutex fork2; // $ Alert[cpp/lock-order-cycle]
+std::mutex fork3; // $ Alert[cpp/lock-order-cycle]
+std::mutex fork4; // $ Alert[cpp/lock-order-cycle]
+std::mutex fork5; // $ Alert[cpp/lock-order-cycle]
 
 void eat(int ph);
 

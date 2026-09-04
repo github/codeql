@@ -5,7 +5,7 @@ import "fmt"
 func callRecover3() {
 	// This will have no effect because panics do not propagate down the stack,
 	// only back up the stack
-	if recover() != nil {
+	if recover() != nil { // $ Alert
 		fmt.Printf("recovered")
 	}
 }

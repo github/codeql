@@ -27,7 +27,7 @@ void CWE134_Uncontrolled_Format_String__char_console_fprintf_01_bad()
         /* POTENTIAL FLAW: Read data from the console */
         if(100-data_len > 1)
         {
-            if (fgets(data+data_len, (int)(100-data_len), stdin) != NULL)
+            if (fgets(data+data_len, (int)(100-data_len), stdin) != NULL) // $ Source
             {
                 /* The next 3 lines remove the carriage return from the string that is
                  * inserted by fgets() */
@@ -46,7 +46,7 @@ void CWE134_Uncontrolled_Format_String__char_console_fprintf_01_bad()
         }
     }
     /* POTENTIAL FLAW: Do not specify the format allowing a possible format string vulnerability */
-    fprintf(stdout, data);
+    fprintf(stdout, data); // $ Alert
 }
 
 /* goodG2B uses the GoodSource with the BadSink */

@@ -1,0 +1,48 @@
+let n = t.0
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    memberAccessExpr
+                      period: .
+                      declName:
+                        declReferenceExpr
+                          baseName: integerLiteral "0"
+                      base:
+                        declReferenceExpr
+                          baseName: identifier "t"
+              pattern:
+                identifierPattern
+                  identifier: identifier "n"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "t"
+              member: identifier "0"

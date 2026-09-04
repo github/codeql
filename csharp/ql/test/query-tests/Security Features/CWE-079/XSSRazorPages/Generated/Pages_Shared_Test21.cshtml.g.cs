@@ -34,7 +34,7 @@ using test;
             WriteLiteral("    <h3>Hello \"");
 #nullable restore
 #line 8 "../Pages/Shared/Test21.cshtml"
-Write(Html.Raw(Model.Name));
+Write(Html.Raw(Model.Name)); // $ Alert[cs/web/xss]
 
 #line default
 #line hidden

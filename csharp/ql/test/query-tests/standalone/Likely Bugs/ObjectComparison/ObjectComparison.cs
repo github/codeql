@@ -14,9 +14,9 @@ class ObjectComparisonTest
         result = (object)unknownValue = someValue;
 
         // BAD: Explicit cast
-        result = (object)unknownValue == (object)someValue;
+        result = (object)unknownValue == (object)someValue; // $ Alert
 
         // BAD: Type information known
-        result = this == (object)this;
+        result = this == (object)this; // $ Alert
     }
 }

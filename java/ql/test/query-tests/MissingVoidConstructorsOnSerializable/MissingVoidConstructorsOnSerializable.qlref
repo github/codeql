@@ -1,1 +1,2 @@
-Likely Bugs/Serialization/MissingVoidConstructorsOnSerializable.ql
+query: Likely Bugs/Serialization/MissingVoidConstructorsOnSerializable.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -32,7 +32,21 @@ import (
 )
 
 var MaxGoRoutines int
-var typeParamParent map[*types.TypeParam]types.Object = make(map[*types.TypeParam]types.Object)
+
+type typeParamParentEntry struct {
+	parent         types.Object
+	isFromReceiver bool
+}
+
+// typeParamMutex protects typeParamParent.
+var typeParamParentMutex sync.RWMutex
+
+var typeParamParent map[*types.TypeParam]typeParamParentEntry = make(map[*types.TypeParam]typeParamParentEntry)
+
+// typeParamMutex protects typeParamOrigin.
+var typeParamOriginMutex sync.RWMutex
+
+var typeParamOrigin map[*types.TypeParam]*types.TypeParam = make(map[*types.TypeParam]*types.TypeParam)
 
 func init() {
 	// this sets the number of threads that the Go runtime will spawn; this is separate
@@ -57,6 +71,63 @@ func init() {
 	} else {
 		log.Printf("Max goroutines set to %d", MaxGoRoutines)
 	}
+}
+
+// isExactTestPackage checks if a package ID represents an exact test match.
+// Returns true for IDs like "github.com/foo/bar [github.com/foo/bar.test]"
+// Returns false for IDs like "github.com/foo/bar [github.com/foo/bar/nested.test]"
+func isExactTestPackage(pkg *packages.Package) bool {
+	// Test packages have IDs in the format: "pkgpath [pkgpath.test]"
+	// or for nested test dependencies: "pkgpath [pkgpath/nested.test]"
+	expectedTestID := pkg.PkgPath + " [" + pkg.PkgPath + ".test]"
+	return pkg.ID == expectedTestID
+}
+
+// isBetterPackage determines if pkg is a better choice than current for extraction.
+// Preferences:
+// 1. Exact test package (e.g., "pkg [pkg.test]") over nested test dependencies
+// 2. More Syntax nodes (more files to extract)
+// 3. Longer ID string as tiebreaker
+func isBetterPackage(pkg, current *packages.Package) bool {
+	pkgIsExact := isExactTestPackage(pkg)
+	currentIsExact := isExactTestPackage(current)
+
+	// Prefer exact test packages
+	if pkgIsExact != currentIsExact {
+		return pkgIsExact
+	}
+
+	// Prefer packages with more syntax nodes (more files)
+	pkgSyntaxCount := len(pkg.Syntax)
+	currentSyntaxCount := len(current.Syntax)
+	if pkgSyntaxCount != currentSyntaxCount {
+		return pkgSyntaxCount > currentSyntaxCount
+	}
+
+	// Fall back to string length
+	return len(pkg.ID) > len(current.ID)
+}
+
+// selectBestPackages builds a map from package paths to their best package variants.
+// In the context of a `go test -c` compilation, we see the same package more than
+// once, with IDs like "abc.com/pkgname [abc.com/pkgname.test]" to distinguish the version
+// that contains and is used by test code.
+// We prefer the version with the most complete test coverage, which is typically:
+// 1. The exact test package (e.g., "pkg [pkg.test]") over nested test dependencies
+// 2. The package with the most Syntax nodes (most files to extract)
+// 3. The longest ID string as a tiebreaker
+func selectBestPackages(pkgs []*packages.Package) map[string]*packages.Package {
+	bestPackageIds := make(map[string]*packages.Package)
+	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
+		if bestSoFar, present := bestPackageIds[pkg.PkgPath]; present {
+			if isBetterPackage(pkg, bestSoFar) {
+				bestPackageIds[pkg.PkgPath] = pkg
+			}
+		} else {
+			bestPackageIds[pkg.PkgPath] = pkg
+		}
+	})
+	return bestPackageIds
 }
 
 // ExtractWithFlags extracts the packages specified by the given patterns and build flags
@@ -153,22 +224,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool,
 
 	pkgsNotFound := make([]string, 0, len(pkgs))
 
-	// Build a map from package paths to their longest IDs--
-	// in the context of a `go test -c` compilation, we will see the same package more than
-	// once, with IDs like "abc.com/pkgname [abc.com/pkgname.test]" to distinguish the version
-	// that contains and is used by test code.
-	// For our purposes it is simplest to just ignore the non-test version, since the test
-	// version seems to be a superset of it.
-	longestPackageIds := make(map[string]string)
-	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
-		if longestIDSoFar, present := longestPackageIds[pkg.PkgPath]; present {
-			if len(pkg.ID) > len(longestIDSoFar) {
-				longestPackageIds[pkg.PkgPath] = pkg.ID
-			}
-		} else {
-			longestPackageIds[pkg.PkgPath] = pkg.ID
-		}
-	})
+	// Build a map from package paths to their best IDs
+	bestPackageIds := selectBestPackages(pkgs)
 
 	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
@@ -183,13 +240,13 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool,
 		// This should only cause some wasted time and not inconsistency because the names for
 		// objects seen in this process should be the same each time.
 
-		log.Printf("Processing package %s.", pkg.PkgPath)
+		slog.Debug("Processing package", "package", pkg.PkgPath)
 
 		if _, ok := pkgInfos[pkg.PkgPath]; !ok {
 			pkgInfos[pkg.PkgPath] = toolchain.GetPkgInfo(pkg.PkgPath, modFlags...)
 		}
 
-		log.Printf("Extracting types for package %s.", pkg.PkgPath)
+		slog.Debug("Extracting types for package", "package", pkg.PkgPath)
 
 		tw, err := trap.NewWriter(pkg.PkgPath, pkg)
 		if err != nil {
@@ -257,15 +314,15 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool,
 	// extract AST information for all packages
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
 
-		// If this is a variant of a package that also occurs with a longer ID, skip it;
+		// If this is a variant of a package that also occurs with a better ID, skip it;
 		// otherwise we would extract the same file more than once including extracting the
 		// body of methods twice, causing database inconsistencies.
 		//
-		// We prefer the version with the longest ID because that is (so far as I know) always
-		// the version that defines more entities -- the only case I'm aware of being a test
-		// variant of a package, which includes test-only functions in addition to the complete
-		// contents of the main variant.
-		if pkg.ID != longestPackageIds[pkg.PkgPath] {
+		// We prefer the version with the most complete test coverage, prioritizing:
+		// 1. Exact test packages (e.g., "pkg [pkg.test]") over nested test dependencies
+		// 2. Packages with more Syntax nodes (more files to extract)
+		// 3. Longer ID strings as a tiebreaker
+		if pkg.ID != bestPackageIds[pkg.PkgPath].ID {
 			return
 		}
 
@@ -487,8 +544,7 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 			// do not appear as objects in any scope, so they have to be dealt
 			// with separately in extractMethods.
 			if funcObj, ok := obj.(*types.Func); ok {
-				populateTypeParamParents(funcObj.Type().(*types.Signature).TypeParams(), obj)
-				populateTypeParamParents(funcObj.Type().(*types.Signature).RecvTypeParams(), obj)
+				populateTypeParamParentsFromFunction(funcObj)
 			}
 			// Populate type parameter parents for defined types and alias types.
 			if typeNameObj, ok := obj.(*types.TypeName); ok {
@@ -499,9 +555,9 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 				// careful with alias types because before Go 1.24 they would
 				// return the underlying type.
 				if tp, ok := typeNameObj.Type().(*types.Named); ok && !typeNameObj.IsAlias() {
-					populateTypeParamParents(tp.TypeParams(), obj)
+					populateTypeParamParents(tp.TypeParams(), obj, false)
 				} else if tp, ok := typeNameObj.Type().(*types.Alias); ok {
-					populateTypeParamParents(tp.TypeParams(), obj)
+					populateTypeParamParents(tp.TypeParams(), obj, false)
 				}
 			}
 			extractObject(tw, obj, lbl)
@@ -527,8 +583,7 @@ func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 	if !exists {
 		// Populate type parameter parents for methods. They do not appear as
 		// objects in any scope, so they have to be dealt with separately here.
-		populateTypeParamParents(meth.Type().(*types.Signature).TypeParams(), meth)
-		populateTypeParamParents(meth.Type().(*types.Signature).RecvTypeParams(), meth)
+		populateTypeParamParentsFromFunction(meth)
 		extractObject(tw, meth, methlbl)
 	}
 
@@ -723,7 +778,7 @@ func normalizedPath(ast *ast.File, fset *token.FileSet) string {
 	if err != nil {
 		return file
 	}
-	return path
+	return util.ResolvePath(path)
 }
 
 // extractFile extracts AST information for the given file
@@ -1486,12 +1541,6 @@ func extractSpec(tw *trap.Writer, spec ast.Spec, parent trap.Label, idx int) {
 	extractNodeLocation(tw, spec, lbl)
 }
 
-// Determines whether the given type is an alias.
-func isAlias(tp types.Type) bool {
-	_, ok := tp.(*types.Alias)
-	return ok
-}
-
 // extractType extracts type information for `tp` and returns its associated label;
 // types are only extracted once, so the second time `extractType` is invoked it simply returns the label
 func extractType(tw *trap.Writer, tp types.Type) trap.Label {
@@ -1601,7 +1650,6 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			dbscheme.TypeNameTable.Emit(tw, lbl, origintp.Obj().Name())
 			underlying := origintp.Underlying()
 			extractUnderlyingType(tw, lbl, underlying)
-			trackInstantiatedStructFields(tw, tp, origintp)
 
 			entitylbl, exists := tw.Labeler.LookupObjectID(origintp.Obj(), lbl)
 			if entitylbl == trap.InvalidLabel {
@@ -1617,8 +1665,8 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			// parent scope, so they are not dealt with by `extractScopes`
 			for i := 0; i < origintp.NumMethods(); i++ {
 				meth := origintp.Method(i).Origin()
-
 				extractMethod(tw, meth)
+				populateTypeParamParentsAndOrigins(tp.Method(i), meth)
 			}
 
 			underlyingInterface, underlyingIsInterface := underlying.(*types.Interface)
@@ -1641,9 +1689,10 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			}
 		case *types.TypeParam:
 			kind = dbscheme.TypeParamType.Index()
-			parentlbl := getTypeParamParentLabel(tw, tp)
-			constraintLabel := extractType(tw, tp.Constraint())
-			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), constraintLabel, parentlbl, tp.Index())
+			parentlbl, isReceiverChild := getTypeParamParentLabel(tw, tp)
+			constraint := getTypeParamOrigin(tp).Constraint()
+			constraintLabel := extractType(tw, constraint)
+			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), constraintLabel, parentlbl, tp.Index(), isReceiverChild)
 		case *types.Union:
 			kind = dbscheme.TypeSetLiteral.Index()
 			for i := 0; i < tp.Len(); i++ {
@@ -1783,9 +1832,9 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};definedtype", entitylbl))
 		case *types.TypeParam:
-			parentlbl := getTypeParamParentLabel(tw, tp)
+			parentlbl, isReceiverChild := getTypeParamParentLabel(tw, tp)
 			idx := tp.Index()
-			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%d,%s;typeparamtype", parentlbl, idx, tp.Obj().Name()))
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%d,%t,%s;typeparamtype", parentlbl, idx, isReceiverChild, tp.Obj().Name()))
 		case *types.Union:
 			var b strings.Builder
 			for i := 0; i < tp.Len(); i++ {
@@ -1969,11 +2018,18 @@ func extractTypeParamDecls(tw *trap.Writer, fields *ast.FieldList, parent trap.L
 	}
 }
 
+func populateTypeParamParentsFromFunction(funcObj *types.Func) {
+	signature := funcObj.Type().(*types.Signature)
+	populateTypeParamParents(signature.RecvTypeParams(), funcObj, true)
+	populateTypeParamParents(signature.TypeParams(), funcObj, false)
+}
+
 // populateTypeParamParents sets `parent` as the parent of the elements of `typeparams`
-func populateTypeParamParents(typeparams *types.TypeParamList, parent types.Object) {
+// and records whether elements are defined in a receiver.
+func populateTypeParamParents(typeparams *types.TypeParamList, parent types.Object, isFromReceiver bool) {
 	if typeparams != nil {
-		for idx := 0; idx < typeparams.Len(); idx++ {
-			setTypeParamParent(typeparams.At(idx), parent)
+		for tparam := range typeparams.TypeParams() {
+			setTypeParamParent(tparam, parent, isFromReceiver)
 		}
 	}
 }
@@ -1992,54 +2048,32 @@ func getObjectBeingUsed(tw *trap.Writer, ident *ast.Ident) types.Object {
 	}
 }
 
-// trackInstantiatedStructFields tries to give the fields of an instantiated
-// struct type underlying `tp` the same labels as the corresponding fields of
-// the generic struct type. This is so that when we come across the
-// instantiated field in `tw.Package.TypesInfo.Uses` we will get the label for
-// the generic field instead.
-func trackInstantiatedStructFields(tw *trap.Writer, tp, origintp *types.Named) {
-	if tp == origintp {
-		return
-	}
+func getTypeParamParentLabel(tw *trap.Writer, tp *types.TypeParam) (trap.Label, bool) {
+	typeParamParentMutex.RLock()
+	entry, exists := typeParamParent[tp]
+	typeParamParentMutex.RUnlock()
 
-	if instantiatedStruct, ok := tp.Underlying().(*types.Struct); ok {
-		genericStruct, ok2 := origintp.Underlying().(*types.Struct)
-		if !ok2 {
-			log.Fatalf(
-				"Error: underlying type of instantiated type is a struct but underlying type of generic type is %s",
-				origintp.Underlying())
-		}
-
-		if instantiatedStruct.NumFields() != genericStruct.NumFields() {
-			log.Fatalf(
-				"Error: instantiated struct %s has different number of fields than the generic version %s (%d != %d)",
-				instantiatedStruct, genericStruct, instantiatedStruct.NumFields(), genericStruct.NumFields())
-		}
-
-		for i := 0; i < instantiatedStruct.NumFields(); i++ {
-			tw.ObjectsOverride[instantiatedStruct.Field(i)] = genericStruct.Field(i)
-		}
-	}
-}
-
-func getTypeParamParentLabel(tw *trap.Writer, tp *types.TypeParam) trap.Label {
-	parent, exists := typeParamParent[tp]
 	if !exists {
 		log.Fatalf("Parent of type parameter does not exist: %s %s", tp.String(), tp.Constraint().String())
 	}
-	parentlbl, _ := tw.Labeler.ScopedObjectID(parent, func() trap.Label {
+	parentlbl, _ := tw.Labeler.ScopedObjectID(entry.parent, func() trap.Label {
 		log.Fatalf("getTypeLabel() called for parent of type parameter %s", tp.String())
 		return trap.InvalidLabel
 	})
-	return parentlbl
+	return parentlbl, entry.isFromReceiver
 }
 
-func setTypeParamParent(tp *types.TypeParam, newobj types.Object) {
-	obj, exists := typeParamParent[tp]
+func setTypeParamParent(tp *types.TypeParam, parent types.Object, isFromReceiver bool) {
+	typeParamParentMutex.Lock()
+	defer typeParamParentMutex.Unlock()
+
+	entry, exists := typeParamParent[tp]
+	newEntry := typeParamParentEntry{parent, isFromReceiver}
 	if !exists {
-		typeParamParent[tp] = newobj
-	} else if newobj != obj {
-		log.Fatalf("Parent of type parameter '%s %s' being set to a different value: '%s' vs '%s'", tp.String(), tp.Constraint().String(), obj, newobj)
+		typeParamParent[tp] = newEntry
+	} else if entry != newEntry {
+		log.Fatalf("Parent of type parameter '%s %s' being set to a different value: {'%s', %t}'  vs {'%s', %t}",
+			tp.String(), tp.Constraint().String(), entry.parent, entry.isFromReceiver, parent, isFromReceiver)
 	}
 }
 
@@ -2078,5 +2112,78 @@ func checkObjectNotSpecialized(obj types.Object) {
 		if definedType, ok := typeNameObj.Type().(*types.Named); ok && definedType != definedType.Origin() {
 			log.Fatalf("Encountered type object for specialization %s of defined type %s", definedType.String(), definedType.Origin().String())
 		}
+	}
+}
+
+// getTypeParamOrigin returns the origin type parameter for a type parameter
+// from an instantiated method.
+func getTypeParamOrigin(tp *types.TypeParam) *types.TypeParam {
+	typeParamOriginMutex.RLock()
+	origin, exists := typeParamOrigin[tp]
+	typeParamOriginMutex.RUnlock()
+
+	if exists {
+		return origin
+	} else {
+		return tp
+	}
+}
+
+// populateTypeParamParentsAndOrigins records for each type parameter of a method
+// the origin parent and type parameter.
+//
+// Consider a generic struct and a generic method:
+//
+//	type S[P any] struct{}
+//	func (*S[P]) m[Q ~P](x Q) {}
+//
+// If we have a variable 's' of type 'S[int]' and the expression 's.m[int](42)',
+// then the type of the selector expression 's.m' is 'func[Q ~int](Q)'. The
+// method 'm' here is an instantiation of the declaration, which has its own
+// type with type parameter 'Q' with constraint 'interface { ~int }'. As we
+// do not extract method instantiations, but only their origins, we want to
+// match this behavior for the constraints of instantiated type parameter, and
+// record their origin. Moreover, not extracting instantiations also means that
+// 'populateTypeParamParents' does not automatically get called on their type
+// parameters. To compensate, we add the type params here by calling
+// `setTypeParamParent`.
+//
+// As the parent of a type parameter use the origin method. This suffices, as
+// the name and index of the type parameter in the instantiation will be
+// identical to those of the uninstantiated method, and as only a constraint and
+// these two properties will be extracted for a type parameter.
+func populateTypeParamParentsAndOrigins(meth *types.Func, originmeth *types.Func) {
+	if meth == originmeth {
+		return
+	}
+
+	typeparams := meth.Type().(*types.Signature).TypeParams()
+	populateTypeParamParents(typeparams, originmeth, false)
+
+	origintypeparams := originmeth.Type().(*types.Signature).TypeParams()
+	populateTypeParamOrigins(meth, typeparams, origintypeparams)
+}
+
+func populateTypeParamOrigins(meth *types.Func, typeparams *types.TypeParamList, origintypeparams *types.TypeParamList) {
+	if typeparams.Len() != origintypeparams.Len() {
+		log.Fatalf("Method instantiation %s has %d type parameters, origin has %d",
+			meth, typeparams.Len(), origintypeparams.Len())
+	}
+
+	for j := 0; j < typeparams.Len(); j++ {
+		setTypeParamOrigin(typeparams.At(j), origintypeparams.At(j))
+	}
+}
+
+func setTypeParamOrigin(typeparam *types.TypeParam, origintypeparam *types.TypeParam) {
+	typeParamOriginMutex.Lock()
+	defer typeParamOriginMutex.Unlock()
+
+	entry, exists := typeParamOrigin[typeparam]
+	if !exists {
+		typeParamOrigin[typeparam] = origintypeparam
+	} else if entry != origintypeparam {
+		log.Fatalf("Origin of type parameter '%s %s' being set to a different value: '%s' vs '%s'",
+			typeparam.String(), typeparam.Constraint().String(), entry.String(), origintypeparam.String())
 	}
 }

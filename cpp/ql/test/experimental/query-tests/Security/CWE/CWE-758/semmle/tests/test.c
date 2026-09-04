@@ -10,10 +10,10 @@ char tmpFunction2(char * buf)
 }
 void workFunction_0(char *s, char * buf) {
   int intA;
-  intA = tmpFunction1(buf) + tmpFunction2(buf);  // BAD
+  intA = tmpFunction1(buf) + tmpFunction2(buf);  // $ Alert // BAD
   intA = tmpFunction1(buf);  //GOOD
   intA += tmpFunction2(buf);  // GOOD
-  buf[intA] = intA++; // BAD
+  buf[intA] = intA++; // $ Alert // BAD
   intA++;
   buf[intA] = intA; // GOOD
 }

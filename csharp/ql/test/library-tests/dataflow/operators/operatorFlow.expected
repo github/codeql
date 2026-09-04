@@ -130,6 +130,16 @@ edges
 | Operator.cs:119:14:119:14 | access to local variable y : C [property Field] : Object | Operator.cs:119:9:119:9 | [post] access to local variable x : C [property Field] : Object | provenance |  |
 | Operator.cs:120:14:120:14 | access to local variable x : C [property Field] : Object | Operator.cs:120:14:120:20 | access to property Field | provenance |  |
 | Operator.cs:120:14:120:14 | access to local variable x : C [property Field] : Object | Operator.cs:120:14:120:20 | access to property Field | provenance |  |
+| Operator.cs:143:30:143:31 | this [Return] : C1 [property Field] : Object | Operator.cs:151:13:151:13 | [post] access to local variable x : C1 [property Field] : Object | provenance |  |
+| Operator.cs:143:30:143:31 | this [Return] : C1 [property Field] : Object | Operator.cs:151:13:151:13 | [post] access to local variable x : C1 [property Field] : Object | provenance |  |
+| Operator.cs:145:13:145:17 | [post] this access : C1 [property Field] : Object | Operator.cs:143:30:143:31 | this [Return] : C1 [property Field] : Object | provenance |  |
+| Operator.cs:145:13:145:17 | [post] this access : C1 [property Field] : Object | Operator.cs:143:30:143:31 | this [Return] : C1 [property Field] : Object | provenance |  |
+| Operator.cs:145:21:145:37 | call to method Source<Object> : Object | Operator.cs:145:13:145:17 | [post] this access : C1 [property Field] : Object | provenance |  |
+| Operator.cs:145:21:145:37 | call to method Source<Object> : Object | Operator.cs:145:13:145:17 | [post] this access : C1 [property Field] : Object | provenance |  |
+| Operator.cs:151:13:151:13 | [post] access to local variable x : C1 [property Field] : Object | Operator.cs:152:18:152:18 | access to local variable x : C1 [property Field] : Object | provenance |  |
+| Operator.cs:151:13:151:13 | [post] access to local variable x : C1 [property Field] : Object | Operator.cs:152:18:152:18 | access to local variable x : C1 [property Field] : Object | provenance |  |
+| Operator.cs:152:18:152:18 | access to local variable x : C1 [property Field] : Object | Operator.cs:152:18:152:24 | access to property Field | provenance |  |
+| Operator.cs:152:18:152:18 | access to local variable x : C1 [property Field] : Object | Operator.cs:152:18:152:24 | access to property Field | provenance |  |
 nodes
 | Operator.cs:9:39:9:39 | x : C | semmle.label | x : C |
 | Operator.cs:9:39:9:39 | x : C | semmle.label | x : C |
@@ -275,6 +285,18 @@ nodes
 | Operator.cs:120:14:120:14 | access to local variable x : C [property Field] : Object | semmle.label | access to local variable x : C [property Field] : Object |
 | Operator.cs:120:14:120:20 | access to property Field | semmle.label | access to property Field |
 | Operator.cs:120:14:120:20 | access to property Field | semmle.label | access to property Field |
+| Operator.cs:143:30:143:31 | this [Return] : C1 [property Field] : Object | semmle.label | this [Return] : C1 [property Field] : Object |
+| Operator.cs:143:30:143:31 | this [Return] : C1 [property Field] : Object | semmle.label | this [Return] : C1 [property Field] : Object |
+| Operator.cs:145:13:145:17 | [post] this access : C1 [property Field] : Object | semmle.label | [post] this access : C1 [property Field] : Object |
+| Operator.cs:145:13:145:17 | [post] this access : C1 [property Field] : Object | semmle.label | [post] this access : C1 [property Field] : Object |
+| Operator.cs:145:21:145:37 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Operator.cs:145:21:145:37 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Operator.cs:151:13:151:13 | [post] access to local variable x : C1 [property Field] : Object | semmle.label | [post] access to local variable x : C1 [property Field] : Object |
+| Operator.cs:151:13:151:13 | [post] access to local variable x : C1 [property Field] : Object | semmle.label | [post] access to local variable x : C1 [property Field] : Object |
+| Operator.cs:152:18:152:18 | access to local variable x : C1 [property Field] : Object | semmle.label | access to local variable x : C1 [property Field] : Object |
+| Operator.cs:152:18:152:18 | access to local variable x : C1 [property Field] : Object | semmle.label | access to local variable x : C1 [property Field] : Object |
+| Operator.cs:152:18:152:24 | access to property Field | semmle.label | access to property Field |
+| Operator.cs:152:18:152:24 | access to property Field | semmle.label | access to property Field |
 subpaths
 | Operator.cs:29:17:29:17 | access to local variable x : C | Operator.cs:16:38:16:38 | x : C | Operator.cs:16:49:16:49 | access to parameter x : C | Operator.cs:29:17:29:21 | call to operator + : C |
 | Operator.cs:29:17:29:17 | access to local variable x : C | Operator.cs:16:38:16:38 | x : C | Operator.cs:16:49:16:49 | access to parameter x : C | Operator.cs:29:17:29:21 | call to operator + : C |
@@ -308,3 +330,5 @@ testFailures
 | Operator.cs:78:14:78:14 | (...) ... | Operator.cs:84:17:84:29 | call to method Source<C> : C | Operator.cs:78:14:78:14 | (...) ... | $@ | Operator.cs:84:17:84:29 | call to method Source<C> : C | call to method Source<C> : C |
 | Operator.cs:120:14:120:20 | access to property Field | Operator.cs:116:23:116:39 | call to method Source<Object> : Object | Operator.cs:120:14:120:20 | access to property Field | $@ | Operator.cs:116:23:116:39 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Operator.cs:120:14:120:20 | access to property Field | Operator.cs:116:23:116:39 | call to method Source<Object> : Object | Operator.cs:120:14:120:20 | access to property Field | $@ | Operator.cs:116:23:116:39 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Operator.cs:152:18:152:24 | access to property Field | Operator.cs:145:21:145:37 | call to method Source<Object> : Object | Operator.cs:152:18:152:24 | access to property Field | $@ | Operator.cs:145:21:145:37 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Operator.cs:152:18:152:24 | access to property Field | Operator.cs:145:21:145:37 | call to method Source<Object> : Object | Operator.cs:152:18:152:24 | access to property Field | $@ | Operator.cs:145:21:145:37 | call to method Source<Object> : Object | call to method Source<Object> : Object |

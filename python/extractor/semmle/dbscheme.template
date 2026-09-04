@@ -272,13 +272,17 @@ yaml_scalars (unique int scalar: @yaml_scalar_node ref,
               int style: int ref,
               string value: string ref);
 
+yaml_comments (unique int id: @yaml_comment,
+               string text: string ref,
+               string tostring: string ref);
+
 yaml_errors (unique int id: @yaml_error,
              string message: string ref);
 
 yaml_locations(unique int locatable: @yaml_locatable ref,
              int location: @location_default ref);
 
-@yaml_locatable = @yaml_node | @yaml_error;
+@yaml_locatable = @yaml_node | @yaml_error | @yaml_comment;
 
 /*- Python dbscheme -*/
 

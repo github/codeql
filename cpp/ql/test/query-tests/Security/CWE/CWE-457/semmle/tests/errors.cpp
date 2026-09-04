@@ -10,6 +10,6 @@ void * operator new(unsigned long, bool);
 void operator delete(void*, bool);
 
 int f2() {
-  int x;
-  new(true) int (x);  // BAD, ignore implicit error expression
+  int x; // $ Source Sink
+  new(true) int (x);  // $ Alert // BAD, ignore implicit error expression
 }

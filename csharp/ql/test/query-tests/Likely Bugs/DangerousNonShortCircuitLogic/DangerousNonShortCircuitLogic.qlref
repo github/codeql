@@ -1,1 +1,2 @@
-Likely Bugs/DangerousNonShortCircuitLogic.ql
+query: Likely Bugs/DangerousNonShortCircuitLogic.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

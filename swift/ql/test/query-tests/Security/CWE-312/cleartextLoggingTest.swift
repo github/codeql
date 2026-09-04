@@ -164,24 +164,24 @@ class MyRemoteLogger {
 // --- tests ---
 
 func test1(password: String, passwordHash : String, passphrase: String, pass_phrase: String) {
-    print(password) // $ Alert
-    print(password, separator: "") // $ Alert
-    print("", separator: password) // $ Alert
-    print(password, separator: "", terminator: "") // $ Alert
-    print("", separator: password, terminator: "") // $ Alert
-    print("", separator: "", terminator: password) // $ Alert
+    print(password) // $ Alert[swift/cleartext-logging]
+    print(password, separator: "") // $ Alert[swift/cleartext-logging]
+    print("", separator: password) // $ Alert[swift/cleartext-logging]
+    print(password, separator: "", terminator: "") // $ Alert[swift/cleartext-logging]
+    print("", separator: password, terminator: "") // $ Alert[swift/cleartext-logging]
+    print("", separator: "", terminator: password) // $ Alert[swift/cleartext-logging]
     print(passwordHash) // safe
 
-    debugPrint(password) // $ Alert
+    debugPrint(password) // $ Alert[swift/cleartext-logging]
 
-    dump(password) // $ Alert
+    dump(password) // $ Alert[swift/cleartext-logging]
 
-    NSLog(password) // $ Alert
-    NSLog("%@", password) // $ Alert
-    NSLog("%@ %@", "", password) // $ Alert
-    NSLog("\(password)") // $ Alert
-    NSLogv("%@", getVaList([password])) // $ Alert
-    NSLogv("%@ %@", getVaList(["", password])) // $ Alert
+    NSLog(password) // $ Alert[swift/cleartext-logging]
+    NSLog("%@", password) // $ Alert[swift/cleartext-logging]
+    NSLog("%@ %@", "", password) // $ Alert[swift/cleartext-logging]
+    NSLog("\(password)") // $ Alert[swift/cleartext-logging]
+    NSLogv("%@", getVaList([password])) // $ Alert[swift/cleartext-logging]
+    NSLogv("%@ %@", getVaList(["", password])) // $ Alert[swift/cleartext-logging]
     NSLog(passwordHash) // safe
     NSLogv("%@", getVaList([passwordHash])) // safe
 
@@ -217,12 +217,12 @@ func test1(password: String, passwordHash : String, passphrase: String, pass_phr
     log.fault("\(password, privacy: .public)") // $ MISSING: Alert
     log.fault("\(passwordHash, privacy: .public)") // safe
 
-    NSLog(passphrase) // $ Alert
-    NSLog(pass_phrase) // $ Alert
+    NSLog(passphrase) // $ Alert[swift/cleartext-logging]
+    NSLog(pass_phrase) // $ Alert[swift/cleartext-logging]
 
     os_log("%@", log: .default, type: .default, "") // safe
-    os_log("%@", log: .default, type: .default, password) // $ Alert
-    os_log("%@ %@ %@", log: .default, type: .default, "", "", password) // $ Alert
+    os_log("%@", log: .default, type: .default, password) // $ Alert[swift/cleartext-logging]
+    os_log("%@ %@ %@", log: .default, type: .default, "", "", password) // $ Alert[swift/cleartext-logging]
 }
 
 class MyClass {
@@ -237,15 +237,15 @@ func test3(x: String) {
 	// alternative evidence of sensitivity...
 
 	NSLog(x) // $ MISSING: Alert
-	doSomething(password: x); // $ Source
-	NSLog(x) // $ Alert
+	doSomething(password: x); // $ Source[swift/cleartext-logging]
+	NSLog(x) // $ Alert[swift/cleartext-logging]
 
-	let y = getPassword(); // $ Source
-	NSLog(y) // $ Alert
+	let y = getPassword(); // $ Source[swift/cleartext-logging]
+	NSLog(y) // $ Alert[swift/cleartext-logging]
 
 	let z = MyClass()
 	NSLog(z.harmless) // safe
-	NSLog(z.password) // $ Alert
+	NSLog(z.password) // $ Alert[swift/cleartext-logging]
 }
 
 struct MyOuter {
@@ -260,7 +260,7 @@ struct MyOuter {
 func test3(mo : MyOuter) {
 	// struct members...
 
-	NSLog(mo.password.value) // $ Alert
+	NSLog(mo.password.value) // $ Alert[swift/cleartext-logging]
 	NSLog(mo.harmless.value) // safe
 }
 
@@ -283,40 +283,40 @@ func test4(harmless: String, password: String) {
 	print(harmless, to: &myString1)
 	print(myString1) // safe
 
-	print(password, to: &myString2) // $ Source
-	print(myString2) // $ Alert
+	print(password, to: &myString2) // $ Source[swift/cleartext-logging]
+	print(myString2) // $ Alert[swift/cleartext-logging]
 
-	print("log: " + password, to: &myString3) // $ Source
-	print(myString3) // $ Alert
+	print("log: " + password, to: &myString3) // $ Source[swift/cleartext-logging]
+	print(myString3) // $ Alert[swift/cleartext-logging]
 
 	debugPrint(harmless, to: &myString4)
 	debugPrint(myString4) // safe
 
-	debugPrint(password, to: &myString5) // $ Source
-	debugPrint(myString5) // $ Alert
+	debugPrint(password, to: &myString5) // $ Source[swift/cleartext-logging]
+	debugPrint(myString5) // $ Alert[swift/cleartext-logging]
 
 	dump(harmless, to: &myString6)
 	dump(myString6) // safe
 
-	dump(password, to: &myString7) // $ Source
-	dump(myString7) // $ Alert
+	dump(password, to: &myString7) // $ Source[swift/cleartext-logging]
+	dump(myString7) // $ Alert[swift/cleartext-logging]
 
 	myString8.write(harmless)
 	print(myString8)
 
-	myString9.write(password) // $ Source
-	print(myString9) // $ Alert
+	myString9.write(password) // $ Source[swift/cleartext-logging]
+	print(myString9) // $ Alert[swift/cleartext-logging]
 
 	myString10.write(harmless)
-	myString10.write(password) // $ Source
+	myString10.write(password) // $ Source[swift/cleartext-logging]
 	myString10.write(harmless)
-	print(myString10) // $ Alert
+	print(myString10) // $ Alert[swift/cleartext-logging]
 
 	harmless.write(to: &myString11)
 	print(myString11)
 
-	password.write(to: &myString12) // $ Source
-	print(myString12) // $ Alert
+	password.write(to: &myString12) // $ Source[swift/cleartext-logging]
+	print(myString12) // $ Alert[swift/cleartext-logging]
 
 	print(password, to: &myString13) // $ safe - only printed to another string
 	debugPrint(password, to: &myString13) // $ safe - only printed to another string
@@ -331,59 +331,59 @@ func test5(password: String, caseNum: Int) {
 
 	switch caseNum {
 	case 0:
-		assert(false, password) // $ Alert
+		assert(false, password) // $ Alert[swift/cleartext-logging]
 	case 1:
-		assertionFailure(password) // $ Alert
+		assertionFailure(password) // $ Alert[swift/cleartext-logging]
 	case 2:
-		precondition(false, password) // $ Alert
+		precondition(false, password) // $ Alert[swift/cleartext-logging]
 	case 3:
-		preconditionFailure(password) // $ Alert
+		preconditionFailure(password) // $ Alert[swift/cleartext-logging]
 	default:
-		fatalError(password) // $ Alert
+		fatalError(password) // $ Alert[swift/cleartext-logging]
 	}
 }
 
 func test6(passwordString: String) {
-    let e = NSException(name: NSExceptionName("exception"), reason: "\(passwordString) is incorrect!", userInfo: nil) // $ Alert
+    let e = NSException(name: NSExceptionName("exception"), reason: "\(passwordString) is incorrect!", userInfo: nil) // $ Alert[swift/cleartext-logging]
     e.raise()
 
-    NSException.raise(NSExceptionName("exception"), format: "\(passwordString) is incorrect!", arguments: getVaList([])) // $ Alert
-    NSException.raise(NSExceptionName("exception"), format: "%s is incorrect!", arguments: getVaList([passwordString])) // $ Alert
+    NSException.raise(NSExceptionName("exception"), format: "\(passwordString) is incorrect!", arguments: getVaList([])) // $ Alert[swift/cleartext-logging]
+    NSException.raise(NSExceptionName("exception"), format: "%s is incorrect!", arguments: getVaList([passwordString])) // $ Alert[swift/cleartext-logging]
 
-    _ = dprintf(0, "\(passwordString) is incorrect!") // $ Alert
-    _ = dprintf(0, "%s is incorrect!", passwordString) // $ Alert
-    _ = dprintf(0, "%s: %s is incorrect!", "foo", passwordString) // $ Alert
-    _ = vprintf("\(passwordString) is incorrect!", getVaList([])) // $ Alert
-    _ = vprintf("%s is incorrect!", getVaList([passwordString])) // $ Alert
-    _ = vfprintf(nil, "\(passwordString) is incorrect!", getVaList([])) // $ Alert
-    _ = vfprintf(nil, "%s is incorrect!", getVaList([passwordString])) // $ Alert
+    _ = dprintf(0, "\(passwordString) is incorrect!") // $ Alert[swift/cleartext-logging]
+    _ = dprintf(0, "%s is incorrect!", passwordString) // $ Alert[swift/cleartext-logging]
+    _ = dprintf(0, "%s: %s is incorrect!", "foo", passwordString) // $ Alert[swift/cleartext-logging]
+    _ = vprintf("\(passwordString) is incorrect!", getVaList([])) // $ Alert[swift/cleartext-logging]
+    _ = vprintf("%s is incorrect!", getVaList([passwordString])) // $ Alert[swift/cleartext-logging]
+    _ = vfprintf(nil, "\(passwordString) is incorrect!", getVaList([])) // $ Alert[swift/cleartext-logging]
+    _ = vfprintf(nil, "%s is incorrect!", getVaList([passwordString])) // $ Alert[swift/cleartext-logging]
     _ = vasprintf_l(nil, nil, "\(passwordString) is incorrect!", getVaList([])) // good (`sprintf` is not logging)
     _ = vasprintf_l(nil, nil, "%s is incorrect!", getVaList([passwordString])) // good (`sprintf` is not logging)
 }
 
 func test7(authKey: String, authKey2: Int, authKey3: Float, password: String, secret: String) {
-    log(message: authKey) // $ Alert
-    log(message: String(authKey2)) // $ Alert
+    log(message: authKey) // $ Alert[swift/cleartext-logging]
+    log(message: String(authKey2)) // $ Alert[swift/cleartext-logging]
     logging(message: authKey) // $ MISSING: Alert
     logfile(file: 0, message: authKey) // $ MISSING: Alert
-    logMessage(NSString(string: authKey)) // $ Alert
-    logInfo(authKey) // $ Alert
-    logError(errorMsg: authKey) // $ Alert
+    logMessage(NSString(string: authKey)) // $ Alert[swift/cleartext-logging]
+    logInfo(authKey) // $ Alert[swift/cleartext-logging]
+    logError(errorMsg: authKey) // $ Alert[swift/cleartext-logging]
     harmless(authKey) // GOOD: not logging
     _ = logarithm(authKey3) // GOOD: not logging
     doLogin(login: authKey) // GOOD: not logging
 
     let logger = LogFile()
-    let msg = "authKey: " + authKey // $ Source
-    logger.log(msg) // $ Alert
-    logger.trace(msg) // $ Alert
-    logger.debug(msg) // $ Alert
-    logger.info(NSString(string: msg)) // $ Alert
-    logger.notice(msg) // $ Alert
-    logger.warning(msg) // $ Alert
-    logger.error(msg) // $ Alert
-    logger.critical(msg) // $ Alert
-    logger.fatal(msg) // $ Alert
+    let msg = "authKey: " + authKey // $ Source[swift/cleartext-logging]
+    logger.log(msg) // $ Alert[swift/cleartext-logging]
+    logger.trace(msg) // $ Alert[swift/cleartext-logging]
+    logger.debug(msg) // $ Alert[swift/cleartext-logging]
+    logger.info(NSString(string: msg)) // $ Alert[swift/cleartext-logging]
+    logger.notice(msg) // $ Alert[swift/cleartext-logging]
+    logger.warning(msg) // $ Alert[swift/cleartext-logging]
+    logger.error(msg) // $ Alert[swift/cleartext-logging]
+    logger.critical(msg) // $ Alert[swift/cleartext-logging]
+    logger.fatal(msg) // $ Alert[swift/cleartext-logging]
 
     let logic = Logic()
     logic.addInt(authKey2) // GOOD: not logging

@@ -10,7 +10,7 @@ bool maybe();
 
 bool test2_1(SSL *ssl)
 {
-	int cert = SSL_get_peer_certificate(ssl); // BAD (SSL_get_verify_result is never called)
+	int cert = SSL_get_peer_certificate(ssl); // $ Alert[cpp/certificate-not-checked] // BAD (SSL_get_verify_result is never called)
 
 	return true;
 }
@@ -25,7 +25,7 @@ bool test2_2(SSL *ssl)
 
 bool test2_3(SSL *ssl)
 {
-	int cert = SSL_get_peer_certificate(ssl); // BAD (SSL_get_verify_result may not be called)
+	int cert = SSL_get_peer_certificate(ssl); // $ Alert[cpp/certificate-not-checked] // BAD (SSL_get_verify_result may not be called)
 
 	if (maybe())
 	{
@@ -58,7 +58,7 @@ bool test2_5(SSL *ssl)
 {
 	int cert, result;
 
-	cert = SSL_get_peer_certificate(ssl); // BAD (SSL_get_verify_result is not used reliably)
+	cert = SSL_get_peer_certificate(ssl); // $ Alert[cpp/certificate-not-checked] // BAD (SSL_get_verify_result is not used reliably)
 	if ((cert != 0) && (maybe()))
 	{
 		result = SSL_get_verify_result(ssl);
@@ -86,7 +86,7 @@ bool test2_7(SSL *ssl)
 {
 	int cert;
 
-	cert = SSL_get_peer_certificate(ssl); // BAD (SSL_get_verify_result is only called when there is not a cert)
+	cert = SSL_get_peer_certificate(ssl); // $ Alert[cpp/certificate-not-checked] // BAD (SSL_get_verify_result is only called when there is not a cert)
 	if (cert != 0) return false;
 	if (SSL_get_verify_result(ssl) != 0) return false;
 

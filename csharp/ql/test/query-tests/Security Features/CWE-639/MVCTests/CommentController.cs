@@ -12,7 +12,7 @@ public class CommentController : Controller
     }
 
     // BAD: Any user can access this.
-    public ActionResult Edit1(int commentId, string text)
+    public ActionResult Edit1(int commentId, string text) // $ Alert
     {
         editComment(commentId, text);
         return View();
@@ -39,7 +39,7 @@ public class CommentController : Controller
     // BAD: The AllowAnonymous attribute overrides the Authorize attribute
     [Authorize]
     [AllowAnonymous]
-    public ActionResult Edit4(int commentId, string text)
+    public ActionResult Edit4(int commentId, string text) // $ Alert
     {
         editComment(commentId, text);
         return View();

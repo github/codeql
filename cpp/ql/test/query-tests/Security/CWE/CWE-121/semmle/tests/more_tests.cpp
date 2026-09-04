@@ -22,7 +22,7 @@ int main()
 	myFunction2(0, 1, -1);
 	myFunction2(0, 1, 2, -1);
 	myFunction2(0, 1, 2, 3, -1);
-	myFunction2(0, 1, 2, 3, 4); // BAD: missing terminator
+	myFunction2(0, 1, 2, 3, 4); // $ Alert // BAD: missing terminator
 
 	myFunction3(-1);
 	myFunction3(0, -1);
@@ -36,7 +36,7 @@ int main()
 	myFunction4(0, 0, 1, 1, 0);
 	myFunction4(0, x, 1, 1, 1, 0);
 	myFunction4(0, 0, 1, 1, 1, 1, 0);
-	myFunction4(x, 0, 1, 1, 1, 1, 1); // BAD: missing terminator
+	myFunction4(x, 0, 1, 1, 1, 1, 1); // $ Alert // BAD: missing terminator
 
 	myFunction5('a', 'b', 'c', 0); // GOOD: ambiguous terminator
 	myFunction5('a', 'b', 'c', 0);
@@ -46,7 +46,7 @@ int main()
 	myFunction5('a', 'b', 'c', -1);
 
 	myFunction6(0.0);
-	myFunction6(1.0); // BAD: missing terminator
+	myFunction6(1.0); // $ Alert // BAD: missing terminator
 	myFunction6(1.0, 2.0, 0.0);
 	myFunction6(1.0, 2.0, 3.0, 0.0);
 	myFunction6(1.0, 2.0, 3.0, 4.0, 0.0);
@@ -61,8 +61,8 @@ int main()
 	myFunction7("seven", "eight", "nine", 0);
 	myFunction7("alpha", "beta", "gamma", 0);
 	myFunction7("", 0);
-	myFunction7("yes", "no"); // BAD: missing terminator
-	myFunction7(); // BAD: missing terminator
+	myFunction7("yes", "no"); // $ Alert // BAD: missing terminator
+	myFunction7(); // $ Alert // BAD: missing terminator
 
 	return 0;
 }

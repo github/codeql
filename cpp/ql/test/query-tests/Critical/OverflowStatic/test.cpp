@@ -16,14 +16,14 @@ void f1(void)
 	}
 	for (i = 0; i < 4; i++)
 	{
-		buffer1[i] = 0; // BAD
-		buffer2[i] = 0; // BAD
+		buffer1[i] = 0; // $ Alert // BAD
+		buffer2[i] = 0; // $ Alert // BAD
 	}
 
 	memcpy(buffer1, buffer2, 3); // GOOD
-	memcpy(buffer1, buffer2, 4); // BAD
+	memcpy(buffer1, buffer2, 4); // $ Alert // BAD
 	memcpy(buffer2, buffer1, 3); // GOOD
-	memcpy(buffer2, buffer1, 4); // BAD
+	memcpy(buffer2, buffer1, 4); // $ Alert // BAD
 }
 
 void f2(char *src)
@@ -35,16 +35,16 @@ void f2(char *src)
 	amount = 100;
 	memcpy(buffer, src, amount); // GOOD
 	amount = amount + 1;
-	memcpy(buffer, src, amount); // BAD [NOT DETECTED]
+	memcpy(buffer, src, amount); // $ MISSING: Alert // BAD [NOT DETECTED]
 	amount = 101;
-	memcpy(buffer, src, amount); // BAD
+	memcpy(buffer, src, amount); // $ Alert // BAD
 
 	ptr = buffer;
-	memcpy(ptr, src, 101); // BAD [NOT DETECTED]
+	memcpy(ptr, src, 101); // $ MISSING: Alert // BAD [NOT DETECTED]
 	ptr = &(buffer[0]);
-	memcpy(ptr, src, 101); // BAD [NOT DETECTED]
+	memcpy(ptr, src, 101); // $ MISSING: Alert // BAD [NOT DETECTED]
 	ptr = &(buffer[1]);
-	memcpy(ptr, src, 100); // BAD [NOT DETECTED]
+	memcpy(ptr, src, 100); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 void f3() {

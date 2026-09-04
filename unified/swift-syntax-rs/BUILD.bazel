@@ -1,0 +1,111 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
+load("@rules_swift//swift:swift.bzl", "swift_library")
+load("@rules_swift//swift/toolchains:swift_toolchain.bzl", "swift_runtime")
+load("//unified:platforms.bzl", "UNIFIED_SUPPORTED_PLATFORMS")
+
+package(default_visibility = ["//visibility:public"])
+
+config_setting(
+    name = "static_linux_runtime",
+    constraint_values = [
+        "@platforms//os:linux",
+        "//:static_swift_runtime",
+    ],
+)
+
+swift_runtime(
+    name = "_swift_runtime",
+)
+
+filegroup(
+    name = "swift_runtime",
+    srcs = select({
+        ":static_linux_runtime": [],
+        "@platforms//os:linux": [":_swift_runtime"],
+        "//conditions:default": [],
+    }),
+)
+
+cc_library(
+    name = "static_runtime_group_start",
+    linkopts = ["-Wl,--start-group"],
+    target_compatible_with = ["@platforms//os:linux"],
+)
+
+cc_library(
+    name = "static_runtime_group_end",
+    linkopts = [
+        "-lBlocksRuntime",
+        "-lc",
+        "-ldispatch",
+        "-ldl",
+        "-lm",
+        "-lpthread",
+        "-lrt",
+        "-lutil",
+        "-Wl,--end-group",
+    ],
+    target_compatible_with = ["@platforms//os:linux"],
+)
+
+# Swift FFI shim: wraps swift-syntax and exposes a small C ABI.
+swift_library(
+    name = "swift_syntax_ffi",
+    srcs = ["swift/Sources/SwiftSyntaxFFI/SwiftSyntaxFFI.swift"],
+    module_name = "SwiftSyntaxFFI",
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
+    deps = [
+        "@swift-syntax//:SwiftOperators",
+        "@swift-syntax//:SwiftParser",
+        "@swift-syntax//:SwiftSyntax",
+    ],
+)
+
+# Safe Rust bindings on top of the C ABI. Under Bazel the Swift side comes
+# from `:swift_syntax_ffi`.
+rust_library(
+    name = "swift_syntax_rs",
+    srcs = glob(
+        ["src/**/*.rs"],
+        exclude = ["src/main.rs"],
+    ),
+    edition = "2024",
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
+    deps = select({
+        ":static_linux_runtime": [
+            # Keep these in linker order; sorting them produces an invalid group.
+            ":static_runtime_group_start",
+            ":swift_syntax_ffi",
+            ":static_runtime_group_end",
+        ],
+        "@platforms//os:linux": [
+            ":_swift_runtime",
+            ":swift_syntax_ffi",
+        ],
+        "//conditions:default": [
+            ":swift_syntax_ffi",
+        ],
+    }),
+)
+
+# A debugging aid, for looking at the raw swift-syntax JSON for some input:
+#
+#     echo 'let x = 1' | bazel run //unified/swift-syntax-rs:swift-syntax-parse
+rust_binary(
+    name = "swift-syntax-parse",
+    srcs = ["src/main.rs"],
+    data = [":swift_runtime"],
+    edition = "2024",
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
+    deps = [":swift_syntax_rs"],
+)
+
+rust_test(
+    name = "swift_syntax_rs_test",
+    size = "small",
+    crate = ":swift_syntax_rs",
+    data = [":swift_runtime"],
+    edition = "2024",
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
+)

@@ -21,10 +21,12 @@ pub fn run(options: Options) -> std::io::Result<()> {
         Language {
             name: "Ruby".to_owned(),
             node_types: tree_sitter_ruby::NODE_TYPES,
+            desugar: None,
         },
         Language {
             name: "Erb".to_owned(),
             node_types: tree_sitter_embedded_template::NODE_TYPES,
+            desugar: None,
         },
     ];
 
@@ -32,6 +34,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
         languages,
         options.dbscheme,
         options.library,
+        false, // do not use facade AST
         "run 'make dbscheme' in ql/ruby/",
     )
 }

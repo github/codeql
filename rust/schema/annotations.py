@@ -1269,7 +1269,7 @@ class _:
 @annotate(Impl)
 class _:
     """
-    An `impl`` block.
+    An `impl` block.
 
     For example:
     ```rust
@@ -1932,18 +1932,6 @@ class _:
     }
 
     pub trait Foo<T: Frobinizable> where T::Frobinator: Eq {}
-    ```
-    """
-
-
-@annotate(TraitAlias)
-class _:
-    """
-    A trait alias.
-
-    For example:
-    ```rust
-    trait Foo = Bar + Baz;
     ```
     """
 

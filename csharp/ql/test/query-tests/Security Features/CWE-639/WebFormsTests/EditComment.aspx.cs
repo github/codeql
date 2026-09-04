@@ -4,7 +4,7 @@ using System.Web.UI;
 class EditComment : System.Web.UI.Page {
     
     // BAD - Any user can access this method.
-    protected void btn1_Click(object sender, EventArgs e) {
+    protected void btn1_Click(object sender, EventArgs e) { // $ Alert
         string commentId = Request.QueryString["Id"];
         Comment comment = getCommentById(commentId);
         comment.Text = "xyz";

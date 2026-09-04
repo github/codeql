@@ -36,7 +36,7 @@ void foo(const struct vtype* vec, int count) {
                 b1 = (char *)malloc(w1);
             } else {
                 // Allocate the buffer on stack
-                b1 = (char*) alloca(w1);  // BAD
+                b1 = (char*) alloca(w1);  // $ Alert // BAD
                 iter = 1;
             }
         }

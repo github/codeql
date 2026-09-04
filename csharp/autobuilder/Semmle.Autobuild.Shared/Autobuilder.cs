@@ -108,7 +108,7 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         /// <param name="path">The relative path.</param>
         /// <returns>True iff the path was found.</returns>
-        public bool HasRelativePath(string path) => HasPath(Actions.PathCombine(RootDirectory, path));
+        public bool HasRelativePath(string path) => HasPath(Actions.PathJoin(RootDirectory, path));
 
         /// <summary>
         /// List of project/solution files to build.

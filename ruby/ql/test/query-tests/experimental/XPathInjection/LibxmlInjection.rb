@@ -2,7 +2,7 @@ require 'libxml'
 
 class FooController < ActionController::Base
   def libxml_handler(event:, context:)
-    name = params[:user_name]
+    name = params[:user_name] # $ Source
 
     xml = <<-XML
       <root>
@@ -18,13 +18,13 @@ class FooController < ActionController::Base
     results1 = doc.find_first('//foo')
 
     # BAD: XPath query is constructed from user input
-    results2 = doc.find_first("//#{name}")
+    results2 = doc.find_first("//#{name}") # $ Alert
 
     # GOOD: XPath query is not constructed from user input
     results3 = doc.find('//foo')
 
     # BAD: XPath query is constructed from user input
-    results4 = doc.find("//#{name}")
+    results4 = doc.find("//#{name}") # $ Alert
   end
 end
 

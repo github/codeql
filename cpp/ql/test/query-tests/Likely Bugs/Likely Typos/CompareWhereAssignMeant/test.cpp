@@ -25,30 +25,30 @@ void f(void) {
 
     i = 1;
 
-    i == 1;
+    i == 1; // $ Alert[cpp/compare-where-assign-meant]
 
-    i == 1, i == 2;
+    i == 1, i == 2; // $ Alert[cpp/compare-where-assign-meant] Alert[cpp/useless-expression]
 
-    i = i == 1, i == 2;
+    i = i == 1, i == 2; // $ Alert[cpp/compare-where-assign-meant]
 
-    i = (i == 1, i == 2);
+    i = (i == 1, i == 2); // $ Alert[cpp/compare-where-assign-meant]
 
     if (({ int x = 3; x == 3; })) {
         return;
     }
-    if (({ int x = 3; x == 3; x; })) {
+    if (({ int x = 3; x == 3; x; })) { // $ Alert[cpp/compare-where-assign-meant]
         return;
     }
-    if (({ int x = 3; x == 3; x = 4; })) {
+    if (({ int x = 3; x == 3; x = 4; })) { // $ Alert[cpp/compare-where-assign-meant]
         return;
     }
 
-    i != 1;
+    i != 1; // $ Alert[cpp/useless-expression]
 
     IntHolder holder1(i);
     IntHolder holder2(i);
     holder1 = holder2;
-    holder1 == holder2;
+    holder1 == holder2; // $ Alert[cpp/compare-where-assign-meant]
     if(holder1 = holder2) {
     }
     if(holder1 == holder1) {
@@ -69,6 +69,6 @@ void report_error(const char*);
 
 void test_inside_macro_expansion(int x, int y) {
   DOES_NOT_THROW(x == y); // GOOD
-  x == y; // BAD
-  x == ID(y); // BAD
+  x == y; // $ Alert[cpp/compare-where-assign-meant] // BAD
+  x == ID(y); // $ Alert[cpp/compare-where-assign-meant] // BAD
 }

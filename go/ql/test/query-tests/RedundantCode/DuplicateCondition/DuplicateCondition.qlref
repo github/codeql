@@ -1,1 +1,2 @@
-RedundantCode/DuplicateCondition.ql
+query: RedundantCode/DuplicateCondition.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

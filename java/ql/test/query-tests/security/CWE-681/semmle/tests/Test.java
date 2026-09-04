@@ -8,7 +8,7 @@ class Test {
 			long data;
 
 			BufferedReader readerBuffered = new BufferedReader(
-					new InputStreamReader(System.in, "UTF-8"));
+					new InputStreamReader(System.in, "UTF-8")); // $ Source
 			String stringNumber = readerBuffered.readLine();
 			if (stringNumber != null) {
 				data = Long.parseLong(stringNumber.trim());
@@ -18,7 +18,7 @@ class Test {
 
 			// AVOID: potential truncation if input data is very large, for example
 			// 'Long.MAX_VALUE'
-			int scaled = (int)data;
+			int scaled = (int)data; // $ Alert
 
 			//...
 

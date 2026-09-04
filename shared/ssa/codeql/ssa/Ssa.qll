@@ -993,6 +993,11 @@ module Make<
     predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SourceVariable v);
   }
 
+  /**
+   * Builds the user-facing SSA API (the `SsaSig` class hierarchy and associated
+   * predicates) on top of the core SSA construction, using the language-specific
+   * expressions, parameters, and writes provided by `SsaInput`.
+   */
   module MakeSsa<SsaInputSig SsaInput> implements
     SsaSig<Location, ControlFlowNode, BasicBlock, SsaInput::Expr, SsaInput::Parameter, SsaInput::VariableWrite>
   {
@@ -1054,7 +1059,7 @@ module Make<
     /** A static single assignment (SSA) definition. */
     class SsaDefinition extends FinalDefinition {
       /** Gets a textual representation of this SSA definition. */
-      string toString() { result = super.toString() }
+      string toString() { result = "SSA def(" + this.getSourceVariable() + ")" }
 
       /**
        * Gets the control flow node of this SSA definition.
@@ -1207,6 +1212,8 @@ module Make<
      * a phi definition for `x` is inserted just before the call `puts x`.
      */
     class SsaPhiDefinition extends SsaDefinition instanceof PhiNode {
+      override string toString() { result = "SSA phi(" + this.getSourceVariable() + ")" }
+
       /** Holds if `inp` is an input to this phi definition along the edge originating in `bb`. */
       predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
         phiHasInputFromBlockCached(this, inp, bb)

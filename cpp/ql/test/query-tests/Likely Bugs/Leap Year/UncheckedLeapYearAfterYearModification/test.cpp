@@ -422,7 +422,7 @@ void AntiPattern_unchecked_filetime_conversion2a()
 	st.wYear += 2; // $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 
 	// BUG - UncheckedReturnValueForTimeFunctions
-	SystemTimeToFileTime(&st, &ft);
+	SystemTimeToFileTime(&st, &ft); // $ Alert[cpp/leap-year/unchecked-return-value-for-time-conversion-function]
 }
 
 /**
@@ -440,7 +440,7 @@ void AntiPattern_unchecked_filetime_conversion2b()
 	st.wYear++; // $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 
 	// BUG - UncheckedReturnValueForTimeFunctions
-	SystemTimeToFileTime(&st, &ft);
+	SystemTimeToFileTime(&st, &ft); // $ Alert[cpp/leap-year/unchecked-return-value-for-time-conversion-function]
 }
 
 /**
@@ -456,7 +456,7 @@ void AntiPattern_unchecked_filetime_conversion2b(SYSTEMTIME* st)
 	st->wYear++; // $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 
 	// BUG - UncheckedReturnValueForTimeFunctions
-	SystemTimeToFileTime(st, &ft);
+	SystemTimeToFileTime(st, &ft); // $ Alert[cpp/leap-year/unchecked-return-value-for-time-conversion-function]
 }
 
 /**
@@ -950,7 +950,7 @@ void tp_intermediaryVar(struct timespec now, struct logtime &timestamp_remote)
 		// BUG - UncheckedLeapYearAfterYearModification
 		st.wYear = st.wYear + 1; // $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 
-		SystemTimeToFileTime(&st, &ft);
+		SystemTimeToFileTime(&st, &ft); // $ Alert[cpp/leap-year/unchecked-return-value-for-time-conversion-function]
 	}
 
 	/**
@@ -968,7 +968,7 @@ void tp_intermediaryVar(struct timespec now, struct logtime &timestamp_remote)
 		// BUG - UncheckedLeapYearAfterYearModification
 		st.wYear++; // $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 
-		SystemTimeToFileTime(&st, &ft);
+		SystemTimeToFileTime(&st, &ft); // $ Alert[cpp/leap-year/unchecked-return-value-for-time-conversion-function]
 	}
 
 	/**
@@ -1032,7 +1032,7 @@ void fp_daymonth_guard(){
 
 	st.wDay = st.wMonth == 2 && st.wDay == 29 ? 28 : st.wDay;
 
-	SystemTimeToFileTime(&st, &ft);
+	SystemTimeToFileTime(&st, &ft); // $ Alert[cpp/leap-year/unchecked-return-value-for-time-conversion-function]
 }
 
 void increment_arg(WORD &x){

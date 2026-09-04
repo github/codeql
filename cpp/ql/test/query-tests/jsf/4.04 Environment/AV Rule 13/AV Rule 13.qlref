@@ -1,1 +1,2 @@
-jsf/4.04 Environment/AV Rule 13.ql
+query: jsf/4.04 Environment/AV Rule 13.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

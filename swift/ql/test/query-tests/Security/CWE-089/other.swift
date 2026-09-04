@@ -43,21 +43,21 @@ class MyDatabase {
 // --- tests ---
 
 func test_heuristic(db: MyDatabase) throws {
-	let remoteString = try String(contentsOf: URL(string: "http://example.com/")!)
+	let remoteString = try String(contentsOf: URL(string: "http://example.com/")!) // $ Source
 
 	_ = MyDatabase() // GOOD
 	_ = MyDatabase(sql: "some_fixed_sql") // GOOD
-	_ = MyDatabase(sql: remoteString) // BAD
+	_ = MyDatabase(sql: remoteString) // $ Alert
 
-	db.execute1(remoteString) // BAD
-	db.execute2(remoteString) // BAD
-	db.execute3(NSString(string: remoteString)) // BAD
-	db.execute4(remoteString as! Sql) // BAD
+	db.execute1(remoteString) // $ Alert
+	db.execute2(remoteString) // $ Alert
+	db.execute3(NSString(string: remoteString)) // $ Alert
+	db.execute4(remoteString as! Sql) // $ Alert
 
-	db.query(sql: remoteString) // BAD
-	db.query(sqlLiteral: remoteString) // BAD [NOT DETECTED]
-	db.query(sqlStatement: remoteString) // BAD [NOT DETECTED]
-	db.query(sqliteStatement: remoteString) // BAD [NOT DETECTED]
+	db.query(sql: remoteString) // $ Alert
+	db.query(sqlLiteral: remoteString) // $ MISSING: Alert // BAD [NOT DETECTED]
+	db.query(sqlStatement: remoteString) // $ MISSING: Alert // BAD [NOT DETECTED]
+	db.query(sqliteStatement: remoteString) // $ MISSING: Alert // BAD [NOT DETECTED]
 
 	db.doSomething(sqlIndex: Int(remoteString) ?? 0) // GOOD
 	db.doSomething(sqliteContext: remoteString as! Sql) // GOOD

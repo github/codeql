@@ -14,6 +14,8 @@ public static class MyExtensions
         public static int StaticM2(string x) { return x.Length; }
         public static string operator *(int a, string b) { return ""; }
         public T StringGenericM1<T>(T t, object o) { return t; }
+        public void operator ++() { }
+        public static string operator --(string o) { return o; }
     }
 
     extension(object)
@@ -61,8 +63,10 @@ public class C
         var x25 = object.StaticObjectM1();
         var x26 = object.StaticObjectM2(s);
 
-        // Calling the extension operator.
+        // Calling the extension operators.
         var x30 = 3 * s;
+        s++;
+        s--;
 
         // Calling the classic extension method.
         var y = s.M3();
@@ -77,6 +81,8 @@ public class C
 
         // Calling the compiler generated operator method.
         MyExtensions.op_Multiply(3, s);
+        MyExtensions.op_IncrementAssignment(s);
+        MyExtensions.op_Decrement(s);
 
         // Calling the compiler generated methods used by the extension property accessors.
         MyExtensions.get_Prop1(s);

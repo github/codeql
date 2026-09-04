@@ -1,1 +1,2 @@
-Likely Bugs/Collections/IteratorRemoveMayFail.ql
+query: Likely Bugs/Collections/IteratorRemoveMayFail.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

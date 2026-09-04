@@ -1,0 +1,58 @@
+let (a, b) = pair
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    declReferenceExpr
+                      baseName: identifier "pair"
+              pattern:
+                tuplePattern
+                  leftParen: (
+                  rightParen: )
+                  elements:
+                    tuplePatternElement
+                      trailingComma: ,
+                      pattern:
+                        identifierPattern
+                          identifier: identifier "a"
+                    tuplePatternElement
+                      pattern:
+                        identifierPattern
+                          identifier: identifier "b"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            tuple_pattern
+              element:
+                pattern_element
+                  pattern:
+                    name_pattern
+                      identifier: identifier "a"
+                pattern_element
+                  pattern:
+                    name_pattern
+                      identifier: identifier "b"
+          value:
+            name_expr
+              identifier: identifier "pair"

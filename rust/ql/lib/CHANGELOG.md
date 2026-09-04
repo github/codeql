@@ -1,3 +1,56 @@
+## 0.2.20
+
+### Major Analysis Improvements
+
+* The alert locations for data flow queries have been improved. The new locations are more precise and are based on the actual source and sink nodes. Example:
+```rust
+let _ = conn.query(
+//      ^^^^                 old alert location
+    unsafe_query.as_str(),
+//  ^^^^^^^^^^^^^^^^^^^^^    new alert location
+)?;
+```
+This means that some alerts will have their locations changed, and hence appear as new alerts (while the old alerts will disappear).
+
+### Minor Analysis Improvements
+
+* Canonical paths for Rust trait items now use the format `crate::Trait::item` instead of
+  `<_ as crate::Trait>::item`. Custom data extension models that reference trait items
+  must be updated to use the new format.
+* The Rust extractor has been upgraded to use `rust-analyzer` version 0.0.328. As a result, the AST exposed by the Rust libraries has changed: the `TraitAlias` class has been removed, `cfg` attributes are now modeled by the new `CfgMeta`, `CfgAtom`, `CfgComposite`, `CfgPredicate`, and `CfgAttrMeta` classes, and the `Meta` class has been refined into the `KeyValueMeta`, `PathMeta`, `TokenTreeMeta`, and `UnsafeMeta` subclasses. New `TryBlockModifier` and `FormatArgsArgName` classes have also been added.
+
+## 0.2.19
+
+No user-facing changes.
+
+## 0.2.18
+
+No user-facing changes.
+
+## 0.2.17
+
+No user-facing changes.
+
+## 0.2.16
+
+No user-facing changes.
+
+## 0.2.15
+
+### Minor Analysis Improvements
+
+* The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example `rust/cleartext-logging`) may find more correct results and fewer false positive results after these changes.
+
+## 0.2.14
+
+No user-facing changes.
+
+## 0.2.13
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions.
+
 ## 0.2.12
 
 No user-facing changes.

@@ -26,10 +26,10 @@ public class DotRegexFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
-		String source = httpRequest.getPathInfo();
+		String source = httpRequest.getPathInfo(); // $ Source
 
 		Pattern p = Pattern.compile(PROTECTED_PATTERN);
-		Matcher m = p.matcher(source);
+		Matcher m = p.matcher(source); // $ Alert
 
 		if (m.matches()) {
 			// Protected page - check access token and redirect to login page

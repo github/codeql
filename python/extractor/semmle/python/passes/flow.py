@@ -12,7 +12,7 @@ from semmle.python.passes import splitter
 from semmle.python.passes import unroller
 from semmle.python import modules
 import semmle.graph as graph
-from semmle.logging import Logger
+from semmle.logging import Logger, format_message
 
 __all__ = [ 'FlowPass' ]
 
@@ -1924,7 +1924,7 @@ def main():
 class FakeLogger(object):
 
     def debug(self, fmt, *args):
-        print(fmt % args)
+        print(format_message(fmt, args))
 
     def traceback(self):
         print(traceback.format_exc())

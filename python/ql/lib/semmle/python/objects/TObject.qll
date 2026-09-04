@@ -387,7 +387,7 @@ private PythonClassObjectInternal abcMetaClassObject() {
 private predicate neither_class_nor_static_method(Function f) {
   not exists(f.getADecorator())
   or
-  exists(ControlFlowNode deco | deco = f.getADecorator().getAFlowNode() |
+  exists(ControlFlowNode deco | deco.getNode() = f.getADecorator() |
     exists(ObjectInternal o | PointsToInternal::pointsTo(deco, _, o, _) |
       o != ObjectInternal::staticMethod() and
       o != ObjectInternal::classMethod()

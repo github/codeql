@@ -1,1 +1,2 @@
-Best Practices/Likely Errors/OffsetUseBeforeRangeCheck.ql
+query: Best Practices/Likely Errors/OffsetUseBeforeRangeCheck.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

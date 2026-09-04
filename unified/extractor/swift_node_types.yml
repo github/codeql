@@ -1,0 +1,1282 @@
+# GENERATED from swift-syntax by unified/swift-syntax-rs/schemagen.
+# Do not edit; run unified/scripts/regenerate-node-types.sh instead.
+supertypes:
+  decl:
+    - accessorDecl
+    - actorDecl
+    - associatedTypeDecl
+    - classDecl
+    - deinitializerDecl
+    - editorPlaceholderDecl
+    - enumCaseDecl
+    - enumDecl
+    - extensionDecl
+    - functionDecl
+    - ifConfigDecl
+    - importDecl
+    - initializerDecl
+    - macroDecl
+    - macroExpansionDecl
+    - missingDecl
+    - operatorDecl
+    - poundSourceLocation
+    - precedenceGroupDecl
+    - protocolDecl
+    - structDecl
+    - subscriptDecl
+    - typeAliasDecl
+    - unexpectedCodeDecl
+    - usingDecl
+    - variableDecl
+  expr:
+    - _canImportExpr
+    - _canImportVersionInfo
+    - arrayExpr
+    - arrowExpr
+    - asExpr
+    - assignmentExpr
+    - awaitExpr
+    - binaryOperatorExpr
+    - booleanLiteralExpr
+    - borrowExpr
+    - closureExpr
+    - consumeExpr
+    - copyExpr
+    - declReferenceExpr
+    - dictionaryExpr
+    - discardAssignmentExpr
+    - doExpr
+    - editorPlaceholderExpr
+    - floatLiteralExpr
+    - forceUnwrapExpr
+    - functionCallExpr
+    - genericSpecializationExpr
+    - ifExpr
+    - inOutExpr
+    - infixOperatorExpr
+    - integerLiteralExpr
+    - isExpr
+    - keyPathExpr
+    - macroExpansionExpr
+    - memberAccessExpr
+    - missingExpr
+    - nilLiteralExpr
+    - optionalChainingExpr
+    - packElementExpr
+    - packExpansionExpr
+    - patternExpr
+    - postfixIfConfigExpr
+    - postfixOperatorExpr
+    - prefixOperatorExpr
+    - regexLiteralExpr
+    - sequenceExpr
+    - simpleStringLiteralExpr
+    - stringLiteralExpr
+    - subscriptCallExpr
+    - superExpr
+    - switchExpr
+    - ternaryExpr
+    - tryExpr
+    - tupleExpr
+    - typeExpr
+    - unresolvedAsExpr
+    - unresolvedIsExpr
+    - unresolvedTernaryExpr
+    - unsafeExpr
+  pattern:
+    - expressionPattern
+    - identifierPattern
+    - isTypePattern
+    - missingPattern
+    - tuplePattern
+    - valueBindingPattern
+    - wildcardPattern
+  stmt:
+    - breakStmt
+    - continueStmt
+    - deferStmt
+    - discardStmt
+    - doStmt
+    - expressionStmt
+    - fallThroughStmt
+    - forStmt
+    - guardStmt
+    - labeledStmt
+    - missingStmt
+    - repeatStmt
+    - returnStmt
+    - thenStmt
+    - throwStmt
+    - whileStmt
+    - yieldStmt
+  syntax:
+    - abiAttributeArguments
+    - accessorBlock
+    - accessorBlockFile
+    - accessorEffectSpecifiers
+    - accessorParameters
+    - arrayElement
+    - attribute
+    - attributeClauseFile
+    - availabilityArgument
+    - availabilityCondition
+    - availabilityLabeledArgument
+    - availabilityMacroDefinitionFile
+    - backDeployedAttributeArguments
+    - catchClause
+    - catchItem
+    - closureCapture
+    - closureCaptureClause
+    - closureCaptureSpecifier
+    - closureParameter
+    - closureParameterClause
+    - closureShorthandParameter
+    - closureSignature
+    - codeBlock
+    - codeBlockFile
+    - codeBlockItem
+    - compositionTypeElement
+    - conditionElement
+    - conformanceRequirement
+    - declModifier
+    - declModifierDetail
+    - declNameArgument
+    - declNameArguments
+    - deinitializerEffectSpecifiers
+    - derivativeAttributeArguments
+    - designatedType
+    - dictionaryElement
+    - differentiabilityArgument
+    - differentiabilityArguments
+    - differentiabilityWithRespectToArgument
+    - differentiableAttributeArguments
+    - documentationAttributeArgument
+    - dynamicReplacementAttributeArguments
+    - enumCaseElement
+    - enumCaseParameter
+    - enumCaseParameterClause
+    - expressionSegment
+    - functionEffectSpecifiers
+    - functionParameter
+    - functionParameterClause
+    - functionSignature
+    - genericArgument
+    - genericArgumentClause
+    - genericParameter
+    - genericParameterClause
+    - genericRequirement
+    - genericWhereClause
+    - ifConfigClause
+    - implementsAttributeArguments
+    - importPathComponent
+    - inheritanceClause
+    - inheritedType
+    - initializerClause
+    - keyPathComponent
+    - keyPathMethodComponent
+    - keyPathOptionalComponent
+    - keyPathPropertyComponent
+    - keyPathSubscriptComponent
+    - labeledExpr
+    - labeledSpecializeArgument
+    - layoutRequirement
+    - lifetimeSpecifierArgument
+    - lifetimeTypeSpecifier
+    - matchingPatternCondition
+    - memberBlock
+    - memberBlockItem
+    - memberBlockItemListFile
+    - missing
+    - moduleSelector
+    - multipleTrailingClosureElement
+    - nonisolatedSpecifierArgument
+    - nonisolatedTypeSpecifier
+    - objCSelectorPiece
+    - operatorPrecedenceAndTypes
+    - optionalBindingCondition
+    - originallyDefinedInAttributeArguments
+    - patternBinding
+    - platformVersion
+    - platformVersionItem
+    - poundSourceLocationArguments
+    - precedenceGroupAssignment
+    - precedenceGroupAssociativity
+    - precedenceGroupName
+    - precedenceGroupRelation
+    - primaryAssociatedType
+    - primaryAssociatedTypeClause
+    - returnClause
+    - sameTypeRequirement
+    - simpleTypeSpecifier
+    - sourceFile
+    - specializeAvailabilityArgument
+    - specializeTargetFunctionArgument
+    - specializedAttributeArgument
+    - stringSegment
+    - switchCase
+    - switchCaseItem
+    - switchCaseLabel
+    - switchDefaultLabel
+    - throwsClause
+    - tuplePatternElement
+    - tupleTypeElement
+    - typeAnnotation
+    - typeEffectSpecifiers
+    - typeInitializerClause
+    - versionComponent
+    - versionTuple
+    - whereClause
+    - yieldedExpression
+    - yieldedExpressionsClause
+  type:
+    - arrayType
+    - attributedType
+    - classRestrictionType
+    - compositionType
+    - dictionaryType
+    - functionType
+    - identifierType
+    - implicitlyUnwrappedOptionalType
+    - inlineArrayType
+    - memberType
+    - metatypeType
+    - missingType
+    - namedOpaqueReturnType
+    - optionalType
+    - packElementType
+    - packExpansionType
+    - someOrAnyType
+    - suppressedType
+    - tupleType
+named:
+  _canImportExpr:
+    canImportKeyword: _token
+    leftParen: _token
+    importPath: _token
+    versionInfo?: _canImportVersionInfo
+    rightParen: _token
+  _canImportVersionInfo:
+    comma: _token
+    label: _token
+    colon: _token
+    version: versionTuple
+  abiAttributeArguments:
+    provider: [associatedTypeDecl, deinitializerDecl, enumCaseDecl, functionDecl, initializerDecl, missingDecl, subscriptDecl, typeAliasDecl, variableDecl]
+  accessorBlock:
+    leftBrace: _token
+    accessors: [accessorDecl, codeBlockItemList]
+    rightBrace: _token
+  accessorBlockFile:
+    leftBrace?: _token
+    accessors*: accessorDecl
+    rightBrace?: _token
+    endOfFileToken: _token
+  accessorDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifier?: declModifier
+    accessorSpecifier: _token
+    parameters?: accessorParameters
+    effectSpecifiers?: accessorEffectSpecifiers
+    body?: codeBlock
+  accessorEffectSpecifiers:
+    asyncSpecifier?: _token
+    throwsClause?: throwsClause
+  accessorParameters:
+    leftParen: _token
+    name: _token
+    rightParen: _token
+  actorDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    actorKeyword: _token
+    name: _token
+    genericParameterClause?: genericParameterClause
+    inheritanceClause?: inheritanceClause
+    genericWhereClause?: genericWhereClause
+    memberBlock: memberBlock
+  arrayElement:
+    expression: expr
+    trailingComma?: _token
+  arrayExpr:
+    leftSquare: _token
+    elements*: arrayElement
+    rightSquare: _token
+  arrayType:
+    leftSquare: _token
+    element: type
+    rightSquare: _token
+  arrowExpr:
+    effectSpecifiers?: typeEffectSpecifiers
+    arrow: _token
+  asExpr:
+    expression: expr
+    asKeyword: _token
+    questionOrExclamationMark?: _token
+    type: type
+  assignmentExpr:
+    equal: _token
+  associatedTypeDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    associatedtypeKeyword: _token
+    name: _token
+    inheritanceClause?: inheritanceClause
+    initializer?: typeInitializerClause
+    genericWhereClause?: genericWhereClause
+  attribute:
+    atSign: _token
+    attributeName: type
+    leftParen?: _token
+    arguments?: [labeledExprList, availabilityArgumentList, specializeAttributeArgumentList, specializedAttributeArgument, objCSelectorPieceList, implementsAttributeArguments, differentiableAttributeArguments, derivativeAttributeArguments, backDeployedAttributeArguments, originallyDefinedInAttributeArguments, dynamicReplacementAttributeArguments, effectsAttributeArgumentList, documentationAttributeArgumentList, abiAttributeArguments]
+    rightParen?: _token
+  attributeClauseFile:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    endOfFileToken: _token
+  attributedType:
+    specifiers*: [simpleTypeSpecifier, lifetimeTypeSpecifier, nonisolatedTypeSpecifier]
+    attributes*: [attribute, ifConfigDecl]
+    lateSpecifiers*: [simpleTypeSpecifier, lifetimeTypeSpecifier, nonisolatedTypeSpecifier]
+    baseType: type
+  availabilityArgument:
+    argument: [_token, platformVersion, availabilityLabeledArgument]
+    trailingComma?: _token
+  availabilityCondition:
+    availabilityKeyword: _token
+    leftParen: _token
+    availabilityArguments*: availabilityArgument
+    rightParen: _token
+  availabilityLabeledArgument:
+    label: _token
+    colon: _token
+    value: [simpleStringLiteralExpr, versionTuple]
+  availabilityMacroDefinitionFile:
+    platformVersion: platformVersion
+    colon: _token
+    specs*: availabilityArgument
+    endOfFileToken: _token
+  awaitExpr:
+    awaitKeyword: _token
+    expression: expr
+  backDeployedAttributeArguments:
+    beforeLabel: _token
+    colon: _token
+    platforms*: platformVersionItem
+  binaryOperatorExpr:
+    operator: _token
+  booleanLiteralExpr:
+    literal: _token
+  borrowExpr:
+    borrowKeyword: _token
+    expression: expr
+  breakStmt:
+    breakKeyword: _token
+    label?: _token
+  catchClause:
+    catchKeyword: _token
+    catchItems*: catchItem
+    body: codeBlock
+  catchItem:
+    pattern?: pattern
+    whereClause?: whereClause
+    trailingComma?: _token
+  classDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    classKeyword: _token
+    name: _token
+    genericParameterClause?: genericParameterClause
+    inheritanceClause?: inheritanceClause
+    genericWhereClause?: genericWhereClause
+    memberBlock: memberBlock
+  classRestrictionType:
+    classKeyword: _token
+  closureCapture:
+    specifier?: closureCaptureSpecifier
+    name: _token
+    initializer?: initializerClause
+    trailingComma?: _token
+  closureCaptureClause:
+    leftSquare: _token
+    items*: closureCapture
+    rightSquare: _token
+  closureCaptureSpecifier:
+    specifier: _token
+    leftParen?: _token
+    detail?: _token
+    rightParen?: _token
+  closureExpr:
+    leftBrace: _token
+    signature?: closureSignature
+    statements*: codeBlockItem
+    rightBrace: _token
+  closureParameter:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    firstName: _token
+    secondName?: _token
+    colon?: _token
+    type?: type
+    ellipsis?: _token
+    trailingComma?: _token
+  closureParameterClause:
+    leftParen: _token
+    parameters*: closureParameter
+    rightParen: _token
+  closureShorthandParameter:
+    name: _token
+    trailingComma?: _token
+  closureSignature:
+    attributes*: [attribute, ifConfigDecl]
+    capture?: closureCaptureClause
+    parameterClause?: [closureShorthandParameterList, closureParameterClause]
+    effectSpecifiers?: typeEffectSpecifiers
+    returnClause?: returnClause
+    inKeyword: _token
+  codeBlock:
+    leftBrace: _token
+    statements*: codeBlockItem
+    rightBrace: _token
+  codeBlockFile:
+    body: codeBlock
+    endOfFileToken: _token
+  codeBlockItem:
+    item: [decl, stmt, expr]
+    semicolon?: _token
+  compositionType:
+    elements*: compositionTypeElement
+  compositionTypeElement:
+    type: type
+    ampersand?: token
+  conditionElement:
+    condition: [expr, availabilityCondition, matchingPatternCondition, optionalBindingCondition]
+    trailingComma?: _token
+  conformanceRequirement:
+    leftType: type
+    colon: _token
+    rightType: type
+  consumeExpr:
+    consumeKeyword: _token
+    expression: expr
+  continueStmt:
+    continueKeyword: _token
+    label?: _token
+  copyExpr:
+    copyKeyword: _token
+    expression: expr
+  declModifier:
+    name: _token
+    detail?: declModifierDetail
+  declModifierDetail:
+    leftParen: _token
+    detail: _token
+    rightParen: _token
+  declNameArgument:
+    name: token
+    colon: _token
+  declNameArguments:
+    leftParen: _token
+    arguments*: declNameArgument
+    rightParen: _token
+  declReferenceExpr:
+    moduleSelector?: moduleSelector
+    baseName: _token
+    argumentNames?: declNameArguments
+  deferStmt:
+    deferKeyword: _token
+    body: codeBlock
+  deinitializerDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    deinitKeyword: _token
+    effectSpecifiers?: deinitializerEffectSpecifiers
+    body?: codeBlock
+  deinitializerEffectSpecifiers:
+    asyncSpecifier?: _token
+  derivativeAttributeArguments:
+    ofLabel: _token
+    colon: _token
+    originalDeclName: expr
+    period?: _token
+    accessorSpecifier?: _token
+    comma?: _token
+    arguments?: differentiabilityWithRespectToArgument
+  designatedType:
+    leadingComma: _token
+    name: token
+  dictionaryElement:
+    key: expr
+    colon: _token
+    value: expr
+    trailingComma?: _token
+  dictionaryExpr:
+    leftSquare: _token
+    content: [_token, dictionaryElementList]
+    rightSquare: _token
+  dictionaryType:
+    leftSquare: _token
+    key: type
+    colon: _token
+    value: type
+    rightSquare: _token
+  differentiabilityArgument:
+    argument: _token
+    trailingComma?: _token
+  differentiabilityArguments:
+    leftParen: _token
+    arguments*: differentiabilityArgument
+    rightParen: _token
+  differentiabilityWithRespectToArgument:
+    wrtLabel: _token
+    colon: _token
+    arguments: [differentiabilityArgument, differentiabilityArguments]
+  differentiableAttributeArguments:
+    kindSpecifier?: _token
+    kindSpecifierComma?: _token
+    arguments?: differentiabilityWithRespectToArgument
+    argumentsComma?: _token
+    genericWhereClause?: genericWhereClause
+  discardAssignmentExpr:
+    wildcard: _token
+  discardStmt:
+    discardKeyword: _token
+    expression: expr
+  doExpr:
+    doKeyword: _token
+    body: codeBlock
+    catchClauses*: catchClause
+  doStmt:
+    doKeyword: _token
+    throwsClause?: throwsClause
+    body: codeBlock
+    catchClauses*: catchClause
+  documentationAttributeArgument:
+    label: _token
+    colon: _token
+    value: [_token, stringLiteralExpr]
+    trailingComma?: _token
+  dynamicReplacementAttributeArguments:
+    forLabel: _token
+    colon: _token
+    declName: declReferenceExpr
+  editorPlaceholderDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    placeholder: _token
+  editorPlaceholderExpr:
+    placeholder: _token
+  enumCaseDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    caseKeyword: _token
+    elements*: enumCaseElement
+  enumCaseElement:
+    name: _token
+    parameterClause?: enumCaseParameterClause
+    rawValue?: initializerClause
+    trailingComma?: _token
+  enumCaseParameter:
+    modifiers*: declModifier
+    firstName?: _token
+    secondName?: _token
+    colon?: _token
+    type: type
+    defaultValue?: initializerClause
+    trailingComma?: _token
+  enumCaseParameterClause:
+    leftParen: _token
+    parameters*: enumCaseParameter
+    rightParen: _token
+  enumDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    enumKeyword: _token
+    name: _token
+    genericParameterClause?: genericParameterClause
+    inheritanceClause?: inheritanceClause
+    genericWhereClause?: genericWhereClause
+    memberBlock: memberBlock
+  expressionPattern:
+    expression: expr
+  expressionSegment:
+    backslash: _token
+    pounds?: _token
+    leftParen: _token
+    expressions*: labeledExpr
+    rightParen: _token
+  expressionStmt:
+    expression: expr
+  extensionDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    extensionKeyword: _token
+    extendedType: type
+    inheritanceClause?: inheritanceClause
+    genericWhereClause?: genericWhereClause
+    memberBlock: memberBlock
+  fallThroughStmt:
+    fallthroughKeyword: _token
+  floatLiteralExpr:
+    literal: _token
+  forStmt:
+    forKeyword: _token
+    tryKeyword?: _token
+    awaitKeyword?: _token
+    unsafeKeyword?: _token
+    caseKeyword?: _token
+    pattern: pattern
+    typeAnnotation?: typeAnnotation
+    inKeyword: _token
+    sequence: expr
+    whereClause?: whereClause
+    body: codeBlock
+  forceUnwrapExpr:
+    expression: expr
+    exclamationMark: _token
+  functionCallExpr:
+    calledExpression: expr
+    leftParen?: _token
+    arguments*: labeledExpr
+    rightParen?: _token
+    trailingClosure?: closureExpr
+    additionalTrailingClosures*: multipleTrailingClosureElement
+  functionDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    funcKeyword: _token
+    name: _token
+    genericParameterClause?: genericParameterClause
+    signature: functionSignature
+    genericWhereClause?: genericWhereClause
+    body?: codeBlock
+  functionEffectSpecifiers:
+    asyncSpecifier?: _token
+    throwsClause?: throwsClause
+  functionParameter:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    firstName: _token
+    secondName?: _token
+    colon: _token
+    type: type
+    ellipsis?: _token
+    defaultValue?: initializerClause
+    trailingComma?: _token
+  functionParameterClause:
+    leftParen: _token
+    parameters*: functionParameter
+    rightParen: _token
+  functionSignature:
+    parameterClause: functionParameterClause
+    effectSpecifiers?: functionEffectSpecifiers
+    returnClause?: returnClause
+  functionType:
+    leftParen: _token
+    parameters*: tupleTypeElement
+    rightParen: _token
+    effectSpecifiers?: typeEffectSpecifiers
+    returnClause: returnClause
+  genericArgument:
+    argument: [type, expr]
+    trailingComma?: _token
+  genericArgumentClause:
+    leftAngle: _token
+    arguments*: genericArgument
+    rightAngle: _token
+  genericParameter:
+    attributes*: [attribute, ifConfigDecl]
+    specifier?: _token
+    name: _token
+    colon?: _token
+    inheritedType?: type
+    trailingComma?: _token
+  genericParameterClause:
+    leftAngle: _token
+    parameters*: genericParameter
+    genericWhereClause?: genericWhereClause
+    rightAngle: _token
+  genericRequirement:
+    requirement: [sameTypeRequirement, conformanceRequirement, layoutRequirement]
+    trailingComma?: _token
+  genericSpecializationExpr:
+    expression: expr
+    genericArgumentClause: genericArgumentClause
+  genericWhereClause:
+    whereKeyword: _token
+    requirements*: genericRequirement
+  guardStmt:
+    guardKeyword: _token
+    conditions*: conditionElement
+    elseKeyword: _token
+    body: codeBlock
+  identifierPattern:
+    identifier: _token
+  identifierType:
+    moduleSelector?: moduleSelector
+    name: _token
+    genericArgumentClause?: genericArgumentClause
+  ifConfigClause:
+    poundKeyword: _token
+    condition?: expr
+    elements?: [codeBlockItemList, switchCaseList, memberBlockItemList, expr, attributeList]
+  ifConfigDecl:
+    clauses*: ifConfigClause
+    poundEndif: _token
+  ifExpr:
+    ifKeyword: _token
+    conditions*: conditionElement
+    body: codeBlock
+    elseKeyword?: _token
+    elseBody?: [ifExpr, codeBlock]
+  implementsAttributeArguments:
+    type: type
+    comma: _token
+    declName: declReferenceExpr
+  implicitlyUnwrappedOptionalType:
+    wrappedType: type
+    exclamationMark: _token
+  importDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    importKeyword: _token
+    importKindSpecifier?: _token
+    path*: importPathComponent
+  importPathComponent:
+    name: _token
+    trailingPeriod?: _token
+  inOutExpr:
+    ampersand: _token
+    expression: expr
+  infixOperatorExpr:
+    leftOperand: expr
+    operator: expr
+    rightOperand: expr
+  inheritanceClause:
+    colon: _token
+    inheritedTypes*: inheritedType
+  inheritedType:
+    type: type
+    trailingComma?: _token
+  initializerClause:
+    equal: _token
+    value: expr
+  initializerDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    initKeyword: _token
+    optionalMark?: _token
+    genericParameterClause?: genericParameterClause
+    signature: functionSignature
+    genericWhereClause?: genericWhereClause
+    body?: codeBlock
+  inlineArrayType:
+    leftSquare: _token
+    count: genericArgument
+    separator: _token
+    element: genericArgument
+    rightSquare: _token
+  integerLiteralExpr:
+    literal: _token
+  isExpr:
+    expression: expr
+    isKeyword: _token
+    type: type
+  isTypePattern:
+    isKeyword: _token
+    type: type
+  keyPathComponent:
+    period?: _token
+    component: [keyPathPropertyComponent, keyPathMethodComponent, keyPathSubscriptComponent, keyPathOptionalComponent]
+  keyPathExpr:
+    backslash: _token
+    root?: type
+    components*: keyPathComponent
+  keyPathMethodComponent:
+    declName: declReferenceExpr
+    leftParen: _token
+    arguments*: labeledExpr
+    rightParen: _token
+  keyPathOptionalComponent:
+    questionOrExclamationMark: _token
+  keyPathPropertyComponent:
+    declName: declReferenceExpr
+    genericArgumentClause?: genericArgumentClause
+  keyPathSubscriptComponent:
+    leftSquare: _token
+    arguments*: labeledExpr
+    rightSquare: _token
+  labeledExpr:
+    label?: _token
+    colon?: _token
+    expression: expr
+    trailingComma?: _token
+  labeledSpecializeArgument:
+    label: _token
+    colon: _token
+    value: token
+    trailingComma?: _token
+  labeledStmt:
+    label: _token
+    colon: _token
+    statement: stmt
+  layoutRequirement:
+    type: type
+    colon: _token
+    layoutSpecifier: _token
+    leftParen?: _token
+    size?: _token
+    comma?: _token
+    alignment?: _token
+    rightParen?: _token
+  lifetimeSpecifierArgument:
+    parameter: _token
+    trailingComma?: _token
+  lifetimeTypeSpecifier:
+    dependsOnKeyword: _token
+    leftParen: _token
+    scopedKeyword?: _token
+    arguments*: lifetimeSpecifierArgument
+    rightParen: _token
+  macroDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    macroKeyword: _token
+    name: _token
+    genericParameterClause?: genericParameterClause
+    signature: functionSignature
+    definition?: initializerClause
+    genericWhereClause?: genericWhereClause
+  macroExpansionDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    pound: _token
+    moduleSelector?: moduleSelector
+    macroName: _token
+    genericArgumentClause?: genericArgumentClause
+    leftParen?: _token
+    arguments*: labeledExpr
+    rightParen?: _token
+    trailingClosure?: closureExpr
+    additionalTrailingClosures*: multipleTrailingClosureElement
+  macroExpansionExpr:
+    pound: _token
+    moduleSelector?: moduleSelector
+    macroName: _token
+    genericArgumentClause?: genericArgumentClause
+    leftParen?: _token
+    arguments*: labeledExpr
+    rightParen?: _token
+    trailingClosure?: closureExpr
+    additionalTrailingClosures*: multipleTrailingClosureElement
+  matchingPatternCondition:
+    caseKeyword: _token
+    pattern: pattern
+    typeAnnotation?: typeAnnotation
+    initializer: initializerClause
+  memberAccessExpr:
+    base?: expr
+    period: _token
+    declName: declReferenceExpr
+  memberBlock:
+    leftBrace: _token
+    members*: memberBlockItem
+    rightBrace: _token
+  memberBlockItem:
+    decl: decl
+    semicolon?: _token
+  memberBlockItemListFile:
+    members*: memberBlockItem
+    endOfFileToken: _token
+  memberType:
+    baseType: type
+    period: _token
+    moduleSelector?: moduleSelector
+    name: _token
+    genericArgumentClause?: genericArgumentClause
+  metatypeType:
+    baseType: type
+    period: _token
+    metatypeSpecifier: _token
+  missing:
+    placeholder: _token
+  missingDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    placeholder: _token
+  missingExpr:
+    placeholder: _token
+  missingPattern:
+    placeholder: _token
+  missingStmt:
+    placeholder: _token
+  missingType:
+    placeholder: _token
+  moduleSelector:
+    moduleName: _token
+    colonColon: _token
+  multipleTrailingClosureElement:
+    label: _token
+    colon: _token
+    closure: closureExpr
+  namedOpaqueReturnType:
+    genericParameterClause: genericParameterClause
+    type: type
+  nilLiteralExpr:
+    nilKeyword: _token
+  nonisolatedSpecifierArgument:
+    leftParen: _token
+    nonsendingKeyword: _token
+    rightParen: _token
+  nonisolatedTypeSpecifier:
+    nonisolatedKeyword: _token
+    argument?: nonisolatedSpecifierArgument
+  objCSelectorPiece:
+    name?: token
+    colon?: _token
+  operatorDecl:
+    fixitySpecifier: _token
+    operatorKeyword: _token
+    name: _token
+    operatorPrecedenceAndTypes?: operatorPrecedenceAndTypes
+  operatorPrecedenceAndTypes:
+    colon: _token
+    precedenceGroup: _token
+    designatedTypes*: designatedType
+  optionalBindingCondition:
+    bindingSpecifier: _token
+    pattern: pattern
+    typeAnnotation?: typeAnnotation
+    initializer?: initializerClause
+  optionalChainingExpr:
+    expression: expr
+    questionMark: _token
+  optionalType:
+    wrappedType: type
+    questionMark: _token
+  originallyDefinedInAttributeArguments:
+    moduleLabel: _token
+    colon: _token
+    moduleName: stringLiteralExpr
+    comma: _token
+    platforms*: platformVersionItem
+  packElementExpr:
+    eachKeyword: _token
+    pack: expr
+  packElementType:
+    eachKeyword: _token
+    pack: type
+  packExpansionExpr:
+    repeatKeyword: _token
+    repetitionPattern: expr
+  packExpansionType:
+    repeatKeyword: _token
+    repetitionPattern: type
+  patternBinding:
+    pattern: pattern
+    typeAnnotation?: typeAnnotation
+    initializer?: initializerClause
+    accessorBlock?: accessorBlock
+    trailingComma?: _token
+  patternExpr:
+    pattern: pattern
+  platformVersion:
+    platform: _token
+    version?: versionTuple
+  platformVersionItem:
+    platformVersion: platformVersion
+    trailingComma?: _token
+  postfixIfConfigExpr:
+    base?: expr
+    config: ifConfigDecl
+  postfixOperatorExpr:
+    expression: expr
+    operator: _token
+  poundSourceLocation:
+    poundSourceLocation: _token
+    leftParen: _token
+    arguments?: poundSourceLocationArguments
+    rightParen: _token
+  poundSourceLocationArguments:
+    fileLabel: _token
+    fileColon: _token
+    fileName: simpleStringLiteralExpr
+    comma: _token
+    lineLabel: _token
+    lineColon: _token
+    lineNumber: _token
+  precedenceGroupAssignment:
+    assignmentLabel: _token
+    colon: _token
+    value: _token
+  precedenceGroupAssociativity:
+    associativityLabel: _token
+    colon: _token
+    value: _token
+  precedenceGroupDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    precedencegroupKeyword: _token
+    name: _token
+    leftBrace: _token
+    groupAttributes*: [precedenceGroupRelation, precedenceGroupAssignment, precedenceGroupAssociativity]
+    rightBrace: _token
+  precedenceGroupName:
+    name: _token
+    trailingComma?: _token
+  precedenceGroupRelation:
+    higherThanOrLowerThanLabel: _token
+    colon: _token
+    precedenceGroups*: precedenceGroupName
+  prefixOperatorExpr:
+    operator: _token
+    expression: expr
+  primaryAssociatedType:
+    name: _token
+    trailingComma?: _token
+  primaryAssociatedTypeClause:
+    leftAngle: _token
+    primaryAssociatedTypes*: primaryAssociatedType
+    rightAngle: _token
+  protocolDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    protocolKeyword: _token
+    name: _token
+    primaryAssociatedTypeClause?: primaryAssociatedTypeClause
+    inheritanceClause?: inheritanceClause
+    genericWhereClause?: genericWhereClause
+    memberBlock: memberBlock
+  regexLiteralExpr:
+    openingPounds?: _token
+    openingSlash: _token
+    regex: _token
+    closingSlash: _token
+    closingPounds?: _token
+  repeatStmt:
+    repeatKeyword: _token
+    body: codeBlock
+    whileKeyword: _token
+    condition: expr
+  returnClause:
+    arrow: _token
+    type: type
+  returnStmt:
+    returnKeyword: _token
+    expression?: expr
+  sameTypeRequirement:
+    leftType: [type, expr]
+    equal: _token
+    rightType: [type, expr]
+  sequenceExpr:
+    elements*: expr
+  simpleStringLiteralExpr:
+    openingQuote: _token
+    segments*: stringSegment
+    closingQuote: _token
+  simpleTypeSpecifier:
+    specifier: _token
+  someOrAnyType:
+    someOrAnySpecifier: _token
+    constraint: type
+  sourceFile:
+    shebang?: _token
+    statements*: codeBlockItem
+    endOfFileToken: _token
+  specializeAvailabilityArgument:
+    availabilityLabel: _token
+    colon: _token
+    availabilityArguments*: availabilityArgument
+    semicolon: _token
+  specializeTargetFunctionArgument:
+    targetLabel: _token
+    colon: _token
+    declName: declReferenceExpr
+    trailingComma?: _token
+  specializedAttributeArgument:
+    genericWhereClause: genericWhereClause
+  stringLiteralExpr:
+    openingPounds?: _token
+    openingQuote: _token
+    segments*: [stringSegment, expressionSegment]
+    closingQuote: _token
+    closingPounds?: _token
+  stringSegment:
+    content: _token
+  structDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    structKeyword: _token
+    name: _token
+    genericParameterClause?: genericParameterClause
+    inheritanceClause?: inheritanceClause
+    genericWhereClause?: genericWhereClause
+    memberBlock: memberBlock
+  subscriptCallExpr:
+    calledExpression: expr
+    leftSquare: _token
+    arguments*: labeledExpr
+    rightSquare: _token
+    trailingClosure?: closureExpr
+    additionalTrailingClosures*: multipleTrailingClosureElement
+  subscriptDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    subscriptKeyword: _token
+    genericParameterClause?: genericParameterClause
+    parameterClause: functionParameterClause
+    returnClause: returnClause
+    genericWhereClause?: genericWhereClause
+    accessorBlock?: accessorBlock
+  superExpr:
+    superKeyword: _token
+  suppressedType:
+    withoutTilde: _token
+    type: type
+  switchCase:
+    attribute?: attribute
+    label: [switchDefaultLabel, switchCaseLabel]
+    statements*: codeBlockItem
+  switchCaseItem:
+    pattern: pattern
+    whereClause?: whereClause
+    trailingComma?: _token
+  switchCaseLabel:
+    caseKeyword: _token
+    caseItems*: switchCaseItem
+    colon: _token
+  switchDefaultLabel:
+    defaultKeyword: _token
+    colon: _token
+  switchExpr:
+    switchKeyword: _token
+    subject: expr
+    leftBrace: _token
+    cases*: [switchCase, ifConfigDecl]
+    rightBrace: _token
+  ternaryExpr:
+    condition: expr
+    questionMark: _token
+    thenExpression: expr
+    colon: _token
+    elseExpression: expr
+  thenStmt:
+    thenKeyword: _token
+    expression: expr
+  throwStmt:
+    throwKeyword: _token
+    expression: expr
+  throwsClause:
+    throwsSpecifier: _token
+    leftParen?: _token
+    type?: type
+    rightParen?: _token
+  tryExpr:
+    tryKeyword: _token
+    questionOrExclamationMark?: _token
+    expression: expr
+  tupleExpr:
+    leftParen: _token
+    elements*: labeledExpr
+    rightParen: _token
+  tuplePattern:
+    leftParen: _token
+    elements*: tuplePatternElement
+    rightParen: _token
+  tuplePatternElement:
+    label?: _token
+    colon?: _token
+    pattern: pattern
+    trailingComma?: _token
+  tupleType:
+    leftParen: _token
+    elements*: tupleTypeElement
+    rightParen: _token
+  tupleTypeElement:
+    inoutKeyword?: _token
+    firstName?: _token
+    secondName?: _token
+    colon?: _token
+    type: type
+    ellipsis?: _token
+    trailingComma?: _token
+  typeAliasDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    typealiasKeyword: _token
+    name: _token
+    genericParameterClause?: genericParameterClause
+    initializer: typeInitializerClause
+    genericWhereClause?: genericWhereClause
+  typeAnnotation:
+    colon: _token
+    type: type
+  typeEffectSpecifiers:
+    asyncSpecifier?: _token
+    throwsClause?: throwsClause
+  typeExpr:
+    type: type
+  typeInitializerClause:
+    equal: _token
+    value: type
+  unexpectedCodeDecl:
+  unresolvedAsExpr:
+    asKeyword: _token
+    questionOrExclamationMark?: _token
+  unresolvedIsExpr:
+    isKeyword: _token
+  unresolvedTernaryExpr:
+    questionMark: _token
+    thenExpression: expr
+    colon: _token
+  unsafeExpr:
+    unsafeKeyword: _token
+    expression: expr
+  usingDecl:
+    usingKeyword: _token
+    specifier: [attribute, _token]
+  valueBindingPattern:
+    bindingSpecifier: _token
+    pattern: pattern
+  variableDecl:
+    attributes*: [attribute, ifConfigDecl]
+    modifiers*: declModifier
+    bindingSpecifier: _token
+    bindings*: patternBinding
+  versionComponent:
+    period: _token
+    number: _token
+  versionTuple:
+    major: _token
+    components*: versionComponent
+  whereClause:
+    whereKeyword: _token
+    condition: expr
+  whileStmt:
+    whileKeyword: _token
+    conditions*: conditionElement
+    body: codeBlock
+  wildcardPattern:
+    wildcard: _token
+  yieldStmt:
+    yieldKeyword: _token
+    yieldedExpressions: [yieldedExpressionsClause, expr]
+  yieldedExpression:
+    expression: expr
+    comma?: _token
+  yieldedExpressionsClause:
+    leftParen: _token
+    elements*: yieldedExpression
+    rightParen: _token
+  _token:
+  binaryOperator:
+  dollarIdentifier:
+  floatLiteral:
+  identifier:
+  integerLiteral:
+  postfixOperator:
+  prefixOperator:
+  rawStringPoundDelimiter:
+  regexLiteralPattern:
+  regexPoundDelimiter:
+  shebang:
+  unknown:

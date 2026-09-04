@@ -1,1 +1,2 @@
-Likely Bugs/InconsistentCheckReturnNull.ql
+query: Likely Bugs/InconsistentCheckReturnNull.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

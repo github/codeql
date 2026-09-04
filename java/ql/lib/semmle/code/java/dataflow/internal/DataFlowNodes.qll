@@ -198,19 +198,6 @@ module Public {
       or
       result = this.getType() and not exists(this.getImprovedTypeBound())
     }
-
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    deprecated predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
   }
 
   /**
@@ -452,7 +439,7 @@ module Private {
     result.asCallable() = n.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
     result.asCallable() = n.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
     result = nodeGetEnclosingCallable(n.(ImplicitPostUpdateNode).getPreUpdateNode()) or
-    result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable() or
+    result = n.(FlowSummaryNode).getSummaryNode().getEnclosingCallable() or
     result.asCallable() = n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() or
     result.asFieldScope() = n.(FieldValueNode).getField() or
     result.asCallable() = any(Expr e | n.(AdditionalNode).nodeAt(e, _)).getEnclosingCallable() or
@@ -544,7 +531,7 @@ module Private {
       result = this.getSummaryNode().getSummarizedCallable()
     }
 
-    override Location getLocation() { result = this.getSummarizedCallable().getLocation() }
+    override Location getLocation() { result = this.getSummaryNode().getLocation() }
 
     override string toString() { result = this.getSummaryNode().toString() }
 

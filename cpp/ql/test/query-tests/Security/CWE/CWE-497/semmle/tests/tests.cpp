@@ -45,21 +45,21 @@ void test1()
 {
 	std::ostream cout_copy = std::cout;
 
-	std::cout << getenv("SECRET_TOKEN"); // BAD: outputs SECRET_TOKEN environment variable
-	std::cerr << getenv("SECRET_TOKEN"); // BAD: outputs SECRET_TOKEN environment variable
-	std::clog << getenv("SECRET_TOKEN"); // BAD: outputs SECRET_TOKEN environment variable
+	std::cout << getenv("SECRET_TOKEN"); // $ Alert[cpp/potential-system-data-exposure] // BAD: outputs SECRET_TOKEN environment variable
+	std::cerr << getenv("SECRET_TOKEN"); // $ Alert[cpp/potential-system-data-exposure] // BAD: outputs SECRET_TOKEN environment variable
+	std::clog << getenv("SECRET_TOKEN"); // $ Alert[cpp/potential-system-data-exposure] // BAD: outputs SECRET_TOKEN environment variable
 	someotherostream << getenv("SECRET_TOKEN"); // GOOD: not output
 	cout_copy << getenv("SECRET_TOKEN"); // BAD: outputs SECRET_TOKEN environment variable [NOT DETECTED]
 
 	std::cout << getenv("USERPROFILE"); // BAD: outputs PATH environment variable [NOT DETECTED]
 	std::cout << getenv("PATH"); // BAD: outputs PATH environment variable [NOT DETECTED]
 
-	std::cout.write(getenv("SECRET_TOKEN"), strlen(getenv("SECRET_TOKEN"))); // BAD: outputs SECRET_TOKEN environment variable
-	(std::cout << "SECRET_TOKEN = ").write(getenv("SECRET_TOKEN"), strlen(getenv("SECRET_TOKEN"))); // BAD: outputs SECRET_TOKEN environment variable
-	std::cout.write("SECRET_TOKEN = ", 7) << getenv("SECRET_TOKEN"); // BAD: outputs SECRET_TOKEN environment variable
+	std::cout.write(getenv("SECRET_TOKEN"), strlen(getenv("SECRET_TOKEN"))); // $ Alert[cpp/potential-system-data-exposure] // BAD: outputs SECRET_TOKEN environment variable
+	(std::cout << "SECRET_TOKEN = ").write(getenv("SECRET_TOKEN"), strlen(getenv("SECRET_TOKEN"))); // $ Alert[cpp/potential-system-data-exposure] // BAD: outputs SECRET_TOKEN environment variable
+	std::cout.write("SECRET_TOKEN = ", 7) << getenv("SECRET_TOKEN"); // $ Alert[cpp/potential-system-data-exposure] // BAD: outputs SECRET_TOKEN environment variable
 }
 
-char *global_token = getenv("SECRET_TOKEN");
+char *global_token = getenv("SECRET_TOKEN"); // $ Source[cpp/potential-system-data-exposure]
 char *global_other = "Hello, world!";
 
 void test2(bool cond)
@@ -67,10 +67,10 @@ void test2(bool cond)
 	char *maybe;
 
 	maybe = cond ? global_token : global_other;
-	
-	printf("token = '%s'\n", global_token); // BAD: outputs SECRET_TOKEN environment variable
+
+	printf("token = '%s'\n", global_token); // $ Alert[cpp/potential-system-data-exposure] // BAD: outputs SECRET_TOKEN environment variable
 	printf("other = '%s'\n", global_other);
-	printf("maybe = '%s'\n", maybe); // BAD: may output SECRET_TOKEN environment variable
+	printf("maybe = '%s'\n", maybe); // $ Alert[cpp/potential-system-data-exposure] // BAD: may output SECRET_TOKEN environment variable
 }
 
 void test3()
@@ -85,7 +85,7 @@ void test3()
 
 void myOutputFn(const char *msg)
 {
-	printf("%s", msg);
+	printf("%s", msg); // $ Alert[cpp/potential-system-data-exposure]
 }
 
 void myOtherFn(const char *msg)
@@ -94,7 +94,7 @@ void myOtherFn(const char *msg)
 
 void test4()
 {
-	myOutputFn(getenv("SECRET_TOKEN")); // BAD: outputs the SECRET_TOKEN environment variable
+	myOutputFn(getenv("SECRET_TOKEN")); // $ Alert[cpp/potential-system-data-exposure] Source[cpp/potential-system-data-exposure] // BAD: outputs the SECRET_TOKEN environment variable
 	myOtherFn(getenv("SECRET_TOKEN")); // GOOD: does not output anything.
 }
 
@@ -108,7 +108,7 @@ void myOutputFn3(const char *msg)
 {
 	const char *tmp = msg;
 
-	printf("%s", tmp);
+	printf("%s", tmp); // $ Alert[cpp/potential-system-data-exposure]
 }
 
 void myOutputFn4(const char *msg)
@@ -116,29 +116,29 @@ void myOutputFn4(const char *msg)
 	char buffer[4096];
 
 	sprintf(buffer, "log: %s\n", msg);
-	puts(buffer);
+	puts(buffer); // $ Alert[cpp/potential-system-data-exposure]
 }
 
 void myOutputFn5(const char *msg)
 {
-	printf("%s", msg);
+	printf("%s", msg); // $ Alert[cpp/potential-system-data-exposure]
 	msg = "";
 }
 
 void test5()
 {
 	myOutputFn2(getenv("SECRET_TOKEN")); // GOOD: myOutputFn2 doesn't actually output the parameter
-	myOutputFn3(getenv("SECRET_TOKEN")); // BAD: outputs the SECRET_TOKEN environment variable
-	myOutputFn4(getenv("SECRET_TOKEN")); // BAD: outputs the SECRET_TOKEN environment variable
-	myOutputFn5(getenv("SECRET_TOKEN")); // BAD: outputs the SECRET_TOKEN environment variable
+	myOutputFn3(getenv("SECRET_TOKEN")); // $ Source[cpp/potential-system-data-exposure] // BAD: outputs the SECRET_TOKEN environment variable
+	myOutputFn4(getenv("SECRET_TOKEN")); // $ Source[cpp/potential-system-data-exposure] // BAD: outputs the SECRET_TOKEN environment variable
+	myOutputFn5(getenv("SECRET_TOKEN")); // $ Alert[cpp/potential-system-data-exposure] Source[cpp/potential-system-data-exposure] // BAD: outputs the SECRET_TOKEN environment variable
 }
 
 void RtlZeroMemory(void* dst, size_t len);
 
 void test_clear_memory(char *username) {
-	char* secret = getenv("SECRET_TOKEN");
+	char* secret = getenv("SECRET_TOKEN"); // $ Source[cpp/potential-system-data-exposure]
 
-	printf("%s", secret); // BAD
+	printf("%s", secret); // $ Alert[cpp/potential-system-data-exposure] // BAD
 	RtlZeroMemory(secret, 1024);
 	printf("%s", secret); // GOOD
 }

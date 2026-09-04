@@ -1,1 +1,2 @@
-API Abuse/CallToGCCollect.ql
+query: API Abuse/CallToGCCollect.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

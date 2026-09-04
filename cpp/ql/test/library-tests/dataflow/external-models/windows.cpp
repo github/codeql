@@ -941,3 +941,236 @@ void test_http_server_api(HANDLE hRequestQueue) {
     sink(*certInfo.pCertEncoded); // $ ir
   }
 }
+
+using HKEY = void*;
+using BYTE = unsigned char;
+using LPBYTE = BYTE*;
+using PLONG = LONG*;
+
+typedef struct value_entA {
+  LPSTR ve_valuename;
+  DWORD ve_valuelen;
+  DWORD_PTR ve_valueptr;
+  DWORD ve_type;
+} VALENTA, *PVALENTA;
+
+typedef struct value_entW {
+  LPWSTR ve_valuename;
+  DWORD ve_valuelen;
+  DWORD_PTR ve_valueptr;
+  DWORD ve_type;
+} VALENTW, *PVALENTW;
+
+LONG RegQueryValueA(HKEY hKey, LPCSTR lpSubKey, LPSTR lpData, PLONG lpcbData);
+LONG RegQueryValueW(HKEY hKey, LPCWSTR lpSubKey, LPWSTR lpData, PLONG lpcbData);
+
+LONG RegQueryValueExA(
+  HKEY hKey, LPCSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData,
+  LPDWORD lpcbData
+);
+
+LONG RegQueryValueExW(
+  HKEY hKey, LPCWSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData,
+  LPDWORD lpcbData
+);
+
+LONG RegGetValueA(
+  HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValue, DWORD flags, LPDWORD lpType, PVOID lpData,
+  LPDWORD lpcbData
+);
+
+LONG RegGetValueW(
+  HKEY hKey, LPCWSTR lpSubKey, LPCWSTR lpValue, DWORD flags, LPDWORD lpType, PVOID lpData,
+  LPDWORD lpcbData
+);
+
+LONG RegQueryMultipleValuesA(
+  HKEY hKey, PVALENTA valList, DWORD numVals, LPSTR valueBuffer, LPDWORD totalSize
+);
+
+LONG RegQueryMultipleValuesW(
+  HKEY hKey, PVALENTW valList, DWORD numVals, LPWSTR valueBuffer, LPDWORD totalSize
+);
+
+LONG RegEnumValueA(
+  HKEY hKey, DWORD dwIndex, LPSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpReserved,
+  LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData
+);
+
+LONG RegEnumValueW(
+  HKEY hKey, DWORD dwIndex, LPWSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpReserved,
+  LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData
+);
+
+void test_registry_queries(HKEY hKey) {
+  {
+    char data[256];
+    LONG dataSize = sizeof(data);
+    RegQueryValueA(hKey, "value", data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    wchar_t data[256];
+    LONG dataSize = sizeof(data);
+    RegQueryValueW(hKey, L"value", data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegQueryValueExA(hKey, "value", nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegQueryValueExW(hKey, L"value", nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    VALENTA values[1];
+    char data[256];
+    DWORD dataSize = sizeof(data);
+    RegQueryMultipleValuesA(hKey, values, 1, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    VALENTW values[1];
+    wchar_t data[256];
+    DWORD dataSize = sizeof(data);
+    RegQueryMultipleValuesW(hKey, values, 1, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegGetValueA(hKey, "subkey", "value", 0, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+
+  {
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegGetValueW(hKey, L"subkey", L"value", 0, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    char valueName[256];
+    DWORD valueNameSize = sizeof(valueName);
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegEnumValueA(hKey, 0, valueName, &valueNameSize, nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+    sink(valueName); // clean
+    sink(*valueName); // $ ir
+  }
+  {
+    wchar_t valueName[256];
+    DWORD valueNameSize = sizeof(valueName) / sizeof(*valueName);
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegEnumValueW(hKey, 0, valueName, &valueNameSize, nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+    sink(valueName); // clean
+    sink(*valueName); // $ ir
+  }
+}
+
+using LPCOLESTR = const char*;
+using LPOLESTR = char*;
+using GUID = int;
+using CLSID = GUID;
+using IID = GUID;
+using REFIID = const IID&;
+using REFCLSID = const CLSID&;
+using REFGUID = const GUID&;
+using LPIID = IID*;
+using LPCLSID = CLSID*;
+using HRESULT = long;
+
+HRESULT IIDFromString(LPCOLESTR lpsz, LPIID lpiid);
+HRESULT StringFromIID(REFIID rclsid, LPOLESTR* lplpsz);
+HRESULT ProgIDFromCLSID(REFCLSID clsid, LPOLESTR* lplpszProgID);
+HRESULT CLSIDFromProgID(LPCOLESTR lpszProgID, LPCLSID lpclsid);
+HRESULT CLSIDFromString(LPCOLESTR lpsz, LPCLSID pclsid);
+HRESULT StringFromCLSID(REFCLSID rclsid, LPOLESTR* lplpsz);
+int GUIDFromString(LPCOLESTR psz, GUID* pguid);
+int StringFromGUID2(REFGUID rguid, LPOLESTR lpsz, int cchMax);
+
+void sink(GUID);
+void sink(GUID*);
+
+void test_com_string_conversions() {
+  {
+    char str[256];
+    str[0] = (char)source();
+    IID iid;
+    IIDFromString(str, &iid);
+    sink(iid); // $ ir
+  }
+  {
+    IID iid = source();
+    LPOLESTR str = nullptr;
+    StringFromIID(iid, &str);
+    sink(str);
+    sink(*str); // $ ir
+  }
+  {
+    CLSID clsid = source();
+    LPOLESTR str = nullptr;
+    ProgIDFromCLSID(clsid, &str);
+    sink(str);
+    sink(*str); // $ ir
+  }
+  {
+    char progID[256];
+    progID[0] = (char)source();
+    CLSID clsid;
+    CLSIDFromProgID(progID, &clsid);
+    sink(clsid); // $ ir
+  }
+  {
+    char str[256];
+    str[0] = (char)source();
+    CLSID clsid;
+    CLSIDFromString(str, &clsid);
+    sink(clsid); // $ ir
+  }
+  {
+    CLSID clsid = source();
+    LPOLESTR str = nullptr;
+    StringFromCLSID(clsid, &str);
+    sink(str);
+    sink(*str); // $ ir
+  }
+  {
+    char str[256];
+    str[0] = (char)source();
+    GUID guid;
+    GUIDFromString(str, &guid);
+    sink(guid); // $ ir
+  }
+  {
+    GUID guid = source();
+    char str[256];
+    StringFromGUID2(guid, str, 256);
+    sink(str);
+    sink(*str); // $ ir
+  }
+}

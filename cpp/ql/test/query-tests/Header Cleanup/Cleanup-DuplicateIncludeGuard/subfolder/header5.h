@@ -1,6 +1,6 @@
 // header5.h
 
-#ifndef INCLUDED_HEADER4 // duplicate
+#ifndef INCLUDED_HEADER4 // $ Alert // duplicate
 #define INCLUDED_HEADER4
 
 	// ...

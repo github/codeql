@@ -5,7 +5,7 @@ bool cannotHoldAnother8(int n1) {
     // clang 8.0.0 -O2: deleted (silently)
     // gcc 9.2 -O2: deleted (silently)
     // msvc 19.22 /O2: not deleted
-    return n1 + 8 < n1; // BAD
+    return n1 + 8 < n1; // $ Alert[cpp/signed-overflow-check] // BAD
 }
 
 /* 2. Signed comparison with a narrower unsigned type.  The narrower
@@ -15,7 +15,7 @@ bool cannotHoldAnotherUShort(int n1, unsigned short delta) {
     // clang 8.0.0 -O2: deleted (silently)
     // gcc 9.2 -O2: deleted (silently)
     // msvc 19.22 /O2: not deleted
-    return n1 + delta < n1; // BAD
+    return n1 + delta < n1; // $ Alert[cpp/signed-overflow-check] // BAD
 }
 
 /* 3. Signed comparison with a non-narrower unsigned type.  The
@@ -32,7 +32,7 @@ bool shortShort1(unsigned short n1, unsigned short delta) {
 
     // BAD [BadAdditionOverflowCheck.ql]
     // GOOD [SigneOverflowCheck.ql]: Test always fails, but will never overflow.
-	return n1 + delta < n1;
+	return n1 + delta < n1; // $ Alert[cpp/bad-addition-overflow-check]
 }
 
 bool shortShort2(unsigned short n1, unsigned short delta) {
@@ -70,7 +70,7 @@ extern se *getSo(void);
 
 bool func1(se *so) {
 	se *o = getSo();
-	if (so->xPos + so->xSize < so->xPos // BAD
+	if (so->xPos + so->xSize < so->xPos // $ Alert[cpp/signed-overflow-check] // BAD
 	    || so->xPos > o->xPos + o->xSize) { // GOOD
     	// clang 8.0.0 -O2: not deleted
     	// gcc 9.2 -O2: not deleted
@@ -96,7 +96,7 @@ int checkOverflow4(unsigned int ioff, C c) {
 
 int overflow12(int n) {
     // not deleted by gcc or clang
-	return (n + 32 <= (unsigned)n? -1: 1); // BAD: n + 32 can overflow
+	return (n + 32 <= (unsigned)n? -1: 1); // $ Alert[cpp/signed-overflow-check] // BAD: n + 32 can overflow
 }
 
 bool multipleCasts(char x) {
@@ -110,7 +110,7 @@ bool multipleCasts2(char x) {
 
     // BAD [BadAdditionOverflowCheck.ql]
     // GOOD [SigneOverflowCheck.ql]: Test always fails, but will never overflow.
-    return (int)(unsigned short)(x + '1') < (int)(unsigned short)x;
+    return (int)(unsigned short)(x + '1') < (int)(unsigned short)x; // $ Alert[cpp/bad-addition-overflow-check]
 }
 
 int does_it_overflow(int n1, unsigned short delta) {
@@ -119,7 +119,7 @@ int does_it_overflow(int n1, unsigned short delta) {
 
 int overflow12b(int n) {
     // not deleted by gcc or clang
-	return ((unsigned)(n + 32) <= (unsigned)n? -1: 1); // BAD: n + 32 may overflow
+	return ((unsigned)(n + 32) <= (unsigned)n? -1: 1); // $ Alert[cpp/signed-overflow-check] // BAD: n + 32 may overflow
 }
 
 #define MACRO(E1, E2) (E1) <= (E2)? -1: 1
@@ -127,4 +127,3 @@ int overflow12b(int n) {
 int overflow12_macro(int n) {
 	return MACRO((unsigned)(n + 32), (unsigned)n); // GOOD: inside a macro expansion
 }
-

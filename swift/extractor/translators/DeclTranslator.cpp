@@ -299,6 +299,7 @@ void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl&
       entry.inherited_types.push_back(dispatcher.fetchLabel(type));
     }
   }
+  entry.declared_interface_type = dispatcher.fetchLabel(decl.getDeclaredInterfaceType());
   fillValueDecl(decl, entry);
 }
 

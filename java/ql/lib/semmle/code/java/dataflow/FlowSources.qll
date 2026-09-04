@@ -30,6 +30,8 @@ import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
+import semmle.code.java.frameworks.micronaut.MicronautController
+import semmle.code.java.frameworks.micronaut.MicronautWebSocket
 private import semmle.code.java.dataflow.ExternalFlow
 private import codeql.threatmodels.ThreatModels
 
@@ -42,14 +44,6 @@ abstract class SourceNode extends DataFlow::Node {
    */
   abstract string getThreatModel();
 }
-
-/**
- * DEPRECATED: Use `ActiveThreatModelSource` instead.
- *
- * A class of data flow sources that respects the
- * current threat model configuration.
- */
-deprecated class ThreatModelFlowSource = ActiveThreatModelSource;
 
 /**
  * A data flow source that is enabled in the current threat model configuration.
@@ -185,6 +179,28 @@ private class AndroidExternalStorageSource extends RemoteFlowSource {
   AndroidExternalStorageSource() { androidExternalStorageSource(this) }
 
   override string getSourceType() { result = "Android external storage" }
+}
+
+private class MicronautHttpInputParameterSource extends RemoteFlowSource {
+  MicronautHttpInputParameterSource() {
+    this.asParameter() = any(MicronautRequestMappingParameter mrmp | mrmp.isTaintedInput())
+  }
+
+  override string getSourceType() { result = "Micronaut HTTP input parameter" }
+}
+
+private class MicronautWebSocketParameterSource extends RemoteFlowSource {
+  MicronautWebSocketParameterSource() { this.asParameter() instanceof MicronautWebSocketParameter }
+
+  override string getSourceType() { result = "Micronaut WebSocket parameter" }
+}
+
+private class MicronautErrorHandlerSource extends RemoteFlowSource {
+  MicronautErrorHandlerSource() {
+    this.asParameter() = any(MicronautErrorHandler h).getARemoteParameter()
+  }
+
+  override string getSourceType() { result = "Micronaut error handler parameter" }
 }
 
 /** Class for `tainted` user input. */

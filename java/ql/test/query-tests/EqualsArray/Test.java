@@ -3,7 +3,7 @@ public class Test {
 
 	// NOT OK
 	public boolean areTheseMyNumbers(int[] numbers) {
-		return this.numbers.equals(numbers);
+		return this.numbers.equals(numbers); // $ Alert
 	}
 
 	// OK
@@ -17,6 +17,6 @@ public class Test {
 	}
 
 	{
-		numbers.hashCode();
+		numbers.hashCode(); // $ Alert
 	}
 }

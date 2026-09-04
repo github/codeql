@@ -72,9 +72,9 @@ class AssignExpr extends Assignment, @simple_assign_expr {
 }
 
 /**
- * An assignment operation. Either an arithmetic assignment operation
- * (`AssignArithmeticOperation`), a bitwise assignment operation
- * (`AssignBitwiseOperation`), an event assignment (`AddOrRemoveEventExpr`), or
+ * An assignment operation. Either an arithmetic assignment expression
+ * (`AssignArithmeticExpr`), a bitwise assignment expression
+ * (`AssignBitwiseExpr`), an event assignment (`AddOrRemoveEventExpr`), or
  * a null-coalescing assignment (`AssignCoalesceExpr`).
  */
 class AssignOperation extends Assignment, @assign_op_expr {
@@ -94,134 +94,147 @@ class AssignOperation extends Assignment, @assign_op_expr {
 }
 
 /**
- * A compound assignment operation that invokes an operator.
+ * A compound assignment expression that invokes an operator.
  *
  * (1) `x += y` invokes the compound assignment operator `+=` (if it exists).
  * (2) `x += y` invokes the operator `+` and assigns `x + y` to `x`.
  *
- * Either an arithmetic assignment operation (`AssignArithmeticOperation`) or a bitwise
- * assignment operation (`AssignBitwiseOperation`).
+ * Either an arithmetic assignment expression (`AssignArithmeticExpr`) or a bitwise
+ * assignment expression (`AssignBitwiseExpr`).
  */
-class AssignCallOperation extends AssignOperation, OperatorCall, QualifiableExpr,
-  @assign_op_call_expr
-{
+class AssignCallExpr extends AssignOperation, OperatorCall, QualifiableExpr, @assign_op_call_expr {
   override string toString() { result = AssignOperation.super.toString() }
 }
 
 /**
- * An arithmetic assignment operation. Either an addition assignment operation
- * (`AssignAddExpr`), a subtraction assignment operation (`AssignSubExpr`), a
- * multiplication assignment operation (`AssignMulExpr`), a division assignment
- * operation (`AssignDivExpr`), or a remainder assignment operation
- * (`AssignRemExpr`).
+ * DEPRECATED: Use `AssignCallExpr` instead.
  */
-class AssignArithmeticOperation extends AssignCallOperation, @assign_arith_expr { }
+deprecated class AssignCallOperation = AssignCallExpr;
 
 /**
- * An addition assignment operation, for example `x += y`.
+ * An arithmetic assignment expression. Either an addition assignment expression
+ * (`AssignAddExpr`), a subtraction assignment expression (`AssignSubExpr`), a
+ * multiplication assignment expression (`AssignMulExpr`), a division assignment
+ * expression (`AssignDivExpr`), or a remainder assignment expression
+ * (`AssignRemExpr`).
  */
-class AssignAddExpr extends AssignArithmeticOperation, AddOperation, @assign_add_expr {
+class AssignArithmeticExpr extends AssignCallExpr, @assign_arith_expr { }
+
+/**
+ * DEPRECATED: Use `AssignArithmeticExpr` instead.
+ */
+deprecated class AssignArithmeticOperation = AssignArithmeticExpr;
+
+/**
+ * An addition assignment expression, for example `x += y`.
+ */
+class AssignAddExpr extends AssignArithmeticExpr, AddOperation, @assign_add_expr {
   override string getOperator() { result = "+=" }
 
   override string getAPrimaryQlClass() { result = "AssignAddExpr" }
 }
 
 /**
- * A subtraction assignment operation, for example `x -= y`.
+ * A subtraction assignment expression, for example `x -= y`.
  */
-class AssignSubExpr extends AssignArithmeticOperation, SubOperation, @assign_sub_expr {
+class AssignSubExpr extends AssignArithmeticExpr, SubOperation, @assign_sub_expr {
   override string getOperator() { result = "-=" }
 
   override string getAPrimaryQlClass() { result = "AssignSubExpr" }
 }
 
 /**
- * An multiplication assignment operation, for example `x *= y`.
+ * A multiplication assignment expression, for example `x *= y`.
  */
-class AssignMulExpr extends AssignArithmeticOperation, MulOperation, @assign_mul_expr {
+class AssignMulExpr extends AssignArithmeticExpr, MulOperation, @assign_mul_expr {
   override string getOperator() { result = "*=" }
 
   override string getAPrimaryQlClass() { result = "AssignMulExpr" }
 }
 
 /**
- * An division assignment operation, for example `x /= y`.
+ * A division assignment expression, for example `x /= y`.
  */
-class AssignDivExpr extends AssignArithmeticOperation, DivOperation, @assign_div_expr {
+class AssignDivExpr extends AssignArithmeticExpr, DivOperation, @assign_div_expr {
   override string getOperator() { result = "/=" }
 
   override string getAPrimaryQlClass() { result = "AssignDivExpr" }
 }
 
 /**
- * A remainder assignment operation, for example `x %= y`.
+ * A remainder assignment expression, for example `x %= y`.
  */
-class AssignRemExpr extends AssignArithmeticOperation, RemOperation, @assign_rem_expr {
+class AssignRemExpr extends AssignArithmeticExpr, RemOperation, @assign_rem_expr {
   override string getOperator() { result = "%=" }
 
   override string getAPrimaryQlClass() { result = "AssignRemExpr" }
 }
 
 /**
- * A bitwise assignment operation. Either a bitwise-and assignment
- * operation (`AssignAndExpr`), a bitwise-or assignment
- * operation (`AssignOrExpr`), a bitwise exclusive-or assignment
- * operation (`AssignXorExpr`), a left-shift assignment
- * operation (`AssignLeftShiftExpr`), or a right-shift assignment
- * operation (`AssignRightShiftExpr`), or an unsigned right-shift assignment
- * operation (`AssignUnsignedRightShiftExpr`).
+ * A bitwise assignment expression. Either a bitwise-and assignment
+ * expression (`AssignAndExpr`), a bitwise-or assignment
+ * expression (`AssignOrExpr`), a bitwise exclusive-or assignment
+ * expression (`AssignXorExpr`), a left-shift assignment
+ * expression (`AssignLeftShiftExpr`), or a right-shift assignment
+ * expression (`AssignRightShiftExpr`), or an unsigned right-shift assignment
+ * expression (`AssignUnsignedRightShiftExpr`).
  */
-class AssignBitwiseOperation extends AssignCallOperation, @assign_bitwise_expr { }
+class AssignBitwiseExpr extends AssignCallExpr, @assign_bitwise_expr { }
 
 /**
- * A bitwise-and assignment operation, for example `x &= y`.
+ * DEPRECATED: Use `AssignBitwiseExpr` instead.
  */
-class AssignAndExpr extends AssignBitwiseOperation, BitwiseAndOperation, @assign_and_expr {
+deprecated class AssignBitwiseOperation = AssignBitwiseExpr;
+
+/**
+ * A bitwise-and assignment expression, for example `x &= y`.
+ */
+class AssignAndExpr extends AssignBitwiseExpr, BitwiseAndOperation, @assign_and_expr {
   override string getOperator() { result = "&=" }
 
   override string getAPrimaryQlClass() { result = "AssignAndExpr" }
 }
 
 /**
- * A bitwise-or assignment operation, for example `x |= y`.
+ * A bitwise-or assignment expression, for example `x |= y`.
  */
-class AssignOrExpr extends AssignBitwiseOperation, BitwiseOrOperation, @assign_or_expr {
+class AssignOrExpr extends AssignBitwiseExpr, BitwiseOrOperation, @assign_or_expr {
   override string getOperator() { result = "|=" }
 
   override string getAPrimaryQlClass() { result = "AssignOrExpr" }
 }
 
 /**
- * A bitwise exclusive-or assignment operation, for example `x ^= y`.
+ * A bitwise exclusive-or assignment expression, for example `x ^= y`.
  */
-class AssignXorExpr extends AssignBitwiseOperation, BitwiseXorOperation, @assign_xor_expr {
+class AssignXorExpr extends AssignBitwiseExpr, BitwiseXorOperation, @assign_xor_expr {
   override string getOperator() { result = "^=" }
 
   override string getAPrimaryQlClass() { result = "AssignXorExpr" }
 }
 
 /**
- * A left-shift assignment operation, for example `x <<= y`.
+ * A left-shift assignment expression, for example `x <<= y`.
  */
-class AssignLeftShiftExpr extends AssignBitwiseOperation, LeftShiftOperation, @assign_lshift_expr {
+class AssignLeftShiftExpr extends AssignBitwiseExpr, LeftShiftOperation, @assign_lshift_expr {
   override string getOperator() { result = "<<=" }
 
   override string getAPrimaryQlClass() { result = "AssignLeftShiftExpr" }
 }
 
 /**
- * A right-shift assignment operation, for example `x >>= y`.
+ * A right-shift assignment expression, for example `x >>= y`.
  */
-class AssignRightShiftExpr extends AssignBitwiseOperation, RightShiftOperation, @assign_rshift_expr {
+class AssignRightShiftExpr extends AssignBitwiseExpr, RightShiftOperation, @assign_rshift_expr {
   override string getOperator() { result = ">>=" }
 
   override string getAPrimaryQlClass() { result = "AssignRightShiftExpr" }
 }
 
 /**
- * An unsigned right-shift assignment operation, for example `x >>>= y`.
+ * An unsigned right-shift assignment expression, for example `x >>>= y`.
  */
-class AssignUnsignedRightShiftExpr extends AssignBitwiseOperation, UnsignedRightShiftOperation,
+class AssignUnsignedRightShiftExpr extends AssignBitwiseExpr, UnsignedRightShiftOperation,
   @assign_urshift_expr
 {
   override string getOperator() { result = ">>>=" }
@@ -297,10 +310,10 @@ class RemoveEventExpr extends AddOrRemoveEventExpr, @remove_event_expr {
 }
 
 /**
- * A null-coalescing assignment operation, for example `x ??= y`.
+ * A null-coalescing assignment expression, for example `x ??= y`.
  */
 class AssignCoalesceExpr extends AssignOperation, NullCoalescingOperation, @assign_coalesce_expr {
-  override string toString() { result = "... ??= ..." }
+  override string getOperator() { result = "??=" }
 
   override string getAPrimaryQlClass() { result = "AssignCoalesceExpr" }
 }

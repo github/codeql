@@ -13,7 +13,7 @@ class MyHashCode
     {
         // BAD: Number 391 is repeated.
         return
-          391 +
+          391 + // $ Alert[cs/magic-number]
           391 + 391 + 391 + 391 + 391 + 391 + 391 + 391 + 391 + 391 +
           391 + 391 + 391 + 391 + 391 + 391 + 391 + 391 + 391 + 391 + 397;
     }

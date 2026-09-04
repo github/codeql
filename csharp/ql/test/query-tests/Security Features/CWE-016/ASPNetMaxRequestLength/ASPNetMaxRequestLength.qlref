@@ -1,1 +1,2 @@
-Security Features/CWE-016/ASPNetMaxRequestLength.ql
+query: Security Features/CWE-016/ASPNetMaxRequestLength.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

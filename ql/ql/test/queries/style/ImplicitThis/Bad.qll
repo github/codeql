@@ -7,5 +7,5 @@ class Foo extends string {
 
   string getBarWithThis() { result = this.getBar() }
 
-  string getBarWithoutThis() { result = getBar() }
+  string getBarWithoutThis() { result = getBar() } // $ Alert
 }

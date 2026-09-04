@@ -1,1 +1,2 @@
-Likely Bugs/Likely Typos/ExprHasNoEffect.ql
+query: Likely Bugs/Likely Typos/ExprHasNoEffect.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

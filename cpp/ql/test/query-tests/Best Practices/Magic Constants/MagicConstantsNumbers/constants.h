@@ -2,7 +2,7 @@
 void FUN(void) {
     int i, j, k;
 
-    i = 123;
+    i = 123; // $ Alert
     i = 123;
     i = 123;
     i = 123;
@@ -57,7 +57,7 @@ void FUN(void) {
     k = 789;
     k = 789;
 
-    i = 0x0078;
+    i = 0x0078; // $ Alert
     i = 0x0078;
     i = 0x0078;
     i = 0x0078;
@@ -88,7 +88,7 @@ void FUN(void) {
     i = 0x0078;
     i = 0x0078;
 
-    i = 0x01f8;
+    i = 0x01f8; // $ Alert
     i = 0x01f8;
     i = 0x01f8;
     i = 0x01f8;
@@ -119,7 +119,7 @@ void FUN(void) {
     i = 0x01f8;
     i = 0x01f8;
 
-    i = 278UL;
+    i = 278UL; // $ Alert
     i = 278UL;
     i = 278UL;
     i = 278UL;
@@ -150,7 +150,7 @@ void FUN(void) {
     i = 278UL;
     i = 278UL;
 
-    i = -129;
+    i = -129; // $ Alert
     i = -129;
     i = -129;
     i = -129;

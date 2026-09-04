@@ -1,0 +1,81 @@
+func greet(person name: String) {
+  print(name)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "name"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          name: identifier "greet"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "String"
+                      firstName: identifier "person"
+                      secondName: identifier "name"
+          funcKeyword: func
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          name: identifier "greet"
+          parameter:
+            parameter
+              external_name: identifier "person"
+              type:
+                named_type_expr
+                  name: identifier "String"
+              pattern:
+                name_pattern
+                  identifier: identifier "name"
+          body:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "name"

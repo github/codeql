@@ -24,7 +24,7 @@ bool badTest1(SSL *ssl,char *text)
   char buf[256];
   if( peer = SSL_get_peer_certificate(ssl))
   {
-    X509_NAME_oneline(X509_get_subject_name(peer),buf,1024); // BAD
+    X509_NAME_oneline(X509_get_subject_name(peer),buf,1024); // $ Alert // BAD
     if((char*)strcasestr(buf,text)) return true;
   }
   return false;

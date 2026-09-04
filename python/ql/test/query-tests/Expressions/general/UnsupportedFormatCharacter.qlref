@@ -1,1 +1,2 @@
-Expressions/UnsupportedFormatCharacter.ql
+query: Expressions/UnsupportedFormatCharacter.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,244 @@
+# swift-syntax-rs
+
+A Rust wrapper around the [swift-syntax](https://github.com/swiftlang/swift-syntax)
+package, allowing Swift source code to be parsed from Rust.
+
+Parsing is delegated to a small Swift shim (in [`swift/`](swift/)) that links
+against `SwiftSyntax`/`SwiftParser` and exposes a tiny C ABI. The Rust crate
+builds that shim (via `build.rs`) and provides safe bindings on top of it.
+
+## Output format
+
+The emitted JSON tree preserves the AST's named structure. Every node has a
+`kind` and a `range` with `start`/`end` positions (UTF-8 `offset` plus 1-based
+`line`/`column`). Beyond that:
+
+- **Tokens** carry `text`, `tokenKind`, and — only when non-empty —
+  `leadingTrivia`/`trailingTrivia` arrays of `{ kind, text }` pieces.
+- **Layout nodes** (e.g. `functionDecl`) embed their children directly as
+  members keyed by the child's name in the parent (`name`, `signature`,
+  `body`, …), alongside `kind`/`range`. Absent optional children are omitted.
+- **Collection nodes** (e.g. `codeBlockItemList`) are elided: a list-valued
+  field is simply a JSON array of its elements (e.g. `parameters`, `statements`).
+  This drops the collection node's own `kind`/`range`.
+
+Only meaningful trivia is kept — the four comment kinds (`lineComment`,
+`blockComment`, `docLineComment`, `docBlockComment`) and `unexpectedText`
+(source the parser skipped). Whitespace trivia is dropped, since node ranges
+already encode positions.
+
+### Example
+
+Parsing `let x = 1 // c` produces the following (each `range` object is
+abbreviated here as `…`):
+
+```jsonc
+{
+  "kind": "sourceFile",
+  "range": …,
+  "statements": [                       // collection node elided to an array
+    {
+      "kind": "codeBlockItem",
+      "range": …,
+      "item": {
+        "kind": "variableDecl",
+        "range": …,
+        "attributes": [],               // empty collection → empty array
+        "modifiers": [],
+        "bindingSpecifier": {           // a token
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)",
+          "range": …
+        },
+        "bindings": [
+          {
+            "kind": "patternBinding",
+            "range": …,
+            "pattern": {
+              "kind": "identifierPattern",
+              "range": …,
+              "identifier": { "kind": "token", "text": "x", "tokenKind": "identifier(\"x\")", "range": … }
+            },
+            "initializer": {
+              "kind": "initializerClause",
+              "range": …,
+              "equal": { "kind": "token", "text": "=", "tokenKind": "equal", "range": … },
+              "value": {
+                "kind": "integerLiteralExpr",
+                "range": …,
+                "literal": {
+                  "kind": "token",
+                  "text": "1",
+                  "tokenKind": "integerLiteral(\"1\")",
+                  "range": …,
+                  "trailingTrivia": [ { "kind": "lineComment", "text": "// c" } ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "endOfFileToken": { "kind": "token", "text": "", "tokenKind": "endOfFile", "range": … }
+}
+```
+
+Note how `statements`, `bindings`, `attributes`, and `modifiers` are plain
+arrays (their collection nodes are elided), layout children such as
+`bindingSpecifier` and `initializer` are embedded by name, and the `// c`
+comment rides along as `trailingTrivia` on the token it follows. Tokens without
+trivia (most of them) simply omit the `leadingTrivia`/`trailingTrivia` keys.
+
+### Operator folding
+
+Swift's grammar does not encode operator precedence, so the parser represents an
+expression like `a + b * c` as a flat `sequenceExpr` (an alternating list of
+operands and operators). Before serializing, we fold these sequences into
+precedence-correct `infixOperatorExpr` (and `ternaryExpr`) trees — so `1 + 2 * 3`
+becomes `1 + (2 * 3)`.
+
+Folding needs to know each operator's precedence group, which comes from
+declarations rather than the grammar. We resolve operators from two sources:
+
+- the **Swift standard library** operators (a built-in approximation), and
+- operator / precedence-group declarations **in the file being parsed**.
+
+Operators defined anywhere else (for example, imported from another module) are
+unknown, so their precedence cannot be determined. Rather than guess — which
+would silently produce a wrongly-structured tree — each top-level sequence is
+folded independently, and any sequence that uses an unknown operator is left as
+a flat `sequenceExpr`. So `a <+> b` (with an undeclared `<+>`) stays flat, while
+a neighbouring `1 + 2` in the same file still folds. Supporting operators from
+other modules is future work.
+
+Folding is bottom-up, so a *grouped* subexpression still folds even when the
+sequence enclosing it uses an unknown operator: in `a *** (b + c)` (with an
+unknown `***`) the parenthesised `b + c` is its own sequence and folds, while
+the outer `a *** …` stays flat. This only applies when the subexpression is
+syntactically isolated (parentheses, call arguments, collection elements, …);
+an unparenthesised `a *** b + c` is a single flat sequence whose structure
+cannot be determined without knowing `***`'s precedence, so it is left flat in
+its entirety.
+
+## Prerequisites
+
+The build does not depend on any particular version manager. You need:
+
+- **Rust** — pinned to `1.88` by the repo-root [`rust-toolchain.toml`](../../rust-toolchain.toml),
+  which `rustup` picks up automatically.
+- **Swift** — pinned to the version in [`.swift-version`](.swift-version)
+  (currently `6.3.3`), used to build `swift-syntax` `603.0.2`. Install it any way
+  you like — [swift.org](https://www.swift.org/install/) or
+  [swiftly](https://www.swift.org/swiftly/) (which reads `.swift-version`), or a
+  system package. Just make sure `swift` (and `swiftc`) are on your `PATH` —
+  `build.rs` invokes them directly and does not read any environment variable
+  to locate them.
+
+On Debian/Ubuntu the Swift runtime also needs `libncurses6` (and related libs)
+available on the system.
+
+## Building & testing
+
+With `cargo` and `swift`/`swiftc` on `PATH`:
+
+```sh
+cargo build
+cargo test
+```
+
+The first build compiles `swift-syntax` and can take several minutes.
+
+## Regenerating the extractor node types
+
+After updating the pinned swift-syntax version, regenerate the unified
+extractor's input schema:
+
+```sh
+../scripts/regenerate-node-types.sh
+```
+
+The script uses swift-syntax's authoritative `SyntaxSupport` definitions and
+requires the local Swift toolchain pinned by [`.swift-version`](.swift-version).
+Review the resulting `extractor/swift_node_types.yml` diff alongside the Swift
+mapping rules. See [`schemagen/README.md`](schemagen/README.md) for details.
+
+## Building with Bazel (CI)
+
+CI builds this crate hermetically with Bazel. A Swift toolchain is downloaded
+from swift.org by the official `rules_swift` standalone toolchain extension
+(wired up in the repo-root `MODULE.bazel`), `swift-syntax` is pulled from the
+Bazel Central Registry, and the FFI shim is compiled as a `swift_library` that
+the Rust targets link against. `build.rs` is not used under Bazel; it only
+builds the Swift shim for the local `cargo` workflow.
+
+```sh
+bazel build //unified/swift-syntax-rs:swift-syntax-parse
+bazel test  //unified/swift-syntax-rs:swift_syntax_rs_test
+bazel run   //unified/swift-syntax-rs:swift-syntax-parse < some.swift
+```
+
+The `swift-syntax-parse` binary is a debugging aid for looking at the raw
+swift-syntax JSON for some input; it is not shipped as part of the extractor
+pack, which links `swift-syntax-rs` directly instead.
+
+Requirements:
+
+- **`clang`** must be installed on the runner. `rules_swift` requires the Bazel
+  CC toolchain to use clang; the repo's `.bazelrc` already sets
+  `--repo_env=CC=clang`, so no extra flags are needed.
+- The registered Swift toolchains cover **ubuntu22.04 / x86_64** and
+  **macOS** (Apple Silicon and Intel). Bazel selects the toolchain matching the
+  host. Targets are marked `target_compatible_with` these two OSes, so on
+  Windows Bazel skips them cleanly.
+- **macOS only:** `rules_swift` downloads the pinned Swift toolchain from
+  swift.org. The Bazel C++ toolchain must still provide the macOS SDK, but a
+  full Xcode installation is not required.
+
+The Swift compiler version is kept in sync between the
+[`.swift-version`](.swift-version) file (read by the local `cargo`/`swift build`
+and by [swiftly](https://www.swift.org/swiftly/)) and the literal
+`swift_version` pinned on `swift.toolchain(...)` in the root `MODULE.bazel`
+(the hermetic swift.org Bazel toolchain).
+
+The swift-syntax version is independently pinned in the root `MODULE.bazel`,
+[`swift/Package.swift`](swift/Package.swift), and
+[`schemagen/Package.swift`](schemagen/Package.swift). Update all three together.
+
+(The Bazel toolchain pins a literal rather than reading `.swift-version` via
+`swift_version_file`, because the latter makes the module extension read a
+`//unified/...` label, which fails when this repo is consumed as a dependency
+module.)
+
+## Usage
+
+Library:
+
+```rust
+let json = swift_syntax_rs::parse_to_json("let x = 1")?;
+println!("{json}");
+```
+
+CLI (reads a file argument or stdin, prints the syntax tree as JSON):
+
+```sh
+echo 'let x = 1' | cargo run --bin swift-syntax-parse
+```
+
+## Converting to a yeast AST
+
+The JSON tree is consumed by the CodeQL extractor, which converts it into a
+[`yeast::Ast`](../../shared/yeast) — the in-memory format its rewrite rules
+operate on. That adapter is a pure-Rust module living in the extractor
+(`unified/extractor/src/languages/swift/adapter.rs`). The extractor links
+`swift-syntax-rs` directly and consumes the JSON produced in-process by this
+crate's `parse_to_json`.
+
+## Layout
+
+- `swift/` — Swift package exposing the `ssr_parse_json` / `ssr_string_free` C ABI.
+- `build.rs` — builds the Swift package and emits link/rpath flags (local `cargo` only).
+- `BUILD.bazel` — Bazel targets for the hermetic CI build (swift_library + rust targets).
+- `src/lib.rs` — safe Rust bindings (`parse_to_json`).
+- `src/main.rs` — demo CLI.

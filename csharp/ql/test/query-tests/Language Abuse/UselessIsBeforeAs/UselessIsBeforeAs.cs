@@ -5,7 +5,7 @@ class UselessIsBeforeAs
         if (x is string)
         {
             M(x as string); // GOOD
-            return (x as string) + " "; // BAD
+            return (x as string) + " "; // $ Alert // BAD
         }
         else
         {

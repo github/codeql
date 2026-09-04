@@ -131,3 +131,112 @@ void test_strsafe_gets() {
 		StringCchGetsExA(dest, sizeof(dest), &end, &remaining, 0); // $ local_source
 	}
 }
+
+int scanf_s(const char *format, ...);
+int fscanf_s(FILE *stream, const char *format, ...);
+
+void test_scanf_s(FILE *stream) {
+  {
+  int n1, n2;
+  scanf_s(
+    "%d %d",
+    &n1, // $ local_source
+    &n2); // $ local_source
+  }
+
+  {
+  int n;
+  fscanf_s(stream, "%d", &n); // $ remote_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  scanf_s("%d %s %d",
+    &n1, // $ local_source
+    buf, // $ local_source
+    256,
+    &n2); // $ local_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  fscanf_s(stream, "%d %s %d",
+    &n1, // $ remote_source
+    buf, // $ remote_source
+    256,
+    &n2); // $ remote_source
+  }
+}
+
+typedef void *locale_t;
+
+int wscanf_s(const wchar_t *format, ...);
+int _scanf_s_l(const char *format, locale_t locale, ...);
+int _wscanf_s_l(const wchar_t *format, locale_t locale, ...);
+int fwscanf_s(FILE *stream, const wchar_t *format, ...);
+int _fscanf_s_l(FILE *stream, const char *format, locale_t locale, ...);
+int _fwscanf_s_l(FILE *stream, const wchar_t *format, locale_t locale, ...);
+
+void test_additional_scanf_s_variants(FILE *stream, locale_t locale) {
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  wscanf_s(L"%d %s %d",
+    &n1, // $ local_source
+    buf, // $ local_source
+    256,
+    &n2); // $ local_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  _scanf_s_l("%d %s %d", locale,
+    &n1, // $ local_source
+    buf, // $ local_source
+    256,
+    &n2); // $ local_source
+  }
+
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  _wscanf_s_l(L"%d %s %d", locale,
+    &n1, // $ local_source
+    buf, // $ local_source
+    256,
+    &n2); // $ local_source
+  }
+
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  fwscanf_s(stream, L"%d %s %d",
+    &n1, // $ remote_source
+    buf, // $ remote_source
+    256,
+    &n2); // $ remote_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  _fscanf_s_l(stream, "%d %s %d", locale,
+    &n1, // $ remote_source
+    buf, // $ remote_source
+    256,
+    &n2); // $ remote_source
+  }
+
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  _fwscanf_s_l(stream, L"%d %s %d", locale,
+    &n1, // $ remote_source
+    buf, // $ remote_source
+    256,
+    &n2); // $ remote_source
+  }
+}

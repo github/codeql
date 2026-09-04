@@ -24,20 +24,20 @@ int Main()
 {
 
     // BAD: constructor creating a EraInfo with exact Heisei era start date
-    EraInfo * pDateTimeUtil = new EraInfo(1989, 1, 8);
+    EraInfo * pDateTimeUtil = new EraInfo(1989, 1, 8); // $ Alert
 
     // BAD: constructor creating a EraInfo with exact Heisei era start date
-    EraInfo * pDateTimeUtil1 = new EraInfo(1, 2, 1989, 1, 8, L"\u5e73\u6210");
+    EraInfo * pDateTimeUtil1 = new EraInfo(1, 2, 1989, 1, 8, L"\u5e73\u6210"); // $ Alert
 
     // Good: constructor creating a EraInfo with another date
     EraInfo * pDateTimeUtil2 = new EraInfo(1, 2, 1900, 1, 1, L"foo");
 
     // BAD: method call passing exact Haisei era start date as parameters
-    EraInfo * pDateTimeUtil3 = EraInfo::EraInfoFromDate(1, 2, 1989, 1, 8, L"\u5e73\u6210");
+    EraInfo * pDateTimeUtil3 = EraInfo::EraInfoFromDate(1, 2, 1989, 1, 8, L"\u5e73\u6210"); // $ Alert
 
     // GOOD: method call with the same parameters in a different order (we only track year, month, day)
     EraInfo * pDateTimeUtil4 = EraInfo::EraInfoFromDate(1, 2, 8, 1, 1989, L"\u5e73\u6210");
 
     // BAD: constructor creating a EraInfo with exact Reiwa era start date
-    EraInfo * pDateTimeUtil5 = new EraInfo(2019, 5, 1);
+    EraInfo * pDateTimeUtil5 = new EraInfo(2019, 5, 1); // $ Alert
 }

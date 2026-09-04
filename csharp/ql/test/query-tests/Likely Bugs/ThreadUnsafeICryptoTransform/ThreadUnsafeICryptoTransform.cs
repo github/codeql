@@ -37,12 +37,12 @@ public class ListNonStatic
 /// </summary>
 public class Nest03
 {
-    private static readonly Nest01 _n = new Nest01();
+    private static readonly Nest01 _n = new Nest01(); // $ Alert
 }
 
 public class Nest04
 {
-    static ListNonStatic _list = new ListNonStatic();
+    static ListNonStatic _list = new ListNonStatic(); // $ Alert
 }
 
 public static class StaticMemberChildUsage
@@ -53,7 +53,7 @@ public static class StaticMemberChildUsage
         SHA256,
     }
 
-    private static readonly IDictionary<DigestAlgorithm, HashAlgorithm> HashMap = new Dictionary<DigestAlgorithm, HashAlgorithm>
+    private static readonly IDictionary<DigestAlgorithm, HashAlgorithm> HashMap = new Dictionary<DigestAlgorithm, HashAlgorithm> // $ Alert
         {
             { DigestAlgorithm.SHA1, SHA1.Create() },
             { DigestAlgorithm.SHA256, SHA256.Create() },
@@ -62,12 +62,12 @@ public static class StaticMemberChildUsage
 
 public class StaticMember
 {
-    private static SHA1 _sha1 = SHA1.Create();
+    private static SHA1 _sha1 = SHA1.Create(); // $ Alert
 }
 
 public class IndirectStatic2
 {
-    static Nest02 _n = new Nest02();
+    static Nest02 _n = new Nest02(); // $ Alert
 }
 
 /// <summary>

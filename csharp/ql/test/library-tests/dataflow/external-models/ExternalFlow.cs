@@ -442,4 +442,31 @@ namespace My.Qltest
 
         static void Sink(object o) { }
     }
+
+    // Test operator overloads
+    public class N
+    {
+        public void operator +=(N y) => throw null;
+
+        public void operator checked +=(N y) => throw null;
+
+        public void M1(N n)
+        {
+            var n0 = new N();
+            n += n0;
+            Sink(n);
+        }
+
+        public void M2(N n)
+        {
+            var n0 = new N();
+            checked
+            {
+                n += n0;
+            }
+            Sink(n);
+        }
+
+        static void Sink(object o) { }
+    }
 }

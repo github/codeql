@@ -1,3 +1,52 @@
+## 1.9.2
+
+### Minor Analysis Improvements
+
+* The `cs/simplifiable-boolean-expression` query no longer suggests replacing a negated comparison when the replacement could recursively call an enclosing user-defined operator in `build-mode: none` databases.
+* The `cs/web/missing-token-validation` query now recognizes enabled ASP.NET Core `RequireAntiforgeryToken` attributes when antiforgery middleware is used.
+* The query `cs/virtual-call-in-constructor` has been improved. Uses of virtual members in `nameof` expressions are no longer reported, since they are not calls.
+* Static constructors are now used as the enclosing callable for static member initializer expressions. This improves the precision of a range of queries, including `cs/useless-assignment-to-local` and `cs/dereferenced-value-may-be-null`.
+
+### Bug Fixes
+
+* The query `cs/useless-cast-to-self` no longer reports casts when both the expression type and the cast target type are unknown, which can occur in `build-mode: none` databases.
+
+## 1.9.1
+
+No user-facing changes.
+
+## 1.9.0
+
+### Query Metadata Changes
+
+* The query `cs/useless-assignment-to-local` has been removed from the `code-quality` suite, but it remains in the `code-quality-extended` suite.
+
+### Minor Analysis Improvements
+
+* `System.Web.HttpRequest.RawUrl` is no longer treated as a sanitizer for `cs/web/unvalidated-url-redirection`, since it contains the un-normalized request line. This may lead to more results.
+
+## 1.8.0
+
+### Query Metadata Changes
+
+* Added the tag `external/cwe/cwe-073` to `cs/assembly-path-injection`.
+
+## 1.7.5
+
+No user-facing changes.
+
+## 1.7.4
+
+No user-facing changes.
+
+## 1.7.3
+
+No user-facing changes.
+
+## 1.7.2
+
+No user-facing changes.
+
 ## 1.7.1
 
 ### Minor Analysis Improvements

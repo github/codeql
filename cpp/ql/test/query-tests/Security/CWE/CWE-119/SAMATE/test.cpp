@@ -15,7 +15,7 @@ typedef struct
 
 string_t *mk_string_t(int size) {
     string_t *str = (string_t *) malloc(sizeof(string_t));
-    str->string = malloc(size);
+    str->string = malloc(size); // $ Source[cpp/overrun-write]
     str->size = size;
     return str;
 }
@@ -39,10 +39,10 @@ void test3(unsigned size, char *buf, unsigned anotherSize) {
     string_t *str = mk_string_t(size);
 
     strncpy(str->string, buf, str->size); // GOOD
-    strncpy(str->string, buf, str->size + 1); // BAD
+    strncpy(str->string, buf, str->size + 1); // $ Alert[cpp/overrun-write] // BAD
 
     strncpy(str->string, buf, size); // GOOD
-    strncpy(str->string, buf, size + 1); // BAD [NOT DETECTED]
+    strncpy(str->string, buf, size + 1); // $ MISSING: Alert // BAD [NOT DETECTED]
 
     if(anotherSize < str->size) {
         strncpy(str->string, buf, anotherSize); // GOOD
@@ -69,19 +69,19 @@ void test3(unsigned size, char *buf, unsigned anotherSize) {
     }
 
     if(anotherSize <= str->size + 1) {
-        strncpy(str->string, buf, anotherSize); // BAD
+        strncpy(str->string, buf, anotherSize); // $ Alert[cpp/overrun-write] // BAD
     }
 
     if(anotherSize <= size + 1) {
-        strncpy(str->string, buf, anotherSize); // BAD [NOT DETECTED]
+        strncpy(str->string, buf, anotherSize); // $ MISSING: Alert // BAD [NOT DETECTED]
     }
 
     if(anotherSize <= str->size + 2) {
-        strncpy(str->string, buf, anotherSize); // BAD
+        strncpy(str->string, buf, anotherSize); // $ Alert[cpp/overrun-write] // BAD
     }
 
     if(anotherSize <= size + 2) {
-        strncpy(str->string, buf, anotherSize); // BAD [NOT DETECTED]
+        strncpy(str->string, buf, anotherSize); // $ MISSING: Alert // BAD [NOT DETECTED]
     }
 }
 
@@ -138,22 +138,22 @@ void test4(unsigned size, char *buf, unsigned anotherSize) {
     }
 
     if(anotherSize <= size + 2) {
-        strncpy(str->string, buf, anotherSize); // BAD [NOT DETECTED]
+        strncpy(str->string, buf, anotherSize); // $ MISSING: Alert // BAD [NOT DETECTED]
     }
 }
 
 void test5(unsigned size, char *buf, unsigned anotherSize) {
     string_t *str = (string_t *) malloc(sizeof(string_t));
-    str->string = malloc(size - 1);
+    str->string = malloc(size - 1); // $ Source[cpp/overrun-write]
     str->size = size - 1;
 
     strncpy(str->string, buf, str->size); // GOOD
     strncpy(str->string, buf, str->size - 1); // GOOD
-    strncpy(str->string, buf, str->size + 1); // BAD
+    strncpy(str->string, buf, str->size + 1); // $ Alert[cpp/overrun-write] // BAD
 
-    strncpy(str->string, buf, size); // BAD
+    strncpy(str->string, buf, size); // $ Alert[cpp/overrun-write] // BAD
     strncpy(str->string, buf, size - 1); // GOOD
-    strncpy(str->string, buf, size + 1); // BAD
+    strncpy(str->string, buf, size + 1); // $ Alert[cpp/overrun-write] // BAD
 
     if(anotherSize < str->size) {
         strncpy(str->string, buf, anotherSize); // GOOD
@@ -172,7 +172,7 @@ void test5(unsigned size, char *buf, unsigned anotherSize) {
     }
 
     if(anotherSize <= size) {
-        strncpy(str->string, buf, anotherSize); // BAD
+        strncpy(str->string, buf, anotherSize); // $ Alert[cpp/overrun-write] // BAD
     }
 
     if(anotherSize <= size - 1) {
@@ -184,7 +184,7 @@ void test5(unsigned size, char *buf, unsigned anotherSize) {
     }
 
     if(anotherSize < size + 1) {
-        strncpy(str->string, buf, anotherSize); // BAD
+        strncpy(str->string, buf, anotherSize); // $ Alert[cpp/overrun-write] // BAD
     }
 
     if(anotherSize < size - 1) {
@@ -192,19 +192,19 @@ void test5(unsigned size, char *buf, unsigned anotherSize) {
     }
 
     if(anotherSize <= str->size + 1) {
-        strncpy(str->string, buf, anotherSize); // BAD
+        strncpy(str->string, buf, anotherSize); // $ Alert[cpp/overrun-write] // BAD
     }
 
     if(anotherSize <= size + 1) {
-        strncpy(str->string, buf, anotherSize); // BAD
+        strncpy(str->string, buf, anotherSize); // $ Alert[cpp/overrun-write] // BAD
     }
 
     if(anotherSize <= str->size + 2) {
-        strncpy(str->string, buf, anotherSize); // BAD
+        strncpy(str->string, buf, anotherSize); // $ Alert[cpp/overrun-write] // BAD
     }
 
     if(anotherSize <= size + 2) {
-        strncpy(str->string, buf, anotherSize); // BAD
+        strncpy(str->string, buf, anotherSize); // $ Alert[cpp/overrun-write] // BAD
     }
 }
 
@@ -229,7 +229,7 @@ void repeated_alerts(unsigned size, unsigned offset) {
   while(unknown()) {
     ++size;
   }
-  memset(buffer, 0, size); // BAD [NOT DETECTED]
+  memset(buffer, 0, size); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 void set_string(string_t* p_str, char* buffer) {
@@ -238,16 +238,16 @@ void set_string(string_t* p_str, char* buffer) {
 
 void test_flow_through_setter(unsigned size) {
     string_t str;
-    char* buffer = (char*)malloc(size);
+    char* buffer = (char*)malloc(size); // $ Source[cpp/overrun-write]
     set_string(&str, buffer);
-    memset(str.string, 0, size + 1); // BAD
+    memset(str.string, 0, size + 1); // $ Alert[cpp/overrun-write] // BAD
 }
 
 void* my_alloc(unsigned size);
 
 void foo(unsigned size) {
-    int* p = (int*)my_alloc(size); // BAD
-    memset(p, 0, size + 1);
+    int* p = (int*)my_alloc(size); // $ Source[cpp/overrun-write] // BAD
+    memset(p, 0, size + 1); // $ Alert[cpp/overrun-write]
 }
 
 void test6(unsigned long n, char *p) {
@@ -259,11 +259,11 @@ void test6(unsigned long n, char *p) {
 }
 
 void test7(unsigned n) {
-    char* p = (char*)malloc(n);
+    char* p = (char*)malloc(n); // $ Source[cpp/overrun-write]
     if(!p) {
         p = (char*)malloc(++n);
     }
-    memset(p, 0, n); // GOOD [FALSE POSITIVE]
+    memset(p, 0, n); // $ SPURIOUS: Alert[cpp/overrun-write] // GOOD [FALSE POSITIVE]
 }
 
 void test8(unsigned size, unsigned src_pos)

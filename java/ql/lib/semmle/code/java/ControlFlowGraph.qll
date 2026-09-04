@@ -61,6 +61,8 @@ private module Ast implements AstSig<Location> {
   class Parameter extends AstNode {
     Parameter() { none() }
 
+    AstNode getPattern() { none() }
+
     Expr getDefaultValue() { none() }
   }
 
@@ -84,11 +86,21 @@ private module Ast implements AstSig<Location> {
 
   class DoStmt = J::DoStmt;
 
-  class ForStmt = J::ForStmt;
+  class UntilStmt extends LoopStmt {
+    UntilStmt() { none() }
+  }
+
+  final private class FinalForStmt = J::ForStmt;
+
+  class ForStmt extends FinalForStmt {
+    AstNode getInit(int index) { result = super.getInit(index) }
+
+    AstNode getUpdate(int index) { result = super.getUpdate(index) }
+  }
 
   final private class FinalEnhancedForStmt = J::EnhancedForStmt;
 
-  class ForeachStmt extends FinalEnhancedForStmt {
+  class ForEachStmt extends FinalEnhancedForStmt {
     Expr getVariable() { result = super.getVariable() }
 
     Expr getCollection() { result = super.getExpr() }
@@ -111,19 +123,24 @@ private module Ast implements AstSig<Location> {
   final private class FinalTryStmt = J::TryStmt;
 
   class TryStmt extends FinalTryStmt {
-    Stmt getBody() { result = super.getBlock() }
+    AstNode getBody(int index) {
+      result = super.getResource(index)
+      or
+      index = count(super.getAResource()) and
+      result = super.getBlock()
+    }
 
     CatchClause getCatch(int index) { result = super.getCatchClause(index) }
 
     Stmt getFinally() { result = super.getFinally() }
   }
 
-  AstNode getTryInit(TryStmt try, int index) { result = try.getResource(index) }
-
   final private class FinalCatchClause = J::CatchClause;
 
   class CatchClause extends FinalCatchClause {
-    AstNode getVariable() { result = super.getVariable() }
+    AstNode getPattern() { result = super.getVariable() }
+
+    AstNode getVariable() { none() }
 
     Expr getCondition() { none() }
 
@@ -153,10 +170,10 @@ private module Ast implements AstSig<Location> {
   }
 
   class Case extends AstNode instanceof J::SwitchCase {
-    /** Gets a pattern being matched by this case. */
-    AstNode getAPattern() {
-      result = this.(PatternCase).getAPattern() or
-      result = this.(ConstCase).getValue(_)
+    /** Gets the pattern being matched by this case at the specified (zero-based) `index`. */
+    AstNode getPattern(int index) {
+      result = this.(PatternCase).getPattern(index) or
+      result = this.(ConstCase).getValue(index)
     }
 
     /** Gets the guard expression of this case, if any. */
@@ -389,7 +406,9 @@ private module NonReturningCalls {
     }
 
     /** Gets a `MethodCall` that calls this method. */
-    MethodCall getAnAccess() { result.getMethod().getAPossibleImplementation() = this }
+    MethodCall getAnAccess() {
+      result.getMethod().getAPossibleImplementation() = pragma[only_bind_out](this)
+    }
   }
 
   /** Holds if a call to `m` indicates that `m` is expected to return. */

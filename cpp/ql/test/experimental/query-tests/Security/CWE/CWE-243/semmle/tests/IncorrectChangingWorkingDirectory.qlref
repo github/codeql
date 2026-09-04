@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-243/IncorrectChangingWorkingDirectory.ql
+query: experimental/Security/CWE/CWE-243/IncorrectChangingWorkingDirectory.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

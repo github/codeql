@@ -1,1 +1,2 @@
-Likely Bugs/Statements/InconsistentCallOnResult.ql
+query: Likely Bugs/Statements/InconsistentCallOnResult.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -3,9 +3,9 @@ var app = express();
 
 app.get('/some/path', function(req, res) {})
 
-someOtherApp.get('/some/path', function(req, res) {})
+someOtherApp.get('/some/path', function(req, res) {}) // $ Alert[js/unpromoted-route-setup-candidate]
 
-someOtherApp.get('/some/path', function(request, response) {})
+someOtherApp.get('/some/path', function(request, response) {}) // $ Alert[js/unpromoted-route-setup-candidate]
 
 someOtherApp.get('/some/path', function(r) {
     r.acceptsCharsets()
@@ -27,23 +27,23 @@ someOtherApp.get('/some/path', function(r, s, n) {
     n('route')
 })
 
-someOtherApp.delete('/some/path',  function(req, res) {})
+someOtherApp.delete('/some/path',  function(req, res) {}) // $ Alert[js/unpromoted-route-setup-candidate]
 
 someOtherApp.get('/some/path',
                  function(req, res) {},
-                 function(req, res) {})
+                 function(req, res) {}) // $ Alert[js/unpromoted-route-setup-candidate]
 
 someOtherApp.get('/some/path', [
     function(req, res) {},
     function(req, res) {}
-])
+]) // $ Alert[js/unpromoted-route-setup-candidate]
 
 someOtherApp.get('/some/path',
                  function() {},
-                 function(req, res) {})
+                 function(req, res) {}) // $ Alert[js/unpromoted-route-setup-candidate]
 
 
-function f(req, res) {}
+function f(req, res) {} // $ Alert[js/unpromoted-route-handler-candidate]
 
 function f(ctx, next) {
     ctx.acceptsCharsets()
@@ -51,25 +51,25 @@ function f(ctx, next) {
 
 function f(req, res) {
     req()
-}
+} // $ Alert[js/unpromoted-route-handler-candidate]
 
 function called(req,res) {
 
-}
+} // $ Alert[js/unpromoted-route-handler-candidate]
 called()
 
 function f(req,res) {
     return;
-}
+} // $ Alert[js/unpromoted-route-handler-candidate]
 
 function f(req,res) {
     return x;
-}
+} // $ Alert[js/unpromoted-route-handler-candidate]
 
 function adHocTestsFor_HeuristicRouteHandler() {
     function rh_dead(req, res) {
 
-    }
+    } // $ Alert[js/unpromoted-route-handler-candidate]
 
     function rh_flowToSetup(req, res) {
 
@@ -84,7 +84,7 @@ function adHocTestsFor_HeuristicRouteHandler() {
     function rh_flowToHeuristicSetup(req, res) {
 
     }
-    unknownApp.get('/some/path', rh_flowToHeuristicSetup)
+    unknownApp.get('/some/path', rh_flowToHeuristicSetup) // $ Alert[js/unpromoted-route-setup-candidate]
 }
 
 function adHocTestsFor_HeuristicRouteSetups() {
@@ -93,22 +93,22 @@ function adHocTestsFor_HeuristicRouteSetups() {
     }
     app.get('/some/path', rh);
 
-    unknownApp.get('/some/path', rh);
+    unknownApp.get('/some/path', rh); // $ Alert[js/unpromoted-route-setup-candidate]
 
-    unknownApp.get('/some/path', [rh]);
+    unknownApp.get('/some/path', [rh]); // $ Alert[js/unpromoted-route-setup-candidate]
 
     unknownApp.get('/some/path', unknown);
 
     unknownApp.get('/some/path', [unknown]);
 
-    unknownApp.get('/some/path', unknown, rh);
+    unknownApp.get('/some/path', unknown, rh); // $ Alert[js/unpromoted-route-setup-candidate]
 }
 
 function adHocTestsFor_HeuristicRouteHandler_withTracking() {
     function get_rh_dead() {
         return function rh_dead(req, res) {
 
-        }
+        } // $ Alert[js/unpromoted-route-handler-candidate]
     }
     var rh_dead = get_rh_dead();
 
@@ -134,7 +134,7 @@ function adHocTestsFor_HeuristicRouteHandler_withTracking() {
         }
     }
     var rh_flowToHeuristicSetup = get_rh_flowToHeuristicSetup();
-    unknownApp.get('/some/path', rh_flowToHeuristicSetup)
+    unknownApp.get('/some/path', rh_flowToHeuristicSetup) // $ Alert[js/unpromoted-route-setup-candidate]
 }
 
 function adHocTestsFor_HeuristicRouteSetups_withTracking() {
@@ -146,13 +146,13 @@ function adHocTestsFor_HeuristicRouteSetups_withTracking() {
     var rh = get_rh();
     app.get('/some/path', rh);
 
-    unknownApp.get('/some/path', rh);
+    unknownApp.get('/some/path', rh); // $ Alert[js/unpromoted-route-setup-candidate]
 
-    unknownApp.get('/some/path', [rh]);
+    unknownApp.get('/some/path', [rh]); // $ Alert[js/unpromoted-route-setup-candidate]
 
     unknownApp.get('/some/path', unknown);
 
     unknownApp.get('/some/path', [unknown]);
 
-    unknownApp.get('/some/path', unknown, rh);
+    unknownApp.get('/some/path', unknown, rh); // $ Alert[js/unpromoted-route-setup-candidate]
 }

@@ -1,3 +1,77 @@
+## 12.0.3
+
+No user-facing changes.
+
+## 12.0.2
+
+### Minor Analysis Improvements
+
+* Added flow source models for `RegQueryValue` and related functions from the `winreg.h` Windows header.
+
+## 12.0.1
+
+No user-facing changes.
+
+## 12.0.0
+
+### Breaking Changes
+
+* Removed support for using variables as sources and sinks in models-as-data. Users of this feature should convert such sources and sinks to models defined using the QL language.
+
+### Deprecated APIs
+
+* Models-as-data flow summaries now use fully qualified field names (for example, `MyNamespace::MyStruct::myField`) instead of unqualified field names such as `myField`. We recommend updating existing flow summaries to use fully qualified field names. Unqualified field names are still supported, but that support will be removed in a future release.
+
+## 11.0.0
+
+### Breaking Changes
+
+* Removed the deprecated `overrideReturnsNull` predicate from `Options.qll`. Use `CustomOptions.overrideReturnsNull` instead.
+* Removed the deprecated `returnsNull` predicate from `Options.qll`. Use `CustomOptions.returnsNull` instead.
+* Removed the deprecated `exits` predicate from `Options.qll`. Use `CustomOptions.exits` instead.
+* Removed the deprecated `exprExits` predicate from `Options.qll`. Use `CustomOptions.exprExits` instead.
+* Removed the deprecated `alwaysCheckReturnValue` predicate from `Options.qll`. Use `CustomOptions.alwaysCheckReturnValue` instead.
+* Removed the deprecated `okToIgnoreReturnValue` predicate from `Options.qll`. Use `CustomOptions.okToIgnoreReturnValue` instead.
+* Removed the deprecated `semmle.code.cpp.Member`. Import `semmle.code.cpp.Element` and/or `semmle.code.cpp.Type` directly.
+* Removed the deprecated `UnknownDefaultLocation` class. Use `UnknownLocation` instead.
+* Removed the deprecated `UnknownExprLocation` class. Use `UnknownLocation` instead.
+* Removed the deprecated `UnknownStmtLocation` class. Use `UnknownLocation` instead.
+* Removed the deprecated `TemplateParameter` class. Use `TypeTemplateParameter` instead.
+* Support for class resolution across link targets has been removed for databases which were created with CodeQL versions before 1.23.0.
+
+## 10.2.0
+
+### Deprecated APIs
+
+* The `UsingAliasTypedefType` class has been deprecated. Use `TypeAliasType` instead.
+
+### New Features
+
+* Added a `getOriginalTemplate` predicate to `TemplateClass`, `TemplateFunction`, `TemplateVariable`, and `AliasTemplateType`, which yields the class member template the template was generated from. The predicates only have results for templates that are members of class template instantiations.
+* Added `AliasTemplateType` and `AliasTemplateInstantiationType` classes, representing C++ alias templates and their instantiations.
+
+### Minor Analysis Improvements
+
+* Added flow source models for `scanf_s` and related functions.
+* Added a `Call` column to `LocalFlowSourceFunction::hasLocalFlowSource` and `RemoteFlowSourceFunction::hasRemoteFlowSource`. The old predicates without a `Call` column continue to be supported.
+
+## 10.1.1
+
+### Minor Analysis Improvements
+
+* The `RemoteFlowSourceFunction` model for `fscanf` (and variants) now implements `hasSocketInput` to reflect that these functions may read from a socket.
+
+## 10.1.0
+
+### New Features
+
+* A new predicate `getSwitchCase` was added to the `SwitchStmt` class, which yields the `n`th `case` statement from a `switch` statement.
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for C and C++](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-cpp/).
+
+### Minor Analysis Improvements
+
+* Added taint flow models for the `Strsafe.h` header from the Windows SDK.
+
 ## 10.0.0
 
 ### Breaking Changes

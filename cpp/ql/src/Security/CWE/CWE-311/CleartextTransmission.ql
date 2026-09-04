@@ -94,9 +94,8 @@ class Recv extends SendRecv instanceof RemoteFlowSourceFunction {
   }
 
   override Expr getDataExpr(Call call) {
-    call.getTarget() = this and
     exists(FunctionOutput output, int arg |
-      super.hasRemoteFlowSource(output, _) and
+      super.hasRemoteFlowSource(call, output, _) and
       output.isParameterDeref(arg) and
       result = call.getArgument(arg)
     )

@@ -246,3 +246,116 @@ properties.cs:
 #  133|               0: [FieldAccess] access to field Prop.field
 #  133|               1: [ParameterAccess] access to parameter value
 #  130|     7: [Field] Prop.field
+#  137|   11: [RefStruct] S
+#  139|     6: [Field] x
+#  139|       -1: [TypeMention] int
+#  141|     7: [InstanceConstructor] S
+#-----|       2: (Parameters)
+#  141|         0: [Parameter] v
+#  141|           -1: [TypeMention] int
+#  142|       4: [BlockStmt] {...}
+#  143|         0: [ExprStmt] ...;
+#  143|           0: [AssignExpr] ... = ...
+#  143|             0: [FieldAccess] access to field x
+#  143|             1: [RefExpr] ref ...
+#  143|               0: [ParameterAccess] access to parameter v
+#  146|     8: [Property] Prop
+#  146|       -1: [TypeMention] int
+#  148|       3: [Getter] get_Prop
+#  148|         4: [BlockStmt] {...}
+#  148|           0: [ReturnStmt] return ...;
+#  148|             0: [RefExpr] ref ...
+#  148|               0: [FieldAccess] access to field x
+#  152|   12: [Class] TestRefReturns
+#  154|     6: [Method] M
+#  154|       -1: [TypeMention] Void
+#  155|       4: [BlockStmt] {...}
+#  156|         0: [LocalVariableDeclStmt] ... ...;
+#  156|           0: [LocalVariableDeclAndInitExpr] Int32 a = ...
+#  156|             -1: [TypeMention] int
+#  156|             0: [LocalVariableAccess] access to local variable a
+#  156|             1: [IntLiteral] 0
+#  158|         1: [LocalVariableDeclStmt] ... ...;
+#  158|           0: [LocalVariableDeclAndInitExpr] S s = ...
+#  158|             -1: [TypeMention] S
+#  158|             0: [LocalVariableAccess] access to local variable s
+#  158|             1: [ObjectCreation] object creation of type S
+#  158|               -1: [TypeMention] S
+#  158|               0: [LocalVariableAccess] access to local variable a
+#  159|         2: [ExprStmt] ...;
+#  159|           0: [AssignExpr] ... = ...
+#  159|             0: [PropertyCall] access to property Prop
+#  159|               -1: [LocalVariableAccess] access to local variable s
+#  159|             1: [IntLiteral] 1
+#  160|         3: [LocalVariableDeclStmt] ... ...;
+#  160|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#  160|             -1: [TypeMention] int
+#  160|             0: [LocalVariableAccess] access to local variable x
+#  160|             1: [PropertyCall] access to property Prop
+#  160|               -1: [LocalVariableAccess] access to local variable s
+#  164|   13: [Class] BaseClass
+#  166|     6: [Property] Value
+#  166|       -1: [TypeMention] int
+#  168|       3: [Getter] get_Value
+#  168|         4: [BlockStmt] {...}
+#  168|           0: [ReturnStmt] return ...;
+#  168|             0: [FieldAccess] access to field Value.field
+#  169|       4: [Setter] set_Value
+#-----|         2: (Parameters)
+#  169|           0: [Parameter] value
+#  169|         4: [BlockStmt] {...}
+#  169|           0: [ExprStmt] ...;
+#  169|             0: [AssignExpr] ... = ...
+#  169|               0: [FieldAccess] access to field Value.field
+#  169|               1: [ParameterAccess] access to parameter value
+#  166|     7: [Field] Value.field
+#  173|   14: [Class] DerivedClass1
+#-----|     3: (Base types)
+#  173|       0: [TypeMention] BaseClass
+#  175|     6: [Property] Value
+#  175|       -1: [TypeMention] int
+#  177|       3: [Getter] get_Value
+#  177|         4: [BlockStmt] {...}
+#  177|           0: [ReturnStmt] return ...;
+#  177|             0: [IntLiteral] 20
+#  181|   15: [Class] DerivedClass2
+#-----|     3: (Base types)
+#  181|       0: [TypeMention] BaseClass
+#  183|   16: [Class] TestPartialPropertyOverride
+#  185|     6: [Method] M
+#  185|       -1: [TypeMention] Void
+#  186|       4: [BlockStmt] {...}
+#  187|         0: [LocalVariableDeclStmt] ... ...;
+#  187|           0: [LocalVariableDeclAndInitExpr] DerivedClass1 d1 = ...
+#  187|             -1: [TypeMention] DerivedClass1
+#  187|             0: [LocalVariableAccess] access to local variable d1
+#  187|             1: [ObjectCreation] object creation of type DerivedClass1
+#  187|               0: [TypeMention] DerivedClass1
+#  188|         1: [ExprStmt] ...;
+#  188|           0: [AssignExpr] ... = ...
+#  188|             0: [PropertyCall] access to property Value
+#  188|               -1: [LocalVariableAccess] access to local variable d1
+#  188|             1: [IntLiteral] 11
+#  189|         2: [LocalVariableDeclStmt] ... ...;
+#  189|           0: [LocalVariableDeclAndInitExpr] Int32 test1 = ...
+#  189|             -1: [TypeMention] int
+#  189|             0: [LocalVariableAccess] access to local variable test1
+#  189|             1: [PropertyCall] access to property Value
+#  189|               -1: [LocalVariableAccess] access to local variable d1
+#  191|         3: [LocalVariableDeclStmt] ... ...;
+#  191|           0: [LocalVariableDeclAndInitExpr] DerivedClass2 d2 = ...
+#  191|             -1: [TypeMention] DerivedClass2
+#  191|             0: [LocalVariableAccess] access to local variable d2
+#  191|             1: [ObjectCreation] object creation of type DerivedClass2
+#  191|               0: [TypeMention] DerivedClass2
+#  192|         4: [ExprStmt] ...;
+#  192|           0: [AssignExpr] ... = ...
+#  192|             0: [PropertyCall] access to property Value
+#  192|               -1: [LocalVariableAccess] access to local variable d2
+#  192|             1: [IntLiteral] 12
+#  193|         5: [LocalVariableDeclStmt] ... ...;
+#  193|           0: [LocalVariableDeclAndInitExpr] Int32 test2 = ...
+#  193|             -1: [TypeMention] int
+#  193|             0: [LocalVariableAccess] access to local variable test2
+#  193|             1: [PropertyCall] access to property Value
+#  193|               -1: [LocalVariableAccess] access to local variable d2

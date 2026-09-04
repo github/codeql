@@ -6,17 +6,17 @@ int getTaintedInt()
 {
 	char buf[128];
 
-	gets(buf);
-	return strtoul(buf, 0, 10);
+	gets(buf); // $ Source[cpp/tainted-arithmetic]
+	return strtoul(buf, 0, 10); // $ Alert[cpp/integer-overflow-tainted]
 }
 
 void useTaintedInt()
 {
 	int x, y;
 
-	x = getTaintedInt() * 1024; // BAD: arithmetic on a tainted value
+	x = getTaintedInt() * 1024; // $ Alert[cpp/integer-overflow-tainted] Alert[cpp/tainted-arithmetic] // BAD: arithmetic on a tainted value
 	y = getTaintedInt();
-	y = y * 1024; // BAD: arithmetic on a tainted value
+	y = y * 1024; // $ Alert[cpp/integer-overflow-tainted] Alert[cpp/tainted-arithmetic] // BAD: arithmetic on a tainted value
 }
 
 typedef long long int intmax_t;

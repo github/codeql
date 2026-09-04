@@ -75,7 +75,8 @@ module Ast implements AstSig<Location> {
 
   additional predicate skipControlFlow(AstNode e) {
     e instanceof TypeAccess and
-    not e instanceof TypeAccessPatternExpr
+    not e instanceof TypeAccessPatternExpr and
+    not any(CS::SpecificCatchClause sc).getTypeAccess() = e
     or
     not e.getFile().fromSource()
   }
@@ -90,6 +91,7 @@ module Ast implements AstSig<Location> {
   private AstNode getStmtChild0(Stmt s, int i) {
     not s instanceof FixedStmt and
     not s instanceof UsingBlockStmt and
+    not skipControlFlow(result) and
     result = s.getChild(i)
     or
     s =
@@ -145,6 +147,8 @@ module Ast implements AstSig<Location> {
   final private class ParameterFinal = CS::Parameter;
 
   class Parameter extends ParameterFinal {
+    AstNode getPattern() { result = this }
+
     Expr getDefaultValue() {
       // Avoid combinatorial explosions for callables with multiple bodies
       result = unique( | | super.getDefaultValue())
@@ -172,15 +176,21 @@ module Ast implements AstSig<Location> {
 
   class DoStmt = CS::DoStmt;
 
+  class UntilStmt extends LoopStmt {
+    UntilStmt() { none() }
+  }
+
   final private class FinalForStmt = CS::ForStmt;
 
   class ForStmt extends FinalForStmt {
-    Expr getInit(int index) { result = this.getInitializer(index) }
+    AstNode getInit(int index) { result = super.getInitializer(index) }
+
+    AstNode getUpdate(int index) { result = super.getUpdate(index) }
   }
 
   final private class FinalForeachStmt = CS::ForeachStmt;
 
-  class ForeachStmt extends FinalForeachStmt {
+  class ForEachStmt extends FinalForeachStmt {
     Expr getVariable() {
       result = this.getVariableDeclExpr() or result = this.getVariableDeclTuple()
     }
@@ -201,7 +211,7 @@ module Ast implements AstSig<Location> {
   final private class FinalTryStmt = CS::TryStmt;
 
   class TryStmt extends FinalTryStmt {
-    Stmt getBody() { result = this.getBlock() }
+    AstNode getBody(int index) { index = 0 and result = this.getBlock() }
 
     CatchClause getCatch(int index) { result = this.getCatchClause(index) }
 
@@ -211,7 +221,12 @@ module Ast implements AstSig<Location> {
   final private class FinalCatchClause = CS::CatchClause;
 
   class CatchClause extends FinalCatchClause {
-    AstNode getVariable() { result = this.(CS::SpecificCatchClause).getVariableDeclExpr() }
+    AstNode getPattern() {
+      result = this.(CS::SpecificCatchClause).getVariableDeclExpr() or
+      result = this.(CS::SpecificCatchClause).getTypeAccess()
+    }
+
+    AstNode getVariable() { none() }
 
     Expr getCondition() { result = this.getFilterClause() }
 
@@ -229,7 +244,7 @@ module Ast implements AstSig<Location> {
   final private class FinalCase = CS::Case;
 
   class Case extends FinalCase {
-    AstNode getAPattern() { result = this.getPattern() }
+    AstNode getPattern(int index) { result = this.getPattern() and index = 0 }
 
     Expr getGuard() { result = this.getCondition() }
 

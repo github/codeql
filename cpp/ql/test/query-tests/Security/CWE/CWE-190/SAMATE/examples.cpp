@@ -19,10 +19,10 @@ void CWE191_Integer_Underflow__unsigned_int_rand_sub_01_bad()
     unsigned int data;
     data = 0;
     /* POTENTIAL FLAW: Use a random value */
-    data = (unsigned int)RAND32();
+    data = (unsigned int)RAND32(); // $ Source[cpp/uncontrolled-arithmetic]
     {
         /* POTENTIAL FLAW: Subtracting 1 from data could cause an underflow */
-        unsigned int result = data - 1;
+        unsigned int result = data - 1; // $ Alert[cpp/uncontrolled-arithmetic]
         printUnsignedLine(result);
     }
 }
@@ -32,10 +32,10 @@ void CWE191_Integer_Underflow__unsigned_int_rand_postdec_01_bad()
     unsigned int data;
     data = 0;
     /* POTENTIAL FLAW: Use a random value */
-    data = (unsigned int)RAND32();
+    data = (unsigned int)RAND32(); // $ Source[cpp/uncontrolled-arithmetic]
     {
         /* POTENTIAL FLAW: Decrementing data could cause an underflow */
-        data--;
+        data--; // $ Alert[cpp/uncontrolled-arithmetic]
         unsigned int result = data;
         printUnsignedLine(result);
     }
@@ -60,10 +60,10 @@ void CWE191_Integer_Underflow__unsigned_int_fscanf_predec_01_bad()
     unsigned int data;
     data = 0;
     /* POTENTIAL FLAW: Use a value input from the console */
-    fscanf (stdin, "%u", &data);
+    fscanf (stdin, "%u", &data); // $ Source[cpp/tainted-arithmetic]
     {
         /* POTENTIAL FLAW: Decrementing data could cause an underflow */
-        --data;
+        --data; // $ Alert[cpp/integer-overflow-tainted] Alert[cpp/tainted-arithmetic]
         unsigned int result = data;
         printUnsignedLine(result);
     }

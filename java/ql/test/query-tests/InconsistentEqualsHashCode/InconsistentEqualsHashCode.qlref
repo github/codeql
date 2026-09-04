@@ -1,1 +1,2 @@
-Likely Bugs/Comparison/InconsistentEqualsHashCode.ql
+query: Likely Bugs/Comparison/InconsistentEqualsHashCode.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

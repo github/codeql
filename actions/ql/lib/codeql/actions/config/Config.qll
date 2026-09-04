@@ -164,3 +164,12 @@ predicate untrustedGhCommandDataModel(string cmd_regex, string flag) {
 predicate actionsPermissionsDataModel(string action, string permission) {
   Extensions::actionsPermissionsDataModel(action, permission)
 }
+
+/**
+ * MaD models for deployment environments
+ * Fields:
+ *    - name: deployment environment name, e.g. `Public CI`
+ */
+predicate enabledDeploymentEnvironmentDataModel(string name) {
+  Extensions::enabledDeploymentEnvironmentDataModel(name)
+}

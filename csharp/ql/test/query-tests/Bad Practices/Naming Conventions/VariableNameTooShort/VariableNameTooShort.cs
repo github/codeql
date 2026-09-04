@@ -3,14 +3,14 @@ using System.Linq;
 
 class VariableNameTooShort
 {
-    int F; // BAD
+    int F; // $ Alert // BAD
     int Foo; // GOOD
 
     Func<int, string> Func = _ => "";
 
-    void M(int i /* BAD */, int[] args /* GOOD */)
+    void M(int i /* BAD */, int[] args /* GOOD */) // $ Alert
     {
         args.Select(x /* GOOD */ => x + 1);
-        Func<int, int> func = x /* BAD */ => x + 1;
+        Func<int, int> func = x /* BAD */ => x + 1; // $ Alert
     }
 }

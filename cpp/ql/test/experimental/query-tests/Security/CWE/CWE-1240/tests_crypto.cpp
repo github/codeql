@@ -8,7 +8,7 @@ int strlen(const char *string);
 
 // the following function is homebrew crypto written for this test.  This is a bad algorithm
 // on multiple levels and should never be used in cryptography.
-void encryptString(char *string, unsigned int key) {
+void encryptString(char *string, unsigned int key) { // $ Alert
 	char *ptr = string;
 	int len = strlen(string);
 
@@ -27,7 +27,7 @@ void encryptString(char *string, unsigned int key) {
 
 // the following function is homebrew crypto written for this test.  This is a bad algorithm
 // on multiple levels and should never be used in cryptography.
-void MyEncrypt(const unsigned int *dataIn, unsigned int *dataOut, unsigned int dataSize, unsigned int key[2]) {
+void MyEncrypt(const unsigned int *dataIn, unsigned int *dataOut, unsigned int dataSize, unsigned int key[2]) { // $ Alert
 	unsigned int state[2];
 	unsigned int t;
 
@@ -48,7 +48,7 @@ void MyEncrypt(const unsigned int *dataIn, unsigned int *dataOut, unsigned int d
 // the following function resembles an implementation of the AES "mix columns"
 // step. It is not accurate, efficient or safe and should never be used in
 // cryptography.
-void mix_columns(const uint8_t inputs[4], uint8_t outputs[4]) {
+void mix_columns(const uint8_t inputs[4], uint8_t outputs[4]) { // $ Alert
 	// The "mix columns" step takes four bytes as inputs. Each byte represents a
 	// polynomial with 8 one-bit coefficients, e.g. input bits 00001101
 	// represent the polynomial x^3 + x^2 + 1.  Arithmetic is reduced modulo
@@ -80,7 +80,7 @@ void mix_columns(const uint8_t inputs[4], uint8_t outputs[4]) {
 // the following function resembles initialization of an S-box as may be done
 // in an implementation of DES, AES and other encryption algorithms. It is not
 // accurate, efficient or safe and should never be used in cryptography.
-void init_aes_sbox(unsigned char data[256]) {
+void init_aes_sbox(unsigned char data[256]) { // $ Alert
 	// initialize `data` in a loop using lots of ^, ^= and << operations and
 	// a few fixed constants.
 	unsigned int state = 0x12345678;

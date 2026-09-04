@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 
     // BAD, do not use scanf without specifying a length first
     char buf1[10];
-    scanf("%s", buf1);
+    scanf("%s", buf1); // $ Alert
 
     // GOOD, length is specified. The length should be one less than the size of the destination buffer, since the last character is the NULL terminator.
     char buf2[20];
@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 
     // BAD, do not use scanf without specifying a length first
     char file[10];
-    fscanf(file, "%s", buf2);
+    fscanf(file, "%s", buf2); // $ Alert
 
     // GOOD, with 'sscanf' the input can be checked first and enough room allocated [FALSE POSITIVE]
     if (argc >= 1)
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 		char *src = argv[0];
 		char *dest = (char *)malloc(strlen(src) + 1);
 
-		sscanf(src, "%s", dest);
+		sscanf(src, "%s", dest); // $ Alert
 	}
 
     return 0;

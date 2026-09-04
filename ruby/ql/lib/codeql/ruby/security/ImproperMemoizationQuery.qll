@@ -70,7 +70,7 @@ private predicate memoReturnedFromMethod(Method m, MemoStmt s) {
   or
   // If we don't have flow (e.g. due to the dataflow library not supporting instance variable flow yet),
   // fall back to a syntactic heuristic: does the last statement in the method mention the memoization variable?
-  m.getLastStmt().getAChild*().(InstanceVariableReadAccess).getVariable() =
+  m.getBody().getLastStmt().getAChild*().(InstanceVariableReadAccess).getVariable() =
     s.getVariableAccess().getVariable()
 }
 

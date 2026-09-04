@@ -6,6 +6,7 @@ use std::io::Write;
 use std::path::PathBuf;
 
 use crate::node_types;
+use yeast;
 
 pub mod dbscheme;
 pub mod language;
@@ -17,6 +18,7 @@ pub fn generate(
     languages: Vec<language::Language>,
     dbscheme_path: PathBuf,
     ql_library_path: PathBuf,
+    use_facade_ast: bool,
     regenerate_instructions: &str,
 ) -> std::io::Result<()> {
     let dbscheme_file = File::create(dbscheme_path).map_err(|e| {
@@ -46,6 +48,7 @@ pub fn generate(
     ql::write(
         &mut ql_writer,
         &[ql::TopLevel::Import(ql::Import {
+            is_private: false,
             module: "codeql.Locations",
             alias: Some("L"),
         })],
@@ -67,42 +70,108 @@ pub fn generate(
         let node_parent_table_name = format!("{}_ast_node_parent", &prefix);
         let token_name = format!("{}_token", &prefix);
         let tokeninfo_name = format!("{}_tokeninfo", &prefix);
+        let trivia_token_name = format!("{}_trivia_token", &prefix);
+        let trivia_tokeninfo_name = format!("{}_trivia_tokeninfo", &prefix);
         let reserved_word_name = format!("{}_reserved_word", &prefix);
-        let nodes = node_types::read_node_types_str(&prefix, language.node_types)?;
+        // When a desugaring is configured, comments and other `extra` nodes are
+        // preserved from the original parse tree as `TriviaToken`s.
+        let has_trivia_tokens = language.desugar.is_some();
+        let effective_node_types: String = match language
+            .desugar
+            .as_ref()
+            .and_then(|c| c.output_node_types_yaml)
+        {
+            Some(yaml) => yeast::node_types_yaml::convert(yaml).map_err(|e| {
+                std::io::Error::other(format!(
+                    "Failed to convert YAML node-types to JSON for {}: {e}",
+                    language.name
+                ))
+            })?,
+            None => language.node_types.to_string(),
+        };
+        let nodes = node_types::read_node_types_str(&prefix, &effective_node_types)?;
         let (dbscheme_entries, mut ast_node_members, token_kinds) = convert_nodes(&nodes);
         ast_node_members.insert(&token_name);
+        if has_trivia_tokens {
+            ast_node_members.insert(&trivia_token_name);
+        }
         writeln!(&mut dbscheme_writer, "/*- {} dbscheme -*/", language.name)?;
         dbscheme::write(&mut dbscheme_writer, &dbscheme_entries)?;
         let token_case = create_token_case(&token_name, token_kinds);
-        dbscheme::write(
-            &mut dbscheme_writer,
-            &[
-                dbscheme::Entry::Table(create_tokeninfo(&tokeninfo_name, &token_name)),
-                dbscheme::Entry::Case(token_case),
-                dbscheme::Entry::Union(dbscheme::Union {
-                    name: &ast_node_name,
-                    members: ast_node_members,
-                }),
-                dbscheme::Entry::Table(create_ast_node_location_table(
-                    &node_location_table_name,
-                    &ast_node_name,
-                )),
-                dbscheme::Entry::Table(create_ast_node_parent_table(
-                    &node_parent_table_name,
-                    &ast_node_name,
-                )),
-            ],
-        )?;
-
-        let mut body = vec![
-            ql::TopLevel::Class(ql_gen::create_ast_node_class(
-                &ast_node_name,
-                &node_location_table_name,
-                &node_parent_table_name,
-            )),
-            ql::TopLevel::Class(ql_gen::create_token_class(&token_name, &tokeninfo_name)),
-            ql::TopLevel::Class(ql_gen::create_reserved_word_class(&reserved_word_name)),
+        let mut dbscheme_tail = vec![
+            dbscheme::Entry::Table(create_tokeninfo(&tokeninfo_name, &token_name)),
+            dbscheme::Entry::Case(token_case),
         ];
+        if has_trivia_tokens {
+            dbscheme_tail.push(dbscheme::Entry::Table(create_tokeninfo(
+                &trivia_tokeninfo_name,
+                &trivia_token_name,
+            )));
+        }
+        dbscheme_tail.push(dbscheme::Entry::Union(dbscheme::Union {
+            name: &ast_node_name,
+            members: ast_node_members,
+        }));
+        dbscheme_tail.push(dbscheme::Entry::Table(create_ast_node_location_table(
+            &node_location_table_name,
+            &ast_node_name,
+        )));
+        dbscheme_tail.push(dbscheme::Entry::Table(create_ast_node_parent_table(
+            &node_parent_table_name,
+            &ast_node_name,
+        )));
+        dbscheme::write(&mut dbscheme_writer, &dbscheme_tail)?;
+
+        let mut body = vec![];
+
+        let facade_import_name = if use_facade_ast {
+            format!("FacadeAst::{}", &language.name)
+        } else {
+            language.name.clone() // If not using a facade AST, treat the module itself as the facade module.
+        };
+        if use_facade_ast {
+            body.push(ql::TopLevel::Import(ql::Import {
+                is_private: true,
+                module: &facade_import_name,
+                alias: Some("F"),
+            }));
+        } else {
+            body.push(ql::TopLevel::ModuleAlias(ql::ModuleAlias {
+                is_private: true,
+                name: "F",
+                target: &language.name,
+            }));
+        }
+
+        body.push(ql::TopLevel::Class(ql_gen::create_ast_node_class(
+            &ast_node_name,
+            &node_location_table_name,
+            &node_parent_table_name,
+        )));
+
+        body.push(ql::TopLevel::Class(ql_gen::create_token_class(
+            &token_name,
+            &tokeninfo_name,
+        )));
+
+        if has_trivia_tokens {
+            body.push(ql::TopLevel::Class(ql_gen::create_trivia_token_class(
+                &trivia_token_name,
+                &trivia_tokeninfo_name,
+            )));
+        }
+        // Only emit the ReservedWord class when there are actually unnamed token
+        // types in the schema (i.e., @{prefix}_reserved_word exists in the dbscheme).
+        // When converting from a YEAST YAML schema that has no unnamed tokens, this
+        // type is absent and referencing it would cause a QL compilation error.
+        let has_reserved_words = nodes
+            .values()
+            .any(|n| n.dbscheme_name == reserved_word_name);
+        if has_reserved_words {
+            body.push(ql::TopLevel::Class(ql_gen::create_reserved_word_class(
+                &reserved_word_name,
+            )));
+        }
 
         // Overlay discard predicates
         body.push(ql::TopLevel::Predicate(
@@ -116,14 +185,69 @@ pub fn generate(
         ));
 
         body.append(&mut ql_gen::convert_nodes(&nodes));
+        body.push(ql_gen::create_print_ast_module(&nodes));
+        let mut final_body = if use_facade_ast {
+            vec![
+                ql::TopLevel::Import(ql::Import {
+                    is_private: true,
+                    module: &facade_import_name,
+                    alias: Some("F"),
+                }),
+                ql::TopLevel::Import(ql::Import {
+                    is_private: false,
+                    module: "F",
+                    alias: None,
+                }),
+            ]
+        } else {
+            vec![
+                ql::TopLevel::ModuleAlias(ql::ModuleAlias {
+                    is_private: true,
+                    name: "F",
+                    target: &language.name,
+                }),
+                ql::TopLevel::Import(ql::Import {
+                    is_private: false,
+                    module: "F",
+                    alias: None,
+                }),
+            ]
+        };
+        let final_aliases = body
+            .iter()
+            .filter_map(|decl| match decl {
+                ql::TopLevel::Class(c) => Some(ql::TopLevel::Class(ql::Class {
+                    qldoc: None,
+                    name: c.name,
+                    is_abstract: false,
+                    is_final: true,
+                    is_private: false,
+                    supertypes: Set::new(),
+                    characteristic_predicate: None,
+                    predicates: vec![],
+                    alias: Some(format!("F::{}", c.name)),
+                })),
+                _ => None,
+            })
+            .collect::<Vec<_>>();
+        final_body.extend(final_aliases);
+        let final_module_name = format!("{}Final", language.name);
         ql::write(
             &mut ql_writer,
-            &[ql::TopLevel::Module(ql::Module {
-                qldoc: None,
-                name: &language.name,
-                body,
-                overlay: Some(ql::OverlayAnnotation::Local),
-            })],
+            &[
+                ql::TopLevel::Module(ql::Module {
+                    qldoc: None,
+                    name: &language.name,
+                    body,
+                    overlay: Some(ql::OverlayAnnotation::Local),
+                }),
+                ql::TopLevel::Module(ql::Module {
+                    qldoc: None,
+                    name: &final_module_name,
+                    body: final_body,
+                    overlay: None,
+                }),
+            ],
         )?;
     }
     Ok(())
@@ -280,7 +404,18 @@ fn convert_nodes(
                 // type.
                 let members: Set<&str> = n_members
                     .iter()
-                    .map(|n| nodes.get(n).unwrap().dbscheme_name.as_str())
+                    .map(|n| {
+                        nodes
+                            .get(n)
+                            .unwrap_or_else(|| {
+                                panic!(
+                                    "union type '{}' references unknown member node type {:?}",
+                                    node.dbscheme_name, n
+                                )
+                            })
+                            .dbscheme_name
+                            .as_str()
+                    })
                     .collect();
                 entries.push(dbscheme::Entry::Union(dbscheme::Union {
                     name: &node.dbscheme_name,

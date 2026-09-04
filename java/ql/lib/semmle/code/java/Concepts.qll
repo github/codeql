@@ -25,6 +25,12 @@ private module Frameworks {
  *
  * These are either method calls, which return `true` when there is a match, or
  * annotations, which are considered to match if they are present.
+ *
+ * To use a `RegexMatch` as a barrier or sanitizer, instantiate
+ * `DataFlow::BarrierGuard`. Method-call matches act as ordinary control-flow
+ * barrier guards, while annotation matches are treated as direct barriers,
+ * since an annotation does not dominate the expression it constrains;
+ * `DataFlow::BarrierGuard` handles both, so callers need not distinguish the two.
  */
 class RegexMatch extends Expr instanceof RegexMatch::Range {
   /** Gets the expression for the regex being executed by this node. */

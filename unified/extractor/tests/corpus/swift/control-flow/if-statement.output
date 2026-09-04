@@ -1,0 +1,74 @@
+if x > 0 {
+  print(x)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            ifExpr
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "x"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              conditions:
+                conditionElement
+                  condition:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator ">"
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      rightOperand:
+                        integerLiteralExpr
+                          literal: integerLiteral "0"
+              ifKeyword: if
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        if_expr
+          condition:
+            binary_expr
+              left:
+                name_expr
+                  identifier: identifier "x"
+              operator: infix_operator ">"
+              right: int_literal "0"
+          then:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"

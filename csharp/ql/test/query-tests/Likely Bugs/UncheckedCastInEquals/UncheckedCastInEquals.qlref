@@ -1,1 +1,2 @@
-Likely Bugs/UncheckedCastInEquals.ql
+query: Likely Bugs/UncheckedCastInEquals.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

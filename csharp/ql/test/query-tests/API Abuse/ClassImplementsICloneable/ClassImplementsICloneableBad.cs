@@ -8,7 +8,7 @@ class Bad
         public Thing(int i) { I = i; }
     }
 
-    class Shallow : ICloneable
+    class Shallow : ICloneable // $ Alert
     {
         public Thing T { get; set; }
         public Shallow(Thing t) { T = t; }
@@ -17,7 +17,7 @@ class Bad
         public object Clone() { return new Shallow(T); }
     }
 
-    class Deep : ICloneable
+    class Deep : ICloneable // $ Alert
     {
         public Thing T { get; set; }
         public Deep(Thing t) { T = t; }

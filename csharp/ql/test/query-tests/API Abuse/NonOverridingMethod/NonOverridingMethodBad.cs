@@ -7,6 +7,6 @@ class Bad
 
     class Sub : Super
     {
-        public void Foo() { }
+        public void Foo() { } // $ Alert
     }
 }

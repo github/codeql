@@ -12,9 +12,9 @@ class UsersController < ApplicationController
   def read_from_params
     init_logger
 
-    unsanitized = params[:foo]
-    @logger.debug unsanitized             # BAD: unsanitized user input
-    @logger.error "input: " + unsanitized # BAD: unsanitized user input
+    unsanitized = params[:foo] # $ Source
+    @logger.debug unsanitized # $ Alert // BAD: unsanitized user input
+    @logger.error "input: " + unsanitized # $ Alert // BAD: unsanitized user input
 
     sanitized = unsanitized.gsub("\n", "")
     @logger.fatal sanitized            # GOOD: sanitized user input
@@ -22,17 +22,17 @@ class UsersController < ApplicationController
 
     unsanitized2 = unsanitized.sub("\n", "")
     @logger.info do
-      unsanitized2                      # BAD: partially sanitized user input
+      unsanitized2 # $ Alert // BAD: partially sanitized user input
     end
-    @logger << "input: " + unsanitized2 # BAD: partially sanitized user input
+    @logger << "input: " + unsanitized2 # $ Alert // BAD: partially sanitized user input
   end
 
   def read_from_cookies
     init_logger
 
-    unsanitized = cookies[:bar]
-    @logger.add(Logger::INFO) { unsanitized }             # BAD: unsanitized user input
-    @logger.log(Logger::WARN) { "input: " + unsanitized } # BAD: unsanitized user input
+    unsanitized = cookies[:bar] # $ Source
+    @logger.add(Logger::INFO) { unsanitized } # $ Alert // BAD: unsanitized user input
+    @logger.log(Logger::WARN) { "input: " + unsanitized } # $ Alert // BAD: unsanitized user input
   end
 
   def html_sanitization
@@ -46,7 +46,7 @@ class UsersController < ApplicationController
   def inspect_sanitization
     init_logger
 
-    @logger.debug params[:foo]         # BAD: unsanitized user input
+    @logger.debug params[:foo] # $ Alert // BAD: unsanitized user input
     @logger.debug params[:foo].inspect # GOOD: sanitized user input
   end
 end

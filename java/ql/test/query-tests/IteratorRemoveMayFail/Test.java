@@ -13,7 +13,7 @@ public class Test {
 	private static void removeOdd(Iterator<Integer> iter) {
 		while (iter.hasNext()) {
 			if (iter.next()%2 != 0)
-				iter.remove();
+				iter.remove(); // $ Alert
 		}
 	}
 }
@@ -41,7 +41,7 @@ class A {
 class Parent<T> {
 
 	public void removeFirst(List<T> l) {
-		l.iterator().remove();
+		l.iterator().remove(); // $ Alert
 	}
 
 }

@@ -1,1 +1,2 @@
-Likely Bugs/EqualsUsesAs.ql
+query: Likely Bugs/EqualsUsesAs.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

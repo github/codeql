@@ -1,1 +1,2 @@
-queries/style/UseSetLiteral.ql
+query: queries/style/UseSetLiteral.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

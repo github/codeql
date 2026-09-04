@@ -241,8 +241,9 @@
 				<OmitContent Condition="%(PaketReferencesFileLinesInfo.Splits) &gt;= 7">$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[6])</OmitContent>
 				<ImportTargets Condition="%(PaketReferencesFileLinesInfo.Splits) &gt;= 8">$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[7])</ImportTargets>
 				<Aliases Condition="%(PaketReferencesFileLinesInfo.Splits) &gt;= 9">$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[8])</Aliases>
+				<ReferenceCondition Condition="%(PaketReferencesFileLinesInfo.Splits) &gt;= 10">$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[9])</ReferenceCondition>
 			</PaketReferencesFileLinesInfo>
-			<PackageReference Condition=" '$(ManagePackageVersionsCentrally)' != 'true' Or '%(PaketReferencesFileLinesInfo.Reference)' == 'Direct' " Include="%(PaketReferencesFileLinesInfo.PackageName)">
+			<PackageReference Condition=" ('$(ManagePackageVersionsCentrally)' != 'true' Or '%(PaketReferencesFileLinesInfo.Reference)' == 'Direct') AND ('%(PaketReferencesFileLinesInfo.ReferenceCondition)' == 'true' Or $(%(PaketReferencesFileLinesInfo.ReferenceCondition)) == 'true')" Include="%(PaketReferencesFileLinesInfo.PackageName)">
 				<Version Condition=" '$(ManagePackageVersionsCentrally)' != 'true' ">%(PaketReferencesFileLinesInfo.PackageVersion)</Version>
 				<PrivateAssets Condition=" ('%(PaketReferencesFileLinesInfo.AllPrivateAssets)' == 'true') Or ('$(PackAsTool)' == 'true') ">All</PrivateAssets>
 				<ExcludeAssets Condition=" %(PaketReferencesFileLinesInfo.CopyLocal) == 'false' or %(PaketReferencesFileLinesInfo.AllPrivateAssets) == 'exclude'">runtime</ExcludeAssets>
@@ -251,10 +252,8 @@
 				<Aliases Condition=" %(PaketReferencesFileLinesInfo.Aliases) != ''">%(PaketReferencesFileLinesInfo.Aliases)</Aliases>
 				<Publish Condition=" '$(PackAsTool)' == 'true' ">true</Publish>
 				<AllowExplicitVersion>true</AllowExplicitVersion>
-
 			</PackageReference>
-
-			<PackageVersion Include="%(PaketReferencesFileLinesInfo.PackageName)">
+			<PackageVersion Condition="('$(ManagePackageVersionsCentrally)' != 'true' Or '%(PaketReferencesFileLinesInfo.Reference)' == 'Direct') AND ('%(PaketReferencesFileLinesInfo.ReferenceCondition)' == 'true' Or $(%(PaketReferencesFileLinesInfo.ReferenceCondition)) == 'true')" Include="%(PaketReferencesFileLinesInfo.PackageName)">
 				<Version>%(PaketReferencesFileLinesInfo.PackageVersion)</Version>
 			</PackageVersion>
 		</ItemGroup>
@@ -319,7 +318,17 @@
 		</ItemGroup>
 
 		<Error Text="Error Because of PAKET_ERROR_ON_MSBUILD_EXEC (not calling fix-nuspecs)" Condition=" '$(PAKET_ERROR_ON_MSBUILD_EXEC)' == 'true' " />
-		<Exec Condition="@(_NuspecFiles) != ''" Command='$(PaketCommand) fix-nuspecs files "@(_NuspecFiles)" project-file "$(PaketProjectFile)" ' />
+		<Exec Condition="@(_NuspecFiles) != ''" Command='$(PaketCommand) show-conditions -s' ConsoleToMSBuild="true" StandardOutputImportance="low">
+			<Output TaskParameter="ConsoleOutput" ItemName="_ConditionProperties"/>
+		</Exec>
+		<ItemGroup>
+			<_DefinedConditionProperties Include="@(_ConditionProperties)" Condition="$(%(Identity)) == 'true'"/>
+		</ItemGroup>
+		<PropertyGroup>
+			<_ConditionsParameter></_ConditionsParameter>
+			<_ConditionsParameter Condition="@(_DefinedConditionProperties) != ''">--conditions @(_DefinedConditionProperties)</_ConditionsParameter>
+		</PropertyGroup>
+		<Exec Condition="@(_NuspecFiles) != ''" Command='$(PaketCommand) fix-nuspecs files "@(_NuspecFiles)" project-file "$(PaketProjectFile)" $(_ConditionsParameter)' />
 		<Error Condition="@(_NuspecFiles) == ''" Text='Could not find nuspec files in "$(AdjustedNuspecOutputPath)" (Version: "$(PackageVersion)"), therefore we cannot call "paket fix-nuspecs" and have to error out!' />
 
 		<ConvertToAbsolutePath Condition="@(_NuspecFiles) != ''" Paths="@(_NuspecFiles)">

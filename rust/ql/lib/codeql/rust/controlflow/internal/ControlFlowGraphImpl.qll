@@ -99,6 +99,8 @@ class FormatTemplateVariableAccessTree extends LeafTree, FormatTemplateVariableA
 class ItemTree extends LeafTree, Item {
   ItemTree() {
     not this instanceof MacroCall and
+    not this instanceof Const and
+    not this instanceof Static and
     this = any(StmtList s).getAStatement()
   }
 }

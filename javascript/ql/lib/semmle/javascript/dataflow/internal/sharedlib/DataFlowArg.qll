@@ -3,6 +3,7 @@ private import DataFlowImplSpecific
 private import codeql.dataflow.DataFlow as SharedDataFlow
 private import codeql.dataflow.TaintTracking as SharedTaintTracking
 private import codeql.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import codeql.util.Void
 
 module JSDataFlow implements SharedDataFlow::InputSig<Location> {
   import Private

@@ -1,7 +1,7 @@
 class Foo(object):
     pass
 
-import pkg_notok
+import pkg_notok # $ Alert[py/import-and-import-from]
 
 # This import is a bit tricky. It will make `bar` available in as `pkg_notok.bar` as a
 # side effect (see https://docs.python.org/3/reference/import.html#submodules), but the

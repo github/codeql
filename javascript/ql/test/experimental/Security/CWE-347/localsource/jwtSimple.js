@@ -10,10 +10,10 @@ function aJWT() {
 }
 
 (function () {
-    const UserToken = aJwt()
+    const UserToken = aJwt() // $ Alert
 
     // BAD: no signature verification
-    jwt_simple.decode(UserToken, getSecret(), true); // NOT OK
+    jwt_simple.decode(UserToken, getSecret(), true); // $ Sink // NOT OK
 })();
 
 (function () {

@@ -14,13 +14,22 @@ private import DataFlowImplSpecific::Public
 module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow> {
   private import codeql.util.Void
 
-  class SummarizedCallableBase = string;
+  class SummarizedCallableBase extends string {
+    bindingset[this]
+    SummarizedCallableBase() { exists(this) }
 
-  class SourceBase = Void;
+    Location getLocation() { none() }
+  }
 
-  class SinkBase = Void;
+  class FlowSummaryCallBase extends Void {
+    Location getLocation() { none() }
+  }
 
   predicate callableFromSource(SummarizedCallableBase c) { none() }
+
+  DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+    result.asLibraryCallable() = c
+  }
 
   ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
 
@@ -66,22 +75,32 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
   }
 
   string encodeContent(ContentSet cs, string arg) {
-    cs = TListElementContent() and result = "ListElement" and arg = ""
-    or
-    cs = TSetElementContent() and result = "SetElement" and arg = ""
-    or
-    exists(int index |
-      cs = TTupleElementContent(index) and result = "TupleElement" and arg = index.toString()
+    exists(Content c | cs.isSingleton(c) |
+      c = TListElementContent() and result = "ListElement" and arg = ""
+      or
+      c = TSetElementContent() and result = "SetElement" and arg = ""
+      or
+      exists(int index |
+        c = TTupleElementContent(index) and result = "TupleElement" and arg = index.toString()
+      )
+      or
+      exists(string key |
+        c = TDictionaryElementContent(key) and result = "DictionaryElement" and arg = key
+      )
+      or
+      c = TDictionaryElementAnyContent() and result = "DictionaryElementAny" and arg = ""
+      or
+      exists(string attr | c = TAttributeContent(attr) and result = "Attribute" and arg = attr)
     )
     or
-    exists(string key |
-      cs = TDictionaryElementContent(key) and result = "DictionaryElement" and arg = key
-    )
+    cs.isAnyTupleElement() and result = "AnyTupleElement" and arg = ""
     or
-    cs = TDictionaryElementAnyContent() and result = "DictionaryElementAny" and arg = ""
+    cs.isAnyDictionaryElement() and result = "AnyDictionaryElement" and arg = ""
     or
-    exists(string attr | cs = TAttributeContent(attr) and result = "Attribute" and arg = attr)
+    cs.isAnyTupleOrDictionaryElement() and result = "AnyTupleOrDictionaryElement" and arg = ""
   }
+
+  string encodeWithContent(ContentSet c, string arg) { result = "With" + encodeContent(c, arg) }
 
   bindingset[token]
   ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
@@ -100,7 +119,23 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
 
 private import Make<Location, DataFlowImplSpecific::PythonDataFlow, Input> as Impl
 
-private module StepsInput implements Impl::Private::StepsInputSig {
+private module Input2 implements Impl::Private::InputSig2 {
+  private import codeql.util.Void
+
+  class SourceSinkReportingElement extends Void {
+    Location getLocation() { none() }
+
+    DataFlowCallable getEnclosingCallable() { none() }
+
+    SourceSinkReportingElement getASuccessor(Impl::Private::SummaryComponent sc) { none() }
+  }
+}
+
+private import Impl::Private::Make2<Input2> as Impl2
+
+private module StepsInput implements Impl2::StepsInputSig {
+  Impl2::SummaryNode getSummaryNode(Node n) { result = n.(FlowSummaryNode).getSummaryNode() }
+
   overlay[global]
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result =
@@ -109,18 +144,13 @@ private module StepsInput implements Impl::Private::StepsInputSig {
           sc.(LibraryCallable).getACallSimple().asCfgNode()
         ])
   }
-
-  DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) { none() }
-
-  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) { none() }
-
-  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module Private {
   import Impl::Private
+  import Impl2
 
-  module Steps = Impl::Private::Steps<StepsInput>;
+  module Steps = Impl2::Steps<StepsInput>;
 
   /**
    * Provides predicates for constructing summary components.
@@ -139,27 +169,29 @@ module Private {
     predicate withContent = SC::withContent/1;
 
     /** Gets a summary component that represents a list element. */
-    SummaryComponent listElement() { result = content(any(ListElementContent c)) }
+    SummaryComponent listElement() { result = content(singleton(any(ListElementContent c))) }
 
     /** Gets a summary component that represents a set element. */
-    SummaryComponent setElement() { result = content(any(SetElementContent c)) }
+    SummaryComponent setElement() { result = content(singleton(any(SetElementContent c))) }
 
     /** Gets a summary component that represents a tuple element. */
     SummaryComponent tupleElement(int index) {
-      exists(TupleElementContent c | c.getIndex() = index and result = content(c))
+      exists(TupleElementContent c | c.getIndex() = index and result = content(singleton(c)))
     }
 
     /** Gets a summary component that represents a dictionary element. */
     SummaryComponent dictionaryElement(string key) {
-      exists(DictionaryElementContent c | c.getKey() = key and result = content(c))
+      exists(DictionaryElementContent c | c.getKey() = key and result = content(singleton(c)))
     }
 
     /** Gets a summary component that represents a dictionary element at any key. */
-    SummaryComponent dictionaryElementAny() { result = content(any(DictionaryElementAnyContent c)) }
+    SummaryComponent dictionaryElementAny() {
+      result = content(singleton(any(DictionaryElementAnyContent c)))
+    }
 
     /** Gets a summary component that represents an attribute element. */
     SummaryComponent attribute(string attr) {
-      exists(AttributeContent c | c.getAttribute() = attr and result = content(c))
+      exists(AttributeContent c | c.getAttribute() = attr and result = content(singleton(c)))
     }
 
     /** Gets a summary component that represents the return value of a call. */

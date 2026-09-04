@@ -1,0 +1,39 @@
+var x: Int
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: var
+          bindings:
+            patternBinding
+              pattern:
+                identifierPattern
+                  identifier: identifier "x"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    identifierType
+                      name: identifier "Int"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "var"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          type:
+            named_type_expr
+              name: identifier "Int"

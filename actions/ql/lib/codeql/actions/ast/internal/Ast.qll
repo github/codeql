@@ -1920,3 +1920,5 @@ private YamlMappingLikeNode resolveMatrixAccessPath(
     else result = resolveMatrixAccessPath(newRoot, rest)
   )
 }
+
+class Comment = YamlComment;

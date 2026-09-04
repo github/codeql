@@ -1,15 +1,15 @@
 <sample>
-  <db pwd=""/>
-  <db pwd="foo"/>
+  <db pwd=""/> <!-- $ Alert[cs/empty-password-in-configuration] -->
+  <db pwd="foo"/> <!-- $ Alert[cs/password-in-configuration] -->
   <db dwp=""/>
   <db dwp="foo"/>
-  <db Password=""/>
-  <db Password="foo"/>
+  <db Password=""/> <!-- $ Alert[cs/empty-password-in-configuration] -->
+  <db Password="foo"/> <!-- $ Alert[cs/password-in-configuration] -->
   <db drowssaP=""/>
   <db drowssaP="foo"/>
   <db connectionString="Driver=ODBCDriver;server=ODBCServer;"/>
-  <db connectionString="Driver=ODBCDriver;server=ODBCServer;pwd=;"/>
-  <db connectionString="Driver=ODBCDriver;server=ODBCServer;password=;"/>
-  <db connectionString="Driver=ODBCDriver;server=ODBCServer;pwd=foo;"/>
-  <db connectionString="Driver=ODBCDriver;server=ODBCServer;password=foo;"/>
+  <db connectionString="Driver=ODBCDriver;server=ODBCServer;pwd=;"/> <!-- $ Alert[cs/empty-password-in-configuration] -->
+  <db connectionString="Driver=ODBCDriver;server=ODBCServer;password=;"/> <!-- $ Alert[cs/empty-password-in-configuration] -->
+  <db connectionString="Driver=ODBCDriver;server=ODBCServer;pwd=foo;"/> <!-- $ Alert[cs/password-in-configuration] -->
+  <db connectionString="Driver=ODBCDriver;server=ODBCServer;password=foo;"/> <!-- $ Alert[cs/password-in-configuration] -->
 </sample>

@@ -1,14 +1,80 @@
 #select
-| test.rs:20:9:20:24 | ...::compute | test.rs:20:26:20:39 | credit_card_no | test.rs:20:9:20:24 | ...::compute | $@ is used in a hashing algorithm (MD5) that is insecure. | test.rs:20:26:20:39 | credit_card_no | Sensitive data (private) |
-| test.rs:21:9:21:24 | ...::compute | test.rs:21:26:21:33 | password | test.rs:21:9:21:24 | ...::compute | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:21:26:21:33 | password | Sensitive data (password) |
+| test.rs:14:26:14:39 | credit_card_no | test.rs:14:26:14:39 | credit_card_no | test.rs:14:26:14:39 | credit_card_no | $@ is used in a hashing algorithm (MD5) that is insecure. | test.rs:14:26:14:39 | credit_card_no | Sensitive data (private) |
+| test.rs:15:26:15:33 | password | test.rs:15:26:15:33 | password | test.rs:15:26:15:33 | password | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:15:26:15:33 | password | Sensitive data (password) |
+| test.rs:20:26:20:39 | credit_card_no | test.rs:20:26:20:39 | credit_card_no | test.rs:20:26:20:39 | credit_card_no | $@ is used in a hashing algorithm (MD5) that is insecure. | test.rs:20:26:20:39 | credit_card_no | Sensitive data (private) |
+| test.rs:21:26:21:33 | password | test.rs:21:26:21:33 | password | test.rs:21:26:21:33 | password | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:21:26:21:33 | password | Sensitive data (password) |
+| test.rs:26:28:26:41 | credit_card_no | test.rs:26:28:26:41 | credit_card_no | test.rs:26:28:26:41 | credit_card_no | $@ is used in a hashing algorithm (SHA1) that is insecure. | test.rs:26:28:26:41 | credit_card_no | Sensitive data (private) |
+| test.rs:27:28:27:35 | password | test.rs:27:28:27:35 | password | test.rs:27:28:27:35 | password | $@ is used in a hashing algorithm (SHA1) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:27:28:27:35 | password | Sensitive data (password) |
+| test.rs:32:36:32:49 | credit_card_no | test.rs:32:36:32:49 | credit_card_no | test.rs:32:36:32:49 | credit_card_no | $@ is used in a hashing algorithm (SHA1) that is insecure. | test.rs:32:36:32:49 | credit_card_no | Sensitive data (private) |
+| test.rs:33:36:33:43 | password | test.rs:33:36:33:43 | password | test.rs:33:36:33:43 | password | $@ is used in a hashing algorithm (SHA1) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:33:36:33:43 | password | Sensitive data (password) |
+| test.rs:39:32:39:39 | password | test.rs:39:32:39:39 | password | test.rs:39:32:39:39 | password | $@ is used in a hashing algorithm (SHA3256) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:39:32:39:39 | password | Sensitive data (password) |
+| test.rs:60:26:60:37 | password_str | test.rs:60:26:60:37 | password_str | test.rs:60:26:60:37 | password_str | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:60:26:60:37 | password_str | Sensitive data (password) |
+| test.rs:62:26:62:37 | password_arr | test.rs:62:26:62:37 | password_arr | test.rs:62:26:62:37 | password_arr | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:62:26:62:37 | password_arr | Sensitive data (password) |
+| test.rs:64:26:64:37 | password_vec | test.rs:64:26:64:37 | password_vec | test.rs:64:26:64:37 | password_vec | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:64:26:64:37 | password_vec | Sensitive data (password) |
+| test.rs:77:35:77:42 | password | test.rs:77:35:77:42 | password | test.rs:77:35:77:42 | password | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:77:35:77:42 | password | Sensitive data (password) |
+| test.rs:81:26:81:40 | password.trim() | test.rs:81:26:81:33 | password | test.rs:81:26:81:40 | password.trim() | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:81:26:81:33 | password | Sensitive data (password) |
+| test.rs:83:26:83:44 | password.as_bytes() | test.rs:83:26:83:33 | password | test.rs:83:26:83:44 | password.as_bytes() | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:83:26:83:33 | password | Sensitive data (password) |
+| test.rs:211:30:211:34 | value | test.rs:226:29:226:36 | password | test.rs:211:30:211:34 | value | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:226:29:226:36 | password | Sensitive data (password) |
 edges
-| test.rs:20:26:20:39 | credit_card_no | test.rs:20:9:20:24 | ...::compute | provenance | MaD:1 Sink:MaD:1 |
-| test.rs:21:26:21:33 | password | test.rs:21:9:21:24 | ...::compute | provenance | MaD:1 Sink:MaD:1 |
+| test.rs:14:26:14:39 | credit_card_no | test.rs:14:26:14:39 | credit_card_no | provenance | Sink:MaD:1 |
+| test.rs:15:26:15:33 | password | test.rs:15:26:15:33 | password | provenance | Sink:MaD:1 |
+| test.rs:20:26:20:39 | credit_card_no | test.rs:20:26:20:39 | credit_card_no | provenance | Sink:MaD:3 |
+| test.rs:21:26:21:33 | password | test.rs:21:26:21:33 | password | provenance | Sink:MaD:3 |
+| test.rs:26:28:26:41 | credit_card_no | test.rs:26:28:26:41 | credit_card_no | provenance | Sink:MaD:1 |
+| test.rs:27:28:27:35 | password | test.rs:27:28:27:35 | password | provenance | Sink:MaD:1 |
+| test.rs:32:36:32:49 | credit_card_no | test.rs:32:36:32:49 | credit_card_no | provenance | Sink:MaD:1 |
+| test.rs:33:36:33:43 | password | test.rs:33:36:33:43 | password | provenance | Sink:MaD:1 |
+| test.rs:39:32:39:39 | password | test.rs:39:32:39:39 | password | provenance | Sink:MaD:1 |
+| test.rs:60:26:60:37 | password_str | test.rs:60:26:60:37 | password_str | provenance | Sink:MaD:1 |
+| test.rs:62:26:62:37 | password_arr | test.rs:62:26:62:37 | password_arr | provenance | Sink:MaD:1 |
+| test.rs:64:26:64:37 | password_vec | test.rs:64:26:64:37 | password_vec | provenance | Sink:MaD:1 |
+| test.rs:77:35:77:42 | password | test.rs:77:35:77:42 | password | provenance | Sink:MaD:2 |
+| test.rs:81:26:81:33 | password | test.rs:81:26:81:40 | password.trim() [&ref] | provenance | MaD:5 |
+| test.rs:81:26:81:40 | password.trim() [&ref] | test.rs:81:26:81:40 | password.trim() | provenance | Sink:MaD:1 |
+| test.rs:83:26:83:33 | password | test.rs:83:26:83:44 | password.as_bytes() [&ref] | provenance | MaD:4 |
+| test.rs:83:26:83:44 | password.as_bytes() [&ref] | test.rs:83:26:83:44 | password.as_bytes() | provenance | Sink:MaD:1 |
+| test.rs:210:20:210:30 | ...: ... | test.rs:211:30:211:34 | value | provenance | Sink:MaD:3 |
+| test.rs:226:29:226:36 | password | test.rs:210:20:210:30 | ...: ... | provenance |  |
 models
-| 1 | Sink: md5::compute; Argument[0]; hasher-input |
+| 1 | Sink: <digest::digest::Digest>::digest; Argument[0]; hasher-input |
+| 2 | Sink: <digest::digest::Digest>::new_with_prefix; Argument[0]; hasher-input |
+| 3 | Sink: md5::compute; Argument[0]; hasher-input |
+| 4 | Summary: <core::str>::as_bytes; Argument[self].Reference; ReturnValue.Reference; taint |
+| 5 | Summary: <core::str>::trim; Argument[self].Reference; ReturnValue.Reference; taint |
 nodes
-| test.rs:20:9:20:24 | ...::compute | semmle.label | ...::compute |
+| test.rs:14:26:14:39 | credit_card_no | semmle.label | credit_card_no |
+| test.rs:14:26:14:39 | credit_card_no | semmle.label | credit_card_no |
+| test.rs:15:26:15:33 | password | semmle.label | password |
+| test.rs:15:26:15:33 | password | semmle.label | password |
 | test.rs:20:26:20:39 | credit_card_no | semmle.label | credit_card_no |
-| test.rs:21:9:21:24 | ...::compute | semmle.label | ...::compute |
+| test.rs:20:26:20:39 | credit_card_no | semmle.label | credit_card_no |
 | test.rs:21:26:21:33 | password | semmle.label | password |
+| test.rs:21:26:21:33 | password | semmle.label | password |
+| test.rs:26:28:26:41 | credit_card_no | semmle.label | credit_card_no |
+| test.rs:26:28:26:41 | credit_card_no | semmle.label | credit_card_no |
+| test.rs:27:28:27:35 | password | semmle.label | password |
+| test.rs:27:28:27:35 | password | semmle.label | password |
+| test.rs:32:36:32:49 | credit_card_no | semmle.label | credit_card_no |
+| test.rs:32:36:32:49 | credit_card_no | semmle.label | credit_card_no |
+| test.rs:33:36:33:43 | password | semmle.label | password |
+| test.rs:33:36:33:43 | password | semmle.label | password |
+| test.rs:39:32:39:39 | password | semmle.label | password |
+| test.rs:39:32:39:39 | password | semmle.label | password |
+| test.rs:60:26:60:37 | password_str | semmle.label | password_str |
+| test.rs:60:26:60:37 | password_str | semmle.label | password_str |
+| test.rs:62:26:62:37 | password_arr | semmle.label | password_arr |
+| test.rs:62:26:62:37 | password_arr | semmle.label | password_arr |
+| test.rs:64:26:64:37 | password_vec | semmle.label | password_vec |
+| test.rs:64:26:64:37 | password_vec | semmle.label | password_vec |
+| test.rs:77:35:77:42 | password | semmle.label | password |
+| test.rs:77:35:77:42 | password | semmle.label | password |
+| test.rs:81:26:81:33 | password | semmle.label | password |
+| test.rs:81:26:81:40 | password.trim() | semmle.label | password.trim() |
+| test.rs:81:26:81:40 | password.trim() [&ref] | semmle.label | password.trim() [&ref] |
+| test.rs:83:26:83:33 | password | semmle.label | password |
+| test.rs:83:26:83:44 | password.as_bytes() | semmle.label | password.as_bytes() |
+| test.rs:83:26:83:44 | password.as_bytes() [&ref] | semmle.label | password.as_bytes() [&ref] |
+| test.rs:210:20:210:30 | ...: ... | semmle.label | ...: ... |
+| test.rs:211:30:211:34 | value | semmle.label | value |
+| test.rs:226:29:226:36 | password | semmle.label | password |
 subpaths

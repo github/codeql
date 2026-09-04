@@ -1,13 +1,13 @@
 // BAD
-predicate isXML() { any() }
+predicate isXML() { any() } // $ Alert
 
 // GOOD [ AES is exceptional ]
 predicate isAES() { any() }
 
 // BAD
-newtype TXMLElements =
+newtype TXMLElements = // $ Alert
   TXmlElement() or // GOOD
-  TXMLElement() // BAD
+  TXMLElement() // $ Alert // BAD
 
 // GOOD
 newtype TIRFunction = MkIRFunction()

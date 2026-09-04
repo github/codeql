@@ -1,35 +1,35 @@
 class FooController < ActionController::Base
   def some_request_handler
     # A source for the data-flow query (i.e. a remote flow source)
-    name = params[:name]
+    name = params[:name] # $ Source
 
     # A vulnerable regex
     regex = /^\s+|\s+$/
 
     # Various sinks that match the source against the regex
-    name =~ regex         # NOT GOOD
-    name !~ regex         # NOT GOOD
-    name[regex]           # NOT GOOD
-    name.gsub regex, ''   # NOT GOOD
-    name.index regex      # NOT GOOD
-    name.match regex      # NOT GOOD
-    name.match? regex     # NOT GOOD
-    name.partition regex  # NOT GOOD
-    name.rindex regex     # NOT GOOD
-    name.rpartition regex # NOT GOOD
-    name.scan regex       # NOT GOOD
-    name.split regex      # NOT GOOD
-    name.sub regex, ''    # NOT GOOD
-    regex.match name      # NOT GOOD
-    regex.match? name     # NOT GOOD
+    name =~ regex # $ Alert // NOT GOOD
+    name !~ regex # $ Alert // NOT GOOD
+    name[regex] # $ Alert // NOT GOOD
+    name.gsub regex, '' # $ Alert // NOT GOOD
+    name.index regex # $ Alert // NOT GOOD
+    name.match regex # $ Alert // NOT GOOD
+    name.match? regex # $ Alert // NOT GOOD
+    name.partition regex # $ Alert // NOT GOOD
+    name.rindex regex # $ Alert // NOT GOOD
+    name.rpartition regex # $ Alert // NOT GOOD
+    name.scan regex # $ Alert // NOT GOOD
+    name.split regex # $ Alert // NOT GOOD
+    name.sub regex, '' # $ Alert // NOT GOOD
+    regex.match name # $ Alert // NOT GOOD
+    regex.match? name # $ Alert // NOT GOOD
 
     # Destructive variants
-    a = params[:b]
-    a.gsub! regex, ''     # NOT GOOD
-    b = params[:a]
-    b.slice! regex        # NOT GOOD
-    c = params[:c]
-    c.sub! regex, ''      # NOT GOOD
+    a = params[:b] # $ Source
+    a.gsub! regex, '' # $ Alert // NOT GOOD
+    b = params[:a] # $ Source
+    b.slice! regex # $ Alert // NOT GOOD
+    c = params[:c] # $ Source
+    c.sub! regex, '' # $ Alert // NOT GOOD
 
     # GOOD - guarded by a string length check
     if name.length < 1024
@@ -39,19 +39,19 @@ class FooController < ActionController::Base
     # GOOD - regex does not suffer from polynomial backtracking (regression test)
     params[:foo] =~ /\A[bc].*\Z/
 
-    case name # NOT GOOD
+    case name # $ Sink // NOT GOOD
     when regex 
       puts "foo"
-    end
+    end # $ Alert
 
-    case name # NOT GOOD
+    case name # $ Sink // NOT GOOD
     in /^\s+|\s+$/ then 
       puts "foo"
-    end
+    end # $ Alert
   end
 
   def some_other_request_handle
-    name = params[:name] # source
+    name = params[:name] # $ Source // source
 
     indirect_use_of_reg /^\s+|\s+$/, name
 
@@ -59,22 +59,22 @@ class FooController < ActionController::Base
   end
 
   def indirect_use_of_reg (reg, input)
-    input.gsub reg, '' # NOT GOOD
+    input.gsub reg, '' # $ Alert // NOT GOOD
   end
 
   def as_string_indirect (reg_as_string, input)
-    input.match? reg_as_string, '' # NOT GOOD
+    input.match? reg_as_string, '' # $ Alert // NOT GOOD
   end
 
   def re_compile_indirect 
-    name = params[:name] # source
+    name = params[:name] # $ Source // source
 
     reg = Regexp.new '^\s+|\s+$'
     re_compile_indirect_2 reg, name
   end
 
   def re_compile_indirect_2 (reg, input)
-    input.gsub reg, '' # NOT GOOD
+    input.gsub reg, '' # $ Alert // NOT GOOD
   end
 
   # See https://github.com/dependabot/dependabot-core/blob/37dc1767fde9b7184020763f4d0c1434f93d11d6/python/lib/dependabot/python/requirement_parser.rb#L6-L25
@@ -100,8 +100,8 @@ class FooController < ActionController::Base
   MARKER_EXPR = /(#{MARKER_EXPR_ONE}|\(\s*|\s*\)|\s+and\s+|\s+or\s+)+/
 
   def use_marker_expr 
-    name = params[:name] # source
+    name = params[:name] # $ Source // source
 
-    name =~ MARKER_EXPR 
+    name =~ MARKER_EXPR  # $ Alert
   end  
 end

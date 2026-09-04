@@ -13,6 +13,7 @@ private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.WCF
 private import semmle.code.csharp.frameworks.microsoft.Owin
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
+private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
@@ -116,7 +117,8 @@ class AspNetServiceRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::Pa
   override string getSourceType() { result = "ASP.NET web service input" }
 }
 
-private class CandidateMemberToTaint extends Member {
+/** A public, non-static, auto-implemented property or field, candidate for taint-tracking. */
+class CandidateMemberToTaint extends Member {
   CandidateMemberToTaint() {
     this.isPublic() and
     not this.isStatic() and
@@ -305,13 +307,41 @@ class AspNetCoreActionMethodParameter extends AspNetCoreRemoteFlowSource, DataFl
   AspNetCoreActionMethodParameter() {
     exists(Parameter p |
       p = this.getParameter() and
-      p.fromSource()
+      p.fromSource() and
+      not exists(Attribute attr, ValueOrRefType attributeBase | attr = p.getAnAttribute() |
+        attributeBase = attr.getType().getABaseType*() and
+        (
+          attributeBase
+              .getABaseInterface*()
+              .hasFullyQualifiedName("Microsoft.AspNetCore.Http.Metadata", "IFromServiceMetadata")
+          or
+          attributeBase
+              .hasFullyQualifiedName("Microsoft.Extensions.DependencyInjection",
+                "FromKeyedServicesAttribute")
+        )
+      )
     |
       p = any(MicrosoftAspNetCoreMvcController c).getAnActionMethod().getAParameter()
     )
   }
 
   override string getSourceType() { result = "ASP.NET Core MVC action method parameter" }
+}
+
+/** A parameter to a Razor Page handler method, viewed as a source of remote user input. */
+class AspNetCorePageHandlerMethodParameter extends AspNetCoreRemoteFlowSource,
+  DataFlow::ParameterNode
+{
+  AspNetCorePageHandlerMethodParameter() {
+    exists(Parameter p |
+      p = this.getParameter() and
+      p.fromSource()
+    |
+      p = any(PageModelClass pm).getAHandlerMethod().getAParameter()
+    )
+  }
+
+  override string getSourceType() { result = "ASP.NET Core Razor Page handler method parameter" }
 }
 
 private class ExternalRemoteFlowSource extends RemoteFlowSource {

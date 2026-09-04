@@ -13,7 +13,7 @@ int inv(int a) {
 	return !a;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) { // $ Source
 	int varZero = 0;
 	int varOne = 1;
 	
@@ -59,69 +59,69 @@ int main(int argc, char **argv) {
 	char *c7;
 	if (globalZero)
 		c7 = argv[1];
-	printf(c7);
+	printf(c7); // $ Alert
 	
 	// GOOD: inv(1) returns 0 and it never goes inside the if
 	// But we can't handle this case because currently we don't analyse arguments in function calls
 	char *c8;
 	if (inv(1))
 		c8 = argv[1];
-	printf(c8);
+	printf(c8); // $ Alert
 
 	// BAD: condition is true and it always goes inside the if
 	char *i1;
 	if (1)
 		i1 = argv[1];
-	printf(i1);
+	printf(i1); // $ Alert
 	
 	// BAD: condition is true and it always goes inside the if
 	char *i2;
 	if (0 == 0)
 		i2 = argv[1];
-	printf(i2);
+	printf(i2); // $ Alert
 	
 	// BAD: condition is true and it always goes inside the if
 	char *i3;
 	if (!0)
 		i3 = argv[1];
-	printf(i3);
+	printf(i3); // $ Alert
 	
 	// BAD: varOne is 1 so condition is true and it always goes inside the if
 	char *i4;
 	if (varOne)
 		i4 = argv[1];
-	printf(i4);
+	printf(i4); // $ Alert
 	
 	// BAD: varZero is 0 so condition is true and it always goes inside the if
 	char *i5;
 	if (!varZero)
 		i5 = argv[1];
-	printf(i5);
+	printf(i5); // $ Alert
 	
 	// BAD: condition is true and it always goes inside the if
 	// But our analysis only handle booleans, so it isn't able the detect that both values are the same (we can handle only 0 == 0)
 	char *i6;
 	if (varOne == varOne)
 		i6 = argv[1];
-	printf(i6);
+	printf(i6); // $ Alert
 	
 	// BAD: globalOne is 1 so condition is true and it always goes inside the if
 	char *i7;
 	if (globalOne)
 		i7 = argv[1];
-	printf(i7);
+	printf(i7); // $ Alert
 	
 	// BAD: we don't know the value of globalUnknown so we have to assume it can be true
 	char *i8;
 	if (globalUnknown)
 		i8 = argv[1];
-	printf(i8);
+	printf(i8); // $ Alert
 	
 	// BAD: inv(0) returns 1 and it always goes inside the if
 	char *i9;
 	if (inv(0))
 		i9 = argv[1];
-	printf(i9);
+	printf(i9); // $ Alert
 	
 	return 0;
 	

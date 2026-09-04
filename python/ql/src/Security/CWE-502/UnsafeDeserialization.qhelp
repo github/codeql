@@ -5,22 +5,32 @@
 <p>
 Deserializing untrusted data using any deserialization framework that
 allows the construction of arbitrary serializable objects is easily exploitable
-and in many cases allows an attacker to execute arbitrary code.  Even before a
+and in many cases allows an attacker to execute arbitrary code. Even before a
 deserialized object is returned to the caller of a deserialization method a lot
 of code may have been executed, including static initializers, constructors,
-and finalizers.  Automatic deserialization of fields means that an attacker may
+and finalizers. Automatic deserialization of fields means that an attacker may
 craft a nested combination of objects on which the executed initialization code
 may have unforeseen effects, such as the execution of arbitrary code.
 </p>
 <p>
-There are many different serialization frameworks.  This query currently
+There are many different serialization frameworks. This query currently
 supports Pickle, Marshal and Yaml.
+</p>
+<p>
+Note that a deserialization method is only dangerous if it can instantiate
+arbitrary classes. Serialization frameworks that use a schema to instantiate
+only expected, predefined types are generally not tracked by this query. Such
+frameworks are generally safe with respect to arbitrary-class-instantiation and
+gadget-chain attacks when the schema is trusted and does not permit
+user-controlled type resolution. However, care must be taken to ensure the schema
+strictly limits the allowed types. Permitting common standard library classes
+can still leave the application vulnerable to gadget-chain attacks.
 </p>
 </overview>
 
 <recommendation>
 <p>
-Avoid deserialization of untrusted data if at all possible.  If the
+Avoid deserialization of untrusted data if at all possible. If the
 architecture permits it then use other formats instead of serialized objects,
 for example JSON.
 </p>

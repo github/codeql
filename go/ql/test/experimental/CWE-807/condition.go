@@ -13,7 +13,7 @@ const test = "localhost"
 
 // Should alert as authkey is sensitive
 func ex1(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Origin") != test {
+	if r.Header.Get("Origin") != test { // $ Alert
 		authkey := "randomDatta"
 		io.WriteString(w, authkey)
 	}
@@ -22,7 +22,7 @@ func ex1(w http.ResponseWriter, r *http.Request) {
 // Should alert as authkey is sensitive
 func ex2(w http.ResponseWriter, r *http.Request) {
 	test2 := "test"
-	if r.Header.Get("Origin") != test2 {
+	if r.Header.Get("Origin") != test2 { // $ Alert
 		authkey := "randomDatta2"
 		io.WriteString(w, authkey)
 	}
@@ -31,7 +31,7 @@ func ex2(w http.ResponseWriter, r *http.Request) {
 // Should alert as login() is sensitive
 func ex3(w http.ResponseWriter, r *http.Request) {
 	test2 := "test"
-	if r.Header.Get("Origin") != test2 {
+	if r.Header.Get("Origin") != test2 { // $ Alert
 		login()
 	}
 }

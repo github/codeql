@@ -24,7 +24,7 @@ being used as a marker.</p>
 </example>
 <references>
 
-  <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Marker_interface_pattern">Marker interface pattern</a></li>
+  <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Marker_interface_pattern">Marker interface pattern</a></li>
   <li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/csharp/tutorials/attributes">Using Attributes in C#</a></li>
 
 

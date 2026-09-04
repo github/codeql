@@ -100,31 +100,31 @@ void positiveTestCases()
     wchar_t* lpApplicationName = NULL;
 
     // CreateProcessA
-    CreateProcessA(                             //BUG
+    CreateProcessA(                             // $ Alert //BUG
         NULL,
         (char*)"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessW
-    CreateProcessW(                             //BUG
+    CreateProcessW(                             // $ Alert //BUG
         NULL,
         (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
-    
+
     // CreateProcess
-    CreateProcess(                              //BUG
+    CreateProcess(                              // $ Alert //BUG
         NULL,
         (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // lpCommandLine as hardcoded variable
-    CreateProcess(                              //BUG
+    CreateProcess(                              // $ Alert //BUG
         NULL,
         (wchar_t*)lpCommandLine,
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessWithTokenW
-    CreateProcessWithTokenW(                    //BUG
+    CreateProcessWithTokenW(                    // $ Alert //BUG
         h,
         LOGON_WITH_PROFILE,
         NULL,
@@ -132,7 +132,7 @@ void positiveTestCases()
         0, NULL, NULL, NULL, NULL);
 
     // CreateProcessWithLogonW
-    CreateProcessWithLogonW(                    //BUG
+    CreateProcessWithLogonW(                    // $ Alert //BUG
         (const wchar_t*)L"UserName",
         (const wchar_t*)L"CONTOSO",
         (const wchar_t*)L"<fake_password!>",
@@ -142,21 +142,21 @@ void positiveTestCases()
         0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUserA
-    CreateProcessAsUserA(                        //BUG
+    CreateProcessAsUserA(                        // $ Alert //BUG
         h,
         NULL,
         (char*)"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUserW
-    CreateProcessAsUserW(                        //BUG
+    CreateProcessAsUserW(                        // $ Alert //BUG
         h,
         NULL,
         (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUser
-    CreateProcessAsUser(                        //BUG
+    CreateProcessAsUser(                        // $ Alert //BUG
         h,
         NULL,
         (wchar_t*)L"C:\\Program Files\\MyApp",
@@ -164,7 +164,7 @@ void positiveTestCases()
 
     // CreateProcess with a hardcoded variable for application Name (NULL)
     // Variation: tab instead of space
-    CreateProcess(                              //BUG
+    CreateProcess(                              // $ Alert //BUG
         lpApplicationName,
         (wchar_t*)L"C:\\Program\tFiles\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
@@ -173,7 +173,7 @@ void positiveTestCases()
 void PositiveTestCasesWithCmdLineParameter(wchar_t* lpCommandLine)
 {
     // lpCommandLine as variable
-    CreateProcess(                              //BUG - Depends on the caller
+    CreateProcess(                              // $ Alert //BUG - Depends on the caller
         NULL,
         lpCommandLine,
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
@@ -199,14 +199,14 @@ void FalseNegativeTestCasesWithCmdLineParameter_caller()
 {
     // No bug - escaped command line
     // But compare with "PositiveTestCasesWithCmdLineParameter"
-    FalseNegativeTestCasesWithCmdLineParameter((wchar_t*)L"\"C:\\Program Files\\MyApp\"");  
+    FalseNegativeTestCasesWithCmdLineParameter((wchar_t*)L"\"C:\\Program Files\\MyApp\"");
 }
 
 void PositiveTestCasesWithAppNameParameter(wchar_t* lpApplicationName)
 {
     void* h = 0;
 
-    CreateProcessWithTokenW(                    //BUG - Depends on the caller. In this case the caller sends NULL
+    CreateProcessWithTokenW(                    // $ Alert //BUG - Depends on the caller. In this case the caller sends NULL
         h,
         LOGON_WITH_PROFILE,
         lpApplicationName,
@@ -255,7 +255,7 @@ void TestCaseProbablyBug()
         lpApplicationName = (const wchar_t*)L"app.exe";
     }
 
-    CreateProcessWithLogonW(                    // BUG (Probably - depends on a condition that may be false)
+    CreateProcessWithLogonW(                    // $ Alert // BUG (Probably - depends on a condition that may be false)
         (const wchar_t*)L"UserName",
         (const wchar_t*)L"CONTOSO",
         (const wchar_t*)L"<fake_password!>",
@@ -289,13 +289,13 @@ void negativeTestCases_quotedCommandLine()
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcess
-    CreateProcess( 
+    CreateProcess(
         NULL,
         (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // lpCommandLine as hardcoded variable
-    CreateProcess( 
+    CreateProcess(
         NULL,
         (wchar_t*)lpCommandLine,
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
@@ -340,7 +340,7 @@ void negativeTestCases_quotedCommandLine()
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcess with a hardcoded variable for application Name (NULL)
-    CreateProcess( 
+    CreateProcess(
         lpApplicationName,
         (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);

@@ -4,21 +4,21 @@ from jinja2 import Template
 from jinja2 import Environment, DictLoader, escape
 
 
-def a(request):
+def a(request): # $ Source
     # Load the template
     template = request.GET['template']
-    t = Template(template) # BAD: Template constructed from user input
+    t = Template(template) # $ Alert # BAD: Template constructed from user input
     name = request.GET['name']
     # Render the template with the context data
     html = t.render(name=escape(name))
     return HttpResponse(html)
 
-def b(request):
+def b(request): # $ Source
     import jinja2
     # Load the template
     template = request.GET['template']
     env = Environment()
-    t = env.from_string(template) # BAD: Template constructed from user input
+    t = env.from_string(template) # $ Alert # BAD: Template constructed from user input
     name = request.GET['name']
     # Render the template with the context data
     html = t.render(name=escape(name))

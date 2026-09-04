@@ -6,11 +6,11 @@ class Test
 {
     // Test variable scope
 
-    IList<int> v1 = new List<int>();  // BAD: private scope
+    IList<int> v1 = new List<int>();  // $ Alert // BAD: private scope
 
     void f()
     {
-        var v2 = new List<int>();   // BAD: local scope
+        var v2 = new List<int>();   // $ Alert // BAD: local scope
         var x = v1.Contains(1);
         var y = v2.Contains(2);
     }
@@ -27,7 +27,7 @@ class Test
     // Test initializer
 
     IList<int> n3 = new List<int> { 1, 2, 3 };  // GOOD: initialized
-    IList<int> v3;  // BAD: unassigned
+    IList<int> v3;  // $ Alert // BAD: unassigned
 
     void h()
     {
@@ -52,7 +52,7 @@ class Test
         n5 = new List<int> { 1, 2, 3 };
         n5.Contains(1);
 
-        var v4 = new List<int>(); // BAD: assigned only from empty list
+        var v4 = new List<int>(); // $ Alert // BAD: assigned only from empty list
         v4 = new List<int>();
         v4.Contains(1);
 
@@ -73,30 +73,30 @@ class Test
 
     void f4()
     {
-        var v5 = new Dictionary<int, int>();  // BAD
+        var v5 = new Dictionary<int, int>();  // $ Alert // BAD
         v5.ContainsKey(1);
         v5.ContainsValue(1);
         v5.GetEnumerator();
 
         var tmp = new HashSet<int>();
-        var v6 = new HashSet<int>();  // BAD
+        var v6 = new HashSet<int>();  // $ Alert // BAD
         v6.IsSubsetOf(tmp);
         v6.IsProperSubsetOf(tmp);
         v6.IsSupersetOf(tmp);
         v6.IsProperSupersetOf(tmp);
 
-        var v7 = new LinkedList<int>(); // BAD
+        var v7 = new LinkedList<int>(); // $ Alert // BAD
         v7.Contains(1);
 
-        var v8 = new Queue<int>();    // BAD
+        var v8 = new Queue<int>();    // $ Alert // BAD
         v8.Dequeue();
         v8.Peek();
         v8.ToArray();
 
-        var v9 = new Stack<int>();    // BAD
+        var v9 = new Stack<int>();    // $ Alert // BAD
         v9.Pop();
 
-        var v10 = new List<int>();      // BAD: property access
+        var v10 = new List<int>();      // $ Alert // BAD: property access
         var x = v10.Count;
     }
 
@@ -118,7 +118,7 @@ class Test
 
     void f6()
     {
-        var v11 = new Dictionary<int, int>(); // BAD: read by Index
+        var v11 = new Dictionary<int, int>(); // $ Alert // BAD: read by Index
         var x = v11[1];
 
         var n12 = new Dictionary<int, int>(); // GOOD: written by Index
@@ -155,7 +155,7 @@ class Test
 
     void f9()
     {
-        var l1 = new MyList(); // BAD
+        var l1 = new MyList(); // $ Alert // BAD
         var x1 = l1[0];
 
         var l2 = new MyList(); // GOOD

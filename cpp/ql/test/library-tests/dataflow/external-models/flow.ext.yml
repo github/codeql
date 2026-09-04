@@ -4,11 +4,26 @@ extensions:
       extensible: sourceModel
     data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
       - ["", "", False, "ymlSource", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "ymlSourcePtr", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "ymlFieldSource", "", "", "ReturnValue.Field[SourceWrapper::value]", "local", "manual"]
+      - ["", "", False, "source_from_callback_template", "", "", "Argument[0].Parameter[*0].Field[SourceWrapper::value]", "local", "manual"]
+      - ["", "", False, "source_from_callback_ptr", "", "", "Argument[0].Parameter[*0].Field[SourceWrapper::value]", "local", "manual"]
+      - ["", "", False, "source_from_callback_return_template", "", "", "Argument[0].ReturnValue", "local", "manual"]
+      - ["", "", False, "source_from_callback_return_ptr", "", "", "Argument[0].ReturnValue", "local", "manual"]
+      - ["", "", False, "source_ptr_from_callback_return_ptr", "", "", "Argument[0].ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "test_parameter", "", "", "Parameter[*0].Field[SourceWrapper::value]", "local", "manual"]
+      - ["", "", False, "test_parameter", "", "", "Parameter[*0].Field[*SourceWrapper::pointer]", "local", "manual"]
+      - ["", "", False, "test_parameter", "", "", "Parameter[1].Field[*SourceWrapper::pointer]", "local", "manual"]
+      - ["", "", False, "test_parameter", "", "", "Parameter[1].Field[SourceWrapper::value]", "local", "manual"]
+      - ["", "", False, "test_parameter", "", "", "Parameter[*2]", "local", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: sinkModel
     data: # namespace, type, subtypes, name, signature, ext, input, kind, provenance
       - ["", "", False, "ymlSink", "", "", "Argument[0]", "test-sink", "manual"]
+      - ["", "", False, "sink_from_callback_return_template", "", "", "Argument[0].ReturnValue", "test-sink", "manual"]
+      - ["", "", False, "sink_from_callback_return_ptr", "", "", "Argument[0].ReturnValue", "test-sink", "manual"]
+      - ["", "", False, "sink_ptr_from_callback_return_ptr", "", "", "Argument[0].ReturnValue[*]", "test-sink", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: summaryModel
@@ -19,3 +34,11 @@ extensions:
       - ["", "", False, "ymlStepGenerated_with_body", "", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["", "", False, "callWithArgument", "", "", "Argument[1]", "Argument[0].Parameter[0]", "value", "manual"]
       - ["", "", False, "callWithNonTypeTemplate<T>", "(const T &)", "", "Argument[*0]", "ReturnValue", "value", "manual"]
+      - ["", "TemplateClass1<T>", False, "templateFunction<U>", "(T,U)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["", "TemplateClass1", True, "templateFunction2<U,V>", "(U,V)", "", "Argument[1]", "ReturnValue", "value", "manual"]
+      - ["", "TemplateClass2<T,U>", True, "function", "(U,T)", "", "Argument[1]", "ReturnValue", "value", "manual"]
+      - ["", "", False, "read_field_from_struct", "", "", "Argument[*0].Field[MyNamespace::MyStructInNamespace::myField]", "ReturnValue", "value", "manual"]
+      - ["", "", False, "read_field_from_struct_2", "", "", "Argument[*0].Field[MyGlobalStruct::myField]", "ReturnValue", "value", "manual"]
+      - ["", "ReverseFlow", True, "get_ptr", "", "", "ReturnValue[*]", "Argument[-1].Field[ReverseFlow::value]", "value", "manual"]
+      - ["", "MyString", True, "operator[]", "", "", "ReturnValue[*]", "Argument[-1]", "taint", "manual"]
+      - ["", "MyString", True, "operator[]", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]

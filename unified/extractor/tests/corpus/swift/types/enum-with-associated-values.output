@@ -1,0 +1,103 @@
+enum Shape {
+  case circle(radius: Double)
+  case square(side: Double)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        enumDecl
+          attributes:
+          name: identifier "Shape"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "circle"
+                          parameterClause:
+                            enumCaseParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                enumCaseParameter
+                                  colon: :
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "Double"
+                                  firstName: identifier "radius"
+                      caseKeyword: case
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "square"
+                          parameterClause:
+                            enumCaseParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                enumCaseParameter
+                                  colon: :
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "Double"
+                                  firstName: identifier "side"
+                      caseKeyword: case
+          modifiers:
+          enumKeyword: enum
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "enum"
+          name: identifier "Shape"
+          member:
+            class_like_declaration
+              modifier: modifier "enum_case"
+              name: identifier "circle"
+              member:
+                constructor_declaration
+                  parameter:
+                    parameter
+                      type:
+                        named_type_expr
+                          name: identifier "Double"
+                      pattern:
+                        name_pattern
+                          identifier: identifier "radius"
+                  body: block "circle(radius: Double)"
+            class_like_declaration
+              modifier: modifier "enum_case"
+              name: identifier "square"
+              member:
+                constructor_declaration
+                  parameter:
+                    parameter
+                      type:
+                        named_type_expr
+                          name: identifier "Double"
+                      pattern:
+                        name_pattern
+                          identifier: identifier "side"
+                  body: block "square(side: Double)"

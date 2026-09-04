@@ -1,6 +1,6 @@
 using System;
 
-class Bad
+class Bad // $ Alert
 {
     private int id;
 

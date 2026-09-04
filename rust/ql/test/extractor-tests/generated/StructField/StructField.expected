@@ -1,7 +1,7 @@
 instances
 | gen_struct_field.rs:7:16:7:21 | x: i32 | isUnsafe: | no |
 getAttr
-getDefault
+getDefaultVal
 getName
 | gen_struct_field.rs:7:16:7:21 | x: i32 | gen_struct_field.rs:7:16:7:16 | x |
 getTypeRepr

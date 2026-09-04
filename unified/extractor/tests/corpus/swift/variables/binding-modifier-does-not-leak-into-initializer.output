@@ -1,0 +1,91 @@
+let x = switch y {
+case someConstant: 1
+default: 2
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    switchExpr
+                      leftBrace: {
+                      rightBrace: }
+                      cases:
+                        switchCase
+                          label:
+                            switchCaseLabel
+                              colon: :
+                              caseKeyword: case
+                              caseItems:
+                                switchCaseItem
+                                  pattern:
+                                    expressionPattern
+                                      expression:
+                                        declReferenceExpr
+                                          baseName: identifier "someConstant"
+                          statements:
+                            codeBlockItem
+                              item:
+                                integerLiteralExpr
+                                  literal: integerLiteral "1"
+                        switchCase
+                          label:
+                            switchDefaultLabel
+                              colon: :
+                              defaultKeyword: default
+                          statements:
+                            codeBlockItem
+                              item:
+                                integerLiteralExpr
+                                  literal: integerLiteral "2"
+                      subject:
+                        declReferenceExpr
+                          baseName: identifier "y"
+                      switchKeyword: switch
+              pattern:
+                identifierPattern
+                  identifier: identifier "x"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          value:
+            switch_expr
+              value:
+                name_expr
+                  identifier: identifier "y"
+              case:
+                switch_case
+                  pattern:
+                    expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "someConstant"
+                  body:
+                    block
+                      stmt: int_literal "1"
+                switch_case
+                  body:
+                    block
+                      stmt: int_literal "2"

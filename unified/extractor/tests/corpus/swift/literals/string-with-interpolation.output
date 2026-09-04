@@ -1,0 +1,33 @@
+"hello \(name)"
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "hello "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "name"
+            stringSegment
+              content: stringSegment
+
+---
+
+top_level
+  body:
+    block
+      stmt: string_literal "\"hello \\(name)\""

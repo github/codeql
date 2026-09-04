@@ -5,10 +5,10 @@ class NestedIf
     void fn()
     {
         // BAD:
-        if (true) if (false) return;
+        if (true) if (false) return; // $ Alert
 
         // BAD
-        if (true) if (false) if (true) return;
+        if (true) if (false) if (true) return; // $ Alert
 
         // BAD: using braces
         if (true)
@@ -18,7 +18,7 @@ class NestedIf
                 {
                 }
             }
-        }
+        } // $ Alert
 
         // GOOD: contains else part
         if (true)

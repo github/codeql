@@ -1,0 +1,7 @@
+#select
+| main_test.go |
+| nested/nested_test.go |
+testFunctions
+| TestNestedFunc | nested/nested_test.go |
+| TestPrivateFunc | main_test.go |
+| TestPublicFunc | main_test.go |

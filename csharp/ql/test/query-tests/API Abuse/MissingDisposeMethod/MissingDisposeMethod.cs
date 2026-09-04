@@ -25,7 +25,7 @@ class C1 : IDisposable
     }
 }
 
-class C2 : C1
+class C2 : C1 // $ Alert
 {
     C2 Field; // BAD
 }
@@ -41,13 +41,13 @@ class C3 : C1
     }
 }
 
-class WebPage : Page
+class WebPage : Page // $ Alert
 {
     C1 Field1; // BAD
     Control Field2; // GOOD
 }
 
-class WebControl : Control
+class WebControl : Control // $ Alert
 {
     C1 Field1; // BAD
     Control Field2; // GOOD
@@ -73,12 +73,12 @@ class C5 : C4
     }
 }
 
-class C6 : C4
+class C6 : C4 // $ Alert
 {
     C2 Field; // BAD
 }
 
-class C7 : Component
+class C7 : Component // $ Alert
 {
     C2 Field; // BAD
 }
@@ -97,7 +97,7 @@ class C8 : Component
     }
 }
 
-class C9 : C1
+class C9 : C1 // $ Alert
 {
     C2 Field; // BAD
 

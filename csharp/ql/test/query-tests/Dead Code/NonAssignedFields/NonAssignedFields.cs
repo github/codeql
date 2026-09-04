@@ -84,8 +84,8 @@ struct PtrToStructure2
 class Fields1
 {
     // BAD:
-    int BadNonAssigned;
-    object BadAssignedNull = null;
+    int BadNonAssigned; // $ Alert
+    object BadAssignedNull = null; // $ Alert
 
     // GOOD:
     int GoodAssignedByInitializer = 0;

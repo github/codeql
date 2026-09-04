@@ -10,24 +10,24 @@ public class BeanShellInjection {
 
 	@GetMapping(value = "bad1")
 	public void bad1(HttpServletRequest request) {
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source[java/beanshell-injection]
 		BshScriptEvaluator evaluator = new BshScriptEvaluator();
-		evaluator.evaluate(new StaticScriptSource(code)); //bad
+		evaluator.evaluate(new StaticScriptSource(code)); // $ Alert[java/beanshell-injection] //bad
 	}
 
 	@GetMapping(value = "bad2")
 	public void bad2(HttpServletRequest request) throws Exception {
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source[java/beanshell-injection]
 		Interpreter interpreter = new Interpreter();
-		interpreter.eval(code);  //bad
+		interpreter.eval(code);  // $ Alert[java/beanshell-injection] //bad
 	}
 
 	@GetMapping(value = "bad3")
 	public void bad3(HttpServletRequest request) {
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source[java/beanshell-injection]
 		StaticScriptSource staticScriptSource = new StaticScriptSource("test");
 		staticScriptSource.setScript(code);
 		BshScriptEvaluator evaluator = new BshScriptEvaluator();
-		evaluator.evaluate(staticScriptSource);  //bad
+		evaluator.evaluate(staticScriptSource);  // $ Alert[java/beanshell-injection] //bad
 	}
 }

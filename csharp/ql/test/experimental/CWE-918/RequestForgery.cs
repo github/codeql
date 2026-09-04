@@ -9,9 +9,9 @@ namespace RequestForgery.Controllers
     {
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Bad(string url)
+        public async Task<ActionResult> Bad(string url) // $ Source=r1
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var request = new HttpRequestMessage(HttpMethod.Get, url); // $ Alert=r1
 
             var client = new HttpClient();
             await client.SendAsync(request);

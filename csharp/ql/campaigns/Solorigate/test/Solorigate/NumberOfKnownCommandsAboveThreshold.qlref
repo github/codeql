@@ -1,1 +1,2 @@
-NumberOfKnownCommandsAboveThreshold.ql
+query: NumberOfKnownCommandsAboveThreshold.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -9,6 +9,6 @@ public class ExternalAPISinkExample extends HttpServlet {
 	throws ServletException, IOException {
 		// BAD: a request parameter is written directly to an error response page
 		response.sendError(HttpServletResponse.SC_NOT_FOUND,
-				"The page \"" + request.getParameter("page") + "\" was not found."); // $ Alert
+				"The page \"" + request.getParameter("page") + "\" was not found."); // $ Alert[java/untrusted-data-to-external-api]
 	}
 }

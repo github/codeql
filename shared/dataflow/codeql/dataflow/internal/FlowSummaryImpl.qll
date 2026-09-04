@@ -19,29 +19,14 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
   class SummarizedCallableBase {
     bindingset[this]
     string toString();
+
+    bindingset[this]
+    Location getLocation();
   }
 
   /** Holds if `c` is defined in source code. */
   bindingset[c]
   predicate callableFromSource(SummarizedCallableBase c);
-
-  /**
-   * A base class of elements that are candidates for flow source modeling.
-   */
-  bindingset[this]
-  class SourceBase {
-    bindingset[this]
-    string toString();
-  }
-
-  /**
-   * A base class of elements that are candidates for flow sink modeling.
-   */
-  bindingset[this]
-  class SinkBase {
-    bindingset[this]
-    string toString();
-  }
 
   /**
    * Holds if a neutral (MaD) model exists for `c` of kind `kind`
@@ -53,6 +38,24 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
   ) {
     none()
   }
+
+  /**
+   * A base class of calls that are candidates for flow summary modeling.
+   */
+  class FlowSummaryCallBase {
+    string toString();
+
+    Location getLocation();
+  }
+
+  /** Gets a call that targets summarized callable `sc`. */
+  default FlowSummaryCallBase getASourceCall(SummarizedCallableBase sc) { none() }
+
+  /** Gets the callable corresponding to summarized callable `c`. */
+  Lang::DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c);
+
+  /** Gets the enclosing callable of `call`. */
+  default Lang::DataFlowCallable getSourceCallEnclosingCallable(FlowSummaryCallBase call) { none() }
 
   /** Gets the parameter position representing a callback itself, if any. */
   default Lang::ArgumentPosition callbackSelfParameterPosition() { none() }
@@ -73,6 +76,9 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
     arg = "" and
     result = getStandardReturnValueKind()
   }
+
+  /** Gets the parameter position corresponding to a flow-summary return kind `rk`, if any. */
+  default Lang::ParameterPosition getFlowSummaryParameterPosition(Lang::ReturnKind rk) { none() }
 
   /** Gets the textual representation of parameter position `pos` used in MaD. */
   string encodeParameterPosition(Lang::ParameterPosition pos);
@@ -196,10 +202,6 @@ module Make<
   private import codeql.util.Unit
 
   final private class SummarizedCallableBaseFinal = SummarizedCallableBase;
-
-  final private class SourceBaseFinal = SourceBase;
-
-  final private class SinkBaseFinal = SinkBase;
 
   /** Provides classes and predicates for defining flow summaries. */
   module Public {
@@ -343,7 +345,7 @@ module Make<
     }
 
     /** A source element. */
-    abstract class SourceElement extends SourceBaseFinal {
+    abstract class SourceElement extends SummarizedCallableBaseFinal {
       bindingset[this]
       SourceElement() { any() }
 
@@ -352,11 +354,13 @@ module Make<
        * flows out as described by `output`.
        */
       pragma[nomagic]
-      abstract predicate isSource(string output, string kind, Provenance provenance, string model);
+      abstract predicate isSource(
+        string output, string kind, Provenance provenance, boolean isExact, string model
+      );
     }
 
     /** A sink element. */
-    abstract class SinkElement extends SinkBaseFinal {
+    abstract class SinkElement extends SummarizedCallableBaseFinal {
       bindingset[this]
       SinkElement() { any() }
 
@@ -365,11 +369,13 @@ module Make<
        * flows in as described by `input`.
        */
       pragma[nomagic]
-      abstract predicate isSink(string input, string kind, Provenance provenance, string model);
+      abstract predicate isSink(
+        string input, string kind, Provenance provenance, boolean isExact, string model
+      );
     }
 
     /** A barrier element. */
-    abstract class BarrierElement extends SourceBaseFinal {
+    abstract class BarrierElement extends SummarizedCallableBaseFinal {
       bindingset[this]
       BarrierElement() { any() }
 
@@ -378,11 +384,13 @@ module Make<
        * flows out as described by `output`.
        */
       pragma[nomagic]
-      abstract predicate isBarrier(string output, string kind, Provenance provenance, string model);
+      abstract predicate isBarrier(
+        string output, string kind, Provenance provenance, boolean isExact, string model
+      );
     }
 
     /** A barrier guard element. */
-    abstract class BarrierGuardElement extends SinkBaseFinal {
+    abstract class BarrierGuardElement extends SummarizedCallableBaseFinal {
       bindingset[this]
       BarrierGuardElement() { any() }
 
@@ -392,7 +400,8 @@ module Make<
        */
       pragma[nomagic]
       abstract predicate isBarrierGuard(
-        string input, string acceptingValue, string kind, Provenance provenance, string model
+        string input, string acceptingValue, string kind, Provenance provenance, boolean isExact,
+        string model
       );
     }
 
@@ -506,6 +515,51 @@ module Make<
   module Private {
     private import Public
 
+    private signature predicate modelSig(
+      SummarizedCallableBase c, string kind, Provenance provenance, string model, boolean isExact,
+      string modelKind
+    );
+
+    private module RelevantModel<modelSig/6 model> {
+      /**
+       * Holds if the model described by the parameters is relevant. A model may be
+       * irrelevant if a more specific model exists.
+       */
+      predicate isRelevantModel(
+        SummarizedCallableBase c, string kind, Provenance provenance, string model, boolean isExact
+      ) {
+        exists(string modelKind |
+          model(c, kind, provenance, model, isExact, modelKind) and
+          if provenance.isGenerated() or isExact = false
+          then
+            // Only apply generated models to functions in library code
+            not (provenance.isGenerated() and callableFromSource(c)) and
+            // Only apply generated or inexact models when no strictly better model exists
+            not exists(Provenance other, boolean isExactOther |
+              model(c, _, other, _, isExactOther, modelKind)
+              or
+              neutralElement(c, modelKind, other, isExactOther)
+            |
+              provenance.isGenerated() and other.isManual()
+              or
+              provenance.getVerification() = other.getVerification() and
+              isExact = false and
+              isExactOther = true
+            )
+          else any()
+        )
+      }
+    }
+
+    private predicate summaryModel(
+      SummarizedCallableBase c, string kind, Provenance p, string model, boolean isExact,
+      string modelKind
+    ) {
+      c.(SummarizedCallable).propagatesFlow(_, _, _, p, isExact, model) and
+      kind = "(unused)" and
+      modelKind = "summary"
+    }
+
     /**
      * Holds if `c` has a relevant flow summary.
      *
@@ -522,23 +576,7 @@ module Make<
       boolean isExact, string model
     ) {
       c.propagatesFlow(input, output, preservesValue, p, isExact, model) and
-      if p.isGenerated() or isExact = false
-      then
-        // Only apply generated models to functions in library code
-        not (p.isGenerated() and callableFromSource(c)) and
-        // Only apply generated or inexact models when no strictly better model exists
-        not exists(Provenance other, boolean isExactOther |
-          c.propagatesFlow(_, _, _, other, isExactOther, _)
-          or
-          neutralElement(c, "summary", other, isExactOther)
-        |
-          p.isGenerated() and other.isManual()
-          or
-          p.getVerification() = other.getVerification() and
-          isExact = false and
-          isExactOther = true
-        )
-      else any()
+      RelevantModel<summaryModel/6>::isRelevantModel(c, _, p, model, isExact)
     }
 
     /**
@@ -660,6 +698,10 @@ module Make<
       s.length() = 1 and
       s.head() instanceof TArgumentSummaryComponent
       or
+      // ReturnValue.*
+      s.length() = 1 and
+      s.head() instanceof TReturnSummaryComponent
+      or
       // Argument[n].ReturnValue.*
       s.length() = 2 and
       s.head() instanceof TReturnSummaryComponent and
@@ -727,54 +769,84 @@ module Make<
       unsupportedCallable(callable, _, _, _)
     }
 
+    private predicate sourceModel(
+      SummarizedCallableBase c, string kind, Provenance p, string model, boolean isExact,
+      string modelKind
+    ) {
+      c.(SourceElement).isSource(_, kind, p, isExact, model) and
+      modelKind = "source"
+    }
+
     private predicate isRelevantSource(
       SourceElement e, string output, string kind, Provenance provenance, string model
     ) {
-      e.isSource(output, kind, provenance, model) and
-      (
-        provenance.isManual()
-        or
-        provenance.isGenerated() and
-        not exists(Provenance p | p.isManual() and e.isSource(_, kind, p, _))
+      exists(boolean isExact |
+        e.isSource(output, kind, provenance, isExact, model) and
+        RelevantModel<sourceModel/6>::isRelevantModel(e, kind, provenance, model, isExact)
       )
+    }
+
+    private predicate sinkModel(
+      SummarizedCallableBase c, string kind, Provenance p, string model, boolean isExact,
+      string modelKind
+    ) {
+      c.(SinkElement).isSink(_, kind, p, isExact, model) and
+      modelKind = "sink"
     }
 
     private predicate isRelevantSink(
       SinkElement e, string input, string kind, Provenance provenance, string model
     ) {
-      e.isSink(input, kind, provenance, model) and
-      (
-        provenance.isManual()
-        or
-        provenance.isGenerated() and
-        not exists(Provenance p | p.isManual() and e.isSink(_, kind, p, _))
+      exists(boolean isExact |
+        e.isSink(input, kind, provenance, isExact, model) and
+        RelevantModel<sinkModel/6>::isRelevantModel(e, kind, provenance, model, isExact)
       )
+    }
+
+    private predicate barrierModel(
+      SummarizedCallableBase c, string kind, Provenance p, string model, boolean isExact,
+      string modelKind
+    ) {
+      c.(BarrierElement).isBarrier(_, kind, p, isExact, model) and
+      modelKind = "barrier"
     }
 
     private predicate isRelevantBarrier(
       BarrierElement e, string output, string kind, Provenance provenance, string model
     ) {
-      e.isBarrier(output, kind, provenance, model) and
-      (
-        provenance.isManual()
-        or
-        provenance.isGenerated() and
-        not exists(Provenance p | p.isManual() and e.isBarrier(_, kind, p, _))
+      exists(boolean isExact |
+        e.isBarrier(output, kind, provenance, isExact, model) and
+        RelevantModel<barrierModel/6>::isRelevantModel(e, kind, provenance, model, isExact)
       )
+    }
+
+    private predicate barrierGuardModel(
+      SummarizedCallableBase c, string kind, Provenance p, string model, boolean isExact,
+      string modelKind
+    ) {
+      c.(BarrierGuardElement).isBarrierGuard(_, _, kind, p, isExact, model) and
+      modelKind = "barrier-guard"
     }
 
     private predicate isRelevantBarrierGuard(
       BarrierGuardElement e, string input, string acceptingValue, string kind,
       Provenance provenance, string model
     ) {
-      e.isBarrierGuard(input, acceptingValue, kind, provenance, model) and
-      (
-        provenance.isManual()
-        or
-        provenance.isGenerated() and
-        not exists(Provenance p | p.isManual() and e.isBarrierGuard(_, _, kind, p, _))
+      exists(boolean isExact |
+        e.isBarrierGuard(input, acceptingValue, kind, provenance, isExact, model) and
+        RelevantModel<barrierGuardModel/6>::isRelevantModel(e, kind, provenance, model, isExact)
       )
     }
+
+    private string sourceMarker() { result = "SOURCEMARKER" }
+
+    private string sinkMarker() { result = "SINKMARKER" }
+
+    bindingset[s]
+    private string addSourceMarker(string s) { result = sourceMarker() + "." + s }
+
+    bindingset[s]
+    private string addSinkMarker(string s) { result = sinkMarker() + "." + s }
 
     private predicate flowSpec(string spec) {
       exists(SummarizedCallable c |
@@ -783,16 +855,126 @@ module Make<
         c.propagatesFlow(_, spec, _, _, _, _)
       )
       or
-      isRelevantSource(_, spec, _, _, _)
+      exists(string sourceSpec |
+        spec = addSourceMarker(sourceSpec) and
+        isRelevantSource(_, sourceSpec, _, _, _)
+      )
       or
       isRelevantBarrier(_, spec, _, _, _)
       or
       isRelevantBarrierGuard(_, spec, _, _, _, _)
       or
-      isRelevantSink(_, spec, _, _, _)
+      exists(string sinkSpec |
+        spec = addSinkMarker(sinkSpec) and
+        isRelevantSink(_, sinkSpec, _, _, _)
+      )
     }
 
-    import AccessPathSyntax::AccessPath<flowSpec/1>
+    private module Ap = AccessPathSyntax::AccessPath<flowSpec/1>;
+
+    import Ap
+
+    class AccessPath extends Ap::AccessPath {
+      AccessPathToken getToken(int n) { result = super.getToken(n) }
+
+      int getNumToken() { result = super.getNumToken() }
+    }
+
+    abstract private class SourceOrSinkAccessPath extends AccessPath {
+      AccessPathToken getTokenExclMarker(int n) {
+        result = super.getToken(n + 1) and
+        n >= 0
+      }
+
+      private predicate hasContentAt(int pos) {
+        exists(External::interpretContent(this.getTokenExclMarker(pos)))
+      }
+
+      int getFirstContentToken() {
+        this.hasContentAt(result) and
+        not this.hasContentAt(result - 1)
+      }
+
+      override int getNumToken() {
+        result = super.getNumToken() - 1 // account for the marker
+      }
+    }
+
+    /**
+     * For a source access path like
+     *
+     * ```
+     * Argument[0].Parameter[1].Field[A].Field[B]
+     * ```
+     *
+     * we rewrite it into
+     *
+     * ```
+     * Parameter[1].Argument[0].Field[A].Field[B]
+     * ```
+     *
+     * which allows us to process the stack top-down, first performing a store into `B`,
+     * then a store into `A`, and finally a step from a callback argument at position 0
+     * to its parameter at position 1.
+     */
+    private class SourceAccessPath extends SourceOrSinkAccessPath, AccessPath {
+      SourceAccessPath() { AccessPath.super.getToken(0) = sourceMarker() }
+
+      override AccessPathToken getToken(int n) {
+        not exists(this.getFirstContentToken()) and
+        exists(int i |
+          i = this.getNumToken() - 1 and
+          result = this.getTokenExclMarker(i - n)
+        )
+        or
+        exists(int first | first = this.getFirstContentToken() |
+          result = this.getTokenExclMarker(n) and
+          n >= first
+          or
+          result = this.getTokenExclMarker(first - n - 1) and
+          n >= 0
+        )
+      }
+    }
+
+    /**
+     * For a sink access path like
+     *
+     * ```
+     * Argument[0].ReturnValue.Field[A].Field[B]
+     * ```
+     *
+     * we rewrite it into
+     *
+     * ```
+     * Field[B].Field[A].Argument[0].ReturnValue
+     * ```
+     *
+     * which allows us to process the stack top-down, first performing a step from the
+     * returned value of a callback to the place where the callback is supplied as an
+     * argument at position 0, then a read of `A`, and finally a read of `B`.
+     */
+    private class SinkAccessPath extends SourceOrSinkAccessPath, AccessPath {
+      SinkAccessPath() { AccessPath.super.getToken(0) = sinkMarker() }
+
+      override AccessPathToken getToken(int n) {
+        not exists(this.getFirstContentToken()) and
+        result = this.getTokenExclMarker(n)
+        or
+        exists(int first, int num, int i |
+          first = this.getFirstContentToken() and
+          num = this.getNumToken()
+        |
+          result = this.getTokenExclMarker(first + i) and
+          i >= 0 and
+          n = num - first - i - 1
+          or
+          result = this.getTokenExclMarker(i) and
+          i < first and
+          n = num - first + i
+        )
+      }
+    }
 
     /** Holds if specification component `token` parses as parameter `pos`. */
     predicate parseParam(AccessPathToken token, ArgumentPosition pos) {
@@ -1137,13 +1319,20 @@ module Make<
       outputState(c, s) and s = SummaryComponentStack::argument(_)
     }
 
+    private predicate relevantFlowSummaryPosition(SummarizedCallable c, ReturnKind rk) {
+      exists(SummaryComponentStack input |
+        summary(c, input, _, _, _) and
+        input = TSingletonSummaryComponentStack(TReturnSummaryComponent(rk))
+      )
+    }
+
     pragma[nomagic]
     private predicate sourceOutputStateEntry(
       SourceElement source, SummaryComponentStack s, string kind, string model
     ) {
       exists(string outSpec |
         isRelevantSource(source, outSpec, kind, _, model) and
-        External::interpretSpec(outSpec, s)
+        External::interpretSpec(addSourceMarker(outSpec), s)
       )
     }
 
@@ -1151,22 +1340,19 @@ module Make<
     private predicate sourceOutputState(
       SourceElement source, SummaryComponentStack s, string kind, string model
     ) {
-      sourceOutputStateEntry(source, s, kind, model)
-      or
-      exists(SummaryComponentStack out |
-        sourceOutputState(source, out, kind, model) and
-        out.head() = TContentSummaryComponent(_) and
-        s = out.tail()
+      exists(SummaryComponentStack entry |
+        sourceOutputStateEntry(source, entry, kind, model) and
+        s = entry.drop(_)
       )
     }
 
     pragma[nomagic]
-    private predicate sinkInputStateExit(
+    private predicate sinkInputStateEntry(
       SinkElement sink, SummaryComponentStack s, string kind, string model
     ) {
       exists(string inSpec |
         isRelevantSink(sink, inSpec, kind, _, model) and
-        External::interpretSpec(inSpec, s)
+        External::interpretSpec(addSinkMarker(inSpec), s)
       )
     }
 
@@ -1174,12 +1360,9 @@ module Make<
     private predicate sinkInputState(
       SinkElement sink, SummaryComponentStack s, string kind, string model
     ) {
-      sinkInputStateExit(sink, s, kind, model)
-      or
-      exists(SummaryComponentStack inp |
-        sinkInputState(sink, inp, kind, model) and
-        inp.head() = TContentSummaryComponent(_) and
-        s = inp.tail()
+      exists(SummaryComponentStack entry |
+        sinkInputStateEntry(sink, entry, kind, model) and
+        s = entry.drop(_)
       )
     }
 
@@ -1265,777 +1448,1292 @@ module Make<
       }
     }
 
-    private newtype TSummaryNode =
-      TSummaryInternalNode(SummarizedCallable c, SummaryNodeState state) {
-        summaryNodeRange(c, state)
-      } or
-      TSummaryParameterNode(SummarizedCallable c, ParameterPosition pos) {
-        summaryParameterNodeRange(c, pos)
-      } or
-      TSourceOutputNode(SourceElement source, SummaryNodeState state, string kind, string model) {
-        state.isSourceOutputState(source, _, kind, model)
-      } or
-      TSinkInputNode(SinkElement sink, SummaryNodeState state, string kind, string model) {
-        state.isSinkInputState(sink, _, kind, model)
-      }
-
-    abstract class SummaryNode extends TSummaryNode {
-      abstract string toString();
-
-      abstract SummarizedCallable getSummarizedCallable();
-
-      abstract SourceElement getSourceElement();
-
-      abstract SinkElement getSinkElement();
-
-      predicate isHidden() { any() }
-    }
-
-    private class SummaryInternalNode extends SummaryNode, TSummaryInternalNode {
-      private SummarizedCallable c;
-      private SummaryNodeState state;
-
-      SummaryInternalNode() { this = TSummaryInternalNode(c, state) }
-
-      override string toString() { result = "[summary] " + state + " in " + c }
-
-      override SummarizedCallable getSummarizedCallable() { result = c }
-
-      override SourceElement getSourceElement() { none() }
-
-      override SinkElement getSinkElement() { none() }
-    }
-
-    private class SummaryParamNode extends SummaryNode, TSummaryParameterNode {
-      private SummarizedCallable c;
-      private ParameterPosition pos;
-
-      SummaryParamNode() { this = TSummaryParameterNode(c, pos) }
-
-      override string toString() { result = "[summary param] " + pos + " in " + c }
-
-      override SummarizedCallable getSummarizedCallable() { result = c }
-
-      override SourceElement getSourceElement() { none() }
-
-      override SinkElement getSinkElement() { none() }
-    }
-
-    class SourceOutputNode extends SummaryNode, TSourceOutputNode {
-      private SourceElement source_;
-      private SummaryNodeState state_;
-      private string kind_;
-      private string model_;
-
-      SourceOutputNode() { this = TSourceOutputNode(source_, state_, kind_, model_) }
-
+    signature module InputSig2 {
       /**
-       * Holds if this node is an entry node, i.e. before any stores have been performed.
+       * An element used to represent sources and sinks.
        *
-       * This node should be used as the actual source node in data flow configurations.
-       */
-      predicate isEntry(string kind, string model) {
-        model = model_ and
-        exists(SummaryComponentStack out |
-          sourceOutputStateEntry(source_, out, kind, model_) and
-          state_.isSourceOutputState(source_, out, kind, model_)
-        )
-      }
-
-      /**
-       * Holds if this node is an exit node, i.e. after all stores have been performed.
+       * These elements will be embedded into the data flow graph and serve as the
+       * sources/sinks that the user sees in the output.
        *
-       * A local flow step should be added from this node to a data flow node representing
-       * `s` inside `source`.
-       */
-      predicate isExit(SourceElement source, SummaryComponentStack s, string model) {
-        source = source_ and
-        model = model_ and
-        state_.isSourceOutputState(source, s, _, model)
-      }
-
-      override predicate isHidden() { not this.isEntry(_, _) }
-
-      override string toString() {
-        if this.isEntry(_, _)
-        then result = source_.toString()
-        else result = "[source] " + state_ + " at " + source_
-      }
-
-      override SummarizedCallable getSummarizedCallable() { none() }
-
-      override SourceElement getSourceElement() { result = source_ }
-
-      override SinkElement getSinkElement() { none() }
-    }
-
-    class SinkInputNode extends SummaryNode, TSinkInputNode {
-      private SinkElement sink_;
-      private SummaryNodeState state_;
-      private string kind_;
-      private string model_;
-
-      SinkInputNode() { this = TSinkInputNode(sink_, state_, kind_, model_) }
-
-      /**
-       * Holds if this node is an entry node, i.e. before any reads have been performed.
+       * For example, if we have a source access path like
        *
-       * A local flow step should be added to this node from a data flow node representing
-       * `sc` inside `sink`.
+       * ```
+       * Argument[0].Parameter[1].Field[A].Field[B]
+       * ```
+       *
+       * then there should be a reporting element corresponding to the `Argument[0]` part,
+       * as well as the `Parameter[1]` part, and a flow step will be generated between them.
        */
-      predicate isEntry(SinkElement sink, SummaryComponent sc, string model) {
-        sink = sink_ and
-        model = model_ and
-        state_.isSinkInputState(sink, TSingletonSummaryComponentStack(sc), _, model)
+      class SourceSinkReportingElement {
+        /** Gets the enclosing callable of this element. */
+        DataFlowCallable getEnclosingCallable();
+
+        /**
+         * Gets a successor element corresponding to the `sc` part of this element.
+         *
+         * For example, if `sc` is `Parameter[0]` then the result should be the
+         * parameter at position 0 of this element (this element may for example be
+         * a reference to a closure).
+         */
+        bindingset[this, sc]
+        SourceSinkReportingElement getASuccessor(SummaryComponent sc);
+
+        /** Gets a textual representation of this element. */
+        string toString();
+
+        /** Gets the location of this element. */
+        Location getLocation();
       }
 
       /**
-       * Holds if this node is an exit node, i.e. after all reads have been performed.
+       * Gets an element corresponding to the `sc` part of `source`.
        *
-       * This node should be used as the actual sink node in data flow configurations.
+       * For example, if `sc` is `ReturnValue` then the result should be a
+       * call to `source`, and if `sc` is `Argument[0]` then the result
+       * should be an argument at position 0 in a call to `source`.
        */
-      predicate isExit(string kind, string model) {
-        kind = kind_ and
-        model = model_ and
-        exists(SummaryComponentStack inp |
-          sinkInputStateExit(sink_, inp, kind, model_) and
-          state_.isSinkInputState(sink_, inp, kind, model_)
-        )
-      }
-
-      override predicate isHidden() { not this.isExit(_, _) }
-
-      override string toString() {
-        if this.isExit(_, _)
-        then result = sink_.toString()
-        else result = "[sink] " + state_ + " at " + sink_
-      }
-
-      override SummarizedCallable getSummarizedCallable() { none() }
-
-      override SourceElement getSourceElement() { none() }
-
-      override SinkElement getSinkElement() { result = sink_ }
-    }
-
-    /**
-     * Holds if `state` represents having read from a parameter at position
-     * `pos` in `c`. In this case we are not synthesizing a data-flow node,
-     * but instead assume that a relevant parameter node already exists.
-     */
-    private predicate parameterReadState(
-      SummarizedCallable c, SummaryNodeState state, ParameterPosition pos
-    ) {
-      state.isInputState(c, SummaryComponentStack::argument(pos))
-    }
-
-    /**
-     * Holds if a synthesized summary node is needed for the state `state` in summarized
-     * callable `c`.
-     */
-    private predicate summaryNodeRange(SummarizedCallable c, SummaryNodeState state) {
-      state.isInputState(c, _) and
-      not parameterReadState(c, state, _)
-      or
-      state.isOutputState(c, _)
-    }
-
-    pragma[noinline]
-    private SummaryNode summaryNodeInputState(SummarizedCallable c, SummaryComponentStack s) {
-      exists(SummaryNodeState state | state.isInputState(c, s) |
-        result = TSummaryInternalNode(c, state)
-        or
-        exists(ParameterPosition pos |
-          parameterReadState(c, state, pos) and
-          result = TSummaryParameterNode(c, pos)
-        )
-      )
-    }
-
-    pragma[noinline]
-    private SummaryNode summaryNodeOutputState(SummarizedCallable c, SummaryComponentStack s) {
-      exists(SummaryNodeState state |
-        state.isOutputState(c, s) and
-        result = TSummaryInternalNode(c, state)
-      )
-    }
-
-    pragma[noinline]
-    private SummaryNode sourceElementOutputState(SourceElement source, SummaryComponentStack s) {
-      exists(SummaryNodeState state, string kind, string model |
-        state.isSourceOutputState(source, s, kind, model) and
-        result = TSourceOutputNode(source, state, kind, model)
-      )
-    }
-
-    pragma[noinline]
-    private SummaryNode sinkElementInputState(SinkElement sink, SummaryComponentStack s) {
-      exists(SummaryNodeState state, string kind, string model |
-        state.isSinkInputState(sink, s, kind, model) and
-        result = TSinkInputNode(sink, state, kind, model)
-      )
-    }
-
-    /**
-     * Holds if a write targets `post`, which is a post-update node for a
-     * parameter at position `pos` in `c`.
-     */
-    private predicate isParameterPostUpdate(
-      SummaryNode post, SummarizedCallable c, ParameterPosition pos
-    ) {
-      post = summaryNodeOutputState(c, SummaryComponentStack::argument(pos))
-    }
-
-    /** Holds if a parameter node at position `pos` is required for `c`. */
-    private predicate summaryParameterNodeRange(SummarizedCallable c, ParameterPosition pos) {
-      parameterReadState(c, _, pos)
-      or
-      // Same as `isParameterPostUpdate(_, c, pos)`, but can be used in a negative context
-      any(SummaryNodeState state).isOutputState(c, SummaryComponentStack::argument(pos))
-    }
-
-    private predicate callbackOutput(
-      SummarizedCallable c, SummaryComponentStack s, SummaryNode receiver, ReturnKind rk
-    ) {
-      any(SummaryNodeState state).isInputState(c, s) and
-      s.head() = TReturnSummaryComponent(rk) and
-      receiver = summaryNodeInputState(c, s.tail())
-    }
-
-    private predicate callbackInput(
-      SummarizedCallable c, SummaryComponentStack s, SummaryNode receiver, ArgumentPosition pos
-    ) {
-      any(SummaryNodeState state).isOutputState(c, s) and
-      s.head() = TParameterSummaryComponent(pos) and
-      receiver = summaryNodeInputState(c, s.tail())
-    }
-
-    /** Holds if a call targeting `receiver` should be synthesized inside `c`. */
-    predicate summaryCallbackRange(SummarizedCallable c, SummaryNode receiver) {
-      callbackOutput(c, _, receiver, _)
-      or
-      callbackInput(c, _, receiver, _)
-    }
-
-    /** Holds if summary node `p` is a parameter with position `pos`. */
-    predicate summaryParameterNode(SummaryNode p, ParameterPosition pos) {
-      p = TSummaryParameterNode(_, pos)
-    }
-
-    /** Holds if summary node `out` contains output of kind `rk` from a call targeting `receiver`. */
-    predicate summaryOutNode(SummaryNode receiver, SummaryNode out, ReturnKind rk) {
-      exists(SummarizedCallable callable, SummaryComponentStack s |
-        callbackOutput(callable, s, receiver, rk) and
-        out = summaryNodeInputState(callable, s)
-      )
-    }
-
-    /** Holds if summary node `arg` is at position `pos` in a call targeting `receiver`. */
-    predicate summaryArgumentNode(SummaryNode receiver, SummaryNode arg, ArgumentPosition pos) {
-      exists(SummarizedCallable callable, SummaryComponentStack s |
-        callbackInput(callable, s, receiver, pos) and
-        arg = summaryNodeOutputState(callable, s)
-      )
-    }
-
-    /** Holds if summary node `post` is a post-update node with pre-update node `pre`. */
-    predicate summaryPostUpdateNode(SummaryNode post, SummaryNode pre) {
-      exists(SummarizedCallable c, ParameterPosition pos |
-        isParameterPostUpdate(post, c, pos) and
-        pre = TSummaryParameterNode(c, pos)
-      )
-      or
-      exists(SummarizedCallable callable, SummaryComponentStack s |
-        callbackInput(callable, s, _, _) and
-        pre = summaryNodeOutputState(callable, s) and
-        post = summaryNodeInputState(callable, s)
-      )
-    }
-
-    /** Holds if summary node `ret` is a return node of kind `rk`. */
-    predicate summaryReturnNode(SummaryNode ret, ReturnKind rk) {
-      exists(SummaryComponentStack s |
-        ret = summaryNodeOutputState(_, s) and
-        s = TSingletonSummaryComponentStack(TReturnSummaryComponent(rk))
-      )
-    }
-
-    /**
-     * Holds if flow is allowed to pass from the parameter at position `pos` of `c`,
-     * to a return node, and back out to the parameter.
-     */
-    predicate summaryAllowParameterReturnInSelf(SummarizedCallable c, ParameterPosition ppos) {
-      exists(SummaryComponentStack inputContents, SummaryComponentStack outputContents |
-        summary(c, inputContents, outputContents, _, _) and
-        inputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos)) and
-        outputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos))
-      )
-    }
-
-    /**
-     * Holds if `barrier` is a relevant barrier element with output specification `outSpec`.
-     */
-    predicate barrierSpec(
-      BarrierElement barrier, SummaryComponentStack outSpec, string kind, string model
-    ) {
-      exists(string output |
-        isRelevantBarrier(barrier, output, kind, _, model) and
-        External::interpretSpec(output, outSpec)
-      )
-    }
-
-    /**
-     * Holds if `barrierGuard` is a relevant barrier guard element with input specification `inSpec`.
-     */
-    predicate barrierGuardSpec(
-      BarrierGuardElement barrierGuard, SummaryComponentStack inSpec, string acceptingValue,
-      string kind, string model
-    ) {
-      exists(string input |
-        isRelevantBarrierGuard(barrierGuard, input, acceptingValue, kind, _, model) and
-        External::interpretSpec(input, inSpec)
-      )
-    }
-
-    signature module TypesInputSig {
-      /** Gets the type of content `c`. */
-      DataFlowType getContentType(ContentSet c);
-
-      /** Gets the type of the parameter at the given position. */
-      bindingset[c, pos]
-      DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos);
-
-      /** Gets the return type of kind `rk` for callable `c`. */
-      bindingset[c, rk]
-      DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk);
-
-      /**
-       * Gets the type of the `i`th parameter in a synthesized call that targets a
-       * callback of type `t`.
-       */
-      bindingset[t, pos]
-      DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos);
-
-      /**
-       * Gets the return type of kind `rk` in a synthesized call that targets a
-       * callback of type `t`.
-       */
-      bindingset[t, rk]
-      DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk);
-
-      DataFlowType getSyntheticGlobalType(SyntheticGlobal sg);
-
-      DataFlowType getSourceType(SourceBase source, SummaryComponentStack sc);
-
-      DataFlowType getSinkType(SinkBase sink, SummaryComponent sc);
-    }
-
-    /**
-     * Provides the predicate `summaryNodeType` for associating types with summary nodes.
-     *
-     * Only relevant for typed languages.
-     */
-    module Types<TypesInputSig TypesInput> {
-      private import TypesInput
-
-      /**
-       * Gets the type of synthesized summary node `n`.
-       *
-       * The type is computed based on the language-specific predicates
-       * `getContentType()`, `getReturnType()`, `getCallbackParameterType()`, and
-       * `getCallbackReturnType()`.
-       */
-      DataFlowType summaryNodeType(SummaryNode n) {
-        exists(SummaryNode pre |
-          summaryPostUpdateNode(n, pre) and
-          result = summaryNodeType(pre)
-        )
-        or
-        exists(SummarizedCallable c, SummaryComponentStack s, SummaryComponent head |
-          head = s.head()
-        |
-          n = summaryNodeInputState(c, s) and
-          (
-            exists(ContentSet cont | result = getContentType(cont) |
-              head = TContentSummaryComponent(cont) or
-              head = TWithContentSummaryComponent(cont)
-            )
-            or
-            head = TWithoutContentSummaryComponent(_) and
-            result = summaryNodeType(summaryNodeInputState(c, s.tail()))
-            or
-            exists(ReturnKind rk |
-              head = TReturnSummaryComponent(rk) and
-              result =
-                getCallbackReturnType(summaryNodeType(summaryNodeInputState(pragma[only_bind_out](c),
-                      s.tail())), rk)
-            )
-            or
-            exists(SyntheticGlobal sg |
-              head = TSyntheticGlobalSummaryComponent(sg) and
-              result = getSyntheticGlobalType(sg)
-            )
-            or
-            exists(ParameterPosition pos |
-              head = TArgumentSummaryComponent(pos) and
-              result = getParameterType(c, pos)
-            )
-          )
-          or
-          n = summaryNodeOutputState(c, s) and
-          (
-            exists(ContentSet cont |
-              head = TContentSummaryComponent(cont) and result = getContentType(cont)
-            )
-            or
-            s.length() = 1 and
-            exists(ReturnKind rk |
-              head = TReturnSummaryComponent(rk) and
-              result = getReturnType(c, rk)
-            )
-            or
-            exists(ArgumentPosition pos | head = TParameterSummaryComponent(pos) |
-              result =
-                getCallbackParameterType(summaryNodeType(summaryNodeInputState(pragma[only_bind_out](c),
-                      s.tail())), pos)
-            )
-            or
-            exists(SyntheticGlobal sg |
-              head = TSyntheticGlobalSummaryComponent(sg) and
-              result = getSyntheticGlobalType(sg)
-            )
-          )
-        )
-        or
-        exists(SourceElement source |
-          exists(SummaryComponentStack s |
-            n.(SourceOutputNode).isExit(source, s, _) and
-            result = getSourceType(source, s)
-          )
-          or
-          exists(SummaryComponentStack s, ContentSet cont |
-            n = sourceElementOutputState(source, s) and
-            s.head() = TContentSummaryComponent(cont) and
-            result = getContentType(cont)
-          )
-        )
-        or
-        exists(SinkElement sink |
-          exists(SummaryComponent sc |
-            n.(SinkInputNode).isEntry(sink, sc, _) and
-            result = getSinkType(sink, sc)
-          )
-          or
-          exists(SummaryComponentStack s, ContentSet cont |
-            n = sinkElementInputState(sink, s) and
-            s.head() = TContentSummaryComponent(cont) and
-            result = getContentType(cont)
-          )
-        )
-      }
-    }
-
-    signature module StepsInputSig {
-      /** Gets a call that targets summarized callable `sc`. */
-      DataFlowCall getACall(SummarizedCallable sc);
-
-      /** Gets the enclosing callable of `source`. */
-      DataFlowCallable getSourceNodeEnclosingCallable(SourceBase source);
-
-      /**
-       * Gets a data flow node corresponding to the `s` part of `source`.
-       *
-       * `s` is typically `ReturnValue` and the result is the node that
-       * represents the return value of `source`.
-       */
-      Node getSourceNode(SourceBase source, SummaryComponentStack s);
-
-      /**
-       * Gets a data flow node corresponding to the `sc` part of `sink`.
-       *
-       * `sc` is typically `Argument[i]` and the result is the node that
-       * represents the `i`th argument of `sink`.
-       */
-      Node getSinkNode(SinkBase sink, SummaryComponent sc);
-    }
-
-    /** Provides a compilation of flow summaries to atomic data-flow steps. */
-    module Steps<StepsInputSig StepsInput> {
-      /**
-       * Holds if there is a local step from `pred` to `succ`, which is synthesized
-       * from a flow summary.
-       */
-      predicate summaryLocalStep(
-        SummaryNode pred, SummaryNode succ, boolean preservesValue, string model
+      bindingset[source, sc]
+      default SourceSinkReportingElement getASourceReportingElement(
+        SummarizedCallableBase source, SummaryComponent sc
       ) {
-        exists(
-          SummarizedCallable c, SummaryComponentStack inputContents,
-          SummaryComponentStack outputContents
-        |
-          summary(c, inputContents, outputContents, preservesValue, model) and
-          pred = summaryNodeInputState(pragma[only_bind_into](c), inputContents) and
-          succ = summaryNodeOutputState(pragma[only_bind_into](c), outputContents)
-        |
-          preservesValue = true
+        none()
+      }
+
+      /**
+       * Gets the source data flow node corresponding to `e` and `sc`.
+       *
+       * For example, if `sc` is `ReturnValue` then the result should be the node
+       * that corresponds directly to `e`, and if `sc` is `Argument[0]` then the
+       * result should be the post-update node whose pre-update node corresponds to
+       * `e`.
+       */
+      bindingset[e, sc]
+      default Node getSourceDataFlowNode(SourceSinkReportingElement e, SummaryComponent sc) {
+        none()
+      }
+
+      /**
+       * Gets an element corresponding to the `sc` part of `sink`.
+       *
+       * For example, if `sc` is `Argument[0]` then the result should be the argument
+       * at position 0 in a call to `sink`.
+       */
+      bindingset[sink, sc]
+      default SourceSinkReportingElement getASinkReportingElement(
+        SummarizedCallableBase sink, SummaryComponent sc
+      ) {
+        none()
+      }
+
+      /**
+       * Gets the data flow node corresponding to `e` and `sc`.
+       *
+       * For example, if `sc` is `Argument[0]` then the result should be the node
+       * that corresponds directly to `e`.
+       */
+      bindingset[e, sc]
+      default Node getSinkDataFlowNode(SourceSinkReportingElement e, SummaryComponent sc) { none() }
+    }
+
+    module Make2<InputSig2 Input2> {
+      private import Input2
+
+      /**
+       * For a source access path like
+       *
+       * ```
+       * Argument[0].Parameter[1].Field[A].Field[B]
+       * ```
+       *
+       * which gets rewritten into
+       *
+       * ```
+       * Parameter[1].Argument[0].Field[A].Field[B]
+       * ```
+       *
+       * we first find the entry reporting element based on `Argument[0]`. This entry
+       * reporting element will also be used for all the stores (done in
+       * `sourceOutputStoreNode`), but for `Parameter[1]`, we will use the reporting
+       * element obtained by going to the parameter at position 1 of the entry element
+       * (done in `sourceOutputStepNode`).
+       */
+      private predicate sourceOutputNodeEntryElement(
+        SourceElement source, SummaryNodeState state, SourceSinkReportingElement e, string kind,
+        string model
+      ) {
+        exists(SummaryComponentStack entry, SummaryComponentStack stack |
+          state.isSourceOutputState(source, stack, kind, model) and
+          // entry = Parameter[1].Argument[0].Field[A].Field[B]
+          sourceOutputStateEntry(source, entry, kind, model) and
+          // stack = Parameter[1].Argument[0]
+          stack =
+            min(SummaryComponentStack stack0, int i |
+              stack0 = entry.drop(i) and
+              not stack0.head() instanceof TContentSummaryComponent
+            |
+              stack0 order by i
+            ) and
+          e = getASourceReportingElement(source, stack.head())
+        )
+      }
+
+      private predicate sourceOutputStepNode(
+        SourceElement source, SummaryNodeState state, SourceSinkReportingElement e, string kind,
+        string model
+      ) {
+        sourceOutputNodeEntryElement(source, state, e, kind, model)
+        or
+        sourceOutputNodeStep(source, state, _, e, _, kind, model)
+      }
+
+      private predicate sourceOutputNodeStep(
+        SourceElement source, SummaryNodeState state, SummaryNodeState state0,
+        SourceSinkReportingElement e, SourceSinkReportingElement e0, string kind, string model
+      ) {
+        exists(SummaryComponentStack stack, SummaryComponent head, SummaryComponentStack stack0 |
+          sourceOutputStepNode(source, state0, e0, kind, model) and
+          state0.isSourceOutputState(source, stack0, kind, model) and
+          stack = stack0.tail() and
+          state.isSourceOutputState(source, stack, kind, model) and
+          head = stack.head() and
+          e = e0.getASuccessor(head)
+        )
+      }
+
+      private predicate sourceOutputStoreNode(
+        SourceElement source, SummaryNodeState state, SourceSinkReportingElement e, string kind,
+        string model
+      ) {
+        sourceOutputNodeEntryElement(source, state, e, kind, model)
+        or
+        exists(SummaryComponentStack stack, SummaryNodeState state0 |
+          sourceOutputStoreNode(source, state0, e, kind, model) and
+          state0.isSourceOutputState(source, stack.tail(), kind, model) and
+          state.isSourceOutputState(source, stack, kind, model)
+        )
+      }
+
+      /**
+       * For a sink access path like
+       *
+       * ```
+       * Argument[0].ReturnValue.Field[A].Field[B]
+       * ```
+       *
+       * which gets rewritten into
+       *
+       * ```
+       * Field[B].Field[A].Argument[0].ReturnValue
+       * ```
+       *
+       * we first find the entry reporting element based on `Argument[0]`. This entry
+       * reporting element will also be used for all the reads (done in `sinkInputReadNode`),
+       * but for `ReturnValue`, we will use the reporting element obtained by going to a
+       * value returned by the entry element (done in `sinkInputStepNode`).
+       */
+      private predicate sinkInputNodeEntryElement(
+        SinkElement sink, SummaryNodeState state, SourceSinkReportingElement e, string kind,
+        string model
+      ) {
+        exists(SummaryComponentStack entry, SummaryComponentStack stack |
+          state.isSinkInputState(sink, stack, kind, model) and
+          // entry = Field[B].Field[A].Argument[0].ReturnValue
+          sinkInputStateEntry(sink, entry, kind, model) and
+          // stack = Field[B].Field[A].Argument[0]
+          stack =
+            max(SummaryComponentStack stack0, int i |
+              stack0 = entry.drop(i) and
+              not stack0.head() instanceof TContentSummaryComponent
+            |
+              stack0 order by i
+            ) and
+          e = getASinkReportingElement(sink, stack.head())
+        )
+      }
+
+      private predicate sinkInputStepNode(
+        SinkElement sink, SummaryNodeState state, SourceSinkReportingElement e, string kind,
+        string model
+      ) {
+        sinkInputNodeEntryElement(sink, state, e, kind, model)
+        or
+        sinkInputNodeStep(sink, state, _, e, _, kind, model)
+      }
+
+      private predicate sinkInputNodeStep(
+        SinkElement sink, SummaryNodeState state, SummaryNodeState state0,
+        SourceSinkReportingElement e, SourceSinkReportingElement e0, string kind, string model
+      ) {
+        exists(SummaryComponentStack stack, SummaryComponent head, SummaryComponentStack stack0 |
+          sinkInputStepNode(sink, state0, e0, kind, model) and
+          state0.isSinkInputState(sink, stack0, kind, model) and
+          stack.tail() = stack0 and
+          state.isSinkInputState(sink, stack, kind, model) and
+          head = stack.head() and
+          e = e0.getASuccessor(head)
+        )
+      }
+
+      private predicate sinkInputReadNode(
+        SinkElement sink, SummaryNodeState state, SourceSinkReportingElement e, string kind,
+        string model
+      ) {
+        sinkInputNodeEntryElement(sink, state, e, kind, model)
+        or
+        exists(SummaryComponentStack stack, SummaryNodeState state0, SummaryComponentStack stack0 |
+          sinkInputReadNode(sink, state0, e, kind, model) and
+          state0.isSinkInputState(sink, stack0, kind, model) and
+          state.isSinkInputState(sink, stack, kind, model) and
+          stack = stack0.tail()
+        )
+      }
+
+      private newtype TSummaryNode =
+        TSummaryInternalNode(SummarizedCallable c, SummaryNodeState state) {
+          summaryNodeRange(c, state)
+        } or
+        TSummaryParameterNode(SummarizedCallable c, ParameterPosition pos) {
+          summaryParameterNodeRange(c, pos)
+        } or
+        TSummaryReturnArgumentNode(FlowSummaryCallBase call, ReturnKind rk) {
+          exists(SummarizedCallable sc |
+            call = getASourceCall(sc) and
+            relevantFlowSummaryPosition(sc, rk)
+          )
+        } or
+        TSourceOutputNode(
+          SourceElement source, SummaryNodeState state, SourceSinkReportingElement e, string kind,
+          string model
+        ) {
+          sourceOutputStepNode(source, state, e, kind, model)
           or
-          preservesValue = false and not summary(c, inputContents, outputContents, true, _)
-        )
+          sourceOutputStoreNode(source, state, e, kind, model)
+        } or
+        TSinkInputNode(
+          SinkElement sink, SummaryNodeState state, SourceSinkReportingElement e, string kind,
+          string model
+        ) {
+          sinkInputStepNode(sink, state, e, kind, model)
+          or
+          sinkInputReadNode(sink, state, e, kind, model)
+        }
+
+      abstract class SummaryNode extends TSummaryNode {
+        abstract string toString();
+
+        abstract SummarizedCallable getSummarizedCallable();
+
+        abstract SourceElement getSourceElement();
+
+        abstract SinkElement getSinkElement();
+
+        abstract SourceSinkReportingElement getSourceSinkReportingElement();
+
+        abstract DataFlowCallable getEnclosingCallable();
+
+        abstract Location getLocation();
+
+        predicate isHidden() { any() }
+      }
+
+      private class SummaryInternalNode extends SummaryNode, TSummaryInternalNode {
+        private SummarizedCallable c;
+        private SummaryNodeState state;
+
+        SummaryInternalNode() { this = TSummaryInternalNode(c, state) }
+
+        override string toString() { result = "[summary] " + state + " in " + c }
+
+        override SummarizedCallable getSummarizedCallable() { result = c }
+
+        override SourceElement getSourceElement() { none() }
+
+        override SinkElement getSinkElement() { none() }
+
+        override SourceSinkReportingElement getSourceSinkReportingElement() { none() }
+
+        override DataFlowCallable getEnclosingCallable() {
+          result = getSummarizedCallableAsDataFlowCallable(c)
+        }
+
+        override Location getLocation() { result = c.getLocation() }
+      }
+
+      private class SummaryParamNode extends SummaryNode, TSummaryParameterNode {
+        private SummarizedCallable c;
+        private ParameterPosition pos;
+
+        SummaryParamNode() { this = TSummaryParameterNode(c, pos) }
+
+        override string toString() { result = "[summary param] " + pos + " in " + c }
+
+        override SummarizedCallable getSummarizedCallable() { result = c }
+
+        override SourceElement getSourceElement() { none() }
+
+        override SinkElement getSinkElement() { none() }
+
+        override SourceSinkReportingElement getSourceSinkReportingElement() { none() }
+
+        override DataFlowCallable getEnclosingCallable() {
+          result = getSummarizedCallableAsDataFlowCallable(c)
+        }
+
+        override Location getLocation() { result = c.getLocation() }
+      }
+
+      private class SummaryReturnArgumentNode extends SummaryNode, TSummaryReturnArgumentNode {
+        private FlowSummaryCallBase call;
+        private ReturnKind rk;
+
+        SummaryReturnArgumentNode() { this = TSummaryReturnArgumentNode(call, rk) }
+
+        override string toString() { result = "[summary] value written to " + rk + " at " + call }
+
+        override SummarizedCallable getSummarizedCallable() { none() }
+
+        override SourceElement getSourceElement() { none() }
+
+        override SinkElement getSinkElement() { none() }
+
+        override SourceSinkReportingElement getSourceSinkReportingElement() { none() }
+
+        override DataFlowCallable getEnclosingCallable() {
+          result = getSourceCallEnclosingCallable(call)
+        }
+
+        override Location getLocation() { result = call.getLocation() }
+      }
+
+      /**
+       * Gets the summary node that represents the argument node used to transfer
+       * flow into the caller when a value is written to the value returned by
+       * `call` with kind `rk`.
+       */
+      SummaryNode summaryArgumentNode(FlowSummaryCallBase call, ReturnKind rk) {
+        result = TSummaryReturnArgumentNode(call, rk)
+      }
+
+      class SourceOutputNode extends SummaryNode, TSourceOutputNode {
+        private SourceElement source_;
+        private SummaryNodeState state_;
+        private SourceSinkReportingElement e_;
+        private string kind_;
+        private string model_;
+
+        SourceOutputNode() { this = TSourceOutputNode(source_, state_, e_, kind_, model_) }
+
+        /**
+         * Holds if this node is an entry node, i.e. before any stores or steps have been
+         * performed.
+         *
+         * This node should be used as the actual source node in data flow configurations.
+         */
+        predicate isEntry(string kind, string model) {
+          model = model_ and
+          exists(SummaryComponentStack entry |
+            state_.isSourceOutputState(source_, entry, kind, model_) and
+            sourceOutputStateEntry(source_, entry, kind, model_)
+          )
+        }
+
+        /**
+         * Holds if this node is an exit node, i.e. after all stores and steps have been
+         * performed.
+         *
+         * A flow step is added from this node to a data flow node representing
+         * `s` inside `source`, using `getSourceDataFlowNode`.
+         */
+        predicate isExit(
+          SourceElement source, SummaryComponent sc, SourceSinkReportingElement e, string model
+        ) {
+          source = source_ and
+          model = model_ and
+          state_.isSourceOutputState(source, TSingletonSummaryComponentStack(sc), _, model) and
+          e = e_
+        }
+
+        override predicate isHidden() {
+          not this.isEntry(_, _) and
+          (
+            exists(SummaryComponentStack stack |
+              state_.isSourceOutputState(_, stack, _, _) and
+              stack.head() instanceof TContentSummaryComponent
+            )
+            or
+            this.isExit(_, _, _, _)
+          )
+        }
+
+        override string toString() {
+          if this.isHidden()
+          then result = "[source] " + state_ + " at " + e_
+          else result = e_.toString()
+        }
+
+        override SummarizedCallable getSummarizedCallable() { none() }
+
+        override SourceElement getSourceElement() { result = source_ }
+
+        override SinkElement getSinkElement() { none() }
+
+        override SourceSinkReportingElement getSourceSinkReportingElement() { result = e_ }
+
+        override DataFlowCallable getEnclosingCallable() { result = e_.getEnclosingCallable() }
+
+        override Location getLocation() { result = e_.getLocation() }
+      }
+
+      class SinkInputNode extends SummaryNode, TSinkInputNode {
+        private SinkElement sink_;
+        private SummaryNodeState state_;
+        private SourceSinkReportingElement e_;
+        private string kind_;
+        private string model_;
+
+        SinkInputNode() { this = TSinkInputNode(sink_, state_, e_, kind_, model_) }
+
+        /**
+         * Holds if this node is an entry node, i.e. before any reads and steps have been
+         * performed.
+         *
+         * A flow step is added to this node from a data flow node representing
+         * `sc` inside `sink`, using `getSinkDataFlowNode`.
+         */
+        predicate isEntry(
+          SinkElement sink, SummaryComponent sc, SourceSinkReportingElement e, string model
+        ) {
+          sink = sink_ and
+          model = model_ and
+          e = e_ and
+          exists(SummaryComponentStack entry |
+            sinkInputStateEntry(sink, entry, kind_, model) and
+            state_.isSinkInputState(sink, entry, _, model) and
+            sc = entry.head()
+          )
+        }
+
+        /**
+         * Holds if this node is an exit node, i.e. after all reads and steps have been
+         * performed.
+         *
+         * This node should be used as the actual sink node in data flow configurations.
+         */
+        predicate isExit(string kind, string model) {
+          kind = kind_ and
+          model = model_ and
+          state_.isSinkInputState(sink_, TSingletonSummaryComponentStack(_), kind, model_)
+        }
+
+        override predicate isHidden() {
+          not this.isExit(_, _) and
+          (
+            exists(SummaryComponentStack stack |
+              state_.isSinkInputState(_, stack, _, _) and
+              stack.head() instanceof TContentSummaryComponent
+            )
+            or
+            this.isEntry(_, _, _, _)
+          )
+        }
+
+        override string toString() {
+          if this.isHidden()
+          then result = "[sink] " + state_ + " at " + e_
+          else result = e_.toString()
+        }
+
+        override SummarizedCallable getSummarizedCallable() { none() }
+
+        override SourceElement getSourceElement() { none() }
+
+        override SinkElement getSinkElement() { result = sink_ }
+
+        override SourceSinkReportingElement getSourceSinkReportingElement() { result = e_ }
+
+        override DataFlowCallable getEnclosingCallable() { result = e_.getEnclosingCallable() }
+
+        override Location getLocation() { result = e_.getLocation() }
+      }
+
+      /**
+       * Holds if `state` represents having read from a parameter at position
+       * `pos` in `c`. In this case we are not synthesizing a data-flow node,
+       * but instead assume that a relevant parameter node already exists.
+       */
+      private predicate parameterReadState(
+        SummarizedCallable c, SummaryNodeState state, ParameterPosition pos
+      ) {
+        state.isInputState(c, SummaryComponentStack::argument(pos))
         or
-        exists(SummarizedCallable c, SummaryComponentStack s |
-          pred = summaryNodeInputState(c, s.tail()) and
-          succ = summaryNodeInputState(c, s) and
-          s.head() = [SummaryComponent::withContent(_), SummaryComponent::withoutContent(_)] and
-          preservesValue = true and
-          model = ""
+        exists(ReturnKind rk |
+          relevantFlowSummaryPosition(c, rk) and
+          state.isInputState(c, SummaryComponentStack::return(rk)) and
+          pos = getFlowSummaryParameterPosition(rk)
         )
-      }
-
-      predicate sourceStep(SourceOutputNode nodeFrom, Node nodeTo, string model, boolean local) {
-        exists(SummaryComponentStack sc, SourceElement source |
-          nodeFrom.isExit(source, sc, model) and
-          nodeTo = StepsInput::getSourceNode(source, sc) and
-          if StepsInput::getSourceNodeEnclosingCallable(source) = getNodeEnclosingCallable(nodeTo)
-          then local = true
-          else local = false
-        )
-      }
-
-      predicate sourceLocalStep(SourceOutputNode nodeFrom, Node nodeTo, string model) {
-        sourceStep(nodeFrom, nodeTo, model, true)
-      }
-
-      predicate sinkLocalStep(Node nodeFrom, SinkInputNode nodeTo, string model) {
-        exists(SummaryComponent sc, SinkElement sink |
-          nodeFrom = StepsInput::getSinkNode(sink, sc) and
-          nodeTo.isEntry(sink, sc, model)
-        )
-      }
-
-      /** Holds if the value of `succ` is uniquely determined by the value of `pred`. */
-      predicate summaryLocalMustFlowStep(SummaryNode pred, SummaryNode succ) {
-        pred = unique(SummaryNode n1 | summaryLocalStep(n1, succ, true, _))
       }
 
       /**
-       * Holds if there is a read step of content `c` from `pred` to `succ`, which
-       * is synthesized from a flow summary.
+       * Holds if a synthesized summary node is needed for the state `state` in summarized
+       * callable `c`.
        */
-      predicate summaryReadStep(SummaryNode pred, ContentSet c, SummaryNode succ) {
-        exists(SummarizedCallable sc, SummaryComponentStack s |
-          pred = summaryNodeInputState(sc, s.tail()) and
-          succ = summaryNodeInputState(sc, s) and
-          SummaryComponent::content(c) = s.head()
-        )
+      private predicate summaryNodeRange(SummarizedCallable c, SummaryNodeState state) {
+        state.isInputState(c, _) and
+        not parameterReadState(c, state, _)
         or
-        exists(SinkElement sink, SummaryComponentStack s |
-          pred = sinkElementInputState(sink, s.tail()) and
-          succ = sinkElementInputState(sink, s) and
-          SummaryComponent::content(c) = s.head()
-        )
+        state.isOutputState(c, _)
       }
 
-      /**
-       * Holds if there is a store step of content `c` from `pred` to `succ`, which
-       * is synthesized from a flow summary.
-       */
-      predicate summaryStoreStep(SummaryNode pred, ContentSet c, SummaryNode succ) {
-        exists(SummarizedCallable sc, SummaryComponentStack s |
-          pred = summaryNodeOutputState(sc, s) and
-          succ = summaryNodeOutputState(sc, s.tail()) and
-          SummaryComponent::content(c) = s.head()
-        )
-        or
-        exists(SourceElement source, SummaryComponentStack s |
-          pred = sourceElementOutputState(source, s) and
-          succ = sourceElementOutputState(source, s.tail()) and
-          SummaryComponent::content(c) = s.head()
-        )
-      }
-
-      /**
-       * Holds if there is a jump step from `pred` to `succ`, which is synthesized
-       * from a flow summary.
-       */
-      predicate summaryJumpStep(SummaryNode pred, SummaryNode succ) {
-        exists(SummaryComponentStack s |
-          s = SummaryComponentStack::singleton(SummaryComponent::syntheticGlobal(_)) and
-          pred = summaryNodeOutputState(_, s) and
-          succ = summaryNodeInputState(_, s)
-        )
-      }
-
-      predicate sourceJumpStep(SourceOutputNode nodeFrom, Node nodeTo) {
-        sourceStep(nodeFrom, nodeTo, _, false)
-      }
-
-      /**
-       * Holds if values stored inside content `c` are cleared at `n`. `n` is a
-       * synthesized summary node, so in order for values to be cleared at calls
-       * to the relevant method, it is important that flow does not pass over
-       * the argument, either via use-use flow or def-use flow.
-       *
-       * Example:
-       *
-       * ```
-       * a.b = taint;
-       * a.clearB(); // assume we have a flow summary for `clearB` that clears `b` on the qualifier
-       * sink(a.b);
-       * ```
-       *
-       * In the above, flow should not pass from `a` on the first line (or the second
-       * line) to `a` on the third line. Instead, there will be synthesized flow from
-       * `a` on line 2 to the post-update node for `a` on that line (via an intermediate
-       * node where field `b` is cleared).
-       */
-      predicate summaryClearsContent(SummaryNode n, ContentSet c) {
-        exists(SummarizedCallable sc, SummaryNodeState state, SummaryComponentStack stack |
-          n = TSummaryInternalNode(sc, state) and
-          state.isInputState(sc, stack) and
-          stack.head() = SummaryComponent::withoutContent(c)
-        )
-      }
-
-      /**
-       * Holds if the value that is being tracked is expected to be stored inside
-       * content `c` at `n`.
-       */
-      predicate summaryExpectsContent(SummaryNode n, ContentSet c) {
-        exists(SummarizedCallable sc, SummaryNodeState state, SummaryComponentStack stack |
-          n = TSummaryInternalNode(sc, state) and
-          state.isInputState(sc, stack) and
-          stack.head() = SummaryComponent::withContent(c)
+      pragma[noinline]
+      private SummaryNode summaryNodeInputState(SummarizedCallable c, SummaryComponentStack s) {
+        exists(SummaryNodeState state | state.isInputState(c, s) |
+          result = TSummaryInternalNode(c, state)
+          or
+          exists(ParameterPosition pos |
+            parameterReadState(c, state, pos) and
+            result = TSummaryParameterNode(c, pos)
+          )
         )
       }
 
       pragma[noinline]
-      private predicate viableParam(
-        DataFlowCall call, SummarizedCallable sc, ParameterPosition ppos, SummaryParamNode p
+      private SummaryNode summaryNodeOutputState(SummarizedCallable c, SummaryComponentStack s) {
+        exists(SummaryNodeState state |
+          state.isOutputState(c, s) and
+          result = TSummaryInternalNode(c, state)
+        )
+      }
+
+      pragma[noinline]
+      private SummaryNode sourceElementOutputState(
+        SourceElement source, SourceSinkReportingElement e, SummaryComponentStack s
       ) {
-        p = TSummaryParameterNode(sc, ppos) and
-        call = StepsInput::getACall(sc)
+        result = TSourceOutputNode(source, TSourceOutputState(s), e, _, _)
       }
 
-      pragma[nomagic]
-      private SummaryParamNode summaryArgParam(DataFlowCall call, ArgNode arg, SummarizedCallable sc) {
-        exists(ParameterPosition ppos |
-          argumentPositionMatch(call, arg, ppos) and
-          viableParam(call, sc, ppos, result)
-        )
-      }
-
-      /**
-       * Holds if `p` can reach `n` in a summarized callable, using only value-preserving
-       * local steps. `clearsOrExpects` records whether any node on the path from `p` to
-       * `n` either clears or expects contents.
-       */
-      private predicate paramReachesLocal(SummaryParamNode p, SummaryNode n, boolean clearsOrExpects) {
-        viableParam(_, _, _, p) and
-        n = p and
-        clearsOrExpects = false
-        or
-        exists(SummaryNode mid, boolean clearsOrExpectsMid |
-          paramReachesLocal(p, mid, clearsOrExpectsMid) and
-          summaryLocalStep(mid, n, true, _) and
-          if
-            summaryClearsContent(n, _) or
-            summaryExpectsContent(n, _)
-          then clearsOrExpects = true
-          else clearsOrExpects = clearsOrExpectsMid
-        )
-      }
-
-      /**
-       * Holds if use-use flow starting from `arg` should be prohibited.
-       *
-       * This is the case when `arg` is the argument of a call that targets a
-       * flow summary where the corresponding parameter either clears contents
-       * or expects contents.
-       */
-      pragma[nomagic]
-      predicate prohibitsUseUseFlow(ArgNode arg, SummarizedCallable sc) {
-        exists(SummaryParamNode p, ParameterPosition ppos, SummaryNode ret |
-          paramReachesLocal(p, ret, true) and
-          p = summaryArgParam(_, arg, sc) and
-          p = TSummaryParameterNode(_, pragma[only_bind_into](ppos)) and
-          isParameterPostUpdate(ret, _, pragma[only_bind_into](ppos))
-        )
-      }
-
-      pragma[nomagic]
-      private predicate summaryReturnNodeExt(SummaryNode ret, ReturnKindExt rk) {
-        summaryReturnNode(ret, rk.(ValueReturnKind).getKind())
-        or
-        exists(SummaryParamNode p, SummaryNode pre, ParameterPosition pos |
-          paramReachesLocal(p, pre, _) and
-          summaryPostUpdateNode(ret, pre) and
-          p = TSummaryParameterNode(_, pos) and
-          rk.(ParamUpdateReturnKind).getPosition() = pos
-        )
-      }
-
-      bindingset[ret]
-      private SummaryParamNode summaryArgParamRetOut(
-        ArgNode arg, SummaryNode ret, OutNodeExt out, SummarizedCallable sc
+      pragma[noinline]
+      private SummaryNode sinkElementInputState(
+        SinkElement sink, SourceSinkReportingElement e, SummaryComponentStack s
       ) {
-        exists(DataFlowCall call, ReturnKindExt rk |
-          result = summaryArgParam(call, arg, sc) and
-          summaryReturnNodeExt(ret, pragma[only_bind_into](rk)) and
-          out = getAnOutNodeExt(call, pragma[only_bind_into](rk))
+        result = TSinkInputNode(sink, TSinkInputState(s), e, _, _)
+      }
+
+      /**
+       * Holds if a write targets `post`, which is a post-update node for a
+       * parameter at position `pos` in `c`.
+       */
+      private predicate isParameterPostUpdate(
+        SummaryNode post, SummarizedCallable c, ParameterPosition pos
+      ) {
+        post = summaryNodeOutputState(c, SummaryComponentStack::argument(pos))
+      }
+
+      /** Holds if a parameter node at position `pos` is required for `c`. */
+      private predicate summaryParameterNodeRange(SummarizedCallable c, ParameterPosition pos) {
+        parameterReadState(c, _, pos)
+        or
+        // Same as `isParameterPostUpdate(_, c, pos)`, but can be used in a negative context
+        any(SummaryNodeState state).isOutputState(c, SummaryComponentStack::argument(pos))
+      }
+
+      private predicate callbackOutput(
+        SummarizedCallable c, SummaryComponentStack s, SummaryNode receiver, ReturnKind rk
+      ) {
+        any(SummaryNodeState state).isInputState(c, s) and
+        s.head() = TReturnSummaryComponent(rk) and
+        receiver = summaryNodeInputState(c, s.tail())
+      }
+
+      private predicate callbackInput(
+        SummarizedCallable c, SummaryComponentStack s, SummaryNode receiver, ArgumentPosition pos
+      ) {
+        any(SummaryNodeState state).isOutputState(c, s) and
+        s.head() = TParameterSummaryComponent(pos) and
+        receiver = summaryNodeInputState(c, s.tail())
+      }
+
+      /** Holds if a call targeting `receiver` should be synthesized inside `c`. */
+      predicate summaryCallbackRange(SummarizedCallable c, SummaryNode receiver) {
+        callbackOutput(c, _, receiver, _)
+        or
+        callbackInput(c, _, receiver, _)
+      }
+
+      /** Holds if summary node `p` is a parameter with position `pos`. */
+      predicate summaryParameterNode(SummaryNode p, ParameterPosition pos) {
+        p = TSummaryParameterNode(_, pos)
+      }
+
+      /** Holds if summary node `out` contains output of kind `rk` from a call targeting `receiver`. */
+      predicate summaryOutNode(SummaryNode receiver, SummaryNode out, ReturnKind rk) {
+        exists(SummarizedCallable callable, SummaryComponentStack s |
+          callbackOutput(callable, s, receiver, rk) and
+          out = summaryNodeInputState(callable, s)
+        )
+      }
+
+      /** Holds if summary node `arg` is at position `pos` in a call targeting `receiver`. */
+      predicate summaryArgumentNode(SummaryNode receiver, SummaryNode arg, ArgumentPosition pos) {
+        exists(SummarizedCallable callable, SummaryComponentStack s |
+          callbackInput(callable, s, receiver, pos) and
+          arg = summaryNodeOutputState(callable, s)
+        )
+      }
+
+      /** Holds if summary node `post` is a post-update node with pre-update node `pre`. */
+      predicate summaryPostUpdateNode(SummaryNode post, SummaryNode pre) {
+        exists(SummarizedCallable c, ParameterPosition pos |
+          isParameterPostUpdate(post, c, pos) and
+          pre = TSummaryParameterNode(c, pos)
+        )
+        or
+        exists(SummarizedCallable callable, SummaryComponentStack s |
+          callbackInput(callable, s, _, _) and
+          pre = summaryNodeOutputState(callable, s) and
+          post = summaryNodeInputState(callable, s)
+        )
+      }
+
+      /** Holds if summary node `ret` is a return node of kind `rk`. */
+      predicate summaryReturnNode(SummaryNode ret, ReturnKind rk) {
+        exists(SummaryComponentStack s |
+          ret = summaryNodeOutputState(_, s) and
+          s = TSingletonSummaryComponentStack(TReturnSummaryComponent(rk))
+        )
+      }
+
+      /** Holds if return kind `rk` is a relevant return kind for flow summary modeling. */
+      predicate relevantFlowSummaryPosition(ReturnKind rk) { relevantFlowSummaryPosition(_, rk) }
+
+      /**
+       * Holds if flow is allowed to pass from the parameter at position `pos` of `c`,
+       * to a return node, and back out to the parameter.
+       */
+      predicate summaryAllowParameterReturnInSelf(SummarizedCallable c, ParameterPosition ppos) {
+        exists(SummaryComponentStack inputContents, SummaryComponentStack outputContents |
+          summary(c, inputContents, outputContents, _, _) and
+          inputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos)) and
+          outputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos))
         )
       }
 
       /**
-       * Holds if `arg` flows to `out` using a simple value-preserving flow
-       * summary, that is, a flow summary without reads and stores.
-       *
-       * NOTE: This step should not be used in global data-flow/taint-tracking, but may
-       * be useful to include in the exposed local data-flow/taint-tracking relations.
+       * Holds if `barrier` is a relevant barrier element with output specification `outSpec`.
        */
-      predicate summaryThroughStepValue(ArgNode arg, Node out, SummarizedCallable sc) {
-        exists(SummaryNode ret |
-          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), ret, true, _)
+      predicate barrierSpec(
+        BarrierElement barrier, SummaryComponentStack outSpec, string kind, string model
+      ) {
+        exists(string output |
+          isRelevantBarrier(barrier, output, kind, _, model) and
+          External::interpretSpec(output, outSpec)
         )
       }
 
       /**
-       * Holds if `arg` flows to `out` using a simple flow summary involving taint
-       * step, that is, a flow summary without reads and stores.
-       *
-       * NOTE: This step should not be used in global data-flow/taint-tracking, but may
-       * be useful to include in the exposed local data-flow/taint-tracking relations.
+       * Holds if `barrierGuard` is a relevant barrier guard element with input specification `inSpec`.
        */
-      predicate summaryThroughStepTaint(ArgNode arg, Node out, SummarizedCallable sc) {
-        exists(SummaryNode ret |
-          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), ret, false, _)
+      predicate barrierGuardSpec(
+        BarrierGuardElement barrierGuard, SummaryComponentStack inSpec, string acceptingValue,
+        string kind, string model
+      ) {
+        exists(string input |
+          isRelevantBarrierGuard(barrierGuard, input, acceptingValue, kind, _, model) and
+          External::interpretSpec(input, inSpec)
         )
       }
 
-      /**
-       * Holds if there is a read(+taint) of `c` from `arg` to `out` using a
-       * flow summary.
-       *
-       * NOTE: This step should not be used in global data-flow/taint-tracking, but may
-       * be useful to include in the exposed local data-flow/taint-tracking relations.
-       */
-      predicate summaryGetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
-        exists(SummaryNode mid, SummaryNode ret |
-          summaryReadStep(summaryArgParamRetOut(arg, ret, out, sc), c, mid) and
-          summaryLocalStep(mid, ret, _, _)
-        )
+      signature module TypesInputSig {
+        /** Gets the type of content `c`. */
+        DataFlowType getContentType(ContentSet c);
+
+        /** Gets the type of the parameter at the given position. */
+        bindingset[c, pos]
+        DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos);
+
+        /** Gets the return type of kind `rk` for callable `c`. */
+        bindingset[c, rk]
+        DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk);
+
+        /**
+         * Gets the type of the `i`th parameter in a synthesized call that targets a
+         * callback of type `t`.
+         */
+        bindingset[t, pos]
+        DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos);
+
+        /**
+         * Gets the return type of kind `rk` in a synthesized call that targets a
+         * callback of type `t`.
+         */
+        bindingset[t, rk]
+        DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk);
+
+        DataFlowType getSyntheticGlobalType(SyntheticGlobal sg);
+
+        DataFlowType getSourceSinkType(SourceSinkReportingElement e);
       }
 
       /**
-       * Holds if there is a (taint+)store of `arg` into content `c` of `out` using a
-       * flow summary.
+       * Provides the predicate `summaryNodeType` for associating types with summary nodes.
        *
-       * NOTE: This step should not be used in global data-flow/taint-tracking, but may
-       * be useful to include in the exposed local data-flow/taint-tracking relations.
+       * Only relevant for typed languages.
        */
-      predicate summarySetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
-        exists(SummaryNode mid, SummaryNode ret |
-          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), mid, _, _) and
-          summaryStoreStep(mid, c, ret)
-        )
+      module Types<TypesInputSig TypesInput> {
+        private import TypesInput
+
+        /**
+         * Gets the type of synthesized summary node `n`.
+         *
+         * The type is computed based on the language-specific predicates
+         * `getContentType()`, `getReturnType()`, `getCallbackParameterType()`, and
+         * `getCallbackReturnType()`.
+         */
+        DataFlowType summaryNodeType(SummaryNode n) {
+          exists(SummaryNode pre |
+            summaryPostUpdateNode(n, pre) and
+            result = summaryNodeType(pre)
+          )
+          or
+          exists(SummarizedCallable c, SummaryComponentStack s, SummaryComponent head |
+            head = s.head()
+          |
+            n = summaryNodeInputState(c, s) and
+            (
+              exists(ContentSet cont | result = getContentType(cont) |
+                head = TContentSummaryComponent(cont) or
+                head = TWithContentSummaryComponent(cont)
+              )
+              or
+              head = TWithoutContentSummaryComponent(_) and
+              result = summaryNodeType(summaryNodeInputState(c, s.tail()))
+              or
+              exists(ReturnKind rk |
+                head = TReturnSummaryComponent(rk) and
+                result =
+                  getCallbackReturnType(summaryNodeType(summaryNodeInputState(pragma[only_bind_out](c),
+                        s.tail())), rk)
+              )
+              or
+              exists(SyntheticGlobal sg |
+                head = TSyntheticGlobalSummaryComponent(sg) and
+                result = getSyntheticGlobalType(sg)
+              )
+              or
+              exists(ParameterPosition pos |
+                head = TArgumentSummaryComponent(pos) and
+                result = getParameterType(c, pos)
+              )
+            )
+            or
+            n = summaryNodeOutputState(c, s) and
+            (
+              exists(ContentSet cont |
+                head = TContentSummaryComponent(cont) and result = getContentType(cont)
+              )
+              or
+              s.length() = 1 and
+              exists(ReturnKind rk |
+                head = TReturnSummaryComponent(rk) and
+                result = getReturnType(c, rk)
+              )
+              or
+              exists(ArgumentPosition pos | head = TParameterSummaryComponent(pos) |
+                result =
+                  getCallbackParameterType(summaryNodeType(summaryNodeInputState(pragma[only_bind_out](c),
+                        s.tail())), pos)
+              )
+              or
+              exists(SyntheticGlobal sg |
+                head = TSyntheticGlobalSummaryComponent(sg) and
+                result = getSyntheticGlobalType(sg)
+              )
+            )
+          )
+          or
+          exists(SourceElement source |
+            exists(SourceSinkReportingElement e |
+              n.(SourceOutputNode).isExit(source, _, e, _) and
+              result = getSourceSinkType(e)
+            )
+            or
+            exists(SummaryComponentStack s, ContentSet cont |
+              n = sourceElementOutputState(source, _, s) and
+              s.head() = TContentSummaryComponent(cont) and
+              result = getContentType(cont)
+            )
+          )
+          or
+          exists(SinkElement sink |
+            exists(SourceSinkReportingElement e |
+              n.(SinkInputNode).isEntry(sink, _, e, _) and
+              result = getSourceSinkType(e)
+            )
+            or
+            exists(SummaryComponentStack s, ContentSet cont |
+              n = sinkElementInputState(sink, _, s) and
+              s.head() = TContentSummaryComponent(cont) and
+              result = getContentType(cont)
+            )
+          )
+        }
+      }
+
+      signature module StepsInputSig {
+        /** Gets the summary node represented by data-flow node `n`, if any. */
+        SummaryNode getSummaryNode(Node n);
+
+        /** Gets a call that targets summarized callable `sc`. */
+        DataFlowCall getACall(SummarizedCallable sc);
+
+        /** Gets the out node of kind `rk` for `call`, if any. */
+        default Node getSourceOutNode(FlowSummaryCallBase call, ReturnKind rk) { none() }
+      }
+
+      /** Provides a compilation of flow summaries to atomic data-flow steps. */
+      module Steps<StepsInputSig StepsInput> {
+        private predicate sourceExitStep(SourceOutputNode nodeFrom, Node nodeTo, boolean local) {
+          exists(SummaryComponent sc, SourceSinkReportingElement e, string model |
+            nodeFrom.isExit(_, sc, e, model) and
+            nodeTo = getSourceDataFlowNode(e, sc) and
+            if
+              e.getEnclosingCallable() = getNodeEnclosingCallable(nodeTo) and
+              (nodeFrom.isEntry(_, model) or summaryStoreStep(_, _, nodeFrom))
+            then local = true
+            else local = false
+          )
+        }
+
+        private predicate sinkEntryStep(Node nodeFrom, SinkInputNode nodeTo, boolean local) {
+          exists(SummaryComponent sc, SourceSinkReportingElement e, string model |
+            nodeTo.isEntry(_, sc, e, model) and
+            nodeFrom = getSinkDataFlowNode(e, sc) and
+            if
+              e.getEnclosingCallable() = getNodeEnclosingCallable(nodeFrom) and
+              (nodeTo.isExit(_, model) or summaryReadStep(nodeTo, _, _))
+            then local = true
+            else local = false
+          )
+        }
+
+        /**
+         * Holds if there is a local step from `pred` to `succ`, which is synthesized
+         * from a flow summary.
+         */
+        private predicate summaryLocalStepImpl(
+          SummaryNode pred, SummaryNode succ, boolean preservesValue, string model
+        ) {
+          exists(
+            SummarizedCallable c, SummaryComponentStack inputContents,
+            SummaryComponentStack outputContents
+          |
+            summary(c, inputContents, outputContents, preservesValue, model) and
+            pred = summaryNodeInputState(pragma[only_bind_into](c), inputContents) and
+            succ = summaryNodeOutputState(pragma[only_bind_into](c), outputContents)
+          |
+            preservesValue = true
+            or
+            preservesValue = false and not summary(c, inputContents, outputContents, true, _)
+          )
+          or
+          exists(SummarizedCallable c, SummaryComponentStack s |
+            pred = summaryNodeInputState(c, s.tail()) and
+            succ = summaryNodeInputState(c, s) and
+            s.head() = [SummaryComponent::withContent(_), SummaryComponent::withoutContent(_)] and
+            preservesValue = true and
+            model = ""
+          )
+        }
+
+        /** Holds if there is a local step between data-flow nodes synthesized from a flow summary. */
+        predicate summaryLocalStep(Node pred, Node succ, boolean preservesValue, string model) {
+          exists(SummaryNode predSummary | predSummary = StepsInput::getSummaryNode(pred) |
+            summaryLocalStepImpl(predSummary, StepsInput::getSummaryNode(succ), preservesValue,
+              model)
+            or
+            sourceExitStep(predSummary, succ, true) and
+            preservesValue = true and
+            model = ""
+          )
+          or
+          exists(SummaryNode succSummary |
+            succSummary = StepsInput::getSummaryNode(succ) and
+            sinkEntryStep(pred, succSummary, true) and
+            preservesValue = true and
+            model = ""
+          )
+          or
+          exists(FlowSummaryCallBase summaryCall, ReturnKind rk, SummarizedCallable sc |
+            pred = StepsInput::getSourceOutNode(summaryCall, rk) and
+            summaryCall = getASourceCall(sc) and
+            summary(sc, SummaryComponentStack::return(rk), _, preservesValue, model) and
+            StepsInput::getSummaryNode(succ) = TSummaryReturnArgumentNode(summaryCall, rk)
+          )
+        }
+
+        /** Holds if the value of `succ` is uniquely determined by the value of `pred`. */
+        predicate summaryLocalMustFlowStep(SummaryNode pred, SummaryNode succ) {
+          pred = unique(SummaryNode n1 | summaryLocalStepImpl(n1, succ, true, _))
+        }
+
+        /**
+         * Holds if there is a read step of content `c` from `pred` to `succ`, which
+         * is synthesized from a flow summary or a sink specification.
+         */
+        predicate summaryReadStep(SummaryNode pred, ContentSet c, SummaryNode succ) {
+          exists(SummaryComponentStack stack | SummaryComponent::content(c) = stack.head() |
+            exists(SummarizedCallable sc |
+              pred = summaryNodeInputState(sc, stack.tail()) and
+              succ = summaryNodeInputState(sc, stack)
+            )
+            or
+            exists(SinkElement sink, SourceSinkReportingElement e, SummaryComponentStack stack0 |
+              pred = sinkElementInputState(sink, e, stack0) and
+              stack = stack0.tail() and
+              succ = sinkElementInputState(sink, e, stack)
+            )
+          )
+        }
+
+        /**
+         * Holds if there is a store step of content `c` from `pred` to `succ`, which
+         * is synthesized from a flow summary or a source specification.
+         */
+        predicate summaryStoreStep(SummaryNode pred, ContentSet c, SummaryNode succ) {
+          exists(SummaryComponentStack stack | SummaryComponent::content(c) = stack.head() |
+            exists(SummarizedCallable sc |
+              pred = summaryNodeOutputState(sc, stack) and
+              succ = summaryNodeOutputState(sc, stack.tail())
+            )
+            or
+            exists(SourceElement source, SourceSinkReportingElement e |
+              pred = sourceElementOutputState(source, e, stack) and
+              succ = sourceElementOutputState(source, e, stack.tail())
+            )
+          )
+        }
+
+        /**
+         * Holds if there is a jump step from `pred` to `succ`, which is synthesized
+         * from a flow summary.
+         */
+        predicate summaryJumpStep(Node pred, Node succ) {
+          exists(SummaryNode predSummary | StepsInput::getSummaryNode(pred) = predSummary |
+            exists(SummaryNode succSummary | StepsInput::getSummaryNode(succ) = succSummary |
+              exists(SummaryComponentStack s |
+                s = SummaryComponentStack::singleton(SummaryComponent::syntheticGlobal(_)) and
+                predSummary = summaryNodeOutputState(_, s) and
+                succSummary = summaryNodeInputState(_, s)
+              )
+              or
+              // We model all non-store steps as jumps in order to ensure that they are not stepped
+              // over in the path graph.
+              exists(
+                SourceElement source, string kind, SummaryNodeState state, SummaryNodeState state0,
+                SourceSinkReportingElement e, SourceSinkReportingElement e0, string model
+              |
+                sourceOutputNodeStep(source, state, state0, e, e0, kind, model) and
+                predSummary = TSourceOutputNode(source, state0, e0, kind, model) and
+                succSummary = TSourceOutputNode(source, state, e, kind, model)
+              )
+              or
+              // We model all non-read steps as jumps in order to ensure that they are not stepped
+              // over in the path graph.
+              exists(
+                SinkElement sink, string kind, SummaryNodeState state, SummaryNodeState state0,
+                SourceSinkReportingElement e, SourceSinkReportingElement e0, string model
+              |
+                sinkInputNodeStep(sink, state, state0, e, e0, kind, model) and
+                predSummary = TSinkInputNode(sink, state, e, kind, model) and
+                succSummary = TSinkInputNode(sink, state0, e0, kind, model)
+              )
+            )
+            or
+            sourceExitStep(predSummary, succ, false)
+          )
+          or
+          sinkEntryStep(pred, StepsInput::getSummaryNode(succ), false)
+        }
+
+        /**
+         * Holds if values stored inside content `c` are cleared at `n`. `n` is a
+         * synthesized summary node, so in order for values to be cleared at calls
+         * to the relevant method, it is important that flow does not pass over
+         * the argument, either via use-use flow or def-use flow.
+         *
+         * Example:
+         *
+         * ```
+         * a.b = taint;
+         * a.clearB(); // assume we have a flow summary for `clearB` that clears `b` on the qualifier
+         * sink(a.b);
+         * ```
+         *
+         * In the above, flow should not pass from `a` on the first line (or the second
+         * line) to `a` on the third line. Instead, there will be synthesized flow from
+         * `a` on line 2 to the post-update node for `a` on that line (via an intermediate
+         * node where field `b` is cleared).
+         */
+        predicate summaryClearsContent(SummaryNode n, ContentSet c) {
+          exists(SummarizedCallable sc, SummaryNodeState state, SummaryComponentStack stack |
+            n = TSummaryInternalNode(sc, state) and
+            state.isInputState(sc, stack) and
+            stack.head() = SummaryComponent::withoutContent(c)
+          )
+        }
+
+        /**
+         * Holds if the value that is being tracked is expected to be stored inside
+         * content `c` at `n`.
+         */
+        predicate summaryExpectsContent(SummaryNode n, ContentSet c) {
+          exists(SummarizedCallable sc, SummaryNodeState state, SummaryComponentStack stack |
+            n = TSummaryInternalNode(sc, state) and
+            state.isInputState(sc, stack) and
+            stack.head() = SummaryComponent::withContent(c)
+          )
+        }
+
+        pragma[noinline]
+        private predicate viableParam(
+          DataFlowCall call, SummarizedCallable sc, ParameterPosition ppos, SummaryParamNode p
+        ) {
+          p = TSummaryParameterNode(sc, ppos) and
+          call = StepsInput::getACall(sc)
+        }
+
+        pragma[nomagic]
+        private SummaryParamNode summaryArgParam(
+          DataFlowCall call, ArgNode arg, SummarizedCallable sc
+        ) {
+          exists(ParameterPosition ppos |
+            argumentPositionMatch(call, arg, ppos) and
+            viableParam(call, sc, ppos, result)
+          )
+        }
+
+        /**
+         * Holds if `p` can reach `n` in a summarized callable, using only value-preserving
+         * local steps. `clearsOrExpects` records whether any node on the path from `p` to
+         * `n` either clears or expects contents.
+         */
+        private predicate paramReachesLocal(
+          SummaryParamNode p, SummaryNode n, boolean clearsOrExpects
+        ) {
+          viableParam(_, _, _, p) and
+          n = p and
+          clearsOrExpects = false
+          or
+          exists(SummaryNode mid, boolean clearsOrExpectsMid |
+            paramReachesLocal(p, mid, clearsOrExpectsMid) and
+            summaryLocalStepImpl(mid, n, true, _) and
+            if
+              summaryClearsContent(n, _) or
+              summaryExpectsContent(n, _)
+            then clearsOrExpects = true
+            else clearsOrExpects = clearsOrExpectsMid
+          )
+        }
+
+        /**
+         * Holds if use-use flow starting from `arg` should be prohibited.
+         *
+         * This is the case when `arg` is the argument of a call that targets a
+         * flow summary where the corresponding parameter either clears contents
+         * or expects contents.
+         */
+        pragma[nomagic]
+        predicate prohibitsUseUseFlow(ArgNode arg, SummarizedCallable sc) {
+          exists(SummaryParamNode p, ParameterPosition ppos, SummaryNode ret |
+            paramReachesLocal(p, ret, true) and
+            p = summaryArgParam(_, arg, sc) and
+            p = TSummaryParameterNode(_, pragma[only_bind_into](ppos)) and
+            isParameterPostUpdate(ret, _, pragma[only_bind_into](ppos))
+          )
+        }
+
+        pragma[nomagic]
+        private predicate summaryReturnNodeExt(SummaryNode ret, ReturnKindExt rk) {
+          summaryReturnNode(ret, rk.(ValueReturnKind).getKind())
+          or
+          exists(SummaryParamNode p, SummaryNode pre, ParameterPosition pos |
+            paramReachesLocal(p, pre, _) and
+            summaryPostUpdateNode(ret, pre) and
+            p = TSummaryParameterNode(_, pos) and
+            rk.(ParamUpdateReturnKind).getPosition() = pos
+          )
+        }
+
+        bindingset[ret]
+        private SummaryParamNode summaryArgParamRetOut(
+          ArgNode arg, SummaryNode ret, OutNodeExt out, SummarizedCallable sc
+        ) {
+          exists(DataFlowCall call, ReturnKindExt rk |
+            result = summaryArgParam(call, arg, sc) and
+            summaryReturnNodeExt(ret, pragma[only_bind_into](rk)) and
+            out = getAnOutNodeExt(call, pragma[only_bind_into](rk))
+          )
+        }
+
+        /**
+         * Holds if `arg` flows to `out` using a simple value-preserving flow
+         * summary, that is, a flow summary without reads and stores.
+         *
+         * NOTE: This step should not be used in global data-flow/taint-tracking, but may
+         * be useful to include in the exposed local data-flow/taint-tracking relations.
+         */
+        predicate summaryThroughStepValue(ArgNode arg, Node out, SummarizedCallable sc) {
+          exists(SummaryNode ret |
+            summaryLocalStepImpl(summaryArgParamRetOut(arg, ret, out, sc), ret, true, _)
+          )
+        }
+
+        /**
+         * Holds if `arg` flows to `out` using a simple flow summary involving taint
+         * step, that is, a flow summary without reads and stores.
+         *
+         * NOTE: This step should not be used in global data-flow/taint-tracking, but may
+         * be useful to include in the exposed local data-flow/taint-tracking relations.
+         */
+        predicate summaryThroughStepTaint(ArgNode arg, Node out, SummarizedCallable sc) {
+          exists(SummaryNode ret |
+            summaryLocalStepImpl(summaryArgParamRetOut(arg, ret, out, sc), ret, false, _)
+          )
+        }
+
+        /**
+         * Holds if there is a read(+taint) of `c` from `arg` to `out` using a
+         * flow summary.
+         *
+         * NOTE: This step should not be used in global data-flow/taint-tracking, but may
+         * be useful to include in the exposed local data-flow/taint-tracking relations.
+         */
+        predicate summaryGetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
+          exists(SummaryNode mid, SummaryNode ret |
+            summaryReadStep(summaryArgParamRetOut(arg, ret, out, sc), c, mid) and
+            summaryLocalStepImpl(mid, ret, _, _)
+          )
+        }
+
+        /**
+         * Holds if there is a (taint+)store of `arg` into content `c` of `out` using a
+         * flow summary.
+         *
+         * NOTE: This step should not be used in global data-flow/taint-tracking, but may
+         * be useful to include in the exposed local data-flow/taint-tracking relations.
+         */
+        predicate summarySetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
+          exists(SummaryNode mid, SummaryNode ret |
+            summaryLocalStepImpl(summaryArgParamRetOut(arg, ret, out, sc), mid, _, _) and
+            summaryStoreStep(mid, c, ret)
+          )
+        }
+      }
+
+      /**
+       * Provides query predicates for rendering the generated data flow graph for
+       * a summarized callable.
+       *
+       * Import this module into a `.ql` file of `@kind graph` to render the graph.
+       * The graph is restricted to callables from `RelevantSummarizedCallable`.
+       */
+      module RenderSummarizedCallable<StepsInputSig StepsInput> {
+        private module PrivateSteps = Steps<StepsInput>;
+
+        /** A summarized callable to include in the graph. */
+        abstract class RelevantSummarizedCallable instanceof SummarizedCallable {
+          string toString() { result = super.toString() }
+        }
+
+        private newtype TNodeOrCall =
+          MkNode(SummaryNode n) {
+            exists(RelevantSummarizedCallable c |
+              n = TSummaryInternalNode(c, _)
+              or
+              n = TSummaryParameterNode(c, _)
+            )
+          } or
+          MkCall(SummaryNode receiver) {
+            receiver.getSummarizedCallable() instanceof RelevantSummarizedCallable and
+            (
+              callbackInput(_, _, receiver, _) or
+              callbackOutput(_, _, receiver, _)
+            )
+          }
+
+        private class NodeOrCall extends TNodeOrCall {
+          SummaryNode asNode() { this = MkNode(result) }
+
+          SummaryNode asCallReceiver() { this = MkCall(result) }
+
+          string toString() {
+            result = this.asNode().toString()
+            or
+            result = this.asCallReceiver().toString()
+          }
+
+          /**
+           * Holds if this element is at the specified location.
+           * The location spans column `startcolumn` of line `startline` to
+           * column `endcolumn` of line `endline` in file `filepath`.
+           * For more information, see
+           * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+           */
+          predicate hasLocationInfo(
+            string filepath, int startline, int startcolumn, int endline, int endcolumn
+          ) {
+            filepath = "" and
+            startline = 0 and
+            startcolumn = 0 and
+            endline = 0 and
+            endcolumn = 0
+          }
+        }
+
+        query predicate nodes(NodeOrCall n, string key, string val) {
+          key = "semmle.label" and val = n.toString()
+        }
+
+        private Node getNode(SummaryNode sn) { sn = StepsInput::getSummaryNode(result) }
+
+        private predicate edgesComponent(NodeOrCall a, NodeOrCall b, string value) {
+          exists(boolean preservesValue |
+            PrivateSteps::summaryLocalStep(getNode(a.asNode()), getNode(b.asNode()), preservesValue,
+              _) and
+            if preservesValue = true then value = "value" else value = "taint"
+          )
+          or
+          exists(ContentSet c |
+            PrivateSteps::summaryReadStep(a.asNode(), c, b.asNode()) and
+            value = "read (" + c + ")"
+            or
+            PrivateSteps::summaryStoreStep(a.asNode(), c, b.asNode()) and
+            value = "store (" + c + ")"
+            or
+            PrivateSteps::summaryClearsContent(a.asNode(), c) and
+            b = a and
+            value = "clear (" + c + ")"
+            or
+            PrivateSteps::summaryExpectsContent(a.asNode(), c) and
+            b = a and
+            value = "expect (" + c + ")"
+          )
+          or
+          summaryPostUpdateNode(b.asNode(), a.asNode()) and
+          value = "post-update"
+          or
+          b.asCallReceiver() = a.asNode() and
+          value = "receiver"
+          or
+          exists(ArgumentPosition pos |
+            summaryArgumentNode(b.asCallReceiver(), a.asNode(), pos) and
+            value = "argument (" + pos + ")"
+          )
+        }
+
+        query predicate edges(NodeOrCall a, NodeOrCall b, string key, string value) {
+          key = "semmle.label" and
+          value = strictconcat(string s | edgesComponent(a, b, s) | s, " / ")
+        }
       }
     }
 
@@ -2066,15 +2764,15 @@ module Make<
         token = encodeWithContent(result, "")
       }
 
+      ContentSet interpretContent(AccessPathToken token) {
+        result = decodeContent(token)
+        or
+        not exists(decodeContent(token)) and
+        result = decodeUnknownContent(token)
+      }
+
       private SummaryComponent interpretComponent(AccessPathToken token) {
-        exists(ContentSet c |
-          c = decodeContent(token)
-          or
-          not exists(decodeContent(token)) and
-          c = decodeUnknownContent(token)
-        |
-          result = SummaryComponent::content(c)
-        )
+        result = SummaryComponent::content(interpretContent(token))
         or
         exists(ParameterPosition pos |
           parseArg(token, pos) and
@@ -2682,110 +3380,6 @@ module Make<
               + c.getKind() + ";" // kind
               + renderProvenance(c) // provenance
         )
-      }
-    }
-
-    /**
-     * Provides query predicates for rendering the generated data flow graph for
-     * a summarized callable.
-     *
-     * Import this module into a `.ql` file of `@kind graph` to render the graph.
-     * The graph is restricted to callables from `RelevantSummarizedCallable`.
-     */
-    module RenderSummarizedCallable<StepsInputSig StepsInput> {
-      private module PrivateSteps = Private::Steps<StepsInput>;
-
-      /** A summarized callable to include in the graph. */
-      abstract class RelevantSummarizedCallable instanceof SummarizedCallable {
-        string toString() { result = super.toString() }
-      }
-
-      private newtype TNodeOrCall =
-        MkNode(SummaryNode n) {
-          exists(RelevantSummarizedCallable c |
-            n = TSummaryInternalNode(c, _)
-            or
-            n = TSummaryParameterNode(c, _)
-          )
-        } or
-        MkCall(SummaryNode receiver) {
-          receiver.getSummarizedCallable() instanceof RelevantSummarizedCallable and
-          (
-            callbackInput(_, _, receiver, _) or
-            callbackOutput(_, _, receiver, _)
-          )
-        }
-
-      private class NodeOrCall extends TNodeOrCall {
-        SummaryNode asNode() { this = MkNode(result) }
-
-        SummaryNode asCallReceiver() { this = MkCall(result) }
-
-        string toString() {
-          result = this.asNode().toString()
-          or
-          result = this.asCallReceiver().toString()
-        }
-
-        /**
-         * Holds if this element is at the specified location.
-         * The location spans column `startcolumn` of line `startline` to
-         * column `endcolumn` of line `endline` in file `filepath`.
-         * For more information, see
-         * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-         */
-        predicate hasLocationInfo(
-          string filepath, int startline, int startcolumn, int endline, int endcolumn
-        ) {
-          filepath = "" and
-          startline = 0 and
-          startcolumn = 0 and
-          endline = 0 and
-          endcolumn = 0
-        }
-      }
-
-      query predicate nodes(NodeOrCall n, string key, string val) {
-        key = "semmle.label" and val = n.toString()
-      }
-
-      private predicate edgesComponent(NodeOrCall a, NodeOrCall b, string value) {
-        exists(boolean preservesValue |
-          PrivateSteps::summaryLocalStep(a.asNode(), b.asNode(), preservesValue, _) and
-          if preservesValue = true then value = "value" else value = "taint"
-        )
-        or
-        exists(ContentSet c |
-          PrivateSteps::summaryReadStep(a.asNode(), c, b.asNode()) and
-          value = "read (" + c + ")"
-          or
-          PrivateSteps::summaryStoreStep(a.asNode(), c, b.asNode()) and
-          value = "store (" + c + ")"
-          or
-          PrivateSteps::summaryClearsContent(a.asNode(), c) and
-          b = a and
-          value = "clear (" + c + ")"
-          or
-          PrivateSteps::summaryExpectsContent(a.asNode(), c) and
-          b = a and
-          value = "expect (" + c + ")"
-        )
-        or
-        summaryPostUpdateNode(b.asNode(), a.asNode()) and
-        value = "post-update"
-        or
-        b.asCallReceiver() = a.asNode() and
-        value = "receiver"
-        or
-        exists(ArgumentPosition pos |
-          summaryArgumentNode(b.asCallReceiver(), a.asNode(), pos) and
-          value = "argument (" + pos + ")"
-        )
-      }
-
-      query predicate edges(NodeOrCall a, NodeOrCall b, string key, string value) {
-        key = "semmle.label" and
-        value = strictconcat(string s | edgesComponent(a, b, s) | s, " / ")
       }
     }
   }

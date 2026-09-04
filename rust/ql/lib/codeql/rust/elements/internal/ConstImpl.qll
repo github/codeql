@@ -24,7 +24,12 @@ module Impl {
    * const X: i32 = 42;
    * ```
    */
-  class Const extends Generated::Const { }
+  class Const extends Generated::Const {
+    /** Gets an access to this constant item. */
+    ConstAccess getAnAccess() { this = result.getConst() }
+
+    override string toStringImpl() { result = "const " + this.getName().getText() }
+  }
 
   /**
    * A constant access.

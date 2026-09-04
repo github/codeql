@@ -14,7 +14,7 @@ void minizip_test(int argc, const char **argv) {
     int32_t bytes_read;
     char buf[4096];
     while(true) {
-        bytes_read = mz_zip_entry_read(zip_handle, (char *) argv[1], sizeof(buf)); // BAD
+        bytes_read = mz_zip_entry_read(zip_handle, (char *) argv[1], sizeof(buf)); // $ Alert // BAD
         if (bytes_read <= 0) {
             break;
         }
@@ -23,7 +23,7 @@ void minizip_test(int argc, const char **argv) {
     void *zip_reader = mz_zip_reader_create();
     mz_zip_reader_open_file(zip_reader, argv[1]);
     mz_zip_reader_goto_first_entry(zip_reader);
-    mz_zip_reader_entry_save(zip_reader, 0, 0); // BAD
+    mz_zip_reader_entry_save(zip_reader, 0, 0); // $ Alert // BAD
 
-    UnzOpen(argv[3]); // BAD
+    UnzOpen(argv[3]); // $ Alert // BAD
 }

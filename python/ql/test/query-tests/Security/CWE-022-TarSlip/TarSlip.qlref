@@ -1,1 +1,2 @@
-Security/CWE-022/TarSlip.ql
+query: Security/CWE-022/TarSlip.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

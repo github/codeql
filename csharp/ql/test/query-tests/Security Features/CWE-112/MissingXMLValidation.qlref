@@ -1,2 +1,4 @@
 query: Security Features/CWE-112/MissingXMLValidation.ql
-postprocess: utils/test/PrettyPrintModels.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql

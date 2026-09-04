@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.hssf.record.common", "ExtRst", True, "copy", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "ExtRst", True, "getPhRuns", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "ExtRst", True, "getPhoneticText", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "ExtendedColor", False, "ExtendedColor", "(ExtendedColor)", "", "Argument[0].SyntheticField[org.apache.poi.hssf.record.common.ExtendedColor.rgba]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.ExtendedColor.rgba]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "ExtendedColor", False, "ExtendedColor", "(LittleEndianInput)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "ExtendedColor", False, "copy", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.ExtendedColor.rgba]", "ReturnValue.SyntheticField[org.apache.poi.hssf.record.common.ExtendedColor.rgba]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "ExtendedColor", False, "getRGBA", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.ExtendedColor.rgba]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "ExtendedColor", False, "serialize", "(LittleEndianOutput)", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.ExtendedColor.rgba]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "ExtendedColor", False, "setRGBA", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.ExtendedColor.rgba]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "FeatProtection", False, "FeatProtection", "(FeatProtection)", "", "Argument[0].SyntheticField[org.apache.poi.hssf.record.common.FeatProtection.title]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.FeatProtection.title]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "FeatProtection", False, "FeatProtection", "(RecordInputStream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "FeatProtection", False, "copy", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.FeatProtection.title]", "ReturnValue.SyntheticField[org.apache.poi.hssf.record.common.FeatProtection.title]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "FeatProtection", False, "getTitle", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.FeatProtection.title]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "FeatProtection", False, "setTitle", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.FeatProtection.title]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "FeatSmartTag", False, "FeatSmartTag", "(FeatSmartTag)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "FeatSmartTag", False, "FeatSmartTag", "(RecordInputStream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "FtrHeader", False, "getAssociatedRange", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.FtrHeader.associatedRange]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "FtrHeader", False, "setAssociatedRange", "(CellRangeAddress)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.FtrHeader.associatedRange]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "FutureRecord", True, "getAssociatedRange", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "FutureRecord", True, "getFutureHeader", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "SharedFeature", True, "copy", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "SharedFeature", True, "serialize", "(LittleEndianOutput)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "UnicodeString", True, "UnicodeString", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.UnicodeString.field_3_string]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "UnicodeString", True, "addFormatRun", "(FormatRun)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.UnicodeString.field_4_format_runs].Element", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "UnicodeString", True, "copy", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.UnicodeString.field_3_string]", "ReturnValue.SyntheticField[org.apache.poi.hssf.record.common.UnicodeString.field_3_string]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "UnicodeString", True, "formatIterator", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.UnicodeString.field_4_format_runs].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "UnicodeString", True, "formatSpliterator", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.UnicodeString.field_4_format_runs].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "UnicodeString", True, "getDebugInfo", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.UnicodeString.field_3_string]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "UnicodeString", True, "getDebugInfo", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.UnicodeString.field_4_format_runs].Element", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "UnicodeString", True, "getExtendedRst", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.common", "UnicodeString", True, "getFormatRun", "(int)", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.UnicodeString.field_4_format_runs].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "UnicodeString", True, "getString", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.UnicodeString.field_3_string]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.common", "UnicodeString", True, "setString", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.common.UnicodeString.field_3_string]", "value", "dfc-generated"]

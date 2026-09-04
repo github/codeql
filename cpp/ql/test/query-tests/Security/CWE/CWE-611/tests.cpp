@@ -12,9 +12,9 @@ public:
 // ---
 
 void test1(InputSource &data) {
-	XercesDOMParser *p = new XercesDOMParser();
+	XercesDOMParser *p = new XercesDOMParser(); // $ Source
 
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // $ Alert // BAD (parser not correctly configured)
 }
 
 void test2(InputSource &data) {
@@ -25,18 +25,18 @@ void test2(InputSource &data) {
 }
 
 void test3(InputSource &data) {
-	XercesDOMParser *p = new XercesDOMParser();
+	XercesDOMParser *p = new XercesDOMParser(); // $ Source
 
 	p->setDisableDefaultEntityResolution(false);
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // $ Alert // BAD (parser not correctly configured)
 }
 
 void test4(InputSource &data) {
-	XercesDOMParser *p = new XercesDOMParser();
+	XercesDOMParser *p = new XercesDOMParser(); // $ Source
 
 	p->setDisableDefaultEntityResolution(true);
 	p->setCreateEntityReferenceNodes(false);
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // $ Alert // BAD (parser not correctly configured)
 }
 
 void test5(InputSource &data) {
@@ -48,44 +48,44 @@ void test5(InputSource &data) {
 }
 
 void test6(InputSource &data) {
-	XercesDOMParser *p = new XercesDOMParser();
+	XercesDOMParser *p = new XercesDOMParser(); // $ Source
 
 	p->setDisableDefaultEntityResolution(true);
 	p->parse(data); // GOOD
 	p->setDisableDefaultEntityResolution(false);
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // $ Alert // BAD (parser not correctly configured)
 	p->setDisableDefaultEntityResolution(true);
 	p->parse(data); // GOOD
 	p->setCreateEntityReferenceNodes(false);
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // $ Alert // BAD (parser not correctly configured)
 	p->setCreateEntityReferenceNodes(true);
 	p->parse(data); // GOOD
 }
 
 void test7(InputSource &data, bool cond) {
-	XercesDOMParser *p = new XercesDOMParser();
+	XercesDOMParser *p = new XercesDOMParser(); // $ Source
 
 	p->setDisableDefaultEntityResolution(cond);
-	p->parse(data); // BAD (parser may not be correctly configured)
+	p->parse(data); // $ Alert // BAD (parser may not be correctly configured)
 }
 
 void test8(InputSource &data, bool cond) {
-	XercesDOMParser *p = new XercesDOMParser();
+	XercesDOMParser *p = new XercesDOMParser(); // $ Source
 
 	if (cond)
 	{
 		p->setDisableDefaultEntityResolution(true);
 	}
 
-	p->parse(data); // BAD (parser may not be correctly configured)
+	p->parse(data); // $ Alert // BAD (parser may not be correctly configured)
 }
 
 void test9(InputSource &data) {
 	{
-		XercesDOMParser *p = new XercesDOMParser();
+		XercesDOMParser *p = new XercesDOMParser(); // $ Source
 		XercesDOMParser &q = *p;
 
-		q.parse(data); // BAD (parser not correctly configured)
+		q.parse(data); // $ Alert // BAD (parser not correctly configured)
 	}
 
 	{
@@ -97,11 +97,11 @@ void test9(InputSource &data) {
 	}
 
 	{
-		XercesDOMParser *p = new XercesDOMParser();
+		XercesDOMParser *p = new XercesDOMParser(); // $ Source
 		XercesDOMParser &q = *p;
 
 		p->setDisableDefaultEntityResolution(true);
-		q.parse(data); // GOOD [FALSE POSITIVE]
+		q.parse(data); // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
 	}
 }
 
@@ -110,16 +110,16 @@ void test10_doParseA(XercesDOMParser *p, InputSource &data) {
 }
 
 void test10_doParseB(XercesDOMParser *p, InputSource &data) {
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // $ Alert // BAD (parser not correctly configured)
 }
 
 void test10_doParseC(XercesDOMParser *p, InputSource &data) {
-	p->parse(data); // BAD (parser may not be correctly configured)
+	p->parse(data); // $ Alert // BAD (parser may not be correctly configured)
 }
 
 void test10(InputSource &data) {
 	XercesDOMParser *p = new XercesDOMParser();
-	XercesDOMParser *q = new XercesDOMParser();
+	XercesDOMParser *q = new XercesDOMParser(); // $ Source
 
 	p->setDisableDefaultEntityResolution(true);
 	test10_doParseA(p, data);

@@ -36,11 +36,15 @@ where
   exists(string s | dict_key(d, k1, s) and dict_key(d, k2, s) and k1 != k2) and
   (
     exists(BasicBlock b, int i1, int i2 |
-      k1.getAFlowNode() = b.getNode(i1) and
-      k2.getAFlowNode() = b.getNode(i2) and
+      b.getNode(i1).getNode() = k1 and
+      b.getNode(i2).getNode() = k2 and
       i1 < i2
     )
     or
-    k1.getAFlowNode().getBasicBlock().strictlyDominates(k2.getAFlowNode().getBasicBlock())
+    exists(ControlFlowNode k1Cfg, ControlFlowNode k2Cfg |
+      k1Cfg.getNode() = k1 and k2Cfg.getNode() = k2
+    |
+      k1Cfg.getBasicBlock().strictlyDominates(k2Cfg.getBasicBlock())
+    )
   )
 select k1, "Dictionary key " + repr(k1) + " is subsequently $@.", k2, "overwritten"

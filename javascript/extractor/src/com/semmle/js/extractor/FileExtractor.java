@@ -321,7 +321,7 @@ public class FileExtractor {
       }
     },
 
-    YAML(".raml", ".yaml", ".yml") {
+    YAML(".lock", ".raml", ".yaml", ".yml") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
         return new YAMLExtractor(config);

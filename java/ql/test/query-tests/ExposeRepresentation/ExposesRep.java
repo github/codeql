@@ -8,17 +8,17 @@ public class ExposesRep {
     strings = new String[1];
   }
 
-  public String[] getStrings() { return strings; }
+  public String[] getStrings() { return strings; } // $ Alert
 
-  public Map<String, String> getStringMap() {
+  public Map<String, String> getStringMap() { // $ Alert
     return stringMap;
   }
 
-  public void setStrings(String[] ss) {
+  public void setStrings(String[] ss) { // $ Alert
     this.strings = ss;
   }
 
-  public void setStringMap(Map<String, String> m) {
+  public void setStringMap(Map<String, String> m) { // $ Alert
     this.stringMap = m;
   }
 }
@@ -26,5 +26,5 @@ public class ExposesRep {
 class GenericExposesRep<T> {
   private T[] array;
 
-  public T[] getArray() { return array; }
+  public T[] getArray() { return array; } // $ Alert
 }

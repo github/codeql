@@ -16,11 +16,15 @@ module Input implements InputSig<Location, DataFlowImplSpecific::SwiftDataFlow> 
 
   class SummarizedCallableBase = Function;
 
-  class SourceBase = Void;
-
-  class SinkBase = Void;
+  class FlowSummaryCallBase extends Void {
+    Location getLocation() { none() }
+  }
 
   predicate callableFromSource(SummarizedCallableBase c) { c.hasBody() }
+
+  DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+    result.asSummarizedCallable() = c
+  }
 
   ArgumentPosition callbackSelfParameterPosition() { result instanceof ThisArgumentPosition }
 
@@ -112,14 +116,24 @@ module Input implements InputSig<Location, DataFlowImplSpecific::SwiftDataFlow> 
 
 private import Make<Location, DataFlowImplSpecific::SwiftDataFlow, Input> as Impl
 
-private module StepsInput implements Impl::Private::StepsInputSig {
+private module Input2 implements Impl::Private::InputSig2 {
+  private import codeql.util.Void
+
+  class SourceSinkReportingElement extends Void {
+    Location getLocation() { none() }
+
+    DataFlowCallable getEnclosingCallable() { none() }
+
+    SourceSinkReportingElement getASuccessor(Impl::Private::SummaryComponent sc) { none() }
+  }
+}
+
+private import Impl::Private::Make2<Input2> as Impl2
+
+private module StepsInput implements Impl2::StepsInputSig {
+  Impl2::SummaryNode getSummaryNode(Node n) { result = n.(FlowSummaryNode).getSummaryNode() }
+
   DataFlowCall getACall(Public::SummarizedCallable sc) { result.asCall().getStaticTarget() = sc }
-
-  DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) { none() }
-
-  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) { none() }
-
-  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module SourceSinkInterpretationInput implements
@@ -246,8 +260,9 @@ module SourceSinkInterpretationInput implements
 
 module Private {
   import Impl::Private
+  import Impl2
 
-  module Steps = Impl::Private::Steps<StepsInput>;
+  module Steps = Impl2::Steps<StepsInput>;
 
   module External {
     import Impl::Private::External

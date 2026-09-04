@@ -1,0 +1,57 @@
+let t = (1, "two", 3.0)
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    tupleExpr
+                      leftParen: (
+                      rightParen: )
+                      elements:
+                        labeledExpr
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+                          trailingComma: ,
+                        labeledExpr
+                          expression:
+                            stringLiteralExpr
+                              closingQuote: "
+                              openingQuote: "
+                              segments:
+                                stringSegment
+                                  content: stringSegment "two"
+                          trailingComma: ,
+                        labeledExpr
+                          expression:
+                            floatLiteralExpr
+                              literal: floatLiteral "3.0"
+              pattern:
+                identifierPattern
+                  identifier: identifier "t"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "t"
+          value: tuple_expr "(1, \"two\", 3.0)"

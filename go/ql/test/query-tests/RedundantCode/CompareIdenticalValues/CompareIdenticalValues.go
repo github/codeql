@@ -6,7 +6,7 @@ type Rectangle struct {
 
 func (r *Rectangle) containsBad(x, y int) bool {
 	return r.x <= x &&
-		y <= y && // NOT OK
+		y <= y && // $ Alert // NOT OK
 		x <= r.x+r.width &&
 		y <= r.y+r.height
 }

@@ -12,7 +12,7 @@ app.get("/check-with-axios", req => {
     axios.get("test.com/" + req.query.tainted); // OK
   }
   if (isAlphanumeric(req.query.tainted)) {
-    axios.get("test.com/" + req.query.tainted); // SSRF
+    axios.get("test.com/" + req.query.tainted); // $ Alert // SSRF
   }
   if (validAlphanumeric(req.query.tainted)) {
     axios.get("test.com/" + req.query.tainted); // OK
@@ -24,7 +24,7 @@ app.get("/check-with-axios", req => {
     axios.get("test.com/" + req.query.tainted); // OK
   }
   if (wrongValidation(req.query.tainted)) {
-    axios.get("test.com/" + req.query.tainted); // SSRF
+    axios.get("test.com/" + req.query.tainted); // $ Alert // SSRF
   }
 
   // numbers
@@ -47,25 +47,25 @@ app.get("/check-with-axios", req => {
     axios.get("test.com/" + req.query.tainted); // OK
   }
   if (validHexa(req.query.tainted)) {
-    axios.get("test.com/" + req.query.tainted); // OK. False Positive
+    axios.get("test.com/" + req.query.tainted); // $ SPURIOUS: Alert // OK. False Positive
   }
 
   // with simple assignation
-  const numberURL = req.query.tainted;
+  const numberURL = req.query.tainted; // $ Source
   if (validNumber(numberURL)) {
     axios.get("test.com/" + numberURL); // OK
   }
   if (validNumber(numberURL)) {
-    axios.get("test.com/" + req.query.tainted); // OK. False Positive
+    axios.get("test.com/" + req.query.tainted); // $ SPURIOUS: Alert // OK. False Positive
   }
   if (validNumber(req.query.tainted)) {
-    axios.get("test.com/" + numberURL); // OK. False Positive
+    axios.get("test.com/" + numberURL); // $ SPURIOUS: Alert // OK. False Positive
   }
 
-  if (validHexadecimal(req.query.tainted) || validHexaColor(req.query.tainted) || 
-      validDecimal(req.query.tainted) || validFloat(req.query.tainted) || validInt(req.query.tainted) || 
-      validNumber(req.query.tainted) || validOctal(req.query.tainted)) {
-    axios.get("test.com/" + req.query.tainted); // OK. False Positive
+  if (validHexadecimal(req.query.tainted) || validHexaColor(req.query.tainted) ||
+    validDecimal(req.query.tainted) || validFloat(req.query.tainted) || validInt(req.query.tainted) ||
+    validNumber(req.query.tainted) || validOctal(req.query.tainted)) {
+    axios.get("test.com/" + req.query.tainted); // $ SPURIOUS: Alert // OK. False Positive
   }
 });
 
@@ -93,6 +93,6 @@ const validHexaColor = url => validator.isHexColor(url);
 const validUUID = url => validator.isUUID(url);
 
 // unsafe validators
-const wrongValidation = url => validator.isByteLength(url, {min:4,max:8});
+const wrongValidation = url => validator.isByteLength(url, { min: 4, max: 8 });
 
 const isAlphanumeric = url => true;

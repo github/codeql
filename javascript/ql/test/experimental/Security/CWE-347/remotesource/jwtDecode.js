@@ -8,11 +8,11 @@ function getSecret() {
 }
 
 app.get('/jwtDecode', (req, res) => {
-    const UserToken = req.headers.authorization;
+    const UserToken = req.headers.authorization; // $ Alert
 
     // jwt-decode
     // no signature verification
-    jwt_decode(UserToken) // NOT OK
+    jwt_decode(UserToken) // $ Sink // NOT OK
 })
 
 app.listen(port, () => {

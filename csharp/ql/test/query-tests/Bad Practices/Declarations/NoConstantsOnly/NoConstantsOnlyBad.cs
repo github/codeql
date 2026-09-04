@@ -2,7 +2,7 @@ using System;
 
 class Bad
 {
-    abstract class MathConstants
+    abstract class MathConstants // $ Alert
     {
         public static readonly double Pi = 3.14;
     }

@@ -13,10 +13,10 @@ class ObjectComparisonTest : I
         ObjectComparisonTest y = new ObjectComparisonTest();
 
         var b = x == y; // GOOD: but still reference equality
-        b = (object)x == y; // BAD
-        b = x == (object)y; // BAD
-        b = (I)x == y; // BAD
-        b = x == (I)y; // BAD
+        b = (object)x == y; // $ Alert // BAD
+        b = x == (object)y; // $ Alert // BAD
+        b = (I)x == y; // $ Alert // BAD
+        b = x == (I)y; // $ Alert // BAD
         b = (object)x == Field1; // GOOD
         b = Field1 == (object)x; // GOOD
 

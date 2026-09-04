@@ -1,1 +1,2 @@
-jsf/4.10 Classes/AV Rule 73.ql
+query: jsf/4.10 Classes/AV Rule 73.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

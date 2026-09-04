@@ -1,0 +1,115 @@
+/**
+ * Provides taint modeling for `Microsoft.AspNet.OData`/`Microsoft.AspNetCore.OData`
+ * (and the older `System.Web.Http.OData`) OData action parameter binding.
+ *
+ * OData actions receive their untrusted payload in one of two shapes that
+ * bypass the usual "type used as an action-method parameter" taint modeling:
+ *
+ * - `ODataActionParameters`, an untyped `Dictionary<string, object>` whose
+ *   values are cast, `as`-converted, or type-tested to arbitrary model types
+ *   by the action method body.
+ * - `Delta<T>`, a change-tracking wrapper for PATCH/PUT requests, whose
+ *   tracked property values are exposed via `GetInstance()` (`GetEntity()` in
+ *   the older `System.Web.Http.OData`) or copied onto an existing entity via
+ *   `Patch`/`Put`/`CopyChangedValues`/`CopyUnchangedValues`.
+ *
+ * In both cases the type that ends up holding the client-controlled data has
+ * no static relationship to the action method's parameter types, so its
+ * members need to be taint-tracked explicitly.
+ */
+
+import csharp
+private import semmle.code.csharp.commons.Collections
+private import semmle.code.csharp.security.dataflow.flowsources.Remote
+
+/** The `ODataActionParameters` dictionary type, across OData library versions. */
+class ODataActionParametersClass extends Class {
+  ODataActionParametersClass() {
+    this.hasFullyQualifiedName("Microsoft.AspNet.OData", "ODataActionParameters") or
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.OData.Formatter", "ODataActionParameters") or
+    this.hasFullyQualifiedName("System.Web.Http.OData", "ODataActionParameters")
+  }
+}
+
+/**
+ * Holds if `e` is (or, via local flow -- e.g. an upcast to `IDictionary<string, object>`
+ * -- may hold the value of) an `ODataActionParameters` dictionary.
+ */
+private predicate isODataActionParametersValue(Expr e) {
+  exists(ParameterAccess e0 | e0.getType() instanceof ODataActionParametersClass |
+    e0 = e or DataFlow::localExprFlow(e0, e)
+  )
+}
+
+/**
+ * An indexer read on an `ODataActionParameters` dictionary, e.g. `parameters["Foo"]`
+ * (including through an upcast to a base dictionary type/interface).
+ */
+class ODataActionParameterRead extends ElementAccess {
+  ODataActionParameterRead() { isODataActionParametersValue(this.getQualifier()) }
+}
+
+/** Holds if `e` may (locally) hold the value of an `ODataActionParameters` entry. */
+private predicate isODataParameterValue(Expr e) {
+  DataFlow::localExprFlow(any(ODataActionParameterRead r), e)
+}
+
+/** The generic ``Delta`1`` change-tracking class, across OData library versions. */
+class DeltaClass extends UnboundGenericClass {
+  DeltaClass() {
+    this.getNumberOfTypeParameters() = 1 and
+    (
+      this.hasFullyQualifiedName("Microsoft.AspNet.OData", "Delta`1") or
+      this.hasFullyQualifiedName("Microsoft.AspNetCore.OData.Deltas", "Delta`1") or
+      this.hasFullyQualifiedName("System.Web.Http.OData", "Delta`1")
+    )
+  }
+}
+
+/**
+ * A type that a value read out of `ODataActionParameters` is cast, `as`-converted,
+ * or type-tested to -- directly, or wrapped in a collection (`List<T>`,
+ * `IEnumerable<T>`, arrays, ...) -- or a type that is tracked by a `Delta<T>`.
+ */
+class ODataBoundType extends ValueOrRefType {
+  ODataBoundType() {
+    exists(Cast c | isODataParameterValue(c.getExpr()) |
+      this = c.getTargetType() or
+      this = c.getTargetType().(CollectionType).getElementType() or
+      this = c.getTargetType().(ParamsCollectionType).getElementType()
+    )
+    or
+    exists(IsExpr ie, Type t |
+      isODataParameterValue(ie.getExpr()) and
+      t = ie.getPattern().(TypePatternExpr).getCheckedType()
+    |
+      this = t or
+      this = t.(CollectionType).getElementType() or
+      this = t.(ParamsCollectionType).getElementType()
+    )
+    or
+    this = any(ConstructedClass c | c.getUnboundGeneric() instanceof DeltaClass).getTypeArgument(0)
+  }
+}
+
+/**
+ * Taint members (transitively) on types used in
+ * 1. Casts, `as`-conversions, or type tests applied to `ODataActionParameters` values.
+ * 2. The type argument of a `Delta<T>`.
+ *
+ * Note that this also impacts uses of such types in other contexts, the same
+ * trade-off `AspNetRemoteFlowSourceMember` (`Remote.qll`) makes for ASP.NET
+ * action-method parameters.
+ */
+private class ODataBoundMember extends TaintTracking::TaintedMember, CandidateMemberToTaint {
+  ODataBoundMember() {
+    exists(Type t, Type t0 | t = this.getDeclaringType() |
+      (t = t0 or t = t0.(CollectionType).getElementType()) and
+      (
+        t0 = any(ODataBoundMember m).getType()
+        or
+        t0 instanceof ODataBoundType
+      )
+    )
+  }
+}

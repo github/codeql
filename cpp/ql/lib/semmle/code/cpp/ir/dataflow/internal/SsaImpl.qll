@@ -136,7 +136,9 @@ private module SourceVariables {
     NormalSourceVariable() { this = TNormalSourceVariable(base, ind) }
 
     final override string toString() {
-      result = repeatStars(this.getIndirection()) + base.toString()
+      if this.getIndirection() = 0
+      then result = "&" + base.toString()
+      else result = repeatStars(this.getIndirection() - 1) + base.toString()
     }
   }
 
@@ -157,7 +159,9 @@ private module SourceVariables {
     }
 
     final override string toString() {
-      result = repeatStars(this.getIndirection()) + base.toString() + " [before crement]"
+      if this.getIndirection() = 0
+      then result = "&" + base.toString() + " [before crement]"
+      else result = repeatStars(this.getIndirection() - 1) + base.toString() + " [before crement]"
     }
 
     /**
@@ -1353,16 +1357,144 @@ class PhiNode extends Definition instanceof SsaImpl::PhiNode {
   final predicate hasInputFromBlock(Definition input, IRBlock bb) {
     phiHasInputFromBlock(this, input, bb)
   }
-}
 
-/** An static single assignment (SSA) definition. */
-class Definition extends SsaImpl::Definition {
-  private Definition getAPhiInputOrPriorDefinition() {
-    result = this.(PhiNode).getAnInput()
+  override int getIndirection() { result = this.getSourceVariable().getIndirection() }
+
+  override predicate isCertain() {
+    // If this phi node is part of a phi cycle of phi nodes the least
+    // fixed-point semantics of datalog means we don't get the right answer.
+    // So we perform an SCC reduction to simulate greatest fixed-point semantics.
+    getCycle(this).isCertain()
     or
-    uncertainWriteDefinitionInput(this, result)
+    // If there is no cycle we get the right semantics through traditional
+    // recursion.
+    not exists(getCycle(this)) and
+    forex(Definition inp | inp = this.getAnInput() | inp.isCertain())
   }
 
+  final override Declaration getFunction() {
+    result = SsaImpl::PhiNode.super.getBasicBlock().getEnclosingFunction()
+  }
+}
+
+private PhiNode getAnInput(PhiNode phi) { result = phi.getAnInput() }
+
+private predicate sccEdge(PhiNode phi1, PhiNode phi2) {
+  getAnInput(phi1) = phi2 and getAnInput+(phi2) = phi1
+}
+
+private module PhiCycleEquivalence = QlBuiltins::EquivalenceRelation<PhiNode, sccEdge/2>;
+
+private PhiCycle getCycle(PhiNode phi) { result.getAPhiNode() = phi }
+
+private class PhiCycle extends PhiCycleEquivalence::EquivalenceClass {
+  PhiNode getAPhiNode() { PhiCycleEquivalence::getEquivalenceClass(result) = this }
+
+  predicate hasPhiNode(PhiNode phi) { this.getAPhiNode() = phi }
+
+  pragma[nomagic]
+  Definition getAnInput() {
+    result = this.getAPhiNode().getAnInput() and not this.hasPhiNode(result)
+  }
+
+  string toString() { result = strictconcat(this.getAPhiNode().toString(), ", ") }
+
+  predicate isCertain() {
+    // A phi cycle is certain if all of the inputs into the phi cycle is certain.
+    forex(Definition inp | inp = this.getAnInput() | inp.isCertain())
+  }
+}
+
+private Definition getAPhiInputOrPriorDefinition(Definition def) {
+  result = def.(PhiNode).getAnInput()
+  or
+  uncertainWriteDefinitionInput(def, result)
+}
+
+module Public {
+  /**
+   * A module signature to define relevant ultimate definitions for an
+   * optimized version of `Definition.getAnUltimateDefinition`.
+   */
+  signature module GetAnUltimateDefinitionSig {
+    /**
+     * Holds if `def` is a relevant definition. This defines the set
+     * of `Definition`s which may be returned by
+     * `GetAnUltimateDefinition::getAnUltimateDefinition`.
+     */
+    predicate isRelevantUltimateDefinition(Definition def);
+  }
+
+  /**
+   * A module which constructs an optimized version of
+   * ```
+   * Definition.getAnUltimateDefinition
+   * ```
+   * by restricting the set of possible ultimate definitions.
+   *
+   * Use this module by defining a module `M` which implements
+   * `GetAnUltimateDefinitionSig` and then call:
+   * ```
+   * GetAnUltimateDefinition<M>::getAnUltimateDefinition
+   * ```
+   */
+  module GetAnUltimateDefinition<GetAnUltimateDefinitionSig Sig> {
+    private import Sig
+
+    private predicate relevantUltimateDefinition(Definition def) {
+      isRelevantUltimateDefinition(def) and
+      not def instanceof PhiNode
+    }
+
+    /**
+     * The `getAnUltimateDefinition` predicate uses an optimized step relation
+     * which is pruned to only those uncertain steps which lead back to a
+     * definition which satisfies `relevantUltimateDefinition`. This predicate
+     * computes the subset of `Definition`s which can lead back to definitions
+     * which satisfy `relevantUltimateDefinition`.
+     */
+    private predicate fwd(Definition def) {
+      // Base case: This definition is a relevant definition
+      relevantUltimateDefinition(def)
+      or
+      exists(Definition def0 |
+        // Recursive case: `def0` is a relevant definition, and
+        // `def` is an uncertain step which takes us back to `def0`.
+        fwd(def0) and
+        def0 = getAPhiInputOrPriorDefinition(def)
+      )
+    }
+
+    /**
+     * Holds if `def1 = getAPhiInputOrPriorDefinition(def2)`, and
+     * both `def1` and `def2` are part of a sequence of uncertain
+     * steps which lead back to a `Definition` which
+     * satisfies `relevantUltimateDefinition`.
+     */
+    private predicate step(Definition def1, Definition def2) {
+      fwd(def1) and
+      fwd(def2) and
+      def1 = getAPhiInputOrPriorDefinition(def2)
+    }
+
+    /**
+     * Gets a definition that ultimately defines this SSA definition and is
+     * not itself a phi node.
+     *
+     * This predicate is restricted to ultimate definitions which
+     * satisfy `isRelevantUltimateDefinition`.
+     */
+    Definition getAnUltimateDefinition(Definition def) {
+      step*(result, def) and
+      relevantUltimateDefinition(result)
+    }
+  }
+}
+
+import Public
+
+/** A static single assignment (SSA) definition. */
+class Definition extends SsaImpl::Definition {
   /**
    * Holds if this SSA definition is live at the end of basic block `bb`.
    * That is, this definition reaches the end of basic block `bb`, at which
@@ -1374,9 +1506,13 @@ class Definition extends SsaImpl::Definition {
   /**
    * Gets a definition that ultimately defines this SSA definition and is
    * not itself a phi node.
+   *
+   * Note: A more efficient implementation of this predicate exists. See the
+   * `GetAnUltimateDefinition` module for a description of how to access
+   * the more efficient implementation.
    */
   final Definition getAnUltimateDefinition() {
-    result = this.getAPhiInputOrPriorDefinition*() and
+    result = getAPhiInputOrPriorDefinition*(this) and
     not result instanceof PhiNode
   }
 

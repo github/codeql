@@ -1,3 +1,43 @@
+## 6.0.4
+
+### Minor Analysis Improvements
+
+* The algorithm for tracking regexes has been replaced. This can cause result changes in related queries, for example, `rb/polynomial-redos`.
+
+## 6.0.3
+
+### Minor Analysis Improvements
+
+* Removed library input to vendored gems from the set of taint sources. This should reduce false positives for `rb/polynomial-redos`, `rb/regex/badly-anchored-regexp`, `rb/unsafe-code-construction`, `rb/html-constructed-from-input`, and `rb/shell-command-constructed-from-input` whenever vendoring is used.
+
+## 6.0.2
+
+No user-facing changes.
+
+## 6.0.1
+
+No user-facing changes.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The `else` branch of a `case` expression is no longer represented as a `StmtSequence` directly. Instead, a new `CaseElseBranch` AST node wraps the body (a `StmtSequence`). `CaseExpr.getElseBranch()` now returns a `CaseElseBranch`, and the body of the else branch can be accessed via `CaseElseBranch.getBody()`.
+
+## 5.2.2
+
+No user-facing changes.
+
+## 5.2.1
+
+No user-facing changes.
+
+## 5.2.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Ruby](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-ruby/).
+
 ## 5.1.16
 
 No user-facing changes.

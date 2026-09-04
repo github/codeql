@@ -3,7 +3,7 @@ import os
 import runs_on
 
 
-def test(codeql, java, cwd):
+def test(codeql, java, cwd, check_diagnostics_java):
     # This serves the "repo" directory on https://locahost:4443
     command = ["python3", "../server.py"]
     if runs_on.github_actions and runs_on.posix:
@@ -21,6 +21,7 @@ def test(codeql, java, cwd):
             _env={
                 "MAVEN_OPTS": maven_opts,
                 "CODEQL_JAVA_EXTRACTOR_TRUST_STORE_PATH": str(certspath),
+                "LGTM_INDEX_MAVEN_SETTINGS_FILE": os.path.join(os.path.dirname(os.path.realpath(__file__)), "settings.xml"),
             },
         )
     finally:

@@ -1,1 +1,2 @@
-Critical/MemoryNeverFreed.ql
+query: Critical/MemoryNeverFreed.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

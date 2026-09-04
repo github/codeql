@@ -1,1 +1,2 @@
-Likely Bugs/Concurrency/LazyInitStaticField.ql
+query: Likely Bugs/Concurrency/LazyInitStaticField.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
