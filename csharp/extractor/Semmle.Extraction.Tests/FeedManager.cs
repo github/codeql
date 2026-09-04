@@ -279,7 +279,7 @@ namespace Semmle.Extraction.Tests
         {
             // Setup
             var logger = new LoggerStub();
-            var dotnet = new DotNetStub([], [], ["E https://api.nuget.org/v3/index.json"], ["E https://api.nuget.org/v3/index.json"]);
+            var dotnet = new DotNetStub([], [], ["E https://www.nuget.org/api/v2/"], ["E https://api.nuget.org/v3/index.json"]);
             var dependabotProxy = new DependabotProxyStubWithBaseUrls();
             var fileProvider = new FileProviderStub();
             var feedManagerIo = new FeedManagerIOStub(["https://example.com/registry2", "https://example.com/base1"]);
