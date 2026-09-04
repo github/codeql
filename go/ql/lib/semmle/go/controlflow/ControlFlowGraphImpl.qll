@@ -106,6 +106,14 @@ module CfgImpl {
         not skipCfg(n) and
         result = n.getChild(index)
         or
+        exists(Go::Assignment assgn, Go::Expr lhs |
+          n = assgn and lhs = assgn.getLhs(_) and lhs = n.getChild(index) and skipCfg(lhs)
+        |
+          result = lhs.(Go::StarExpr).getBase()
+          or
+          result = lhs.(Go::DerefExpr).getOperand()
+        )
+        or
         // The body block of a switch (expression or type) is transparent (see
         // `skipCfg`), so it is not itself a child and contributes no children.
         // Expose the case clauses directly as children of the switch instead,

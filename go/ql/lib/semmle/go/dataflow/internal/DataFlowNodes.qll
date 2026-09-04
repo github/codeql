@@ -772,6 +772,8 @@ module Public {
   private IR::Instruction getADirectlyWrittenInsn() {
     exists(Write w | w.writesComponentInstruction(result, _))
     or
+    result = any(Write w).getLhs().(IR::PointerTarget).getBase()
+    or
     result = IR::evalExprInstruction(any(SendStmt s).getChannel())
   }
 
