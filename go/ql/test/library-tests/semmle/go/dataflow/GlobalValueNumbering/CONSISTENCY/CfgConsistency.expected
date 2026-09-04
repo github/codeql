@@ -1,0 +1,4 @@
+consistencyOverview
+| invalidAbruptCompletionOrigin | 1 |
+invalidAbruptCompletionOrigin
+| main.go:35:2:37:4 | defer statement | main.go:35:8:37:4 | defer-invoke function call |

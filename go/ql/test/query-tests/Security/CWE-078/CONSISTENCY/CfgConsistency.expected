@@ -1,0 +1,4 @@
+consistencyOverview
+| invalidAbruptCompletionOrigin | 1 |
+invalidAbruptCompletionOrigin
+| CommandInjection2.go:29:2:29:22 | defer statement | CommandInjection2.go:29:8:29:22 | defer-invoke call to Close |

@@ -55,6 +55,8 @@ numberOfTypeParameters
 | codeql-go-tests/function.StructForGenericMethod2.GenericMethod2 | 0 | from receiver | P3 | interface { } |
 | codeql-go-tests/function.StructWithDependentBound | 0 |  | P5 | interface { } |
 | codeql-go-tests/function.StructWithDependentBound.GenericMethodWithDependentBound | 0 |  | P7 | interface { ~[]P6 } |
+| codeql-go-tests/function.StructWithDependentBound.GenericMethodWithDependentBound | 0 |  | P7 | interface { ~[]int } |
+| codeql-go-tests/function.StructWithDependentBound.GenericMethodWithDependentBound | 0 |  | P7 | interface { ~[]string } |
 | codeql-go-tests/function.StructWithDependentBound.GenericMethodWithDependentBound | 0 | from receiver | P6 | interface { } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 0 |  | _ | interface { } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 1 |  | _ | interface { string } |

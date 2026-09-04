@@ -1,5 +1,15 @@
 consistencyOverview
+| invalidAbruptCompletionOrigin | 8 |
 | multipleSuccessors | 6 |
+invalidAbruptCompletionOrigin
+| tests.go:10:2:10:16 | defer statement | tests.go:10:8:10:16 | defer-invoke call to Close |
+| tests.go:18:2:18:13 | defer statement | tests.go:18:8:18:13 | defer-invoke call to cont |
+| tests.go:27:2:27:13 | defer statement | tests.go:27:8:27:13 | defer-invoke call to cont |
+| tests.go:99:3:99:17 | defer statement | tests.go:99:9:99:17 | defer-invoke call to Close |
+| tests.go:112:3:112:17 | defer statement | tests.go:112:9:112:17 | defer-invoke call to Close |
+| tests.go:126:3:126:17 | defer statement | tests.go:126:9:126:17 | defer-invoke call to Close |
+| tests.go:157:2:157:16 | defer statement | tests.go:157:8:157:16 | defer-invoke call to Close |
+| tests.go:166:2:166:16 | defer statement | tests.go:166:8:166:16 | defer-invoke call to Close |
 multipleSuccessors
 | tests.go:96:2:104:2 | After if statement | successor | tests.go:94:30:105:1 | After block statement |
 | tests.go:96:2:104:2 | After if statement | successor | tests.go:99:9:99:17 | defer-invoke call to Close |
