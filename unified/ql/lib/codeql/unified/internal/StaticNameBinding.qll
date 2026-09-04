@@ -401,16 +401,23 @@ private module TrackNamespaceInput implements TrackInputSig {
 
 private module TrackNamespace = Track<TrackNamespaceInput>;
 
+bindingset[node1, node2]
+pragma[inline_late]
+private predicate sameName(Identifier node1, Identifier node2) {
+  node1.getValue() = node2.getValue()
+}
+
 /**
  * Holds if `decl` is a trivial local alias for an imported name.
  *
  * Declaration-tracking usually stops at type-aliases, but trivial aliases
  * will be passed through.
  */
+pragma[nomagic]
 predicate isTrivialNameAlias(NameDeclaration decl) {
   exists(ImportDeclaration imprt |
     decl = getImportBindingIdentifier(imprt) and
-    decl.getName() = getIdentifierFromRef(imprt.getImportedExpr()).getValue()
+    sameName(decl, getIdentifierFromRef(imprt.getImportedExpr()))
   )
 }
 
