@@ -851,40 +851,39 @@ fn same_predicate_signature(a: &ql::Predicate, b: &ql::Predicate) -> bool {
 /// The result for a given node is memoized in `cache`, and also used to
 /// answer the query for any other node that (directly, or transitively
 /// through further supertypes) has that node as a member.
-fn compute_exposed_predicates<'a>(
-    type_name: &node_types::TypeName,
+fn compute_exposed_predicates<'a, 'b>(
+    type_name: &'a node_types::TypeName,
     nodes: &'a node_types::NodeTypeMap,
     field_predicates: &BTreeMap<&node_types::TypeName, Vec<ql::Predicate<'a>>>,
-    cache: &mut BTreeMap<node_types::TypeName, Vec<ql::Predicate<'a>>>,
-) -> Vec<ql::Predicate<'a>> {
-    if let Some(exposed) = cache.get(type_name) {
-        return exposed.clone();
-    }
-    let exposed = match nodes.get(type_name).map(|node| &node.kind) {
-        Some(node_types::EntryKind::Table { .. }) => {
-            field_predicates.get(type_name).cloned().unwrap_or_default()
-        }
-        Some(node_types::EntryKind::Union { members }) => {
-            let mut members = members.iter();
-            let mut common = match members.next() {
-                Some(first) => compute_exposed_predicates(first, nodes, field_predicates, cache),
-                None => Vec::new(),
-            };
-            for member in members {
-                let member_predicates =
-                    compute_exposed_predicates(member, nodes, field_predicates, cache);
-                common.retain(|predicate| {
-                    member_predicates
-                        .iter()
-                        .any(|other| same_predicate_signature(predicate, other))
-                });
+    cache: &'b mut BTreeMap<&'a node_types::TypeName, Vec<ql::Predicate<'a>>>,
+) -> &'b Vec<ql::Predicate<'a>> {
+    if !cache.contains_key(type_name) {
+        let exposed = match nodes.get(type_name).map(|node| &node.kind) {
+            Some(node_types::EntryKind::Table { .. }) => {
+                field_predicates.get(type_name).cloned().unwrap_or_default()
             }
-            common
-        }
-        Some(node_types::EntryKind::Token { .. }) | None => Vec::new(),
-    };
-    cache.insert(type_name.clone(), exposed.clone());
-    exposed
+            Some(node_types::EntryKind::Union { members }) => {
+                let mut members = members.iter();
+                let mut common = match members.next() {
+                    Some(first) => compute_exposed_predicates(first, nodes, field_predicates, cache).clone(),
+                    None => Vec::new(),
+                };
+                for member in members {
+                    let member_predicates =
+                        compute_exposed_predicates(member, nodes, field_predicates, cache);
+                    common.retain(|predicate| {
+                        member_predicates
+                            .iter()
+                            .any(|other| same_predicate_signature(predicate, other))
+                    });
+                }
+                common
+            }
+            Some(node_types::EntryKind::Token { .. }) | None => Vec::new(),
+        };
+        cache.insert(type_name, exposed);
+    }
+    cache.get(type_name).unwrap()
 }
 
 /// Returns whether `predicate` (declared, or about to be declared, on the
@@ -977,7 +976,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     // parameters) by every one of its members. Such predicates can be hoisted
     // to an `abstract` predicate on the supertype's class, with the
     // corresponding predicates on its members becoming `override`s.
-    let mut exposed_predicates_cache: BTreeMap<node_types::TypeName, Vec<ql::Predicate<'_>>> =
+    let mut exposed_predicates_cache: BTreeMap<&node_types::TypeName, Vec<ql::Predicate<'_>>> =
         BTreeMap::new();
     let mut exposed_by_class_name: BTreeMap<&str, Vec<ql::Predicate<'_>>> = BTreeMap::new();
     for (type_name, node) in nodes {
@@ -988,7 +987,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                 &field_predicates,
                 &mut exposed_predicates_cache,
             );
-            exposed_by_class_name.insert(node.ql_class_name.as_str(), exposed);
+            exposed_by_class_name.insert(node.ql_class_name.as_str(), exposed.clone());
         }
     }
 
@@ -1017,24 +1016,20 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
             node_types::EntryKind::Union { members: _ } => {
                 // It's a tree-sitter supertype node, so we're wrapping a dbscheme
                 // union type. Any predicate that's identically defined by every
-                // member becomes an `abstract` predicate here, unless it's
-                // already inherited (and thus abstract) via one of this
-                // supertype's own direct supertypes.
+                // member becomes an `abstract` predicate here.
                 let predicates = exposed_predicates_cache
                     .get(type_name)
                     .cloned()
                     .unwrap_or_default()
                     .into_iter()
-                    .filter(|predicate| {
-                        !is_predicate_inherited(
-                            predicate,
-                            type_name,
-                            &direct_supertypes,
-                            &exposed_by_class_name,
-                        )
-                    })
                     .map(|predicate| ql::Predicate {
-                        overridden: false,
+                        overridden:
+                            is_predicate_inherited(
+                                &predicate,
+                                type_name,
+                                &direct_supertypes,
+                                &exposed_by_class_name,
+                            ),
                         is_private: false,
                         is_final: false,
                         body: None,
