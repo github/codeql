@@ -33,6 +33,12 @@ private predicate isPinnedContainer(string version) {
 bindingset[nwo]
 private predicate isContainerImage(string nwo) { nwo.regexpMatch("^docker://.+") }
 
+// A `$/` reference is a same-repository (self repository) reference (e.g. `$/path/to/action`),
+// resolved at the commit the calling workflow is running. Like `./` local (self workspace)
+// references, it is inherently pinned and can never be an unpinned-tag finding, so we never flag it.
+bindingset[nwo]
+private predicate isSelfRepository(string nwo) { nwo.matches("$/%") }
+
 private predicate hasUsesContainerName(Uses uses, string name) {
   exists(Workflow workflow |
     uses.getEnclosingWorkflow() = workflow and
@@ -55,6 +61,13 @@ where
   hasUsesContainerName(uses, name) and
   uses.getVersion() = version and
   not isTrustedOwner(nwo) and
+  not isSelfRepository(nwo) and
+  not exists(UsesStep step |
+    uses = step and
+    exists(ActionsLock lock |
+      lock.pins(step.getLocation().getFile().getRelativePath(), nwo, version)
+    )
+  ) and
   not (
     if uses instanceof UsesStep and isContainerImage(nwo)
     then isPinnedContainer(version)
