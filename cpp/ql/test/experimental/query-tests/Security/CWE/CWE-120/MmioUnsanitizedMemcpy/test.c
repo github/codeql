@@ -56,7 +56,7 @@ static void good_early_return(char *dst, char *src) {
 
 static void good_constant_size(char *dst, char *src) {
   uint32_t len = READ_REG(0x40001000);
-  memcpy(dst, src, 32); // GOOD — constant size, not tainted sink
+  memcpy(dst, src, 32); // GOOD
 }
 
 static void negative_volatile_global(char *dst, char *src) {
