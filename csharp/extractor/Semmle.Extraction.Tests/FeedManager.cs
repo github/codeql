@@ -246,5 +246,62 @@ namespace Semmle.Extraction.Tests
                 "https://example.com/base2"
             ], reachableFallback);
         }
+
+        [Fact]
+        public void TestNugetOrg()
+        {
+            // Setup
+            var logger = new LoggerStub();
+            var dotnet = new DotNetStub([], [], [], ["E https://api.nuget.org/v3/index.json"]);
+            var dependabotProxy = new DependabotProxyStub();
+            var fileProvider = new FileProviderStub();
+            var feedManagerIo = new FeedManagerIOStub(["https://example.com/registry2", "https://example.com/base1"]);
+            var feedManager = new FeedManager(logger, dotnet, dependabotProxy, fileProvider, feedManagerIo);
+
+            // Execute
+            var explicitFeeds = feedManager.ExplicitFeeds;
+            var allFeeds = feedManager.AllFeeds;
+
+            // Verify
+            Assert.Equal([
+                "https://example.com/registry1",
+                "https://example.com/registry2",
+            ], explicitFeeds);
+            Assert.Equal([
+                "https://example.com/registry1",
+                "https://example.com/registry2",
+                "https://api.nuget.org/v3/index.json"
+            ], allFeeds);
+
+        }
+        [Fact]
+        public void TestNugetOrgReplacement()
+        {
+            // Setup
+            var logger = new LoggerStub();
+            var dotnet = new DotNetStub([], [], ["E https://api.nuget.org/v3/index.json"], ["E https://api.nuget.org/v3/index.json"]);
+            var dependabotProxy = new DependabotProxyStubWithBaseUrls();
+            var fileProvider = new FileProviderStub();
+            var feedManagerIo = new FeedManagerIOStub(["https://example.com/registry2", "https://example.com/base1"]);
+            var feedManager = new FeedManager(logger, dotnet, dependabotProxy, fileProvider, feedManagerIo);
+
+            // Execute
+            var explicitFeeds = feedManager.ExplicitFeeds;
+            var allFeeds = feedManager.AllFeeds;
+
+            // Verify
+            Assert.Equal([
+                "https://example.com/base1",
+                "https://example.com/base2",
+                "https://example.com/registry1",
+                "https://example.com/registry2"
+            ], explicitFeeds);
+            Assert.Equal([
+                "https://example.com/base1",
+                "https://example.com/base2",
+                "https://example.com/registry1",
+                "https://example.com/registry2",
+            ], allFeeds);
+        }
     }
 }

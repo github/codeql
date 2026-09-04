@@ -10,13 +10,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal sealed partial class FeedManager : IDisposable
     {
-        internal const string PublicNugetOrgFeed = "https://api.nuget.org/v3/index.json";
+        private const string PublicNugetOrg = "nuget.org";
+        private const string PublicDotNugetOrg = $".{PublicNugetOrg}";
+        internal const string PublicApiNugetOrgFeed = $"https://api{PublicDotNugetOrg}/v3/index.json";
 
         private readonly ILogger logger;
         private readonly IDotNet dotnet;
         private readonly IFileProvider fileProvider;
         private readonly DependencyDirectory emptyPackageDirectory;
         private readonly ImmutableHashSet<string> privateRegistryFeeds;
+        private readonly bool hasPrivateRegistryBaseFeeds;
+        private readonly ImmutableHashSet<string> privateRegistryBaseFeeds;
         private readonly IFeedManagerIO feedManagerIo;
 
         /// <summary>
@@ -93,9 +97,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.feedManagerIo = feedManagerIo;
             privateRegistryFeeds = dependabotProxy?.RegistryURLs ?? [];
             HasPrivateRegistryFeeds = privateRegistryFeeds.Count > 0;
-            DefaultFeeds = dependabotProxy?.RegistryBaseURLs.Any() == true
-                ? dependabotProxy.RegistryBaseURLs
-                : [PublicNugetOrgFeed];
+            privateRegistryBaseFeeds = dependabotProxy?.RegistryBaseURLs ?? [];
+            hasPrivateRegistryBaseFeeds = privateRegistryBaseFeeds.Count > 0;
+
+            DefaultFeeds = hasPrivateRegistryBaseFeeds
+                ? privateRegistryBaseFeeds
+                : [PublicApiNugetOrgFeed];
             emptyPackageDirectory = new DependencyDirectory("empty", "empty package", logger);
 
             lazyExplicitFeeds = new Lazy<ImmutableHashSet<string>>(GetExplicitFeeds);
@@ -120,6 +127,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
         }
 
+        private bool IsNugetOrgFeed(string url)
+        {
+            try
+            {
+                var uri = new Uri(url);
+                return uri.Host.EndsWith(PublicDotNugetOrg, StringComparison.InvariantCultureIgnoreCase) ||
+                    string.Equals(uri.Host, PublicNugetOrg, StringComparison.InvariantCultureIgnoreCase);
+            }
+            catch (UriFormatException)
+            {
+                return false;
+            }
+        }
+
         private IEnumerable<string> GetFeeds(Func<IList<string>> getNugetFeeds)
         {
             var results = getNugetFeeds();
@@ -138,6 +159,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     !url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
                 {
                     logger.LogInfo($"Skipping feed '{url}' as it is not a valid URL.");
+                    continue;
+                }
+
+                if (hasPrivateRegistryBaseFeeds && IsNugetOrgFeed(url))
+                {
+                    // Use private registry base feeds.
+                    foreach (var feed in privateRegistryBaseFeeds)
+                    {
+                        logger.LogDebug($"Using private registry base feed '{feed}'.");
+                        yield return feed;
+                    }
                     continue;
                 }
 
