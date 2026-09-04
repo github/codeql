@@ -2776,9 +2776,12 @@
 | stmts3.go:14:13:14:13 | x | stmts3.go:14:21:16:1 | block statement |
 | stmts3.go:14:21:16:1 | After block statement | stmts3.go:14:1:16:1 | Normal Exit |
 | stmts3.go:14:21:16:1 | block statement | stmts3.go:15:2:15:8 | ... = ... |
-| stmts3.go:15:2:15:8 | ... = ... | stmts3.go:15:7:15:8 | Before 42 |
+| stmts3.go:15:2:15:8 | ... = ... | stmts3.go:15:3:15:3 | Before x |
 | stmts3.go:15:2:15:8 | After ... = ... | stmts3.go:14:21:16:1 | After block statement |
 | stmts3.go:15:2:15:8 | assign:0 ... = ... | stmts3.go:15:2:15:8 | After ... = ... |
+| stmts3.go:15:3:15:3 | After x | stmts3.go:15:7:15:8 | Before 42 |
+| stmts3.go:15:3:15:3 | Before x | stmts3.go:15:3:15:3 | x |
+| stmts3.go:15:3:15:3 | x | stmts3.go:15:3:15:3 | After x |
 | stmts3.go:15:7:15:8 | 42 | stmts3.go:15:7:15:8 | After 42 |
 | stmts3.go:15:7:15:8 | After 42 | stmts3.go:15:2:15:8 | assign:0 ... = ... |
 | stmts3.go:15:7:15:8 | Before 42 | stmts3.go:15:7:15:8 | 42 |
