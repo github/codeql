@@ -1244,8 +1244,8 @@ public class FileUtil
 		try {
 			// getCanonicalFile does not canonicalize subst drives on Windows, so do this separately. This
 			// is a no-op on non-Windows platforms.
-			return SubstResolver.resolve(f.getCanonicalFile());		}
-		catch (IOException ignored) {
+			return SubstResolver.resolve(f.getCanonicalFile());
+		} catch (IOException ignored) {
 			Exceptions.ignore(ignored, "Can't log error: Could be too verbose.");
 			return new File(simplifyPath(f));
 		}
