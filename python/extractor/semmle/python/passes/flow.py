@@ -1916,7 +1916,8 @@ def main():
         import semmle.python.parser.tsg_parser
         parsed_ast = semmle.python.parser.tsg_parser.parse(inputfile, FakeLogger())
     else:
-        module = modules.PythonSourceModule("__main__", inputfile, FakeLogger())
+        from semmle.worker import DiagnosticsWriter
+        module = modules.PythonSourceModule("__main__", inputfile, FakeLogger(), DiagnosticsWriter(0))
         parsed_ast = module.ast
     FlowPass(options.split, options.prune, options.unroll).extract(parsed_ast, writer)
     writer.close()

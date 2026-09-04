@@ -10,7 +10,8 @@ from queue import Full as _Full
 from semmle.extractors import SuperExtractor, ModulePrinter, SkippedBuiltin
 from semmle.profiling import get_profiler
 from semmle.path_rename import renamer_from_options_and_env
-from semmle.logging import WARN, recursion_error_message, internal_error_message, Logger
+from semmle.logging import WARN, recursion_error_message, internal_error_message, extractor_telemetry_message, Logger
+from semmle.logging import parser_statistics_telemetry_message
 from semmle.util import FileExtractable, FolderExtractable
 
 class ExtractorFailure(Exception):
@@ -239,9 +240,35 @@ def _drain_queue(queue):
         #Emptied queue as best we can.
         pass
 
+def _write_extractor_telemetry(diagnostics_writer, logger: Logger, extractor_flags):
+    try:
+        diagnostics_writer.write(extractor_telemetry_message(extractor_flags))
+    except OSError as ex:
+        logger.warning("Failed to write extractor telemetry: %s", ex)
+
+def _write_parser_statistics_telemetry(diagnostics_writer, logger: Logger):
+    counts = diagnostics_writer.parser_statistics()
+    if counts == (0, 0):
+        return
+    try:
+        diagnostics_writer.write(parser_statistics_telemetry_message(*counts))
+    except OSError as ex:
+        logger.warning("Failed to write parser statistics telemetry: %s", ex)
+
 class DiagnosticsWriter(object):
     def __init__(self, proc_id):
         self.proc_id = proc_id
+        self.old_parser_file_count = 0
+        self.tree_sitter_parser_file_count = 0
+
+    def record_old_parser(self):
+        self.old_parser_file_count += 1
+
+    def record_tree_sitter_parser(self):
+        self.tree_sitter_parser_file_count += 1
+
+    def parser_statistics(self):
+        return self.old_parser_file_count, self.tree_sitter_parser_file_count
 
     def write(self, message):
         dir = os.environ.get("CODEQL_EXTRACTOR_PYTHON_DIAGNOSTIC_DIR")
@@ -276,9 +303,11 @@ def _extract_loop(proc_id, queue, trap_dir, archive, options, reply_queue, logge
         reply_queue.put(("INTERRUPT", None, None))
         sys.exit(2)
     logger.set_process_id(proc_id)
+    if write_global_data:
+        _write_extractor_telemetry(diagnostics_writer, logger, options.extractor_flags)
     try:
         if options.trace_only:
-            extractor = ModulePrinter(options, trap_dir, archive, renamer, logger)
+            extractor = ModulePrinter(options, trap_dir, archive, renamer, logger, diagnostics_writer)
         else:
             extractor = SuperExtractor(options, trap_dir, archive, renamer, logger, diagnostics_writer)
         profiler = get_profiler(options, id, logger)
@@ -291,6 +320,7 @@ def _extract_loop(proc_id, queue, trap_dir, archive, options, reply_queue, logge
                     if write_global_data:
                         extractor.write_global_data()
                     extractor.close()
+                    _write_parser_statistics_telemetry(diagnostics_writer, logger)
                     return
                 try:
                     start = time.time()
@@ -344,4 +374,5 @@ def _extract_loop(proc_id, queue, trap_dir, archive, options, reply_queue, logge
     except _Empty:
         #Cleared queue enough to avoid deadlock.
         pass
+    _write_parser_statistics_telemetry(diagnostics_writer, logger)
     sys.exit(2)
