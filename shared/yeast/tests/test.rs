@@ -132,9 +132,24 @@ fn test_cursor_uses_declared_field_order_after_schema_registration() {
     let a_field = ast.field_id_for_name("a").unwrap();
     let m_field = ast.field_id_for_name("m").unwrap();
 
-    let z = ast.create_node(leaf_kind, NodeContent::String("z"), Default::default(), true);
-    let a = ast.create_node(leaf_kind, NodeContent::String("a"), Default::default(), true);
-    let m = ast.create_node(leaf_kind, NodeContent::String("m"), Default::default(), true);
+    let z = ast.create_node(
+        leaf_kind,
+        NodeContent::String("z"),
+        Default::default(),
+        true,
+    );
+    let a = ast.create_node(
+        leaf_kind,
+        NodeContent::String("a"),
+        Default::default(),
+        true,
+    );
+    let m = ast.create_node(
+        leaf_kind,
+        NodeContent::String("m"),
+        Default::default(),
+        true,
+    );
 
     let mut fields = std::collections::BTreeMap::new();
     fields.insert(a_field, vec![a]);

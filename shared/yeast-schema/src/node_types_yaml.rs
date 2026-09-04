@@ -291,10 +291,7 @@ fn record_field_order(schema: &mut crate::schema::Schema, yaml_input: &str) -> R
     Ok(())
 }
 
-fn apply_yaml_to_schema(
-    yaml: &YamlNodeTypes,
-    schema: &mut crate::schema::Schema,
-) {
+fn apply_yaml_to_schema(yaml: &YamlNodeTypes, schema: &mut crate::schema::Schema) {
     // Register all supertypes as node kinds
     for name in yaml.supertypes.keys() {
         schema.register_kind(name);
@@ -356,7 +353,8 @@ fn apply_yaml_to_schema(
                 .into_vec()
                 .into_iter()
                 .map(|type_ref| {
-                    let (kind, named) = resolve_type_ref_pair(&type_ref, &named_types, &unnamed_types);
+                    let (kind, named) =
+                        resolve_type_ref_pair(&type_ref, &named_types, &unnamed_types);
                     crate::schema::NodeType { kind, named }
                 })
                 .collect::<Vec<_>>();
