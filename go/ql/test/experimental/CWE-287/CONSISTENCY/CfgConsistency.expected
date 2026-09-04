@@ -1,7 +1,0 @@
-consistencyOverview
-| invalidAbruptCompletionOrigin | 4 |
-invalidAbruptCompletionOrigin
-| ImproperLdapAuth.go:25:2:25:16 | defer statement | ImproperLdapAuth.go:25:8:25:16 | defer-invoke call to Close |
-| ImproperLdapAuth.go:46:2:46:16 | defer statement | ImproperLdapAuth.go:46:8:46:16 | defer-invoke call to Close |
-| ImproperLdapAuth.go:71:2:71:16 | defer statement | ImproperLdapAuth.go:71:8:71:16 | defer-invoke call to Close |
-| ImproperLdapAuth.go:94:2:94:16 | defer statement | ImproperLdapAuth.go:94:8:94:16 | defer-invoke call to Close |
