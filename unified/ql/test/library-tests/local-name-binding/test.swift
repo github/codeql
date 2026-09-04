@@ -358,7 +358,7 @@ func t38(value: E38) { // $ access=E38
 // A non-binding pattern in a guard refers to an existing variable
 func t39(value: Int) {
     let x = 1 // name=x1
-    guard case x = value else { // $ access=value MISSING: access=x1
+    guard case x = value else { // $ access=value access=x1
         return
     }
 }

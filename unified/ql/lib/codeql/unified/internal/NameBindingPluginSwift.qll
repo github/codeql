@@ -44,11 +44,13 @@ class NameBindingPluginSwift extends NameBindingPlugin {
 
 /** Holds if `node` is in a context where a bare name node should be seen as a reference rather than a declaration. */
 private predicate isUnboundPattern(Expr node) {
-  // 'case/catch' start an unbound-pattern context, 'let/var' terminate it
+  // 'case/catch/guard' start an unbound-pattern context, 'let/var' terminate it
   (
     node = any(SwitchCase c).getPattern()
     or
     node = any(CatchClause c).getPattern()
+    or
+    node = any(PatternGuardExpr c).getPattern()
     or
     isUnboundPattern(node.(Expr).getEnclosingExpr())
   ) and
