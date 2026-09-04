@@ -1,7 +1,0 @@
-consistencyOverview
-| invalidAbruptCompletionOrigin | 4 |
-invalidAbruptCompletionOrigin
-| RedundantRecover1.go:12:2:14:4 | defer statement | RedundantRecover1.go:12:8:14:4 | defer-invoke function call |
-| RedundantRecover1Good.go:12:2:12:25 | defer statement | RedundantRecover1Good.go:12:8:12:25 | defer-invoke call to callRecover1Good |
-| RedundantRecover2Good.go:4:2:4:29 | defer statement | RedundantRecover2Good.go:4:8:4:29 | defer-invoke function call |
-| tst.go:32:2:32:21 | defer statement | tst.go:32:8:32:21 | defer-invoke call to callRecover4 |

@@ -1,4 +1,0 @@
-consistencyOverview
-| invalidAbruptCompletionOrigin | 1 |
-invalidAbruptCompletionOrigin
-| tst.go:16:2:16:19 | defer statement | tst.go:16:8:16:19 | defer-invoke call to Close |

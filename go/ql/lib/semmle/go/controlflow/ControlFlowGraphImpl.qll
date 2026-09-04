@@ -690,12 +690,13 @@ module CfgImpl {
       c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
       always = false
       or
-      ast instanceof Go::DeferStmt and
+      ast instanceof Go::CallExpr and
+      ast = any(Go::DeferStmt defer).getCall() and
       (
-        not exists(ast.(Go::DeferStmt).getCall().getTarget()) or
-        ast.(Go::DeferStmt).getCall().getTarget().mayPanic()
+        not exists(ast.(Go::CallExpr).getTarget()) or
+        ast.(Go::CallExpr).getTarget().mayPanic()
       ) and
-      n.isAdditional(ast.(Go::DeferStmt).getCall(), "defer-invoke") and
+      n.isAdditional(ast, "defer-invoke") and
       c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
       always = false
       or
@@ -711,11 +712,12 @@ module CfgImpl {
       c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
       always = true
       or
-      ast instanceof Go::DeferStmt and
-      exists(Go::Function target | target = ast.(Go::DeferStmt).getCall().getTarget() |
+      ast instanceof Go::CallExpr and
+      ast = any(Go::DeferStmt defer).getCall() and
+      exists(Go::Function target | target = ast.(Go::CallExpr).getTarget() |
         target.mustPanic() or target.mustNotReturnNormally()
       ) and
-      n.isAdditional(ast.(Go::DeferStmt).getCall(), "defer-invoke") and
+      n.isAdditional(ast, "defer-invoke") and
       c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
       always = true
       or

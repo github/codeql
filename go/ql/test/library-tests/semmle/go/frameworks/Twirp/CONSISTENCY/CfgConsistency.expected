@@ -1,9 +1,0 @@
-consistencyOverview
-| invalidAbruptCompletionOrigin | 6 |
-invalidAbruptCompletionOrigin
-| rpc/notes/service.twirp.go:494:3:494:48 | defer statement | rpc/notes/service.twirp.go:494:9:494:48 | defer-invoke call to ensurePanicResponses |
-| rpc/notes/service.twirp.go:575:3:575:48 | defer statement | rpc/notes/service.twirp.go:575:9:575:48 | defer-invoke call to ensurePanicResponses |
-| rpc/notes/service.twirp.go:674:3:674:48 | defer statement | rpc/notes/service.twirp.go:674:9:674:48 | defer-invoke call to ensurePanicResponses |
-| rpc/notes/service.twirp.go:755:3:755:48 | defer statement | rpc/notes/service.twirp.go:755:9:755:48 | defer-invoke call to ensurePanicResponses |
-| rpc/notes/service.twirp.go:1227:2:1227:41 | defer statement | rpc/notes/service.twirp.go:1227:8:1227:41 | defer-invoke function call |
-| rpc/notes/service.twirp.go:1277:2:1282:4 | defer statement | rpc/notes/service.twirp.go:1277:8:1282:4 | defer-invoke function call |
