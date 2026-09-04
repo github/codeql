@@ -62,12 +62,7 @@ where
   uses.getVersion() = version and
   not isTrustedOwner(nwo) and
   not isSelfRepository(nwo) and
-  not exists(UsesStep step |
-    uses = step and
-    exists(ActionsLock lock |
-      lock.pins(step.getLocation().getFile().getRelativePath(), nwo, version)
-    )
-  ) and
+  not any(ActionsLock lock).pins(uses, version) and
   not (
     if uses instanceof UsesStep and isContainerImage(nwo)
     then isPinnedContainer(version)
