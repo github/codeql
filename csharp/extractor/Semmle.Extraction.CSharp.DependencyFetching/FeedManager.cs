@@ -141,10 +141,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     continue;
                 }
 
-                if (!string.IsNullOrWhiteSpace(url))
-                {
-                    yield return url;
-                }
+                yield return url;
             }
         }
 
