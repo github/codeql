@@ -8,6 +8,8 @@ set -euo pipefail
 
 # no need to install rust-src explicitly, it's listed in both toolchains
 cd "$(dirname "$0")"
+# toolchain forced by the extractor for rust-analyzer compatibility
+rustup toolchain install 1.97.0 --profile minimal --component rust-src
 pushd ../../extractor/src/nightly-toolchain
 rustup install
 popd

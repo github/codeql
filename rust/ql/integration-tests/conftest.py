@@ -5,6 +5,14 @@ import pathlib
 import tomllib
 
 
+def pytest_configure(config):
+    # Install before xdist starts its workers to avoid concurrent rustup downloads.
+    if not hasattr(config, "workerinput"):
+        commands.run(
+            "rustup toolchain install 1.97.0 --profile minimal --component rust-src"
+        )
+
+
 @pytest.fixture(params=[2018, 2021, 2024])
 def rust_edition(request):
     return request.param
