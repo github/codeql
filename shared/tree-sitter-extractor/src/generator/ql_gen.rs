@@ -853,15 +853,31 @@ fn same_predicate_signature(a: &ql::Predicate, b: &ql::Predicate) -> bool {
 /// (directly, or transitively through further supertypes) has that node as a
 /// member. The same cache also serves as the answer to "what does the class
 /// named X expose?", used by `is_predicate_inherited`.
+///
+/// `visiting` tracks the chain of supertypes whose computation is currently
+/// in progress, so that a cycle in the "is a member of" relation (which would
+/// otherwise cause infinite recursion) can be detected and reported as an
+/// error instead.
 fn compute_exposed_predicates<'a, 'b>(
     type_name: &'a node_types::TypeName,
     nodes: &'a node_types::NodeTypeMap,
     field_predicates: &BTreeMap<&node_types::TypeName, Vec<ql::Predicate<'a>>>,
     cache: &'b mut BTreeMap<&'a str, Vec<ql::Predicate<'a>>>,
+    visiting: &mut Vec<&'a str>,
 ) -> &'b Vec<ql::Predicate<'a>> {
     let node = nodes.get(type_name);
     let class_name = node.map_or(type_name.kind.as_str(), |node| node.ql_class_name.as_str());
     if !cache.contains_key(class_name) {
+        if let Some(cycle_start) = visiting.iter().position(|&name| name == class_name) {
+            let mut cycle: Vec<&str> = visiting[cycle_start..].to_vec();
+            cycle.push(class_name);
+            panic!(
+                "Found a cycle in the supertype hierarchy: {}. A supertype's members must not \
+                 (directly or transitively) include the supertype itself.",
+                cycle.join(" -> ")
+            );
+        }
+        visiting.push(class_name);
         let exposed = match node.map(|node| &node.kind) {
             Some(node_types::EntryKind::Table { .. }) => {
                 field_predicates.get(type_name).cloned().unwrap_or_default()
@@ -870,13 +886,19 @@ fn compute_exposed_predicates<'a, 'b>(
                 let mut members = members.iter();
                 let mut common = match members.next() {
                     Some(first) => {
-                        compute_exposed_predicates(first, nodes, field_predicates, cache).clone()
+                        compute_exposed_predicates(first, nodes, field_predicates, cache, visiting)
+                            .clone()
                     }
                     None => Vec::new(),
                 };
                 for member in members {
-                    let member_predicates =
-                        compute_exposed_predicates(member, nodes, field_predicates, cache);
+                    let member_predicates = compute_exposed_predicates(
+                        member,
+                        nodes,
+                        field_predicates,
+                        cache,
+                        visiting,
+                    );
                     common.retain(|predicate| {
                         member_predicates
                             .iter()
@@ -887,6 +909,7 @@ fn compute_exposed_predicates<'a, 'b>(
             }
             Some(node_types::EntryKind::Token { .. }) | None => Vec::new(),
         };
+        visiting.pop();
         cache.insert(class_name, exposed);
     }
     cache.get(class_name).unwrap()
@@ -988,6 +1011,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                 nodes,
                 &field_predicates,
                 &mut exposed_predicates,
+                &mut Vec::new(),
             );
         }
     }
@@ -1333,5 +1357,37 @@ mod tests {
                 "{member}'s getBody should be an override"
             );
         }
+    }
+
+    /// Builds a node-types fixture where two supertypes declare each other
+    /// as (transitive) members, forming a cycle in the "is a member of"
+    /// relation.
+    fn cyclic_supertypes_fixture() -> node_types::NodeTypeMap {
+        let json = r#"[
+            {
+                "type": "a_stmt",
+                "named": true,
+                "subtypes": [
+                    {"type": "b_stmt", "named": true}
+                ]
+            },
+            {
+                "type": "b_stmt",
+                "named": true,
+                "subtypes": [
+                    {"type": "a_stmt", "named": true}
+                ]
+            }
+        ]"#;
+        node_types::read_node_types_str("test", json).unwrap()
+    }
+
+    #[test]
+    #[should_panic(expected = "cycle")]
+    fn detects_cycle_in_supertype_hierarchy() {
+        let nodes = cyclic_supertypes_fixture();
+        // This must not recurse infinitely; it should panic with a
+        // descriptive error instead.
+        convert_nodes(&nodes);
     }
 }
