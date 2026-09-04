@@ -224,8 +224,9 @@ predicate missedFirstOrDefaultOpportunity(ForeachStmtGenericEnumerable fes, IfSt
   ) and
   not is.getCondition().getAChildExpr*() instanceof AwaitExpr and
   not fes.isAsync() and
+  not fes.getVariable().isCaptured() and
   returnsLoopVariable(fes, is.getThen()) and
-fes.getElementType() = fes.getVariable().getType() and
+  fes.getElementType() = fes.getVariable().getType() and
   returnsDefaultValueAfterForeach(fes)
 }
 

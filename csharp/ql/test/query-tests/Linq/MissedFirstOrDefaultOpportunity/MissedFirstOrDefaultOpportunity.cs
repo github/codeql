@@ -167,6 +167,18 @@ class MissedFirstOrDefaultOpportunity
         return default(int);
     }
 
+    public Operation M14(IEnumerable<Operation> operations, Func<string, bool>[] predicates)
+    {
+        // GOOD: Ignore the corner case where the foreach variable is captured by a nested lambda.
+        foreach (var operation in operations)
+        {
+            if (Array.Exists(predicates, predicate => predicate(operation.OperationId)))
+                return operation;
+        }
+
+        return null;
+    }
+
     private static Task<bool> IsMatch(Operation operation, string operationId) =>
         Task.FromResult(string.Equals(operation.OperationId, operationId, StringComparison.Ordinal));
 }
