@@ -57,12 +57,12 @@
 #-----| core -> Crate(core@0.0.0)
 #-----| std -> Crate(std@0.0.0)
 
-#-----| Crate(hashbrown@0.16.1)
+#-----| Crate(hashbrown@0.17.1)
 #-----| alloc -> Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
 #-----| foldhash -> Crate(foldhash@0.2.0)
 
-#-----| Crate(libc@0.2.178)
+#-----| Crate(libc@0.2.185)
 #-----| rustc_std_workspace_core -> Crate(core@0.0.0)
 
 main.rs:
@@ -98,7 +98,7 @@ main.rs:
 #-----| Crate(panic_unwind@0.0.0)
 #-----| alloc -> Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
-#-----| libc -> Crate(libc@0.2.178)
+#-----| libc -> Crate(libc@0.2.185)
 #-----| unwind -> Crate(unwind@0.0.0)
 
 #-----| Crate(proc_macro@0.0.0)
@@ -123,27 +123,27 @@ main.rs:
 #-----| Crate(std@0.0.0)
 #-----| alloc -> Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
-#-----| cfg_if -> Crate(cfg_if@1.0.4)
-#-----| hashbrown -> Crate(hashbrown@0.16.1)
-#-----| libc -> Crate(libc@0.2.178)
-#-----| rand -> Crate(rand@0.9.2)
-#-----| rand_xorshift -> Crate(rand_xorshift@0.4.0)
-#-----| rustc_demangle -> Crate(rustc_demangle@0.1.27)
 #-----| panic_abort -> Crate(panic_abort@0.0.0)
+#-----| libc -> Crate(libc@0.2.185)
 #-----| unwind -> Crate(unwind@0.0.0)
 #-----| panic_unwind -> Crate(panic_unwind@0.0.0)
 #-----| std_detect -> Crate(std_detect@0.1.5)
+#-----| cfg_if -> Crate(cfg_if@1.0.4)
+#-----| hashbrown -> Crate(hashbrown@0.17.1)
+#-----| rand -> Crate(rand@0.9.2)
+#-----| rand_xorshift -> Crate(rand_xorshift@0.4.0)
+#-----| rustc_demangle -> Crate(rustc_demangle@0.1.27)
 
 #-----| Crate(std_detect@0.1.5)
 #-----| alloc -> Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
-#-----| libc -> Crate(libc@0.2.178)
+#-----| libc -> Crate(libc@0.2.185)
 
 #-----| Crate(test@0.0.0)
 #-----| core -> Crate(core@0.0.0)
 #-----| std -> Crate(std@0.0.0)
+#-----| libc -> Crate(libc@0.2.185)
 #-----| getopts -> Crate(getopts@0.2.24)
-#-----| libc -> Crate(libc@0.2.178)
 
 lib.rs:
 #    0| Crate(test@0.0.1)
@@ -164,7 +164,7 @@ lib.rs:
 
 #-----| Crate(unwind@0.0.0)
 #-----| core -> Crate(core@0.0.0)
-#-----| libc -> Crate(libc@0.2.178)
+#-----| libc -> Crate(libc@0.2.185)
 
 #-----| Crate(version_check@0.9.5)
 #-----| proc_macro -> Crate(proc_macro@0.0.0)

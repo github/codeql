@@ -46,6 +46,7 @@ const DEFAULT_RUST_TOOLCHAIN: &str = "1.97.0";
 ///
 /// Examples of what the stdout might look like when the command is successful:
 /// - `nightly-aarch64-apple-darwin (overridden by '/path/to/project/rust-toolchain.toml')`
+/// - `nightly-2026-09-01-aarch64-apple-darwin (overridden by '/path/to/project/rust-toolchain.toml')`
 /// - `stable-aarch64-apple-darwin (default)`
 /// - `1.80.1-aarch64-apple-darwin (overridden by '/path/to/project/rust-toolchain.toml')`
 fn project_toolchain(dir: impl AsRef<Path>) -> io::Result<process::Output> {
@@ -56,13 +57,13 @@ fn project_toolchain(dir: impl AsRef<Path>) -> io::Result<process::Output> {
 }
 
 fn select_toolchain() -> String {
-    project_toolchain(".")
+    let nightly = project_toolchain(".")
         .ok()
         .filter(|output| output.status.success())
         .and_then(|output| String::from_utf8(output.stdout).ok())
         .and_then(|toolchain| toolchain.split_whitespace().next().map(str::to_owned))
-        .filter(|toolchain| toolchain.starts_with("nightly"))
-        .unwrap_or_else(|| DEFAULT_RUST_TOOLCHAIN.to_owned())
+        .filter(|toolchain| toolchain.starts_with("nightly"));
+    nightly.unwrap_or_else(|| DEFAULT_RUST_TOOLCHAIN.to_owned())
 }
 
 struct Extractor<'a> {
