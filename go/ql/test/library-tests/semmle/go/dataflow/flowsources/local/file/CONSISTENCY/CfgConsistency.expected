@@ -1,0 +1,6 @@
+consistencyOverview
+| invalidAbruptCompletionOrigin | 3 |
+invalidAbruptCompletionOrigin
+| test.go:14:2:14:19 | defer statement | test.go:14:8:14:19 | defer-invoke call to Close |
+| test.go:23:2:23:19 | defer statement | test.go:23:8:23:19 | defer-invoke call to Close |
+| test.go:68:2:68:19 | defer statement | test.go:68:8:68:19 | defer-invoke call to Close |
