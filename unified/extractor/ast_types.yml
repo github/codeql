@@ -97,7 +97,7 @@ named:
   top_level:
     body: block
 
-  # A name pattern that applies a nested pattern. Used for scoped imports.
+  # A pattern that binds the incoming value to a name, and then applies it to a sub-pattern.
   named_pattern:
     modifier*: modifier
     name_node: identifier
