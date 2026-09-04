@@ -259,7 +259,7 @@ pub fn extend_schema_from_yaml(
     Ok(())
 }
 
-/// Record each node kind's declared (named) field order from the source YAML,
+/// Record each node kind's declared child-field order from the source YAML,
 /// which `serde`'s `BTreeMap`-based deserialization does not preserve.
 /// `serde_yaml::Value` mappings keep insertion (source) order.
 fn record_field_order(schema: &mut crate::schema::Schema, yaml_input: &str) -> Result<(), String> {
@@ -280,10 +280,11 @@ fn record_field_order(schema: &mut crate::schema::Schema, yaml_input: &str) -> R
             let Some(raw) = raw_field_name.as_str() else {
                 continue;
             };
-            // Skip the unnamed/`child` slot; the dump handles it separately.
-            if let Some(name) = parse_field_name(raw).name {
-                order.push(schema.register_field(&name));
-            }
+            let field_id = match parse_field_name(raw).name {
+                Some(name) => schema.register_field(&name),
+                None => CHILD_FIELD,
+            };
+            order.push(field_id);
         }
         schema.set_field_order(node_name, order);
     }

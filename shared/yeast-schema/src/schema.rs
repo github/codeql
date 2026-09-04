@@ -44,10 +44,10 @@ pub struct Schema {
     field_types: BTreeMap<(String, FieldId), Vec<NodeType>>,
     field_cardinalities: BTreeMap<(String, FieldId), FieldCardinality>,
     supertypes: BTreeMap<String, Vec<NodeType>>,
-    /// Per-node-kind declared field order (named fields only), as written in
-    /// the source node-types YAML. Field ids are not a stable ordering key
-    /// across front-ends, so this preserves the authored order for
-    /// presentation (see the AST dump).
+    /// Per-node-kind declared child-field order, as written in the source
+    /// node-types YAML. Field ids are not a stable ordering key across
+    /// front-ends, so this preserves the authored order for presentation (see
+    /// the AST dump) and traversal.
     field_order: BTreeMap<String, Vec<FieldId>>,
 }
 
@@ -193,6 +193,21 @@ impl Schema {
         for name in other.field_ids.keys() {
             self.register_field(name);
         }
+        for (kind, order) in &other.field_order {
+            let order = order
+                .iter()
+                .filter_map(|&field_id| {
+                    if field_id == CHILD_FIELD {
+                        Some(CHILD_FIELD)
+                    } else {
+                        other
+                            .field_name_for_id(field_id)
+                            .map(|name| self.register_field(name))
+                    }
+                })
+                .collect();
+            self.set_field_order(kind, order);
+        }
     }
 
     /// Track a name for a kind ID without registering it as named or
@@ -275,13 +290,13 @@ impl Schema {
             .get(&(parent_kind.to_string(), field_id))
     }
 
-    /// Record the declared (named) field order for a node kind, as authored in
+    /// Record the declared child-field order for a node kind, as authored in
     /// the source node-types YAML.
     pub fn set_field_order(&mut self, kind: &str, field_ids: Vec<FieldId>) {
         self.field_order.insert(kind.to_string(), field_ids);
     }
 
-    /// The declared (named) field order for a node kind, if known.
+    /// The declared child-field order for a node kind, if known.
     pub fn field_order(&self, kind: &str) -> Option<&Vec<FieldId>> {
         self.field_order.get(kind)
     }

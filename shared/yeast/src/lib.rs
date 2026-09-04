@@ -323,7 +323,7 @@ impl<'a> AstCursor<'a> {
     fn goto_first_child_opt(&mut self) -> Option<()> {
         let parent_id = self.node_id;
         let parent = self.ast.get_node(parent_id)?;
-        let mut children = ChildrenIter::new(parent);
+        let mut children = ChildrenIter::new(self.ast, parent);
         let first_child = children.next()?;
         self.node_id = first_child;
         self.parents.push((parent_id, children));
@@ -340,21 +340,48 @@ impl<'a> AstCursor<'a> {
 #[derive(Debug)]
 struct ChildrenIter<'a> {
     current_field: Option<FieldId>,
-    fields: std::collections::btree_map::Iter<'a, FieldId, Vec<Id>>,
+    node: &'a Node,
+    fields: Vec<FieldId>,
+    field_index: usize,
     field_children: Option<std::slice::Iter<'a, Id>>,
 }
 
 impl<'a> ChildrenIter<'a> {
-    fn new(node: &'a Node) -> Self {
+    fn new(ast: &'a Ast, node: &'a Node) -> Self {
+        let present: Vec<FieldId> = node.fields.keys().copied().collect();
+        let fields = match ast.schema.field_order(node.kind_name()) {
+            Some(order) => {
+                let mut fields: Vec<FieldId> = order
+                    .iter()
+                    .copied()
+                    .filter(|field| node.fields.contains_key(field))
+                    .collect();
+                for field in present {
+                    if !fields.contains(&field) {
+                        fields.push(field);
+                    }
+                }
+                fields
+            }
+            None => present,
+        };
         Self {
             current_field: None,
-            fields: node.fields.iter(),
+            node,
+            fields,
+            field_index: 0,
             field_children: None,
         }
     }
 
     fn current_field(&self) -> Option<FieldId> {
         self.current_field
+    }
+
+    fn next_field(&mut self) -> Option<FieldId> {
+        let field = self.fields.get(self.field_index).copied();
+        self.field_index += usize::from(field.is_some());
+        field
     }
 }
 
@@ -363,20 +390,20 @@ impl Iterator for ChildrenIter<'_> {
 
     fn next(&mut self) -> Option<Self::Item> {
         match self.field_children.as_mut() {
-            None => match self.fields.next() {
-                Some((field, children)) => {
-                    self.current_field = Some(*field);
-                    self.field_children = Some(children.iter());
+            None => match self.next_field() {
+                Some(field) => {
+                    self.current_field = Some(field);
+                    self.field_children = Some(self.node.fields[&field].iter());
                     self.next()
                 }
                 None => None,
             },
             Some(children) => match children.next() {
-                None => match self.fields.next() {
+                None => match self.next_field() {
                     None => None,
-                    Some((field, children)) => {
-                        self.current_field = Some(*field);
-                        self.field_children = Some(children.iter());
+                    Some(field) => {
+                        self.current_field = Some(field);
+                        self.field_children = Some(self.node.fields[&field].iter());
                         self.next()
                     }
                 },

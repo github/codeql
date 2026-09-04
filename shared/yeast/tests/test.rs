@@ -111,6 +111,52 @@ fn assert_dump_eq(actual: &str, expected: &str) {
 // ---- Parsing tests ----
 
 #[test]
+fn test_cursor_uses_declared_field_order_after_schema_registration() {
+    let output_schema = yeast::node_types_yaml::schema_from_yaml(
+        r#"
+        named:
+          root:
+            z: leaf
+            a: leaf
+            m*: leaf
+          leaf:
+        "#,
+    )
+    .unwrap();
+
+    let mut ast = Ast::with_schema(yeast::schema::Schema::new());
+    ast.register_names_from_schema(&output_schema);
+    let leaf_kind = ast.register_kind("leaf");
+    let root_kind = ast.register_kind("root");
+    let z_field = ast.field_id_for_name("z").unwrap();
+    let a_field = ast.field_id_for_name("a").unwrap();
+    let m_field = ast.field_id_for_name("m").unwrap();
+
+    let z = ast.create_node(leaf_kind, NodeContent::String("z"), Default::default(), true);
+    let a = ast.create_node(leaf_kind, NodeContent::String("a"), Default::default(), true);
+    let m = ast.create_node(leaf_kind, NodeContent::String("m"), Default::default(), true);
+
+    let mut fields = std::collections::BTreeMap::new();
+    fields.insert(a_field, vec![a]);
+    fields.insert(m_field, vec![m]);
+    fields.insert(z_field, vec![z]);
+    let root = ast.create_node(root_kind, NodeContent::String("root"), fields, true);
+    ast.set_root(root);
+
+    let mut cursor = ast.walk();
+    assert!(cursor.goto_first_child());
+    assert_eq!(cursor.field_name(), Some("z"));
+    assert_eq!(cursor.node_id(), z);
+    assert!(cursor.goto_next_sibling());
+    assert_eq!(cursor.field_name(), Some("a"));
+    assert_eq!(cursor.node_id(), a);
+    assert!(cursor.goto_next_sibling());
+    assert_eq!(cursor.field_name(), Some("m"));
+    assert_eq!(cursor.node_id(), m);
+    assert!(!cursor.goto_next_sibling());
+}
+
+#[test]
 fn test_parse_assignment() {
     let dump = parse_and_dump("x = 1");
     assert_dump_eq(
