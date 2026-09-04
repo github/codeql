@@ -3,6 +3,7 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
+      - ["strings", "", False, "CutLast", "", "", "Argument[0]", "ReturnValue[0..1]", "taint", "manual"]
       - ["strings", "", False, "Fields", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "FieldsFunc", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "Join", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]

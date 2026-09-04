@@ -274,6 +274,18 @@ func TaintStepTest_StringsReplacerWriteString_B0I0O0(sourceCQL interface{}) inte
 	return intoWriter754
 }
 
+func TaintStepTest_StringsCutLastleft(sourceCQL interface{}) interface{} {
+	fromString := sourceCQL.(string)
+	left, _, _ := strings.CutLast(fromString, "")
+	return left
+}
+
+func TaintStepTest_StringsCutLastright(sourceCQL interface{}) interface{} {
+	fromString := sourceCQL.(string)
+	_, right, _ := strings.CutLast(fromString, "")
+	return right
+}
+
 func RunAllTaints_Strings() {
 	{
 		source := newSource(0)
@@ -489,5 +501,15 @@ func RunAllTaints_Strings() {
 		source := newSource(42)
 		out := TaintStepTest_StringsReplacerWriteString_B0I0O0(source)
 		sink(42, out)
+	}
+	{
+		source := newSource(43)
+		out := TaintStepTest_StringsCutLastleft(source)
+		sink(43, out)
+	}
+	{
+		source := newSource(44)
+		out := TaintStepTest_StringsCutLastright(source)
+		sink(44, out)
 	}
 }
