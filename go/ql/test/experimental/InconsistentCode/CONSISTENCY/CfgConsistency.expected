@@ -1,15 +1,6 @@
 consistencyOverview
-| invalidAbruptCompletionOrigin | 7 |
 | multipleSuccessors | 8 |
 | selfLoop | 1 |
-invalidAbruptCompletionOrigin
-| DeferInLoop.go:8:3:8:20 | defer statement | DeferInLoop.go:8:9:8:20 | defer-invoke call to Close |
-| DeferInLoopGood.go:7:2:7:19 | defer statement | DeferInLoopGood.go:7:8:7:19 | defer-invoke call to Close |
-| test.go:6:3:6:14 | defer statement | test.go:6:9:6:14 | defer-invoke call to test |
-| test.go:11:4:11:15 | defer statement | test.go:11:10:11:15 | defer-invoke call to test |
-| test.go:16:3:16:14 | defer statement | test.go:16:9:16:14 | defer-invoke call to test |
-| test.go:20:3:20:14 | defer statement | test.go:20:9:20:14 | defer-invoke call to test |
-| test.go:24:3:24:14 | defer statement | test.go:24:9:24:14 | defer-invoke call to test |
 multipleSuccessors
 | DeferInLoop.go:6:2:13:2 | After range statement | successor | DeferInLoop.go:5:36:14:1 | After block statement |
 | DeferInLoop.go:6:2:13:2 | After range statement | successor | DeferInLoop.go:8:9:8:20 | defer-invoke call to Close |
