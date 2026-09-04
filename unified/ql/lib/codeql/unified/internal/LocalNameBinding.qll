@@ -389,9 +389,6 @@ module Public {
  */
 class PotentialLocalNameAccess extends Identifier {
   PotentialLocalNameAccess() {
-    this instanceof NameDeclaration
-    or
-    not this instanceof NameDeclaration and
     not this = any(MemberAccessExpr e).getMemberNameNode() and
     not this = any(Argument a).getNameNode() and
     not this = any(Parameter p).getExternalNameNode() and
