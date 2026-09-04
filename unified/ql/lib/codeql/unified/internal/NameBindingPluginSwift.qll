@@ -6,10 +6,8 @@ private import unified
 private import codeql.unified.internal.NameBindingPlugin
 
 class NameBindingPluginSwift extends NameBindingPlugin {
-  bindingset[identifier]
-  override predicate isNameReferenceInPatternContext(Identifier identifier) {
-    isUnboundPattern(identifier)
-  }
+  bindingset[e]
+  override predicate isNonPattern(Expr e) { isUnboundPattern(e.(Identifier)) }
 
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
   bindingset[cls, member]

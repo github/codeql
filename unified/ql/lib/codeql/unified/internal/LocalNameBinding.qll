@@ -185,8 +185,20 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     override AstNode getElse() { none() }
   }
 
+  /** Holds if `e` cannot be a pattern even if it appears in pattern context. */
+  bindingset[e]
+  private predicate isNonPattern(Expr e) {
+    e = any(TypeTestExpr n).getType()
+    or
+    e = any(TypeCastExpr n).getType()
+    or
+    e instanceof MemberAccessExpr
+    or
+    any(NameBindingPlugin p).isNonPattern(e)
+  }
+
   additional predicate bindingContext(AstNode pattern, AstNode scope, AstNode declaration) {
-    not any(NameBindingPlugin p).isNameReferenceInPatternContext(pattern) and
+    not isNonPattern(pattern) and
     (
       exists(SiblingShadowingDecl decl |
         scope = decl and

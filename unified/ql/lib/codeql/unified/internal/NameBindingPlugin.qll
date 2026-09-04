@@ -5,12 +5,11 @@ private import codeql.unified.internal.NameBindingPluginSwift // ensure override
 /** Extension point for language-specific inputs to name binding. */
 class NameBindingPlugin extends Unit {
   /**
-   * Holds if `identifier`, occurring in pattern context, refers to an existing name.
-   *
-   * The caller has already restricted `identifier` to one that appears in pattern context.
+   * Holds if `e`, occurring in pattern context, should be interpreted a sub-expression
+   * whose result is to be compared to the incoming value.
    */
-  bindingset[identifier]
-  predicate isNameReferenceInPatternContext(Identifier identifier) { none() }
+  bindingset[e]
+  predicate isNonPattern(Expr e) { none() }
 
   /**
    * Holds if `member` is an instance member.
