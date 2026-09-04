@@ -55,18 +55,14 @@ fn project_toolchain(dir: impl AsRef<Path>) -> io::Result<process::Output> {
         .output()
 }
 
-fn select_toolchain() -> &'static str {
-    let uses_nightly = project_toolchain(".")
+fn select_toolchain() -> String {
+    project_toolchain(".")
         .ok()
         .filter(|output| output.status.success())
         .and_then(|output| String::from_utf8(output.stdout).ok())
-        .is_some_and(|toolchain| toolchain.starts_with("nightly"));
-
-    if uses_nightly {
-        "nightly"
-    } else {
-        DEFAULT_RUST_TOOLCHAIN
-    }
+        .and_then(|toolchain| toolchain.split_whitespace().next().map(str::to_owned))
+        .filter(|toolchain| toolchain.starts_with("nightly"))
+        .unwrap_or_else(|| DEFAULT_RUST_TOOLCHAIN.to_owned())
 }
 
 struct Extractor<'a> {

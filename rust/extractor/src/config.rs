@@ -143,7 +143,7 @@ impl Config {
         extra_env.extend(self.cargo_extra_env.clone());
         extra_env.insert(
             "RUSTUP_TOOLCHAIN".to_owned(),
-            Some(crate::select_toolchain().to_owned()),
+            Some(crate::select_toolchain()),
         );
         extra_env
     }
