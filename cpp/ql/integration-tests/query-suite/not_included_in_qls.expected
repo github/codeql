@@ -242,6 +242,7 @@ ql/cpp/ql/src/experimental/Security/CWE/CWE-078/WordexpTainted.ql
 ql/cpp/ql/src/experimental/Security/CWE/CWE-1041/FindWrapperFunctions.ql
 ql/cpp/ql/src/experimental/Security/CWE/CWE-1126/DeclarationOfVariableWithUnnecessarilyWideScope.ql
 ql/cpp/ql/src/experimental/Security/CWE/CWE-120/MemoryUnsafeFunctionScan.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-120/MmioUnsanitizedMemcpy.ql
 ql/cpp/ql/src/experimental/Security/CWE/CWE-1240/CustomCryptographicPrimitive.ql
 ql/cpp/ql/src/experimental/Security/CWE/CWE-125/DangerousWorksWithMultibyteOrWideCharacters.ql
 ql/cpp/ql/src/experimental/Security/CWE/CWE-190/AllocMultiplicationOverflow.ql
