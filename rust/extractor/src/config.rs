@@ -23,6 +23,7 @@ use std::collections::HashSet;
 use std::fmt::Debug;
 use std::ops::Not;
 use std::path::{Path, PathBuf};
+use tracing::{info, warn};
 
 #[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, clap::ValueEnum)]
 #[serde(rename_all = "lowercase")]
@@ -65,6 +66,7 @@ pub struct Config {
     pub qltest_cargo_check: bool,
     pub qltest_dependencies: Vec<String>,
     pub qltest_use_nightly: bool,
+    pub qltest_edition: Option<String>,
     pub sysroot: Option<PathBuf>,
     pub sysroot_src: Option<PathBuf>,
     pub rustc_src: Option<PathBuf>,
@@ -129,13 +131,35 @@ impl Config {
         // but we do want to allow rustup to auto-install toolchains if needed, so we set it to 1 here.
         extra_env.insert("RUSTUP_AUTO_INSTALL".to_owned(), Some("1".to_owned()));
         if self.qltest_cargo_check {
-            // When running qltests we add this flag to match the `cargo check`
-            // invocation in the `cargo_check` function. This is necessary as
-            // Cargo does not re-use the cache when `RUSTFLAGS` differ.
-            extra_env.insert("RUSTFLAGS".to_owned(), Some("-Awarnings".to_owned()));
+            // Match the `cargo check` invocation in `cargo_check` so Cargo reuses its
+            // cache (it does not when `RUSTFLAGS` differ). `--cap-lints=allow` keeps
+            // deny-by-default lints (e.g. `dangerous_implicit_autorefs` on recent
+            // toolchains) from failing extraction of otherwise valid test sources.
+            extra_env.insert(
+                "RUSTFLAGS".to_owned(),
+                Some("-Awarnings --cap-lints=allow".to_owned()),
+            );
         }
         extra_env.extend(self.cargo_extra_env.clone());
+        extra_env.insert(
+            "RUSTUP_TOOLCHAIN".to_owned(),
+            Some(crate::select_toolchain()),
+        );
         extra_env
+    }
+
+    pub(crate) fn log_project_toolchain(&self, dir: &AbsPath) {
+        match crate::project_toolchain(dir.as_str()) {
+            Ok(output) if output.status.success() => info!(
+                "project Rust toolchain: {}",
+                String::from_utf8_lossy(&output.stdout).trim()
+            ),
+            Ok(output) => warn!(
+                "unable to determine project Rust toolchain: {}",
+                String::from_utf8_lossy(&output.stderr).trim()
+            ),
+            Err(error) => warn!("unable to determine project Rust toolchain: {error}"),
+        }
     }
 
     fn sysroot(&self, dir: &AbsPath) -> Sysroot {
@@ -181,6 +205,7 @@ impl Config {
 
     pub fn to_cargo_config(&self, dir: &AbsPath) -> (CargoConfig, LoadCargoConfig) {
         let sysroot = self.sysroot(dir);
+        info!("Using sysroot: {:?}", sysroot.root());
         (
             CargoConfig {
                 all_targets: self.cargo_all_targets,

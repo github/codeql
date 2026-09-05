@@ -15,12 +15,13 @@ use ra_ap_vfs::Vfs;
 use rust_analyzer::{ParseResult, RustAnalyzer};
 use std::collections::HashSet;
 use std::hash::RandomState;
+use std::io;
 use std::time::Instant;
 use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
-use std::{env, fs};
+use std::{env, fs, process};
 use tracing::{error, info, warn};
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -34,6 +35,36 @@ mod qltest;
 mod rust_analyzer;
 mod translate;
 pub mod trap;
+
+/// The toolchain target by the extractor. When rust-analyzer is updated this
+/// number should be bumped to the last Rust toolchain release that preceedes
+/// the rust-analyzer release.
+const DEFAULT_RUST_TOOLCHAIN: &str = "1.97.0";
+
+/// The command output of asking `rustup` which toolchain is used by the Rust
+/// project in `dir`.
+///
+/// Examples of what the stdout might look like when the command is successful:
+/// - `nightly-aarch64-apple-darwin (overridden by '/path/to/project/rust-toolchain.toml')`
+/// - `nightly-2026-09-01-aarch64-apple-darwin (overridden by '/path/to/project/rust-toolchain.toml')`
+/// - `stable-aarch64-apple-darwin (default)`
+/// - `1.80.1-aarch64-apple-darwin (overridden by '/path/to/project/rust-toolchain.toml')`
+fn project_toolchain(dir: impl AsRef<Path>) -> io::Result<process::Output> {
+    process::Command::new("rustup")
+        .current_dir(dir)
+        .args(["show", "active-toolchain"])
+        .output()
+}
+
+fn select_toolchain() -> String {
+    let nightly = project_toolchain(".")
+        .ok()
+        .filter(|output| output.status.success())
+        .and_then(|output| String::from_utf8(output.stdout).ok())
+        .and_then(|toolchain| toolchain.split_whitespace().next().map(str::to_owned))
+        .filter(|toolchain| toolchain.starts_with("nightly"));
+    nightly.unwrap_or_else(|| DEFAULT_RUST_TOOLCHAIN.to_owned())
+}
 
 struct Extractor<'a> {
     archiver: &'a Archiver,
@@ -64,12 +95,11 @@ impl<'a> Extractor<'a> {
 
         let before_extract = Instant::now();
         let line_index = LineIndex::new(text.as_ref());
-        let display_path = file.to_string_lossy();
         let mut trap = self.traps.create("source", file);
         let label = trap.emit_file(file);
         let mut translator = translate::Translator::new(
             trap,
-            display_path.as_ref(),
+            file,
             label,
             line_index,
             semantics_info.as_ref().ok(),
@@ -98,7 +128,7 @@ impl<'a> Extractor<'a> {
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
                 "Failed to write trap file for: {}: {}",
-                display_path,
+                file.display(),
                 err.to_string()
             )
         });
@@ -106,11 +136,11 @@ impl<'a> Extractor<'a> {
             .push(ExtractionStep::extract(before_extract, source_kind, file));
     }
 
-    pub fn extract_with_semantics(
+    pub fn extract_with_semantics<'db>(
         &mut self,
         file: &Path,
-        semantics: &Semantics<'_, RootDatabase>,
-        vfs: &Vfs,
+        semantics: &'db Semantics<'db, RootDatabase>,
+        vfs: &'db Vfs,
         source_kind: SourceKind,
     ) {
         self.extract(&RustAnalyzer::new(vfs, semantics), file, source_kind);
@@ -270,6 +300,7 @@ fn main() -> anyhow::Result<()> {
         );
     }
     let cwd = cwd()?;
+    cfg.log_project_toolchain(&cwd);
     let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
     let library_mode = if cfg.extract_dependencies_as_source {
         SourceKind::Source

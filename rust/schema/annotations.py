@@ -1055,6 +1055,21 @@ class _:
     """
 
 
+@annotate(DerefPat, cfg=True)
+class _:
+    """
+    A deref pattern, matching the value behind a smart pointer. This is an experimental
+    Rust feature that cannot be written directly in stable Rust; the example below uses
+    rust-analyzer's canonical `builtin#deref` syntax for such patterns:
+    ```rust
+    match x {
+        builtin#deref(y) => y,
+        _ => 0,
+    };
+    ```
+    """
+
+
 @annotate(DynTraitTypeRepr)
 class _:
     """
@@ -1280,6 +1295,13 @@ class _:
     """
 
 
+@annotate(ImplRestriction)
+class _:
+    """
+    An implementation restriction, limiting where a trait can be implemented. For example the `impl(crate)` restriction (an unstable feature).
+    """
+
+
 @annotate(ImplTraitTypeRepr)
 class _:
     """
@@ -1289,6 +1311,16 @@ class _:
     ```rust
     fn foo() -> impl Iterator<Item = i32> { 0..10 }
     //          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(IncludeBytesExpr, cfg=True)
+class _:
+    """
+    An expression produced by the built-in `include_bytes!` macro, embedding the contents of a file as a byte array. For example:
+    ```rust
+    let data = include_bytes!("data.bin");
     ```
     """
 
@@ -1507,6 +1539,13 @@ class _:
     """
 
 
+@annotate(MutRestriction)
+class _:
+    """
+    A mutability restriction, limiting where a field can be mutated. For example the `mut(crate)` restriction (an unstable feature).
+    """
+
+
 @annotate(Name, cfg=True)
 class _:
     """
@@ -1553,6 +1592,19 @@ class ParamBase(AstNode):
 
     attrs: list["Attr"] | child
     type_repr: optional["TypeRepr"] | child
+
+
+@annotate(NotNull, cfg=True)
+class _:
+    """
+    The `!null` pattern used in a pattern type to denote a non-null value. Pattern types
+    are an experimental, mostly compiler-internal feature (used in the standard library for
+    types such as `NonZero` and `NonNull`) and cannot be written directly in stable Rust;
+    the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
+    ```rust
+    type NonNull = builtin#pattern_type(*const () is !null);
+    ```
+    """
 
 
 @annotate(ParamBase, cfg=True)
@@ -1638,6 +1690,18 @@ class _:
     ```rust
     type X = std::collections::HashMap<i32, i32>;
     type Y = X::Item;
+    ```
+    """
+
+
+@annotate(PatternTypeRepr)
+class _:
+    """
+    A pattern type, constraining a type to values matching a pattern. Pattern types are an
+    experimental, mostly compiler-internal feature and cannot be written directly in stable
+    Rust; the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
+    ```rust
+    type NonZero = builtin#pattern_type(u32 is 1..);
     ```
     """
 
@@ -2146,6 +2210,17 @@ class _:
     ```rust
       pub struct S;
     //^^^
+    ```
+    """
+
+
+@annotate(VisibilityInner)
+class _:
+    """
+    The parenthesized inner part of a visibility modifier or restriction, such as the `(in path)` in `pub(in path)`, or the `(crate)` in `pub(crate)`. For example the `(in foo::bar)` in:
+    ```rust
+    pub(in foo::bar) struct S;
+    //  ^^^^^^^^^^^^
     ```
     """
 
