@@ -111,6 +111,7 @@ ql/python/ql/src/Security/CWE-113/HeaderInjection.ql
 ql/python/ql/src/Security/CWE-116/BadTagFilter.ql
 ql/python/ql/src/Security/CWE-117/LogInjection.ql
 ql/python/ql/src/Security/CWE-1275/SameSiteNoneCookie.ql
+ql/python/ql/src/Security/CWE-1427/SystemPromptInjection.ql
 ql/python/ql/src/Security/CWE-209/StackTraceExposure.ql
 ql/python/ql/src/Security/CWE-215/FlaskDebug.ql
 ql/python/ql/src/Security/CWE-285/PamAuthorization.ql
