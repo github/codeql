@@ -1,5 +1,6 @@
 /**
  * @kind test-postprocess
+ * @tags inline-expectation-test
  */
 
 private import go
@@ -17,5 +18,13 @@ private module Input implements T::TestPostProcessing::InputSig<Impl> {
       result =
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // Go databases can also contain XML, whose block-comment syntax is not yet supported, so
+    // we only render for Go sources.
+    relativePath.matches("%.go") and
+    result = "//"
   }
 }
