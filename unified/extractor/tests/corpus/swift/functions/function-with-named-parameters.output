@@ -57,25 +57,17 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "greet"
+          name_node: identifier "greet"
           parameter:
             parameter
-              external_name: identifier "person"
-              type:
-                named_type_expr
-                  name: identifier "String"
-              pattern:
-                name_pattern
-                  identifier: identifier "name"
+              external_name_node: identifier "person"
+              type: identifier "String"
+              pattern: identifier "name"
           body:
             block
               stmt:
                 call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                  callee: identifier "print"
                   argument:
                     argument
-                      value:
-                        name_expr
-                          identifier: identifier "name"
+                      value: identifier "name"

@@ -41,14 +41,10 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "result"
+          pattern: identifier "result"
           value:
             unary_expr
               operand:
                 call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "foo"
+                  callee: identifier "foo"
               operator: prefix_operator "try!"

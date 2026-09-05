@@ -71,33 +71,25 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "enum"
-          name: identifier "Shape"
+          name_node: identifier "Shape"
           member:
             class_like_declaration
               modifier: modifier "enum_case"
-              name: identifier "circle"
+              name_node: identifier "circle"
               member:
                 constructor_declaration
                   parameter:
                     parameter
-                      type:
-                        named_type_expr
-                          name: identifier "Double"
-                      pattern:
-                        name_pattern
-                          identifier: identifier "radius"
+                      type: identifier "Double"
+                      pattern: identifier "radius"
                   body: block "circle(radius: Double)"
             class_like_declaration
               modifier: modifier "enum_case"
-              name: identifier "square"
+              name_node: identifier "square"
               member:
                 constructor_declaration
                   parameter:
                     parameter
-                      type:
-                        named_type_expr
-                          name: identifier "Double"
-                      pattern:
-                        name_pattern
-                          identifier: identifier "side"
+                      type: identifier "Double"
+                      pattern: identifier "side"
                   body: block "square(side: Double)"

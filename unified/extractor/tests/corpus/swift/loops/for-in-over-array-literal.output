@@ -61,9 +61,7 @@ top_level
     block
       stmt:
         for_each_stmt
-          pattern:
-            name_pattern
-              identifier: identifier "x"
+          pattern: identifier "x"
           iterable:
             array_literal
               element:
@@ -74,11 +72,7 @@ top_level
             block
               stmt:
                 call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                  callee: identifier "print"
                   argument:
                     argument
-                      value:
-                        name_expr
-                          identifier: identifier "x"
+                      value: identifier "x"

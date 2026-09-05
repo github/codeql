@@ -62,20 +62,16 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "increment"
+          name_node: identifier "increment"
           parameter:
             parameter
-              external_name: identifier "_"
+              external_name_node: identifier "_"
               type: unsupported_node "inout Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "x"
+              pattern: identifier "x"
           body:
             block
               stmt:
                 compound_assign_expr
-                  target:
-                    name_expr
-                      identifier: identifier "x"
+                  target: identifier "x"
                   operator: infix_operator "+="
                   value: int_literal "1"

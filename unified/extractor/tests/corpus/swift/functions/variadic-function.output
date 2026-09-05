@@ -78,19 +78,13 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "sum"
+          name_node: identifier "sum"
           parameter:
             parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "values"
-          return_type:
-            named_type_expr
-              name: identifier "Int"
+              external_name_node: identifier "_"
+              type: identifier "Int"
+              pattern: identifier "values"
+          return_type: identifier "Int"
           body:
             block
               stmt:
@@ -99,14 +93,10 @@ top_level
                     call_expr
                       callee:
                         member_access_expr
-                          base:
-                            name_expr
-                              identifier: identifier "values"
-                          member: identifier "reduce"
+                          base: identifier "values"
+                          member_name_node: identifier "reduce"
                       argument:
                         argument
                           value: int_literal "0"
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "+"
+                          value: identifier "+"

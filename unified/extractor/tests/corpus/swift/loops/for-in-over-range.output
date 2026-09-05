@@ -53,9 +53,7 @@ top_level
     block
       stmt:
         for_each_stmt
-          pattern:
-            name_pattern
-              identifier: identifier "i"
+          pattern: identifier "i"
           iterable:
             binary_expr
               left: int_literal "0"
@@ -65,11 +63,7 @@ top_level
             block
               stmt:
                 call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                  callee: identifier "print"
                   argument:
                     argument
-                      value:
-                        name_expr
-                          identifier: identifier "i"
+                      value: identifier "i"

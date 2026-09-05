@@ -98,25 +98,17 @@ top_level
       stmt:
         accessor_declaration
           modifier: modifier "var"
-          name: identifier "p"
+          name_node: identifier "p"
           accessor_kind: accessor_kind "get"
-          type:
-            named_type_expr
-              name: identifier "Int"
+          type: identifier "Int"
           body:
             block
               stmt:
                 switch_expr
-                  value:
-                    name_expr
-                      identifier: identifier "y"
+                  value: identifier "y"
                   case:
                     switch_case
-                      pattern:
-                        expr_equality_pattern
-                          expr:
-                            name_expr
-                              identifier: identifier "someConstant"
+                      pattern: identifier "someConstant"
                       body:
                         block
                           stmt:

@@ -1,6 +1,7 @@
 protocol P {
   var foo: Int { get }
   var bar: String { get set }
+  var count: Int { get }
 }
 
 ---
@@ -71,6 +72,31 @@ sourceFile
                                   attributes:
                               leftBrace: {
                               rightBrace: }
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "count"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: get
+                                  attributes:
+                              leftBrace: {
+                              rightBrace: }
           modifiers:
           protocolKeyword: protocol
 
@@ -82,24 +108,22 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "protocol"
-          name: identifier "P"
+          name_node: identifier "P"
           member:
             accessor_declaration
-              name: identifier "foo"
+              name_node: identifier "foo"
               accessor_kind: accessor_kind "get"
-              type:
-                named_type_expr
-                  name: identifier "Int"
+              type: identifier "Int"
             accessor_declaration
-              name: identifier "bar"
+              name_node: identifier "bar"
               accessor_kind: accessor_kind "get"
-              type:
-                named_type_expr
-                  name: identifier "String"
+              type: identifier "String"
             accessor_declaration
               modifier: modifier "chained_declaration"
-              name: identifier "bar"
+              name_node: identifier "bar"
               accessor_kind: accessor_kind "set"
-              type:
-                named_type_expr
-                  name: identifier "String"
+              type: identifier "String"
+            accessor_declaration
+              name_node: identifier "count"
+              accessor_kind: accessor_kind "get"
+              type: identifier "Int"

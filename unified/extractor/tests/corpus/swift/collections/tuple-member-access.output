@@ -37,12 +37,8 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "n"
+          pattern: identifier "n"
           value:
             member_access_expr
-              base:
-                name_expr
-                  identifier: identifier "t"
-              member: identifier "0"
+              base: identifier "t"
+              member_name_node: identifier "0"

@@ -25,7 +25,5 @@ top_level
     block
       stmt:
         assign_expr
-          target:
-            name_expr
-              identifier: identifier "x"
+          target: identifier "x"
           value: int_literal "1"

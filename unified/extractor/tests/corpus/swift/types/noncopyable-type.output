@@ -56,16 +56,12 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "struct"
-          name: identifier "FileHandle"
+          name_node: identifier "FileHandle"
           base_type:
             base_type
               type: unsupported_node "~Copyable"
           member:
             variable_declaration
               modifier: modifier "let"
-              pattern:
-                name_pattern
-                  identifier: identifier "descriptor"
-              type:
-                named_type_expr
-                  name: identifier "Int"
+              pattern: identifier "descriptor"
+              type: identifier "Int"

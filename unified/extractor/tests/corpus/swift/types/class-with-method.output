@@ -79,22 +79,18 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "Counter"
+          name_node: identifier "Counter"
           member:
             variable_declaration
               modifier: modifier "var"
-              pattern:
-                name_pattern
-                  identifier: identifier "n"
+              pattern: identifier "n"
               value: int_literal "0"
             function_declaration
-              name: identifier "bump"
+              name_node: identifier "bump"
               body:
                 block
                   stmt:
                     compound_assign_expr
-                      target:
-                        name_expr
-                          identifier: identifier "n"
+                      target: identifier "n"
                       operator: infix_operator "+="
                       value: int_literal "1"

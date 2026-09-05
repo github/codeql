@@ -119,13 +119,29 @@ class NameBindingNode extends TNameBindingNode {
 }
 
 Identifier getIdentifierFromRef(AstNode n) {
-  result = n.(NameExpr).getIdentifier()
+  result = n.(Identifier)
   or
-  result = n.(NamePattern).getIdentifier()
+  result = n.(MemberAccessExpr).getMemberNameNode()
+}
+
+private Identifier getImportBindingIdentifier(ImportDeclaration imprt) {
+  result = imprt.getPattern().(Identifier)
   or
-  result = n.(MemberAccessExpr).getMember()
-  or
-  result = n.(NamedTypeExpr).getName()
+  result = imprt.getPattern().(NamedPattern).getNameNode()
+}
+
+/** Holds if `binding` is only visible in its local scope. */
+pragma[nomagic]
+private predicate isPrivateToLocalScope(AstNode binding) {
+  exists(Stmt member |
+    bindingContext(binding, _, member) and
+    (
+      member = any(ClassLikeDeclaration cls).getAMember() or
+      member = any(TopLevel t).getBody().getAStmt()
+    ) and
+    (binding instanceof NameDeclaration or binding instanceof BulkImportingPattern) and
+    any(NameBindingPlugin p).isPrivateToLocalScope(member, binding)
+  )
 }
 
 NameBindingNode getNodeFromRef(AstNode n) {
@@ -147,13 +163,7 @@ private NameBindingNode getNodeFromUncertainScope(AstNode n) { result.isLocalNam
 predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
   exists(MemberAccessExpr expr |
     node1 = getNodeFromRef(expr.getBase()) and
-    name = expr.getMember().getValue() and
-    node2 = getNodeFromRef(expr)
-  )
-  or
-  exists(NamedTypeExpr expr |
-    node1 = getNodeFromRef(expr.getQualifier()) and
-    name = expr.getName().getValue() and
+    name = expr.getMemberName() and
     node2 = getNodeFromRef(expr)
   )
   or
@@ -164,10 +174,10 @@ predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
     node2.isIdentifier(access)
   )
   or
-  exists(NameExpr expr |
+  exists(Identifier expr |
     isImportPrefix(expr) and
     node1.isModuleRoot() and
-    name = expr.getIdentifier().getValue() and
+    name = expr.getValue() and
     node2 = getNodeFromRef(expr)
   )
 }
@@ -215,7 +225,7 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   or
   exists(ClassLikeDeclaration cls |
     node1.isStaticMemberNamespace(cls) and
-    node2.isIdentifier(cls.getName())
+    node2.isIdentifier(cls.getNameNode())
   )
   or
   exists(ClassLikeDeclaration cls |
@@ -230,7 +240,7 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   or
   exists(ImportDeclaration imprt |
     node1 = getNodeFromRef(imprt.getImportedExpr()) and
-    node2 = getNodeFromRef(imprt.getPattern())
+    node2 = getNodeFromRef(getImportBindingIdentifier(imprt))
   )
   or
   exists(BulkImportingPattern p, AstNode scope, AstNode declaration |
@@ -247,8 +257,8 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     )
   )
   or
-  exists(NamePattern p |
-    node1 = getNodeFromRef(p) and
+  exists(NamedPattern p |
+    node1 = getNodeFromRef(p.getNameNode()) and
     node2 = getNodeFromRef(p.getSubPattern())
   )
   or
@@ -384,12 +394,18 @@ private module TrackNamespaceInput implements TrackInputSig {
     // Namespace-tracking goes through aliases, but declaration-tracking does not
     exists(TypeAliasDeclaration decl |
       node1 = getNodeFromRef(decl.getType()) and
-      node2.isIdentifier(decl.getName())
+      node2.isIdentifier(decl.getNameNode())
     )
   }
 }
 
 private module TrackNamespace = Track<TrackNamespaceInput>;
+
+bindingset[node1, node2]
+pragma[inline_late]
+private predicate sameName(Identifier node1, Identifier node2) {
+  node1.getValue() = node2.getValue()
+}
 
 /**
  * Holds if `decl` is a trivial local alias for an imported name.
@@ -397,10 +413,11 @@ private module TrackNamespace = Track<TrackNamespaceInput>;
  * Declaration-tracking usually stops at type-aliases, but trivial aliases
  * will be passed through.
  */
+pragma[nomagic]
 predicate isTrivialNameAlias(NameDeclaration decl) {
   exists(ImportDeclaration imprt |
-    decl = getIdentifierFromRef(imprt.getPattern()) and
-    decl.getName() = getIdentifierFromRef(imprt.getImportedExpr()).getValue()
+    decl = getImportBindingIdentifier(imprt) and
+    sameName(decl, getIdentifierFromRef(imprt.getImportedExpr()))
   )
 }
 
@@ -619,7 +636,7 @@ predicate unqualifiedMemberAccess(
 }
 
 /**
- * An identifier appearing in a unqualified position, referring to a member of an enclosing class.
+ * A name node appearing in an unqualified position, referring to a member of an enclosing class.
  */
 class UnqualifiedMemberAccess extends Identifier {
   private boolean instanceAccess;

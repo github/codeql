@@ -120,7 +120,6 @@ private module Ast implements AstSig<Location> {
 
     // TODO support foreach guard
     //
-    // TODO: Expr != Pattern
     Expr getVariable() { result = super.getPattern() }
 
     Expr getCollection() { result = super.getIterable() }
@@ -232,9 +231,9 @@ private module Input implements InputSig1, InputSig2 {
 
   class Label extends string {
     Label() {
-      any(LabeledStmt l).getLabel().getValue() = this or
-      any(BreakExpr b).getLabel().getValue() = this or
-      any(ContinueExpr c).getLabel().getValue() = this
+      any(LabeledStmt l).getLabelName() = this or
+      any(BreakExpr b).getLabelName() = this or
+      any(ContinueExpr c).getLabelName() = this
     }
 
     string toString() { result = this }
@@ -242,7 +241,7 @@ private module Input implements InputSig1, InputSig2 {
 
   private Label getLabelOfStmt(Stmt s) {
     exists(LabeledStmt l | s = l.getStmt() |
-      result = l.getLabel().getValue() or
+      result = l.getLabelName() or
       result = getLabelOfStmt(l)
     )
   }
@@ -250,9 +249,9 @@ private module Input implements InputSig1, InputSig2 {
   predicate hasLabel(Ast::AstNode n, Label l) {
     l = getLabelOfStmt(n)
     or
-    l = n.(BreakExpr).getLabel().getValue()
+    l = n.(BreakExpr).getLabelName()
     or
-    l = n.(ContinueExpr).getLabel().getValue()
+    l = n.(ContinueExpr).getLabelName()
   }
 
   class CallableContext = Void;

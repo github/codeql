@@ -52,14 +52,12 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "greet"
+          name_node: identifier "greet"
           body:
             block
               stmt:
                 call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                  callee: identifier "print"
                   argument:
                     argument
                       value: string_literal "\"hello\""

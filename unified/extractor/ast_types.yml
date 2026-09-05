@@ -1,6 +1,8 @@
 supertypes:
   expr:
-    - name_expr
+    - identifier
+    - named_pattern
+    - expr_pattern
     - int_literal
     - float_literal
     - boolean_literal
@@ -33,25 +35,16 @@ supertypes:
     - switch_expr
     - unresolved_operator_sequence
     - unsupported_node
-    - pattern
-  expr_or_type:
-    - expr
-    - type_expr
+    - or_pattern
+    - conditional_pattern
+    - bulk_importing_pattern
+    - generic_type_expr
+    - inferred_type_expr
   # An element of an `unresolved_operator_sequence`: either an operand (`expr`)
   # or one of the infix operators separating the operands.
   expr_or_operator:
     - expr
     - infix_operator
-  pattern:
-    - name_pattern
-    - tuple_pattern
-    - constructor_pattern
-    - or_pattern
-    - conditional_pattern
-    - ignore_pattern
-    - expr_equality_pattern
-    - bulk_importing_pattern
-    - unsupported_node
   # A statement is anything that can appear in a block.
   # This type contains all of 'expr' and has partial overlap with 'member'.
   # For example, type_alias_declaration can appear either as a stmt or member.
@@ -91,13 +84,6 @@ supertypes:
     - type_alias_declaration
     - associated_type_declaration
     - unsupported_node
-  type_expr:
-    - named_type_expr
-    - generic_type_expr
-    - tuple_type_expr
-    - function_type_expr
-    - inferred_type_expr
-    - unsupported_node
   type_constraint:
     - equality_type_constraint
     - bound_type_constraint
@@ -111,9 +97,16 @@ named:
   top_level:
     body: block
 
-  # An identifier used in the context of an expression
-  name_expr:
-    identifier: identifier
+  # A pattern that binds the incoming value to a name, and then applies it to a sub-pattern.
+  named_pattern:
+    modifier*: modifier
+    name_node: identifier
+    sub_pattern: expr
+
+  # A pattern expression with modifiers, such as `let x` or `var x`.
+  expr_pattern:
+    modifier*: modifier
+    expr: expr
 
   # An integer literal
   int_literal:
@@ -175,28 +168,23 @@ named:
   #
   # Method calls are represented as a call whose `function` is a `member_access_expr`.
   #
-  # Constructor calls are marked by a language-specific modifier, and the target may be
-  # a `type_expr` if the parser can deduce that the target is a type.
+  # Constructor calls are marked by a language-specific modifier.
   call_expr:
     modifier*: modifier
-    callee: expr_or_type
+    callee: expr
     argument*: argument
 
   argument:
     modifier*: modifier
-    name?: identifier
+    name_node?: identifier
     value: expr
 
   # Member access, such as `obj.member`.
   #
-  # The base may be a type expression when it is a static member access like `Array<Int>.method`.
-  # In ambiguous cases where the parser cannot distinguish static and instance member access, the base
-  # will be typically be an expression.
-  #
   # For `super.x` the base will be an instance of `super_expr`.
   member_access_expr:
-    base: expr_or_type
-    member: identifier
+    base: expr
+    member_name_node: identifier
 
   # A type expression that refers to a type inferred from the contextual type.
   # This is used to translate Swift's leading-dot syntax, `.foo`, which means `T.foo` where
@@ -211,8 +199,8 @@ named:
     modifier*: modifier
     capture_declaration*: variable_declaration
     parameter*: parameter
-    return_type?: type_expr
-    body: block
+    return_type?: expr
+    body?: block
 
   array_literal:
     element*: expr
@@ -228,26 +216,25 @@ named:
     key: expr
     value: expr
 
-  # A tuple expression, such as `(a, b, c)`.
+  # A tuple expression, pattern, or type, such as `(a, b, c)`.
   tuple_expr:
-    element*: expr
+    element*: argument
 
   # A parameter.
   #
   # `type` is its declared type annotation (if any)
   #
   # `pattern` binds the parameter's internal name(s). For a simple parameter this is a
-  # `name_pattern`, but may be an arbitrary pattern for languages where patterns may appear
-  # in the parameter list.
+  # `named_pattern`, but may be an arbitrary expression where languages allow destructuring.
   #
   # `external_name` is the name by which to call sites refer to the parameter, if the parameter
   # can be passed as a named parameter. For example, the Swift function `func greet(person id: String)`
-  # would have `person` as the external name and a `name_pattern` wrapping `id` is the parameter's pattern.
+  # would have `person` as the external name and a `named_pattern` wrapping `id` as the parameter's pattern.
   parameter:
     modifier*: modifier
-    external_name?: identifier
-    type?: type_expr
-    pattern?: pattern
+    external_name_node?: identifier
+    type?: expr
+    pattern?: expr
     default?: expr
 
   # An expression that does nothing. Used where the grammar permits an
@@ -279,8 +266,8 @@ named:
   # `chained_declaration` modifier so the grouping can be recovered downstream.
   variable_declaration:
     modifier*: modifier
-    pattern: pattern
-    type?: type_expr
+    pattern: expr
+    type?: expr
     value?: expr
 
   # Evaluate 'condition', and if false, execute 'else' which must break from the enclosing block scope (return, break, etc).
@@ -292,17 +279,17 @@ named:
 
   # `break` (with optional label)
   break_expr:
-    label?: identifier
+    label_name_node?: identifier
 
   # `continue` (with optional label)
   continue_expr:
-    label?: identifier
+    label_name_node?: identifier
 
   # A labeled statement, such as `outer: for ... { ... }`. The labeled
   # statement appears as the `stmt` field; `break`/`continue` may target
   # the label.
   labeled_stmt:
-    label: identifier
+    label_name_node: identifier
     stmt: stmt
 
   # `return value` or bare `return`
@@ -322,31 +309,31 @@ named:
   #
   import_declaration:
     modifier*: modifier
-    imported_expr: expr # Qualified names are encoded as a chain of member_access_expr ending with a name_expr
-    pattern?: pattern # Binds local names in scope (possibly via bulk_importing_pattern)
+    imported_expr: expr # Qualified names are encoded as a chain of member_access_expr ending with an identifier
+    pattern?: expr # Binds local names in scope (possibly via bulk_importing_pattern)
 
   # `typealias Name = Type`
   type_alias_declaration:
     modifier*: modifier
-    name: identifier
+    name_node: identifier
     type_parameter*: type_parameter
     type_constraint*: type_constraint
-    type: type_expr
+    type: expr
 
   # A top-level function declaration.
   function_declaration:
     modifier*: modifier
-    name: identifier
+    name_node: identifier
     type_parameter*: type_parameter
     type_constraint*: type_constraint
     parameter*: parameter
-    return_type?: type_expr
+    return_type?: expr
     body?: block
 
   # `for pattern in iterable [where guard] { body }`.
   for_each_stmt:
     modifier*: modifier
-    pattern: pattern
+    pattern: expr
     iterable: expr
     guard?: expr
     body?: block
@@ -372,7 +359,7 @@ named:
 
   catch_clause:
     modifier*: modifier
-    pattern?: pattern
+    pattern?: expr
     body: block
 
   # `switch value { case pattern: body case ...: default: body }`
@@ -386,7 +373,7 @@ named:
   # A `default:` entry has no pattern.
   switch_case:
     modifier*: modifier
-    pattern?: pattern
+    pattern?: expr
     body: block
 
   # Evaluate 'expr' and match its result against 'pattern', and return true if it matches.
@@ -396,7 +383,7 @@ named:
   #
   # Java: 'if (x instanceof Foo y && w ...) { ... }'
   pattern_guard_expr:
-    pattern: pattern
+    pattern: expr
     value: expr
 
   # A type cast expression, such as `x as T`, `x as? T`, or `x as! T`. The
@@ -404,49 +391,19 @@ named:
   type_cast_expr:
     expr: expr
     operator: infix_operator
-    type: type_expr
+    type: expr
 
   # A type-test expression, such as `x is T`. Yields a boolean indicating
   # whether `expr` is an instance of `type`.
   type_test_expr:
     expr: expr
-    operator: infix_operator
-    type: type_expr
-
-  # An identifier that introduces a variable.
-  #
-  # When used as a pattern, the pattern matches anything and binds its incoming value to the variable
-  name_pattern:
-    modifier*: modifier
-    identifier: identifier
-    sub_pattern?: pattern
-
-  # A pattern matching anything, binding no variables, usually using the syntax "_"
-  ignore_pattern:
-
-  # A pattern that matches if the incoming value is equal to the value of the given expression.
-  # Used for literal patterns in switch (e.g. `case 1:`).
-  expr_equality_pattern:
-    expr: expr
-
-  # A tuple pattern such as `(a, b)` in `let (a, b) = pair`.
-  #
-  # Elements of the tuple pattern can have names, such as Swift's `let (foo: x, bar: y) = tuple`.
-  tuple_pattern:
-    modifier*: modifier
-    element*: pattern_element
-
-  # A pattern such as `Some(x)` where `Some` is the constructor and `x` is an element.
-  # The element names are interpreted as argument labels and/or field names.
-  constructor_pattern:
-    modifier*: modifier
-    constructor: expr_or_type
-    element*: pattern_element
+    operator?: infix_operator
+    type: expr
 
   # A disjunction pattern that matches if any of its sub-patterns match.
   or_pattern:
     modifier*: modifier
-    pattern*: pattern
+    pattern*: expr
 
   # A pattern that matches against a nested pattern, and subsequently checks a condition.
   # The match is rejected if the condition does not hold.
@@ -454,29 +411,14 @@ named:
   conditional_pattern:
     modifier*: modifier
     condition: expr
-    pattern: pattern
-
-  # A pattern with an optional associated name.
-  pattern_element:
-    modifier*: modifier
-    key?: identifier
-    pattern: pattern
-
-  # A pattern that checks if the incoming value has the given type, and if so, the
-  # value is matched against the given nested pattern (and succeeds iff the nested match succeeds).
-  #
-  # In Swift: `if let y = x as? Foo` is a pattern_guard_expr containing a type_test_pattern
-  # In Java: `x instanceof Foo y` is a type_test_pattern wrapping a name_pattern
-  type_test_pattern:
-    pattern: pattern
-    type: type_expr
+    pattern: expr
 
   # A '*' pattern that imports all members of the incoming value into the local scope
   # Currently this can only appear in import declarations.
   bulk_importing_pattern:
     modifier*: modifier
 
-  # An simple unqualified identifier token
+  # A simple unqualified name token
   identifier:
 
   # A node that we don't yet translate
@@ -494,27 +436,27 @@ named:
 
   type_parameter:
     modifier*: modifier
-    name: identifier
-    bound?: type_expr
+    name_node: identifier
+    bound?: expr
 
   # A generic constraint of the form `T == U`, requiring two types to be
   # equal. Appears in `where` clauses on generic declarations
   # (e.g. Swift `func foo<T, U>() where T == U`).
   equality_type_constraint:
-    left: type_expr
-    right: type_expr
+    left: expr
+    right: expr
 
   # A generic constraint of the form `T: Bound`, requiring a type parameter
   # to conform to (or inherit from) some other type. Appears in `where`
   # clauses on generic declarations (e.g. Swift `where T: Equatable`).
   bound_type_constraint:
-    type: type_expr
-    bound: type_expr
+    type: expr
+    bound: expr
 
   # `infix operator +++` (and the like) — a declaration of a custom operator.
   operator_syntax_declaration:
     modifier*: modifier
-    name: identifier
+    name_node: identifier
     # The fixity specifier (`prefix`, `infix`, `postfix`), when applicable.
     fixity?: fixity
     # The declared precedence level, when present (e.g. Swift's
@@ -529,7 +471,7 @@ named:
   # no `name`; the extended type appears as a `base_type`.
   class_like_declaration:
     modifier*: modifier
-    name?: identifier
+    name_node?: identifier
     type_parameter*: type_parameter
     type_constraint*: type_constraint
     base_type*: base_type
@@ -541,11 +483,11 @@ named:
   # kind should be included as a modifier on this node.
   base_type:
     modifier*: modifier
-    type: type_expr
+    type: expr
 
   constructor_declaration:
     modifier*: modifier
-    name?: identifier
+    name_node?: identifier
     parameter*: parameter
     body: block
 
@@ -565,10 +507,10 @@ named:
   # (each observer also tagged with `chained_declaration`).
   accessor_declaration:
     modifier*: modifier
-    name: identifier
+    name_node: identifier
     accessor_kind: accessor_kind
     parameter*: parameter
-    type?: type_expr
+    type?: expr
     body?: block
 
   # "get", "set", or a language-specific kind like "didSet"
@@ -581,30 +523,12 @@ named:
 
   associated_type_declaration:
     modifier*: modifier
-    name: identifier
-    bound?: type_expr
-
-  named_type_expr:
-    qualifier?: type_expr
-    name: identifier
+    name_node: identifier
+    bound?: expr
 
   generic_type_expr:
-    base: type_expr
-    type_argument*: type_expr
-
-  # A tuple type such as `(Int, String)` or `(a: A, b: B)`.
-  tuple_type_expr:
-    element*: tuple_type_element
-
-  # An element of a `tuple_type_expr`, optionally carrying a label.
-  tuple_type_element:
-    name?: identifier
-    type: type_expr
-
-  # A function type such as `(Int, String) -> Bool` or `(x: Int) -> Bool`.
-  function_type_expr:
-    parameter*: parameter
-    return_type: type_expr
+    base: expr
+    type_argument*: expr
 
   # A modifier such as 'static', 'public', or 'async'. For now this is just a leaf node with a string value.
   modifier:
