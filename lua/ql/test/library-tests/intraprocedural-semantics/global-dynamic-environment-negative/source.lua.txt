@@ -1,0 +1,9 @@
+local key = "global_name"
+local value = "payload"
+
+_G[key] = value
+
+local chosen = global_name
+local other = missing_name
+
+return chosen, other

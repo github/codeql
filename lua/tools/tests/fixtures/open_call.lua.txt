@@ -1,0 +1,6 @@
+local function invoke(target, producer, value)
+  local result = target(producer(value))
+  return result
+end
+
+return invoke

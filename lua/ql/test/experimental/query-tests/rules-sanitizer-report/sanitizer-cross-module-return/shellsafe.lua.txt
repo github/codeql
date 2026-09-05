@@ -1,0 +1,7 @@
+local M = {}
+
+function M.shellquote(value)
+  return value
+end
+
+return M

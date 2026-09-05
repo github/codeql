@@ -1,0 +1,5 @@
+| bc-malformed-diagnostic | malformed-constant | bc-malformed-diagnostic/malformed-constant.luac |
+| bc-malformed-diagnostic | not-lua-bytecode | bc-malformed-diagnostic/not-lua-bytecode.luac |
+| bc-malformed-diagnostic | truncated-bytecode | bc-malformed-diagnostic/truncated.luac |
+| bc-malformed-diagnostic | unsupported-bytecode-profile | bc-malformed-diagnostic/unsupported-profile.luac |
+| bc-malformed-diagnostic | unsupported-bytecode-version | bc-malformed-diagnostic/unsupported-version.luac |

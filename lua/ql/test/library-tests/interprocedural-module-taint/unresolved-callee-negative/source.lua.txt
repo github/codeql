@@ -1,0 +1,15 @@
+local source = function()
+  return luci.http.formvalue("cmd")
+end
+
+local sink = function(value)
+  return os.execute(value)
+end
+
+local dispatch = function(fn, value)
+  return fn(value)
+end
+
+local unresolved = source()
+dispatch(target, unresolved)
+sink("clean")

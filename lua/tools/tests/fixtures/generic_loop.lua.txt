@@ -1,0 +1,9 @@
+local function last_value(iterator, state, control)
+  local result = control
+  for _, value in iterator, state, control do
+    result = value
+  end
+  return result
+end
+
+return last_value

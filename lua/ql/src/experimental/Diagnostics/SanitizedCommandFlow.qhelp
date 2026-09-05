@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>This diagnostic shows Lua 5.1 bytecode paths from external data to command-execution APIs when
+a recognized sanitizer suppresses the corresponding security finding.</p>
+
+<p>The result is review information, not a security alert. It records path-local sanitizer
+behavior so reviewers can confirm that the sanitizer applies to the value reaching the sink.</p>
+
+</overview>
+<recommendation>
+
+<p>Review the reported path and confirm that the sanitizer is appropriate for the command context.
+Do not treat sanitization on an unrelated path or value as protection for the reported sink.</p>
+
+<p>Lua source must first be compiled with <code>luac5.1</code>, preserving its relative file layout,
+because the analysis operates on Lua 5.1 bytecode.</p>
+
+</recommendation>
+<example>
+
+<p>The following example applies a shell sanitizer to the value that reaches the command API.</p>
+
+<sample src="examples/SanitizedCommandFlow.lua" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/attacks/Command_Injection">Command Injection</a>.
+</li>
+
+</references>
+</qhelp>
