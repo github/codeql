@@ -1,2133 +1,1756 @@
 /**
- * INTERNAL: Analyses should use module `ControlFlowGraph` instead.
- *
- * Provides predicates for building intra-procedural CFGs.
+ * Provides the shared CFG library instantiation for Go.
  */
 overlay[local]
 module;
 
-import go
+private import codeql.controlflow.ControlFlowGraph as CfgLib
+private import codeql.controlflow.SuccessorType
+private import codeql.util.Void
 
-/** A block statement that is not the body of a `switch` or `select` statement. */
-class PlainBlock extends BlockStmt {
-  PlainBlock() {
-    not this = any(SwitchStmt sw).getBody() and not this = any(SelectStmt sel).getBody()
-  }
-}
+/** Contains the shared CFG library instantiation for Go. */
+module CfgImpl {
+  private import go as Go
 
-private predicate notBlankIdent(Expr e) { not e instanceof BlankIdent }
+  private module Cfg0 = CfgLib::Make0<Go::Location, Ast>;
 
-private predicate pureLvalue(ReferenceExpr e) { not e.isRvalue() }
+  private module Cfg1 = Cfg0::Make1<Input1>;
 
-/**
- * Holds if `e` is a branch condition, including the LHS of a short-circuiting binary operator.
- */
-private predicate isCondRoot(Expr e) {
-  e = any(LogicalBinaryExpr lbe).getLeftOperand()
-  or
-  e = any(ForStmt fs).getCond()
-  or
-  e = any(IfStmt is).getCond()
-  or
-  e = any(ExpressionSwitchStmt ess | not exists(ess.getExpr())).getACase().getAnExpr()
-}
+  private module EarlyCfg2 = Cfg1::Make2<EarlyInput2>;
 
-/**
- * Holds if `e` is a branch condition or part of a logical binary expression contributing to a
- * branch condition.
- *
- * For example, in `v := (x && y) || (z && w)`, `x` and `(x && y)` and `z` are branch conditions
- * (`isCondRoot` holds of them), whereas this predicate also holds of `y` (contributes to condition
- * `x && y`) but not of `w` (contributes to the value `v`, but not to any branch condition).
- *
- * In the context `if (x && y) || (z && w)` then the whole `(x && y) || (z && w)` is a branch condition
- * as well as `x` and `(x && y)` and `z` as previously, and this predicate holds of all their
- * subexpressions.
- */
-private predicate isCond(Expr e) {
-  isCondRoot(e) or
-  e = any(LogicalBinaryExpr lbe | isCond(lbe)).getRightOperand() or
-  e = any(ParenExpr par | isCond(par)).getExpr()
-}
+  private module Cfg2 = Cfg1::Make2<FinalInput2>;
 
-/**
- * Holds if `e` implicitly reads the embedded field `implicitField`.
- *
- * The `index` is the distance from the promoted field. For example, if `A` contains an embedded
- * field `B`, `B` contains an embedded field `C` and `C` contains the non-embedded field `x`.
- * Then `a.x` implicitly reads `C` with index 1 and `B` with index 2.
- */
-private predicate implicitFieldSelectionForField(PromotedSelector e, int index, Field implicitField) {
-  exists(StructType baseType, PromotedField child, int implicitFieldDepth |
-    baseType = e.getSelectedStructType() and
-    (
-      e.refersTo(child)
-      or
-      implicitFieldSelectionForField(e, implicitFieldDepth + 1, child)
-    )
-  |
-    child = baseType.getFieldOfEmbedded(implicitField, _, implicitFieldDepth + 1, _) and
-    exists(PromotedField explicitField, int explicitFieldDepth |
-      e.refersTo(explicitField) and baseType.getFieldAtDepth(_, explicitFieldDepth) = explicitField
-    |
-      index = explicitFieldDepth - implicitFieldDepth
-    )
-  )
-}
+  private import Cfg0
+  private import Cfg1
+  private import Cfg2
+  import Public
 
-private predicate implicitFieldSelectionForMethod(PromotedSelector e, int index, Field implicitField) {
-  exists(StructType baseType, PromotedMethod method, int mDepth, int implicitFieldDepth |
-    baseType = e.getSelectedStructType() and
-    e.refersTo(method) and
-    baseType.getMethodAtDepth(_, mDepth) = method and
-    index = mDepth - implicitFieldDepth
-  |
-    method = baseType.getMethodOfEmbedded(implicitField, _, implicitFieldDepth + 1)
-    or
-    exists(PromotedField child |
-      child = baseType.getFieldOfEmbedded(implicitField, _, implicitFieldDepth + 1, _) and
-      implicitFieldSelectionForMethod(e, implicitFieldDepth + 1, child)
-    )
-  )
-}
+  class CfgScope = Ast::Callable;
 
-/**
- * A node in the intra-procedural control-flow graph of a Go function or file.
- *
- * There are two kinds of control-flow nodes:
- *
- *   1. Instructions: these are nodes that correspond to expressions and statements
- *      that compute a value or perform an operation (as opposed to providing syntactic
- *      structure or type information).
- *   2. Synthetic nodes:
- *      - Entry and exit nodes for each Go function and file that mark the beginning and the end,
- *        respectively, of the execution of the function and the loading of the file;
- *      - Skip nodes that are semantic no-ops, but make CFG construction easier.
- */
-cached
-newtype TControlFlowNode =
-  /**
-   * A control-flow node that represents the evaluation of an expression.
-   */
-  MkExprNode(Expr e) { CFG::hasEvaluationNode(e) } or
-  /**
-   * A control-flow node that represents the initialization of an element of a composite literal.
-   */
-  MkLiteralElementInitNode(Expr e) { e = any(CompositeLit lit).getAnElement() } or
-  /**
-   * A control-flow node that represents the implicit index of an element in a slice or array literal.
-   */
-  MkImplicitLiteralElementIndex(Expr e) {
-    exists(CompositeLit lit | not lit instanceof StructLit |
-      e = lit.getAnElement() and
-      not e instanceof KeyValueExpr
-    )
-  } or
-  /**
-   * A control-flow node that represents a (single) assignment.
-   *
-   * Assignments with multiple left-hand sides are split up into multiple assignment nodes,
-   * one for each left-hand side. Assignments to `_` are not represented in the control-flow graph.
-   */
-  MkAssignNode(AstNode assgn, int i) {
-    // the `i`th assignment in a (possibly multi-)assignment
-    notBlankIdent(assgn.(Assignment).getLhs(i))
-    or
-    // the `i`th name declared in a (possibly multi-)declaration specifier
-    notBlankIdent(assgn.(ValueSpec).getNameExpr(i))
-    or
-    // the assignment to the "key" variable in a `range` statement
-    notBlankIdent(assgn.(RangeStmt).getKey()) and i = 0
-    or
-    // the assignment to the "value" variable in a `range` statement
-    notBlankIdent(assgn.(RangeStmt).getValue()) and i = 1
-  } or
-  /**
-   * A control-flow node that represents the implicit right-hand side of a compound assignment.
-   *
-   * For example, the compound assignment `x += 1` has an implicit right-hand side `x + 1`.
-   */
-  MkCompoundAssignRhsNode(CompoundAssignStmt assgn) or
-  /**
-   * A control-flow node that represents the `i`th component of a tuple expression `s`.
-   */
-  MkExtractNode(AstNode s, int i) {
-    // in an assignment `x, y, z = tuple`
-    exists(Assignment assgn |
-      s = assgn and
-      exists(assgn.getRhs()) and
-      assgn.getNumLhs() > 1 and
-      exists(assgn.getLhs(i))
-    )
-    or
-    // in a declaration `var x, y, z = tuple`
-    exists(ValueSpec spec |
-      s = spec and
-      exists(spec.getInit()) and
-      spec.getNumName() > 1 and
-      exists(spec.getNameExpr(i))
-    )
-    or
-    // in a `range` statement
-    exists(RangeStmt rs | s = rs |
-      exists(rs.getKey()) and i = 0
-      or
-      exists(rs.getValue()) and i = 1
-    )
-    or
-    // in a return statement `return f()` where `f` has multiple return values
-    exists(ReturnStmt ret, SignatureType rettp |
-      s = ret and
-      // the return statement has a single expression
-      exists(ret.getExpr()) and
-      // but the enclosing function has multiple results
-      rettp = ret.getEnclosingFunction().getType() and
-      rettp.getNumResult() > 1 and
-      exists(rettp.getResultType(i))
-    )
-    or
-    // in a call `f(g())` where `g` has multiple return values
-    exists(CallExpr outer, CallExpr inner | s = outer |
-      inner = outer.getArgument(0).stripParens() and
-      outer.getNumArgument() = 1 and
-      exists(inner.getType().(TupleType).getComponentType(i))
-    )
-  } or
-  /**
-   * A control-flow node that represents the zero value to which a variable without an initializer
-   * expression is initialized.
-   */
-  MkZeroInitNode(ValueEntity v) {
-    exists(ValueSpec spec |
-      not exists(spec.getAnInit()) and
-      spec.getNameExpr(_) = v.getDeclaration()
-    )
-    or
-    exists(v.(ResultVariable).getFunction().getBody())
-  } or
-  /**
-   * A control-flow node that represents a function declaration.
-   */
-  MkFuncDeclNode(FuncDecl fd) or
-  /**
-   * A control-flow node that represents a `defer` statement.
-   */
-  MkDeferNode(DeferStmt def) or
-  /**
-   * A control-flow node that represents a `go` statement.
-   */
-  MkGoNode(GoStmt go) or
-  /**
-   * A control-flow node that represents the fact that `e` is known to evaluate to
-   * `outcome`.
-   */
-  MkConditionGuardNode(Expr e, Boolean outcome) { isCondRoot(e) } or
-  /**
-   * A control-flow node that represents an increment or decrement statement.
-   */
-  MkIncDecNode(IncDecStmt ids) or
-  /**
-   * A control-flow node that represents the implicit right-hand side of an increment or decrement statement.
-   */
-  MkIncDecRhs(IncDecStmt ids) or
-  /**
-   * A control-flow node that represents the implicit operand 1 of an increment or decrement statement.
-   */
-  MkImplicitOne(IncDecStmt ids) or
-  /**
-   * A control-flow node that represents a return from a function.
-   */
-  MkReturnNode(ReturnStmt ret) or
-  /**
-   * A control-flow node that represents the implicit write to a named result variable in a return statement.
-   */
-  MkResultWriteNode(ResultVariable var, int i, ReturnStmt ret) {
-    ret.getEnclosingFunction().getResultVar(i) = var and
-    exists(ret.getAnExpr())
-  } or
-  /**
-   * A control-flow node that represents the implicit read of a named result variable upon returning from
-   * a function (after any deferred calls have been executed).
-   */
-  MkResultReadNode(ResultVariable var) or
-  /**
-   * A control-flow node that represents a no-op.
-   *
-   * These control-flow nodes correspond to Go statements that have no runtime semantics other than potentially
-   * influencing control flow: the branching statements `continue`, `break`, `fallthrough` and `goto`; empty
-   * blocks; empty statements; and import and type declarations.
-   */
-  MkSkipNode(AstNode skip) {
-    skip instanceof BranchStmt
-    or
-    skip instanceof EmptyStmt
-    or
-    skip.(PlainBlock).getNumStmt() = 0
-    or
-    skip instanceof ImportDecl
-    or
-    skip instanceof TypeDecl
-    or
-    pureLvalue(skip)
-    or
-    skip.(CaseClause).getNumStmt() = 0
-    or
-    skip.(CommClause).getNumStmt() = 0
-  } or
-  /**
-   * A control-flow node that represents a `select` operation.
-   */
-  MkSelectNode(SelectStmt sel) or
-  /**
-   * A control-flow node that represents a `send` operation.
-   */
-  MkSendNode(SendStmt send) or
-  /**
-   * A control-flow node that represents the initialization of a parameter to its corresponding argument.
-   */
-  MkParameterInit(Parameter parm) { exists(parm.getFunction().getBody()) } or
-  /**
-   * A control-flow node that represents the argument corresponding to a parameter.
-   */
-  MkArgumentNode(Parameter parm) { exists(parm.getFunction().getBody()) } or
-  /**
-   * A control-flow node that represents the initialization of a result variable to its zero value.
-   */
-  MkResultInit(ResultVariable rv) { exists(rv.getFunction().getBody()) } or
-  /**
-   * A control-flow node that represents the operation of retrieving the next (key, value) pair in a
-   * `range` statement, if any.
-   */
-  MkNextNode(RangeStmt rs) or
-  /**
-   * A control-flow node that represents the implicit `true` expression in `switch { ... }`.
-   */
-  MkImplicitTrue(ExpressionSwitchStmt stmt) { not exists(stmt.getExpr()) } or
-  /**
-   * A control-flow node that represents the implicit comparison or type check performed by
-   * the `i`th expression of a case clause `cc`.
-   */
-  MkCaseCheckNode(CaseClause cc, int i) { exists(cc.getExpr(i)) } or
-  /**
-   * A control-flow node that represents the implicit declaration of the
-   * variable `lv` in case clause `cc` and its assignment of the value
-   * `switchExpr` from the guard. This only occurs in case clauses in a type
-   * switch statement which declares a variable in its guard.
-   */
-  MkTypeSwitchImplicitVariable(CaseClause cc, LocalVariable lv, Expr switchExpr) {
-    exists(TypeSwitchStmt ts, DefineStmt ds | ds = ts.getAssign() |
-      cc = ts.getACase() and
-      lv = cc.getImplicitlyDeclaredVariable() and
-      switchExpr = ds.getRhs().(TypeAssertExpr).getExpr()
-    )
-  } or
-  /**
-   * A control-flow node that represents the implicit lower bound of a slice expression.
-   */
-  MkImplicitLowerSliceBound(SliceExpr sl) { not exists(sl.getLow()) } or
-  /**
-   * A control-flow node that represents the implicit upper bound of a simple slice expression.
-   */
-  MkImplicitUpperSliceBound(SliceExpr sl) { not exists(sl.getHigh()) } or
-  /**
-   * A control-flow node that represents the implicit max bound of a simple slice expression.
-   */
-  MkImplicitMaxSliceBound(SliceExpr sl) { not exists(sl.getMax()) } or
-  /**
-   * A control-flow node that represents the implicit dereference of the base in a field/method
-   * access, element access, or slice expression.
-   */
-  MkImplicitDeref(Expr e) {
-    e.getType().getUnderlyingType() instanceof PointerType and
-    (
-      exists(SelectorExpr sel | e = sel.getBase() |
-        // field accesses through a pointer always implicitly dereference
-        sel = any(Field f).getAReference()
-        or
-        // method accesses only dereference if the receiver is _not_ a pointer
-        exists(Method m, Type tp |
-          sel = m.getAReference() and
-          tp = m.getReceiver().getType().getUnderlyingType() and
-          not tp instanceof PointerType
-        )
-      )
-      or
-      e = any(IndexExpr ie).getBase()
-      or
-      e = any(SliceExpr se).getBase()
-    )
-  } or
-  /**
-   * A control-flow node that represents the implicit selection of a field when
-   * accessing a promoted field.
-   *
-   * If that field has a pointer type then this control-flow node also
-   * represents an implicit dereference of it.
-   */
-  MkImplicitFieldSelection(PromotedSelector e, int i, Field implicitField) {
-    implicitFieldSelectionForField(e, i, implicitField) or
-    implicitFieldSelectionForMethod(e, i, implicitField)
-  } or
-  /**
-   * A control-flow node that represents the start of the execution of a function or file.
-   */
-  MkEntryNode(ControlFlow::Root root) or
-  /**
-   * A control-flow node that represents the end of the execution of a function or file.
-   */
-  MkExitNode(ControlFlow::Root root)
-
-/** A representation of the target of a write. */
-newtype TWriteTarget =
-  /** A write target that is represented explicitly in the AST. */
-  MkLhs(TControlFlowNode write, Expr lhs) {
-    exists(AstNode assgn, int i | write = MkAssignNode(assgn, i) |
-      lhs = assgn.(Assignment).getLhs(i).stripParens()
-      or
-      lhs = assgn.(ValueSpec).getNameExpr(i)
-      or
-      exists(RangeStmt rs | rs = assgn |
-        i = 0 and lhs = rs.getKey().stripParens()
-        or
-        i = 1 and lhs = rs.getValue().stripParens()
-      )
-    )
-    or
-    exists(IncDecStmt ids | write = MkIncDecNode(ids) | lhs = ids.getOperand().stripParens())
-    or
-    exists(Parameter parm | write = MkParameterInit(parm) | lhs = parm.getDeclaration())
-    or
-    exists(ResultVariable res | write = MkResultInit(res) | lhs = res.getDeclaration())
-  } or
-  /** A write target for an element in a compound literal, viewed as a field write. */
-  MkLiteralElementTarget(MkLiteralElementInitNode elt) or
-  /** A write target for a returned expression, viewed as a write to the corresponding result variable. */
-  MkResultWriteTarget(MkResultWriteNode w)
-
-/**
- * A control-flow node that represents a no-op.
- *
- * These control-flow nodes correspond to Go statements that have no runtime semantics other than
- * potentially influencing control flow: the branching statements `continue`, `break`,
- * `fallthrough` and `goto`; empty blocks; empty statements; and import and type declarations.
- */
-class SkipNode extends ControlFlow::Node, MkSkipNode {
-  AstNode skip;
-
-  SkipNode() { this = MkSkipNode(skip) }
-
-  override ControlFlow::Root getRoot() { result.isRootOf(skip) }
-
-  override string toString() { result = "skip" }
-
-  override Location getLocation() { result = skip.getLocation() }
-}
-
-/**
- * A control-flow node that represents the start of the execution of a function or file.
- */
-class EntryNode extends ControlFlow::Node, MkEntryNode {
-  ControlFlow::Root root;
-
-  EntryNode() { this = MkEntryNode(root) }
-
-  override ControlFlow::Root getRoot() { result = root }
-
-  override string toString() { result = "entry" }
-
-  override Location getLocation() { result = root.getLocation() }
-}
-
-/**
- * A control-flow node that represents the end of the execution of a function or file.
- */
-class ExitNode extends ControlFlow::Node, MkExitNode {
-  ControlFlow::Root root;
-
-  ExitNode() { this = MkExitNode(root) }
-
-  override ControlFlow::Root getRoot() { result = root }
-
-  override string toString() { result = "exit" }
-
-  override Location getLocation() { result = root.getLocation() }
-}
-
-/**
- * Provides classes and predicates for computing the control-flow graph.
- */
-cached
-module CFG {
-  /**
-   * The target of a branch statement, which is either the label of a labeled statement or
-   * the special target `""` referring to the innermost enclosing loop or `switch`.
-   */
-  private class BranchTarget extends string {
-    BranchTarget() { this = any(LabeledStmt ls).getLabel() or this = "" }
-  }
-
-  private module BranchTarget {
-    /** Holds if this is the target of branch statement `stmt` or the label of compound statement `stmt`. */
-    BranchTarget of(Stmt stmt) {
-      exists(BranchStmt bs | bs = stmt |
-        result = bs.getLabel()
-        or
-        not exists(bs.getLabel()) and result = ""
-      )
-      or
-      exists(LabeledStmt ls | stmt = ls.getStmt() | result = ls.getLabel())
-      or
-      (stmt instanceof LoopStmt or stmt instanceof SwitchStmt or stmt instanceof SelectStmt) and
-      result = ""
-    }
-  }
-
-  private newtype TCompletion =
-    /** A completion indicating that an expression or statement was evaluated successfully. */
-    Done() or
-    /**
-     * A completion indicating that an expression was successfully evaluated to Boolean value `b`.
-     *
-     * Note that many Boolean expressions are modeled as having completion `Done()` instead.
-     * Completion `Bool` is only used in contexts where the Boolean value can be determined.
-     */
-    Bool(boolean b) { b = true or b = false } or
-    /**
-     * A completion indicating that execution of a (compound) statement ended with a `break`
-     * statement targeting the given label.
-     */
-    Break(BranchTarget lbl) or
-    /**
-     * A completion indicating that execution of a (compound) statement ended with a `continue`
-     * statement targeting the given label.
-     */
-    Continue(BranchTarget lbl) or
-    /**
-     * A completion indicating that execution of a (compound) statement ended with a `fallthrough`
-     * statement.
-     */
-    Fallthrough() or
-    /**
-     * A completion indicating that execution of a (compound) statement ended with a `return`
-     * statement.
-     */
-    Return() or
-    /**
-     * A completion indicating that execution of a statement or expression may have ended with
-     * a panic being raised.
-     */
-    Panic()
-
-  private Completion normalCompletion() { result.isNormal() }
-
-  private class Completion extends TCompletion {
-    predicate isNormal() { this = Done() or this = Bool(_) }
-
-    Boolean getOutcome() { this = Done() or this = Bool(result) }
-
-    string toString() {
-      this = Done() and result = "normal"
-      or
-      exists(boolean b | this = Bool(b) | result = b.toString())
-      or
-      exists(BranchTarget lbl |
-        this = Break(lbl) and result = "break " + lbl
-        or
-        this = Continue(lbl) and result = "continue " + lbl
-      )
-      or
-      this = Fallthrough() and result = "fallthrough"
-      or
-      this = Return() and result = "return"
-      or
-      this = Panic() and result = "panic"
-    }
+  /** Holds if `e` has an implicit field selection at `index` for `implicitField`. */
+  predicate implicitFieldSelection(Go::AstNode e, int index, Go::Field implicitField) {
+    Input1::implicitFieldSelection(e, index, implicitField)
   }
 
   /**
-   * Holds if `e` should have an evaluation node in the control-flow graph.
-   *
-   * Excluded expressions include those not evaluated at runtime (e.g. identifiers, type expressions)
-   * and some logical expressions that are expressed as control-flow edges rather than having a specific
-   * evaluation node.
+   * Holds if `root` is a constant root: a constant expression (with any
+   * enclosing parentheses stripped) whose parent expression is not itself
+   * constant. The strict sub-expressions of a constant root are folded at
+   * compile time and are not evaluated at run time, so they get no evaluation
+   * node; the constant root itself is evaluated as a single leaf value.
    */
-  cached
-  predicate hasEvaluationNode(Expr e) {
-    // exclude expressions that do not denote a value
-    not e instanceof TypeExpr and
-    not e = any(FieldDecl f).getTag() and
-    not e instanceof KeyValueExpr and
-    not e = any(SelectorExpr sel).getSelector() and
-    not e = any(StructLit sl).getKey(_) and
-    not (e instanceof Ident and not e instanceof ReferenceExpr) and
-    not (e instanceof SelectorExpr and not e instanceof ReferenceExpr) and
-    not pureLvalue(e) and
-    // exclude parentheses, which are purely concrete syntax, and some logical binary expressions
-    // whose evaluation is implied by control-flow edges without requiring an evaluation node.
-    not isControlFlowStructural(e) and
-    // exclude expressions that are not evaluated at runtime
-    not e = any(ImportSpec is).getPathExpr() and
-    not e.getParent*() = any(ArrayTypeExpr ate).getLength() and
-    // sub-expressions of constant expressions are not evaluated (even if they don't look constant
-    // themselves)
-    not constRoot(e.getParent+())
-  }
-
-  /**
-   * Holds if `e` is an expression that purely serves grouping or control-flow purposes.
-   *
-   * Examples include parenthesized expressions and short-circuiting Boolean expressions used within
-   * a branch condition (`if` or `for` condition, or as part of a larger boolean expression, e.g.
-   * in `(x && y) || z`, the `&&` subexpression matches this predicate).
-   */
-  private predicate isControlFlowStructural(Expr e) {
-    // Some logical binary operators do not need an evaluation node
-    // (for example, in `if x && y`, we evaluate `x` and then branch straight to either `y` or the
-    //  `else` block, so there is no control-flow step where `x && y` is specifically calculated)
-    e instanceof LogicalBinaryExpr and
-    isCond(e)
-    or
-    // Purely concrete-syntactic structural expression:
-    e instanceof ParenExpr
-  }
-
-  /**
-   * Gets a constant root, that is, an expression that is constant but whose parent expression is not.
-   *
-   * As an exception to the latter, for a control-flow structural expression such as `(c1)` or `c1 && c2`
-   * where `cn` are constants we still consider the `cn`s to be a constant roots, even though their parent
-   * expression is also constant.
-   */
-  private predicate constRoot(Expr root) {
-    exists(Expr c |
+  private predicate constantRoot(Go::Expr root) {
+    exists(Go::Expr c |
       c.isConst() and
-      not c.getParent().(Expr).isConst() and
-      root = stripStructural(c)
+      not c.getParent().(Go::Expr).isConst() and
+      root = c.stripParens()
     )
   }
 
-  /**
-   * Strips off any control-flow structural components from `e`.
-   */
-  private Expr stripStructural(Expr e) {
-    if isControlFlowStructural(e) then result = stripStructural(e.getAChildExpr()) else result = e
-  }
+  /** Provides an implementation of the AST signature for Go. */
+  private module Ast implements CfgLib::AstSig<Go::Location> {
+    class AstNode = Go::AstNode;
 
-  private class ControlFlowTree extends AstNode {
-    predicate firstNode(ControlFlow::Node first) { none() }
+    private predicate skipCfg(AstNode e) {
+      e instanceof Go::TypeExpr and not e instanceof Go::FuncTypeExpr
+      or
+      e = any(Go::FieldDecl f).getTag()
+      or
+      e instanceof Go::KeyValueExpr and not e = any(Go::CompositeLit lit).getAnElement()
+      or
+      e = any(Go::SelectorExpr sel).getSelector()
+      or
+      e = any(Go::StructLit sl).getKey(_)
+      or
+      e instanceof Go::Ident and not e instanceof Go::ReferenceExpr
+      or
+      e instanceof Go::SelectorExpr and not e instanceof Go::ReferenceExpr
+      or
+      e instanceof Go::ReferenceExpr and
+      not e.(Go::ReferenceExpr).isRvalue() and
+      not e instanceof Go::SelectorExpr and
+      not e = any(Go::SelectorExpr sel).getBase() and
+      not e instanceof Go::IndexExpr and
+      not e = any(Go::IndexExpr idx).getBase() and
+      not e = any(Go::IndexExpr idx).getIndex()
+      or
+      e instanceof Go::CommentGroup
+      or
+      e instanceof Go::Comment
+      or
+      e = any(Go::ImportSpec is).getPathExpr()
+      or
+      e.getParent*() = any(Go::ArrayTypeExpr ate).getLength()
+      or
+      // The shared switch model wires control flow directly from the switch to
+      // its case clauses (in control-flow order) and between cases, so the
+      // enclosing block must not introduce its own nodes or default
+      // left-to-right sequencing of the case clauses.
+      e = any(Go::SwitchStmt sw).getBody()
+      or
+      // The test statement of a type switch (`y := x.(type)` or the bare
+      // `x.(type)` expression statement) is transparent: the shared switch
+      // model evaluates the underlying type-assertion expression directly as
+      // the switch expression (see `Switch.getExpr`), so the wrapping
+      // statement must not introduce its own assignment or expression nodes.
+      e = any(Go::TypeSwitchStmt ts).getTest()
+      or
+      // The strict sub-expressions of a constant expression are not evaluated
+      // at run time, so they must not get their own evaluation nodes.
+      constantRoot(e.(Go::Expr).getParent+())
+    }
 
-    predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      // propagate abnormal completion from children
-      lastNode(this.getAChild(), last, cmpl) and
-      not cmpl.isNormal()
+    AstNode getChild(AstNode n, int index) {
+      (
+        not n instanceof Go::FuncDef and
+        not skipCfg(n) and
+        result = n.getChild(index)
+        or
+        exists(Go::Assignment assgn, Go::Expr lhs |
+          n = assgn and lhs = assgn.getLhs(_) and lhs = n.getChild(index) and skipCfg(lhs)
+        |
+          result = lhs.(Go::StarExpr).getBase()
+          or
+          result = lhs.(Go::DerefExpr).getOperand()
+        )
+        or
+        // The body block of a switch (expression or type) is transparent (see
+        // `skipCfg`), so it is not itself a child and contributes no children.
+        // Expose the case clauses directly as children of the switch instead,
+        // so that the AST child chain stays connected for abrupt-completion
+        // propagation (e.g. a panicking call in a case body reaching the
+        // enclosing function's exceptional exit).
+        result = n.(Go::SwitchStmt).getBody().getChild(index)
+        or
+        // The type-switch test statement is transparent (see `skipCfg`), so
+        // expose the underlying type-assertion expression directly as a child
+        // of the type switch, keeping the AST child chain connected.
+        result = n.(Go::TypeSwitchStmt).getExpr() and index = 1
+      ) and
+      not skipCfg(result)
+    }
+
+    class Callable extends AstNode {
+      Callable() {
+        exists(this.(Go::FuncDef).getBody())
+        or
+        exists(this.(Go::File).getADecl())
+      }
+    }
+
+    AstNode callableGetBody(Callable c) {
+      result = c.(Go::FuncDef).getBody()
+      or
+      result = c.(Go::File)
+    }
+
+    class Parameter extends AstNode {
+      Parameter() { this = any(Go::Parameter p).getDeclaration() }
+
+      AstNode getPattern() { result = this }
+
+      Expr getDefaultValue() { none() }
+    }
+
+    Parameter callableGetParameter(Callable c, int index) {
+      result = c.(Go::FuncDef).getParameter(index).getDeclaration()
+    }
+
+    Callable getEnclosingCallable(AstNode node) {
+      result = node.getEnclosingFunction()
+      or
+      not exists(node.getEnclosingFunction()) and
+      result = node.getFile()
+    }
+
+    class Stmt = Go::Stmt;
+
+    class Expr = Go::Expr;
+
+    class BlockStmt extends Go::BlockStmt {
+      BlockStmt() {
+        not this = any(Go::FuncDef fd).getBody() and
+        not this = any(Go::SwitchStmt sw).getBody() and
+        not this = any(Go::SelectStmt sel).getBody()
+      }
+
+      Stmt getLastStmt() {
+        exists(int last | result = this.getStmt(last) and not exists(this.getStmt(last + 1)))
+      }
+    }
+
+    class ExprStmt extends Stmt instanceof Go::ExprStmt {
+      // The `x.(type)` test statement of a type switch is transparent (see
+      // `skipCfg`): the shared switch model evaluates the underlying
+      // type-assertion expression directly as the switch expression. It must
+      // therefore not be treated as an ordinary expression statement, whose
+      // value would otherwise be propagated from the expression to the
+      // statement (creating a spurious flow into the transparent wrapper).
+      ExprStmt() { not this = any(Go::TypeSwitchStmt ts).getTest() }
+
+      Expr getExpr() { result = Go::ExprStmt.super.getExpr() }
+    }
+
+    class IfStmt = Go::IfStmt;
+
+    AstNode getIfInit(IfStmt ifstmt) { result = ifstmt.(Go::IfStmt).getInit() }
+
+    class LoopStmt = Go::LoopStmt;
+
+    class WhileStmt extends LoopStmt {
+      WhileStmt() { none() }
+
+      Expr getCondition() { none() }
+    }
+
+    class DoStmt extends LoopStmt {
+      DoStmt() { none() }
+
+      Expr getCondition() { none() }
+    }
+
+    class UntilStmt extends LoopStmt {
+      UntilStmt() { none() }
+
+      Expr getCondition() { none() }
+    }
+
+    class ForStmt extends LoopStmt instanceof Go::ForStmt {
+      AstNode getInit(int index) { index = 0 and result = this.(Go::ForStmt).getInit() }
+
+      Expr getCondition() { result = this.(Go::ForStmt).getCond() }
+
+      AstNode getUpdate(int index) { index = 0 and result = this.(Go::ForStmt).getPost() }
+    }
+
+    class ForEachStmt extends LoopStmt instanceof Go::RangeStmt {
+      Expr getVariable() { result = this.(Go::RangeStmt).getPattern() }
+
+      Expr getCollection() { result = this.(Go::RangeStmt).getDomain() }
+    }
+
+    class BreakStmt = Go::BreakStmt;
+
+    class ContinueStmt = Go::ContinueStmt;
+
+    class GotoStmt = Go::GotoStmt;
+
+    class ReturnStmt = Go::ReturnStmt;
+
+    class Throw extends AstNode {
+      Throw() { none() }
+
+      Expr getExpr() { none() }
+    }
+
+    class TryStmt extends Stmt {
+      TryStmt() { none() }
+
+      AstNode getBody(int index) { none() }
+
+      CatchClause getCatch(int index) { none() }
+
+      Stmt getFinally() { none() }
+    }
+
+    class CatchClause extends AstNode {
+      CatchClause() { none() }
+
+      AstNode getPattern() { none() }
+
+      AstNode getVariable() { none() }
+
+      Expr getCondition() { none() }
+
+      Stmt getBody() { none() }
+    }
+
+    class Switch extends AstNode instanceof Go::SwitchStmt {
+      Expr getExpr() { result = this.(Go::SwitchStmt).getExpr() }
+
+      Case getCase(int index) { result = this.(Go::SwitchStmt).getCase(index) }
+
+      Stmt getStmt(int index) {
+        // Go nests each case clause's body statements under the clause rather
+        // than in a flat list, so we expose a flattened view in which every
+        // case clause is immediately followed by its own body statements. This
+        // lets the shared library compute the body of a case as the statements
+        // between it and the next clause.
+        result =
+          rank[index + 1](Go::Stmt s, int caseIdx, int inner |
+            switchFlatItem(this, s, caseIdx, inner)
+          |
+            s order by caseIdx, inner
+          )
+      }
+    }
+
+    class Case extends AstNode {
+      Case() { this = any(Go::SwitchStmt sw).getACase() }
+
+      AstNode getPattern(int index) { result = this.(Go::CaseClause).getExpr(index) }
+
+      Expr getGuard() { none() }
+
+      AstNode getBody() { none() }
+    }
+
+    class DefaultCase extends Case {
+      DefaultCase() { not exists(this.(Go::CaseClause).getAnExpr()) }
+    }
+
+    AstNode getSwitchInit(Switch switch) { result = switch.(Go::SwitchStmt).getInit() }
+
+    predicate fallsThrough(Case c) {
+      // Go has no implicit fall-through between case clauses; an explicit
+      // `fallthrough` statement is required.
+      c.(Go::CaseClause).getStmt(max(int i | exists(c.(Go::CaseClause).getStmt(i)))) instanceof
+        Go::FallthroughStmt
     }
 
     /**
-     * Holds if `succ` is a successor of `pred`, ignoring the execution of any
-     * deferred functions when a function ends.
+     * Holds if `s` is the flattened body element at position (`caseIdx`,
+     * `inner`) of switch `sw`: either the `caseIdx`-th case clause itself (with
+     * `inner` = -1) or its `inner`-th body statement.
      */
-    pragma[nomagic]
-    predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      exists(int i |
-        lastNode(this.getChildTreeRanked(i), pred, normalCompletion()) and
-        firstNode(this.getChildTreeRanked(i + 1), succ)
-      )
+    private predicate switchFlatItem(Go::SwitchStmt sw, Go::Stmt s, int caseIdx, int inner) {
+      s = sw.getCase(caseIdx) and inner = -1
+      or
+      s = sw.getCase(caseIdx).getStmt(inner)
     }
 
-    /** Holds if `succ` is a successor of `pred`. */
-    predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) { this.succ0(pred, succ) }
+    class ConditionalExpr extends Expr {
+      ConditionalExpr() { none() }
 
-    final ControlFlowTree getChildTreeRanked(int i) {
-      exists(int j |
-        result = this.getChildTree(j) and
-        j = rank[i + 1](int k | exists(this.getChildTree(k)))
-      )
+      Expr getCondition() { none() }
+
+      Expr getThen() { none() }
+
+      Expr getElse() { none() }
     }
 
-    ControlFlowTree getFirstChildTree() { result = this.getChildTreeRanked(0) }
+    class BinaryExpr = Go::BinaryExpr;
 
-    ControlFlowTree getLastChildTree() {
-      result = max(ControlFlowTree ch, int j | ch = this.getChildTree(j) | ch order by j)
+    // Constant short-circuiting operators are folded at compile time and their
+    // operands are not evaluated at run time, so they are not treated as
+    // logical operators here (which would give their operands their own
+    // evaluation nodes via `getLeftOperand`/`getRightOperand`/`getOperand`,
+    // bypassing `skipCfg`). Instead they are handled as constant-root leaf
+    // value nodes (see `postOrInOrder`).
+    class LogicalAndExpr extends Go::LandExpr {
+      LogicalAndExpr() { not this.isConst() }
     }
 
-    ControlFlowTree getChildTree(int i) { none() }
-  }
-
-  private class AtomicTree extends ControlFlowTree {
-    ControlFlow::Node nd;
-    Completion cmpl;
-
-    AtomicTree() {
-      exists(Expr e |
-        e = this and
-        e.isConst() and
-        nd = mkExprOrSkipNode(this)
-      |
-        if e.isPlatformIndependentConstant() and exists(e.getBoolValue())
-        then cmpl = Bool(e.getBoolValue())
-        else cmpl = Done()
-      )
-      or
-      this instanceof Ident and
-      not this.(Expr).isConst() and
-      nd = mkExprOrSkipNode(this) and
-      cmpl = Done()
-      or
-      this instanceof BreakStmt and
-      nd = MkSkipNode(this) and
-      cmpl = Break(BranchTarget::of(this))
-      or
-      this instanceof ContinueStmt and
-      nd = MkSkipNode(this) and
-      cmpl = Continue(BranchTarget::of(this))
-      or
-      this instanceof Decl and
-      nd = MkSkipNode(this) and
-      cmpl = Done()
-      or
-      this instanceof EmptyStmt and
-      nd = MkSkipNode(this) and
-      cmpl = Done()
-      or
-      this instanceof FallthroughStmt and
-      nd = MkSkipNode(this) and
-      cmpl = Fallthrough()
-      or
-      this instanceof FuncLit and
-      nd = MkExprNode(this) and
-      cmpl = Done()
-      or
-      this instanceof PlainBlock and
-      nd = MkSkipNode(this) and
-      cmpl = Done()
-      or
-      this instanceof SelectorExpr and
-      not this.(SelectorExpr).getBase() instanceof ValueExpr and
-      nd = mkExprOrSkipNode(this) and
-      cmpl = Done()
-      or
-      this instanceof GenericFunctionInstantiationExpr and
-      nd = MkExprNode(this) and
-      cmpl = Done()
+    class LogicalOrExpr extends Go::LorExpr {
+      LogicalOrExpr() { not this.isConst() }
     }
 
-    override predicate firstNode(ControlFlow::Node first) { first = nd }
-
-    override predicate lastNode(ControlFlow::Node last, Completion c) { last = nd and c = cmpl }
-  }
-
-  abstract private class PostOrderTree extends ControlFlowTree {
-    abstract ControlFlow::Node getNode();
-
-    Completion getCompletion() { result = Done() }
-
-    override predicate firstNode(ControlFlow::Node first) {
-      firstNode(this.getFirstChildTree(), first)
-      or
-      not exists(this.getChildTree(_)) and
-      first = this.getNode()
+    class NullCoalescingExpr extends BinaryExpr {
+      NullCoalescingExpr() { none() }
     }
 
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      super.lastNode(last, cmpl)
-      or
-      last = this.getNode() and cmpl = this.getCompletion()
+    class UnaryExpr = Go::UnaryExpr;
+
+    class LogicalNotExpr extends Go::NotExpr {
+      LogicalNotExpr() { not this.isConst() }
     }
 
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      super.succ0(pred, succ)
-      or
-      lastNode(this.getLastChildTree(), pred, normalCompletion()) and
-      succ = this.getNode()
-    }
-  }
+    class BooleanLiteral extends Expr {
+      boolean val;
 
-  abstract private class PreOrderTree extends ControlFlowTree {
-    abstract ControlFlow::Node getNode();
-
-    override predicate firstNode(ControlFlow::Node first) { first = this.getNode() }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      super.lastNode(last, cmpl)
-      or
-      lastNode(this.getLastChildTree(), last, cmpl)
-      or
-      not exists(this.getChildTree(_)) and
-      last = this.getNode() and
-      cmpl = Done()
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      super.succ0(pred, succ)
-      or
-      pred = this.getNode() and
-      firstNode(this.getFirstChildTree(), succ)
-    }
-  }
-
-  private class WrapperTree extends ControlFlowTree {
-    WrapperTree() {
-      this instanceof ConstDecl or
-      this instanceof DeclStmt or
-      this instanceof ExprStmt or
-      this instanceof KeyValueExpr or
-      this instanceof LabeledStmt or
-      this instanceof ParenExpr or
-      this instanceof PlainBlock or
-      this instanceof VarDecl
-    }
-
-    override predicate firstNode(ControlFlow::Node first) {
-      firstNode(this.getFirstChildTree(), first)
-    }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      super.lastNode(last, cmpl)
-      or
-      lastNode(this.getLastChildTree(), last, cmpl)
-      or
-      exists(LoopStmt ls | this = ls.getBody() |
-        lastNode(this, last, Continue(BranchTarget::of(ls))) and
-        cmpl = Done()
-      )
-    }
-
-    override ControlFlowTree getChildTree(int i) {
-      i = 0 and result = this.(DeclStmt).getDecl()
-      or
-      i = 0 and result = this.(ExprStmt).getExpr()
-      or
-      result = this.(GenDecl).getSpec(i)
-      or
-      exists(KeyValueExpr kv | kv = this |
-        not kv.getLiteral() instanceof StructLit and
-        i = 0 and
-        result = kv.getKey()
+      BooleanLiteral() {
+        this.(Go::Ident).getName() = "true" and val = true
         or
-        i = 1 and result = kv.getValue()
-      )
-      or
-      i = 0 and result = this.(LabeledStmt).getStmt()
-      or
-      i = 0 and result = this.(ParenExpr).getExpr()
-      or
-      result = this.(PlainBlock).getStmt(i)
+        this.(Go::Ident).getName() = "false" and val = false
+      }
+
+      boolean getValue() { result = val }
+    }
+
+    class Assignment extends BinaryExpr {
+      Assignment() { none() }
+    }
+
+    class AssignExpr extends Assignment {
+      AssignExpr() { none() }
+    }
+
+    class CompoundAssignment extends Assignment {
+      CompoundAssignment() { none() }
+    }
+
+    class AssignLogicalAndExpr extends CompoundAssignment {
+      AssignLogicalAndExpr() { none() }
+    }
+
+    class AssignLogicalOrExpr extends CompoundAssignment {
+      AssignLogicalOrExpr() { none() }
+    }
+
+    class AssignNullCoalescingExpr extends CompoundAssignment {
+      AssignNullCoalescingExpr() { none() }
+    }
+
+    class PatternMatchExpr extends Expr {
+      PatternMatchExpr() { none() }
+
+      Expr getExpr() { none() }
+
+      AstNode getPattern() { none() }
     }
   }
 
-  private class AssignmentTree extends ControlFlowTree {
-    AssignmentTree() {
-      this instanceof Assignment or
-      this instanceof ValueSpec
+  /** Predicates shared by the two stages of Go CFG construction. */
+  private module Input1 implements Cfg0::InputSig1 {
+    predicate cfgCachedStageRef() { CfgCachedStage::ref() }
+
+    class CallableContext = Void;
+
+    class Label extends string {
+      Label() { this = any(Go::LabeledStmt ls).getLabel() }
+
+      string toString() { result = this }
     }
 
-    Expr getLhs(int i) {
-      result = this.(Assignment).getLhs(i) or
-      result = this.(ValueSpec).getNameExpr(i)
-    }
-
-    int getNumLhs() {
-      result = this.(Assignment).getNumLhs() or
-      result = this.(ValueSpec).getNumName()
-    }
-
-    Expr getRhs(int i) {
-      result = this.(Assignment).getRhs(i) or
-      result = this.(ValueSpec).getInit(i)
-    }
-
-    int getNumRhs() {
-      result = this.(Assignment).getNumRhs() or
-      result = this.(ValueSpec).getNumInit()
-    }
-
-    predicate isExtractingAssign() { this.getNumRhs() = 1 and this.getNumLhs() > 1 }
-
-    override predicate firstNode(ControlFlow::Node first) {
-      not this instanceof RecvStmt and
-      firstNode(this.getLhs(0), first)
-    }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      ControlFlowTree.super.lastNode(last, cmpl)
+    predicate hasLabel(Ast::AstNode n, Label l) {
+      // A statement carries the label of every `LabeledStmt` that wraps it.
+      // This is recursive because Go allows stacked labels (`L1: L2: stmt`),
+      // which the extractor represents as nested `LabeledStmt`s, so a single
+      // statement may have several labels.
+      exists(Go::LabeledStmt ls | n = ls.getStmt() | l = ls.getLabel() or hasLabel(ls, l))
       or
+      // The `LabeledStmt` wrapper itself also carries its label. Blocks contain
+      // the wrapper (not the inner statement) as a direct child, so the shared
+      // library's block-level `goto` target resolution -- which looks for a
+      // labelled statement that is a direct child of a block -- matches on the
+      // wrapper.
+      l = n.(Go::LabeledStmt).getLabel()
+      or
+      l = n.(Go::BreakStmt).getLabel()
+      or
+      l = n.(Go::ContinueStmt).getLabel()
+      or
+      // A `goto` statement carries its target label, so that the shared
+      // library's `beginAbruptCompletion` produces a *labelled* goto completion
+      // (matching the target label) rather than an unlabelled one.
+      l = n.(Go::GotoStmt).getLabel()
+    }
+
+    predicate preOrderExpr(Ast::Expr e) {
+      // The call of a `defer` statement is not invoked at the statement
+      // itself; its callee expression and arguments are evaluated in place,
+      // but the call is only invoked later, at function exit (modeled by the
+      // `defer-invoke` node and the final-stage defer steps). Marking it as
+      // pre-order means no in-order "invocation" node (and hence no inline
+      // exceptional-exit edge) is created at the `defer` statement.
+      e = any(Go::DeferStmt s).getCall()
+    }
+
+    predicate postOrInOrder(Ast::AstNode n) {
+      // Leaf value expressions: these have no CFG children, so the shared
+      // library's default (which only makes expressions *with* children
+      // post-order) would otherwise treat them as simple leaf nodes with no
+      // in-order value node.
+      n instanceof Go::ReferenceExpr
+      or
+      n instanceof Go::BasicLit
+      or
+      n instanceof Go::FuncLit
+      or
+      // An empty composite literal (e.g. `T{}`) has no CFG children, so it too
+      // needs an explicit in-order (allocation) node.
+      n instanceof Go::CompositeLit
+      or
+      // A constant expression is folded at compile time and its sub-expressions
+      // are not evaluated (they are pruned by `skipCfg`), so the constant root
+      // has no CFG children. It therefore needs an explicit in-order node to
+      // remain a single value-producing leaf (e.g. `unsafe.Sizeof(test())`,
+      // `1 << 10`, or `!d` for constant `d`).
+      constantRoot(n)
+      or
+      // Statements/declarations that compute a value or perform an operation and
+      // are not among the statements the shared library makes post-order by
+      // default.
+      n instanceof Go::DeferStmt
+      or
+      n instanceof Go::GoStmt
+      or
+      n instanceof Go::CompoundAssignStmt
+      or
+      n instanceof Go::IncDecStmt
+      or
+      n instanceof Go::SelectStmt
+      or
+      n instanceof Go::SendStmt
+      or
+      n instanceof Go::FuncDecl
+    }
+
+    predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {
+      t instanceof DirectSuccessor and
       (
-        last = max(int i | | this.epilogueNode(i) order by i)
+        // Assignment write nodes: one per LHS
+        exists(int i |
+          (
+            notBlankIdent(n.(Go::Assignment).getLhs(i)) and
+            // A compound assignment (`x += y`) performs its write at its
+            // post-order operation node rather than emitting a separate
+            // `assign:i` write node (see
+            // `IR::EvalCompoundAssignRhsInstruction`).
+            not n instanceof Go::CompoundAssignStmt and
+            // The `y := x.(type)` test statement of a type switch is transparent
+            // (see `skipCfg`): the per-case implicit variables are written at the
+            // case match nodes (see `IR::TypeSwitchImplicitVariableInstruction`),
+            // so the guard itself emits no assignment write node.
+            not n = any(Go::TypeSwitchStmt ts).getAssign() and
+            // A tuple-destructuring assignment (`x, y = f()`) folds its per-target
+            // write into the `extract` node (see `IR::ExtractWriteInstruction`).
+            not extractNodeCondition(n, i)
+            or
+            // A `ValueSpec` without an initializer is written by its `zero-init`
+            // node directly (see `IR::EvalImplicitInitInstruction`), and a
+            // tuple-destructuring declaration (`var x, y = f()`) is written by its
+            // `extract` node; only specs with a per-name initializer emit
+            // `assign:i`.
+            notBlankIdent(n.(Go::ValueSpec).getNameExpr(i)) and
+            exists(n.(Go::ValueSpec).getAnInit()) and
+            not extractNodeCondition(n, i)
+          ) and
+          tag = "assign:" + i.toString()
+        )
         or
-        not exists(this.epilogueNode(_)) and
-        lastNode(this.getLastSubExprInEvalOrder(), last, normalCompletion())
+        // Get the next key-value pair produced by a `range` statement.
+        n instanceof Go::RangeElementExpr and tag = "next"
+        or
+        // Tuple extraction nodes
+        exists(int i |
+          extractNodeCondition(n, i) and
+          tag = "extract:" + i.toString()
+        )
+        or
+        // Zero initialization (on the ValueSpec)
+        exists(int i, Go::ValueSpec spec |
+          n = spec and
+          not exists(spec.getAnInit()) and
+          exists(spec.getNameExpr(i)) and
+          tag = "zero-init:" + i.toString()
+        )
+        or
+        // Result write nodes in return statements
+        exists(int i, Go::ReturnStmt ret |
+          n = ret and
+          exists(ret.getEnclosingFunction().getResultVar(i)) and
+          exists(ret.getAnExpr()) and
+          tag = "result-write:" + i.toString()
+        )
+        or
+        // Result read nodes (on the function body)
+        exists(int i, Go::FuncDef fd |
+          n = fd.getBody() and
+          exists(fd.getBody()) and
+          exists(fd.getResultVar(i)) and
+          tag = "result-read:" + i.toString()
+        )
+        or
+        // Result-variable zero-initialization (on the function body). This single
+        // node computes the zero value and writes it to the result variable (see
+        // `IR::EvalImplicitInitInstruction`); it is the same kind of node as the
+        // `zero-init` of an uninitialised local variable.
+        exists(int i, Go::FuncDef fd |
+          n = fd.getBody() and
+          exists(fd.getBody()) and
+          exists(fd.getResultVar(i)) and
+          tag = "zero-init:" + i.toString()
+        )
+        or
+        // Implicit deref
+        implicitDerefCondition(n) and tag = "implicit-deref"
+        or
+        // Literal element initialization
+        n = any(Go::CompositeLit lit).getAnElement() and
+        tag = "lit-init"
+        or
+        // Implicit field selection for promoted fields
+        exists(int i, Go::Field implicitField |
+          implicitFieldSelection(n, i, implicitField) and
+          tag = "implicit-field:" + i.toString()
+        )
+        or
+        // Deferred-call invocation node, placed at function exit by the final-stage defer steps
+        n = any(Go::DeferStmt s).getCall() and tag = "defer-invoke"
+        or
+        n instanceof Go::DeferStmt and tag = "catch-defer-panic"
+        or
+        not n instanceof Go::DeferStmt and
+        mayPanic(n) and
+        mayDeferParent(n) and
+        tag = "catch-panic"
+        or
+        mayReturn(n) and mayDeferParent(n) and tag = "catch-return"
+      )
+    }
+
+    /** Helper: condition for MkExtractNode */
+    private predicate extractNodeCondition(Ast::AstNode s, int i) {
+      exists(Go::Assignment assgn |
+        s = assgn and
+        exists(assgn.getRhs()) and
+        assgn.getNumLhs() > 1 and
+        exists(assgn.getLhs(i))
+      )
+      or
+      exists(Go::ValueSpec spec |
+        s = spec and
+        exists(spec.getInit()) and
+        spec.getNumName() > 1 and
+        exists(spec.getNameExpr(i))
+      )
+      or
+      exists(Go::RangeElementExpr p | s = p |
+        exists(p.getKey()) and i = 0
+        or
+        exists(p.getValue()) and i = 1
+      )
+      or
+      exists(Go::ReturnStmt ret, Go::SignatureType rettp |
+        s = ret and
+        exists(ret.getExpr()) and
+        rettp = ret.getEnclosingFunction().getType() and
+        rettp.getNumResult() > 1 and
+        exists(rettp.getResultType(i))
+      )
+      or
+      exists(Go::CallExpr outer, Go::CallExpr inner | s = outer |
+        inner = outer.getArgument(0).stripParens() and
+        outer.getNumArgument() = 1 and
+        exists(inner.getType().(Go::TupleType).getComponentType(i))
+      )
+    }
+
+    /** Helper: condition for implicit dereference */
+    private predicate implicitDerefCondition(Ast::AstNode e) {
+      e.(Go::Expr).getType().getUnderlyingType() instanceof Go::PointerType and
+      (
+        exists(Go::SelectorExpr sel | e = sel.getBase() |
+          sel = any(Go::Field f).getAReference()
+          or
+          exists(Go::Method m, Go::Type tp |
+            sel = m.getAReference() and
+            tp = m.getReceiver().getType().getUnderlyingType() and
+            not tp instanceof Go::PointerType
+          )
+        )
+        or
+        e = any(Go::IndexExpr ie).getBase()
+        or
+        e = any(Go::SliceExpr se).getBase()
+      )
+    }
+
+    /** Helper: blank identifier check */
+    private predicate notBlankIdent(Go::Expr e) { not e instanceof Go::BlankIdent }
+
+    /** Helper: implicit field selection for promoted selectors */
+    additional predicate implicitFieldSelection(Ast::AstNode e, int index, Go::Field implicitField) {
+      exists(Go::StructType baseType, Go::PromotedField child, int implicitFieldDepth |
+        baseType = e.(Go::PromotedSelector).getSelectedStructType() and
+        (
+          e.(Go::PromotedSelector).refersTo(child)
+          or
+          implicitFieldSelection(e, implicitFieldDepth + 1, child)
+        )
+      |
+        child = baseType.getFieldOfEmbedded(implicitField, _, implicitFieldDepth + 1, _) and
+        exists(Go::PromotedField explicitField, int explicitFieldDepth |
+          e.(Go::PromotedSelector).refersTo(explicitField) and
+          baseType.getFieldAtDepth(_, explicitFieldDepth) = explicitField
+        |
+          index = explicitFieldDepth - implicitFieldDepth
+        )
+      )
+      or
+      exists(
+        Go::StructType baseType, Go::PromotedMethod method, int mDepth, int implicitFieldDepth
+      |
+        baseType = e.(Go::PromotedSelector).getSelectedStructType() and
+        e.(Go::PromotedSelector).refersTo(method) and
+        baseType.getMethodAtDepth(_, mDepth) = method and
+        index = mDepth - implicitFieldDepth
+      |
+        method = baseType.getMethodOfEmbedded(implicitField, _, implicitFieldDepth + 1)
+        or
+        exists(Go::PromotedField child |
+          child = baseType.getFieldOfEmbedded(implicitField, _, implicitFieldDepth + 1, _) and
+          implicitFieldSelection(e, implicitFieldDepth + 1, child)
+        )
+      )
+    }
+
+    additional predicate beginAbruptCompletion(
+      Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
+    ) {
+      ast instanceof Go::CallExpr and
+      (
+        not exists(ast.(Go::CallExpr).getTarget()) or
+        ast.(Go::CallExpr).getTarget().mayPanic()
       ) and
-      cmpl = Done()
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ0(pred, succ)
+      n.isIn(ast) and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = false
       or
-      exists(int i | lastNode(this.getLhs(i), pred, normalCompletion()) |
-        firstNode(this.getLhs(i + 1), succ)
-        or
-        not this instanceof RecvStmt and
-        i = this.getNumLhs() - 1 and
-        (
-          firstNode(this.getRhs(0), succ)
-          or
-          not exists(this.getRhs(_)) and
-          succ = this.epilogueNodeRanked(0)
-        )
-      )
-      or
-      exists(int i |
-        lastNode(this.getRhs(i), pred, normalCompletion()) and
-        firstNode(this.getRhs(i + 1), succ)
-      )
-      or
-      not this instanceof RecvStmt and
-      lastNode(this.getRhs(this.getNumRhs() - 1), pred, normalCompletion()) and
-      succ = this.epilogueNodeRanked(0)
-      or
-      exists(int i |
-        pred = this.epilogueNodeRanked(i) and
-        succ = this.epilogueNodeRanked(i + 1)
-      )
-    }
-
-    ControlFlow::Node epilogueNodeRanked(int i) {
-      exists(int j |
-        result = this.epilogueNode(j) and
-        j = rank[i + 1](int k | exists(this.epilogueNode(k)))
-      )
-    }
-
-    private Expr getSubExprInEvalOrder(int evalOrder) {
-      if evalOrder < this.getNumLhs()
-      then result = this.getLhs(evalOrder)
-      else result = this.getRhs(evalOrder - this.getNumLhs())
-    }
-
-    private Expr getLastSubExprInEvalOrder() {
-      result = max(int i | | this.getSubExprInEvalOrder(i) order by i)
-    }
-
-    private ControlFlow::Node epilogueNode(int i) {
-      i = -1 and
-      result = MkCompoundAssignRhsNode(this)
-      or
-      exists(int j |
-        result = MkExtractNode(this, j) and
-        i = 2 * j
-        or
-        result = MkZeroInitNode(any(ValueEntity v | this.getLhs(j) = v.getDeclaration())) and
-        i = 2 * j
-        or
-        result = MkAssignNode(this, j) and
-        i = 2 * j + 1
-      )
-    }
-  }
-
-  private class BinaryExprTree extends PostOrderTree, BinaryExpr {
-    override ControlFlow::Node getNode() { result = MkExprNode(this) }
-
-    private predicate equalityTestMayPanic() {
-      this instanceof EqualityTestExpr and
-      exists(Type t |
-        t = this.getAnOperand().getType().getUnderlyingType() and
-        (
-          t instanceof InterfaceType or // panic due to comparison of incomparable interface values
-          t instanceof StructType or // may contain an interface-typed field
-          t instanceof ArrayType // may be an array of interface values
-        )
-      )
-    }
-
-    override Completion getCompletion() {
-      result = PostOrderTree.super.getCompletion()
-      or
-      // runtime panic due to division by zero or comparison of incomparable interface values
-      (this instanceof DivExpr or this.equalityTestMayPanic()) and
-      not this.(Expr).isConst() and
-      result = Panic()
-    }
-
-    override ControlFlowTree getChildTree(int i) {
-      i = 0 and result = this.getLeftOperand()
-      or
-      i = 1 and result = this.getRightOperand()
-    }
-  }
-
-  private class LogicalBinaryExprTree extends BinaryExprTree, LogicalBinaryExpr {
-    boolean shortCircuit;
-
-    LogicalBinaryExprTree() {
-      this instanceof LandExpr and shortCircuit = false
-      or
-      this instanceof LorExpr and shortCircuit = true
-    }
-
-    private ControlFlow::Node getGuard(boolean outcome) {
-      result = MkConditionGuardNode(this.getLeftOperand(), outcome)
-    }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      lastNode(this.getAnOperand(), last, cmpl) and
-      not cmpl.isNormal()
-      or
-      if isCond(this)
-      then (
-        last = this.getGuard(shortCircuit) and
-        cmpl = Bool(shortCircuit)
-        or
-        lastNode(this.getRightOperand(), last, cmpl)
-      ) else (
-        last = MkExprNode(this) and
-        cmpl = Done()
-      )
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      exists(Completion lcmpl |
-        lastNode(this.getLeftOperand(), pred, lcmpl) and
-        succ = this.getGuard(lcmpl.getOutcome())
-      )
-      or
-      pred = this.getGuard(shortCircuit.booleanNot()) and
-      firstNode(this.getRightOperand(), succ)
-      or
-      not isCond(this) and
+      ast instanceof Go::CallExpr and
+      ast = any(Go::DeferStmt defer).getCall() and
       (
-        pred = this.getGuard(shortCircuit) and
-        succ = MkExprNode(this)
-        or
-        exists(Completion rcmpl |
-          lastNode(this.getRightOperand(), pred, rcmpl) and
-          rcmpl.isNormal() and
-          succ = MkExprNode(this)
-        )
-      )
-    }
-  }
-
-  private class CallExprTree extends PostOrderTree, CallExpr {
-    private predicate isSpecial() {
-      this = any(DeferStmt defer).getCall() or
-      this = any(GoStmt go).getCall()
-    }
-
-    override ControlFlow::Node getNode() {
-      not this.isSpecial() and
-      result = MkExprNode(this)
-    }
-
-    override Completion getCompletion() {
-      (not exists(this.getTarget()) or this.getTarget().mayReturnNormally()) and
-      result = Done()
-      or
-      (not exists(this.getTarget()) or this.getTarget().mayPanic()) and
-      result = Panic()
-    }
-
-    override ControlFlowTree getChildTree(int i) {
-      i = 0 and result = this.getCalleeExpr()
-      or
-      result = this.getArgument(i - 1) and
-      // calls to `make` and `new` can have type expressions as arguments
-      not result instanceof TypeExpr
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      // interpose implicit argument destructuring nodes between last argument
-      // and call itself; this is for cases like `f(g())` where `g` has multiple
-      // results
-      exists(ControlFlow::Node mid | PostOrderTree.super.succ0(pred, mid) |
-        if mid = this.getNode() then succ = this.getEpilogueNode(0) else succ = mid
-      )
-      or
-      exists(int i |
-        pred = this.getEpilogueNode(i) and
-        succ = this.getEpilogueNode(i + 1)
-      )
-    }
-
-    private ControlFlow::Node getEpilogueNode(int i) {
-      result = MkExtractNode(this, i)
-      or
-      i = max(int j | exists(MkExtractNode(this, j))) + 1 and
-      result = this.getNode()
-      or
-      not exists(MkExtractNode(this, _)) and
-      i = 0 and
-      result = this.getNode()
-    }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      PostOrderTree.super.lastNode(last, cmpl)
-      or
-      this.isSpecial() and
-      lastNode(this.getLastChildTree(), last, cmpl)
-    }
-  }
-
-  private class CaseClauseTree extends ControlFlowTree, CaseClause {
-    private ControlFlow::Node getExprStart(int i) {
-      firstNode(this.getExpr(i), result)
-      or
-      this.getExpr(i) instanceof TypeExpr and
-      result = MkCaseCheckNode(this, i)
-    }
-
-    ControlFlow::Node getExprEnd(int i, Boolean outcome) {
-      exists(Expr e | e = this.getExpr(i) |
-        result = MkConditionGuardNode(e, outcome)
-        or
-        not exists(MkConditionGuardNode(e, _)) and
-        result = MkCaseCheckNode(this, i)
-      )
-    }
-
-    private ControlFlow::Node getBodyStart() {
-      firstNode(this.getStmt(0), result) or result = MkSkipNode(this)
-    }
-
-    override predicate firstNode(ControlFlow::Node first) {
-      first = this.getExprStart(0)
-      or
-      not exists(this.getAnExpr()) and
-      first = MkTypeSwitchImplicitVariable(this, _, _)
-      or
-      not exists(this.getAnExpr()) and
-      not exists(MkTypeSwitchImplicitVariable(this, _, _)) and
-      first = this.getBodyStart()
-    }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      ControlFlowTree.super.lastNode(last, cmpl)
-      or
-      // TODO: shouldn't be here
-      last = this.getExprEnd(this.getNumExpr() - 1, false) and
-      cmpl = Bool(false)
-      or
-      last = MkSkipNode(this) and
-      cmpl = Done()
-      or
-      lastNode(this.getStmt(this.getNumStmt() - 1), last, cmpl)
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ0(pred, succ)
-      or
-      pred = MkTypeSwitchImplicitVariable(this, _, _) and
-      succ = this.getBodyStart()
-      or
-      exists(int i |
-        lastNode(this.getExpr(i), pred, normalCompletion()) and
-        succ = MkCaseCheckNode(this, i)
-        or
-        // visit guard node if there is one
-        pred = MkCaseCheckNode(this, i) and
-        succ = this.getExprEnd(i, _) and
-        succ != pred // this avoids self-loops if there isn't a guard node
-        or
-        pred = this.getExprEnd(i, false) and
-        succ = this.getExprStart(i + 1)
-        or
-        this.isPassingEdge(i, pred, succ, _)
-      )
-    }
-
-    predicate isPassingEdge(int i, ControlFlow::Node pred, ControlFlow::Node succ, Expr testExpr) {
-      pred = this.getExprEnd(i, true) and
-      testExpr = this.getExpr(i) and
-      (
-        succ = MkTypeSwitchImplicitVariable(this, _, _)
-        or
-        not exists(MkTypeSwitchImplicitVariable(this, _, _)) and
-        succ = this.getBodyStart()
-      )
-    }
-
-    override ControlFlowTree getChildTree(int i) { result = this.getStmt(i) }
-  }
-
-  private class CommClauseTree extends ControlFlowTree, CommClause {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getComm(), first) }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      ControlFlowTree.super.lastNode(last, cmpl)
-      or
-      last = MkSkipNode(this) and
-      cmpl = Done()
-      or
-      lastNode(this.getStmt(this.getNumStmt() - 1), last, cmpl)
-    }
-
-    override ControlFlowTree getChildTree(int i) { result = this.getStmt(i) }
-  }
-
-  private class CompositeLiteralTree extends ControlFlowTree, CompositeLit {
-    private ControlFlow::Node getElementInit(int i) {
-      result = MkLiteralElementInitNode(this.getElement(i))
-    }
-
-    private ControlFlow::Node getElementStart(int i) {
-      exists(Expr elt | elt = this.getElement(i) |
-        result = MkImplicitLiteralElementIndex(elt)
-        or
-        (elt instanceof KeyValueExpr or this instanceof StructLit) and
-        firstNode(this.getElement(i), result)
-      )
-    }
-
-    override predicate firstNode(ControlFlow::Node first) { first = MkExprNode(this) }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      ControlFlowTree.super.lastNode(last, cmpl)
-      or
-      last = this.getElementInit(this.getNumElement() - 1) and
-      cmpl = Done()
-      or
-      not exists(this.getElement(_)) and
-      last = MkExprNode(this) and
-      cmpl = Done()
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      this.firstNode(pred) and
-      succ = this.getElementStart(0)
-      or
-      exists(int i |
-        pred = MkImplicitLiteralElementIndex(this.getElement(i)) and
-        firstNode(this.getElement(i), succ)
-        or
-        lastNode(this.getElement(i), pred, normalCompletion()) and
-        succ = this.getElementInit(i)
-        or
-        pred = this.getElementInit(i) and
-        succ = this.getElementStart(i + 1)
-      )
-    }
-  }
-
-  private class ConversionExprTree extends PostOrderTree, ConversionExpr {
-    override Completion getCompletion() {
-      // conversions of a slice to an array pointer are the only kind that may panic
-      this.getType().(PointerType).getBaseType() instanceof ArrayType and
-      result = Panic()
-      or
-      result = Done()
-    }
-
-    override ControlFlow::Node getNode() { result = MkExprNode(this) }
-
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getOperand() }
-  }
-
-  private class DeferStmtTree extends PostOrderTree, DeferStmt {
-    override ControlFlow::Node getNode() { result = MkDeferNode(this) }
-
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getCall() }
-  }
-
-  private class FuncDeclTree extends PostOrderTree, FuncDecl {
-    override ControlFlow::Node getNode() { result = MkFuncDeclNode(this) }
-
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getNameExpr() }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      // override to prevent panic propagation out of function declarations
-      last = this.getNode() and cmpl = Done()
-    }
-  }
-
-  private class GoStmtTree extends PostOrderTree, GoStmt {
-    override ControlFlow::Node getNode() { result = MkGoNode(this) }
-
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getCall() }
-  }
-
-  private class IfStmtTree extends ControlFlowTree, IfStmt {
-    private ControlFlow::Node getGuard(boolean outcome) {
-      result = MkConditionGuardNode(this.getCond(), outcome)
-    }
-
-    override predicate firstNode(ControlFlow::Node first) {
-      firstNode(this.getInit(), first)
-      or
-      not exists(this.getInit()) and
-      firstNode(this.getCond(), first)
-    }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      ControlFlowTree.super.lastNode(last, cmpl)
-      or
-      lastNode(this.getThen(), last, cmpl)
-      or
-      lastNode(this.getElse(), last, cmpl)
-      or
-      not exists(this.getElse()) and
-      last = this.getGuard(false) and
-      cmpl = Done()
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(this.getInit(), pred, normalCompletion()) and
-      firstNode(this.getCond(), succ)
-      or
-      exists(Completion condCmpl |
-        lastNode(this.getCond(), pred, condCmpl) and
-        succ = MkConditionGuardNode(this.getCond(), condCmpl.getOutcome())
-      )
-      or
-      pred = this.getGuard(true) and
-      firstNode(this.getThen(), succ)
-      or
-      pred = this.getGuard(false) and
-      firstNode(this.getElse(), succ)
-    }
-  }
-
-  private class IndexExprTree extends ControlFlowTree, IndexExpr {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getBase(), first) }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      ControlFlowTree.super.lastNode(last, cmpl)
-      or
-      // panic due to `nil` dereference
-      last = MkImplicitDeref(this.getBase()) and
-      cmpl = Panic()
-      or
-      last = mkExprOrSkipNode(this) and
-      (cmpl = Done() or cmpl = Panic())
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(this.getBase(), pred, normalCompletion()) and
-      (
-        succ = MkImplicitDeref(this.getBase())
-        or
-        not exists(MkImplicitDeref(this.getBase())) and
-        firstNode(this.getIndex(), succ)
-      )
-      or
-      pred = MkImplicitDeref(this.getBase()) and
-      firstNode(this.getIndex(), succ)
-      or
-      lastNode(this.getIndex(), pred, normalCompletion()) and
-      succ = mkExprOrSkipNode(this)
-    }
-  }
-
-  private class LoopTree extends ControlFlowTree, LoopStmt {
-    BranchTarget getLabel() { result = BranchTarget::of(this) }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      exists(Completion inner | lastNode(this.getBody(), last, inner) and not inner.isNormal() |
-        if inner = Break(this.getLabel())
-        then cmpl = Done()
-        else (
-          not inner = Continue(this.getLabel()) and
-          cmpl = inner
-        )
-      )
-    }
-  }
-
-  private class FileTree extends ControlFlowTree, File {
-    FileTree() { exists(this.getADecl()) }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) { none() }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ0(pred, succ)
-      or
-      pred = MkEntryNode(this) and
-      firstNode(this.getDecl(0), succ)
-      or
-      exists(int i, Completion inner | lastNode(this.getDecl(i), pred, inner) |
-        not inner.isNormal()
-        or
-        i = this.getNumDecl() - 1
+        not exists(ast.(Go::CallExpr).getTarget()) or
+        ast.(Go::CallExpr).getTarget().mayPanic()
       ) and
-      succ = MkExitNode(this)
+      n.isAdditional(ast, "defer-invoke") and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = false
+      or
+      // Calls to functions that never return normally (e.g. `os.Exit`, `log.Fatal`,
+      // `panic`) must suppress normal flow past the call site. We emit an `always`
+      // exception completion so that the shared library's default In->After step
+      // is suppressed.
+      ast instanceof Go::CallExpr and
+      exists(Go::Function target | target = ast.(Go::CallExpr).getTarget() |
+        target.mustPanic() or target.mustNotReturnNormally()
+      ) and
+      n.isIn(ast) and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = true
+      or
+      ast instanceof Go::CallExpr and
+      ast = any(Go::DeferStmt defer).getCall() and
+      exists(Go::Function target | target = ast.(Go::CallExpr).getTarget() |
+        target.mustPanic() or target.mustNotReturnNormally()
+      ) and
+      n.isAdditional(ast, "defer-invoke") and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = true
+      or
+      ast instanceof Go::DivExpr and
+      not ast.(Go::Expr).isConst() and
+      n.isIn(ast) and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = false
+      or
+      ast instanceof Go::DerefExpr and
+      n.isIn(ast) and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = false
+      or
+      ast instanceof Go::TypeAssertExpr and
+      not exists(Go::Assignment assgn |
+        assgn.getNumLhs() = 2 and ast = assgn.getRhs().stripParens()
+      ) and
+      not exists(Go::ValueSpec vs | vs.getNumName() = 2 and ast = vs.getInit().stripParens()) and
+      not exists(Go::TypeSwitchStmt ts | ast = ts.getExpr()) and
+      n.isIn(ast) and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = false
+      or
+      ast instanceof Go::IndexExpr and
+      n.isIn(ast) and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = false
+      or
+      ast instanceof Go::ConversionExpr and
+      ast.(Go::ConversionExpr).getType().(Go::PointerType).getBaseType() instanceof Go::ArrayType and
+      n.isIn(ast) and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = false
     }
 
-    override ControlFlowTree getChildTree(int i) { result = this.getDecl(i) }
-  }
-
-  private class ForTree extends LoopTree, ForStmt {
-    private ControlFlow::Node getGuard(boolean outcome) {
-      result = MkConditionGuardNode(this.getCond(), outcome)
-    }
-
-    override predicate firstNode(ControlFlow::Node first) {
-      firstNode(this.getFirstChildTree(), first)
-    }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      LoopTree.super.lastNode(last, cmpl)
+    additional predicate endAbruptCompletion(
+      Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c
+    ) {
+      ast instanceof Go::DeferStmt and
+      n.isAdditional(ast, "catch-defer-panic") and
+      c.getSuccessorType() instanceof ExceptionSuccessor
       or
-      lastNode(this.getInit(), last, cmpl) and
-      not cmpl.isNormal()
+      not ast instanceof Go::DeferStmt and
+      mayPanic(ast) and
+      mayDeferParent(ast) and
+      n.isAdditional(ast, "catch-panic") and
+      c.getSuccessorType() instanceof ExceptionSuccessor
       or
-      lastNode(this.getCond(), last, cmpl) and
-      not cmpl.isNormal()
+      mayReturn(ast) and
+      mayDeferParent(ast) and
+      n.isAdditional(ast, "catch-return") and
+      c.getSuccessorType() instanceof ReturnSuccessor
       or
-      lastNode(this.getPost(), last, cmpl) and
-      not cmpl.isNormal()
-      or
-      last = this.getGuard(false) and
-      cmpl = Done()
-    }
-
-    override ControlFlowTree getChildTree(int i) {
-      i = 0 and result = this.getInit()
-      or
-      i = 1 and result = this.getCond()
-      or
-      i = 2 and result = this.getBody()
-      or
-      i = 3 and result = this.getPost()
-      or
-      i = 4 and result = this.getCond()
-      or
-      i = 5 and result = this.getBody()
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      exists(int i, ControlFlowTree predTree, Completion cmpl |
-        predTree = this.getChildTreeRanked(i) and
-        lastNode(predTree, pred, cmpl) and
-        cmpl.isNormal()
-      |
-        if predTree = this.getCond()
-        then succ = this.getGuard(cmpl.getOutcome())
-        else firstNode(this.getChildTreeRanked(i + 1), succ)
+      exists(Go::LabeledStmt lbl |
+        ast = lbl.getStmt() and
+        n.isAfter(lbl) and
+        c.getSuccessorType() instanceof BreakSuccessor and
+        c.hasLabel(lbl.getLabel())
       )
       or
-      pred = this.getGuard(true) and
-      firstNode(this.getBody(), succ)
-    }
-  }
-
-  private class FuncDefTree extends ControlFlowTree, FuncDef {
-    FuncDefTree() { exists(this.getBody()) }
-
-    pragma[noinline]
-    private MkEntryNode getEntry() { result = MkEntryNode(this) }
-
-    private Parameter getParameterRanked(int i) {
-      result = rank[i + 1](Parameter p, int j | p = this.getParameter(j) | p order by j)
-    }
-
-    private ControlFlow::Node getPrologueNode(int i) {
-      i = -1 and result = this.getEntry()
-      or
-      exists(int numParm, int numRes |
-        numParm = count(this.getParameter(_)) and
-        numRes = count(this.getResultVar(_))
+      // A `break` in a communication clause body terminates the enclosing
+      // `select` statement, continuing after it. This mirrors the shared
+      // library's handling of `break` in a `switch` case body, but `select` is
+      // modeled language-specifically (it is not a `Switch`), so the break
+      // must be caught here. The break completion bubbles up the AST until it
+      // reaches a top-level statement of the comm clause body, at which point
+      // flow resumes after the `select`. An unlabeled `break` targets the
+      // innermost enclosing construct; a labeled `break` only targets this
+      // `select` if it (or a `LabeledStmt` wrapping it) carries that label.
+      exists(Go::SelectStmt sel, Go::CommClause cc |
+        cc = sel.getACommClause() and
+        ast = cc.getStmt(_) and
+        n.isAfter(sel) and
+        c.getSuccessorType() instanceof BreakSuccessor
       |
-        exists(int j, Parameter p | p = this.getParameterRanked(j) |
-          i = 2 * j and result = MkArgumentNode(p)
-          or
-          i = 2 * j + 1 and result = MkParameterInit(p)
+        not c.hasLabel(_)
+        or
+        exists(Label l | c.hasLabel(l) and hasLabel(sel, l))
+      )
+      or
+      exists(Go::FuncDef fd |
+        ast = fd.getBody() and
+        not funcHasDefer(fd) and
+        c.getSuccessorType() instanceof ReturnSuccessor and
+        // If the function has result variables, route the return completion
+        // through the result-read epilogue before reaching the function exit.
+        exists(fd.getResultVar(0)) and
+        n.isAdditional(fd.getBody(), "result-read:0")
+      )
+      or
+      // Function bodies are excluded from `Ast::BlockStmt`, so handle goto
+      // targets among their top-level statements here.
+      exists(Go::FuncDef fd, Go::Stmt target, Label l |
+        ast = fd.getBody() and
+        target = fd.getBody().getAStmt() and
+        not target instanceof Go::GotoStmt and
+        hasLabel(target, l) and
+        n.isBefore(target) and
+        c.getSuccessorType() instanceof GotoSuccessor and
+        c.hasLabel(l)
+      )
+    }
+
+    /** Holds if `ast` or one of its CFG children may panic. */
+    private predicate mayPanic(Ast::AstNode ast) {
+      ast instanceof Go::CallExpr and
+      not ast = any(Go::DeferStmt s).getCall() and
+      (not exists(ast.(Go::CallExpr).getTarget()) or ast.(Go::CallExpr).getTarget().mayPanic()) and
+      not exists(Go::Function target | target = ast.(Go::CallExpr).getTarget() |
+        target.mustNotReturnNormally() and not target.mustPanic()
+      )
+      or
+      ast instanceof Go::DivExpr and not ast.(Go::Expr).isConst()
+      or
+      ast instanceof Go::DerefExpr
+      or
+      ast instanceof Go::TypeAssertExpr and
+      not exists(Go::Assignment assgn |
+        assgn.getNumLhs() = 2 and ast = assgn.getRhs().stripParens()
+      ) and
+      not exists(Go::ValueSpec vs | vs.getNumName() = 2 and ast = vs.getInit().stripParens()) and
+      not exists(Go::TypeSwitchStmt ts | ast = ts.getExpr())
+      or
+      ast instanceof Go::IndexExpr
+      or
+      ast instanceof Go::ConversionExpr and
+      ast.(Go::ConversionExpr).getType().(Go::PointerType).getBaseType() instanceof Go::ArrayType
+      or
+      mayPanic(Ast::getChild(ast, _))
+    }
+
+    /** Holds if `ast` or one of its CFG children may return abruptly. */
+    private predicate mayReturn(Ast::AstNode ast) {
+      ast instanceof Go::ReturnStmt
+      or
+      mayReturn(Ast::getChild(ast, _))
+    }
+
+    /** Holds if `ast` or one of its CFG children registers a deferred call. */
+    private predicate mayDefer(Ast::AstNode ast) {
+      ast instanceof Go::DeferStmt
+      or
+      mayDefer(Ast::getChild(ast, _))
+    }
+
+    /** Holds if the CFG parent of `ast` may register a deferred call. */
+    private predicate mayDeferParent(Ast::AstNode ast) {
+      exists(Ast::AstNode parent | ast = Ast::getChild(parent, _) and mayDefer(parent))
+    }
+
+    /** Holds if `fd` contains at least one `defer` statement. */
+    private predicate funcHasDefer(Go::FuncDef fd) {
+      exists(Go::DeferStmt s | s.getEnclosingFunction() = fd)
+    }
+
+    /**
+     * Holds if `n` is the registration node of `defer` statement `s` (the
+     * post-order node of the statement, reached once its call's arguments have
+     * been evaluated).
+     */
+    private predicate deferRegistration(PreControlFlowNode n, Go::DeferStmt s) { n.isIn(s) }
+
+    /**
+     * Holds if `n` is the deferred-invocation node for `defer` statement `s`,
+     * which models the deferred call running at function exit.
+     */
+    private predicate deferInvoke(PreControlFlowNode n, Go::DeferStmt s) {
+      n.isAdditional(s.getCall(), "defer-invoke")
+    }
+
+    /** Holds if invoking deferred call `s` may return normally. */
+    private predicate deferInvocationMayReturnNormally(Go::DeferStmt s) {
+      not exists(Go::Function target | target = s.getCall().getTarget() |
+        target.mustPanic() or target.mustNotReturnNormally()
+      )
+    }
+
+    /** Holds if invoking deferred call `s` terminates without panic unwinding. */
+    private predicate deferInvocationStopsUnwinding(Go::DeferStmt s) {
+      exists(Go::Function target | target = s.getCall().getTarget() |
+        target.mustNotReturnNormally() and not target.mustPanic()
+      )
+    }
+
+    /**
+     * Gets a defer-free successor of `n` that is not a `defer` registration
+     * node. Walking this relation from a node stops at the next registration
+     * node, which is how the reachability gate for deferred calls is computed.
+     *
+     * This is computed over the early CFG, before deferred-invocation edges are
+     * added to the final CFG.
+     */
+    private PreControlFlowNode succBeforeNextDeferRegistration(PreControlFlowNode n) {
+      earlySuccessor(n) = result and
+      not deferRegistration(result, _)
+    }
+
+    /** Gets a successor of `n` in the early CFG, before deferred invocations are added. */
+    private PreControlFlowNode earlySuccessor(PreControlFlowNode n) {
+      exists(EarlyCfg2::ControlFlowNode early | early = n and result = early.getASuccessor())
+    }
+
+    /** Gets a node reachable from `start` over `succBeforeNextDeferRegistration`, reflexively. */
+    private PreControlFlowNode reachableBeforeNextDeferRegistration(PreControlFlowNode start) {
+      result = start
+      or
+      result = succBeforeNextDeferRegistration(reachableBeforeNextDeferRegistration(start))
+    }
+
+    /** Gets the entry node of `fd`. */
+    private PreControlFlowNode funcEntry(Go::FuncDef fd) {
+      result.(EntryNodeImpl).getEnclosingCallable() = fd
+    }
+
+    /**
+     * Holds if `s` can be the first `defer` statement registered in `fd`, and
+     * hence the last to run: its registration node is reachable from the entry
+     * node without passing through another registration node.
+     */
+    private predicate firstRegisteredDefer(Go::DeferStmt s, Go::FuncDef fd) {
+      s.getEnclosingFunction() = fd and
+      exists(PreControlFlowNode reg, PreControlFlowNode m |
+        deferRegistration(reg, s) and
+        m = reachableBeforeNextDeferRegistration(funcEntry(fd)) and
+        earlySuccessor(m) = reg
+      )
+    }
+
+    /**
+     * Holds if the registration node of `laterRegistered` is the next registration
+     * node reachable from the registration node of `earlierRegistered`. The later
+     * registration therefore runs immediately before the earlier one (deferred calls
+     * run in last-in-first-out order).
+     */
+    private predicate nextRegisteredDefer(
+      Go::DeferStmt laterRegistered, Go::DeferStmt earlierRegistered
+    ) {
+      exists(
+        PreControlFlowNode laterRegistration, PreControlFlowNode earlierRegistration,
+        PreControlFlowNode m
+      |
+        deferRegistration(laterRegistration, laterRegistered) and
+        deferRegistration(earlierRegistration, earlierRegistered) and
+        m = reachableBeforeNextDeferRegistration(earlierRegistration) and
+        earlySuccessor(m) = laterRegistration
+      )
+    }
+
+    /**
+     * Holds if `n` is a normal-exit predecessor of `fd`: a `return` statement
+     * node, or the normal fall-through from the body's last statement.
+     */
+    private predicate normalExitPred(PreControlFlowNode n, Go::FuncDef fd) {
+      exists(Ast::AstNode ast |
+        ast.getEnclosingFunction() = fd and n.isAdditional(ast, "catch-return")
+      )
+      or
+      n.isAfter(getLastRankedChild(fd.getBody()))
+    }
+
+    /**
+     * Holds if `n` is an exceptional-exit predecessor of `fd`: the in-order
+     * node of an operation that may panic. In Go, deferred functions run on
+     * panic, so these nodes must also enter the deferred-call chain. Other
+     * nonreturning calls, such as `os.Exit`, do not run deferred functions.
+     */
+    private predicate exceptionalExitPred(PreControlFlowNode n, Go::FuncDef fd) {
+      exists(Ast::AstNode ast |
+        ast.getEnclosingFunction() = fd and n.isAdditional(ast, "catch-panic")
+      )
+    }
+
+    /**
+     * Holds if, after running its deferred calls, `fd` should continue at
+     * `target` on a normal exit. For functions with result variables this is
+     * the start of the result-read epilogue; otherwise it is the function
+     * body's `After` node.
+     */
+    private predicate deferChainExitTarget(Go::FuncDef fd, PreControlFlowNode target) {
+      exists(fd.getResultVar(0)) and target.isAdditional(fd.getBody(), "result-read:0")
+      or
+      not exists(fd.getResultVar(_)) and target.isAfter(fd.getBody())
+    }
+
+    additional predicate finalDeferStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::FuncDef fd | funcHasDefer(fd) |
+        // an exit predecessor with no active defer flows straight to the exit target
+        normalExitPred(n1, fd) and
+        n1 = reachableBeforeNextDeferRegistration(funcEntry(fd)) and
+        deferChainExitTarget(fd, n2)
+        or
+        // an exit predecessor flows to the invocation of the last-registered active defer
+        exists(Go::DeferStmt d, PreControlFlowNode reg |
+          deferRegistration(reg, d) and
+          d.getEnclosingFunction() = fd and
+          normalExitPred(n1, fd) and
+          n1 = reachableBeforeNextDeferRegistration(reg) and
+          deferInvoke(n2, d)
         )
         or
-        exists(int j, ResultVariable v | v = this.getResultVar(j) |
-          i = 2 * numParm + 2 * j and
-          result = MkZeroInitNode(v)
-          or
-          i = 2 * numParm + 2 * j + 1 and
-          result = MkResultInit(v)
+        // deferred invocations chain in last-in-first-out order
+        exists(Go::DeferStmt laterRegistered, Go::DeferStmt earlierRegistered |
+          laterRegistered.getEnclosingFunction() = fd and
+          nextRegisteredDefer(laterRegistered, earlierRegistered) and
+          not deferInvocationStopsUnwinding(laterRegistered) and
+          deferInvoke(n1, laterRegistered) and
+          deferInvoke(n2, earlierRegistered)
         )
         or
-        i = 2 * numParm + 2 * numRes and
-        firstNode(this.getBody(), result)
+        // a panic in a deferred invocation continues unwinding through earlier defers
+        exists(Go::DeferStmt laterRegistered, Go::DeferStmt earlierRegistered |
+          laterRegistered.getEnclosingFunction() = fd and
+          nextRegisteredDefer(laterRegistered, earlierRegistered) and
+          not deferInvocationStopsUnwinding(laterRegistered) and
+          n1.isAdditional(laterRegistered, "catch-defer-panic") and
+          deferInvoke(n2, earlierRegistered)
+        )
+        or
+        // the invocation of the first-registered (last to run) defer flows to the exit target
+        exists(Go::DeferStmt firstD |
+          firstRegisteredDefer(firstD, fd) and
+          deferInvocationMayReturnNormally(firstD) and
+          deferInvoke(n1, firstD) and
+          deferChainExitTarget(fd, n2)
+        )
+        or
+        // a panic in the first-registered defer finishes at the exceptional exit
+        exists(Go::DeferStmt firstD |
+          firstRegisteredDefer(firstD, fd) and
+          n1.isAdditional(firstD, "catch-defer-panic") and
+          n2.(ExceptionalExitNodeImpl).getEnclosingCallable() = fd
+        )
+        or
+        // a non-panicking, non-returning deferred call stops unwinding immediately
+        exists(Go::DeferStmt d |
+          d.getEnclosingFunction() = fd and
+          deferInvocationStopsUnwinding(d) and
+          n1.isAdditional(d, "catch-defer-panic") and
+          n2.(ExceptionalExitNodeImpl).getEnclosingCallable() = fd
+        )
+        or
+        // a possible panic with active defers flows to the last-registered active defer
+        exists(Go::DeferStmt d, PreControlFlowNode reg |
+          deferRegistration(reg, d) and
+          d.getEnclosingFunction() = fd and
+          exceptionalExitPred(n1, fd) and
+          n1 = reachableBeforeNextDeferRegistration(reg) and
+          deferInvoke(n2, d)
+        )
+        or
+        // a possible panic with no active defer flows to the exceptional exit
+        exceptionalExitPred(n1, fd) and
+        n1 = reachableBeforeNextDeferRegistration(funcEntry(fd)) and
+        n2.(ExceptionalExitNodeImpl).getEnclosingCallable() = fd
       )
     }
 
-    private ControlFlow::Node getEpilogueNode(int i) {
-      result = MkResultReadNode(this.getResultVar(i))
-      or
-      i = count(this.getAResultVar()) and
-      result = MkExitNode(this)
+    additional predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
+      rangeStmtStep(n1, n2) or
+      selectStmtStep(n1, n2) or
+      assignmentStep(n1, n2) or
+      returnStep(n1, n2) or
+      callExprStep(n1, n2) or
+      indexExprStep(n1, n2) or
+      sliceExprStep(n1, n2) or
+      selectorExprStep(n1, n2) or
+      compositeLitStep(n1, n2) or
+      sendStmtStep(n1, n2) or
+      funcDefStep(n1, n2)
     }
 
-    pragma[noinline]
-    private predicate firstDefer(ControlFlow::Node nd) {
-      exists(DeferStmt defer |
-        nd = MkExprNode(defer.getCall()) and
-        // `defer` can be the first `defer` statement executed
-        // there is always a predecessor node because the `defer`'s call is always
-        // evaluated before the defer statement itself
-        MkDeferNode(defer) = succ0(notDeferSucc0*(this.getEntry()))
-      )
+    /**
+     * Gets the non-skipped child of `parent` at rank `rnk` (1-based).
+     * This mimics the shared library's getRankedChild but for use in explicit steps.
+     */
+    private Ast::AstNode getRankedChild(Ast::AstNode parent, int rnk) {
+      result = rank[rnk](Ast::AstNode c, int ix | c = Ast::getChild(parent, ix) | c order by ix)
     }
 
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) { none() }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+    /** Gets the last non-skipped child of `parent`, or fails if none. */
+    private Ast::AstNode getLastRankedChild(Ast::AstNode parent) {
       exists(int i |
-        pred = this.getPrologueNode(i) and
-        succ = this.getPrologueNode(i + 1)
+        result = getRankedChild(parent, i) and
+        not exists(getRankedChild(parent, i + 1))
       )
-      or
-      exists(GotoStmt goto, LabeledStmt ls |
-        pred = MkSkipNode(goto) and
-        this = goto.getEnclosingFunction() and
-        this = ls.getEnclosingFunction() and
-        goto.getLabel() = ls.getLabel() and
-        firstNode(ls, succ)
-      )
+    }
+
+    /** Routes into and between the children of `parent` in evaluation order. */
+    private predicate childSequenceStep(
+      Ast::AstNode parent, PreControlFlowNode n1, PreControlFlowNode n2
+    ) {
+      n1.isBefore(parent) and n2.isBefore(getRankedChild(parent, 1))
       or
       exists(int i |
-        pred = this.getEpilogueNode(i) and
-        succ = this.getEpilogueNode(i + 1)
+        n1.isAfter(getRankedChild(parent, i)) and n2.isBefore(getRankedChild(parent, i + 1))
       )
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      this.succ0(pred, succ)
+    /** Routes between consecutive epilogue nodes of `parent`. */
+    private predicate epilogueSequenceStep(
+      Ast::AstNode parent, PreControlFlowNode n1, PreControlFlowNode n2
+    ) {
+      exists(string tag1, string tag2 |
+        epilogueTagSucc(parent, tag1, tag2) and
+        n1.isAdditional(parent, tag1) and
+        n2.isAdditional(parent, tag2)
+      )
+    }
+
+    /** Routes into and between the epilogue nodes of `parent`. */
+    private predicate epilogueStep(Ast::AstNode parent, PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(getFirstEpilogueTag(parent)) and childSequenceStep(parent, n1, n2)
       or
-      exists(Completion cmpl |
-        lastNode(this.getBody(), pred, cmpl) and
-        // last node of function body can be reached without going through a `defer` statement
-        pred = notDeferSucc0*(this.getEntry())
+      n1.isAfter(getLastRankedChild(parent)) and
+      n2.isAdditional(parent, getFirstEpilogueTag(parent))
+      or
+      not exists(getRankedChild(parent, _)) and
+      n1.isBefore(parent) and
+      n2.isAdditional(parent, getFirstEpilogueTag(parent))
+      or
+      epilogueSequenceStep(parent, n1, n2)
+    }
+
+    /**
+     * Assignment flow: routes through LHS/RHS children, then through
+     * additional nodes for extract, zero-init, and assign operations.
+     */
+    private predicate assignmentStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Ast::AstNode assgn |
+        assgn instanceof Go::Assignment and
+        not assgn instanceof Go::RecvStmt and
+        // The `y := x.(type)` test statement of a type switch is transparent
+        // (see `skipCfg`); the shared switch model evaluates the underlying
+        // type-assertion expression directly, so this statement has no
+        // assignment flow of its own.
+        not assgn = any(Go::TypeSwitchStmt ts).getAssign()
+        or
+        assgn instanceof Go::ValueSpec
       |
-        // panic goes directly to exit, non-panic reads result variables first
-        if cmpl = Panic() then succ = MkExitNode(this) else succ = this.getEpilogueNode(0)
-      )
-      or
-      lastNode(this.getBody(), pred, _) and
-      exists(DeferStmt defer | defer = this.getADeferStmt() |
-        succ = MkExprNode(defer.getCall()) and
-        // the last `DeferStmt` executed before pred is this `defer`
-        pred = notDeferSucc0*(MkDeferNode(defer))
-      )
-      or
-      exists(DeferStmt predDefer, DeferStmt succDefer |
-        predDefer = this.getADeferStmt() and
-        succDefer = this.getADeferStmt()
-      |
-        // reversed because `defer`s are executed in LIFO order
-        MkDeferNode(predDefer) = nextDefer(MkDeferNode(succDefer)) and
-        pred = MkExprNode(predDefer.getCall()) and
-        succ = MkExprNode(succDefer.getCall())
-      )
-      or
-      this.firstDefer(pred) and
-      (
-        // conservatively assume that we might either panic (and hence skip the result reads)
-        // or not
-        succ = MkExitNode(this)
+        epilogueStep(assgn, n1, n2)
         or
-        succ = this.getEpilogueNode(0)
+        n1.isAdditional(assgn, getLastEpilogueTag(assgn)) and
+        n2.isAfter(assgn)
       )
     }
-  }
 
-  private class GotoTree extends ControlFlowTree, GotoStmt {
-    override predicate firstNode(ControlFlow::Node first) { first = MkSkipNode(this) }
-  }
-
-  private class IncDecTree extends ControlFlowTree, IncDecStmt {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getOperand(), first) }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      ControlFlowTree.super.lastNode(last, cmpl)
-      or
-      last = MkIncDecNode(this) and
-      cmpl = Done()
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(this.getOperand(), pred, normalCompletion()) and
-      succ = MkImplicitOne(this)
-      or
-      pred = MkImplicitOne(this) and
-      succ = MkIncDecRhs(this)
-      or
-      pred = MkIncDecRhs(this) and
-      succ = MkIncDecNode(this)
-    }
-  }
-
-  private class RangeTree extends LoopTree, RangeStmt {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getDomain(), first) }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      LoopTree.super.lastNode(last, cmpl)
-      or
-      last = MkNextNode(this) and
-      cmpl = Done()
-      or
-      lastNode(this.getKey(), last, cmpl) and
-      not cmpl.isNormal()
-      or
-      lastNode(this.getValue(), last, cmpl) and
-      not cmpl.isNormal()
-      or
-      lastNode(this.getDomain(), last, cmpl) and
-      not cmpl.isNormal()
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(this.getDomain(), pred, normalCompletion()) and
-      succ = MkNextNode(this)
-      or
-      pred = MkNextNode(this) and
-      (
-        firstNode(this.getKey(), succ)
-        or
-        not exists(this.getKey()) and
-        firstNode(this.getBody(), succ)
-      )
-      or
-      lastNode(this.getKey(), pred, normalCompletion()) and
-      (
-        firstNode(this.getValue(), succ)
-        or
-        not exists(this.getValue()) and
-        succ = MkExtractNode(this, 0)
-      )
-      or
-      lastNode(this.getValue(), pred, normalCompletion()) and
-      succ = MkExtractNode(this, 0)
-      or
-      pred = MkExtractNode(this, 0) and
-      (
-        if exists(this.getValue())
-        then succ = MkExtractNode(this, 1)
-        else
-          if exists(MkAssignNode(this, 0))
-          then succ = MkAssignNode(this, 0)
-          else
-            if exists(MkAssignNode(this, 1))
-            then succ = MkAssignNode(this, 1)
-            else firstNode(this.getBody(), succ)
-      )
-      or
-      pred = MkExtractNode(this, 1) and
-      (
-        if exists(MkAssignNode(this, 0))
-        then succ = MkAssignNode(this, 0)
-        else
-          if exists(MkAssignNode(this, 1))
-          then succ = MkAssignNode(this, 1)
-          else firstNode(this.getBody(), succ)
-      )
-      or
-      pred = MkAssignNode(this, 0) and
-      (
-        if exists(MkAssignNode(this, 1))
-        then succ = MkAssignNode(this, 1)
-        else firstNode(this.getBody(), succ)
-      )
-      or
-      pred = MkAssignNode(this, 1) and
-      firstNode(this.getBody(), succ)
-      or
-      exists(Completion inner |
-        lastNode(this.getBody(), pred, inner) and
-        (inner.isNormal() or inner = Continue(BranchTarget::of(this))) and
-        succ = MkNextNode(this)
-      )
-    }
-  }
-
-  private class RecvStmtTree extends ControlFlowTree, RecvStmt {
-    override predicate firstNode(ControlFlow::Node first) {
-      firstNode(this.getExpr().getOperand(), first)
-    }
-  }
-
-  private class ReturnStmtTree extends PostOrderTree, ReturnStmt {
-    override ControlFlow::Node getNode() { result = MkReturnNode(this) }
-
-    override Completion getCompletion() { result = Return() }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+    /** Gets a tuple-extraction epilogue tag and its order. */
+    private string getExtractionEpilogueTag(Ast::AstNode node, int ord) {
       exists(int i |
-        lastNode(this.getExpr(i), pred, normalCompletion()) and
-        succ = this.complete(i)
-        or
-        pred = MkExtractNode(this, i) and
-        succ = this.after(i)
-        or
-        pred = MkResultWriteNode(_, i, this) and
-        succ = this.next(i)
+        extractNodeCondition(node, i) and
+        result = "extract:" + i.toString() and
+        ord = 2 * i
       )
     }
 
-    private ControlFlow::Node complete(int i) {
-      result = MkExtractNode(this, i)
-      or
-      not exists(MkExtractNode(this, _)) and
-      result = this.after(i)
-    }
-
-    private ControlFlow::Node after(int i) {
-      result = MkResultWriteNode(_, i, this)
-      or
-      not exists(MkResultWriteNode(_, i, this)) and
-      result = this.next(i)
-    }
-
-    private ControlFlow::Node next(int i) {
-      firstNode(this.getExpr(i + 1), result)
-      or
-      exists(MkExtractNode(this, _)) and
-      result = this.complete(i + 1)
-      or
-      i + 1 = this.getEnclosingFunction().getType().getNumResult() and
-      result = this.getNode()
-    }
-
-    override ControlFlowTree getChildTree(int i) { result = this.getExpr(i) }
-  }
-
-  private class SelectStmtTree extends ControlFlowTree, SelectStmt {
-    private BranchTarget getLabel() { result = BranchTarget::of(this) }
-
-    override predicate firstNode(ControlFlow::Node first) {
-      firstNode(this.getNonDefaultCommClause(0), first)
-      or
-      this.getNumNonDefaultCommClause() = 0 and
-      first = MkSelectNode(this)
-    }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      exists(Completion inner | lastNode(this.getACommClause(), last, inner) |
-        if inner = Break(this.getLabel()) then cmpl = Done() else cmpl = inner
-      )
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ0(pred, succ)
-      or
-      exists(CommClause cc, int i, Stmt comm |
-        cc = this.getNonDefaultCommClause(i) and
-        comm = cc.getComm() and
+    /** Gets an assignment epilogue tag and its order. */
+    private string getAssignmentEpilogueTag(Ast::AstNode assgn, int ord) {
+      exists(int j |
         (
-          comm instanceof RecvStmt and
-          lastNode(comm.(RecvStmt).getExpr().getOperand(), pred, normalCompletion())
+          exists(Go::ValueSpec spec |
+            assgn = spec and
+            not exists(spec.getAnInit()) and
+            exists(spec.getNameExpr(j)) and
+            result = "zero-init:" + j.toString() and
+            ord = 2 * j
+          )
           or
-          comm instanceof SendStmt and
-          lastNode(comm.(SendStmt).getValue(), pred, normalCompletion())
+          (
+            notBlankIdent(assgn.(Go::Assignment).getLhs(j)) and
+            // Compound assignments perform their write at their post-order
+            // operation node, so they emit no separate `assign:j` node.
+            not assgn instanceof Go::CompoundAssignStmt and
+            // Tuple-destructuring targets are written by their `extract` node.
+            not extractNodeCondition(assgn, j)
+            or
+            // A `ValueSpec` without an initializer is written by its `zero-init`
+            // node directly, and a tuple-destructuring declaration by its
+            // `extract` node, so only specs with a per-name initializer emit
+            // `assign:j`.
+            notBlankIdent(assgn.(Go::ValueSpec).getNameExpr(j)) and
+            exists(assgn.(Go::ValueSpec).getAnInit()) and
+            not extractNodeCondition(assgn, j)
+          ) and
+          result = "assign:" + j.toString() and
+          ord = 2 * j + 1
         )
+      )
+    }
+
+    /** Gets a result-write epilogue tag and its order. */
+    private string getResultWriteEpilogueTag(Ast::AstNode node, int ord) {
+      exists(int i, Go::ReturnStmt ret, Go::ResultVariable rv |
+        node = ret and
+        ret.getEnclosingFunction().getResultVar(i) = rv and
+        exists(ret.getAnExpr()) and
+        result = "result-write:" + i.toString() and
+        ord = 2 * i + 1
+      )
+    }
+
+    /** Gets an epilogue tag and its order. */
+    private string getEpilogueTag(Ast::AstNode node, int ord) {
+      result = getExtractionEpilogueTag(node, ord)
+      or
+      result = getAssignmentEpilogueTag(node, ord)
+      or
+      result = getResultWriteEpilogueTag(node, ord)
+    }
+
+    private string getRankedEpilogueTag(Ast::AstNode node, int rnk) {
+      result = rank[rnk](string tag, int ord | tag = getEpilogueTag(node, ord) | tag order by ord)
+    }
+
+    private string getFirstEpilogueTag(Ast::AstNode node) { result = getRankedEpilogueTag(node, 1) }
+
+    private string getLastEpilogueTag(Ast::AstNode node) {
+      exists(int i |
+        result = getRankedEpilogueTag(node, i) and
+        not exists(getRankedEpilogueTag(node, i + 1))
+      )
+    }
+
+    private predicate epilogueTagSucc(Ast::AstNode node, string tag1, string tag2) {
+      exists(int i |
+        tag1 = getRankedEpilogueTag(node, i) and
+        tag2 = getRankedEpilogueTag(node, i + 1)
+      )
+    }
+
+    /**
+     * Return statement: evaluate expressions, extract tuples, write results,
+     * then the return node.
+     */
+    private predicate returnStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::ReturnStmt ret |
+        epilogueStep(ret, n1, n2)
+        or
+        n1.isAdditional(ret, getLastEpilogueTag(ret)) and
+        n2.isIn(ret)
+      )
+    }
+
+    /**
+     * Call with spread arguments, e.g. `f(g())` where the inner call `g`
+     * returns multiple results that are passed as the arguments of the outer
+     * call `f`: evaluate the function expression and argument call, extract
+     * each tuple element of the argument's result, then invoke the outer call.
+     *
+     * The tuple-extraction nodes are additional nodes (see
+     * `extractNodeCondition`); without wiring them into the control flow they
+     * would be unreachable and pruned, breaking data flow through `f(g())`.
+     */
+    private predicate callExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::CallExpr call |
+        // Restrict to ordinary invoked calls; the calls of `defer`/`go`
+        // statements do not use this tuple-extraction override.
+        not call = any(Go::DeferStmt s).getCall() and
+        not call = any(Go::GoStmt s).getCall() and
+        extractNodeCondition(call, _)
       |
-        firstNode(this.getNonDefaultCommClause(i + 1), succ)
+        epilogueStep(call, n1, n2)
         or
-        i = this.getNumNonDefaultCommClause() - 1 and
-        succ = MkSelectNode(this)
-      )
-      or
-      pred = MkSelectNode(this) and
-      exists(CommClause cc, Stmt comm |
-        cc = this.getNonDefaultCommClause(_) and comm = cc.getComm()
-      |
-        comm instanceof RecvStmt and
-        succ = MkExprNode(comm.(RecvStmt).getExpr())
+        n1.isAdditional(call, getLastEpilogueTag(call)) and n2.isIn(call)
         or
-        comm instanceof SendStmt and
-        succ = MkSendNode(comm)
+        n1.isIn(call) and
+        n2.isAfter(call) and
+        not beginAbruptCompletion(call, n1, _, true)
       )
-      or
-      pred = MkSelectNode(this) and
-      exists(CommClause cc | cc = this.getDefaultCommClause() |
-        firstNode(cc.getStmt(0), succ)
-        or
-        succ = MkSkipNode(cc)
-      )
-      or
-      exists(CommClause cc, RecvStmt recv | cc = this.getCommClause(_) and recv = cc.getComm() |
-        pred = MkExprNode(recv.getExpr()) and
+    }
+
+    /**
+     * Index expression: base -> implicit-deref? -> index -> In(indexExpr)
+     */
+    private predicate indexExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::IndexExpr ie |
+        implicitDerefCondition(ie.getBase()) and
         (
-          firstNode(recv.getLhs(0), succ)
+          n1.isBefore(ie) and n2.isBefore(ie.getBase())
           or
-          not exists(recv.getLhs(0)) and
-          (firstNode(cc.getStmt(0), succ) or succ = MkSkipNode(cc))
+          n1.isAfter(ie.getBase()) and n2.isAdditional(ie.getBase(), "implicit-deref")
+          or
+          n1.isAdditional(ie.getBase(), "implicit-deref") and n2.isBefore(ie.getIndex())
+          or
+          n1.isAfter(ie.getIndex()) and n2.isIn(ie)
+          or
+          n1.isIn(ie) and n2.isAfter(ie)
+        )
+      )
+    }
+
+    /**
+     * Gets the bound expression of slice `se` at position `r` (`0` = low,
+     * `1` = high, `2` = max), if it is present.
+     */
+    private Go::Expr sliceBoundExpr(Go::SliceExpr se, int r) {
+      r = 0 and result = se.getLow()
+      or
+      r = 1 and result = se.getHigh()
+      or
+      r = 2 and result = se.getMax()
+    }
+
+    /**
+     * Holds if, having finished evaluating the slice component at position `p`
+     * (`-1` = base, `0` = low, `1` = high, `2` = max), `n2` is the control-flow
+     * node to execute next: the next present bound in `low, high, max` order, or
+     * the slice evaluation node `In(se)` if no further bound is present.
+     *
+     * Implicit (omitted) bounds have no control-flow node of their own, so
+     * control simply skips over them.
+     */
+    bindingset[p]
+    private predicate sliceNext(Go::SliceExpr se, int p, PreControlFlowNode n2) {
+      exists(int q | q = min(int r | r > p and exists(sliceBoundExpr(se, r)) | r) |
+        n2.isBefore(sliceBoundExpr(se, q))
+      )
+      or
+      not exists(int r | r > p and exists(sliceBoundExpr(se, r))) and
+      n2.isIn(se)
+    }
+
+    /**
+     * Slice expression: base -> implicit-deref? -> low? -> high? -> max? -> In(sliceExpr).
+     *
+     * Missing (implicit) bounds have no control-flow node of their own; the
+     * implicit lower bound of `0` is modeled as a constant on the
+     * `SliceInstruction` rather than as a separate node.
+     */
+    private predicate sliceExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::SliceExpr se |
+        n1.isBefore(se) and n2.isBefore(se.getBase())
+        or
+        n1.isAfter(se.getBase()) and
+        (
+          if implicitDerefCondition(se.getBase())
+          then n2.isAdditional(se.getBase(), "implicit-deref")
+          else sliceNext(se, -1, n2)
         )
         or
-        lastNode(recv.getLhs(0), pred, normalCompletion()) and
-        not exists(recv.getLhs(1)) and
-        (
-          succ = MkAssignNode(recv, 0)
-          or
-          not exists(MkAssignNode(recv, 0)) and
-          (firstNode(cc.getStmt(0), succ) or succ = MkSkipNode(cc))
-        )
+        n1.isAdditional(se.getBase(), "implicit-deref") and sliceNext(se, -1, n2)
         or
-        lastNode(recv.getLhs(1), pred, normalCompletion()) and
-        succ = MkExtractNode(recv, 0)
+        n1.isAfter(se.getLow()) and sliceNext(se, 0, n2)
         or
+        n1.isAfter(se.getHigh()) and sliceNext(se, 1, n2)
+        or
+        n1.isAfter(se.getMax()) and sliceNext(se, 2, n2)
+        or
+        n1.isIn(se) and n2.isAfter(se)
+      )
+    }
+
+    /**
+     * Selector expression with value base: base -> implicit-deref? ->
+     * implicit-field-selections -> In(selector)
+     */
+    private predicate selectorExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::SelectorExpr sel |
+        sel.getBase() instanceof Go::ValueExpr and
         (
-          pred = MkAssignNode(recv, 0) and
-          not exists(MkExtractNode(recv, 1))
-          or
-          pred = MkExtractNode(recv, 1) and
-          not exists(MkAssignNode(recv, 1))
-          or
-          pred = MkAssignNode(recv, 1)
+          implicitDerefCondition(sel.getBase()) or
+          exists(Go::Field f | sel = f.getAReference()) or
+          implicitFieldSelection(sel, _, _)
         ) and
-        (firstNode(cc.getStmt(0), succ) or succ = MkSkipNode(cc))
-      )
-      or
-      exists(CommClause cc, SendStmt ss |
-        cc = this.getCommClause(_) and
-        ss = cc.getComm() and
-        pred = MkSendNode(ss)
-      |
-        firstNode(cc.getStmt(0), succ)
-        or
-        succ = MkSkipNode(cc)
-      )
-    }
-  }
-
-  private class SelectorExprTree extends ControlFlowTree, SelectorExpr {
-    SelectorExprTree() { this.getBase() instanceof ValueExpr }
-
-    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getBase(), first) }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      ControlFlowTree.super.lastNode(last, cmpl)
-      or
-      // panic due to `nil` dereference
-      last = MkImplicitDeref(this.getBase()) and
-      cmpl = Panic()
-      or
-      last = mkExprOrSkipNode(this) and
-      cmpl = Done()
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      exists(int i | pred = this.getStepWithRank(i) and succ = this.getStepWithRank(i + 1))
-    }
-
-    private ControlFlow::Node getStepOrdered(int i) {
-      i = -2 and lastNode(this.getBase(), result, normalCompletion())
-      or
-      i = -1 and result = MkImplicitDeref(this.getBase())
-      or
-      exists(int maxIndex |
-        maxIndex = max(int k | k = 0 or exists(MkImplicitFieldSelection(this, k, _)))
-      |
-        result = MkImplicitFieldSelection(this, maxIndex - i, _)
-        or
-        i = maxIndex and
-        result = mkExprOrSkipNode(this)
-      )
-    }
-
-    private ControlFlow::Node getStepWithRank(int i) {
-      exists(int j |
-        result = this.getStepOrdered(j) and
-        j = rank[i + 1](int k | exists(this.getStepOrdered(k)))
-      )
-    }
-  }
-
-  private class SendStmtTree extends ControlFlowTree, SendStmt {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getChannel(), first) }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      ControlFlowTree.super.lastNode(last, cmpl)
-      or
-      last = MkSendNode(this) and
-      (cmpl = Done() or cmpl = Panic())
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ0(pred, succ)
-      or
-      not this = any(CommClause cc).getComm() and
-      lastNode(this.getValue(), pred, normalCompletion()) and
-      succ = MkSendNode(this)
-    }
-
-    override ControlFlowTree getChildTree(int i) {
-      i = 0 and result = this.getChannel()
-      or
-      i = 1 and result = this.getValue()
-    }
-  }
-
-  private class SliceExprTree extends ControlFlowTree, SliceExpr {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getBase(), first) }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      ControlFlowTree.super.lastNode(last, cmpl)
-      or
-      // panic due to `nil` dereference
-      last = MkImplicitDeref(this.getBase()) and
-      cmpl = Panic()
-      or
-      last = MkExprNode(this) and
-      (cmpl = Done() or cmpl = Panic())
-    }
-
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ0(pred, succ)
-      or
-      lastNode(this.getBase(), pred, normalCompletion()) and
-      (
-        succ = MkImplicitDeref(this.getBase())
-        or
-        not exists(MkImplicitDeref(this.getBase())) and
-        (firstNode(this.getLow(), succ) or succ = MkImplicitLowerSliceBound(this))
-      )
-      or
-      pred = MkImplicitDeref(this.getBase()) and
-      (firstNode(this.getLow(), succ) or succ = MkImplicitLowerSliceBound(this))
-      or
-      (lastNode(this.getLow(), pred, normalCompletion()) or pred = MkImplicitLowerSliceBound(this)) and
-      (firstNode(this.getHigh(), succ) or succ = MkImplicitUpperSliceBound(this))
-      or
-      (lastNode(this.getHigh(), pred, normalCompletion()) or pred = MkImplicitUpperSliceBound(this)) and
-      (firstNode(this.getMax(), succ) or succ = MkImplicitMaxSliceBound(this))
-      or
-      (lastNode(this.getMax(), pred, normalCompletion()) or pred = MkImplicitMaxSliceBound(this)) and
-      succ = MkExprNode(this)
-    }
-  }
-
-  private class StarExprTree extends PostOrderTree, StarExpr {
-    override ControlFlow::Node getNode() { result = mkExprOrSkipNode(this) }
-
-    override Completion getCompletion() { result = Done() or result = Panic() }
-
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getBase() }
-  }
-
-  private class SwitchTree extends ControlFlowTree, SwitchStmt {
-    override predicate firstNode(ControlFlow::Node first) {
-      firstNode(this.getInit(), first)
-      or
-      not exists(this.getInit()) and
-      (
-        firstNode(this.(ExpressionSwitchStmt).getExpr(), first)
-        or
-        first = MkImplicitTrue(this)
-        or
-        firstNode(this.(TypeSwitchStmt).getTest(), first)
-      )
-    }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      lastNode(this.getInit(), last, cmpl) and
-      not cmpl.isNormal()
-      or
-      (
-        lastNode(this.(ExpressionSwitchStmt).getExpr(), last, cmpl)
-        or
-        lastNode(this.(TypeSwitchStmt).getTest(), last, cmpl)
-      ) and
-      (
-        not cmpl.isNormal()
-        or
-        not exists(this.getDefault())
-      )
-      or
-      last = MkImplicitTrue(this) and
-      cmpl = Bool(true) and
-      this.getNumCase() = 0
-      or
-      exists(CaseClause cc, int i, Completion inner |
-        cc = this.getCase(i) and lastNode(cc, last, inner)
-      |
-        not exists(this.getDefault()) and
-        i = this.getNumCase() - 1 and
-        last = cc.(CaseClauseTree).getExprEnd(cc.getNumExpr() - 1, false) and
-        inner.isNormal() and
-        cmpl = inner
-        or
-        not last = cc.(CaseClauseTree).getExprEnd(_, _) and
-        inner.isNormal() and
-        cmpl = inner
-        or
-        if inner = Break(BranchTarget::of(this))
-        then cmpl = Done()
-        else (
-          not inner.isNormal() and inner != Fallthrough() and cmpl = inner
+        (
+          n1.isBefore(sel) and n2.isBefore(sel.getBase())
+          or
+          n1.isAfter(sel.getBase()) and
+          not implicitDerefCondition(sel.getBase()) and
+          (
+            // Has implicit field reads: go to outermost (highest index)
+            exists(int maxIdx |
+              maxIdx = max(int i | implicitFieldSelection(sel, i, _)) and
+              n2.isAdditional(sel, "implicit-field:" + maxIdx.toString())
+            )
+            or
+            // No implicit field reads: go directly to In(sel)
+            not implicitFieldSelection(sel, _, _) and n2.isIn(sel)
+          )
+          or
+          n1.isAfter(sel.getBase()) and
+          implicitDerefCondition(sel.getBase()) and
+          n2.isAdditional(sel.getBase(), "implicit-deref")
+          or
+          n1.isAdditional(sel.getBase(), "implicit-deref") and
+          (
+            // Has implicit field reads: go to outermost (highest index)
+            exists(int maxIdx |
+              maxIdx = max(int i | implicitFieldSelection(sel, i, _)) and
+              n2.isAdditional(sel, "implicit-field:" + maxIdx.toString())
+            )
+            or
+            // No implicit field reads: go directly to In(sel)
+            not implicitFieldSelection(sel, _, _) and n2.isIn(sel)
+          )
+          or
+          exists(int i |
+            i > 1 and
+            implicitFieldSelection(sel, i, _) and
+            implicitFieldSelection(sel, i - 1, _) and
+            n1.isAdditional(sel, "implicit-field:" + i.toString()) and
+            n2.isAdditional(sel, "implicit-field:" + (i - 1).toString())
+          )
+          or
+          implicitFieldSelection(sel, 1, _) and
+          n1.isAdditional(sel, "implicit-field:1") and
+          n2.isIn(sel)
+          or
+          n1.isIn(sel) and n2.isAfter(sel)
         )
       )
     }
 
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ0(pred, succ)
-      or
-      lastNode(this.getInit(), pred, normalCompletion()) and
-      (
-        firstNode(this.(ExpressionSwitchStmt).getExpr(), succ) or
-        succ = MkImplicitTrue(this) or
-        firstNode(this.(TypeSwitchStmt).getTest(), succ)
-      )
-      or
-      (
-        lastNode(this.(ExpressionSwitchStmt).getExpr(), pred, normalCompletion()) or
-        pred = MkImplicitTrue(this) or
-        lastNode(this.(TypeSwitchStmt).getTest(), pred, normalCompletion())
-      ) and
-      (
-        firstNode(this.getNonDefaultCase(0), succ)
+    /**
+     * Composite literal: In(lit) -> element-init chain -> After(lit)
+     * CompositeLit evaluates the literal (allocation) first (pre-order),
+     * then initializes elements.
+     */
+    private predicate compositeLitStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::CompositeLit lit |
+        n1.isBefore(lit) and n2.isIn(lit)
         or
-        not exists(this.getANonDefaultCase()) and
-        firstNode(this.getDefault(), succ)
-      )
-      or
-      exists(CaseClause cc, int i |
-        cc = this.getNonDefaultCase(i) and
-        lastNode(cc, pred, normalCompletion()) and
-        pred = cc.(CaseClauseTree).getExprEnd(_, false)
-      |
-        firstNode(this.getNonDefaultCase(i + 1), succ)
+        n1.isIn(lit) and
+        (
+          n2.isBefore(lit.getElement(0))
+          or
+          not exists(lit.getElement(_)) and n2.isAfter(lit)
+        )
         or
-        i = this.getNumNonDefaultCase() - 1 and
-        firstNode(this.getDefault(), succ)
+        // Positional array/slice elements have an implicit index that is
+        // modeled on the `lit-init` instruction itself (see
+        // `IR::InitLiteralElementInstruction`) rather than as a separate node.
+        exists(int i |
+          n1.isAfter(lit.getElement(i)) and
+          n2.isAdditional(lit.getElement(i), "lit-init")
+          or
+          n1.isAdditional(lit.getElement(i), "lit-init") and
+          (
+            n2.isBefore(lit.getElement(i + 1))
+            or
+            not exists(lit.getElement(i + 1)) and n2.isAfter(lit)
+          )
+        )
       )
-      or
-      exists(CaseClause cc, int i, CaseClause next |
-        cc = this.getCase(i) and
-        lastNode(cc, pred, Fallthrough()) and
-        next = this.getCase(i + 1)
-      |
-        firstNode(next.getStmt(0), succ)
+    }
+
+    /**
+     * Send statement (outside select): channel -> value -> In(send)
+     */
+    private predicate sendStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::SendStmt s | not s = any(Go::CommClause cc).getComm() |
+        n1.isBefore(s) and n2.isBefore(s.getChannel())
         or
-        succ = MkSkipNode(next)
+        n1.isAfter(s.getChannel()) and n2.isBefore(s.getValue())
+        or
+        n1.isAfter(s.getValue()) and n2.isIn(s)
+        or
+        n1.isIn(s) and n2.isAfter(s)
+      )
+    }
+
+    private predicate rangeStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::RangeElementExpr p |
+        // The shared `ForEachStmt` model owns the loop skeleton (testing the
+        // domain for emptiness, the `[LoopHeader]` join/branch point, and the
+        // loop exit) and routes control flow into `Before(p)` and out of
+        // `After(p)`, where `p` is the synthesized "range element" loop
+        // variable. Here we get the next key-value pair and destructure it into
+        // the key/value variables using the shared extract/assign epilogue
+        // machinery.
+        n1.isBefore(p) and n2.isAdditional(p, "next")
+        or
+        n1.isAdditional(p, "next") and
+        (
+          exists(getFirstEpilogueTag(p)) and
+          n2.isAdditional(p, getFirstEpilogueTag(p))
+          or
+          not exists(getFirstEpilogueTag(p)) and n2.isAfter(p)
+        )
+        or
+        epilogueSequenceStep(p, n1, n2)
+        or
+        n1.isAdditional(p, getLastEpilogueTag(p)) and n2.isAfter(p)
+      )
+    }
+
+    private predicate commClauseBodyStart(
+      Go::SelectStmt sel, Go::CommClause cc, PreControlFlowNode n
+    ) {
+      n.isBefore(cc.getStmt(0))
+      or
+      not exists(cc.getStmt(0)) and n.isAfter(sel)
+    }
+
+    private predicate selectCommPrepStart(Go::CommClause cc, PreControlFlowNode n) {
+      exists(Go::RecvStmt recv | recv = cc.getComm() | n.isBefore(recv.getExpr().getOperand()))
+      or
+      exists(Go::SendStmt send | send = cc.getComm() | n.isBefore(send.getChannel()))
+    }
+
+    private predicate selectCommPrepEnd(Go::CommClause cc, PreControlFlowNode n) {
+      exists(Go::RecvStmt recv | recv = cc.getComm() | n.isAfter(recv.getExpr().getOperand()))
+      or
+      exists(Go::SendStmt send | send = cc.getComm() | n.isAfter(send.getValue()))
+    }
+
+    private predicate selectCommPrepStep(
+      Go::CommClause cc, PreControlFlowNode n1, PreControlFlowNode n2
+    ) {
+      exists(Go::SendStmt send | send = cc.getComm() |
+        n1.isAfter(send.getChannel()) and n2.isBefore(send.getValue())
+      )
+    }
+
+    /**
+     * Holds if there is a control-flow step from `n1` to `n2` for the
+     * communication operation of a comm clause of `sel` that has been selected.
+     *
+     * The channel operands (and, for a send, the value) of every clause are
+     * evaluated up front in the prep phase (see `selectCommPrepStart` and
+     * friends), and the `select` then non-deterministically dispatches to one
+     * clause via `In(sel) -> Before(cc) -> Before(comm)`. Explicit steps from
+     * the communication statement's `Before` node then skip the operands that
+     * were already evaluated during preparation and perform the selected
+     * communication.
+     */
+    private predicate selectedCommStep(
+      Go::SelectStmt sel, PreControlFlowNode n1, PreControlFlowNode n2
+    ) {
+      exists(Go::SendStmt send | send = sel.getACommClause().getComm() |
+        n1.isBefore(send) and n2.isIn(send)
+        or
+        // The send communication happens at `In(send)`; flow then continues to
+        // the clause body via `selectStmtStep`.
+        n1.isIn(send) and n2.isAfter(send)
+      )
+    }
+
+    private predicate selectRecvStmtStep(
+      Go::SelectStmt sel, Go::CommClause cc, Go::RecvStmt recv, PreControlFlowNode n1,
+      PreControlFlowNode n2
+    ) {
+      cc = sel.getACommClause() and
+      recv = cc.getComm() and
+      (
+        n1.isBefore(recv) and n2.isBefore(recv.getExpr())
+        or
+        n1.isBefore(recv.getExpr()) and n2.isIn(recv.getExpr())
+        or
+        n1.isIn(recv.getExpr()) and
+        (
+          n2.isBefore(recv.getLhs(0))
+          or
+          not exists(recv.getLhs(0)) and commClauseBodyStart(sel, cc, n2)
+        )
+        or
+        exists(int j | n1.isAfter(recv.getLhs(j)) and n2.isBefore(recv.getLhs(j + 1)))
+        or
+        exists(int last | exists(recv.getLhs(last)) and not exists(recv.getLhs(last + 1)) |
+          n1.isAfter(recv.getLhs(last)) and
+          n2.isAdditional(recv, getFirstEpilogueTag(recv))
+        )
+        or
+        exists(int last | exists(recv.getLhs(last)) and not exists(recv.getLhs(last + 1)) |
+          not exists(getFirstEpilogueTag(recv)) and
+          n1.isAfter(recv.getLhs(last)) and
+          commClauseBodyStart(sel, cc, n2)
+        )
+        or
+        epilogueSequenceStep(recv, n1, n2)
+        or
+        n1.isAdditional(recv, getLastEpilogueTag(recv)) and
+        commClauseBodyStart(sel, cc, n2)
+      )
+    }
+
+    private predicate selectStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::SelectStmt sel |
+        selectedCommStep(sel, n1, n2)
+        or
+        n1.isBefore(sel) and
+        (
+          selectCommPrepStart(sel.getNonDefaultCommClause(0), n2)
+          or
+          not exists(sel.getNonDefaultCommClause(0)) and n2.isIn(sel)
+        )
+        or
+        exists(Go::CommClause cc, int i | cc = sel.getNonDefaultCommClause(i) |
+          selectCommPrepStep(cc, n1, n2)
+          or
+          selectCommPrepEnd(cc, n1) and
+          (
+            selectCommPrepStart(sel.getNonDefaultCommClause(i + 1), n2)
+            or
+            not exists(sel.getNonDefaultCommClause(i + 1)) and n2.isIn(sel)
+          )
+        )
+        or
+        n1.isIn(sel) and
+        exists(Go::CommClause cc | sel.getACommClause() = cc | n2.isBefore(cc))
+        or
+        exists(Go::CommClause cc | sel.getACommClause() = cc |
+          n1.isBefore(cc) and
+          (
+            n2.isBefore(cc.getComm())
+            or
+            not exists(cc.getComm()) and commClauseBodyStart(sel, cc, n2)
+          )
+          or
+          exists(Go::RecvStmt recv | selectRecvStmtStep(sel, cc, recv, n1, n2))
+          or
+          n1.isAfter(cc.getComm().(Go::SendStmt)) and commClauseBodyStart(sel, cc, n2)
+          or
+          exists(int j | n1.isAfter(cc.getStmt(j)) and n2.isBefore(cc.getStmt(j + 1)))
+          or
+          exists(int last |
+            last = max(int j | exists(cc.getStmt(j))) and
+            n1.isAfter(cc.getStmt(last)) and
+            n2.isAfter(sel)
+          )
+        )
+      )
+    }
+
+    private predicate hasFuncDefPrologue(Go::FuncDef fd) { exists(fd.getResultVar(_)) }
+
+    private predicate funcDefBodyStart(Go::FuncDef fd, PreControlFlowNode n) {
+      n.isBefore(getRankedChild(fd.getBody(), 1))
+      or
+      not exists(getRankedChild(fd.getBody(), _)) and
+      n.isAdditional(fd.getBody(), "result-read:0")
+    }
+
+    /**
+     * Function body flow for named result variables: `Before(body)` ->
+     * `zero-init:0` -> ... -> first statement -> ... -> `result-read:0` -> ...
+     * -> `After(body)`. Parameters precede `Before(body)` through the shared
+     * callable flow. Return and defer handling route into the result-read
+     * sequence separately; this predicate sequences its nodes and routes
+     * defer-free fall-through into it.
+     */
+    private predicate funcDefStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::FuncDef fd | exists(fd.getBody()) |
+        funcHasDefer(fd) and
+        not hasFuncDefPrologue(fd) and
+        n1.isBefore(fd.getBody()) and
+        n2.isBefore(getRankedChild(fd.getBody(), 1))
+        or
+        (hasFuncDefPrologue(fd) or funcHasDefer(fd)) and
+        exists(int i |
+          n1.isAfter(getRankedChild(fd.getBody(), i)) and
+          n2.isBefore(getRankedChild(fd.getBody(), i + 1))
+        )
+        or
+        n1.isBefore(fd.getBody()) and
+        exists(fd.getResultVar(0)) and
+        n2.isAdditional(fd.getBody(), "zero-init:0")
+        or
+        exists(int j | exists(fd.getResultVar(j)) |
+          n1.isAdditional(fd.getBody(), "zero-init:" + j.toString()) and
+          (
+            exists(fd.getResultVar(j + 1)) and
+            n2.isAdditional(fd.getBody(), "zero-init:" + (j + 1).toString())
+            or
+            not exists(fd.getResultVar(j + 1)) and
+            funcDefBodyStart(fd, n2)
+          )
+        )
+        or
+        exists(int j | exists(fd.getResultVar(j + 1)) |
+          n1.isAdditional(fd.getBody(), "result-read:" + j.toString()) and
+          n2.isAdditional(fd.getBody(), "result-read:" + (j + 1).toString())
+        )
+        or
+        not funcHasDefer(fd) and
+        exists(fd.getResultVar(0)) and
+        n1.isAfter(getLastRankedChild(fd.getBody())) and
+        n2.isAdditional(fd.getBody(), "result-read:0")
+        or
+        exists(int j |
+          exists(fd.getResultVar(j)) and
+          not exists(fd.getResultVar(j + 1)) and
+          n1.isAdditional(fd.getBody(), "result-read:" + j.toString()) and
+          n2.isAfter(fd.getBody())
+        )
       )
     }
   }
 
-  private class TypeAssertTree extends PostOrderTree, TypeAssertExpr {
-    override ControlFlow::Node getNode() { result = MkExprNode(this) }
-
-    override Completion getCompletion() {
-      result = Done()
-      or
-      // panic due to type mismatch, but not if the assertion appears in an assignment or
-      // initialization with two variables or a type-switch
-      not exists(Assignment assgn | assgn.getNumLhs() = 2 and this = assgn.getRhs().stripParens()) and
-      not exists(ValueSpec vs | vs.getNumName() = 2 and this = vs.getInit().stripParens()) and
-      not exists(TypeSwitchStmt ts | this = ts.getExpr()) and
-      result = Panic()
+  /** Builds the CFG used to determine which `defer` statements have been registered. */
+  private module EarlyInput2 implements Cfg1::InputSig2 {
+    predicate beginAbruptCompletion(
+      Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
+    ) {
+      Input1::beginAbruptCompletion(ast, n, c, always)
     }
 
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getExpr() }
-  }
-
-  private class UnaryExprTree extends ControlFlowTree, UnaryExpr {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getOperand(), first) }
-
-    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      last = MkExprNode(this) and
-      (
-        cmpl = Done()
-        or
-        this instanceof DerefExpr and cmpl = Panic()
+    predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
+      Input1::endAbruptCompletion(ast, n, c)
+      or
+      exists(Go::FuncDef fd |
+        ast = fd.getBody() and
+        c.getSuccessorType() instanceof ReturnSuccessor and
+        exists(fd.getResultVar(0)) and
+        n.isAdditional(fd.getBody(), "result-read:0")
       )
     }
 
-    pragma[nomagic]
-    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ0(pred, succ)
-      or
-      not this = any(RecvStmt recv).getExpr() and
-      lastNode(this.getOperand(), pred, normalCompletion()) and
-      succ = MkExprNode(this)
+    predicate step(PreControlFlowNode n1, PreControlFlowNode n2) { Input1::step(n1, n2) }
+  }
+
+  /** Builds the final Go CFG, including deferred invocations. */
+  private module FinalInput2 implements Cfg1::InputSig2 {
+    predicate beginAbruptCompletion(
+      Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
+    ) {
+      Input1::beginAbruptCompletion(ast, n, c, always)
+    }
+
+    predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
+      Input1::endAbruptCompletion(ast, n, c)
+    }
+
+    predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
+      Input1::step(n1, n2) or Input1::finalDeferStep(n1, n2)
     }
   }
-
-  private ControlFlow::Node mkExprOrSkipNode(Expr e) {
-    result = MkExprNode(e) or
-    result = MkSkipNode(e)
-  }
-
-  /** Holds if evaluation of `root` may start at `first`. */
-  cached
-  predicate firstNode(ControlFlowTree root, ControlFlow::Node first) { root.firstNode(first) }
-
-  /** Holds if evaluation of `root` may complete normally after `last`. */
-  cached
-  predicate lastNode(ControlFlowTree root, ControlFlow::Node last) {
-    lastNode(root, last, normalCompletion())
-  }
-
-  private predicate lastNode(ControlFlowTree root, ControlFlow::Node last, Completion cmpl) {
-    root.lastNode(last, cmpl)
-  }
-
-  /** Gets a successor of `nd` that is not a `defer` node */
-  private ControlFlow::Node notDeferSucc0(ControlFlow::Node nd) {
-    not result = MkDeferNode(_) and
-    result = succ0(nd)
-  }
-
-  /** Gets `defer` statements that can be the first defer statement after `nd` in the CFG */
-  private ControlFlow::Node nextDefer(ControlFlow::Node nd) {
-    nd = MkDeferNode(_) and
-    result = MkDeferNode(_) and
-    (
-      result = succ0(nd)
-      or
-      result = succ0(notDeferSucc0+(nd))
-    )
-  }
-
-  /**
-   * Holds if the function `f` may return without panicking, exiting the process, or looping forever.
-   *
-   * This is defined conservatively, and so may also hold of a function that in fact
-   * cannot return normally, but never fails to hold of a function that can return normally.
-   */
-  cached
-  predicate mayReturnNormally(ControlFlowTree root) {
-    exists(Completion cmpl | lastNode(root, _, cmpl) and cmpl != Panic())
-  }
-
-  /**
-   * Holds if `pred` is the node for the case `testExpr` in an expression
-   * switch statement which is switching on `switchExpr`, and `succ` is the
-   * node to be executed next if the case test succeeds.
-   */
-  cached
-  predicate isSwitchCaseTestPassingEdge(
-    ControlFlow::Node pred, ControlFlow::Node succ, Expr switchExpr, Expr testExpr
-  ) {
-    exists(ExpressionSwitchStmt ess | ess.getExpr() = switchExpr |
-      ess.getACase().(CaseClauseTree).isPassingEdge(_, pred, succ, testExpr)
-    )
-  }
-
-  /**
-   * Gets a successor of `nd`, that is, a node that is executed after `nd`,
-   * ignoring the execution of any deferred functions when a function ends.
-   */
-  pragma[nomagic]
-  private ControlFlow::Node succ0(ControlFlow::Node nd) {
-    any(ControlFlowTree tree).succ0(nd, result)
-  }
-
-  /** Gets a successor of `nd`, that is, a node that is executed after `nd`. */
-  cached
-  ControlFlow::Node succ(ControlFlow::Node nd) { any(ControlFlowTree tree).succ(nd, result) }
 }

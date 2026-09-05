@@ -1,0 +1,14 @@
+consistencyOverview
+| multipleSuccessors | 8 |
+| selfLoop | 1 |
+multipleSuccessors
+| DeferInLoop.go:6:2:13:2 | After range statement | successor | DeferInLoop.go:5:36:14:1 | After block statement |
+| DeferInLoop.go:6:2:13:2 | After range statement | successor | DeferInLoop.go:8:9:8:20 | defer-invoke call to Close |
+| DeferInLoop.go:7:3:7:32 | catch-panic ... := ... | successor | DeferInLoop.go:5:1:14:1 | Exceptional Exit |
+| DeferInLoop.go:7:3:7:32 | catch-panic ... := ... | successor | DeferInLoop.go:8:9:8:20 | defer-invoke call to Close |
+| DeferInLoop.go:8:3:8:20 | catch-defer-panic defer statement | successor | DeferInLoop.go:5:1:14:1 | Exceptional Exit |
+| DeferInLoop.go:8:3:8:20 | catch-defer-panic defer statement | successor | DeferInLoop.go:8:9:8:20 | defer-invoke call to Close |
+| DeferInLoop.go:8:9:8:20 | defer-invoke call to Close | successor | DeferInLoop.go:5:36:14:1 | After block statement |
+| DeferInLoop.go:8:9:8:20 | defer-invoke call to Close | successor | DeferInLoop.go:8:9:8:20 | defer-invoke call to Close |
+selfLoop
+| DeferInLoop.go:8:9:8:20 | defer-invoke call to Close | successor |

@@ -31,12 +31,6 @@ float getAnUpperBound(Expr expr) {
   if expr.isConst()
   then result = expr.getNumericValue()
   else (
-    //if an expression with parenthesis, strip the parenthesis first
-    exists(ParenExpr paren |
-      paren = expr and
-      result = getAnUpperBound(paren.stripParens())
-    )
-    or
     //if this expression is an identifier
     exists(SsaVariable v, Ident identifier |
       identifier = expr and
@@ -188,11 +182,6 @@ float getALowerBound(Expr expr) {
     result = expr.getIntValue() or
     result = expr.getExactValue().toFloat()
   else (
-    exists(ParenExpr paren |
-      paren = expr and
-      result = getALowerBound(paren.stripParens())
-    )
-    or
     //if this expression is an identifer
     exists(SsaVariable v, Ident identifier |
       identifier = expr and
@@ -389,12 +378,13 @@ float getAnSsaUpperBound(SsaDefinition def) {
         )
       else
         //SSA definition corresponding to an `IncDecStmt`
-        if explicitDef.getInstruction() instanceof IR::IncDecInstruction
+        if
+          explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() instanceof
+            IncDecStmt
         then
-          exists(IncDecStmt incOrDec, IR::IncDecInstruction instr, float exprLB |
-            instr = explicitDef.getInstruction() and
+          exists(IncDecStmt incOrDec, float exprLB |
+            explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() = incOrDec and
             exprLB = getAnUpperBound(incOrDec.getOperand()) and
-            instr.getRhs().(IR::EvalIncDecRhsInstruction).getStmt() = incOrDec and
             (
               //IncStmt(x++)
               exists(IncStmt inc |
@@ -475,12 +465,13 @@ float getAnSsaLowerBound(SsaDefinition def) {
         )
       else
         //IncDecStmt
-        if explicitDef.getInstruction() instanceof IR::IncDecInstruction
+        if
+          explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() instanceof
+            IncDecStmt
         then
-          exists(IncDecStmt incOrDec, IR::IncDecInstruction instr, float exprLB |
-            instr = explicitDef.getInstruction() and
+          exists(IncDecStmt incOrDec, float exprLB |
+            explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() = incOrDec and
             exprLB = getALowerBound(incOrDec.getOperand()) and
-            instr.getRhs().(IR::EvalIncDecRhsInstruction).getStmt() = incOrDec and
             (
               //IncStmt(x++)
               exists(IncStmt inc |
@@ -550,9 +541,7 @@ predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
     nextDef
         .(SsaExplicitDefinition)
         .getInstruction()
-        .(IR::IncDecInstruction)
-        .getRhs()
-        .(IR::EvalIncDecRhsInstruction)
+        .(IR::EvalCompoundAssignRhsInstruction)
         .getStmt() = incDec and
     ssaDependsOnExpr(prevDef, incDec.getOperand())
   )
@@ -571,12 +560,6 @@ predicate ssaDependsOnExpr(SsaDefinition def, Expr expr) {
   if expr.isConst()
   then none()
   else (
-    //if an expression with parenthesis, strip the parenthesis
-    exists(ParenExpr paren |
-      paren = expr and
-      ssaDependsOnExpr(def, paren.stripParens())
-    )
-    or
     exists(Ident ident |
       ident = expr and
       getAUse(def) = ident

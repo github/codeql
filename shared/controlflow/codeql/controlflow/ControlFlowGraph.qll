@@ -284,6 +284,14 @@ signature module AstSig<LocationSig Location> {
     Stmt getStmt(int index);
   }
 
+  /**
+   * Gets the initializer of `switch` statement `switch`, if any.
+   *
+   * Only some languages (e.g. Go) support an initializer that is evaluated
+   * before the switch expression.
+   */
+  default AstNode getSwitchInit(Switch switch) { none() }
+
   /** A case in a switch. */
   class Case extends AstNode {
     /** Gets the pattern being matched by this case at the specified (zero-based) `index`. */
@@ -1088,7 +1096,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /** The `PreControlFlowNode` at the entry point of a callable. */
-    final private class EntryNodeImpl extends NodeImpl, TEntryNode {
+    final class EntryNodeImpl extends NodeImpl, TEntryNode {
       private Callable c;
 
       EntryNodeImpl() { this = TEntryNode(c) }
@@ -1132,7 +1140,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /** A control flow node indicating exceptional termination of a callable. */
-    final private class ExceptionalExitNodeImpl extends AnnotatedExitNodeImpl {
+    final class ExceptionalExitNodeImpl extends AnnotatedExitNodeImpl {
       ExceptionalExitNodeImpl() { this = TAnnotatedExitNode(_, false) }
     }
 
@@ -1189,7 +1197,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     signature module InputSig2 {
       /**
        * Holds if `ast` may result in an abrupt completion `c` originating at
-       * `n`. The boolean `always`  indicates whether the abrupt completion
+       * `n`. The boolean `always` indicates whether the abrupt completion
        * always occurs or whether `n` may also terminate normally.
        *
        * This predicate is only relevant for AST constructs that are not already
@@ -1283,7 +1291,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         Input2::endAbruptCompletion(ast, n, c)
         or
         exists(Callable callable |
-          callableHasBodyPart(callable, ast) or callableHasParamDefault(callable, ast)
+          not Input2::endAbruptCompletion(ast, _, c) and
+          (callableHasBodyPart(callable, ast) or callableHasParamDefault(callable, ast))
         |
           c.getSuccessorType() instanceof ReturnSuccessor and
           n.(NormalExitNodeImpl).getEnclosingCallable() = callable
@@ -1826,14 +1835,30 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         exists(Switch switch, PreControlFlowNode firstCase |
           firstCase.isBefore(getRankedCaseCfgOrder(switch, 1))
           or
-          not exists(getRankedCaseCfgOrder(switch, _)) and firstCase.isAfter(switch)
+          not exists(getRankedCaseCfgOrder(switch, _)) and
+          not simpleLeafNode(switch) and
+          firstCase.isAfter(switch)
         |
           n1.isBefore(switch) and
-          n2.isBefore(switch.getExpr())
+          (
+            n2.isBefore(getSwitchInit(switch))
+            or
+            not exists(getSwitchInit(switch)) and
+            (
+              n2.isBefore(switch.getExpr())
+              or
+              not exists(switch.getExpr()) and
+              n2 = firstCase
+            )
+          )
           or
-          n1.isBefore(switch) and
-          not exists(switch.getExpr()) and
-          n2 = firstCase
+          n1.isAfter(getSwitchInit(switch)) and
+          (
+            n2.isBefore(switch.getExpr())
+            or
+            not exists(switch.getExpr()) and
+            n2 = firstCase
+          )
           or
           n1.isAfter(switch.getExpr()) and
           n2 = firstCase
@@ -1966,8 +1991,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         // Require a predecessor as a coarse approximation of reachability.
         // In particular, this prevents a catch-all catch clause preceding a
         // finally block from adding exception edges out of the finally.
-        step(_, last) and
-        beginAbruptCompletion(ast, last, c, _)
+        step(_, last) and beginAbruptCompletion(ast, last, c, _)
         or
         exists(AstNode child |
           getChild(ast, _) = child and
@@ -2286,7 +2310,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
                 multipleConditionalSuccessorKinds(node, t1, t2, succ1, succ2)
               )
             or
-            query = "directAndConditionalSuccessor" and
+            query = "directAndConditionalSuccessors" and
             results =
               strictcount(ControlFlowNode node, ConditionalSuccessor t1, DirectSuccessor t2,
                 ControlFlowNode succ1, ControlFlowNode succ2 |
@@ -2295,6 +2319,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             query = "selfLoop" and
             results = strictcount(ControlFlowNode node, SuccessorType t | selfLoop(node, t))
+            or
+            query = "bodyPartNonOverlap" and
+            results = strictcount(Callable c | bodyPartNonOverlap(c))
+            or
+            query = "parameterNonOverlap" and
+            results = strictcount(Callable c, Parameter p | parameterNonOverlap(c, p))
+            or
+            query = "parameterEnclosingCallable" and
+            results = strictcount(Parameter p, Callable c | parameterEnclosingCallable(p, c))
+            or
+            query = "multipleDefaultCases" and
+            results =
+              strictcount(Switch s, int defaultCases | multipleDefaultCases(s, defaultCases))
           }
 
           /**
@@ -2494,6 +2531,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           query predicate parameterEnclosingCallable(Parameter p, Callable c) {
             p = callableGetParameter(c, _) and
             not c = getEnclosingCallable(p)
+          }
+
+          /**
+           * Holds if a switch `s` has multiple default cases.
+           *
+           * A well-formed switch statement should have at most one default case.
+           */
+          query predicate multipleDefaultCases(Switch s, int defaultCases) {
+            defaultCases = strictcount(DefaultCase c | s.getCase(_) = c) and
+            defaultCases > 1
           }
         }
       }
