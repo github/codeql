@@ -1645,8 +1645,9 @@ open class KotlinFileExtractor(
         extractMethodAndParameterTypeAccesses: Boolean,
         typeSubstitution: TypeSubstitution?,
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
-    ) : Label<out DbCallable> =
-        forceExtractFunction(
+    ) : Label<out DbCallable> {
+        val sourceLoc = tw.getLocation(f.parentClassOrNull ?: f)
+        return forceExtractFunction(
                 f,
                 parentId,
                 extractBody = false,
@@ -1656,6 +1657,7 @@ open class KotlinFileExtractor(
                 classTypeArgsIncludingOuterClasses,
                 overriddenAttributes =
                     OverriddenFunctionAttributes(
+                        sourceLoc = sourceLoc,
                         visibility = DescriptorVisibilities.PUBLIC,
                         modality = Modality.OPEN
                     )
@@ -1666,7 +1668,6 @@ open class KotlinFileExtractor(
                     CompilerGeneratedKinds.INTERFACE_FORWARDER.kind
                 )
                 if (extractBody) {
-                    val realFunctionLocId = tw.getLocation(f)
                     val inheritedDefaultFunction = f.realOverrideTarget
                     val directlyInheritedSymbol =
                         when (f) {
@@ -1686,10 +1687,10 @@ open class KotlinFileExtractor(
                         (directlyInheritedSymbol.owner.parentClassOrNull ?: return functionId)
                             .typeWith()
 
-                    extractExpressionBody(functionId, realFunctionLocId).also { returnId ->
+                    extractExpressionBody(functionId, sourceLoc).also { returnId ->
                         extractRawMethodAccess(
                             f,
-                            realFunctionLocId,
+                            sourceLoc,
                             f.returnType,
                             functionId,
                             returnId,
@@ -1702,7 +1703,7 @@ open class KotlinFileExtractor(
                                     extractVariableAccess(
                                         syntheticParamId,
                                         param.type,
-                                        realFunctionLocId,
+                                        sourceLoc,
                                         argParentId,
                                         idxOffset + idx,
                                         functionId,
@@ -1718,7 +1719,7 @@ open class KotlinFileExtractor(
                                     callId,
                                     -1,
                                     returnId,
-                                    realFunctionLocId
+                                    sourceLoc
                                 )
                             },
                             null
@@ -1726,6 +1727,7 @@ open class KotlinFileExtractor(
                     }
                 }
             }
+    }
 
     private fun extractFunction(
         f: IrFunction,
