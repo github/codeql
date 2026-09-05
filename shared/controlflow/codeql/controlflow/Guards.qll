@@ -78,6 +78,12 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     BasicBlock getBasicBlock();
   }
 
+  /**
+   * Holds if `guard` evaluating to `branch` controls `bb` in a way not represented
+   * by an edge from `guard.getControlFlowNode()`.
+   */
+  default predicate additionalBooleanControls(Expr guard, BasicBlock bb, boolean branch) { none() }
+
   class ConstantValue {
     /** Gets a textual representation of this constant value. */
     string toString();
@@ -1427,6 +1433,8 @@ module Make<
           dominatingEdge(guard, succ) and
           succ.dominates(bb)
         )
+        or
+        additionalBooleanControls(this, bb, v.asBooleanValue())
       }
 
       /**
