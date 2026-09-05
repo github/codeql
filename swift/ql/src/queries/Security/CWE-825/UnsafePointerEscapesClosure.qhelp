@@ -1,0 +1,21 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>Certain functions take a closure and pass a temporary pointer into it. If this pointer escapes from the closure and is used outside it, memory corruption may occur.</p>
+  </overview>
+
+  <recommendation>
+    <p>Do not use temporary pointers outside the closure they are passed to.</p>
+  </recommendation>
+
+  <example>
+    <p>In the first example below, the pointer is returned from the closure, potentially leading to memory corruption. In the second example, all work with the pointer is done inside the closure, and it is not returned.</p>
+    <sample src="UnsafePointerEscapesClosure.swift" />
+  </example>
+
+  <references>
+    <li><a href="https://developer.apple.com/documentation/swift/array/withunsafebytes(_:)">withUnsafeBytes</a></li>
+  </references>
+</qhelp>
