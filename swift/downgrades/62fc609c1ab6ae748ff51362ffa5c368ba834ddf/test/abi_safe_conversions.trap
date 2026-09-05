@@ -1,0 +1,10 @@
+integer_literal_exprs(@"an_int", "42")
+string_literal_exprs(@"a_string", "foo")
+
+load_exprs(@"load_conv")
+implicit_conversion_exprs(@"load_conv", @"an_int")
+
+abi_safe_conversion_exprs(@"abi_safe_conv")
+implicit_conversion_exprs(@"abi_safe_conv", @"a_string")
+
+unspecified_elements(@"existing_unspecified", "prop", "error")
