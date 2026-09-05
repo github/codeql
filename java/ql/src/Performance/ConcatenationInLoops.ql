@@ -40,19 +40,26 @@ predicate useAndDef(Assignment a, Variable v) {
   )
 }
 
-predicate declaredInLoop(LocalVariableDecl v, LoopStmt loop) {
-  exists(LocalVariableDeclExpr e |
-    e.getVariable() = v and
-    e.getEnclosingStmt().getEnclosingStmt*() = loop.getBody()
-  )
+/**
+ * Holds if `e` is executed often in loop `loop`.
+ */
+predicate executedOften(Assignment a) {
+  a.getDest().getType() instanceof TypeString and
+  exists(ControlFlowNode n | a.getControlFlowNode() = n | getADeepSuccessor(n) = n)
+}
+
+/** Gets a sucessor of `n`, also following function calls. */
+ControlFlowNode getADeepSuccessor(ControlFlowNode n) {
+  result = n.getASuccessor+()
   or
-  exists(EnhancedForStmt for | for = loop | for.getVariable().getVariable() = v)
+  exists(Call c, ControlFlowNode callee | c.(Expr).getControlFlowNode() = n.getASuccessor+() |
+    callee = c.getCallee().getBody().getControlFlowNode() and
+    result = getADeepSuccessor(callee)
+  )
 }
 
 from Assignment a, Variable v
 where
   useAndDef(a, v) and
-  exists(LoopStmt loop | a.getEnclosingStmt().getEnclosingStmt*() = loop |
-    not declaredInLoop(v, loop)
-  )
+  executedOften(a)
 select a, "The string " + v.getName() + " is built-up in a loop: use string buffer."
