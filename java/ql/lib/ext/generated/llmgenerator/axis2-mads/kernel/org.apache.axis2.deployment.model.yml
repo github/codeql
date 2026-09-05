@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      #- ["org.apache.axis2.deployment", "Deployer", True, "deploy", "(DeploymentFileData)", "", "Argument[0]", "path-injection", "ai-generated"] # INVALID: No implementation found in repo
+      #- ["org.apache.axis2.deployment", "Deployer", True, "undeploy", "(String)", "", "Argument[0]", "path-injection", "ai-generated"] # INVALID: No method found
+      #- ["org.apache.axis2.deployment", "DeploymentClassLoader", True, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-generated"] # INVALID: Method not found in repo
+      - ["org.apache.axis2.deployment", "DeploymentEngine", True, "buildModule", "(File,AxisConfiguration)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment", "DeploymentEngine", True, "getFileList", "(URL)", "", "Argument[0]", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.deployment", "DeploymentEngine", True, "loadRepository", "(String)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment", "DeploymentEngine", True, "loadRepositoryFromURL", "(URL)", "", "Argument[0]", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.deployment", "DeploymentEngine", True, "loadServiceGroup", "(File,ConfigurationContext)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment", "DeploymentEngine", True, "loadServicesFromUrl", "(URL)", "", "Argument[0]", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.deployment", "DeploymentEngine", True, "prepareRepository", "(String)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment", "DeploymentEngine", True, "setClassLoaders", "(String)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment", "FileSystemConfigurator", True, "getAxisConfiguration", "()", "", "this", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment", "ModuleDeployer", True, "deoloyFromUrl", "(DeploymentFileData)", "", "Argument[0]", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.deployment", "ModuleDeployer", True, "deploy", "(DeploymentFileData)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment", "RepositoryListener", True, "findServicesInDirectory", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment", "ServiceDeployer", True, "deploy", "(DeploymentFileData)", "", "Argument[0]", "path-injection", "ai-generated"]
+      #- ["org.apache.axis2.deployment", "ServiceDeployer", True, "deploy", "(DeploymentFileData)", "", "Argument[0]", "request-forgery", "ai-generated"] # INVALID: Not a request-forgery sink; URL fetch is in deployFromUrl
+      - ["org.apache.axis2.deployment", "ServiceDeployer", True, "deployFromUrl", "(Deployer,URL)", "", "Argument[1]", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.deployment", "ServiceDeployer", True, "deployFromUrl", "(DeploymentFileData)", "", "Argument[0]", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.deployment", "TransportDeployer", True, "deploy", "(DeploymentFileData)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment", "URLBasedAxisConfigurator", True, "getAxisConfiguration", "()", "", "this", "request-forgery", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      #- ["org.apache.axis2.deployment", "DeploymentEngine", True, "getFileList", "(URL)", "", "ReturnValue", "remote", "ai-generated"] # INVALID: Not a source; it is a URL fetch sink
