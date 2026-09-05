@@ -1,0 +1,139 @@
+usedAsRegex_
+| test.cpp:133:19:133:27 | a*b+c?d |
+| test.cpp:134:19:134:26 | a{4,8} |
+| test.cpp:135:19:135:25 | a{3,} |
+| test.cpp:140:19:140:28 | foo\|bar+ |
+| test.cpp:144:19:144:26 | [abc]+ |
+| test.cpp:145:19:145:33 | [a-fA-F0-9_]+ |
+| test.cpp:146:19:146:26 | [\\w]+ |
+| test.cpp:147:19:147:27 | [^A-Z]* |
+| test.cpp:151:19:151:22 | .* |
+| test.cpp:152:19:152:27 | \\w+\\W |
+| test.cpp:153:19:153:27 | \\s+\\S |
+| test.cpp:154:19:154:27 | \\d+\\D |
+| test.cpp:158:19:158:26 | ^a+bc$ |
+| test.cpp:159:19:159:30 | \\ba+bc\\B |
+| test.cpp:163:19:163:29 | (foo)*bar |
+| test.cpp:164:19:164:30 | fo(o\|b+)ar |
+| test.cpp:165:19:165:30 | (a\|b\|cd)e+ |
+| test.cpp:166:19:166:29 | (?::+)\\w |
+| test.cpp:170:19:170:31 | (?<id>\\w+) |
+| test.cpp:171:19:171:53 | (?<first>[a-z]+)(?<second>[0-9]+) |
+| test.cpp:175:19:175:29 | (a+)b+\\1 |
+| test.cpp:176:19:176:43 | (?<qux>q+)\\s+\\k<qux>+ |
+| test.cpp:180:19:180:31 | (?=\\w+)abc |
+| test.cpp:181:19:181:31 | (?!\\d+)abc |
+| test.cpp:182:19:182:32 | a+bc(?<=\\w) |
+| test.cpp:183:19:183:32 | a+bc(?<!\\d) |
+| test.cpp:187:19:187:25 | (a+)+ |
+| test.cpp:188:19:188:26 | (a*)*b |
+| test.cpp:189:19:189:32 | ([a-zA-Z]+)* |
+| test.cpp:193:19:193:67 | [a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,} |
+| test.cpp:194:19:194:54 | (https?\|ftp)://[^\\s/$.?#].[^\\s]* |
+| test.cpp:209:18:209:25 | (a+)+b |
+| test.cpp:218:18:218:23 | foo+ |
+| test.cpp:225:18:225:23 | bar+ |
+| test.cpp:231:18:231:23 | abc+ |
+| test.cpp:242:18:242:23 | abc+ |
+| test.cpp:245:19:245:26 | ^gr+ep |
+| test.cpp:249:19:249:32 | \\(ab\\)*c.* |
+| test.cpp:250:19:250:27 | a(b)c.* |
+| test.cpp:252:19:252:32 | a\\{2,5\\}.* |
+| test.cpp:253:19:253:28 | a{2,5}.* |
+| test.cpp:255:19:255:26 | a+b?.* |
+| test.cpp:258:19:258:26 | *abc.* |
+| test.cpp:259:19:259:24 | a*.* |
+| test.cpp:263:20:263:28 | a^b$c.* |
+| test.cpp:265:20:265:33 | \\(a\\)\\1.* |
+| test.cpp:268:20:268:33 | \\.\\*\\\\.* |
+| test.cpp:271:20:271:41 | \\([[:alpha:]]\\)*.* |
+| test.cpp:275:20:275:30 | \\(a*\\)* |
+| test.cpp:290:19:290:24 | abc+ |
+| test.cpp:293:19:293:32 | [[:alpha:]]+ |
+| test.cpp:297:19:297:34 | a\\.b\\(c\\).* |
+| test.cpp:299:19:299:34 | (foo\|bar){2,3} |
+| test.cpp:301:19:301:24 | awk+ |
+| test.cpp:303:19:303:26 | (x\|y)+ |
+| test.cpp:305:19:305:26 | ^a.*b$ |
+| test.cpp:309:19:309:29 | ([a-z]+)+ |
+| test.cpp:315:14:315:19 | baz+ |
+| test.cpp:320:18:320:26 | pat+ern |
+| test.cpp:330:42:330:48 | hel+o |
+| test.cpp:346:18:346:32 | [[:alpha:]].* |
+| test.cpp:348:18:348:31 | [[:digit:]]+ |
+| test.cpp:350:18:350:33 | [a[:space:]].* |
+| test.cpp:352:18:352:41 | [[:alpha:][:digit:]].* |
+| test.cpp:354:18:354:33 | [^[:space:]].* |
+| test.cpp:356:18:356:28 | [[.a.]].* |
+| test.cpp:358:18:358:28 | [[=a=]].* |
+| test.cpp:361:18:361:34 | ([[:alpha:]]+)+ |
+| test.cpp:380:19:380:31 | [:alpha:].* |
+| test.cpp:386:19:386:29 | a[:b:]c.* |
+| test.cpp:389:19:389:51 | [[:alpha:][:digit:][:space:]].* |
+| test.cpp:393:19:393:35 | []a[:alpha:]].* |
+| test.cpp:400:19:400:35 | [[:alpha:]-z].* |
+| test.cpp:406:19:406:31 | [[:alpha].* |
+| test.cpp:415:19:415:88 | ^([[:alpha:]]+[[:digit:]]*[[:space:]]?)+([[:punct:]]\|[[:xdigit:]])+$ |
+| test.cpp:430:19:430:23 | a+b |
+| test.cpp:431:19:431:24 | \\s+ |
+| test.cpp:436:19:436:26 | a+b |
+| test.cpp:437:19:437:27 | \\s+$ |
+| test.cpp:438:19:438:37 | \\(([,\\w]+)+\\)$ |
+| test.cpp:442:19:442:28 | a+b |
+| test.cpp:446:20:446:25 | a+b |
+| test.cpp:447:20:447:28 | a+b |
+| test.cpp:459:19:459:25 | a+b |
+| test.cpp:460:19:460:28 | a+b |
+regexMatchedAgainst_
+| test.cpp:209:18:209:25 | (a+)+b | test.cpp:211:28:211:34 | subject |
+| test.cpp:209:18:209:25 | (a+)+b | test.cpp:212:29:212:35 | subject |
+| test.cpp:209:18:209:25 | (a+)+b | test.cpp:213:30:213:36 | subject |
+| test.cpp:218:18:218:23 | foo+ | test.cpp:220:28:220:28 | s |
+| test.cpp:320:18:320:26 | pat+ern | test.cpp:323:29:323:29 | a |
+| test.cpp:320:18:320:26 | pat+ern | test.cpp:324:29:324:29 | b |
+| test.cpp:330:42:330:48 | hel+o | test.cpp:330:28:330:28 | s |
+| test.cpp:346:18:346:32 | [[:alpha:]].* | test.cpp:347:29:347:32 | subj |
+| test.cpp:348:18:348:31 | [[:digit:]]+ | test.cpp:349:29:349:32 | subj |
+| test.cpp:350:18:350:33 | [a[:space:]].* | test.cpp:351:29:351:32 | subj |
+| test.cpp:352:18:352:41 | [[:alpha:][:digit:]].* | test.cpp:353:29:353:32 | subj |
+| test.cpp:354:18:354:33 | [^[:space:]].* | test.cpp:355:29:355:32 | subj |
+| test.cpp:356:18:356:28 | [[.a.]].* | test.cpp:357:29:357:32 | subj |
+| test.cpp:358:18:358:28 | [[=a=]].* | test.cpp:359:29:359:32 | subj |
+| test.cpp:361:18:361:34 | ([[:alpha:]]+)+ | test.cpp:362:29:362:32 | subj |
+| test.cpp:380:19:380:31 | [:alpha:].* | test.cpp:381:29:381:32 | subj |
+| test.cpp:386:19:386:29 | a[:b:]c.* | test.cpp:387:29:387:32 | subj |
+| test.cpp:389:19:389:51 | [[:alpha:][:digit:][:space:]].* | test.cpp:390:29:390:32 | subj |
+| test.cpp:393:19:393:35 | []a[:alpha:]].* | test.cpp:394:29:394:32 | subj |
+| test.cpp:400:19:400:35 | [[:alpha:]-z].* | test.cpp:401:29:401:32 | subj |
+| test.cpp:406:19:406:31 | [[:alpha].* | test.cpp:407:29:407:32 | subj |
+| test.cpp:415:19:415:88 | ^([[:alpha:]]+[[:digit:]]*[[:space:]]?)+([[:punct:]]\|[[:xdigit:]])+$ | test.cpp:416:29:416:32 | subj |
+hasIgnoreCaseFlag_
+| test.cpp:218:18:218:23 | foo+ |
+| test.cpp:225:18:225:23 | bar+ |
+| test.cpp:245:19:245:26 | ^gr+ep |
+| test.cpp:315:14:315:19 | baz+ |
+hasMultilineFlag_
+| test.cpp:225:18:225:23 | bar+ |
+hasNonEcmaScriptGrammarFlag_
+| test.cpp:242:18:242:23 | abc+ |
+| test.cpp:245:19:245:26 | ^gr+ep |
+| test.cpp:249:19:249:32 | \\(ab\\)*c.* |
+| test.cpp:250:19:250:27 | a(b)c.* |
+| test.cpp:252:19:252:32 | a\\{2,5\\}.* |
+| test.cpp:253:19:253:28 | a{2,5}.* |
+| test.cpp:255:19:255:26 | a+b?.* |
+| test.cpp:258:19:258:26 | *abc.* |
+| test.cpp:259:19:259:24 | a*.* |
+| test.cpp:263:20:263:28 | a^b$c.* |
+| test.cpp:265:20:265:33 | \\(a\\)\\1.* |
+| test.cpp:268:20:268:33 | \\.\\*\\\\.* |
+| test.cpp:271:20:271:41 | \\([[:alpha:]]\\)*.* |
+| test.cpp:275:20:275:30 | \\(a*\\)* |
+| test.cpp:290:19:290:24 | abc+ |
+| test.cpp:293:19:293:32 | [[:alpha:]]+ |
+| test.cpp:297:19:297:34 | a\\.b\\(c\\).* |
+| test.cpp:299:19:299:34 | (foo\|bar){2,3} |
+| test.cpp:301:19:301:24 | awk+ |
+| test.cpp:303:19:303:26 | (x\|y)+ |
+| test.cpp:305:19:305:26 | ^a.*b$ |
+| test.cpp:309:19:309:29 | ([a-z]+)+ |
