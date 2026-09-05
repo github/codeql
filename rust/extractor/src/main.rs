@@ -64,12 +64,11 @@ impl<'a> Extractor<'a> {
 
         let before_extract = Instant::now();
         let line_index = LineIndex::new(text.as_ref());
-        let display_path = file.to_string_lossy();
         let mut trap = self.traps.create("source", file);
         let label = trap.emit_file(file);
         let mut translator = translate::Translator::new(
             trap,
-            display_path.as_ref(),
+            file,
             label,
             line_index,
             semantics_info.as_ref().ok(),
@@ -98,7 +97,7 @@ impl<'a> Extractor<'a> {
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
                 "Failed to write trap file for: {}: {}",
-                display_path,
+                file.display(),
                 err.to_string()
             )
         });
@@ -106,11 +105,11 @@ impl<'a> Extractor<'a> {
             .push(ExtractionStep::extract(before_extract, source_kind, file));
     }
 
-    pub fn extract_with_semantics(
+    pub fn extract_with_semantics<'db>(
         &mut self,
         file: &Path,
-        semantics: &Semantics<'_, RootDatabase>,
-        vfs: &Vfs,
+        semantics: &'db Semantics<'db, RootDatabase>,
+        vfs: &'db Vfs,
         source_kind: SourceKind,
     ) {
         self.extract(&RustAnalyzer::new(vfs, semantics), file, source_kind);

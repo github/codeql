@@ -84,6 +84,11 @@ installing [`cargo-edit`](https://crates.io/crates/cargo-edit) with `cargo insta
    git add .
    git commit -am 'Bazel: regenerate vendored cargo dependencies' --no-verify
    ```
+   > [!NOTE]
+   > If in step 6 you also bump `rules_rust` or the rust toolchain, those changes invalidate _all_ vendored files (including the
+   > Python ones under `misc/bazel/3rdparty/py_deps`), not just the tree-sitter ones. In that case run the umbrella script
+   > `misc/bazel/3rdparty/update_cargo_deps.sh` instead (it regenerates both `py_deps` and `tree_sitter_extractors_deps`, and runs
+   > `bazel mod tidy`), then commit all the regenerated files.
 5. Run codegen
    ```
    bazel run //rust/codegen
@@ -100,6 +105,8 @@ installing [`cargo-edit`](https://crates.io/crates/cargo-edit) with `cargo insta
         independently of the changes in `codeql`.
       * in `codeql`, update both `RUST_VERSION` in `MODULE.bazel` _and_ `rust-toolchain.toml` files. You may want to also update the
         nightly toolchain in `rust/extractor/src/nightly-toolchain/rust-toolchain.toml` to a more recent date while you're at it.
+      * a toolchain and/or `rules_rust` bump invalidates the vendored files, so re-run `misc/bazel/3rdparty/update_cargo_deps.sh`
+       (see the note in step 4) and commit the regenerated files.
    * if it fails while compiling rust extractor code, you will need to adapt it to the new library version.
       * for example updating annotations in `annotations.py`, adding / removing generated tests.
 

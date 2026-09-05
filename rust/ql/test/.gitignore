@@ -3,6 +3,9 @@ target/
 # these are all generated, see `rust/extractor/src/qltest.rs` for details
 Cargo.toml
 /*/**/rust-toolchain.toml
+# but this one is committed on purpose: it pins a pre-1.94 toolchain to exercise
+# the extractor's `FormatArgsExpr` reconstruction fallback.
+!/library-tests/format-macros-legacy/rust-toolchain.toml
 lib.rs
 .proc_macro/
 .lib/

@@ -25,9 +25,9 @@ module Impl {
     override string toStringImpl() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() {
-      result = "pub(" + this.getPath().toAbbreviatedString() + ")"
+      result = "pub(" + this.getVisibilityInner().getPath().toAbbreviatedString() + ")"
       or
-      not this.hasPath() and result = "pub"
+      not exists(this.getVisibilityInner().getPath()) and result = "pub"
     }
   }
 }

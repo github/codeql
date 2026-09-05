@@ -1,0 +1,12 @@
+| main.rs:13:10:13:25 | FormatArgsExpr | 1 |
+| main.rs:16:10:16:23 | FormatArgsExpr | 0 |
+| main.rs:19:13:19:36 | FormatArgsExpr | 1 |
+| main.rs:27:25:27:33 | FormatArgsExpr | 1 |
+| main.rs:38:40:38:46 | FormatArgsExpr | 0 |
+| main.rs:43:52:43:58 | FormatArgsExpr | 0 |
+| main.rs:49:13:49:33 | FormatArgsExpr | 1 |
+| main.rs:54:13:54:33 | FormatArgsExpr | 0 |
+| main.rs:64:5:64:27 | FormatArgsExpr | 1 |
+| main.rs:65:5:65:26 | FormatArgsExpr | 0 |
+| main.rs:66:5:66:25 | FormatArgsExpr | 1 |
+| main.rs:67:5:67:24 | FormatArgsExpr | 0 |

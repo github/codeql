@@ -50,7 +50,7 @@ impl fmt::Display for Import<'_> {
         if self.is_private {
             write!(f, "private ")?;
         }
-        write!(f, "import {}", &self.module)?;
+        write!(f, "import {}", self.module)?;
         if let Some(name) = &self.alias {
             write!(f, " as {name}")?;
         }
@@ -82,13 +82,13 @@ impl fmt::Display for Class<'_> {
             write!(f, "private ")?;
         }
         if let Some(alias) = &self.alias {
-            write!(f, "class {} = {alias};", &self.name)?;
+            write!(f, "class {} = {alias};", self.name)?;
             return Ok(());
         }
         if self.is_abstract {
             write!(f, "abstract ")?;
         }
-        write!(f, "class {} extends ", &self.name)?;
+        write!(f, "class {} extends ", self.name)?;
         for (index, supertype) in self.supertypes.iter().enumerate() {
             if index > 0 {
                 write!(f, ", ")?;
@@ -373,7 +373,7 @@ impl fmt::Display for FormalParameter<'_> {
 /// Generates a QL library by writing the given `elements` to the `file`.
 pub fn write(file: &mut dyn std::io::Write, elements: &[TopLevel]) -> std::io::Result<()> {
     for element in elements {
-        write!(file, "{}\n\n", &element)?;
+        write!(file, "{}\n\n", element)?;
     }
     Ok(())
 }
