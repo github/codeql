@@ -276,9 +276,19 @@ abstract class LabelCheck extends ControlCheck {
   }
 }
 
+/**
+ * This type represents deployment environments that may serve as sanitizers for
+ * various vulnerabilities.
+ *
+ * It is possible to customize which deployment environments apply. The default behavior
+ * of this model is for any environment to be considered a sanitizer.
+ * If values are provided then those names
+ * will be used to define the valid sanitizer set.
+ * To describe the situation where there is no acceptable sanitizer environment
+ * populate the predicate `enabledDeploymentEnvironmentDataModel` to contain a single empty string.
+ */
 class EnvironmentCheck extends ControlCheck instanceof Environment {
   EnvironmentCheck() {
-    // if there are any custom tuples use those
     if enabledDeploymentEnvironmentDataModel(_)
     then enabledDeploymentEnvironmentDataModel(this.(Environment).getName())
     else this instanceof Environment
