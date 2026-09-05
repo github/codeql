@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
@@ -14,13 +15,39 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Represents configurations for package registries.
         /// </summary>
-        /// <param name="Type">The type of package registry.</param>
-        /// <param name="URL">The URL of the package registry.</param>
-        public record class RegistryConfig(string Type, string URL);
+        public class RegistryConfig
+        {
+            /// <summary>
+            /// The type of the package registry.
+            /// </summary>
+            public string Type { get; init; } = "";
+
+            /// <summary>
+            /// The URL of the package registry.
+            /// </summary>
+            public string URL { get; init; } = "";
+
+            /// <summary>
+            /// A boolean indicating whether this registry replaces the base registry.
+            /// </summary>
+            [JsonProperty("replaces-base")]
+            public bool ReplacesBase { get; init; } = false;
+        };
 
         public string Address { get; }
 
-        public HashSet<string> RegistryURLs { get; } = [];
+        /// <summary>
+        /// A dictionary mapping registry URLs to a boolean indicating whether they replace the base registry.
+        /// </summary>
+        private readonly Dictionary<string, bool> registryMapping = [];
+
+        private ImmutableHashSet<string>? registryURLs;
+        public ImmutableHashSet<string> RegistryURLs =>
+            registryURLs ??= registryMapping.Keys.ToImmutableHashSet();
+
+        private ImmutableHashSet<string>? registryBaseURLs;
+        public ImmutableHashSet<string> RegistryBaseURLs =>
+            registryBaseURLs ??= registryMapping.Where(kvp => kvp.Value).Select(kvp => kvp.Key).ToImmutableHashSet();
 
         public string? CertificatePath { get; private set; }
 
@@ -65,7 +92,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                             }
 
                             logger.LogInfo($"Found private registry at '{registry.URL}'");
-                            RegistryURLs.Add(registry.URL);
+                            registryMapping.AddOrUpdateToLatest(registry.URL, registry.ReplacesBase);
                         }
                     }
                 }

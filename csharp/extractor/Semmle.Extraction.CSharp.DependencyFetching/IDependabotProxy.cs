@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
@@ -14,7 +14,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// The URLs of package registries that are configured for the proxy.
         /// </summary>
-        HashSet<string> RegistryURLs { get; }
+        ImmutableHashSet<string> RegistryURLs { get; }
+
+        /// <summary>
+        /// The URLs of package registries that replace the base registry.
+        /// </summary>
+        ImmutableHashSet<string> RegistryBaseURLs { get; }
 
         /// <summary>
         /// The path to the temporary file where the certificate is stored.
