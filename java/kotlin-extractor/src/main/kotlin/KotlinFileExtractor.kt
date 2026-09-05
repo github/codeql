@@ -6,6 +6,8 @@ import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.*
 import com.semmle.extractor.java.OdasaOutput
 import java.io.Closeable
+import java.nio.file.Files
+import java.nio.file.Path
 import java.util.*
 import kotlin.collections.ArrayList
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -50,6 +52,7 @@ import org.jetbrains.kotlin.load.java.structure.JavaMethod
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameter
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameterListOwner
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
+import org.jetbrains.kotlin.fir.java.VirtualFileBasedSourceElement
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -161,10 +164,59 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun javaBinaryDeclaresMethod(c: IrClass, name: String) =
-        ((c.source as? JavaSourceElement)?.javaElement as? BinaryJavaClass)?.methods?.any {
-            it.name.asString() == name
+    private fun javaBinaryDeclaresMethod(c: IrClass, name: String): Boolean? {
+        // K1 path: source is JavaSourceElement wrapping a BinaryJavaClass - inspect class metadata
+        val binaryJavaClass = (c.source as? JavaSourceElement)?.javaElement as? BinaryJavaClass
+        if (binaryJavaClass != null) {
+            return binaryJavaClass.methods.any { it.name.asString() == name }
         }
+
+        // K2 path: binary Java classes use VirtualFileBasedSourceElement instead of
+        // JavaSourceElement. The BinaryJavaClass is not stored in the source element, so we parse
+        // the class bytes directly using ASM to check if the method is explicitly declared.
+        val virtualFile = (c.source as? VirtualFileBasedSourceElement)?.virtualFile
+        if (virtualFile != null) {
+            if (!virtualFile.name.endsWith(".class")) return null
+            return try {
+                val bytes = virtualFile.contentsToByteArray()
+                var found = false
+                var hasKotlinMetadata = false
+                val reader = org.jetbrains.org.objectweb.asm.ClassReader(bytes)
+                reader.accept(
+                    object : org.jetbrains.org.objectweb.asm.ClassVisitor(
+                        org.jetbrains.org.objectweb.asm.Opcodes.ASM9
+                    ) {
+                        override fun visitAnnotation(
+                            descriptor: String,
+                            visible: Boolean
+                        ): org.jetbrains.org.objectweb.asm.AnnotationVisitor? {
+                            if (descriptor == "Lkotlin/Metadata;") hasKotlinMetadata = true
+                            return null
+                        }
+
+                        override fun visitMethod(
+                            access: Int,
+                            methodName: String,
+                            descriptor: String,
+                            signature: String?,
+                            exceptions: Array<String>?
+                        ): org.jetbrains.org.objectweb.asm.MethodVisitor? {
+                            if (methodName == name) found = true
+                            return null
+                        }
+                    },
+                    org.jetbrains.org.objectweb.asm.ClassReader.SKIP_CODE or
+                        org.jetbrains.org.objectweb.asm.ClassReader.SKIP_DEBUG or
+                        org.jetbrains.org.objectweb.asm.ClassReader.SKIP_FRAMES
+                )
+                if (hasKotlinMetadata) false else found
+            } catch (e: Exception) {
+                logger.warn("Failed to check binary class methods for ${c.fqNameWhenAvailable}: $e")
+                null
+            }
+        }
+        return null
+    }
 
     private fun isJavaBinaryDeclaration(f: IrFunction) =
         f.parentClassOrNull?.let { javaBinaryDeclaresMethod(it, f.name.asString()) } ?: false
@@ -175,7 +227,14 @@ open class KotlinFileExtractor(
                 when (d.name.asString()) {
                     "toString" -> d.codeQlValueParameters.isEmpty()
                     "hashCode" -> d.codeQlValueParameters.isEmpty()
-                    "equals" -> d.codeQlValueParameters.singleOrNull()?.type?.isNullableAny() ?: false
+                    // Under K2 (language version 2.0+), the Object.equals(Object) parameter is
+                    // typed as Any (non-nullable) rather than Any? (nullable). Under K1 it is Any?.
+                    // Accept both so the redeclaration is recovered consistently across compilers.
+                    "equals" ->
+                        d.codeQlValueParameters
+                            .singleOrNull()
+                            ?.type
+                            ?.let { it.isNullableAny() || it.isAny() } ?: false
                     else -> false
                 } && isJavaBinaryDeclaration(d)
             else -> false
@@ -1312,27 +1371,28 @@ open class KotlinFileExtractor(
     ): TypeResults {
         with("value parameter", vp) {
             val location = locOverride ?: getLocation(vp, classTypeArgsIncludingOuterClasses)
+            val parentFunction = vp.parent as? IrFunction
+            val javaCallable = parentFunction?.let { getJavaCallable(it) }
             val maybeAlteredType =
-                (vp.parent as? IrFunction)?.let {
+                parentFunction?.let {
                     if (overridesCollectionsMethodWithAlteredParameterTypes(it))
                         eraseCollectionsMethodParameterType(vp.type, it.name.asString(), idx)
                     else if (
-                        (vp.parent as? IrConstructor)?.parentClassOrNull?.kind ==
+                        (parentFunction as? IrConstructor)?.parentClassOrNull?.kind ==
                             ClassKind.ANNOTATION_CLASS
                     )
                         kClassToJavaClass(vp.type)
                     else null
                 } ?: vp.type
-            val javaType =
-                (vp.parent as? IrFunction)?.let {
-                    getJavaCallable(it)?.let { jCallable ->
-                        getJavaValueParameterType(jCallable, idx)
-                    }
-                }
+            val javaType = javaCallable?.let { jCallable -> getJavaValueParameterType(jCallable, idx) }
+            val addParameterWildcardsByDefault =
+                !getInnermostWildcardSupppressionAnnotation(vp) &&
+                    !(javaCallable == null &&
+                        parentFunction?.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB)
             val typeWithWildcards =
                 addJavaLoweringWildcards(
                     maybeAlteredType,
-                    !getInnermostWildcardSupppressionAnnotation(vp),
+                    addParameterWildcardsByDefault,
                     javaType
                 )
             val substitutedType =
@@ -1346,9 +1406,9 @@ open class KotlinFileExtractor(
                 vp.origin == IrDeclarationOrigin.UNDERSCORE_PARAMETER ||
                     ((vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true)
             val javaParameter =
-                when (val callable = (vp.parent as? IrFunction)?.let { getJavaCallable(it) }) {
-                    is JavaConstructor -> callable.valueParameters.getOrNull(idx)
-                    is JavaMethod -> callable.valueParameters.getOrNull(idx)
+                when (javaCallable) {
+                    is JavaConstructor -> javaCallable.valueParameters.getOrNull(idx)
+                    is JavaMethod -> javaCallable.valueParameters.getOrNull(idx)
                     else -> null
                 }
             val extraAnnotations =
@@ -2874,6 +2934,52 @@ open class KotlinFileExtractor(
         return v
     }
 
+    private val sourceTextCache = mutableMapOf<String, String?>()
+
+    private fun getCurrentFileSourceText() =
+        sourceTextCache.getOrPut(filePath) {
+            runCatching { Files.readString(Path.of(filePath)) }.getOrNull()
+        }
+
+    private fun getVariableNameLocation(v: IrVariable): Label<DbLocation>? {
+        if (v.startOffset < 0 || v.endOffset < v.startOffset) return null
+
+        val source = getCurrentFileSourceText() ?: return null
+        if (v.startOffset >= source.length) return null
+
+        val name = v.name.asString()
+        if (name.isEmpty()) return null
+
+        val endExclusive = minOf(v.endOffset + 1, source.length)
+        val declarationText = source.substring(v.startOffset, endExclusive)
+        val nameOffsetInDeclaration = declarationText.indexOf(name)
+        if (nameOffsetInDeclaration < 0) return null
+
+        val nameStartOffset = v.startOffset + nameOffsetInDeclaration
+        // getLocation treats the end offset as exclusive (matching IR's getEndOffset), so the
+        // identifier span is [nameStartOffset, nameStartOffset + name.length).
+        val nameEndOffset = nameStartOffset + name.length
+        return tw.getLocation(nameStartOffset, nameEndOffset)
+    }
+
+    private fun shouldUseVariableNameLocation(v: IrVariable): Boolean {
+        // For a variable initialised by an IMPLICIT_NOTNULL coercion (a platform-type not-null
+        // assertion), the K2 frontend widens the IrVariable span to cover the coercion, which would
+        // shift the location away from the identifier. Anchor those to the name token instead.
+        // Variables without this coercion keep the location-provider span, which already points at
+        // the identifier.
+        val initializer = v.initializer
+        return initializer is IrTypeOperatorCall && initializer.operator == IrTypeOperator.IMPLICIT_NOTNULL
+    }
+
+    private fun getVariableLocation(v: IrVariable): Label<DbLocation> {
+        if (shouldUseVariableNameLocation(v)) {
+            val nameLocation = getVariableNameLocation(v)
+            if (nameLocation != null) return nameLocation
+        }
+        return tw.getLocation(getVariableLocationProvider(v))
+    }
+
     private fun extractVariable(
         v: IrVariable,
         callable: Label<out DbCallable>,
@@ -2882,7 +2988,7 @@ open class KotlinFileExtractor(
     ) {
         with("variable", v) {
             val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
-            val locId = tw.getLocation(getVariableLocationProvider(v))
+            val locId = getVariableLocation(v)
             tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
             tw.writeHasLocation(stmtId, locId)
             extractVariableExpr(v, callable, stmtId, 1, stmtId)
@@ -2900,7 +3006,7 @@ open class KotlinFileExtractor(
         with("variable expr", v) {
             val varId = useVariable(v)
             val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-            val locId = tw.getLocation(getVariableLocationProvider(v))
+            val locId = getVariableLocation(v)
             val type = useType(v.type)
             tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, exprId)
             tw.writeLocalvarsKotlinType(varId, type.kotlinResult.id)
@@ -4066,6 +4172,28 @@ open class KotlinFileExtractor(
             else -> false
         }
 
+    private fun getCallResultType(c: IrCall, syntacticCallTarget: IrFunction): IrType {
+        if (syntacticCallTarget.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
+            return c.type
+        }
+
+        val primitiveInfo =
+            (c.type as? IrSimpleType)?.let { primitiveTypeMapping.getPrimitiveInfo(it) } ?: return c.type
+        val parentClass = syntacticCallTarget.parentClassOrNull ?: return c.type
+        val returnIsClassifier =
+            javaBinaryMethodReturnIsClassifierType(
+                parentClass,
+                getFunctionShortName(syntacticCallTarget).nameInDB,
+                syntacticCallTarget.codeQlValueParameters.size,
+                syntacticCallTarget is IrConstructor
+            )
+        return if (returnIsClassifier == true) {
+            primitiveInfo.javaClass.symbol.typeWith()
+        } else {
+            c.type
+        }
+    }
+
     private fun isGenericArrayType(typeName: String) =
         when (typeName) {
             "Array" -> true
@@ -4111,7 +4239,7 @@ open class KotlinFileExtractor(
                 extractRawMethodAccess(
                     syntacticCallTarget,
                     c,
-                    c.type,
+                    getCallResultType(c, syntacticCallTarget),
                     callable,
                     parent,
                     idx,
