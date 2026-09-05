@@ -1,0 +1,34 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: randomNumberGeneratorModel
+    # namespace, type, name, output, secure
+    data:
+      # C standard library / POSIX / BSD generators returning the value (insecure).
+      - ["", "", "rand", "", false]
+      - ["", "", "random", "", false]
+      - ["", "", "drand48", "", false]
+      - ["", "", "erand48", "", false]
+      - ["", "", "lrand48", "", false]
+      - ["", "", "nrand48", "", false]
+      - ["", "", "mrand48", "", false]
+      - ["", "", "jrand48", "", false]
+      - ["", "", "rand_r", "", false]
+      # POSIX/BSD generators returning the value (secure).
+      - ["", "", "arc4random", "", true]
+      - ["", "", "arc4random_uniform", "", true]
+      # Generators writing to a buffer argument (secure).
+      - ["", "", "arc4random_buf", "0", true]
+      - ["", "", "getrandom", "0", true]
+      - ["", "", "getentropy", "0", true]
+      - ["", "", "RtlGenRandom", "0", true]
+      - ["", "", "BCryptGenRandom", "1", true]
+      - ["", "", "CryptGenRandom", "2", true]
+      # C++ <random> engines (insecure) and std::random_device (secure).
+      - ["std", "mersenne_twister_engine", "operator()", "", false]
+      - ["std", "linear_congruential_engine", "operator()", "", false]
+      - ["std", "subtract_with_carry_engine", "operator()", "", false]
+      - ["std", "discard_block_engine", "operator()", "", false]
+      - ["std", "shuffle_order_engine", "operator()", "", false]
+      - ["std", "independent_bits_engine", "operator()", "", false]
+      - ["std", "random_device", "operator()", "", true]
