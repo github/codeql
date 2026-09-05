@@ -1511,10 +1511,7 @@ module IR {
    * value is not stored in a variable or used to compute the value of a non-shortcircuiting
    * expression) do not have a final instruction either.
    */
-  Instruction evalExprInstruction(Expr e) {
-    result = MkExprNode(e) or
-    result = evalExprInstruction(e.(ParenExpr).getExpr())
-  }
+  Instruction evalExprInstruction(Expr e) { result = MkExprNode(e) }
 
   /**
    * Gets the instruction corresponding to the initialization of `r`.
