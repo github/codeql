@@ -119,7 +119,7 @@ class NameBindingNode extends TNameBindingNode {
 }
 
 Identifier getIdentifierFromRef(AstNode n) {
-  result = n.(Identifier)
+  result = n.(PotentialLocalNameAccess)
   or
   result = n.(MemberAccessExpr).getMemberNameNode()
 }
