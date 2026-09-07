@@ -672,6 +672,12 @@ abstract class Position extends TPosition {
     this.getArgumentIndex() = -1 and
     result = call.getQualifier()
   }
+
+  /**
+   * Holds if this position is the synthetic argument for an address of a
+   * constructor used for functions which perform "perfect forwarding".
+   */
+  predicate isForward() { none() }
 }
 
 class DirectPosition extends Position, TDirectPosition {
@@ -721,6 +727,16 @@ class FlowSummaryPosition extends Position, TFlowSummaryPosition {
   final override int getIndirectionIndex() { result = rk.getIndirectionIndex() }
 }
 
+class ForwardPosition extends Position, TForwardPosition {
+  final override predicate isForward() { any() }
+
+  override int getArgumentIndex() { none() }
+
+  final override int getIndirectionIndex() { result = 0 }
+
+  override string toString() { result = "forward" }
+}
+
 newtype TPosition =
   TDirectPosition(int argumentIndex) {
     exists(any(CallInstruction c).getArgument(argumentIndex))
@@ -740,6 +756,7 @@ newtype TPosition =
       indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1]
     )
   } or
+  TForwardPosition() or
   TFlowSummaryPosition(ReturnKind rk) { FlowSummaryImpl::Private::relevantFlowSummaryPosition(rk) }
 
 private newtype TReturnKind =

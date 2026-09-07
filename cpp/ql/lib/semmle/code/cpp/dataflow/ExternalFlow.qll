@@ -15,6 +15,8 @@
  *   `namespace; type; subtypes; name; signature; ext; output; kind; provenance`
  * - BarrierGuards:
  *   `namespace; type; subtypes; name; signature; ext; input; acceptingValue; kind; provenance`
+ * - Forwards:
+ *   `namespace; type; subtypes; name; signature; ext; start; constructor; provenance`
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -160,6 +162,20 @@ predicate summaryModel(
   )
 }
 
+/**
+ * Holds if a forward model exists for the given parameters.
+ */
+predicate forwardsModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string start, string constructor, string provenance, string model
+) {
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::forwardsModel(namespace, type, subtypes, name, signature, ext, start, constructor,
+      provenance, madId) and
+    model = madId.toString()
+  )
+}
+
 /** Provides a query predicate to check the data for validation errors. */
 module ModelValidation {
   private string getInvalidModelInput() {
@@ -259,7 +275,8 @@ private predicate elementSpec(
   sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
   barrierModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
   barrierGuardModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _) or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
+  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _) or
+  forwardsModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
 }
 
 /**
@@ -1053,6 +1070,46 @@ private module Cached {
 }
 
 import Cached
+
+/** Gets the constructor type selected by `constructorType` in a forwarding model. */
+bindingset[forwarder, type, name, constructorType]
+private Type getForwardedConstructorType(
+  Function forwarder, string type, string name, string constructorType
+) {
+  exists(string typeArguments, int index |
+    parseAngles(type, _, typeArguments, "") and
+    constructorType = getAtIndex(typeArguments, index) and
+    result = forwarder.getDeclaringType().getTemplateArgument(index)
+  )
+  or
+  exists(string nameArguments, int index |
+    parseAngles(name, _, nameArguments, "") and
+    constructorType = getAtIndex(nameArguments, index) and
+    result = forwarder.getTemplateArgument(index)
+  )
+}
+
+/** Holds if `forwarder` forwards its arguments starting at `start` to `constructor`. */
+predicate forwards(Function forwarder, Constructor constructor, int start) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string startString, string constructorType
+  |
+    forwardsModel(namespace, type, subtypes, name, signature, ext, startString, constructorType, _,
+      _) and
+    forwarder = interpretElement(namespace, type, subtypes, name, signature, ext) and
+    start = startString.toInt()
+  |
+    // Either the row specifies forwarding to a type given by the type or
+    // function template, in which case we need to resolve that from the type
+    // or function name.
+    constructor.getDeclaringType() =
+      getForwardedConstructorType(forwarder, type, name, constructorType).getUnspecifiedType()
+    or
+    // Or the row specifies forwarding to a specific type.
+    classHasQualifiedName(constructor.getDeclaringType(), namespace, constructorType)
+  )
+}
 
 /**
  * Holds if `node` is specified as a source with the given kind in a MaD flow
