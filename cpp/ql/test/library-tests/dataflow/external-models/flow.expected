@@ -85,24 +85,26 @@ models
 | 84 | Summary: ; ; false; ymlStepGenerated; ; ; Argument[0]; ReturnValue; taint; df-generated |
 | 85 | Summary: ; ; false; ymlStepManual; ; ; Argument[0]; ReturnValue; taint; manual |
 | 86 | Summary: ; ; false; ymlStepManual_with_body; ; ; Argument[0]; ReturnValue; taint; manual |
-| 87 | Summary: ; MyString; true; operator[]; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 88 | Summary: ; MyString; true; operator[]; ; ; ReturnValue[*]; Argument[-1]; taint; manual |
-| 89 | Summary: ; ReverseFlow; true; get_ptr; ; ; ReturnValue[*]; Argument[-1].Field[ReverseFlow::value]; value; manual |
-| 90 | Summary: ; TemplateClass1; true; templateFunction2<U,V>; (U,V); ; Argument[1]; ReturnValue; value; manual |
-| 91 | Summary: ; TemplateClass1<T>; false; templateFunction<U>; (T,U); ; Argument[0]; ReturnValue; value; manual |
-| 92 | Summary: ; TemplateClass2<T,U>; true; function; (U,T); ; Argument[1]; ReturnValue; value; manual |
-| 93 | Summary: Azure::Core::IO; BodyStream; true; Read; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 94 | Summary: Azure::Core::IO; BodyStream; true; ReadToCount; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 95 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
-| 96 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 97 | Summary: BloombergLP::bdlbb; Blob; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 98 | Summary: BloombergLP::bdlbb; BlobBuffer; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 99 | Summary: BloombergLP::bdlbb; BlobBuffer; true; data; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 100 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const Blob &,int,int); ; Argument[*2]; Argument[*0]; taint; manual |
-| 101 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const char *,int); ; Argument[*2]; Argument[*0]; taint; manual |
-| 102 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (char *,const Blob &,int,int); ; Argument[*1]; Argument[*0]; taint; manual |
-| 103 | Summary: BloombergLP::bdlbb; BlobUtil; true; getContiguousRangeOrCopy; ; ; Argument[*1]; ReturnValue[*]; taint; manual |
-| 104 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 87 | Summary: ; Container; true; get; ; ; Argument[-1].Element; ReturnValue[*]; value; manual |
+| 88 | Summary: ; Forwarder; true; get; ; ; Argument[-1]; ReturnValue; value; manual |
+| 89 | Summary: ; MyString; true; operator[]; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 90 | Summary: ; MyString; true; operator[]; ; ; ReturnValue[*]; Argument[-1]; taint; manual |
+| 91 | Summary: ; ReverseFlow; true; get_ptr; ; ; ReturnValue[*]; Argument[-1].Field[ReverseFlow::value]; value; manual |
+| 92 | Summary: ; TemplateClass1; true; templateFunction2<U,V>; (U,V); ; Argument[1]; ReturnValue; value; manual |
+| 93 | Summary: ; TemplateClass1<T>; false; templateFunction<U>; (T,U); ; Argument[0]; ReturnValue; value; manual |
+| 94 | Summary: ; TemplateClass2<T,U>; true; function; (U,T); ; Argument[1]; ReturnValue; value; manual |
+| 95 | Summary: Azure::Core::IO; BodyStream; true; Read; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 96 | Summary: Azure::Core::IO; BodyStream; true; ReadToCount; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 97 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
+| 98 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 99 | Summary: BloombergLP::bdlbb; Blob; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 100 | Summary: BloombergLP::bdlbb; BlobBuffer; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 101 | Summary: BloombergLP::bdlbb; BlobBuffer; true; data; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 102 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const Blob &,int,int); ; Argument[*2]; Argument[*0]; taint; manual |
+| 103 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const char *,int); ; Argument[*2]; Argument[*0]; taint; manual |
+| 104 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (char *,const Blob &,int,int); ; Argument[*1]; Argument[*0]; taint; manual |
+| 105 | Summary: BloombergLP::bdlbb; BlobUtil; true; getContiguousRangeOrCopy; ; ; Argument[*1]; ReturnValue[*]; taint; manual |
+| 106 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
 edges
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:56  |
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
@@ -111,16 +113,16 @@ edges
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:100:44:100:62 | call to buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:101:7:101:17 | send_buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | send_buffer | provenance | Sink:MaD:4 |
-| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:104 |
+| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:106 |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:257:5:257:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:262:5:262:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:266:38:266:41 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | call to GetBodyStream | azure.cpp:253:48:253:60 | *call to GetBodyStream | provenance | Src:MaD:53  |
-| azure.cpp:257:5:257:8 | *resp | azure.cpp:257:16:257:21 | Read output argument | provenance | MaD:93 |
+| azure.cpp:257:5:257:8 | *resp | azure.cpp:257:16:257:21 | Read output argument | provenance | MaD:95 |
 | azure.cpp:257:16:257:21 | Read output argument | azure.cpp:258:10:258:16 | * ... | provenance |  |
-| azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument | provenance | MaD:94 |
+| azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument | provenance | MaD:96 |
 | azure.cpp:262:23:262:28 | ReadToCount output argument | azure.cpp:263:10:263:16 | * ... | provenance |  |
-| azure.cpp:266:38:266:41 | *resp | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | provenance | MaD:95 |
+| azure.cpp:266:38:266:41 | *resp | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | provenance | MaD:97 |
 | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | provenance |  |
 | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | azure.cpp:267:10:267:12 | vec [element] | provenance |  |
 | azure.cpp:267:10:267:12 | vec [element] | azure.cpp:267:10:267:12 | vec | provenance |  |
@@ -136,10 +138,10 @@ edges
 | azure.cpp:278:10:278:13 | body | azure.cpp:278:10:278:13 | body | provenance |  |
 | azure.cpp:281:68:281:84 | *call to ExtractBodyStream | azure.cpp:282:21:282:23 | *call to get | provenance |  |
 | azure.cpp:281:68:281:84 | call to ExtractBodyStream | azure.cpp:281:68:281:84 | *call to ExtractBodyStream | provenance | Src:MaD:50  |
-| azure.cpp:282:21:282:23 | *call to get | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance | MaD:95 |
+| azure.cpp:282:21:282:23 | *call to get | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance | MaD:97 |
 | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | azure.cpp:282:10:282:38 | call to ReadToEnd | provenance |  |
 | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance |  |
-| azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value | provenance | MaD:96 |
+| azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value | provenance | MaD:98 |
 | azure.cpp:289:32:289:40 | call to GetHeader | azure.cpp:289:24:289:56 | call to GetHeader | provenance |  |
 | azure.cpp:289:32:289:40 | call to GetHeader | azure.cpp:289:32:289:40 | call to GetHeader | provenance | Src:MaD:54  |
 | azure.cpp:289:63:289:65 | call to Value | azure.cpp:289:63:289:65 | call to Value | provenance |  |
@@ -153,36 +155,36 @@ edges
 | azure.cpp:295:10:295:20 | contentType | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | bdlbb.cpp:54:16:54:23 | call to source | bdlbb.cpp:56:49:56:52 | *call to data | provenance | TaintFunction |
 | bdlbb.cpp:56:37:56:41 | copy output argument | bdlbb.cpp:58:42:58:45 | *blob | provenance |  |
-| bdlbb.cpp:56:49:56:52 | *call to data | bdlbb.cpp:56:37:56:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:56:49:56:52 | *call to data | bdlbb.cpp:56:37:56:41 | copy output argument | provenance | MaD:103 |
 | bdlbb.cpp:58:37:58:39 | copy output argument | bdlbb.cpp:59:7:59:10 | * ... | provenance |  |
-| bdlbb.cpp:58:42:58:45 | *blob | bdlbb.cpp:58:37:58:39 | copy output argument | provenance | MaD:102 |
+| bdlbb.cpp:58:42:58:45 | *blob | bdlbb.cpp:58:37:58:39 | copy output argument | provenance | MaD:104 |
 | bdlbb.cpp:63:16:63:23 | call to source | bdlbb.cpp:65:49:65:52 | *call to data | provenance | TaintFunction |
 | bdlbb.cpp:65:37:65:41 | copy output argument | bdlbb.cpp:66:18:66:21 | *blob | provenance |  |
-| bdlbb.cpp:65:49:65:52 | *call to data | bdlbb.cpp:65:37:65:41 | copy output argument | provenance | MaD:101 |
-| bdlbb.cpp:66:18:66:21 | *blob | bdlbb.cpp:66:29:66:32 | *call to buffer | provenance | MaD:97 |
+| bdlbb.cpp:65:49:65:52 | *call to data | bdlbb.cpp:65:37:65:41 | copy output argument | provenance | MaD:103 |
+| bdlbb.cpp:66:18:66:21 | *blob | bdlbb.cpp:66:29:66:32 | *call to buffer | provenance | MaD:99 |
 | bdlbb.cpp:66:18:66:38 | *call to data | bdlbb.cpp:66:18:66:38 | *call to data | provenance |  |
 | bdlbb.cpp:66:18:66:38 | *call to data | bdlbb.cpp:67:7:67:8 | * ... | provenance |  |
-| bdlbb.cpp:66:29:66:32 | *call to buffer | bdlbb.cpp:66:18:66:38 | *call to data | provenance | MaD:99 |
+| bdlbb.cpp:66:29:66:32 | *call to buffer | bdlbb.cpp:66:18:66:38 | *call to data | provenance | MaD:101 |
 | bdlbb.cpp:72:16:72:23 | call to source | bdlbb.cpp:74:49:74:52 | *call to data | provenance | TaintFunction |
 | bdlbb.cpp:74:37:74:41 | copy output argument | bdlbb.cpp:75:18:75:21 | *blob | provenance |  |
-| bdlbb.cpp:74:49:74:52 | *call to data | bdlbb.cpp:74:37:74:41 | copy output argument | provenance | MaD:101 |
-| bdlbb.cpp:75:18:75:21 | *blob | bdlbb.cpp:75:29:75:32 | *call to buffer | provenance | MaD:97 |
+| bdlbb.cpp:74:49:74:52 | *call to data | bdlbb.cpp:74:37:74:41 | copy output argument | provenance | MaD:103 |
+| bdlbb.cpp:75:18:75:21 | *blob | bdlbb.cpp:75:29:75:32 | *call to buffer | provenance | MaD:99 |
 | bdlbb.cpp:75:18:75:46 | call to get | bdlbb.cpp:76:7:76:8 | * ... | provenance |  |
-| bdlbb.cpp:75:29:75:32 | *call to buffer | bdlbb.cpp:75:39:75:41 | *call to buffer | provenance | MaD:98 |
+| bdlbb.cpp:75:29:75:32 | *call to buffer | bdlbb.cpp:75:39:75:41 | *call to buffer | provenance | MaD:100 |
 | bdlbb.cpp:75:39:75:41 | *call to buffer | bdlbb.cpp:75:18:75:46 | call to get | provenance | DataFlowFunction |
 | bdlbb.cpp:80:16:80:23 | call to source | bdlbb.cpp:82:49:82:52 | *call to data | provenance | TaintFunction |
 | bdlbb.cpp:82:37:82:41 | copy output argument | bdlbb.cpp:84:72:84:75 | *blob | provenance |  |
-| bdlbb.cpp:82:49:82:52 | *call to data | bdlbb.cpp:82:37:82:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:82:49:82:52 | *call to data | bdlbb.cpp:82:37:82:41 | copy output argument | provenance | MaD:103 |
 | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | provenance |  |
 | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | bdlbb.cpp:85:7:85:8 | * ... | provenance |  |
-| bdlbb.cpp:84:72:84:75 | *blob | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | provenance | MaD:103 |
+| bdlbb.cpp:84:72:84:75 | *blob | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | provenance | MaD:105 |
 | bdlbb.cpp:90:16:90:23 | call to source | bdlbb.cpp:92:48:92:51 | *call to data | provenance | TaintFunction |
 | bdlbb.cpp:92:37:92:40 | copy output argument | bdlbb.cpp:94:46:94:48 | *src | provenance |  |
-| bdlbb.cpp:92:48:92:51 | *call to data | bdlbb.cpp:92:37:92:40 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:92:48:92:51 | *call to data | bdlbb.cpp:92:37:92:40 | copy output argument | provenance | MaD:103 |
 | bdlbb.cpp:94:37:94:40 | copy output argument | bdlbb.cpp:96:42:96:44 | *dst | provenance |  |
-| bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument | provenance | MaD:100 |
+| bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument | provenance | MaD:102 |
 | bdlbb.cpp:96:37:96:39 | copy output argument | bdlbb.cpp:97:7:97:10 | * ... | provenance |  |
-| bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument | provenance | MaD:102 |
+| bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument | provenance | MaD:104 |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:48  |
@@ -234,27 +236,27 @@ edges
 | test.cpp:133:10:133:18 | call to ymlSource | test.cpp:134:45:134:45 | x | provenance |  |
 | test.cpp:134:13:134:43 | call to templateFunction | test.cpp:134:13:134:43 | call to templateFunction | provenance |  |
 | test.cpp:134:13:134:43 | call to templateFunction | test.cpp:135:10:135:10 | y | provenance | Sink:MaD:3 |
-| test.cpp:134:45:134:45 | x | test.cpp:134:13:134:43 | call to templateFunction | provenance | MaD:91 |
+| test.cpp:134:45:134:45 | x | test.cpp:134:13:134:43 | call to templateFunction | provenance | MaD:93 |
 | test.cpp:146:10:146:18 | call to ymlSource | test.cpp:146:10:146:18 | call to ymlSource | provenance | Src:MaD:48  |
 | test.cpp:146:10:146:18 | call to ymlSource | test.cpp:148:26:148:26 | x | provenance |  |
 | test.cpp:148:10:148:27 | call to function | test.cpp:148:10:148:27 | call to function | provenance |  |
 | test.cpp:148:10:148:27 | call to function | test.cpp:149:10:149:10 | z | provenance | Sink:MaD:3 |
-| test.cpp:148:26:148:26 | x | test.cpp:148:10:148:27 | call to function | provenance | MaD:92 |
+| test.cpp:148:26:148:26 | x | test.cpp:148:10:148:27 | call to function | provenance | MaD:94 |
 | test.cpp:155:10:155:18 | call to ymlSource | test.cpp:155:10:155:18 | call to ymlSource | provenance | Src:MaD:48  |
 | test.cpp:155:10:155:18 | call to ymlSource | test.cpp:157:26:157:26 | x | provenance |  |
 | test.cpp:157:13:157:20 | call to function | test.cpp:157:13:157:20 | call to function | provenance |  |
 | test.cpp:157:13:157:20 | call to function | test.cpp:158:10:158:10 | z | provenance | Sink:MaD:3 |
-| test.cpp:157:26:157:26 | x | test.cpp:157:13:157:20 | call to function | provenance | MaD:92 |
+| test.cpp:157:26:157:26 | x | test.cpp:157:13:157:20 | call to function | provenance | MaD:94 |
 | test.cpp:164:34:164:34 | x | test.cpp:165:69:165:69 | x | provenance |  |
 | test.cpp:165:12:165:64 | call to templateFunction2 | test.cpp:164:7:164:7 | *templateFunction3 | provenance |  |
 | test.cpp:165:12:165:64 | call to templateFunction2 | test.cpp:165:12:165:64 | call to templateFunction2 | provenance |  |
-| test.cpp:165:69:165:69 | x | test.cpp:165:12:165:64 | call to templateFunction2 | provenance | MaD:90 |
+| test.cpp:165:69:165:69 | x | test.cpp:165:12:165:64 | call to templateFunction2 | provenance | MaD:92 |
 | test.cpp:170:10:170:18 | call to ymlSource | test.cpp:170:10:170:18 | call to ymlSource | provenance | Src:MaD:48  |
 | test.cpp:170:10:170:18 | call to ymlSource | test.cpp:172:51:172:51 | x | provenance |  |
 | test.cpp:172:13:172:44 | call to templateFunction3 | test.cpp:172:13:172:44 | call to templateFunction3 | provenance |  |
 | test.cpp:172:13:172:44 | call to templateFunction3 | test.cpp:173:10:173:10 | y | provenance | Sink:MaD:3 |
 | test.cpp:172:51:172:51 | x | test.cpp:164:34:164:34 | x | provenance |  |
-| test.cpp:172:51:172:51 | x | test.cpp:172:13:172:44 | call to templateFunction3 | provenance | MaD:90 |
+| test.cpp:172:51:172:51 | x | test.cpp:172:13:172:44 | call to templateFunction3 | provenance | MaD:92 |
 | test.cpp:186:2:186:2 | *s [post update] [myField] | test.cpp:187:33:187:34 | *& ... [myField] | provenance |  |
 | test.cpp:186:2:186:24 | ... = ... | test.cpp:186:2:186:2 | *s [post update] [myField] | provenance |  |
 | test.cpp:186:14:186:22 | call to ymlSource | test.cpp:186:2:186:24 | ... = ... | provenance | Src:MaD:48  |
@@ -268,15 +270,15 @@ edges
 | test.cpp:200:10:200:33 | call to read_field_from_struct_2 | test.cpp:201:10:201:10 | x | provenance | Sink:MaD:3 |
 | test.cpp:200:35:200:36 | *& ... [myField] | test.cpp:200:10:200:33 | call to read_field_from_struct_2 | provenance | MaD:83 |
 | test.cpp:216:3:216:4 | get_ptr output argument [value] | test.cpp:217:11:217:12 | *rf [value] | provenance |  |
-| test.cpp:216:3:216:28 | ... = ... | test.cpp:216:3:216:4 | get_ptr output argument [value] | provenance | MaD:89 |
+| test.cpp:216:3:216:28 | ... = ... | test.cpp:216:3:216:4 | get_ptr output argument [value] | provenance | MaD:91 |
 | test.cpp:216:18:216:26 | call to ymlSource | test.cpp:216:3:216:28 | ... = ... | provenance | Src:MaD:48  |
 | test.cpp:217:11:217:12 | *rf [value] | test.cpp:217:14:217:18 | value | provenance |  |
 | test.cpp:217:14:217:18 | value | test.cpp:217:14:217:18 | value | provenance |  |
 | test.cpp:217:14:217:18 | value | test.cpp:218:11:218:11 | x | provenance | Sink:MaD:3 |
 | test.cpp:222:3:222:3 | operator[] output argument | test.cpp:223:12:223:12 | *s | provenance |  |
-| test.cpp:222:3:222:20 | ... = ... | test.cpp:222:3:222:3 | operator[] output argument | provenance | MaD:88 |
+| test.cpp:222:3:222:20 | ... = ... | test.cpp:222:3:222:3 | operator[] output argument | provenance | MaD:90 |
 | test.cpp:222:10:222:18 | call to ymlSource | test.cpp:222:3:222:20 | ... = ... | provenance | Src:MaD:48  |
-| test.cpp:223:12:223:12 | *s | test.cpp:223:13:223:15 | call to operator[] | provenance | MaD:87 |
+| test.cpp:223:12:223:12 | *s | test.cpp:223:13:223:15 | call to operator[] | provenance | MaD:89 |
 | test.cpp:223:13:223:15 | call to operator[] | test.cpp:223:13:223:15 | call to operator[] | provenance |  |
 | test.cpp:223:13:223:15 | call to operator[] | test.cpp:224:11:224:11 | c | provenance | Sink:MaD:3 |
 | test.cpp:242:29:242:29 | *s [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
@@ -351,6 +353,52 @@ edges
 | test.cpp:329:12:329:16 | value | test.cpp:329:12:329:16 | value | provenance | Sink:MaD:3 |
 | test.cpp:331:10:331:19 | * ... | test.cpp:331:10:331:19 | * ... | provenance | Sink:MaD:3 |
 | test.cpp:331:11:331:11 | *s [*pointer] | test.cpp:331:10:331:19 | * ... | provenance |  |
+| test.cpp:341:30:341:32 | arg | test.cpp:342:5:342:17 | ... = ... | provenance |  |
+| test.cpp:342:5:342:8 | *this [post update] [s] | test.cpp:341:3:341:22 | *this [Return] [s] | provenance |  |
+| test.cpp:342:5:342:17 | ... = ... | test.cpp:342:5:342:8 | *this [post update] [s] | provenance |  |
+| test.cpp:345:38:345:40 | arg | test.cpp:346:5:346:18 | ... = ... | provenance |  |
+| test.cpp:346:5:346:8 | *this [post update] [ul] | test.cpp:345:3:345:22 | *this [Return] [ul] | provenance |  |
+| test.cpp:346:5:346:18 | ... = ... | test.cpp:346:5:346:8 | *this [post update] [ul] | provenance |  |
+| test.cpp:361:15:361:23 | call to ymlSource | test.cpp:361:15:361:25 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:361:15:361:25 | call to ymlSource | test.cpp:362:15:362:15 | *x | provenance |  |
+| test.cpp:362:5:362:5 | forward output argument [s] | test.cpp:364:30:364:30 | *f [s] | provenance |  |
+| test.cpp:362:15:362:15 | *x | test.cpp:341:30:341:32 | arg | provenance |  |
+| test.cpp:362:15:362:15 | *x | test.cpp:362:5:362:5 | forward output argument [s] | provenance |  |
+| test.cpp:364:30:364:30 | *f [s] | test.cpp:364:32:364:34 | call to get [s] | provenance | MaD:88 |
+| test.cpp:364:32:364:34 | call to get [s] | test.cpp:364:32:364:34 | call to get [s] | provenance |  |
+| test.cpp:364:32:364:34 | call to get [s] | test.cpp:365:13:365:13 | *c [s] | provenance |  |
+| test.cpp:365:13:365:13 | *c [s] | test.cpp:365:13:365:15 | s | provenance |  |
+| test.cpp:365:13:365:13 | *c [s] | test.cpp:365:15:365:15 | s | provenance | Sink:MaD:3 |
+| test.cpp:365:13:365:15 | s | test.cpp:365:15:365:15 | s | provenance | Sink:MaD:3 |
+| test.cpp:370:24:370:32 | call to ymlSource | test.cpp:370:24:370:34 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:370:24:370:34 | call to ymlSource | test.cpp:371:15:371:16 | *ul | provenance |  |
+| test.cpp:371:5:371:5 | forward output argument [ul] | test.cpp:373:30:373:30 | *f [ul] | provenance |  |
+| test.cpp:371:15:371:16 | *ul | test.cpp:345:38:345:40 | arg | provenance |  |
+| test.cpp:371:15:371:16 | *ul | test.cpp:371:5:371:5 | forward output argument [ul] | provenance |  |
+| test.cpp:373:30:373:30 | *f [ul] | test.cpp:373:32:373:34 | call to get [ul] | provenance | MaD:88 |
+| test.cpp:373:32:373:34 | call to get [ul] | test.cpp:373:32:373:34 | call to get [ul] | provenance |  |
+| test.cpp:373:32:373:34 | call to get [ul] | test.cpp:375:13:375:13 | *c [ul] | provenance |  |
+| test.cpp:375:13:375:13 | *c [ul] | test.cpp:375:13:375:16 | ul | provenance |  |
+| test.cpp:375:13:375:13 | *c [ul] | test.cpp:375:15:375:16 | ul | provenance | Sink:MaD:3 |
+| test.cpp:375:13:375:16 | ul | test.cpp:375:15:375:16 | ul | provenance | Sink:MaD:3 |
+| test.cpp:394:11:394:19 | call to ymlSource | test.cpp:394:11:394:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:394:11:394:19 | call to ymlSource | test.cpp:395:16:395:16 | *x | provenance |  |
+| test.cpp:395:3:395:3 | emplace output argument [element, x] | test.cpp:397:15:397:15 | *c [element, x] | provenance |  |
+| test.cpp:395:16:395:16 | *x | test.cpp:395:3:395:3 | emplace output argument [element, x] | provenance |  |
+| test.cpp:397:15:397:15 | *c [element, x] | test.cpp:397:20:397:22 | call to get [x] | provenance | MaD:87 |
+| test.cpp:397:20:397:22 | call to get [x] | test.cpp:397:20:397:22 | call to get [x] | provenance |  |
+| test.cpp:397:20:397:22 | call to get [x] | test.cpp:398:11:398:11 | *e [x] | provenance |  |
+| test.cpp:398:11:398:11 | *e [x] | test.cpp:398:13:398:13 | x | provenance |  |
+| test.cpp:398:13:398:13 | x | test.cpp:398:13:398:13 | x | provenance | Sink:MaD:3 |
+| test.cpp:408:11:408:19 | call to ymlSource | test.cpp:408:11:408:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:408:11:408:19 | call to ymlSource | test.cpp:409:16:409:16 | *x | provenance |  |
+| test.cpp:409:3:409:3 | emplace output argument [element, x] | test.cpp:411:34:411:34 | *c [element, x] | provenance |  |
+| test.cpp:409:16:409:16 | *x | test.cpp:409:3:409:3 | emplace output argument [element, x] | provenance |  |
+| test.cpp:411:34:411:34 | *c [element, x] | test.cpp:411:39:411:41 | call to get [x] | provenance | MaD:87 |
+| test.cpp:411:39:411:41 | call to get [x] | test.cpp:411:39:411:41 | call to get [x] | provenance |  |
+| test.cpp:411:39:411:41 | call to get [x] | test.cpp:412:11:412:11 | *e [x] | provenance |  |
+| test.cpp:412:11:412:11 | *e [x] | test.cpp:412:13:412:13 | x | provenance |  |
+| test.cpp:412:13:412:13 | x | test.cpp:412:13:412:13 | x | provenance | Sink:MaD:3 |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:24:8:24:11 | * ... | provenance |  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:27:36:27:38 | *cmd | provenance |  |
 | windows.cpp:22:15:22:29 | call to GetCommandLineA | windows.cpp:22:15:22:29 | *call to GetCommandLineA | provenance | Src:MaD:5  |
@@ -811,6 +859,54 @@ nodes
 | test.cpp:331:10:331:19 | * ... | semmle.label | * ... |
 | test.cpp:331:11:331:11 | *s [*pointer] | semmle.label | *s [*pointer] |
 | test.cpp:334:10:334:16 | * ... | semmle.label | * ... |
+| test.cpp:341:3:341:22 | *this [Return] [s] | semmle.label | *this [Return] [s] |
+| test.cpp:341:30:341:32 | arg | semmle.label | arg |
+| test.cpp:342:5:342:8 | *this [post update] [s] | semmle.label | *this [post update] [s] |
+| test.cpp:342:5:342:17 | ... = ... | semmle.label | ... = ... |
+| test.cpp:345:3:345:22 | *this [Return] [ul] | semmle.label | *this [Return] [ul] |
+| test.cpp:345:38:345:40 | arg | semmle.label | arg |
+| test.cpp:346:5:346:8 | *this [post update] [ul] | semmle.label | *this [post update] [ul] |
+| test.cpp:346:5:346:18 | ... = ... | semmle.label | ... = ... |
+| test.cpp:361:15:361:23 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:361:15:361:25 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:362:5:362:5 | forward output argument [s] | semmle.label | forward output argument [s] |
+| test.cpp:362:15:362:15 | *x | semmle.label | *x |
+| test.cpp:364:30:364:30 | *f [s] | semmle.label | *f [s] |
+| test.cpp:364:32:364:34 | call to get [s] | semmle.label | call to get [s] |
+| test.cpp:364:32:364:34 | call to get [s] | semmle.label | call to get [s] |
+| test.cpp:365:13:365:13 | *c [s] | semmle.label | *c [s] |
+| test.cpp:365:13:365:15 | s | semmle.label | s |
+| test.cpp:365:15:365:15 | s | semmle.label | s |
+| test.cpp:370:24:370:32 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:370:24:370:34 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:371:5:371:5 | forward output argument [ul] | semmle.label | forward output argument [ul] |
+| test.cpp:371:15:371:16 | *ul | semmle.label | *ul |
+| test.cpp:373:30:373:30 | *f [ul] | semmle.label | *f [ul] |
+| test.cpp:373:32:373:34 | call to get [ul] | semmle.label | call to get [ul] |
+| test.cpp:373:32:373:34 | call to get [ul] | semmle.label | call to get [ul] |
+| test.cpp:375:13:375:13 | *c [ul] | semmle.label | *c [ul] |
+| test.cpp:375:13:375:16 | ul | semmle.label | ul |
+| test.cpp:375:15:375:16 | ul | semmle.label | ul |
+| test.cpp:394:11:394:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:394:11:394:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:395:3:395:3 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
+| test.cpp:395:16:395:16 | *x | semmle.label | *x |
+| test.cpp:397:15:397:15 | *c [element, x] | semmle.label | *c [element, x] |
+| test.cpp:397:20:397:22 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:397:20:397:22 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:398:11:398:11 | *e [x] | semmle.label | *e [x] |
+| test.cpp:398:13:398:13 | x | semmle.label | x |
+| test.cpp:398:13:398:13 | x | semmle.label | x |
+| test.cpp:408:11:408:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:408:11:408:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:409:3:409:3 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
+| test.cpp:409:16:409:16 | *x | semmle.label | *x |
+| test.cpp:411:34:411:34 | *c [element, x] | semmle.label | *c [element, x] |
+| test.cpp:411:39:411:41 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:411:39:411:41 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:412:11:412:11 | *e [x] | semmle.label | *e [x] |
+| test.cpp:412:13:412:13 | x | semmle.label | x |
+| test.cpp:412:13:412:13 | x | semmle.label | x |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | semmle.label | *call to GetCommandLineA |
 | windows.cpp:22:15:22:29 | call to GetCommandLineA | semmle.label | call to GetCommandLineA |
 | windows.cpp:24:8:24:11 | * ... | semmle.label | * ... |
@@ -1032,4 +1128,6 @@ nodes
 subpaths
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body |
 | test.cpp:172:51:172:51 | x | test.cpp:164:34:164:34 | x | test.cpp:164:7:164:7 | *templateFunction3 | test.cpp:172:13:172:44 | call to templateFunction3 |
+| test.cpp:362:15:362:15 | *x | test.cpp:341:30:341:32 | arg | test.cpp:341:3:341:22 | *this [Return] [s] | test.cpp:362:5:362:5 | forward output argument [s] |
+| test.cpp:371:15:371:16 | *ul | test.cpp:345:38:345:40 | arg | test.cpp:345:3:345:22 | *this [Return] [ul] | test.cpp:371:5:371:5 | forward output argument [ul] |
 testFailures

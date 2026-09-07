@@ -362,7 +362,7 @@ void forward_test() {
     f.forward(x);
 
     ConstructableFromInt c = f.get();
-    ymlSink(c.s); // $ MISSING: ir
+    ymlSink(c.s); // $ ir
     ymlSink(c.ul); // clean
   }
   {
@@ -372,7 +372,7 @@ void forward_test() {
 
     ConstructableFromInt c = f.get();
     ymlSink(c.s); // clean
-    ymlSink(c.ul); // $ MISSING: ir
+    ymlSink(c.ul); // $ ir
   }
 }
 
@@ -395,7 +395,7 @@ void forward_test_model() {
   c.emplace(0, x);
 
   Element e = c.get();
-  ymlSink(e.x); // $ MISSING: ir
+  ymlSink(e.x); // $ ir
 }
 
 struct ElementWithDefaultArgument {
@@ -409,5 +409,5 @@ void forward_test_model_with_default_argument() {
   c.emplace(0, x);
 
   ElementWithDefaultArgument e = c.get();
-  ymlSink(e.x); // $ MISSING: ir
+  ymlSink(e.x); // $ ir
 }
