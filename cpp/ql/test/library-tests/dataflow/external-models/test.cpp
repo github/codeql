@@ -333,3 +333,81 @@ void test_parameter(SourceWrapper* p, SourceWrapper s, int* source) {
 	ymlSink((int)source); // clean
 	ymlSink(*source); // $ ir
 }
+
+
+struct ConstructableFromInt {
+  short s;
+  unsigned long ul;
+  ConstructableFromInt(short arg) {
+    this->s = arg;
+  }
+
+  ConstructableFromInt(unsigned long arg) {
+    this->ul = arg;
+  }
+};
+
+template<typename T>
+struct Forwarder {
+  template<typename... Args>
+  void forward(Args&&... args);
+
+  T get();
+};
+
+void forward_test() {
+  {
+    Forwarder<ConstructableFromInt> f;
+    short x = ymlSource();
+    f.forward(x);
+
+    ConstructableFromInt c = f.get();
+    ymlSink(c.s); // $ MISSING: ir
+    ymlSink(c.ul); // clean
+  }
+  {
+    Forwarder<ConstructableFromInt> f;
+    unsigned long ul = ymlSource();
+    f.forward(ul);
+
+    ConstructableFromInt c = f.get();
+    ymlSink(c.s); // clean
+    ymlSink(c.ul); // $ MISSING: ir
+  }
+}
+
+template<typename T>
+struct Container {
+  template<typename... Args>
+  void emplace(int pos, Args&&... args);
+
+  T& get();
+};
+
+struct Element {
+  int x;
+  Element(int);
+};
+
+void forward_test_model() {
+  Container<Element> c;
+  int x = ymlSource();
+  c.emplace(0, x);
+
+  Element e = c.get();
+  ymlSink(e.x); // $ MISSING: ir
+}
+
+struct ElementWithDefaultArgument {
+  int x;
+  ElementWithDefaultArgument(int x, int = 0);
+};
+
+void forward_test_model_with_default_argument() {
+  Container<ElementWithDefaultArgument> c;
+  int x = ymlSource();
+  c.emplace(0, x);
+
+  ElementWithDefaultArgument e = c.get();
+  ymlSink(e.x); // $ MISSING: ir
+}

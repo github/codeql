@@ -42,3 +42,13 @@ extensions:
       - ["", "ReverseFlow", True, "get_ptr", "", "", "ReturnValue[*]", "Argument[-1].Field[ReverseFlow::value]", "value", "manual"]
       - ["", "MyString", True, "operator[]", "", "", "ReturnValue[*]", "Argument[-1]", "taint", "manual"]
       - ["", "MyString", True, "operator[]", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "Forwarder", True, "get", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["", "Container", True, "get", "", "", "Argument[-1].Element", "ReturnValue[*]", "value", "manual"]
+      - ["", "Element", True, "Element", "", "", "Argument[0]", "Argument[-1].Field[Element::x]", "value", "manual"]
+      - ["", "ElementWithDefaultArgument", True, "ElementWithDefaultArgument", "", "", "Argument[0]", "Argument[-1].Field[ElementWithDefaultArgument::x]", "value", "manual"]
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: forwardsModel
+    data: # namespace, type, subtypes, name, signature, ext, start, constructor, output, provenance
+      - ["", "Forwarder<T>", True, "forward<Args>", "(Args &&)", "", "0", "T", "Argument[-1]", "manual"]
+      - ["", "Container<T>", True, "emplace<Args>", "(int,Args &&)", "", "1", "T", "Argument[-1].Element", "manual"]
