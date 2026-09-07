@@ -305,7 +305,7 @@ class DefaultCase extends CaseStmt, LabeledStmt {
  *
  * Either a `while` statement (`WhileStmt`), a `do`-`while` statement
  * (`DoStmt`), a `for` statement (`ForStmt`), or a `foreach` statement
- * (`ForeachStmt`).
+ * (`ForEachStmt`).
  */
 class LoopStmt extends Stmt, @loop_stmt {
   /** Gets the body of this loop statement. */
@@ -422,6 +422,9 @@ class ForStmt extends LoopStmt, @for_stmt {
   override string getAPrimaryQlClass() { result = "ForStmt" }
 }
 
+/** DEPRECATED: Use `ForEachStmt` instead. */
+deprecated class ForeachStmt = ForEachStmt;
+
 /**
  * A `foreach` loop, for example
  *
@@ -431,7 +434,7 @@ class ForStmt extends LoopStmt, @for_stmt {
  * }
  * ```
  */
-class ForeachStmt extends LoopStmt, @foreach_stmt {
+class ForEachStmt extends LoopStmt, @foreach_stmt {
   /**
    * Gets the local variable of this `foreach` loop, if any.
    *
@@ -564,7 +567,7 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
 
   override string toString() { result = "foreach (... ... in ...) ..." }
 
-  override string getAPrimaryQlClass() { result = "ForeachStmt" }
+  override string getAPrimaryQlClass() { result = "ForEachStmt" }
 }
 
 /**

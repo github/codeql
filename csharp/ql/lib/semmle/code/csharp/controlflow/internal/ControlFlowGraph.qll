@@ -188,9 +188,9 @@ module Ast implements AstSig<Location> {
     AstNode getUpdate(int index) { result = super.getUpdate(index) }
   }
 
-  final private class FinalForeachStmt = CS::ForeachStmt;
+  final private class FinalForEachStmt = CS::ForEachStmt;
 
-  class ForEachStmt extends FinalForeachStmt {
+  class ForEachStmt extends FinalForEachStmt {
     Expr getVariable() {
       result = this.getVariableDeclExpr() or result = this.getVariableDeclTuple()
     }
