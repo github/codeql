@@ -705,7 +705,7 @@ mod self_imports {
 
         #[rustfmt::skip]
         use super::definitions::MyTrait::{ // $ item=I105
-            self // $ MISSING: item=I105 SPURIOUS: item=definitions
+            self // $ item=I105
         };
 
         #[rustfmt::skip]
@@ -714,7 +714,7 @@ mod self_imports {
         };
 
         #[rustfmt::skip]
-        fn f<T: MyTrait>() { // $ MISSING: item=I105
+        fn f<T: MyTrait>() { // $ item=I105
             my_module::f(); // $ item=I107
             let _ = MyEnum::A; // $ item=I108
         }

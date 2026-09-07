@@ -13,6 +13,6 @@ mod self_import_from_struct {
 
     #[rustfmt::skip]
     use self::MyStruct::{ // $ item=Struct
-        self // $ SPURIOUS: item=Struct
+        self // $ SPURIOUS: item=self_import_from_struct
     };
 }

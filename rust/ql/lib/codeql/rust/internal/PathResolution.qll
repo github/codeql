@@ -427,7 +427,7 @@ abstract class ItemNode extends Locatable {
       if
         this instanceof Module or
         this instanceof Enum or
-        this instanceof Struct or
+        this instanceof Trait or
         this instanceof Crate
       then (
         kind.isBoth() and

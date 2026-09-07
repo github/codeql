@@ -57,7 +57,7 @@ resolvePath
 | invalid/main.rs:6:9:6:9 | A | invalid/main.rs:3:11:4:9 | struct A |
 | invalid/main.rs:15:9:15:12 | self | invalid/main.rs:8:1:18:1 | mod self_import_from_struct |
 | invalid/main.rs:15:9:15:22 | ...::MyStruct | invalid/main.rs:12:5:12:20 | struct MyStruct |
-| invalid/main.rs:16:9:16:12 | self | invalid/main.rs:12:5:12:20 | struct MyStruct |
+| invalid/main.rs:16:9:16:12 | self | invalid/main.rs:8:1:18:1 | mod self_import_from_struct |
 | main.rs:4:8:4:9 | my | main.rs:1:1:1:7 | mod my |
 | main.rs:4:14:4:17 | self | main.rs:1:1:1:7 | mod my |
 | main.rs:6:5:6:6 | my | main.rs:1:1:1:7 | mod my |
@@ -397,11 +397,12 @@ resolvePath
 | main.rs:707:13:707:17 | super | main.rs:688:1:722:1 | mod self_imports |
 | main.rs:707:13:707:30 | ...::definitions | main.rs:690:5:698:5 | mod definitions |
 | main.rs:707:13:707:39 | ...::MyTrait | main.rs:693:11:694:28 | trait MyTrait |
-| main.rs:708:13:708:16 | self | main.rs:690:5:698:5 | mod definitions |
+| main.rs:708:13:708:16 | self | main.rs:693:11:694:28 | trait MyTrait |
 | main.rs:712:13:712:17 | super | main.rs:688:1:722:1 | mod self_imports |
 | main.rs:712:13:712:30 | ...::definitions | main.rs:690:5:698:5 | mod definitions |
 | main.rs:712:13:712:38 | ...::MyEnum | main.rs:694:30:697:9 | enum MyEnum |
 | main.rs:713:13:713:16 | self | main.rs:694:30:697:9 | enum MyEnum |
+| main.rs:717:17:717:23 | MyTrait | main.rs:693:11:694:28 | trait MyTrait |
 | main.rs:718:13:718:21 | my_module | main.rs:691:9:693:9 | mod my_module |
 | main.rs:718:13:718:24 | ...::f | main.rs:692:13:692:25 | fn f |
 | main.rs:719:21:719:26 | MyEnum | main.rs:694:30:697:9 | enum MyEnum |
