@@ -1490,6 +1490,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         private module RevTypeFlow = TypeFlow<RevTypeFlowInput>;
 
+        pragma[no_dynamic_join_order]
         pragma[nomagic]
         private predicate flowIntoCallApValid(Call call, Callable c, ArgNd arg, ParamNd p, Ap ap) {
           flowIntoCallAp(call, c, arg, p, ap) and
@@ -1506,6 +1507,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
+        pragma[no_dynamic_join_order]
         private predicate revFlowIn(Call call, Callable c, ArgNd arg, Ap ap) {
           exists(ParamNd p |
             revFlow(p, TReturnCtxNone(), _, ap) and
