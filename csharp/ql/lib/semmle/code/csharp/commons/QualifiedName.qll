@@ -173,6 +173,7 @@ module QualifiedName<QualifiedNameInputSig Input> {
    * Holds if declaration `d` has name `name` and is defined in type `type`
    * with namespace `namespace`.
    */
+  pragma[no_dynamic_join_order]
   predicate hasQualifiedName(Declaration d, string namespace, string type, string name) {
     hasQualifiedName(d.getDeclaringType(), namespace, type) and
     (
