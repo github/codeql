@@ -596,6 +596,14 @@ private string getAtIndex(string s, int i) {
   not (s = "" and i = 0)
 }
 
+/** Gets the number of comma-separated arguments in `s`. */
+bindingset[s]
+private int getNumberOfArguments(string s) {
+  s = "" and result = 0
+  or
+  s != "" and result = count(s.indexOf(",")) + 1
+}
+
 /**
  * Normalizes `partiallyNormalizedSignature` by replacing the `remaining`
  * number of template arguments in `partiallyNormalizedSignature` with their
@@ -605,7 +613,7 @@ private string getSignatureWithoutClassTemplateNames(
   string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
 ) {
   elementSpecWithArguments0(_, _, _, partiallyNormalizedSignature, typeArgs, nameArgs) and
-  remaining = count(partiallyNormalizedSignature.indexOf(",")) + 1 and
+  remaining = getNumberOfArguments(typeArgs) and
   result = partiallyNormalizedSignature
   or
   exists(string mid |
@@ -619,7 +627,7 @@ private string getSignatureWithoutClassTemplateNames(
     )
     or
     // Make sure `remaining` is properly bound
-    remaining = [0 .. count(partiallyNormalizedSignature.indexOf(",")) + 1] and
+    remaining = [0 .. getNumberOfArguments(typeArgs)] and
     not exists(getAtIndex(typeArgs, remaining)) and
     result = mid
   )
@@ -636,7 +644,7 @@ pragma[nomagic]
 private string getSignatureWithoutFunctionTemplateNames(
   string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
 ) {
-  remaining = count(partiallyNormalizedSignature.indexOf(",")) + 1 and
+  remaining = getNumberOfArguments(nameArgs) and
   result =
     getSignatureWithoutClassTemplateNames(partiallyNormalizedSignature, typeArgs, nameArgs, 0)
   or
@@ -651,7 +659,7 @@ private string getSignatureWithoutFunctionTemplateNames(
     )
     or
     // Make sure `remaining` is properly bound
-    remaining = [0 .. count(partiallyNormalizedSignature.indexOf(",")) + 1] and
+    remaining = [0 .. getNumberOfArguments(nameArgs)] and
     not exists(getAtIndex(nameArgs, remaining)) and
     result = mid
   )
