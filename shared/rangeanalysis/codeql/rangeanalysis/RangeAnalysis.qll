@@ -1289,6 +1289,7 @@ module RangeStage<
    * - `upper = true`  : `e <= b + delta`
    * - `upper = false` : `e >= b + delta`
    */
+  pragma[no_dynamic_join_order]
   predicate initialBounded(
     Sem::Expr e, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason
