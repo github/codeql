@@ -27,7 +27,8 @@ import org.junit.runners.Suite.SuiteClasses;
   ExportExtensionsTests.class,
   AutoBuildTests.class,
   RobustnessTests.class,
-  NumericSeparatorTests.class
+  NumericSeparatorTests.class,
+  AwaitYieldIdentifierTests.class
 })
 public class AllTests {
 
