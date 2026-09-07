@@ -315,6 +315,7 @@ private module Cached {
    * Holds if `asExpr(n1) = e1` and `e1 != e2` and `n2` is the first reachable node from
    * `n1` such that `asExpr(n2) = e2`.
    */
+  pragma[no_dynamic_join_order]
   private predicate localExprFlowStepImpl(Node n1, Expr e1, Node n2, Expr e2) {
     exists(Node n, Expr e | localExprFlowSingleExprStep(n1, e1, n, e) |
       // If `n.asExpr()` and `n1.asExpr()` both resolve to the same node (which can
