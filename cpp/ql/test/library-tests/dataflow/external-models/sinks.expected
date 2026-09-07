@@ -43,3 +43,7 @@
 | test.cpp:331:10:331:19 | * ... | test-sink |
 | test.cpp:333:15:333:20 | source | test-sink |
 | test.cpp:334:10:334:16 | * ... | test-sink |
+| test.cpp:364:13:364:13 | s | test-sink |
+| test.cpp:365:13:365:14 | ul | test-sink |
+| test.cpp:373:13:373:13 | s | test-sink |
+| test.cpp:374:13:374:14 | ul | test-sink |
