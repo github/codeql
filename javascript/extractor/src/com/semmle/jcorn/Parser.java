@@ -2296,8 +2296,8 @@ public class Parser {
           && (this.options.ecmaVersion() >= 6
               || inputSubstring(this.start, this.end).indexOf("\\") == -1))
         this.raiseRecoverable(this.start, "The keyword '" + this.value + "' is reserved");
-      // `yield` and `await` are only restricted as bindings and references, not as property
-      // names, which is what `liberal` indicates (it also implies `isPrivateField`).
+      // `yield` and `await` are only restricted as bindings and references. `liberal` means we
+      // are parsing a property name, where they are ordinary identifiers.
       if (!liberal && this.inGenerator && this.value.equals("yield"))
         this.raiseRecoverable(this.start, "Can not use 'yield' as identifier inside a generator");
       if (!liberal && this.inAsync && this.value.equals("await"))
