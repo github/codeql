@@ -866,6 +866,7 @@ module RangeStage<
    * - `upper = true`  : `v <= b + delta`
    * - `upper = false` : `v >= b + delta`
    */
+  pragma[no_dynamic_join_order]
   private predicate boundedSsa(
     Sem::SsaVariable v, SemBound b, D::Delta delta, SsaReadPosition pos, boolean upper,
     boolean fromBackEdge, D::Delta origdelta, SemReason reason
