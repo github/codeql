@@ -6,6 +6,7 @@ private import unified
 private import unified as U
 private import codeql.namebinding.LocalNameBinding
 private import codeql.unified.internal.NameBindingPlugin
+private import codeql.unified.internal.StaticNameBinding
 
 private module LocalNameBindingInput implements LocalNameBindingInputSig<Location> {
   class AstNode = U::AstNode;
@@ -325,6 +326,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   predicate implicitDeclInScope(string name, AstNode scope) {
     none()
     // TODO: self
+    // TODO: When populating this predicate, make sure LocalVariable knows which implicit locals are variables
   }
 
   predicate accessCand(AstNode n, string name) { n.(PotentialLocalNameAccess).getName() = name }
@@ -357,6 +359,11 @@ module Public {
 
     /** Gets the name of this local, as a string. */
     string getName() { result = super.getName() }
+
+    LocalNameAccess getAnAccess() { result.getLocalName() = this }
+
+    /** Gets an identiier that declares this local name. */
+    NameDeclaration getADeclaration() { result.getLocalName() = this }
   }
 
   /** A name node that appears as the declaration site of a name, such as the `x` in `let x = 123`. */
@@ -371,6 +378,38 @@ module Public {
 
     /** Gets the representative for the local name introduced by this declaration. */
     LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
+  }
+
+  /** A representative for a lexically scoped local variable. */
+  class LocalVariable extends LocalName {
+    LocalVariable() {
+      exists(AstNode decl |
+        decl = this.getADeclaration().getDeclaration() and
+        not isInstanceMember(decl) and
+        not isStaticMember(decl)
+      |
+        decl instanceof VariableDeclaration or
+        decl instanceof FunctionDeclaration or // treat functions as values
+        decl instanceof Parameter or
+        decl instanceof ForEachStmt or
+        decl instanceof PatternGuardExpr or
+        decl instanceof CatchClause or
+        decl instanceof SwitchCase
+      )
+    }
+  }
+
+  /** An access to a locally-declared name. */
+  class LocalNameAccess extends PotentialLocalNameAccess {
+    LocalNameAccess() { not this instanceof UnqualifiedMemberAccess }
+  }
+
+  /** An access to a local variable. */
+  class LocalVariableAccess extends LocalNameAccess {
+    LocalVariableAccess() { this.getLocalName() instanceof LocalVariable }
+
+    /** Gets the local variable being accessed. Alias for `getLocalName()`. */
+    LocalVariable getLocalVariable() { result = this.getLocalName() }
   }
 }
 
