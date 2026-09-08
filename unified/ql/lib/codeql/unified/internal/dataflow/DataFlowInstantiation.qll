@@ -110,13 +110,19 @@ module DataFlowInput implements InputSig<Location> {
   //
   // Steps
   //
-  predicate simpleLocalFlowStep(Node node1, Node node2, string model) { none() } // TODO
+  predicate simpleLocalFlowStep(Node node1, Node node2, string model) {
+    step(node1, any(Step s | s.value()), node2) and model = ""
+  }
 
-  predicate jumpStep(Node node1, Node node2) { none() } // TODO
+  predicate jumpStep(Node node1, Node node2) { step(node1, any(Step s | s.jump()), node2) }
 
-  predicate readStep(Node node1, ContentSet c, Node node2) { none() } // TODO
+  predicate readStep(Node node1, ContentSet c, Node node2) {
+    step(node1, any(Step s | s.read(c)), node2)
+  }
 
-  predicate storeStep(Node node1, ContentSet c, Node node2) { none() } // TODO
+  predicate storeStep(Node node1, ContentSet c, Node node2) {
+    step(node1, any(Step s | s.store(c)), node2)
+  }
 
   predicate clearsContent(Node n, ContentSet c) { none() } // TODO
 

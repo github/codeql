@@ -5,7 +5,9 @@ private import codeql.dataflow.TaintTracking
 module TaintTrackingInput implements InputSig<Location, DataFlowInput> {
   predicate defaultTaintSanitizer(Node node) { none() } // TODO
 
-  predicate defaultAdditionalTaintStep(Node src, Node sink, string model) { none() } // TODO
+  predicate defaultAdditionalTaintStep(Node src, Node sink, string model) {
+    step(src, any(Step s | s.taint()), sink) and model = ""
+  }
 
   bindingset[node]
   predicate defaultImplicitTaintRead(Node node, ContentSet c) { none() } // TODO

@@ -3,6 +3,6 @@ func t1() {
 }
 
 func t2() {
-    sink(source("t2.1") + "blah"); // $ MISSING: hasTaintFlow=t2.1
-    sink("blah" + source("t2.2")); // $ MISSING: hasTaintFlow=t2.2
+    sink(source("t2.1") + "blah"); // $ hasTaintFlow=t2.1
+    sink("blah" + source("t2.2")); // $ hasTaintFlow=t2.2
 }
