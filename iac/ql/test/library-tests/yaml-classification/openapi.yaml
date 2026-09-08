@@ -1,0 +1,12 @@
+openapi: "3.0.0"
+info:
+  title: Sample API
+  version: "1.0"
+servers:
+  - url: https://example.com
+paths:
+  /items:
+    get:
+      responses:
+        "200":
+          description: OK
