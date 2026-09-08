@@ -1,0 +1,25 @@
+| WeakKDFConfiguration.ps1:7:8:7:79 | Call to new | Rfc2898DeriveBytes uses default iteration count of 1000. Specify at least 100000 iterations. |
+| WeakKDFConfiguration.ps1:7:8:7:79 | Call to new | Rfc2898DeriveBytes uses the default hash algorithm SHA1. Specify SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:11:8:11:85 | Call to new | Rfc2898DeriveBytes uses iteration count of 1000, which is below the minimum of 100000. |
+| WeakKDFConfiguration.ps1:11:8:11:85 | Call to new | Rfc2898DeriveBytes uses the default hash algorithm SHA1. Specify SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:14:8:14:86 | Call to new | Rfc2898DeriveBytes uses iteration count of 10000, which is below the minimum of 100000. |
+| WeakKDFConfiguration.ps1:14:8:14:86 | Call to new | Rfc2898DeriveBytes uses the default hash algorithm SHA1. Specify SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:17:8:17:86 | Call to new | Rfc2898DeriveBytes uses iteration count of 50000, which is below the minimum of 100000. |
+| WeakKDFConfiguration.ps1:17:8:17:86 | Call to new | Rfc2898DeriveBytes uses the default hash algorithm SHA1. Specify SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:21:8:21:87 | Call to new | Rfc2898DeriveBytes uses the default hash algorithm SHA1. Specify SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:25:8:25:143 | Call to new | Rfc2898DeriveBytes uses weak hash algorithm SHA1. Use SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:28:8:28:142 | Call to new | Rfc2898DeriveBytes uses weak hash algorithm MD5. Use SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:32:8:32:89 | Call to new-object | Rfc2898DeriveBytes uses iteration count of 5000, which is below the minimum of 100000. |
+| WeakKDFConfiguration.ps1:32:8:32:89 | Call to new-object | Rfc2898DeriveBytes uses the default hash algorithm SHA1. Specify SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:36:8:36:83 | Call to new-object | Rfc2898DeriveBytes uses default iteration count of 1000. Specify at least 100000 iterations. |
+| WeakKDFConfiguration.ps1:36:8:36:83 | Call to new-object | Rfc2898DeriveBytes uses the default hash algorithm SHA1. Specify SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:39:8:41:1 | Call to new-object | Rfc2898DeriveBytes uses iteration count of 5000, which is below the minimum of 100000. |
+| WeakKDFConfiguration.ps1:39:8:41:1 | Call to new-object | Rfc2898DeriveBytes uses weak hash algorithm SHA1. Use SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:42:8:44:1 | Call to new-object | Rfc2898DeriveBytes uses iteration count of 5000, which is below the minimum of 100000. |
+| WeakKDFConfiguration.ps1:42:8:44:1 | Call to new-object | Rfc2898DeriveBytes uses weak hash algorithm SHA1. Use SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:48:8:48:102 | Call to pbkdf2 | Rfc2898DeriveBytes.Pbkdf2 uses iteration count of 1000, which is below the minimum of 100000. |
+| WeakKDFConfiguration.ps1:52:8:52:102 | Call to pbkdf2 | Rfc2898DeriveBytes.Pbkdf2 uses weak hash algorithm SHA1. Use SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:55:8:55:84 | Call to new | Rfc2898DeriveBytes uses iteration count of 500, which is below the minimum of 100000. |
+| WeakKDFConfiguration.ps1:55:8:55:84 | Call to new | Rfc2898DeriveBytes uses the default hash algorithm SHA1. Specify SHA-256 or stronger. |
+| WeakKDFConfiguration.ps1:58:8:58:140 | Call to new | Rfc2898DeriveBytes uses iteration count of 500, which is below the minimum of 100000. |
+| WeakKDFConfiguration.ps1:58:8:58:140 | Call to new | Rfc2898DeriveBytes uses weak hash algorithm SHA1. Use SHA-256 or stronger. |

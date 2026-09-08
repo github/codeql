@@ -1,0 +1,2 @@
+query: queries/security/cwe-327/WeakKDFConfiguration.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

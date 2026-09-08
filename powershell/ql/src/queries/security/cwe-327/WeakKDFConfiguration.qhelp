@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+When deriving cryptographic keys from passwords using <code>Rfc2898DeriveBytes</code> (PBKDF2),
+both the iteration count and hash algorithm must be configured securely.
+An insufficient iteration count or a weak hash algorithm makes the derived key
+vulnerable to brute-force attacks.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Always specify at least 100,000 iterations and use SHA-256 or a stronger hash algorithm
+(SHA-384, SHA-512) when creating an <code>Rfc2898DeriveBytes</code> instance or calling the
+static <code>Pbkdf2</code> method.
+</p>
+</recommendation>
+
+<example>
+<p>The following example shows insecure usage with default settings:</p>
+<sample src="examples/WeakKDFConfigurationBad.ps1" />
+<p>The following example shows secure usage with adequate iterations and a strong hash:</p>
+<sample src="examples/WeakKDFConfigurationGood.ps1" />
+</example>
+
+<references>
+<li>
+  OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">Password Storage Cheat Sheet</a>
+</li>
+<li>
+  Microsoft: <a href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rfc2898derivebytes">Rfc2898DeriveBytes Class</a>
+</li>
+<li>
+  CWE-327: <a href="https://cwe.mitre.org/data/definitions/327.html">Use of a Broken or Risky Cryptographic Algorithm</a>
+</li>
+</references>
+</qhelp>
