@@ -192,8 +192,8 @@ unsafe fn test_system_alloc(v: usize) {
     let l2 = std::alloc::Layout::array::<u8>(v).unwrap();
     // These resolve to the blanket `impl GlobalAlloc for A` in `core`, so the target's canonical
     // path has a type-parameter `Self` (`<_ as ..::GlobalAlloc>::alloc`); the sink model misses it.
-    let _ = std::alloc::System.alloc(l2); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
-    let _ = std::alloc::System.alloc_zeroed(l2); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::System.alloc(l2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::System.alloc_zeroed(l2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let _ = std::alloc::System.allocate(l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let _ = std::alloc::System.allocate_zeroed(l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let _ = std::alloc::Global.allocate(l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
