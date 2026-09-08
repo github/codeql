@@ -20,12 +20,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             /// <summary>
             /// The type of the package registry.
             /// </summary>
-            public string Type { get; init; } = "";
+            public string? Type { get; init; }
 
             /// <summary>
             /// The URL of the package registry.
             /// </summary>
-            public string URL { get; init; } = "";
+            public string? Url { get; init; }
 
             /// <summary>
             /// A boolean indicating whether this registry replaces the base registry.
@@ -42,10 +42,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly Dictionary<string, bool> registryMapping = [];
 
         private ImmutableHashSet<string>? registryURLs;
+        /// <summary>
+        /// Gets the set of registry URLs that have been configured as part of the organization-level
+        /// private registry configuration. This includes all registries, regardless of whether they replace
+        /// the default feeds.
+        /// </summary>
         public ImmutableHashSet<string> RegistryURLs =>
             registryURLs ??= registryMapping.Keys.ToImmutableHashSet();
 
         private ImmutableHashSet<string>? registryBaseURLs;
+        /// <summary>
+        /// Gets the set of registry URLs that have been configured as part of the organization-level
+        /// private registry configuration and that replace the default registry. This is a subset of
+        /// <see cref="RegistryURLs"/>.
+        /// If non-empty, the set should be used as a replacement for the default registry during
+        /// package resolution.
+        /// </summary>
         public ImmutableHashSet<string> RegistryBaseURLs =>
             registryBaseURLs ??= registryMapping.Where(kvp => kvp.Value).Select(kvp => kvp.Key).ToImmutableHashSet();
 
@@ -83,16 +95,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     {
                         foreach (RegistryConfig registry in array)
                         {
-                            // The array contains all configured private registries, not just ones for C#.
-                            // We ignore the non-C# ones here.
-                            if (!registry.Type.Equals("nuget_feed"))
+                            if (string.IsNullOrWhiteSpace(registry.Url))
                             {
-                                logger.LogDebug($"Ignoring registry at '{registry.URL}' since it is not of type 'nuget_feed'.");
+                                logger.LogDebug("Ignoring registry with empty URL.");
                                 continue;
                             }
 
-                            logger.LogInfo($"Found private registry at '{registry.URL}'");
-                            registryMapping.AddOrUpdateToLatest(registry.URL, registry.ReplacesBase);
+                            // The array contains all configured private registries, not just ones for C#.
+                            // We ignore the non-C# ones here.
+                            if (registry.Type is null || !registry.Type.Equals("nuget_feed"))
+                            {
+                                logger.LogDebug($"Ignoring registry at '{registry.Url}' since it is not of type 'nuget_feed'.");
+                                continue;
+                            }
+
+                            logger.LogInfo($"Found private registry at '{registry.Url}'");
+                            registryMapping.AddOrUpdateToLatest(registry.Url, registry.ReplacesBase);
                         }
                     }
                 }

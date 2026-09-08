@@ -68,6 +68,11 @@ namespace Semmle.Extraction.Tests
         public ICollection<string> Resources { get; } = new List<string>();
     }
 
+    /// <summary>
+    /// The purpose of this test class is to verify the behavior of the FeedManager class.
+    /// The tests use stub implementations of the FeedManager's dependencies to control the behavior of the FeedManager
+    /// and verify its behavior.
+    /// </summary>
     public class FeedManagerTests
     {
         private static FeedManager MakeFeedManager()
@@ -80,6 +85,10 @@ namespace Semmle.Extraction.Tests
             return new FeedManager(logger, dotnet, dependabotProxy, fileProvider, feedManagerIo);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
+        /// explicit feeds.
+        /// </summary>
         [Fact]
         public void TestExplicitFeeds()
         {
@@ -97,6 +106,10 @@ namespace Semmle.Extraction.Tests
             ], actualFeeds);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
+        /// inherited feeds.
+        /// </summary>
         [Fact]
         public void TestInheritedFeeds()
         {
@@ -113,6 +126,10 @@ namespace Semmle.Extraction.Tests
             ], inherited);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
+        /// all feeds.
+        /// </summary>
         [Fact]
         public void TestAllFeeds()
         {
@@ -132,6 +149,10 @@ namespace Semmle.Extraction.Tests
             ], all);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
+        /// reachable feeds.
+        /// </summary>
         [Fact]
         public void TestReachableFeeds()
         {
@@ -149,6 +170,10 @@ namespace Semmle.Extraction.Tests
             ], reachableFeeds);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
+        /// reachable explicit feeds.
+        /// </summary>
         [Fact]
         public void TestReachableExplicitFeeds()
         {
@@ -165,6 +190,10 @@ namespace Semmle.Extraction.Tests
             ], reachableFeeds);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
+        /// reachable fallback feeds.
+        /// </summary>
         [Fact]
         public void TestReachableFallbackFeeds()
         {
@@ -182,6 +211,10 @@ namespace Semmle.Extraction.Tests
             ], reachableFallback);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
+        /// feeds to use for a given file.
+        /// </summary>
         [Fact]
         public void TestFeedsToUse()
         {
@@ -198,8 +231,12 @@ namespace Semmle.Extraction.Tests
             ], feedsToUse);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
+        /// default feeds and reachable default feeds when no private registries are configured.
+        /// </summary>
         [Fact]
-        public void TestDefaultFeeds1()
+        public void TestDefaultFeedsNugetOrg()
         {
             // Setup
             var feedManager = MakeFeedManager();
@@ -217,8 +254,13 @@ namespace Semmle.Extraction.Tests
             ], reachableDefault);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
+        /// default feeds, reachable default feeds, and fallback feeds when private registries
+        /// are configured and some of them replace the default feeds.
+        /// </summary>
         [Fact]
-        public void TestDefaultFeeds2()
+        public void TestDefaultFeedsPrivateRegistries()
         {
             // Setup
             var logger = new LoggerStub();
@@ -247,8 +289,13 @@ namespace Semmle.Extraction.Tests
             ], reachableFallback);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
+        /// all feeds when https://api.nuget.org/v3/index.json is not replaced by any private registries because
+        /// none of them are configured to replace the base feeds.
+        /// </summary>
         [Fact]
-        public void TestNugetOrg()
+        public void TestNugetOrgNotReplaced()
         {
             // Setup
             var logger = new LoggerStub();
@@ -274,6 +321,12 @@ namespace Semmle.Extraction.Tests
             ], allFeeds);
 
         }
+
+        /// <summary>
+        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
+        /// all feeds when https://api.nuget.org/v3/index.json and related NuGet.org URLs are replaced by private
+        /// registries configured to replace the base feeds.
+        /// </summary>
         [Fact]
         public void TestNugetOrgReplacement()
         {

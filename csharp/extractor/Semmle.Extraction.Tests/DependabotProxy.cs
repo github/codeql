@@ -28,8 +28,12 @@ namespace Semmle.Extraction.Tests
             return new TemporaryDirectory(tmp, "testing", new LoggerStub());
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the registry proxy correctly handles the case where the port is not specified.
+        /// In this case, the registry proxy should not be created.
+        /// </summary>
         [Fact]
-        public void TestDependabotProxyCreation1()
+        public void TestDependabotProxyNoPort()
         {
             // Setup
             var config = new DependabotConfigurationStub
@@ -46,8 +50,12 @@ namespace Semmle.Extraction.Tests
             Assert.Null(proxy);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the registry proxy correctly handles the case where the host is not specified.
+        /// In this case, the registry proxy should not be created.
+        /// </summary>
         [Fact]
-        public void TestDependabotProxyCreation2()
+        public void TestDependabotProxyNoHost()
         {
             // Setup
             var config = new DependabotConfigurationStub
@@ -96,6 +104,10 @@ namespace Semmle.Extraction.Tests
         -----END CERTIFICATE-----
         """;
 
+        /// <summary>
+        /// The purpose of this test is to verify that the registry proxy correctly handles the case
+        /// where the port, host, and certificate are specified.
+        /// </summary>
         [Fact]
         public void TestDependabotProxyCertificate()
         {
@@ -118,8 +130,13 @@ namespace Semmle.Extraction.Tests
             Assert.NotNull(proxy.CertificatePath);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the registry proxy correctly handles the case
+        /// where the RegistryURLs environment variable is not a valid JSON list.
+        /// In this case, the registry proxy should be created, but the list of private registries should be empty.
+        /// </summary>
         [Fact]
-        public void TestDependabotRegistryUrls1()
+        public void TestDependabotRegistryUrlsParseError()
         {
             // Setup
             var config = new DependabotConfigurationStub
@@ -139,8 +156,13 @@ namespace Semmle.Extraction.Tests
             Assert.Empty(proxy.RegistryBaseURLs);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the registry proxy correctly handles the case
+        /// where the RegistryURLs environment variable is a valid JSON list with a single entry.
+        /// In this case, the registry proxy should be created, and the list of private registries should contain the single entry.
+        /// </summary>
         [Fact]
-        public void TestDependabotRegistryUrls2()
+        public void TestDependabotRegistryUrlsSingle()
         {
             // Setup
             var config = new DependabotConfigurationStub
@@ -162,6 +184,13 @@ namespace Semmle.Extraction.Tests
             Assert.Empty(proxy.RegistryBaseURLs);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the registry proxy correctly handles the case
+        /// where the RegistryURLs environment variable is a valid JSON list with multiple entries, but only one of them
+        /// is of type "nuget_feed", which is relevant for C#.
+        /// In this case, the registry proxy should be created, and the list of private registries should
+        /// contain only the entry of type "nuget_feed".
+        /// </summary>
         [Fact]
         public void TestDependabotRegistryUrls3()
         {
@@ -185,8 +214,15 @@ namespace Semmle.Extraction.Tests
             Assert.Empty(proxy.RegistryBaseURLs);
         }
 
+        /// <summary>
+        /// The purpose of this test is to verify that the registry proxy correctly handles the case
+        /// where the RegistryURLs environment variable is a valid JSON list with multiple entries and one of them
+        /// is configured to replace the base feeds.
+        /// In this case, the registry proxy should be created, and the list of private registries should contain all
+        /// entries, while the list of base registries should contain only the entry that replaces the base feeds.
+        /// </summary>
         [Fact]
-        public void TestDependabotReplacesBase1()
+        public void TestDependabotRegistryUrlsReplacesBase()
         {
             // Setup
             var config = new DependabotConfigurationStub
