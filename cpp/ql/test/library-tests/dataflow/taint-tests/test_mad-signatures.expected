@@ -1962,6 +1962,15 @@ getSignatureParameterName
 | (BUF_MEM *,size_t) |  | BUF_MEM_grow | 1 | size_t |
 | (BUF_MEM *,size_t) |  | BUF_MEM_grow_clean | 0 | BUF_MEM * |
 | (BUF_MEM *,size_t) |  | BUF_MEM_grow_clean | 1 | size_t |
+| (Blob *,int,const Blob &,int,int) | BlobUtil | copy | 0 | Blob * |
+| (Blob *,int,const Blob &,int,int) | BlobUtil | copy | 1 | int |
+| (Blob *,int,const Blob &,int,int) | BlobUtil | copy | 2 | const Blob & |
+| (Blob *,int,const Blob &,int,int) | BlobUtil | copy | 3 | int |
+| (Blob *,int,const Blob &,int,int) | BlobUtil | copy | 4 | int |
+| (Blob *,int,const char *,int) | BlobUtil | copy | 0 | Blob * |
+| (Blob *,int,const char *,int) | BlobUtil | copy | 1 | int |
+| (Blob *,int,const char *,int) | BlobUtil | copy | 2 | const char * |
+| (Blob *,int,const char *,int) | BlobUtil | copy | 3 | int |
 | (BrotliBitReader *const,uint64_t,uint64_t *) |  | BrotliSafeReadBits32Slow | 0 | BrotliBitReader *const |
 | (BrotliBitReader *const,uint64_t,uint64_t *) |  | BrotliSafeReadBits32Slow | 1 | uint64_t |
 | (BrotliBitReader *const,uint64_t,uint64_t *) |  | BrotliSafeReadBits32Slow | 2 | uint64_t * |
@@ -13127,6 +13136,10 @@ getSignatureParameterName
 | (char *,char,char **) |  | __old_strtok_r_1c | 0 | char * |
 | (char *,char,char **) |  | __old_strtok_r_1c | 1 | char |
 | (char *,char,char **) |  | __old_strtok_r_1c | 2 | char ** |
+| (char *,const Blob &,int,int) | BlobUtil | copy | 0 | char * |
+| (char *,const Blob &,int,int) | BlobUtil | copy | 1 | const Blob & |
+| (char *,const Blob &,int,int) | BlobUtil | copy | 2 | int |
+| (char *,const Blob &,int,int) | BlobUtil | copy | 3 | int |
 | (char *,const char *) |  | xstrdup | 0 | char * |
 | (char *,const char *) |  | xstrdup | 1 | const char * |
 | (char *,const char **,const char **,const char **,const char **,const char **) |  | _nl_explode_name | 0 | char * |

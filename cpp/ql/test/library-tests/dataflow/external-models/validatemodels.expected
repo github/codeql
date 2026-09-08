@@ -370,6 +370,8 @@
 | Dubious signature "(BN_MONT_CTX *,const BIGNUM *,int,const unsigned char *,size_t,uint32_t,uint32_t)" in summary model. |
 | Dubious signature "(BN_RECP_CTX *,const BIGNUM *,BN_CTX *)" in summary model. |
 | Dubious signature "(BUF_MEM *,size_t)" in summary model. |
+| Dubious signature "(Blob *,int,const Blob &,int,int)" in summary model. |
+| Dubious signature "(Blob *,int,const char *,int)" in summary model. |
 | Dubious signature "(BrotliBitReader *const,uint64_t,uint64_t *)" in summary model. |
 | Dubious signature "(BrotliDecoderState *,BrotliDecoderStateInternal *,BrotliSharedDictionaryType,size_t,const uint8_t[])" in summary model. |
 | Dubious signature "(BrotliDecoderState *,BrotliDecoderStateInternal *,brotli_decoder_metadata_start_func,brotli_decoder_metadata_chunk_func,void *)" in summary model. |
@@ -2948,6 +2950,7 @@
 | Dubious signature "(char *,char *__restrict__,int,FILE *,FILE *__restrict__)" in summary model. |
 | Dubious signature "(char *,char *__restrict__,size_t,const char *,const char *__restrict__,const tm *,const tm *__restrict__,locale_t)" in summary model. |
 | Dubious signature "(char *,char,char **)" in summary model. |
+| Dubious signature "(char *,const Blob &,int,int)" in summary model. |
 | Dubious signature "(char *,const char *)" in summary model. |
 | Dubious signature "(char *,const char **,const char **,const char **,const char **,const char **)" in summary model. |
 | Dubious signature "(char *,const char *,char **)" in summary model. |
