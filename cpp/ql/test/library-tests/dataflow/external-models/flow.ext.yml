@@ -49,6 +49,7 @@ extensions:
       - ["", "Container", True, "emplace", "", "", "Argument[forward].Parameter[-1]", "Argument[-1].Element", "value", "manual"]
       - ["", "Container", True, "get", "", "", "Argument[-1].Element", "ReturnValue[*]", "value", "manual"]
       - ["", "Element", True, "Element", "", "", "Argument[0]", "Argument[-1].Field[Element::x]", "value", "manual"]
+      - ["", "ElementWithDefaultArgument", True, "ElementWithDefaultArgument", "", "", "Argument[0]", "Argument[-1].Field[ElementWithDefaultArgument::x]", "value", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: forwardsModel

@@ -397,3 +397,17 @@ void forward_test_model() {
   Element e = c.get();
   ymlSink(e.x); // $ ir
 }
+
+struct ElementWithDefaultArgument {
+  int x;
+  ElementWithDefaultArgument(int x, int = 0);
+};
+
+void forward_test_model_with_default_argument() {
+  Container<ElementWithDefaultArgument> c;
+  int x = ymlSource();
+  c.emplace(0, x);
+
+  ElementWithDefaultArgument e = c.get();
+  ymlSink(e.x); // $ MISSING: ir
+}
