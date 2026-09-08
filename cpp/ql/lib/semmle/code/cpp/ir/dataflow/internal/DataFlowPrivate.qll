@@ -603,15 +603,15 @@ private Type stripReferences(Type unspecifiedType) {
 private predicate forwardingCallTargetsConstructor(
   CallInstruction call, Cpp::Constructor constructor
 ) {
-  exists(int start |
+  exists(int start, int numberOfForwardedArguments |
     External::forwards(call.getStaticCallTarget(), constructor, start) and
-    call.getNumberOfPositionalArguments() = start + constructor.getNumberOfParameters() and
-    forall(int i, Type typeCall, Type typeConstructor |
-      i = [0 .. constructor.getNumberOfParameters() - 1] and
-      typeCall = stripReferences(call.getPositionalArgument(start + i).getResultType()) and
-      typeConstructor = stripReferences(constructor.getParameter(i).getUnspecifiedType())
-    |
-      typeCall = typeConstructor
+    call.getNumberOfPositionalArguments() = start + numberOfForwardedArguments and
+    forall(int i | i = [0 .. constructor.getNumberOfParameters() - 1] |
+      i < numberOfForwardedArguments and
+      stripReferences(call.getPositionalArgument(start + i).getResultType()) =
+        stripReferences(constructor.getParameter(i).getUnspecifiedType())
+      or
+      i >= numberOfForwardedArguments and constructor.getParameter(i).hasInitializer()
     )
   )
 }

@@ -409,5 +409,5 @@ void forward_test_model_with_default_argument() {
   c.emplace(0, x);
 
   ElementWithDefaultArgument e = c.get();
-  ymlSink(e.x); // $ MISSING: ir
+  ymlSink(e.x); // $ ir
 }

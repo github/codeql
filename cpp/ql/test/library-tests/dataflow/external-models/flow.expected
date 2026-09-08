@@ -392,6 +392,15 @@ edges
 | test.cpp:397:20:397:22 | call to get [x] | test.cpp:398:11:398:11 | *e [x] | provenance |  |
 | test.cpp:398:11:398:11 | *e [x] | test.cpp:398:13:398:13 | x | provenance |  |
 | test.cpp:398:13:398:13 | x | test.cpp:398:13:398:13 | x | provenance | Sink:MaD:3 |
+| test.cpp:408:11:408:19 | call to ymlSource | test.cpp:408:11:408:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:408:11:408:19 | call to ymlSource | test.cpp:409:16:409:16 | *x | provenance |  |
+| test.cpp:409:3:409:3 | emplace output argument [element, x] | test.cpp:411:34:411:34 | *c [element, x] | provenance |  |
+| test.cpp:409:16:409:16 | *x | test.cpp:409:3:409:3 | emplace output argument [element, x] | provenance | MaD:87 |
+| test.cpp:411:34:411:34 | *c [element, x] | test.cpp:411:39:411:41 | call to get [x] | provenance | MaD:88 |
+| test.cpp:411:39:411:41 | call to get [x] | test.cpp:411:39:411:41 | call to get [x] | provenance |  |
+| test.cpp:411:39:411:41 | call to get [x] | test.cpp:412:11:412:11 | *e [x] | provenance |  |
+| test.cpp:412:11:412:11 | *e [x] | test.cpp:412:13:412:13 | x | provenance |  |
+| test.cpp:412:13:412:13 | x | test.cpp:412:13:412:13 | x | provenance | Sink:MaD:3 |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:24:8:24:11 | * ... | provenance |  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:27:36:27:38 | *cmd | provenance |  |
 | windows.cpp:22:15:22:29 | call to GetCommandLineA | windows.cpp:22:15:22:29 | *call to GetCommandLineA | provenance | Src:MaD:5  |
@@ -890,6 +899,16 @@ nodes
 | test.cpp:398:11:398:11 | *e [x] | semmle.label | *e [x] |
 | test.cpp:398:13:398:13 | x | semmle.label | x |
 | test.cpp:398:13:398:13 | x | semmle.label | x |
+| test.cpp:408:11:408:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:408:11:408:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:409:3:409:3 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
+| test.cpp:409:16:409:16 | *x | semmle.label | *x |
+| test.cpp:411:34:411:34 | *c [element, x] | semmle.label | *c [element, x] |
+| test.cpp:411:39:411:41 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:411:39:411:41 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:412:11:412:11 | *e [x] | semmle.label | *e [x] |
+| test.cpp:412:13:412:13 | x | semmle.label | x |
+| test.cpp:412:13:412:13 | x | semmle.label | x |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | semmle.label | *call to GetCommandLineA |
 | windows.cpp:22:15:22:29 | call to GetCommandLineA | semmle.label | call to GetCommandLineA |
 | windows.cpp:24:8:24:11 | * ... | semmle.label | * ... |
