@@ -737,7 +737,7 @@ newtype TPosition =
     // the function.
     exists(Cpp::Function f, Cpp::Parameter p |
       p = f.getParameter(argumentIndex) and
-      indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1]
+      indirectionIndex = [1 .. Ssa::getMaxIndirectionsForPRType(p.getUnspecifiedType())]
     )
   } or
   TFlowSummaryPosition(ReturnKind rk) { FlowSummaryImpl::Private::relevantFlowSummaryPosition(rk) }
@@ -755,7 +755,7 @@ private newtype TReturnKind =
       [0 .. max(Cpp::Function f |
           not exists(f.getBlock())
         |
-          Ssa::getMaxIndirectionsForType(f.getUnspecifiedType()) - 1 // -1 because a returned value is a prvalue not a glvalue
+          Ssa::getMaxIndirectionsForPRType(f.getUnspecifiedType())
         )]
   } or
   TIndirectReturnKind(int argumentIndex, int indirectionIndex) {
@@ -770,7 +770,7 @@ private newtype TReturnKind =
       [0 .. max(Cpp::Function f |
           not exists(f.getBlock())
         |
-          Ssa::getMaxIndirectionsForType(f.getParameter(argumentIndex).getUnspecifiedType()) - 1 // -1 because an argument is a prvalue not a glvalue
+          Ssa::getMaxIndirectionsForPRType(f.getParameter(argumentIndex).getUnspecifiedType())
         )]
   }
 
