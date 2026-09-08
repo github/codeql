@@ -321,6 +321,7 @@ dependencies = [
  "anyhow",
  "clap",
  "regex",
+ "serde_json",
  "tree-sitter",
  "tree-sitter-graph",
  "tsp",

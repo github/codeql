@@ -1,75 +1,76 @@
 import unittest
-
-from ast import literal_eval
+import json
 
 from semmle.logging import format_message
-from semmle.python.parser.tsg_parser import evaluate_string, rust_to_python_escapes
+from semmle.python.parser.tsg_parser import Node, evaluate_string, read_tsg_python_output
 
 
-class RustEscapeTest(unittest.TestCase):
-    """`tsg-python` serialises strings with Rust's `Debug` formatting, which escapes characters such
-    as U+FE0F as `\\u{...}` -- a syntax Python's `literal_eval` does not accept -- and NUL as `\\0`,
-    which Python reads as an octal escape."""
+class JsonOutputTest(unittest.TestCase):
+    def test_decodes_nodes_edges_and_attribute_values(self):
+        output = json.dumps(
+            [
+                {
+                    "id": 0,
+                    "edges": [
+                        {
+                            "sink": 1,
+                            "attrs": {"body": {"type": "int", "int": 0}},
+                        }
+                    ],
+                    "attrs": {
+                        "_kind": {"type": "string", "string": "Module"},
+                        "_location": {
+                            "type": "list",
+                            "values": [
+                                {"type": "int", "int": 0},
+                                {"type": "int", "int": 0},
+                                {"type": "int", "int": 1},
+                                {"type": "int", "int": 0},
+                            ],
+                        },
+                    },
+                },
+                {
+                    "id": 1,
+                    "edges": [],
+                    "attrs": {
+                        "_kind": {"type": "string", "string": "Name"},
+                        "variable": {
+                            "type": "string",
+                            "string": "caf\u00e9 \u26a0\ufe0f \U0001f4be",
+                        },
+                        "s": {
+                            "type": "string",
+                            "string": '"\u26a0\ufe0f  problem %s: %s"',
+                        },
+                        "is_async": {"type": "bool", "bool": True},
+                        "optional": {"type": "null"},
+                        "_skip_to": {"type": "graphNode", "id": 0},
+                    },
+                },
+            ]
+        ).encode("utf-8")
 
-    def test_untouched_without_escapes(self):
-        text = '"caf\u00e9 \u2713 \U0001f4be"'
-        self.assertEqual(rust_to_python_escapes(text), text)
+        process = unittest.mock.Mock()
+        process.communicate.return_value = (output, None)
+        process.returncode = 0
+        with unittest.mock.patch(
+            "semmle.python.parser.tsg_parser.subprocess.Popen", return_value=process
+        ):
+            node_attr, edge_attr = read_tsg_python_output(
+                "test.py", unittest.mock.Mock()
+            )
 
-    def test_basic_multilingual_plane(self):
-        self.assertEqual(rust_to_python_escapes(r'"\u{fe0f}"'), r'"\ufe0f"')
-        self.assertEqual(rust_to_python_escapes(r'"\u{200d}"'), r'"\u200d"')
-
-    def test_short_and_astral_code_points(self):
-        self.assertEqual(rust_to_python_escapes(r'"\u{0}"'), r'"\u0000"')
-        self.assertEqual(rust_to_python_escapes(r'"\u{1f4a9}"'), r'"\U0001f4a9"')
-
-    def test_other_escapes_are_preserved(self):
-        self.assertEqual(rust_to_python_escapes(r'"a\nb\"c\u{ad}"'), r'"a\nb\"c\u00ad"')
-
-    def test_escaped_backslash_is_not_an_escape_introducer(self):
-        # How a raw string `r"\u{fe0f}"` in the analysed source gets serialised: the `\u{fe0f}` is
-        # literal text, not an escape, and must survive unchanged.
-        self.assertEqual(rust_to_python_escapes(r'"\\u{fe0f}"'), r'"\\u{fe0f}"')
-
-    def test_nul_is_not_left_as_an_octal_escape(self):
-        # Rust renders NUL as `\0`; Python would read that as the start of an octal escape and
-        # swallow the digits that follow, decoding `"\01"` to U+0001 instead of NUL then `1`.
-        self.assertEqual(rust_to_python_escapes(r'"\01"'), r'"\x001"')
-
-    def test_every_escape_shape_round_trips(self):
-        # Rust's `Debug for str` only ever emits these escape shapes. Check that each round-trips
-        # with every printable ASCII neighbour before and after it.
-        for escape_shape, expected in [
-            (r'\0', "\x00"),
-            (r'\t', "\t"),
-            (r'\n', "\n"),
-            (r'\r', "\r"),
-            (r'\\', "\\"),
-            (r'\"', '"'),
-            (r'\u{1}', "\u0001"),
-            (r'\u{1f}', "\u001f"),
-            (r'\u{300}', "\u0300"),
-            (r'\u{fe0f}', "\ufe0f"),
-            (r'\u{e0100}', "\U000e0100"),
-            (r'\u{10fffe}', "\U0010fffe"),
-        ]:
-            for neighbour in map(chr, range(0x20, 0x7F)):
-                rendered_neighbour = {"\\": r"\\", '"': r'\"'}.get(neighbour, neighbour)
-                for position, text, expected_value in [
-                    ("before", '"' + rendered_neighbour + escape_shape + '"', neighbour + expected),
-                    ("after", '"' + escape_shape + rendered_neighbour + '"', expected + neighbour),
-                ]:
-                    with self.subTest(
-                        escape_shape=escape_shape,
-                        neighbour=neighbour,
-                        position=position,
-                    ):
-                        self.assertEqual(literal_eval(rust_to_python_escapes(text)), expected_value)
+        self.assertEqual(node_attr[1]["variable"], "caf\u00e9 \u26a0\ufe0f \U0001f4be")
+        self.assertEqual(node_attr[1]["s"], "\u26a0\ufe0f  problem %s: %s")
+        self.assertIs(node_attr[1]["is_async"], True)
+        self.assertIsNone(node_attr[1]["optional"])
+        self.assertIsInstance(node_attr[1]["_skip_to"], Node)
+        self.assertEqual(node_attr[1]["_skip_to"].id, 0)
+        self.assertEqual(edge_attr, {0: {"body": [(0, 1)]}})
 
     def test_evaluate_string_on_reported_value(self):
-        # The exact value from https://github.com/github/codeql/issues/22435 that used to raise
-        # `truncated \uXXXX escape`.
-        value = rust_to_python_escapes('"\\"\u26a0\\u{fe0f}  problem %s: %s\\""')
+        value = '"\u26a0\ufe0f  problem %s: %s"'
         self.assertEqual(evaluate_string(value), "\u26a0\ufe0f  problem %s: %s")
 
 
