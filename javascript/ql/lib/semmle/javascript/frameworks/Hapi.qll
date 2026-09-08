@@ -4,6 +4,7 @@
 
 import javascript
 import semmle.javascript.frameworks.HTTP
+private import semmle.javascript.dataflow.internal.CallGraphs
 
 module Hapi {
   /**
@@ -116,17 +117,21 @@ module Hapi {
           this.(DataFlow::PropRead).accesses(request, "rawPayload")
           or
           exists(DataFlow::PropRead payload |
-            // `request.payload.name`
+            // `request.payload.name`, or `request.payload` when the object is forwarded.
             payload.accesses(request, "payload") and
-            this.(DataFlow::PropRead).accesses(payload, _)
+            if exists(payload.getAPropertyRead())
+            then this = payload.getAPropertyRead()
+            else this = payload
           )
         )
         or
         kind = "parameter" and
-        exists(DataFlow::PropRead query |
-          // `request.query.name`
-          query.accesses(request, ["query", "params"]) and
-          this.(DataFlow::PropRead).accesses(query, _)
+        exists(DataFlow::PropRead parameter |
+          // `request.query.name` / `request.params.name`, or the object when it is forwarded.
+          parameter.accesses(request, ["query", "params"]) and
+          if exists(parameter.getAPropertyRead())
+          then this = parameter.getAPropertyRead()
+          else this = parameter
         )
         or
         exists(DataFlow::PropRead url |
@@ -199,30 +204,10 @@ module Hapi {
    */
   class RouteSetup extends DataFlow::MethodCallNode, Http::Servers::StandardRouteSetup {
     ServerDefinition server;
-    DataFlow::Node handler;
 
     RouteSetup() {
       server.ref().getAMethodCall() = this and
-      (
-        // server.route({ handler: fun })
-        this.getMethodName() = "route" and
-        this.getOptionArgument(0, "handler") = handler
-        or
-        // server.ext('/', fun)
-        this.getMethodName() = "ext" and
-        handler = this.getArgument(1)
-        or
-        // server.route([{ handler(request){}])
-        this.getMethodName() = "route" and
-        handler =
-          this.getArgument(0)
-              .getALocalSource()
-              .(DataFlow::ArrayCreationNode)
-              .getAnElement()
-              .getALocalSource()
-              .getAPropertySource("handler")
-              .getAFunctionValue()
-      )
+      this.getMethodName() = ["route", "ext"]
     }
 
     override DataFlow::SourceNode getARouteHandler() {
@@ -233,11 +218,45 @@ module Hapi {
       t.start() and
       result = this.getRouteHandler().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = this.getARouteHandler(t2).backtrack(t2, t))
+      this.getMethodName() = "route" and
+      t.isInProp("handler") and
+      result = this.getArgument(0).getALocalSource()
+      or
+      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ |
+        succ = this.getARouteHandler(t2)
+      |
+        result = succ.backtrack(t2, t)
+        or
+        Http::routeHandlerStep(result, succ) and
+        t = t2
+        or
+        DataFlow::SharedFlowStep::storeStep(result.getALocalUse(), succ,
+          DataFlow::PseudoProperties::arrayElement()) and
+        t = t2.continue()
+      )
     }
 
     pragma[noinline]
-    private DataFlow::Node getRouteHandler() { result = handler }
+    private DataFlow::Node getRouteHandler() {
+      // server.route({ handler: fun })
+      this.getMethodName() = "route" and
+      this.getOptionArgument(0, "handler") = result
+      or
+      // server.ext('/', fun)
+      this.getMethodName() = "ext" and
+      result = this.getArgument(1)
+      or
+      // server.route([{ handler(request){}])
+      this.getMethodName() = "route" and
+      result =
+        this.getArgument(0)
+            .getALocalSource()
+            .(DataFlow::ArrayCreationNode)
+            .getAnElement()
+            .getALocalSource()
+            .getAPropertySource("handler")
+            .getAFunctionValue()
+    }
 
     override DataFlow::Node getServer() { result = server }
   }
@@ -259,6 +278,56 @@ module Hapi {
       |
         // heuristic: is not invoked (Hapi invokes this at a call site we cannot reason precisely about)
         not exists(DataFlow::InvokeNode cs | cs.getACallee() = astNode)
+      )
+    }
+  }
+
+  private DataFlow::SourceNode routeDefinitionRef(
+    DataFlow::ObjectLiteralNode definition, DataFlow::TypeTracker t
+  ) {
+    t.start() and
+    result = definition
+    or
+    exists(DataFlow::TypeTracker t2 | result = routeDefinitionRef(definition, t2).track(t2, t))
+  }
+
+  private predicate handlerRegistration(
+    DataFlow::FunctionNode handler, DataFlow::ObjectLiteralNode definition
+  ) {
+    exists(
+      DataFlow::CallNode registration, DataFlow::FunctionNode registrar,
+      DataFlow::ParameterNode handlerParameter, DataFlow::SourceNode handlerRef, int index
+    |
+      registration.getACallee() = registrar.getFunction() and
+      handlerParameter = registrar.getParameter(index) and
+      handlerParameter.flowsTo(definition.getAPropertyWrite("handler").getRhs()) and
+      (
+        handlerRef = handler
+        or
+        handlerRef = CallGraph::callgraphStep(handler, DataFlow::TypeTracker::end())
+      ) and
+      handlerRef.flowsTo(registration.getArgument(index))
+    )
+  }
+
+  /** Data flow through handlers stored in route definitions by registration helpers. */
+  private class RegisteredHandlerCallStep extends DataFlow::SharedFlowStep {
+    DataFlow::CallNode call;
+    DataFlow::FunctionNode handler;
+
+    RegisteredHandlerCallStep() {
+      exists(DataFlow::ObjectLiteralNode definition, DataFlow::PropRead handlerRead |
+        handlerRegistration(handler, definition) and
+        handlerRead.getPropertyName() = "handler" and
+        routeDefinitionRef(definition, DataFlow::TypeTracker::end()).flowsTo(handlerRead.getBase()) and
+        call.getCalleeNode() = handlerRead
+      )
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(int index |
+        pred = call.getArgument(index) and
+        succ = handler.getParameter(index)
       )
     }
   }

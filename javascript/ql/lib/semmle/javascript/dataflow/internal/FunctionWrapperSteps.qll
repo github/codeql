@@ -145,3 +145,30 @@ private module Cached {
 }
 
 import Cached
+
+private DataFlow::SourceNode forwardedCalleeSource(
+  DataFlow::CallNode call, DataFlow::TypeBackTracker t
+) {
+  t.start() and
+  result = call.getCalleeNode().getALocalSource()
+  or
+  exists(DataFlow::TypeBackTracker t2 | result = forwardedCalleeSource(call, t2).backtrack(t2, t))
+}
+
+/** Data flow into a concrete function invoked through a forwarding wrapper. */
+private class FunctionWrapperCallStep extends DataFlow::SharedFlowStep {
+  DataFlow::CallNode call;
+  DataFlow::FunctionNode wrapped;
+
+  FunctionWrapperCallStep() {
+    DataFlow::functionOneWayForwardingStep(wrapped,
+      forwardedCalleeSource(call, DataFlow::TypeBackTracker::end()))
+  }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(int index |
+      pred = call.getArgument(index) and
+      succ = wrapped.getParameter(index)
+    )
+  }
+}
