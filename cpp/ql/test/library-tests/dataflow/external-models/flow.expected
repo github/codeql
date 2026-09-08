@@ -104,14 +104,14 @@ models
 | 103 | Summary: BloombergLP::bdlbb; BlobUtil; true; getContiguousRangeOrCopy; ; ; Argument[*1]; ReturnValue[*]; taint; manual |
 | 104 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
 edges
-| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:56  |
-| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
-| asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:98:7:98:14 | send_str | provenance | TaintFunction |
-| asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:100:64:100:71 | *send_str | provenance | TaintFunction |
-| asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:100:44:100:62 | call to buffer | provenance |  |
-| asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:101:7:101:17 | send_buffer | provenance |  |
-| asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | send_buffer | provenance | Sink:MaD:4 |
-| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:104 |
+| asio_streams.cpp:129:34:129:44 | read_until output argument | asio_streams.cpp:133:7:133:17 | recv_buffer | provenance | Src:MaD:56  |
+| asio_streams.cpp:129:34:129:44 | read_until output argument | asio_streams.cpp:135:29:135:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
+| asio_streams.cpp:139:37:139:44 | call to source | asio_streams.cpp:140:7:140:14 | send_str | provenance | TaintFunction |
+| asio_streams.cpp:139:37:139:44 | call to source | asio_streams.cpp:142:64:142:71 | *send_str | provenance | TaintFunction |
+| asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:142:44:142:62 | call to buffer | provenance |  |
+| asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:143:7:143:17 | send_buffer | provenance |  |
+| asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:145:29:145:39 | send_buffer | provenance | Sink:MaD:4 |
+| asio_streams.cpp:142:64:142:71 | *send_str | asio_streams.cpp:142:44:142:62 | call to buffer | provenance | MaD:104 |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:257:5:257:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:262:5:262:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:266:38:266:41 | *resp | provenance |  |
@@ -526,16 +526,16 @@ edges
 | windows.cpp:1172:21:1172:24 | *guid | windows.cpp:1172:27:1172:29 | StringFromGUID2 output argument | provenance | MaD:76 |
 | windows.cpp:1172:27:1172:29 | StringFromGUID2 output argument | windows.cpp:1174:10:1174:13 | * ... | provenance |  |
 nodes
-| asio_streams.cpp:87:34:87:44 | read_until output argument | semmle.label | read_until output argument |
-| asio_streams.cpp:91:7:91:17 | recv_buffer | semmle.label | recv_buffer |
-| asio_streams.cpp:93:29:93:39 | recv_buffer | semmle.label | recv_buffer |
-| asio_streams.cpp:97:37:97:44 | call to source | semmle.label | call to source |
-| asio_streams.cpp:98:7:98:14 | send_str | semmle.label | send_str |
-| asio_streams.cpp:100:44:100:62 | call to buffer | semmle.label | call to buffer |
-| asio_streams.cpp:100:44:100:62 | call to buffer | semmle.label | call to buffer |
-| asio_streams.cpp:100:64:100:71 | *send_str | semmle.label | *send_str |
-| asio_streams.cpp:101:7:101:17 | send_buffer | semmle.label | send_buffer |
-| asio_streams.cpp:103:29:103:39 | send_buffer | semmle.label | send_buffer |
+| asio_streams.cpp:129:34:129:44 | read_until output argument | semmle.label | read_until output argument |
+| asio_streams.cpp:133:7:133:17 | recv_buffer | semmle.label | recv_buffer |
+| asio_streams.cpp:135:29:135:39 | recv_buffer | semmle.label | recv_buffer |
+| asio_streams.cpp:139:37:139:44 | call to source | semmle.label | call to source |
+| asio_streams.cpp:140:7:140:14 | send_str | semmle.label | send_str |
+| asio_streams.cpp:142:44:142:62 | call to buffer | semmle.label | call to buffer |
+| asio_streams.cpp:142:44:142:62 | call to buffer | semmle.label | call to buffer |
+| asio_streams.cpp:142:64:142:71 | *send_str | semmle.label | *send_str |
+| asio_streams.cpp:143:7:143:17 | send_buffer | semmle.label | send_buffer |
+| asio_streams.cpp:145:29:145:39 | send_buffer | semmle.label | send_buffer |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | semmle.label | *call to GetBodyStream |
 | azure.cpp:253:48:253:60 | call to GetBodyStream | semmle.label | call to GetBodyStream |
 | azure.cpp:257:5:257:8 | *resp | semmle.label | *resp |
