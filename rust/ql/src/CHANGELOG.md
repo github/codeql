@@ -1,3 +1,23 @@
+## 0.1.42
+
+### New Queries
+
+* Added a new query, `rust/command-line-injection`, to detect uncontrolled command lines.
+
+### Minor Analysis Improvements
+
+* The `rust/hard-coded-cryptographic-value` query has been adjusted to produce
+fewer results in certain situations where many results were being produced with very similar source locations.
+* The `rust/unused-variable` query no longer reports variables in functions containing the standard `todo!()` or `unimplemented!()` macros.
+
+## 0.1.41
+
+No user-facing changes.
+
+## 0.1.40
+
+No user-facing changes.
+
 ## 0.1.39
 
 No user-facing changes.

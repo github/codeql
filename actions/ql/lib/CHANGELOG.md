@@ -1,3 +1,35 @@
+## 0.6.1
+
+### New Features
+
+* GitHub Actions databases now extract `actions.lock` files. The new `ActionsLock` class
+  provides access to their YAML abstract syntax trees.
+
+### Minor Analysis Improvements
+
+* Checks on author association fields read from the event payload (e.g. `github.event.pull_request.author_association`) now only count as protection for events whose payload actually populates that field. Previously, a condition such as `github.event.pull_request.author_association != 'NONE'` on a workflow triggered by `issues` events was treated as a protective check even though `github.event.pull_request` is not populated for `issues` events, which makes the condition vacuous. This change may result in more alerts for queries using the `ControlCheck` class.
+
+## 0.6.0
+
+### Breaking Changes
+
+* Checks on actor fields read from the event payload (e.g. `github.event.pull_request.user.login`) were split out of `ActorIfCheck` into a new class `EventActorIfCheck`. The `ActorIfCheck` class now only covers `github.actor` and `github.triggering_actor`.
+
+### Minor Analysis Improvements
+
+* Checks on actor fields read from the event payload (e.g. `github.event.pull_request.user.login`) now only count as protection for events whose payload actually populates that field. Previously, a condition such as `github.event.pull_request.user.login != 'name'` on a workflow triggered by `issues` events was treated as a protective check even though `github.event.pull_request` is not populated for `issues` events, which makes the condition vacuous. This change may result in more alerts for queries using the `ControlCheck` class.
+* Added an option to `EnvironmentCheck` to become specified by a MaD model, otherwise it will continue as the default it previously was. Without adding models to `actions/ql/lib/ext/config/deployment_environment.yml` the behavior of every query will be unchanged. When models are added queries using `ControlCheck` may find more results in cases where an environment is no longer a sufficient sanitizer.
+
+## 0.5.0
+
+### Breaking Changes
+
+* The `codeql.actions.security.SelfHostedQuery` module has been removed because runner labels do not reliably distinguish self-hosted runners from managed runners.
+
+### Minor Analysis Improvements
+
+* GitHub Actions analysis now recognizes untrusted data in `github.event.merge_group` for workflows triggered by the `merge_group` event.
+
 ## 0.4.40
 
 ### Minor Analysis Improvements

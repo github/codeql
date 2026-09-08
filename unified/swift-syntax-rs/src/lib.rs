@@ -120,6 +120,27 @@ mod tests {
             json.contains("\"kind\":\"sourceFile\""),
             "unexpected tree: {json}"
         );
+        assert!(
+            json.contains("\"statements\":[]"),
+            "empty collections should be serialized as JSON arrays: {json}"
+        );
+    }
+
+    #[test]
+    fn serializes_json_strings_and_keys_deterministically() {
+        let source = "/* quote \" slash / backslash \\ tab \t newline\n emoji 😀 combining e\u{301} control \u{1} */\nlet x = 1";
+        let json = parse_to_json(source).expect("parsing should succeed");
+
+        assert!(
+            json.contains(
+                r#""text":"\/* quote \" slash \/ backslash \\ tab \t newline\n emoji 😀 combining é control \u0001 *\/""#
+            ),
+            "JSON string was not escaped correctly: {json}"
+        );
+        assert!(
+            json.contains(r#""start":{"column":1,"line":1,"offset":0}"#),
+            "JSON object keys were not sorted: {json}"
+        );
     }
 
     #[test]

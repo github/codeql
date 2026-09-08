@@ -1,0 +1,4 @@
+name: codeql/actions-lock-integration-test
+dependencies:
+  codeql/actions-all: "*"
+warnOnImplicitThis: true

@@ -10,7 +10,7 @@ extensions:
       - ["sqlx_core::query_scalar::query_scalar", "Argument[0]", "sql-injection", "manual"]
       - ["sqlx_core::query_scalar_with::query_scalar_with", "Argument[0]", "sql-injection", "manual"]
       - ["sqlx_core::raw_sql::raw_sql", "Argument[0]", "sql-injection", "manual"]
-      - ["<_ as sqlx_core::executor::Executor>::execute", "Argument[0]", "sql-injection", "manual"]
+      - ["<sqlx_core::executor::Executor>::execute", "Argument[0]", "sql-injection", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel

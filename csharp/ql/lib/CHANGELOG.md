@@ -1,3 +1,29 @@
+## 7.3.0
+
+### New Features
+
+* Added taint modeling for OData action parameter binding (`Microsoft.AspNet.OData`/`Microsoft.AspNetCore.OData`). Values cast, `as`-converted, or type-tested out of `ODataActionParameters`, and entities tracked by `Delta<T>` (via `GetInstance`, `Patch`, `Put`, `CopyChangedValues`, and `CopyUnchangedValues`), now taint the members of the target type.
+
+### Minor Analysis Improvements
+
+* In `build-mode: none`, project and solution restoration is now always attempted using the feeds available.
+* C# analysis with build mode `none` now lists unreachable explicitly configured NuGet feeds in both the extraction warning and the tool status page note. This makes it easier to identify feeds that may cause dependencies to be missing from the analysis.
+* Improved ASP.NET Core MVC controller and action discovery to more closely match runtime behavior, including application parts, endpoint mappings, inherited actions, and controller and action exclusions. Service-injected action parameters are no longer modeled as remote input.
+
+## 7.2.0
+
+### New Features
+
+* Added the `AdditionalTaintStep` extension point (`semmle.code.csharp.dataflow.FlowSteps`). Extend this class to add additional taint steps that apply to all taint-tracking configurations.
+
+### Major Analysis Improvements
+
+* Simplified and streamlined the use of NuGet sources when downloading dependencies. In fallback scenarios and specialized package downloads, NuGet sources are now passed directly to `dotnet restore` via the CLI. Furthermore, no `nuget.config` files are created for fallback scenarios, and private registries are used when attempting to download missing packages that were not restored as part of the normal `dotnet restore` process.
+
+## 7.1.2
+
+No user-facing changes.
+
 ## 7.1.1
 
 No user-facing changes.

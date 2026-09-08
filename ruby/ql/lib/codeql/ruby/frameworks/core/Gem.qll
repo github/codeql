@@ -90,6 +90,9 @@ module Gem {
       result = this.getAPublicModule().getStmt(_).(SingletonClass)
     }
 
+    /** Holds if this gem is vendored in this codebase. */
+    predicate isVendored() { File.super.getParentContainer+().getBaseName() = "vendor" }
+
     /** Gets a parameter from an exported method, which is an input to this gem. */
     DataFlow::ParameterNode getAnInputParameter() {
       exists(MethodBase method |
@@ -107,6 +110,7 @@ module Gem {
   DataFlow::ParameterNode getALibraryInput() {
     exists(GemSpec spec |
       exists(spec.getName()) and // we only consider `.gemspec` files that have a name
+      not spec.isVendored() and // if the gem is vendored its parameters are not external inputs
       result = spec.getAnInputParameter()
     )
   }

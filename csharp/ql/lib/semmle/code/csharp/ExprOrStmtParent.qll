@@ -6,6 +6,7 @@
 
 import csharp
 private import internal.Location
+private import controlflow.internal.ControlFlowGraph
 
 /**
  * INTERNAL: Do not use.
@@ -145,6 +146,8 @@ private module Cached {
     parent*(cfe, c.(Constructor).getObjectInitializerCall())
     or
     parent*(cfe, any(AssignExpr init | c.(ObjectInitMethod).initializes(init)))
+    or
+    parent*(cfe, any(Expr init | Initializers::staticMemberInitializer(c, init)))
   }
 
   /** Holds if the enclosing statement of expression `e` is `s`. */

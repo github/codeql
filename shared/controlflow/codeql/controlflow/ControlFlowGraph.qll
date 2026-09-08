@@ -147,7 +147,7 @@ signature module AstSig<LocationSig Location> {
   }
 
   /** A for-loop that iterates over the elements of a collection. */
-  class ForeachStmt extends LoopStmt {
+  class ForEachStmt extends LoopStmt {
     /** Gets the variable declaration of this `foreach` loop. */
     Expr getVariable();
 
@@ -571,7 +571,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       not n instanceof LogicalNotExpr and
       not n instanceof ConditionalExpr and
       not n instanceof Switch and
-      not n instanceof Case
+      not n instanceof Case and
+      not n instanceof BlockStmt and
+      not n instanceof TryStmt
     }
 
     /**
@@ -648,7 +650,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         any(Case case).getGuard() = n
       )
       or
-      any(ForeachStmt foreachstmt).getCollection() = n and kind.isEmptiness()
+      any(ForEachStmt foreachstmt).getCollection() = n and kind.isEmptiness()
       or
       kind.isMatching() and
       (
@@ -1269,6 +1271,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         result = block.(Switch).getStmt(_)
       }
 
+      private predicate callableHasParamDefault(Callable c, Expr defaultValue) {
+        exists(Parameter p | p.getDefaultValue() = defaultValue and c = getEnclosingCallable(p))
+      }
+
       /**
        * Holds if an abrupt completion `c` from within `ast` is caught with
        * flow continuing at `n`.
@@ -1276,7 +1282,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       private predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
         Input2::endAbruptCompletion(ast, n, c)
         or
-        exists(Callable callable | callableHasBodyPart(callable, ast) |
+        exists(Callable callable |
+          callableHasBodyPart(callable, ast) or callableHasParamDefault(callable, ast)
+        |
           c.getSuccessorType() instanceof ReturnSuccessor and
           n.(NormalExitNodeImpl).getEnclosingCallable() = callable
           or
@@ -1543,8 +1551,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n1.isAfterTrue(condexpr.getCondition()) and
           n2.isBefore(condexpr.getThen())
           or
+          n1.isAfterTrue(condexpr.getCondition()) and
+          not exists(condexpr.getThen()) and
+          n2.isAfter(condexpr)
+          or
           n1.isAfterFalse(condexpr.getCondition()) and
           n2.isBefore(condexpr.getElse())
+          or
+          n1.isAfterFalse(condexpr.getCondition()) and
+          not exists(condexpr.getElse()) and
+          n2.isAfter(condexpr)
         )
         or
         exists(PatternMatchExpr pme |
@@ -1640,7 +1656,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfter(loopstmt)
         )
         or
-        exists(ForeachStmt foreachstmt |
+        exists(ForEachStmt foreachstmt |
           n1.isBefore(foreachstmt) and
           n2.isBefore(foreachstmt.getCollection())
           or
@@ -1737,6 +1753,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
               not exists(trystmt.getFinally()) and beforeFinally.isAfter(trystmt)
             )
           |
+            not exists(trystmt.getBody(_)) and
+            n1.isBefore(trystmt) and
+            n2 = beforeElse
+            or
             exists(int i |
               n1.isAfter(trystmt.getBody(i)) and
               not exists(trystmt.getBody(i + 1)) and
@@ -2053,6 +2073,33 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             result = this.getASuccessor(any(ExceptionSuccessor t))
           }
 
+          /*
+           * Note that the following 3 predicates, `isAfterValue`,
+           * `isAfterTrue`, and `isAfterFalse`, shadow their counterparts in
+           * `PreControlFlowNode`, and that their semantics are slightly
+           * different.
+           *
+           * This is because, in `PreControlFlowNode`, during CFG construction,
+           * we need to identify the control flow node that results from the
+           * evaluation of an AST node to a certain value, but that control
+           * flow node may or may not encode that fact. In contrast, in
+           * `ControlFlowNode`, we instead want to know what the node actually
+           * encodes.
+           */
+
+          /** Holds if this node indicates that `n` evaluates to the value `t`. */
+          predicate isAfterValue(AstNode n, ConditionalSuccessor t) { this = TAfterValueNode(n, t) }
+
+          /** Holds if this node indicates that `n` evaluates to the value `true`. */
+          predicate isAfterTrue(AstNode n) {
+            this = TAfterValueNode(n, any(BooleanSuccessor b | b.getValue() = true))
+          }
+
+          /** Holds if this node indicates that `n` evaluates to the value `false`. */
+          predicate isAfterFalse(AstNode n) {
+            this = TAfterValueNode(n, any(BooleanSuccessor b | b.getValue() = false))
+          }
+
           /**
            * Holds if this node dominates `that` node.
            *
@@ -2217,6 +2264,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             query = "ambiguousAdditionalNode" and
             results = strictcount(AstNode n, string tag | ambiguousAdditionalNode(n, tag))
             or
+            query = "invalidAbruptCompletionOrigin" and
+            results =
+              strictcount(AstNode ast, PreControlFlowNode node |
+                invalidAbruptCompletionOrigin(ast, node)
+              )
+            or
             query = "missingInNodeForPostOrInOrder" and
             results = strictcount(AstNode ast | missingInNodeForPostOrInOrder(ast))
             or
@@ -2305,6 +2358,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           }
 
           /**
+           * Holds if the language-specific CFG input supplies an abrupt completion for `ast` whose
+           * origin `node` does not belong to `ast`.
+           */
+          query predicate invalidAbruptCompletionOrigin(AstNode ast, PreControlFlowNode node) {
+            Input2::beginAbruptCompletion(ast, node, _, _) and
+            not node.isIn(ast) and
+            not node.isAdditional(ast, _)
+          }
+
+          /**
            * Holds if the "in" node is unreachable for a post-or-in-order AST node.
            *
            * If the "before" node of a post-or-in-order AST node is reachable,
@@ -2354,7 +2417,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             // allow for loop headers in foreach loops (they're checking emptiness on the iterator, not the collection)
             not (
               t instanceof DirectSuccessor and
-              node.isAdditional(any(ForeachStmt foreach), loopHeaderTag())
+              node.isAdditional(any(ForEachStmt foreach), loopHeaderTag())
             ) and
             // allow for functions with multiple bodies
             not exists(Callable c |

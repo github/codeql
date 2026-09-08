@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     sw.Write(argsString);
                 }
 
-                dotnet.Exec($"\"{cscPath}\" /noconfig @\"{cscArgsPath}\"");
+                dotnet.Exec([cscPath, "/noconfig", $"@{cscArgsPath}"]);
 
                 var files = Directory.GetFiles(outputFolder, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
 

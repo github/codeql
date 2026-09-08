@@ -42,9 +42,9 @@ module FlowSource {
     Range() { any() }
 
     override predicate isSource(
-      string output, string kind, Impl::Public::Provenance provenance, string model
+      string output, string kind, Impl::Public::Provenance provenance, boolean isExact, string model
     ) {
-      this.isSource(output, kind) and provenance = "manual" and model = ""
+      this.isSource(output, kind) and provenance = "manual" and isExact = true and model = ""
     }
 
     /**

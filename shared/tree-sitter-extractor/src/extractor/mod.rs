@@ -904,10 +904,10 @@ impl<'a> Visitor<'a> {
                 if tp == single_type {
                     return true;
                 }
-                if let EntryKind::Union { members } = &self.schema.get(single_type).unwrap().kind {
-                    if self.type_matches_set(tp, members) {
-                        return true;
-                    }
+                if let EntryKind::Union { members } = &self.schema.get(single_type).unwrap().kind
+                    && self.type_matches_set(tp, members)
+                {
+                    return true;
                 }
             }
             node_types::FieldTypeInfo::Multiple { types, .. } => {
@@ -926,10 +926,10 @@ impl<'a> Visitor<'a> {
             return true;
         }
         for other in types.iter() {
-            if let EntryKind::Union { members } = &self.schema.get(other).unwrap().kind {
-                if self.type_matches_set(tp, members) {
-                    return true;
-                }
+            if let EntryKind::Union { members } = &self.schema.get(other).unwrap().kind
+                && self.type_matches_set(tp, members)
+            {
+                return true;
             }
         }
         false

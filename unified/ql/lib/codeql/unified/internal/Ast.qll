@@ -96,7 +96,7 @@ module Unified {
   }
 
   /** A class representing `accessor_declaration` nodes. */
-  class AccessorDeclaration extends @unified_accessor_declaration, F::Member, F::Stmt {
+  class AccessorDeclaration extends @unified_accessor_declaration, F::Callable, F::Member, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AccessorDeclaration" }
 
@@ -104,7 +104,7 @@ module Unified {
     final F::AccessorKind getAccessorKind() { unified_accessor_declaration_def(this, result, _) }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_accessor_declaration_body(this, result) }
+    final override F::Block getBody() { unified_accessor_declaration_body(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_accessor_declaration_modifier(this, i, result) }
@@ -189,7 +189,7 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "AssignExpr" }
 
     /** Gets the node corresponding to the field `target`. */
-    final F::ExprOrPattern getTarget() { unified_assign_expr_def(this, result, _) }
+    final F::Expr getTarget() { unified_assign_expr_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
     final F::Expr getValue() { unified_assign_expr_def(this, _, result) }
@@ -373,6 +373,11 @@ module Unified {
     }
   }
 
+  class Callable extends @unified_callable, F::AstNode {
+    /** Gets the node corresponding to the field `body`. */
+    abstract F::Block getBody();
+  }
+
   /** A class representing `catch_clause` nodes. */
   class CatchClause extends @unified_catch_clause, F::AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -503,12 +508,14 @@ module Unified {
   }
 
   /** A class representing `constructor_declaration` nodes. */
-  class ConstructorDeclaration extends @unified_constructor_declaration, F::Member, F::Stmt {
+  class ConstructorDeclaration extends @unified_constructor_declaration, F::Callable, F::Member,
+    F::Stmt
+  {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ConstructorDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_constructor_declaration_def(this, result) }
+    final override F::Block getBody() { unified_constructor_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
@@ -581,12 +588,14 @@ module Unified {
   }
 
   /** A class representing `destructor_declaration` nodes. */
-  class DestructorDeclaration extends @unified_destructor_declaration, F::Member, F::Stmt {
+  class DestructorDeclaration extends @unified_destructor_declaration, F::Callable, F::Member,
+    F::Stmt
+  {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DestructorDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_destructor_declaration_def(this, result) }
+    final override F::Block getBody() { unified_destructor_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
@@ -652,7 +661,7 @@ module Unified {
     }
   }
 
-  class Expr extends @unified_expr, F::ExprOrOperator, F::ExprOrPattern, F::ExprOrType, F::Stmt { }
+  class Expr extends @unified_expr, F::ExprOrOperator, F::ExprOrType, F::Stmt { }
 
   /** A class representing `expr_equality_pattern` nodes. */
   class ExprEqualityPattern extends @unified_expr_equality_pattern, F::Pattern {
@@ -667,8 +676,6 @@ module Unified {
   }
 
   class ExprOrOperator extends @unified_expr_or_operator, F::AstNode { }
-
-  class ExprOrPattern extends @unified_expr_or_pattern, F::AstNode { }
 
   class ExprOrType extends @unified_expr_or_type, F::AstNode { }
 
@@ -718,12 +725,12 @@ module Unified {
   }
 
   /** A class representing `function_declaration` nodes. */
-  class FunctionDeclaration extends @unified_function_declaration, F::Member, F::Stmt {
+  class FunctionDeclaration extends @unified_function_declaration, F::Callable, F::Member, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_function_declaration_body(this, result) }
+    final override F::Block getBody() { unified_function_declaration_body(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_function_declaration_modifier(this, i, result) }
@@ -774,12 +781,12 @@ module Unified {
   }
 
   /** A class representing `function_expr` nodes. */
-  class FunctionExpr extends @unified_function_expr, F::Expr {
+  class FunctionExpr extends @unified_function_expr, F::Callable, F::Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionExpr" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_function_expr_def(this, result) }
+    final override F::Block getBody() { unified_function_expr_def(this, result) }
 
     /** Gets the node corresponding to the field `capture_declaration`. */
     final F::VariableDeclaration getCaptureDeclaration(int i) {
@@ -949,12 +956,12 @@ module Unified {
   }
 
   /** A class representing `initializer_declaration` nodes. */
-  class InitializerDeclaration extends @unified_initializer_declaration, F::Member {
+  class InitializerDeclaration extends @unified_initializer_declaration, F::Callable, F::Member {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InitializerDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_initializer_declaration_def(this, result) }
+    final override F::Block getBody() { unified_initializer_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
@@ -1078,9 +1085,14 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
+    /** Gets the node corresponding to the field `sub_pattern`. */
+    final F::Pattern getSubPattern() { unified_name_pattern_sub_pattern(this, result) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
-      unified_name_pattern_def(this, result) or unified_name_pattern_modifier(this, _, result)
+      unified_name_pattern_def(this, result) or
+      unified_name_pattern_modifier(this, _, result) or
+      unified_name_pattern_sub_pattern(this, result)
     }
   }
 
@@ -1190,7 +1202,7 @@ module Unified {
     }
   }
 
-  class Pattern extends @unified_pattern, F::ExprOrPattern { }
+  class Pattern extends @unified_pattern, F::Expr { }
 
   /** A class representing `pattern_element` nodes. */
   class PatternElement extends @unified_pattern_element, F::AstNode {
@@ -1345,12 +1357,12 @@ module Unified {
   }
 
   /** A class representing `top_level` nodes. */
-  class TopLevel extends @unified_top_level, F::AstNode {
+  class TopLevel extends @unified_top_level, F::Callable {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TopLevel" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_top_level_def(this, result) }
+    final override F::Block getBody() { unified_top_level_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_top_level_def(this, result) }
@@ -1895,6 +1907,8 @@ module Unified {
       or
       result = node.(NamePattern).getModifier(i) and name = "getModifier"
       or
+      result = node.(NamePattern).getSubPattern() and i = -1 and name = "getSubPattern"
+      or
       result = node.(NamedTypeExpr).getName() and i = -1 and name = "getName"
       or
       result = node.(NamedTypeExpr).getQualifier() and i = -1 and name = "getQualifier"
@@ -2064,6 +2078,8 @@ module UnifiedFinal {
 
   final class CallExpr = F::CallExpr;
 
+  final class Callable = F::Callable;
+
   final class CatchClause = F::CatchClause;
 
   final class ClassLikeDeclaration = F::ClassLikeDeclaration;
@@ -2091,8 +2107,6 @@ module UnifiedFinal {
   final class ExprEqualityPattern = F::ExprEqualityPattern;
 
   final class ExprOrOperator = F::ExprOrOperator;
-
-  final class ExprOrPattern = F::ExprOrPattern;
 
   final class ExprOrType = F::ExprOrType;
 

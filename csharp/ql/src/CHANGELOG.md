@@ -1,3 +1,26 @@
+## 1.9.3
+
+### Minor Analysis Improvements
+
+* The `cs/linq/missed-where` query no longer flags `foreach` loops where the matching branch terminates the method, iterator, or loop instead of continuing with filtered loop work.
+
+## 1.9.2
+
+### Minor Analysis Improvements
+
+* The `cs/simplifiable-boolean-expression` query no longer suggests replacing a negated comparison when the replacement could recursively call an enclosing user-defined operator in `build-mode: none` databases.
+* The `cs/web/missing-token-validation` query now recognizes enabled ASP.NET Core `RequireAntiforgeryToken` attributes when antiforgery middleware is used.
+* The query `cs/virtual-call-in-constructor` has been improved. Uses of virtual members in `nameof` expressions are no longer reported, since they are not calls.
+* Static constructors are now used as the enclosing callable for static member initializer expressions. This improves the precision of a range of queries, including `cs/useless-assignment-to-local` and `cs/dereferenced-value-may-be-null`.
+
+### Bug Fixes
+
+* The query `cs/useless-cast-to-self` no longer reports casts when both the expression type and the cast target type are unknown, which can occur in `build-mode: none` databases.
+
+## 1.9.1
+
+No user-facing changes.
+
 ## 1.9.0
 
 ### Query Metadata Changes

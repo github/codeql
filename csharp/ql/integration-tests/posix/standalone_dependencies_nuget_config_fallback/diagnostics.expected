@@ -27,12 +27,12 @@
   }
 }
 {
-  "markdownMessage": "Found unreachable NuGet feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.",
+  "markdownMessage": "Found unreachable NuGet feeds in C# analysis with build-mode 'none':\n\n- `https://www.nuget.org/api/v2/`\n\nThis may cause missing dependencies in the analysis.",
   "severity": "note",
   "source": {
     "extractorName": "csharp",
     "id": "csharp/autobuilder/buildless/unreachable-feed",
-    "name": "Found unreachable NuGet feed in C# analysis with build-mode 'none'"
+    "name": "Found unreachable NuGet feeds in C# analysis with build-mode 'none'"
   },
   "visibility": {
     "cliSummaryTable": true,

@@ -1,3 +1,21 @@
+## 2.4.5
+
+### Minor Analysis Improvements
+
+* HTML files are now included in file-coverage stats, and will start showing up on the status page for CodeQL under "Scanned Files".
+
+## 2.4.4
+
+### Minor Analysis Improvements
+
+* The `js/superfluous-trailing-arguments` query no longer reports valid arguments passed to the `TransformStream` constructor.
+
+## 2.4.3
+
+### Minor Analysis Improvements
+
+* The `js/missing-rate-limiting` query now recognizes the `@fastify/rate-limit` package as a rate limiter.
+
 ## 2.4.2
 
 No user-facing changes.

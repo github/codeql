@@ -1,6 +1,6 @@
 use crate::trap;
 use itertools::Itertools;
-use ra_ap_base_db::{EditionedFileId, FileText, RootQueryDb, SourceDatabase};
+use ra_ap_base_db::{EditionedFileId, FileText, SourceDatabase};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_load_cargo::{LoadCargoConfig, load_workspace_at};
@@ -115,7 +115,7 @@ impl<'a> RustAnalyzer<'a> {
                         "no text available for the file in the project",
                     )),
                 )?;
-                let editioned_file_id = semantics.attach_first_edition(file_id).ok_or(
+                let editioned_file_id = semantics.attach_first_edition_opt(file_id).ok_or(
                     RustAnalyzerNoSemantics::warning("failed to determine rust edition"),
                 )?;
                 Ok((semantics, editioned_file_id, input))
@@ -127,9 +127,8 @@ impl<'a> RustAnalyzer<'a> {
         match self.get_file_data(path) {
             Ok((semantics, file_id, input)) => {
                 let source_file = semantics.parse(file_id);
-                let errors = semantics
-                    .db
-                    .parse_errors(file_id)
+                let errors = file_id
+                    .parse_errors(semantics.db)
                     .into_iter()
                     .flat_map(|x| x.to_vec())
                     .collect();

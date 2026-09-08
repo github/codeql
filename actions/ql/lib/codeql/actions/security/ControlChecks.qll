@@ -276,7 +276,24 @@ abstract class LabelCheck extends ControlCheck {
   }
 }
 
+/**
+ * A deployment environment that may serve as a sanitizer for
+ * various vulnerabilities.
+ *
+ * It is possible to customize which deployment environments apply. The default behavior
+ * of this model is for any environment to be considered a sanitizer.
+ * If values are provided then those names
+ * will be used to define the valid sanitizer set.
+ * To describe the situation where there is no acceptable sanitizer environment
+ * populate the predicate `enabledDeploymentEnvironmentDataModel` to contain a single empty string.
+ */
 class EnvironmentCheck extends ControlCheck instanceof Environment {
+  EnvironmentCheck() {
+    if enabledDeploymentEnvironmentDataModel(_)
+    then enabledDeploymentEnvironmentDataModel(this.(Environment).getName())
+    else this instanceof Environment
+  }
+
   // Environment checks are not effective against any mutable attacks
   // they do actually protect against untrusted code execution (sha)
   override predicate protectsCategoryAndEvent(string category, string event) {
@@ -307,17 +324,6 @@ class LabelIfCheck extends LabelCheck instanceof If {
 
 class ActorIfCheck extends ActorCheck instanceof If {
   ActorIfCheck() {
-    // eg: github.event.pull_request.user.login == 'admin'
-    exists(
-      normalizeExpr(this.getCondition())
-          .regexpFind([
-              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b",
-              "\\bgithub\\.event\\.head_commit\\.author\\.name\\b",
-              "\\bgithub\\.event\\.commits.*\\.author\\.name\\b",
-              "\\bgithub\\.event\\.sender\\.login\\b"
-            ], _, _)
-    )
-    or
     // eg: github.actor == 'admin'
     // eg: github.triggering_actor == 'admin'
     exists(
@@ -325,6 +331,51 @@ class ActorIfCheck extends ActorCheck instanceof If {
           .regexpFind(["\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",], _, _)
     ) and
     not normalizeExpr(this.getCondition()).matches("%[bot]%")
+  }
+}
+
+/**
+ * Gets a regular expression matching a condition on an actor field that is
+ * only populated for events whose payload contains the `context_prefix` context.
+ */
+private string eventPayloadActorFieldRegex(string context_prefix) {
+  context_prefix = "github.event.pull_request" and
+  result = "\\bgithub\\.event\\.pull_request\\.user\\.login\\b"
+  or
+  context_prefix = "github.event.head_commit" and
+  result = "\\bgithub\\.event\\.head_commit\\.author\\.name\\b"
+  or
+  context_prefix = "github.event.commits" and
+  result = "\\bgithub\\.event\\.commits.*\\.author\\.name\\b"
+  or
+  context_prefix = "github.event.sender" and
+  result = "\\bgithub\\.event\\.sender\\.login\\b"
+}
+
+/** An If node that checks an actor field from the event payload */
+class EventActorIfCheck extends ActorCheck instanceof If {
+  string context_prefix;
+
+  EventActorIfCheck() {
+    // eg: github.event.pull_request.user.login == 'admin'
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind(eventPayloadActorFieldRegex(context_prefix), _, _)
+    )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    ActorCheck.super.protectsCategoryAndEvent(category, event) and
+    (
+      // the `sender` object is part of every webhook event payload
+      context_prefix = "github.event.sender"
+      or
+      // other actor fields only restrict events whose payload populates them.
+      // eg: `github.event.pull_request.user.login` cannot restrict the actor
+      // of an `issues` event since `github.event.pull_request` is not
+      // populated there, which makes the condition vacuous
+      contextTriggerDataModel(event, context_prefix)
+    )
   }
 }
 
@@ -367,16 +418,37 @@ class WorkflowRunRepositoryIfCheck extends RepositoryCheck instanceof If {
   }
 }
 
+/**
+ * Gets a regular expression matching a condition on an author association field
+ * that is only populated for events whose payload contains the `context_prefix`
+ * context.
+ */
+private string eventPayloadAssociationFieldRegex(string context_prefix) {
+  context_prefix = "github.event.comment" and
+  result = "\\bgithub\\.event\\.comment\\.author_association\\b"
+  or
+  context_prefix = "github.event.issue" and
+  result = "\\bgithub\\.event\\.issue\\.author_association\\b"
+  or
+  context_prefix = "github.event.pull_request" and
+  result = "\\bgithub\\.event\\.pull_request\\.author_association\\b"
+}
+
 class AssociationIfCheck extends AssociationCheck instanceof If {
+  string context_prefix;
+
   AssociationIfCheck() {
     // eg: contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association)
-    normalizeExpr(this.getCondition())
-        .splitAt("\n")
-        .regexpMatch([
-            ".*\\bgithub\\.event\\.comment\\.author_association\\b.*",
-            ".*\\bgithub\\.event\\.issue\\.author_association\\b.*",
-            ".*\\bgithub\\.event\\.pull_request\\.author_association\\b.*",
-          ])
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind(eventPayloadAssociationFieldRegex(context_prefix), _, _)
+    )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    AssociationCheck.super.protectsCategoryAndEvent(category, event) and
+    // association fields only restrict events whose payload populates them
+    contextTriggerDataModel(event, context_prefix)
   }
 }
 

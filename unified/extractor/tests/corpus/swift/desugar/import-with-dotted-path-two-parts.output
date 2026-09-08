@@ -31,4 +31,7 @@ top_level
                 name_expr
                   identifier: identifier "Foundation"
               member: identifier "Networking"
-          pattern: bulk_importing_pattern "import Foundation.Networking"
+          pattern:
+            name_pattern
+              identifier: identifier "Networking"
+              sub_pattern: bulk_importing_pattern "import Foundation.Networking"

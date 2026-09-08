@@ -20,20 +20,6 @@ fn update_mode_enabled() -> bool {
         .unwrap_or(false)
 }
 
-/// Whether the external swift-syntax parser is available. When the parser
-/// binary genuinely cannot be found/launched (e.g. no Swift toolchain, and
-/// neither `CODEQL_EXTRACTOR_UNIFIED_SWIFT_SYNTAX_PARSE` nor a `swift-syntax-parse`
-/// on `PATH`), the corpus test is skipped rather than failed — it cannot run
-/// without the Swift-backed parser.
-///
-/// Crucially this checks only that the executable *launches*: a parser that is
-/// present but crashes, emits invalid JSON, or otherwise regresses is
-/// considered available, so the suite runs and fails (rather than silently
-/// skipping the very failures CI needs to catch).
-fn parser_available() -> bool {
-    languages::swift_parse::binary_available()
-}
-
 /// Parse a corpus `.output` file. The file holds a single test case made of
 /// three sections separated by `---` delimiter lines:
 ///
@@ -110,19 +96,29 @@ fn collect_corpus_stems(dir: &Path, out: &mut Vec<std::path::PathBuf>) {
     }
 }
 
+#[cfg(bazel)]
+fn corpus_dir() -> std::path::PathBuf {
+    let base = std::path::PathBuf::from(
+         std::env::var("RUNFILES_DIR").expect("RUNFILES_DIR not set"),
+    );
+    std::fs::read_dir(&base)
+        .expect("failed to read RUNFILES_DIR")
+        .filter_map(Result::ok)
+        .map(|entry| entry.path().join("unified/extractor/tests/corpus"))
+        .find(|path| path.exists())
+        .expect("corpus not found under any runfiles repo root")
+}
+
+#[cfg(not(bazel))]
+fn corpus_dir() -> std::path::PathBuf {
+    std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/corpus")
+}
+
 #[test]
 fn test_corpus() {
-    if !parser_available() {
-        eprintln!(
-            "skipping test_corpus: the swift-syntax parser is unavailable \
-             (set CODEQL_EXTRACTOR_UNIFIED_SWIFT_SYNTAX_PARSE or put \
-             `swift-syntax-parse` on PATH)"
-        );
-        return;
-    }
     let update_mode = update_mode_enabled();
     let all_languages = languages::all_language_specs();
-    let corpus_dir = Path::new("tests/corpus");
+    let corpus_dir = corpus_dir();
 
     for lang in all_languages {
         let output_schema = yeast::node_types_yaml::schema_from_yaml(languages::OUTPUT_AST_SCHEMA)

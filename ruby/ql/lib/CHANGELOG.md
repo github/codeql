@@ -1,3 +1,31 @@
+## 7.0.0
+
+### Breaking Changes
+
+* The Ruby control flow graph implementation has been completely replaced. This
+  affects a number of queries slightly. The CFG now includes additional nodes
+  to more accurately represent certain constructs. This also means that any
+  existing code that implicitly relies on very specific details about the CFG
+  may need to be updated. The CFG no longer uses splitting, which means that
+  AST nodes now have a unique CFG node representation. In particular,
+  `ControlFlowNode.getAstNode` has changed its meaning. The AST-to-CFG mapping
+  remains one-to-many, but now for a different reason. It used to be because of
+  splitting, but now it's because of additional "helper" CFG nodes. To get the
+  (now canonical) CFG node for a given AST node, use
+  `Stmt.getControlFlowNode()` instead.
+
+## 6.0.4
+
+### Minor Analysis Improvements
+
+* The algorithm for tracking regexes has been replaced. This can cause result changes in related queries, for example, `rb/polynomial-redos`.
+
+## 6.0.3
+
+### Minor Analysis Improvements
+
+* Removed library input to vendored gems from the set of taint sources. This should reduce false positives for `rb/polynomial-redos`, `rb/regex/badly-anchored-regexp`, `rb/unsafe-code-construction`, `rb/html-constructed-from-input`, and `rb/shell-command-constructed-from-input` whenever vendoring is used.
+
 ## 6.0.2
 
 No user-facing changes.

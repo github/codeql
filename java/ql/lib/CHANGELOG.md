@@ -1,3 +1,25 @@
+## 9.3.0
+
+### New Features
+
+* Factories returned by the Apache Commons Secure XML (`org.apache.commons.xml.secure`) hardening library's `SecureDocumentBuilderFactory`, `SecureSAXParserFactory`, `SecureXMLInputFactory`, `SecureTransformerFactory` and `SecureSchemaFactory` classes are now recognized as safely configured by the XXE query.
+* A new extensible class `SafeXmlFactorySource` was added to `semmle.code.java.security.XmlParsers` for modeling sources of pre-hardened JAXP factories.
+
+### Minor Analysis Improvements
+
+* Added modeling for the Micronaut framework, including HTTP controllers, WebSocket endpoints, configuration injection, data access, security annotations, and HTTP client sinks.
+
+## 9.2.4
+
+### Minor Analysis Improvements
+
+* Removed the summary model for `String.valueOf(CharSequence)`, which does not exist. Instead, taint is now propagated through calls to `String.valueOf(Object)` when the argument is a `CharSequence`, for example a `String` or a `StringBuilder`.
+* Added SQL injection sink models for Spring R2DBC `DatabaseClient` and the R2DBC SPI.
+
+## 9.2.3
+
+No user-facing changes.
+
 ## 9.2.2
 
 ### Minor Analysis Improvements

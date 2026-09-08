@@ -278,6 +278,72 @@ public class GenericFlow<T>
     }
 }
 
+public class GenericWithVirtual1<T>
+{
+    // heuristic-summary=Models;GenericWithVirtual1<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=Models;GenericWithVirtual1<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;dfc-generated
+    public virtual T ReturnParam(T input)
+    {
+        return input;
+    }
+
+    public virtual T StubImplementation(T input)
+    {
+        throw null;
+    }
+}
+
+public class DerivedGenericWithVirtual : GenericWithVirtual1<string>
+{
+    // heuristic-summary=Models;GenericWithVirtual1<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=Models;GenericWithVirtual1<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;dfc-generated
+    public override string ReturnParam(string input)
+    {
+        return input;
+    }
+
+    // heuristic-summary=Models;GenericWithVirtual1<T>;true;StubImplementation;(T);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=Models;GenericWithVirtual1<T>;true;StubImplementation;(T);;Argument[0];ReturnValue;value;dfc-generated
+    public override string StubImplementation(string input)
+    {
+        return input;
+    }
+}
+
+public class GenericWithVirtual2<T>
+{
+    // heuristic-summary=Models;GenericWithVirtual2<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=Models;GenericWithVirtual2<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;dfc-generated
+    public virtual T ReturnParam(T input)
+    {
+        return input;
+    }
+
+    public virtual T StubImplementation(T input)
+    {
+        throw null;
+    }
+}
+
+public class NestedGenericWithVirtual<T> : GenericWithVirtual2<string> { }
+
+public class DerivedNestedGenericWithVirtual : NestedGenericWithVirtual<int>
+{
+    // heuristic-summary=Models;GenericWithVirtual2<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=Models;GenericWithVirtual2<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;dfc-generated
+    public override string ReturnParam(string input)
+    {
+        return input;
+    }
+
+    // heuristic-summary=Models;GenericWithVirtual2<T>;true;StubImplementation;(T);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=Models;GenericWithVirtual2<T>;true;StubImplementation;(T);;Argument[0];ReturnValue;value;dfc-generated
+    public override string StubImplementation(string input)
+    {
+        return input;
+    }
+}
+
 public abstract class BaseClassFlow
 {
     // heuristic-summary=Models;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;value;df-generated

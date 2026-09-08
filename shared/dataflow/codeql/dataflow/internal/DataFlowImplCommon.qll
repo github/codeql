@@ -1797,12 +1797,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     cached
     newtype TAccessPathFront =
       TFrontNil() or
-      TFrontHead(Content c)
+      TFrontHead(Content c, int length) { length in [1 .. accessPathLimit()] }
 
     cached
     newtype TApproxAccessPathFront =
       TApproxFrontNil() or
-      TApproxFrontHead(ContentApprox c)
+      TApproxFrontHead(ContentApprox c, int length) { length in [1 .. accessPathLimit()] }
 
     cached
     newtype TAccessPathFrontOption =
@@ -2505,31 +2505,33 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     abstract boolean toBoolNonEmpty();
 
-    ContentApprox getHead() { this = TApproxFrontHead(result) }
+    abstract int length();
+
+    ContentApprox getHead(int length) { this = TApproxFrontHead(result, length) }
 
     pragma[nomagic]
-    Content getAHead() {
-      exists(ContentApprox cont |
-        this = TApproxFrontHead(cont) and
-        cont = getContentApproxCached(result)
-      )
-    }
+    Content getAHead(int length) { this.getHead(length) = getContentApproxCached(result) }
   }
 
   class ApproxAccessPathFrontNil extends ApproxAccessPathFront, TApproxFrontNil {
     override string toString() { result = "nil" }
 
     override boolean toBoolNonEmpty() { result = false }
+
+    override int length() { result = 0 }
   }
 
   class ApproxAccessPathFrontHead extends ApproxAccessPathFront, TApproxFrontHead {
     private ContentApprox c;
+    private int length;
 
-    ApproxAccessPathFrontHead() { this = TApproxFrontHead(c) }
+    ApproxAccessPathFrontHead() { this = TApproxFrontHead(c, length) }
 
-    override string toString() { result = c.toString() }
+    override string toString() { result = c + " (length: " + length + ")" }
 
     override boolean toBoolNonEmpty() { result = true }
+
+    override int length() { result = length }
   }
 
   /** An optional approximated access path front. */
@@ -2549,23 +2551,30 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     abstract ApproxAccessPathFront toApprox();
 
-    Content getHead() { this = TFrontHead(result) }
+    abstract int length();
+
+    Content getHead(int length) { this = TFrontHead(result, length) }
   }
 
   class AccessPathFrontNil extends AccessPathFront, TFrontNil {
     override string toString() { result = "nil" }
 
     override ApproxAccessPathFront toApprox() { result = TApproxFrontNil() }
+
+    override int length() { result = 0 }
   }
 
   class AccessPathFrontHead extends AccessPathFront, TFrontHead {
     private Content c;
+    private int length;
 
-    AccessPathFrontHead() { this = TFrontHead(c) }
+    AccessPathFrontHead() { this = TFrontHead(c, length) }
 
-    override string toString() { result = c.toString() }
+    override string toString() { result = c + " (length: " + length + ")" }
 
-    override ApproxAccessPathFront toApprox() { result.getAHead() = c }
+    override ApproxAccessPathFront toApprox() { result.getAHead(length) = c }
+
+    override int length() { result = length }
   }
 
   /** An optional access path front. */

@@ -51,7 +51,7 @@ top_level
             call_expr
               callee:
                 member_access_expr
-                  base: inferred_type_expr ".some"
+                  base: inferred_type_expr "."
                   member: identifier "some"
               argument:
                 argument

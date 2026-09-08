@@ -3668,6 +3668,7 @@ trackEnd
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:1:11:1:11 | x | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:5:10:5:10 | x |
@@ -3869,16 +3870,20 @@ trackEnd
 | params_flow.rb:5:10:5:10 | x | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:5:10:5:10 | x | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:5:10:5:10 | x | params_flow.rb:6:10:6:10 | x |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:6:5:6:10 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:6:5:6:10 | call to puts |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:10:5:10:11 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:10:5:11:84 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:11:5:11:11 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:14:1:14:30 | call to positional |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:17:5:17:11 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:17:5:18:82 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:18:5:18:11 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:21:1:21:35 | call to keyword |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:22:1:22:35 | call to keyword |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:23:1:23:41 | call to keyword |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:26:5:26:11 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:26:5:30:22 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:27:5:27:22 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:28:5:28:22 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:29:5:29:22 | call to sink |
@@ -3890,14 +3895,17 @@ trackEnd
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:44:1:44:28 | call to positional |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:47:1:47:17 | call to positional |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:50:5:50:11 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:50:5:52:21 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:51:5:51:21 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:52:5:52:21 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:55:1:55:29 | call to posargs |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:58:1:58:25 | call to posargs |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:61:1:61:14 | call to posargs |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:65:5:65:13 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:65:5:65:33 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:67:1:67:17 | call to splatstuff |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:70:5:70:10 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:70:5:75:75 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:71:5:71:10 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:72:5:72:13 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:73:5:73:13 | call to sink |
@@ -3906,6 +3914,7 @@ trackEnd
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:78:1:78:63 | call to splatmid |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:81:1:81:37 | call to splatmid |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:84:5:84:10 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:84:5:90:39 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:85:5:85:10 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:86:5:86:10 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:87:5:87:10 | call to sink |
@@ -3915,17 +3924,20 @@ trackEnd
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:94:1:94:48 | call to pos_many |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:96:1:96:88 | call to splatmid |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:99:5:99:10 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:99:5:102:57 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:100:5:100:18 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:101:5:101:18 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:102:5:102:10 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:105:1:105:49 | call to splatmidsmall |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:106:1:106:46 | call to splatmidsmall |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:109:5:109:10 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:109:5:111:30 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:110:5:110:13 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:111:5:111:10 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:114:1:114:67 | call to splat_followed_by_keyword_param |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:118:1:118:14 | call to positional |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:121:5:121:10 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:121:5:125:39 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:122:5:122:10 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:123:5:123:10 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:124:5:124:10 | call to sink |
@@ -3933,6 +3945,7 @@ trackEnd
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:128:1:128:61 | call to destruct |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:131:1:131:46 | call to pos_many |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:134:5:134:16 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:134:5:134:36 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:137:1:137:44 | call to splatall |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:144:1:144:20 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:146:1:146:20 | call to sink |
@@ -3951,20 +3964,24 @@ trackEnd
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:191:1:191:11 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:193:1:193:11 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:201:5:201:15 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:201:5:204:15 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:202:5:202:15 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:203:5:203:15 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:204:5:204:15 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:207:1:207:14 | call to foo |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:211:9:211:15 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:211:9:217:23 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:212:9:212:21 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:213:9:213:21 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:214:9:214:21 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:215:9:215:16 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:216:9:216:25 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:217:9:217:23 | yield ... |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:223:9:223:13 | ... |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:223:9:223:13 | super call to m |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:227:1:229:3 | call to m |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:228:5:228:11 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:228:5:228:31 | ... |
 | params_flow.rb:6:5:6:10 | synthetic splat argument | params_flow.rb:6:5:6:10 | synthetic splat argument |
 | params_flow.rb:9:1:12:3 | &block | params_flow.rb:9:1:12:3 | &block |
 | params_flow.rb:9:1:12:3 | positional | params_flow.rb:9:1:12:3 | positional |
@@ -3992,6 +4009,7 @@ trackEnd
 | params_flow.rb:9:20:9:21 | p2 | params_flow.rb:11:10:11:11 | p2 |
 | params_flow.rb:10:5:10:11 | call to sink | params_flow.rb:10:5:10:11 | call to sink |
 | params_flow.rb:10:5:10:11 | synthetic splat argument | params_flow.rb:10:5:10:11 | synthetic splat argument |
+| params_flow.rb:11:5:11:11 | call to sink | params_flow.rb:10:5:11:84 | ... |
 | params_flow.rb:11:5:11:11 | call to sink | params_flow.rb:11:5:11:11 | call to sink |
 | params_flow.rb:11:5:11:11 | call to sink | params_flow.rb:14:1:14:30 | call to positional |
 | params_flow.rb:11:5:11:11 | call to sink | params_flow.rb:44:1:44:28 | call to positional |
@@ -4010,6 +4028,7 @@ trackEnd
 | params_flow.rb:14:12:14:19 | synthetic splat argument | params_flow.rb:14:12:14:19 | synthetic splat argument |
 | params_flow.rb:14:18:14:18 | 1 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:14:18:14:18 | 1 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:14:18:14:18 | 1 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:14:18:14:18 | 1 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:14:18:14:18 | 1 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:14:18:14:18 | 1 | params_flow.rb:5:10:5:10 | x |
@@ -4029,6 +4048,7 @@ trackEnd
 | params_flow.rb:14:22:14:29 | synthetic splat argument | params_flow.rb:14:22:14:29 | synthetic splat argument |
 | params_flow.rb:14:28:14:28 | 2 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:14:28:14:28 | 2 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:14:28:14:28 | 2 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:14:28:14:28 | 2 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:14:28:14:28 | 2 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:14:28:14:28 | 2 | params_flow.rb:5:10:5:10 | x |
@@ -4064,6 +4084,7 @@ trackEnd
 | params_flow.rb:16:18:16:19 | p2 | params_flow.rb:18:10:18:11 | p2 |
 | params_flow.rb:17:5:17:11 | call to sink | params_flow.rb:17:5:17:11 | call to sink |
 | params_flow.rb:17:5:17:11 | synthetic splat argument | params_flow.rb:17:5:17:11 | synthetic splat argument |
+| params_flow.rb:18:5:18:11 | call to sink | params_flow.rb:17:5:18:82 | ... |
 | params_flow.rb:18:5:18:11 | call to sink | params_flow.rb:18:5:18:11 | call to sink |
 | params_flow.rb:18:5:18:11 | call to sink | params_flow.rb:21:1:21:35 | call to keyword |
 | params_flow.rb:18:5:18:11 | call to sink | params_flow.rb:22:1:22:35 | call to keyword |
@@ -4084,6 +4105,7 @@ trackEnd
 | params_flow.rb:21:13:21:20 | synthetic splat argument | params_flow.rb:21:13:21:20 | synthetic splat argument |
 | params_flow.rb:21:19:21:19 | 3 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:21:19:21:19 | 3 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:21:19:21:19 | 3 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:21:19:21:19 | 3 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:21:19:21:19 | 3 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:21:19:21:19 | 3 | params_flow.rb:5:10:5:10 | x |
@@ -4105,6 +4127,7 @@ trackEnd
 | params_flow.rb:21:27:21:34 | synthetic splat argument | params_flow.rb:21:27:21:34 | synthetic splat argument |
 | params_flow.rb:21:33:21:33 | 4 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:21:33:21:33 | 4 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:21:33:21:33 | 4 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:21:33:21:33 | 4 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:21:33:21:33 | 4 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:21:33:21:33 | 4 | params_flow.rb:5:10:5:10 | x |
@@ -4128,6 +4151,7 @@ trackEnd
 | params_flow.rb:22:13:22:20 | synthetic splat argument | params_flow.rb:22:13:22:20 | synthetic splat argument |
 | params_flow.rb:22:19:22:19 | 5 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:22:19:22:19 | 5 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:22:19:22:19 | 5 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:22:19:22:19 | 5 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:22:19:22:19 | 5 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:22:19:22:19 | 5 | params_flow.rb:5:10:5:10 | x |
@@ -4149,6 +4173,7 @@ trackEnd
 | params_flow.rb:22:27:22:34 | synthetic splat argument | params_flow.rb:22:27:22:34 | synthetic splat argument |
 | params_flow.rb:22:33:22:33 | 6 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:22:33:22:33 | 6 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:22:33:22:33 | 6 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:22:33:22:33 | 6 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:22:33:22:33 | 6 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:22:33:22:33 | 6 | params_flow.rb:5:10:5:10 | x |
@@ -4172,6 +4197,7 @@ trackEnd
 | params_flow.rb:23:16:23:23 | synthetic splat argument | params_flow.rb:23:16:23:23 | synthetic splat argument |
 | params_flow.rb:23:22:23:22 | 7 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:23:22:23:22 | 7 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:23:22:23:22 | 7 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:23:22:23:22 | 7 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:23:22:23:22 | 7 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:23:22:23:22 | 7 | params_flow.rb:5:10:5:10 | x |
@@ -4193,6 +4219,7 @@ trackEnd
 | params_flow.rb:23:33:23:40 | synthetic splat argument | params_flow.rb:23:33:23:40 | synthetic splat argument |
 | params_flow.rb:23:39:23:39 | 8 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:23:39:23:39 | 8 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:23:39:23:39 | 8 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:23:39:23:39 | 8 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:23:39:23:39 | 8 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:23:39:23:39 | 8 | params_flow.rb:5:10:5:10 | x |
@@ -4258,6 +4285,7 @@ trackEnd
 | params_flow.rb:29:11:29:21 | ...[...] | params_flow.rb:29:11:29:21 | ...[...] |
 | params_flow.rb:29:11:29:21 | synthetic splat argument | params_flow.rb:29:11:29:21 | synthetic splat argument |
 | params_flow.rb:29:18:29:20 | :p3 | params_flow.rb:29:18:29:20 | :p3 |
+| params_flow.rb:30:5:30:22 | call to sink | params_flow.rb:26:5:30:22 | ... |
 | params_flow.rb:30:5:30:22 | call to sink | params_flow.rb:30:5:30:22 | call to sink |
 | params_flow.rb:30:5:30:22 | call to sink | params_flow.rb:33:1:33:58 | call to kwargs |
 | params_flow.rb:30:5:30:22 | call to sink | params_flow.rb:35:1:35:29 | call to kwargs |
@@ -4292,6 +4320,7 @@ trackEnd
 | params_flow.rb:33:12:33:19 | synthetic splat argument | params_flow.rb:33:12:33:19 | synthetic splat argument |
 | params_flow.rb:33:18:33:18 | 9 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:33:18:33:18 | 9 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:33:18:33:18 | 9 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:33:18:33:18 | 9 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:33:18:33:18 | 9 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:33:18:33:18 | 9 | params_flow.rb:5:10:5:10 | x |
@@ -4314,6 +4343,7 @@ trackEnd
 | params_flow.rb:33:26:33:34 | synthetic splat argument | params_flow.rb:33:26:33:34 | synthetic splat argument |
 | params_flow.rb:33:32:33:33 | 10 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:33:32:33:33 | 10 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:33:32:33:33 | 10 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:33:32:33:33 | 10 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:33:32:33:33 | 10 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:33:32:33:33 | 10 | params_flow.rb:5:10:5:10 | x |
@@ -4333,6 +4363,7 @@ trackEnd
 | params_flow.rb:33:41:33:49 | synthetic splat argument | params_flow.rb:33:41:33:49 | synthetic splat argument |
 | params_flow.rb:33:47:33:48 | 11 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:33:47:33:48 | 11 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:33:47:33:48 | 11 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:33:47:33:48 | 11 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:33:47:33:48 | 11 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:33:47:33:48 | 11 | params_flow.rb:5:10:5:10 | x |
@@ -4371,6 +4402,7 @@ trackEnd
 | params_flow.rb:34:14:34:22 | synthetic splat argument | params_flow.rb:34:14:34:22 | synthetic splat argument |
 | params_flow.rb:34:20:34:21 | 12 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:34:20:34:21 | 12 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:34:20:34:21 | 12 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:34:20:34:21 | 12 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:34:20:34:21 | 12 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:34:20:34:21 | 12 | params_flow.rb:5:10:5:10 | x |
@@ -4409,6 +4441,7 @@ trackEnd
 | params_flow.rb:35:12:35:20 | synthetic splat argument | params_flow.rb:35:12:35:20 | synthetic splat argument |
 | params_flow.rb:35:18:35:19 | 13 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:35:18:35:19 | 13 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:35:18:35:19 | 13 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:35:18:35:19 | 13 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:35:18:35:19 | 13 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:35:18:35:19 | 13 | params_flow.rb:5:10:5:10 | x |
@@ -4453,6 +4486,7 @@ trackEnd
 | params_flow.rb:37:16:37:24 | synthetic splat argument | params_flow.rb:37:16:37:24 | synthetic splat argument |
 | params_flow.rb:37:22:37:23 | 14 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:37:22:37:23 | 14 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:37:22:37:23 | 14 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:37:22:37:23 | 14 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:37:22:37:23 | 14 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:37:22:37:23 | 14 | params_flow.rb:5:10:5:10 | x |
@@ -4475,6 +4509,7 @@ trackEnd
 | params_flow.rb:37:34:37:42 | synthetic splat argument | params_flow.rb:37:34:37:42 | synthetic splat argument |
 | params_flow.rb:37:40:37:41 | 15 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:37:40:37:41 | 15 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:37:40:37:41 | 15 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:37:40:37:41 | 15 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:37:40:37:41 | 15 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:37:40:37:41 | 15 | params_flow.rb:5:10:5:10 | x |
@@ -4515,6 +4550,7 @@ trackEnd
 | params_flow.rb:40:16:40:24 | synthetic splat argument | params_flow.rb:40:16:40:24 | synthetic splat argument |
 | params_flow.rb:40:22:40:23 | 16 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:40:22:40:23 | 16 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:40:22:40:23 | 16 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:40:22:40:23 | 16 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:40:22:40:23 | 16 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:40:22:40:23 | 16 | params_flow.rb:5:10:5:10 | x |
@@ -4538,6 +4574,7 @@ trackEnd
 | params_flow.rb:41:13:41:21 | synthetic splat argument | params_flow.rb:41:13:41:21 | synthetic splat argument |
 | params_flow.rb:41:19:41:20 | 17 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:41:19:41:20 | 17 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:41:19:41:20 | 17 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:41:19:41:20 | 17 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:41:19:41:20 | 17 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:41:19:41:20 | 17 | params_flow.rb:5:10:5:10 | x |
@@ -4582,6 +4619,7 @@ trackEnd
 | params_flow.rb:43:9:43:17 | synthetic splat argument | params_flow.rb:43:9:43:17 | synthetic splat argument |
 | params_flow.rb:43:15:43:16 | 17 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:43:15:43:16 | 17 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:43:15:43:16 | 17 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:43:15:43:16 | 17 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:43:15:43:16 | 17 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:43:15:43:16 | 17 | params_flow.rb:5:10:5:10 | x |
@@ -4604,6 +4642,7 @@ trackEnd
 | params_flow.rb:44:12:44:20 | synthetic splat argument | params_flow.rb:44:12:44:20 | synthetic splat argument |
 | params_flow.rb:44:18:44:19 | 16 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:44:18:44:19 | 16 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:44:18:44:19 | 16 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:44:18:44:19 | 16 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:44:18:44:19 | 16 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:44:18:44:19 | 16 | params_flow.rb:5:10:5:10 | x |
@@ -4647,6 +4686,7 @@ trackEnd
 | params_flow.rb:46:9:46:17 | synthetic splat argument | params_flow.rb:46:9:46:17 | synthetic splat argument |
 | params_flow.rb:46:15:46:16 | 18 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:46:15:46:16 | 18 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:46:15:46:16 | 18 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:46:15:46:16 | 18 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:46:15:46:16 | 18 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:46:15:46:16 | 18 | params_flow.rb:5:10:5:10 | x |
@@ -4666,6 +4706,7 @@ trackEnd
 | params_flow.rb:46:20:46:28 | synthetic splat argument | params_flow.rb:46:20:46:28 | synthetic splat argument |
 | params_flow.rb:46:26:46:27 | 19 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:46:26:46:27 | 19 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:46:26:46:27 | 19 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:46:26:46:27 | 19 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:46:26:46:27 | 19 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:46:26:46:27 | 19 | params_flow.rb:5:10:5:10 | x |
@@ -4712,6 +4753,7 @@ trackEnd
 | params_flow.rb:51:11:51:20 | ...[...] | params_flow.rb:51:11:51:20 | ...[...] |
 | params_flow.rb:51:11:51:20 | synthetic splat argument | params_flow.rb:51:11:51:20 | synthetic splat argument |
 | params_flow.rb:51:19:51:19 | 0 | params_flow.rb:51:19:51:19 | 0 |
+| params_flow.rb:52:5:52:21 | call to sink | params_flow.rb:50:5:52:21 | ... |
 | params_flow.rb:52:5:52:21 | call to sink | params_flow.rb:52:5:52:21 | call to sink |
 | params_flow.rb:52:5:52:21 | call to sink | params_flow.rb:55:1:55:29 | call to posargs |
 | params_flow.rb:52:5:52:21 | call to sink | params_flow.rb:58:1:58:25 | call to posargs |
@@ -4737,6 +4779,7 @@ trackEnd
 | params_flow.rb:55:9:55:17 | synthetic splat argument | params_flow.rb:55:9:55:17 | synthetic splat argument |
 | params_flow.rb:55:15:55:16 | 20 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:55:15:55:16 | 20 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:55:15:55:16 | 20 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:55:15:55:16 | 20 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:55:15:55:16 | 20 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:55:15:55:16 | 20 | params_flow.rb:5:10:5:10 | x |
@@ -4755,6 +4798,7 @@ trackEnd
 | params_flow.rb:55:20:55:28 | synthetic splat argument | params_flow.rb:55:20:55:28 | synthetic splat argument |
 | params_flow.rb:55:26:55:27 | 21 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:55:26:55:27 | 21 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:55:26:55:27 | 21 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:55:26:55:27 | 21 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:55:26:55:27 | 21 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:55:26:55:27 | 21 | params_flow.rb:5:10:5:10 | x |
@@ -4793,6 +4837,7 @@ trackEnd
 | params_flow.rb:57:9:57:17 | synthetic splat argument | params_flow.rb:57:9:57:17 | synthetic splat argument |
 | params_flow.rb:57:15:57:16 | 22 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:57:15:57:16 | 22 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:57:15:57:16 | 22 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:57:15:57:16 | 22 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:57:15:57:16 | 22 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:57:15:57:16 | 22 | params_flow.rb:5:10:5:10 | x |
@@ -4813,6 +4858,7 @@ trackEnd
 | params_flow.rb:58:9:58:17 | synthetic splat argument | params_flow.rb:58:9:58:17 | synthetic splat argument |
 | params_flow.rb:58:15:58:16 | 23 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:58:15:58:16 | 23 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:58:15:58:16 | 23 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:58:15:58:16 | 23 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:58:15:58:16 | 23 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:58:15:58:16 | 23 | params_flow.rb:5:10:5:10 | x |
@@ -4860,6 +4906,7 @@ trackEnd
 | params_flow.rb:60:9:60:17 | synthetic splat argument | params_flow.rb:60:9:60:17 | synthetic splat argument |
 | params_flow.rb:60:15:60:16 | 24 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:60:15:60:16 | 24 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:60:15:60:16 | 24 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:60:15:60:16 | 24 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:60:15:60:16 | 24 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:60:15:60:16 | 24 | params_flow.rb:5:10:5:10 | x |
@@ -4878,6 +4925,7 @@ trackEnd
 | params_flow.rb:60:20:60:28 | synthetic splat argument | params_flow.rb:60:20:60:28 | synthetic splat argument |
 | params_flow.rb:60:26:60:27 | 25 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:60:26:60:27 | 25 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:60:26:60:27 | 25 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:60:26:60:27 | 25 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:60:26:60:27 | 25 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:60:26:60:27 | 25 | params_flow.rb:5:10:5:10 | x |
@@ -4901,6 +4949,7 @@ trackEnd
 | params_flow.rb:63:8:63:16 | synthetic splat argument | params_flow.rb:63:8:63:16 | synthetic splat argument |
 | params_flow.rb:63:14:63:15 | 26 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:63:14:63:15 | 26 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:63:14:63:15 | 26 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:63:14:63:15 | 26 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:63:14:63:15 | 26 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:63:14:63:15 | 26 | params_flow.rb:5:10:5:10 | x |
@@ -4924,6 +4973,7 @@ trackEnd
 | params_flow.rb:64:16:64:17 | *x | params_flow.rb:65:10:65:10 | x |
 | params_flow.rb:64:17:64:17 | x | params_flow.rb:64:17:64:17 | x |
 | params_flow.rb:65:5:65:13 | call to sink | params_flow.rb:65:5:65:13 | call to sink |
+| params_flow.rb:65:5:65:13 | call to sink | params_flow.rb:65:5:65:33 | ... |
 | params_flow.rb:65:5:65:13 | call to sink | params_flow.rb:67:1:67:17 | call to splatstuff |
 | params_flow.rb:65:5:65:13 | synthetic splat argument | params_flow.rb:65:5:65:13 | synthetic splat argument |
 | params_flow.rb:65:10:65:13 | ...[...] | params_flow.rb:5:10:5:10 | x |
@@ -5006,6 +5056,7 @@ trackEnd
 | params_flow.rb:73:12:73:12 | 1 | params_flow.rb:73:12:73:12 | 1 |
 | params_flow.rb:74:5:74:10 | call to sink | params_flow.rb:74:5:74:10 | call to sink |
 | params_flow.rb:74:5:74:10 | synthetic splat argument | params_flow.rb:74:5:74:10 | synthetic splat argument |
+| params_flow.rb:75:5:75:10 | call to sink | params_flow.rb:70:5:75:75 | ... |
 | params_flow.rb:75:5:75:10 | call to sink | params_flow.rb:75:5:75:10 | call to sink |
 | params_flow.rb:75:5:75:10 | call to sink | params_flow.rb:78:1:78:63 | call to splatmid |
 | params_flow.rb:75:5:75:10 | call to sink | params_flow.rb:81:1:81:37 | call to splatmid |
@@ -5024,6 +5075,7 @@ trackEnd
 | params_flow.rb:78:10:78:18 | synthetic splat argument | params_flow.rb:78:10:78:18 | synthetic splat argument |
 | params_flow.rb:78:16:78:17 | 27 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:78:16:78:17 | 27 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:78:16:78:17 | 27 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:78:16:78:17 | 27 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:78:16:78:17 | 27 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:78:16:78:17 | 27 | params_flow.rb:5:10:5:10 | x |
@@ -5043,6 +5095,7 @@ trackEnd
 | params_flow.rb:78:21:78:29 | synthetic splat argument | params_flow.rb:78:21:78:29 | synthetic splat argument |
 | params_flow.rb:78:27:78:28 | 28 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:78:27:78:28 | 28 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:78:27:78:28 | 28 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:78:27:78:28 | 28 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:78:27:78:28 | 28 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:78:27:78:28 | 28 | params_flow.rb:5:10:5:10 | x |
@@ -5056,6 +5109,7 @@ trackEnd
 | params_flow.rb:78:32:78:40 | synthetic splat argument | params_flow.rb:78:32:78:40 | synthetic splat argument |
 | params_flow.rb:78:38:78:39 | 29 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:78:38:78:39 | 29 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:78:38:78:39 | 29 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:78:38:78:39 | 29 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:78:38:78:39 | 29 | params_flow.rb:78:32:78:40 | call to taint |
 | params_flow.rb:78:38:78:39 | 29 | params_flow.rb:78:38:78:39 | 29 |
@@ -5063,6 +5117,7 @@ trackEnd
 | params_flow.rb:78:43:78:51 | synthetic splat argument | params_flow.rb:78:43:78:51 | synthetic splat argument |
 | params_flow.rb:78:49:78:50 | 30 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:78:49:78:50 | 30 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:78:49:78:50 | 30 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:78:49:78:50 | 30 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:78:49:78:50 | 30 | params_flow.rb:78:43:78:51 | call to taint |
 | params_flow.rb:78:49:78:50 | 30 | params_flow.rb:78:49:78:50 | 30 |
@@ -5070,6 +5125,7 @@ trackEnd
 | params_flow.rb:78:54:78:62 | synthetic splat argument | params_flow.rb:78:54:78:62 | synthetic splat argument |
 | params_flow.rb:78:60:78:61 | 31 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:78:60:78:61 | 31 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:78:60:78:61 | 31 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:78:60:78:61 | 31 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:78:60:78:61 | 31 | params_flow.rb:78:54:78:62 | call to taint |
 | params_flow.rb:78:60:78:61 | 31 | params_flow.rb:78:60:78:61 | 31 |
@@ -5106,6 +5162,7 @@ trackEnd
 | params_flow.rb:80:9:80:17 | synthetic splat argument | params_flow.rb:80:9:80:17 | synthetic splat argument |
 | params_flow.rb:80:15:80:16 | 33 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:80:15:80:16 | 33 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:80:15:80:16 | 33 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:80:15:80:16 | 33 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:80:15:80:16 | 33 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:80:15:80:16 | 33 | params_flow.rb:5:10:5:10 | x |
@@ -5119,6 +5176,7 @@ trackEnd
 | params_flow.rb:80:20:80:28 | synthetic splat argument | params_flow.rb:80:20:80:28 | synthetic splat argument |
 | params_flow.rb:80:26:80:27 | 34 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:80:26:80:27 | 34 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:80:26:80:27 | 34 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:80:26:80:27 | 34 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:80:26:80:27 | 34 | params_flow.rb:80:20:80:28 | call to taint |
 | params_flow.rb:80:26:80:27 | 34 | params_flow.rb:80:26:80:27 | 34 |
@@ -5126,6 +5184,7 @@ trackEnd
 | params_flow.rb:80:31:80:39 | synthetic splat argument | params_flow.rb:80:31:80:39 | synthetic splat argument |
 | params_flow.rb:80:37:80:38 | 35 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:80:37:80:38 | 35 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:80:37:80:38 | 35 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:80:37:80:38 | 35 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:80:37:80:38 | 35 | params_flow.rb:80:31:80:39 | call to taint |
 | params_flow.rb:80:37:80:38 | 35 | params_flow.rb:80:37:80:38 | 35 |
@@ -5133,6 +5192,7 @@ trackEnd
 | params_flow.rb:80:42:80:50 | synthetic splat argument | params_flow.rb:80:42:80:50 | synthetic splat argument |
 | params_flow.rb:80:48:80:49 | 36 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:80:48:80:49 | 36 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:80:48:80:49 | 36 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:80:48:80:49 | 36 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:80:48:80:49 | 36 | params_flow.rb:80:42:80:50 | call to taint |
 | params_flow.rb:80:48:80:49 | 36 | params_flow.rb:80:48:80:49 | 36 |
@@ -5149,6 +5209,7 @@ trackEnd
 | params_flow.rb:81:10:81:18 | synthetic splat argument | params_flow.rb:81:10:81:18 | synthetic splat argument |
 | params_flow.rb:81:16:81:17 | 32 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:81:16:81:17 | 32 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:81:16:81:17 | 32 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:81:16:81:17 | 32 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:81:16:81:17 | 32 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:81:16:81:17 | 32 | params_flow.rb:5:10:5:10 | x |
@@ -5163,6 +5224,7 @@ trackEnd
 | params_flow.rb:81:28:81:36 | synthetic splat argument | params_flow.rb:81:28:81:36 | synthetic splat argument |
 | params_flow.rb:81:34:81:35 | 37 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:81:34:81:35 | 37 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:81:34:81:35 | 37 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:81:34:81:35 | 37 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:81:34:81:35 | 37 | params_flow.rb:81:28:81:36 | call to taint |
 | params_flow.rb:81:34:81:35 | 37 | params_flow.rb:81:34:81:35 | 37 |
@@ -5242,6 +5304,7 @@ trackEnd
 | params_flow.rb:88:5:88:10 | synthetic splat argument | params_flow.rb:88:5:88:10 | synthetic splat argument |
 | params_flow.rb:89:5:89:10 | call to sink | params_flow.rb:89:5:89:10 | call to sink |
 | params_flow.rb:89:5:89:10 | synthetic splat argument | params_flow.rb:89:5:89:10 | synthetic splat argument |
+| params_flow.rb:90:5:90:10 | call to sink | params_flow.rb:84:5:90:39 | ... |
 | params_flow.rb:90:5:90:10 | call to sink | params_flow.rb:90:5:90:10 | call to sink |
 | params_flow.rb:90:5:90:10 | call to sink | params_flow.rb:94:1:94:48 | call to pos_many |
 | params_flow.rb:90:5:90:10 | call to sink | params_flow.rb:131:1:131:46 | call to pos_many |
@@ -5279,6 +5342,7 @@ trackEnd
 | params_flow.rb:93:9:93:17 | synthetic splat argument | params_flow.rb:93:9:93:17 | synthetic splat argument |
 | params_flow.rb:93:15:93:16 | 40 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:93:15:93:16 | 40 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:93:15:93:16 | 40 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:93:15:93:16 | 40 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:93:15:93:16 | 40 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:93:15:93:16 | 40 | params_flow.rb:5:10:5:10 | x |
@@ -5298,6 +5362,7 @@ trackEnd
 | params_flow.rb:93:20:93:28 | synthetic splat argument | params_flow.rb:93:20:93:28 | synthetic splat argument |
 | params_flow.rb:93:26:93:27 | 41 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:93:26:93:27 | 41 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:93:26:93:27 | 41 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:93:26:93:27 | 41 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:93:26:93:27 | 41 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:93:26:93:27 | 41 | params_flow.rb:5:10:5:10 | x |
@@ -5317,6 +5382,7 @@ trackEnd
 | params_flow.rb:93:31:93:39 | synthetic splat argument | params_flow.rb:93:31:93:39 | synthetic splat argument |
 | params_flow.rb:93:37:93:38 | 42 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:93:37:93:38 | 42 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:93:37:93:38 | 42 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:93:37:93:38 | 42 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:93:37:93:38 | 42 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:93:37:93:38 | 42 | params_flow.rb:5:10:5:10 | x |
@@ -5336,6 +5402,7 @@ trackEnd
 | params_flow.rb:93:42:93:50 | synthetic splat argument | params_flow.rb:93:42:93:50 | synthetic splat argument |
 | params_flow.rb:93:48:93:49 | 43 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:93:48:93:49 | 43 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:93:48:93:49 | 43 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:93:48:93:49 | 43 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:93:48:93:49 | 43 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:93:48:93:49 | 43 | params_flow.rb:5:10:5:10 | x |
@@ -5358,6 +5425,7 @@ trackEnd
 | params_flow.rb:94:10:94:18 | synthetic splat argument | params_flow.rb:94:10:94:18 | synthetic splat argument |
 | params_flow.rb:94:16:94:17 | 38 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:94:16:94:17 | 38 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:94:16:94:17 | 38 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:94:16:94:17 | 38 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:94:16:94:17 | 38 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:94:16:94:17 | 38 | params_flow.rb:5:10:5:10 | x |
@@ -5377,6 +5445,7 @@ trackEnd
 | params_flow.rb:94:21:94:29 | synthetic splat argument | params_flow.rb:94:21:94:29 | synthetic splat argument |
 | params_flow.rb:94:27:94:28 | 39 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:94:27:94:28 | 39 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:94:27:94:28 | 39 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:94:27:94:28 | 39 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:94:27:94:28 | 39 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:94:27:94:28 | 39 | params_flow.rb:5:10:5:10 | x |
@@ -5391,6 +5460,7 @@ trackEnd
 | params_flow.rb:94:39:94:47 | synthetic splat argument | params_flow.rb:94:39:94:47 | synthetic splat argument |
 | params_flow.rb:94:45:94:46 | 44 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:94:45:94:46 | 44 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:94:45:94:46 | 44 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:94:45:94:46 | 44 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:94:45:94:46 | 44 | params_flow.rb:94:39:94:47 | call to taint |
 | params_flow.rb:94:45:94:46 | 44 | params_flow.rb:94:45:94:46 | 44 |
@@ -5406,6 +5476,7 @@ trackEnd
 | params_flow.rb:96:10:96:18 | synthetic splat argument | params_flow.rb:96:10:96:18 | synthetic splat argument |
 | params_flow.rb:96:16:96:17 | 45 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:96:16:96:17 | 45 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:96:16:96:17 | 45 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:96:16:96:17 | 45 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:96:16:96:17 | 45 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:96:16:96:17 | 45 | params_flow.rb:5:10:5:10 | x |
@@ -5425,6 +5496,7 @@ trackEnd
 | params_flow.rb:96:21:96:29 | synthetic splat argument | params_flow.rb:96:21:96:29 | synthetic splat argument |
 | params_flow.rb:96:27:96:28 | 46 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:96:27:96:28 | 46 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:96:27:96:28 | 46 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:96:27:96:28 | 46 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:96:27:96:28 | 46 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:96:27:96:28 | 46 | params_flow.rb:5:10:5:10 | x |
@@ -5443,6 +5515,7 @@ trackEnd
 | params_flow.rb:96:34:96:42 | synthetic splat argument | params_flow.rb:96:34:96:42 | synthetic splat argument |
 | params_flow.rb:96:40:96:41 | 47 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:96:40:96:41 | 47 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:96:40:96:41 | 47 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:96:40:96:41 | 47 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:96:40:96:41 | 47 | params_flow.rb:96:34:96:42 | call to taint |
 | params_flow.rb:96:40:96:41 | 47 | params_flow.rb:96:40:96:41 | 47 |
@@ -5450,6 +5523,7 @@ trackEnd
 | params_flow.rb:96:45:96:53 | synthetic splat argument | params_flow.rb:96:45:96:53 | synthetic splat argument |
 | params_flow.rb:96:51:96:52 | 48 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:96:51:96:52 | 48 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:96:51:96:52 | 48 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:96:51:96:52 | 48 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:96:51:96:52 | 48 | params_flow.rb:96:45:96:53 | call to taint |
 | params_flow.rb:96:51:96:52 | 48 | params_flow.rb:96:51:96:52 | 48 |
@@ -5457,6 +5531,7 @@ trackEnd
 | params_flow.rb:96:56:96:64 | synthetic splat argument | params_flow.rb:96:56:96:64 | synthetic splat argument |
 | params_flow.rb:96:62:96:63 | 49 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:96:62:96:63 | 49 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:96:62:96:63 | 49 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:96:62:96:63 | 49 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:96:62:96:63 | 49 | params_flow.rb:96:56:96:64 | call to taint |
 | params_flow.rb:96:62:96:63 | 49 | params_flow.rb:96:62:96:63 | 49 |
@@ -5464,6 +5539,7 @@ trackEnd
 | params_flow.rb:96:68:96:76 | synthetic splat argument | params_flow.rb:96:68:96:76 | synthetic splat argument |
 | params_flow.rb:96:74:96:75 | 50 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:96:74:96:75 | 50 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:96:74:96:75 | 50 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:96:74:96:75 | 50 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:96:74:96:75 | 50 | params_flow.rb:96:68:96:76 | call to taint |
 | params_flow.rb:96:74:96:75 | 50 | params_flow.rb:96:74:96:75 | 50 |
@@ -5471,6 +5547,7 @@ trackEnd
 | params_flow.rb:96:79:96:87 | synthetic splat argument | params_flow.rb:96:79:96:87 | synthetic splat argument |
 | params_flow.rb:96:85:96:86 | 51 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:96:85:96:86 | 51 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:96:85:96:86 | 51 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:96:85:96:86 | 51 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:96:85:96:86 | 51 | params_flow.rb:96:79:96:87 | call to taint |
 | params_flow.rb:96:85:96:86 | 51 | params_flow.rb:96:85:96:86 | 51 |
@@ -5523,6 +5600,7 @@ trackEnd
 | params_flow.rb:101:10:101:18 | ...[...] | params_flow.rb:101:10:101:18 | ...[...] |
 | params_flow.rb:101:10:101:18 | synthetic splat argument | params_flow.rb:101:10:101:18 | synthetic splat argument |
 | params_flow.rb:101:17:101:17 | 1 | params_flow.rb:101:17:101:17 | 1 |
+| params_flow.rb:102:5:102:10 | call to sink | params_flow.rb:99:5:102:57 | ... |
 | params_flow.rb:102:5:102:10 | call to sink | params_flow.rb:102:5:102:10 | call to sink |
 | params_flow.rb:102:5:102:10 | call to sink | params_flow.rb:105:1:105:49 | call to splatmidsmall |
 | params_flow.rb:102:5:102:10 | call to sink | params_flow.rb:106:1:106:46 | call to splatmidsmall |
@@ -5539,6 +5617,7 @@ trackEnd
 | params_flow.rb:105:15:105:23 | synthetic splat argument | params_flow.rb:105:15:105:23 | synthetic splat argument |
 | params_flow.rb:105:21:105:22 | 52 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:105:21:105:22 | 52 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:105:21:105:22 | 52 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:105:21:105:22 | 52 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:105:21:105:22 | 52 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:105:21:105:22 | 52 | params_flow.rb:5:10:5:10 | x |
@@ -5557,6 +5636,7 @@ trackEnd
 | params_flow.rb:105:28:105:36 | synthetic splat argument | params_flow.rb:105:28:105:36 | synthetic splat argument |
 | params_flow.rb:105:34:105:35 | 53 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:105:34:105:35 | 53 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:105:34:105:35 | 53 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:105:34:105:35 | 53 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:105:34:105:35 | 53 | params_flow.rb:105:28:105:36 | call to taint |
 | params_flow.rb:105:34:105:35 | 53 | params_flow.rb:105:34:105:35 | 53 |
@@ -5564,6 +5644,7 @@ trackEnd
 | params_flow.rb:105:39:105:47 | synthetic splat argument | params_flow.rb:105:39:105:47 | synthetic splat argument |
 | params_flow.rb:105:45:105:46 | 54 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:105:45:105:46 | 54 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:105:45:105:46 | 54 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:105:45:105:46 | 54 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:105:45:105:46 | 54 | params_flow.rb:105:39:105:47 | call to taint |
 | params_flow.rb:105:45:105:46 | 54 | params_flow.rb:105:45:105:46 | 54 |
@@ -5580,6 +5661,7 @@ trackEnd
 | params_flow.rb:106:15:106:23 | synthetic splat argument | params_flow.rb:106:15:106:23 | synthetic splat argument |
 | params_flow.rb:106:21:106:22 | 55 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:106:21:106:22 | 55 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:106:21:106:22 | 55 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:106:21:106:22 | 55 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:106:21:106:22 | 55 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:106:21:106:22 | 55 | params_flow.rb:5:10:5:10 | x |
@@ -5593,6 +5675,7 @@ trackEnd
 | params_flow.rb:106:26:106:34 | synthetic splat argument | params_flow.rb:106:26:106:34 | synthetic splat argument |
 | params_flow.rb:106:32:106:33 | 56 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:106:32:106:33 | 56 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:106:32:106:33 | 56 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:106:32:106:33 | 56 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:106:32:106:33 | 56 | params_flow.rb:106:26:106:34 | call to taint |
 | params_flow.rb:106:32:106:33 | 56 | params_flow.rb:106:32:106:33 | 56 |
@@ -5600,6 +5683,7 @@ trackEnd
 | params_flow.rb:106:37:106:45 | synthetic splat argument | params_flow.rb:106:37:106:45 | synthetic splat argument |
 | params_flow.rb:106:43:106:44 | 57 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:106:43:106:44 | 57 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:106:43:106:44 | 57 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:106:43:106:44 | 57 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:106:43:106:44 | 57 | params_flow.rb:106:37:106:45 | call to taint |
 | params_flow.rb:106:43:106:44 | 57 | params_flow.rb:106:43:106:44 | 57 |
@@ -5643,6 +5727,7 @@ trackEnd
 | params_flow.rb:110:10:110:13 | ...[...] | params_flow.rb:110:10:110:13 | ...[...] |
 | params_flow.rb:110:10:110:13 | synthetic splat argument | params_flow.rb:110:10:110:13 | synthetic splat argument |
 | params_flow.rb:110:12:110:12 | 0 | params_flow.rb:110:12:110:12 | 0 |
+| params_flow.rb:111:5:111:10 | call to sink | params_flow.rb:109:5:111:30 | ... |
 | params_flow.rb:111:5:111:10 | call to sink | params_flow.rb:111:5:111:10 | call to sink |
 | params_flow.rb:111:5:111:10 | call to sink | params_flow.rb:114:1:114:67 | call to splat_followed_by_keyword_param |
 | params_flow.rb:111:5:111:10 | synthetic splat argument | params_flow.rb:111:5:111:10 | synthetic splat argument |
@@ -5660,6 +5745,7 @@ trackEnd
 | params_flow.rb:114:33:114:41 | synthetic splat argument | params_flow.rb:114:33:114:41 | synthetic splat argument |
 | params_flow.rb:114:39:114:40 | 58 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:114:39:114:40 | 58 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:114:39:114:40 | 58 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:114:39:114:40 | 58 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:114:39:114:40 | 58 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:114:39:114:40 | 58 | params_flow.rb:5:10:5:10 | x |
@@ -5677,6 +5763,7 @@ trackEnd
 | params_flow.rb:114:44:114:52 | synthetic splat argument | params_flow.rb:114:44:114:52 | synthetic splat argument |
 | params_flow.rb:114:50:114:51 | 59 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:114:50:114:51 | 59 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:114:50:114:51 | 59 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:114:50:114:51 | 59 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:114:50:114:51 | 59 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:114:50:114:51 | 59 | params_flow.rb:5:10:5:10 | x |
@@ -5696,6 +5783,7 @@ trackEnd
 | params_flow.rb:114:58:114:66 | synthetic splat argument | params_flow.rb:114:58:114:66 | synthetic splat argument |
 | params_flow.rb:114:64:114:65 | 60 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:114:64:114:65 | 60 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:114:64:114:65 | 60 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:114:64:114:65 | 60 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:114:64:114:65 | 60 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:114:64:114:65 | 60 | params_flow.rb:5:10:5:10 | x |
@@ -5747,6 +5835,7 @@ trackEnd
 | params_flow.rb:117:19:117:27 | synthetic splat argument | params_flow.rb:117:19:117:27 | synthetic splat argument |
 | params_flow.rb:117:25:117:26 | 61 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:117:25:117:26 | 61 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:117:25:117:26 | 61 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:117:25:117:26 | 61 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:117:25:117:26 | 61 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:117:25:117:26 | 61 | params_flow.rb:5:10:5:10 | x |
@@ -5816,6 +5905,7 @@ trackEnd
 | params_flow.rb:123:5:123:10 | synthetic splat argument | params_flow.rb:123:5:123:10 | synthetic splat argument |
 | params_flow.rb:124:5:124:10 | call to sink | params_flow.rb:124:5:124:10 | call to sink |
 | params_flow.rb:124:5:124:10 | synthetic splat argument | params_flow.rb:124:5:124:10 | synthetic splat argument |
+| params_flow.rb:125:5:125:10 | call to sink | params_flow.rb:121:5:125:39 | ... |
 | params_flow.rb:125:5:125:10 | call to sink | params_flow.rb:125:5:125:10 | call to sink |
 | params_flow.rb:125:5:125:10 | call to sink | params_flow.rb:128:1:128:61 | call to destruct |
 | params_flow.rb:125:5:125:10 | synthetic splat argument | params_flow.rb:125:5:125:10 | synthetic splat argument |
@@ -5829,6 +5919,7 @@ trackEnd
 | params_flow.rb:128:11:128:19 | synthetic splat argument | params_flow.rb:128:11:128:19 | synthetic splat argument |
 | params_flow.rb:128:17:128:18 | 62 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:128:17:128:18 | 62 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:128:17:128:18 | 62 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:128:17:128:18 | 62 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:128:17:128:18 | 62 | params_flow.rb:128:11:128:19 | call to taint |
 | params_flow.rb:128:17:128:18 | 62 | params_flow.rb:128:17:128:18 | 62 |
@@ -5836,6 +5927,7 @@ trackEnd
 | params_flow.rb:128:22:128:30 | synthetic splat argument | params_flow.rb:128:22:128:30 | synthetic splat argument |
 | params_flow.rb:128:28:128:29 | 63 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:128:28:128:29 | 63 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:128:28:128:29 | 63 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:128:28:128:29 | 63 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:128:28:128:29 | 63 | params_flow.rb:128:22:128:30 | call to taint |
 | params_flow.rb:128:28:128:29 | 63 | params_flow.rb:128:28:128:29 | 63 |
@@ -5847,6 +5939,7 @@ trackEnd
 | params_flow.rb:128:35:128:43 | synthetic splat argument | params_flow.rb:128:35:128:43 | synthetic splat argument |
 | params_flow.rb:128:41:128:42 | 64 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:128:41:128:42 | 64 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:128:41:128:42 | 64 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:128:41:128:42 | 64 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:128:41:128:42 | 64 | params_flow.rb:128:35:128:43 | call to taint |
 | params_flow.rb:128:41:128:42 | 64 | params_flow.rb:128:41:128:42 | 64 |
@@ -5859,6 +5952,7 @@ trackEnd
 | params_flow.rb:128:50:128:58 | synthetic splat argument | params_flow.rb:128:50:128:58 | synthetic splat argument |
 | params_flow.rb:128:56:128:57 | 65 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:128:56:128:57 | 65 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:128:56:128:57 | 65 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:128:56:128:57 | 65 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:128:56:128:57 | 65 | params_flow.rb:128:50:128:58 | call to taint |
 | params_flow.rb:128:56:128:57 | 65 | params_flow.rb:128:56:128:57 | 65 |
@@ -5895,6 +5989,7 @@ trackEnd
 | params_flow.rb:130:9:130:17 | synthetic splat argument | params_flow.rb:130:9:130:17 | synthetic splat argument |
 | params_flow.rb:130:15:130:16 | 66 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:130:15:130:16 | 66 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:130:15:130:16 | 66 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:130:15:130:16 | 66 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:130:15:130:16 | 66 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:130:15:130:16 | 66 | params_flow.rb:5:10:5:10 | x |
@@ -5914,6 +6009,7 @@ trackEnd
 | params_flow.rb:130:20:130:28 | synthetic splat argument | params_flow.rb:130:20:130:28 | synthetic splat argument |
 | params_flow.rb:130:26:130:27 | 67 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:130:26:130:27 | 67 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:130:26:130:27 | 67 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:130:26:130:27 | 67 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:130:26:130:27 | 67 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:130:26:130:27 | 67 | params_flow.rb:5:10:5:10 | x |
@@ -5930,6 +6026,7 @@ trackEnd
 | params_flow.rb:131:17:131:25 | synthetic splat argument | params_flow.rb:131:17:131:25 | synthetic splat argument |
 | params_flow.rb:131:23:131:24 | 68 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:131:23:131:24 | 68 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:131:23:131:24 | 68 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:131:23:131:24 | 68 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:131:23:131:24 | 68 | params_flow.rb:131:17:131:25 | call to taint |
 | params_flow.rb:131:23:131:24 | 68 | params_flow.rb:131:23:131:24 | 68 |
@@ -5950,6 +6047,7 @@ trackEnd
 | params_flow.rb:133:14:133:18 | *args | params_flow.rb:134:10:134:13 | args |
 | params_flow.rb:133:15:133:18 | args | params_flow.rb:133:15:133:18 | args |
 | params_flow.rb:134:5:134:16 | call to sink | params_flow.rb:134:5:134:16 | call to sink |
+| params_flow.rb:134:5:134:16 | call to sink | params_flow.rb:134:5:134:36 | ... |
 | params_flow.rb:134:5:134:16 | call to sink | params_flow.rb:137:1:137:44 | call to splatall |
 | params_flow.rb:134:5:134:16 | synthetic splat argument | params_flow.rb:134:5:134:16 | synthetic splat argument |
 | params_flow.rb:134:10:134:16 | ...[...] | params_flow.rb:5:10:5:10 | x |
@@ -5971,6 +6069,7 @@ trackEnd
 | params_flow.rb:137:12:137:20 | synthetic splat argument | params_flow.rb:137:12:137:20 | synthetic splat argument |
 | params_flow.rb:137:18:137:19 | 69 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:137:18:137:19 | 69 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:137:18:137:19 | 69 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:137:18:137:19 | 69 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:137:18:137:19 | 69 | params_flow.rb:137:12:137:20 | call to taint |
 | params_flow.rb:137:18:137:19 | 69 | params_flow.rb:137:18:137:19 | 69 |
@@ -5982,6 +6081,7 @@ trackEnd
 | params_flow.rb:137:23:137:31 | synthetic splat argument | params_flow.rb:137:23:137:31 | synthetic splat argument |
 | params_flow.rb:137:29:137:30 | 70 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:137:29:137:30 | 70 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:137:29:137:30 | 70 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:137:29:137:30 | 70 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:137:29:137:30 | 70 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:137:29:137:30 | 70 | params_flow.rb:5:10:5:10 | x |
@@ -5993,6 +6093,7 @@ trackEnd
 | params_flow.rb:137:34:137:42 | synthetic splat argument | params_flow.rb:137:34:137:42 | synthetic splat argument |
 | params_flow.rb:137:40:137:41 | 71 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:137:40:137:41 | 71 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:137:40:137:41 | 71 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:137:40:137:41 | 71 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:137:40:137:41 | 71 | params_flow.rb:137:34:137:42 | call to taint |
 | params_flow.rb:137:40:137:41 | 71 | params_flow.rb:137:40:137:41 | 71 |
@@ -6007,6 +6108,7 @@ trackEnd
 | params_flow.rb:140:5:140:15 | ...[...] | params_flow.rb:140:5:140:15 | ...[...] |
 | params_flow.rb:140:5:140:15 | [post] ...[...] | params_flow.rb:140:5:140:15 | [post] ...[...] |
 | params_flow.rb:140:5:140:15 | synthetic splat argument | params_flow.rb:140:5:140:15 | synthetic splat argument |
+| params_flow.rb:140:5:140:38 | call to insert | params_flow.rb:140:5:140:38 | ... |
 | params_flow.rb:140:5:140:38 | call to insert | params_flow.rb:140:5:140:38 | call to insert |
 | params_flow.rb:140:5:140:38 | call to insert | params_flow.rb:145:1:145:29 | call to hashSplatSideEffect |
 | params_flow.rb:140:5:140:38 | call to insert | params_flow.rb:150:1:150:42 | call to hashSplatSideEffect |
@@ -6045,6 +6147,7 @@ trackEnd
 | params_flow.rb:143:24:143:32 | synthetic splat argument | params_flow.rb:143:24:143:32 | synthetic splat argument |
 | params_flow.rb:143:30:143:31 | 72 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:143:30:143:31 | 72 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:143:30:143:31 | 72 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:143:30:143:31 | 72 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:143:30:143:31 | 72 | params_flow.rb:140:27:140:37 | ...[...] |
 | params_flow.rb:143:30:143:31 | 72 | params_flow.rb:143:24:143:32 | call to taint |
@@ -6109,6 +6212,7 @@ trackEnd
 | params_flow.rb:150:33:150:41 | synthetic splat argument | params_flow.rb:150:33:150:41 | synthetic splat argument |
 | params_flow.rb:150:39:150:40 | 73 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:150:39:150:40 | 73 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:150:39:150:40 | 73 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:150:39:150:40 | 73 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:150:39:150:40 | 73 | params_flow.rb:140:27:140:37 | ...[...] |
 | params_flow.rb:150:39:150:40 | 73 | params_flow.rb:150:33:150:41 | call to taint |
@@ -6134,6 +6238,7 @@ trackEnd
 | params_flow.rb:153:28:153:29 | p2 | params_flow.rb:153:28:153:29 | p2 |
 | params_flow.rb:153:28:153:29 | p2 | params_flow.rb:154:18:154:19 | p2 |
 | params_flow.rb:154:5:154:6 | [post] p1 | params_flow.rb:154:5:154:6 | [post] p1 |
+| params_flow.rb:154:5:154:20 | call to insert | params_flow.rb:154:5:154:20 | ... |
 | params_flow.rb:154:5:154:20 | call to insert | params_flow.rb:154:5:154:20 | call to insert |
 | params_flow.rb:154:5:154:20 | call to insert | params_flow.rb:159:1:159:27 | call to keywordSideEffect |
 | params_flow.rb:154:5:154:20 | call to insert | params_flow.rb:164:1:164:40 | call to keywordSideEffect |
@@ -6172,6 +6277,7 @@ trackEnd
 | params_flow.rb:157:24:157:32 | synthetic splat argument | params_flow.rb:157:24:157:32 | synthetic splat argument |
 | params_flow.rb:157:30:157:31 | 74 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:157:30:157:31 | 74 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:157:30:157:31 | 74 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:157:30:157:31 | 74 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:157:30:157:31 | 74 | params_flow.rb:153:28:153:29 | p2 |
 | params_flow.rb:157:30:157:31 | 74 | params_flow.rb:153:28:153:29 | p2 |
@@ -6235,6 +6341,7 @@ trackEnd
 | params_flow.rb:164:31:164:39 | synthetic splat argument | params_flow.rb:164:31:164:39 | synthetic splat argument |
 | params_flow.rb:164:37:164:38 | 75 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:164:37:164:38 | 75 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:164:37:164:38 | 75 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:164:37:164:38 | 75 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:164:37:164:38 | 75 | params_flow.rb:153:28:153:29 | p2 |
 | params_flow.rb:164:37:164:38 | 75 | params_flow.rb:153:28:153:29 | p2 |
@@ -6260,6 +6367,7 @@ trackEnd
 | params_flow.rb:168:5:168:14 | ...[...] | params_flow.rb:168:5:168:14 | ...[...] |
 | params_flow.rb:168:5:168:14 | [post] ...[...] | params_flow.rb:168:5:168:14 | [post] ...[...] |
 | params_flow.rb:168:5:168:14 | synthetic splat argument | params_flow.rb:168:5:168:14 | synthetic splat argument |
+| params_flow.rb:168:5:168:36 | call to insert | params_flow.rb:168:5:168:36 | ... |
 | params_flow.rb:168:5:168:36 | call to insert | params_flow.rb:168:5:168:36 | call to insert |
 | params_flow.rb:168:5:168:36 | call to insert | params_flow.rb:173:1:173:25 | call to splatSideEffect |
 | params_flow.rb:168:5:168:36 | call to insert | params_flow.rb:178:1:178:30 | call to splatSideEffect |
@@ -6296,6 +6404,7 @@ trackEnd
 | params_flow.rb:171:17:171:25 | synthetic splat argument | params_flow.rb:171:17:171:25 | synthetic splat argument |
 | params_flow.rb:171:23:171:24 | 76 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:171:23:171:24 | 76 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:171:23:171:24 | 76 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:171:23:171:24 | 76 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:171:23:171:24 | 76 | params_flow.rb:168:26:168:35 | ...[...] |
 | params_flow.rb:171:23:171:24 | 76 | params_flow.rb:171:17:171:25 | call to taint |
@@ -6356,6 +6465,7 @@ trackEnd
 | params_flow.rb:178:21:178:29 | synthetic splat argument | params_flow.rb:178:21:178:29 | synthetic splat argument |
 | params_flow.rb:178:27:178:28 | 77 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:178:27:178:28 | 77 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:178:27:178:28 | 77 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:178:27:178:28 | 77 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:178:27:178:28 | 77 | params_flow.rb:168:26:168:35 | ...[...] |
 | params_flow.rb:178:27:178:28 | 77 | params_flow.rb:178:21:178:29 | call to taint |
@@ -6381,6 +6491,7 @@ trackEnd
 | params_flow.rb:181:28:181:29 | p2 | params_flow.rb:181:28:181:29 | p2 |
 | params_flow.rb:181:28:181:29 | p2 | params_flow.rb:182:18:182:19 | p2 |
 | params_flow.rb:182:5:182:6 | [post] p1 | params_flow.rb:182:5:182:6 | [post] p1 |
+| params_flow.rb:182:5:182:20 | call to insert | params_flow.rb:182:5:182:20 | ... |
 | params_flow.rb:182:5:182:20 | call to insert | params_flow.rb:182:5:182:20 | call to insert |
 | params_flow.rb:182:5:182:20 | call to insert | params_flow.rb:187:1:187:25 | call to positionSideEffect |
 | params_flow.rb:182:5:182:20 | call to insert | params_flow.rb:192:1:192:33 | call to positionSideEffect |
@@ -6421,6 +6532,7 @@ trackEnd
 | params_flow.rb:185:14:185:22 | synthetic splat argument | params_flow.rb:185:14:185:22 | synthetic splat argument |
 | params_flow.rb:185:20:185:21 | 78 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:185:20:185:21 | 78 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:185:20:185:21 | 78 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:185:20:185:21 | 78 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:185:20:185:21 | 78 | params_flow.rb:181:28:181:29 | p2 |
 | params_flow.rb:185:20:185:21 | 78 | params_flow.rb:181:28:181:29 | p2 |
@@ -6480,6 +6592,7 @@ trackEnd
 | params_flow.rb:192:24:192:32 | synthetic splat argument | params_flow.rb:192:24:192:32 | synthetic splat argument |
 | params_flow.rb:192:30:192:31 | 79 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:192:30:192:31 | 79 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:192:30:192:31 | 79 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:192:30:192:31 | 79 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:192:30:192:31 | 79 | params_flow.rb:181:28:181:29 | p2 |
 | params_flow.rb:192:30:192:31 | 79 | params_flow.rb:181:28:181:29 | p2 |
@@ -6524,6 +6637,7 @@ trackEnd
 | params_flow.rb:196:10:196:18 | synthetic splat argument | params_flow.rb:196:10:196:18 | synthetic splat argument |
 | params_flow.rb:196:16:196:17 | 80 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:196:16:196:17 | 80 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:196:16:196:17 | 80 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:196:16:196:17 | 80 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:196:16:196:17 | 80 | params_flow.rb:196:10:196:18 | call to taint |
 | params_flow.rb:196:16:196:17 | 80 | params_flow.rb:196:16:196:17 | 80 |
@@ -6587,6 +6701,7 @@ trackEnd
 | params_flow.rb:203:11:203:14 | ...[...] | params_flow.rb:203:11:203:14 | ...[...] |
 | params_flow.rb:203:11:203:14 | synthetic splat argument | params_flow.rb:203:11:203:14 | synthetic splat argument |
 | params_flow.rb:203:13:203:13 | 0 | params_flow.rb:203:13:203:13 | 0 |
+| params_flow.rb:204:5:204:15 | call to sink | params_flow.rb:201:5:204:15 | ... |
 | params_flow.rb:204:5:204:15 | call to sink | params_flow.rb:204:5:204:15 | call to sink |
 | params_flow.rb:204:5:204:15 | call to sink | params_flow.rb:207:1:207:14 | call to foo |
 | params_flow.rb:204:5:204:15 | synthetic splat argument | params_flow.rb:204:5:204:15 | synthetic splat argument |
@@ -6681,7 +6796,9 @@ trackEnd
 | params_flow.rb:216:14:216:24 | synthetic splat argument | params_flow.rb:216:14:216:24 | synthetic splat argument |
 | params_flow.rb:216:21:216:23 | :k2 | params_flow.rb:216:21:216:23 | :k2 |
 | params_flow.rb:217:9:217:23 | synthetic splat argument | params_flow.rb:217:9:217:23 | synthetic splat argument |
+| params_flow.rb:217:9:217:23 | yield ... | params_flow.rb:211:9:217:23 | ... |
 | params_flow.rb:217:9:217:23 | yield ... | params_flow.rb:217:9:217:23 | yield ... |
+| params_flow.rb:217:9:217:23 | yield ... | params_flow.rb:223:9:223:13 | ... |
 | params_flow.rb:217:9:217:23 | yield ... | params_flow.rb:223:9:223:13 | super call to m |
 | params_flow.rb:217:9:217:23 | yield ... | params_flow.rb:227:1:229:3 | call to m |
 | params_flow.rb:217:9:217:23 | yield block argument | params_flow.rb:217:9:217:23 | yield block argument |
@@ -6695,6 +6812,7 @@ trackEnd
 | params_flow.rb:217:15:217:23 | synthetic splat argument | params_flow.rb:217:15:217:23 | synthetic splat argument |
 | params_flow.rb:217:21:217:22 | 86 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:217:21:217:22 | 86 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:217:21:217:22 | 86 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:217:21:217:22 | 86 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:217:21:217:22 | 86 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:217:21:217:22 | 86 | params_flow.rb:5:10:5:10 | x |
@@ -6760,6 +6878,7 @@ trackEnd
 | params_flow.rb:223:9:223:13 | ** ... | params_flow.rb:223:9:223:13 | ** ... |
 | params_flow.rb:223:9:223:13 | Pair | params_flow.rb:223:9:223:13 | Pair |
 | params_flow.rb:223:9:223:13 | k1 | params_flow.rb:223:9:223:13 | k1 |
+| params_flow.rb:223:9:223:13 | super call to m | params_flow.rb:223:9:223:13 | ... |
 | params_flow.rb:223:9:223:13 | super call to m | params_flow.rb:223:9:223:13 | super call to m |
 | params_flow.rb:223:9:223:13 | super call to m | params_flow.rb:227:1:229:3 | call to m |
 | params_flow.rb:223:9:223:13 | synthetic hash-splat argument | params_flow.rb:210:26:210:33 | **kwargs |
@@ -6793,6 +6912,7 @@ trackEnd
 | params_flow.rb:227:11:227:19 | synthetic splat argument | params_flow.rb:227:11:227:19 | synthetic splat argument |
 | params_flow.rb:227:17:227:18 | 81 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:227:17:227:18 | 81 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:17:227:18 | 81 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:227:17:227:18 | 81 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:227:17:227:18 | 81 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:227:17:227:18 | 81 | params_flow.rb:5:10:5:10 | x |
@@ -6813,6 +6933,7 @@ trackEnd
 | params_flow.rb:227:22:227:30 | synthetic splat argument | params_flow.rb:227:22:227:30 | synthetic splat argument |
 | params_flow.rb:227:28:227:29 | 82 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:227:28:227:29 | 82 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:28:227:29 | 82 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:227:28:227:29 | 82 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:227:28:227:29 | 82 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:227:28:227:29 | 82 | params_flow.rb:5:10:5:10 | x |
@@ -6833,6 +6954,7 @@ trackEnd
 | params_flow.rb:227:36:227:44 | synthetic splat argument | params_flow.rb:227:36:227:44 | synthetic splat argument |
 | params_flow.rb:227:42:227:43 | 83 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:227:42:227:43 | 83 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:42:227:43 | 83 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:227:42:227:43 | 83 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:227:42:227:43 | 83 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:227:42:227:43 | 83 | params_flow.rb:5:10:5:10 | x |
@@ -6855,6 +6977,7 @@ trackEnd
 | params_flow.rb:227:51:227:59 | synthetic splat argument | params_flow.rb:227:51:227:59 | synthetic splat argument |
 | params_flow.rb:227:57:227:58 | 84 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:227:57:227:58 | 84 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:57:227:58 | 84 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:227:57:227:58 | 84 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:227:57:227:58 | 84 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:227:57:227:58 | 84 | params_flow.rb:5:10:5:10 | x |
@@ -6877,6 +7000,7 @@ trackEnd
 | params_flow.rb:227:66:227:74 | synthetic splat argument | params_flow.rb:227:66:227:74 | synthetic splat argument |
 | params_flow.rb:227:72:227:73 | 85 | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:227:72:227:73 | 85 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:72:227:73 | 85 | params_flow.rb:2:5:2:5 | ... |
 | params_flow.rb:227:72:227:73 | 85 | params_flow.rb:2:5:2:5 | x |
 | params_flow.rb:227:72:227:73 | 85 | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:227:72:227:73 | 85 | params_flow.rb:5:10:5:10 | x |
@@ -6902,10 +7026,13 @@ trackEnd
 | params_flow.rb:227:81:227:81 | x | params_flow.rb:227:81:227:81 | x |
 | params_flow.rb:227:81:227:81 | x | params_flow.rb:227:81:227:81 | x |
 | params_flow.rb:227:81:227:81 | x | params_flow.rb:228:10:228:10 | x |
+| params_flow.rb:228:5:228:11 | call to sink | params_flow.rb:211:9:217:23 | ... |
 | params_flow.rb:228:5:228:11 | call to sink | params_flow.rb:217:9:217:23 | yield ... |
+| params_flow.rb:228:5:228:11 | call to sink | params_flow.rb:223:9:223:13 | ... |
 | params_flow.rb:228:5:228:11 | call to sink | params_flow.rb:223:9:223:13 | super call to m |
 | params_flow.rb:228:5:228:11 | call to sink | params_flow.rb:227:1:229:3 | call to m |
 | params_flow.rb:228:5:228:11 | call to sink | params_flow.rb:228:5:228:11 | call to sink |
+| params_flow.rb:228:5:228:11 | call to sink | params_flow.rb:228:5:228:31 | ... |
 | params_flow.rb:228:5:228:11 | synthetic splat argument | params_flow.rb:228:5:228:11 | synthetic splat argument |
 forwardButNoBackwardFlow
 backwardButNoForwardFlow

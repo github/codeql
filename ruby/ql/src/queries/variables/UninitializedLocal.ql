@@ -49,7 +49,7 @@ private predicate isInBooleanContext(AstNode n) {
 
 private predicate isGuarded(LocalVariableReadAccess read) {
   exists(AstCfgNode guard, boolean branch |
-    Guards::guardControlsBlock(guard, read.getAControlFlowNode().getBasicBlock(), branch)
+    Guards::guardControlsBlock(guard, read.getControlFlowNode().getBasicBlock(), branch)
   |
     // guard is `var`
     guard.getAstNode() = read.getVariable().getAnAccess() and
