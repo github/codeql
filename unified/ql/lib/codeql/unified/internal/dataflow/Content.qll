@@ -1,7 +1,14 @@
 private import unified
 private import AllDataFlow
 
-private newtype TContent = TNamedMember(string name) { name = any(Identifier id).getValue() }
+private newtype TContent =
+  TNamedMember(string name) {
+    name = any(Identifier id).getValue()
+    or
+    // Tuple elements can be accessed as named members, e.g. `tuple.0`, `tuple.1`, etc,
+    // so just model their elements as named members.
+    name = [0 .. 20].toString()
+  }
 
 class Content extends TContent {
   string asNamedMember() { this = TNamedMember(result) }
