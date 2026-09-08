@@ -39,4 +39,12 @@ function Number() {}
 
 Number.parseFloat = function(num) {};
 
+/**
+ * @param {*=} transformer
+ * @param {*=} writableStrategy
+ * @param {*=} readableStrategy
+ * @constructor
+ */
+function TransformStream(transformer, writableStrategy, readableStrategy) {}
+
 /** @externs */

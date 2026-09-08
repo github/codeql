@@ -1,2 +1,8 @@
-| MissingAntiForgeryTokenValidation.cs:7:25:7:29 | Login | Method 'Login' handles a POST request without performing CSRF token validation. |
-| MissingAntiForgeryTokenValidation.cs:58:25:58:45 | NoInheritedValidation | Method 'NoInheritedValidation' handles a POST request without performing CSRF token validation. |
+| MissingAntiForgeryTokenValidation.cs:12:25:12:29 | Login | Method 'Login' handles a POST request without performing CSRF token validation. |
+| MissingAntiForgeryTokenValidation.cs:52:25:52:42 | DisabledValidation | Method 'DisabledValidation' handles a POST request without performing CSRF token validation. |
+| MissingAntiForgeryTokenValidation.cs:60:25:60:50 | ConstantDisabledValidation | Method 'ConstantDisabledValidation' handles a POST request without performing CSRF token validation. |
+| MissingAntiForgeryTokenValidation.cs:126:25:126:38 | DisabledAction | Method 'DisabledAction' handles a POST request without performing CSRF token validation. |
+| MissingAntiForgeryTokenValidation.cs:137:25:137:48 | DisabledControllerAction | Method 'DisabledControllerAction' handles a POST request without performing CSRF token validation. |
+| MissingAntiForgeryTokenValidation.cs:161:25:161:47 | DisabledInheritedAction | Method 'DisabledInheritedAction' handles a POST request without performing CSRF token validation. |
+| MissingAntiForgeryTokenValidation.cs:207:25:207:45 | NoInheritedValidation | Method 'NoInheritedValidation' handles a POST request without performing CSRF token validation. |
+| MissingAntiForgeryTokenValidation.cs:224:29:224:46 | LookalikeAttribute | Method 'LookalikeAttribute' handles a POST request without performing CSRF token validation. |

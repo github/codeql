@@ -439,7 +439,7 @@ module Private {
     result.asCallable() = n.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
     result.asCallable() = n.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
     result = nodeGetEnclosingCallable(n.(ImplicitPostUpdateNode).getPreUpdateNode()) or
-    result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable() or
+    result = n.(FlowSummaryNode).getSummaryNode().getEnclosingCallable() or
     result.asCallable() = n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() or
     result.asFieldScope() = n.(FieldValueNode).getField() or
     result.asCallable() = any(Expr e | n.(AdditionalNode).nodeAt(e, _)).getEnclosingCallable() or
@@ -531,7 +531,7 @@ module Private {
       result = this.getSummaryNode().getSummarizedCallable()
     }
 
-    override Location getLocation() { result = this.getSummarizedCallable().getLocation() }
+    override Location getLocation() { result = this.getSummaryNode().getLocation() }
 
     override string toString() { result = this.getSummaryNode().toString() }
 

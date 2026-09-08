@@ -8,7 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AddressableImpl::Impl as AddressableImpl
 import codeql.rust.elements.Attr
-import codeql.rust.elements.Expr
+import codeql.rust.elements.ConstArg
 import codeql.rust.elements.FieldList
 import codeql.rust.elements.Name
 import codeql.rust.elements.Visibility
@@ -51,17 +51,17 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the discriminant of this variant, if it exists.
+     * Gets the const argument of this variant, if it exists.
      */
-    Expr getDiscriminant() {
+    ConstArg getConstArg() {
       result =
-        Synth::convertExprFromRaw(Synth::convertVariantToRaw(this).(Raw::Variant).getDiscriminant())
+        Synth::convertConstArgFromRaw(Synth::convertVariantToRaw(this).(Raw::Variant).getConstArg())
     }
 
     /**
-     * Holds if `getDiscriminant()` exists.
+     * Holds if `getConstArg()` exists.
      */
-    final predicate hasDiscriminant() { exists(this.getDiscriminant()) }
+    final predicate hasConstArg() { exists(this.getConstArg()) }
 
     /**
      * Gets the field list of this variant, if it exists.

@@ -13,8 +13,8 @@ query predicate getAttr(StructField x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 
-query predicate getDefault(StructField x, Expr getDefault) {
-  toBeTested(x) and not x.isUnknown() and getDefault = x.getDefault()
+query predicate getDefaultVal(StructField x, ConstArg getDefaultVal) {
+  toBeTested(x) and not x.isUnknown() and getDefaultVal = x.getDefaultVal()
 }
 
 query predicate getName(StructField x, Name getName) {

@@ -44,6 +44,7 @@ private module SyntheticCallables {
   private import semmle.code.java.dispatch.WrappedInvocation
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.Stream
+  private import semmle.code.java.frameworks.Strings
 }
 
 private newtype TSummarizedCallableBase =

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: enabledDeploymentEnvironmentDataModel
+    data: 
+      # assumed to exist in a repo where controlcheck.yml exists
+      # realistically would need to be manually/externally provided
+      - ["EnvironmentInRepo"]

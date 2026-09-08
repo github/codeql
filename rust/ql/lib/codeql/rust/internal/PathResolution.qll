@@ -263,7 +263,7 @@ abstract class ItemNode extends Locatable {
   pragma[nomagic]
   final Attr getAttr(string name) {
     result = this.getAnAttr() and
-    result.getMeta().getPath().(PathExt).isUnqualified(name)
+    result.getMeta().getMetaPath().(PathExt).isUnqualified(name)
   }
 
   final predicate hasAttr(string name) { exists(this.getAttr(name)) }
@@ -1095,31 +1095,25 @@ final class TraitItemNode extends ImplOrTraitItemNode, NamedItemNode, TypeItemNo
   bindingset[c]
   private string getCanonicalPathPart(Crate c, int i) {
     i = 0 and
-    result = "<_ as "
-    or
-    i = 1 and
     result = this.getCanonicalPathPrefix(c)
     or
-    i = 2 and
+    i = 1 and
     result = "::"
     or
-    i = 3 and
+    i = 2 and
     result = this.getName()
-    or
-    i = 4 and
-    result = ">"
   }
 
   language[monotonicAggregates]
   override string getCanonicalPath(Crate c) {
     this.hasCanonicalPath(c) and
-    result = strictconcat(int i | i in [1 .. 3] | this.getCanonicalPathPart(c, i) order by i)
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
   }
 
   language[monotonicAggregates]
   override string getCanonicalPathPrefixFor(Crate c, ItemNode child) {
     this.providesCanonicalPathPrefixFor(c, child) and
-    result = strictconcat(int i | i in [0 .. 4] | this.getCanonicalPathPart(c, i) order by i)
+    result = this.getCanonicalPath(c)
   }
 }
 
@@ -1380,7 +1374,7 @@ private predicate fileModuleInlineLate(SourceFile f, string name, Folder folder)
  */
 private Meta getPathAttrMeta(Module m) {
   result = m.getAnAttr().getMeta() and
-  result.getPath().getText() = "path"
+  result.getMetaPath().getText() = "path"
 }
 
 /**
@@ -1441,7 +1435,7 @@ private predicate modImportNestedLookup(Module m, ModuleItemNode ancestor, Folde
 }
 
 private predicate pathAttrImport(Folder f, Module m, string relativePath) {
-  exists(Meta meta |
+  exists(KeyValueMeta meta |
     f = m.getFile().getParentContainer() and
     meta = getPathAttrMeta(m) and
     relativePath = meta.getExpr().(LiteralExpr).getTextValue().regexpCapture("\"(.+)\"", 1)
@@ -1825,7 +1819,7 @@ private module DollarCrateResolution {
     or
     exists(ItemNode type |
       expansion = type.(TypeItem).getDeriveMacroExpansion(_) and
-      macroDefPath = type.getAttr("derive").getMeta().getPath()
+      macroDefPath = type.getAttr("derive").getMeta().getMetaPath()
     )
   }
 
@@ -1984,7 +1978,7 @@ private predicate pathUsesNamespace(PathExt p, Namespace n) {
   (
     p = any(MacroCall mc).getPath()
     or
-    p = any(Meta m).getPath()
+    p = any(Meta m).getMetaPath()
   )
 }
 

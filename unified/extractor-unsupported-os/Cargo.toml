@@ -1,0 +1,6 @@
+[package]
+name = "codeql-extractor-unified-unsupported-os"
+description = "Fallback executable for unsupported CodeQL Unified extractor platforms"
+version = "0.1.0"
+authors = ["GitHub"]
+edition = "2024"

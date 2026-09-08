@@ -5,8 +5,8 @@ use actix_web::{
 };
 
 // The "bad" example from the qldoc
-#[get("/bad/{a}")] // $ Source=a
-async fn vulnerable_handler(path: web::Path<String>) -> impl Responder {
+#[get("/bad/{a}")]
+async fn vulnerable_handler(path: web::Path<String>) -> impl Responder { // $ Source=a
     let user_input = path.into_inner();
 
     let html = format!(

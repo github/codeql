@@ -1269,6 +1269,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         result = block.(Switch).getStmt(_)
       }
 
+      private predicate callableHasParamDefault(Callable c, Expr defaultValue) {
+        exists(Parameter p | p.getDefaultValue() = defaultValue and c = getEnclosingCallable(p))
+      }
+
       /**
        * Holds if an abrupt completion `c` from within `ast` is caught with
        * flow continuing at `n`.
@@ -1276,7 +1280,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       private predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
         Input2::endAbruptCompletion(ast, n, c)
         or
-        exists(Callable callable | callableHasBodyPart(callable, ast) |
+        exists(Callable callable |
+          callableHasBodyPart(callable, ast) or callableHasParamDefault(callable, ast)
+        |
           c.getSuccessorType() instanceof ReturnSuccessor and
           n.(NormalExitNodeImpl).getEnclosingCallable() = callable
           or
@@ -1737,6 +1743,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
               not exists(trystmt.getFinally()) and beforeFinally.isAfter(trystmt)
             )
           |
+            not exists(trystmt.getBody(_)) and
+            n1.isBefore(trystmt) and
+            n2 = beforeElse
+            or
             exists(int i |
               n1.isAfter(trystmt.getBody(i)) and
               not exists(trystmt.getBody(i + 1)) and
@@ -2051,6 +2061,33 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           /** Gets an exception successor of this node, if any. */
           ControlFlowNode getAnExceptionSuccessor() {
             result = this.getASuccessor(any(ExceptionSuccessor t))
+          }
+
+          /*
+           * Note that the following 3 predicates, `isAfterValue`,
+           * `isAfterTrue`, and `isAfterFalse`, shadow their counterparts in
+           * `PreControlFlowNode`, and that their semantics are slightly
+           * different.
+           *
+           * This is because, in `PreControlFlowNode`, during CFG construction,
+           * we need to identify the control flow node that results from the
+           * evaluation of an AST node to a certain value, but that control
+           * flow node may or may not encode that fact. In contrast, in
+           * `ControlFlowNode`, we instead want to know what the node actually
+           * encodes.
+           */
+
+          /** Holds if this node indicates that `n` evaluates to the value `t`. */
+          predicate isAfterValue(AstNode n, ConditionalSuccessor t) { this = TAfterValueNode(n, t) }
+
+          /** Holds if this node indicates that `n` evaluates to the value `true`. */
+          predicate isAfterTrue(AstNode n) {
+            this = TAfterValueNode(n, any(BooleanSuccessor b | b.getValue() = true))
+          }
+
+          /** Holds if this node indicates that `n` evaluates to the value `false`. */
+          predicate isAfterFalse(AstNode n) {
+            this = TAfterValueNode(n, any(BooleanSuccessor b | b.getValue() = false))
           }
 
           /**

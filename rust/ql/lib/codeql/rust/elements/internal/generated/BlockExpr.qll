@@ -9,6 +9,7 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.LabelableExprImpl::Impl as LabelableExprImpl
 import codeql.rust.elements.StmtList
+import codeql.rust.elements.TryBlockModifier
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BlockExpr` and should not
@@ -73,11 +74,6 @@ module Generated {
     predicate isMove() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isMove() }
 
     /**
-     * Holds if this block expression is try.
-     */
-    predicate isTry() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isTry() }
-
-    /**
      * Holds if this block expression is unsafe.
      */
     predicate isUnsafe() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isUnsafe() }
@@ -96,5 +92,20 @@ module Generated {
      * Holds if `getStmtList()` exists.
      */
     final predicate hasStmtList() { exists(this.getStmtList()) }
+
+    /**
+     * Gets the try block modifier of this block expression, if it exists.
+     */
+    TryBlockModifier getTryBlockModifier() {
+      result =
+        Synth::convertTryBlockModifierFromRaw(Synth::convertBlockExprToRaw(this)
+              .(Raw::BlockExpr)
+              .getTryBlockModifier())
+    }
+
+    /**
+     * Holds if `getTryBlockModifier()` exists.
+     */
+    final predicate hasTryBlockModifier() { exists(this.getTryBlockModifier()) }
   }
 }

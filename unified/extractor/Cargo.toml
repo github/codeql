@@ -18,3 +18,4 @@ serde_json = "1.0.145"
 
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
 yeast = { path = "../../shared/yeast" }
+swift-syntax-rs = { path = "../swift-syntax-rs" }

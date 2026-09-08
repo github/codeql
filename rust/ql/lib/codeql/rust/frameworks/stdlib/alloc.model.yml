@@ -13,12 +13,12 @@ extensions:
       - ["alloc::alloc::alloc", "Argument[0]", "alloc-layout", "manual"]
       - ["alloc::alloc::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
       - ["alloc::alloc::realloc", "Argument[2]", "alloc-size", "manual"]
-      - ["<_ as core::alloc::global::GlobalAlloc>::alloc", "Argument[0]", "alloc-layout", "manual"]
-      - ["<_ as core::alloc::global::GlobalAlloc>::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
-      - ["<_ as core::alloc::Allocator>::allocate", "Argument[0]", "alloc-layout", "manual"]
-      - ["<_ as core::alloc::Allocator>::allocate_zeroed", "Argument[0]", "alloc-layout", "manual"]
-      - ["<_ as core::alloc::Allocator>::grow", "Argument[2]", "alloc-layout", "manual"]
-      - ["<_ as core::alloc::Allocator>::grow_zeroed", "Argument[2]", "alloc-layout", "manual"]
+      - ["core::alloc::global::GlobalAlloc::alloc", "Argument[0]", "alloc-layout", "manual"]
+      - ["core::alloc::global::GlobalAlloc::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["core::alloc::Allocator::allocate", "Argument[0]", "alloc-layout", "manual"]
+      - ["core::alloc::Allocator::allocate_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["core::alloc::Allocator::grow", "Argument[2]", "alloc-layout", "manual"]
+      - ["core::alloc::Allocator::grow_zeroed", "Argument[2]", "alloc-layout", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel
@@ -49,13 +49,16 @@ extensions:
       # String
       - ["<alloc::string::String>::as_str", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
       - ["<alloc::string::String>::as_bytes", "Argument[self].Reference", "ReturnValue.Reference.Element", "taint", "manual"]
-      - ["<_ as alloc::string::ToString>::to_string", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
+      - ["alloc::string::ToString::to_string", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
         # Overwrite generated model
       - ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[0].Reference", "ReturnValue", "taint", "manual"]
       # Vec
       - ["alloc::vec::from_elem", "Argument[0]", "ReturnValue.Element", "value", "manual"]
       - ["<alloc::vec::Vec as core::ops::deref::Deref>::deref", "Argument[self].Reference.Element", "ReturnValue.Reference.Element", "value", "manual"]
+      # ToOwned
+      - ["alloc::borrow::ToOwned::to_owned", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
+      - ["alloc::borrow::ToOwned::clone_into", "Argument[self].Reference", "Argument[0].Reference", "taint", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: neutralModel

@@ -6,3 +6,5 @@
 | genericFunctions.go:45:6:45:50 | generic function instantiation expression | genericFunctions.go:45:6:45:33 | GenericFunctionTwoTypeParams | 1 | genericFunctions.go:45:43:45:49 | float64 |
 | genericFunctions.go:141:6:141:41 | generic function instantiation expression | genericFunctions.go:141:6:141:33 | GenericFunctionInAnotherFile | 0 | genericFunctions.go:141:35:141:40 | string |
 | genericFunctions.go:146:6:146:55 | generic function instantiation expression | genericFunctions.go:146:6:146:47 | selection of GenericFunctionInAnotherPackage | 0 | genericFunctions.go:146:49:146:54 | string |
+| genericMethods.go:13:2:13:23 | generic function instantiation expression | genericMethods.go:13:2:13:18 | selection of GenericMethod1 | 0 | genericMethods.go:13:20:13:22 | int |
+| genericMethods.go:14:2:14:26 | generic function instantiation expression | genericMethods.go:14:2:14:18 | selection of GenericMethod2 | 0 | genericMethods.go:14:20:14:25 | string |

@@ -1,5 +1,5 @@
 diff --git a/xtask/src/codegen/grammar.rs b/xtask/src/codegen/grammar.rs
-index e7534582f2..49c96f1be3 100644
+index 257429c..ddbe321 100644
 --- a/xtask/src/codegen/grammar.rs
 +++ b/xtask/src/codegen/grammar.rs
 @@ -3,7 +3,9 @@
@@ -22,7 +22,7 @@ index e7534582f2..49c96f1be3 100644
  use self::ast_src::{AstEnumSrc, AstNodeSrc, AstSrc, Cardinality, Field, KindsSrc};
  
  pub(crate) fn generate(check: bool) {
-@@ -624,7 +626,7 @@ fn pluralize(s: &str) -> String {
+@@ -775,7 +777,7 @@ fn pluralize(s: &str) -> String {
  }
  
  impl Field {
@@ -31,26 +31,26 @@ index e7534582f2..49c96f1be3 100644
          matches!(self, Field::Node { cardinality: Cardinality::Many, .. })
      }
      fn token_kind(&self) -> Option<proc_macro2::TokenStream> {
-@@ -636,7 +638,7 @@ impl Field {
+@@ -787,7 +789,7 @@ impl Field {
              _ => None,
          }
      }
 -    fn method_name(&self) -> String {
 +    pub fn method_name(&self) -> String {
          match self {
-             Field::Token(name) => {
-                 let name = match name.as_str() {
-@@ -682,7 +684,7 @@ impl Field {
+             Field::Token { name, token, .. } => {
+                 if let Some(name) = name {
+@@ -836,7 +838,7 @@ impl Field {
              }
          }
      }
 -    fn ty(&self) -> proc_macro2::Ident {
 +    pub fn ty(&self) -> proc_macro2::Ident {
          match self {
-             Field::Token(_) => format_ident!("SyntaxToken"),
+             Field::Token { .. } => format_ident!("SyntaxToken"),
              Field::Node { ty, .. } => format_ident!("{}", ty),
-@@ -699,7 +701,7 @@ fn clean_token_name(name: &str) -> String {
-     }
+@@ -849,7 +851,7 @@ fn clean_token_name(name: &str) -> String {
+     if cleaned.is_empty() { name.to_owned() } else { cleaned.to_owned() }
  }
  
 -fn lower(grammar: &Grammar) -> AstSrc {
@@ -59,7 +59,7 @@ index e7534582f2..49c96f1be3 100644
          tokens:
              "Whitespace Comment String ByteString CString IntNumber FloatNumber Char Byte Ident"
 diff --git a/xtask/src/codegen/grammar/ast_src.rs b/xtask/src/codegen/grammar/ast_src.rs
-index 9269d15423..babe7ca1bf 100644
+index a0abdf0..5f59f97 100644
 --- a/xtask/src/codegen/grammar/ast_src.rs
 +++ b/xtask/src/codegen/grammar/ast_src.rs
 @@ -1,5 +1,8 @@

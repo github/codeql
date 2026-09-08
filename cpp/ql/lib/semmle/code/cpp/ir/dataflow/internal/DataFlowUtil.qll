@@ -158,8 +158,7 @@ private module Cached {
     model = ""
     or
     // models-as-data summarized flow
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
-      nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model)
   }
 
   private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {

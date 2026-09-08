@@ -52,4 +52,9 @@ module Public {
       result = this.getValue().regexpCapture("(?s)/\\*(.*)\\*/", 1)
     }
   }
+
+  /** A `Stmt` at the top-level. */
+  final class TopLevelStmt extends Stmt {
+    TopLevelStmt() { this = any(TopLevel t).getBody().getAStmt() }
+  }
 }

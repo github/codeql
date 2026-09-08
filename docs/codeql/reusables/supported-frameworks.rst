@@ -263,6 +263,7 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    mysqlclient, Database
    oracledb, Database
    phoenixdb, Database
+   psycopg, Database
    psycopg2, Database
    pymssql, Database
    PyMySQL, Database
