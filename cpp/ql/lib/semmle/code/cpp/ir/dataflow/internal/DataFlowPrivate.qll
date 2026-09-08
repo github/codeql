@@ -593,6 +593,87 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
   }
 }
 
+private Type stripReferences(Type unspecifiedType) {
+  result = unspecifiedType.(Cpp::ReferenceType).getBaseType().getUnspecifiedType()
+  or
+  not unspecifiedType instanceof Cpp::ReferenceType and
+  result = unspecifiedType
+}
+
+private predicate forwardingCallTargetsConstructor(
+  CallInstruction call, Cpp::Constructor constructor
+) {
+  exists(int start |
+    External::forwards(call.getStaticCallTarget(), constructor, start) and
+    call.getNumberOfPositionalArguments() = start + constructor.getNumberOfParameters() and
+    forall(int i, Type typeCall, Type typeConstructor |
+      i = [0 .. constructor.getNumberOfParameters() - 1] and
+      typeCall = stripReferences(call.getPositionalArgument(start + i).getResultType()) and
+      typeConstructor = stripReferences(constructor.getParameter(i).getUnspecifiedType())
+    |
+      typeCall = typeConstructor
+    )
+  )
+}
+
+/** Holds if `call` is a call that forwards arguments to a constructor call. */
+predicate isForwarderConstructorArgumentNodeImpl(CallInstruction call) {
+  forwardingCallTargetsConstructor(call, _)
+}
+
+/**
+ * In order to implement a MaD summary for a flow such as:
+ * ```
+ * struct Foo {
+ *   int x;
+ *   Foo(int x) { // (2)
+ *     this->x = x;
+ *   }
+ * }
+ *
+ * std::vector<Foo> v;
+ * int x = source();
+ * v.emplace_back(x); // (1)
+ * sink(v.back());
+ * ```
+ * we model it as if the code was:
+ * ```
+ * v.__emplace_back(x, &Foo)
+ * ```
+ * (nevermind that this is not real C++ since you cannot take the address of a
+ * constructor.)
+ * where `__emplace_back` invokes `Foo` with the `x` argument and returns the
+ * result.
+ *
+ * This class serves as the argument node for `&Foo`.
+ */
+private class ForwarderConstructorArgumentNode extends ArgumentNode,
+  TForwarderConstructorArgumentNode
+{
+  private CallInstruction call;
+
+  ForwarderConstructorArgumentNode() { this = TForwarderConstructorArgumentNode(call) }
+
+  override predicate sourceArgumentOf(CallInstruction c, ArgumentPosition pos) {
+    c = call and pos = TForwardPosition()
+  }
+
+  /**
+   * Gets a constructor which may be targeted by this forwarding call.
+   */
+  Cpp::Constructor getAConstructor() { forwardingCallTargetsConstructor(call, result) }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
+
+  override Declaration getFunction() { result = call.getEnclosingFunction() }
+
+  override Location getLocationImpl() { result = call.getLocation() }
+
+  override string toStringImpl() { result = "forwarder for " + call.toString() }
+}
+
 /**
  * An argument node that is part of a summary. These only occur when the
  * summary contains a synthesized call.
@@ -1275,6 +1356,19 @@ private predicate summarizedCallableIsManual(SummarizedCallable sc) {
   sc.asSummarizedCallable().hasManualModel()
 }
 
+private DataFlowCallable getTarget(Declaration target) {
+  // Don't use the source callable if there is a manual model for the target.
+  not exists(SummarizedCallable sc |
+    sc.asSummarizedCallable() = target and
+    summarizedCallableIsManual(sc)
+  ) and
+  result.asSourceCallable() = target
+  or
+  // When there is no function body, or when we have a manual model, dispatch to the summary.
+  (not target.hasDefinition() or summarizedCallableIsManual(result)) and
+  result.asSummarizedCallable() = target
+}
+
 /**
  * A function call relevant for data flow. This includes calls from source
  * code and calls inside library callables with a flow summary.
@@ -1310,20 +1404,7 @@ class DataFlowCall extends TDataFlowCall {
    * whether is it manual or generated.
    */
   final DataFlowCallable getStaticCallTarget() {
-    exists(Declaration target | target = this.getStaticCallSourceTarget() |
-      // Don't use the source callable if there is a manual model for the
-      // target
-      not exists(SummarizedCallable sc |
-        sc.asSummarizedCallable() = target and
-        summarizedCallableIsManual(sc)
-      ) and
-      result.asSourceCallable() = target
-      or
-      // When there is no function body, or when we have a manual model then
-      // we dispatch to the summary.
-      (not target.hasDefinition() or summarizedCallableIsManual(result)) and
-      result.asSummarizedCallable() = target
-    )
+    result = getTarget(this.getStaticCallSourceTarget())
   }
 
   /**
@@ -1510,6 +1591,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof SsaSynthNode
   or
   n.(FlowSummaryNode).getSummaryNode().isHidden()
+  or
+  n instanceof ForwarderConstructorArgumentNode
 }
 
 predicate neverSkipInPathGraph(Node n) {
@@ -1590,6 +1673,9 @@ private predicate isFunctorCreationWithConstructor(Node creation, OperatorCall o
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
   kind.isFunctionPointer() and
   creation.asInstruction().(FunctionAddressInstruction).getFunctionSymbol() = c.asSourceCallable()
+  or
+  kind.isFunctionPointer() and
+  c = getTarget(creation.(ForwarderConstructorArgumentNode).getAConstructor())
   or
   kind.isFunctor() and
   exists(OperatorCall operator | operator = c.asSourceCallable() |
