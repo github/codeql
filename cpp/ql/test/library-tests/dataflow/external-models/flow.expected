@@ -85,7 +85,7 @@ models
 | 84 | Summary: ; ; false; ymlStepGenerated; ; ; Argument[0]; ReturnValue; taint; df-generated |
 | 85 | Summary: ; ; false; ymlStepManual; ; ; Argument[0]; ReturnValue; taint; manual |
 | 86 | Summary: ; ; false; ymlStepManual_with_body; ; ; Argument[0]; ReturnValue; taint; manual |
-| 87 | Summary: ; Container; true; emplace; ; ; Argument[*0]; Argument[forward].Parameter[0]; value; manual |
+| 87 | Summary: ; Container; true; emplace; ; ; Argument[*1]; Argument[forward].Parameter[0]; value; manual |
 | 88 | Summary: ; Container; true; get; ; ; Argument[-1].Element; ReturnValue[*]; value; manual |
 | 89 | Summary: ; Forwarder; true; forward; ; ; Argument[*0]; Argument[forward].Parameter[0]; value; manual |
 | 90 | Summary: ; Forwarder; true; get; ; ; Argument[-1]; ReturnValue; value; manual |
@@ -384,9 +384,9 @@ edges
 | test.cpp:375:13:375:13 | *c [ul] | test.cpp:375:15:375:16 | ul | provenance | Sink:MaD:3 |
 | test.cpp:375:13:375:16 | ul | test.cpp:375:15:375:16 | ul | provenance | Sink:MaD:3 |
 | test.cpp:394:11:394:19 | call to ymlSource | test.cpp:394:11:394:19 | call to ymlSource | provenance | Src:MaD:48  |
-| test.cpp:394:11:394:19 | call to ymlSource | test.cpp:395:13:395:13 | *x | provenance |  |
+| test.cpp:394:11:394:19 | call to ymlSource | test.cpp:395:16:395:16 | *x | provenance |  |
 | test.cpp:395:3:395:3 | emplace output argument [element, x] | test.cpp:397:15:397:15 | *c [element, x] | provenance |  |
-| test.cpp:395:13:395:13 | *x | test.cpp:395:3:395:3 | emplace output argument [element, x] | provenance | MaD:87 |
+| test.cpp:395:16:395:16 | *x | test.cpp:395:3:395:3 | emplace output argument [element, x] | provenance | MaD:87 |
 | test.cpp:397:15:397:15 | *c [element, x] | test.cpp:397:20:397:22 | call to get [x] | provenance | MaD:88 |
 | test.cpp:397:20:397:22 | call to get [x] | test.cpp:397:20:397:22 | call to get [x] | provenance |  |
 | test.cpp:397:20:397:22 | call to get [x] | test.cpp:398:11:398:11 | *e [x] | provenance |  |
@@ -883,7 +883,7 @@ nodes
 | test.cpp:394:11:394:19 | call to ymlSource | semmle.label | call to ymlSource |
 | test.cpp:394:11:394:19 | call to ymlSource | semmle.label | call to ymlSource |
 | test.cpp:395:3:395:3 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
-| test.cpp:395:13:395:13 | *x | semmle.label | *x |
+| test.cpp:395:16:395:16 | *x | semmle.label | *x |
 | test.cpp:397:15:397:15 | *c [element, x] | semmle.label | *c [element, x] |
 | test.cpp:397:20:397:22 | call to get [x] | semmle.label | call to get [x] |
 | test.cpp:397:20:397:22 | call to get [x] | semmle.label | call to get [x] |

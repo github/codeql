@@ -45,7 +45,7 @@ extensions:
       - ["", "Forwarder", True, "forward", "", "", "Argument[*0]", "Argument[forward].Parameter[0]", "value", "manual"]
       - ["", "Forwarder", True, "forward", "", "", "Argument[forward].Parameter[-1]", "Argument[-1]", "value", "manual"]
       - ["", "Forwarder", True, "get", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["", "Container", True, "emplace", "", "", "Argument[*0]", "Argument[forward].Parameter[0]", "value", "manual"]
+      - ["", "Container", True, "emplace", "", "", "Argument[*1]", "Argument[forward].Parameter[0]", "value", "manual"]
       - ["", "Container", True, "emplace", "", "", "Argument[forward].Parameter[-1]", "Argument[-1].Element", "value", "manual"]
       - ["", "Container", True, "get", "", "", "Argument[-1].Element", "ReturnValue[*]", "value", "manual"]
       - ["", "Element", True, "Element", "", "", "Argument[0]", "Argument[-1].Field[Element::x]", "value", "manual"]
@@ -54,4 +54,4 @@ extensions:
       extensible: forwardsModel
     data: # namespace, type, subtypes, name, signature, ext, start, constructor, provenance
       - ["", "Forwarder<T>", True, "forward<Args>", "(Args &&)", "", "0", "T", "manual"]
-      - ["", "Container<T>", True, "emplace<Args>", "(Args &&)", "", "0", "T", "manual"]
+      - ["", "Container<T>", True, "emplace<Args>", "(int,Args &&)", "", "1", "T", "manual"]

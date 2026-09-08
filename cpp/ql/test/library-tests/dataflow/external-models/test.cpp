@@ -379,7 +379,7 @@ void forward_test() {
 template<typename T>
 struct Container {
   template<typename... Args>
-  void emplace(Args&&... args);
+  void emplace(int pos, Args&&... args);
 
   T& get();
 };
@@ -392,7 +392,7 @@ struct Element {
 void forward_test_model() {
   Container<Element> c;
   int x = ymlSource();
-  c.emplace(x);
+  c.emplace(0, x);
 
   Element e = c.get();
   ymlSink(e.x); // $ ir
