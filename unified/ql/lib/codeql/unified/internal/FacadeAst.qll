@@ -23,12 +23,14 @@ module Unified {
       )
     }
 
-    /** Gets the nearest enclosing class declaration, possibly this node itself. */
+    /** Gets the nearest enclosing class declaration. */
     ClassLikeDeclaration getEnclosingClass() {
-      result = this
-      or
-      not this instanceof ClassLikeDeclaration and
-      result = this.getParent().getEnclosingClass()
+      exists(AstNode parent | parent = this.getParent() |
+        result = parent
+        or
+        not parent instanceof ClassLikeDeclaration and
+        result = parent.getEnclosingClass()
+      )
     }
 
     /** Gets the nearest callable containing this AST node. */

@@ -3,10 +3,10 @@ private import CommentUtil
 private import codeql.unified.internal.StaticNameBinding
 
 private string deriveClassName(ClassLikeDeclaration cls) {
-  not exists(cls.getParent().getEnclosingClass()) and
+  not exists(cls.getEnclosingClass()) and
   result = cls.getName()
   or
-  result = deriveClassName(cls.getParent().getEnclosingClass()) + "." + cls.getName()
+  result = deriveClassName(cls.getEnclosingClass()) + "." + cls.getName()
 }
 
 private string defaultName(NameDeclaration decl) {
