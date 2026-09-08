@@ -20,7 +20,7 @@ private int numStmts(ForEachStmt fes) {
   else result = 1
 }
 
-private predicate returnsLoopVariable(ForeachStmt fes, Stmt s) {
+private predicate returnsLoopVariable(ForEachStmt fes, Stmt s) {
   exists(ReturnStmt ret |
     ret = s.stripSingletonBlocks() and
     ret.getExpr().stripImplicit().(VariableAccess).getTarget() = fes.getVariable()
@@ -29,7 +29,7 @@ private predicate returnsLoopVariable(ForeachStmt fes, Stmt s) {
 
 private predicate hasNullDefault(Type t) { t.isRefType() or t instanceof NullableType }
 
-private predicate returnsDefaultValueAfterForeach(ForeachStmt fes) {
+private predicate returnsDefaultValueAfterForeach(ForEachStmt fes) {
   exists(BlockStmt enclosingBlock, int i, Type elementType, ReturnStmt ret |
     enclosingBlock.getStmt(i) = fes and
     enclosingBlock.getStmt(i + 1) = ret and
@@ -218,7 +218,7 @@ predicate missedWhereOpportunity(ForEachStmtGenericEnumerable fes, IfStmt is) {
  * That is, the loop contains a single `if` statement that accesses the loop variable,
  * returns the loop variable when the condition matches, and is followed by a default return.
  */
-predicate missedFirstOrDefaultOpportunity(ForeachStmtGenericEnumerable fes, IfStmt is) {
+predicate missedFirstOrDefaultOpportunity(ForEachStmtGenericEnumerable fes, IfStmt is) {
   // The loop only checks whether the current element is the first match.
   is = firstStmt(fes) and
   not exists(is.getElse()) and
