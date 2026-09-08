@@ -129,6 +129,7 @@ identifier
 | test.swift:74:10:74:17 | isSorted | isSorted |
 | test.swift:74:24:74:27 | Bool | Bool |
 | test.swift:75:13:75:13 | i | i |
+| test.swift:75:23:75:27 | count | count |
 | test.swift:76:16:76:19 | self | self |
 | test.swift:76:21:76:21 | i | i |
 | test.swift:76:26:76:29 | self | self |
