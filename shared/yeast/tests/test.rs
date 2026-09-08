@@ -1679,13 +1679,21 @@ fn test_elided_tokens_contribute_to_replacement_location() {
     );
 
     let ast = run_and_ast("foo.bar()", vec![rule]);
-    let root = ast.get_node(ast.get_root()).unwrap();
-    let stmt_field = ast.field_id_for_name("stmt").unwrap();
-    let call_id = root.field_children(stmt_field)[0];
+    let call_ids: Vec<yeast::Id> = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter(|&id| {
+            ast.get_node(id)
+                .is_some_and(|node| node.kind_name() == "call")
+        })
+        .collect();
+
+    assert_eq!(call_ids.len(), 1, "expected exactly one reachable call");
+    let call_id = call_ids[0];
     let call = ast.get_node(call_id).unwrap();
 
     assert_eq!(call.start_byte(), 0);
-    assert_eq!(call.end_byte(), 7);
+    assert_eq!(call.end_byte(), 9);
 }
 
 // ---- `rules!` macro tests (compile-time type-checking) ----
