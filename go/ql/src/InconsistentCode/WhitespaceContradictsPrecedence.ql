@@ -73,14 +73,19 @@ predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
 
 /** Gets the number of whitespace characters around the operator `op` of `be`. */
 int getWhitespaceAroundOperator(BinaryExpr be, string op) {
-  exists(Location left, Location right |
+  exists(Location loc, Location left, Location right |
+    be.getLocation() = loc and
     be.getLeftOperand().getLocation() = left and
     be.getRightOperand().getLocation() = right and
     left.getFile() = right.getFile() and
-    left.getStartLine() = right.getStartLine()
-  |
+    left.getStartLine() = right.getStartLine() and
     op = be.getOperator() and
-    result = (right.getStartColumn() - left.getEndColumn() - op.length() - 1) / 2
+    result =
+      (
+          right.getStartColumn() - left.getEndColumn() - op.length() - 1 -
+            (left.getStartColumn() - loc.getStartColumn()) -
+            (loc.getEndColumn() - right.getEndColumn())
+        ) / 2
   )
 }
 
