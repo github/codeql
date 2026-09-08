@@ -42,7 +42,7 @@ module YamlDocumentClassification {
    * when authored with a `.yaml` extension.
    */
   private predicate hasArmSchemaMarker(YamlSyntaxDocument doc) {
-    yamlToString(doc.lookup("$schema")).regexpMatch(".*schema\\.management\\.azure\\.com.*")
+    yamlToString(doc.lookup("$schema")).matches("%schema.management.azure.com%")
   }
 
   /**
