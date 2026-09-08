@@ -23,3 +23,26 @@ predicate step(Node node1, Step step, Node node2) {
   or
   none() // Temporarily disable compilation errors from unsatisfiable types
 }
+
+/** Holds if `node` should be included in the debug view. */
+private signature predicate relevantNodeSig(AstNode node);
+
+module DebugGraph<relevantNodeSig/1 relevantNode> {
+  private predicate relevantNameBindingNode(Node node) { relevantNode(node.getWrappedAstNode()) }
+
+  query predicate nodes(Node node, string key, string value) {
+    relevantNameBindingNode(node) and
+    key = "semmle.label" and
+    value = node.toString()
+  }
+
+  query predicate edges(Node node1, Node node2, string key, string value) {
+    key = "semmle.label" and
+    relevantNameBindingNode(node1) and
+    relevantNameBindingNode(node2) and
+    exists(Step step |
+      step(node1, step, node2) and
+      value = step.toString()
+    )
+  }
+}
