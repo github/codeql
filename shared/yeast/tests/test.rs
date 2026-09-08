@@ -1663,6 +1663,31 @@ fn test_hash_brace_uses_capture_location_for_leaf() {
     assert_eq!(bar.end_byte(), 7);
 }
 
+/// Regression test: tokens matched by a rule but elided from the output still
+/// contribute to the source location of the synthesized replacement node.
+#[test]
+fn test_elided_tokens_contribute_to_replacement_location() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        (call
+            method: {name}
+        )
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let root = ast.get_node(ast.get_root()).unwrap();
+    let stmt_field = ast.field_id_for_name("stmt").unwrap();
+    let call_id = root.field_children(stmt_field)[0];
+    let call = ast.get_node(call_id).unwrap();
+
+    assert_eq!(call.start_byte(), 0);
+    assert_eq!(call.end_byte(), 7);
+}
+
 // ---- `rules!` macro tests (compile-time type-checking) ----
 
 /// `rules!` should accept well-typed rules using the bare-rule-body
