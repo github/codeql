@@ -1,4 +1,20 @@
 | asio_streams.cpp:142:64:142:71 | *send_str | asio_streams.cpp:142:44:142:62 | call to buffer |
+| asio_streams.cpp:161:24:161:27 | *host | asio_streams.cpp:161:16:161:22 | call to resolve |
+| asio_streams.cpp:162:24:162:27 | *host | asio_streams.cpp:162:16:162:22 | call to resolve |
+| asio_streams.cpp:163:24:163:27 | *host | asio_streams.cpp:163:16:163:22 | call to resolve |
+| asio_streams.cpp:164:24:164:27 | *host | asio_streams.cpp:164:16:164:22 | call to resolve |
+| asio_streams.cpp:166:24:166:32 | host_view | asio_streams.cpp:166:16:166:22 | call to resolve |
+| asio_streams.cpp:167:24:167:32 | host_view | asio_streams.cpp:167:16:167:22 | call to resolve |
+| asio_streams.cpp:168:24:168:32 | host_view | asio_streams.cpp:168:16:168:22 | call to resolve |
+| asio_streams.cpp:169:24:169:32 | host_view | asio_streams.cpp:169:16:169:22 | call to resolve |
+| asio_streams.cpp:171:34:171:37 | *host | asio_streams.cpp:171:16:171:22 | call to resolve |
+| asio_streams.cpp:172:34:172:37 | *host | asio_streams.cpp:172:16:172:22 | call to resolve |
+| asio_streams.cpp:173:34:173:37 | *host | asio_streams.cpp:173:16:173:22 | call to resolve |
+| asio_streams.cpp:174:34:174:37 | *host | asio_streams.cpp:174:16:174:22 | call to resolve |
+| asio_streams.cpp:176:34:176:42 | host_view | asio_streams.cpp:176:16:176:22 | call to resolve |
+| asio_streams.cpp:177:34:177:42 | host_view | asio_streams.cpp:177:16:177:22 | call to resolve |
+| asio_streams.cpp:178:34:178:42 | host_view | asio_streams.cpp:178:16:178:22 | call to resolve |
+| asio_streams.cpp:179:34:179:42 | host_view | asio_streams.cpp:179:16:179:22 | call to resolve |
 | azure.cpp:252:79:252:98 | call to string | azure.cpp:252:62:252:99 | call to Url |
 | azure.cpp:257:5:257:8 | *resp | azure.cpp:257:16:257:21 | Read output argument |
 | azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument |

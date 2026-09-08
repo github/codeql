@@ -102,7 +102,23 @@ models
 | 101 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const char *,int); ; Argument[*2]; Argument[*0]; taint; manual |
 | 102 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (char *,const Blob &,int,int); ; Argument[*1]; Argument[*0]; taint; manual |
 | 103 | Summary: BloombergLP::bdlbb; BlobUtil; true; getContiguousRangeOrCopy; ; ; Argument[*1]; ReturnValue[*]; taint; manual |
-| 104 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 104 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &); ; Argument[*1]; ReturnValue; taint; manual |
+| 105 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,error_code &); ; Argument[*1]; ReturnValue; taint; manual |
+| 106 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags); ; Argument[*1]; ReturnValue; taint; manual |
+| 107 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags,error_code &); ; Argument[*1]; ReturnValue; taint; manual |
+| 108 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view); ; Argument[1]; ReturnValue; taint; manual |
+| 109 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,error_code &); ; Argument[1]; ReturnValue; taint; manual |
+| 110 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags); ; Argument[1]; ReturnValue; taint; manual |
+| 111 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags,error_code &); ; Argument[1]; ReturnValue; taint; manual |
+| 112 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &); ; Argument[*0]; ReturnValue; taint; manual |
+| 113 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,error_code &); ; Argument[*0]; ReturnValue; taint; manual |
+| 114 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags); ; Argument[*0]; ReturnValue; taint; manual |
+| 115 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags,error_code &); ; Argument[*0]; ReturnValue; taint; manual |
+| 116 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view); ; Argument[0]; ReturnValue; taint; manual |
+| 117 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,error_code &); ; Argument[0]; ReturnValue; taint; manual |
+| 118 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags); ; Argument[0]; ReturnValue; taint; manual |
+| 119 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags,error_code &); ; Argument[0]; ReturnValue; taint; manual |
+| 120 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
 edges
 | asio_streams.cpp:129:34:129:44 | read_until output argument | asio_streams.cpp:133:7:133:17 | recv_buffer | provenance | Src:MaD:56  |
 | asio_streams.cpp:129:34:129:44 | read_until output argument | asio_streams.cpp:135:29:135:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
@@ -111,7 +127,39 @@ edges
 | asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:142:44:142:62 | call to buffer | provenance |  |
 | asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:143:7:143:17 | send_buffer | provenance |  |
 | asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:145:29:145:39 | send_buffer | provenance | Sink:MaD:4 |
-| asio_streams.cpp:142:64:142:71 | *send_str | asio_streams.cpp:142:44:142:62 | call to buffer | provenance | MaD:104 |
+| asio_streams.cpp:142:64:142:71 | *send_str | asio_streams.cpp:142:44:142:62 | call to buffer | provenance | MaD:120 |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:161:24:161:27 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:162:24:162:27 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:163:24:163:27 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:164:24:164:27 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:171:34:171:37 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:172:34:172:37 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:173:34:173:37 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:174:34:174:37 | *host | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:166:24:166:32 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:167:24:167:32 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:168:24:168:32 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:169:24:169:32 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:176:34:176:42 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:177:34:177:42 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:178:34:178:42 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:179:34:179:42 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:161:24:161:27 | *host | asio_streams.cpp:161:16:161:22 | call to resolve | provenance | MaD:112 |
+| asio_streams.cpp:162:24:162:27 | *host | asio_streams.cpp:162:16:162:22 | call to resolve | provenance | MaD:113 |
+| asio_streams.cpp:163:24:163:27 | *host | asio_streams.cpp:163:16:163:22 | call to resolve | provenance | MaD:114 |
+| asio_streams.cpp:164:24:164:27 | *host | asio_streams.cpp:164:16:164:22 | call to resolve | provenance | MaD:115 |
+| asio_streams.cpp:166:24:166:32 | host_view | asio_streams.cpp:166:16:166:22 | call to resolve | provenance | MaD:116 |
+| asio_streams.cpp:167:24:167:32 | host_view | asio_streams.cpp:167:16:167:22 | call to resolve | provenance | MaD:117 |
+| asio_streams.cpp:168:24:168:32 | host_view | asio_streams.cpp:168:16:168:22 | call to resolve | provenance | MaD:118 |
+| asio_streams.cpp:169:24:169:32 | host_view | asio_streams.cpp:169:16:169:22 | call to resolve | provenance | MaD:119 |
+| asio_streams.cpp:171:34:171:37 | *host | asio_streams.cpp:171:16:171:22 | call to resolve | provenance | MaD:104 |
+| asio_streams.cpp:172:34:172:37 | *host | asio_streams.cpp:172:16:172:22 | call to resolve | provenance | MaD:105 |
+| asio_streams.cpp:173:34:173:37 | *host | asio_streams.cpp:173:16:173:22 | call to resolve | provenance | MaD:106 |
+| asio_streams.cpp:174:34:174:37 | *host | asio_streams.cpp:174:16:174:22 | call to resolve | provenance | MaD:107 |
+| asio_streams.cpp:176:34:176:42 | host_view | asio_streams.cpp:176:16:176:22 | call to resolve | provenance | MaD:108 |
+| asio_streams.cpp:177:34:177:42 | host_view | asio_streams.cpp:177:16:177:22 | call to resolve | provenance | MaD:109 |
+| asio_streams.cpp:178:34:178:42 | host_view | asio_streams.cpp:178:16:178:22 | call to resolve | provenance | MaD:110 |
+| asio_streams.cpp:179:34:179:42 | host_view | asio_streams.cpp:179:16:179:22 | call to resolve | provenance | MaD:111 |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:257:5:257:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:262:5:262:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:266:38:266:41 | *resp | provenance |  |
@@ -536,6 +584,40 @@ nodes
 | asio_streams.cpp:142:64:142:71 | *send_str | semmle.label | *send_str |
 | asio_streams.cpp:143:7:143:17 | send_buffer | semmle.label | send_buffer |
 | asio_streams.cpp:145:29:145:39 | send_buffer | semmle.label | send_buffer |
+| asio_streams.cpp:156:19:156:26 | call to source | semmle.label | call to source |
+| asio_streams.cpp:158:29:158:36 | call to source | semmle.label | call to source |
+| asio_streams.cpp:161:16:161:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:161:24:161:27 | *host | semmle.label | *host |
+| asio_streams.cpp:162:16:162:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:162:24:162:27 | *host | semmle.label | *host |
+| asio_streams.cpp:163:16:163:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:163:24:163:27 | *host | semmle.label | *host |
+| asio_streams.cpp:164:16:164:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:164:24:164:27 | *host | semmle.label | *host |
+| asio_streams.cpp:166:16:166:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:166:24:166:32 | host_view | semmle.label | host_view |
+| asio_streams.cpp:167:16:167:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:167:24:167:32 | host_view | semmle.label | host_view |
+| asio_streams.cpp:168:16:168:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:168:24:168:32 | host_view | semmle.label | host_view |
+| asio_streams.cpp:169:16:169:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:169:24:169:32 | host_view | semmle.label | host_view |
+| asio_streams.cpp:171:16:171:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:171:34:171:37 | *host | semmle.label | *host |
+| asio_streams.cpp:172:16:172:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:172:34:172:37 | *host | semmle.label | *host |
+| asio_streams.cpp:173:16:173:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:173:34:173:37 | *host | semmle.label | *host |
+| asio_streams.cpp:174:16:174:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:174:34:174:37 | *host | semmle.label | *host |
+| asio_streams.cpp:176:16:176:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:176:34:176:42 | host_view | semmle.label | host_view |
+| asio_streams.cpp:177:16:177:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:177:34:177:42 | host_view | semmle.label | host_view |
+| asio_streams.cpp:178:16:178:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:178:34:178:42 | host_view | semmle.label | host_view |
+| asio_streams.cpp:179:16:179:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:179:34:179:42 | host_view | semmle.label | host_view |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | semmle.label | *call to GetBodyStream |
 | azure.cpp:253:48:253:60 | call to GetBodyStream | semmle.label | call to GetBodyStream |
 | azure.cpp:257:5:257:8 | *resp | semmle.label | *resp |

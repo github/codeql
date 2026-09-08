@@ -3350,6 +3350,14 @@
 | Dubious signature "(const IPAddressRange *,unsigned char **)" in summary model. |
 | Dubious signature "(const ISSUER_SIGN_TOOL *,unsigned char **)" in summary model. |
 | Dubious signature "(const ISSUING_DIST_POINT *,unsigned char **)" in summary model. |
+| Dubious signature "(const InternetProtocol &,const string &,const string &)" in summary model. |
+| Dubious signature "(const InternetProtocol &,const string &,const string &,error_code &)" in summary model. |
+| Dubious signature "(const InternetProtocol &,const string &,const string &,flags)" in summary model. |
+| Dubious signature "(const InternetProtocol &,const string &,const string &,flags,error_code &)" in summary model. |
+| Dubious signature "(const InternetProtocol &,string_view,string_view)" in summary model. |
+| Dubious signature "(const InternetProtocol &,string_view,string_view,error_code &)" in summary model. |
+| Dubious signature "(const InternetProtocol &,string_view,string_view,flags)" in summary model. |
+| Dubious signature "(const InternetProtocol &,string_view,string_view,flags,error_code &)" in summary model. |
 | Dubious signature "(const MATRIX *,const VECTOR *,VECTOR *)" in summary model. |
 | Dubious signature "(const MD5_params *)" in summary model. |
 | Dubious signature "(const ML_DSA_KEY *)" in summary model. |
@@ -4153,6 +4161,10 @@
 | Dubious signature "(const stack_st_X509_EXTENSION *,int,int)" in summary model. |
 | Dubious signature "(const stack_st_X509_NAME *)" in summary model. |
 | Dubious signature "(const stat *)" in summary model. |
+| Dubious signature "(const string &,const string &)" in summary model. |
+| Dubious signature "(const string &,const string &,error_code &)" in summary model. |
+| Dubious signature "(const string &,const string &,flags)" in summary model. |
+| Dubious signature "(const string &,const string &,flags,error_code &)" in summary model. |
 | Dubious signature "(const td_thragent_t *,lwpid_t,td_thrhandle_t *)" in summary model. |
 | Dubious signature "(const td_thragent_t *,ps_prochandle **)" in summary model. |
 | Dubious signature "(const td_thragent_t *,pthread_t,td_thrhandle_t *)" in summary model. |
@@ -5180,6 +5192,8 @@
 | Dubious signature "(string_buf *,uint32_t *)" in summary model. |
 | Dubious signature "(string_buf *,unsigned char *)" in summary model. |
 | Dubious signature "(string_buf *,unsigned char **,size_t *)" in summary model. |
+| Dubious signature "(string_view,string_view,error_code &)" in summary model. |
+| Dubious signature "(string_view,string_view,flags,error_code &)" in summary model. |
 | Dubious signature "(stringtable *,const char *)" in summary model. |
 | Dubious signature "(stringtable *,stringtable_finalized *)" in summary model. |
 | Dubious signature "(support_descriptors *,const char *,FILE *)" in summary model. |
