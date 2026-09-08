@@ -1707,12 +1707,24 @@ class CallInstruction extends Instruction {
   }
 
   /**
+   * Gets a positional argument operand, if any.
+   */
+  final PositionalArgumentOperand getAPositionalArgumentOperand() {
+    result = this.getPositionalArgumentOperand(_)
+  }
+
+  /**
    * Gets the argument at the specified index.
    */
   pragma[noinline]
   final Instruction getPositionalArgument(int index) {
     result = this.getPositionalArgumentOperand(index).getDef()
   }
+
+  /**
+   * Gets a positional argument, if any.
+   */
+  final Instruction getAPositionalArgument() { result = this.getPositionalArgument(_) }
 
   /**
    * Gets the argument operand at the specified index, or `this` if `index` is `-1`.
@@ -1734,6 +1746,11 @@ class CallInstruction extends Instruction {
    * Gets the number of arguments of the call, including the `this` pointer, if any.
    */
   final int getNumberOfArguments() { result = count(this.getAnArgumentOperand()) }
+
+  /**
+   * Gets the number of positional arguments of the call.
+   */
+  final int getNumberOfPositionalArguments() { result = count(this.getAPositionalArgument()) }
 
   /**
    * Holds if the result is a side effect for the argument at the specified index, or `this` if
