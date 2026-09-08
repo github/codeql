@@ -31,6 +31,16 @@ module Unified {
       result = this.getParent().getEnclosingClass()
     }
 
+    /** Gets the nearest callable containing this AST node. */
+    Callable getEnclosingCallable() {
+      exists(AstNode parent | parent = this.getParent() |
+        result = parent
+        or
+        not parent instanceof Callable and
+        result = parent.getEnclosingCallable()
+      )
+    }
+
     /** Gets the depth of this node in the AST. The root node has a depth of 0. */
     int getDepth() {
       not exists(this.getParent()) and result = 0
