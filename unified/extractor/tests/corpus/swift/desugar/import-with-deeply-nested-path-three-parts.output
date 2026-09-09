@@ -37,4 +37,7 @@ top_level
                       identifier: identifier "Foundation"
                   member: identifier "Networking"
               member: identifier "URLSession"
-          pattern: bulk_importing_pattern "import Foundation.Networking.URLSession"
+          pattern:
+            name_pattern
+              identifier: identifier "URLSession"
+              sub_pattern: bulk_importing_pattern "import Foundation.Networking.URLSession"

@@ -74,7 +74,7 @@ Canonical paths take the following forms:
 - **Free functions**: ``crate::module::function``, for example ``std::env::var`` or ``std::fs::read_to_string``.
 - **Inherent methods**: ``<Type>::method``, for example ``<std::fs::File>::open``.
 - **Trait methods with a concrete type**: ``<Type as Trait>::method``, for example ``<std::fs::File as std::io::Read>::read_to_end``.
-- **Trait methods with a wildcard type**: ``<_ as Trait>::method``, for example ``<_ as core::clone::Clone>::clone``. This form matches any type that implements the trait and is useful for modeling broadly applicable trait methods. For a type that has a specific model (<Type as Trait>::method), that model will take precedence over the trait model.
+- **Trait methods**: ``Trait::method``, for example ``core::clone::Clone::clone``. This form matches any type that implements the trait and is useful for modeling broadly applicable trait methods. For a type that has a specific model (``<Type as Trait>::method``), that model will take precedence over the trait model.
 
 Examples of custom model definitions
 -------------------------------------
@@ -270,10 +270,10 @@ We need to add tuples to the ``summaryModel(path, input, output, kind, provenanc
         pack: codeql/rust-all
         extensible: summaryModel
       data:
-        - ["<_ as core::iter::traits::iterator::Iterator>::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+        - ["core::iter::traits::iterator::Iterator::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
 
 
-- The first value ``<_ as core::iter::traits::iterator::Iterator>::map`` is the canonical path. The ``<_ as Trait>::method`` form uses a wildcard type (``_``) to match any type that implements the ``Iterator`` trait.
+- The first value ``core::iter::traits::iterator::Iterator::map`` is the canonical path. The ``Trait::method`` form matches any type that implements the ``Iterator`` trait.
 - The second value ``Argument[self].Element`` is the access path to the input — the elements of the iterator (the receiver).
 - The third value ``Argument[0].Parameter[0]`` is the access path to the output:
 

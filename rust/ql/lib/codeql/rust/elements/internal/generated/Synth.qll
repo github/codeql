@@ -133,6 +133,22 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TCfgAtom(Raw::CfgAtom id) { constructCfgAtom(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TCfgAttrMeta(Raw::CfgAttrMeta id) { constructCfgAttrMeta(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TCfgComposite(Raw::CfgComposite id) { constructCfgComposite(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TCfgMeta(Raw::CfgMeta id) { constructCfgMeta(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TClosureExpr(Raw::ClosureExpr id) { constructClosureExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -223,6 +239,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TFormatArgsArgName(Raw::FormatArgsArgName id) { constructFormatArgsArgName(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TFormatArgsExpr(Raw::FormatArgsExpr id) { constructFormatArgsExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -278,6 +298,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TItemList(Raw::ItemList id) { constructItemList(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TKeyValueMeta(Raw::KeyValueMeta id) { constructKeyValueMeta(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -365,10 +389,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TMeta(Raw::Meta id) { constructMeta(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TMethodCallExpr(Raw::MethodCallExpr id) { constructMethodCallExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -434,6 +454,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TPathExpr(Raw::PathExpr id) { constructPathExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TPathMeta(Raw::PathMeta id) { constructPathMeta(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -561,11 +585,15 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TTokenTreeMeta(Raw::TokenTreeMeta id) { constructTokenTreeMeta(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TTrait(Raw::Trait id) { constructTrait(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TTraitAlias(Raw::TraitAlias id) { constructTraitAlias(id) } or
+    TTryBlockModifier(Raw::TryBlockModifier id) { constructTryBlockModifier(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -626,6 +654,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TUnion(Raw::Union id) { constructUnion(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TUnsafeMeta(Raw::UnsafeMeta id) { constructUnsafeMeta(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -709,21 +741,27 @@ module Synth {
    */
   class TAstNode =
     TAbi or TAddressable or TArgList or TAsmDirSpec or TAsmOperand or TAsmOperandExpr or
-        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItemList or TAttr or TCallable or TExpr or
-        TExternItemList or TFieldList or TForBinder or TFormatArgsArg or TGenericArg or
-        TGenericArgList or TGenericParam or TGenericParamList or TItemList or TLabel or TLetElse or
-        TMacroItems or TMatchArm or TMatchArmList or TMatchGuard or TMeta or TName or TParamBase or
-        TParamList or TParenthesizedArgList or TPat or TPath or TPathAstNode or TPathSegment or
-        TRename or TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
+        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItemList or TAttr or TCallable or
+        TCfgPredicate or TExpr or TExternItemList or TFieldList or TForBinder or TFormatArgsArg or
+        TFormatArgsArgName or TGenericArg or TGenericArgList or TGenericParam or
+        TGenericParamList or TItemList or TLabel or TLetElse or TMacroItems or TMatchArm or
+        TMatchArmList or TMatchGuard or TMeta or TName or TParamBase or TParamList or
+        TParenthesizedArgList or TPat or TPath or TPathAstNode or TPathSegment or TRename or
+        TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
         TStructExprField or TStructExprFieldList or TStructField or TStructPatField or
-        TStructPatFieldList or TToken or TTokenTree or TTupleField or TTypeBound or
-        TTypeBoundList or TTypeRepr or TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or
-        TUseTreeList or TVariantList or TVisibility or TWhereClause or TWherePred;
+        TStructPatFieldList or TToken or TTokenTree or TTryBlockModifier or TTupleField or
+        TTypeBound or TTypeBoundList or TTypeRepr or TUseBoundGenericArg or TUseBoundGenericArgs or
+        TUseTree or TUseTreeList or TVariantList or TVisibility or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
    */
   class TCallable = TClosureExpr or TFunction;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TCfgPredicate = TCfgAtom or TCfgComposite;
 
   /**
    * INTERNAL: Do not use.
@@ -761,7 +799,7 @@ module Synth {
    */
   class TItem =
     TAsmExpr or TAssocItem or TExternBlock or TExternCrate or TExternItem or TImpl or TMacroDef or
-        TMacroRules or TModule or TTrait or TTraitAlias or TTypeItem or TUse;
+        TMacroRules or TModule or TTrait or TTypeItem or TUse;
 
   /**
    * INTERNAL: Do not use.
@@ -777,6 +815,12 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TLoopingExpr = TForExpr or TLoopExpr or TWhileExpr;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TMeta =
+    TCfgAttrMeta or TCfgMeta or TKeyValueMeta or TPathMeta or TTokenTreeMeta or TUnsafeMeta;
 
   /**
    * INTERNAL: Do not use.
@@ -1057,6 +1101,34 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
+   * Converts a raw element to a synthesized `TCfgAtom`, if possible.
+   */
+  TCfgAtom convertCfgAtomFromRaw(Raw::Element e) { result = TCfgAtom(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TCfgAttrMeta`, if possible.
+   */
+  TCfgAttrMeta convertCfgAttrMetaFromRaw(Raw::Element e) { result = TCfgAttrMeta(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TCfgComposite`, if possible.
+   */
+  TCfgComposite convertCfgCompositeFromRaw(Raw::Element e) { result = TCfgComposite(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TCfgMeta`, if possible.
+   */
+  TCfgMeta convertCfgMetaFromRaw(Raw::Element e) { result = TCfgMeta(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
    * Converts a raw element to a synthesized `TClosureExpr`, if possible.
    */
   TClosureExpr convertClosureExprFromRaw(Raw::Element e) { result = TClosureExpr(e) }
@@ -1211,6 +1283,15 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
+   * Converts a raw element to a synthesized `TFormatArgsArgName`, if possible.
+   */
+  TFormatArgsArgName convertFormatArgsArgNameFromRaw(Raw::Element e) {
+    result = TFormatArgsArgName(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   *
    * Converts a raw element to a synthesized `TFormatArgsExpr`, if possible.
    */
   TFormatArgsExpr convertFormatArgsExprFromRaw(Raw::Element e) { result = TFormatArgsExpr(e) }
@@ -1302,6 +1383,13 @@ module Synth {
    * Converts a raw element to a synthesized `TItemList`, if possible.
    */
   TItemList convertItemListFromRaw(Raw::Element e) { result = TItemList(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TKeyValueMeta`, if possible.
+   */
+  TKeyValueMeta convertKeyValueMetaFromRaw(Raw::Element e) { result = TKeyValueMeta(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1453,13 +1541,6 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
-   * Converts a raw element to a synthesized `TMeta`, if possible.
-   */
-  TMeta convertMetaFromRaw(Raw::Element e) { result = TMeta(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   *
    * Converts a raw element to a synthesized `TMethodCallExpr`, if possible.
    */
   TMethodCallExpr convertMethodCallExprFromRaw(Raw::Element e) { result = TMethodCallExpr(e) }
@@ -1577,6 +1658,13 @@ module Synth {
    * Converts a raw element to a synthesized `TPathExpr`, if possible.
    */
   TPathExpr convertPathExprFromRaw(Raw::Element e) { result = TPathExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TPathMeta`, if possible.
+   */
+  TPathMeta convertPathMetaFromRaw(Raw::Element e) { result = TPathMeta(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1802,6 +1890,13 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
+   * Converts a raw element to a synthesized `TTokenTreeMeta`, if possible.
+   */
+  TTokenTreeMeta convertTokenTreeMetaFromRaw(Raw::Element e) { result = TTokenTreeMeta(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
    * Converts a raw element to a synthesized `TTrait`, if possible.
    */
   TTrait convertTraitFromRaw(Raw::Element e) { result = TTrait(e) }
@@ -1809,9 +1904,9 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
-   * Converts a raw element to a synthesized `TTraitAlias`, if possible.
+   * Converts a raw element to a synthesized `TTryBlockModifier`, if possible.
    */
-  TTraitAlias convertTraitAliasFromRaw(Raw::Element e) { result = TTraitAlias(e) }
+  TTryBlockModifier convertTryBlockModifierFromRaw(Raw::Element e) { result = TTryBlockModifier(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1917,6 +2012,13 @@ module Synth {
    * Converts a raw element to a synthesized `TUnion`, if possible.
    */
   TUnion convertUnionFromRaw(Raw::Element e) { result = TUnion(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TUnsafeMeta`, if possible.
+   */
+  TUnsafeMeta convertUnsafeMetaFromRaw(Raw::Element e) { result = TUnsafeMeta(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2100,6 +2202,8 @@ module Synth {
     or
     result = convertCallableFromRaw(e)
     or
+    result = convertCfgPredicateFromRaw(e)
+    or
     result = convertExprFromRaw(e)
     or
     result = convertExternItemListFromRaw(e)
@@ -2109,6 +2213,8 @@ module Synth {
     result = convertForBinderFromRaw(e)
     or
     result = convertFormatArgsArgFromRaw(e)
+    or
+    result = convertFormatArgsArgNameFromRaw(e)
     or
     result = convertGenericArgFromRaw(e)
     or
@@ -2176,6 +2282,8 @@ module Synth {
     or
     result = convertTokenTreeFromRaw(e)
     or
+    result = convertTryBlockModifierFromRaw(e)
+    or
     result = convertTupleFieldFromRaw(e)
     or
     result = convertTypeBoundFromRaw(e)
@@ -2209,6 +2317,16 @@ module Synth {
     result = convertClosureExprFromRaw(e)
     or
     result = convertFunctionFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TCfgPredicate`, if possible.
+   */
+  TCfgPredicate convertCfgPredicateFromRaw(Raw::Element e) {
+    result = convertCfgAtomFromRaw(e)
+    or
+    result = convertCfgCompositeFromRaw(e)
   }
 
   /**
@@ -2374,8 +2492,6 @@ module Synth {
     or
     result = convertTraitFromRaw(e)
     or
-    result = convertTraitAliasFromRaw(e)
-    or
     result = convertTypeItemFromRaw(e)
     or
     result = convertUseFromRaw(e)
@@ -2415,6 +2531,24 @@ module Synth {
     result = convertLoopExprFromRaw(e)
     or
     result = convertWhileExprFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TMeta`, if possible.
+   */
+  TMeta convertMetaFromRaw(Raw::Element e) {
+    result = convertCfgAttrMetaFromRaw(e)
+    or
+    result = convertCfgMetaFromRaw(e)
+    or
+    result = convertKeyValueMetaFromRaw(e)
+    or
+    result = convertPathMetaFromRaw(e)
+    or
+    result = convertTokenTreeMetaFromRaw(e)
+    or
+    result = convertUnsafeMetaFromRaw(e)
   }
 
   /**
@@ -2753,6 +2887,30 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TCfgAtom` to a raw DB element, if possible.
+   */
+  Raw::Element convertCfgAtomToRaw(TCfgAtom e) { e = TCfgAtom(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCfgAttrMeta` to a raw DB element, if possible.
+   */
+  Raw::Element convertCfgAttrMetaToRaw(TCfgAttrMeta e) { e = TCfgAttrMeta(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCfgComposite` to a raw DB element, if possible.
+   */
+  Raw::Element convertCfgCompositeToRaw(TCfgComposite e) { e = TCfgComposite(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCfgMeta` to a raw DB element, if possible.
+   */
+  Raw::Element convertCfgMetaToRaw(TCfgMeta e) { e = TCfgMeta(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TClosureExpr` to a raw DB element, if possible.
    */
   Raw::Element convertClosureExprToRaw(TClosureExpr e) { e = TClosureExpr(result) }
@@ -2885,6 +3043,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TFormatArgsArgName` to a raw DB element, if possible.
+   */
+  Raw::Element convertFormatArgsArgNameToRaw(TFormatArgsArgName e) {
+    e = TFormatArgsArgName(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TFormatArgsExpr` to a raw DB element, if possible.
    */
   Raw::Element convertFormatArgsExprToRaw(TFormatArgsExpr e) { e = TFormatArgsExpr(result) }
@@ -2962,6 +3128,12 @@ module Synth {
    * Converts a synthesized `TItemList` to a raw DB element, if possible.
    */
   Raw::Element convertItemListToRaw(TItemList e) { e = TItemList(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TKeyValueMeta` to a raw DB element, if possible.
+   */
+  Raw::Element convertKeyValueMetaToRaw(TKeyValueMeta e) { e = TKeyValueMeta(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3091,12 +3263,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TMeta` to a raw DB element, if possible.
-   */
-  Raw::Element convertMetaToRaw(TMeta e) { e = TMeta(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TMethodCallExpr` to a raw DB element, if possible.
    */
   Raw::Element convertMethodCallExprToRaw(TMethodCallExpr e) { e = TMethodCallExpr(result) }
@@ -3198,6 +3364,12 @@ module Synth {
    * Converts a synthesized `TPathExpr` to a raw DB element, if possible.
    */
   Raw::Element convertPathExprToRaw(TPathExpr e) { e = TPathExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPathMeta` to a raw DB element, if possible.
+   */
+  Raw::Element convertPathMetaToRaw(TPathMeta e) { e = TPathMeta(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3391,15 +3563,21 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TTokenTreeMeta` to a raw DB element, if possible.
+   */
+  Raw::Element convertTokenTreeMetaToRaw(TTokenTreeMeta e) { e = TTokenTreeMeta(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TTrait` to a raw DB element, if possible.
    */
   Raw::Element convertTraitToRaw(TTrait e) { e = TTrait(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TTraitAlias` to a raw DB element, if possible.
+   * Converts a synthesized `TTryBlockModifier` to a raw DB element, if possible.
    */
-  Raw::Element convertTraitAliasToRaw(TTraitAlias e) { e = TTraitAlias(result) }
+  Raw::Element convertTryBlockModifierToRaw(TTryBlockModifier e) { e = TTryBlockModifier(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3490,6 +3668,12 @@ module Synth {
    * Converts a synthesized `TUnion` to a raw DB element, if possible.
    */
   Raw::Element convertUnionToRaw(TUnion e) { e = TUnion(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TUnsafeMeta` to a raw DB element, if possible.
+   */
+  Raw::Element convertUnsafeMetaToRaw(TUnsafeMeta e) { e = TUnsafeMeta(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3660,6 +3844,8 @@ module Synth {
     or
     result = convertCallableToRaw(e)
     or
+    result = convertCfgPredicateToRaw(e)
+    or
     result = convertExprToRaw(e)
     or
     result = convertExternItemListToRaw(e)
@@ -3669,6 +3855,8 @@ module Synth {
     result = convertForBinderToRaw(e)
     or
     result = convertFormatArgsArgToRaw(e)
+    or
+    result = convertFormatArgsArgNameToRaw(e)
     or
     result = convertGenericArgToRaw(e)
     or
@@ -3736,6 +3924,8 @@ module Synth {
     or
     result = convertTokenTreeToRaw(e)
     or
+    result = convertTryBlockModifierToRaw(e)
+    or
     result = convertTupleFieldToRaw(e)
     or
     result = convertTypeBoundToRaw(e)
@@ -3769,6 +3959,16 @@ module Synth {
     result = convertClosureExprToRaw(e)
     or
     result = convertFunctionToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCfgPredicate` to a raw DB element, if possible.
+   */
+  Raw::Element convertCfgPredicateToRaw(TCfgPredicate e) {
+    result = convertCfgAtomToRaw(e)
+    or
+    result = convertCfgCompositeToRaw(e)
   }
 
   /**
@@ -3934,8 +4134,6 @@ module Synth {
     or
     result = convertTraitToRaw(e)
     or
-    result = convertTraitAliasToRaw(e)
-    or
     result = convertTypeItemToRaw(e)
     or
     result = convertUseToRaw(e)
@@ -3975,6 +4173,24 @@ module Synth {
     result = convertLoopExprToRaw(e)
     or
     result = convertWhileExprToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TMeta` to a raw DB element, if possible.
+   */
+  Raw::Element convertMetaToRaw(TMeta e) {
+    result = convertCfgAttrMetaToRaw(e)
+    or
+    result = convertCfgMetaToRaw(e)
+    or
+    result = convertKeyValueMetaToRaw(e)
+    or
+    result = convertPathMetaToRaw(e)
+    or
+    result = convertTokenTreeMetaToRaw(e)
+    or
+    result = convertUnsafeMetaToRaw(e)
   }
 
   /**

@@ -21,7 +21,7 @@ private module Input implements InputSig<Location, RustDataFlow> {
     or
     n.(Node::PostUpdateNode).getPreUpdateNode().asExpr() = getPostUpdateReverseStep(_, _)
     or
-    FlowSummaryImpl::Private::Steps::sourceLocalStep(_, n, _)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(_, n, _, _)
   }
 
   predicate missingLocationExclude(RustDataFlow::Node n) { not exists(n.asExpr().getLocation()) }

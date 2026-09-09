@@ -1,3 +1,10 @@
+## 9.2.4
+
+### Minor Analysis Improvements
+
+* Removed the summary model for `String.valueOf(CharSequence)`, which does not exist. Instead, taint is now propagated through calls to `String.valueOf(Object)` when the argument is a `CharSequence`, for example a `String` or a `StringBuilder`.
+* Added SQL injection sink models for Spring R2DBC `DatabaseClient` and the R2DBC SPI.
+
 ## 9.2.3
 
 No user-facing changes.

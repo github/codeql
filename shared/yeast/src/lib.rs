@@ -492,7 +492,7 @@ impl Ast {
         }
     }
 
-    pub fn walk(&self) -> AstCursor {
+    pub fn walk(&self) -> AstCursor<'_> {
         AstCursor::new(self)
     }
 

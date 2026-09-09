@@ -136,6 +136,12 @@ signature module LocalNameBindingInputSig<LocationSig Location> {
    * full control of scope resolution for specific types of references.
    */
   default predicate lookupStartsAt(AstNode n, AstNode scope) { none() }
+
+  /**
+   * Holds if the set of names available in `scope` is not known ahead of time,
+   * and thus any lookup chain that goes through `scope` may need to be reconciled at a later stage.
+   */
+  default predicate uncertainScope(AstNode scope) { none() }
 }
 
 /**
@@ -154,6 +160,8 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
       implicitDeclInScope(_, this)
       or
       isTopScope(this)
+      or
+      uncertainScope(this)
     }
   }
 
@@ -346,10 +354,34 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
     or
     exists(Scope mid |
       lookupInScope(name, lookup, mid) and
-      not declInScope(_, name, mid) and
-      not implicitDeclInScope(name, mid) and
+      not declInScope(name, mid) and
       not isTopScope(mid) and
       scope = getEnclosingScope(mid)
+    )
+  }
+
+  private predicate declInScope(string name, AstNode scope) {
+    declInScope(_, name, scope) or
+    implicitDeclInScope(name, scope)
+  }
+
+  /**
+   * Holds if `name`, when resolved from `lookup`, may resolve to one of the uncertain members of `scope`.
+   */
+  pragma[nomagic]
+  private predicate lookupInUncertainScope(string name, Scope lookup, Scope scope) {
+    lookupInScope(name, lookup, scope) and
+    uncertainScope(scope) and
+    not declInScope(name, scope)
+  }
+
+  /**
+   * Gets an uncertain scope in which the `accessCand` pair may resolve.
+   */
+  AstNode getAnUncertainScope(AstNode access, string name) {
+    exists(Scope lookup |
+      accessCandInLookupScope(access, name, lookup) and
+      lookupInUncertainScope(name, lookup, result)
     )
   }
 

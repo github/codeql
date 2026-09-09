@@ -21,6 +21,7 @@ ret
 | local_dataflow.rb:123:32:123:43 | call to puts |
 | local_dataflow.rb:127:3:127:8 | call to rand |
 | local_dataflow.rb:132:3:149:5 | if ... |
+| local_dataflow.rb:173:3:173:9 | call to sink |
 arg
 | UseUseExplosion.rb:20:13:20:17 | @prop | UseUseExplosion.rb:20:13:20:23 | ... > ... | self |
 | UseUseExplosion.rb:20:13:20:23 | synthetic splat argument | UseUseExplosion.rb:20:13:20:23 | ... > ... | synthetic * |
@@ -1524,3 +1525,36 @@ arg
 | local_dataflow.rb:148:5:148:10 | self | local_dataflow.rb:148:5:148:10 | call to use | self |
 | local_dataflow.rb:148:5:148:10 | synthetic splat argument | local_dataflow.rb:148:5:148:10 | call to use | synthetic * |
 | local_dataflow.rb:148:9:148:9 | x | local_dataflow.rb:148:5:148:10 | call to use | position 0 |
+| local_dataflow.rb:154:9:154:21 | self | local_dataflow.rb:154:9:154:21 | call to raise | self |
+| local_dataflow.rb:154:9:154:21 | synthetic splat argument | local_dataflow.rb:154:9:154:21 | call to raise | synthetic * |
+| local_dataflow.rb:154:15:154:21 | "error" | local_dataflow.rb:154:9:154:21 | call to raise | position 0 |
+| local_dataflow.rb:155:9:155:17 | self | local_dataflow.rb:155:9:155:17 | call to source | self |
+| local_dataflow.rb:155:9:155:17 | synthetic splat argument | local_dataflow.rb:155:9:155:17 | call to source | synthetic * |
+| local_dataflow.rb:155:16:155:16 | 1 | local_dataflow.rb:155:9:155:17 | call to source | position 0 |
+| local_dataflow.rb:157:9:157:17 | self | local_dataflow.rb:157:9:157:17 | call to source | self |
+| local_dataflow.rb:157:9:157:17 | synthetic splat argument | local_dataflow.rb:157:9:157:17 | call to source | synthetic * |
+| local_dataflow.rb:157:16:157:16 | 2 | local_dataflow.rb:157:9:157:17 | call to source | position 0 |
+| local_dataflow.rb:159:9:159:17 | self | local_dataflow.rb:159:9:159:17 | call to source | self |
+| local_dataflow.rb:159:9:159:17 | synthetic splat argument | local_dataflow.rb:159:9:159:17 | call to source | synthetic * |
+| local_dataflow.rb:159:16:159:16 | 3 | local_dataflow.rb:159:9:159:17 | call to source | position 0 |
+| local_dataflow.rb:161:3:161:9 | self | local_dataflow.rb:161:3:161:9 | call to sink | self |
+| local_dataflow.rb:161:3:161:9 | synthetic splat argument | local_dataflow.rb:161:3:161:9 | call to sink | synthetic * |
+| local_dataflow.rb:161:8:161:8 | x | local_dataflow.rb:161:3:161:9 | call to sink | position 0 |
+| local_dataflow.rb:164:9:164:21 | self | local_dataflow.rb:164:9:164:21 | call to raise | self |
+| local_dataflow.rb:164:9:164:21 | synthetic splat argument | local_dataflow.rb:164:9:164:21 | call to raise | synthetic * |
+| local_dataflow.rb:164:15:164:21 | "error" | local_dataflow.rb:164:9:164:21 | call to raise | position 0 |
+| local_dataflow.rb:165:9:165:17 | self | local_dataflow.rb:165:9:165:17 | call to source | self |
+| local_dataflow.rb:165:9:165:17 | synthetic splat argument | local_dataflow.rb:165:9:165:17 | call to source | synthetic * |
+| local_dataflow.rb:165:16:165:16 | 4 | local_dataflow.rb:165:9:165:17 | call to source | position 0 |
+| local_dataflow.rb:167:9:167:17 | self | local_dataflow.rb:167:9:167:17 | call to source | self |
+| local_dataflow.rb:167:9:167:17 | synthetic splat argument | local_dataflow.rb:167:9:167:17 | call to source | synthetic * |
+| local_dataflow.rb:167:16:167:16 | 5 | local_dataflow.rb:167:9:167:17 | call to source | position 0 |
+| local_dataflow.rb:169:9:169:17 | self | local_dataflow.rb:169:9:169:17 | call to source | self |
+| local_dataflow.rb:169:9:169:17 | synthetic splat argument | local_dataflow.rb:169:9:169:17 | call to source | synthetic * |
+| local_dataflow.rb:169:16:169:16 | 6 | local_dataflow.rb:169:9:169:17 | call to source | position 0 |
+| local_dataflow.rb:171:9:171:17 | self | local_dataflow.rb:171:9:171:17 | call to source | self |
+| local_dataflow.rb:171:9:171:17 | synthetic splat argument | local_dataflow.rb:171:9:171:17 | call to source | synthetic * |
+| local_dataflow.rb:171:16:171:16 | 7 | local_dataflow.rb:171:9:171:17 | call to source | position 0 |
+| local_dataflow.rb:173:3:173:9 | self | local_dataflow.rb:173:3:173:9 | call to sink | self |
+| local_dataflow.rb:173:3:173:9 | synthetic splat argument | local_dataflow.rb:173:3:173:9 | call to sink | synthetic * |
+| local_dataflow.rb:173:8:173:8 | y | local_dataflow.rb:173:3:173:9 | call to sink | position 0 |

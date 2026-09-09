@@ -16,6 +16,8 @@
 | .github/workflows/commands.yml:28:9:31:2 | Run Step | wc -l |
 | .github/workflows/commands.yml:34:9:37:6 | Run Step | command1 |
 | .github/workflows/commands.yml:34:9:37:6 | Run Step | command2 |
+| .github/workflows/controlcheck.yml:9:9:11:2 | Run Step | echo "test1" |
+| .github/workflows/controlcheck.yml:15:9:16:25 | Run Step | echo "test2" |
 | .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step | LINE 1echo '${{ github.event.comment.body }}' |
 | .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step | LINE 1 echo '${{ github.event.comment.body }}' |
 | .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step | LINE 1 echo '${{ github.event.comment.body }}' |

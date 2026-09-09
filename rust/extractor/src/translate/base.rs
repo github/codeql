@@ -6,15 +6,20 @@ use crate::trap::{Label, TrapClass};
 use ra_ap_base_db::EditionedFileId;
 use ra_ap_hir::Semantics;
 use ra_ap_hir::db::ExpandDatabase;
-use ra_ap_hir_expand::{ExpandResult, ExpandTo, InFile};
+use ra_ap_hir_expand::builtin::{BuiltinDeriveExpander, find_builtin_derive};
+use ra_ap_hir_expand::span_map::ExpansionSpanMap;
+use ra_ap_hir_expand::{ExpandResult, ExpandTo, HirFileId, InFile, map_node_range_up_rooted};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
-use ra_ap_parser::SyntaxKind;
+use ra_ap_parser::{SyntaxKind, TopEntryPoint};
 use ra_ap_span::TextSize;
 use ra_ap_syntax::ast::HasAttrs;
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
+};
+use ra_ap_syntax_bridge::{
+    DocCommentDesugarMode, syntax_node_to_token_tree, token_tree_to_syntax_node,
 };
 
 impl Emission<ast::Item> for Translator<'_> {
@@ -128,6 +133,10 @@ pub struct Translator<'a> {
     source_kind: SourceKind,
     pub(crate) macro_context_depth: usize,
     diagnostic_count: usize,
+    /// When emitting a reconstructed built-in derive expansion, holds the span map of the
+    /// synthesized syntax tree. Those nodes are not registered in the semantics cache, so
+    /// locations are resolved through this map instead of `Semantics::original_range`.
+    builtin_derive_span_map: Option<ExpansionSpanMap>,
 }
 
 const UNKNOWN_LOCATION: (LineCol, LineCol) =
@@ -154,6 +163,7 @@ impl<'a> Translator<'a> {
             source_kind,
             macro_context_depth: 0,
             diagnostic_count: 0,
+            builtin_derive_span_map: None,
         }
     }
     fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
@@ -177,6 +187,15 @@ impl<'a> Translator<'a> {
     }
 
     pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> Option<TextRange> {
+        if let Some(span_map) = self.builtin_derive_span_map.as_ref() {
+            // Nodes synthesized by a reconstructed built-in derive expansion are not in the
+            // semantics cache; resolve their original source range through the expansion span map.
+            let semantics = self.semantics.as_ref()?;
+            let file_id = self.file_id?;
+            let file_range =
+                map_node_range_up_rooted(semantics.db, span_map, node.syntax().text_range())?;
+            return (file_id == file_range.file_id).then_some(file_range.range);
+        }
         if let Some(semantics) = self.semantics.as_ref() {
             let file_range = semantics.original_range(node.syntax());
             let file_id = self.file_id?;
@@ -215,12 +234,12 @@ impl<'a> Translator<'a> {
     ) {
         let parent_range = parent.syntax().text_range();
         let token_range = token.text_range();
-        if let Some(clipped_range) = token_range.intersect(parent_range) {
-            if let Some(parent_range2) = self.text_range_for_node(parent) {
-                let token_range = clipped_range + parent_range2.start() - parent_range.start();
-                if let Some((start, end)) = self.location(token_range) {
-                    self.trap.emit_location(self.label, label, start, end)
-                }
+        if let Some(clipped_range) = token_range.intersect(parent_range)
+            && let Some(parent_range2) = self.text_range_for_node(parent)
+        {
+            let token_range = clipped_range + parent_range2.start() - parent_range.start();
+            if let Some((start, end)) = self.location(token_range) {
+                self.trap.emit_location(self.label, label, start, end)
             }
         }
     }
@@ -332,15 +351,15 @@ impl<'a> Translator<'a> {
         children: SyntaxElementChildren,
     ) {
         for child in children {
-            if let NodeOrToken::Token(token) = child {
-                if token.kind() == SyntaxKind::COMMENT {
-                    let label = self.trap.emit(generated::Comment {
-                        id: TrapId::Star,
-                        parent: parent_label,
-                        text: token.text().to_owned(),
-                    });
-                    self.emit_location_token(label.into(), parent_node, &token);
-                }
+            if let NodeOrToken::Token(token) = child
+                && token.kind() == SyntaxKind::COMMENT
+            {
+                let label = self.trap.emit(generated::Comment {
+                    id: TrapId::Star,
+                    parent: parent_label,
+                    text: token.text().to_owned(),
+                });
+                self.emit_location_token(label.into(), parent_node, &token);
             }
         }
     }
@@ -411,6 +430,11 @@ impl<'a> Translator<'a> {
             // way as from version 0.0.274 rust-analyser only expands in the context of an expansion
             return;
         }
+        if self.builtin_derive_span_map.is_some() {
+            // inside a reconstructed built-in derive expansion the macro call is not registered in
+            // the semantics cache, so it cannot (and need not) be expanded further
+            return;
+        }
         if let Some(expanded) = self
             .semantics
             .as_ref()
@@ -465,9 +489,39 @@ impl<'a> Translator<'a> {
     pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
         self.semantics.is_some_and(|sema| {
             item.attrs().any(|attr| {
-                attr.as_simple_call().is_some_and(|(name, tokens)| {
-                    name == "cfg" && sema.check_cfg_attr(&tokens) == Some(false)
-                })
+                let meta = match attr.meta() {
+                    Some(meta) => meta,
+                    None => return false,
+                };
+                let cfg_meta = match ast::CfgMeta::cast(meta.syntax().clone()) {
+                    Some(cfg_meta) => cfg_meta,
+                    None => return false,
+                };
+                let cfg_predicate = match cfg_meta.cfg_predicate() {
+                    Some(pred) => pred,
+                    None => return false,
+                };
+                let cfg_expr = ra_ap_cfg::CfgExpr::parse_from_ast(cfg_predicate);
+                // Resolve the crate the item belongs to so its `cfg` options can be checked.
+                // Items originating from a macro expansion live in a `MacroFile` rather than a
+                // real file, so we recover their crate from the macro call; otherwise cfg'd-out
+                // items from expansions (e.g. tokio's `cfg(feature = "rt")` /
+                // `cfg(not(feature = "rt"))` cousins) would all be extracted, bloating the DB with
+                // contradictory entries.
+                let cfg_options = match sema.hir_file_for(item.syntax()) {
+                    HirFileId::FileId(fid) => {
+                        match sema.file_to_module_defs(fid.file_id(sema.db)).next() {
+                            Some(module) => module.krate(sema.db).cfg(sema.db),
+                            None => return false,
+                        }
+                    }
+                    HirFileId::MacroFile(macro_call) => sema
+                        .db
+                        .lookup_intern_macro_call(macro_call)
+                        .krate
+                        .cfg_options(sema.db),
+                };
+                cfg_options.check(&cfg_expr) == Some(false)
             })
         })
     }
@@ -551,9 +605,9 @@ impl<'a> Translator<'a> {
             is_const: false,
             is_gen: false,
             is_move: false,
-            is_try: false,
             is_unsafe: false,
             stmt_list: Some(stmt_list),
+            try_block_modifier: None,
         });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
@@ -563,7 +617,8 @@ impl<'a> Translator<'a> {
     fn is_attribute_macro_target(&self, node: &ast::Item) -> bool {
         // rust-analyzer considers as an `attr_macro_call` also a plain macro call, but we want to
         // process that differently (in `extract_macro_call_expanded`)
-        !matches!(node, ast::Item::MacroCall(_))
+        self.builtin_derive_span_map.is_none()
+            && !matches!(node, ast::Item::MacroCall(_))
             && self.semantics.is_some_and(|semantics| {
                 let file = semantics.hir_file_for(node.syntax());
                 let node = InFile::new(file, node);
@@ -684,6 +739,51 @@ impl<'a> Translator<'a> {
         }
     }
 
+    /// Reconstructs the expansion of a built-in derive macro (e.g. `Debug`, `PartialEq`).
+    ///
+    /// Since rust-analyzer 0.0.317 built-in derives are modeled as synthetic impls rather than
+    /// syntactic macro expansions, `Semantics::expand_derive_macro` no longer returns anything for
+    /// them. We re-run the still-public built-in derive expander over the ADT and emit the resulting
+    /// `impl` items ourselves. The synthesized nodes are not registered in the semantics
+    /// cache, so `builtin_derive_span_map` is set for the duration of the emission to route their
+    /// locations through the expansion span map.
+    fn emit_builtin_derive_expansion(
+        &mut self,
+        adt: &ast::Adt,
+        expander: BuiltinDeriveExpander,
+    ) -> Option<Label<generated::MacroItems>> {
+        let semantics = self.semantics?;
+        let db = semantics.db;
+        let file_id = semantics.hir_file_for(adt.syntax());
+        let span_map = db.span_map(file_id);
+        let call_site = span_map.span_for_range(adt.syntax().text_range());
+        let input = syntax_node_to_token_tree(
+            adt.syntax(),
+            span_map.as_ref(),
+            call_site,
+            DocCommentDesugarMode::ProcMacro,
+        );
+        let ExpandResult { value: output, err } = expander.expander()(db, call_site, &input);
+        let edition = self.file_id?.edition(db);
+        let (parsed, output_span_map) =
+            token_tree_to_syntax_node(&output, TopEntryPoint::MacroItems, &mut |_| edition);
+        let items = ast::MacroItems::cast(parsed.syntax_node())?;
+        if let Some(err) = err {
+            let rendered = err.render_to_string(db);
+            self.emit_diagnostic_for_node(
+                adt,
+                DiagnosticSeverity::Warning,
+                "item_expansion".to_owned(),
+                format!("built-in derive expansion failed ({})", rendered.kind),
+                rendered.message,
+            );
+        }
+        let previous = self.builtin_derive_span_map.replace(output_span_map);
+        let result = self.emit_macro_items(&items);
+        self.builtin_derive_span_map = previous;
+        result
+    }
+
     pub(crate) fn emit_derive_expansion(
         &mut self,
         node: &(impl Into<ast::Adt> + Clone),
@@ -693,12 +793,29 @@ impl<'a> Translator<'a> {
             return;
         };
         let node: ast::Adt = node.clone().into();
-        let expansions = node
-            .attrs()
-            .filter_map(|attr| semantics.expand_derive_macro(&attr))
-            .flatten()
-            .filter_map(|expanded| self.process_item_macro_expansion(&node, expanded))
-            .collect::<Vec<_>>();
+        let mut expansions = Vec::new();
+        for meta in node.attrs().filter_map(|attr| attr.meta()) {
+            let Some(expanded) = semantics.expand_derive_macro(&meta) else {
+                continue;
+            };
+            // `resolve_derive_macro` yields one entry per derive, including built-in ones for which
+            // `expand_derive_macro` returns `None`; we use it to recover the built-in expander.
+            let resolved = semantics.resolve_derive_macro(&meta).unwrap_or_default();
+            for (i, expanded) in expanded.into_iter().enumerate() {
+                let label = if let Some(expanded) = expanded {
+                    self.process_item_macro_expansion(&node, expanded)
+                } else if let Some(expander) = resolved
+                    .get(i)
+                    .and_then(|m| m.as_ref())
+                    .and_then(|m| find_builtin_derive(&m.name(semantics.db)))
+                {
+                    self.emit_builtin_derive_expansion(&node, expander)
+                } else {
+                    None
+                };
+                expansions.extend(label);
+            }
+        }
         generated::TypeItem::emit_derive_macro_expansions(
             label.into(),
             expansions,

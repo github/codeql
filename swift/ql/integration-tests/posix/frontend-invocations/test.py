@@ -13,7 +13,7 @@ def test(codeql, swift, expected_files):
             with open(f, "rb") as module:
                 print(f.name, sha256(module.read()).hexdigest(), file=expected)
 
-    with open("hashes.actual", "w") as actual:
+    with expected_files.add("hashes.actual") as actual:
         hashes = [
             (s.name, s.resolve().name)
             for s in Path("test-db/working/swift-extraction-artifacts/store").iterdir()
@@ -21,4 +21,3 @@ def test(codeql, swift, expected_files):
         hashes.sort()
         for module, hash in hashes:
             print(module, hash, file=actual)
-    expected_files.add("hashes.expected")

@@ -1,8 +1,14 @@
+## 6.0.4
+
+### Minor Analysis Improvements
+
+* The algorithm for tracking regexes has been replaced. This can cause result changes in related queries, for example, `rb/polynomial-redos`.
+
 ## 6.0.3
 
 ### Minor Analysis Improvements
 
-* Parameters of methods exported by vendored gems are no longer treated as flow sources, since such methods are only called from within the codebase. This should reduce false positives for `rb/polynomial-redos`, `rb/regex/badly-anchored-regexp`, `rb/unsafe-code-construction`, `rb/html-constructed-from-input`, and `rb/shell-command-constructed-from-input` in codebases that vendor their dependencies.
+* Removed library input to vendored gems from the set of taint sources. This should reduce false positives for `rb/polynomial-redos`, `rb/regex/badly-anchored-regexp`, `rb/unsafe-code-construction`, `rb/html-constructed-from-input`, and `rb/shell-command-constructed-from-input` whenever vendoring is used.
 
 ## 6.0.2
 

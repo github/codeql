@@ -12,15 +12,27 @@ private import DataFlowImplSpecific::Public
 module Input implements InputSig<Location, DataFlowImplSpecific::PowershellDataFlow> {
   private import codeql.util.Void
 
-  class SummarizedCallableBase = string;
+  class SummarizedCallableBase extends string {
+    bindingset[this]
+    SummarizedCallableBase() { exists(this) }
 
-  class SourceBase = Void;
+    bindingset[this]
+    Location getLocation() { result instanceof EmptyLocation }
+  }
 
-  class SinkBase = Void;
+  class SourceBase extends Void {
+    Location getLocation() { none() }
+  }
 
-  class FlowSummaryCallBase = Void;
+  class SinkBase = SourceBase;
+
+  class FlowSummaryCallBase = SourceBase;
 
   predicate callableFromSource(SummarizedCallableBase c) { none() }
+
+  DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+    result.asLibraryCallable() = c
+  }
 
   ArgumentPosition callbackSelfParameterPosition() { none() }
 
@@ -125,28 +137,35 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PowershellDataF
 
 private import Make<Location, DataFlowImplSpecific::PowershellDataFlow, Input> as Impl
 
-private module StepsInput implements Impl::Private::StepsInputSig {
-  Impl::Private::SummaryNode getSummaryNode(Node n) {
-    result = n.(FlowSummaryNode).getSummaryNode()
+private module Input2 implements Impl::Private::InputSig2 {
+  private import codeql.util.Void
+
+  class SourceSinkReportingElement extends Void {
+    Location getLocation() { none() }
+
+    DataFlowCallable getEnclosingCallable() { none() }
+
+    SourceSinkReportingElement getASuccessor(Impl::Private::SummaryComponent sc) { none() }
   }
+}
+
+private import Impl::Private::Make2<Input2> as Impl2
+
+private module StepsInput implements Impl2::StepsInputSig {
+  Impl2::SummaryNode getSummaryNode(Node n) { result = n.(FlowSummaryNode).getSummaryNode() }
 
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result.asCall().getAstNode() = sc.(LibraryCallable).getACall()
     or
     result.asCall().getAstNode() = sc.(LibraryCallable).getACallSimple()
   }
-
-  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack sc) { none() }
-
-  DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) { none() }
-
-  Node getSinkNode(Input::SinkBase source, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module Private {
   import Impl::Private
+  import Impl2
 
-  module Steps = Impl::Private::Steps<StepsInput>;
+  module Steps = Impl2::Steps<StepsInput>;
 
   /**
    * Provides predicates for constructing summary components.

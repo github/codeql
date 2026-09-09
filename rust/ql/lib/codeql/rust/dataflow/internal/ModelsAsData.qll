@@ -58,6 +58,10 @@ private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
+private import codeql.rust.internal.CachedStages
+private import codeql.rust.internal.typeinference.FunctionType
+private import codeql.rust.internal.typeinference.TypeMention
+private import codeql.rust.frameworks.stdlib.Stdlib
 
 /**
  * Holds if in a call to the function with canonical path `path`, the value referred
@@ -207,12 +211,45 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   }
 }
 
+/**
+ * Holds if library function `f` has a callback at position `n`. In this case we
+ * add a flow model that achieves the effect of simulating that the callback is
+ * invoked, which is needed for flow through captured variables to work.
+ */
+cached
+predicate mayInvokeCallback(Function f, int n) {
+  Stages::TypeInferenceStage::ref() and
+  exists(TypeMention tm, Trait trait |
+    tm = f.getParam(n).getTypeRepr() and
+    trait = getALookupTrait(f, tm.getType()) and
+    trait.getSupertrait*() instanceof FnOnceTrait and
+    not f.fromSource()
+  )
+}
+
+private class SummarizedCallableWithCallback extends SummarizedCallable::Range {
+  private int pos;
+
+  SummarizedCallableWithCallback() { mayInvokeCallback(this, pos) }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
+  ) {
+    input = "Argument[" + pos + "]" and
+    output = "Argument[" + pos + "].Parameter[closure-self]" and
+    preservesValue = true and
+    p = "hq-generated" and
+    isExact = true and
+    model = "heuristic-callback"
+  }
+}
+
 private class FlowSourceFromModel extends FlowSource::Range {
   private string path;
 
   FlowSourceFromModel() {
     sourceModel(path, _, _, _, _) and
-    this.callResolvesTo(path)
+    this.getCanonicalPath() = path
   }
 
   override predicate isSource(string output, string kind, Provenance provenance, string model) {
@@ -234,7 +271,7 @@ private class FlowSinkFromModel extends FlowSink::Range {
 
   FlowSinkFromModel() {
     sinkModel(path, _, _, _, _) and
-    this.callResolvesTo(path)
+    this.getCanonicalPath() = path
   }
 
   override predicate isSink(string input, string kind, Provenance provenance, string model) {
@@ -256,7 +293,7 @@ private class FlowBarrierFromModel extends FlowBarrier::Range {
 
   FlowBarrierFromModel() {
     barrierModel(path, _, _, _, _) and
-    this.callResolvesTo(path)
+    this.getCanonicalPath() = path
   }
 
   override predicate isBarrier(string output, string kind, Provenance provenance, string model) {
@@ -272,7 +309,7 @@ private class FlowBarrierGuardFromModel extends FlowBarrierGuard::Range {
 
   FlowBarrierGuardFromModel() {
     barrierGuardModel(path, _, _, _, _, _) and
-    this.callResolvesTo(path)
+    this.getCanonicalPath() = path
   }
 
   override predicate isBarrierGuard(

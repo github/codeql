@@ -687,6 +687,11 @@ unified_name_pattern_modifier(
   unique int modifier: @unified_token_modifier ref
 );
 
+unified_name_pattern_sub_pattern(
+  unique int unified_name_pattern: @unified_name_pattern ref,
+  unique int sub_pattern: @unified_pattern ref
+);
+
 unified_name_pattern_def(
   unique int id: @unified_name_pattern,
   int identifier: @unified_token_identifier ref

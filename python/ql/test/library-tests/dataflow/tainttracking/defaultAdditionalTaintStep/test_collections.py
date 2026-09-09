@@ -232,6 +232,37 @@ def list_extend():
     ensure_not_tainted(my_list)
 
     my_list.extend(tainted_list)
+    ensure_tainted(my_list) # $ tainted
+
+
+def list_extend_iteration():
+    my_list = ["safe"]
+    tainted_list = [TAINTED_STRING]
+
+    ensure_not_tainted(my_list)
+
+    my_list.extend(tainted_list)
+    for x in my_list:
+        ensure_tainted(x) # $ tainted
+
+
+def list_insert():
+    tainted_string = TAINTED_STRING
+    my_list = ["safe"]
+
+    ensure_not_tainted(my_list)
+
+    my_list.insert(0, tainted_string)
+    ensure_tainted(my_list) # $ tainted
+
+
+def list_iadd():
+    my_list = ["safe"]
+    tainted_list = [TAINTED_STRING]
+
+    ensure_not_tainted(my_list)
+
+    my_list += tainted_list
     ensure_tainted(my_list) # $ MISSING: tainted
 
 
@@ -308,6 +339,9 @@ list_index_assign()
 list_index_aug_assign()
 list_append()
 list_extend()
+list_extend_iteration()
+list_insert()
+list_iadd()
 
 dict_update_dict()
 dict_update_kv_list()

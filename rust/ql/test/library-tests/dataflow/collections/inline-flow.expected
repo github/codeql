@@ -1,7 +1,7 @@
 models
 | 1 | Summary: <& as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue; value |
-| 2 | Summary: <_ as core::ops::arith::AddAssign>::add_assign; Argument[0]; Argument[self].Reference; taint |
-| 3 | Summary: <_ as core::ops::index::Index>::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
+| 2 | Summary: core::ops::arith::AddAssign::add_assign; Argument[0]; Argument[self].Reference; taint |
+| 3 | Summary: core::ops::index::Index::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
 edges
 | main.rs:15:13:15:13 | s | main.rs:16:20:16:20 | s | provenance |  |
 | main.rs:15:17:15:25 | source(...) | main.rs:15:13:15:13 | s | provenance |  |

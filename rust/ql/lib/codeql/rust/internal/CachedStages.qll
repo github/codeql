@@ -130,6 +130,7 @@ module Stages {
   module TypeInferenceStage {
     private import codeql.rust.internal.typeinference.Type
     private import codeql.rust.internal.typeinference.TypeInference
+    private import codeql.rust.dataflow.internal.ModelsAsData
 
     /**
      * Always holds.
@@ -150,6 +151,8 @@ module Stages {
       exists(Type t)
       or
       exists(inferType(_))
+      or
+      mayInvokeCallback(_, _)
     }
   }
 

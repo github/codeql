@@ -109,8 +109,7 @@ private predicate localAdditionalForwardTaintStep(
   or
   any(AdditionalTaintStep a).step(pred, succ) and model = "AdditionalTaintStep"
   or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred,
-    succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false, model)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred, succ, false, model)
 }
 
 /**

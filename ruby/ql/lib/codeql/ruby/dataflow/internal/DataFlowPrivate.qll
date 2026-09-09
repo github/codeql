@@ -198,7 +198,7 @@ module LocalFlow {
     FlowSummaryNode nodeFrom, FlowSummaryNode nodeTo, FlowSummaryImpl::Public::SummarizedCallable c,
     string model
   ) {
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo.getSummaryNode(), true, model) and
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model) and
     c = nodeFrom.getSummarizedCallable()
   }
 
@@ -676,26 +676,28 @@ private module Cached {
     )
   }
 
+  private predicate fieldName(string name) {
+    name = any(InstanceVariable v).getName()
+    or
+    name = "@" + any(SetterMethodCall c).getTargetName()
+    or
+    // The following equation unfortunately leads to a non-monotonic recursion error:
+    //    name = any(AccessPathToken a).getAnArgument("Field")
+    // Therefore, we use the following instead to extract the field names from the
+    // external model data. This, unfortunately, does not included any field names used
+    // in models defined in QL code.
+    exists(string input, string output |
+      ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
+    |
+      name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
+    )
+  }
+
   cached
   newtype TContent =
     TKnownElementContent(ConstantValue cv) { trackKnownValue(cv) } or
     TUnknownElementContent() or
-    TFieldContent(string name) {
-      name = any(InstanceVariable v).getName()
-      or
-      name = "@" + any(SetterMethodCall c).getTargetName()
-      or
-      // The following equation unfortunately leads to a non-monotonic recursion error:
-      //    name = any(AccessPathToken a).getAnArgument("Field")
-      // Therefore, we use the following instead to extract the field names from the
-      // external model data. This, unfortunately, does not included any field names used
-      // in models defined in QL code.
-      exists(string input, string output |
-        ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
-      |
-        name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
-      )
-    } or
+    TFieldContent(string name) { fieldName(name) } or
     deprecated TSplatContent(int i, Boolean shifted) { i in [0 .. 10] } or
     deprecated THashSplatContent(ConstantValue::ConstantSymbolValue cv) or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
@@ -717,11 +719,19 @@ private module Cached {
   }
 
   cached
+  int fieldNameBucket(string name) {
+    exists(int r | name = rank[r](string n | fieldName(n)) and result = r % 30)
+  }
+
+  cached
   newtype TContentApprox =
     TUnknownElementContentApprox() or
     TKnownIntegerElementContentApprox() or
     TKnownElementContentApprox(string approx) { approx = approxKnownElementIndex(_) } or
-    TNonElementContentApprox(Content c) { not c instanceof Content::ElementContent } or
+    TFieldContentApprox(int bucket) { bucket = fieldNameBucket(_) } or
+    TNonElementContentApprox(Content c) {
+      not c instanceof Content::ElementContent and not c instanceof Content::FieldContent
+    } or
     TCapturedVariableContentApprox(VariableCapture::CapturedVariable v)
 
   cached
@@ -1286,10 +1296,10 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   override CfgScope getCfgScopeImpl() { none() }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asLibraryCallable() = this.getSummarizedCallable()
+    result = this.getSummaryNode().getEnclosingCallable()
   }
 
-  override EmptyLocation getLocationImpl() { any() }
+  override Location getLocationImpl() { result = this.getSummaryNode().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 }
@@ -1643,16 +1653,24 @@ private module ReturnNodes {
     }
   }
 
-  pragma[noinline]
-  private AstNode implicitReturn(Callable c, ExprNode n) {
-    exists(CfgNodes::ExprCfgNode en |
-      en = n.getExprNode() and
-      en.getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
-      n.(NodeImpl).getCfgScope() = c and
-      result = en.getExpr()
-    )
+  private AstNode desugar(AstNode n) {
+    result = n.getDesugared()
     or
-    result = implicitReturn(c, n).getParent()
+    not exists(n.getDesugared()) and
+    result = n
+  }
+
+  private Expr getLast(StmtSequence s) {
+    result = getLast(s.(BodyStmt).getElse())
+    or
+    result = getLast(s.(BodyStmt).getARescue().getBody())
+    or
+    not exists(s.(BodyStmt).getElse()) and
+    exists(Stmt last | last = s.getLastStmt() |
+      result = getLast(last)
+      or
+      result = last and not last instanceof StmtSequence
+    )
   }
 
   /**
@@ -1661,7 +1679,7 @@ private module ReturnNodes {
    * last thing that is evaluated in the body of the callable.
    */
   class ExprReturnNode extends SourceReturnNode, ExprNode {
-    ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = c.getBody().getAStmt()) }
+    ExprReturnNode() { this.getExprNode().getExpr() = desugar(getLast(any(Callable c).getBody())) }
 
     override ReturnKind getKindSource() {
       exists(CfgScope scope | scope = this.(NodeImpl).getCfgScope() |
@@ -1760,8 +1778,7 @@ import OutNodes
 predicate jumpStep(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
-    succ.(FlowSummaryNode).getSummaryNode())
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
   or
   any(AdditionalJumpStep s).step(pred, succ)
   or
@@ -2268,6 +2285,10 @@ class ContentApprox extends TContentApprox {
       result = "approximated element " + approx
     )
     or
+    exists(int bucket |
+      this = TFieldContentApprox(bucket) and result = "field bucket " + bucket.toString()
+    )
+    or
     exists(Content c |
       this = TNonElementContentApprox(c) and
       result = c.toString()
@@ -2306,6 +2327,8 @@ ContentApprox getContentApprox(Content c) {
   or
   result =
     TKnownElementContentApprox(approxKnownElementIndex(c.(Content::KnownElementContent).getIndex()))
+  or
+  result = TFieldContentApprox(fieldNameBucket(c.(Content::FieldContent).getName()))
   or
   result = TNonElementContentApprox(c)
 }
