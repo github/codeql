@@ -14,6 +14,16 @@ predicate step(Node node1, Step step, Node node2) {
     node2.isIncomingValue(assign.getTarget())
   )
   or
+  exists(LocalVariableAccess access |
+    node1.isLocalVariable(access.getLocalVariable()) and
+    step.value() and
+    node2.isResultValue(access)
+    or
+    node1.isIncomingValue(access) and
+    step.value() and
+    node2.isLocalVariable(access.getLocalVariable())
+  )
+  or
   exists(BinaryExpr expr |
     expr.getOperator().getValue() = "+" and
     node1.isResultValue([expr.getLeft(), expr.getRight()]) and
