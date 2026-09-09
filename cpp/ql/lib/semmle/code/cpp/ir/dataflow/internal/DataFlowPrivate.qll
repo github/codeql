@@ -654,7 +654,7 @@ predicate isForwarderConstructorArgumentNodeImpl(CallInstruction call) {
  * ```
  * v.__emplace_back(x, &Foo)
  * ```
- * (nevermind that this is not real C++ since you cannot take the address of a
+ * (never mind that this is not real C++ since you cannot take the address of a
  * constructor.)
  * where `__emplace_back` invokes `Foo` with the `x` argument and returns the
  * result.
