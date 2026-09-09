@@ -1,8 +1,7 @@
 /**
- * @name Ambiguous assignment of comparison used as truth value
- * @description Assigning the result of an unparenthesized comparison when the assignment is used
- *              as a truth value may indicate that the assignment and comparison are grouped
- *              incorrectly.
+ * @name Ambiguous assignment of comparison result used as truth value
+ * @description Using an assignment of an unparenthesized comparison as
+ *              a truth value may indicate unintended operator grouping.
  * @kind problem
  * @problem.severity warning
  * @precision high
