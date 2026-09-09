@@ -86,8 +86,10 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
-        /// explicit feeds.
+        /// Verify that `FeedManager` correctly computes the explicit feeds using feeds discovered in nuget.config files and
+        /// private registries.
+        /// See the initialization of `DotNetStub` and `DependabotProxyStub` in `MakeFeedManager` for the feeds configured
+        /// to be returned and classified as explicit feeds.
         /// </summary>
         [Fact]
         public void TestExplicitFeeds()
@@ -107,8 +109,9 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
-        /// inherited feeds.
+        /// Verify that `FeedManager` correctly computes the inherited feeds using feeds discovered from the environment.
+        /// See the initialization of `DotNetStub` in `MakeFeedManager` for the feeds configured
+        /// to be returned and classified as inherited feeds.
         /// </summary>
         [Fact]
         public void TestInheritedFeeds()
@@ -127,8 +130,10 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
-        /// all feeds.
+        /// Verify that `FeedManager` correctly computes all feeds using feeds discovered in nuget.config files, private registries,
+        /// and the environment.
+        /// See the initialization of `DotNetStub` and `DependabotProxyStub` in `MakeFeedManager` for the feeds configured
+        /// to be returned and included in all feeds.
         /// </summary>
         [Fact]
         public void TestAllFeeds()
@@ -150,8 +155,10 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
-        /// reachable feeds.
+        /// Verify that `FeedManager` correctly computes the reachable feeds using feeds discovered in
+        /// nuget.config files, private registries, and the environment.
+        /// See the initialization of `FeedManagerIOStub` in `MakeFeedManager` for the feeds configured as unreachable
+        /// and therefore filtered out of the reachable feeds.
         /// </summary>
         [Fact]
         public void TestReachableFeeds()
@@ -171,8 +178,10 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
-        /// reachable explicit feeds.
+        /// Verify that `FeedManager` correctly computes the reachable explicit feeds using feeds discovered in
+        /// nuget.config files and private registries.
+        /// See the initialization of `FeedManagerIOStub` in `MakeFeedManager` for the feeds configured as unreachable
+        /// and therefore filtered out of the reachable explicit feeds.
         /// </summary>
         [Fact]
         public void TestReachableExplicitFeeds()
@@ -191,8 +200,10 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
-        /// reachable fallback feeds.
+        /// Verify that `FeedManager` correctly computes the reachable fallback feeds using feeds discovered in
+        /// nuget.config files and the default NuGet.org feed.
+        /// See the initialization of `FeedManagerIOStub` in `MakeFeedManager` for the feeds configured as unreachable
+        /// and therefore filtered out of the reachable fallback feeds.
         /// </summary>
         [Fact]
         public void TestReachableFallbackFeeds()
@@ -212,8 +223,10 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
-        /// feeds to use for a given file.
+        /// Verify that `FeedManager` correctly computes the feeds to use for a given packages.config file from feeds discovered
+        /// in private registries and the environment.
+        /// See the initialization of `DotNetStub` in `MakeFeedManager` for the feeds configured
+        /// to be returned and selected for use.
         /// </summary>
         [Fact]
         public void TestFeedsToUse()
@@ -232,8 +245,8 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
-        /// default feeds and reachable default feeds when no private registries are configured.
+        /// Verify that `FeedManager` correctly computes the default feeds and reachable default feeds
+        /// when no private registries are configured.
         /// </summary>
         [Fact]
         public void TestDefaultFeedsNugetOrg()
@@ -255,9 +268,9 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
-        /// default feeds, reachable default feeds, and fallback feeds when private registries
-        /// are configured and some of them replace the default feeds.
+        /// Verify that `FeedManager` correctly computes the default feeds and reachable default feeds
+        /// when private registries are configured to replace the default feeds.
+        /// See the initialization of `DependabotProxyStubWithBaseUrls` for the feeds configured to replace the default feeds.
         /// </summary>
         [Fact]
         public void TestDefaultFeedsPrivateRegistries()
@@ -290,9 +303,8 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
-        /// all feeds when https://api.nuget.org/v3/index.json is not replaced by any private registries because
-        /// none of them are configured to replace the base feeds.
+        /// Verify that `FeedManager` correctly computes all feeds when https://api.nuget.org/v3/index.json is not replaced
+        /// by a private registry because no private registry is configured to replace the base feed.
         /// </summary>
         [Fact]
         public void TestNugetOrgNotReplaced()
@@ -323,9 +335,9 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the FeedManager correctly computes the set of
-        /// all feeds when https://api.nuget.org/v3/index.json and related NuGet.org URLs are replaced by private
-        /// registries configured to replace the base feeds.
+        /// Verify that `FeedManager` correctly computes the explicit and all feeds when https://api.nuget.org/v3/index.json and
+        /// related NuGet.org URLs are replaced by private registries configured to replace the base feeds.
+        /// See the initialization of `DependabotProxyStubWithBaseUrls` for the feeds configured as default replacements.
         /// </summary>
         [Fact]
         public void TestNugetOrgReplacement()
