@@ -17,30 +17,37 @@ mod languages;
 const LET_X_JSON: &str = include_str!("fixtures/let_x.swiftsyntax.json");
 
 const IMPORT_FOUNDATION_JSON: &str = r#"{
+    "$lineStarts": [0],
+    "$pos": 0,
+    "$end": 17,
     "kind": "sourceFile",
-    "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":17,"line":1,"column":18}},
     "statements": [
         {
+            "$pos": 0,
+            "$end": 17,
             "kind": "codeBlockItem",
-            "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":17,"line":1,"column":18}},
             "item": {
+                "$pos": 0,
+                "$end": 17,
                 "kind": "importDecl",
-                "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":17,"line":1,"column":18}},
                 "importKeyword": {
+                    "$pos": 0,
+                    "$end": 6,
                     "kind": "token",
                     "tokenKind": "keyword(SwiftSyntax.Keyword.import)",
-                    "text": "import",
-                    "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":6,"line":1,"column":7}}
+                    "text": "import"
                 },
                 "path": [
                     {
+                        "$pos": 7,
+                        "$end": 17,
                         "kind": "importPathComponent",
-                        "range": {"start":{"offset":7,"line":1,"column":8},"end":{"offset":17,"line":1,"column":18}},
                         "name": {
+                            "$pos": 7,
+                            "$end": 17,
                             "kind": "token",
                             "tokenKind": "identifier(\"Foundation\")",
-                            "text": "Foundation",
-                            "range": {"start":{"offset":7,"line":1,"column":8},"end":{"offset":17,"line":1,"column":18}}
+                            "text": "Foundation"
                         }
                     }
                 ]
