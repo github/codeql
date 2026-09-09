@@ -16,6 +16,39 @@ mod languages;
 /// A real `swift-syntax-rs` JSON dump of the Swift source `let x = 1`.
 const LET_X_JSON: &str = include_str!("fixtures/let_x.swiftsyntax.json");
 
+const IMPORT_FOUNDATION_JSON: &str = r#"{
+    "kind": "sourceFile",
+    "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":17,"line":1,"column":18}},
+    "statements": [
+        {
+            "kind": "codeBlockItem",
+            "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":17,"line":1,"column":18}},
+            "item": {
+                "kind": "importDecl",
+                "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":17,"line":1,"column":18}},
+                "importKeyword": {
+                    "kind": "token",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.import)",
+                    "text": "import",
+                    "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":6,"line":1,"column":7}}
+                },
+                "path": [
+                    {
+                        "kind": "importPathComponent",
+                        "range": {"start":{"offset":7,"line":1,"column":8},"end":{"offset":17,"line":1,"column":18}},
+                        "name": {
+                            "kind": "token",
+                            "tokenKind": "identifier(\"Foundation\")",
+                            "text": "Foundation",
+                            "range": {"start":{"offset":7,"line":1,"column":8},"end":{"offset":17,"line":1,"column":18}}
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}"#;
+
 #[test]
 fn swift_syntax_json_runs_through_the_desugarer() {
     let lang = languages::all_language_specs()
@@ -46,4 +79,38 @@ fn swift_syntax_json_runs_through_the_desugarer() {
     let dump = dump_ast(&desugared, desugared.get_root(), "");
     assert!(dump.contains("top_level"), "unexpected dump: {dump}");
     assert!(dump.contains("block"), "unexpected dump: {dump}");
+}
+
+#[test]
+fn import_name_expr_location_excludes_import_keyword() {
+    let lang = languages::all_language_specs()
+        .into_iter()
+        .find(|l| l.file_globs.iter().any(|g| g.contains("swift")))
+        .expect("swift language spec");
+    let desugarer = lang.desugarer.as_ref();
+    let adapted = languages::swift_adapter::json_to_ast(IMPORT_FOUNDATION_JSON)
+        .expect("adapter should succeed");
+
+    let desugared = desugarer
+        .run_from_ast(adapted.ast)
+        .expect("desugaring an import should not error");
+
+    let name_expr_ids: Vec<yeast::Id> = desugared
+        .reachable_node_ids()
+        .into_iter()
+        .filter(|&id| {
+            desugared
+                .get_node(id)
+                .is_some_and(|node| node.kind_name() == "name_expr")
+        })
+        .collect();
+    assert_eq!(
+        name_expr_ids.len(),
+        1,
+        "expected exactly one reachable name_expr"
+    );
+
+    let name_expr = desugared.get_node(name_expr_ids[0]).unwrap();
+    assert_eq!(name_expr.start_byte(), 7);
+    assert_eq!(name_expr.end_byte(), 17);
 }
