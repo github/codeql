@@ -635,26 +635,28 @@ predicate unqualifiedMemberAccess(
   accessingClass.getDepth() = unqualifiedMemberAccessDepth(access)
 }
 
-/**
- * A name node appearing in an unqualified position, referring to a member of an enclosing class.
- */
-class UnqualifiedMemberAccess extends Identifier {
-  private boolean instanceAccess;
-  private NameBinding target;
-  private ClassLikeDeclaration accessingClass;
+module Public {
+  /**
+   * A name node appearing in an unqualified position, referring to a member of an enclosing class.
+   */
+  class UnqualifiedMemberAccess extends Identifier {
+    private boolean instanceAccess;
+    private NameBinding target;
+    private ClassLikeDeclaration accessingClass;
 
-  UnqualifiedMemberAccess() {
-    unqualifiedMemberAccess(this, instanceAccess, target, accessingClass)
+    UnqualifiedMemberAccess() {
+      unqualifiedMemberAccess(this, instanceAccess, target, accessingClass)
+    }
+
+    /** Gets the name declaration of the member being accessed. */
+    NameBinding getTarget() { result = target }
+
+    /** Gets the enclosing class whose (possibly inherited) member is being accessed. */
+    ClassLikeDeclaration getAccessingClass() { result = accessingClass }
+
+    /** Holds if this is an instance access on the accessing class. */
+    predicate isInstanceAccess() { instanceAccess = true }
   }
-
-  /** Gets the name declaration of the member being accessed. */
-  NameBinding getTarget() { result = target }
-
-  /** Gets the enclosing class whose (possibly inherited) member is being accessed. */
-  ClassLikeDeclaration getAccessingClass() { result = accessingClass }
-
-  /** Holds if this is an instance access on the accessing class. */
-  predicate isInstanceAccess() { instanceAccess = true }
 }
 
 /** Gets the declaration being accessed by `access`, as determined by static name binding. */
