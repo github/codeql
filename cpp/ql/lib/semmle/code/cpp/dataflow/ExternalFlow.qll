@@ -1075,20 +1075,25 @@ private module Cached {
 import Cached
 
 /** Gets the constructor type selected by `constructorType` in a forwarding model. */
-bindingset[forwarder, type, name, constructorType]
 private Type getForwardedConstructorType(
-  Function forwarder, string type, string name, string constructorType
+  Function forwarder, string namespace, string type, boolean subtypes, string name,
+  string signature, string ext, string constructorType
 ) {
-  exists(string typeArguments, int index |
-    parseAngles(type, _, typeArguments, "") and
-    constructorType = getAtIndex(typeArguments, index) and
-    result = forwarder.getDeclaringType().getTemplateArgument(index)
-  )
-  or
-  exists(string nameArguments, int index |
-    parseAngles(name, _, nameArguments, "") and
-    constructorType = getAtIndex(nameArguments, index) and
-    result = forwarder.getTemplateArgument(index)
+  exists(int index |
+    forwardsModel(namespace, type, subtypes, name, signature, ext, _, constructorType, _, _, _) and
+    forwarder = interpretElement(namespace, type, subtypes, name, signature, ext)
+  |
+    exists(string typeArguments |
+      parseAngles(type, _, typeArguments, "") and
+      constructorType = getAtIndex(typeArguments, index) and
+      result = forwarder.getDeclaringType().getTemplateArgument(index)
+    )
+    or
+    exists(string nameArguments |
+      parseAngles(name, _, nameArguments, "") and
+      constructorType = getAtIndex(nameArguments, index) and
+      result = forwarder.getTemplateArgument(index)
+    )
   )
 }
 
@@ -1110,9 +1115,14 @@ private predicate interpretForwardsModel(
     // function template, in which case we need to resolve that from the type
     // or function name.
     constructor.getDeclaringType() =
-      getForwardedConstructorType(forwarder, type, name, constructorType).getUnspecifiedType()
+      getForwardedConstructorType(forwarder, namespace, type, subtypes, name, signature, ext,
+        constructorType).getUnspecifiedType()
     or
     // Or the row specifies forwarding to a specific type.
+    not exists(
+      getForwardedConstructorType(forwarder, namespace, type, subtypes, name, signature, ext,
+        constructorType)
+    ) and
     classHasQualifiedName(constructor.getDeclaringType(), namespace, constructorType)
   )
 }
