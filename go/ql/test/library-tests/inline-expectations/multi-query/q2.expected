@@ -1,0 +1,8 @@
+hit
+| code.go:3:6:3:17 | sharedTarget |
+| code.go:11:6:11:18 | foreignTarget |
+| code.go:17:6:17:15 | noteTarget |
+mark
+| code.go:5:6:5:17 | valuedTarget | q2 |
+two
+| code.go:9:6:9:13 | q2Target |
