@@ -607,6 +607,10 @@ predicate forwardingCallTargetsConstructor(
   CallInstruction call, Cpp::Constructor constructor, int start
 ) {
   exists(int numberOfForwardedArguments |
+    numberOfForwardedArguments <= constructor.getNumberOfParameters()
+    or
+    constructor.isVarargs()
+  |
     External::forwards(call.getStaticCallTarget(), constructor, start) and
     call.getNumberOfPositionalArguments() = start + numberOfForwardedArguments and
     forall(int i | i = [0 .. constructor.getNumberOfParameters() - 1] |

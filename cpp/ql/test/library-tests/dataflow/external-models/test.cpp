@@ -428,7 +428,7 @@ void forward_test_constructor_arity() {
   {
     Container<ElementWithOverloadedArity> c;
     c.emplace(0, x, 0);
-    ymlSink(c.get().x); // $ SPURIOUS: ir
+    ymlSink(c.get().x); // clean
   }
   {
     Container<ElementWithOverloadedArity> c;
