@@ -45,6 +45,14 @@ extensible predicate summaryModel(
 );
 
 /**
+ * Holds if an external constructor forwarding model exists for the given parameters.
+ */
+extensible predicate forwardsModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string start, string constructor, string provenance, QlBuiltins::ExtensionId madId
+);
+
+/**
  * Holds if a neutral model exists for the given parameters.
  */
 extensible predicate neutralModel(

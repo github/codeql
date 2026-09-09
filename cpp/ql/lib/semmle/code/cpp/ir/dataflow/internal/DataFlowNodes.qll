@@ -191,6 +191,9 @@ private module Cached {
     } or
     TSsaSynthNode(SsaImpl::SynthNode n) or
     TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
+    TForwarderConstructorArgumentNode(CallInstruction call) {
+      isForwarderConstructorArgumentNodeImpl(call)
+    } or
     TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
       SsaImpl::hasRawIndirectOperand(node.asOperand(), indirectionIndex)
     } or
