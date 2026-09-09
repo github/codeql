@@ -102,6 +102,19 @@ module Hapi {
     override RequestSource src;
   }
 
+  private DataFlow::SourceNode requestInputRef(
+    RouteHandler rh, string property, DataFlow::TypeTracker t
+  ) {
+    t.start() and
+    result = rh.getRequestParameter().getAPropertyRead(property)
+    or
+    exists(DataFlow::TypeTracker t2 | result = requestInputRef(rh, property, t2).track(t2, t))
+  }
+
+  private DataFlow::SourceNode requestInputRef(RouteHandler rh, string property) {
+    result = requestInputRef(rh, property, DataFlow::TypeTracker::end())
+  }
+
   /**
    * An access to a user-controlled Hapi request input.
    */
@@ -116,22 +129,18 @@ module Hapi {
           // `request.rawPayload`
           this.(DataFlow::PropRead).accesses(request, "rawPayload")
           or
-          exists(DataFlow::PropRead payload |
-            // `request.payload.name`, or `request.payload` when the object is forwarded.
-            payload.accesses(request, "payload") and
-            if exists(payload.getAPropertyRead())
-            then this = payload.getAPropertyRead()
-            else this = payload
-          )
+          // `request.payload` is an object, so prefer a property read if possible.
+          if exists(requestInputRef(rh, "payload").getAPropertyRead())
+          then this = requestInputRef(rh, "payload").getAPropertyRead()
+          else this = rh.getRequestParameter().getAPropertyRead("payload")
         )
         or
         kind = "parameter" and
-        exists(DataFlow::PropRead parameter |
-          // `request.query.name` / `request.params.name`, or the object when it is forwarded.
-          parameter.accesses(request, ["query", "params"]) and
-          if exists(parameter.getAPropertyRead())
-          then this = parameter.getAPropertyRead()
-          else this = parameter
+        exists(string property | property = ["query", "params"] |
+          // These are objects, so prefer a property read if possible.
+          if exists(requestInputRef(rh, property).getAPropertyRead())
+          then this = requestInputRef(rh, property).getAPropertyRead()
+          else this = rh.getRequestParameter().getAPropertyRead(property)
         )
         or
         exists(DataFlow::PropRead url |
