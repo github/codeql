@@ -1750,7 +1750,7 @@ class CallInstruction extends Instruction {
   /**
    * Gets the number of positional arguments of the call.
    */
-  final int getNumberOfPositionalArguments() { result = count(this.getAPositionalArgument()) }
+  final int getNumberOfPositionalArguments() { result = count(this.getAPositionalArgumentOperand()) }
 
   /**
    * Holds if the result is a side effect for the argument at the specified index, or `this` if
