@@ -15,17 +15,28 @@ predicate step(Node node1, Step step, Node node2) {
   )
   or
   exists(LocalVariableAccess access |
-    node1.isLocalVariable(access.getLocalVariable()) and
+    node1.isLocalVariableRead(access, access.getLocalVariable()) and
     step.value() and
     node2.isResultValue(access)
     or
     node1.isIncomingValue(access) and
     step.value() and
-    node2.isLocalVariable(access.getLocalVariable())
+    node2.isLocalVariableWrite(access, access.getLocalVariable())
     or
     node1.isPostUpdate(access) and
     step.value() and
-    node2.isLocalVariable(access.getLocalVariable())
+    node2.isLocalVariablePostUpdate(access, access.getLocalVariable())
+  )
+  or
+  // dummy implementation: make all writes and post-updates flow to all reads
+  step.value() and
+  exists(LocalVariable v |
+    (
+      node1.isLocalVariableWrite(_, v)
+      or
+      node1.isLocalVariablePostUpdate(_, v)
+    ) and
+    node2.isLocalVariableRead(_, v)
   )
   or
   exists(BinaryExpr expr |

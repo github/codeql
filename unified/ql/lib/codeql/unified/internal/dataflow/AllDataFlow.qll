@@ -6,3 +6,4 @@ import DataFlowInstantiation
 import DataFlowNode
 import Step
 import TaintTrackingInstantiation
+import VariableRefKind
