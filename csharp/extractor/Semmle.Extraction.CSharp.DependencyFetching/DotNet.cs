@@ -137,7 +137,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private static readonly IReadOnlyList<string> nugetListSourceCommandArgs = ["nuget", "list", "source", "--format", "Short"];
 
-        public IList<string> GetNugetFeeds(string nugetConfig)
+        public IList<string> GetNugetFeedsFromConfig(string nugetConfig)
         {
             logger.LogInfo($"Getting NuGet feeds from '{nugetConfig}'...");
             return GetResultList([.. nugetListSourceCommandArgs, "--configfile", nugetConfig]);

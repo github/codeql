@@ -181,7 +181,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             GetFeeds(() => dotnet.GetNugetFeedsFromFolder(folderPath));
 
         private IEnumerable<string> GetFeedsFromNugetConfig(string nugetConfigPath) =>
-            GetFeeds(() => dotnet.GetNugetFeeds(nugetConfigPath));
+            GetFeeds(() => dotnet.GetNugetFeedsFromConfig(nugetConfigPath));
 
         /// <summary>
         /// Constructs the NuGet sources argument for the restore command based on the given feeds.
