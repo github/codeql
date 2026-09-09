@@ -15113,6 +15113,8 @@ getSignatureParameterName
 | (const ML_KEM_KEY *,int) |  | ossl_ml_kem_key_dup | 1 | int |
 | (const ML_KEM_KEY *,unsigned char **) |  | ossl_ml_kem_i2d_pubkey | 0 | const ML_KEM_KEY * |
 | (const ML_KEM_KEY *,unsigned char **) |  | ossl_ml_kem_i2d_pubkey | 1 | unsigned char ** |
+| (const MessageProperties &,Allocator *) | MessageProperties | MessageProperties | 0 | const MessageProperties & |
+| (const MessageProperties &,Allocator *) | MessageProperties | MessageProperties | 1 | Allocator * |
 | (const NAMING_AUTHORITY *) |  | NAMING_AUTHORITY_get0_authorityId | 0 | const NAMING_AUTHORITY * |
 | (const NAMING_AUTHORITY *) |  | NAMING_AUTHORITY_get0_authorityText | 0 | const NAMING_AUTHORITY * |
 | (const NAMING_AUTHORITY *) |  | NAMING_AUTHORITY_get0_authorityURL | 0 | const NAMING_AUTHORITY * |

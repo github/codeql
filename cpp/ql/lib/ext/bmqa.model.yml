@@ -1,0 +1,45 @@
+# Model of the BlazingMQ client API (BloombergLP::bmqa). Scalar property getters are not modelled.
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      # Message payload
+      - ["BloombergLP::bmqa", "Message", true, "getData", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "Message", true, "setData", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "Message", true, "setDataRef", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "Message", true, "clone", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      # Message properties
+      - ["BloombergLP::bmqa", "Message", true, "loadProperties", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "Message", true, "setPropertiesRef", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "MessageProperties", "(const MessageProperties &,Allocator *)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "operator=", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "operator=", "", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsString", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsBinary", "", "", "Argument[-1]", "ReturnValue[*].Element", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsStringOr", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsStringOr", "", "", "Argument[*1]", "ReturnValue[*]", "value", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsBinaryOr", "", "", "Argument[-1]", "ReturnValue[*].Element", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsBinaryOr", "", "", "Argument[*1].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "setPropertyAsString", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "setPropertyAsBinary", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      # Property names are stored and exposed by MessagePropertiesIterator::name
+      - ["BloombergLP::bmqa", "MessageProperties", true, "setPropertyAsBool", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "setPropertyAsChar", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "setPropertyAsShort", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "setPropertyAsInt32", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "setPropertyAsInt64", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "setPropertyAsString", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "setPropertyAsBinary", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "streamIn", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "streamOut", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      # Property iteration
+      - ["BloombergLP::bmqa", "MessagePropertiesIterator", true, "MessagePropertiesIterator", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessagePropertiesIterator", true, "operator=", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["BloombergLP::bmqa", "MessagePropertiesIterator", true, "operator=", "", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["BloombergLP::bmqa", "MessagePropertiesIterator", true, "name", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessagePropertiesIterator", true, "getAsString", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessagePropertiesIterator", true, "getAsBinary", "", "", "Argument[-1]", "ReturnValue[*].Element", "taint", "manual"]
+      # Event -> iterator -> message
+      - ["BloombergLP::bmqa", "MessageEvent", true, "messageIterator", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["BloombergLP::bmqa", "MessageIterator", true, "message", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]

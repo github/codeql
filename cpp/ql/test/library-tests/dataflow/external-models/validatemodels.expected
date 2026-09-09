@@ -3368,6 +3368,7 @@
 | Dubious signature "(const ML_KEM_KEY *,const ML_KEM_KEY *)" in summary model. |
 | Dubious signature "(const ML_KEM_KEY *,int)" in summary model. |
 | Dubious signature "(const ML_KEM_KEY *,unsigned char **)" in summary model. |
+| Dubious signature "(const MessageProperties &,Allocator *)" in summary model. |
 | Dubious signature "(const NAMING_AUTHORITY *)" in summary model. |
 | Dubious signature "(const NAMING_AUTHORITY *,unsigned char **)" in summary model. |
 | Dubious signature "(const NETSCAPE_CERT_SEQUENCE *,unsigned char **)" in summary model. |

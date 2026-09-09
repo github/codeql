@@ -102,23 +102,60 @@ models
 | 101 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const char *,int); ; Argument[*2]; Argument[*0]; taint; manual |
 | 102 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (char *,const Blob &,int,int); ; Argument[*1]; Argument[*0]; taint; manual |
 | 103 | Summary: BloombergLP::bdlbb; BlobUtil; true; getContiguousRangeOrCopy; ; ; Argument[*1]; ReturnValue[*]; taint; manual |
-| 104 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 105 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 106 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 107 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 108 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view); ; Argument[1..2]; ReturnValue; taint; manual |
-| 109 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
-| 110 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags); ; Argument[1..2]; ReturnValue; taint; manual |
-| 111 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
-| 112 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 113 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 114 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 115 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 116 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view); ; Argument[0..1]; ReturnValue; taint; manual |
-| 117 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
-| 118 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags); ; Argument[0..1]; ReturnValue; taint; manual |
-| 119 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
-| 120 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 104 | Summary: BloombergLP::bmqa; Message; true; clone; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 105 | Summary: BloombergLP::bmqa; Message; true; getData; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 106 | Summary: BloombergLP::bmqa; Message; true; loadProperties; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 107 | Summary: BloombergLP::bmqa; Message; true; setData; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 108 | Summary: BloombergLP::bmqa; Message; true; setDataRef; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 109 | Summary: BloombergLP::bmqa; Message; true; setPropertiesRef; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 110 | Summary: BloombergLP::bmqa; MessageEvent; true; messageIterator; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 111 | Summary: BloombergLP::bmqa; MessageIterator; true; message; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 112 | Summary: BloombergLP::bmqa; MessageProperties; true; MessageProperties; (const MessageProperties &,Allocator *); ; Argument[*0]; Argument[-1]; value; manual |
+| 113 | Summary: BloombergLP::bmqa; MessageProperties; true; getPropertyAsBinary; ; ; Argument[-1]; ReturnValue[*].Element; taint; manual |
+| 114 | Summary: BloombergLP::bmqa; MessageProperties; true; getPropertyAsBinaryOr; ; ; Argument[*1].Element[@]; ReturnValue[*].Element[@]; value; manual |
+| 115 | Summary: BloombergLP::bmqa; MessageProperties; true; getPropertyAsBinaryOr; ; ; Argument[-1]; ReturnValue[*].Element; taint; manual |
+| 116 | Summary: BloombergLP::bmqa; MessageProperties; true; getPropertyAsString; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 117 | Summary: BloombergLP::bmqa; MessageProperties; true; getPropertyAsStringOr; ; ; Argument[*1]; ReturnValue[*]; value; manual |
+| 118 | Summary: BloombergLP::bmqa; MessageProperties; true; getPropertyAsStringOr; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 119 | Summary: BloombergLP::bmqa; MessageProperties; true; operator=; ; ; Argument[*0]; Argument[-1]; value; manual |
+| 120 | Summary: BloombergLP::bmqa; MessageProperties; true; operator=; ; ; Argument[*0]; ReturnValue[*]; value; manual |
+| 121 | Summary: BloombergLP::bmqa; MessageProperties; true; setPropertyAsBinary; ; ; Argument[0]; Argument[-1]; taint; manual |
+| 122 | Summary: BloombergLP::bmqa; MessageProperties; true; setPropertyAsBinary; ; ; Argument[1]; Argument[-1]; taint; manual |
+| 123 | Summary: BloombergLP::bmqa; MessageProperties; true; setPropertyAsBool; ; ; Argument[0]; Argument[-1]; taint; manual |
+| 124 | Summary: BloombergLP::bmqa; MessageProperties; true; setPropertyAsChar; ; ; Argument[0]; Argument[-1]; taint; manual |
+| 125 | Summary: BloombergLP::bmqa; MessageProperties; true; setPropertyAsInt32; ; ; Argument[0]; Argument[-1]; taint; manual |
+| 126 | Summary: BloombergLP::bmqa; MessageProperties; true; setPropertyAsInt64; ; ; Argument[0]; Argument[-1]; taint; manual |
+| 127 | Summary: BloombergLP::bmqa; MessageProperties; true; setPropertyAsShort; ; ; Argument[0]; Argument[-1]; taint; manual |
+| 128 | Summary: BloombergLP::bmqa; MessageProperties; true; setPropertyAsString; ; ; Argument[0]; Argument[-1]; taint; manual |
+| 129 | Summary: BloombergLP::bmqa; MessageProperties; true; setPropertyAsString; ; ; Argument[1]; Argument[-1]; taint; manual |
+| 130 | Summary: BloombergLP::bmqa; MessageProperties; true; streamIn; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 131 | Summary: BloombergLP::bmqa; MessageProperties; true; streamOut; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 132 | Summary: BloombergLP::bmqa; MessagePropertiesIterator; true; MessagePropertiesIterator; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 133 | Summary: BloombergLP::bmqa; MessagePropertiesIterator; true; getAsBinary; ; ; Argument[-1]; ReturnValue[*].Element; taint; manual |
+| 134 | Summary: BloombergLP::bmqa; MessagePropertiesIterator; true; getAsString; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 135 | Summary: BloombergLP::bmqa; MessagePropertiesIterator; true; name; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 136 | Summary: BloombergLP::bmqa; MessagePropertiesIterator; true; operator=; ; ; Argument[*0]; Argument[-1]; value; manual |
+| 137 | Summary: BloombergLP::bmqa; MessagePropertiesIterator; true; operator=; ; ; Argument[*0]; ReturnValue[*]; value; manual |
+| 138 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 139 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 140 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 141 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 142 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view); ; Argument[1..2]; ReturnValue; taint; manual |
+| 143 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
+| 144 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags); ; Argument[1..2]; ReturnValue; taint; manual |
+| 145 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
+| 146 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 147 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 148 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 149 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 150 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view); ; Argument[0..1]; ReturnValue; taint; manual |
+| 151 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
+| 152 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags); ; Argument[0..1]; ReturnValue; taint; manual |
+| 153 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
+| 154 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 155 | Summary: bsl; vector; true; data; ; ; Argument[-1].Element[@]; ReturnValue[*@]; value; manual |
+| 156 | Summary: bsl; vector; true; operator[]; ; ; Argument[-1].Element[@]; ReturnValue[*@]; value; manual |
+| 157 | Summary: bsl; vector; true; push_back; ; ; Argument[*@0]; Argument[-1].Element[@]; value; manual |
 edges
 | asio_streams.cpp:129:34:129:44 | read_until output argument | asio_streams.cpp:133:7:133:17 | recv_buffer | provenance | Src:MaD:56  |
 | asio_streams.cpp:129:34:129:44 | read_until output argument | asio_streams.cpp:135:29:135:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
@@ -127,7 +164,7 @@ edges
 | asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:142:44:142:62 | call to buffer | provenance |  |
 | asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:143:7:143:17 | send_buffer | provenance |  |
 | asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:145:29:145:39 | send_buffer | provenance | Sink:MaD:4 |
-| asio_streams.cpp:142:64:142:71 | *send_str | asio_streams.cpp:142:44:142:62 | call to buffer | provenance | MaD:120 |
+| asio_streams.cpp:142:64:142:71 | *send_str | asio_streams.cpp:142:44:142:62 | call to buffer | provenance | MaD:154 |
 | asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:161:24:161:27 | *host | provenance | TaintFunction |
 | asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:162:24:162:27 | *host | provenance | TaintFunction |
 | asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:163:24:163:27 | *host | provenance | TaintFunction |
@@ -144,22 +181,22 @@ edges
 | asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:177:34:177:42 | host_view | provenance | TaintFunction |
 | asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:178:34:178:42 | host_view | provenance | TaintFunction |
 | asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:179:34:179:42 | host_view | provenance | TaintFunction |
-| asio_streams.cpp:161:24:161:27 | *host | asio_streams.cpp:161:16:161:22 | call to resolve | provenance | MaD:112 |
-| asio_streams.cpp:162:24:162:27 | *host | asio_streams.cpp:162:16:162:22 | call to resolve | provenance | MaD:113 |
-| asio_streams.cpp:163:24:163:27 | *host | asio_streams.cpp:163:16:163:22 | call to resolve | provenance | MaD:114 |
-| asio_streams.cpp:164:24:164:27 | *host | asio_streams.cpp:164:16:164:22 | call to resolve | provenance | MaD:115 |
-| asio_streams.cpp:166:24:166:32 | host_view | asio_streams.cpp:166:16:166:22 | call to resolve | provenance | MaD:116 |
-| asio_streams.cpp:167:24:167:32 | host_view | asio_streams.cpp:167:16:167:22 | call to resolve | provenance | MaD:117 |
-| asio_streams.cpp:168:24:168:32 | host_view | asio_streams.cpp:168:16:168:22 | call to resolve | provenance | MaD:118 |
-| asio_streams.cpp:169:24:169:32 | host_view | asio_streams.cpp:169:16:169:22 | call to resolve | provenance | MaD:119 |
-| asio_streams.cpp:171:34:171:37 | *host | asio_streams.cpp:171:16:171:22 | call to resolve | provenance | MaD:104 |
-| asio_streams.cpp:172:34:172:37 | *host | asio_streams.cpp:172:16:172:22 | call to resolve | provenance | MaD:105 |
-| asio_streams.cpp:173:34:173:37 | *host | asio_streams.cpp:173:16:173:22 | call to resolve | provenance | MaD:106 |
-| asio_streams.cpp:174:34:174:37 | *host | asio_streams.cpp:174:16:174:22 | call to resolve | provenance | MaD:107 |
-| asio_streams.cpp:176:34:176:42 | host_view | asio_streams.cpp:176:16:176:22 | call to resolve | provenance | MaD:108 |
-| asio_streams.cpp:177:34:177:42 | host_view | asio_streams.cpp:177:16:177:22 | call to resolve | provenance | MaD:109 |
-| asio_streams.cpp:178:34:178:42 | host_view | asio_streams.cpp:178:16:178:22 | call to resolve | provenance | MaD:110 |
-| asio_streams.cpp:179:34:179:42 | host_view | asio_streams.cpp:179:16:179:22 | call to resolve | provenance | MaD:111 |
+| asio_streams.cpp:161:24:161:27 | *host | asio_streams.cpp:161:16:161:22 | call to resolve | provenance | MaD:146 |
+| asio_streams.cpp:162:24:162:27 | *host | asio_streams.cpp:162:16:162:22 | call to resolve | provenance | MaD:147 |
+| asio_streams.cpp:163:24:163:27 | *host | asio_streams.cpp:163:16:163:22 | call to resolve | provenance | MaD:148 |
+| asio_streams.cpp:164:24:164:27 | *host | asio_streams.cpp:164:16:164:22 | call to resolve | provenance | MaD:149 |
+| asio_streams.cpp:166:24:166:32 | host_view | asio_streams.cpp:166:16:166:22 | call to resolve | provenance | MaD:150 |
+| asio_streams.cpp:167:24:167:32 | host_view | asio_streams.cpp:167:16:167:22 | call to resolve | provenance | MaD:151 |
+| asio_streams.cpp:168:24:168:32 | host_view | asio_streams.cpp:168:16:168:22 | call to resolve | provenance | MaD:152 |
+| asio_streams.cpp:169:24:169:32 | host_view | asio_streams.cpp:169:16:169:22 | call to resolve | provenance | MaD:153 |
+| asio_streams.cpp:171:34:171:37 | *host | asio_streams.cpp:171:16:171:22 | call to resolve | provenance | MaD:138 |
+| asio_streams.cpp:172:34:172:37 | *host | asio_streams.cpp:172:16:172:22 | call to resolve | provenance | MaD:139 |
+| asio_streams.cpp:173:34:173:37 | *host | asio_streams.cpp:173:16:173:22 | call to resolve | provenance | MaD:140 |
+| asio_streams.cpp:174:34:174:37 | *host | asio_streams.cpp:174:16:174:22 | call to resolve | provenance | MaD:141 |
+| asio_streams.cpp:176:34:176:42 | host_view | asio_streams.cpp:176:16:176:22 | call to resolve | provenance | MaD:142 |
+| asio_streams.cpp:177:34:177:42 | host_view | asio_streams.cpp:177:16:177:22 | call to resolve | provenance | MaD:143 |
+| asio_streams.cpp:178:34:178:42 | host_view | asio_streams.cpp:178:16:178:22 | call to resolve | provenance | MaD:144 |
+| asio_streams.cpp:179:34:179:42 | host_view | asio_streams.cpp:179:16:179:22 | call to resolve | provenance | MaD:145 |
 | asio_streams.cpp:188:22:188:29 | call to source | asio_streams.cpp:192:30:192:36 | *service | provenance | TaintFunction |
 | asio_streams.cpp:188:22:188:29 | call to source | asio_streams.cpp:193:30:193:36 | *service | provenance | TaintFunction |
 | asio_streams.cpp:188:22:188:29 | call to source | asio_streams.cpp:194:30:194:36 | *service | provenance | TaintFunction |
@@ -176,22 +213,22 @@ edges
 | asio_streams.cpp:190:32:190:39 | call to source | asio_streams.cpp:208:45:208:56 | service_view | provenance | TaintFunction |
 | asio_streams.cpp:190:32:190:39 | call to source | asio_streams.cpp:209:45:209:56 | service_view | provenance | TaintFunction |
 | asio_streams.cpp:190:32:190:39 | call to source | asio_streams.cpp:210:45:210:56 | service_view | provenance | TaintFunction |
-| asio_streams.cpp:192:30:192:36 | *service | asio_streams.cpp:192:16:192:22 | call to resolve | provenance | MaD:112 |
-| asio_streams.cpp:193:30:193:36 | *service | asio_streams.cpp:193:16:193:22 | call to resolve | provenance | MaD:113 |
-| asio_streams.cpp:194:30:194:36 | *service | asio_streams.cpp:194:16:194:22 | call to resolve | provenance | MaD:114 |
-| asio_streams.cpp:195:30:195:36 | *service | asio_streams.cpp:195:16:195:22 | call to resolve | provenance | MaD:115 |
-| asio_streams.cpp:197:35:197:46 | service_view | asio_streams.cpp:197:16:197:22 | call to resolve | provenance | MaD:116 |
-| asio_streams.cpp:198:35:198:46 | service_view | asio_streams.cpp:198:16:198:22 | call to resolve | provenance | MaD:117 |
-| asio_streams.cpp:199:35:199:46 | service_view | asio_streams.cpp:199:16:199:22 | call to resolve | provenance | MaD:118 |
-| asio_streams.cpp:200:35:200:46 | service_view | asio_streams.cpp:200:16:200:22 | call to resolve | provenance | MaD:119 |
-| asio_streams.cpp:202:40:202:46 | *service | asio_streams.cpp:202:16:202:22 | call to resolve | provenance | MaD:104 |
-| asio_streams.cpp:203:40:203:46 | *service | asio_streams.cpp:203:16:203:22 | call to resolve | provenance | MaD:105 |
-| asio_streams.cpp:204:40:204:46 | *service | asio_streams.cpp:204:16:204:22 | call to resolve | provenance | MaD:106 |
-| asio_streams.cpp:205:40:205:46 | *service | asio_streams.cpp:205:16:205:22 | call to resolve | provenance | MaD:107 |
-| asio_streams.cpp:207:45:207:56 | service_view | asio_streams.cpp:207:16:207:22 | call to resolve | provenance | MaD:108 |
-| asio_streams.cpp:208:45:208:56 | service_view | asio_streams.cpp:208:16:208:22 | call to resolve | provenance | MaD:109 |
-| asio_streams.cpp:209:45:209:56 | service_view | asio_streams.cpp:209:16:209:22 | call to resolve | provenance | MaD:110 |
-| asio_streams.cpp:210:45:210:56 | service_view | asio_streams.cpp:210:16:210:22 | call to resolve | provenance | MaD:111 |
+| asio_streams.cpp:192:30:192:36 | *service | asio_streams.cpp:192:16:192:22 | call to resolve | provenance | MaD:146 |
+| asio_streams.cpp:193:30:193:36 | *service | asio_streams.cpp:193:16:193:22 | call to resolve | provenance | MaD:147 |
+| asio_streams.cpp:194:30:194:36 | *service | asio_streams.cpp:194:16:194:22 | call to resolve | provenance | MaD:148 |
+| asio_streams.cpp:195:30:195:36 | *service | asio_streams.cpp:195:16:195:22 | call to resolve | provenance | MaD:149 |
+| asio_streams.cpp:197:35:197:46 | service_view | asio_streams.cpp:197:16:197:22 | call to resolve | provenance | MaD:150 |
+| asio_streams.cpp:198:35:198:46 | service_view | asio_streams.cpp:198:16:198:22 | call to resolve | provenance | MaD:151 |
+| asio_streams.cpp:199:35:199:46 | service_view | asio_streams.cpp:199:16:199:22 | call to resolve | provenance | MaD:152 |
+| asio_streams.cpp:200:35:200:46 | service_view | asio_streams.cpp:200:16:200:22 | call to resolve | provenance | MaD:153 |
+| asio_streams.cpp:202:40:202:46 | *service | asio_streams.cpp:202:16:202:22 | call to resolve | provenance | MaD:138 |
+| asio_streams.cpp:203:40:203:46 | *service | asio_streams.cpp:203:16:203:22 | call to resolve | provenance | MaD:139 |
+| asio_streams.cpp:204:40:204:46 | *service | asio_streams.cpp:204:16:204:22 | call to resolve | provenance | MaD:140 |
+| asio_streams.cpp:205:40:205:46 | *service | asio_streams.cpp:205:16:205:22 | call to resolve | provenance | MaD:141 |
+| asio_streams.cpp:207:45:207:56 | service_view | asio_streams.cpp:207:16:207:22 | call to resolve | provenance | MaD:142 |
+| asio_streams.cpp:208:45:208:56 | service_view | asio_streams.cpp:208:16:208:22 | call to resolve | provenance | MaD:143 |
+| asio_streams.cpp:209:45:209:56 | service_view | asio_streams.cpp:209:16:209:22 | call to resolve | provenance | MaD:144 |
+| asio_streams.cpp:210:45:210:56 | service_view | asio_streams.cpp:210:16:210:22 | call to resolve | provenance | MaD:145 |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:257:5:257:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:262:5:262:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:266:38:266:41 | *resp | provenance |  |
@@ -263,6 +300,256 @@ edges
 | bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument | provenance | MaD:100 |
 | bdlbb.cpp:96:37:96:39 | copy output argument | bdlbb.cpp:97:7:97:10 | * ... | provenance |  |
 | bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument | provenance | MaD:102 |
+| bmqa.cpp:124:19:124:26 | call to source | bmqa.cpp:125:36:125:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:125:36:125:76 | *call to data | bmqa.cpp:127:2:127:4 | *msg | provenance |  |
+| bmqa.cpp:127:2:127:4 | *msg | bmqa.cpp:127:15:127:19 | getData output argument | provenance | MaD:105 |
+| bmqa.cpp:127:15:127:19 | getData output argument | bmqa.cpp:129:42:129:45 | *blob | provenance |  |
+| bmqa.cpp:129:37:129:39 | copy output argument | bmqa.cpp:130:7:130:10 | * ... | provenance |  |
+| bmqa.cpp:129:42:129:45 | *blob | bmqa.cpp:129:37:129:39 | copy output argument | provenance | MaD:102 |
+| bmqa.cpp:134:19:134:26 | call to source | bmqa.cpp:135:43:135:88 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:135:43:135:88 | *call to data | bmqa.cpp:136:42:136:46 | *event | provenance |  |
+| bmqa.cpp:136:42:136:46 | *event | bmqa.cpp:136:49:136:63 | call to messageIterator | provenance | MaD:110 |
+| bmqa.cpp:136:49:136:63 | call to messageIterator | bmqa.cpp:136:49:136:63 | call to messageIterator | provenance |  |
+| bmqa.cpp:136:49:136:63 | call to messageIterator | bmqa.cpp:138:43:138:44 | *it | provenance |  |
+| bmqa.cpp:138:43:138:44 | *it | bmqa.cpp:138:53:138:55 | *call to message | provenance | MaD:111 |
+| bmqa.cpp:138:53:138:55 | *call to message | bmqa.cpp:138:53:138:55 | *call to message | provenance |  |
+| bmqa.cpp:138:53:138:55 | *call to message | bmqa.cpp:140:3:140:5 | *msg | provenance |  |
+| bmqa.cpp:140:3:140:5 | *msg | bmqa.cpp:140:15:140:19 | getData output argument | provenance | MaD:105 |
+| bmqa.cpp:140:15:140:19 | getData output argument | bmqa.cpp:142:43:142:46 | *blob | provenance |  |
+| bmqa.cpp:142:38:142:40 | copy output argument | bmqa.cpp:143:8:143:11 | * ... | provenance |  |
+| bmqa.cpp:142:43:142:46 | *blob | bmqa.cpp:142:38:142:40 | copy output argument | provenance | MaD:102 |
+| bmqa.cpp:148:16:148:23 | call to source | bmqa.cpp:150:47:150:50 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:150:37:150:39 | copy output argument | bmqa.cpp:152:17:152:19 | *& ... | provenance |  |
+| bmqa.cpp:150:47:150:50 | *call to data | bmqa.cpp:150:37:150:39 | copy output argument | provenance | MaD:101 |
+| bmqa.cpp:152:2:152:4 | setDataRef output argument | bmqa.cpp:154:2:154:4 | *msg | provenance |  |
+| bmqa.cpp:152:17:152:19 | *& ... | bmqa.cpp:152:2:152:4 | setDataRef output argument | provenance | MaD:108 |
+| bmqa.cpp:154:2:154:4 | *msg | bmqa.cpp:154:14:154:17 | getData output argument | provenance | MaD:105 |
+| bmqa.cpp:154:14:154:17 | getData output argument | bmqa.cpp:156:42:156:44 | *out | provenance |  |
+| bmqa.cpp:156:37:156:39 | copy output argument | bmqa.cpp:157:7:157:10 | * ... | provenance |  |
+| bmqa.cpp:156:42:156:44 | *out | bmqa.cpp:156:37:156:39 | copy output argument | provenance | MaD:102 |
+| bmqa.cpp:161:16:161:23 | call to source | bmqa.cpp:163:19:163:22 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:163:2:163:4 | setDataRef output argument | bmqa.cpp:165:2:165:4 | *msg | provenance |  |
+| bmqa.cpp:163:19:163:22 | *call to data | bmqa.cpp:163:2:163:4 | setDataRef output argument | provenance | MaD:108 |
+| bmqa.cpp:165:2:165:4 | *msg | bmqa.cpp:165:14:165:17 | getData output argument | provenance | MaD:105 |
+| bmqa.cpp:165:14:165:17 | getData output argument | bmqa.cpp:167:42:167:44 | *out | provenance |  |
+| bmqa.cpp:167:37:167:39 | copy output argument | bmqa.cpp:168:7:168:10 | * ... | provenance |  |
+| bmqa.cpp:167:42:167:44 | *out | bmqa.cpp:167:37:167:39 | copy output argument | provenance | MaD:102 |
+| bmqa.cpp:172:16:172:23 | call to source | bmqa.cpp:174:16:174:19 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:174:2:174:4 | setData output argument | bmqa.cpp:176:2:176:4 | *msg | provenance |  |
+| bmqa.cpp:174:16:174:19 | *call to data | bmqa.cpp:174:2:174:4 | setData output argument | provenance | MaD:107 |
+| bmqa.cpp:176:2:176:4 | *msg | bmqa.cpp:176:14:176:17 | getData output argument | provenance | MaD:105 |
+| bmqa.cpp:176:14:176:17 | getData output argument | bmqa.cpp:178:42:178:44 | *out | provenance |  |
+| bmqa.cpp:178:37:178:39 | copy output argument | bmqa.cpp:179:7:179:10 | * ... | provenance |  |
+| bmqa.cpp:178:42:178:44 | *out | bmqa.cpp:178:37:178:39 | copy output argument | provenance | MaD:102 |
+| bmqa.cpp:183:19:183:26 | call to source | bmqa.cpp:184:36:184:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:184:36:184:76 | *call to data | bmqa.cpp:185:36:185:38 | *msg | provenance |  |
+| bmqa.cpp:185:36:185:38 | *msg | bmqa.cpp:185:41:185:45 | call to clone | provenance | MaD:104 |
+| bmqa.cpp:185:41:185:45 | call to clone | bmqa.cpp:185:41:185:45 | call to clone | provenance |  |
+| bmqa.cpp:185:41:185:45 | call to clone | bmqa.cpp:187:2:187:5 | *copy | provenance |  |
+| bmqa.cpp:187:2:187:5 | *copy | bmqa.cpp:187:15:187:19 | getData output argument | provenance | MaD:105 |
+| bmqa.cpp:187:15:187:19 | getData output argument | bmqa.cpp:189:42:189:45 | *blob | provenance |  |
+| bmqa.cpp:189:37:189:39 | copy output argument | bmqa.cpp:190:7:190:10 | * ... | provenance |  |
+| bmqa.cpp:189:42:189:45 | *blob | bmqa.cpp:189:37:189:39 | copy output argument | provenance | MaD:102 |
+| bmqa.cpp:194:19:194:26 | call to source | bmqa.cpp:195:36:195:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:195:36:195:76 | *call to data | bmqa.cpp:197:2:197:4 | *msg | provenance |  |
+| bmqa.cpp:197:2:197:4 | *msg | bmqa.cpp:197:22:197:27 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:197:22:197:27 | loadProperties output argument | bmqa.cpp:198:29:198:33 | *props | provenance |  |
+| bmqa.cpp:198:29:198:33 | *props | bmqa.cpp:198:54:198:61 | *call to getPropertyAsString | provenance | MaD:116 |
+| bmqa.cpp:198:54:198:61 | *call to getPropertyAsString | bmqa.cpp:198:54:198:61 | *call to getPropertyAsString | provenance |  |
+| bmqa.cpp:198:54:198:61 | *call to getPropertyAsString | bmqa.cpp:199:7:199:21 | access to array | provenance | TaintFunction |
+| bmqa.cpp:203:19:203:26 | call to source | bmqa.cpp:204:36:204:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:204:36:204:76 | *call to data | bmqa.cpp:206:2:206:4 | *msg | provenance |  |
+| bmqa.cpp:206:2:206:4 | *msg | bmqa.cpp:206:22:206:27 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:206:22:206:27 | loadProperties output argument | bmqa.cpp:207:35:207:39 | *props | provenance |  |
+| bmqa.cpp:207:35:207:39 | *props | bmqa.cpp:207:60:207:67 | *call to getPropertyAsBinary [element] | provenance | MaD:113 |
+| bmqa.cpp:207:60:207:67 | *call to getPropertyAsBinary [element] | bmqa.cpp:207:60:207:67 | *call to getPropertyAsBinary [element] | provenance |  |
+| bmqa.cpp:207:60:207:67 | *call to getPropertyAsBinary [element] | bmqa.cpp:208:7:208:11 | *value [element] | provenance |  |
+| bmqa.cpp:208:7:208:11 | *value [element] | bmqa.cpp:208:7:208:21 | access to array | provenance | MaD:155 |
+| bmqa.cpp:212:19:212:26 | call to source | bmqa.cpp:213:36:213:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:213:36:213:76 | *call to data | bmqa.cpp:215:2:215:4 | *msg | provenance |  |
+| bmqa.cpp:215:2:215:4 | *msg | bmqa.cpp:215:22:215:27 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:215:22:215:27 | loadProperties output argument | bmqa.cpp:216:35:216:39 | *props | provenance |  |
+| bmqa.cpp:216:35:216:39 | *props | bmqa.cpp:216:60:216:67 | *call to getPropertyAsBinary [element] | provenance | MaD:113 |
+| bmqa.cpp:216:60:216:67 | *call to getPropertyAsBinary [element] | bmqa.cpp:216:60:216:67 | *call to getPropertyAsBinary [element] | provenance |  |
+| bmqa.cpp:216:60:216:67 | *call to getPropertyAsBinary [element] | bmqa.cpp:217:7:217:11 | *value [element] | provenance |  |
+| bmqa.cpp:217:7:217:11 | *value [element] | bmqa.cpp:217:12:217:14 | call to operator[] | provenance | MaD:156 |
+| bmqa.cpp:221:19:221:26 | call to source | bmqa.cpp:222:36:222:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:222:36:222:76 | *call to data | bmqa.cpp:224:2:224:4 | *msg | provenance |  |
+| bmqa.cpp:224:2:224:4 | *msg | bmqa.cpp:224:22:224:27 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:224:22:224:27 | loadProperties output argument | bmqa.cpp:226:29:226:33 | *props | provenance |  |
+| bmqa.cpp:226:29:226:33 | *props | bmqa.cpp:226:56:226:69 | *call to getPropertyAsStringOr | provenance | MaD:118 |
+| bmqa.cpp:226:56:226:69 | *call to getPropertyAsStringOr | bmqa.cpp:226:56:226:69 | *call to getPropertyAsStringOr | provenance |  |
+| bmqa.cpp:226:56:226:69 | *call to getPropertyAsStringOr | bmqa.cpp:227:7:227:19 | * ... | provenance | TaintFunction |
+| bmqa.cpp:232:19:232:26 | call to source | bmqa.cpp:234:64:234:67 | *dflt | provenance | TaintFunction |
+| bmqa.cpp:234:56:234:69 | *call to getPropertyAsStringOr | bmqa.cpp:234:56:234:69 | *call to getPropertyAsStringOr | provenance |  |
+| bmqa.cpp:234:56:234:69 | *call to getPropertyAsStringOr | bmqa.cpp:235:7:235:19 | * ... | provenance | TaintFunction |
+| bmqa.cpp:234:64:234:67 | *dflt | bmqa.cpp:234:56:234:69 | *call to getPropertyAsStringOr | provenance | MaD:117 |
+| bmqa.cpp:239:19:239:26 | call to source | bmqa.cpp:240:36:240:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:240:36:240:76 | *call to data | bmqa.cpp:242:2:242:4 | *msg | provenance |  |
+| bmqa.cpp:242:2:242:4 | *msg | bmqa.cpp:242:22:242:27 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:242:22:242:27 | loadProperties output argument | bmqa.cpp:244:35:244:39 | *props | provenance |  |
+| bmqa.cpp:244:35:244:39 | *props | bmqa.cpp:244:62:244:75 | *call to getPropertyAsBinaryOr [element] | provenance | MaD:115 |
+| bmqa.cpp:244:62:244:75 | *call to getPropertyAsBinaryOr [element] | bmqa.cpp:244:62:244:75 | *call to getPropertyAsBinaryOr [element] | provenance |  |
+| bmqa.cpp:244:62:244:75 | *call to getPropertyAsBinaryOr [element] | bmqa.cpp:245:8:245:12 | *value [element] | provenance |  |
+| bmqa.cpp:245:8:245:12 | *value [element] | bmqa.cpp:245:7:245:19 | * ... | provenance | MaD:155 |
+| bmqa.cpp:249:11:249:19 | * ... | bmqa.cpp:251:17:251:17 | *c | provenance |  |
+| bmqa.cpp:249:12:249:17 | call to source | bmqa.cpp:249:11:249:19 | * ... | provenance |  |
+| bmqa.cpp:251:2:251:5 | push_back output argument [element] | bmqa.cpp:253:70:253:73 | *dflt [element] | provenance |  |
+| bmqa.cpp:251:17:251:17 | *c | bmqa.cpp:251:2:251:5 | push_back output argument [element] | provenance | MaD:157 |
+| bmqa.cpp:253:62:253:75 | *call to getPropertyAsBinaryOr [element] | bmqa.cpp:253:62:253:75 | *call to getPropertyAsBinaryOr [element] | provenance |  |
+| bmqa.cpp:253:62:253:75 | *call to getPropertyAsBinaryOr [element] | bmqa.cpp:254:8:254:12 | *value [element] | provenance |  |
+| bmqa.cpp:253:70:253:73 | *dflt [element] | bmqa.cpp:253:62:253:75 | *call to getPropertyAsBinaryOr [element] | provenance | MaD:114 |
+| bmqa.cpp:254:8:254:12 | *value [element] | bmqa.cpp:254:7:254:19 | * ... | provenance | MaD:155 |
+| bmqa.cpp:266:16:266:23 | call to source | bmqa.cpp:268:49:268:52 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:268:37:268:41 | copy output argument | bmqa.cpp:270:17:270:20 | *blob | provenance |  |
+| bmqa.cpp:268:49:268:52 | *call to data | bmqa.cpp:268:37:268:41 | copy output argument | provenance | MaD:101 |
+| bmqa.cpp:270:2:270:6 | streamIn output argument | bmqa.cpp:271:8:271:12 | *props | provenance |  |
+| bmqa.cpp:270:17:270:20 | *blob | bmqa.cpp:270:2:270:6 | streamIn output argument | provenance | MaD:130 |
+| bmqa.cpp:271:8:271:12 | *props | bmqa.cpp:271:33:271:40 | *call to getPropertyAsString | provenance | MaD:116 |
+| bmqa.cpp:271:33:271:40 | *call to getPropertyAsString | bmqa.cpp:271:7:271:46 | * ... | provenance | TaintFunction |
+| bmqa.cpp:275:16:275:23 | call to source | bmqa.cpp:277:49:277:52 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:277:37:277:41 | copy output argument | bmqa.cpp:279:14:279:17 | *blob | provenance |  |
+| bmqa.cpp:277:49:277:52 | *call to data | bmqa.cpp:277:37:277:41 | copy output argument | provenance | MaD:101 |
+| bmqa.cpp:279:2:279:3 | streamIn output argument | bmqa.cpp:281:23:281:25 | *& ... | provenance |  |
+| bmqa.cpp:279:14:279:17 | *blob | bmqa.cpp:279:2:279:3 | streamIn output argument | provenance | MaD:130 |
+| bmqa.cpp:281:2:281:4 | setPropertiesRef output argument | bmqa.cpp:283:2:283:4 | *msg | provenance |  |
+| bmqa.cpp:281:23:281:25 | *& ... | bmqa.cpp:281:2:281:4 | setPropertiesRef output argument | provenance | MaD:109 |
+| bmqa.cpp:283:2:283:4 | *msg | bmqa.cpp:283:21:283:24 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:283:21:283:24 | loadProperties output argument | bmqa.cpp:284:8:284:10 | *out | provenance |  |
+| bmqa.cpp:284:8:284:10 | *out | bmqa.cpp:284:31:284:38 | *call to getPropertyAsString | provenance | MaD:116 |
+| bmqa.cpp:284:31:284:38 | *call to getPropertyAsString | bmqa.cpp:284:7:284:44 | * ... | provenance | TaintFunction |
+| bmqa.cpp:288:19:288:26 | call to source | bmqa.cpp:289:36:289:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:289:36:289:76 | *call to data | bmqa.cpp:291:2:291:4 | *msg | provenance |  |
+| bmqa.cpp:291:2:291:4 | *msg | bmqa.cpp:291:22:291:27 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:291:22:291:27 | loadProperties output argument | bmqa.cpp:293:41:293:45 | *props | provenance |  |
+| bmqa.cpp:293:41:293:45 | *props | bmqa.cpp:293:56:293:66 | *call to streamOut | provenance | MaD:131 |
+| bmqa.cpp:293:56:293:66 | *call to streamOut | bmqa.cpp:293:56:293:66 | *call to streamOut | provenance |  |
+| bmqa.cpp:293:56:293:66 | *call to streamOut | bmqa.cpp:295:42:295:45 | *blob | provenance |  |
+| bmqa.cpp:295:37:295:39 | copy output argument | bmqa.cpp:296:7:296:10 | * ... | provenance |  |
+| bmqa.cpp:295:42:295:45 | *blob | bmqa.cpp:295:37:295:39 | copy output argument | provenance | MaD:102 |
+| bmqa.cpp:300:19:300:26 | call to source | bmqa.cpp:301:36:301:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:301:36:301:76 | *call to data | bmqa.cpp:303:2:303:4 | *msg | provenance |  |
+| bmqa.cpp:303:2:303:4 | *msg | bmqa.cpp:303:22:303:27 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:303:22:303:27 | loadProperties output argument | bmqa.cpp:304:44:304:48 | *props | provenance |  |
+| bmqa.cpp:303:22:303:27 | loadProperties output argument | bmqa.cpp:305:8:305:11 | *copy | provenance | DataFlowFunction |
+| bmqa.cpp:303:22:303:27 | loadProperties output argument | bmqa.cpp:305:8:305:11 | *copy | provenance | TaintFunction |
+| bmqa.cpp:304:39:304:42 | call to MessageProperties | bmqa.cpp:305:8:305:11 | *copy | provenance |  |
+| bmqa.cpp:304:44:304:48 | *props | bmqa.cpp:304:39:304:42 | call to MessageProperties | provenance | MaD:112 |
+| bmqa.cpp:305:8:305:11 | *copy | bmqa.cpp:305:32:305:39 | *call to getPropertyAsString | provenance | MaD:116 |
+| bmqa.cpp:305:32:305:39 | *call to getPropertyAsString | bmqa.cpp:305:7:305:45 | * ... | provenance | TaintFunction |
+| bmqa.cpp:309:19:309:26 | call to source | bmqa.cpp:310:36:310:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:310:36:310:76 | *call to data | bmqa.cpp:312:2:312:4 | *msg | provenance |  |
+| bmqa.cpp:312:2:312:4 | *msg | bmqa.cpp:312:22:312:27 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:312:22:312:27 | loadProperties output argument | bmqa.cpp:314:9:314:13 | *props | provenance |  |
+| bmqa.cpp:312:22:312:27 | loadProperties output argument | bmqa.cpp:315:8:315:11 | *copy | provenance | TaintFunction |
+| bmqa.cpp:314:2:314:5 | operator= output argument | bmqa.cpp:315:8:315:11 | *copy | provenance |  |
+| bmqa.cpp:314:9:314:13 | *props | bmqa.cpp:314:2:314:5 | operator= output argument | provenance | MaD:119 |
+| bmqa.cpp:315:8:315:11 | *copy | bmqa.cpp:315:32:315:39 | *call to getPropertyAsString | provenance | MaD:116 |
+| bmqa.cpp:315:32:315:39 | *call to getPropertyAsString | bmqa.cpp:315:7:315:45 | * ... | provenance | TaintFunction |
+| bmqa.cpp:319:19:319:26 | call to source | bmqa.cpp:320:36:320:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:320:36:320:76 | *call to data | bmqa.cpp:322:2:322:4 | *msg | provenance |  |
+| bmqa.cpp:322:2:322:4 | *msg | bmqa.cpp:322:22:322:27 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:322:22:322:27 | loadProperties output argument | bmqa.cpp:324:8:324:21 | *call to operator= | provenance | TaintFunction |
+| bmqa.cpp:322:22:322:27 | loadProperties output argument | bmqa.cpp:324:16:324:20 | *props | provenance |  |
+| bmqa.cpp:324:8:324:21 | *call to operator= | bmqa.cpp:324:42:324:49 | *call to getPropertyAsString | provenance | MaD:116 |
+| bmqa.cpp:324:16:324:20 | *props | bmqa.cpp:324:8:324:21 | *call to operator= | provenance | MaD:120 |
+| bmqa.cpp:324:42:324:49 | *call to getPropertyAsString | bmqa.cpp:324:7:324:55 | * ... | provenance | TaintFunction |
+| bmqa.cpp:328:19:328:26 | call to source | bmqa.cpp:329:28:329:58 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:329:28:329:58 | *call to data | bmqa.cpp:331:35:331:40 | * ... | provenance |  |
+| bmqa.cpp:331:2:331:6 | setPropertyAsString output argument | bmqa.cpp:332:8:332:12 | *props | provenance |  |
+| bmqa.cpp:331:35:331:40 | * ... | bmqa.cpp:331:2:331:6 | setPropertyAsString output argument | provenance | MaD:129 |
+| bmqa.cpp:332:8:332:12 | *props | bmqa.cpp:332:33:332:40 | *call to getPropertyAsString | provenance | MaD:116 |
+| bmqa.cpp:332:33:332:40 | *call to getPropertyAsString | bmqa.cpp:332:7:332:46 | * ... | provenance | TaintFunction |
+| bmqa.cpp:336:25:336:32 | call to source | bmqa.cpp:338:35:338:39 | value | provenance | TaintFunction |
+| bmqa.cpp:338:2:338:6 | setPropertyAsString output argument | bmqa.cpp:339:8:339:12 | *props | provenance |  |
+| bmqa.cpp:338:35:338:39 | value | bmqa.cpp:338:2:338:6 | setPropertyAsString output argument | provenance | MaD:129 |
+| bmqa.cpp:339:8:339:12 | *props | bmqa.cpp:339:33:339:40 | *call to getPropertyAsString | provenance | MaD:116 |
+| bmqa.cpp:339:33:339:40 | *call to getPropertyAsString | bmqa.cpp:339:7:339:46 | * ... | provenance | TaintFunction |
+| bmqa.cpp:343:19:343:26 | call to source | bmqa.cpp:344:33:344:68 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:344:33:344:68 | *call to data | bmqa.cpp:346:35:346:40 | * ... | provenance |  |
+| bmqa.cpp:346:2:346:6 | setPropertyAsBinary output argument | bmqa.cpp:347:8:347:12 | *props | provenance |  |
+| bmqa.cpp:346:35:346:40 | * ... | bmqa.cpp:346:2:346:6 | setPropertyAsBinary output argument | provenance | MaD:122 |
+| bmqa.cpp:347:8:347:12 | *props | bmqa.cpp:347:33:347:40 | *call to getPropertyAsBinary [element] | provenance | MaD:113 |
+| bmqa.cpp:347:33:347:40 | *call to getPropertyAsBinary [element] | bmqa.cpp:347:7:347:46 | * ... | provenance | MaD:155 |
+| bmqa.cpp:352:24:352:31 | call to source | bmqa.cpp:354:26:354:29 | name | provenance | TaintFunction |
+| bmqa.cpp:354:2:354:6 | setPropertyAsBool output argument | bmqa.cpp:355:50:355:55 | *& ... | provenance |  |
+| bmqa.cpp:354:26:354:29 | name | bmqa.cpp:354:2:354:6 | setPropertyAsBool output argument | provenance | MaD:123 |
+| bmqa.cpp:355:47:355:48 | call to MessagePropertiesIterator | bmqa.cpp:356:8:356:9 | *it | provenance |  |
+| bmqa.cpp:355:50:355:55 | *& ... | bmqa.cpp:355:47:355:48 | call to MessagePropertiesIterator | provenance | MaD:132 |
+| bmqa.cpp:356:8:356:9 | *it | bmqa.cpp:356:15:356:17 | *call to name | provenance | MaD:135 |
+| bmqa.cpp:356:15:356:17 | *call to name | bmqa.cpp:356:7:356:23 | * ... | provenance | TaintFunction |
+| bmqa.cpp:360:24:360:31 | call to source | bmqa.cpp:362:26:362:29 | name | provenance | TaintFunction |
+| bmqa.cpp:362:2:362:6 | setPropertyAsChar output argument | bmqa.cpp:363:50:363:55 | *& ... | provenance |  |
+| bmqa.cpp:362:26:362:29 | name | bmqa.cpp:362:2:362:6 | setPropertyAsChar output argument | provenance | MaD:124 |
+| bmqa.cpp:363:47:363:48 | call to MessagePropertiesIterator | bmqa.cpp:364:8:364:9 | *it | provenance |  |
+| bmqa.cpp:363:50:363:55 | *& ... | bmqa.cpp:363:47:363:48 | call to MessagePropertiesIterator | provenance | MaD:132 |
+| bmqa.cpp:364:8:364:9 | *it | bmqa.cpp:364:15:364:17 | *call to name | provenance | MaD:135 |
+| bmqa.cpp:364:15:364:17 | *call to name | bmqa.cpp:364:7:364:23 | * ... | provenance | TaintFunction |
+| bmqa.cpp:368:24:368:31 | call to source | bmqa.cpp:370:27:370:30 | name | provenance | TaintFunction |
+| bmqa.cpp:370:2:370:6 | setPropertyAsShort output argument | bmqa.cpp:371:50:371:55 | *& ... | provenance |  |
+| bmqa.cpp:370:27:370:30 | name | bmqa.cpp:370:2:370:6 | setPropertyAsShort output argument | provenance | MaD:127 |
+| bmqa.cpp:371:47:371:48 | call to MessagePropertiesIterator | bmqa.cpp:372:8:372:9 | *it | provenance |  |
+| bmqa.cpp:371:50:371:55 | *& ... | bmqa.cpp:371:47:371:48 | call to MessagePropertiesIterator | provenance | MaD:132 |
+| bmqa.cpp:372:8:372:9 | *it | bmqa.cpp:372:15:372:17 | *call to name | provenance | MaD:135 |
+| bmqa.cpp:372:15:372:17 | *call to name | bmqa.cpp:372:7:372:23 | * ... | provenance | TaintFunction |
+| bmqa.cpp:376:24:376:31 | call to source | bmqa.cpp:378:27:378:30 | name | provenance | TaintFunction |
+| bmqa.cpp:378:2:378:6 | setPropertyAsInt32 output argument | bmqa.cpp:379:50:379:55 | *& ... | provenance |  |
+| bmqa.cpp:378:27:378:30 | name | bmqa.cpp:378:2:378:6 | setPropertyAsInt32 output argument | provenance | MaD:125 |
+| bmqa.cpp:379:47:379:48 | call to MessagePropertiesIterator | bmqa.cpp:380:8:380:9 | *it | provenance |  |
+| bmqa.cpp:379:50:379:55 | *& ... | bmqa.cpp:379:47:379:48 | call to MessagePropertiesIterator | provenance | MaD:132 |
+| bmqa.cpp:380:8:380:9 | *it | bmqa.cpp:380:15:380:17 | *call to name | provenance | MaD:135 |
+| bmqa.cpp:380:15:380:17 | *call to name | bmqa.cpp:380:7:380:23 | * ... | provenance | TaintFunction |
+| bmqa.cpp:384:24:384:31 | call to source | bmqa.cpp:386:27:386:30 | name | provenance | TaintFunction |
+| bmqa.cpp:386:2:386:6 | setPropertyAsInt64 output argument | bmqa.cpp:387:50:387:55 | *& ... | provenance |  |
+| bmqa.cpp:386:27:386:30 | name | bmqa.cpp:386:2:386:6 | setPropertyAsInt64 output argument | provenance | MaD:126 |
+| bmqa.cpp:387:47:387:48 | call to MessagePropertiesIterator | bmqa.cpp:388:8:388:9 | *it | provenance |  |
+| bmqa.cpp:387:50:387:55 | *& ... | bmqa.cpp:387:47:387:48 | call to MessagePropertiesIterator | provenance | MaD:132 |
+| bmqa.cpp:388:8:388:9 | *it | bmqa.cpp:388:15:388:17 | *call to name | provenance | MaD:135 |
+| bmqa.cpp:388:15:388:17 | *call to name | bmqa.cpp:388:7:388:23 | * ... | provenance | TaintFunction |
+| bmqa.cpp:392:24:392:31 | call to source | bmqa.cpp:394:28:394:31 | name | provenance | TaintFunction |
+| bmqa.cpp:394:2:394:6 | setPropertyAsString output argument | bmqa.cpp:395:50:395:55 | *& ... | provenance |  |
+| bmqa.cpp:394:28:394:31 | name | bmqa.cpp:394:2:394:6 | setPropertyAsString output argument | provenance | MaD:128 |
+| bmqa.cpp:395:47:395:48 | call to MessagePropertiesIterator | bmqa.cpp:396:8:396:9 | *it | provenance |  |
+| bmqa.cpp:395:50:395:55 | *& ... | bmqa.cpp:395:47:395:48 | call to MessagePropertiesIterator | provenance | MaD:132 |
+| bmqa.cpp:396:8:396:9 | *it | bmqa.cpp:396:15:396:17 | *call to name | provenance | MaD:135 |
+| bmqa.cpp:396:15:396:17 | *call to name | bmqa.cpp:396:7:396:23 | * ... | provenance | TaintFunction |
+| bmqa.cpp:400:24:400:31 | call to source | bmqa.cpp:402:28:402:31 | name | provenance | TaintFunction |
+| bmqa.cpp:402:2:402:6 | setPropertyAsBinary output argument | bmqa.cpp:403:50:403:55 | *& ... | provenance |  |
+| bmqa.cpp:402:28:402:31 | name | bmqa.cpp:402:2:402:6 | setPropertyAsBinary output argument | provenance | MaD:121 |
+| bmqa.cpp:403:47:403:48 | call to MessagePropertiesIterator | bmqa.cpp:404:8:404:9 | *it | provenance |  |
+| bmqa.cpp:403:50:403:55 | *& ... | bmqa.cpp:403:47:403:48 | call to MessagePropertiesIterator | provenance | MaD:132 |
+| bmqa.cpp:404:8:404:9 | *it | bmqa.cpp:404:15:404:17 | *call to name | provenance | MaD:135 |
+| bmqa.cpp:404:15:404:17 | *call to name | bmqa.cpp:404:7:404:23 | * ... | provenance | TaintFunction |
+| bmqa.cpp:408:19:408:26 | call to source | bmqa.cpp:409:36:409:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:409:36:409:76 | *call to data | bmqa.cpp:411:2:411:4 | *msg | provenance |  |
+| bmqa.cpp:411:2:411:4 | *msg | bmqa.cpp:411:22:411:27 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:411:22:411:27 | loadProperties output argument | bmqa.cpp:412:50:412:55 | *& ... | provenance |  |
+| bmqa.cpp:412:47:412:48 | call to MessagePropertiesIterator | bmqa.cpp:414:9:414:10 | *it | provenance |  |
+| bmqa.cpp:412:47:412:48 | call to MessagePropertiesIterator | bmqa.cpp:415:9:415:10 | *it | provenance |  |
+| bmqa.cpp:412:47:412:48 | call to MessagePropertiesIterator | bmqa.cpp:416:9:416:10 | *it | provenance |  |
+| bmqa.cpp:412:50:412:55 | *& ... | bmqa.cpp:412:47:412:48 | call to MessagePropertiesIterator | provenance | MaD:132 |
+| bmqa.cpp:414:9:414:10 | *it | bmqa.cpp:414:16:414:18 | *call to name | provenance | MaD:135 |
+| bmqa.cpp:414:16:414:18 | *call to name | bmqa.cpp:414:8:414:24 | * ... | provenance | TaintFunction |
+| bmqa.cpp:415:9:415:10 | *it | bmqa.cpp:415:23:415:25 | *call to getAsString | provenance | MaD:134 |
+| bmqa.cpp:415:23:415:25 | *call to getAsString | bmqa.cpp:415:8:415:31 | * ... | provenance | TaintFunction |
+| bmqa.cpp:416:9:416:10 | *it | bmqa.cpp:416:23:416:25 | *call to getAsBinary [element] | provenance | MaD:133 |
+| bmqa.cpp:416:23:416:25 | *call to getAsBinary [element] | bmqa.cpp:416:8:416:31 | * ... | provenance | MaD:155 |
+| bmqa.cpp:422:19:422:26 | call to source | bmqa.cpp:423:36:423:76 | *call to data | provenance | TaintFunction |
+| bmqa.cpp:423:36:423:76 | *call to data | bmqa.cpp:425:2:425:4 | *msg | provenance |  |
+| bmqa.cpp:425:2:425:4 | *msg | bmqa.cpp:425:22:425:27 | loadProperties output argument | provenance | MaD:106 |
+| bmqa.cpp:425:22:425:27 | loadProperties output argument | bmqa.cpp:426:50:426:55 | *& ... | provenance |  |
+| bmqa.cpp:426:47:426:48 | call to MessagePropertiesIterator | bmqa.cpp:428:9:428:10 | *it | provenance |  |
+| bmqa.cpp:426:47:426:48 | call to MessagePropertiesIterator | bmqa.cpp:429:8:429:11 | *copy | provenance | TaintFunction |
+| bmqa.cpp:426:47:426:48 | call to MessagePropertiesIterator | bmqa.cpp:430:8:430:18 | *call to operator= | provenance | TaintFunction |
+| bmqa.cpp:426:47:426:48 | call to MessagePropertiesIterator | bmqa.cpp:430:16:430:17 | *it | provenance |  |
+| bmqa.cpp:426:50:426:55 | *& ... | bmqa.cpp:426:47:426:48 | call to MessagePropertiesIterator | provenance | MaD:132 |
+| bmqa.cpp:428:2:428:5 | operator= output argument | bmqa.cpp:429:8:429:11 | *copy | provenance |  |
+| bmqa.cpp:428:9:428:10 | *it | bmqa.cpp:428:2:428:5 | operator= output argument | provenance | MaD:136 |
+| bmqa.cpp:429:8:429:11 | *copy | bmqa.cpp:429:24:429:26 | *call to getAsString | provenance | MaD:134 |
+| bmqa.cpp:429:24:429:26 | *call to getAsString | bmqa.cpp:429:7:429:32 | * ... | provenance | TaintFunction |
+| bmqa.cpp:430:8:430:18 | *call to operator= | bmqa.cpp:430:24:430:26 | *call to name | provenance | MaD:135 |
+| bmqa.cpp:430:16:430:17 | *it | bmqa.cpp:430:8:430:18 | *call to operator= | provenance | MaD:137 |
+| bmqa.cpp:430:24:430:26 | *call to name | bmqa.cpp:430:7:430:32 | * ... | provenance | TaintFunction |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:48  |
@@ -765,6 +1052,281 @@ nodes
 | bdlbb.cpp:96:37:96:39 | copy output argument | semmle.label | copy output argument |
 | bdlbb.cpp:96:42:96:44 | *dst | semmle.label | *dst |
 | bdlbb.cpp:97:7:97:10 | * ... | semmle.label | * ... |
+| bmqa.cpp:124:19:124:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:125:36:125:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:127:2:127:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:127:15:127:19 | getData output argument | semmle.label | getData output argument |
+| bmqa.cpp:129:37:129:39 | copy output argument | semmle.label | copy output argument |
+| bmqa.cpp:129:42:129:45 | *blob | semmle.label | *blob |
+| bmqa.cpp:130:7:130:10 | * ... | semmle.label | * ... |
+| bmqa.cpp:134:19:134:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:135:43:135:88 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:136:42:136:46 | *event | semmle.label | *event |
+| bmqa.cpp:136:49:136:63 | call to messageIterator | semmle.label | call to messageIterator |
+| bmqa.cpp:136:49:136:63 | call to messageIterator | semmle.label | call to messageIterator |
+| bmqa.cpp:138:43:138:44 | *it | semmle.label | *it |
+| bmqa.cpp:138:53:138:55 | *call to message | semmle.label | *call to message |
+| bmqa.cpp:138:53:138:55 | *call to message | semmle.label | *call to message |
+| bmqa.cpp:140:3:140:5 | *msg | semmle.label | *msg |
+| bmqa.cpp:140:15:140:19 | getData output argument | semmle.label | getData output argument |
+| bmqa.cpp:142:38:142:40 | copy output argument | semmle.label | copy output argument |
+| bmqa.cpp:142:43:142:46 | *blob | semmle.label | *blob |
+| bmqa.cpp:143:8:143:11 | * ... | semmle.label | * ... |
+| bmqa.cpp:148:16:148:23 | call to source | semmle.label | call to source |
+| bmqa.cpp:150:37:150:39 | copy output argument | semmle.label | copy output argument |
+| bmqa.cpp:150:47:150:50 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:152:2:152:4 | setDataRef output argument | semmle.label | setDataRef output argument |
+| bmqa.cpp:152:17:152:19 | *& ... | semmle.label | *& ... |
+| bmqa.cpp:154:2:154:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:154:14:154:17 | getData output argument | semmle.label | getData output argument |
+| bmqa.cpp:156:37:156:39 | copy output argument | semmle.label | copy output argument |
+| bmqa.cpp:156:42:156:44 | *out | semmle.label | *out |
+| bmqa.cpp:157:7:157:10 | * ... | semmle.label | * ... |
+| bmqa.cpp:161:16:161:23 | call to source | semmle.label | call to source |
+| bmqa.cpp:163:2:163:4 | setDataRef output argument | semmle.label | setDataRef output argument |
+| bmqa.cpp:163:19:163:22 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:165:2:165:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:165:14:165:17 | getData output argument | semmle.label | getData output argument |
+| bmqa.cpp:167:37:167:39 | copy output argument | semmle.label | copy output argument |
+| bmqa.cpp:167:42:167:44 | *out | semmle.label | *out |
+| bmqa.cpp:168:7:168:10 | * ... | semmle.label | * ... |
+| bmqa.cpp:172:16:172:23 | call to source | semmle.label | call to source |
+| bmqa.cpp:174:2:174:4 | setData output argument | semmle.label | setData output argument |
+| bmqa.cpp:174:16:174:19 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:176:2:176:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:176:14:176:17 | getData output argument | semmle.label | getData output argument |
+| bmqa.cpp:178:37:178:39 | copy output argument | semmle.label | copy output argument |
+| bmqa.cpp:178:42:178:44 | *out | semmle.label | *out |
+| bmqa.cpp:179:7:179:10 | * ... | semmle.label | * ... |
+| bmqa.cpp:183:19:183:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:184:36:184:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:185:36:185:38 | *msg | semmle.label | *msg |
+| bmqa.cpp:185:41:185:45 | call to clone | semmle.label | call to clone |
+| bmqa.cpp:185:41:185:45 | call to clone | semmle.label | call to clone |
+| bmqa.cpp:187:2:187:5 | *copy | semmle.label | *copy |
+| bmqa.cpp:187:15:187:19 | getData output argument | semmle.label | getData output argument |
+| bmqa.cpp:189:37:189:39 | copy output argument | semmle.label | copy output argument |
+| bmqa.cpp:189:42:189:45 | *blob | semmle.label | *blob |
+| bmqa.cpp:190:7:190:10 | * ... | semmle.label | * ... |
+| bmqa.cpp:194:19:194:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:195:36:195:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:197:2:197:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:197:22:197:27 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:198:29:198:33 | *props | semmle.label | *props |
+| bmqa.cpp:198:54:198:61 | *call to getPropertyAsString | semmle.label | *call to getPropertyAsString |
+| bmqa.cpp:198:54:198:61 | *call to getPropertyAsString | semmle.label | *call to getPropertyAsString |
+| bmqa.cpp:199:7:199:21 | access to array | semmle.label | access to array |
+| bmqa.cpp:203:19:203:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:204:36:204:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:206:2:206:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:206:22:206:27 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:207:35:207:39 | *props | semmle.label | *props |
+| bmqa.cpp:207:60:207:67 | *call to getPropertyAsBinary [element] | semmle.label | *call to getPropertyAsBinary [element] |
+| bmqa.cpp:207:60:207:67 | *call to getPropertyAsBinary [element] | semmle.label | *call to getPropertyAsBinary [element] |
+| bmqa.cpp:208:7:208:11 | *value [element] | semmle.label | *value [element] |
+| bmqa.cpp:208:7:208:21 | access to array | semmle.label | access to array |
+| bmqa.cpp:212:19:212:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:213:36:213:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:215:2:215:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:215:22:215:27 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:216:35:216:39 | *props | semmle.label | *props |
+| bmqa.cpp:216:60:216:67 | *call to getPropertyAsBinary [element] | semmle.label | *call to getPropertyAsBinary [element] |
+| bmqa.cpp:216:60:216:67 | *call to getPropertyAsBinary [element] | semmle.label | *call to getPropertyAsBinary [element] |
+| bmqa.cpp:217:7:217:11 | *value [element] | semmle.label | *value [element] |
+| bmqa.cpp:217:12:217:14 | call to operator[] | semmle.label | call to operator[] |
+| bmqa.cpp:221:19:221:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:222:36:222:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:224:2:224:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:224:22:224:27 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:226:29:226:33 | *props | semmle.label | *props |
+| bmqa.cpp:226:56:226:69 | *call to getPropertyAsStringOr | semmle.label | *call to getPropertyAsStringOr |
+| bmqa.cpp:226:56:226:69 | *call to getPropertyAsStringOr | semmle.label | *call to getPropertyAsStringOr |
+| bmqa.cpp:227:7:227:19 | * ... | semmle.label | * ... |
+| bmqa.cpp:232:19:232:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:234:56:234:69 | *call to getPropertyAsStringOr | semmle.label | *call to getPropertyAsStringOr |
+| bmqa.cpp:234:56:234:69 | *call to getPropertyAsStringOr | semmle.label | *call to getPropertyAsStringOr |
+| bmqa.cpp:234:64:234:67 | *dflt | semmle.label | *dflt |
+| bmqa.cpp:235:7:235:19 | * ... | semmle.label | * ... |
+| bmqa.cpp:239:19:239:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:240:36:240:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:242:2:242:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:242:22:242:27 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:244:35:244:39 | *props | semmle.label | *props |
+| bmqa.cpp:244:62:244:75 | *call to getPropertyAsBinaryOr [element] | semmle.label | *call to getPropertyAsBinaryOr [element] |
+| bmqa.cpp:244:62:244:75 | *call to getPropertyAsBinaryOr [element] | semmle.label | *call to getPropertyAsBinaryOr [element] |
+| bmqa.cpp:245:7:245:19 | * ... | semmle.label | * ... |
+| bmqa.cpp:245:8:245:12 | *value [element] | semmle.label | *value [element] |
+| bmqa.cpp:249:11:249:19 | * ... | semmle.label | * ... |
+| bmqa.cpp:249:12:249:17 | call to source | semmle.label | call to source |
+| bmqa.cpp:251:2:251:5 | push_back output argument [element] | semmle.label | push_back output argument [element] |
+| bmqa.cpp:251:17:251:17 | *c | semmle.label | *c |
+| bmqa.cpp:253:62:253:75 | *call to getPropertyAsBinaryOr [element] | semmle.label | *call to getPropertyAsBinaryOr [element] |
+| bmqa.cpp:253:62:253:75 | *call to getPropertyAsBinaryOr [element] | semmle.label | *call to getPropertyAsBinaryOr [element] |
+| bmqa.cpp:253:70:253:73 | *dflt [element] | semmle.label | *dflt [element] |
+| bmqa.cpp:254:7:254:19 | * ... | semmle.label | * ... |
+| bmqa.cpp:254:8:254:12 | *value [element] | semmle.label | *value [element] |
+| bmqa.cpp:266:16:266:23 | call to source | semmle.label | call to source |
+| bmqa.cpp:268:37:268:41 | copy output argument | semmle.label | copy output argument |
+| bmqa.cpp:268:49:268:52 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:270:2:270:6 | streamIn output argument | semmle.label | streamIn output argument |
+| bmqa.cpp:270:17:270:20 | *blob | semmle.label | *blob |
+| bmqa.cpp:271:7:271:46 | * ... | semmle.label | * ... |
+| bmqa.cpp:271:8:271:12 | *props | semmle.label | *props |
+| bmqa.cpp:271:33:271:40 | *call to getPropertyAsString | semmle.label | *call to getPropertyAsString |
+| bmqa.cpp:275:16:275:23 | call to source | semmle.label | call to source |
+| bmqa.cpp:277:37:277:41 | copy output argument | semmle.label | copy output argument |
+| bmqa.cpp:277:49:277:52 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:279:2:279:3 | streamIn output argument | semmle.label | streamIn output argument |
+| bmqa.cpp:279:14:279:17 | *blob | semmle.label | *blob |
+| bmqa.cpp:281:2:281:4 | setPropertiesRef output argument | semmle.label | setPropertiesRef output argument |
+| bmqa.cpp:281:23:281:25 | *& ... | semmle.label | *& ... |
+| bmqa.cpp:283:2:283:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:283:21:283:24 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:284:7:284:44 | * ... | semmle.label | * ... |
+| bmqa.cpp:284:8:284:10 | *out | semmle.label | *out |
+| bmqa.cpp:284:31:284:38 | *call to getPropertyAsString | semmle.label | *call to getPropertyAsString |
+| bmqa.cpp:288:19:288:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:289:36:289:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:291:2:291:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:291:22:291:27 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:293:41:293:45 | *props | semmle.label | *props |
+| bmqa.cpp:293:56:293:66 | *call to streamOut | semmle.label | *call to streamOut |
+| bmqa.cpp:293:56:293:66 | *call to streamOut | semmle.label | *call to streamOut |
+| bmqa.cpp:295:37:295:39 | copy output argument | semmle.label | copy output argument |
+| bmqa.cpp:295:42:295:45 | *blob | semmle.label | *blob |
+| bmqa.cpp:296:7:296:10 | * ... | semmle.label | * ... |
+| bmqa.cpp:300:19:300:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:301:36:301:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:303:2:303:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:303:22:303:27 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:304:39:304:42 | call to MessageProperties | semmle.label | call to MessageProperties |
+| bmqa.cpp:304:44:304:48 | *props | semmle.label | *props |
+| bmqa.cpp:305:7:305:45 | * ... | semmle.label | * ... |
+| bmqa.cpp:305:8:305:11 | *copy | semmle.label | *copy |
+| bmqa.cpp:305:32:305:39 | *call to getPropertyAsString | semmle.label | *call to getPropertyAsString |
+| bmqa.cpp:309:19:309:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:310:36:310:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:312:2:312:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:312:22:312:27 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:314:2:314:5 | operator= output argument | semmle.label | operator= output argument |
+| bmqa.cpp:314:9:314:13 | *props | semmle.label | *props |
+| bmqa.cpp:315:7:315:45 | * ... | semmle.label | * ... |
+| bmqa.cpp:315:8:315:11 | *copy | semmle.label | *copy |
+| bmqa.cpp:315:32:315:39 | *call to getPropertyAsString | semmle.label | *call to getPropertyAsString |
+| bmqa.cpp:319:19:319:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:320:36:320:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:322:2:322:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:322:22:322:27 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:324:7:324:55 | * ... | semmle.label | * ... |
+| bmqa.cpp:324:8:324:21 | *call to operator= | semmle.label | *call to operator= |
+| bmqa.cpp:324:16:324:20 | *props | semmle.label | *props |
+| bmqa.cpp:324:42:324:49 | *call to getPropertyAsString | semmle.label | *call to getPropertyAsString |
+| bmqa.cpp:328:19:328:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:329:28:329:58 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:331:2:331:6 | setPropertyAsString output argument | semmle.label | setPropertyAsString output argument |
+| bmqa.cpp:331:35:331:40 | * ... | semmle.label | * ... |
+| bmqa.cpp:332:7:332:46 | * ... | semmle.label | * ... |
+| bmqa.cpp:332:8:332:12 | *props | semmle.label | *props |
+| bmqa.cpp:332:33:332:40 | *call to getPropertyAsString | semmle.label | *call to getPropertyAsString |
+| bmqa.cpp:336:25:336:32 | call to source | semmle.label | call to source |
+| bmqa.cpp:338:2:338:6 | setPropertyAsString output argument | semmle.label | setPropertyAsString output argument |
+| bmqa.cpp:338:35:338:39 | value | semmle.label | value |
+| bmqa.cpp:339:7:339:46 | * ... | semmle.label | * ... |
+| bmqa.cpp:339:8:339:12 | *props | semmle.label | *props |
+| bmqa.cpp:339:33:339:40 | *call to getPropertyAsString | semmle.label | *call to getPropertyAsString |
+| bmqa.cpp:343:19:343:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:344:33:344:68 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:346:2:346:6 | setPropertyAsBinary output argument | semmle.label | setPropertyAsBinary output argument |
+| bmqa.cpp:346:35:346:40 | * ... | semmle.label | * ... |
+| bmqa.cpp:347:7:347:46 | * ... | semmle.label | * ... |
+| bmqa.cpp:347:8:347:12 | *props | semmle.label | *props |
+| bmqa.cpp:347:33:347:40 | *call to getPropertyAsBinary [element] | semmle.label | *call to getPropertyAsBinary [element] |
+| bmqa.cpp:352:24:352:31 | call to source | semmle.label | call to source |
+| bmqa.cpp:354:2:354:6 | setPropertyAsBool output argument | semmle.label | setPropertyAsBool output argument |
+| bmqa.cpp:354:26:354:29 | name | semmle.label | name |
+| bmqa.cpp:355:47:355:48 | call to MessagePropertiesIterator | semmle.label | call to MessagePropertiesIterator |
+| bmqa.cpp:355:50:355:55 | *& ... | semmle.label | *& ... |
+| bmqa.cpp:356:7:356:23 | * ... | semmle.label | * ... |
+| bmqa.cpp:356:8:356:9 | *it | semmle.label | *it |
+| bmqa.cpp:356:15:356:17 | *call to name | semmle.label | *call to name |
+| bmqa.cpp:360:24:360:31 | call to source | semmle.label | call to source |
+| bmqa.cpp:362:2:362:6 | setPropertyAsChar output argument | semmle.label | setPropertyAsChar output argument |
+| bmqa.cpp:362:26:362:29 | name | semmle.label | name |
+| bmqa.cpp:363:47:363:48 | call to MessagePropertiesIterator | semmle.label | call to MessagePropertiesIterator |
+| bmqa.cpp:363:50:363:55 | *& ... | semmle.label | *& ... |
+| bmqa.cpp:364:7:364:23 | * ... | semmle.label | * ... |
+| bmqa.cpp:364:8:364:9 | *it | semmle.label | *it |
+| bmqa.cpp:364:15:364:17 | *call to name | semmle.label | *call to name |
+| bmqa.cpp:368:24:368:31 | call to source | semmle.label | call to source |
+| bmqa.cpp:370:2:370:6 | setPropertyAsShort output argument | semmle.label | setPropertyAsShort output argument |
+| bmqa.cpp:370:27:370:30 | name | semmle.label | name |
+| bmqa.cpp:371:47:371:48 | call to MessagePropertiesIterator | semmle.label | call to MessagePropertiesIterator |
+| bmqa.cpp:371:50:371:55 | *& ... | semmle.label | *& ... |
+| bmqa.cpp:372:7:372:23 | * ... | semmle.label | * ... |
+| bmqa.cpp:372:8:372:9 | *it | semmle.label | *it |
+| bmqa.cpp:372:15:372:17 | *call to name | semmle.label | *call to name |
+| bmqa.cpp:376:24:376:31 | call to source | semmle.label | call to source |
+| bmqa.cpp:378:2:378:6 | setPropertyAsInt32 output argument | semmle.label | setPropertyAsInt32 output argument |
+| bmqa.cpp:378:27:378:30 | name | semmle.label | name |
+| bmqa.cpp:379:47:379:48 | call to MessagePropertiesIterator | semmle.label | call to MessagePropertiesIterator |
+| bmqa.cpp:379:50:379:55 | *& ... | semmle.label | *& ... |
+| bmqa.cpp:380:7:380:23 | * ... | semmle.label | * ... |
+| bmqa.cpp:380:8:380:9 | *it | semmle.label | *it |
+| bmqa.cpp:380:15:380:17 | *call to name | semmle.label | *call to name |
+| bmqa.cpp:384:24:384:31 | call to source | semmle.label | call to source |
+| bmqa.cpp:386:2:386:6 | setPropertyAsInt64 output argument | semmle.label | setPropertyAsInt64 output argument |
+| bmqa.cpp:386:27:386:30 | name | semmle.label | name |
+| bmqa.cpp:387:47:387:48 | call to MessagePropertiesIterator | semmle.label | call to MessagePropertiesIterator |
+| bmqa.cpp:387:50:387:55 | *& ... | semmle.label | *& ... |
+| bmqa.cpp:388:7:388:23 | * ... | semmle.label | * ... |
+| bmqa.cpp:388:8:388:9 | *it | semmle.label | *it |
+| bmqa.cpp:388:15:388:17 | *call to name | semmle.label | *call to name |
+| bmqa.cpp:392:24:392:31 | call to source | semmle.label | call to source |
+| bmqa.cpp:394:2:394:6 | setPropertyAsString output argument | semmle.label | setPropertyAsString output argument |
+| bmqa.cpp:394:28:394:31 | name | semmle.label | name |
+| bmqa.cpp:395:47:395:48 | call to MessagePropertiesIterator | semmle.label | call to MessagePropertiesIterator |
+| bmqa.cpp:395:50:395:55 | *& ... | semmle.label | *& ... |
+| bmqa.cpp:396:7:396:23 | * ... | semmle.label | * ... |
+| bmqa.cpp:396:8:396:9 | *it | semmle.label | *it |
+| bmqa.cpp:396:15:396:17 | *call to name | semmle.label | *call to name |
+| bmqa.cpp:400:24:400:31 | call to source | semmle.label | call to source |
+| bmqa.cpp:402:2:402:6 | setPropertyAsBinary output argument | semmle.label | setPropertyAsBinary output argument |
+| bmqa.cpp:402:28:402:31 | name | semmle.label | name |
+| bmqa.cpp:403:47:403:48 | call to MessagePropertiesIterator | semmle.label | call to MessagePropertiesIterator |
+| bmqa.cpp:403:50:403:55 | *& ... | semmle.label | *& ... |
+| bmqa.cpp:404:7:404:23 | * ... | semmle.label | * ... |
+| bmqa.cpp:404:8:404:9 | *it | semmle.label | *it |
+| bmqa.cpp:404:15:404:17 | *call to name | semmle.label | *call to name |
+| bmqa.cpp:408:19:408:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:409:36:409:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:411:2:411:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:411:22:411:27 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:412:47:412:48 | call to MessagePropertiesIterator | semmle.label | call to MessagePropertiesIterator |
+| bmqa.cpp:412:50:412:55 | *& ... | semmle.label | *& ... |
+| bmqa.cpp:414:8:414:24 | * ... | semmle.label | * ... |
+| bmqa.cpp:414:9:414:10 | *it | semmle.label | *it |
+| bmqa.cpp:414:16:414:18 | *call to name | semmle.label | *call to name |
+| bmqa.cpp:415:8:415:31 | * ... | semmle.label | * ... |
+| bmqa.cpp:415:9:415:10 | *it | semmle.label | *it |
+| bmqa.cpp:415:23:415:25 | *call to getAsString | semmle.label | *call to getAsString |
+| bmqa.cpp:416:8:416:31 | * ... | semmle.label | * ... |
+| bmqa.cpp:416:9:416:10 | *it | semmle.label | *it |
+| bmqa.cpp:416:23:416:25 | *call to getAsBinary [element] | semmle.label | *call to getAsBinary [element] |
+| bmqa.cpp:422:19:422:26 | call to source | semmle.label | call to source |
+| bmqa.cpp:423:36:423:76 | *call to data | semmle.label | *call to data |
+| bmqa.cpp:425:2:425:4 | *msg | semmle.label | *msg |
+| bmqa.cpp:425:22:425:27 | loadProperties output argument | semmle.label | loadProperties output argument |
+| bmqa.cpp:426:47:426:48 | call to MessagePropertiesIterator | semmle.label | call to MessagePropertiesIterator |
+| bmqa.cpp:426:50:426:55 | *& ... | semmle.label | *& ... |
+| bmqa.cpp:428:2:428:5 | operator= output argument | semmle.label | operator= output argument |
+| bmqa.cpp:428:9:428:10 | *it | semmle.label | *it |
+| bmqa.cpp:429:7:429:32 | * ... | semmle.label | * ... |
+| bmqa.cpp:429:8:429:11 | *copy | semmle.label | *copy |
+| bmqa.cpp:429:24:429:26 | *call to getAsString | semmle.label | *call to getAsString |
+| bmqa.cpp:430:7:430:32 | * ... | semmle.label | * ... |
+| bmqa.cpp:430:8:430:18 | *call to operator= | semmle.label | *call to operator= |
+| bmqa.cpp:430:16:430:17 | *it | semmle.label | *it |
+| bmqa.cpp:430:24:430:26 | *call to name | semmle.label | *call to name |
 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | semmle.label | *ymlStepGenerated_with_body |
 | test.cpp:7:47:7:52 | value2 | semmle.label | value2 |
 | test.cpp:7:64:7:69 | value2 | semmle.label | value2 |
