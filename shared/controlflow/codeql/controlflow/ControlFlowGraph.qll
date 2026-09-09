@@ -2286,7 +2286,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
                 multipleConditionalSuccessorKinds(node, t1, t2, succ1, succ2)
               )
             or
-            query = "directAndConditionalSuccessor" and
+            query = "directAndConditionalSuccessors" and
             results =
               strictcount(ControlFlowNode node, ConditionalSuccessor t1, DirectSuccessor t2,
                 ControlFlowNode succ1, ControlFlowNode succ2 |
@@ -2295,6 +2295,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             query = "selfLoop" and
             results = strictcount(ControlFlowNode node, SuccessorType t | selfLoop(node, t))
+            or
+            query = "bodyPartNonOverlap" and
+            results = strictcount(Callable c | bodyPartNonOverlap(c))
+            or
+            query = "parameterNonOverlap" and
+            results = strictcount(Callable c, Parameter p | parameterNonOverlap(c, p))
+            or
+            query = "parameterEnclosingCallable" and
+            results = strictcount(Parameter p, Callable c | parameterEnclosingCallable(p, c))
+            or
+            query = "multipleDefaultCases" and
+            results =
+              strictcount(Switch s, int defaultCases | multipleDefaultCases(s, defaultCases))
           }
 
           /**
@@ -2494,6 +2507,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           query predicate parameterEnclosingCallable(Parameter p, Callable c) {
             p = callableGetParameter(c, _) and
             not c = getEnclosingCallable(p)
+          }
+
+          /**
+           * Holds if a switch `s` has multiple default cases.
+           *
+           * A well-formed switch statement should have at most one default case.
+           */
+          query predicate multipleDefaultCases(Switch s, int defaultCases) {
+            defaultCases = strictcount(DefaultCase c | s.getCase(_) = c) and
+            defaultCases > 1
           }
         }
       }
