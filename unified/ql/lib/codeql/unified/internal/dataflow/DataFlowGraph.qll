@@ -73,21 +73,37 @@ predicate step(Node node1, Step step, Node node2) {
 private signature predicate relevantNodeSig(AstNode node);
 
 module DebugGraph<relevantNodeSig/1 relevantNode> {
-  private predicate relevantNameBindingNode(Node node) { relevantNode(node.getWrappedAstNode()) }
+  private Node adjacent(Node n) {
+    step(n, _, result)
+    or
+    step(result, _, n)
+  }
+
+  private predicate relevantDataFlowNode(Node node) {
+    relevantNode(node.getWrappedAstNode())
+    or
+    not exists(node.getWrappedAstNode()) and
+    relevantDataFlowNode(adjacent(node))
+  }
 
   query predicate nodes(Node node, string key, string value) {
-    relevantNameBindingNode(node) and
+    relevantDataFlowNode(node) and
     key = "semmle.label" and
     value = node.toString()
   }
 
   query predicate edges(Node node1, Node node2, string key, string value) {
     key = "semmle.label" and
-    relevantNameBindingNode(node1) and
-    relevantNameBindingNode(node2) and
-    exists(Step step |
-      step(node1, step, node2) and
-      value = step.toString()
+    relevantDataFlowNode(node1) and
+    relevantDataFlowNode(node2) and
+    (
+      exists(Step step |
+        step(node1, step, node2) and
+        value = step.toString()
+      )
+      or
+      node2 = getPostUpdateNode(node1) and
+      value = "post-update"
     )
   }
 }
