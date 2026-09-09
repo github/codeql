@@ -1,1 +1,5 @@
+#select
 | MissedAllOpportunity.cs:11:9:18:9 | foreach (... ... in ...) ... | This foreach loop looks as if it might be testing whether every sequence element satisfies a predicate - consider using '.All(...)'. |
+| MissedAllOpportunity.cs:39:9:46:9 | foreach (... ... in ...) ... | This foreach loop looks as if it might be testing whether every sequence element satisfies a predicate - consider using '.All(...)'. |
+testFailures
+| MissedAllOpportunity.cs:39:9:46:9 | This foreach loop looks as if it might be testing whether every sequence element satisfies a predicate - consider using '.All(...)'. | Unexpected result: Alert |

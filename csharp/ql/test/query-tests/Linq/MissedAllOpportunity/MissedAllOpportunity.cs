@@ -32,6 +32,20 @@ class MissedAllOpportunity
         }
     }
 
+    public void M3(List<int> lst, ref int x)
+    {
+        // GOOD: Linq can't be used here because the condition uses a ref parameter.
+        var allEven = true;
+        foreach (int i in lst)
+        {
+            if (i % 2 != x)
+            {
+                allEven = false;
+                break;
+            }
+        }
+    }
+
     public class NonEnumerableClass
     {
         public IEnumerator<int> GetEnumerator() => throw null;
