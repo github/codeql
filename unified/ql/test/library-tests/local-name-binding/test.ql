@@ -20,8 +20,7 @@ module VariableAccessTest implements TestSig {
   }
 
   private PotentialLocalNameAccess getUniqueDeclarationSite(LocalName name) {
-    result =
-      unique(PotentialLocalNameAccess ac | ac.isDeclarationSite() and ac.getLocalName() = name)
+    result = unique(PotentialLocalNameAccess ac | ac.isBindingSite() and ac.getLocalName() = name)
   }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {

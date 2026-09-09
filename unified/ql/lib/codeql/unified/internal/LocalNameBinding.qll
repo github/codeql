@@ -360,13 +360,13 @@ module Public {
 
     LocalNameAccess getAnAccess() { result.getLocalName() = this }
 
-    /** Gets an identiier that declares this local name. */
-    NameDeclaration getADeclaration() { result.getLocalName() = this }
+    /** Gets a name binding that declares this local name. */
+    NameBinding getABinding() { result.getLocalName() = this }
   }
 
-  /** A name node that appears as the declaration site of a name, such as the `x` in `let x = 123`. */
-  class NameDeclaration extends Identifier {
-    NameDeclaration() { LocalNameBindingInput::bindingContext(this, _, _) }
+  /** An identifier appearing in a name-binding position, such as the `x` in `let x = 123`. */
+  class NameBinding extends Identifier {
+    NameBinding() { LocalNameBindingInput::bindingContext(this, _, _) }
 
     /** Gets the statement-like node declaring this name, such as a `VariableDeclaration` or `CatchClause`. */
     AstNode getDeclaration() { LocalNameBindingInput::bindingContext(this, _, result) }
@@ -382,7 +382,7 @@ module Public {
   class LocalVariable extends LocalName {
     LocalVariable() {
       exists(AstNode decl |
-        decl = this.getADeclaration().getDeclaration() and
+        decl = this.getABinding().getDeclaration() and
         not isInstanceMember(decl) and
         not isStaticMember(decl)
       |
@@ -429,6 +429,6 @@ class PotentialLocalNameAccess extends IdentifierExpr {
 
   string getName() { result = this.getValue() }
 
-  /** Holds if this is one of the declaration sites for a name, such as the `x` in `let x = 123`. */
-  predicate isDeclarationSite() { this instanceof NameDeclaration }
+  /** Holds if this is one of the binding sites for a name, such as the `x` in `let x = 123`. */
+  predicate isBindingSite() { this instanceof NameBinding }
 }

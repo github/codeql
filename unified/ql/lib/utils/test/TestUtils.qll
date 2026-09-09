@@ -9,7 +9,7 @@ private string deriveClassName(ClassLikeDeclaration cls) {
   result = deriveClassName(cls.getEnclosingClass()) + "." + cls.getName()
 }
 
-private string defaultName(NameDeclaration decl) {
+private string defaultName(NameBinding decl) {
   exists(ClassLikeDeclaration cls |
     decl.getDeclaration() = cls.getAMember() and
     result = deriveClassName(cls) + "." + decl.getName()
@@ -19,11 +19,11 @@ private string defaultName(NameDeclaration decl) {
   result = decl.getName()
 }
 
-private predicate declAt(NameDeclaration v, string filepath, int line) {
+private predicate declAt(NameBinding v, string filepath, int line) {
   v.getLocation().hasLocationInfo(filepath, line, _, _, _)
 }
 
-predicate nameDeclaration(NameDeclaration v, string alias) {
+predicate nameBinding(NameBinding v, string alias) {
   exists(string filepath, int line | declAt(v, filepath, line) |
     keyValueCommentAt(filepath, line, "name", alias)
     or

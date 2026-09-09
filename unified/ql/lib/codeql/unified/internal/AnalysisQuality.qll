@@ -44,7 +44,7 @@ module StaticNameResolutionStats implements EntityStatsSig {
         this = getIdentifierFromRef(ref) and
         not memberAccessDependsOnTypeInference(ref)
       ) and
-      not this instanceof NameDeclaration
+      not this instanceof NameBinding
     }
 
     NameBindingNode getTarget() {

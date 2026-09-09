@@ -9,8 +9,8 @@ private import codeql.unified.internal.StaticNameBinding
  * Holds if `reference` refers to `definition`.
  */
 cached
-predicate definitionOf(Identifier reference, NameDeclaration definition, string kind) {
+predicate definitionOf(Identifier reference, NameBinding definition, string kind) {
   definition = getStaticBindingTarget(reference) and
-  not reference instanceof NameDeclaration and
+  not reference instanceof NameBinding and
   kind = "name"
 }
