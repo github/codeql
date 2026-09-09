@@ -15040,6 +15040,38 @@ getSignatureParameterName
 | (const ISSUER_SIGN_TOOL *,unsigned char **) |  | i2d_ISSUER_SIGN_TOOL | 1 | unsigned char ** |
 | (const ISSUING_DIST_POINT *,unsigned char **) |  | i2d_ISSUING_DIST_POINT | 0 | const ISSUING_DIST_POINT * |
 | (const ISSUING_DIST_POINT *,unsigned char **) |  | i2d_ISSUING_DIST_POINT | 1 | unsigned char ** |
+| (const InternetProtocol &,const string &,const string &) | basic_resolver<InternetProtocol> | resolve | 0 | const class:0 & |
+| (const InternetProtocol &,const string &,const string &) | basic_resolver<InternetProtocol> | resolve | 1 | const string & |
+| (const InternetProtocol &,const string &,const string &) | basic_resolver<InternetProtocol> | resolve | 2 | const string & |
+| (const InternetProtocol &,const string &,const string &,error_code &) | basic_resolver<InternetProtocol> | resolve | 0 | const class:0 & |
+| (const InternetProtocol &,const string &,const string &,error_code &) | basic_resolver<InternetProtocol> | resolve | 1 | const string & |
+| (const InternetProtocol &,const string &,const string &,error_code &) | basic_resolver<InternetProtocol> | resolve | 2 | const string & |
+| (const InternetProtocol &,const string &,const string &,error_code &) | basic_resolver<InternetProtocol> | resolve | 3 | error_code & |
+| (const InternetProtocol &,const string &,const string &,flags) | basic_resolver<InternetProtocol> | resolve | 0 | const class:0 & |
+| (const InternetProtocol &,const string &,const string &,flags) | basic_resolver<InternetProtocol> | resolve | 1 | const string & |
+| (const InternetProtocol &,const string &,const string &,flags) | basic_resolver<InternetProtocol> | resolve | 2 | const string & |
+| (const InternetProtocol &,const string &,const string &,flags) | basic_resolver<InternetProtocol> | resolve | 3 | flags |
+| (const InternetProtocol &,const string &,const string &,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 0 | const class:0 & |
+| (const InternetProtocol &,const string &,const string &,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 1 | const string & |
+| (const InternetProtocol &,const string &,const string &,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 2 | const string & |
+| (const InternetProtocol &,const string &,const string &,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 3 | flags |
+| (const InternetProtocol &,const string &,const string &,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 4 | error_code & |
+| (const InternetProtocol &,string_view,string_view) | basic_resolver<InternetProtocol> | resolve | 0 | const class:0 & |
+| (const InternetProtocol &,string_view,string_view) | basic_resolver<InternetProtocol> | resolve | 1 | string_view |
+| (const InternetProtocol &,string_view,string_view) | basic_resolver<InternetProtocol> | resolve | 2 | string_view |
+| (const InternetProtocol &,string_view,string_view,error_code &) | basic_resolver<InternetProtocol> | resolve | 0 | const class:0 & |
+| (const InternetProtocol &,string_view,string_view,error_code &) | basic_resolver<InternetProtocol> | resolve | 1 | string_view |
+| (const InternetProtocol &,string_view,string_view,error_code &) | basic_resolver<InternetProtocol> | resolve | 2 | string_view |
+| (const InternetProtocol &,string_view,string_view,error_code &) | basic_resolver<InternetProtocol> | resolve | 3 | error_code & |
+| (const InternetProtocol &,string_view,string_view,flags) | basic_resolver<InternetProtocol> | resolve | 0 | const class:0 & |
+| (const InternetProtocol &,string_view,string_view,flags) | basic_resolver<InternetProtocol> | resolve | 1 | string_view |
+| (const InternetProtocol &,string_view,string_view,flags) | basic_resolver<InternetProtocol> | resolve | 2 | string_view |
+| (const InternetProtocol &,string_view,string_view,flags) | basic_resolver<InternetProtocol> | resolve | 3 | flags |
+| (const InternetProtocol &,string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 0 | const class:0 & |
+| (const InternetProtocol &,string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 1 | string_view |
+| (const InternetProtocol &,string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 2 | string_view |
+| (const InternetProtocol &,string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 3 | flags |
+| (const InternetProtocol &,string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 4 | error_code & |
 | (const MATRIX *,const VECTOR *,VECTOR *) |  | ossl_ml_dsa_matrix_mult_vector | 0 | const MATRIX * |
 | (const MATRIX *,const VECTOR *,VECTOR *) |  | ossl_ml_dsa_matrix_mult_vector | 1 | const VECTOR * |
 | (const MATRIX *,const VECTOR *,VECTOR *) |  | ossl_ml_dsa_matrix_mult_vector | 2 | VECTOR * |
@@ -18552,6 +18584,18 @@ getSignatureParameterName
 | (const stat *) |  | get_stat_ctime_ns | 0 | const stat * |
 | (const stat *) |  | get_stat_mtime | 0 | const stat * |
 | (const stat *) |  | get_stat_mtime_ns | 0 | const stat * |
+| (const string &,const string &) | basic_resolver<InternetProtocol> | resolve | 0 | const string & |
+| (const string &,const string &) | basic_resolver<InternetProtocol> | resolve | 1 | const string & |
+| (const string &,const string &,error_code &) | basic_resolver<InternetProtocol> | resolve | 0 | const string & |
+| (const string &,const string &,error_code &) | basic_resolver<InternetProtocol> | resolve | 1 | const string & |
+| (const string &,const string &,error_code &) | basic_resolver<InternetProtocol> | resolve | 2 | error_code & |
+| (const string &,const string &,flags) | basic_resolver<InternetProtocol> | resolve | 0 | const string & |
+| (const string &,const string &,flags) | basic_resolver<InternetProtocol> | resolve | 1 | const string & |
+| (const string &,const string &,flags) | basic_resolver<InternetProtocol> | resolve | 2 | flags |
+| (const string &,const string &,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 0 | const string & |
+| (const string &,const string &,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 1 | const string & |
+| (const string &,const string &,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 2 | flags |
+| (const string &,const string &,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 3 | error_code & |
 | (const td_thragent_t *,lwpid_t,td_thrhandle_t *) |  | __td_ta_lookup_th_unique | 0 | const td_thragent_t * |
 | (const td_thragent_t *,lwpid_t,td_thrhandle_t *) |  | __td_ta_lookup_th_unique | 1 | lwpid_t |
 | (const td_thragent_t *,lwpid_t,td_thrhandle_t *) |  | __td_ta_lookup_th_unique | 2 | td_thrhandle_t * |
@@ -24702,6 +24746,18 @@ getSignatureParameterName
 | (string_buf *,unsigned char **,size_t *) |  | _libssh2_get_string | 0 | string_buf * |
 | (string_buf *,unsigned char **,size_t *) |  | _libssh2_get_string | 1 | unsigned char ** |
 | (string_buf *,unsigned char **,size_t *) |  | _libssh2_get_string | 2 | size_t * |
+| (string_view,string_view) | basic_resolver<InternetProtocol> | resolve | 0 | string_view |
+| (string_view,string_view) | basic_resolver<InternetProtocol> | resolve | 1 | string_view |
+| (string_view,string_view,error_code &) | basic_resolver<InternetProtocol> | resolve | 0 | string_view |
+| (string_view,string_view,error_code &) | basic_resolver<InternetProtocol> | resolve | 1 | string_view |
+| (string_view,string_view,error_code &) | basic_resolver<InternetProtocol> | resolve | 2 | error_code & |
+| (string_view,string_view,flags) | basic_resolver<InternetProtocol> | resolve | 0 | string_view |
+| (string_view,string_view,flags) | basic_resolver<InternetProtocol> | resolve | 1 | string_view |
+| (string_view,string_view,flags) | basic_resolver<InternetProtocol> | resolve | 2 | flags |
+| (string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 0 | string_view |
+| (string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 1 | string_view |
+| (string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 2 | flags |
+| (string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 3 | error_code & |
 | (stringtable *,const char *) |  | stringtable_add | 0 | stringtable * |
 | (stringtable *,const char *) |  | stringtable_add | 1 | const char * |
 | (stringtable *,stringtable_finalized *) |  | stringtable_finalize | 0 | stringtable * |
