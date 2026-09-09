@@ -26,7 +26,7 @@ module Impl {
    * ```
    */
   class Trait extends Generated::Trait {
-    override string toStringImpl() { result = "trait " + this.getName().getText() }
+    override string toStringImpl() { result = "trait " + concat(this.getName().getText()) }
 
     /**
      * Gets the number of generic parameters of this trait.
