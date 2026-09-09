@@ -22,6 +22,10 @@ predicate step(Node node1, Step step, Node node2) {
     node1.isIncomingValue(access) and
     step.value() and
     node2.isLocalVariable(access.getLocalVariable())
+    or
+    node1.isPostUpdate(access) and
+    step.value() and
+    node2.isLocalVariable(access.getLocalVariable())
   )
   or
   exists(BinaryExpr expr |
@@ -45,6 +49,10 @@ predicate step(Node node1, Step step, Node node2) {
     node1.isResultValue(expr.getBase()) and
     step.readName(expr.getMemberName()) and
     node2.isResultValue(expr)
+    or
+    (node1.isIncomingValue(expr) or node1.isPostUpdate(expr)) and
+    step.storeName(expr.getMemberName()) and
+    node2.isPostUpdate(expr.getBase())
   )
   or
   none() // Temporarily disable compilation errors from unsatisfiable types
