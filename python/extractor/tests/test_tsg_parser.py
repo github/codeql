@@ -1,4 +1,5 @@
 import unittest
+import unittest.mock
 import json
 
 from semmle.logging import format_message
