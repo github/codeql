@@ -411,3 +411,28 @@ void forward_test_model_with_default_argument() {
   ElementWithDefaultArgument e = c.get();
   ymlSink(e.x); // $ ir
 }
+
+struct ElementWithOverloadedArity {
+  int x;
+  ElementWithOverloadedArity(int first) : x(first) {}
+  ElementWithOverloadedArity(int, int second) : x(second) {}
+};
+
+void forward_test_constructor_arity() {
+  int x = ymlSource();
+  {
+    Container<ElementWithOverloadedArity> c;
+    c.emplace(0, x);
+    ymlSink(c.get().x); // $ ir
+  }
+  {
+    Container<ElementWithOverloadedArity> c;
+    c.emplace(0, x, 0);
+    ymlSink(c.get().x); // $ SPURIOUS: ir
+  }
+  {
+    Container<ElementWithOverloadedArity> c;
+    c.emplace(0, 0, x);
+    ymlSink(c.get().x); // $ ir
+  }
+}
