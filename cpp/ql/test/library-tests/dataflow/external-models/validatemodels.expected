@@ -4016,6 +4016,7 @@
 | Dubious signature "(const char *,size_t *)" in summary model. |
 | Dubious signature "(const char *,size_t *,int)" in summary model. |
 | Dubious signature "(const char *,size_t)" in summary model. |
+| Dubious signature "(const char *,size_t,TYPE *,const char *)" in summary model. |
 | Dubious signature "(const char *,size_t,char **,size_t *,urlreject)" in summary model. |
 | Dubious signature "(const char *,size_t,const char *)" in summary model. |
 | Dubious signature "(const char *,size_t,const char *,const char *,bool,iconv_ilseq_handler,size_t *,char **,size_t *)" in summary model. |
@@ -4677,6 +4678,8 @@
 | Dubious signature "(int,void *)" in summary model. |
 | Dubious signature "(int,void *,size_t)" in summary model. |
 | Dubious signature "(int_dhx942_dh **,const unsigned char **,long)" in summary model. |
+| Dubious signature "(istream &,AnyRef *,const char *)" in summary model. |
+| Dubious signature "(istream &,TYPE *,const char *)" in summary model. |
 | Dubious signature "(lemon *)" in summary model. |
 | Dubious signature "(lemon *,action *)" in summary model. |
 | Dubious signature "(lemon *,const char *)" in summary model. |
@@ -4925,6 +4928,8 @@
 | Dubious signature "(obstack *,int,int,..(*)(..),..(*)(..),void *)" in summary model. |
 | Dubious signature "(obstack *,void *)" in summary model. |
 | Dubious signature "(old_termios_t *,speed_t)" in summary model. |
+| Dubious signature "(ostream &,const AnyConstRef &)" in summary model. |
+| Dubious signature "(ostream &,const TYPE &)" in summary model. |
 | Dubious signature "(passwd *,char *,size_t,int *)" in summary model. |
 | Dubious signature "(passwd *,char *,size_t,passwd **)" in summary model. |
 | Dubious signature "(pgrs_dir *,curl_off_t,curltime)" in summary model. |
@@ -5188,6 +5193,10 @@
 | Dubious signature "(statvfs64 *,const statfs64 *)" in summary model. |
 | Dubious signature "(store_netrc *)" in summary model. |
 | Dubious signature "(store_netrc *,const char *,char **,char **,char *)" in summary model. |
+| Dubious signature "(streambuf *,AnyRef *,const char *)" in summary model. |
+| Dubious signature "(streambuf *,TYPE *,const char *)" in summary model. |
+| Dubious signature "(streambuf *,const AnyConstRef &)" in summary model. |
+| Dubious signature "(streambuf *,const TYPE &)" in summary model. |
 | Dubious signature "(string_buf *,libssh2_uint64_t *)" in summary model. |
 | Dubious signature "(string_buf *,uint32_t *)" in summary model. |
 | Dubious signature "(string_buf *,unsigned char *)" in summary model. |

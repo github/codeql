@@ -1,0 +1,13 @@
+# Model of the BDE balber BER codec (BloombergLP::balber).
+# All overloads take the stream at argument 0 and the object at argument 1 and return int.
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      # Decoding: stream -> object
+      - ["BloombergLP::balber", "BerDecoder", true, "decode", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["BloombergLP::balber", "BerDecoder", true, "decodeAny", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      # Encoding: object -> stream
+      - ["BloombergLP::balber", "BerEncoder", true, "encode", "", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::balber", "BerEncoder", true, "encodeAny", "", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
