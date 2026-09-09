@@ -116,12 +116,12 @@ module Unified {
     final F::Identifier getName() { unified_accessor_declaration_def(this, _, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getParameter(int i) {
+    final override F::Parameter getParameter(int i) {
       unified_accessor_declaration_parameter(this, i, result)
     }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getAParameter() { result = this.getParameter(_) }
+    final override F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `type`. */
     final F::TypeExpr getType() { unified_accessor_declaration_type(this, result) }
@@ -376,6 +376,12 @@ module Unified {
   class Callable extends @unified_callable, F::AstNode {
     /** Gets the node corresponding to the field `body`. */
     abstract F::Block getBody();
+
+    /** Gets the node corresponding to the field `parameter`. */
+    abstract F::Parameter getParameter(int i);
+
+    /** Gets the node corresponding to the field `parameter`. */
+    abstract F::Parameter getAParameter();
   }
 
   /** A class representing `catch_clause` nodes. */
@@ -529,12 +535,12 @@ module Unified {
     final F::Identifier getName() { unified_constructor_declaration_name(this, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getParameter(int i) {
+    final override F::Parameter getParameter(int i) {
       unified_constructor_declaration_parameter(this, i, result)
     }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getAParameter() { result = this.getParameter(_) }
+    final override F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -742,12 +748,12 @@ module Unified {
     final F::Identifier getName() { unified_function_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getParameter(int i) {
+    final override F::Parameter getParameter(int i) {
       unified_function_declaration_parameter(this, i, result)
     }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getAParameter() { result = this.getParameter(_) }
+    final override F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `return_type`. */
     final F::TypeExpr getReturnType() { unified_function_declaration_return_type(this, result) }
@@ -803,10 +809,12 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getParameter(int i) { unified_function_expr_parameter(this, i, result) }
+    final override F::Parameter getParameter(int i) {
+      unified_function_expr_parameter(this, i, result)
+    }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getAParameter() { result = this.getParameter(_) }
+    final override F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `return_type`. */
     final F::TypeExpr getReturnType() { unified_function_expr_return_type(this, result) }
