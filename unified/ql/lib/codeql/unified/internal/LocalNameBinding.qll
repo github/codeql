@@ -395,6 +395,14 @@ module Public {
         decl instanceof SwitchCase
       )
     }
+
+    /** Gets the callable containing the declaration of this local variable. */
+    Callable getDeclaringCallable() { result = this.getABinding().getEnclosingCallable() }
+
+    /** Holds if this local variable is captured, that is, it is accessed from another callable than the one declaring it. */
+    predicate isCaptured() {
+      this.getAnAccess().getEnclosingCallable() != this.getDeclaringCallable()
+    }
   }
 
   /** An access to a locally-declared name. */
