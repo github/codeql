@@ -799,7 +799,7 @@ fn compute_direct_supertypes(
 ) -> std::collections::BTreeMap<node_types::TypeName, BTreeSet<&str>> {
     let mut supertypes = std::collections::BTreeMap::new();
     for node in nodes.values() {
-        if let node_types::EntryKind::Union { members } = &node.kind {
+        if let node_types::EntryKind::Union { members, .. } = &node.kind {
             for member in members {
                 supertypes
                     .entry(member.clone())
@@ -841,12 +841,9 @@ fn same_predicate_signature(a: &ql::Predicate, b: &ql::Predicate) -> bool {
     a.name == b.name && a.return_type == b.return_type && a.formal_parameters == b.formal_parameters
 }
 
-/// Computes, for each tree-sitter supertype (union) node, the list of
-/// predicates that are guaranteed to be defined identically (in terms of
-/// name, return type, and formal parameters, though not necessarily body) by
-/// every one of its members. These are the predicates that can be hoisted to
-/// an `abstract` predicate on the union's class, with the corresponding
-/// predicates on its members becoming `override`s.
+/// Computes the predicates explicitly exposed by a node. For a table these are
+/// its field predicates; for a union they are the predicates declared by the
+/// fields on that supertype.
 ///
 /// The result for a given node is memoized in `cache` (keyed by its QL class
 /// name), and also used to answer the query for any other node that
@@ -869,24 +866,8 @@ fn compute_exposed_predicates<'a, 'b>(
             Some(node_types::EntryKind::Table { .. }) => {
                 field_predicates.get(type_name).cloned().unwrap_or_default()
             }
-            Some(node_types::EntryKind::Union { members }) => {
-                let mut members = members.iter();
-                let mut common = match members.next() {
-                    Some(first) => {
-                        compute_exposed_predicates(first, nodes, field_predicates, cache).clone()
-                    }
-                    None => Vec::new(),
-                };
-                for member in members {
-                    let member_predicates =
-                        compute_exposed_predicates(member, nodes, field_predicates, cache);
-                    common.retain(|predicate| {
-                        member_predicates
-                            .iter()
-                            .any(|other| same_predicate_signature(predicate, other))
-                    });
-                }
-                common
+            Some(node_types::EntryKind::Union { .. }) => {
+                field_predicates.get(type_name).cloned().unwrap_or_default()
             }
             Some(node_types::EntryKind::Token { .. }) | None => Vec::new(),
         };
@@ -930,25 +911,24 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
         }
     }
 
-    // First, compute the field-getter predicates (and the expressions used by
-    // `getAFieldOrChild`) for every table node, without yet knowing whether
-    // any of them will need to be marked `override`. These are needed both
-    // to build the final classes below, and to figure out which fields are
-    // shared identically by all the members of a supertype.
+    // First, compute field-getter predicates for tables and the explicitly
+    // declared field predicates for supertypes.
     let mut field_predicates: BTreeMap<&node_types::TypeName, Vec<ql::Predicate<'_>>> =
         BTreeMap::new();
     let mut get_child_exprs: BTreeMap<&node_types::TypeName, Vec<ql::Expression<'_>>> =
         BTreeMap::new();
     for (type_name, node) in nodes {
-        if let node_types::EntryKind::Table {
-            name: main_table_name,
-            fields,
-        } = &node.kind
-        {
-            if fields.is_empty() {
-                panic!("Encountered node '{}' with no fields", type_name.kind);
+        let (main_table_name, fields, has_storage) = match &node.kind {
+            node_types::EntryKind::Table { name, fields } => (name.as_str(), fields, true),
+            node_types::EntryKind::Union { fields, .. } => {
+                (node.dbscheme_name.as_str(), fields, false)
             }
-
+            node_types::EntryKind::Token { .. } => continue,
+        };
+        if has_storage && fields.is_empty() {
+            panic!("Encountered node '{}' with no fields", type_name.kind);
+        }
+        if !fields.is_empty() {
             // Count how many columns there will be in the main table. There
             // will be one for the id, plus one for each field that's stored
             // as a column.
@@ -969,20 +949,18 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     nodes,
                 );
                 predicates.extend(get_preds);
-                if let Some(get_child_expr) = get_child_expr {
+                if has_storage && let Some(get_child_expr) = get_child_expr {
                     exprs.push(get_child_expr)
                 }
             }
             field_predicates.insert(type_name, predicates);
-            get_child_exprs.insert(type_name, exprs);
+            if has_storage {
+                get_child_exprs.insert(type_name, exprs);
+            }
         }
     }
 
-    // Next, for every supertype (union) node, compute the predicates that are
-    // guaranteed to be defined identically (in name, return type, and formal
-    // parameters) by every one of its members. Such predicates can be hoisted
-    // to an `abstract` predicate on the supertype's class, with the
-    // corresponding predicates on its members becoming `override`s.
+    // Next, collect the predicates explicitly exposed by every supertype.
     let mut exposed_predicates: BTreeMap<&str, Vec<ql::Predicate<'_>>> = BTreeMap::new();
     for (type_name, node) in nodes {
         if let node_types::EntryKind::Union { .. } = &node.kind {
@@ -1017,10 +995,10 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     }));
                 }
             }
-            node_types::EntryKind::Union { members: _ } => {
+            node_types::EntryKind::Union { .. } => {
                 // It's a tree-sitter supertype node, so we're wrapping a dbscheme
-                // union type. Any predicate that's identically defined by every
-                // member becomes an `abstract` predicate here.
+                // union type. Fields declared on the supertype become abstract
+                // predicates here.
                 let predicates = exposed_predicates
                     .get(node.ql_class_name.as_str())
                     .cloned()
@@ -1214,4 +1192,111 @@ pub fn create_print_ast_module(nodes: &node_types::NodeTypeMap) -> ql::TopLevel<
         body: vec![ql::TopLevel::Predicate(get_child)],
         overlay: None,
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn supertype_exposes_only_declared_fields() {
+        let node_types = r#"[
+            {
+                "type": "container",
+                "named": true,
+                "subtypes": [
+                    { "type": "alpha", "named": true },
+                    { "type": "beta", "named": true }
+                ],
+                "fields": {
+                    "item": {
+                        "multiple": true,
+                        "required": false,
+                        "types": [{ "type": "item", "named": true }]
+                    }
+                }
+            },
+            {
+                "type": "alpha",
+                "named": true,
+                "fields": {
+                    "hidden": {
+                        "multiple": false,
+                        "required": true,
+                        "types": [{ "type": "item", "named": true }]
+                    },
+                    "item": {
+                        "multiple": true,
+                        "required": false,
+                        "types": [{ "type": "item", "named": true }]
+                    }
+                }
+            },
+            {
+                "type": "beta",
+                "named": true,
+                "fields": {
+                    "hidden": {
+                        "multiple": false,
+                        "required": true,
+                        "types": [{ "type": "item", "named": true }]
+                    },
+                    "item": {
+                        "multiple": true,
+                        "required": false,
+                        "types": [{ "type": "item", "named": true }]
+                    }
+                }
+            },
+            { "type": "item", "named": true, "fields": {} }
+        ]"#;
+        let nodes = node_types::read_node_types_str("test", node_types).unwrap();
+        let classes = convert_nodes(&nodes);
+
+        let container = classes
+            .iter()
+            .find_map(|top_level| match top_level {
+                ql::TopLevel::Class(class) if class.name == "Container" => Some(class),
+                _ => None,
+            })
+            .unwrap();
+        assert_eq!(
+            container
+                .predicates
+                .iter()
+                .map(|predicate| predicate.name)
+                .collect::<BTreeSet<_>>(),
+            BTreeSet::from(["getAnItem", "getItem"]),
+        );
+        assert!(
+            container
+                .predicates
+                .iter()
+                .all(|predicate| predicate.body.is_none() && !predicate.is_final)
+        );
+
+        let alpha = classes
+            .iter()
+            .find_map(|top_level| match top_level {
+                ql::TopLevel::Class(class) if class.name == "Alpha" => Some(class),
+                _ => None,
+            })
+            .unwrap();
+        assert!(
+            alpha
+                .predicates
+                .iter()
+                .find(|predicate| predicate.name == "getItem")
+                .unwrap()
+                .overridden
+        );
+        assert!(
+            !alpha
+                .predicates
+                .iter()
+                .find(|predicate| predicate.name == "getHidden")
+                .unwrap()
+                .overridden
+        );
+    }
 }
