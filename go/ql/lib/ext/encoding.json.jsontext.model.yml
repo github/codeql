@@ -24,7 +24,6 @@ extensions:
       - ["encoding/json/jsontext", "Pointer", True, "AppendToken", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["encoding/json/jsontext", "Pointer", True, "LastToken", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["encoding/json/jsontext", "Pointer", True, "Parent", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
-      - ["encoding/json/jsontext", "Pointer", True, "Tokens", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["encoding/json/jsontext", "Token", True, "Clone", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["encoding/json/jsontext", "Token", True, "Float", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
       - ["encoding/json/jsontext", "Token", True, "Float32", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]

@@ -69,13 +69,13 @@ func TaintStepTest_StringsSplitSeq(sourceCQL interface{}) interface{} {
 func TaintStepTest_StringsFields_B0I0O0(sourceCQL interface{}) interface{} {
 	fromString656 := sourceCQL.(string)
 	intoString414 := strings.Fields(fromString656)
-	return intoString414
+	return intoString414[0]
 }
 
 func TaintStepTest_StringsFieldsFunc_B0I0O0(sourceCQL interface{}) interface{} {
 	fromString518 := sourceCQL.(string)
 	intoString650 := strings.FieldsFunc(fromString518, nil)
-	return intoString650
+	return intoString650[0]
 }
 
 func TaintStepTest_StringsJoin_B0I0O0(sourceCQL interface{}) interface{} {
