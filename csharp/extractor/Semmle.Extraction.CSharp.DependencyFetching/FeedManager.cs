@@ -359,6 +359,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     logger.LogInfo($"Using NuGet feeds from nuget.config files as fallback feeds: {string.Join(", ", ExplicitFeeds.OrderBy(f => f))}");
                 }
             }
+            else
+            {
+                logger.LogInfo($"Using fallback NuGet feeds from environment variable '{EnvironmentVariableNames.FallbackNugetFeeds}'.");
+            }
 
             return GetReachableNuGetFeeds(fallbackFeeds, isFallback: true);
         }

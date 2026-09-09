@@ -97,13 +97,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         {
                             if (string.IsNullOrWhiteSpace(registry.Url))
                             {
-                                logger.LogDebug("Ignoring registry with empty URL.");
+                                logger.LogError("Ignoring registry with empty URL.");
+                                continue;
+                            }
+
+                            if (string.IsNullOrWhiteSpace(registry.Type))
+                            {
+                                logger.LogError($"Ignoring registry at '{registry.Url}' since it has no type.");
                                 continue;
                             }
 
                             // The array contains all configured private registries, not just ones for C#.
                             // We ignore the non-C# ones here.
-                            if (registry.Type is null || !registry.Type.Equals("nuget_feed"))
+                            if (!registry.Type.Equals("nuget_feed"))
                             {
                                 logger.LogDebug($"Ignoring registry at '{registry.Url}' since it is not of type 'nuget_feed'.");
                                 continue;
