@@ -1727,8 +1727,15 @@ module CfgImpl {
     }
   }
 
-  /** Builds the CFG used to determine which `defer` statements have been registered. */
+  /**
+   * Builds the CFG used to determine which `defer` statements have been registered.
+   * Only functions containing `defer` statements need this auxiliary stage.
+   */
   private module EarlyInput2 implements Cfg1::InputSig2 {
+    predicate includeCallableEntry(Ast::Callable callable) {
+      callable = any(Go::DeferStmt stmt).getEnclosingFunction()
+    }
+
     predicate beginAbruptCompletion(
       Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
     ) {
