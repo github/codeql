@@ -1,4 +1,5 @@
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate
 import FlowTest
@@ -23,7 +24,7 @@ import MakeTest<MakeTestSig<MaximalFlowTest>>
 module MaximalFlowsConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     exists(node.getLocation().getFile().getRelativePath()) and
-    not node.asCfgNode() instanceof CallNode and
+    not node.asCfgNode() instanceof Cfg::CallNode and
     not node.asCfgNode().getNode() instanceof Return and
     not node instanceof DataFlow::ParameterNode and
     not node instanceof DataFlow::PostUpdateNode and
@@ -34,9 +35,9 @@ module MaximalFlowsConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     exists(node.getLocation().getFile().getRelativePath()) and
-    not any(CallNode c).getArg(_) = node.asCfgNode() and
+    not any(Cfg::CallNode c).getArg(_) = node.asCfgNode() and
     not isArgumentNode(node, _, _) and
-    not node.asCfgNode().(NameNode).getId().matches("SINK%") and
+    not node.asCfgNode().(Cfg::NameNode).getId().matches("SINK%") and
     not DataFlow::localFlowStep(node, _)
   }
 }

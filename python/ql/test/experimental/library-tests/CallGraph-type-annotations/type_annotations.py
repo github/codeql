@@ -26,7 +26,7 @@ def test_variable_annotation():
     x = eval("Foo()")
     x : Foo
     # Currently fails because there is no flow from the class definition to the type annotation.
-    x.method() # $ MISSING: tt=Foo.method
+    x.method() # $ tt=Foo.method
 
 def test_no_variable_annotation():
     x = eval("Foo()")

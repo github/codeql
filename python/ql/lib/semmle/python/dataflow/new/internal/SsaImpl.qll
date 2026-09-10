@@ -216,6 +216,7 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Py::Location, Cfg
     // shared-SSA `SsaUncertainWrite` merges the new value with the
     // immediately preceding definition.
     exists(Cfg::ImportStarNode imp |
+      imp.injects(_) and
       bb.getNode(i) = imp and
       certain = false and
       (
@@ -255,7 +256,7 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Py::Location, Cfg
   }
 }
 
-import SsaImplCommon::Make<Py::Location, CfgImpl::Cfg, SsaImplInput> as Impl
+import SsaImplCommon::MakeWithCachedLiveness<Py::Location, CfgImpl::Cfg, SsaImplInput> as Impl
 
 // Matching the cases in `SsaImplInput.variableWrite` above
 newtype TVariableWrite =

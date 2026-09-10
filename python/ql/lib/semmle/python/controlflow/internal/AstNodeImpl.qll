@@ -1626,6 +1626,8 @@ private module Input implements InputSig1, InputSig2 {
     n = any(Ast::AssertStmt a).getTest()
   }
 
+  predicate postOrInOrder(Ast::AstNode n) { mayThrow(n) }
+
   private string assertThrowTag() { result = "[assert-throw]" }
 
   /**
@@ -1724,7 +1726,7 @@ private module Input implements InputSig1, InputSig2 {
     always = true
     or
     mayThrow(ast) and
-    n.injects(ast) and
+    n.isIn(ast) and
     c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
     always = false
   }

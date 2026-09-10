@@ -239,6 +239,20 @@ signature module SsaSig<
   }
 }
 
+private signature module LivenessCachingSig {
+  predicate enabled();
+}
+
+private module NoLivenessCaching implements LivenessCachingSig {
+  pragma[inline]
+  predicate enabled() { none() }
+}
+
+private module LivenessCaching implements LivenessCachingSig {
+  pragma[inline]
+  predicate enabled() { any() }
+}
+
 /**
  * Provides an SSA implementation.
  *
@@ -256,8 +270,9 @@ signature module SsaSig<
  * NB: If this predicate is exposed, it should be cached.
  * ```
  */
-module Make<
-  LocationSig Location, BB::CfgSig<Location> Cfg, InputSig<Location, Cfg::BasicBlock> Input>
+private module MakeImpl<
+  LocationSig Location, BB::CfgSig<Location> Cfg, InputSig<Location, Cfg::BasicBlock> Input,
+  LivenessCachingSig CacheLiveness>
 {
   private import Cfg
   private import Input
@@ -386,7 +401,21 @@ module Make<
     /**
      * Holds if source variable `v` is live at the end of basic block `bb`.
      */
-    predicate liveAtExit(BasicBlock bb, SourceVariable v) { liveAtEntry(bb.getASuccessor(), v) }
+    private predicate liveAtExitUncached(BasicBlock bb, SourceVariable v) {
+      liveAtEntry(bb.getASuccessor(), v)
+    }
+
+    cached
+    private predicate liveAtExitCached(BasicBlock bb, SourceVariable v) {
+      liveAtEntry(bb.getASuccessor(), v)
+    }
+
+    pragma[inline]
+    predicate liveAtExit(BasicBlock bb, SourceVariable v) {
+      not CacheLiveness::enabled() and liveAtExitUncached(bb, v)
+      or
+      CacheLiveness::enabled() and liveAtExitCached(bb, v)
+    }
 
     /**
      * Holds if variable `v` is live in basic block `bb` at rank `rnk`.
@@ -2201,4 +2230,22 @@ module Make<
       )
     }
   }
+}
+
+/** Provides the default demand-specialized SSA implementation. */
+module Make<
+  LocationSig Location, BB::CfgSig<Location> Cfg, InputSig<Location, Cfg::BasicBlock> Input>
+{
+  import MakeImpl<Location, Cfg, Input, NoLivenessCaching>
+}
+
+/**
+ * Provides an SSA implementation that caches the complete source-variable liveness relation.
+ *
+ * Use this when the same SSA instantiation is exposed through multiple cached API stages.
+ */
+module MakeWithCachedLiveness<
+  LocationSig Location, BB::CfgSig<Location> Cfg, InputSig<Location, Cfg::BasicBlock> Input>
+{
+  import MakeImpl<Location, Cfg, Input, LivenessCaching>
 }

@@ -311,7 +311,6 @@ private module SsaComputeImpl {
      */
     cached
     predicate reachesEndOfBlock(SsaSourceVariable v, BasicBlock defbb, int defindex, BasicBlock b) {
-      Stages::AST::ref() and
       Liveness::liveAtExit(v, b) and
       (
         defbb = b and

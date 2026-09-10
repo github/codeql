@@ -45,13 +45,9 @@ module Stages {
     cached
     predicate ref() { 1 = 1 }
 
-    private import semmle.python.essa.SsaDefinitions as SsaDefinitions
-    private import semmle.python.essa.SsaCompute as SsaCompute
-    private import semmle.python.essa.Essa as Essa
     private import semmle.python.Module as PyModule
     private import semmle.python.Exprs as Exprs
     private import semmle.python.AstExtended as AstExtended
-    private import semmle.python.Flow as PyFlow
 
     /**
      * DONT USE!
@@ -60,12 +56,6 @@ module Stages {
     cached
     predicate backref() {
       1 = 1
-      or
-      SsaDefinitions::SsaSource::method_call_refinement(_, _, _)
-      or
-      SsaCompute::SsaDefinitions::reachesEndOfBlock(_, _, _, _)
-      or
-      exists(any(Essa::PhiFunction p).getInput(_))
       or
       exists(PyModule::moduleNameFromFile(_))
       or
@@ -76,26 +66,6 @@ module Stages {
       exists(any(AstExtended::AstNode n).getAChildNode())
       or
       exists(any(AstExtended::AstNode n).getParentNode())
-      or
-      exists(PyFlow::ControlFlowNode cfg, AstExtended::AstNode n | cfg.getNode() = n)
-      or
-      exists(any(PyFlow::BasicBlock b).getImmediateDominator())
-      or
-      exists(any(PyFlow::BasicBlock b).getScope())
-      or
-      any(PyFlow::BasicBlock b).strictlyDominates(_)
-      or
-      any(PyFlow::BasicBlock b).strictlyReaches(_)
-      or
-      exists(any(PyFlow::BasicBlock b).getASuccessor())
-      or
-      exists(any(PyFlow::ControlFlowNode b).getScope())
-      or
-      exists(PyFlow::DefinitionNode b)
-      or
-      exists(any(PyFlow::SequenceNode n).getElement(_))
-      or
-      exists(any(PyFlow::ControlFlowNode c).toString())
     }
   }
 
