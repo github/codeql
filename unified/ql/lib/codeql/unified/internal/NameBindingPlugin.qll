@@ -1,10 +1,16 @@
 private import unified
 private import codeql.util.Unit
-private import codeql.unified.internal.LocalNameBinding
 private import codeql.unified.internal.NameBindingPluginSwift // ensure overrides are seen
 
 /** Extension point for language-specific inputs to name binding. */
 class NameBindingPlugin extends Unit {
+  /**
+   * Holds if `e`, occurring in pattern context, should be interpreted a sub-expression
+   * whose result is to be compared to the incoming value.
+   */
+  bindingset[e]
+  predicate isNonPattern(Expr e) { none() }
+
   /**
    * Holds if `member` is an instance member.
    *
@@ -61,20 +67,6 @@ predicate isInheritableMember(Member member) {
   )
 }
 
-/** Holds if `binding` is only visible in its local scope. */
-pragma[nomagic]
-predicate isPrivateToLocalScope(AstNode binding) {
-  exists(Stmt member |
-    bindingContext(binding, _, member) and
-    (
-      member = any(ClassLikeDeclaration cls).getAMember() or
-      member = any(TopLevel t).getBody().getAStmt()
-    ) and
-    (binding instanceof NameDeclaration or binding instanceof BulkImportingPattern) and
-    any(NameBindingPlugin p).isPrivateToLocalScope(member, binding)
-  )
-}
-
 /**
  * A representative for a module scope.
  *
@@ -93,8 +85,8 @@ abstract class ModuleScopeRepr extends AstNode {
   predicate shouldInclude(Container c, string path) { none() }
 
   /**
-   * Holds if this module scope can be referenced by an identifier `name`
-   * appearing as the leading identifier of an import path.
+   * Holds if this module scope can be referenced by the given `name`
+   * appearing as the leading name of an import path.
    */
   predicate hasImportableName(string name) { none() }
 

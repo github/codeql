@@ -32,9 +32,7 @@ top_level
     block
       stmt:
         call_expr
-          callee:
-            name_expr
-              identifier: identifier "foo"
+          callee: identifier "foo"
           argument:
             argument
               value: int_literal "1"

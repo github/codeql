@@ -29,10 +29,6 @@ top_level
           modifier: modifier "struct"
           imported_expr:
             member_access_expr
-              base:
-                name_expr
-                  identifier: identifier "Foundation"
-              member: identifier "Date"
-          pattern:
-            name_pattern
-              identifier: identifier "Date"
+              base: identifier "Foundation"
+              member_name_node: identifier "Date"
+          pattern: identifier "Date"

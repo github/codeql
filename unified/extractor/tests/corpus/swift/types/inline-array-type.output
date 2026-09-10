@@ -65,9 +65,7 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "triple"
+          pattern: identifier "triple"
           type: unsupported_node "[3 of Int]"
           value:
             array_literal

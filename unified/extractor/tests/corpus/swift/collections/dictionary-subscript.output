@@ -47,14 +47,10 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "v"
+          pattern: identifier "v"
           value:
             call_expr
-              callee:
-                name_expr
-                  identifier: identifier "d"
+              callee: identifier "d"
               argument:
                 argument
                   value: string_literal "\"key\""

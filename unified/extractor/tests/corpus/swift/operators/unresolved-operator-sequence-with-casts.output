@@ -94,48 +94,34 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "casts"
+          name_node: identifier "casts"
           parameter:
             parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Any"
-              pattern:
-                name_pattern
-                  identifier: identifier "a"
+              external_name_node: identifier "_"
+              type: identifier "Any"
+              pattern: identifier "a"
             parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "b"
+              external_name_node: identifier "_"
+              type: identifier "Int"
+              pattern: identifier "b"
           body:
             block
               stmt:
                 unresolved_operator_sequence
                   element:
-                    name_expr
-                      identifier: identifier "_"
+                    identifier "_"
                     infix_operator "="
-                    name_expr
-                      identifier: identifier "a"
+                    identifier "a"
                     infix_operator "as"
                     unsupported_node "Int"
                     infix_operator ".&"
-                    name_expr
-                      identifier: identifier "b"
+                    identifier "b"
                 unresolved_operator_sequence
                   element:
-                    name_expr
-                      identifier: identifier "_"
+                    identifier "_"
                     infix_operator "="
-                    name_expr
-                      identifier: identifier "a"
+                    identifier "a"
                     infix_operator "is"
                     unsupported_node "Int"
                     infix_operator ".&"
-                    name_expr
-                      identifier: identifier "b"
+                    identifier "b"

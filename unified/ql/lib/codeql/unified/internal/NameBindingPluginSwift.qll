@@ -6,6 +6,9 @@ private import unified
 private import codeql.unified.internal.NameBindingPlugin
 
 class NameBindingPluginSwift extends NameBindingPlugin {
+  bindingset[e]
+  override predicate isNonPattern(Expr e) { isUnboundPattern(e.(Identifier)) }
+
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
   bindingset[cls, member]
   override predicate isInstanceMember(ClassLikeDeclaration cls, Member member) {
@@ -37,6 +40,21 @@ class NameBindingPluginSwift extends NameBindingPlugin {
   }
 }
 
+/** Holds if `node` is in a context where a bare name node should be seen as a reference rather than a declaration. */
+private predicate isUnboundPattern(Expr node) {
+  // 'case/catch/guard' start an unbound-pattern context, 'let/var' terminate it
+  (
+    node = any(SwitchCase c).getPattern()
+    or
+    node = any(CatchClause c).getPattern()
+    or
+    node = any(PatternGuardExpr c).getPattern()
+    or
+    isUnboundPattern(node.(Expr).getEnclosingExpr())
+  ) and
+  not node.(ExprPattern).hasModifier(["let", "var"])
+}
+
 private predicate predefinedSourceFolders(string folder, int ordering) {
   folder = "Sources,Source,src,srcs".splitAt(",", ordering)
 }
@@ -63,7 +81,7 @@ class SwiftPackageTarget extends ModuleScopeRepr, CallExpr {
 
   SwiftPackageTarget() {
     this.getFile().getBaseName() = "Package.swift" and
-    this.getCallee().(MemberAccessExpr).getMember().getValue() = targetKind and
+    this.getCallee().(MemberAccessExpr).getMemberName() = targetKind and
     targetKind =
       [
         "target", "executableTarget", "testTarget", "systemLibrary", "binaryTarget", "plugin",

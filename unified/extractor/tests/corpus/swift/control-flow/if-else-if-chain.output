@@ -115,18 +115,14 @@ top_level
         if_expr
           condition:
             binary_expr
-              left:
-                name_expr
-                  identifier: identifier "x"
+              left: identifier "x"
               operator: infix_operator ">"
               right: int_literal "0"
           then:
             block
               stmt:
                 call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                  callee: identifier "print"
                   argument:
                     argument
                       value: int_literal "1"
@@ -134,18 +130,14 @@ top_level
             if_expr
               condition:
                 binary_expr
-                  left:
-                    name_expr
-                      identifier: identifier "x"
+                  left: identifier "x"
                   operator: infix_operator "<"
                   right: int_literal "0"
               then:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: int_literal "2"
@@ -153,9 +145,7 @@ top_level
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: int_literal "3"
