@@ -112,6 +112,8 @@ module DataFlowInput implements InputSig<Location> {
   //
   predicate simpleLocalFlowStep(Node node1, Node node2, string model) {
     step(node1, any(Step s | s.value()), node2) and model = ""
+    or
+    localSsaStep(node1, node2, _) and model = ""
   }
 
   predicate jumpStep(Node node1, Node node2) { step(node1, any(Step s | s.jump()), node2) }
@@ -128,7 +130,7 @@ module DataFlowInput implements InputSig<Location> {
 
   predicate expectsContent(Node n, ContentSet c) { none() } // TODO
 
-  predicate localMustFlowStep(Node node1, Node node2) { none() } // TODO
+  predicate localMustFlowStep(Node node1, Node node2) { localSsaMustFlowStep(node1, node2) } // TODO
 
   //
   // Misc

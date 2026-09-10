@@ -5,5 +5,6 @@ import DataFlowGraph
 import DataFlowInstantiation
 import DataFlowNode
 import Step
+import LocalSsa
 import TaintTrackingInstantiation
 import VariableRefKind

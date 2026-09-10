@@ -1,6 +1,6 @@
 private import unified
 
-private newtype TVariableRefKind =
+newtype TVariableRefKind =
   TRead() or
   TWrite() or
   TPostUpdate()
