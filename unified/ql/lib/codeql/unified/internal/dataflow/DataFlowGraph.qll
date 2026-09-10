@@ -66,6 +66,10 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
     step(n, _, result)
     or
     step(result, _, n)
+    or
+    localSsaStep(n, result, _)
+    or
+    localSsaStep(result, n, _)
   }
 
   private predicate relevantDataFlowNode(Node node) {
@@ -89,6 +93,11 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
       exists(Step step |
         step(node1, step, node2) and
         value = step.toString()
+      )
+      or
+      exists(boolean isUseStep |
+        localSsaStep(node1, node2, isUseStep) and
+        if isUseStep = true then value = "use-use" else value = "def-use"
       )
       or
       node2 = getPostUpdateNode(node1) and
