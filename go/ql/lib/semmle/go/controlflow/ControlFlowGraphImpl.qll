@@ -47,6 +47,18 @@ module CfgImpl {
     )
   }
 
+  private predicate insideConstantRoot(Go::AstNode node) {
+    constantRoot(node.getParent())
+    or
+    insideConstantRoot(node.getParent())
+  }
+
+  private predicate inArrayLength(Go::AstNode node) {
+    node = any(Go::ArrayTypeExpr array).getLength()
+    or
+    inArrayLength(node.getParent())
+  }
+
   /** Provides an implementation of the AST signature for Go. */
   private module Ast implements CfgLib::AstSig<Go::Location> {
     class AstNode = Go::AstNode;
@@ -80,7 +92,7 @@ module CfgImpl {
       or
       e = any(Go::ImportSpec is).getPathExpr()
       or
-      e.getParent*() = any(Go::ArrayTypeExpr ate).getLength()
+      inArrayLength(e)
       or
       // The shared switch model wires control flow directly from the switch to
       // its case clauses (in control-flow order) and between cases, so the
@@ -97,7 +109,7 @@ module CfgImpl {
       or
       // The strict sub-expressions of a constant expression are not evaluated
       // at run time, so they must not get their own evaluation nodes.
-      constantRoot(e.(Go::Expr).getParent+())
+      insideConstantRoot(e.(Go::Expr))
     }
 
     AstNode getChild(AstNode n, int index) {
