@@ -11,12 +11,12 @@ public class UnsafeHostnameVerification {
      * Test the implementation of trusting all hostnames as an anonymous class
      */
     public void testTrustAllHostnameOfAnonymousClass() {
-        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() { // $
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() { // $ Alert[java/unsafe-hostname-verification]
             @Override
             public boolean verify(String hostname, SSLSession session) {
                 return true; // BAD, always returns true
             }
-        }); // $ Alert[java/unsafe-hostname-verification]
+        });
     }
 
     /**
@@ -63,7 +63,7 @@ public class UnsafeHostnameVerification {
     }
 
     public void testTrustAllHostnameWithExceptions() {
-        HostnameVerifier verifier = new HostnameVerifier() { // $
+        HostnameVerifier verifier = new HostnameVerifier() { // $ Source[java/unsafe-hostname-verification]
             @Override
             public boolean verify(String hostname, SSLSession session) {
                 try { verify(hostname, session.getPeerCertificates()); } catch (Exception e) { throw new RuntimeException(); }
@@ -77,7 +77,7 @@ public class UnsafeHostnameVerification {
             // `Exception` in the case of a mismatch.
             private void verify(String hostname, Certificate[] certs) {
             }
-        }; // $ Source[java/unsafe-hostname-verification]
+        };
         HttpsURLConnection.setDefaultHostnameVerifier(verifier); // $ Alert[java/unsafe-hostname-verification]
     }
 
@@ -85,12 +85,12 @@ public class UnsafeHostnameVerification {
      * Test the implementation of trusting all hostnames as a variable
      */
     public void testTrustAllHostnameOfVariable() {
-        HostnameVerifier verifier = new HostnameVerifier() { // $
+        HostnameVerifier verifier = new HostnameVerifier() { // $ Source[java/unsafe-hostname-verification]
             @Override
             public boolean verify(String hostname, SSLSession session) {
                 return true; // BAD, always returns true
             }
-        }; // $ Source[java/unsafe-hostname-verification]
+        };
         HttpsURLConnection.setDefaultHostnameVerifier(verifier); // $ Alert[java/unsafe-hostname-verification]
     }
 

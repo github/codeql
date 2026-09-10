@@ -6,8 +6,8 @@ class EmptyBlock
 
         // BAD
         foreach (var arg in args)
-        {
-        } // $ Alert
+        /* $ Alert */ {
+        }
 
         // OK - comment
         foreach (var arg in args)
@@ -23,8 +23,8 @@ class EmptyBlock
 
         // BAD
         if (true)
-        {
-        } // $ Alert
+        /* $ Alert */ {
+        }
 
         // OK - comment
         if (true)
@@ -45,7 +45,7 @@ class EmptyBlock
 
         // BAD: there is no update
         for (int i = 0; i < 10;)
-        {
-        } // $ Alert
+        /* $ Alert */ {
+        }
     }
 }

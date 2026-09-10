@@ -5,6 +5,7 @@ private import codeql.util.test.InlineExpectationsTest
 module Impl implements InlineExpectationsTestSig {
   private newtype TExpectationComment =
     TCSharpComment(CS::SinglelineComment c) or
+    TCSharpMultilineComment(CS::MultilineComment c) or
     TXmlComment(CS::XmlComment c) or
     TAspComment(ASP::AspComment c)
 
@@ -16,6 +17,8 @@ module Impl implements InlineExpectationsTestSig {
   class ExpectationComment extends TExpectationComment {
     CS::SinglelineComment asCSharpComment() { this = TCSharpComment(result) }
 
+    CS::MultilineComment asCSharpMultilineComment() { this = TCSharpMultilineComment(result) }
+
     CS::XmlComment asXmlComment() { this = TXmlComment(result) }
 
     ASP::AspComment asAspComment() { this = TAspComment(result) }
@@ -23,6 +26,8 @@ module Impl implements InlineExpectationsTestSig {
     /** Gets the contents of this comment, _without_ the preceding comment marker. */
     string getContents() {
       result = this.asCSharpComment().getText()
+      or
+      result = this.asCSharpMultilineComment().getText()
       or
       result = this.asXmlComment().getText()
       or
@@ -33,6 +38,8 @@ module Impl implements InlineExpectationsTestSig {
     Location getLocation() {
       result = this.asCSharpComment().getLocation()
       or
+      result = this.asCSharpMultilineComment().getLocation()
+      or
       result = this.asXmlComment().getLocation()
       or
       result = this.asAspComment().getLocation()
@@ -41,6 +48,8 @@ module Impl implements InlineExpectationsTestSig {
     /** Gets a textual representation of this comment. */
     string toString() {
       result = this.asCSharpComment().toString()
+      or
+      result = this.asCSharpMultilineComment().toString()
       or
       result = this.asXmlComment().toString()
       or

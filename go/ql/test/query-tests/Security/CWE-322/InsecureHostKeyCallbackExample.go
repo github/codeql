@@ -12,10 +12,10 @@ func insecureSSHClientConfig() {
 	_ = &ssh.ClientConfig{
 		User: "user",
 		Auth: []ssh.AuthMethod{nil},
-		HostKeyCallback: ssh.HostKeyCallback( // BAD
+		HostKeyCallback: ssh.HostKeyCallback( // BAD // $ Source Alert
 			func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 				return nil
-			}), // $ Source Alert
+			}),
 	}
 }
 
@@ -28,10 +28,10 @@ func insecureSSHClientConfigAlt() {
 }
 
 func insecureSSHClientConfigLocalFlow() {
-	callback := ssh.HostKeyCallback(
+	callback := ssh.HostKeyCallback( // $ Source
 		func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 			return nil
-		}) // $ Source
+		})
 
 	_ = &ssh.ClientConfig{
 		User:            "user",
@@ -42,9 +42,9 @@ func insecureSSHClientConfigLocalFlow() {
 
 func insecureSSHClientConfigLocalFlowAlt() {
 	callback :=
-		func(hostname string, remote net.Addr, key ssh.PublicKey) error {
+		func(hostname string, remote net.Addr, key ssh.PublicKey) error { // $ Source
 			return nil
-		} // $ Source
+		}
 
 	_ = &ssh.ClientConfig{
 		User:            "user",

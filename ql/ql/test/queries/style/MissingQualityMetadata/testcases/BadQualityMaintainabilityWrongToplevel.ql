@@ -1,4 +1,4 @@
-/**
+/** // $ Alert
  * @name Some query
  * @description Some description
  * @kind problem
@@ -8,7 +8,7 @@
  * @tags quality
  *       maintainability
  *       error-handling
- */ // $ Alert
+ */
 
 import ql
 

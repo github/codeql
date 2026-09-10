@@ -1,3 +1,3 @@
-class AlternativeRootController < ActionController::Base
+class AlternativeRootController < ActionController::Base # $ Alert[rb/csrf-protection-not-enabled]
     # BAD: no protect_from_forgery call
-end # $ Alert[rb/csrf-protection-not-enabled]
+end

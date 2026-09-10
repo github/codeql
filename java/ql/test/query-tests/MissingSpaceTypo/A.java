@@ -1,20 +1,20 @@
 public class A {
   public void missing() {
     String s;
-    s = "this text" +
-      "is missing a space"; // $ Alert
-    s = "the class java.util.ArrayList" +
-      "without a space"; // $ Alert
-    s = "This isn't" +
-      "right."; // $ Alert
-    s = "There's 1" +
-      "thing wrong"; // $ Alert
-    s = "There's A/B" +
-      "and no space"; // $ Alert
-    s = "Wait for it...." +
-      "No space!"; // $ Alert
-    s = "Is there a space?" +
-      "No!"; // $ Alert
+    s = "this text" + // $ Alert
+      "is missing a space";
+    s = "the class java.util.ArrayList" + // $ Alert
+      "without a space";
+    s = "This isn't" + // $ Alert
+      "right.";
+    s = "There's 1" + // $ Alert
+      "thing wrong";
+    s = "There's A/B" + // $ Alert
+      "and no space";
+    s = "Wait for it...." + // $ Alert
+      "No space!";
+    s = "Is there a space?" + // $ Alert
+      "No!";
   }
 
   public void ok() {

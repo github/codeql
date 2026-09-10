@@ -2,7 +2,7 @@ const http = require('http');
 
 // BAD: a hand-written RFC 1918 / loopback / metadata denylist matched against the
 // host string. The embedded IPv4 inside `::ffff:10.0.0.1` is never seen.
-function checkTargetHost(host) { // NOT OK
+function checkTargetHost(host) { // NOT OK // $ Alert[javascript/ssrf-ipv6-transition-incomplete-guard]
   if (
     host === '127.0.0.1' ||
     host === '169.254.169.254' ||
@@ -13,6 +13,6 @@ function checkTargetHost(host) { // NOT OK
     throw new Error('blocked internal host');
   }
   return http.get('http://' + host + '/');
-} // $ Alert[javascript/ssrf-ipv6-transition-incomplete-guard]
+}
 
 module.exports = { checkTargetHost };

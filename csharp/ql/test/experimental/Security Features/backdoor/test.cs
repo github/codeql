@@ -68,10 +68,10 @@ class External
     {
         DateTime lastWriteTime = System.IO.File.GetLastWriteTime("someFile"); // $ Source[cs/backdoor/potential-time-bomb]
         int num = new Random().Next(288, 336);
-        if (DateTime.Now.CompareTo(lastWriteTime.AddHours((double)num)) >= 0) // $ Sink[cs/backdoor/potential-time-bomb] // BUG : Potential time bomb, currently not detected
+        if (DateTime.Now.CompareTo(lastWriteTime.AddHours((double)num)) >= 0) // $ Sink[cs/backdoor/potential-time-bomb] Alert[cs/backdoor/potential-time-bomb] // BUG : Potential time bomb, currently not detected
         {
             // Some code here
-        } // $ Alert[cs/backdoor/potential-time-bomb]
+        }
     }
 
 }

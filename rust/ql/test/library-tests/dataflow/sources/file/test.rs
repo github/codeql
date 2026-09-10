@@ -147,9 +147,9 @@ fn test_io_file() -> std::io::Result<()> {
     }
 
     {
-        let mut f2 = std::fs::OpenOptions::new()
+        let mut f2 = std::fs::OpenOptions::new() // $ Alert[rust/summary/taint-sources]
             .create_new(true)
-            .open("f2.txt") // $ Alert[rust/summary/taint-sources]
+            .open("f2.txt")
             .unwrap();
         let mut buffer = [0u8; 1024];
         let _bytes = f2.read(&mut buffer)?;
@@ -157,12 +157,12 @@ fn test_io_file() -> std::io::Result<()> {
     }
 
     {
-        let mut f3 = std::fs::OpenOptions::new()
+        let mut f3 = std::fs::OpenOptions::new() // $ Alert[rust/summary/taint-sources]
             .read(true)
             .write(true)
             .truncate(true)
             .create(true)
-            .open("f3.txt") // $ Alert[rust/summary/taint-sources]
+            .open("f3.txt")
             .unwrap();
         let mut buffer = [0u8; 1024];
         let _bytes = f3.read(&mut buffer)?;

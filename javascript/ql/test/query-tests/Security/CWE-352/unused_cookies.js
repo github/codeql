@@ -5,12 +5,12 @@ let app = express();
 
 app.use(cookieParser()); // $ Alert
 
-app.post('/doSomethingTerrible', (req, res) => { // uses cookies
+app.post('/doSomethingTerrible', (req, res) => { // uses cookies // $ RelatedLocation
     if (req.cookies['secret'] === app.secret) {
         somethingTerrible();
     }
     res.end('Ok');
-}); // $ RelatedLocation
+});
 
 app.post('/doSomethingElse', (req, res) => { // OK - doesn't actually use cookies
     somethingElse(req.query['data']);
@@ -26,14 +26,14 @@ app.post('/doWithCaptcha', (req, res) => { // OK - attacker can't guess the capt
     res.end('Ok');
 });
 
-app.post('/user', (req, res) => { // access to req.user is unprotected
+app.post('/user', (req, res) => { // access to req.user is unprotected // $ RelatedLocation
     somethingElse(req.user.name);
     res.end('Ok');
-}); // $ RelatedLocation
+});
 
-app.post('/session', (req, res) => { // access to req.session is unprotected
+app.post('/session', (req, res) => { // access to req.session is unprotected // $ RelatedLocation
     somethingElse(req.session.name);
     res.end('Ok');
-}); // $ RelatedLocation
+});
 
 app.listen();

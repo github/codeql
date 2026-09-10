@@ -47,9 +47,9 @@ public class HardcodedHandler : IHttpHandler
 
         byte[] rawCertData = new byte[] { 0x20, 0x20, 0x20 }; // $ Alert[cs/hardcoded-credentials]
         // BAD: Passing a literal certificate and password to an X509 certificate constructor
-        X509Certificate2 cert = new X509Certificate2(
+        X509Certificate2 cert = new X509Certificate2( // $ Alert[cs/hardcoded-credentials]
             rawCertData, // $ Sink[cs/hardcoded-credentials]
-            "myPa55word"); // $ Alert[cs/hardcoded-credentials]
+            "myPa55word");
 
         // BAD: Passing literal Password to connection string
         SqlConnection conn = new SqlConnection("Password=12345"); // $ Alert[cs/hardcoded-connection-string-credentials]

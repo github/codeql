@@ -1,6 +1,6 @@
-/*
+/* // $ Alert
  * This should be QLDoc.
- */ // $ Alert
+ */
 
 /**
  * this is fine

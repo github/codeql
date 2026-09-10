@@ -1,11 +1,11 @@
 import * as Cookies from "es-cookie";
 
 function esCookies() {
-  Cookies.set("authkey", "value", {
+  Cookies.set("authkey", "value", { // $ Alert
     secure: true,
     httpOnly: true,
     sameSite: "None",
-  }); // $ Alert
+  });
 
   Cookies.set("authkey", "value", {
     secure: true,
@@ -17,12 +17,12 @@ function esCookies() {
 function browserCookies() {
   var cookies = require("browser-cookies");
 
-  cookies.set("authkey", "value", {
+  cookies.set("authkey", "value", { // $ Alert
     expires: 365,
     secure: true,
     httponly: true,
     samesite: "None",
-  }); // $ Alert
+  });
 
   cookies.set("authkey", "value", {
     expires: 365,
@@ -35,12 +35,12 @@ function browserCookies() {
 function cookie() {
   var cookie = require("cookie");
 
-  var setCookie = cookie.serialize("authkey", "value", {
+  var setCookie = cookie.serialize("authkey", "value", { // $ Alert
     maxAge: 9000000000,
     httpOnly: true,
     secure: true,
     sameSite: "None",
-  }); // $ Alert
+  });
 
   var setCookie = cookie.serialize("authkey", "value", {
     maxAge: 9000000000,
@@ -55,12 +55,12 @@ const app = express();
 const session = require("cookie-session");
 
 app.get("/a", function (req, res, next) {
-  res.cookie("authkey", "value", {
+  res.cookie("authkey", "value", { // $ Alert
     maxAge: 9000000000,
     httpOnly: true,
     secure: true,
     sameSite: "None",
-  }); // $ Alert
+  });
 
   res.cookie("session", "value", {
     maxAge: 9000000000,
@@ -73,13 +73,13 @@ app.get("/a", function (req, res, next) {
 });
 
 app.use(
-  session({
+  session({ // $ Alert
     name: "session",
     keys: ["key1", "key2"],
     httpOnly: true,
     secure: true,
     sameSite: "None",
-  }) // $ Alert
+  })
 );
 
 app.use(
@@ -95,7 +95,7 @@ app.use(
 const expressSession = require("express-session");
 
 app.use(
-  expressSession({
+  expressSession({ // $ Alert
     name: "session",
     keys: ["key1", "key2"],
     cookie: {
@@ -103,7 +103,7 @@ app.use(
       secure: true,
       sameSite: "None",
     },
-  }) // $ Alert
+  })
 );
 
 app.use(

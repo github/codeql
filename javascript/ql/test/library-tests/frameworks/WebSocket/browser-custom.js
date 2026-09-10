@@ -7,13 +7,13 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
 		socket.send('Hi from browser!'); // $ clientSend
 	});
 
-	socket.addEventListener('message', function (event) {
+	socket.addEventListener('message', function (event) { // $ clientReceive
 		console.log('Message from server ', event.data); // $ remoteFlow
-	}); // $ clientReceive
+	});
 
-	socket.onmessage = function (event) {
+	socket.onmessage = function (event) { // $ clientReceive
 		console.log("Message from server 2", event.data); // $ remoteFlow
-	}; // $ clientReceive
+	};
 })();
 
 
@@ -23,14 +23,14 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
 		sock.send('test'); // $ clientSend
 	};
 	
-	sock.onmessage = function (e) {
+	sock.onmessage = function (e) { // $ clientReceive
 		console.log('message', e.data); // $ remoteFlow
 		sock.close();
-	}; // $ clientReceive
+	};
 	
-	sock.addEventListener('message', function (event) {
+	sock.addEventListener('message', function (event) { // $ clientReceive
 		console.log('Using addEventListener ', event.data); // $ remoteFlow
-	}); // $ clientReceive
+	});
 })();
 
 
@@ -39,13 +39,13 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
         myWebSocketInstance.send('Hi from browser!'); // $ clientSend
     });
 
-    myWebSocketInstance.addEventListener('message', function (event) {
+    myWebSocketInstance.addEventListener('message', function (event) { // $ clientReceive
         console.log('Message from server ', event.data); // $ remoteFlow
-    }); // $ clientReceive
+    });
 
-    myWebSocketInstance.onmessage = function (event) {
+    myWebSocketInstance.onmessage = function (event) { // $ clientReceive
         console.log("Message from server 2", event.data); // $ remoteFlow
-    }; // $ clientReceive
+    };
 })();
 
 
@@ -54,20 +54,20 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
         mySockJSInstance.send('test'); // $ clientSend
     };
     
-    mySockJSInstance.onmessage = function (e) {
+    mySockJSInstance.onmessage = function (e) { // $ clientReceive
         console.log('message', e.data); // $ remoteFlow
         mySockJSInstance.close();
-    }; // $ clientReceive
+    };
     
-    mySockJSInstance.addEventListener('message', function (event) {
+    mySockJSInstance.addEventListener('message', function (event) { // $ clientReceive
         console.log('Using addEventListener ', event.data); // $ remoteFlow
-    }); // $ clientReceive
+    });
 })();
 
 
-const recv_message = function (e) {
+const recv_message = function (e) { // $ clientReceive
     console.log('Received message:', e.data); // $ remoteFlow
-}; // $ clientReceive
+};
 
 (function () {
     myWebSocketInstance.onmessage = recv_message.bind(this);

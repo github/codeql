@@ -287,9 +287,9 @@ func testUtilsPropagators(c *beego.Controller) {
 	c.CustomAbort(500, utils.SliceDiff(untainted, genericFiles)[0].(*multipart.FileHeader).Filename)
 	c.CustomAbort(
 		500,
-		utils.SliceFilter(
+		utils.SliceFilter( // $ Alert[go/reflected-xss]
 			genericFiles,
-			func([]interface{}) bool { return true })[0].(*multipart.FileHeader).Filename) // $ Alert[go/reflected-xss]
+			func([]interface{}) bool { return true })[0].(*multipart.FileHeader).Filename)
 	c.CustomAbort(500, utils.SliceIntersect(genericFiles, untainted)[0].(*multipart.FileHeader).Filename)  // $ Alert[go/reflected-xss]
 	c.CustomAbort(500, utils.SliceIntersect(untainted, genericFiles)[0].(*multipart.FileHeader).Filename)  // $ Alert[go/reflected-xss]
 	c.CustomAbort(500, utils.SliceMerge(genericFiles, untainted)[0].(*multipart.FileHeader).Filename)      // $ Alert[go/reflected-xss]
