@@ -116,3 +116,45 @@ const fastifyApp3 = require('fastify')();
 fastifyApp3.get('/before-rate-limit', expensiveHandler1); // $ Alert
 fastifyApp3.register(require('@fastify/rate-limit'));
 fastifyApp3.get('/after-rate-limit', expensiveHandler1);
+
+// the server instance is reached through a chainable configuration method, which
+// returns the same instance
+const fastifyApp4 = require('fastify')().withTypeProvider();
+
+fastifyApp4.register(require('@fastify/rate-limit'));
+fastifyApp4.get('/after-rate-limit', expensiveHandler1);
+
+// same, but with no rate limiter registered at all, so the route is genuinely unguarded
+const fastifyApp5 = require('fastify')().withTypeProvider();
+
+fastifyApp5.get('/no-rate-limit', expensiveHandler1); // $ Alert
+
+// several configuration methods chained together
+const fastifyApp6 = require('fastify')()
+  .withTypeProvider()
+  .setValidatorCompiler(compiler)
+  .decorate('answer', 42);
+
+fastifyApp6.register(require('@fastify/rate-limit'));
+fastifyApp6.get('/after-rate-limit', expensiveHandler1);
+
+// the chained instance is returned from a factory function, so reaching it requires
+// tracking the value across the call rather than only through local references
+function makeFastifyApp() {
+  return require('fastify')().withTypeProvider();
+}
+
+const fastifyApp7 = makeFastifyApp();
+
+fastifyApp7.register(require('@fastify/rate-limit'));
+fastifyApp7.get('/after-rate-limit', expensiveHandler1);
+
+// same, from a separate factory so that the server above does not share its creation
+// site, and no rate limiter is registered on it
+function makeUnguardedFastifyApp() {
+  return require('fastify')().withTypeProvider();
+}
+
+const fastifyApp8 = makeUnguardedFastifyApp();
+
+fastifyApp8.get('/no-rate-limit', expensiveHandler1); // $ Alert

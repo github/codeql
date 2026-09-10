@@ -21,6 +21,25 @@ module Fastify {
     StandardServerDefinition() { this = DataFlow::moduleImport("fastify").getAnInvocation() }
   }
 
+  /**
+   * Gets the name of a chainable Fastify server method, that is, a configuration or
+   * lifecycle method that returns the same server instance it was called on, so that a
+   * call to it still refers to that server.
+   *
+   * Route-registering methods such as `register`, `addHook`, and the shorthand route
+   * methods return the server as well, but they are deliberately excluded here because
+   * they already have a meaning in the routing model for Fastify.
+   */
+  private string chainableServerMethodName() {
+    result =
+      [
+        "withTypeProvider", "addSchema", "addHttpMethod", "decorate", "decorateRequest",
+        "decorateReply", "setValidatorCompiler", "setSerializerCompiler", "setSchemaController",
+        "setReplySerializer", "setSchemaErrorFormatter", "setErrorHandler", "setNotFoundHandler",
+        "setGenReqId", "setChildLoggerFactory", "after", "ready"
+      ]
+  }
+
   /** Gets a data flow node referring to a fastify server. */
   private DataFlow::SourceNode server(DataFlow::SourceNode creation, DataFlow::TypeTracker t) {
     t.start() and
@@ -30,6 +49,11 @@ module Fastify {
     // server.register((serverAlias) => ..., { options })
     t.start() and
     result = pluginCallback(creation).(DataFlow::FunctionNode).getParameter(0)
+    or
+    // server.withTypeProvider<T>(), server.setValidatorCompiler(...), and friends return
+    // the server itself, so the result of such a call still refers to it.
+    t.start() and
+    result = server(creation).getAMethodCall(chainableServerMethodName())
     or
     exists(DataFlow::TypeTracker t2 | result = server(creation, t2).track(t2, t))
   }
