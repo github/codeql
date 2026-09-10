@@ -28,7 +28,7 @@ bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.1", repo_name = "json")
 bazel_dep(name = "fmt", version = "12.1.0-codeql.1")
 bazel_dep(name = "rules_kotlin", version = "2.2.2-codeql.1")
 bazel_dep(name = "gazelle", version = "0.50.0")
-bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.1")
+bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.2")
 bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_rust", version = "0.69.0")
 bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.1")
@@ -186,6 +186,9 @@ register_toolchains("@dotnet_toolchains//:all")
 
 csharp_main_extension = use_extension("//csharp:paket.main_extension.bzl", "main_extension")
 use_repo(csharp_main_extension, "paket.main")
+
+powershell_extension = use_extension("//powershell:paket.powershell_extension.bzl", "powershell_extension")
+use_repo(powershell_extension, "paket.powershell")
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
