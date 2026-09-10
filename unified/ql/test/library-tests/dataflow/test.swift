@@ -120,3 +120,21 @@ func t13() {
     sink(a); // $ hasValueFlow=t13.1
     sink(b); // $ hasValueFlow=t13.2
 }
+
+func t14() {
+    var a = "safe";
+    a = sink(a) + source("t14.1"); // $ SPURIOUS: hasTaintFlow=t14.1
+    sink(a); // $ hasTaintFlow=t14.1
+}
+
+func t15() {
+    var a = "safe";
+    a += source("t15.1");
+    sink(a); // $ MISSING: hasTaintFlow=t15.1
+}
+
+func t16() {
+    var a = "safe";
+    a += sink(a) + source("t16.1");
+    sink(a); // $ MISSING: hasTaintFlow=t16.1
+}
