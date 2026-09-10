@@ -28,6 +28,16 @@ predicate step(Node node1, Step step, Node node2) {
     node2.isLocalVariablePostUpdate(access, access.getLocalVariable())
   )
   or
+  exists(UnqualifiedMemberAccess access | access.isInstanceAccess() |
+    node1.isLocalVariableRead(access, access.getImplicitQualifierVariable()) and
+    step.readName(access.getName()) and
+    node2.isResultValue(access)
+    or
+    (node1.isIncomingValue(access) or node1.isPostUpdate(access)) and
+    step.storeName(access.getName()) and
+    node2.isLocalVariablePostUpdate(access, access.getImplicitQualifierVariable())
+  )
+  or
   exists(BinaryExpr expr |
     expr.getOperator().getValue() = "+" and
     node1.isResultValue([expr.getLeft(), expr.getRight()]) and

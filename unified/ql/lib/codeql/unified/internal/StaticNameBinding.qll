@@ -667,6 +667,9 @@ module Public {
     LocalVariable getImplicitQualifierVariable() {
       ResolveImplicitReceiverAccess::access(this, result)
     }
+
+    /** Gets the simple name of this identifier, that is, the name of the member being accessed. */
+    string getName() { result = this.getValue() }
   }
 }
 

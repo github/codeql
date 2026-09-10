@@ -11,7 +11,13 @@ module LocalSsaInput implements InputSig<Location, BasicBlock> {
 
   predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     certain = true and
-    performsVariableAccess(_, v, TWrite(), bb.getNode(i))
+    (
+      performsVariableAccess(_, v, TWrite(), bb.getNode(i))
+      or
+      // Add implicit initialization of all variables at index -1 before the entry block
+      bb.(EntryBasicBlock).getEnclosingCallable() = v.getDeclaringCallable() and
+      i = -1
+    )
   }
 
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
