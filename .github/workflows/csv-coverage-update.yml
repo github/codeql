@@ -21,12 +21,12 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github.event) }}
         run: echo "$GITHUB_CONTEXT"
       - name: Clone self (github/codeql)
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           path: ql
           fetch-depth: 0
       - name: Set up Python 3.8
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c # v4.9.1
         with:
           python-version: 3.8
       - name: Download CodeQL CLI

@@ -16,16 +16,16 @@ jobs:
 
     steps:
       - name: Clone self (github/codeql)
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           path: script
       - name: Clone self (github/codeql) for analysis
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           path: codeqlModels
           ref: ${{ github.event.inputs.qlModelShaOverride || github.ref }}
       - name: Set up Python 3.8
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c # v4.9.1
         with:
           python-version: 3.8
       - name: Download CodeQL CLI
@@ -34,12 +34,12 @@ jobs:
         run: |
           python script/misc/scripts/library-coverage/generate-report.py ci codeqlModels script
       - name: Upload CSV package list
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: framework-coverage-csv
           path: framework-coverage-*.csv
       - name: Upload RST package list
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: framework-coverage-rst
           path: framework-coverage-*.rst
