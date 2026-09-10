@@ -46,26 +46,24 @@ jobs:
         uses: actions/checkout@v5
       - name: Build extractor pack
         shell: bash
+        # On Windows `bash` is MSYS2, which reads the `:` in `//powershell:install` as a Unix
+        # path-list separator and rewrites the label to `/powershell:install`. Excluding args
+        # prefixed with `//` leaves Bazel labels alone.
+        env:
+          MSYS2_ARG_CONV_EXCL: "//"
         run: |
           bazel build //powershell/...
-          bazel run //powershell:install
-      # Proves the packaged binary runs with all its native assets on this platform.
+          # `install` resolves its destination through the BUILD file in the runfiles tree, which
+          # only leads back to the workspace where runfiles are symlinks. On Windows they are
+          # copies, so without an explicit destination the pack lands in a temporary directory.
+          bazel run //powershell:install -- --destdir "$GITHUB_WORKSPACE/powershell/extractor-pack"
+      - name: Setup CodeQL
+        uses: ./.github/actions/fetch-codeql
+        with:
+          channel: release
+      # Proves the packaged extractor runs with all its native assets on this platform.
       - name: Smoke test the extractor
         shell: bash
         run: |
-          case "${{ runner.os }}" in
-            Windows) platform=win64 ;;
-            macOS) platform=osx64 ;;
-            *) platform=linux64 ;;
-          esac
-          mkdir -p "$RUNNER_TEMP/smoke"
-          echo 'Write-Output "hello"' > "$RUNNER_TEMP/smoke/hello.ps1"
-          echo "$RUNNER_TEMP/smoke/hello.ps1" > "$RUNNER_TEMP/smoke/files.txt"
-          CODEQL_EXTRACTOR_POWERSHELL_TRAP_DIR="$RUNNER_TEMP/smoke/trap" \
-          CODEQL_EXTRACTOR_POWERSHELL_SOURCE_ARCHIVE_DIR="$RUNNER_TEMP/smoke/archive" \
-          CODEQL_EXTRACTOR_POWERSHELL_LOG_DIR="$RUNNER_TEMP/smoke/log" \
-            "powershell/extractor-pack/tools/$platform/Semmle.Extraction.PowerShell.Standalone" \
-            --file-list "$RUNNER_TEMP/smoke/files.txt"
-          find "$RUNNER_TEMP/smoke/trap" -name '*.trap' | grep -q . || {
-            echo "no trap files produced"; exit 1;
-          }
+          codeql test run --threads=0 --search-path powershell/extractor-pack \
+            powershell/ql/test/library-tests/ssa
