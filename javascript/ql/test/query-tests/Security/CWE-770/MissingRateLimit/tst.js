@@ -133,6 +133,7 @@ fastifyApp5.get('/no-rate-limit', expensiveHandler1); // $ Alert
 const fastifyApp6 = require('fastify')()
   .withTypeProvider()
   .setValidatorCompiler(compiler)
+  .addContentTypeParser('application/json', parser)
   .decorate('answer', 42);
 
 fastifyApp6.register(require('@fastify/rate-limit'));

@@ -12,4 +12,4 @@
 | tst.js:111:28:111:44 | expensiveHandler1 | This route handler performs $@, but is not rate-limited. | tst.js:14:40:14:46 | login() | authorization |
 | tst.js:116:39:116:55 | expensiveHandler1 | This route handler performs $@, but is not rate-limited. | tst.js:14:40:14:46 | login() | authorization |
 | tst.js:130:35:130:51 | expensiveHandler1 | This route handler performs $@, but is not rate-limited. | tst.js:14:40:14:46 | login() | authorization |
-| tst.js:160:35:160:51 | expensiveHandler1 | This route handler performs $@, but is not rate-limited. | tst.js:14:40:14:46 | login() | authorization |
+| tst.js:161:35:161:51 | expensiveHandler1 | This route handler performs $@, but is not rate-limited. | tst.js:14:40:14:46 | login() | authorization |
