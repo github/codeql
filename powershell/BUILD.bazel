@@ -1,0 +1,42 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load("//misc/bazel:pkg.bzl", "codeql_pack")
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "dbscheme",
+    actual = "//powershell/ql/lib:dbscheme",
+)
+
+alias(
+    name = "dbscheme-stats",
+    actual = "//powershell/ql/lib:dbscheme-stats",
+)
+
+pkg_files(
+    name = "dbscheme-group",
+    srcs = [
+        ":dbscheme",
+        ":dbscheme-stats",
+    ],
+    strip_prefix = None,
+)
+
+pkg_files(
+    name = "extra-files",
+    srcs = [
+        ":codeql-extractor.yml",
+        "//:LICENSE",
+    ],
+)
+
+codeql_pack(
+    name = "powershell",
+    srcs = [
+        ":dbscheme-group",
+        ":extra-files",
+        "//powershell/downgrades",
+        "//powershell/extractor/Semmle.Extraction.PowerShell.Standalone",
+        "//powershell/tools",
+    ],
+)

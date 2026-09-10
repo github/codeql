@@ -1,0 +1,19 @@
+# Own group so the generated repository is `paket.powershell` and does not clash with
+# C#'s `paket.main`, which pins different versions of the same packages.
+#
+# These must be kept in sync with the `PackageReference`s in `extractor/*/*.csproj`, which
+# still drive the `dotnet publish` build in `build-*.ps1`.
+group powershell
+framework: net10.0
+storage: none
+source https://api.nuget.org/v3/index.json
+# behave like nuget in choosing transitive dependency versions
+strategy: max
+
+nuget Microsoft.CodeAnalysis 4.13.0
+nuget Mono.Posix.NETStandard
+nuget System.Management.Automation 7.5.0
+
+# `strategy: max` would otherwise pick 3.x, which drags in the whole
+# OpenTelemetry/Azure/Identity tree. `dotnet publish` resolves 2.22.0.
+nuget Microsoft.ApplicationInsights 2.22.0

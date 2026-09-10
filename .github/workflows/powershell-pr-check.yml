@@ -30,3 +30,42 @@ jobs:
       - name: Run QL tests
         run: |
           codeql test run --threads=0 powershell/ql/test
+
+  powershell-bazel-build:
+    name: powershell-bazel-build
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    if: github.repository == 'microsoft/codeql'
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Build extractor pack
+        shell: bash
+        run: |
+          bazel build //powershell/...
+          bazel run //powershell:install
+      # Proves the packaged binary runs with all its native assets on this platform.
+      - name: Smoke test the extractor
+        shell: bash
+        run: |
+          case "${{ runner.os }}" in
+            Windows) platform=win64 ;;
+            macOS) platform=osx64 ;;
+            *) platform=linux64 ;;
+          esac
+          mkdir -p "$RUNNER_TEMP/smoke"
+          echo 'Write-Output "hello"' > "$RUNNER_TEMP/smoke/hello.ps1"
+          echo "$RUNNER_TEMP/smoke/hello.ps1" > "$RUNNER_TEMP/smoke/files.txt"
+          CODEQL_EXTRACTOR_POWERSHELL_TRAP_DIR="$RUNNER_TEMP/smoke/trap" \
+          CODEQL_EXTRACTOR_POWERSHELL_SOURCE_ARCHIVE_DIR="$RUNNER_TEMP/smoke/archive" \
+          CODEQL_EXTRACTOR_POWERSHELL_LOG_DIR="$RUNNER_TEMP/smoke/log" \
+            "powershell/extractor-pack/tools/$platform/Semmle.Extraction.PowerShell.Standalone" \
+            --file-list "$RUNNER_TEMP/smoke/files.txt"
+          find "$RUNNER_TEMP/smoke/trap" -name '*.trap' | grep -q . || {
+            echo "no trap files produced"; exit 1;
+          }

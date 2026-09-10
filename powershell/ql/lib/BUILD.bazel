@@ -1,0 +1,15 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+
+package(default_visibility = ["//powershell:__pkg__"])
+
+pkg_files(
+    name = "dbscheme",
+    srcs = ["semmlecode.powershell.dbscheme"],
+    prefix = "powershell",
+)
+
+pkg_files(
+    name = "dbscheme-stats",
+    srcs = ["semmlecode.powershell.dbscheme.stats"],
+    prefix = "powershell",
+)

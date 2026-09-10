@@ -1,0 +1,15 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_csharp_binary",
+)
+
+codeql_csharp_binary(
+    name = "Semmle.Extraction.PowerShell.Standalone",
+    srcs = glob([
+        "*.cs",
+    ]),
+    visibility = ["//powershell:__subpackages__"],
+    deps = [
+        "//powershell/extractor/Semmle.Extraction.PowerShell",
+    ],
+)

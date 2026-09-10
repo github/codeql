@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 using Semmle.Util.Logging;
 
 namespace Semmle.Extraction
@@ -96,7 +97,16 @@ namespace Semmle.Extraction
 
         public ILogger Logger { get; private set; }
 
-        public static string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
+        public static string Version
+        {
+            get
+            {
+                // the attribute carrying the git information is attached to the entry assembly by our build system
+                var assembly = Assembly.GetEntryAssembly();
+                var version = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+                return version?.InformationalVersion ?? "unknown";
+            }
+        }
 
         public PathTransformer PathTransformer { get; }
     }

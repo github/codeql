@@ -1,0 +1,19 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_csharp_library",
+)
+
+codeql_csharp_library(
+    name = "Semmle.Extraction.PowerShell",
+    srcs = glob([
+        "Entities/**/*.cs",
+        "Extractor/**/*.cs",
+        "*.cs",
+    ]),
+    visibility = ["//powershell:__subpackages__"],
+    deps = [
+        "//powershell/extractor/Semmle.Extraction",
+        "//powershell/extractor/Semmle.Util",
+        "@paket.powershell//system.management.automation",
+    ],
+)
