@@ -1,0 +1,22 @@
+# Stand-in for the `git_info` target provided by the internal repository, so that targets
+# depending on it (e.g. `//csharp/scripts:git-assembly-info-src`) can be built from this
+# repository in isolation.
+genrule(
+    name = "git-info-files",
+    outs = [
+        "git-describe-all.log",
+        "git-ql-describe-all.log",
+        "git-ql-rev-parse.log",
+    ],
+    cmd = """
+        echo unknown > $(location git-describe-all.log)
+        echo no-git > $(location git-ql-describe-all.log)
+        echo unknown > $(location git-ql-rev-parse.log)
+    """,
+)
+
+filegroup(
+    name = "git_info",
+    srcs = [":git-info-files"],
+    visibility = ["//visibility:public"],
+)
