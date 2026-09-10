@@ -790,7 +790,23 @@ module Public {
   }
 
   private IR::Instruction getAWrittenInsn() {
-    result = getAccessPathPredecessorInsn*(getADirectlyWrittenInsn())
+    result = getADirectlyWrittenInsn()
+    or
+    result = getAccessPathPredecessorInsn(getAWrittenInsn())
+  }
+
+  private IR::Instruction getAMethodReceiverInsn() {
+    exists(CallExpr call, IR::MethodReadInstruction methodRead |
+      call.getTarget() instanceof Method and
+      methodRead = IR::evalExprInstruction(call.getCalleeExpr()) and
+      result = methodRead.getReceiver()
+    )
+    or
+    // If a.x is reading a promoted field, and it's equivalent to a.b.c.x,
+    // then methodRead.getReceiver() will give us the implicit field read a.b.c
+    // and we want to have post-update nodes for a, the implicit field
+    // read a.b and the implicit field read a.b.c.
+    result = IR::lookThroughImplicitFieldRead(getAMethodReceiverInsn())
   }
 
   /**
@@ -837,23 +853,17 @@ module Public {
       e = any(IR::EvalImplicitDerefInstruction eidi).getOperand()
     )
     or
-    exists(CallExpr ce |
-      ce.getArgument(0).getType() instanceof TupleType and
-      insn = IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0)), _)
-      or
-      not ce.getArgument(0).getType() instanceof TupleType and
-      insn = IR::evalExprInstruction(ce.getAnArgument())
+    (
+      exists(CallExpr ce |
+        ce.getArgument(0).getType() instanceof TupleType and
+        insn = IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0)), _)
+        or
+        not ce.getArgument(0).getType() instanceof TupleType and
+        insn = IR::evalExprInstruction(ce.getAnArgument())
+      )
       or
       // Receiver of a method call
-      exists(IR::MethodReadInstruction mri |
-        ce.getTarget() instanceof Method and
-        mri = IR::evalExprInstruction(ce.getCalleeExpr()) and
-        // If a.x is reading a promoted field, and it's equivalent to a.b.c.x,
-        // then mri.getReceiver() will give us the implicit field read a.b.c
-        // and we want to have post-update nodes for a, the implicit field
-        // read a.b and the implicit field read a.b.c.
-        insn = IR::lookThroughImplicitFieldRead*(mri.getReceiver())
-      )
+      insn = getAMethodReceiverInsn()
     ) and
     mutableType(insn.getResultType())
     or
