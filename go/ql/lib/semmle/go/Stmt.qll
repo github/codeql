@@ -571,7 +571,7 @@ class ReturnStmt extends @returnstmt, Stmt {
   int getNumExpr() { result = count(this.getAnExpr()) }
 
   /** Gets the unique returned expression, if there is only one. */
-  Expr getExpr() { this.getNumChild() = 1 and result = this.getExpr(0) }
+  Expr getExpr() { this.getNumExpr() = 1 and result = this.getExpr(0) }
 
   override predicate mayHaveSideEffects() { this.getAnExpr().mayHaveSideEffects() }
 
