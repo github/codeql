@@ -91,9 +91,7 @@ predicate matchAsFlowStep(Node nodeFrom, Node nodeTo) {
     or
     // the interior pattern flows to the alias
     nodeFrom.(CfgNode).getNode().getNode() = subject.getPattern() and
-    exists(PatternAliasDefinition pad | pad.getDefiningNode().getNode() = alias |
-      nodeTo.(CfgNode).getNode() = pad.getDefiningNode()
-    )
+    nodeTo.(CfgNode).getNode().getNode() = alias
   )
 }
 
@@ -124,11 +122,9 @@ predicate matchLiteralFlowStep(Node nodeFrom, Node nodeTo) {
  * syntax (toplevel): `case var:`
  */
 predicate matchCaptureFlowStep(Node nodeFrom, Node nodeTo) {
-  exists(MatchCapturePattern capture, Name var | capture.getVariable() = var |
+  exists(MatchCapturePattern capture |
     nodeFrom.(CfgNode).getNode().getNode() = capture and
-    exists(PatternCaptureDefinition pcd | pcd.getDefiningNode().getNode() = var |
-      nodeTo.(CfgNode).getNode() = pcd.getDefiningNode()
-    )
+    nodeTo.(CfgNode).getNode().getNode() = capture.getVariable()
   )
 }
 

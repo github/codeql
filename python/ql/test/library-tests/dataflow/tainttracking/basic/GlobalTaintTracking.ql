@@ -1,15 +1,16 @@
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.DataFlow
 
 module TestTaintTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.(DataFlow::CfgNode).getNode().(NameNode).getId() = "SOURCE"
+    source.(DataFlow::CfgNode).getNode().(Cfg::NameNode).getId() = "SOURCE"
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(CallNode call |
-      call.getFunction().(NameNode).getId() = "SINK" and
+    exists(Cfg::CallNode call |
+      call.getFunction().(Cfg::NameNode).getId() = "SINK" and
       sink.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }

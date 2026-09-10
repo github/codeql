@@ -3,6 +3,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /**
  * INTERNAL: Do not use.
@@ -29,7 +30,7 @@ private class TracebackFunctionCall extends ExceptionInfo, DataFlow::CallCfgNode
 private class CaughtException extends ExceptionInfo {
   CaughtException() {
     this.asExpr() = any(ExceptStmt s).getName() and
-    this.asCfgNode() = any(EssaNodeDefinition def).getDefiningNode()
+    this.asCfgNode().(Cfg::NameNode).defines(_)
   }
 }
 

@@ -4,6 +4,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 // Need to import `semmle.python.Frameworks` since frameworks can extend `SensitiveDataSource::Range`
 private import semmle.python.Frameworks
@@ -105,7 +106,7 @@ private module SensitiveDataModeling {
       or
       // to cover functions that we don't have the definition for, and where the
       // reference to the function has not already been marked as being sensitive
-      this.getFunction().asCfgNode().(NameNode).getId() = sensitiveString(classification)
+      this.getFunction().asCfgNode().(Cfg::NameNode).getId() = sensitiveString(classification)
     }
 
     override SensitiveDataClassification getClassification() { result = classification }
@@ -251,12 +252,12 @@ private module SensitiveDataModeling {
     SensitiveDataClassification classification;
 
     SensitiveVariableAssignment() {
-      exists(DefinitionNode def |
-        def.(NameNode).getId() = sensitiveString(classification) and
+      exists(Cfg::DefinitionNode def |
+        def.(Cfg::NameNode).getId() = sensitiveString(classification) and
         (
           this.asCfgNode() = def.getValue()
           or
-          this.asCfgNode() = def.getValue().(ForNode).getSequence()
+          this.asCfgNode() = def.getValue().(Cfg::ForNode).getSequence()
         ) and
         not this.asExpr() instanceof FunctionExpr and
         not this.asExpr() instanceof ClassExpr
@@ -293,7 +294,7 @@ private module SensitiveDataModeling {
     SensitiveDataClassification classification;
 
     SensitiveSubscript() {
-      this.asCfgNode().(SubscriptNode).getIndex() =
+      this.asCfgNode().(Cfg::SubscriptNode).getIndex() =
         sensitiveLookupStringConst(classification).asCfgNode()
     }
 

@@ -4,6 +4,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
@@ -72,9 +73,9 @@ module Tornado {
       DataFlow::Node value;
 
       TornadoHeaderSubscriptWrite() {
-        exists(SubscriptNode subscript |
+        exists(Cfg::SubscriptNode subscript |
           subscript.getObject() = instance().asCfgNode() and
-          value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+          value.asCfgNode() = subscript.(Cfg::DefinitionNode).getValue() and
           index.asCfgNode() = subscript.getIndex() and
           this.asCfgNode() = subscript
         )
@@ -422,7 +423,7 @@ module Tornado {
             // be able to do something more structured for providing modeling of the members
             // of a container-object.
             exists(DataFlow::AttrRead files | files.accesses(instance(), "cookies") |
-              this.asCfgNode().(SubscriptNode).getObject() = files.asCfgNode()
+              this.asCfgNode().(Cfg::SubscriptNode).getObject() = files.asCfgNode()
               or
               this.(DataFlow::MethodCallNode).calls(files, "get")
             )
@@ -479,20 +480,20 @@ module Tornado {
   // routing
   // ---------------------------------------------------------------------------
   /** Gets a sequence that defines a number of route rules */
-  SequenceNode routeSetupRuleList() {
-    exists(CallNode call |
+  Cfg::SequenceNode routeSetupRuleList() {
+    exists(Cfg::CallNode call |
       call = any(TornadoModule::Web::Application::ClassInstantiation c).asCfgNode()
     |
       result in [call.getArg(0), call.getArgByName("handlers")]
     )
     or
-    exists(CallNode call |
+    exists(Cfg::CallNode call |
       call.getFunction() = TornadoModule::Web::Application::add_handlers().asCfgNode()
     |
       result in [call.getArg(1), call.getArgByName("host_handlers")]
     )
     or
-    result = routeSetupRuleList().getElement(_).(TupleNode).getElement(1)
+    result = routeSetupRuleList().getElement(_).(Cfg::TupleNode).getElement(1)
   }
 
   /** A tornado route setup. */
@@ -515,12 +516,12 @@ module Tornado {
 
   /** A route setup using a tuple. */
   private class TornadoTupleRouteSetup extends TornadoRouteSetup, DataFlow::CfgNode {
-    override TupleNode node;
+    override Cfg::TupleNode node;
 
     TornadoTupleRouteSetup() {
       node = routeSetupRuleList().getElement(_) and
       count(node.getElement(_)) = 2 and
-      not node.getElement(1) instanceof SequenceNode
+      not node.getElement(1) instanceof Cfg::SequenceNode
     }
 
     override DataFlow::Node getUrlPatternArg() { result.asCfgNode() = node.getElement(0) }
