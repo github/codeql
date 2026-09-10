@@ -657,10 +657,10 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** A for-each loop (`for x in iterable:`). */
-  class ForeachStmt extends LoopStmtImpl {
+  class ForEachStmt extends LoopStmtImpl {
     private Py::For forStmt;
 
-    ForeachStmt() { this = TPyStmt(forStmt) }
+    ForEachStmt() { this = TPyStmt(forStmt) }
 
     /** Gets the loop variable. */
     Expr getVariable() { result.asExpr() = forStmt.getTarget() }
@@ -898,7 +898,7 @@ module Ast implements AstSig<Py::Location> {
   AstNode getLoopElse(LoopStmt loop) {
     result = loop.(WhileStmt).getElse()
     or
-    result = loop.(ForeachStmt).getElse()
+    result = loop.(ForEachStmt).getElse()
   }
 
   /** An exception handler (`except` or `except*`). */
@@ -1626,6 +1626,8 @@ private module Input implements InputSig1, InputSig2 {
     n = any(Ast::AssertStmt a).getTest()
   }
 
+  predicate postOrInOrder(Ast::AstNode n) { mayThrow(n) }
+
   private string assertThrowTag() { result = "[assert-throw]" }
 
   /**
@@ -1633,12 +1635,15 @@ private module Input implements InputSig1, InputSig2 {
    * its normal evaluation (not via an explicit `raise`/`assert`, which are
    * modeled separately).
    *
-   * The set mirrors what the legacy CFG used to flag implicitly: function
+   * `TypeError` is intentionally excluded along with exceptions thrown by dunder
+   * implementations to avoid cluttering the CFG; we expect user code to catch
+   * these only rarely.
+   *
+   * Otherwise, the set mirrors what the legacy CFG used to flag implicitly: function
    * calls (anything can raise), attribute access (`AttributeError`),
-   * subscript access (`IndexError`/`KeyError`/`TypeError`), arithmetic and
-   * comparison operators (`TypeError`/`ZeroDivisionError`), imports
+   * subscript access (`IndexError`/`KeyError`), division (`ZeroDivisionError`), imports
    * (`ImportError`/`ModuleNotFoundError`), and generator/coroutine
-   * suspension points (`await`/`yield`/`yield from`).
+   * suspension points (`await`/`yield`/`yield from` throwing `CancelledError` or `GeneratorExit`).
    *
    * Bare `Name` reads are intentionally excluded — modeling every name
    * read as `mayThrow` would explode CFG edge count for negligible
@@ -1652,11 +1657,7 @@ private module Input implements InputSig1, InputSig2 {
     or
     e instanceof Py::Subscript
     or
-    e instanceof Py::BinaryExpr
-    or
-    e instanceof Py::UnaryExpr
-    or
-    e instanceof Py::Compare
+    e.(Py::BinaryExpr).getOp() instanceof Py::Div
     or
     e instanceof Py::ImportExpr
     or

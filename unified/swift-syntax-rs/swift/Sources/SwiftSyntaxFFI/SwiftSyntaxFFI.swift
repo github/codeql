@@ -1,4 +1,3 @@
-import Foundation
 import SwiftOperators
 import SwiftParser
 
@@ -214,6 +213,93 @@ private final class PerSequenceFolder: SyntaxRewriter {
     }
 }
 
+/// Write directly to stderr without Foundation, whose output APIs would pull ICU into static builds.
+private func writeToStandardError(_ message: String) {
+    message.withCString { start in
+        var pointer = UnsafeRawPointer(start)
+        let end = pointer.advanced(by: strlen(start))
+        while pointer != end {
+            let written = write(STDERR_FILENO, pointer, end - pointer)
+            if written <= 0 {
+                return
+            }
+            pointer = pointer.advanced(by: written)
+        }
+    }
+}
+
+private struct JSONEncodingError: Error, CustomStringConvertible {
+    let type: Any.Type
+
+    var description: String {
+        "unsupported JSON value of type \(String(reflecting: type))"
+    }
+}
+
+private let hexDigits = Array("0123456789abcdef".utf8)
+
+private func appendJSONString(_ string: String, to output: inout [UInt8]) {
+    output.append(UInt8(ascii: "\""))
+    for scalar in string.unicodeScalars {
+        switch scalar.value {
+        case 0x08:
+            output.append(contentsOf: "\\b".utf8)
+        case 0x09:
+            output.append(contentsOf: "\\t".utf8)
+        case 0x0a:
+            output.append(contentsOf: "\\n".utf8)
+        case 0x0c:
+            output.append(contentsOf: "\\f".utf8)
+        case 0x0d:
+            output.append(contentsOf: "\\r".utf8)
+        case 0x22:
+            output.append(contentsOf: "\\\"".utf8)
+        case 0x2f:
+            output.append(contentsOf: "\\/".utf8)
+        case 0x5c:
+            output.append(contentsOf: "\\\\".utf8)
+        case 0x00...0x1f:
+            output.append(contentsOf: "\\u00".utf8)
+            output.append(hexDigits[Int(scalar.value >> 4)])
+            output.append(hexDigits[Int(scalar.value & 0x0f)])
+        default:
+            output.append(contentsOf: String(scalar).utf8)
+        }
+    }
+    output.append(UInt8(ascii: "\""))
+}
+
+private func appendJSON(_ value: Any, to output: inout [UInt8]) throws {
+    switch value {
+    case let string as String:
+        appendJSONString(string, to: &output)
+    case let integer as Int:
+        output.append(contentsOf: String(integer).utf8)
+    case let array as [Any]:
+        output.append(UInt8(ascii: "["))
+        for (index, element) in array.enumerated() {
+            if index != 0 {
+                output.append(UInt8(ascii: ","))
+            }
+            try appendJSON(element, to: &output)
+        }
+        output.append(UInt8(ascii: "]"))
+    case let object as [String: Any]:
+        output.append(UInt8(ascii: "{"))
+        for (index, key) in object.keys.sorted().enumerated() {
+            if index != 0 {
+                output.append(UInt8(ascii: ","))
+            }
+            appendJSONString(key, to: &output)
+            output.append(UInt8(ascii: ":"))
+            try appendJSON(object[key]!, to: &output)
+        }
+        output.append(UInt8(ascii: "}"))
+    default:
+        throw JSONEncodingError(type: type(of: value))
+    }
+}
+
 /// Parse the given NUL-terminated Swift source string and return a
 /// heap-allocated, NUL-terminated JSON representation of the syntax tree.
 ///
@@ -231,13 +317,14 @@ public func ssr_parse_json(_ source: UnsafePointer<CChar>?) -> UnsafeMutablePoin
     let converter = SourceLocationConverter(fileName: "<input>", tree: tree)
     let json = serialize(folded, converter)
 
-    guard
-        let data = try? JSONSerialization.data(
-            withJSONObject: json, options: [.sortedKeys]),
-        let string = String(data: data, encoding: .utf8)
-    else {
+    var bytes: [UInt8] = []
+    do {
+        try appendJSON(json, to: &bytes)
+    } catch {
+        writeToStandardError("SwiftSyntaxFFI: JSON serialization failed: \(error)\n")
         return nil
     }
+    let string = String(decoding: bytes, as: UTF8.self)
     return strdup(string)
 }
 

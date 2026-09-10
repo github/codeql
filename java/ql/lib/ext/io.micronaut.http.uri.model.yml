@@ -1,0 +1,28 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.micronaut.http.uri", "UriBuilder", True, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "expand", "(Map)", "", "Argument[0].MapValue", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "expand", "(Map)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "fragment", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "fragment", "(String)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "host", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "host", "(String)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "of", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "of", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "path", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "path", "(String)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "queryParam", "(String,Object[])", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "queryParam", "(String,Object[])", "", "Argument[1].ArrayElement", "Argument[this]", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "queryParam", "(String,Object[])", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "replacePath", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "replacePath", "(String)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "replaceQueryParam", "(String,Object[])", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "replaceQueryParam", "(String,Object[])", "", "Argument[1].ArrayElement", "Argument[this]", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "replaceQueryParam", "(String,Object[])", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "scheme", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "scheme", "(String)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "userInfo", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "userInfo", "(String)", "", "Argument[this]", "ReturnValue", "value", "manual"]

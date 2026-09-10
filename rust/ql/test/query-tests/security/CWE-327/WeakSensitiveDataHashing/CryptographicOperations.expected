@@ -1,10 +1,40 @@
+| test.rs:13:26:13:33 | harmless | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:14:26:14:39 | credit_card_no | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:15:26:15:33 | password | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:16:26:16:43 | encrypted_password | HashingAlgorithm MD5 WEAK inputs:1 |
 | test.rs:19:26:19:33 | harmless | HashingAlgorithm MD5 WEAK inputs:1 |
 | test.rs:20:26:20:39 | credit_card_no | HashingAlgorithm MD5 WEAK inputs:1 |
 | test.rs:21:26:21:33 | password | HashingAlgorithm MD5 WEAK inputs:1 |
 | test.rs:22:26:22:43 | encrypted_password | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:25:28:25:35 | harmless | HashingAlgorithm SHA1 WEAK inputs:1 |
+| test.rs:26:28:26:41 | credit_card_no | HashingAlgorithm SHA1 WEAK inputs:1 |
+| test.rs:27:28:27:35 | password | HashingAlgorithm SHA1 WEAK inputs:1 |
+| test.rs:28:28:28:45 | encrypted_password | HashingAlgorithm SHA1 WEAK inputs:1 |
+| test.rs:31:36:31:43 | harmless | HashingAlgorithm SHA1 WEAK inputs:1 |
+| test.rs:32:36:32:49 | credit_card_no | HashingAlgorithm SHA1 WEAK inputs:1 |
+| test.rs:33:36:33:43 | password | HashingAlgorithm SHA1 WEAK inputs:1 |
+| test.rs:34:36:34:53 | encrypted_password | HashingAlgorithm SHA1 WEAK inputs:1 |
+| test.rs:37:32:37:39 | harmless | HashingAlgorithm SHA3256  inputs:1 |
+| test.rs:38:32:38:45 | credit_card_no | HashingAlgorithm SHA3256  inputs:1 |
+| test.rs:39:32:39:39 | password | HashingAlgorithm SHA3256  inputs:1 |
+| test.rs:40:32:40:49 | encrypted_password | HashingAlgorithm SHA3256  inputs:1 |
+| test.rs:59:26:59:37 | harmless_str | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:60:26:60:37 | password_str | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:61:26:61:37 | harmless_arr | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:62:26:62:37 | password_arr | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:63:26:63:37 | harmless_vec | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:64:26:64:37 | password_vec | HashingAlgorithm MD5 WEAK inputs:1 |
 | test.rs:67:26:67:40 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
 | test.rs:73:9:73:23 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
 | test.rs:74:9:74:23 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
+| test.rs:76:35:76:42 | harmless | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:77:35:77:42 | password | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:80:26:80:40 | harmless.trim() | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:81:26:81:40 | password.trim() | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:82:26:82:44 | harmless.as_bytes() | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:83:26:83:44 | password.as_bytes() | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:84:26:84:67 | ... .unwrap() | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:85:26:85:67 | ... .unwrap() | HashingAlgorithm MD5 WEAK inputs:1 |
 | test.rs:133:26:133:40 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
 | test.rs:156:26:156:40 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
 | test.rs:176:13:176:24 | ...::new(...) | EncryptionAlgorithm SEED   |

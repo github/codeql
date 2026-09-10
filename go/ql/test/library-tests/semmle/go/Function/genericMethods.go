@@ -17,3 +17,12 @@ func generic_methods(s1 StructForGenericMethod1, s2 StructForGenericMethod2[int]
 	s1.GenericMethod1("hello")
 	s2.GenericMethod2(42)
 }
+
+type StructWithDependentBound[P5 any] struct{}
+
+func (*StructWithDependentBound[P6]) GenericMethodWithDependentBound[P7 ~[]P6](x P7) {}
+
+func genericMethodDependentBounds(t1 StructWithDependentBound[int], t2 StructWithDependentBound[string]) {
+	t1.GenericMethodWithDependentBound([]int{})
+	t2.GenericMethodWithDependentBound([]string{})
+}

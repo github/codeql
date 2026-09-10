@@ -199,7 +199,7 @@ definitions.cs:
 #   86|             0: [LocalVariableDeclExpr] Exception e
 #   86|               0: [TypeMention] Exception
 #   87|             1: [BlockStmt] {...}
-#   88|               0: [ForeachStmt] foreach (... ... in ...) ...
+#   88|               0: [ForEachStmt] foreach (... ... in ...) ...
 #   88|                 0: [LocalVariableDeclExpr] S1 s
 #   88|                   0: [TypeMention] S1
 #   88|                 1: [ParameterAccess] access to parameter ss

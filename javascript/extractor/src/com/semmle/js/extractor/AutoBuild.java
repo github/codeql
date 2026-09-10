@@ -404,6 +404,9 @@ public class AutoBuild {
     patterns.add("**/*tsconfig*.json");
     patterns.add("**/codeql-javascript-*.json");
 
+    // exclude lock files that are not explicitly included via `LGTM_INDEX_FILTERS`
+    patterns.add("-**/*.lock");
+
     // include any explicitly specified extensions
     for (String extension : fileTypes.keySet()) patterns.add("**/*" + extension);
 

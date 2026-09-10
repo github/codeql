@@ -10,12 +10,14 @@ private newtype TNameBindingNode =
   TIdentifier(Identifier n) or
   TBulkImport(BulkImportingPattern p) or
   TLocalName(LocalName local) or
-  TExportedNamespace(ClassLikeDeclaration cls) or
+  TStaticMemberNamespace(ClassLikeDeclaration cls) or
+  TInstanceMemberNamespace(ClassLikeDeclaration cls) or
   TLocalNamespace(AstNode n) {
     n = any(TopLevel t).getBody() or // Imported names come in scope here
     n instanceof ClassLikeDeclaration
   } or
   TModuleScope(ModuleScopeRepr repr) or
+  TFolderScope(Folder folder) or
   TModuleRoot()
 
 /**
@@ -30,14 +32,22 @@ class NameBindingNode extends TNameBindingNode {
 
   predicate isLocalName(LocalName local) { this = TLocalName(local) }
 
-  /** Holds if this represents the set of static members available in the given namespace. */
-  predicate isExportedNamespace(ClassLikeDeclaration cls) { this = TExportedNamespace(cls) }
+  /** Holds if this represents the set of static members available in the given class. */
+  predicate isStaticMemberNamespace(ClassLikeDeclaration cls) { this = TStaticMemberNamespace(cls) }
+
+  /** Holds if this represents the set of instance members available in the given class. */
+  predicate isInstanceMemberNamespace(ClassLikeDeclaration cls) {
+    this = TInstanceMemberNamespace(cls)
+  }
 
   /** Holds if this represents the set of members that can be accessed unqualified within the given scope. */
   predicate isLocalNamespace(AstNode n) { this = TLocalNamespace(n) }
 
   /** Holds if this represents the given module scope. */
   predicate isModuleScopeNode(ModuleScopeRepr repr) { this = TModuleScope(repr) }
+
+  /** Holds if this represents the set of members that can be accessed unqualified within the given folder and subfolders. */
+  predicate isFolderScope(Folder folder) { this = TFolderScope(folder) }
 
   /** Holds if this represents the root namespace in which all named modules are members. */
   predicate isModuleRoot() { this = TModuleRoot() }
@@ -52,7 +62,9 @@ class NameBindingNode extends TNameBindingNode {
     or
     this.isBulkImport(result)
     or
-    this.isExportedNamespace(result)
+    this.isStaticMemberNamespace(result)
+    or
+    this.isInstanceMemberNamespace(result)
     or
     this.isLocalNamespace(result)
     or
@@ -67,7 +79,11 @@ class NameBindingNode extends TNameBindingNode {
     exists(LocalName local | this.isLocalName(local) and result = "LocalName(" + local + ")")
     or
     exists(ClassLikeDeclaration cls |
-      this.isExportedNamespace(cls) and result = "ExportedNamespace(" + cls + ")"
+      this.isStaticMemberNamespace(cls) and result = "StaticMemberNamespace(" + cls + ")"
+    )
+    or
+    exists(ClassLikeDeclaration cls |
+      this.isInstanceMemberNamespace(cls) and result = "InstanceMemberNamespace(" + cls + ")"
     )
     or
     exists(AstNode n | this.isLocalNamespace(n) and result = "LocalNamespace(" + n + ")")
@@ -75,6 +91,8 @@ class NameBindingNode extends TNameBindingNode {
     exists(ModuleScopeRepr repr |
       this.isModuleScopeNode(repr) and result = "ModuleScope(" + repr + ")"
     )
+    or
+    exists(Folder folder | this.isFolderScope(folder) and result = "FolderScope(" + folder + ")")
     or
     this.isModuleRoot() and result = "ModuleRoot"
   }
@@ -86,7 +104,13 @@ class NameBindingNode extends TNameBindingNode {
     or
     exists(LocalName local | this.isLocalName(local) and result = local.getLocation())
     or
-    exists(ClassLikeDeclaration cls | this.isExportedNamespace(cls) and result = cls.getLocation())
+    exists(ClassLikeDeclaration cls |
+      this.isStaticMemberNamespace(cls) and result = cls.getLocation()
+    )
+    or
+    exists(ClassLikeDeclaration cls |
+      this.isInstanceMemberNamespace(cls) and result = cls.getLocation()
+    )
     or
     exists(AstNode n | this.isLocalNamespace(n) and result = n.getLocation())
     or
@@ -151,12 +175,13 @@ predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
 predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   exists(ClassLikeDeclaration cls, Member member, NameDeclaration nameDecl |
     member = cls.getAMember() and
-    not isInstanceMember(member) and
     not isPrivateToLocalScope(nameDecl) and
     nameDecl.getDeclaration() = member and
     node1.isIdentifier(nameDecl) and
     name = nameDecl.getName() and
-    node2.isExportedNamespace(cls)
+    if isInstanceMember(member)
+    then node2.isInstanceMemberNamespace(cls)
+    else node2.isStaticMemberNamespace(cls)
   )
   or
   exists(TopLevel top, Stmt stmt, NameDeclaration nameDecl |
@@ -173,6 +198,8 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
     mod.hasImportableName(name) and
     node2.isModuleRoot()
   )
+  or
+  FolderHeuristic::storeStep(node1, name, node2)
 }
 
 predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
@@ -187,12 +214,12 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   )
   or
   exists(ClassLikeDeclaration cls |
-    node1.isExportedNamespace(cls) and
+    node1.isStaticMemberNamespace(cls) and
     node2.isIdentifier(cls.getName())
   )
   or
   exists(ClassLikeDeclaration cls |
-    node1.isExportedNamespace(cls) and
+    node1.isStaticMemberNamespace(cls) and
     node2.isLocalNamespace(cls)
   )
   or
@@ -224,6 +251,8 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     node1 = getNodeFromRef(p) and
     node2 = getNodeFromRef(p.getSubPattern())
   )
+  or
+  FolderHeuristic::valueStep(node1, node2)
 }
 
 private predicate isImportPrefix(Expr e) {
@@ -239,7 +268,7 @@ predicate inheritanceStep(NameBindingNode supertype, NameBindingNode subtype) {
   exists(ClassLikeDeclaration cls, BaseType base |
     base = cls.getABaseType() and
     supertype = getNodeFromRef(base.getType()) and
-    subtype.isExportedNamespace(cls)
+    subtype.isStaticMemberNamespace(cls)
   )
 }
 
@@ -285,9 +314,23 @@ private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode no
   )
 }
 
-/** A name-binding node that has members. */
+/** Holds if the member represented by `node` can be inherited. */
+pragma[nomagic]
+private predicate isInheritableMemberNode(NameBindingNode node) {
+  exists(NameDeclaration decl |
+    node.isIdentifier(decl) and
+    isInheritableMember(decl.getDeclaration())
+  )
+}
+
+/** A name-binding node that can have members. */
 class NamespaceNode extends NameBindingNode {
-  NamespaceNode() { storeStep(_, _, this) or inheritanceStep(_, this) }
+  NamespaceNode() {
+    storeStep(_, _, this) or
+    inheritanceStep(_, this) or
+    this.isInstanceMemberNamespace(_) or
+    this.isStaticMemberNamespace(_)
+  }
 
   /** Gets a name-binding node that may refer to this namespace. */
   NameBindingNode ref() { result = TrackNamespace::track(this) }
@@ -298,8 +341,27 @@ class NamespaceNode extends NameBindingNode {
   /** Holds if this namespace has an own-member of the given name */
   predicate hasOwnMember(string name) { exists(this.getOwnMember(name)) }
 
+  /** If this is the static namespace for a class, gets the corresponding instance namespace. */
+  NamespaceNode toInstanceNamespace() {
+    exists(ClassLikeDeclaration cls |
+      this.isStaticMemberNamespace(cls) and
+      result.isInstanceMemberNamespace(cls)
+    )
+  }
+
+  /** If this is the instance namespace for a class, gets the corresponding static namespace. */
+  NamespaceNode toStaticNamespace() { result.toInstanceNamespace() = this }
+
+  private NamespaceNode getAnInheritanceParent1() { inheritanceStep(result.ref(), this) }
+
   /** Gets a namespace from which this namespace inherits directly. */
-  NamespaceNode getAnInheritanceParent() { inheritanceStep(result.ref(), this) }
+  NamespaceNode getAnInheritanceParent() {
+    result = this.getAnInheritanceParent1()
+    or
+    // `inheritanceStep` connects the static namespaces of classes.
+    // Add the corresponding inheritance relation between the instance namespaces.
+    result = this.toStaticNamespace().getAnInheritanceParent1().toInstanceNamespace()
+  }
 
   /** Gets a namespace that directly inherits from this one. */
   NamespaceNode getAnInheritanceChild() { result.getAnInheritanceParent() = this }
@@ -310,7 +372,8 @@ class NamespaceNode extends NameBindingNode {
     result = this.getOwnMember(name)
     or
     not this.hasOwnMember(name) and
-    result = this.getAnInheritanceParent().getMember(name)
+    result = this.getAnInheritanceParent().getMember(name) and
+    isInheritableMemberNode(result)
   }
 }
 
@@ -402,4 +465,187 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
       value = "inheritedBy"
     )
   }
+}
+
+/**
+ * Implements a folder-based heuristic for linking up top-level names
+ * between files that are not included in any module scope.
+ */
+private module FolderHeuristic {
+  private predicate topLevelNameDef(File file, string name, NameBindingNode node) {
+    exists(TopLevel top, Stmt stmt, NameDeclaration nameDecl |
+      top.getFile() = file and
+      stmt = top.getBody().getAStmt() and
+      not isPrivateToLocalScope(nameDecl) and
+      nameDecl.getDeclaration() = stmt and
+      name = nameDecl.getName() and
+      node.isIdentifier(nameDecl)
+    )
+  }
+
+  private predicate uniqueTopLevelName(File file, string name) {
+    file = unique(File f | topLevelNameDef(f, name, _))
+  }
+
+  /**
+   * Holds if `file` has one of the definitions of the given ambiguous name.
+   *
+   * A name is considered "ambiguous" if there is more than one file exporting it.
+   */
+  private predicate ambiguousTopLevelName(File file, string name) {
+    topLevelNameDef(file, name, _) and
+    not uniqueTopLevelName(file, name)
+  }
+
+  /** Holds if `folder` contains one or more definitions of the given ambiguous name */
+  private predicate containsDef(Folder folder, string name) {
+    exists(File f |
+      ambiguousTopLevelName(f, name) and
+      folder = f.getParentContainer+()
+    )
+  }
+
+  /**
+   * Holds if `folder` has two or more subfolders containing a definition of `name`.
+   */
+  private predicate hasConflictingDefs(Folder folder, string name) {
+    // Check for "two or more" using `exists(X) and not exists(unique(X))`
+    containsDef(folder.getAFolder(), name) and
+    not exists(unique(Folder child | child = folder.getAFolder() and containsDef(child, name)))
+  }
+
+  /**
+   * Holds if `folder` is an outermost folder containing exactly one definition of `name`.
+   *
+   * This means `folder` should act as the scope of that definition.
+   */
+  private predicate isOutermostNonConflictingScope(Folder folder, string name) {
+    containsDef(folder, name) and
+    hasConflictingDefs(folder.getParentContainer(), name) and
+    not hasConflictingDefs(folder, name)
+  }
+
+  /**
+   * Gets the scope into which a definition of `name` appearing in `folder` should target.
+   */
+  private Folder getOutermostNonConflictingScope(Folder folder, string name) {
+    isOutermostNonConflictingScope(folder, name) and
+    result = folder
+    or
+    result = getOutermostNonConflictingScope(folder.getParentContainer(), name) and
+    containsDef(folder, name) // Prune to the subfolder actually containing the definition
+  }
+
+  predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
+    exists(File file | topLevelNameDef(file, name, node1) |
+      node2.isFolderScope(getOutermostNonConflictingScope(file.getParentContainer(), name))
+      or
+      uniqueTopLevelName(file, name) and
+      node2.isFolderScope(any(Folder f | f.getRelativePath() = ""))
+    )
+  }
+
+  predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
+    exists(TopLevel top |
+      node1.isFolderScope(top.getFile().getParentContainer()) and
+      node2.isLocalNamespace(top.getBody()) and
+      not top.getFile() = any(ModuleScopeRepr r).getAnIncludedFile()
+    )
+    or
+    exists(Folder folder |
+      node1.isFolderScope(folder.getParentContainer()) and
+      node2.isFolderScope(folder)
+    )
+  }
+}
+
+/**
+ * Holds if `access` may resolve to `target` through the enclosing `accessingClass`.
+ *
+ * `instanceAccess` indicates whether this member should be accessed as an instance of `accessingClass`
+ * or as a static member.
+ */
+private predicate unqualifiedMemberAccessCand(
+  PotentialLocalNameAccess access, boolean instanceAccess, NameDeclaration target,
+  ClassLikeDeclaration accessingClass
+) {
+  not access instanceof NameDeclaration and
+  (
+    // Resolved by local scoping
+    exists(LocalName local |
+      target.getLocalName() = local and
+      access.getLocalName() = local and
+      target.getDeclaration() = accessingClass.getAMember()
+    |
+      instanceAccess = true and
+      isInstanceMember(target.getDeclaration())
+      or
+      instanceAccess = false and
+      isStaticMember(target.getDeclaration())
+    )
+    or
+    // Resolved in an uncertain scope
+    exists(NamespaceNode namespace, string name |
+      name = access.getName() and
+      accessingClass = LocalNameBindingOutput::getAnUncertainScope(access, name)
+    |
+      instanceAccess = true and
+      namespace.isInstanceMemberNamespace(accessingClass) and
+      namespace.getMember(name).isIdentifier(target)
+      or
+      instanceAccess = false and
+      namespace.isStaticMemberNamespace(accessingClass) and
+      namespace.getMember(name).isIdentifier(target)
+    )
+  )
+}
+
+private int unqualifiedMemberAccessDepth(PotentialLocalNameAccess access) {
+  result = max(AstNode scope | unqualifiedMemberAccessCand(access, _, _, scope) | scope.getDepth())
+}
+
+/**
+ * Holds if `access` is an unqualified access to `target`.
+ *
+ * `accessingClass` is the enclosing class in which the member was found, and
+ * `instanceAccess` indicates if it is an instance member or static member.
+ */
+predicate unqualifiedMemberAccess(
+  PotentialLocalNameAccess access, boolean instanceAccess, NameDeclaration target,
+  ClassLikeDeclaration accessingClass
+) {
+  unqualifiedMemberAccessCand(access, instanceAccess, target, accessingClass) and
+  accessingClass.getDepth() = unqualifiedMemberAccessDepth(access)
+}
+
+/**
+ * An identifier appearing in a unqualified position, referring to a member of an enclosing class.
+ */
+class UnqualifiedMemberAccess extends Identifier {
+  private boolean instanceAccess;
+  private NameDeclaration target;
+  private ClassLikeDeclaration accessingClass;
+
+  UnqualifiedMemberAccess() {
+    unqualifiedMemberAccess(this, instanceAccess, target, accessingClass)
+  }
+
+  /** Gets the name declaration of the member being accessed. */
+  NameDeclaration getTarget() { result = target }
+
+  /** Gets the enclosing class whose (possibly inherited) member is being accessed. */
+  ClassLikeDeclaration getAccessingClass() { result = accessingClass }
+
+  /** Holds if this is an instance access on the accessing class. */
+  predicate isInstanceAccess() { instanceAccess = true }
+}
+
+/** Gets the declaration being accessed by `access`, as determined by static name binding. */
+NameDeclaration getStaticBindingTarget(Identifier access) {
+  // For unqualified accesses, use the shadowing-aware lookup
+  result = access.(UnqualifiedMemberAccess).getTarget()
+  or
+  // For others, just follow the name binding graph
+  not access instanceof UnqualifiedMemberAccess and
+  trackNameDeclaration(result).asIdentifier() = access
 }

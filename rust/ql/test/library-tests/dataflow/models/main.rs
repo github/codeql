@@ -102,7 +102,7 @@ fn test_set_var_field() {
     match e1 {
         MyFieldEnum::C { field_c: i } => sink(i),
         MyFieldEnum::D { field_d: i } => sink(i), // $ hasValueFlow=5
-        MyFieldEnum::E { field_e: o } => ()
+        MyFieldEnum::E { field_e: o } => (),
     }
 }
 
@@ -258,18 +258,17 @@ fn test_enum_source() {
     match s {
         MyFieldEnum::C { field_c: i } => sink(i),
         MyFieldEnum::D { field_d: i } => sink(i), // $ hasValueFlow=12
-        MyFieldEnum::E { field_e: o } => ()
+        MyFieldEnum::E { field_e: o } => (),
     }
 
     let s = enum_source_nested(13);
     match s {
         MyFieldEnum::C { field_c: i } => sink(i),
         MyFieldEnum::D { field_d: i } => sink(i),
-        MyFieldEnum::E { field_e: o } => 
-        { 
+        MyFieldEnum::E { field_e: o } => {
             match o {
                 Some(i) => sink(i), // $ hasValueFlow=13
-                None => ()
+                None => (),
             }
         }
     }
@@ -281,13 +280,13 @@ fn test_enum_method_source() {
     match s {
         MyFieldEnum::C { field_c: i } => sink(i), // $ hasValueFlow=13
         MyFieldEnum::D { field_d: i } => sink(i),
-        MyFieldEnum::E { field_e: o } => ()
+        MyFieldEnum::E { field_e: o } => (),
     }
 }
 
 mod source_into_function {
-    use crate::MyFieldEnum;
     use super::sink;
+    use crate::MyFieldEnum;
 
     // has a source model
     fn pass_source<A>(_i: i64, f: impl FnOnce(i64) -> A) -> A {
@@ -320,11 +319,10 @@ mod source_into_function {
             match e {
                 MyFieldEnum::C { field_c: i } => sink(i),
                 MyFieldEnum::D { field_d: i } => sink(i),
-                MyFieldEnum::E { field_e: o } => 
-                { 
+                MyFieldEnum::E { field_e: o } => {
                     match o {
                         Some(i) => sink(i), // $ hasValueFlow=5
-                        None => ()
+                        None => (),
                     }
                 }
             }
@@ -333,14 +331,14 @@ mod source_into_function {
 }
 
 mod sink_out_of_function {
-    use crate::MyFieldEnum;
     use super::source;
+    use crate::MyFieldEnum;
 
     // has a sink model
-    fn pass_sink(f: impl FnOnce(()) -> i64) { }
+    fn pass_sink(f: impl FnOnce(()) -> i64) {}
 
     // has a sink model
-    fn pass_sink_nested(f: impl FnOnce(()) -> MyFieldEnum) { }
+    fn pass_sink_nested(f: impl FnOnce(()) -> MyFieldEnum) {}
 
     fn test_sink_out_of_function() {
         let a = |a| source(1);
@@ -348,7 +346,9 @@ mod sink_out_of_function {
 
         let b = |_a| {
             let s = source(2);
-            MyFieldEnum::E { field_e: Option::Some(s) }
+            MyFieldEnum::E {
+                field_e: Option::Some(s),
+            }
         };
         pass_sink_nested(b); // $ hasValueFlow=2
     }
@@ -460,6 +460,37 @@ impl Ord for MyStruct2 {
     }
 }
 
+trait MyTrait3 {
+    fn flow_through3(i: i64) -> i64;
+}
+
+impl<T> MyTrait3 for T {
+    // has an explicit model
+    fn flow_through3(i: i64) -> i64 {
+        0
+    }
+}
+
+trait MySourceTrait3 {
+    fn produce3(i: i64) -> i64;
+}
+
+impl<T> MySourceTrait3 for T {
+    // has an explicit model
+    fn produce3(i: i64) -> i64 {
+        0
+    }
+}
+
+trait MySinkTrait3 {
+    fn consume3(i: i64);
+}
+
+impl<T> MySinkTrait3 for T {
+    // has an explicit model
+    fn consume3(i: i64) {}
+}
+
 fn test_trait_model<T: Ord>(x: T) {
     let x1 = source(20).max(0);
     sink(x1); // $ hasValueFlow=20
@@ -488,6 +519,22 @@ fn test_trait_model<T: Ord>(x: T) {
 
     let x7 = (source(28) as i32) < 1;
     sink(x7);
+
+    let x8 = <()>::flow_through2(source(29));
+    sink(x8); // $ hasValueFlow=29
+
+    let x9 = <()>::flow_through3(source(30));
+    sink(x9); // $ hasValueFlow=30
+
+    let x10 = <()>::produce2(31);
+    sink(x10); // $ hasValueFlow=31
+
+    let x11 = <()>::produce3(32);
+    sink(x11); // $ hasValueFlow=32
+
+    <()>::consume2(source(33)); // $ hasValueFlow=33
+
+    <()>::consume3(source(34)); // $ hasValueFlow=34
 }
 
 mod external_file;

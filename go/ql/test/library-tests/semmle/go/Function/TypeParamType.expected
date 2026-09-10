@@ -22,6 +22,8 @@ numberOfTypeParameters
 | genericMethods.go:5:33:5:46 | GenericMethod1 | 1 |
 | genericMethods.go:7:6:7:28 | StructForGenericMethod2 | 1 |
 | genericMethods.go:9:37:9:50 | GenericMethod2 | 2 |
+| genericMethods.go:21:6:21:29 | StructWithDependentBound | 1 |
+| genericMethods.go:23:38:23:68 | GenericMethodWithDependentBound | 2 |
 #select
 | codeql-go-tests/function.EdgeConstraint | 0 |  | Node | interface { } |
 | codeql-go-tests/function.Element | 0 |  | S | interface { } |
@@ -51,6 +53,9 @@ numberOfTypeParameters
 | codeql-go-tests/function.StructForGenericMethod2 | 0 |  | P2 | interface { } |
 | codeql-go-tests/function.StructForGenericMethod2.GenericMethod2 | 0 |  | P4 | interface { } |
 | codeql-go-tests/function.StructForGenericMethod2.GenericMethod2 | 0 | from receiver | P3 | interface { } |
+| codeql-go-tests/function.StructWithDependentBound | 0 |  | P5 | interface { } |
+| codeql-go-tests/function.StructWithDependentBound.GenericMethodWithDependentBound | 0 |  | P7 | interface { ~[]P6 } |
+| codeql-go-tests/function.StructWithDependentBound.GenericMethodWithDependentBound | 0 | from receiver | P6 | interface { } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 0 |  | _ | interface { } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 1 |  | _ | interface { string } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 2 |  | _ | interface { } |

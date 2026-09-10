@@ -3,5 +3,5 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["async_std::io::read::ReadExt::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
-      - ["async_std::io::read::ReadExt::read", "Argument[self].Reference", "Argument[0].Reference", "taint", "manual"]
+      - ["<async_std::io::read::ReadExt>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["<async_std::io::read::ReadExt>::read", "Argument[self].Reference", "Argument[0].Reference", "taint", "manual"]

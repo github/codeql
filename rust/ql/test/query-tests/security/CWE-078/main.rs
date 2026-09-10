@@ -1,0 +1,145 @@
+use std::process::Command;
+
+fn test_std_command_injection() {
+    let arg_string = std::env::args().nth(1).unwrap_or(String::from("ls")); // $ Source=args1
+    let remote_string = reqwest::blocking::get("http://example.com/") // $ Source=remote1
+        .unwrap()
+        .text()
+        .unwrap_or(String::from("ls"));
+    let const_string = String::from("echo hello");
+
+    // --- safe cases ---
+
+    // Constant command and argument
+    Command::new("ls")
+        .arg("-la")
+        .output()
+        .expect("failed"); // safe
+
+    // Constant constructed command
+    Command::new(const_string.as_str())
+        .output()
+        .expect("failed"); // safe
+
+    // --- unsafe cases ---
+
+    // User input as the command itself
+    Command::new(arg_string.as_str()) // $ Alert[rust/command-line-injection]=args1
+        .output()
+        .expect("failed");
+
+    // User input as an argument to sh -c
+    Command::new("sh")
+        .arg("-c")
+        .arg(remote_string.as_str()) // $ Alert[rust/command-line-injection]=remote1
+        .output()
+        .expect("failed");
+
+    // User input as an argument
+    Command::new("grep")
+        .arg(arg_string.as_str()) // $ Alert[rust/command-line-injection]=args1
+        .arg("file.txt")
+        .output()
+        .expect("failed");
+
+    // Remote input via args()
+    Command::new("bash")
+        .args(&["-c", remote_string.as_str()]) // $ Alert[rust/command-line-injection]=remote1
+        .output()
+        .expect("failed");
+
+    // Remote input concatenated into a command
+    let concatenated_command = format!("sh -c echo {}", remote_string);
+    Command::new(concatenated_command.as_str()) // $ Alert[rust/command-line-injection]=remote1
+        .output()
+        .expect("failed");
+}
+
+async fn test_tokio_command_injection() {
+    let remote_string = reqwest::blocking::get("http://example.com/") // $ Source=remote2
+        .unwrap()
+        .text()
+        .unwrap_or(String::from("ls"));
+
+    // Unsafe: remote input as tokio command
+    let _output = tokio::process::Command::new(remote_string.as_str()) // $ Alert[rust/command-line-injection]=remote2
+        .output()
+        .await
+        .expect("failed");
+
+    // Unsafe: remote input as tokio command argument
+    tokio::process::Command::new("sh")
+        .arg("-c")
+        .arg(remote_string.as_str()) // $ Alert[rust/command-line-injection]=remote2
+        .output()
+        .await
+        .expect("failed");
+}
+
+mod qhelp_example_bad {
+    use std::process::Command;
+
+    pub fn handle_request(user_input: &str) {
+        // BAD
+        Command::new("sh")
+            .arg("-c")
+            .arg(user_input) // $ Alert[rust/command-line-injection]=args2
+            .output()
+            .expect("failed to execute");
+    }
+}
+
+mod qhelp_example_good {
+    use std::process::Command;
+
+    pub fn handle_request(filename: &str) {
+        // GOOD
+        let allowed_names = ["report.pdf", "summary.txt", "data.csv"];
+        if allowed_names.contains(&filename) {
+            Command::new("cat")
+                .arg(filename) // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+                .output()
+                .expect("failed to execute");
+        }
+    }
+}
+
+fn test_allowlist_sanitizers(command: &str) {
+    let allowed_commands_array = ["cat", "git", "ls"];
+
+    if allowed_commands_array.contains(&command) {
+        Command::new(command).output().expect("failed"); // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+    } else {
+        Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
+    }
+
+    let allowed_commands_vec = vec!["cat", "git", "ls"];
+
+    if allowed_commands_vec.contains(&command) {
+        Command::new(command).output().expect("failed");
+    } else {
+        Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
+    }
+
+    if command == "ls" {
+        Command::new(command).output().expect("failed");
+    } else {
+        Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
+    }
+
+    if command != "ls" {
+        Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
+    } else {
+        Command::new(command).output().expect("failed");
+    }
+}
+
+fn main() {
+    let arg_string = std::env::args().nth(1).unwrap_or(String::from("ls")); // $ Source=args2
+
+    test_std_command_injection();
+    test_tokio_command_injection();
+    qhelp_example_bad::handle_request(arg_string.as_str());
+    qhelp_example_good::handle_request(arg_string.as_str());
+    test_allowlist_sanitizers(arg_string.as_str());
+}

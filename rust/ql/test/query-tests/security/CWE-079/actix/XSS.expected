@@ -1,7 +1,8 @@
 #select
 | main.rs:25:15:25:18 | html | main.rs:9:10:9:27 | vulnerable_handler | main.rs:25:15:25:18 | html | Cross-site scripting vulnerability due to a $@. | main.rs:9:10:9:27 | vulnerable_handler | user-provided value |
 edges
-| main.rs:9:10:9:27 | vulnerable_handler | main.rs:10:22:10:25 | path | provenance | Src:MaD:2  |
+| main.rs:9:10:9:27 | vulnerable_handler | main.rs:9:29:9:51 | ...: ...::Path::<...> | provenance | Src:MaD:2  |
+| main.rs:9:29:9:51 | ...: ...::Path::<...> | main.rs:10:22:10:25 | path | provenance |  |
 | main.rs:10:9:10:18 | user_input | main.rs:13:9:22:18 | MacroExpr | provenance |  |
 | main.rs:10:22:10:25 | path | main.rs:10:22:10:38 | path.into_inner() | provenance | MaD:3 |
 | main.rs:10:22:10:38 | path.into_inner() | main.rs:10:9:10:18 | user_input | provenance |  |
@@ -18,6 +19,7 @@ models
 | 5 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
 nodes
 | main.rs:9:10:9:27 | vulnerable_handler | semmle.label | vulnerable_handler |
+| main.rs:9:29:9:51 | ...: ...::Path::<...> | semmle.label | ...: ...::Path::<...> |
 | main.rs:10:9:10:18 | user_input | semmle.label | user_input |
 | main.rs:10:22:10:25 | path | semmle.label | path |
 | main.rs:10:22:10:38 | path.into_inner() | semmle.label | path.into_inner() |

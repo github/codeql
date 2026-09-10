@@ -33,6 +33,7 @@ predicate isElementAnArrayOfFixedSize(
   or
   exists(Variable var |
     var = element and
+    not var.isCompilerGenerated() and
     var.getType().(ArrayType).getArraySize() = size and
     allocType = "an array allocation" and
     f = var and

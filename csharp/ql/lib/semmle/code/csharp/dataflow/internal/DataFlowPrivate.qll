@@ -2207,7 +2207,7 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
   c instanceof ElementContent
   or
   exists(
-    ForeachStmt fs, SsaExplicitWrite def, AssignableDefinitions::LocalVariableDefinition defTo
+    ForEachStmt fs, SsaExplicitWrite def, AssignableDefinitions::LocalVariableDefinition defTo
   |
     node1.asExpr() = fs.getIterableExpr() and
     defTo.getDeclaration() = fs.getVariableDeclExpr() and

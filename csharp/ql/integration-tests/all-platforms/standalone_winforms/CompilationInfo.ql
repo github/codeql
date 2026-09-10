@@ -1,16 +1,9 @@
 import csharp
 import semmle.code.csharp.commons.Diagnostics
 
-query predicate compilationInfo(string key, float value) {
+query predicate compilationInfo(string key, string value) {
   key != "Resolved references" and
   key != "Resolved assembly conflicts" and
   not key.matches(["Compiler diagnostic count for%", "Extractor message count for group%"]) and
-  exists(Compilation c, string infoKey, string infoValue | infoValue = c.getInfo(infoKey) |
-    key = infoKey and
-    value = infoValue.toFloat()
-    or
-    not exists(infoValue.toFloat()) and
-    key = infoKey + ": " + infoValue and
-    value = 1
-  )
+  value = any(Compilation c).getInfo(key)
 }

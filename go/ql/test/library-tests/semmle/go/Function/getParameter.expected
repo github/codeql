@@ -15,6 +15,9 @@
 | genericMethods.go:9:37:9:50 | GenericMethod2 | 0 | genericMethods.go:9:60:9:60 | x |
 | genericMethods.go:11:6:11:20 | generic_methods | 0 | genericMethods.go:11:22:11:23 | s1 |
 | genericMethods.go:11:6:11:20 | generic_methods | 1 | genericMethods.go:11:50:11:51 | s2 |
+| genericMethods.go:23:38:23:68 | GenericMethodWithDependentBound | 0 | genericMethods.go:23:80:23:80 | x |
+| genericMethods.go:25:6:25:33 | genericMethodDependentBounds | 0 | genericMethods.go:25:35:25:36 | t1 |
+| genericMethods.go:25:6:25:33 | genericMethodDependentBounds | 1 | genericMethods.go:25:69:25:70 | t2 |
 | main.go:7:6:7:7 | f1 | 0 | main.go:7:9:7:9 | x |
 | main.go:9:12:9:13 | f2 | 0 | main.go:9:15:9:15 | x |
 | main.go:9:12:9:13 | f2 | 1 | main.go:9:18:9:18 | y |

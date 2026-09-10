@@ -231,6 +231,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     exists(ClassLikeDeclaration cls |
       getChild(scope, _) = cls and
       pattern = cls.getName() and
+      not cls.hasModifier("extension") and // TODO: Fix in the AST mapping: type extensions should reference their type, not declare it
       declaration = cls
     )
     or
@@ -382,6 +383,8 @@ class PotentialLocalNameAccess extends Identifier {
     this = any(NamedTypeExpr e | not exists(e.getQualifier())).getName()
     or
     this instanceof NameDeclaration
+    or
+    this = any(ClassLikeDeclaration cls | cls.hasModifier("extension")).getName() // TODO: Fix in the AST mapping: type extensions should reference their type, not declare it
   }
 
   LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }

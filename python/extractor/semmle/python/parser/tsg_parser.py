@@ -3,6 +3,7 @@
 # Functions and classes used for parsing Python files using `tree-sitter-graph`
 
 from ast import literal_eval
+import re
 import sys
 import os
 import semmle.python.parser
@@ -144,6 +145,7 @@ def read_tsg_python_output(path, logger):
             elif value == "#null": # e.g. `exc: #null`
                 value = None
             else: # literal values, e.g. `name: "k1.k2"` or `level: 5`
+                value = rust_to_python_escapes(value)
                 try:
                     if key =="s" and value[0] == '"': # e.g. `s: "k1.k2"`
                         value = evaluate_string(value)
@@ -170,6 +172,36 @@ def read_tsg_python_output(path, logger):
     p.wait()
     logger.debug("Read {} nodes and {} edges from TSG output".format(len(node_attr), len(edge_attr)))
     return node_attr, edge_attr
+
+# `tsg-python` serialises string values using Rust's `Debug` formatting, which diverges from what
+# Python's `literal_eval` accepts in two ways:
+#  - characters Rust considers non-printable -- including grapheme-extending ones such as the U+FE0F
+#    variation selector, U+200D zero width joiner and combining accents -- are rendered as `\u{...}`,
+#    a syntax Python does not know at all;
+#  - NUL is rendered as `\0`, which Python reads as the start of an *octal* escape, silently
+#    swallowing up to two more digits (NUL followed by `1` is emitted as `"\01"`, which decodes
+#    to `\x01`).
+# Everything else Rust emits (`\t`, `\r`, `\n`, `\\`, `\"`, and unescaped characters) is read back
+# identically by `literal_eval`, as verified exhaustively over every Unicode scalar value.
+_RUST_ESCAPE = re.compile(r"\\(?:u\{([0-9a-fA-F]{1,6})\}|.)", re.DOTALL)
+
+def rust_to_python_escapes(text):
+    """Rewrites Rust escapes in `text` that Python would reject or misread into their equivalents.
+
+    Matching every escape sequence (rather than only the offending ones) keeps the scan in step with
+    the backslashes, so an escaped backslash -- how a literal `\\u{fe0f}` in the source is
+    serialised -- is left alone."""
+    if "\\u{" not in text and "\\0" not in text:
+        return text
+    def replace(match):
+        code_point = match.group(1)
+        if code_point is None:
+            return "\\x00" if match.group(0) == "\\0" else match.group(0)
+        code_point = int(code_point, 16)
+        if code_point > 0xFFFF:
+            return "\\U{:08x}".format(code_point)
+        return "\\u{:04x}".format(code_point)
+    return _RUST_ESCAPE.sub(replace, text)
 
 def evaluate_string(s):
     s = literal_eval(s)

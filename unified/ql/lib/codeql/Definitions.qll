@@ -10,7 +10,7 @@ private import codeql.unified.internal.StaticNameBinding
  */
 cached
 predicate definitionOf(Identifier reference, NameDeclaration definition, string kind) {
-  reference = trackNameDeclaration(definition).asIdentifier() and
+  definition = getStaticBindingTarget(reference) and
   not reference instanceof NameDeclaration and
   kind = "name"
 }

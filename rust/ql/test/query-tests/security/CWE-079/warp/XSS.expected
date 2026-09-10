@@ -1,7 +1,8 @@
 #select
 | main.rs:10:31:10:34 | body | main.rs:7:14:11:9 | \|...\| ... | main.rs:10:31:10:34 | body | Cross-site scripting vulnerability due to a $@. | main.rs:7:14:11:9 | \|...\| ... | user-provided value |
 edges
-| main.rs:7:14:11:9 | \|...\| ... | main.rs:9:32:9:56 | MacroExpr | provenance | Src:MaD:2  |
+| main.rs:7:14:11:9 | \|...\| ... | main.rs:7:15:7:26 | ...: String | provenance | Src:MaD:2  |
+| main.rs:7:15:7:26 | ...: String | main.rs:9:32:9:56 | MacroExpr | provenance |  |
 | main.rs:9:17:9:20 | body | main.rs:10:31:10:34 | body | provenance | Sink:MaD:1 |
 | main.rs:9:32:9:56 | ...::format(...) | main.rs:9:32:9:56 | { ... } | provenance |  |
 | main.rs:9:32:9:56 | ...::must_use(...) | main.rs:9:17:9:20 | body | provenance |  |
@@ -9,11 +10,12 @@ edges
 | main.rs:9:32:9:56 | { ... } | main.rs:9:32:9:56 | ...::must_use(...) | provenance | MaD:4 |
 models
 | 1 | Sink: warp::reply::html; Argument[0]; html-injection |
-| 2 | Source: warp::filter::Filter::map; Argument[0].Parameter[0..7]; remote |
+| 2 | Source: <warp::filter::Filter>::map; Argument[0].Parameter[0..7]; remote |
 | 3 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
 | 4 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
 nodes
 | main.rs:7:14:11:9 | \|...\| ... | semmle.label | \|...\| ... |
+| main.rs:7:15:7:26 | ...: String | semmle.label | ...: String |
 | main.rs:9:17:9:20 | body | semmle.label | body |
 | main.rs:9:32:9:56 | ...::format(...) | semmle.label | ...::format(...) |
 | main.rs:9:32:9:56 | ...::must_use(...) | semmle.label | ...::must_use(...) |

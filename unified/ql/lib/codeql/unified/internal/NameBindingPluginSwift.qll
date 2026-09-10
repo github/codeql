@@ -29,6 +29,12 @@ class NameBindingPluginSwift extends NameBindingPlugin {
     // Note: Private class members can be seen within type-extensions in the same file,
     // so we can't declare those private to their local scope.
   }
+
+  bindingset[cls, member]
+  override predicate isInheritableMember(ClassLikeDeclaration cls, Member member) {
+    exists(cls) and
+    not member.hasModifier("private")
+  }
 }
 
 private predicate predefinedSourceFolders(string folder, int ordering) {

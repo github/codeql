@@ -1,39 +1,39 @@
 models
 | 1 | Summary: <core::num::wrapping::Wrapping as core::ops::arith::Neg>::neg; Argument[self].Field[core::num::wrapping::Wrapping(0)]; ReturnValue.Field[core::num::wrapping::Wrapping(0)]; taint |
 | 2 | Summary: <core::num::wrapping::Wrapping as core::ops::bit::Not>::not; Argument[self].Field[core::num::wrapping::Wrapping(0)]; ReturnValue.Field[core::num::wrapping::Wrapping(0)]; taint |
-| 3 | Summary: core::ops::arith::Add::add; Argument[self,0].Field[core::num::wrapping::Wrapping(0)]; ReturnValue.Field[core::num::wrapping::Wrapping(0)]; taint |
-| 4 | Summary: core::ops::arith::Add::add; Argument[self,0]; ReturnValue; taint |
-| 5 | Summary: core::ops::arith::AddAssign::add_assign; Argument[0].Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
-| 6 | Summary: core::ops::arith::AddAssign::add_assign; Argument[0]; Argument[self].Reference; taint |
-| 7 | Summary: core::ops::arith::AddAssign::add_assign; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
-| 8 | Summary: core::ops::arith::AddAssign::add_assign; Argument[self].Reference; Argument[self].Reference; taint |
-| 9 | Summary: core::ops::arith::Mul::mul; Argument[self,0]; ReturnValue; taint |
-| 10 | Summary: core::ops::arith::MulAssign::mul_assign; Argument[0]; Argument[self].Reference; taint |
-| 11 | Summary: core::ops::arith::MulAssign::mul_assign; Argument[self].Reference; Argument[self].Reference; taint |
-| 12 | Summary: core::ops::arith::Neg::neg; Argument[self]; ReturnValue; taint |
-| 13 | Summary: core::ops::arith::Sub::sub; Argument[self,0]; ReturnValue; taint |
-| 14 | Summary: core::ops::arith::SubAssign::sub_assign; Argument[0]; Argument[self].Reference; taint |
-| 15 | Summary: core::ops::arith::SubAssign::sub_assign; Argument[self].Reference; Argument[self].Reference; taint |
-| 16 | Summary: core::ops::bit::BitAnd::bitand; Argument[self,0].Field[core::num::wrapping::Wrapping(0)]; ReturnValue.Field[core::num::wrapping::Wrapping(0)]; taint |
-| 17 | Summary: core::ops::bit::BitAndAssign::bitand_assign; Argument[0].Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
-| 18 | Summary: core::ops::bit::BitAndAssign::bitand_assign; Argument[0]; Argument[self].Reference; taint |
-| 19 | Summary: core::ops::bit::BitAndAssign::bitand_assign; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
-| 20 | Summary: core::ops::bit::BitAndAssign::bitand_assign; Argument[self].Reference; Argument[self].Reference; taint |
-| 21 | Summary: core::ops::bit::BitOr::bitor; Argument[self,0]; ReturnValue; taint |
-| 22 | Summary: core::ops::bit::BitXor::bitxor; Argument[self,0]; ReturnValue; taint |
-| 23 | Summary: core::ops::bit::BitXorAssign::bitxor_assign; Argument[0]; Argument[self].Reference; taint |
-| 24 | Summary: core::ops::bit::BitXorAssign::bitxor_assign; Argument[self].Reference; Argument[self].Reference; taint |
-| 25 | Summary: core::ops::bit::Not::not; Argument[self]; ReturnValue; taint |
-| 26 | Summary: core::ops::bit::Shl::shl; Argument[self,0].Field[core::num::wrapping::Wrapping(0)]; ReturnValue.Field[core::num::wrapping::Wrapping(0)]; taint |
-| 27 | Summary: core::ops::bit::Shl::shl; Argument[self,0]; ReturnValue; taint |
-| 28 | Summary: core::ops::bit::ShlAssign::shl_assign; Argument[0].Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
-| 29 | Summary: core::ops::bit::ShlAssign::shl_assign; Argument[0]; Argument[self].Reference; taint |
-| 30 | Summary: core::ops::bit::ShlAssign::shl_assign; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
-| 31 | Summary: core::ops::bit::ShlAssign::shl_assign; Argument[self].Reference; Argument[self].Reference; taint |
-| 32 | Summary: core::ops::bit::Shr::shr; Argument[self,0]; ReturnValue; taint |
-| 33 | Summary: core::ops::bit::ShrAssign::shr_assign; Argument[0]; Argument[self].Reference; taint |
-| 34 | Summary: core::ops::bit::ShrAssign::shr_assign; Argument[self].Reference; Argument[self].Reference; taint |
-| 35 | Summary: core::ops::index::Index::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
+| 3 | Summary: <core::ops::arith::Add>::add; Argument[self,0].Field[core::num::wrapping::Wrapping(0)]; ReturnValue.Field[core::num::wrapping::Wrapping(0)]; taint |
+| 4 | Summary: <core::ops::arith::Add>::add; Argument[self,0]; ReturnValue; taint |
+| 5 | Summary: <core::ops::arith::AddAssign>::add_assign; Argument[0].Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
+| 6 | Summary: <core::ops::arith::AddAssign>::add_assign; Argument[0]; Argument[self].Reference; taint |
+| 7 | Summary: <core::ops::arith::AddAssign>::add_assign; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
+| 8 | Summary: <core::ops::arith::AddAssign>::add_assign; Argument[self].Reference; Argument[self].Reference; taint |
+| 9 | Summary: <core::ops::arith::Mul>::mul; Argument[self,0]; ReturnValue; taint |
+| 10 | Summary: <core::ops::arith::MulAssign>::mul_assign; Argument[0]; Argument[self].Reference; taint |
+| 11 | Summary: <core::ops::arith::MulAssign>::mul_assign; Argument[self].Reference; Argument[self].Reference; taint |
+| 12 | Summary: <core::ops::arith::Neg>::neg; Argument[self]; ReturnValue; taint |
+| 13 | Summary: <core::ops::arith::Sub>::sub; Argument[self,0]; ReturnValue; taint |
+| 14 | Summary: <core::ops::arith::SubAssign>::sub_assign; Argument[0]; Argument[self].Reference; taint |
+| 15 | Summary: <core::ops::arith::SubAssign>::sub_assign; Argument[self].Reference; Argument[self].Reference; taint |
+| 16 | Summary: <core::ops::bit::BitAnd>::bitand; Argument[self,0].Field[core::num::wrapping::Wrapping(0)]; ReturnValue.Field[core::num::wrapping::Wrapping(0)]; taint |
+| 17 | Summary: <core::ops::bit::BitAndAssign>::bitand_assign; Argument[0].Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
+| 18 | Summary: <core::ops::bit::BitAndAssign>::bitand_assign; Argument[0]; Argument[self].Reference; taint |
+| 19 | Summary: <core::ops::bit::BitAndAssign>::bitand_assign; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
+| 20 | Summary: <core::ops::bit::BitAndAssign>::bitand_assign; Argument[self].Reference; Argument[self].Reference; taint |
+| 21 | Summary: <core::ops::bit::BitOr>::bitor; Argument[self,0]; ReturnValue; taint |
+| 22 | Summary: <core::ops::bit::BitXor>::bitxor; Argument[self,0]; ReturnValue; taint |
+| 23 | Summary: <core::ops::bit::BitXorAssign>::bitxor_assign; Argument[0]; Argument[self].Reference; taint |
+| 24 | Summary: <core::ops::bit::BitXorAssign>::bitxor_assign; Argument[self].Reference; Argument[self].Reference; taint |
+| 25 | Summary: <core::ops::bit::Not>::not; Argument[self]; ReturnValue; taint |
+| 26 | Summary: <core::ops::bit::Shl>::shl; Argument[self,0].Field[core::num::wrapping::Wrapping(0)]; ReturnValue.Field[core::num::wrapping::Wrapping(0)]; taint |
+| 27 | Summary: <core::ops::bit::Shl>::shl; Argument[self,0]; ReturnValue; taint |
+| 28 | Summary: <core::ops::bit::ShlAssign>::shl_assign; Argument[0].Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
+| 29 | Summary: <core::ops::bit::ShlAssign>::shl_assign; Argument[0]; Argument[self].Reference; taint |
+| 30 | Summary: <core::ops::bit::ShlAssign>::shl_assign; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]; taint |
+| 31 | Summary: <core::ops::bit::ShlAssign>::shl_assign; Argument[self].Reference; Argument[self].Reference; taint |
+| 32 | Summary: <core::ops::bit::Shr>::shr; Argument[self,0]; ReturnValue; taint |
+| 33 | Summary: <core::ops::bit::ShrAssign>::shr_assign; Argument[0]; Argument[self].Reference; taint |
+| 34 | Summary: <core::ops::bit::ShrAssign>::shr_assign; Argument[self].Reference; Argument[self].Reference; taint |
+| 35 | Summary: <core::ops::index::Index>::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
 edges
 | main.rs:12:9:12:9 | a | main.rs:13:10:13:10 | a | provenance |  |
 | main.rs:12:9:12:9 | a | main.rs:14:14:14:14 | a | provenance |  |
