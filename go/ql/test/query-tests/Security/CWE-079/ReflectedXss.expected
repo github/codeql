@@ -58,9 +58,11 @@ edges
 | reflectedxsstest.go:51:14:51:18 | selection of URL | reflectedxsstest.go:51:14:51:26 | call to Query | provenance | Src:MaD:10 MaD:17 |
 | reflectedxsstest.go:51:14:51:26 | call to Query | reflectedxsstest.go:54:11:54:21 | type conversion | provenance |  |
 | tst.go:14:15:14:20 | selection of Form | tst.go:14:15:14:36 | call to Get | provenance | Src:MaD:6 MaD:18 |
-| tst.go:14:15:14:36 | call to Get | tst.go:18:32:18:32 | a | provenance |  |
+| tst.go:14:15:14:36 | call to Get | tst.go:17:18:17:25 | username | provenance |  |
+| tst.go:17:9:17:57 | slice literal [array] | tst.go:18:32:18:32 | a [array] | provenance |  |
+| tst.go:17:18:17:25 | username | tst.go:17:9:17:57 | slice literal [array] | provenance |  |
 | tst.go:18:19:18:38 | call to Join | tst.go:18:12:18:39 | type conversion | provenance |  |
-| tst.go:18:32:18:32 | a | tst.go:18:19:18:38 | call to Join | provenance | MaD:19 |
+| tst.go:18:32:18:32 | a [array] | tst.go:18:19:18:38 | call to Join | provenance | MaD:19 |
 | tst.go:48:14:48:19 | selection of Form | tst.go:48:14:48:34 | call to Get | provenance | Src:MaD:6 MaD:18 |
 | tst.go:48:14:48:34 | call to Get | tst.go:53:12:53:26 | type conversion | provenance |  |
 | websocketXss.go:31:11:31:14 | xnet [postupdate] | websocketXss.go:32:24:32:27 | xnet | provenance | Src:MaD:5  |
@@ -88,7 +90,7 @@ models
 | 16 | Summary: mime/multipart; Reader; true; NextPart; ; ; Argument[receiver]; ReturnValue[0]; taint; manual |
 | 17 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
 | 18 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 19 | Summary: strings; ; false; Join; ; ; Argument[0..1]; ReturnValue; taint; manual |
+| 19 | Summary: strings; ; false; Join; ; ; Argument[0].ArrayElement; ReturnValue; taint; manual |
 nodes
 | ReflectedXss.go:11:15:11:20 | selection of Form | semmle.label | selection of Form |
 | ReflectedXss.go:11:15:11:36 | call to Get | semmle.label | call to Get |
@@ -137,9 +139,11 @@ nodes
 | reflectedxsstest.go:54:11:54:21 | type conversion | semmle.label | type conversion |
 | tst.go:14:15:14:20 | selection of Form | semmle.label | selection of Form |
 | tst.go:14:15:14:36 | call to Get | semmle.label | call to Get |
+| tst.go:17:9:17:57 | slice literal [array] | semmle.label | slice literal [array] |
+| tst.go:17:18:17:25 | username | semmle.label | username |
 | tst.go:18:12:18:39 | type conversion | semmle.label | type conversion |
 | tst.go:18:19:18:38 | call to Join | semmle.label | call to Join |
-| tst.go:18:32:18:32 | a | semmle.label | a |
+| tst.go:18:32:18:32 | a [array] | semmle.label | a [array] |
 | tst.go:48:14:48:19 | selection of Form | semmle.label | selection of Form |
 | tst.go:48:14:48:34 | call to Get | semmle.label | call to Get |
 | tst.go:53:12:53:26 | type conversion | semmle.label | type conversion |
