@@ -122,6 +122,47 @@ private module Cached {
     FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
   }
 
+  bindingset[store]
+  pragma[inline_late]
+  private predicate nodeHasInstructionLate(Node node, StoreInstruction store, int indirectionIndex) {
+    nodeHasInstruction(node, store, indirectionIndex)
+  }
+
+  pragma[nomagic]
+  private predicate storeStepSource(
+    Operand fieldAddress, int contentIndirectionIndex, Node node, boolean certain
+  ) {
+    exists(int indirectionIndex, int numberOfLoads, StoreInstruction store |
+      nodeHasInstructionLate(node, store, indirectionIndex) and
+      numberOfLoadsFromOperand(fieldAddress, store.getDestinationAddressOperand(), numberOfLoads,
+        certain) and
+      contentIndirectionIndex = 1 + indirectionIndex + numberOfLoads
+    )
+  }
+
+  pragma[nomagic]
+  private predicate hasFieldAddressAndField(Field f, PostFieldUpdateNode pfu, Operand fieldAddress) {
+    pfu.getIndirectionIndex() = 1 and
+    pfu.getUpdatedField() = f and
+    pfu.getFieldAddress() = fieldAddress
+  }
+
+  pragma[nomagic]
+  private predicate hasFieldAndIndirectionIndex(Field f, int indirectionIndex, FieldContent fc) {
+    fc.getAField() = f and
+    fc.getIndirectionIndex() = indirectionIndex
+  }
+
+  pragma[nomagic]
+  private predicate storeStepTarget(
+    Operand address, int indirectionIndex, PostFieldUpdateNode pfu, FieldContent fc
+  ) {
+    exists(Field f |
+      hasFieldAddressAndField(f, pfu, address) and
+      hasFieldAndIndirectionIndex(f, indirectionIndex, fc)
+    )
+  }
+
   /**
    * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
    * Thus, `node2` references an object with a field `f` that contains the
@@ -132,19 +173,9 @@ private module Cached {
    */
   cached
   predicate storeStepImpl(Node node1, Content c, Node node2, boolean certain) {
-    exists(
-      PostFieldUpdateNode postFieldUpdate, int indirectionIndex1, int numberOfLoads,
-      StoreInstruction store, FieldContent fc
-    |
-      postFieldUpdate = node2 and
-      fc = c and
-      nodeHasInstruction(node1, pragma[only_bind_into](store),
-        pragma[only_bind_into](indirectionIndex1)) and
-      postFieldUpdate.getIndirectionIndex() = 1 and
-      numberOfLoadsFromOperand(postFieldUpdate.getFieldAddress(),
-        store.getDestinationAddressOperand(), numberOfLoads, certain) and
-      fc.getAField() = postFieldUpdate.getUpdatedField() and
-      getIndirectionIndexLate(fc) = 1 + indirectionIndex1 + numberOfLoads
+    exists(Operand fieldAddress, int indirectionIndex |
+      storeStepSource(fieldAddress, indirectionIndex, node1, certain) and
+      storeStepTarget(fieldAddress, indirectionIndex, node2, c)
     )
     or
     // models-as-data summarized flow

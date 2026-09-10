@@ -148,11 +148,11 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, [], true));
+            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, ["https://my.nuget.source1"], true));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
-            Assert.Equal(["restore", "--no-dependencies", "myproject.csproj", "--packages", "mypackages", "/p:DisableImplicitNuGetFallbackFolder=true", "--verbosity", "normal", "--force"], lastArgs);
+            Assert.Equal(["restore", "--no-dependencies", "myproject.csproj", "--packages", "mypackages", "/p:DisableImplicitNuGetFallbackFolder=true", "--verbosity", "normal", "--force", "-s", "https://my.nuget.source1"], lastArgs);
             Assert.Equal(2, res.AssetsFilePaths.Count());
             Assert.Contains("/path/to/project.assets.json", res.AssetsFilePaths);
             Assert.Contains("/path/to/project2.assets.json", res.AssetsFilePaths);
@@ -166,11 +166,11 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            var res = dotnet.Restore(new("mysolution.sln", "mypackages", false, []));
+            var res = dotnet.Restore(new("mysolution.sln", "mypackages", false, ["https://my.nuget.source1", "https://my.nuget.source2"]));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
-            Assert.Equal(["restore", "--no-dependencies", "mysolution.sln", "--packages", "mypackages", "/p:DisableImplicitNuGetFallbackFolder=true", "--verbosity", "normal"], lastArgs);
+            Assert.Equal(["restore", "--no-dependencies", "mysolution.sln", "--packages", "mypackages", "/p:DisableImplicitNuGetFallbackFolder=true", "--verbosity", "normal", "-s", "https://my.nuget.source1", "-s", "https://my.nuget.source2"], lastArgs);
             Assert.Equal(2, res.RestoredProjects.Count());
             Assert.Contains("/path/to/project.csproj", res.RestoredProjects);
             Assert.Contains("/path/to/project2.csproj", res.RestoredProjects);

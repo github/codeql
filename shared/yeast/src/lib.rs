@@ -323,7 +323,7 @@ impl<'a> AstCursor<'a> {
     fn goto_first_child_opt(&mut self) -> Option<()> {
         let parent_id = self.node_id;
         let parent = self.ast.get_node(parent_id)?;
-        let mut children = ChildrenIter::new(parent);
+        let mut children = ChildrenIter::new(self.ast, parent);
         let first_child = children.next()?;
         self.node_id = first_child;
         self.parents.push((parent_id, children));
@@ -340,15 +340,35 @@ impl<'a> AstCursor<'a> {
 #[derive(Debug)]
 struct ChildrenIter<'a> {
     current_field: Option<FieldId>,
-    fields: std::collections::btree_map::Iter<'a, FieldId, Vec<Id>>,
+    fields: &'a BTreeMap<FieldId, Vec<Id>>,
+    field_order: std::vec::IntoIter<FieldId>,
     field_children: Option<std::slice::Iter<'a, Id>>,
 }
 
 impl<'a> ChildrenIter<'a> {
-    fn new(node: &'a Node) -> Self {
+    fn new(ast: &'a Ast, node: &'a Node) -> Self {
+        let fields = &node.fields;
+        let present: Vec<FieldId> = fields.keys().copied().collect();
+        let field_order = match ast.schema.field_order(node.kind_name()) {
+            Some(order) => {
+                let mut fields: Vec<FieldId> = order
+                    .iter()
+                    .copied()
+                    .filter(|field| fields.contains_key(field))
+                    .collect();
+                for field in present {
+                    if !fields.contains(&field) {
+                        fields.push(field);
+                    }
+                }
+                fields.into_iter()
+            }
+            None => present.into_iter(),
+        };
         Self {
             current_field: None,
-            fields: node.fields.iter(),
+            fields,
+            field_order,
             field_children: None,
         }
     }
@@ -363,20 +383,20 @@ impl Iterator for ChildrenIter<'_> {
 
     fn next(&mut self) -> Option<Self::Item> {
         match self.field_children.as_mut() {
-            None => match self.fields.next() {
-                Some((field, children)) => {
-                    self.current_field = Some(*field);
-                    self.field_children = Some(children.iter());
+            None => match self.field_order.next() {
+                Some(field) => {
+                    self.current_field = Some(field);
+                    self.field_children = Some(self.fields[&field].iter());
                     self.next()
                 }
                 None => None,
             },
             Some(children) => match children.next() {
-                None => match self.fields.next() {
+                None => match self.field_order.next() {
                     None => None,
-                    Some((field, children)) => {
-                        self.current_field = Some(*field);
-                        self.field_children = Some(children.iter());
+                    Some(field) => {
+                        self.current_field = Some(field);
+                        self.field_children = Some(self.fields[&field].iter());
                         self.next()
                     }
                 },

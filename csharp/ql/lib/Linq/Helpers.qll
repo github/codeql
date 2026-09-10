@@ -8,16 +8,66 @@ private import semmle.code.csharp.frameworks.system.collections.Generic as Gener
 private import semmle.code.csharp.frameworks.system.Collections as Collections
 
 //#################### PREDICATES ####################
-private Stmt firstStmt(ForeachStmt fes) {
+private Stmt firstStmt(ForEachStmt fes) {
   if fes.getBody() instanceof BlockStmt
   then result = fes.getBody().(BlockStmt).getStmt(0)
   else result = fes.getBody()
 }
 
-private int numStmts(ForeachStmt fes) {
+private int numStmts(ForEachStmt fes) {
   if fes.getBody() instanceof BlockStmt
   then result = count(fes.getBody().(BlockStmt).getAStmt())
   else result = 1
+}
+
+private predicate returnsLoopVariable(ForEachStmt fes, Stmt s) {
+  exists(ReturnStmt ret |
+    ret = s.stripSingletonBlocks() and
+    ret.getExpr().stripImplicit().(VariableAccess).getTarget() = fes.getVariable()
+  )
+}
+
+private predicate hasNullDefault(Type t) { t.isRefType() or t instanceof NullableType }
+
+private predicate returnsDefaultValueAfterForeach(ForEachStmt fes) {
+  exists(BlockStmt enclosingBlock, int i, Type elementType, ReturnStmt ret |
+    enclosingBlock.getStmt(i) = fes and
+    enclosingBlock.getStmt(i + 1) = ret and
+    elementType = fes.getVariable().getType()
+  |
+    ret.getExpr().stripImplicit() instanceof NullLiteral and
+    hasNullDefault(elementType)
+    or
+    exists(DefaultValueExpr defaultValue |
+      defaultValue = ret.getExpr().stripImplicit() and
+      (
+        defaultValue.getType() = elementType
+        or
+        hasNullDefault(elementType) and
+        hasNullDefault(defaultValue.getType())
+      )
+    )
+  )
+}
+
+private predicate terminatesCallable(Stmt s) {
+  exists(Stmt stripped | stripped = s.stripSingletonBlocks() |
+    stripped instanceof ReturnStmt
+    or
+    stripped instanceof YieldBreakStmt
+    or
+    stripped instanceof ThrowStmt
+    or
+    stripped instanceof BreakStmt
+    or
+    stripped = any(BlockStmt b | terminatesCallable(b.getLastStmt()))
+    or
+    stripped =
+      any(IfStmt nested |
+        terminatesCallable(nested.getThen()) and
+        terminatesCallable(nested.getElse())
+      )
+  )
 }
 
 /** Holds if the type's qualified name is "System.Linq.Enumerable" */
@@ -33,12 +83,15 @@ predicate isIEnumerableType(ValueOrRefType t) {
   )
 }
 
+/** DEPRECATED: Use `ForEachStmtGenericEnumerable` instead. */
+deprecated class ForeachStmtGenericEnumerable = ForEachStmtGenericEnumerable;
+
 /**
  * A class of foreach statements where the iterable expression
  * supports the use of the LINQ extension methods on `IEnumerable<T>`.
  */
-class ForeachStmtGenericEnumerable extends ForeachStmt {
-  ForeachStmtGenericEnumerable() {
+class ForEachStmtGenericEnumerable extends ForEachStmt {
+  ForEachStmtGenericEnumerable() {
     exists(ValueOrRefType t | t = this.getIterableExpr().getType() |
       t.getABaseType*().getUnboundDeclaration() instanceof
         GenericCollections::SystemCollectionsGenericIEnumerableTInterface or
@@ -47,12 +100,15 @@ class ForeachStmtGenericEnumerable extends ForeachStmt {
   }
 }
 
+/** DEPRECATED: Use `ForEachStmtEnumerable` instead. */
+deprecated class ForeachStmtEnumerable = ForEachStmtEnumerable;
+
 /**
  * A class of foreach statements where the iterable expression
  * supports the use of the LINQ extension methods on `IEnumerable`.
  */
-class ForeachStmtEnumerable extends ForeachStmt {
-  ForeachStmtEnumerable() {
+class ForEachStmtEnumerable extends ForEachStmt {
+  ForEachStmtEnumerable() {
     exists(ValueOrRefType t | t = this.getIterableExpr().getType() |
       t.getABaseType*() instanceof Collections::SystemCollectionsIEnumerableInterface or
       t.(ArrayType).getRank() = 1
@@ -62,11 +118,11 @@ class ForeachStmtEnumerable extends ForeachStmt {
 
 /**
  * Holds if `foreach` statement `fes` could be converted to a `.All()` call.
- * That is, the `ForeachStmt` contains a single `if` with a condition that
+ * That is, the `ForEachStmt` contains a single `if` with a condition that
  * accesses the loop variable and with a body that assigns `false` to a variable
  * and `break`s out of the `foreach`.
  */
-predicate missedAllOpportunity(ForeachStmtGenericEnumerable fes) {
+predicate missedAllOpportunity(ForEachStmtGenericEnumerable fes) {
   exists(IfStmt is |
     // The loop contains an if statement with no else case, and nothing else.
     is = firstStmt(fes) and
@@ -90,7 +146,7 @@ predicate missedAllOpportunity(ForeachStmtGenericEnumerable fes) {
  * block, the access is a cast, and the first statement is a
  * local variable declaration statement `s`.
  */
-predicate missedCastOpportunity(ForeachStmtEnumerable fes, LocalVariableDeclStmt s) {
+predicate missedCastOpportunity(ForEachStmtEnumerable fes, LocalVariableDeclStmt s) {
   s = firstStmt(fes) and
   forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
     va = s.getAVariableDeclExpr().getAChildExpr*()
@@ -107,7 +163,7 @@ predicate missedCastOpportunity(ForeachStmtEnumerable fes, LocalVariableDeclStmt
  * block, the access is a cast with the `as` operator, and the first statement
  * is a local variable declaration statement `s`.
  */
-predicate missedOfTypeOpportunity(ForeachStmtEnumerable fes, LocalVariableDeclStmt s) {
+predicate missedOfTypeOpportunity(ForEachStmtEnumerable fes, LocalVariableDeclStmt s) {
   s = firstStmt(fes) and
   forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
     va = s.getAVariableDeclExpr().getAChildExpr*()
@@ -125,7 +181,7 @@ predicate missedOfTypeOpportunity(ForeachStmtEnumerable fes, LocalVariableDeclSt
  * local variable declaration statement `s`, and the initializer does not
  * contain an `await` expression (since `Select` does not support async lambdas).
  */
-predicate missedSelectOpportunity(ForeachStmtGenericEnumerable fes, LocalVariableDeclStmt s) {
+predicate missedSelectOpportunity(ForEachStmtGenericEnumerable fes, LocalVariableDeclStmt s) {
   s = firstStmt(fes) and
   forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
     va = s.getAVariableDeclExpr().getAChildExpr*()
@@ -140,7 +196,7 @@ predicate missedSelectOpportunity(ForeachStmtGenericEnumerable fes, LocalVariabl
  * variable, and the body of the `if` is either a `continue` or there's nothing
  * else in the loop than the `if`.
  */
-predicate missedWhereOpportunity(ForeachStmtGenericEnumerable fes, IfStmt is) {
+predicate missedWhereOpportunity(ForEachStmtGenericEnumerable fes, IfStmt is) {
   // The very first thing the foreach loop does is test its iteration variable.
   is = firstStmt(fes) and
   exists(VariableAccess va |
@@ -152,8 +208,32 @@ predicate missedWhereOpportunity(ForeachStmtGenericEnumerable fes, IfStmt is) {
     is.getThen() instanceof ContinueStmt
     or
     not exists(is.getElse()) and
-    numStmts(fes) = 1
+    numStmts(fes) = 1 and
+    not terminatesCallable(is.getThen())
   )
+}
+
+/**
+ * Holds if `foreach` statement `fes` could be converted to a `.FirstOrDefault()` call.
+ * That is, the loop contains a single `if` statement that accesses the loop variable,
+ * returns the loop variable when the condition matches, and is followed by a default return.
+ */
+predicate missedFirstOrDefaultOpportunity(ForEachStmtGenericEnumerable fes, IfStmt is) {
+  // The loop only checks whether the current element is the first match.
+  is = firstStmt(fes) and
+  not exists(is.getElse()) and
+  numStmts(fes) = 1 and
+  // Condition relies on loop variable.
+  exists(VariableAccess va |
+    va.getTarget() = fes.getVariable() and
+    va = is.getCondition().getAChildExpr*()
+  ) and
+  not is.getCondition().getAChildExpr*() instanceof AwaitExpr and
+  not fes.isAsync() and
+  not fes.getVariable().isCaptured() and
+  returnsLoopVariable(fes, is.getThen()) and
+  fes.getElementType() = fes.getVariable().getType() and
+  returnsDefaultValueAfterForeach(fes)
 }
 
 //#################### CLASSES ####################

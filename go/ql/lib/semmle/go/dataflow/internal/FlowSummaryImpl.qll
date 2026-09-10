@@ -27,13 +27,9 @@ module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
 
   class SummarizedCallableBase = Callable;
 
-  class SourceBase extends Void {
+  class FlowSummaryCallBase extends Void {
     Location getLocation() { none() }
   }
-
-  class SinkBase = SourceBase;
-
-  class FlowSummaryCallBase = SourceBase;
 
   predicate callableFromSource(SummarizedCallableBase c) { exists(c.getFuncDef()) }
 

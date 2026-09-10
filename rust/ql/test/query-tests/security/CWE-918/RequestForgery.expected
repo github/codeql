@@ -40,7 +40,8 @@ edges
 | request_forgery_tests.rs:31:43:31:50 | user_url | request_forgery_tests.rs:31:42:31:50 | &user_url [&ref] | provenance |  |
 | request_forgery_tests.rs:37:50:37:58 | &user_url [&ref] | request_forgery_tests.rs:37:50:37:58 | &user_url | provenance | Sink:MaD:1 |
 | request_forgery_tests.rs:37:51:37:58 | user_url | request_forgery_tests.rs:37:50:37:58 | &user_url [&ref] | provenance |  |
-| request_forgery_tests.rs:65:42:73:9 | \|...\| ... | request_forgery_tests.rs:68:42:68:42 | a | provenance | Src:MaD:2  |
+| request_forgery_tests.rs:65:42:73:9 | \|...\| ... | request_forgery_tests.rs:65:49:65:57 | ...: String | provenance | Src:MaD:2  |
+| request_forgery_tests.rs:65:49:65:57 | ...: String | request_forgery_tests.rs:68:42:68:42 | a | provenance |  |
 | request_forgery_tests.rs:68:41:68:42 | &a [&ref] | request_forgery_tests.rs:68:41:68:42 | &a | provenance | Sink:MaD:1 |
 | request_forgery_tests.rs:68:42:68:42 | a | request_forgery_tests.rs:68:41:68:42 | &a [&ref] | provenance |  |
 models
@@ -84,6 +85,7 @@ nodes
 | request_forgery_tests.rs:37:50:37:58 | &user_url [&ref] | semmle.label | &user_url [&ref] |
 | request_forgery_tests.rs:37:51:37:58 | user_url | semmle.label | user_url |
 | request_forgery_tests.rs:65:42:73:9 | \|...\| ... | semmle.label | \|...\| ... |
+| request_forgery_tests.rs:65:49:65:57 | ...: String | semmle.label | ...: String |
 | request_forgery_tests.rs:68:41:68:42 | &a | semmle.label | &a |
 | request_forgery_tests.rs:68:41:68:42 | &a [&ref] | semmle.label | &a [&ref] |
 | request_forgery_tests.rs:68:42:68:42 | a | semmle.label | a |

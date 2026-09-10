@@ -295,6 +295,11 @@ abstract class MemoryLocation0 extends TMemoryLocation {
  */
 abstract class VirtualVariable extends MemoryLocation0 { }
 
+pragma[nomagic]
+private VirtualVariable getAllocationMemoryLocation(Allocation alloc) {
+  result.getAnAllocation() = alloc
+}
+
 abstract class AllocationMemoryLocation extends MemoryLocation0 {
   Allocation var;
   boolean isMayAccess;
@@ -313,7 +318,7 @@ abstract class AllocationMemoryLocation extends MemoryLocation0 {
       result = getGroupedMemoryLocation(var, false, false).getVirtualVariable()
       or
       not exists(getGroupedMemoryLocation(var, false, false)) and
-      result.(AllocationMemoryLocation).getAnAllocation() = var
+      result = getAllocationMemoryLocation(var)
     )
   }
 
@@ -815,6 +820,7 @@ private predicate isRelatableMemoryLocation(VariableMemoryLocation vml) {
   vml.getStartBitOffset() != Ints::unknown()
 }
 
+pragma[no_dynamic_join_order]
 private predicate isCoveredOffset(Allocation var, int offsetRank, VariableMemoryLocation vml) {
   exists(int startRank, int endRank, VirtualVariable vvar |
     vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(vvar, offset_)) and

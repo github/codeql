@@ -39,6 +39,14 @@ module Unified {
     }
   }
 
+  /** A block statement. */
+  class Block extends G::Block {
+    /** Gets the last statement in this block. */
+    Stmt getLastStmt() {
+      exists(int i | result = this.getStmt(i) and not exists(this.getStmt(i + 1)))
+    }
+  }
+
   /** An expression */
   class Expr extends G::Expr {
     /** Gets the string value of this expression, if it is a known string constant. */
@@ -47,6 +55,12 @@ module Unified {
       // just strip the quotes here and ignore escape sequences.
       result = this.(StringLiteral).getValue().regexpCapture("\"(.*)\"", 1)
     }
+  }
+
+  /** A binary expression. */
+  class BinaryExpr extends G::BinaryExpr {
+    /** Gets an operand of this binary expression. */
+    Expr getAnOperand() { result = [this.getLeft(), this.getRight()] }
   }
 
   /** A function call */

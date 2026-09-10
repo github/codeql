@@ -95,16 +95,103 @@ models
 | 94 | Summary: Azure::Core::IO; BodyStream; true; ReadToCount; ; ; Argument[-1]; Argument[*0]; taint; manual |
 | 95 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
 | 96 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 97 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 97 | Summary: BloombergLP::bdlbb; Blob; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 98 | Summary: BloombergLP::bdlbb; BlobBuffer; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 99 | Summary: BloombergLP::bdlbb; BlobBuffer; true; data; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 100 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const Blob &,int,int); ; Argument[*2]; Argument[*0]; taint; manual |
+| 101 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const char *,int); ; Argument[*2]; Argument[*0]; taint; manual |
+| 102 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (char *,const Blob &,int,int); ; Argument[*1]; Argument[*0]; taint; manual |
+| 103 | Summary: BloombergLP::bdlbb; BlobUtil; true; getContiguousRangeOrCopy; ; ; Argument[*1]; ReturnValue[*]; taint; manual |
+| 104 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 105 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 106 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 107 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 108 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view); ; Argument[1..2]; ReturnValue; taint; manual |
+| 109 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
+| 110 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags); ; Argument[1..2]; ReturnValue; taint; manual |
+| 111 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
+| 112 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 113 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 114 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 115 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 116 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view); ; Argument[0..1]; ReturnValue; taint; manual |
+| 117 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
+| 118 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags); ; Argument[0..1]; ReturnValue; taint; manual |
+| 119 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
+| 120 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
 edges
-| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:56  |
-| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
-| asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:98:7:98:14 | send_str | provenance | TaintFunction |
-| asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:100:64:100:71 | *send_str | provenance | TaintFunction |
-| asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:100:44:100:62 | call to buffer | provenance |  |
-| asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:101:7:101:17 | send_buffer | provenance |  |
-| asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | send_buffer | provenance | Sink:MaD:4 |
-| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:97 |
+| asio_streams.cpp:129:34:129:44 | read_until output argument | asio_streams.cpp:133:7:133:17 | recv_buffer | provenance | Src:MaD:56  |
+| asio_streams.cpp:129:34:129:44 | read_until output argument | asio_streams.cpp:135:29:135:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
+| asio_streams.cpp:139:37:139:44 | call to source | asio_streams.cpp:140:7:140:14 | send_str | provenance | TaintFunction |
+| asio_streams.cpp:139:37:139:44 | call to source | asio_streams.cpp:142:64:142:71 | *send_str | provenance | TaintFunction |
+| asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:142:44:142:62 | call to buffer | provenance |  |
+| asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:143:7:143:17 | send_buffer | provenance |  |
+| asio_streams.cpp:142:44:142:62 | call to buffer | asio_streams.cpp:145:29:145:39 | send_buffer | provenance | Sink:MaD:4 |
+| asio_streams.cpp:142:64:142:71 | *send_str | asio_streams.cpp:142:44:142:62 | call to buffer | provenance | MaD:120 |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:161:24:161:27 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:162:24:162:27 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:163:24:163:27 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:164:24:164:27 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:171:34:171:37 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:172:34:172:37 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:173:34:173:37 | *host | provenance | TaintFunction |
+| asio_streams.cpp:156:19:156:26 | call to source | asio_streams.cpp:174:34:174:37 | *host | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:166:24:166:32 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:167:24:167:32 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:168:24:168:32 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:169:24:169:32 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:176:34:176:42 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:177:34:177:42 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:178:34:178:42 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:158:29:158:36 | call to source | asio_streams.cpp:179:34:179:42 | host_view | provenance | TaintFunction |
+| asio_streams.cpp:161:24:161:27 | *host | asio_streams.cpp:161:16:161:22 | call to resolve | provenance | MaD:112 |
+| asio_streams.cpp:162:24:162:27 | *host | asio_streams.cpp:162:16:162:22 | call to resolve | provenance | MaD:113 |
+| asio_streams.cpp:163:24:163:27 | *host | asio_streams.cpp:163:16:163:22 | call to resolve | provenance | MaD:114 |
+| asio_streams.cpp:164:24:164:27 | *host | asio_streams.cpp:164:16:164:22 | call to resolve | provenance | MaD:115 |
+| asio_streams.cpp:166:24:166:32 | host_view | asio_streams.cpp:166:16:166:22 | call to resolve | provenance | MaD:116 |
+| asio_streams.cpp:167:24:167:32 | host_view | asio_streams.cpp:167:16:167:22 | call to resolve | provenance | MaD:117 |
+| asio_streams.cpp:168:24:168:32 | host_view | asio_streams.cpp:168:16:168:22 | call to resolve | provenance | MaD:118 |
+| asio_streams.cpp:169:24:169:32 | host_view | asio_streams.cpp:169:16:169:22 | call to resolve | provenance | MaD:119 |
+| asio_streams.cpp:171:34:171:37 | *host | asio_streams.cpp:171:16:171:22 | call to resolve | provenance | MaD:104 |
+| asio_streams.cpp:172:34:172:37 | *host | asio_streams.cpp:172:16:172:22 | call to resolve | provenance | MaD:105 |
+| asio_streams.cpp:173:34:173:37 | *host | asio_streams.cpp:173:16:173:22 | call to resolve | provenance | MaD:106 |
+| asio_streams.cpp:174:34:174:37 | *host | asio_streams.cpp:174:16:174:22 | call to resolve | provenance | MaD:107 |
+| asio_streams.cpp:176:34:176:42 | host_view | asio_streams.cpp:176:16:176:22 | call to resolve | provenance | MaD:108 |
+| asio_streams.cpp:177:34:177:42 | host_view | asio_streams.cpp:177:16:177:22 | call to resolve | provenance | MaD:109 |
+| asio_streams.cpp:178:34:178:42 | host_view | asio_streams.cpp:178:16:178:22 | call to resolve | provenance | MaD:110 |
+| asio_streams.cpp:179:34:179:42 | host_view | asio_streams.cpp:179:16:179:22 | call to resolve | provenance | MaD:111 |
+| asio_streams.cpp:188:22:188:29 | call to source | asio_streams.cpp:192:30:192:36 | *service | provenance | TaintFunction |
+| asio_streams.cpp:188:22:188:29 | call to source | asio_streams.cpp:193:30:193:36 | *service | provenance | TaintFunction |
+| asio_streams.cpp:188:22:188:29 | call to source | asio_streams.cpp:194:30:194:36 | *service | provenance | TaintFunction |
+| asio_streams.cpp:188:22:188:29 | call to source | asio_streams.cpp:195:30:195:36 | *service | provenance | TaintFunction |
+| asio_streams.cpp:188:22:188:29 | call to source | asio_streams.cpp:202:40:202:46 | *service | provenance | TaintFunction |
+| asio_streams.cpp:188:22:188:29 | call to source | asio_streams.cpp:203:40:203:46 | *service | provenance | TaintFunction |
+| asio_streams.cpp:188:22:188:29 | call to source | asio_streams.cpp:204:40:204:46 | *service | provenance | TaintFunction |
+| asio_streams.cpp:188:22:188:29 | call to source | asio_streams.cpp:205:40:205:46 | *service | provenance | TaintFunction |
+| asio_streams.cpp:190:32:190:39 | call to source | asio_streams.cpp:197:35:197:46 | service_view | provenance | TaintFunction |
+| asio_streams.cpp:190:32:190:39 | call to source | asio_streams.cpp:198:35:198:46 | service_view | provenance | TaintFunction |
+| asio_streams.cpp:190:32:190:39 | call to source | asio_streams.cpp:199:35:199:46 | service_view | provenance | TaintFunction |
+| asio_streams.cpp:190:32:190:39 | call to source | asio_streams.cpp:200:35:200:46 | service_view | provenance | TaintFunction |
+| asio_streams.cpp:190:32:190:39 | call to source | asio_streams.cpp:207:45:207:56 | service_view | provenance | TaintFunction |
+| asio_streams.cpp:190:32:190:39 | call to source | asio_streams.cpp:208:45:208:56 | service_view | provenance | TaintFunction |
+| asio_streams.cpp:190:32:190:39 | call to source | asio_streams.cpp:209:45:209:56 | service_view | provenance | TaintFunction |
+| asio_streams.cpp:190:32:190:39 | call to source | asio_streams.cpp:210:45:210:56 | service_view | provenance | TaintFunction |
+| asio_streams.cpp:192:30:192:36 | *service | asio_streams.cpp:192:16:192:22 | call to resolve | provenance | MaD:112 |
+| asio_streams.cpp:193:30:193:36 | *service | asio_streams.cpp:193:16:193:22 | call to resolve | provenance | MaD:113 |
+| asio_streams.cpp:194:30:194:36 | *service | asio_streams.cpp:194:16:194:22 | call to resolve | provenance | MaD:114 |
+| asio_streams.cpp:195:30:195:36 | *service | asio_streams.cpp:195:16:195:22 | call to resolve | provenance | MaD:115 |
+| asio_streams.cpp:197:35:197:46 | service_view | asio_streams.cpp:197:16:197:22 | call to resolve | provenance | MaD:116 |
+| asio_streams.cpp:198:35:198:46 | service_view | asio_streams.cpp:198:16:198:22 | call to resolve | provenance | MaD:117 |
+| asio_streams.cpp:199:35:199:46 | service_view | asio_streams.cpp:199:16:199:22 | call to resolve | provenance | MaD:118 |
+| asio_streams.cpp:200:35:200:46 | service_view | asio_streams.cpp:200:16:200:22 | call to resolve | provenance | MaD:119 |
+| asio_streams.cpp:202:40:202:46 | *service | asio_streams.cpp:202:16:202:22 | call to resolve | provenance | MaD:104 |
+| asio_streams.cpp:203:40:203:46 | *service | asio_streams.cpp:203:16:203:22 | call to resolve | provenance | MaD:105 |
+| asio_streams.cpp:204:40:204:46 | *service | asio_streams.cpp:204:16:204:22 | call to resolve | provenance | MaD:106 |
+| asio_streams.cpp:205:40:205:46 | *service | asio_streams.cpp:205:16:205:22 | call to resolve | provenance | MaD:107 |
+| asio_streams.cpp:207:45:207:56 | service_view | asio_streams.cpp:207:16:207:22 | call to resolve | provenance | MaD:108 |
+| asio_streams.cpp:208:45:208:56 | service_view | asio_streams.cpp:208:16:208:22 | call to resolve | provenance | MaD:109 |
+| asio_streams.cpp:209:45:209:56 | service_view | asio_streams.cpp:209:16:209:22 | call to resolve | provenance | MaD:110 |
+| asio_streams.cpp:210:45:210:56 | service_view | asio_streams.cpp:210:16:210:22 | call to resolve | provenance | MaD:111 |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:257:5:257:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:262:5:262:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:266:38:266:41 | *resp | provenance |  |
@@ -144,6 +231,38 @@ edges
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:295:10:295:20 | contentType | azure.cpp:295:10:295:20 | contentType | provenance |  |
+| bdlbb.cpp:54:16:54:23 | call to source | bdlbb.cpp:56:49:56:52 | *call to data | provenance | TaintFunction |
+| bdlbb.cpp:56:37:56:41 | copy output argument | bdlbb.cpp:58:42:58:45 | *blob | provenance |  |
+| bdlbb.cpp:56:49:56:52 | *call to data | bdlbb.cpp:56:37:56:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:58:37:58:39 | copy output argument | bdlbb.cpp:59:7:59:10 | * ... | provenance |  |
+| bdlbb.cpp:58:42:58:45 | *blob | bdlbb.cpp:58:37:58:39 | copy output argument | provenance | MaD:102 |
+| bdlbb.cpp:63:16:63:23 | call to source | bdlbb.cpp:65:49:65:52 | *call to data | provenance | TaintFunction |
+| bdlbb.cpp:65:37:65:41 | copy output argument | bdlbb.cpp:66:18:66:21 | *blob | provenance |  |
+| bdlbb.cpp:65:49:65:52 | *call to data | bdlbb.cpp:65:37:65:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:66:18:66:21 | *blob | bdlbb.cpp:66:29:66:32 | *call to buffer | provenance | MaD:97 |
+| bdlbb.cpp:66:18:66:38 | *call to data | bdlbb.cpp:66:18:66:38 | *call to data | provenance |  |
+| bdlbb.cpp:66:18:66:38 | *call to data | bdlbb.cpp:67:7:67:8 | * ... | provenance |  |
+| bdlbb.cpp:66:29:66:32 | *call to buffer | bdlbb.cpp:66:18:66:38 | *call to data | provenance | MaD:99 |
+| bdlbb.cpp:72:16:72:23 | call to source | bdlbb.cpp:74:49:74:52 | *call to data | provenance | TaintFunction |
+| bdlbb.cpp:74:37:74:41 | copy output argument | bdlbb.cpp:75:18:75:21 | *blob | provenance |  |
+| bdlbb.cpp:74:49:74:52 | *call to data | bdlbb.cpp:74:37:74:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:75:18:75:21 | *blob | bdlbb.cpp:75:29:75:32 | *call to buffer | provenance | MaD:97 |
+| bdlbb.cpp:75:18:75:46 | call to get | bdlbb.cpp:76:7:76:8 | * ... | provenance |  |
+| bdlbb.cpp:75:29:75:32 | *call to buffer | bdlbb.cpp:75:39:75:41 | *call to buffer | provenance | MaD:98 |
+| bdlbb.cpp:75:39:75:41 | *call to buffer | bdlbb.cpp:75:18:75:46 | call to get | provenance | DataFlowFunction |
+| bdlbb.cpp:80:16:80:23 | call to source | bdlbb.cpp:82:49:82:52 | *call to data | provenance | TaintFunction |
+| bdlbb.cpp:82:37:82:41 | copy output argument | bdlbb.cpp:84:72:84:75 | *blob | provenance |  |
+| bdlbb.cpp:82:49:82:52 | *call to data | bdlbb.cpp:82:37:82:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | provenance |  |
+| bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | bdlbb.cpp:85:7:85:8 | * ... | provenance |  |
+| bdlbb.cpp:84:72:84:75 | *blob | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | provenance | MaD:103 |
+| bdlbb.cpp:90:16:90:23 | call to source | bdlbb.cpp:92:48:92:51 | *call to data | provenance | TaintFunction |
+| bdlbb.cpp:92:37:92:40 | copy output argument | bdlbb.cpp:94:46:94:48 | *src | provenance |  |
+| bdlbb.cpp:92:48:92:51 | *call to data | bdlbb.cpp:92:37:92:40 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:94:37:94:40 | copy output argument | bdlbb.cpp:96:42:96:44 | *dst | provenance |  |
+| bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument | provenance | MaD:100 |
+| bdlbb.cpp:96:37:96:39 | copy output argument | bdlbb.cpp:97:7:97:10 | * ... | provenance |  |
+| bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument | provenance | MaD:102 |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:48  |
@@ -240,6 +359,7 @@ edges
 | test.cpp:223:12:223:12 | *s | test.cpp:223:13:223:15 | call to operator[] | provenance | MaD:87 |
 | test.cpp:223:13:223:15 | call to operator[] | test.cpp:223:13:223:15 | call to operator[] | provenance |  |
 | test.cpp:223:13:223:15 | call to operator[] | test.cpp:224:11:224:11 | c | provenance | Sink:MaD:3 |
+| test.cpp:242:29:242:29 | *s [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
 | test.cpp:243:10:243:10 | *s [value] | test.cpp:243:13:243:17 | value | provenance |  |
 | test.cpp:243:13:243:17 | value | test.cpp:243:13:243:17 | value | provenance | Sink:MaD:3 |
 | test.cpp:247:26:247:39 | call to ymlFieldSource | test.cpp:247:26:247:39 | call to ymlFieldSource [value] | provenance | Src:MaD:47  |
@@ -247,35 +367,41 @@ edges
 | test.cpp:248:10:248:16 | *wrapper [value] | test.cpp:248:18:248:22 | value | provenance |  |
 | test.cpp:248:18:248:22 | value | test.cpp:248:18:248:22 | value | provenance | Sink:MaD:3 |
 | test.cpp:250:32:250:32 | source_from_callback_template output argument | test.cpp:250:32:250:32 | source_from_callback_template output argument [value] | provenance | Src:MaD:40  |
-| test.cpp:250:32:250:32 | source_from_callback_template output argument [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
+| test.cpp:250:32:250:32 | source_from_callback_template output argument [value] | test.cpp:242:29:242:29 | *s [value] | provenance |  |
 | test.cpp:251:27:251:27 | source_from_callback_ptr output argument | test.cpp:251:27:251:27 | source_from_callback_ptr output argument [value] | provenance | Src:MaD:37  |
-| test.cpp:251:27:251:27 | source_from_callback_ptr output argument [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
+| test.cpp:251:27:251:27 | source_from_callback_ptr output argument [value] | test.cpp:242:29:242:29 | *s [value] | provenance |  |
+| test.cpp:257:35:257:35 | *s [value] | test.cpp:258:12:258:12 | *s [value] | provenance |  |
 | test.cpp:258:12:258:12 | *s [value] | test.cpp:258:15:258:19 | value | provenance |  |
 | test.cpp:258:15:258:19 | value | test.cpp:258:15:258:19 | value | provenance | Sink:MaD:3 |
 | test.cpp:262:27:262:31 | source_from_callback_ptr output argument | test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | provenance | Src:MaD:37  |
-| test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
-| test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | test.cpp:258:12:258:12 | *s [value] | provenance |  |
+| test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | test.cpp:242:29:242:29 | *s [value] | provenance |  |
+| test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | test.cpp:257:35:257:35 | *s [value] | provenance |  |
 | test.cpp:264:32:266:2 | source_from_callback_template output argument | test.cpp:264:32:266:2 | source_from_callback_template output argument [value] | provenance | Src:MaD:40  |
-| test.cpp:264:32:266:2 | source_from_callback_template output argument [value] | test.cpp:265:11:265:11 | *s [value] | provenance |  |
+| test.cpp:264:32:266:2 | source_from_callback_template output argument [value] | test.cpp:264:56:264:56 | *s [value] | provenance |  |
+| test.cpp:264:56:264:56 | *s [value] | test.cpp:265:11:265:11 | *s [value] | provenance |  |
 | test.cpp:265:11:265:11 | *s [value] | test.cpp:265:14:265:18 | value | provenance |  |
 | test.cpp:265:14:265:18 | value | test.cpp:265:14:265:18 | value | provenance | Sink:MaD:3 |
 | test.cpp:268:27:268:27 | source_from_callback_ptr output argument | test.cpp:268:27:268:27 | source_from_callback_ptr output argument [value] | provenance | Src:MaD:37  |
-| test.cpp:268:27:268:27 | source_from_callback_ptr output argument [value] | test.cpp:269:11:269:11 | *s [value] | provenance |  |
+| test.cpp:268:27:268:27 | source_from_callback_ptr output argument [value] | test.cpp:268:51:268:51 | *s [value] | provenance |  |
+| test.cpp:268:51:268:51 | *s [value] | test.cpp:269:11:269:11 | *s [value] | provenance |  |
 | test.cpp:269:11:269:11 | *s [value] | test.cpp:269:14:269:18 | value | provenance |  |
 | test.cpp:269:14:269:18 | value | test.cpp:269:14:269:18 | value | provenance | Sink:MaD:3 |
+| test.cpp:273:40:273:40 | *s [value] | test.cpp:274:12:274:12 | *s [value] | provenance |  |
 | test.cpp:274:12:274:12 | *s [value] | test.cpp:274:15:274:19 | value | provenance |  |
 | test.cpp:274:15:274:19 | value | test.cpp:274:15:274:19 | value | provenance | Sink:MaD:3 |
 | test.cpp:278:32:278:34 | source_from_callback_template output argument | test.cpp:278:32:278:34 | source_from_callback_template output argument [value] | provenance | Src:MaD:40  |
-| test.cpp:278:32:278:34 | source_from_callback_template output argument [value] | test.cpp:274:12:274:12 | *s [value] | provenance |  |
+| test.cpp:278:32:278:34 | source_from_callback_template output argument [value] | test.cpp:273:40:273:40 | *s [value] | provenance |  |
 | test.cpp:293:5:293:26 | *callback_returning_int | test.cpp:307:10:307:31 | call to callback_returning_int | provenance |  |
 | test.cpp:294:5:294:28 | *callback_returning_int_2 | test.cpp:310:10:310:33 | call to callback_returning_int_2 | provenance |  |
 | test.cpp:295:6:295:31 | **callback_returning_ptr_int | test.cpp:313:13:313:38 | *call to callback_returning_ptr_int | provenance |  |
+| test.cpp:297:5:297:20 | *return_ymlSource | test.cpp:318:37:318:52 | return_ymlSource | provenance | Sink:MaD:1 |
+| test.cpp:297:33:297:41 | call to ymlSource | test.cpp:297:5:297:20 | *return_ymlSource | provenance |  |
+| test.cpp:297:33:297:41 | call to ymlSource | test.cpp:297:5:297:20 | *return_ymlSource | provenance | Src:MaD:48  |
 | test.cpp:297:33:297:41 | call to ymlSource | test.cpp:297:33:297:41 | call to ymlSource | provenance | Src:MaD:48  |
-| test.cpp:297:33:297:41 | call to ymlSource | test.cpp:318:37:318:52 | return_ymlSource | provenance | Sink:MaD:1 |
-| test.cpp:297:33:297:41 | call to ymlSource | test.cpp:318:37:318:52 | return_ymlSource | provenance | Src:MaD:48  Sink:MaD:1 |
-| test.cpp:299:41:299:52 | *call to ymlSourcePtr | test.cpp:321:36:321:58 | return_ptr_to_ymlSource | provenance | Sink:MaD:2 |
+| test.cpp:299:6:299:28 | **return_ptr_to_ymlSource | test.cpp:321:36:321:58 | return_ptr_to_ymlSource | provenance | Sink:MaD:2 |
+| test.cpp:299:41:299:52 | *call to ymlSourcePtr | test.cpp:299:6:299:28 | **return_ptr_to_ymlSource | provenance |  |
+| test.cpp:299:41:299:52 | call to ymlSourcePtr | test.cpp:299:6:299:28 | **return_ptr_to_ymlSource | provenance | Src:MaD:49  |
 | test.cpp:299:41:299:52 | call to ymlSourcePtr | test.cpp:299:41:299:52 | *call to ymlSourcePtr | provenance | Src:MaD:49  |
-| test.cpp:299:41:299:52 | call to ymlSourcePtr | test.cpp:321:36:321:58 | return_ptr_to_ymlSource | provenance | Src:MaD:49  Sink:MaD:2 |
 | test.cpp:304:11:304:22 | call to ymlSourcePtr | test.cpp:304:10:304:24 | * ... | provenance | Src:MaD:49 Sink:MaD:3 |
 | test.cpp:306:39:306:60 | source_from_callback_return_template output argument | test.cpp:293:5:293:26 | *callback_returning_int | provenance | Src:MaD:39  |
 | test.cpp:307:10:307:31 | call to callback_returning_int | test.cpp:307:10:307:31 | call to callback_returning_int | provenance | Sink:MaD:3 |
@@ -284,11 +410,13 @@ edges
 | test.cpp:312:38:312:63 | source_ptr_from_callback_return_ptr output argument | test.cpp:295:6:295:31 | **callback_returning_ptr_int | provenance | Src:MaD:41  |
 | test.cpp:313:13:313:38 | *call to callback_returning_ptr_int | test.cpp:313:13:313:38 | *call to callback_returning_ptr_int | provenance |  |
 | test.cpp:313:13:313:38 | *call to callback_returning_ptr_int | test.cpp:315:10:315:13 | * ... | provenance | Sink:MaD:3 |
-| test.cpp:317:51:317:59 | call to ymlSource | test.cpp:317:37:317:64 | [...](...){...} | provenance | Sink:MaD:1 |
-| test.cpp:317:51:317:59 | call to ymlSource | test.cpp:317:37:317:64 | [...](...){...} | provenance | Src:MaD:48  Sink:MaD:1 |
+| test.cpp:317:39:317:39 | *operator() | test.cpp:317:37:317:64 | [...](...){...} | provenance | Sink:MaD:1 |
+| test.cpp:317:51:317:59 | call to ymlSource | test.cpp:317:39:317:39 | *operator() | provenance |  |
+| test.cpp:317:51:317:59 | call to ymlSource | test.cpp:317:39:317:39 | *operator() | provenance | Src:MaD:48  |
 | test.cpp:317:51:317:59 | call to ymlSource | test.cpp:317:51:317:59 | call to ymlSource | provenance | Src:MaD:48  |
-| test.cpp:320:50:320:61 | *call to ymlSourcePtr | test.cpp:320:36:320:36 | call to operator int *(*)() | provenance | Sink:MaD:2 |
-| test.cpp:320:50:320:61 | call to ymlSourcePtr | test.cpp:320:36:320:36 | call to operator int *(*)() | provenance | Src:MaD:49  Sink:MaD:2 |
+| test.cpp:320:38:320:38 | **operator() | test.cpp:320:36:320:36 | call to operator int *(*)() | provenance | Sink:MaD:2 |
+| test.cpp:320:50:320:61 | *call to ymlSourcePtr | test.cpp:320:38:320:38 | **operator() | provenance |  |
+| test.cpp:320:50:320:61 | call to ymlSourcePtr | test.cpp:320:38:320:38 | **operator() | provenance | Src:MaD:49  |
 | test.cpp:320:50:320:61 | call to ymlSourcePtr | test.cpp:320:50:320:61 | *call to ymlSourcePtr | provenance | Src:MaD:49  |
 | test.cpp:324:36:324:36 | p | test.cpp:325:10:325:10 | *p [value] | provenance | Src:MaD:43  |
 | test.cpp:324:36:324:36 | p | test.cpp:327:11:327:11 | *p [*pointer] | provenance | Src:MaD:42  |
@@ -478,16 +606,84 @@ edges
 | windows.cpp:1172:21:1172:24 | *guid | windows.cpp:1172:27:1172:29 | StringFromGUID2 output argument | provenance | MaD:76 |
 | windows.cpp:1172:27:1172:29 | StringFromGUID2 output argument | windows.cpp:1174:10:1174:13 | * ... | provenance |  |
 nodes
-| asio_streams.cpp:87:34:87:44 | read_until output argument | semmle.label | read_until output argument |
-| asio_streams.cpp:91:7:91:17 | recv_buffer | semmle.label | recv_buffer |
-| asio_streams.cpp:93:29:93:39 | recv_buffer | semmle.label | recv_buffer |
-| asio_streams.cpp:97:37:97:44 | call to source | semmle.label | call to source |
-| asio_streams.cpp:98:7:98:14 | send_str | semmle.label | send_str |
-| asio_streams.cpp:100:44:100:62 | call to buffer | semmle.label | call to buffer |
-| asio_streams.cpp:100:44:100:62 | call to buffer | semmle.label | call to buffer |
-| asio_streams.cpp:100:64:100:71 | *send_str | semmle.label | *send_str |
-| asio_streams.cpp:101:7:101:17 | send_buffer | semmle.label | send_buffer |
-| asio_streams.cpp:103:29:103:39 | send_buffer | semmle.label | send_buffer |
+| asio_streams.cpp:129:34:129:44 | read_until output argument | semmle.label | read_until output argument |
+| asio_streams.cpp:133:7:133:17 | recv_buffer | semmle.label | recv_buffer |
+| asio_streams.cpp:135:29:135:39 | recv_buffer | semmle.label | recv_buffer |
+| asio_streams.cpp:139:37:139:44 | call to source | semmle.label | call to source |
+| asio_streams.cpp:140:7:140:14 | send_str | semmle.label | send_str |
+| asio_streams.cpp:142:44:142:62 | call to buffer | semmle.label | call to buffer |
+| asio_streams.cpp:142:44:142:62 | call to buffer | semmle.label | call to buffer |
+| asio_streams.cpp:142:64:142:71 | *send_str | semmle.label | *send_str |
+| asio_streams.cpp:143:7:143:17 | send_buffer | semmle.label | send_buffer |
+| asio_streams.cpp:145:29:145:39 | send_buffer | semmle.label | send_buffer |
+| asio_streams.cpp:156:19:156:26 | call to source | semmle.label | call to source |
+| asio_streams.cpp:158:29:158:36 | call to source | semmle.label | call to source |
+| asio_streams.cpp:161:16:161:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:161:24:161:27 | *host | semmle.label | *host |
+| asio_streams.cpp:162:16:162:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:162:24:162:27 | *host | semmle.label | *host |
+| asio_streams.cpp:163:16:163:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:163:24:163:27 | *host | semmle.label | *host |
+| asio_streams.cpp:164:16:164:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:164:24:164:27 | *host | semmle.label | *host |
+| asio_streams.cpp:166:16:166:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:166:24:166:32 | host_view | semmle.label | host_view |
+| asio_streams.cpp:167:16:167:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:167:24:167:32 | host_view | semmle.label | host_view |
+| asio_streams.cpp:168:16:168:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:168:24:168:32 | host_view | semmle.label | host_view |
+| asio_streams.cpp:169:16:169:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:169:24:169:32 | host_view | semmle.label | host_view |
+| asio_streams.cpp:171:16:171:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:171:34:171:37 | *host | semmle.label | *host |
+| asio_streams.cpp:172:16:172:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:172:34:172:37 | *host | semmle.label | *host |
+| asio_streams.cpp:173:16:173:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:173:34:173:37 | *host | semmle.label | *host |
+| asio_streams.cpp:174:16:174:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:174:34:174:37 | *host | semmle.label | *host |
+| asio_streams.cpp:176:16:176:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:176:34:176:42 | host_view | semmle.label | host_view |
+| asio_streams.cpp:177:16:177:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:177:34:177:42 | host_view | semmle.label | host_view |
+| asio_streams.cpp:178:16:178:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:178:34:178:42 | host_view | semmle.label | host_view |
+| asio_streams.cpp:179:16:179:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:179:34:179:42 | host_view | semmle.label | host_view |
+| asio_streams.cpp:188:22:188:29 | call to source | semmle.label | call to source |
+| asio_streams.cpp:190:32:190:39 | call to source | semmle.label | call to source |
+| asio_streams.cpp:192:16:192:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:192:30:192:36 | *service | semmle.label | *service |
+| asio_streams.cpp:193:16:193:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:193:30:193:36 | *service | semmle.label | *service |
+| asio_streams.cpp:194:16:194:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:194:30:194:36 | *service | semmle.label | *service |
+| asio_streams.cpp:195:16:195:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:195:30:195:36 | *service | semmle.label | *service |
+| asio_streams.cpp:197:16:197:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:197:35:197:46 | service_view | semmle.label | service_view |
+| asio_streams.cpp:198:16:198:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:198:35:198:46 | service_view | semmle.label | service_view |
+| asio_streams.cpp:199:16:199:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:199:35:199:46 | service_view | semmle.label | service_view |
+| asio_streams.cpp:200:16:200:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:200:35:200:46 | service_view | semmle.label | service_view |
+| asio_streams.cpp:202:16:202:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:202:40:202:46 | *service | semmle.label | *service |
+| asio_streams.cpp:203:16:203:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:203:40:203:46 | *service | semmle.label | *service |
+| asio_streams.cpp:204:16:204:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:204:40:204:46 | *service | semmle.label | *service |
+| asio_streams.cpp:205:16:205:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:205:40:205:46 | *service | semmle.label | *service |
+| asio_streams.cpp:207:16:207:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:207:45:207:56 | service_view | semmle.label | service_view |
+| asio_streams.cpp:208:16:208:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:208:45:208:56 | service_view | semmle.label | service_view |
+| asio_streams.cpp:209:16:209:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:209:45:209:56 | service_view | semmle.label | service_view |
+| asio_streams.cpp:210:16:210:22 | call to resolve | semmle.label | call to resolve |
+| asio_streams.cpp:210:45:210:56 | service_view | semmle.label | service_view |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | semmle.label | *call to GetBodyStream |
 | azure.cpp:253:48:253:60 | call to GetBodyStream | semmle.label | call to GetBodyStream |
 | azure.cpp:257:5:257:8 | *resp | semmle.label | *resp |
@@ -532,6 +728,43 @@ nodes
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
+| bdlbb.cpp:54:16:54:23 | call to source | semmle.label | call to source |
+| bdlbb.cpp:56:37:56:41 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:56:49:56:52 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:58:37:58:39 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:58:42:58:45 | *blob | semmle.label | *blob |
+| bdlbb.cpp:59:7:59:10 | * ... | semmle.label | * ... |
+| bdlbb.cpp:63:16:63:23 | call to source | semmle.label | call to source |
+| bdlbb.cpp:65:37:65:41 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:65:49:65:52 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:66:18:66:21 | *blob | semmle.label | *blob |
+| bdlbb.cpp:66:18:66:38 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:66:18:66:38 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:66:29:66:32 | *call to buffer | semmle.label | *call to buffer |
+| bdlbb.cpp:67:7:67:8 | * ... | semmle.label | * ... |
+| bdlbb.cpp:72:16:72:23 | call to source | semmle.label | call to source |
+| bdlbb.cpp:74:37:74:41 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:74:49:74:52 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:75:18:75:21 | *blob | semmle.label | *blob |
+| bdlbb.cpp:75:18:75:46 | call to get | semmle.label | call to get |
+| bdlbb.cpp:75:29:75:32 | *call to buffer | semmle.label | *call to buffer |
+| bdlbb.cpp:75:39:75:41 | *call to buffer | semmle.label | *call to buffer |
+| bdlbb.cpp:76:7:76:8 | * ... | semmle.label | * ... |
+| bdlbb.cpp:80:16:80:23 | call to source | semmle.label | call to source |
+| bdlbb.cpp:82:37:82:41 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:82:49:82:52 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | semmle.label | *call to getContiguousRangeOrCopy |
+| bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | semmle.label | *call to getContiguousRangeOrCopy |
+| bdlbb.cpp:84:72:84:75 | *blob | semmle.label | *blob |
+| bdlbb.cpp:85:7:85:8 | * ... | semmle.label | * ... |
+| bdlbb.cpp:90:16:90:23 | call to source | semmle.label | call to source |
+| bdlbb.cpp:92:37:92:40 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:92:48:92:51 | *call to data | semmle.label | *call to data |
+| bdlbb.cpp:94:37:94:40 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:94:46:94:48 | *src | semmle.label | *src |
+| bdlbb.cpp:96:37:96:39 | copy output argument | semmle.label | copy output argument |
+| bdlbb.cpp:96:42:96:44 | *dst | semmle.label | *dst |
+| bdlbb.cpp:97:7:97:10 | * ... | semmle.label | * ... |
 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | semmle.label | *ymlStepGenerated_with_body |
 | test.cpp:7:47:7:52 | value2 | semmle.label | value2 |
 | test.cpp:7:64:7:69 | value2 | semmle.label | value2 |
@@ -640,6 +873,7 @@ nodes
 | test.cpp:223:13:223:15 | call to operator[] | semmle.label | call to operator[] |
 | test.cpp:223:13:223:15 | call to operator[] | semmle.label | call to operator[] |
 | test.cpp:224:11:224:11 | c | semmle.label | c |
+| test.cpp:242:29:242:29 | *s [value] | semmle.label | *s [value] |
 | test.cpp:243:10:243:10 | *s [value] | semmle.label | *s [value] |
 | test.cpp:243:13:243:17 | value | semmle.label | value |
 | test.cpp:243:13:243:17 | value | semmle.label | value |
@@ -652,6 +886,7 @@ nodes
 | test.cpp:250:32:250:32 | source_from_callback_template output argument [value] | semmle.label | source_from_callback_template output argument [value] |
 | test.cpp:251:27:251:27 | source_from_callback_ptr output argument | semmle.label | source_from_callback_ptr output argument |
 | test.cpp:251:27:251:27 | source_from_callback_ptr output argument [value] | semmle.label | source_from_callback_ptr output argument [value] |
+| test.cpp:257:35:257:35 | *s [value] | semmle.label | *s [value] |
 | test.cpp:258:12:258:12 | *s [value] | semmle.label | *s [value] |
 | test.cpp:258:15:258:19 | value | semmle.label | value |
 | test.cpp:258:15:258:19 | value | semmle.label | value |
@@ -659,14 +894,17 @@ nodes
 | test.cpp:262:27:262:31 | source_from_callback_ptr output argument [value] | semmle.label | source_from_callback_ptr output argument [value] |
 | test.cpp:264:32:266:2 | source_from_callback_template output argument | semmle.label | source_from_callback_template output argument |
 | test.cpp:264:32:266:2 | source_from_callback_template output argument [value] | semmle.label | source_from_callback_template output argument [value] |
+| test.cpp:264:56:264:56 | *s [value] | semmle.label | *s [value] |
 | test.cpp:265:11:265:11 | *s [value] | semmle.label | *s [value] |
 | test.cpp:265:14:265:18 | value | semmle.label | value |
 | test.cpp:265:14:265:18 | value | semmle.label | value |
 | test.cpp:268:27:268:27 | source_from_callback_ptr output argument | semmle.label | source_from_callback_ptr output argument |
 | test.cpp:268:27:268:27 | source_from_callback_ptr output argument [value] | semmle.label | source_from_callback_ptr output argument [value] |
+| test.cpp:268:51:268:51 | *s [value] | semmle.label | *s [value] |
 | test.cpp:269:11:269:11 | *s [value] | semmle.label | *s [value] |
 | test.cpp:269:14:269:18 | value | semmle.label | value |
 | test.cpp:269:14:269:18 | value | semmle.label | value |
+| test.cpp:273:40:273:40 | *s [value] | semmle.label | *s [value] |
 | test.cpp:274:12:274:12 | *s [value] | semmle.label | *s [value] |
 | test.cpp:274:15:274:19 | value | semmle.label | value |
 | test.cpp:274:15:274:19 | value | semmle.label | value |
@@ -675,8 +913,10 @@ nodes
 | test.cpp:293:5:293:26 | *callback_returning_int | semmle.label | *callback_returning_int |
 | test.cpp:294:5:294:28 | *callback_returning_int_2 | semmle.label | *callback_returning_int_2 |
 | test.cpp:295:6:295:31 | **callback_returning_ptr_int | semmle.label | **callback_returning_ptr_int |
+| test.cpp:297:5:297:20 | *return_ymlSource | semmle.label | *return_ymlSource |
 | test.cpp:297:33:297:41 | call to ymlSource | semmle.label | call to ymlSource |
 | test.cpp:297:33:297:41 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:299:6:299:28 | **return_ptr_to_ymlSource | semmle.label | **return_ptr_to_ymlSource |
 | test.cpp:299:41:299:52 | *call to ymlSourcePtr | semmle.label | *call to ymlSourcePtr |
 | test.cpp:299:41:299:52 | call to ymlSourcePtr | semmle.label | call to ymlSourcePtr |
 | test.cpp:304:10:304:24 | * ... | semmle.label | * ... |
@@ -692,10 +932,12 @@ nodes
 | test.cpp:313:13:313:38 | *call to callback_returning_ptr_int | semmle.label | *call to callback_returning_ptr_int |
 | test.cpp:315:10:315:13 | * ... | semmle.label | * ... |
 | test.cpp:317:37:317:64 | [...](...){...} | semmle.label | [...](...){...} |
+| test.cpp:317:39:317:39 | *operator() | semmle.label | *operator() |
 | test.cpp:317:51:317:59 | call to ymlSource | semmle.label | call to ymlSource |
 | test.cpp:317:51:317:59 | call to ymlSource | semmle.label | call to ymlSource |
 | test.cpp:318:37:318:52 | return_ymlSource | semmle.label | return_ymlSource |
 | test.cpp:320:36:320:36 | call to operator int *(*)() | semmle.label | call to operator int *(*)() |
+| test.cpp:320:38:320:38 | **operator() | semmle.label | **operator() |
 | test.cpp:320:50:320:61 | *call to ymlSourcePtr | semmle.label | *call to ymlSourcePtr |
 | test.cpp:320:50:320:61 | call to ymlSourcePtr | semmle.label | call to ymlSourcePtr |
 | test.cpp:321:36:321:58 | return_ptr_to_ymlSource | semmle.label | return_ptr_to_ymlSource |

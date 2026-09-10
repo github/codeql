@@ -16,7 +16,10 @@ by Apple's swift-syntax rather than by tree-sitter.
 - `extractor/src/languages/swift/adapter.rs` converts that JSON into a yeast AST.
 
 - The raw parse tree's shape is described by `extractor/swift_node_types.yml`,
-  which is maintained by hand.
+  which is generated from swift-syntax by `swift-syntax-rs/schemagen`. Do not
+  edit it by hand; regenerate it with `scripts/regenerate-node-types.sh` after
+  changing the pinned swift-syntax version, then review the diff alongside the
+  mapping in `extractor/src/languages/swift/swift.rs`.
 
 ## AST Mapping
 - The target AST shape is described by `extractor/ast_types.yml`.

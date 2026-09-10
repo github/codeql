@@ -31,11 +31,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Join(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
+        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, IDependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Join(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
 
         internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, bool runDotnetInfo) => new DotNet(dotnetCliInvoker, logger, runDotnetInfo);
 
-        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) => new DotNet(logger, dotNetPath, tempWorkingDirectory, dependabotProxy);
+        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, IDependabotProxy? dependabotProxy) => new DotNet(logger, dotNetPath, tempWorkingDirectory, dependabotProxy);
 
         private static void HandleRetryExitCode143(string dotnet, int attempt, ILogger logger)
         {
@@ -90,7 +90,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args.Add("/p:EnableWindowsTargeting=true");
             }
 
-            args.AddRange(restoreSettings.NugetSources);
+            var nugetSources = restoreSettings.NugetSources.SelectMany<string, string>(source => ["-s", source]).ToList();
+            args.AddRange(nugetSources);
 
             return args;
         }

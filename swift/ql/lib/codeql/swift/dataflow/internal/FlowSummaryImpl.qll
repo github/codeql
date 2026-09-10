@@ -16,13 +16,9 @@ module Input implements InputSig<Location, DataFlowImplSpecific::SwiftDataFlow> 
 
   class SummarizedCallableBase = Function;
 
-  class SourceBase extends Void {
+  class FlowSummaryCallBase extends Void {
     Location getLocation() { none() }
   }
-
-  class SinkBase = SourceBase;
-
-  class FlowSummaryCallBase = SourceBase;
 
   predicate callableFromSource(SummarizedCallableBase c) { c.hasBody() }
 

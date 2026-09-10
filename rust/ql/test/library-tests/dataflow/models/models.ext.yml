@@ -14,6 +14,8 @@ extensions:
       - ["main::external_file::generated_source", "ReturnValue", "test-source", "dfc-generated"] # not actually generated, but we want to test behaviour of generated models here.
       - ["main::external_file::neutral_generated_source", "ReturnValue", "test-source", "dfc-generated"]
       - ["main::external_file::neutral_manual_source", "ReturnValue", "test-source", "manual"]
+      - ["<main::external_file::MySourceTrait2>::produce2", "ReturnValue", "test-source", "manual"]
+      - ["<_ as main::MySourceTrait3>::produce3", "ReturnValue", "test-source", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
@@ -27,6 +29,8 @@ extensions:
       - ["main::external_file::generated_sink", "Argument[0]", "test-sink", "dfc-generated"]
       - ["main::external_file::neutral_generated_sink", "Argument[0]", "test-sink", "dfc-generated"]
       - ["main::external_file::neutral_manual_sink", "Argument[0]", "test-sink", "manual"]
+      - ["<main::external_file::MySinkTrait2>::consume2", "Argument[0]", "test-sink", "manual"]
+      - ["<_ as main::MySinkTrait3>::consume3", "Argument[0]", "test-sink", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel

@@ -295,9 +295,9 @@ private module Ast implements AstSig<Location> {
     AstNode getUpdate(int index) { none() }
   }
 
-  // `ForExpr` would be a match for `ForeachStmt`, but it is desugared.
-  class ForeachStmt extends LoopStmt {
-    ForeachStmt() { none() }
+  // `ForExpr` would be a match for `ForEachStmt`, but it is desugared.
+  class ForEachStmt extends LoopStmt {
+    ForEachStmt() { none() }
 
     Expr getVariable() { none() }
 

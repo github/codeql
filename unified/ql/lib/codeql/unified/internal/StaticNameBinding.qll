@@ -476,7 +476,6 @@ private module FolderHeuristic {
     exists(TopLevel top, Stmt stmt, NameDeclaration nameDecl |
       top.getFile() = file and
       stmt = top.getBody().getAStmt() and
-      not stmt.(ClassLikeDeclaration).hasModifier("extension") and // TODO: target of type extensions should not be seen as a NameDeclaration
       not isPrivateToLocalScope(nameDecl) and
       nameDecl.getDeclaration() = stmt and
       name = nameDecl.getName() and

@@ -100,7 +100,7 @@ private module Ast implements AstSig<Location> {
 
   final private class FinalEnhancedForStmt = J::EnhancedForStmt;
 
-  class ForeachStmt extends FinalEnhancedForStmt {
+  class ForEachStmt extends FinalEnhancedForStmt {
     Expr getVariable() { result = super.getVariable() }
 
     Expr getCollection() { result = super.getExpr() }

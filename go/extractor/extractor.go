@@ -38,7 +38,15 @@ type typeParamParentEntry struct {
 	isFromReceiver bool
 }
 
+// typeParamMutex protects typeParamParent.
+var typeParamParentMutex sync.RWMutex
+
 var typeParamParent map[*types.TypeParam]typeParamParentEntry = make(map[*types.TypeParam]typeParamParentEntry)
+
+// typeParamMutex protects typeParamOrigin.
+var typeParamOriginMutex sync.RWMutex
+
+var typeParamOrigin map[*types.TypeParam]*types.TypeParam = make(map[*types.TypeParam]*types.TypeParam)
 
 func init() {
 	// this sets the number of threads that the Go runtime will spawn; this is separate
@@ -1658,29 +1666,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			for i := 0; i < origintp.NumMethods(); i++ {
 				meth := origintp.Method(i).Origin()
 				extractMethod(tw, meth)
-
-				// Consider a generic struct and a generic method:
-				//
-				//   type S[P any] struct{}
-				//   func (*S[P]) m[Q any](x Q) {}
-				//
-				// If we have a variable 's' of type 'S[int]' and the expression
-				// 's.m[string]("")', then the type of the selector expression 's.m'
-				// is '	func(Q)'. The method 'm' here is an instantiation of the
-				// declaration, which has its own type with type parameter 'Q'.
-				// As we do not extract method instantiations, 'populateTypeParamParents'
-				// does not automatically get called for the type parameter 'Q'
-				// from the instantiation of 'm'. To compensate, we add the type
-				// parameters here.
-				//
-				// As a parent we use the origin method. This suffices, as the name
-				// and index of the type parameter in the instantiation will be
-				// identical to those of the uninstantiated method, and as only
-				// these two properties will be extracted for a type parameter.
-				if tp.Method(i) != meth {
-					signature := tp.Method(i).Type().(*types.Signature)
-					populateTypeParamParents(signature.TypeParams(), meth, false)
-				}
+				populateTypeParamParentsAndOrigins(tp.Method(i), meth)
 			}
 
 			underlyingInterface, underlyingIsInterface := underlying.(*types.Interface)
@@ -1704,7 +1690,8 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 		case *types.TypeParam:
 			kind = dbscheme.TypeParamType.Index()
 			parentlbl, isReceiverChild := getTypeParamParentLabel(tw, tp)
-			constraintLabel := extractType(tw, tp.Constraint())
+			constraint := getTypeParamOrigin(tp).Constraint()
+			constraintLabel := extractType(tw, constraint)
 			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), constraintLabel, parentlbl, tp.Index(), isReceiverChild)
 		case *types.Union:
 			kind = dbscheme.TypeSetLiteral.Index()
@@ -2062,7 +2049,10 @@ func getObjectBeingUsed(tw *trap.Writer, ident *ast.Ident) types.Object {
 }
 
 func getTypeParamParentLabel(tw *trap.Writer, tp *types.TypeParam) (trap.Label, bool) {
+	typeParamParentMutex.RLock()
 	entry, exists := typeParamParent[tp]
+	typeParamParentMutex.RUnlock()
+
 	if !exists {
 		log.Fatalf("Parent of type parameter does not exist: %s %s", tp.String(), tp.Constraint().String())
 	}
@@ -2074,6 +2064,9 @@ func getTypeParamParentLabel(tw *trap.Writer, tp *types.TypeParam) (trap.Label, 
 }
 
 func setTypeParamParent(tp *types.TypeParam, parent types.Object, isFromReceiver bool) {
+	typeParamParentMutex.Lock()
+	defer typeParamParentMutex.Unlock()
+
 	entry, exists := typeParamParent[tp]
 	newEntry := typeParamParentEntry{parent, isFromReceiver}
 	if !exists {
@@ -2119,5 +2112,78 @@ func checkObjectNotSpecialized(obj types.Object) {
 		if definedType, ok := typeNameObj.Type().(*types.Named); ok && definedType != definedType.Origin() {
 			log.Fatalf("Encountered type object for specialization %s of defined type %s", definedType.String(), definedType.Origin().String())
 		}
+	}
+}
+
+// getTypeParamOrigin returns the origin type parameter for a type parameter
+// from an instantiated method.
+func getTypeParamOrigin(tp *types.TypeParam) *types.TypeParam {
+	typeParamOriginMutex.RLock()
+	origin, exists := typeParamOrigin[tp]
+	typeParamOriginMutex.RUnlock()
+
+	if exists {
+		return origin
+	} else {
+		return tp
+	}
+}
+
+// populateTypeParamParentsAndOrigins records for each type parameter of a method
+// the origin parent and type parameter.
+//
+// Consider a generic struct and a generic method:
+//
+//	type S[P any] struct{}
+//	func (*S[P]) m[Q ~P](x Q) {}
+//
+// If we have a variable 's' of type 'S[int]' and the expression 's.m[int](42)',
+// then the type of the selector expression 's.m' is 'func[Q ~int](Q)'. The
+// method 'm' here is an instantiation of the declaration, which has its own
+// type with type parameter 'Q' with constraint 'interface { ~int }'. As we
+// do not extract method instantiations, but only their origins, we want to
+// match this behavior for the constraints of instantiated type parameter, and
+// record their origin. Moreover, not extracting instantiations also means that
+// 'populateTypeParamParents' does not automatically get called on their type
+// parameters. To compensate, we add the type params here by calling
+// `setTypeParamParent`.
+//
+// As the parent of a type parameter use the origin method. This suffices, as
+// the name and index of the type parameter in the instantiation will be
+// identical to those of the uninstantiated method, and as only a constraint and
+// these two properties will be extracted for a type parameter.
+func populateTypeParamParentsAndOrigins(meth *types.Func, originmeth *types.Func) {
+	if meth == originmeth {
+		return
+	}
+
+	typeparams := meth.Type().(*types.Signature).TypeParams()
+	populateTypeParamParents(typeparams, originmeth, false)
+
+	origintypeparams := originmeth.Type().(*types.Signature).TypeParams()
+	populateTypeParamOrigins(meth, typeparams, origintypeparams)
+}
+
+func populateTypeParamOrigins(meth *types.Func, typeparams *types.TypeParamList, origintypeparams *types.TypeParamList) {
+	if typeparams.Len() != origintypeparams.Len() {
+		log.Fatalf("Method instantiation %s has %d type parameters, origin has %d",
+			meth, typeparams.Len(), origintypeparams.Len())
+	}
+
+	for j := 0; j < typeparams.Len(); j++ {
+		setTypeParamOrigin(typeparams.At(j), origintypeparams.At(j))
+	}
+}
+
+func setTypeParamOrigin(typeparam *types.TypeParam, origintypeparam *types.TypeParam) {
+	typeParamOriginMutex.Lock()
+	defer typeParamOriginMutex.Unlock()
+
+	entry, exists := typeParamOrigin[typeparam]
+	if !exists {
+		typeParamOrigin[typeparam] = origintypeparam
+	} else if entry != origintypeparam {
+		log.Fatalf("Origin of type parameter '%s %s' being set to a different value: '%s' vs '%s'",
+			typeparam.String(), typeparam.Constraint().String(), entry.String(), origintypeparam.String())
 	}
 }

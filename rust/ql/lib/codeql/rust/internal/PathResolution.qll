@@ -48,6 +48,7 @@ private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 private import codeql.rust.internal.CachedStages
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.util.Option
+private import codeql.util.SemVer
 
 private newtype TNamespace =
   TTypeNamespace() or
@@ -426,7 +427,7 @@ abstract class ItemNode extends Locatable {
       if
         this instanceof Module or
         this instanceof Enum or
-        this instanceof Struct or
+        this instanceof Trait or
         this instanceof Crate
       then (
         kind.isBoth() and
@@ -566,6 +567,16 @@ class CrateItemNode extends NamedItemNode instanceof Crate {
       fileImport(mod, result) and
       not result = any(Crate other).getSourceFile()
     )
+  }
+
+  pragma[nomagic]
+  predicate isLatestVersion(string name) {
+    this =
+      max(CrateItemNode c, string ver |
+        name = c.getName() and ver = padSemVer(c.(Crate).getVersion())
+      |
+        c order by ver
+      )
   }
 
   override string getName() { result = Crate.super.getName() }
@@ -1529,11 +1540,11 @@ private predicate crateDependencyEdge(SourceFileItemNode file, string name, Crat
   crateDependency(file, name, dep)
   or
   // As a fallback, give all files access to crates that do not conflict with known dependencies
-  // and declarations. This is in order to workaround incomplete crate dependency information
-  // provided by the extractor, as well as `CrateItemNode.getASourceFile()` being unable to map
-  // a given file to its crate (for example, if the file is `mod` imported inside a macro that the
-  // extractor is unable to expand).
-  name = dep.getName() and
+  // and declarations, as long as those crates have a unique latest version.
+  // This is in order to workaround incomplete crate dependency information provided by the extractor,
+  // as well as `CrateItemNode.getASourceFile()` being unable to map a given file to its crate (for
+  // example, if the file is `mod` imported inside a macro that the extractor is unable to expand).
+  dep = unique(CrateItemNode dep0 | dep0.isLatestVersion(name)) and
   not hasDeclOrDep(file, name)
 }
 
@@ -2385,6 +2396,11 @@ private module Debug {
     useImportEdge(use, name, item, kind)
   }
 
+  predicate debugCrateDependencyEdge(SourceFileItemNode file, string name, CrateItemNode dep) {
+    file = getRelevantLocatable() and
+    crateDependencyEdge(file, name, dep)
+  }
+
   ItemNode debugGetASuccessor(ItemNode i, string name, SuccessorKind kind) {
     i = getRelevantLocatable() and
     result = i.getASuccessor(name, kind, _)
@@ -2408,5 +2424,11 @@ private module Debug {
   string debugGetCanonicalPath(ItemNode i, Crate c) {
     result = i.getCanonicalPath(c) and
     i = getRelevantLocatable()
+  }
+
+  predicate debugCallTargetCanonicalPath(Call call, Function f, string path) {
+    call = getRelevantLocatable() and
+    f = call.getStaticTarget() and
+    path = f.getCanonicalPath()
   }
 }
