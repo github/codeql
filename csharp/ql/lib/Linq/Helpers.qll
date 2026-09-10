@@ -116,6 +116,14 @@ class ForEachStmtEnumerable extends ForEachStmt {
   }
 }
 
+bindingset[e]
+private predicate acceptableForLinqCapture(Expr e) {
+  not exists(ParameterAccess pa, Parameter p | p = pa.getTarget() |
+    pa = e.getAChildExpr*() and
+    (p.isOutOrRef() or p.isIn() or p.isReadonlyRef())
+  )
+}
+
 private signature predicate linqCandidateSig(Stmt s, Expr e);
 
 private module LinqFilterOpportunity<linqCandidateSig/2 linqCandidate> {
@@ -124,7 +132,8 @@ private module LinqFilterOpportunity<linqCandidateSig/2 linqCandidate> {
     // The linq candidate expression accesses the loop variable, and the
     // candidate doesn't access an in, out, or ref parameter.
     exists(Expr candidate | linqCandidate(s, candidate) |
-      fes.getVariable().getAnAccess() = candidate.getAChildExpr*()
+      fes.getVariable().getAnAccess() = candidate.getAChildExpr*() and
+      acceptableForLinqCapture(candidate)
     )
   }
 }
@@ -137,7 +146,8 @@ private module LinqMapOpportunity<linqCandidateSig/2 linqCandidate> {
     exists(Expr candidate | linqCandidate(s, candidate) |
       forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
         va = candidate.getAChildExpr*()
-      )
+      ) and
+      acceptableForLinqCapture(candidate)
     )
   }
 }
