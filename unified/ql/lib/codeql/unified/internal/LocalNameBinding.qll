@@ -321,11 +321,15 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     )
   }
 
-  predicate implicitDeclInScope(string name, AstNode scope) {
-    none()
-    // TODO: self
-    // TODO: When populating this predicate, make sure LocalVariable knows which implicit locals are variables
+  additional predicate implicitDeclInScope(string name, AstNode scope, boolean isLocalVariable) {
+    exists(Callable callable |
+      isLocalVariable = true and
+      name = any(NameBindingPlugin p).getImplicitReceiverParameterName(callable) and
+      scope = callable
+    )
   }
+
+  predicate implicitDeclInScope(string name, AstNode scope) { implicitDeclInScope(name, scope, _) }
 
   predicate accessCand(AstNode n, string name) { n.(PotentialLocalNameAccess).getName() = name }
 
@@ -394,10 +398,26 @@ module Public {
         decl instanceof CatchClause or
         decl instanceof SwitchCase
       )
+      or
+      // For implicitly-declared locals we can't expect to find a binding. Check 'implicitDeclInScope' directly.
+      exists(AstNode scope, string name |
+        this.getName() = name and
+        this.(LocalNameBindingOutput::ImplicitLocal).getScope() = scope and
+        LocalNameBindingInput::implicitDeclInScope(name, scope, true)
+      )
     }
 
     /** Gets the callable containing the declaration of this local variable. */
-    Callable getDeclaringCallable() { result = this.getABinding().getEnclosingCallable() }
+    Callable getDeclaringCallable() {
+      result = this.getABinding().getEnclosingCallable()
+      or
+      exists(AstNode scope | scope = this.(LocalNameBindingOutput::ImplicitLocal).getScope() |
+        result = scope
+        or
+        not scope instanceof Callable and
+        result = scope.getEnclosingCallable()
+      )
+    }
 
     /** Holds if this local variable is captured, that is, it is accessed from another callable than the one declaring it. */
     predicate isCaptured() {

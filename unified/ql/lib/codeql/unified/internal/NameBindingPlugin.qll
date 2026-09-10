@@ -39,6 +39,9 @@ class NameBindingPlugin extends Unit {
    */
   bindingset[cls, member]
   predicate isInheritableMember(ClassLikeDeclaration cls, Member member) { none() }
+
+  /** Gets the name of the implicit receiver parameter in `callable`, if it has one. */
+  string getImplicitReceiverParameterName(Callable callable) { none() }
 }
 
 /** Holds if `member` is an instance member. */
