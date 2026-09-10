@@ -591,11 +591,17 @@ impl Ast {
         let source_range = match &content {
             // Parsed nodes already carry an exact source range in their content.
             NodeContent::Range(_) => source_range,
-            // Synthesized nodes derive location from children when possible,
-            // and fall back to the inherited rule-match range otherwise.
+            // Synthesized nodes derive location from both their children and
+            // the inherited rule-match range, so tokens matched by a rule but
+            // elided from its output still contribute to the replacement range.
             _ => self
                 .union_source_range_of_children(&fields)
-                .or(source_range),
+                .map_or(source_range, |child_range| {
+                    Some(match source_range {
+                        Some(source_range) => union_source_ranges(child_range, source_range),
+                        None => child_range,
+                    })
+                }),
         };
         let id = self.nodes.len();
         self.nodes.push(Node {
@@ -783,6 +789,25 @@ impl Ast {
         } else {
             Some(id)
         }
+    }
+}
+
+fn union_source_ranges(first: Range, second: Range) -> Range {
+    let (start_byte, start_point) = if first.start_byte <= second.start_byte {
+        (first.start_byte, first.start_point)
+    } else {
+        (second.start_byte, second.start_point)
+    };
+    let (end_byte, end_point) = if first.end_byte >= second.end_byte {
+        (first.end_byte, first.end_point)
+    } else {
+        (second.end_byte, second.end_point)
+    };
+    Range {
+        start_byte,
+        end_byte,
+        start_point,
+        end_point,
     }
 }
 
