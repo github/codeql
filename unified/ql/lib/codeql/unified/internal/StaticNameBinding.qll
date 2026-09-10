@@ -656,6 +656,11 @@ module Public {
 
     /** Holds if this is an instance access on the accessing class. */
     predicate isInstanceAccess() { instanceAccess = true }
+
+    /** Gets the local variable implicitly referenced as the base of this access. */
+    LocalVariable getImplicitQualifierVariable() {
+      ResolveImplicitReceiverAccess::access(this, result)
+    }
   }
 }
 
@@ -668,3 +673,24 @@ NameBinding getStaticBindingTarget(Identifier access) {
   not access instanceof UnqualifiedMemberAccess and
   trackNameBinding(result).asIdentifier() = access
 }
+
+/**
+ * Gets the name of the implicit receiver parameter in scope at `callable` (possibly declared by an outer callable).
+ *
+ * Note that we only propagate the name, not the LocalVariable, since capture-declarations and Swift's `guard let self` statements
+ * may re-introduce a new binding for `self`, which becomes the one referenced by subsequent unqualified member accesses.
+ */
+private string getEnclosingReceiverParameterName(Callable callable) {
+  result = any(NameBindingPlugin p).getImplicitReceiverParameterName(callable)
+  or
+  not exists(any(NameBindingPlugin p).getImplicitReceiverParameterName(callable)) and
+  result = getEnclosingReceiverParameterName(callable.getEnclosingCallable())
+}
+
+/** Holds if `access` contains a reference to the implicit receiver parameter `name`. */
+private predicate implicitReceiverAccess(AstNode access, string name) {
+  name = getEnclosingReceiverParameterName(access.(UnqualifiedMemberAccess).getEnclosingCallable())
+}
+
+private module ResolveImplicitReceiverAccess =
+  LocalNameBindingOutput::ResolveAccesses<implicitReceiverAccess/2>;
