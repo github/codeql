@@ -25,7 +25,11 @@ private module Ast implements AstSig<Location> {
 
   class AstNode = U::AstNode;
 
-  private predicate skipControlFlow(AstNode e) { e instanceof Modifier or e instanceof Identifier }
+  private predicate skipControlFlow(AstNode e) {
+    e instanceof Modifier
+    or
+    e instanceof Identifier and not e instanceof IdentifierExpr
+  }
 
   AstNode getChild(AstNode n, int index) {
     result.getParent() = n and

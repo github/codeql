@@ -387,16 +387,7 @@ module Public {
  * }
  * ```
  */
-class PotentialLocalNameAccess extends Identifier {
-  PotentialLocalNameAccess() {
-    not this = any(MemberAccessExpr e).getMemberNameNode() and
-    not this = any(Argument a).getNameNode() and
-    not this = any(Parameter p).getExternalNameNode() and
-    not this = any(LabeledStmt stmt).getLabelNameNode() and
-    not this = any(BreakExpr expr).getLabelNameNode() and
-    not this = any(ContinueExpr expr).getLabelNameNode()
-  }
-
+class PotentialLocalNameAccess extends IdentifierExpr {
   LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
 
   string getName() { result = this.getValue() }

@@ -68,4 +68,16 @@ module Public {
   final class TopLevelStmt extends Stmt {
     TopLevelStmt() { this = any(TopLevel t).getBody().getAStmt() }
   }
+
+  /** An identifier appearing in the context of an expression, pattern, or type annotation. */
+  final class IdentifierExpr extends Identifier {
+    IdentifierExpr() {
+      not this = any(MemberAccessExpr e).getMemberNameNode() and
+      not this = any(Argument a).getNameNode() and
+      not this = any(Parameter p).getExternalNameNode() and
+      not this = any(LabeledStmt stmt).getLabelNameNode() and
+      not this = any(BreakExpr expr).getLabelNameNode() and
+      not this = any(ContinueExpr expr).getLabelNameNode()
+    }
+  }
 }
