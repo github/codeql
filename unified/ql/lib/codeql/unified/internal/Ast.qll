@@ -375,13 +375,13 @@ module Unified {
 
   class Callable extends @unified_callable, F::AstNode {
     /** Gets the node corresponding to the field `body`. */
-    abstract F::Block getBody();
+    F::Block getBody() { none() }
 
     /** Gets the node corresponding to the field `parameter`. */
-    abstract F::Parameter getParameter(int i);
+    F::Parameter getParameter(int i) { none() }
 
     /** Gets the node corresponding to the field `parameter`. */
-    abstract F::Parameter getAParameter();
+    F::Parameter getAParameter() { none() }
   }
 
   /** A class representing `catch_clause` nodes. */

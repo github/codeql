@@ -997,8 +997,9 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
             }
             node_types::EntryKind::Union { .. } => {
                 // It's a tree-sitter supertype node, so we're wrapping a dbscheme
-                // union type. Fields declared on the supertype become abstract
-                // predicates here.
+                // union type. Fields declared on the supertype get an empty
+                // default implementation so members without the field can
+                // inherit it.
                 let predicates = exposed_predicates
                     .get(node.ql_class_name.as_str())
                     .cloned()
@@ -1013,7 +1014,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                         ),
                         is_private: false,
                         is_final: false,
-                        body: None,
+                        body: Some(ql::Expression::Pred("none", vec![])),
                         ..predicate
                     })
                     .collect();
@@ -1053,8 +1054,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
 
                 // A field getter that's identically defined (in signature) by
                 // every member of one of this node's direct supertypes is an
-                // override of the corresponding `abstract` predicate declared
-                // there.
+                // override of the corresponding predicate declared there.
                 main_class.predicates.extend(
                     field_predicates
                         .get(type_name)
@@ -1272,7 +1272,10 @@ mod tests {
             container
                 .predicates
                 .iter()
-                .all(|predicate| predicate.body.is_none() && !predicate.is_final)
+                .all(|predicate| {
+                    predicate.body == Some(ql::Expression::Pred("none", vec![]))
+                        && !predicate.is_final
+                })
         );
 
         let alpha = classes
