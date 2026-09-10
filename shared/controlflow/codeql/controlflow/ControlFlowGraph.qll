@@ -1012,6 +1012,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       abstract string getIdTag();
 
       /** Gets a textual representation of this node. */
+      pragma[inline]
       abstract string toString();
 
       /** Gets the source location for this node. */
@@ -1034,6 +1035,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       override string getIdTag() { result = "before" }
 
+      pragma[inline]
       override string toString() {
         if postOrInOrder(n) then result = "Before " + n else result = n.toString()
       }
@@ -1048,6 +1050,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       override string getIdTag() { result = "ast" }
 
+      pragma[inline]
       override string toString() { result = n.toString() }
     }
 
@@ -1065,6 +1068,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         t.getValue() = false and result = "after-false"
       }
 
+      pragma[inline]
       override string toString() { result = "After " + n + " [" + t + "]" }
     }
 
@@ -1077,6 +1081,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       override string getIdTag() { result = "after" }
 
+      pragma[inline]
       override string toString() { result = "After " + n }
     }
 
@@ -1092,6 +1097,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       override string getIdTag() { result = "add. " + tag }
 
+      pragma[inline]
       override string toString() { result = tag + " " + n }
     }
 
@@ -1107,6 +1113,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       override string getIdTag() { result = "entry" }
 
+      pragma[inline]
       override string toString() { result = "Entry" }
     }
 
@@ -1127,6 +1134,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         normal = false and result = "exit-exc"
       }
 
+      pragma[inline]
       override string toString() {
         normal = true and result = "Normal Exit"
         or
@@ -1156,6 +1164,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       override string getIdTag() { result = "exit" }
 
+      pragma[inline]
       override string toString() { result = "Exit" }
     }
 
