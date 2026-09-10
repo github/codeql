@@ -112,15 +112,21 @@ fn member_chain(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
     parts: Vec<yeast::Id>,
 ) -> yeast::Id {
+    // `member_chain` builds the imported expression inside the larger import
+    // declaration rule. The imported expression should span the import path,
+    // not the whole declaration including the `import` keyword.
+    let source_range = ctx.source_range.take();
     let mut iter = parts.into_iter();
     let first = iter
         .next()
         .expect("identifier with `part:` must have at least one part");
     let init = tree!((identifier #{first}));
-    iter.fold(
+    let result = iter.fold(
         init,
         |acc, elem| tree!((member_access_expr base: {acc} member_name_node: (identifier #{elem}))),
-    )
+    );
+    ctx.source_range = source_range;
+    result
 }
 
 /// Compound-assignment operator spellings (`+=`, `<<=`, ...). Used to tell a

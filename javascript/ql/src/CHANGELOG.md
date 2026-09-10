@@ -1,3 +1,9 @@
+## 2.4.5
+
+### Minor Analysis Improvements
+
+* HTML files are now included in file-coverage stats, and will start showing up on the status page for CodeQL under "Scanned Files".
+
 ## 2.4.4
 
 ### Minor Analysis Improvements

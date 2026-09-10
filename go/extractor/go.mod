@@ -2,20 +2,17 @@ module github.com/github/codeql-go/extractor
 
 go 1.27
 
-toolchain go1.27.0
+toolchain go1.27.1
 
 // when updating this, run
 //    bazel run @rules_go//go -- mod tidy
 // when adding or removing dependencies, run
 //    bazel mod tidy
 require (
-	golang.org/x/mod v0.40.0
-	golang.org/x/tools v0.49.0
-)
-
-require (
 	github.com/stretchr/testify v1.11.1
+	golang.org/x/mod v0.41.0
 	golang.org/x/sys v0.47.0
+	golang.org/x/tools v0.49.0
 )
 
 require (

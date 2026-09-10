@@ -256,7 +256,7 @@ private module Input2 implements Impl::Private::InputSig2 {
   pragma[nomagic]
   private predicate hasKindAndEnclosingFunction(Function f, ReturnKind rk, ReturnNode r) {
     r.getEnclosingCallable().asSourceCallable() = f and
-    r.getKind() = rk
+    pragma[only_bind_into](r).getKind() = rk
   }
 
   pragma[nomagic]

@@ -24,7 +24,9 @@ module Impl {
    * ```
    */
   class MacroCall extends Generated::MacroCall {
-    override string toStringImpl() { result = this.getPath().toAbbreviatedString() + "!..." }
+    override string toStringImpl() {
+      result = concat(this.getPath().toAbbreviatedString()) + "!..."
+    }
 
     /**
      * Gets the macro definition that this macro call resolves to.
