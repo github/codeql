@@ -31,6 +31,11 @@ def basic_assign():  # $ def=basic_assign
     return y  # $ use=y
 
 
+def repeated_use(x):  # $ def=repeated_use def=x
+    first = x  # $ def=first use=x
+    return x + first  # $ use=x use=first
+
+
 def reassignment():  # $ def=reassignment
     x = 1
     x = 2  # $ def=x

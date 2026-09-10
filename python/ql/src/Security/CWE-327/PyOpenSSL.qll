@@ -5,6 +5,7 @@
 
 private import python
 private import semmle.python.ApiGraphs
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import TlsLibraryModel
 
 class PyOpenSslContextCreation extends ContextCreation, DataFlow::CallCfgNode {
@@ -37,10 +38,10 @@ class ConnectionCall extends ConnectionCreation, DataFlow::CallCfgNode {
 // This cannot be used to unrestrict,
 // see https://www.pyopenssl.org/en/stable/api/ssl.html#OpenSSL.SSL.Context.set_options
 class SetOptionsCall extends ProtocolRestriction, DataFlow::CallCfgNode {
-  SetOptionsCall() { node.getFunction().(AttrNode).getName() = "set_options" }
+  SetOptionsCall() { node.getFunction().(Cfg::AttrNode).getName() = "set_options" }
 
   override DataFlow::CfgNode getContext() {
-    result.getNode() = node.getFunction().(AttrNode).getObject()
+    result.getNode() = node.getFunction().(Cfg::AttrNode).getObject()
   }
 
   override ProtocolVersion getRestriction() {

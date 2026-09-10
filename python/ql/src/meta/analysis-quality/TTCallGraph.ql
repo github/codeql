@@ -8,8 +8,9 @@
 
 import python
 import CallGraphQuality
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
-from CallNode call, Target target
+from Cfg::CallNode call, Target target
 where
   target.isRelevant() and
   call.(TypeTrackingBasedCallGraph::ResolvableCall).getTarget() = target

@@ -8,6 +8,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.security.dataflow.UrlRedirectCustomizations
@@ -91,7 +92,7 @@ private module Urllib {
      * A read of the `netloc` attribute of a parsed URL as returned by `urllib.parse.urlparse`,
      * which is being checked in a way that is relevant for URL redirection vulnerabilities.
      */
-    private predicate netlocCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+    private predicate netlocCheck(DataFlow::GuardNode g, Cfg::ControlFlowNode node, boolean branch) {
       exists(DataFlow::CallCfgNode urlParseCall, DataFlow::AttrRead netlocRead |
         urlParseCall = getUrlParseCall() and
         netlocRead = urlParseCall.getAnAttributeRead("netloc") and
