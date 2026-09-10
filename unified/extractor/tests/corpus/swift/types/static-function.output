@@ -1,0 +1,57 @@
+class Factory {
+  static func make() {}
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Factory"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                      name: identifier "make"
+                      modifiers:
+                        declModifier
+                          name: static
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                      funcKeyword: func
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name_node: identifier "Factory"
+          member:
+            function_declaration
+              modifier: modifier "static"
+              name_node: identifier "make"
+              body: block "static func make() {}"
