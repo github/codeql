@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    public class DependabotProxy : IDependabotProxy
+    public class RegistryProxy : IRegistryProxy
     {
         /// <summary>
         /// Represents configurations for package registries.
@@ -65,13 +65,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public X509Certificate2? Certificate { get; private set; }
 
-        private DependabotProxy(IDependabotProxyConfiguration config, ILogger logger, TemporaryDirectory tempWorkingDirectory)
+        private RegistryProxy(IRegistryProxyConfiguration config, ILogger logger, TemporaryDirectory tempWorkingDirectory)
         {
             Address = $"http://{config.Host}:{config.Port}";
 
             if (!string.IsNullOrWhiteSpace(config.Certificate))
             {
-                var certDirPath = new DirectoryInfo(Path.Join(tempWorkingDirectory.DirInfo.FullName, ".dependabot-proxy"));
+                var certDirPath = new DirectoryInfo(Path.Join(tempWorkingDirectory.DirInfo.FullName, ".registry-proxy"));
                 Directory.CreateDirectory(certDirPath.FullName);
 
                 CertificatePath = Path.Join(certDirPath.FullName, "proxy.crt");
@@ -81,7 +81,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 writer.Write(config.Certificate);
                 writer.Close();
 
-                logger.LogInfo($"Stored Dependabot proxy certificate at {CertificatePath}");
+                logger.LogInfo($"Stored Registry proxy certificate at {CertificatePath}");
 
                 Certificate = X509Certificate2.CreateFromPem(config.Certificate);
             }
@@ -127,37 +127,37 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        internal static IDependabotProxy? Make(ILogger logger, IDiagnosticsWriter diagnosticsWriter, TemporaryDirectory tempWorkingDirectory)
+        internal static IRegistryProxy? Make(ILogger logger, IDiagnosticsWriter diagnosticsWriter, TemporaryDirectory tempWorkingDirectory)
         {
             // Setting HTTP(S)_PROXY and SSL_CERT_FILE have no effect on Windows or macOS,
-            // but we would still end up using the Dependabot proxy to check for feed reachability.
+            // but we would still end up using the Registry proxy to check for feed reachability.
             // This would result in us discovering that the feeds are reachable, but `dotnet` would
             // fail to connect to them. To prevent this from happening, we do not initialise an
-            // instance of `DependabotProxy` on those platforms.
+            // instance of `RegistryProxy` on those platforms.
             if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMacOs())
             {
                 return null;
             }
 
-            return Make(new DependabotProxyConfiguration(), logger, diagnosticsWriter, tempWorkingDirectory);
+            return Make(new RegistryProxyConfiguration(), logger, diagnosticsWriter, tempWorkingDirectory);
         }
 
         /// <summary>
-        /// Creates an instance of the Dependabot proxy using the specified configuration.
+        /// Creates an instance of the Registry proxy using the specified configuration.
         /// Returns null if the proxy cannot be created.
         /// This overload is exposed primarily to enable platform-independent unit testing.
         /// </summary>
-        internal static IDependabotProxy? Make(
-            IDependabotProxyConfiguration proxyConfig, ILogger logger, IDiagnosticsWriter diagnosticsWriter, TemporaryDirectory tempWorkingDirectory)
+        internal static IRegistryProxy? Make(
+            IRegistryProxyConfiguration proxyConfig, ILogger logger, IDiagnosticsWriter diagnosticsWriter, TemporaryDirectory tempWorkingDirectory)
         {
             if (string.IsNullOrWhiteSpace(proxyConfig.Host) || string.IsNullOrWhiteSpace(proxyConfig.Port))
             {
-                logger.LogDebug("No Dependabot proxy credentials are configured.");
+                logger.LogDebug("No Registry proxy credentials are configured.");
                 return null;
             }
 
-            var result = new DependabotProxy(proxyConfig, logger, tempWorkingDirectory);
-            logger.LogInfo($"Dependabot proxy configured at {result.Address}");
+            var result = new RegistryProxy(proxyConfig, logger, tempWorkingDirectory);
+            logger.LogInfo($"Registry proxy configured at {result.Address}");
 
             // Emit a diagnostic for the discovered private registries, so that it is easy
             // for users to see that they were picked up.
