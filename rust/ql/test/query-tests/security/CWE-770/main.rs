@@ -199,7 +199,6 @@ unsafe fn test_system_alloc(v: usize) {
 
     let l3 = std::alloc::Layout::array::<u8>(10).unwrap();
     let m3 = std::alloc::System.alloc(l3);
-    // `System.realloc` resolves to that same blanket `GlobalAlloc` impl (see above); MISSING.
     let _ = std::alloc::System.realloc(m3, l3, v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l4 = std::alloc::Layout::array::<u8>(10).unwrap();
