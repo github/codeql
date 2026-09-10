@@ -54,3 +54,5 @@
 | test.cpp:444:21:444:21 | x | test-sink |
 | test.cpp:449:21:449:21 | x | test-sink |
 | test.cpp:454:21:454:21 | x | test-sink |
+| test.cpp:462:15:462:17 | call to get | test-sink |
+| test.cpp:467:13:467:20 | * ... | test-sink |
