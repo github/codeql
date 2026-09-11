@@ -8,7 +8,7 @@ private class A {
     static let y = 456 // name=A.type.y
 
     func getY1() {
-        return Self.y // $ MISSING: access=A access=A.type.y
+        return Self.y // $ access=A access=A.type.y
     }
 
     static func getY2() {
@@ -30,7 +30,7 @@ private class B : A { // $ access=A
     }
 
     func getY3() {
-        return Self.y // $ MISSING: access=B access=A.type.y
+        return Self.y // $ access=B access=A.type.y
     }
 
     static func getY4() {

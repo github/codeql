@@ -210,6 +210,12 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   )
   or
   FolderHeuristic::storeStep(node1, name, node2)
+  or
+  exists(ClassLikeDeclaration cls |
+    name = any(NameBindingPlugin p).getStaticSelfName() and
+    node1.isIdentifier(cls.getNameNode()) and
+    node2.isStaticMemberNamespace(cls)
+  )
 }
 
 predicate valueStep(NameBindingNode node1, NameBindingNode node2) {

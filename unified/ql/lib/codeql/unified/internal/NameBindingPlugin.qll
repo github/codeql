@@ -42,6 +42,12 @@ class NameBindingPlugin extends Unit {
 
   /** Gets the name of the implicit receiver parameter in `callable`, if it has one. */
   string getImplicitReceiverParameterName(Callable callable) { none() }
+
+  /**
+   * Gets the name through which static members of the enclosing class can be
+   * accessed, for example `Self` in Swift.
+   */
+  string getStaticSelfName() { none() }
 }
 
 /** Holds if `member` is an instance member. */
