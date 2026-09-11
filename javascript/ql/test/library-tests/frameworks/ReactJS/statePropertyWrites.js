@@ -1,4 +1,4 @@
-class Writes extends React.Component {
+class Writes extends React.Component { // $ reactComponent
     constructor() {
         var cmp = this;
         cmp.state.p1 = 42;
@@ -31,9 +31,9 @@ class Writes extends React.Component {
     state = {
         p7: 42
     };
-} // $ reactComponent
+}
 
-React.createClass({
+React.createClass({ // $ reactComponent
   render: function() {
     return <div>Hello {this.props.name}</div>; // $ threatModelSource=view-component-input
   },
@@ -42,4 +42,4 @@ React.createClass({
       p8: 42
     };
   }
-}); // $ reactComponent
+});

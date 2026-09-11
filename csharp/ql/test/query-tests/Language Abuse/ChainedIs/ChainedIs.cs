@@ -45,7 +45,7 @@ class ChainedIs
         {
         } // GOOD
 
-        if (x is A)
+        if (x is A) // $ Alert // BAD
         {
         }
         else if (x is B)
@@ -62,7 +62,7 @@ class ChainedIs
         }
         else if (x is F<int>)
         {
-        } // $ Alert // BAD
+        }
     }
 
     class A { }

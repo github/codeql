@@ -2,7 +2,7 @@
 
 <html>
 <body>
-<%
+<%-- $ Alert[cs/asp/complex-inline-code] --%><%
   if (builder == null)
     builder = ec.GetTemporaryLocal (type);
 
@@ -15,6 +15,6 @@
   } else {
     ec.Emit (Response, OpCodes.Ldloca, builder);
   }
-%> <%-- $ Alert[cs/asp/complex-inline-code] --%>
+%>
 </body>
 </html>

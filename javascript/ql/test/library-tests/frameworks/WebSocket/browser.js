@@ -5,13 +5,13 @@
 		socket.send('Hi from browser!'); // $ clientSend
 	});
 
-	socket.addEventListener('message', function (event) {
+	socket.addEventListener('message', function (event) { // $ clientReceive
 		console.log('Message from server ', event.data); // $ remoteFlow
-	}); // $ clientReceive
+	});
 
-	socket.onmessage = function (event) {
+	socket.onmessage = function (event) { // $ clientReceive
 		console.log("Message from server 2", event.data); // $ remoteFlow
-	}; // $ clientReceive
+	};
 })();
 
 
@@ -21,14 +21,14 @@
 		sock.send('test'); // $ clientSend
 	};
 
-	sock.onmessage = function (e) {
+	sock.onmessage = function (e) { // $ clientReceive
 		console.log('message', e.data); // $ remoteFlow
 		sock.close();
-	}; // $ clientReceive
+	};
 
-	sock.addEventListener('message', function (event) {
+	sock.addEventListener('message', function (event) { // $ clientReceive
 		console.log('Using addEventListener ', event.data); // $ remoteFlow
-	}); // $ clientReceive
+	});
 })();
 
 export const MyWebSocket = WebSocket;
