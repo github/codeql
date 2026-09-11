@@ -47,9 +47,9 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "f" source="f"
           value:
-            function_expr source="⟨body⟩"
+            function_expr source="{ ⟨body⟩ }"
               body:
-                block source="{ ⟨stmt⟩ }"
+                block source="⟨stmt⟩"
                   stmt:
                     binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
                       left: identifier "$0" source="$0"

@@ -55,18 +55,18 @@ top_level source="⟨body⟩"
       stmt:
         if_expr source="if ⟨condition⟩ ⟨then⟩"
           condition:
-            pattern_guard_expr source="⟨pattern⟩⟨value⟩"
+            pattern_guard_expr source="let ⟨pattern⟩ = ⟨value⟩"
               pattern:
-                call_expr source="⟨argument⟩⟨callee⟩"
+                call_expr source="⟨argument⟩"
                   callee:
-                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
-                      base: identifier "Optional" source="let value = optional"
-                      member_name_node: identifier "some" source="let value = optional"
+                    member_access_expr source=<no location>
+                      base: identifier "Optional" source=<no location>
+                      member_name_node: identifier "some" source=<no location>
                   argument:
                     argument source="⟨value⟩"
                       value:
-                        expr_pattern source="⟨modifier⟩⟨expr⟩"
-                          modifier: modifier "let" source="let value = optional"
+                        expr_pattern source="⟨expr⟩"
+                          modifier: modifier "let" source=<no location>
                           expr: identifier "value" source="value"
               value: identifier "optional" source="optional"
           then:

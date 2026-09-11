@@ -98,13 +98,13 @@ top_level source="⟨body⟩"
               modifier: modifier "var" source="var"
               pattern: identifier "x" source="x"
               type: identifier "Int" source="Int"
-            constructor_declaration source="⟨body⟩⟨parameter⟩"
+            constructor_declaration source="init(⟨parameter⟩) {\n    ⟨body⟩\n  }"
               parameter:
                 parameter source="⟨pattern⟩: ⟨type⟩"
                   type: identifier "Int" source="Int"
                   pattern: identifier "x" source="x"
               body:
-                block source="init(x: Int) {\n    ⟨stmt⟩\n  }"
+                block source="⟨stmt⟩"
                   stmt:
                     binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
                       left:

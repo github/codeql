@@ -126,10 +126,10 @@ top_level source="⟨body⟩"
                   stmt:
                     return_expr source="return ⟨value⟩"
                       value: identifier "_v" source="_v"
-            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ {\n    get { return _v }\n    ⟨accessor_kind⟩⟨modifier⟩⟨body⟩"
+            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ {\n    get { return _v }\n    ⟨accessor_kind⟩ ⟨body⟩"
               modifier:
                 modifier "var" source="var"
-                modifier "chained_declaration" source="set { _v = newValue }"
+                modifier "chained_declaration" source=<no location>
               name_node: identifier "v" source="v"
               accessor_kind: accessor_kind "set" source="set"
               type: identifier "Int" source="Int"

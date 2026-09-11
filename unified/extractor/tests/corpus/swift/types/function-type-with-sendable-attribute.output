@@ -60,5 +60,5 @@ top_level source="⟨body⟩"
           pattern: identifier "handler" source="handler"
           type: unsupported_node "@Sendable () -> Void" source="@Sendable () -> Void"
           value:
-            function_expr source="⟨body⟩"
-              body: block "{}" source="{}"
+            function_expr source="{}"
+              body: block source=<no location>

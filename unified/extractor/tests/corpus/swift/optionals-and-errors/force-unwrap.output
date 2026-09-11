@@ -36,6 +36,6 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "n" source="n"
           value:
-            unary_expr source="⟨operand⟩⟨operator⟩"
+            unary_expr source="⟨operand⟩!"
               operand: identifier "opt" source="opt"
-              operator: postfix_operator "!" source="opt!"
+              operator: postfix_operator "!" source=<no location>

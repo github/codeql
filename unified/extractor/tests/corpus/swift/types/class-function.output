@@ -51,7 +51,7 @@ top_level source="⟨body⟩"
           modifier: modifier "class" source="class"
           name_node: identifier "Factory" source="Factory"
           member:
-            function_declaration source="⟨modifier⟩⟨body⟩⟨name_node⟩"
+            function_declaration source="⟨modifier⟩ func ⟨name_node⟩() {}"
               modifier: modifier "class" source="class"
               name_node: identifier "make" source="make"
-              body: block "class func make() {}" source="class func make() {}"
+              body: block source=<no location>

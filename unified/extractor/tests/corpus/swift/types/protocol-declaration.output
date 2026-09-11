@@ -61,10 +61,10 @@ top_level source="⟨body⟩"
           modifier: modifier "protocol" source="protocol"
           name_node: identifier "Drawable" source="Drawable"
           member:
-            function_declaration source="⟨body⟩⟨name_node⟩"
+            function_declaration source="func ⟨name_node⟩()"
               name_node: identifier "draw" source="draw"
-              body: block "func draw()" source="func draw()"
-            function_declaration source="⟨modifier⟩⟨body⟩⟨name_node⟩"
+              body: block source=<no location>
+            function_declaration source="⟨modifier⟩ func ⟨name_node⟩()"
               modifier: modifier "static" source="static"
               name_node: identifier "make" source="make"
-              body: block "static func make()" source="static func make()"
+              body: block source=<no location>

@@ -56,10 +56,10 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "type" source="type"
           value:
-            member_access_expr source="⟨base⟩⟨member_name_node⟩"
+            member_access_expr source="[⟨base⟩].⟨member_name_node⟩"
               base:
-                generic_type_expr source="⟨base⟩⟨type_argument⟩"
-                  base: identifier "Array" source="[Result<Void>].self"
+                generic_type_expr source="⟨type_argument⟩"
+                  base: identifier "Array" source=<no location>
                   type_argument:
                     generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
                       base: identifier "Result" source="Result"

@@ -987,6 +987,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                     #(#translated_bindings)*
                     let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __fresh, __source_range, __user_ctx, __translator);
                     let __result: Vec<yeast::Id> = { #transform_body };
+                    let __result = #ctx_ident.finish_rule(__result);
                     Ok(__result)
                 }),
             )

@@ -162,7 +162,7 @@ top_level source="⟨body⟩"
         switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n⟨case⟩\n}"
           value: identifier "event" source="event"
           case:
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
                 expr_pattern source="⟨modifier⟩ ⟨expr⟩"
                   modifier: modifier "let" source="let"
@@ -173,9 +173,9 @@ top_level source="⟨body⟩"
                           base: inferred_type_expr "." source="."
                           member_name_node: identifier "received" source="received"
                       argument:
-                        argument source="⟨value⟩"
+                        argument source="⟨value⟩),"
                           value:
-                            call_expr source="⟨callee⟩(⟨argument⟩),"
+                            call_expr source="⟨callee⟩(⟨argument⟩"
                               callee:
                                 member_access_expr source="⟨base⟩⟨member_name_node⟩"
                                   base: inferred_type_expr "." source="."
@@ -186,7 +186,7 @@ top_level source="⟨body⟩"
                         argument source="⟨value⟩"
                           value: identifier "timestamp" source="timestamp"
               body:
-                block source="case let .received(.some(value), timestamp):\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
                       callee: identifier "print" source="print"
@@ -195,7 +195,7 @@ top_level source="⟨body⟩"
                           value: identifier "value" source="value"
                         argument source="⟨value⟩"
                           value: identifier "timestamp" source="timestamp"
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
                 call_expr source="⟨callee⟩(⟨argument⟩)"
                   callee:
@@ -209,14 +209,14 @@ top_level source="⟨body⟩"
                           modifier: modifier "let" source="let"
                           expr: identifier "value" source="value"
               body:
-                block source="case Type.some(let value):\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "value" source="value"
-            switch_case source="⟨body⟩"
+            switch_case source="default:\n  ⟨body⟩"
               body:
-                block source="default:\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt: break_expr "break" source="break"
