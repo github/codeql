@@ -53,7 +53,13 @@ module Unified {
     string getStringValue() {
       // TODO: we'll want to cook the string literals extractor-side, but for now
       // just strip the quotes here and ignore escape sequences.
-      result = this.(StringLiteral).getValue().regexpCapture("\"(.*)\"", 1)
+      exists(string text | text = this.(StringLiteral).getValue() |
+        result = text.regexpCapture("\"(.*)\"", 1)
+        or
+        // Constant-segments of string interpolations are represented as string literals, but their raw text does not have quotes
+        not exists(text.regexpCapture("\"(.*)\"", 1)) and
+        result = text
+      )
     }
 
     /** Gets the immediately-enclosing expression, skipping over intermediate sub-nodes like `Argument`, and without crossing a function boundary. */

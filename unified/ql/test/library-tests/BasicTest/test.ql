@@ -6,4 +6,6 @@ query predicate namedPattern(NamedPattern node, string value) { value = node.get
 
 query predicate unsupported(UnsupportedNode node, string value) { value = node.getValue() }
 
-query predicate stringValue(StringLiteral e, string value) { value = e.getValue() }
+query predicate rawStringValue(StringLiteral e, string value) { value = e.getValue() }
+
+query predicate exprStringValue(Expr e, string value) { value = e.getStringValue() }

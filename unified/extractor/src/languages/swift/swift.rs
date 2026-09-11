@@ -173,9 +173,27 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((nilLiteralExpr) @@node => expr {
             tree!((builtin_expr #{node}))
         }),
-        rule!((stringLiteralExpr) @@node => expr {
-            tree!((string_literal #{node}))
-        }),
+        rule!((simpleStringLiteralExpr) @@node => (string_literal #{node})),
+        // String literal with a single constant segment (for some reason not typed as simpleStringLiteralExpr)
+        rule!(
+            (stringLiteralExpr segments: (stringSegment) segments: _* @@rest) @@node
+            where rest.is_empty()
+            =>
+            (string_literal #{node})
+        ),
+        rule!(
+            (stringLiteralExpr segments: _* @segments)
+            =>
+            (string_interpolation_expr element: {segments})
+        ),
+        rule!((stringSegment content: @@content) => (string_literal #{content})),
+        rule!(
+            (expressionSegment expressions: _* @expressions)
+            =>
+            (call_expr
+                callee: (builtin_expr "interpolation")
+                argument: {expressions})
+        ),
         rule!((regexLiteralExpr) @@node => expr {
             tree!((regex_literal #{node}))
         }),
