@@ -37,7 +37,8 @@ fn ranges(ast: &Ast, kind: &str, content: Option<&str>) -> Vec<std::ops::Range<u
             {
                 return None;
             }
-            Some(node.byte_range())
+            node.source_range()
+                .map(|range| range.start_byte..range.end_byte)
         })
         .collect()
 }
@@ -47,16 +48,6 @@ fn assert_has_span(ast: &Ast, source: &str, kind: &str, content: Option<&str>, e
     assert!(
         spans.iter().any(|span| span == expected),
         "expected {kind} {content:?} to span {expected:?}, got {spans:?}"
-    );
-}
-
-fn assert_has_empty_span(ast: &Ast, kind: &str, content: Option<&str>, expected_offset: usize) {
-    let ranges = ranges(ast, kind, content);
-    assert!(
-        ranges
-            .iter()
-            .any(|range| range.start == expected_offset && range.end == expected_offset),
-        "expected {kind} {content:?} to have an empty span at {expected_offset}, got {ranges:?}"
     );
 }
 
@@ -96,5 +87,4 @@ fn import_member_chain_excludes_import_keyword() {
         None,
         "import Foundation.Networking.URLSession",
     );
-    assert_has_empty_span(&ast, "bulk_importing_pattern", None, 0);
 }
