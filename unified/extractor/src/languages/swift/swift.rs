@@ -282,6 +282,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A `tupleExpr` is a tuple literal (`(a, b)`) or a parenthesised
         // expression (`(x)`). Its elements are labelled expressions, which
         // translate to `argument`s.
+        //
+        // TODO: a parenthesised single-element `tupleExpr` is really a grouping
+        // expression and should be elided (unwrapped to its inner expression)
+        // rather than modelled as a tuple.
         rule!((tupleExpr elements: _* @els) => (tuple_expr element: {els})),
         // A code block contains its statements directly.
         rule!((codeBlock statements: _* @stmts) => (block stmt: {stmts})),
