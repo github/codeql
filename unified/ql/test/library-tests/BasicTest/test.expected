@@ -165,3 +165,9 @@ rawStringValue
 | strings.swift:4:27:4:32 |  world |  world |
 exprStringValue
 | strings.swift:1:10:1:16 | "hello" | hello |
+| strings.swift:2:11:2:16 | hello  | hello  |
+| strings.swift:2:23:2:28 |  world |  world |
+| strings.swift:3:11:3:16 | hello  | hello  |
+| strings.swift:3:28:3:33 |  world |  world |
+| strings.swift:4:11:4:16 | hello  | hello  |
+| strings.swift:4:27:4:32 |  world |  world |
