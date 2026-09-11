@@ -367,6 +367,7 @@ module Public {
     /** Gets the name of this local, as a string. */
     string getName() { result = super.getName() }
 
+    /** Gets an access to this entity, through its lexically scoped name. */
     LocalNameAccess getAnAccess() { result.getLocalName() = this }
 
     /** Gets a name binding that declares this local name. */
@@ -458,8 +459,10 @@ module Public {
  * ```
  */
 class PotentialLocalNameAccess extends IdentifierExpr {
+  /** Gets the representative for the local name being accessed. */
   LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
 
+  /** Gets the name being accessed. */
   string getName() { result = this.getValue() }
 
   /** Holds if this is one of the binding sites for a name, such as the `x` in `let x = 123`. */

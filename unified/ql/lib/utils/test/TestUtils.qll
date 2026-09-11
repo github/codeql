@@ -23,6 +23,7 @@ private predicate declAt(NameBinding v, string filepath, int line) {
   v.getLocation().hasLocationInfo(filepath, line, _, _, _)
 }
 
+/** Holds if the name-binding `v` has been assigned the given `alias` by a comment in the test code. */
 predicate nameBinding(NameBinding v, string alias) {
   exists(string filepath, int line | declAt(v, filepath, line) |
     keyValueCommentAt(filepath, line, "name", alias)

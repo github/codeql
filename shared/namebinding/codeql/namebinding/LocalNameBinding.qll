@@ -382,6 +382,7 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
       )
     }
 
+    /** Holds if `access` resolves to `l`. */
     predicate access(AstNode access, Local l) {
       exists(Scope lookup, string name |
         accessCandInLookupScope(access, name, lookup) and
@@ -412,6 +413,7 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
 
   private module DefaultAccesses = ResolveAccesses<accessCand/2>;
 
+  /** Holds if `access` resolves to `l`. */
   cached
   predicate access(AstNode access, Local l) {
     CachedStage::ref() and
