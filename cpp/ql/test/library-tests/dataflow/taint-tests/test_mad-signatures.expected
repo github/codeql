@@ -14064,6 +14064,10 @@ getSignatureParameterName
 | (const Command *,const size_t,const BlockSplit *,const BlockSplit *,const BlockSplit *,const uint8_t *,size_t,size_t,uint8_t,uint8_t,const ContextType *,HistogramLiteral *,HistogramCommand *,HistogramDistance *) |  | BrotliBuildHistogramsWithContext | 11 | HistogramLiteral * |
 | (const Command *,const size_t,const BlockSplit *,const BlockSplit *,const BlockSplit *,const uint8_t *,size_t,size_t,uint8_t,uint8_t,const ContextType *,HistogramLiteral *,HistogramCommand *,HistogramDistance *) |  | BrotliBuildHistogramsWithContext | 12 | HistogramCommand * |
 | (const Command *,const size_t,const BlockSplit *,const BlockSplit *,const BlockSplit *,const uint8_t *,size_t,size_t,uint8_t,uint8_t,const ContextType *,HistogramLiteral *,HistogramCommand *,HistogramDistance *) |  | BrotliBuildHistogramsWithContext | 13 | HistogramDistance * |
+| (const Cord &) | MessageLite | MergeFromString | 0 | const Cord & |
+| (const Cord &) | MessageLite | MergePartialFromString | 0 | const Cord & |
+| (const Cord &) | MessageLite | ParseFromString | 0 | const Cord & |
+| (const Cord &) | MessageLite | ParsePartialFromString | 0 | const Cord & |
 | (const Curl_easy *,const connectdata *,int) |  | Curl_conn_is_http2 | 0 | const Curl_easy * |
 | (const Curl_easy *,const connectdata *,int) |  | Curl_conn_is_http2 | 1 | const connectdata * |
 | (const Curl_easy *,const connectdata *,int) |  | Curl_conn_is_http2 | 2 | int |
@@ -24746,6 +24750,10 @@ getSignatureParameterName
 | (string_buf *,unsigned char **,size_t *) |  | _libssh2_get_string | 0 | string_buf * |
 | (string_buf *,unsigned char **,size_t *) |  | _libssh2_get_string | 1 | unsigned char ** |
 | (string_buf *,unsigned char **,size_t *) |  | _libssh2_get_string | 2 | size_t * |
+| (string_view) | MessageLite | MergeFromString | 0 | string_view |
+| (string_view) | MessageLite | MergePartialFromString | 0 | string_view |
+| (string_view) | MessageLite | ParseFromString | 0 | string_view |
+| (string_view) | MessageLite | ParsePartialFromString | 0 | string_view |
 | (string_view,string_view) | basic_resolver<InternetProtocol> | resolve | 0 | string_view |
 | (string_view,string_view) | basic_resolver<InternetProtocol> | resolve | 1 | string_view |
 | (string_view,string_view,error_code &) | basic_resolver<InternetProtocol> | resolve | 0 | string_view |
