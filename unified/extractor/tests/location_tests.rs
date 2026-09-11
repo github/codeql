@@ -72,12 +72,62 @@ fn generic_type_children_have_local_ranges() {
 }
 
 #[test]
+fn nested_calls_include_their_delimiters() {
+    let source = r#"sink(source("first"), source("second"))"#;
+    let ast = desugar(source);
+
+    assert_has_span(&ast, source, "call_expr", None, r#"source("first")"#);
+    assert_has_span(&ast, source, "call_expr", None, r#"source("second")"#);
+}
+
+#[test]
+fn enum_case_constructors_include_their_parameter_clause() {
+    let source = "enum Result<T> { case success(T) }";
+    let ast = desugar(source);
+
+    assert_has_span(&ast, source, "constructor_declaration", None, "success(T)");
+}
+
+#[test]
+fn synthesized_condition_and_switch_nodes_use_child_ranges() {
+    let source = "if a, b { c }\nswitch x { case a, b: c }";
+    let ast = desugar(source);
+
+    assert_has_span(&ast, source, "binary_expr", None, "a, b");
+    assert_has_empty_span(
+        &ast,
+        "infix_operator",
+        Some("&&"),
+        source.find(',').unwrap(),
+    );
+    assert_has_span(&ast, source, "or_pattern", None, "a, b");
+    assert_has_span(&ast, source, "block", None, "c");
+}
+
+#[test]
 fn declaration_and_operator_tokens_keep_precise_ranges() {
-    let source = "func f() { return x }";
+    let source = "func f() { return x }\nlet y = try? await value! as? T\nlet z = value is T";
     let ast = desugar(source);
 
     assert_has_span(&ast, source, "block", None, "{ return x }");
     assert_has_span(&ast, source, "return_expr", None, "return x");
+    assert_has_span(&ast, source, "prefix_operator", Some("try?"), "try?");
+    assert_has_span(&ast, source, "prefix_operator", Some("await"), "await");
+    assert_has_span(&ast, source, "postfix_operator", Some("!"), "!");
+    assert_has_span(&ast, source, "infix_operator", Some("as?"), "as?");
+    assert_has_span(&ast, source, "infix_operator", Some("is"), "is");
+}
+
+#[test]
+fn synthetic_optional_binding_nodes_anchor_to_binding_keyword() {
+    let source = "if let value = optional {}";
+    let ast = desugar(source);
+    let binding_start = source.find("let").unwrap();
+
+    assert_has_empty_span(&ast, "member_access_expr", None, binding_start);
+    assert_has_empty_span(&ast, "identifier", Some("Optional"), binding_start);
+    assert_has_empty_span(&ast, "identifier", Some("some"), binding_start);
+    assert_has_span(&ast, source, "modifier", Some("let"), "let");
 }
 
 #[test]

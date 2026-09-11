@@ -65,8 +65,8 @@ top_level source="⟨body⟩"
                   argument:
                     argument source="⟨value⟩"
                       value:
-                        expr_pattern source="let ⟨expr⟩"
-                          modifier: modifier "let" source=""
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
                           expr: identifier "value" source="value"
               value: identifier "optional" source="optional"
           then:

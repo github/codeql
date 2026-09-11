@@ -24,6 +24,6 @@ top_level source="⟨body⟩"
         import_declaration source="⟨pattern⟩⟨imported_expr⟩"
           imported_expr: identifier "Foundation" source="Foundation"
           pattern:
-            named_pattern source="import ⟨name_node⟩"
+            named_pattern source="⟨sub_pattern⟩⟨name_node⟩"
               name_node: identifier "Foundation" source="Foundation"
-              sub_pattern: bulk_importing_pattern source=""
+              sub_pattern: bulk_importing_pattern "import Foundation" source="import Foundation"
