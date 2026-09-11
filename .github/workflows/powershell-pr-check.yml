@@ -67,3 +67,20 @@ jobs:
         run: |
           codeql test run --threads=0 --search-path powershell/extractor-pack \
             powershell/ql/test/library-tests/ssa
+      # Windows' filesystem is case-insensitive, so two pack entries differing only in case
+      # collide on extraction. Cross-build the win64 pack here because the collision comes from
+      # RID-specific NuGet payloads and is invisible on a native Linux build.
+      - name: Check the win64 pack for case-insensitive duplicates
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        env:
+          MSYS2_ARG_CONV_EXCL: "//"
+        run: |
+          bazel run //powershell:install --@rules_dotnet//dotnet:rid=win-x64 \
+            -- --destdir "$GITHUB_WORKSPACE/powershell/extractor-pack-win"
+          duplicates="$(cd powershell/extractor-pack-win && find . -type f | tr '[:upper:]' '[:lower:]' | sort | uniq -d)"
+          if [ -n "$duplicates" ]; then
+            echo "::error::paths differing only by case in the win64 pack:"
+            echo "$duplicates"
+            exit 1
+          fi
