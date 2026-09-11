@@ -1103,7 +1103,6 @@ module CfgImpl {
       sliceExprStep(n1, n2) or
       selectorExprStep(n1, n2) or
       compositeLitStep(n1, n2) or
-      sendStmtStep(n1, n2) or
       funcDefStep(n1, n2)
     }
 
@@ -1358,22 +1357,19 @@ module CfgImpl {
     }
 
     /**
-     * Slice expression: base -> implicit-deref? -> low? -> high? -> max? -> In(sliceExpr).
+     * Slice expression with implicit dereference: base -> implicit-deref ->
+     * low? -> high? -> max? -> In(sliceExpr).
      *
      * Missing (implicit) bounds have no control-flow node of their own; the
      * implicit lower bound of `0` is modeled as a constant on the
      * `SliceInstruction` rather than as a separate node.
      */
     private predicate sliceExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exists(Go::SliceExpr se |
+      exists(Go::SliceExpr se | implicitDerefCondition(se.getBase()) |
         n1.isBefore(se) and n2.isBefore(se.getBase())
         or
         n1.isAfter(se.getBase()) and
-        (
-          if implicitDerefCondition(se.getBase())
-          then n2.isAdditional(se.getBase(), "implicit-deref")
-          else sliceNext(se, -1, n2)
-        )
+        n2.isAdditional(se.getBase(), "implicit-deref")
         or
         n1.isAdditional(se.getBase(), "implicit-deref") and sliceNext(se, -1, n2)
         or
@@ -1396,7 +1392,6 @@ module CfgImpl {
         sel.getBase() instanceof Go::ValueExpr and
         (
           implicitDerefCondition(sel.getBase()) or
-          exists(Go::Field f | sel = f.getAReference()) or
           implicitFieldSelection(sel, _, _)
         ) and
         (
@@ -1478,21 +1473,6 @@ module CfgImpl {
             not exists(lit.getElement(i + 1)) and n2.isAfter(lit)
           )
         )
-      )
-    }
-
-    /**
-     * Send statement (outside select): channel -> value -> In(send)
-     */
-    private predicate sendStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exists(Go::SendStmt s | not s = any(Go::CommClause cc).getComm() |
-        n1.isBefore(s) and n2.isBefore(s.getChannel())
-        or
-        n1.isAfter(s.getChannel()) and n2.isBefore(s.getValue())
-        or
-        n1.isAfter(s.getValue()) and n2.isIn(s)
-        or
-        n1.isIn(s) and n2.isAfter(s)
       )
     }
 
