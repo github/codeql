@@ -1,8 +1,6 @@
 private import unified
 private import codeql.util.ReportStats
-private import codeql.unified.internal.StaticNameBinding
-private import codeql.unified.internal.LocalNameBinding
-private import codeql.unified.internal.NameBindingPlugin
+private import codeql.unified.internal.NameBinding
 
 /** Stats about name nodes that static name binding could resolve. */
 module StaticNameResolutionStats implements EntityStatsSig {

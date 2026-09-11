@@ -7,5 +7,4 @@ import codeql.files.FileSystem
 import codeql.unified.internal.Ast::UnifiedFinal
 import codeql.unified.internal.AstExtra::Public
 import codeql.unified.internal.ControlFlowGraph
-import codeql.unified.internal.LocalNameBinding::Public
-import codeql.unified.internal.StaticNameBinding::Public
+import codeql.unified.internal.NameBinding::Public
