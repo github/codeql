@@ -2803,6 +2803,7 @@ mod arg_trait_bounds {
 fn empty_array() {
     let arr1: [i32; 0] = []; // $ type=arr1@[;]<TArray>:i32
     let arr2 = [true; 0]; // $ type=arr2@[;]<TArray>:bool
+
     let arr3 = []; // $ type=arr3@[;]<TArray>:i32
 
     fn pin_array<T>(arr: [T; 0], x: T) {}
