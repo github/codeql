@@ -415,7 +415,7 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
 
   /** Holds if `access` resolves to `l`. */
   cached
-  predicate access(AstNode access, Local l) {
+  private predicate access(AstNode access, Local l) {
     CachedStage::ref() and
     DefaultAccesses::access(access, l)
   }
