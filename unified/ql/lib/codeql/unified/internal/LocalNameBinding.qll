@@ -326,6 +326,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     )
   }
 
+  pragma[nomagic]
   additional predicate implicitDeclInScope(string name, AstNode scope, boolean isLocalVariable) {
     exists(Callable callable |
       isLocalVariable = true and
@@ -407,8 +408,7 @@ module Public {
       or
       // For implicitly-declared locals we can't expect to find a binding. Check 'implicitDeclInScope' directly.
       exists(AstNode scope, string name |
-        this.getName() = name and
-        this.(LocalNameBindingOutput::ImplicitLocal).getScope() = scope and
+        this.(LocalNameBindingOutput::ImplicitLocal).hasNameAndScope(name, scope) and
         LocalNameBindingInput::implicitDeclInScope(name, scope, true)
       )
     }

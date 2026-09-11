@@ -484,6 +484,10 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
     override string getName() { result = name }
 
     override Location getLocation() { result = scope.getLocation() }
+
+    /** Holds if this variable has the given name and scope. */
+    pragma[nomagic]
+    predicate hasNameAndScope(string name_, AstNode scope_) { name = name_ and scope = scope_ }
   }
 
   /** A local access. */
