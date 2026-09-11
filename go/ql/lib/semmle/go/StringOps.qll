@@ -138,6 +138,18 @@ module StringOps {
       override boolean getPolarity() { result = expr.getPolarity() }
     }
 
+    bindingset[slice, substring]
+    pragma[inline_late]
+    private predicate hasPrefixSliceUpperBound(DataFlow::SliceNode slice, DataFlow::Node substring) {
+      exists(DataFlow::CallNode len |
+        len = Builtin::len().getACall() and
+        len.getArgument(0) = globalValueNumber(substring).getANode() and
+        slice.getHigh() = globalValueNumber(len).getANode()
+      )
+      or
+      substring.getStringValue().length() = slice.getHigh().getIntValue()
+    }
+
     /**
      * A comparison of the form `x[:len(y)] == y`.
      */
@@ -149,15 +161,7 @@ module StringOps {
         this.eq(_, slice, substring) and
         // An omitted lower bound (`x[:len(y)]`) is implicitly `0`.
         (not exists(slice.getLow()) or slice.getLow().getIntValue() = 0) and
-        (
-          exists(DataFlow::CallNode len |
-            len = Builtin::len().getACall() and
-            len.getArgument(0) = globalValueNumber(substring).getANode() and
-            slice.getHigh() = globalValueNumber(len).getANode()
-          )
-          or
-          substring.getStringValue().length() = slice.getHigh().getIntValue()
-        )
+        hasPrefixSliceUpperBound(slice, substring)
       }
 
       override DataFlow::Node getBaseString() { result = slice.getBase() }
