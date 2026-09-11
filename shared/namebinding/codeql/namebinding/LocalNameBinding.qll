@@ -347,7 +347,7 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
   /**
    * Allows resolution of access candidates.
    *
-   * This is instantiated once by the local name binding library itself in order to populate `LocalAccces`.
+   * This is instantiated once by the local name binding library itself in order to populate `LocalAccess`.
    * It can be instantiated further by the client, to resolve additional lookups at a later evaluation stage.
    */
   module ResolveAccesses<accessCandSig/2 accessCandInput> {
