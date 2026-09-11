@@ -283,9 +283,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // the grouping rather than modelling it as a tuple.
         rule!(
             (tupleExpr
-                elements: (labeledExpr label: _? @label expression: @e)
+                elements: (labeledExpr
+                    label: _? @label
+                    expression: @e
+                    trailingComma: _? @trailing_comma)
                 elements: _* @rest)
-            where label.is_none() && rest.is_empty()
+            where label.is_none() && trailing_comma.is_none() && rest.is_empty()
             =>
             expr { e }
         ),
