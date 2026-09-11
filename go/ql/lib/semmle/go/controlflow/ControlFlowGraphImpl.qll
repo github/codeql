@@ -1112,9 +1112,15 @@ module CfgImpl {
 
     /**
      * Gets the non-skipped child of `parent` at rank `rnk` (1-based).
-     * This mimics the shared library's getRankedChild but for use in explicit steps.
+     * This mimics the shared library's getRankedChild for explicit sequencing of
+     * function bodies and nodes with epilogues.
      */
     private Ast::AstNode getRankedChild(Ast::AstNode parent, int rnk) {
+      (
+        parent = any(Go::FuncDef fd).getBody()
+        or
+        exists(getEpilogueTag(parent, _))
+      ) and
       result = rank[rnk](Ast::AstNode c, int ix | c = Ast::getChild(parent, ix) | c order by ix)
     }
 
