@@ -1,6 +1,6 @@
 private import unified
 private import CommentUtil
-private import codeql.unified.internal.StaticNameBinding
+private import codeql.unified.internal.NameBinding
 
 private string deriveClassName(ClassLikeDeclaration cls) {
   not exists(cls.getEnclosingClass()) and

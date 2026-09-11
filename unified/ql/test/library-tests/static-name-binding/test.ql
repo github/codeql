@@ -1,7 +1,7 @@
 import unified
 import utils.test.InlineExpectationsTest
 import utils.test.TestUtils
-import codeql.unified.internal.StaticNameBinding
+import codeql.unified.internal.NameBinding
 
 module StaticDeclAccess implements TestSig {
   string getARelevantTag() { result = "access" }

@@ -1,7 +1,7 @@
 import unified
 import utils.test.InlineExpectationsTest
 import utils.test.CommentUtil
-import codeql.unified.internal.LocalNameBinding
+import codeql.unified.internal.NameBinding
 
 module VariableAccessTest implements TestSig {
   string getARelevantTag() { result = ["access", "implicit-qualifier", "captured"] }

@@ -3,7 +3,7 @@
  */
 
 private import unified
-private import codeql.unified.internal.StaticNameBinding
+private import codeql.unified.internal.NameBinding
 
 /**
  * Holds if `reference` refers to `definition`.
