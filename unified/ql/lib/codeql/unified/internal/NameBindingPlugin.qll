@@ -44,10 +44,11 @@ class NameBindingPlugin extends Unit {
   string getImplicitReceiverParameterName(Callable callable) { none() }
 
   /**
-   * Gets the name through which static members of the enclosing class can be
+   * Gets the name through which static members of the enclosing class `cls` can be
    * accessed, for example `Self` in Swift.
    */
-  string getStaticSelfName() { none() }
+  bindingset[cls]
+  string getStaticSelfName(ClassLikeDeclaration cls) { none() }
 }
 
 /** Holds if `member` is an instance member. */

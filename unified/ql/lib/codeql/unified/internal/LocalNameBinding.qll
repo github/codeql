@@ -333,6 +333,12 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       name = any(NameBindingPlugin p).getImplicitReceiverParameterName(callable) and
       scope = callable
     )
+    or
+    exists(ClassLikeDeclaration cls |
+      isLocalVariable = false and
+      name = any(NameBindingPlugin p).getStaticSelfName(cls) and
+      scope = cls
+    )
   }
 
   predicate implicitDeclInScope(string name, AstNode scope) { implicitDeclInScope(name, scope, _) }

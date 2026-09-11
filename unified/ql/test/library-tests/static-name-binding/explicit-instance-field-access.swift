@@ -50,6 +50,6 @@ private class C {
     static let x = 1
     class D {
         static let x = 2
-        static let foo = Self.x // $ access=C.D access=C.D.x $ SPURIOUS: access=C.x
+        static let foo = Self.x // $ access=C.D access=C.D.x
     }
 }
