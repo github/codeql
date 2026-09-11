@@ -3,6 +3,7 @@
  */
 
 private import unified
+private import codeql.unified.internal.NameBindingPlugin
 
 module Public {
   /** A short-circuiting logical AND expression. */
@@ -29,24 +30,14 @@ module Public {
    * Declaration of a local or top-level variable.
    */
   class LocalVariableDeclaration extends VariableDeclaration {
-    private Block block;
-
-    LocalVariableDeclaration() { this = block.getStmt(_) }
-
-    /** Gets the block in which this variable is declared. */
-    Block getDeclaringBlock() { result = block }
+    LocalVariableDeclaration() { not isStaticMember(this) and not isInstanceMember(this) }
   }
 
   /**
    * Declaration of a local or top-level function.
    */
   class LocalFunctionDeclaration extends FunctionDeclaration {
-    private Block block;
-
-    LocalFunctionDeclaration() { this = block.getStmt(_) }
-
-    /** Gets the block in which this function is declared. */
-    Block getDeclaringBlock() { result = block }
+    LocalFunctionDeclaration() { not isStaticMember(this) and not isInstanceMember(this) }
   }
 
   /**

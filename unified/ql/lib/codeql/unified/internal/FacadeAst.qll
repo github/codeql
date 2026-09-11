@@ -23,12 +23,47 @@ module Unified {
       )
     }
 
-    /** Gets the nearest enclosing class declaration, possibly this node itself. */
+    /** Gets the nearest enclosing class declaration, if any. */
     ClassLikeDeclaration getEnclosingClass() {
-      result = this
-      or
-      not this instanceof ClassLikeDeclaration and
-      result = this.getParent().getEnclosingClass()
+      exists(AstNode parent | parent = this.getParent() |
+        result = parent
+        or
+        not parent instanceof ClassLikeDeclaration and
+        result = parent.getEnclosingClass()
+      )
+    }
+
+    private AstNode overrideEnclosingCallableParent() {
+      exists(FunctionExpr func |
+        // Capture declarations are evaluated as part of the outer context, and
+        // considered to be captured by the function expression.
+        this = func.getACaptureDeclaration() and
+        result = func.getParent()
+      )
+    }
+
+    /**
+     * Gets the nearest callable containing this AST node.
+     *
+     * If this node is itself a callable, this gets the outer callable, not the node itself.
+     *
+     * Note that the `TopLevel` is callable, so all nodes other than the `TopLevel` itself has an enclosing callable.
+     *
+     * In some cases this predicate skips overs the syntactically-enclosing callable in order to get the callable in which
+     * the AST is actually evaluated (such as for capture declarations in a function expression).
+     */
+    Callable getEnclosingCallable() {
+      exists(AstNode parent |
+        parent = this.overrideEnclosingCallableParent()
+        or
+        not exists(this.overrideEnclosingCallableParent()) and
+        parent = this.getParent()
+      |
+        result = parent
+        or
+        not parent instanceof Callable and
+        result = parent.getEnclosingCallable()
+      )
     }
 
     /** Gets the depth of this node in the AST. The root node has a depth of 0. */

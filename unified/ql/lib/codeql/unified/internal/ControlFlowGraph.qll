@@ -39,14 +39,7 @@ private module Ast implements AstSig<Location> {
     not skipControlFlow(result)
   }
 
-  Callable getEnclosingCallable(AstNode node) {
-    exists(AstNode parent | parent = node.getParent() |
-      result = parent
-      or
-      not parent instanceof Callable and
-      result = getEnclosingCallable(parent)
-    )
-  }
+  Callable getEnclosingCallable(AstNode node) { result = node.getEnclosingCallable() }
 
   class Callable = U::Callable;
 

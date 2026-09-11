@@ -38,6 +38,12 @@ class NameBindingPluginSwift extends NameBindingPlugin {
     exists(cls) and
     not member.hasModifier("private")
   }
+
+  override string getImplicitReceiverParameterName(Callable callable) {
+    // TODO: field initializers can also reference 'self' but are not currently wrapped in a Callable
+    callable = any(ClassLikeDeclaration cls).getAMember() and
+    result = "self"
+  }
 }
 
 /** Holds if `node` is in a context where a bare name node should be seen as a reference rather than a declaration. */

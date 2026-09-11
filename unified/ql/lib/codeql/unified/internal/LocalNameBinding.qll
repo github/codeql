@@ -6,6 +6,7 @@ private import unified
 private import unified as U
 private import codeql.namebinding.LocalNameBinding
 private import codeql.unified.internal.NameBindingPlugin
+private import codeql.unified.internal.StaticNameBinding
 
 private module LocalNameBindingInput implements LocalNameBindingInputSig<Location> {
   class AstNode = U::AstNode;
@@ -167,7 +168,10 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   private class LocalVariableDeclarationSiblingShadowingDecl extends SiblingShadowingDecl instanceof LocalVariableDeclaration
   {
-    LocalVariableDeclarationSiblingShadowingDecl() { not this instanceof TopLevelStmt }
+    LocalVariableDeclarationSiblingShadowingDecl() {
+      // Capture-declarations act as local variables, but are not sibling-shadowing
+      not this = any(FunctionExpr e).getACaptureDeclaration()
+    }
 
     override Expr getPattern() { result = LocalVariableDeclaration.super.getPattern() }
 
@@ -322,10 +326,16 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     )
   }
 
-  predicate implicitDeclInScope(string name, AstNode scope) {
-    none()
-    // TODO: self
+  pragma[nomagic]
+  additional predicate implicitDeclInScope(string name, AstNode scope, boolean isLocalVariable) {
+    exists(Callable callable |
+      isLocalVariable = true and
+      name = any(NameBindingPlugin p).getImplicitReceiverParameterName(callable) and
+      scope = callable
+    )
   }
+
+  predicate implicitDeclInScope(string name, AstNode scope) { implicitDeclInScope(name, scope, _) }
 
   predicate accessCand(AstNode n, string name) { n.(PotentialLocalNameAccess).getName() = name }
 
@@ -357,11 +367,17 @@ module Public {
 
     /** Gets the name of this local, as a string. */
     string getName() { result = super.getName() }
+
+    /** Gets an access to this entity, through its lexically scoped name. */
+    LocalNameAccess getAnAccess() { result.getLocalName() = this }
+
+    /** Gets a name binding that declares this local name. */
+    NameBinding getABinding() { result.getLocalName() = this }
   }
 
-  /** A name node that appears as the declaration site of a name, such as the `x` in `let x = 123`. */
-  class NameDeclaration extends Identifier {
-    NameDeclaration() { LocalNameBindingInput::bindingContext(this, _, _) }
+  /** An identifier appearing in a name-binding position, such as the `x` in `let x = 123`. */
+  class NameBinding extends Identifier {
+    NameBinding() { LocalNameBindingInput::bindingContext(this, _, _) }
 
     /** Gets the statement-like node declaring this name, such as a `VariableDeclaration` or `CatchClause`. */
     AstNode getDeclaration() { LocalNameBindingInput::bindingContext(this, _, result) }
@@ -371,6 +387,61 @@ module Public {
 
     /** Gets the representative for the local name introduced by this declaration. */
     LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
+  }
+
+  /** A representative for a lexically scoped local variable. */
+  class LocalVariable extends LocalName {
+    LocalVariable() {
+      exists(AstNode decl |
+        decl = this.getABinding().getDeclaration() and
+        not isInstanceMember(decl) and
+        not isStaticMember(decl)
+      |
+        decl instanceof VariableDeclaration or
+        decl instanceof FunctionDeclaration or // treat functions as values
+        decl instanceof Parameter or
+        decl instanceof ForEachStmt or
+        decl instanceof PatternGuardExpr or
+        decl instanceof CatchClause or
+        decl instanceof SwitchCase
+      )
+      or
+      // For implicitly-declared locals we can't expect to find a binding. Check 'implicitDeclInScope' directly.
+      exists(AstNode scope, string name |
+        this.(LocalNameBindingOutput::ImplicitLocal).hasNameAndScope(name, scope) and
+        LocalNameBindingInput::implicitDeclInScope(name, scope, true)
+      )
+    }
+
+    /** Gets the callable containing the declaration of this local variable. */
+    Callable getDeclaringCallable() {
+      result = this.getABinding().getEnclosingCallable()
+      or
+      exists(AstNode scope | scope = this.(LocalNameBindingOutput::ImplicitLocal).getScope() |
+        result = scope
+        or
+        not scope instanceof Callable and
+        result = scope.getEnclosingCallable()
+      )
+    }
+
+    /** Holds if this local variable is captured, that is, it is accessed from another callable than the one declaring it. */
+    predicate isCaptured() {
+      this.getAnAccess().getEnclosingCallable() != this.getDeclaringCallable()
+    }
+  }
+
+  /** An access to a locally-declared name. */
+  class LocalNameAccess extends PotentialLocalNameAccess {
+    LocalNameAccess() { not this instanceof UnqualifiedMemberAccess }
+  }
+
+  /** An access to a local variable. */
+  class LocalVariableAccess extends LocalNameAccess {
+    LocalVariableAccess() { this.getLocalName() instanceof LocalVariable }
+
+    /** Gets the local variable being accessed. Alias for `getLocalName()`. */
+    LocalVariable getLocalVariable() { result = this.getLocalName() }
   }
 }
 
@@ -388,10 +459,12 @@ module Public {
  * ```
  */
 class PotentialLocalNameAccess extends IdentifierExpr {
+  /** Gets the representative for the local name being accessed. */
   LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
 
+  /** Gets the name being accessed. */
   string getName() { result = this.getValue() }
 
-  /** Holds if this is one of the declaration sites for a name, such as the `x` in `let x = 123`. */
-  predicate isDeclarationSite() { this instanceof NameDeclaration }
+  /** Holds if this is one of the binding sites for a name, such as the `x` in `let x = 123`. */
+  predicate isBindingSite() { this instanceof NameBinding }
 }

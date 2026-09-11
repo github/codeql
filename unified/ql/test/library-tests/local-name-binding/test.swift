@@ -135,7 +135,7 @@ func t16() throws {
 
 // Closure captures
 func t17() {
-    let x = 1 // name=x1
+    let x = 1 // $ captured=x1 // name=x1
     let closure = { // name=closure1
         print(x) // $ access=x1
     }
@@ -181,7 +181,7 @@ func t21() {
 // Nested functions
 func t22() {
     let x = 1 // name=x1
-    func inner() { // name=inner1
+    func inner() { // $ captured=inner1 // name=inner1
         let x = 2 // name=x2
         print(x) // $ access=x2
     }
