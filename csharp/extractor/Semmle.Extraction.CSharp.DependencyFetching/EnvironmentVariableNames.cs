@@ -80,7 +80,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public const string ProxyHost = "CODEQL_PROXY_HOST";
 
         /// <summary>
-        /// Specifies the hostname of the Registry proxy.
+        /// Specifies the port of the Registry proxy.
         /// </summary>
         public const string ProxyPort = "CODEQL_PROXY_PORT";
 
