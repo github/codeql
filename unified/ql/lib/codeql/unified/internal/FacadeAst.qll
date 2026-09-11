@@ -42,7 +42,16 @@ module Unified {
       )
     }
 
-    /** Gets the nearest callable containing this AST node. */
+    /**
+     * Gets the nearest callable containing this AST node.
+     *
+     * If this node is itself a callable, this gets the outer callable, not the node itself.
+     *
+     * Note that the `TopLevel` is callable, so all nodes other than the `TopLevel` itself has an enclosing callable.
+     *
+     * In some cases this predicate skips overs the syntactically-enclosing callable in order to get the callable in which
+     * the AST is actually evaluated (such as for capture declarations in a function expression).
+     */
     Callable getEnclosingCallable() {
       exists(AstNode parent |
         parent = this.overrideEnclosingCallableParent()
