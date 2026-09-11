@@ -1072,6 +1072,7 @@ module IR {
   }
 
   /** A representation of the target of a write instruction. */
+  cached
   newtype TWriteTarget =
     /** A left-hand side of an assignment. */
     MkLhs(ControlFlow::Node write, Expr lhs) {
