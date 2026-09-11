@@ -51,6 +51,14 @@ module StaticNameResolutionStats implements EntityStatsSig {
         or
         result.isModuleScopeNode(_) and
         result.(NamespaceNode).ref().isIdentifier(this)
+        or
+        // Resolving to an implicitly-declared local such as "self" should count as
+        // as a successfully resolved name
+        exists(LocalName implicitLocal |
+          implicitLocal = this.(LocalNameAccess).getLocalName() and
+          not exists(implicitLocal.getABinding()) and
+          result.isLocalName(implicitLocal)
+        )
       )
     }
 
