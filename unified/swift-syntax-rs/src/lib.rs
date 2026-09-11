@@ -86,11 +86,17 @@ mod tests {
             "unexpected tree: {json}"
         );
         assert!(json.contains("\"text\":\"x\""), "unexpected tree: {json}");
-        // Source ranges are emitted for every node.
-        assert!(json.contains("\"range\""), "missing ranges: {json}");
+        // Compact UTF-8 source ranges are emitted for every node, with one
+        // source-wide line-start table.
         assert!(
-            json.contains("\"line\"") && json.contains("\"column\"") && json.contains("\"offset\""),
+            json.contains("\"$pos\"")
+                && json.contains("\"$end\"")
+                && json.contains("\"$lineStarts\""),
             "missing location fields: {json}"
+        );
+        assert!(
+            !json.contains("\"range\""),
+            "unexpected verbose range: {json}"
         );
     }
 
@@ -138,8 +144,29 @@ mod tests {
             "JSON string was not escaped correctly: {json}"
         );
         assert!(
-            json.contains(r#""start":{"column":1,"line":1,"offset":0}"#),
+            json.starts_with(r#"{"$end":"#) && json.contains(r#","$lineStarts":[0,"#),
             "JSON object keys were not sorted: {json}"
+        );
+    }
+
+    #[test]
+    fn emits_utf8_offsets_with_swift_syntax_line_boundaries() {
+        let source = "// é😀\r\nlet x = 1\rlet y = 2\n";
+        let json = parse_to_json(source).expect("parsing should succeed");
+
+        // SwiftSyntax recognizes LF, CR, and CRLF as physical line breaks. The
+        // offsets are UTF-8 bytes, so the first CRLF ends at byte 11.
+        assert!(
+            json.contains(r#""$lineStarts":[0,11,21,31]"#),
+            "unexpected line starts: {json}"
+        );
+        assert!(
+            json.contains(r#""$end":16,"$pos":15,"kind":"token","text":"x""#),
+            "unexpected UTF-8 token range: {json}"
+        );
+        assert!(
+            json.contains(r#""$end":26,"$pos":25,"kind":"token","text":"y""#),
+            "unexpected UTF-8 token range: {json}"
         );
     }
 

@@ -61,8 +61,69 @@ const VARYING_TOKEN_KINDS: &[&str] = &[
 fn is_metadata_key(key: &str) -> bool {
     matches!(
         key,
-        "kind" | "range" | "tokenKind" | "text" | "leadingTrivia" | "trailingTrivia"
+        "kind"
+            | "$pos"
+            | "$end"
+            | "$lineStarts"
+            | "tokenKind"
+            | "text"
+            | "leadingTrivia"
+            | "trailingTrivia"
     )
+}
+
+/// Converts compact UTF-8 byte offsets into tree-sitter-style points.
+struct LocationTable {
+    line_starts: Vec<usize>,
+}
+
+impl LocationTable {
+    fn from_root(root: &Value) -> Result<Self, String> {
+        let values = root
+            .get("$lineStarts")
+            .and_then(Value::as_array)
+            .ok_or("root node is missing an array `$lineStarts`")?;
+        let mut line_starts = Vec::with_capacity(values.len());
+        for (index, value) in values.iter().enumerate() {
+            let offset = value
+                .as_u64()
+                .and_then(|offset| usize::try_from(offset).ok())
+                .ok_or_else(|| format!("`$lineStarts[{index}]` is not a valid byte offset"))?;
+            line_starts.push(offset);
+        }
+        if line_starts.first() != Some(&0) {
+            return Err("`$lineStarts` must start with offset 0".to_string());
+        }
+        if line_starts.windows(2).any(|pair| pair[0] >= pair[1]) {
+            return Err("`$lineStarts` offsets must be strictly increasing".to_string());
+        }
+        Ok(Self { line_starts })
+    }
+
+    fn point(&self, offset: usize) -> Point {
+        let row = self
+            .line_starts
+            .partition_point(|line_start| *line_start <= offset)
+            - 1;
+        Point::new(row, offset - self.line_starts[row])
+    }
+
+    /// Parse a node's half-open UTF-8 byte range into a [`yeast::Range`].
+    fn range(&self, node: &Value) -> Option<Range> {
+        let offset = |key: &str| {
+            node.get(key)?
+                .as_u64()
+                .and_then(|offset| usize::try_from(offset).ok())
+        };
+        let start_byte = offset("$pos")?;
+        let end_byte = offset("$end")?;
+        Some(Range {
+            start_byte,
+            end_byte,
+            start_point: self.point(start_byte),
+            end_point: self.point(end_byte),
+        })
+    }
 }
 
 /// The classification of a JSON node into a yeast kind name and named-ness.
@@ -158,16 +219,21 @@ fn children_of(value: &Value) -> Vec<&Value> {
 /// comment/`unexpectedText` trivia carried by a token is harvested into
 /// `extras` (as [`ExtraToken`]s) during the same pass rather than embedded in
 /// the tree.
-fn build(node: &Value, ast: &mut Ast, extras: &mut Vec<ExtraToken>) -> Result<Id, String> {
+fn build(
+    node: &Value,
+    locations: &LocationTable,
+    ast: &mut Ast,
+    extras: &mut Vec<ExtraToken>,
+) -> Result<Id, String> {
     let info = classify(node)?;
-    collect_extras(node, extras);
+    collect_extras(node, locations, extras);
 
     let mut fields: BTreeMap<u16, Vec<Id>> = BTreeMap::new();
     for (field, value) in field_entries(node) {
         let field_id = ast.register_field(field);
         let mut ids = Vec::new();
         for child in children_of(value) {
-            ids.push(build(child, ast, extras)?);
+            ids.push(build(child, locations, ast, extras)?);
         }
         fields.insert(field_id, ids);
     }
@@ -183,7 +249,7 @@ fn build(node: &Value, ast: &mut Ast, extras: &mut Vec<ExtraToken>) -> Result<Id
         NodeContent::DynamicString(info.text),
         fields,
         info.is_named,
-        parse_range(node),
+        locations.range(node),
     ))
 }
 
@@ -191,7 +257,7 @@ fn build(node: &Value, ast: &mut Ast, extras: &mut Vec<ExtraToken>) -> Result<Id
 /// filtered to comments/`unexpectedText` upstream) into `out` as
 /// [`ExtraToken`]s. Non-token nodes have no trivia keys, so this is a no-op for
 /// them.
-fn collect_extras(node: &Value, out: &mut Vec<ExtraToken>) {
+fn collect_extras(node: &Value, locations: &LocationTable, out: &mut Vec<ExtraToken>) {
     for key in ["leadingTrivia", "trailingTrivia"] {
         let Some(Value::Array(pieces)) = node.get(key) else {
             continue;
@@ -199,7 +265,7 @@ fn collect_extras(node: &Value, out: &mut Vec<ExtraToken>) {
         for piece in pieces {
             let (Some(kind), Some(range)) = (
                 piece.get("kind").and_then(Value::as_str),
-                parse_range(piece),
+                locations.range(piece),
             ) else {
                 continue;
             };
@@ -232,35 +298,6 @@ fn trivia_kind_id(kind: &str) -> usize {
     }
 }
 
-/// Parse a node's `range` into a [`yeast::Range`].
-///
-/// The JSON carries, for `start` and `end`, a 0-based UTF-8 file byte `offset`,
-/// a 1-based `line`, and a 1-based UTF-8 byte `column`. yeast (like tree-sitter)
-/// uses byte offsets with 0-based rows/columns and an exclusive end, so the
-/// line/column are shifted down by one. swift-syntax's end position is already
-/// exclusive, so the byte offsets map across directly.
-fn parse_range(node: &Value) -> Option<Range> {
-    let range = node.get("range")?;
-    let point = |key: &str| -> Option<(usize, Point)> {
-        let p = range.get(key)?;
-        let offset = p.get("offset")?.as_u64()? as usize;
-        let line = p.get("line")?.as_u64()? as usize;
-        let column = p.get("column")?.as_u64()? as usize;
-        Some((
-            offset,
-            Point::new(line.saturating_sub(1), column.saturating_sub(1)),
-        ))
-    };
-    let (start_byte, start_point) = point("start")?;
-    let (end_byte, end_point) = point("end")?;
-    Some(Range {
-        start_byte,
-        end_byte,
-        start_point,
-        end_point,
-    })
-}
-
 /// The authoritative swift-syntax input node-types schema, generated from
 /// swift-syntax by `swift-syntax-rs/schemagen` (run
 /// `unified/scripts/regenerate-node-types.sh` to refresh it).
@@ -276,10 +313,11 @@ const SWIFT_NODE_TYPES: &str = include_str!("../../../swift_node_types.yml");
 /// ever consumes swift-syntax input, so the schema is not a parameter.
 pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
     let root: Value = serde_json::from_str(json).map_err(|e| format!("invalid JSON: {e}"))?;
+    let locations = LocationTable::from_root(&root)?;
 
     let mut ast = Ast::with_schema(yeast::node_types_yaml::schema_from_yaml(SWIFT_NODE_TYPES)?);
     let mut extras = Vec::new();
-    let root_id = build(&root, &mut ast, &mut extras)?;
+    let root_id = build(&root, &locations, &mut ast, &mut extras)?;
     ast.set_root(root_id);
 
     // Emit extras in source order (the traversal visits nodes bottom-up).
@@ -297,23 +335,28 @@ mod tests {
     /// adapter is tested without needing the Swift toolchain.
     fn sample_json() -> &'static str {
         r#"{
+            "$lineStarts": [0],
+            "$pos": 0,
+            "$end": 9,
             "kind": "sourceFile",
-            "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":9,"line":1,"column":10}},
             "statements": [
                 {
+                    "$pos": 0,
+                    "$end": 9,
                     "kind": "variableDecl",
-                    "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":9,"line":1,"column":10}},
                     "bindingSpecifier": {
+                        "$pos": 0,
+                        "$end": 3,
                         "kind": "token",
                         "tokenKind": "keyword(SwiftSyntax.Keyword.let)",
-                        "text": "let",
-                        "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":3,"line":1,"column":4}}
+                        "text": "let"
                     },
                     "name": {
+                        "$pos": 4,
+                        "$end": 5,
                         "kind": "token",
                         "tokenKind": "identifier(\"x\")",
-                        "text": "x",
-                        "range": {"start":{"offset":4,"line":1,"column":5},"end":{"offset":5,"line":1,"column":6}}
+                        "text": "x"
                     }
                 }
             ]
@@ -377,8 +420,7 @@ mod tests {
             .iter()
             .find(|n| n.kind_name() == "identifier")
             .expect("identifier node exists");
-        // `x` is at file offset 4..5, line 1, column 5 (1-based) in the JSON,
-        // which maps to 0-based row 0, column 4 and byte range 4..5.
+        // `x` is at UTF-8 byte range 4..5 on the first line.
         assert_eq!(ident.start_byte(), 4);
         assert_eq!(ident.end_byte(), 5);
         assert_eq!(ident.start_position(), Point::new(0, 4));
@@ -386,21 +428,64 @@ mod tests {
     }
 
     #[test]
+    fn maps_utf8_locations_across_swift_line_endings() {
+        // The implied source prefix is `// é😀\r\nlet `: the second line begins
+        // at UTF-8 byte 11 and `x` occupies bytes 15..16.
+        let json = r#"{
+            "$lineStarts": [0, 11, 21, 31],
+            "$pos": 0,
+            "$end": 31,
+            "kind": "sourceFile",
+            "name": {
+                "$pos": 15,
+                "$end": 16,
+                "kind": "token",
+                "tokenKind": "identifier(\"x\")",
+                "text": "x"
+            }
+        }"#;
+        let ast = json_to_ast(json).expect("adapter should succeed").ast;
+        let ident = ast
+            .nodes()
+            .iter()
+            .find(|n| n.kind_name() == "identifier")
+            .expect("identifier node exists");
+        assert_eq!(ident.start_byte(), 15);
+        assert_eq!(ident.end_byte(), 16);
+        assert_eq!(ident.start_position(), Point::new(1, 4));
+        assert_eq!(ident.end_position(), Point::new(1, 5));
+    }
+
+    #[test]
+    fn rejects_invalid_line_starts() {
+        let json = r#"{"$lineStarts":[1],"$pos":0,"$end":0,"kind":"sourceFile"}"#;
+        let error = match json_to_ast(json) {
+            Ok(_) => panic!("invalid line starts should fail"),
+            Err(error) => error,
+        };
+        assert!(error.contains("must start with offset 0"), "{error}");
+    }
+
+    #[test]
     fn collects_extras_into_side_channel() {
         // A token carrying a trailing line comment in its trivia.
         let json = r#"{
+            "$lineStarts": [0],
+            "$pos": 0,
+            "$end": 14,
             "kind": "sourceFile",
-            "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":14,"line":1,"column":15}},
             "value": {
+                "$pos": 0,
+                "$end": 1,
                 "kind": "token",
                 "tokenKind": "integerLiteral(\"1\")",
                 "text": "1",
-                "range": {"start":{"offset":0,"line":1,"column":1},"end":{"offset":1,"line":1,"column":2}},
                 "trailingTrivia": [
                     {
+                        "$pos": 2,
+                        "$end": 6,
                         "kind": "lineComment",
-                        "text": "// c",
-                        "range": {"start":{"offset":2,"line":1,"column":3},"end":{"offset":6,"line":1,"column":7}}
+                        "text": "// c"
                     }
                 ]
             }
