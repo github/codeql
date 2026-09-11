@@ -59,7 +59,7 @@
  *
  * ```rust
  * let x = if cond { Default::default() } else { Default::default() };
- * let y : i64 = x;
+ * let y: i64 = x;
  * ```
  *
  * where the `UnknownType` will propagate upwards using two bottom-up steps, and the
@@ -1174,8 +1174,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         /** Gets the location of this declaration. */
         Location getLocation();
 
-        /** Gets the type parameter at position `pos` of this declaration, if any. */
-        TypeParameter getTypeParameter(int pos);
+        /** Gets the `i`th type parameter of this declaration, if any. */
+        TypeParameter getTypeParameter(int i);
 
         /**
          * Gets the declared type of this declaration at `path` for position `dpos`.
@@ -1225,13 +1225,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Location getLocation();
 
         /**
-         * Gets the type at `path` for the type argument at position `pos` of
-         * this access, if any.
+         * Gets the type at `path` for the `i`th type argument of this access, if any.
          *
          * For example, in a method call like `M<int>()`, `int` is an explicit
          * type argument at position `0`.
          */
-        Type getTypeArgument(int pos, TypePath path);
+        Type getTypeArgument(int i, TypePath path);
 
         /**
          * Gets the inferred type at `path` for the position `apos` and environment `e`
@@ -1734,7 +1733,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
              *
              * fn bar<T1, T2: MyTrait<T1>>(x: T1, y: T2) {}
              *
-             * let x : i32 = ...;
+             * let x: i32 = ...;
              * let y = MyThing(Default::default());
              * bar(x, y);
              * ```
@@ -1786,8 +1785,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         /** Gets the location of this declaration. */
         Location getLocation();
 
-        /** Gets the type parameter at position `pos` of this declaration, if any. */
-        TypeParameter getTypeParameter(int pos);
+        /** Gets the `i`th type parameter of this declaration, if any. */
+        TypeParameter getTypeParameter(int i);
 
         /**
          * Gets the declared type of this declaration at `path` for position `dpos`.
@@ -1829,13 +1828,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Location getLocation();
 
         /**
-         * Gets the type at `path` for the type argument at position `pos` of
-         * this access, if any.
+         * Gets the type at `path` for the `i`th type argument of this access, if any.
          *
          * For example, in a method call like `M<int>()`, `int` is an explicit
          * type argument at position `0`.
          */
-        Type getTypeArgument(int pos, TypePath path);
+        Type getTypeArgument(int i, TypePath path);
 
         /**
          * Gets the inferred type at `path` for the position `apos` of this access.
@@ -2039,7 +2037,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /**
        * A variable, or an entity that behaves like a variable with respect to
-       * type inference, for example a local variable, `const`, or `static` in Rust.
+       * type inference, for example a local variable, `const` item, or `static`
+       * item in Rust.
        */
       class Variable {
         /** Gets the AST node that defines this variable. */
@@ -2058,14 +2057,24 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       /** A declaration. */
       class Declaration extends AstNode {
         /**
-         * Gets the type at `path` of the entity that contains this declaration, if any.
+         * Gets the type mention of the entity that contains this declaration, if any.
          *
          * For example, if this declaration is a method, then the declaring type is the
          * type of the class that contains the method.
          *
-         * This type will be used to match against type qualifiers at invocations, and
-         * it may coincide with the types of (possibly implicit) `this`/`self` parameters,
-         * but in for example Rust those types can differ.
+         * This type will be used to match against type qualifiers at invocations:
+         *
+         * ```rust
+         * struct MyStruct<A> { ... }
+         *
+         * impl<B> MyStruct<B> {
+         * //      ^^^^^^^^^^^ declaring type of `new`
+         *   fn new() -> Self { ... }
+         * }
+         *
+         * let c = MyStruct::<C>::new();
+         * //      ^^^^^^^^^^^^^ type qualifier; `C` should be matched against `B`
+         * ```
          *
          * Local variable declarations will not have a declaring type (but they may have
          * a _declared_ type).
@@ -2087,10 +2096,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       class VariableDeclaration extends Declaration {
         /**
-         * Holds if this declaration is a coercion site, meaning that the type of the
-         * initializer may have to be coerced to match the pattern.
+         * Holds if the type of the initializer and the pattern are certainly the same.
+         *
+         * This need not be the case in for example Rust, where implicit coercions may
+         * happen.
          */
-        predicate isCoercionSite();
+        predicate preservesInitializerType();
 
         /**
          * Gets the pattern of this declaration.
@@ -2134,7 +2145,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        *
        * ```rust
        * let tuple = (Default::default(), "hello");
-       * let x : i32 = tuple.0;
+       * let x: i32 = tuple.0;
        * ```
        *
        * we will be able to infer that the type of `Default::default()` is `i32`.
@@ -2156,10 +2167,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       /** A parameter. */
       class Parameter extends VariableDeclaration;
 
-      /** A parameterizable element, such as a function or a variant constructor. */
-      class Parameterizable extends Declaration {
+      /** A callable. This may include for example variant constructors. */
+      class Callable extends Declaration {
         /**
-         * Gets the type parameter at position `pos` of this element, if any.
+         * Gets the `i`th type parameter of this element, if any.
          *
          * This should only include type parameters declared directly on the element
          * itself; any type parameters that are in scope from the declaring element
@@ -2173,7 +2184,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * }
          * ```
          */
-        TypeParameter getTypeParameter(int pos);
+        TypeParameter getTypeParameter(int i);
 
         /**
          * Gets an additional type parameter constraint for the given type parameter,
@@ -2195,10 +2206,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * This should also include (possibly implicit) `this`/`self` parameters.
          */
         Parameter getParameter(int i);
-      }
 
-      /** A callable. */
-      class Callable extends Parameterizable {
         /** Gets the body of this callable, if any. */
         AstNode getBody();
       }
@@ -2223,7 +2231,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * implicit dereferencing and borrowing. When not needed, simply use `Unit`.
        */
       bindingset[this]
-      class ResolutionContext {
+      class InvocationResolutionContext {
         /** Gets a textual representation of this context. */
         bindingset[this]
         string toString();
@@ -2232,7 +2240,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       /** An invocation expression, for example a call or a variant construction. */
       class Invocation extends Expr {
         /**
-         * Gets the explicit type qualifier at `path` for this invocation, if any.
+         * Gets the type at `path` of the explicit type qualifier for this invocation,
+         * if any.
          *
          * When present, this type qualifier will be matched against the declaring
          * type of the target.
@@ -2247,7 +2256,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Type getTypeQualifier(TypePath path);
 
         /**
-         * Gets the explicit type argument at position `pos` and `path` for this
+         * Gets the explicit type argument at position `i` and `path` for this
          * invocation, if any.
          *
          * This should only include type arguments that are supplied for type
@@ -2263,7 +2272,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * //                        ^^^ type argument 0
          * ```
          */
-        Type getTypeArgument(int pos, TypePath path);
+        Type getTypeArgument(int i, TypePath path);
 
         /**
          * Gets the `i`th argument of this invocation.
@@ -2279,7 +2288,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * in order to resolve a method call one needs to know the type of the
          * receiver.
          */
-        Parameterizable getTarget(ResolutionContext ctx);
+        Callable getTarget(InvocationResolutionContext ctx);
 
         /**
          * Gets a target (candidate) of this invocation which will be used to
@@ -2289,7 +2298,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * Unlike `getTarget`, this predicate cannot depend on the `inferType`
          * predicate.
          */
-        Parameterizable getATargetForTypeQualifierMatching();
+        Callable getATargetForTypeQualifierMatching();
       }
 
       /**
@@ -2303,7 +2312,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       bindingset[ctx]
       default Type inferInvocationArgumentType(
-        Invocation invocation, ResolutionContext ctx, int i, TypePath path
+        Invocation invocation, InvocationResolutionContext ctx, int i, TypePath path
       ) {
         result = inferTypeForDefaults(invocation.getArgument(i), path) and
         exists(ctx)
@@ -2346,7 +2355,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * ```rust
        * fn id<T>(x: T) -> T { x }
        * let x = Default::default();
-       * let y : i32 = id(x);
+       * let y: i32 = id(x);
        * ```
        *
        * knowing that the return type of `id(x)` is `i32` allows us to infer that
@@ -2433,6 +2442,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * `t` at `prefix2.suffix`, for any `suffix`.
        *
        * Use this predicate to implement any language-specific bottom-up inference logic.
+       *
+       * When contextual type information is needed at `n1`, this predicate may additionally
+       * be applied _reversely_ as well (see an example in the module documentation).
        */
       predicate stepLanguageSpecific(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2);
 
@@ -2510,7 +2522,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             exists(Variable v | n1 = v.getDefiningNode() and n2 = v.getAnAccess())
             or
             exists(VariableDeclaration decl |
-              not decl.isCoercionSite() and
+              decl.preservesInitializerType() and
               n1 = decl.getInitializer() and
               n2 = decl.getPattern()
             )
@@ -2595,7 +2607,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             infersCertainTypeAt(n, path, result.getATypeParameter())
           ) and
           // type annotation may for example include unknown types, such as
-          // `x : Vec<_>` in Rust
+          // `x: Vec<_>` in Rust
           not result instanceof PseudoType
         }
 
@@ -2792,16 +2804,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
-      private Type getParameterizableReturnType(Parameterizable p, TypePath path) {
-        (
-          result = getCallableReturnType(p, path)
-          or
-          not p instanceof Callable and
-          result = p.getType().getTypeAt(path)
-        )
-      }
-
-      final private class ParameterizableFinal = Parameterizable;
+      final private class CallableFinal = Callable;
 
       final private class InvocationFinal = Invocation;
 
@@ -2836,7 +2839,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           apos = dpos
         }
 
-        class Declaration extends ParameterizableFinal {
+        class Declaration extends CallableFinal {
           Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
             result = this.getDeclaringType().getTypeAt(path) and
             exists(dpos)
@@ -2885,22 +2888,21 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
         /** Gets the position used to represent the return type of an invocation. */
         additional int getReturnPosition() {
-          result = min(int i | i = 0 or exists(any(Parameterizable p).getParameter(i)) | i) - 1
+          result = min(int i | i = 0 or exists(any(Callable c).getParameter(i)) | i) - 1
         }
 
         private int getFirstTypeParameterPosition() {
-          result = min(int i | i = 0 or exists(any(Parameterizable p).getTypeParameter(i)) | i)
+          result = min(int i | i = 0 or exists(any(Callable c).getTypeParameter(i)) | i)
         }
 
         private predicate typeQualifierMatch(
-          Invocation invocation, Parameterizable target, TypePath path, Type t, TypeParameter tp,
-          int pos
+          Invocation invocation, Callable target, TypePath path, Type t, TypeParameter tp, int pos
         ) {
           InvocationTypeQualifierMatching::typeMatch(invocation, _, target, path, t, tp) and
           pos = getFirstTypeParameterPosition() - getRank(tp) - 2
         }
 
-        class Declaration extends ParameterizableFinal {
+        class Declaration extends CallableFinal {
           TypeParameter getTypeParameter(int pos) {
             // include type parameters that are matched via a type qualifier
             typeQualifierMatch(_, this, _, _, result, pos)
@@ -2917,7 +2919,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             result = this.getParameter(dpos).getType().getTypeAt(path)
             or
             dpos = getReturnPosition() and
-            result = getParameterizableReturnType(this, path)
+            result = getCallableReturnType(this, path)
           }
         }
 
@@ -2926,7 +2928,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           result = InvocationTypeQualifierMatchingInput::getATypeParameterConstraint(tp, decl)
         }
 
-        class AccessEnvironment = ResolutionContext;
+        class AccessEnvironment = InvocationResolutionContext;
 
         class Access extends InvocationFinal {
           Type getTypeArgument(int pos, TypePath path) {
@@ -2966,7 +2968,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * `InputSig3::inferInvocationType`.
        */
       pragma[nomagic]
-      Type inferInvocationTypeDefault(Invocation invocation, ResolutionContext ctx, TypePath path) {
+      Type inferInvocationTypeDefault(
+        Invocation invocation, InvocationResolutionContext ctx, TypePath path
+      ) {
         result =
           InvocationMatching::inferAccessType(invocation, ctx,
             InvocationMatchingInput::getReturnPosition(), path)
@@ -2978,7 +2982,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       Type inferInvocationArgumentTypeContextualDefault(
-        Invocation invocation, ResolutionContext ctx, int pos, Expr arg, TypePath path
+        Invocation invocation, InvocationResolutionContext ctx, int pos, Expr arg, TypePath path
       ) {
         arg = invocation.getArgument(pos) and
         result = InvocationMatching::inferAccessType(invocation, ctx, pos, path) and
@@ -3003,17 +3007,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
 
         /**
-         * Holds if parameterizable `p` mentions type parameter `tp` at some parameter,
+         * Holds if callable `c` mentions type parameter `tp` at some parameter,
          * possibly via a constraint on another mentioned type parameter.
          */
         pragma[nomagic]
-        private predicate mentionsTypeParameterAtParameter(Parameterizable p, TypeParameter tp) {
-          tp = getAConstrained*(p.getParameter(_).getType().getTypeAt(_))
+        private predicate mentionsTypeParameterAtParameter(Callable c, TypeParameter tp) {
+          tp = getAConstrained*(c.getParameter(_).getType().getTypeAt(_))
         }
 
         /**
-         * Holds if the return type of the parameterizable `p` at `path` is type parameter
-         * `tp`, and `tp` does not appear in the type of any parameter of `p`.
+         * Holds if the return type of the callable `c` at `path` is type parameter
+         * `tp`, and `tp` does not appear in the type of any parameter of `c`.
          *
          * In this case, the context in which `p` is called may be needed to infer
          * the instantiation of `tp`.
@@ -3021,18 +3025,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * This covers functions like `Default::default` and `Vec::new` in Rust.
          */
         pragma[nomagic]
-        private predicate parameterizableReturnContextTypedAt(
-          Parameterizable p, TypePath path, TypeParameter tp
-        ) {
-          tp = getParameterizableReturnType(p, path) and
-          not mentionsTypeParameterAtParameter(p, tp)
+        private predicate callableReturnContextTypedAt(Callable c, TypePath path, TypeParameter tp) {
+          tp = getCallableReturnType(c, path) and
+          not mentionsTypeParameterAtParameter(c, tp)
         }
 
         bindingset[invocation, target]
         pragma[inline_late]
-        private predicate hasTypeArgument(
-          Invocation invocation, Parameterizable target, TypeParameter tp
-        ) {
+        private predicate hasTypeArgument(Invocation invocation, Callable target, TypeParameter tp) {
           exists(Type t |
             InvocationTypeQualifierMatching::typeMatch(invocation, _, _, _, t, tp) and
             not t instanceof PseudoType
@@ -3047,12 +3047,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          */
         pragma[nomagic]
         predicate needsContextualTyping(Invocation invocation, TypePath path) {
-          exists(Parameterizable target, TypeParameter tp |
+          exists(Callable target, TypeParameter tp |
             target = invocation.getATargetForTypeQualifierMatching()
             or
             target = invocation.getTarget(_)
           |
-            parameterizableReturnContextTypedAt(target, path, tp) and
+            callableReturnContextTypedAt(target, path, tp) and
             // check that no explicit type arguments have been supplied that bind `tp`
             not exists(TypeParameter supplied |
               tp = getAConstrained*(supplied) and
