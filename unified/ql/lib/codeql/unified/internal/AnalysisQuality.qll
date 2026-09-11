@@ -4,7 +4,7 @@ private import codeql.unified.internal.StaticNameBinding
 private import codeql.unified.internal.LocalNameBinding
 private import codeql.unified.internal.NameBindingPlugin
 
-/** Stats about identifiers that static name binding could resolve. */
+/** Stats about name nodes that static name binding could resolve. */
 module StaticNameResolutionStats implements EntityStatsSig {
   /**
    * Holds if `name` has been positively identified as referring to a value, so static name binding

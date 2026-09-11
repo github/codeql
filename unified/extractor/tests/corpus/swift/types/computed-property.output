@@ -103,41 +103,27 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "Rect"
+          name_node: identifier "Rect"
           member:
             variable_declaration
               modifier: modifier "var"
-              pattern:
-                name_pattern
-                  identifier: identifier "w"
-              type:
-                named_type_expr
-                  name: identifier "Double"
+              pattern: identifier "w"
+              type: identifier "Double"
             variable_declaration
               modifier: modifier "var"
-              pattern:
-                name_pattern
-                  identifier: identifier "h"
-              type:
-                named_type_expr
-                  name: identifier "Double"
+              pattern: identifier "h"
+              type: identifier "Double"
             accessor_declaration
               modifier: modifier "var"
-              name: identifier "area"
+              name_node: identifier "area"
               accessor_kind: accessor_kind "get"
-              type:
-                named_type_expr
-                  name: identifier "Double"
+              type: identifier "Double"
               body:
                 block
                   stmt:
                     return_expr
                       value:
                         binary_expr
-                          left:
-                            name_expr
-                              identifier: identifier "w"
+                          left: identifier "w"
                           operator: infix_operator "*"
-                          right:
-                            name_expr
-                              identifier: identifier "h"
+                          right: identifier "h"

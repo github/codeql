@@ -125,21 +125,15 @@ top_level
     block
       stmt:
         switch_expr
-          value:
-            name_expr
-              identifier: identifier "x"
+          value: identifier "x"
           case:
             switch_case
-              pattern:
-                expr_equality_pattern
-                  expr: int_literal "1"
+              pattern: int_literal "1"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: string_literal "\"one\""
@@ -147,17 +141,13 @@ top_level
               pattern:
                 or_pattern
                   pattern:
-                    expr_equality_pattern
-                      expr: int_literal "2"
-                    expr_equality_pattern
-                      expr: int_literal "3"
+                    int_literal "2"
+                    int_literal "3"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: string_literal "\"two or three\""
@@ -166,9 +156,7 @@ top_level
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: string_literal "\"other\""

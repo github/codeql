@@ -26,4 +26,4 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "Foo"
+          name_node: identifier "Foo"

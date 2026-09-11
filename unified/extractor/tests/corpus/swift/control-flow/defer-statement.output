@@ -80,15 +80,13 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "withCleanup"
+          name_node: identifier "withCleanup"
           body:
             block
               stmt:
                 unsupported_node "defer { print(\"cleanup\") }"
                 call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                  callee: identifier "print"
                   argument:
                     argument
                       value: string_literal "\"work\""

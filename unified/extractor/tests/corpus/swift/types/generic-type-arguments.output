@@ -62,22 +62,13 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "cache"
+          pattern: identifier "cache"
           type:
             generic_type_expr
-              base:
-                named_type_expr
-                  name: identifier "Dictionary"
+              base: identifier "Dictionary"
               type_argument:
-                named_type_expr
-                  name: identifier "String"
+                identifier "String"
                 generic_type_expr
-                  base:
-                    named_type_expr
-                      name: identifier "Array"
-                  type_argument:
-                    named_type_expr
-                      name: identifier "Int"
+                  base: identifier "Array"
+                  type_argument: identifier "Int"
           value: map_literal "[:]"

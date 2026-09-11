@@ -120,55 +120,47 @@ top_level
     block
       stmt:
         switch_expr
-          value:
-            name_expr
-              identifier: identifier "shape"
+          value: identifier "shape"
           case:
             switch_case
               pattern:
-                constructor_pattern
-                  constructor:
+                call_expr
+                  callee:
                     member_access_expr
                       base: inferred_type_expr "."
-                      member: identifier "circle"
-                  element:
-                    pattern_element
-                      pattern:
-                        name_pattern
-                          identifier: identifier "r"
+                      member_name_node: identifier "circle"
+                  argument:
+                    argument
+                      value:
+                        expr_pattern
+                          modifier: modifier "let"
+                          expr: identifier "r"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "r"
+                          value: identifier "r"
             switch_case
               pattern:
-                constructor_pattern
-                  constructor:
+                call_expr
+                  callee:
                     member_access_expr
                       base: inferred_type_expr "."
-                      member: identifier "square"
-                  element:
-                    pattern_element
-                      pattern:
-                        name_pattern
-                          identifier: identifier "s"
+                      member_name_node: identifier "square"
+                  argument:
+                    argument
+                      value:
+                        expr_pattern
+                          modifier: modifier "let"
+                          expr: identifier "s"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "s"
+                          value: identifier "s"

@@ -55,6 +55,89 @@ module Unified {
       // just strip the quotes here and ignore escape sequences.
       result = this.(StringLiteral).getValue().regexpCapture("\"(.*)\"", 1)
     }
+
+    /** Gets the immediately-enclosing expression, skipping over intermediate sub-nodes like `Argument`, and without crossing a function boundary. */
+    Expr getEnclosingExpr() {
+      result = this.getParent() and
+      not result instanceof Callable
+      or
+      result = this.getParent().(Argument).getParent()
+    }
+  }
+
+  class AccessorDeclaration extends G::AccessorDeclaration {
+    /** Gets the name of this accessor. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class Argument extends G::Argument {
+    /** Gets the name of this argument. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class AssociatedTypeDeclaration extends G::AssociatedTypeDeclaration {
+    /** Gets the name of this associated type. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class BreakExpr extends G::BreakExpr {
+    /** Gets the label name targeted by this break. */
+    string getLabelName() { result = this.getLabelNameNode().getValue() }
+  }
+
+  class ClassLikeDeclaration extends G::ClassLikeDeclaration {
+    /** Gets the name of this declaration. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class ConstructorDeclaration extends G::ConstructorDeclaration {
+    /** Gets the name of this constructor. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class ContinueExpr extends G::ContinueExpr {
+    /** Gets the label name targeted by this continue. */
+    string getLabelName() { result = this.getLabelNameNode().getValue() }
+  }
+
+  class FunctionDeclaration extends G::FunctionDeclaration {
+    /** Gets the name of this function. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class LabeledStmt extends G::LabeledStmt {
+    /** Gets the label name of this statement. */
+    string getLabelName() { result = this.getLabelNameNode().getValue() }
+  }
+
+  class MemberAccessExpr extends G::MemberAccessExpr {
+    /** Gets the member name of this access. */
+    string getMemberName() { result = this.getMemberNameNode().getValue() }
+  }
+
+  class NamedPattern extends G::NamedPattern {
+    /** Gets the name bound by this pattern. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class OperatorSyntaxDeclaration extends G::OperatorSyntaxDeclaration {
+    /** Gets the name of this operator. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class Parameter extends G::Parameter {
+    /** Gets the external name of this parameter. */
+    string getExternalName() { result = this.getExternalNameNode().getValue() }
+  }
+
+  class TypeAliasDeclaration extends G::TypeAliasDeclaration {
+    /** Gets the name of this type alias. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class TypeParameter extends G::TypeParameter {
+    /** Gets the name of this type parameter. */
+    string getName() { result = this.getNameNode().getValue() }
   }
 
   /** A binary expression. */
@@ -69,19 +152,9 @@ module Unified {
     Expr getNamedArgument(string name) {
       exists(Argument arg |
         arg = this.getAnArgument() and
-        arg.getName().getValue() = name and
+        arg.getName() = name and
         result = arg.getValue()
       )
-    }
-  }
-
-  /** The base class for all patterns. */
-  class Pattern extends G::Pattern {
-    /** Gets the immediately-enclosing pattern in which this is a nested pattern. */
-    Pattern getEnclosingPattern() {
-      result = this.getParent()
-      or
-      result = this.getParent().(PatternElement).getParent()
     }
   }
 }

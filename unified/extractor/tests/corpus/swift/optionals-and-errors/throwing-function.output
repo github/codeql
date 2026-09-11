@@ -56,10 +56,8 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "read"
-          return_type:
-            named_type_expr
-              name: identifier "String"
+          name_node: identifier "read"
+          return_type: identifier "String"
           body:
             block
               stmt:

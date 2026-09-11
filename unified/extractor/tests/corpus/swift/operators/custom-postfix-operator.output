@@ -42,7 +42,5 @@ top_level
         unsupported_node "postfix operator ^^"
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "squared"
+          pattern: identifier "squared"
           value: unsupported_node "3^^"
