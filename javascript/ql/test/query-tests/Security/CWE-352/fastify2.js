@@ -21,7 +21,7 @@ app.route({
 app.route({
   method: 'POST',
   path: '/',
-  handler: async (req, reply) => { // lacks CSRF protection // $ RelatedLocation
+  handler: async (req, reply) => { // $ RelatedLocation // lacks CSRF protection
     req.session.blah;
     return req.body
   }

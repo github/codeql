@@ -33,7 +33,7 @@ cp.exec("cmd.sh " + require("yargs").argv.foo); // $ Alert
 cp.exec("cmd.sh " + require("optimist").argv.foo); // $ Alert
 
 (function () {
-	var args = require('yargs') // eslint-disable-line // $ Source
+	var args = require('yargs') // $ Source // eslint-disable-line
 		.command('serve [port]', 'start the server', (yargs) => { })
 		.option('verbose', { foo: "bar" })
 		.argv

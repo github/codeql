@@ -20,7 +20,7 @@ function test() {
         }
     };
     
-    var pref = { // implicitly enabled // $ Alert
+    var pref = { // $ Alert // implicitly enabled
             plugins: true,
             webSecurity: true,
             sandbox: true     

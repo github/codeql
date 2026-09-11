@@ -12,7 +12,7 @@ func insecureSSHClientConfig() {
 	_ = &ssh.ClientConfig{
 		User: "user",
 		Auth: []ssh.AuthMethod{nil},
-		HostKeyCallback: ssh.HostKeyCallback( // BAD // $ Source Alert
+		HostKeyCallback: ssh.HostKeyCallback( // $ Source Alert // BAD
 			func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 				return nil
 			}),

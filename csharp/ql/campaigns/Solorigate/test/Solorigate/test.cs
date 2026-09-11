@@ -31,7 +31,7 @@ class TestCases
 				num *= 1099511628211UL; // $ Alert[cs/solorigate/number-of-known-hashes-above-threshold]
 			}
 		}
-		catch // BUG : SwallowEverythingExceptionHandler // $ Alert[cs/solorigate/swallow-everything-exception]
+		catch // $ Alert[cs/solorigate/swallow-everything-exception] // BUG : SwallowEverythingExceptionHandler
 		{
 
 		}
@@ -285,13 +285,13 @@ class TestCases
 		try{
 			Literals();
 		}
-		catch // BUG : SwallowEverythingExceptionHandler // $ Alert[cs/solorigate/swallow-everything-exception]
+		catch // $ Alert[cs/solorigate/swallow-everything-exception] // BUG : SwallowEverythingExceptionHandler
 		{}
 
 		try{
 			Literals();
 		}
-		catch( Exception e) // BUG : SwallowEverythingExceptionHandler // $ Alert[cs/solorigate/swallow-everything-exception]
+		catch( Exception e) // $ Alert[cs/solorigate/swallow-everything-exception] // BUG : SwallowEverythingExceptionHandler
 		{
 			//
 		}

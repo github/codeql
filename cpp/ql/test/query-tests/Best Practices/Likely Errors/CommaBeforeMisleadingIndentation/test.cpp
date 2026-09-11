@@ -173,7 +173,7 @@ int Foo::test(int (*baz)(int))
 
 	if (foo(j))
 		return i++
-			, i++ // GOOD(?) [FALSE POSITIVE] -- can't exclude w/o source code text :/ // $ SPURIOUS: Alert
+			, i++ // $ SPURIOUS: Alert // GOOD(?) [FALSE POSITIVE] -- can't exclude w/o source code text :/
 			? 1
 			: 2;
 

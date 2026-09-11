@@ -23,7 +23,7 @@ app.post('/process', parseForm, lusca({csrf:{}}), function (req, res) {
   res.send('data is being processed')
 })
 
-app.post('/process', parseForm, lusca(), function (req, res) { // missing csrf option // $ RelatedLocation
+app.post('/process', parseForm, lusca(), function (req, res) { // $ RelatedLocation // missing csrf option
   let newEmail = req.cookies["newEmail"];
   res.send('data is being processed')
 })

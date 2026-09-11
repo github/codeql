@@ -2,7 +2,7 @@ void Signed()
 {
     signed char i;
 
-    for (i = 0; i < 100; i--)   //BUG // $ Alert
+    for (i = 0; i < 100; i--) // $ Alert // BUG
     {
     }
 
@@ -10,7 +10,7 @@ void Signed()
     {
     }
 
-    for (i = 100; i >= 0; i++)   //BUG // $ Alert
+    for (i = 100; i >= 0; i++) // $ Alert // BUG
     {
     }
 
@@ -24,7 +24,7 @@ void Unsigned()
 {
     unsigned long i;
 
-    for (i = 0; i < 100; i--)   //BUG // $ Alert
+    for (i = 0; i < 100; i--) // $ Alert // BUG
     {
     }
 
@@ -32,7 +32,7 @@ void Unsigned()
     {
     }
 
-    for (i = 100; i >= 0; i++)   //BUG // $ Alert
+    for (i = 100; i >= 0; i++) // $ Alert // BUG
     {
     }
 
@@ -43,7 +43,7 @@ void Unsigned()
 
 void DeclarationInLoop()
 {
-    for (signed char i = 0; i < 100; --i)   //BUG // $ Alert
+    for (signed char i = 0; i < 100; --i) // $ Alert // BUG
     {
     }
 
@@ -51,7 +51,7 @@ void DeclarationInLoop()
     {
     }
 
-    for (unsigned char i = 100; i >= 0; ++i)   //BUG // $ Alert
+    for (unsigned char i = 100; i >= 0; ++i) // $ Alert // BUG
     {
     }
 
@@ -66,7 +66,7 @@ void SignedWithVariables()
     signed char min = 0;
     signed char max = 100;
 
-    for (i = min; i < max; i--)   //BUG // $ Alert
+    for (i = min; i < max; i--) // $ Alert // BUG
     {
     }
 
@@ -74,7 +74,7 @@ void SignedWithVariables()
     {
     }
 
-    for (i = max; i >= min; i++)   //BUG // $ Alert
+    for (i = max; i >= min; i++) // $ Alert // BUG
     {
     }
 
@@ -88,7 +88,7 @@ void InitializationOutsideLoop()
 {
     signed char i = 0;
 
-    for (; i < 100; --i)   //BUG // $ Alert
+    for (; i < 100; --i) // $ Alert // BUG
     {
     }
 
@@ -98,7 +98,7 @@ void InitializationOutsideLoop()
     }
 
     i = 100;
-    for (; i >= 0; ++i)   //BUG // $ Alert
+    for (; i >= 0; ++i) // $ Alert // BUG
     {
     }
 
@@ -115,11 +115,11 @@ void InvalidCondition()
     signed char min = 0;
     signed char max = 100;
 
-    for (i = max; i < min; i--)   //BUG // $ Alert
+    for (i = max; i < min; i--) // $ Alert // BUG
     {
     }
 
-    for (i = min; i > max; i++)   //BUG // $ Alert
+    for (i = min; i > max; i++) // $ Alert // BUG
     {
     }
 }
@@ -130,14 +130,14 @@ void InvalidConditionUnsignedCornerCase()
     unsigned char min = 0;
     unsigned char max = 100;
 
-    for (i = 100; i < 0; i--)   //BUG // $ Alert
+    for (i = 100; i < 0; i--) // $ Alert // BUG
     {
     }
 
     // Limitation.
     // Currently odasa will not detect this for-loop condition as always true
     // The rule will still detect the mismatch iterator, but the error message may change in the future.
-    for (i = 200; i >= 0; i++)   //BUG // $ Alert
+    for (i = 200; i >= 0; i++) // $ Alert // BUG
     {
     }
 }
