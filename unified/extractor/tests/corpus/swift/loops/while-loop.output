@@ -1,4 +1,4 @@
-while x > 0 {
+while (x > 0) {
   x -= 1
 }
 
@@ -30,16 +30,22 @@ sourceFile
           conditions:
             conditionElement
               condition:
-                infixOperatorExpr
-                  operator:
-                    binaryOperatorExpr
-                      operator: binaryOperator ">"
-                  leftOperand:
-                    declReferenceExpr
-                      baseName: identifier "x"
-                  rightOperand:
-                    integerLiteralExpr
-                      literal: integerLiteral "0"
+                tupleExpr
+                  leftParen: (
+                  rightParen: )
+                  elements:
+                    labeledExpr
+                      expression:
+                        infixOperatorExpr
+                          operator:
+                            binaryOperatorExpr
+                              operator: binaryOperator ">"
+                          leftOperand:
+                            declReferenceExpr
+                              baseName: identifier "x"
+                          rightOperand:
+                            integerLiteralExpr
+                              literal: integerLiteral "0"
           whileKeyword: while
 
 ---
@@ -50,10 +56,14 @@ top_level
       stmt:
         while_stmt
           condition:
-            binary_expr
-              left: identifier "x"
-              operator: infix_operator ">"
-              right: int_literal "0"
+            tuple_expr
+              element:
+                argument
+                  value:
+                    binary_expr
+                      left: identifier "x"
+                      operator: infix_operator ">"
+                      right: int_literal "0"
           body:
             block
               stmt:
