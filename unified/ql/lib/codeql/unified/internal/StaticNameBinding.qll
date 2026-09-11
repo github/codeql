@@ -648,7 +648,7 @@ module Public {
       unqualifiedMemberAccess(this, instanceAccess, target, accessingClass)
     }
 
-    /** Gets the name declaration of the member being accessed. */
+    /** Gets the name binding of the member being accessed. */
     NameBinding getTarget() { result = target }
 
     /** Gets the enclosing class whose (possibly inherited) member is being accessed. */

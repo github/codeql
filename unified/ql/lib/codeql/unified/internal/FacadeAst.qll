@@ -23,7 +23,7 @@ module Unified {
       )
     }
 
-    /** Gets the nearest enclosing class declaration. */
+    /** Gets the nearest enclosing class declaration, if any. */
     ClassLikeDeclaration getEnclosingClass() {
       exists(AstNode parent | parent = this.getParent() |
         result = parent
