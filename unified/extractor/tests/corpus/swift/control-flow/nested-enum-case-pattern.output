@@ -173,9 +173,9 @@ top_level source="⟨body⟩"
                           base: inferred_type_expr "." source="."
                           member_name_node: identifier "received" source="received"
                       argument:
-                        argument source="⟨value⟩),"
+                        argument source="⟨value⟩,"
                           value:
-                            call_expr source="⟨callee⟩(⟨argument⟩"
+                            call_expr source="⟨callee⟩(⟨argument⟩)"
                               callee:
                                 member_access_expr source="⟨base⟩⟨member_name_node⟩"
                                   base: inferred_type_expr "." source="."

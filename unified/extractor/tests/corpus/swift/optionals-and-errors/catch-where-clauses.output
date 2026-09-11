@@ -144,11 +144,11 @@ top_level source="⟨body⟩"
           body:
             block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                unary_expr source="try ⟨operand⟩"
+                unary_expr source="⟨operator⟩ ⟨operand⟩"
                   operand:
                     call_expr source="⟨callee⟩()"
                       callee: identifier "foo" source="foo"
-                  operator: prefix_operator "try" source=""
+                  operator: prefix_operator "try" source="try"
           catch_clause:
             catch_clause source="catch ⟨pattern⟩ ⟨body⟩"
               pattern:
