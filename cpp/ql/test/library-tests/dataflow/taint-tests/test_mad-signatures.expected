@@ -18071,6 +18071,10 @@ getSignatureParameterName
 | (const char *,size_t) |  | uv__strndup | 1 | size_t |
 | (const char *,size_t) |  | xstrndup | 0 | const char * |
 | (const char *,size_t) |  | xstrndup | 1 | size_t |
+| (const char *,size_t,TYPE *,const char *) | Decoder | decode<TYPE> | 0 | const char * |
+| (const char *,size_t,TYPE *,const char *) | Decoder | decode<TYPE> | 1 | size_t |
+| (const char *,size_t,TYPE *,const char *) | Decoder | decode<TYPE> | 2 | func:0 * |
+| (const char *,size_t,TYPE *,const char *) | Decoder | decode<TYPE> | 3 | const char * |
 | (const char *,size_t,char **,size_t *,urlreject) |  | Curl_urldecode | 0 | const char * |
 | (const char *,size_t,char **,size_t *,urlreject) |  | Curl_urldecode | 1 | size_t |
 | (const char *,size_t,char **,size_t *,urlreject) |  | Curl_urldecode | 2 | char ** |
@@ -22146,6 +22150,15 @@ getSignatureParameterName
 | (int_dhx942_dh **,const unsigned char **,long) |  | d2i_int_dhx | 1 | const unsigned char ** |
 | (int_dhx942_dh **,const unsigned char **,long) |  | d2i_int_dhx | 2 | long |
 | (intptr_t) |  | __sbrk | 0 | intptr_t |
+| (istream &,AnyRef *,const char *) | Decoder | decodeAny | 0 | istream & |
+| (istream &,AnyRef *,const char *) | Decoder | decodeAny | 1 | AnyRef * |
+| (istream &,AnyRef *,const char *) | Decoder | decodeAny | 2 | const char * |
+| (istream &,TYPE *,const char *) | Decoder | decode<TYPE> | 0 | istream & |
+| (istream &,TYPE *,const char *) | Decoder | decode<TYPE> | 1 | func:0 * |
+| (istream &,TYPE *,const char *) | Decoder | decode<TYPE> | 2 | const char * |
+| (istream &,TYPE *,const char *) | Decoder | decodeAny<TYPE> | 0 | istream & |
+| (istream &,TYPE *,const char *) | Decoder | decodeAny<TYPE> | 1 | func:0 * |
+| (istream &,TYPE *,const char *) | Decoder | decodeAny<TYPE> | 2 | const char * |
 | (lemon *) |  | ResortStates | 0 | lemon * |
 | (lemon *) |  | getstate | 0 | lemon * |
 | (lemon *,action *) |  | compute_action | 0 | lemon * |
@@ -23435,6 +23448,12 @@ getSignatureParameterName
 | (old_termios_t *,speed_t) |  | __old_cfsetospeed | 1 | speed_t |
 | (old_termios_t *,speed_t) |  | __old_cfsetspeed | 0 | old_termios_t * |
 | (old_termios_t *,speed_t) |  | __old_cfsetspeed | 1 | speed_t |
+| (ostream &,const AnyConstRef &) | Encoder | encodeAny | 0 | ostream & |
+| (ostream &,const AnyConstRef &) | Encoder | encodeAny | 1 | const AnyConstRef & |
+| (ostream &,const TYPE &) | Encoder | encode<TYPE> | 0 | ostream & |
+| (ostream &,const TYPE &) | Encoder | encode<TYPE> | 1 | const func:0 & |
+| (ostream &,const TYPE &) | Encoder | encodeAny<TYPE> | 0 | ostream & |
+| (ostream &,const TYPE &) | Encoder | encodeAny<TYPE> | 1 | const func:0 & |
 | (passwd *,char *,size_t,int *) |  | _nss_compat_getpwent_r | 0 | passwd * |
 | (passwd *,char *,size_t,int *) |  | _nss_compat_getpwent_r | 1 | char * |
 | (passwd *,char *,size_t,int *) |  | _nss_compat_getpwent_r | 2 | size_t |
@@ -24734,6 +24753,21 @@ getSignatureParameterName
 | (store_netrc *,const char *,char **,char **,char *) |  | Curl_parsenetrc | 2 | char ** |
 | (store_netrc *,const char *,char **,char **,char *) |  | Curl_parsenetrc | 3 | char ** |
 | (store_netrc *,const char *,char **,char **,char *) |  | Curl_parsenetrc | 4 | char * |
+| (streambuf *,AnyRef *,const char *) | Decoder | decodeAny | 0 | streambuf * |
+| (streambuf *,AnyRef *,const char *) | Decoder | decodeAny | 1 | AnyRef * |
+| (streambuf *,AnyRef *,const char *) | Decoder | decodeAny | 2 | const char * |
+| (streambuf *,TYPE *,const char *) | Decoder | decode<TYPE> | 0 | streambuf * |
+| (streambuf *,TYPE *,const char *) | Decoder | decode<TYPE> | 1 | func:0 * |
+| (streambuf *,TYPE *,const char *) | Decoder | decode<TYPE> | 2 | const char * |
+| (streambuf *,TYPE *,const char *) | Decoder | decodeAny<TYPE> | 0 | streambuf * |
+| (streambuf *,TYPE *,const char *) | Decoder | decodeAny<TYPE> | 1 | func:0 * |
+| (streambuf *,TYPE *,const char *) | Decoder | decodeAny<TYPE> | 2 | const char * |
+| (streambuf *,const AnyConstRef &) | Encoder | encodeAny | 0 | streambuf * |
+| (streambuf *,const AnyConstRef &) | Encoder | encodeAny | 1 | const AnyConstRef & |
+| (streambuf *,const TYPE &) | Encoder | encode<TYPE> | 0 | streambuf * |
+| (streambuf *,const TYPE &) | Encoder | encode<TYPE> | 1 | const func:0 & |
+| (streambuf *,const TYPE &) | Encoder | encodeAny<TYPE> | 0 | streambuf * |
+| (streambuf *,const TYPE &) | Encoder | encodeAny<TYPE> | 1 | const func:0 & |
 | (string_buf *,libssh2_uint64_t *) |  | _libssh2_get_u64 | 0 | string_buf * |
 | (string_buf *,libssh2_uint64_t *) |  | _libssh2_get_u64 | 1 | libssh2_uint64_t * |
 | (string_buf *,uint32_t *) |  | _libssh2_get_u32 | 0 | string_buf * |
