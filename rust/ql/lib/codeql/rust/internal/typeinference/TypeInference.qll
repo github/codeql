@@ -2368,7 +2368,7 @@ private module Input3 implements InputSig3 {
   final class VariableDeclaration = VariableDeclarationImpl;
 
   abstract private class VariableDeclarationImpl extends DeclarationImpl {
-    abstract predicate isCoercionSite();
+    abstract predicate preservesInitializerType();
 
     abstract AstNode getPattern();
 
@@ -2378,7 +2378,7 @@ private module Input3 implements InputSig3 {
   }
 
   private class LetExprDeclaration extends VariableDeclarationImpl instanceof LetExpr {
-    override predicate isCoercionSite() { not super.getPat() instanceof IdentPat }
+    override predicate preservesInitializerType() { super.getPat() instanceof IdentPat }
 
     override TypeMention getType() { none() }
 
@@ -2388,14 +2388,13 @@ private module Input3 implements InputSig3 {
   }
 
   private class LetStmtDeclaration extends VariableDeclarationImpl instanceof LetStmt {
-    override predicate isCoercionSite() {
-      super.hasTypeRepr()
-      or
+    override predicate preservesInitializerType() {
+      not super.hasTypeRepr() and
       // Due to "binding modes" the type of the pattern is not necessarily the
       // same as the type of the initializer. However, when the pattern is an
       // identifier pattern, its type is guaranteed to be the same as the type of the
       // initializer.
-      not super.getPat() instanceof IdentPat
+      super.getPat() instanceof IdentPat
     }
 
     override TypeMention getType() { result = super.getTypeRepr() }
@@ -2406,7 +2405,7 @@ private module Input3 implements InputSig3 {
   }
 
   private class ConstDeclaration extends VariableDeclarationImpl instanceof Const {
-    override predicate isCoercionSite() { any() }
+    override predicate preservesInitializerType() { none() }
 
     override TypeMention getType() { result = super.getTypeRepr() }
 
@@ -2416,7 +2415,7 @@ private module Input3 implements InputSig3 {
   }
 
   private class StaticDeclaration extends VariableDeclarationImpl instanceof Static {
-    override predicate isCoercionSite() { any() }
+    override predicate preservesInitializerType() { none() }
 
     override TypeMention getType() { result = super.getTypeRepr() }
 
@@ -2491,7 +2490,7 @@ private module Input3 implements InputSig3 {
   final class Parameter = ParameterImpl;
 
   abstract private class ParameterImpl extends VariableDeclarationImpl {
-    override predicate isCoercionSite() { any() } // doesn't really matter, since there are no initializers/default values
+    override predicate preservesInitializerType() { none() } // doesn't really matter, since there are no initializers/default values
 
     override AstNode getInitializer() { none() }
   }
@@ -2520,17 +2519,19 @@ private module Input3 implements InputSig3 {
     override TypeMention getType() { result = super.getTypeRepr() }
   }
 
-  final class Parameterizable = ParameterizableImpl;
+  final class Callable = CallableImpl;
 
-  abstract private class ParameterizableImpl extends DeclarationImpl {
+  abstract private class CallableImpl extends DeclarationImpl {
     abstract TypeParameter getTypeParameter(int pos);
 
     abstract TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp);
 
     abstract Parameter getParameter(int i);
+
+    abstract AstNode getBody();
   }
 
-  class Callable extends ParameterizableImpl instanceof Rust::Callable {
+  private class CallableCallable extends CallableImpl instanceof Rust::Callable {
     override TypeMention getDeclaringType() {
       exists(ImplOrTraitItemNode implOrTrait | this = implOrTrait.getAnAssocItem() |
         result = implOrTrait.(Impl).getSelfTy() or
@@ -2558,14 +2559,14 @@ private module Input3 implements InputSig3 {
 
     override TypeMention getType() { result = getReturnTypeMention(this) }
 
-    AstNode getBody() { result = Rust::Callable.super.getBody() }
+    override AstNode getBody() { result = Rust::Callable.super.getBody() }
   }
 
   Callable getEnclosingCallable(AstNode node) { result = node.getEnclosingCallable() }
 
   additional final class Constructor = ConstructorImpl;
 
-  abstract private class ConstructorImpl extends ParameterizableImpl {
+  abstract private class ConstructorImpl extends CallableImpl {
     abstract TypeItem getTypeItem();
 
     override TypeMention getDeclaringType() { result = this.getTypeItem() }
@@ -2577,6 +2578,8 @@ private module Input3 implements InputSig3 {
     }
 
     override TypeMention getType() { result = this.getTypeItem() }
+
+    override AstNode getBody() { none() }
   }
 
   private class StructConstructor extends ConstructorImpl instanceof Struct {
@@ -2596,6 +2599,8 @@ private module Input3 implements InputSig3 {
   }
 
   Type getCallableReturnType(Callable c, TypePath path) {
+    result = c.(Constructor).getType().getTypeAt(path)
+    or
     if c.(Function).isAsync() or c.(ClosureExpr).isAsync()
     then
       path.isEmpty() and
@@ -2608,10 +2613,12 @@ private module Input3 implements InputSig3 {
     else result = getReturnTypeMention(c).getTypeAt(path)
   }
 
-  class ResolutionContext = string;
+  class InvocationResolutionContext = string;
 
   bindingset[derefChain, borrow]
-  private ResolutionContext encodeDerefChainBorrow(DerefChain derefChain, BorrowKind borrow) {
+  private InvocationResolutionContext encodeDerefChainBorrow(
+    DerefChain derefChain, BorrowKind borrow
+  ) {
     result = derefChain + ";" + borrow
   }
 
@@ -2643,9 +2650,9 @@ private module Input3 implements InputSig3 {
 
     abstract Expr getArgument(int i);
 
-    abstract Parameterizable getTarget(string derefChainBorrow);
+    abstract Callable getTarget(string derefChainBorrow);
 
-    abstract Parameterizable getATargetForTypeQualifierMatching();
+    abstract Callable getATargetForTypeQualifierMatching();
   }
 
   pragma[nomagic]
@@ -2703,7 +2710,7 @@ private module Input3 implements InputSig3 {
       )
     }
 
-    override Parameterizable getATargetForTypeQualifierMatching() {
+    override Callable getATargetForTypeQualifierMatching() {
       result = CallExprImpl::getResolvedFunction(this)
     }
   }
@@ -2728,7 +2735,7 @@ private module Input3 implements InputSig3 {
       derefChainBorrow = noDerefChainBorrow()
     }
 
-    override Parameterizable getATargetForTypeQualifierMatching() {
+    override Callable getATargetForTypeQualifierMatching() {
       none() // non-assoc function calls cannot have type qualifiers
     }
   }
@@ -2736,12 +2743,12 @@ private module Input3 implements InputSig3 {
   abstract private class Construction extends InvocationImpl {
     abstract Constructor getTarget();
 
-    override Parameterizable getTarget(string derefChainBorrow) {
+    override Callable getTarget(string derefChainBorrow) {
       result = this.getTarget() and
       derefChainBorrow = noDerefChainBorrow()
     }
 
-    override Parameterizable getATargetForTypeQualifierMatching() { result = this.getTarget() }
+    override Callable getATargetForTypeQualifierMatching() { result = this.getTarget() }
   }
 
   private class NonAssocCallConstruction extends Construction instanceof NonAssocCallExpr {
@@ -3006,7 +3013,7 @@ private module Input3 implements InputSig3 {
         else prefix2.isEmpty()
       )
       or
-      // Rust closure types like `Fn<(A, B) -> C>` are syntactic sugar for `Fn<Args = (A, B), Output = C>`,
+      // Rust closure types like `Fn(A, B) -> C` are syntactic sugar for `Fn<Args = (A, B), Output = C>`,
       // so in calls to a closure, we consider the entire argument list as a single tuple argument.
       exists(CallExprImpl::DynamicCallExpr dce, TupleType tt, int i |
         n1 = dce.getSyntacticPositionalArgument(i) and
