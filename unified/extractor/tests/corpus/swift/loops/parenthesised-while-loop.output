@@ -56,14 +56,10 @@ top_level
       stmt:
         while_stmt
           condition:
-            tuple_expr
-              element:
-                argument
-                  value:
-                    binary_expr
-                      left: identifier "x"
-                      operator: infix_operator ">"
-                      right: int_literal "0"
+            binary_expr
+              left: identifier "x"
+              operator: infix_operator ">"
+              right: int_literal "0"
           body:
             block
               stmt:

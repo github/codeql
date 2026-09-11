@@ -40,13 +40,9 @@ top_level
       stmt:
         binary_expr
           left:
-            tuple_expr
-              element:
-                argument
-                  value:
-                    binary_expr
-                      left: identifier "a"
-                      operator: infix_operator "+"
-                      right: identifier "b"
+            binary_expr
+              left: identifier "a"
+              operator: infix_operator "+"
+              right: identifier "b"
           operator: infix_operator "*"
           right: identifier "c"
