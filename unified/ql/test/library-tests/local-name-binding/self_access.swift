@@ -10,14 +10,14 @@ class C {
     }
 
     func t3() { // implicit-self=t3.self
-        foo(123) { [self] in // name=closure.self
+        foo(123) { [self] in // $ captured=closure.self // name=closure.self
             print(self) // $ access=closure.self
             print(instanceField) // $ access=instanceField implicit-qualifier=closure.self
         }
     }
 
     func t4() { // implicit-self=t4.self
-        foo(123) { [weak self] in // name=weak.self
+        foo(123) { [weak self] in // $ captured=weak.self // name=weak.self
             // Here, 'self' is an Option<C> referring to .some(<outer self>) if it
             // has not been GC'ed yet. Swift does not allow unqualified self access here.
 

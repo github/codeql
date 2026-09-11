@@ -4,7 +4,7 @@ import utils.test.CommentUtil
 import codeql.unified.internal.LocalNameBinding
 
 module VariableAccessTest implements TestSig {
-  string getARelevantTag() { result = ["access", "implicit-qualifier"] }
+  string getARelevantTag() { result = ["access", "implicit-qualifier", "captured"] }
 
   additional predicate declAt(LocalName v, string filepath, int line) {
     v.getLocation().hasLocationInfo(filepath, line, _, _, _)
@@ -50,6 +50,14 @@ module VariableAccessTest implements TestSig {
       decl(v, value) and
       access.isInstanceAccess() and // For now, don't annotate receiver access in static methods. It technically exists, it's just not important yet.
       tag = "implicit-qualifier"
+    )
+    or
+    exists(LocalVariable v |
+      v.isCaptured() and
+      location = v.getLocation() and
+      element = v.toString() and
+      decl(v, value) and
+      tag = "captured"
     )
   }
 }

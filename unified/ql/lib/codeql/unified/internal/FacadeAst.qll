@@ -33,9 +33,23 @@ module Unified {
       )
     }
 
+    private AstNode overrideEnclosingCallableParent() {
+      exists(FunctionExpr func |
+        // Capture declarations are evaluated as part of the outer context, and
+        // considered to be captured by the function expression.
+        this = func.getACaptureDeclaration() and
+        result = func.getParent()
+      )
+    }
+
     /** Gets the nearest callable containing this AST node. */
     Callable getEnclosingCallable() {
-      exists(AstNode parent | parent = this.getParent() |
+      exists(AstNode parent |
+        parent = this.overrideEnclosingCallableParent()
+        or
+        not exists(this.overrideEnclosingCallableParent()) and
+        parent = this.getParent()
+      |
         result = parent
         or
         not parent instanceof Callable and
