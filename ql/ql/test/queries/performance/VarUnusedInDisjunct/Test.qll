@@ -124,12 +124,12 @@ predicate good5(Big a, Big b) {
 
 predicate bad6(Big a) {
   (
-    a.toString().matches("%foo") // bad // $ Alert
+    a.toString().matches("%foo") // $ Alert // bad
     or
     any()
   ) and
   (
-    a.toString().matches("%foo") // also bad // $ Alert
+    a.toString().matches("%foo") // $ Alert // also bad
     or
     any()
   )

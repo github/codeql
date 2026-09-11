@@ -1,4 +1,4 @@
-/** // $ Alert
+/**
  * @name Some query
  * @description Some description
  * @kind problem

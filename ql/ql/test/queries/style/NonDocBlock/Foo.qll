@@ -1,4 +1,4 @@
-/* // $ Alert
+/*
  * This should be QLDoc.
  */
 
@@ -7,7 +7,7 @@
  */
 predicate foo() { any() }
 
-/* Note: this is bad. */ // $ Alert
+/* Note: this is bad. */
 class Foo extends string {
   Foo() { this = "FOo" }
 }
