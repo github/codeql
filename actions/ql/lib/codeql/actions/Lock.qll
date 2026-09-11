@@ -9,6 +9,7 @@ private import codeql.actions.ast.internal.Yaml
 class ActionsLock extends YamlDocument, YamlMapping {
   ActionsLock() { this.getFile().getRelativePath() = ".github/workflows/actions.lock" }
 
+  pragma[nomagic]
   private predicate pins0(string workflowPath, string pinnedNwo, string ref) {
     exists(YamlSequence workflowPins, YamlScalar pinNode, YamlMapping dependency, string pin |
       this.lookup("workflows").(YamlMapping).lookup(workflowPath) = workflowPins and

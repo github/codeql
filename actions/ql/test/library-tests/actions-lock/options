@@ -1,1 +1,1 @@
-semmle-extractor-options: actions.lock
+semmle-extractor-options: --file-type YAML .github/workflows/actions.lock
