@@ -98,7 +98,7 @@ top_level source="⟨body⟩"
               modifier: modifier "var" source="var"
               pattern: identifier "x" source="x"
               type: identifier "Int" source="Int"
-            constructor_declaration source="⟨name_node⟩(⟨parameter⟩) {\n    ⟨body⟩\n  }"
+            constructor_declaration source="⟨name_node⟩(⟨parameter⟩) ⟨body⟩"
               name_node: identifier "init" source="init"
               parameter:
                 parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
@@ -106,7 +106,7 @@ top_level source="⟨body⟩"
                   type: identifier "Int" source="Int"
                   pattern: identifier "x" source="x"
               body:
-                block source="⟨stmt⟩"
+                block source="{\n    ⟨stmt⟩\n  }"
                   stmt:
                     binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
                       left:

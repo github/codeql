@@ -158,14 +158,14 @@ top_level source="⟨body⟩"
                   value: int_literal "1" source="1"
                 argument source="⟨value⟩"
                   value:
-                    function_expr source="{ ⟨parameter⟩ ⟨parameter⟩ in\n\t⟨body⟩\n}"
+                    function_expr source="⟨body⟩⟨parameter⟩⟨parameter⟩"
                       parameter:
                         parameter source="⟨pattern⟩,"
                           pattern: identifier "_" source="_"
                         parameter source="⟨pattern⟩"
                           pattern: identifier "count" source="count"
                       body:
-                        block source="⟨stmt⟩"
+                        block source="{ _, count in\n\t⟨stmt⟩\n}"
                           stmt:
                             binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
                               left: identifier "count" source="count"

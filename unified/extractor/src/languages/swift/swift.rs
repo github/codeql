@@ -1,5 +1,5 @@
 use codeql_extractor::extractor::desugaring;
-use yeast::{ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule, rule, tree};
+use yeast::{ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule, rule, tree, tree_at};
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
@@ -57,6 +57,17 @@ impl SwiftContext {
     /// mutation in `ctx.scoped(...)` instead.
     fn reset(&mut self) {
         *self = SwiftContext::default();
+    }
+}
+
+fn block_with_anchor(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    statements: Vec<yeast::Id>,
+    anchor: Option<yeast::Id>,
+) -> yeast::Id {
+    match anchor {
+        Some(anchor) => tree_at!(ctx, anchor, (block stmt: {statements})),
+        None => tree!(ctx, (block stmt: {statements})),
     }
 }
 
@@ -298,14 +309,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 bindings: (patternBinding
                     pattern: (identifierPattern identifier: @@name)
                     typeAnnotation: (typeAnnotation type: @ty)
-                    accessorBlock: (accessorBlock accessors: (codeBlockItem)+ @body)))
+                    accessorBlock: (accessorBlock accessors: (codeBlockItem)+ @body) @@accessor_block))
             =>
             (accessor_declaration
                 modifier: (modifier #{spec})
                 name_node: (identifier #{name})
                 type: {ty}
-                accessor_kind: (accessor_kind "get")
-                body: (block stmt: {body}))
+                accessor_kind: {ctx.literal_at_start_of("accessor_kind", "get", accessor_block)}
+                body: {block_with_anchor(&mut ctx, body, Some(accessor_block))})
         ),
         // A property with an explicit accessor block. swift-syntax makes both
         // shapes plain `accessorDecl`s, so they are told apart by the presence
@@ -561,7 +572,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params)
                     returnClause: (returnClause type: @ret)?)
-                body: (codeBlock statements: _* @body))
+                body: (codeBlock) @body)
             =>
             (function_declaration
                 modifier: {mods}
@@ -569,7 +580,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 type_parameter: {type_params}
                 parameter: {params}
                 return_type: {ret}
-                body: (block stmt: {body}))
+                body: {body})
         ),
         rule!(
             (functionDecl
@@ -749,14 +760,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     capture: (closureCaptureClause items: _* @captures)?
                     parameterClause: _* @params
                     returnClause: (returnClause type: @ret)?)?
-                statements: _* @body)
+                statements: _* @body) @@closure
             =>
             (function_expr
                 modifier: {attrs}
                 capture_declaration: {captures}
                 parameter: {params}
                 return_type: {ret}
-                body: (block stmt: {body}))
+                body: {block_with_anchor(&mut ctx, body, Some(closure))})
         ),
         // A closure capture (`[weak self]`, `[x]`, `[y = expr]`). The optional
         // ownership specifier (`weak`/`unowned`) becomes a modifier; the
@@ -1278,23 +1289,34 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifiers: _* @mods
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params))
-                body: (codeBlock statements: _* @body_stmts)?)
+                body: (codeBlock) @body)
             =>
             (constructor_declaration
                 modifier: {mods}
                 name_node: (identifier #{initK})
                 parameter: {params}
-                body: (block stmt: {body_stmts}))
+                body: {body})
+        ),
+        rule!(
+            (initializerDecl
+                modifiers: _* @mods
+                signature: (functionSignature
+                    parameterClause: (functionParameterClause parameters: _* @params)))
+            =>
+            (constructor_declaration
+                modifier: {mods}
+                parameter: {params}
+                body: (block))
         ),
         // Deinit declaration → destructor_declaration. Body statements optional.
         rule!(
             (deinitializerDecl
                 modifiers: _* @mods
-                body: (codeBlock statements: _* @body_stmts))
+                body: (codeBlock) @body)
             =>
             (destructor_declaration
                 modifier: {mods}
-                body: (block stmt: {body_stmts}))
+                body: {body})
         ),
         // Typealias declaration
         rule!(

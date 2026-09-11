@@ -45,7 +45,7 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩\n⟨stmt⟩"
       stmt:
-        function_declaration source="func ⟨name_node⟩() {}"
+        function_declaration source="func ⟨name_node⟩() ⟨body⟩"
           name_node: identifier "doWork" source="doWork"
-          body: block source=""
+          body: block "{}" source="{}"
         unsupported_node "unsafe doWork()" source="unsafe doWork()"

@@ -74,9 +74,9 @@ top_level source="⟨body⟩"
             base_type source="⟨type⟩"
               type: unsupported_node "~Copyable" source="~Copyable"
           member:
-            function_declaration source="⟨modifier⟩ func ⟨name_node⟩() {\n    ⟨body⟩\n  }"
+            function_declaration source="⟨modifier⟩ func ⟨name_node⟩() ⟨body⟩"
               modifier: modifier "consuming" source="consuming"
               name_node: identifier "close" source="close"
               body:
-                block source="⟨stmt⟩"
+                block source="{\n    ⟨stmt⟩\n  }"
                   stmt: unsupported_node "discard self" source="discard self"
