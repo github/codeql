@@ -48,12 +48,25 @@ module IR {
     )
   }
 
+  /** Gets the CFG node representing a basic literal or plain identifier reference. */
+  cached
+  private ControlFlow::Node leafEvaluation(Expr leaf) {
+    (
+      leaf instanceof BasicLit
+      or
+      leaf instanceof Ident and leaf instanceof ReferenceExpr
+    ) and
+    result.injects(leaf)
+  }
+
   /**
    * An IR instruction.
    */
   class Instruction extends ControlFlow::Node {
     Instruction() {
       this.isIn(_)
+      or
+      this = leafEvaluation(_)
       or
       this.isAdditional(_, _)
       or
@@ -202,6 +215,8 @@ module IR {
 
     EvalInstruction() {
       this.isIn(e)
+      or
+      this = leafEvaluation(e)
       or
       // The call of a `defer` statement is pre-order (it has no in-order
       // "invocation" node at the statement), so its value is produced by the

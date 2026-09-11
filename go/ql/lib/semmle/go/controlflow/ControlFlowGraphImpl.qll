@@ -459,13 +459,10 @@ module CfgImpl {
     }
 
     predicate postOrInOrder(Ast::AstNode n) {
-      // Leaf value expressions: these have no CFG children, so the shared
-      // library's default (which only makes expressions *with* children
-      // post-order) would otherwise treat them as simple leaf nodes with no
-      // in-order value node.
-      n instanceof Go::ReferenceExpr
-      or
-      n instanceof Go::BasicLit
+      // References other than plain identifiers and function literals need
+      // an in-order value node even when they have no CFG children. Basic
+      // literals and plain identifiers instead evaluate at their before node.
+      n instanceof Go::ReferenceExpr and not n instanceof Go::Ident
       or
       n instanceof Go::FuncLit
       or
@@ -475,10 +472,10 @@ module CfgImpl {
       or
       // A constant expression is folded at compile time and its sub-expressions
       // are not evaluated (they are pruned by `skipCfg`), so the constant root
-      // has no CFG children. It therefore needs an explicit in-order node to
-      // remain a single value-producing leaf (e.g. `unsafe.Sizeof(test())`,
-      // `1 << 10`, or `!d` for constant `d`).
-      constantRoot(n)
+      // has no CFG children. Except for basic literals and identifiers, it
+      // needs an explicit in-order node to remain a single value-producing
+      // leaf (e.g. `unsafe.Sizeof(test())`, `1 << 10`, or `!d` for constant `d`).
+      constantRoot(n) and not n instanceof Go::BasicLit and not n instanceof Go::Ident
       or
       // Statements/declarations that compute a value or perform an operation and
       // are not among the statements the shared library makes post-order by
