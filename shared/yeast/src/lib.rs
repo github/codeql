@@ -128,9 +128,10 @@ pub trait YeastDisplay {
 
 /// Optional source range for values used in `#{expr}` interpolations.
 ///
-/// By default this returns `None`, so synthesized leaves inherit the matched
-/// rule's source range. `Id` returns the referenced node's range, letting
-/// `(kind #{capture})` carry the captured node's location.
+/// By default this returns `None`, so synthesized leaves use the current
+/// [`crate::build::BuildCtx`] default range, if any. `Id` returns the
+/// referenced node's range, letting `(kind #{capture})` carry the captured
+/// node's location.
 pub trait YeastSourceRange {
     fn yeast_source_range(&self, ast: &Ast) -> Option<Range>;
 }
@@ -592,8 +593,7 @@ impl Ast {
             // Parsed nodes already carry an exact source range in their content.
             NodeContent::Range(_) => source_range,
             // Synthesized nodes derive location from both their children and
-            // the inherited rule-match range, so tokens matched by a rule but
-            // elided from its output still contribute to the replacement range.
+            // any explicitly supplied source range.
             _ => self
                 .union_source_range_of_children(&fields)
                 .map_or(source_range, |child_range| {
@@ -616,6 +616,24 @@ impl Ast {
             source_range,
         });
         Id(id)
+    }
+
+    /// Extend a synthetic node's source range to include `source_range`.
+    ///
+    /// Parsed nodes carry their exact range in [`NodeContent::Range`] and must
+    /// not be modified through this API.
+    pub fn extend_source_range(&mut self, id: Id, source_range: Range) {
+        let node = self
+            .nodes
+            .get_mut(id.0)
+            .unwrap_or_else(|| panic!("extend_source_range: invalid node id {}", id.0));
+        if matches!(node.content, NodeContent::Range(_)) {
+            panic!("extend_source_range: cannot modify a parsed node");
+        }
+        node.source_range = Some(match node.source_range {
+            Some(existing) => union_source_ranges(existing, source_range),
+            None => source_range,
+        });
     }
 
     /// Register a named node kind, returning its id (idempotent). Lets callers
@@ -1134,8 +1152,8 @@ impl<C> Rule<C> {
         }
     }
 
-    /// Run this rule's transform with the given captures, using `node`'s
-    /// source range as the source range of the produced nodes.
+    /// Run this rule's transform with the given captures, making `node`'s
+    /// source range available to the transform.
     fn run_transform(
         &self,
         ast: &mut Ast,

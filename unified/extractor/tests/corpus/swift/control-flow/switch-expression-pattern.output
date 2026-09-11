@@ -307,9 +307,9 @@ top_level source="⟨body⟩"
         switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n⟨case⟩\n}"
           value: identifier "subject" source="subject"
           case:
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n    ⟨body⟩"
               pattern:
-                or_pattern source="case ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩,\n    ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩,\n    ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩:\n    consume(value)"
+                or_pattern source="⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩,\n    ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩,\n    ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩"
                   pattern:
                     identifier "value" source="value"
                     binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
@@ -342,54 +342,54 @@ top_level source="⟨body⟩"
                     array_literal source="[⟨element⟩]"
                       element: identifier "value" source="value"
                     map_literal "[key: value]" source="[key: value]"
-                    call_expr source="⟨argument⟩⟨callee⟩"
+                    call_expr source="⟨argument⟩?"
                       callee:
-                        member_access_expr source="⟨base⟩⟨member_name_node⟩"
-                          base: identifier "Optional" source="optional?"
-                          member_name_node: identifier "some" source="optional?"
+                        member_access_expr source=<no location>
+                          base: identifier "Optional" source=<no location>
+                          member_name_node: identifier "some" source=<no location>
                       argument:
-                        argument source="⟨value⟩?"
+                        argument source="⟨value⟩"
                           value: identifier "optional" source="optional"
-                    unary_expr source="⟨operator⟩⟨operand⟩"
+                    unary_expr source="try ⟨operand⟩"
                       operand: identifier "value" source="value"
-                      operator: prefix_operator "try" source="try value"
-                    unary_expr source="⟨operand⟩⟨operator⟩"
+                      operator: prefix_operator "try" source=<no location>
+                    unary_expr source="⟨operand⟩!"
                       operand: identifier "value" source="value"
-                      operator: postfix_operator "!" source="value!"
-                    type_cast_expr source="⟨expr⟩⟨operator⟩⟨type⟩"
+                      operator: postfix_operator "!" source=<no location>
+                    type_cast_expr source="⟨expr⟩ as ⟨type⟩"
                       expr: identifier "value" source="value"
-                      operator: infix_operator "as" source="value as Target"
+                      operator: infix_operator "as" source=<no location>
                       type: identifier "Target" source="Target"
-                    type_test_expr source="⟨expr⟩⟨operator⟩⟨type⟩"
+                    type_test_expr source="⟨expr⟩ is ⟨type⟩"
                       expr: identifier "value" source="value"
-                      operator: infix_operator "is" source="value is Target"
+                      operator: infix_operator "is" source=<no location>
                       type: identifier "Target" source="Target"
-                    unary_expr source="⟨operator⟩⟨operand⟩"
+                    unary_expr source="await ⟨operand⟩"
                       operand: identifier "value" source="value"
-                      operator: prefix_operator "await" source="await value"
+                      operator: prefix_operator "await" source=<no location>
               body:
-                block source="case value, value + offset, -value, lower...upper, makeValue(), makeValue().member,\n    .inferred, (value, offset), [value], [key: value], optional?, try value,\n    value!, value as Target, value is Target, await value:\n    ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "consume" source="consume"
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "value" source="value"
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n    ⟨body⟩"
               pattern:
                 if_expr source="⟨condition⟩ ? ⟨then⟩ : ⟨else⟩"
                   condition: identifier "condition" source="condition"
                   then: identifier "value" source="value"
                   else: identifier "fallback" source="fallback"
               body:
-                block source="case condition ? value : fallback:\n    ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "consume" source="consume"
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "fallback" source="fallback"
-            switch_case source="⟨body⟩"
+            switch_case source="default:\n    ⟨body⟩"
               body:
-                block source="default:\n    ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt: break_expr "break" source="break"

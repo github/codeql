@@ -95,17 +95,17 @@ top_level source="⟨body⟩"
         switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n}"
           value: identifier "y" source="y"
           case:
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern: identifier "someConstant" source="someConstant"
               body:
-                block source="case someConstant:\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
                           value: string_literal "\"matched\"" source="\"matched\""
-            switch_case source="⟨body⟩"
+            switch_case source="default:\n  ⟨body⟩"
               body:
-                block source="default:\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt: break_expr "break" source="break"

@@ -61,7 +61,7 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩) {\n  ⟨body⟩\n}"
           name_node: identifier "increment" source="increment"
           parameter:
             parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
@@ -69,7 +69,7 @@ top_level source="⟨body⟩"
               type: unsupported_node "inout Int" source="inout Int"
               pattern: identifier "x" source="x"
           body:
-            block source="func increment(_ x: inout Int) {\n  ⟨stmt⟩\n}"
+            block source="⟨stmt⟩"
               stmt:
                 binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
                   left: identifier "x" source="x"

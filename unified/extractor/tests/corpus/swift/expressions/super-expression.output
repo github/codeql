@@ -154,21 +154,21 @@ top_level source="⟨body⟩"
               modifier: modifier "var" source="var"
               pattern: identifier "value" source="value"
               value: int_literal "0" source="0"
-            function_declaration source="⟨body⟩⟨name_node⟩"
+            function_declaration source="func ⟨name_node⟩() {}"
               name_node: identifier "update" source="update"
-              body: block "func update() {}" source="func update() {}"
-        class_like_declaration source="⟨modifier⟩⟨base_type⟩⟨name_node⟩⟨member⟩"
+              body: block source=<no location>
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨base_type⟩ {\n  ⟨member⟩\n}"
           modifier: modifier "class" source="class"
           name_node: identifier "Derived" source="Derived"
           base_type:
-            base_type source="class Derived: ⟨type⟩ {\n  override func update() {\n    _ = super.value\n    super.update()\n  }\n}"
+            base_type source="⟨type⟩"
               type: identifier "Base" source="Base"
           member:
-            function_declaration source="⟨modifier⟩⟨body⟩⟨name_node⟩"
+            function_declaration source="⟨modifier⟩ func ⟨name_node⟩() {\n    ⟨body⟩\n  }"
               modifier: modifier "override" source="override"
               name_node: identifier "update" source="update"
               body:
-                block source="override func update() {\n    ⟨stmt⟩\n    ⟨stmt⟩\n  }"
+                block source="⟨stmt⟩\n    ⟨stmt⟩"
                   stmt:
                     binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
                       left: identifier "_" source="_"

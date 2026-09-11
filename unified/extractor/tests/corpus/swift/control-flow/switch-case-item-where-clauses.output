@@ -157,7 +157,7 @@ top_level source="⟨body⟩"
         switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n⟨case⟩\n}"
           value: identifier "n" source="n"
           case:
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
                 conditional_pattern source="⟨pattern⟩ where ⟨condition⟩"
                   condition:
@@ -170,16 +170,16 @@ top_level source="⟨body⟩"
                       modifier: modifier "let" source="let"
                       expr: identifier "x" source="x"
               body:
-                block source="case let x where x > 0:\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
                           value: string_literal "\"positive\"" source="\"positive\""
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                or_pattern source="case ⟨pattern⟩ ⟨pattern⟩:\n  print(\"non-positive\")"
+                or_pattern source="⟨pattern⟩ ⟨pattern⟩"
                   pattern:
                     conditional_pattern source="⟨pattern⟩ where ⟨condition⟩,"
                       condition:
@@ -193,16 +193,16 @@ top_level source="⟨body⟩"
                           expr: identifier "y" source="y"
                     int_literal "0" source="0"
               body:
-                block source="case let y where y < 0, 0:\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
                           value: string_literal "\"non-positive\"" source="\"non-positive\""
-            switch_case source="⟨body⟩"
+            switch_case source="default:\n  ⟨body⟩"
               body:
-                block source="default:\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"

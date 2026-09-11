@@ -42,7 +42,7 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "x" source="x"
           type:
-            generic_type_expr source="⟨type_argument⟩⟨base⟩"
-              base: identifier "Optional" source="Int?"
+            generic_type_expr source="⟨type_argument⟩?"
+              base: identifier "Optional" source=<no location>
               type_argument: identifier "Int" source="Int"
           value: builtin_expr "nil" source="nil"

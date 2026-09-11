@@ -43,8 +43,8 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "result" source="result"
           value:
-            unary_expr source="⟨operator⟩⟨operand⟩"
+            unary_expr source="try? ⟨operand⟩"
               operand:
                 call_expr source="⟨callee⟩()"
                   callee: identifier "foo" source="foo"
-              operator: prefix_operator "try?" source="try? foo()"
+              operator: prefix_operator "try?" source=<no location>

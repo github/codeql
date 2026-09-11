@@ -72,11 +72,11 @@ top_level source="⟨body⟩"
           modifier: modifier "extension" source="extension"
           extension_target: identifier "Int" source="Int"
           member:
-            function_declaration source="⟨body⟩⟨name_node⟩⟨return_type⟩"
+            function_declaration source="func ⟨name_node⟩() -> ⟨return_type⟩ { ⟨body⟩ }"
               name_node: identifier "squared" source="squared"
               return_type: identifier "Int" source="Int"
               body:
-                block source="func squared() -> Int { ⟨stmt⟩ }"
+                block source="⟨stmt⟩"
                   stmt:
                     return_expr source="return ⟨value⟩"
                       value:

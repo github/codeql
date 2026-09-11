@@ -27,7 +27,7 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        import_declaration source="⟨pattern⟩⟨imported_expr⟩"
+        import_declaration source="import ⟨imported_expr⟩⟨pattern⟩"
           imported_expr:
             member_access_expr source="⟨base⟩.⟨member_name_node⟩"
               base:
@@ -36,6 +36,6 @@ top_level source="⟨body⟩"
                   member_name_node: identifier "Networking" source="Networking"
               member_name_node: identifier "URLSession" source="URLSession"
           pattern:
-            named_pattern source="⟨sub_pattern⟩⟨name_node⟩"
+            named_pattern source="⟨name_node⟩"
               name_node: identifier "URLSession" source="URLSession"
-              sub_pattern: bulk_importing_pattern "import Foundation.Networking.URLSession" source="import Foundation.Networking.URLSession"
+              sub_pattern: bulk_importing_pattern source=<no location>

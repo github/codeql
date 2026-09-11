@@ -51,10 +51,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        function_declaration source="⟨body⟩⟨name_node⟩"
+        function_declaration source="func ⟨name_node⟩() {\n  ⟨body⟩\n}"
           name_node: identifier "greet" source="greet"
           body:
-            block source="func greet() {\n  ⟨stmt⟩\n}"
+            block source="⟨stmt⟩"
               stmt:
                 call_expr source="⟨callee⟩(⟨argument⟩)"
                   callee: identifier "print" source="print"

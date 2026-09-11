@@ -235,6 +235,27 @@ yeast::trees!(ctx,
 (identifier #{name})         // an identifier from a Rust variable
 ```
 
+### Source locations
+
+Captured nodes keep the locations assigned by their own translations. New
+nodes in an output template derive their locations from their children. After
+the transform completes, the matched input node's range is added only to
+locally-created nodes returned as rule results:
+
+```rust
+rule!(
+    (wrapper child: (_) @child)
+    =>
+    (outer nested: (inner value: {child}))
+)
+```
+
+Here `inner` derives its range from `child`, while the returned `outer` node
+also includes the full `wrapper` range. This lets replacement roots include
+elided keywords or delimiters without assigning the same broad range to every
+synthetic descendant. A transform that simply returns a translated capture
+does not widen that capture to the wrapper's range.
+
 For reviewing locations, `DumpOptions::show_abridged_source` prints each node's
 source range with every direct child replaced by its field name in Unicode
 angle brackets. This keeps delimiters and other parent-owned syntax visible

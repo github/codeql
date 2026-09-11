@@ -79,10 +79,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        function_declaration source="⟨body⟩⟨name_node⟩"
+        function_declaration source="func ⟨name_node⟩() {\n  ⟨body⟩\n}"
           name_node: identifier "withCleanup" source="withCleanup"
           body:
-            block source="func withCleanup() {\n  ⟨stmt⟩\n  ⟨stmt⟩\n}"
+            block source="⟨stmt⟩\n  ⟨stmt⟩"
               stmt:
                 unsupported_node "defer { print(\"cleanup\") }" source="defer { print(\"cleanup\") }"
                 call_expr source="⟨callee⟩(⟨argument⟩)"

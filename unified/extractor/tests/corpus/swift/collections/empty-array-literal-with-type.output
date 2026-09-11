@@ -45,7 +45,7 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "xs" source="xs"
           type:
-            generic_type_expr source="⟨base⟩⟨type_argument⟩"
-              base: identifier "Array" source="[Int]"
+            generic_type_expr source="[⟨type_argument⟩]"
+              base: identifier "Array" source=<no location>
               type_argument: identifier "Int" source="Int"
           value: array_literal "[]" source="[]"

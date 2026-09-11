@@ -144,15 +144,15 @@ top_level source="⟨body⟩"
           body:
             block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                unary_expr source="⟨operator⟩⟨operand⟩"
+                unary_expr source="try ⟨operand⟩"
                   operand:
                     call_expr source="⟨callee⟩()"
                       callee: identifier "foo" source="foo"
-                  operator: prefix_operator "try" source="try foo()"
+                  operator: prefix_operator "try" source=<no location>
           catch_clause:
-            catch_clause source="⟨pattern⟩⟨body⟩"
+            catch_clause source="catch ⟨pattern⟩ ⟨body⟩"
               pattern:
-                or_pattern source="catch ⟨pattern⟩ ⟨pattern⟩ {\n  print(\"retry\")\n}"
+                or_pattern source="⟨pattern⟩ ⟨pattern⟩"
                   pattern:
                     conditional_pattern source="⟨pattern⟩ where ⟨condition⟩,"
                       condition:
