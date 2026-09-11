@@ -69,7 +69,7 @@ top_level source="⟨body⟩"
                   operand:
                     call_expr source="⟨callee⟩()"
                       callee: identifier "foo" source="foo"
-                  operator: prefix_operator "try" source=<no location>
+                  operator: prefix_operator "try" source=""
           catch_clause:
             catch_clause source="catch ⟨body⟩"
               body:

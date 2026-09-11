@@ -78,4 +78,4 @@ top_level source="⟨body⟩"
                   external_name_node: identifier "height" source="height"
                   type: identifier "Int" source="Int"
                   pattern: identifier "h" source="h"
-              body: block source=<no location>
+              body: block source=""

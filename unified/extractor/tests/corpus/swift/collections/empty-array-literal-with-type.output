@@ -46,6 +46,6 @@ top_level source="⟨body⟩"
           pattern: identifier "xs" source="xs"
           type:
             generic_type_expr source="[⟨type_argument⟩]"
-              base: identifier "Array" source=<no location>
+              base: identifier "Array" source=""
               type_argument: identifier "Int" source="Int"
           value: array_literal "[]" source="[]"

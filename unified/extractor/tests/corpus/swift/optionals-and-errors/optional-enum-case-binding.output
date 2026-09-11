@@ -82,9 +82,9 @@ top_level source="⟨body⟩"
               pattern:
                 call_expr source="⟨argument⟩?"
                   callee:
-                    member_access_expr source=<no location>
-                      base: identifier "Optional" source=<no location>
-                      member_name_node: identifier "some" source=<no location>
+                    member_access_expr source=""
+                      base: identifier "Optional" source=""
+                      member_name_node: identifier "some" source=""
                   argument:
                     argument source="⟨value⟩"
                       value:

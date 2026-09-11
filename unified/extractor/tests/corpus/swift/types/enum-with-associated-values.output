@@ -73,23 +73,23 @@ top_level source="⟨body⟩"
           modifier: modifier "enum" source="enum"
           name_node: identifier "Shape" source="Shape"
           member:
-            class_like_declaration source="⟨name_node⟩(⟨member⟩)"
-              modifier: modifier "enum_case" source=<no location>
+            class_like_declaration source="⟨name_node⟩⟨member⟩)"
+              modifier: modifier "enum_case" source=""
               name_node: identifier "circle" source="circle"
               member:
-                constructor_declaration source="⟨parameter⟩"
+                constructor_declaration source="circle(⟨parameter⟩"
                   parameter:
                     parameter source="⟨pattern⟩: ⟨type⟩"
                       type: identifier "Double" source="Double"
                       pattern: identifier "radius" source="radius"
-                  body: block source=<no location>
-            class_like_declaration source="⟨name_node⟩(⟨member⟩)"
-              modifier: modifier "enum_case" source=<no location>
+                  body: block source=""
+            class_like_declaration source="⟨name_node⟩⟨member⟩)"
+              modifier: modifier "enum_case" source=""
               name_node: identifier "square" source="square"
               member:
-                constructor_declaration source="⟨parameter⟩"
+                constructor_declaration source="square(⟨parameter⟩"
                   parameter:
                     parameter source="⟨pattern⟩: ⟨type⟩"
                       type: identifier "Double" source="Double"
                       pattern: identifier "side" source="side"
-                  body: block source=<no location>
+                  body: block source=""

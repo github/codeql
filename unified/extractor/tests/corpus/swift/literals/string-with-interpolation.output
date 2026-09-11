@@ -229,7 +229,7 @@ top_level source="⟨body⟩"
           element:
             string_literal "hello " source="hello "
             call_expr source="\\(⟨argument⟩)"
-              callee: builtin_expr "interpolation" source=<no location>
+              callee: builtin_expr "interpolation" source=""
               argument:
                 argument source="⟨value⟩"
                   value: identifier "name" source="name"
@@ -238,13 +238,13 @@ top_level source="⟨body⟩"
           element:
             string_literal "hello " source="hello "
             call_expr source="\\(⟨argument⟩)"
-              callee: builtin_expr "interpolation" source=<no location>
+              callee: builtin_expr "interpolation" source=""
               argument:
                 argument source="⟨value⟩"
                   value: identifier "first" source="first"
             string_literal " " source=" "
             call_expr source="\\(⟨argument⟩)"
-              callee: builtin_expr "interpolation" source=<no location>
+              callee: builtin_expr "interpolation" source=""
               argument:
                 argument source="⟨value⟩"
                   value: identifier "last" source="last"
@@ -253,7 +253,7 @@ top_level source="⟨body⟩"
           element:
             string_literal "result: " source="result: "
             call_expr source="\\(⟨argument⟩)"
-              callee: builtin_expr "interpolation" source=<no location>
+              callee: builtin_expr "interpolation" source=""
               argument:
                 argument source="⟨value⟩"
                   value:
@@ -266,7 +266,7 @@ top_level source="⟨body⟩"
           element:
             string_literal "prefix " source="prefix "
             call_expr source="\\(⟨argument⟩)"
-              callee: builtin_expr "interpolation" source=<no location>
+              callee: builtin_expr "interpolation" source=""
               argument:
                 argument source="⟨value⟩"
                   value: identifier "value" source="value"
@@ -275,7 +275,7 @@ top_level source="⟨body⟩"
           element:
             string_literal "foo " source="foo "
             call_expr source="\\(⟨argument⟩ ⟨argument⟩)"
-              callee: builtin_expr "interpolation" source=<no location>
+              callee: builtin_expr "interpolation" source=""
               argument:
                 argument source="⟨value⟩,"
                   value: identifier "x" source="x"
@@ -286,7 +286,7 @@ top_level source="⟨body⟩"
           element:
             string_literal "foo " source="foo "
             call_expr source="\\(⟨argument⟩ ⟨argument⟩ ⟨argument⟩)"
-              callee: builtin_expr "interpolation" source=<no location>
+              callee: builtin_expr "interpolation" source=""
               argument:
                 argument source="⟨value⟩,"
                   value: identifier "x" source="x"
@@ -299,7 +299,7 @@ top_level source="⟨body⟩"
           element:
             string_literal "foo " source="foo "
             call_expr source="\\(⟨argument⟩)"
-              callee: builtin_expr "interpolation" source=<no location>
+              callee: builtin_expr "interpolation" source=""
               argument:
                 argument source="⟨name_node⟩: ⟨value⟩"
                   name_node: identifier "arg" source="arg"
@@ -309,7 +309,7 @@ top_level source="⟨body⟩"
           element:
             string_literal "foo " source="foo "
             call_expr source="\\(⟨argument⟩ ⟨argument⟩)"
-              callee: builtin_expr "interpolation" source=<no location>
+              callee: builtin_expr "interpolation" source=""
               argument:
                 argument source="⟨name_node⟩: ⟨value⟩,"
                   name_node: identifier "arg" source="arg"

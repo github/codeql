@@ -1709,6 +1709,34 @@ fn test_nested_synthetic_node_uses_child_location() {
     assert_eq!(arguments.byte_range(), 0..3);
 }
 
+/// A nested node with no explicit range or located children gets an empty
+/// location at the start of the rule's matched node.
+#[test]
+fn test_source_less_nested_node_uses_empty_match_start() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        (call
+            method: {name}
+            receiver: {recv}
+            arguments: (argument_list)
+        )
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    let range = arguments.source_range().unwrap();
+    assert_eq!(range.start_byte..range.end_byte, 0..0);
+}
+
 /// An explicit empty range at byte zero is a real location, not the sentinel
 /// for an absent location, and therefore contributes to parent ranges.
 #[test]

@@ -113,7 +113,7 @@ top_level source="⟨body⟩"
             accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: Int = 0 {\n    ⟨accessor_kind⟩ ⟨body⟩"
               modifier:
                 modifier "var" source="var"
-                modifier "chained_declaration" source=<no location>
+                modifier "chained_declaration" source=""
               name_node: identifier "x" source="x"
               accessor_kind: accessor_kind "willSet" source="willSet"
               body:
@@ -127,7 +127,7 @@ top_level source="⟨body⟩"
             accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: Int = 0 {\n    willSet { print(newValue) }\n    ⟨accessor_kind⟩ ⟨body⟩"
               modifier:
                 modifier "var" source="var"
-                modifier "chained_declaration" source=<no location>
+                modifier "chained_declaration" source=""
               name_node: identifier "x" source="x"
               accessor_kind: accessor_kind "didSet" source="didSet"
               body:

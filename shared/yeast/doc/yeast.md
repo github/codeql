@@ -238,9 +238,10 @@ yeast::trees!(ctx,
 ### Source locations
 
 Captured nodes keep the locations assigned by their own translations. New
-nodes in an output template derive their locations from their children. After
-the transform completes, the matched input node's range is added only to
-locally-created nodes returned as rule results:
+nodes in an output template derive their locations from their children. A
+source-less nested node receives an empty location at the start of the matched
+input node. After the transform completes, the full matched range is added only
+to locally-created nodes returned as rule results:
 
 ```rust
 rule!(
@@ -251,10 +252,12 @@ rule!(
 ```
 
 Here `inner` derives its range from `child`, while the returned `outer` node
-also includes the full `wrapper` range. This lets replacement roots include
-elided keywords or delimiters without assigning the same broad range to every
-synthetic descendant. A transform that simply returns a translated capture
-does not widen that capture to the wrapper's range.
+also includes the full `wrapper` range. A nested node with no located children
+would instead receive an empty range at the start of `wrapper`. This lets
+replacement roots include elided keywords or delimiters without assigning the
+same broad range to every synthetic descendant. A transform that simply
+returns a translated capture does not widen that capture to the wrapper's
+range.
 
 When the desired range belongs to another node, `tree_at!` assigns that range
 to the template's root. Nested nodes still derive their own locations normally:

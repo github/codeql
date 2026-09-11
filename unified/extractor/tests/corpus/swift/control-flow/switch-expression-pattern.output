@@ -344,29 +344,29 @@ top_level source="⟨body⟩"
                     map_literal "[key: value]" source="[key: value]"
                     call_expr source="⟨argument⟩?"
                       callee:
-                        member_access_expr source=<no location>
-                          base: identifier "Optional" source=<no location>
-                          member_name_node: identifier "some" source=<no location>
+                        member_access_expr source=""
+                          base: identifier "Optional" source=""
+                          member_name_node: identifier "some" source=""
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "optional" source="optional"
                     unary_expr source="try ⟨operand⟩"
                       operand: identifier "value" source="value"
-                      operator: prefix_operator "try" source=<no location>
+                      operator: prefix_operator "try" source=""
                     unary_expr source="⟨operand⟩!"
                       operand: identifier "value" source="value"
-                      operator: postfix_operator "!" source=<no location>
+                      operator: postfix_operator "!" source=""
                     type_cast_expr source="⟨expr⟩ as ⟨type⟩"
                       expr: identifier "value" source="value"
-                      operator: infix_operator "as" source=<no location>
+                      operator: infix_operator "as" source=""
                       type: identifier "Target" source="Target"
                     type_test_expr source="⟨expr⟩ is ⟨type⟩"
                       expr: identifier "value" source="value"
-                      operator: infix_operator "is" source=<no location>
+                      operator: infix_operator "is" source=""
                       type: identifier "Target" source="Target"
                     unary_expr source="await ⟨operand⟩"
                       operand: identifier "value" source="value"
-                      operator: prefix_operator "await" source=<no location>
+                      operator: prefix_operator "await" source=""
               body:
                 block source="⟨stmt⟩"
                   stmt:

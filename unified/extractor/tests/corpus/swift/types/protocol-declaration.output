@@ -63,8 +63,8 @@ top_level source="⟨body⟩"
           member:
             function_declaration source="func ⟨name_node⟩()"
               name_node: identifier "draw" source="draw"
-              body: block source=<no location>
+              body: block source=""
             function_declaration source="⟨modifier⟩ func ⟨name_node⟩()"
               modifier: modifier "static" source="static"
               name_node: identifier "make" source="make"
-              body: block source=<no location>
+              body: block source=""

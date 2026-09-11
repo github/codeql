@@ -47,6 +47,6 @@ top_level source="⟨body⟩"
         variable_declaration source="⟨modifier⟩ x = 1, ⟨pattern⟩ = ⟨value⟩"
           modifier:
             modifier "let" source="let"
-            modifier "chained_declaration" source=<no location>
+            modifier "chained_declaration" source=""
           pattern: identifier "y" source="y"
           value: int_literal "2" source="2"
