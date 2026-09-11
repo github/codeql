@@ -558,6 +558,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // an empty `block`.
         rule!(
             (functionDecl
+                modifiers: _* @mods
                 name: @name
                 genericParameterClause: (genericParameterClause parameters: _* @type_params)?
                 signature: (functionSignature
@@ -566,6 +567,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 body: (codeBlock statements: _* @body))
             =>
             (function_declaration
+                modifier: {mods}
                 name_node: (identifier #{name})
                 type_parameter: {type_params}
                 parameter: {params}
@@ -574,6 +576,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         rule!(
             (functionDecl
+                modifiers: _* @mods
                 name: @name
                 genericParameterClause: (genericParameterClause parameters: _* @type_params)?
                 signature: (functionSignature
@@ -581,6 +584,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     returnClause: (returnClause type: @ret)?))
             =>
             (function_declaration
+                modifier: {mods}
                 name_node: (identifier #{name})
                 type_parameter: {type_params}
                 parameter: {params}

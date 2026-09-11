@@ -75,6 +75,7 @@ top_level
               type: unsupported_node "~Copyable"
           member:
             function_declaration
+              modifier: modifier "consuming"
               name_node: identifier "close"
               body:
                 block

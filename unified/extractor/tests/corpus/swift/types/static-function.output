@@ -1,6 +1,5 @@
-protocol Drawable {
-  func draw()
-  static func make()
+class Factory {
+  static func make() {}
 }
 
 ---
@@ -10,9 +9,9 @@ sourceFile
   statements:
     codeBlockItem
       item:
-        protocolDecl
+        classDecl
           attributes:
-          name: identifier "Drawable"
+          name: identifier "Factory"
           memberBlock:
             memberBlock
               leftBrace: {
@@ -22,20 +21,11 @@ sourceFile
                   decl:
                     functionDecl
                       attributes:
-                      name: identifier "draw"
-                      modifiers:
-                      signature:
-                        functionSignature
-                          parameterClause:
-                            functionParameterClause
-                              leftParen: (
-                              rightParen: )
-                              parameters:
-                      funcKeyword: func
-                memberBlockItem
-                  decl:
-                    functionDecl
-                      attributes:
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
                       name: identifier "make"
                       modifiers:
                         declModifier
@@ -49,7 +39,7 @@ sourceFile
                               parameters:
                       funcKeyword: func
           modifiers:
-          protocolKeyword: protocol
+          classKeyword: class
 
 ---
 
@@ -58,13 +48,10 @@ top_level
     block
       stmt:
         class_like_declaration
-          modifier: modifier "protocol"
-          name_node: identifier "Drawable"
+          modifier: modifier "class"
+          name_node: identifier "Factory"
           member:
-            function_declaration
-              name_node: identifier "draw"
-              body: block "func draw()"
             function_declaration
               modifier: modifier "static"
               name_node: identifier "make"
-              body: block "static func make()"
+              body: block "static func make() {}"
