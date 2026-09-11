@@ -60,15 +60,20 @@ module Public {
     TopLevelStmt() { this = any(TopLevel t).getBody().getAStmt() }
   }
 
+  /** An identifier appearing in the context of a break/continue label, argument/parameter name, or name of a member lookup. */
+  final class IdentifierLabel extends Identifier {
+    IdentifierLabel() {
+      this = any(MemberAccessExpr e).getMemberNameNode() or
+      this = any(Argument a).getNameNode() or
+      this = any(Parameter p).getExternalNameNode() or
+      this = any(LabeledStmt stmt).getLabelNameNode() or
+      this = any(BreakExpr expr).getLabelNameNode() or
+      this = any(ContinueExpr expr).getLabelNameNode()
+    }
+  }
+
   /** An identifier appearing in the context of an expression, pattern, or type annotation. */
   final class IdentifierExpr extends Identifier {
-    IdentifierExpr() {
-      not this = any(MemberAccessExpr e).getMemberNameNode() and
-      not this = any(Argument a).getNameNode() and
-      not this = any(Parameter p).getExternalNameNode() and
-      not this = any(LabeledStmt stmt).getLabelNameNode() and
-      not this = any(BreakExpr expr).getLabelNameNode() and
-      not this = any(ContinueExpr expr).getLabelNameNode()
-    }
+    IdentifierExpr() { not this instanceof IdentifierLabel }
   }
 }
