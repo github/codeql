@@ -1709,6 +1709,36 @@ fn test_nested_synthetic_node_uses_child_location() {
     assert_eq!(arguments.byte_range(), 0..3);
 }
 
+/// An explicit empty range at byte zero is a real location, not the sentinel
+/// for an absent location, and therefore contributes to parent ranges.
+#[test]
+fn test_empty_range_at_file_start_contributes_to_parent() {
+    use std::collections::BTreeMap;
+
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let mut ast = Ast::with_schema(schema);
+    let empty = Range {
+        start_byte: 0,
+        end_byte: 0,
+        start_point: Point::new(0, 0),
+        end_point: Point::new(0, 0),
+    };
+    let child =
+        ast.create_named_token_with_range("identifier", "synthetic".to_owned(), Some(empty));
+    let fields = BTreeMap::from([(ast.field_id_for_name("method").unwrap(), vec![child])]);
+    let parent = ast.create_node_with_range(
+        ast.id_for_node_kind("call").unwrap(),
+        NodeContent::DynamicString(String::new()),
+        fields,
+        true,
+        None,
+    );
+
+    assert_eq!(ast.get_node(parent).unwrap().source_range(), Some(empty));
+}
+
 /// A rule that only unwraps and returns a translated capture must not widen
 /// that capture to the wrapper's source range.
 #[test]

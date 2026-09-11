@@ -144,10 +144,7 @@ impl YeastDisplay for Id {
 
 impl YeastSourceRange for Id {
     fn yeast_source_range(&self, ast: &Ast) -> Option<Range> {
-        ast.get_node(*self).and_then(|n| match &n.content {
-            NodeContent::Range(r) => Some(*r),
-            _ => n.source_range,
-        })
+        ast.get_node(*self).and_then(Node::source_range)
     }
 }
 
@@ -598,7 +595,7 @@ impl Ast {
                 .union_source_range_of_children(&fields)
                 .map_or(source_range, |child_range| {
                     Some(match source_range {
-                        Some(source_range) => union_source_ranges(child_range, source_range),
+                        Some(source_range) => child_range.union(source_range),
                         None => child_range,
                     })
                 }),
@@ -631,7 +628,7 @@ impl Ast {
             panic!("extend_source_range: cannot modify a parsed node");
         }
         node.source_range = Some(match node.source_range {
-            Some(existing) => union_source_ranges(existing, source_range),
+            Some(existing) => existing.union(source_range),
             None => source_range,
         });
     }
@@ -673,35 +670,30 @@ impl Ast {
                 let Some(child) = self.get_node(child_id) else {
                     continue;
                 };
-
-                let child_start_byte = child.start_byte();
-                let child_end_byte = child.end_byte();
-
-                // Skip children that carry no usable location.
-                if child_start_byte == 0 && child_end_byte == 0 {
+                let Some(child_range) = child.source_range() else {
                     continue;
-                }
+                };
 
                 match start_byte {
                     None => {
-                        start_byte = Some(child_start_byte);
-                        start_point = child.start_position();
+                        start_byte = Some(child_range.start_byte);
+                        start_point = child_range.start_point;
                     }
-                    Some(current_start) if child_start_byte < current_start => {
-                        start_byte = Some(child_start_byte);
-                        start_point = child.start_position();
+                    Some(current_start) if child_range.start_byte < current_start => {
+                        start_byte = Some(child_range.start_byte);
+                        start_point = child_range.start_point;
                     }
                     _ => {}
                 }
 
                 match end_byte {
                     None => {
-                        end_byte = Some(child_end_byte);
-                        end_point = child.end_position();
+                        end_byte = Some(child_range.end_byte);
+                        end_point = child_range.end_point;
                     }
-                    Some(current_end) if child_end_byte > current_end => {
-                        end_byte = Some(child_end_byte);
-                        end_point = child.end_position();
+                    Some(current_end) if child_range.end_byte > current_end => {
+                        end_byte = Some(child_range.end_byte);
+                        end_point = child_range.end_point;
                     }
                     _ => {}
                 }
@@ -810,25 +802,6 @@ impl Ast {
     }
 }
 
-fn union_source_ranges(first: Range, second: Range) -> Range {
-    let (start_byte, start_point) = if first.start_byte <= second.start_byte {
-        (first.start_byte, first.start_point)
-    } else {
-        (second.start_byte, second.start_point)
-    };
-    let (end_byte, end_point) = if first.end_byte >= second.end_byte {
-        (first.end_byte, first.end_point)
-    } else {
-        (second.end_byte, second.end_point)
-    };
-    Range {
-        start_byte,
-        end_byte,
-        start_point,
-        end_point,
-    }
-}
-
 /// A node in our AST
 #[derive(PartialEq, Eq, Debug, Clone, Serialize)]
 pub struct Node {
@@ -871,36 +844,29 @@ impl Node {
         Point { row: 0, column: 0 }
     }
 
-    pub fn start_position(&self) -> Point {
+    pub fn source_range(&self) -> Option<Range> {
         match self.content {
-            NodeContent::Range(range) => range.start_point,
-            _ => self
-                .source_range
-                .map_or_else(|| self.fake_point(), |r| r.start_point),
+            NodeContent::Range(range) => Some(range),
+            _ => self.source_range,
         }
+    }
+
+    pub fn start_position(&self) -> Point {
+        self.source_range()
+            .map_or_else(|| self.fake_point(), |range| range.start_point)
     }
 
     pub fn end_position(&self) -> Point {
-        match self.content {
-            NodeContent::Range(range) => range.end_point,
-            _ => self
-                .source_range
-                .map_or_else(|| self.fake_point(), |r| r.end_point),
-        }
+        self.source_range()
+            .map_or_else(|| self.fake_point(), |range| range.end_point)
     }
 
     pub fn start_byte(&self) -> usize {
-        match self.content {
-            NodeContent::Range(range) => range.start_byte,
-            _ => self.source_range.map_or(0, |r| r.start_byte),
-        }
+        self.source_range().map_or(0, |range| range.start_byte)
     }
 
     pub fn end_byte(&self) -> usize {
-        match self.content {
-            NodeContent::Range(range) => range.end_byte,
-            _ => self.source_range.map_or(0, |r| r.end_byte),
-        }
+        self.source_range().map_or(0, |range| range.end_byte)
     }
 
     pub fn byte_range(&self) -> std::ops::Range<usize> {
