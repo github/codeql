@@ -422,7 +422,7 @@ automatically: single captures bind as `Id`, repeated captures (after
 ## The `rule!` macro
 
 `rule!` combines a query and a transform into a single declaration.
-There are three transform forms, each suited to a different level of
+There are two transform forms, each suited to a different level of
 rule complexity:
 
 ```rust
@@ -433,13 +433,7 @@ yeast::rule!(
     (output_template field: {capture})
 )
 
-// 2. Shorthand form — captures become fields on a bare output kind.
-yeast::rule!(
-    (query_pattern field: (_) @capture)
-    => output_kind
-)
-
-// 3. Annotation form — a Rust block body preceded by the output kind.
+// 2. Annotation form — a Rust block body preceded by the output kind.
 yeast::rule!(
     (query_pattern child: (_)+ @@children)
     =>
@@ -454,9 +448,6 @@ yeast::rule!(
     }
 )
 ```
-
-The shorthand `=> kind` form auto-generates the template, mapping each
-capture name to a field of the same name on the output node.
 
 ### Guards
 
@@ -537,8 +528,6 @@ having to inspect the block's expression.
 Prefer the simplest form that fits:
 
 - If the whole transform is a tree literal, use the **template form**.
-- If the transform is a template whose root matches a query capture
-  1:1, use the **shorthand form**.
 - If the transform needs Rust logic (loops, `let` bindings, calls to
   `ctx.translate`, etc.), use the **annotation form**.
 
