@@ -1,0 +1,9 @@
+| HeaderWrites.cs:10:9:10:74 | call to method Append | A clickjacking-related response header is configured here. |
+| HeaderWrites.cs:11:9:11:69 | call to method Add | A clickjacking-related response header is configured here. |
+| HeaderWrites.cs:12:9:14:57 | call to method TryAdd<String,StringValues> | A clickjacking-related response header is configured here. |
+| HeaderWrites.cs:16:9:16:60 | ... = ... | A clickjacking-related response header is configured here. |
+| HeaderWrites.cs:17:9:18:56 | ... = ... | A clickjacking-related response header is configured here. |
+| HeaderWrites.cs:20:9:20:55 | ... = ... | A clickjacking-related response header is configured here. |
+| HeaderWrites.cs:21:9:22:56 | ... = ... | A clickjacking-related response header is configured here. |
+| HeaderWrites.cs:23:9:24:56 | ... = ... | A clickjacking-related response header is configured here. |
+| HeaderWrites.cs:27:9:27:57 | call to method Append | A clickjacking-related response header is configured here. |
