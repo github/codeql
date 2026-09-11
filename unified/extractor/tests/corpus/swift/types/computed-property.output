@@ -113,13 +113,13 @@ top_level source="⟨body⟩"
               modifier: modifier "var" source="var"
               pattern: identifier "h" source="h"
               type: identifier "Double" source="Double"
-            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ {\n    ⟨body⟩\n  }"
+            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ ⟨body⟩"
               modifier: modifier "var" source="var"
               name_node: identifier "area" source="area"
               accessor_kind: accessor_kind "get" source=""
               type: identifier "Double" source="Double"
               body:
-                block source="⟨stmt⟩"
+                block source="{\n    ⟨stmt⟩\n  }"
                   stmt:
                     return_expr source="return ⟨value⟩"
                       value:

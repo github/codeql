@@ -72,6 +72,15 @@ fn generic_type_children_have_local_ranges() {
 }
 
 #[test]
+fn declaration_and_operator_tokens_keep_precise_ranges() {
+    let source = "func f() { return x }";
+    let ast = desugar(source);
+
+    assert_has_span(&ast, source, "block", None, "{ return x }");
+    assert_has_span(&ast, source, "return_expr", None, "return x");
+}
+
+#[test]
 fn synthetic_type_and_modifier_nodes_use_empty_scope_start_ranges() {
     let source = "let array: [T]\nlet optional: T?\nenum E { case a, b }";
     let ast = desugar(source);
