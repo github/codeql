@@ -75,6 +75,7 @@ module ControlFlow {
      * Gets the innermost function to which this node belongs, or the file if
      * it is not inside a function.
      */
+    cached
     Root getRoot() { result = this.getEnclosingCallable() }
 
     /** Gets the file to which this node belongs. */
