@@ -289,8 +289,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             expr { e }
         ),
-        // A `tupleExpr` with multiple elements is a tuple literal (`(a, b)`).
-        // Its labelled expressions translate to `argument`s.
+        // Other `tupleExpr` forms are tuple literals. Their labelled
+        // expressions translate to `argument`s.
         rule!((tupleExpr elements: _* @els) => (tuple_expr element: {els})),
         // A code block contains its statements directly.
         rule!((codeBlock statements: _* @stmts) => (block stmt: {stmts})),
