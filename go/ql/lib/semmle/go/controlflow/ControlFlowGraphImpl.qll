@@ -63,6 +63,12 @@ module CfgImpl {
   private module Ast implements CfgLib::AstSig<Go::Location> {
     class AstNode = Go::AstNode;
 
+    /**
+     * Holds if `e` is excluded from ordinary AST child traversal by `getChild`.
+     * This does not exclude `e` from the CFG entirely: specialized accessors and
+     * explicit control-flow steps can still use it, for example as a type-switch
+     * pattern or a select-receive assignment target.
+     */
     private predicate skipCfg(AstNode e) {
       e instanceof Go::TypeExpr and not e instanceof Go::FuncTypeExpr
       or
