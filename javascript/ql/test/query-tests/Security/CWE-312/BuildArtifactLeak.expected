@@ -1,9 +1,9 @@
 #select
-| build-leaks.js:4:39:6:1 | {\\n    " ... leak]\\n} | build-leaks.js:5:35:5:45 | process.env | build-leaks.js:4:39:6:1 | {\\n    " ... leak]\\n} | This creates a build artifact that depends on $@. | build-leaks.js:5:35:5:45 | process.env | sensitive data returned byprocess environment |
+| build-leaks.js:4:39:6:1 | { // $  ... leak]\\n} | build-leaks.js:5:35:5:45 | process.env | build-leaks.js:4:39:6:1 | { // $  ... leak]\\n} | This creates a build artifact that depends on $@. | build-leaks.js:5:35:5:45 | process.env | sensitive data returned byprocess environment |
 | build-leaks.js:34:26:34:57 | getEnv( ... ngified | build-leaks.js:15:24:15:34 | process.env | build-leaks.js:34:26:34:57 | getEnv( ... ngified | This creates a build artifact that depends on $@. | build-leaks.js:15:24:15:34 | process.env | sensitive data returned byprocess environment |
 | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | build-leaks.js:40:14:40:60 | url.par ... assword | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | This creates a build artifact that depends on $@. | build-leaks.js:40:14:40:60 | url.par ... assword | sensitive data returned byan access to current_password |
 edges
-| build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | build-leaks.js:4:39:6:1 | {\\n    " ... leak]\\n} | provenance |  |
+| build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | build-leaks.js:4:39:6:1 | { // $  ... leak]\\n} | provenance |  |
 | build-leaks.js:5:35:5:45 | process.env | build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | provenance |  |
 | build-leaks.js:13:11:13:13 | raw | build-leaks.js:22:36:22:38 | raw | provenance |  |
 | build-leaks.js:13:17:19:10 | Object. ...      }) | build-leaks.js:13:11:13:13 | raw | provenance |  |
@@ -28,7 +28,7 @@ edges
 | build-leaks.js:41:67:41:84 | JSON.stringify(pw) | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | provenance |  |
 | build-leaks.js:41:82:41:83 | pw | build-leaks.js:41:67:41:84 | JSON.stringify(pw) | provenance |  |
 nodes
-| build-leaks.js:4:39:6:1 | {\\n    " ... leak]\\n} | semmle.label | {\\n    " ... leak]\\n} |
+| build-leaks.js:4:39:6:1 | { // $  ... leak]\\n} | semmle.label | { // $  ... leak]\\n} |
 | build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | semmle.label | JSON.st ... ss.env) |
 | build-leaks.js:5:35:5:45 | process.env | semmle.label | process.env |
 | build-leaks.js:13:11:13:13 | raw | semmle.label | raw |

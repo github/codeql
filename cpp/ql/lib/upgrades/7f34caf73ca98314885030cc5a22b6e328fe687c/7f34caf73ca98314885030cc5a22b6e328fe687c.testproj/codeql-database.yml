@@ -1,0 +1,12 @@
+---
+sourceLocationPrefix: /home/runner/work/codeql/codeql/cpp/ql/lib/upgrades/7f34caf73ca98314885030cc5a22b6e328fe687c
+baselineLinesOfCode: 0
+unicodeNewlines: false
+columnKind: utf8
+primaryLanguage: cpp
+creationMetadata:
+  cliVersion: 2.26.4
+  creationTime: 2026-09-11T12:03:09.050081078Z
+finalised: true
+overlayBaseDatabase: false
+overlayDatabase: false

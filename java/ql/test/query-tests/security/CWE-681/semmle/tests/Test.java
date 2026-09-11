@@ -7,8 +7,8 @@ class Test {
 		{
 			long data;
 
-			BufferedReader readerBuffered = new BufferedReader( // $ Source
-					new InputStreamReader(System.in, "UTF-8"));
+			BufferedReader readerBuffered = new BufferedReader(
+					new InputStreamReader(System.in, "UTF-8")); // $ Source
 			String stringNumber = readerBuffered.readLine();
 			if (stringNumber != null) {
 				data = Long.parseLong(stringNumber.trim());

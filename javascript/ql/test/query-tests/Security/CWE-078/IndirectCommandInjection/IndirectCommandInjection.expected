@@ -109,8 +109,8 @@ edges
 | command-line-parameter-command-injection.js:36:13:39:7 | require ... \\t\\t.argv | command-line-parameter-command-injection.js:36:6:36:9 | args | provenance |  |
 | command-line-parameter-command-injection.js:41:22:41:25 | args | command-line-parameter-command-injection.js:41:10:41:25 | "cmd.sh " + args | provenance |  |
 | command-line-parameter-command-injection.js:43:22:43:58 | require ... parse() | command-line-parameter-command-injection.js:43:10:43:62 | "cmd.sh ... e().foo | provenance |  |
-| command-line-parameter-command-injection.js:48:3:50:3 | argv: { ... rgs\\n\\t\\t} | command-line-parameter-command-injection.js:48:9:50:3 | {\\n\\t\\t\\t...args\\n\\t\\t} | provenance |  |
-| command-line-parameter-command-injection.js:48:9:50:3 | {\\n\\t\\t\\t...args\\n\\t\\t} | command-line-parameter-command-injection.js:49:7:49:10 | args | provenance |  |
+| command-line-parameter-command-injection.js:48:3:50:3 | argv: { ... rgs\\n\\t\\t} | command-line-parameter-command-injection.js:48:9:50:3 | { // $  ... rgs\\n\\t\\t} | provenance |  |
+| command-line-parameter-command-injection.js:48:9:50:3 | { // $  ... rgs\\n\\t\\t} | command-line-parameter-command-injection.js:49:7:49:10 | args | provenance |  |
 | command-line-parameter-command-injection.js:49:7:49:10 | args | command-line-parameter-command-injection.js:55:22:55:25 | args | provenance |  |
 | command-line-parameter-command-injection.js:55:22:55:25 | args | command-line-parameter-command-injection.js:55:10:55:25 | "cmd.sh " + args | provenance |  |
 | command-line-parameter-command-injection.js:57:6:57:13 | tainted1 | command-line-parameter-command-injection.js:61:11:61:18 | tainted1 | provenance |  |
@@ -254,7 +254,7 @@ nodes
 | command-line-parameter-command-injection.js:43:10:43:62 | "cmd.sh ... e().foo | semmle.label | "cmd.sh ... e().foo |
 | command-line-parameter-command-injection.js:43:22:43:58 | require ... parse() | semmle.label | require ... parse() |
 | command-line-parameter-command-injection.js:48:3:50:3 | argv: { ... rgs\\n\\t\\t} | semmle.label | argv: { ... rgs\\n\\t\\t} |
-| command-line-parameter-command-injection.js:48:9:50:3 | {\\n\\t\\t\\t...args\\n\\t\\t} | semmle.label | {\\n\\t\\t\\t...args\\n\\t\\t} |
+| command-line-parameter-command-injection.js:48:9:50:3 | { // $  ... rgs\\n\\t\\t} | semmle.label | { // $  ... rgs\\n\\t\\t} |
 | command-line-parameter-command-injection.js:49:7:49:10 | args | semmle.label | args |
 | command-line-parameter-command-injection.js:55:10:55:25 | "cmd.sh " + args | semmle.label | "cmd.sh " + args |
 | command-line-parameter-command-injection.js:55:22:55:25 | args | semmle.label | args |

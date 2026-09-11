@@ -66,11 +66,11 @@ routeHandlerCandidate
 | src/nodejs.js:15:12:15:31 | function(req, res){} |
 | src/returned-handler.js:5:12:5:32 | functio ... res) {} |
 | src/route-objects.js:7:19:7:38 | function(req, res){} |
-| src/route-objects.js:8:12:10:5 | (req, res) {\\n\\n    } |
+| src/route-objects.js:8:12:10:5 | (req, r ... \\n\\n    } |
 | src/route-objects.js:20:16:22:9 | (req, r ...       } |
 | src/route-objects.js:27:16:29:9 | (req, r ...       } |
-| src/route-objects.js:40:12:42:5 | (req, res) {\\n\\n    } |
-| src/route-objects.js:50:12:52:5 | (req, res) {\\n\\n    } |
+| src/route-objects.js:40:12:42:5 | (req, r ... \\n\\n    } |
+| src/route-objects.js:50:12:52:5 | (req, r ... \\n\\n    } |
 | src/route-objects.js:56:12:58:5 | functio ... ;\\n    } |
 | src/tst.js:4:23:4:43 | functio ... res) {} |
 | src/tst.js:6:32:6:52 | functio ... res) {} |
@@ -83,7 +83,7 @@ routeHandlerCandidate
 | src/tst.js:43:18:43:38 | functio ... res) {} |
 | src/tst.js:46:1:46:23 | functio ... res) {} |
 | src/tst.js:52:1:54:1 | functio ... req()\\n} |
-| src/tst.js:56:1:58:1 | functio ... s) {\\n\\n} |
+| src/tst.js:56:1:58:1 | functio ... ate]\\n\\n} |
 | src/tst.js:61:1:63:1 | functio ... turn;\\n} |
 | src/tst.js:65:1:67:1 | functio ... rn x;\\n} |
 | src/tst.js:70:5:72:5 | functio ... \\n\\n    } |
