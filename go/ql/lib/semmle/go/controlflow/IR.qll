@@ -48,11 +48,13 @@ module IR {
     )
   }
 
-  /** Gets the CFG node representing a basic literal or plain identifier reference. */
+  /** Gets the CFG node representing a basic literal, function literal, or plain identifier reference. */
   cached
   private ControlFlow::Node leafEvaluation(Expr leaf) {
     (
       leaf instanceof BasicLit
+      or
+      leaf instanceof FuncLit
       or
       leaf instanceof Ident and leaf instanceof ReferenceExpr
     ) and

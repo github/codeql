@@ -372,16 +372,14 @@
 | epilogues.go:78:2:80:15 | Before defer statement | epilogues.go:78:8:80:15 | function call |
 | epilogues.go:78:2:80:15 | catch-defer-panic defer statement | epilogues.go:77:1:82:1 | Exceptional Exit |
 | epilogues.go:78:2:80:15 | defer statement | epilogues.go:78:2:80:15 | After defer statement |
-| epilogues.go:78:8:80:2 | After function literal | epilogues.go:80:4:80:9 | "done" |
-| epilogues.go:78:8:80:2 | Before function literal | epilogues.go:78:8:80:2 | function literal |
 | epilogues.go:78:8:80:2 | Entry | epilogues.go:78:13:78:17 | label |
 | epilogues.go:78:8:80:2 | Exceptional Exit | epilogues.go:78:8:80:2 | Exit |
 | epilogues.go:78:8:80:2 | Normal Exit | epilogues.go:78:8:80:2 | Exit |
-| epilogues.go:78:8:80:2 | function literal | epilogues.go:78:8:80:2 | After function literal |
+| epilogues.go:78:8:80:2 | function literal | epilogues.go:80:4:80:9 | "done" |
 | epilogues.go:78:8:80:15 | After function call | epilogues.go:78:2:80:15 | defer statement |
 | epilogues.go:78:8:80:15 | defer-invoke function call | epilogues.go:77:29:82:1 | After block statement |
 | epilogues.go:78:8:80:15 | defer-invoke function call | epilogues.go:78:2:80:15 | catch-defer-panic defer statement |
-| epilogues.go:78:8:80:15 | function call | epilogues.go:78:8:80:2 | Before function literal |
+| epilogues.go:78:8:80:15 | function call | epilogues.go:78:8:80:2 | function literal |
 | epilogues.go:78:13:78:17 | label | epilogues.go:78:27:78:27 | n |
 | epilogues.go:78:27:78:27 | n | epilogues.go:78:34:80:2 | block statement |
 | epilogues.go:78:34:80:2 | After block statement | epilogues.go:78:8:80:2 | Normal Exit |
@@ -430,15 +428,13 @@
 | epilogues.go:88:2:92:4 | Before defer statement | epilogues.go:88:8:92:4 | function call |
 | epilogues.go:88:2:92:4 | catch-defer-panic defer statement | epilogues.go:87:1:98:1 | Exceptional Exit |
 | epilogues.go:88:2:92:4 | defer statement | epilogues.go:88:2:92:4 | After defer statement |
-| epilogues.go:88:8:92:2 | After function literal | epilogues.go:88:8:92:4 | After function call |
-| epilogues.go:88:8:92:2 | Before function literal | epilogues.go:88:8:92:2 | function literal |
 | epilogues.go:88:8:92:2 | Entry | epilogues.go:88:15:92:2 | block statement |
 | epilogues.go:88:8:92:2 | Normal Exit | epilogues.go:88:8:92:2 | Exit |
-| epilogues.go:88:8:92:2 | function literal | epilogues.go:88:8:92:2 | After function literal |
+| epilogues.go:88:8:92:2 | function literal | epilogues.go:88:8:92:4 | After function call |
 | epilogues.go:88:8:92:4 | After function call | epilogues.go:88:2:92:4 | defer statement |
 | epilogues.go:88:8:92:4 | defer-invoke function call | epilogues.go:87:42:98:1 | result-read:0 block statement |
 | epilogues.go:88:8:92:4 | defer-invoke function call | epilogues.go:88:2:92:4 | catch-defer-panic defer statement |
-| epilogues.go:88:8:92:4 | function call | epilogues.go:88:8:92:2 | Before function literal |
+| epilogues.go:88:8:92:4 | function call | epilogues.go:88:8:92:2 | function literal |
 | epilogues.go:88:15:92:2 | After block statement | epilogues.go:88:8:92:2 | Normal Exit |
 | epilogues.go:88:15:92:2 | block statement | epilogues.go:89:3:91:3 | if statement |
 | epilogues.go:89:3:91:3 | After if statement | epilogues.go:88:15:92:2 | After block statement |
@@ -701,14 +697,12 @@
 | exprs.go:8:16:8:24 | Before type conversion | exprs.go:8:23:8:23 | k |
 | exprs.go:8:16:8:24 | type conversion | exprs.go:8:16:8:24 | After type conversion |
 | exprs.go:8:23:8:23 | k | exprs.go:8:16:8:24 | type conversion |
-| exprs.go:9:2:9:61 | ... := ... | exprs.go:9:8:9:61 | Before function literal |
+| exprs.go:9:2:9:61 | ... := ... | exprs.go:9:8:9:61 | function literal |
 | exprs.go:9:2:9:61 | After ... := ... | exprs.go:10:2:10:32 | ... := ... |
 | exprs.go:9:2:9:61 | assign:0 ... := ... | exprs.go:9:2:9:61 | After ... := ... |
-| exprs.go:9:8:9:61 | After function literal | exprs.go:9:2:9:61 | assign:0 ... := ... |
-| exprs.go:9:8:9:61 | Before function literal | exprs.go:9:8:9:61 | function literal |
 | exprs.go:9:8:9:61 | Entry | exprs.go:9:13:9:13 | a |
 | exprs.go:9:8:9:61 | Normal Exit | exprs.go:9:8:9:61 | Exit |
-| exprs.go:9:8:9:61 | function literal | exprs.go:9:8:9:61 | After function literal |
+| exprs.go:9:8:9:61 | function literal | exprs.go:9:2:9:61 | assign:0 ... := ... |
 | exprs.go:9:13:9:13 | a | exprs.go:9:16:9:16 | b |
 | exprs.go:9:16:9:16 | b | exprs.go:9:23:9:23 | z |
 | exprs.go:9:23:9:23 | z | exprs.go:9:39:9:61 | block statement |
@@ -2226,17 +2220,15 @@
 | stmts3.go:18:1:20:1 | function declaration | stmts3.go:18:1:20:1 | After function declaration |
 | stmts3.go:18:15:20:1 | After block statement | stmts3.go:18:1:20:1 | Normal Exit |
 | stmts3.go:18:15:20:1 | block statement | stmts3.go:19:2:19:23 | ... = ... |
-| stmts3.go:19:2:19:11 | After selection of Usage | stmts3.go:19:15:19:23 | Before function literal |
+| stmts3.go:19:2:19:11 | After selection of Usage | stmts3.go:19:15:19:23 | function literal |
 | stmts3.go:19:2:19:11 | Before selection of Usage | stmts3.go:19:2:19:11 | selection of Usage |
 | stmts3.go:19:2:19:11 | selection of Usage | stmts3.go:19:2:19:11 | After selection of Usage |
 | stmts3.go:19:2:19:23 | ... = ... | stmts3.go:19:2:19:11 | Before selection of Usage |
 | stmts3.go:19:2:19:23 | After ... = ... | stmts3.go:18:15:20:1 | After block statement |
 | stmts3.go:19:2:19:23 | assign:0 ... = ... | stmts3.go:19:2:19:23 | After ... = ... |
-| stmts3.go:19:15:19:23 | After function literal | stmts3.go:19:2:19:23 | assign:0 ... = ... |
-| stmts3.go:19:15:19:23 | Before function literal | stmts3.go:19:15:19:23 | function literal |
 | stmts3.go:19:15:19:23 | Entry | stmts3.go:19:22:19:23 | block statement |
 | stmts3.go:19:15:19:23 | Normal Exit | stmts3.go:19:15:19:23 | Exit |
-| stmts3.go:19:15:19:23 | function literal | stmts3.go:19:15:19:23 | After function literal |
+| stmts3.go:19:15:19:23 | function literal | stmts3.go:19:2:19:23 | assign:0 ... = ... |
 | stmts3.go:19:22:19:23 | block statement | stmts3.go:19:15:19:23 | Normal Exit |
 | stmts4.go:0:0:0:0 | After stmts4.go | stmts4.go:0:0:0:0 | Normal Exit |
 | stmts4.go:0:0:0:0 | Entry | stmts4.go:0:0:0:0 | stmts4.go |
@@ -3004,16 +2996,14 @@
 | stmts.go:67:3:67:35 | Before defer statement | stmts.go:67:9:67:35 | function call |
 | stmts.go:67:3:67:35 | catch-defer-panic defer statement | stmts.go:65:1:72:1 | Exceptional Exit |
 | stmts.go:67:3:67:35 | defer statement | stmts.go:67:3:67:35 | After defer statement |
-| stmts.go:67:9:67:33 | After function literal | stmts.go:67:9:67:35 | After function call |
-| stmts.go:67:9:67:33 | Before function literal | stmts.go:67:9:67:33 | function literal |
 | stmts.go:67:9:67:33 | Entry | stmts.go:67:16:67:33 | block statement |
 | stmts.go:67:9:67:33 | Exceptional Exit | stmts.go:67:9:67:33 | Exit |
 | stmts.go:67:9:67:33 | Normal Exit | stmts.go:67:9:67:33 | Exit |
-| stmts.go:67:9:67:33 | function literal | stmts.go:67:9:67:33 | After function literal |
+| stmts.go:67:9:67:33 | function literal | stmts.go:67:9:67:35 | After function call |
 | stmts.go:67:9:67:35 | After function call | stmts.go:67:3:67:35 | defer statement |
 | stmts.go:67:9:67:35 | defer-invoke function call | stmts.go:65:23:72:1 | After block statement |
 | stmts.go:67:9:67:35 | defer-invoke function call | stmts.go:67:3:67:35 | catch-defer-panic defer statement |
-| stmts.go:67:9:67:35 | function call | stmts.go:67:9:67:33 | Before function literal |
+| stmts.go:67:9:67:35 | function call | stmts.go:67:9:67:33 | function literal |
 | stmts.go:67:16:67:33 | After block statement | stmts.go:67:9:67:33 | Normal Exit |
 | stmts.go:67:16:67:33 | block statement | stmts.go:67:18:67:31 | expression statement |
 | stmts.go:67:18:67:28 | After selection of Println | stmts.go:67:30:67:30 | x |
@@ -3032,16 +3022,14 @@
 | stmts.go:69:3:69:36 | Before defer statement | stmts.go:69:9:69:36 | function call |
 | stmts.go:69:3:69:36 | catch-defer-panic defer statement | stmts.go:65:1:72:1 | Exceptional Exit |
 | stmts.go:69:3:69:36 | defer statement | stmts.go:69:3:69:36 | After defer statement |
-| stmts.go:69:9:69:34 | After function literal | stmts.go:69:9:69:36 | After function call |
-| stmts.go:69:9:69:34 | Before function literal | stmts.go:69:9:69:34 | function literal |
 | stmts.go:69:9:69:34 | Entry | stmts.go:69:16:69:34 | block statement |
 | stmts.go:69:9:69:34 | Exceptional Exit | stmts.go:69:9:69:34 | Exit |
 | stmts.go:69:9:69:34 | Normal Exit | stmts.go:69:9:69:34 | Exit |
-| stmts.go:69:9:69:34 | function literal | stmts.go:69:9:69:34 | After function literal |
+| stmts.go:69:9:69:34 | function literal | stmts.go:69:9:69:36 | After function call |
 | stmts.go:69:9:69:36 | After function call | stmts.go:69:3:69:36 | defer statement |
 | stmts.go:69:9:69:36 | defer-invoke function call | stmts.go:65:23:72:1 | After block statement |
 | stmts.go:69:9:69:36 | defer-invoke function call | stmts.go:69:3:69:36 | catch-defer-panic defer statement |
-| stmts.go:69:9:69:36 | function call | stmts.go:69:9:69:34 | Before function literal |
+| stmts.go:69:9:69:36 | function call | stmts.go:69:9:69:34 | function literal |
 | stmts.go:69:16:69:34 | After block statement | stmts.go:69:9:69:34 | Normal Exit |
 | stmts.go:69:16:69:34 | block statement | stmts.go:69:18:69:32 | expression statement |
 | stmts.go:69:18:69:28 | After selection of Println | stmts.go:69:30:69:31 | Before -... |

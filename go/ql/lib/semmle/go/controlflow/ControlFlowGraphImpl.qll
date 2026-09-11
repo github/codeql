@@ -459,12 +459,10 @@ module CfgImpl {
     }
 
     predicate postOrInOrder(Ast::AstNode n) {
-      // References other than plain identifiers and function literals need
-      // an in-order value node even when they have no CFG children. Basic
-      // literals and plain identifiers instead evaluate at their before node.
+      // References other than plain identifiers need an in-order value node
+      // even when they have no CFG children. Basic literals, function literals,
+      // and plain identifiers instead evaluate at their before node.
       n instanceof Go::ReferenceExpr and not n instanceof Go::Ident
-      or
-      n instanceof Go::FuncLit
       or
       // An empty composite literal (e.g. `T{}`) has no CFG children, so it too
       // needs an explicit in-order (allocation) node.
