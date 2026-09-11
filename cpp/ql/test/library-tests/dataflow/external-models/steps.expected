@@ -82,6 +82,90 @@
 | bdlbb.cpp:92:48:92:51 | *call to data | bdlbb.cpp:92:37:92:40 | copy output argument |
 | bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument |
 | bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument |
+| bmqa.cpp:127:2:127:4 | *msg | bmqa.cpp:127:15:127:19 | getData output argument |
+| bmqa.cpp:129:42:129:45 | *blob | bmqa.cpp:129:37:129:39 | copy output argument |
+| bmqa.cpp:136:42:136:46 | *event | bmqa.cpp:136:49:136:63 | call to messageIterator |
+| bmqa.cpp:138:43:138:44 | *it | bmqa.cpp:138:53:138:55 | *call to message |
+| bmqa.cpp:140:3:140:5 | *msg | bmqa.cpp:140:15:140:19 | getData output argument |
+| bmqa.cpp:142:43:142:46 | *blob | bmqa.cpp:142:38:142:40 | copy output argument |
+| bmqa.cpp:150:47:150:50 | *call to data | bmqa.cpp:150:37:150:39 | copy output argument |
+| bmqa.cpp:152:17:152:19 | *& ... | bmqa.cpp:152:2:152:4 | setDataRef output argument |
+| bmqa.cpp:154:2:154:4 | *msg | bmqa.cpp:154:14:154:17 | getData output argument |
+| bmqa.cpp:156:42:156:44 | *out | bmqa.cpp:156:37:156:39 | copy output argument |
+| bmqa.cpp:163:19:163:22 | *call to data | bmqa.cpp:163:2:163:4 | setDataRef output argument |
+| bmqa.cpp:165:2:165:4 | *msg | bmqa.cpp:165:14:165:17 | getData output argument |
+| bmqa.cpp:167:42:167:44 | *out | bmqa.cpp:167:37:167:39 | copy output argument |
+| bmqa.cpp:174:16:174:19 | *call to data | bmqa.cpp:174:2:174:4 | setData output argument |
+| bmqa.cpp:176:2:176:4 | *msg | bmqa.cpp:176:14:176:17 | getData output argument |
+| bmqa.cpp:178:42:178:44 | *out | bmqa.cpp:178:37:178:39 | copy output argument |
+| bmqa.cpp:185:36:185:38 | *msg | bmqa.cpp:185:41:185:45 | call to clone |
+| bmqa.cpp:187:2:187:5 | *copy | bmqa.cpp:187:15:187:19 | getData output argument |
+| bmqa.cpp:189:42:189:45 | *blob | bmqa.cpp:189:37:189:39 | copy output argument |
+| bmqa.cpp:197:2:197:4 | *msg | bmqa.cpp:197:22:197:27 | loadProperties output argument |
+| bmqa.cpp:198:29:198:33 | *props | bmqa.cpp:198:54:198:61 | *call to getPropertyAsString |
+| bmqa.cpp:206:2:206:4 | *msg | bmqa.cpp:206:22:206:27 | loadProperties output argument |
+| bmqa.cpp:215:2:215:4 | *msg | bmqa.cpp:215:22:215:27 | loadProperties output argument |
+| bmqa.cpp:224:2:224:4 | *msg | bmqa.cpp:224:22:224:27 | loadProperties output argument |
+| bmqa.cpp:226:29:226:33 | *props | bmqa.cpp:226:56:226:69 | *call to getPropertyAsStringOr |
+| bmqa.cpp:234:29:234:33 | *props | bmqa.cpp:234:56:234:69 | *call to getPropertyAsStringOr |
+| bmqa.cpp:242:2:242:4 | *msg | bmqa.cpp:242:22:242:27 | loadProperties output argument |
+| bmqa.cpp:261:2:261:4 | *msg | bmqa.cpp:261:22:261:27 | loadProperties output argument |
+| bmqa.cpp:268:49:268:52 | *call to data | bmqa.cpp:268:37:268:41 | copy output argument |
+| bmqa.cpp:270:17:270:20 | *blob | bmqa.cpp:270:2:270:6 | streamIn output argument |
+| bmqa.cpp:271:8:271:12 | *props | bmqa.cpp:271:33:271:40 | *call to getPropertyAsString |
+| bmqa.cpp:277:49:277:52 | *call to data | bmqa.cpp:277:37:277:41 | copy output argument |
+| bmqa.cpp:279:14:279:17 | *blob | bmqa.cpp:279:2:279:3 | streamIn output argument |
+| bmqa.cpp:281:23:281:25 | *& ... | bmqa.cpp:281:2:281:4 | setPropertiesRef output argument |
+| bmqa.cpp:283:2:283:4 | *msg | bmqa.cpp:283:21:283:24 | loadProperties output argument |
+| bmqa.cpp:284:8:284:10 | *out | bmqa.cpp:284:31:284:38 | *call to getPropertyAsString |
+| bmqa.cpp:291:2:291:4 | *msg | bmqa.cpp:291:22:291:27 | loadProperties output argument |
+| bmqa.cpp:293:41:293:45 | *props | bmqa.cpp:293:56:293:66 | *call to streamOut |
+| bmqa.cpp:295:42:295:45 | *blob | bmqa.cpp:295:37:295:39 | copy output argument |
+| bmqa.cpp:303:2:303:4 | *msg | bmqa.cpp:303:22:303:27 | loadProperties output argument |
+| bmqa.cpp:305:8:305:11 | *copy | bmqa.cpp:305:32:305:39 | *call to getPropertyAsString |
+| bmqa.cpp:312:2:312:4 | *msg | bmqa.cpp:312:22:312:27 | loadProperties output argument |
+| bmqa.cpp:315:8:315:11 | *copy | bmqa.cpp:315:32:315:39 | *call to getPropertyAsString |
+| bmqa.cpp:322:2:322:4 | *msg | bmqa.cpp:322:22:322:27 | loadProperties output argument |
+| bmqa.cpp:324:8:324:21 | *call to operator= | bmqa.cpp:324:42:324:49 | *call to getPropertyAsString |
+| bmqa.cpp:331:28:331:32 | call to basic_string_view | bmqa.cpp:331:2:331:6 | setPropertyAsString output argument |
+| bmqa.cpp:331:35:331:40 | * ... | bmqa.cpp:331:2:331:6 | setPropertyAsString output argument |
+| bmqa.cpp:332:8:332:12 | *props | bmqa.cpp:332:33:332:40 | *call to getPropertyAsString |
+| bmqa.cpp:338:28:338:32 | call to basic_string_view | bmqa.cpp:338:2:338:6 | setPropertyAsString output argument |
+| bmqa.cpp:338:35:338:39 | value | bmqa.cpp:338:2:338:6 | setPropertyAsString output argument |
+| bmqa.cpp:339:8:339:12 | *props | bmqa.cpp:339:33:339:40 | *call to getPropertyAsString |
+| bmqa.cpp:346:28:346:32 | call to basic_string_view | bmqa.cpp:346:2:346:6 | setPropertyAsBinary output argument |
+| bmqa.cpp:346:35:346:40 | * ... | bmqa.cpp:346:2:346:6 | setPropertyAsBinary output argument |
+| bmqa.cpp:354:26:354:29 | name | bmqa.cpp:354:2:354:6 | setPropertyAsBool output argument |
+| bmqa.cpp:355:50:355:55 | *& ... | bmqa.cpp:355:47:355:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:356:8:356:9 | *it | bmqa.cpp:356:15:356:17 | *call to name |
+| bmqa.cpp:362:26:362:29 | name | bmqa.cpp:362:2:362:6 | setPropertyAsChar output argument |
+| bmqa.cpp:363:50:363:55 | *& ... | bmqa.cpp:363:47:363:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:364:8:364:9 | *it | bmqa.cpp:364:15:364:17 | *call to name |
+| bmqa.cpp:370:27:370:30 | name | bmqa.cpp:370:2:370:6 | setPropertyAsShort output argument |
+| bmqa.cpp:371:50:371:55 | *& ... | bmqa.cpp:371:47:371:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:372:8:372:9 | *it | bmqa.cpp:372:15:372:17 | *call to name |
+| bmqa.cpp:378:27:378:30 | name | bmqa.cpp:378:2:378:6 | setPropertyAsInt32 output argument |
+| bmqa.cpp:379:50:379:55 | *& ... | bmqa.cpp:379:47:379:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:380:8:380:9 | *it | bmqa.cpp:380:15:380:17 | *call to name |
+| bmqa.cpp:386:27:386:30 | name | bmqa.cpp:386:2:386:6 | setPropertyAsInt64 output argument |
+| bmqa.cpp:387:50:387:55 | *& ... | bmqa.cpp:387:47:387:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:388:8:388:9 | *it | bmqa.cpp:388:15:388:17 | *call to name |
+| bmqa.cpp:394:28:394:31 | name | bmqa.cpp:394:2:394:6 | setPropertyAsString output argument |
+| bmqa.cpp:394:34:394:40 | call to basic_string_view | bmqa.cpp:394:2:394:6 | setPropertyAsString output argument |
+| bmqa.cpp:395:50:395:55 | *& ... | bmqa.cpp:395:47:395:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:396:8:396:9 | *it | bmqa.cpp:396:15:396:17 | *call to name |
+| bmqa.cpp:402:28:402:31 | name | bmqa.cpp:402:2:402:6 | setPropertyAsBinary output argument |
+| bmqa.cpp:402:34:402:56 | call to span | bmqa.cpp:402:2:402:6 | setPropertyAsBinary output argument |
+| bmqa.cpp:403:50:403:55 | *& ... | bmqa.cpp:403:47:403:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:404:8:404:9 | *it | bmqa.cpp:404:15:404:17 | *call to name |
+| bmqa.cpp:411:2:411:4 | *msg | bmqa.cpp:411:22:411:27 | loadProperties output argument |
+| bmqa.cpp:412:50:412:55 | *& ... | bmqa.cpp:412:47:412:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:414:9:414:10 | *it | bmqa.cpp:414:16:414:18 | *call to name |
+| bmqa.cpp:415:9:415:10 | *it | bmqa.cpp:415:23:415:25 | *call to getAsString |
+| bmqa.cpp:425:2:425:4 | *msg | bmqa.cpp:425:22:425:27 | loadProperties output argument |
+| bmqa.cpp:426:50:426:55 | *& ... | bmqa.cpp:426:47:426:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:429:8:429:11 | *copy | bmqa.cpp:429:24:429:26 | *call to getAsString |
+| bmqa.cpp:430:8:430:18 | *call to operator= | bmqa.cpp:430:24:430:26 | *call to name |
 | test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual |
 | test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated |
 | test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body |
