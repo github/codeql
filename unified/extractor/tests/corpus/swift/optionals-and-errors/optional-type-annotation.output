@@ -43,6 +43,6 @@ top_level source="⟨body⟩"
           pattern: identifier "x" source="x"
           type:
             generic_type_expr source="⟨type_argument⟩?"
-              base: identifier "Optional" source=<no location>
+              base: identifier "Optional" source=""
               type_argument: identifier "Int" source="Int"
           value: builtin_expr "nil" source="nil"

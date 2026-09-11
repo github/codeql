@@ -116,7 +116,7 @@ top_level source="⟨body⟩"
             accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ {\n    ⟨body⟩\n  }"
               modifier: modifier "var" source="var"
               name_node: identifier "area" source="area"
-              accessor_kind: accessor_kind "get" source=<no location>
+              accessor_kind: accessor_kind "get" source=""
               type: identifier "Double" source="Double"
               body:
                 block source="⟨stmt⟩"

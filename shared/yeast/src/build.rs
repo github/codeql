@@ -37,7 +37,8 @@ pub struct BuildCtx<'a, C: 'a = ()> {
     ///
     /// The `rule!` macro applies this range to locally-created result roots
     /// after the transform completes. Nested synthetic nodes derive their
-    /// ranges from their children.
+    /// ranges from their children, falling back to an empty range at this
+    /// range's start.
     pub matched_source_range: Option<Range>,
     /// User-supplied context, accessible directly via `ctx.field` (via Deref).
     pub user_ctx: &'a mut C,
@@ -104,6 +105,16 @@ impl<'a, C> BuildCtx<'a, C> {
         let id = self
             .ast
             .create_node_with_range(kind, content, fields, is_named, source_range);
+        if self
+            .ast
+            .get_node(id)
+            .is_some_and(|node| node.source_range().is_none())
+        {
+            if let Some(source_range) = self.matched_source_range {
+                self.ast
+                    .extend_source_range(id, source_range.empty_at_start());
+            }
+        }
         if !has_explicit_source_range {
             self.created_nodes.insert(id);
         }
@@ -129,6 +140,10 @@ impl<'a, C> BuildCtx<'a, C> {
         source_range: Option<Range>,
     ) -> Id {
         let has_explicit_source_range = source_range.is_some();
+        let source_range = source_range.or_else(|| {
+            self.matched_source_range
+                .map(|range| range.empty_at_start())
+        });
         let id = self
             .ast
             .create_named_token_with_range(kind, content, source_range);

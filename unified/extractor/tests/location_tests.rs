@@ -51,6 +51,16 @@ fn assert_has_span(ast: &Ast, source: &str, kind: &str, content: Option<&str>, e
     );
 }
 
+fn assert_has_empty_span(ast: &Ast, kind: &str, content: Option<&str>, expected_offset: usize) {
+    let ranges = ranges(ast, kind, content);
+    assert!(
+        ranges
+            .iter()
+            .any(|range| range.start == expected_offset && range.end == expected_offset),
+        "expected {kind} {content:?} to have an empty span at {expected_offset}, got {ranges:?}"
+    );
+}
+
 #[test]
 fn generic_type_children_have_local_ranges() {
     let source = "let x = C<Foo>()";
@@ -59,6 +69,25 @@ fn generic_type_children_have_local_ranges() {
     assert_has_span(&ast, source, "generic_type_expr", None, "C<Foo>");
     assert_has_span(&ast, source, "identifier", Some("C"), "C");
     assert_has_span(&ast, source, "identifier", Some("Foo"), "Foo");
+}
+
+#[test]
+fn synthetic_type_and_modifier_nodes_use_empty_scope_start_ranges() {
+    let source = "let array: [T]\nlet optional: T?\nenum E { case a, b }";
+    let ast = desugar(source);
+
+    assert_has_empty_span(&ast, "identifier", Some("Array"), source.find('[').unwrap());
+    assert_has_empty_span(
+        &ast,
+        "identifier",
+        Some("Optional"),
+        source.find("T?").unwrap(),
+    );
+    let case_a = source.find("a, b").unwrap();
+    let case_b = case_a + "a, ".len();
+    assert_has_empty_span(&ast, "modifier", Some("enum_case"), case_a);
+    assert_has_empty_span(&ast, "modifier", Some("enum_case"), case_b);
+    assert_has_empty_span(&ast, "modifier", Some("chained_declaration"), case_b);
 }
 
 #[test]

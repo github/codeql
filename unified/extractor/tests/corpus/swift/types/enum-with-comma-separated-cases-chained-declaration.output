@@ -49,20 +49,20 @@ top_level source="⟨body⟩"
           name_node: identifier "Suit" source="Suit"
           member:
             variable_declaration source="⟨pattern⟩,"
-              modifier: modifier "enum_case" source=<no location>
+              modifier: modifier "enum_case" source=""
               pattern: identifier "clubs" source="clubs"
             variable_declaration source="⟨pattern⟩,"
               modifier:
-                modifier "chained_declaration" source=<no location>
-                modifier "enum_case" source=<no location>
+                modifier "chained_declaration" source=""
+                modifier "enum_case" source=""
               pattern: identifier "diamonds" source="diamonds"
             variable_declaration source="⟨pattern⟩,"
               modifier:
-                modifier "chained_declaration" source=<no location>
-                modifier "enum_case" source=<no location>
+                modifier "chained_declaration" source=""
+                modifier "enum_case" source=""
               pattern: identifier "hearts" source="hearts"
             variable_declaration source="⟨pattern⟩"
               modifier:
-                modifier "chained_declaration" source=<no location>
-                modifier "enum_case" source=<no location>
+                modifier "chained_declaration" source=""
+                modifier "enum_case" source=""
               pattern: identifier "spades" source="spades"

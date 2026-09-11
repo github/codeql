@@ -38,4 +38,4 @@ top_level source="⟨body⟩"
           value:
             unary_expr source="⟨operand⟩!"
               operand: identifier "opt" source="opt"
-              operator: postfix_operator "!" source=<no location>
+              operator: postfix_operator "!" source=""

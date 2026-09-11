@@ -68,4 +68,4 @@ top_level source="⟨body⟩"
           type: unsupported_node "@convention(c) () -> Void" source="@convention(c) () -> Void"
           value:
             function_expr source="{}"
-              body: block source=<no location>
+              body: block source=""

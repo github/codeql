@@ -54,4 +54,4 @@ top_level source="⟨body⟩"
             function_declaration source="⟨modifier⟩ func ⟨name_node⟩() {}"
               modifier: modifier "static" source="static"
               name_node: identifier "make" source="make"
-              body: block source=<no location>
+              body: block source=""
