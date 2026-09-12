@@ -1,5 +1,6 @@
 /**
  * @kind test-postprocess
+ * @tags inline-expectation-test
  */
 
 private import unified
@@ -17,5 +18,15 @@ private module Input implements T::TestPostProcessing::InputSig<Impl> {
       result =
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // The unified extractor is a new tree-sitter-based extractor that currently ingests only
+    // Swift sources (see `file_types` in its `codeql-extractor.yml`), which use `//`. Gating on
+    // the extension keeps this correct if it later gains a language with a different comment
+    // syntax.
+    relativePath.regexpMatch(".*\\.(swift|swiftinterface)") and
+    result = "//"
   }
 }
