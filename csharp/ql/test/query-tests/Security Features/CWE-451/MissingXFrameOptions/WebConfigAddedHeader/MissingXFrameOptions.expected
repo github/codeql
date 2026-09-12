@@ -1,0 +1,2 @@
+| CspSubstring.Web.config:0:0:0:0 | CspSubstring.Web.config | Configuration file is missing clickjacking protection. |
+| PrefixedCsp.Web.config:0:0:0:0 | PrefixedCsp.Web.config | Configuration file is missing clickjacking protection. |
