@@ -12,14 +12,14 @@ private predicate relevantNode(AstNode n) {
 }
 
 query predicate inferCertainType(AstNode n, TypePath path, Type t) {
-  t = TypeInference::CertainTypeInference::inferCertainType(n, path) and
-  t != TUnknownType() and
+  t = TypeInference::inferTypeCertain(n, path) and
+  not t instanceof PseudoType and
   relevantNode(n)
 }
 
 query predicate inferType(AstNode n, TypePath path, Type t) {
   t = TypeInference::inferType(n, path) and
-  t != TUnknownType() and
+  not t instanceof PseudoType and
   relevantNode(n)
 }
 
@@ -59,26 +59,4 @@ module ResolveTest implements TestSig {
   }
 }
 
-module TypeTest implements TestSig {
-  string getARelevantTag() { result = ["type", "certainType"] }
-
-  predicate hasActualResult(Location location, string element, string tag, string value) { none() }
-
-  predicate hasOptionalResult(Location location, string element, string tag, string value) {
-    exists(AstNode n, TypePath path, Type t, string at |
-      t = TypeInference::inferType(n, path) and
-      (
-        tag = "type"
-        or
-        t = TypeInference::CertainTypeInference::inferCertainType(n, path) and
-        tag = "certainType"
-      ) and
-      location = n.getLocation() and
-      (if path.isEmpty() then at = "" else at = "@" + TypePath::printTypePathVerbose(path)) and
-      value = element + at + ":" + t.toString() and
-      element = [n.toString(), n.(IdentPat).getName().getText()]
-    )
-  }
-}
-
-import MakeTest<MergeTests<ResolveTest, TypeTest>>
+import MakeTest<MergeTests<ResolveTest, TypeInference::TypeTest>>
