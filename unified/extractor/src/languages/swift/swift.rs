@@ -297,14 +297,22 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((sequenceExpr elements: _* @els) => (unresolved_operator_sequence element: {els})),
         // Prefix unary operators (`!a`, `-x`).
         rule!((prefixOperatorExpr operator: @op expression: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
-        // A `tupleExpr` is a tuple literal (`(a, b)`) or a parenthesised
-        // expression (`(x)`). For now it is kept as an opaque `tuple_expr` leaf
-        // (its source text); its elements are not descended into.
-        //
-        // TODO: a parenthesised single-element `tupleExpr` is really a grouping
-        // expression and should be elided (unwrapped to its inner expression)
-        // rather than modelled as a tuple.
-        rule!((tupleExpr) => (tuple_expr)),
+        // A single-element `tupleExpr` is a parenthesised expression, so elide
+        // the grouping rather than modelling it as a tuple.
+        rule!(
+            (tupleExpr
+                elements: (labeledExpr
+                    label: _? @label
+                    expression: @e
+                    trailingComma: _? @trailing_comma)
+                elements: _* @rest)
+            where label.is_none() && trailing_comma.is_none() && rest.is_empty()
+            =>
+            expr { e }
+        ),
+        // Other `tupleExpr` forms are tuple literals. Their labelled
+        // expressions translate to `argument`s.
+        rule!((tupleExpr elements: _* @els) => (tuple_expr element: {els})),
         // A code block contains its statements directly.
         rule!((codeBlock statements: _* @stmts) => (block stmt: {stmts})),
         // ---- Properties with accessors ----
