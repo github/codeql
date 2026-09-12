@@ -206,6 +206,9 @@ private module Input implements TypeFlowInput<Location> {
 
   predicate isNullValue(TypeFlowNode n) { n.isNullValue() }
 
+  overlay[local]
+  predicate isEvaluatingInOverlay() { none() }
+
   private newtype TType =
     TSingle() or
     TBuffer()
