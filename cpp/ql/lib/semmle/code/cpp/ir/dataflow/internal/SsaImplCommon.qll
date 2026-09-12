@@ -174,19 +174,6 @@ private class PointerOrArrayOrReferenceTypeIndirection extends Indirection insta
   }
 }
 
-private class PointerWrapperTypeIndirection extends Indirection instanceof PointerWrapper {
-  PointerWrapperTypeIndirection() { baseType = PointerWrapper.super.getBaseType() }
-
-  override predicate isAdditionalDereference(Instruction deref, Operand address) {
-    exists(CallInstruction call |
-      operandForFullyConvertedCall(getAUse(deref), call) and
-      this =
-        call.getStaticCallTarget().(Function).getClassAndName(["operator*", "operator->", "get"]) and
-      address = call.getThisArgumentOperand()
-    )
-  }
-}
-
 private module IteratorIndirections {
   import semmle.code.cpp.models.interfaces.Iterator as Interfaces
   import semmle.code.cpp.models.implementations.Iterator as Iterator
