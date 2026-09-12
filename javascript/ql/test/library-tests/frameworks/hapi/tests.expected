@@ -14,6 +14,7 @@ test_RouteSetup
 | src/hapihapi.js:17:1:18:2 | server2 ... dler\\n}) |
 | src/hapihapi.js:29:1:29:20 | server2.route(route) |
 | src/hapihapi.js:36:1:36:38 | server2 ... ler()}) |
+| src/wrapped-route.js:38:5:38:38 | server. ... apped)) |
 test_RequestExpr
 | src/hapi.js:13:32:13:38 | request | src/hapi.js:13:14:15:5 | functio ... n\\n    } |
 | src/hapi.js:13:32:13:38 | request | src/hapi.js:13:14:15:5 | functio ... n\\n    } |
@@ -56,6 +57,9 @@ test_RequestExpr
 | src/hapihapi.js:25:3:25:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:26:3:26:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:34:22:34:24 | req | src/hapihapi.js:34:12:34:30 | function (req, h){} |
+| src/wrapped-route.js:11:30:11:36 | request | src/wrapped-route.js:11:14:13:5 | async f ... ;\\n    } |
+| src/wrapped-route.js:11:30:11:36 | request | src/wrapped-route.js:11:14:13:5 | async f ... ;\\n    } |
+| src/wrapped-route.js:12:22:12:28 | request | src/wrapped-route.js:11:14:13:5 | async f ... ;\\n    } |
 test_HeaderAccess
 | src/hapi.js:25:3:25:21 | request.headers.baz | baz |
 | src/hapiglue.js:27:3:27:21 | request.headers.baz | baz |
@@ -80,6 +84,7 @@ test_RouteHandler
 | src/hapihapi.js:17:30:18:1 | functio ... ndler\\n} | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
 | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
 | src/hapihapi.js:34:12:34:30 | function (req, h){} | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
+| src/wrapped-route.js:11:14:13:5 | async f ... ;\\n    } | src/wrapped-route.js:42:10:42:26 | new Hapi.Server() |
 test_HeaderDefinition
 | src/hapi.js:14:9:14:46 | request ... 1', '') | src/hapi.js:13:14:15:5 | functio ... n\\n    } |
 | src/hapiglue.js:14:9:14:46 | request ... 1', '') | src/hapiglue.js:13:14:15:5 | functio ... n\\n    } |
@@ -93,6 +98,7 @@ test_ServerDefinition
 | src/hapiglue.js:44:45:44:51 | server_ |
 | src/hapihapi.js:1:15:1:50 | new (re ... erver() |
 | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
+| src/wrapped-route.js:42:10:42:26 | new Hapi.Server() |
 test_RequestInputAccess
 | src/hapi.js:21:3:21:20 | request.rawPayload | body | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:22:3:22:21 | request.payload.foo | body | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
@@ -114,6 +120,7 @@ test_RequestInputAccess
 | src/hapihapi.js:24:3:24:18 | request.url.path | url | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:25:3:25:21 | request.headers.baz | header | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:26:3:26:21 | request.state.token | cookie | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/wrapped-route.js:12:22:12:34 | request.query | parameter | src/wrapped-route.js:11:14:13:5 | async f ... ;\\n    } |
 test_RouteSetup_getServer
 | src/hapi.js:7:1:9:2 | server2 ... ler1\\n}) | src/hapi.js:4:15:4:31 | new Hapi.Server() |
 | src/hapi.js:12:1:15:7 | server2 ...     }}) | src/hapi.js:4:15:4:31 | new Hapi.Server() |
@@ -130,6 +137,7 @@ test_RouteSetup_getServer
 | src/hapihapi.js:17:1:18:2 | server2 ... dler\\n}) | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
 | src/hapihapi.js:29:1:29:20 | server2.route(route) | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
 | src/hapihapi.js:36:1:36:38 | server2 ... ler()}) | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
+| src/wrapped-route.js:38:5:38:38 | server. ... apped)) | src/wrapped-route.js:42:10:42:26 | new Hapi.Server() |
 test_HeaderDefinition_defines
 | src/hapi.js:14:9:14:46 | request ... 1', '') | header1 |  |
 | src/hapiglue.js:14:9:14:46 | request ... 1', '') | header1 |  |
@@ -156,6 +164,7 @@ test_RouteSetup_getARouteHandler
 | src/hapihapi.js:36:1:36:38 | server2 ... ler()}) | src/hapihapi.js:33:1:35:1 | return of function getHandler |
 | src/hapihapi.js:36:1:36:38 | server2 ... ler()}) | src/hapihapi.js:34:12:34:30 | function (req, h){} |
 | src/hapihapi.js:36:1:36:38 | server2 ... ler()}) | src/hapihapi.js:36:25:36:36 | getHandler() |
+| src/wrapped-route.js:38:5:38:38 | server. ... apped)) | src/wrapped-route.js:11:14:13:5 | async f ... ;\\n    } |
 test_RouteHandler_getARequestExpr
 | src/hapi.js:13:14:15:5 | functio ... n\\n    } | src/hapi.js:13:32:13:38 | request |
 | src/hapi.js:13:14:15:5 | functio ... n\\n    } | src/hapi.js:13:32:13:38 | request |
@@ -198,6 +207,9 @@ test_RouteHandler_getARequestExpr
 | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:25:3:25:9 | request |
 | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:26:3:26:9 | request |
 | src/hapihapi.js:34:12:34:30 | function (req, h){} | src/hapihapi.js:34:22:34:24 | req |
+| src/wrapped-route.js:11:14:13:5 | async f ... ;\\n    } | src/wrapped-route.js:11:30:11:36 | request |
+| src/wrapped-route.js:11:14:13:5 | async f ... ;\\n    } | src/wrapped-route.js:11:30:11:36 | request |
+| src/wrapped-route.js:11:14:13:5 | async f ... ;\\n    } | src/wrapped-route.js:12:22:12:28 | request |
 test_HeaderDefinition_getAHeaderName
 | src/hapi.js:14:9:14:46 | request ... 1', '') | header1 |
 | src/hapiglue.js:14:9:14:46 | request ... 1', '') | header1 |
@@ -206,3 +218,5 @@ test_RouteHandler_getAResponseHeader
 | src/hapi.js:13:14:15:5 | functio ... n\\n    } | header1 | src/hapi.js:14:9:14:46 | request ... 1', '') |
 | src/hapiglue.js:13:14:15:5 | functio ... n\\n    } | header1 | src/hapiglue.js:14:9:14:46 | request ... 1', '') |
 | src/hapihapi.js:13:14:15:5 | functio ... n\\n    } | header1 | src/hapihapi.js:14:9:14:46 | request ... 1', '') |
+test_WrappedRouteFlow
+| src/wrapped-route.js:12:22:12:34 | request.query | src/wrapped-route.js:24:8:24:13 | filter |
