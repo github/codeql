@@ -21,3 +21,17 @@ extension A { // $ access=A
         extensionMethod2() // $ access=A.extensionMethod2
     }
 }
+
+class B {
+}
+
+extension B { // $ access=B
+    class C { // name=B.C
+        class D {} // name=B.C.D
+    }
+}
+extension B { // $ access=B
+    class Nested : C { // $ access=B.C
+        let x : D // $ MISSING: access=B.C.D
+    }
+}
