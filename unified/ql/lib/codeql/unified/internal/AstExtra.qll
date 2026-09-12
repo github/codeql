@@ -3,6 +3,7 @@
  */
 
 private import unified
+private import codeql.unified.internal.NameBindingPlugin
 
 module Public {
   /** A short-circuiting logical AND expression. */
@@ -29,24 +30,14 @@ module Public {
    * Declaration of a local or top-level variable.
    */
   class LocalVariableDeclaration extends VariableDeclaration {
-    private Block block;
-
-    LocalVariableDeclaration() { this = block.getStmt(_) }
-
-    /** Gets the block in which this variable is declared. */
-    Block getDeclaringBlock() { result = block }
+    LocalVariableDeclaration() { not isStaticMember(this) and not isInstanceMember(this) }
   }
 
   /**
    * Declaration of a local or top-level function.
    */
   class LocalFunctionDeclaration extends FunctionDeclaration {
-    private Block block;
-
-    LocalFunctionDeclaration() { this = block.getStmt(_) }
-
-    /** Gets the block in which this function is declared. */
-    Block getDeclaringBlock() { result = block }
+    LocalFunctionDeclaration() { not isStaticMember(this) and not isInstanceMember(this) }
   }
 
   /**
@@ -67,5 +58,17 @@ module Public {
   /** A `Stmt` at the top-level. */
   final class TopLevelStmt extends Stmt {
     TopLevelStmt() { this = any(TopLevel t).getBody().getAStmt() }
+  }
+
+  /** An identifier appearing in the context of an expression, pattern, or type annotation. */
+  final class IdentifierExpr extends Identifier {
+    IdentifierExpr() {
+      not this = any(MemberAccessExpr e).getMemberNameNode() and
+      not this = any(Argument a).getNameNode() and
+      not this = any(Parameter p).getExternalNameNode() and
+      not this = any(LabeledStmt stmt).getLabelNameNode() and
+      not this = any(BreakExpr expr).getLabelNameNode() and
+      not this = any(ContinueExpr expr).getLabelNameNode()
+    }
   }
 }

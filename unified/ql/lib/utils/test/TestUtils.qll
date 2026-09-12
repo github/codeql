@@ -1,15 +1,15 @@
 private import unified
 private import CommentUtil
-private import codeql.unified.internal.StaticNameBinding
+private import codeql.unified.internal.NameBinding
 
 private string deriveClassName(ClassLikeDeclaration cls) {
-  not exists(cls.getParent().getEnclosingClass()) and
-  result = cls.getName().getValue()
+  not exists(cls.getEnclosingClass()) and
+  result = cls.getName()
   or
-  result = deriveClassName(cls.getParent().getEnclosingClass()) + "." + cls.getName().getValue()
+  result = deriveClassName(cls.getEnclosingClass()) + "." + cls.getName()
 }
 
-private string defaultName(NameDeclaration decl) {
+private string defaultName(NameBinding decl) {
   exists(ClassLikeDeclaration cls |
     decl.getDeclaration() = cls.getAMember() and
     result = deriveClassName(cls) + "." + decl.getName()
@@ -19,11 +19,12 @@ private string defaultName(NameDeclaration decl) {
   result = decl.getName()
 }
 
-private predicate declAt(NameDeclaration v, string filepath, int line) {
+private predicate declAt(NameBinding v, string filepath, int line) {
   v.getLocation().hasLocationInfo(filepath, line, _, _, _)
 }
 
-predicate nameDeclaration(NameDeclaration v, string alias) {
+/** Holds if the name-binding `v` has been assigned the given `alias` by a comment in the test code. */
+predicate nameBinding(NameBinding v, string alias) {
   exists(string filepath, int line | declAt(v, filepath, line) |
     keyValueCommentAt(filepath, line, "name", alias)
     or

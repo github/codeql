@@ -13,7 +13,7 @@ import unified
 
 external string selectedSourceFile();
 
-from Identifier reference, NameDeclaration definition, string kind
+from Identifier reference, NameBinding definition, string kind
 where
   definitionOf(reference, definition, kind) and
   reference.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())

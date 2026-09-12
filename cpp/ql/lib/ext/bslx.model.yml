@@ -10,27 +10,10 @@ extensions:
       # tainted stream; a stream reset with a clean buffer keeps any earlier taint.
       - ["BloombergLP::bslx", "ByteInStream", true, "ByteInStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
       - ["BloombergLP::bslx", "ByteInStream", true, "reset", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
-      # Taint out: the stream (`this`) taints the deserialized output variable/buffer.
-      - ["BloombergLP::bslx", "ByteInStream", true, "getLength", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getVersion", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getInt8", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getUint8", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getInt16", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getUint16", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getInt24", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getUint24", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getInt32", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getUint32", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getInt40", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getUint40", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getInt48", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getUint48", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getInt56", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getUint56", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getInt64", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getUint64", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getFloat32", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "ByteInStream", true, "getFloat64", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      # Taint out: the stream (`this`) taints the deserialized string/array output buffer.
+      # Scalar getters (getLength, getVersion, getInt*, getUint*, getFloat*) are deliberately
+      # not modeled as outputs: most queries sanitize taint through integers, so such rows
+      # would add nothing. Their fluent `ReturnValue[*]` rows below are still modeled.
       - ["BloombergLP::bslx", "ByteInStream", true, "getString", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
       - ["BloombergLP::bslx", "ByteInStream", true, "getArrayInt8", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
       - ["BloombergLP::bslx", "ByteInStream", true, "getArrayUint8", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
@@ -93,27 +76,10 @@ extensions:
       # === bslx::GenericInStream<STREAMBUF>: streambuf-backed in-stream ===
       # Taint in: the source buffer/streambuf taints the stream (`this`).
       - ["BloombergLP::bslx", "GenericInStream", true, "GenericInStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
-      # Taint out: the stream (`this`) taints the deserialized output variable/buffer.
-      - ["BloombergLP::bslx", "GenericInStream", true, "getLength", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getVersion", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getInt8", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getUint8", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getInt16", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getUint16", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getInt24", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getUint24", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getInt32", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getUint32", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getInt40", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getUint40", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getInt48", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getUint48", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getInt56", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getUint56", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getInt64", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getUint64", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getFloat32", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["BloombergLP::bslx", "GenericInStream", true, "getFloat64", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      # Taint out: the stream (`this`) taints the deserialized string/array output buffer.
+      # Scalar getters (getLength, getVersion, getInt*, getUint*, getFloat*) are deliberately
+      # not modeled as outputs: most queries sanitize taint through integers, so such rows
+      # would add nothing. Their fluent `ReturnValue[*]` rows below are still modeled.
       - ["BloombergLP::bslx", "GenericInStream", true, "getString", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
       - ["BloombergLP::bslx", "GenericInStream", true, "getArrayInt8", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
       - ["BloombergLP::bslx", "GenericInStream", true, "getArrayUint8", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
@@ -175,5 +141,6 @@ extensions:
       - ["BloombergLP::bslx", "GenericInStream", true, "getArrayFloat64", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
       # === bslx::InStreamFunctions::bdexStreamIn: generic BDEX deserialization ===
       # Free function template; `InStreamFunctions` is a namespace, so `type` is empty.
-      - ["BloombergLP::bslx::InStreamFunctions", "", false, "bdexStreamIn", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      # Object outputs are modeled in implementations/Bslx.qll, where their type
+      # can be checked to exclude scalar outputs.
       - ["BloombergLP::bslx::InStreamFunctions", "", false, "bdexStreamIn", "", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]

@@ -125,6 +125,12 @@ namespace bslx {
 	namespace InStreamFunctions {
 		template <class STREAM, class TYPE>
 		STREAM &bdexStreamIn(STREAM &stream, TYPE &variable);
+		template <class STREAM, class TYPE>
+		STREAM &bdexStreamIn(STREAM &stream, TYPE &variable, int version);
+		template <class STREAM>
+		STREAM &bdexStreamIn(STREAM &stream, int &variable, int version = 0) {
+			return stream.getInt32(variable);
+		}
 	}
 }
 }
@@ -137,12 +143,12 @@ void sink(char);
 
 // --- flow tests (source -> sink) ---
 
-void test_ByteInStream_getInt32() {
+void test_ByteInStream_getInt32_no_flow() {
 	std::string data = std::string(source());
 	BloombergLP::bslx::ByteInStream stream(data.data(), data.size());
 	int x = 0;
 	stream.getInt32(x);
-	sink(x); // $ ir
+	sink(x); // no flow: scalar outputs are deliberately not modeled
 }
 
 void test_ByteInStream_getArrayInt8() {
@@ -165,35 +171,44 @@ void test_ByteInStream_chained() {
 	std::string data = std::string(source());
 	BloombergLP::bslx::ByteInStream stream(data.data(), data.size());
 	int a = 0;
-	int b = 0;
-	stream.getInt32(a).getInt32(b);
-	sink(b); // $ ir
+	bsl::string out;
+	stream.getInt32(a).getString(out);
+	sink(*out.data()); // $ ir
 }
 
 void test_ByteInStream_reset() {
 	BloombergLP::bslx::ByteInStream stream;
 	std::string data = std::string(source());
 	stream.reset(data.data(), data.size());
-	int x = 0;
-	stream.getInt32(x);
-	sink(x); // $ ir
+	bsl::string out;
+	stream.getString(out);
+	sink(*out.data()); // $ ir
 }
 
 void test_GenericInStream_flow() {
 	std::string data = std::string(source());
 	MyStreamBuf *sb = (MyStreamBuf *)data.data();
 	BloombergLP::bslx::GenericInStream<MyStreamBuf> stream(sb);
+	bsl::string out;
+	stream.getString(out);
+	sink(*out.data()); // $ ir
+}
+
+void test_GenericInStream_getInt32_no_flow() {
+	std::string data = std::string(source());
+	MyStreamBuf *sb = (MyStreamBuf *)data.data();
+	BloombergLP::bslx::GenericInStream<MyStreamBuf> stream(sb);
 	int x = 0;
 	stream.getInt32(x);
-	sink(x); // $ ir
+	sink(x); // no flow: scalar outputs are deliberately not modeled
 }
 
 void test_bdexStreamIn() {
 	std::string data = std::string(source());
 	BloombergLP::bslx::ByteInStream stream(data.data(), data.size());
-	int obj = 0;
+	bsl::string obj;
 	BloombergLP::bslx::InStreamFunctions::bdexStreamIn(stream, obj);
-	sink(obj); // $ ir
+	sink(*obj.data()); // $ ir
 }
 
 // --- coverage: call every modeled getter so steps.ql verifies each row is consumed ---
@@ -246,4 +261,39 @@ void coverage_GenericInStream(BloombergLP::bslx::GenericInStream<MyStreamBuf> &s
 	float fbuf[16];
 	double dbuf[16];
 	stream.getLength(i).getVersion(i).getInt8(c).getUint8(uc).getInt16(s).getUint16(us).getInt24(i).getUint24(ui).getInt32(i).getUint32(ui).getInt40(ll).getUint40(ull).getInt48(ll).getUint48(ull).getInt56(ll).getUint56(ull).getInt64(ll).getUint64(ull).getFloat32(f).getFloat64(d).getString(str).getArrayInt8(cbuf, 16).getArrayUint8(ucbuf, 16).getArrayInt16(sbuf, 16).getArrayUint16(usbuf, 16).getArrayInt24(ibuf, 16).getArrayUint24(uibuf, 16).getArrayInt32(ibuf, 16).getArrayUint32(uibuf, 16).getArrayInt40(llbuf, 16).getArrayUint40(ullbuf, 16).getArrayInt48(llbuf, 16).getArrayUint48(ullbuf, 16).getArrayInt56(llbuf, 16).getArrayUint56(ullbuf, 16).getArrayInt64(llbuf, 16).getArrayUint64(ullbuf, 16).getArrayFloat32(fbuf, 16).getArrayFloat64(dbuf, 16);
+}
+
+void test_bdexStreamIn_integer_no_flow() {
+	std::string data = std::string(source());
+	BloombergLP::bslx::ByteInStream stream(data.data(), data.size());
+	int x = 0;
+	BloombergLP::bslx::InStreamFunctions::bdexStreamIn(stream, x);
+	sink(x); // no flow: scalar outputs are deliberately not modeled
+	BloombergLP::bslx::InStreamFunctions::bdexStreamIn(stream, x, 0);
+	sink(x); // no flow: the versioned overload must also exclude scalar outputs
+	bsl::string out;
+	BloombergLP::bslx::InStreamFunctions::bdexStreamIn(stream, x, 0).getString(out);
+	sink(*out.data()); // $ ir
+}
+
+void test_bdexStreamIn_versioned_string() {
+	std::string data = std::string(source());
+	BloombergLP::bslx::ByteInStream stream(data.data(), data.size());
+	bsl::string out;
+	BloombergLP::bslx::InStreamFunctions::bdexStreamIn(stream, out, 1);
+	sink(*out.data()); // $ ir
+}
+
+struct BdexObject {
+	int value;
+};
+
+void sink(BdexObject);
+
+void test_bdexStreamIn_object() {
+	std::string data = std::string(source());
+	BloombergLP::bslx::ByteInStream stream(data.data(), data.size());
+	BdexObject out;
+	BloombergLP::bslx::InStreamFunctions::bdexStreamIn(stream, out, 1);
+	sink(out); // $ ir
 }

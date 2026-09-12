@@ -44,14 +44,10 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "first"
+          pattern: identifier "first"
           value:
             call_expr
-              callee:
-                name_expr
-                  identifier: identifier "xs"
+              callee: identifier "xs"
               argument:
                 argument
                   value: int_literal "0"

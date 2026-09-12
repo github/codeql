@@ -23,12 +23,47 @@ module Unified {
       )
     }
 
-    /** Gets the nearest enclosing class declaration, possibly this node itself. */
+    /** Gets the nearest enclosing class declaration, if any. */
     ClassLikeDeclaration getEnclosingClass() {
-      result = this
-      or
-      not this instanceof ClassLikeDeclaration and
-      result = this.getParent().getEnclosingClass()
+      exists(AstNode parent | parent = this.getParent() |
+        result = parent
+        or
+        not parent instanceof ClassLikeDeclaration and
+        result = parent.getEnclosingClass()
+      )
+    }
+
+    private AstNode overrideEnclosingCallableParent() {
+      exists(FunctionExpr func |
+        // Capture declarations are evaluated as part of the outer context, and
+        // considered to be captured by the function expression.
+        this = func.getACaptureDeclaration() and
+        result = func.getParent()
+      )
+    }
+
+    /**
+     * Gets the nearest callable containing this AST node.
+     *
+     * If this node is itself a callable, this gets the outer callable, not the node itself.
+     *
+     * Note that the `TopLevel` is callable, so all nodes other than the `TopLevel` itself has an enclosing callable.
+     *
+     * In some cases this predicate skips overs the syntactically-enclosing callable in order to get the callable in which
+     * the AST is actually evaluated (such as for capture declarations in a function expression).
+     */
+    Callable getEnclosingCallable() {
+      exists(AstNode parent |
+        parent = this.overrideEnclosingCallableParent()
+        or
+        not exists(this.overrideEnclosingCallableParent()) and
+        parent = this.getParent()
+      |
+        result = parent
+        or
+        not parent instanceof Callable and
+        result = parent.getEnclosingCallable()
+      )
     }
 
     /** Gets the depth of this node in the AST. The root node has a depth of 0. */
@@ -53,8 +88,97 @@ module Unified {
     string getStringValue() {
       // TODO: we'll want to cook the string literals extractor-side, but for now
       // just strip the quotes here and ignore escape sequences.
-      result = this.(StringLiteral).getValue().regexpCapture("\"(.*)\"", 1)
+      exists(string text | text = this.(StringLiteral).getValue() |
+        result = text.regexpCapture("\"(.*)\"", 1)
+        or
+        // Constant-segments of string interpolations are represented as string literals, but their raw text does not have quotes
+        not exists(text.regexpCapture("\"(.*)\"", 1)) and
+        result = text
+      )
     }
+
+    /** Gets the immediately-enclosing expression, skipping over intermediate sub-nodes like `Argument`, and without crossing a function boundary. */
+    Expr getEnclosingExpr() {
+      result = this.getParent() and
+      not result instanceof Callable
+      or
+      result = this.getParent().(Argument).getParent()
+    }
+  }
+
+  class AccessorDeclaration extends G::AccessorDeclaration {
+    /** Gets the name of this accessor. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class Argument extends G::Argument {
+    /** Gets the name of this argument. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class AssociatedTypeDeclaration extends G::AssociatedTypeDeclaration {
+    /** Gets the name of this associated type. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class BreakExpr extends G::BreakExpr {
+    /** Gets the label name targeted by this break. */
+    string getLabelName() { result = this.getLabelNameNode().getValue() }
+  }
+
+  class ClassLikeDeclaration extends G::ClassLikeDeclaration {
+    /** Gets the name of this declaration. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class ConstructorDeclaration extends G::ConstructorDeclaration {
+    /** Gets the name of this constructor. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class ContinueExpr extends G::ContinueExpr {
+    /** Gets the label name targeted by this continue. */
+    string getLabelName() { result = this.getLabelNameNode().getValue() }
+  }
+
+  class FunctionDeclaration extends G::FunctionDeclaration {
+    /** Gets the name of this function. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class LabeledStmt extends G::LabeledStmt {
+    /** Gets the label name of this statement. */
+    string getLabelName() { result = this.getLabelNameNode().getValue() }
+  }
+
+  class MemberAccessExpr extends G::MemberAccessExpr {
+    /** Gets the member name of this access. */
+    string getMemberName() { result = this.getMemberNameNode().getValue() }
+  }
+
+  class NamedPattern extends G::NamedPattern {
+    /** Gets the name bound by this pattern. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class OperatorSyntaxDeclaration extends G::OperatorSyntaxDeclaration {
+    /** Gets the name of this operator. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class Parameter extends G::Parameter {
+    /** Gets the external name of this parameter. */
+    string getExternalName() { result = this.getExternalNameNode().getValue() }
+  }
+
+  class TypeAliasDeclaration extends G::TypeAliasDeclaration {
+    /** Gets the name of this type alias. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class TypeParameter extends G::TypeParameter {
+    /** Gets the name of this type parameter. */
+    string getName() { result = this.getNameNode().getValue() }
   }
 
   /** A binary expression. */
@@ -69,19 +193,9 @@ module Unified {
     Expr getNamedArgument(string name) {
       exists(Argument arg |
         arg = this.getAnArgument() and
-        arg.getName().getValue() = name and
+        arg.getName() = name and
         result = arg.getValue()
       )
-    }
-  }
-
-  /** The base class for all patterns. */
-  class Pattern extends G::Pattern {
-    /** Gets the immediately-enclosing pattern in which this is a nested pattern. */
-    Pattern getEnclosingPattern() {
-      result = this.getParent()
-      or
-      result = this.getParent().(PatternElement).getParent()
     }
   }
 }

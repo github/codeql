@@ -460,7 +460,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return true;
             }
 
-            if (!feedManager.CheckNugetFeedResponsiveness && res.HasNugetPackageSourceError && nugetSources.Count > 0)
+            if (!feedManager.CheckNugetFeedResponsiveness && !feedManager.HasPrivateRegistryFeeds && res.HasNugetPackageSourceError && nugetSources.Count > 0)
             {
                 logger.LogDebug($"Trying to restore '{package}' without explicitly providing NuGet sources.");
                 // Restore could not be completed because the listed source is unavailable. Try without an explicit restore source argument.

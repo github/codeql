@@ -39,13 +39,9 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "n"
+          pattern: identifier "n"
           value:
             binary_expr
-              left:
-                name_expr
-                  identifier: identifier "opt"
+              left: identifier "opt"
               operator: infix_operator "??"
               right: int_literal "0"

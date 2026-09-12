@@ -1,196 +1,80 @@
 {
+    "$end": 10,
+    "$lineStarts": [
+        0,
+        10
+    ],
+    "$pos": 0,
     "endOfFileToken": {
+        "$end": 10,
+        "$pos": 10,
         "kind": "token",
-        "range": {
-            "end": {
-                "column": 1,
-                "line": 2,
-                "offset": 10
-            },
-            "start": {
-                "column": 1,
-                "line": 2,
-                "offset": 10
-            }
-        },
         "text": "",
         "tokenKind": "endOfFile"
     },
     "kind": "sourceFile",
-    "range": {
-        "end": {
-            "column": 1,
-            "line": 2,
-            "offset": 10
-        },
-        "start": {
-            "column": 1,
-            "line": 1,
-            "offset": 0
-        }
-    },
     "statements": [
         {
+            "$end": 9,
+            "$pos": 0,
             "item": {
+                "$end": 9,
+                "$pos": 0,
                 "attributes": [],
                 "bindings": [
                     {
+                        "$end": 9,
+                        "$pos": 4,
                         "initializer": {
+                            "$end": 9,
+                            "$pos": 6,
                             "equal": {
+                                "$end": 7,
+                                "$pos": 6,
                                 "kind": "token",
-                                "range": {
-                                    "end": {
-                                        "column": 8,
-                                        "line": 1,
-                                        "offset": 7
-                                    },
-                                    "start": {
-                                        "column": 7,
-                                        "line": 1,
-                                        "offset": 6
-                                    }
-                                },
                                 "text": "=",
                                 "tokenKind": "equal"
                             },
                             "kind": "initializerClause",
-                            "range": {
-                                "end": {
-                                    "column": 10,
-                                    "line": 1,
-                                    "offset": 9
-                                },
-                                "start": {
-                                    "column": 7,
-                                    "line": 1,
-                                    "offset": 6
-                                }
-                            },
                             "value": {
+                                "$end": 9,
+                                "$pos": 8,
                                 "kind": "integerLiteralExpr",
                                 "literal": {
+                                    "$end": 9,
+                                    "$pos": 8,
                                     "kind": "token",
-                                    "range": {
-                                        "end": {
-                                            "column": 10,
-                                            "line": 1,
-                                            "offset": 9
-                                        },
-                                        "start": {
-                                            "column": 9,
-                                            "line": 1,
-                                            "offset": 8
-                                        }
-                                    },
                                     "text": "1",
                                     "tokenKind": "integerLiteral(\"1\")"
-                                },
-                                "range": {
-                                    "end": {
-                                        "column": 10,
-                                        "line": 1,
-                                        "offset": 9
-                                    },
-                                    "start": {
-                                        "column": 9,
-                                        "line": 1,
-                                        "offset": 8
-                                    }
                                 }
                             }
                         },
                         "kind": "patternBinding",
                         "pattern": {
+                            "$end": 5,
+                            "$pos": 4,
                             "identifier": {
+                                "$end": 5,
+                                "$pos": 4,
                                 "kind": "token",
-                                "range": {
-                                    "end": {
-                                        "column": 6,
-                                        "line": 1,
-                                        "offset": 5
-                                    },
-                                    "start": {
-                                        "column": 5,
-                                        "line": 1,
-                                        "offset": 4
-                                    }
-                                },
                                 "text": "x",
                                 "tokenKind": "identifier(\"x\")"
                             },
-                            "kind": "identifierPattern",
-                            "range": {
-                                "end": {
-                                    "column": 6,
-                                    "line": 1,
-                                    "offset": 5
-                                },
-                                "start": {
-                                    "column": 5,
-                                    "line": 1,
-                                    "offset": 4
-                                }
-                            }
-                        },
-                        "range": {
-                            "end": {
-                                "column": 10,
-                                "line": 1,
-                                "offset": 9
-                            },
-                            "start": {
-                                "column": 5,
-                                "line": 1,
-                                "offset": 4
-                            }
+                            "kind": "identifierPattern"
                         }
                     }
                 ],
                 "bindingSpecifier": {
+                    "$end": 3,
+                    "$pos": 0,
                     "kind": "token",
-                    "range": {
-                        "end": {
-                            "column": 4,
-                            "line": 1,
-                            "offset": 3
-                        },
-                        "start": {
-                            "column": 1,
-                            "line": 1,
-                            "offset": 0
-                        }
-                    },
                     "text": "let",
                     "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
                 },
                 "kind": "variableDecl",
-                "modifiers": [],
-                "range": {
-                    "end": {
-                        "column": 10,
-                        "line": 1,
-                        "offset": 9
-                    },
-                    "start": {
-                        "column": 1,
-                        "line": 1,
-                        "offset": 0
-                    }
-                }
+                "modifiers": []
             },
-            "kind": "codeBlockItem",
-            "range": {
-                "end": {
-                    "column": 10,
-                    "line": 1,
-                    "offset": 9
-                },
-                "start": {
-                    "column": 1,
-                    "line": 1,
-                    "offset": 0
-                }
-            }
+            "kind": "codeBlockItem"
         }
     ]
 }

@@ -44,15 +44,13 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "y"
+          pattern: identifier "y"
           value:
             call_expr
               callee:
                 member_access_expr
                   base: inferred_type_expr "."
-                  member: identifier "some"
+                  member_name_node: identifier "some"
               argument:
                 argument
                   value: int_literal "1"

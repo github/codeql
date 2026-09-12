@@ -1,10 +1,8 @@
 private import unified
 private import codeql.util.ReportStats
-private import codeql.unified.internal.StaticNameBinding
-private import codeql.unified.internal.LocalNameBinding
-private import codeql.unified.internal.NameBindingPlugin
+private import codeql.unified.internal.NameBinding
 
-/** Stats about identifiers that static name binding could resolve. */
+/** Stats about name nodes that static name binding could resolve. */
 module StaticNameResolutionStats implements EntityStatsSig {
   /**
    * Holds if `name` has been positively identified as referring to a value, so static name binding
@@ -44,15 +42,21 @@ module StaticNameResolutionStats implements EntityStatsSig {
         this = getIdentifierFromRef(ref) and
         not memberAccessDependsOnTypeInference(ref)
       ) and
-      not this instanceof NameDeclaration
+      not this instanceof NameBinding
     }
 
     NameBindingNode getTarget() {
-      (
-        result.asIdentifier() = getStaticBindingTarget(this)
-        or
-        result.isModuleScopeNode(_) and
-        result.(NamespaceNode).ref().isIdentifier(this)
+      result.asIdentifier() = getStaticBindingTarget(this)
+      or
+      result.isModuleScopeNode(_) and
+      result.(NamespaceNode).ref().isIdentifier(this)
+      or
+      // Resolving to an implicitly-declared local such as "self" should count as
+      // as a successfully resolved name
+      exists(LocalName implicitLocal |
+        implicitLocal = this.(LocalNameAccess).getLocalName() and
+        not exists(implicitLocal.getABinding()) and
+        result.isLocalName(implicitLocal)
       )
     }
 

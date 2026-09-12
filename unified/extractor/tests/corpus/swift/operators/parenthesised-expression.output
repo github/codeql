@@ -41,6 +41,4 @@ top_level
         binary_expr
           left: tuple_expr "(a + b)"
           operator: infix_operator "*"
-          right:
-            name_expr
-              identifier: identifier "c"
+          right: identifier "c"

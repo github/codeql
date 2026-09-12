@@ -68,9 +68,7 @@ top_level
                 unary_expr
                   operand:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "foo"
+                      callee: identifier "foo"
                   operator: prefix_operator "try"
           catch_clause:
             catch_clause
@@ -78,11 +76,7 @@ top_level
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "error"
+                          value: identifier "error"

@@ -135,7 +135,7 @@ func t16() throws {
 
 // Closure captures
 func t17() {
-    let x = 1 // name=x1
+    let x = 1 // $ captured=x1 // name=x1
     let closure = { // name=closure1
         print(x) // $ access=x1
     }
@@ -181,7 +181,7 @@ func t21() {
 // Nested functions
 func t22() {
     let x = 1 // name=x1
-    func inner() { // name=inner1
+    func inner() { // $ captured=inner1 // name=inner1
         let x = 2 // name=x2
         print(x) // $ access=x2
     }
@@ -352,5 +352,13 @@ func t38(value: E38) { // $ access=E38
     case .a(let y) where y < 1, // $ access=y1 // name=y1
          .b(let y): // $ access=y1
         print(y) // $ access=y1
+    }
+}
+
+// A non-binding pattern in a guard refers to an existing variable
+func t39(value: Int) {
+    let x = 1 // name=x1
+    guard case x = value else { // $ access=value access=x1
+        return
     }
 }

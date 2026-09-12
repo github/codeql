@@ -9,7 +9,7 @@
  */
 
 import unified
-import codeql.unified.internal.StaticNameBinding
+import codeql.unified.internal.NameBinding
 import codeql.unified.internal.AnalysisQuality
 
 from StaticNameResolutionStats::Candidate c, NameBindingNode target

@@ -5,6 +5,8 @@
 private import unified
 private import unified as U
 private import codeql.namebinding.LocalNameBinding
+private import codeql.unified.internal.NameBindingPlugin
+private import codeql.unified.internal.StaticNameBinding
 
 private module LocalNameBindingInput implements LocalNameBindingInputSig<Location> {
   class AstNode = U::AstNode;
@@ -101,7 +103,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
    */
   private predicate relocatedClassMember(Identifier className, Member member) {
     exists(ClassLikeDeclaration cls |
-      className = cls.getName() and
+      className = cls.getNameNode() and
       member = cls.getAMember()
     )
   }
@@ -166,9 +168,12 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   private class LocalVariableDeclarationSiblingShadowingDecl extends SiblingShadowingDecl instanceof LocalVariableDeclaration
   {
-    LocalVariableDeclarationSiblingShadowingDecl() { not this instanceof TopLevelStmt }
+    LocalVariableDeclarationSiblingShadowingDecl() {
+      // Capture-declarations act as local variables, but are not sibling-shadowing
+      not this = any(FunctionExpr e).getACaptureDeclaration()
+    }
 
-    override Pattern getPattern() { result = LocalVariableDeclaration.super.getPattern() }
+    override Expr getPattern() { result = LocalVariableDeclaration.super.getPattern() }
 
     override AstNode getRhs() { result = LocalVariableDeclaration.super.getValue() }
 
@@ -177,100 +182,115 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   private class PatternGuardExprSiblingShadowingDecl extends SiblingShadowingDecl instanceof PatternGuardExpr
   {
-    override Pattern getPattern() { result = PatternGuardExpr.super.getPattern() }
+    override Expr getPattern() { result = PatternGuardExpr.super.getPattern() }
 
     override AstNode getRhs() { result = PatternGuardExpr.super.getValue() }
 
     override AstNode getElse() { none() }
   }
 
+  /** Holds if `e` cannot be a pattern even if it appears in pattern context. */
+  bindingset[e]
+  private predicate isNonPattern(Expr e) {
+    e = any(TypeTestExpr n).getType()
+    or
+    e = any(TypeCastExpr n).getType()
+    or
+    e instanceof MemberAccessExpr
+    or
+    any(NameBindingPlugin p).isNonPattern(e)
+  }
+
   additional predicate bindingContext(AstNode pattern, AstNode scope, AstNode declaration) {
-    exists(SiblingShadowingDecl decl |
-      scope = decl and
-      pattern = decl.getPattern() and
-      declaration = decl
+    not isNonPattern(pattern) and
+    (
+      exists(SiblingShadowingDecl decl |
+        scope = decl and
+        pattern = decl.getPattern() and
+        declaration = decl
+      )
+      or
+      exists(VariableDeclaration decl |
+        not decl instanceof SiblingShadowingDecl and
+        getChild(scope, _) = decl and
+        pattern = decl.getPattern() and
+        declaration = decl
+      )
+      or
+      exists(FunctionDeclaration func |
+        getChild(scope, _) = func and
+        pattern = func.getNameNode() and
+        declaration = func
+      )
+      or
+      exists(Parameter param |
+        scope = param.getParent() and // TODO: add SourceCallable and use .getParameter() instead
+        pattern = param.getPattern() and
+        declaration = param
+      )
+      or
+      exists(CatchClause catch |
+        scope = catch and // ensure both body and pattern are in scope
+        pattern = catch.getPattern() and
+        declaration = catch
+      )
+      or
+      exists(SwitchCase case |
+        scope = case and // ensure both body and pattern are in scope
+        pattern = case.getPattern() and
+        declaration = case
+      )
+      or
+      exists(ForEachStmt stmt |
+        scope = stmt and // ensure both 'body' and 'guard' are in scope
+        pattern = stmt.getPattern() and
+        declaration = stmt
+      )
+      or
+      exists(ClassLikeDeclaration cls |
+        getChild(scope, _) = cls and
+        pattern = cls.getNameNode() and
+        not cls.hasModifier("extension") and // TODO: Fix in the AST mapping: type extensions should reference their type, not declare it
+        declaration = cls
+      )
+      or
+      exists(TypeAliasDeclaration decl |
+        getChild(scope, _) = decl and
+        pattern = decl.getNameNode() and
+        declaration = decl
+      )
+      or
+      exists(TypeParameter param |
+        scope = param.getParent() and
+        pattern = param.getNameNode() and
+        declaration = param
+      )
+      or
+      exists(AssociatedTypeDeclaration decl |
+        getChild(scope, _) = decl and
+        pattern = decl.getNameNode() and
+        declaration = decl
+      )
+      or
+      exists(AccessorDeclaration decl |
+        getChild(scope, _) = decl and
+        pattern = decl.getNameNode() and
+        declaration = decl
+      )
+      or
+      exists(ImportDeclaration imprt |
+        getChild(scope, _) = imprt and
+        pattern = imprt.getPattern() and
+        declaration = imprt
+      )
+      or
+      exists(NamedPattern p |
+        bindingContext(p, scope, declaration) and
+        pattern = p.getNameNode()
+      )
+      or
+      bindingContext(pattern.(Expr).getEnclosingExpr(), scope, declaration)
     )
-    or
-    exists(VariableDeclaration decl |
-      not decl instanceof SiblingShadowingDecl and
-      getChild(scope, _) = decl and
-      pattern = decl.getPattern() and
-      declaration = decl
-    )
-    or
-    exists(FunctionDeclaration func |
-      getChild(scope, _) = func and
-      pattern = func.getName() and
-      declaration = func
-    )
-    or
-    exists(Parameter param |
-      scope = param.getParent() and // TODO: add SourceCallable and use .getParameter() instead
-      pattern = param.getPattern() and
-      declaration = param
-    )
-    or
-    exists(CatchClause catch |
-      scope = catch and // ensure both body and pattern are in scope
-      pattern = catch.getPattern() and
-      declaration = catch
-    )
-    or
-    exists(SwitchCase case |
-      scope = case and // ensure both body and pattern are in scope
-      pattern = case.getPattern() and
-      declaration = case
-    )
-    or
-    exists(ForEachStmt stmt |
-      scope = stmt and // ensure both 'body' and 'guard' are in scope
-      pattern = stmt.getPattern() and
-      declaration = stmt
-    )
-    or
-    exists(ClassLikeDeclaration cls |
-      getChild(scope, _) = cls and
-      pattern = cls.getName() and
-      not cls.hasModifier("extension") and // TODO: Fix in the AST mapping: type extensions should reference their type, not declare it
-      declaration = cls
-    )
-    or
-    exists(TypeAliasDeclaration decl |
-      getChild(scope, _) = decl and
-      pattern = decl.getName() and
-      declaration = decl
-    )
-    or
-    exists(TypeParameter param |
-      scope = param.getParent() and
-      pattern = param.getName() and
-      declaration = param
-    )
-    or
-    exists(AssociatedTypeDeclaration decl |
-      getChild(scope, _) = decl and
-      pattern = decl.getName() and
-      declaration = decl
-    )
-    or
-    exists(AccessorDeclaration decl |
-      getChild(scope, _) = decl and
-      pattern = decl.getName() and
-      declaration = decl
-    )
-    or
-    exists(ImportDeclaration imprt |
-      getChild(scope, _) = imprt and
-      pattern = imprt.getPattern() and
-      declaration = imprt
-    )
-    or
-    exists(NamePattern p |
-      bindingContext(p, scope, declaration) and
-      pattern = p.getIdentifier()
-    )
-    or
-    bindingContext(pattern.(Pattern).getEnclosingPattern(), scope, declaration)
   }
 
   /**
@@ -282,18 +302,15 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
    * At the moment no further checks are needed since the Swift compiler enforces that
    * variable names bound in any branch are bound in all branches.
    */
-  private OrPattern getEnclosingOrPattern(Pattern p) {
+  private OrPattern getEnclosingOrPattern(Expr p) {
     p = result.getPattern(_)
     or
     not p instanceof OrPattern and
-    result = getEnclosingOrPattern(p.getEnclosingPattern())
+    result = getEnclosingOrPattern(p.getEnclosingExpr())
   }
 
-  private OrPattern getEnclosingOrPatternFromIdentifier(Identifier id) {
-    exists(NamePattern p |
-      id = p.getIdentifier() and
-      result = getEnclosingOrPattern(p)
-    )
+  private OrPattern getEnclosingOrPatternFromIdentifier(Identifier identifier) {
+    result = getEnclosingOrPattern(identifier)
   }
 
   predicate declInScope(AstNode definingNode, string name, AstNode scope) {
@@ -309,10 +326,16 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     )
   }
 
-  predicate implicitDeclInScope(string name, AstNode scope) {
-    none()
-    // TODO: self
+  pragma[nomagic]
+  additional predicate implicitDeclInScope(string name, AstNode scope, boolean isLocalVariable) {
+    exists(Callable callable |
+      isLocalVariable = true and
+      name = any(NameBindingPlugin p).getImplicitReceiverParameterName(callable) and
+      scope = callable
+    )
   }
+
+  predicate implicitDeclInScope(string name, AstNode scope) { implicitDeclInScope(name, scope, _) }
 
   predicate accessCand(AstNode n, string name) { n.(PotentialLocalNameAccess).getName() = name }
 
@@ -344,11 +367,17 @@ module Public {
 
     /** Gets the name of this local, as a string. */
     string getName() { result = super.getName() }
+
+    /** Gets an access to this entity, through its lexically scoped name. */
+    LocalNameAccess getAnAccess() { result.getLocalName() = this }
+
+    /** Gets a name binding that declares this local name. */
+    NameBinding getABinding() { result.getLocalName() = this }
   }
 
-  /** An identifier that appears as the declaration site of a name, such as the `x` in `let x = 123`. */
-  class NameDeclaration extends Identifier {
-    NameDeclaration() { LocalNameBindingInput::bindingContext(this, _, _) }
+  /** An identifier appearing in a name-binding position, such as the `x` in `let x = 123`. */
+  class NameBinding extends Identifier {
+    NameBinding() { LocalNameBindingInput::bindingContext(this, _, _) }
 
     /** Gets the statement-like node declaring this name, such as a `VariableDeclaration` or `CatchClause`. */
     AstNode getDeclaration() { LocalNameBindingInput::bindingContext(this, _, result) }
@@ -359,10 +388,65 @@ module Public {
     /** Gets the representative for the local name introduced by this declaration. */
     LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
   }
+
+  /** A representative for a lexically scoped local variable. */
+  class LocalVariable extends LocalName {
+    LocalVariable() {
+      exists(AstNode decl |
+        decl = this.getABinding().getDeclaration() and
+        not isInstanceMember(decl) and
+        not isStaticMember(decl)
+      |
+        decl instanceof VariableDeclaration or
+        decl instanceof FunctionDeclaration or // treat functions as values
+        decl instanceof Parameter or
+        decl instanceof ForEachStmt or
+        decl instanceof PatternGuardExpr or
+        decl instanceof CatchClause or
+        decl instanceof SwitchCase
+      )
+      or
+      // For implicitly-declared locals we can't expect to find a binding. Check 'implicitDeclInScope' directly.
+      exists(AstNode scope, string name |
+        this.(LocalNameBindingOutput::ImplicitLocal).hasNameAndScope(name, scope) and
+        LocalNameBindingInput::implicitDeclInScope(name, scope, true)
+      )
+    }
+
+    /** Gets the callable containing the declaration of this local variable. */
+    Callable getDeclaringCallable() {
+      result = this.getABinding().getEnclosingCallable()
+      or
+      exists(AstNode scope | scope = this.(LocalNameBindingOutput::ImplicitLocal).getScope() |
+        result = scope
+        or
+        not scope instanceof Callable and
+        result = scope.getEnclosingCallable()
+      )
+    }
+
+    /** Holds if this local variable is captured, that is, it is accessed from another callable than the one declaring it. */
+    predicate isCaptured() {
+      this.getAnAccess().getEnclosingCallable() != this.getDeclaringCallable()
+    }
+  }
+
+  /** An access to a locally-declared name. */
+  class LocalNameAccess extends PotentialLocalNameAccess {
+    LocalNameAccess() { not this instanceof UnqualifiedMemberAccess }
+  }
+
+  /** An access to a local variable. */
+  class LocalVariableAccess extends LocalNameAccess {
+    LocalVariableAccess() { this.getLocalName() instanceof LocalVariable }
+
+    /** Gets the local variable being accessed. Alias for `getLocalName()`. */
+    LocalVariable getLocalVariable() { result = this.getLocalName() }
+  }
 }
 
 /**
- * An identifier node that is possibly a reference to a local name, but could also refer to a member
+ * A name node that is possibly a reference to a local name, but could also refer to a member
  * visible through imports or inheritance.
  *
  * For example, the type annotation `C` below is a potential access to `class C`, but could
@@ -374,23 +458,13 @@ module Public {
  * }
  * ```
  */
-class PotentialLocalNameAccess extends Identifier {
-  PotentialLocalNameAccess() {
-    this = any(NameExpr e).getIdentifier()
-    or
-    this = any(NamePattern e).getIdentifier()
-    or
-    this = any(NamedTypeExpr e | not exists(e.getQualifier())).getName()
-    or
-    this instanceof NameDeclaration
-    or
-    this = any(ClassLikeDeclaration cls | cls.hasModifier("extension")).getName() // TODO: Fix in the AST mapping: type extensions should reference their type, not declare it
-  }
-
+class PotentialLocalNameAccess extends IdentifierExpr {
+  /** Gets the representative for the local name being accessed. */
   LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
 
+  /** Gets the name being accessed. */
   string getName() { result = this.getValue() }
 
-  /** Holds if this is one of the declaration sites for a name, such as the `x` in `let x = 123`. */
-  predicate isDeclarationSite() { this instanceof NameDeclaration }
+  /** Holds if this is one of the binding sites for a name, such as the `x` in `let x = 123`. */
+  predicate isBindingSite() { this instanceof NameBinding }
 }

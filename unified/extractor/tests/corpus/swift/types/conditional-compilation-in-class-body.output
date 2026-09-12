@@ -83,5 +83,5 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "C"
+          name_node: identifier "C"
           member: unsupported_node "#if DEBUG\n    init(x: Int) {}\n    deinit {}\n#endif"

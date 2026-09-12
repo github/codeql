@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
@@ -14,13 +15,51 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Represents configurations for package registries.
         /// </summary>
-        /// <param name="Type">The type of package registry.</param>
-        /// <param name="URL">The URL of the package registry.</param>
-        public record class RegistryConfig(string Type, string URL);
+        public class RegistryConfig
+        {
+            /// <summary>
+            /// The type of the package registry.
+            /// </summary>
+            public string? Type { get; init; }
+
+            /// <summary>
+            /// The URL of the package registry.
+            /// </summary>
+            public string? Url { get; init; }
+
+            /// <summary>
+            /// A boolean indicating whether this registry replaces the base registry.
+            /// </summary>
+            [JsonProperty("replaces-base")]
+            public bool ReplacesBase { get; init; } = false;
+        };
 
         public string Address { get; }
 
-        public HashSet<string> RegistryURLs { get; } = [];
+        /// <summary>
+        /// A dictionary mapping registry URLs to a boolean indicating whether they replace the base registry.
+        /// </summary>
+        private readonly Dictionary<string, bool> registryMapping = [];
+
+        private ImmutableHashSet<string>? registryURLs;
+        /// <summary>
+        /// Gets the set of registry URLs that have been configured as part of the organization-level
+        /// private registry configuration. This includes all registries, regardless of whether they replace
+        /// the default feeds.
+        /// </summary>
+        public ImmutableHashSet<string> RegistryURLs =>
+            registryURLs ??= registryMapping.Keys.ToImmutableHashSet();
+
+        private ImmutableHashSet<string>? registryBaseURLs;
+        /// <summary>
+        /// Gets the set of registry URLs that have been configured as part of the organization-level
+        /// private registry configuration and that replace the default registry. This is a subset of
+        /// <see cref="RegistryURLs"/>.
+        /// If non-empty, the set should be used as a replacement for the default registry during
+        /// package resolution.
+        /// </summary>
+        public ImmutableHashSet<string> RegistryBaseURLs =>
+            registryBaseURLs ??= registryMapping.Where(kvp => kvp.Value).Select(kvp => kvp.Key).ToImmutableHashSet();
 
         public string? CertificatePath { get; private set; }
 
@@ -56,16 +95,28 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     {
                         foreach (RegistryConfig registry in array)
                         {
+                            if (string.IsNullOrWhiteSpace(registry.Url))
+                            {
+                                logger.LogError("Ignoring registry with empty URL.");
+                                continue;
+                            }
+
+                            if (string.IsNullOrWhiteSpace(registry.Type))
+                            {
+                                logger.LogError($"Ignoring registry at '{registry.Url}' since it has no type.");
+                                continue;
+                            }
+
                             // The array contains all configured private registries, not just ones for C#.
                             // We ignore the non-C# ones here.
                             if (!registry.Type.Equals("nuget_feed"))
                             {
-                                logger.LogDebug($"Ignoring registry at '{registry.URL}' since it is not of type 'nuget_feed'.");
+                                logger.LogDebug($"Ignoring registry at '{registry.Url}' since it is not of type 'nuget_feed'.");
                                 continue;
                             }
 
-                            logger.LogInfo($"Found private registry at '{registry.URL}'");
-                            RegistryURLs.Add(registry.URL);
+                            logger.LogInfo($"Found private registry at '{registry.Url}'");
+                            registryMapping.AddOrUpdateToLatest(registry.Url, registry.ReplacesBase);
                         }
                     }
                 }

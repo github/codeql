@@ -27,11 +27,9 @@ top_level
         import_declaration
           imported_expr:
             member_access_expr
-              base:
-                name_expr
-                  identifier: identifier "Foundation"
-              member: identifier "Networking"
+              base: identifier "Foundation"
+              member_name_node: identifier "Networking"
           pattern:
-            name_pattern
-              identifier: identifier "Networking"
+            named_pattern
+              name_node: identifier "Networking"
               sub_pattern: bulk_importing_pattern "import Foundation.Networking"
