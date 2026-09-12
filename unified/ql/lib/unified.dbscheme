@@ -318,6 +318,11 @@ unified_class_like_declaration_base_type(
   unique int base_type: @unified_base_type ref
 );
 
+unified_class_like_declaration_extension_target(
+  unique int unified_class_like_declaration: @unified_class_like_declaration ref,
+  unique int extension_target: @unified_expr ref
+);
+
 #keyset[unified_class_like_declaration, index]
 unified_class_like_declaration_member(
   int unified_class_like_declaration: @unified_class_like_declaration ref,
