@@ -1274,14 +1274,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (extensionDecl
                 extensionKeyword: @kind
                 modifiers: _* @mods
-                extendedType: @@name
+                extendedType: @extendedType
                 inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
                 memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
-                name_node: (identifier #{name})
+                extension_target: {extendedType}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
