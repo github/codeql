@@ -1,0 +1,14 @@
+import '../lib.just'
+
+install: (_bazel "run" "@codeql//rust:install")
+
+build: (_if_not_on_ci_just "generate" source_dir()) (_build_dist "rust")
+
+generate: (_bazel "run" "@codeql//rust/codegen")
+
+lint: (_run_in source_dir() "python3" "lint.py")
+
+format: (_run_in source_dir() "python3" "lint.py" "--format-only")
+
+[group('test')]
+language-tests *EXTRA_ARGS: (_language_tests EXTRA_ARGS source_dir() 'ql/test')

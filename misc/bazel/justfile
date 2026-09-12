@@ -1,0 +1,5 @@
+import '../just/lib.just'
+
+[no-cd, positional-arguments, no-exit-message]
+hello +ARGS:
+    @echo "hello from bzl" "$@"

@@ -1,0 +1,5 @@
+import "../just/lib.just"
+
+test *ARGS="": (_bazel "test" "@codeql//misc/codegen/...")
+
+format *ARGS=".": (_format_py ARGS)

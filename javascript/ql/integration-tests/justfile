@@ -1,0 +1,4 @@
+import "../../../lib.just"
+
+[no-cd]
+test *ARGS=".": (_integration_test ARGS)
