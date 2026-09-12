@@ -35,3 +35,15 @@ extension B { // $ access=B
         let x : D // $ access=B.C.D
     }
 }
+
+// Inheritance through extension
+class Base {
+    func baseMethod() {
+    }
+}
+class X {
+    func xMethod() {
+        baseMethod() // $ access=Base.baseMethod
+    }
+}
+extension X : Base {} // $ access=X access=Base
