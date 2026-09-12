@@ -1,3 +1,4 @@
 - queries: .
-- apply: code-quality-selectors.yml
-  from: codeql/suite-helpers
+- include:
+    tags contain:
+      - type-inference-warmup
