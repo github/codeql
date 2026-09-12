@@ -1,0 +1,159 @@
+expressions
+| base/a.go:1:9:1:12 | base |
+| base/a.go:3:8:3:16 | "strings" |
+| base/a.go:5:6:5:6 | A |
+| base/a.go:5:8:7:1 | struct type |
+| base/a.go:6:2:6:5 | name |
+| base/a.go:6:7:6:12 | string |
+| base/a.go:13:1:13:31 | function type |
+| base/a.go:13:7:13:7 | a |
+| base/a.go:13:9:13:10 | star expression |
+| base/a.go:13:10:13:10 | A |
+| base/a.go:13:13:13:25 | GetNameLength |
+| base/a.go:13:29:13:31 | int |
+| base/a.go:15:9:15:11 | len |
+| base/a.go:15:9:15:19 | call to len |
+| base/a.go:15:13:15:13 | a |
+| base/a.go:15:13:15:18 | selection of name |
+| base/a.go:15:15:15:18 | name |
+| base/a.go:22:1:22:33 | function type |
+| base/a.go:22:7:22:7 | a |
+| base/a.go:22:9:22:10 | star expression |
+| base/a.go:22:10:22:10 | A |
+| base/a.go:22:13:22:24 | GetNameUpper |
+| base/a.go:22:28:22:33 | string |
+| base/a.go:24:9:24:15 | strings |
+| base/a.go:24:9:24:23 | selection of ToUpper |
+| base/a.go:24:9:24:31 | call to ToUpper |
+| base/a.go:24:17:24:23 | ToUpper |
+| base/a.go:24:25:24:25 | a |
+| base/a.go:24:25:24:30 | selection of name |
+| base/a.go:24:27:24:30 | name |
+| base/a.go:27:1:27:26 | function type |
+| base/a.go:27:6:27:10 | FuncA |
+| base/a.go:27:12:27:15 | name |
+| base/a.go:27:17:27:22 | string |
+| base/a.go:27:25:27:26 | star expression |
+| base/a.go:27:26:27:26 | A |
+| base/a.go:28:9:28:22 | &... |
+| base/a.go:28:10:28:10 | A |
+| base/a.go:28:10:28:22 | struct literal |
+| base/a.go:28:12:28:15 | name |
+| base/a.go:28:12:28:21 | key-value pair |
+| base/a.go:28:18:28:21 | name |
+| base/a.go:31:1:31:27 | function type |
+| base/a.go:31:6:31:7 | Id |
+| base/a.go:31:9:31:12 | name |
+| base/a.go:31:14:31:19 | string |
+| base/a.go:31:22:31:27 | string |
+| base/a.go:32:9:32:12 | name |
+| base/a.go:35:6:35:6 | B |
+| base/a.go:35:8:37:1 | interface type |
+| base/a.go:36:2:36:8 | GetName |
+| base/a.go:36:9:36:17 | function type |
+| base/a.go:36:12:36:17 | string |
+| overlay/a.go:1:9:1:12 | base |
+| overlay/a.go:3:8:3:16 | "strings" |
+| overlay/a.go:5:6:5:6 | C |
+| overlay/a.go:5:8:5:15 | struct type |
+| overlay/a.go:7:6:7:6 | A |
+| overlay/a.go:7:8:9:1 | struct type |
+| overlay/a.go:8:2:8:5 | name |
+| overlay/a.go:8:7:8:12 | string |
+| overlay/a.go:11:1:11:33 | function type |
+| overlay/a.go:11:7:11:7 | a |
+| overlay/a.go:11:9:11:10 | star expression |
+| overlay/a.go:11:10:11:10 | A |
+| overlay/a.go:11:13:11:24 | GetNameUpper |
+| overlay/a.go:11:28:11:33 | string |
+| overlay/a.go:12:9:12:15 | strings |
+| overlay/a.go:12:9:12:23 | selection of ToUpper |
+| overlay/a.go:12:9:12:31 | call to ToUpper |
+| overlay/a.go:12:17:12:23 | ToUpper |
+| overlay/a.go:12:25:12:25 | a |
+| overlay/a.go:12:25:12:30 | selection of name |
+| overlay/a.go:12:27:12:30 | name |
+| overlay/a.go:19:1:19:28 | function type |
+| overlay/a.go:19:7:19:7 | a |
+| overlay/a.go:19:9:19:10 | star expression |
+| overlay/a.go:19:10:19:10 | A |
+| overlay/a.go:19:13:19:19 | GetName |
+| overlay/a.go:19:23:19:28 | string |
+| overlay/a.go:21:9:21:9 | a |
+| overlay/a.go:21:9:21:14 | selection of name |
+| overlay/a.go:21:11:21:14 | name |
+| overlay/a.go:24:1:24:27 | function type |
+| overlay/a.go:24:6:24:7 | Id |
+| overlay/a.go:24:9:24:12 | name |
+| overlay/a.go:24:14:24:19 | string |
+| overlay/a.go:24:22:24:27 | string |
+| overlay/a.go:25:9:25:12 | name |
+| overlay/a.go:32:1:32:15 | function type |
+| overlay/a.go:32:6:32:10 | FuncC |
+| overlay/a.go:32:14:32:15 | star expression |
+| overlay/a.go:32:15:32:15 | C |
+| overlay/a.go:34:9:34:12 | &... |
+| overlay/a.go:34:10:34:10 | C |
+| overlay/a.go:34:10:34:12 | struct literal |
+statements
+| base/a.go:13:33:16:1 | block statement |
+| base/a.go:15:2:15:19 | return statement |
+| base/a.go:22:35:25:1 | block statement |
+| base/a.go:24:2:24:31 | return statement |
+| base/a.go:27:28:29:1 | block statement |
+| base/a.go:28:2:28:22 | return statement |
+| base/a.go:31:29:33:1 | block statement |
+| base/a.go:32:2:32:12 | return statement |
+| overlay/a.go:11:35:13:1 | block statement |
+| overlay/a.go:12:2:12:31 | return statement |
+| overlay/a.go:19:30:22:1 | block statement |
+| overlay/a.go:21:2:21:14 | return statement |
+| overlay/a.go:24:29:26:1 | block statement |
+| overlay/a.go:25:2:25:12 | return statement |
+| overlay/a.go:32:17:35:1 | block statement |
+| overlay/a.go:34:2:34:12 | return statement |
+functions
+| base/a.go:13:13:13:25 | GetNameLength |
+| base/a.go:22:13:22:24 | GetNameUpper |
+| base/a.go:27:6:27:10 | FuncA |
+| base/a.go:31:6:31:7 | Id |
+| base/a.go:36:2:36:8 | GetName |
+| overlay/a.go:11:13:11:24 | GetNameUpper |
+| overlay/a.go:19:13:19:19 | GetName |
+| overlay/a.go:24:6:24:7 | Id |
+| overlay/a.go:32:6:32:10 | FuncC |
+types
+| base/a.go:5:6:5:6 | A |
+| base/a.go:35:6:35:6 | B |
+| overlay/a.go:5:6:5:6 | C |
+| overlay/a.go:7:6:7:6 | A |
+parameters
+| base/a.go:13:7:13:7 | a |
+| base/a.go:22:7:22:7 | a |
+| base/a.go:27:12:27:15 | name |
+| base/a.go:31:9:31:12 | name |
+| overlay/a.go:11:7:11:7 | a |
+| overlay/a.go:19:7:19:7 | a |
+| overlay/a.go:24:9:24:12 | name |
+fields
+| base/a.go:6:2:6:5 | name |
+| overlay/a.go:8:2:8:5 | name |
+commentLines
+| base/a.go:9:1:12:3 | comment |
+| base/a.go:14:2:14:19 | comment |
+| base/a.go:18:1:21:3 | comment |
+| base/a.go:23:2:23:19 | comment |
+| overlay/a.go:15:1:18:3 | comment |
+| overlay/a.go:20:2:20:19 | comment |
+| overlay/a.go:28:1:31:3 | comment |
+| overlay/a.go:33:2:33:19 | comment |
+commentBlocks
+| base/a.go:9:1:12:3 | comment group |
+| base/a.go:14:2:14:19 | comment group |
+| base/a.go:18:1:21:3 | comment group |
+| base/a.go:23:2:23:19 | comment group |
+| overlay/a.go:15:1:18:3 | comment group |
+| overlay/a.go:20:2:20:19 | comment group |
+| overlay/a.go:28:1:31:3 | comment group |
+| overlay/a.go:33:2:33:19 | comment group |
+htmlElements

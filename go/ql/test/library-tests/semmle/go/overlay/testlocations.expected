@@ -1,0 +1,6 @@
+elementsWithMultipleLocations
+commentLinesWithMultipleLocations
+commentBlocksWithMultipleLocations
+removedEntities
+| base/a.go:13:13:13:25 | GetNameLength |
+| base/a.go:27:6:27:10 | FuncA |
