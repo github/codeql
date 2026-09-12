@@ -282,6 +282,13 @@ predicate inheritanceStep(NameBindingNode supertype, NameBindingNode subtype) {
   )
 }
 
+predicate extensionStep(NameBindingNode extension, NameBindingNode targetClass) {
+  exists(ClassLikeDeclaration cls |
+    targetClass = getNodeFromRef(cls.getExtensionTarget()) and
+    extension.isStaticMemberNamespace(cls)
+  )
+}
+
 signature module TrackInputSig {
   /** Holds if the forward-flow of `node` should be tracked. */
   predicate shouldTrack(NameBindingNode node);
@@ -362,6 +369,17 @@ class NamespaceNode extends NameBindingNode {
   /** If this is the instance namespace for a class, gets the corresponding static namespace. */
   NamespaceNode toStaticNamespace() { result.toInstanceNamespace() = this }
 
+  private NamespaceNode getAnExtension1() { extensionStep(result, this.ref()) }
+
+  /** Gets a namespace that is an extension (i.e. containing extension methods) of this node. */
+  NamespaceNode getAnExtension() {
+    result = this.getAnExtension1()
+    or
+    // `extensionStep` connects the static namespaces of classes.
+    // Add the corresponding extension relation between the instance namespaces.
+    result = this.toStaticNamespace().getAnExtension1().toInstanceNamespace()
+  }
+
   private NamespaceNode getAnInheritanceParent1() { inheritanceStep(result.ref(), this) }
 
   /** Gets a namespace from which this namespace inherits directly. */
@@ -384,6 +402,8 @@ class NamespaceNode extends NameBindingNode {
     not this.hasOwnMember(name) and
     result = this.getAnInheritanceParent().getMember(name) and
     isInheritableMemberNode(result)
+    or
+    result = this.getAnExtension().getMember(name)
   }
 }
 
