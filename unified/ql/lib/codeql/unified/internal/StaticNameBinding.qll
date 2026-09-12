@@ -596,6 +596,17 @@ private module FolderHeuristic {
   }
 }
 
+private ClassLikeDeclaration resolveExtensionTarget(ClassLikeDeclaration cls) {
+  trackNameBinding(result.getNameNode()) = getNodeFromRef(cls.getExtensionTarget())
+}
+
+private ClassLikeDeclaration tryResolveExtensionTarget(ClassLikeDeclaration cls) {
+  result = resolveExtensionTarget(cls)
+  or
+  not exists(resolveExtensionTarget(cls)) and
+  result = cls
+}
+
 /**
  * Holds if `access` may resolve to `target` through the enclosing `accessingClass`.
  *
@@ -624,7 +635,8 @@ private predicate unqualifiedMemberAccessCand(
     // Resolved in an uncertain scope
     exists(NamespaceNode namespace, string name |
       name = access.getName() and
-      accessingClass = LocalNameBindingOutput::getAnUncertainScope(access, name)
+      accessingClass =
+        tryResolveExtensionTarget(LocalNameBindingOutput::getAnUncertainScope(access, name))
     |
       instanceAccess = true and
       namespace.isInstanceMemberNamespace(accessingClass) and
