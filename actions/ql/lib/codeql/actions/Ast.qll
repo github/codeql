@@ -383,7 +383,12 @@ class GitHubExpression extends SimpleReferenceExpression instanceof GitHubExpres
 
 class SecretsExpression extends SimpleReferenceExpression instanceof SecretsExpressionImpl { }
 
-class StepsExpression extends SimpleReferenceExpression instanceof StepsExpressionImpl {
+/**
+ * DEPRECATED: Use `StepOutputExpression` instead.
+ */
+deprecated class StepsExpression = StepOutputExpression;
+
+class StepOutputExpression extends SimpleReferenceExpression instanceof StepsExpressionImpl {
   string getStepId() { result = super.getStepId() }
 }
 
