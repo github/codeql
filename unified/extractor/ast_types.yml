@@ -66,13 +66,17 @@ supertypes:
     - do_while_stmt
     - labeled_stmt
   callable:
-    - top_level
-    - function_expr
-    - function_declaration
-    - constructor_declaration
-    - destructor_declaration
-    - accessor_declaration
-    - initializer_declaration
+    subtypes:
+      - top_level
+      - function_expr
+      - function_declaration
+      - constructor_declaration
+      - destructor_declaration
+      - accessor_declaration
+      - initializer_declaration
+    fields:
+      parameter*: parameter
+      body?: block
   # A member is anything that can appear in the body of a class-like declaration
   member:
     - constructor_declaration

@@ -17,9 +17,17 @@ pub struct Entry {
 
 #[derive(Debug)]
 pub enum EntryKind {
-    Union { members: Set<TypeName> },
-    Table { name: String, fields: Vec<Field> },
-    Token { kind_id: usize },
+    Union {
+        members: Set<TypeName>,
+        fields: Vec<Field>,
+    },
+    Table {
+        name: String,
+        fields: Vec<Field>,
+    },
+    Token {
+        kind_id: usize,
+    },
 }
 
 #[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq)]
@@ -135,16 +143,39 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
         if !subtypes.is_empty() {
             // It's a tree-sitter supertype node, for which we create a union
             // type.
+            let type_name = TypeName {
+                kind: node.kind.clone(),
+                named: node.named,
+            };
+            let mut fields = Vec::new();
+            for (field_name, field_info) in &node.fields {
+                add_field(
+                    prefix,
+                    &type_name,
+                    Some(field_name.to_string()),
+                    field_info,
+                    &mut fields,
+                    &token_kinds,
+                );
+            }
+            if let Some(children) = &node.children {
+                add_field(
+                    prefix,
+                    &type_name,
+                    None,
+                    children,
+                    &mut fields,
+                    &token_kinds,
+                );
+            }
             entries.insert(
-                TypeName {
-                    kind: node.kind.clone(),
-                    named: node.named,
-                },
+                type_name,
                 Entry {
                     dbscheme_name,
                     ql_class_name,
                     kind: EntryKind::Union {
                         members: convert_types(subtypes),
+                        fields,
                     },
                 },
             );

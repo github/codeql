@@ -50,7 +50,25 @@ This corresponds to the following JSON:
 }
 ```
 
-Members are resolved as named or unnamed using the
+To declare fields that consumers may expose on the supertype, use the detailed
+form with `subtypes` and `fields`:
+
+```yaml
+supertypes:
+  callable:
+    subtypes:
+      - function
+      - closure
+    fields:
+      parameter*: parameter
+      body?: block
+```
+
+The field syntax and multiplicity suffixes are the same as for named nodes.
+These fields describe the common interface of the supertype; they do not add
+storage to the supertype or its members.
+
+Members and field types are resolved as named or unnamed using the
 [type reference rules](#type-references) described below.
 
 ## Named nodes
