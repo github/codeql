@@ -7,21 +7,45 @@ import (
 	"strings"
 )
 
+func TaintStepTest_StringsClone(sourceCQL interface{}) interface{} {
+	return strings.Clone(sourceCQL.(string))
+}
+
+func TaintStepTest_StringsCutleft(sourceCQL interface{}) interface{} {
+	left, _, _ := strings.Cut(sourceCQL.(string), "")
+	return left
+}
+
+func TaintStepTest_StringsCutright(sourceCQL interface{}) interface{} {
+	_, right, _ := strings.Cut(sourceCQL.(string), "")
+	return right
+}
+
+func TaintStepTest_StringsCutPrefix(sourceCQL interface{}) interface{} {
+	result, _ := strings.CutPrefix(sourceCQL.(string), "")
+	return result
+}
+
+func TaintStepTest_StringsCutSuffix(sourceCQL interface{}) interface{} {
+	result, _ := strings.CutSuffix(sourceCQL.(string), "")
+	return result
+}
+
 func TaintStepTest_StringsFields_B0I0O0(sourceCQL interface{}) interface{} {
 	fromString656 := sourceCQL.(string)
 	intoString414 := strings.Fields(fromString656)
-	return intoString414
+	return intoString414[0]
 }
 
 func TaintStepTest_StringsFieldsFunc_B0I0O0(sourceCQL interface{}) interface{} {
 	fromString518 := sourceCQL.(string)
 	intoString650 := strings.FieldsFunc(fromString518, nil)
-	return intoString650
+	return intoString650[0]
 }
 
 func TaintStepTest_StringsJoin_B0I0O0(sourceCQL interface{}) interface{} {
-	fromString784 := sourceCQL.([]string)
-	intoString957 := strings.Join(fromString784, "")
+	fromString784 := sourceCQL.(string)
+	intoString957 := strings.Join([]string{fromString784}, "")
 	return intoString957
 }
 
@@ -231,6 +255,18 @@ func TaintStepTest_StringsBuilderWriteString_B0I0O0(sourceCQL interface{}) inter
 	return intoBuilder389
 }
 
+func TaintStepTest_StringsBuilderWriteByte(sourceCQL interface{}) interface{} {
+	var builder strings.Builder
+	builder.WriteByte(sourceCQL.(byte))
+	return builder
+}
+
+func TaintStepTest_StringsBuilderWriteRune(sourceCQL interface{}) interface{} {
+	var builder strings.Builder
+	builder.WriteRune(sourceCQL.(rune))
+	return builder
+}
+
 func TaintStepTest_StringsReaderRead_B0I0O0(sourceCQL interface{}) interface{} {
 	fromReader198 := sourceCQL.(strings.Reader)
 	var intoByte477 []byte
@@ -243,6 +279,18 @@ func TaintStepTest_StringsReaderReadAt_B0I0O0(sourceCQL interface{}) interface{}
 	var intoByte382 []byte
 	fromReader544.ReadAt(intoByte382, 0)
 	return intoByte382
+}
+
+func TaintStepTest_StringsReaderReadByte(sourceCQL interface{}) interface{} {
+	reader := sourceCQL.(strings.Reader)
+	result, _ := reader.ReadByte()
+	return result
+}
+
+func TaintStepTest_StringsReaderReadRune(sourceCQL interface{}) interface{} {
+	reader := sourceCQL.(strings.Reader)
+	result, _, _ := reader.ReadRune()
+	return result
 }
 
 func TaintStepTest_StringsReaderReset_B0I0O0(sourceCQL interface{}) interface{} {
@@ -272,6 +320,28 @@ func TaintStepTest_StringsReplacerWriteString_B0I0O0(sourceCQL interface{}) inte
 	var mediumObjCQL strings.Replacer
 	mediumObjCQL.WriteString(intoWriter754, fromString824)
 	return intoWriter754
+}
+
+func TaintStepTest_StringsReplacerReplaceReceiver(sourceCQL interface{}) interface{} {
+	return sourceCQL.(*strings.Replacer).Replace("")
+}
+
+func TaintStepTest_StringsReplacerWriteStringReceiver(sourceCQL interface{}) interface{} {
+	var writer io.Writer
+	sourceCQL.(*strings.Replacer).WriteString(writer, "")
+	return writer
+}
+
+func TaintStepTest_StringsCutLastleft(sourceCQL interface{}) interface{} {
+	fromString := sourceCQL.(string)
+	left, _, _ := strings.CutLast(fromString, "")
+	return left
+}
+
+func TaintStepTest_StringsCutLastright(sourceCQL interface{}) interface{} {
+	fromString := sourceCQL.(string)
+	_, right, _ := strings.CutLast(fromString, "")
+	return right
 }
 
 func RunAllTaints_Strings() {
@@ -489,5 +559,70 @@ func RunAllTaints_Strings() {
 		source := newSource(42)
 		out := TaintStepTest_StringsReplacerWriteString_B0I0O0(source)
 		sink(42, out)
+	}
+	{
+		source := newSource(43)
+		out := TaintStepTest_StringsCutLastleft(source)
+		sink(43, out)
+	}
+	{
+		source := newSource(44)
+		out := TaintStepTest_StringsCutLastright(source)
+		sink(44, out)
+	}
+	{
+		source := newSource(45)
+		out := TaintStepTest_StringsClone(source)
+		sink(45, out)
+	}
+	{
+		source := newSource(46)
+		out := TaintStepTest_StringsCutleft(source)
+		sink(46, out)
+	}
+	{
+		source := newSource(47)
+		out := TaintStepTest_StringsCutright(source)
+		sink(47, out)
+	}
+	{
+		source := newSource(48)
+		out := TaintStepTest_StringsCutPrefix(source)
+		sink(48, out)
+	}
+	{
+		source := newSource(49)
+		out := TaintStepTest_StringsCutSuffix(source)
+		sink(49, out)
+	}
+	{
+		source := newSource(55)
+		out := TaintStepTest_StringsBuilderWriteByte(source)
+		sink(55, out)
+	}
+	{
+		source := newSource(56)
+		out := TaintStepTest_StringsBuilderWriteRune(source)
+		sink(56, out)
+	}
+	{
+		source := newSource(57)
+		out := TaintStepTest_StringsReaderReadByte(source)
+		sink(57, out)
+	}
+	{
+		source := newSource(58)
+		out := TaintStepTest_StringsReaderReadRune(source)
+		sink(58, out)
+	}
+	{
+		source := newSource(59)
+		out := TaintStepTest_StringsReplacerReplaceReceiver(source)
+		sink(59, out)
+	}
+	{
+		source := newSource(60)
+		out := TaintStepTest_StringsReplacerWriteStringReceiver(source)
+		sink(60, out)
 	}
 }
