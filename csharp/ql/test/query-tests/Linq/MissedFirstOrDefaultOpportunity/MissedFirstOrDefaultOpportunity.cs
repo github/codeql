@@ -179,6 +179,20 @@ class MissedFirstOrDefaultOpportunity
         return null;
     }
 
+    public int M15(IEnumerable<int> values, ref readonly int x)
+    {
+        // GOOD: FirstOrDefault does not support a predicate that captures a ref parameter.
+        foreach (var value in values)
+        {
+            if (value > x)
+            {
+                return value;
+            }
+        }
+
+        return default;
+    }
+
     private static Task<bool> IsMatch(Operation operation, string operationId) =>
         Task.FromResult(string.Equals(operation.OperationId, operationId, StringComparison.Ordinal));
 }

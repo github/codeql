@@ -116,6 +116,56 @@ class ForEachStmtEnumerable extends ForEachStmt {
   }
 }
 
+bindingset[e]
+private predicate acceptableForLinqCapture(Expr e) {
+  not exists(ParameterAccess pa, Parameter p | p = pa.getTarget() |
+    pa = e.getAChildExpr*() and
+    (p.isOutOrRef() or p.isIn() or p.isReadonlyRef())
+  )
+}
+
+private signature predicate linqCandidateSig(Stmt s, Expr e);
+
+private module LinqFilterOpportunity<linqCandidateSig/2 linqCandidate> {
+  predicate missed(ForEachStmtGenericEnumerable fes, Stmt s) {
+    s = firstStmt(fes) and
+    // The linq candidate expression accesses the loop variable, and the
+    // candidate doesn't access an in, out, or ref parameter.
+    exists(Expr candidate | linqCandidate(s, candidate) |
+      fes.getVariable().getAnAccess() = candidate.getAChildExpr*() and
+      acceptableForLinqCapture(candidate)
+    )
+  }
+}
+
+private module LinqMapOpportunity<linqCandidateSig/2 linqCandidate> {
+  predicate missed(ForEachStmt fes, Stmt s) {
+    s = firstStmt(fes) and
+    // The linq candidate (and only the candidate) expression accesses the loop variable and the
+    // candidate doesn't access an in, out, or ref parameter.
+    exists(Expr candidate | linqCandidate(s, candidate) |
+      forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
+        va = candidate.getAChildExpr*()
+      ) and
+      acceptableForLinqCapture(candidate)
+    )
+  }
+}
+
+private predicate linqAllCandidate(Stmt s, Expr e) {
+  s =
+    any(IfStmt is |
+      e = is.getCondition() and
+      not exists(is.getElse()) and // The then case of the if assigns false to something and breaks out of the loop.
+      exists(Assignment a, BoolLiteral bl |
+        a = is.getThen().getAChild*() and
+        bl = a.getRightOperand() and
+        bl.toString() = "false"
+      ) and
+      is.getThen().getAChild*() instanceof BreakStmt
+    )
+}
+
 /**
  * Holds if `foreach` statement `fes` could be converted to a `.All()` call.
  * That is, the `ForEachStmt` contains a single `if` with a condition that
@@ -123,21 +173,20 @@ class ForEachStmtEnumerable extends ForEachStmt {
  * and `break`s out of the `foreach`.
  */
 predicate missedAllOpportunity(ForEachStmtGenericEnumerable fes) {
-  exists(IfStmt is |
-    // The loop contains an if statement with no else case, and nothing else.
-    is = firstStmt(fes) and
-    numStmts(fes) = 1 and
-    not exists(is.getElse()) and
-    // The if statement accesses the loop variable.
-    is.getCondition().getAChildExpr*() = fes.getVariable().getAnAccess() and
-    // The then case of the if assigns false to something and breaks out of the loop.
-    exists(Assignment a, BoolLiteral bl |
-      a = is.getThen().getAChild*() and
-      bl = a.getRightOperand() and
-      bl.toString() = "false"
-    ) and
-    is.getThen().getAChild*() instanceof BreakStmt
-  )
+  // The loop contains an if statement with no else case, and nothing else.
+  LinqFilterOpportunity<linqAllCandidate/2>::missed(fes, _) and
+  numStmts(fes) = 1
+}
+
+private predicate linqCastCandidate(Stmt s, Expr e) {
+  s =
+    any(LocalVariableDeclStmt lvds |
+      exists(CastExpr ce |
+        ce = lvds.getAVariableDeclExpr().getInitializer() and
+        e = ce.getExpr() and
+        e instanceof LocalVariableAccess
+      )
+    )
 }
 
 /**
@@ -147,14 +196,18 @@ predicate missedAllOpportunity(ForEachStmtGenericEnumerable fes) {
  * local variable declaration statement `s`.
  */
 predicate missedCastOpportunity(ForEachStmtEnumerable fes, LocalVariableDeclStmt s) {
-  s = firstStmt(fes) and
-  forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
-    va = s.getAVariableDeclExpr().getAChildExpr*()
-  ) and
-  exists(CastExpr ce |
-    ce = s.getAVariableDeclExpr().getInitializer() and
-    ce.getExpr() = fes.getVariable().getAnAccess()
-  )
+  LinqMapOpportunity<linqCastCandidate/2>::missed(fes, s)
+}
+
+private predicate linqOfTypeCandidate(Stmt s, Expr e) {
+  s =
+    any(LocalVariableDeclStmt lvds |
+      exists(AsExpr ae |
+        ae = lvds.getAVariableDeclExpr().getInitializer() and
+        e = ae.getExpr() and
+        e instanceof LocalVariableAccess
+      )
+    )
 }
 
 /**
@@ -164,14 +217,16 @@ predicate missedCastOpportunity(ForEachStmtEnumerable fes, LocalVariableDeclStmt
  * is a local variable declaration statement `s`.
  */
 predicate missedOfTypeOpportunity(ForEachStmtEnumerable fes, LocalVariableDeclStmt s) {
-  s = firstStmt(fes) and
-  forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
-    va = s.getAVariableDeclExpr().getAChildExpr*()
-  ) and
-  exists(AsExpr ae |
-    ae = s.getAVariableDeclExpr().getInitializer() and
-    ae.getExpr() = fes.getVariable().getAnAccess()
-  )
+  LinqMapOpportunity<linqOfTypeCandidate/2>::missed(fes, s)
+}
+
+private predicate linqSelectCandidate(Stmt s, Expr e) {
+  s =
+    any(LocalVariableDeclStmt lvds |
+      e = lvds.getAVariableDeclExpr().getInitializer() and
+      not e instanceof Cast and
+      not e.getAChildExpr*() instanceof AwaitExpr
+    )
 }
 
 /**
@@ -182,12 +237,24 @@ predicate missedOfTypeOpportunity(ForEachStmtEnumerable fes, LocalVariableDeclSt
  * contain an `await` expression (since `Select` does not support async lambdas).
  */
 predicate missedSelectOpportunity(ForEachStmtGenericEnumerable fes, LocalVariableDeclStmt s) {
-  s = firstStmt(fes) and
-  forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
-    va = s.getAVariableDeclExpr().getAChildExpr*()
-  ) and
-  not s.getAVariableDeclExpr().getInitializer() instanceof Cast and
-  not s.getAVariableDeclExpr().getInitializer().getAChildExpr*() instanceof AwaitExpr
+  LinqMapOpportunity<linqSelectCandidate/2>::missed(fes, s)
+}
+
+private predicate linqWhereCandidateCase1(Stmt s, Expr e) {
+  s =
+    any(IfStmt is |
+      e = is.getCondition() and
+      is.getThen() instanceof ContinueStmt
+    )
+}
+
+private predicate linqWhereCandidateCase2(Stmt s, Expr e) {
+  s =
+    any(IfStmt is |
+      e = is.getCondition() and
+      not exists(is.getElse()) and
+      not terminatesCallable(is.getThen())
+    )
 }
 
 /**
@@ -197,20 +264,21 @@ predicate missedSelectOpportunity(ForEachStmtGenericEnumerable fes, LocalVariabl
  * else in the loop than the `if`.
  */
 predicate missedWhereOpportunity(ForEachStmtGenericEnumerable fes, IfStmt is) {
-  // The very first thing the foreach loop does is test its iteration variable.
-  is = firstStmt(fes) and
-  exists(VariableAccess va |
-    va.getTarget() = fes.getVariable() and
-    va = is.getCondition().getAChildExpr*()
-  ) and
-  // It then either (a) continues, or (b) performs the entire body of the loop within the condition.
-  (
-    is.getThen() instanceof ContinueStmt
-    or
-    not exists(is.getElse()) and
-    numStmts(fes) = 1 and
-    not terminatesCallable(is.getThen())
-  )
+  // The body of the `if` is a continue.
+  LinqFilterOpportunity<linqWhereCandidateCase1/2>::missed(fes, is)
+  or
+  // There's nothing else in the loop than the `if`.
+  LinqFilterOpportunity<linqWhereCandidateCase2/2>::missed(fes, is) and
+  numStmts(fes) = 1
+}
+
+private predicate linqFirstOrDefaultCandidate(Stmt s, Expr e) {
+  s =
+    any(IfStmt is |
+      e = is.getCondition() and
+      not exists(is.getElse()) and
+      not e.getAChildExpr*() instanceof AwaitExpr
+    )
 }
 
 /**
@@ -220,15 +288,8 @@ predicate missedWhereOpportunity(ForEachStmtGenericEnumerable fes, IfStmt is) {
  */
 predicate missedFirstOrDefaultOpportunity(ForEachStmtGenericEnumerable fes, IfStmt is) {
   // The loop only checks whether the current element is the first match.
-  is = firstStmt(fes) and
-  not exists(is.getElse()) and
+  LinqFilterOpportunity<linqFirstOrDefaultCandidate/2>::missed(fes, is) and
   numStmts(fes) = 1 and
-  // Condition relies on loop variable.
-  exists(VariableAccess va |
-    va.getTarget() = fes.getVariable() and
-    va = is.getCondition().getAChildExpr*()
-  ) and
-  not is.getCondition().getAChildExpr*() instanceof AwaitExpr and
   not fes.isAsync() and
   not fes.getVariable().isCaptured() and
   returnsLoopVariable(fes, is.getThen()) and
