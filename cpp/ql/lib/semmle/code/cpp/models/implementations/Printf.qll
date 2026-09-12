@@ -11,11 +11,28 @@ import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.NonThrowing
 
 /**
+ * A formatting function that takes its format arguments through a `va_list` parameter.
+ */
+abstract private class VaListFormattingFunction extends FormattingFunction {
+  final override int getFirstFormatArgumentIndex() { none() }
+
+  final int getVaListParameterIndex() { result = this.getNumberOfParameters() - 1 }
+
+  private predicate hasLocaleParameter() { this.getName().matches("%\\_l") }
+
+  final override int getFormatParameterIndex() {
+    if this.hasLocaleParameter()
+    then result = this.getVaListParameterIndex() - 2
+    else result = this.getVaListParameterIndex() - 1
+  }
+}
+
+/**
  * The standard functions `printf`, `wprintf` and their glib variants.
  */
-private class Printf extends FormattingFunction, AliasFunction, NonCppThrowingFunction {
+private class Printf extends FormattingFunction, AliasFunction, NonCppThrowingFunction instanceof TopLevelFunction
+{
   Printf() {
-    this instanceof TopLevelFunction and
     (
       this.hasGlobalOrStdOrBslName(["printf", "wprintf"]) or
       this.hasGlobalName(["printf_s", "wprintf_s", "g_printf"])
@@ -37,9 +54,9 @@ private class Printf extends FormattingFunction, AliasFunction, NonCppThrowingFu
 /**
  * The standard functions `fprintf`, `fwprintf` and their glib variants.
  */
-private class Fprintf extends FormattingFunction, NonCppThrowingFunction {
+private class Fprintf extends FormattingFunction, NonCppThrowingFunction instanceof TopLevelFunction
+{
   Fprintf() {
-    this instanceof TopLevelFunction and
     (
       this.hasGlobalOrStdOrBslName(["fprintf", "fwprintf"]) or
       this.hasGlobalName("g_fprintf")
@@ -53,11 +70,43 @@ private class Fprintf extends FormattingFunction, NonCppThrowingFunction {
 }
 
 /**
+ * The standard functions `vprintf`, `vwprintf` and their Microsoft variants.
+ */
+private class Vprintf extends VaListFormattingFunction, NonCppThrowingFunction instanceof TopLevelFunction
+{
+  Vprintf() {
+    (
+      this.hasGlobalOrStdOrBslName(["vprintf", "vwprintf"]) or
+      this.hasGlobalName(["_vprintf_l", "_vwprintf_l"])
+    ) and
+    not exists(this.getDefinition().getFile().getRelativePath())
+  }
+
+  override predicate isOutputGlobal() { any() }
+}
+
+/**
+ * The standard functions `vfprintf`, `vfwprintf` and their Microsoft variants.
+ */
+private class Vfprintf extends VaListFormattingFunction, NonCppThrowingFunction instanceof TopLevelFunction
+{
+  Vfprintf() {
+    (
+      this.hasGlobalOrStdOrBslName(["vfprintf", "vfwprintf"]) or
+      this.hasGlobalName(["_vfprintf_l", "_vfwprintf_l"])
+    ) and
+    not exists(this.getDefinition().getFile().getRelativePath())
+  }
+
+  override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = true }
+}
+
+/**
  * The standard function `sprintf` and its Microsoft and glib variants.
  */
-private class Sprintf extends FormattingFunction, NonCppThrowingFunction {
+private class Sprintf extends FormattingFunction, NonCppThrowingFunction instanceof TopLevelFunction
+{
   Sprintf() {
-    this instanceof TopLevelFunction and
     (
       this.hasGlobalOrStdOrBslName([
           "sprintf", // sprintf(dst, format, args...)
@@ -96,13 +145,31 @@ private class Sprintf extends FormattingFunction, NonCppThrowingFunction {
 }
 
 /**
+ * The standard function `vsprintf` and its Microsoft variants.
+ */
+private class Vsprintf extends VaListFormattingFunction, NonCppThrowingFunction instanceof TopLevelFunction
+{
+  Vsprintf() {
+    (
+      this.hasGlobalOrStdOrBslName("vsprintf") or // vsprintf(dst, format, va_list)
+      this.hasGlobalName([
+          "_vsprintf_l", // _vsprintf_l(dst, format, locale, va_list)
+          "__vswprintf_l" // __vswprintf_l(dst, format, locale, va_list)
+        ])
+    ) and
+    not exists(this.getDefinition().getFile().getRelativePath())
+  }
+
+  override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }
+}
+
+/**
  * Implements `Snprintf`.
  */
 private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction,
-  NonCppThrowingFunction
+  NonCppThrowingFunction instanceof TopLevelFunction
 {
   SnprintfImpl() {
-    this instanceof TopLevelFunction and
     (
       this.hasGlobalOrStdOrBslName([
           "snprintf", // C99 defines snprintf
@@ -170,14 +237,101 @@ private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction,
 }
 
 /**
+ * The standard function `vsnprintf`, and its Microsoft variants.
+ */
+private class VsnprintfImpl extends Snprintf, VaListFormattingFunction, AliasFunction,
+  SideEffectFunction, NonCppThrowingFunction instanceof TopLevelFunction
+{
+  VsnprintfImpl() {
+    (
+      this.hasGlobalOrStdOrBslName("vsnprintf") // vsnprintf(dst, count, format, va_list)
+      or
+      this.hasGlobalName([
+          "vsnprintf_s", // vsnprintf_s(dst, size, count, format, va_list)
+          "vsprintf_s", // vsprintf_s(dst, size, format, va_list)
+          "vswprintf_s", // vswprintf_s(dst, size, format, va_list)
+          "_vsnprintf", // _vsnprintf(dst, count, format, va_list)
+          "_vsnprintf_l", // _vsnprintf_l(dst, count, format, locale, va_list)
+          "_vsnprintf_s", // _vsnprintf_s(dst, size, count, format, va_list)
+          "_vsnprintf_s_l", // _vsnprintf_s_l(dst, size, count, format, locale, va_list)
+          "_vsnwprintf", // _vsnwprintf(dst, count, format, va_list)
+          "_vsnwprintf_l", // _vsnwprintf_l(dst, count, format, locale, va_list)
+          "_vsnwprintf_s", // _vsnwprintf_s(dst, size, count, format, va_list)
+          "_vsnwprintf_s_l", // _vsnwprintf_s_l(dst, size, count, format, locale, va_list)
+          "_vsprintf_p", // _vsprintf_p(dst, size, format, va_list)
+          "_vsprintf_p_l", // _vsprintf_p_l(dst, size, format, locale, va_list)
+          "_vsprintf_s_l", // _vsprintf_s_l(dst, size, format, locale, va_list)
+          "_vswprintf_p", // _vswprintf_p(dst, count, format, va_list)
+          "_vswprintf_p_l", // _vswprintf_p_l(dst, count, format, locale, va_list)
+          "_vswprintf_s_l" // _vswprintf_s_l(dst, size, format, locale, va_list)
+        ])
+      or
+      this.hasGlobalOrStdOrBslName("vswprintf") and this.getNumberOfParameters() = 4
+      or
+      this.hasGlobalName("_vswprintf_l") and this.getNumberOfParameters() = 5
+    ) and
+    not exists(this.getDefinition().getFile().getRelativePath())
+  }
+
+  override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }
+
+  override int getSizeParameterIndex() { result = 1 }
+
+  override predicate returnsFullFormatLength() { this.hasName(["vsnprintf", "vsnprintf_s"]) }
+
+  override predicate parameterNeverEscapes(int index) {
+    index =
+      [
+        this.getOutputParameterIndex(false), this.getFormatParameterIndex(),
+        this.getVaListParameterIndex()
+      ]
+  }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate parameterIsAlwaysReturned(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = this.getOutputParameterIndex(false) and buffer = true and mustWrite = false
+    or
+    i = this.getVaListParameterIndex() and buffer = false and mustWrite = false
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = this.getFormatParameterIndex() and buffer = true
+    or
+    i = this.getVaListParameterIndex() and buffer = false
+  }
+}
+
+/**
+ * The Microsoft `_vscprintf_p` functions and variants.
+ */
+private class Vscprintf extends VaListFormattingFunction, NonCppThrowingFunction instanceof TopLevelFunction
+{
+  Vscprintf() {
+    this.hasGlobalName([
+        "_vscprintf_p", // _vscprintf_p(format, va_list)
+        "_vscprintf_p_l", // _vscprintf_p_l(format, locale, va_list)
+        "_vscwprintf_p", // _vscwprintf_p(format, va_list)
+        "_vscwprintf_p_l" // _vscwprintf_p_l(format, locale, va_list)
+      ]) and
+    not exists(this.getDefinition().getFile().getRelativePath())
+  }
+}
+
+/**
  * The Microsoft `StringCchPrintf` function and variants.
  * See: https://learn.microsoft.com/en-us/windows/win32/api/strsafe/
  *      and
  *      https://learn.microsoft.com/en-us/previous-versions/windows/embedded/ms860435(v=msdn.10)
  */
-private class StringCchPrintf extends FormattingFunction {
+private class StringCchPrintf extends FormattingFunction instanceof TopLevelFunction {
   StringCchPrintf() {
-    this instanceof TopLevelFunction and
     exists(string baseName |
       baseName in [
           "StringCchPrintf", //StringCchPrintf(pszDest, cchDest, pszFormat, ...)
@@ -207,9 +361,8 @@ private class StringCchPrintf extends FormattingFunction {
 /**
  * The standard function `syslog`.
  */
-private class Syslog extends FormattingFunction, NonCppThrowingFunction {
+private class Syslog extends FormattingFunction, NonCppThrowingFunction instanceof TopLevelFunction {
   Syslog() {
-    this instanceof TopLevelFunction and
     this.hasGlobalName("syslog") and
     not exists(this.getDefinition().getFile().getRelativePath())
   }
