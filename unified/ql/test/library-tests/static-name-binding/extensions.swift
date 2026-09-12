@@ -32,6 +32,6 @@ extension B { // $ access=B
 }
 extension B { // $ access=B
     class Nested : C { // $ access=B.C
-        let x : D // $ MISSING: access=B.C.D
+        let x : D // $ access=B.C.D
     }
 }

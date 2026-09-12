@@ -262,6 +262,11 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     node2 = getNodeFromRef(p.getSubPattern())
   )
   or
+  exists(ClassLikeDeclaration extension |
+    node1 = getNodeFromRef(extension.getExtensionTarget()) and
+    node2.isLocalNamespace(extension)
+  )
+  or
   FolderHeuristic::valueStep(node1, node2)
 }
 
