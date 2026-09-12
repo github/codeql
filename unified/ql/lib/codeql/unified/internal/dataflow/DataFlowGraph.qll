@@ -2,6 +2,18 @@ private import unified
 private import AllDataFlow
 
 predicate step(Node node1, Step step, Node node2) {
+  exists(VariableDeclaration decl |
+    node1.isResultValue(decl.getValue()) and
+    step.value() and
+    node2.isIncomingValue(decl.getPattern())
+  )
+  or
+  exists(AssignExpr assign |
+    node1.isResultValue(assign.getValue()) and
+    step.value() and
+    node2.isIncomingValue(assign.getTarget())
+  )
+  or
   exists(BinaryExpr expr |
     expr.getOperator().getValue() = "+" and
     node1.isResultValue([expr.getLeft(), expr.getRight()]) and
@@ -13,6 +25,10 @@ predicate step(Node node1, Step step, Node node2) {
     node1.isResultValue(expr.getElement(i).getValue()) and
     step.storeName(i.toString()) and
     node2.isResultValue(expr)
+    or
+    node1.isIncomingValue(expr) and
+    step.readName(i.toString()) and
+    node2.isIncomingValue(expr.getElement(i).getValue())
   )
   or
   exists(MemberAccessExpr expr |
