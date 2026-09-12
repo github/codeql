@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A TLS/SSL certificate validation callback that always returns <code>true</code> trusts every certificate,
+regardless of any validation errors that were detected. This allows an attacker to perform a machine-in-the-middle
+attack against the application, therefore breaking any security that Transport Layer Security (TLS) provides.
+</p>
+
+<p>
+An attack might look like this:
+</p>
+
+<ol>
+  <li>The vulnerable program connects to <code>https://example.com</code>.</li>
+  <li>The attacker intercepts this connection and presents a valid, self-signed certificate for <code>https://example.com</code>.</li>
+  <li>The vulnerable program calls the certificate validation callback to check whether it should trust the certificate.</li>
+  <li>The callback ignores the <code>SslPolicyErrors</code> argument and returns <code>true</code>.</li>
+  <li>The vulnerable program accepts the certificate and proceeds with the connection, since the callback indicated that the certificate is trusted.</li>
+  <li>The attacker can now read the data the program sends to <code>https://example.com</code> and/or alter its replies while the program thinks the connection is secure.</li>
+</ol>
+</overview>
+
+<recommendation>
+<p>
+Do not use a certificate validation callback that unconditionally returns <code>true</code>.
+Either rely on the default certificate validation, or implement a callback that inspects the
+<code>SslPolicyErrors</code> argument and only trusts a specific, known certificate (for example, when
+using a self-signed certificate that has been explicitly pinned).
+</p>
+</recommendation>
+
+<example>
+<p>
+In the first (bad) example, the callback always returns <code>true</code> and therefore trusts any certificate,
+which allows an attacker to perform a machine-in-the-middle attack. In the second (good) example, the callback
+returns <code>true</code> only when there are no validation errors.
+</p>
+<sample src="AcceptAnyCertificate.cs" />
+</example>
+
+<references>
+<li>Microsoft Learn:
+  <a href="https://learn.microsoft.com/en-us/dotnet/api/system.net.security.remotecertificatevalidationcallback">RemoteCertificateValidationCallback Delegate</a>.</li>
+<li>Microsoft Learn:
+  <a href="https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5359">CA5359: Do not disable certificate validation</a>.</li>
+<li>OWASP:
+  <a href="https://owasp.org/www-community/attacks/Manipulator-in-the-middle_attack">Manipulator-in-the-middle attack</a>.</li>
+</references>
+</qhelp>

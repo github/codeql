@@ -1,0 +1,2 @@
+query: Security Features/CWE-295/AcceptAnyCertificate.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
