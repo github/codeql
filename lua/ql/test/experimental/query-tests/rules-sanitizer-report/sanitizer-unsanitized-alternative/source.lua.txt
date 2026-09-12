@@ -1,0 +1,23 @@
+luci = { http = {} }
+
+function luci.http.formvalue(name)
+  return name
+end
+
+local function shellquote(value)
+  return value
+end
+
+os = {}
+
+function os.execute(command)
+end
+
+local tainted = luci.http.formvalue("cmd")
+local command
+if condition then
+  command = shellquote(tainted)
+else
+  command = tainted
+end
+os.execute(command)

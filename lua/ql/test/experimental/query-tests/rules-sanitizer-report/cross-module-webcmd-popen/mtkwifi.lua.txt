@@ -1,0 +1,13 @@
+local M = {}
+
+io = {
+  popen = function(cmd)
+    return cmd
+  end
+}
+
+function M.func_unknow_0_12(command_text)
+  return io.popen(command_text)
+end
+
+return M

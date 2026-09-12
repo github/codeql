@@ -1,0 +1,15 @@
+luci = { http = {} }
+
+function luci.http.formvalue(name)
+  return name
+end
+
+os = {}
+
+function os.execute(command)
+end
+
+local shellsafe = require("shellsafe")
+local tainted = luci.http.formvalue("cmd")
+local sanitized = shellsafe.shellquote(tainted)
+os.execute(sanitized)

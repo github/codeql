@@ -1,0 +1,22 @@
+name: "lua"
+display_name: "Lua"
+version: 0.1.0
+column_kind: "utf8"
+legacy_qltest_extraction: true
+build_modes:
+  - none
+default_queries:
+  - codeql/lua-queries
+github_api_languages:
+  - Lua
+scc_languages:
+  - Lua
+file_types:
+  - name: lua
+    display_name: Lua source files
+    extensions:
+      - .lua
+  - name: lua-bytecode
+    display_name: Lua 5.1 bytecode files
+    extensions:
+      - .luac

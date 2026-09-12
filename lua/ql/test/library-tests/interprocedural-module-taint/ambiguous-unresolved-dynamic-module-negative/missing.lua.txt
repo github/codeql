@@ -1,0 +1,6 @@
+local function run()
+  local mod = require("missing.module")
+  return mod.exec("whoami")
+end
+
+return run

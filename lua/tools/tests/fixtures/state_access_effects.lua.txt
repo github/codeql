@@ -1,0 +1,15 @@
+local captured
+
+local function state_access(object, key, value)
+  local items = {value, key}
+  items[key] = value
+  local selected = items[key]
+  global_value = selected
+  selected = global_value
+  captured = selected
+  selected = captured
+  object:consume(selected)
+  return selected
+end
+
+return state_access

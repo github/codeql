@@ -1,0 +1,7 @@
+local choice = ...
+local function run()
+  local mod = require(choice)
+  return mod.exec("whoami")
+end
+
+return run

@@ -1,0 +1,14 @@
+luci = { http = {} }
+
+function luci.http.formvalue(name)
+  return name
+end
+
+local mtkwifi = require("mtkwifi")
+
+function webcmd()
+  local command_text = luci.http.formvalue("cmd")
+  return mtkwifi.func_unknow_0_12(command_text)
+end
+
+webcmd()

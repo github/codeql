@@ -1,0 +1,8 @@
+local function unary_effects(value)
+  local negative = -value
+  local logical = not value
+  local length = #value
+  return negative, logical, length
+end
+
+return unary_effects

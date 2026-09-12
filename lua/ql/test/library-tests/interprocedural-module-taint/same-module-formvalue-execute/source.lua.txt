@@ -1,0 +1,22 @@
+luci = { http = {} }
+
+function luci.http.formvalue(name)
+  return name
+end
+
+os = {
+  execute = function(cmd)
+    return cmd
+  end
+}
+
+local function read_command()
+  return luci.http.formvalue("cmd")
+end
+
+local function run_command(command_text)
+  return os.execute(command_text)
+end
+
+local command_text = read_command()
+run_command(command_text)

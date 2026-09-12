@@ -1,0 +1,16 @@
+| bc-call-candidate-unresolved | calltarget.boundary | root.1@pc2 | param-derived | unresolved-call-target |
+| bc-call-candidate-unresolved | calltarget.resolution | root@pc5 | root.1 | closure-move |
+| bc-kill-overwrite | rda.analyzer-relation | root@pc4:r2 -> root@pc6:r2 | reaching-definition | bytecode-only,cfg-rda |
+| bc-kill-overwrite | rda.kill-gen | bc-kill-overwrite:clean-constant-to-sink | root@pc4:r2 -> root@pc7:r4 | reachable |
+| bc-table-global-upvalue | table.analyzer-relation | root.0@pc0:r1.key | root.0@pc1:r0 -> root.0@pc3:r3 | bytecode-only,precise-table-field |
+| bc-table-global-upvalue | table.field-flow | root.0@pc1:r0 -> root.0@pc6:r3 | root.0@pc0:r1/key | table/global/upvalue carrier |
+| bc-table-global-upvalue | table.generic-field-flow | root.0@pc0:r1.key | root.0@pc1:r0 -> root.0@pc3:r3 | bytecode-only,precise-table-field |
+| bc-table-global-upvalue | table.object-carrier | root.0@pc0:r1 | root.0@pc1:r0 -> root.0@pc3:r1 | bytecode-only,mutable-table-object |
+| bc-table-global-upvalue | upvalue.capture-read-write | root.0:u0 | root@pc2:r0 -> root.0@pc4:r4 | bytecode-only,derived-upvalue-flow |
+| call-result-table-flow | table.call-result-object-flow | dynamic-write-to-later-read | root.1@pc2:r0 -> root.1@pc3:r3 | bytecode-only,mutable-table-object |
+| defuse-transitive-chain | analysis.boundary | root@pc9 | open-return-tail | only predecessor-proven return slots are modeled |
+| defuse-transitive-chain | defuse.transitive-chain | defuse-transitive-chain:register-chain | root@pc3:r2 -> root@pc8:r6 | reachable |
+| global-state-write-read | global.write-read | shared_global | root.0@pc0:r0 -> root.0@pc1:r1 | bytecode-only,precise-global-state |
+| table-dynamic-key-negative | table.whole-object-flow | dynamic-key-read | root@pc2:r2 -> root@pc4:r3 | same-proven-table |
+| table-dynamic-key-negative | table.whole-object-flow | missing-key-read | root@pc2:r2 -> root@pc5:r4 | same-proven-table |
+| upvalue-mutation-negative | upvalue.mutation-evidence | root.0:u0 | root.0@pc2:r1 -> root.0@pc3:r1 | post-write-evidence |

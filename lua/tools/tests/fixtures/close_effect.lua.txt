@@ -1,0 +1,13 @@
+local function preserve(value)
+  local result = value
+  do
+    local captured = value
+    local function read()
+      return captured
+    end
+    result = read()
+  end
+  return result
+end
+
+return preserve

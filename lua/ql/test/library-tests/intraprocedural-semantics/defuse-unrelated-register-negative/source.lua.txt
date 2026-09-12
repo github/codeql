@@ -1,0 +1,16 @@
+local function source()
+  return "tainted"
+end
+
+local function sink(x)
+  return x
+end
+
+local function unrelated()
+  local r = "clean"
+  return r
+end
+
+local a = source()
+local b = unrelated()
+return sink(b)

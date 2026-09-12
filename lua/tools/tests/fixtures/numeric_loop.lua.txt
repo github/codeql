@@ -1,0 +1,9 @@
+local function last_index(limit, initial)
+  local result = initial
+  for index = 1, limit do
+    result = index
+  end
+  return result
+end
+
+return last_index
