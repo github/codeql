@@ -1,0 +1,4 @@
+instances
+| gen_visibility_inner.rs:5:8:5:20 | VisibilityInner |
+getPath
+| gen_visibility_inner.rs:5:8:5:20 | VisibilityInner | gen_visibility_inner.rs:5:12:5:19 | ...::bar |

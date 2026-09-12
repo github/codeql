@@ -65,14 +65,14 @@ pub fn generate(
 
     for language in languages {
         let prefix = node_types::to_snake_case(&language.name);
-        let ast_node_name = format!("{}_ast_node", &prefix);
-        let node_location_table_name = format!("{}_ast_node_location", &prefix);
-        let node_parent_table_name = format!("{}_ast_node_parent", &prefix);
-        let token_name = format!("{}_token", &prefix);
-        let tokeninfo_name = format!("{}_tokeninfo", &prefix);
-        let trivia_token_name = format!("{}_trivia_token", &prefix);
-        let trivia_tokeninfo_name = format!("{}_trivia_tokeninfo", &prefix);
-        let reserved_word_name = format!("{}_reserved_word", &prefix);
+        let ast_node_name = format!("{}_ast_node", prefix);
+        let node_location_table_name = format!("{}_ast_node_location", prefix);
+        let node_parent_table_name = format!("{}_ast_node_parent", prefix);
+        let token_name = format!("{}_token", prefix);
+        let tokeninfo_name = format!("{}_tokeninfo", prefix);
+        let trivia_token_name = format!("{}_trivia_token", prefix);
+        let trivia_tokeninfo_name = format!("{}_trivia_tokeninfo", prefix);
+        let reserved_word_name = format!("{}_reserved_word", prefix);
         // When a desugaring is configured, comments and other `extra` nodes are
         // preserved from the original parse tree as `TriviaToken`s.
         let has_trivia_tokens = language.desugar.is_some();
@@ -125,7 +125,7 @@ pub fn generate(
         let mut body = vec![];
 
         let facade_import_name = if use_facade_ast {
-            format!("FacadeAst::{}", &language.name)
+            format!("FacadeAst::{}", language.name)
         } else {
             language.name.clone() // If not using a facade AST, treat the module itself as the facade module.
         };
@@ -389,8 +389,8 @@ fn convert_nodes(
     let mut entries = Vec::new();
     let mut ast_node_members: Set<&str> = Set::new();
     let token_kinds: Map<&str, usize> = nodes
-        .iter()
-        .filter_map(|(_, node)| match &node.kind {
+        .values()
+        .filter_map(|node| match &node.kind {
             node_types::EntryKind::Token { kind_id } => {
                 Some((node.dbscheme_name.as_str(), *kind_id))
             }

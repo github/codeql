@@ -52,12 +52,14 @@ rust_library(
     target_compatible_with = select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [],
         "@rules_rust//rust/platform:aarch64-apple-ios": [],
+        "@rules_rust//rust/platform:aarch64-apple-ios-macabi": [],
         "@rules_rust//rust/platform:aarch64-apple-ios-sim": [],
         "@rules_rust//rust/platform:aarch64-linux-android": [],
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [],
         "@rules_rust//rust/platform:aarch64-unknown-fuchsia": [],
         "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [],
+        "@rules_rust//rust/platform:aarch64-unknown-none": [],
         "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710": [],
         "@rules_rust//rust/platform:aarch64-unknown-uefi": [],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [],
@@ -69,13 +71,23 @@ rust_library(
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [],
         "@rules_rust//rust/platform:i686-unknown-freebsd": [],
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [],
+        "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu": [],
+        "@rules_rust//rust/platform:mips-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [],
+        "@rules_rust//rust/platform:riscv32imac-unknown-none-elf": [],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-none-elf": [],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [],
+        "@rules_rust//rust/platform:sparc64-unknown-linux-gnu": [],
+        "@rules_rust//rust/platform:sparc64-unknown-netbsd": [],
+        "@rules_rust//rust/platform:sparc64-unknown-openbsd": [],
+        "@rules_rust//rust/platform:thumbv6m-none-eabi": [],
         "@rules_rust//rust/platform:thumbv7em-none-eabi": [],
+        "@rules_rust//rust/platform:thumbv7em-none-eabihf": [],
+        "@rules_rust//rust/platform:thumbv7m-none-eabi": [],
         "@rules_rust//rust/platform:thumbv8m.main-none-eabi": [],
+        "@rules_rust//rust/platform:thumbv8m.main-none-eabihf": [],
         "@rules_rust//rust/platform:wasm32-unknown-emscripten": [],
         "@rules_rust//rust/platform:wasm32-unknown-unknown": [],
         "@rules_rust//rust/platform:wasm32-wasip1": [],
@@ -83,6 +95,7 @@ rust_library(
         "@rules_rust//rust/platform:wasm32-wasip2": [],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [],
         "@rules_rust//rust/platform:x86_64-apple-ios": [],
+        "@rules_rust//rust/platform:x86_64-apple-ios-macabi": [],
         "@rules_rust//rust/platform:x86_64-linux-android": [],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [],
         "@rules_rust//rust/platform:x86_64-unknown-freebsd": [],
@@ -96,22 +109,28 @@ rust_library(
     version = "0.3.0",
     deps = select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
+            "@vendor_ts__libc-0.2.189//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios": [
-            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
+            "@vendor_ts__libc-0.2.189//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
+        ],
+        "@rules_rust//rust/platform:aarch64-apple-ios-macabi": [
+            "@vendor_ts__libc-0.2.189//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios-sim": [
-            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
+            "@vendor_ts__libc-0.2.189//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
         ],
         "@rules_rust//rust/platform:aarch64-linux-android": [
-            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_os = "android"))
+            "@vendor_ts__libc-0.2.189//:libc",  # cfg(all(target_arch = "aarch64", target_os = "android"))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_os = "linux"))
+            "@vendor_ts__libc-0.2.189//:libc",  # cfg(all(target_arch = "aarch64", target_os = "linux"))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_os = "linux"))
+            "@vendor_ts__libc-0.2.189//:libc",  # cfg(all(target_arch = "aarch64", target_os = "linux"))
+        ],
+        "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu": [
+            "@vendor_ts__libc-0.2.189//:libc",  # cfg(all(target_arch = "loongarch64", target_os = "linux"))
         ],
         "//conditions:default": [],
     }),

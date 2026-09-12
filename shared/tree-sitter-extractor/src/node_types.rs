@@ -130,7 +130,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
         let flattened_name = &node_type_name(&node.kind, node.named);
         let dbscheme_name = escape_name(flattened_name);
         let ql_class_name = dbscheme_name_to_class_name(&dbscheme_name);
-        let dbscheme_name = format!("{}_{}", prefix, &dbscheme_name);
+        let dbscheme_name = format!("{}_{}", prefix, dbscheme_name);
         let subtypes = &node.subtypes;
         if !subtypes.is_empty() {
             // It's a tree-sitter supertype node, for which we create a union
@@ -156,8 +156,8 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                 kind: node.kind.clone(),
                 named: node.named,
             };
-            let table_name = escape_name(&(format!("{}_def", &flattened_name)));
-            let table_name = format!("{}_{}", prefix, &table_name);
+            let table_name = escape_name(&(format!("{}_def", flattened_name)));
+            let table_name = format!("{}_{}", prefix, table_name);
 
             let mut fields = Vec::new();
 
@@ -203,13 +203,13 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
             counter += 1;
             let unprefixed_name = node_type_name(&type_name.kind, true);
             Entry {
-                dbscheme_name: escape_name(&format!("{}_token_{}", &prefix, &unprefixed_name)),
+                dbscheme_name: escape_name(&format!("{}_token_{}", prefix, unprefixed_name)),
                 ql_class_name: dbscheme_name_to_class_name(&escape_name(&unprefixed_name)),
                 kind: EntryKind::Token { kind_id: counter },
             }
         } else {
             Entry {
-                dbscheme_name: format!("{}_reserved_word", &prefix),
+                dbscheme_name: format!("{}_reserved_word", prefix),
                 ql_class_name: "ReservedWord".to_owned(),
                 kind: EntryKind::Token { kind_id: 0 },
             }
@@ -238,9 +238,9 @@ fn add_field(
         let has_index = field_info.multiple;
         let field_table_name = escape_name(&format!(
             "{}_{}_{}",
-            &prefix,
+            prefix,
             parent_flattened_name,
-            &name_for_field_or_child(&field_name)
+            name_for_field_or_child(&field_name)
         ));
         Storage::Table {
             has_index,
@@ -261,7 +261,7 @@ fn add_field(
         let mut field_token_ints: BTreeMap<String, (usize, String)> = BTreeMap::new();
         for (counter, t) in converted_types.into_iter().enumerate() {
             let dbscheme_variant_name =
-                escape_name(&format!("{}_{}_{}", &prefix, parent_flattened_name, t.kind));
+                escape_name(&format!("{}_{}_{}", prefix, parent_flattened_name, t.kind));
             field_token_ints.insert(t.kind.to_owned(), (counter, dbscheme_variant_name));
         }
         FieldTypeInfo::ReservedWordInt(field_token_ints)
@@ -273,9 +273,9 @@ fn add_field(
             types: converted_types,
             dbscheme_union: format!(
                 "{}_{}_{}_type",
-                &prefix,
-                &parent_flattened_name,
-                &name_for_field_or_child(&field_name)
+                prefix,
+                parent_flattened_name,
+                name_for_field_or_child(&field_name)
             ),
             ql_class: "AstNode".to_owned(),
         }

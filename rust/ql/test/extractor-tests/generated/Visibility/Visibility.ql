@@ -4,6 +4,6 @@ import TestUtils
 
 query predicate instances(Visibility x) { toBeTested(x) and not x.isUnknown() }
 
-query predicate getPath(Visibility x, Path getPath) {
-  toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
+query predicate getVisibilityInner(Visibility x, VisibilityInner getVisibilityInner) {
+  toBeTested(x) and not x.isUnknown() and getVisibilityInner = x.getVisibilityInner()
 }

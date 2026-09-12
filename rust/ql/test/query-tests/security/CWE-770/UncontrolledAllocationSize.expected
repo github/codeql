@@ -188,16 +188,16 @@ edges
 | main.rs:161:19:161:68 | ... .unwrap() | main.rs:161:13:161:15 | l13 | provenance |  |
 | main.rs:161:55:161:55 | v | main.rs:161:19:161:59 | ...::from_size_align(...) [Ok] | provenance | MaD:30 |
 | main.rs:183:29:183:36 | ...: usize | main.rs:192:46:192:46 | v | provenance |  |
-| main.rs:183:29:183:36 | ...: usize | main.rs:202:48:202:48 | v | provenance | Sink:MaD:14 |
-| main.rs:192:9:192:10 | l2 | main.rs:193:38:193:39 | l2 | provenance | Sink:MaD:12 |
-| main.rs:192:9:192:10 | l2 | main.rs:194:45:194:46 | l2 | provenance | Sink:MaD:13 |
-| main.rs:192:9:192:10 | l2 | main.rs:195:41:195:42 | l2 | provenance | Sink:MaD:7 |
-| main.rs:192:9:192:10 | l2 | main.rs:196:48:196:49 | l2 | provenance | Sink:MaD:8 |
+| main.rs:183:29:183:36 | ...: usize | main.rs:202:48:202:48 | v | provenance | Sink:MaD:9 |
+| main.rs:192:9:192:10 | l2 | main.rs:193:38:193:39 | l2 | provenance | Sink:MaD:7 |
+| main.rs:192:9:192:10 | l2 | main.rs:194:45:194:46 | l2 | provenance | Sink:MaD:8 |
+| main.rs:192:9:192:10 | l2 | main.rs:195:41:195:42 | l2 | provenance | Sink:MaD:10 |
+| main.rs:192:9:192:10 | l2 | main.rs:196:48:196:49 | l2 | provenance | Sink:MaD:11 |
 | main.rs:192:9:192:10 | l2 | main.rs:197:41:197:42 | l2 | provenance | Sink:MaD:1 |
 | main.rs:192:9:192:10 | l2 | main.rs:198:48:198:49 | l2 | provenance | Sink:MaD:2 |
-| main.rs:192:9:192:10 | l2 | main.rs:208:53:208:54 | l2 | provenance | Sink:MaD:9 |
-| main.rs:192:9:192:10 | l2 | main.rs:210:60:210:61 | l2 | provenance | Sink:MaD:10 |
-| main.rs:192:9:192:10 | l2 | main.rs:213:51:213:52 | l2 | provenance | Sink:MaD:11 |
+| main.rs:192:9:192:10 | l2 | main.rs:208:53:208:54 | l2 | provenance | Sink:MaD:12 |
+| main.rs:192:9:192:10 | l2 | main.rs:210:60:210:61 | l2 | provenance | Sink:MaD:13 |
+| main.rs:192:9:192:10 | l2 | main.rs:213:51:213:52 | l2 | provenance | Sink:MaD:14 |
 | main.rs:192:14:192:47 | ...::array::<...>(...) [Ok] | main.rs:192:14:192:56 | ... .unwrap() | provenance | MaD:41 |
 | main.rs:192:14:192:56 | ... .unwrap() | main.rs:192:9:192:10 | l2 | provenance |  |
 | main.rs:192:46:192:46 | v | main.rs:192:14:192:47 | ...::array::<...>(...) [Ok] | provenance | MaD:25 |
@@ -252,14 +252,14 @@ models
 | 4 | Sink: <alloc::vec::Vec>::try_with_capacity_in; Argument[0]; alloc-layout |
 | 5 | Sink: <alloc::vec::Vec>::with_capacity; Argument[0]; alloc-layout |
 | 6 | Sink: <alloc::vec::Vec>::with_capacity_in; Argument[0]; alloc-layout |
-| 7 | Sink: <std::alloc::System as core::alloc::Allocator>::allocate; Argument[0]; alloc-size |
-| 8 | Sink: <std::alloc::System as core::alloc::Allocator>::allocate_zeroed; Argument[0]; alloc-size |
-| 9 | Sink: <std::alloc::System as core::alloc::Allocator>::grow; Argument[2]; alloc-size |
-| 10 | Sink: <std::alloc::System as core::alloc::Allocator>::grow_zeroed; Argument[2]; alloc-size |
-| 11 | Sink: <std::alloc::System as core::alloc::Allocator>::shrink; Argument[2]; alloc-size |
-| 12 | Sink: <std::alloc::System as core::alloc::global::GlobalAlloc>::alloc; Argument[0]; alloc-size |
-| 13 | Sink: <std::alloc::System as core::alloc::global::GlobalAlloc>::alloc_zeroed; Argument[0]; alloc-size |
-| 14 | Sink: <std::alloc::System as core::alloc::global::GlobalAlloc>::realloc; Argument[2]; alloc-size |
+| 7 | Sink: <core::alloc::global::GlobalAlloc>::alloc; Argument[0]; alloc-layout |
+| 8 | Sink: <core::alloc::global::GlobalAlloc>::alloc_zeroed; Argument[0]; alloc-layout |
+| 9 | Sink: <core::alloc::global::GlobalAlloc>::realloc; Argument[2]; alloc-size |
+| 10 | Sink: <std::alloc::System as core::alloc::Allocator>::allocate; Argument[0]; alloc-size |
+| 11 | Sink: <std::alloc::System as core::alloc::Allocator>::allocate_zeroed; Argument[0]; alloc-size |
+| 12 | Sink: <std::alloc::System as core::alloc::Allocator>::grow; Argument[2]; alloc-size |
+| 13 | Sink: <std::alloc::System as core::alloc::Allocator>::grow_zeroed; Argument[2]; alloc-size |
+| 14 | Sink: <std::alloc::System as core::alloc::Allocator>::shrink; Argument[2]; alloc-size |
 | 15 | Sink: alloc::alloc::alloc; Argument[0]; alloc-layout |
 | 16 | Sink: alloc::alloc::alloc_zeroed; Argument[0]; alloc-layout |
 | 17 | Sink: alloc::alloc::realloc; Argument[2]; alloc-size |

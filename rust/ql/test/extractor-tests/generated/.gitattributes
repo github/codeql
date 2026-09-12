@@ -34,6 +34,7 @@
 /ConstBlockPat/gen_const_block_pat.rs linguist-generated
 /ConstParam/gen_const_param.rs linguist-generated
 /ContinueExpr/gen_continue_expr.rs linguist-generated
+/DerefPat/gen_deref_pat.rs linguist-generated
 /DynTraitTypeRepr/gen_dyn_trait_type_repr.rs linguist-generated
 /Enum/gen_enum.rs linguist-generated
 /ExprStmt/gen_expr_stmt.rs linguist-generated
@@ -56,6 +57,7 @@
 /IfExpr/gen_if_expr.rs linguist-generated
 /Impl/gen_impl.rs linguist-generated
 /ImplTraitTypeRepr/gen_impl_trait_type_repr.rs linguist-generated
+/IncludeBytesExpr/gen_include_bytes_expr.rs linguist-generated
 /IndexExpr/gen_index_expr.rs linguist-generated
 /InferTypeRepr/gen_infer_type_repr.rs linguist-generated
 /ItemList/gen_item_list.rs linguist-generated
@@ -85,6 +87,7 @@
 /Name/gen_name.rs linguist-generated
 /NameRef/gen_name_ref.rs linguist-generated
 /NeverTypeRepr/gen_never_type_repr.rs linguist-generated
+/NotNull/gen_not_null.rs linguist-generated
 /OffsetOfExpr/gen_offset_of_expr.rs linguist-generated
 /OrPat/gen_or_pat.rs linguist-generated
 /Param/gen_param.rs linguist-generated
@@ -97,6 +100,7 @@
 /Path/gen_path_expr.rs linguist-generated
 /Path/gen_path_pat.rs linguist-generated
 /Path/gen_path_type_repr.rs linguist-generated
+/PatternTypeRepr/gen_pattern_type_repr.rs linguist-generated
 /PrefixExpr/gen_prefix_expr.rs linguist-generated
 /PtrTypeRepr/gen_ptr_type_repr.rs linguist-generated
 /RangeExpr/gen_range_expr.rs linguist-generated
@@ -147,6 +151,7 @@
 /Variant/gen_variant.rs linguist-generated
 /VariantList/gen_variant_list.rs linguist-generated
 /Visibility/gen_visibility.rs linguist-generated
+/VisibilityInner/gen_visibility_inner.rs linguist-generated
 /WhereClause/gen_where_clause.rs linguist-generated
 /WherePred/gen_where_pred.rs linguist-generated
 /WhileExpr/gen_while_expr.rs linguist-generated

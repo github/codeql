@@ -6,7 +6,7 @@
 private import internal.FormatArgsArgImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Expr
-import codeql.rust.elements.FormatArgsArgName
+import codeql.rust.elements.Name
 
 /**
  * A FormatArgsArg. For example the `"world"` in:

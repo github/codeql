@@ -99,7 +99,7 @@ impl<'a> RustAnalyzer<'a> {
     fn get_file_data(
         &self,
         path: &Path,
-    ) -> Result<(&Semantics<'_, RootDatabase>, EditionedFileId, FileText), RustAnalyzerNoSemantics>
+    ) -> Result<(&'a Semantics<'a, RootDatabase>, EditionedFileId, FileText), RustAnalyzerNoSemantics>
     {
         match self {
             RustAnalyzer::WithoutSemantics { severity, reason } => Err(RustAnalyzerNoSemantics {
@@ -118,12 +118,12 @@ impl<'a> RustAnalyzer<'a> {
                 let editioned_file_id = semantics.attach_first_edition_opt(file_id).ok_or(
                     RustAnalyzerNoSemantics::warning("failed to determine rust edition"),
                 )?;
-                Ok((semantics, editioned_file_id, input))
+                Ok((*semantics, editioned_file_id, input))
             }
         }
     }
 
-    pub fn parse(&self, path: &Path) -> ParseResult<'_> {
+    pub fn parse(&self, path: &Path) -> ParseResult<'a> {
         match self.get_file_data(path) {
             Ok((semantics, file_id, input)) => {
                 let source_file = semantics.parse(file_id);

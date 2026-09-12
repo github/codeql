@@ -17,6 +17,10 @@ query predicate getDefaultVal(StructField x, ConstArg getDefaultVal) {
   toBeTested(x) and not x.isUnknown() and getDefaultVal = x.getDefaultVal()
 }
 
+query predicate getMutRestriction(StructField x, MutRestriction getMutRestriction) {
+  toBeTested(x) and not x.isUnknown() and getMutRestriction = x.getMutRestriction()
+}
+
 query predicate getName(StructField x, Name getName) {
   toBeTested(x) and not x.isUnknown() and getName = x.getName()
 }

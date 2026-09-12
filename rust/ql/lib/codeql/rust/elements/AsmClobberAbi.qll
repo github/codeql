@@ -5,6 +5,7 @@
 
 private import internal.AsmClobberAbiImpl
 import codeql.rust.elements.AsmPiece
+import codeql.rust.elements.Attr
 
 /**
  * A clobbered ABI in an inline assembly block.

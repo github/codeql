@@ -36,7 +36,7 @@ private predicate formatArgsHasArg(
 
 pragma[nomagic]
 private predicate formatArgsHasArgName(Raw::FormatArgsExpr parent) {
-  exists(parent.getArg(_).getArgName())
+  exists(parent.getArg(_).getName())
 }
 
 /**

@@ -7,3 +7,7 @@ query predicate instances(AsmOptionsList x) { toBeTested(x) and not x.isUnknown(
 query predicate getAsmOption(AsmOptionsList x, int index, AsmOption getAsmOption) {
   toBeTested(x) and not x.isUnknown() and getAsmOption = x.getAsmOption(index)
 }
+
+query predicate getAttr(AsmOptionsList x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
