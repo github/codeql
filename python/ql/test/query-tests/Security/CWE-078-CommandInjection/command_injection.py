@@ -78,3 +78,33 @@ def restricted_characters():
     path = request.args.get('path', '')
     if re.match(r'^[a-zA-Z0-9_-]+$', path):
         os.system("ls " + path) # $ Alert SPURIOUS: result=BAD
+
+
+@app.route("/exec-shell")
+def exec_shell():
+    files = request.args.get('files', '')
+    os.execl("/bin/sh", "sh", "-c", "ls " + files) # $ Alert result=BAD result=OK
+
+
+@app.route("/subprocess-shell")
+def subprocess_shell():
+    files = request.args.get('files', '')
+    subprocess.run(["sh", "-c", "ls " + files]) # $ Alert result=BAD result=OK
+
+
+@app.route("/safe-subprocess-arguments")
+def safe_subprocess_arguments():
+    files = request.args.get('files', '')
+    subprocess.run(["ls", files]) # $ result=OK
+
+
+@app.route("/execv-shell")
+def execv_shell():
+    files = request.args.get('files', '')
+    os.execve("/bin/sh", ["sh", "-c", "ls " + files], {}) # $ Alert result=BAD result=OK
+
+
+@app.route("/legacy-shell-helper")
+def legacy_shell_helper():
+    files = request.args.get('files', '')
+    subprocess.getoutput(["sh", "-c", "ls " + files]) # $ result=OK
