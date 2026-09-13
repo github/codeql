@@ -9,3 +9,5 @@ query predicate unsupported(UnsupportedNode node, string value) { value = node.g
 query predicate rawStringValue(StringLiteral e, string value) { value = e.getValue() }
 
 query predicate exprStringValue(Expr e, string value) { value = e.getStringValue() }
+
+query predicate unexpectedUnaryTuple(TupleExpr tuple) { count(tuple.getAnElement()) = 1 }
