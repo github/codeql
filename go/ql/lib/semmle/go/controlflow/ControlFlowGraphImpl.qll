@@ -46,8 +46,7 @@ private predicate isCondRoot(Expr e) {
  */
 private predicate isCond(Expr e) {
   isCondRoot(e) or
-  e = any(LogicalBinaryExpr lbe | isCond(lbe)).getRightOperand() or
-  e = any(ParenExpr par | isCond(par)).getExpr()
+  e = any(LogicalBinaryExpr lbe | isCond(lbe)).getRightOperand()
 }
 
 /**
@@ -586,9 +585,6 @@ module CFG {
     //  `else` block, so there is no control-flow step where `x && y` is specifically calculated)
     e instanceof LogicalBinaryExpr and
     isCond(e)
-    or
-    // Purely concrete-syntactic structural expression:
-    e instanceof ParenExpr
   }
 
   /**
@@ -774,7 +770,6 @@ module CFG {
       this instanceof ExprStmt or
       this instanceof KeyValueExpr or
       this instanceof LabeledStmt or
-      this instanceof ParenExpr or
       this instanceof PlainBlock or
       this instanceof VarDecl
     }
@@ -810,8 +805,6 @@ module CFG {
       )
       or
       i = 0 and result = this.(LabeledStmt).getStmt()
-      or
-      i = 0 and result = this.(ParenExpr).getExpr()
       or
       result = this.(PlainBlock).getStmt(i)
     }

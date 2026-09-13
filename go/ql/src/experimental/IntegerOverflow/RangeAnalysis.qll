@@ -31,12 +31,6 @@ float getAnUpperBound(Expr expr) {
   if expr.isConst()
   then result = expr.getNumericValue()
   else (
-    //if an expression with parenthesis, strip the parenthesis first
-    exists(ParenExpr paren |
-      paren = expr and
-      result = getAnUpperBound(paren.stripParens())
-    )
-    or
     //if this expression is an identifier
     exists(SsaVariable v, Ident identifier |
       identifier = expr and
@@ -188,11 +182,6 @@ float getALowerBound(Expr expr) {
     result = expr.getIntValue() or
     result = expr.getExactValue().toFloat()
   else (
-    exists(ParenExpr paren |
-      paren = expr and
-      result = getALowerBound(paren.stripParens())
-    )
-    or
     //if this expression is an identifer
     exists(SsaVariable v, Ident identifier |
       identifier = expr and
@@ -571,12 +560,6 @@ predicate ssaDependsOnExpr(SsaDefinition def, Expr expr) {
   if expr.isConst()
   then none()
   else (
-    //if an expression with parenthesis, strip the parenthesis
-    exists(ParenExpr paren |
-      paren = expr and
-      ssaDependsOnExpr(def, paren.stripParens())
-    )
-    or
     exists(Ident ident |
       ident = expr and
       getAUse(def) = ident
