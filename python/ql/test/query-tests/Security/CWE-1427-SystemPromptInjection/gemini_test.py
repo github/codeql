@@ -1,0 +1,74 @@
+from google import genai
+from google.genai import types
+from flask import Flask, request  # $ Source
+
+app = Flask(__name__)
+client = genai.Client()
+
+
+@app.route("/gemini")
+def get_input_gemini():
+    persona = request.args.get("persona")
+    query = request.args.get("query")
+
+    response1 = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=[
+            {
+                "role": "model",
+                "parts": [
+                    {
+                        "text": "I am " + persona  # $ Alert[py/system-prompt-injection]
+                    }
+                ]
+            },
+            {
+                "role": "user",
+                "parts": [
+                    {
+                        "text": query
+                    }
+                ]
+            }
+        ],
+        config=types.GenerateContentConfig(
+            system_instruction="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
+        ),
+    )
+    print(response1)
+
+    cache = client.caches.create(
+        model="gemini-2.0-flash",
+        config=types.CreateCachedContentConfig(
+            system_instruction="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
+        ),
+    )
+    print(cache)
+
+
+@app.route("/gemini-live")
+async def get_input_gemini_live():
+    persona = request.args.get("persona")
+
+    async with client.aio.live.connect(
+        model="gemini-2.0-flash",
+        config=types.LiveConnectConfig(
+            system_instruction="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
+        ),
+    ) as session:
+        print(session)
+
+
+@app.route("/gemini-tool")
+def get_input_gemini_tool():
+    persona = request.args.get("persona")
+
+    tool = types.Tool(
+        function_declarations=[
+            types.FunctionDeclaration(
+                name="lookup",
+                description="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
+            )
+        ]
+    )
+    print(tool)
