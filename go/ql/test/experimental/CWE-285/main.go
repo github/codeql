@@ -7,9 +7,9 @@ import (
 )
 
 func bad() error {
-	t, _ := pam.StartFunc("", "", func(s pam.Style, msg string) (string, error) {
+	t, _ := pam.StartFunc("", "", func(s pam.Style, msg string) (string, error) { // $ Alert
 		return "", nil
-	}) // $ Alert
+	})
 	return t.Authenticate(0)
 
 }

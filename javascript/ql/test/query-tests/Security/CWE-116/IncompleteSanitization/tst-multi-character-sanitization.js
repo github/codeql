@@ -88,11 +88,11 @@
 
   x = x.replace(/^(\.\.\/?)+/g, "");
 
-  x = x.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/g, function(
+  x = x.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/g, function( // $ Alert[js/incomplete-multi-character-sanitization]
     $0
   ) {
     return unknown ? $0 : "";
-  }); // $ Alert[js/incomplete-multi-character-sanitization]
+  });
 
   x = x.replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, ""); // $ MISSING: Alert
 
@@ -122,10 +122,10 @@
 
   x = x.replace(/<!\-\-DEVEL[\d\D]*?DEVEL\-\->/g, "");
 
-  x = x
+  x = x // $ Alert[js/incomplete-multi-character-sanitization]
     .replace(/^\.\//, "")
     .replace(/\/\.\//, "/")
-    .replace(/[^\/]*\/\.\.\//, ""); // $ Alert[js/incomplete-multi-character-sanitization]
+    .replace(/[^\/]*\/\.\.\//, "");
 
   return x;
 });

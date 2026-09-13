@@ -122,10 +122,10 @@ new ws.Server({ port: 8080 }).on('connection', function (socket, request) {
 var server2 = http.createServer(function (req, res) {
     var tainted = url.parse(req.url, true).query.url; // $ Source[js/request-forgery]
 
-    axios({
+    axios({ // $ Alert[js/request-forgery]
         method: 'get',
         url: tainted // $ Sink[js/request-forgery]
-    }) // $ Alert[js/request-forgery]
+    })
 
     var myUrl = `${something}/bla/${tainted}`;
     axios.get(myUrl); // $ Alert[js/request-forgery]

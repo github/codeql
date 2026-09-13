@@ -139,16 +139,16 @@ class ParallelInvoke
 
         try
         {
-            Parallel.Invoke(() =>
+            Parallel.Invoke(() => // $ Alert
                 {
                     var bytes = new byte[4];
                     Convert.ToBase64String(sha1.ComputeHash(bytes));
-                }, // $ Alert
-                () =>
+                },
+                () => // $ Alert
                 {
                     var bytes = new byte[4];
                     Convert.ToBase64String(sha1.ComputeHash(bytes));
-                } // $ Alert
+                }
             );
 
         }

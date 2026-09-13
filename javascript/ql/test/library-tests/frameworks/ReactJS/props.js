@@ -1,6 +1,6 @@
 function ES2015() {
-    class C extends React.Component { // $ threatModelSource=view-component-input
-    } // $ reactComponent
+    class C extends React.Component { // $ threatModelSource=view-component-input reactComponent
+    }
 
     C.defaultProps = { propFromDefaultProps: "propFromDefaultProps" }; // $ getACandidatePropsValue
 
@@ -10,11 +10,11 @@ function ES2015() {
 }
 
 function ES5() {
-    var C = React.createClass({
+    var C = React.createClass({ // $ reactComponent
         getDefaultProps() {
             return { propFromDefaultProps: "propFromDefaultProps" }; // $ getACandidatePropsValue
         }
-    }); // $ reactComponent
+    });
 
     (<C propFromJSX={"propFromJSX"}/>); // $ getACandidatePropsValue
 
@@ -23,9 +23,9 @@ function ES5() {
 }
 
 function Functional() {
-    function C(props) { // $ threatModelSource=view-component-input
+    function C(props) { // $ threatModelSource=view-component-input reactComponent
         return <div/>;
-    } // $ reactComponent
+    }
 
     C.defaultProps = { propFromDefaultProps: "propFromDefaultProps" }; // $ getACandidatePropsValue
 
