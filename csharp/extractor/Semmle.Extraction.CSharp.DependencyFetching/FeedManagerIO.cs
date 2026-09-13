@@ -13,12 +13,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     public class FeedManagerIO : IFeedManagerIO
     {
         private readonly ILogger logger;
-        private readonly IDependabotProxy? dependabotProxy;
+        private readonly IRegistryProxy? registryProxy;
 
-        public FeedManagerIO(ILogger logger, IDependabotProxy? dependabotProxy)
+        public FeedManagerIO(ILogger logger, IRegistryProxy? registryProxy)
         {
             this.logger = logger;
-            this.dependabotProxy = dependabotProxy;
+            this.registryProxy = registryProxy;
         }
 
         public string? GetDirectoryName(string path)
@@ -43,13 +43,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             logger.LogInfo($"Checking if NuGet feed '{feed}' is reachable...");
 
-            // Configure the HttpClient to be aware of the Dependabot Proxy, if used.
+            // Configure the HttpClient to be aware of the Registry proxy, if used.
             HttpClientHandler httpClientHandler = new();
-            if (dependabotProxy != null)
+            if (registryProxy != null)
             {
-                httpClientHandler.Proxy = new WebProxy(dependabotProxy.Address);
+                httpClientHandler.Proxy = new WebProxy(registryProxy.Address);
 
-                if (dependabotProxy.Certificate != null)
+                if (registryProxy.Certificate != null)
                 {
                     httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, _) =>
                     {
@@ -60,11 +60,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                                 : chain is null
                                     ? "chain"
                                     : "certificate";
-                            logger.LogWarning($"Dependabot proxy certificate validation failed due to missing {msg}");
+                            logger.LogWarning($"Registry proxy certificate validation failed due to missing {msg}");
                             return false;
                         }
                         chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
-                        chain.ChainPolicy.CustomTrustStore.Add(dependabotProxy.Certificate);
+                        chain.ChainPolicy.CustomTrustStore.Add(registryProxy.Certificate);
                         return chain.Build(cert);
                     };
                 }

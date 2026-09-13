@@ -12,14 +12,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal sealed class DotNetCliInvoker : IDotNetCliInvoker
     {
         private readonly ILogger logger;
-        private readonly IDependabotProxy? proxy;
+        private readonly IRegistryProxy? proxy;
 
         public string Exec { get; }
 
-        public DotNetCliInvoker(ILogger logger, string exec, IDependabotProxy? dependabotProxy)
+        public DotNetCliInvoker(ILogger logger, string exec, IRegistryProxy? registryProxy)
         {
             this.logger = logger;
-            this.proxy = dependabotProxy;
+            this.proxy = registryProxy;
             this.Exec = exec;
             logger.LogInfo($"Using .NET CLI executable: '{Exec}'");
         }
@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Configure the proxy settings, if applicable.
             if (this.proxy != null)
             {
-                logger.LogDebug($"Configuring environment variables for the Dependabot proxy at {this.proxy.Address}");
+                logger.LogDebug($"Configuring environment variables for the Registry proxy at {this.proxy.Address}");
 
                 startInfo.EnvironmentVariables["HTTP_PROXY"] = this.proxy.Address;
                 startInfo.EnvironmentVariables["HTTPS_PROXY"] = this.proxy.Address;

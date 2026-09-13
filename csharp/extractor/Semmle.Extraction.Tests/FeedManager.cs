@@ -9,7 +9,7 @@ using Semmle.Extraction.CSharp.DependencyFetching;
 
 namespace Semmle.Extraction.Tests
 {
-    public class DependabotProxyStub : IDependabotProxy
+    public class RegistryProxyStub : IRegistryProxy
     {
         public string Address { get; } = "";
         public ImmutableHashSet<string> RegistryURLs { get; } = ["https://example.com/registry1", "https://example.com/registry2"];
@@ -20,7 +20,7 @@ namespace Semmle.Extraction.Tests
         public void Dispose() { }
     }
 
-    public class DependabotProxyStubWithBaseUrls : IDependabotProxy
+    public class RegistryProxyStubWithBaseUrls : IRegistryProxy
     {
         public string Address { get; } = "";
         public ImmutableHashSet<string> RegistryURLs { get; } = ["https://example.com/registry1", "https://example.com/registry2", "https://example.com/base1", "https://example.com/base2"];
@@ -79,16 +79,16 @@ namespace Semmle.Extraction.Tests
         {
             var logger = new LoggerStub();
             var dotnet = new DotNetStub([], [], ["E https://feed.from/config"], ["E https://feed.from/folder1", "E https://feed.from/folder2", "D https://feed.from/folder3"]);
-            var dependabotProxy = new DependabotProxyStub();
+            var registryProxy = new RegistryProxyStub();
             var fileProvider = new FileProviderStub();
             var feedManagerIo = new FeedManagerIOStub(["https://example.com/registry1", "https://feed.from/folder2"]);
-            return new FeedManager(logger, dotnet, dependabotProxy, fileProvider, feedManagerIo);
+            return new FeedManager(logger, dotnet, registryProxy, fileProvider, feedManagerIo);
         }
 
         /// <summary>
         /// Verify that `FeedManager` correctly computes the explicit feeds using feeds discovered in nuget.config files and
         /// private registries.
-        /// See the initialization of `DotNetStub` and `DependabotProxyStub` in `MakeFeedManager` for the feeds configured
+        /// See the initialization of `DotNetStub` and `RegistryProxyStub` in `MakeFeedManager` for the feeds configured
         /// to be returned and classified as explicit feeds.
         /// </summary>
         [Fact]
@@ -132,7 +132,7 @@ namespace Semmle.Extraction.Tests
         /// <summary>
         /// Verify that `FeedManager` correctly computes all feeds using feeds discovered in nuget.config files, private registries,
         /// and the environment.
-        /// See the initialization of `DotNetStub` and `DependabotProxyStub` in `MakeFeedManager` for the feeds configured
+        /// See the initialization of `DotNetStub` and `RegistryProxyStub` in `MakeFeedManager` for the feeds configured
         /// to be returned and included in all feeds.
         /// </summary>
         [Fact]
@@ -270,7 +270,7 @@ namespace Semmle.Extraction.Tests
         /// <summary>
         /// Verify that `FeedManager` correctly computes the default feeds and reachable default feeds
         /// when private registries are configured to replace the default feeds.
-        /// See the initialization of `DependabotProxyStubWithBaseUrls` for the feeds configured to replace the default feeds.
+        /// See the initialization of `RegistryProxyStubWithBaseUrls` for the feeds configured to replace the default feeds.
         /// </summary>
         [Fact]
         public void TestDefaultFeedsPrivateRegistries()
@@ -278,10 +278,10 @@ namespace Semmle.Extraction.Tests
             // Setup
             var logger = new LoggerStub();
             var dotnet = new DotNetStub([], [], [], []);
-            var dependabotProxy = new DependabotProxyStubWithBaseUrls();
+            var registryProxy = new RegistryProxyStubWithBaseUrls();
             var fileProvider = new FileProviderStub();
             var feedManagerIo = new FeedManagerIOStub(["https://example.com/registry2", "https://example.com/base1"]);
-            var feedManager = new FeedManager(logger, dotnet, dependabotProxy, fileProvider, feedManagerIo);
+            var feedManager = new FeedManager(logger, dotnet, registryProxy, fileProvider, feedManagerIo);
 
             // Execute
             var defaultFeeds = feedManager.DefaultFeeds;
@@ -312,10 +312,10 @@ namespace Semmle.Extraction.Tests
             // Setup
             var logger = new LoggerStub();
             var dotnet = new DotNetStub([], [], [], ["E https://api.nuget.org/v3/index.json"]);
-            var dependabotProxy = new DependabotProxyStub();
+            var registryProxy = new RegistryProxyStub();
             var fileProvider = new FileProviderStub();
             var feedManagerIo = new FeedManagerIOStub(["https://example.com/registry2", "https://example.com/base1"]);
-            var feedManager = new FeedManager(logger, dotnet, dependabotProxy, fileProvider, feedManagerIo);
+            var feedManager = new FeedManager(logger, dotnet, registryProxy, fileProvider, feedManagerIo);
 
             // Execute
             var explicitFeeds = feedManager.ExplicitFeeds;
@@ -337,7 +337,7 @@ namespace Semmle.Extraction.Tests
         /// <summary>
         /// Verify that `FeedManager` correctly computes the explicit and all feeds when https://api.nuget.org/v3/index.json and
         /// related NuGet.org URLs are replaced by private registries configured to replace the base feeds.
-        /// See the initialization of `DependabotProxyStubWithBaseUrls` for the feeds configured as default replacements.
+        /// See the initialization of `RegistryProxyStubWithBaseUrls` for the feeds configured as default replacements.
         /// </summary>
         [Fact]
         public void TestNugetOrgReplacement()
@@ -345,10 +345,10 @@ namespace Semmle.Extraction.Tests
             // Setup
             var logger = new LoggerStub();
             var dotnet = new DotNetStub([], [], ["E https://www.nuget.org/api/v2/"], ["E https://api.nuget.org/v3/index.json"]);
-            var dependabotProxy = new DependabotProxyStubWithBaseUrls();
+            var registryProxy = new RegistryProxyStubWithBaseUrls();
             var fileProvider = new FileProviderStub();
             var feedManagerIo = new FeedManagerIOStub(["https://example.com/registry2", "https://example.com/base1"]);
-            var feedManager = new FeedManager(logger, dotnet, dependabotProxy, fileProvider, feedManagerIo);
+            var feedManager = new FeedManager(logger, dotnet, registryProxy, fileProvider, feedManagerIo);
 
             // Execute
             var explicitFeeds = feedManager.ExplicitFeeds;

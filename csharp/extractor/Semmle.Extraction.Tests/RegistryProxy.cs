@@ -6,7 +6,7 @@ using Semmle.Util;
 
 namespace Semmle.Extraction.Tests
 {
-    public class DependabotConfigurationStub : IDependabotProxyConfiguration
+    public class RegistryConfigurationStub : IRegistryProxyConfiguration
     {
         public string? Host { get; set; }
         public string? Port { get; set; }
@@ -20,23 +20,23 @@ namespace Semmle.Extraction.Tests
         public void Dispose() { }
     }
 
-    public class DependabotProxyTests
+    public class RegistryProxyTests
     {
         private static TemporaryDirectory MakeTemporaryDirectory()
         {
-            var tmp = Path.Join(Path.GetTempPath(), "DependabotProxyTests", Guid.NewGuid().ToString());
+            var tmp = Path.Join(Path.GetTempPath(), "RegistryProxyTests", Guid.NewGuid().ToString());
             return new TemporaryDirectory(tmp, "testing", new LoggerStub());
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the registry proxy correctly handles the case where the port is not specified.
-        /// In this case, the registry proxy should not be created.
+        /// Verify that the Registry proxy correctly handles the case where the port is not specified.
+        /// In this case, the Registry proxy should not be created.
         /// </summary>
         [Fact]
-        public void TestDependabotProxyNoPort()
+        public void TestRegistryProxyNoPort()
         {
             // Setup
-            var config = new DependabotConfigurationStub
+            var config = new RegistryConfigurationStub
             {
                 Host = "localhost",
                 Port = "",
@@ -44,28 +44,28 @@ namespace Semmle.Extraction.Tests
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = RegistryProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.Null(proxy);
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the registry proxy correctly handles the case where the host is not specified.
-        /// In this case, the registry proxy should not be created.
+        /// Verify that the Registry proxy correctly handles the case where the host is not specified.
+        /// In this case, the Registry proxy should not be created.
         /// </summary>
         [Fact]
-        public void TestDependabotProxyNoHost()
+        public void TestRegistryProxyNoHost()
         {
             // Setup
-            var config = new DependabotConfigurationStub
+            var config = new RegistryConfigurationStub
             {
                 Port = "8080",
             };
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = RegistryProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.Null(proxy);
@@ -105,14 +105,14 @@ namespace Semmle.Extraction.Tests
         """;
 
         /// <summary>
-        /// The purpose of this test is to verify that the registry proxy correctly handles the case
+        /// Verify that the Registry proxy correctly handles the case
         /// where the port, host, and certificate are specified.
         /// </summary>
         [Fact]
-        public void TestDependabotProxyCertificate()
+        public void TestRegistryProxyCertificate()
         {
             // Setup
-            var config = new DependabotConfigurationStub
+            var config = new RegistryConfigurationStub
             {
                 Port = "8080",
                 Host = "localhost",
@@ -121,7 +121,7 @@ namespace Semmle.Extraction.Tests
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = RegistryProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.NotNull(proxy);
@@ -131,15 +131,15 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the registry proxy correctly handles the case
-        /// where the RegistryURLs environment variable is not a valid JSON list.
-        /// In this case, the registry proxy should be created, but the list of private registries should be empty.
+        /// Verify that the Registry proxy correctly handles the case where the RegistryURLs environment variable
+        /// is not a valid JSON list.
+        /// In this case, the Registry proxy should be created, but the list of private registries should be empty.
         /// </summary>
         [Fact]
-        public void TestDependabotRegistryUrlsParseError()
+        public void TestRegistryProxyUrlsParseError()
         {
             // Setup
-            var config = new DependabotConfigurationStub
+            var config = new RegistryConfigurationStub
             {
                 Port = "8080",
                 Host = "localhost",
@@ -148,7 +148,7 @@ namespace Semmle.Extraction.Tests
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = RegistryProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.NotNull(proxy);
@@ -157,15 +157,15 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the registry proxy correctly handles the case
-        /// where the RegistryURLs environment variable is a valid JSON list with a single entry.
-        /// In this case, the registry proxy should be created, and the list of private registries should contain the single entry.
+        /// Verify that the Registry proxy correctly handles the case where the RegistryURLs environment variable
+        /// is a valid JSON list with a single entry.
+        /// In this case, the Registry proxy should be created, and the list of private registries should contain the single entry.
         /// </summary>
         [Fact]
-        public void TestDependabotRegistryUrlsSingle()
+        public void TestRegistryProxyUrlsSingle()
         {
             // Setup
-            var config = new DependabotConfigurationStub
+            var config = new RegistryConfigurationStub
             {
                 Port = "8080",
                 Host = "localhost",
@@ -174,7 +174,7 @@ namespace Semmle.Extraction.Tests
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = RegistryProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.NotNull(proxy);
@@ -185,17 +185,17 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the registry proxy correctly handles the case
-        /// where the RegistryURLs environment variable is a valid JSON list with multiple entries, but only one of them
-        /// is of type "nuget_feed", which is relevant for C#.
-        /// In this case, the registry proxy should be created, and the list of private registries should
+        /// Verify that the Registry proxy correctly handles the case where the RegistryURLs environment variable
+        /// is a valid JSON list with multiple entries, but only one of them is of type "nuget_feed", which is
+        /// relevant for C#.
+        /// In this case, the Registry proxy should be created, and the list of private registries should
         /// contain only the entry of type "nuget_feed".
         /// </summary>
         [Fact]
-        public void TestDependabotRegistryUrls3()
+        public void TestRegistryProxyUrls3()
         {
             // Setup
-            var config = new DependabotConfigurationStub
+            var config = new RegistryConfigurationStub
             {
                 Port = "8080",
                 Host = "localhost",
@@ -204,7 +204,7 @@ namespace Semmle.Extraction.Tests
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = RegistryProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.NotNull(proxy);
@@ -215,17 +215,16 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// The purpose of this test is to verify that the registry proxy correctly handles the case
-        /// where the RegistryURLs environment variable is a valid JSON list with multiple entries and one of them
-        /// is configured to replace the base feeds.
-        /// In this case, the registry proxy should be created, and the list of private registries should contain all
+        /// Verify that the Registry proxy correctly handles the case where the RegistryURLs environment variable
+        /// is a valid JSON list with multiple entries and one of them is configured to replace the base feeds.
+        /// In this case, the Registry proxy should be created, and the list of private registries should contain all
         /// entries, while the list of base registries should contain only the entry that replaces the base feeds.
         /// </summary>
         [Fact]
-        public void TestDependabotRegistryUrlsReplacesBase()
+        public void TestRegistryProxyUrlsReplacesBase()
         {
             // Setup
-            var config = new DependabotConfigurationStub
+            var config = new RegistryConfigurationStub
             {
                 Port = "8080",
                 Host = "localhost",
@@ -234,7 +233,7 @@ namespace Semmle.Extraction.Tests
 
             // Execute
             using var tempWorkingDirectory = MakeTemporaryDirectory();
-            using var proxy = DependabotProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+            using var proxy = RegistryProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
 
             // Verify
             Assert.NotNull(proxy);

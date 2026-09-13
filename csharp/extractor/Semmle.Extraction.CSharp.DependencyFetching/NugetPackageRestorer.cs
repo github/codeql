@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             IFileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
-            IDependabotProxy? dependabotProxy,
+            IRegistryProxy? registryProxy,
             IDiagnosticsWriter diagnosticsWriter,
             ILogger logger,
             ICompilationInfoContainer compilationInfoContainer)
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             PackageDirectory = new DependencyDirectory("packages", "package", logger);
             legacyPackageDirectory = new DependencyDirectory("legacypackages", "legacy package", logger);
             missingPackageDirectory = new DependencyDirectory("missingpackages", "missing package", logger);
-            feedManager = new FeedManager(logger, dotnet, dependabotProxy, fileProvider);
+            feedManager = new FeedManager(logger, dotnet, registryProxy, fileProvider);
         }
 
         public string? TryRestore(string package)
