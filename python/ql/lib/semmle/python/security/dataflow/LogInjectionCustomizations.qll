@@ -10,6 +10,7 @@ private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.frameworks.data.ModelsAsData
+private import semmle.python.ApiGraphs
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -43,11 +44,26 @@ module LogInjection {
   private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
+   * Holds if `node` is an argument to a logging call where the format string
+   * uses `%r` for that argument, which applies `repr()` escaping.
+   */
+  private predicate isReprFormattedLoggingArg(DataFlow::Node node) {
+    exists(Logging log |
+      node = log.getAnInput() and
+      exists(DataFlow::Node fmtNode |
+        fmtNode = log.getAnInput() and
+        fmtNode.asExpr().(StringLiteral).getText().regexpMatch(".*%r.*")
+      )
+    )
+  }
+
+  /**
    * A logging operation, considered as a flow sink.
    */
   class LoggingAsSink extends Sink {
     LoggingAsSink() {
       this = any(Logging write).getAnInput() and
+      not isReprFormattedLoggingArg(this) and
       // since the inner implementation of the `logging.Logger.warn` function is
       // ```py
       // class Logger:
@@ -105,6 +121,14 @@ module LogInjection {
       this.getFunction().(DataFlow::AttrRead).getAttributeName() = "replace" and
       this.getArg(0).asExpr().(StringLiteral).getText() in ["\r\n", "\n"]
     }
+  }
+
+  /**
+   * A call to `repr()`, considered as a sanitizer.
+   * `repr()` escapes special characters such as newlines, preventing log injection.
+   */
+  class ReprCallSanitizer extends Sanitizer, DataFlow::CallCfgNode {
+    ReprCallSanitizer() { this = API::builtin("repr").getACall() }
   }
 
   /**
