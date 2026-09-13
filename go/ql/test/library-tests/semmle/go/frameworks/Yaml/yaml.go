@@ -12,10 +12,10 @@ func main() {
 	var in, out interface{}
 	var inb []byte
 
-	out, _ = yaml1.Marshal(in) // $ marshaler="yaml: in -> ... = ...[0]" ttfnmodelstep="in -> ... = ...[0]"
+	out, _ = yaml1.Marshal(in) // $ marshaler="yaml: in -> extract:0 ... = ..." ttfnmodelstep="in -> extract:0 ... = ..."
 	yaml1.Unmarshal(inb, out)  // $ unmarshaler="yaml: inb -> out [postupdate]" ttfnmodelstep="inb -> out [postupdate]"
 
-	out, _ = yaml2.Marshal(in)      // $ marshaler="yaml: in -> ... = ...[0]" ttfnmodelstep="in -> ... = ...[0]"
+	out, _ = yaml2.Marshal(in)      // $ marshaler="yaml: in -> extract:0 ... = ..." ttfnmodelstep="in -> extract:0 ... = ..."
 	yaml2.Unmarshal(inb, out)       // $ unmarshaler="yaml: inb -> out [postupdate]" ttfnmodelstep="inb -> out [postupdate]"
 	yaml2.UnmarshalStrict(inb, out) // $ unmarshaler="yaml: inb -> out [postupdate]" ttfnmodelstep="inb -> out [postupdate]"
 
@@ -27,7 +27,7 @@ func main() {
 	e := yaml2.NewEncoder(w) // $ ttfnmodelstep="SSA def(e) -> w [postupdate]"
 	e.Encode(in)             // $ ttfnmodelstep="in -> e [postupdate]"
 
-	out, _ = yaml3.Marshal(in) // $ marshaler="yaml: in -> ... = ...[0]" ttfnmodelstep="in -> ... = ...[0]"
+	out, _ = yaml3.Marshal(in) // $ marshaler="yaml: in -> extract:0 ... = ..." ttfnmodelstep="in -> extract:0 ... = ..."
 	yaml3.Unmarshal(inb, out)  // $ unmarshaler="yaml: inb -> out [postupdate]" ttfnmodelstep="inb -> out [postupdate]"
 
 	d1 := yaml3.NewDecoder(r) // $ ttfnmodelstep="r -> call to NewDecoder"

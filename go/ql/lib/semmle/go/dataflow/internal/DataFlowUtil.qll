@@ -5,6 +5,7 @@ overlay[local?]
 module;
 
 private import go
+private import semmle.go.controlflow.Guards
 private import semmle.go.dataflow.FunctionInputsAndOutputs
 private import semmle.go.dataflow.ExternalFlow
 private import DataFlowPrivate
@@ -388,11 +389,11 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
 module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode(P param) {
-    exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var |
+    exists(Guard guard, boolean branch, SsaWithFields var |
       result = pragma[only_bind_out](var).getAUse()
     |
-      guards(_, guard, _, var, param) and
-      pragma[only_bind_out](guard).dominates(result.getBasicBlock())
+      guards(_, guard, branch, _, var, param) and
+      pragma[only_bind_out](guard).controls(result.getBasicBlock(), branch)
     )
   }
 
@@ -400,39 +401,35 @@ module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guar
    * Gets a node that is safely guarded by the given guard check.
    */
   Node getABarrierNodeForGuard(Node guardCheck, P param) {
-    exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var | result = var.getAUse() |
-      guards(guardCheck, guard, _, var, param) and
-      guard.dominates(result.getBasicBlock())
+    exists(Guard guard, boolean branch, SsaWithFields var | result = var.getAUse() |
+      guards(guardCheck, guard, branch, _, var, param) and
+      guard.controls(result.getBasicBlock(), branch)
     )
   }
 
   /**
-   * Holds if `guard` marks a point in the control-flow graph where `g`
-   * is known to validate `nd`, which is represented by `ap`.
+   * Holds if `guard` evaluating to `branch` marks a point in the control-flow
+   * graph where `g` is known to validate `nd`, which is represented by `ap`.
    *
    * This predicate exists to enforce a good join order in `getAGuardedNode`.
    */
   pragma[noinline]
-  private predicate guards(
-    Node g, ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields ap, P param
-  ) {
-    guards(g, guard, nd, param) and nd = ap.getAUse()
+  private predicate guards(Node g, Guard guard, boolean branch, Node nd, SsaWithFields ap, P param) {
+    guards(g, guard, branch, nd, param) and nd = ap.getAUse()
   }
 
   /**
-   * Holds if `guard` marks a point in the control-flow graph where `g`
-   * is known to validate `nd`.
+   * Holds if `guard` evaluating to `branch` marks a point in the control-flow
+   * graph where `g` is known to validate `nd`.
    */
-  private predicate guards(Node g, ControlFlow::ConditionGuardNode guard, Node nd, P param) {
-    exists(boolean branch |
-      guardChecks(g, nd.asExpr(), branch, param) and
-      guard.ensures(g, branch)
-    )
+  private predicate guards(Node g, Guard guard, boolean branch, Node nd, P param) {
+    guardChecks(g, nd.asExpr(), branch, param) and
+    guard = g.asExpr()
     or
-    exists(DataFlow::Property p, Node resNode, Node check, boolean outcome |
+    exists(DataFlow::Property p, Node resNode, Node check |
       guardingCall(g, _, _, _, p, _, nd, resNode, param) and
-      p.checkOn(check, outcome, resNode) and
-      guard.ensures(pragma[only_bind_into](check), outcome)
+      p.checkOn(check, branch, resNode) and
+      guard = pragma[only_bind_into](check).asExpr()
     )
   }
 
@@ -487,9 +484,9 @@ module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guar
       localFlow(inp.getExitNode(fd), pragma[only_bind_out](arg)) and
       (
         // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
-        exists(ControlFlow::ConditionGuardNode guard |
-          guards(g, pragma[only_bind_out](guard), arg, param) and
-          guard.dominates(pragma[only_bind_out](ret).getBasicBlock())
+        exists(Guard guard, boolean branch |
+          guards(g, pragma[only_bind_out](guard), branch, arg, param) and
+          guard.controls(pragma[only_bind_out](ret).getBasicBlock(), branch)
         |
           onlyPossibleReturnSatisfyingProperty(fd, outp, ret, p)
         )

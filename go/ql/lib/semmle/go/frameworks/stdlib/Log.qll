@@ -44,7 +44,7 @@ module Log {
       )
     }
 
-    override predicate mayReturnNormally() { none() }
+    override predicate mustNotReturnNormally() { any() }
   }
 
   /** A log function which must panic. */

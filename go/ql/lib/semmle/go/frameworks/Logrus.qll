@@ -29,11 +29,9 @@ module Logrus {
       )
     }
 
-    override predicate mayReturnNormally() {
-      not exists(string level, string suffix | level = ["Fatal", "Panic"] |
-        this.getName() = level + suffix
-      )
-    }
+    override predicate mustNotReturnNormally() { this.getName() = "Fatal" + any(string suffix) }
+
+    override predicate mustPanic() { this.getName() = "Panic" + any(string suffix) }
   }
 
   private class StringFormatters extends StringOps::Formatting::Range instanceof LogFunction {
@@ -45,5 +43,12 @@ module Logrus {
     }
 
     override int getFormatStringIndex() { result = argOffset }
+  }
+
+  /** The `Exit` function, which ends the process. */
+  private class Exit extends Function {
+    Exit() { this.hasQualifiedName(packagePath(), "Exit") }
+
+    override predicate mustNotReturnNormally() { any() }
   }
 }

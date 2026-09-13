@@ -13,6 +13,7 @@
  */
 
 import go
+private import semmle.go.controlflow.Guards
 
 newtype TIndex =
   VariableIndex(DataFlow::SsaNode v) { v.getAUse() = any(DataFlow::ElementReadNode e).getIndex() } or
@@ -41,21 +42,23 @@ DataFlow::CallNode arrayLen(DataFlow::SsaNode array) {
 }
 
 /**
- * Gets a condition that checks that `index` is less than or equal to `array.length`.
+ * Holds if `guard` evaluating to `branch` checks that `index` is less than or
+ * equal to `array.length`.
  */
-ControlFlow::ConditionGuardNode getLengthLEGuard(Index index, DataFlow::SsaNode array) {
-  result.ensuresLeq(getAUse(index), arrayLen(array), 0)
+predicate lengthLeGuard(Guard guard, boolean branch, Index index, DataFlow::SsaNode array) {
+  guardEnsuresLeq(guard, branch, getAUse(index), arrayLen(array), 0)
   or
   exists(int i, int bias | index = ConstantIndex(i) |
-    result.ensuresLeq(getAUse(ConstantIndex(i + bias)), arrayLen(array), bias)
+    guardEnsuresLeq(guard, branch, getAUse(ConstantIndex(i + bias)), arrayLen(array), bias)
   )
 }
 
 /**
- * Gets a condition that checks that `index` is not equal to `array.length`.
+ * Holds if `guard` evaluating to `branch` checks that `index` is not equal to
+ * `array.length`.
  */
-ControlFlow::ConditionGuardNode getLengthNEGuard(Index index, DataFlow::SsaNode array) {
-  result.ensuresNeq(getAUse(index), arrayLen(array))
+predicate lengthNeGuard(Guard guard, boolean branch, Index index, DataFlow::SsaNode array) {
+  guardEnsuresNeq(guard, branch, getAUse(index), arrayLen(array))
 }
 
 /**
@@ -78,23 +81,24 @@ predicate isRegexpMethodCall(DataFlow::MethodCallNode c) {
 }
 
 from
-  ControlFlow::ConditionGuardNode cond, DataFlow::SsaNode array, Index index,
-  DataFlow::ElementReadNode ea, BasicBlock bb
+  Guard cond, boolean branch, DataFlow::SsaNode array, Index index, DataFlow::ElementReadNode ea,
+  BasicBlock bb
 where
   // there is a comparison `index <= len(array)`
-  cond = getLengthLEGuard(index, array) and
+  lengthLeGuard(cond, branch, index, array) and
   // there is a read from `array[index]`
   elementRead(ea, array, index, bb) and
   // and the read is guarded by the comparison
-  cond.dominates(bb) and
+  cond.controls(bb, branch) and
   // but the read is not guarded by another check that `index != len(array)`
-  not getLengthNEGuard(index, array).dominates(bb) and
+  not exists(Guard ne, boolean neBranch |
+    lengthNeGuard(ne, neBranch, index, array) and ne.controls(bb, neBranch)
+  ) and
   // and it is not additionally guarded by a stronger index check
-  not exists(Index index2, int i, int i2 |
+  not exists(Index index2, int i, int i2, Guard g2, boolean b2 |
     index = ConstantIndex(i) and index2 = ConstantIndex(i2) and i < i2
   |
-    getLengthLEGuard(index2, array).dominates(bb)
+    lengthLeGuard(g2, b2, index2, array) and g2.controls(bb, b2)
   ) and
   not isRegexpMethodCall(array.getInit())
-select cond.getCondition(),
-  "Off-by-one index comparison against length may lead to out-of-bounds $@.", ea, "read"
+select cond, "Off-by-one index comparison against length may lead to out-of-bounds $@.", ea, "read"
