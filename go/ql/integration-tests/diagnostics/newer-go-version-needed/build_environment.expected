@@ -1,5 +1,7 @@
 {
   "configuration" : {
-    "go" : { }
+    "go" : {
+      "version" : "1.999.0"
+    }
   }
 }
