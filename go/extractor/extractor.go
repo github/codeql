@@ -1025,6 +1025,12 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int, ski
 		return
 	}
 
+	// Skip parenthesised expressions and extract their child directly in their place
+	if paren, ok := expr.(*ast.ParenExpr); ok {
+		extractExpr(tw, paren.X, parent, idx, skipExtractingValue)
+		return
+	}
+
 	lbl := tw.Labeler.LocalID(expr)
 	extractTypeOf(tw, expr, lbl)
 
@@ -1099,9 +1105,6 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int, ski
 		kind = dbscheme.CompositeLitExpr.Index()
 		extractExpr(tw, expr.Type, lbl, 0, false)
 		extractExprs(tw, expr.Elts, lbl, 1, 1)
-	case *ast.ParenExpr:
-		kind = dbscheme.ParenExpr.Index()
-		extractExpr(tw, expr.X, lbl, 0, false)
 	case *ast.SelectorExpr:
 		kind = dbscheme.SelectorExpr.Index()
 		extractExpr(tw, expr.X, lbl, 0, false)
@@ -1428,8 +1431,18 @@ func extractStmt(tw *trap.Writer, stmt ast.Stmt, parent trap.Label, idx int) {
 		emitScopeNodeInfo(tw, stmt, lbl)
 	case *ast.RangeStmt:
 		kind = dbscheme.RangeStmtType.Index()
-		extractExpr(tw, stmt.Key, lbl, 0, false)
-		extractExpr(tw, stmt.Value, lbl, 1, false)
+		// Synthesize a "range element" node that groups the loop variables (the
+		// key and value) into a single target. This mirrors how other languages
+		// present a single loop-variable node for a `foreach` loop and lets the
+		// shared control-flow library drive the destructuring through this node.
+		patternLbl := tw.Labeler.FreshID()
+		dbscheme.ExprsTable.Emit(tw, patternLbl, dbscheme.RangeElementExpr.Index(), lbl, 0)
+		// The range element node uses the location of the whole range statement,
+		// so that the destructuring control-flow and data-flow nodes derived from
+		// it keep the same location they had before this node was introduced.
+		extractNodeLocation(tw, stmt, patternLbl)
+		extractExpr(tw, stmt.Key, patternLbl, 0, false)
+		extractExpr(tw, stmt.Value, patternLbl, 1, false)
 		extractExpr(tw, stmt.X, lbl, 2, false)
 		extractStmt(tw, stmt.Body, lbl, 3)
 		emitScopeNodeInfo(tw, stmt, lbl)

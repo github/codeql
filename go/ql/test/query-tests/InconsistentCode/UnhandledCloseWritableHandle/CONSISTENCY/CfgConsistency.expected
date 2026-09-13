@@ -1,0 +1,9 @@
+consistencyOverview
+| multipleSuccessors | 6 |
+multipleSuccessors
+| tests.go:96:2:104:2 | After if statement | successor | tests.go:94:30:105:1 | After block statement |
+| tests.go:96:2:104:2 | After if statement | successor | tests.go:99:9:99:17 | defer-invoke call to Close |
+| tests.go:119:2:119:6 | After ... = ... | successor | tests.go:107:31:120:1 | After block statement |
+| tests.go:119:2:119:6 | After ... = ... | successor | tests.go:112:9:112:17 | defer-invoke call to Close |
+| tests.go:124:2:136:2 | After if statement | successor | tests.go:122:46:137:1 | After block statement |
+| tests.go:124:2:136:2 | After if statement | successor | tests.go:126:9:126:17 | defer-invoke call to Close |
