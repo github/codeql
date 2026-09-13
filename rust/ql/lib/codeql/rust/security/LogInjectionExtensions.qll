@@ -45,6 +45,34 @@ module LogInjection {
   }
 
   /**
+   * A sink for the logging macros of the `tracing` crate, such as
+   * `tracing::info!`. The underlying function calls are difficult to
+   * identify reliably, so we treat any expression inside the expansion
+   * of such a macro call as a sink.
+   */
+  class TracingMacroSink extends Sink {
+    TracingMacroSink() {
+      exists(Crate c, MacroRules m, MacroCall mc |
+        // `c` is a tracing macro of interest
+        c.getName() = "tracing" and
+        m.getName().getText() = ["event", "span"] and
+        m.getLocation().getFile() = c.getASourceFile().getFile() and
+        // candidate sinks are expressions inside the expansion of a call to `c`
+        mc.resolveMacro() = m and
+        this.asExpr().getParentNode*() = mc.getMacroCallExpansion() and
+        // limit sinks to places that may have to do with producing a log message
+        (
+          this.asExpr().getParentNode() instanceof FormatArgsArg
+          or
+          this.asExpr().getParentNode() instanceof FormatArgsExpr
+          or
+          exists(ArgList al | al.getAnArg() = this.asExpr().getParentNode())
+        )
+      )
+    }
+  }
+
+  /**
    * A barrier for log-injection from model data.
    */
   private class ModelsAsDataBarrier extends Barrier {
