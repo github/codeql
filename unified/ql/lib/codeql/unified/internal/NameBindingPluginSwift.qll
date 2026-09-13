@@ -44,6 +44,9 @@ class NameBindingPluginSwift extends NameBindingPlugin {
     callable = any(ClassLikeDeclaration cls).getAMember() and
     result = "self"
   }
+
+  bindingset[cls]
+  override string getStaticSelfName(ClassLikeDeclaration cls) { exists(cls) and result = "Self" }
 }
 
 /** Holds if `node` is in a context where a bare name node should be seen as a reference rather than a declaration. */

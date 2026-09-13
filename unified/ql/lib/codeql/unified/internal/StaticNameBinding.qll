@@ -263,6 +263,12 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   )
   or
   FolderHeuristic::valueStep(node1, node2)
+  or
+  exists(ClassLikeDeclaration cls, LocalNameBindingOutput::ImplicitLocal self |
+    node1.isIdentifier(cls.getNameNode()) and
+    node2.isLocalName(self) and
+    self.hasNameAndScope(any(NameBindingPlugin p).getStaticSelfName(cls), cls)
+  )
 }
 
 private predicate isImportPrefix(Expr e) {
