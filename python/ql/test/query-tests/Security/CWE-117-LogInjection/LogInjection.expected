@@ -3,6 +3,8 @@
 | LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
 | LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
 | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
+| LogInjectionFastApi.py:82:17:82:31 | ControlFlowNode for Fstring | LogInjectionFastApi.py:81:21:81:24 | ControlFlowNode for name | LogInjectionFastApi.py:82:17:82:31 | ControlFlowNode for Fstring | This log entry depends on a $@. | LogInjectionFastApi.py:81:21:81:24 | ControlFlowNode for name | user-provided value |
+| LogInjectionFastApi.py:88:17:88:31 | ControlFlowNode for Fstring | LogInjectionFastApi.py:87:29:87:32 | ControlFlowNode for name | LogInjectionFastApi.py:88:17:88:31 | ControlFlowNode for Fstring | This log entry depends on a $@. | LogInjectionFastApi.py:87:29:87:32 | ControlFlowNode for name | user-provided value |
 edges
 | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for request | provenance |  |
 | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for request | LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request | provenance |  |
@@ -25,6 +27,8 @@ edges
 | LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request | LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
 | LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute | LogInjectionBad.py:35:12:35:35 | ControlFlowNode for Attribute() | provenance | dict.get |
 | LogInjectionBad.py:35:12:35:35 | ControlFlowNode for Attribute() | LogInjectionBad.py:35:5:35:8 | ControlFlowNode for name | provenance |  |
+| LogInjectionFastApi.py:81:21:81:24 | ControlFlowNode for name | LogInjectionFastApi.py:82:17:82:31 | ControlFlowNode for Fstring | provenance |  |
+| LogInjectionFastApi.py:87:29:87:32 | ControlFlowNode for name | LogInjectionFastApi.py:88:17:88:31 | ControlFlowNode for Fstring | provenance |  |
 nodes
 | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -48,4 +52,8 @@ nodes
 | LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | LogInjectionBad.py:35:12:35:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| LogInjectionFastApi.py:81:21:81:24 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| LogInjectionFastApi.py:82:17:82:31 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| LogInjectionFastApi.py:87:29:87:32 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| LogInjectionFastApi.py:88:17:88:31 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
 subpaths
