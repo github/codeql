@@ -1,0 +1,26 @@
+formatArgsArgName
+| upgrade_shapes.rs:22:37:22:41 | FormatArgsArg | upgrade_shapes.rs:22:13:22:49 | (no string representation) | upgrade_shapes.rs:22:41:22:41 | 1 | 13 |
+| upgrade_shapes.rs:22:44:22:48 | FormatArgsArg | upgrade_shapes.rs:22:13:22:49 | (no string representation) | upgrade_shapes.rs:22:48:22:48 | 2 | 13 |
+tryBlock
+| upgrade_shapes.rs:21:13:21:21 | { ... } |
+structFieldDefault
+| upgrade_shapes.rs:9:5:9:17 | field: u8 | upgrade_shapes.rs:9:17:9:17 | 1 |
+variantDiscriminant
+| upgrade_shapes.rs:13:5:13:9 | V | upgrade_shapes.rs:13:9:13:9 | 2 |
+metaPath
+| upgrade_shapes.rs:1:4:1:19 | Meta | allow |
+| upgrade_shapes.rs:2:4:2:32 | Meta | feature |
+| upgrade_shapes.rs:4:3:4:11 | Meta | path_meta |
+| upgrade_shapes.rs:5:3:5:15 | Meta | key_value |
+| upgrade_shapes.rs:6:3:6:18 | Meta | token_tree |
+| upgrade_shapes.rs:7:3:7:19 | Meta | path_meta |
+metaExpr
+| upgrade_shapes.rs:5:3:5:15 | Meta | upgrade_shapes.rs:5:15:5:15 | 1 |
+metaTokenTree
+| upgrade_shapes.rs:1:4:1:19 | Meta | upgrade_shapes.rs:1:9:1:19 | TokenTree |
+| upgrade_shapes.rs:2:4:2:32 | Meta | upgrade_shapes.rs:2:11:2:32 | TokenTree |
+| upgrade_shapes.rs:6:3:6:18 | Meta | upgrade_shapes.rs:6:13:6:18 | TokenTree |
+metaIsUnsafe
+| upgrade_shapes.rs:7:3:7:19 | Meta |
+traitAlias
+| upgrade_shapes.rs:16:1:18:12 | TraitAlias | upgrade_shapes.rs:16:7:16:11 | Alias | upgrade_shapes.rs:16:18:16:22 | ... | upgrade_shapes.rs:17:1:18:11 | WhereClause |

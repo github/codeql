@@ -1,0 +1,6 @@
+name: codeql/rust-upgrade-66a489863649185f4a9770f894505803059a1312-test-new
+version: 0.0.0
+dependencies:
+  codeql/rust-all: ${workspace}
+extractor: rust
+tests: .
