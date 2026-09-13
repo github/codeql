@@ -26,7 +26,7 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.14.1</version>
+      <version>2.25.4</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -47,22 +47,22 @@
     <dependency>
       <groupId>org.springframework.ldap</groupId>
       <artifactId>spring-ldap-core</artifactId>
-      <version>2.3.5.RELEASE</version>
+      <version>2.4.4</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.3.18</version>
+      <version>6.1.21</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.18</version>
+      <version>6.1.20</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>5.3.18</version>
+      <version>6.2.18</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.data</groupId>
@@ -72,7 +72,7 @@
     <dependency>
       <groupId>org.apache.shiro</groupId>
       <artifactId>shiro-core</artifactId>
-      <version>1.8.0</version>
+      <version>2.2.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>org.owasp.esapi</groupId>
       <artifactId>esapi</artifactId>
-      <version>2.2.3.1</version>
+      <version>2.6.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.unboundid</groupId>
@@ -112,12 +112,12 @@
     <dependency>
         <groupId>org.thymeleaf</groupId>
         <artifactId>thymeleaf</artifactId>
-        <version>3.0.15.RELEASE</version>
+        <version>3.1.5.RELEASE</version>
     </dependency>
     <dependency>
         <groupId>com.hubspot.jinjava</groupId>
         <artifactId>jinjava</artifactId>
-        <version>2.6.0</version>
+        <version>2.7.6</version>
     </dependency>
     <dependency>
         <groupId>io.pebbletemplates</groupId>
