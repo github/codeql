@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
 import com.github.codeql.utils.versions.codeQlExtensionReceiver
+import com.github.codeql.utils.versions.codeQlGetValueArgument
 import com.semmle.extractor.java.PopulateFile
 import com.semmle.util.unicode.UTF8Util
 import java.io.BufferedWriter
@@ -14,6 +15,7 @@ import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 
 /**
@@ -303,6 +305,20 @@ open class FileTrapWriter(
     /** The ID for the file that we are extracting from. */
     val fileId = mkFileId(filePath, populateFileTables)
 
+    /**
+     * When non-null, any location computed with a start/end offset pair exactly equal to
+     * [scopedOffsetRemap]`.first` is emitted as if it had the offset pair
+     * [scopedOffsetRemap]`.second`.
+     *
+     * This is used to normalise the source range of the synthesised body expressions of a
+     * delegated-property accessor: the K1 frontend anchors them at the enclosing
+     * `KtPropertyDelegate` (i.e. including the `by` keyword), whereas K2 anchors them at the
+     * delegate expression itself. The remap is set only while extracting such an accessor
+     * body and matches the full `by`-inclusive range exactly, so it never affects unrelated
+     * locations.
+     */
+    var scopedOffsetRemap: Pair<Pair<Int, Int>, Pair<Int, Int>>? = null
+
     override fun getDiagnosticTrapWriter(): DiagnosticTrapWriter {
         return dtw
     }
@@ -333,7 +349,17 @@ open class FileTrapWriter(
                 // Calls have incorrect startOffset, so we adjust them:
                 val dr = e.dispatchReceiver?.let { getStartOffset(it) }
                 val er = e.codeQlExtensionReceiver?.let { getStartOffset(it) }
-                offsetMinOf(e.startOffset, dr, er)
+                // The `!!` (CHECK_NOT_NULL / EXCLEXCL) intrinsic carries its operand as value
+                // argument 0 rather than as a dispatch/extension receiver, and in K1 its own
+                // startOffset points at the `!` token rather than the operand. Consider the
+                // operand's start so that a call qualified through a `!!` expression (e.g.
+                // `s!!.foo()`) spans from the operand. K2 already starts at the operand, so it is
+                // unaffected.
+                val exclOperand =
+                    if (e.origin == IrStatementOrigin.EXCLEXCL)
+                        e.codeQlGetValueArgument(0)?.let { getStartOffset(it) }
+                    else null
+                offsetMinOf(e.startOffset, dr, er, exclOperand)
             }
             else -> e.startOffset
         }
@@ -346,6 +372,15 @@ open class FileTrapWriter(
     /** Gets a label for the location of `e`. */
     fun getLocation(e: IrElement): Label<DbLocation> {
         return getLocation(getStartOffset(e), getEndOffset(e))
+    }
+    /**
+     * Gets a label for the location starting at `e`'s (adjusted) start offset and ending at the
+     * given `endOffset`. This preserves the IrCall start-offset adjustment that [getLocation]
+     * applies, while allowing the caller to override the end offset (for example to widen an
+     * assignment's span to include its right-hand value).
+     */
+    fun getLocation(e: IrElement, endOffset: Int): Label<DbLocation> {
+        return getLocation(getStartOffset(e), endOffset)
     }
     /**
      * Gets a label for the location corresponding to `startOffset` and `endOffset` within this
@@ -398,6 +433,12 @@ class SourceFileTrapWriter(
     private val fileEntry = irFile.fileEntry
 
     override fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
+        scopedOffsetRemap?.let { (from, to) ->
+            if (startOffset == from.first && endOffset == from.second) {
+                return getLocation(to.first, to.second)
+            }
+        }
+
         if (startOffset == UNDEFINED_OFFSET || endOffset == UNDEFINED_OFFSET) {
             if (startOffset != endOffset) {
                 loggerBase.warn(

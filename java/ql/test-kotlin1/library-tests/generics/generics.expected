@@ -29,7 +29,7 @@ parameterizedType
 function
 | generics.kt:3:1:5:1 | f0 | f0(int,java.lang.Object) |
 | generics.kt:7:1:9:1 | f1 | f1(int,java.lang.Object) |
-| generics.kt:11:6:11:19 | C0 | C0() |
+| generics.kt:11:1:11:19 | C0 | C0() |
 | generics.kt:13:15:13:24 | C1 | C1(java.lang.Object) |
 | generics.kt:13:16:13:23 | getT | getT() |
 | generics.kt:14:5:14:19 | f1 | f1(java.lang.Object) |
@@ -40,7 +40,7 @@ function
 | generics.kt:36:1:40:1 | BoundedTest | BoundedTest() |
 | generics.kt:38:5:38:25 | m | m(java.lang.CharSequence,java.lang.CharSequence) |
 | generics.kt:42:1:54:1 | Outer | Outer() |
-| generics.kt:43:11:47:5 | Inner1 | Inner1() |
+| generics.kt:43:5:47:5 | Inner1 | Inner1() |
 | generics.kt:44:9:46:9 | fn1 | fn1(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object) |
 | generics.kt:49:5:53:5 | Nested1 | Nested1() |
 | generics.kt:50:9:52:9 | fn2 | fn2(java.lang.Object,java.lang.Object) |
