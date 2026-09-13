@@ -298,6 +298,7 @@ _NORMAL_DEPENDENCIES = {
             "anyhow": Label("@vendor_py__anyhow-1.0.95//:anyhow"),
             "clap": Label("@vendor_py__clap-4.5.30//:clap"),
             "regex": Label("@vendor_py__regex-1.11.1//:regex"),
+            "serde_json": Label("@vendor_py__serde_json-1.0.138//:serde_json"),
             "tree-sitter": Label("@vendor_py__tree-sitter-0.24.7//:tree_sitter"),
             "tree-sitter-graph": Label("@vendor_py__tree-sitter-graph-0.12.0//:tree_sitter_graph"),
         },
@@ -942,6 +943,7 @@ def crate_repositories():
         struct(repo = "vendor_py__cc-1.2.14", is_dev_dep = False),
         struct(repo = "vendor_py__clap-4.5.30", is_dev_dep = False),
         struct(repo = "vendor_py__regex-1.11.1", is_dev_dep = False),
+        struct(repo = "vendor_py__serde_json-1.0.138", is_dev_dep = False),
         struct(repo = "vendor_py__tree-sitter-0.24.7", is_dev_dep = False),
         struct(repo = "vendor_py__tree-sitter-graph-0.12.0", is_dev_dep = False),
     ]
