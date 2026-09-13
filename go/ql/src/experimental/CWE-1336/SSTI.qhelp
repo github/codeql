@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            Server-Side Template Injection (SSTI) in Go occurs when user input is embedded in a template in an unsafe manner, allowing an attacker to manipulate the template and execute arbitrary code. This vulnerability is particularly relevant in applications using Go's 'html/template' and 'text/template' packages.
+        </p>
+    </overview>
+    <recommendation>
+        <p>
+            To prevent SSTI, validate and sanitize all user input before incorporating it into templates. Additionally, avoid exposing sensitive methods through objects passed to templates. Employ context-aware escaping and consider using stricter template systems that provide better isolation from the application logic.
+        </p>
+    </recommendation>
+    <example>
+        <p>
+            Vulnerable code example: A Go application uses user input directly in a template, allowing an attacker to inject malicious code.
+        </p>
+        <sample src="SSTIVulnerable.go" />
+    </example>
+    <example>
+        <p>
+            Secure code example: The application validates and sanitizes user input before using it in a template, effectively mitigating the risk of SSTI.
+        </p>
+        <sample src="SSTISecure.go" />
+    </example>
+    <references>
+        <li>
+            Onsecurity - Go SSTI Method Research:
+            <a href="https://www.onsecurity.io/blog/go-ssti-method-research/">Exploring SSTI in Go's Template Engines</a>
+        </li>
+        <!-- Additional references can be added here -->
+    </references>
+</qhelp>
