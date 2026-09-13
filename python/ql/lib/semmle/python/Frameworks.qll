@@ -28,6 +28,7 @@ private import semmle.python.frameworks.Cx_Oracle
 private import semmle.python.frameworks.data.ModelsAsData
 private import semmle.python.frameworks.Dill
 private import semmle.python.frameworks.Django
+private import semmle.python.frameworks.Duckdb
 private import semmle.python.frameworks.Fabric
 private import semmle.python.frameworks.FastApi
 private import semmle.python.frameworks.Flask
