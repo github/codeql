@@ -10,11 +10,7 @@ private import TypeInference::Consistency as Consistency
 import TypeInference::Consistency
 
 query predicate illFormedTypeMention(TypeMention tm) {
-  // NOTE: We do not use `illFormedTypeMention` from the shared library as it is
-  // instantiated with `PreTypeMention` and we are interested in inconsistencies
-  // for `TypeMention`.
-  not exists(tm.getTypeAt(TypePath::nil())) and
-  exists(tm.getLocation()) and
+  Consistency::illFormedTypeMention(tm) and
   // avoid overlap with `PathTypeMention`
   not tm instanceof PathTypeReprMention and
   // known limitation for type mentions that would mention an escaping type parameter
@@ -31,7 +27,7 @@ query predicate illFormedTypeMention(TypeMention tm) {
 }
 
 query predicate nonUniqueCertainType(AstNode n, TypePath path) {
-  Consistency::nonUniqueCertainType(n, path, _) and
+  Consistency::nonUniqueCertainType(n, path) and
   n.fromSource() // Only include inconsistencies in the source.
 }
 
