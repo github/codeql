@@ -1,19 +1,28 @@
 #select
 | test.go:173:20:173:24 | param | test.go:172:11:172:32 | call to Param | test.go:173:20:173:24 | param | This path to an untrusted URL redirection depends on a $@. | test.go:172:11:172:32 | call to Param | user-provided value |
 | test.go:185:20:185:29 | ...+... | test.go:178:11:178:32 | call to Param | test.go:185:20:185:29 | ...+... | This path to an untrusted URL redirection depends on a $@. | test.go:178:11:178:32 | call to Param | user-provided value |
+| test.go:210:20:210:33 | type conversion | test.go:207:2:207:29 | ... := ...[0] | test.go:210:20:210:33 | type conversion | This path to an untrusted URL redirection depends on a $@. | test.go:207:2:207:29 | ... := ...[0] | user-provided value |
+| test.go:212:20:212:45 | index expression | test.go:212:20:212:29 | selection of Value | test.go:212:20:212:45 | index expression | This path to an untrusted URL redirection depends on a $@. | test.go:212:20:212:29 | selection of Value | user-provided value |
 edges
 | test.go:172:11:172:32 | call to Param | test.go:173:20:173:24 | param | provenance | Src:MaD:2 Sink:MaD:1 |
 | test.go:178:11:178:32 | call to Param | test.go:185:24:185:29 | param2 | provenance | Src:MaD:2  |
 | test.go:185:24:185:29 | param2 | test.go:185:20:185:29 | ...+... | provenance | Config Sink:MaD:1 |
 | test.go:193:9:193:26 | star expression | test.go:193:10:193:26 | selection of URL [postupdate] | provenance | Config |
 | test.go:193:9:193:26 | star expression | test.go:196:21:196:23 | url | provenance |  |
-| test.go:193:10:193:26 | selection of URL | test.go:193:9:193:26 | star expression | provenance | Src:MaD:3 Config |
+| test.go:193:10:193:26 | selection of URL | test.go:193:9:193:26 | star expression | provenance | Src:MaD:5 Config |
 | test.go:193:10:193:26 | selection of URL [postupdate] | test.go:193:9:193:26 | star expression | provenance | Config |
 | test.go:196:21:196:23 | url | test.go:196:21:196:32 | call to String | provenance | Config Sink:MaD:1 |
+| test.go:207:2:207:29 | ... := ...[0] | test.go:209:2:209:5 | file | provenance | Src:MaD:3  |
+| test.go:209:2:209:5 | file | test.go:209:12:209:17 | buffer [postupdate] | provenance | Config |
+| test.go:209:12:209:17 | buffer [postupdate] | test.go:210:20:210:33 | type conversion | provenance | Sink:MaD:1 |
+| test.go:212:20:212:29 | selection of Value | test.go:212:20:212:42 | index expression | provenance | Src:MaD:4 Config |
+| test.go:212:20:212:42 | index expression | test.go:212:20:212:45 | index expression | provenance | Config Sink:MaD:1 |
 models
 | 1 | Sink: github.com/labstack/echo; Context; true; Redirect; ; ; Argument[1]; url-redirection; manual |
 | 2 | Source: github.com/labstack/echo; Context; true; Param; ; ; ReturnValue[0]; remote; manual |
-| 3 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
+| 3 | Source: mime/multipart; FileHeader; true; Open; ; ; ReturnValue[0]; remote; manual |
+| 4 | Source: mime/multipart; Form; true; Value; ; ; ; remote; manual |
+| 5 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
 nodes
 | test.go:172:11:172:32 | call to Param | semmle.label | call to Param |
 | test.go:173:20:173:24 | param | semmle.label | param |
@@ -25,4 +34,11 @@ nodes
 | test.go:193:10:193:26 | selection of URL [postupdate] | semmle.label | selection of URL [postupdate] |
 | test.go:196:21:196:23 | url | semmle.label | url |
 | test.go:196:21:196:32 | call to String | semmle.label | call to String |
+| test.go:207:2:207:29 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:209:2:209:5 | file | semmle.label | file |
+| test.go:209:12:209:17 | buffer [postupdate] | semmle.label | buffer [postupdate] |
+| test.go:210:20:210:33 | type conversion | semmle.label | type conversion |
+| test.go:212:20:212:29 | selection of Value | semmle.label | selection of Value |
+| test.go:212:20:212:42 | index expression | semmle.label | index expression |
+| test.go:212:20:212:45 | index expression | semmle.label | index expression |
 subpaths
