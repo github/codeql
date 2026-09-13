@@ -1,0 +1,24 @@
+name: Gemini Fix from Branch Name
+on:
+  workflow_run:
+    workflows: [Tests]
+    types: [completed]
+
+jobs:
+  fix:
+    if: github.event.workflow_run.conclusion == 'failure'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Gemini fix
+        id: gemini_fix
+        uses: google-github-actions/run-gemini-cli@v1
+        with:
+          prompt: |
+            The CI failed on branch ${{ github.event.workflow_run.head_branch }}.
+            Analyze the failure and suggest a fix.
