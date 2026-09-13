@@ -27,9 +27,9 @@ module JCAModel {
   predicate cipher_names(string algo) {
     algo.toUpperCase()
         .matches([
-            "AES", "AESWrap", "AESWrapPad", "ARCFOUR", "Blowfish", "ChaCha20", "ChaCha20-Poly1305",
-            "DES", "DESede", "DESedeWrap", "ECIES", "PBEWith%", "RC2", "RC4", "RC5", "RSA",
-            "Skipjack", "Idea"
+            "AES", "AESWrap", "AESWrapPad", "ARCFOUR", "ARIA", "Blowfish", "Camellia", "ChaCha20",
+            "ChaCha20-Poly1305", "DES", "DESede", "DESedeWrap", "ECIES", "PBEWith%", "RC2", "RC4",
+            "RC5", "RSA", "Salsa20", "SEED", "Skipjack", "Idea", "Twofish"
           ].toUpperCase())
   }
 
@@ -106,7 +106,7 @@ module JCAModel {
   bindingset[name]
   predicate key_agreement_names(string name) {
     name.toUpperCase()
-        .matches(["DH", "EDH", "ECDH", "X25519", "X448", "ML-KEM%", "XDH"].toUpperCase())
+        .matches(["DH", "EDH", "ECDH", "ECMQV", "X25519", "X448", "ML-KEM%", "XDH"].toUpperCase())
   }
 
   bindingset[name]
@@ -189,6 +189,8 @@ module JCAModel {
     type = KeyOpAlg::PCBC() and name = "PCBC"
     or
     type = KeyOpAlg::KWP() and name = "KWP"
+    or
+    type = KeyOpAlg::LRW() and name = "LRW"
   }
 
   bindingset[name]
@@ -197,12 +199,31 @@ module JCAModel {
       upper.matches("AES%") and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::AES())
       or
-      // NOTE: there is DES and DESede
+      // NOTE: DESede (TripleDES) must be matched before DES% to avoid misclassification
+      upper.matches("DESEDE%") and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES())
+      or
+      not upper.matches("DESEDE%") and
       upper.matches("DES%") and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES())
       or
       upper = "TRIPLEDES" and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES())
+      or
+      upper = "ARIA" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::ARIA())
+      or
+      upper = "CAMELLIA" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::CAMELLIA())
+      or
+      upper = "TWOFISH" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TWOFISH())
+      or
+      upper = "SEED" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::SEED())
+      or
+      upper = "SALSA20" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::SALSA20())
       or
       upper = "IDEA" and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::IDEA())
@@ -243,6 +264,9 @@ module JCAModel {
     or
     type = Crypto::ECDH() and
     name.toUpperCase() in ["ECDH", "X25519", "X448", "XDH"]
+    or
+    type = Crypto::ECMQV() and
+    name.toUpperCase() = "ECMQV"
     or
     type = Crypto::OtherKeyAgreementType() and
     name.toUpperCase().matches("ML-KEM%")
@@ -363,6 +387,10 @@ module JCAModel {
       type instanceof KeyOpAlg::PKCS7 and name = ["PKCS5Padding", "PKCS7Padding"] // TODO: misnomer in the JCA?
       or
       type instanceof KeyOpAlg::OAEP and name.matches("OAEP%") // TODO: handle OAEPWith%
+      or
+      type instanceof KeyOpAlg::PKCS1_V1_5 and name = "PKCS1Padding"
+      or
+      type instanceof KeyOpAlg::PSS and name = "PSS"
     }
 
     override KeyOpAlg::PaddingSchemeType getPaddingType() {
@@ -606,7 +634,7 @@ module JCAModel {
       }
 
       predicate isBarrier(DataFlow::Node node, FlowState state) {
-        exists(CipherInitCall call | node.asExpr() = call.getQualifier() |
+        exists(Init call | node.asExpr() = call.(MethodCall).getQualifier() |
           state instanceof UninitializedFlowState
           or
           state.(InitializedFlowState).getInitCall() != call
@@ -1851,7 +1879,14 @@ module JCAModel {
 
     override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
 
-    override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
+    override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { result = this }
+
+    override predicate shouldHaveModeOfOperation() { none() }
+
+    override predicate shouldHavePaddingScheme() {
+      // Only RSA-based signatures have a meaningful padding concept (PSS or PKCS1v1.5)
+      signature_name_to_type_known(KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA()), super.getValue())
+    }
   }
 
   class SignatureHashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof SignatureStringLiteralAlgorithmInstance
@@ -1870,6 +1905,185 @@ module JCAModel {
     override int getFixedDigestLength() { result = digestLength }
   }
 
+  /**
+   * Determines if a signature algorithm name implies PSS padding.
+   */
+  bindingset[name]
+  private predicate signatureImpliesPss(string name) {
+    name.toUpperCase().matches("%RSASSA-PSS%") or
+    name.toUpperCase().matches("%WITHRSA%MGF1%") or
+    name.toUpperCase().matches("%WITHRSA/PSS%")
+  }
+
+  /**
+   * Base class for PSS padding derived from signature algorithm names.
+   * Provides getPaddingType() on PaddingAlgorithmInstance to break the non-monotonic
+   * recursion that would occur if the derived PssPaddingAlgorithmInstance class
+   * defined getPaddingType() itself (since PssPaddingAlgorithmInstance's charpred
+   * calls getPaddingType()).
+   * Follows the same two-class pattern used for OAEP:
+   *   CipherStringLiteralPaddingAlgorithmInstance → OaepPaddingAlgorithmInstance.
+   */
+  private class SignaturePssPaddingBase extends SignatureStringLiteralAlgorithmInstance,
+    Crypto::PaddingAlgorithmInstance instanceof SignatureStringLiteral
+  {
+    SignaturePssPaddingBase() { signatureImpliesPss(super.getValue()) }
+
+    override string getRawPaddingAlgorithmName() { result = "PSS" }
+
+    override KeyOpAlg::PaddingSchemeType getPaddingType() { result instanceof KeyOpAlg::PSS }
+  }
+
+  /**
+   * A PSS padding algorithm instance derived from a signature algorithm literal.
+   * Extends PssPaddingAlgorithmInstance (whose charpred evaluates through
+   * SignaturePssPaddingBase.getPaddingType()) to produce MD and MGF1Hash edges.
+   *
+   * For name-implied PSS (e.g., "SHA256withRSAandMGF1"), the same literal element
+   * is also a SignatureHashAlgorithmInstance, so `result = this` yields the hash.
+   * For bare "RSASSA-PSS", `result = this` has no result (this is not a
+   * HashAlgorithmInstance), so the graph falls back to self-referencing (unknown).
+   * When a PSSParameterSpec is connected via setParameter(), the explicit hash
+   * from the spec is used instead.
+   */
+  class SignaturePssPaddingAlgorithmInstance extends Crypto::PssPaddingAlgorithmInstance,
+    SignaturePssPaddingBase instanceof SignatureStringLiteral
+  {
+    override Crypto::HashAlgorithmInstance getHashAlgorithm() {
+      // Name-implied hash (e.g., SHA256withRSAandMGF1 → SHA-256)
+      result = this
+      or
+      // Explicit PSS hash from PSSParameterSpec via Signature.setParameter()
+      exists(PssParameterSpecInstantiation spec |
+        pssSpecForSignatureLiteral(spec, this) and
+        result.(PssParameterSpecDigestHashAlgorithmInstance).getSpec() = spec
+      )
+    }
+
+    override Crypto::HashAlgorithmInstance getMgf1HashAlgorithm() {
+      // Name-implied MGF1 hash (defaults to same hash as digest)
+      result = this
+      or
+      // Explicit MGF1 hash from PSSParameterSpec via Signature.setParameter()
+      exists(PssParameterSpecInstantiation spec |
+        pssSpecForSignatureLiteral(spec, this) and
+        result.(PssParameterSpecMgf1HashAlgorithmInstance).getSpec() = spec
+      )
+    }
+  }
+
+  /**
+   * A PSSParameterSpec instantiation, e.g.,
+   * new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1)
+   */
+  class PssParameterSpecInstantiation extends ClassInstanceExpr {
+    PssParameterSpecInstantiation() {
+      this.getConstructedType().hasQualifiedName("java.security.spec", "PSSParameterSpec")
+    }
+
+    /** Gets the digest algorithm name argument (arg 0). */
+    Expr getDigestAlgorithmArg() { result = this.getArgument(0) }
+
+    /** Gets the MGF algorithm name argument (arg 1). */
+    Expr getMgfAlgorithmArg() { result = this.getArgument(1) }
+
+    /** Gets the salt length argument (arg 3). */
+    Expr getSaltLengthArg() { result = this.getArgument(3) }
+
+    /** Gets the MGF parameter spec argument (arg 2), e.g., MGF1ParameterSpec.SHA256. */
+    Expr getMgfSpecArg() { result = this.getArgument(2) }
+  }
+
+  /**
+   * A static field access on `java.security.spec.MGF1ParameterSpec`, e.g.,
+   * `MGF1ParameterSpec.SHA256`. These fields represent well-known MGF1 hash
+   * algorithm configurations.
+   */
+  class Mgf1ParameterSpecFieldAccess extends FieldAccess {
+    Mgf1ParameterSpecFieldAccess() {
+      this.getField().getDeclaringType().hasQualifiedName("java.security.spec", "MGF1ParameterSpec") and
+      this.getField().isStatic()
+    }
+
+    /** Gets the hash algorithm name corresponding to this MGF1 field. */
+    string getHashAlgorithmName() {
+      this.getField().getName() = "SHA1" and result = "SHA-1"
+      or
+      this.getField().getName() = "SHA224" and result = "SHA-224"
+      or
+      this.getField().getName() = "SHA256" and result = "SHA-256"
+      or
+      this.getField().getName() = "SHA384" and result = "SHA-384"
+      or
+      this.getField().getName() = "SHA512" and result = "SHA-512"
+      or
+      this.getField().getName() = "SHA512_224" and result = "SHA-512/224"
+      or
+      this.getField().getName() = "SHA512_256" and result = "SHA-512/256"
+    }
+  }
+
+  /**
+   * A hash algorithm instance for the digest algorithm argument (arg 0) of a
+   * PSSParameterSpec instantiation, e.g., "SHA-256" in:
+   *   new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1)
+   *
+   * Type resolution delegates to hash_name_to_type_known from Standardization.
+   */
+  class PssParameterSpecDigestHashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof JavaConstant
+  {
+    PssParameterSpecInstantiation spec;
+
+    PssParameterSpecDigestHashAlgorithmInstance() {
+      this = spec.getDigestAlgorithmArg() and
+      // Only instantiate when the value resolves to a known hash type
+      exists(hash_name_to_type_known(super.getValue(), _))
+    }
+
+    /** Gets the PSSParameterSpec this digest hash belongs to. */
+    PssParameterSpecInstantiation getSpec() { result = spec }
+
+    override string getRawHashAlgorithmName() { result = super.getValue() }
+
+    override Crypto::THashType getHashType() {
+      result = hash_name_to_type_known(super.getValue(), _)
+    }
+
+    override int getFixedDigestLength() {
+      exists(hash_name_to_type_known(super.getValue(), result))
+    }
+  }
+
+  /**
+   * A hash algorithm instance for the MGF1 parameter spec argument (arg 2) of a
+   * PSSParameterSpec instantiation, e.g., MGF1ParameterSpec.SHA256 in:
+   *   new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1)
+   *
+   * The field name is normalized to a standard hash algorithm name (e.g.,
+   * SHA256 -> SHA-256), then type resolution delegates to hash_name_to_type_known.
+   */
+  class PssParameterSpecMgf1HashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof Mgf1ParameterSpecFieldAccess
+  {
+    PssParameterSpecInstantiation spec;
+    string normalizedName;
+
+    PssParameterSpecMgf1HashAlgorithmInstance() {
+      this = spec.getMgfSpecArg() and
+      normalizedName = super.getHashAlgorithmName() and
+      // Only instantiate when the normalized name resolves to a known hash type
+      exists(hash_name_to_type_known(normalizedName, _))
+    }
+
+    /** Gets the PSSParameterSpec this MGF1 hash belongs to. */
+    PssParameterSpecInstantiation getSpec() { result = spec }
+
+    override string getRawHashAlgorithmName() { result = super.getField().getName() }
+
+    override Crypto::THashType getHashType() { result = hash_name_to_type_known(normalizedName, _) }
+
+    override int getFixedDigestLength() { exists(hash_name_to_type_known(normalizedName, result)) }
+  }
+
   class SignatureInitCall extends MethodCall {
     SignatureInitCall() {
       this.getCallee().hasQualifiedName("java.security", "Signature", ["initSign", "initVerify"])
@@ -1879,6 +2093,23 @@ module JCAModel {
       result = this.getArgument(0)
       // TODO: verify can take in a certificate too?
     }
+  }
+
+  /**
+   * A call to `Signature.setParameter(AlgorithmParameterSpec)`, used to
+   * configure algorithm parameters such as PSSParameterSpec on a Signature instance.
+   */
+  class SignatureSetParameterCall extends MethodCall {
+    SignatureSetParameterCall() {
+      this.getMethod().hasQualifiedName("java.security", "Signature", "setParameter") and
+      this.getMethod()
+          .getParameterType(0)
+          .(RefType)
+          .hasQualifiedName("java.security.spec", "AlgorithmParameterSpec")
+    }
+
+    /** Gets the AlgorithmParameterSpec argument. */
+    Expr getParameterSpecArg() { result = this.getArgument(0) }
   }
 
   class SignatureOperationCall extends MethodCall {
@@ -1945,7 +2176,6 @@ module JCAModel {
     }
 
     override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
-      // TODO: RSASSA-PSS literal sets hashes differently, through a ParameterSpec
       result = this.getInstantiationCall().getAlgorithmArg()
     }
 
@@ -1971,6 +2201,58 @@ module JCAModel {
   module SignatureFlowAnalysisImpl =
     GetInstanceInitUseFlowAnalysis<SignatureGetInstanceCall, SignatureInitCall,
       SignatureOperationCall>;
+
+  /**
+   * Flow from `Signature.getInstance()` return value to `Signature.setParameter()` qualifier.
+   * Used to connect a signature algorithm literal to its PSSParameterSpec configuration.
+   */
+  module SignatureToSetParameterConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SignatureGetInstanceCall }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(SignatureSetParameterCall c | sink.asExpr() = c.getQualifier())
+    }
+  }
+
+  module SignatureToSetParameterFlow = DataFlow::Global<SignatureToSetParameterConfig>;
+
+  /**
+   * Flow from `PSSParameterSpec` instantiation to `Signature.setParameter()` argument.
+   */
+  module PssSpecToSetParameterConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof PssParameterSpecInstantiation }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(SignatureSetParameterCall c | sink.asExpr() = c.getParameterSpecArg())
+    }
+  }
+
+  module PssSpecToSetParameterFlow = DataFlow::Global<PssSpecToSetParameterConfig>;
+
+  /**
+   * Connects a PSSParameterSpec instantiation to the signature PSS padding literal
+   * for which it provides configuration, via `Signature.setParameter()`.
+   *
+   * The connection requires:
+   * 1. The padding literal flows (via its consumer) to a `Signature.getInstance()` call
+   * 2. That getInstance call flows to a `Signature.setParameter()` qualifier
+   * 3. The PSSParameterSpec flows to the same setParameter's argument
+   */
+  private predicate pssSpecForSignatureLiteral(
+    PssParameterSpecInstantiation spec, SignaturePssPaddingAlgorithmInstance literal
+  ) {
+    exists(
+      SignatureSetParameterCall setParam, SignatureGetInstanceCall getInstance,
+      SignatureGetInstanceAlgorithmValueConsumer consumer
+    |
+      consumer = literal.getConsumer() and
+      consumer = getInstance.getAlgorithmArg() and
+      SignatureToSetParameterFlow::flow(DataFlow::exprNode(getInstance),
+        DataFlow::exprNode(setParam.getQualifier())) and
+      PssSpecToSetParameterFlow::flow(DataFlow::exprNode(spec),
+        DataFlow::exprNode(setParam.getParameterSpecArg()))
+    )
+  }
 
   /*
    * Elliptic Curves (EC)

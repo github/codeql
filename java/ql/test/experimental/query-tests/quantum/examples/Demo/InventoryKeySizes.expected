@@ -1,0 +1,13 @@
+| CryptoClassificationTest.java:75:28:75:51 | KeyGeneration | Key creation with algorithm $@ using 2048-bit key. | CryptoClassificationTest.java:73:64:73:68 | KeyOperationAlgorithm | RSA |
+| CryptoClassificationTest.java:137:9:137:33 | KeyGeneration | Key creation with algorithm $@ using 1024-bit key. | CryptoClassificationTest.java:135:65:135:69 | KeyOperationAlgorithm | RSA |
+| CryptoClassificationTest.java:141:9:141:33 | KeyGeneration | Key creation with algorithm $@ using 2048-bit key. | CryptoClassificationTest.java:139:65:139:69 | KeyOperationAlgorithm | RSA |
+| CryptoClassificationTest.java:145:9:145:33 | KeyGeneration | Key creation with algorithm $@ using 3072-bit key. | CryptoClassificationTest.java:143:65:143:69 | KeyOperationAlgorithm | RSA |
+| CryptoClassificationTest.java:149:9:149:33 | KeyGeneration | Key creation with algorithm $@ using 4096-bit key. | CryptoClassificationTest.java:147:65:147:69 | KeyOperationAlgorithm | RSA |
+| CryptoClassificationTest.java:154:9:154:33 | KeyGeneration | Key creation with algorithm $@ using 1024-bit key. | CryptoClassificationTest.java:152:65:152:69 | KeyOperationAlgorithm | DSA |
+| CryptoClassificationTest.java:158:9:158:33 | KeyGeneration | Key creation with algorithm $@ using 2048-bit key. | CryptoClassificationTest.java:156:65:156:69 | KeyOperationAlgorithm | DSA |
+| CryptoClassificationTest.java:163:9:163:32 | KeyGeneration | Key creation with algorithm $@ using 1024-bit key. | CryptoClassificationTest.java:161:64:161:67 | KeyAgreementAlgorithm | DH |
+| CryptoClassificationTest.java:167:9:167:32 | KeyGeneration | Key creation with algorithm $@ using 2048-bit key. | CryptoClassificationTest.java:165:64:165:67 | KeyAgreementAlgorithm | DH |
+| CryptoClassificationTest.java:171:9:171:32 | KeyGeneration | Key creation with algorithm $@ using 4096-bit key. | CryptoClassificationTest.java:169:64:169:67 | KeyAgreementAlgorithm | DH |
+| CryptoClassificationTest.java:298:31:298:52 | KeyGeneration | Key creation with algorithm $@ using 128-bit key. | CryptoClassificationTest.java:296:58:296:62 | KeyOperationAlgorithm | AES |
+| CryptoClassificationTest.java:306:31:306:52 | KeyGeneration | Key creation with algorithm $@ using 192-bit key. | CryptoClassificationTest.java:304:58:304:62 | KeyOperationAlgorithm | AES |
+| CryptoClassificationTest.java:314:31:314:52 | KeyGeneration | Key creation with algorithm $@ using 256-bit key. | CryptoClassificationTest.java:312:58:312:62 | KeyOperationAlgorithm | AES |
