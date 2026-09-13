@@ -1,0 +1,39 @@
+| test.cpp:74:23:74:24 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:76:23:76:24 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:78:23:78:24 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:80:23:80:24 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:82:24:82:25 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:84:25:84:26 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:86:22:86:28 | (a?a?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:88:22:88:30 | (?:a\|a?)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:90:26:90:31 | [\\w-]* | This part of the regular expression may cause exponential backtracking on strings starting with 'foo' and containing many repetitions of '-'. |
+| test.cpp:92:23:92:27 | (ab)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'ab'. |
+| test.cpp:99:24:99:29 | [a-z]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:101:24:101:29 | [a-z]* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:103:51:103:62 | [a-zA-Z0-9]+ | This part of the regular expression may cause exponential backtracking on strings starting with '0' and containing many repetitions of '0'. |
+| test.cpp:106:24:106:31 | ([a-z])+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'aa'. |
+| test.cpp:108:24:108:27 | (a)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'aa'. |
+| test.cpp:110:24:110:25 | b+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'bb'. |
+| test.cpp:112:26:112:27 | c+ | This part of the regular expression may cause exponential backtracking on strings starting with 'ab' and containing many repetitions of 'c'. |
+| test.cpp:119:23:119:28 | (a\|a)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:121:22:121:29 | (a\|aa?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:123:22:123:29 | (b\|a?b)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
+| test.cpp:125:23:125:24 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:125:26:125:27 | b+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
+| test.cpp:133:23:133:27 | [^X]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'W'. |
+| test.cpp:135:28:135:28 | b | This part of the regular expression may cause exponential backtracking on strings starting with 'W' and containing many repetitions of 'bW'. |
+| test.cpp:137:23:137:36 | ([\\S\\s]\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '`'. |
+| test.cpp:139:23:139:31 | (.\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '`'. |
+| test.cpp:141:23:141:31 | (b\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
+| test.cpp:143:23:143:35 | ([0-9]\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| test.cpp:145:24:145:29 | [^>a]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '='. |
+| test.cpp:157:23:157:24 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:162:23:162:25 | \\n+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\n'. |
+| test.cpp:167:28:167:28 | b | This part of the regular expression may cause exponential backtracking on strings starting with 'W' and containing many repetitions of 'bW'. |
+| test.cpp:176:24:176:25 | ab | This part of the regular expression may cause exponential backtracking on strings starting with 'a' and containing many repetitions of 'ab'. |
+| test.cpp:229:24:229:29 | [a-z]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:241:24:241:25 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:265:24:265:35 | [[:alpha:]]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:267:24:267:35 | [[:alpha:]]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| test.cpp:331:24:331:29 | [a-z]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:375:25:375:26 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |

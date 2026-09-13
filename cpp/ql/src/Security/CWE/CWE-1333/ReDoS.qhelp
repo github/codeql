@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <include src="ReDoSIntroduction.inc.qhelp" />
+
+  <example>
+    <p>
+      Consider this regular expression:
+    </p>
+
+    <sample language="cpp">
+static const std::regex re("^(a+)+$");
+if (std::regex_match(input, re)) { /* ... */ } // BAD
+    </sample>
+
+    <p>
+      Its sub-expression <code>"(a+)+"</code> can match the string
+      <code>"aa"</code> either by a single iteration of the outer group
+      matching two <code>a</code>s in the inner <code>a+</code>, or by two
+      iterations of the outer group each matching a single <code>a</code>.
+      Thus, an input consisting of many <code>a</code>s followed by a
+      non-matching character will cause the regular expression engine to run
+      for an exponential amount of time before rejecting the input.
+    </p>
+
+    <p>
+      This problem can be avoided by rewriting the regular expression so
+      that the repetition of the outer group cannot overlap with the
+      repetition of the inner group. For example, by simply using a single
+      repetition:
+    </p>
+
+    <sample language="cpp">
+static const std::regex re("^a+$");
+if (std::regex_match(input, re)) { /* ... */ }
+    </sample>
+  </example>
+
+  <example>
+    <p>
+      As a slightly subtler example, consider the regular expression
+      <code>"^(a|a)*$"</code>. The two alternatives inside the group both
+      match the same character, so the regular expression engine can match
+      each character in the input in two different ways. The number of ways
+      of matching an input consisting of <em>n</em> <code>a</code>s
+      followed by a non-matching character grows as <em>2<sup>n</sup></em>,
+      leading to exponential worst-case behavior:
+    </p>
+
+    <sample language="cpp">
+static const std::regex re("^(a|a)*$");
+if (std::regex_match(input, re)) { /* ... */ } // BAD
+    </sample>
+
+    <p>
+      This can be fixed by removing the ambiguity between the two branches
+      of the alternative, for instance by rewriting the pattern as
+      <code>"^a*$"</code>.
+    </p>
+  </example>
+
+  <include src="ReDoSReferences.inc.qhelp" />
+
+</qhelp>
