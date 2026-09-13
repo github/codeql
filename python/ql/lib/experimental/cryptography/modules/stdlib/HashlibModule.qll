@@ -17,12 +17,13 @@ module Hashes {
    * Represents a hash algorithm used by `hashlib.new`, where the hash algorithm is a string in the first argument.
    */
   class HashlibNewHashAlgorithm extends HashAlgorithm {
+    API::CallNode instance;
+
     HashlibNewHashAlgorithm() {
-      this =
-        Utils::getUltimateSrcFromApiNode(API::moduleImport("hashlib")
+      instance = API::moduleImport("hashlib")
               .getMember("new")
-              .getACall()
-              .getParameter(0, "name"))
+              .getACall() and
+      this = Utils::getUltimateSrcFromApiNode(instance.getParameter(0, "name"))
     }
 
     override string getName() {
@@ -31,6 +32,8 @@ module Hashes {
       // if not a known/static string, assume from an outside source and the algorithm is UNKNOWN
       not this.asExpr() instanceof StringLiteral and result = unknownAlgorithm()
     }
+
+    API::CallNode getInstance() { result = instance }
   }
 
   /**
@@ -71,14 +74,15 @@ module Hashes {
    *  In these cases, the algorithm is considered 'UNKNOWN'.
    */
   class HashlibFileDigestAlgorithm extends HashAlgorithm {
+    API::CallNode instance;
+
     HashlibFileDigestAlgorithm() {
-      this =
-        Utils::getUltimateSrcFromApiNode(API::moduleImport("hashlib")
+      instance = API::moduleImport("hashlib")
               .getMember("file_digest")
-              .getACall()
-              .getParameter(1, "digest")) and
+              .getACall() and
+      this = Utils::getUltimateSrcFromApiNode(instance.getParameter(1, "digest")) and
       // Ignore sources that are hash constructors, allow `HashlibMemberAlgorithm` to detect these
-      this != hashlibMemberHashAlgorithm(_) and
+      this != hashlibMemberHashAlgorithm(_, _) and
       // Ignore sources that are HMAC objects, to be handled by HmacModule
       this != API::moduleImport("hmac").getMember("new").getACall() and
       this != API::moduleImport("hmac").getMember("HMAC").getACall()
@@ -93,6 +97,8 @@ module Hashes {
       not this.asExpr() instanceof StringLiteral and
       result = unknownAlgorithm()
     }
+
+    API::CallNode getInstance() { result = instance }
   }
 
   /**
@@ -104,8 +110,9 @@ module Hashes {
    */
   // Copying use of nomagic from similar predicate in codeql/main
   pragma[nomagic]
-  DataFlow::Node hashlibMemberHashAlgorithm(string hashName) {
-    result = API::moduleImport("hashlib").getMember(hashName).asSource() and
+  DataFlow::Node hashlibMemberHashAlgorithm(API::Node hashModule, string hashName) {
+    hashModule = API::moduleImport("hashlib").getMember(hashName) and
+    result = hashModule.asSource() and
     // Don't matches known non-hash members
     not hashName in [
         "new", "pbkdf2_hmac", "algorithms_available", "algorithms_guaranteed", "file_digest"
@@ -119,13 +126,40 @@ module Hashes {
    *  e.g., `hashlib.sha512`.
    */
   class HashlibMemberAlgorithm extends HashAlgorithm {
-    HashlibMemberAlgorithm() { this = hashlibMemberHashAlgorithm(_) }
+    HashlibMemberAlgorithm() { this = hashlibMemberHashAlgorithm(_, _) }
 
     override string getName() {
       exists(string rawName |
-        result = super.normalizeName(rawName) and this = hashlibMemberHashAlgorithm(rawName)
+        result = super.normalizeName(rawName) and this = hashlibMemberHashAlgorithm(_, rawName)
       )
     }
+
+    API::Node getModule() { this = hashlibMemberHashAlgorithm(result, _) }
+  }
+
+  API::CallNode getHashlibDigestInstance(HashAlgorithm hash) {
+    exists(HashlibMemberAlgorithm memberAlgorithm | result = memberAlgorithm.getModule().getACall() and hash = memberAlgorithm)
+    or
+    exists(HashlibNewHashAlgorithm newHashAlgorithm | result = newHashAlgorithm.getInstance() and hash = newHashAlgorithm)
+    or
+    exists(HashlibFileDigestAlgorithm fileDigestAlgorithm | result = fileDigestAlgorithm.getInstance() and hash = fileDigestAlgorithm)
+  }
+
+  API::CallNode getHashlibDigestOperation(HashAlgorithm hash, API::CallNode instance) {
+    instance = getHashlibDigestInstance(hash) and
+    result = instance.getAMethodCall("update")
+  }
+
+  class HashlibDigestOperation extends CryptographicOperation {
+    HashlibDigestOperation() {
+      this = getHashlibDigestOperation(_, _)
+    }
+
+    override DataFlow::Node getInitialisation() { this = getHashlibDigestOperation(_, result) }
+
+    override HashAlgorithm getAlgorithm() { this = getHashlibDigestOperation(result, _) }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) or result = this.getArgByName("data") }
   }
 }
 
@@ -160,9 +194,19 @@ module KDF {
 
     override string getName() { result = super.normalizeName("pbkdf2_hmac") }
 
+    override DataFlow::Node getInitialisation() { result = this }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(1) or result = this.getArgByName("password") }
+
     override DataFlow::Node getIterationSizeSrc() {
       exists(API::Node it | hashlibPBDKF2HMACKDFRequiredParams(this, _, _, it) |
         result = Utils::getUltimateSrcFromApiNode(it)
+      )
+    }
+
+    override DataFlow::Node getSaltConfigSink() {
+      exists(API::Node s | hashlibPBDKF2HMACKDFRequiredParams(this, _, s, _) |
+        result = s.asSink()
       )
     }
 
@@ -179,9 +223,7 @@ module KDF {
     }
 
     override DataFlow::Node getDerivedKeySizeSrc() {
-      exists(API::Node dk | hashlibPBDKF2HMACKDFOptionalParams(this, dk) |
-        result = Utils::getUltimateSrcFromApiNode(dk)
-      )
+      result = Utils::getUltimateSrcFromApiNode(this.getParameter(4, "dklen"))
     }
 
     // TODO: if DK is none, then the length is based on the hash type, if hash length not known, must call this unknown
@@ -197,31 +239,56 @@ module KDF {
     override predicate requiresSalt() { any() }
 
     override predicate requiresIteration() { any() }
+
+    override predicate requiresLanes() { none() }
+
+    override predicate requiresMemoryCost() { none() }
+  }
+
+  // NOTE: Only finds the params of `scrypt` that are non-optional
+  //       maxmem and dk_len are optional, i.e., can be None or omitted, and if addressed in this predicate
+  //       would result in an unsatisfiable predicate.
+  predicate hashlibScryptKDFRequiredParams(
+    HashlibScryptOperation kdf, API::Node nParam, API::Node rParam,
+    API::Node pParam, API::Node saltParam
+  ) {
+    kdf.getKeywordParameter("n") = nParam and
+    kdf.getKeywordParameter("r") = rParam and
+    kdf.getKeywordParameter("p") = pParam and
+    kdf.getKeywordParameter("salt") = saltParam
   }
 
   // TODO: better modeling of scrypt
   /**
    * Identifies key derivation function hashlib.scrypt accesses.
    */
-  class HashlibScryptAlgorithm extends KeyDerivationAlgorithm, KeyDerivationOperation {
-    HashlibScryptAlgorithm() { this = API::moduleImport("hashlib").getMember("scrypt").getACall() }
+  class HashlibScryptOperation extends KeyDerivationAlgorithm, KeyDerivationOperation {
+    HashlibScryptOperation() { this = API::moduleImport("hashlib").getMember("scrypt").getACall() }
 
     override string getName() { result = super.normalizeName("scrypt") }
 
+    override DataFlow::Node getInitialisation() { result = this }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) or result = this.getArgByName("password") }
+
     override DataFlow::Node getIterationSizeSrc() { none() }
 
+    override DataFlow::Node getSaltConfigSink() {
+      exists(API::Node s | hashlibScryptKDFRequiredParams(this, _, _, _, s) |
+        result = s.asSink()
+      )
+    }
+
     override DataFlow::Node getSaltConfigSrc() {
-      // TODO: need to address getting salt from params, unsure how this works in CodeQL
-      // since the signature is defined as hashlib.scrypt(password, *, salt, n, r, p, maxmem=0, dklen=64)
-      // What position is 'salt' then such that we can reliably extract it?
-      none()
+      exists(API::Node s | hashlibScryptKDFRequiredParams(this, _, _, _, s) |
+        result = Utils::getUltimateSrcFromApiNode(s)
+      )
     }
 
     override DataFlow::Node getHashConfigSrc() { none() }
 
     override DataFlow::Node getDerivedKeySizeSrc() {
-      //TODO: see comment for getSaltConfigSrc above
-      none()
+      result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("dklen"))
     }
 
     override KeyDerivationAlgorithm getAlgorithm() { result = this }
@@ -233,5 +300,9 @@ module KDF {
     override predicate requiresSalt() { any() }
 
     override predicate requiresIteration() { none() }
+
+    override predicate requiresLanes() { none() }
+
+    override predicate requiresMemoryCost() { none() }
   }
 }
