@@ -1983,7 +1983,7 @@ private predicate pathUsesNamespace(PathExt p, Namespace n) {
   or
   n.isType() and
   (
-    p = any(Visibility v).getPath()
+    p = any(Visibility v).getVisibilityInner().getPath()
     or
     p = any(StructExpr re).getPath()
     or

@@ -66,7 +66,7 @@ class ArrayTypeRepr(TypeRepr, ):
     element_type_repr: optional["TypeRepr"] | child
 
 class AsmClobberAbi(AsmPiece, ):
-    pass
+    attrs: list["Attr"] | child
 
 class AsmConst(AsmOperand, ):
     expr: optional["Expr"] | child
@@ -89,6 +89,7 @@ class AsmOperandExpr(AstNode, ):
 
 class AsmOperandNamed(AsmPiece, ):
     asm_operand: optional["AsmOperand"] | child
+    attrs: list["Attr"] | child
     name: optional["Name"] | child
 
 class AsmOption(AstNode, ):
@@ -96,6 +97,7 @@ class AsmOption(AstNode, ):
 
 class AsmOptionsList(AsmPiece, ):
     asm_options: list["AsmOption"] | child
+    attrs: list["Attr"] | child
 
 class AsmRegOperand(AsmOperand, ):
     asm_dir_spec: optional["AsmDirSpec"] | child
@@ -222,6 +224,9 @@ class ContinueExpr(Expr, ):
     attrs: list["Attr"] | child
     lifetime: optional["Lifetime"] | child
 
+class DerefPat(Pat, ):
+    pat: optional["Pat"] | child
+
 class DynTraitTypeRepr(TypeRepr, ):
     type_bound_list: optional["TypeBoundList"] | child
 
@@ -296,11 +301,8 @@ class ForTypeRepr(TypeRepr, ):
     type_repr: optional["TypeRepr"] | child
 
 class FormatArgsArg(AstNode, ):
-    arg_name: optional["FormatArgsArgName"] | child
     expr: optional["Expr"] | child
-
-class FormatArgsArgName(AstNode, ):
-    pass
+    name: optional["Name"] | child
 
 class FormatArgsExpr(Expr, ):
     args: list["FormatArgsArg"] | child
@@ -338,8 +340,14 @@ class Impl(Item, ):
     visibility: optional["Visibility"] | child
     where_clause: optional["WhereClause"] | child
 
+class ImplRestriction(AstNode, ):
+    visibility_inner: optional["VisibilityInner"] | child
+
 class ImplTraitTypeRepr(TypeRepr, ):
     type_bound_list: optional["TypeBoundList"] | child
+
+class IncludeBytesExpr(Expr, ):
+    pass
 
 class IndexExpr(Expr, ):
     attrs: list["Attr"] | child
@@ -459,6 +467,10 @@ class Module(Item, ):
     name: optional["Name"] | child
     visibility: optional["Visibility"] | child
 
+class MutRestriction(AstNode, ):
+    is_mut: predicate
+    visibility_inner: optional["VisibilityInner"] | child
+
 class Name(AstNode, ):
     text: optional[string]
 
@@ -466,6 +478,9 @@ class NameRef(UseBoundGenericArg, ):
     text: optional[string]
 
 class NeverTypeRepr(TypeRepr, ):
+    pass
+
+class NotNull(Pat, ):
     pass
 
 class OffsetOfExpr(Expr, ):
@@ -522,6 +537,10 @@ class PathSegment(AstNode, ):
 class PathTypeRepr(TypeRepr, ):
     path: optional["Path"] | child
 
+class PatternTypeRepr(TypeRepr, ):
+    pat: optional["Pat"] | child
+    type_repr: optional["TypeRepr"] | child
+
 class PrefixExpr(Expr, ):
     attrs: list["Attr"] | child
     expr: optional["Expr"] | child
@@ -561,6 +580,7 @@ class StructField(AstNode, ):
     attrs: list["Attr"] | child
     default_val: optional["ConstArg"] | child
     is_unsafe: predicate
+    mut_restriction: optional["MutRestriction"] | child
     name: optional["Name"] | child
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child
@@ -665,6 +685,7 @@ class Trait(Item, ):
     assoc_item_list: optional["AssocItemList"] | child
     attrs: list["Attr"] | child
     generic_param_list: optional["GenericParamList"] | child
+    impl_restriction: optional["ImplRestriction"] | child
     is_auto: predicate
     is_unsafe: predicate
     name: optional["Name"] | child
@@ -686,6 +707,7 @@ class TupleExpr(Expr, ):
 
 class TupleField(AstNode, ):
     attrs: list["Attr"] | child
+    mut_restriction: optional["MutRestriction"] | child
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child
 
@@ -775,6 +797,9 @@ class VariantList(AstNode, ):
     variants: list["Variant"] | child
 
 class Visibility(AstNode, ):
+    visibility_inner: optional["VisibilityInner"] | child
+
+class VisibilityInner(AstNode, ):
     path: optional["Path"] | child
 
 class WhereClause(AstNode, ):

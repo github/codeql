@@ -1,0 +1,4 @@
+instances
+| gen_deref_pat.rs:8:9:8:24 | DerefPat |
+getPat
+| gen_deref_pat.rs:8:9:8:24 | DerefPat | gen_deref_pat.rs:8:23:8:23 | y |

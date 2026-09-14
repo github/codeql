@@ -5,10 +5,9 @@ use itertools::Itertools;
 use std::ffi::OsStr;
 use std::fs;
 use std::path::Path;
-use std::process::Command;
 use tracing::info;
 
-const EDITION: &str = "2021";
+const DEFAULT_EDITION: &str = "2021";
 
 fn dump_lib() -> anyhow::Result<()> {
     let path_iterator = glob("*.rs").context("globbing test sources")?;
@@ -54,19 +53,19 @@ impl TestCargoManifest<'_> {
         fs::write(&path, rendered).with_context(|| format!("writing {}", path.display()))
     }
 }
-fn dump_cargo_manifest(dependencies: &[String]) -> anyhow::Result<()> {
+fn dump_cargo_manifest(dependencies: &[String], edition: &str) -> anyhow::Result<()> {
     let uses_proc_macro =
         fs::exists("proc_macro.rs").context("checking existence of proc_macro.rs")?;
     let lib_manifest = TestCargoManifest::Lib {
         uses_proc_macro,
         uses_main: fs::exists("main.rs").context("checking existence of main.rs")?,
         dependencies,
-        edition: EDITION,
+        edition,
     };
     if uses_proc_macro {
         TestCargoManifest::Workspace {}.dump("")?;
         lib_manifest.dump(".lib")?;
-        TestCargoManifest::Macro { edition: EDITION }.dump(".proc_macro")
+        TestCargoManifest::Macro { edition }.dump(".proc_macro")
     } else {
         lib_manifest.dump("")
     }
@@ -91,15 +90,8 @@ fn set_sources(config: &mut Config) -> anyhow::Result<()> {
 }
 
 fn cargo_check(config: &Config) -> anyhow::Result<()> {
-    let mut command = Command::new("cargo");
+    let mut command = ra_ap_toolchain::command("cargo", ".", &config.get_extra_env());
     command.env("CARGO_TARGET_DIR", config.cargo_target_dir());
-    // Pass the extra environment variables to the initial `cargo check`.
-    for (key, value) in config.get_extra_env() {
-        match value {
-            Some(value) => command.env(key, value),
-            None => command.env_remove(key),
-        };
-    }
     let status = command
         .arg("check")
         .arg("-q")
@@ -116,7 +108,8 @@ fn cargo_check(config: &Config) -> anyhow::Result<()> {
 pub(crate) fn prepare(config: &mut Config) -> anyhow::Result<()> {
     dump_lib()?;
     set_sources(config)?;
-    dump_cargo_manifest(&config.qltest_dependencies)?;
+    let edition = config.qltest_edition.as_deref().unwrap_or(DEFAULT_EDITION);
+    dump_cargo_manifest(&config.qltest_dependencies, edition)?;
     if config.qltest_use_nightly {
         dump_nightly_toolchain()?;
     }
