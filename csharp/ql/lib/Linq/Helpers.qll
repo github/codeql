@@ -122,7 +122,7 @@ private predicate acceptableForLinqCapture(Expr e) {
     p = pa.getTarget() and
     pa = e.getAChildExpr*()
   |
-    (p.isOutOrRef() or p.isIn() or p.isReadonlyRef())
+    p.isOutOrRef() or p.isIn() or p.isReadonlyRef()
   )
 }
 
