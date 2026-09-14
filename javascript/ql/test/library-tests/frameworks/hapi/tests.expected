@@ -23,9 +23,12 @@ test_RequestExpr
 | src/hapi.js:20:19:20:25 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:20:19:20:25 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:21:3:21:9 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
-| src/hapi.js:22:3:22:9 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:22:3:22:21 | getRequest(request) | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:22:14:22:20 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:23:3:23:21 | getRequest(request) | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:23:14:23:20 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:23:34:23:52 | getRequest(request) | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:23:45:23:51 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:24:3:24:9 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:25:3:25:9 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:26:3:26:9 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
@@ -106,8 +109,9 @@ test_ServerDefinition
 | src/wrapped-route.js:42:10:42:26 | new Hapi.Server() |
 test_RequestInputAccess
 | src/hapi.js:21:3:21:20 | request.rawPayload | body | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
-| src/hapi.js:22:3:22:21 | request.payload.foo | body | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:22:3:22:33 | getRequ ... oad.foo | body | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:23:3:23:31 | getRequ ... ery.bar | parameter | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:23:34:23:63 | getRequ ... ams.bar | parameter | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:24:3:24:18 | request.url.path | url | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:25:3:25:21 | request.headers.baz | header | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:26:3:26:21 | request.state.token | cookie | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
@@ -178,9 +182,12 @@ test_RouteHandler_getARequestExpr
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:20:19:20:25 | request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:20:19:20:25 | request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:21:3:21:9 | request |
-| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:22:3:22:9 | request |
+| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:22:3:22:21 | getRequest(request) |
+| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:22:14:22:20 | request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:23:3:23:21 | getRequest(request) |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:23:14:23:20 | request |
+| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:23:34:23:52 | getRequest(request) |
+| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:23:45:23:51 | request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:24:3:24:9 | request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:25:3:25:9 | request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:26:3:26:9 | request |

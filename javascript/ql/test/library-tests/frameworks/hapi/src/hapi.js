@@ -19,8 +19,8 @@ server2.ext('onPreResponse', function handler3(request, reply) { // HTTP::RouteH
 
 function handler4(request, reply){
   request.rawPayload;
-  request.payload.foo;
-  getRequest(request).query.bar;
+  getRequest(request).payload.foo;
+  getRequest(request).query.bar; getRequest(request).params.bar;
   request.url.path;
   request.headers.baz;
   request.state.token;
