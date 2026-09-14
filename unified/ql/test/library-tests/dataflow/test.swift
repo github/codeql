@@ -5,6 +5,11 @@ func t1() {
 func t2() {
     sink(source("t2.1") + "blah"); // $ hasTaintFlow=t2.1
     sink("blah" + source("t2.2")); // $ hasTaintFlow=t2.2
+
+    sink("\(source("t2.3")) blah"); // $ hasTaintFlow=t2.3
+    sink("blah \(source("t2.4"))"); // $ hasTaintFlow=t2.4
+    sink("blah \(source("t2.5")) blah"); // $ hasTaintFlow=t2.5
+    sink("blah \(escape: source("t2.6")) blah"); // no flow
 }
 
 func t3() {
