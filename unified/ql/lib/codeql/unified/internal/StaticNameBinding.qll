@@ -505,6 +505,9 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
       or
       inheritanceStep(node1, node2) and
       value = "inheritedBy"
+      or
+      extensionStep(node1, node2) and
+      value = "extensionOf"
     )
   }
 }
