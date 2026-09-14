@@ -36,14 +36,17 @@ extension B { // $ access=B
     }
 }
 
-// Inheritance through extension
-class Base {
-    func baseMethod() {
-    }
+// Protocol conformance through extension
+protocol Base {
+    func baseMethod();
+}
+extension Base { // $ access=Base
+    func baseMethodExt() {} // name=Base.baseMethodExt
 }
 class X {
     func xMethod() {
         baseMethod() // $ access=Base.baseMethod
+        baseMethodExt() // $ access=Base.baseMethodExt
     }
 }
 extension X : Base {} // $ access=X access=Base
