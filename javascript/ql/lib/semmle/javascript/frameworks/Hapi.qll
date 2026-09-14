@@ -106,7 +106,7 @@ module Hapi {
     RouteHandler rh, string property, DataFlow::TypeTracker t
   ) {
     t.start() and
-    result = rh.getRequestParameter().getAPropertyRead(property)
+    result = rh.getARequestSource().ref().getAPropertyRead(property)
     or
     exists(DataFlow::TypeTracker t2 | result = requestInputRef(rh, property, t2).track(t2, t))
   }
@@ -132,7 +132,7 @@ module Hapi {
           // `request.payload` is an object, so prefer a property read if possible.
           if exists(requestInputRef(rh, "payload").getAPropertyRead())
           then this = requestInputRef(rh, "payload").getAPropertyRead()
-          else this = rh.getRequestParameter().getAPropertyRead("payload")
+          else this = rh.getARequestSource().ref().getAPropertyRead("payload")
         )
         or
         kind = "parameter" and
@@ -140,7 +140,7 @@ module Hapi {
           // These are objects, so prefer a property read if possible.
           if exists(requestInputRef(rh, property).getAPropertyRead())
           then this = requestInputRef(rh, property).getAPropertyRead()
-          else this = rh.getRequestParameter().getAPropertyRead(property)
+          else this = rh.getARequestSource().ref().getAPropertyRead(property)
         )
         or
         exists(DataFlow::PropRead url |
