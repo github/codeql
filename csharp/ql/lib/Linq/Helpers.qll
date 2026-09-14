@@ -118,8 +118,10 @@ class ForEachStmtEnumerable extends ForEachStmt {
 
 bindingset[e]
 private predicate acceptableForLinqCapture(Expr e) {
-  not exists(ParameterAccess pa, Parameter p | p = pa.getTarget() |
-    pa = e.getAChildExpr*() and
+  not exists(ParameterAccess pa, Parameter p |
+    p = pa.getTarget() and
+    pa = e.getAChildExpr*()
+  |
     (p.isOutOrRef() or p.isIn() or p.isReadonlyRef())
   )
 }
