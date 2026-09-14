@@ -2335,8 +2335,8 @@ private module Input3 implements InputSig3 {
 
   private newtype TVariable =
     TVariableVariable(Rust::Variable v) or
-    TConstVariable(Const c) or
-    TStaticVariable(Static s)
+    TConstVariable(Const c) { none() } or
+    TStaticVariable(Static s) { none() }
 
   class Variable extends TVariable {
     Rust::Variable asLocalVariable() { this = TVariableVariable(result) }
