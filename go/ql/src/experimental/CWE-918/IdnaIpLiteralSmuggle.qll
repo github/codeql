@@ -98,16 +98,16 @@
 
 import go
 
-  /**
-   * The two flow states in the IDNA-smuggle taint configuration.
-   *
-   * `TPreIdna()` is the initial state of every untrusted hostname source.
-   * `TPostIdna()` is reached only after a value has flowed through one of the
-   * IDNA mapping calls. Sinks are only flagged in `TPostIdna()`.
-   */
-  newtype TFlowState =
-    TPreIdna() or
-    TPostIdna()
+/**
+ * The two flow states in the IDNA-smuggle taint configuration.
+ *
+ * `TPreIdna()` is the initial state of every untrusted hostname source.
+ * `TPostIdna()` is reached only after a value has flowed through one of the
+ * IDNA mapping calls. Sinks are only flagged in `TPostIdna()`.
+ */
+newtype TFlowState =
+  TPreIdna() or
+  TPostIdna()
 
 /**
  * Holds if `call` is a call to one of the `idna` mapping entry points whose
@@ -348,8 +348,9 @@ module Config implements DataFlow::StateConfigSig {
   }
 
   /**
-   * The IDNA mapping is modeled as a state-transition step:
-   *   `TPreIdna(arg) -> TPostIdna(result)`
+   * Holds if `node1` in `state1` steps to `node2` in `state2` through an IDNA
+   * mapping call, modeled as the state transition
+   * `TPreIdna(arg) -> TPostIdna(result)`.
    */
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
@@ -360,9 +361,10 @@ module Config implements DataFlow::StateConfigSig {
   }
 
   /**
-   * A correct post-IDNA IP-literal recheck (trailing-dot trim FOLLOWED
-   * BY `net.ParseIP` or equivalent) is a barrier in `TPostIdna`. The
-   * trim source is bound to the post-IDNA-tainted predecessor so that
+   * Holds if `node` in `state` is a barrier because it is the output of an
+   * IDNA mapping call that is followed by a correct post-IDNA IP-literal
+   * recheck (trailing-dot trim FOLLOWED BY `net.ParseIP` or equivalent).
+   * The trim source is bound to the post-IDNA-tainted predecessor so that
    * an unrelated TrimRight + ParseIP construct elsewhere in the same
    * scope does not silently sanitize the IDNA-tainted path. A bare
    * `net.ParseIP` without the prior trim is NOT a barrier; the alert
@@ -370,14 +372,15 @@ module Config implements DataFlow::StateConfigSig {
    */
   predicate isBarrier(DataFlow::Node node, FlowState state) {
     state = TPostIdna() and
-    exists(DataFlow::Node postIdnaResult, DataFlow::Node parseInput |
+    exists(DataFlow::Node postIdnaResult |
       idnaMapInToOut(_, postIdnaResult) and
       DataFlow::localFlow(postIdnaResult, node) and
-      safePostIdnaRecheck(postIdnaResult, parseInput)
+      safePostIdnaRecheck(postIdnaResult, _)
     )
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }
+
 /** Tracks taint flow for IDNA digit-fold IP-literal smuggling. */
 module Flow = TaintTracking::GlobalWithState<Config>;
