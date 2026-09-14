@@ -2403,13 +2403,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        *
        * 1. `x` is assigned the pseudo type `T_x`,
        * 2. infer that the return type of `c` is `(T_x, bool)` and hence that `c` has type
-       *    `Fn(...) -> (T_x, bool)`,
+       *    `Fn(T_x) -> (T_x, bool)`,
        * 3. this enables us to detect that contextual inference is needed, so we also
-       *    assign `c` the type `Fn(...) -> (UnknownType, bool)`,
+       *    assign `c` the type `Fn(T_x) -> (UnknownType, bool)`,
        * 4. infer that `c(Default::default()).0` must have `UnknownType`,
-       * 5. infer, using contextual inference, that `c` has type `Fn(...) -> (i32, bool)`,
+       * 5. infer, using contextual inference, that `c` has type `Fn(T_x) -> (i32, bool)`,
        *    and finally
-       * 6. since `c` also has type `Fn(...) -> (T_x, bool)`, we conclude that `x` has type
+       * 6. since `c` also has type `Fn(T_x) -> (T_x, bool)`, we conclude that `x` has type
        *    `i32` and hence that `c` has type `Fn(i32) -> (i32, bool)`.
        *
        * Note that steps 2, 4, and 5 are standard inference steps.
@@ -2439,7 +2439,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /**
        * Holds if `n1` having type `t` at `prefix1.suffix` implies that `n2` has type
-       * `t` at `prefix2.suffix`, for any `suffix`.
+       * `t` at `prefix2.suffix`, for any `suffix`. The converse should also hold, but
+       * only when `n1` already has an inferred type that matches `prefix1`.
        *
        * Use this predicate to implement any language-specific bottom-up inference logic.
        *
@@ -3138,8 +3139,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       private module ClosureTyping {
+        /**
+         * Holds if `n` at `path` has a closure parameter pseudo type
+         * corresponding to closure parameter `p`.
+         */
         pragma[nomagic]
-        private predicate hasClosureParameterPseudoType(AstNode n, Parameter p, TypePath path) {
+        private predicate hasClosureParameterPseudoType(AstNode n, TypePath path, Parameter p) {
           // use `inferTypeCand` to also detect propagation into enclosing closure
           p = inferTypeCand(n, path).(ClosureParameterPseudoType).getParameter()
         }
@@ -3150,21 +3155,25 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
 
         pragma[nomagic]
-        private predicate hasTypeAt(AstNode n, TypePath path) { exists(inferType(n, path)) }
-
-        pragma[nomagic]
         private predicate hasTypeAtPrefix(AstNode n, TypePath prefix, TypePath path) {
-          hasTypeAt(n, path) and
+          hasInferredType(n, path) and
           hasClosureParameterPseudoType(n) and
           prefix = path.getAPrefix()
         }
 
+        /**
+         * Holds if `n` has a closure parameter pseudo type for the parameter
+         * with pattern `pattern` at `prefix`, where `path = prefix.suffix`.
+         *
+         * This means that the parameter pattern can be inferred to have type
+         * `t` at `suffix` when `n` also has inferred type `t` at `path`.
+         */
         pragma[nomagic]
-        private predicate hasClosureParameterPseudoType(
+        private predicate hasClosureParameterPseudoTypeAtPrefix(
           AstNode n, TypePath path, AstNode pattern, TypePath suffix
         ) {
           exists(Parameter p, TypePath prefix |
-            hasClosureParameterPseudoType(n, p, prefix) and
+            hasClosureParameterPseudoType(n, prefix, p) and
             hasTypeAtPrefix(n, prefix, path) and
             path = prefix.appendInverse(suffix) and
             pattern = p.getPattern()
@@ -3184,18 +3193,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             // step 1
             n = p.getPattern() and
             path.isEmpty() and
-            not exists(p.getType()) and
             result.(ClosureParameterPseudoType).getParameter() = p
             or
             // step 3
-            hasClosureParameterPseudoType(c, p, path) and
+            hasClosureParameterPseudoType(c, path, p) and
             n = c and
             result instanceof UnknownType
           )
           or
           // step 6
           exists(AstNode n0, TypePath path0 |
-            hasClosureParameterPseudoType(n0, path0, n, path) and
+            hasClosureParameterPseudoTypeAtPrefix(n0, path0, n, path) and
             result = inferClosureParameterTypeCand(n0, path0) and
             not (path.isEmpty() and result instanceof UnknownType)
           )
@@ -3223,6 +3231,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
       }
 
+      /**
+       * Gets an inferred candidate type of `n` at `path`.
+       *
+       * The type is only a candidate because it may later be filtered away, for
+       * example if it conflicts with certain type information.
+       */
       private Type inferTypeCand(AstNode n, TypePath path) {
         result = Input3::inferTypeLanguageSpecific(n, path)
         or
@@ -3289,13 +3303,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
+       * Holds if `n` has type information at `path`.
+       */
+      pragma[nomagic]
+      predicate hasInferredType(AstNode n, TypePath path) { exists(inferType(n, path)) }
+
+      /**
        * Holds if `n` has type information at the type path `prefix.tp`. This entails
        * that the type at `prefix` must be the type that declares `tp`.
        */
       pragma[nomagic]
       private predicate infersTypeAt(AstNode n, TypePath prefix, TypeParameter tp) {
         exists(TypePath path |
-          exists(inferType(n, path)) and
+          hasInferredType(n, path) and
           not path.isEmpty() and // implied by `isSnoc` below, but improves performance slightly
           path.isSnoc(prefix, tp)
         )
@@ -3430,7 +3450,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         pragma[nomagic]
         predicate atLimit(AstNode n) {
           exists(TypePath path0 |
-            exists(inferType(n, path0)) and path0.length() >= getTypePathLimit()
+            hasInferredType(n, path0) and path0.length() >= getTypePathLimit()
           )
         }
 

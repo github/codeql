@@ -28,6 +28,14 @@ mod simple_closures {
         let id2 = |b| b;
         let arg = Default::default(); // $ target=default type=arg:bool
         let _b2: bool = id2(arg); // $ certainType=_b2:bool
+
+        // The parameter type of `f1` is inferred from the argument.
+        let f1 = |x| (x, false); // $ type=x@Option<T>:i32
+        let _r = f1(Some(0)); // $ type=_r@(T_2)<T0>.Option<T>:i32
+
+        // The return type of `f2` is inferred from the type of the call expression.
+        let f2 = |x| (x, false); // $ type=x@Option<T>:i32
+        let _r: Option<i32> = f2(Default::default()).0; // $ fieldof=Tuple2 target=default
     }
 }
 
