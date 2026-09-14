@@ -333,7 +333,12 @@ top_level
                     member_access_expr
                       base: inferred_type_expr "."
                       member_name_node: identifier "inferred"
-                    tuple_expr "(value, offset)"
+                    tuple_expr
+                      element:
+                        argument
+                          value: identifier "value"
+                        argument
+                          value: identifier "offset"
                     array_literal
                       element: identifier "value"
                     map_literal "[key: value]"

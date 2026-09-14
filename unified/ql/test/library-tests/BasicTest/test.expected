@@ -129,6 +129,7 @@ identifier
 | test.swift:74:10:74:17 | isSorted | isSorted |
 | test.swift:74:24:74:27 | Bool | Bool |
 | test.swift:75:13:75:13 | i | i |
+| test.swift:75:23:75:27 | count | count |
 | test.swift:76:16:76:19 | self | self |
 | test.swift:76:21:76:21 | i | i |
 | test.swift:76:26:76:29 | self | self |
@@ -152,6 +153,9 @@ identifier
 | test.swift:87:31:87:36 | reduce | reduce |
 | test.swift:87:38:87:43 | values | values |
 | test.swift:87:49:87:57 | transform | transform |
+| test.swift:90:5:90:9 | tuple | tuple |
+| test.swift:91:5:91:10 | unary1 | unary1 |
+| test.swift:92:5:92:10 | unary2 | unary2 |
 namedPattern
 | test.swift:1:1:1:17 | NamedPattern | Foundation |
 unsupported
@@ -163,6 +167,9 @@ rawStringValue
 | strings.swift:3:28:3:33 |  world |  world |
 | strings.swift:4:11:4:16 | hello  | hello  |
 | strings.swift:4:27:4:32 |  world |  world |
+| test.swift:90:17:90:23 | "hello" | "hello" |
+| test.swift:91:15:91:29 | "parenthesized" | "parenthesized" |
+| test.swift:92:16:92:37 | "double-parenthesized" | "double-parenthesized" |
 exprStringValue
 | strings.swift:1:10:1:16 | "hello" | hello |
 | strings.swift:2:11:2:16 | hello  | hello  |
@@ -171,3 +178,7 @@ exprStringValue
 | strings.swift:3:28:3:33 |  world |  world |
 | strings.swift:4:11:4:16 | hello  | hello  |
 | strings.swift:4:27:4:32 |  world |  world |
+| test.swift:90:17:90:23 | "hello" | hello |
+| test.swift:91:15:91:29 | "parenthesized" | parenthesized |
+| test.swift:92:16:92:37 | "double-parenthesized" | double-parenthesized |
+unexpectedUnaryTuple
