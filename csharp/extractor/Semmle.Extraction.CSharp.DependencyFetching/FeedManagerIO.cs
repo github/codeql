@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             logger.LogInfo($"Checking if NuGet feed '{feed}' is reachable...");
 
-            // Configure the HttpClient to be aware of the Registry proxy, if used.
+            // Configure the HttpClient to be aware of the registry proxy, if used.
             HttpClientHandler httpClientHandler = new();
             if (registryProxy != null)
             {

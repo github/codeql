@@ -29,8 +29,8 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// Verify that the Registry proxy correctly handles the case where the port is not specified.
-        /// In this case, the Registry proxy should not be created.
+        /// Verify that the registry proxy correctly handles the case where the port is not specified.
+        /// In this case, the registry proxy should not be created.
         /// </summary>
         [Fact]
         public void TestRegistryProxyNoPort()
@@ -51,8 +51,8 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// Verify that the Registry proxy correctly handles the case where the host is not specified.
-        /// In this case, the Registry proxy should not be created.
+        /// Verify that the registry proxy correctly handles the case where the host is not specified.
+        /// In this case, the registry proxy should not be created.
         /// </summary>
         [Fact]
         public void TestRegistryProxyNoHost()
@@ -105,7 +105,7 @@ namespace Semmle.Extraction.Tests
         """;
 
         /// <summary>
-        /// Verify that the Registry proxy correctly handles the case
+        /// Verify that the registry proxy correctly handles the case
         /// where the port, host, and certificate are specified.
         /// </summary>
         [Fact]
@@ -131,9 +131,9 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// Verify that the Registry proxy correctly handles the case where the RegistryURLs environment variable
+        /// Verify that the registry proxy correctly handles the case where the RegistryURLs environment variable
         /// is not a valid JSON list.
-        /// In this case, the Registry proxy should be created, but the list of private registries should be empty.
+        /// In this case, the registry proxy should be created, but the list of private registries should be empty.
         /// </summary>
         [Fact]
         public void TestRegistryProxyUrlsParseError()
@@ -157,9 +157,9 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// Verify that the Registry proxy correctly handles the case where the RegistryURLs environment variable
+        /// Verify that the registry proxy correctly handles the case where the RegistryURLs environment variable
         /// is a valid JSON list with a single entry.
-        /// In this case, the Registry proxy should be created, and the list of private registries should contain the single entry.
+        /// In this case, the registry proxy should be created, and the list of private registries should contain the single entry.
         /// </summary>
         [Fact]
         public void TestRegistryProxyUrlsSingle()
@@ -185,10 +185,10 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// Verify that the Registry proxy correctly handles the case where the RegistryURLs environment variable
+        /// Verify that the registry proxy correctly handles the case where the RegistryURLs environment variable
         /// is a valid JSON list with multiple entries, but only one of them is of type "nuget_feed", which is
         /// relevant for C#.
-        /// In this case, the Registry proxy should be created, and the list of private registries should
+        /// In this case, the registry proxy should be created, and the list of private registries should
         /// contain only the entry of type "nuget_feed".
         /// </summary>
         [Fact]
@@ -215,9 +215,9 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// Verify that the Registry proxy correctly handles the case where the RegistryURLs environment variable
+        /// Verify that the registry proxy correctly handles the case where the RegistryURLs environment variable
         /// is a valid JSON list with multiple entries and one of them is configured to replace the base feeds.
-        /// In this case, the Registry proxy should be created, and the list of private registries should contain all
+        /// In this case, the registry proxy should be created, and the list of private registries should contain all
         /// entries, while the list of base registries should contain only the entry that replaces the base feeds.
         /// </summary>
         [Fact]

@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     public interface IRegistryProxy : IDisposable
     {
         /// <summary>
-        /// The full address of the Registry proxy, if available.
+        /// The full address of the registry proxy, if available.
         /// </summary>
         string Address { get; }
 
@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         string? CertificatePath { get; }
 
         /// <summary>
-        /// The certificate used for the Registry proxy.
+        /// The certificate used for the registry proxy.
         /// </summary>
         X509Certificate2? Certificate { get; }
     }
