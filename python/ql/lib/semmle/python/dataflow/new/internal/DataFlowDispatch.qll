@@ -1711,21 +1711,12 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asLibraryCallable() = this.getSummarizedCallable()
+    result = this.getSummaryNode().getEnclosingCallable()
   }
 
   override string toString() { result = this.getSummaryNode().toString() }
 
-  // Hack to return "empty location"
-  deprecated override predicate hasLocationInfo(
-    string file, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    file = "" and
-    startline = 0 and
-    startcolumn = 0 and
-    endline = 0 and
-    endcolumn = 0
-  }
+  override Location getLocation() { result = this.getSummaryNode().getLocation() }
 }
 
 private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {

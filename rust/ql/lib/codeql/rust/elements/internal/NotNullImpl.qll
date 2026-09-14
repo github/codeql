@@ -1,0 +1,27 @@
+/**
+ * This module provides a hand-modifiable wrapper around the generated class `NotNull`.
+ *
+ * INTERNAL: Do not use.
+ */
+
+private import codeql.rust.elements.internal.generated.NotNull
+
+/**
+ * INTERNAL: This module contains the customizable definition of `NotNull` and should not
+ * be referenced directly.
+ */
+module Impl {
+  // the following QLdoc is generated: if you need to edit it, do it in the schema file
+  /**
+   * The `!null` pattern used in a pattern type to denote a non-null value. Pattern types
+   * are an experimental, mostly compiler-internal feature (used in the standard library for
+   * types such as `NonZero` and `NonNull`) and cannot be written directly in stable Rust;
+   * the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
+   * ```rust
+   * type NonNull = builtin#pattern_type(*const () is !null);
+   * ```
+   */
+  class NotNull extends Generated::NotNull {
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+  }
+}

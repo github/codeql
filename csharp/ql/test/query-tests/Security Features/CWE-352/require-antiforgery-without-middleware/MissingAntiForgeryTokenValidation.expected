@@ -1,0 +1,1 @@
+| MissingAntiForgeryTokenValidation.cs:15:25:15:49 | MetadataWithoutMiddleware | Method 'MetadataWithoutMiddleware' handles a POST request without performing CSRF token validation. |

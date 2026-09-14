@@ -51,17 +51,13 @@ top_level
         while_stmt
           condition:
             binary_expr
-              left:
-                name_expr
-                  identifier: identifier "x"
+              left: identifier "x"
               operator: infix_operator ">"
               right: int_literal "0"
           body:
             block
               stmt:
                 compound_assign_expr
-                  target:
-                    name_expr
-                      identifier: identifier "x"
+                  target: identifier "x"
                   operator: infix_operator "-="
                   value: int_literal "1"

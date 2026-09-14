@@ -27,10 +27,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly ILogger logger;
         private readonly IDiagnosticsWriter diagnosticsWriter;
         private readonly NugetPackageRestorer nugetPackageRestorer;
-        private readonly DependabotProxy? dependabotProxy;
+        private readonly IRegistryProxy? registryProxy;
         private readonly IDotNet dotnet;
         private readonly FileContent fileContent;
-        private readonly FileProvider fileProvider;
+        private readonly IFileProvider fileProvider;
 
         // Only used as a set, but ConcurrentDictionary is the only concurrent set in .NET.
         private readonly IDictionary<string, bool> usedReferences = new ConcurrentDictionary<string, bool>();
@@ -106,11 +106,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return BuildScript.Success;
             }).Run(SystemBuildActions.Instance, startCallback, exitCallback);
 
-            dependabotProxy = DependabotProxy.GetDependabotProxy(logger, diagnosticsWriter, tempWorkingDirectory);
+            registryProxy = RegistryProxy.Make(logger, diagnosticsWriter, tempWorkingDirectory);
 
             try
             {
-                this.dotnet = DotNet.Make(logger, dotnetPath, tempWorkingDirectory, dependabotProxy);
+                this.dotnet = DotNet.Make(logger, dotnetPath, tempWorkingDirectory, registryProxy);
                 runtimeLazy = new Lazy<Runtime>(() => new Runtime(dotnet));
             }
             catch
@@ -119,7 +119,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 throw;
             }
 
-            nugetPackageRestorer = new NugetPackageRestorer(fileProvider, fileContent, dotnet, dependabotProxy, diagnosticsWriter, logger, this);
+            nugetPackageRestorer = new NugetPackageRestorer(fileProvider, fileContent, dotnet, registryProxy, diagnosticsWriter, logger, this);
 
             var dllLocations = fileProvider.Dlls.Select(x => new AssemblyLookupLocation(x)).ToHashSet();
             dllLocations.UnionWith(nugetPackageRestorer.Restore());
@@ -544,7 +544,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void Dispose()
         {
             nugetPackageRestorer?.Dispose();
-            dependabotProxy?.Dispose();
+            registryProxy?.Dispose();
             if (cleanupTempWorkingDirectory)
             {
                 tempWorkingDirectory?.Dispose();

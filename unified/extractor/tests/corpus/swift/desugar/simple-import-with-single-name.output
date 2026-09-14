@@ -22,7 +22,8 @@ top_level
     block
       stmt:
         import_declaration
-          imported_expr:
-            name_expr
-              identifier: identifier "Foundation"
-          pattern: bulk_importing_pattern "import Foundation"
+          imported_expr: identifier "Foundation"
+          pattern:
+            named_pattern
+              name_node: identifier "Foundation"
+              sub_pattern: bulk_importing_pattern "import Foundation"

@@ -82,6 +82,7 @@ public final class Joiner {
   }
 
   // heuristic-summary=p;Joiner;false;add;(CharSequence);;Argument[this];ReturnValue;value;df-generated
+  // heuristic-summary=p;Joiner;false;add;(CharSequence);;Argument[0];Argument[this];taint;df-generated
   // contentbased-summary=p;Joiner;false;add;(CharSequence);;Argument[this];ReturnValue;value;dfc-generated
   // MISSING content based summaries for "elts". This could be a synthetic field.
   public Joiner add(CharSequence newElement) {
@@ -107,6 +108,7 @@ public final class Joiner {
   }
 
   // heuristic-summary=p;Joiner;false;merge;(Joiner);;Argument[this];ReturnValue;value;df-generated
+  // heuristic-summary=p;Joiner;false;merge;(Joiner);;Argument[0];Argument[this];taint;df-generated
   // contentbased-summary=p;Joiner;false;merge;(Joiner);;Argument[this];ReturnValue;value;dfc-generated
   // MISSING content based summaries for "elts". This could be a synthetic field.
   public Joiner merge(Joiner other) {

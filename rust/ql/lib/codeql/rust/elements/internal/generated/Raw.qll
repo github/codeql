@@ -420,6 +420,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class CfgPredicate extends @cfg_predicate, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
    * The base class for expressions.
    */
   class Expr extends @expr, AstNode { }
@@ -658,6 +663,31 @@ module Raw {
         none()
         or
         result = e.getGenericParam(index - n)
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An implementation restriction, limiting where a trait can be implemented. For example the `impl(crate)` restriction (an unstable feature).
+   */
+  class ImplRestriction extends @impl_restriction, AstNode {
+    override string toString() { result = "ImplRestriction" }
+
+    /**
+     * Gets the visibility inner of this impl restriction, if it exists.
+     */
+    VisibilityInner getVisibilityInner() { impl_restriction_visibility_inners(this, result) }
+  }
+
+  private Element getImmediateChildOfImplRestriction(ImplRestriction e, int index) {
+    exists(int n, int nVisibilityInner |
+      n = 0 and
+      nVisibilityInner = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getVisibilityInner()
       )
     )
   }
@@ -988,44 +1018,34 @@ module Raw {
    * }
    * ```
    */
-  class Meta extends @meta, AstNode {
-    override string toString() { result = "Meta" }
+  class Meta extends @meta, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
+   * A mutability restriction, limiting where a field can be mutated. For example the `mut(crate)` restriction (an unstable feature).
+   */
+  class MutRestriction extends @mut_restriction, AstNode {
+    override string toString() { result = "MutRestriction" }
 
     /**
-     * Gets the expression of this meta, if it exists.
+     * Holds if this mut restriction is mut.
      */
-    Expr getExpr() { meta_exprs(this, result) }
+    predicate isMut() { mut_restriction_is_mut(this) }
 
     /**
-     * Holds if this meta is unsafe.
+     * Gets the visibility inner of this mut restriction, if it exists.
      */
-    predicate isUnsafe() { meta_is_unsafe(this) }
-
-    /**
-     * Gets the path of this meta, if it exists.
-     */
-    Path getPath() { meta_paths(this, result) }
-
-    /**
-     * Gets the token tree of this meta, if it exists.
-     */
-    TokenTree getTokenTree() { meta_token_trees(this, result) }
+    VisibilityInner getVisibilityInner() { mut_restriction_visibility_inners(this, result) }
   }
 
-  private Element getImmediateChildOfMeta(Meta e, int index) {
-    exists(int n, int nExpr, int nPath, int nTokenTree |
+  private Element getImmediateChildOfMutRestriction(MutRestriction e, int index) {
+    exists(int n, int nVisibilityInner |
       n = 0 and
-      nExpr = n + 1 and
-      nPath = nExpr + 1 and
-      nTokenTree = nPath + 1 and
+      nVisibilityInner = n + 1 and
       (
         none()
         or
-        index = n and result = e.getExpr()
-        or
-        index = nExpr and result = e.getPath()
-        or
-        index = nPath and result = e.getTokenTree()
+        index = n and result = e.getVisibilityInner()
       )
     )
   }
@@ -1638,14 +1658,19 @@ module Raw {
     int getNumberOfAttrs() { result = count(int i | struct_field_attrs(this, i, _)) }
 
     /**
-     * Gets the default of this struct field, if it exists.
+     * Gets the default val of this struct field, if it exists.
      */
-    Expr getDefault() { struct_field_defaults(this, result) }
+    ConstArg getDefaultVal() { struct_field_default_vals(this, result) }
 
     /**
      * Holds if this struct field is unsafe.
      */
     predicate isUnsafe() { struct_field_is_unsafe(this) }
+
+    /**
+     * Gets the mut restriction of this struct field, if it exists.
+     */
+    MutRestriction getMutRestriction() { struct_field_mut_restrictions(this, result) }
 
     /**
      * Gets the name of this struct field, if it exists.
@@ -1664,11 +1689,15 @@ module Raw {
   }
 
   private Element getImmediateChildOfStructField(StructField e, int index) {
-    exists(int n, int nAttr, int nDefault, int nName, int nTypeRepr, int nVisibility |
+    exists(
+      int n, int nAttr, int nDefaultVal, int nMutRestriction, int nName, int nTypeRepr,
+      int nVisibility
+    |
       n = 0 and
       nAttr = n + e.getNumberOfAttrs() and
-      nDefault = nAttr + 1 and
-      nName = nDefault + 1 and
+      nDefaultVal = nAttr + 1 and
+      nMutRestriction = nDefaultVal + 1 and
+      nName = nMutRestriction + 1 and
       nTypeRepr = nName + 1 and
       nVisibility = nTypeRepr + 1 and
       (
@@ -1676,9 +1705,11 @@ module Raw {
         or
         result = e.getAttr(index - n)
         or
-        index = nAttr and result = e.getDefault()
+        index = nAttr and result = e.getDefaultVal()
         or
-        index = nDefault and result = e.getName()
+        index = nDefaultVal and result = e.getMutRestriction()
+        or
+        index = nMutRestriction and result = e.getName()
         or
         index = nName and result = e.getTypeRepr()
         or
@@ -1808,6 +1839,35 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class TryBlockModifier extends @try_block_modifier, AstNode {
+    override string toString() { result = "TryBlockModifier" }
+
+    /**
+     * Holds if this try block modifier is try.
+     */
+    predicate isTry() { try_block_modifier_is_try(this) }
+
+    /**
+     * Gets the type representation of this try block modifier, if it exists.
+     */
+    TypeRepr getTypeRepr() { try_block_modifier_type_reprs(this, result) }
+  }
+
+  private Element getImmediateChildOfTryBlockModifier(TryBlockModifier e, int index) {
+    exists(int n, int nTypeRepr |
+      n = 0 and
+      nTypeRepr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getTypeRepr()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A field in a tuple struct or tuple variant.
    *
    * For example:
@@ -1830,6 +1890,11 @@ module Raw {
     int getNumberOfAttrs() { result = count(int i | tuple_field_attrs(this, i, _)) }
 
     /**
+     * Gets the mut restriction of this tuple field, if it exists.
+     */
+    MutRestriction getMutRestriction() { tuple_field_mut_restrictions(this, result) }
+
+    /**
      * Gets the type representation of this tuple field, if it exists.
      */
     TypeRepr getTypeRepr() { tuple_field_type_reprs(this, result) }
@@ -1841,17 +1906,20 @@ module Raw {
   }
 
   private Element getImmediateChildOfTupleField(TupleField e, int index) {
-    exists(int n, int nAttr, int nTypeRepr, int nVisibility |
+    exists(int n, int nAttr, int nMutRestriction, int nTypeRepr, int nVisibility |
       n = 0 and
       nAttr = n + e.getNumberOfAttrs() and
-      nTypeRepr = nAttr + 1 and
+      nMutRestriction = nAttr + 1 and
+      nTypeRepr = nMutRestriction + 1 and
       nVisibility = nTypeRepr + 1 and
       (
         none()
         or
         result = e.getAttr(index - n)
         or
-        index = nAttr and result = e.getTypeRepr()
+        index = nAttr and result = e.getMutRestriction()
+        or
+        index = nMutRestriction and result = e.getTypeRepr()
         or
         index = nTypeRepr and result = e.getVisibility()
       )
@@ -2155,12 +2223,41 @@ module Raw {
     override string toString() { result = "Visibility" }
 
     /**
-     * Gets the path of this visibility, if it exists.
+     * Gets the visibility inner of this visibility, if it exists.
      */
-    Path getPath() { visibility_paths(this, result) }
+    VisibilityInner getVisibilityInner() { visibility_visibility_inners(this, result) }
   }
 
   private Element getImmediateChildOfVisibility(Visibility e, int index) {
+    exists(int n, int nVisibilityInner |
+      n = 0 and
+      nVisibilityInner = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getVisibilityInner()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * The parenthesized inner part of a visibility modifier or restriction, such as the `(in path)` in `pub(in path)`, or the `(crate)` in `pub(crate)`. For example the `(in foo::bar)` in:
+   * ```rust
+   * pub(in foo::bar) struct S;
+   * //  ^^^^^^^^^^^^
+   * ```
+   */
+  class VisibilityInner extends @visibility_inner, AstNode {
+    override string toString() { result = "VisibilityInner" }
+
+    /**
+     * Gets the path of this visibility inner, if it exists.
+     */
+    Path getPath() { visibility_inner_paths(this, result) }
+  }
+
+  private Element getImmediateChildOfVisibilityInner(VisibilityInner e, int index) {
     exists(int n, int nPath |
       n = 0 and
       nPath = n + 1 and
@@ -2364,9 +2461,29 @@ module Raw {
    */
   class AsmClobberAbi extends @asm_clobber_abi, AsmPiece {
     override string toString() { result = "AsmClobberAbi" }
+
+    /**
+     * Gets the `index`th attr of this asm clobber abi (0-based).
+     */
+    Attr getAttr(int index) { asm_clobber_abi_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this asm clobber abi.
+     */
+    int getNumberOfAttrs() { result = count(int i | asm_clobber_abi_attrs(this, i, _)) }
   }
 
-  private Element getImmediateChildOfAsmClobberAbi(AsmClobberAbi e, int index) { none() }
+  private Element getImmediateChildOfAsmClobberAbi(AsmClobberAbi e, int index) {
+    exists(int n, int nAttr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+      )
+    )
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -2460,22 +2577,35 @@ module Raw {
     AsmOperand getAsmOperand() { asm_operand_named_asm_operands(this, result) }
 
     /**
+     * Gets the `index`th attr of this asm operand named (0-based).
+     */
+    Attr getAttr(int index) { asm_operand_named_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this asm operand named.
+     */
+    int getNumberOfAttrs() { result = count(int i | asm_operand_named_attrs(this, i, _)) }
+
+    /**
      * Gets the name of this asm operand named, if it exists.
      */
     Name getName() { asm_operand_named_names(this, result) }
   }
 
   private Element getImmediateChildOfAsmOperandNamed(AsmOperandNamed e, int index) {
-    exists(int n, int nAsmOperand, int nName |
+    exists(int n, int nAsmOperand, int nAttr, int nName |
       n = 0 and
       nAsmOperand = n + 1 and
-      nName = nAsmOperand + 1 and
+      nAttr = nAsmOperand + e.getNumberOfAttrs() and
+      nName = nAttr + 1 and
       (
         none()
         or
         index = n and result = e.getAsmOperand()
         or
-        index = nAsmOperand and result = e.getName()
+        result = e.getAttr(index - nAsmOperand)
+        or
+        index = nAttr and result = e.getName()
       )
     )
   }
@@ -2503,16 +2633,29 @@ module Raw {
      * Gets the number of asm options of this asm options list.
      */
     int getNumberOfAsmOptions() { result = count(int i | asm_options_list_asm_options(this, i, _)) }
+
+    /**
+     * Gets the `index`th attr of this asm options list (0-based).
+     */
+    Attr getAttr(int index) { asm_options_list_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this asm options list.
+     */
+    int getNumberOfAttrs() { result = count(int i | asm_options_list_attrs(this, i, _)) }
   }
 
   private Element getImmediateChildOfAsmOptionsList(AsmOptionsList e, int index) {
-    exists(int n, int nAsmOption |
+    exists(int n, int nAsmOption, int nAttr |
       n = 0 and
       nAsmOption = n + e.getNumberOfAsmOptions() and
+      nAttr = nAsmOption + e.getNumberOfAttrs() and
       (
         none()
         or
         result = e.getAsmOption(index - n)
+        or
+        result = e.getAttr(index - nAsmOption)
       )
     )
   }
@@ -3046,6 +3189,107 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class CfgAtom extends @cfg_atom, CfgPredicate {
+    override string toString() { result = "CfgAtom" }
+  }
+
+  private Element getImmediateChildOfCfgAtom(CfgAtom e, int index) { none() }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class CfgAttrMeta extends @cfg_attr_meta, Meta {
+    override string toString() { result = "CfgAttrMeta" }
+
+    /**
+     * Gets the cfg predicate of this cfg attr meta, if it exists.
+     */
+    CfgPredicate getCfgPredicate() { cfg_attr_meta_cfg_predicates(this, result) }
+
+    /**
+     * Gets the `index`th meta of this cfg attr meta (0-based).
+     */
+    Meta getMeta(int index) { cfg_attr_meta_metas(this, index, result) }
+
+    /**
+     * Gets the number of metas of this cfg attr meta.
+     */
+    int getNumberOfMetas() { result = count(int i | cfg_attr_meta_metas(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfCfgAttrMeta(CfgAttrMeta e, int index) {
+    exists(int n, int nCfgPredicate, int nMeta |
+      n = 0 and
+      nCfgPredicate = n + 1 and
+      nMeta = nCfgPredicate + e.getNumberOfMetas() and
+      (
+        none()
+        or
+        index = n and result = e.getCfgPredicate()
+        or
+        result = e.getMeta(index - nCfgPredicate)
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class CfgComposite extends @cfg_composite, CfgPredicate {
+    override string toString() { result = "CfgComposite" }
+
+    /**
+     * Gets the `index`th cfg predicate of this cfg composite (0-based).
+     */
+    CfgPredicate getCfgPredicate(int index) { cfg_composite_cfg_predicates(this, index, result) }
+
+    /**
+     * Gets the number of cfg predicates of this cfg composite.
+     */
+    int getNumberOfCfgPredicates() {
+      result = count(int i | cfg_composite_cfg_predicates(this, i, _))
+    }
+  }
+
+  private Element getImmediateChildOfCfgComposite(CfgComposite e, int index) {
+    exists(int n, int nCfgPredicate |
+      n = 0 and
+      nCfgPredicate = n + e.getNumberOfCfgPredicates() and
+      (
+        none()
+        or
+        result = e.getCfgPredicate(index - n)
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class CfgMeta extends @cfg_meta, Meta {
+    override string toString() { result = "CfgMeta" }
+
+    /**
+     * Gets the cfg predicate of this cfg meta, if it exists.
+     */
+    CfgPredicate getCfgPredicate() { cfg_meta_cfg_predicates(this, result) }
+  }
+
+  private Element getImmediateChildOfCfgMeta(CfgMeta e, int index) {
+    exists(int n, int nCfgPredicate |
+      n = 0 and
+      nCfgPredicate = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getCfgPredicate()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A closure expression. For example:
    * ```rust
    * |x| x + 1;
@@ -3332,6 +3576,39 @@ module Raw {
         result = e.getAttr(index - n)
         or
         index = nAttr and result = e.getLifetime()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A deref pattern, matching the value behind a smart pointer. This is an experimental
+   * Rust feature that cannot be written directly in stable Rust; the example below uses
+   * rust-analyzer's canonical `builtin#deref` syntax for such patterns:
+   * ```rust
+   * match x {
+   *     builtin#deref(y) => y,
+   *     _ => 0,
+   * };
+   * ```
+   */
+  class DerefPat extends @deref_pat, Pat {
+    override string toString() { result = "DerefPat" }
+
+    /**
+     * Gets the pattern of this deref pattern, if it exists.
+     */
+    Pat getPat() { deref_pat_pats(this, result) }
+  }
+
+  private Element getImmediateChildOfDerefPat(DerefPat e, int index) {
+    exists(int n, int nPat |
+      n = 0 and
+      nPat = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPat()
       )
     )
   }
@@ -3773,6 +4050,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression produced by the built-in `include_bytes!` macro, embedding the contents of a file as a byte array. For example:
+   * ```rust
+   * let data = include_bytes!("data.bin");
+   * ```
+   */
+  class IncludeBytesExpr extends @include_bytes_expr, Expr {
+    override string toString() { result = "IncludeBytesExpr" }
+  }
+
+  private Element getImmediateChildOfIncludeBytesExpr(IncludeBytesExpr e, int index) { none() }
+
+  /**
+   * INTERNAL: Do not use.
    * An index expression. For example:
    * ```rust
    * list[42];
@@ -3853,6 +4143,38 @@ module Raw {
      * Gets the attribute macro expansion of this item, if it exists.
      */
     MacroItems getAttributeMacroExpansion() { item_attribute_macro_expansions(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class KeyValueMeta extends @key_value_meta, Meta {
+    override string toString() { result = "KeyValueMeta" }
+
+    /**
+     * Gets the expression of this key value meta, if it exists.
+     */
+    Expr getExpr() { key_value_meta_exprs(this, result) }
+
+    /**
+     * Gets the path of this key value meta, if it exists.
+     */
+    Path getPath() { key_value_meta_paths(this, result) }
+  }
+
+  private Element getImmediateChildOfKeyValueMeta(KeyValueMeta e, int index) {
+    exists(int n, int nExpr, int nPath |
+      n = 0 and
+      nExpr = n + 1 and
+      nPath = nExpr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getExpr()
+        or
+        index = nExpr and result = e.getPath()
+      )
+    )
   }
 
   /**
@@ -4439,6 +4761,22 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The `!null` pattern used in a pattern type to denote a non-null value. Pattern types
+   * are an experimental, mostly compiler-internal feature (used in the standard library for
+   * types such as `NonZero` and `NonNull`) and cannot be written directly in stable Rust;
+   * the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
+   * ```rust
+   * type NonNull = builtin#pattern_type(*const () is !null);
+   * ```
+   */
+  class NotNull extends @not_null, Pat {
+    override string toString() { result = "NotNull" }
+  }
+
+  private Element getImmediateChildOfNotNull(NotNull e, int index) { none() }
+
+  /**
+   * INTERNAL: Do not use.
    *  An `offset_of` expression. For example:
    * ```rust
    * builtin # offset_of(Struct, field);
@@ -4675,6 +5013,30 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class PathMeta extends @path_meta, Meta {
+    override string toString() { result = "PathMeta" }
+
+    /**
+     * Gets the path of this path meta, if it exists.
+     */
+    Path getPath() { path_meta_paths(this, result) }
+  }
+
+  private Element getImmediateChildOfPathMeta(PathMeta e, int index) {
+    exists(int n, int nPath |
+      n = 0 and
+      nPath = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A path pattern. For example:
    * ```rust
    * match x {
@@ -4724,6 +5086,44 @@ module Raw {
         none()
         or
         index = n and result = e.getPath()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A pattern type, constraining a type to values matching a pattern. Pattern types are an
+   * experimental, mostly compiler-internal feature and cannot be written directly in stable
+   * Rust; the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
+   * ```rust
+   * type NonZero = builtin#pattern_type(u32 is 1..);
+   * ```
+   */
+  class PatternTypeRepr extends @pattern_type_repr, TypeRepr {
+    override string toString() { result = "PatternTypeRepr" }
+
+    /**
+     * Gets the pattern of this pattern type representation, if it exists.
+     */
+    Pat getPat() { pattern_type_repr_pats(this, result) }
+
+    /**
+     * Gets the type representation of this pattern type representation, if it exists.
+     */
+    TypeRepr getTypeRepr() { pattern_type_repr_type_reprs(this, result) }
+  }
+
+  private Element getImmediateChildOfPatternTypeRepr(PatternTypeRepr e, int index) {
+    exists(int n, int nPat, int nTypeRepr |
+      n = 0 and
+      nPat = n + 1 and
+      nTypeRepr = nPat + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPat()
+        or
+        index = nPat and result = e.getTypeRepr()
       )
     )
   }
@@ -5381,6 +5781,38 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class TokenTreeMeta extends @token_tree_meta, Meta {
+    override string toString() { result = "TokenTreeMeta" }
+
+    /**
+     * Gets the path of this token tree meta, if it exists.
+     */
+    Path getPath() { token_tree_meta_paths(this, result) }
+
+    /**
+     * Gets the token tree of this token tree meta, if it exists.
+     */
+    TokenTree getTokenTree() { token_tree_meta_token_trees(this, result) }
+  }
+
+  private Element getImmediateChildOfTokenTreeMeta(TokenTreeMeta e, int index) {
+    exists(int n, int nPath, int nTokenTree |
+      n = 0 and
+      nPath = n + 1 and
+      nTokenTree = nPath + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath()
+        or
+        index = nPath and result = e.getTokenTree()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A try expression using the `?` operator.
    *
    * For example:
@@ -5743,6 +6175,35 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class UnsafeMeta extends @unsafe_meta, Meta {
+    override string toString() { result = "UnsafeMeta" }
+
+    /**
+     * Holds if this unsafe meta is unsafe.
+     */
+    predicate isUnsafe() { unsafe_meta_is_unsafe(this) }
+
+    /**
+     * Gets the meta of this unsafe meta, if it exists.
+     */
+    Meta getMeta() { unsafe_meta_meta(this, result) }
+  }
+
+  private Element getImmediateChildOfUnsafeMeta(UnsafeMeta e, int index) {
+    exists(int n, int nMeta |
+      n = 0 and
+      nMeta = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getMeta()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A variant in an enum declaration.
    *
    * For example:
@@ -5765,9 +6226,9 @@ module Raw {
     int getNumberOfAttrs() { result = count(int i | variant_attrs(this, i, _)) }
 
     /**
-     * Gets the discriminant of this variant, if it exists.
+     * Gets the const argument of this variant, if it exists.
      */
-    Expr getDiscriminant() { variant_discriminants(this, result) }
+    ConstArg getConstArg() { variant_const_args(this, result) }
 
     /**
      * Gets the field list of this variant, if it exists.
@@ -5786,11 +6247,11 @@ module Raw {
   }
 
   private Element getImmediateChildOfVariant(Variant e, int index) {
-    exists(int n, int nAttr, int nDiscriminant, int nFieldList, int nName, int nVisibility |
+    exists(int n, int nAttr, int nConstArg, int nFieldList, int nName, int nVisibility |
       n = 0 and
       nAttr = n + e.getNumberOfAttrs() and
-      nDiscriminant = nAttr + 1 and
-      nFieldList = nDiscriminant + 1 and
+      nConstArg = nAttr + 1 and
+      nFieldList = nConstArg + 1 and
       nName = nFieldList + 1 and
       nVisibility = nName + 1 and
       (
@@ -5798,9 +6259,9 @@ module Raw {
         or
         result = e.getAttr(index - n)
         or
-        index = nAttr and result = e.getDiscriminant()
+        index = nAttr and result = e.getConstArg()
         or
-        index = nDiscriminant and result = e.getFieldList()
+        index = nConstArg and result = e.getFieldList()
         or
         index = nFieldList and result = e.getName()
         or
@@ -6035,11 +6496,6 @@ module Raw {
     predicate isMove() { block_expr_is_move(this) }
 
     /**
-     * Holds if this block expression is try.
-     */
-    predicate isTry() { block_expr_is_try(this) }
-
-    /**
      * Holds if this block expression is unsafe.
      */
     predicate isUnsafe() { block_expr_is_unsafe(this) }
@@ -6048,14 +6504,20 @@ module Raw {
      * Gets the statement list of this block expression, if it exists.
      */
     StmtList getStmtList() { block_expr_stmt_lists(this, result) }
+
+    /**
+     * Gets the try block modifier of this block expression, if it exists.
+     */
+    TryBlockModifier getTryBlockModifier() { block_expr_try_block_modifiers(this, result) }
   }
 
   private Element getImmediateChildOfBlockExpr(BlockExpr e, int index) {
-    exists(int n, int nLabel, int nAttr, int nStmtList |
+    exists(int n, int nLabel, int nAttr, int nStmtList, int nTryBlockModifier |
       n = 0 and
       nLabel = n + 1 and
       nAttr = nLabel + e.getNumberOfAttrs() and
       nStmtList = nAttr + 1 and
+      nTryBlockModifier = nStmtList + 1 and
       (
         none()
         or
@@ -6064,6 +6526,8 @@ module Raw {
         result = e.getAttr(index - nLabel)
         or
         index = nAttr and result = e.getStmtList()
+        or
+        index = nStmtList and result = e.getTryBlockModifier()
       )
     )
   }
@@ -6608,6 +7072,11 @@ module Raw {
     GenericParamList getGenericParamList() { trait_generic_param_lists(this, result) }
 
     /**
+     * Gets the impl restriction of this trait, if it exists.
+     */
+    ImplRestriction getImplRestriction() { trait_impl_restrictions(this, result) }
+
+    /**
      * Holds if this trait is auto.
      */
     predicate isAuto() { trait_is_auto(this) }
@@ -6641,14 +7110,15 @@ module Raw {
   private Element getImmediateChildOfTrait(Trait e, int index) {
     exists(
       int n, int nAttributeMacroExpansion, int nAssocItemList, int nAttr, int nGenericParamList,
-      int nName, int nTypeBoundList, int nVisibility, int nWhereClause
+      int nImplRestriction, int nName, int nTypeBoundList, int nVisibility, int nWhereClause
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
       nAssocItemList = nAttributeMacroExpansion + 1 and
       nAttr = nAssocItemList + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
-      nName = nGenericParamList + 1 and
+      nImplRestriction = nGenericParamList + 1 and
+      nName = nImplRestriction + 1 and
       nTypeBoundList = nName + 1 and
       nVisibility = nTypeBoundList + 1 and
       nWhereClause = nVisibility + 1 and
@@ -6663,88 +7133,9 @@ module Raw {
         or
         index = nAttr and result = e.getGenericParamList()
         or
-        index = nGenericParamList and result = e.getName()
+        index = nGenericParamList and result = e.getImplRestriction()
         or
-        index = nName and result = e.getTypeBoundList()
-        or
-        index = nTypeBoundList and result = e.getVisibility()
-        or
-        index = nVisibility and result = e.getWhereClause()
-      )
-    )
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A trait alias.
-   *
-   * For example:
-   * ```rust
-   * trait Foo = Bar + Baz;
-   * ```
-   */
-  class TraitAlias extends @trait_alias, Item {
-    override string toString() { result = "TraitAlias" }
-
-    /**
-     * Gets the `index`th attr of this trait alias (0-based).
-     */
-    Attr getAttr(int index) { trait_alias_attrs(this, index, result) }
-
-    /**
-     * Gets the number of attrs of this trait alias.
-     */
-    int getNumberOfAttrs() { result = count(int i | trait_alias_attrs(this, i, _)) }
-
-    /**
-     * Gets the generic parameter list of this trait alias, if it exists.
-     */
-    GenericParamList getGenericParamList() { trait_alias_generic_param_lists(this, result) }
-
-    /**
-     * Gets the name of this trait alias, if it exists.
-     */
-    Name getName() { trait_alias_names(this, result) }
-
-    /**
-     * Gets the type bound list of this trait alias, if it exists.
-     */
-    TypeBoundList getTypeBoundList() { trait_alias_type_bound_lists(this, result) }
-
-    /**
-     * Gets the visibility of this trait alias, if it exists.
-     */
-    Visibility getVisibility() { trait_alias_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this trait alias, if it exists.
-     */
-    WhereClause getWhereClause() { trait_alias_where_clauses(this, result) }
-  }
-
-  private Element getImmediateChildOfTraitAlias(TraitAlias e, int index) {
-    exists(
-      int n, int nAttributeMacroExpansion, int nAttr, int nGenericParamList, int nName,
-      int nTypeBoundList, int nVisibility, int nWhereClause
-    |
-      n = 0 and
-      nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
-      nGenericParamList = nAttr + 1 and
-      nName = nGenericParamList + 1 and
-      nTypeBoundList = nName + 1 and
-      nVisibility = nTypeBoundList + 1 and
-      nWhereClause = nVisibility + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getAttributeMacroExpansion()
-        or
-        result = e.getAttr(index - nAttributeMacroExpansion)
-        or
-        index = nAttr and result = e.getGenericParamList()
-        or
-        index = nGenericParamList and result = e.getName()
+        index = nImplRestriction and result = e.getName()
         or
         index = nName and result = e.getTypeBoundList()
         or
@@ -7716,6 +8107,8 @@ module Raw {
     or
     result = getImmediateChildOfGenericParamList(e, index)
     or
+    result = getImmediateChildOfImplRestriction(e, index)
+    or
     result = getImmediateChildOfItemList(e, index)
     or
     result = getImmediateChildOfLabel(e, index)
@@ -7730,7 +8123,7 @@ module Raw {
     or
     result = getImmediateChildOfMatchGuard(e, index)
     or
-    result = getImmediateChildOfMeta(e, index)
+    result = getImmediateChildOfMutRestriction(e, index)
     or
     result = getImmediateChildOfName(e, index)
     or
@@ -7764,6 +8157,8 @@ module Raw {
     or
     result = getImmediateChildOfTokenTree(e, index)
     or
+    result = getImmediateChildOfTryBlockModifier(e, index)
+    or
     result = getImmediateChildOfTupleField(e, index)
     or
     result = getImmediateChildOfTypeBound(e, index)
@@ -7779,6 +8174,8 @@ module Raw {
     result = getImmediateChildOfVariantList(e, index)
     or
     result = getImmediateChildOfVisibility(e, index)
+    or
+    result = getImmediateChildOfVisibilityInner(e, index)
     or
     result = getImmediateChildOfWhereClause(e, index)
     or
@@ -7818,6 +8215,14 @@ module Raw {
     or
     result = getImmediateChildOfCastExpr(e, index)
     or
+    result = getImmediateChildOfCfgAtom(e, index)
+    or
+    result = getImmediateChildOfCfgAttrMeta(e, index)
+    or
+    result = getImmediateChildOfCfgComposite(e, index)
+    or
+    result = getImmediateChildOfCfgMeta(e, index)
+    or
     result = getImmediateChildOfClosureExpr(e, index)
     or
     result = getImmediateChildOfComment(e, index)
@@ -7829,6 +8234,8 @@ module Raw {
     result = getImmediateChildOfConstParam(e, index)
     or
     result = getImmediateChildOfContinueExpr(e, index)
+    or
+    result = getImmediateChildOfDerefPat(e, index)
     or
     result = getImmediateChildOfDynTraitTypeRepr(e, index)
     or
@@ -7848,9 +8255,13 @@ module Raw {
     or
     result = getImmediateChildOfImplTraitTypeRepr(e, index)
     or
+    result = getImmediateChildOfIncludeBytesExpr(e, index)
+    or
     result = getImmediateChildOfIndexExpr(e, index)
     or
     result = getImmediateChildOfInferTypeRepr(e, index)
+    or
+    result = getImmediateChildOfKeyValueMeta(e, index)
     or
     result = getImmediateChildOfLetExpr(e, index)
     or
@@ -7880,6 +8291,8 @@ module Raw {
     or
     result = getImmediateChildOfNeverTypeRepr(e, index)
     or
+    result = getImmediateChildOfNotNull(e, index)
+    or
     result = getImmediateChildOfOffsetOfExpr(e, index)
     or
     result = getImmediateChildOfOrPat(e, index)
@@ -7892,9 +8305,13 @@ module Raw {
     or
     result = getImmediateChildOfParenTypeRepr(e, index)
     or
+    result = getImmediateChildOfPathMeta(e, index)
+    or
     result = getImmediateChildOfPathPat(e, index)
     or
     result = getImmediateChildOfPathTypeRepr(e, index)
+    or
+    result = getImmediateChildOfPatternTypeRepr(e, index)
     or
     result = getImmediateChildOfPrefixExpr(e, index)
     or
@@ -7926,6 +8343,8 @@ module Raw {
     or
     result = getImmediateChildOfStructPat(e, index)
     or
+    result = getImmediateChildOfTokenTreeMeta(e, index)
+    or
     result = getImmediateChildOfTryExpr(e, index)
     or
     result = getImmediateChildOfTupleExpr(e, index)
@@ -7943,6 +8362,8 @@ module Raw {
     result = getImmediateChildOfTypeParam(e, index)
     or
     result = getImmediateChildOfUnderscoreExpr(e, index)
+    or
+    result = getImmediateChildOfUnsafeMeta(e, index)
     or
     result = getImmediateChildOfVariant(e, index)
     or
@@ -7971,8 +8392,6 @@ module Raw {
     result = getImmediateChildOfPathExpr(e, index)
     or
     result = getImmediateChildOfTrait(e, index)
-    or
-    result = getImmediateChildOfTraitAlias(e, index)
     or
     result = getImmediateChildOfUse(e, index)
     or

@@ -1,0 +1,172 @@
+let values = [Result<Void>]()
+let initialized = [Result<Void>](unsafeUninitializedCapacity: 1) { _, count in
+	count = 0
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                      additionalTrailingClosures:
+                      calledExpression:
+                        arrayExpr
+                          elements:
+                            arrayElement
+                              expression:
+                                genericSpecializationExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "Result"
+                                  genericArgumentClause:
+                                    genericArgumentClause
+                                      arguments:
+                                        genericArgument
+                                          argument:
+                                            identifierType
+                                              name: identifier "Void"
+                                      leftAngle: <
+                                      rightAngle: >
+                          leftSquare: [
+                          rightSquare: ]
+              pattern:
+                identifierPattern
+                  identifier: identifier "values"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          colon: :
+                          label: identifier "unsafeUninitializedCapacity"
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        arrayExpr
+                          elements:
+                            arrayElement
+                              expression:
+                                genericSpecializationExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "Result"
+                                  genericArgumentClause:
+                                    genericArgumentClause
+                                      arguments:
+                                        genericArgument
+                                          argument:
+                                            identifierType
+                                              name: identifier "Void"
+                                      leftAngle: <
+                                      rightAngle: >
+                          leftSquare: [
+                          rightSquare: ]
+                      trailingClosure:
+                        closureExpr
+                          leftBrace: {
+                          rightBrace: }
+                          signature:
+                            closureSignature
+                              attributes:
+                              inKeyword: in
+                              parameterClause:
+                                closureShorthandParameter
+                                  name: _
+                                  trailingComma: ,
+                                closureShorthandParameter
+                                  name: identifier "count"
+                          statements:
+                            codeBlockItem
+                              item:
+                                infixOperatorExpr
+                                  operator:
+                                    assignmentExpr
+                                      equal: =
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "count"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "0"
+              pattern:
+                identifierPattern
+                  identifier: identifier "initialized"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern: identifier "values"
+          value:
+            call_expr
+              callee:
+                generic_type_expr
+                  base: identifier "Array"
+                  type_argument:
+                    generic_type_expr
+                      base: identifier "Result"
+                      type_argument: identifier "Void"
+        variable_declaration
+          modifier: modifier "let"
+          pattern: identifier "initialized"
+          value:
+            call_expr
+              callee:
+                generic_type_expr
+                  base: identifier "Array"
+                  type_argument:
+                    generic_type_expr
+                      base: identifier "Result"
+                      type_argument: identifier "Void"
+              argument:
+                argument
+                  name_node: identifier "unsafeUninitializedCapacity"
+                  value: int_literal "1"
+                argument
+                  value:
+                    function_expr
+                      parameter:
+                        parameter
+                          pattern: identifier "_"
+                        parameter
+                          pattern: identifier "count"
+                      body:
+                        block
+                          stmt:
+                            assign_expr
+                              target: identifier "count"
+                              value: int_literal "0"

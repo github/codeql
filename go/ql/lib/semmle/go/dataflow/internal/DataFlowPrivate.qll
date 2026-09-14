@@ -153,8 +153,7 @@ predicate jumpStep(Node n1, Node n2) {
     n2 = recvRead
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1.(FlowSummaryNode).getSummaryNode(),
-    n2.(FlowSummaryNode).getSummaryNode())
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
 }
 
 /**

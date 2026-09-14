@@ -1535,12 +1535,49 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   }
 
   override DataFlowCallable getEnclosingCallable() {
-    result = FlowSummaryImpl::Private::getEnclosingCallable(this.getSummaryNode())
+    result = this.getSummaryNode().getEnclosingCallable()
   }
 
-  override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
+  override Location getLocationImpl() { result = this.getSummaryNode().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
+
+  /** Gets the source element that this node belongs to, if any. */
+  FlowSummaryImpl::Public::SourceElement getSourceElement() {
+    result = this.getSummaryNode().getSourceElement()
+  }
+
+  /** Gets the sink element that this node belongs to, if any. */
+  FlowSummaryImpl::Public::SinkElement getSinkElement() {
+    result = this.getSummaryNode().getSinkElement()
+  }
+
+  /** Holds if this node is a source node of kind `kind`. */
+  predicate isSource(string kind, string model) {
+    this.getSummaryNode().(FlowSummaryImpl::Private::SourceOutputNode).isEntry(kind, model)
+  }
+
+  /** Holds if this node is a sink node of kind `kind`. */
+  predicate isSink(string kind, string model) {
+    this.getSummaryNode().(FlowSummaryImpl::Private::SinkInputNode).isExit(kind, model)
+  }
+}
+
+private class SourceOutputNode extends FlowSummaryImpl::Private::SourceOutputNode {
+  final override string toString() {
+    exists(Call call |
+      this.isOutArgument(call) and
+      result = call.getTarget() + " output argument"
+    )
+    or
+    not this.isOutArgument(_) and
+    result = super.toString()
+  }
+
+  private predicate isOutArgument(Call call) {
+    call.getTarget() = this.getSourceElement() and
+    [call.getAnArgument(), call.getQualifier()] = this.getSourceSinkReportingElement()
+  }
 }
 
 /**
@@ -1655,12 +1692,12 @@ abstract private class AbstractParameterNode extends Node {
    * Holds if this node represents an implicit `this` parameter, if it exists.
    */
   predicate isThis() { none() } // overridden by subclasses
+
+  /** Gets the indirection index of this parameter node. */
+  int getIndirectionIndex() { none() }
 }
 
-abstract private class AbstractIndirectParameterNode extends AbstractParameterNode {
-  /** Gets the indirection index of this parameter node. */
-  abstract int getIndirectionIndex();
-}
+abstract private class AbstractIndirectParameterNode extends AbstractParameterNode { }
 
 pragma[noinline]
 private predicate indirectParameterNodeHasArgumentIndexAndIndex(
@@ -1725,7 +1762,9 @@ private class IndirectInstructionParameterNode extends AbstractIndirectParameter
   final override int getIndirectionIndex() { this.hasInstructionAndIndirectionIndex(init, result) }
 }
 
-abstract private class AbstractDirectParameterNode extends AbstractParameterNode { }
+abstract private class AbstractDirectParameterNode extends AbstractParameterNode {
+  override int getIndirectionIndex() { result = 0 }
+}
 
 /**
  * A non-indirect parameter node that is represented as an `Instruction`.
@@ -1796,6 +1835,8 @@ private class DirectBodyLessParameterNode extends AbstractExplicitParameterNode,
   }
 
   override Parameter getParameter() { result = p }
+
+  final override int getIndirectionIndex() { result = 0 }
 }
 
 private class IndirectBodyLessParameterNode extends AbstractIndirectParameterNode,

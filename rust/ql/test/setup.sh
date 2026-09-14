@@ -8,7 +8,14 @@ set -euo pipefail
 
 # no need to install rust-src explicitly, it's listed in both toolchains
 cd "$(dirname "$0")"
+# Install the fixed toolchain used by the extractor. The version here should
+# match `FIXED_RUST_TOOLCHAIN`.
+rustup toolchain install 1.97.0 --profile minimal --component rust-src
 pushd ../../extractor/src/nightly-toolchain
+rustup install
+popd
+# pre-1.94 toolchain exercising the extractor's `FormatArgsExpr` reconstruction
+pushd library-tests/format-macros-legacy
 rustup install
 popd
 # this needs to be last to set the default toolchain

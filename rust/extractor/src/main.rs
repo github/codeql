@@ -1,5 +1,6 @@
 use crate::diagnostics::{ExtractionStep, emit_extraction_diagnostics};
 use crate::rust_analyzer::{RustAnalyzerNoSemantics, path_to_file_id};
+use crate::toolchain::log_project_toolchain;
 use crate::translate::SourceKind;
 use crate::trap::TrapId;
 use anyhow::Context;
@@ -32,6 +33,7 @@ mod diagnostics;
 pub mod generated;
 mod qltest;
 mod rust_analyzer;
+mod toolchain;
 mod translate;
 pub mod trap;
 
@@ -64,12 +66,11 @@ impl<'a> Extractor<'a> {
 
         let before_extract = Instant::now();
         let line_index = LineIndex::new(text.as_ref());
-        let display_path = file.to_string_lossy();
         let mut trap = self.traps.create("source", file);
         let label = trap.emit_file(file);
         let mut translator = translate::Translator::new(
             trap,
-            display_path.as_ref(),
+            file,
             label,
             line_index,
             semantics_info.as_ref().ok(),
@@ -80,25 +81,25 @@ impl<'a> Extractor<'a> {
             translator.emit_parse_error(&ast, &err);
         }
         let no_location = (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
-        if let Err(RustAnalyzerNoSemantics { severity, reason }) = semantics_info {
-            if !reason.is_empty() {
-                let message = format!("semantic analyzer unavailable ({reason})");
-                let full_message = format!("{message}: macro expansion will be skipped.");
-                translator.emit_diagnostic(
-                    severity,
-                    "semantics".to_owned(),
-                    message,
-                    full_message,
-                    no_location,
-                );
-            }
+        if let Err(RustAnalyzerNoSemantics { severity, reason }) = semantics_info
+            && !reason.is_empty()
+        {
+            let message = format!("semantic analyzer unavailable ({reason})");
+            let full_message = format!("{message}: macro expansion will be skipped.");
+            translator.emit_diagnostic(
+                severity,
+                "semantics".to_owned(),
+                message,
+                full_message,
+                no_location,
+            );
         }
         translator.emit_source_file(&ast);
         translator.emit_truncated_diagnostics_message();
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
                 "Failed to write trap file for: {}: {}",
-                display_path,
+                file.display(),
                 err.to_string()
             )
         });
@@ -106,11 +107,11 @@ impl<'a> Extractor<'a> {
             .push(ExtractionStep::extract(before_extract, source_kind, file));
     }
 
-    pub fn extract_with_semantics(
+    pub fn extract_with_semantics<'db>(
         &mut self,
         file: &Path,
-        semantics: &Semantics<'_, RootDatabase>,
-        vfs: &Vfs,
+        semantics: &'db Semantics<'db, RootDatabase>,
+        vfs: &'db Vfs,
         source_kind: SourceKind,
     ) {
         self.extract(&RustAnalyzer::new(vfs, semantics), file, source_kind);
@@ -270,6 +271,7 @@ fn main() -> anyhow::Result<()> {
         );
     }
     let cwd = cwd()?;
+    log_project_toolchain();
     let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
     let library_mode = if cfg.extract_dependencies_as_source {
         SourceKind::Source
@@ -300,17 +302,16 @@ fn main() -> anyhow::Result<()> {
                 };
             }
             for (file_id, file) in vfs.iter() {
-                if let Some(file) = file.as_path().map(<_ as AsRef<Path>>::as_ref) {
-                    if file.extension().is_some_and(|ext| ext == "rs")
-                        && processed_files.insert(file.to_owned())
-                        && db
-                            .source_root(db.file_source_root(file_id).source_root_id(db))
-                            .source_root(db)
-                            .is_library
-                    {
-                        extractor.extract_with_semantics(file, &semantics, vfs, library_mode);
-                        extractor.archiver.archive(file);
-                    }
+                if let Some(file) = file.as_path().map(<_ as AsRef<Path>>::as_ref)
+                    && file.extension().is_some_and(|ext| ext == "rs")
+                    && processed_files.insert(file.to_owned())
+                    && db
+                        .source_root(db.file_source_root(file_id).source_root_id(db))
+                        .source_root(db)
+                        .is_library
+                {
+                    extractor.extract_with_semantics(file, &semantics, vfs, library_mode);
+                    extractor.archiver.archive(file);
                 }
             }
         } else {

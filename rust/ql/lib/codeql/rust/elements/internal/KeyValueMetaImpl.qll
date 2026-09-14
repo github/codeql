@@ -1,0 +1,17 @@
+/**
+ * This module provides a hand-modifiable wrapper around the generated class `KeyValueMeta`.
+ *
+ * INTERNAL: Do not use.
+ */
+
+private import codeql.rust.elements.internal.generated.KeyValueMeta
+
+/**
+ * INTERNAL: This module contains the customizable definition of `KeyValueMeta` and should not
+ * be referenced directly.
+ */
+module Impl {
+  class KeyValueMeta extends Generated::KeyValueMeta {
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+  }
+}

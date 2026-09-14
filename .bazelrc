@@ -11,6 +11,9 @@ build --compilation_mode opt
 common --override_module=semmle_code=%workspace%/misc/bazel/semmle_code_stub
 
 build --repo_env=CC=clang --repo_env=CXX=clang++
+# The standalone Linux toolchain uses gold, which does not support the
+# LLD-specific -z nostart-stop-gc workaround enabled by rules_swift.
+build:linux --features=-swift.lld_gc_workaround
 # Disable Android SDK auto-detection (we don't use it, and rules_android has Bazel 9 compatibility issues)
 build --repo_env=ANDROID_HOME=
 

@@ -98,9 +98,8 @@ fn collect_corpus_stems(dir: &Path, out: &mut Vec<std::path::PathBuf>) {
 
 #[cfg(bazel)]
 fn corpus_dir() -> std::path::PathBuf {
-    let base = std::path::PathBuf::from(
-         std::env::var("RUNFILES_DIR").expect("RUNFILES_DIR not set"),
-    );
+    let base =
+        std::path::PathBuf::from(std::env::var("RUNFILES_DIR").expect("RUNFILES_DIR not set"));
     std::fs::read_dir(&base)
         .expect("failed to read RUNFILES_DIR")
         .filter_map(Result::ok)

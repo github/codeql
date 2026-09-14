@@ -34,10 +34,8 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "x"
+          pattern: identifier "x"
           value:
             member_access_expr
-              base: inferred_type_expr ".foo"
-              member: identifier "foo"
+              base: inferred_type_expr "."
+              member_name_node: identifier "foo"

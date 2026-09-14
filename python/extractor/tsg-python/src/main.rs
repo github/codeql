@@ -710,6 +710,9 @@ fn main() -> Result<()> {
         add_syntax_error_nodes(&mut graph, &syntax_errors);
     }
 
+    // `pretty_print` renders string values with Rust's `Debug` formatting, so non-printable and
+    // grapheme-extending characters come out as `\u{...}`. The reader on the other side
+    // (`semmle/python/parser/tsg_parser.py`) translates those into Python escapes.
     print!("{}", graph.pretty_print());
     Ok(())
 }

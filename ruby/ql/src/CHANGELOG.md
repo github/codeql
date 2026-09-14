@@ -1,3 +1,11 @@
+## 1.6.10
+
+No user-facing changes.
+
+## 1.6.9
+
+No user-facing changes.
+
 ## 1.6.8
 
 No user-facing changes.

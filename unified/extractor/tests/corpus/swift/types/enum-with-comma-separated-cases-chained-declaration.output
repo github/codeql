@@ -46,31 +46,23 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "enum"
-          name: identifier "Suit"
+          name_node: identifier "Suit"
           member:
             variable_declaration
               modifier: modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "clubs"
+              pattern: identifier "clubs"
             variable_declaration
               modifier:
                 modifier "chained_declaration"
                 modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "diamonds"
+              pattern: identifier "diamonds"
             variable_declaration
               modifier:
                 modifier "chained_declaration"
                 modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "hearts"
+              pattern: identifier "hearts"
             variable_declaration
               modifier:
                 modifier "chained_declaration"
                 modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "spades"
+              pattern: identifier "spades"

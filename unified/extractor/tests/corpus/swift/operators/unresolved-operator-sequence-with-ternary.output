@@ -100,43 +100,25 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "choose"
+          name_node: identifier "choose"
           parameter:
             parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Bool"
-              pattern:
-                name_pattern
-                  identifier: identifier "c"
+              external_name_node: identifier "_"
+              type: identifier "Bool"
+              pattern: identifier "c"
             parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "a"
+              external_name_node: identifier "_"
+              type: identifier "Int"
+              pattern: identifier "a"
             parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "b"
+              external_name_node: identifier "_"
+              type: identifier "Int"
+              pattern: identifier "b"
             parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "d"
-          return_type:
-            named_type_expr
-              name: identifier "Int"
+              external_name_node: identifier "_"
+              type: identifier "Int"
+              pattern: identifier "d"
+          return_type: identifier "Int"
           body:
             block
               stmt:
@@ -144,14 +126,10 @@ top_level
                   value:
                     unresolved_operator_sequence
                       element:
-                        name_expr
-                          identifier: identifier "c"
+                        identifier "c"
                         infix_operator "?"
-                        name_expr
-                          identifier: identifier "a"
+                        identifier "a"
                         infix_operator ":"
-                        name_expr
-                          identifier: identifier "b"
+                        identifier "b"
                         infix_operator ".&"
-                        name_expr
-                          identifier: identifier "d"
+                        identifier "d"

@@ -1,3 +1,13 @@
+## 0.6.35
+
+No user-facing changes.
+
+## 0.6.34
+
+### Minor Analysis Improvements
+
+* The `actions/unpinned-tag` query now detects mutable references to reusable workflows.
+
 ## 0.6.33
 
 ### Query Metadata Changes

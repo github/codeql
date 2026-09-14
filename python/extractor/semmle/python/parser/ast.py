@@ -1,6 +1,7 @@
 from blib2to3.pgen2 import token
 from ast import literal_eval
 from semmle.python import ast
+from semmle.util import get_analysis_major_version
 from blib2to3.pgen2.parse import ParseError
 import sys
 
@@ -981,7 +982,20 @@ class Convertor(ParseTreeVisitor):
         if len(node.children) > 1:
             type = self.visit(node.children[1], LOAD)
         if len(node.children) > 3:
-            name = self.visit(node.children[3], STORE)
+            # The grammar rule `'except' [test [(',' | 'as') test]]` is shared
+            # between two incompatible readings of a fourth child, so the
+            # separator token and the analysis version together decide:
+            #   `except A as e:`  binds an alias, in every version;
+            #   `except A, e:`    binds an alias when extracting Python 2, where
+            #                     that is the canonical idiom;
+            #   `except A, B:`    is an unparenthesized tuple of exception types
+            #                     otherwise -- PEP 758, Python 3.14+.
+            if is_token(node.children[2], "as") or get_analysis_major_version() == 2:
+                name = self.visit(node.children[3], STORE)
+            else:
+                elts = [type, self.visit(node.children[3], LOAD)]
+                type = ast.Tuple(elts, LOAD)
+                set_location(type, node.children[1].start, node.children[3].end)
         return type, name
 
     def visit_del_stmt(self, node):

@@ -82,7 +82,7 @@ module Private {
       result = this.getSummaryNode().getSummarizedCallable()
     }
 
-    override Location getLocation() { result = this.getSummarizedCallable().getLocation() }
+    override Location getLocation() { result = this.getSummaryNode().getLocation() }
 
     override string toString() { result = this.getSummaryNode().toString() }
 

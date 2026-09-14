@@ -119,24 +119,24 @@ impl LogWriter {
             Some(Severity::Note) => tracing::info!("{}", full_error_message),
             None => tracing::debug!("{}", full_error_message),
         }
-        if self.inner.is_none() {
-            if let Some(path) = self.path.as_ref() {
-                match std::fs::OpenOptions::new()
-                    .create(true)
-                    .append(true)
-                    .open(path)
-                {
-                    Err(e) => {
-                        tracing::error!(
-                            "Could not open log file '{}': {}",
-                            &path.to_string_lossy(),
-                            e
-                        );
-                        self.path = None;
-                        self.inner = None
-                    }
-                    Ok(file) => self.inner = Some(std::io::BufWriter::new(file)),
+        if self.inner.is_none()
+            && let Some(path) = self.path.as_ref()
+        {
+            match std::fs::OpenOptions::new()
+                .create(true)
+                .append(true)
+                .open(path)
+            {
+                Err(e) => {
+                    tracing::error!(
+                        "Could not open log file '{}': {}",
+                        &path.to_string_lossy(),
+                        e
+                    );
+                    self.path = None;
+                    self.inner = None
                 }
+                Ok(file) => self.inner = Some(std::io::BufWriter::new(file)),
             }
         }
         if let Some(mut writer) = self.inner.as_mut() {

@@ -128,57 +128,48 @@ top_level
     block
       stmt:
         switch_expr
-          value:
-            name_expr
-              identifier: identifier "x"
+          value: identifier "x"
           case:
             switch_case
               pattern:
-                constructor_pattern
-                  constructor:
+                call_expr
+                  callee:
                     member_access_expr
                       base: inferred_type_expr "."
-                      member: identifier "implicit"
-                  element:
-                    pattern_element
-                      key: identifier "isAcknowledged"
-                      pattern:
-                        expr_equality_pattern
-                          expr: boolean_literal "false"
+                      member_name_node: identifier "implicit"
+                  argument:
+                    argument
+                      name_node: identifier "isAcknowledged"
+                      value: boolean_literal "false"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
                           value: string_literal "\"yes\""
             switch_case
               pattern:
-                constructor_pattern
-                  constructor:
+                call_expr
+                  callee:
                     member_access_expr
                       base: inferred_type_expr "."
-                      member: identifier "thread"
-                  element:
-                    pattern_element
-                      key: identifier "threadRowId"
-                      pattern: ignore_pattern "_"
-                    pattern_element
-                      pattern:
-                        name_pattern
-                          identifier: identifier "rowId"
+                      member_name_node: identifier "thread"
+                  argument:
+                    argument
+                      name_node: identifier "threadRowId"
+                      value: identifier "_"
+                    argument
+                      value:
+                        expr_pattern
+                          modifier: modifier "let"
+                          expr: identifier "rowId"
               body:
                 block
                   stmt:
                     call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                      callee: identifier "print"
                       argument:
                         argument
-                          value:
-                            name_expr
-                              identifier: identifier "rowId"
+                          value: identifier "rowId"
