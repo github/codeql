@@ -2,6 +2,7 @@
 overlay[local]
 module;
 
+private import unified
 private import codeql.Locations
 private import codeql.util.FileSystem
 
@@ -37,4 +38,23 @@ module Folder = Impl::Folder;
 class File extends Container, Impl::File {
   /** Holds if this file was extracted from ordinary source code. */
   predicate fromSource() { any() }
+
+  /**
+   * Gets the number of lines containing code in this file. This value
+   * is approximate.
+   */
+  overlay[local?]
+  int getNumberOfLinesOfCode() {
+    result =
+      count(int line |
+        exists(AstNode node, Location loc |
+          not node instanceof Comment and
+          not node instanceof TopLevel and
+          loc = node.getLocation() and
+          this = loc.getFile() and
+          line = loc.getStartLine() and
+          not loc instanceof EmptyLocation
+        )
+      )
+  }
 }

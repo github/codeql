@@ -145,3 +145,12 @@ const short NormalYearDayToMonth[365] = {
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  // October
     10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,     // November
     11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11}; // December
+
+void f_______________________________________________________this_name_must_be_exactly_357_chars__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________() {
+  // Using this magic compiler variable results in a `const char` array being
+  // initialized with the function signature. Including `void`, a space, and
+  // `()`, the signature adds up to exactly 364 characters in this case.
+  // The initializer for `__PRETTY_FUNCTION__` thus initializes an array of
+  // length 365 (because the null-terminator adds another character).
+  auto x = __PRETTY_FUNCTION__; // clean
+}

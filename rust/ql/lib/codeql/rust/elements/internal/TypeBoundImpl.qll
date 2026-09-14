@@ -24,6 +24,8 @@ module Impl {
    * ```
    */
   class TypeBound extends Generated::TypeBound {
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     override string toAbbreviatedString() {
       result = this.getLifetime().toAbbreviatedString()
       or

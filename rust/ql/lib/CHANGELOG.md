@@ -1,3 +1,11 @@
+## 0.2.21
+
+### Minor Analysis Improvements
+
+* Canonical paths for Rust trait items now use the format `<crate::Trait>::item` instead of
+  `crate::Trait::item`. Custom data extension models that reference trait items must be
+  updated to use the new format.
+
 ## 0.2.20
 
 ### Major Analysis Improvements

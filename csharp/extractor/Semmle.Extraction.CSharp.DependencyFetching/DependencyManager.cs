@@ -27,10 +27,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly ILogger logger;
         private readonly IDiagnosticsWriter diagnosticsWriter;
         private readonly NugetPackageRestorer nugetPackageRestorer;
-        private readonly DependabotProxy? dependabotProxy;
+        private readonly IDependabotProxy? dependabotProxy;
         private readonly IDotNet dotnet;
         private readonly FileContent fileContent;
-        private readonly FileProvider fileProvider;
+        private readonly IFileProvider fileProvider;
 
         // Only used as a set, but ConcurrentDictionary is the only concurrent set in .NET.
         private readonly IDictionary<string, bool> usedReferences = new ConcurrentDictionary<string, bool>();
@@ -106,7 +106,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return BuildScript.Success;
             }).Run(SystemBuildActions.Instance, startCallback, exitCallback);
 
-            dependabotProxy = DependabotProxy.GetDependabotProxy(logger, diagnosticsWriter, tempWorkingDirectory);
+            dependabotProxy = DependabotProxy.Make(logger, diagnosticsWriter, tempWorkingDirectory);
 
             try
             {

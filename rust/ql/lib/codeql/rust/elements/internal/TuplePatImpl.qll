@@ -22,6 +22,8 @@ module Impl {
    * ```
    */
   class TuplePat extends Generated::TuplePat {
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the arity of the tuple matched by this pattern, if any.
      *

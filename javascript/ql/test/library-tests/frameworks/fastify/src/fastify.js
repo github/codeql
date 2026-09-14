@@ -90,3 +90,13 @@ fastifyWithObjects4.post(
     request.params;
   }
 );
+
+// the server is reached through a chainable configuration method, which returns the
+// same instance
+var fastifyChained = require("fastify")().withTypeProvider();
+fastifyChained.get(
+  "/",
+  /* handler */ (request, reply) => {
+    reply.send({ hello: "world" }); // response
+  }
+);

@@ -51,7 +51,5 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "t"
+          pattern: identifier "t"
           value: tuple_expr "(1, \"two\", 3.0)"

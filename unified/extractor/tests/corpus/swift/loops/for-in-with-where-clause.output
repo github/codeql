@@ -59,28 +59,18 @@ top_level
     block
       stmt:
         for_each_stmt
-          pattern:
-            name_pattern
-              identifier: identifier "x"
-          iterable:
-            name_expr
-              identifier: identifier "xs"
+          pattern: identifier "x"
+          iterable: identifier "xs"
           guard:
             binary_expr
-              left:
-                name_expr
-                  identifier: identifier "x"
+              left: identifier "x"
               operator: infix_operator ">"
               right: int_literal "0"
           body:
             block
               stmt:
                 call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                  callee: identifier "print"
                   argument:
                     argument
-                      value:
-                        name_expr
-                          identifier: identifier "x"
+                      value: identifier "x"

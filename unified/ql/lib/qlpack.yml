@@ -6,7 +6,8 @@ extractor: unified
 library: true
 upgrades: upgrades
 dependencies:
-  codeql/util: ${workspace}
+  codeql/controlflow: ${workspace}
   codeql/namebinding: ${workspace}
+  codeql/util: ${workspace}
 warnOnImplicitThis: true
 compileForOverlayEval: true

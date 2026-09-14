@@ -29,28 +29,6 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
   predicate callableFromSource(SummarizedCallableBase c);
 
   /**
-   * A base class of elements that are candidates for flow source modeling.
-   */
-  bindingset[this]
-  class SourceBase {
-    bindingset[this]
-    string toString();
-
-    Location getLocation();
-  }
-
-  /**
-   * A base class of elements that are candidates for flow sink modeling.
-   */
-  bindingset[this]
-  class SinkBase {
-    bindingset[this]
-    string toString();
-
-    Location getLocation();
-  }
-
-  /**
    * Holds if a neutral (MaD) model exists for `c` of kind `kind`
    * with provenance `provenance` and `isExact` is true if the model
    * signature matches `c` exactly - otherwise false.
@@ -225,10 +203,6 @@ module Make<
 
   final private class SummarizedCallableBaseFinal = SummarizedCallableBase;
 
-  final private class SourceBaseFinal = SourceBase;
-
-  final private class SinkBaseFinal = SinkBase;
-
   /** Provides classes and predicates for defining flow summaries. */
   module Public {
     private import Private
@@ -371,7 +345,7 @@ module Make<
     }
 
     /** A source element. */
-    abstract class SourceElement extends SourceBaseFinal {
+    abstract class SourceElement extends SummarizedCallableBaseFinal {
       bindingset[this]
       SourceElement() { any() }
 
@@ -380,11 +354,13 @@ module Make<
        * flows out as described by `output`.
        */
       pragma[nomagic]
-      abstract predicate isSource(string output, string kind, Provenance provenance, string model);
+      abstract predicate isSource(
+        string output, string kind, Provenance provenance, boolean isExact, string model
+      );
     }
 
     /** A sink element. */
-    abstract class SinkElement extends SinkBaseFinal {
+    abstract class SinkElement extends SummarizedCallableBaseFinal {
       bindingset[this]
       SinkElement() { any() }
 
@@ -393,11 +369,13 @@ module Make<
        * flows in as described by `input`.
        */
       pragma[nomagic]
-      abstract predicate isSink(string input, string kind, Provenance provenance, string model);
+      abstract predicate isSink(
+        string input, string kind, Provenance provenance, boolean isExact, string model
+      );
     }
 
     /** A barrier element. */
-    abstract class BarrierElement extends SourceBaseFinal {
+    abstract class BarrierElement extends SummarizedCallableBaseFinal {
       bindingset[this]
       BarrierElement() { any() }
 
@@ -406,11 +384,13 @@ module Make<
        * flows out as described by `output`.
        */
       pragma[nomagic]
-      abstract predicate isBarrier(string output, string kind, Provenance provenance, string model);
+      abstract predicate isBarrier(
+        string output, string kind, Provenance provenance, boolean isExact, string model
+      );
     }
 
     /** A barrier guard element. */
-    abstract class BarrierGuardElement extends SinkBaseFinal {
+    abstract class BarrierGuardElement extends SummarizedCallableBaseFinal {
       bindingset[this]
       BarrierGuardElement() { any() }
 
@@ -420,7 +400,8 @@ module Make<
        */
       pragma[nomagic]
       abstract predicate isBarrierGuard(
-        string input, string acceptingValue, string kind, Provenance provenance, string model
+        string input, string acceptingValue, string kind, Provenance provenance, boolean isExact,
+        string model
       );
     }
 
@@ -534,6 +515,51 @@ module Make<
   module Private {
     private import Public
 
+    private signature predicate modelSig(
+      SummarizedCallableBase c, string kind, Provenance provenance, string model, boolean isExact,
+      string modelKind
+    );
+
+    private module RelevantModel<modelSig/6 model> {
+      /**
+       * Holds if the model described by the parameters is relevant. A model may be
+       * irrelevant if a more specific model exists.
+       */
+      predicate isRelevantModel(
+        SummarizedCallableBase c, string kind, Provenance provenance, string model, boolean isExact
+      ) {
+        exists(string modelKind |
+          model(c, kind, provenance, model, isExact, modelKind) and
+          if provenance.isGenerated() or isExact = false
+          then
+            // Only apply generated models to functions in library code
+            not (provenance.isGenerated() and callableFromSource(c)) and
+            // Only apply generated or inexact models when no strictly better model exists
+            not exists(Provenance other, boolean isExactOther |
+              model(c, _, other, _, isExactOther, modelKind)
+              or
+              neutralElement(c, modelKind, other, isExactOther)
+            |
+              provenance.isGenerated() and other.isManual()
+              or
+              provenance.getVerification() = other.getVerification() and
+              isExact = false and
+              isExactOther = true
+            )
+          else any()
+        )
+      }
+    }
+
+    private predicate summaryModel(
+      SummarizedCallableBase c, string kind, Provenance p, string model, boolean isExact,
+      string modelKind
+    ) {
+      c.(SummarizedCallable).propagatesFlow(_, _, _, p, isExact, model) and
+      kind = "(unused)" and
+      modelKind = "summary"
+    }
+
     /**
      * Holds if `c` has a relevant flow summary.
      *
@@ -550,23 +576,7 @@ module Make<
       boolean isExact, string model
     ) {
       c.propagatesFlow(input, output, preservesValue, p, isExact, model) and
-      if p.isGenerated() or isExact = false
-      then
-        // Only apply generated models to functions in library code
-        not (p.isGenerated() and callableFromSource(c)) and
-        // Only apply generated or inexact models when no strictly better model exists
-        not exists(Provenance other, boolean isExactOther |
-          c.propagatesFlow(_, _, _, other, isExactOther, _)
-          or
-          neutralElement(c, "summary", other, isExactOther)
-        |
-          p.isGenerated() and other.isManual()
-          or
-          p.getVerification() = other.getVerification() and
-          isExact = false and
-          isExactOther = true
-        )
-      else any()
+      RelevantModel<summaryModel/6>::isRelevantModel(c, _, p, model, isExact)
     }
 
     /**
@@ -759,52 +769,72 @@ module Make<
       unsupportedCallable(callable, _, _, _)
     }
 
+    private predicate sourceModel(
+      SummarizedCallableBase c, string kind, Provenance p, string model, boolean isExact,
+      string modelKind
+    ) {
+      c.(SourceElement).isSource(_, kind, p, isExact, model) and
+      modelKind = "source"
+    }
+
     private predicate isRelevantSource(
       SourceElement e, string output, string kind, Provenance provenance, string model
     ) {
-      e.isSource(output, kind, provenance, model) and
-      (
-        provenance.isManual()
-        or
-        provenance.isGenerated() and
-        not exists(Provenance p | p.isManual() and e.isSource(_, kind, p, _))
+      exists(boolean isExact |
+        e.isSource(output, kind, provenance, isExact, model) and
+        RelevantModel<sourceModel/6>::isRelevantModel(e, kind, provenance, model, isExact)
       )
+    }
+
+    private predicate sinkModel(
+      SummarizedCallableBase c, string kind, Provenance p, string model, boolean isExact,
+      string modelKind
+    ) {
+      c.(SinkElement).isSink(_, kind, p, isExact, model) and
+      modelKind = "sink"
     }
 
     private predicate isRelevantSink(
       SinkElement e, string input, string kind, Provenance provenance, string model
     ) {
-      e.isSink(input, kind, provenance, model) and
-      (
-        provenance.isManual()
-        or
-        provenance.isGenerated() and
-        not exists(Provenance p | p.isManual() and e.isSink(_, kind, p, _))
+      exists(boolean isExact |
+        e.isSink(input, kind, provenance, isExact, model) and
+        RelevantModel<sinkModel/6>::isRelevantModel(e, kind, provenance, model, isExact)
       )
+    }
+
+    private predicate barrierModel(
+      SummarizedCallableBase c, string kind, Provenance p, string model, boolean isExact,
+      string modelKind
+    ) {
+      c.(BarrierElement).isBarrier(_, kind, p, isExact, model) and
+      modelKind = "barrier"
     }
 
     private predicate isRelevantBarrier(
       BarrierElement e, string output, string kind, Provenance provenance, string model
     ) {
-      e.isBarrier(output, kind, provenance, model) and
-      (
-        provenance.isManual()
-        or
-        provenance.isGenerated() and
-        not exists(Provenance p | p.isManual() and e.isBarrier(_, kind, p, _))
+      exists(boolean isExact |
+        e.isBarrier(output, kind, provenance, isExact, model) and
+        RelevantModel<barrierModel/6>::isRelevantModel(e, kind, provenance, model, isExact)
       )
+    }
+
+    private predicate barrierGuardModel(
+      SummarizedCallableBase c, string kind, Provenance p, string model, boolean isExact,
+      string modelKind
+    ) {
+      c.(BarrierGuardElement).isBarrierGuard(_, _, kind, p, isExact, model) and
+      modelKind = "barrier-guard"
     }
 
     private predicate isRelevantBarrierGuard(
       BarrierGuardElement e, string input, string acceptingValue, string kind,
       Provenance provenance, string model
     ) {
-      e.isBarrierGuard(input, acceptingValue, kind, provenance, model) and
-      (
-        provenance.isManual()
-        or
-        provenance.isGenerated() and
-        not exists(Provenance p | p.isManual() and e.isBarrierGuard(_, _, kind, p, _))
+      exists(boolean isExact |
+        e.isBarrierGuard(input, acceptingValue, kind, provenance, isExact, model) and
+        RelevantModel<barrierGuardModel/6>::isRelevantModel(e, kind, provenance, model, isExact)
       )
     }
 
@@ -1464,7 +1494,7 @@ module Make<
        */
       bindingset[source, sc]
       default SourceSinkReportingElement getASourceReportingElement(
-        SourceBase source, SummaryComponent sc
+        SummarizedCallableBase source, SummaryComponent sc
       ) {
         none()
       }
@@ -1489,7 +1519,9 @@ module Make<
        * at position 0 in a call to `sink`.
        */
       bindingset[sink, sc]
-      default SourceSinkReportingElement getASinkReportingElement(SinkBase sink, SummaryComponent sc) {
+      default SourceSinkReportingElement getASinkReportingElement(
+        SummarizedCallableBase sink, SummaryComponent sc
+      ) {
         none()
       }
 
@@ -2260,20 +2292,24 @@ module Make<
       /** Provides a compilation of flow summaries to atomic data-flow steps. */
       module Steps<StepsInputSig StepsInput> {
         private predicate sourceExitStep(SourceOutputNode nodeFrom, Node nodeTo, boolean local) {
-          exists(SummaryComponent sc, SourceSinkReportingElement e |
-            nodeFrom.isExit(_, sc, e, _) and
+          exists(SummaryComponent sc, SourceSinkReportingElement e, string model |
+            nodeFrom.isExit(_, sc, e, model) and
             nodeTo = getSourceDataFlowNode(e, sc) and
-            if e.getEnclosingCallable() = getNodeEnclosingCallable(nodeTo)
+            if
+              e.getEnclosingCallable() = getNodeEnclosingCallable(nodeTo) and
+              (nodeFrom.isEntry(_, model) or summaryStoreStep(_, _, nodeFrom))
             then local = true
             else local = false
           )
         }
 
         private predicate sinkEntryStep(Node nodeFrom, SinkInputNode nodeTo, boolean local) {
-          exists(SummaryComponent sc, SourceSinkReportingElement e |
-            nodeTo.isEntry(_, sc, e, _) and
+          exists(SummaryComponent sc, SourceSinkReportingElement e, string model |
+            nodeTo.isEntry(_, sc, e, model) and
             nodeFrom = getSinkDataFlowNode(e, sc) and
-            if e.getEnclosingCallable() = getNodeEnclosingCallable(nodeFrom)
+            if
+              e.getEnclosingCallable() = getNodeEnclosingCallable(nodeFrom) and
+              (nodeTo.isExit(_, model) or summaryReadStep(nodeTo, _, _))
             then local = true
             else local = false
           )

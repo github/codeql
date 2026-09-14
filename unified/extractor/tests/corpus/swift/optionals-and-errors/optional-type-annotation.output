@@ -40,15 +40,9 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "x"
+          pattern: identifier "x"
           type:
             generic_type_expr
-              base:
-                named_type_expr
-                  name: identifier "Optional"
-              type_argument:
-                named_type_expr
-                  name: identifier "Int"
+              base: identifier "Optional"
+              type_argument: identifier "Int"
           value: builtin_expr "nil"

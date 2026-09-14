@@ -3,39 +3,41 @@
  */
 
 private import unified
+private import codeql.unified.internal.NameBindingPlugin
 
 module Public {
-  /**
-   * A logical 'and' expression with short-circuiting.
-   */
+  /** A short-circuiting logical AND expression. */
   class LogicalAndExpr extends BinaryExpr {
     LogicalAndExpr() { this.getOperator().getValue() = "&&" }
+  }
 
-    Expr getAnOperand() { result = [this.getLeft(), this.getRight()] }
+  /** A short-circuiting logical OR expression. */
+  class LogicalOrExpr extends BinaryExpr {
+    LogicalOrExpr() { this.getOperator().getValue() = "||" }
+  }
+
+  /** A short-circuiting null-coalescing expression. */
+  class NullCoalescingExpr extends BinaryExpr {
+    NullCoalescingExpr() { this.getOperator().getValue() = "??" }
+  }
+
+  /** A logical NOT expression. */
+  class LogicalNotExpr extends UnaryExpr {
+    LogicalNotExpr() { this.getOperator().(PrefixOperator).getValue() = "!" }
   }
 
   /**
    * Declaration of a local or top-level variable.
    */
   class LocalVariableDeclaration extends VariableDeclaration {
-    private Block block;
-
-    LocalVariableDeclaration() { this = block.getStmt(_) }
-
-    /** Gets the block in which this variable is declared. */
-    Block getDeclaringBlock() { result = block }
+    LocalVariableDeclaration() { not isStaticMember(this) and not isInstanceMember(this) }
   }
 
   /**
    * Declaration of a local or top-level function.
    */
   class LocalFunctionDeclaration extends FunctionDeclaration {
-    private Block block;
-
-    LocalFunctionDeclaration() { this = block.getStmt(_) }
-
-    /** Gets the block in which this function is declared. */
-    Block getDeclaringBlock() { result = block }
+    LocalFunctionDeclaration() { not isStaticMember(this) and not isInstanceMember(this) }
   }
 
   /**
@@ -56,5 +58,17 @@ module Public {
   /** A `Stmt` at the top-level. */
   final class TopLevelStmt extends Stmt {
     TopLevelStmt() { this = any(TopLevel t).getBody().getAStmt() }
+  }
+
+  /** An identifier appearing in the context of an expression, pattern, or type annotation. */
+  final class IdentifierExpr extends Identifier {
+    IdentifierExpr() {
+      not this = any(MemberAccessExpr e).getMemberNameNode() and
+      not this = any(Argument a).getNameNode() and
+      not this = any(Parameter p).getExternalNameNode() and
+      not this = any(LabeledStmt stmt).getLabelNameNode() and
+      not this = any(BreakExpr expr).getLabelNameNode() and
+      not this = any(ContinueExpr expr).getLabelNameNode()
+    }
   }
 }

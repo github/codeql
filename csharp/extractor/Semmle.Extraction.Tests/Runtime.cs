@@ -5,36 +5,11 @@ using Semmle.Extraction.CSharp.DependencyFetching;
 
 namespace Semmle.Extraction.Tests
 {
-    internal class DotNetStub : IDotNet
-    {
-        private readonly IList<string> runtimes;
-        private readonly IList<string> sdks;
-
-        public DotNetStub(IList<string> runtimes, IList<string> sdks)
-        {
-            this.runtimes = runtimes;
-            this.sdks = sdks;
-        }
-        public bool AddPackage(string folder, string package) => true;
-
-        public bool New(string folder) => true;
-
-        public RestoreResult Restore(RestoreSettings restoreSettings) => new(true, Array.Empty<string>());
-
-        public IList<string> GetListedRuntimes() => runtimes;
-
-        public IList<string> GetListedSdks() => sdks;
-
-        public bool Exec(string execArgs) => true;
-
-        public IList<string> GetNugetFeeds(string nugetConfig) => [];
-
-        public IList<string> GetNugetFeedsFromFolder(string folderPath) => [];
-    }
-
     public class RuntimeTests
     {
         private static string FixExpectedPathOnWindows(string path) => path.Replace('\\', '/');
+
+        private static DotNetStub MakeDotNetStub(IList<string> listedRuntimes) => new DotNetStub(listedRuntimes, null!, [], []);
 
         [Fact]
         public void TestRuntime1()
@@ -50,7 +25,7 @@ namespace Semmle.Extraction.Tests
                 "Microsoft.NETCore.App 7.0.0 [/path/dotnet/shared/Microsoft.NETCore.App]",
                 "Microsoft.NETCore.App 7.0.2 [/path/dotnet/shared/Microsoft.NETCore.App]"
                 };
-            var dotnet = new DotNetStub(listedRuntimes, null!);
+            var dotnet = MakeDotNetStub(listedRuntimes);
             var runtime = new Runtime(dotnet);
 
             // Execute
@@ -76,7 +51,7 @@ namespace Semmle.Extraction.Tests
                 "Microsoft.NETCore.App 8.0.0-preview.5.43280.8 [/path/dotnet/shared/Microsoft.NETCore.App]",
                 "Microsoft.NETCore.App 8.0.0-preview.5.23280.8 [/path/dotnet/shared/Microsoft.NETCore.App]"
             };
-            var dotnet = new DotNetStub(listedRuntimes, null!);
+            var dotnet = new DotNetStub(listedRuntimes, null!, [], []);
             var runtime = new Runtime(dotnet);
 
             // Execute
@@ -99,7 +74,7 @@ namespace Semmle.Extraction.Tests
                 "Microsoft.NETCore.App 8.0.0-rc.4.43280.8 [/path/dotnet/shared/Microsoft.NETCore.App]",
                 "Microsoft.NETCore.App 8.0.0-preview.5.23280.8 [/path/dotnet/shared/Microsoft.NETCore.App]"
             };
-            var dotnet = new DotNetStub(listedRuntimes, null!);
+            var dotnet = MakeDotNetStub(listedRuntimes);
             var runtime = new Runtime(dotnet);
 
             // Execute
@@ -128,7 +103,7 @@ namespace Semmle.Extraction.Tests
                 @"Microsoft.WindowsDesktop.App 6.0.20 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]",
                 @"Microsoft.WindowsDesktop.App 7.0.4 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]"
             };
-            var dotnet = new DotNetStub(listedRuntimes, null!);
+            var dotnet = MakeDotNetStub(listedRuntimes);
             var runtime = new Runtime(dotnet);
 
             // Execute
@@ -149,6 +124,7 @@ namespace Semmle.Extraction.Tests
     {
         private static string FixExpectedPathOnWindows(string path) => path.Replace('\\', '/');
 
+        private static DotNetStub MakeDotNetStub(IList<string> listedSdks) => new DotNetStub(null!, listedSdks, [], []);
         [Fact]
         public void TestSdk1()
         {
@@ -163,7 +139,7 @@ namespace Semmle.Extraction.Tests
                 "6.0.102 [/usr/local/share/dotnet/sdk6]",
                 "6.0.301 [/usr/local/share/dotnet/sdk7]",
             };
-            var dotnet = new DotNetStub(null!, listedSdks);
+            var dotnet = MakeDotNetStub(listedSdks);
             var sdk = new Sdk(dotnet, new LoggerStub());
 
             // Execute
@@ -185,7 +161,7 @@ namespace Semmle.Extraction.Tests
                 "8.0.100-preview.7.23376.3 [/usr/local/share/dotnet/sdk3]",
                 "7.0.400 [/usr/local/share/dotnet/sdk4]",
             };
-            var dotnet = new DotNetStub(null!, listedSdks);
+            var dotnet = MakeDotNetStub(listedSdks);
             var sdk = new Sdk(dotnet, new LoggerStub());
 
             // Execute

@@ -48,6 +48,7 @@ private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 private import codeql.rust.internal.CachedStages
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.util.Option
+private import codeql.util.SemVer
 
 private newtype TNamespace =
   TTypeNamespace() or
@@ -426,7 +427,7 @@ abstract class ItemNode extends Locatable {
       if
         this instanceof Module or
         this instanceof Enum or
-        this instanceof Struct or
+        this instanceof Trait or
         this instanceof Crate
       then (
         kind.isBoth() and
@@ -566,6 +567,16 @@ class CrateItemNode extends NamedItemNode instanceof Crate {
       fileImport(mod, result) and
       not result = any(Crate other).getSourceFile()
     )
+  }
+
+  pragma[nomagic]
+  predicate isLatestVersion(string name) {
+    this =
+      max(CrateItemNode c, string ver |
+        name = c.getName() and ver = padSemVer(c.(Crate).getVersion())
+      |
+        c order by ver
+      )
   }
 
   override string getName() { result = Crate.super.getName() }
@@ -874,7 +885,12 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
    */
   predicate isBlanketImplementation() { exists(this.getBlanketImplementationTypeParam()) }
 
-  override predicate hasCanonicalPath(Crate c) { this.resolveSelfTy().hasCanonicalPathPrefix(c) }
+  override predicate hasCanonicalPath(Crate c) {
+    this.resolveSelfTy().hasCanonicalPathPrefix(c)
+    or
+    this.isBlanketImplementation() and
+    c.getASourceFile().getFile() = this.getFile()
+  }
 
   /**
    * Holds if `(c1, c2)` forms a pair of crates for the type and trait
@@ -920,7 +936,12 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
     result = "<"
     or
     i = 1 and
-    result = this.getSelfCanonicalPath(c)
+    (
+      result = this.getSelfCanonicalPath(c)
+      or
+      this.isBlanketImplementation() and
+      result = "_"
+    )
     or
     if exists(this.getTraitPath())
     then
@@ -1095,25 +1116,31 @@ final class TraitItemNode extends ImplOrTraitItemNode, NamedItemNode, TypeItemNo
   bindingset[c]
   private string getCanonicalPathPart(Crate c, int i) {
     i = 0 and
-    result = this.getCanonicalPathPrefix(c)
+    result = "<"
     or
     i = 1 and
-    result = "::"
+    result = this.getCanonicalPathPrefix(c)
     or
     i = 2 and
+    result = "::"
+    or
+    i = 3 and
     result = this.getName()
+    or
+    i = 4 and
+    result = ">"
   }
 
   language[monotonicAggregates]
   override string getCanonicalPath(Crate c) {
     this.hasCanonicalPath(c) and
-    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+    result = strictconcat(int i | i in [1 .. 3] | this.getCanonicalPathPart(c, i) order by i)
   }
 
   language[monotonicAggregates]
   override string getCanonicalPathPrefixFor(Crate c, ItemNode child) {
     this.providesCanonicalPathPrefixFor(c, child) and
-    result = this.getCanonicalPath(c)
+    result = strictconcat(int i | i in [0 .. 4] | this.getCanonicalPathPart(c, i) order by i)
   }
 }
 
@@ -1513,11 +1540,11 @@ private predicate crateDependencyEdge(SourceFileItemNode file, string name, Crat
   crateDependency(file, name, dep)
   or
   // As a fallback, give all files access to crates that do not conflict with known dependencies
-  // and declarations. This is in order to workaround incomplete crate dependency information
-  // provided by the extractor, as well as `CrateItemNode.getASourceFile()` being unable to map
-  // a given file to its crate (for example, if the file is `mod` imported inside a macro that the
-  // extractor is unable to expand).
-  name = dep.getName() and
+  // and declarations, as long as those crates have a unique latest version.
+  // This is in order to workaround incomplete crate dependency information provided by the extractor,
+  // as well as `CrateItemNode.getASourceFile()` being unable to map a given file to its crate (for
+  // example, if the file is `mod` imported inside a macro that the extractor is unable to expand).
+  dep = unique(CrateItemNode dep0 | dep0.isLatestVersion(name)) and
   not hasDeclOrDep(file, name)
 }
 
@@ -2369,6 +2396,11 @@ private module Debug {
     useImportEdge(use, name, item, kind)
   }
 
+  predicate debugCrateDependencyEdge(SourceFileItemNode file, string name, CrateItemNode dep) {
+    file = getRelevantLocatable() and
+    crateDependencyEdge(file, name, dep)
+  }
+
   ItemNode debugGetASuccessor(ItemNode i, string name, SuccessorKind kind) {
     i = getRelevantLocatable() and
     result = i.getASuccessor(name, kind, _)
@@ -2392,5 +2424,11 @@ private module Debug {
   string debugGetCanonicalPath(ItemNode i, Crate c) {
     result = i.getCanonicalPath(c) and
     i = getRelevantLocatable()
+  }
+
+  predicate debugCallTargetCanonicalPath(Call call, Function f, string path) {
+    call = getRelevantLocatable() and
+    f = call.getStaticTarget() and
+    path = f.getCanonicalPath()
   }
 }

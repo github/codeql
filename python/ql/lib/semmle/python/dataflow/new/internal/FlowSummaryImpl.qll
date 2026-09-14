@@ -21,13 +21,9 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
     Location getLocation() { none() }
   }
 
-  class SourceBase extends Void {
+  class FlowSummaryCallBase extends Void {
     Location getLocation() { none() }
   }
-
-  class SinkBase = SourceBase;
-
-  class FlowSummaryCallBase = SourceBase;
 
   predicate callableFromSource(SummarizedCallableBase c) { none() }
 

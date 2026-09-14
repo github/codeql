@@ -276,9 +276,19 @@ abstract class LabelCheck extends ControlCheck {
   }
 }
 
+/**
+ * A deployment environment that may serve as a sanitizer for
+ * various vulnerabilities.
+ *
+ * It is possible to customize which deployment environments apply. The default behavior
+ * of this model is for any environment to be considered a sanitizer.
+ * If values are provided then those names
+ * will be used to define the valid sanitizer set.
+ * To describe the situation where there is no acceptable sanitizer environment
+ * populate the predicate `enabledDeploymentEnvironmentDataModel` to contain a single empty string.
+ */
 class EnvironmentCheck extends ControlCheck instanceof Environment {
   EnvironmentCheck() {
-    // if there are any custom tuples use those
     if enabledDeploymentEnvironmentDataModel(_)
     then enabledDeploymentEnvironmentDataModel(this.(Environment).getName())
     else this instanceof Environment
@@ -408,16 +418,37 @@ class WorkflowRunRepositoryIfCheck extends RepositoryCheck instanceof If {
   }
 }
 
+/**
+ * Gets a regular expression matching a condition on an author association field
+ * that is only populated for events whose payload contains the `context_prefix`
+ * context.
+ */
+private string eventPayloadAssociationFieldRegex(string context_prefix) {
+  context_prefix = "github.event.comment" and
+  result = "\\bgithub\\.event\\.comment\\.author_association\\b"
+  or
+  context_prefix = "github.event.issue" and
+  result = "\\bgithub\\.event\\.issue\\.author_association\\b"
+  or
+  context_prefix = "github.event.pull_request" and
+  result = "\\bgithub\\.event\\.pull_request\\.author_association\\b"
+}
+
 class AssociationIfCheck extends AssociationCheck instanceof If {
+  string context_prefix;
+
   AssociationIfCheck() {
     // eg: contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association)
-    normalizeExpr(this.getCondition())
-        .splitAt("\n")
-        .regexpMatch([
-            ".*\\bgithub\\.event\\.comment\\.author_association\\b.*",
-            ".*\\bgithub\\.event\\.issue\\.author_association\\b.*",
-            ".*\\bgithub\\.event\\.pull_request\\.author_association\\b.*",
-          ])
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind(eventPayloadAssociationFieldRegex(context_prefix), _, _)
+    )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    AssociationCheck.super.protectsCategoryAndEvent(category, event) and
+    // association fields only restrict events whose payload populates them
+    contextTriggerDataModel(event, context_prefix)
   }
 }
 

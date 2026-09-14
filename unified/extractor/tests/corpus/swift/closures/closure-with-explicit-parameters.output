@@ -68,28 +68,18 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "f"
+          pattern: identifier "f"
           value:
             function_expr
               parameter:
                 parameter
-                  type:
-                    named_type_expr
-                      name: identifier "Int"
-                  pattern:
-                    name_pattern
-                      identifier: identifier "x"
-              return_type:
-                named_type_expr
-                  name: identifier "Int"
+                  type: identifier "Int"
+                  pattern: identifier "x"
+              return_type: identifier "Int"
               body:
                 block
                   stmt:
                     binary_expr
-                      left:
-                        name_expr
-                          identifier: identifier "x"
+                      left: identifier "x"
                       operator: infix_operator "*"
                       right: int_literal "2"

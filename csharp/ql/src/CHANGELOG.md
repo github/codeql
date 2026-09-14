@@ -1,3 +1,9 @@
+## 1.9.3
+
+### Minor Analysis Improvements
+
+* The `cs/linq/missed-where` query no longer flags `foreach` loops where the matching branch terminates the method, iterator, or loop instead of continuing with filtered loop work.
+
 ## 1.9.2
 
 ### Minor Analysis Improvements

@@ -1,5 +1,5 @@
 
-int ymlSource();
+int ymlSource(); int* ymlSourcePtr();
 void ymlSink(int value);
 int ymlStepManual(int value);
 int ymlStepGenerated(int value);
@@ -223,4 +223,113 @@ void test_reverse_flow(unsigned i, unsigned j) {
 		char c = s[j];
 		ymlSink(c); // $ ir
 	}
+}
+
+
+struct SourceWrapper {
+	int value; int* pointer;
+};
+
+SourceWrapper ymlFieldSource();
+
+template<typename F>
+void source_from_callback_template(F);
+
+using Callback = void(*)(const SourceWrapper*);
+
+void source_from_callback_ptr(Callback);
+
+void f(const SourceWrapper* s) {
+	ymlSink(s->value); // $ ir=250:32 ir=251:27 ir=262:27
+}
+
+void test_source_access_path(bool b) {
+	SourceWrapper wrapper = ymlFieldSource();
+	ymlSink(wrapper.value); // $ ir
+
+	source_from_callback_template(f);
+	source_from_callback_ptr(f);
+
+	Callback f_var;
+	if(b) {
+		f_var = f;
+	} else {
+		f_var = [](const SourceWrapper* s) {
+			ymlSink(s->value); // $ ir
+		};
+	}
+
+	source_from_callback_ptr(f_var);
+
+	source_from_callback_template([](const SourceWrapper* s) {
+		ymlSink(s->value); // $ ir
+	});
+
+	source_from_callback_ptr([](const SourceWrapper* s) {
+		ymlSink(s->value); // $ ir
+	});
+
+	struct S {
+		void operator()(const SourceWrapper* s) {
+			ymlSink(s->value); // $ ir
+		}
+	};
+
+	source_from_callback_template(S());
+}
+
+template<typename F> void source_from_callback_return_template(F);
+template<typename F> void sink_from_callback_return_template(F);
+
+using IntCallback = int(*)(void);
+using IntPtrCallback = int*(*)(void);
+
+void source_from_callback_return_ptr(IntCallback);
+void sink_from_callback_return_ptr(IntCallback);
+
+void source_ptr_from_callback_return_ptr(IntPtrCallback);
+void sink_ptr_from_callback_return_ptr(IntPtrCallback);
+
+int callback_returning_int() { return 0; }
+int callback_returning_int_2() { return 0; }
+int* callback_returning_ptr_int() { return nullptr; }
+
+int return_ymlSource() { return ymlSource(); }
+
+int* return_ptr_to_ymlSource() { return ymlSourcePtr(); }
+
+void test_callback_return_access_paths() {
+	
+	ymlSink((int)ymlSourcePtr()); // clean
+	ymlSink(*ymlSourcePtr()); // $ ir
+
+	source_from_callback_return_template(callback_returning_int);
+	ymlSink(callback_returning_int()); // $ ir
+
+	source_from_callback_return_ptr(callback_returning_int_2);
+	ymlSink(callback_returning_int_2()); // $ ir
+
+	source_ptr_from_callback_return_ptr(callback_returning_ptr_int);
+	int *ptr = callback_returning_ptr_int();
+	ymlSink((int)ptr); // clean
+	ymlSink(*ptr); // $ ir
+
+	sink_from_callback_return_template([]() { return ymlSource(); }); // $ ir
+	sink_from_callback_return_template(return_ymlSource); // $ ir
+
+	sink_ptr_from_callback_return_ptr([]() { return ymlSourcePtr(); }); // $ ir
+	sink_ptr_from_callback_return_ptr(return_ptr_to_ymlSource); // $ ir
+}
+
+void test_parameter(SourceWrapper* p, SourceWrapper s, int* source) {
+	ymlSink(p->value); // $ ir
+	ymlSink((int)p->pointer); // clean
+	ymlSink(*p->pointer); // $ ir
+
+	ymlSink(s.value); // $ ir
+	ymlSink((int)s.pointer); // clean
+	ymlSink(*s.pointer); // $ ir
+
+	ymlSink((int)source); // clean
+	ymlSink(*source); // $ ir
 }

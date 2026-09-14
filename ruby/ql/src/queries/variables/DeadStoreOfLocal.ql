@@ -19,7 +19,12 @@ import codeql.ruby.ApiGraphs
 
 pragma[nomagic]
 private predicate hasErbResultCall(CfgScope scope) {
-  scope = API::getTopLevelMember("ERB").getInstance().getAMethodCall("result").asExpr().getScope()
+  scope =
+    API::getTopLevelMember("ERB")
+        .getInstance()
+        .getAMethodCall("result")
+        .asExpr()
+        .getEnclosingCallable()
 }
 
 class RelevantLocalVariableWriteAccess extends LocalVariableWriteAccess {
@@ -39,6 +44,6 @@ class RelevantLocalVariableWriteAccess extends LocalVariableWriteAccess {
 from RelevantLocalVariableWriteAccess write, LocalVariable v
 where
   v = write.getVariable() and
-  exists(write.getAControlFlowNode()) and
+  exists(write.getControlFlowNode()) and
   not exists(Ssa::WriteDefinition def | def.getWriteAccess().getAstNode() = write)
 select write, "This assignment to $@ is useless, since its value is never read.", v, v.getName()

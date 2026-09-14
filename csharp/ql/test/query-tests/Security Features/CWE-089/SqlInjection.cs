@@ -139,4 +139,6 @@ namespace Test
             return Ok();
         }
     }
+
+    public class ConcreteController : MyController { }
 }
