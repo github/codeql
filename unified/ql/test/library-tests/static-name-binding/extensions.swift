@@ -50,3 +50,9 @@ class X {
     }
 }
 extension X : Base {} // $ access=X access=Base
+
+// Type parameters of the extended type should be in scope in the extension.
+class GenericExtensionTarget<ExtensionTypeParameter> {}
+extension GenericExtensionTarget { // $ access=GenericExtensionTarget
+    func useTypeParameter(_: ExtensionTypeParameter) {} // $ MISSING: access=ExtensionTypeParameter
+}
