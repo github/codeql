@@ -2,7 +2,7 @@ using System;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    public class DependabotProxyConfiguration : IDependabotProxyConfiguration
+    public class RegistryProxyConfiguration : IRegistryProxyConfiguration
     {
         public string? Host { get; } = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyHost);
 

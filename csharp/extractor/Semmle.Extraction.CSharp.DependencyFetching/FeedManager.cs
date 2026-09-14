@@ -89,15 +89,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public ImmutableHashSet<string> ReachableDefaultFeeds => lazyReachableDefaultFeeds.Value;
 
-        public FeedManager(ILogger logger, IDotNet dotnet, IDependabotProxy? dependabotProxy, IFileProvider fileProvider, IFeedManagerIO feedManagerIo)
+        public FeedManager(ILogger logger, IDotNet dotnet, IRegistryProxy? registryProxy, IFileProvider fileProvider, IFeedManagerIO feedManagerIo)
         {
             this.logger = logger;
             this.dotnet = dotnet;
             this.fileProvider = fileProvider;
             this.feedManagerIo = feedManagerIo;
-            privateRegistryFeeds = dependabotProxy?.RegistryURLs ?? [];
+            privateRegistryFeeds = registryProxy?.RegistryURLs ?? [];
             HasPrivateRegistryFeeds = privateRegistryFeeds.Count > 0;
-            privateRegistryBaseFeeds = dependabotProxy?.RegistryBaseURLs ?? [];
+            privateRegistryBaseFeeds = registryProxy?.RegistryBaseURLs ?? [];
             hasPrivateRegistryBaseFeeds = privateRegistryBaseFeeds.Count > 0;
 
             DefaultFeeds = hasPrivateRegistryBaseFeeds
@@ -122,8 +122,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             lazyReachableDefaultFeeds = new Lazy<ImmutableHashSet<string>>(() => CheckSpecifiedFeeds(DefaultFeeds));
         }
 
-        public FeedManager(ILogger logger, IDotNet dotnet, IDependabotProxy? dependabotProxy, IFileProvider fileProvider)
-            : this(logger, dotnet, dependabotProxy, fileProvider, new FeedManagerIO(logger, dependabotProxy))
+        public FeedManager(ILogger logger, IDotNet dotnet, IRegistryProxy? registryProxy, IFileProvider fileProvider)
+            : this(logger, dotnet, registryProxy, fileProvider, new FeedManagerIO(logger, registryProxy))
         {
         }
 
