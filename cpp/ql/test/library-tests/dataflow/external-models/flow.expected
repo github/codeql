@@ -105,77 +105,155 @@ models
 | 104 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (char *,const Blob &,int,int); ; Argument[*1]; Argument[*0]; taint; manual |
 | 105 | Summary: BloombergLP::bdlbb; BlobUtil; true; getContiguousRangeOrCopy; ; ; Argument[*1]; ReturnValue[*]; taint; manual |
 | 106 | Summary: BloombergLP::bslx::InStreamFunctions; ; false; bdexStreamIn; ; ; Argument[*0]; Argument[*1]; taint; manual |
-| 107 | Summary: BloombergLP::bslx; ByteInStream; true; ByteInStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 108 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayInt8; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 109 | Summary: BloombergLP::bslx; ByteInStream; true; getInt32; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 110 | Summary: BloombergLP::bslx; ByteInStream; true; getInt32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 111 | Summary: BloombergLP::bslx; ByteInStream; true; getString; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 112 | Summary: BloombergLP::bslx; ByteInStream; true; reset; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 113 | Summary: BloombergLP::bslx; GenericInStream; true; GenericInStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 114 | Summary: BloombergLP::bslx; GenericInStream; true; getInt32; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 115 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 116 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 117 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 118 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 119 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view); ; Argument[1..2]; ReturnValue; taint; manual |
-| 120 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
-| 121 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags); ; Argument[1..2]; ReturnValue; taint; manual |
-| 122 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
-| 123 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 124 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 125 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 126 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 127 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view); ; Argument[0..1]; ReturnValue; taint; manual |
-| 128 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
-| 129 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags); ; Argument[0..1]; ReturnValue; taint; manual |
-| 130 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
-| 131 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
-| 132 | Summary: google::protobuf; MessageLite; true; AppendPartialToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 133 | Summary: google::protobuf; MessageLite; true; AppendPartialToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 134 | Summary: google::protobuf; MessageLite; true; AppendToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 135 | Summary: google::protobuf; MessageLite; true; AppendToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 136 | Summary: google::protobuf; MessageLite; true; MergeFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 137 | Summary: google::protobuf; MessageLite; true; MergeFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 138 | Summary: google::protobuf; MessageLite; true; MergeFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 139 | Summary: google::protobuf; MessageLite; true; MergeFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
-| 140 | Summary: google::protobuf; MessageLite; true; MergeFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
-| 141 | Summary: google::protobuf; MessageLite; true; MergePartialFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 142 | Summary: google::protobuf; MessageLite; true; MergePartialFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 143 | Summary: google::protobuf; MessageLite; true; MergePartialFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 144 | Summary: google::protobuf; MessageLite; true; MergePartialFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
-| 145 | Summary: google::protobuf; MessageLite; true; MergePartialFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
-| 146 | Summary: google::protobuf; MessageLite; true; ParseFromArray; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 147 | Summary: google::protobuf; MessageLite; true; ParseFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 148 | Summary: google::protobuf; MessageLite; true; ParseFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 149 | Summary: google::protobuf; MessageLite; true; ParseFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 150 | Summary: google::protobuf; MessageLite; true; ParseFromIstream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 151 | Summary: google::protobuf; MessageLite; true; ParseFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
-| 152 | Summary: google::protobuf; MessageLite; true; ParseFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
-| 153 | Summary: google::protobuf; MessageLite; true; ParseFromZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 154 | Summary: google::protobuf; MessageLite; true; ParsePartialFromArray; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 155 | Summary: google::protobuf; MessageLite; true; ParsePartialFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 156 | Summary: google::protobuf; MessageLite; true; ParsePartialFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 157 | Summary: google::protobuf; MessageLite; true; ParsePartialFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 158 | Summary: google::protobuf; MessageLite; true; ParsePartialFromIstream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 159 | Summary: google::protobuf; MessageLite; true; ParsePartialFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
-| 160 | Summary: google::protobuf; MessageLite; true; ParsePartialFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
-| 161 | Summary: google::protobuf; MessageLite; true; ParsePartialFromZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 162 | Summary: google::protobuf; MessageLite; true; SerializeAsCord; ; ; Argument[-1]; ReturnValue; taint; manual |
-| 163 | Summary: google::protobuf; MessageLite; true; SerializeAsString; ; ; Argument[-1]; ReturnValue; taint; manual |
-| 164 | Summary: google::protobuf; MessageLite; true; SerializePartialAsCord; ; ; Argument[-1]; ReturnValue; taint; manual |
-| 165 | Summary: google::protobuf; MessageLite; true; SerializePartialAsString; ; ; Argument[-1]; ReturnValue; taint; manual |
-| 166 | Summary: google::protobuf; MessageLite; true; SerializePartialToArray; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 167 | Summary: google::protobuf; MessageLite; true; SerializePartialToCodedStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 168 | Summary: google::protobuf; MessageLite; true; SerializePartialToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 169 | Summary: google::protobuf; MessageLite; true; SerializePartialToOstream; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 170 | Summary: google::protobuf; MessageLite; true; SerializePartialToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 171 | Summary: google::protobuf; MessageLite; true; SerializePartialToZeroCopyStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 172 | Summary: google::protobuf; MessageLite; true; SerializeToArray; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 173 | Summary: google::protobuf; MessageLite; true; SerializeToCodedStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 174 | Summary: google::protobuf; MessageLite; true; SerializeToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 175 | Summary: google::protobuf; MessageLite; true; SerializeToOstream; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 176 | Summary: google::protobuf; MessageLite; true; SerializeToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 177 | Summary: google::protobuf; MessageLite; true; SerializeToZeroCopyStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 107 | Summary: BloombergLP::bslx::InStreamFunctions; ; false; bdexStreamIn; ; ; Argument[*0]; ReturnValue[*]; taint; manual |
+| 108 | Summary: BloombergLP::bslx; ByteInStream; true; ByteInStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 109 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayFloat32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 110 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayFloat64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 111 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayInt16; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 112 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayInt24; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 113 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayInt32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 114 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayInt40; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 115 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayInt48; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 116 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayInt56; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 117 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayInt64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 118 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayInt8; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 119 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayInt8; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 120 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayUint16; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 121 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayUint24; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 122 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayUint32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 123 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayUint40; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 124 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayUint48; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 125 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayUint56; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 126 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayUint64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 127 | Summary: BloombergLP::bslx; ByteInStream; true; getArrayUint8; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 128 | Summary: BloombergLP::bslx; ByteInStream; true; getFloat32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 129 | Summary: BloombergLP::bslx; ByteInStream; true; getFloat64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 130 | Summary: BloombergLP::bslx; ByteInStream; true; getInt16; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 131 | Summary: BloombergLP::bslx; ByteInStream; true; getInt24; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 132 | Summary: BloombergLP::bslx; ByteInStream; true; getInt32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 133 | Summary: BloombergLP::bslx; ByteInStream; true; getInt40; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 134 | Summary: BloombergLP::bslx; ByteInStream; true; getInt48; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 135 | Summary: BloombergLP::bslx; ByteInStream; true; getInt56; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 136 | Summary: BloombergLP::bslx; ByteInStream; true; getInt64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 137 | Summary: BloombergLP::bslx; ByteInStream; true; getInt8; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 138 | Summary: BloombergLP::bslx; ByteInStream; true; getLength; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 139 | Summary: BloombergLP::bslx; ByteInStream; true; getString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 140 | Summary: BloombergLP::bslx; ByteInStream; true; getString; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 141 | Summary: BloombergLP::bslx; ByteInStream; true; getUint16; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 142 | Summary: BloombergLP::bslx; ByteInStream; true; getUint24; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 143 | Summary: BloombergLP::bslx; ByteInStream; true; getUint32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 144 | Summary: BloombergLP::bslx; ByteInStream; true; getUint40; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 145 | Summary: BloombergLP::bslx; ByteInStream; true; getUint48; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 146 | Summary: BloombergLP::bslx; ByteInStream; true; getUint56; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 147 | Summary: BloombergLP::bslx; ByteInStream; true; getUint64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 148 | Summary: BloombergLP::bslx; ByteInStream; true; getUint8; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 149 | Summary: BloombergLP::bslx; ByteInStream; true; getVersion; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 150 | Summary: BloombergLP::bslx; ByteInStream; true; reset; (const StringRef &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 151 | Summary: BloombergLP::bslx; ByteInStream; true; reset; (const char *,size_t); ; Argument[*0]; Argument[-1]; taint; manual |
+| 152 | Summary: BloombergLP::bslx; GenericInStream; true; GenericInStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 153 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayFloat32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 154 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayFloat64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 155 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayInt16; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 156 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayInt24; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 157 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayInt32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 158 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayInt40; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 159 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayInt48; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 160 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayInt56; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 161 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayInt64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 162 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayInt8; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 163 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayUint16; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 164 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayUint24; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 165 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayUint32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 166 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayUint40; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 167 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayUint48; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 168 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayUint56; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 169 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayUint64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 170 | Summary: BloombergLP::bslx; GenericInStream; true; getArrayUint8; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 171 | Summary: BloombergLP::bslx; GenericInStream; true; getFloat32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 172 | Summary: BloombergLP::bslx; GenericInStream; true; getFloat64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 173 | Summary: BloombergLP::bslx; GenericInStream; true; getInt16; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 174 | Summary: BloombergLP::bslx; GenericInStream; true; getInt24; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 175 | Summary: BloombergLP::bslx; GenericInStream; true; getInt32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 176 | Summary: BloombergLP::bslx; GenericInStream; true; getInt40; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 177 | Summary: BloombergLP::bslx; GenericInStream; true; getInt48; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 178 | Summary: BloombergLP::bslx; GenericInStream; true; getInt56; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 179 | Summary: BloombergLP::bslx; GenericInStream; true; getInt64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 180 | Summary: BloombergLP::bslx; GenericInStream; true; getInt8; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 181 | Summary: BloombergLP::bslx; GenericInStream; true; getLength; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 182 | Summary: BloombergLP::bslx; GenericInStream; true; getString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 183 | Summary: BloombergLP::bslx; GenericInStream; true; getString; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 184 | Summary: BloombergLP::bslx; GenericInStream; true; getUint16; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 185 | Summary: BloombergLP::bslx; GenericInStream; true; getUint24; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 186 | Summary: BloombergLP::bslx; GenericInStream; true; getUint32; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 187 | Summary: BloombergLP::bslx; GenericInStream; true; getUint40; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 188 | Summary: BloombergLP::bslx; GenericInStream; true; getUint48; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 189 | Summary: BloombergLP::bslx; GenericInStream; true; getUint56; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 190 | Summary: BloombergLP::bslx; GenericInStream; true; getUint64; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 191 | Summary: BloombergLP::bslx; GenericInStream; true; getUint8; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 192 | Summary: BloombergLP::bslx; GenericInStream; true; getVersion; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 193 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 194 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 195 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 196 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 197 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view); ; Argument[1..2]; ReturnValue; taint; manual |
+| 198 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
+| 199 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags); ; Argument[1..2]; ReturnValue; taint; manual |
+| 200 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
+| 201 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 202 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 203 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 204 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 205 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view); ; Argument[0..1]; ReturnValue; taint; manual |
+| 206 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
+| 207 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags); ; Argument[0..1]; ReturnValue; taint; manual |
+| 208 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
+| 209 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 210 | Summary: google::protobuf; MessageLite; true; AppendPartialToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 211 | Summary: google::protobuf; MessageLite; true; AppendPartialToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 212 | Summary: google::protobuf; MessageLite; true; AppendToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 213 | Summary: google::protobuf; MessageLite; true; AppendToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 214 | Summary: google::protobuf; MessageLite; true; MergeFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 215 | Summary: google::protobuf; MessageLite; true; MergeFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 216 | Summary: google::protobuf; MessageLite; true; MergeFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 217 | Summary: google::protobuf; MessageLite; true; MergeFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 218 | Summary: google::protobuf; MessageLite; true; MergeFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 219 | Summary: google::protobuf; MessageLite; true; MergePartialFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 220 | Summary: google::protobuf; MessageLite; true; MergePartialFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 221 | Summary: google::protobuf; MessageLite; true; MergePartialFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 222 | Summary: google::protobuf; MessageLite; true; MergePartialFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 223 | Summary: google::protobuf; MessageLite; true; MergePartialFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 224 | Summary: google::protobuf; MessageLite; true; ParseFromArray; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 225 | Summary: google::protobuf; MessageLite; true; ParseFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 226 | Summary: google::protobuf; MessageLite; true; ParseFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 227 | Summary: google::protobuf; MessageLite; true; ParseFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 228 | Summary: google::protobuf; MessageLite; true; ParseFromIstream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 229 | Summary: google::protobuf; MessageLite; true; ParseFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 230 | Summary: google::protobuf; MessageLite; true; ParseFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 231 | Summary: google::protobuf; MessageLite; true; ParseFromZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 232 | Summary: google::protobuf; MessageLite; true; ParsePartialFromArray; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 233 | Summary: google::protobuf; MessageLite; true; ParsePartialFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 234 | Summary: google::protobuf; MessageLite; true; ParsePartialFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 235 | Summary: google::protobuf; MessageLite; true; ParsePartialFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 236 | Summary: google::protobuf; MessageLite; true; ParsePartialFromIstream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 237 | Summary: google::protobuf; MessageLite; true; ParsePartialFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 238 | Summary: google::protobuf; MessageLite; true; ParsePartialFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 239 | Summary: google::protobuf; MessageLite; true; ParsePartialFromZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 240 | Summary: google::protobuf; MessageLite; true; SerializeAsCord; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 241 | Summary: google::protobuf; MessageLite; true; SerializeAsString; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 242 | Summary: google::protobuf; MessageLite; true; SerializePartialAsCord; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 243 | Summary: google::protobuf; MessageLite; true; SerializePartialAsString; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 244 | Summary: google::protobuf; MessageLite; true; SerializePartialToArray; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 245 | Summary: google::protobuf; MessageLite; true; SerializePartialToCodedStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 246 | Summary: google::protobuf; MessageLite; true; SerializePartialToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 247 | Summary: google::protobuf; MessageLite; true; SerializePartialToOstream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 248 | Summary: google::protobuf; MessageLite; true; SerializePartialToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 249 | Summary: google::protobuf; MessageLite; true; SerializePartialToZeroCopyStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 250 | Summary: google::protobuf; MessageLite; true; SerializeToArray; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 251 | Summary: google::protobuf; MessageLite; true; SerializeToCodedStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 252 | Summary: google::protobuf; MessageLite; true; SerializeToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 253 | Summary: google::protobuf; MessageLite; true; SerializeToOstream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 254 | Summary: google::protobuf; MessageLite; true; SerializeToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 255 | Summary: google::protobuf; MessageLite; true; SerializeToZeroCopyStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
 edges
 | asio_streams.cpp:116:34:116:44 | read_until output argument | asio_streams.cpp:120:7:120:17 | recv_buffer | provenance | Src:MaD:56  |
 | asio_streams.cpp:116:34:116:44 | read_until output argument | asio_streams.cpp:122:29:122:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
@@ -184,7 +262,7 @@ edges
 | asio_streams.cpp:129:44:129:62 | call to buffer | asio_streams.cpp:129:44:129:62 | call to buffer | provenance |  |
 | asio_streams.cpp:129:44:129:62 | call to buffer | asio_streams.cpp:130:7:130:17 | send_buffer | provenance |  |
 | asio_streams.cpp:129:44:129:62 | call to buffer | asio_streams.cpp:132:29:132:39 | send_buffer | provenance | Sink:MaD:4 |
-| asio_streams.cpp:129:64:129:71 | *send_str | asio_streams.cpp:129:44:129:62 | call to buffer | provenance | MaD:131 |
+| asio_streams.cpp:129:64:129:71 | *send_str | asio_streams.cpp:129:44:129:62 | call to buffer | provenance | MaD:209 |
 | asio_streams.cpp:143:19:143:26 | call to source | asio_streams.cpp:148:24:148:27 | *host | provenance | TaintFunction |
 | asio_streams.cpp:143:19:143:26 | call to source | asio_streams.cpp:149:24:149:27 | *host | provenance | TaintFunction |
 | asio_streams.cpp:143:19:143:26 | call to source | asio_streams.cpp:150:24:150:27 | *host | provenance | TaintFunction |
@@ -201,22 +279,22 @@ edges
 | asio_streams.cpp:145:29:145:36 | call to source | asio_streams.cpp:164:34:164:42 | host_view | provenance | TaintFunction |
 | asio_streams.cpp:145:29:145:36 | call to source | asio_streams.cpp:165:34:165:42 | host_view | provenance | TaintFunction |
 | asio_streams.cpp:145:29:145:36 | call to source | asio_streams.cpp:166:34:166:42 | host_view | provenance | TaintFunction |
-| asio_streams.cpp:148:24:148:27 | *host | asio_streams.cpp:148:16:148:22 | call to resolve | provenance | MaD:123 |
-| asio_streams.cpp:149:24:149:27 | *host | asio_streams.cpp:149:16:149:22 | call to resolve | provenance | MaD:124 |
-| asio_streams.cpp:150:24:150:27 | *host | asio_streams.cpp:150:16:150:22 | call to resolve | provenance | MaD:125 |
-| asio_streams.cpp:151:24:151:27 | *host | asio_streams.cpp:151:16:151:22 | call to resolve | provenance | MaD:126 |
-| asio_streams.cpp:153:24:153:32 | host_view | asio_streams.cpp:153:16:153:22 | call to resolve | provenance | MaD:127 |
-| asio_streams.cpp:154:24:154:32 | host_view | asio_streams.cpp:154:16:154:22 | call to resolve | provenance | MaD:128 |
-| asio_streams.cpp:155:24:155:32 | host_view | asio_streams.cpp:155:16:155:22 | call to resolve | provenance | MaD:129 |
-| asio_streams.cpp:156:24:156:32 | host_view | asio_streams.cpp:156:16:156:22 | call to resolve | provenance | MaD:130 |
-| asio_streams.cpp:158:34:158:37 | *host | asio_streams.cpp:158:16:158:22 | call to resolve | provenance | MaD:115 |
-| asio_streams.cpp:159:34:159:37 | *host | asio_streams.cpp:159:16:159:22 | call to resolve | provenance | MaD:116 |
-| asio_streams.cpp:160:34:160:37 | *host | asio_streams.cpp:160:16:160:22 | call to resolve | provenance | MaD:117 |
-| asio_streams.cpp:161:34:161:37 | *host | asio_streams.cpp:161:16:161:22 | call to resolve | provenance | MaD:118 |
-| asio_streams.cpp:163:34:163:42 | host_view | asio_streams.cpp:163:16:163:22 | call to resolve | provenance | MaD:119 |
-| asio_streams.cpp:164:34:164:42 | host_view | asio_streams.cpp:164:16:164:22 | call to resolve | provenance | MaD:120 |
-| asio_streams.cpp:165:34:165:42 | host_view | asio_streams.cpp:165:16:165:22 | call to resolve | provenance | MaD:121 |
-| asio_streams.cpp:166:34:166:42 | host_view | asio_streams.cpp:166:16:166:22 | call to resolve | provenance | MaD:122 |
+| asio_streams.cpp:148:24:148:27 | *host | asio_streams.cpp:148:16:148:22 | call to resolve | provenance | MaD:201 |
+| asio_streams.cpp:149:24:149:27 | *host | asio_streams.cpp:149:16:149:22 | call to resolve | provenance | MaD:202 |
+| asio_streams.cpp:150:24:150:27 | *host | asio_streams.cpp:150:16:150:22 | call to resolve | provenance | MaD:203 |
+| asio_streams.cpp:151:24:151:27 | *host | asio_streams.cpp:151:16:151:22 | call to resolve | provenance | MaD:204 |
+| asio_streams.cpp:153:24:153:32 | host_view | asio_streams.cpp:153:16:153:22 | call to resolve | provenance | MaD:205 |
+| asio_streams.cpp:154:24:154:32 | host_view | asio_streams.cpp:154:16:154:22 | call to resolve | provenance | MaD:206 |
+| asio_streams.cpp:155:24:155:32 | host_view | asio_streams.cpp:155:16:155:22 | call to resolve | provenance | MaD:207 |
+| asio_streams.cpp:156:24:156:32 | host_view | asio_streams.cpp:156:16:156:22 | call to resolve | provenance | MaD:208 |
+| asio_streams.cpp:158:34:158:37 | *host | asio_streams.cpp:158:16:158:22 | call to resolve | provenance | MaD:193 |
+| asio_streams.cpp:159:34:159:37 | *host | asio_streams.cpp:159:16:159:22 | call to resolve | provenance | MaD:194 |
+| asio_streams.cpp:160:34:160:37 | *host | asio_streams.cpp:160:16:160:22 | call to resolve | provenance | MaD:195 |
+| asio_streams.cpp:161:34:161:37 | *host | asio_streams.cpp:161:16:161:22 | call to resolve | provenance | MaD:196 |
+| asio_streams.cpp:163:34:163:42 | host_view | asio_streams.cpp:163:16:163:22 | call to resolve | provenance | MaD:197 |
+| asio_streams.cpp:164:34:164:42 | host_view | asio_streams.cpp:164:16:164:22 | call to resolve | provenance | MaD:198 |
+| asio_streams.cpp:165:34:165:42 | host_view | asio_streams.cpp:165:16:165:22 | call to resolve | provenance | MaD:199 |
+| asio_streams.cpp:166:34:166:42 | host_view | asio_streams.cpp:166:16:166:22 | call to resolve | provenance | MaD:200 |
 | asio_streams.cpp:175:22:175:29 | call to source | asio_streams.cpp:179:30:179:36 | *service | provenance | TaintFunction |
 | asio_streams.cpp:175:22:175:29 | call to source | asio_streams.cpp:180:30:180:36 | *service | provenance | TaintFunction |
 | asio_streams.cpp:175:22:175:29 | call to source | asio_streams.cpp:181:30:181:36 | *service | provenance | TaintFunction |
@@ -233,22 +311,22 @@ edges
 | asio_streams.cpp:177:32:177:39 | call to source | asio_streams.cpp:195:45:195:56 | service_view | provenance | TaintFunction |
 | asio_streams.cpp:177:32:177:39 | call to source | asio_streams.cpp:196:45:196:56 | service_view | provenance | TaintFunction |
 | asio_streams.cpp:177:32:177:39 | call to source | asio_streams.cpp:197:45:197:56 | service_view | provenance | TaintFunction |
-| asio_streams.cpp:179:30:179:36 | *service | asio_streams.cpp:179:16:179:22 | call to resolve | provenance | MaD:123 |
-| asio_streams.cpp:180:30:180:36 | *service | asio_streams.cpp:180:16:180:22 | call to resolve | provenance | MaD:124 |
-| asio_streams.cpp:181:30:181:36 | *service | asio_streams.cpp:181:16:181:22 | call to resolve | provenance | MaD:125 |
-| asio_streams.cpp:182:30:182:36 | *service | asio_streams.cpp:182:16:182:22 | call to resolve | provenance | MaD:126 |
-| asio_streams.cpp:184:35:184:46 | service_view | asio_streams.cpp:184:16:184:22 | call to resolve | provenance | MaD:127 |
-| asio_streams.cpp:185:35:185:46 | service_view | asio_streams.cpp:185:16:185:22 | call to resolve | provenance | MaD:128 |
-| asio_streams.cpp:186:35:186:46 | service_view | asio_streams.cpp:186:16:186:22 | call to resolve | provenance | MaD:129 |
-| asio_streams.cpp:187:35:187:46 | service_view | asio_streams.cpp:187:16:187:22 | call to resolve | provenance | MaD:130 |
-| asio_streams.cpp:189:40:189:46 | *service | asio_streams.cpp:189:16:189:22 | call to resolve | provenance | MaD:115 |
-| asio_streams.cpp:190:40:190:46 | *service | asio_streams.cpp:190:16:190:22 | call to resolve | provenance | MaD:116 |
-| asio_streams.cpp:191:40:191:46 | *service | asio_streams.cpp:191:16:191:22 | call to resolve | provenance | MaD:117 |
-| asio_streams.cpp:192:40:192:46 | *service | asio_streams.cpp:192:16:192:22 | call to resolve | provenance | MaD:118 |
-| asio_streams.cpp:194:45:194:56 | service_view | asio_streams.cpp:194:16:194:22 | call to resolve | provenance | MaD:119 |
-| asio_streams.cpp:195:45:195:56 | service_view | asio_streams.cpp:195:16:195:22 | call to resolve | provenance | MaD:120 |
-| asio_streams.cpp:196:45:196:56 | service_view | asio_streams.cpp:196:16:196:22 | call to resolve | provenance | MaD:121 |
-| asio_streams.cpp:197:45:197:56 | service_view | asio_streams.cpp:197:16:197:22 | call to resolve | provenance | MaD:122 |
+| asio_streams.cpp:179:30:179:36 | *service | asio_streams.cpp:179:16:179:22 | call to resolve | provenance | MaD:201 |
+| asio_streams.cpp:180:30:180:36 | *service | asio_streams.cpp:180:16:180:22 | call to resolve | provenance | MaD:202 |
+| asio_streams.cpp:181:30:181:36 | *service | asio_streams.cpp:181:16:181:22 | call to resolve | provenance | MaD:203 |
+| asio_streams.cpp:182:30:182:36 | *service | asio_streams.cpp:182:16:182:22 | call to resolve | provenance | MaD:204 |
+| asio_streams.cpp:184:35:184:46 | service_view | asio_streams.cpp:184:16:184:22 | call to resolve | provenance | MaD:205 |
+| asio_streams.cpp:185:35:185:46 | service_view | asio_streams.cpp:185:16:185:22 | call to resolve | provenance | MaD:206 |
+| asio_streams.cpp:186:35:186:46 | service_view | asio_streams.cpp:186:16:186:22 | call to resolve | provenance | MaD:207 |
+| asio_streams.cpp:187:35:187:46 | service_view | asio_streams.cpp:187:16:187:22 | call to resolve | provenance | MaD:208 |
+| asio_streams.cpp:189:40:189:46 | *service | asio_streams.cpp:189:16:189:22 | call to resolve | provenance | MaD:193 |
+| asio_streams.cpp:190:40:190:46 | *service | asio_streams.cpp:190:16:190:22 | call to resolve | provenance | MaD:194 |
+| asio_streams.cpp:191:40:191:46 | *service | asio_streams.cpp:191:16:191:22 | call to resolve | provenance | MaD:195 |
+| asio_streams.cpp:192:40:192:46 | *service | asio_streams.cpp:192:16:192:22 | call to resolve | provenance | MaD:196 |
+| asio_streams.cpp:194:45:194:56 | service_view | asio_streams.cpp:194:16:194:22 | call to resolve | provenance | MaD:197 |
+| asio_streams.cpp:195:45:195:56 | service_view | asio_streams.cpp:195:16:195:22 | call to resolve | provenance | MaD:198 |
+| asio_streams.cpp:196:45:196:56 | service_view | asio_streams.cpp:196:16:196:22 | call to resolve | provenance | MaD:199 |
+| asio_streams.cpp:197:45:197:56 | service_view | asio_streams.cpp:197:16:197:22 | call to resolve | provenance | MaD:200 |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:257:5:257:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:262:5:262:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:266:38:266:41 | *resp | provenance |  |
@@ -320,238 +398,362 @@ edges
 | bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument | provenance | MaD:102 |
 | bdlbb.cpp:96:37:96:39 | copy output argument | bdlbb.cpp:97:7:97:10 | * ... | provenance |  |
 | bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument | provenance | MaD:104 |
-| bslx.cpp:141:33:141:40 | call to source | bslx.cpp:142:46:142:49 | *call to data | provenance | TaintFunction |
-| bslx.cpp:142:34:142:39 | call to ByteInStream | bslx.cpp:144:2:144:7 | *stream | provenance |  |
-| bslx.cpp:142:46:142:49 | *call to data | bslx.cpp:142:34:142:39 | call to ByteInStream | provenance | MaD:107 |
-| bslx.cpp:144:2:144:7 | *stream | bslx.cpp:144:18:144:18 | getInt32 output argument | provenance | MaD:109 |
-| bslx.cpp:144:18:144:18 | getInt32 output argument | bslx.cpp:145:7:145:7 | x | provenance |  |
-| bslx.cpp:149:33:149:40 | call to source | bslx.cpp:150:46:150:49 | *call to data | provenance | TaintFunction |
-| bslx.cpp:150:34:150:39 | call to ByteInStream | bslx.cpp:152:2:152:7 | *stream | provenance |  |
-| bslx.cpp:150:46:150:49 | *call to data | bslx.cpp:150:34:150:39 | call to ByteInStream | provenance | MaD:107 |
-| bslx.cpp:152:2:152:7 | *stream | bslx.cpp:152:22:152:24 | getArrayInt8 output argument | provenance | MaD:108 |
-| bslx.cpp:152:22:152:24 | getArrayInt8 output argument | bslx.cpp:153:7:153:10 | * ... | provenance |  |
-| bslx.cpp:157:33:157:40 | call to source | bslx.cpp:158:46:158:49 | *call to data | provenance | TaintFunction |
-| bslx.cpp:158:34:158:39 | call to ByteInStream | bslx.cpp:160:2:160:7 | *stream | provenance |  |
-| bslx.cpp:158:46:158:49 | *call to data | bslx.cpp:158:34:158:39 | call to ByteInStream | provenance | MaD:107 |
-| bslx.cpp:160:2:160:7 | *stream | bslx.cpp:160:19:160:21 | getString output argument | provenance | MaD:111 |
-| bslx.cpp:160:19:160:21 | getString output argument | bslx.cpp:161:7:161:17 | * ... | provenance | TaintFunction |
-| bslx.cpp:165:33:165:40 | call to source | bslx.cpp:166:46:166:49 | *call to data | provenance | TaintFunction |
-| bslx.cpp:166:34:166:39 | call to ByteInStream | bslx.cpp:169:2:169:7 | *stream | provenance |  |
-| bslx.cpp:166:46:166:49 | *call to data | bslx.cpp:166:34:166:39 | call to ByteInStream | provenance | MaD:107 |
-| bslx.cpp:169:2:169:7 | *stream | bslx.cpp:169:17:169:20 | *call to getInt32 | provenance | MaD:110 |
-| bslx.cpp:169:17:169:20 | *call to getInt32 | bslx.cpp:169:30:169:30 | getInt32 output argument | provenance | MaD:109 |
-| bslx.cpp:169:30:169:30 | getInt32 output argument | bslx.cpp:170:7:170:7 | b | provenance |  |
-| bslx.cpp:175:33:175:40 | call to source | bslx.cpp:176:20:176:23 | *call to data | provenance | TaintFunction |
-| bslx.cpp:176:2:176:7 | reset output argument | bslx.cpp:178:2:178:7 | *stream | provenance |  |
-| bslx.cpp:176:20:176:23 | *call to data | bslx.cpp:176:2:176:7 | reset output argument | provenance | MaD:112 |
-| bslx.cpp:178:2:178:7 | *stream | bslx.cpp:178:18:178:18 | getInt32 output argument | provenance | MaD:109 |
-| bslx.cpp:178:18:178:18 | getInt32 output argument | bslx.cpp:179:7:179:7 | x | provenance |  |
-| bslx.cpp:183:33:183:40 | call to source | bslx.cpp:184:20:184:45 | *call to data | provenance | TaintFunction |
-| bslx.cpp:184:20:184:45 | *call to data | bslx.cpp:185:57:185:58 | *sb | provenance |  |
-| bslx.cpp:184:20:184:45 | *call to data | bslx.cpp:187:2:187:7 | *stream | provenance | TaintFunction |
-| bslx.cpp:185:50:185:55 | call to GenericInStream | bslx.cpp:187:2:187:7 | *stream | provenance |  |
-| bslx.cpp:185:57:185:58 | *sb | bslx.cpp:185:50:185:55 | call to GenericInStream | provenance | MaD:113 |
-| bslx.cpp:187:2:187:7 | *stream | bslx.cpp:187:18:187:18 | getInt32 output argument | provenance | MaD:114 |
-| bslx.cpp:187:18:187:18 | getInt32 output argument | bslx.cpp:188:7:188:7 | x | provenance |  |
-| bslx.cpp:192:33:192:40 | call to source | bslx.cpp:193:46:193:49 | *call to data | provenance | TaintFunction |
-| bslx.cpp:193:34:193:39 | call to ByteInStream | bslx.cpp:195:53:195:58 | *stream | provenance |  |
-| bslx.cpp:193:46:193:49 | *call to data | bslx.cpp:193:34:193:39 | call to ByteInStream | provenance | MaD:107 |
-| bslx.cpp:195:53:195:58 | *stream | bslx.cpp:195:61:195:63 | bdexStreamIn output argument | provenance | MaD:106 |
-| bslx.cpp:195:61:195:63 | bdexStreamIn output argument | bslx.cpp:196:7:196:9 | obj | provenance |  |
+| bslx.cpp:161:33:161:40 | call to source | bslx.cpp:162:46:162:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:162:34:162:39 | call to ByteInStream | bslx.cpp:164:2:164:7 | *stream | provenance |  |
+| bslx.cpp:162:46:162:49 | *call to data | bslx.cpp:162:34:162:39 | call to ByteInStream | provenance | MaD:108 |
+| bslx.cpp:164:2:164:7 | *stream | bslx.cpp:164:22:164:24 | getArrayInt8 output argument | provenance | MaD:118 |
+| bslx.cpp:164:22:164:24 | getArrayInt8 output argument | bslx.cpp:165:7:165:10 | * ... | provenance |  |
+| bslx.cpp:169:33:169:40 | call to source | bslx.cpp:170:46:170:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:170:34:170:39 | call to ByteInStream | bslx.cpp:172:2:172:7 | *stream | provenance |  |
+| bslx.cpp:170:46:170:49 | *call to data | bslx.cpp:170:34:170:39 | call to ByteInStream | provenance | MaD:108 |
+| bslx.cpp:172:2:172:7 | *stream | bslx.cpp:172:19:172:21 | getString output argument | provenance | MaD:139 |
+| bslx.cpp:172:19:172:21 | getString output argument | bslx.cpp:173:7:173:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:177:33:177:40 | call to source | bslx.cpp:178:46:178:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:178:34:178:39 | call to ByteInStream | bslx.cpp:181:2:181:7 | *stream | provenance |  |
+| bslx.cpp:178:46:178:49 | *call to data | bslx.cpp:178:34:178:39 | call to ByteInStream | provenance | MaD:108 |
+| bslx.cpp:181:2:181:7 | *stream | bslx.cpp:181:17:181:20 | *call to getInt32 | provenance | MaD:132 |
+| bslx.cpp:181:17:181:20 | *call to getInt32 | bslx.cpp:181:31:181:33 | getString output argument | provenance | MaD:139 |
+| bslx.cpp:181:31:181:33 | getString output argument | bslx.cpp:182:7:182:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:187:33:187:40 | call to source | bslx.cpp:188:20:188:23 | *call to data | provenance | TaintFunction |
+| bslx.cpp:188:2:188:7 | reset output argument | bslx.cpp:190:2:190:7 | *stream | provenance |  |
+| bslx.cpp:188:20:188:23 | *call to data | bslx.cpp:188:2:188:7 | reset output argument | provenance | MaD:151 |
+| bslx.cpp:190:2:190:7 | *stream | bslx.cpp:190:19:190:21 | getString output argument | provenance | MaD:139 |
+| bslx.cpp:190:19:190:21 | getString output argument | bslx.cpp:191:7:191:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:195:33:195:40 | call to source | bslx.cpp:196:20:196:45 | *call to data | provenance | TaintFunction |
+| bslx.cpp:196:20:196:45 | *call to data | bslx.cpp:197:57:197:58 | *sb | provenance |  |
+| bslx.cpp:196:20:196:45 | *call to data | bslx.cpp:199:2:199:7 | *stream | provenance | TaintFunction |
+| bslx.cpp:197:50:197:55 | call to GenericInStream | bslx.cpp:199:2:199:7 | *stream | provenance |  |
+| bslx.cpp:197:57:197:58 | *sb | bslx.cpp:197:50:197:55 | call to GenericInStream | provenance | MaD:152 |
+| bslx.cpp:199:2:199:7 | *stream | bslx.cpp:199:19:199:21 | getString output argument | provenance | MaD:182 |
+| bslx.cpp:199:19:199:21 | getString output argument | bslx.cpp:200:7:200:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:213:33:213:40 | call to source | bslx.cpp:214:46:214:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:214:34:214:39 | call to ByteInStream | bslx.cpp:216:53:216:58 | *stream | provenance |  |
+| bslx.cpp:214:46:214:49 | *call to data | bslx.cpp:214:34:214:39 | call to ByteInStream | provenance | MaD:108 |
+| bslx.cpp:216:53:216:58 | *stream | bslx.cpp:216:61:216:63 | bdexStreamIn output argument | provenance | MaD:106 |
+| bslx.cpp:216:61:216:63 | bdexStreamIn output argument | bslx.cpp:217:7:217:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:223:33:223:40 | call to source | bslx.cpp:224:46:224:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:224:34:224:39 | call to ByteInStream | bslx.cpp:247:2:247:7 | *stream | provenance |  |
+| bslx.cpp:224:46:224:49 | *call to data | bslx.cpp:224:34:224:39 | call to ByteInStream | provenance | MaD:108 |
+| bslx.cpp:247:2:247:7 | *stream | bslx.cpp:247:18:247:21 | *call to getLength | provenance | MaD:138 |
+| bslx.cpp:247:18:247:21 | *call to getLength | bslx.cpp:247:32:247:35 | *call to getVersion | provenance | MaD:149 |
+| bslx.cpp:247:32:247:35 | *call to getVersion | bslx.cpp:247:43:247:46 | *call to getInt8 | provenance | MaD:137 |
+| bslx.cpp:247:43:247:46 | *call to getInt8 | bslx.cpp:247:55:247:59 | *call to getUint8 | provenance | MaD:148 |
+| bslx.cpp:247:55:247:59 | *call to getUint8 | bslx.cpp:247:68:247:71 | *call to getInt16 | provenance | MaD:130 |
+| bslx.cpp:247:68:247:71 | *call to getInt16 | bslx.cpp:247:81:247:85 | *call to getUint16 | provenance | MaD:141 |
+| bslx.cpp:247:81:247:85 | *call to getUint16 | bslx.cpp:247:94:247:97 | *call to getInt24 | provenance | MaD:131 |
+| bslx.cpp:247:94:247:97 | *call to getInt24 | bslx.cpp:247:107:247:111 | *call to getUint24 | provenance | MaD:142 |
+| bslx.cpp:247:107:247:111 | *call to getUint24 | bslx.cpp:247:120:247:123 | *call to getInt32 | provenance | MaD:132 |
+| bslx.cpp:247:120:247:123 | *call to getInt32 | bslx.cpp:247:133:247:137 | *call to getUint32 | provenance | MaD:143 |
+| bslx.cpp:247:133:247:137 | *call to getUint32 | bslx.cpp:247:146:247:150 | *call to getInt40 | provenance | MaD:133 |
+| bslx.cpp:247:146:247:150 | *call to getInt40 | bslx.cpp:247:160:247:165 | *call to getUint40 | provenance | MaD:144 |
+| bslx.cpp:247:160:247:165 | *call to getUint40 | bslx.cpp:247:174:247:178 | *call to getInt48 | provenance | MaD:134 |
+| bslx.cpp:247:174:247:178 | *call to getInt48 | bslx.cpp:247:188:247:193 | *call to getUint48 | provenance | MaD:145 |
+| bslx.cpp:247:188:247:193 | *call to getUint48 | bslx.cpp:247:202:247:206 | *call to getInt56 | provenance | MaD:135 |
+| bslx.cpp:247:202:247:206 | *call to getInt56 | bslx.cpp:247:216:247:221 | *call to getUint56 | provenance | MaD:146 |
+| bslx.cpp:247:216:247:221 | *call to getUint56 | bslx.cpp:247:230:247:234 | *call to getInt64 | provenance | MaD:136 |
+| bslx.cpp:247:230:247:234 | *call to getInt64 | bslx.cpp:247:244:247:249 | *call to getUint64 | provenance | MaD:147 |
+| bslx.cpp:247:244:247:249 | *call to getUint64 | bslx.cpp:247:260:247:263 | *call to getFloat32 | provenance | MaD:128 |
+| bslx.cpp:247:260:247:263 | *call to getFloat32 | bslx.cpp:247:274:247:277 | *call to getFloat64 | provenance | MaD:129 |
+| bslx.cpp:247:274:247:277 | *call to getFloat64 | bslx.cpp:247:287:247:292 | *call to getString | provenance | MaD:140 |
+| bslx.cpp:247:287:247:292 | *call to getString | bslx.cpp:247:305:247:315 | *call to getArrayInt8 | provenance | MaD:119 |
+| bslx.cpp:247:305:247:315 | *call to getArrayInt8 | bslx.cpp:247:329:247:340 | *call to getArrayUint8 | provenance | MaD:127 |
+| bslx.cpp:247:329:247:340 | *call to getArrayUint8 | bslx.cpp:247:354:247:364 | *call to getArrayInt16 | provenance | MaD:111 |
+| bslx.cpp:247:354:247:364 | *call to getArrayInt16 | bslx.cpp:247:379:247:390 | *call to getArrayUint16 | provenance | MaD:120 |
+| bslx.cpp:247:379:247:390 | *call to getArrayUint16 | bslx.cpp:247:404:247:414 | *call to getArrayInt24 | provenance | MaD:112 |
+| bslx.cpp:247:404:247:414 | *call to getArrayInt24 | bslx.cpp:247:429:247:440 | *call to getArrayUint24 | provenance | MaD:121 |
+| bslx.cpp:247:429:247:440 | *call to getArrayUint24 | bslx.cpp:247:454:247:464 | *call to getArrayInt32 | provenance | MaD:113 |
+| bslx.cpp:247:454:247:464 | *call to getArrayInt32 | bslx.cpp:247:479:247:490 | *call to getArrayUint32 | provenance | MaD:122 |
+| bslx.cpp:247:479:247:490 | *call to getArrayUint32 | bslx.cpp:247:504:247:515 | *call to getArrayInt40 | provenance | MaD:114 |
+| bslx.cpp:247:504:247:515 | *call to getArrayInt40 | bslx.cpp:247:530:247:542 | *call to getArrayUint40 | provenance | MaD:123 |
+| bslx.cpp:247:530:247:542 | *call to getArrayUint40 | bslx.cpp:247:556:247:567 | *call to getArrayInt48 | provenance | MaD:115 |
+| bslx.cpp:247:556:247:567 | *call to getArrayInt48 | bslx.cpp:247:582:247:594 | *call to getArrayUint48 | provenance | MaD:124 |
+| bslx.cpp:247:582:247:594 | *call to getArrayUint48 | bslx.cpp:247:608:247:619 | *call to getArrayInt56 | provenance | MaD:116 |
+| bslx.cpp:247:608:247:619 | *call to getArrayInt56 | bslx.cpp:247:634:247:646 | *call to getArrayUint56 | provenance | MaD:125 |
+| bslx.cpp:247:634:247:646 | *call to getArrayUint56 | bslx.cpp:247:660:247:671 | *call to getArrayInt64 | provenance | MaD:117 |
+| bslx.cpp:247:660:247:671 | *call to getArrayInt64 | bslx.cpp:247:686:247:698 | *call to getArrayUint64 | provenance | MaD:126 |
+| bslx.cpp:247:686:247:698 | *call to getArrayUint64 | bslx.cpp:247:714:247:724 | *call to getArrayFloat32 | provenance | MaD:109 |
+| bslx.cpp:247:714:247:724 | *call to getArrayFloat32 | bslx.cpp:247:740:247:750 | *call to getArrayFloat64 | provenance | MaD:110 |
+| bslx.cpp:247:740:247:750 | *call to getArrayFloat64 | bslx.cpp:247:761:247:763 | getString output argument | provenance | MaD:139 |
+| bslx.cpp:247:761:247:763 | getString output argument | bslx.cpp:248:7:248:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:252:33:252:40 | call to source | bslx.cpp:253:20:253:45 | *call to data | provenance | TaintFunction |
+| bslx.cpp:253:20:253:45 | *call to data | bslx.cpp:254:57:254:58 | *sb | provenance |  |
+| bslx.cpp:253:20:253:45 | *call to data | bslx.cpp:277:2:277:7 | *stream | provenance | TaintFunction |
+| bslx.cpp:254:50:254:55 | call to GenericInStream | bslx.cpp:277:2:277:7 | *stream | provenance |  |
+| bslx.cpp:254:57:254:58 | *sb | bslx.cpp:254:50:254:55 | call to GenericInStream | provenance | MaD:152 |
+| bslx.cpp:277:2:277:7 | *stream | bslx.cpp:277:18:277:21 | *call to getLength | provenance | MaD:181 |
+| bslx.cpp:277:18:277:21 | *call to getLength | bslx.cpp:277:32:277:35 | *call to getVersion | provenance | MaD:192 |
+| bslx.cpp:277:32:277:35 | *call to getVersion | bslx.cpp:277:43:277:46 | *call to getInt8 | provenance | MaD:180 |
+| bslx.cpp:277:43:277:46 | *call to getInt8 | bslx.cpp:277:55:277:59 | *call to getUint8 | provenance | MaD:191 |
+| bslx.cpp:277:55:277:59 | *call to getUint8 | bslx.cpp:277:68:277:71 | *call to getInt16 | provenance | MaD:173 |
+| bslx.cpp:277:68:277:71 | *call to getInt16 | bslx.cpp:277:81:277:85 | *call to getUint16 | provenance | MaD:184 |
+| bslx.cpp:277:81:277:85 | *call to getUint16 | bslx.cpp:277:94:277:97 | *call to getInt24 | provenance | MaD:174 |
+| bslx.cpp:277:94:277:97 | *call to getInt24 | bslx.cpp:277:107:277:111 | *call to getUint24 | provenance | MaD:185 |
+| bslx.cpp:277:107:277:111 | *call to getUint24 | bslx.cpp:277:120:277:123 | *call to getInt32 | provenance | MaD:175 |
+| bslx.cpp:277:120:277:123 | *call to getInt32 | bslx.cpp:277:133:277:137 | *call to getUint32 | provenance | MaD:186 |
+| bslx.cpp:277:133:277:137 | *call to getUint32 | bslx.cpp:277:146:277:150 | *call to getInt40 | provenance | MaD:176 |
+| bslx.cpp:277:146:277:150 | *call to getInt40 | bslx.cpp:277:160:277:165 | *call to getUint40 | provenance | MaD:187 |
+| bslx.cpp:277:160:277:165 | *call to getUint40 | bslx.cpp:277:174:277:178 | *call to getInt48 | provenance | MaD:177 |
+| bslx.cpp:277:174:277:178 | *call to getInt48 | bslx.cpp:277:188:277:193 | *call to getUint48 | provenance | MaD:188 |
+| bslx.cpp:277:188:277:193 | *call to getUint48 | bslx.cpp:277:202:277:206 | *call to getInt56 | provenance | MaD:178 |
+| bslx.cpp:277:202:277:206 | *call to getInt56 | bslx.cpp:277:216:277:221 | *call to getUint56 | provenance | MaD:189 |
+| bslx.cpp:277:216:277:221 | *call to getUint56 | bslx.cpp:277:230:277:234 | *call to getInt64 | provenance | MaD:179 |
+| bslx.cpp:277:230:277:234 | *call to getInt64 | bslx.cpp:277:244:277:249 | *call to getUint64 | provenance | MaD:190 |
+| bslx.cpp:277:244:277:249 | *call to getUint64 | bslx.cpp:277:260:277:263 | *call to getFloat32 | provenance | MaD:171 |
+| bslx.cpp:277:260:277:263 | *call to getFloat32 | bslx.cpp:277:274:277:277 | *call to getFloat64 | provenance | MaD:172 |
+| bslx.cpp:277:274:277:277 | *call to getFloat64 | bslx.cpp:277:287:277:292 | *call to getString | provenance | MaD:183 |
+| bslx.cpp:277:287:277:292 | *call to getString | bslx.cpp:277:305:277:315 | *call to getArrayInt8 | provenance | MaD:162 |
+| bslx.cpp:277:305:277:315 | *call to getArrayInt8 | bslx.cpp:277:329:277:340 | *call to getArrayUint8 | provenance | MaD:170 |
+| bslx.cpp:277:329:277:340 | *call to getArrayUint8 | bslx.cpp:277:354:277:364 | *call to getArrayInt16 | provenance | MaD:155 |
+| bslx.cpp:277:354:277:364 | *call to getArrayInt16 | bslx.cpp:277:379:277:390 | *call to getArrayUint16 | provenance | MaD:163 |
+| bslx.cpp:277:379:277:390 | *call to getArrayUint16 | bslx.cpp:277:404:277:414 | *call to getArrayInt24 | provenance | MaD:156 |
+| bslx.cpp:277:404:277:414 | *call to getArrayInt24 | bslx.cpp:277:429:277:440 | *call to getArrayUint24 | provenance | MaD:164 |
+| bslx.cpp:277:429:277:440 | *call to getArrayUint24 | bslx.cpp:277:454:277:464 | *call to getArrayInt32 | provenance | MaD:157 |
+| bslx.cpp:277:454:277:464 | *call to getArrayInt32 | bslx.cpp:277:479:277:490 | *call to getArrayUint32 | provenance | MaD:165 |
+| bslx.cpp:277:479:277:490 | *call to getArrayUint32 | bslx.cpp:277:504:277:515 | *call to getArrayInt40 | provenance | MaD:158 |
+| bslx.cpp:277:504:277:515 | *call to getArrayInt40 | bslx.cpp:277:530:277:542 | *call to getArrayUint40 | provenance | MaD:166 |
+| bslx.cpp:277:530:277:542 | *call to getArrayUint40 | bslx.cpp:277:556:277:567 | *call to getArrayInt48 | provenance | MaD:159 |
+| bslx.cpp:277:556:277:567 | *call to getArrayInt48 | bslx.cpp:277:582:277:594 | *call to getArrayUint48 | provenance | MaD:167 |
+| bslx.cpp:277:582:277:594 | *call to getArrayUint48 | bslx.cpp:277:608:277:619 | *call to getArrayInt56 | provenance | MaD:160 |
+| bslx.cpp:277:608:277:619 | *call to getArrayInt56 | bslx.cpp:277:634:277:646 | *call to getArrayUint56 | provenance | MaD:168 |
+| bslx.cpp:277:634:277:646 | *call to getArrayUint56 | bslx.cpp:277:660:277:671 | *call to getArrayInt64 | provenance | MaD:161 |
+| bslx.cpp:277:660:277:671 | *call to getArrayInt64 | bslx.cpp:277:686:277:698 | *call to getArrayUint64 | provenance | MaD:169 |
+| bslx.cpp:277:686:277:698 | *call to getArrayUint64 | bslx.cpp:277:714:277:724 | *call to getArrayFloat32 | provenance | MaD:153 |
+| bslx.cpp:277:714:277:724 | *call to getArrayFloat32 | bslx.cpp:277:740:277:750 | *call to getArrayFloat64 | provenance | MaD:154 |
+| bslx.cpp:277:740:277:750 | *call to getArrayFloat64 | bslx.cpp:277:761:277:763 | getString output argument | provenance | MaD:182 |
+| bslx.cpp:277:761:277:763 | getString output argument | bslx.cpp:278:7:278:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:282:33:282:40 | call to source | bslx.cpp:283:46:283:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:283:34:283:39 | call to ByteInStream | bslx.cpp:285:53:285:58 | *stream | provenance |  |
+| bslx.cpp:283:34:283:39 | call to ByteInStream | bslx.cpp:287:53:287:58 | *stream | provenance |  |
+| bslx.cpp:283:34:283:39 | call to ByteInStream | bslx.cpp:290:53:290:58 | *stream | provenance |  |
+| bslx.cpp:283:46:283:49 | *call to data | bslx.cpp:283:34:283:39 | call to ByteInStream | provenance | MaD:108 |
+| bslx.cpp:285:53:285:58 | *stream | bslx.cpp:285:61:285:61 | bdexStreamIn output argument | provenance | MaD:106 |
+| bslx.cpp:285:61:285:61 | bdexStreamIn output argument | bslx.cpp:286:7:286:7 | x | provenance |  |
+| bslx.cpp:285:61:285:61 | bdexStreamIn output argument | bslx.cpp:288:7:288:7 | x | provenance |  |
+| bslx.cpp:287:53:287:58 | *stream | bslx.cpp:287:61:287:61 | bdexStreamIn output argument | provenance | MaD:106 |
+| bslx.cpp:287:61:287:61 | bdexStreamIn output argument | bslx.cpp:288:7:288:7 | x | provenance |  |
+| bslx.cpp:290:52:290:66 | *call to bdexStreamIn | bslx.cpp:290:77:290:79 | getString output argument | provenance | MaD:139 |
+| bslx.cpp:290:53:290:58 | *stream | bslx.cpp:290:52:290:66 | *call to bdexStreamIn | provenance | MaD:107 |
+| bslx.cpp:290:77:290:79 | getString output argument | bslx.cpp:291:7:291:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:295:33:295:40 | call to source | bslx.cpp:296:46:296:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:296:34:296:39 | call to ByteInStream | bslx.cpp:298:53:298:58 | *stream | provenance |  |
+| bslx.cpp:296:46:296:49 | *call to data | bslx.cpp:296:34:296:39 | call to ByteInStream | provenance | MaD:108 |
+| bslx.cpp:298:53:298:58 | *stream | bslx.cpp:298:61:298:63 | bdexStreamIn output argument | provenance | MaD:106 |
+| bslx.cpp:298:61:298:63 | bdexStreamIn output argument | bslx.cpp:299:7:299:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:309:33:309:40 | call to source | bslx.cpp:310:46:310:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:310:34:310:39 | call to ByteInStream | bslx.cpp:312:53:312:58 | *stream | provenance |  |
+| bslx.cpp:310:46:310:49 | *call to data | bslx.cpp:310:34:310:39 | call to ByteInStream | provenance | MaD:108 |
+| bslx.cpp:312:53:312:58 | *stream | bslx.cpp:312:61:312:63 | bdexStreamIn output argument | provenance | MaD:106 |
+| bslx.cpp:312:61:312:63 | bdexStreamIn output argument | bslx.cpp:313:7:313:9 | out | provenance |  |
+| bslx.cpp:322:40:322:60 | call to source | bslx.cpp:322:40:322:60 | call to source | provenance |  |
+| bslx.cpp:322:40:322:60 | call to source | bslx.cpp:323:15:323:18 | *data | provenance |  |
+| bslx.cpp:323:2:323:7 | reset output argument | bslx.cpp:325:2:325:7 | *stream | provenance |  |
+| bslx.cpp:323:15:323:18 | *data | bslx.cpp:323:2:323:7 | reset output argument | provenance | MaD:150 |
+| bslx.cpp:325:2:325:7 | *stream | bslx.cpp:325:19:325:21 | getString output argument | provenance | MaD:139 |
+| bslx.cpp:325:19:325:21 | getString output argument | bslx.cpp:326:7:326:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:330:33:330:40 | call to source | bslx.cpp:331:46:331:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:331:34:331:39 | call to ByteInStream | bslx.cpp:334:2:334:7 | *stream | provenance |  |
+| bslx.cpp:331:46:331:49 | *call to data | bslx.cpp:331:34:331:39 | call to ByteInStream | provenance | MaD:108 |
+| bslx.cpp:334:2:334:7 | *stream | bslx.cpp:334:19:334:21 | getString output argument | provenance | MaD:139 |
+| bslx.cpp:334:19:334:21 | getString output argument | bslx.cpp:335:7:335:17 | * ... | provenance | TaintFunction |
+| bslx.cpp:349:33:349:40 | call to source | bslx.cpp:350:46:350:49 | *call to data | provenance | TaintFunction |
+| bslx.cpp:350:34:350:39 | call to ByteInStream | bslx.cpp:354:2:354:7 | *stream | provenance |  |
+| bslx.cpp:350:46:350:49 | *call to data | bslx.cpp:350:34:350:39 | call to ByteInStream | provenance | MaD:108 |
+| bslx.cpp:354:2:354:7 | *stream | bslx.cpp:354:19:354:21 | getString output argument | provenance | MaD:139 |
+| bslx.cpp:354:19:354:21 | getString output argument | bslx.cpp:356:7:356:17 | * ... | provenance | TaintFunction |
 | protobuf.cpp:117:27:117:51 | call to source | protobuf.cpp:117:27:117:51 | call to source | provenance |  |
 | protobuf.cpp:117:27:117:51 | call to source | protobuf.cpp:118:22:118:25 | data | provenance |  |
 | protobuf.cpp:118:2:118:4 | ParseFromString output argument | protobuf.cpp:119:7:119:9 | msg | provenance |  |
-| protobuf.cpp:118:22:118:25 | data | protobuf.cpp:118:2:118:4 | ParseFromString output argument | provenance | MaD:152 |
+| protobuf.cpp:118:22:118:25 | data | protobuf.cpp:118:2:118:4 | ParseFromString output argument | provenance | MaD:230 |
 | protobuf.cpp:124:20:124:37 | call to source | protobuf.cpp:124:20:124:37 | call to source | provenance |  |
 | protobuf.cpp:124:20:124:37 | call to source | protobuf.cpp:125:22:125:25 | *data | provenance |  |
 | protobuf.cpp:125:2:125:4 | ParseFromString output argument | protobuf.cpp:126:7:126:9 | msg | provenance |  |
-| protobuf.cpp:125:22:125:25 | *data | protobuf.cpp:125:2:125:4 | ParseFromString output argument | provenance | MaD:151 |
+| protobuf.cpp:125:22:125:25 | *data | protobuf.cpp:125:2:125:4 | ParseFromString output argument | provenance | MaD:229 |
 | protobuf.cpp:131:27:131:51 | call to source | protobuf.cpp:131:27:131:51 | call to source | provenance |  |
 | protobuf.cpp:131:27:131:51 | call to source | protobuf.cpp:132:29:132:32 | data | provenance |  |
 | protobuf.cpp:132:2:132:4 | ParsePartialFromString output argument | protobuf.cpp:133:7:133:9 | msg | provenance |  |
-| protobuf.cpp:132:29:132:32 | data | protobuf.cpp:132:2:132:4 | ParsePartialFromString output argument | provenance | MaD:160 |
+| protobuf.cpp:132:29:132:32 | data | protobuf.cpp:132:2:132:4 | ParsePartialFromString output argument | provenance | MaD:238 |
 | protobuf.cpp:138:20:138:37 | call to source | protobuf.cpp:138:20:138:37 | call to source | provenance |  |
 | protobuf.cpp:138:20:138:37 | call to source | protobuf.cpp:139:29:139:32 | *data | provenance |  |
 | protobuf.cpp:139:2:139:4 | ParsePartialFromString output argument | protobuf.cpp:140:7:140:9 | msg | provenance |  |
-| protobuf.cpp:139:29:139:32 | *data | protobuf.cpp:139:2:139:4 | ParsePartialFromString output argument | provenance | MaD:159 |
+| protobuf.cpp:139:29:139:32 | *data | protobuf.cpp:139:2:139:4 | ParsePartialFromString output argument | provenance | MaD:237 |
 | protobuf.cpp:145:27:145:51 | call to source | protobuf.cpp:145:27:145:51 | call to source | provenance |  |
 | protobuf.cpp:145:27:145:51 | call to source | protobuf.cpp:146:22:146:25 | data | provenance |  |
 | protobuf.cpp:146:2:146:4 | MergeFromString output argument | protobuf.cpp:147:7:147:9 | msg | provenance |  |
-| protobuf.cpp:146:22:146:25 | data | protobuf.cpp:146:2:146:4 | MergeFromString output argument | provenance | MaD:140 |
+| protobuf.cpp:146:22:146:25 | data | protobuf.cpp:146:2:146:4 | MergeFromString output argument | provenance | MaD:218 |
 | protobuf.cpp:152:20:152:37 | call to source | protobuf.cpp:152:20:152:37 | call to source | provenance |  |
 | protobuf.cpp:152:20:152:37 | call to source | protobuf.cpp:153:22:153:25 | *data | provenance |  |
 | protobuf.cpp:153:2:153:4 | MergeFromString output argument | protobuf.cpp:154:7:154:9 | msg | provenance |  |
-| protobuf.cpp:153:22:153:25 | *data | protobuf.cpp:153:2:153:4 | MergeFromString output argument | provenance | MaD:139 |
+| protobuf.cpp:153:22:153:25 | *data | protobuf.cpp:153:2:153:4 | MergeFromString output argument | provenance | MaD:217 |
 | protobuf.cpp:159:27:159:51 | call to source | protobuf.cpp:159:27:159:51 | call to source | provenance |  |
 | protobuf.cpp:159:27:159:51 | call to source | protobuf.cpp:160:29:160:32 | data | provenance |  |
 | protobuf.cpp:160:2:160:4 | MergePartialFromString output argument | protobuf.cpp:161:7:161:9 | msg | provenance |  |
-| protobuf.cpp:160:29:160:32 | data | protobuf.cpp:160:2:160:4 | MergePartialFromString output argument | provenance | MaD:145 |
+| protobuf.cpp:160:29:160:32 | data | protobuf.cpp:160:2:160:4 | MergePartialFromString output argument | provenance | MaD:223 |
 | protobuf.cpp:166:20:166:37 | call to source | protobuf.cpp:166:20:166:37 | call to source | provenance |  |
 | protobuf.cpp:166:20:166:37 | call to source | protobuf.cpp:167:29:167:32 | *data | provenance |  |
 | protobuf.cpp:167:2:167:4 | MergePartialFromString output argument | protobuf.cpp:168:7:168:9 | msg | provenance |  |
-| protobuf.cpp:167:29:167:32 | *data | protobuf.cpp:167:2:167:4 | MergePartialFromString output argument | provenance | MaD:144 |
+| protobuf.cpp:167:29:167:32 | *data | protobuf.cpp:167:2:167:4 | MergePartialFromString output argument | provenance | MaD:222 |
 | protobuf.cpp:173:19:173:38 | call to source | protobuf.cpp:174:21:174:31 | *call to data | provenance | TaintFunction |
 | protobuf.cpp:174:2:174:4 | ParseFromArray output argument | protobuf.cpp:175:7:175:9 | msg | provenance |  |
-| protobuf.cpp:174:21:174:31 | *call to data | protobuf.cpp:174:2:174:4 | ParseFromArray output argument | provenance | MaD:146 |
+| protobuf.cpp:174:21:174:31 | *call to data | protobuf.cpp:174:2:174:4 | ParseFromArray output argument | provenance | MaD:224 |
 | protobuf.cpp:180:19:180:38 | call to source | protobuf.cpp:181:28:181:38 | *call to data | provenance | TaintFunction |
 | protobuf.cpp:181:2:181:4 | ParsePartialFromArray output argument | protobuf.cpp:182:7:182:9 | msg | provenance |  |
-| protobuf.cpp:181:28:181:38 | *call to data | protobuf.cpp:181:2:181:4 | ParsePartialFromArray output argument | provenance | MaD:154 |
+| protobuf.cpp:181:28:181:38 | *call to data | protobuf.cpp:181:2:181:4 | ParsePartialFromArray output argument | provenance | MaD:232 |
 | protobuf.cpp:187:20:187:37 | call to source | protobuf.cpp:187:20:187:37 | call to source | provenance |  |
 | protobuf.cpp:187:20:187:37 | call to source | protobuf.cpp:188:20:188:23 | *data | provenance |  |
 | protobuf.cpp:188:2:188:4 | ParseFromCord output argument | protobuf.cpp:189:7:189:9 | msg | provenance |  |
-| protobuf.cpp:188:20:188:23 | *data | protobuf.cpp:188:2:188:4 | ParseFromCord output argument | provenance | MaD:149 |
+| protobuf.cpp:188:20:188:23 | *data | protobuf.cpp:188:2:188:4 | ParseFromCord output argument | provenance | MaD:227 |
 | protobuf.cpp:194:20:194:37 | call to source | protobuf.cpp:194:20:194:37 | call to source | provenance |  |
 | protobuf.cpp:194:20:194:37 | call to source | protobuf.cpp:195:27:195:30 | *data | provenance |  |
 | protobuf.cpp:195:2:195:4 | ParsePartialFromCord output argument | protobuf.cpp:196:7:196:9 | msg | provenance |  |
-| protobuf.cpp:195:27:195:30 | *data | protobuf.cpp:195:2:195:4 | ParsePartialFromCord output argument | provenance | MaD:157 |
+| protobuf.cpp:195:27:195:30 | *data | protobuf.cpp:195:2:195:4 | ParsePartialFromCord output argument | provenance | MaD:235 |
 | protobuf.cpp:201:20:201:37 | call to source | protobuf.cpp:201:20:201:37 | call to source | provenance |  |
 | protobuf.cpp:201:20:201:37 | call to source | protobuf.cpp:202:20:202:23 | *data | provenance |  |
 | protobuf.cpp:202:2:202:4 | MergeFromCord output argument | protobuf.cpp:203:7:203:9 | msg | provenance |  |
-| protobuf.cpp:202:20:202:23 | *data | protobuf.cpp:202:2:202:4 | MergeFromCord output argument | provenance | MaD:138 |
+| protobuf.cpp:202:20:202:23 | *data | protobuf.cpp:202:2:202:4 | MergeFromCord output argument | provenance | MaD:216 |
 | protobuf.cpp:208:20:208:37 | call to source | protobuf.cpp:208:20:208:37 | call to source | provenance |  |
 | protobuf.cpp:208:20:208:37 | call to source | protobuf.cpp:209:27:209:30 | *data | provenance |  |
 | protobuf.cpp:209:2:209:4 | MergePartialFromCord output argument | protobuf.cpp:210:7:210:9 | msg | provenance |  |
-| protobuf.cpp:209:27:209:30 | *data | protobuf.cpp:209:2:209:4 | MergePartialFromCord output argument | provenance | MaD:143 |
+| protobuf.cpp:209:27:209:30 | *data | protobuf.cpp:209:2:209:4 | MergePartialFromCord output argument | provenance | MaD:221 |
 | protobuf.cpp:215:20:215:39 | call to source | protobuf.cpp:215:20:215:39 | call to source | provenance |  |
 | protobuf.cpp:215:20:215:39 | call to source | protobuf.cpp:216:23:216:25 | *& ... | provenance |  |
 | protobuf.cpp:216:2:216:4 | ParseFromIstream output argument | protobuf.cpp:217:7:217:9 | msg | provenance |  |
-| protobuf.cpp:216:23:216:25 | *& ... | protobuf.cpp:216:2:216:4 | ParseFromIstream output argument | provenance | MaD:150 |
+| protobuf.cpp:216:23:216:25 | *& ... | protobuf.cpp:216:2:216:4 | ParseFromIstream output argument | provenance | MaD:228 |
 | protobuf.cpp:222:20:222:39 | call to source | protobuf.cpp:222:20:222:39 | call to source | provenance |  |
 | protobuf.cpp:222:20:222:39 | call to source | protobuf.cpp:223:30:223:32 | *& ... | provenance |  |
 | protobuf.cpp:223:2:223:4 | ParsePartialFromIstream output argument | protobuf.cpp:224:7:224:9 | msg | provenance |  |
-| protobuf.cpp:223:30:223:32 | *& ... | protobuf.cpp:223:2:223:4 | ParsePartialFromIstream output argument | provenance | MaD:158 |
+| protobuf.cpp:223:30:223:32 | *& ... | protobuf.cpp:223:2:223:4 | ParsePartialFromIstream output argument | provenance | MaD:236 |
 | protobuf.cpp:229:27:229:53 | call to source | protobuf.cpp:229:27:229:53 | call to source | provenance |  |
 | protobuf.cpp:229:27:229:53 | call to source | protobuf.cpp:230:30:230:32 | *& ... | provenance |  |
 | protobuf.cpp:230:2:230:4 | ParseFromZeroCopyStream output argument | protobuf.cpp:231:7:231:9 | msg | provenance |  |
-| protobuf.cpp:230:30:230:32 | *& ... | protobuf.cpp:230:2:230:4 | ParseFromZeroCopyStream output argument | provenance | MaD:153 |
+| protobuf.cpp:230:30:230:32 | *& ... | protobuf.cpp:230:2:230:4 | ParseFromZeroCopyStream output argument | provenance | MaD:231 |
 | protobuf.cpp:236:27:236:53 | call to source | protobuf.cpp:236:27:236:53 | call to source | provenance |  |
 | protobuf.cpp:236:27:236:53 | call to source | protobuf.cpp:237:37:237:39 | *& ... | provenance |  |
 | protobuf.cpp:237:2:237:4 | ParsePartialFromZeroCopyStream output argument | protobuf.cpp:238:7:238:9 | msg | provenance |  |
-| protobuf.cpp:237:37:237:39 | *& ... | protobuf.cpp:237:2:237:4 | ParsePartialFromZeroCopyStream output argument | provenance | MaD:161 |
+| protobuf.cpp:237:37:237:39 | *& ... | protobuf.cpp:237:2:237:4 | ParsePartialFromZeroCopyStream output argument | provenance | MaD:239 |
 | protobuf.cpp:243:27:243:53 | call to source | protobuf.cpp:243:27:243:53 | call to source | provenance |  |
 | protobuf.cpp:243:27:243:53 | call to source | protobuf.cpp:244:37:244:39 | *& ... | provenance |  |
 | protobuf.cpp:244:2:244:4 | ParseFromBoundedZeroCopyStream output argument | protobuf.cpp:245:7:245:9 | msg | provenance |  |
-| protobuf.cpp:244:37:244:39 | *& ... | protobuf.cpp:244:2:244:4 | ParseFromBoundedZeroCopyStream output argument | provenance | MaD:147 |
+| protobuf.cpp:244:37:244:39 | *& ... | protobuf.cpp:244:2:244:4 | ParseFromBoundedZeroCopyStream output argument | provenance | MaD:225 |
 | protobuf.cpp:250:27:250:53 | call to source | protobuf.cpp:250:27:250:53 | call to source | provenance |  |
 | protobuf.cpp:250:27:250:53 | call to source | protobuf.cpp:251:44:251:46 | *& ... | provenance |  |
 | protobuf.cpp:251:2:251:4 | ParsePartialFromBoundedZeroCopyStream output argument | protobuf.cpp:252:7:252:9 | msg | provenance |  |
-| protobuf.cpp:251:44:251:46 | *& ... | protobuf.cpp:251:2:251:4 | ParsePartialFromBoundedZeroCopyStream output argument | provenance | MaD:155 |
+| protobuf.cpp:251:44:251:46 | *& ... | protobuf.cpp:251:2:251:4 | ParsePartialFromBoundedZeroCopyStream output argument | provenance | MaD:233 |
 | protobuf.cpp:257:27:257:53 | call to source | protobuf.cpp:257:27:257:53 | call to source | provenance |  |
 | protobuf.cpp:257:27:257:53 | call to source | protobuf.cpp:258:37:258:39 | *& ... | provenance |  |
 | protobuf.cpp:258:2:258:4 | MergeFromBoundedZeroCopyStream output argument | protobuf.cpp:259:7:259:9 | msg | provenance |  |
-| protobuf.cpp:258:37:258:39 | *& ... | protobuf.cpp:258:2:258:4 | MergeFromBoundedZeroCopyStream output argument | provenance | MaD:136 |
+| protobuf.cpp:258:37:258:39 | *& ... | protobuf.cpp:258:2:258:4 | MergeFromBoundedZeroCopyStream output argument | provenance | MaD:214 |
 | protobuf.cpp:264:27:264:53 | call to source | protobuf.cpp:264:27:264:53 | call to source | provenance |  |
 | protobuf.cpp:264:27:264:53 | call to source | protobuf.cpp:265:44:265:46 | *& ... | provenance |  |
 | protobuf.cpp:265:2:265:4 | MergePartialFromBoundedZeroCopyStream output argument | protobuf.cpp:266:7:266:9 | msg | provenance |  |
-| protobuf.cpp:265:44:265:46 | *& ... | protobuf.cpp:265:2:265:4 | MergePartialFromBoundedZeroCopyStream output argument | provenance | MaD:141 |
+| protobuf.cpp:265:44:265:46 | *& ... | protobuf.cpp:265:2:265:4 | MergePartialFromBoundedZeroCopyStream output argument | provenance | MaD:219 |
 | protobuf.cpp:271:24:271:47 | call to source | protobuf.cpp:271:24:271:47 | call to source | provenance |  |
 | protobuf.cpp:271:24:271:47 | call to source | protobuf.cpp:272:27:272:29 | *& ... | provenance |  |
 | protobuf.cpp:272:2:272:4 | ParseFromCodedStream output argument | protobuf.cpp:273:7:273:9 | msg | provenance |  |
-| protobuf.cpp:272:27:272:29 | *& ... | protobuf.cpp:272:2:272:4 | ParseFromCodedStream output argument | provenance | MaD:148 |
+| protobuf.cpp:272:27:272:29 | *& ... | protobuf.cpp:272:2:272:4 | ParseFromCodedStream output argument | provenance | MaD:226 |
 | protobuf.cpp:278:24:278:47 | call to source | protobuf.cpp:278:24:278:47 | call to source | provenance |  |
 | protobuf.cpp:278:24:278:47 | call to source | protobuf.cpp:279:34:279:36 | *& ... | provenance |  |
 | protobuf.cpp:279:2:279:4 | ParsePartialFromCodedStream output argument | protobuf.cpp:280:7:280:9 | msg | provenance |  |
-| protobuf.cpp:279:34:279:36 | *& ... | protobuf.cpp:279:2:279:4 | ParsePartialFromCodedStream output argument | provenance | MaD:156 |
+| protobuf.cpp:279:34:279:36 | *& ... | protobuf.cpp:279:2:279:4 | ParsePartialFromCodedStream output argument | provenance | MaD:234 |
 | protobuf.cpp:285:24:285:47 | call to source | protobuf.cpp:285:24:285:47 | call to source | provenance |  |
 | protobuf.cpp:285:24:285:47 | call to source | protobuf.cpp:286:27:286:29 | *& ... | provenance |  |
 | protobuf.cpp:286:2:286:4 | MergeFromCodedStream output argument | protobuf.cpp:287:7:287:9 | msg | provenance |  |
-| protobuf.cpp:286:27:286:29 | *& ... | protobuf.cpp:286:2:286:4 | MergeFromCodedStream output argument | provenance | MaD:137 |
+| protobuf.cpp:286:27:286:29 | *& ... | protobuf.cpp:286:2:286:4 | MergeFromCodedStream output argument | provenance | MaD:215 |
 | protobuf.cpp:292:24:292:47 | call to source | protobuf.cpp:292:24:292:47 | call to source | provenance |  |
 | protobuf.cpp:292:24:292:47 | call to source | protobuf.cpp:293:34:293:36 | *& ... | provenance |  |
 | protobuf.cpp:293:2:293:4 | MergePartialFromCodedStream output argument | protobuf.cpp:294:7:294:9 | msg | provenance |  |
-| protobuf.cpp:293:34:293:36 | *& ... | protobuf.cpp:293:2:293:4 | MergePartialFromCodedStream output argument | provenance | MaD:142 |
+| protobuf.cpp:293:34:293:36 | *& ... | protobuf.cpp:293:2:293:4 | MergePartialFromCodedStream output argument | provenance | MaD:220 |
 | protobuf.cpp:307:15:307:28 | call to source | protobuf.cpp:307:15:307:28 | call to source | provenance |  |
 | protobuf.cpp:307:15:307:28 | call to source | protobuf.cpp:309:2:309:4 | *msg | provenance |  |
-| protobuf.cpp:309:2:309:4 | *msg | protobuf.cpp:309:24:309:27 | SerializeToString output argument | provenance | MaD:176 |
+| protobuf.cpp:309:2:309:4 | *msg | protobuf.cpp:309:24:309:27 | SerializeToString output argument | provenance | MaD:254 |
 | protobuf.cpp:309:24:309:27 | SerializeToString output argument | protobuf.cpp:310:7:310:9 | out | provenance |  |
 | protobuf.cpp:314:15:314:28 | call to source | protobuf.cpp:314:15:314:28 | call to source | provenance |  |
 | protobuf.cpp:314:15:314:28 | call to source | protobuf.cpp:316:2:316:4 | *msg | provenance |  |
-| protobuf.cpp:316:2:316:4 | *msg | protobuf.cpp:316:31:316:34 | SerializePartialToString output argument | provenance | MaD:170 |
+| protobuf.cpp:316:2:316:4 | *msg | protobuf.cpp:316:31:316:34 | SerializePartialToString output argument | provenance | MaD:248 |
 | protobuf.cpp:316:31:316:34 | SerializePartialToString output argument | protobuf.cpp:317:7:317:9 | out | provenance |  |
 | protobuf.cpp:321:15:321:28 | call to source | protobuf.cpp:321:15:321:28 | call to source | provenance |  |
 | protobuf.cpp:321:15:321:28 | call to source | protobuf.cpp:323:2:323:4 | *msg | provenance |  |
-| protobuf.cpp:323:2:323:4 | *msg | protobuf.cpp:323:21:323:24 | AppendToString output argument | provenance | MaD:135 |
+| protobuf.cpp:323:2:323:4 | *msg | protobuf.cpp:323:21:323:24 | AppendToString output argument | provenance | MaD:213 |
 | protobuf.cpp:323:21:323:24 | AppendToString output argument | protobuf.cpp:324:7:324:9 | out | provenance |  |
 | protobuf.cpp:328:15:328:28 | call to source | protobuf.cpp:328:15:328:28 | call to source | provenance |  |
 | protobuf.cpp:328:15:328:28 | call to source | protobuf.cpp:330:2:330:4 | *msg | provenance |  |
-| protobuf.cpp:330:2:330:4 | *msg | protobuf.cpp:330:28:330:31 | AppendPartialToString output argument | provenance | MaD:133 |
+| protobuf.cpp:330:2:330:4 | *msg | protobuf.cpp:330:28:330:31 | AppendPartialToString output argument | provenance | MaD:211 |
 | protobuf.cpp:330:28:330:31 | AppendPartialToString output argument | protobuf.cpp:331:7:331:9 | out | provenance |  |
 | protobuf.cpp:335:15:335:28 | call to source | protobuf.cpp:335:15:335:28 | call to source | provenance |  |
 | protobuf.cpp:335:15:335:28 | call to source | protobuf.cpp:337:2:337:4 | *msg | provenance |  |
-| protobuf.cpp:337:2:337:4 | *msg | protobuf.cpp:337:24:337:27 | SerializeToString output argument | provenance | MaD:176 |
+| protobuf.cpp:337:2:337:4 | *msg | protobuf.cpp:337:24:337:27 | SerializeToString output argument | provenance | MaD:254 |
 | protobuf.cpp:337:24:337:27 | SerializeToString output argument | protobuf.cpp:338:7:338:9 | out | provenance |  |
 | protobuf.cpp:342:15:342:28 | call to source | protobuf.cpp:342:15:342:28 | call to source | provenance |  |
 | protobuf.cpp:342:15:342:28 | call to source | protobuf.cpp:344:2:344:4 | *msg | provenance |  |
-| protobuf.cpp:344:2:344:4 | *msg | protobuf.cpp:344:31:344:34 | SerializePartialToString output argument | provenance | MaD:170 |
+| protobuf.cpp:344:2:344:4 | *msg | protobuf.cpp:344:31:344:34 | SerializePartialToString output argument | provenance | MaD:248 |
 | protobuf.cpp:344:31:344:34 | SerializePartialToString output argument | protobuf.cpp:345:7:345:9 | out | provenance |  |
 | protobuf.cpp:349:15:349:28 | call to source | protobuf.cpp:349:15:349:28 | call to source | provenance |  |
 | protobuf.cpp:349:15:349:28 | call to source | protobuf.cpp:351:2:351:4 | *msg | provenance |  |
-| protobuf.cpp:351:2:351:4 | *msg | protobuf.cpp:351:21:351:24 | AppendToString output argument | provenance | MaD:135 |
+| protobuf.cpp:351:2:351:4 | *msg | protobuf.cpp:351:21:351:24 | AppendToString output argument | provenance | MaD:213 |
 | protobuf.cpp:351:21:351:24 | AppendToString output argument | protobuf.cpp:352:7:352:9 | out | provenance |  |
 | protobuf.cpp:356:15:356:28 | call to source | protobuf.cpp:356:15:356:28 | call to source | provenance |  |
 | protobuf.cpp:356:15:356:28 | call to source | protobuf.cpp:358:2:358:4 | *msg | provenance |  |
-| protobuf.cpp:358:2:358:4 | *msg | protobuf.cpp:358:28:358:31 | AppendPartialToString output argument | provenance | MaD:133 |
+| protobuf.cpp:358:2:358:4 | *msg | protobuf.cpp:358:28:358:31 | AppendPartialToString output argument | provenance | MaD:211 |
 | protobuf.cpp:358:28:358:31 | AppendPartialToString output argument | protobuf.cpp:359:7:359:9 | out | provenance |  |
 | protobuf.cpp:363:15:363:28 | call to source | protobuf.cpp:363:15:363:28 | call to source | provenance |  |
 | protobuf.cpp:363:15:363:28 | call to source | protobuf.cpp:365:2:365:4 | *msg | provenance |  |
-| protobuf.cpp:365:2:365:4 | *msg | protobuf.cpp:365:23:365:25 | SerializeToArray output argument | provenance | MaD:172 |
+| protobuf.cpp:365:2:365:4 | *msg | protobuf.cpp:365:23:365:25 | SerializeToArray output argument | provenance | MaD:250 |
 | protobuf.cpp:365:23:365:25 | SerializeToArray output argument | protobuf.cpp:366:7:366:10 | * ... | provenance |  |
 | protobuf.cpp:370:15:370:28 | call to source | protobuf.cpp:370:15:370:28 | call to source | provenance |  |
 | protobuf.cpp:370:15:370:28 | call to source | protobuf.cpp:372:2:372:4 | *msg | provenance |  |
-| protobuf.cpp:372:2:372:4 | *msg | protobuf.cpp:372:30:372:32 | SerializePartialToArray output argument | provenance | MaD:166 |
+| protobuf.cpp:372:2:372:4 | *msg | protobuf.cpp:372:30:372:32 | SerializePartialToArray output argument | provenance | MaD:244 |
 | protobuf.cpp:372:30:372:32 | SerializePartialToArray output argument | protobuf.cpp:373:7:373:10 | * ... | provenance |  |
 | protobuf.cpp:377:15:377:28 | call to source | protobuf.cpp:377:15:377:28 | call to source | provenance |  |
 | protobuf.cpp:377:15:377:28 | call to source | protobuf.cpp:379:2:379:4 | *msg | provenance |  |
-| protobuf.cpp:379:2:379:4 | *msg | protobuf.cpp:379:22:379:25 | SerializeToCord output argument | provenance | MaD:174 |
+| protobuf.cpp:379:2:379:4 | *msg | protobuf.cpp:379:22:379:25 | SerializeToCord output argument | provenance | MaD:252 |
 | protobuf.cpp:379:22:379:25 | SerializeToCord output argument | protobuf.cpp:380:7:380:9 | out | provenance |  |
 | protobuf.cpp:384:15:384:28 | call to source | protobuf.cpp:384:15:384:28 | call to source | provenance |  |
 | protobuf.cpp:384:15:384:28 | call to source | protobuf.cpp:386:2:386:4 | *msg | provenance |  |
-| protobuf.cpp:386:2:386:4 | *msg | protobuf.cpp:386:29:386:32 | SerializePartialToCord output argument | provenance | MaD:168 |
+| protobuf.cpp:386:2:386:4 | *msg | protobuf.cpp:386:29:386:32 | SerializePartialToCord output argument | provenance | MaD:246 |
 | protobuf.cpp:386:29:386:32 | SerializePartialToCord output argument | protobuf.cpp:387:7:387:9 | out | provenance |  |
 | protobuf.cpp:391:15:391:28 | call to source | protobuf.cpp:391:15:391:28 | call to source | provenance |  |
 | protobuf.cpp:391:15:391:28 | call to source | protobuf.cpp:393:2:393:4 | *msg | provenance |  |
-| protobuf.cpp:393:2:393:4 | *msg | protobuf.cpp:393:19:393:22 | AppendToCord output argument | provenance | MaD:134 |
+| protobuf.cpp:393:2:393:4 | *msg | protobuf.cpp:393:19:393:22 | AppendToCord output argument | provenance | MaD:212 |
 | protobuf.cpp:393:19:393:22 | AppendToCord output argument | protobuf.cpp:394:7:394:9 | out | provenance |  |
 | protobuf.cpp:398:15:398:28 | call to source | protobuf.cpp:398:15:398:28 | call to source | provenance |  |
 | protobuf.cpp:398:15:398:28 | call to source | protobuf.cpp:400:2:400:4 | *msg | provenance |  |
-| protobuf.cpp:400:2:400:4 | *msg | protobuf.cpp:400:26:400:29 | AppendPartialToCord output argument | provenance | MaD:132 |
+| protobuf.cpp:400:2:400:4 | *msg | protobuf.cpp:400:26:400:29 | AppendPartialToCord output argument | provenance | MaD:210 |
 | protobuf.cpp:400:26:400:29 | AppendPartialToCord output argument | protobuf.cpp:401:7:401:9 | out | provenance |  |
 | protobuf.cpp:405:15:405:28 | call to source | protobuf.cpp:405:15:405:28 | call to source | provenance |  |
 | protobuf.cpp:405:15:405:28 | call to source | protobuf.cpp:407:2:407:4 | *msg | provenance |  |
-| protobuf.cpp:407:2:407:4 | *msg | protobuf.cpp:407:25:407:28 | SerializeToOstream output argument | provenance | MaD:175 |
+| protobuf.cpp:407:2:407:4 | *msg | protobuf.cpp:407:25:407:28 | SerializeToOstream output argument | provenance | MaD:253 |
 | protobuf.cpp:407:25:407:28 | SerializeToOstream output argument | protobuf.cpp:408:7:408:9 | out | provenance |  |
 | protobuf.cpp:412:15:412:28 | call to source | protobuf.cpp:412:15:412:28 | call to source | provenance |  |
 | protobuf.cpp:412:15:412:28 | call to source | protobuf.cpp:414:2:414:4 | *msg | provenance |  |
-| protobuf.cpp:414:2:414:4 | *msg | protobuf.cpp:414:32:414:35 | SerializePartialToOstream output argument | provenance | MaD:169 |
+| protobuf.cpp:414:2:414:4 | *msg | protobuf.cpp:414:32:414:35 | SerializePartialToOstream output argument | provenance | MaD:247 |
 | protobuf.cpp:414:32:414:35 | SerializePartialToOstream output argument | protobuf.cpp:415:7:415:9 | out | provenance |  |
 | protobuf.cpp:419:15:419:28 | call to source | protobuf.cpp:419:15:419:28 | call to source | provenance |  |
 | protobuf.cpp:419:15:419:28 | call to source | protobuf.cpp:421:2:421:4 | *msg | provenance |  |
-| protobuf.cpp:421:2:421:4 | *msg | protobuf.cpp:421:32:421:35 | SerializeToZeroCopyStream output argument | provenance | MaD:177 |
+| protobuf.cpp:421:2:421:4 | *msg | protobuf.cpp:421:32:421:35 | SerializeToZeroCopyStream output argument | provenance | MaD:255 |
 | protobuf.cpp:421:32:421:35 | SerializeToZeroCopyStream output argument | protobuf.cpp:422:7:422:9 | out | provenance |  |
 | protobuf.cpp:426:15:426:28 | call to source | protobuf.cpp:426:15:426:28 | call to source | provenance |  |
 | protobuf.cpp:426:15:426:28 | call to source | protobuf.cpp:428:2:428:4 | *msg | provenance |  |
-| protobuf.cpp:428:2:428:4 | *msg | protobuf.cpp:428:39:428:42 | SerializePartialToZeroCopyStream output argument | provenance | MaD:171 |
+| protobuf.cpp:428:2:428:4 | *msg | protobuf.cpp:428:39:428:42 | SerializePartialToZeroCopyStream output argument | provenance | MaD:249 |
 | protobuf.cpp:428:39:428:42 | SerializePartialToZeroCopyStream output argument | protobuf.cpp:429:7:429:9 | out | provenance |  |
 | protobuf.cpp:433:15:433:28 | call to source | protobuf.cpp:433:15:433:28 | call to source | provenance |  |
 | protobuf.cpp:433:15:433:28 | call to source | protobuf.cpp:435:2:435:4 | *msg | provenance |  |
-| protobuf.cpp:435:2:435:4 | *msg | protobuf.cpp:435:29:435:32 | SerializeToCodedStream output argument | provenance | MaD:173 |
+| protobuf.cpp:435:2:435:4 | *msg | protobuf.cpp:435:29:435:32 | SerializeToCodedStream output argument | provenance | MaD:251 |
 | protobuf.cpp:435:29:435:32 | SerializeToCodedStream output argument | protobuf.cpp:436:7:436:9 | out | provenance |  |
 | protobuf.cpp:440:15:440:28 | call to source | protobuf.cpp:440:15:440:28 | call to source | provenance |  |
 | protobuf.cpp:440:15:440:28 | call to source | protobuf.cpp:442:2:442:4 | *msg | provenance |  |
-| protobuf.cpp:442:2:442:4 | *msg | protobuf.cpp:442:36:442:39 | SerializePartialToCodedStream output argument | provenance | MaD:167 |
+| protobuf.cpp:442:2:442:4 | *msg | protobuf.cpp:442:36:442:39 | SerializePartialToCodedStream output argument | provenance | MaD:245 |
 | protobuf.cpp:442:36:442:39 | SerializePartialToCodedStream output argument | protobuf.cpp:443:7:443:9 | out | provenance |  |
 | protobuf.cpp:449:15:449:28 | call to source | protobuf.cpp:449:15:449:28 | call to source | provenance |  |
 | protobuf.cpp:449:15:449:28 | call to source | protobuf.cpp:450:7:450:9 | *msg | provenance |  |
-| protobuf.cpp:450:7:450:9 | *msg | protobuf.cpp:450:11:450:27 | call to SerializeAsString | provenance | MaD:163 |
+| protobuf.cpp:450:7:450:9 | *msg | protobuf.cpp:450:11:450:27 | call to SerializeAsString | provenance | MaD:241 |
 | protobuf.cpp:454:15:454:28 | call to source | protobuf.cpp:454:15:454:28 | call to source | provenance |  |
 | protobuf.cpp:454:15:454:28 | call to source | protobuf.cpp:455:7:455:9 | *msg | provenance |  |
-| protobuf.cpp:455:7:455:9 | *msg | protobuf.cpp:455:11:455:34 | call to SerializePartialAsString | provenance | MaD:165 |
+| protobuf.cpp:455:7:455:9 | *msg | protobuf.cpp:455:11:455:34 | call to SerializePartialAsString | provenance | MaD:243 |
 | protobuf.cpp:459:15:459:28 | call to source | protobuf.cpp:459:15:459:28 | call to source | provenance |  |
 | protobuf.cpp:459:15:459:28 | call to source | protobuf.cpp:460:7:460:9 | *msg | provenance |  |
-| protobuf.cpp:460:7:460:9 | *msg | protobuf.cpp:460:11:460:25 | call to SerializeAsCord | provenance | MaD:162 |
+| protobuf.cpp:460:7:460:9 | *msg | protobuf.cpp:460:11:460:25 | call to SerializeAsCord | provenance | MaD:240 |
 | protobuf.cpp:464:15:464:28 | call to source | protobuf.cpp:464:15:464:28 | call to source | provenance |  |
 | protobuf.cpp:464:15:464:28 | call to source | protobuf.cpp:465:7:465:9 | *msg | provenance |  |
-| protobuf.cpp:465:7:465:9 | *msg | protobuf.cpp:465:11:465:32 | call to SerializePartialAsCord | provenance | MaD:164 |
+| protobuf.cpp:465:7:465:9 | *msg | protobuf.cpp:465:11:465:32 | call to SerializePartialAsCord | provenance | MaD:242 |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:48  |
@@ -1148,50 +1350,179 @@ nodes
 | bdlbb.cpp:96:37:96:39 | copy output argument | semmle.label | copy output argument |
 | bdlbb.cpp:96:42:96:44 | *dst | semmle.label | *dst |
 | bdlbb.cpp:97:7:97:10 | * ... | semmle.label | * ... |
-| bslx.cpp:141:33:141:40 | call to source | semmle.label | call to source |
-| bslx.cpp:142:34:142:39 | call to ByteInStream | semmle.label | call to ByteInStream |
-| bslx.cpp:142:46:142:49 | *call to data | semmle.label | *call to data |
-| bslx.cpp:144:2:144:7 | *stream | semmle.label | *stream |
-| bslx.cpp:144:18:144:18 | getInt32 output argument | semmle.label | getInt32 output argument |
-| bslx.cpp:145:7:145:7 | x | semmle.label | x |
-| bslx.cpp:149:33:149:40 | call to source | semmle.label | call to source |
-| bslx.cpp:150:34:150:39 | call to ByteInStream | semmle.label | call to ByteInStream |
-| bslx.cpp:150:46:150:49 | *call to data | semmle.label | *call to data |
-| bslx.cpp:152:2:152:7 | *stream | semmle.label | *stream |
-| bslx.cpp:152:22:152:24 | getArrayInt8 output argument | semmle.label | getArrayInt8 output argument |
-| bslx.cpp:153:7:153:10 | * ... | semmle.label | * ... |
-| bslx.cpp:157:33:157:40 | call to source | semmle.label | call to source |
-| bslx.cpp:158:34:158:39 | call to ByteInStream | semmle.label | call to ByteInStream |
-| bslx.cpp:158:46:158:49 | *call to data | semmle.label | *call to data |
-| bslx.cpp:160:2:160:7 | *stream | semmle.label | *stream |
-| bslx.cpp:160:19:160:21 | getString output argument | semmle.label | getString output argument |
-| bslx.cpp:161:7:161:17 | * ... | semmle.label | * ... |
-| bslx.cpp:165:33:165:40 | call to source | semmle.label | call to source |
-| bslx.cpp:166:34:166:39 | call to ByteInStream | semmle.label | call to ByteInStream |
-| bslx.cpp:166:46:166:49 | *call to data | semmle.label | *call to data |
-| bslx.cpp:169:2:169:7 | *stream | semmle.label | *stream |
-| bslx.cpp:169:17:169:20 | *call to getInt32 | semmle.label | *call to getInt32 |
-| bslx.cpp:169:30:169:30 | getInt32 output argument | semmle.label | getInt32 output argument |
-| bslx.cpp:170:7:170:7 | b | semmle.label | b |
-| bslx.cpp:175:33:175:40 | call to source | semmle.label | call to source |
-| bslx.cpp:176:2:176:7 | reset output argument | semmle.label | reset output argument |
-| bslx.cpp:176:20:176:23 | *call to data | semmle.label | *call to data |
-| bslx.cpp:178:2:178:7 | *stream | semmle.label | *stream |
-| bslx.cpp:178:18:178:18 | getInt32 output argument | semmle.label | getInt32 output argument |
-| bslx.cpp:179:7:179:7 | x | semmle.label | x |
-| bslx.cpp:183:33:183:40 | call to source | semmle.label | call to source |
-| bslx.cpp:184:20:184:45 | *call to data | semmle.label | *call to data |
-| bslx.cpp:185:50:185:55 | call to GenericInStream | semmle.label | call to GenericInStream |
-| bslx.cpp:185:57:185:58 | *sb | semmle.label | *sb |
-| bslx.cpp:187:2:187:7 | *stream | semmle.label | *stream |
-| bslx.cpp:187:18:187:18 | getInt32 output argument | semmle.label | getInt32 output argument |
-| bslx.cpp:188:7:188:7 | x | semmle.label | x |
-| bslx.cpp:192:33:192:40 | call to source | semmle.label | call to source |
-| bslx.cpp:193:34:193:39 | call to ByteInStream | semmle.label | call to ByteInStream |
-| bslx.cpp:193:46:193:49 | *call to data | semmle.label | *call to data |
-| bslx.cpp:195:53:195:58 | *stream | semmle.label | *stream |
-| bslx.cpp:195:61:195:63 | bdexStreamIn output argument | semmle.label | bdexStreamIn output argument |
-| bslx.cpp:196:7:196:9 | obj | semmle.label | obj |
+| bslx.cpp:161:33:161:40 | call to source | semmle.label | call to source |
+| bslx.cpp:162:34:162:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:162:46:162:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:164:2:164:7 | *stream | semmle.label | *stream |
+| bslx.cpp:164:22:164:24 | getArrayInt8 output argument | semmle.label | getArrayInt8 output argument |
+| bslx.cpp:165:7:165:10 | * ... | semmle.label | * ... |
+| bslx.cpp:169:33:169:40 | call to source | semmle.label | call to source |
+| bslx.cpp:170:34:170:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:170:46:170:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:172:2:172:7 | *stream | semmle.label | *stream |
+| bslx.cpp:172:19:172:21 | getString output argument | semmle.label | getString output argument |
+| bslx.cpp:173:7:173:17 | * ... | semmle.label | * ... |
+| bslx.cpp:177:33:177:40 | call to source | semmle.label | call to source |
+| bslx.cpp:178:34:178:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:178:46:178:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:181:2:181:7 | *stream | semmle.label | *stream |
+| bslx.cpp:181:17:181:20 | *call to getInt32 | semmle.label | *call to getInt32 |
+| bslx.cpp:181:31:181:33 | getString output argument | semmle.label | getString output argument |
+| bslx.cpp:182:7:182:17 | * ... | semmle.label | * ... |
+| bslx.cpp:187:33:187:40 | call to source | semmle.label | call to source |
+| bslx.cpp:188:2:188:7 | reset output argument | semmle.label | reset output argument |
+| bslx.cpp:188:20:188:23 | *call to data | semmle.label | *call to data |
+| bslx.cpp:190:2:190:7 | *stream | semmle.label | *stream |
+| bslx.cpp:190:19:190:21 | getString output argument | semmle.label | getString output argument |
+| bslx.cpp:191:7:191:17 | * ... | semmle.label | * ... |
+| bslx.cpp:195:33:195:40 | call to source | semmle.label | call to source |
+| bslx.cpp:196:20:196:45 | *call to data | semmle.label | *call to data |
+| bslx.cpp:197:50:197:55 | call to GenericInStream | semmle.label | call to GenericInStream |
+| bslx.cpp:197:57:197:58 | *sb | semmle.label | *sb |
+| bslx.cpp:199:2:199:7 | *stream | semmle.label | *stream |
+| bslx.cpp:199:19:199:21 | getString output argument | semmle.label | getString output argument |
+| bslx.cpp:200:7:200:17 | * ... | semmle.label | * ... |
+| bslx.cpp:213:33:213:40 | call to source | semmle.label | call to source |
+| bslx.cpp:214:34:214:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:214:46:214:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:216:53:216:58 | *stream | semmle.label | *stream |
+| bslx.cpp:216:61:216:63 | bdexStreamIn output argument | semmle.label | bdexStreamIn output argument |
+| bslx.cpp:217:7:217:17 | * ... | semmle.label | * ... |
+| bslx.cpp:223:33:223:40 | call to source | semmle.label | call to source |
+| bslx.cpp:224:34:224:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:224:46:224:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:247:2:247:7 | *stream | semmle.label | *stream |
+| bslx.cpp:247:18:247:21 | *call to getLength | semmle.label | *call to getLength |
+| bslx.cpp:247:32:247:35 | *call to getVersion | semmle.label | *call to getVersion |
+| bslx.cpp:247:43:247:46 | *call to getInt8 | semmle.label | *call to getInt8 |
+| bslx.cpp:247:55:247:59 | *call to getUint8 | semmle.label | *call to getUint8 |
+| bslx.cpp:247:68:247:71 | *call to getInt16 | semmle.label | *call to getInt16 |
+| bslx.cpp:247:81:247:85 | *call to getUint16 | semmle.label | *call to getUint16 |
+| bslx.cpp:247:94:247:97 | *call to getInt24 | semmle.label | *call to getInt24 |
+| bslx.cpp:247:107:247:111 | *call to getUint24 | semmle.label | *call to getUint24 |
+| bslx.cpp:247:120:247:123 | *call to getInt32 | semmle.label | *call to getInt32 |
+| bslx.cpp:247:133:247:137 | *call to getUint32 | semmle.label | *call to getUint32 |
+| bslx.cpp:247:146:247:150 | *call to getInt40 | semmle.label | *call to getInt40 |
+| bslx.cpp:247:160:247:165 | *call to getUint40 | semmle.label | *call to getUint40 |
+| bslx.cpp:247:174:247:178 | *call to getInt48 | semmle.label | *call to getInt48 |
+| bslx.cpp:247:188:247:193 | *call to getUint48 | semmle.label | *call to getUint48 |
+| bslx.cpp:247:202:247:206 | *call to getInt56 | semmle.label | *call to getInt56 |
+| bslx.cpp:247:216:247:221 | *call to getUint56 | semmle.label | *call to getUint56 |
+| bslx.cpp:247:230:247:234 | *call to getInt64 | semmle.label | *call to getInt64 |
+| bslx.cpp:247:244:247:249 | *call to getUint64 | semmle.label | *call to getUint64 |
+| bslx.cpp:247:260:247:263 | *call to getFloat32 | semmle.label | *call to getFloat32 |
+| bslx.cpp:247:274:247:277 | *call to getFloat64 | semmle.label | *call to getFloat64 |
+| bslx.cpp:247:287:247:292 | *call to getString | semmle.label | *call to getString |
+| bslx.cpp:247:305:247:315 | *call to getArrayInt8 | semmle.label | *call to getArrayInt8 |
+| bslx.cpp:247:329:247:340 | *call to getArrayUint8 | semmle.label | *call to getArrayUint8 |
+| bslx.cpp:247:354:247:364 | *call to getArrayInt16 | semmle.label | *call to getArrayInt16 |
+| bslx.cpp:247:379:247:390 | *call to getArrayUint16 | semmle.label | *call to getArrayUint16 |
+| bslx.cpp:247:404:247:414 | *call to getArrayInt24 | semmle.label | *call to getArrayInt24 |
+| bslx.cpp:247:429:247:440 | *call to getArrayUint24 | semmle.label | *call to getArrayUint24 |
+| bslx.cpp:247:454:247:464 | *call to getArrayInt32 | semmle.label | *call to getArrayInt32 |
+| bslx.cpp:247:479:247:490 | *call to getArrayUint32 | semmle.label | *call to getArrayUint32 |
+| bslx.cpp:247:504:247:515 | *call to getArrayInt40 | semmle.label | *call to getArrayInt40 |
+| bslx.cpp:247:530:247:542 | *call to getArrayUint40 | semmle.label | *call to getArrayUint40 |
+| bslx.cpp:247:556:247:567 | *call to getArrayInt48 | semmle.label | *call to getArrayInt48 |
+| bslx.cpp:247:582:247:594 | *call to getArrayUint48 | semmle.label | *call to getArrayUint48 |
+| bslx.cpp:247:608:247:619 | *call to getArrayInt56 | semmle.label | *call to getArrayInt56 |
+| bslx.cpp:247:634:247:646 | *call to getArrayUint56 | semmle.label | *call to getArrayUint56 |
+| bslx.cpp:247:660:247:671 | *call to getArrayInt64 | semmle.label | *call to getArrayInt64 |
+| bslx.cpp:247:686:247:698 | *call to getArrayUint64 | semmle.label | *call to getArrayUint64 |
+| bslx.cpp:247:714:247:724 | *call to getArrayFloat32 | semmle.label | *call to getArrayFloat32 |
+| bslx.cpp:247:740:247:750 | *call to getArrayFloat64 | semmle.label | *call to getArrayFloat64 |
+| bslx.cpp:247:761:247:763 | getString output argument | semmle.label | getString output argument |
+| bslx.cpp:248:7:248:17 | * ... | semmle.label | * ... |
+| bslx.cpp:252:33:252:40 | call to source | semmle.label | call to source |
+| bslx.cpp:253:20:253:45 | *call to data | semmle.label | *call to data |
+| bslx.cpp:254:50:254:55 | call to GenericInStream | semmle.label | call to GenericInStream |
+| bslx.cpp:254:57:254:58 | *sb | semmle.label | *sb |
+| bslx.cpp:277:2:277:7 | *stream | semmle.label | *stream |
+| bslx.cpp:277:18:277:21 | *call to getLength | semmle.label | *call to getLength |
+| bslx.cpp:277:32:277:35 | *call to getVersion | semmle.label | *call to getVersion |
+| bslx.cpp:277:43:277:46 | *call to getInt8 | semmle.label | *call to getInt8 |
+| bslx.cpp:277:55:277:59 | *call to getUint8 | semmle.label | *call to getUint8 |
+| bslx.cpp:277:68:277:71 | *call to getInt16 | semmle.label | *call to getInt16 |
+| bslx.cpp:277:81:277:85 | *call to getUint16 | semmle.label | *call to getUint16 |
+| bslx.cpp:277:94:277:97 | *call to getInt24 | semmle.label | *call to getInt24 |
+| bslx.cpp:277:107:277:111 | *call to getUint24 | semmle.label | *call to getUint24 |
+| bslx.cpp:277:120:277:123 | *call to getInt32 | semmle.label | *call to getInt32 |
+| bslx.cpp:277:133:277:137 | *call to getUint32 | semmle.label | *call to getUint32 |
+| bslx.cpp:277:146:277:150 | *call to getInt40 | semmle.label | *call to getInt40 |
+| bslx.cpp:277:160:277:165 | *call to getUint40 | semmle.label | *call to getUint40 |
+| bslx.cpp:277:174:277:178 | *call to getInt48 | semmle.label | *call to getInt48 |
+| bslx.cpp:277:188:277:193 | *call to getUint48 | semmle.label | *call to getUint48 |
+| bslx.cpp:277:202:277:206 | *call to getInt56 | semmle.label | *call to getInt56 |
+| bslx.cpp:277:216:277:221 | *call to getUint56 | semmle.label | *call to getUint56 |
+| bslx.cpp:277:230:277:234 | *call to getInt64 | semmle.label | *call to getInt64 |
+| bslx.cpp:277:244:277:249 | *call to getUint64 | semmle.label | *call to getUint64 |
+| bslx.cpp:277:260:277:263 | *call to getFloat32 | semmle.label | *call to getFloat32 |
+| bslx.cpp:277:274:277:277 | *call to getFloat64 | semmle.label | *call to getFloat64 |
+| bslx.cpp:277:287:277:292 | *call to getString | semmle.label | *call to getString |
+| bslx.cpp:277:305:277:315 | *call to getArrayInt8 | semmle.label | *call to getArrayInt8 |
+| bslx.cpp:277:329:277:340 | *call to getArrayUint8 | semmle.label | *call to getArrayUint8 |
+| bslx.cpp:277:354:277:364 | *call to getArrayInt16 | semmle.label | *call to getArrayInt16 |
+| bslx.cpp:277:379:277:390 | *call to getArrayUint16 | semmle.label | *call to getArrayUint16 |
+| bslx.cpp:277:404:277:414 | *call to getArrayInt24 | semmle.label | *call to getArrayInt24 |
+| bslx.cpp:277:429:277:440 | *call to getArrayUint24 | semmle.label | *call to getArrayUint24 |
+| bslx.cpp:277:454:277:464 | *call to getArrayInt32 | semmle.label | *call to getArrayInt32 |
+| bslx.cpp:277:479:277:490 | *call to getArrayUint32 | semmle.label | *call to getArrayUint32 |
+| bslx.cpp:277:504:277:515 | *call to getArrayInt40 | semmle.label | *call to getArrayInt40 |
+| bslx.cpp:277:530:277:542 | *call to getArrayUint40 | semmle.label | *call to getArrayUint40 |
+| bslx.cpp:277:556:277:567 | *call to getArrayInt48 | semmle.label | *call to getArrayInt48 |
+| bslx.cpp:277:582:277:594 | *call to getArrayUint48 | semmle.label | *call to getArrayUint48 |
+| bslx.cpp:277:608:277:619 | *call to getArrayInt56 | semmle.label | *call to getArrayInt56 |
+| bslx.cpp:277:634:277:646 | *call to getArrayUint56 | semmle.label | *call to getArrayUint56 |
+| bslx.cpp:277:660:277:671 | *call to getArrayInt64 | semmle.label | *call to getArrayInt64 |
+| bslx.cpp:277:686:277:698 | *call to getArrayUint64 | semmle.label | *call to getArrayUint64 |
+| bslx.cpp:277:714:277:724 | *call to getArrayFloat32 | semmle.label | *call to getArrayFloat32 |
+| bslx.cpp:277:740:277:750 | *call to getArrayFloat64 | semmle.label | *call to getArrayFloat64 |
+| bslx.cpp:277:761:277:763 | getString output argument | semmle.label | getString output argument |
+| bslx.cpp:278:7:278:17 | * ... | semmle.label | * ... |
+| bslx.cpp:282:33:282:40 | call to source | semmle.label | call to source |
+| bslx.cpp:283:34:283:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:283:46:283:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:285:53:285:58 | *stream | semmle.label | *stream |
+| bslx.cpp:285:61:285:61 | bdexStreamIn output argument | semmle.label | bdexStreamIn output argument |
+| bslx.cpp:286:7:286:7 | x | semmle.label | x |
+| bslx.cpp:287:53:287:58 | *stream | semmle.label | *stream |
+| bslx.cpp:287:61:287:61 | bdexStreamIn output argument | semmle.label | bdexStreamIn output argument |
+| bslx.cpp:288:7:288:7 | x | semmle.label | x |
+| bslx.cpp:290:52:290:66 | *call to bdexStreamIn | semmle.label | *call to bdexStreamIn |
+| bslx.cpp:290:53:290:58 | *stream | semmle.label | *stream |
+| bslx.cpp:290:77:290:79 | getString output argument | semmle.label | getString output argument |
+| bslx.cpp:291:7:291:17 | * ... | semmle.label | * ... |
+| bslx.cpp:295:33:295:40 | call to source | semmle.label | call to source |
+| bslx.cpp:296:34:296:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:296:46:296:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:298:53:298:58 | *stream | semmle.label | *stream |
+| bslx.cpp:298:61:298:63 | bdexStreamIn output argument | semmle.label | bdexStreamIn output argument |
+| bslx.cpp:299:7:299:17 | * ... | semmle.label | * ... |
+| bslx.cpp:309:33:309:40 | call to source | semmle.label | call to source |
+| bslx.cpp:310:34:310:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:310:46:310:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:312:53:312:58 | *stream | semmle.label | *stream |
+| bslx.cpp:312:61:312:63 | bdexStreamIn output argument | semmle.label | bdexStreamIn output argument |
+| bslx.cpp:313:7:313:9 | out | semmle.label | out |
+| bslx.cpp:322:40:322:60 | call to source | semmle.label | call to source |
+| bslx.cpp:322:40:322:60 | call to source | semmle.label | call to source |
+| bslx.cpp:323:2:323:7 | reset output argument | semmle.label | reset output argument |
+| bslx.cpp:323:15:323:18 | *data | semmle.label | *data |
+| bslx.cpp:325:2:325:7 | *stream | semmle.label | *stream |
+| bslx.cpp:325:19:325:21 | getString output argument | semmle.label | getString output argument |
+| bslx.cpp:326:7:326:17 | * ... | semmle.label | * ... |
+| bslx.cpp:330:33:330:40 | call to source | semmle.label | call to source |
+| bslx.cpp:331:34:331:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:331:46:331:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:334:2:334:7 | *stream | semmle.label | *stream |
+| bslx.cpp:334:19:334:21 | getString output argument | semmle.label | getString output argument |
+| bslx.cpp:335:7:335:17 | * ... | semmle.label | * ... |
+| bslx.cpp:349:33:349:40 | call to source | semmle.label | call to source |
+| bslx.cpp:350:34:350:39 | call to ByteInStream | semmle.label | call to ByteInStream |
+| bslx.cpp:350:46:350:49 | *call to data | semmle.label | *call to data |
+| bslx.cpp:354:2:354:7 | *stream | semmle.label | *stream |
+| bslx.cpp:354:19:354:21 | getString output argument | semmle.label | getString output argument |
+| bslx.cpp:356:7:356:17 | * ... | semmle.label | * ... |
 | protobuf.cpp:117:27:117:51 | call to source | semmle.label | call to source |
 | protobuf.cpp:117:27:117:51 | call to source | semmle.label | call to source |
 | protobuf.cpp:118:2:118:4 | ParseFromString output argument | semmle.label | ParseFromString output argument |
