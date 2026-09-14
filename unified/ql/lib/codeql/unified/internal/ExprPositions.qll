@@ -13,6 +13,8 @@ predicate isInTypeContext(Expr expr) {
   or
   expr = any(FunctionDeclaration n).getReturnType()
   or
+  expr = any(FunctionExpr n).getReturnType()
+  or
   expr = any(AccessorDeclaration n).getType()
   or
   expr = any(Parameter n).getType()
@@ -22,6 +24,8 @@ predicate isInTypeContext(Expr expr) {
   expr = any(BaseType n).getType()
   or
   expr = any(TypeParameter n).getBound()
+  or
+  expr = any(AssociatedTypeDeclaration n).getBound()
   or
   expr.getParent() instanceof TypeConstraint
   or
