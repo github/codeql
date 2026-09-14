@@ -1873,6 +1873,7 @@
 | Dubious signature "(OTHERNAME *)" in summary model. |
 | Dubious signature "(OTHERNAME **,const unsigned char **,long)" in summary model. |
 | Dubious signature "(OTHERNAME *,OTHERNAME *)" in summary model. |
+| Dubious signature "(OUT,int *,int *,IN,IN,int)" in summary model. |
 | Dubious signature "(OperationConfig *)" in summary model. |
 | Dubious signature "(OperationConfig *,HttpReq,HttpReq *)" in summary model. |
 | Dubious signature "(OperationConfig *,const char *,tool_mime **,tool_mime **,bool)" in summary model. |

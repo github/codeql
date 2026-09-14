@@ -1,0 +1,18 @@
+# Direct pointer-buffer conversion models for the public BDE bdlde API.
+# https://github.com/bloomberg/bde/tree/ec310b87e008199ecbdbc00a0b0264a53d806a0a/groups/bdl/bdlde
+# These summaries do not model retained data across calls or class-based iterators.
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      # Only begin supplies input bytes. end is exclusive; numOut/numIn are outputs.
+      # The longer overload has six parameters, including the defaulted maxNumOut.
+      - ["BloombergLP::bdlde", "Base64Encoder", False, "convert<OUT,IN>", "(OUT,IN,IN)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlde", "Base64Encoder", False, "convert<OUT,IN>", "(OUT,int *,int *,IN,IN,int)", "", "Argument[*3]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlde", "Base64Decoder", False, "convert<OUT,IN>", "(OUT,IN,IN)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlde", "Base64Decoder", False, "convert<OUT,IN>", "(OUT,int *,int *,IN,IN,int)", "", "Argument[*3]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlde", "HexEncoder", False, "convert<OUT,IN>", "(OUT,IN,IN)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlde", "HexEncoder", False, "convert<OUT,IN>", "(OUT,int *,int *,IN,IN,int)", "", "Argument[*3]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlde", "HexDecoder", False, "convert<OUT,IN>", "(OUT,IN,IN)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlde", "HexDecoder", False, "convert<OUT,IN>", "(OUT,int *,int *,IN,IN,int)", "", "Argument[*3]", "Argument[*0]", "taint", "manual"]
