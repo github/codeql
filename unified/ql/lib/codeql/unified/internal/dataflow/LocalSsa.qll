@@ -1,3 +1,7 @@
+/**
+ * SSA for non-captured variables.
+ */
+
 private import unified
 private import unified as U
 private import AllDataFlow
