@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Firmware and embedded drivers often copy data into buffers using lengths read from
+allowlisted MMIO register macros such as <code>READ_REG</code> or <code>GET_MMIO</code>.
+When those lengths are not validated against the destination buffer size, an attacker who
+can influence hardware registers or DMA metadata can trigger buffer overflows.
+</p>
+</overview>
+<recommendation>
+<p>
+Always validate MMIO/DMA-derived lengths before passing them to <code>memcpy</code>,
+<code>memmove</code>, or <code>strncpy</code>. Compare against a compile-time maximum
+and reject or clamp out-of-range values before copying.
+</p>
+</recommendation>
+<example>
+<p>Bad: length from an MMIO register used directly as the copy size.</p>
+<sample src="MmioUnsanitizedMemcpyBad.c" />
+<p>Good: defensive bounds check before the copy.</p>
+<sample src="MmioUnsanitizedMemcpyGood.c" />
+</example>
+<references>
+<li>
+CWE-120: Buffer Copy without Checking Size of Input
+</li>
+<li>
+CWE-787: Out-of-bounds Write
+</li>
+</references>
+</qhelp>
