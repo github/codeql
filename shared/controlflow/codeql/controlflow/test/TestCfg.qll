@@ -85,21 +85,59 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
 {
   private import Cfg
 
-  /** Holds if `n` from `bb` starts at the given line. */
-  private predicate node(int line, ControlFlowNode n, BasicBlock bb) {
-    n.injects(_) and
-    n.getLocation().getStartLine() = line and
-    n.getBasicBlock() = bb
+  /**
+   * Gets the rank of `n` within `bb` restricted to nodes that are canonical
+   * representatives of AST nodes.
+   */
+  private int bbRank(ControlFlowNode n, BasicBlock bb) {
+    n =
+      rank[result](ControlFlowNode n0, int i | n0.injects(_) and bb.getNode(i) = n0 | n0 order by i)
   }
 
-  /** Gets the rank of `n` within the slice of `bb` at the given line. */
-  private int sliceRank(int line, ControlFlowNode n, BasicBlock bb) {
-    n =
-      rank[result](ControlFlowNode n0, int i |
-        node(line, n0, bb) and n0 = bb.getNode(i)
-      |
-        n0 order by i
-      )
+  /** Gets the start line of `n`. */
+  private int getLine(ControlFlowNode n) { n.getLocation().getStartLine() = result }
+
+  /** Holds if `n` is the first node of a slice of `bb` at the given line. */
+  private predicate sliceStart(int line, ControlFlowNode n, BasicBlock bb) {
+    line = getLine(n) and
+    1 = bbRank(n, bb)
+    or
+    exists(ControlFlowNode n0 |
+      line = getLine(n) and
+      bbRank(n0, bb) + 1 = bbRank(n, bb) and
+      getLine(n0) != line
+    )
+  }
+
+  private newtype TSlice =
+    TMkSlice(int line, ControlFlowNode n, BasicBlock bb) { sliceStart(line, n, bb) }
+
+  /** A slice of a basic block at a specific line. */
+  private class Slice extends TSlice {
+    private int line;
+    private ControlFlowNode start;
+    private BasicBlock bb;
+
+    Slice() { this = TMkSlice(line, start, bb) }
+
+    string toString() { result = start.toString() }
+
+    int getLine() { result = line }
+
+    ControlFlowNode getNode(int i) {
+      i = 0 and result = start
+      or
+      bbRank(this.getNode(i - 1), bb) + 1 = bbRank(result, bb) and
+      not sliceStart(_, result, bb)
+    }
+
+    ControlFlowNode getLast() {
+      exists(int i | result = this.getNode(i) and not exists(this.getNode(i + 1)))
+    }
+
+    predicate step(ControlFlowNode n1, ControlFlowNode n2) {
+      exists(int i | n1 = this.getNode(i) and n2 = this.getNode(i + 1))
+    }
   }
 
   /**
@@ -125,10 +163,10 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
    * the other. The direction in the AST is given by `dir`.
    */
   private predicate astUpDownStep(ControlFlowNode n1, ControlFlowNode n2, Dir dir) {
-    exists(int line, BasicBlock bb, AstNode a1, AstNode a2 |
+    exists(AstNode a1, AstNode a2 |
       n1.injects(a1) and
       n2.injects(a2) and
-      sliceRank(line, n1, bb) + 1 = sliceRank(line, n2, bb)
+      any(Slice s).step(n1, n2)
     |
       if Input::getParent+(a1) = a2
       then dir = Up()
@@ -151,14 +189,12 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
   private predicate oneline(Location l) { l.getStartLine() = l.getEndLine() }
 
   /**
-   * Holds if `n1` steps to `n2` within a basic block line slice of `bb` at
-   * `line` and that the step in locations is given by `dir`. Some identical
-   * locations may be further resolved by peeking at the AST structure.
+   * Holds if `n1` steps to `n2` within a basic block line slice `slice` and
+   * that the step in locations is given by `dir`. Some identical locations may
+   * be further resolved by peeking at the AST structure.
    */
-  private predicate singleLineBlockStep(
-    BasicBlock bb, int line, ControlFlowNode n1, ControlFlowNode n2, Dir dir
-  ) {
-    sliceRank(line, n1, bb) + 1 = sliceRank(line, n2, bb) and
+  private predicate singleLineBlockStep(Slice slice, ControlFlowNode n1, ControlFlowNode n2, Dir dir) {
+    slice.step(n1, n2) and
     exists(Location l1, Location l2 | n1.getLocation() = l1 and n2.getLocation() = l2 |
       if oneline(l1) and l1.getEndColumn() < l2.getStartColumn()
       then dir = Right()
@@ -186,8 +222,7 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
   }
 
   /**
-   * Holds if the `line` slice of the basic block `bb` is simple left-to-right
-   * evaluation order.
+   * Holds if the slice `slice` is simple left-to-right evaluation order.
    *
    * Both pre-order and post-order traversal is allowed and allowed to be
    * mixed. `Up` indicates the last part of a post-order traversal, and `Down`
@@ -195,19 +230,18 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
    * followed by a `Down` step is inconsistent with simple left-to-right
    * evaluation order.
    */
-  private predicate simpleLeftToRightBlock(int line, BasicBlock bb) {
-    node(line, _, bb) and
-    forall(ControlFlowNode n1, ControlFlowNode n2 | singleLineBlockStep(bb, line, n1, n2, _) |
-      exists(Dir dir | singleLineBlockStep(bb, line, n1, n2, dir) |
+  private predicate simpleLeftToRightBlock(Slice slice) {
+    forall(ControlFlowNode n1, ControlFlowNode n2 | singleLineBlockStep(slice, n1, n2, _) |
+      exists(Dir dir | singleLineBlockStep(slice, n1, n2, dir) |
         dir != Other() and
         dir != Id() and
-        (dir = Up() implies not singleLineBlockStep(bb, line, n2, _, Down()))
+        (dir = Up() implies not singleLineBlockStep(slice, n2, _, Down()))
       )
     )
   }
 
   private string outgoingArrow(ControlFlowNode n) {
-    exists(Dir dir | singleLineBlockStep(_, _, n, _, dir) |
+    exists(Dir dir | singleLineBlockStep(_, n, _, dir) |
       dir = Down() and result = " -V "
       or
       dir = Up() and result = " -^ "
@@ -222,23 +256,24 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
 
   module BlockSlices {
     /**
-     * Holds if `blockSlice` is a string representation of the `line` slice of a
+     * Holds if `blockSlice` is a string representation of a `line` slice of a
      * basic block. `first` is the first node in the slice.
      */
     query predicate blockSlice(int line, ControlFlowNode first, string blockSlice) {
-      exists(BasicBlock bb |
-        1 = sliceRank(line, first, bb) and
+      exists(Slice slice |
+        first = slice.getNode(0) and
+        line = slice.getLine() and
         blockSlice =
           "'" +
-            strictconcat(ControlFlowNode n, int r, int i, string s |
-              r = sliceRank(line, n, bb) and
+            strictconcat(ControlFlowNode n, int i, int j, string s |
+              slice.getNode(i) = n and
               (
-                i = 0 and s = n.toString()
+                j = 0 and s = n.toString()
                 or
-                i = 1 and s = outgoingArrow(n)
+                j = 1 and s = outgoingArrow(n)
               )
             |
-              s order by r, i
+              s order by i, j
             ) + "'"
       )
     }
@@ -262,20 +297,11 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
    * `first` is the first node in the slice.
    */
   query predicate nonSimple(ControlFlowNode1line first, string blockSlice) {
-    exists(int line, BasicBlock bb |
-      BlockSlices::blockSlice(line, first, blockSlice) and
-      bb = first.getBasicBlock() and
-      not simpleLeftToRightBlock(line, bb)
+    exists(Slice slice |
+      BlockSlices::blockSlice(_, first, blockSlice) and
+      slice.getNode(0) = first and
+      not simpleLeftToRightBlock(slice)
     )
-  }
-
-  /**
-   * Gets the rank of `n` within `bb` restricted to nodes that are canonical
-   * representatives of AST nodes.
-   */
-  private int bbRank(ControlFlowNode n, BasicBlock bb) {
-    n =
-      rank[result](ControlFlowNode n0, int i | n0.injects(_) and bb.getNode(i) = n0 | n0 order by i)
   }
 
   /**
@@ -303,9 +329,8 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
     int line, ControlFlowNode n1, ControlFlowNode n2, int lineDelta
   ) {
     line = n1.getLocation().getStartLine() and
-    exists(int last, BasicBlock bb |
-      last = sliceRank(line, n1, bb) and
-      not last + 1 = sliceRank(line, _, bb) and
+    exists(BasicBlock bb |
+      n1 = any(Slice slice).getLast() and
       bbRank(n1, bb) + 1 = bbRank(n2, bb)
     ) and
     lineDelta = n2.getLocation().getStartLine() - n1.getLocation().getStartLine() and

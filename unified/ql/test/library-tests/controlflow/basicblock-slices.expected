@@ -39,7 +39,8 @@
 | 60 | cfg.swift:60:21:60:21 | x | 'x -^ Block' |
 | 61 | cfg.swift:61:10:63:3 | Block | 'Block' |
 | 61 | cfg.swift:61:10:63:3 | FunctionExpr | 'FunctionExpr -^ ReturnExpr' |
-| 62 | cfg.swift:62:6:62:6 | y | 'y -> x -> + -> y -^ BinaryExpr' |
+| 62 | cfg.swift:62:6:62:6 | y | 'y' |
+| 62 | cfg.swift:62:19:62:19 | x | 'x -> + -> y -^ BinaryExpr' |
 | 66 | cfg.swift:66:1:70:1 | Block | 'Block' |
 | 66 | cfg.swift:66:1:70:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 67 | cfg.swift:67:3:67:34 | VariableDeclaration | 'VariableDeclaration -V x1 -> createClosure1 -> Argument -V "" -^ CallExpr -^ CallExpr' |

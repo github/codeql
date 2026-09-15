@@ -59,7 +59,7 @@ func createClosure2(x : Int) -> (_ : Int) -> Int { // $ noCfg
 
 func createClosure3(x : Int) -> (_ : Int) -> Int { // $ noCfg
   return {
-    (y) -> Int in x + y
+    (y) -> Int in x + y // $ bbContinues='y goto Block(-1)'
   }
 }
 
