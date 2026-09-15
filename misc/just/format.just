@@ -47,6 +47,11 @@ _bazel_accounting := ': applied fixes, [0-9]+ warnings left$'
 # thousands of lines. So it is asked for all of it and the lines about files it did not
 # touch are dropped. Only those are dropped, so errors still come through, as does
 # anything unforeseen.
+#
+# `[no-cd]` is what keeps a relative argument meaning the directory the caller is in.
+# The forwarder reaches a recipe above its argument with `--justfile`, which otherwise
+# runs it from that justfile's own directory: dropping the attribute would silently turn
+# the default `.` into the whole repository, and the only symptom would be slowness.
 
 [no-cd]
 [no-exit-message]
