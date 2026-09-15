@@ -2247,6 +2247,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
         private module Cfg_ = BB::Make<Location, BbInput>;
 
+        /** Provides the control flow graph interfaces used by basic-block and inline CFG tests. */
         module Cfg implements BB::CfgSig<Location>, TestCfg::CfgSig<Location> {
           import Cfg_
 
