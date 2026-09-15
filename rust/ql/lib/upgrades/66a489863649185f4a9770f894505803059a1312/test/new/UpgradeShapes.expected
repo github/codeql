@@ -1,0 +1,20 @@
+formatArgNamePreserved
+| upgrade_shapes.rs:22:37:22:41 | FormatArgsArg | upgrade_shapes.rs:22:37:22:37 | FormatArgsArgName | upgrade_shapes.rs:22:41:22:41 | 1 | 37 | 1 |
+| upgrade_shapes.rs:22:44:22:48 | FormatArgsArg | upgrade_shapes.rs:22:44:22:44 | FormatArgsArgName | upgrade_shapes.rs:22:48:22:48 | 2 | 44 | 2 |
+tryBlockModifierPreserved
+| upgrade_shapes.rs:21:13:21:21 | { ... } | upgrade_shapes.rs:21:13:21:21 | TryBlockModifier |
+structFieldDefaultPreserved
+| upgrade_shapes.rs:9:5:9:17 | field: u8 | upgrade_shapes.rs:9:17:9:17 | ConstArg | upgrade_shapes.rs:9:17:9:17 | 1 |
+variantDiscriminantPreserved
+| upgrade_shapes.rs:13:5:13:9 | V | upgrade_shapes.rs:13:9:13:9 | ConstArg | upgrade_shapes.rs:13:9:13:9 | 2 |
+pathMetaPreserved
+| upgrade_shapes.rs:4:3:4:11 | PathMeta | path_meta |
+| upgrade_shapes.rs:7:3:7:19 | PathMeta | path_meta |
+keyValueMetaPreserved
+| upgrade_shapes.rs:5:3:5:15 | KeyValueMeta | key_value | upgrade_shapes.rs:5:15:5:15 | 1 |
+tokenTreeMetaPreserved
+| upgrade_shapes.rs:6:3:6:18 | TokenTreeMeta | token_tree | upgrade_shapes.rs:6:13:6:18 | TokenTree |
+unsafeMetaPreserved
+| upgrade_shapes.rs:7:3:7:19 | UnsafeMeta | upgrade_shapes.rs:7:3:7:19 | PathMeta | path_meta |
+traitAliasPreserved
+| upgrade_shapes.rs:16:1:18:12 | trait Alias | upgrade_shapes.rs:16:7:16:11 | Alias | upgrade_shapes.rs:16:18:16:22 | ... | upgrade_shapes.rs:17:1:18:11 | WhereClause |

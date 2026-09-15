@@ -1,0 +1,22 @@
+formatArgsArgName
+| upgrade_shapes.rs:22:31:22:31 | a | upgrade_shapes.rs:22:35:22:35 | 1 | a |
+| upgrade_shapes.rs:22:38:22:38 | b | upgrade_shapes.rs:22:42:22:42 | 2 | b |
+metaExpr
+| upgrade_shapes.rs:5:1:5:15 | #[key_value = 1] | upgrade_shapes.rs:5:15:5:15 | 1 |
+metaIsUnsafe
+| upgrade_shapes.rs:7:1:7:21 | #[unsafe(path_meta)] | 
+metaPath
+| upgrade_shapes.rs:4:1:4:12 | #[path_meta] | path_meta |
+| upgrade_shapes.rs:5:1:5:15 | #[key_value = 1] | key_value |
+| upgrade_shapes.rs:6:1:6:19 | #[token_tree(list)] | token_tree |
+| upgrade_shapes.rs:7:1:7:21 | #[unsafe(path_meta)] | path_meta |
+metaTokenTree
+| upgrade_shapes.rs:6:1:6:19 | #[token_tree(list)] | upgrade_shapes.rs:6:13:6:18 | (list) |
+structFieldDefault
+| upgrade_shapes.rs:9:5:9:17 | field: u8 = 1 | upgrade_shapes.rs:9:17:9:17 | 1 |
+traitAlias
+| upgrade_shapes.rs:16:1:18:12 | TraitAlias | Alias | upgrade_shapes.rs:16:18:16:23 | = Clone | upgrade_shapes.rs:17:1:18:12 | where... |
+tryBlock
+| upgrade_shapes.rs:21:13:21:23 | try { 1 } |
+variantDiscriminant
+| upgrade_shapes.rs:13:5:13:9 | V = 2 | upgrade_shapes.rs:13:9:13:9 | 2 |
