@@ -39,17 +39,21 @@ extension B { // $ access=B
 // Protocol conformance through extension
 protocol Base {
     func baseMethod();
+    func baseMethodNoImpl();
 }
 extension Base { // $ access=Base
     func baseMethodExt() {} // name=Base.baseMethodExt
 }
 class X {
     func xMethod() {
-        baseMethod() // $ access=Base.baseMethod
+        baseMethod() // $ access=X.baseMethod
+        baseMethodNoImpl() // $ access=Base.baseMethodNoImpl // with no visible implementation, just resolve to the signature
         baseMethodExt() // $ access=Base.baseMethodExt
     }
 }
-extension X : Base {} // $ access=X access=Base
+extension X : Base { // $ access=X access=Base
+    func baseMethod() {} // name=X.baseMethod
+}
 
 // Type parameters of the extended type should be in scope in the extension.
 class GenericExtensionTarget<ExtensionTypeParameter> {}
