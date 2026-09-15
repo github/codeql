@@ -2,7 +2,8 @@
  * @name Known elliptic curve algorithms (slice)
  * @description Outputs known elliptic curve algorithms.
  * @id java/quantum/slices/known-elliptic-curve-algorithm
- * @kind table
+ * @kind problem
+ * @severity recommendation
  * @tags quantum
  *       experimental
  */
