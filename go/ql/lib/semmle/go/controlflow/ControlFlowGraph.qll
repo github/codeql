@@ -340,8 +340,6 @@ module ControlFlow {
 
     /** Gets the value of the condition that this node corresponds to. */
     boolean getOutcome() { result = outcome }
-
-    override Root getRoot() { result.isRootOf(cond) }
   }
 
   /**

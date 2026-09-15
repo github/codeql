@@ -244,8 +244,6 @@ module IR {
 
     override Type getResultType() { result = e.getType() }
 
-    override ControlFlow::Root getRoot() { result.isRootOf(e) }
-
     override float getFloatValue() { result = e.getFloatValue() }
 
     override int getIntValue() { result = e.getIntValue() }
@@ -421,8 +419,6 @@ module IR {
     override predicate reads(ValueEntity v) { v = fld }
 
     override Type getResultType() { result = lookThroughPointerType(fld.getType()) }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(sel) }
   }
 
   /**
@@ -532,8 +528,6 @@ module IR {
       or
       result = evalExprInstruction(elt.(KeyValueExpr).getValue())
     }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(elt) }
   }
 
   /**
@@ -660,8 +654,6 @@ module IR {
         result = evalExprInstruction(spec.getInit(i))
       )
     }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(assgn) }
   }
 
   /**
@@ -693,8 +685,6 @@ module IR {
       or
       result = s.(IncDecStmt).getOperand().getType()
     }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(s) }
   }
 
   /** An instruction extracting a component of a tuple value. */
@@ -781,8 +771,6 @@ module IR {
         i = 0 and result = rangeType.(SendRecvChanType).getElementType()
       )
     }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(s) }
   }
 
   /**
@@ -827,8 +815,6 @@ module IR {
 
     override Type getResultType() { result = v.getType() }
 
-    override ControlFlow::Root getRoot() { result.isRootOf(v.getDeclaration()) }
-
     override int getIntValue() {
       v.getType().getUnderlyingType() instanceof IntegerType and result = 0
     }
@@ -871,8 +857,6 @@ module IR {
     DeferStmt defer;
 
     DeferInstruction() { this.isIn(defer) }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(defer) }
   }
 
   /** An instruction that corresponds to a `go` statement. */
@@ -880,8 +864,6 @@ module IR {
     GoStmt go;
 
     GoInstruction() { this.isIn(go) }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(go) }
   }
 
   /** An instruction corresponding to a return from a function. */
@@ -914,8 +896,6 @@ module IR {
       not exists(ExtractTupleElementInstruction ext | ext.isAdditional(ret, _)) and
       result = evalExprInstruction(ret.getExpr(i))
     }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(ret) }
   }
 
   /**
@@ -941,8 +921,6 @@ module IR {
     ResultVariable getResultVariable() { result = var }
 
     override Type getResultType() { result = var.getType() }
-
-    override ControlFlow::Root getRoot() { var = result.(FuncDef).getAResultVar() }
   }
 
   /**
@@ -962,8 +940,6 @@ module IR {
     override predicate reads(ValueEntity v) { v = var }
 
     override Type getResultType() { result = var.getType() }
-
-    override ControlFlow::Root getRoot() { var = result.(FuncDef).getAResultVar() }
   }
 
   /** An instruction initializing a parameter to the corresponding argument. */
@@ -980,8 +956,6 @@ module IR {
     override Instruction getRhs() { result = this }
 
     override Type getResultType() { result = parm.getType() }
-
-    override ControlFlow::Root getRoot() { result = parm.getFunction() }
   }
 
   /** An instruction that gets the next key-value pair in a range loop. */
@@ -994,8 +968,6 @@ module IR {
      * Gets the instruction computing the value whose key-value pairs this instruction reads.
      */
     Instruction getDomain() { result = evalExprInstruction(p.getDomain()) }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(p.getRangeStmt()) }
   }
 
   /**
@@ -1007,8 +979,6 @@ module IR {
     EvalImplicitTrueInstruction() { this.isAdditional(stmt, "implicit-true") }
 
     override Type getResultType() { result instanceof BoolType }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(stmt) }
 
     override boolean getBoolValue() { result = true }
 
@@ -1031,8 +1001,6 @@ module IR {
       this.isAdditional(cc, "case-check:" + i.toString()) and
       exists(cc.getExpr(i))
     }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(cc) }
   }
 
   /**
@@ -1048,8 +1016,6 @@ module IR {
       v = cc.getImplicitlyDeclaredVariable() and
       exists(TypeSwitchStmt ts | cc = ts.getACase() | rhs = evalExprInstruction(ts.getExpr()))
     }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(cc) }
   }
 
   /**
@@ -1067,8 +1033,6 @@ module IR {
     override Type getResultType() {
       result = e.getType().getUnderlyingType().(PointerType).getBaseType()
     }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(e) }
   }
 
   /** A representation of the target of a write instruction. */
