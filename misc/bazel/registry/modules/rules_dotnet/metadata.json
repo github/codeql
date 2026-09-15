@@ -13,7 +13,8 @@
         "github:bazel-contrib/rules_dotnet"
     ],
     "versions": [
-        "0.21.5-codeql.1"
+        "0.21.5-codeql.1",
+        "0.21.5-codeql.2"
     ],
     "yanked_versions": {}
 }
