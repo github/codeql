@@ -1,0 +1,12 @@
+edges
+| SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc4:r0 | SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc6:r0 |
+| SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc6:r0 | SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc6:r2 |
+| SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc6:r2 | SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc7:r2 |
+| SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc7:r1 | SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc11:r1 |
+| SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc7:r2 | SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc7:r1 |
+| SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc11:r1 | SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc11:r4 |
+| SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc11:r4 | SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc12:r4 |
+| SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc12:r3 | SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc13:r3 |
+| SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc12:r4 | SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc12:r3 |
+#select
+| SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac | SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc4:r0 | SanitizedCommandFlow.luac:0:0:0:0 | SanitizedCommandFlow.luac::root@pc13:r3 | Sanitized Lua bytecode flow from SanitizedCommandFlow.luac::root@pc4:r0 reaches this sink. Classification: sanitized; reason: sanitized path suppressed. |

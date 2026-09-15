@@ -1,0 +1,6 @@
+local function precise_global(value)
+  shared_global = value
+  return shared_global
+end
+
+return precise_global

@@ -1,0 +1,8 @@
+local function calculate(first, second, third)
+  local sum = first + second
+  local shifted = sum + 1
+  first = first .. second .. third
+  return first, shifted
+end
+
+return calculate

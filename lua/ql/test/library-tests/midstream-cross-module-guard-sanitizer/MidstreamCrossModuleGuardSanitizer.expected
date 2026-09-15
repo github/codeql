@@ -1,0 +1,4 @@
+| midstream-guard.active-suppression | guarded path has no active report |
+| midstream-guard.classification | middle-module guard sanitizer suppresses the downstream sink |
+| midstream-guard.unrelated-active | unrelated sanitizer argument does not suppress the source |
+| midstream-guard.unrelated-not-sanitized | unrelated sanitizer argument is not on the dataflow chain |

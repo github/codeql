@@ -1,0 +1,7 @@
+local function scalar_range(condition)
+  local first, second, third = condition
+  first = true
+  return first, second, third
+end
+
+return scalar_range

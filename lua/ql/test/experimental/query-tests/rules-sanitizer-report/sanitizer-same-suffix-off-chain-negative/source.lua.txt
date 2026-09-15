@@ -1,0 +1,20 @@
+luci = { http = {} }
+
+function luci.http.formvalue(name)
+  return name
+end
+
+local function tonumber(value)
+  return value
+end
+
+os = {
+  execute = function(cmd)
+    return cmd
+  end
+}
+
+local tainted = luci.http.formvalue("cmd")
+local clean = "fixed"
+tonumber(clean)
+os.execute(tainted)

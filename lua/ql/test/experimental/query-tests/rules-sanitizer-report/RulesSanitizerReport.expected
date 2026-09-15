@@ -1,0 +1,96 @@
+| bc-branch-negative/input.luac | source-endpoint | root@pc3 *.source -> root@pc3:r2 bytecode-only,ql-source-rule,typed-call-resolution |
+| bc-branch-negative/input.luac | source-sink.rule-match | root@pc3 source *.source -> source param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| bc-kill-overwrite/input.luac | source-endpoint | root@pc3 *.source -> root@pc3:r2 bytecode-only,ql-source-rule,typed-call-resolution |
+| bc-kill-overwrite/input.luac | source-sink.rule-match | root@pc3 source *.source -> source param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| bc-taint-minimal-path/input.luac | source-endpoint | root@pc3 *.source -> root@pc3:r2 bytecode-only,ql-source-rule,typed-call-resolution |
+| bc-taint-minimal-path/input.luac | source-sink.rule-match | root@pc3 source *.source -> source param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| callsite-balanced-report/input.luac | sink-endpoint | root@pc11 *.execute param=0 -> root@pc11:r5 bytecode-only,ql-sink-rule,typed-call-resolution |
+| callsite-balanced-report/input.luac | source-endpoint | root@pc2 *.source -> root@pc2:r1 bytecode-only,ql-source-rule,typed-call-resolution |
+| callsite-balanced-report/input.luac | source-sink.rule-match | root@pc2 source *.source -> source param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| callsite-balanced-report/input.luac | source-sink.rule-match | root@pc11 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| cross-module-sanitizer/controller.luac | report.classification | root@pc20:r1 -> root@pc27:r4 sanitized sanitized path suppressed |
+| cross-module-sanitizer/controller.luac | report.sanitized-positive-only | cross-module-sanitizer/controller.luac::root@pc20:r1 -> cross-module-sanitizer/controller.luac::root@pc27:r4 |
+| cross-module-sanitizer/controller.luac | sanitizer.classification | root@pc20:r1 -> root@pc27:r4 sanitizer=root.0@pc2:shellquote applies=true chain=true classification=sanitized |
+| cross-module-sanitizer/controller.luac | sanitizer.classification.callee-module | root@pc20:r1 -> root@pc27:r4 sanitizer=cross-module-sanitizer/sanitizer.luac::root.0@pc2:shellquote classification=sanitized |
+| cross-module-sanitizer/controller.luac | sink-endpoint | root@pc27 *.execute param=0 -> root@pc27:r4 bytecode-only,ql-sink-rule,typed-call-resolution |
+| cross-module-sanitizer/controller.luac | source-endpoint | root@pc20 *.formvalue -> root@pc20:r1 bytecode-only,ql-source-rule,typed-call-resolution |
+| cross-module-sanitizer/controller.luac | source-sink.rule-match | root@pc20 source *.formvalue -> formvalue param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| cross-module-sanitizer/controller.luac | source-sink.rule-match | root@pc27 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| cross-module-sanitizer/sanitizer.luac | sanitizer-call.callee-module | root.0@pc2 shellquote -> root.0@pc2:r1 typed-call-resolution |
+| cross-module-webcmd-popen/controller.luac | report.classification | root.1@pc4:r0 -> root.1@pc3:r2 true-positive unsanitized active source-to-sink path |
+| cross-module-webcmd-popen/controller.luac | source-endpoint | root.1@pc4 *.formvalue -> root.1@pc4:r0 bytecode-only,ql-source-rule,typed-call-resolution |
+| cross-module-webcmd-popen/controller.luac | source-sink.rule-match | root.1@pc4 source *.formvalue -> formvalue param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| cross-module-webcmd-popen/mtkwifi.luac | sink-endpoint | root.1@pc3 *.popen param=0 -> root.1@pc3:r2 bytecode-only,ql-sink-rule,typed-call-resolution |
+| cross-module-webcmd-popen/mtkwifi.luac | source-sink.rule-match | root.1@pc3 sink *.popen -> popen param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| formvalue-os-execute-chain/input.luac | report.classification | root@pc16:r0 -> root@pc20:r2 true-positive unsanitized active source-to-sink path |
+| formvalue-os-execute-chain/input.luac | report.path.local-complete | formvalue-os-execute-chain/input.luac::root@pc16:r0 -> formvalue-os-execute-chain/input.luac::root@pc19:r0 -> formvalue-os-execute-chain/input.luac::root@pc19:r2 -> formvalue-os-execute-chain/input.luac::root@pc20:r2 |
+| formvalue-os-execute-chain/input.luac | sink-endpoint | root@pc20 *.execute param=0 -> root@pc20:r2 bytecode-only,ql-sink-rule,typed-call-resolution |
+| formvalue-os-execute-chain/input.luac | source-endpoint | root@pc16 *.formvalue -> root@pc16:r0 bytecode-only,ql-source-rule,typed-call-resolution |
+| formvalue-os-execute-chain/input.luac | source-endpoint.typed-resolution | root@pc16 *.formvalue -> root@pc16:r0 typed-call-resolution |
+| formvalue-os-execute-chain/input.luac | source-sink.rule-match | root@pc16 source *.formvalue -> formvalue param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| formvalue-os-execute-chain/input.luac | source-sink.rule-match | root@pc20 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| no-report-without-path-negative/input.luac | sink-endpoint | root@pc21 *.execute param=0 -> root@pc21:r3 bytecode-only,ql-sink-rule,typed-call-resolution |
+| no-report-without-path-negative/input.luac | source-endpoint | root@pc16 *.formvalue -> root@pc16:r0 bytecode-only,ql-source-rule,typed-call-resolution |
+| no-report-without-path-negative/input.luac | source-sink.rule-match | root@pc16 source *.formvalue -> formvalue param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| no-report-without-path-negative/input.luac | source-sink.rule-match | root@pc21 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| sanitizer-cross-module-return/controller.luac | report.classification | root@pc20:r1 -> root@pc27:r4 sanitized sanitized path suppressed |
+| sanitizer-cross-module-return/controller.luac | report.sanitized-positive-only | sanitizer-cross-module-return/controller.luac::root@pc20:r1 -> sanitizer-cross-module-return/controller.luac::root@pc27:r4 |
+| sanitizer-cross-module-return/controller.luac | sanitizer-call.cross-module | root@pc23 shellquote -> root@pc23:r2 typed-call-resolution |
+| sanitizer-cross-module-return/controller.luac | sanitizer.classification | root@pc20:r1 -> root@pc27:r4 sanitizer=root@pc23:shellquote applies=true chain=true classification=sanitized |
+| sanitizer-cross-module-return/controller.luac | sanitizer.classification.cross-module | root@pc20:r1 -> root@pc27:r4 sanitizer=root@pc23:shellquote classification=sanitized |
+| sanitizer-cross-module-return/controller.luac | sink-endpoint | root@pc27 *.execute param=0 -> root@pc27:r4 bytecode-only,ql-sink-rule,typed-call-resolution |
+| sanitizer-cross-module-return/controller.luac | source-endpoint | root@pc20 *.formvalue -> root@pc20:r1 bytecode-only,ql-source-rule,typed-call-resolution |
+| sanitizer-cross-module-return/controller.luac | source-sink.rule-match | root@pc20 source *.formvalue -> formvalue param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| sanitizer-cross-module-return/controller.luac | source-sink.rule-match | root@pc27 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| sanitizer-on-path/input.luac | report.classification | root@pc17:r1 -> root@pc24:r4 sanitized sanitized path suppressed |
+| sanitizer-on-path/input.luac | report.sanitized-positive-only | sanitizer-on-path/input.luac::root@pc17:r1 -> sanitizer-on-path/input.luac::root@pc24:r4 |
+| sanitizer-on-path/input.luac | sanitizer-call.typed-resolution | root@pc20 tonumber -> root@pc20:r2 typed-call-resolution |
+| sanitizer-on-path/input.luac | sanitizer.classification | root@pc17:r1 -> root@pc24:r4 sanitizer=root@pc20:tonumber applies=true chain=true classification=sanitized |
+| sanitizer-on-path/input.luac | sink-endpoint | root@pc24 *.execute param=0 -> root@pc24:r4 bytecode-only,ql-sink-rule,typed-call-resolution |
+| sanitizer-on-path/input.luac | source-endpoint | root@pc17 *.formvalue -> root@pc17:r1 bytecode-only,ql-source-rule,typed-call-resolution |
+| sanitizer-on-path/input.luac | source-sink.rule-match | root@pc17 source *.formvalue -> formvalue param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| sanitizer-on-path/input.luac | source-sink.rule-match | root@pc24 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| sanitizer-same-suffix-off-chain-negative/input.luac | report.classification | root@pc17:r1 -> root@pc25:r4 true-positive unsanitized active source-to-sink path |
+| sanitizer-same-suffix-off-chain-negative/input.luac | sanitizer.classification | root@pc17:r1 -> root@pc25:r4 sanitizer=root@pc21:tonumber applies=false chain=false classification=not-sanitized |
+| sanitizer-same-suffix-off-chain-negative/input.luac | sink-endpoint | root@pc25 *.execute param=0 -> root@pc25:r4 bytecode-only,ql-sink-rule,typed-call-resolution |
+| sanitizer-same-suffix-off-chain-negative/input.luac | source-endpoint | root@pc17 *.formvalue -> root@pc17:r1 bytecode-only,ql-source-rule,typed-call-resolution |
+| sanitizer-same-suffix-off-chain-negative/input.luac | source-sink.rule-match | root@pc17 source *.formvalue -> formvalue param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| sanitizer-same-suffix-off-chain-negative/input.luac | source-sink.rule-match | root@pc25 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| sanitizer-unsanitized-alternative/input.luac | report.classification | root@pc18:r1 -> root@pc32:r4 true-positive unsanitized active source-to-sink path |
+| sanitizer-unsanitized-alternative/input.luac | sanitizer.classification | root@pc18:r1 -> root@pc32:r4 sanitizer=root@pc25:shellquote applies=true chain=true classification=not-sanitized |
+| sanitizer-unsanitized-alternative/input.luac | sink-endpoint | root@pc32 *.execute param=0 -> root@pc32:r4 bytecode-only,ql-sink-rule,typed-call-resolution |
+| sanitizer-unsanitized-alternative/input.luac | source-endpoint | root@pc18 *.formvalue -> root@pc18:r1 bytecode-only,ql-source-rule,typed-call-resolution |
+| sanitizer-unsanitized-alternative/input.luac | source-sink.rule-match | root@pc18 source *.formvalue -> formvalue param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| sanitizer-unsanitized-alternative/input.luac | source-sink.rule-match | root@pc32 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| submit-dpp-uri-execute/input.luac | report.classification | root.2@pc4:r0 -> root.2@pc8:r2 true-positive unsanitized active source-to-sink path |
+| submit-dpp-uri-execute/input.luac | sink-endpoint | root.2@pc8 *.execute param=0 -> root.2@pc8:r2 bytecode-only,ql-sink-rule,typed-call-resolution |
+| submit-dpp-uri-execute/input.luac | source-endpoint | root.2@pc4 *.formvalue -> root.2@pc4:r0 bytecode-only,ql-source-rule,typed-call-resolution |
+| submit-dpp-uri-execute/input.luac | source-sink.rule-match | root.2@pc4 source *.formvalue -> formvalue param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| submit-dpp-uri-execute/input.luac | source-sink.rule-match | root.2@pc8 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/dynamic-key.luac | report.classification | root@pc2:r1 -> root@pc16:r2 true-positive unsanitized active source-to-sink path |
+| table-field-sanitizer-overwrite/dynamic-key.luac | sanitizer.classification | root@pc2:r1 -> root@pc16:r2 sanitizer=root@pc12:tonumber applies=true chain=true classification=not-sanitized |
+| table-field-sanitizer-overwrite/dynamic-key.luac | sink-endpoint | root@pc16 *.execute param=0 -> root@pc16:r2 bytecode-only,ql-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/dynamic-key.luac | source-endpoint | root@pc2 *.source -> root@pc2:r1 bytecode-only,ql-source-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/dynamic-key.luac | source-sink.rule-match | root@pc2 source *.source -> source param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/dynamic-key.luac | source-sink.rule-match | root@pc16 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/optional-branch.luac | report.classification | root@pc2:r1 -> root@pc14:r2 true-positive unsanitized active source-to-sink path |
+| table-field-sanitizer-overwrite/optional-branch.luac | sanitizer.classification | root@pc2:r1 -> root@pc14:r2 sanitizer=root@pc10:tonumber applies=true chain=true classification=not-sanitized |
+| table-field-sanitizer-overwrite/optional-branch.luac | sink-endpoint | root@pc14 *.execute param=0 -> root@pc14:r2 bytecode-only,ql-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/optional-branch.luac | source-endpoint | root@pc2 *.source -> root@pc2:r1 bytecode-only,ql-source-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/optional-branch.luac | source-sink.rule-match | root@pc2 source *.source -> source param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/optional-branch.luac | source-sink.rule-match | root@pc14 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/same-field.luac | report.classification | root@pc2:r1 -> root@pc19:r2 sanitized sanitized path suppressed |
+| table-field-sanitizer-overwrite/same-field.luac | report.sanitized-positive-only | table-field-sanitizer-overwrite/same-field.luac::root@pc2:r1 -> table-field-sanitizer-overwrite/same-field.luac::root@pc19:r2 |
+| table-field-sanitizer-overwrite/same-field.luac | sanitizer.classification | root@pc2:r1 -> root@pc19:r2 sanitizer=root@pc10:tonumber applies=true chain=true classification=sanitized |
+| table-field-sanitizer-overwrite/same-field.luac | sanitizer.classification | root@pc2:r1 -> root@pc19:r2 sanitizer=root@pc15:shellquote applies=true chain=true classification=sanitized |
+| table-field-sanitizer-overwrite/same-field.luac | sink-endpoint | root@pc19 *.execute param=0 -> root@pc19:r2 bytecode-only,ql-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/same-field.luac | source-endpoint | root@pc2 *.source -> root@pc2:r1 bytecode-only,ql-source-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/same-field.luac | source-sink.rule-match | root@pc2 source *.source -> source param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/same-field.luac | source-sink.rule-match | root@pc19 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/unrelated-field.luac | report.classification | root@pc2:r1 -> root@pc19:r2 true-positive unsanitized active source-to-sink path |
+| table-field-sanitizer-overwrite/unrelated-field.luac | sanitizer.classification | root@pc2:r1 -> root@pc19:r2 sanitizer=root@pc10:tonumber applies=true chain=true classification=not-sanitized |
+| table-field-sanitizer-overwrite/unrelated-field.luac | sanitizer.classification | root@pc2:r1 -> root@pc19:r2 sanitizer=root@pc15:shellquote applies=true chain=true classification=not-sanitized |
+| table-field-sanitizer-overwrite/unrelated-field.luac | sink-endpoint | root@pc19 *.execute param=0 -> root@pc19:r2 bytecode-only,ql-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/unrelated-field.luac | source-endpoint | root@pc2 *.source -> root@pc2:r1 bytecode-only,ql-source-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/unrelated-field.luac | source-sink.rule-match | root@pc2 source *.source -> source param=-1 bytecode-only,ql-source-sink-rule,typed-call-resolution |
+| table-field-sanitizer-overwrite/unrelated-field.luac | source-sink.rule-match | root@pc19 sink *.execute -> execute param=0 bytecode-only,ql-source-sink-rule,typed-call-resolution |
