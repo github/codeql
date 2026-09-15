@@ -2444,8 +2444,21 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        *
        * Use this predicate to implement any language-specific bottom-up inference logic.
        *
-       * When contextual type information is needed at `n1`, this predicate may additionally
-       * be applied _reversely_ as well (see an example in the module documentation).
+       * For example, in Rust one may implement the following two rules for the `?` operator:
+       *
+       * ```text
+       *   x : Option<T>          x : Result<T, E>
+       * -----------------      --------------------
+       *      x? : T                    x? : T
+       * ```
+       *
+       * The rules examplify how the converse only holds when `n1` already has an inferred type
+       * that matches `prefix1`; knowing that `x?` has type `i32` does not necessarily imply that
+       * `x` has type `Option<i32>` or `Result<i32, _>`, we can only conclude this if we know
+       * that `x` has root type `Option` or `Result`, respectively.
+       *
+       * When contextual type information is needed at `n1`, this predicate may be applied
+       * _reversely_ (see an example in the module documentation).
        */
       predicate stepLanguageSpecific(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2);
 
