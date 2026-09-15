@@ -11,6 +11,8 @@ permissions: {}
 
 jobs:
   label:
+  # Label non-draft PRs from personal accounts that are not owning (github) organization members or owners,
+  # including outside collaborators and prior contributors. GitHub organization members are excluded, and bot accounts too.
     if: >-
       github.event.pull_request.draft == false &&
       github.event.pull_request.user.type == 'User' &&
