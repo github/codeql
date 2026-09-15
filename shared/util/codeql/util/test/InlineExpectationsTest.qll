@@ -373,6 +373,93 @@ module Make<InlineExpectationsTestSig Impl> {
       )
     }
 
+    /**
+     * Holds if `location` is the location of a comment that
+     * `codeql test run --learn` may rewrite as a whole.
+     *
+     * A comment is rewritable when it either carries at least one parseable expectation, or is a
+     * plain comment carrying only a trailing note (see `getTrailingNote`) that a freshly learned
+     * tag can be merged into (for example `// note` -> `// $ Alert // note`); and in addition none
+     * of its expectations is unparseable, and none mixes (in a single comma-separated group) a tag
+     * this test understands with a tag it ignores (for example a query ID that does not match the
+     * current query). The last condition keeps the rewrite from having to take apart a group such
+     * as `Alert,Source[other-query]` whose parts this test treats differently; such comments are
+     * left untouched.
+     *
+     * A rewritable comment may still carry whole expectations this test ignores (for example
+     * `// $ Alert[other-query]`). Those are preserved verbatim by `hasForeignExpectation` when the
+     * comment is rewritten, so that a `--learn` run for one query never drops an expectation that
+     * belongs to a different query sharing the same source file.
+     */
+    predicate isRewritableComment(Impl::Location location) {
+      exists(Impl::ExpectationComment comment | comment.getLocation() = location |
+        (
+          getAnExpectation(comment, _, _, _, _)
+          or
+          // A plain comment carrying only a note (no expectation of its own) is rewritable too, so
+          // that a freshly learned tag can be merged into it rather than appended as a second
+          // comment (for example `// note` -> `// $ Alert // note`).
+          exists(getTrailingNote(location)) and not getAnExpectation(comment, _, _, _, _)
+        ) and
+        not exists(InvalidTestExpectation invalid | invalid.getLocation() = location) and
+        not exists(string tags, string owned, string ignored |
+          getAnExpectation(comment, _, _, tags, _) and
+          owned = tags.splitAt(",") and
+          not TestImpl::tagIsIgnored(owned) and
+          ignored = tags.splitAt(",") and
+          TestImpl::tagIsIgnored(ignored)
+        )
+      )
+    }
+
+    /**
+     * Holds if the comment at `location` carries a whole expectation this test ignores (for
+     * example one annotated with a query ID that does not match the current query), whose verbatim
+     * text is `text` and which sits in `column` (`""` for the default column, or a named column
+     * such as `"SPURIOUS"` / `"MISSING"`).
+     *
+     * `codeql test run --learn` preserves such expectations unchanged when it rewrites the comment,
+     * because they belong to a different query that shares the same source file and this test
+     * cannot tell whether they still hold.
+     */
+    predicate hasForeignExpectation(Impl::Location location, string column, string text) {
+      exists(Impl::ExpectationComment comment, TColumn col, string tags |
+        comment.getLocation() = location and
+        getAnExpectation(comment, col, text, tags, _) and
+        column = getColumnString(col) and
+        forall(string tag | tag = tags.splitAt(",") | TestImpl::tagIsIgnored(tag))
+      )
+    }
+
+    /**
+     * Holds if the comment at `location` carries a trailing regular (non-interpreted) note `note`,
+     * with the note's own comment marker and surrounding whitespace stripped. This is either:
+     *
+     * - the text after a `//` that follows the expectations in an expectation comment (for example
+     *   `note` in `// $ Alert // note` or `# $ Alert // note`), which the framework treats as an
+     *   ordinary comment (see `expectationCommentPattern`); or
+     * - the whole content of a plain comment that carries no expectation at all (for example `note`
+     *   in `// note` or `# note`), into which `--learn` may merge a freshly learned tag.
+     *
+     * `codeql test run --learn` keeps this note when it rewrites, deletes, or merges into the
+     * comment, re-wrapping it with the appropriate markers (`<marker> $ ... // note` when
+     * expectations remain, or `<marker> note` when none do), so an explanatory note written next to
+     * code is never lost. Only `//` delimits such a note within an expectation comment, mirroring
+     * `expectationCommentPattern`'s `(?:[^/]|/[^/])*` expectation region, which ends only at `//`; a
+     * `#` never does, so `# $ Alert # note` reads `note` as a tag rather than a note.
+     */
+    string getTrailingNote(Impl::Location location) {
+      exists(Impl::ExpectationComment comment | comment.getLocation() = location |
+        result = comment.getContents().regexpCapture("\\s*\\$ (?:[^/]|/[^/])*//(.*)", 1).trim()
+        or
+        // A plain comment with no expectation of its own: its whole content is the note.
+        not getAnExpectation(comment, _, _, _, _) and
+        not exists(InvalidTestExpectation invalid | invalid.getLocation() = location) and
+        result = comment.getContents().trim()
+      ) and
+      result != ""
+    }
+
     query predicate testFailures(FailureLocatable element, string message) {
       hasFailureMessage(element, message)
     }
@@ -635,6 +722,28 @@ module TestPostProcessing {
 
   signature module InputSig<InlineExpectationsTestSig Input> {
     string getRelativeUrl(Input::Location location);
+
+    /**
+     * Gets the marker that starts a line comment (for example `"//"` or `"#"`) in the source
+     * file with the given `relativePath`, provided that `codeql test run --learn` is able to
+     * render inline expectations for that file. Files for which this has no result are left
+     * untouched by `--learn`.
+     *
+     * This is keyed on the file rather than on the analyzed language because a single database
+     * may contain source files in several languages with different comment syntaxes (for
+     * example Java together with XML). `relativePath` is the path reported by `getRelativeUrl`.
+     */
+    bindingset[relativePath]
+    string getStartCommentMarker(string relativePath);
+
+    /**
+     * Gets the marker that ends a comment (for example `"-->"`) in the source file with the
+     * given `relativePath`. Defaults to the empty string, which is correct for languages whose
+     * inline expectations use line comments; block-comment languages can override it so that
+     * `--learn` renders a closing marker.
+     */
+    bindingset[relativePath]
+    default string getEndCommentMarker(string relativePath) { result = "" }
   }
 
   module Make<InlineExpectationsTestSig Input, InputSig<Input> Input2> {
@@ -1010,6 +1119,368 @@ module TestPostProcessing {
       or
       Test::testFailures(_, _) and
       relation = "testFailures"
+    }
+
+    /**
+     * Gets the inline expectation comment (including the comment markers, but with no leading
+     * whitespace) that renders a plain `tag` expectation in the file with the given `relativePath`,
+     * or has no result if that file's comment syntax is not supported. For example `// $ Alert` for
+     * a language whose line comments start with `//`.
+     *
+     * This form is used when rewriting an existing comment in place, starting at its comment
+     * marker, so it must not carry the leading separator space that `renderExpectationComment`
+     * adds for appending after code.
+     */
+    bindingset[relativePath, tag]
+    private string renderInlineComment(string relativePath, string tag) {
+      exists(string startMarker, string endMarker, string endSuffix |
+        startMarker = Input2::getStartCommentMarker(relativePath) and
+        endMarker = Input2::getEndCommentMarker(relativePath) and
+        (
+          endMarker = "" and endSuffix = ""
+          or
+          endMarker != "" and endSuffix = " " + endMarker
+        ) and
+        result = startMarker + " $ " + tag + endSuffix
+      )
+    }
+
+    /**
+     * Gets the fully rendered inline expectation comment (including the comment markers) that
+     * `--learn` should append for a new `tag` expectation in the file with the given
+     * `relativePath`, or has no result if that file's comment syntax is not supported.
+     *
+     * The leading space separates the comment from any existing content on the line.
+     */
+    bindingset[relativePath, tag]
+    private string renderExpectationComment(string relativePath, string tag) {
+      result = " " + renderInlineComment(relativePath, tag)
+    }
+
+    /**
+     * Gets the fully rendered inline expectation comment (including comment markers) that `--learn`
+     * should append to `line` of `relativePath`, carrying *every* expectation freshly learned for
+     * that line (see `learnedNewExpectation`) in a single comment, or has no result if that file's
+     * comment syntax is not supported.
+     *
+     * The expectations are ordered lexically, matching `renderLearnedColumn`, so that a line on
+     * which several results fire (for example a path-problem source and sink that coincide) grows
+     * one deterministic comment such as `// $ Sink Source` rather than several separate comments.
+     */
+    bindingset[relativePath, line]
+    private string renderNewComment(string relativePath, int line) {
+      exists(string body |
+        body =
+          concat(string text |
+            learnedNewExpectation(relativePath, line, text)
+          |
+            text, " " order by text
+          ) and
+        result = renderExpectationComment(relativePath, body)
+      )
+    }
+
+    /**
+     * Holds if, after `--learn`, the inline expectation comment at `commentLoc` should carry the
+     * expectation `text` in `column` (`""` for the default column, or `"SPURIOUS"` / `"MISSING"`).
+     *
+     * These are the expectations that survive learning: a default or `SPURIOUS:` expectation is
+     * kept only while it still matches a result, a `MISSING:` expectation whose result now fires is
+     * promoted to the default column, and a `MISSING:` expectation whose result is still absent is
+     * kept unchanged.
+     */
+    private predicate learnedExpectation(TestLocation commentLoc, string column, string text) {
+      exists(Test::FailureLocatable e |
+        e.getLocation() = commentLoc and text = e.getExpectationText()
+      |
+        // a default expectation that still matches a result is kept
+        e instanceof Test::GoodTestExpectation and
+        e = Test::getAMatchingExpectation(_, _, _, _, _) and
+        column = ""
+        or
+        // a `SPURIOUS:` expectation whose result still fires is kept
+        e instanceof Test::FalsePositiveTestExpectation and
+        e = Test::getAMatchingExpectation(_, _, _, _, _) and
+        column = "SPURIOUS"
+        or
+        // a `MISSING:` expectation whose result now fires is promoted to the default column
+        e instanceof Test::FalseNegativeTestExpectation and
+        e = Test::getAMatchingExpectation(_, _, _, _, _) and
+        column = ""
+        or
+        // a `MISSING:` expectation whose result is still absent is kept
+        e instanceof Test::FalseNegativeTestExpectation and
+        not e = Test::getAMatchingExpectation(_, _, _, _, _) and
+        column = "MISSING"
+      )
+    }
+
+    /**
+     * Holds if `--learn` should record a new expectation `text` on `endLine` of `relativePath`,
+     * because a non-optional actual result there has no matching expectation (an *unexpected
+     * result*). `text` is the fully rendered expectation, so it carries a value where the result
+     * has one (`Alert`, `Source`, or a custom `tag=value`).
+     *
+     * The expectation is keyed on the result's *end* line, because an expectation matches a
+     * result when the expectation's start line equals the result's end line (see `onSameLine`).
+     * Whether the new expectation is appended as a fresh comment or merged into an existing one is
+     * decided by the callers (see the append disjunct of `learnEdits` and `mergedNewExpectation`).
+     *
+     * `RelatedLocation` results are excluded: they are only reported when an expectation on the
+     * line already references them (see `hasRelatedLocation`/`shouldReportRelatedLocations`), so
+     * they never constitute a genuinely new result that learning should introduce on its own.
+     */
+    private predicate learnedNewExpectation(string relativePath, int endLine, string text) {
+      exists(Test::ActualTestResult actualResult |
+        not actualResult.isOptional() and
+        actualResult.getTag() != "RelatedLocation" and
+        not exists(
+          Test::getAMatchingExpectation(actualResult.getLocation(), actualResult.toString(),
+            actualResult.getTag(), actualResult.getValue(), false)
+        ) and
+        text = actualResult.getExpectationText() and
+        parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, _, _,
+          endLine, _)
+      )
+    }
+
+    /**
+     * Holds if `--learn` should merge a freshly learned expectation `text` into the existing,
+     * rewritable comment at `commentLoc` (in `column` `""`, the default), because an unexpected
+     * result fires on that comment's line. Merging keeps the new tag alongside the comment's
+     * existing expectations rather than appending a second comment to the line; when several new
+     * expectations land on the same line they are all merged and re-rendered together (see
+     * `renderLearnedColumn`).
+     */
+    private predicate mergedNewExpectation(TestLocation commentLoc, string column, string text) {
+      exists(string relativePath, int line |
+        Test::isRewritableComment(commentLoc) and
+        parseLocationString(commentLoc.getRelativeUrl(), relativePath, line, _, _, _) and
+        learnedNewExpectation(relativePath, line, text) and
+        column = ""
+      )
+    }
+
+    /**
+     * Holds if, after `--learn`, the inline expectation comment at `commentLoc` should carry the
+     * expectation `text` in `column` (`""` for the default column, or a named column such as
+     * `"SPURIOUS"` / `"MISSING"`).
+     *
+     * This combines the surviving expectations this test understands (see `learnedExpectation`)
+     * with the expectations it ignores (see `Test::hasForeignExpectation`), which are preserved
+     * verbatim so that rewriting a comment for one query never drops another query's expectation on
+     * the same line, and with any freshly learned expectations merged into the comment (see
+     * `mergedNewExpectation`).
+     */
+    private predicate desiredExpectation(TestLocation commentLoc, string column, string text) {
+      learnedExpectation(commentLoc, column, text)
+      or
+      Test::hasForeignExpectation(commentLoc, column, text)
+      or
+      mergedNewExpectation(commentLoc, column, text)
+    }
+
+    /**
+     * Holds if `column` (`""` for the default column, or a named column such as `"SPURIOUS"` /
+     * `"MISSING"`) currently carries the expectation `text` on the comment at `commentLoc`. This
+     * includes expectations this test ignores, so it can be compared against `desiredExpectation`.
+     */
+    private predicate currentExpectation(TestLocation commentLoc, string column, string text) {
+      exists(Test::FailureLocatable e |
+        e.getLocation() = commentLoc and text = e.getExpectationText()
+      |
+        e instanceof Test::GoodTestExpectation and column = ""
+        or
+        e instanceof Test::FalsePositiveTestExpectation and column = "SPURIOUS"
+        or
+        e instanceof Test::FalseNegativeTestExpectation and column = "MISSING"
+      )
+      or
+      Test::hasForeignExpectation(commentLoc, column, text)
+    }
+
+    /** Holds if `--learn` should change the set of expectations carried by the comment at `commentLoc`. */
+    private predicate commentNeedsRewrite(TestLocation commentLoc) {
+      exists(string column, string text |
+        desiredExpectation(commentLoc, column, text) and
+        not currentExpectation(commentLoc, column, text)
+      )
+      or
+      exists(string column, string text |
+        currentExpectation(commentLoc, column, text) and
+        not desiredExpectation(commentLoc, column, text)
+      )
+    }
+
+    /** Gets the rank that orders the default, `SPURIOUS:`, and `MISSING:` columns within a comment. */
+    private int getColumnRank(string column) {
+      column = "" and result = 0
+      or
+      column = "SPURIOUS" and result = 1
+      or
+      column = "MISSING" and result = 2
+    }
+
+    /**
+     * Gets the rendered text of `column` on the learned comment at `commentLoc`, for example
+     * `Alert Alert[foo]` for the default column or `MISSING: Alert` for the `MISSING:` column, or
+     * has no result if that column carries no expectation after learning. Expectations within a
+     * column are ordered lexically, so a rewritten comment has a deterministic layout.
+     */
+    private string renderLearnedColumn(TestLocation commentLoc, string column) {
+      desiredExpectation(commentLoc, column, _) and
+      exists(string joined |
+        joined =
+          concat(string text |
+            desiredExpectation(commentLoc, column, text)
+          |
+            text, " " order by text
+          )
+      |
+        column = "" and result = joined
+        or
+        column != "" and result = column + ": " + joined
+      )
+    }
+
+    /**
+     * Gets the fully rendered inline expectation comment (including the comment markers, but with no
+     * leading whitespace) that `--learn` should leave in place of the comment at `commentLoc` in the
+     * file with the given `relativePath`. Has no result if no expectation survives learning (in
+     * which case the caller deletes the comment instead) or the file's comment syntax is
+     * unsupported.
+     */
+    bindingset[relativePath]
+    private string renderLearnedComment(string relativePath, TestLocation commentLoc) {
+      exists(
+        string startMarker, string endMarker, string endSuffix, string body, string trailingSuffix
+      |
+        startMarker = Input2::getStartCommentMarker(relativePath) and
+        endMarker = Input2::getEndCommentMarker(relativePath) and
+        (
+          endMarker = "" and endSuffix = ""
+          or
+          endMarker != "" and endSuffix = " " + endMarker
+        ) and
+        // Preserve a trailing regular note (e.g. the `note` in `// $ Alert // note`) that sits
+        // after the expectations, so rewriting the expectations never drops an explanatory note.
+        // The inner delimiter is always `//`, which the framework recognises regardless of the
+        // outer comment marker (so a `#`-comment file renders `# $ Alert // note`).
+        (
+          exists(string note |
+            note = Test::getTrailingNote(commentLoc) and trailingSuffix = " // " + note
+          )
+          or
+          not exists(Test::getTrailingNote(commentLoc)) and trailingSuffix = ""
+        ) and
+        body =
+          concat(string column |
+            exists(renderLearnedColumn(commentLoc, column))
+          |
+            renderLearnedColumn(commentLoc, column), " " order by getColumnRank(column)
+          ) and
+        result = startMarker + " $ " + body + trailingSuffix + endSuffix
+      )
+    }
+
+    /**
+     * Holds if `codeql test run --learn` should edit the source file `file` so that its inline
+     * expectations match the current query results. Each row asks the test runner to change
+     * `line`, where `operation` is either:
+     *
+     * - `"append"`: add `text` (a fully rendered comment) at the end of the line; `startColumn`
+     *   and `endColumn` are both 0.
+     * - `"replace"`: replace the 1-based inclusive column range `[startColumn, endColumn]` with
+     *   `text` (the empty string deletes the range).
+     *
+     * The following edits are emitted:
+     *
+     * - an actual result with no matching expectation records a new expectation (an *unexpected
+     *   result*): the expectation is the result's tag, carrying a value where the result has one
+     *   (`Alert`, a path-problem `Source`/`Sink`, or a custom `tag=value`). If the result's line
+     *   already has a rewritable comment the expectation is merged into it (see below), otherwise a
+     *   fresh comment carrying every expectation learned for the line is appended (for example
+     *   `// $ Alert`, or `// $ Sink Source` when several results fire on one line); and
+     * - an existing rewritable expectation comment is rewritten as a whole so that it matches the
+     *   current results: obsolete default and `// $ SPURIOUS:` expectations are dropped (a *missing
+     *   result* or a *fixed spurious result*), a `// $ MISSING:` expectation whose result now fires
+     *   is promoted to the default column (a *fixed missing result*), any freshly learned tags on
+     *   the line are merged in, and the resulting expectations are re-rendered. If nothing remains,
+     *   the comment is deleted.
+     *
+     * The rewrite handles comments that carry several expectations across the default,
+     * `SPURIOUS:`, and `MISSING:` columns. Expectations this test ignores (for example a tag
+     * annotated with a different query's ID) are preserved verbatim, so the comment keeps any
+     * expectation belonging to a different query that shares the same source file; see
+     * `isRewritableComment` and `Test::hasForeignExpectation`. A trailing regular note after the
+     * expectations (for example the `note` in `// $ Alert // note` or `# $ Alert // note`) is
+     * likewise preserved, and freshly learned tags can be merged into a plain comment that carries
+     * only such a note (`// note` -> `// $ Alert // note`); see `Test::getTrailingNote`.
+     */
+    query predicate learnEdits(
+      string file, int line, string operation, int startColumn, int endColumn, string text
+    ) {
+      // Unexpected result with no comment to merge into: append a fresh comment carrying every
+      // expectation learned for the result's line (see `learnedNewExpectation`). The comment must
+      // go on the result's *end* line, because an expectation matches a result when the
+      // expectation's start line equals the result's end line (see `onSameLine`). For most
+      // languages a result spans a single line, but some (e.g. Rust) include leading trivia in the
+      // location, so the start and end lines differ. If the line already has a rewritable comment,
+      // the new expectations are merged into it by the rewrite disjunct below (see
+      // `mergedNewExpectation`) rather than appended as a separate comment.
+      exists(string relativePath, int el, string comment |
+        learnedNewExpectation(relativePath, el, _) and
+        not exists(TestLocation existing |
+          Test::isRewritableComment(existing) and
+          parseLocationString(existing.getRelativeUrl(), relativePath, el, _, _, _)
+        ) and
+        comment = renderNewComment(relativePath, el) and
+        file = relativePath and
+        line = el and
+        operation = "append" and
+        startColumn = 0 and
+        endColumn = 0 and
+        text = comment
+      )
+      or
+      // Rewrite an existing expectation comment as a whole so that it matches the current results.
+      // This subsumes the single-expectation removal and MISSING-promotion cases and additionally
+      // handles comments that carry several expectations across the default, `SPURIOUS:`, and
+      // `MISSING:` columns. The comment is replaced from its marker to the end of the line: with
+      // the re-rendered desired expectations (keeping any trailing regular comment), with just the
+      // trailing regular comment when no expectation remains but a note like `// $ Alert // note`
+      // does, or with the empty string when nothing remains (in which case `endColumn = 0` also
+      // trims the whitespace gap the removed comment leaves behind). `endColumn = 0` is the
+      // engine's "to end of line" convention, which avoids depending on how each extractor reports
+      // a line comment's end column (e.g. Swift reports it as ending at column 1 of the next line).
+      exists(TestLocation commentLoc, string relativePath, int sl, int sc |
+        Test::isRewritableComment(commentLoc) and
+        commentNeedsRewrite(commentLoc) and
+        parseLocationString(commentLoc.getRelativeUrl(), relativePath, sl, sc, _, _) and
+        file = relativePath and
+        line = sl and
+        operation = "replace" and
+        startColumn = sc and
+        endColumn = 0 and
+        (
+          desiredExpectation(commentLoc, _, _) and
+          text = renderLearnedComment(relativePath, commentLoc)
+          or
+          not desiredExpectation(commentLoc, _, _) and
+          // No expectation survives, so drop the `$ ...` part of the comment. If it carried a
+          // trailing regular note, keep that note re-wrapped in the file's own comment marker (so a
+          // `#`-comment file yields `# note`, not an invalid `// note`); otherwise delete to the
+          // end of line.
+          (
+            exists(string note |
+              note = Test::getTrailingNote(commentLoc) and
+              text = Input2::getStartCommentMarker(relativePath) + " " + note
+            )
+            or
+            not exists(Test::getTrailingNote(commentLoc)) and text = ""
+          )
+        )
+      )
     }
   }
 }
