@@ -20,6 +20,29 @@ The core of the functionality is given by forwarding. The idea is that:
   `just build ql/rust ql/java`, or
   `just test ql/rust/ql/test/some/language/test ql/rust/ql/integration-test/some/integration/test`
   will also work, with corresponding recipes run sequentially.
+- finally, if nothing above an argument implements the verb, the forwarder looks
+  _below_ it, so that `just test ql/cpp` runs the tests defined underneath it. The
+  argument only says where to look in this case, so each recipe found is run on its own
+  directory rather than being passed the argument. Several may be found, in which case
+  they run sequentially: `just format ql/cpp` formats everything under `ql/cpp` that
+  knows how to format itself.
+
+Searching upwards takes precedence, so a justfile naming a verb decides what that verb
+means for its whole subtree. This means a recipe should be named after a verb only if it
+covers everything beneath it: an aggregate that forgets one of the directories under it
+would silently shadow it. Conversely, a directory that only makes sense when named
+explicitly (integration tests, or the sharded Kotlin suites that CI runs) can opt out of
+being found from above:
+
+```just
+explicit_verbs := ['test']
+```
+
+This only affects the downward search. Running the verb from inside that directory, or
+naming the directory on the command line, keeps working.
+
+Justfiles are found through `git`, so a newly written one needs to be either tracked or
+untracked-but-not-ignored to be picked up.
 
 Another point is how launching QL tests can be tweaked:
 
@@ -37,5 +60,8 @@ Test arguments are passed around as `just` lists (`set lists`), so they reach th
 underlying runner already split and arguments containing spaces survive intact.
 
 One caveat: when running different recipes for the same verb, non-positional arguments
-need to be supported by all recipes involved. For example, this will work ok for
-`--learn` or `--codeql` options in language and integration tests.
+need to be supported by all recipes involved. This works fine for `--learn` or
+`--codeql` across language and integration tests, but note that searching downwards can
+reach recipes that have nothing to do with QL: `just test .` also finds the bazel suites
+under `unified`, which do not understand `--codeql`. Such a mismatch fails rather than
+being ignored, so the fix is to aim the verb at something narrower.

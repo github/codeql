@@ -9,6 +9,4 @@ roots := [source_dir() / 'ql/test']
 language-tests *EXTRA_ARGS: (_language_tests (roots ++ EXTRA_ARGS))
 
 [group('test')]
-test *BAZEL_ARGS: (_bazel (['test', '--build_tests_only', '@codeql//unified/...'] ++ BAZEL_ARGS))
-
-alias extractor-tests := test
+extractor-tests *BAZEL_ARGS: (_bazel (['test', '--build_tests_only', '@codeql//unified/...'] ++ BAZEL_ARGS))
