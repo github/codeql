@@ -47,9 +47,7 @@ _root_format *ARGS=".": (_format_bazel ARGS)
 This is for work that belongs to no single directory. bazel files are the case in hand:
 they sit throughout the tree rather than under any one language, so formatting them is
 the root's job, and taking the argument keeps `just format cpp` to the bazel files under
-`cpp`. Note that the `buildifier` bazel target is a dev dependency and so only resolves
-in a build rooted in this repository; inside the internal repository the buildifier
-target there covers these files instead.
+`cpp`.
 
 A directory that only makes sense when named explicitly can opt out of being found from
 above:

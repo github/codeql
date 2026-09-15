@@ -98,6 +98,11 @@ def parse_args():
         help="pass absolute file names, needed when the command runs elsewhere",
     )
     parser.add_argument(
+        "--chdir",
+        metavar="<directory>",
+        help="run the command from here, for one that must be run from a project root",
+    )
+    parser.add_argument(
         "--drop",
         action="append",
         default=[],
@@ -127,7 +132,7 @@ def parse_args():
     return args
 
 
-def run(command, drops):
+def run(command, drops, chdir=None):
     """Run the command, hiding the lines of its output that were asked to be hidden.
 
     Told nothing to hide, the command keeps this process' own output streams, so that
@@ -139,9 +144,11 @@ def run(command, drops):
     standard output, which is left alone here.
     """
     if not drops:
-        return subprocess.run(command).returncode
+        return subprocess.run(command, cwd=chdir).returncode
     hidden = re.compile("|".join(drops))
-    process = subprocess.Popen(command, stderr=subprocess.PIPE, text=True, bufsize=1)
+    process = subprocess.Popen(
+        command, cwd=chdir, stderr=subprocess.PIPE, text=True, bufsize=1
+    )
     for line in process.stderr:
         if not hidden.search(line):
             sys.stderr.write(line)
@@ -155,7 +162,7 @@ def main():
     limit = batch_limit() - sum(len(argument) + 1 for argument in args.command)
     status = 0
     for batch in batched(files, limit):
-        status = run([*args.command, *batch], args.drop) or status
+        status = run([*args.command, *batch], args.drop, args.chdir) or status
     return status
 
 

@@ -7,19 +7,28 @@ _py_formatter := if SEMMLE_CODE != "" { "uv run black" } else { "black" }
 _cpp_formatter := if SEMMLE_CODE != "" { "uv run clang-format" } else { "clang-format" }
 
 # The `buildifier` bazel target always covers the whole workspace, so the binary behind
-# it is used instead and given paths. That target is a bazel dev dependency and only
-# resolves in a build rooted in this repository, so inside the internal repository this
-# is left to the buildifier target there, which covers these files as well.
-#
-# Building the binary has nothing to say for itself either, so bazel is told to report
-# only what went wrong.
-_bazel_formatter := if SEMMLE_CODE != "" { "" } else { "bazel run --noshow_progress --ui_event_filters=,+error,+fail @codeql//misc/bazel/buildifier:binary --" }
+# it is used instead and given paths. Both repositories depend on it, each as the root
+# module of its own checkout, so the same label resolves either way; what differs is
+# which bazel to ask and from where, as the internal repository's workspace encloses
+# this one and a nested checkout would otherwise be taken for the root.
+
+_bazel_command := if SEMMLE_CODE != "" { '"$SEMMLE_CODE/tools/bazel"' } else { "bazel" }
+
+_bazel_workspace := if SEMMLE_CODE != "" { '"$SEMMLE_CODE"' } else { quote(parent_directory(parent_directory(source_dir()))) }
+
+_bazel_formatter := _bazel_command + " run --noshow_progress --ui_event_filters=,+error,+fail @buildifier_prebuilt//:buildifier --"
 
 # bazel files are named rather than suffixed, and buildifier has no exclude option of its
 # own, so the generated files skipped by the target above are skipped here too.
+#
+# As with the QL formatter, buildifier only names what it rewrote if it also accounts for
+# every file it did not, so that accounting is dropped. It counts the warnings it could
+# not fix there, which are left for linting to report rather than raised on every format.
 _bazel_names := "BUILD,BUILD.*,WORKSPACE,WORKSPACE.*,*.bazel,*.bzl,*.sky"
 
 _bazel_generated := "*misc/bazel/3rdparty/*_deps/*"
+
+_bazel_accounting := ': applied fixes, [0-9]+ warnings left$'
 
 # `codeql query format` and `clang-format` take files rather than directories, so the
 # files are collected by `run_on_files.py`. Arguments are passed positionally so that
@@ -53,4 +62,4 @@ _format_cpp *ARGS=".":
 [no-exit-message]
 [positional-arguments]
 _format_bazel *ARGS=".":
-    {{ cmd_sep }}if [ -n '{{ _bazel_formatter }}' ]; then {{ py }} "{{ source_dir() }}/run_on_files.py" --absolute --exclude '{{ _bazel_generated }}' "{{ _bazel_names }}" {{ _bazel_formatter }} -mode=fix -lint=fix -- "$@"; fi{{ cmd_sep }}
+    {{ cmd_sep }}export MSYS2_ARG_CONV_EXCL="*"; {{ py }} "{{ source_dir() }}/run_on_files.py" --absolute --chdir {{ _bazel_workspace }} --drop '{{ _bazel_accounting }}' --exclude '{{ _bazel_generated }}' "{{ _bazel_names }}" {{ _bazel_formatter }} -mode=fix -lint=fix -v -- "$@"{{ cmd_sep }}
