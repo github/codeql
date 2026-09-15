@@ -1,7 +1,6 @@
 import "../justfile"
 
-# A whole language test suite is slow and needs a CodeQL CLI, so it only runs when
-# asked for by name.
+# A whole language test suite is slow, so it only runs when asked for by name.
 explicit_verbs := ['test']
 
 # The Kotlin extractor must see the diagnostic limit set, but blank: hence the single

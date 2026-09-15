@@ -1,7 +1,6 @@
 import "../justfile"
 
-# A whole language test suite is slow and needs a CodeQL CLI, so it only runs when
-# asked for by name.
+# A whole language test suite is slow, so it only runs when asked for by name.
 explicit_verbs := ['test']
 
 base_flags := _python_env
