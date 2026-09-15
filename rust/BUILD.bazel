@@ -58,5 +58,4 @@ codeql_pack(
         ":tools",
         "//rust/downgrades",
     ],
-    experimental = True,
 )
