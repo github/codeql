@@ -40,19 +40,33 @@ extension B { // $ access=B
 protocol Base {
     func baseMethod();
     func baseMethodNoImpl();
+    func baseMethodDefaultImpl();
 }
 extension Base { // $ access=Base
-    func baseMethodExt() {} // name=Base.baseMethodExt
+    func baseMethodExt() {} // name=BaseImpl.baseMethodExt
+    func baseMethodDefaultImpl() {} // name=BaseImpl.baseMethodDefaultImpl
 }
 class X {
     func xMethod() {
         baseMethod() // $ access=X.baseMethod
         baseMethodNoImpl() // $ access=Base.baseMethodNoImpl // with no visible implementation, just resolve to the signature
-        baseMethodExt() // $ access=Base.baseMethodExt
+        baseMethodExt() // $ access=BaseImpl.baseMethodExt
+        baseMethodDefaultImpl() // $ access=Base.baseMethodDefaultImpl access=BaseImpl.baseMethodDefaultImpl
     }
 }
 extension X : Base { // $ access=X access=Base
     func baseMethod() {} // name=X.baseMethod
+}
+
+class Y {
+    func yMethod() {
+        baseMethod() // $ access=Y.baseMethod
+        baseMethodDefaultImpl() // $ access=Y.baseMethodDefaultImpl
+    }
+}
+extension Y : Base { // $ access=Y access=Base
+    func baseMethod() {} // name=Y.baseMethod
+    func baseMethodDefaultImpl() {} // name=Y.baseMethodDefaultImpl
 }
 
 // Type parameters of the extended type should be in scope in the extension.
