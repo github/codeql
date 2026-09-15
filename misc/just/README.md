@@ -31,8 +31,7 @@ Searching upwards takes precedence, so a justfile naming a verb decides what tha
 means for its whole subtree. This means a recipe should be named after a verb only if it
 covers everything beneath it: an aggregate that forgets one of the directories under it
 would silently shadow it. Conversely, a directory that only makes sense when named
-explicitly (integration tests, or the sharded Kotlin suites that CI runs) can opt out of
-being found from above:
+explicitly can opt out of being found from above:
 
 ```just
 explicit_verbs := ['test']
@@ -40,6 +39,27 @@ explicit_verbs := ['test']
 
 This only affects the downward search. Running the verb from inside that directory, or
 naming the directory on the command line, keeps working.
+
+The QL test suites use this: `test` on a language runs the whole suite, which takes a
+long time and needs a CodeQL CLI, so that has to be asked for by name. Integration tests
+and the sharded Kotlin suites that CI runs opt out for the same reason. What is left
+discoverable from above is what is cheap enough to run without meaning to.
+
+Being an ordinary variable, `explicit_verbs` is inherited by justfiles importing one
+that sets it. That is normally what is wanted, as importing a suite's justfile means
+being the same kind of suite, down to the reason for naming it explicitly. An importer
+that disagrees can reassign it, and its own value wins:
+
+```just
+import '../some/suite/justfile'
+
+explicit_verbs := []
+```
+
+Duplicate variables are allowed throughout (see `defs.just`), so this is silent in both
+directions: assigning `explicit_verbs` without realising one was inherited overrides it
+without complaint, which can put a heavy suite back within reach of a verb aimed at a
+parent directory.
 
 Justfiles are found through `git`, so a newly written one needs to be either tracked or
 untracked-but-not-ignored to be picked up.
@@ -59,9 +79,9 @@ Another point is how launching QL tests can be tweaked:
 Test arguments are passed around as `just` lists (`set lists`), so they reach the
 underlying runner already split and arguments containing spaces survive intact.
 
-One caveat: when running different recipes for the same verb, non-positional arguments
-need to be supported by all recipes involved. This works fine for `--learn` or
-`--codeql` across language and integration tests, but note that searching downwards can
-reach recipes that have nothing to do with QL: `just test .` also finds the bazel suites
-under `unified`, which do not understand `--codeql`. Such a mismatch fails rather than
-being ignored, so the fix is to aim the verb at something narrower.
+One caveat: when a verb ends up running several recipes, non-positional arguments need
+to be understood by all of them. That is fine when they speak the same language, as
+`--learn` or `--codeql` do across QL and integration tests. It is not when they do not:
+a broad `just test .` reaches bazel and pytest suites alike, and a flag meant for one of
+them will fail on the other. It fails rather than being quietly ignored, so the answer
+is to aim the verb at something narrower.
