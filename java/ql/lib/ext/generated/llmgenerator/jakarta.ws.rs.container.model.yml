@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/jakartaee/rest.git#8617779abb277aa1a37cdcd1deeb4cbadc5e0d96 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "containsHeaderString", "(String,String,Predicate)", "", "Argument[1]", "ReDoS", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getAcceptableLanguages", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getAcceptableMediaTypes", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getCookies", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getDate", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getEntityStream", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getHeaderString", "(String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getHeaderString", "(String,String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getHeaders", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getLanguage", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getMediaType", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getMethod", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getUriInfo", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.container", "ContainerRequestFilter", True, "filter", "(ContainerRequestContext)", "", "Argument[0]", "remote", "ai-generated"]
