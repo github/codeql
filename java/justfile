@@ -1,0 +1,4 @@
+import '../lib.just'
+
+[group('build')]
+build: (_build_dist "java")

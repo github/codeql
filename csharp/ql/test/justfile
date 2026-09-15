@@ -1,0 +1,11 @@
+import "../justfile"
+
+# A whole language test suite is slow, so it only runs when asked for by name.
+explicit_verbs := ['test']
+
+base_flags := []
+
+all_checks := default_db_checks ++ ['--check-undefined-labels', '--check-repeated-labels', '--check-redefined-labels', '--additional-packs=ql', '--consistency-queries=' + consistency_queries]
+
+[no-cd]
+test *ARGS=".": (_codeql_test "csharp" (base_flags ++ prepend('--all-checks=', all_checks) ++ ARGS))

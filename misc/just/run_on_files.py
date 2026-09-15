@@ -1,0 +1,203 @@
+"""Run a command on the files matching the given patterns below the given paths.
+
+This is a portable `find <path>... -name <pattern> -exec <command> {} +`. It exists
+because `find` is an unrelated program on Windows, and because a shell command
+substitution splits the file names it produces on whitespace, which mangles the many
+paths in this repository that contain spaces.
+
+The command is run once per batch of file names rather than once per file, and the
+batches are sized so that no single command line runs into a length limit. Nothing is
+run at all when no file matches.
+"""
+
+import argparse
+import os
+import re
+import subprocess
+import sys
+from fnmatch import fnmatch
+from pathlib import Path
+
+def batch_limit():
+    """How many characters of file names to put on one command line.
+
+    Windows caps a whole command line at 32767 characters. Elsewhere the cap is
+    `ARG_MAX`, which the environment is counted against as well, so that is taken off
+    along with some slack. This is worth doing rather than assuming the tightest of the
+    two: `ARG_MAX` is 2MB on Linux, which turns the couple of thousand QL files of a
+    language into a single invocation rather than several.
+
+    A single argument is capped far lower than the whole line, at 128KB on Linux, and a
+    command that hands its arguments on through a shell arrives as one of them. Batches
+    are kept below that too, as the resulting failure is reported by whatever did the
+    handing on rather than by anything naming this file.
+    """
+    if sys.platform == "win32":
+        return 30000
+    single_argument = 100000
+    try:
+        arg_max = os.sysconf("SC_ARG_MAX")
+    except (ValueError, OSError):
+        return 30000
+    environment = sum(len(name) + len(value) + 2 for name, value in os.environ.items())
+    return max(4096, min(arg_max - environment - 4096, single_argument))
+
+
+def files_under(paths, patterns, excludes=(), absolute=False, within=None):
+    """Collect the files matching one of the patterns at or below each path.
+
+    Patterns are matched against the file name, as bazel files are identified by name
+    rather than by extension. Exclusions are matched against the whole path instead,
+    which is how a directory of generated files is left alone. That path is the one the
+    walk built, so an exclusion has to allow for how the paths it is given are spelled:
+    `*/<directory>/*` does not match what is walked from `<directory>` itself.
+
+    A `within` directory bounds the result to the files below it, for a command that
+    answers for one project and may be handed a path reaching outside it.
+
+    Symbolic links are not followed, which is what keeps the `bazel-*` convenience
+    links out of the walk.
+    """
+    boundary = Path(within).resolve() if within else None
+
+    def wanted(path):
+        if boundary is not None and not path.resolve().is_relative_to(boundary):
+            return False
+        return any(fnmatch(path.name, p) for p in patterns) and not any(
+            fnmatch(str(path), e) for e in excludes
+        )
+
+    found = set()
+    for path in map(Path, paths):
+        if path.is_file():
+            if wanted(path):
+                found.add(path)
+            continue
+        for directory, _, names in os.walk(path):
+            found.update(p for p in map(Path(directory).joinpath, names) if wanted(p))
+    return sorted(os.path.abspath(p) if absolute else str(p) for p in found)
+
+
+def batched(files, limit):
+    """Split file names into groups that each fit on one command line."""
+    batch, length = [], 0
+    for file in files:
+        if batch and length + len(file) + 1 > limit:
+            yield batch
+            batch, length = [], 0
+        batch.append(file)
+        length += len(file) + 1
+    if batch:
+        yield batch
+
+
+def comma_separated(value):
+    """Split an option value listing several patterns.
+
+    Patterns tend to come in groups, and a justfile passes them as one variable, so they
+    are spelled as one argument here rather than repeated. Repeating the option works
+    too, which is what lets a list be extended rather than restated.
+    """
+    return value.split(",")
+
+
+def parse_args():
+    """Work out what to run, on which files, and what to hide of what it says."""
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        usage="%(prog)s [option...] <pattern>[,<pattern>...] "
+        "<command> [<arg>...] -- [<path>...]",
+    )
+    parser.add_argument(
+        "--exclude",
+        action="extend",
+        default=[],
+        type=comma_separated,
+        metavar="<pattern>[,<pattern>...]",
+        help="leave out files whose path matches, repeatable",
+    )
+    parser.add_argument(
+        "--absolute",
+        action="store_true",
+        help="pass absolute file names, needed when the command runs elsewhere",
+    )
+    parser.add_argument(
+        "--chdir",
+        metavar="<directory>",
+        help="run the command from here, for one that must be run from a project root",
+    )
+    parser.add_argument(
+        "--within",
+        metavar="<directory>",
+        help="leave out files outside this directory, for a command answering for one "
+        "project that may be handed a path reaching beyond it",
+    )
+    parser.add_argument(
+        "--drop",
+        action="append",
+        default=[],
+        metavar="<regex>",
+        help="hide matching lines of the command's output, repeatable",
+    )
+    parser.add_argument(
+        "patterns",
+        metavar="<pattern>[,<pattern>...]",
+        type=comma_separated,
+        help="what to match file names against",
+    )
+    parser.add_argument(
+        "rest",
+        nargs=argparse.REMAINDER,
+        metavar="<command> [<arg>...] -- [<path>...]",
+        help="the command, then the paths to search, separated by the last `--` so "
+        "that the command may contain one of its own",
+    )
+    args = parser.parse_args()
+    if "--" not in args.rest:
+        parser.error("the paths must be separated from the command by `--`")
+    separator = len(args.rest) - 1 - args.rest[::-1].index("--")
+    args.command, args.paths = args.rest[:separator], args.rest[separator + 1 :]
+    if not args.command:
+        parser.error("no command given")
+    return args
+
+
+def run(command, drops, chdir=None):
+    """Run the command, hiding the lines of its output that were asked to be hidden.
+
+    Told nothing to hide, the command keeps this process' own output streams, so that
+    it can do as it likes with them. Otherwise its diagnostics are read a line at a
+    time and passed on as they arrive, which is what keeps a long run's progress
+    visible. Only what was named is hidden, so an unforeseen message still gets out.
+
+    Note that these tools report on their progress over standard error rather than
+    standard output, which is left alone here.
+    """
+    if not drops:
+        return subprocess.run(command, cwd=chdir).returncode
+    hidden = re.compile("|".join(drops))
+    process = subprocess.Popen(
+        command, cwd=chdir, stderr=subprocess.PIPE, text=True, bufsize=1
+    )
+    for line in process.stderr:
+        if not hidden.search(line):
+            sys.stderr.write(line)
+            sys.stderr.flush()
+    return process.wait()
+
+
+def main():
+    args = parse_args()
+    files = files_under(
+        args.paths, args.patterns, args.exclude, args.absolute, args.within
+    )
+    limit = batch_limit() - sum(len(argument) + 1 for argument in args.command)
+    status = 0
+    for batch in batched(files, limit):
+        status = run([*args.command, *batch], args.drop, args.chdir) or status
+    return status
+
+
+if __name__ == "__main__":
+    sys.exit(main())
