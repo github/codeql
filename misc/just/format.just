@@ -15,11 +15,16 @@ _cpp_formatter := if SEMMLE_CODE != "" { "uv run clang-format" } else { "clang-f
 # `_bazel` in build.just going the other way.
 _bazel_workspace := quote(parent_directory(parent_directory(source_dir())))
 
-_bazel_formatter := "bazel run --noshow_progress --ui_event_filters=,+error,+fail @buildifier_prebuilt//:buildifier --"
+_bazel_formatter := "bazel run --noshow_progress --ui_event_filters=,+error,+fail //misc/bazel/buildifier:binary --"
 
 # bazel files are named rather than suffixed, and buildifier has no exclude option of its
-# own, so the generated files skipped by the target above are skipped here too. bazel
-# knows `BUILD` and `WORKSPACE` by those names and everything else by the `.bazel`
+# own, so the files skipped by the target above are skipped here too. That target formats
+# the whole workspace at once and so cannot take the path this recipe is given, which is
+# why the two run the same binary through different entry points. Their exclusions are
+# therefore stated twice, in two places, in two syntaxes: keep them in step, or `just
+# format` rewrites what pre-commit and CI deliberately leave alone.
+#
+# bazel knows `BUILD` and `WORKSPACE` by those names and everything else by the `.bazel`
 # extension, so a file named `BUILD.<anything>` else is a template or a generator's input
 # rather than a bazel file, and is none of the formatter's business to parse.
 #
@@ -34,7 +39,7 @@ _bazel_formatter := "bazel run --noshow_progress --ui_event_filters=,+error,+fai
 # not fix there, which are left for linting to report rather than raised on every format.
 _bazel_names := "BUILD,WORKSPACE,*.bazel,*.bzl,*.sky"
 
-_bazel_generated := "*misc/bazel/3rdparty/*_deps/*"
+_bazel_excluded := ".git/*,*/.git/*,*misc/bazel/3rdparty/*_deps/*"
 
 _bazel_accounting := ': applied fixes, [0-9]+ warnings left$'
 
@@ -75,4 +80,4 @@ _format_cpp *ARGS=".":
 [no-exit-message]
 [positional-arguments]
 _format_bazel *ARGS=".":
-    {{ cmd_sep }}export MSYS2_ARG_CONV_EXCL="*"; {{ py }} "{{ source_dir() }}/run_on_files.py" --absolute --chdir {{ _bazel_workspace }} --within {{ _bazel_workspace }} --drop '{{ _bazel_accounting }}' --exclude '{{ _bazel_generated }}' "{{ _bazel_names }}" {{ _bazel_formatter }} -mode=fix -lint=fix -v -- "$@"{{ cmd_sep }}
+    {{ cmd_sep }}export MSYS2_ARG_CONV_EXCL="*"; {{ py }} "{{ source_dir() }}/run_on_files.py" --absolute --chdir {{ _bazel_workspace }} --within {{ _bazel_workspace }} --drop '{{ _bazel_accounting }}' --exclude '{{ _bazel_excluded }}' "{{ _bazel_names }}" {{ _bazel_formatter }} -mode=fix -lint=fix -v -- "$@"{{ cmd_sep }}
