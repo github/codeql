@@ -1,0 +1,5 @@
+name: codeql/cpp-consistency-queries
+groups: [cpp, test, consistency-queries]
+dependencies:
+  codeql/cpp-all: ${workspace}
+extractor: cpp
