@@ -25804,6 +25804,30 @@ ir.cpp:
 # 2919|         Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
 # 2919|         Type = [IntType] int
 # 2919|         ValueCategory = prvalue
+# 2921| [CopyAssignmentOperator] PointerWrapper& PointerWrapper::operator=(PointerWrapper const&)
+# 2921|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const PointerWrapper &
+# 2921| [MoveAssignmentOperator] PointerWrapper& PointerWrapper::operator=(PointerWrapper&&)
+# 2921|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] PointerWrapper &&
+# 2925| [TopLevelFunction] PointerWrapper get_wrapper()
+# 2925|   <params>: 
+# 2927| [TopLevelFunction] void test()
+# 2927|   <params>: 
+# 2927|   getEntryPoint(): [BlockStmt] { ... }
+# 2928|     getStmt(0): [ExprStmt] ExprStmt
+# 2928|       getExpr(): [ValueFieldAccess] x
+# 2928|           Type = [IntType] int
+# 2928|           ValueCategory = prvalue
+# 2928|         getQualifier(): [ValueFieldAccess] point
+# 2928|             Type = [Struct] Point
+# 2928|             ValueCategory = prvalue
+# 2928|           getQualifier(): [FunctionCall] call to get_wrapper
+# 2928|               Type = [Struct] PointerWrapper
+# 2928|               ValueCategory = prvalue
+# 2929|     getStmt(1): [ReturnStmt] return ...
 ir23.cpp:
 #    1| [TopLevelFunction] bool consteval_1()
 #    1|   <params>: 
