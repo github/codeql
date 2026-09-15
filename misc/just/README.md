@@ -73,8 +73,23 @@ root might reasonably want to redirect is an interface between the two repositor
 Renaming one is therefore a breaking change that nothing reports. `just` has no notion
 of an assignment that fails to override, so a root assigning the old name keeps parsing,
 keeps listing, keeps passing CI, and silently reverts to the value here. Worse, a root
-overriding several loses only the renamed one, leaving a half-applied configuration.
-Rename freely, but say so when handing the change over.
+overriding several loses only the renamed one, leaving a half-applied configuration:
+total failure would land in a state someone designed, while partial failure lands in one
+nobody has ever seen.
+
+Nothing can see it either, because the underscore that keeps these out of `just --list`
+keeps them out of `--variables` and a bare `--evaluate` as well. Asked by name they do
+answer, which is how a root checks that an override of its own still overrides anything:
+
+```sh
+just --evaluate _bazel_excluded                      # what mine is now
+just --justfile <this-repo>/justfile --evaluate _bazel_excluded   # what it would be
+```
+
+A name that has gone says so rather than reporting an empty value. That is a diagnostic
+to reach for once something looks wrong, though: it answers whether a name still exists,
+not whether its meaning has changed, so it passes happily when the value here gains or
+loses a pattern. Rename freely, but say so when handing the change over.
 
 A directory that only makes sense when named explicitly can opt out of being found from
 above:
