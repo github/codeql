@@ -63,9 +63,9 @@ covered more than it did. That listing is part of the account of what ran and le
 exit status alone; only a verb that matched nothing at all fails.
 
 The QL test suites use this: `test` on a language runs the whole suite, which takes a
-long time and needs a CodeQL CLI, so that has to be asked for by name. Integration tests
-and the sharded Kotlin suites that CI runs opt out for the same reason. What is left
-discoverable from above is what is cheap enough to run without meaning to.
+long time, so that has to be asked for by name. Integration tests and the sharded
+Kotlin suites that CI runs opt out for the same reason. What is left discoverable from
+above is what is cheap enough to run without meaning to.
 
 Being an ordinary variable, `explicit_verbs` is inherited by justfiles importing one
 that sets it. That is normally what is wanted, as importing a suite's justfile means
