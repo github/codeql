@@ -40,7 +40,9 @@ explicit_verbs := ['test']
 ```
 
 This only affects the downward search. Running the verb from inside that directory, or
-naming the directory on the command line, keeps working.
+naming the directory on the command line, keeps working. A verb that passed over such a
+directory says so and names it, so that a command covering a tree does not look like it
+covered more than it did.
 
 The QL test suites use this: `test` on a language runs the whole suite, which takes a
 long time and needs a CodeQL CLI, so that has to be asked for by name. Integration tests

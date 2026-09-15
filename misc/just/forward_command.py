@@ -1,5 +1,24 @@
 #!/usr/bin/env python3
-"""Forward commands to language-specific justfiles.
+"""Forward a common verb to the justfiles that implement it.
+
+Verbs like `test`, `build` and `format` are spelled the same everywhere, but what they
+mean is defined per language, next to the code they act on. This finds the justfiles
+implementing a verb for each of its arguments and runs every one of them, so that
+`just test rust` or `just format .` work without a central list of who implements what.
+
+Justfiles are looked for in both directions from an argument:
+
+- above it, where a recipe is passed the argument itself, as that says what to act on
+- below it, where a recipe is passed its own directory, as there the argument only said
+  where to look
+
+Every distinct recipe found this way runs. Recipes are compared by value, so one reached
+through `import` is recognised as the same job and runs once, while a cross-cutting
+recipe higher up composes with the more specific ones below instead of hiding them.
+
+Two things keep the search useful: recipes delegating back here are skipped, so it never
+settles on a forwarder, and a directory can set `explicit_verbs` to stay out of reach of
+a verb aimed at one of its parents. See README.md for the whole picture.
 
 Called from just recipes as:
     python3 forward_command.py COMMAND [ARGS...]
@@ -29,6 +48,9 @@ PROBE_WORKERS = 16
 
 
 def error(message):
+    # Anything already reported on stdout belongs before this, and the two streams are
+    # buffered differently when they are not both a terminal.
+    sys.stdout.flush()
     print(f"{ERROR}{message}", file=sys.stderr)
 
 
@@ -81,7 +103,7 @@ def accepts(recipe, argc):
     return required <= argc and (variadic or argc <= len(parameters))
 
 
-def implements(dump, command, argc, *, implicitly):
+def implements(dump, command, argc):
     """Return the recipe a justfile runs for a command, if it has a usable one."""
     recipe = dump["recipes"].get(dump["aliases"].get(command, command))
     if recipe is None or recipe["private"] or not accepts(recipe, argc):
@@ -90,9 +112,12 @@ def implements(dump, command, argc, *, implicitly):
         dependency["recipe"] == FORWARD_RECIPE for dependency in recipe["dependencies"]
     ):
         return None
-    if implicitly and command in list_value(dump["assignments"], EXPLICIT_VERBS):
-        return None
     return recipe
+
+
+def opts_out(dump, command):
+    """Whether a justfile asks to be named rather than found by a command."""
+    return command in list_value(dump["assignments"], EXPLICIT_VERBS)
 
 
 def dump_all(justfiles):
@@ -185,7 +210,7 @@ def find_justfiles_above(command, arg):
         # A justfile sitting exactly on the argument is called without it, as the
         # argument would only repeat where it already is.
         argc = 0 if justfile.parent == Path(arg) else 1
-        recipe = implements(dump, command, argc, implicitly=False)
+        recipe = implements(dump, command, argc)
         # These justfiles are nested, so a recipe that was seen already is one this
         # one merely imported, and the nearest spelling of it has been taken.
         if recipe is not None and recipe not in seen:
@@ -194,21 +219,29 @@ def find_justfiles_above(command, arg):
     return found
 
 
-def find_justfiles_below(command, directory, covered=(), *, implicitly=True):
+def find_justfiles_below(command, directory, covered=()):
     """Search down a directory for justfiles implementing the command.
 
     A justfile is skipped when the recipe it would run is one an enclosing directory
     already contributes, which is what `import` makes happen: the recipe is the same
     job, so running it once is enough. `covered` holds the recipes already found above
     the directory.
+
+    Returns the justfiles to run and, separately, the ones that implement the command
+    but ask to be named rather than found.
     """
     # The justfile at `directory` is covered by the search above it.
     candidates = sorted(find_justfiles(directory) - {Path(directory) / "justfile"})
-    matches = [
-        (justfile, recipe)
-        for justfile, dump in dump_all(candidates)
-        if (recipe := implements(dump, command, 0, implicitly=implicitly))
-    ]
+    matches = []
+    opted_out = []
+    for justfile, dump in dump_all(candidates):
+        recipe = implements(dump, command, 0)
+        if recipe is None:
+            continue
+        if opts_out(dump, command):
+            opted_out.append(justfile)
+        else:
+            matches.append((justfile, recipe))
     contributed = {Path(directory): list(covered)}
     found = []
     # Shallowest first, so that an enclosing justfile is always decided before the ones
@@ -218,7 +251,7 @@ def find_justfiles_below(command, directory, covered=(), *, implicitly=True):
             continue
         contributed.setdefault(justfile.parent, []).append(recipe)
         found.append(justfile)
-    return sorted(found)
+    return sorted(found), sorted(opted_out)
 
 
 def resolve(command, arg):
@@ -227,25 +260,28 @@ def resolve(command, arg):
     Returns a list of (justfile, argument) pairs, from both above and below the
     argument. One found above gets the argument itself, as that selects what to act on.
     One found below gets its own directory instead, as there the argument only said
-    where to look.
+    where to look. Justfiles below that asked to be named are returned separately.
     """
     above = find_justfiles_above(command, arg)
     resolved = [(justfile, arg) for justfile, _ in above]
+    opted_out = []
     if os.path.isdir(arg):
-        below = find_justfiles_below(command, arg, [recipe for _, recipe in above])
+        below, opted_out = find_justfiles_below(
+            command, arg, [recipe for _, recipe in above]
+        )
         resolved += [(justfile, str(justfile.parent)) for justfile in below]
-    return resolved
+    return resolved, opted_out
 
 
-def report_missing(command, arg):
-    """Explain a command going nowhere, naming what opted out of being found."""
-    error(f"No justfile found for {command} on {arg}")
-    if not os.path.isdir(arg):
-        return
-    skipped = find_justfiles_below(command, arg, implicitly=False)
-    if skipped:
-        directories = " ".join(sorted(str(jf.parent) for jf in skipped))
-        error(f"these ask to be named explicitly: {directories}")
+def report_opted_out(command, justfiles):
+    """Name the justfiles a command passed over because they ask to be named.
+
+    Worth saying even when other recipes did run, as otherwise a command that looks
+    like it covered a whole directory quietly left parts of it alone.
+    """
+    if justfiles:
+        directories = " ".join(sorted(str(jf.parent) for jf in set(justfiles)))
+        error(f"not run, as {command} must name these explicitly: {directories}")
 
 
 def invoke_just(cwd, args):
@@ -264,10 +300,13 @@ def forward(cmd, args):
     positional_args = [arg for arg in args if not is_non_positional.match(arg)]
 
     justfiles = {}
+    opted_out = []
     for arg in positional_args or ["."]:
-        resolved = resolve(cmd, arg)
+        resolved, skipped = resolve(cmd, arg)
+        opted_out += skipped
         if not resolved:
-            report_missing(cmd, arg)
+            error(f"No justfile found for {cmd} on {arg}")
+            report_opted_out(cmd, skipped)
             return 1
         for justfile, justfile_arg in resolved:
             justfiles.setdefault(justfile, []).append(justfile_arg)
@@ -283,6 +322,8 @@ def forward(cmd, args):
         prefix = f"cd {cwd}; " if cwd else ""
         print(f"-> {prefix}just {' '.join(just_args)}")
         invocations.append((cwd, just_args))
+
+    report_opted_out(cmd, opted_out)
 
     for cwd, just_args in invocations:
         if invoke_just(cwd, just_args) != 0:
