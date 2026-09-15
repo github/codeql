@@ -5,5 +5,13 @@ build: (_build_dist "go")
 
 roots := [source_dir() / 'ql/test']
 
+# The `IncorrectIntegerConversion` query treats `math.MaxInt`/`math.MaxUint` differently on 32- and
+# 64-bit targets, so we run its test under `GOARCH=386` as well. `GOOS=linux` because
+# `GOOS=darwin GOARCH=386` is no longer supported.
+roots_386 := [source_dir() / 'ql/test/query-tests/Security/CWE-681/IncorrectIntegerConversion.qlref']
+
 [group('test')]
 language-tests *EXTRA_ARGS: (_language_tests (roots ++ EXTRA_ARGS))
+
+[group('test')]
+language-tests-386 *EXTRA_ARGS: (_language_tests (roots_386 ++ ['GOOS=linux', 'GOARCH=386'] ++ EXTRA_ARGS))
