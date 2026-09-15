@@ -37,22 +37,20 @@ jobs:
               return;
             }
 
-            if (context.payload.action !== 'opened') {
-              const events = await github.paginate(
-                github.rest.issues.listEvents,
-                {
-                  ...context.repo,
-                  issue_number: pullRequest.number,
-                  per_page: 100,
-                },
-              );
-              if (
-                events.some(({ event, label: eventLabel }) =>
-                  event === 'unlabeled' && eventLabel?.name === label
-                )
-              ) {
-                return;
-              }
+            const events = await github.paginate(
+              github.rest.issues.listEvents,
+              {
+                ...context.repo,
+                issue_number: pullRequest.number,
+                per_page: 100,
+              },
+            );
+            if (
+              events.some(({ event, label: eventLabel }) =>
+                event === 'unlabeled' && eventLabel?.name === label
+              )
+            ) {
+              return;
             }
 
             await github.rest.issues.addLabels({
