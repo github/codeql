@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Parsing XML input with external entity (XXE) expansion enabled while the input
+is controlled by a user can lead to a variety of attacks. An attacker who
+controls the XML input may be able to use an XML external entity declaration
+to read the contents of arbitrary files from the server's file system, perform
+server-side request forgery (SSRF), or perform denial-of-service attacks.
+</p>
+<p>
+The Rust <code>libxml</code> crate (bindings to C's <code>libxml2</code>
+library) exposes several XML parsing functions that accept a parser options
+argument. The options <code>XML_PARSE_NOENT</code> and
+<code>XML_PARSE_DTDLOAD</code> enable external entity expansion and loading of
+external DTD subsets, respectively. Enabling these options when parsing
+user-controlled XML is dangerous.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not enable <code>XML_PARSE_NOENT</code> or <code>XML_PARSE_DTDLOAD</code>
+when parsing user-controlled XML. Parse XML with safe options (for example,
+using <code>0</code> as the options argument) to disable external entity
+expansion.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, the program reads an XML document supplied by the
+user and parses it with external entity expansion enabled:
+</p>
+<sample src="examples/XxeBad.rs"/>
+<p>
+The following example shows a corrected version that parses with safe options:
+</p>
+<sample src="examples/XxeGood.rs"/>
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing">XML External Entity (XXE) Processing</a>.</li>
+<li>CWE: <a href="https://cwe.mitre.org/data/definitions/611.html">CWE-611: Improper Restriction of XML External Entity Reference</a>.</li>
+</references>
+
+</qhelp>
