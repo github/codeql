@@ -1172,26 +1172,66 @@ module StdlibPrivate {
   }
 
   /**
+   * Holds if `flag` makes `interpreter` execute the following argument as a command.
+   *
+   * See https://docs.python.org/3/library/subprocess.html#popen-constructor.
+   */
+  private predicate isShellCommandFlag(DataFlow::Node interpreter, DataFlow::Node flag) {
+    interpreter.asExpr().(StringLiteral).getText().regexpMatch("(.*/)?(sh|bash|dash|zsh)") and
+    flag.asExpr().(StringLiteral).getText() = "-c"
+  }
+
+  /** Gets the command from separate interpreter, flag, and command arguments. */
+  private DataFlow::Node getShellCommandFromArguments(
+    DataFlow::Node interpreter, DataFlow::Node flag, DataFlow::Node command
+  ) {
+    isShellCommandFlag(interpreter, flag) and
+    result = command
+  }
+
+  /** Gets the command from an argument sequence passed to `interpreter`. */
+  private DataFlow::Node getShellCommandFromSequence(
+    DataFlow::Node interpreter, DataFlow::Node arguments
+  ) {
+    exists(SequenceNode sequence, DataFlow::Node flag |
+      arguments.asCfgNode() = sequence and
+      flag.asCfgNode() = sequence.getElement(1) and
+      isShellCommandFlag(interpreter, flag) and
+      result.asCfgNode() = sequence.getElement(2)
+    )
+  }
+
+  /**
    * A call to any of the `os.exec*` functions
    * See https://docs.python.org/3.8/library/os.html#os.execl
    */
   private class OsExecCall extends SystemCommandExecution::Range, FileSystemAccess::Range,
     DataFlow::CallCfgNode
   {
+    string name;
+
     OsExecCall() {
-      exists(string name |
-        name in ["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"] and
-        this = os().getMember(name).getACall()
-      )
+      name in ["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"] and
+      this = os().getMember(name).getACall()
     }
 
-    override DataFlow::Node getCommand() { result = this.getArg(0) }
-
-    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
-
-    override predicate isShellInterpreted(DataFlow::Node arg) {
-      none() // this is a safe API.
+    private DataFlow::Node getShellCommand() {
+      name in ["execl", "execlp"] and
+      result = getShellCommandFromArguments(this.getArg(0), this.getArg(2), this.getArg(3))
+      or
+      name in ["execle", "execlpe"] and
+      exists(this.getArg(4)) and
+      result = getShellCommandFromArguments(this.getArg(0), this.getArg(2), this.getArg(3))
+      or
+      name in ["execv", "execve", "execvp", "execvpe"] and
+      result = getShellCommandFromSequence(this.getArg(0), this.getArg(1))
     }
+
+    override DataFlow::Node getCommand() { result in [this.getArg(0), this.getShellCommand()] }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArg(0) }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getShellCommand() }
   }
 
   /**
@@ -1201,16 +1241,16 @@ module StdlibPrivate {
   private class OsSpawnCall extends SystemCommandExecution::Range, FileSystemAccess::Range,
     DataFlow::CallCfgNode
   {
+    string name;
+
     OsSpawnCall() {
-      exists(string name |
-        name in [
-            "spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp", "spawnvpe"
-          ] and
-        this = os().getMember(name).getACall()
-      )
+      name in [
+          "spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp", "spawnvpe"
+        ] and
+      this = os().getMember(name).getACall()
     }
 
-    override DataFlow::Node getCommand() {
+    private DataFlow::Node getInterpreter() {
       result = this.getArg(1)
       or
       // `file` keyword argument only valid for the `v` variants, but this
@@ -1218,11 +1258,27 @@ module StdlibPrivate {
       result = this.getArgByName("file")
     }
 
-    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+    private DataFlow::Node getArguments() { result in [this.getArg(2), this.getArgByName("args")] }
 
-    override predicate isShellInterpreted(DataFlow::Node arg) {
-      none() // this is a safe API.
+    private DataFlow::Node getShellCommand() {
+      name in ["spawnl", "spawnlp"] and
+      result = getShellCommandFromArguments(this.getInterpreter(), this.getArg(3), this.getArg(4))
+      or
+      name in ["spawnle", "spawnlpe"] and
+      exists(this.getArg(5)) and
+      result = getShellCommandFromArguments(this.getInterpreter(), this.getArg(3), this.getArg(4))
+      or
+      name in ["spawnv", "spawnve", "spawnvp", "spawnvpe"] and
+      result = getShellCommandFromSequence(this.getInterpreter(), this.getArguments())
     }
+
+    override DataFlow::Node getCommand() {
+      result in [this.getInterpreter(), this.getShellCommand()]
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getInterpreter() }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getShellCommand() }
   }
 
   /**
@@ -1234,13 +1290,23 @@ module StdlibPrivate {
   {
     OsPosixSpawnCall() { this = os().getMember(["posix_spawn", "posix_spawnp"]).getACall() }
 
-    override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("path")] }
-
-    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
-
-    override predicate isShellInterpreted(DataFlow::Node arg) {
-      none() // this is a safe API.
+    private DataFlow::Node getInterpreter() {
+      result in [this.getArg(0), this.getArgByName("path")]
     }
+
+    private DataFlow::Node getArguments() { result in [this.getArg(1), this.getArgByName("argv")] }
+
+    private DataFlow::Node getShellCommand() {
+      result = getShellCommandFromSequence(this.getInterpreter(), this.getArguments())
+    }
+
+    override DataFlow::Node getCommand() {
+      result in [this.getInterpreter(), this.getShellCommand()]
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getInterpreter() }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getShellCommand() }
   }
 
   /** An additional taint step for calls to `os.path.join` */
@@ -1267,13 +1333,11 @@ module StdlibPrivate {
    * ref: https://docs.python.org/3/library/subprocess.html#legacy-shell-invocation-functions
    */
   private class SubprocessPopenCall extends SystemCommandExecution::Range, API::CallNode {
+    string name;
+
     SubprocessPopenCall() {
-      exists(string name |
-        name in [
-            "Popen", "call", "check_call", "check_output", "run", "getoutput", "getstatusoutput"
-          ] and
-        this = subprocess().getMember(name).getACall()
-      )
+      name in ["Popen", "call", "check_call", "check_output", "run", "getoutput", "getstatusoutput"] and
+      this = subprocess().getMember(name).getACall()
     }
 
     /** Gets the API-node for the `args` argument, if any. */
@@ -1296,20 +1360,43 @@ module StdlibPrivate {
     /** Gets the API-node for the `executable` argument, if any. */
     private API::Node get_executable_arg() { result = this.getParameter(2, "executable") }
 
+    /** Holds if the `executable` argument overrides the executable from `args`. */
+    private predicate hasExecutableOverride() {
+      exists(DataFlow::Node executable |
+        executable = this.get_executable_arg().asSink() and
+        not executable.asExpr() instanceof None
+      )
+    }
+
+    /** Gets the interpreter that will execute `args`, if it can be determined. */
+    private DataFlow::Node getInterpreter() {
+      this.hasExecutableOverride() and
+      result = this.get_executable_arg().asSink()
+      or
+      not this.hasExecutableOverride() and
+      result.asCfgNode() = this.get_args_arg().asSink().asCfgNode().(SequenceNode).getElement(0)
+    }
+
+    /** Gets a shell command passed in the `args` sequence. */
+    private DataFlow::Node getShellCommand() {
+      name in ["Popen", "call", "check_call", "check_output", "run"] and
+      this.get_shell_arg_value() = false and
+      result = getShellCommandFromSequence(this.getInterpreter(), this.get_args_arg().asSink())
+    }
+
     override DataFlow::Node getCommand() {
-      // TODO: Track arguments ("args" and "shell")
-      // TODO: Handle using `args=["sh", "-c", <user-input>]`
+      this.hasExecutableOverride() and
       result = this.get_executable_arg().asSink()
       or
       exists(DataFlow::Node arg_args, boolean shell |
         arg_args = this.get_args_arg().asSink() and
         shell = this.get_shell_arg_value()
       |
-        // When "executable" argument is set, and "shell" argument is `False`, the
-        // "args" argument will only be used to set the program name and arguments to
+        // When the `executable` argument overrides `args[0]`, and `shell` is `False`, the
+        // `args` argument will only be used to set the program name and arguments to
         // the program, so we should not consider any of them as command execution.
         not (
-          exists(this.get_executable_arg()) and
+          this.hasExecutableOverride() and
           shell = false
         ) and
         (
@@ -1327,11 +1414,15 @@ module StdlibPrivate {
           result = arg_args
         )
       )
+      or
+      result = this.getShellCommand()
     }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       arg = [this.get_executable_arg(), this.get_args_arg()].asSink() and
       this.get_shell_arg_value() = true
+      or
+      arg = this.getShellCommand()
     }
   }
 
