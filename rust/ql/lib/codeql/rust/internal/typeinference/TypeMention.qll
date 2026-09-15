@@ -678,7 +678,7 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
   }
 
   class NeverTypeReprMention extends TypeMentionImpl, NeverTypeRepr {
-    override Type getTypeAt(TypePath path) { result = TUnknownType() and path.isEmpty() }
+    override Type getTypeAt(TypePath path) { none() }
   }
 
   class PtrTypeReprMention extends TypeMentionImpl instanceof PtrTypeRepr {

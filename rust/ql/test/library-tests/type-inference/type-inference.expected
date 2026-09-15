@@ -8994,7 +8994,6 @@ inferType
 | main.rs:983:17:983:38 | ...::PairNone(...) |  | main.rs:972:5:978:5 | PairOption |
 | main.rs:983:17:983:38 | ...::PairNone(...) | Fst | main.rs:980:10:980:12 | Fst |
 | main.rs:983:17:983:38 | ...::PairNone(...) | Snd | main.rs:980:15:980:17 | Snd |
-| main.rs:983:43:983:82 | MacroExpr |  | main.rs:980:15:980:17 | Snd |
 | main.rs:983:50:983:81 | "PairNone has no second elemen... |  | {EXTERNAL LOCATION} | & |
 | main.rs:983:50:983:81 | "PairNone has no second elemen... | TRef | {EXTERNAL LOCATION} | str |
 | main.rs:983:50:983:81 | MacroExpr |  | {EXTERNAL LOCATION} | () |
@@ -9003,7 +9002,6 @@ inferType
 | main.rs:984:17:984:38 | ...::PairFst(...) | Fst | main.rs:980:10:980:12 | Fst |
 | main.rs:984:17:984:38 | ...::PairFst(...) | Snd | main.rs:980:15:980:17 | Snd |
 | main.rs:984:37:984:37 | _ |  | main.rs:980:10:980:12 | Fst |
-| main.rs:984:43:984:81 | MacroExpr |  | main.rs:980:15:980:17 | Snd |
 | main.rs:984:50:984:80 | "PairFst has no second element... |  | {EXTERNAL LOCATION} | & |
 | main.rs:984:50:984:80 | "PairFst has no second element... | TRef | {EXTERNAL LOCATION} | str |
 | main.rs:984:50:984:80 | MacroExpr |  | {EXTERNAL LOCATION} | () |

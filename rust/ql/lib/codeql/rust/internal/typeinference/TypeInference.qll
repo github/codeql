@@ -3094,9 +3094,6 @@ private module Input3 implements InputSig3 {
     (
       n.(AssocFunctionResolution::AssocFunctionCall).resolutionDependsOnReturnType(path)
       or
-      path.isEmpty() and
-      isPanicMacroCall(n)
-      or
       n.(ArrayListExpr).getNumberOfExprs() = 0 and
       path = TypePath::singleton(getArrayTypeParameter())
     )
