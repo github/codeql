@@ -186,10 +186,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     UnboundList singleton(Element e) { result = encode(e) + "." }
 
     /**
-     * Gets the list obtained by appending the singleton list `e`
-     * onto `suffix`.
+     * Gets the list obtained by appending the element `e` onto `suffix`.
      */
     bindingset[suffix]
     UnboundList cons(Element e, UnboundList suffix) { result = singleton(e).append(suffix) }
+
+    /**
+     * Gets the list obtained by appending the element `e` after `prefix`.
+     */
+    bindingset[prefix]
+    UnboundList snoc(UnboundList prefix, Element e) { result = prefix.append(singleton(e)) }
   }
 }
