@@ -135,7 +135,20 @@ module DataFlowInput implements InputSig<Location> {
   //
   // Misc
   //
-  predicate nodeIsHidden(Node node) { none() } // TODO
+  additional predicate nodeIsVisible(Node node) {
+    node instanceof TValueNode
+    or
+    node instanceof TStrictlyIncomingValue
+    or
+    node instanceof TExprPostUpdateNode
+  }
+
+  predicate nodeIsHidden(Node node) { not nodeIsVisible(node) }
+
+  predicate neverSkipInPathGraph(Node n) {
+    n.isIncomingValue(_) or // Never skip assignment target
+    n.asExpr() instanceof LocalVariableAccess // Never skip a variable reference
+  }
 
   class DataFlowExpr = Expr;
 
