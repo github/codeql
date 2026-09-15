@@ -36,6 +36,7 @@ import org.jetbrains.kotlin.load.java.BuiltinMethodsWithSpecialGenericSignature
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
+import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.load.java.typeEnhancement.hasEnhancedNullability
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.NameUtils
@@ -996,7 +997,20 @@ open class KotlinUsesExtractor(
                 )
                 return null
             }
-            return extractFileClass(fqName)
+            val fileClassId = extractFileClass(fqName)
+            // Under K2, external file class members sit directly under IrExternalPackageFragment
+            // rather than under their IrClass parent. In that case the file class entity won't
+            // get a location set through the normal extractClassSource path.
+            if (d is IrMemberWithContainerSource && tw.lm.externalFileClassLocationsExtracted.add(fqName)) {
+                val binaryPath =
+                    getContainerSourceBinaryPath(d.containerSource)
+                        ?.let { normalizeExternalFileClassBinaryPath(it, fqName) }
+                if (binaryPath != null && shouldUseConcreteExternalFileClassLocation(binaryPath)) {
+                    val fileId = tw.mkFileId(binaryPath, true)
+                    tw.writeHasLocation(fileClassId, tw.getWholeFileLocation(fileId))
+                }
+            }
+            return fileClassId
         }
         return useDeclarationParent(parent, canBeTopLevel, classTypeArguments, inReceiverContext)
     }
@@ -1371,8 +1385,13 @@ open class KotlinUsesExtractor(
         parentId: Label<out DbElement>,
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
         maybeParameterList: List<IrValueParameter>? = null
-    ): String =
-        getFunctionLabel(
+    ): String {
+        val javaCallable = getJavaCallable(f)
+        val addParameterWildcardsByDefault =
+            !getInnermostWildcardSupppressionAnnotation(f) &&
+                !(javaCallable == null && f.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB)
+
+        return getFunctionLabel(
             f.parent,
             parentId,
             getFunctionShortName(f).nameInDB,
@@ -1382,9 +1401,10 @@ open class KotlinUsesExtractor(
             getFunctionTypeParameters(f),
             classTypeArgsIncludingOuterClasses,
             overridesCollectionsMethodWithAlteredParameterTypes(f),
-            getJavaCallable(f),
-            !getInnermostWildcardSupppressionAnnotation(f)
+            javaCallable,
+            addParameterWildcardsByDefault
         )
+    }
 
     /*
      * This function actually generates the label for a function.
@@ -1471,15 +1491,41 @@ open class KotlinUsesExtractor(
             // Finally, mimic the Java extractor's behaviour by naming functions with type
             // parameters for their erased types;
             // those without type parameters are named for the generic type.
-            val maybeErased =
+            var maybeErased =
                 if (functionTypeParameters.isEmpty()) maybeSubbed else erase(maybeSubbed)
+            // K2 compatibility: under K2, Java @NotNull reference types such as @NotNull Integer
+            // are enhanced to Kotlin primitives (e.g. kotlin.Int). But the Java extractor uses
+            // the original reference type (java.lang.Integer) in callable labels. When we detect
+            // that the original Java parameter type is a reference (classifier) type but the
+            // Kotlin IR type is a primitive, revert to the boxed Java class so both extractors
+            // produce matching callable IDs.
+            if (functionTypeParameters.isEmpty()) {
+                val primitiveInfo = (maybeErased as? IrSimpleType)?.let {
+                    primitiveTypeMapping.getPrimitiveInfo(it)
+                }
+                if (primitiveInfo != null) {
+                    val parentClass = parent as? IrClass
+                    if (parentClass != null) {
+                        val isClassifierType = javaBinaryMethodParamIsClassifierType(
+                            parentClass,
+                            name,
+                            allParamTypes.size,
+                            name == "<init>",
+                            it.index
+                        )
+                        if (isClassifierType == true) {
+                            maybeErased = primitiveInfo.javaClass.symbol.typeWith()
+                        }
+                    }
+                }
+            }
             "{${useType(maybeErased).javaResult.id}}"
         }
         val paramTypeIds =
             allParamTypes
                 .withIndex()
                 .joinToString(separator = ",", transform = getIdForFunctionLabel)
-        val labelReturnType =
+        var labelReturnType =
             if (name == "<init>") pluginContext.irBuiltIns.unitType
             else
                 erase(
@@ -1489,6 +1535,28 @@ open class KotlinUsesExtractor(
                         pluginContext
                     )
                 )
+        // K2 compatibility: same as for parameters, if the Java binary method return type is a
+        // reference type but K2 enhanced it to a Kotlin primitive, use the boxed Java class.
+        if (functionTypeParameters.isEmpty() && name != "<init>") {
+            val primitiveInfo = (labelReturnType as? IrSimpleType)?.let {
+                primitiveTypeMapping.getPrimitiveInfo(it)
+            }
+            if (primitiveInfo != null) {
+                val parentClass = parent as? IrClass
+                if (parentClass != null) {
+                    val returnIsClassifier =
+                        javaBinaryMethodReturnIsClassifierType(
+                            parentClass,
+                            name,
+                            allParamTypes.size,
+                            false
+                        )
+                    if (returnIsClassifier == true) {
+                        labelReturnType = primitiveInfo.javaClass.symbol.typeWith()
+                    }
+                }
+            }
+        }
         // Note that `addJavaLoweringWildcards` is not required here because the return type used to
         // form the function
         // label is always erased.
@@ -1594,9 +1662,23 @@ open class KotlinUsesExtractor(
     }
 
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    fun getJavaCallable(f: IrFunction) =
-        (f.descriptor.source as? JavaSourceElement)?.javaElement as? JavaMember
+    fun getJavaCallable(f: IrFunction): JavaMember? {
+        val fromDescriptor = (f.descriptor.source as? JavaSourceElement)?.javaElement as? JavaMember
+        if (fromDescriptor != null) return fromDescriptor
 
+        // K2 fallback: under K2, descriptor.source may not carry JavaSourceElement for binary Java
+        // methods. Try to get the JavaMember from the parent class's binary class directly.
+        val parentClass = f.parentClassOrNull ?: return null
+        val binaryJavaClass = (parentClass.source as? JavaSourceElement)?.javaElement as? BinaryJavaClass
+            ?: return null
+        val name = getFunctionShortName(f).nameInDB
+        val nParams = f.codeQlValueParameters.size
+        return if (f is IrConstructor) {
+            binaryJavaClass.constructors.find { it.valueParameters.size == nParams }
+        } else {
+            binaryJavaClass.methods.find { it.name.asString() == name && it.valueParameters.size == nParams }
+        }
+    }
     fun getJavaValueParameterType(m: JavaMember, idx: Int) =
         when (m) {
             is JavaMethod -> m.valueParameters[idx].type
