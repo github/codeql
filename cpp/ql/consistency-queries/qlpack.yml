@@ -3,3 +3,4 @@ groups: [cpp, test, consistency-queries]
 dependencies:
   codeql/cpp-all: ${workspace}
 extractor: cpp
+warnOnImplicitThis: true
