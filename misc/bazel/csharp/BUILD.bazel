@@ -3,14 +3,12 @@ load("@rules_python//python:defs.bzl", "py_binary")
 py_binary(
     name = "gen-git-assembly-info",
     srcs = ["gen-git-assembly-info.py"],
-    deps = ["@rules_python//python/runfiles"],
 )
 
 py_binary(
     name = "gen-assembly-info",
     srcs = ["gen-assembly-info.py"],
     visibility = ["//visibility:public"],
-    deps = ["@rules_python//python/runfiles"],
 )
 
 genrule(
