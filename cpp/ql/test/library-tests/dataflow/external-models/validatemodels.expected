@@ -1317,6 +1317,7 @@
 | Dubious signature "(NISTZ256_PRE_COMP *)" in summary model. |
 | Dubious signature "(NOTICEREF *)" in summary model. |
 | Dubious signature "(NOTICEREF **,const unsigned char **,long)" in summary model. |
+| Dubious signature "(NullableValue &&)" in summary model. |
 | Dubious signature "(OCB128_CONTEXT *,OCB128_CONTEXT *,void *,void *)" in summary model. |
 | Dubious signature "(OCB128_CONTEXT *,const unsigned char *,size_t)" in summary model. |
 | Dubious signature "(OCB128_CONTEXT *,const unsigned char *,unsigned char *,size_t)" in summary model. |
@@ -2519,6 +2520,7 @@
 | Dubious signature "(URLGlob **,char *,curl_off_t *,FILE *)" in summary model. |
 | Dubious signature "(USERNOTICE *)" in summary model. |
 | Dubious signature "(USERNOTICE **,const unsigned char **,long)" in summary model. |
+| Dubious signature "(VariantImp &&)" in summary model. |
 | Dubious signature "(WHIRLPOOL_CTX *,const void *,size_t)" in summary model. |
 | Dubious signature "(WPACKET *)" in summary model. |
 | Dubious signature "(WPACKET *,BUF_MEM *)" in summary model. |
@@ -3377,6 +3379,7 @@
 | Dubious signature "(const NETSCAPE_SPKAC *,unsigned char **)" in summary model. |
 | Dubious signature "(const NETSCAPE_SPKI *,unsigned char **)" in summary model. |
 | Dubious signature "(const NOTICEREF *,unsigned char **)" in summary model. |
+| Dubious signature "(const NullableValue &)" in summary model. |
 | Dubious signature "(const OCSP_BASICRESP *)" in summary model. |
 | Dubious signature "(const OCSP_BASICRESP *,ASN1_OCTET_STRING **,X509_NAME **)" in summary model. |
 | Dubious signature "(const OCSP_BASICRESP *,unsigned char **)" in summary model. |
@@ -3711,6 +3714,8 @@
 | Dubious signature "(const VARIANT &)" in summary model. |
 | Dubious signature "(const VARIANT &,IAtlStringMgr *)" in summary model. |
 | Dubious signature "(const VECTOR *,uint32_t,uint8_t *,size_t)" in summary model. |
+| Dubious signature "(const VariantImp &)" in summary model. |
+| Dubious signature "(const VariantImp &,bslma::Allocator *)" in summary model. |
 | Dubious signature "(const X509 *)" in summary model. |
 | Dubious signature "(const X509 *,EVP_MD **,int *)" in summary model. |
 | Dubious signature "(const X509 *,const ASN1_BIT_STRING **,const ASN1_BIT_STRING **)" in summary model. |
