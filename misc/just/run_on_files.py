@@ -77,6 +77,16 @@ def batched(files, limit):
         yield batch
 
 
+def comma_separated(value):
+    """Split an option value listing several patterns.
+
+    Patterns tend to come in groups, and a justfile passes them as one variable, so they
+    are spelled as one argument here rather than repeated. Repeating the option works
+    too, which is what lets a list be extended rather than restated.
+    """
+    return value.split(",")
+
+
 def parse_args():
     """Work out what to run, on which files, and what to hide of what it says."""
     parser = argparse.ArgumentParser(
@@ -87,9 +97,10 @@ def parse_args():
     )
     parser.add_argument(
         "--exclude",
-        action="append",
+        action="extend",
         default=[],
-        metavar="<pattern>",
+        type=comma_separated,
+        metavar="<pattern>[,<pattern>...]",
         help="leave out files whose path matches, repeatable",
     )
     parser.add_argument(
@@ -112,7 +123,7 @@ def parse_args():
     parser.add_argument(
         "patterns",
         metavar="<pattern>[,<pattern>...]",
-        type=lambda patterns: set(patterns.split(",")),
+        type=comma_separated,
         help="what to match file names against",
     )
     parser.add_argument(

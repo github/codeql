@@ -23,6 +23,10 @@ _bazel_formatter := "bazel run --noshow_progress --ui_event_filters=,+error,+fai
 # extension, so a file named `BUILD.<anything>` else is a template or a generator's input
 # rather than a bazel file, and is none of the formatter's business to parse.
 #
+# Both lists are comma-separated, so a root defining its own `_root_format` can name
+# several patterns in one variable. It has no need to repeat the ones here: the files
+# they cover belong to this repository, which formats them itself.
+#
 # As with the QL formatter, buildifier only names what it rewrote if it also accounts for
 # every file it did not, so that accounting is dropped. It counts the warnings it could
 # not fix there, which are left for linting to report rather than raised on every format.
