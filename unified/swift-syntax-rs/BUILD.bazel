@@ -72,7 +72,7 @@ rust_library(
     ),
     edition = "2024",
     target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
-    deps = select({
+    link_deps = select({
         ":static_linux_runtime": [
             # Keep these in linker order; sorting them produces an invalid group.
             ":static_runtime_group_start",
