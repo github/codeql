@@ -1,0 +1,1523 @@
+test.cpp:
+#  133| [RegExpConstant, RegExpNormalChar] a
+
+#  133| [RegExpStar] a*
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  133| [RegExpSequence] a*b+c?d
+#-----| 0 -> [RegExpStar] a*
+#-----| 1 -> [RegExpPlus] b+
+#-----| 2 -> [RegExpOpt] c?
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] d
+
+#  133| [RegExpConstant, RegExpNormalChar] b
+
+#  133| [RegExpPlus] b+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] b
+
+#  133| [RegExpConstant, RegExpNormalChar] c
+
+#  133| [RegExpOpt] c?
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] c
+
+#  133| [RegExpConstant, RegExpNormalChar] d
+
+#  134| [RegExpConstant, RegExpNormalChar] a
+
+#  134| [RegExpRange] a{4,8}
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  134| [RegExpNormalChar] 4,8}
+
+#  135| [RegExpConstant, RegExpNormalChar] a
+
+#  135| [RegExpRange] a{3,}
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  135| [RegExpNormalChar] 3,}
+
+#  140| [RegExpConstant, RegExpNormalChar] foo
+
+#  140| [RegExpAlt] foo|bar+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] foo
+#-----| 1 -> [RegExpSequence] bar+
+
+#  140| [RegExpConstant, RegExpNormalChar] ba
+
+#  140| [RegExpSequence] bar+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] ba
+#-----| 1 -> [RegExpPlus] r+
+
+#  140| [RegExpConstant, RegExpNormalChar] r
+
+#  140| [RegExpPlus] r+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] r
+
+#  144| [RegExpCharacterClass] [abc]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] c
+
+#  144| [RegExpPlus] [abc]+
+#-----| 0 -> [RegExpCharacterClass] [abc]
+
+#  144| [RegExpConstant, RegExpNormalChar] a
+
+#  144| [RegExpConstant, RegExpNormalChar] b
+
+#  144| [RegExpConstant, RegExpNormalChar] c
+
+#  145| [RegExpCharacterClass] [a-fA-F0-9_]
+#-----| 0 -> [RegExpCharacterRange] a-f
+#-----| 1 -> [RegExpCharacterRange] A-F
+#-----| 2 -> [RegExpCharacterRange] 0-9
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] _
+
+#  145| [RegExpPlus] [a-fA-F0-9_]+
+#-----| 0 -> [RegExpCharacterClass] [a-fA-F0-9_]
+
+#  145| [RegExpConstant, RegExpNormalChar] a
+
+#  145| [RegExpCharacterRange] a-f
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] f
+
+#  145| [RegExpConstant, RegExpNormalChar] f
+
+#  145| [RegExpConstant, RegExpNormalChar] A
+
+#  145| [RegExpCharacterRange] A-F
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] A
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] F
+
+#  145| [RegExpConstant, RegExpNormalChar] F
+
+#  145| [RegExpConstant, RegExpNormalChar] 0
+
+#  145| [RegExpCharacterRange] 0-9
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] 0
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] 9
+
+#  145| [RegExpConstant, RegExpNormalChar] 9
+
+#  145| [RegExpConstant, RegExpNormalChar] _
+
+#  146| [RegExpCharacterClass] [\w]
+#-----| 0 -> [RegExpCharacterClassEscape] \w
+
+#  146| [RegExpPlus] [\w]+
+#-----| 0 -> [RegExpCharacterClass] [\w]
+
+#  146| [RegExpCharacterClassEscape] \w
+
+#  147| [RegExpCharacterClass] [^A-Z]
+#-----| 0 -> [RegExpCharacterRange] A-Z
+
+#  147| [RegExpStar] [^A-Z]*
+#-----| 0 -> [RegExpCharacterClass] [^A-Z]
+
+#  147| [RegExpConstant, RegExpNormalChar] A
+
+#  147| [RegExpCharacterRange] A-Z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] A
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] Z
+
+#  147| [RegExpConstant, RegExpNormalChar] Z
+
+#  151| [RegExpDot] .
+
+#  151| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  152| [RegExpCharacterClassEscape] \w
+
+#  152| [RegExpPlus] \w+
+#-----| 0 -> [RegExpCharacterClassEscape] \w
+
+#  152| [RegExpSequence] \w+\W
+#-----| 0 -> [RegExpPlus] \w+
+#-----| 1 -> [RegExpCharacterClassEscape] \W
+
+#  152| [RegExpCharacterClassEscape] \W
+
+#  153| [RegExpCharacterClassEscape] \s
+
+#  153| [RegExpPlus] \s+
+#-----| 0 -> [RegExpCharacterClassEscape] \s
+
+#  153| [RegExpSequence] \s+\S
+#-----| 0 -> [RegExpPlus] \s+
+#-----| 1 -> [RegExpCharacterClassEscape] \S
+
+#  153| [RegExpCharacterClassEscape] \S
+
+#  154| [RegExpCharacterClassEscape] \d
+
+#  154| [RegExpPlus] \d+
+#-----| 0 -> [RegExpCharacterClassEscape] \d
+
+#  154| [RegExpSequence] \d+\D
+#-----| 0 -> [RegExpPlus] \d+
+#-----| 1 -> [RegExpCharacterClassEscape] \D
+
+#  154| [RegExpCharacterClassEscape] \D
+
+#  158| [RegExpCaret] ^
+
+#  158| [RegExpSequence] ^a+bc$
+#-----| 0 -> [RegExpCaret] ^
+#-----| 1 -> [RegExpPlus] a+
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] bc
+#-----| 3 -> [RegExpDollar] $
+
+#  158| [RegExpConstant, RegExpNormalChar] a
+
+#  158| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  158| [RegExpConstant, RegExpNormalChar] bc
+
+#  158| [RegExpDollar] $
+
+#  159| [RegExpWordBoundary] \b
+
+#  159| [RegExpSequence] \ba+bc\B
+#-----| 0 -> [RegExpWordBoundary] \b
+#-----| 1 -> [RegExpPlus] a+
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] bc
+#-----| 3 -> [RegExpNonWordBoundary] \B
+
+#  159| [RegExpConstant, RegExpNormalChar] a
+
+#  159| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  159| [RegExpConstant, RegExpNormalChar] bc
+
+#  159| [RegExpNonWordBoundary] \B
+
+#  163| [RegExpGroup] (foo)
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] foo
+
+#  163| [RegExpStar] (foo)*
+#-----| 0 -> [RegExpGroup] (foo)
+
+#  163| [RegExpSequence] (foo)*bar
+#-----| 0 -> [RegExpStar] (foo)*
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] bar
+
+#  163| [RegExpConstant, RegExpNormalChar] foo
+
+#  163| [RegExpConstant, RegExpNormalChar] bar
+
+#  164| [RegExpConstant, RegExpNormalChar] fo
+
+#  164| [RegExpSequence] fo(o|b+)ar
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] fo
+#-----| 1 -> [RegExpGroup] (o|b+)
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] ar
+
+#  164| [RegExpGroup] (o|b+)
+#-----| 0 -> [RegExpAlt] o|b+
+
+#  164| [RegExpConstant, RegExpNormalChar] o
+
+#  164| [RegExpAlt] o|b+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] o
+#-----| 1 -> [RegExpPlus] b+
+
+#  164| [RegExpConstant, RegExpNormalChar] b
+
+#  164| [RegExpPlus] b+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] b
+
+#  164| [RegExpConstant, RegExpNormalChar] ar
+
+#  165| [RegExpGroup] (a|b|cd)
+#-----| 0 -> [RegExpAlt] a|b|cd
+
+#  165| [RegExpSequence] (a|b|cd)e+
+#-----| 0 -> [RegExpGroup] (a|b|cd)
+#-----| 1 -> [RegExpPlus] e+
+
+#  165| [RegExpConstant, RegExpNormalChar] a
+
+#  165| [RegExpAlt] a|b|cd
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] cd
+
+#  165| [RegExpConstant, RegExpNormalChar] b
+
+#  165| [RegExpConstant, RegExpNormalChar] cd
+
+#  165| [RegExpConstant, RegExpNormalChar] e
+
+#  165| [RegExpPlus] e+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] e
+
+#  166| [RegExpGroup] (?::+)
+#-----| 0 -> [RegExpPlus] :+
+
+#  166| [RegExpSequence] (?::+)\w
+#-----| 0 -> [RegExpGroup] (?::+)
+#-----| 1 -> [RegExpCharacterClassEscape] \w
+
+#  166| [RegExpConstant, RegExpNormalChar] :
+
+#  166| [RegExpPlus] :+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] :
+
+#  166| [RegExpCharacterClassEscape] \w
+
+#  170| [RegExpGroup] (?<id>\w+)
+#-----| 0 -> [RegExpPlus] \w+
+
+#  170| [RegExpCharacterClassEscape] \w
+
+#  170| [RegExpPlus] \w+
+#-----| 0 -> [RegExpCharacterClassEscape] \w
+
+#  171| [RegExpGroup] (?<first>[a-z]+)
+#-----| 0 -> [RegExpPlus] [a-z]+
+
+#  171| [RegExpSequence] (?<first>[a-z]+)(?<second>[0-9]+)
+#-----| 0 -> [RegExpGroup] (?<first>[a-z]+)
+#-----| 1 -> [RegExpGroup] (?<second>[0-9]+)
+
+#  171| [RegExpCharacterClass] [a-z]
+#-----| 0 -> [RegExpCharacterRange] a-z
+
+#  171| [RegExpPlus] [a-z]+
+#-----| 0 -> [RegExpCharacterClass] [a-z]
+
+#  171| [RegExpConstant, RegExpNormalChar] a
+
+#  171| [RegExpCharacterRange] a-z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] z
+
+#  171| [RegExpConstant, RegExpNormalChar] z
+
+#  171| [RegExpGroup] (?<second>[0-9]+)
+#-----| 0 -> [RegExpPlus] [0-9]+
+
+#  171| [RegExpCharacterClass] [0-9]
+#-----| 0 -> [RegExpCharacterRange] 0-9
+
+#  171| [RegExpPlus] [0-9]+
+#-----| 0 -> [RegExpCharacterClass] [0-9]
+
+#  171| [RegExpConstant, RegExpNormalChar] 0
+
+#  171| [RegExpCharacterRange] 0-9
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] 0
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] 9
+
+#  171| [RegExpConstant, RegExpNormalChar] 9
+
+#  175| [RegExpGroup] (a+)
+#-----| 0 -> [RegExpPlus] a+
+
+#  175| [RegExpSequence] (a+)b+\1
+#-----| 0 -> [RegExpGroup] (a+)
+#-----| 1 -> [RegExpPlus] b+
+#-----| 2 -> [RegExpBackRef] \1
+
+#  175| [RegExpConstant, RegExpNormalChar] a
+
+#  175| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  175| [RegExpConstant, RegExpNormalChar] b
+
+#  175| [RegExpPlus] b+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] b
+
+#  175| [RegExpBackRef] \1
+
+#  176| [RegExpGroup] (?<qux>q+)
+#-----| 0 -> [RegExpPlus] q+
+
+#  176| [RegExpSequence] (?<qux>q+)\s+\k<qux>+
+#-----| 0 -> [RegExpGroup] (?<qux>q+)
+#-----| 1 -> [RegExpPlus] \s+
+#-----| 2 -> [RegExpPlus] \k<qux>+
+
+#  176| [RegExpConstant, RegExpNormalChar] q
+
+#  176| [RegExpPlus] q+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] q
+
+#  176| [RegExpCharacterClassEscape] \s
+
+#  176| [RegExpPlus] \s+
+#-----| 0 -> [RegExpCharacterClassEscape] \s
+
+#  176| [RegExpBackRef] \k<qux>
+
+#  176| [RegExpPlus] \k<qux>+
+#-----| 0 -> [RegExpBackRef] \k<qux>
+
+#  180| [RegExpPositiveLookahead] (?=\w+)
+
+#  180| [RegExpSequence] (?=\w+)abc
+#-----| 0 -> [RegExpPositiveLookahead] (?=\w+)
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
+
+#  180| [RegExpCharacterClassEscape] \w
+
+#  180| [RegExpPlus] \w+
+#-----| 0 -> [RegExpCharacterClassEscape] \w
+
+#  180| [RegExpConstant, RegExpNormalChar] abc
+
+#  181| [RegExpNegativeLookahead] (?!\d+)
+
+#  181| [RegExpSequence] (?!\d+)abc
+#-----| 0 -> [RegExpNegativeLookahead] (?!\d+)
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
+
+#  181| [RegExpCharacterClassEscape] \d
+
+#  181| [RegExpPlus] \d+
+#-----| 0 -> [RegExpCharacterClassEscape] \d
+
+#  181| [RegExpConstant, RegExpNormalChar] abc
+
+#  182| [RegExpConstant, RegExpNormalChar] a
+
+#  182| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  182| [RegExpSequence] a+bc(?<=\w)
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] bc
+#-----| 2 -> [RegExpPositiveLookbehind] (?<=\w)
+
+#  182| [RegExpConstant, RegExpNormalChar] bc
+
+#  182| [RegExpPositiveLookbehind] (?<=\w)
+
+#  182| [RegExpCharacterClassEscape] \w
+
+#  183| [RegExpConstant, RegExpNormalChar] a
+
+#  183| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  183| [RegExpSequence] a+bc(?<!\d)
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] bc
+#-----| 2 -> [RegExpNegativeLookbehind] (?<!\d)
+
+#  183| [RegExpConstant, RegExpNormalChar] bc
+
+#  183| [RegExpNegativeLookbehind] (?<!\d)
+
+#  183| [RegExpCharacterClassEscape] \d
+
+#  187| [RegExpGroup] (a+)
+#-----| 0 -> [RegExpPlus] a+
+
+#  187| [RegExpPlus] (a+)+
+#-----| 0 -> [RegExpGroup] (a+)
+
+#  187| [RegExpConstant, RegExpNormalChar] a
+
+#  187| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  188| [RegExpGroup] (a*)
+#-----| 0 -> [RegExpStar] a*
+
+#  188| [RegExpStar] (a*)*
+#-----| 0 -> [RegExpGroup] (a*)
+
+#  188| [RegExpSequence] (a*)*b
+#-----| 0 -> [RegExpStar] (a*)*
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  188| [RegExpConstant, RegExpNormalChar] a
+
+#  188| [RegExpStar] a*
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  188| [RegExpConstant, RegExpNormalChar] b
+
+#  189| [RegExpGroup] ([a-zA-Z]+)
+#-----| 0 -> [RegExpPlus] [a-zA-Z]+
+
+#  189| [RegExpStar] ([a-zA-Z]+)*
+#-----| 0 -> [RegExpGroup] ([a-zA-Z]+)
+
+#  189| [RegExpCharacterClass] [a-zA-Z]
+#-----| 0 -> [RegExpCharacterRange] a-z
+#-----| 1 -> [RegExpCharacterRange] A-Z
+
+#  189| [RegExpPlus] [a-zA-Z]+
+#-----| 0 -> [RegExpCharacterClass] [a-zA-Z]
+
+#  189| [RegExpConstant, RegExpNormalChar] a
+
+#  189| [RegExpCharacterRange] a-z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] z
+
+#  189| [RegExpConstant, RegExpNormalChar] z
+
+#  189| [RegExpConstant, RegExpNormalChar] A
+
+#  189| [RegExpCharacterRange] A-Z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] A
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] Z
+
+#  189| [RegExpConstant, RegExpNormalChar] Z
+
+#  193| [RegExpCharacterClass] [a-zA-Z0-9._%+-]
+#-----| 0 -> [RegExpCharacterRange] a-z
+#-----| 1 -> [RegExpCharacterRange] A-Z
+#-----| 2 -> [RegExpCharacterRange] 0-9
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] .
+#-----| 4 -> [RegExpConstant, RegExpNormalChar] _
+#-----| 5 -> [RegExpConstant, RegExpNormalChar] %
+#-----| 6 -> [RegExpConstant, RegExpNormalChar] +
+#-----| 7 -> [RegExpConstant, RegExpNormalChar] -
+
+#  193| [RegExpPlus] [a-zA-Z0-9._%+-]+
+#-----| 0 -> [RegExpCharacterClass] [a-zA-Z0-9._%+-]
+
+#  193| [RegExpSequence] [a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
+#-----| 0 -> [RegExpPlus] [a-zA-Z0-9._%+-]+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] @
+#-----| 2 -> [RegExpPlus] [a-zA-Z0-9.-]+
+#-----| 3 -> [RegExpConstant, RegExpEscape] \.
+#-----| 4 -> [RegExpRange] [a-zA-Z]{2,}
+
+#  193| [RegExpConstant, RegExpNormalChar] a
+
+#  193| [RegExpCharacterRange] a-z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] z
+
+#  193| [RegExpConstant, RegExpNormalChar] z
+
+#  193| [RegExpConstant, RegExpNormalChar] A
+
+#  193| [RegExpCharacterRange] A-Z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] A
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] Z
+
+#  193| [RegExpConstant, RegExpNormalChar] Z
+
+#  193| [RegExpConstant, RegExpNormalChar] 0
+
+#  193| [RegExpCharacterRange] 0-9
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] 0
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] 9
+
+#  193| [RegExpConstant, RegExpNormalChar] 9
+
+#  193| [RegExpConstant, RegExpNormalChar] .
+
+#  193| [RegExpConstant, RegExpNormalChar] _
+
+#  193| [RegExpConstant, RegExpNormalChar] %
+
+#  193| [RegExpConstant, RegExpNormalChar] +
+
+#  193| [RegExpConstant, RegExpNormalChar] -
+
+#  193| [RegExpConstant, RegExpNormalChar] @
+
+#  193| [RegExpCharacterClass] [a-zA-Z0-9.-]
+#-----| 0 -> [RegExpCharacterRange] a-z
+#-----| 1 -> [RegExpCharacterRange] A-Z
+#-----| 2 -> [RegExpCharacterRange] 0-9
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] .
+#-----| 4 -> [RegExpConstant, RegExpNormalChar] -
+
+#  193| [RegExpPlus] [a-zA-Z0-9.-]+
+#-----| 0 -> [RegExpCharacterClass] [a-zA-Z0-9.-]
+
+#  193| [RegExpConstant, RegExpNormalChar] a
+
+#  193| [RegExpCharacterRange] a-z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] z
+
+#  193| [RegExpConstant, RegExpNormalChar] z
+
+#  193| [RegExpConstant, RegExpNormalChar] A
+
+#  193| [RegExpCharacterRange] A-Z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] A
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] Z
+
+#  193| [RegExpConstant, RegExpNormalChar] Z
+
+#  193| [RegExpConstant, RegExpNormalChar] 0
+
+#  193| [RegExpCharacterRange] 0-9
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] 0
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] 9
+
+#  193| [RegExpConstant, RegExpNormalChar] 9
+
+#  193| [RegExpConstant, RegExpNormalChar] .
+
+#  193| [RegExpConstant, RegExpNormalChar] -
+
+#  193| [RegExpConstant, RegExpEscape] \.
+
+#  193| [RegExpCharacterClass] [a-zA-Z]
+#-----| 0 -> [RegExpCharacterRange] a-z
+#-----| 1 -> [RegExpCharacterRange] A-Z
+
+#  193| [RegExpRange] [a-zA-Z]{2,}
+#-----| 0 -> [RegExpCharacterClass] [a-zA-Z]
+
+#  193| [RegExpConstant, RegExpNormalChar] a
+
+#  193| [RegExpCharacterRange] a-z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] z
+
+#  193| [RegExpConstant, RegExpNormalChar] z
+
+#  193| [RegExpConstant, RegExpNormalChar] A
+
+#  193| [RegExpCharacterRange] A-Z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] A
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] Z
+
+#  193| [RegExpConstant, RegExpNormalChar] Z
+
+#  193| [RegExpNormalChar] 2,}
+
+#  194| [RegExpGroup] (https?|ftp)
+#-----| 0 -> [RegExpAlt] https?|ftp
+
+#  194| [RegExpSequence] (https?|ftp)://[^\s/$.?#].[^\s]*
+#-----| 0 -> [RegExpGroup] (https?|ftp)
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] ://
+#-----| 2 -> [RegExpCharacterClass] [^\s/$.?#]
+#-----| 3 -> [RegExpDot] .
+#-----| 4 -> [RegExpStar] [^\s]*
+
+#  194| [RegExpConstant, RegExpNormalChar] http
+
+#  194| [RegExpSequence] https?
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] http
+#-----| 1 -> [RegExpOpt] s?
+
+#  194| [RegExpAlt] https?|ftp
+#-----| 0 -> [RegExpSequence] https?
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] ftp
+
+#  194| [RegExpConstant, RegExpNormalChar] s
+
+#  194| [RegExpOpt] s?
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] s
+
+#  194| [RegExpConstant, RegExpNormalChar] ftp
+
+#  194| [RegExpConstant, RegExpNormalChar] ://
+
+#  194| [RegExpCharacterClass] [^\s/$.?#]
+#-----| 0 -> [RegExpCharacterClassEscape] \s
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] /
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] $
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] .
+#-----| 4 -> [RegExpConstant, RegExpNormalChar] ?
+#-----| 5 -> [RegExpConstant, RegExpNormalChar] #
+
+#  194| [RegExpCharacterClassEscape] \s
+
+#  194| [RegExpConstant, RegExpNormalChar] /
+
+#  194| [RegExpConstant, RegExpNormalChar] $
+
+#  194| [RegExpConstant, RegExpNormalChar] .
+
+#  194| [RegExpConstant, RegExpNormalChar] ?
+
+#  194| [RegExpConstant, RegExpNormalChar] #
+
+#  194| [RegExpDot] .
+
+#  194| [RegExpCharacterClass] [^\s]
+#-----| 0 -> [RegExpCharacterClassEscape] \s
+
+#  194| [RegExpStar] [^\s]*
+#-----| 0 -> [RegExpCharacterClass] [^\s]
+
+#  194| [RegExpCharacterClassEscape] \s
+
+#  209| [RegExpGroup] (a+)
+#-----| 0 -> [RegExpPlus] a+
+
+#  209| [RegExpPlus] (a+)+
+#-----| 0 -> [RegExpGroup] (a+)
+
+#  209| [RegExpSequence] (a+)+b
+#-----| 0 -> [RegExpPlus] (a+)+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  209| [RegExpConstant, RegExpNormalChar] a
+
+#  209| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  209| [RegExpConstant, RegExpNormalChar] b
+
+#  218| [RegExpConstant, RegExpNormalChar] fo
+
+#  218| [RegExpSequence] foo+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] fo
+#-----| 1 -> [RegExpPlus] o+
+
+#  218| [RegExpConstant, RegExpNormalChar] o
+
+#  218| [RegExpPlus] o+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] o
+
+#  225| [RegExpConstant, RegExpNormalChar] ba
+
+#  225| [RegExpSequence] bar+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] ba
+#-----| 1 -> [RegExpPlus] r+
+
+#  225| [RegExpConstant, RegExpNormalChar] r
+
+#  225| [RegExpPlus] r+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] r
+
+#  231| [RegExpConstant, RegExpNormalChar] ab
+
+#  231| [RegExpSequence] abc+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] ab
+#-----| 1 -> [RegExpPlus] c+
+
+#  231| [RegExpConstant, RegExpNormalChar] c
+
+#  231| [RegExpPlus] c+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] c
+
+#  242| [RegExpConstant, RegExpNormalChar] abc+
+
+#  245| [RegExpCaret] ^
+
+#  245| [RegExpSequence] ^gr+ep
+#-----| 0 -> [RegExpCaret] ^
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] gr+ep
+
+#  245| [RegExpConstant, RegExpNormalChar] gr+ep
+
+#  249| [RegExpGroup] \(ab\)
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] ab
+
+#  249| [RegExpStar] \(ab\)*
+#-----| 0 -> [RegExpGroup] \(ab\)
+
+#  249| [RegExpSequence] \(ab\)*c.*
+#-----| 0 -> [RegExpStar] \(ab\)*
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] c
+#-----| 2 -> [RegExpStar] .*
+
+#  249| [RegExpConstant, RegExpNormalChar] ab
+
+#  249| [RegExpConstant, RegExpNormalChar] c
+
+#  249| [RegExpDot] .
+
+#  249| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  250| [RegExpConstant, RegExpNormalChar] a(b)c
+
+#  250| [RegExpSequence] a(b)c.*
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a(b)c
+#-----| 1 -> [RegExpStar] .*
+
+#  250| [RegExpDot] .
+
+#  250| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  252| [RegExpConstant, RegExpNormalChar] a
+
+#  252| [RegExpRange] a\{2,5\}
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  252| [RegExpSequence] a\{2,5\}.*
+#-----| 0 -> [RegExpRange] a\{2,5\}
+#-----| 1 -> [RegExpStar] .*
+
+#  252| [RegExpNormalChar] {2,5\}
+
+#  252| [RegExpDot] .
+
+#  252| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  253| [RegExpConstant, RegExpNormalChar] a{2,5}
+
+#  253| [RegExpSequence] a{2,5}.*
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a{2,5}
+#-----| 1 -> [RegExpStar] .*
+
+#  253| [RegExpDot] .
+
+#  253| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  255| [RegExpConstant, RegExpNormalChar] a+b?
+
+#  255| [RegExpSequence] a+b?.*
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a+b?
+#-----| 1 -> [RegExpStar] .*
+
+#  255| [RegExpDot] .
+
+#  255| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  258| [RegExpConstant, RegExpNormalChar] *abc
+
+#  258| [RegExpSequence] *abc.*
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] *abc
+#-----| 1 -> [RegExpStar] .*
+
+#  258| [RegExpDot] .
+
+#  258| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  259| [RegExpConstant, RegExpNormalChar] a
+
+#  259| [RegExpStar] a*
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  259| [RegExpSequence] a*.*
+#-----| 0 -> [RegExpStar] a*
+#-----| 1 -> [RegExpStar] .*
+
+#  259| [RegExpDot] .
+
+#  259| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  263| [RegExpConstant, RegExpNormalChar] a^b$c
+
+#  263| [RegExpSequence] a^b$c.*
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a^b$c
+#-----| 1 -> [RegExpStar] .*
+
+#  263| [RegExpDot] .
+
+#  263| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  265| [RegExpGroup] \(a\)
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  265| [RegExpSequence] \(a\)\1.*
+#-----| 0 -> [RegExpGroup] \(a\)
+#-----| 1 -> [RegExpBackRef] \1
+#-----| 2 -> [RegExpStar] .*
+
+#  265| [RegExpConstant, RegExpNormalChar] a
+
+#  265| [RegExpBackRef] \1
+
+#  265| [RegExpDot] .
+
+#  265| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  268| [RegExpConstant, RegExpEscape] \.
+
+#  268| [RegExpSequence] \.\*\\.*
+#-----| 0 -> [RegExpConstant, RegExpEscape] \.
+#-----| 1 -> [RegExpConstant, RegExpEscape] \*
+#-----| 2 -> [RegExpConstant, RegExpEscape] \\
+#-----| 3 -> [RegExpStar] .*
+
+#  268| [RegExpConstant, RegExpEscape] \*
+
+#  268| [RegExpConstant, RegExpEscape] \\
+
+#  268| [RegExpDot] .
+
+#  268| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  271| [RegExpGroup] \([[:alpha:]]\)
+#-----| 0 -> [RegExpCharacterClass] [[:alpha:]]
+
+#  271| [RegExpStar] \([[:alpha:]]\)*
+#-----| 0 -> [RegExpGroup] \([[:alpha:]]\)
+
+#  271| [RegExpSequence] \([[:alpha:]]\)*.*
+#-----| 0 -> [RegExpStar] \([[:alpha:]]\)*
+#-----| 1 -> [RegExpStar] .*
+
+#  271| [RegExpCharacterClass] [[:alpha:]]
+#-----| 0 -> [RegExpPosixBracket] [:alpha:]
+
+#  271| [RegExpPosixBracket] [:alpha:]
+
+#  271| [RegExpDot] .
+
+#  271| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  275| [RegExpGroup] \(a*\)
+#-----| 0 -> [RegExpStar] a*
+
+#  275| [RegExpStar] \(a*\)*
+#-----| 0 -> [RegExpGroup] \(a*\)
+
+#  275| [RegExpConstant, RegExpNormalChar] a
+
+#  275| [RegExpStar] a*
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  290| [RegExpConstant, RegExpNormalChar] ab
+
+#  290| [RegExpSequence] abc+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] ab
+#-----| 1 -> [RegExpPlus] c+
+
+#  290| [RegExpConstant, RegExpNormalChar] c
+
+#  290| [RegExpPlus] c+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] c
+
+#  293| [RegExpCharacterClass] [[:alpha:]]
+#-----| 0 -> [RegExpPosixBracket] [:alpha:]
+
+#  293| [RegExpPlus] [[:alpha:]]+
+#-----| 0 -> [RegExpCharacterClass] [[:alpha:]]
+
+#  293| [RegExpPosixBracket] [:alpha:]
+
+#  297| [RegExpConstant, RegExpNormalChar] a
+
+#  297| [RegExpSequence] a\.b\(c\).*
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpEscape] \.
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] b
+#-----| 3 -> [RegExpConstant, RegExpEscape] \(
+#-----| 4 -> [RegExpConstant, RegExpNormalChar] c
+#-----| 5 -> [RegExpConstant, RegExpEscape] \)
+#-----| 6 -> [RegExpStar] .*
+
+#  297| [RegExpConstant, RegExpEscape] \.
+
+#  297| [RegExpConstant, RegExpNormalChar] b
+
+#  297| [RegExpConstant, RegExpEscape] \(
+
+#  297| [RegExpConstant, RegExpNormalChar] c
+
+#  297| [RegExpConstant, RegExpEscape] \)
+
+#  297| [RegExpDot] .
+
+#  297| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  299| [RegExpGroup] (foo|bar)
+#-----| 0 -> [RegExpAlt] foo|bar
+
+#  299| [RegExpRange] (foo|bar){2,3}
+#-----| 0 -> [RegExpGroup] (foo|bar)
+
+#  299| [RegExpConstant, RegExpNormalChar] foo
+
+#  299| [RegExpAlt] foo|bar
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] foo
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] bar
+
+#  299| [RegExpConstant, RegExpNormalChar] bar
+
+#  299| [RegExpNormalChar] 2,3}
+
+#  301| [RegExpConstant, RegExpNormalChar] aw
+
+#  301| [RegExpSequence] awk+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] aw
+#-----| 1 -> [RegExpPlus] k+
+
+#  301| [RegExpConstant, RegExpNormalChar] k
+
+#  301| [RegExpPlus] k+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] k
+
+#  303| [RegExpGroup] (x|y)
+#-----| 0 -> [RegExpAlt] x|y
+
+#  303| [RegExpPlus] (x|y)+
+#-----| 0 -> [RegExpGroup] (x|y)
+
+#  303| [RegExpConstant, RegExpNormalChar] x
+
+#  303| [RegExpAlt] x|y
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] x
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] y
+
+#  303| [RegExpConstant, RegExpNormalChar] y
+
+#  305| [RegExpCaret] ^
+
+#  305| [RegExpSequence] ^a.*b$
+#-----| 0 -> [RegExpCaret] ^
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 2 -> [RegExpStar] .*
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] b
+#-----| 4 -> [RegExpDollar] $
+
+#  305| [RegExpConstant, RegExpNormalChar] a
+
+#  305| [RegExpDot] .
+
+#  305| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  305| [RegExpConstant, RegExpNormalChar] b
+
+#  305| [RegExpDollar] $
+
+#  309| [RegExpGroup] ([a-z]+)
+#-----| 0 -> [RegExpPlus] [a-z]+
+
+#  309| [RegExpPlus] ([a-z]+)+
+#-----| 0 -> [RegExpGroup] ([a-z]+)
+
+#  309| [RegExpCharacterClass] [a-z]
+#-----| 0 -> [RegExpCharacterRange] a-z
+
+#  309| [RegExpPlus] [a-z]+
+#-----| 0 -> [RegExpCharacterClass] [a-z]
+
+#  309| [RegExpConstant, RegExpNormalChar] a
+
+#  309| [RegExpCharacterRange] a-z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] z
+
+#  309| [RegExpConstant, RegExpNormalChar] z
+
+#  315| [RegExpConstant, RegExpNormalChar] ba
+
+#  315| [RegExpSequence] baz+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] ba
+#-----| 1 -> [RegExpPlus] z+
+
+#  315| [RegExpConstant, RegExpNormalChar] z
+
+#  315| [RegExpPlus] z+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] z
+
+#  320| [RegExpConstant, RegExpNormalChar] pa
+
+#  320| [RegExpSequence] pat+ern
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] pa
+#-----| 1 -> [RegExpPlus] t+
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] ern
+
+#  320| [RegExpConstant, RegExpNormalChar] t
+
+#  320| [RegExpPlus] t+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] t
+
+#  320| [RegExpConstant, RegExpNormalChar] ern
+
+#  330| [RegExpConstant, RegExpNormalChar] he
+
+#  330| [RegExpSequence] hel+o
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] he
+#-----| 1 -> [RegExpPlus] l+
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] o
+
+#  330| [RegExpConstant, RegExpNormalChar] l
+
+#  330| [RegExpPlus] l+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] l
+
+#  330| [RegExpConstant, RegExpNormalChar] o
+
+#  346| [RegExpCharacterClass] [[:alpha:]]
+#-----| 0 -> [RegExpPosixBracket] [:alpha:]
+
+#  346| [RegExpSequence] [[:alpha:]].*
+#-----| 0 -> [RegExpCharacterClass] [[:alpha:]]
+#-----| 1 -> [RegExpStar] .*
+
+#  346| [RegExpPosixBracket] [:alpha:]
+
+#  346| [RegExpDot] .
+
+#  346| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  348| [RegExpCharacterClass] [[:digit:]]
+#-----| 0 -> [RegExpPosixBracket] [:digit:]
+
+#  348| [RegExpPlus] [[:digit:]]+
+#-----| 0 -> [RegExpCharacterClass] [[:digit:]]
+
+#  348| [RegExpPosixBracket] [:digit:]
+
+#  350| [RegExpCharacterClass] [a[:space:]]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpPosixBracket] [:space:]
+
+#  350| [RegExpSequence] [a[:space:]].*
+#-----| 0 -> [RegExpCharacterClass] [a[:space:]]
+#-----| 1 -> [RegExpStar] .*
+
+#  350| [RegExpConstant, RegExpNormalChar] a
+
+#  350| [RegExpPosixBracket] [:space:]
+
+#  350| [RegExpDot] .
+
+#  350| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  352| [RegExpCharacterClass] [[:alpha:][:digit:]]
+#-----| 0 -> [RegExpPosixBracket] [:alpha:]
+#-----| 1 -> [RegExpPosixBracket] [:digit:]
+
+#  352| [RegExpSequence] [[:alpha:][:digit:]].*
+#-----| 0 -> [RegExpCharacterClass] [[:alpha:][:digit:]]
+#-----| 1 -> [RegExpStar] .*
+
+#  352| [RegExpPosixBracket] [:alpha:]
+
+#  352| [RegExpPosixBracket] [:digit:]
+
+#  352| [RegExpDot] .
+
+#  352| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  354| [RegExpCharacterClass] [^[:space:]]
+#-----| 0 -> [RegExpPosixBracket] [:space:]
+
+#  354| [RegExpSequence] [^[:space:]].*
+#-----| 0 -> [RegExpCharacterClass] [^[:space:]]
+#-----| 1 -> [RegExpStar] .*
+
+#  354| [RegExpPosixBracket] [:space:]
+
+#  354| [RegExpDot] .
+
+#  354| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  356| [RegExpCharacterClass] [[.a.]]
+#-----| 0 -> [RegExpPosixBracket] [.a.]
+
+#  356| [RegExpSequence] [[.a.]].*
+#-----| 0 -> [RegExpCharacterClass] [[.a.]]
+#-----| 1 -> [RegExpStar] .*
+
+#  356| [RegExpPosixBracket] [.a.]
+
+#  356| [RegExpDot] .
+
+#  356| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  358| [RegExpCharacterClass] [[=a=]]
+#-----| 0 -> [RegExpPosixBracket] [=a=]
+
+#  358| [RegExpSequence] [[=a=]].*
+#-----| 0 -> [RegExpCharacterClass] [[=a=]]
+#-----| 1 -> [RegExpStar] .*
+
+#  358| [RegExpPosixBracket] [=a=]
+
+#  358| [RegExpDot] .
+
+#  358| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  361| [RegExpGroup] ([[:alpha:]]+)
+#-----| 0 -> [RegExpPlus] [[:alpha:]]+
+
+#  361| [RegExpPlus] ([[:alpha:]]+)+
+#-----| 0 -> [RegExpGroup] ([[:alpha:]]+)
+
+#  361| [RegExpCharacterClass] [[:alpha:]]
+#-----| 0 -> [RegExpPosixBracket] [:alpha:]
+
+#  361| [RegExpPlus] [[:alpha:]]+
+#-----| 0 -> [RegExpCharacterClass] [[:alpha:]]
+
+#  361| [RegExpPosixBracket] [:alpha:]
+
+#  380| [RegExpCharacterClass] [:alpha:]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] :
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] l
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] p
+#-----| 4 -> [RegExpConstant, RegExpNormalChar] h
+#-----| 5 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 6 -> [RegExpConstant, RegExpNormalChar] :
+
+#  380| [RegExpSequence] [:alpha:].*
+#-----| 0 -> [RegExpCharacterClass] [:alpha:]
+#-----| 1 -> [RegExpStar] .*
+
+#  380| [RegExpConstant, RegExpNormalChar] :
+
+#  380| [RegExpConstant, RegExpNormalChar] a
+
+#  380| [RegExpConstant, RegExpNormalChar] l
+
+#  380| [RegExpConstant, RegExpNormalChar] p
+
+#  380| [RegExpConstant, RegExpNormalChar] h
+
+#  380| [RegExpConstant, RegExpNormalChar] a
+
+#  380| [RegExpConstant, RegExpNormalChar] :
+
+#  380| [RegExpDot] .
+
+#  380| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  386| [RegExpConstant, RegExpNormalChar] a
+
+#  386| [RegExpSequence] a[:b:]c.*
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpCharacterClass] [:b:]
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] c
+#-----| 3 -> [RegExpStar] .*
+
+#  386| [RegExpCharacterClass] [:b:]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] :
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] :
+
+#  386| [RegExpConstant, RegExpNormalChar] :
+
+#  386| [RegExpConstant, RegExpNormalChar] b
+
+#  386| [RegExpConstant, RegExpNormalChar] :
+
+#  386| [RegExpConstant, RegExpNormalChar] c
+
+#  386| [RegExpDot] .
+
+#  386| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  389| [RegExpCharacterClass] [[:alpha:][:digit:][:space:]]
+#-----| 0 -> [RegExpPosixBracket] [:alpha:]
+#-----| 1 -> [RegExpPosixBracket] [:digit:]
+#-----| 2 -> [RegExpPosixBracket] [:space:]
+
+#  389| [RegExpSequence] [[:alpha:][:digit:][:space:]].*
+#-----| 0 -> [RegExpCharacterClass] [[:alpha:][:digit:][:space:]]
+#-----| 1 -> [RegExpStar] .*
+
+#  389| [RegExpPosixBracket] [:alpha:]
+
+#  389| [RegExpPosixBracket] [:digit:]
+
+#  389| [RegExpPosixBracket] [:space:]
+
+#  389| [RegExpDot] .
+
+#  389| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  393| [RegExpCharacterClass] []a[:alpha:]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] ]
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] [
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] :
+#-----| 4 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 5 -> [RegExpConstant, RegExpNormalChar] l
+#-----| 6 -> [RegExpConstant, RegExpNormalChar] p
+#-----| 7 -> [RegExpConstant, RegExpNormalChar] h
+#-----| 8 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 9 -> [RegExpConstant, RegExpNormalChar] :
+
+#  393| [RegExpSequence] []a[:alpha:]].*
+#-----| 0 -> [RegExpCharacterClass] []a[:alpha:]
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] ]
+#-----| 2 -> [RegExpStar] .*
+
+#  393| [RegExpConstant, RegExpNormalChar] ]
+
+#  393| [RegExpConstant, RegExpNormalChar] a
+
+#  393| [RegExpConstant, RegExpNormalChar] [
+
+#  393| [RegExpConstant, RegExpNormalChar] :
+
+#  393| [RegExpConstant, RegExpNormalChar] a
+
+#  393| [RegExpConstant, RegExpNormalChar] l
+
+#  393| [RegExpConstant, RegExpNormalChar] p
+
+#  393| [RegExpConstant, RegExpNormalChar] h
+
+#  393| [RegExpConstant, RegExpNormalChar] a
+
+#  393| [RegExpConstant, RegExpNormalChar] :
+
+#  393| [RegExpConstant, RegExpNormalChar] ]
+
+#  393| [RegExpDot] .
+
+#  393| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  400| [RegExpCharacterClass] [[:alpha:]-z]
+#-----| 0 -> [RegExpCharacterRange] [:alpha:]-z
+
+#  400| [RegExpSequence] [[:alpha:]-z].*
+#-----| 0 -> [RegExpCharacterClass] [[:alpha:]-z]
+#-----| 1 -> [RegExpStar] .*
+
+#  400| [RegExpPosixBracket] [:alpha:]
+
+#  400| [RegExpCharacterRange] [:alpha:]-z
+#-----| 0 -> [RegExpPosixBracket] [:alpha:]
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] z
+
+#  400| [RegExpConstant, RegExpNormalChar] z
+
+#  400| [RegExpDot] .
+
+#  400| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  406| [RegExpCharacterClass] [[:alpha]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] [
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] :
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] l
+#-----| 4 -> [RegExpConstant, RegExpNormalChar] p
+#-----| 5 -> [RegExpConstant, RegExpNormalChar] h
+#-----| 6 -> [RegExpConstant, RegExpNormalChar] a
+
+#  406| [RegExpSequence] [[:alpha].*
+#-----| 0 -> [RegExpCharacterClass] [[:alpha]
+#-----| 1 -> [RegExpStar] .*
+
+#  406| [RegExpConstant, RegExpNormalChar] [
+
+#  406| [RegExpConstant, RegExpNormalChar] :
+
+#  406| [RegExpConstant, RegExpNormalChar] a
+
+#  406| [RegExpConstant, RegExpNormalChar] l
+
+#  406| [RegExpConstant, RegExpNormalChar] p
+
+#  406| [RegExpConstant, RegExpNormalChar] h
+
+#  406| [RegExpConstant, RegExpNormalChar] a
+
+#  406| [RegExpDot] .
+
+#  406| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  415| [RegExpCaret] ^
+
+#  415| [RegExpSequence] ^([[:alpha:]]+[[:digit:]]*[[:space:]]?)+([[:punct:]]|[[:xdigit:]])+$
+#-----| 0 -> [RegExpCaret] ^
+#-----| 1 -> [RegExpPlus] ([[:alpha:]]+[[:digit:]]*[[:space:]]?)+
+#-----| 2 -> [RegExpPlus] ([[:punct:]]|[[:xdigit:]])+
+#-----| 3 -> [RegExpDollar] $
+
+#  415| [RegExpGroup] ([[:alpha:]]+[[:digit:]]*[[:space:]]?)
+#-----| 0 -> [RegExpSequence] [[:alpha:]]+[[:digit:]]*[[:space:]]?
+
+#  415| [RegExpPlus] ([[:alpha:]]+[[:digit:]]*[[:space:]]?)+
+#-----| 0 -> [RegExpGroup] ([[:alpha:]]+[[:digit:]]*[[:space:]]?)
+
+#  415| [RegExpCharacterClass] [[:alpha:]]
+#-----| 0 -> [RegExpPosixBracket] [:alpha:]
+
+#  415| [RegExpPlus] [[:alpha:]]+
+#-----| 0 -> [RegExpCharacterClass] [[:alpha:]]
+
+#  415| [RegExpSequence] [[:alpha:]]+[[:digit:]]*[[:space:]]?
+#-----| 0 -> [RegExpPlus] [[:alpha:]]+
+#-----| 1 -> [RegExpStar] [[:digit:]]*
+#-----| 2 -> [RegExpOpt] [[:space:]]?
+
+#  415| [RegExpPosixBracket] [:alpha:]
+
+#  415| [RegExpCharacterClass] [[:digit:]]
+#-----| 0 -> [RegExpPosixBracket] [:digit:]
+
+#  415| [RegExpStar] [[:digit:]]*
+#-----| 0 -> [RegExpCharacterClass] [[:digit:]]
+
+#  415| [RegExpPosixBracket] [:digit:]
+
+#  415| [RegExpCharacterClass] [[:space:]]
+#-----| 0 -> [RegExpPosixBracket] [:space:]
+
+#  415| [RegExpOpt] [[:space:]]?
+#-----| 0 -> [RegExpCharacterClass] [[:space:]]
+
+#  415| [RegExpPosixBracket] [:space:]
+
+#  415| [RegExpGroup] ([[:punct:]]|[[:xdigit:]])
+#-----| 0 -> [RegExpAlt] [[:punct:]]|[[:xdigit:]]
+
+#  415| [RegExpPlus] ([[:punct:]]|[[:xdigit:]])+
+#-----| 0 -> [RegExpGroup] ([[:punct:]]|[[:xdigit:]])
+
+#  415| [RegExpCharacterClass] [[:punct:]]
+#-----| 0 -> [RegExpPosixBracket] [:punct:]
+
+#  415| [RegExpAlt] [[:punct:]]|[[:xdigit:]]
+#-----| 0 -> [RegExpCharacterClass] [[:punct:]]
+#-----| 1 -> [RegExpCharacterClass] [[:xdigit:]]
+
+#  415| [RegExpPosixBracket] [:punct:]
+
+#  415| [RegExpCharacterClass] [[:xdigit:]]
+#-----| 0 -> [RegExpPosixBracket] [:xdigit:]
+
+#  415| [RegExpPosixBracket] [:xdigit:]
+
+#  415| [RegExpDollar] $
+
+#  430| [RegExpConstant, RegExpNormalChar] a
+
+#  430| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  430| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  430| [RegExpConstant, RegExpNormalChar] b
+
+#  431| [RegExpCharacterClassEscape] \s
+
+#  431| [RegExpPlus] \s+
+#-----| 0 -> [RegExpCharacterClassEscape] \s
+
+#  436| [RegExpConstant, RegExpNormalChar] a
+
+#  436| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  436| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  436| [RegExpConstant, RegExpNormalChar] b
+
+#  437| [RegExpCharacterClassEscape] \s
+
+#  437| [RegExpPlus] \s+
+#-----| 0 -> [RegExpCharacterClassEscape] \s
+
+#  437| [RegExpSequence] \s+$
+#-----| 0 -> [RegExpPlus] \s+
+#-----| 1 -> [RegExpDollar] $
+
+#  437| [RegExpDollar] $
+
+#  438| [RegExpConstant, RegExpEscape] \(
+
+#  438| [RegExpSequence] \(([,\w]+)+\)$
+#-----| 0 -> [RegExpConstant, RegExpEscape] \(
+#-----| 1 -> [RegExpPlus] ([,\w]+)+
+#-----| 2 -> [RegExpConstant, RegExpEscape] \)
+#-----| 3 -> [RegExpDollar] $
+
+#  438| [RegExpGroup] ([,\w]+)
+#-----| 0 -> [RegExpPlus] [,\w]+
+
+#  438| [RegExpPlus] ([,\w]+)+
+#-----| 0 -> [RegExpGroup] ([,\w]+)
+
+#  438| [RegExpCharacterClass] [,\w]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] ,
+#-----| 1 -> [RegExpCharacterClassEscape] \w
+
+#  438| [RegExpPlus] [,\w]+
+#-----| 0 -> [RegExpCharacterClass] [,\w]
+
+#  438| [RegExpConstant, RegExpNormalChar] ,
+
+#  438| [RegExpCharacterClassEscape] \w
+
+#  438| [RegExpConstant, RegExpEscape] \)
+
+#  438| [RegExpDollar] $
+
+#  442| [RegExpConstant, RegExpNormalChar] a
+
+#  442| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  442| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  442| [RegExpConstant, RegExpNormalChar] b
+
+#  446| [RegExpConstant, RegExpNormalChar] a
+
+#  446| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  446| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  446| [RegExpConstant, RegExpNormalChar] b
+
+#  447| [RegExpConstant, RegExpNormalChar] a
+
+#  447| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  447| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  447| [RegExpConstant, RegExpNormalChar] b
+
+#  459| [RegExpConstant, RegExpNormalChar] a
+
+#  459| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  459| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  459| [RegExpConstant, RegExpNormalChar] b
+
+#  460| [RegExpConstant, RegExpNormalChar] a
+
+#  460| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  460| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  460| [RegExpConstant, RegExpNormalChar] b

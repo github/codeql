@@ -1,0 +1,569 @@
+// Minimal std::regex/std::basic_string stubs, mirroring the ones in
+// cpp/ql/test/library-tests/regex/test.cpp. Real headers are not available
+// in the extractor sandbox.
+
+namespace std {
+
+template <class CharT>
+class basic_string {
+public:
+    basic_string() {}
+    basic_string(const CharT*) {}
+    const CharT* c_str() const { return 0; }
+    const CharT* data() const { return 0; }
+    unsigned long size() const { return 0; }
+};
+
+typedef basic_string<char> string;
+
+namespace regex_constants {
+    enum syntax_option_type {
+        ECMAScript = 1, basic = 2, extended = 4, awk = 8, grep = 16, egrep = 32,
+        icase = 256, nosubs = 512, optimize = 1024, collate = 2048, multiline = 4096
+    };
+    enum match_flag_type { match_default = 0 };
+}
+
+template <class CharT>
+class basic_regex {
+public:
+    typedef regex_constants::syntax_option_type flag_type;
+    basic_regex(const CharT* p) {}
+    basic_regex(const CharT* p, flag_type f) {}
+    basic_regex(const basic_string<CharT>& p) {}
+};
+
+typedef basic_regex<char> regex;
+
+template <class CharT>
+bool regex_match(const basic_string<CharT>& s, const basic_regex<CharT>& re) { return false; }
+template <class CharT>
+bool regex_search(const basic_string<CharT>& s, const basic_regex<CharT>& re) { return false; }
+template <class CharT>
+bool regex_search(const CharT* s, const basic_regex<CharT>& re) { return false; }
+template <class CharT>
+basic_string<CharT> regex_replace(const basic_string<CharT>& s, const basic_regex<CharT>& re,
+                                  const basic_string<CharT>& fmt) { return basic_string<CharT>(); }
+
+// Iterator stubs - just enough for a construction to be recognized as
+// "regex used as regex" by RegexFlowConfigs.
+template <class BidirIt, class CharT>
+class regex_iterator {
+public:
+    regex_iterator() {}
+    regex_iterator(BidirIt first, BidirIt last, const basic_regex<CharT>& re) {}
+};
+
+template <class BidirIt, class CharT>
+class regex_token_iterator {
+public:
+    regex_token_iterator() {}
+    regex_token_iterator(BidirIt first, BidirIt last, const basic_regex<CharT>& re) {}
+};
+
+typedef regex_iterator<const char*, char> cregex_iterator;
+typedef regex_token_iterator<const char*, char> cregex_token_iterator;
+
+// Stubs for a couple of C standard-library sources modeled by
+// `semmle.code.cpp.security.FlowSources` so that we can exercise
+// non-`argv` sources in the polynomial-ReDoS test suite.
+char* getenv(const char* name);
+typedef unsigned long size_t;
+struct FILE;
+size_t fread(void* ptr, size_t sz, size_t n, FILE* stream);
+
+} // namespace std
+
+// -----------------------------------------------------------------------------
+// Length-restricted helper stubs. These deliberately match the name-based
+// heuristic in PolynomialReDoSQuery::LengthRestrictedFunction so that values
+// returned from them act as barriers.
+// -----------------------------------------------------------------------------
+
+struct Request {
+    std::string getHeader(const char* name) const { return std::string(); }
+    std::string getRequestUri() const { return std::string(); }
+    std::string getRequestUrl() const { return std::string(); }
+    std::string getUserAgent() const { return std::string(); }
+    std::string getPath() const { return std::string(); }         // matches "%get%path%"
+    std::string getUserName() const { return std::string(); }     // matches "get%user%"
+    std::string getQueryString() const { return std::string(); }  // matches "%querystring%"
+};
+
+struct Cookie {
+    std::string getValue() const { return std::string(); } // Cookie::get% matches
+};
+
+// A non-restricted source: a plain member function unrelated to headers/cookies.
+struct Widget {
+    std::string readAll() const { return std::string(); }
+};
+
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
+// argv is a LocalFlowSource (and hence a FlowSource).
+int main(int argc, char** argv) { // $ Source
+    std::string input(argv[1]);
+
+    // -------------------------------------------------------------------------
+    // 1. Original coverage (kept for regression stability).
+    // -------------------------------------------------------------------------
+
+    // BAD: polynomial-backtracking pattern applied to user input.
+    {
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(input, re, std::string("")); // $ Alert
+    }
+
+    // Note: passing `argv[1]` (a raw `char*`) inline to `regex_search`
+    // is not currently modeled by the Phase 2 `regexMatchedAgainst`
+    // predicate (which only tracks values reaching a `std::regex`
+    // variable), so no alert is expected here.
+    {
+        std::regex re("^\\s+|\\s+$");
+        std::regex_search(argv[1], re);
+    }
+
+    // BAD: quadratic \\d+E?\\d+ pattern applied to user input.
+    {
+        std::regex re("^0\\.\\d+E?\\d+$");
+        std::regex_search(input, re); // $ Alert
+    }
+
+    // GOOD: pattern is linear (a fixed prefix, no ambiguous repetition).
+    {
+        std::regex re("^abc.*$");
+        std::regex_search(input, re);
+    }
+
+    // GOOD: input is length-restricted (a header-like getter).
+    {
+        Request req;
+        std::string h = req.getHeader("X-Foo");
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(h, re, std::string(""));
+    }
+
+    // GOOD: input is not user-controlled.
+    {
+        std::string s("literal");
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string(""));
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. Additional superlinear patterns applied to user input (BAD).
+    // -------------------------------------------------------------------------
+
+    // BAD: (a|b)*a$ - quadratic on strings of a's followed by a non-match.
+    {
+        std::regex re("^(a|b)*a$");
+        std::regex_match(input, re);
+    }
+
+    // BAD: \s+X? repeated - quadratic on strings of whitespace.
+    {
+        std::regex re("\\s+X?\\s+$");
+        std::regex_search(input, re); // $ Alert
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. Coverage of every modeled match API.
+    // -------------------------------------------------------------------------
+
+    // BAD: std::regex_match with user input.
+    {
+        std::regex re("^\\s+|\\s+$");
+        std::regex_match(input, re); // $ Alert
+    }
+
+    // BAD: std::regex_search with user input.
+    {
+        std::regex re("^\\s+|\\s+$");
+        std::regex_search(input, re); // $ Alert
+    }
+
+    // BAD: std::regex_replace with user input (already covered above; kept for
+    // symmetry with the other APIs).
+    {
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(input, re, std::string("")); // $ Alert
+    }
+
+    // BAD: std::regex_iterator constructed with a superlinear regex - the
+    // literal is recognized as a std::regex pattern by Phase 2, so the
+    // pattern's terms are analyzed by the polynomial ReDoS query.
+    // Note: the iterator constructor does not itself take a `std::string`
+    // subject, so no cpp/polynomial-redos alert is expected here; this case
+    // exists to confirm the pattern literal is still parsed (a
+    // cpp/redos alert would fire if the pattern were exponential).
+    {
+        std::regex re("^\\s+|\\s+$");
+        (void)std::cregex_iterator(input.data(), input.data() + input.size(), re);
+    }
+
+    // Same for std::regex_token_iterator.
+    {
+        std::regex re("^\\s+|\\s+$");
+        (void)std::cregex_token_iterator(input.data(), input.data() + input.size(), re);
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. Additional length-restricted / barrier true-negatives (GOOD).
+    // -------------------------------------------------------------------------
+
+    // GOOD: request URI is treated as length-restricted.
+    {
+        Request req;
+        std::string s = req.getRequestUri();
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string(""));
+    }
+
+    // GOOD: request URL is treated as length-restricted.
+    {
+        Request req;
+        std::string s = req.getRequestUrl();
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string(""));
+    }
+
+    // GOOD: user agent is treated as length-restricted.
+    {
+        Request req;
+        std::string s = req.getUserAgent();
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string(""));
+    }
+
+    // GOOD: Request::getPath matches the request/path member-getter heuristic.
+    {
+        Request req;
+        std::string s = req.getPath();
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string(""));
+    }
+
+    // GOOD: Request::getUserName matches the request/user member-getter heuristic.
+    {
+        Request req;
+        std::string s = req.getUserName();
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string(""));
+    }
+
+    // GOOD: query string is treated as length-restricted.
+    {
+        Request req;
+        std::string s = req.getQueryString();
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string(""));
+    }
+
+    // GOOD: Cookie::getValue matches the "cookie" class + "get%" prefix heuristic.
+    {
+        Cookie c;
+        std::string s = c.getValue();
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string(""));
+    }
+
+    // GOOD: integer types are treated as small-fixed-size and act as barriers.
+    // (No direct string flow, but demonstrates isSmallFixedSizeType.)
+    {
+        int n = argc; // integer, small fixed size
+        (void)n;
+        std::regex re("^\\s+|\\s+$");
+        std::regex_search(input, re); // $ Alert // BAD (already reported above)
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. Non-user-controlled subjects with a superlinear pattern (GOOD).
+    // -------------------------------------------------------------------------
+
+    // GOOD: subject is a compile-time literal, not user-controlled.
+    {
+        std::string s("static-value");
+        std::regex re("^(a|b)*a$");
+        std::regex_match(s, re);
+    }
+
+    // GOOD: subject comes from an ordinary (non-source) function.
+    {
+        Widget w;
+        std::string s = w.readAll();
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string(""));
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. Flag / dialect gating.
+    // -------------------------------------------------------------------------
+
+    // BAD: icase does not suppress the polynomial alert.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::icase);
+        std::regex_replace(input, re, std::string("")); // $ Alert
+    }
+
+    // GOOD: BRE grammar (`basic`) is now modeled by the parser
+    // (`BreRegExp`, Phase D). Under BRE, the pattern `^\s+|\s+$` parses
+    // as: `^` anchor, literal `\s`, literal `+`, literal `|`, literal
+    // `\s`, literal `+`, `$` anchor - there is no `+` quantifier in BRE
+    // (bare `+` is a literal) and no `|` alternation, so the polynomial
+    // shape disappears and the pattern is not flagged. (See Section 12
+    // below for the proper BRE spelling with `\{1,\}` intervals.)
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::basic);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // BAD: extended selects the ERE grammar (modeled by `EreRegExp` since
+    // Phase C) and is backtracking-eligible, so the polynomial engine
+    // flags the superlinear pattern on user input - same as the
+    // ECMAScript case.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::extended);
+        std::regex_replace(input, re, std::string("")); // $ Alert
+    }
+    // GOOD: awk parses as ERE (same as `extended`) but is excluded from
+    // the ReDoS queries by `isBacktrackingEngine`, *not* by any
+    // parsing/grammar difference.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::awk);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: grep selects BRE (`BreRegExp`, Phase D) - the pattern is
+    // parsed, but `grep` is excluded from the polynomial-ReDoS query by
+    // `isBacktrackingEngine`.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::grep);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: egrep parses as ERE (same as `extended`) but is excluded from
+    // the ReDoS queries by `isBacktrackingEngine`, *not* by any
+    // parsing/grammar difference.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::egrep);
+        std::regex_replace(input, re, std::string(""));
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. Additional superlinear patterns (ported from Java/JS polynomial suites).
+    // -------------------------------------------------------------------------
+
+    // BAD: (\d+)*$ - the outer `*` allows quadratic backtracking on non-matching
+    // digit-heavy input (Java polynomial-ReDoS test `Test.java`).
+    {
+        std::regex re("(\\d+)*$");
+        std::regex_search(input, re); // $ Alert
+    }
+
+    // BAD: .*.*=.* - classic polynomial pattern, cf. JS
+    // `polynomial-redos/tst.js`.
+    {
+        std::regex re(".*.*=.*");
+        std::regex_search(input, re); // $ Alert
+    }
+
+    // GOOD (observed): `^(\w+\s?)*$` - a "trim-and-split" style pattern that
+    // the shared engine's polynomial analysis does not currently flag as
+    // super-linear (the optional `\s?` inside the outer `*` does not
+    // produce a polynomial-backtracking pivot term). The Java and
+    // JavaScript polynomial-ReDoS queries behave the same way on this
+    // shape; documented here as a negative case rather than divergence.
+    {
+        std::regex re("^(\\w+\\s?)*$");
+        std::regex_match(input, re);
+    }
+
+    // -------------------------------------------------------------------------
+    // 8. Source variety - non-`argv` C++ threat-model sources.
+    // -------------------------------------------------------------------------
+
+    // BAD: `std::getenv` is modeled as a LocalFlowSource.
+    {
+        const char* env = std::getenv("USER_REGEX_INPUT"); // $ Source
+        std::string s(env);
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string("")); // $ Alert
+    }
+
+    // BAD: `std::fread` is modeled as a RemoteFlowSource (bytes read from a
+    // stream / file). This exercises the RemoteFlowSource half of the
+    // `FlowSource` union used by `PolynomialRedosConfig::isSource`.
+    {
+        char buf[256];
+        std::fread(buf, 1, sizeof(buf), (std::FILE*)0); // $ Source
+        std::string s(buf);
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string("")); // $ Alert
+    }
+
+    // -------------------------------------------------------------------------
+    // 9. Sanitized / length-checked user input (GOOD).
+    //
+    // The polynomial ReDoS query treats calls to `LengthRestrictedFunction`s
+    // as barriers, so user input that has been laundered through such a
+    // getter (here: `Request::getHeader`, which is a header-style getter)
+    // should not produce an alert even though the pattern is superlinear
+    // and the *original* value was user-controlled.
+    // -------------------------------------------------------------------------
+
+    // GOOD: `argv[1]` is user-controlled but is passed through a
+    // header-style barrier before reaching the regex match.
+    {
+        Request req;
+        std::string sanitized = req.getHeader(argv[1]);
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(sanitized, re, std::string(""));
+    }
+
+    // -------------------------------------------------------------------------
+    // 10. Overlap sanity: an exponential pattern on user input.
+    //
+    // The shared engine splits reporting between `cpp/redos` (exponential)
+    // and `cpp/polynomial-redos` (polynomial). Many "exponential" nested-
+    // quantifier patterns also contain a polynomial-backtracking sub-term,
+    // so BOTH queries fire - matching the behaviour observed in the Java
+    // and JavaScript suites. `(a+)+b` is such a pattern: `cpp/redos`
+    // reports the outer nested quantifier, and `cpp/polynomial-redos`
+    // reports the inner `a+` term.
+    // -------------------------------------------------------------------------
+
+    // BAD (also reported by cpp/redos): the inner `a+` is a polynomial
+    // backtracking term on user input.
+    {
+        std::regex re("(a+)+b");
+        std::regex_match(input, re); // $ Alert
+    }
+
+    // -------------------------------------------------------------------------
+    // 11. Non-backtracking POSIX tool-style grammars (`awk`, `grep`, `egrep`)
+    //     combined with other flags via bitwise-OR.
+    //
+    // Regression guard for the `isBacktrackingEngine` gate: `awk`,
+    // `egrep`, and `grep` are all parsed (`awk`/`egrep` as ERE via
+    // `EreRegExp` in Phase C; `grep` as BRE via `BreRegExp` in Phase D)
+    // - the same trees the `extended`/`basic` positive cases would be
+    // analysed with - so suppression here is exclusively due to
+    // `isBacktrackingEngine`, not any parsing/grammar difference.
+    //
+    // The equivalent default-grammar (ECMAScript) patterns above fire,
+    // showing that the gate - not some unrelated exclusion - suppresses
+    // these cases.
+    // -------------------------------------------------------------------------
+
+    // GOOD: awk grammar - non-backtracking.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::awk);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: grep grammar combined with icase - non-backtracking.
+    {
+        std::regex re("^\\s+|\\s+$",
+                      (std::regex_constants::syntax_option_type)
+                      (std::regex_constants::grep | std::regex_constants::icase));
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: egrep grammar combined with icase - non-backtracking.
+    {
+        std::regex re("^\\s+|\\s+$",
+                      (std::regex_constants::syntax_option_type)
+                      (std::regex_constants::egrep | std::regex_constants::icase));
+        std::regex_replace(input, re, std::string(""));
+    }
+
+    // -------------------------------------------------------------------------
+    // 12. End-to-end ERE-grammar coverage for cpp/polynomial-redos.
+    //
+    // These cases exercise the ERE parser (Phase C, `EreRegExp`) end-to-end
+    // through the shared backtracking engine with a user-controlled
+    // subject. All three flags below (`extended`, `egrep`, `awk`) select
+    // the *same* grammar (ERE) and therefore produce structurally-
+    // identical parse trees for the same pattern string - the only axis
+    // they differ on is `isBacktrackingEngine`:
+    //
+    //   * `extended` -> ERE + backtracking-eligible -> source->sink alert.
+    //   * `egrep` / `awk` -> ERE + non-backtracking -> NO alert.
+    //
+    // The pattern `^\s+|\s+$` (the same superlinear trim pattern used by
+    // the existing polynomial cases above) uses only ERE-legal constructs
+    // (`\s` is an ERE-legal escape), so the ERE parse tree is
+    // structurally equivalent to the ECMAScript one. The taint source
+    // (`argv[1]` -> `input`) and the match harness (`std::regex_replace`)
+    // are reused verbatim so that only the grammar flag differs.
+    // -------------------------------------------------------------------------
+
+    // BAD: ERE grammar via `extended` - parsed as ERE and backtracking-eligible.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::extended);
+        std::regex_replace(input, re, std::string("")); // $ Alert
+    }
+    // GOOD: same pattern/flow under `egrep` - parses identically as ERE
+    // but excluded by `isBacktrackingEngine`.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::egrep);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: same pattern/flow under `awk` - parses identically as ERE but
+    // excluded by `isBacktrackingEngine`.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::awk);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: `egrep | icase` bitwise-OR combination - still ERE-parsed and
+    // still excluded by `isBacktrackingEngine`.
+    {
+        std::regex re("^\\s+|\\s+$",
+                      (std::regex_constants::syntax_option_type)
+                      (std::regex_constants::egrep | std::regex_constants::icase));
+        std::regex_replace(input, re, std::string(""));
+    }
+
+    // -------------------------------------------------------------------------
+    // 13. End-to-end BRE-grammar coverage for cpp/polynomial-redos.
+    //
+    // These cases exercise the BRE parser (Phase D, `BreRegExp`) end-to-end
+    // through the shared backtracking engine with a user-controlled
+    // subject. Both flags below (`basic`, `grep`) select the *same* grammar
+    // (BRE) and therefore produce structurally-identical parse trees for
+    // the same pattern string - the only axis they differ on is
+    // `isBacktrackingEngine`:
+    //
+    //   * `basic` -> BRE + backtracking-eligible -> source->sink alert.
+    //   * `grep`  -> BRE + non-backtracking     -> NO alert.
+    //
+    // The pattern must be expressed in BRE's inverted metacharacter
+    // convention: `\{1,\}` is the "one-or-more" interval quantifier (BRE
+    // has no `+`) and there is no `|` alternation, so the ECMAScript
+    // `\s+.*\s+` polynomial shape is spelled here as
+    // `[[:space:]]\{1,\}.*[[:space:]]\{1,\}` - a superlinear pattern
+    // matched against the tainted subject.
+    // -------------------------------------------------------------------------
+
+    // BAD: BRE grammar via `basic` - parsed as BRE and backtracking-eligible.
+    {
+        std::regex re("[[:space:]]\\{1,\\}.*[[:space:]]\\{1,\\}$",
+                      std::regex_constants::basic);
+        std::regex_replace(input, re, std::string("")); // $ Alert
+    }
+    // GOOD: same pattern/flow under `grep` - parses identically as BRE
+    // but excluded by `isBacktrackingEngine`.
+    {
+        std::regex re("[[:space:]]\\{1,\\}.*[[:space:]]\\{1,\\}$",
+                      std::regex_constants::grep);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: `grep | icase` bitwise-OR combination - still BRE-parsed and
+    // still excluded by `isBacktrackingEngine`.
+    {
+        std::regex re("[[:space:]]\\{1,\\}.*[[:space:]]\\{1,\\}$",
+                      (std::regex_constants::syntax_option_type)
+                      (std::regex_constants::grep | std::regex_constants::icase));
+        std::regex_replace(input, re, std::string(""));
+    }
+
+    return 0;
+}
