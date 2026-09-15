@@ -23,8 +23,9 @@ The core of the functionality is given by forwarding. The idea is that:
 - finally, the forwarder also looks _below_ each argument, so that `just test ql/cpp`
   runs the tests defined underneath it. The argument only says where to look in this
   case, so each recipe found is run on its own directory rather than being passed the
-  argument. Several may be found, in which case they run sequentially: `just format
-  ql/cpp` formats everything under `ql/cpp` that knows how to format itself.
+  argument. Several may be found, in which case they run sequentially:
+  `just format ql/cpp` formats everything under `ql/cpp` that knows how to format
+  itself.
 
 Both directions are searched, and every distinct recipe found runs. This matters because
 a verb higher up is usually doing a different job from one further down rather than a
