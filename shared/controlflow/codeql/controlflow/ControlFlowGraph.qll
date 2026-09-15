@@ -2208,12 +2208,20 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           }
         }
 
-        module Cfg = BB::Make<Location, BbInput>;
+        private module Cfg_ = BB::Make<Location, BbInput>;
 
-        private module CfgAlias = Cfg;
+        module Cfg implements BB::CfgSig<Location>, TestCfg::CfgSig<Location> {
+          import Cfg_
 
-        import CfgAlias
+          class AstNode = Ast::AstNode;
+
+          class Callable = Ast::Callable;
+        }
+
+        import Cfg_
       }
+
+      private import test.TestCfg as TestCfg
 
       private module Additional {
         /*
@@ -2235,6 +2243,18 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         }
 
         import Pp::PrintGraph<Location, PrintGraphInput>
+
+        /*
+         * CFG testing
+         */
+
+        private module TestInput implements TestCfg::InputSig<AstNode, Callable> {
+          AstNode getParent(AstNode node) { node = getChild(result, _) }
+
+          predicate getEnclosingCallable = Ast::getEnclosingCallable/1;
+        }
+
+        module TestCfgInline = TestCfg::Make<Location, Cfg, TestInput>;
 
         /** Provides a set of consistency queries. */
         module Consistency {

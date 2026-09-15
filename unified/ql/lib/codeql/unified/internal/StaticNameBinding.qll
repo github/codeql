@@ -262,6 +262,13 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     node2 = getNodeFromRef(p.getSubPattern())
   )
   or
+  // Extensions have access to the members of the entity they extend.
+  // TODO: The type parameters of the target type should also be in the local scope (for Swift).
+  exists(ClassLikeDeclaration extension |
+    node1 = getNodeFromRef(extension.getExtensionTarget()) and
+    node2.isLocalNamespace(extension)
+  )
+  or
   FolderHeuristic::valueStep(node1, node2)
   or
   exists(ClassLikeDeclaration cls, LocalNameBindingOutput::ImplicitLocal self |
@@ -285,6 +292,13 @@ predicate inheritanceStep(NameBindingNode supertype, NameBindingNode subtype) {
     base = cls.getABaseType() and
     supertype = getNodeFromRef(base.getType()) and
     subtype.isStaticMemberNamespace(cls)
+  )
+}
+
+predicate extensionStep(NameBindingNode extension, NameBindingNode targetClass) {
+  exists(ClassLikeDeclaration cls |
+    targetClass = getNodeFromRef(cls.getExtensionTarget()) and
+    extension.isStaticMemberNamespace(cls)
   )
 }
 
@@ -368,6 +382,17 @@ class NamespaceNode extends NameBindingNode {
   /** If this is the instance namespace for a class, gets the corresponding static namespace. */
   NamespaceNode toStaticNamespace() { result.toInstanceNamespace() = this }
 
+  private NamespaceNode getAnExtension1() { extensionStep(result, this.ref()) }
+
+  /** Gets a namespace that is an extension (i.e. containing extension methods) of this node. */
+  NamespaceNode getAnExtension() {
+    result = this.getAnExtension1()
+    or
+    // `extensionStep` connects the static namespaces of classes.
+    // Add the corresponding extension relation between the instance namespaces.
+    result = this.toStaticNamespace().getAnExtension1().toInstanceNamespace()
+  }
+
   private NamespaceNode getAnInheritanceParent1() { inheritanceStep(result.ref(), this) }
 
   /** Gets a namespace from which this namespace inherits directly. */
@@ -390,6 +415,8 @@ class NamespaceNode extends NameBindingNode {
     not this.hasOwnMember(name) and
     result = this.getAnInheritanceParent().getMember(name) and
     isInheritableMemberNode(result)
+    or
+    result = this.getAnExtension().getMember(name)
   }
 }
 
@@ -486,6 +513,9 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
       or
       inheritanceStep(node1, node2) and
       value = "inheritedBy"
+      or
+      extensionStep(node1, node2) and
+      value = "extensionOf"
     )
   }
 }
@@ -582,6 +612,17 @@ private module FolderHeuristic {
   }
 }
 
+private ClassLikeDeclaration resolveExtensionTarget(ClassLikeDeclaration cls) {
+  trackNameBinding(result.getNameNode()) = getNodeFromRef(cls.getExtensionTarget())
+}
+
+private ClassLikeDeclaration tryResolveExtensionTarget(ClassLikeDeclaration cls) {
+  result = resolveExtensionTarget(cls)
+  or
+  not exists(resolveExtensionTarget(cls)) and
+  result = cls
+}
+
 /**
  * Holds if `access` may resolve to `target` through the enclosing `accessingClass`.
  *
@@ -610,7 +651,8 @@ private predicate unqualifiedMemberAccessCand(
     // Resolved in an uncertain scope
     exists(NamespaceNode namespace, string name |
       name = access.getName() and
-      accessingClass = LocalNameBindingOutput::getAnUncertainScope(access, name)
+      accessingClass =
+        tryResolveExtensionTarget(LocalNameBindingOutput::getAnUncertainScope(access, name))
     |
       instanceAccess = true and
       namespace.isInstanceMemberNamespace(accessingClass) and
@@ -667,6 +709,9 @@ module Public {
     LocalVariable getImplicitQualifierVariable() {
       ResolveImplicitReceiverAccess::access(this, result)
     }
+
+    /** Gets the simple name of this identifier, that is, the name of the member being accessed. */
+    string getName() { result = this.getValue() }
   }
 }
 

@@ -70,7 +70,7 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "extension"
-          name_node: identifier "Int"
+          extension_target: identifier "Int"
           member:
             function_declaration
               name_node: identifier "squared"

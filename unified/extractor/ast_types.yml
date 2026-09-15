@@ -478,6 +478,7 @@ named:
   class_like_declaration:
     modifier*: modifier
     name_node?: identifier
+    extension_target?: expr
     type_parameter*: type_parameter
     type_constraint*: type_constraint
     base_type*: base_type

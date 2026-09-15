@@ -1,0 +1,5 @@
+consistencyOverview
+| deadEnd | 2 |
+deadEnd
+| test.swift:59:10:59:25 | Entry |
+| test.swift:60:10:60:25 | Entry |
