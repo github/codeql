@@ -1,0 +1,17 @@
+# BDE character views and substring utilities.
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data:
+      - ["BloombergLP::bslstl", "StringRefImp", False, "data", "", "", "Argument[-1].Element[]", "ReturnValue[*]", "value", "manual"]
+      - ["BloombergLP::bslstl", "StringRefImp", False, "begin", "", "", "Argument[-1].Element[]", "ReturnValue[*]", "value", "manual"]
+      - ["BloombergLP::bslstl", "StringRefImp", False, "operator[]", "", "", "Argument[-1].Element[]", "ReturnValue[*]", "value", "manual"]
+      - ["BloombergLP::bdlb", "StringRefUtil", False, "trim", "", "", "Argument[*0].Element[]", "ReturnValue.Element[]", "value", "manual"]
+      - ["BloombergLP::bdlb", "StringRefUtil", False, "ltrim", "", "", "Argument[*0].Element[]", "ReturnValue.Element[]", "value", "manual"]
+      - ["BloombergLP::bdlb", "StringRefUtil", False, "rtrim", "", "", "Argument[*0].Element[]", "ReturnValue.Element[]", "value", "manual"]
+      - ["BloombergLP::bdlb", "StringRefUtil", False, "substr", "", "", "Argument[*0].Element[]", "ReturnValue.Element[]", "value", "manual"]
+      - ["BloombergLP::bdlb", "StringRefUtil", False, "strstr", "", "", "Argument[*0].Element[]", "ReturnValue.Element[]", "value", "manual"]
+      - ["BloombergLP::bdlb", "StringRefUtil", False, "strrstr", "", "", "Argument[*0].Element[]", "ReturnValue.Element[]", "value", "manual"]
+      - ["BloombergLP::bdlb", "StringRefUtil", False, "strstrCaseless", "", "", "Argument[*0].Element[]", "ReturnValue.Element[]", "value", "manual"]
+      - ["BloombergLP::bdlb", "StringRefUtil", False, "strrstrCaseless", "", "", "Argument[*0].Element[]", "ReturnValue.Element[]", "value", "manual"]
