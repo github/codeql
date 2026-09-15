@@ -26,15 +26,21 @@ def batch_limit():
     along with some slack. This is worth doing rather than assuming the tightest of the
     two: `ARG_MAX` is 2MB on Linux, which turns the couple of thousand QL files of a
     language into a single invocation rather than several.
+
+    A single argument is capped far lower than the whole line, at 128KB on Linux, and a
+    command that hands its arguments on through a shell arrives as one of them. Batches
+    are kept below that too, as the resulting failure is reported by whatever did the
+    handing on rather than by anything naming this file.
     """
     if sys.platform == "win32":
         return 30000
+    single_argument = 100000
     try:
         arg_max = os.sysconf("SC_ARG_MAX")
     except (ValueError, OSError):
         return 30000
     environment = sum(len(name) + len(value) + 2 for name, value in os.environ.items())
-    return max(4096, arg_max - environment - 4096)
+    return max(4096, min(arg_max - environment - 4096, single_argument))
 
 
 def files_under(paths, patterns, excludes=(), absolute=False, within=None):
@@ -42,7 +48,9 @@ def files_under(paths, patterns, excludes=(), absolute=False, within=None):
 
     Patterns are matched against the file name, as bazel files are identified by name
     rather than by extension. Exclusions are matched against the whole path instead,
-    which is how a directory of generated files is left alone.
+    which is how a directory of generated files is left alone. That path is the one the
+    walk built, so an exclusion has to allow for how the paths it is given are spelled:
+    `*/<directory>/*` does not match what is walked from `<directory>` itself.
 
     A `within` directory bounds the result to the files below it, for a command that
     answers for one project and may be handed a path reaching outside it.

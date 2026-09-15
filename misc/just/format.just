@@ -25,7 +25,9 @@ _bazel_formatter := "bazel run --noshow_progress --ui_event_filters=,+error,+fai
 #
 # Both lists are comma-separated, so a root defining its own `_root_format` can name
 # several patterns in one variable. It has no need to repeat the ones here: the files
-# they cover belong to this repository, which formats them itself.
+# they cover belong to this repository, which formats them itself. Exclusions match the
+# path as walked rather than as spelled on the command line, so one naming a directory
+# has to cover both the path it is reached by and the path it is walked from.
 #
 # As with the QL formatter, buildifier only names what it rewrote if it also accounts for
 # every file it did not, so that accounting is dropped. It counts the warnings it could
