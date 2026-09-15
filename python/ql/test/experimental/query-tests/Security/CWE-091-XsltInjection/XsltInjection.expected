@@ -71,7 +71,9 @@ edges
 | xsltInjection.py:46:38:46:48 | ControlFlowNode for xsltStrings [List element] | xsltInjection.py:46:17:46:49 | ControlFlowNode for Attribute() | provenance |  |
 | xsltInjection.py:46:38:46:48 | ControlFlowNode for xsltStrings [List element] | xsltInjection.py:46:17:46:49 | ControlFlowNode for Attribute() | provenance | Config |
 | xsltInjection.py:46:38:46:48 | ControlFlowNode for xsltStrings [List element] | xsltInjection.py:46:17:46:49 | ControlFlowNode for Attribute() | provenance | Decoding-XML |
-| xsltInjection.py:46:38:46:48 | ControlFlowNode for xsltStrings [List element] | xsltInjection.py:46:17:46:49 | ControlFlowNode for Attribute() | provenance | MaD:58660 |
+| xsltInjection.py:46:38:46:48 | ControlFlowNode for xsltStrings [List element] | xsltInjection.py:46:17:46:49 | ControlFlowNode for Attribute() | provenance | MaD:1 |
+models
+| 1 | Summary: lxml; Member[etree].Member[fromstringlist]; Argument[0,strings:].ListElement; ReturnValue; taint |
 nodes
 | xslt.py:3:26:3:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | xslt.py:3:26:3:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
