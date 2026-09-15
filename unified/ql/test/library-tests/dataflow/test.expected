@@ -1,265 +1,265 @@
 models
 edges
-| implicit-self.swift:11:9:11:12 | [post] self : unit [x] : unit | implicit-self.swift:12:14:12:17 | self : unit [x] : unit | provenance |  |
-| implicit-self.swift:11:9:11:14 | MemberAccessExpr : unit | implicit-self.swift:11:9:11:12 | [post] self : unit [x] : unit | provenance |  |
-| implicit-self.swift:11:18:11:31 | CallExpr : unit | implicit-self.swift:11:9:11:14 | MemberAccessExpr : unit | provenance |  |
-| implicit-self.swift:12:14:12:17 | self : unit [x] : unit | implicit-self.swift:12:14:12:19 | MemberAccessExpr | provenance |  |
-| implicit-self.swift:17:9:17:9 | x : unit | implicit-self.swift:18:14:18:14 | x | provenance |  |
-| implicit-self.swift:17:13:17:26 | CallExpr : unit | implicit-self.swift:17:9:17:9 | x : unit | provenance |  |
-| implicit-self.swift:23:9:23:9 | x : unit | implicit-self.swift:24:14:24:17 | self : unit [x] : unit | provenance |  |
-| implicit-self.swift:23:13:23:26 | CallExpr : unit | implicit-self.swift:23:9:23:9 | x : unit | provenance |  |
-| implicit-self.swift:24:14:24:17 | self : unit [x] : unit | implicit-self.swift:24:14:24:19 | MemberAccessExpr | provenance |  |
-| implicit-self.swift:29:9:29:12 | [post] self : unit [x] : unit | implicit-self.swift:30:14:30:14 | x | provenance |  |
-| implicit-self.swift:29:9:29:14 | MemberAccessExpr : unit | implicit-self.swift:29:9:29:12 | [post] self : unit [x] : unit | provenance |  |
-| implicit-self.swift:29:18:29:31 | CallExpr : unit | implicit-self.swift:29:9:29:14 | MemberAccessExpr : unit | provenance |  |
-| implicit-self.swift:35:9:35:12 | [post] self : unit [box, x] : unit | implicit-self.swift:36:14:36:17 | self : unit [box, x] : unit | provenance |  |
-| implicit-self.swift:35:9:35:16 | [post] MemberAccessExpr : unit [x] : unit | implicit-self.swift:35:9:35:12 | [post] self : unit [box, x] : unit | provenance |  |
-| implicit-self.swift:35:9:35:18 | MemberAccessExpr : unit | implicit-self.swift:35:9:35:16 | [post] MemberAccessExpr : unit [x] : unit | provenance |  |
-| implicit-self.swift:35:22:35:35 | CallExpr : unit | implicit-self.swift:35:9:35:18 | MemberAccessExpr : unit | provenance |  |
-| implicit-self.swift:36:14:36:17 | self : unit [box, x] : unit | implicit-self.swift:36:14:36:21 | MemberAccessExpr : unit [x] : unit | provenance |  |
-| implicit-self.swift:36:14:36:21 | MemberAccessExpr : unit [x] : unit | implicit-self.swift:36:14:36:23 | MemberAccessExpr | provenance |  |
-| implicit-self.swift:41:9:41:11 | [post] box : unit [x] : unit | implicit-self.swift:42:14:42:16 | box : unit [x] : unit | provenance |  |
-| implicit-self.swift:41:9:41:13 | MemberAccessExpr : unit | implicit-self.swift:41:9:41:11 | [post] box : unit [x] : unit | provenance |  |
-| implicit-self.swift:41:17:41:30 | CallExpr : unit | implicit-self.swift:41:9:41:13 | MemberAccessExpr : unit | provenance |  |
-| implicit-self.swift:42:14:42:16 | box : unit [x] : unit | implicit-self.swift:42:14:42:18 | MemberAccessExpr | provenance |  |
-| implicit-self.swift:47:9:47:11 | [post] box : unit [x] : unit | implicit-self.swift:48:14:48:17 | self : unit [box, x] : unit | provenance |  |
-| implicit-self.swift:47:9:47:13 | MemberAccessExpr : unit | implicit-self.swift:47:9:47:11 | [post] box : unit [x] : unit | provenance |  |
-| implicit-self.swift:47:17:47:30 | CallExpr : unit | implicit-self.swift:47:9:47:13 | MemberAccessExpr : unit | provenance |  |
-| implicit-self.swift:48:14:48:17 | self : unit [box, x] : unit | implicit-self.swift:48:14:48:21 | MemberAccessExpr : unit [x] : unit | provenance |  |
-| implicit-self.swift:48:14:48:21 | MemberAccessExpr : unit [x] : unit | implicit-self.swift:48:14:48:23 | MemberAccessExpr | provenance |  |
-| implicit-self.swift:53:9:53:12 | [post] self : unit [box, x] : unit | implicit-self.swift:54:14:54:16 | box : unit [x] : unit | provenance |  |
-| implicit-self.swift:53:9:53:16 | [post] MemberAccessExpr : unit [x] : unit | implicit-self.swift:53:9:53:12 | [post] self : unit [box, x] : unit | provenance |  |
-| implicit-self.swift:53:9:53:18 | MemberAccessExpr : unit | implicit-self.swift:53:9:53:16 | [post] MemberAccessExpr : unit [x] : unit | provenance |  |
-| implicit-self.swift:53:22:53:35 | CallExpr : unit | implicit-self.swift:53:9:53:18 | MemberAccessExpr : unit | provenance |  |
-| implicit-self.swift:54:14:54:16 | box : unit [x] : unit | implicit-self.swift:54:14:54:18 | MemberAccessExpr | provenance |  |
-| test.swift:6:10:6:23 | CallExpr : unit | test.swift:6:10:6:32 | BinaryExpr | provenance |  |
-| test.swift:7:19:7:32 | CallExpr : unit | test.swift:7:10:7:32 | BinaryExpr | provenance |  |
-| test.swift:9:13:9:26 | CallExpr : unit | test.swift:9:10:9:33 | StringInterpolationExpr | provenance |  |
-| test.swift:10:18:10:31 | CallExpr : unit | test.swift:10:10:10:33 | StringInterpolationExpr | provenance |  |
-| test.swift:11:18:11:31 | CallExpr : unit | test.swift:11:10:11:38 | StringInterpolationExpr | provenance |  |
-| test.swift:16:10:16:33 | TupleExpr : unit [0] : unit | test.swift:16:10:16:35 | MemberAccessExpr | provenance |  |
-| test.swift:16:11:16:25 | CallExpr : unit | test.swift:16:10:16:33 | TupleExpr : unit [0] : unit | provenance |  |
-| test.swift:19:10:19:33 | TupleExpr : unit [1] : unit | test.swift:19:10:19:35 | MemberAccessExpr | provenance |  |
-| test.swift:19:19:19:32 | CallExpr : unit | test.swift:19:10:19:33 | TupleExpr : unit [1] : unit | provenance |  |
-| test.swift:23:9:23:9 | a : unit | test.swift:24:10:24:10 | a | provenance |  |
-| test.swift:23:13:23:26 | CallExpr : unit | test.swift:23:9:23:9 | a : unit | provenance |  |
-| test.swift:28:9:28:14 | TupleExpr : unit [0] : unit | test.swift:28:10:28:10 | a : unit | provenance |  |
-| test.swift:28:10:28:10 | a : unit | test.swift:29:10:29:10 | a | provenance |  |
-| test.swift:28:18:28:41 | TupleExpr : unit [0] : unit | test.swift:28:9:28:14 | TupleExpr : unit [0] : unit | provenance |  |
-| test.swift:28:19:28:33 | CallExpr : unit | test.swift:28:18:28:41 | TupleExpr : unit [0] : unit | provenance |  |
-| test.swift:32:9:32:14 | TupleExpr : unit [1] : unit | test.swift:32:13:32:13 | d : unit | provenance |  |
-| test.swift:32:13:32:13 | d : unit | test.swift:34:10:34:10 | d | provenance |  |
-| test.swift:32:18:32:41 | TupleExpr : unit [1] : unit | test.swift:32:9:32:14 | TupleExpr : unit [1] : unit | provenance |  |
-| test.swift:32:27:32:40 | CallExpr : unit | test.swift:32:18:32:41 | TupleExpr : unit [1] : unit | provenance |  |
-| test.swift:38:9:38:9 | a : unit | test.swift:39:10:39:10 | a | provenance |  |
-| test.swift:38:13:38:26 | CallExpr : unit | test.swift:38:9:38:9 | a : unit | provenance |  |
-| test.swift:46:5:46:9 | [post] tuple : unit [0] : unit | test.swift:47:10:47:14 | tuple : unit [0] : unit | provenance |  |
-| test.swift:46:5:46:11 | MemberAccessExpr : unit | test.swift:46:5:46:9 | [post] tuple : unit [0] : unit | provenance |  |
-| test.swift:46:15:46:28 | CallExpr : unit | test.swift:46:5:46:11 | MemberAccessExpr : unit | provenance |  |
-| test.swift:47:10:47:14 | tuple : unit [0] : unit | test.swift:47:10:47:16 | MemberAccessExpr | provenance |  |
-| test.swift:53:5:53:14 | [post] deep_tuple : unit [1, 0] : unit | test.swift:58:10:58:19 | deep_tuple : unit [1, 0] : unit | provenance |  |
-| test.swift:53:5:53:16 | [post] MemberAccessExpr : unit [0] : unit | test.swift:53:5:53:14 | [post] deep_tuple : unit [1, 0] : unit | provenance |  |
-| test.swift:53:5:53:18 | MemberAccessExpr : unit | test.swift:53:5:53:16 | [post] MemberAccessExpr : unit [0] : unit | provenance |  |
-| test.swift:53:22:53:35 | CallExpr : unit | test.swift:53:5:53:18 | MemberAccessExpr : unit | provenance |  |
-| test.swift:58:10:58:19 | deep_tuple : unit [1, 0] : unit | test.swift:58:10:58:21 | MemberAccessExpr : unit [0] : unit | provenance |  |
-| test.swift:58:10:58:21 | MemberAccessExpr : unit [0] : unit | test.swift:58:10:58:23 | MemberAccessExpr | provenance |  |
-| test.swift:64:5:64:16 | TupleExpr : unit [0] : unit | test.swift:64:6:64:12 | MemberAccessExpr : unit | provenance |  |
-| test.swift:64:6:64:10 | [post] tuple : unit [1] : unit | test.swift:66:10:66:14 | tuple : unit [1] : unit | provenance |  |
-| test.swift:64:6:64:12 | MemberAccessExpr : unit | test.swift:64:6:64:10 | [post] tuple : unit [1] : unit | provenance |  |
-| test.swift:64:20:64:51 | TupleExpr : unit [0] : unit | test.swift:64:5:64:16 | TupleExpr : unit [0] : unit | provenance |  |
-| test.swift:64:21:64:35 | CallExpr : unit | test.swift:64:20:64:51 | TupleExpr : unit [0] : unit | provenance |  |
-| test.swift:66:10:66:14 | tuple : unit [1] : unit | test.swift:66:10:66:16 | MemberAccessExpr | provenance |  |
-| test.swift:74:5:74:9 | [post] tuple : unit [0] : unit | test.swift:75:10:75:14 | tuple : unit [0] : unit | provenance |  |
-| test.swift:74:5:74:11 | MemberAccessExpr : unit | test.swift:74:5:74:9 | [post] tuple : unit [0] : unit | provenance |  |
-| test.swift:74:15:74:29 | CallExpr : unit | test.swift:74:5:74:11 | MemberAccessExpr : unit | provenance |  |
-| test.swift:75:10:75:14 | tuple : unit [0] : unit | test.swift:75:10:75:16 | MemberAccessExpr | provenance |  |
-| test.swift:86:9:86:9 | x : unit | test.swift:90:10:90:10 | x | provenance |  |
-| test.swift:86:9:86:9 | x : unit | test.swift:99:14:99:14 | x | provenance |  |
-| test.swift:86:13:86:27 | CallExpr : unit | test.swift:86:9:86:9 | x : unit | provenance |  |
-| test.swift:94:9:94:9 | y : unit | test.swift:96:10:96:10 | y | provenance |  |
-| test.swift:94:9:94:9 | y : unit | test.swift:100:14:100:14 | y | provenance |  |
-| test.swift:94:13:94:27 | CallExpr : unit | test.swift:94:9:94:9 | y : unit | provenance |  |
-| test.swift:107:9:107:13 | [post] tuple : unit [0] : unit | test.swift:112:10:112:14 | tuple : unit [0] : unit | provenance |  |
-| test.swift:107:9:107:15 | MemberAccessExpr : unit | test.swift:107:9:107:13 | [post] tuple : unit [0] : unit | provenance |  |
-| test.swift:107:19:107:33 | CallExpr : unit | test.swift:107:9:107:15 | MemberAccessExpr : unit | provenance |  |
-| test.swift:112:10:112:14 | tuple : unit [0] : unit | test.swift:112:10:112:16 | MemberAccessExpr | provenance |  |
-| test.swift:117:9:117:13 | tuple : unit [0] : unit | test.swift:120:17:120:21 | tuple : unit [0] : unit | provenance |  |
-| test.swift:117:9:117:13 | tuple : unit [1] : unit | test.swift:120:17:120:21 | tuple : unit [1] : unit | provenance |  |
-| test.swift:117:17:117:50 | TupleExpr : unit [0] : unit | test.swift:117:9:117:13 | tuple : unit [0] : unit | provenance |  |
-| test.swift:117:17:117:50 | TupleExpr : unit [1] : unit | test.swift:117:9:117:13 | tuple : unit [1] : unit | provenance |  |
-| test.swift:117:18:117:33 | CallExpr : unit | test.swift:117:17:117:50 | TupleExpr : unit [0] : unit | provenance |  |
-| test.swift:117:35:117:49 | CallExpr : unit | test.swift:117:17:117:50 | TupleExpr : unit [1] : unit | provenance |  |
-| test.swift:120:9:120:13 | TupleExpr : unit [0] : unit | test.swift:120:10:120:10 | a : unit | provenance |  |
-| test.swift:120:9:120:13 | TupleExpr : unit [1] : unit | test.swift:120:12:120:12 | b : unit | provenance |  |
-| test.swift:120:10:120:10 | a : unit | test.swift:125:10:125:10 | a | provenance |  |
-| test.swift:120:12:120:12 | b : unit | test.swift:126:10:126:10 | b | provenance |  |
-| test.swift:120:17:120:21 | tuple : unit [0] : unit | test.swift:120:9:120:13 | TupleExpr : unit [0] : unit | provenance |  |
-| test.swift:120:17:120:21 | tuple : unit [1] : unit | test.swift:120:9:120:13 | TupleExpr : unit [1] : unit | provenance |  |
-| test.swift:131:5:131:5 | a : unit | test.swift:131:14:131:14 | a | provenance |  |
-| test.swift:131:5:131:5 | a : unit | test.swift:132:10:132:10 | a | provenance |  |
-| test.swift:131:19:131:33 | CallExpr : unit | test.swift:131:5:131:5 | a : unit | provenance |  |
+| implicit-self.swift:11:9:11:12 | [post] self [x] | implicit-self.swift:12:14:12:17 | self [x] | provenance |  |
+| implicit-self.swift:11:9:11:14 | MemberAccessExpr | implicit-self.swift:11:9:11:12 | [post] self [x] | provenance |  |
+| implicit-self.swift:11:18:11:31 | CallExpr | implicit-self.swift:11:9:11:14 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:12:14:12:17 | self [x] | implicit-self.swift:12:14:12:19 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:17:9:17:9 | x | implicit-self.swift:18:14:18:14 | x | provenance |  |
+| implicit-self.swift:17:13:17:26 | CallExpr | implicit-self.swift:17:9:17:9 | x | provenance |  |
+| implicit-self.swift:23:9:23:9 | x | implicit-self.swift:24:14:24:17 | self [x] | provenance |  |
+| implicit-self.swift:23:13:23:26 | CallExpr | implicit-self.swift:23:9:23:9 | x | provenance |  |
+| implicit-self.swift:24:14:24:17 | self [x] | implicit-self.swift:24:14:24:19 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:29:9:29:12 | [post] self [x] | implicit-self.swift:30:14:30:14 | x | provenance |  |
+| implicit-self.swift:29:9:29:14 | MemberAccessExpr | implicit-self.swift:29:9:29:12 | [post] self [x] | provenance |  |
+| implicit-self.swift:29:18:29:31 | CallExpr | implicit-self.swift:29:9:29:14 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:35:9:35:12 | [post] self [box, x] | implicit-self.swift:36:14:36:17 | self [box, x] | provenance |  |
+| implicit-self.swift:35:9:35:16 | [post] MemberAccessExpr [x] | implicit-self.swift:35:9:35:12 | [post] self [box, x] | provenance |  |
+| implicit-self.swift:35:9:35:18 | MemberAccessExpr | implicit-self.swift:35:9:35:16 | [post] MemberAccessExpr [x] | provenance |  |
+| implicit-self.swift:35:22:35:35 | CallExpr | implicit-self.swift:35:9:35:18 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:36:14:36:17 | self [box, x] | implicit-self.swift:36:14:36:21 | MemberAccessExpr [x] | provenance |  |
+| implicit-self.swift:36:14:36:21 | MemberAccessExpr [x] | implicit-self.swift:36:14:36:23 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:41:9:41:11 | [post] box [x] | implicit-self.swift:42:14:42:16 | box [x] | provenance |  |
+| implicit-self.swift:41:9:41:13 | MemberAccessExpr | implicit-self.swift:41:9:41:11 | [post] box [x] | provenance |  |
+| implicit-self.swift:41:17:41:30 | CallExpr | implicit-self.swift:41:9:41:13 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:42:14:42:16 | box [x] | implicit-self.swift:42:14:42:18 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:47:9:47:11 | [post] box [x] | implicit-self.swift:48:14:48:17 | self [box, x] | provenance |  |
+| implicit-self.swift:47:9:47:13 | MemberAccessExpr | implicit-self.swift:47:9:47:11 | [post] box [x] | provenance |  |
+| implicit-self.swift:47:17:47:30 | CallExpr | implicit-self.swift:47:9:47:13 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:48:14:48:17 | self [box, x] | implicit-self.swift:48:14:48:21 | MemberAccessExpr [x] | provenance |  |
+| implicit-self.swift:48:14:48:21 | MemberAccessExpr [x] | implicit-self.swift:48:14:48:23 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:53:9:53:12 | [post] self [box, x] | implicit-self.swift:54:14:54:16 | box [x] | provenance |  |
+| implicit-self.swift:53:9:53:16 | [post] MemberAccessExpr [x] | implicit-self.swift:53:9:53:12 | [post] self [box, x] | provenance |  |
+| implicit-self.swift:53:9:53:18 | MemberAccessExpr | implicit-self.swift:53:9:53:16 | [post] MemberAccessExpr [x] | provenance |  |
+| implicit-self.swift:53:22:53:35 | CallExpr | implicit-self.swift:53:9:53:18 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:54:14:54:16 | box [x] | implicit-self.swift:54:14:54:18 | MemberAccessExpr | provenance |  |
+| test.swift:6:10:6:23 | CallExpr | test.swift:6:10:6:32 | BinaryExpr | provenance |  |
+| test.swift:7:19:7:32 | CallExpr | test.swift:7:10:7:32 | BinaryExpr | provenance |  |
+| test.swift:9:13:9:26 | CallExpr | test.swift:9:10:9:33 | StringInterpolationExpr | provenance |  |
+| test.swift:10:18:10:31 | CallExpr | test.swift:10:10:10:33 | StringInterpolationExpr | provenance |  |
+| test.swift:11:18:11:31 | CallExpr | test.swift:11:10:11:38 | StringInterpolationExpr | provenance |  |
+| test.swift:16:10:16:33 | TupleExpr [0] | test.swift:16:10:16:35 | MemberAccessExpr | provenance |  |
+| test.swift:16:11:16:25 | CallExpr | test.swift:16:10:16:33 | TupleExpr [0] | provenance |  |
+| test.swift:19:10:19:33 | TupleExpr [1] | test.swift:19:10:19:35 | MemberAccessExpr | provenance |  |
+| test.swift:19:19:19:32 | CallExpr | test.swift:19:10:19:33 | TupleExpr [1] | provenance |  |
+| test.swift:23:9:23:9 | a | test.swift:24:10:24:10 | a | provenance |  |
+| test.swift:23:13:23:26 | CallExpr | test.swift:23:9:23:9 | a | provenance |  |
+| test.swift:28:9:28:14 | TupleExpr [0] | test.swift:28:10:28:10 | a | provenance |  |
+| test.swift:28:10:28:10 | a | test.swift:29:10:29:10 | a | provenance |  |
+| test.swift:28:18:28:41 | TupleExpr [0] | test.swift:28:9:28:14 | TupleExpr [0] | provenance |  |
+| test.swift:28:19:28:33 | CallExpr | test.swift:28:18:28:41 | TupleExpr [0] | provenance |  |
+| test.swift:32:9:32:14 | TupleExpr [1] | test.swift:32:13:32:13 | d | provenance |  |
+| test.swift:32:13:32:13 | d | test.swift:34:10:34:10 | d | provenance |  |
+| test.swift:32:18:32:41 | TupleExpr [1] | test.swift:32:9:32:14 | TupleExpr [1] | provenance |  |
+| test.swift:32:27:32:40 | CallExpr | test.swift:32:18:32:41 | TupleExpr [1] | provenance |  |
+| test.swift:38:9:38:9 | a | test.swift:39:10:39:10 | a | provenance |  |
+| test.swift:38:13:38:26 | CallExpr | test.swift:38:9:38:9 | a | provenance |  |
+| test.swift:46:5:46:9 | [post] tuple [0] | test.swift:47:10:47:14 | tuple [0] | provenance |  |
+| test.swift:46:5:46:11 | MemberAccessExpr | test.swift:46:5:46:9 | [post] tuple [0] | provenance |  |
+| test.swift:46:15:46:28 | CallExpr | test.swift:46:5:46:11 | MemberAccessExpr | provenance |  |
+| test.swift:47:10:47:14 | tuple [0] | test.swift:47:10:47:16 | MemberAccessExpr | provenance |  |
+| test.swift:53:5:53:14 | [post] deep_tuple [1, 0] | test.swift:58:10:58:19 | deep_tuple [1, 0] | provenance |  |
+| test.swift:53:5:53:16 | [post] MemberAccessExpr [0] | test.swift:53:5:53:14 | [post] deep_tuple [1, 0] | provenance |  |
+| test.swift:53:5:53:18 | MemberAccessExpr | test.swift:53:5:53:16 | [post] MemberAccessExpr [0] | provenance |  |
+| test.swift:53:22:53:35 | CallExpr | test.swift:53:5:53:18 | MemberAccessExpr | provenance |  |
+| test.swift:58:10:58:19 | deep_tuple [1, 0] | test.swift:58:10:58:21 | MemberAccessExpr [0] | provenance |  |
+| test.swift:58:10:58:21 | MemberAccessExpr [0] | test.swift:58:10:58:23 | MemberAccessExpr | provenance |  |
+| test.swift:64:5:64:16 | TupleExpr [0] | test.swift:64:6:64:12 | MemberAccessExpr | provenance |  |
+| test.swift:64:6:64:10 | [post] tuple [1] | test.swift:66:10:66:14 | tuple [1] | provenance |  |
+| test.swift:64:6:64:12 | MemberAccessExpr | test.swift:64:6:64:10 | [post] tuple [1] | provenance |  |
+| test.swift:64:20:64:51 | TupleExpr [0] | test.swift:64:5:64:16 | TupleExpr [0] | provenance |  |
+| test.swift:64:21:64:35 | CallExpr | test.swift:64:20:64:51 | TupleExpr [0] | provenance |  |
+| test.swift:66:10:66:14 | tuple [1] | test.swift:66:10:66:16 | MemberAccessExpr | provenance |  |
+| test.swift:74:5:74:9 | [post] tuple [0] | test.swift:75:10:75:14 | tuple [0] | provenance |  |
+| test.swift:74:5:74:11 | MemberAccessExpr | test.swift:74:5:74:9 | [post] tuple [0] | provenance |  |
+| test.swift:74:15:74:29 | CallExpr | test.swift:74:5:74:11 | MemberAccessExpr | provenance |  |
+| test.swift:75:10:75:14 | tuple [0] | test.swift:75:10:75:16 | MemberAccessExpr | provenance |  |
+| test.swift:86:9:86:9 | x | test.swift:90:10:90:10 | x | provenance |  |
+| test.swift:86:9:86:9 | x | test.swift:99:14:99:14 | x | provenance |  |
+| test.swift:86:13:86:27 | CallExpr | test.swift:86:9:86:9 | x | provenance |  |
+| test.swift:94:9:94:9 | y | test.swift:96:10:96:10 | y | provenance |  |
+| test.swift:94:9:94:9 | y | test.swift:100:14:100:14 | y | provenance |  |
+| test.swift:94:13:94:27 | CallExpr | test.swift:94:9:94:9 | y | provenance |  |
+| test.swift:107:9:107:13 | [post] tuple [0] | test.swift:112:10:112:14 | tuple [0] | provenance |  |
+| test.swift:107:9:107:15 | MemberAccessExpr | test.swift:107:9:107:13 | [post] tuple [0] | provenance |  |
+| test.swift:107:19:107:33 | CallExpr | test.swift:107:9:107:15 | MemberAccessExpr | provenance |  |
+| test.swift:112:10:112:14 | tuple [0] | test.swift:112:10:112:16 | MemberAccessExpr | provenance |  |
+| test.swift:117:9:117:13 | tuple [0] | test.swift:120:17:120:21 | tuple [0] | provenance |  |
+| test.swift:117:9:117:13 | tuple [1] | test.swift:120:17:120:21 | tuple [1] | provenance |  |
+| test.swift:117:17:117:50 | TupleExpr [0] | test.swift:117:9:117:13 | tuple [0] | provenance |  |
+| test.swift:117:17:117:50 | TupleExpr [1] | test.swift:117:9:117:13 | tuple [1] | provenance |  |
+| test.swift:117:18:117:33 | CallExpr | test.swift:117:17:117:50 | TupleExpr [0] | provenance |  |
+| test.swift:117:35:117:49 | CallExpr | test.swift:117:17:117:50 | TupleExpr [1] | provenance |  |
+| test.swift:120:9:120:13 | TupleExpr [0] | test.swift:120:10:120:10 | a | provenance |  |
+| test.swift:120:9:120:13 | TupleExpr [1] | test.swift:120:12:120:12 | b | provenance |  |
+| test.swift:120:10:120:10 | a | test.swift:125:10:125:10 | a | provenance |  |
+| test.swift:120:12:120:12 | b | test.swift:126:10:126:10 | b | provenance |  |
+| test.swift:120:17:120:21 | tuple [0] | test.swift:120:9:120:13 | TupleExpr [0] | provenance |  |
+| test.swift:120:17:120:21 | tuple [1] | test.swift:120:9:120:13 | TupleExpr [1] | provenance |  |
+| test.swift:131:5:131:5 | a | test.swift:131:14:131:14 | a | provenance |  |
+| test.swift:131:5:131:5 | a | test.swift:132:10:132:10 | a | provenance |  |
+| test.swift:131:19:131:33 | CallExpr | test.swift:131:5:131:5 | a | provenance |  |
 nodes
-| implicit-self.swift:11:9:11:12 | [post] self : unit [x] : unit | semmle.label | [post] self : unit [x] : unit |
-| implicit-self.swift:11:9:11:14 | MemberAccessExpr : unit | semmle.label | MemberAccessExpr : unit |
-| implicit-self.swift:11:18:11:31 | CallExpr : unit | semmle.label | CallExpr : unit |
-| implicit-self.swift:12:14:12:17 | self : unit [x] : unit | semmle.label | self : unit [x] : unit |
+| implicit-self.swift:11:9:11:12 | [post] self [x] | semmle.label | [post] self [x] |
+| implicit-self.swift:11:9:11:14 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| implicit-self.swift:11:18:11:31 | CallExpr | semmle.label | CallExpr |
+| implicit-self.swift:12:14:12:17 | self [x] | semmle.label | self [x] |
 | implicit-self.swift:12:14:12:19 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| implicit-self.swift:17:9:17:9 | x : unit | semmle.label | x : unit |
-| implicit-self.swift:17:13:17:26 | CallExpr : unit | semmle.label | CallExpr : unit |
+| implicit-self.swift:17:9:17:9 | x | semmle.label | x |
+| implicit-self.swift:17:13:17:26 | CallExpr | semmle.label | CallExpr |
 | implicit-self.swift:18:14:18:14 | x | semmle.label | x |
-| implicit-self.swift:23:9:23:9 | x : unit | semmle.label | x : unit |
-| implicit-self.swift:23:13:23:26 | CallExpr : unit | semmle.label | CallExpr : unit |
-| implicit-self.swift:24:14:24:17 | self : unit [x] : unit | semmle.label | self : unit [x] : unit |
+| implicit-self.swift:23:9:23:9 | x | semmle.label | x |
+| implicit-self.swift:23:13:23:26 | CallExpr | semmle.label | CallExpr |
+| implicit-self.swift:24:14:24:17 | self [x] | semmle.label | self [x] |
 | implicit-self.swift:24:14:24:19 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| implicit-self.swift:29:9:29:12 | [post] self : unit [x] : unit | semmle.label | [post] self : unit [x] : unit |
-| implicit-self.swift:29:9:29:14 | MemberAccessExpr : unit | semmle.label | MemberAccessExpr : unit |
-| implicit-self.swift:29:18:29:31 | CallExpr : unit | semmle.label | CallExpr : unit |
+| implicit-self.swift:29:9:29:12 | [post] self [x] | semmle.label | [post] self [x] |
+| implicit-self.swift:29:9:29:14 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| implicit-self.swift:29:18:29:31 | CallExpr | semmle.label | CallExpr |
 | implicit-self.swift:30:14:30:14 | x | semmle.label | x |
-| implicit-self.swift:35:9:35:12 | [post] self : unit [box, x] : unit | semmle.label | [post] self : unit [box, x] : unit |
-| implicit-self.swift:35:9:35:16 | [post] MemberAccessExpr : unit [x] : unit | semmle.label | [post] MemberAccessExpr : unit [x] : unit |
-| implicit-self.swift:35:9:35:18 | MemberAccessExpr : unit | semmle.label | MemberAccessExpr : unit |
-| implicit-self.swift:35:22:35:35 | CallExpr : unit | semmle.label | CallExpr : unit |
-| implicit-self.swift:36:14:36:17 | self : unit [box, x] : unit | semmle.label | self : unit [box, x] : unit |
-| implicit-self.swift:36:14:36:21 | MemberAccessExpr : unit [x] : unit | semmle.label | MemberAccessExpr : unit [x] : unit |
+| implicit-self.swift:35:9:35:12 | [post] self [box, x] | semmle.label | [post] self [box, x] |
+| implicit-self.swift:35:9:35:16 | [post] MemberAccessExpr [x] | semmle.label | [post] MemberAccessExpr [x] |
+| implicit-self.swift:35:9:35:18 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| implicit-self.swift:35:22:35:35 | CallExpr | semmle.label | CallExpr |
+| implicit-self.swift:36:14:36:17 | self [box, x] | semmle.label | self [box, x] |
+| implicit-self.swift:36:14:36:21 | MemberAccessExpr [x] | semmle.label | MemberAccessExpr [x] |
 | implicit-self.swift:36:14:36:23 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| implicit-self.swift:41:9:41:11 | [post] box : unit [x] : unit | semmle.label | [post] box : unit [x] : unit |
-| implicit-self.swift:41:9:41:13 | MemberAccessExpr : unit | semmle.label | MemberAccessExpr : unit |
-| implicit-self.swift:41:17:41:30 | CallExpr : unit | semmle.label | CallExpr : unit |
-| implicit-self.swift:42:14:42:16 | box : unit [x] : unit | semmle.label | box : unit [x] : unit |
+| implicit-self.swift:41:9:41:11 | [post] box [x] | semmle.label | [post] box [x] |
+| implicit-self.swift:41:9:41:13 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| implicit-self.swift:41:17:41:30 | CallExpr | semmle.label | CallExpr |
+| implicit-self.swift:42:14:42:16 | box [x] | semmle.label | box [x] |
 | implicit-self.swift:42:14:42:18 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| implicit-self.swift:47:9:47:11 | [post] box : unit [x] : unit | semmle.label | [post] box : unit [x] : unit |
-| implicit-self.swift:47:9:47:13 | MemberAccessExpr : unit | semmle.label | MemberAccessExpr : unit |
-| implicit-self.swift:47:17:47:30 | CallExpr : unit | semmle.label | CallExpr : unit |
-| implicit-self.swift:48:14:48:17 | self : unit [box, x] : unit | semmle.label | self : unit [box, x] : unit |
-| implicit-self.swift:48:14:48:21 | MemberAccessExpr : unit [x] : unit | semmle.label | MemberAccessExpr : unit [x] : unit |
+| implicit-self.swift:47:9:47:11 | [post] box [x] | semmle.label | [post] box [x] |
+| implicit-self.swift:47:9:47:13 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| implicit-self.swift:47:17:47:30 | CallExpr | semmle.label | CallExpr |
+| implicit-self.swift:48:14:48:17 | self [box, x] | semmle.label | self [box, x] |
+| implicit-self.swift:48:14:48:21 | MemberAccessExpr [x] | semmle.label | MemberAccessExpr [x] |
 | implicit-self.swift:48:14:48:23 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| implicit-self.swift:53:9:53:12 | [post] self : unit [box, x] : unit | semmle.label | [post] self : unit [box, x] : unit |
-| implicit-self.swift:53:9:53:16 | [post] MemberAccessExpr : unit [x] : unit | semmle.label | [post] MemberAccessExpr : unit [x] : unit |
-| implicit-self.swift:53:9:53:18 | MemberAccessExpr : unit | semmle.label | MemberAccessExpr : unit |
-| implicit-self.swift:53:22:53:35 | CallExpr : unit | semmle.label | CallExpr : unit |
-| implicit-self.swift:54:14:54:16 | box : unit [x] : unit | semmle.label | box : unit [x] : unit |
+| implicit-self.swift:53:9:53:12 | [post] self [box, x] | semmle.label | [post] self [box, x] |
+| implicit-self.swift:53:9:53:16 | [post] MemberAccessExpr [x] | semmle.label | [post] MemberAccessExpr [x] |
+| implicit-self.swift:53:9:53:18 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| implicit-self.swift:53:22:53:35 | CallExpr | semmle.label | CallExpr |
+| implicit-self.swift:54:14:54:16 | box [x] | semmle.label | box [x] |
 | implicit-self.swift:54:14:54:18 | MemberAccessExpr | semmle.label | MemberAccessExpr |
 | test.swift:2:10:2:21 | CallExpr | semmle.label | CallExpr |
-| test.swift:6:10:6:23 | CallExpr : unit | semmle.label | CallExpr : unit |
+| test.swift:6:10:6:23 | CallExpr | semmle.label | CallExpr |
 | test.swift:6:10:6:32 | BinaryExpr | semmle.label | BinaryExpr |
 | test.swift:7:10:7:32 | BinaryExpr | semmle.label | BinaryExpr |
-| test.swift:7:19:7:32 | CallExpr : unit | semmle.label | CallExpr : unit |
+| test.swift:7:19:7:32 | CallExpr | semmle.label | CallExpr |
 | test.swift:9:10:9:33 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| test.swift:9:13:9:26 | CallExpr : unit | semmle.label | CallExpr : unit |
+| test.swift:9:13:9:26 | CallExpr | semmle.label | CallExpr |
 | test.swift:10:10:10:33 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| test.swift:10:18:10:31 | CallExpr : unit | semmle.label | CallExpr : unit |
+| test.swift:10:18:10:31 | CallExpr | semmle.label | CallExpr |
 | test.swift:11:10:11:38 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| test.swift:11:18:11:31 | CallExpr : unit | semmle.label | CallExpr : unit |
-| test.swift:16:10:16:33 | TupleExpr : unit [0] : unit | semmle.label | TupleExpr : unit [0] : unit |
+| test.swift:11:18:11:31 | CallExpr | semmle.label | CallExpr |
+| test.swift:16:10:16:33 | TupleExpr [0] | semmle.label | TupleExpr [0] |
 | test.swift:16:10:16:35 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| test.swift:16:11:16:25 | CallExpr : unit | semmle.label | CallExpr : unit |
-| test.swift:19:10:19:33 | TupleExpr : unit [1] : unit | semmle.label | TupleExpr : unit [1] : unit |
+| test.swift:16:11:16:25 | CallExpr | semmle.label | CallExpr |
+| test.swift:19:10:19:33 | TupleExpr [1] | semmle.label | TupleExpr [1] |
 | test.swift:19:10:19:35 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| test.swift:19:19:19:32 | CallExpr : unit | semmle.label | CallExpr : unit |
-| test.swift:23:9:23:9 | a : unit | semmle.label | a : unit |
-| test.swift:23:13:23:26 | CallExpr : unit | semmle.label | CallExpr : unit |
+| test.swift:19:19:19:32 | CallExpr | semmle.label | CallExpr |
+| test.swift:23:9:23:9 | a | semmle.label | a |
+| test.swift:23:13:23:26 | CallExpr | semmle.label | CallExpr |
 | test.swift:24:10:24:10 | a | semmle.label | a |
-| test.swift:28:9:28:14 | TupleExpr : unit [0] : unit | semmle.label | TupleExpr : unit [0] : unit |
-| test.swift:28:10:28:10 | a : unit | semmle.label | a : unit |
-| test.swift:28:18:28:41 | TupleExpr : unit [0] : unit | semmle.label | TupleExpr : unit [0] : unit |
-| test.swift:28:19:28:33 | CallExpr : unit | semmle.label | CallExpr : unit |
+| test.swift:28:9:28:14 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:28:10:28:10 | a | semmle.label | a |
+| test.swift:28:18:28:41 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:28:19:28:33 | CallExpr | semmle.label | CallExpr |
 | test.swift:29:10:29:10 | a | semmle.label | a |
-| test.swift:32:9:32:14 | TupleExpr : unit [1] : unit | semmle.label | TupleExpr : unit [1] : unit |
-| test.swift:32:13:32:13 | d : unit | semmle.label | d : unit |
-| test.swift:32:18:32:41 | TupleExpr : unit [1] : unit | semmle.label | TupleExpr : unit [1] : unit |
-| test.swift:32:27:32:40 | CallExpr : unit | semmle.label | CallExpr : unit |
+| test.swift:32:9:32:14 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:32:13:32:13 | d | semmle.label | d |
+| test.swift:32:18:32:41 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:32:27:32:40 | CallExpr | semmle.label | CallExpr |
 | test.swift:34:10:34:10 | d | semmle.label | d |
-| test.swift:38:9:38:9 | a : unit | semmle.label | a : unit |
-| test.swift:38:13:38:26 | CallExpr : unit | semmle.label | CallExpr : unit |
+| test.swift:38:9:38:9 | a | semmle.label | a |
+| test.swift:38:13:38:26 | CallExpr | semmle.label | CallExpr |
 | test.swift:39:10:39:10 | a | semmle.label | a |
-| test.swift:46:5:46:9 | [post] tuple : unit [0] : unit | semmle.label | [post] tuple : unit [0] : unit |
-| test.swift:46:5:46:11 | MemberAccessExpr : unit | semmle.label | MemberAccessExpr : unit |
-| test.swift:46:15:46:28 | CallExpr : unit | semmle.label | CallExpr : unit |
-| test.swift:47:10:47:14 | tuple : unit [0] : unit | semmle.label | tuple : unit [0] : unit |
+| test.swift:46:5:46:9 | [post] tuple [0] | semmle.label | [post] tuple [0] |
+| test.swift:46:5:46:11 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| test.swift:46:15:46:28 | CallExpr | semmle.label | CallExpr |
+| test.swift:47:10:47:14 | tuple [0] | semmle.label | tuple [0] |
 | test.swift:47:10:47:16 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| test.swift:53:5:53:14 | [post] deep_tuple : unit [1, 0] : unit | semmle.label | [post] deep_tuple : unit [1, 0] : unit |
-| test.swift:53:5:53:16 | [post] MemberAccessExpr : unit [0] : unit | semmle.label | [post] MemberAccessExpr : unit [0] : unit |
-| test.swift:53:5:53:18 | MemberAccessExpr : unit | semmle.label | MemberAccessExpr : unit |
-| test.swift:53:22:53:35 | CallExpr : unit | semmle.label | CallExpr : unit |
-| test.swift:58:10:58:19 | deep_tuple : unit [1, 0] : unit | semmle.label | deep_tuple : unit [1, 0] : unit |
-| test.swift:58:10:58:21 | MemberAccessExpr : unit [0] : unit | semmle.label | MemberAccessExpr : unit [0] : unit |
+| test.swift:53:5:53:14 | [post] deep_tuple [1, 0] | semmle.label | [post] deep_tuple [1, 0] |
+| test.swift:53:5:53:16 | [post] MemberAccessExpr [0] | semmle.label | [post] MemberAccessExpr [0] |
+| test.swift:53:5:53:18 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| test.swift:53:22:53:35 | CallExpr | semmle.label | CallExpr |
+| test.swift:58:10:58:19 | deep_tuple [1, 0] | semmle.label | deep_tuple [1, 0] |
+| test.swift:58:10:58:21 | MemberAccessExpr [0] | semmle.label | MemberAccessExpr [0] |
 | test.swift:58:10:58:23 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| test.swift:64:5:64:16 | TupleExpr : unit [0] : unit | semmle.label | TupleExpr : unit [0] : unit |
-| test.swift:64:6:64:10 | [post] tuple : unit [1] : unit | semmle.label | [post] tuple : unit [1] : unit |
-| test.swift:64:6:64:12 | MemberAccessExpr : unit | semmle.label | MemberAccessExpr : unit |
-| test.swift:64:20:64:51 | TupleExpr : unit [0] : unit | semmle.label | TupleExpr : unit [0] : unit |
-| test.swift:64:21:64:35 | CallExpr : unit | semmle.label | CallExpr : unit |
-| test.swift:66:10:66:14 | tuple : unit [1] : unit | semmle.label | tuple : unit [1] : unit |
+| test.swift:64:5:64:16 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:64:6:64:10 | [post] tuple [1] | semmle.label | [post] tuple [1] |
+| test.swift:64:6:64:12 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| test.swift:64:20:64:51 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:64:21:64:35 | CallExpr | semmle.label | CallExpr |
+| test.swift:66:10:66:14 | tuple [1] | semmle.label | tuple [1] |
 | test.swift:66:10:66:16 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| test.swift:74:5:74:9 | [post] tuple : unit [0] : unit | semmle.label | [post] tuple : unit [0] : unit |
-| test.swift:74:5:74:11 | MemberAccessExpr : unit | semmle.label | MemberAccessExpr : unit |
-| test.swift:74:15:74:29 | CallExpr : unit | semmle.label | CallExpr : unit |
-| test.swift:75:10:75:14 | tuple : unit [0] : unit | semmle.label | tuple : unit [0] : unit |
+| test.swift:74:5:74:9 | [post] tuple [0] | semmle.label | [post] tuple [0] |
+| test.swift:74:5:74:11 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| test.swift:74:15:74:29 | CallExpr | semmle.label | CallExpr |
+| test.swift:75:10:75:14 | tuple [0] | semmle.label | tuple [0] |
 | test.swift:75:10:75:16 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| test.swift:86:9:86:9 | x : unit | semmle.label | x : unit |
-| test.swift:86:13:86:27 | CallExpr : unit | semmle.label | CallExpr : unit |
+| test.swift:86:9:86:9 | x | semmle.label | x |
+| test.swift:86:13:86:27 | CallExpr | semmle.label | CallExpr |
 | test.swift:90:10:90:10 | x | semmle.label | x |
-| test.swift:94:9:94:9 | y : unit | semmle.label | y : unit |
-| test.swift:94:13:94:27 | CallExpr : unit | semmle.label | CallExpr : unit |
+| test.swift:94:9:94:9 | y | semmle.label | y |
+| test.swift:94:13:94:27 | CallExpr | semmle.label | CallExpr |
 | test.swift:96:10:96:10 | y | semmle.label | y |
 | test.swift:99:14:99:14 | x | semmle.label | x |
 | test.swift:100:14:100:14 | y | semmle.label | y |
-| test.swift:107:9:107:13 | [post] tuple : unit [0] : unit | semmle.label | [post] tuple : unit [0] : unit |
-| test.swift:107:9:107:15 | MemberAccessExpr : unit | semmle.label | MemberAccessExpr : unit |
-| test.swift:107:19:107:33 | CallExpr : unit | semmle.label | CallExpr : unit |
-| test.swift:112:10:112:14 | tuple : unit [0] : unit | semmle.label | tuple : unit [0] : unit |
+| test.swift:107:9:107:13 | [post] tuple [0] | semmle.label | [post] tuple [0] |
+| test.swift:107:9:107:15 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| test.swift:107:19:107:33 | CallExpr | semmle.label | CallExpr |
+| test.swift:112:10:112:14 | tuple [0] | semmle.label | tuple [0] |
 | test.swift:112:10:112:16 | MemberAccessExpr | semmle.label | MemberAccessExpr |
-| test.swift:117:9:117:13 | tuple : unit [0] : unit | semmle.label | tuple : unit [0] : unit |
-| test.swift:117:9:117:13 | tuple : unit [1] : unit | semmle.label | tuple : unit [1] : unit |
-| test.swift:117:17:117:50 | TupleExpr : unit [0] : unit | semmle.label | TupleExpr : unit [0] : unit |
-| test.swift:117:17:117:50 | TupleExpr : unit [1] : unit | semmle.label | TupleExpr : unit [1] : unit |
-| test.swift:117:18:117:33 | CallExpr : unit | semmle.label | CallExpr : unit |
-| test.swift:117:35:117:49 | CallExpr : unit | semmle.label | CallExpr : unit |
-| test.swift:120:9:120:13 | TupleExpr : unit [0] : unit | semmle.label | TupleExpr : unit [0] : unit |
-| test.swift:120:9:120:13 | TupleExpr : unit [1] : unit | semmle.label | TupleExpr : unit [1] : unit |
-| test.swift:120:10:120:10 | a : unit | semmle.label | a : unit |
-| test.swift:120:12:120:12 | b : unit | semmle.label | b : unit |
-| test.swift:120:17:120:21 | tuple : unit [0] : unit | semmle.label | tuple : unit [0] : unit |
-| test.swift:120:17:120:21 | tuple : unit [1] : unit | semmle.label | tuple : unit [1] : unit |
+| test.swift:117:9:117:13 | tuple [0] | semmle.label | tuple [0] |
+| test.swift:117:9:117:13 | tuple [1] | semmle.label | tuple [1] |
+| test.swift:117:17:117:50 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:117:17:117:50 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:117:18:117:33 | CallExpr | semmle.label | CallExpr |
+| test.swift:117:35:117:49 | CallExpr | semmle.label | CallExpr |
+| test.swift:120:9:120:13 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:120:9:120:13 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:120:10:120:10 | a | semmle.label | a |
+| test.swift:120:12:120:12 | b | semmle.label | b |
+| test.swift:120:17:120:21 | tuple [0] | semmle.label | tuple [0] |
+| test.swift:120:17:120:21 | tuple [1] | semmle.label | tuple [1] |
 | test.swift:125:10:125:10 | a | semmle.label | a |
 | test.swift:126:10:126:10 | b | semmle.label | b |
-| test.swift:131:5:131:5 | a : unit | semmle.label | a : unit |
+| test.swift:131:5:131:5 | a | semmle.label | a |
 | test.swift:131:14:131:14 | a | semmle.label | a |
-| test.swift:131:19:131:33 | CallExpr : unit | semmle.label | CallExpr : unit |
+| test.swift:131:19:131:33 | CallExpr | semmle.label | CallExpr |
 | test.swift:132:10:132:10 | a | semmle.label | a |
 subpaths
 testFailures
 #select
-| implicit-self.swift:12:14:12:19 | MemberAccessExpr | implicit-self.swift:11:18:11:31 | CallExpr : unit | implicit-self.swift:12:14:12:19 | MemberAccessExpr | $@ | implicit-self.swift:11:18:11:31 | CallExpr : unit | CallExpr : unit |
-| implicit-self.swift:18:14:18:14 | x | implicit-self.swift:17:13:17:26 | CallExpr : unit | implicit-self.swift:18:14:18:14 | x | $@ | implicit-self.swift:17:13:17:26 | CallExpr : unit | CallExpr : unit |
-| implicit-self.swift:24:14:24:19 | MemberAccessExpr | implicit-self.swift:23:13:23:26 | CallExpr : unit | implicit-self.swift:24:14:24:19 | MemberAccessExpr | $@ | implicit-self.swift:23:13:23:26 | CallExpr : unit | CallExpr : unit |
-| implicit-self.swift:30:14:30:14 | x | implicit-self.swift:29:18:29:31 | CallExpr : unit | implicit-self.swift:30:14:30:14 | x | $@ | implicit-self.swift:29:18:29:31 | CallExpr : unit | CallExpr : unit |
-| implicit-self.swift:36:14:36:23 | MemberAccessExpr | implicit-self.swift:35:22:35:35 | CallExpr : unit | implicit-self.swift:36:14:36:23 | MemberAccessExpr | $@ | implicit-self.swift:35:22:35:35 | CallExpr : unit | CallExpr : unit |
-| implicit-self.swift:42:14:42:18 | MemberAccessExpr | implicit-self.swift:41:17:41:30 | CallExpr : unit | implicit-self.swift:42:14:42:18 | MemberAccessExpr | $@ | implicit-self.swift:41:17:41:30 | CallExpr : unit | CallExpr : unit |
-| implicit-self.swift:48:14:48:23 | MemberAccessExpr | implicit-self.swift:47:17:47:30 | CallExpr : unit | implicit-self.swift:48:14:48:23 | MemberAccessExpr | $@ | implicit-self.swift:47:17:47:30 | CallExpr : unit | CallExpr : unit |
-| implicit-self.swift:54:14:54:18 | MemberAccessExpr | implicit-self.swift:53:22:53:35 | CallExpr : unit | implicit-self.swift:54:14:54:18 | MemberAccessExpr | $@ | implicit-self.swift:53:22:53:35 | CallExpr : unit | CallExpr : unit |
+| implicit-self.swift:12:14:12:19 | MemberAccessExpr | implicit-self.swift:11:18:11:31 | CallExpr | implicit-self.swift:12:14:12:19 | MemberAccessExpr | $@ | implicit-self.swift:11:18:11:31 | CallExpr | CallExpr |
+| implicit-self.swift:18:14:18:14 | x | implicit-self.swift:17:13:17:26 | CallExpr | implicit-self.swift:18:14:18:14 | x | $@ | implicit-self.swift:17:13:17:26 | CallExpr | CallExpr |
+| implicit-self.swift:24:14:24:19 | MemberAccessExpr | implicit-self.swift:23:13:23:26 | CallExpr | implicit-self.swift:24:14:24:19 | MemberAccessExpr | $@ | implicit-self.swift:23:13:23:26 | CallExpr | CallExpr |
+| implicit-self.swift:30:14:30:14 | x | implicit-self.swift:29:18:29:31 | CallExpr | implicit-self.swift:30:14:30:14 | x | $@ | implicit-self.swift:29:18:29:31 | CallExpr | CallExpr |
+| implicit-self.swift:36:14:36:23 | MemberAccessExpr | implicit-self.swift:35:22:35:35 | CallExpr | implicit-self.swift:36:14:36:23 | MemberAccessExpr | $@ | implicit-self.swift:35:22:35:35 | CallExpr | CallExpr |
+| implicit-self.swift:42:14:42:18 | MemberAccessExpr | implicit-self.swift:41:17:41:30 | CallExpr | implicit-self.swift:42:14:42:18 | MemberAccessExpr | $@ | implicit-self.swift:41:17:41:30 | CallExpr | CallExpr |
+| implicit-self.swift:48:14:48:23 | MemberAccessExpr | implicit-self.swift:47:17:47:30 | CallExpr | implicit-self.swift:48:14:48:23 | MemberAccessExpr | $@ | implicit-self.swift:47:17:47:30 | CallExpr | CallExpr |
+| implicit-self.swift:54:14:54:18 | MemberAccessExpr | implicit-self.swift:53:22:53:35 | CallExpr | implicit-self.swift:54:14:54:18 | MemberAccessExpr | $@ | implicit-self.swift:53:22:53:35 | CallExpr | CallExpr |
 | test.swift:2:10:2:21 | CallExpr | test.swift:2:10:2:21 | CallExpr | test.swift:2:10:2:21 | CallExpr | $@ | test.swift:2:10:2:21 | CallExpr | CallExpr |
-| test.swift:6:10:6:32 | BinaryExpr | test.swift:6:10:6:23 | CallExpr : unit | test.swift:6:10:6:32 | BinaryExpr | $@ | test.swift:6:10:6:23 | CallExpr : unit | CallExpr : unit |
-| test.swift:7:10:7:32 | BinaryExpr | test.swift:7:19:7:32 | CallExpr : unit | test.swift:7:10:7:32 | BinaryExpr | $@ | test.swift:7:19:7:32 | CallExpr : unit | CallExpr : unit |
-| test.swift:9:10:9:33 | StringInterpolationExpr | test.swift:9:13:9:26 | CallExpr : unit | test.swift:9:10:9:33 | StringInterpolationExpr | $@ | test.swift:9:13:9:26 | CallExpr : unit | CallExpr : unit |
-| test.swift:10:10:10:33 | StringInterpolationExpr | test.swift:10:18:10:31 | CallExpr : unit | test.swift:10:10:10:33 | StringInterpolationExpr | $@ | test.swift:10:18:10:31 | CallExpr : unit | CallExpr : unit |
-| test.swift:11:10:11:38 | StringInterpolationExpr | test.swift:11:18:11:31 | CallExpr : unit | test.swift:11:10:11:38 | StringInterpolationExpr | $@ | test.swift:11:18:11:31 | CallExpr : unit | CallExpr : unit |
-| test.swift:16:10:16:35 | MemberAccessExpr | test.swift:16:11:16:25 | CallExpr : unit | test.swift:16:10:16:35 | MemberAccessExpr | $@ | test.swift:16:11:16:25 | CallExpr : unit | CallExpr : unit |
-| test.swift:19:10:19:35 | MemberAccessExpr | test.swift:19:19:19:32 | CallExpr : unit | test.swift:19:10:19:35 | MemberAccessExpr | $@ | test.swift:19:19:19:32 | CallExpr : unit | CallExpr : unit |
-| test.swift:24:10:24:10 | a | test.swift:23:13:23:26 | CallExpr : unit | test.swift:24:10:24:10 | a | $@ | test.swift:23:13:23:26 | CallExpr : unit | CallExpr : unit |
-| test.swift:29:10:29:10 | a | test.swift:28:19:28:33 | CallExpr : unit | test.swift:29:10:29:10 | a | $@ | test.swift:28:19:28:33 | CallExpr : unit | CallExpr : unit |
-| test.swift:34:10:34:10 | d | test.swift:32:27:32:40 | CallExpr : unit | test.swift:34:10:34:10 | d | $@ | test.swift:32:27:32:40 | CallExpr : unit | CallExpr : unit |
-| test.swift:39:10:39:10 | a | test.swift:38:13:38:26 | CallExpr : unit | test.swift:39:10:39:10 | a | $@ | test.swift:38:13:38:26 | CallExpr : unit | CallExpr : unit |
-| test.swift:47:10:47:16 | MemberAccessExpr | test.swift:46:15:46:28 | CallExpr : unit | test.swift:47:10:47:16 | MemberAccessExpr | $@ | test.swift:46:15:46:28 | CallExpr : unit | CallExpr : unit |
-| test.swift:58:10:58:23 | MemberAccessExpr | test.swift:53:22:53:35 | CallExpr : unit | test.swift:58:10:58:23 | MemberAccessExpr | $@ | test.swift:53:22:53:35 | CallExpr : unit | CallExpr : unit |
-| test.swift:66:10:66:16 | MemberAccessExpr | test.swift:64:21:64:35 | CallExpr : unit | test.swift:66:10:66:16 | MemberAccessExpr | $@ | test.swift:64:21:64:35 | CallExpr : unit | CallExpr : unit |
-| test.swift:75:10:75:16 | MemberAccessExpr | test.swift:74:15:74:29 | CallExpr : unit | test.swift:75:10:75:16 | MemberAccessExpr | $@ | test.swift:74:15:74:29 | CallExpr : unit | CallExpr : unit |
-| test.swift:90:10:90:10 | x | test.swift:86:13:86:27 | CallExpr : unit | test.swift:90:10:90:10 | x | $@ | test.swift:86:13:86:27 | CallExpr : unit | CallExpr : unit |
-| test.swift:96:10:96:10 | y | test.swift:94:13:94:27 | CallExpr : unit | test.swift:96:10:96:10 | y | $@ | test.swift:94:13:94:27 | CallExpr : unit | CallExpr : unit |
-| test.swift:99:14:99:14 | x | test.swift:86:13:86:27 | CallExpr : unit | test.swift:99:14:99:14 | x | $@ | test.swift:86:13:86:27 | CallExpr : unit | CallExpr : unit |
-| test.swift:100:14:100:14 | y | test.swift:94:13:94:27 | CallExpr : unit | test.swift:100:14:100:14 | y | $@ | test.swift:94:13:94:27 | CallExpr : unit | CallExpr : unit |
-| test.swift:112:10:112:16 | MemberAccessExpr | test.swift:107:19:107:33 | CallExpr : unit | test.swift:112:10:112:16 | MemberAccessExpr | $@ | test.swift:107:19:107:33 | CallExpr : unit | CallExpr : unit |
-| test.swift:125:10:125:10 | a | test.swift:117:18:117:33 | CallExpr : unit | test.swift:125:10:125:10 | a | $@ | test.swift:117:18:117:33 | CallExpr : unit | CallExpr : unit |
-| test.swift:126:10:126:10 | b | test.swift:117:35:117:49 | CallExpr : unit | test.swift:126:10:126:10 | b | $@ | test.swift:117:35:117:49 | CallExpr : unit | CallExpr : unit |
-| test.swift:131:14:131:14 | a | test.swift:131:19:131:33 | CallExpr : unit | test.swift:131:14:131:14 | a | $@ | test.swift:131:19:131:33 | CallExpr : unit | CallExpr : unit |
-| test.swift:132:10:132:10 | a | test.swift:131:19:131:33 | CallExpr : unit | test.swift:132:10:132:10 | a | $@ | test.swift:131:19:131:33 | CallExpr : unit | CallExpr : unit |
+| test.swift:6:10:6:32 | BinaryExpr | test.swift:6:10:6:23 | CallExpr | test.swift:6:10:6:32 | BinaryExpr | $@ | test.swift:6:10:6:23 | CallExpr | CallExpr |
+| test.swift:7:10:7:32 | BinaryExpr | test.swift:7:19:7:32 | CallExpr | test.swift:7:10:7:32 | BinaryExpr | $@ | test.swift:7:19:7:32 | CallExpr | CallExpr |
+| test.swift:9:10:9:33 | StringInterpolationExpr | test.swift:9:13:9:26 | CallExpr | test.swift:9:10:9:33 | StringInterpolationExpr | $@ | test.swift:9:13:9:26 | CallExpr | CallExpr |
+| test.swift:10:10:10:33 | StringInterpolationExpr | test.swift:10:18:10:31 | CallExpr | test.swift:10:10:10:33 | StringInterpolationExpr | $@ | test.swift:10:18:10:31 | CallExpr | CallExpr |
+| test.swift:11:10:11:38 | StringInterpolationExpr | test.swift:11:18:11:31 | CallExpr | test.swift:11:10:11:38 | StringInterpolationExpr | $@ | test.swift:11:18:11:31 | CallExpr | CallExpr |
+| test.swift:16:10:16:35 | MemberAccessExpr | test.swift:16:11:16:25 | CallExpr | test.swift:16:10:16:35 | MemberAccessExpr | $@ | test.swift:16:11:16:25 | CallExpr | CallExpr |
+| test.swift:19:10:19:35 | MemberAccessExpr | test.swift:19:19:19:32 | CallExpr | test.swift:19:10:19:35 | MemberAccessExpr | $@ | test.swift:19:19:19:32 | CallExpr | CallExpr |
+| test.swift:24:10:24:10 | a | test.swift:23:13:23:26 | CallExpr | test.swift:24:10:24:10 | a | $@ | test.swift:23:13:23:26 | CallExpr | CallExpr |
+| test.swift:29:10:29:10 | a | test.swift:28:19:28:33 | CallExpr | test.swift:29:10:29:10 | a | $@ | test.swift:28:19:28:33 | CallExpr | CallExpr |
+| test.swift:34:10:34:10 | d | test.swift:32:27:32:40 | CallExpr | test.swift:34:10:34:10 | d | $@ | test.swift:32:27:32:40 | CallExpr | CallExpr |
+| test.swift:39:10:39:10 | a | test.swift:38:13:38:26 | CallExpr | test.swift:39:10:39:10 | a | $@ | test.swift:38:13:38:26 | CallExpr | CallExpr |
+| test.swift:47:10:47:16 | MemberAccessExpr | test.swift:46:15:46:28 | CallExpr | test.swift:47:10:47:16 | MemberAccessExpr | $@ | test.swift:46:15:46:28 | CallExpr | CallExpr |
+| test.swift:58:10:58:23 | MemberAccessExpr | test.swift:53:22:53:35 | CallExpr | test.swift:58:10:58:23 | MemberAccessExpr | $@ | test.swift:53:22:53:35 | CallExpr | CallExpr |
+| test.swift:66:10:66:16 | MemberAccessExpr | test.swift:64:21:64:35 | CallExpr | test.swift:66:10:66:16 | MemberAccessExpr | $@ | test.swift:64:21:64:35 | CallExpr | CallExpr |
+| test.swift:75:10:75:16 | MemberAccessExpr | test.swift:74:15:74:29 | CallExpr | test.swift:75:10:75:16 | MemberAccessExpr | $@ | test.swift:74:15:74:29 | CallExpr | CallExpr |
+| test.swift:90:10:90:10 | x | test.swift:86:13:86:27 | CallExpr | test.swift:90:10:90:10 | x | $@ | test.swift:86:13:86:27 | CallExpr | CallExpr |
+| test.swift:96:10:96:10 | y | test.swift:94:13:94:27 | CallExpr | test.swift:96:10:96:10 | y | $@ | test.swift:94:13:94:27 | CallExpr | CallExpr |
+| test.swift:99:14:99:14 | x | test.swift:86:13:86:27 | CallExpr | test.swift:99:14:99:14 | x | $@ | test.swift:86:13:86:27 | CallExpr | CallExpr |
+| test.swift:100:14:100:14 | y | test.swift:94:13:94:27 | CallExpr | test.swift:100:14:100:14 | y | $@ | test.swift:94:13:94:27 | CallExpr | CallExpr |
+| test.swift:112:10:112:16 | MemberAccessExpr | test.swift:107:19:107:33 | CallExpr | test.swift:112:10:112:16 | MemberAccessExpr | $@ | test.swift:107:19:107:33 | CallExpr | CallExpr |
+| test.swift:125:10:125:10 | a | test.swift:117:18:117:33 | CallExpr | test.swift:125:10:125:10 | a | $@ | test.swift:117:18:117:33 | CallExpr | CallExpr |
+| test.swift:126:10:126:10 | b | test.swift:117:35:117:49 | CallExpr | test.swift:126:10:126:10 | b | $@ | test.swift:117:35:117:49 | CallExpr | CallExpr |
+| test.swift:131:14:131:14 | a | test.swift:131:19:131:33 | CallExpr | test.swift:131:14:131:14 | a | $@ | test.swift:131:19:131:33 | CallExpr | CallExpr |
+| test.swift:132:10:132:10 | a | test.swift:131:19:131:33 | CallExpr | test.swift:132:10:132:10 | a | $@ | test.swift:131:19:131:33 | CallExpr | CallExpr |
