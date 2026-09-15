@@ -17,6 +17,8 @@ updates:
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-patch', 'version-update:semver-minor']
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "gomod"
     directory: "go/extractor"
