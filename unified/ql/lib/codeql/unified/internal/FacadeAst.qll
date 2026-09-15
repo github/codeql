@@ -197,5 +197,8 @@ module Unified {
         result = arg.getValue()
       )
     }
+
+    /** Gets the number of arguments passed to this call, not counting implicit arguments like receiver. */
+    int getNumberOfArguments() { result = count(this.getAnArgument()) }
   }
 }
