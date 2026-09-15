@@ -32,10 +32,6 @@ class Property extends TProperty {
     // then !test = !outcome ==> nd matches this
     this.checkOnExpr(test.(NotExpr).getOperand(), outcome.booleanNot(), nd)
     or
-    // if test = outcome ==> nd matches this
-    // then (test) = outcome ==> nd matches this
-    this.checkOnExpr(test.(ParenExpr).getExpr(), outcome, nd)
-    or
     // if test = true ==> nd matches this
     // then (test && e) = true ==> nd matches this
     outcome = true and
