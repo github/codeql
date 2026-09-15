@@ -37,18 +37,24 @@ def batch_limit():
     return max(4096, arg_max - environment - 4096)
 
 
-def files_under(paths, patterns, excludes=(), absolute=False):
+def files_under(paths, patterns, excludes=(), absolute=False, within=None):
     """Collect the files matching one of the patterns at or below each path.
 
     Patterns are matched against the file name, as bazel files are identified by name
     rather than by extension. Exclusions are matched against the whole path instead,
     which is how a directory of generated files is left alone.
 
+    A `within` directory bounds the result to the files below it, for a command that
+    answers for one project and may be handed a path reaching outside it.
+
     Symbolic links are not followed, which is what keeps the `bazel-*` convenience
     links out of the walk.
     """
+    boundary = Path(within).resolve() if within else None
 
     def wanted(path):
+        if boundary is not None and not path.resolve().is_relative_to(boundary):
+            return False
         return any(fnmatch(path.name, p) for p in patterns) and not any(
             fnmatch(str(path), e) for e in excludes
         )
@@ -114,6 +120,12 @@ def parse_args():
         help="run the command from here, for one that must be run from a project root",
     )
     parser.add_argument(
+        "--within",
+        metavar="<directory>",
+        help="leave out files outside this directory, for a command answering for one "
+        "project that may be handed a path reaching beyond it",
+    )
+    parser.add_argument(
         "--drop",
         action="append",
         default=[],
@@ -169,7 +181,9 @@ def run(command, drops, chdir=None):
 
 def main():
     args = parse_args()
-    files = files_under(args.paths, args.patterns, args.exclude, args.absolute)
+    files = files_under(
+        args.paths, args.patterns, args.exclude, args.absolute, args.within
+    )
     limit = batch_limit() - sum(len(argument) + 1 for argument in args.command)
     status = 0
     for batch in batched(files, limit):

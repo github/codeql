@@ -7,12 +7,12 @@ _py_formatter := if SEMMLE_CODE != "" { "uv run black" } else { "black" }
 _cpp_formatter := if SEMMLE_CODE != "" { "uv run clang-format" } else { "clang-format" }
 
 # The `buildifier` bazel target always covers the whole workspace, so the binary behind
-# it is used instead and given paths. bazel is asked from this repository's own root,
-# even when it sits inside the internal one, so that the files being formatted and the
-# buildifier formatting them come from the same checkout: each repository then answers
-# for its own bazel files, with its own pin and its own list of what is generated. This
-# is the opposite of building, where a target needs the enclosing workspace to resolve
-# at all, hence `_bazel` in build.just going the other way.
+# it is used instead and given paths. bazel is asked from the root of this repository,
+# even when it sits inside another, and the files are bounded to that root as well: each
+# repository then formats its own bazel files with the buildifier version it pins, and a
+# verb aimed at a tree spanning both is answered once by each. This is the opposite of
+# building, where a target needs the enclosing workspace to resolve at all, hence
+# `_bazel` in build.just going the other way.
 _bazel_workspace := quote(parent_directory(parent_directory(source_dir())))
 
 _bazel_formatter := "bazel run --noshow_progress --ui_event_filters=,+error,+fail @buildifier_prebuilt//:buildifier --"
@@ -68,4 +68,4 @@ _format_cpp *ARGS=".":
 [no-exit-message]
 [positional-arguments]
 _format_bazel *ARGS=".":
-    {{ cmd_sep }}export MSYS2_ARG_CONV_EXCL="*"; {{ py }} "{{ source_dir() }}/run_on_files.py" --absolute --chdir {{ _bazel_workspace }} --drop '{{ _bazel_accounting }}' --exclude '{{ _bazel_generated }}' "{{ _bazel_names }}" {{ _bazel_formatter }} -mode=fix -lint=fix -v -- "$@"{{ cmd_sep }}
+    {{ cmd_sep }}export MSYS2_ARG_CONV_EXCL="*"; {{ py }} "{{ source_dir() }}/run_on_files.py" --absolute --chdir {{ _bazel_workspace }} --within {{ _bazel_workspace }} --drop '{{ _bazel_accounting }}' --exclude '{{ _bazel_generated }}' "{{ _bazel_names }}" {{ _bazel_formatter }} -mode=fix -lint=fix -v -- "$@"{{ cmd_sep }}
