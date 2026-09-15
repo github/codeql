@@ -95,7 +95,10 @@ module DataFlowInput implements InputSig<Location> {
   //
   // Types
   //
-  class DataFlowType = Unit; // TODO: track types
+  class DataFlowType extends Unit {
+    // TODO: track proper types
+    string toString() { result = "" } // do not include "unit" type in path steps
+  }
 
   class CastNode extends Node {
     CastNode() { none() } // TODO
