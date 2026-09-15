@@ -49,6 +49,13 @@ they sit throughout the tree rather than under any one language, so formatting t
 the root's job, and taking the argument keeps `just format cpp` to the bazel files under
 `cpp`.
 
+Being a recipe like any other, a `_root_<verb>` is inherited by a justfile importing the
+one defining it, which is how the internal repository gets this one for free. It runs
+once either way, as the two spellings are the same recipe. A root that defines its own
+instead replaces it, and then both run, each over the files of the repository that
+defines it: bazel formatting asks bazel from the root of the checkout the files belong
+to, so that a repository formats its own files with its own pin.
+
 A directory that only makes sense when named explicitly can opt out of being found from
 above:
 
