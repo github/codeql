@@ -1,0 +1,43 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.transport.http.server", "AxisHttpResponse", True, "sendError", "(int,String)", "", "Argument[1]", "response-splitting", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpResponse", True, "setContentType", "(String)", "", "Argument[0]", "response-splitting", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpResponseImpl", True, "addHeader", "(Header)", "", "Argument[0]", "response-splitting", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpResponseImpl", True, "addHeader", "(String,Object)", "", "Argument[0..1]", "response-splitting", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpResponseImpl", True, "sendError", "(int,String)", "", "Argument[1]", "response-splitting", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpResponseImpl", True, "setHeader", "(Header)", "", "Argument[0]", "response-splitting", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpResponseImpl", True, "setHeader", "(String,Object)", "", "Argument[0..1]", "response-splitting", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpResponseImpl", True, "setHeaders", "(Header[])", "", "Argument[0]", "response-splitting", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "DefaultConnectionListenerFailureHandler", True, "failed", "(IOProcessor,Throwable)", "", "Argument[1]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "DefaultConnectionListenerFailureHandler", True, "notifyAbnormalTermination", "(IOProcessor,String,Throwable)", "", "Argument[1..2]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "ResponseSessionCookie", True, "process", "(HttpResponse,EntityDetails,HttpContext)", "", "Argument[2]", "response-splitting", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.transport.http.server", "AxisHttpConnection", True, "getInputStream", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpConnection", True, "receiveRequest", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpConnectionImpl", True, "receiveRequest", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequest", True, "getContentType", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequest", True, "getInputStream", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequest", True, "getMethod", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequest", True, "getRequestURI", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "getAllHeaders", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "getContentType", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "getFirstHeader", "(String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "getHeader", "(String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "getHeaders", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "getHeaders", "(String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "getInputStream", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "getLastHeader", "(String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "getMethod", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "getRequestURI", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "headerIterator", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "AxisHttpRequestImpl", True, "headerIterator", "(String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "HttpUtils", True, "getSoapAction", "(AxisHttpRequest)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http.server", "Worker", True, "service", "(AxisHttpRequest,AxisHttpResponse,MessageContext)", "", "Argument[0]", "remote", "ai-generated"]
