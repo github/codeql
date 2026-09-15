@@ -37,7 +37,7 @@ predicate performsVariableAccess(
 newtype TDataFlowNode =
   TValueNode(Expr expr) { hasResultValue(expr) or hasIncomingValue(expr, _) } or
   TStrictlyIncomingValue(Expr expr) { hasResultValue(expr) and hasIncomingValue(expr, _) } or
-  TPostUpdateNode(Expr expr) { hasPostUpdate(expr) } or
+  TExprPostUpdateNode(Expr expr) { hasPostUpdate(expr) } or
   TLocalVariableRefNode(Expr expr, LocalVariable var, VariableRefKind kind) {
     performsVariableAccess(expr, var, kind, _)
   } or
@@ -83,7 +83,7 @@ class Node extends TDataFlowNode {
   }
 
   /** Holds if this represents the updated state of the value returned by `expr` after it has been mutated by the surrounding assignment or call. */
-  predicate isPostUpdate(Expr expr) { this = TPostUpdateNode(expr) }
+  predicate isPostUpdate(Expr expr) { this = TExprPostUpdateNode(expr) }
 
   /** Gets the expression represented by this node. */
   Expr asExpr() { this = TValueNode(result) }
@@ -94,7 +94,7 @@ class Node extends TDataFlowNode {
   AstNode getWrappedAstNode() {
     result = this.asExpr() or
     this = TStrictlyIncomingValue(result) or
-    this = TPostUpdateNode(result) or
+    this = TExprPostUpdateNode(result) or
     this = TLocalVariableRefNode(result, _, _)
   }
 
@@ -106,7 +106,7 @@ class Node extends TDataFlowNode {
       this = TStrictlyIncomingValue(expr) and
       result = "[incoming] " + expr.toString()
       or
-      this = TPostUpdateNode(expr) and
+      this = TExprPostUpdateNode(expr) and
       result = "[post] " + expr.toString()
     )
     or
