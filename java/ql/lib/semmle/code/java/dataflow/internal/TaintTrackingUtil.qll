@@ -141,6 +141,8 @@ private module Cached {
       (
         containerContent(f)
         or
+        f instanceof DataFlow::FieldContent
+        or
         f instanceof TaintInheritingContent
       )
     )
