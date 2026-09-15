@@ -3691,6 +3691,7 @@
 | Dubious signature "(const SSL_SESSION *,unsigned int *)" in summary model. |
 | Dubious signature "(const SXNET *,unsigned char **)" in summary model. |
 | Dubious signature "(const SXNETID *,unsigned char **)" in summary model. |
+| Dubious signature "(const StringRef &)" in summary model. |
 | Dubious signature "(const T &,BOOL)" in summary model. |
 | Dubious signature "(const TS_ACCURACY *)" in summary model. |
 | Dubious signature "(const TS_ACCURACY *,unsigned char **)" in summary model. |
