@@ -1,0 +1,2 @@
+| test.py:17:17:17:19 | ControlFlowNode for obj | This $@ of $@ is unhashable. | test.py:16:11:16:23 | ControlFlowNode for HasEqNoHash() | instance | test.py:16:11:16:23 | ControlFlowNode for HasEqNoHash() | HasEqNoHash |
+| test.py:48:17:48:17 | ControlFlowNode for p | This $@ of $@ is unhashable. | test.py:47:9:47:27 | ControlFlowNode for MutableDataclass() | instance | test.py:47:9:47:27 | ControlFlowNode for MutableDataclass() | MutableDataclass |
