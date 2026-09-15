@@ -121,6 +121,8 @@ module CfgImpl {
     AstNode getChild(AstNode n, int index) {
       (
         not n instanceof Go::FuncDef and
+        not n instanceof Go::ImportDecl and
+        not n instanceof Go::TypeDecl and
         not skipCfg(n) and
         result = n.getChild(index)
         or
@@ -496,8 +498,6 @@ module CfgImpl {
       n instanceof Go::SelectStmt
       or
       n instanceof Go::SendStmt
-      or
-      n instanceof Go::FuncDecl
     }
 
     predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {

@@ -93,6 +93,9 @@ module IR {
       // "before"/"after" leaf node for its declaration), which hosts the
       // initialization write (see `InitParameterInstruction`).
       this.isBefore(any(FuncDef fd).getParameter(_).getDeclaration())
+      or
+      // Function declarations are represented by their merged leaf node.
+      this.isBefore(any(FuncDecl fd))
     }
 
     /** Holds if this instruction reads the value of variable or constant `v`. */
@@ -847,7 +850,7 @@ module IR {
   class DeclareFunctionInstruction extends Instruction {
     FuncDecl fd;
 
-    DeclareFunctionInstruction() { this.isIn(fd) }
+    DeclareFunctionInstruction() { this.isBefore(fd) }
 
     override Type getResultType() { result = fd.getType() }
   }
