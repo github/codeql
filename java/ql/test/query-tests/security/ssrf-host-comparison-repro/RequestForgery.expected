@@ -1,0 +1,162 @@
+#select
+| HostComparison.java:8:9:8:19 | toURL(...) | HostComparison.java:7:27:7:53 | getParameter(...) : String | HostComparison.java:8:9:8:19 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:7:27:7:53 | getParameter(...) | user-provided value |
+| HostComparison.java:51:13:51:23 | toURL(...) | HostComparison.java:49:27:49:53 | getParameter(...) : String | HostComparison.java:51:13:51:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:49:27:49:53 | getParameter(...) | user-provided value |
+| HostComparison.java:58:13:58:23 | toURL(...) | HostComparison.java:56:27:56:53 | getParameter(...) : String | HostComparison.java:58:13:58:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:56:27:56:53 | getParameter(...) | user-provided value |
+| HostComparison.java:69:13:69:23 | toURL(...) | HostComparison.java:67:27:67:53 | getParameter(...) : String | HostComparison.java:69:13:69:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:67:27:67:53 | getParameter(...) | user-provided value |
+| HostComparison.java:85:13:85:23 | toURL(...) | HostComparison.java:83:27:83:53 | getParameter(...) : String | HostComparison.java:85:13:85:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:83:27:83:53 | getParameter(...) | user-provided value |
+| HostComparison.java:93:13:93:24 | toURL(...) | HostComparison.java:91:28:91:54 | getParameter(...) : String | HostComparison.java:93:13:93:24 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:91:28:91:54 | getParameter(...) | user-provided value |
+| HostComparison.java:104:13:104:23 | toURL(...) | HostComparison.java:102:27:102:53 | getParameter(...) : String | HostComparison.java:104:13:104:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:102:27:102:53 | getParameter(...) | user-provided value |
+| HostComparison.java:112:13:112:24 | toURL(...) | HostComparison.java:110:28:110:54 | getParameter(...) : String | HostComparison.java:112:13:112:24 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:110:28:110:54 | getParameter(...) | user-provided value |
+| HostComparison.java:121:13:121:23 | toURL(...) | HostComparison.java:117:27:117:53 | getParameter(...) : String | HostComparison.java:121:13:121:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:117:27:117:53 | getParameter(...) | user-provided value |
+| HostComparison.java:132:13:132:23 | toURL(...) | HostComparison.java:126:27:126:53 | getParameter(...) : String | HostComparison.java:132:13:132:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:126:27:126:53 | getParameter(...) | user-provided value |
+| HostComparison.java:141:13:141:23 | toURL(...) | HostComparison.java:139:23:139:49 | getParameter(...) : String | HostComparison.java:141:13:141:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:139:23:139:49 | getParameter(...) | user-provided value |
+| HostComparison.java:148:13:148:23 | toURL(...) | HostComparison.java:146:27:146:53 | getParameter(...) : String | HostComparison.java:148:13:148:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:146:27:146:53 | getParameter(...) | user-provided value |
+| HostComparison.java:155:13:155:23 | toURL(...) | HostComparison.java:153:27:153:53 | getParameter(...) : String | HostComparison.java:155:13:155:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:153:27:153:53 | getParameter(...) | user-provided value |
+| HostComparison.java:183:17:183:27 | toURL(...) | HostComparison.java:176:27:176:53 | getParameter(...) : String | HostComparison.java:183:17:183:27 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:176:27:176:53 | getParameter(...) | user-provided value |
+| HostComparison.java:209:13:209:23 | toURL(...) | HostComparison.java:206:27:206:53 | getParameter(...) : String | HostComparison.java:209:13:209:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:206:27:206:53 | getParameter(...) | user-provided value |
+| HostComparison.java:235:13:235:23 | toURL(...) | HostComparison.java:231:27:231:53 | getParameter(...) : String | HostComparison.java:235:13:235:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:231:27:231:53 | getParameter(...) | user-provided value |
+| HostComparison.java:244:13:244:23 | toURL(...) | HostComparison.java:240:27:240:53 | getParameter(...) : String | HostComparison.java:244:13:244:23 | toURL(...) | Potential server-side request forgery due to a $@. | HostComparison.java:240:27:240:53 | getParameter(...) | user-provided value |
+edges
+| HostComparison.java:7:19:7:54 | new URI(...) : URI | HostComparison.java:8:9:8:11 | uri : URI | provenance |  |
+| HostComparison.java:7:27:7:53 | getParameter(...) : String | HostComparison.java:7:19:7:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:7:27:7:53 | getParameter(...) : String | HostComparison.java:7:19:7:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:8:9:8:11 | uri : URI | HostComparison.java:8:9:8:19 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:49:19:49:54 | new URI(...) : URI | HostComparison.java:51:13:51:15 | uri : URI | provenance |  |
+| HostComparison.java:49:27:49:53 | getParameter(...) : String | HostComparison.java:49:19:49:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:49:27:49:53 | getParameter(...) : String | HostComparison.java:49:19:49:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:51:13:51:15 | uri : URI | HostComparison.java:51:13:51:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:56:19:56:54 | new URI(...) : URI | HostComparison.java:58:13:58:15 | uri : URI | provenance |  |
+| HostComparison.java:56:27:56:53 | getParameter(...) : String | HostComparison.java:56:19:56:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:56:27:56:53 | getParameter(...) : String | HostComparison.java:56:19:56:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:58:13:58:15 | uri : URI | HostComparison.java:58:13:58:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:67:19:67:54 | new URI(...) : URI | HostComparison.java:69:13:69:15 | uri : URI | provenance |  |
+| HostComparison.java:67:27:67:53 | getParameter(...) : String | HostComparison.java:67:19:67:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:67:27:67:53 | getParameter(...) : String | HostComparison.java:67:19:67:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:69:13:69:15 | uri : URI | HostComparison.java:69:13:69:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:83:19:83:54 | new URI(...) : URI | HostComparison.java:85:13:85:15 | uri : URI | provenance |  |
+| HostComparison.java:83:27:83:53 | getParameter(...) : String | HostComparison.java:83:19:83:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:83:27:83:53 | getParameter(...) : String | HostComparison.java:83:19:83:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:85:13:85:15 | uri : URI | HostComparison.java:85:13:85:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:91:20:91:55 | new URI(...) : URI | HostComparison.java:93:13:93:16 | used : URI | provenance |  |
+| HostComparison.java:91:28:91:54 | getParameter(...) : String | HostComparison.java:91:20:91:55 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:91:28:91:54 | getParameter(...) : String | HostComparison.java:91:20:91:55 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:93:13:93:16 | used : URI | HostComparison.java:93:13:93:24 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:102:19:102:54 | new URI(...) : URI | HostComparison.java:104:13:104:15 | uri : URI | provenance |  |
+| HostComparison.java:102:27:102:53 | getParameter(...) : String | HostComparison.java:102:19:102:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:102:27:102:53 | getParameter(...) : String | HostComparison.java:102:19:102:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:104:13:104:15 | uri : URI | HostComparison.java:104:13:104:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:110:20:110:55 | new URI(...) : URI | HostComparison.java:112:13:112:16 | used : URI | provenance |  |
+| HostComparison.java:110:28:110:54 | getParameter(...) : String | HostComparison.java:110:20:110:55 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:110:28:110:54 | getParameter(...) : String | HostComparison.java:110:20:110:55 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:112:13:112:16 | used : URI | HostComparison.java:112:13:112:24 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:117:19:117:54 | new URI(...) : URI | HostComparison.java:121:13:121:15 | uri : URI | provenance |  |
+| HostComparison.java:117:27:117:53 | getParameter(...) : String | HostComparison.java:117:19:117:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:117:27:117:53 | getParameter(...) : String | HostComparison.java:117:19:117:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:121:13:121:15 | uri : URI | HostComparison.java:121:13:121:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:126:19:126:54 | new URI(...) : URI | HostComparison.java:132:13:132:15 | uri : URI | provenance |  |
+| HostComparison.java:126:27:126:53 | getParameter(...) : String | HostComparison.java:126:19:126:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:126:27:126:53 | getParameter(...) : String | HostComparison.java:126:19:126:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:132:13:132:15 | uri : URI | HostComparison.java:132:13:132:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:139:15:139:50 | new URI(...) : URI | HostComparison.java:141:13:141:15 | uri : URI | provenance |  |
+| HostComparison.java:139:23:139:49 | getParameter(...) : String | HostComparison.java:139:15:139:50 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:139:23:139:49 | getParameter(...) : String | HostComparison.java:139:15:139:50 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:141:13:141:15 | uri : URI | HostComparison.java:141:13:141:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:146:19:146:54 | new URI(...) : URI | HostComparison.java:148:13:148:15 | uri : URI | provenance |  |
+| HostComparison.java:146:27:146:53 | getParameter(...) : String | HostComparison.java:146:19:146:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:146:27:146:53 | getParameter(...) : String | HostComparison.java:146:19:146:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:148:13:148:15 | uri : URI | HostComparison.java:148:13:148:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:153:19:153:54 | new URI(...) : URI | HostComparison.java:155:13:155:15 | uri : URI | provenance |  |
+| HostComparison.java:153:27:153:53 | getParameter(...) : String | HostComparison.java:153:19:153:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:153:27:153:53 | getParameter(...) : String | HostComparison.java:153:19:153:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:155:13:155:15 | uri : URI | HostComparison.java:155:13:155:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:176:19:176:54 | new URI(...) : URI | HostComparison.java:183:17:183:19 | uri : URI | provenance |  |
+| HostComparison.java:176:27:176:53 | getParameter(...) : String | HostComparison.java:176:19:176:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:176:27:176:53 | getParameter(...) : String | HostComparison.java:176:19:176:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:183:17:183:19 | uri : URI | HostComparison.java:183:17:183:27 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:206:19:206:54 | new URI(...) : URI | HostComparison.java:209:13:209:15 | uri : URI | provenance |  |
+| HostComparison.java:206:27:206:53 | getParameter(...) : String | HostComparison.java:206:19:206:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:206:27:206:53 | getParameter(...) : String | HostComparison.java:206:19:206:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:209:13:209:15 | uri : URI | HostComparison.java:209:13:209:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:231:19:231:54 | new URI(...) : URI | HostComparison.java:235:13:235:15 | uri : URI | provenance |  |
+| HostComparison.java:231:27:231:53 | getParameter(...) : String | HostComparison.java:231:19:231:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:231:27:231:53 | getParameter(...) : String | HostComparison.java:231:19:231:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:235:13:235:15 | uri : URI | HostComparison.java:235:13:235:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+| HostComparison.java:240:19:240:54 | new URI(...) : URI | HostComparison.java:244:13:244:15 | uri : URI | provenance |  |
+| HostComparison.java:240:27:240:53 | getParameter(...) : String | HostComparison.java:240:19:240:54 | new URI(...) : URI | provenance | Src:MaD:2 Config |
+| HostComparison.java:240:27:240:53 | getParameter(...) : String | HostComparison.java:240:19:240:54 | new URI(...) : URI | provenance | Src:MaD:2 MaD:3 |
+| HostComparison.java:244:13:244:15 | uri : URI | HostComparison.java:244:13:244:23 | toURL(...) | provenance | MaD:4 Sink:MaD:1 |
+models
+| 1 | Sink: java.net; URL; false; openConnection; ; ; Argument[this]; request-forgery; manual |
+| 2 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 3 | Summary: java.net; URI; false; URI; (String); ; Argument[0]; Argument[this]; taint; manual |
+| 4 | Summary: java.net; URI; false; toURL; ; ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| HostComparison.java:7:19:7:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:7:27:7:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:8:9:8:11 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:8:9:8:19 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:49:19:49:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:49:27:49:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:51:13:51:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:51:13:51:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:56:19:56:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:56:27:56:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:58:13:58:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:58:13:58:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:67:19:67:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:67:27:67:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:69:13:69:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:69:13:69:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:83:19:83:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:83:27:83:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:85:13:85:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:85:13:85:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:91:20:91:55 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:91:28:91:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:93:13:93:16 | used : URI | semmle.label | used : URI |
+| HostComparison.java:93:13:93:24 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:102:19:102:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:102:27:102:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:104:13:104:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:104:13:104:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:110:20:110:55 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:110:28:110:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:112:13:112:16 | used : URI | semmle.label | used : URI |
+| HostComparison.java:112:13:112:24 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:117:19:117:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:117:27:117:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:121:13:121:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:121:13:121:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:126:19:126:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:126:27:126:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:132:13:132:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:132:13:132:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:139:15:139:50 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:139:23:139:49 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:141:13:141:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:141:13:141:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:146:19:146:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:146:27:146:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:148:13:148:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:148:13:148:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:153:19:153:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:153:27:153:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:155:13:155:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:155:13:155:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:176:19:176:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:176:27:176:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:183:17:183:19 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:183:17:183:27 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:206:19:206:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:206:27:206:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:209:13:209:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:209:13:209:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:231:19:231:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:231:27:231:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:235:13:235:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:235:13:235:23 | toURL(...) | semmle.label | toURL(...) |
+| HostComparison.java:240:19:240:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparison.java:240:27:240:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparison.java:244:13:244:15 | uri : URI | semmle.label | uri : URI |
+| HostComparison.java:244:13:244:23 | toURL(...) | semmle.label | toURL(...) |
+subpaths

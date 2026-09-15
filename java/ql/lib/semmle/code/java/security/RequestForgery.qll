@@ -13,6 +13,7 @@ import semmle.code.java.frameworks.Properties
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.security.Sanitizers
 
 /**
@@ -122,11 +123,21 @@ private class ExternalRequestForgerySanitizer extends RequestForgerySanitizer {
   ExternalRequestForgerySanitizer() { barrierNode(this, "request-forgery") }
 }
 
-/**
- * A comparison on the host of a url, that is a sanitizer for URL redirects.
- * E.g. `"example.org".equals(url.getHost())"`
- */
+/** Gets a host read, following local assignments with a single explicit SSA definition. */
+private MethodCall getCheckedHost(Expr checked) {
+  result = checked.getUnderlyingExpr() and
+  result.getMethod().hasQualifiedName("java.net", "URI", "getHost")
+  or
+  exists(SsaExplicitWrite def |
+    checked.getUnderlyingExpr().(VarRead).getVariable() instanceof LocalScopeVariable and
+    def.getARead() = checked.getUnderlyingExpr() and
+    result = getCheckedHost(def.getValue())
+  )
+}
+
+/** Holds if a comparison validates the host of a URI. */
 private predicate isHostComparisonSanitizer(Guard guard, Expr e, boolean branch) {
+  // Direct equality checks also accept nonconstant comparison operands.
   guard =
     any(MethodCall equalsCall |
       equalsCall.getMethod().getName() = "equals" and
@@ -137,6 +148,21 @@ private predicate isHostComparisonSanitizer(Guard guard, Expr e, boolean branch)
         e = hostCall.getQualifier()
       )
     )
+  or
+  exists(MethodCall comparison, Expr checked, Expr allowed |
+    guard = comparison and
+    comparison.getMethod().getDeclaringType() instanceof TypeString and
+    comparison.getMethod().hasName(["equals", "equalsIgnoreCase"]) and
+    branch = true and
+    (
+      checked = comparison.getQualifier() and allowed = comparison.getArgument(0)
+      or
+      checked = comparison.getArgument(0) and allowed = comparison.getQualifier()
+    ) and
+    // New cases require a fixed allowlist entry, not another untrusted value.
+    exists(allowed.(CompileTimeConstantExpr).getStringValue()) and
+    e = getCheckedHost(checked).getQualifier()
+  )
 }
 
 /**
