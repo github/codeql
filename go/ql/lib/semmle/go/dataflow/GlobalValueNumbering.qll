@@ -109,15 +109,41 @@ private ControlFlow::Node getControlFlowEntry(ControlFlow::Node node) {
 
 private predicate entryNode(ControlFlow::Node node) { node.isEntryNode() }
 
+/** Retains queried instructions, effects, and junctions while allowing linear CFG nodes to be bypassed. */
+private predicate retainedSideEffectNode(ControlFlow::Node node) {
+  node instanceof IR::Instruction
+  or
+  node = nodeWithPossibleSideEffect()
+  or
+  node.isEntryNode()
+  or
+  node.isBranch()
+  or
+  node.isJoin()
+  or
+  not exists(node.getAPredecessor())
+  or
+  not exists(node.getASuccessor())
+}
+
+/** Gets the first retained node at or after `node` along a linear CFG path. */
+private ControlFlow::Node nextSideEffectNode(ControlFlow::Node node) {
+  retainedSideEffectNode(node) and result = node
+  or
+  not retainedSideEffectNode(node) and
+  result = nextSideEffectNode(node.getASuccessor())
+}
+
 /**
- * Holds if there is a control flow edge from `src` to `dst` or
+ * Holds if there is a contracted control flow edge from `src` to `dst` or
  * if `dst` is an expression with a possible side-effect. The idea
  * is to treat side effects as entry points in the control flow
  * graph so that we can use the dominator tree to find the most recent
  * side-effect.
  */
 private predicate sideEffectCfg(ControlFlow::Node src, ControlFlow::Node dst) {
-  src.getASuccessor() = dst
+  retainedSideEffectNode(src) and
+  dst = nextSideEffectNode(src.getASuccessor())
   or
   // Add an edge from the entry point to any node that might have a side
   // effect.
