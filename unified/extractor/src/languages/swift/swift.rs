@@ -1266,22 +1266,19 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
-        // An `extension Foo { … }` is likewise a `class_like_declaration`, named
-        // by the extended type. The extended type is captured opaquely (as its
-        // source text) so that qualified names (`extension String.Interpolation`,
-        // a `memberType`) name the declaration just like simple ones.
+        // An `extension Foo.Bar { … }` is likewise a `class_like_declaration`.
         rule!(
             (extensionDecl
                 extensionKeyword: @kind
                 modifiers: _* @mods
-                extendedType: @@name
+                extendedType: @extendedType
                 inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
                 memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
-                name_node: (identifier #{name})
+                extension_target: {extendedType}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),

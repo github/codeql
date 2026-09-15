@@ -418,6 +418,11 @@ module Unified {
     /** Gets the node corresponding to the field `base_type`. */
     final F::BaseType getABaseType() { result = this.getBaseType(_) }
 
+    /** Gets the node corresponding to the field `extension_target`. */
+    final F::Expr getExtensionTarget() {
+      unified_class_like_declaration_extension_target(this, result)
+    }
+
     /** Gets the node corresponding to the field `member`. */
     final F::Member getMember(int i) { unified_class_like_declaration_member(this, i, result) }
 
@@ -454,6 +459,7 @@ module Unified {
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_class_like_declaration_base_type(this, _, result) or
+      unified_class_like_declaration_extension_target(this, result) or
       unified_class_like_declaration_member(this, _, result) or
       unified_class_like_declaration_modifier(this, _, result) or
       unified_class_like_declaration_name_node(this, result) or
@@ -1613,6 +1619,10 @@ module Unified {
       result = node.(CatchClause).getPattern() and i = -1 and name = "getPattern"
       or
       result = node.(ClassLikeDeclaration).getBaseType(i) and name = "getBaseType"
+      or
+      result = node.(ClassLikeDeclaration).getExtensionTarget() and
+      i = -1 and
+      name = "getExtensionTarget"
       or
       result = node.(ClassLikeDeclaration).getMember(i) and name = "getMember"
       or
