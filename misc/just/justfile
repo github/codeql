@@ -1,2 +1,4 @@
+[no-cd]
+[positional-arguments]
 format *ARGS=".":
-    npx prettier --write {{ ARGS }}
+    npx prettier --write "$@"
