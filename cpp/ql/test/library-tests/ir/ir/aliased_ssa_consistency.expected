@@ -1,5 +1,4 @@
 missingOperand
-| ir.cpp:2928:23:2928:23 | FieldAddress: x | Instruction 'FieldAddress' is missing an expected operand with tag 'Unary' in function '$@'. | ir.cpp:2927:6:2927:9 | void test() | void test() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -8,7 +7,6 @@ duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 ambiguousSuccessors
-| ir.cpp:2928:17:2928:21 | FieldAddress: point | Instruction 'FieldAddress: point' has 2 successors of kind 'Goto' in function '$@'. | ir.cpp:2927:6:2927:9 | void test() | void test() |
 unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
@@ -28,7 +26,6 @@ wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
-| ir.cpp:2928:23:2928:23 | FieldAddress: x | FieldAddress instruction 'FieldAddress: x' has an object address operand that is not an address, in function '$@'. | ir.cpp:2927:6:2927:9 | void test() | void test() |
 thisArgumentIsNonPointer
 | ir.cpp:2548:34:2548:34 | Call: call to operator bool | Call instruction 'Call: call to operator bool' has a `this` argument operand that is not an address, in function '$@'. | ir.cpp:2547:6:2547:23 | void this_inconsistency(bool) | void this_inconsistency(bool) |
 nonUniqueIRVariable

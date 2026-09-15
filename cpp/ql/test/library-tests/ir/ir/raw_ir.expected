@@ -19788,25 +19788,12 @@ ir.cpp:
 # 2928|     r2928_4(glval<PointerWrapper>) = VariableAddress[#temp2928:3] : 
 # 2928|     mu2928_5(PointerWrapper)       = Store[#temp2928:3]           : &:r2928_4, r2928_2
 # 2928|     r2928_6(glval<Point>)          = FieldAddress[point]          : r2928_4
-#-----|   Goto -> Block 3
-#-----|   Goto -> Block 2
-
-# 2928|   Block 1
-# 2928|     r2928_7(glval<int>) = FieldAddress[x] : 
-# 2928|     r2928_8(int)        = Load[?]         : &:r2928_7, ~m?
-# 2929|     v2929_1(void)       = NoOp            : 
-# 2927|     v2927_4(void)       = ReturnVoid      : 
-# 2927|     v2927_5(void)       = AliasedUse      : ~m?
-# 2927|     v2927_6(void)       = ExitFunction    : 
-
-# 2928|   Block 2
-# 2928|     r2928_9(glval<Point>) = VariableAddress[#temp2928:17] : 
-# 2928|     mu2928_10(Point)      = Store[#temp2928:17]           : &:r2928_9, r2928_6
-#-----|   Goto -> Block 1
-
-# 2928|   Block 3
-# 2928|     r2928_11(Point) = Load[?] : &:r2928_6, ~m?
-#-----|   Goto -> Block 1
+# 2928|     r2928_7(glval<int>)            = FieldAddress[x]              : r2928_6
+# 2928|     r2928_8(int)                   = Load[?]                      : &:r2928_7, ~m?
+# 2929|     v2929_1(void)                  = NoOp                         : 
+# 2927|     v2927_4(void)                  = ReturnVoid                   : 
+# 2927|     v2927_5(void)                  = AliasedUse                   : ~m?
+# 2927|     v2927_6(void)                  = ExitFunction                 : 
 
 ir23.cpp:
 #    1| bool consteval_1()
