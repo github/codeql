@@ -51,9 +51,12 @@ class X {
         baseMethod() // $ access=X.baseMethod
         baseMethodNoImpl() // $ access=Base.baseMethodNoImpl // with no visible implementation, just resolve to the signature
         baseMethodExt() // $ access=BaseImpl.baseMethodExt
+
+        // Static name binding may find multiple targets. Type inference should disambiguate.
         baseMethodDefaultImpl() // $ access=Base.baseMethodDefaultImpl access=BaseImpl.baseMethodDefaultImpl
     }
 }
+
 extension X : Base { // $ access=X access=Base
     func baseMethod() {} // name=X.baseMethod
 }
