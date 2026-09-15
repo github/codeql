@@ -1,6 +1,6 @@
-"""Run a command on the files with the given extensions below the given paths.
+"""Run a command on the files matching the given patterns below the given paths.
 
-This is a portable `find <path>... -name '*.<ext>' -exec <command> {} +`. It exists
+This is a portable `find <path>... -name <pattern> -exec <command> {} +`. It exists
 because `find` is an unrelated program on Windows, and because a shell command
 substitution splits the file names it produces on whitespace, which mangles the many
 paths in this repository that contain spaces.
@@ -9,12 +9,21 @@ The command is run once per batch of file names rather than once per file, and t
 batches are sized so that no single command line runs into a length limit. Nothing is
 run at all when no file matches.
 
-Usage: run_on_files.py <ext>[,<ext>...] <command> [<arg>...] -- [<path>...]
+Usage: run_on_files.py [option...] <pattern>[,<pattern>...] <command> [<arg>...]
+                       -- [<path>...]
+
+Options:
+  --exclude <pattern>  leave out files whose path matches, repeatable
+  --absolute           pass absolute file names, needed when the command runs elsewhere
+
+The command is separated from the paths by the last `--`, so that it may contain one of
+its own, as `bazel run <target> -- <flag>...` does.
 """
 
 import os
 import subprocess
 import sys
+from fnmatch import fnmatch
 from pathlib import Path
 
 def batch_limit():
@@ -36,25 +45,31 @@ def batch_limit():
     return max(4096, arg_max - environment - 4096)
 
 
-def files_under(paths, extensions):
-    """Collect the files with one of the extensions at or below each path.
+def files_under(paths, patterns, excludes=(), absolute=False):
+    """Collect the files matching one of the patterns at or below each path.
+
+    Patterns are matched against the file name, as bazel files are identified by name
+    rather than by extension. Exclusions are matched against the whole path instead,
+    which is how a directory of generated files is left alone.
 
     Symbolic links are not followed, which is what keeps the `bazel-*` convenience
     links out of the walk.
     """
+
+    def wanted(path):
+        return any(fnmatch(path.name, p) for p in patterns) and not any(
+            fnmatch(str(path), e) for e in excludes
+        )
+
     found = set()
     for path in map(Path, paths):
         if path.is_file():
-            if path.suffix in extensions:
+            if wanted(path):
                 found.add(path)
             continue
         for directory, _, names in os.walk(path):
-            found.update(
-                Path(directory) / name
-                for name in names
-                if Path(name).suffix in extensions
-            )
-    return sorted(str(path) for path in found)
+            found.update(p for p in map(Path(directory).joinpath, names) if wanted(p))
+    return sorted(os.path.abspath(p) if absolute else str(p) for p in found)
 
 
 def batched(files, limit):
@@ -70,13 +85,30 @@ def batched(files, limit):
         yield batch
 
 
+def parse_options(args):
+    """Take the leading options off the argument list, returning what they asked for."""
+    excludes, absolute = [], False
+    while args and args[0] != "--" and args[0].startswith("--"):
+        option = args.pop(0)
+        if option == "--absolute":
+            absolute = True
+        elif option == "--exclude":
+            excludes.append(args.pop(0))
+        else:
+            sys.exit(f"run_on_files.py: unknown option {option}")
+    return excludes, absolute
+
+
 def main():
-    extensions = set(sys.argv[1].split(","))
-    rest = sys.argv[2:]
-    separator = rest.index("--")
+    args = sys.argv[1:]
+    excludes, absolute = parse_options(args)
+    patterns = set(args[0].split(","))
+    rest = args[1:]
+    # The command may hold a `--` of its own, so the paths start after the last one.
+    separator = len(rest) - 1 - rest[::-1].index("--")
     command, paths = rest[:separator], rest[separator + 1 :]
 
-    files = files_under(paths, extensions)
+    files = files_under(paths, patterns, excludes, absolute)
     limit = batch_limit() - sum(len(arg) + 1 for arg in command)
     status = 0
     for batch in batched(files, limit):
