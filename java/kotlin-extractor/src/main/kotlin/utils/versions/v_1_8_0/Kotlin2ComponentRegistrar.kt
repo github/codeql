@@ -21,6 +21,7 @@ abstract class Kotlin2ComponentRegistrar : ComponentRegistrar {
         configuration: CompilerConfiguration
     ) {
         this.project = project
+        com.github.codeql.comments.KDocProjectHolder.project = project
         doRegisterExtensions(configuration)
     }
 
