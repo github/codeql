@@ -971,6 +971,18 @@ class KeyValueExpr extends @keyvalueexpr, Expr {
   /** Gets the composite literal to which this key-value pair belongs. */
   CompositeLit getLiteral() { this = result.getElement(_) }
 
+  /**
+   * Gets the type of this key-value pair.
+   *
+   * The Go type checker does not assign a type to key-value pairs, so we use the
+   * type of the value, which is the value that flows through this node.
+   */
+  override Type getType() {
+    type_of(this, result)
+    or
+    not type_of(this, _) and result = this.getValue().getType()
+  }
+
   override string toString() { result = "key-value pair" }
 
   override string getAPrimaryQlClass() { result = "KeyValueExpr" }

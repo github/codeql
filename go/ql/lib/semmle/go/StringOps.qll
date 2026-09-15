@@ -147,7 +147,8 @@ module StringOps {
 
       HasPrefix_Substring() {
         this.eq(_, slice, substring) and
-        slice.getLow().getIntValue() = 0 and
+        // An omitted lower bound (`x[:len(y)]`) is implicitly `0`.
+        (not exists(slice.getLow()) or slice.getLow().getIntValue() = 0) and
         (
           exists(DataFlow::CallNode len |
             len = Builtin::len().getACall() and
