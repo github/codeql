@@ -174,6 +174,7 @@ module CfgImpl {
       result = c.(Go::FuncDef).getParameter(index).getDeclaration()
     }
 
+    cached
     Callable getEnclosingCallable(AstNode node) {
       result = node.getEnclosingFunction()
       or
