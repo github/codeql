@@ -262,6 +262,8 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     node2 = getNodeFromRef(p.getSubPattern())
   )
   or
+  // Extensions have access to the members of the entity they extend.
+  // TODO: The type parameters of the target type should also be in the local scope (for Swift).
   exists(ClassLikeDeclaration extension |
     node1 = getNodeFromRef(extension.getExtensionTarget()) and
     node2.isLocalNamespace(extension)
