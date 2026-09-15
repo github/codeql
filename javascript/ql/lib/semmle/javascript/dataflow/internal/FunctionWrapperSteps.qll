@@ -145,3 +145,38 @@ private module Cached {
 }
 
 import Cached
+
+private DataFlow::SourceNode forwardedCalleeSource(
+  DataFlow::CallNode call, DataFlow::TypeBackTracker t
+) {
+  t.start() and
+  result = call.getCalleeNode().getALocalSource()
+  or
+  exists(DataFlow::TypeBackTracker t2 | result = forwardedCalleeSource(call, t2).backtrack(t2, t))
+}
+
+/**
+ * Data flow into a concrete function invoked through a forwarding wrapper.
+ *
+ * Only arguments with a statically known position and a corresponding non-rest parameter are
+ * modeled.
+ */
+private class FunctionWrapperCallStep extends DataFlow::SharedFlowStep {
+  DataFlow::CallNode call;
+  DataFlow::FunctionNode wrapped;
+
+  FunctionWrapperCallStep() {
+    DataFlow::functionOneWayForwardingStep(wrapped,
+      forwardedCalleeSource(call, DataFlow::TypeBackTracker::end()))
+  }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(int index |
+      // getArgument only has a result when the argument position is statically known.
+      pred = call.getArgument(index) and
+      succ = wrapped.getParameter(index) and
+      // A rest parameter receives an array, not the argument at this index.
+      not succ.(DataFlow::ParameterNode).isRestParameter()
+    )
+  }
+}
