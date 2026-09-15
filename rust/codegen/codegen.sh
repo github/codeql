@@ -2,7 +2,7 @@
 
 set -eu
 
-source misc/bazel/runfiles.sh 2>/dev/null || source external/ql+/misc/bazel/runfiles.sh
+source misc/bazel/runfiles.sh 2>/dev/null || source ../ql+/misc/bazel/runfiles.sh
 
 ast_generator="$(rlocation "$1")"
 grammar_file="$(rlocation "$2")"
