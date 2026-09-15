@@ -206,7 +206,7 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
     )
   }
 
-  private string arrow(ControlFlowNode n) {
+  private string outgoingArrow(ControlFlowNode n) {
     exists(Dir dir | singleLineBlockStep(_, _, n, _, dir) |
       dir = Down() and result = " -V "
       or
@@ -235,7 +235,7 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
               (
                 i = 0 and s = n.toString()
                 or
-                i = 1 and s = arrow(n)
+                i = 1 and s = outgoingArrow(n)
               )
             |
               s order by r, i
