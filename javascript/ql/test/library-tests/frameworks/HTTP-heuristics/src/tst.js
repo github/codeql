@@ -29,18 +29,18 @@ someOtherApp.get('/some/path', function(r, s, n) {
 
 someOtherApp.delete('/some/path',  function(req, res) {}) // $ Alert[js/unpromoted-route-setup-candidate]
 
-someOtherApp.get('/some/path',
+someOtherApp.get('/some/path', // $ Alert[js/unpromoted-route-setup-candidate]
                  function(req, res) {},
-                 function(req, res) {}) // $ Alert[js/unpromoted-route-setup-candidate]
+                 function(req, res) {})
 
-someOtherApp.get('/some/path', [
+someOtherApp.get('/some/path', [ // $ Alert[js/unpromoted-route-setup-candidate]
     function(req, res) {},
     function(req, res) {}
-]) // $ Alert[js/unpromoted-route-setup-candidate]
+])
 
-someOtherApp.get('/some/path',
+someOtherApp.get('/some/path', // $ Alert[js/unpromoted-route-setup-candidate]
                  function() {},
-                 function(req, res) {}) // $ Alert[js/unpromoted-route-setup-candidate]
+                 function(req, res) {})
 
 
 function f(req, res) {} // $ Alert[js/unpromoted-route-handler-candidate]
@@ -49,27 +49,27 @@ function f(ctx, next) {
     ctx.acceptsCharsets()
 }
 
-function f(req, res) {
+function f(req, res) { // $ Alert[js/unpromoted-route-handler-candidate]
     req()
-} // $ Alert[js/unpromoted-route-handler-candidate]
+}
 
-function called(req,res) {
+function called(req,res) { // $ Alert[js/unpromoted-route-handler-candidate]
 
-} // $ Alert[js/unpromoted-route-handler-candidate]
+}
 called()
 
-function f(req,res) {
+function f(req,res) { // $ Alert[js/unpromoted-route-handler-candidate]
     return;
-} // $ Alert[js/unpromoted-route-handler-candidate]
+}
 
-function f(req,res) {
+function f(req,res) { // $ Alert[js/unpromoted-route-handler-candidate]
     return x;
-} // $ Alert[js/unpromoted-route-handler-candidate]
+}
 
 function adHocTestsFor_HeuristicRouteHandler() {
-    function rh_dead(req, res) {
+    function rh_dead(req, res) { // $ Alert[js/unpromoted-route-handler-candidate]
 
-    } // $ Alert[js/unpromoted-route-handler-candidate]
+    }
 
     function rh_flowToSetup(req, res) {
 
@@ -106,9 +106,9 @@ function adHocTestsFor_HeuristicRouteSetups() {
 
 function adHocTestsFor_HeuristicRouteHandler_withTracking() {
     function get_rh_dead() {
-        return function rh_dead(req, res) {
+        return function rh_dead(req, res) { // $ Alert[js/unpromoted-route-handler-candidate]
 
-        } // $ Alert[js/unpromoted-route-handler-candidate]
+        }
     }
     var rh_dead = get_rh_dead();
 

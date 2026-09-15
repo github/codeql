@@ -7,9 +7,9 @@ class FutileConditionalTest
     {
         if (s.Length > 0) ; // $ Alert
 
-        if (s.Length > 1)
+        if (s.Length > 1) // $ Alert
         {
-        } // $ Alert
+        }
 
         if (s.Length > 2) // GOOD: because of else-branch
         {
@@ -19,12 +19,12 @@ class FutileConditionalTest
             Console.WriteLine("hello");
         }
 
-        if (s.Length > 3)
+        if (s.Length > 3) // $ Alert
         {
         }
         else
         {
-        } // $ Alert
+        }
 
         if (s.Length > 4)
         {

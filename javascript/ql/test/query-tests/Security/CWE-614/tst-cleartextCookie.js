@@ -2,12 +2,12 @@ const express = require('express')
 const app = express()
 
 app.get('/a', function (req, res, next) {
-    res.cookie('authkey', 'value',
+    res.cookie('authkey', 'value', // $ Alert
         {
             maxAge: 9000000000,
             httpOnly: true,
             secure: false
-        }); // $ Alert
+        });
     res.end('ok')
 })
 
@@ -104,19 +104,19 @@ const express = require('express')
 const app = express()
 const session = require('express-session')
 
-app.use(session({
+app.use(session({ // $ Alert
     secret: 'secret',
     cookie: { secure: false }
-})) // $ Alert
+}))
 
-app.use(session({
+app.use(session({ // $ Alert
     secret: 'secret'
-})) // $ Alert
+}))
 
-app.use(session({
+app.use(session({ // $ Alert
     secret: 'secret',
     cookie: {}
-})) // $ Alert
+}))
 
 const sess = {
     secret: 'secret',
@@ -147,7 +147,7 @@ app.use(session({
     expires: expiryDate
 }))
 
-app.use(session({
+app.use(session({ // $ Alert
     name: 'session',
     keys: ['key1', 'key2'],
     secure: false,
@@ -155,7 +155,7 @@ app.use(session({
     domain: 'example.com',
     path: 'foo/bar',
     expires: expiryDate
-})) // $ Alert
+}))
 
 http.createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html');

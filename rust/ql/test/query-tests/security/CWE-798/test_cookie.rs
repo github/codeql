@@ -22,19 +22,19 @@ fn test_cookie_jar(array_var: &[u8], val: u64) {
     let key2 = Key::from(&array2); // $ Sink
     _ = jar.private_mut(&key2);
 
-    let str3 = match(val) {
+    let str3 = match(val) { // $ Alert[rust/hard-coded-cryptographic-value]
         0 => "one",
         1 => "two",
         _ => "many"
-    }; // $ Alert[rust/hard-coded-cryptographic-value]
+    };
     let key3 = Key::from(str3.as_bytes()); // $ Sink
     _ = jar.signed_mut(&key3);
 
-    let array4: [u8; 3] = [
+    let array4: [u8; 3] = [ // $ Alert[rust/hard-coded-cryptographic-value]
         1,
         2,
         val as u8
-    ]; // $ Alert[rust/hard-coded-cryptographic-value]
+    ];
     let key4 = Key::from(&array4); // $ Sink
     _ = jar.signed_mut(&key4);
 }

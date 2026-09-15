@@ -80,9 +80,9 @@ def m9(x)
   x = x.gsub(/^(\.\.\/?)+/, "") # OK
 
   # NOT OK
-  x = x.gsub(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/) do |match|
+  x = x.gsub(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/) do |match| # $ hasResult=html
       if unknown then match else "" end
-  end # $ hasResult=html
+  end
 
   x = x.gsub(/<\/?([a-z][a-z0-9]*)\b[^>]*>/i, "") # NOT OK [INCONSISTENCY] $ hasResult=html
 
@@ -113,10 +113,10 @@ def m9(x)
 
   x = x.gsub(/<!\-\-DEVEL[\d\D]*?DEVEL\-\->/, "") # OK
 
-  x = x
+  x = x # $ hasResult=path
     .gsub(/^\.\//, "")
     .gsub(/\/\.\//, "/")
-    .gsub(/[^\/]*\/\.\.\//, "") # $ hasResult=path
+    .gsub(/[^\/]*\/\.\.\//, "")
 
   x
 end
