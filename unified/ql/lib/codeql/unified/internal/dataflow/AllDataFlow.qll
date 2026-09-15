@@ -4,6 +4,7 @@ import Content
 import DataFlowGraph
 import DataFlowInstantiation
 import DataFlowNode
+import DataFlowPlugin
 import Step
 import LocalSsa
 import TaintTrackingInstantiation

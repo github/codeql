@@ -2,6 +2,8 @@ private import unified
 private import AllDataFlow
 
 predicate step(Node node1, Step step, Node node2) {
+  any(DataFlowPlugin p).step(node1, step, node2)
+  or
   exists(VariableDeclaration decl |
     node1.isResultValue(decl.getValue()) and
     step.value() and
@@ -38,28 +40,10 @@ predicate step(Node node1, Step step, Node node2) {
     node2.isLocalVariablePostUpdate(access, access.getImplicitQualifierVariable())
   )
   or
-  exists(BinaryExpr expr |
-    expr.getOperator().getValue() = "+" and
-    node1.isResultValue([expr.getLeft(), expr.getRight()]) and
-    step.taint() and
-    node2.isResultValue(expr)
-  )
-  or
   exists(StringInterpolationExpr expr |
     node1.isResultValue(expr.getAnElement()) and
     step.taint() and
     node2.isResultValue(expr)
-  )
-  or
-  exists(CallExpr call |
-    // String interpolations in Swift currently insert a call to a built-in called "interpolation".
-    // Add taint through plain 1-argument calls to this built-in.
-    call.getCallee().(BuiltinExpr).getValue() = "interpolation" and
-    call.getNumberOfArguments() = 1 and
-    not exists(call.getArgument(0).getName()) and
-    node1.isResultValue(call.getArgument(0).getValue()) and
-    step.value() and
-    node2.isResultValue(call)
   )
   or
   exists(TupleExpr expr, int i |
