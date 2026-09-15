@@ -1,0 +1,10 @@
+import "../justfile"
+
+# The Kotlin extractor must see the diagnostic limit set, but blank: hence the single
+# trailing space.
+base_flags := ['CODEQL_EXTRACTOR_KOTLIN_DIAGNOSTIC_LIMIT= ']
+
+all_checks := default_db_checks ++ ['--check-undefined-labels', '--check-repeated-labels', '--check-redefined-labels', '--check-use-before-definition', '--consistency-queries=' + consistency_queries]
+
+[no-cd]
+test *ARGS=".": (_codeql_test "java" (base_flags ++ prepend('--all-checks=', all_checks) ++ ARGS))

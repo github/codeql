@@ -1,0 +1,4 @@
+import "../../../lib.just"
+
+[no-cd]
+test *ARGS=".": (_just "generate") (_integration_test ARGS)
