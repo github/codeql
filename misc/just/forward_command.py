@@ -40,6 +40,11 @@ ERROR = os.environ.get("JUST_ERROR", "")
 # justfile of a nested repository.
 FORWARD_RECIPE = "_forward"
 
+# A justfile that forwards a verb has already spent the plain name on the forwarder, so
+# it names its own implementation of that verb `_root_<verb>`. This is how a repository
+# root gets to answer a verb for itself while still dispatching it everywhere else.
+ROOT_PREFIX = "_root_"
+
 # Justfiles may list verbs that must be spelled out explicitly instead of being picked
 # up by a verb aimed at one of their parent directories.
 EXPLICIT_VERBS = "explicit_verbs"
@@ -54,7 +59,7 @@ def error(message):
     print(f"{ERROR}{message}", file=sys.stderr)
 
 
-def get_just_context(justfile, cmd, flags, positional_args):
+def get_just_context(justfile, recipe, flags, positional_args):
     """Get the (cwd, args) for invoking just with the given justfile."""
     if (
         len(positional_args) == 1
@@ -63,9 +68,9 @@ def get_just_context(justfile, cmd, flags, positional_args):
         # If there's only one positional argument and it matches the justfile
         # path, suppress arguments so e.g. `just build ql/rust` becomes
         # `just build` in the `ql/rust` directory
-        return positional_args[0], [cmd, *flags]
+        return positional_args[0], [recipe, *flags]
     else:
-        return None, ["--justfile", str(justfile), cmd, *flags, *positional_args]
+        return None, ["--justfile", str(justfile), recipe, *flags, *positional_args]
 
 
 def dump_justfile(justfile):
@@ -105,14 +110,20 @@ def accepts(recipe, argc):
 
 def implements(dump, command, argc):
     """Return the recipe a justfile runs for a command, if it has a usable one."""
-    recipe = dump["recipes"].get(dump["aliases"].get(command, command))
-    if recipe is None or recipe["private"] or not accepts(recipe, argc):
+    recipes = dump["recipes"]
+    recipe = recipes.get(dump["aliases"].get(command, command))
+    if recipe is None or recipe["private"]:
         return None
     if any(
         dependency["recipe"] == FORWARD_RECIPE for dependency in recipe["dependencies"]
     ):
-        return None
-    return recipe
+        # Here the plain name is the forwarder's own, so it says nothing about what this
+        # directory does. A justfile that both forwards and answers the command itself
+        # spells its own answer `_root_<command>`, the one name the two can share.
+        recipe = recipes.get(f"{ROOT_PREFIX}{command}")
+        if recipe is None:
+            return None
+    return recipe if accepts(recipe, argc) else None
 
 
 def opts_out(dump, command):
@@ -250,26 +261,29 @@ def find_justfiles_below(command, directory, covered=()):
         if any(recipe in contributed.get(p, []) for p in justfile.parent.parents):
             continue
         contributed.setdefault(justfile.parent, []).append(recipe)
-        found.append(justfile)
-    return sorted(found), sorted(opted_out)
+        found.append((justfile, recipe))
+    return sorted(found, key=lambda match: match[0]), sorted(opted_out)
 
 
 def resolve(command, arg):
     """Find the justfiles implementing a command for an argument.
 
-    Returns a list of (justfile, argument) pairs, from both above and below the
-    argument. One found above gets the argument itself, as that selects what to act on.
-    One found below gets its own directory instead, as there the argument only said
+    Returns a list of (justfile, argument, recipe) triples, from both above and below
+    the argument. One found above gets the argument itself, as that selects what to act
+    on. One found below gets its own directory instead, as there the argument only said
     where to look. Justfiles below that asked to be named are returned separately.
     """
     above = find_justfiles_above(command, arg)
-    resolved = [(justfile, arg) for justfile, _ in above]
+    resolved = [(justfile, arg, recipe["name"]) for justfile, recipe in above]
     opted_out = []
     if os.path.isdir(arg):
         below, opted_out = find_justfiles_below(
             command, arg, [recipe for _, recipe in above]
         )
-        resolved += [(justfile, str(justfile.parent)) for justfile in below]
+        resolved += [
+            (justfile, str(justfile.parent), recipe["name"])
+            for justfile, recipe in below
+        ]
     return resolved, opted_out
 
 
@@ -317,17 +331,17 @@ def forward(cmd, args):
             error(f"No justfile found for {cmd} on {arg}")
             report_opted_out(cmd, skipped, ran=False)
             return 1
-        for justfile, justfile_arg in resolved:
-            justfiles.setdefault(justfile, []).append(justfile_arg)
+        for justfile, justfile_arg, recipe in resolved:
+            justfiles.setdefault(justfile, (recipe, []))[1].append(justfile_arg)
 
     invocations = []
-    for justfile, pos_args in justfiles.items():
+    for justfile, (recipe, pos_args) in justfiles.items():
         # An argument standing for the whole directory subsumes any more specific one
         # that ended up on the same justfile.
         whole_directory = str(justfile.parent)
         if whole_directory in pos_args:
             pos_args = [whole_directory]
-        cwd, just_args = get_just_context(justfile, cmd, flags, pos_args)
+        cwd, just_args = get_just_context(justfile, recipe, flags, pos_args)
         prefix = f"cd {cwd}; " if cwd else ""
         print(f"-> {prefix}just {' '.join(just_args)}")
         invocations.append((cwd, just_args))
