@@ -2437,6 +2437,7 @@
 | Dubious signature "(Strent *)" in summary model. |
 | Dubious signature "(Strtab *,const char *,size_t)" in summary model. |
 | Dubious signature "(Strtab *,size_t *)" in summary model. |
+| Dubious signature "(T &&)" in summary model. |
 | Dubious signature "(T *)" in summary model. |
 | Dubious signature "(T **)" in summary model. |
 | Dubious signature "(TLS_FEATURE *)" in summary model. |
@@ -3691,6 +3692,7 @@
 | Dubious signature "(const SSL_SESSION *,unsigned int *)" in summary model. |
 | Dubious signature "(const SXNET *,unsigned char **)" in summary model. |
 | Dubious signature "(const SXNETID *,unsigned char **)" in summary model. |
+| Dubious signature "(const T &)" in summary model. |
 | Dubious signature "(const T &,BOOL)" in summary model. |
 | Dubious signature "(const TS_ACCURACY *)" in summary model. |
 | Dubious signature "(const TS_ACCURACY *,unsigned char **)" in summary model. |
