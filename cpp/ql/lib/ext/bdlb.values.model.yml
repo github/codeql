@@ -1,0 +1,29 @@
+# Contained values of BDE nullable values and variants.
+# https://github.com/bloomberg/bde/tree/ec310b87e008199ecbdbc00a0b0264a53d806a0a/groups/bdl/bdlb
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data:
+      - ["BloombergLP::bdlb", "NullableValue", False, "value", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "NullableValue", False, "value", "", "", "ReturnValue[*]", "Argument[-1].Element[]", "value", "manual"]
+      - ["BloombergLP::bdlb", "NullableValue", False, "value", "", "", "ReturnValue[**]", "Argument[-1].Element[*]", "value", "manual"]
+      - ["BloombergLP::bdlb", "NullableValue", False, "NullableValue", "(const NullableValue &)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "NullableValue", False, "operator=", "(const NullableValue &)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "NullableValue", False, "operator=", "(const NullableValue &)", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "NullableValue", False, "operator=", "(const NullableValue &)", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      - ["BloombergLP::bdlb", "NullableValue", False, "NullableValue", "(NullableValue &&)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "NullableValue", False, "operator=", "(NullableValue &&)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "NullableValue", False, "operator=", "(NullableValue &&)", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "NullableValue", False, "operator=", "(NullableValue &&)", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "the", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "the", "", "", "ReturnValue[*]", "Argument[-1].Element[]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "the", "", "", "ReturnValue[**]", "Argument[-1].Element[*]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "VariantImp", "(const VariantImp &,bslma::Allocator *)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "operator=", "(const VariantImp &)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "operator=", "(const VariantImp &)", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "operator=", "(const VariantImp &)", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "VariantImp", "(VariantImp &&)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "operator=", "(VariantImp &&)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "operator=", "(VariantImp &&)", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "operator=", "(VariantImp &&)", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
