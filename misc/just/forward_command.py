@@ -273,15 +273,24 @@ def resolve(command, arg):
     return resolved, opted_out
 
 
-def report_opted_out(command, justfiles):
+def report_opted_out(command, justfiles, *, ran):
     """Name the justfiles a command passed over because they ask to be named.
 
     Worth saying even when other recipes did run, as otherwise a command that looks
-    like it covered a whole directory quietly left parts of it alone.
+    like it covered a whole directory quietly left parts of it alone. That case is
+    informational and goes to stdout with the rest of the account of what ran: the
+    command did what was asked of it. Only matching nothing at all is an error.
     """
-    if justfiles:
-        directories = " ".join(sorted(str(jf.parent) for jf in set(justfiles)))
-        error(f"not run, as {command} must name these explicitly: {directories}")
+    if not justfiles:
+        return
+    directories = sorted(str(jf.parent) for jf in set(justfiles))
+    # One per line: there can be dozens, and a single wrapped line is unreadable.
+    listed = "\n".join(f"  {directory}" for directory in directories)
+    message = f"not run, as {command} must name these explicitly:\n{listed}"
+    if ran:
+        print(message)
+    else:
+        error(message)
 
 
 def invoke_just(cwd, args):
@@ -306,7 +315,7 @@ def forward(cmd, args):
         opted_out += skipped
         if not resolved:
             error(f"No justfile found for {cmd} on {arg}")
-            report_opted_out(cmd, skipped)
+            report_opted_out(cmd, skipped, ran=False)
             return 1
         for justfile, justfile_arg in resolved:
             justfiles.setdefault(justfile, []).append(justfile_arg)
@@ -323,10 +332,13 @@ def forward(cmd, args):
         print(f"-> {prefix}just {' '.join(just_args)}")
         invocations.append((cwd, just_args))
 
-    report_opted_out(cmd, opted_out)
+    report_opted_out(cmd, opted_out, ran=True)
 
     for cwd, just_args in invocations:
         if invoke_just(cwd, just_args) != 0:
+            # Say which one, as a verb can fan out over a great many directories.
+            where = f" in {cwd}" if cwd else ""
+            error(f"{cmd} failed{where}: just {' '.join(just_args)}")
             return 1
     return 0
 
