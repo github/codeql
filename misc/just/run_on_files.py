@@ -8,19 +8,11 @@ paths in this repository that contain spaces.
 The command is run once per batch of file names rather than once per file, and the
 batches are sized so that no single command line runs into a length limit. Nothing is
 run at all when no file matches.
-
-Usage: run_on_files.py [option...] <pattern>[,<pattern>...] <command> [<arg>...]
-                       -- [<path>...]
-
-Options:
-  --exclude <pattern>  leave out files whose path matches, repeatable
-  --absolute           pass absolute file names, needed when the command runs elsewhere
-
-The command is separated from the paths by the last `--`, so that it may contain one of
-its own, as `bazel run <target> -- <flag>...` does.
 """
 
+import argparse
 import os
+import re
 import subprocess
 import sys
 from fnmatch import fnmatch
@@ -85,34 +77,85 @@ def batched(files, limit):
         yield batch
 
 
-def parse_options(args):
-    """Take the leading options off the argument list, returning what they asked for."""
-    excludes, absolute = [], False
-    while args and args[0] != "--" and args[0].startswith("--"):
-        option = args.pop(0)
-        if option == "--absolute":
-            absolute = True
-        elif option == "--exclude":
-            excludes.append(args.pop(0))
-        else:
-            sys.exit(f"run_on_files.py: unknown option {option}")
-    return excludes, absolute
+def parse_args():
+    """Work out what to run, on which files, and what to hide of what it says."""
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        usage="%(prog)s [option...] <pattern>[,<pattern>...] "
+        "<command> [<arg>...] -- [<path>...]",
+    )
+    parser.add_argument(
+        "--exclude",
+        action="append",
+        default=[],
+        metavar="<pattern>",
+        help="leave out files whose path matches, repeatable",
+    )
+    parser.add_argument(
+        "--absolute",
+        action="store_true",
+        help="pass absolute file names, needed when the command runs elsewhere",
+    )
+    parser.add_argument(
+        "--drop",
+        action="append",
+        default=[],
+        metavar="<regex>",
+        help="hide matching lines of the command's output, repeatable",
+    )
+    parser.add_argument(
+        "patterns",
+        metavar="<pattern>[,<pattern>...]",
+        type=lambda patterns: set(patterns.split(",")),
+        help="what to match file names against",
+    )
+    parser.add_argument(
+        "rest",
+        nargs=argparse.REMAINDER,
+        metavar="<command> [<arg>...] -- [<path>...]",
+        help="the command, then the paths to search, separated by the last `--` so "
+        "that the command may contain one of its own",
+    )
+    args = parser.parse_args()
+    if "--" not in args.rest:
+        parser.error("the paths must be separated from the command by `--`")
+    separator = len(args.rest) - 1 - args.rest[::-1].index("--")
+    args.command, args.paths = args.rest[:separator], args.rest[separator + 1 :]
+    if not args.command:
+        parser.error("no command given")
+    return args
+
+
+def run(command, drops):
+    """Run the command, hiding the lines of its output that were asked to be hidden.
+
+    Told nothing to hide, the command keeps this process' own output streams, so that
+    it can do as it likes with them. Otherwise its diagnostics are read a line at a
+    time and passed on as they arrive, which is what keeps a long run's progress
+    visible. Only what was named is hidden, so an unforeseen message still gets out.
+
+    Note that these tools report on their progress over standard error rather than
+    standard output, which is left alone here.
+    """
+    if not drops:
+        return subprocess.run(command).returncode
+    hidden = re.compile("|".join(drops))
+    process = subprocess.Popen(command, stderr=subprocess.PIPE, text=True, bufsize=1)
+    for line in process.stderr:
+        if not hidden.search(line):
+            sys.stderr.write(line)
+            sys.stderr.flush()
+    return process.wait()
 
 
 def main():
-    args = sys.argv[1:]
-    excludes, absolute = parse_options(args)
-    patterns = set(args[0].split(","))
-    rest = args[1:]
-    # The command may hold a `--` of its own, so the paths start after the last one.
-    separator = len(rest) - 1 - rest[::-1].index("--")
-    command, paths = rest[:separator], rest[separator + 1 :]
-
-    files = files_under(paths, patterns, excludes, absolute)
-    limit = batch_limit() - sum(len(arg) + 1 for arg in command)
+    args = parse_args()
+    files = files_under(args.paths, args.patterns, args.exclude, args.absolute)
+    limit = batch_limit() - sum(len(argument) + 1 for argument in args.command)
     status = 0
     for batch in batched(files, limit):
-        status = subprocess.run([*command, *batch]).returncode or status
+        status = run([*args.command, *batch], args.drop) or status
     return status
 
 
