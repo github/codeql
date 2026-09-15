@@ -82,17 +82,17 @@ def accepts(recipe, argc):
 
 
 def implements(dump, command, argc, *, implicitly):
-    """Check whether a justfile dump provides a command taking argc arguments."""
+    """Return the recipe a justfile runs for a command, if it has a usable one."""
     recipe = dump["recipes"].get(dump["aliases"].get(command, command))
     if recipe is None or recipe["private"] or not accepts(recipe, argc):
-        return False
+        return None
     if any(
         dependency["recipe"] == FORWARD_RECIPE for dependency in recipe["dependencies"]
     ):
-        return False
+        return None
     if implicitly and command in list_value(dump["assignments"], EXPLICIT_VERBS):
-        return False
-    return True
+        return None
+    return recipe
 
 
 def dump_all(justfiles):
@@ -167,55 +167,85 @@ def find_justfiles(directory):
     return justfiles
 
 
-def find_justfile_above(command, arg):
-    """Search up the directory tree for a justfile implementing the command."""
+def find_justfiles_above(command, arg):
+    """Search up the directory tree for justfiles implementing the command.
+
+    All of them are collected rather than just the nearest, because a recipe higher up
+    is often doing a different job from one further down rather than a broader version
+    of it. Returns (justfile, recipe) pairs, nearest first.
+    """
     candidates = [
         p / "justfile"
         for p in [Path(arg), *Path(arg).parents]
         if (p / "justfile").exists()
     ]
+    found = []
+    seen = []
     for justfile, dump in dump_all(candidates):
         # A justfile sitting exactly on the argument is called without it, as the
         # argument would only repeat where it already is.
         argc = 0 if justfile.parent == Path(arg) else 1
-        if implements(dump, command, argc, implicitly=False):
-            return justfile
-    return None
+        recipe = implements(dump, command, argc, implicitly=False)
+        # These justfiles are nested, so a recipe that was seen already is one this
+        # one merely imported, and the nearest spelling of it has been taken.
+        if recipe is not None and recipe not in seen:
+            seen.append(recipe)
+            found.append((justfile, recipe))
+    return found
 
 
-def find_justfiles_below(command, directory):
-    """Search down a directory for the outermost justfiles implementing the command."""
-    # The justfile at `directory` was already ruled out by the search above it.
+def find_justfiles_below(command, directory, covered=(), *, implicitly=True):
+    """Search down a directory for justfiles implementing the command.
+
+    A justfile is skipped when the recipe it would run is one an enclosing directory
+    already contributes, which is what `import` makes happen: the recipe is the same
+    job, so running it once is enough. `covered` holds the recipes already found above
+    the directory.
+    """
+    # The justfile at `directory` is covered by the search above it.
     candidates = sorted(find_justfiles(directory) - {Path(directory) / "justfile"})
-    # Each of these is called on its own directory, so without arguments.
-    found = [
-        justfile
+    matches = [
+        (justfile, recipe)
         for justfile, dump in dump_all(candidates)
-        if implements(dump, command, 0, implicitly=True)
+        if (recipe := implements(dump, command, 0, implicitly=implicitly))
     ]
-    # Keep only the outermost matches, so that a justfile covering a whole subtree wins
-    # over the ones below it.
-    directories = {justfile.parent for justfile in found}
-    return [
-        justfile
-        for justfile in found
-        if not any(parent in directories for parent in justfile.parent.parents)
-    ]
+    contributed = {Path(directory): list(covered)}
+    found = []
+    # Shallowest first, so that an enclosing justfile is always decided before the ones
+    # it may account for.
+    for justfile, recipe in sorted(matches, key=lambda match: len(match[0].parts)):
+        if any(recipe in contributed.get(p, []) for p in justfile.parent.parents):
+            continue
+        contributed.setdefault(justfile.parent, []).append(recipe)
+        found.append(justfile)
+    return sorted(found)
 
 
 def resolve(command, arg):
     """Find the justfiles implementing a command for an argument.
 
-    Returns a list of (justfile, argument) pairs. A justfile found above the argument
-    gets the argument itself, as that selects what to act on. One found below it gets
-    its own directory instead, as there the argument only said where to look.
+    Returns a list of (justfile, argument) pairs, from both above and below the
+    argument. One found above gets the argument itself, as that selects what to act on.
+    One found below gets its own directory instead, as there the argument only said
+    where to look.
     """
-    justfile = find_justfile_above(command, arg)
-    if justfile:
-        return [(justfile, arg)]
+    above = find_justfiles_above(command, arg)
+    resolved = [(justfile, arg) for justfile, _ in above]
+    if os.path.isdir(arg):
+        below = find_justfiles_below(command, arg, [recipe for _, recipe in above])
+        resolved += [(justfile, str(justfile.parent)) for justfile in below]
+    return resolved
+
+
+def report_missing(command, arg):
+    """Explain a command going nowhere, naming what opted out of being found."""
+    error(f"No justfile found for {command} on {arg}")
     if not os.path.isdir(arg):
-        return []
-    return [(jf, str(jf.parent)) for jf in find_justfiles_below(command, arg)]
+        return
+    skipped = find_justfiles_below(command, arg, implicitly=False)
+    if skipped:
+        directories = " ".join(sorted(str(jf.parent) for jf in skipped))
+        error(f"these ask to be named explicitly: {directories}")
 
 
 def invoke_just(cwd, args):
@@ -237,7 +267,7 @@ def forward(cmd, args):
     for arg in positional_args or ["."]:
         resolved = resolve(cmd, arg)
         if not resolved:
-            error(f"No justfile found for {cmd} on {arg}")
+            report_missing(cmd, arg)
             return 1
         for justfile, justfile_arg in resolved:
             justfiles.setdefault(justfile, []).append(justfile_arg)

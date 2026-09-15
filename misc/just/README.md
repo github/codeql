@@ -20,18 +20,20 @@ The core of the functionality is given by forwarding. The idea is that:
   `just build ql/rust ql/java`, or
   `just test ql/rust/ql/test/some/language/test ql/rust/ql/integration-test/some/integration/test`
   will also work, with corresponding recipes run sequentially.
-- finally, if nothing above an argument implements the verb, the forwarder looks
-  _below_ it, so that `just test ql/cpp` runs the tests defined underneath it. The
-  argument only says where to look in this case, so each recipe found is run on its own
-  directory rather than being passed the argument. Several may be found, in which case
-  they run sequentially: `just format ql/cpp` formats everything under `ql/cpp` that
-  knows how to format itself.
+- finally, the forwarder also looks _below_ each argument, so that `just test ql/cpp`
+  runs the tests defined underneath it. The argument only says where to look in this
+  case, so each recipe found is run on its own directory rather than being passed the
+  argument. Several may be found, in which case they run sequentially: `just format
+  ql/cpp` formats everything under `ql/cpp` that knows how to format itself.
 
-Searching upwards takes precedence, so a justfile naming a verb decides what that verb
-means for its whole subtree. This means a recipe should be named after a verb only if it
-covers everything beneath it: an aggregate that forgets one of the directories under it
-would silently shadow it. Conversely, a directory that only makes sense when named
-explicitly can opt out of being found from above:
+Both directions are searched, and every distinct recipe found runs. This matters because
+a verb higher up is usually doing a different job from one further down rather than a
+broader version of it: `rust` formats Rust sources while `rust/ql` formats QL, so
+`just format rust` has to do both. A recipe that only arrived through `import` is the
+same job, though, and runs once.
+
+A directory that only makes sense when named explicitly can opt out of being found from
+above:
 
 ```just
 explicit_verbs := ['test']
