@@ -1,0 +1,9 @@
+| CryptoClassificationTest.java:27:47:27:68 | ModeOfOperation | Mode of operation: ECB. |
+| CryptoClassificationTest.java:32:51:32:89 | ModeOfOperation | Mode of operation: ECB. |
+| CryptoClassificationTest.java:263:47:263:68 | ModeOfOperation | Mode of operation: ECB. |
+| CryptoClassificationTest.java:268:47:268:65 | ModeOfOperation | Mode of operation: CFB. |
+| CryptoClassificationTest.java:273:47:273:65 | ModeOfOperation | Mode of operation: OFB. |
+| CryptoClassificationTest.java:299:47:299:65 | ModeOfOperation | Mode of operation: GCM. |
+| CryptoClassificationTest.java:307:47:307:65 | ModeOfOperation | Mode of operation: GCM. |
+| CryptoClassificationTest.java:315:47:315:65 | ModeOfOperation | Mode of operation: GCM. |
+| CryptoClassificationTest.java:324:44:324:65 | ModeOfOperation | Mode of operation: CBC. |

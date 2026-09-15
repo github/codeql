@@ -1,0 +1,4 @@
+query: experimental/quantum/Examples/Demo/ProtocolJWS_PS.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql
