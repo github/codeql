@@ -203,6 +203,13 @@ def find_justfiles(directory):
     return justfiles
 
 
+def invocation_path(path, *, like):
+    """Spell an absolute path like the user spelled the argument."""
+    if Path(like).is_absolute():
+        return path
+    return Path(os.path.relpath(path, Path.cwd()))
+
+
 def find_justfiles_above(command, arg):
     """Search up the directory tree for justfiles implementing the command.
 
@@ -210,9 +217,10 @@ def find_justfiles_above(command, arg):
     is often doing a different job from one further down rather than a broader version
     of it. Returns (justfile, recipe) pairs, nearest first.
     """
+    directory = Path(arg).resolve()
     candidates = [
-        p / "justfile"
-        for p in [Path(arg), *Path(arg).parents]
+        invocation_path(p / "justfile", like=arg)
+        for p in [directory, *directory.parents]
         if (p / "justfile").exists()
     ]
     found = []
@@ -220,7 +228,7 @@ def find_justfiles_above(command, arg):
     for justfile, dump in dump_all(candidates):
         # A justfile sitting exactly on the argument is called without it, as the
         # argument would only repeat where it already is.
-        argc = 0 if justfile.parent == Path(arg) else 1
+        argc = 0 if justfile.parent.resolve() == directory else 1
         recipe = implements(dump, command, argc)
         # These justfiles are nested, so a recipe that was seen already is one this
         # one merely imported, and the nearest spelling of it has been taken.
