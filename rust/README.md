@@ -62,4 +62,4 @@ for code generation to succeed.
 
 ### Updating `rust-analyzer`
 
-See [Updating rust-analyzer](UPDATING-RUST-ANALYZER.md).
+See [Updating rust-analyzer](updating-rust-analyzer.md).

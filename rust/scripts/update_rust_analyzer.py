@@ -68,7 +68,7 @@ def get_compatible_rust_toolchain(rust_analyzer_version: str) -> str:
     crate = json.loads(fetch(crate_url))
     rust_analyzer_release = crate["version"]["created_at"].split("T")[0]
 
-    # `manifests.txt` is a list of all toolchains. The one we're interested looks likes
+    # `manifests.txt` is a list of all toolchains. The one we're interested in looks like
     # ```
     # static.rust-lang.org/dist/YYYY-MM-DD/channel-rust-stable.toml
     # ```

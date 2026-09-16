@@ -8,7 +8,7 @@ pkg-config`.
 
 > [!TIP]
 > All steps up to and including running `bazel run //rust:install` are (barring
-> any errors) caried out by the script `./scripts/update_rust_analyzer.py`.
+> any errors) carried out by the script `rust/scripts/update_rust_analyzer.py`.
 > Prefer using the script.
 
 1. Update dependencies.
@@ -58,7 +58,7 @@ pkg-config`.
    ```
    bazel run //rust/codegen
    ```
-   If codegen fails other changes might be neccessary. For instance, adaptions
+   If codegen fails, other changes might be necessary. For instance, adaptations
    to `annotations.py`. Make these changes in separate commits.
 
    Once codegen succeeds commit only the changes made by codegen with
@@ -87,8 +87,8 @@ pkg-config`.
         toolchain in `rust/extractor/src/nightly-toolchain/rust-toolchain.toml`
         to a more recent date while you're at it.
       * a toolchain and/or `rules_rust` bump invalidates the vendored files, so
-        re-run `misc/bazel/3rdparty/update_cargo_deps.sh` (see the note in step
-        4) and commit the regenerated files.
+       re-run `misc/bazel/3rdparty/update_cargo_deps.sh` (see the note in step
+       3) and commit the regenerated files.
    * if it fails while compiling rust extractor code, you will need to adapt it
      to the new library version.
       * for example updating annotations in `annotations.py`, adding / removing
