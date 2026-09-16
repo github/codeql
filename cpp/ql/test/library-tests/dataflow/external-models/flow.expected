@@ -85,86 +85,88 @@ models
 | 84 | Summary: ; ; false; ymlStepGenerated; ; ; Argument[0]; ReturnValue; taint; df-generated |
 | 85 | Summary: ; ; false; ymlStepManual; ; ; Argument[0]; ReturnValue; taint; manual |
 | 86 | Summary: ; ; false; ymlStepManual_with_body; ; ; Argument[0]; ReturnValue; taint; manual |
-| 87 | Summary: ; MyString; true; operator[]; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 88 | Summary: ; MyString; true; operator[]; ; ; ReturnValue[*]; Argument[-1]; taint; manual |
-| 89 | Summary: ; ReverseFlow; true; get_ptr; ; ; ReturnValue[*]; Argument[-1].Field[ReverseFlow::value]; value; manual |
-| 90 | Summary: ; TemplateClass1; true; templateFunction2<U,V>; (U,V); ; Argument[1]; ReturnValue; value; manual |
-| 91 | Summary: ; TemplateClass1<T>; false; templateFunction<U>; (T,U); ; Argument[0]; ReturnValue; value; manual |
-| 92 | Summary: ; TemplateClass2<T,U>; true; function; (U,T); ; Argument[1]; ReturnValue; value; manual |
-| 93 | Summary: Azure::Core::IO; BodyStream; true; Read; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 94 | Summary: Azure::Core::IO; BodyStream; true; ReadToCount; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 95 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
-| 96 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 97 | Summary: BloombergLP::bdlbb; Blob; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 98 | Summary: BloombergLP::bdlbb; BlobBuffer; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 99 | Summary: BloombergLP::bdlbb; BlobBuffer; true; data; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 100 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const Blob &,int,int); ; Argument[*2]; Argument[*0]; taint; manual |
-| 101 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const char *,int); ; Argument[*2]; Argument[*0]; taint; manual |
-| 102 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (char *,const Blob &,int,int); ; Argument[*1]; Argument[*0]; taint; manual |
-| 103 | Summary: BloombergLP::bdlbb; BlobUtil; true; getContiguousRangeOrCopy; ; ; Argument[*1]; ReturnValue[*]; taint; manual |
-| 104 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 105 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 106 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 107 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
-| 108 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view); ; Argument[1..2]; ReturnValue; taint; manual |
-| 109 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
-| 110 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags); ; Argument[1..2]; ReturnValue; taint; manual |
-| 111 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
-| 112 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 113 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 114 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 115 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
-| 116 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view); ; Argument[0..1]; ReturnValue; taint; manual |
-| 117 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
-| 118 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags); ; Argument[0..1]; ReturnValue; taint; manual |
-| 119 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
-| 120 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
-| 121 | Summary: google::protobuf; MessageLite; true; AppendPartialToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 122 | Summary: google::protobuf; MessageLite; true; AppendPartialToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 123 | Summary: google::protobuf; MessageLite; true; AppendToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 124 | Summary: google::protobuf; MessageLite; true; AppendToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 125 | Summary: google::protobuf; MessageLite; true; MergeFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 126 | Summary: google::protobuf; MessageLite; true; MergeFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 127 | Summary: google::protobuf; MessageLite; true; MergeFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 128 | Summary: google::protobuf; MessageLite; true; MergeFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
-| 129 | Summary: google::protobuf; MessageLite; true; MergeFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
-| 130 | Summary: google::protobuf; MessageLite; true; MergePartialFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 131 | Summary: google::protobuf; MessageLite; true; MergePartialFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 132 | Summary: google::protobuf; MessageLite; true; MergePartialFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 133 | Summary: google::protobuf; MessageLite; true; MergePartialFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
-| 134 | Summary: google::protobuf; MessageLite; true; MergePartialFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
-| 135 | Summary: google::protobuf; MessageLite; true; ParseFromArray; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 136 | Summary: google::protobuf; MessageLite; true; ParseFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 137 | Summary: google::protobuf; MessageLite; true; ParseFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 138 | Summary: google::protobuf; MessageLite; true; ParseFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 139 | Summary: google::protobuf; MessageLite; true; ParseFromIstream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 140 | Summary: google::protobuf; MessageLite; true; ParseFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
-| 141 | Summary: google::protobuf; MessageLite; true; ParseFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
-| 142 | Summary: google::protobuf; MessageLite; true; ParseFromZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 143 | Summary: google::protobuf; MessageLite; true; ParsePartialFromArray; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 144 | Summary: google::protobuf; MessageLite; true; ParsePartialFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 145 | Summary: google::protobuf; MessageLite; true; ParsePartialFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 146 | Summary: google::protobuf; MessageLite; true; ParsePartialFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 147 | Summary: google::protobuf; MessageLite; true; ParsePartialFromIstream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 148 | Summary: google::protobuf; MessageLite; true; ParsePartialFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
-| 149 | Summary: google::protobuf; MessageLite; true; ParsePartialFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
-| 150 | Summary: google::protobuf; MessageLite; true; ParsePartialFromZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
-| 151 | Summary: google::protobuf; MessageLite; true; SerializeAsCord; ; ; Argument[-1]; ReturnValue; taint; manual |
-| 152 | Summary: google::protobuf; MessageLite; true; SerializeAsString; ; ; Argument[-1]; ReturnValue; taint; manual |
-| 153 | Summary: google::protobuf; MessageLite; true; SerializePartialAsCord; ; ; Argument[-1]; ReturnValue; taint; manual |
-| 154 | Summary: google::protobuf; MessageLite; true; SerializePartialAsString; ; ; Argument[-1]; ReturnValue; taint; manual |
-| 155 | Summary: google::protobuf; MessageLite; true; SerializePartialToArray; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 156 | Summary: google::protobuf; MessageLite; true; SerializePartialToCodedStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 157 | Summary: google::protobuf; MessageLite; true; SerializePartialToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 158 | Summary: google::protobuf; MessageLite; true; SerializePartialToOstream; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 159 | Summary: google::protobuf; MessageLite; true; SerializePartialToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 160 | Summary: google::protobuf; MessageLite; true; SerializePartialToZeroCopyStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 161 | Summary: google::protobuf; MessageLite; true; SerializeToArray; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 162 | Summary: google::protobuf; MessageLite; true; SerializeToCodedStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 163 | Summary: google::protobuf; MessageLite; true; SerializeToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 164 | Summary: google::protobuf; MessageLite; true; SerializeToOstream; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 165 | Summary: google::protobuf; MessageLite; true; SerializeToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 166 | Summary: google::protobuf; MessageLite; true; SerializeToZeroCopyStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 87 | Summary: ; Container; true; get; ; ; Argument[-1].Element; ReturnValue[*]; value; manual |
+| 88 | Summary: ; Forwarder; true; get; ; ; Argument[-1]; ReturnValue; value; manual |
+| 89 | Summary: ; MyString; true; operator[]; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 90 | Summary: ; MyString; true; operator[]; ; ; ReturnValue[*]; Argument[-1]; taint; manual |
+| 91 | Summary: ; ReverseFlow; true; get_ptr; ; ; ReturnValue[*]; Argument[-1].Field[ReverseFlow::value]; value; manual |
+| 92 | Summary: ; TemplateClass1; true; templateFunction2<U,V>; (U,V); ; Argument[1]; ReturnValue; value; manual |
+| 93 | Summary: ; TemplateClass1<T>; false; templateFunction<U>; (T,U); ; Argument[0]; ReturnValue; value; manual |
+| 94 | Summary: ; TemplateClass2<T,U>; true; function; (U,T); ; Argument[1]; ReturnValue; value; manual |
+| 95 | Summary: Azure::Core::IO; BodyStream; true; Read; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 96 | Summary: Azure::Core::IO; BodyStream; true; ReadToCount; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 97 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
+| 98 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 99 | Summary: BloombergLP::bdlbb; Blob; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 100 | Summary: BloombergLP::bdlbb; BlobBuffer; true; buffer; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 101 | Summary: BloombergLP::bdlbb; BlobBuffer; true; data; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 102 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const Blob &,int,int); ; Argument[*2]; Argument[*0]; taint; manual |
+| 103 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (Blob *,int,const char *,int); ; Argument[*2]; Argument[*0]; taint; manual |
+| 104 | Summary: BloombergLP::bdlbb; BlobUtil; true; copy; (char *,const Blob &,int,int); ; Argument[*1]; Argument[*0]; taint; manual |
+| 105 | Summary: BloombergLP::bdlbb; BlobUtil; true; getContiguousRangeOrCopy; ; ; Argument[*1]; ReturnValue[*]; taint; manual |
+| 106 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 107 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 108 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 109 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,const string &,const string &,flags,error_code &); ; Argument[*1..2]; ReturnValue; taint; manual |
+| 110 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view); ; Argument[1..2]; ReturnValue; taint; manual |
+| 111 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
+| 112 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags); ; Argument[1..2]; ReturnValue; taint; manual |
+| 113 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const InternetProtocol &,string_view,string_view,flags,error_code &); ; Argument[1..2]; ReturnValue; taint; manual |
+| 114 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 115 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 116 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 117 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (const string &,const string &,flags,error_code &); ; Argument[*0..1]; ReturnValue; taint; manual |
+| 118 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view); ; Argument[0..1]; ReturnValue; taint; manual |
+| 119 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
+| 120 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags); ; Argument[0..1]; ReturnValue; taint; manual |
+| 121 | Summary: boost::asio::ip; basic_resolver<InternetProtocol>; false; resolve; (string_view,string_view,flags,error_code &); ; Argument[0..1]; ReturnValue; taint; manual |
+| 122 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 123 | Summary: google::protobuf; MessageLite; true; AppendPartialToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 124 | Summary: google::protobuf; MessageLite; true; AppendPartialToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 125 | Summary: google::protobuf; MessageLite; true; AppendToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 126 | Summary: google::protobuf; MessageLite; true; AppendToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 127 | Summary: google::protobuf; MessageLite; true; MergeFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 128 | Summary: google::protobuf; MessageLite; true; MergeFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 129 | Summary: google::protobuf; MessageLite; true; MergeFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 130 | Summary: google::protobuf; MessageLite; true; MergeFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 131 | Summary: google::protobuf; MessageLite; true; MergeFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 132 | Summary: google::protobuf; MessageLite; true; MergePartialFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 133 | Summary: google::protobuf; MessageLite; true; MergePartialFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 134 | Summary: google::protobuf; MessageLite; true; MergePartialFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 135 | Summary: google::protobuf; MessageLite; true; MergePartialFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 136 | Summary: google::protobuf; MessageLite; true; MergePartialFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 137 | Summary: google::protobuf; MessageLite; true; ParseFromArray; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 138 | Summary: google::protobuf; MessageLite; true; ParseFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 139 | Summary: google::protobuf; MessageLite; true; ParseFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 140 | Summary: google::protobuf; MessageLite; true; ParseFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 141 | Summary: google::protobuf; MessageLite; true; ParseFromIstream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 142 | Summary: google::protobuf; MessageLite; true; ParseFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 143 | Summary: google::protobuf; MessageLite; true; ParseFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 144 | Summary: google::protobuf; MessageLite; true; ParseFromZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 145 | Summary: google::protobuf; MessageLite; true; ParsePartialFromArray; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 146 | Summary: google::protobuf; MessageLite; true; ParsePartialFromBoundedZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 147 | Summary: google::protobuf; MessageLite; true; ParsePartialFromCodedStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 148 | Summary: google::protobuf; MessageLite; true; ParsePartialFromCord; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 149 | Summary: google::protobuf; MessageLite; true; ParsePartialFromIstream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 150 | Summary: google::protobuf; MessageLite; true; ParsePartialFromString; (const Cord &); ; Argument[*0]; Argument[-1]; taint; manual |
+| 151 | Summary: google::protobuf; MessageLite; true; ParsePartialFromString; (string_view); ; Argument[0]; Argument[-1]; taint; manual |
+| 152 | Summary: google::protobuf; MessageLite; true; ParsePartialFromZeroCopyStream; ; ; Argument[*0]; Argument[-1]; taint; manual |
+| 153 | Summary: google::protobuf; MessageLite; true; SerializeAsCord; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 154 | Summary: google::protobuf; MessageLite; true; SerializeAsString; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 155 | Summary: google::protobuf; MessageLite; true; SerializePartialAsCord; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 156 | Summary: google::protobuf; MessageLite; true; SerializePartialAsString; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 157 | Summary: google::protobuf; MessageLite; true; SerializePartialToArray; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 158 | Summary: google::protobuf; MessageLite; true; SerializePartialToCodedStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 159 | Summary: google::protobuf; MessageLite; true; SerializePartialToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 160 | Summary: google::protobuf; MessageLite; true; SerializePartialToOstream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 161 | Summary: google::protobuf; MessageLite; true; SerializePartialToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 162 | Summary: google::protobuf; MessageLite; true; SerializePartialToZeroCopyStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 163 | Summary: google::protobuf; MessageLite; true; SerializeToArray; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 164 | Summary: google::protobuf; MessageLite; true; SerializeToCodedStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 165 | Summary: google::protobuf; MessageLite; true; SerializeToCord; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 166 | Summary: google::protobuf; MessageLite; true; SerializeToOstream; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 167 | Summary: google::protobuf; MessageLite; true; SerializeToString; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 168 | Summary: google::protobuf; MessageLite; true; SerializeToZeroCopyStream; ; ; Argument[-1]; Argument[*0]; taint; manual |
 edges
 | asio_streams.cpp:116:34:116:44 | read_until output argument | asio_streams.cpp:120:7:120:17 | recv_buffer | provenance | Src:MaD:56  |
 | asio_streams.cpp:116:34:116:44 | read_until output argument | asio_streams.cpp:122:29:122:39 | recv_buffer | provenance | Src:MaD:56 Sink:MaD:4 |
@@ -173,7 +175,7 @@ edges
 | asio_streams.cpp:129:44:129:62 | call to buffer | asio_streams.cpp:129:44:129:62 | call to buffer | provenance |  |
 | asio_streams.cpp:129:44:129:62 | call to buffer | asio_streams.cpp:130:7:130:17 | send_buffer | provenance |  |
 | asio_streams.cpp:129:44:129:62 | call to buffer | asio_streams.cpp:132:29:132:39 | send_buffer | provenance | Sink:MaD:4 |
-| asio_streams.cpp:129:64:129:71 | *send_str | asio_streams.cpp:129:44:129:62 | call to buffer | provenance | MaD:120 |
+| asio_streams.cpp:129:64:129:71 | *send_str | asio_streams.cpp:129:44:129:62 | call to buffer | provenance | MaD:122 |
 | asio_streams.cpp:143:19:143:26 | call to source | asio_streams.cpp:148:24:148:27 | *host | provenance | TaintFunction |
 | asio_streams.cpp:143:19:143:26 | call to source | asio_streams.cpp:149:24:149:27 | *host | provenance | TaintFunction |
 | asio_streams.cpp:143:19:143:26 | call to source | asio_streams.cpp:150:24:150:27 | *host | provenance | TaintFunction |
@@ -190,22 +192,22 @@ edges
 | asio_streams.cpp:145:29:145:36 | call to source | asio_streams.cpp:164:34:164:42 | host_view | provenance | TaintFunction |
 | asio_streams.cpp:145:29:145:36 | call to source | asio_streams.cpp:165:34:165:42 | host_view | provenance | TaintFunction |
 | asio_streams.cpp:145:29:145:36 | call to source | asio_streams.cpp:166:34:166:42 | host_view | provenance | TaintFunction |
-| asio_streams.cpp:148:24:148:27 | *host | asio_streams.cpp:148:16:148:22 | call to resolve | provenance | MaD:112 |
-| asio_streams.cpp:149:24:149:27 | *host | asio_streams.cpp:149:16:149:22 | call to resolve | provenance | MaD:113 |
-| asio_streams.cpp:150:24:150:27 | *host | asio_streams.cpp:150:16:150:22 | call to resolve | provenance | MaD:114 |
-| asio_streams.cpp:151:24:151:27 | *host | asio_streams.cpp:151:16:151:22 | call to resolve | provenance | MaD:115 |
-| asio_streams.cpp:153:24:153:32 | host_view | asio_streams.cpp:153:16:153:22 | call to resolve | provenance | MaD:116 |
-| asio_streams.cpp:154:24:154:32 | host_view | asio_streams.cpp:154:16:154:22 | call to resolve | provenance | MaD:117 |
-| asio_streams.cpp:155:24:155:32 | host_view | asio_streams.cpp:155:16:155:22 | call to resolve | provenance | MaD:118 |
-| asio_streams.cpp:156:24:156:32 | host_view | asio_streams.cpp:156:16:156:22 | call to resolve | provenance | MaD:119 |
-| asio_streams.cpp:158:34:158:37 | *host | asio_streams.cpp:158:16:158:22 | call to resolve | provenance | MaD:104 |
-| asio_streams.cpp:159:34:159:37 | *host | asio_streams.cpp:159:16:159:22 | call to resolve | provenance | MaD:105 |
-| asio_streams.cpp:160:34:160:37 | *host | asio_streams.cpp:160:16:160:22 | call to resolve | provenance | MaD:106 |
-| asio_streams.cpp:161:34:161:37 | *host | asio_streams.cpp:161:16:161:22 | call to resolve | provenance | MaD:107 |
-| asio_streams.cpp:163:34:163:42 | host_view | asio_streams.cpp:163:16:163:22 | call to resolve | provenance | MaD:108 |
-| asio_streams.cpp:164:34:164:42 | host_view | asio_streams.cpp:164:16:164:22 | call to resolve | provenance | MaD:109 |
-| asio_streams.cpp:165:34:165:42 | host_view | asio_streams.cpp:165:16:165:22 | call to resolve | provenance | MaD:110 |
-| asio_streams.cpp:166:34:166:42 | host_view | asio_streams.cpp:166:16:166:22 | call to resolve | provenance | MaD:111 |
+| asio_streams.cpp:148:24:148:27 | *host | asio_streams.cpp:148:16:148:22 | call to resolve | provenance | MaD:114 |
+| asio_streams.cpp:149:24:149:27 | *host | asio_streams.cpp:149:16:149:22 | call to resolve | provenance | MaD:115 |
+| asio_streams.cpp:150:24:150:27 | *host | asio_streams.cpp:150:16:150:22 | call to resolve | provenance | MaD:116 |
+| asio_streams.cpp:151:24:151:27 | *host | asio_streams.cpp:151:16:151:22 | call to resolve | provenance | MaD:117 |
+| asio_streams.cpp:153:24:153:32 | host_view | asio_streams.cpp:153:16:153:22 | call to resolve | provenance | MaD:118 |
+| asio_streams.cpp:154:24:154:32 | host_view | asio_streams.cpp:154:16:154:22 | call to resolve | provenance | MaD:119 |
+| asio_streams.cpp:155:24:155:32 | host_view | asio_streams.cpp:155:16:155:22 | call to resolve | provenance | MaD:120 |
+| asio_streams.cpp:156:24:156:32 | host_view | asio_streams.cpp:156:16:156:22 | call to resolve | provenance | MaD:121 |
+| asio_streams.cpp:158:34:158:37 | *host | asio_streams.cpp:158:16:158:22 | call to resolve | provenance | MaD:106 |
+| asio_streams.cpp:159:34:159:37 | *host | asio_streams.cpp:159:16:159:22 | call to resolve | provenance | MaD:107 |
+| asio_streams.cpp:160:34:160:37 | *host | asio_streams.cpp:160:16:160:22 | call to resolve | provenance | MaD:108 |
+| asio_streams.cpp:161:34:161:37 | *host | asio_streams.cpp:161:16:161:22 | call to resolve | provenance | MaD:109 |
+| asio_streams.cpp:163:34:163:42 | host_view | asio_streams.cpp:163:16:163:22 | call to resolve | provenance | MaD:110 |
+| asio_streams.cpp:164:34:164:42 | host_view | asio_streams.cpp:164:16:164:22 | call to resolve | provenance | MaD:111 |
+| asio_streams.cpp:165:34:165:42 | host_view | asio_streams.cpp:165:16:165:22 | call to resolve | provenance | MaD:112 |
+| asio_streams.cpp:166:34:166:42 | host_view | asio_streams.cpp:166:16:166:22 | call to resolve | provenance | MaD:113 |
 | asio_streams.cpp:175:22:175:29 | call to source | asio_streams.cpp:179:30:179:36 | *service | provenance | TaintFunction |
 | asio_streams.cpp:175:22:175:29 | call to source | asio_streams.cpp:180:30:180:36 | *service | provenance | TaintFunction |
 | asio_streams.cpp:175:22:175:29 | call to source | asio_streams.cpp:181:30:181:36 | *service | provenance | TaintFunction |
@@ -222,31 +224,31 @@ edges
 | asio_streams.cpp:177:32:177:39 | call to source | asio_streams.cpp:195:45:195:56 | service_view | provenance | TaintFunction |
 | asio_streams.cpp:177:32:177:39 | call to source | asio_streams.cpp:196:45:196:56 | service_view | provenance | TaintFunction |
 | asio_streams.cpp:177:32:177:39 | call to source | asio_streams.cpp:197:45:197:56 | service_view | provenance | TaintFunction |
-| asio_streams.cpp:179:30:179:36 | *service | asio_streams.cpp:179:16:179:22 | call to resolve | provenance | MaD:112 |
-| asio_streams.cpp:180:30:180:36 | *service | asio_streams.cpp:180:16:180:22 | call to resolve | provenance | MaD:113 |
-| asio_streams.cpp:181:30:181:36 | *service | asio_streams.cpp:181:16:181:22 | call to resolve | provenance | MaD:114 |
-| asio_streams.cpp:182:30:182:36 | *service | asio_streams.cpp:182:16:182:22 | call to resolve | provenance | MaD:115 |
-| asio_streams.cpp:184:35:184:46 | service_view | asio_streams.cpp:184:16:184:22 | call to resolve | provenance | MaD:116 |
-| asio_streams.cpp:185:35:185:46 | service_view | asio_streams.cpp:185:16:185:22 | call to resolve | provenance | MaD:117 |
-| asio_streams.cpp:186:35:186:46 | service_view | asio_streams.cpp:186:16:186:22 | call to resolve | provenance | MaD:118 |
-| asio_streams.cpp:187:35:187:46 | service_view | asio_streams.cpp:187:16:187:22 | call to resolve | provenance | MaD:119 |
-| asio_streams.cpp:189:40:189:46 | *service | asio_streams.cpp:189:16:189:22 | call to resolve | provenance | MaD:104 |
-| asio_streams.cpp:190:40:190:46 | *service | asio_streams.cpp:190:16:190:22 | call to resolve | provenance | MaD:105 |
-| asio_streams.cpp:191:40:191:46 | *service | asio_streams.cpp:191:16:191:22 | call to resolve | provenance | MaD:106 |
-| asio_streams.cpp:192:40:192:46 | *service | asio_streams.cpp:192:16:192:22 | call to resolve | provenance | MaD:107 |
-| asio_streams.cpp:194:45:194:56 | service_view | asio_streams.cpp:194:16:194:22 | call to resolve | provenance | MaD:108 |
-| asio_streams.cpp:195:45:195:56 | service_view | asio_streams.cpp:195:16:195:22 | call to resolve | provenance | MaD:109 |
-| asio_streams.cpp:196:45:196:56 | service_view | asio_streams.cpp:196:16:196:22 | call to resolve | provenance | MaD:110 |
-| asio_streams.cpp:197:45:197:56 | service_view | asio_streams.cpp:197:16:197:22 | call to resolve | provenance | MaD:111 |
+| asio_streams.cpp:179:30:179:36 | *service | asio_streams.cpp:179:16:179:22 | call to resolve | provenance | MaD:114 |
+| asio_streams.cpp:180:30:180:36 | *service | asio_streams.cpp:180:16:180:22 | call to resolve | provenance | MaD:115 |
+| asio_streams.cpp:181:30:181:36 | *service | asio_streams.cpp:181:16:181:22 | call to resolve | provenance | MaD:116 |
+| asio_streams.cpp:182:30:182:36 | *service | asio_streams.cpp:182:16:182:22 | call to resolve | provenance | MaD:117 |
+| asio_streams.cpp:184:35:184:46 | service_view | asio_streams.cpp:184:16:184:22 | call to resolve | provenance | MaD:118 |
+| asio_streams.cpp:185:35:185:46 | service_view | asio_streams.cpp:185:16:185:22 | call to resolve | provenance | MaD:119 |
+| asio_streams.cpp:186:35:186:46 | service_view | asio_streams.cpp:186:16:186:22 | call to resolve | provenance | MaD:120 |
+| asio_streams.cpp:187:35:187:46 | service_view | asio_streams.cpp:187:16:187:22 | call to resolve | provenance | MaD:121 |
+| asio_streams.cpp:189:40:189:46 | *service | asio_streams.cpp:189:16:189:22 | call to resolve | provenance | MaD:106 |
+| asio_streams.cpp:190:40:190:46 | *service | asio_streams.cpp:190:16:190:22 | call to resolve | provenance | MaD:107 |
+| asio_streams.cpp:191:40:191:46 | *service | asio_streams.cpp:191:16:191:22 | call to resolve | provenance | MaD:108 |
+| asio_streams.cpp:192:40:192:46 | *service | asio_streams.cpp:192:16:192:22 | call to resolve | provenance | MaD:109 |
+| asio_streams.cpp:194:45:194:56 | service_view | asio_streams.cpp:194:16:194:22 | call to resolve | provenance | MaD:110 |
+| asio_streams.cpp:195:45:195:56 | service_view | asio_streams.cpp:195:16:195:22 | call to resolve | provenance | MaD:111 |
+| asio_streams.cpp:196:45:196:56 | service_view | asio_streams.cpp:196:16:196:22 | call to resolve | provenance | MaD:112 |
+| asio_streams.cpp:197:45:197:56 | service_view | asio_streams.cpp:197:16:197:22 | call to resolve | provenance | MaD:113 |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:257:5:257:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:262:5:262:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:266:38:266:41 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | call to GetBodyStream | azure.cpp:253:48:253:60 | *call to GetBodyStream | provenance | Src:MaD:53  |
-| azure.cpp:257:5:257:8 | *resp | azure.cpp:257:16:257:21 | Read output argument | provenance | MaD:93 |
+| azure.cpp:257:5:257:8 | *resp | azure.cpp:257:16:257:21 | Read output argument | provenance | MaD:95 |
 | azure.cpp:257:16:257:21 | Read output argument | azure.cpp:258:10:258:16 | * ... | provenance |  |
-| azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument | provenance | MaD:94 |
+| azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument | provenance | MaD:96 |
 | azure.cpp:262:23:262:28 | ReadToCount output argument | azure.cpp:263:10:263:16 | * ... | provenance |  |
-| azure.cpp:266:38:266:41 | *resp | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | provenance | MaD:95 |
+| azure.cpp:266:38:266:41 | *resp | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | provenance | MaD:97 |
 | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | provenance |  |
 | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | azure.cpp:267:10:267:12 | vec [element] | provenance |  |
 | azure.cpp:267:10:267:12 | vec [element] | azure.cpp:267:10:267:12 | vec | provenance |  |
@@ -262,10 +264,10 @@ edges
 | azure.cpp:278:10:278:13 | body | azure.cpp:278:10:278:13 | body | provenance |  |
 | azure.cpp:281:68:281:84 | *call to ExtractBodyStream | azure.cpp:282:21:282:23 | *call to get | provenance |  |
 | azure.cpp:281:68:281:84 | call to ExtractBodyStream | azure.cpp:281:68:281:84 | *call to ExtractBodyStream | provenance | Src:MaD:50  |
-| azure.cpp:282:21:282:23 | *call to get | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance | MaD:95 |
+| azure.cpp:282:21:282:23 | *call to get | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance | MaD:97 |
 | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | azure.cpp:282:10:282:38 | call to ReadToEnd | provenance |  |
 | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance |  |
-| azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value | provenance | MaD:96 |
+| azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value | provenance | MaD:98 |
 | azure.cpp:289:32:289:40 | call to GetHeader | azure.cpp:289:24:289:56 | call to GetHeader | provenance |  |
 | azure.cpp:289:32:289:40 | call to GetHeader | azure.cpp:289:32:289:40 | call to GetHeader | provenance | Src:MaD:54  |
 | azure.cpp:289:63:289:65 | call to Value | azure.cpp:289:63:289:65 | call to Value | provenance |  |
@@ -279,230 +281,230 @@ edges
 | azure.cpp:295:10:295:20 | contentType | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | bdlbb.cpp:54:16:54:23 | call to source | bdlbb.cpp:56:49:56:52 | *call to data | provenance | TaintFunction |
 | bdlbb.cpp:56:37:56:41 | copy output argument | bdlbb.cpp:58:42:58:45 | *blob | provenance |  |
-| bdlbb.cpp:56:49:56:52 | *call to data | bdlbb.cpp:56:37:56:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:56:49:56:52 | *call to data | bdlbb.cpp:56:37:56:41 | copy output argument | provenance | MaD:103 |
 | bdlbb.cpp:58:37:58:39 | copy output argument | bdlbb.cpp:59:7:59:10 | * ... | provenance |  |
-| bdlbb.cpp:58:42:58:45 | *blob | bdlbb.cpp:58:37:58:39 | copy output argument | provenance | MaD:102 |
+| bdlbb.cpp:58:42:58:45 | *blob | bdlbb.cpp:58:37:58:39 | copy output argument | provenance | MaD:104 |
 | bdlbb.cpp:63:16:63:23 | call to source | bdlbb.cpp:65:49:65:52 | *call to data | provenance | TaintFunction |
 | bdlbb.cpp:65:37:65:41 | copy output argument | bdlbb.cpp:66:18:66:21 | *blob | provenance |  |
-| bdlbb.cpp:65:49:65:52 | *call to data | bdlbb.cpp:65:37:65:41 | copy output argument | provenance | MaD:101 |
-| bdlbb.cpp:66:18:66:21 | *blob | bdlbb.cpp:66:29:66:32 | *call to buffer | provenance | MaD:97 |
+| bdlbb.cpp:65:49:65:52 | *call to data | bdlbb.cpp:65:37:65:41 | copy output argument | provenance | MaD:103 |
+| bdlbb.cpp:66:18:66:21 | *blob | bdlbb.cpp:66:29:66:32 | *call to buffer | provenance | MaD:99 |
 | bdlbb.cpp:66:18:66:38 | *call to data | bdlbb.cpp:66:18:66:38 | *call to data | provenance |  |
 | bdlbb.cpp:66:18:66:38 | *call to data | bdlbb.cpp:67:7:67:8 | * ... | provenance |  |
-| bdlbb.cpp:66:29:66:32 | *call to buffer | bdlbb.cpp:66:18:66:38 | *call to data | provenance | MaD:99 |
+| bdlbb.cpp:66:29:66:32 | *call to buffer | bdlbb.cpp:66:18:66:38 | *call to data | provenance | MaD:101 |
 | bdlbb.cpp:72:16:72:23 | call to source | bdlbb.cpp:74:49:74:52 | *call to data | provenance | TaintFunction |
 | bdlbb.cpp:74:37:74:41 | copy output argument | bdlbb.cpp:75:18:75:21 | *blob | provenance |  |
-| bdlbb.cpp:74:49:74:52 | *call to data | bdlbb.cpp:74:37:74:41 | copy output argument | provenance | MaD:101 |
-| bdlbb.cpp:75:18:75:21 | *blob | bdlbb.cpp:75:29:75:32 | *call to buffer | provenance | MaD:97 |
+| bdlbb.cpp:74:49:74:52 | *call to data | bdlbb.cpp:74:37:74:41 | copy output argument | provenance | MaD:103 |
+| bdlbb.cpp:75:18:75:21 | *blob | bdlbb.cpp:75:29:75:32 | *call to buffer | provenance | MaD:99 |
 | bdlbb.cpp:75:18:75:46 | call to get | bdlbb.cpp:76:7:76:8 | * ... | provenance |  |
-| bdlbb.cpp:75:29:75:32 | *call to buffer | bdlbb.cpp:75:39:75:41 | *call to buffer | provenance | MaD:98 |
+| bdlbb.cpp:75:29:75:32 | *call to buffer | bdlbb.cpp:75:39:75:41 | *call to buffer | provenance | MaD:100 |
 | bdlbb.cpp:75:39:75:41 | *call to buffer | bdlbb.cpp:75:18:75:46 | call to get | provenance | DataFlowFunction |
 | bdlbb.cpp:80:16:80:23 | call to source | bdlbb.cpp:82:49:82:52 | *call to data | provenance | TaintFunction |
 | bdlbb.cpp:82:37:82:41 | copy output argument | bdlbb.cpp:84:72:84:75 | *blob | provenance |  |
-| bdlbb.cpp:82:49:82:52 | *call to data | bdlbb.cpp:82:37:82:41 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:82:49:82:52 | *call to data | bdlbb.cpp:82:37:82:41 | copy output argument | provenance | MaD:103 |
 | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | provenance |  |
 | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | bdlbb.cpp:85:7:85:8 | * ... | provenance |  |
-| bdlbb.cpp:84:72:84:75 | *blob | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | provenance | MaD:103 |
+| bdlbb.cpp:84:72:84:75 | *blob | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy | provenance | MaD:105 |
 | bdlbb.cpp:90:16:90:23 | call to source | bdlbb.cpp:92:48:92:51 | *call to data | provenance | TaintFunction |
 | bdlbb.cpp:92:37:92:40 | copy output argument | bdlbb.cpp:94:46:94:48 | *src | provenance |  |
-| bdlbb.cpp:92:48:92:51 | *call to data | bdlbb.cpp:92:37:92:40 | copy output argument | provenance | MaD:101 |
+| bdlbb.cpp:92:48:92:51 | *call to data | bdlbb.cpp:92:37:92:40 | copy output argument | provenance | MaD:103 |
 | bdlbb.cpp:94:37:94:40 | copy output argument | bdlbb.cpp:96:42:96:44 | *dst | provenance |  |
-| bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument | provenance | MaD:100 |
+| bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument | provenance | MaD:102 |
 | bdlbb.cpp:96:37:96:39 | copy output argument | bdlbb.cpp:97:7:97:10 | * ... | provenance |  |
-| bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument | provenance | MaD:102 |
+| bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument | provenance | MaD:104 |
 | protobuf.cpp:117:27:117:51 | call to source | protobuf.cpp:117:27:117:51 | call to source | provenance |  |
 | protobuf.cpp:117:27:117:51 | call to source | protobuf.cpp:118:22:118:25 | data | provenance |  |
 | protobuf.cpp:118:2:118:4 | ParseFromString output argument | protobuf.cpp:119:7:119:9 | msg | provenance |  |
-| protobuf.cpp:118:22:118:25 | data | protobuf.cpp:118:2:118:4 | ParseFromString output argument | provenance | MaD:141 |
+| protobuf.cpp:118:22:118:25 | data | protobuf.cpp:118:2:118:4 | ParseFromString output argument | provenance | MaD:143 |
 | protobuf.cpp:124:20:124:37 | call to source | protobuf.cpp:124:20:124:37 | call to source | provenance |  |
 | protobuf.cpp:124:20:124:37 | call to source | protobuf.cpp:125:22:125:25 | *data | provenance |  |
 | protobuf.cpp:125:2:125:4 | ParseFromString output argument | protobuf.cpp:126:7:126:9 | msg | provenance |  |
-| protobuf.cpp:125:22:125:25 | *data | protobuf.cpp:125:2:125:4 | ParseFromString output argument | provenance | MaD:140 |
+| protobuf.cpp:125:22:125:25 | *data | protobuf.cpp:125:2:125:4 | ParseFromString output argument | provenance | MaD:142 |
 | protobuf.cpp:131:27:131:51 | call to source | protobuf.cpp:131:27:131:51 | call to source | provenance |  |
 | protobuf.cpp:131:27:131:51 | call to source | protobuf.cpp:132:29:132:32 | data | provenance |  |
 | protobuf.cpp:132:2:132:4 | ParsePartialFromString output argument | protobuf.cpp:133:7:133:9 | msg | provenance |  |
-| protobuf.cpp:132:29:132:32 | data | protobuf.cpp:132:2:132:4 | ParsePartialFromString output argument | provenance | MaD:149 |
+| protobuf.cpp:132:29:132:32 | data | protobuf.cpp:132:2:132:4 | ParsePartialFromString output argument | provenance | MaD:151 |
 | protobuf.cpp:138:20:138:37 | call to source | protobuf.cpp:138:20:138:37 | call to source | provenance |  |
 | protobuf.cpp:138:20:138:37 | call to source | protobuf.cpp:139:29:139:32 | *data | provenance |  |
 | protobuf.cpp:139:2:139:4 | ParsePartialFromString output argument | protobuf.cpp:140:7:140:9 | msg | provenance |  |
-| protobuf.cpp:139:29:139:32 | *data | protobuf.cpp:139:2:139:4 | ParsePartialFromString output argument | provenance | MaD:148 |
+| protobuf.cpp:139:29:139:32 | *data | protobuf.cpp:139:2:139:4 | ParsePartialFromString output argument | provenance | MaD:150 |
 | protobuf.cpp:145:27:145:51 | call to source | protobuf.cpp:145:27:145:51 | call to source | provenance |  |
 | protobuf.cpp:145:27:145:51 | call to source | protobuf.cpp:146:22:146:25 | data | provenance |  |
 | protobuf.cpp:146:2:146:4 | MergeFromString output argument | protobuf.cpp:147:7:147:9 | msg | provenance |  |
-| protobuf.cpp:146:22:146:25 | data | protobuf.cpp:146:2:146:4 | MergeFromString output argument | provenance | MaD:129 |
+| protobuf.cpp:146:22:146:25 | data | protobuf.cpp:146:2:146:4 | MergeFromString output argument | provenance | MaD:131 |
 | protobuf.cpp:152:20:152:37 | call to source | protobuf.cpp:152:20:152:37 | call to source | provenance |  |
 | protobuf.cpp:152:20:152:37 | call to source | protobuf.cpp:153:22:153:25 | *data | provenance |  |
 | protobuf.cpp:153:2:153:4 | MergeFromString output argument | protobuf.cpp:154:7:154:9 | msg | provenance |  |
-| protobuf.cpp:153:22:153:25 | *data | protobuf.cpp:153:2:153:4 | MergeFromString output argument | provenance | MaD:128 |
+| protobuf.cpp:153:22:153:25 | *data | protobuf.cpp:153:2:153:4 | MergeFromString output argument | provenance | MaD:130 |
 | protobuf.cpp:159:27:159:51 | call to source | protobuf.cpp:159:27:159:51 | call to source | provenance |  |
 | protobuf.cpp:159:27:159:51 | call to source | protobuf.cpp:160:29:160:32 | data | provenance |  |
 | protobuf.cpp:160:2:160:4 | MergePartialFromString output argument | protobuf.cpp:161:7:161:9 | msg | provenance |  |
-| protobuf.cpp:160:29:160:32 | data | protobuf.cpp:160:2:160:4 | MergePartialFromString output argument | provenance | MaD:134 |
+| protobuf.cpp:160:29:160:32 | data | protobuf.cpp:160:2:160:4 | MergePartialFromString output argument | provenance | MaD:136 |
 | protobuf.cpp:166:20:166:37 | call to source | protobuf.cpp:166:20:166:37 | call to source | provenance |  |
 | protobuf.cpp:166:20:166:37 | call to source | protobuf.cpp:167:29:167:32 | *data | provenance |  |
 | protobuf.cpp:167:2:167:4 | MergePartialFromString output argument | protobuf.cpp:168:7:168:9 | msg | provenance |  |
-| protobuf.cpp:167:29:167:32 | *data | protobuf.cpp:167:2:167:4 | MergePartialFromString output argument | provenance | MaD:133 |
+| protobuf.cpp:167:29:167:32 | *data | protobuf.cpp:167:2:167:4 | MergePartialFromString output argument | provenance | MaD:135 |
 | protobuf.cpp:173:19:173:38 | call to source | protobuf.cpp:174:21:174:31 | *call to data | provenance | TaintFunction |
 | protobuf.cpp:174:2:174:4 | ParseFromArray output argument | protobuf.cpp:175:7:175:9 | msg | provenance |  |
-| protobuf.cpp:174:21:174:31 | *call to data | protobuf.cpp:174:2:174:4 | ParseFromArray output argument | provenance | MaD:135 |
+| protobuf.cpp:174:21:174:31 | *call to data | protobuf.cpp:174:2:174:4 | ParseFromArray output argument | provenance | MaD:137 |
 | protobuf.cpp:180:19:180:38 | call to source | protobuf.cpp:181:28:181:38 | *call to data | provenance | TaintFunction |
 | protobuf.cpp:181:2:181:4 | ParsePartialFromArray output argument | protobuf.cpp:182:7:182:9 | msg | provenance |  |
-| protobuf.cpp:181:28:181:38 | *call to data | protobuf.cpp:181:2:181:4 | ParsePartialFromArray output argument | provenance | MaD:143 |
+| protobuf.cpp:181:28:181:38 | *call to data | protobuf.cpp:181:2:181:4 | ParsePartialFromArray output argument | provenance | MaD:145 |
 | protobuf.cpp:187:20:187:37 | call to source | protobuf.cpp:187:20:187:37 | call to source | provenance |  |
 | protobuf.cpp:187:20:187:37 | call to source | protobuf.cpp:188:20:188:23 | *data | provenance |  |
 | protobuf.cpp:188:2:188:4 | ParseFromCord output argument | protobuf.cpp:189:7:189:9 | msg | provenance |  |
-| protobuf.cpp:188:20:188:23 | *data | protobuf.cpp:188:2:188:4 | ParseFromCord output argument | provenance | MaD:138 |
+| protobuf.cpp:188:20:188:23 | *data | protobuf.cpp:188:2:188:4 | ParseFromCord output argument | provenance | MaD:140 |
 | protobuf.cpp:194:20:194:37 | call to source | protobuf.cpp:194:20:194:37 | call to source | provenance |  |
 | protobuf.cpp:194:20:194:37 | call to source | protobuf.cpp:195:27:195:30 | *data | provenance |  |
 | protobuf.cpp:195:2:195:4 | ParsePartialFromCord output argument | protobuf.cpp:196:7:196:9 | msg | provenance |  |
-| protobuf.cpp:195:27:195:30 | *data | protobuf.cpp:195:2:195:4 | ParsePartialFromCord output argument | provenance | MaD:146 |
+| protobuf.cpp:195:27:195:30 | *data | protobuf.cpp:195:2:195:4 | ParsePartialFromCord output argument | provenance | MaD:148 |
 | protobuf.cpp:201:20:201:37 | call to source | protobuf.cpp:201:20:201:37 | call to source | provenance |  |
 | protobuf.cpp:201:20:201:37 | call to source | protobuf.cpp:202:20:202:23 | *data | provenance |  |
 | protobuf.cpp:202:2:202:4 | MergeFromCord output argument | protobuf.cpp:203:7:203:9 | msg | provenance |  |
-| protobuf.cpp:202:20:202:23 | *data | protobuf.cpp:202:2:202:4 | MergeFromCord output argument | provenance | MaD:127 |
+| protobuf.cpp:202:20:202:23 | *data | protobuf.cpp:202:2:202:4 | MergeFromCord output argument | provenance | MaD:129 |
 | protobuf.cpp:208:20:208:37 | call to source | protobuf.cpp:208:20:208:37 | call to source | provenance |  |
 | protobuf.cpp:208:20:208:37 | call to source | protobuf.cpp:209:27:209:30 | *data | provenance |  |
 | protobuf.cpp:209:2:209:4 | MergePartialFromCord output argument | protobuf.cpp:210:7:210:9 | msg | provenance |  |
-| protobuf.cpp:209:27:209:30 | *data | protobuf.cpp:209:2:209:4 | MergePartialFromCord output argument | provenance | MaD:132 |
+| protobuf.cpp:209:27:209:30 | *data | protobuf.cpp:209:2:209:4 | MergePartialFromCord output argument | provenance | MaD:134 |
 | protobuf.cpp:215:20:215:39 | call to source | protobuf.cpp:215:20:215:39 | call to source | provenance |  |
 | protobuf.cpp:215:20:215:39 | call to source | protobuf.cpp:216:23:216:25 | *& ... | provenance |  |
 | protobuf.cpp:216:2:216:4 | ParseFromIstream output argument | protobuf.cpp:217:7:217:9 | msg | provenance |  |
-| protobuf.cpp:216:23:216:25 | *& ... | protobuf.cpp:216:2:216:4 | ParseFromIstream output argument | provenance | MaD:139 |
+| protobuf.cpp:216:23:216:25 | *& ... | protobuf.cpp:216:2:216:4 | ParseFromIstream output argument | provenance | MaD:141 |
 | protobuf.cpp:222:20:222:39 | call to source | protobuf.cpp:222:20:222:39 | call to source | provenance |  |
 | protobuf.cpp:222:20:222:39 | call to source | protobuf.cpp:223:30:223:32 | *& ... | provenance |  |
 | protobuf.cpp:223:2:223:4 | ParsePartialFromIstream output argument | protobuf.cpp:224:7:224:9 | msg | provenance |  |
-| protobuf.cpp:223:30:223:32 | *& ... | protobuf.cpp:223:2:223:4 | ParsePartialFromIstream output argument | provenance | MaD:147 |
+| protobuf.cpp:223:30:223:32 | *& ... | protobuf.cpp:223:2:223:4 | ParsePartialFromIstream output argument | provenance | MaD:149 |
 | protobuf.cpp:229:27:229:53 | call to source | protobuf.cpp:229:27:229:53 | call to source | provenance |  |
 | protobuf.cpp:229:27:229:53 | call to source | protobuf.cpp:230:30:230:32 | *& ... | provenance |  |
 | protobuf.cpp:230:2:230:4 | ParseFromZeroCopyStream output argument | protobuf.cpp:231:7:231:9 | msg | provenance |  |
-| protobuf.cpp:230:30:230:32 | *& ... | protobuf.cpp:230:2:230:4 | ParseFromZeroCopyStream output argument | provenance | MaD:142 |
+| protobuf.cpp:230:30:230:32 | *& ... | protobuf.cpp:230:2:230:4 | ParseFromZeroCopyStream output argument | provenance | MaD:144 |
 | protobuf.cpp:236:27:236:53 | call to source | protobuf.cpp:236:27:236:53 | call to source | provenance |  |
 | protobuf.cpp:236:27:236:53 | call to source | protobuf.cpp:237:37:237:39 | *& ... | provenance |  |
 | protobuf.cpp:237:2:237:4 | ParsePartialFromZeroCopyStream output argument | protobuf.cpp:238:7:238:9 | msg | provenance |  |
-| protobuf.cpp:237:37:237:39 | *& ... | protobuf.cpp:237:2:237:4 | ParsePartialFromZeroCopyStream output argument | provenance | MaD:150 |
+| protobuf.cpp:237:37:237:39 | *& ... | protobuf.cpp:237:2:237:4 | ParsePartialFromZeroCopyStream output argument | provenance | MaD:152 |
 | protobuf.cpp:243:27:243:53 | call to source | protobuf.cpp:243:27:243:53 | call to source | provenance |  |
 | protobuf.cpp:243:27:243:53 | call to source | protobuf.cpp:244:37:244:39 | *& ... | provenance |  |
 | protobuf.cpp:244:2:244:4 | ParseFromBoundedZeroCopyStream output argument | protobuf.cpp:245:7:245:9 | msg | provenance |  |
-| protobuf.cpp:244:37:244:39 | *& ... | protobuf.cpp:244:2:244:4 | ParseFromBoundedZeroCopyStream output argument | provenance | MaD:136 |
+| protobuf.cpp:244:37:244:39 | *& ... | protobuf.cpp:244:2:244:4 | ParseFromBoundedZeroCopyStream output argument | provenance | MaD:138 |
 | protobuf.cpp:250:27:250:53 | call to source | protobuf.cpp:250:27:250:53 | call to source | provenance |  |
 | protobuf.cpp:250:27:250:53 | call to source | protobuf.cpp:251:44:251:46 | *& ... | provenance |  |
 | protobuf.cpp:251:2:251:4 | ParsePartialFromBoundedZeroCopyStream output argument | protobuf.cpp:252:7:252:9 | msg | provenance |  |
-| protobuf.cpp:251:44:251:46 | *& ... | protobuf.cpp:251:2:251:4 | ParsePartialFromBoundedZeroCopyStream output argument | provenance | MaD:144 |
+| protobuf.cpp:251:44:251:46 | *& ... | protobuf.cpp:251:2:251:4 | ParsePartialFromBoundedZeroCopyStream output argument | provenance | MaD:146 |
 | protobuf.cpp:257:27:257:53 | call to source | protobuf.cpp:257:27:257:53 | call to source | provenance |  |
 | protobuf.cpp:257:27:257:53 | call to source | protobuf.cpp:258:37:258:39 | *& ... | provenance |  |
 | protobuf.cpp:258:2:258:4 | MergeFromBoundedZeroCopyStream output argument | protobuf.cpp:259:7:259:9 | msg | provenance |  |
-| protobuf.cpp:258:37:258:39 | *& ... | protobuf.cpp:258:2:258:4 | MergeFromBoundedZeroCopyStream output argument | provenance | MaD:125 |
+| protobuf.cpp:258:37:258:39 | *& ... | protobuf.cpp:258:2:258:4 | MergeFromBoundedZeroCopyStream output argument | provenance | MaD:127 |
 | protobuf.cpp:264:27:264:53 | call to source | protobuf.cpp:264:27:264:53 | call to source | provenance |  |
 | protobuf.cpp:264:27:264:53 | call to source | protobuf.cpp:265:44:265:46 | *& ... | provenance |  |
 | protobuf.cpp:265:2:265:4 | MergePartialFromBoundedZeroCopyStream output argument | protobuf.cpp:266:7:266:9 | msg | provenance |  |
-| protobuf.cpp:265:44:265:46 | *& ... | protobuf.cpp:265:2:265:4 | MergePartialFromBoundedZeroCopyStream output argument | provenance | MaD:130 |
+| protobuf.cpp:265:44:265:46 | *& ... | protobuf.cpp:265:2:265:4 | MergePartialFromBoundedZeroCopyStream output argument | provenance | MaD:132 |
 | protobuf.cpp:271:24:271:47 | call to source | protobuf.cpp:271:24:271:47 | call to source | provenance |  |
 | protobuf.cpp:271:24:271:47 | call to source | protobuf.cpp:272:27:272:29 | *& ... | provenance |  |
 | protobuf.cpp:272:2:272:4 | ParseFromCodedStream output argument | protobuf.cpp:273:7:273:9 | msg | provenance |  |
-| protobuf.cpp:272:27:272:29 | *& ... | protobuf.cpp:272:2:272:4 | ParseFromCodedStream output argument | provenance | MaD:137 |
+| protobuf.cpp:272:27:272:29 | *& ... | protobuf.cpp:272:2:272:4 | ParseFromCodedStream output argument | provenance | MaD:139 |
 | protobuf.cpp:278:24:278:47 | call to source | protobuf.cpp:278:24:278:47 | call to source | provenance |  |
 | protobuf.cpp:278:24:278:47 | call to source | protobuf.cpp:279:34:279:36 | *& ... | provenance |  |
 | protobuf.cpp:279:2:279:4 | ParsePartialFromCodedStream output argument | protobuf.cpp:280:7:280:9 | msg | provenance |  |
-| protobuf.cpp:279:34:279:36 | *& ... | protobuf.cpp:279:2:279:4 | ParsePartialFromCodedStream output argument | provenance | MaD:145 |
+| protobuf.cpp:279:34:279:36 | *& ... | protobuf.cpp:279:2:279:4 | ParsePartialFromCodedStream output argument | provenance | MaD:147 |
 | protobuf.cpp:285:24:285:47 | call to source | protobuf.cpp:285:24:285:47 | call to source | provenance |  |
 | protobuf.cpp:285:24:285:47 | call to source | protobuf.cpp:286:27:286:29 | *& ... | provenance |  |
 | protobuf.cpp:286:2:286:4 | MergeFromCodedStream output argument | protobuf.cpp:287:7:287:9 | msg | provenance |  |
-| protobuf.cpp:286:27:286:29 | *& ... | protobuf.cpp:286:2:286:4 | MergeFromCodedStream output argument | provenance | MaD:126 |
+| protobuf.cpp:286:27:286:29 | *& ... | protobuf.cpp:286:2:286:4 | MergeFromCodedStream output argument | provenance | MaD:128 |
 | protobuf.cpp:292:24:292:47 | call to source | protobuf.cpp:292:24:292:47 | call to source | provenance |  |
 | protobuf.cpp:292:24:292:47 | call to source | protobuf.cpp:293:34:293:36 | *& ... | provenance |  |
 | protobuf.cpp:293:2:293:4 | MergePartialFromCodedStream output argument | protobuf.cpp:294:7:294:9 | msg | provenance |  |
-| protobuf.cpp:293:34:293:36 | *& ... | protobuf.cpp:293:2:293:4 | MergePartialFromCodedStream output argument | provenance | MaD:131 |
+| protobuf.cpp:293:34:293:36 | *& ... | protobuf.cpp:293:2:293:4 | MergePartialFromCodedStream output argument | provenance | MaD:133 |
 | protobuf.cpp:307:15:307:28 | call to source | protobuf.cpp:307:15:307:28 | call to source | provenance |  |
 | protobuf.cpp:307:15:307:28 | call to source | protobuf.cpp:309:2:309:4 | *msg | provenance |  |
-| protobuf.cpp:309:2:309:4 | *msg | protobuf.cpp:309:24:309:27 | SerializeToString output argument | provenance | MaD:165 |
+| protobuf.cpp:309:2:309:4 | *msg | protobuf.cpp:309:24:309:27 | SerializeToString output argument | provenance | MaD:167 |
 | protobuf.cpp:309:24:309:27 | SerializeToString output argument | protobuf.cpp:310:7:310:9 | out | provenance |  |
 | protobuf.cpp:314:15:314:28 | call to source | protobuf.cpp:314:15:314:28 | call to source | provenance |  |
 | protobuf.cpp:314:15:314:28 | call to source | protobuf.cpp:316:2:316:4 | *msg | provenance |  |
-| protobuf.cpp:316:2:316:4 | *msg | protobuf.cpp:316:31:316:34 | SerializePartialToString output argument | provenance | MaD:159 |
+| protobuf.cpp:316:2:316:4 | *msg | protobuf.cpp:316:31:316:34 | SerializePartialToString output argument | provenance | MaD:161 |
 | protobuf.cpp:316:31:316:34 | SerializePartialToString output argument | protobuf.cpp:317:7:317:9 | out | provenance |  |
 | protobuf.cpp:321:15:321:28 | call to source | protobuf.cpp:321:15:321:28 | call to source | provenance |  |
 | protobuf.cpp:321:15:321:28 | call to source | protobuf.cpp:323:2:323:4 | *msg | provenance |  |
-| protobuf.cpp:323:2:323:4 | *msg | protobuf.cpp:323:21:323:24 | AppendToString output argument | provenance | MaD:124 |
+| protobuf.cpp:323:2:323:4 | *msg | protobuf.cpp:323:21:323:24 | AppendToString output argument | provenance | MaD:126 |
 | protobuf.cpp:323:21:323:24 | AppendToString output argument | protobuf.cpp:324:7:324:9 | out | provenance |  |
 | protobuf.cpp:328:15:328:28 | call to source | protobuf.cpp:328:15:328:28 | call to source | provenance |  |
 | protobuf.cpp:328:15:328:28 | call to source | protobuf.cpp:330:2:330:4 | *msg | provenance |  |
-| protobuf.cpp:330:2:330:4 | *msg | protobuf.cpp:330:28:330:31 | AppendPartialToString output argument | provenance | MaD:122 |
+| protobuf.cpp:330:2:330:4 | *msg | protobuf.cpp:330:28:330:31 | AppendPartialToString output argument | provenance | MaD:124 |
 | protobuf.cpp:330:28:330:31 | AppendPartialToString output argument | protobuf.cpp:331:7:331:9 | out | provenance |  |
 | protobuf.cpp:335:15:335:28 | call to source | protobuf.cpp:335:15:335:28 | call to source | provenance |  |
 | protobuf.cpp:335:15:335:28 | call to source | protobuf.cpp:337:2:337:4 | *msg | provenance |  |
-| protobuf.cpp:337:2:337:4 | *msg | protobuf.cpp:337:24:337:27 | SerializeToString output argument | provenance | MaD:165 |
+| protobuf.cpp:337:2:337:4 | *msg | protobuf.cpp:337:24:337:27 | SerializeToString output argument | provenance | MaD:167 |
 | protobuf.cpp:337:24:337:27 | SerializeToString output argument | protobuf.cpp:338:7:338:9 | out | provenance |  |
 | protobuf.cpp:342:15:342:28 | call to source | protobuf.cpp:342:15:342:28 | call to source | provenance |  |
 | protobuf.cpp:342:15:342:28 | call to source | protobuf.cpp:344:2:344:4 | *msg | provenance |  |
-| protobuf.cpp:344:2:344:4 | *msg | protobuf.cpp:344:31:344:34 | SerializePartialToString output argument | provenance | MaD:159 |
+| protobuf.cpp:344:2:344:4 | *msg | protobuf.cpp:344:31:344:34 | SerializePartialToString output argument | provenance | MaD:161 |
 | protobuf.cpp:344:31:344:34 | SerializePartialToString output argument | protobuf.cpp:345:7:345:9 | out | provenance |  |
 | protobuf.cpp:349:15:349:28 | call to source | protobuf.cpp:349:15:349:28 | call to source | provenance |  |
 | protobuf.cpp:349:15:349:28 | call to source | protobuf.cpp:351:2:351:4 | *msg | provenance |  |
-| protobuf.cpp:351:2:351:4 | *msg | protobuf.cpp:351:21:351:24 | AppendToString output argument | provenance | MaD:124 |
+| protobuf.cpp:351:2:351:4 | *msg | protobuf.cpp:351:21:351:24 | AppendToString output argument | provenance | MaD:126 |
 | protobuf.cpp:351:21:351:24 | AppendToString output argument | protobuf.cpp:352:7:352:9 | out | provenance |  |
 | protobuf.cpp:356:15:356:28 | call to source | protobuf.cpp:356:15:356:28 | call to source | provenance |  |
 | protobuf.cpp:356:15:356:28 | call to source | protobuf.cpp:358:2:358:4 | *msg | provenance |  |
-| protobuf.cpp:358:2:358:4 | *msg | protobuf.cpp:358:28:358:31 | AppendPartialToString output argument | provenance | MaD:122 |
+| protobuf.cpp:358:2:358:4 | *msg | protobuf.cpp:358:28:358:31 | AppendPartialToString output argument | provenance | MaD:124 |
 | protobuf.cpp:358:28:358:31 | AppendPartialToString output argument | protobuf.cpp:359:7:359:9 | out | provenance |  |
 | protobuf.cpp:363:15:363:28 | call to source | protobuf.cpp:363:15:363:28 | call to source | provenance |  |
 | protobuf.cpp:363:15:363:28 | call to source | protobuf.cpp:365:2:365:4 | *msg | provenance |  |
-| protobuf.cpp:365:2:365:4 | *msg | protobuf.cpp:365:23:365:25 | SerializeToArray output argument | provenance | MaD:161 |
+| protobuf.cpp:365:2:365:4 | *msg | protobuf.cpp:365:23:365:25 | SerializeToArray output argument | provenance | MaD:163 |
 | protobuf.cpp:365:23:365:25 | SerializeToArray output argument | protobuf.cpp:366:7:366:10 | * ... | provenance |  |
 | protobuf.cpp:370:15:370:28 | call to source | protobuf.cpp:370:15:370:28 | call to source | provenance |  |
 | protobuf.cpp:370:15:370:28 | call to source | protobuf.cpp:372:2:372:4 | *msg | provenance |  |
-| protobuf.cpp:372:2:372:4 | *msg | protobuf.cpp:372:30:372:32 | SerializePartialToArray output argument | provenance | MaD:155 |
+| protobuf.cpp:372:2:372:4 | *msg | protobuf.cpp:372:30:372:32 | SerializePartialToArray output argument | provenance | MaD:157 |
 | protobuf.cpp:372:30:372:32 | SerializePartialToArray output argument | protobuf.cpp:373:7:373:10 | * ... | provenance |  |
 | protobuf.cpp:377:15:377:28 | call to source | protobuf.cpp:377:15:377:28 | call to source | provenance |  |
 | protobuf.cpp:377:15:377:28 | call to source | protobuf.cpp:379:2:379:4 | *msg | provenance |  |
-| protobuf.cpp:379:2:379:4 | *msg | protobuf.cpp:379:22:379:25 | SerializeToCord output argument | provenance | MaD:163 |
+| protobuf.cpp:379:2:379:4 | *msg | protobuf.cpp:379:22:379:25 | SerializeToCord output argument | provenance | MaD:165 |
 | protobuf.cpp:379:22:379:25 | SerializeToCord output argument | protobuf.cpp:380:7:380:9 | out | provenance |  |
 | protobuf.cpp:384:15:384:28 | call to source | protobuf.cpp:384:15:384:28 | call to source | provenance |  |
 | protobuf.cpp:384:15:384:28 | call to source | protobuf.cpp:386:2:386:4 | *msg | provenance |  |
-| protobuf.cpp:386:2:386:4 | *msg | protobuf.cpp:386:29:386:32 | SerializePartialToCord output argument | provenance | MaD:157 |
+| protobuf.cpp:386:2:386:4 | *msg | protobuf.cpp:386:29:386:32 | SerializePartialToCord output argument | provenance | MaD:159 |
 | protobuf.cpp:386:29:386:32 | SerializePartialToCord output argument | protobuf.cpp:387:7:387:9 | out | provenance |  |
 | protobuf.cpp:391:15:391:28 | call to source | protobuf.cpp:391:15:391:28 | call to source | provenance |  |
 | protobuf.cpp:391:15:391:28 | call to source | protobuf.cpp:393:2:393:4 | *msg | provenance |  |
-| protobuf.cpp:393:2:393:4 | *msg | protobuf.cpp:393:19:393:22 | AppendToCord output argument | provenance | MaD:123 |
+| protobuf.cpp:393:2:393:4 | *msg | protobuf.cpp:393:19:393:22 | AppendToCord output argument | provenance | MaD:125 |
 | protobuf.cpp:393:19:393:22 | AppendToCord output argument | protobuf.cpp:394:7:394:9 | out | provenance |  |
 | protobuf.cpp:398:15:398:28 | call to source | protobuf.cpp:398:15:398:28 | call to source | provenance |  |
 | protobuf.cpp:398:15:398:28 | call to source | protobuf.cpp:400:2:400:4 | *msg | provenance |  |
-| protobuf.cpp:400:2:400:4 | *msg | protobuf.cpp:400:26:400:29 | AppendPartialToCord output argument | provenance | MaD:121 |
+| protobuf.cpp:400:2:400:4 | *msg | protobuf.cpp:400:26:400:29 | AppendPartialToCord output argument | provenance | MaD:123 |
 | protobuf.cpp:400:26:400:29 | AppendPartialToCord output argument | protobuf.cpp:401:7:401:9 | out | provenance |  |
 | protobuf.cpp:405:15:405:28 | call to source | protobuf.cpp:405:15:405:28 | call to source | provenance |  |
 | protobuf.cpp:405:15:405:28 | call to source | protobuf.cpp:407:2:407:4 | *msg | provenance |  |
-| protobuf.cpp:407:2:407:4 | *msg | protobuf.cpp:407:25:407:28 | SerializeToOstream output argument | provenance | MaD:164 |
+| protobuf.cpp:407:2:407:4 | *msg | protobuf.cpp:407:25:407:28 | SerializeToOstream output argument | provenance | MaD:166 |
 | protobuf.cpp:407:25:407:28 | SerializeToOstream output argument | protobuf.cpp:408:7:408:9 | out | provenance |  |
 | protobuf.cpp:412:15:412:28 | call to source | protobuf.cpp:412:15:412:28 | call to source | provenance |  |
 | protobuf.cpp:412:15:412:28 | call to source | protobuf.cpp:414:2:414:4 | *msg | provenance |  |
-| protobuf.cpp:414:2:414:4 | *msg | protobuf.cpp:414:32:414:35 | SerializePartialToOstream output argument | provenance | MaD:158 |
+| protobuf.cpp:414:2:414:4 | *msg | protobuf.cpp:414:32:414:35 | SerializePartialToOstream output argument | provenance | MaD:160 |
 | protobuf.cpp:414:32:414:35 | SerializePartialToOstream output argument | protobuf.cpp:415:7:415:9 | out | provenance |  |
 | protobuf.cpp:419:15:419:28 | call to source | protobuf.cpp:419:15:419:28 | call to source | provenance |  |
 | protobuf.cpp:419:15:419:28 | call to source | protobuf.cpp:421:2:421:4 | *msg | provenance |  |
-| protobuf.cpp:421:2:421:4 | *msg | protobuf.cpp:421:32:421:35 | SerializeToZeroCopyStream output argument | provenance | MaD:166 |
+| protobuf.cpp:421:2:421:4 | *msg | protobuf.cpp:421:32:421:35 | SerializeToZeroCopyStream output argument | provenance | MaD:168 |
 | protobuf.cpp:421:32:421:35 | SerializeToZeroCopyStream output argument | protobuf.cpp:422:7:422:9 | out | provenance |  |
 | protobuf.cpp:426:15:426:28 | call to source | protobuf.cpp:426:15:426:28 | call to source | provenance |  |
 | protobuf.cpp:426:15:426:28 | call to source | protobuf.cpp:428:2:428:4 | *msg | provenance |  |
-| protobuf.cpp:428:2:428:4 | *msg | protobuf.cpp:428:39:428:42 | SerializePartialToZeroCopyStream output argument | provenance | MaD:160 |
+| protobuf.cpp:428:2:428:4 | *msg | protobuf.cpp:428:39:428:42 | SerializePartialToZeroCopyStream output argument | provenance | MaD:162 |
 | protobuf.cpp:428:39:428:42 | SerializePartialToZeroCopyStream output argument | protobuf.cpp:429:7:429:9 | out | provenance |  |
 | protobuf.cpp:433:15:433:28 | call to source | protobuf.cpp:433:15:433:28 | call to source | provenance |  |
 | protobuf.cpp:433:15:433:28 | call to source | protobuf.cpp:435:2:435:4 | *msg | provenance |  |
-| protobuf.cpp:435:2:435:4 | *msg | protobuf.cpp:435:29:435:32 | SerializeToCodedStream output argument | provenance | MaD:162 |
+| protobuf.cpp:435:2:435:4 | *msg | protobuf.cpp:435:29:435:32 | SerializeToCodedStream output argument | provenance | MaD:164 |
 | protobuf.cpp:435:29:435:32 | SerializeToCodedStream output argument | protobuf.cpp:436:7:436:9 | out | provenance |  |
 | protobuf.cpp:440:15:440:28 | call to source | protobuf.cpp:440:15:440:28 | call to source | provenance |  |
 | protobuf.cpp:440:15:440:28 | call to source | protobuf.cpp:442:2:442:4 | *msg | provenance |  |
-| protobuf.cpp:442:2:442:4 | *msg | protobuf.cpp:442:36:442:39 | SerializePartialToCodedStream output argument | provenance | MaD:156 |
+| protobuf.cpp:442:2:442:4 | *msg | protobuf.cpp:442:36:442:39 | SerializePartialToCodedStream output argument | provenance | MaD:158 |
 | protobuf.cpp:442:36:442:39 | SerializePartialToCodedStream output argument | protobuf.cpp:443:7:443:9 | out | provenance |  |
 | protobuf.cpp:449:15:449:28 | call to source | protobuf.cpp:449:15:449:28 | call to source | provenance |  |
 | protobuf.cpp:449:15:449:28 | call to source | protobuf.cpp:450:7:450:9 | *msg | provenance |  |
-| protobuf.cpp:450:7:450:9 | *msg | protobuf.cpp:450:11:450:27 | call to SerializeAsString | provenance | MaD:152 |
+| protobuf.cpp:450:7:450:9 | *msg | protobuf.cpp:450:11:450:27 | call to SerializeAsString | provenance | MaD:154 |
 | protobuf.cpp:454:15:454:28 | call to source | protobuf.cpp:454:15:454:28 | call to source | provenance |  |
 | protobuf.cpp:454:15:454:28 | call to source | protobuf.cpp:455:7:455:9 | *msg | provenance |  |
-| protobuf.cpp:455:7:455:9 | *msg | protobuf.cpp:455:11:455:34 | call to SerializePartialAsString | provenance | MaD:154 |
+| protobuf.cpp:455:7:455:9 | *msg | protobuf.cpp:455:11:455:34 | call to SerializePartialAsString | provenance | MaD:156 |
 | protobuf.cpp:459:15:459:28 | call to source | protobuf.cpp:459:15:459:28 | call to source | provenance |  |
 | protobuf.cpp:459:15:459:28 | call to source | protobuf.cpp:460:7:460:9 | *msg | provenance |  |
-| protobuf.cpp:460:7:460:9 | *msg | protobuf.cpp:460:11:460:25 | call to SerializeAsCord | provenance | MaD:151 |
+| protobuf.cpp:460:7:460:9 | *msg | protobuf.cpp:460:11:460:25 | call to SerializeAsCord | provenance | MaD:153 |
 | protobuf.cpp:464:15:464:28 | call to source | protobuf.cpp:464:15:464:28 | call to source | provenance |  |
 | protobuf.cpp:464:15:464:28 | call to source | protobuf.cpp:465:7:465:9 | *msg | provenance |  |
-| protobuf.cpp:465:7:465:9 | *msg | protobuf.cpp:465:11:465:32 | call to SerializePartialAsCord | provenance | MaD:153 |
+| protobuf.cpp:465:7:465:9 | *msg | protobuf.cpp:465:11:465:32 | call to SerializePartialAsCord | provenance | MaD:155 |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:48  |
@@ -554,27 +556,27 @@ edges
 | test.cpp:133:10:133:18 | call to ymlSource | test.cpp:134:45:134:45 | x | provenance |  |
 | test.cpp:134:13:134:43 | call to templateFunction | test.cpp:134:13:134:43 | call to templateFunction | provenance |  |
 | test.cpp:134:13:134:43 | call to templateFunction | test.cpp:135:10:135:10 | y | provenance | Sink:MaD:3 |
-| test.cpp:134:45:134:45 | x | test.cpp:134:13:134:43 | call to templateFunction | provenance | MaD:91 |
+| test.cpp:134:45:134:45 | x | test.cpp:134:13:134:43 | call to templateFunction | provenance | MaD:93 |
 | test.cpp:146:10:146:18 | call to ymlSource | test.cpp:146:10:146:18 | call to ymlSource | provenance | Src:MaD:48  |
 | test.cpp:146:10:146:18 | call to ymlSource | test.cpp:148:26:148:26 | x | provenance |  |
 | test.cpp:148:10:148:27 | call to function | test.cpp:148:10:148:27 | call to function | provenance |  |
 | test.cpp:148:10:148:27 | call to function | test.cpp:149:10:149:10 | z | provenance | Sink:MaD:3 |
-| test.cpp:148:26:148:26 | x | test.cpp:148:10:148:27 | call to function | provenance | MaD:92 |
+| test.cpp:148:26:148:26 | x | test.cpp:148:10:148:27 | call to function | provenance | MaD:94 |
 | test.cpp:155:10:155:18 | call to ymlSource | test.cpp:155:10:155:18 | call to ymlSource | provenance | Src:MaD:48  |
 | test.cpp:155:10:155:18 | call to ymlSource | test.cpp:157:26:157:26 | x | provenance |  |
 | test.cpp:157:13:157:20 | call to function | test.cpp:157:13:157:20 | call to function | provenance |  |
 | test.cpp:157:13:157:20 | call to function | test.cpp:158:10:158:10 | z | provenance | Sink:MaD:3 |
-| test.cpp:157:26:157:26 | x | test.cpp:157:13:157:20 | call to function | provenance | MaD:92 |
+| test.cpp:157:26:157:26 | x | test.cpp:157:13:157:20 | call to function | provenance | MaD:94 |
 | test.cpp:164:34:164:34 | x | test.cpp:165:69:165:69 | x | provenance |  |
 | test.cpp:165:12:165:64 | call to templateFunction2 | test.cpp:164:7:164:7 | *templateFunction3 | provenance |  |
 | test.cpp:165:12:165:64 | call to templateFunction2 | test.cpp:165:12:165:64 | call to templateFunction2 | provenance |  |
-| test.cpp:165:69:165:69 | x | test.cpp:165:12:165:64 | call to templateFunction2 | provenance | MaD:90 |
+| test.cpp:165:69:165:69 | x | test.cpp:165:12:165:64 | call to templateFunction2 | provenance | MaD:92 |
 | test.cpp:170:10:170:18 | call to ymlSource | test.cpp:170:10:170:18 | call to ymlSource | provenance | Src:MaD:48  |
 | test.cpp:170:10:170:18 | call to ymlSource | test.cpp:172:51:172:51 | x | provenance |  |
 | test.cpp:172:13:172:44 | call to templateFunction3 | test.cpp:172:13:172:44 | call to templateFunction3 | provenance |  |
 | test.cpp:172:13:172:44 | call to templateFunction3 | test.cpp:173:10:173:10 | y | provenance | Sink:MaD:3 |
 | test.cpp:172:51:172:51 | x | test.cpp:164:34:164:34 | x | provenance |  |
-| test.cpp:172:51:172:51 | x | test.cpp:172:13:172:44 | call to templateFunction3 | provenance | MaD:90 |
+| test.cpp:172:51:172:51 | x | test.cpp:172:13:172:44 | call to templateFunction3 | provenance | MaD:92 |
 | test.cpp:186:2:186:2 | *s [post update] [myField] | test.cpp:187:33:187:34 | *& ... [myField] | provenance |  |
 | test.cpp:186:2:186:24 | ... = ... | test.cpp:186:2:186:2 | *s [post update] [myField] | provenance |  |
 | test.cpp:186:14:186:22 | call to ymlSource | test.cpp:186:2:186:24 | ... = ... | provenance | Src:MaD:48  |
@@ -588,15 +590,15 @@ edges
 | test.cpp:200:10:200:33 | call to read_field_from_struct_2 | test.cpp:201:10:201:10 | x | provenance | Sink:MaD:3 |
 | test.cpp:200:35:200:36 | *& ... [myField] | test.cpp:200:10:200:33 | call to read_field_from_struct_2 | provenance | MaD:83 |
 | test.cpp:216:3:216:4 | get_ptr output argument [value] | test.cpp:217:11:217:12 | *rf [value] | provenance |  |
-| test.cpp:216:3:216:28 | ... = ... | test.cpp:216:3:216:4 | get_ptr output argument [value] | provenance | MaD:89 |
+| test.cpp:216:3:216:28 | ... = ... | test.cpp:216:3:216:4 | get_ptr output argument [value] | provenance | MaD:91 |
 | test.cpp:216:18:216:26 | call to ymlSource | test.cpp:216:3:216:28 | ... = ... | provenance | Src:MaD:48  |
 | test.cpp:217:11:217:12 | *rf [value] | test.cpp:217:14:217:18 | value | provenance |  |
 | test.cpp:217:14:217:18 | value | test.cpp:217:14:217:18 | value | provenance |  |
 | test.cpp:217:14:217:18 | value | test.cpp:218:11:218:11 | x | provenance | Sink:MaD:3 |
 | test.cpp:222:3:222:3 | operator[] output argument | test.cpp:223:12:223:12 | *s | provenance |  |
-| test.cpp:222:3:222:20 | ... = ... | test.cpp:222:3:222:3 | operator[] output argument | provenance | MaD:88 |
+| test.cpp:222:3:222:20 | ... = ... | test.cpp:222:3:222:3 | operator[] output argument | provenance | MaD:90 |
 | test.cpp:222:10:222:18 | call to ymlSource | test.cpp:222:3:222:20 | ... = ... | provenance | Src:MaD:48  |
-| test.cpp:223:12:223:12 | *s | test.cpp:223:13:223:15 | call to operator[] | provenance | MaD:87 |
+| test.cpp:223:12:223:12 | *s | test.cpp:223:13:223:15 | call to operator[] | provenance | MaD:89 |
 | test.cpp:223:13:223:15 | call to operator[] | test.cpp:223:13:223:15 | call to operator[] | provenance |  |
 | test.cpp:223:13:223:15 | call to operator[] | test.cpp:224:11:224:11 | c | provenance | Sink:MaD:3 |
 | test.cpp:242:29:242:29 | *s [value] | test.cpp:243:10:243:10 | *s [value] | provenance |  |
@@ -671,6 +673,100 @@ edges
 | test.cpp:329:12:329:16 | value | test.cpp:329:12:329:16 | value | provenance | Sink:MaD:3 |
 | test.cpp:331:10:331:19 | * ... | test.cpp:331:10:331:19 | * ... | provenance | Sink:MaD:3 |
 | test.cpp:331:11:331:11 | *s [*pointer] | test.cpp:331:10:331:19 | * ... | provenance |  |
+| test.cpp:341:30:341:32 | arg | test.cpp:342:5:342:17 | ... = ... | provenance |  |
+| test.cpp:342:5:342:8 | *this [post update] [s] | test.cpp:341:3:341:22 | *this [Return] [s] | provenance |  |
+| test.cpp:342:5:342:17 | ... = ... | test.cpp:342:5:342:8 | *this [post update] [s] | provenance |  |
+| test.cpp:345:38:345:40 | arg | test.cpp:346:5:346:18 | ... = ... | provenance |  |
+| test.cpp:346:5:346:8 | *this [post update] [ul] | test.cpp:345:3:345:22 | *this [Return] [ul] | provenance |  |
+| test.cpp:346:5:346:18 | ... = ... | test.cpp:346:5:346:8 | *this [post update] [ul] | provenance |  |
+| test.cpp:362:15:362:23 | call to ymlSource | test.cpp:362:15:362:25 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:362:15:362:25 | call to ymlSource | test.cpp:363:15:363:15 | *x | provenance |  |
+| test.cpp:363:5:363:5 | forward output argument [s] | test.cpp:365:30:365:30 | *f [s] | provenance |  |
+| test.cpp:363:15:363:15 | *x | test.cpp:341:30:341:32 | arg | provenance |  |
+| test.cpp:363:15:363:15 | *x | test.cpp:363:5:363:5 | forward output argument [s] | provenance |  |
+| test.cpp:365:30:365:30 | *f [s] | test.cpp:365:32:365:34 | call to get [s] | provenance | MaD:88 |
+| test.cpp:365:32:365:34 | call to get [s] | test.cpp:365:32:365:34 | call to get [s] | provenance |  |
+| test.cpp:365:32:365:34 | call to get [s] | test.cpp:366:13:366:13 | *c [s] | provenance |  |
+| test.cpp:366:13:366:13 | *c [s] | test.cpp:366:13:366:15 | s | provenance |  |
+| test.cpp:366:13:366:13 | *c [s] | test.cpp:366:15:366:15 | s | provenance | Sink:MaD:3 |
+| test.cpp:366:13:366:15 | s | test.cpp:366:15:366:15 | s | provenance | Sink:MaD:3 |
+| test.cpp:371:24:371:32 | call to ymlSource | test.cpp:371:24:371:34 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:371:24:371:34 | call to ymlSource | test.cpp:372:15:372:16 | *ul | provenance |  |
+| test.cpp:372:5:372:5 | forward output argument [ul] | test.cpp:374:30:374:30 | *f [ul] | provenance |  |
+| test.cpp:372:15:372:16 | *ul | test.cpp:345:38:345:40 | arg | provenance |  |
+| test.cpp:372:15:372:16 | *ul | test.cpp:372:5:372:5 | forward output argument [ul] | provenance |  |
+| test.cpp:374:30:374:30 | *f [ul] | test.cpp:374:32:374:34 | call to get [ul] | provenance | MaD:88 |
+| test.cpp:374:32:374:34 | call to get [ul] | test.cpp:374:32:374:34 | call to get [ul] | provenance |  |
+| test.cpp:374:32:374:34 | call to get [ul] | test.cpp:376:13:376:13 | *c [ul] | provenance |  |
+| test.cpp:376:13:376:13 | *c [ul] | test.cpp:376:13:376:16 | ul | provenance |  |
+| test.cpp:376:13:376:13 | *c [ul] | test.cpp:376:15:376:16 | ul | provenance | Sink:MaD:3 |
+| test.cpp:376:13:376:16 | ul | test.cpp:376:15:376:16 | ul | provenance | Sink:MaD:3 |
+| test.cpp:397:11:397:19 | call to ymlSource | test.cpp:397:11:397:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:397:11:397:19 | call to ymlSource | test.cpp:398:38:398:38 | x | provenance |  |
+| test.cpp:398:15:398:36 | call to makeForwarded [x] | test.cpp:398:15:398:36 | call to makeForwarded [x] | provenance |  |
+| test.cpp:398:15:398:36 | call to makeForwarded [x] | test.cpp:399:11:399:11 | *e [x] | provenance |  |
+| test.cpp:398:38:398:38 | x | test.cpp:398:15:398:36 | call to makeForwarded [x] | provenance |  |
+| test.cpp:399:11:399:11 | *e [x] | test.cpp:399:13:399:13 | x | provenance |  |
+| test.cpp:399:13:399:13 | x | test.cpp:399:13:399:13 | x | provenance | Sink:MaD:3 |
+| test.cpp:404:11:404:19 | call to ymlSource | test.cpp:404:11:404:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:404:11:404:19 | call to ymlSource | test.cpp:405:22:405:22 | x | provenance |  |
+| test.cpp:405:3:405:3 | forwardToElement output argument [x] | test.cpp:406:15:406:15 | *f [x] | provenance |  |
+| test.cpp:405:22:405:22 | x | test.cpp:405:3:405:3 | forwardToElement output argument [x] | provenance |  |
+| test.cpp:406:15:406:15 | *f [x] | test.cpp:406:17:406:19 | call to get [x] | provenance | MaD:88 |
+| test.cpp:406:17:406:19 | call to get [x] | test.cpp:406:17:406:19 | call to get [x] | provenance |  |
+| test.cpp:406:17:406:19 | call to get [x] | test.cpp:407:11:407:11 | *e [x] | provenance |  |
+| test.cpp:407:11:407:11 | *e [x] | test.cpp:407:13:407:13 | x | provenance |  |
+| test.cpp:407:13:407:13 | x | test.cpp:407:13:407:13 | x | provenance | Sink:MaD:3 |
+| test.cpp:412:11:412:19 | call to ymlSource | test.cpp:412:11:412:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:412:11:412:19 | call to ymlSource | test.cpp:413:16:413:16 | *x | provenance |  |
+| test.cpp:413:3:413:3 | emplace output argument [element, x] | test.cpp:415:15:415:15 | *c [element, x] | provenance |  |
+| test.cpp:413:16:413:16 | *x | test.cpp:413:3:413:3 | emplace output argument [element, x] | provenance |  |
+| test.cpp:415:15:415:15 | *c [element, x] | test.cpp:415:20:415:22 | call to get [x] | provenance | MaD:87 |
+| test.cpp:415:20:415:22 | call to get [x] | test.cpp:415:20:415:22 | call to get [x] | provenance |  |
+| test.cpp:415:20:415:22 | call to get [x] | test.cpp:416:11:416:11 | *e [x] | provenance |  |
+| test.cpp:416:11:416:11 | *e [x] | test.cpp:416:13:416:13 | x | provenance |  |
+| test.cpp:416:13:416:13 | x | test.cpp:416:13:416:13 | x | provenance | Sink:MaD:3 |
+| test.cpp:426:11:426:19 | call to ymlSource | test.cpp:426:11:426:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:426:11:426:19 | call to ymlSource | test.cpp:427:16:427:16 | *x | provenance |  |
+| test.cpp:427:3:427:3 | emplace output argument [element, x] | test.cpp:429:34:429:34 | *c [element, x] | provenance |  |
+| test.cpp:427:16:427:16 | *x | test.cpp:427:3:427:3 | emplace output argument [element, x] | provenance |  |
+| test.cpp:429:34:429:34 | *c [element, x] | test.cpp:429:39:429:41 | call to get [x] | provenance | MaD:87 |
+| test.cpp:429:39:429:41 | call to get [x] | test.cpp:429:39:429:41 | call to get [x] | provenance |  |
+| test.cpp:429:39:429:41 | call to get [x] | test.cpp:430:11:430:11 | *e [x] | provenance |  |
+| test.cpp:430:11:430:11 | *e [x] | test.cpp:430:13:430:13 | x | provenance |  |
+| test.cpp:430:13:430:13 | x | test.cpp:430:13:430:13 | x | provenance | Sink:MaD:3 |
+| test.cpp:435:3:435:28 | *ElementWithOverloadedArity [post update] [x] | test.cpp:435:3:435:28 | *this [Return] [x] | provenance |  |
+| test.cpp:435:34:435:38 | first | test.cpp:435:45:435:49 | first | provenance |  |
+| test.cpp:435:45:435:49 | first | test.cpp:435:3:435:28 | *ElementWithOverloadedArity [post update] [x] | provenance |  |
+| test.cpp:436:3:436:28 | *ElementWithOverloadedArity [post update] [x] | test.cpp:436:3:436:28 | *this [Return] [x] | provenance |  |
+| test.cpp:436:39:436:44 | second | test.cpp:436:51:436:56 | second | provenance |  |
+| test.cpp:436:51:436:56 | second | test.cpp:436:3:436:28 | *ElementWithOverloadedArity [post update] [x] | provenance |  |
+| test.cpp:440:11:440:19 | call to ymlSource | test.cpp:440:11:440:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:440:11:440:19 | call to ymlSource | test.cpp:443:18:443:18 | *x | provenance |  |
+| test.cpp:440:11:440:19 | call to ymlSource | test.cpp:453:21:453:21 | *x | provenance |  |
+| test.cpp:443:5:443:5 | emplace output argument [element, x] | test.cpp:444:13:444:13 | *c [element, x] | provenance |  |
+| test.cpp:443:18:443:18 | *x | test.cpp:435:34:435:38 | first | provenance |  |
+| test.cpp:443:18:443:18 | *x | test.cpp:443:5:443:5 | emplace output argument [element, x] | provenance |  |
+| test.cpp:444:13:444:13 | *c [element, x] | test.cpp:444:18:444:20 | *call to get [x] | provenance | MaD:87 |
+| test.cpp:444:18:444:20 | *call to get [x] | test.cpp:444:21:444:21 | x | provenance |  |
+| test.cpp:444:21:444:21 | x | test.cpp:444:21:444:21 | x | provenance | Sink:MaD:3 |
+| test.cpp:453:5:453:5 | emplace output argument [element, x] | test.cpp:454:13:454:13 | *c [element, x] | provenance |  |
+| test.cpp:453:21:453:21 | *x | test.cpp:436:39:436:44 | second | provenance |  |
+| test.cpp:453:21:453:21 | *x | test.cpp:453:5:453:5 | emplace output argument [element, x] | provenance |  |
+| test.cpp:454:13:454:13 | *c [element, x] | test.cpp:454:18:454:20 | *call to get [x] | provenance | MaD:87 |
+| test.cpp:454:18:454:20 | *call to get [x] | test.cpp:454:21:454:21 | x | provenance |  |
+| test.cpp:454:21:454:21 | x | test.cpp:454:21:454:21 | x | provenance | Sink:MaD:3 |
+| test.cpp:461:5:461:5 | forward output argument | test.cpp:462:13:462:13 | *f | provenance |  |
+| test.cpp:461:15:461:23 | call to ymlSource | test.cpp:461:15:461:23 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:461:15:461:23 | call to ymlSource | test.cpp:461:15:461:25 | call to ymlSource | provenance |  |
+| test.cpp:461:15:461:25 | call to ymlSource | test.cpp:461:5:461:5 | forward output argument | provenance |  |
+| test.cpp:462:13:462:13 | *f | test.cpp:462:15:462:17 | call to get | provenance | MaD:88 |
+| test.cpp:462:15:462:17 | call to get | test.cpp:462:15:462:17 | call to get | provenance | Sink:MaD:3 |
+| test.cpp:466:5:466:5 | forward output argument | test.cpp:467:14:467:14 | *f | provenance |  |
+| test.cpp:466:15:466:26 | *call to ymlSourcePtr | test.cpp:466:15:466:28 | **call to ymlSourcePtr | provenance |  |
+| test.cpp:466:15:466:26 | call to ymlSourcePtr | test.cpp:466:15:466:26 | *call to ymlSourcePtr | provenance | Src:MaD:49  |
+| test.cpp:466:15:466:28 | **call to ymlSourcePtr | test.cpp:466:5:466:5 | forward output argument | provenance |  |
+| test.cpp:467:14:467:14 | *f | test.cpp:467:13:467:20 | * ... | provenance | MaD:88 Sink:MaD:3 |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:24:8:24:11 | * ... | provenance |  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:27:36:27:38 | *cmd | provenance |  |
 | windows.cpp:22:15:22:29 | call to GetCommandLineA | windows.cpp:22:15:22:29 | *call to GetCommandLineA | provenance | Src:MaD:5  |
@@ -1443,6 +1539,107 @@ nodes
 | test.cpp:331:10:331:19 | * ... | semmle.label | * ... |
 | test.cpp:331:11:331:11 | *s [*pointer] | semmle.label | *s [*pointer] |
 | test.cpp:334:10:334:16 | * ... | semmle.label | * ... |
+| test.cpp:341:3:341:22 | *this [Return] [s] | semmle.label | *this [Return] [s] |
+| test.cpp:341:30:341:32 | arg | semmle.label | arg |
+| test.cpp:342:5:342:8 | *this [post update] [s] | semmle.label | *this [post update] [s] |
+| test.cpp:342:5:342:17 | ... = ... | semmle.label | ... = ... |
+| test.cpp:345:3:345:22 | *this [Return] [ul] | semmle.label | *this [Return] [ul] |
+| test.cpp:345:38:345:40 | arg | semmle.label | arg |
+| test.cpp:346:5:346:8 | *this [post update] [ul] | semmle.label | *this [post update] [ul] |
+| test.cpp:346:5:346:18 | ... = ... | semmle.label | ... = ... |
+| test.cpp:362:15:362:23 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:362:15:362:25 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:363:5:363:5 | forward output argument [s] | semmle.label | forward output argument [s] |
+| test.cpp:363:15:363:15 | *x | semmle.label | *x |
+| test.cpp:365:30:365:30 | *f [s] | semmle.label | *f [s] |
+| test.cpp:365:32:365:34 | call to get [s] | semmle.label | call to get [s] |
+| test.cpp:365:32:365:34 | call to get [s] | semmle.label | call to get [s] |
+| test.cpp:366:13:366:13 | *c [s] | semmle.label | *c [s] |
+| test.cpp:366:13:366:15 | s | semmle.label | s |
+| test.cpp:366:15:366:15 | s | semmle.label | s |
+| test.cpp:371:24:371:32 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:371:24:371:34 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:372:5:372:5 | forward output argument [ul] | semmle.label | forward output argument [ul] |
+| test.cpp:372:15:372:16 | *ul | semmle.label | *ul |
+| test.cpp:374:30:374:30 | *f [ul] | semmle.label | *f [ul] |
+| test.cpp:374:32:374:34 | call to get [ul] | semmle.label | call to get [ul] |
+| test.cpp:374:32:374:34 | call to get [ul] | semmle.label | call to get [ul] |
+| test.cpp:376:13:376:13 | *c [ul] | semmle.label | *c [ul] |
+| test.cpp:376:13:376:16 | ul | semmle.label | ul |
+| test.cpp:376:15:376:16 | ul | semmle.label | ul |
+| test.cpp:397:11:397:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:397:11:397:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:398:15:398:36 | call to makeForwarded [x] | semmle.label | call to makeForwarded [x] |
+| test.cpp:398:15:398:36 | call to makeForwarded [x] | semmle.label | call to makeForwarded [x] |
+| test.cpp:398:38:398:38 | x | semmle.label | x |
+| test.cpp:399:11:399:11 | *e [x] | semmle.label | *e [x] |
+| test.cpp:399:13:399:13 | x | semmle.label | x |
+| test.cpp:399:13:399:13 | x | semmle.label | x |
+| test.cpp:404:11:404:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:404:11:404:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:405:3:405:3 | forwardToElement output argument [x] | semmle.label | forwardToElement output argument [x] |
+| test.cpp:405:22:405:22 | x | semmle.label | x |
+| test.cpp:406:15:406:15 | *f [x] | semmle.label | *f [x] |
+| test.cpp:406:17:406:19 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:406:17:406:19 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:407:11:407:11 | *e [x] | semmle.label | *e [x] |
+| test.cpp:407:13:407:13 | x | semmle.label | x |
+| test.cpp:407:13:407:13 | x | semmle.label | x |
+| test.cpp:412:11:412:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:412:11:412:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:413:3:413:3 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
+| test.cpp:413:16:413:16 | *x | semmle.label | *x |
+| test.cpp:415:15:415:15 | *c [element, x] | semmle.label | *c [element, x] |
+| test.cpp:415:20:415:22 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:415:20:415:22 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:416:11:416:11 | *e [x] | semmle.label | *e [x] |
+| test.cpp:416:13:416:13 | x | semmle.label | x |
+| test.cpp:416:13:416:13 | x | semmle.label | x |
+| test.cpp:426:11:426:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:426:11:426:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:427:3:427:3 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
+| test.cpp:427:16:427:16 | *x | semmle.label | *x |
+| test.cpp:429:34:429:34 | *c [element, x] | semmle.label | *c [element, x] |
+| test.cpp:429:39:429:41 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:429:39:429:41 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:430:11:430:11 | *e [x] | semmle.label | *e [x] |
+| test.cpp:430:13:430:13 | x | semmle.label | x |
+| test.cpp:430:13:430:13 | x | semmle.label | x |
+| test.cpp:435:3:435:28 | *ElementWithOverloadedArity [post update] [x] | semmle.label | *ElementWithOverloadedArity [post update] [x] |
+| test.cpp:435:3:435:28 | *this [Return] [x] | semmle.label | *this [Return] [x] |
+| test.cpp:435:34:435:38 | first | semmle.label | first |
+| test.cpp:435:45:435:49 | first | semmle.label | first |
+| test.cpp:436:3:436:28 | *ElementWithOverloadedArity [post update] [x] | semmle.label | *ElementWithOverloadedArity [post update] [x] |
+| test.cpp:436:3:436:28 | *this [Return] [x] | semmle.label | *this [Return] [x] |
+| test.cpp:436:39:436:44 | second | semmle.label | second |
+| test.cpp:436:51:436:56 | second | semmle.label | second |
+| test.cpp:440:11:440:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:440:11:440:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:443:5:443:5 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
+| test.cpp:443:18:443:18 | *x | semmle.label | *x |
+| test.cpp:444:13:444:13 | *c [element, x] | semmle.label | *c [element, x] |
+| test.cpp:444:18:444:20 | *call to get [x] | semmle.label | *call to get [x] |
+| test.cpp:444:21:444:21 | x | semmle.label | x |
+| test.cpp:444:21:444:21 | x | semmle.label | x |
+| test.cpp:453:5:453:5 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
+| test.cpp:453:21:453:21 | *x | semmle.label | *x |
+| test.cpp:454:13:454:13 | *c [element, x] | semmle.label | *c [element, x] |
+| test.cpp:454:18:454:20 | *call to get [x] | semmle.label | *call to get [x] |
+| test.cpp:454:21:454:21 | x | semmle.label | x |
+| test.cpp:454:21:454:21 | x | semmle.label | x |
+| test.cpp:461:5:461:5 | forward output argument | semmle.label | forward output argument |
+| test.cpp:461:15:461:23 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:461:15:461:23 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:461:15:461:25 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:462:13:462:13 | *f | semmle.label | *f |
+| test.cpp:462:15:462:17 | call to get | semmle.label | call to get |
+| test.cpp:462:15:462:17 | call to get | semmle.label | call to get |
+| test.cpp:466:5:466:5 | forward output argument | semmle.label | forward output argument |
+| test.cpp:466:15:466:26 | *call to ymlSourcePtr | semmle.label | *call to ymlSourcePtr |
+| test.cpp:466:15:466:26 | call to ymlSourcePtr | semmle.label | call to ymlSourcePtr |
+| test.cpp:466:15:466:28 | **call to ymlSourcePtr | semmle.label | **call to ymlSourcePtr |
+| test.cpp:467:13:467:20 | * ... | semmle.label | * ... |
+| test.cpp:467:14:467:14 | *f | semmle.label | *f |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | semmle.label | *call to GetCommandLineA |
 | windows.cpp:22:15:22:29 | call to GetCommandLineA | semmle.label | call to GetCommandLineA |
 | windows.cpp:24:8:24:11 | * ... | semmle.label | * ... |
@@ -1664,4 +1861,8 @@ nodes
 subpaths
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body |
 | test.cpp:172:51:172:51 | x | test.cpp:164:34:164:34 | x | test.cpp:164:7:164:7 | *templateFunction3 | test.cpp:172:13:172:44 | call to templateFunction3 |
+| test.cpp:363:15:363:15 | *x | test.cpp:341:30:341:32 | arg | test.cpp:341:3:341:22 | *this [Return] [s] | test.cpp:363:5:363:5 | forward output argument [s] |
+| test.cpp:372:15:372:16 | *ul | test.cpp:345:38:345:40 | arg | test.cpp:345:3:345:22 | *this [Return] [ul] | test.cpp:372:5:372:5 | forward output argument [ul] |
+| test.cpp:443:18:443:18 | *x | test.cpp:435:34:435:38 | first | test.cpp:435:3:435:28 | *this [Return] [x] | test.cpp:443:5:443:5 | emplace output argument [element, x] |
+| test.cpp:453:21:453:21 | *x | test.cpp:436:39:436:44 | second | test.cpp:436:3:436:28 | *this [Return] [x] | test.cpp:453:5:453:5 | emplace output argument [element, x] |
 testFailures
