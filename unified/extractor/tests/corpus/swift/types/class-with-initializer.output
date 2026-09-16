@@ -106,9 +106,10 @@ top_level
               body:
                 block
                   stmt:
-                    assign_expr
-                      target:
+                    binary_expr
+                      left:
                         member_access_expr
                           base: identifier "self"
                           member_name_node: identifier "x"
-                      value: identifier "x"
+                      operator: infix_operator "="
+                      right: identifier "x"

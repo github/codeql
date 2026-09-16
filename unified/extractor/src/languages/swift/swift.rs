@@ -129,13 +129,6 @@ fn member_chain(
     result
 }
 
-/// Compound-assignment operator spellings (`+=`, `<<=`, ...). Used to tell a
-/// compound assignment from an ordinary binary application, both of which
-/// arrive as a `binaryOperator`-based `infixOperatorExpr`.
-const COMPOUND_ASSIGN_OPS: &[&str] = &[
-    "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "|=", "^=", "&+=", "&-=", "&*=",
-];
-
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
     vec![
         // ---- Top-level ----
@@ -243,29 +236,21 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // operator leaf. Used by `infixOperatorExpr` (folded) and `sequenceExpr`
         // (unresolved).
         rule!((binaryOperatorExpr operator: @op) => (infix_operator #{op})),
-        // Compound assignment (`x += y`) vs. an ordinary binary application
-        // (`a + b`): both are `binaryOperator`-based `infixOperatorExpr`s,
-        // distinguishable only by the operator's spelling. The query engine
-        // can't match on token text, so a small Rust block reads the spelling
-        // and routes to `compound_assign_expr` or `binary_expr`. The operator
-        // is captured raw (`@@op`) to read its spelling.
+        // A `binaryOperator`-based `infixOperatorExpr` represents both ordinary
+        // binary applications (`a + b`) and compound assignments (`x += y`).
+        // Both have the same target AST shape; the QL library distinguishes
+        // assignments by the operator spelling.
         rule!(
             (infixOperatorExpr leftOperand: @l operator: (binaryOperatorExpr) @@op rightOperand: @r)
             =>
-            expr {
-                if COMPOUND_ASSIGN_OPS.contains(&ctx.source_text(op).as_str()) {
-                    tree!((compound_assign_expr target: {l} operator: (infix_operator #{op}) value: {r}))
-                } else {
-                    tree!((binary_expr left: {l} operator: (infix_operator #{op}) right: {r}))
-                }
-            }
+            (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})
         ),
-        // Plain assignment (`x = y`). In a folded chain the `=` is an
-        // `assignmentExpr` node (distinct from other operators), matched by kind.
+        // Plain assignment (`x = y`). In a folded chain the `=` is represented
+        // by an `assignmentExpr` node rather than a `binaryOperatorExpr`.
         rule!(
-            (infixOperatorExpr leftOperand: @l operator: (assignmentExpr) rightOperand: @r)
+            (infixOperatorExpr leftOperand: @l operator: (assignmentExpr) @op rightOperand: @r)
             =>
-            (assign_expr target: {l} value: {r})
+            (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})
         ),
         // In an unresolved `sequenceExpr` (below) the operator positions are not
         // only `binaryOperatorExpr`s: a plain assignment (`=`), an `as`/`is` cast
