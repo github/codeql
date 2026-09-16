@@ -6,6 +6,31 @@ private import unified
 private import codeql.unified.internal.NameBindingPlugin
 
 module Public {
+  /** A plain assignment expression. */
+  class AssignExpr extends BinaryExpr {
+    AssignExpr() { this.getOperator().getValue() = "=" }
+
+    /** Gets the target of this assignment. */
+    Expr getTarget() { result = this.getLeft() }
+
+    /** Gets the value assigned by this assignment. */
+    Expr getValue() { result = this.getRight() }
+  }
+
+  /** A compound assignment expression. */
+  class CompoundAssignExpr extends BinaryExpr {
+    CompoundAssignExpr() {
+      this.getOperator().getValue() =
+        ["+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "|=", "^=", "&+=", "&-=", "&*="]
+    }
+
+    /** Gets the target of this assignment. */
+    Expr getTarget() { result = this.getLeft() }
+
+    /** Gets the value assigned by this assignment. */
+    Expr getValue() { result = this.getRight() }
+  }
+
   /** A short-circuiting logical AND expression. */
   class LogicalAndExpr extends BinaryExpr {
     LogicalAndExpr() { this.getOperator().getValue() = "&&" }
