@@ -97,6 +97,10 @@ edges
 | test.swift:120:17:120:21 | tuple [1] | test.swift:120:9:120:13 | TupleExpr [1] | provenance |  |
 | test.swift:131:5:131:5 | a | test.swift:132:10:132:10 | a | provenance |  |
 | test.swift:131:19:131:33 | CallExpr | test.swift:131:5:131:5 | a | provenance |  |
+| test.swift:137:5:137:5 | [incoming] a | test.swift:138:10:138:10 | a | provenance |  |
+| test.swift:137:10:137:24 | CallExpr | test.swift:137:5:137:5 | [incoming] a | provenance |  |
+| test.swift:143:5:143:5 | [incoming] a | test.swift:144:10:144:10 | a | provenance |  |
+| test.swift:143:20:143:34 | CallExpr | test.swift:143:5:143:5 | [incoming] a | provenance |  |
 nodes
 | implicit-self.swift:11:9:11:12 | [post] self [x] | semmle.label | [post] self [x] |
 | implicit-self.swift:11:9:11:14 | MemberAccessExpr | semmle.label | MemberAccessExpr |
@@ -225,8 +229,16 @@ nodes
 | test.swift:131:5:131:5 | a | semmle.label | a |
 | test.swift:131:19:131:33 | CallExpr | semmle.label | CallExpr |
 | test.swift:132:10:132:10 | a | semmle.label | a |
+| test.swift:137:5:137:5 | [incoming] a | semmle.label | [incoming] a |
+| test.swift:137:10:137:24 | CallExpr | semmle.label | CallExpr |
+| test.swift:138:10:138:10 | a | semmle.label | a |
+| test.swift:143:5:143:5 | [incoming] a | semmle.label | [incoming] a |
+| test.swift:143:20:143:34 | CallExpr | semmle.label | CallExpr |
+| test.swift:144:10:144:10 | a | semmle.label | a |
 subpaths
 testFailures
+| test.swift:138:10:138:10 | a | Fixed missing result: hasTaintFlow=t15.1 |
+| test.swift:144:10:144:10 | a | Fixed missing result: hasTaintFlow=t16.1 |
 #select
 | implicit-self.swift:12:14:12:19 | MemberAccessExpr | implicit-self.swift:11:18:11:31 | CallExpr | implicit-self.swift:12:14:12:19 | MemberAccessExpr | $@ | implicit-self.swift:11:18:11:31 | CallExpr | CallExpr |
 | implicit-self.swift:18:14:18:14 | x | implicit-self.swift:17:13:17:26 | CallExpr | implicit-self.swift:18:14:18:14 | x | $@ | implicit-self.swift:17:13:17:26 | CallExpr | CallExpr |
@@ -260,3 +272,5 @@ testFailures
 | test.swift:125:10:125:10 | a | test.swift:117:18:117:33 | CallExpr | test.swift:125:10:125:10 | a | $@ | test.swift:117:18:117:33 | CallExpr | CallExpr |
 | test.swift:126:10:126:10 | b | test.swift:117:35:117:49 | CallExpr | test.swift:126:10:126:10 | b | $@ | test.swift:117:35:117:49 | CallExpr | CallExpr |
 | test.swift:132:10:132:10 | a | test.swift:131:19:131:33 | CallExpr | test.swift:132:10:132:10 | a | $@ | test.swift:131:19:131:33 | CallExpr | CallExpr |
+| test.swift:138:10:138:10 | a | test.swift:137:10:137:24 | CallExpr | test.swift:138:10:138:10 | a | $@ | test.swift:137:10:137:24 | CallExpr | CallExpr |
+| test.swift:144:10:144:10 | a | test.swift:143:20:143:34 | CallExpr | test.swift:144:10:144:10 | a | $@ | test.swift:143:20:143:34 | CallExpr | CallExpr |
