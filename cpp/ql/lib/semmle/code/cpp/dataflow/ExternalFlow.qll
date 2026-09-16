@@ -110,6 +110,15 @@
  *    - "manual": The model has been written by hand.
  *    This information is used in a heuristic for dataflow analysis to determine, if a
  *    model or source code should be used for determining flow.
+ *
+ * The "Forwards" relation allows modeling of function that perform C++11-style "perfect
+ * forwarding" where a function receives a number of arguments and forwards those arguments
+ * to a constructor of another type. For example, the row:
+ * `"std"; "vector<T>"; "True"; "emplace"; ""; ""; "1"; T; Argument[-1].Element; manual`
+ * says that `std::vector<T>::emplace(arg0, arg1, ..., argn)` forwards arguments
+ * `arg1, ..., argn` to a constructor for `T`, and the result of `T(arg1, ..., argn)`
+ * flows to `Argument[-1].Element` (see information about the semantics of the `output`
+ * column further above).
  */
 
 import cpp
