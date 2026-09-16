@@ -1097,9 +1097,9 @@ private Type getForwardedConstructorType(
   )
 }
 
-/** Interprets a forwarding model, retaining its output and provenance. */
-private predicate interpretForwardsModel(
-  Function forwarder, Constructor constructor, int start, string output, string provenance,
+/** Interprets a forwarding model, retaining its constructed type, output, and provenance. */
+private predicate interpretForwardsModelType(
+  Function forwarder, Type constructedType, int start, string output, string provenance,
   string model
 ) {
   exists(
@@ -1114,7 +1114,7 @@ private predicate interpretForwardsModel(
     // Either the row specifies forwarding to a type given by the type or
     // function template, in which case we need to resolve that from the type
     // or function name.
-    constructor.getDeclaringType() =
+    constructedType =
       getForwardedConstructorType(forwarder, namespace, type, subtypes, name, signature, ext,
         constructorType).getUnspecifiedType()
     or
@@ -1123,7 +1123,7 @@ private predicate interpretForwardsModel(
       getForwardedConstructorType(forwarder, namespace, type, subtypes, name, signature, ext,
         constructorType)
     ) and
-    classHasQualifiedName(constructor.getDeclaringType(), namespace, constructorType)
+    classHasQualifiedName(constructedType, namespace, constructorType)
   )
 }
 
@@ -1132,12 +1132,29 @@ private predicate interpretForwardsModel(
  * actual constructor being forwarded to depends on the types of arguments from `start`
  * at calls to `forwarder`.
  */
+private predicate interpretForwardsModel(
+  Function forwarder, Constructor constructor, int start, string output, string provenance,
+  string model
+) {
+  interpretForwardsModelType(forwarder, constructor.getDeclaringType(), start, output, provenance,
+    model)
+}
+
+/** Holds if `forwarder` forwards its arguments starting at `start` to `constructor`. */
 predicate forwards(Function forwarder, Constructor constructor, int start) {
   interpretForwardsModel(forwarder, constructor, start, _, _, _)
 }
 
 private int referenceIndirection(Type unspecified) {
   if unspecified instanceof ReferenceType then result = 1 else result = 0
+}
+
+/** Gets `unspecified`, but with its outermost reference removed, if any. */
+private Type stripReference(Type unspecified) {
+  result = unspecified.(ReferenceType).getBaseType().getUnspecifiedType()
+  or
+  not unspecified instanceof ReferenceType and
+  result = unspecified
 }
 
 /**
@@ -1182,6 +1199,20 @@ private predicate interpretForwardingSummary(
     // Generate the (2) summary
     input = "Argument[forward].Parameter[-1]" and
     output = constructorOutput
+  )
+  or
+  // Scalar types have no constructor to synthesize. In this case, directly
+  // preserve the value of the single forwarded argument at the modeled output.
+  exists(Type constructedType, int start, Parameter p, int indirection |
+    interpretForwardsModelType(forwarder, constructedType, start, output, provenance, model) and
+    not constructedType instanceof Class and
+    forwarder.getNumberOfParameters() = start + 1 and
+    p = forwarder.getParameter(start) and
+    stripReference(p.getUnspecifiedType()) = constructedType and
+    indirection = [0 .. SsaImpl::getMaxIndirectionsForPRType(constructedType)] and
+    input =
+      "Argument[" + repeatStars(indirection + referenceIndirection(p.getUnspecifiedType())) + start +
+        "]"
   )
 }
 
