@@ -23,8 +23,6 @@ supertypes:
     - type_cast_expr
     - type_test_expr
     - if_expr
-    - assign_expr
-    - compound_assign_expr
     - pattern_guard_expr
     - empty_expr
     - block
@@ -158,17 +156,6 @@ named:
   # structure. The `element`s alternate operands (`expr`) and infix operators.
   unresolved_operator_sequence:
     element*: expr_or_operator
-
-  # Plain assignment
-  assign_expr:
-    target: expr
-    value: expr
-
-  # Compound assignment
-  compound_assign_expr:
-    target: expr
-    operator: infix_operator
-    value: expr
 
   # A function or method call, such as `f(x)` or `obj.m(x)`.
   #
