@@ -56,28 +56,28 @@ class C {
 
     func t9() {
         x = "safe";
-        x += sink(x) + source("t9.1"); // $ SPURIOUS: hasTaintFlow=t9.1
+        x += sink(x) + source("t9.1");
         sink(x); // $ hasTaintFlow=t9.1
         sink(self.x); // $ hasTaintFlow=t9.1
     }
 
     func t10() {
         x = "safe";
-        self.x += sink(x) + source("t10.1"); // $ SPURIOUS: hasTaintFlow=t10.1
+        self.x += sink(x) + source("t10.1");
         sink(x); // $ hasTaintFlow=t10.1
         sink(self.x); // $ hasTaintFlow=t10.1
     }
 
     func t11() {
         self.x = "safe";
-        x += sink(x) + source("t11.1"); // $ SPURIOUS: hasTaintFlow=t11.1
+        x += sink(x) + source("t11.1");
         sink(x); // $ hasTaintFlow=t11.1
         sink(self.x); // $ hasTaintFlow=t11.1
     }
 
     func t12() {
         self.x = "safe";
-        self.x += sink(x) + source("t12.1"); // $ SPURIOUS: hasTaintFlow=t12.1
+        self.x += sink(x) + source("t12.1");
         sink(x); // $ hasTaintFlow=t12.1
         sink(self.x); // $ hasTaintFlow=t12.1
     }
