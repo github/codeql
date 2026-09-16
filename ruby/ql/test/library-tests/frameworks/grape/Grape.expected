@@ -2,6 +2,7 @@ grapeApiClasses
 | app.rb:1:1:90:3 | MyAPI |
 | app.rb:92:1:96:3 | AdminAPI |
 | app.rb:98:1:239:3 | UserAPI |
+| app.rb:243:1:290:3 | RequestAccessorsAPI |
 grapeEndpoints
 | app.rb:1:1:90:3 | MyAPI | app.rb:7:3:11:5 | call to get | GET | /hello/:name |
 | app.rb:1:1:90:3 | MyAPI | app.rb:17:3:20:5 | call to post | POST | /messages |
@@ -19,6 +20,15 @@ grapeEndpoints
 | app.rb:98:1:239:3 | UserAPI | app.rb:187:5:193:7 | call to post | POST | /users |
 | app.rb:98:1:239:3 | UserAPI | app.rb:204:5:207:7 | call to post | POST | /users |
 | app.rb:98:1:239:3 | UserAPI | app.rb:210:5:238:7 | call to get | GET | /nested_test/:token |
+| app.rb:243:1:290:3 | RequestAccessorsAPI | app.rb:246:3:249:5 | call to get | GET | /body_read_test |
+| app.rb:243:1:290:3 | RequestAccessorsAPI | app.rb:251:3:254:5 | call to get | GET | /body_string_test |
+| app.rb:243:1:290:3 | RequestAccessorsAPI | app.rb:256:3:259:5 | call to get | GET | /request_params_test |
+| app.rb:243:1:290:3 | RequestAccessorsAPI | app.rb:261:3:264:5 | call to get | GET | /request_get_test |
+| app.rb:243:1:290:3 | RequestAccessorsAPI | app.rb:266:3:269:5 | call to get | GET | /request_post_test |
+| app.rb:243:1:290:3 | RequestAccessorsAPI | app.rb:271:3:274:5 | call to get | GET | /request_cookies_test |
+| app.rb:243:1:290:3 | RequestAccessorsAPI | app.rb:276:3:279:5 | call to get | GET | /request_env_test |
+| app.rb:243:1:290:3 | RequestAccessorsAPI | app.rb:281:3:284:5 | call to get | GET | /request_query_string_test |
+| app.rb:243:1:290:3 | RequestAccessorsAPI | app.rb:286:3:289:5 | call to get | GET | /request_path_info_test |
 grapeParams
 | app.rb:8:12:8:17 | call to params |
 | app.rb:14:3:16:5 | call to params |
@@ -44,6 +54,15 @@ grapeHeaders
 grapeRequest
 | app.rb:25:12:25:18 | call to request |
 | app.rb:170:21:170:27 | call to request |
+| app.rb:247:17:247:23 | call to request |
+| app.rb:252:17:252:23 | call to request |
+| app.rb:257:19:257:25 | call to request |
+| app.rb:262:18:262:24 | call to request |
+| app.rb:267:19:267:25 | call to request |
+| app.rb:272:19:272:25 | call to request |
+| app.rb:277:16:277:22 | call to request |
+| app.rb:282:10:282:16 | call to request |
+| app.rb:287:12:287:18 | call to request |
 grapeRouteParam
 | app.rb:51:15:51:35 | call to route_param |
 | app.rb:52:15:52:36 | call to route_param |
@@ -56,3 +75,23 @@ grapeCookies
 | app.rb:80:16:80:22 | call to cookies |
 | app.rb:160:5:162:7 | call to cookies |
 | app.rb:169:19:169:25 | call to cookies |
+grapeRequestBodyRead
+| app.rb:25:12:25:28 | call to read |
+| app.rb:170:21:170:37 | call to read |
+| app.rb:247:17:247:33 | call to read |
+grapeRequestBodyString
+| app.rb:252:17:252:35 | call to string |
+grapeRequestParams
+| app.rb:257:19:257:32 | call to params |
+grapeRequestGET
+| app.rb:262:18:262:28 | call to GET |
+grapeRequestPOST
+| app.rb:267:19:267:30 | call to POST |
+grapeRequestCookies
+| app.rb:272:19:272:33 | call to cookies |
+grapeRequestEnv
+| app.rb:277:16:277:26 | call to env |
+grapeRequestQueryString
+| app.rb:282:10:282:29 | call to query_string |
+grapeRequestPathInfo
+| app.rb:287:12:287:28 | call to path_info |
