@@ -40,7 +40,7 @@ steps:
 
   - name: Install cargo-edit
     continue-on-error: true
-    run: cargo install cargo-edit --locked
+    run: cargo install cargo-edit@0.13.0 --locked
 
   - name: Run rust-analyzer updater script
     run: |
