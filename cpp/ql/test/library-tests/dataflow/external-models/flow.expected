@@ -359,67 +359,76 @@ edges
 | test.cpp:345:38:345:40 | arg | test.cpp:346:5:346:18 | ... = ... | provenance |  |
 | test.cpp:346:5:346:8 | *this [post update] [ul] | test.cpp:345:3:345:22 | *this [Return] [ul] | provenance |  |
 | test.cpp:346:5:346:18 | ... = ... | test.cpp:346:5:346:8 | *this [post update] [ul] | provenance |  |
-| test.cpp:361:15:361:23 | call to ymlSource | test.cpp:361:15:361:25 | call to ymlSource | provenance | Src:MaD:48  |
-| test.cpp:361:15:361:25 | call to ymlSource | test.cpp:362:15:362:15 | *x | provenance |  |
-| test.cpp:362:5:362:5 | forward output argument [s] | test.cpp:364:30:364:30 | *f [s] | provenance |  |
-| test.cpp:362:15:362:15 | *x | test.cpp:341:30:341:32 | arg | provenance |  |
-| test.cpp:362:15:362:15 | *x | test.cpp:362:5:362:5 | forward output argument [s] | provenance |  |
-| test.cpp:364:30:364:30 | *f [s] | test.cpp:364:32:364:34 | call to get [s] | provenance | MaD:88 |
-| test.cpp:364:32:364:34 | call to get [s] | test.cpp:364:32:364:34 | call to get [s] | provenance |  |
-| test.cpp:364:32:364:34 | call to get [s] | test.cpp:365:13:365:13 | *c [s] | provenance |  |
-| test.cpp:365:13:365:13 | *c [s] | test.cpp:365:13:365:15 | s | provenance |  |
-| test.cpp:365:13:365:13 | *c [s] | test.cpp:365:15:365:15 | s | provenance | Sink:MaD:3 |
-| test.cpp:365:13:365:15 | s | test.cpp:365:15:365:15 | s | provenance | Sink:MaD:3 |
-| test.cpp:370:24:370:32 | call to ymlSource | test.cpp:370:24:370:34 | call to ymlSource | provenance | Src:MaD:48  |
-| test.cpp:370:24:370:34 | call to ymlSource | test.cpp:371:15:371:16 | *ul | provenance |  |
-| test.cpp:371:5:371:5 | forward output argument [ul] | test.cpp:373:30:373:30 | *f [ul] | provenance |  |
-| test.cpp:371:15:371:16 | *ul | test.cpp:345:38:345:40 | arg | provenance |  |
-| test.cpp:371:15:371:16 | *ul | test.cpp:371:5:371:5 | forward output argument [ul] | provenance |  |
-| test.cpp:373:30:373:30 | *f [ul] | test.cpp:373:32:373:34 | call to get [ul] | provenance | MaD:88 |
-| test.cpp:373:32:373:34 | call to get [ul] | test.cpp:373:32:373:34 | call to get [ul] | provenance |  |
-| test.cpp:373:32:373:34 | call to get [ul] | test.cpp:375:13:375:13 | *c [ul] | provenance |  |
-| test.cpp:375:13:375:13 | *c [ul] | test.cpp:375:13:375:16 | ul | provenance |  |
-| test.cpp:375:13:375:13 | *c [ul] | test.cpp:375:15:375:16 | ul | provenance | Sink:MaD:3 |
-| test.cpp:375:13:375:16 | ul | test.cpp:375:15:375:16 | ul | provenance | Sink:MaD:3 |
-| test.cpp:394:11:394:19 | call to ymlSource | test.cpp:394:11:394:19 | call to ymlSource | provenance | Src:MaD:48  |
-| test.cpp:394:11:394:19 | call to ymlSource | test.cpp:395:16:395:16 | *x | provenance |  |
-| test.cpp:395:3:395:3 | emplace output argument [element, x] | test.cpp:397:15:397:15 | *c [element, x] | provenance |  |
-| test.cpp:395:16:395:16 | *x | test.cpp:395:3:395:3 | emplace output argument [element, x] | provenance |  |
-| test.cpp:397:15:397:15 | *c [element, x] | test.cpp:397:20:397:22 | call to get [x] | provenance | MaD:87 |
-| test.cpp:397:20:397:22 | call to get [x] | test.cpp:397:20:397:22 | call to get [x] | provenance |  |
-| test.cpp:397:20:397:22 | call to get [x] | test.cpp:398:11:398:11 | *e [x] | provenance |  |
+| test.cpp:362:15:362:23 | call to ymlSource | test.cpp:362:15:362:25 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:362:15:362:25 | call to ymlSource | test.cpp:363:15:363:15 | *x | provenance |  |
+| test.cpp:363:5:363:5 | forward output argument [s] | test.cpp:365:30:365:30 | *f [s] | provenance |  |
+| test.cpp:363:15:363:15 | *x | test.cpp:341:30:341:32 | arg | provenance |  |
+| test.cpp:363:15:363:15 | *x | test.cpp:363:5:363:5 | forward output argument [s] | provenance |  |
+| test.cpp:365:30:365:30 | *f [s] | test.cpp:365:32:365:34 | call to get [s] | provenance | MaD:88 |
+| test.cpp:365:32:365:34 | call to get [s] | test.cpp:365:32:365:34 | call to get [s] | provenance |  |
+| test.cpp:365:32:365:34 | call to get [s] | test.cpp:366:13:366:13 | *c [s] | provenance |  |
+| test.cpp:366:13:366:13 | *c [s] | test.cpp:366:13:366:15 | s | provenance |  |
+| test.cpp:366:13:366:13 | *c [s] | test.cpp:366:15:366:15 | s | provenance | Sink:MaD:3 |
+| test.cpp:366:13:366:15 | s | test.cpp:366:15:366:15 | s | provenance | Sink:MaD:3 |
+| test.cpp:371:24:371:32 | call to ymlSource | test.cpp:371:24:371:34 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:371:24:371:34 | call to ymlSource | test.cpp:372:15:372:16 | *ul | provenance |  |
+| test.cpp:372:5:372:5 | forward output argument [ul] | test.cpp:374:30:374:30 | *f [ul] | provenance |  |
+| test.cpp:372:15:372:16 | *ul | test.cpp:345:38:345:40 | arg | provenance |  |
+| test.cpp:372:15:372:16 | *ul | test.cpp:372:5:372:5 | forward output argument [ul] | provenance |  |
+| test.cpp:374:30:374:30 | *f [ul] | test.cpp:374:32:374:34 | call to get [ul] | provenance | MaD:88 |
+| test.cpp:374:32:374:34 | call to get [ul] | test.cpp:374:32:374:34 | call to get [ul] | provenance |  |
+| test.cpp:374:32:374:34 | call to get [ul] | test.cpp:376:13:376:13 | *c [ul] | provenance |  |
+| test.cpp:376:13:376:13 | *c [ul] | test.cpp:376:13:376:16 | ul | provenance |  |
+| test.cpp:376:13:376:13 | *c [ul] | test.cpp:376:15:376:16 | ul | provenance | Sink:MaD:3 |
+| test.cpp:376:13:376:16 | ul | test.cpp:376:15:376:16 | ul | provenance | Sink:MaD:3 |
+| test.cpp:395:11:395:19 | call to ymlSource | test.cpp:395:11:395:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:395:11:395:19 | call to ymlSource | test.cpp:396:22:396:22 | x | provenance |  |
+| test.cpp:396:3:396:3 | forwardToElement output argument [x] | test.cpp:397:15:397:15 | *f [x] | provenance |  |
+| test.cpp:396:22:396:22 | x | test.cpp:396:3:396:3 | forwardToElement output argument [x] | provenance |  |
+| test.cpp:397:15:397:15 | *f [x] | test.cpp:397:17:397:19 | call to get [x] | provenance | MaD:88 |
+| test.cpp:397:17:397:19 | call to get [x] | test.cpp:397:17:397:19 | call to get [x] | provenance |  |
+| test.cpp:397:17:397:19 | call to get [x] | test.cpp:398:11:398:11 | *e [x] | provenance |  |
 | test.cpp:398:11:398:11 | *e [x] | test.cpp:398:13:398:13 | x | provenance |  |
 | test.cpp:398:13:398:13 | x | test.cpp:398:13:398:13 | x | provenance | Sink:MaD:3 |
-| test.cpp:408:11:408:19 | call to ymlSource | test.cpp:408:11:408:19 | call to ymlSource | provenance | Src:MaD:48  |
-| test.cpp:408:11:408:19 | call to ymlSource | test.cpp:409:16:409:16 | *x | provenance |  |
-| test.cpp:409:3:409:3 | emplace output argument [element, x] | test.cpp:411:34:411:34 | *c [element, x] | provenance |  |
-| test.cpp:409:16:409:16 | *x | test.cpp:409:3:409:3 | emplace output argument [element, x] | provenance |  |
-| test.cpp:411:34:411:34 | *c [element, x] | test.cpp:411:39:411:41 | call to get [x] | provenance | MaD:87 |
-| test.cpp:411:39:411:41 | call to get [x] | test.cpp:411:39:411:41 | call to get [x] | provenance |  |
-| test.cpp:411:39:411:41 | call to get [x] | test.cpp:412:11:412:11 | *e [x] | provenance |  |
-| test.cpp:412:11:412:11 | *e [x] | test.cpp:412:13:412:13 | x | provenance |  |
-| test.cpp:412:13:412:13 | x | test.cpp:412:13:412:13 | x | provenance | Sink:MaD:3 |
-| test.cpp:417:3:417:28 | *ElementWithOverloadedArity [post update] [x] | test.cpp:417:3:417:28 | *this [Return] [x] | provenance |  |
-| test.cpp:417:34:417:38 | first | test.cpp:417:45:417:49 | first | provenance |  |
-| test.cpp:417:45:417:49 | first | test.cpp:417:3:417:28 | *ElementWithOverloadedArity [post update] [x] | provenance |  |
-| test.cpp:418:3:418:28 | *ElementWithOverloadedArity [post update] [x] | test.cpp:418:3:418:28 | *this [Return] [x] | provenance |  |
-| test.cpp:418:39:418:44 | second | test.cpp:418:51:418:56 | second | provenance |  |
-| test.cpp:418:51:418:56 | second | test.cpp:418:3:418:28 | *ElementWithOverloadedArity [post update] [x] | provenance |  |
-| test.cpp:422:11:422:19 | call to ymlSource | test.cpp:422:11:422:19 | call to ymlSource | provenance | Src:MaD:48  |
-| test.cpp:422:11:422:19 | call to ymlSource | test.cpp:425:18:425:18 | *x | provenance |  |
-| test.cpp:422:11:422:19 | call to ymlSource | test.cpp:435:21:435:21 | *x | provenance |  |
-| test.cpp:425:5:425:5 | emplace output argument [element, x] | test.cpp:426:13:426:13 | *c [element, x] | provenance |  |
-| test.cpp:425:18:425:18 | *x | test.cpp:417:34:417:38 | first | provenance |  |
-| test.cpp:425:18:425:18 | *x | test.cpp:425:5:425:5 | emplace output argument [element, x] | provenance |  |
-| test.cpp:426:13:426:13 | *c [element, x] | test.cpp:426:18:426:20 | *call to get [x] | provenance | MaD:87 |
-| test.cpp:426:18:426:20 | *call to get [x] | test.cpp:426:21:426:21 | x | provenance |  |
-| test.cpp:426:21:426:21 | x | test.cpp:426:21:426:21 | x | provenance | Sink:MaD:3 |
-| test.cpp:435:5:435:5 | emplace output argument [element, x] | test.cpp:436:13:436:13 | *c [element, x] | provenance |  |
-| test.cpp:435:21:435:21 | *x | test.cpp:418:39:418:44 | second | provenance |  |
-| test.cpp:435:21:435:21 | *x | test.cpp:435:5:435:5 | emplace output argument [element, x] | provenance |  |
-| test.cpp:436:13:436:13 | *c [element, x] | test.cpp:436:18:436:20 | *call to get [x] | provenance | MaD:87 |
-| test.cpp:436:18:436:20 | *call to get [x] | test.cpp:436:21:436:21 | x | provenance |  |
-| test.cpp:436:21:436:21 | x | test.cpp:436:21:436:21 | x | provenance | Sink:MaD:3 |
+| test.cpp:403:11:403:19 | call to ymlSource | test.cpp:403:11:403:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:403:11:403:19 | call to ymlSource | test.cpp:404:16:404:16 | *x | provenance |  |
+| test.cpp:404:3:404:3 | emplace output argument [element, x] | test.cpp:406:15:406:15 | *c [element, x] | provenance |  |
+| test.cpp:404:16:404:16 | *x | test.cpp:404:3:404:3 | emplace output argument [element, x] | provenance |  |
+| test.cpp:406:15:406:15 | *c [element, x] | test.cpp:406:20:406:22 | call to get [x] | provenance | MaD:87 |
+| test.cpp:406:20:406:22 | call to get [x] | test.cpp:406:20:406:22 | call to get [x] | provenance |  |
+| test.cpp:406:20:406:22 | call to get [x] | test.cpp:407:11:407:11 | *e [x] | provenance |  |
+| test.cpp:407:11:407:11 | *e [x] | test.cpp:407:13:407:13 | x | provenance |  |
+| test.cpp:407:13:407:13 | x | test.cpp:407:13:407:13 | x | provenance | Sink:MaD:3 |
+| test.cpp:417:11:417:19 | call to ymlSource | test.cpp:417:11:417:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:417:11:417:19 | call to ymlSource | test.cpp:418:16:418:16 | *x | provenance |  |
+| test.cpp:418:3:418:3 | emplace output argument [element, x] | test.cpp:420:34:420:34 | *c [element, x] | provenance |  |
+| test.cpp:418:16:418:16 | *x | test.cpp:418:3:418:3 | emplace output argument [element, x] | provenance |  |
+| test.cpp:420:34:420:34 | *c [element, x] | test.cpp:420:39:420:41 | call to get [x] | provenance | MaD:87 |
+| test.cpp:420:39:420:41 | call to get [x] | test.cpp:420:39:420:41 | call to get [x] | provenance |  |
+| test.cpp:420:39:420:41 | call to get [x] | test.cpp:421:11:421:11 | *e [x] | provenance |  |
+| test.cpp:421:11:421:11 | *e [x] | test.cpp:421:13:421:13 | x | provenance |  |
+| test.cpp:421:13:421:13 | x | test.cpp:421:13:421:13 | x | provenance | Sink:MaD:3 |
+| test.cpp:426:3:426:28 | *ElementWithOverloadedArity [post update] [x] | test.cpp:426:3:426:28 | *this [Return] [x] | provenance |  |
+| test.cpp:426:34:426:38 | first | test.cpp:426:45:426:49 | first | provenance |  |
+| test.cpp:426:45:426:49 | first | test.cpp:426:3:426:28 | *ElementWithOverloadedArity [post update] [x] | provenance |  |
+| test.cpp:427:3:427:28 | *ElementWithOverloadedArity [post update] [x] | test.cpp:427:3:427:28 | *this [Return] [x] | provenance |  |
+| test.cpp:427:39:427:44 | second | test.cpp:427:51:427:56 | second | provenance |  |
+| test.cpp:427:51:427:56 | second | test.cpp:427:3:427:28 | *ElementWithOverloadedArity [post update] [x] | provenance |  |
+| test.cpp:431:11:431:19 | call to ymlSource | test.cpp:431:11:431:19 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:431:11:431:19 | call to ymlSource | test.cpp:434:18:434:18 | *x | provenance |  |
+| test.cpp:431:11:431:19 | call to ymlSource | test.cpp:444:21:444:21 | *x | provenance |  |
+| test.cpp:434:5:434:5 | emplace output argument [element, x] | test.cpp:435:13:435:13 | *c [element, x] | provenance |  |
+| test.cpp:434:18:434:18 | *x | test.cpp:426:34:426:38 | first | provenance |  |
+| test.cpp:434:18:434:18 | *x | test.cpp:434:5:434:5 | emplace output argument [element, x] | provenance |  |
+| test.cpp:435:13:435:13 | *c [element, x] | test.cpp:435:18:435:20 | *call to get [x] | provenance | MaD:87 |
+| test.cpp:435:18:435:20 | *call to get [x] | test.cpp:435:21:435:21 | x | provenance |  |
+| test.cpp:435:21:435:21 | x | test.cpp:435:21:435:21 | x | provenance | Sink:MaD:3 |
+| test.cpp:444:5:444:5 | emplace output argument [element, x] | test.cpp:445:13:445:13 | *c [element, x] | provenance |  |
+| test.cpp:444:21:444:21 | *x | test.cpp:427:39:427:44 | second | provenance |  |
+| test.cpp:444:21:444:21 | *x | test.cpp:444:5:444:5 | emplace output argument [element, x] | provenance |  |
+| test.cpp:445:13:445:13 | *c [element, x] | test.cpp:445:18:445:20 | *call to get [x] | provenance | MaD:87 |
+| test.cpp:445:18:445:20 | *call to get [x] | test.cpp:445:21:445:21 | x | provenance |  |
+| test.cpp:445:21:445:21 | x | test.cpp:445:21:445:21 | x | provenance | Sink:MaD:3 |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:24:8:24:11 | * ... | provenance |  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:27:36:27:38 | *cmd | provenance |  |
 | windows.cpp:22:15:22:29 | call to GetCommandLineA | windows.cpp:22:15:22:29 | *call to GetCommandLineA | provenance | Src:MaD:5  |
@@ -888,68 +897,78 @@ nodes
 | test.cpp:345:38:345:40 | arg | semmle.label | arg |
 | test.cpp:346:5:346:8 | *this [post update] [ul] | semmle.label | *this [post update] [ul] |
 | test.cpp:346:5:346:18 | ... = ... | semmle.label | ... = ... |
-| test.cpp:361:15:361:23 | call to ymlSource | semmle.label | call to ymlSource |
-| test.cpp:361:15:361:25 | call to ymlSource | semmle.label | call to ymlSource |
-| test.cpp:362:5:362:5 | forward output argument [s] | semmle.label | forward output argument [s] |
-| test.cpp:362:15:362:15 | *x | semmle.label | *x |
-| test.cpp:364:30:364:30 | *f [s] | semmle.label | *f [s] |
-| test.cpp:364:32:364:34 | call to get [s] | semmle.label | call to get [s] |
-| test.cpp:364:32:364:34 | call to get [s] | semmle.label | call to get [s] |
-| test.cpp:365:13:365:13 | *c [s] | semmle.label | *c [s] |
-| test.cpp:365:13:365:15 | s | semmle.label | s |
-| test.cpp:365:15:365:15 | s | semmle.label | s |
-| test.cpp:370:24:370:32 | call to ymlSource | semmle.label | call to ymlSource |
-| test.cpp:370:24:370:34 | call to ymlSource | semmle.label | call to ymlSource |
-| test.cpp:371:5:371:5 | forward output argument [ul] | semmle.label | forward output argument [ul] |
-| test.cpp:371:15:371:16 | *ul | semmle.label | *ul |
-| test.cpp:373:30:373:30 | *f [ul] | semmle.label | *f [ul] |
-| test.cpp:373:32:373:34 | call to get [ul] | semmle.label | call to get [ul] |
-| test.cpp:373:32:373:34 | call to get [ul] | semmle.label | call to get [ul] |
-| test.cpp:375:13:375:13 | *c [ul] | semmle.label | *c [ul] |
-| test.cpp:375:13:375:16 | ul | semmle.label | ul |
-| test.cpp:375:15:375:16 | ul | semmle.label | ul |
-| test.cpp:394:11:394:19 | call to ymlSource | semmle.label | call to ymlSource |
-| test.cpp:394:11:394:19 | call to ymlSource | semmle.label | call to ymlSource |
-| test.cpp:395:3:395:3 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
-| test.cpp:395:16:395:16 | *x | semmle.label | *x |
-| test.cpp:397:15:397:15 | *c [element, x] | semmle.label | *c [element, x] |
-| test.cpp:397:20:397:22 | call to get [x] | semmle.label | call to get [x] |
-| test.cpp:397:20:397:22 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:362:15:362:23 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:362:15:362:25 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:363:5:363:5 | forward output argument [s] | semmle.label | forward output argument [s] |
+| test.cpp:363:15:363:15 | *x | semmle.label | *x |
+| test.cpp:365:30:365:30 | *f [s] | semmle.label | *f [s] |
+| test.cpp:365:32:365:34 | call to get [s] | semmle.label | call to get [s] |
+| test.cpp:365:32:365:34 | call to get [s] | semmle.label | call to get [s] |
+| test.cpp:366:13:366:13 | *c [s] | semmle.label | *c [s] |
+| test.cpp:366:13:366:15 | s | semmle.label | s |
+| test.cpp:366:15:366:15 | s | semmle.label | s |
+| test.cpp:371:24:371:32 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:371:24:371:34 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:372:5:372:5 | forward output argument [ul] | semmle.label | forward output argument [ul] |
+| test.cpp:372:15:372:16 | *ul | semmle.label | *ul |
+| test.cpp:374:30:374:30 | *f [ul] | semmle.label | *f [ul] |
+| test.cpp:374:32:374:34 | call to get [ul] | semmle.label | call to get [ul] |
+| test.cpp:374:32:374:34 | call to get [ul] | semmle.label | call to get [ul] |
+| test.cpp:376:13:376:13 | *c [ul] | semmle.label | *c [ul] |
+| test.cpp:376:13:376:16 | ul | semmle.label | ul |
+| test.cpp:376:15:376:16 | ul | semmle.label | ul |
+| test.cpp:395:11:395:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:395:11:395:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:396:3:396:3 | forwardToElement output argument [x] | semmle.label | forwardToElement output argument [x] |
+| test.cpp:396:22:396:22 | x | semmle.label | x |
+| test.cpp:397:15:397:15 | *f [x] | semmle.label | *f [x] |
+| test.cpp:397:17:397:19 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:397:17:397:19 | call to get [x] | semmle.label | call to get [x] |
 | test.cpp:398:11:398:11 | *e [x] | semmle.label | *e [x] |
 | test.cpp:398:13:398:13 | x | semmle.label | x |
 | test.cpp:398:13:398:13 | x | semmle.label | x |
-| test.cpp:408:11:408:19 | call to ymlSource | semmle.label | call to ymlSource |
-| test.cpp:408:11:408:19 | call to ymlSource | semmle.label | call to ymlSource |
-| test.cpp:409:3:409:3 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
-| test.cpp:409:16:409:16 | *x | semmle.label | *x |
-| test.cpp:411:34:411:34 | *c [element, x] | semmle.label | *c [element, x] |
-| test.cpp:411:39:411:41 | call to get [x] | semmle.label | call to get [x] |
-| test.cpp:411:39:411:41 | call to get [x] | semmle.label | call to get [x] |
-| test.cpp:412:11:412:11 | *e [x] | semmle.label | *e [x] |
-| test.cpp:412:13:412:13 | x | semmle.label | x |
-| test.cpp:412:13:412:13 | x | semmle.label | x |
-| test.cpp:417:3:417:28 | *ElementWithOverloadedArity [post update] [x] | semmle.label | *ElementWithOverloadedArity [post update] [x] |
-| test.cpp:417:3:417:28 | *this [Return] [x] | semmle.label | *this [Return] [x] |
-| test.cpp:417:34:417:38 | first | semmle.label | first |
-| test.cpp:417:45:417:49 | first | semmle.label | first |
-| test.cpp:418:3:418:28 | *ElementWithOverloadedArity [post update] [x] | semmle.label | *ElementWithOverloadedArity [post update] [x] |
-| test.cpp:418:3:418:28 | *this [Return] [x] | semmle.label | *this [Return] [x] |
-| test.cpp:418:39:418:44 | second | semmle.label | second |
-| test.cpp:418:51:418:56 | second | semmle.label | second |
-| test.cpp:422:11:422:19 | call to ymlSource | semmle.label | call to ymlSource |
-| test.cpp:422:11:422:19 | call to ymlSource | semmle.label | call to ymlSource |
-| test.cpp:425:5:425:5 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
-| test.cpp:425:18:425:18 | *x | semmle.label | *x |
-| test.cpp:426:13:426:13 | *c [element, x] | semmle.label | *c [element, x] |
-| test.cpp:426:18:426:20 | *call to get [x] | semmle.label | *call to get [x] |
-| test.cpp:426:21:426:21 | x | semmle.label | x |
-| test.cpp:426:21:426:21 | x | semmle.label | x |
-| test.cpp:435:5:435:5 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
-| test.cpp:435:21:435:21 | *x | semmle.label | *x |
-| test.cpp:436:13:436:13 | *c [element, x] | semmle.label | *c [element, x] |
-| test.cpp:436:18:436:20 | *call to get [x] | semmle.label | *call to get [x] |
-| test.cpp:436:21:436:21 | x | semmle.label | x |
-| test.cpp:436:21:436:21 | x | semmle.label | x |
+| test.cpp:403:11:403:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:403:11:403:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:404:3:404:3 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
+| test.cpp:404:16:404:16 | *x | semmle.label | *x |
+| test.cpp:406:15:406:15 | *c [element, x] | semmle.label | *c [element, x] |
+| test.cpp:406:20:406:22 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:406:20:406:22 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:407:11:407:11 | *e [x] | semmle.label | *e [x] |
+| test.cpp:407:13:407:13 | x | semmle.label | x |
+| test.cpp:407:13:407:13 | x | semmle.label | x |
+| test.cpp:417:11:417:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:417:11:417:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:418:3:418:3 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
+| test.cpp:418:16:418:16 | *x | semmle.label | *x |
+| test.cpp:420:34:420:34 | *c [element, x] | semmle.label | *c [element, x] |
+| test.cpp:420:39:420:41 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:420:39:420:41 | call to get [x] | semmle.label | call to get [x] |
+| test.cpp:421:11:421:11 | *e [x] | semmle.label | *e [x] |
+| test.cpp:421:13:421:13 | x | semmle.label | x |
+| test.cpp:421:13:421:13 | x | semmle.label | x |
+| test.cpp:426:3:426:28 | *ElementWithOverloadedArity [post update] [x] | semmle.label | *ElementWithOverloadedArity [post update] [x] |
+| test.cpp:426:3:426:28 | *this [Return] [x] | semmle.label | *this [Return] [x] |
+| test.cpp:426:34:426:38 | first | semmle.label | first |
+| test.cpp:426:45:426:49 | first | semmle.label | first |
+| test.cpp:427:3:427:28 | *ElementWithOverloadedArity [post update] [x] | semmle.label | *ElementWithOverloadedArity [post update] [x] |
+| test.cpp:427:3:427:28 | *this [Return] [x] | semmle.label | *this [Return] [x] |
+| test.cpp:427:39:427:44 | second | semmle.label | second |
+| test.cpp:427:51:427:56 | second | semmle.label | second |
+| test.cpp:431:11:431:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:431:11:431:19 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:434:5:434:5 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
+| test.cpp:434:18:434:18 | *x | semmle.label | *x |
+| test.cpp:435:13:435:13 | *c [element, x] | semmle.label | *c [element, x] |
+| test.cpp:435:18:435:20 | *call to get [x] | semmle.label | *call to get [x] |
+| test.cpp:435:21:435:21 | x | semmle.label | x |
+| test.cpp:435:21:435:21 | x | semmle.label | x |
+| test.cpp:444:5:444:5 | emplace output argument [element, x] | semmle.label | emplace output argument [element, x] |
+| test.cpp:444:21:444:21 | *x | semmle.label | *x |
+| test.cpp:445:13:445:13 | *c [element, x] | semmle.label | *c [element, x] |
+| test.cpp:445:18:445:20 | *call to get [x] | semmle.label | *call to get [x] |
+| test.cpp:445:21:445:21 | x | semmle.label | x |
+| test.cpp:445:21:445:21 | x | semmle.label | x |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | semmle.label | *call to GetCommandLineA |
 | windows.cpp:22:15:22:29 | call to GetCommandLineA | semmle.label | call to GetCommandLineA |
 | windows.cpp:24:8:24:11 | * ... | semmle.label | * ... |
@@ -1171,8 +1190,8 @@ nodes
 subpaths
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body |
 | test.cpp:172:51:172:51 | x | test.cpp:164:34:164:34 | x | test.cpp:164:7:164:7 | *templateFunction3 | test.cpp:172:13:172:44 | call to templateFunction3 |
-| test.cpp:362:15:362:15 | *x | test.cpp:341:30:341:32 | arg | test.cpp:341:3:341:22 | *this [Return] [s] | test.cpp:362:5:362:5 | forward output argument [s] |
-| test.cpp:371:15:371:16 | *ul | test.cpp:345:38:345:40 | arg | test.cpp:345:3:345:22 | *this [Return] [ul] | test.cpp:371:5:371:5 | forward output argument [ul] |
-| test.cpp:425:18:425:18 | *x | test.cpp:417:34:417:38 | first | test.cpp:417:3:417:28 | *this [Return] [x] | test.cpp:425:5:425:5 | emplace output argument [element, x] |
-| test.cpp:435:21:435:21 | *x | test.cpp:418:39:418:44 | second | test.cpp:418:3:418:28 | *this [Return] [x] | test.cpp:435:5:435:5 | emplace output argument [element, x] |
+| test.cpp:363:15:363:15 | *x | test.cpp:341:30:341:32 | arg | test.cpp:341:3:341:22 | *this [Return] [s] | test.cpp:363:5:363:5 | forward output argument [s] |
+| test.cpp:372:15:372:16 | *ul | test.cpp:345:38:345:40 | arg | test.cpp:345:3:345:22 | *this [Return] [ul] | test.cpp:372:5:372:5 | forward output argument [ul] |
+| test.cpp:434:18:434:18 | *x | test.cpp:426:34:426:38 | first | test.cpp:426:3:426:28 | *this [Return] [x] | test.cpp:434:5:434:5 | emplace output argument [element, x] |
+| test.cpp:444:21:444:21 | *x | test.cpp:427:39:427:44 | second | test.cpp:427:3:427:28 | *this [Return] [x] | test.cpp:444:5:444:5 | emplace output argument [element, x] |
 testFailures

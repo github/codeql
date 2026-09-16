@@ -351,6 +351,7 @@ template<typename T>
 struct Forwarder {
   template<typename... Args>
   void forward(Args&&... args);
+  void forwardToElement(int arg);
 
   T get();
 };
@@ -388,6 +389,14 @@ struct Element {
   int x;
   Element(int);
 };
+
+void forward_test_named_constructor() {
+  Forwarder<Element> f;
+  int x = ymlSource();
+  f.forwardToElement(x);
+  Element e = f.get();
+  ymlSink(e.x); // $ ir
+}
 
 void forward_test_model() {
   Container<Element> c;
