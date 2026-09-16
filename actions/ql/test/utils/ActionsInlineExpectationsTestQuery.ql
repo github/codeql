@@ -10,12 +10,6 @@ import T::TestPostProcessing
 private module Impl implements T::InlineExpectationsTestSig {
   class Location = Locations::Location;
 
-  class ExpectationComment extends Yaml::YamlComment {
-    string getContents() { result = this.getText() }
-  }
-}
-
-private module Input implements T::TestPostProcessing::InputSig<Impl> {
   string getRelativeUrl(Locations::Location location) {
     exists(int startLine, int startColumn, int endLine, int endColumn |
       location.hasLocationInfo(_, startLine, startColumn, endLine, endColumn)
@@ -25,6 +19,10 @@ private module Input implements T::TestPostProcessing::InputSig<Impl> {
           ":" + endColumn
     )
   }
+
+  class ExpectationComment extends Yaml::YamlComment {
+    string getContents() { result = this.getText() }
+  }
 }
 
-import T::TestPostProcessing::Make<Impl, Input>
+import T::TestPostProcessing::Make<Impl>
