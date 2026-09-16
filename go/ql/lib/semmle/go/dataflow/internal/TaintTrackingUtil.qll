@@ -336,9 +336,10 @@ private predicate isPossibleInputNode(DataFlow::Node inputNode, FuncDef fd) {
  * an expression which data flows to from `inputNode`.
  */
 private ControlFlow::Node getANonTestPassingPredecessor(
-  ControlFlow::Node succ, DataFlow::Node inputNode
+  ControlFlow::Node succ, DataFlow::Node inputNode, FuncDef fd
 ) {
-  isPossibleInputNode(inputNode, succ.getRoot()) and
+  succ.getRoot() = fd and
+  isPossibleInputNode(inputNode, fd) and
   result = succ.getAPredecessor() and
   not exists(DataFlow::Node switchExprNode |
     flowsToSwitchExpression(inputNode, switchExprNode) and
@@ -360,13 +361,15 @@ private ControlFlow::Node getANonTestPassingPredecessor(
 }
 
 private ControlFlow::Node getANonTestPassingReachingNodeRecursive(
-  ControlFlow::Node n, DataFlow::Node inputNode
+  ControlFlow::Node n, DataFlow::Node inputNode, FuncDef fd
 ) {
-  isPossibleInputNode(inputNode, n.getRoot()) and
+  n.getRoot() = fd and
+  isPossibleInputNode(inputNode, fd) and
   (
     result = n or
     result =
-      getANonTestPassingReachingNodeRecursive(getANonTestPassingPredecessor(n, inputNode), inputNode)
+      getANonTestPassingReachingNodeRecursive(getANonTestPassingPredecessor(n, inputNode, fd),
+        inputNode, fd)
   )
 }
 
@@ -378,7 +381,7 @@ private ControlFlow::Node getANonTestPassingReachingNodeRecursive(
 private ControlFlow::Node getANonTestPassingReachingNodeBase(
   IR::ReturnInstruction ret, DataFlow::Node inputNode
 ) {
-  result = getANonTestPassingReachingNodeRecursive(ret, inputNode)
+  result = getANonTestPassingReachingNodeRecursive(ret, inputNode, ret.getRoot())
 }
 
 /**
