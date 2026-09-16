@@ -4,6 +4,11 @@ have common verbs (`build`, `test`, `format`, `lint`, `generate`) that individua
 of the project can implement, and some common functionality that can be used to that
 effect.
 
+`just` 1.58 or newer is required: recipes forward argument lists using `set lists`, which
+is still unstable and did not exist before then. An older one stops with an
+`Unknown setting` error pointing at that line, which is clear enough but does not say
+which version to move to.
+
 # Forwarding
 
 The core of the functionality is given by forwarding. The idea is that:
