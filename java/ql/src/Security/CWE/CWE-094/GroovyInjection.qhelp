@@ -54,7 +54,7 @@ The following example uses classloader block-list approach to exclude loading da
 <references>
 <li>
   Orange Tsai:
-  <a href="https://blog.orange.tw/2019/02/abusing-meta-programming-for-unauthenticated-rce.html">Abusing Meta Programming for Unauthenticated RCE!</a>.
+  <a href="https://devco.re/blog/2019/02/19/hacking-Jenkins-part2-abusing-meta-programming-for-unauthenticated-RCE-en/">Abusing Meta Programming for Unauthenticated RCE!</a>.
 </li>
 <li>
   Cédric Champeau:
