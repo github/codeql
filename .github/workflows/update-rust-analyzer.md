@@ -59,6 +59,7 @@ steps:
         printf '%s\n' "update" > /tmp/gh-aw/agent/rust-analyzer-update-result.txt
       fi
 safe-outputs:
+  report-incomplete: {}
   create-pull-request:
     title-prefix: "Rust: "
     branch-prefix: "automation/update-rust-analyzer/"
@@ -68,6 +69,13 @@ safe-outputs:
     max-patch-files: 1000
     allowed-files:
       - "Cargo.lock"
+      - "shared/tree-sitter-extractor/Cargo.toml"
+      - "shared/yeast/Cargo.toml"
+      - "shared/yeast-macros/Cargo.toml"
+      - "shared/yeast-schema/Cargo.toml"
+      - "ruby/extractor/Cargo.toml"
+      - "unified/extractor/Cargo.toml"
+      - "unified/swift-syntax-rs/Cargo.toml"
       - "MODULE.bazel"
       - "MODULE.bazel.lock"
       - "rust-toolchain.toml"
