@@ -390,6 +390,15 @@ struct Element {
   Element(int);
 };
 
+template<typename T>
+T makeForwarded(int arg);
+
+void forward_test_function_template_constructor() {
+  int x = ymlSource();
+  Element e = makeForwarded<Element>(x);
+  ymlSink(e.x); // $ ir
+}
+
 void forward_test_named_constructor() {
   Forwarder<Element> f;
   int x = ymlSource();
