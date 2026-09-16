@@ -95,7 +95,6 @@ edges
 | test.swift:120:12:120:12 | b | test.swift:126:10:126:10 | b | provenance |  |
 | test.swift:120:17:120:21 | tuple [0] | test.swift:120:9:120:13 | TupleExpr [0] | provenance |  |
 | test.swift:120:17:120:21 | tuple [1] | test.swift:120:9:120:13 | TupleExpr [1] | provenance |  |
-| test.swift:131:5:131:5 | a | test.swift:131:14:131:14 | a | provenance |  |
 | test.swift:131:5:131:5 | a | test.swift:132:10:132:10 | a | provenance |  |
 | test.swift:131:19:131:33 | CallExpr | test.swift:131:5:131:5 | a | provenance |  |
 nodes
@@ -224,7 +223,6 @@ nodes
 | test.swift:125:10:125:10 | a | semmle.label | a |
 | test.swift:126:10:126:10 | b | semmle.label | b |
 | test.swift:131:5:131:5 | a | semmle.label | a |
-| test.swift:131:14:131:14 | a | semmle.label | a |
 | test.swift:131:19:131:33 | CallExpr | semmle.label | CallExpr |
 | test.swift:132:10:132:10 | a | semmle.label | a |
 subpaths
@@ -261,5 +259,4 @@ testFailures
 | test.swift:112:10:112:16 | MemberAccessExpr | test.swift:107:19:107:33 | CallExpr | test.swift:112:10:112:16 | MemberAccessExpr | $@ | test.swift:107:19:107:33 | CallExpr | CallExpr |
 | test.swift:125:10:125:10 | a | test.swift:117:18:117:33 | CallExpr | test.swift:125:10:125:10 | a | $@ | test.swift:117:18:117:33 | CallExpr | CallExpr |
 | test.swift:126:10:126:10 | b | test.swift:117:35:117:49 | CallExpr | test.swift:126:10:126:10 | b | $@ | test.swift:117:35:117:49 | CallExpr | CallExpr |
-| test.swift:131:14:131:14 | a | test.swift:131:19:131:33 | CallExpr | test.swift:131:14:131:14 | a | $@ | test.swift:131:19:131:33 | CallExpr | CallExpr |
 | test.swift:132:10:132:10 | a | test.swift:131:19:131:33 | CallExpr | test.swift:132:10:132:10 | a | $@ | test.swift:131:19:131:33 | CallExpr | CallExpr |

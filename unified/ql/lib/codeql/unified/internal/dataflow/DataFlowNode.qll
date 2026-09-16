@@ -2,9 +2,16 @@ private import unified
 private import AllDataFlow
 private import codeql.unified.internal.ExprPositions
 
-private predicate hasPostUpdate(Expr expr) {
+private predicate hasIncomingValueAtCfgNode(Expr expr, ControlFlowNode cfgNode) {
+  exists(AstNode declOrAssignment |
+    hasIncomingValue(expr, declOrAssignment) and
+    cfgNode.injects(declOrAssignment)
+  )
+}
+
+private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
   exists(MemberAccessExpr member |
-    (hasIncomingValue(member, _) or hasPostUpdate(member)) and
+    (hasIncomingValueAtCfgNode(member, cfgNode) or hasPostUpdate(member, cfgNode)) and
     expr = member.getBase()
   )
 }
@@ -16,11 +23,11 @@ predicate performsVariableAccess(
   Expr expr, LocalVariable var, VariableRefKind kind, ControlFlowNode cfgNode
 ) {
   exists(LocalVariableAccess access | var = access.getLocalVariable() and expr = access |
-    hasResultValue(access) and kind.isRead() and cfgNode.isAfter(expr)
+    hasResultValue(access) and kind.isRead() and cfgNode.asExpr() = expr
     or
-    hasIncomingValue(access, _) and kind.isWrite() and cfgNode.asExpr() = expr // TODO: use more precise CFG node
+    hasIncomingValueAtCfgNode(access, cfgNode) and kind.isWrite()
     or
-    hasPostUpdate(access) and kind.isPostUpdate() and cfgNode.asExpr() = expr // TODO: use more precise CFG node
+    hasPostUpdate(access, cfgNode) and kind.isPostUpdate()
   )
   or
   exists(UnqualifiedMemberAccess access |
@@ -28,16 +35,15 @@ predicate performsVariableAccess(
   |
     kind.isRead() and cfgNode.isBefore(access)
     or
-    (hasIncomingValue(access, _) or hasPostUpdate(access)) and
-    kind.isPostUpdate() and
-    cfgNode.asExpr() = access // TODO: use more precise CFG node
+    (hasIncomingValueAtCfgNode(access, cfgNode) or hasPostUpdate(access, cfgNode)) and
+    kind.isPostUpdate()
   )
 }
 
 newtype TDataFlowNode =
   TValueNode(Expr expr) { hasResultValue(expr) or hasIncomingValue(expr, _) } or
   TStrictlyIncomingValue(Expr expr) { hasResultValue(expr) and hasIncomingValue(expr, _) } or
-  TExprPostUpdateNode(Expr expr) { hasPostUpdate(expr) } or
+  TExprPostUpdateNode(Expr expr) { hasPostUpdate(expr, _) } or
   TLocalVariableRefNode(Expr expr, LocalVariable var, VariableRefKind kind) {
     performsVariableAccess(expr, var, kind, _)
   } or

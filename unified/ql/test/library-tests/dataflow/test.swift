@@ -128,7 +128,7 @@ func t13() {
 
 func t14() {
     var a = "safe";
-    a = sink(a) + source("t14.1"); // $ SPURIOUS: hasTaintFlow=t14.1
+    a = sink(a) + source("t14.1");
     sink(a); // $ hasTaintFlow=t14.1
 }
 
