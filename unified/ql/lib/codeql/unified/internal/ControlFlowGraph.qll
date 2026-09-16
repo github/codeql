@@ -196,20 +196,23 @@ private module Ast implements AstSig<Location> {
 
   class LogicalNotExpr = U::LogicalNotExpr;
 
-  // TODO
-  class Assignment extends BinaryExpr {
-    Assignment() { none() }
+  class Assignment extends BinaryExpr, U::Assignment { }
+
+  class AssignExpr extends Assignment, U::AssignExpr { }
+
+  class CompoundAssignment extends Assignment, U::CompoundAssignExpr { }
+
+  class AssignLogicalAndExpr extends CompoundAssignment {
+    AssignLogicalAndExpr() { this.getOperator().getValue() = "&&=" }
   }
 
-  class AssignExpr extends Assignment { }
+  class AssignLogicalOrExpr extends CompoundAssignment {
+    AssignLogicalOrExpr() { this.getOperator().getValue() = "||=" }
+  }
 
-  class CompoundAssignment extends Assignment { }
-
-  class AssignLogicalAndExpr extends CompoundAssignment { }
-
-  class AssignLogicalOrExpr extends CompoundAssignment { }
-
-  class AssignNullCoalescingExpr extends CompoundAssignment { }
+  class AssignNullCoalescingExpr extends CompoundAssignment {
+    AssignNullCoalescingExpr() { this.getOperator().getValue() = "??=" }
+  }
 
   class BooleanLiteral extends U::BooleanLiteral {
     boolean getValue() { result.toString() = super.getValue() }

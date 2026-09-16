@@ -6,29 +6,36 @@ private import unified
 private import codeql.unified.internal.NameBindingPlugin
 
 module Public {
-  /** A plain assignment expression. */
-  class AssignExpr extends BinaryExpr {
-    AssignExpr() { this.getOperator().getValue() = "=" }
-
+  /** An assignment, possibly a compound assignment. */
+  abstract class AssignmentImpl extends BinaryExpr {
     /** Gets the target of this assignment. */
-    Expr getTarget() { result = this.getLeft() }
+    abstract Expr getTarget();
 
     /** Gets the value assigned by this assignment. */
-    Expr getValue() { result = this.getRight() }
+    abstract Expr getValue();
+  }
+
+  final class Assignment = AssignmentImpl;
+
+  /** A plain assignment expression. */
+  final class AssignExpr extends BinaryExpr, AssignmentImpl {
+    AssignExpr() { this.getOperator().getValue() = "=" }
+
+    override Expr getTarget() { result = this.getLeft() }
+
+    override Expr getValue() { result = this.getRight() }
   }
 
   /** A compound assignment expression. */
-  class CompoundAssignExpr extends BinaryExpr {
+  final class CompoundAssignExpr extends BinaryExpr, AssignmentImpl {
     CompoundAssignExpr() {
       this.getOperator().getValue() =
         ["+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "|=", "^=", "&+=", "&-=", "&*="]
     }
 
-    /** Gets the target of this assignment. */
-    Expr getTarget() { result = this.getLeft() }
+    override Expr getTarget() { result = this.getLeft() }
 
-    /** Gets the value assigned by this assignment. */
-    Expr getValue() { result = this.getRight() }
+    override Expr getValue() { result = this.getRight() }
   }
 
   /** A short-circuiting logical AND expression. */
