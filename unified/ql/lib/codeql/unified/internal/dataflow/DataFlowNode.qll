@@ -27,6 +27,7 @@ predicate performsVariableAccess(
     or
     hasIncomingValueAtCfgNode(access, cfgNode) and kind.isWrite()
     or
+    // TODO: Make the SSA library use this CFG node for post-updates. It currently picks the same as the read.
     hasPostUpdate(access, cfgNode) and kind.isPostUpdate()
   )
   or

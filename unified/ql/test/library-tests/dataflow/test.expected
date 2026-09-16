@@ -32,6 +32,28 @@ edges
 | implicit-self.swift:53:9:53:18 | MemberAccessExpr | implicit-self.swift:53:9:53:16 | [post] MemberAccessExpr [x] | provenance |  |
 | implicit-self.swift:53:22:53:35 | CallExpr | implicit-self.swift:53:9:53:18 | MemberAccessExpr | provenance |  |
 | implicit-self.swift:54:14:54:16 | box [x] | implicit-self.swift:54:14:54:18 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:59:9:59:9 | [incoming] x | implicit-self.swift:59:19:59:19 | x | provenance |  |
+| implicit-self.swift:59:9:59:9 | [incoming] x | implicit-self.swift:60:14:60:14 | x | provenance |  |
+| implicit-self.swift:59:9:59:9 | [incoming] x | implicit-self.swift:61:14:61:17 | self [x] | provenance |  |
+| implicit-self.swift:59:24:59:37 | CallExpr | implicit-self.swift:59:9:59:9 | [incoming] x | provenance |  |
+| implicit-self.swift:61:14:61:17 | self [x] | implicit-self.swift:61:14:61:19 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:66:9:66:12 | [post] self [x] | implicit-self.swift:66:24:66:24 | x | provenance |  |
+| implicit-self.swift:66:9:66:12 | [post] self [x] | implicit-self.swift:67:14:67:14 | x | provenance |  |
+| implicit-self.swift:66:9:66:12 | [post] self [x] | implicit-self.swift:68:14:68:17 | self [x] | provenance |  |
+| implicit-self.swift:66:9:66:14 | [incoming] MemberAccessExpr | implicit-self.swift:66:9:66:12 | [post] self [x] | provenance |  |
+| implicit-self.swift:66:29:66:43 | CallExpr | implicit-self.swift:66:9:66:14 | [incoming] MemberAccessExpr | provenance |  |
+| implicit-self.swift:68:14:68:17 | self [x] | implicit-self.swift:68:14:68:19 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:73:9:73:9 | [incoming] x | implicit-self.swift:73:19:73:19 | x | provenance |  |
+| implicit-self.swift:73:9:73:9 | [incoming] x | implicit-self.swift:74:14:74:14 | x | provenance |  |
+| implicit-self.swift:73:9:73:9 | [incoming] x | implicit-self.swift:75:14:75:17 | self [x] | provenance |  |
+| implicit-self.swift:73:24:73:38 | CallExpr | implicit-self.swift:73:9:73:9 | [incoming] x | provenance |  |
+| implicit-self.swift:75:14:75:17 | self [x] | implicit-self.swift:75:14:75:19 | MemberAccessExpr | provenance |  |
+| implicit-self.swift:80:9:80:12 | [post] self [x] | implicit-self.swift:80:24:80:24 | x | provenance |  |
+| implicit-self.swift:80:9:80:12 | [post] self [x] | implicit-self.swift:81:14:81:14 | x | provenance |  |
+| implicit-self.swift:80:9:80:12 | [post] self [x] | implicit-self.swift:82:14:82:17 | self [x] | provenance |  |
+| implicit-self.swift:80:9:80:14 | [incoming] MemberAccessExpr | implicit-self.swift:80:9:80:12 | [post] self [x] | provenance |  |
+| implicit-self.swift:80:29:80:43 | CallExpr | implicit-self.swift:80:9:80:14 | [incoming] MemberAccessExpr | provenance |  |
+| implicit-self.swift:82:14:82:17 | self [x] | implicit-self.swift:82:14:82:19 | MemberAccessExpr | provenance |  |
 | test.swift:6:10:6:23 | CallExpr | test.swift:6:10:6:32 | BinaryExpr | provenance |  |
 | test.swift:7:19:7:32 | CallExpr | test.swift:7:10:7:32 | BinaryExpr | provenance |  |
 | test.swift:9:13:9:26 | CallExpr | test.swift:9:10:9:33 | StringInterpolationExpr | provenance |  |
@@ -142,6 +164,32 @@ nodes
 | implicit-self.swift:53:22:53:35 | CallExpr | semmle.label | CallExpr |
 | implicit-self.swift:54:14:54:16 | box [x] | semmle.label | box [x] |
 | implicit-self.swift:54:14:54:18 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| implicit-self.swift:59:9:59:9 | [incoming] x | semmle.label | [incoming] x |
+| implicit-self.swift:59:19:59:19 | x | semmle.label | x |
+| implicit-self.swift:59:24:59:37 | CallExpr | semmle.label | CallExpr |
+| implicit-self.swift:60:14:60:14 | x | semmle.label | x |
+| implicit-self.swift:61:14:61:17 | self [x] | semmle.label | self [x] |
+| implicit-self.swift:61:14:61:19 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| implicit-self.swift:66:9:66:12 | [post] self [x] | semmle.label | [post] self [x] |
+| implicit-self.swift:66:9:66:14 | [incoming] MemberAccessExpr | semmle.label | [incoming] MemberAccessExpr |
+| implicit-self.swift:66:24:66:24 | x | semmle.label | x |
+| implicit-self.swift:66:29:66:43 | CallExpr | semmle.label | CallExpr |
+| implicit-self.swift:67:14:67:14 | x | semmle.label | x |
+| implicit-self.swift:68:14:68:17 | self [x] | semmle.label | self [x] |
+| implicit-self.swift:68:14:68:19 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| implicit-self.swift:73:9:73:9 | [incoming] x | semmle.label | [incoming] x |
+| implicit-self.swift:73:19:73:19 | x | semmle.label | x |
+| implicit-self.swift:73:24:73:38 | CallExpr | semmle.label | CallExpr |
+| implicit-self.swift:74:14:74:14 | x | semmle.label | x |
+| implicit-self.swift:75:14:75:17 | self [x] | semmle.label | self [x] |
+| implicit-self.swift:75:14:75:19 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| implicit-self.swift:80:9:80:12 | [post] self [x] | semmle.label | [post] self [x] |
+| implicit-self.swift:80:9:80:14 | [incoming] MemberAccessExpr | semmle.label | [incoming] MemberAccessExpr |
+| implicit-self.swift:80:24:80:24 | x | semmle.label | x |
+| implicit-self.swift:80:29:80:43 | CallExpr | semmle.label | CallExpr |
+| implicit-self.swift:81:14:81:14 | x | semmle.label | x |
+| implicit-self.swift:82:14:82:17 | self [x] | semmle.label | self [x] |
+| implicit-self.swift:82:14:82:19 | MemberAccessExpr | semmle.label | MemberAccessExpr |
 | test.swift:2:10:2:21 | CallExpr | semmle.label | CallExpr |
 | test.swift:6:10:6:23 | CallExpr | semmle.label | CallExpr |
 | test.swift:6:10:6:32 | BinaryExpr | semmle.label | BinaryExpr |
@@ -237,8 +285,6 @@ nodes
 | test.swift:144:10:144:10 | a | semmle.label | a |
 subpaths
 testFailures
-| test.swift:138:10:138:10 | a | Fixed missing result: hasTaintFlow=t15.1 |
-| test.swift:144:10:144:10 | a | Fixed missing result: hasTaintFlow=t16.1 |
 #select
 | implicit-self.swift:12:14:12:19 | MemberAccessExpr | implicit-self.swift:11:18:11:31 | CallExpr | implicit-self.swift:12:14:12:19 | MemberAccessExpr | $@ | implicit-self.swift:11:18:11:31 | CallExpr | CallExpr |
 | implicit-self.swift:18:14:18:14 | x | implicit-self.swift:17:13:17:26 | CallExpr | implicit-self.swift:18:14:18:14 | x | $@ | implicit-self.swift:17:13:17:26 | CallExpr | CallExpr |
@@ -248,6 +294,18 @@ testFailures
 | implicit-self.swift:42:14:42:18 | MemberAccessExpr | implicit-self.swift:41:17:41:30 | CallExpr | implicit-self.swift:42:14:42:18 | MemberAccessExpr | $@ | implicit-self.swift:41:17:41:30 | CallExpr | CallExpr |
 | implicit-self.swift:48:14:48:23 | MemberAccessExpr | implicit-self.swift:47:17:47:30 | CallExpr | implicit-self.swift:48:14:48:23 | MemberAccessExpr | $@ | implicit-self.swift:47:17:47:30 | CallExpr | CallExpr |
 | implicit-self.swift:54:14:54:18 | MemberAccessExpr | implicit-self.swift:53:22:53:35 | CallExpr | implicit-self.swift:54:14:54:18 | MemberAccessExpr | $@ | implicit-self.swift:53:22:53:35 | CallExpr | CallExpr |
+| implicit-self.swift:59:19:59:19 | x | implicit-self.swift:59:24:59:37 | CallExpr | implicit-self.swift:59:19:59:19 | x | $@ | implicit-self.swift:59:24:59:37 | CallExpr | CallExpr |
+| implicit-self.swift:60:14:60:14 | x | implicit-self.swift:59:24:59:37 | CallExpr | implicit-self.swift:60:14:60:14 | x | $@ | implicit-self.swift:59:24:59:37 | CallExpr | CallExpr |
+| implicit-self.swift:61:14:61:19 | MemberAccessExpr | implicit-self.swift:59:24:59:37 | CallExpr | implicit-self.swift:61:14:61:19 | MemberAccessExpr | $@ | implicit-self.swift:59:24:59:37 | CallExpr | CallExpr |
+| implicit-self.swift:66:24:66:24 | x | implicit-self.swift:66:29:66:43 | CallExpr | implicit-self.swift:66:24:66:24 | x | $@ | implicit-self.swift:66:29:66:43 | CallExpr | CallExpr |
+| implicit-self.swift:67:14:67:14 | x | implicit-self.swift:66:29:66:43 | CallExpr | implicit-self.swift:67:14:67:14 | x | $@ | implicit-self.swift:66:29:66:43 | CallExpr | CallExpr |
+| implicit-self.swift:68:14:68:19 | MemberAccessExpr | implicit-self.swift:66:29:66:43 | CallExpr | implicit-self.swift:68:14:68:19 | MemberAccessExpr | $@ | implicit-self.swift:66:29:66:43 | CallExpr | CallExpr |
+| implicit-self.swift:73:19:73:19 | x | implicit-self.swift:73:24:73:38 | CallExpr | implicit-self.swift:73:19:73:19 | x | $@ | implicit-self.swift:73:24:73:38 | CallExpr | CallExpr |
+| implicit-self.swift:74:14:74:14 | x | implicit-self.swift:73:24:73:38 | CallExpr | implicit-self.swift:74:14:74:14 | x | $@ | implicit-self.swift:73:24:73:38 | CallExpr | CallExpr |
+| implicit-self.swift:75:14:75:19 | MemberAccessExpr | implicit-self.swift:73:24:73:38 | CallExpr | implicit-self.swift:75:14:75:19 | MemberAccessExpr | $@ | implicit-self.swift:73:24:73:38 | CallExpr | CallExpr |
+| implicit-self.swift:80:24:80:24 | x | implicit-self.swift:80:29:80:43 | CallExpr | implicit-self.swift:80:24:80:24 | x | $@ | implicit-self.swift:80:29:80:43 | CallExpr | CallExpr |
+| implicit-self.swift:81:14:81:14 | x | implicit-self.swift:80:29:80:43 | CallExpr | implicit-self.swift:81:14:81:14 | x | $@ | implicit-self.swift:80:29:80:43 | CallExpr | CallExpr |
+| implicit-self.swift:82:14:82:19 | MemberAccessExpr | implicit-self.swift:80:29:80:43 | CallExpr | implicit-self.swift:82:14:82:19 | MemberAccessExpr | $@ | implicit-self.swift:80:29:80:43 | CallExpr | CallExpr |
 | test.swift:2:10:2:21 | CallExpr | test.swift:2:10:2:21 | CallExpr | test.swift:2:10:2:21 | CallExpr | $@ | test.swift:2:10:2:21 | CallExpr | CallExpr |
 | test.swift:6:10:6:32 | BinaryExpr | test.swift:6:10:6:23 | CallExpr | test.swift:6:10:6:32 | BinaryExpr | $@ | test.swift:6:10:6:23 | CallExpr | CallExpr |
 | test.swift:7:10:7:32 | BinaryExpr | test.swift:7:19:7:32 | CallExpr | test.swift:7:10:7:32 | BinaryExpr | $@ | test.swift:7:19:7:32 | CallExpr | CallExpr |
