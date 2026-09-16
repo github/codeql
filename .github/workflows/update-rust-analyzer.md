@@ -64,7 +64,6 @@ safe-outputs:
     title-prefix: "Rust: "
     branch-prefix: "automation/update-rust-analyzer/"
     draft: true
-    protected-files: allowed
     max-patch-size: 10240
     max-patch-files: 1000
     allowed-files:
