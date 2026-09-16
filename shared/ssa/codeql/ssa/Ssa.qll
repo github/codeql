@@ -1907,7 +1907,10 @@ module Make<
         isUseStep = false
       )
       or
-      [nodeFrom, nodeFrom.(ExprPostUpdateNode).getPreUpdateNode()].(ReadNode).readsAt(bb, i, v) and
+      nodeFrom.(ReadNode).readsAt(bb, i, v) and
+      isUseStep = true
+      or
+      nodeFrom.(ExprPostUpdateNode).getPreUpdateNode().(ReadNode).readsAt(bb, i, v) and
       isUseStep = true
     }
 
