@@ -29,9 +29,9 @@ query predicate grapeRequestBodyString(Grape::GrapeRequestBodyStringSource src) 
 
 query predicate grapeRequestParams(Grape::GrapeRequestParamsSource src) { any() }
 
-query predicate grapeRequestGET(Grape::GrapeRequestGetSource src) { any() }
+query predicate grapeRequestGet(Grape::GrapeRequestGetSource src) { any() }
 
-query predicate grapeRequestPOST(Grape::GrapeRequestPostSource src) { any() }
+query predicate grapeRequestPost(Grape::GrapeRequestPostSource src) { any() }
 
 query predicate grapeRequestCookies(Grape::GrapeRequestCookiesSource src) { any() }
 

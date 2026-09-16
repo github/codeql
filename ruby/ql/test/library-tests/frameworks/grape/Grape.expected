@@ -83,9 +83,9 @@ grapeRequestBodyString
 | app.rb:252:17:252:35 | call to string |
 grapeRequestParams
 | app.rb:257:19:257:32 | call to params |
-grapeRequestGET
+grapeRequestGet
 | app.rb:262:18:262:28 | call to GET |
-grapeRequestPOST
+grapeRequestPost
 | app.rb:267:19:267:30 | call to POST |
 grapeRequestCookies
 | app.rb:272:19:272:33 | call to cookies |
