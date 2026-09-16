@@ -42,7 +42,9 @@ private module Ast implements AstSig<Location> {
 
   Callable getEnclosingCallable(AstNode node) { result = node.getEnclosingCallable() }
 
-  class Callable = U::Callable;
+  class Callable extends U::Callable {
+    Callable() { this.fromSource() }
+  }
 
   AstNode callableGetBody(Callable c) { result = c.getBody() }
 

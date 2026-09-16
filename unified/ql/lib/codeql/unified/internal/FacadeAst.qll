@@ -15,6 +15,9 @@ module Unified {
     /** Gets the file containing this AST node. */
     File getFile() { result = this.getLocation().getFile() }
 
+    /** Holds if this AST node comes from ordinary source code. */
+    predicate fromSource() { this.getFile().fromSource() }
+
     /** Holds if this AST node has a modifier with the given text. */
     predicate hasModifier(string text) {
       exists(Modifier mod |
