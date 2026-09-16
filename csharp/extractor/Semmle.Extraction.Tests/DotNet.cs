@@ -285,7 +285,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            dotnet.GetNugetFeeds("abc");
+            dotnet.GetNugetFeedsFromConfig("abc");
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();

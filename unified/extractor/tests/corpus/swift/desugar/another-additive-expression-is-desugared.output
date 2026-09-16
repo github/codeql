@@ -25,10 +25,6 @@ top_level
     block
       stmt:
         binary_expr
-          left:
-            name_expr
-              identifier: identifier "foo"
+          left: identifier "foo"
           operator: infix_operator "+"
-          right:
-            name_expr
-              identifier: identifier "bar"
+          right: identifier "bar"

@@ -74,37 +74,23 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "add"
+          name_node: identifier "add"
           parameter:
             parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "a"
+              external_name_node: identifier "_"
+              type: identifier "Int"
+              pattern: identifier "a"
             parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "b"
-          return_type:
-            named_type_expr
-              name: identifier "Int"
+              external_name_node: identifier "_"
+              type: identifier "Int"
+              pattern: identifier "b"
+          return_type: identifier "Int"
           body:
             block
               stmt:
                 return_expr
                   value:
                     binary_expr
-                      left:
-                        name_expr
-                          identifier: identifier "a"
+                      left: identifier "a"
                       operator: infix_operator "+"
-                      right:
-                        name_expr
-                          identifier: identifier "b"
+                      right: identifier "b"

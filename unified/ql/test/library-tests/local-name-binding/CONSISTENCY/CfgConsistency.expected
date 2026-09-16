@@ -1,0 +1,5 @@
+consistencyOverview
+| deadEnd | 2 |
+deadEnd
+| test.swift:341:10:341:15 | Entry |
+| test.swift:342:10:342:15 | Entry |

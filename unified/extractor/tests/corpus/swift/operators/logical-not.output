@@ -20,7 +20,5 @@ top_level
     block
       stmt:
         unary_expr
-          operand:
-            name_expr
-              identifier: identifier "a"
+          operand: identifier "a"
           operator: prefix_operator "!"

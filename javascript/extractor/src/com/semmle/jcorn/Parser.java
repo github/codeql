@@ -2296,9 +2296,9 @@ public class Parser {
           && (this.options.ecmaVersion() >= 6
               || inputSubstring(this.start, this.end).indexOf("\\") == -1))
         this.raiseRecoverable(this.start, "The keyword '" + this.value + "' is reserved");
-      if (!isPrivateField && this.inGenerator && this.value.equals("yield"))
+      if (!liberal && !isPrivateField && this.inGenerator && this.value.equals("yield"))
         this.raiseRecoverable(this.start, "Can not use 'yield' as identifier inside a generator");
-      if (!isPrivateField && this.inAsync && this.value.equals("await"))
+      if (!liberal && !isPrivateField && this.inAsync && this.value.equals("await"))
         this.raiseRecoverable(
             this.start, "Can not use 'await' as identifier inside an async function");
       name = String.valueOf(this.value);

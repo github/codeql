@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 func TaintStepTest_NetHttpCanonicalHeaderKey_B0I0O0(sourceCQL interface{}) interface{} {
@@ -175,6 +176,16 @@ func TaintStepTest_NetHttpResponseWriterWrite_B0I0O0(sourceCQL interface{}) inte
 	return intoResponseWriter139
 }
 
+func TaintStepTest_NetUrlURLClone(sourceCQL interface{}) interface{} {
+	fromURL := sourceCQL.(*url.URL)
+	return fromURL.Clone()
+}
+
+func TaintStepTest_NetUrlValuesClone(sourceCQL interface{}) interface{} {
+	fromValues := sourceCQL.(url.Values)
+	return fromValues.Clone()
+}
+
 func RunAllTaints_NetHttp() {
 	{
 		source := newSource(0)
@@ -305,5 +316,15 @@ func RunAllTaints_NetHttp() {
 		source := newSource(23)
 		out := TaintStepTest_NetHttpResponseWriterWrite_B0I0O0(source)
 		sink(23, out)
+	}
+	{
+		source := newSource(26)
+		out := TaintStepTest_NetUrlURLClone(source)
+		sink(26, out)
+	}
+	{
+		source := newSource(27)
+		out := TaintStepTest_NetUrlValuesClone(source)
+		sink(27, out)
 	}
 }

@@ -86,3 +86,7 @@ func combine<T>(_ values: [T], transform: (T, T) -> T) -> T? {
     guard !values.isEmpty else { return nil }
     return values.dropFirst().reduce(values[0], transform)
 }
+
+let tuple = (1, "hello", true)
+let unary1 = ("parenthesized")
+let unary2 = (("double-parenthesized"))

@@ -6,7 +6,10 @@ extractor: unified
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/concepts: ${workspace}
   codeql/controlflow: ${workspace}
+  codeql/ssa: ${workspace}
+  codeql/dataflow: ${workspace}
   codeql/namebinding: ${workspace}
   codeql/util: ${workspace}
 warnOnImplicitThis: true

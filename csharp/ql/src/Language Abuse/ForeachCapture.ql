@@ -23,17 +23,17 @@ predicate lambdaCaptures(AnonymousFunctionExpr lambda, Variable v) {
   exists(VariableAccess va | va.getEnclosingCallable() = lambda | va.getTarget() = v)
 }
 
-predicate lambdaCapturesLoopVariable(AnonymousFunctionExpr lambda, ForeachStmt loop, Variable v) {
+predicate lambdaCapturesLoopVariable(AnonymousFunctionExpr lambda, ForEachStmt loop, Variable v) {
   lambdaCaptures(lambda, v) and
-  inForeachStmtBody(loop, lambda) and
+  inForEachStmtBody(loop, lambda) and
   loop.getVariable() = v
 }
 
-predicate inForeachStmtBody(ForeachStmt loop, Element e) {
+predicate inForEachStmtBody(ForEachStmt loop, Element e) {
   e = loop.getBody()
   or
   exists(Element mid |
-    inForeachStmtBody(loop, mid) and
+    inForEachStmtBody(loop, mid) and
     e = mid.getAChild()
   )
 }
@@ -53,7 +53,7 @@ module LambdaDataFlow {
     exists(DataFlow::Node sink | flow(DataFlow::exprNode(lambda), sink) |
       storage = getAssignmentTarget(sink.asExpr())
     ) and
-    exists(ForeachStmt loop | lambdaCapturesLoopVariable(lambda, loop, loopVar) |
+    exists(ForEachStmt loop | lambdaCapturesLoopVariable(lambda, loop, loopVar) |
       not declaredInsideLoop(loop, storage)
     )
   }
@@ -103,9 +103,9 @@ Element getCollectionAssignmentTarget(Expr e) {
 }
 
 // Variable v is declared inside the loop body
-predicate declaredInsideLoop(ForeachStmt loop, LocalVariable v) {
+predicate declaredInsideLoop(ForEachStmt loop, LocalVariable v) {
   exists(LocalVariableDeclStmt decl | decl.getVariableDeclExpr(_).getVariable() = v |
-    inForeachStmtBody(loop, decl)
+    inForEachStmtBody(loop, decl)
   )
 }
 

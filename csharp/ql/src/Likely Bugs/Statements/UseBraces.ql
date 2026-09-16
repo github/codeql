@@ -36,7 +36,7 @@ class IfThenElseStmt extends IfStmt {
 
 Stmt getTrailingBody(Stmt s) {
   result = s.(ForStmt).getBody() or
-  result = s.(ForeachStmt).getBody() or
+  result = s.(ForEachStmt).getBody() or
   result = s.(WhileStmt).getBody() or
   result = s.(IfThenStmt).getThen() or
   result = s.(IfThenElseStmt).getElse()

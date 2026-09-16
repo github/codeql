@@ -66,24 +66,18 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "f"
+          pattern: identifier "f"
           value:
             function_expr
               capture_declaration:
                 variable_declaration
                   modifier: modifier "weak"
-                  pattern:
-                    name_pattern
-                      identifier: identifier "self"
+                  pattern: identifier "self"
               body:
                 block
                   stmt:
                     call_expr
                       callee:
                         member_access_expr
-                          base:
-                            name_expr
-                              identifier: identifier "self"
-                          member: identifier "doThing"
+                          base: identifier "self"
+                          member_name_node: identifier "doThing"

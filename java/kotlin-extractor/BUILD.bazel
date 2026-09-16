@@ -57,6 +57,10 @@ _compiler_plugin_registrar_service_source = "src/main/resources/META-INF/service
 
 _compiler_plugin_registrar_service_target = "META-INF/services/org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar"
 
+_component_registrar_service_source = "src/main/resources/META-INF/services/org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar"
+
+_component_registrar_service_target = "META-INF/services/org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar"
+
 py_binary(
     name = "generate_dbscheme",
     srcs = ["generate_dbscheme.py"],
@@ -68,12 +72,20 @@ _resources = [
         r[len("src/main/resources/"):],
     )
     for r in glob(["src/main/resources/**"])
-    if r != _compiler_plugin_registrar_service_source
+    if r not in (
+        _compiler_plugin_registrar_service_source,
+        _component_registrar_service_source,
+    )
 ]
 
 _compiler_plugin_registrar_service = (
     _compiler_plugin_registrar_service_source,
     _compiler_plugin_registrar_service_target,
+)
+
+_component_registrar_service = (
+    _component_registrar_service_source,
+    _component_registrar_service_target,
 )
 
 kt_javac_options(
@@ -93,7 +105,11 @@ kt_javac_options(
                 "kotlin.RequiresOptIn",
                 "org.jetbrains.kotlin.ir.symbols.%s" %
                 ("IrSymbolInternals" if version_less(v, "2.0.0") else "UnsafeDuringIrConstructionAPI"),
-            ] + ([] if version_less(v, "2.2.20") else ["org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi"]),
+            ] + (
+                [] if version_less(v, "2.2.20") else ["org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi"]
+            ) + (
+                [] if version_less(v, "2.4.20") else ["org.jetbrains.kotlin.K1Deprecation"]
+            ),
             x_suppress_version_warnings = True,
         ),
         # * extractor.name is different for each version, so we need to put it in different output dirs
@@ -103,6 +119,8 @@ kt_javac_options(
             name = "resources-%s" % v,
             srcs = [src for src, _ in _resources] + (
                 [_compiler_plugin_registrar_service[0]] if not version_less(v, "2.4.0") else []
+            ) + (
+                [_component_registrar_service[0]] if version_less(v, "2.4.20") else []
             ),
             outs = [
                 "%s/com/github/codeql/extractor.name" % v,
@@ -114,6 +132,11 @@ kt_javac_options(
                     v,
                     _compiler_plugin_registrar_service[1],
                 )] if not version_less(v, "2.4.0") else []
+            ) + (
+                ["%s/%s" % (
+                    v,
+                    _component_registrar_service[1],
+                )] if version_less(v, "2.4.20") else []
             ),
             cmd = "\n".join([
                 "echo %s-%s > $(RULEDIR)/%s/com/github/codeql/extractor.name" % (_extractor_name_prefix, v, v),
@@ -126,6 +149,12 @@ kt_javac_options(
                     v,
                     _compiler_plugin_registrar_service[1],
                 )] if not version_less(v, "2.4.0") else []
+            ) + (
+                ["cp $(execpath %s) $(RULEDIR)/%s/%s" % (
+                    _component_registrar_service[0],
+                    v,
+                    _component_registrar_service[1],
+                )] if version_less(v, "2.4.20") else []
             )),
         ),
         kt_jvm_library(

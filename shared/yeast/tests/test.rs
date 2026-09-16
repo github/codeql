@@ -1663,6 +1663,39 @@ fn test_hash_brace_uses_capture_location_for_leaf() {
     assert_eq!(bar.end_byte(), 7);
 }
 
+/// Regression test: tokens matched by a rule but elided from the output still
+/// contribute to the source location of the synthesized replacement node.
+#[test]
+fn test_elided_tokens_contribute_to_replacement_location() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        (call
+            method: {name}
+        )
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let call_ids: Vec<yeast::Id> = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter(|&id| {
+            ast.get_node(id)
+                .is_some_and(|node| node.kind_name() == "call")
+        })
+        .collect();
+
+    assert_eq!(call_ids.len(), 1, "expected exactly one reachable call");
+    let call_id = call_ids[0];
+    let call = ast.get_node(call_id).unwrap();
+
+    assert_eq!(call.start_byte(), 0);
+    assert_eq!(call.end_byte(), 9);
+}
+
 // ---- `rules!` macro tests (compile-time type-checking) ----
 
 /// `rules!` should accept well-typed rules using the bare-rule-body

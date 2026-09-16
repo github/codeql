@@ -21,7 +21,7 @@
    Java,"Java 7 to 26 [5]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [6]_",``.java``
-   Kotlin,"Kotlin 1.8.0 to 2.4.1\ *x*","kotlinc",``.kt``
+   Kotlin,"Kotlin 1.8.0 to 2.4.20","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [7]_"
    Python [8]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13, 3.14",Not applicable,``.py``
    Ruby,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
