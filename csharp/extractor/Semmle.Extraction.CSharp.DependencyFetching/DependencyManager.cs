@@ -100,6 +100,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.Log(silent ? Severity.Debug : Severity.Info, $"Exit code {ret}{(string.IsNullOrEmpty(msg) ? "" : $": {msg}")}");
             }
 
+            // TODO: Comment can be removed again.
             DotNet.WithDotNet(SystemBuildActions.Instance, logger, fileProvider.GlobalJsons, tempWorkingDirectory.ToString(), shouldCleanUp: false, ensureDotNetAvailable: true, version: null, installDir =>
             {
                 this.dotnetPath = installDir;
