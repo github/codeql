@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sourceModel"},"data":[["android.widget","EditText",true,"getText","","","ReturnValue","remote","manual"]]},{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["android.widget","EditText",true,"getText","","","Argument[this]","ReturnValue","taint","manual"]]}]}

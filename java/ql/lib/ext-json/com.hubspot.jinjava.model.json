@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["com.hubspot.jinjava","Jinjava",true,"render","","","Argument[0]","template-injection","manual"],["com.hubspot.jinjava","Jinjava",true,"renderForResult","","","Argument[0]","template-injection","manual"]]}]}

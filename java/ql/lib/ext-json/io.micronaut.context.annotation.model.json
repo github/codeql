@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sourceModel"},"data":[["io.micronaut.context.annotation","Property",true,"","","Annotated","","environment","manual"],["io.micronaut.context.annotation","Value",true,"","","Annotated","","environment","manual"]]}]}

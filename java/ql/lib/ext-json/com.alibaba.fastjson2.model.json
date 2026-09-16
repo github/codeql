@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["com.alibaba.fastjson2","JSON",false,"parseArray","(String,Class)","","Argument[0]","ReturnValue.Element","taint","ai-manual"]]}]}

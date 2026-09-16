@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["javax.management.remote","JMXConnector",true,"connect","","","Argument[this]","jndi-injection","manual"],["javax.management.remote","JMXConnectorFactory",false,"connect","","","Argument[0]","jndi-injection","manual"]]}]}

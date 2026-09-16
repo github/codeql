@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"experimentalSinkModel"},"data":[["java.util.concurrent","TimeUnit",true,"sleep","","","Argument[0]","thread-pause","manual","thread-resource-abuse"]]}]}

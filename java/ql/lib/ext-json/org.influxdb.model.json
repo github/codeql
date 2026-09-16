@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["org.influxdb","InfluxDBFactory",false,"connect","(String,String,String,OkHttpClient$Builder)","","Argument[0]","request-forgery","ai-manual"]]}]}

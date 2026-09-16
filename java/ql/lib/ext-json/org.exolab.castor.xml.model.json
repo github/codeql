@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["org.exolab.castor.xml","Unmarshaller",true,"unmarshal","","","Argument[0..1]","unsafe-deserialization","manual"]]}]}

@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["javax.xml.xpath","XPath",true,"compile","","","Argument[0]","xpath-injection","manual"],["javax.xml.xpath","XPath",true,"evaluate","","","Argument[0]","xpath-injection","manual"],["javax.xml.xpath","XPath",true,"evaluateExpression","","","Argument[0]","xpath-injection","manual"]]}]}

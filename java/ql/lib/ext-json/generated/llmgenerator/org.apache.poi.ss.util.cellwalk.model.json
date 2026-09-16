@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["org.apache.poi.ss.util.cellwalk","CellWalk",true,"CellWalk","(Sheet,CellRangeAddress)","","Argument[0]","Argument[this]","taint","manual"],["org.apache.poi.ss.util.cellwalk","CellWalk",true,"CellWalk","(Sheet,CellRangeAddress)","","Argument[1]","Argument[this]","taint","manual"]]}]}

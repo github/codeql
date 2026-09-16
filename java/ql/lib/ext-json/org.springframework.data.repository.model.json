@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["org.springframework.data.repository","CrudRepository",true,"save","","","Argument[0]","ReturnValue","value","manual"]]}]}

@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["javax.json.stream","JsonParserFactory",false,"createParser","","","Argument[0]","ReturnValue","taint","manual"]]}]}

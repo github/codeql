@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["org.mvel2.templates","TemplateRuntime",false,"eval","","","Argument[0]","mvel-injection","manual"],["org.mvel2.templates","TemplateRuntime",false,"execute","","","Argument[0]","mvel-injection","manual"]]}]}

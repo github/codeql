@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["org.springframework.web.portlet","ModelAndView",false,"ModelAndView","","","Argument[0]","url-forward","manual"],["org.springframework.web.portlet","ModelAndView",false,"setViewName","","","Argument[0]","url-forward","manual"]]}]}

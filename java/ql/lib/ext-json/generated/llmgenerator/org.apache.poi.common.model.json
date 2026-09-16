@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["org.apache.poi.common","Duplicatable",true,"copy","()","","Argument[this]","ReturnValue","value","dfc-generated"]]}]}

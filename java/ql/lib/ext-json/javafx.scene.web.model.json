@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["javafx.scene.web","WebEngine",false,"load","(String)","","Argument[0]","request-forgery","ai-manual"]]}]}

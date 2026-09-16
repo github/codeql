@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["hudson.lifecycle","Lifecycle",true,"rewriteHudsonWar","(File)","","Argument[0]","path-injection","ai-manual"]]}]}

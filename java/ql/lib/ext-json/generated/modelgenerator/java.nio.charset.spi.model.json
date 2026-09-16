@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["java.nio.charset.spi","CharsetProvider",true,"charsetForName","(String)","","Argument[0]","Argument[this]","taint","df-generated"],["java.nio.charset.spi","CharsetProvider",true,"charsets","()","","Argument[this]","ReturnValue","taint","df-generated"]]}]}

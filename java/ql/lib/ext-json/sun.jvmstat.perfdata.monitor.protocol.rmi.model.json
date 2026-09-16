@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["sun.jvmstat.perfdata.monitor.protocol.rmi","RemoteVmManager",false,"RemoteVmManager","(RemoteHost,String)","","Argument[1]","credentials-username","hq-generated"]]}]}

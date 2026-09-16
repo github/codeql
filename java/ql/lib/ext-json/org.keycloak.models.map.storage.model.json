@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["org.keycloak.models.map.storage","MapStorage",true,"delete","(QueryParameters)","","Argument[0]","sql-injection","ai-manual"]]}]}

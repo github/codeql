@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["org.apache.shiro.mgt","AbstractRememberMeManager",true,"setCipherKey","(byte[])","","Argument[0]","credentials-key","manual"]]}]}

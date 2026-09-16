@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["org.apache.hc.core5.function","Supplier",true,"get","()","","Argument[this]","ReturnValue","taint","manual"]]}]}

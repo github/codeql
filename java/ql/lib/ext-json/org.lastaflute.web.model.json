@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sourceModel"},"data":[["org.lastaflute.web","Execute",false,"","","Annotated","Parameter","remote","manual"]]}]}

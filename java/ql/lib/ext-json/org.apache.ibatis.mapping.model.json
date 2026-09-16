@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["org.apache.ibatis.mapping","BoundSql",true,"getSql","()","","Argument[this]","ReturnValue","taint","ai-manual"]]}]}

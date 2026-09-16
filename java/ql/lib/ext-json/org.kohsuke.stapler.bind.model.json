@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sourceModel"},"data":[["org.kohsuke.stapler.bind","JavaScriptMethod",true,"","","Annotated","Parameter","remote","manual"]]}]}

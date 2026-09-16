@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["retrofit2","Retrofit$Builder",true,"baseUrl","","","Argument[0]","request-forgery","manual"]]},{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["retrofit2","Retrofit$Builder",false,"baseUrl","(String)","","Argument[this]","ReturnValue","taint","ai-manual"]]}]}

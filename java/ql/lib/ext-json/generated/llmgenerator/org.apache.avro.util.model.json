@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sourceModel"},"data":[["org.apache.avro.util","RandomData",true,"main","(String[])","","Argument[0]","commandargs","ai-generated"]]}]}

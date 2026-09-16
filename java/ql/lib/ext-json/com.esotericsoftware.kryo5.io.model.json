@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["com.esotericsoftware.kryo5.io","Input",false,"Input","","","Argument[0]","Argument[this]","taint","manual"]]}]}

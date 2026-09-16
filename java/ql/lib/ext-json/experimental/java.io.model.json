@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"experimentalSummaryModel"},"data":[["java.io","FileInputStream",true,"FileInputStream","","","Argument[0]","Argument[this]","taint","manual","android-web-resource-response"]]}]}

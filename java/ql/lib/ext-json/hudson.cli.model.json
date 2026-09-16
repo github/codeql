@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["hudson.cli","FullDuplexHttpStream",true,"FullDuplexHttpStream","(URL,String,String)","","Argument[0]","request-forgery","ai-manual"],["hudson.cli","FullDuplexHttpStream",true,"FullDuplexHttpStream","(URL,String,String)","","Argument[1]","request-forgery","manual"]]}]}

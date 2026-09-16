@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["org.apache.hive.hcatalog.templeton","HcatDelegator",true,"addOneColumn","(String,String,String,ColumnDesc)","","Argument[3]","sql-injection","ai-manual"]]}]}

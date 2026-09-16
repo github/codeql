@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["freemarker.cache","StringTemplateLoader",true,"putTemplate","","","Argument[1]","template-injection","manual"]]}]}

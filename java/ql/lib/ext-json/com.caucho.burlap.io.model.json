@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["com.caucho.burlap.io","BurlapInput",true,"readObject","","","Argument[this]","unsafe-deserialization","manual"]]}]}

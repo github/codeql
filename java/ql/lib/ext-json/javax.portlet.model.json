@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sinkModel"},"data":[["javax.portlet","PortletContext",true,"getRequestDispatcher","(String)","","Argument[0]","url-forward","manual"]]}]}

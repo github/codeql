@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"summaryModel"},"data":[["org.apache.commons.text.lookup","StringLookup",true,"lookup","","","Argument[this]","ReturnValue","taint","manual"],["org.apache.commons.text.lookup","StringLookupFactory",false,"mapStringLookup","","","Argument[0].MapValue","ReturnValue","taint","manual"]]}]}

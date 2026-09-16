@@ -1,0 +1,1 @@
+{"extensions":[{"addsTo":{"pack":"codeql/java-all","extensible":"sourceModel"},"data":[["org.xmlpull.v1","XmlPullParser",false,"getName","()","","ReturnValue","remote","manual"],["org.xmlpull.v1","XmlPullParser",false,"getNamespace","()","","ReturnValue","remote","manual"],["org.xmlpull.v1","XmlPullParser",false,"getText","()","","ReturnValue","remote","manual"]]}]}
