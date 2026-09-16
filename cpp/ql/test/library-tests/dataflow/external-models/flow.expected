@@ -436,6 +436,17 @@ edges
 | test.cpp:454:13:454:13 | *c [element, x] | test.cpp:454:18:454:20 | *call to get [x] | provenance | MaD:87 |
 | test.cpp:454:18:454:20 | *call to get [x] | test.cpp:454:21:454:21 | x | provenance |  |
 | test.cpp:454:21:454:21 | x | test.cpp:454:21:454:21 | x | provenance | Sink:MaD:3 |
+| test.cpp:461:5:461:5 | forward output argument | test.cpp:462:13:462:13 | *f | provenance |  |
+| test.cpp:461:15:461:23 | call to ymlSource | test.cpp:461:15:461:23 | call to ymlSource | provenance | Src:MaD:48  |
+| test.cpp:461:15:461:23 | call to ymlSource | test.cpp:461:15:461:25 | call to ymlSource | provenance |  |
+| test.cpp:461:15:461:25 | call to ymlSource | test.cpp:461:5:461:5 | forward output argument | provenance |  |
+| test.cpp:462:13:462:13 | *f | test.cpp:462:15:462:17 | call to get | provenance | MaD:88 |
+| test.cpp:462:15:462:17 | call to get | test.cpp:462:15:462:17 | call to get | provenance | Sink:MaD:3 |
+| test.cpp:466:5:466:5 | forward output argument | test.cpp:467:14:467:14 | *f | provenance |  |
+| test.cpp:466:15:466:26 | *call to ymlSourcePtr | test.cpp:466:15:466:28 | **call to ymlSourcePtr | provenance |  |
+| test.cpp:466:15:466:26 | call to ymlSourcePtr | test.cpp:466:15:466:26 | *call to ymlSourcePtr | provenance | Src:MaD:49  |
+| test.cpp:466:15:466:28 | **call to ymlSourcePtr | test.cpp:466:5:466:5 | forward output argument | provenance |  |
+| test.cpp:467:14:467:14 | *f | test.cpp:467:13:467:20 | * ... | provenance | MaD:88 Sink:MaD:3 |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:24:8:24:11 | * ... | provenance |  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:27:36:27:38 | *cmd | provenance |  |
 | windows.cpp:22:15:22:29 | call to GetCommandLineA | windows.cpp:22:15:22:29 | *call to GetCommandLineA | provenance | Src:MaD:5  |
@@ -984,6 +995,19 @@ nodes
 | test.cpp:454:18:454:20 | *call to get [x] | semmle.label | *call to get [x] |
 | test.cpp:454:21:454:21 | x | semmle.label | x |
 | test.cpp:454:21:454:21 | x | semmle.label | x |
+| test.cpp:461:5:461:5 | forward output argument | semmle.label | forward output argument |
+| test.cpp:461:15:461:23 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:461:15:461:23 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:461:15:461:25 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:462:13:462:13 | *f | semmle.label | *f |
+| test.cpp:462:15:462:17 | call to get | semmle.label | call to get |
+| test.cpp:462:15:462:17 | call to get | semmle.label | call to get |
+| test.cpp:466:5:466:5 | forward output argument | semmle.label | forward output argument |
+| test.cpp:466:15:466:26 | *call to ymlSourcePtr | semmle.label | *call to ymlSourcePtr |
+| test.cpp:466:15:466:26 | call to ymlSourcePtr | semmle.label | call to ymlSourcePtr |
+| test.cpp:466:15:466:28 | **call to ymlSourcePtr | semmle.label | **call to ymlSourcePtr |
+| test.cpp:467:13:467:20 | * ... | semmle.label | * ... |
+| test.cpp:467:14:467:14 | *f | semmle.label | *f |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | semmle.label | *call to GetCommandLineA |
 | windows.cpp:22:15:22:29 | call to GetCommandLineA | semmle.label | call to GetCommandLineA |
 | windows.cpp:24:8:24:11 | * ... | semmle.label | * ... |

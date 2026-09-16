@@ -459,11 +459,11 @@ void forward_test_without_constructor() {
   {
     Forwarder<int> f;
     f.forward(ymlSource());
-    ymlSink(f.get()); // $ MISSING: ir
+    ymlSink(f.get()); // $ ir
   }
   {
     Forwarder<int*> f;
     f.forward(ymlSourcePtr());
-    ymlSink(*f.get()); // $ MISSING: ir
+    ymlSink(*f.get()); // $ ir
   }
 }
