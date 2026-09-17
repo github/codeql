@@ -1799,6 +1799,77 @@ fn test_explicit_recursive_translation_keeps_nested_rule_location() {
     assert_eq!(identifier.byte_range(), 4..7);
 }
 
+/// `tree_at!` assigns the captured node's range only to the template root.
+#[test]
+fn test_tree_at_assigns_capture_range_to_root_only() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        ) @@source
+        =>
+        call {
+            let arguments = tree_at!(ctx, source, (argument_list argument: (integer "0")));
+            tree!((call method: {name} receiver: {recv} arguments: {arguments}))
+        }
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    assert_eq!(arguments.byte_range(), 0..9);
+
+    let integer = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "integer")
+        .expect("integer exists");
+    assert_eq!(integer.byte_range(), 0..0);
+}
+
+/// `tree_spanning!` assigns the union of the captured node ranges only to the
+/// template root.
+#[test]
+fn test_tree_spanning_assigns_union_to_root_only() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        call {
+            let arguments = tree_spanning!(
+                ctx,
+                [recv, name],
+                (argument_list argument: (integer "0"))
+            );
+            tree!((call method: {name} receiver: {recv} arguments: {arguments}))
+        }
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    assert_eq!(arguments.byte_range(), 0..7);
+
+    let integer = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "integer")
+        .expect("integer exists");
+    assert_eq!(integer.byte_range(), 0..0);
+}
+
 /// Explicit ranges on multiple results must not be widened to the range of the
 /// input node matched by the rule.
 #[test]
