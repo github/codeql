@@ -4,6 +4,17 @@ bbContinues
 | cfg.swift:525:78:525:78 | Block | 'Block goto Task(+2)' |
 | cfg.swift:526:9:526:20 | continuation | 'continuation goto Block(-1)' |
 bbStep
+| cfg.swift:30:9:30:24 | CallExpr | 'CallExpr : exception -> CatchClause(+5)' |
+| cfg.swift:30:9:30:24 | CallExpr | 'CallExpr : successor -> try(+0)' |
+| cfg.swift:33:5:33:33 | CallExpr | 'CallExpr : successor -> 0(+11)' |
+| cfg.swift:35:5:35:5 | OrPattern | 'OrPattern : match -> Block(+0)' |
+| cfg.swift:35:5:35:5 | OrPattern | 'OrPattern : no-match -> CatchClause(+2)' |
+| cfg.swift:37:11:37:39 | CallExpr | 'CallExpr : match -> Block(+0)' |
+| cfg.swift:37:11:37:39 | CallExpr | 'CallExpr : no-match -> CatchClause(+2)' |
+| cfg.swift:39:11:39:20 |  | ' : match -> Block(+0)' |
+| cfg.swift:39:11:39:20 |  | ' : no-match -> CatchClause(+2)' |
+| cfg.swift:40:5:40:20 | CallExpr | 'CallExpr : successor -> 0(+4)' |
+| cfg.swift:42:5:42:35 | CallExpr | 'CallExpr : successor -> 0(+2)' |
 | cfg.swift:140:12:140:17 | BinaryExpr | 'BinaryExpr : empty -> SwitchExpr(+3)' |
 | cfg.swift:140:12:140:17 | BinaryExpr | 'BinaryExpr : non-empty -> _(+0)' |
 | cfg.swift:141:9:141:12 | Block | 'Block : successor -> SwitchExpr(+2)' |
@@ -80,6 +91,7 @@ bbStep
 | cfg.swift:360:3:360:3 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
 | cfg.swift:360:9:360:14 | BinaryExpr | 'BinaryExpr : true -> Block(+0)' |
 | cfg.swift:361:5:361:10 | CompoundAssignExpr | 'CompoundAssignExpr : successor -> x(-1)' |
+| cfg.swift:398:9:398:24 | CallExpr | 'CallExpr : successor -> try(+0)' |
 | cfg.swift:500:6:500:28 |  | ' : false -> IfExpr(+4)' |
 | cfg.swift:500:6:500:28 |  | ' : true -> Block(+0)' |
 | cfg.swift:501:5:501:10 | CompoundAssignExpr | 'CompoundAssignExpr : successor -> IfExpr(+3)' |
@@ -116,13 +128,6 @@ bbStep
 noCfg
 | cfg.swift:23:9:23:9 | x |
 | cfg.swift:24:5:24:42 | ThrowExpr |
-| cfg.swift:35:11:35:17 | MyError |
-| cfg.swift:36:5:36:12 | ReturnExpr |
-| cfg.swift:37:11:37:17 | MyError |
-| cfg.swift:38:5:38:20 | ReturnExpr |
-| cfg.swift:39:11:39:20 |  |
-| cfg.swift:40:5:40:9 | print |
-| cfg.swift:42:5:42:9 | print |
 | cfg.swift:47:42:47:47 | String |
 | cfg.swift:53:34:53:34 | _ |
 | cfg.swift:60:34:60:34 | _ |
@@ -152,6 +157,7 @@ noCfg
 | cfg.swift:559:6:559:20 | autoclosureTest |
 nonSimple
 | cfg.swift:10:1:10:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyError -^ BaseType -V Error' |
+| cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ MemberAccessExpr -> isZero -> Argument -V x -^ CallExpr -? MyError -^ MemberAccessExpr -^ ConditionalPattern -^ OrPattern' |
 | cfg.swift:209:5:209:5 | x | 'x -> x -? - -^ UnaryExpr -^ AssignExpr' |
 | cfg.swift:390:1:390:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Derived -^ BaseType -V C' |
 | cfg.swift:527:13:527:16 | Task | 'Task -^ MemberAccessExpr -^ Argument -V FunctionExpr -^ CallExpr' |

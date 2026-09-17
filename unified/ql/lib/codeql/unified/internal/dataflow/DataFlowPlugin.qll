@@ -5,7 +5,10 @@
 private import unified
 private import AllDataFlow
 private import codeql.util.Unit
-private import DataFlowPluginSwift // ensure overrides are seen
+
+private module Plugins {
+  private import DataFlowPluginSwift
+}
 
 class DataFlowPlugin extends Unit {
   /** Holds if there is a language-specific step from `node1 -> step -> node2`. */

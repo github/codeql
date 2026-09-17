@@ -1,1 +1,3 @@
-| DeadStoreOfField.go:8:2:8:6 | assignment to field val | This assignment to val is useless since its value is never read. |
+| DeadStoreOfField.go:8:2:8:6 | selection of val | This assignment to val is useless since its value is never read. |
+| writetargets.go:18:2:18:4 | selection of a | This assignment to a is useless since its value is never read. |
+| writetargets.go:23:2:23:4 | selection of c | This assignment to c is useless since its value is never read. |

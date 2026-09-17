@@ -14,5 +14,5 @@
 import go
 
 from IfStmt i
-where i.getThen().getNumStmt() = 0
+where i.getThen().(BlockStmt).getNumStmt() = 0
 select i

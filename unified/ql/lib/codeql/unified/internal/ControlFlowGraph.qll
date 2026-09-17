@@ -7,6 +7,7 @@ module;
 private import unified
 private import codeql.controlflow.ControlFlowGraph
 private import codeql.controlflow.SuccessorType
+private import ControlFlowGraphPlugin
 
 private module Cfg0 = Make0<Location, Ast>;
 
@@ -221,6 +222,8 @@ private module Ast implements AstSig<Location> {
   }
 }
 
+private predicate mayThrow(AstNode ast) { any(ControlFlowGraphPlugin p).mayThrow(ast) }
+
 private module Input implements InputSig1, InputSig2 {
   private import codeql.util.Void
 
@@ -256,7 +259,10 @@ private module Input implements InputSig1, InputSig2 {
   predicate beginAbruptCompletion(
     AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
   ) {
-    none()
+    mayThrow(ast) and
+    n.isIn(ast) and
+    c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+    always = false
   }
 
   predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c) { none() }

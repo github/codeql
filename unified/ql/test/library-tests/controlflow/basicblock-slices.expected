@@ -19,10 +19,22 @@
 | 28 | cfg.swift:28:1:45:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 28 | cfg.swift:28:15:28:15 | x | 'x -^ Block' |
 | 29 | cfg.swift:29:3:43:3 | TryExpr | 'TryExpr -V Block' |
-| 30 | cfg.swift:30:9:30:18 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr -^ try -^ UnaryExpr' |
+| 30 | cfg.swift:30:5:30:24 | try | 'try -^ UnaryExpr' |
+| 30 | cfg.swift:30:9:30:18 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr' |
 | 31 | cfg.swift:31:5:31:9 | print | 'print -> Argument -V "Did not throw." -^ CallExpr' |
 | 32 | cfg.swift:32:10:32:19 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr -^ try! -^ UnaryExpr' |
 | 33 | cfg.swift:33:5:33:9 | print | 'print -> Argument -V "Still did not throw." -^ CallExpr' |
+| 35 | cfg.swift:35:5:37:3 | CatchClause | 'CatchClause -V MyError -^ MemberAccessExpr -> isZero -> Argument -V x -^ CallExpr -? MyError -^ MemberAccessExpr -^ ConditionalPattern -^ OrPattern' |
+| 35 | cfg.swift:35:62:37:3 | Block | 'Block' |
+| 36 | cfg.swift:36:12:36:12 | 0 | '0 -^ ReturnExpr' |
+| 37 | cfg.swift:37:5:39:3 | CatchClause | 'CatchClause -V MyError -^ MemberAccessExpr -> Argument -V withParam -^ ExprPattern -^ CallExpr' |
+| 37 | cfg.swift:37:41:39:3 | Block | 'Block' |
+| 38 | cfg.swift:38:12:38:20 | withParam | 'withParam -^ ReturnExpr' |
+| 39 | cfg.swift:39:5:41:3 | CatchClause | 'CatchClause -V ' |
+| 39 | cfg.swift:39:22:41:3 | Block | 'Block' |
+| 40 | cfg.swift:40:5:40:9 | print | 'print -> Argument -V "MyError" -^ CallExpr' |
+| 41 | cfg.swift:41:5:43:3 | CatchClause | 'CatchClause -V Block' |
+| 42 | cfg.swift:42:5:42:9 | print | 'print -> Argument -V Unknown error  -> interpolation -V Argument -V error -^ CallExpr ->  -^ StringInterpolationExpr -^ CallExpr' |
 | 44 | cfg.swift:44:10:44:10 | 0 | '0 -^ ReturnExpr' |
 | 47 | cfg.swift:47:1:51:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 47 | cfg.swift:47:21:47:21 | s | 's -^ Block' |
@@ -311,7 +323,8 @@
 | 396 | cfg.swift:396:1:404:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 396 | cfg.swift:396:21:396:21 | x | 'x -^ Block' |
 | 397 | cfg.swift:397:3:402:3 | TryExpr | 'TryExpr -V Block' |
-| 398 | cfg.swift:398:9:398:18 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr -^ try -^ UnaryExpr' |
+| 398 | cfg.swift:398:5:398:24 | try | 'try -^ UnaryExpr' |
+| 398 | cfg.swift:398:9:398:18 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr' |
 | 399 | cfg.swift:399:5:399:9 | print | 'print -> Argument -V "Did not throw." -^ CallExpr' |
 | 400 | cfg.swift:400:10:400:19 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr -^ try! -^ UnaryExpr' |
 | 401 | cfg.swift:401:5:401:9 | print | 'print -> Argument -V "Still did not throw." -^ CallExpr' |

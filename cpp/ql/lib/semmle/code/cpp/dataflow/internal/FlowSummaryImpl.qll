@@ -111,6 +111,9 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
         pos = -1 and result = TIndirectionPosition(pos, indirection + 1)
       )
     )
+    or
+    argString = "forward" and
+    result = TForwardPosition()
   }
 
   bindingset[token]

@@ -1,6 +1,9 @@
 private import unified
 private import codeql.util.Unit
-private import codeql.unified.internal.NameBindingPluginSwift // ensure overrides are seen
+
+private module Plugins {
+  private import codeql.unified.internal.NameBindingPluginSwift
+}
 
 /** Extension point for language-specific inputs to name binding. */
 class NameBindingPlugin extends Unit {
