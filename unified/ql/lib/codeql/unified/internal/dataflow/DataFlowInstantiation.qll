@@ -44,6 +44,8 @@ module DataFlowInput implements InputSig<Location> {
 
   DataFlowCallable nodeGetEnclosingCallable(Node node) {
     result.asSourceCallable() = node.getEnclosingCallable()
+    or
+    node.isReceiverParameterEx(result)
   }
 
   private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosition pos) {

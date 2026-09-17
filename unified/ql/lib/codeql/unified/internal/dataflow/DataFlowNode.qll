@@ -64,7 +64,8 @@ newtype TDataFlowNode =
   TLocalVariableRefNode(Expr expr, LocalVariable var, VariableRefKind kind) {
     performsVariableAccess(expr, var, kind, _)
   } or
-  TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node)
+  TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node) or
+  TReceiverParameterNode(DataFlowCallable callable)
 
 /**
  * A node representing something that can have a value.
@@ -108,6 +109,26 @@ class Node extends TDataFlowNode {
   /** Holds if this represents the updated state of the value returned by `expr` after it has been mutated by the surrounding assignment or call. */
   predicate isPostUpdate(Expr expr) { this = TExprPostUpdateNode(expr) }
 
+  /**
+   * Holds if this represents the receiver passed to the given callable.
+   *
+   * Note that for non-methods and closures that capture the receiver from the enclosing method,
+   * this node still exists but will typically not flow anywhere.
+   */
+  predicate isReceiverParameter(Callable callable) {
+    this.isReceiverParameterEx(any(DataFlowCallable c | c.asSourceCallable() = callable))
+  }
+
+  /**
+   * Holds if this represents the receiver passed to the given callable.
+   *
+   * Note that for non-methods and closures that capture the receiver from the enclosing method,
+   * this node still exists but will typically not flow anywhere.
+   */
+  predicate isReceiverParameterEx(DataFlowCallable callable) {
+    this = TReceiverParameterNode(callable)
+  }
+
   /** Gets the expression represented by this node. */
   Expr asExpr() { this = TValueNode(result) }
 
@@ -142,6 +163,11 @@ class Node extends TDataFlowNode {
       this = TLocalSsaNode(node) and
       result = node.toString()
     )
+    or
+    exists(DataFlowCallable callable |
+      this.isReceiverParameterEx(callable) and
+      result = "[receiver] " + callable.toString()
+    )
   }
 
   /** Gets the location of this data flow node. */
@@ -151,6 +177,11 @@ class Node extends TDataFlowNode {
     exists(LocalSsaDataFlowOutput::SsaNode node |
       this = TLocalSsaNode(node) and
       result = node.getLocation()
+    )
+    or
+    exists(DataFlowCallable callable |
+      this.isReceiverParameterEx(callable) and
+      result = callable.getLocation()
     )
   }
 
@@ -162,6 +193,8 @@ class Node extends TDataFlowNode {
       this = TLocalSsaNode(node) and
       result = node.getSourceVariable().getDeclaringCallable()
     )
+    or
+    this.isReceiverParameter(result)
   }
 }
 
