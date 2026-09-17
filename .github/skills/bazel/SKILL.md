@@ -6,7 +6,7 @@ description: Conventions for editing Bazel files in the github/codeql repository
 # Bazel in the codeql repository
 
 A bzlmod module named `ql`, repo name `@codeql` ([`MODULE.bazel`](../../../MODULE.bazel)). It builds standalone, and is
-also consumed by an internal module that depends on it; standalone builds replace that module with a stub.
+also consumed by an internal module; standalone builds replace that module with a stub.
 
 ## Traps
 
@@ -24,10 +24,10 @@ Things that will waste your time or produce a wrong edit here. Read this section
 * **Do not stub your way out of a missing internal dependency.** See [Building standalone](#building-standalone) for the
   one narrow case where extending the stub is correct.
 
-## Rules of thumb
+## Conventions
 
-* **Copy a neighbouring target rather than inventing a shape.** Packaging is not uniform: some packages use the
-  `codeql_*` wrappers, others still use `pkg_files` directly. Copy the closest *working* neighbour, and prefer the
+* **Copy a neighboring target rather than inventing a shape.** Packaging is not uniform: some packages use the
+  `codeql_*` wrappers, others still use `pkg_files` directly. Copy the closest *working* neighbor, and prefer the
   wrapper for new code.
 * **Pin anything fetched over the network** with `sha256` or `integrity`. Bazel only *warns* on an unpinned download, so
   nothing fails loudly, but the build stops being reproducible and a retagged upstream release silently changes what you
@@ -79,10 +79,11 @@ the platform string here; use `os.bzl`.
 
 ## Platform selection
 
-`codeql_platform_select` discriminates the platforms CodeQL knows about: `linux64`, `linux_arm64`, `osx64` and `win64`.
-`otherwise` supplies the value for whichever of those you leave unset; it is **not** a `//conditions:default`. **There
-is deliberately no fallback from `linux_arm64` to `linux64`.** If you only care about the OS, use `os_select`, which
-gives Linux the same value on both architectures and has a `posix` shorthand for the shared Linux/macOS value.
+[`codeql_platform_select`](../../../misc/bazel/os.bzl) takes one keyword argument per CodeQL platform: `linux64`,
+`linux_arm64`, `osx64` and `win64`. `otherwise` supplies the value for whichever of those you leave unset; it is **not**
+a `//conditions:default`. **There is deliberately no fallback from `linux_arm64` to `linux64`.** If you only care about
+the OS, use `os_select`, which gives Linux the same value on both architectures and has a `posix` shorthand for the
+shared Linux/macOS value.
 
 In a macro (no `ctx`) it returns a `select()`:
 
@@ -132,7 +133,7 @@ for a minimal complete example and [`pkg.bzl`](../../../misc/bazel/pkg.bzl) for 
   `installer_alias = None` if one package defines several packs.
 * `codeql_pack_group` exists for bundling packs into distribution zips, but nothing in this repo instantiates it.
 
-## Dependencies and `MODULE.bazel`
+## Adding a dependency
 
 In order of preference:
 
@@ -145,7 +146,8 @@ In order of preference:
    keep its checksum field populated.
 
 Vendored Rust crates under [`misc/bazel/3rdparty`](../../../misc/bazel/3rdparty) are generated. Regenerate with
-`update_cargo_deps.sh` rather than editing, and keep the `use_repo` lists in sync (`bazel mod tidy` handles several).
+[`update_cargo_deps.sh`](../../../misc/bazel/3rdparty/update_cargo_deps.sh) rather than editing, and keep the
+`use_repo` lists in sync, which `bazel mod tidy` does for module extensions.
 
 ## Building standalone
 
