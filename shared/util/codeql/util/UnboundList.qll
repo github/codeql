@@ -52,7 +52,35 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   /** Gets the rank of element `e`, which is used internally in the string encoding. */
   int getRank(Element e) { e = DenseRank<DenseRankInput>::denseRank(result) }
 
-  private string encode(Element e) { result = getRank(e).toString() }
+  pragma[nomagic]
+  private string interpretUnicodeCodePoint(int codePoint) {
+    codePoint = [0, getRank(_)] and
+    codePoint.toUnicode() = result and
+    result != "." // used as element separator
+  }
+
+  private int unicodeCodePoints() { result = strictcount(interpretUnicodeCodePoint(_)) }
+
+  private int getUnicodeCodePointPart(Element e, int i) {
+    result = getRank(e) and
+    i = 0
+    or
+    exists(int mid |
+      mid = getUnicodeCodePointPart(e, i - 1) and
+      mid > 0 and
+      result = mid / unicodeCodePoints()
+    )
+  }
+
+  pragma[nomagic]
+  private string encode(Element e) {
+    result =
+      strictconcat(string s, int i |
+        s = interpretUnicodeCodePoint(getUnicodeCodePointPart(e, i) % unicodeCodePoints())
+      |
+        s order by i
+      )
+  }
 
   bindingset[s]
   private Element decode(string s) { encode(result) = s }
@@ -88,7 +116,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       // Same as
       // `result = count(this.indexOf("."))`
       // but performs better because it doesn't use an aggregate
-      result = this.regexpReplaceAll("[0-9]+", "").length()
+      result = this.regexpReplaceAll("[^\\.]+", "").length()
     }
 
     /** Gets the list obtained by appending `suffix` onto this list. */
@@ -123,7 +151,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // `regexpCapture` will then always join in both groups, only to afterwards filter
         // based on the requested group (the group number is not part of the binding set
         // of `regexpCapture`)
-        elem = this.regexpCapture("^([0-9]+)\\..*$", 1) and
+        elem = this.regexpCapture("^([^\\.]+)\\..*$", 1) and
         e = decode(elem) and
         suffix = this.suffix(elem.length() + 1)
       )
@@ -133,7 +161,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     bindingset[this]
     predicate isSnoc(UnboundList prefix, Element e) {
       // same remark as above about not using multiple capture groups
-      prefix = this.regexpCapture("^(|.+\\.)[0-9]+\\.$", 1) and
+      prefix = this.regexpCapture("^(|.+\\.)[^\\.]+\\.$", 1) and
       e = decode(this.substring(prefix.stringLength(), this.stringLength() - 1))
     }
 
@@ -148,7 +176,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     bindingset[this]
     UnboundList getProperPrefix(int i) {
-      exists(string regexp, int occurrenceOffset | regexp = "[0-9]+\\." |
+      exists(string regexp, int occurrenceOffset | regexp = "[^\\.]+\\." |
         exists(this.regexpFind(regexp, i, occurrenceOffset)) and
         result = this.prefix(occurrenceOffset)
       )
