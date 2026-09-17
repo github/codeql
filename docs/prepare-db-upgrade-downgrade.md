@@ -33,15 +33,17 @@ The `description` field is a textual description of the aim of the step. Describ
 operation in its actual direction: for example, a downgrade that removes a newly added
 table should say that it removes the table.
 
-The `compatibility` field takes one of four values:
+The `compatibility` field takes one of four values. In these definitions, the source schema is
+`old.dbscheme`, and the target schema is the other `.dbscheme` in the script directory. Thus,
+the source is the older schema for an upgrade and the newer schema for a downgrade.
 
- * **full**: results from the upgraded snapshot will be identical to results from a snapshot built with the new version of the toolchain.
+ * **full**: query results from the transformed database will be identical to results from a database built with the target version of the toolchain.
 
- * **backwards**: the step is safe and preserves the meaning of the old database, but new features may not work correctly on the upgraded snapshot.
+ * **backwards**: the step is safe and preserves the meaning of the source database, but features provided by the target query and library packs may not work correctly on the transformed database.
 
- * **partial**: the step is safe and preserves the meaning of the old database, but you would get better results if you rebuilt the snapshot with the new version of the toolchain.
+ * **partial**: the step is safe and preserves the meaning of the source database, but rebuilding the database with the target version of the toolchain would produce better results.
 
- * **breaking**: the step is unsafe and will prevent certain queries from working.
+ * **breaking**: the step is unsafe and will prevent certain target queries from working.
 
 Choose compatibility independently for the upgrade and downgrade, because the two directions
 may preserve different amounts of information.
