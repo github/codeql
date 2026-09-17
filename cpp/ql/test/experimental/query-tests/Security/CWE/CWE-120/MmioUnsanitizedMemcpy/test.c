@@ -1,4 +1,4 @@
-/* Semmle test case for MmioUnsanitizedMemcpy.ql
+/* Test case for MmioUnsanitizedMemcpy.ql
  * Allowlisted MMIO/DMA register macros flowing into memcpy/memmove/strncpy size parameters.
  */
 

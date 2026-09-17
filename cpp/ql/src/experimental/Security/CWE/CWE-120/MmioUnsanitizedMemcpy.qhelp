@@ -24,11 +24,5 @@ and reject or clamp out-of-range values before copying.
 <sample src="MmioUnsanitizedMemcpyGood.c" />
 </example>
 <references>
-<li>
-CWE-120: Buffer Copy without Checking Size of Input
-</li>
-<li>
-CWE-787: Out-of-bounds Write
-</li>
 </references>
 </qhelp>
