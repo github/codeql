@@ -139,38 +139,46 @@ You might also choose to test with a real-world database.
 
 #### Creating the scripts manually
 
-To create both directions manually, without using `prepare-db-upgrade.sh`:
+To create both directions manually, without using `prepare-db-upgrade.sh`, run the following
+commands from the repository root. First set `lang` to the language directory and `schema_file`
+to the repository-relative path of its `.dbscheme` file. For example, for Go:
+
+	```sh
+	lang=go
+	schema_file=go/ql/lib/go.dbscheme
+	```
 
 1. Get the hashes of the old `.dbscheme` from `main` and the new `.dbscheme` from
 	your branch. For example:
 
 	```sh
-	old_hash=$(git show main:ql/lib/<mylang>.dbscheme | git hash-object --stdin)
-	new_hash=$(git hash-object ql/lib/<mylang>.dbscheme)
+	old_hash=$(git show "main:$schema_file" | git hash-object --stdin)
+	new_hash=$(git hash-object "$schema_file")
 	```
 
 2. Create the upgrade directory using the old hash and the downgrade directory using the
 	new hash:
 
 	```sh
-	mkdir -p ql/lib/upgrades/$old_hash
-	mkdir -p downgrades/$new_hash
+	upgrade_dir="$lang/ql/lib/upgrades/$old_hash"
+	downgrade_dir="$lang/downgrades/$new_hash"
+	mkdir -p "$upgrade_dir" "$downgrade_dir"
 	```
 
 3. Populate the upgrade directory. Here, `old.dbscheme` is the schema from `main`, and
-	`<mylang>.dbscheme` is the new target schema:
+	the other `.dbscheme` file is the new target schema:
 
 	```sh
-	git show main:ql/lib/<mylang>.dbscheme > ql/lib/upgrades/$old_hash/old.dbscheme
-	cp ql/lib/<mylang>.dbscheme ql/lib/upgrades/$old_hash/<mylang>.dbscheme
+	git show "main:$schema_file" > "$upgrade_dir/old.dbscheme"
+	cp "$schema_file" "$upgrade_dir/$(basename "$schema_file")"
 	```
 
 4. Populate the downgrade directory in the opposite direction. For a downgrade, the new
 	schema is called `old.dbscheme`, because it is the schema before the downgrade step:
 
 	```sh
-	cp ql/lib/<mylang>.dbscheme downgrades/$new_hash/old.dbscheme
-	git show main:ql/lib/<mylang>.dbscheme > downgrades/$new_hash/<mylang>.dbscheme
+	cp "$schema_file" "$downgrade_dir/old.dbscheme"
+	git show "main:$schema_file" > "$downgrade_dir/$(basename "$schema_file")"
 	```
 
 5. Create an `upgrade.properties` file in each directory. The file in the upgrade directory
