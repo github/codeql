@@ -1,42 +1,22 @@
-const Hapi = require("hapi");
+const Hapi = require("@hapi/hapi");
+const {
+  apiEndpoint,
+  registerEndpoints,
+} = require("./wrapped-route-configurator");
+const { getReportCached } = require("./wrapped-route-service");
 
-const endpoints = [];
-
-function endpoint(handler) {
-  endpoints.push({ handler });
-}
-
-function routeConfig(handler) {
-  return {
-    handler: async function (request, h) {
-      return handler(request.query);
-    },
-  };
-}
-
-function createCached(fn) {
-  return async function (...args) {
-    return fn(...args);
-  };
-}
-
-const cached = createCached(function (filter) {
-  sink(filter);
-});
-
-class Routes {
-  get(query) {
-    return cached(query.filter);
+class ReportRoutes {
+  async getReport(params, query) {
+    return getReportCached(query.filter);
   }
 }
 
-endpoint(Routes.prototype.get);
+apiEndpoint("GET", "/reports", ReportRoutes.prototype.getReport);
 
-function register(server, instance) {
-  for (const definition of endpoints) {
-    const wrapped = async (query) => definition.handler.call(instance, query);
-    server.route(routeConfig(wrapped));
-  }
+async function main() {
+  const server = Hapi.server();
+  registerEndpoints(server, new ReportRoutes());
+  return server;
 }
 
-register(new Hapi.Server(), new Routes());
+main();
