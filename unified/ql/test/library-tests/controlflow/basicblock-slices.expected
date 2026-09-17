@@ -311,7 +311,7 @@
 | 380 | cfg.swift:380:1:384:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 380 | cfg.swift:380:18:380:18 | x | 'x -> y -^ Block' |
 | 381 | cfg.swift:381:10:383:3 | Block | 'Block' |
-| 381 | cfg.swift:381:10:383:3 | FunctionExpr | 'FunctionExpr -^ ReturnExpr' |
+| 381 | cfg.swift:381:13:381:22 | VariableDeclaration | 'VariableDeclaration -V z -> x -> y -^ BinaryExpr -> VariableDeclaration -V t -> "literal" -^ FunctionExpr -^ ReturnExpr' |
 | 382 | cfg.swift:382:12:382:12 | z | 'z -^ ReturnExpr' |
 | 386 | cfg.swift:386:1:388:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 386 | cfg.swift:386:23:386:23 | t | 't -^ Block' |

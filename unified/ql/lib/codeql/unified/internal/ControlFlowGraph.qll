@@ -40,6 +40,8 @@ private module Ast implements AstSig<Location> {
     not n instanceof Callable and
     not skipControlFlow(n) and
     not skipControlFlow(result)
+    or
+    n.(FunctionExpr).getCaptureDeclaration(index) = result
   }
 
   Callable getEnclosingCallable(AstNode node) { result = node.getEnclosingCallable() }

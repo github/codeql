@@ -378,7 +378,7 @@ func testOptional(c : OptionalC?) -> Int? {
 }
 
 func testCapture(x : Int, y : Int) -> () -> Int { // $ noCfg
-  return { [z = x + y, t = "literal"] in // $ noCfg
+  return { [z = x + y, t = "literal"] in
     return z
   }
 }
