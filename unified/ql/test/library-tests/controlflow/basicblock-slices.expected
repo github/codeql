@@ -14,8 +14,12 @@
 | 16 | cfg.swift:16:10:16:10 | x | 'x -> 0 -^ BinaryExpr -^ ReturnExpr' |
 | 19 | cfg.swift:19:1:26:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 19 | cfg.swift:19:17:19:17 | x | 'x -^ Block' |
-| 20 | cfg.swift:20:3:22:3 | GuardIfStmt | 'GuardIfStmt -V x -> 0 -^ BinaryExpr -> Block' |
+| 20 | cfg.swift:20:3:22:3 | GuardIfStmt | 'GuardIfStmt -V x -> 0 -^ BinaryExpr' |
+| 20 | cfg.swift:20:21:22:3 | Block | 'Block' |
 | 21 | cfg.swift:21:11:21:17 | MyError | 'MyError -^ MemberAccessExpr -^ ThrowExpr' |
+| 23 | cfg.swift:23:3:25:3 | GuardIfStmt | 'GuardIfStmt -V x -> 0 -^ BinaryExpr' |
+| 23 | cfg.swift:23:21:25:3 | Block | 'Block' |
+| 24 | cfg.swift:24:11:24:17 | MyError | 'MyError -^ MemberAccessExpr -> Argument -V x -> 1 -^ BinaryExpr -^ CallExpr -^ ThrowExpr' |
 | 28 | cfg.swift:28:1:45:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 28 | cfg.swift:28:15:28:15 | x | 'x -^ Block' |
 | 29 | cfg.swift:29:3:43:3 | TryExpr | 'TryExpr -V Block' |
@@ -393,7 +397,8 @@
 | 508 | cfg.swift:508:3:510:3 | IfExpr | 'IfExpr -V ' |
 | 508 | cfg.swift:508:49:510:3 | Block | 'Block' |
 | 509 | cfg.swift:509:5:509:5 | x | 'x -> 1 -^ BinaryExpr' |
-| 512 | cfg.swift:512:3:514:3 | GuardIfStmt | 'GuardIfStmt -V  -> Block' |
+| 512 | cfg.swift:512:3:514:3 | GuardIfStmt | 'GuardIfStmt -V ' |
+| 512 | cfg.swift:512:38:514:3 | Block | 'Block' |
 | 513 | cfg.swift:513:5:513:5 | x | 'x -> 1 -^ BinaryExpr' |
 | 516 | cfg.swift:516:3:519:3 | IfExpr | 'IfExpr -V BinaryExpr -V ' |
 | 517 | cfg.swift:517:7:517:27 |  | '' |

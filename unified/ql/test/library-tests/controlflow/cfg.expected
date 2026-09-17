@@ -4,6 +4,9 @@ bbContinues
 | cfg.swift:525:78:525:78 | Block | 'Block goto Task(+2)' |
 | cfg.swift:526:9:526:20 | continuation | 'continuation goto Block(-1)' |
 bbStep
+| cfg.swift:20:9:20:14 | BinaryExpr | 'BinaryExpr : false -> Block(+0)' |
+| cfg.swift:20:9:20:14 | BinaryExpr | 'BinaryExpr : true -> GuardIfStmt(+3)' |
+| cfg.swift:23:9:23:14 | BinaryExpr | 'BinaryExpr : false -> Block(+0)' |
 | cfg.swift:30:9:30:24 | CallExpr | 'CallExpr : exception -> CatchClause(+5)' |
 | cfg.swift:30:9:30:24 | CallExpr | 'CallExpr : successor -> UnaryExpr(+0)' |
 | cfg.swift:33:5:33:33 | CallExpr | 'CallExpr : successor -> 0(+11)' |
@@ -101,6 +104,9 @@ bbStep
 | cfg.swift:508:6:508:47 |  | ' : false -> GuardIfStmt(+4)' |
 | cfg.swift:508:6:508:47 |  | ' : true -> Block(+0)' |
 | cfg.swift:509:5:509:10 | BinaryExpr | 'BinaryExpr : successor -> GuardIfStmt(+3)' |
+| cfg.swift:512:9:512:31 |  | ' : false -> Block(+0)' |
+| cfg.swift:512:9:512:31 |  | ' : true -> IfExpr(+4)' |
+| cfg.swift:513:5:513:10 | BinaryExpr | 'BinaryExpr : successor -> IfExpr(+3)' |
 | cfg.swift:516:6:516:28 |  | ' : false,false -> x(+5)' |
 | cfg.swift:516:6:516:28 |  | ' : true -> (+1)' |
 | cfg.swift:517:7:517:27 |  | ' : false,false -> x(+4)' |
@@ -126,8 +132,6 @@ bbStep
 | cfg.swift:591:13:591:18 | BinaryExpr | 'BinaryExpr : false -> Block(+1)' |
 | cfg.swift:591:13:591:18 | BinaryExpr | 'BinaryExpr : true -> Block(+0)' |
 noCfg
-| cfg.swift:23:9:23:9 | x |
-| cfg.swift:24:5:24:42 | ThrowExpr |
 | cfg.swift:47:42:47:47 | String |
 | cfg.swift:53:34:53:34 | _ |
 | cfg.swift:60:34:60:34 | _ |

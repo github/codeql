@@ -17,11 +17,11 @@ func isZero(x : Int) -> Bool {
 }
 
 func mightThrow(x : Int) throws -> Void {
-  guard x >= 0 else {
+  guard x >= 0 else { // $ bbStep='BinaryExpr : false -> Block(+0)' bbStep='BinaryExpr : true -> GuardIfStmt(+3)'
     throw MyError.error1
   }
-  guard x <= 0 else { // $ noCfg
-    throw MyError.error3(withParam: x + 1) // $ noCfg
+  guard x <= 0 else { // $ bbStep='BinaryExpr : false -> Block(+0)'
+    throw MyError.error3(withParam: x + 1)
   }
 }
 
@@ -509,8 +509,8 @@ func testAvailable() -> Int { // $ noCfg
     x += 1 // $ bbStep='BinaryExpr : successor -> GuardIfStmt(+3)'
   }
 
-  guard #available(macOS 12, *) else {
-    x += 1
+  guard #available(macOS 12, *) else { // $ bbStep=' : false -> Block(+0)' bbStep=' : true -> IfExpr(+4)'
+    x += 1 // $ bbStep='BinaryExpr : successor -> IfExpr(+3)'
   }
 
   if #available(macOS 12, *), // $ bbStep=' : true -> (+1)' bbStep=' : false,false -> x(+5)'

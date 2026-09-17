@@ -75,14 +75,12 @@ private module Ast implements AstSig<Location> {
     Expr getExpr() { none() }
   }
 
-  class IfStmt extends Stmt {
-    IfStmt() { none() }
-
-    Expr getCondition() { none() }
+  class IfStmt extends Stmt instanceof U::GuardIfStmt {
+    Expr getCondition() { result = super.getCondition() }
 
     Stmt getThen() { none() }
 
-    Stmt getElse() { none() }
+    Stmt getElse() { result = super.getElse() }
   }
 
   abstract class LoopStmt extends Stmt {
