@@ -206,9 +206,9 @@ func m2(b : Bool) -> Int {
 
 func m3(x : inout Int) -> Int {
   if x < 0 { // $ bbStep='BinaryExpr : true -> Block(+0)' bbStep='BinaryExpr : false -> x(+6)'
-    x = -x // $ nonSimple='x -> x -? - -^ UnaryExpr -^ AssignExpr'
+    x = -x // $ nonSimple='x -> = -> x -? - -^ UnaryExpr -^ BinaryExpr'
     if x > 10 { // $ bbStep='BinaryExpr : true -> Block(+0)' bbStep='BinaryExpr : false -> x(+4)'
-      x = x - 1 // $ bbStep='AssignExpr : successor -> x(+3)'
+      x = x - 1 // $ bbStep='BinaryExpr : successor -> x(+3)'
     }
   }
   return x
@@ -312,7 +312,7 @@ func testSubscriptExpr() -> (Int, Int, Int, Int, Int) { // $ noCfg
 func loop1(x : inout Int) {
   while x >= 0 { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='BinaryExpr : true -> Block(+0)'
     print(x)
-    x -= 1 // $ bbStep='CompoundAssignExpr : successor -> x(-2)'
+    x -= 1 // $ bbStep='BinaryExpr : successor -> x(-2)'
   }
 }
 
@@ -358,7 +358,7 @@ func testRepeat(x : inout Int) {
 func loop_with_identity_expr() { // $ noCfg
   var x = 0
   while(x < 10) { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='BinaryExpr : true -> Block(+0)'
-    x += 1 // $ bbStep='CompoundAssignExpr : successor -> x(-1)'
+    x += 1 // $ bbStep='BinaryExpr : successor -> x(-1)'
   }
 }
 
@@ -498,15 +498,15 @@ func testAvailable() -> Int { // $ noCfg
   var x = 0;
 
   if #available(macOS 10, *) { // $ bbStep=' : false -> IfExpr(+4)' bbStep=' : true -> Block(+0)'
-    x += 1 // $ bbStep='CompoundAssignExpr : successor -> IfExpr(+3)'
+    x += 1 // $ bbStep='BinaryExpr : successor -> IfExpr(+3)'
   }
 
   if #available(macOS 10.13, *) { // $ bbStep=' : false -> IfExpr(+4)' bbStep=' : true -> Block(+0)'
-    x += 1 // $ bbStep='CompoundAssignExpr : successor -> IfExpr(+3)'
+    x += 1 // $ bbStep='BinaryExpr : successor -> IfExpr(+3)'
   }
 
   if #unavailable(iOS 10, watchOS 10, macOS 10) { // $ bbStep=' : false -> GuardIfStmt(+4)' bbStep=' : true -> Block(+0)'
-    x += 1 // $ bbStep='CompoundAssignExpr : successor -> GuardIfStmt(+3)'
+    x += 1 // $ bbStep='BinaryExpr : successor -> GuardIfStmt(+3)'
   }
 
   guard #available(macOS 12, *) else {
@@ -515,7 +515,7 @@ func testAvailable() -> Int { // $ noCfg
 
   if #available(macOS 12, *), // $ bbStep=' : true -> (+1)' bbStep=' : false,false -> x(+5)'
       #available(iOS 12, *) { // $ bbStep=' : false,false -> x(+4)' bbStep=' : true -> Block(+0)'
-    x += 1 // $ bbStep='CompoundAssignExpr : successor -> x(+3)'
+    x += 1 // $ bbStep='BinaryExpr : successor -> x(+3)'
   }
 
   return x

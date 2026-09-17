@@ -40,7 +40,7 @@ bbStep
 | cfg.swift:208:6:208:10 | BinaryExpr | 'BinaryExpr : true -> Block(+0)' |
 | cfg.swift:210:8:210:13 | BinaryExpr | 'BinaryExpr : false -> x(+4)' |
 | cfg.swift:210:8:210:13 | BinaryExpr | 'BinaryExpr : true -> Block(+0)' |
-| cfg.swift:211:7:211:15 | AssignExpr | 'AssignExpr : successor -> x(+3)' |
+| cfg.swift:211:7:211:15 | BinaryExpr | 'BinaryExpr : successor -> x(+3)' |
 | cfg.swift:218:11:218:12 | b1 | 'b1 : false -> b3(+2)' |
 | cfg.swift:218:11:218:12 | b1 | 'b1 : true -> b2(+1)' |
 | cfg.swift:219:13:219:14 | b2 | 'b2 : false,false -> "!b2 \|\| !b3"(+3)' |
@@ -63,7 +63,7 @@ bbStep
 | cfg.swift:251:13:251:14 | b2 | 'b2 : true,true -> Block(+0)' |
 | cfg.swift:313:3:313:3 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
 | cfg.swift:313:9:313:14 | BinaryExpr | 'BinaryExpr : true -> Block(+0)' |
-| cfg.swift:315:5:315:10 | CompoundAssignExpr | 'CompoundAssignExpr : successor -> x(-2)' |
+| cfg.swift:315:5:315:10 | BinaryExpr | 'BinaryExpr : successor -> x(-2)' |
 | cfg.swift:320:3:320:3 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
 | cfg.swift:320:9:320:14 | BinaryExpr | 'BinaryExpr : false -> print(+11)' |
 | cfg.swift:320:9:320:14 | BinaryExpr | 'BinaryExpr : true -> Block(+0)' |
@@ -90,22 +90,22 @@ bbStep
 | cfg.swift:355:11:355:16 | BinaryExpr | 'BinaryExpr : true -> Block(-3)' |
 | cfg.swift:360:3:360:3 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
 | cfg.swift:360:9:360:14 | BinaryExpr | 'BinaryExpr : true -> Block(+0)' |
-| cfg.swift:361:5:361:10 | CompoundAssignExpr | 'CompoundAssignExpr : successor -> x(-1)' |
+| cfg.swift:361:5:361:10 | BinaryExpr | 'BinaryExpr : successor -> x(-1)' |
 | cfg.swift:398:9:398:24 | CallExpr | 'CallExpr : successor -> try(+0)' |
 | cfg.swift:500:6:500:28 |  | ' : false -> IfExpr(+4)' |
 | cfg.swift:500:6:500:28 |  | ' : true -> Block(+0)' |
-| cfg.swift:501:5:501:10 | CompoundAssignExpr | 'CompoundAssignExpr : successor -> IfExpr(+3)' |
+| cfg.swift:501:5:501:10 | BinaryExpr | 'BinaryExpr : successor -> IfExpr(+3)' |
 | cfg.swift:504:6:504:31 |  | ' : false -> IfExpr(+4)' |
 | cfg.swift:504:6:504:31 |  | ' : true -> Block(+0)' |
-| cfg.swift:505:5:505:10 | CompoundAssignExpr | 'CompoundAssignExpr : successor -> IfExpr(+3)' |
+| cfg.swift:505:5:505:10 | BinaryExpr | 'BinaryExpr : successor -> IfExpr(+3)' |
 | cfg.swift:508:6:508:47 |  | ' : false -> GuardIfStmt(+4)' |
 | cfg.swift:508:6:508:47 |  | ' : true -> Block(+0)' |
-| cfg.swift:509:5:509:10 | CompoundAssignExpr | 'CompoundAssignExpr : successor -> GuardIfStmt(+3)' |
+| cfg.swift:509:5:509:10 | BinaryExpr | 'BinaryExpr : successor -> GuardIfStmt(+3)' |
 | cfg.swift:516:6:516:28 |  | ' : false,false -> x(+5)' |
 | cfg.swift:516:6:516:28 |  | ' : true -> (+1)' |
 | cfg.swift:517:7:517:27 |  | ' : false,false -> x(+4)' |
 | cfg.swift:517:7:517:27 |  | ' : true -> Block(+0)' |
-| cfg.swift:518:5:518:10 | CompoundAssignExpr | 'CompoundAssignExpr : successor -> x(+3)' |
+| cfg.swift:518:5:518:10 | BinaryExpr | 'BinaryExpr : successor -> x(+3)' |
 | cfg.swift:528:26:528:32 | BinaryExpr | 'BinaryExpr : empty -> continuation(+3)' |
 | cfg.swift:528:26:528:32 | BinaryExpr | 'BinaryExpr : non-empty -> i(+0)' |
 | cfg.swift:529:21:529:41 | CallExpr | 'CallExpr : successor -> continuation(+2)' |
@@ -158,7 +158,7 @@ noCfg
 nonSimple
 | cfg.swift:10:1:10:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyError -^ BaseType -V Error' |
 | cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ MemberAccessExpr -> isZero -> Argument -V x -^ CallExpr -? MyError -^ MemberAccessExpr -^ ConditionalPattern -^ OrPattern' |
-| cfg.swift:209:5:209:5 | x | 'x -> x -? - -^ UnaryExpr -^ AssignExpr' |
+| cfg.swift:209:5:209:5 | x | 'x -> = -> x -? - -^ UnaryExpr -^ BinaryExpr' |
 | cfg.swift:390:1:390:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Derived -^ BaseType -V C' |
 | cfg.swift:527:13:527:16 | Task | 'Task -^ MemberAccessExpr -^ Argument -V FunctionExpr -^ CallExpr' |
 | cfg.swift:569:1:569:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyProcotolImpl -^ BaseType -V MyProtocol' |
