@@ -48,9 +48,11 @@ Bazel's own macro / rule / repository-rule distinction applies as usual. What is
 | a wrapper used across languages | `misc/bazel/` |
 
 Prefer inline rules in `BUILD.bazel`. A `.bzl` file earns its `load()` only when the shape repeats across packages or a
-value must be computed: [`rust.bzl`](../../../misc/bazel/rust.bzl) is worth it because every Rust binary in the repo
-must get the same universal-binary wrapper and symbols test, and forgetting either is a release bug. The `_gen_binaries`
-list in [`go/BUILD.bazel`](../../../go/BUILD.bazel) is not — it is shared by two targets in one file, so a local
+value must be computed: [`rust.bzl`](../../../misc/bazel/rust.bzl) is worth it because every Rust binary that ships in a
+pack must get the same universal-binary wrapper and symbols test, and forgetting either is a release bug. A local
+debugging aid opts out and declares a plain `rust_binary` — see `swift-syntax-parse` in
+[`unified/swift-syntax-rs/BUILD.bazel`](../../../unified/swift-syntax-rs/BUILD.bazel). The `_gen_binaries` list in
+[`go/BUILD.bazel`](../../../go/BUILD.bazel) does not earn a `.bzl` — it is shared by two targets in one file, so a local
 variable does the job.
 
 Macros here are typically a thin public wrapper around a private rule (`codeql_csharp_binary`, `swift_cc_binary`). Keep
