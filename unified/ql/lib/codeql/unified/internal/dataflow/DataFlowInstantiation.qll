@@ -43,21 +43,17 @@ module DataFlowInput implements InputSig<Location> {
   class ReturnKind = Unit;
 
   import ParameterPositions
-
   //
   // Calls and callables
   //
-  class DataFlowCall extends Void {
-    Location getLocation() { none() } // TODO
-
-    DataFlowCallable getEnclosingCallable() { none() } // TODO
-  }
-
-  class DataFlowCallable = Callable; // TODO: Use newtype
+  import DataFlowCall
+  import DataFlowCallable
 
   DataFlowCallable viableCallable(DataFlowCall c) { none() } // TODO
 
-  DataFlowCallable nodeGetEnclosingCallable(Node node) { result = node.getEnclosingCallable() }
+  DataFlowCallable nodeGetEnclosingCallable(Node node) {
+    result.asSourceCallable() = node.getEnclosingCallable()
+  }
 
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
     none() // TODO
