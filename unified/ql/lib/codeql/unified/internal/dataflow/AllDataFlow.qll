@@ -1,5 +1,6 @@
 /** Re-exports all the files in the internal dataflow folder (except DataFlowPublic). */
 
+import CallGraph
 import Content
 import DataFlowCall
 import DataFlowCallable

@@ -40,8 +40,7 @@ module DataFlowInput implements InputSig<Location> {
   //
   import DataFlowCall
   import DataFlowCallable
-
-  DataFlowCallable viableCallable(DataFlowCall c) { none() } // TODO
+  import CallGraph
 
   DataFlowCallable nodeGetEnclosingCallable(Node node) {
     result.asSourceCallable() = node.getEnclosingCallable()
