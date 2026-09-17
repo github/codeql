@@ -10,6 +10,7 @@ overlay[local?]
 module;
 
 private import Location
+private import Strings
 
 /** Provides the input to `Make`. */
 signature module InputSig<LocationSig Location> {
@@ -53,22 +54,25 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   int getRank(Element e) { e = DenseRank<DenseRankInput>::denseRank(result) }
 
   pragma[nomagic]
-  private string interpretUnicodeCodePoint(int codePoint) {
-    codePoint = [0, getRank(_)] and
-    codePoint.toUnicode() = result and
-    result != "." // used as element separator
+  private string interpretAsciiCode(int code) {
+    exists(int dot, int c |
+      c = code + 1 and
+      // `.` is used as element separator, so cannot be used to encode elements
+      dot = asciiPrintable(".") and
+      if c < dot then c = asciiPrintable(result) else c + 1 = asciiPrintable(result)
+    )
   }
 
-  private int unicodeCodePoints() { result = strictcount(interpretUnicodeCodePoint(_)) }
+  private int asciiCodes() { result = strictcount(interpretAsciiCode(_)) }
 
-  private int getUnicodeCodePointPart(Element e, int i) {
+  private int getAsciiCodePart(Element e, int i) {
     result = getRank(e) and
     i = 0
     or
     exists(int mid |
-      mid = getUnicodeCodePointPart(e, i - 1) and
+      mid = getAsciiCodePart(e, i - 1) and
       mid > 0 and
-      result = mid / unicodeCodePoints()
+      result = mid / asciiCodes()
     )
   }
 
@@ -76,7 +80,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   private string encode(Element e) {
     result =
       strictconcat(string s, int i |
-        s = interpretUnicodeCodePoint(getUnicodeCodePointPart(e, i) % unicodeCodePoints())
+        s = interpretAsciiCode(getAsciiCodePart(e, i) % asciiCodes())
       |
         s order by i
       )
