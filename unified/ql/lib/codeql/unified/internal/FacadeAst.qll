@@ -172,8 +172,12 @@ module Unified {
   }
 
   class Parameter extends G::Parameter {
-    /** Gets the external name of this parameter. */
-    string getExternalName() { result = this.getExternalNameNode().getValue() }
+    /**
+     * Gets the external name of this parameter.
+     *
+     * Has no result for pseudo-names like `_` that indicate that this is actually a positional parameter.
+     */
+    string getExternalName() { result = this.getExternalNameNode().getValue() and not result = "_" }
   }
 
   class TypeAliasDeclaration extends G::TypeAliasDeclaration {

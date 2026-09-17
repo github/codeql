@@ -42,21 +42,7 @@ module DataFlowInput implements InputSig<Location> {
 
   class ReturnKind = Unit;
 
-  class ParameterPosition extends Void {
-    ParameterPosition() { none() } // TODO
-
-    bindingset[this]
-    string toString() { none() } // TODO
-  }
-
-  class ArgumentPosition extends Void {
-    ArgumentPosition() { none() } // TODO
-
-    bindingset[this]
-    string toString() { none() } // TODO
-  }
-
-  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { none() } // TODO
+  import ParameterPositions
 
   //
   // Calls and callables
