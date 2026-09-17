@@ -162,8 +162,6 @@ doc_comments(unique int node: @documentable ref, int comment: @comment_group ref
 #keyset[parent, idx]
 exprs(unique int id: @expr, int kind: int ref, int parent: @exprparent ref, int idx: int ref);
 
-isParenthesized(unique int id: @expr ref, int parentheses: int ref);
-
 literals(unique int expr: @expr ref, string value: string ref, string raw: string ref);
 
 constvalues(unique int expr: @expr ref, string value: string ref, string exact: string ref);
@@ -563,3 +561,4 @@ case @error.kind of
 | 1 = @listerror
 | 2 = @parseerror
 | 3 = @typeerror;
+

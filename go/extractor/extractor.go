@@ -1026,12 +1026,22 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int, ski
 	}
 
 	// Skip parenthesised expressions and extract their child directly in their place
-	if paren, ok := expr.(*ast.ParenExpr); ok {
-		extractExpr(tw, paren.X, parent, idx, skipExtractingValue)
-		return
+	nParens := 0
+	for {
+		paren, ok := expr.(*ast.ParenExpr)
+		if !ok {
+			break
+		}
+		nParens++
+		expr = paren.X
 	}
 
 	lbl := tw.Labeler.LocalID(expr)
+
+	if nParens > 0 {
+		dbscheme.IsParenthesizedTable.Emit(tw, lbl, nParens)
+	}
+
 	extractTypeOf(tw, expr, lbl)
 
 	var kind int
