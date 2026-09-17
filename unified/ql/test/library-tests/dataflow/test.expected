@@ -119,6 +119,27 @@ edges
 | test.swift:137:10:137:24 | CallExpr | test.swift:137:5:137:5 | [incoming] a | provenance |  |
 | test.swift:143:5:143:5 | [incoming] a | test.swift:144:10:144:10 | a | provenance |  |
 | test.swift:143:20:143:34 | CallExpr | test.swift:143:5:143:5 | [incoming] a | provenance |  |
+| test.swift:149:5:149:5 | [post] a [0] | test.swift:150:10:150:10 | a [0] | provenance |  |
+| test.swift:149:5:149:7 | MemberAccessExpr | test.swift:149:5:149:5 | [post] a [0] | provenance |  |
+| test.swift:149:23:149:37 | CallExpr | test.swift:149:5:149:7 | MemberAccessExpr | provenance |  |
+| test.swift:150:10:150:10 | a [0] | test.swift:150:10:150:12 | MemberAccessExpr | provenance |  |
+| test.swift:156:5:156:12 | TupleExpr [0] | test.swift:156:6:156:8 | MemberAccessExpr | provenance |  |
+| test.swift:156:6:156:6 | [post] a [0] | test.swift:157:10:157:10 | a [0] | provenance |  |
+| test.swift:156:6:156:8 | MemberAccessExpr | test.swift:156:6:156:6 | [post] a [0] | provenance |  |
+| test.swift:156:16:156:61 | TupleExpr [0] | test.swift:156:5:156:12 | TupleExpr [0] | provenance |  |
+| test.swift:156:17:156:43 | BinaryExpr | test.swift:156:16:156:61 | TupleExpr [0] | provenance |  |
+| test.swift:156:29:156:43 | CallExpr | test.swift:156:17:156:43 | BinaryExpr | provenance |  |
+| test.swift:157:10:157:10 | a [0] | test.swift:157:10:157:12 | MemberAccessExpr | provenance |  |
+| test.swift:164:5:164:10 | TupleExpr [0] | test.swift:164:6:164:6 | a | provenance |  |
+| test.swift:164:5:164:10 | TupleExpr [1] | test.swift:164:9:164:9 | b | provenance |  |
+| test.swift:164:6:164:6 | a | test.swift:165:10:165:10 | a | provenance |  |
+| test.swift:164:9:164:9 | b | test.swift:166:10:166:10 | b | provenance |  |
+| test.swift:164:14:164:67 | TupleExpr [0] | test.swift:164:5:164:10 | TupleExpr [0] | provenance |  |
+| test.swift:164:14:164:67 | TupleExpr [1] | test.swift:164:5:164:10 | TupleExpr [1] | provenance |  |
+| test.swift:164:15:164:39 | BinaryExpr | test.swift:164:14:164:67 | TupleExpr [0] | provenance |  |
+| test.swift:164:25:164:39 | CallExpr | test.swift:164:15:164:39 | BinaryExpr | provenance |  |
+| test.swift:164:42:164:66 | BinaryExpr | test.swift:164:14:164:67 | TupleExpr [1] | provenance |  |
+| test.swift:164:52:164:66 | CallExpr | test.swift:164:42:164:66 | BinaryExpr | provenance |  |
 nodes
 | implicit-self.swift:11:9:11:12 | [post] self [x] | semmle.label | [post] self [x] |
 | implicit-self.swift:11:9:11:14 | MemberAccessExpr | semmle.label | MemberAccessExpr |
@@ -275,6 +296,31 @@ nodes
 | test.swift:143:5:143:5 | [incoming] a | semmle.label | [incoming] a |
 | test.swift:143:20:143:34 | CallExpr | semmle.label | CallExpr |
 | test.swift:144:10:144:10 | a | semmle.label | a |
+| test.swift:149:5:149:5 | [post] a [0] | semmle.label | [post] a [0] |
+| test.swift:149:5:149:7 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| test.swift:149:23:149:37 | CallExpr | semmle.label | CallExpr |
+| test.swift:150:10:150:10 | a [0] | semmle.label | a [0] |
+| test.swift:150:10:150:12 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| test.swift:156:5:156:12 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:156:6:156:6 | [post] a [0] | semmle.label | [post] a [0] |
+| test.swift:156:6:156:8 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| test.swift:156:16:156:61 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:156:17:156:43 | BinaryExpr | semmle.label | BinaryExpr |
+| test.swift:156:29:156:43 | CallExpr | semmle.label | CallExpr |
+| test.swift:157:10:157:10 | a [0] | semmle.label | a [0] |
+| test.swift:157:10:157:12 | MemberAccessExpr | semmle.label | MemberAccessExpr |
+| test.swift:164:5:164:10 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:164:5:164:10 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:164:6:164:6 | a | semmle.label | a |
+| test.swift:164:9:164:9 | b | semmle.label | b |
+| test.swift:164:14:164:67 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:164:14:164:67 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:164:15:164:39 | BinaryExpr | semmle.label | BinaryExpr |
+| test.swift:164:25:164:39 | CallExpr | semmle.label | CallExpr |
+| test.swift:164:42:164:66 | BinaryExpr | semmle.label | BinaryExpr |
+| test.swift:164:52:164:66 | CallExpr | semmle.label | CallExpr |
+| test.swift:165:10:165:10 | a | semmle.label | a |
+| test.swift:166:10:166:10 | b | semmle.label | b |
 subpaths
 testFailures
 #select
@@ -320,3 +366,7 @@ testFailures
 | test.swift:132:10:132:10 | a | test.swift:131:19:131:33 | CallExpr | test.swift:132:10:132:10 | a | $@ | test.swift:131:19:131:33 | CallExpr | CallExpr |
 | test.swift:138:10:138:10 | a | test.swift:137:10:137:24 | CallExpr | test.swift:138:10:138:10 | a | $@ | test.swift:137:10:137:24 | CallExpr | CallExpr |
 | test.swift:144:10:144:10 | a | test.swift:143:20:143:34 | CallExpr | test.swift:144:10:144:10 | a | $@ | test.swift:143:20:143:34 | CallExpr | CallExpr |
+| test.swift:150:10:150:12 | MemberAccessExpr | test.swift:149:23:149:37 | CallExpr | test.swift:150:10:150:12 | MemberAccessExpr | $@ | test.swift:149:23:149:37 | CallExpr | CallExpr |
+| test.swift:157:10:157:12 | MemberAccessExpr | test.swift:156:29:156:43 | CallExpr | test.swift:157:10:157:12 | MemberAccessExpr | $@ | test.swift:156:29:156:43 | CallExpr | CallExpr |
+| test.swift:165:10:165:10 | a | test.swift:164:25:164:39 | CallExpr | test.swift:165:10:165:10 | a | $@ | test.swift:164:25:164:39 | CallExpr | CallExpr |
+| test.swift:166:10:166:10 | b | test.swift:164:52:164:66 | CallExpr | test.swift:166:10:166:10 | b | $@ | test.swift:164:52:164:66 | CallExpr | CallExpr |

@@ -143,3 +143,25 @@ func t16() {
     a += sink(a) + source("t16.1");
     sink(a); // $ hasTaintFlow=t16.1
 }
+
+func t17() {
+    var a = ("safe", "safe");
+    a.0 = sink(a.0) + source("t17.1");
+    sink(a.0); // $ hasTaintFlow=t17.1
+    sink(a.1); // no flow
+}
+
+func t18() {
+    var a = ("safe", "safe");
+    (a.0, _) = (sink(a.0) + source("t18.1"), source("t18.2"));
+    sink(a.0); // $ hasTaintFlow=t18.1
+    sink(a.1); // no flow
+}
+
+func t19() {
+    var a = "safe";
+    var b = "safe";
+    (a, b) = (sink(a) + source("t19.1"), sink(b) + source("t19.2"));
+    sink(a); // $ hasTaintFlow=t19.1
+    sink(b); // $ hasTaintFlow=t19.2
+}
