@@ -1,6 +1,7 @@
 private import unified
 private import AllDataFlow
 private import codeql.unified.internal.ExprPositions
+private import codeql.unified.internal.LocalNameBinding
 
 private predicate hasIncomingValueAtCfgNode(Expr expr, ControlFlowNode cfgNode) {
   exists(AstNode declOrAssignment | hasIncomingValue(expr, declOrAssignment) |
@@ -56,6 +57,13 @@ predicate performsVariableAccess(
     or
     (hasIncomingValueAtCfgNode(access, cfgNode) or hasPostUpdate(access, cfgNode)) and
     kind.isPostUpdate()
+  )
+  or
+  exists(Callable callable |
+    repr = callable and
+    var = getImplicitReceiverVariable(callable) and
+    kind.isWrite() and
+    cfgNode.(ControlFlow::EntryNode).getEnclosingCallable() = callable
   )
 }
 
