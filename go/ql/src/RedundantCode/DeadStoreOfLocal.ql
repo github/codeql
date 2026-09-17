@@ -37,8 +37,11 @@ where
   def.getBasicBlock() instanceof ReachableBasicBlock and
   // exclude assignments with default values or simple expressions
   not isSimple(rhs) and
-  // exclude variables that are not used at all
-  exists(target.getAReference()) and
+  // exclude variables that are not used in reachable code
+  exists(IR::Instruction ref |
+    ref != def and
+    (ref.reads(target) or ref.writes(target, _))
+  ) and
   // exclude variables with indirect references
   not target.mayHaveIndirectReferences() and
   // Report the assigned variable rather than the whole write instruction. A write to an
