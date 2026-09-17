@@ -18,6 +18,40 @@ mod visitor;
 pub use range::{Point, Range};
 pub use yeast_macros::{query, rule, rules, tree, trees};
 
+/// Build a single AST node whose root uses another node's source range.
+///
+/// Nested nodes in the template are built normally and derive their locations
+/// from their own children.
+#[macro_export]
+macro_rules! tree_at {
+    ($ctx:ident, $source:expr, ($($tree:tt)*)) => {{
+        let __yeast_source: $crate::Id = $source;
+        let __yeast_source_range = $ctx
+            .ast
+            .get_node(__yeast_source)
+            .and_then(|node| node.source_range());
+        let __yeast_node: $crate::Id = $crate::tree!($ctx, ($($tree)*));
+        $ctx.set_node_source_range(__yeast_node, __yeast_source_range)
+    }};
+}
+
+/// Build a single AST node whose root spans a collection of nodes.
+///
+/// Nested nodes in the template are built normally and derive their locations
+/// from their own children.
+#[macro_export]
+macro_rules! tree_spanning {
+    ($ctx:ident, $sources:expr, ($($tree:tt)*)) => {{
+        let __yeast_source_range = ::std::iter::IntoIterator::into_iter($sources)
+            .filter_map(|source: $crate::Id| {
+                $ctx.ast.get_node(source).and_then(|node| node.source_range())
+            })
+            .reduce($crate::Range::union);
+        let __yeast_node: $crate::Id = $crate::tree!($ctx, ($($tree)*));
+        $ctx.set_node_source_range(__yeast_node, __yeast_source_range)
+    }};
+}
+
 use captures::Captures;
 use query::QueryNode;
 
@@ -631,6 +665,18 @@ impl Ast {
             Some(existing) => existing.union(source_range),
             None => source_range,
         });
+    }
+
+    /// Replace a synthetic node's source range.
+    pub(crate) fn set_source_range(&mut self, id: Id, source_range: Range) {
+        let node = self
+            .nodes
+            .get_mut(id.0)
+            .unwrap_or_else(|| panic!("set_source_range: invalid node id {}", id.0));
+        if matches!(node.content, NodeContent::Range(_)) {
+            panic!("set_source_range: cannot modify a parsed node");
+        }
+        node.source_range = Some(source_range);
     }
 
     /// Register a named node kind, returning its id (idempotent). Lets callers

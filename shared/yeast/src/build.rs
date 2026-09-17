@@ -157,6 +157,16 @@ impl<'a, C> BuildCtx<'a, C> {
         results
     }
 
+    /// Assign an explicit source range to a newly-built result root.
+    #[doc(hidden)]
+    pub fn set_node_source_range(&mut self, node: Id, source_range: Option<Range>) -> Id {
+        if let Some(source_range) = source_range {
+            self.ast.set_source_range(node, source_range);
+            self.created_nodes.remove(&node);
+        }
+        node
+    }
+
     /// Look up a capture variable, returning its node Id.
     pub fn capture(&self, name: &str) -> Id {
         self.captures
@@ -178,6 +188,18 @@ impl<'a, C> BuildCtx<'a, C> {
     /// inherited source range).
     pub fn source_text(&self, id: Id) -> String {
         self.ast.source_text(id)
+    }
+
+    /// Return the source range of a parsed or synthetic node.
+    fn source_range_of(&self, id: Id) -> Option<Range> {
+        self.ast.get_node(id).and_then(|node| node.source_range())
+    }
+
+    /// Return an empty range between two non-overlapping nodes.
+    pub fn empty_source_range_between(&self, left: Id, right: Id) -> Option<Range> {
+        let left = self.source_range_of(left)?;
+        let right = self.source_range_of(right)?;
+        (left.end_byte <= right.start_byte).then(|| left.empty_at_end())
     }
 
     /// Create a named AST node with the given kind and fields.
@@ -215,6 +237,12 @@ impl<'a, C> BuildCtx<'a, C> {
         source_range: Option<Range>,
     ) -> Id {
         self.create_named_token_with_range(kind, value.to_string(), source_range)
+    }
+
+    /// Create a literal with an empty range at another node's start.
+    pub fn literal_at_start_of(&mut self, kind: &'static str, value: &str, source: Id) -> Id {
+        let source_range = self.source_range_of(source).map(Range::empty_at_start);
+        self.literal_with_source_range(kind, value, source_range)
     }
 
     /// Create a leaf node with an auto-generated unique name.

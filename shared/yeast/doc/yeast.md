@@ -256,6 +256,22 @@ elided keywords or delimiters without assigning the same broad range to every
 synthetic descendant. A transform that simply returns a translated capture
 does not widen that capture to the wrapper's range.
 
+When the desired range belongs to another node, `tree_at!` assigns that range
+to the template's root. Nested nodes still derive their own locations normally:
+
+```rust
+let synthetic = tree_at!(ctx, source, (synthetic_node child: (nested value: {child})));
+```
+
+`tree_spanning!` similarly assigns the union of several node ranges:
+
+```rust
+let synthetic = tree_spanning!(ctx, nodes, (synthetic_node child: {child}));
+```
+
+For literals, `ctx.literal_at_start_of(...)` creates an empty range at another
+node's start.
+
 For reviewing locations, `DumpOptions::show_abridged_source` prints each node's
 source range with every direct child replaced by its field name in Unicode
 angle brackets. This keeps delimiters and other parent-owned syntax visible
