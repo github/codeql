@@ -1,5 +1,6 @@
 /**
  * @kind test-postprocess
+ * @tags inline-expectation-test
  */
 
 private import ruby
@@ -17,5 +18,13 @@ private module Input implements T::TestPostProcessing::InputSig<Impl> {
       result =
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // Ruby databases can also contain ERB, whose comment syntax is not yet supported, so we
+    // only render for plain Ruby sources.
+    relativePath.matches("%.rb") and
+    result = "#"
   }
 }
