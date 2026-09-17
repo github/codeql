@@ -33,6 +33,8 @@ module Generated {
   class CallExpr extends Synth::TCallExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "CallExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the argument list of this call expression, if it exists.
      */

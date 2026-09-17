@@ -33,6 +33,8 @@ module Generated {
   class Module extends Synth::TModule, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "Module" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this module (0-based).
      */

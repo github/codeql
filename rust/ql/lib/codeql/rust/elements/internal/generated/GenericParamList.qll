@@ -28,6 +28,8 @@ module Generated {
   class GenericParamList extends Synth::TGenericParamList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "GenericParamList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th generic parameter of this generic parameter list (0-based).
      */

@@ -33,6 +33,8 @@ module Generated {
   class ForBinder extends Synth::TForBinder, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "ForBinder" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the generic parameter list of this for binder, if it exists.
      */

@@ -28,6 +28,8 @@ module Generated {
   class ParenTypeRepr extends Synth::TParenTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "ParenTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the type representation of this paren type representation, if it exists.
      */

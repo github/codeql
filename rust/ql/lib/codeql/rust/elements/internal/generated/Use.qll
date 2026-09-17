@@ -27,6 +27,8 @@ module Generated {
   class Use extends Synth::TUse, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "Use" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this use (0-based).
      */

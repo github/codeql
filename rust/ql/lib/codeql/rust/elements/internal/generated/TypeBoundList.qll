@@ -28,6 +28,8 @@ module Generated {
   class TypeBoundList extends Synth::TTypeBoundList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "TypeBoundList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th bound of this type bound list (0-based).
      */

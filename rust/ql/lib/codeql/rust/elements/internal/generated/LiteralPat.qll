@@ -28,6 +28,8 @@ module Generated {
   class LiteralPat extends Synth::TLiteralPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "LiteralPat" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the literal of this literal pattern, if it exists.
      */

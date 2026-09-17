@@ -36,6 +36,8 @@ module Generated {
   class LetStmt extends Synth::TLetStmt, StmtImpl::Stmt {
     override string getAPrimaryQlClass() { result = "LetStmt" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this let statement (0-based).
      */

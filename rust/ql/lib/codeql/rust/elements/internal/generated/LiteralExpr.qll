@@ -32,6 +32,8 @@ module Generated {
   class LiteralExpr extends Synth::TLiteralExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "LiteralExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this literal expression (0-based).
      */

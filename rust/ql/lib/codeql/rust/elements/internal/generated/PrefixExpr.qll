@@ -28,6 +28,8 @@ module Generated {
   class PrefixExpr extends Synth::TPrefixExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "PrefixExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this prefix expression (0-based).
      */

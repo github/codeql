@@ -27,6 +27,8 @@ module Generated {
   class Param extends Synth::TParam, ParamBaseImpl::ParamBase {
     override string getAPrimaryQlClass() { result = "Param" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the pattern of this parameter, if it exists.
      */

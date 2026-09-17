@@ -34,6 +34,8 @@ module Generated {
   class MethodCallExpr extends Synth::TMethodCallExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "MethodCallExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the argument list of this method call expression, if it exists.
      */

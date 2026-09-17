@@ -29,6 +29,8 @@ module Generated {
   class LetExpr extends Synth::TLetExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "LetExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this let expression (0-based).
      */

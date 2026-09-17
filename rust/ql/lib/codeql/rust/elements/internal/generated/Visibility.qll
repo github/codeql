@@ -28,6 +28,8 @@ module Generated {
   class Visibility extends Synth::TVisibility, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "Visibility" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the visibility inner of this visibility, if it exists.
      */

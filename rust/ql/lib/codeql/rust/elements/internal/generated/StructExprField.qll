@@ -27,6 +27,8 @@ module Generated {
   class StructExprField extends Synth::TStructExprField, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "StructExprField" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this struct expression field (0-based).
      */

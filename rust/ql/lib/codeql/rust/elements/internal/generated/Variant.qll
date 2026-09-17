@@ -32,6 +32,8 @@ module Generated {
   class Variant extends Synth::TVariant, AddressableImpl::Addressable {
     override string getAPrimaryQlClass() { result = "Variant" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this variant (0-based).
      */

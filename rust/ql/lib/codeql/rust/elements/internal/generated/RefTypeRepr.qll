@@ -30,6 +30,8 @@ module Generated {
   class RefTypeRepr extends Synth::TRefTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "RefTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Holds if this reference type representation is mut.
      */

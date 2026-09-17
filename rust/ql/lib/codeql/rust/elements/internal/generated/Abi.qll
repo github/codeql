@@ -27,6 +27,8 @@ module Generated {
   class Abi extends Synth::TAbi, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "Abi" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the abi string of this abi, if it exists.
      */

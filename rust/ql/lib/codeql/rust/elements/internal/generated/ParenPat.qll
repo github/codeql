@@ -28,6 +28,8 @@ module Generated {
   class ParenPat extends Synth::TParenPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "ParenPat" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the pattern of this paren pattern, if it exists.
      */

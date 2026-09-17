@@ -31,6 +31,8 @@ module Generated {
   class TypeParam extends Synth::TTypeParam, GenericParamImpl::GenericParam {
     override string getAPrimaryQlClass() { result = "TypeParam" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this type parameter (0-based).
      */

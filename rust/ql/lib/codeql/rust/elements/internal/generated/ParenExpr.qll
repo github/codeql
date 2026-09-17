@@ -28,6 +28,8 @@ module Generated {
   class ParenExpr extends Synth::TParenExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "ParenExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this paren expression (0-based).
      */

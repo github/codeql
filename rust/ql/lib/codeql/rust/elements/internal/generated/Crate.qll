@@ -21,6 +21,8 @@ module Generated {
   class Crate extends Synth::TCrate, LocatableImpl::Locatable {
     override string getAPrimaryQlClass() { result = "Crate" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the name of this crate, if it exists.
      */

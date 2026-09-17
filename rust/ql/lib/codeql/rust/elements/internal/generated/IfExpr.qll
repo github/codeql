@@ -36,6 +36,8 @@ module Generated {
   class IfExpr extends Synth::TIfExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "IfExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this if expression (0-based).
      */

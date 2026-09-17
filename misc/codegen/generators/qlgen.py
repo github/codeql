@@ -237,6 +237,9 @@ class Resolver:
                 hideable="ql_hideable" in cls.pragmas,
                 internal="ql_internal" in cls.pragmas,
                 cfg=cls.cfg,
+                to_string_impl_from_primary_class=bool(
+                    cls.pragmas.get("ql_to_string_impl_from_primary_class")
+                ),
             )
         return self._class_cache[cache_key]
 

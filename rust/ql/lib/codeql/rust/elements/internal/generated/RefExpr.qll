@@ -29,6 +29,8 @@ module Generated {
   class RefExpr extends Synth::TRefExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "RefExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this reference expression (0-based).
      */

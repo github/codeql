@@ -27,6 +27,8 @@ module Generated {
   class IndexExpr extends Synth::TIndexExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "IndexExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this index expression (0-based).
      */

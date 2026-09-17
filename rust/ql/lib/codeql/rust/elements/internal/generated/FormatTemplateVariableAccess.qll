@@ -21,5 +21,7 @@ module Generated {
     PathExprBaseImpl::PathExprBase
   {
     override string getAPrimaryQlClass() { result = "FormatTemplateVariableAccess" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

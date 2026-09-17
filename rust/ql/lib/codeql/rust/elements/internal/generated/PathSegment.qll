@@ -34,6 +34,8 @@ module Generated {
   class PathSegment extends Synth::TPathSegment, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "PathSegment" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the generic argument list of this path segment, if it exists.
      */

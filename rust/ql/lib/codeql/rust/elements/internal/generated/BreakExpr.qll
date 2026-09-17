@@ -46,6 +46,8 @@ module Generated {
   class BreakExpr extends Synth::TBreakExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "BreakExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this break expression (0-based).
      */

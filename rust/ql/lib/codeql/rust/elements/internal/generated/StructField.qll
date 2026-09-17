@@ -33,6 +33,8 @@ module Generated {
   class StructField extends Synth::TStructField, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "StructField" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this struct field (0-based).
      */

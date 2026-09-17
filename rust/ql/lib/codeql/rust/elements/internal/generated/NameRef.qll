@@ -27,6 +27,8 @@ module Generated {
   class NameRef extends Synth::TNameRef, UseBoundGenericArgImpl::UseBoundGenericArg {
     override string getAPrimaryQlClass() { result = "NameRef" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the text of this name reference, if it exists.
      */

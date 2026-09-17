@@ -23,5 +23,7 @@ module Generated {
    */
   class ArrayListExpr extends Synth::TArrayListExpr, ArrayExprImpl::ArrayExpr {
     override string getAPrimaryQlClass() { result = "ArrayListExpr" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

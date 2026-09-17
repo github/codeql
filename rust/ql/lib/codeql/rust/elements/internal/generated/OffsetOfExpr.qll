@@ -27,6 +27,8 @@ module Generated {
   class OffsetOfExpr extends Synth::TOffsetOfExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "OffsetOfExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this offset of expression (0-based).
      */

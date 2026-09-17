@@ -27,6 +27,8 @@ module Generated {
   class Enum extends Synth::TEnum, TypeItemImpl::TypeItem {
     override string getAPrimaryQlClass() { result = "Enum" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the variant list of this enum, if it exists.
      */

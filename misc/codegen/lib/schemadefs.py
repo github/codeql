@@ -263,6 +263,12 @@ qltest.add(
 
 ql.add(_Parametrized(_ClassPragma("default_doc_name"), factory=lambda doc: doc))
 ql.add(_ClassPragma("hideable", inherited=True))
+ql.add(
+    _Parametrized(
+        _ClassPragma("to_string_impl_from_primary_class", inherited=True),
+        factory=lambda enabled: enabled,
+    )
+)
 ql.add(_Pragma("internal"))
 ql.add(_Parametrized(_Pragma("name"), factory=lambda name: name))
 ql.add(_Parametrized(_PropertyPragma("db_table_name"), factory=lambda name: name))

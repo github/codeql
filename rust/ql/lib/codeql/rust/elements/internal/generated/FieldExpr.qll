@@ -27,6 +27,8 @@ module Generated {
   class FieldExpr extends Synth::TFieldExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "FieldExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this field expression (0-based).
      */

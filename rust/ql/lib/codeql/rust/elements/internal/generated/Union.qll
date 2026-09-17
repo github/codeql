@@ -27,6 +27,8 @@ module Generated {
   class Union extends Synth::TUnion, TypeItemImpl::TypeItem {
     override string getAPrimaryQlClass() { result = "Union" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the struct field list of this union, if it exists.
      */

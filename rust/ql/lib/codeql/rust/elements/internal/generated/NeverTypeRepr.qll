@@ -26,5 +26,7 @@ module Generated {
    */
   class NeverTypeRepr extends Synth::TNeverTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "NeverTypeRepr" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

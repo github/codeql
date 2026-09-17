@@ -27,6 +27,8 @@ module Generated {
   class Name extends Synth::TName, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "Name" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the text of this name, if it exists.
      */

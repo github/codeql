@@ -27,6 +27,8 @@ module Generated {
   class StructPatField extends Synth::TStructPatField, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "StructPatField" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this struct pattern field (0-based).
      */

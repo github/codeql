@@ -26,6 +26,8 @@ module Generated {
   class PathTypeRepr extends Synth::TPathTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "PathTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the path of this path type representation, if it exists.
      */

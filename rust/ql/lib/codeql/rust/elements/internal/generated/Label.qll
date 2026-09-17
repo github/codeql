@@ -28,6 +28,8 @@ module Generated {
   class Label extends Synth::TLabel, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "Label" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the lifetime of this label, if it exists.
      */

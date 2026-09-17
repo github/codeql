@@ -29,6 +29,8 @@ module Generated {
   class StructExpr extends Synth::TStructExpr, ExprImpl::Expr, PathAstNodeImpl::PathAstNode {
     override string getAPrimaryQlClass() { result = "StructExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the struct expression field list of this struct expression, if it exists.
      */

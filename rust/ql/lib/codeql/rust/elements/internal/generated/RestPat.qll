@@ -28,6 +28,8 @@ module Generated {
   class RestPat extends Synth::TRestPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "RestPat" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this rest pattern (0-based).
      */

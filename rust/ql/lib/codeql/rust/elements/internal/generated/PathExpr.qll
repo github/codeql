@@ -31,6 +31,8 @@ module Generated {
   {
     override string getAPrimaryQlClass() { result = "PathExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this path expression (0-based).
      */

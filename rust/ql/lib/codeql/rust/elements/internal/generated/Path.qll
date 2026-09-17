@@ -29,6 +29,8 @@ module Generated {
   class Path extends Synth::TPath, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "Path" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the qualifier of this path, if it exists.
      */

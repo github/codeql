@@ -28,6 +28,8 @@ module Generated {
   class ImplTraitTypeRepr extends Synth::TImplTraitTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "ImplTraitTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the type bound list of this impl trait type representation, if it exists.
      */

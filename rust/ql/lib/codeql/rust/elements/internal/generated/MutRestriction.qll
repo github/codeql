@@ -22,6 +22,8 @@ module Generated {
   class MutRestriction extends Synth::TMutRestriction, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "MutRestriction" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Holds if this mut restriction is mut.
      */

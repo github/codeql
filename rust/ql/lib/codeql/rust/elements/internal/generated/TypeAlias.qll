@@ -37,6 +37,8 @@ module Generated {
   class TypeAlias extends Synth::TTypeAlias, AssocItemImpl::AssocItem, ExternItemImpl::ExternItem {
     override string getAPrimaryQlClass() { result = "TypeAlias" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this type alias (0-based).
      */

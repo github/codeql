@@ -37,6 +37,8 @@ module Generated {
   class ClosureExpr extends Synth::TClosureExpr, ExprImpl::Expr, CallableImpl::Callable {
     override string getAPrimaryQlClass() { result = "ClosureExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the closure body of this closure expression, if it exists.
      */

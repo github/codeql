@@ -30,6 +30,8 @@ module Generated {
   class LetElse extends Synth::TLetElse, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "LetElse" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the block expression of this let else, if it exists.
      */

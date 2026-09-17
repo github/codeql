@@ -28,6 +28,8 @@ module Generated {
   class Struct extends Synth::TStruct, TypeItemImpl::TypeItem {
     override string getAPrimaryQlClass() { result = "Struct" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the field list of this struct, if it exists.
      */

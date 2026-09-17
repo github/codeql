@@ -27,5 +27,7 @@ module Generated {
    */
   class PathPat extends Synth::TPathPat, PatImpl::Pat, PathAstNodeImpl::PathAstNode {
     override string getAPrimaryQlClass() { result = "PathPat" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

@@ -41,6 +41,8 @@ module Generated {
   {
     override string getAPrimaryQlClass() { result = "Function" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the abi of this function, if it exists.
      */

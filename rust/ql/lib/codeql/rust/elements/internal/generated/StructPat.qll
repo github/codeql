@@ -29,6 +29,8 @@ module Generated {
   class StructPat extends Synth::TStructPat, PatImpl::Pat, PathAstNodeImpl::PathAstNode {
     override string getAPrimaryQlClass() { result = "StructPat" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the struct pattern field list of this struct pattern, if it exists.
      */

@@ -30,6 +30,8 @@ module Generated {
   class DerefPat extends Synth::TDerefPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "DerefPat" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the pattern of this deref pattern, if it exists.
      */
