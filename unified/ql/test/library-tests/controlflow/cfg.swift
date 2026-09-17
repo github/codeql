@@ -27,19 +27,19 @@ func mightThrow(x : Int) throws -> Void {
 
 func tryCatch(x : Int) -> Int {
   do {
-    try mightThrow(x: 0)
+    try mightThrow(x: 0) // $ bbStep='CallExpr : exception -> CatchClause(+5)' bbStep='CallExpr : successor -> try(+0)'
     print("Did not throw.")
     try! mightThrow(x: 0)
-    print("Still did not throw.")
+    print("Still did not throw.") // $ bbStep='CallExpr : successor -> 0(+11)'
 
-  } catch MyError.error1 , MyError.error2 where isZero(x: x) { // $ noCfg
-    return 0 // $ noCfg
-  } catch MyError.error3(let withParam) { // $ noCfg
-    return withParam // $ noCfg
-  } catch is MyError { // $ noCfg
-    print("MyError") // $ noCfg
+  } catch MyError.error1 , MyError.error2 where isZero(x: x) { // $ bbStep='OrPattern : match -> Block(+0)' bbStep='OrPattern : no-match -> CatchClause(+2)' nonSimple='CatchClause -V MyError -^ MemberAccessExpr -> isZero -> Argument -V x -^ CallExpr -? MyError -^ MemberAccessExpr -^ ConditionalPattern -^ OrPattern'
+    return 0
+  } catch MyError.error3(let withParam) { // $ bbStep='CallExpr : match -> Block(+0)' bbStep='CallExpr : no-match -> CatchClause(+2)'
+    return withParam
+  } catch is MyError { // $ bbStep=' : match -> Block(+0)' bbStep=' : no-match -> CatchClause(+2)'
+    print("MyError") // $ bbStep='CallExpr : successor -> 0(+4)'
   } catch {
-    print("Unknown error \(error)") // $ noCfg
+    print("Unknown error \(error)") // $ bbStep='CallExpr : successor -> 0(+2)'
   }
   return 0
 }
@@ -395,7 +395,7 @@ class Derived : C { // $ nonSimple='ClassLikeDeclaration -V Derived -^ BaseType 
 
 func doWithoutCatch(x : Int) throws -> Int {
   do {
-    try mightThrow(x: 0)
+    try mightThrow(x: 0) // $ bbStep='CallExpr : successor -> try(+0)'
     print("Did not throw.")
     try! mightThrow(x: 0)
     print("Still did not throw.")
