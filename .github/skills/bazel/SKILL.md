@@ -56,9 +56,10 @@ debugging aid opts out and declares a plain `rust_binary` — see `swift-syntax-
 variable does the job.
 
 Macros here are typically a thin public wrapper around a private rule (`codeql_csharp_binary`, `swift_cc_binary`). Keep
-the rule narrow and the ergonomics in the macro. Generated targets are named after the macro's `name` (`<name>-all`,
-`single_arch/<name>`, `internal/<name>`) and kept private; when an error names a target you cannot find in any source
-file, a macro minted it — grep the suffix under `misc/bazel/`.
+the rule narrow and the ergonomics in the macro. Each macro decorates the caller's `name` to mint its helper targets
+(`internal/<name>`, `single_arch/<name>`, `bin/<name>`), but the visibility they get is that macro's choice — private,
+package default, or the caller's own — so read it instead of assuming. When an error names a target you cannot find in
+any source file, a macro minted it — grep the suffix under `misc/bazel/`.
 
 ## Shared helpers
 
