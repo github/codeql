@@ -996,6 +996,12 @@ var ExprsTable = NewTable("exprs",
 	IntColumn("idx"),
 ).KeySet("parent", "idx")
 
+// IsParenthesizedTable is the table associating expressions with how many parentheses they originally had
+var IsParenthesizedTable = NewTable("isParenthesized",
+	EntityColumn(ExprType, "id").Unique(),
+	IntColumn("parentheses"),
+)
+
 // LiteralsTable is the table associating literal expression AST nodes with their values
 var LiteralsTable = NewTable("literals",
 	EntityColumn(ExprType, "expr").Unique(),
