@@ -27,7 +27,7 @@ func deadParameter(x int) bool { // we don't want to flag x here
 }
 
 func usedOnlyAfterFalse() bool {
-	s := deadStore() // $ SPURIOUS: Alert
+	s := deadStore()
 	return false && s == 0
 }
 
