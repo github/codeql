@@ -4,6 +4,11 @@ controlsResult
 | guards.go:7:7:7:15 | ...<... | zero | false |
 | guards.go:9:7:9:16 | ...==... | positive | false |
 | guards.go:9:7:9:16 | ...==... | zero | true |
+| guards.go:18:7:18:7 | 0 | tagged one or two | false |
+| guards.go:18:7:18:7 | 0 | tagged other | false |
+| guards.go:18:7:18:7 | 0 | tagged zero | true |
+| guards.go:20:7:20:7 | 1 | tagged other | false |
+| guards.go:20:10:20:10 | 2 | tagged other | false |
 | guards.go:28:5:28:5 | a | compound true | true |
 | guards.go:28:5:28:17 | ...&&... | compound false | false |
 | guards.go:28:5:28:17 | ...&&... | compound true | true |
@@ -26,6 +31,16 @@ valueControlsResult
 | guards.go:9:7:9:11 | value | zero | 0 |
 | guards.go:9:7:9:16 | ...==... | positive | false |
 | guards.go:9:7:9:16 | ...==... | zero | true |
+| guards.go:17:9:17:13 | value | tagged one or two | not 0 |
+| guards.go:17:9:17:13 | value | tagged other | not 0 |
+| guards.go:17:9:17:13 | value | tagged other | not 1 |
+| guards.go:17:9:17:13 | value | tagged other | not 2 |
+| guards.go:17:9:17:13 | value | tagged zero | 0 |
+| guards.go:18:7:18:7 | 0 | tagged one or two | false |
+| guards.go:18:7:18:7 | 0 | tagged other | false |
+| guards.go:18:7:18:7 | 0 | tagged zero | true |
+| guards.go:20:7:20:7 | 1 | tagged other | false |
+| guards.go:20:10:20:10 | 2 | tagged other | false |
 | guards.go:28:5:28:5 | a | compound true | true |
 | guards.go:28:5:28:17 | ...&&... | compound false | false |
 | guards.go:28:5:28:17 | ...&&... | compound true | true |
@@ -49,6 +64,12 @@ valueControlsResult
 ensuresEqResult
 | guards.go:9:7:9:16 | ...==... | 0 = value | true |
 | guards.go:9:7:9:16 | ...==... | value = 0 | true |
+| guards.go:18:7:18:7 | 0 | 0 = value | true |
+| guards.go:18:7:18:7 | 0 | value = 0 | true |
+| guards.go:20:7:20:7 | 1 | 1 = value | true |
+| guards.go:20:7:20:7 | 1 | value = 1 | true |
+| guards.go:20:10:20:10 | 2 | 2 = value | true |
+| guards.go:20:10:20:10 | 2 | value = 2 | true |
 | guards.go:36:5:36:20 | ...==... | 0 = type conversion | true |
 | guards.go:36:5:36:20 | ...==... | type conversion = 0 | true |
 | guards.go:39:5:39:19 | ...==... | 0 = type conversion | true |

@@ -96,19 +96,22 @@ private module GuardsInput implements
   }
 
   /**
-   * A case expression in a tagless `switch` statement.
+   * A case expression in an expression `switch` statement.
    */
   class Case extends Expr {
-    Case() {
-      this =
-        any(G::ExpressionSwitchStmt switch | not exists(switch.getExpr())).getACase().getAnExpr()
-    }
+    G::ExpressionSwitchStmt switch;
 
-    Expr getSwitchExpr() { result = this }
+    Case() { this = switch.getACase().getAnExpr() }
+
+    Expr getSwitchExpr() {
+      result = switch.getExpr()
+      or
+      not exists(switch.getExpr()) and result = this
+    }
 
     predicate isDefaultCase() { none() }
 
-    ConstantExpr asConstantCase() { none() }
+    ConstantExpr asConstantCase() { exists(switch.getExpr()) and result = this }
 
     predicate matchEdge(CfgImpl::Cfg::BasicBlock bb1, CfgImpl::Cfg::BasicBlock bb2) {
       bb1.getLastNode() = this.getControlFlowNode() and
