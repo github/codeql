@@ -1,6 +1,6 @@
 | 1 | cfg.swift:1:1:604:2 | Block | 'Block -V VariableDeclaration -V topLevelDecl -> Int -> 0' |
 | 2 | cfg.swift:2:1:2:1 | 0 | '0' |
-| 3 | cfg.swift:3:1:3:12 | topLevelDecl | 'topLevelDecl -> + -> 1 -^ BinaryExpr' |
+| 3 | cfg.swift:3:1:3:12 | topLevelDecl | 'topLevelDecl -> 1 -^ BinaryExpr' |
 | 5 | cfg.swift:5:1:5:37 | Block | 'Block -V 0 -^ ReturnExpr' |
 | 5 | cfg.swift:5:1:5:37 | FunctionDeclaration | 'FunctionDeclaration' |
 | 7 | cfg.swift:7:1:7:10 | returnZero | 'returnZero -^ CallExpr' |
@@ -11,18 +11,18 @@
 | 12 | cfg.swift:12:17:12:25 | withParam | 'withParam -^ Block' |
 | 15 | cfg.swift:15:1:17:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 15 | cfg.swift:15:13:15:13 | x | 'x -^ Block' |
-| 16 | cfg.swift:16:10:16:10 | x | 'x -> == -> 0 -^ BinaryExpr -^ ReturnExpr' |
+| 16 | cfg.swift:16:10:16:10 | x | 'x -> 0 -^ BinaryExpr -^ ReturnExpr' |
 | 19 | cfg.swift:19:1:26:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 19 | cfg.swift:19:17:19:17 | x | 'x -^ Block' |
-| 20 | cfg.swift:20:3:22:3 | GuardIfStmt | 'GuardIfStmt -V x -> >= -> 0 -^ BinaryExpr -> Block' |
+| 20 | cfg.swift:20:3:22:3 | GuardIfStmt | 'GuardIfStmt -V x -> 0 -^ BinaryExpr -> Block' |
 | 21 | cfg.swift:21:11:21:17 | MyError | 'MyError -^ MemberAccessExpr -^ ThrowExpr' |
 | 28 | cfg.swift:28:1:45:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 28 | cfg.swift:28:15:28:15 | x | 'x -^ Block' |
 | 29 | cfg.swift:29:3:43:3 | TryExpr | 'TryExpr -V Block' |
-| 30 | cfg.swift:30:5:30:24 | try | 'try -^ UnaryExpr' |
+| 30 | cfg.swift:30:5:30:24 | UnaryExpr | 'UnaryExpr' |
 | 30 | cfg.swift:30:9:30:18 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr' |
 | 31 | cfg.swift:31:5:31:9 | print | 'print -> Argument -V "Did not throw." -^ CallExpr' |
-| 32 | cfg.swift:32:10:32:19 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr -^ try! -^ UnaryExpr' |
+| 32 | cfg.swift:32:10:32:19 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr -^ UnaryExpr' |
 | 33 | cfg.swift:33:5:33:9 | print | 'print -> Argument -V "Still did not throw." -^ CallExpr' |
 | 35 | cfg.swift:35:5:37:3 | CatchClause | 'CatchClause -V MyError -^ MemberAccessExpr -> isZero -> Argument -V x -^ CallExpr -? MyError -^ MemberAccessExpr -^ ConditionalPattern -^ OrPattern' |
 | 35 | cfg.swift:35:62:37:3 | Block | 'Block' |
@@ -40,19 +40,19 @@
 | 47 | cfg.swift:47:21:47:21 | s | 's -^ Block' |
 | 48 | cfg.swift:48:10:50:3 | Block | 'Block' |
 | 48 | cfg.swift:48:10:50:3 | FunctionExpr | 'FunctionExpr -^ ReturnExpr' |
-| 49 | cfg.swift:49:12:49:12 | s | 's -> + -> "" -^ BinaryExpr -^ ReturnExpr' |
+| 49 | cfg.swift:49:12:49:12 | s | 's -> "" -^ BinaryExpr -^ ReturnExpr' |
 | 53 | cfg.swift:53:1:58:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 53 | cfg.swift:53:21:53:21 | x | 'x -^ Block' |
 | 54 | cfg.swift:54:3:56:3 | FunctionDeclaration | 'FunctionDeclaration' |
 | 54 | cfg.swift:54:10:54:10 | y | 'y -^ Block' |
-| 55 | cfg.swift:55:12:55:12 | x | 'x -> + -> y -^ BinaryExpr -^ ReturnExpr' |
+| 55 | cfg.swift:55:12:55:12 | x | 'x -> y -^ BinaryExpr -^ ReturnExpr' |
 | 57 | cfg.swift:57:10:57:10 | f | 'f -^ ReturnExpr' |
 | 60 | cfg.swift:60:1:64:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 60 | cfg.swift:60:21:60:21 | x | 'x -^ Block' |
 | 61 | cfg.swift:61:10:63:3 | Block | 'Block' |
 | 61 | cfg.swift:61:10:63:3 | FunctionExpr | 'FunctionExpr -^ ReturnExpr' |
 | 62 | cfg.swift:62:6:62:6 | y | 'y' |
-| 62 | cfg.swift:62:19:62:19 | x | 'x -> + -> y -^ BinaryExpr' |
+| 62 | cfg.swift:62:19:62:19 | x | 'x -> y -^ BinaryExpr' |
 | 66 | cfg.swift:66:1:70:1 | Block | 'Block' |
 | 66 | cfg.swift:66:1:70:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 67 | cfg.swift:67:3:67:34 | VariableDeclaration | 'VariableDeclaration -V x1 -> createClosure1 -> Argument -V "" -^ CallExpr -^ CallExpr' |
@@ -64,27 +64,27 @@
 | 74 | cfg.swift:74:10:74:10 | n | 'n -^ ReturnExpr' |
 | 77 | cfg.swift:77:1:81:1 | Block | 'Block' |
 | 77 | cfg.swift:77:1:81:1 | FunctionDeclaration | 'FunctionDeclaration' |
-| 78 | cfg.swift:78:3:78:36 | VariableDeclaration | 'VariableDeclaration -V nBang -> maybeParseInt -> Argument -V "42" -^ CallExpr -^ ! -^ UnaryExpr' |
+| 78 | cfg.swift:78:3:78:36 | VariableDeclaration | 'VariableDeclaration -V nBang -> maybeParseInt -> Argument -V "42" -^ CallExpr -^ UnaryExpr' |
 | 79 | cfg.swift:79:3:79:31 | VariableDeclaration | 'VariableDeclaration -V n -> maybeParseInt -> Argument -V "42" -^ CallExpr' |
-| 80 | cfg.swift:80:10:80:14 | nBang | 'nBang -> + -> n -^ ! -^ UnaryExpr -^ BinaryExpr -^ ReturnExpr' |
+| 80 | cfg.swift:80:10:80:14 | nBang | 'nBang -> n -^ UnaryExpr -^ BinaryExpr -^ ReturnExpr' |
 | 83 | cfg.swift:83:1:98:1 | Block | 'Block' |
 | 83 | cfg.swift:83:1:98:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 84 | cfg.swift:84:3:84:15 | VariableDeclaration | 'VariableDeclaration -V temp -> 10' |
 | 86 | cfg.swift:86:3:88:3 | FunctionDeclaration | 'FunctionDeclaration' |
 | 86 | cfg.swift:86:12:86:12 | a | 'a -^ Block' |
-| 87 | cfg.swift:87:5:87:5 | a | 'a -> = -> a -> + -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 87 | cfg.swift:87:5:87:5 | a | 'a -> a -> 1 -^ BinaryExpr -^ BinaryExpr' |
 | 90 | cfg.swift:90:3:92:3 | FunctionDeclaration | 'FunctionDeclaration' |
 | 90 | cfg.swift:90:20:90:20 | a | 'a -^ Block' |
-| 91 | cfg.swift:91:5:91:5 | a | 'a -> = -> nil -^ BinaryExpr' |
+| 91 | cfg.swift:91:5:91:5 | a | 'a -> nil -^ BinaryExpr' |
 | 94 | cfg.swift:94:3:94:5 | add | 'add -> Argument -V  -^ CallExpr' |
 | 95 | cfg.swift:95:3:95:30 | VariableDeclaration | 'VariableDeclaration -V tempOptional -> Optional -V Int -^ GenericTypeExpr -> 10' |
 | 96 | cfg.swift:96:3:96:13 | addOptional | 'addOptional -> Argument -V  -^ CallExpr' |
-| 97 | cfg.swift:97:10:97:13 | temp | 'temp -> + -> tempOptional -^ ! -^ UnaryExpr -^ BinaryExpr -^ ReturnExpr' |
+| 97 | cfg.swift:97:10:97:13 | temp | 'temp -> tempOptional -^ UnaryExpr -^ BinaryExpr -^ ReturnExpr' |
 | 100 | cfg.swift:100:1:109:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V C' |
 | 101 | cfg.swift:101:3:101:16 | VariableDeclaration | 'VariableDeclaration -V myInt -> Int' |
 | 102 | cfg.swift:102:3:104:3 | ConstructorDeclaration | 'ConstructorDeclaration' |
 | 102 | cfg.swift:102:8:102:8 | n | 'n -^ Block' |
-| 103 | cfg.swift:103:5:103:9 | myInt | 'myInt -> = -> n -^ BinaryExpr' |
+| 103 | cfg.swift:103:5:103:9 | myInt | 'myInt -> n -^ BinaryExpr' |
 | 106 | cfg.swift:106:3:108:3 | Block | 'Block' |
 | 106 | cfg.swift:106:3:108:3 | FunctionDeclaration | 'FunctionDeclaration' |
 | 107 | cfg.swift:107:12:107:16 | myInt | 'myInt -^ ReturnExpr' |
@@ -103,17 +103,17 @@
 | 124 | cfg.swift:124:3:124:33 | VariableDeclaration | 'VariableDeclaration -V n10 -> inoutParam -^ MemberAccessExpr -^ MemberAccessExpr' |
 | 125 | cfg.swift:125:3:125:33 | VariableDeclaration | 'VariableDeclaration -V n11 -> inoutParam -^ MemberAccessExpr -^ CallExpr' |
 | 126 | cfg.swift:126:3:126:38 | VariableDeclaration | 'VariableDeclaration -V n12 -> inoutParam -^ MemberAccessExpr -^ MemberAccessExpr -^ CallExpr' |
-| 128 | cfg.swift:128:3:128:22 | VariableDeclaration | 'VariableDeclaration -V n13 -> opt -^ ! -^ UnaryExpr -^ MemberAccessExpr' |
-| 129 | cfg.swift:129:3:129:27 | VariableDeclaration | 'VariableDeclaration -V n14 -> opt -^ ! -^ UnaryExpr -^ MemberAccessExpr -^ MemberAccessExpr' |
-| 130 | cfg.swift:130:3:130:27 | VariableDeclaration | 'VariableDeclaration -V n15 -> opt -^ ! -^ UnaryExpr -^ MemberAccessExpr -^ CallExpr' |
-| 131 | cfg.swift:131:3:131:32 | VariableDeclaration | 'VariableDeclaration -V n16 -> opt -^ ! -^ UnaryExpr -^ MemberAccessExpr -^ MemberAccessExpr -^ CallExpr' |
+| 128 | cfg.swift:128:3:128:22 | VariableDeclaration | 'VariableDeclaration -V n13 -> opt -^ UnaryExpr -^ MemberAccessExpr' |
+| 129 | cfg.swift:129:3:129:27 | VariableDeclaration | 'VariableDeclaration -V n14 -> opt -^ UnaryExpr -^ MemberAccessExpr -^ MemberAccessExpr' |
+| 130 | cfg.swift:130:3:130:27 | VariableDeclaration | 'VariableDeclaration -V n15 -> opt -^ UnaryExpr -^ MemberAccessExpr -^ CallExpr' |
+| 131 | cfg.swift:131:3:131:32 | VariableDeclaration | 'VariableDeclaration -V n16 -> opt -^ UnaryExpr -^ MemberAccessExpr -^ MemberAccessExpr -^ CallExpr' |
 | 133 | cfg.swift:133:3:133:22 | VariableDeclaration | 'VariableDeclaration -V n17 -> opt -^ MemberAccessExpr' |
 | 134 | cfg.swift:134:3:134:27 | VariableDeclaration | 'VariableDeclaration -V n18 -> opt -^ MemberAccessExpr -^ MemberAccessExpr' |
 | 135 | cfg.swift:135:3:135:27 | VariableDeclaration | 'VariableDeclaration -V n19 -> opt -^ MemberAccessExpr -^ CallExpr' |
 | 136 | cfg.swift:136:3:136:32 | VariableDeclaration | 'VariableDeclaration -V n20 -> opt -^ MemberAccessExpr -^ MemberAccessExpr -^ CallExpr' |
 | 139 | cfg.swift:139:1:166:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 139 | cfg.swift:139:15:139:15 | x | 'x -^ Block' |
-| 140 | cfg.swift:140:3:141:12 | ForEachStmt | 'ForEachStmt -V 0 -> ... -> 10 -^ BinaryExpr' |
+| 140 | cfg.swift:140:3:141:12 | ForEachStmt | 'ForEachStmt -V 0 -> 10 -^ BinaryExpr' |
 | 140 | cfg.swift:140:7:140:7 | _ | '_' |
 | 141 | cfg.swift:141:9:141:12 | Block | 'Block' |
 | 143 | cfg.swift:143:3:153:3 | SwitchExpr | 'SwitchExpr -V x' |
@@ -123,8 +123,8 @@
 | 147 | cfg.swift:147:5:150:17 | Block | 'Block' |
 | 147 | cfg.swift:147:5:150:17 | SwitchCase | 'SwitchCase' |
 | 147 | cfg.swift:147:10:147:10 | x | 'x -^ ConditionalPattern' |
-| 148 | cfg.swift:148:9:149:17 | BinaryExpr | 'BinaryExpr -V x -> >= -> 2 -^ BinaryExpr' |
-| 149 | cfg.swift:149:13:149:13 | x | 'x -> < -> 5 -^ BinaryExpr' |
+| 148 | cfg.swift:148:9:149:17 | BinaryExpr | 'BinaryExpr -V x -> 2 -^ BinaryExpr' |
+| 149 | cfg.swift:149:13:149:13 | x | 'x -> 5 -^ BinaryExpr' |
 | 150 | cfg.swift:150:14:150:17 | true | 'true -^ ReturnExpr' |
 | 151 | cfg.swift:151:5:152:18 | SwitchCase | 'SwitchCase -V Block' |
 | 152 | cfg.swift:152:14:152:18 | false | 'false -^ ReturnExpr' |
@@ -135,12 +135,12 @@
 | 178 | cfg.swift:178:3:183:3 |  | '' |
 | 186 | cfg.swift:186:1:198:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 186 | cfg.swift:186:9:186:9 | x | 'x -^ Block' |
-| 187 | cfg.swift:187:3:197:3 | IfExpr | 'IfExpr -V x -> > -> 2 -^ BinaryExpr' |
+| 187 | cfg.swift:187:3:197:3 | IfExpr | 'IfExpr -V x -> 2 -^ BinaryExpr' |
 | 187 | cfg.swift:187:12:189:3 | Block | 'Block' |
 | 188 | cfg.swift:188:5:188:9 | print | 'print -> Argument -V "x is greater than 2" -^ CallExpr' |
-| 190 | cfg.swift:190:8:197:3 | IfExpr | 'IfExpr -V BinaryExpr -V BinaryExpr -V x -> <= -> 2 -^ BinaryExpr' |
-| 191 | cfg.swift:191:13:191:13 | x | 'x -> > -> 0 -^ BinaryExpr' |
-| 192 | cfg.swift:192:13:192:21 | UnaryExpr | 'UnaryExpr -V x -> == -> 5 -^ BinaryExpr' |
+| 190 | cfg.swift:190:8:197:3 | IfExpr | 'IfExpr -V BinaryExpr -V BinaryExpr -V x -> 2 -^ BinaryExpr' |
+| 191 | cfg.swift:191:13:191:13 | x | 'x -> 0 -^ BinaryExpr' |
+| 192 | cfg.swift:192:13:192:21 | UnaryExpr | 'UnaryExpr -V x -> 5 -^ BinaryExpr' |
 | 192 | cfg.swift:192:23:194:3 | Block | 'Block' |
 | 193 | cfg.swift:193:5:193:9 | print | 'print -> Argument -V "x is 1" -^ CallExpr' |
 | 195 | cfg.swift:195:8:197:3 | Block | 'Block' |
@@ -153,12 +153,12 @@
 | 204 | cfg.swift:204:10:204:10 | 1 | '1 -^ ReturnExpr' |
 | 207 | cfg.swift:207:1:215:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 207 | cfg.swift:207:9:207:9 | x | 'x -^ Block' |
-| 208 | cfg.swift:208:3:213:3 | IfExpr | 'IfExpr -V x -> < -> 0 -^ BinaryExpr' |
+| 208 | cfg.swift:208:3:213:3 | IfExpr | 'IfExpr -V x -> 0 -^ BinaryExpr' |
 | 208 | cfg.swift:208:12:213:3 | Block | 'Block' |
-| 209 | cfg.swift:209:5:209:5 | x | 'x -> = -> x -? - -^ UnaryExpr -^ BinaryExpr' |
-| 210 | cfg.swift:210:5:212:5 | IfExpr | 'IfExpr -V x -> > -> 10 -^ BinaryExpr' |
+| 209 | cfg.swift:209:5:209:5 | x | 'x -> x -^ UnaryExpr -^ BinaryExpr' |
+| 210 | cfg.swift:210:5:212:5 | IfExpr | 'IfExpr -V x -> 10 -^ BinaryExpr' |
 | 210 | cfg.swift:210:15:212:5 | Block | 'Block' |
-| 211 | cfg.swift:211:7:211:7 | x | 'x -> = -> x -> - -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 211 | cfg.swift:211:7:211:7 | x | 'x -> x -> 1 -^ BinaryExpr -^ BinaryExpr' |
 | 214 | cfg.swift:214:10:214:10 | x | 'x -^ ReturnExpr' |
 | 217 | cfg.swift:217:1:223:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 217 | cfg.swift:217:10:217:11 | b1 | 'b1 -> b2 -> b3 -^ Block' |
@@ -195,72 +195,72 @@
 | 252 | cfg.swift:252:5:252:9 | print | 'print -> Argument -V "b1 or b2" -^ CallExpr' |
 | 256 | cfg.swift:256:1:273:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 256 | cfg.swift:256:18:256:18 | a | 'a -> b -^ Block' |
-| 257 | cfg.swift:257:3:257:15 | VariableDeclaration | 'VariableDeclaration -V c -> a -> + -> b -^ BinaryExpr' |
-| 258 | cfg.swift:258:3:258:15 | VariableDeclaration | 'VariableDeclaration -V d -> a -> - -> b -^ BinaryExpr' |
-| 259 | cfg.swift:259:3:259:15 | VariableDeclaration | 'VariableDeclaration -V e -> a -> * -> b -^ BinaryExpr' |
-| 260 | cfg.swift:260:3:260:15 | VariableDeclaration | 'VariableDeclaration -V f -> a -> / -> b -^ BinaryExpr' |
-| 261 | cfg.swift:261:3:261:15 | VariableDeclaration | 'VariableDeclaration -V g -> a -> % -> b -^ BinaryExpr' |
-| 262 | cfg.swift:262:3:262:15 | VariableDeclaration | 'VariableDeclaration -V h -> a -> & -> b -^ BinaryExpr' |
-| 263 | cfg.swift:263:3:263:15 | VariableDeclaration | 'VariableDeclaration -V i -> a -> \| -> b -^ BinaryExpr' |
-| 264 | cfg.swift:264:3:264:15 | VariableDeclaration | 'VariableDeclaration -V j -> a -> ^ -> b -^ BinaryExpr' |
-| 265 | cfg.swift:265:3:265:16 | VariableDeclaration | 'VariableDeclaration -V k -> a -> << -> b -^ BinaryExpr' |
-| 266 | cfg.swift:266:3:266:16 | VariableDeclaration | 'VariableDeclaration -V l -> a -> >> -> b -^ BinaryExpr' |
-| 267 | cfg.swift:267:3:267:16 | VariableDeclaration | 'VariableDeclaration -V o -> a -> == -> b -^ BinaryExpr' |
-| 268 | cfg.swift:268:3:268:16 | VariableDeclaration | 'VariableDeclaration -V p -> a -> != -> b -^ BinaryExpr' |
-| 269 | cfg.swift:269:3:269:15 | VariableDeclaration | 'VariableDeclaration -V q -> a -> < -> b -^ BinaryExpr' |
-| 270 | cfg.swift:270:3:270:16 | VariableDeclaration | 'VariableDeclaration -V r -> a -> <= -> b -^ BinaryExpr' |
-| 271 | cfg.swift:271:3:271:15 | VariableDeclaration | 'VariableDeclaration -V s -> a -> > -> b -^ BinaryExpr' |
-| 272 | cfg.swift:272:3:272:16 | VariableDeclaration | 'VariableDeclaration -V t -> a -> >= -> b -^ BinaryExpr' |
+| 257 | cfg.swift:257:3:257:15 | VariableDeclaration | 'VariableDeclaration -V c -> a -> b -^ BinaryExpr' |
+| 258 | cfg.swift:258:3:258:15 | VariableDeclaration | 'VariableDeclaration -V d -> a -> b -^ BinaryExpr' |
+| 259 | cfg.swift:259:3:259:15 | VariableDeclaration | 'VariableDeclaration -V e -> a -> b -^ BinaryExpr' |
+| 260 | cfg.swift:260:3:260:15 | VariableDeclaration | 'VariableDeclaration -V f -> a -> b -^ BinaryExpr' |
+| 261 | cfg.swift:261:3:261:15 | VariableDeclaration | 'VariableDeclaration -V g -> a -> b -^ BinaryExpr' |
+| 262 | cfg.swift:262:3:262:15 | VariableDeclaration | 'VariableDeclaration -V h -> a -> b -^ BinaryExpr' |
+| 263 | cfg.swift:263:3:263:15 | VariableDeclaration | 'VariableDeclaration -V i -> a -> b -^ BinaryExpr' |
+| 264 | cfg.swift:264:3:264:15 | VariableDeclaration | 'VariableDeclaration -V j -> a -> b -^ BinaryExpr' |
+| 265 | cfg.swift:265:3:265:16 | VariableDeclaration | 'VariableDeclaration -V k -> a -> b -^ BinaryExpr' |
+| 266 | cfg.swift:266:3:266:16 | VariableDeclaration | 'VariableDeclaration -V l -> a -> b -^ BinaryExpr' |
+| 267 | cfg.swift:267:3:267:16 | VariableDeclaration | 'VariableDeclaration -V o -> a -> b -^ BinaryExpr' |
+| 268 | cfg.swift:268:3:268:16 | VariableDeclaration | 'VariableDeclaration -V p -> a -> b -^ BinaryExpr' |
+| 269 | cfg.swift:269:3:269:15 | VariableDeclaration | 'VariableDeclaration -V q -> a -> b -^ BinaryExpr' |
+| 270 | cfg.swift:270:3:270:16 | VariableDeclaration | 'VariableDeclaration -V r -> a -> b -^ BinaryExpr' |
+| 271 | cfg.swift:271:3:271:15 | VariableDeclaration | 'VariableDeclaration -V s -> a -> b -^ BinaryExpr' |
+| 272 | cfg.swift:272:3:272:16 | VariableDeclaration | 'VariableDeclaration -V t -> a -> b -^ BinaryExpr' |
 | 275 | cfg.swift:275:1:277:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 275 | cfg.swift:275:25:275:25 | x | 'x -> y -^ Block' |
-| 276 | cfg.swift:276:11:276:10 |  | ' -> interpolation -V Argument -V x -^ CallExpr ->  +  -> interpolation -V Argument -V y -^ CallExpr ->  is equal to  -> interpolation -V Argument -V x -> + -> y -^ BinaryExpr -^ CallExpr ->  and here is a zero:  -> interpolation -V Argument -V returnZero -^ CallExpr -^ CallExpr ->  -^ StringInterpolationExpr -^ ReturnExpr' |
+| 276 | cfg.swift:276:11:276:10 |  | ' -> interpolation -V Argument -V x -^ CallExpr ->  +  -> interpolation -V Argument -V y -^ CallExpr ->  is equal to  -> interpolation -V Argument -V x -> y -^ BinaryExpr -^ CallExpr ->  and here is a zero:  -> interpolation -V Argument -V returnZero -^ CallExpr -^ CallExpr ->  -^ StringInterpolationExpr -^ ReturnExpr' |
 | 279 | cfg.swift:279:1:310:1 | Block | 'Block' |
 | 279 | cfg.swift:279:1:310:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 280 | cfg.swift:280:3:280:44 | VariableDeclaration | 'VariableDeclaration -V a -> 0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -^ ArrayLiteral' |
-| 281 | cfg.swift:281:3:281:3 | a | 'a -> Argument -V 0 -^ CallExpr -> = -> 0 -^ BinaryExpr' |
-| 282 | cfg.swift:282:3:282:3 | a | 'a -> Argument -V 1 -^ CallExpr -> += -> 1 -^ BinaryExpr' |
-| 283 | cfg.swift:283:3:283:3 | a | 'a -> Argument -V 2 -^ CallExpr -> -= -> 1 -^ BinaryExpr' |
-| 284 | cfg.swift:284:3:284:3 | a | 'a -> Argument -V 3 -^ CallExpr -> *= -> 1 -^ BinaryExpr' |
-| 285 | cfg.swift:285:3:285:3 | a | 'a -> Argument -V 4 -^ CallExpr -> /= -> 1 -^ BinaryExpr' |
-| 286 | cfg.swift:286:3:286:3 | a | 'a -> Argument -V 5 -^ CallExpr -> %= -> 1 -^ BinaryExpr' |
-| 287 | cfg.swift:287:3:287:3 | a | 'a -> Argument -V 6 -^ CallExpr -> &= -> 1 -^ BinaryExpr' |
-| 288 | cfg.swift:288:3:288:3 | a | 'a -> Argument -V 7 -^ CallExpr -> \|= -> 1 -^ BinaryExpr' |
-| 289 | cfg.swift:289:3:289:3 | a | 'a -> Argument -V 8 -^ CallExpr -> ^= -> 1 -^ BinaryExpr' |
-| 290 | cfg.swift:290:3:290:3 | a | 'a -> Argument -V 9 -^ CallExpr -> <<= -> 1 -^ BinaryExpr' |
-| 291 | cfg.swift:291:3:291:3 | a | 'a -> Argument -V 10 -^ CallExpr -> >>= -> 1 -^ BinaryExpr' |
+| 281 | cfg.swift:281:3:281:3 | a | 'a -> Argument -V 0 -^ CallExpr -> 0 -^ BinaryExpr' |
+| 282 | cfg.swift:282:3:282:3 | a | 'a -> Argument -V 1 -^ CallExpr -> 1 -^ BinaryExpr' |
+| 283 | cfg.swift:283:3:283:3 | a | 'a -> Argument -V 2 -^ CallExpr -> 1 -^ BinaryExpr' |
+| 284 | cfg.swift:284:3:284:3 | a | 'a -> Argument -V 3 -^ CallExpr -> 1 -^ BinaryExpr' |
+| 285 | cfg.swift:285:3:285:3 | a | 'a -> Argument -V 4 -^ CallExpr -> 1 -^ BinaryExpr' |
+| 286 | cfg.swift:286:3:286:3 | a | 'a -> Argument -V 5 -^ CallExpr -> 1 -^ BinaryExpr' |
+| 287 | cfg.swift:287:3:287:3 | a | 'a -> Argument -V 6 -^ CallExpr -> 1 -^ BinaryExpr' |
+| 288 | cfg.swift:288:3:288:3 | a | 'a -> Argument -V 7 -^ CallExpr -> 1 -^ BinaryExpr' |
+| 289 | cfg.swift:289:3:289:3 | a | 'a -> Argument -V 8 -^ CallExpr -> 1 -^ BinaryExpr' |
+| 290 | cfg.swift:290:3:290:3 | a | 'a -> Argument -V 9 -^ CallExpr -> 1 -^ BinaryExpr' |
+| 291 | cfg.swift:291:3:291:3 | a | 'a -> Argument -V 10 -^ CallExpr -> 1 -^ BinaryExpr' |
 | 293 | cfg.swift:293:3:293:49 | VariableDeclaration | 'VariableDeclaration -V tupleWithA -> Argument -V a -> Argument -V 0 -^ CallExpr -> Argument -V a -> Argument -V 1 -^ CallExpr -> Argument -V a -> Argument -V 2 -^ CallExpr -> Argument -V a -> Argument -V 3 -^ CallExpr -> Argument -V a -> Argument -V 4 -^ CallExpr -^ TupleExpr' |
 | 295 | cfg.swift:295:3:295:48 | VariableDeclaration | 'VariableDeclaration -V b -> 0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -^ ArrayLiteral' |
-| 296 | cfg.swift:296:3:296:3 | b | 'b -> Argument -V 0 -^ CallExpr -> = -> a -> Argument -V 10 -^ CallExpr -^ BinaryExpr' |
-| 297 | cfg.swift:297:3:297:3 | b | 'b -> Argument -V 1 -^ CallExpr -> = -> b -> Argument -V 0 -^ CallExpr -> + -> 1 -^ BinaryExpr -^ BinaryExpr' |
-| 298 | cfg.swift:298:3:298:3 | b | 'b -> Argument -V 2 -^ CallExpr -> = -> b -> Argument -V 1 -^ CallExpr -> - -> 1 -^ BinaryExpr -^ BinaryExpr' |
-| 299 | cfg.swift:299:3:299:3 | b | 'b -> Argument -V 3 -^ CallExpr -> = -> b -> Argument -V 2 -^ CallExpr -> * -> 1 -^ BinaryExpr -^ BinaryExpr' |
-| 300 | cfg.swift:300:3:300:3 | b | 'b -> Argument -V 4 -^ CallExpr -> = -> b -> Argument -V 3 -^ CallExpr -> / -> 1 -^ BinaryExpr -^ BinaryExpr' |
-| 301 | cfg.swift:301:3:301:3 | b | 'b -> Argument -V 5 -^ CallExpr -> = -> b -> Argument -V 4 -^ CallExpr -> % -> 1 -^ BinaryExpr -^ BinaryExpr' |
-| 302 | cfg.swift:302:3:302:3 | b | 'b -> Argument -V 6 -^ CallExpr -> = -> b -> Argument -V 5 -^ CallExpr -> & -> 1 -^ BinaryExpr -^ BinaryExpr' |
-| 303 | cfg.swift:303:3:303:3 | b | 'b -> Argument -V 7 -^ CallExpr -> = -> b -> Argument -V 6 -^ CallExpr -> \| -> 1 -^ BinaryExpr -^ BinaryExpr' |
-| 304 | cfg.swift:304:3:304:3 | b | 'b -> Argument -V 8 -^ CallExpr -> = -> b -> Argument -V 7 -^ CallExpr -> ^ -> 1 -^ BinaryExpr -^ BinaryExpr' |
-| 305 | cfg.swift:305:3:305:3 | b | 'b -> Argument -V 9 -^ CallExpr -> = -> b -> Argument -V 8 -^ CallExpr -> << -> 1 -^ BinaryExpr -^ BinaryExpr' |
-| 306 | cfg.swift:306:3:306:3 | b | 'b -> Argument -V 10 -^ CallExpr -> = -> b -> Argument -V 9 -^ CallExpr -> >> -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 296 | cfg.swift:296:3:296:3 | b | 'b -> Argument -V 0 -^ CallExpr -> a -> Argument -V 10 -^ CallExpr -^ BinaryExpr' |
+| 297 | cfg.swift:297:3:297:3 | b | 'b -> Argument -V 1 -^ CallExpr -> b -> Argument -V 0 -^ CallExpr -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 298 | cfg.swift:298:3:298:3 | b | 'b -> Argument -V 2 -^ CallExpr -> b -> Argument -V 1 -^ CallExpr -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 299 | cfg.swift:299:3:299:3 | b | 'b -> Argument -V 3 -^ CallExpr -> b -> Argument -V 2 -^ CallExpr -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 300 | cfg.swift:300:3:300:3 | b | 'b -> Argument -V 4 -^ CallExpr -> b -> Argument -V 3 -^ CallExpr -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 301 | cfg.swift:301:3:301:3 | b | 'b -> Argument -V 5 -^ CallExpr -> b -> Argument -V 4 -^ CallExpr -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 302 | cfg.swift:302:3:302:3 | b | 'b -> Argument -V 6 -^ CallExpr -> b -> Argument -V 5 -^ CallExpr -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 303 | cfg.swift:303:3:303:3 | b | 'b -> Argument -V 7 -^ CallExpr -> b -> Argument -V 6 -^ CallExpr -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 304 | cfg.swift:304:3:304:3 | b | 'b -> Argument -V 8 -^ CallExpr -> b -> Argument -V 7 -^ CallExpr -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 305 | cfg.swift:305:3:305:3 | b | 'b -> Argument -V 9 -^ CallExpr -> b -> Argument -V 8 -^ CallExpr -> 1 -^ BinaryExpr -^ BinaryExpr' |
+| 306 | cfg.swift:306:3:306:3 | b | 'b -> Argument -V 10 -^ CallExpr -> b -> Argument -V 9 -^ CallExpr -> 1 -^ BinaryExpr -^ BinaryExpr' |
 | 308 | cfg.swift:308:3:308:39 | VariableDeclaration | 'VariableDeclaration -V Argument -V a1 -> Argument -V a2 -> Argument -V a3 -> Argument -V a4 -> Argument -V a5 -^ TupleExpr -> tupleWithA' |
-| 309 | cfg.swift:309:11:309:20 | Argument | 'Argument -V a1 -> + -> b -> Argument -V 0 -^ CallExpr -^ BinaryExpr -> Argument -V a2 -> + -> b -> Argument -V 1 -^ CallExpr -^ BinaryExpr -> Argument -V a3 -> + -> b -> Argument -V 2 -^ CallExpr -^ BinaryExpr -> Argument -V a4 -> + -> b -> Argument -V 3 -^ CallExpr -^ BinaryExpr -> Argument -V a5 -> + -> b -> Argument -V 4 -^ CallExpr -^ BinaryExpr -^ TupleExpr -^ ReturnExpr' |
+| 309 | cfg.swift:309:11:309:20 | Argument | 'Argument -V a1 -> b -> Argument -V 0 -^ CallExpr -^ BinaryExpr -> Argument -V a2 -> b -> Argument -V 1 -^ CallExpr -^ BinaryExpr -> Argument -V a3 -> b -> Argument -V 2 -^ CallExpr -^ BinaryExpr -> Argument -V a4 -> b -> Argument -V 3 -^ CallExpr -^ BinaryExpr -> Argument -V a5 -> b -> Argument -V 4 -^ CallExpr -^ BinaryExpr -^ TupleExpr -^ ReturnExpr' |
 | 312 | cfg.swift:312:1:317:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 312 | cfg.swift:312:12:312:12 | x | 'x -^ Block' |
 | 313 | cfg.swift:313:3:316:3 | WhileStmt | 'WhileStmt' |
-| 313 | cfg.swift:313:9:313:9 | x | 'x -> >= -> 0 -^ BinaryExpr' |
+| 313 | cfg.swift:313:9:313:9 | x | 'x -> 0 -^ BinaryExpr' |
 | 313 | cfg.swift:313:16:316:3 | Block | 'Block' |
 | 314 | cfg.swift:314:5:314:9 | print | 'print -> Argument -V x -^ CallExpr' |
-| 315 | cfg.swift:315:5:315:5 | x | 'x -> -= -> 1 -^ BinaryExpr' |
+| 315 | cfg.swift:315:5:315:5 | x | 'x -> 1 -^ BinaryExpr' |
 | 319 | cfg.swift:319:1:332:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 319 | cfg.swift:319:12:319:12 | x | 'x -^ Block' |
 | 320 | cfg.swift:320:3:330:3 | WhileStmt | 'WhileStmt' |
-| 320 | cfg.swift:320:9:320:9 | x | 'x -> >= -> 0 -^ BinaryExpr' |
+| 320 | cfg.swift:320:9:320:9 | x | 'x -> 0 -^ BinaryExpr' |
 | 320 | cfg.swift:320:16:330:3 | Block | 'Block' |
 | 321 | cfg.swift:321:5:321:9 | print | 'print -> Argument -V x -^ CallExpr' |
-| 322 | cfg.swift:322:5:322:5 | x | 'x -> -= -> 1 -^ BinaryExpr' |
-| 323 | cfg.swift:323:5:328:5 | IfExpr | 'IfExpr -V x -> > -> 100 -^ BinaryExpr' |
+| 322 | cfg.swift:322:5:322:5 | x | 'x -> 1 -^ BinaryExpr' |
+| 323 | cfg.swift:323:5:328:5 | IfExpr | 'IfExpr -V x -> 100 -^ BinaryExpr' |
 | 323 | cfg.swift:323:16:325:5 | Block | 'Block' |
 | 324 | cfg.swift:324:7:324:11 | BreakExpr | 'BreakExpr' |
-| 326 | cfg.swift:326:10:328:5 | IfExpr | 'IfExpr -V x -> > -> 50 -^ BinaryExpr' |
+| 326 | cfg.swift:326:10:328:5 | IfExpr | 'IfExpr -V x -> 50 -^ BinaryExpr' |
 | 326 | cfg.swift:326:20:328:5 | Block | 'Block' |
 | 327 | cfg.swift:327:7:327:14 | ContinueExpr | 'ContinueExpr' |
 | 329 | cfg.swift:329:5:329:9 | print | 'print -> Argument -V "Iter" -^ CallExpr' |
@@ -268,17 +268,17 @@
 | 334 | cfg.swift:334:1:349:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 334 | cfg.swift:334:18:334:18 | x | 'x -^ Block' |
 | 335 | cfg.swift:335:3:348:3 | LabeledStmt | 'LabeledStmt -V WhileStmt' |
-| 335 | cfg.swift:335:16:335:16 | x | 'x -> >= -> 0 -^ BinaryExpr' |
+| 335 | cfg.swift:335:16:335:16 | x | 'x -> 0 -^ BinaryExpr' |
 | 335 | cfg.swift:335:23:348:3 | Block | 'Block' |
 | 336 | cfg.swift:336:5:346:5 | LabeledStmt | 'LabeledStmt -V WhileStmt' |
-| 336 | cfg.swift:336:18:336:18 | x | 'x -> >= -> 0 -^ BinaryExpr' |
+| 336 | cfg.swift:336:18:336:18 | x | 'x -> 0 -^ BinaryExpr' |
 | 336 | cfg.swift:336:25:346:5 | Block | 'Block' |
 | 337 | cfg.swift:337:7:337:11 | print | 'print -> Argument -V x -^ CallExpr' |
-| 338 | cfg.swift:338:7:338:7 | x | 'x -> -= -> 1 -^ BinaryExpr' |
-| 339 | cfg.swift:339:7:344:7 | IfExpr | 'IfExpr -V x -> > -> 100 -^ BinaryExpr' |
+| 338 | cfg.swift:338:7:338:7 | x | 'x -> 1 -^ BinaryExpr' |
+| 339 | cfg.swift:339:7:344:7 | IfExpr | 'IfExpr -V x -> 100 -^ BinaryExpr' |
 | 339 | cfg.swift:339:18:341:7 | Block | 'Block' |
 | 340 | cfg.swift:340:9:340:19 | BreakExpr | 'BreakExpr' |
-| 342 | cfg.swift:342:12:344:7 | IfExpr | 'IfExpr -V x -> > -> 50 -^ BinaryExpr' |
+| 342 | cfg.swift:342:12:344:7 | IfExpr | 'IfExpr -V x -> 50 -^ BinaryExpr' |
 | 342 | cfg.swift:342:22:344:7 | Block | 'Block' |
 | 343 | cfg.swift:343:9:343:22 | ContinueExpr | 'ContinueExpr' |
 | 345 | cfg.swift:345:7:345:11 | print | 'print -> Argument -V "Iter" -^ CallExpr' |
@@ -288,20 +288,20 @@
 | 352 | cfg.swift:352:3:355:16 | DoWhileStmt | 'DoWhileStmt' |
 | 352 | cfg.swift:352:10:355:3 | Block | 'Block' |
 | 353 | cfg.swift:353:5:353:9 | print | 'print -> Argument -V x -^ CallExpr' |
-| 354 | cfg.swift:354:5:354:5 | x | 'x -> -= -> 1 -^ BinaryExpr' |
-| 355 | cfg.swift:355:11:355:11 | x | 'x -> >= -> 0 -^ BinaryExpr' |
+| 354 | cfg.swift:354:5:354:5 | x | 'x -> 1 -^ BinaryExpr' |
+| 355 | cfg.swift:355:11:355:11 | x | 'x -> 0 -^ BinaryExpr' |
 | 358 | cfg.swift:358:1:363:1 | Block | 'Block' |
 | 358 | cfg.swift:358:1:363:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 359 | cfg.swift:359:3:359:11 | VariableDeclaration | 'VariableDeclaration -V x -> 0' |
 | 360 | cfg.swift:360:3:362:3 | WhileStmt | 'WhileStmt' |
-| 360 | cfg.swift:360:9:360:9 | x | 'x -> < -> 10 -^ BinaryExpr' |
+| 360 | cfg.swift:360:9:360:9 | x | 'x -> 10 -^ BinaryExpr' |
 | 360 | cfg.swift:360:17:362:3 | Block | 'Block' |
-| 361 | cfg.swift:361:5:361:5 | x | 'x -> += -> 1 -^ BinaryExpr' |
+| 361 | cfg.swift:361:5:361:5 | x | 'x -> 1 -^ BinaryExpr' |
 | 365 | cfg.swift:365:1:374:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V OptionalC' |
 | 366 | cfg.swift:366:3:366:11 | VariableDeclaration | 'VariableDeclaration -V c -> Optional -V C -^ GenericTypeExpr' |
 | 367 | cfg.swift:367:3:369:3 | ConstructorDeclaration | 'ConstructorDeclaration' |
 | 367 | cfg.swift:367:8:367:10 | arg | 'arg -^ Block' |
-| 368 | cfg.swift:368:5:368:5 | c | 'c -> = -> arg -^ BinaryExpr' |
+| 368 | cfg.swift:368:5:368:5 | c | 'c -> arg -^ BinaryExpr' |
 | 371 | cfg.swift:371:3:373:3 | Block | 'Block' |
 | 371 | cfg.swift:371:3:373:3 | FunctionDeclaration | 'FunctionDeclaration' |
 | 372 | cfg.swift:372:12:372:12 | c | 'c -^ ReturnExpr' |
@@ -315,7 +315,7 @@
 | 382 | cfg.swift:382:12:382:12 | z | 'z -^ ReturnExpr' |
 | 386 | cfg.swift:386:1:388:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 386 | cfg.swift:386:23:386:23 | t | 't -^ Block' |
-| 387 | cfg.swift:387:10:387:10 | t | 't -^ MemberAccessExpr -> + -> t -^ MemberAccessExpr -^ BinaryExpr -> + -> t -^ MemberAccessExpr -^ BinaryExpr -> + -> Argument -V 1 -> Argument -V 2 -> Argument -V 3 -^ TupleExpr -^ MemberAccessExpr -^ BinaryExpr -^ ReturnExpr' |
+| 387 | cfg.swift:387:10:387:10 | t | 't -^ MemberAccessExpr -> t -^ MemberAccessExpr -^ BinaryExpr -> t -^ MemberAccessExpr -^ BinaryExpr -> Argument -V 1 -> Argument -V 2 -> Argument -V 3 -^ TupleExpr -^ MemberAccessExpr -^ BinaryExpr -^ ReturnExpr' |
 | 390 | cfg.swift:390:1:394:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Derived -^ BaseType -V C' |
 | 391 | cfg.swift:391:3:393:3 | Block | 'Block' |
 | 391 | cfg.swift:391:3:393:3 | ConstructorDeclaration | 'ConstructorDeclaration' |
@@ -323,20 +323,20 @@
 | 396 | cfg.swift:396:1:404:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 396 | cfg.swift:396:21:396:21 | x | 'x -^ Block' |
 | 397 | cfg.swift:397:3:402:3 | TryExpr | 'TryExpr -V Block' |
-| 398 | cfg.swift:398:5:398:24 | try | 'try -^ UnaryExpr' |
+| 398 | cfg.swift:398:5:398:24 | UnaryExpr | 'UnaryExpr' |
 | 398 | cfg.swift:398:9:398:18 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr' |
 | 399 | cfg.swift:399:5:399:9 | print | 'print -> Argument -V "Did not throw." -^ CallExpr' |
-| 400 | cfg.swift:400:10:400:19 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr -^ try! -^ UnaryExpr' |
+| 400 | cfg.swift:400:10:400:19 | mightThrow | 'mightThrow -> Argument -V 0 -^ CallExpr -^ UnaryExpr' |
 | 401 | cfg.swift:401:5:401:9 | print | 'print -> Argument -V "Still did not throw." -^ CallExpr' |
 | 403 | cfg.swift:403:10:403:10 | 0 | '0 -^ ReturnExpr' |
 | 406 | cfg.swift:406:1:415:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Structors' |
 | 407 | cfg.swift:407:3:407:16 | VariableDeclaration | 'VariableDeclaration -V field -> Int' |
 | 408 | cfg.swift:408:3:410:3 | Block | 'Block' |
 | 408 | cfg.swift:408:3:410:3 | ConstructorDeclaration | 'ConstructorDeclaration' |
-| 409 | cfg.swift:409:5:409:9 | field | 'field -> = -> 10 -^ BinaryExpr' |
+| 409 | cfg.swift:409:5:409:9 | field | 'field -> 10 -^ BinaryExpr' |
 | 412 | cfg.swift:412:3:414:3 | Block | 'Block' |
 | 412 | cfg.swift:412:3:414:3 | DestructorDeclaration | 'DestructorDeclaration' |
-| 413 | cfg.swift:413:5:413:9 | field | 'field -> = -> 0 -^ BinaryExpr' |
+| 413 | cfg.swift:413:5:413:9 | field | 'field -> 0 -^ BinaryExpr' |
 | 417 | cfg.swift:417:1:419:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 417 | cfg.swift:417:24:417:24 | x | 'x -> y -^ Block' |
 | 418 | cfg.swift:418:10:418:25 | MapLiteral | 'MapLiteral -^ ReturnExpr' |
@@ -346,12 +346,12 @@
 | 423 | cfg.swift:423:5:423:14 | VariableDeclaration | 'VariableDeclaration -V x -> Int' |
 | 424 | cfg.swift:424:5:426:5 | Block | 'Block' |
 | 424 | cfg.swift:424:5:426:5 | ConstructorDeclaration | 'ConstructorDeclaration' |
-| 425 | cfg.swift:425:7:425:7 | x | 'x -> = -> 10 -^ BinaryExpr' |
+| 425 | cfg.swift:425:7:425:7 | x | 'x -> 10 -^ BinaryExpr' |
 | 429 | cfg.swift:429:3:434:3 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyLocalStruct' |
 | 430 | cfg.swift:430:5:430:14 | VariableDeclaration | 'VariableDeclaration -V x -> Int' |
 | 431 | cfg.swift:431:5:433:5 | Block | 'Block' |
 | 431 | cfg.swift:431:5:433:5 | ConstructorDeclaration | 'ConstructorDeclaration' |
-| 432 | cfg.swift:432:7:432:7 | x | 'x -> = -> 10 -^ BinaryExpr' |
+| 432 | cfg.swift:432:7:432:7 | x | 'x -> 10 -^ BinaryExpr' |
 | 436 | cfg.swift:436:3:439:3 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyLocalEnum' |
 | 437 | cfg.swift:437:10:437:10 | VariableDeclaration | 'VariableDeclaration -V A' |
 | 438 | cfg.swift:438:10:438:10 | VariableDeclaration | 'VariableDeclaration -V B' |
@@ -386,19 +386,19 @@
 | 498 | cfg.swift:498:3:498:11 | VariableDeclaration | 'VariableDeclaration -V x -> 0' |
 | 500 | cfg.swift:500:3:502:3 | IfExpr | 'IfExpr -V ' |
 | 500 | cfg.swift:500:30:502:3 | Block | 'Block' |
-| 501 | cfg.swift:501:5:501:5 | x | 'x -> += -> 1 -^ BinaryExpr' |
+| 501 | cfg.swift:501:5:501:5 | x | 'x -> 1 -^ BinaryExpr' |
 | 504 | cfg.swift:504:3:506:3 | IfExpr | 'IfExpr -V ' |
 | 504 | cfg.swift:504:33:506:3 | Block | 'Block' |
-| 505 | cfg.swift:505:5:505:5 | x | 'x -> += -> 1 -^ BinaryExpr' |
+| 505 | cfg.swift:505:5:505:5 | x | 'x -> 1 -^ BinaryExpr' |
 | 508 | cfg.swift:508:3:510:3 | IfExpr | 'IfExpr -V ' |
 | 508 | cfg.swift:508:49:510:3 | Block | 'Block' |
-| 509 | cfg.swift:509:5:509:5 | x | 'x -> += -> 1 -^ BinaryExpr' |
+| 509 | cfg.swift:509:5:509:5 | x | 'x -> 1 -^ BinaryExpr' |
 | 512 | cfg.swift:512:3:514:3 | GuardIfStmt | 'GuardIfStmt -V  -> Block' |
-| 513 | cfg.swift:513:5:513:5 | x | 'x -> += -> 1 -^ BinaryExpr' |
+| 513 | cfg.swift:513:5:513:5 | x | 'x -> 1 -^ BinaryExpr' |
 | 516 | cfg.swift:516:3:519:3 | IfExpr | 'IfExpr -V BinaryExpr -V ' |
 | 517 | cfg.swift:517:7:517:27 |  | '' |
 | 517 | cfg.swift:517:29:519:3 | Block | 'Block' |
-| 518 | cfg.swift:518:5:518:5 | x | 'x -> += -> 1 -^ BinaryExpr' |
+| 518 | cfg.swift:518:5:518:5 | x | 'x -> 1 -^ BinaryExpr' |
 | 521 | cfg.swift:521:10:521:10 | x | 'x -^ ReturnExpr' |
 | 524 | cfg.swift:524:1:538:1 | Block | 'Block' |
 | 524 | cfg.swift:524:1:538:1 | FunctionDeclaration | 'FunctionDeclaration' |
@@ -407,7 +407,7 @@
 | 526 | cfg.swift:526:9:526:20 | continuation | 'continuation' |
 | 527 | cfg.swift:527:13:527:16 | Task | 'Task -^ MemberAccessExpr -^ Argument -V FunctionExpr -^ CallExpr' |
 | 527 | cfg.swift:527:27:532:13 | Block | 'Block' |
-| 528 | cfg.swift:528:17:530:17 | ForEachStmt | 'ForEachStmt -V 1 -> ... -> 100 -^ BinaryExpr' |
+| 528 | cfg.swift:528:17:530:17 | ForEachStmt | 'ForEachStmt -V 1 -> 100 -^ BinaryExpr' |
 | 528 | cfg.swift:528:21:528:21 | i | 'i -> Block' |
 | 529 | cfg.swift:529:21:529:32 | continuation | 'continuation -^ MemberAccessExpr -> Argument -V i -^ CallExpr' |
 | 531 | cfg.swift:531:17:531:28 | continuation | 'continuation -^ MemberAccessExpr -^ CallExpr' |
@@ -455,10 +455,10 @@
 | 585 | cfg.swift:585:23:585:23 | x | 'x -^ Block' |
 | 586 | cfg.swift:586:3:589:3 | VariableDeclaration | 'VariableDeclaration -V a -> SwitchExpr -V x' |
 | 587 | cfg.swift:587:5:587:17 | Block | 'Block -V 1' |
-| 587 | cfg.swift:587:5:587:17 | SwitchCase | 'SwitchCase -V 0 -> ..< -> 5 -^ BinaryExpr' |
+| 587 | cfg.swift:587:5:587:17 | SwitchCase | 'SwitchCase -V 0 -> 5 -^ BinaryExpr' |
 | 588 | cfg.swift:588:5:588:14 | SwitchCase | 'SwitchCase -V Block -V 2' |
 | 590 | cfg.swift:590:3:592:18 | VariableDeclaration | 'VariableDeclaration -V b' |
-| 591 | cfg.swift:591:9:592:18 | IfExpr | 'IfExpr -V x -> < -> 42 -^ BinaryExpr' |
+| 591 | cfg.swift:591:9:592:18 | IfExpr | 'IfExpr -V x -> 42 -^ BinaryExpr' |
 | 591 | cfg.swift:591:21:591:25 | Block | 'Block -V 1' |
 | 592 | cfg.swift:592:14:592:18 | Block | 'Block -V 2' |
 | 596 | cfg.swift:596:1:598:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V ValueGenericsStruct -> TypeParameter -V N -> Int' |
@@ -467,4 +467,4 @@
 | 600 | cfg.swift:600:36:600:40 | value | 'value -^ Block' |
 | 601 | cfg.swift:601:5:601:13 | VariableDeclaration | 'VariableDeclaration -V x -> N' |
 | 602 | cfg.swift:602:5:602:9 | print | 'print -> Argument -V x -^ CallExpr' |
-| 603 | cfg.swift:603:5:603:5 | _ | '_ -> = -> value -^ BinaryExpr' |
+| 603 | cfg.swift:603:5:603:5 | _ | '_ -> value -^ BinaryExpr' |

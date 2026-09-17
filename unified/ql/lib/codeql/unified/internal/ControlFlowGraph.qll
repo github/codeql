@@ -30,6 +30,8 @@ private module Ast implements AstSig<Location> {
     e instanceof Modifier
     or
     e instanceof Identifier and not e instanceof IdentifierExpr
+    or
+    e instanceof Operator
   }
 
   AstNode getChild(AstNode n, int index) {

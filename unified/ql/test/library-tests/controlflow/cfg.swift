@@ -27,7 +27,7 @@ func mightThrow(x : Int) throws -> Void {
 
 func tryCatch(x : Int) -> Int {
   do {
-    try mightThrow(x: 0) // $ bbStep='CallExpr : exception -> CatchClause(+5)' bbStep='CallExpr : successor -> try(+0)'
+    try mightThrow(x: 0) // $ bbStep='CallExpr : exception -> CatchClause(+5)' bbStep='CallExpr : successor -> UnaryExpr(+0)'
     print("Did not throw.")
     try! mightThrow(x: 0)
     print("Still did not throw.") // $ bbStep='CallExpr : successor -> 0(+11)'
@@ -206,7 +206,7 @@ func m2(b : Bool) -> Int {
 
 func m3(x : inout Int) -> Int {
   if x < 0 { // $ bbStep='BinaryExpr : true -> Block(+0)' bbStep='BinaryExpr : false -> x(+6)'
-    x = -x // $ nonSimple='x -> = -> x -? - -^ UnaryExpr -^ BinaryExpr'
+    x = -x
     if x > 10 { // $ bbStep='BinaryExpr : true -> Block(+0)' bbStep='BinaryExpr : false -> x(+4)'
       x = x - 1 // $ bbStep='BinaryExpr : successor -> x(+3)'
     }
@@ -395,7 +395,7 @@ class Derived : C { // $ nonSimple='ClassLikeDeclaration -V Derived -^ BaseType 
 
 func doWithoutCatch(x : Int) throws -> Int {
   do {
-    try mightThrow(x: 0) // $ bbStep='CallExpr : successor -> try(+0)'
+    try mightThrow(x: 0) // $ bbStep='CallExpr : successor -> UnaryExpr(+0)'
     print("Did not throw.")
     try! mightThrow(x: 0)
     print("Still did not throw.")
