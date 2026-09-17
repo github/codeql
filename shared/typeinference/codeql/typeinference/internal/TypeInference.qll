@@ -3162,41 +3162,23 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           p = inferTypeCand(n, path).(ClosureParameterPseudoType).getParameter()
         }
 
-        pragma[nomagic]
-        private predicate hasClosureParameterPseudoType(AstNode n) {
-          hasClosureParameterPseudoType(n, _, _)
-        }
-
-        pragma[nomagic]
-        private predicate hasTypeAtPrefix(AstNode n, TypePath prefix, TypePath path) {
-          hasInferredType(n, path) and
-          hasClosureParameterPseudoType(n) and
-          prefix = path.getAPrefix()
-        }
-
         /**
          * Holds if `n` has a closure parameter pseudo type for the parameter
          * with pattern `pattern` at `prefix`, where `path = prefix.suffix`.
          *
          * This means that the parameter pattern can be inferred to have type
-         * `t` at `suffix` when `n` also has inferred type `t` at `path`.
+         * `type` at `suffix` when `n` also has inferred type `type` at `path`.
          */
         pragma[nomagic]
         private predicate hasClosureParameterPseudoTypeAtPrefix(
-          AstNode n, TypePath path, AstNode pattern, TypePath suffix
+          AstNode n, TypePath path, Type type, AstNode pattern, TypePath suffix
         ) {
           exists(Parameter p, TypePath prefix |
             hasClosureParameterPseudoType(n, prefix, p) and
-            hasTypeAtPrefix(n, prefix, path) and
+            type = inferType(n, path) and
             path = prefix.appendInverse(suffix) and
             pattern = p.getPattern()
           )
-        }
-
-        pragma[nomagic]
-        private Type inferClosureParameterTypeCand(AstNode n, TypePath path) {
-          result = inferType(n, path) and
-          hasClosureParameterPseudoType(n)
         }
 
         private Type inferClosureParameterPseudoType(AstNode n, TypePath path) {
@@ -3216,8 +3198,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           or
           // step 6
           exists(AstNode n0, TypePath path0 |
-            hasClosureParameterPseudoTypeAtPrefix(n0, path0, n, path) and
-            result = inferClosureParameterTypeCand(n0, path0) and
+            hasClosureParameterPseudoTypeAtPrefix(n0, path0, result, n, path) and
             not (path.isEmpty() and result instanceof UnknownType)
           )
         }
