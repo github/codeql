@@ -18,4 +18,12 @@ private module Input implements T::TestPostProcessing::InputSig<Impl> {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // Rust databases can also contain YAML, whose `#` comment syntax differs, so we only
+    // render for Rust sources.
+    relativePath.matches("%.rs") and
+    result = "//"
+  }
 }
