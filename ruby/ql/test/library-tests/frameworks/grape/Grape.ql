@@ -23,20 +23,38 @@ query predicate grapeRouteParam(Grape::GrapeRouteParamSource routeParam) { any()
 
 query predicate grapeCookies(Grape::GrapeCookiesSource cookies) { any() }
 
-query predicate grapeRequestBodyRead(Grape::GrapeRequestBodyReadSource src) { any() }
+query predicate grapeRequestBodyRead(Grape::GrapeRequestBodyReadSource src, string kind) {
+  kind = src.getKind()
+}
 
-query predicate grapeRequestBodyString(Grape::GrapeRequestBodyStringSource src) { any() }
+query predicate grapeRequestBodyString(Grape::GrapeRequestBodyStringSource src, string kind) {
+  kind = src.getKind()
+}
 
-query predicate grapeRequestParams(Grape::GrapeRequestParamsSource src) { any() }
+query predicate grapeRequestParams(Grape::GrapeRequestParamsSource src, string kind) {
+  kind = src.getKind()
+}
 
-query predicate grapeRequestGet(Grape::GrapeRequestGetSource src) { any() }
+query predicate grapeRequestGet(Grape::GrapeRequestGetSource src, string kind) {
+  kind = src.getKind()
+}
 
-query predicate grapeRequestPost(Grape::GrapeRequestPostSource src) { any() }
+query predicate grapeRequestPost(Grape::GrapeRequestPostSource src, string kind) {
+  kind = src.getKind()
+}
 
-query predicate grapeRequestCookies(Grape::GrapeRequestCookiesSource src) { any() }
+query predicate grapeRequestCookies(Grape::GrapeRequestCookiesSource src, string kind) {
+  kind = src.getKind()
+}
 
-query predicate grapeRequestEnv(Grape::GrapeRequestEnvSource src) { any() }
+query predicate grapeRequestEnv(Grape::GrapeRequestEnvSource src, string kind) {
+  kind = src.getKind()
+}
 
-query predicate grapeRequestQueryString(Grape::GrapeRequestQueryStringSource src) { any() }
+query predicate grapeRequestQueryString(Grape::GrapeRequestQueryStringSource src, string kind) {
+  kind = src.getKind()
+}
 
-query predicate grapeRequestPathInfo(Grape::GrapeRequestPathInfoSource src) { any() }
+query predicate grapeRequestPathInfo(Grape::GrapeRequestPathInfoSource src, string kind) {
+  kind = src.getKind()
+}

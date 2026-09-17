@@ -224,7 +224,7 @@ module Grape {
     override string getSourceType() { result = "Grape::Request#body.read" }
 
     override Http::Server::RequestInputKind getKind() {
-      result = Http::Server::parameterInputKind()
+      result = Http::Server::bodyInputKind()
     }
   }
 
@@ -241,7 +241,7 @@ module Grape {
     override string getSourceType() { result = "Grape::Request#body.string" }
 
     override Http::Server::RequestInputKind getKind() {
-      result = Http::Server::parameterInputKind()
+      result = Http::Server::bodyInputKind()
     }
   }
 
@@ -288,7 +288,7 @@ module Grape {
     override string getSourceType() { result = "Grape::Request#POST" }
 
     override Http::Server::RequestInputKind getKind() {
-      result = Http::Server::parameterInputKind()
+      result = Http::Server::bodyInputKind()
     }
   }
 
@@ -349,7 +349,7 @@ module Grape {
     override string getSourceType() { result = "Grape::Request#path_info" }
 
     override Http::Server::RequestInputKind getKind() {
-      result = Http::Server::parameterInputKind()
+      result = Http::Server::urlInputKind()
     }
   }
 

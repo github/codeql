@@ -76,22 +76,22 @@ grapeCookies
 | app.rb:160:5:162:7 | call to cookies |
 | app.rb:169:19:169:25 | call to cookies |
 grapeRequestBodyRead
-| app.rb:25:12:25:28 | call to read |
-| app.rb:170:21:170:37 | call to read |
-| app.rb:247:17:247:33 | call to read |
+| app.rb:25:12:25:28 | call to read | body |
+| app.rb:170:21:170:37 | call to read | body |
+| app.rb:247:17:247:33 | call to read | body |
 grapeRequestBodyString
-| app.rb:252:17:252:35 | call to string |
+| app.rb:252:17:252:35 | call to string | body |
 grapeRequestParams
-| app.rb:257:19:257:32 | call to params |
+| app.rb:257:19:257:32 | call to params | parameter |
 grapeRequestGet
-| app.rb:262:18:262:28 | call to GET |
+| app.rb:262:18:262:28 | call to GET | parameter |
 grapeRequestPost
-| app.rb:267:19:267:30 | call to POST |
+| app.rb:267:19:267:30 | call to POST | body |
 grapeRequestCookies
-| app.rb:272:19:272:33 | call to cookies |
+| app.rb:272:19:272:33 | call to cookies | cookie |
 grapeRequestEnv
-| app.rb:277:16:277:26 | call to env |
+| app.rb:277:16:277:26 | call to env | parameter |
 grapeRequestQueryString
-| app.rb:282:10:282:29 | call to query_string |
+| app.rb:282:10:282:29 | call to query_string | parameter |
 grapeRequestPathInfo
-| app.rb:287:12:287:28 | call to path_info |
+| app.rb:287:12:287:28 | call to path_info | url |
