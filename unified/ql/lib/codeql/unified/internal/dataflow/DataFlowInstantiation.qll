@@ -22,22 +22,14 @@ module DataFlowInput implements InputSig<Location> {
   //
   // Parameter, argument, return, and out nodes and their positions/kinds
   //
-  class ParameterNode extends Node {
-    ParameterNode() { none() } // TODO
-  }
-
-  class ArgumentNode extends Node {
-    ArgumentNode() { none() } // TODO
-  }
-
   class ReturnNode extends Node {
-    ReturnNode() { none() } // TODO
+    ReturnNode() { this.asExpr() = any(ReturnExpr r).getValue() }
 
-    ReturnKind getKind() { none() } // TODO
+    ReturnKind getKind() { exists(result) }
   }
 
   class OutNode extends Node {
-    OutNode() { none() } // TODO
+    OutNode() { this.asExpr() instanceof CallExpr }
   }
 
   class ReturnKind = Unit;
@@ -55,15 +47,49 @@ module DataFlowInput implements InputSig<Location> {
     result.asSourceCallable() = node.getEnclosingCallable()
   }
 
+  private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosition pos) {
+    exists(Parameter param |
+      p.asExpr() = param.getPattern() and
+      c.asSourceCallable() = param.getEnclosingCallable()
+    |
+      pos.asPositional() = param.getPositionalIndex()
+      or
+      pos.asNamed() = param.getExternalName()
+    )
+  }
+
+  class ParameterNode extends Node {
+    ParameterNode() { isParameterNodeImpl(this, _, _) }
+  }
+
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
-    none() // TODO
+    // This predicate is needed to implement the signature without empty recursion through ParameterNode
+    isParameterNodeImpl(p, c, pos)
+  }
+
+  private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition pos) {
+    exists(Argument arg |
+      n.asExpr() = arg.getValue() and
+      call.asExplicitCall().getAnArgument() = arg
+    |
+      pos.asPositional() = arg.getPositionalIndex()
+      or
+      pos.asNamed() = arg.getName()
+    )
+  }
+
+  class ArgumentNode extends Node {
+    ArgumentNode() { isArgumentNodeImpl(this, _, _) }
   }
 
   predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
-    none() // TODO
+    // This predicate is needed to implement the signature without empty recursion through ArgumentNode
+    isArgumentNodeImpl(n, call, pos)
   }
 
-  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { none() } // TODO
+  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
+    result.asExpr() = call.asExplicitCall() and exists(kind)
+  }
 
   //
   // Post-update nodes
