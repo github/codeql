@@ -34,13 +34,15 @@ private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
 }
 
 /**
- * Holds if `expr` performs an access to `var` of the given `kind` at `cfgNode`.
+ * Holds if `repr` performs an access to `var` of the given `kind` at `cfgNode`.
+ *
+ * `repr` should be an arbitary but unique representative for the access.
  */
 predicate performsVariableAccess(
-  Expr expr, LocalVariable var, VariableRefKind kind, ControlFlowNode cfgNode
+  AstNode repr, LocalVariable var, VariableRefKind kind, ControlFlowNode cfgNode
 ) {
-  exists(LocalVariableAccess access | var = access.getLocalVariable() and expr = access |
-    hasResultValue(access) and kind.isRead() and cfgNode.asExpr() = expr
+  exists(LocalVariableAccess access | var = access.getLocalVariable() and repr = access |
+    hasResultValue(access) and kind.isRead() and cfgNode.asExpr() = repr
     or
     hasIncomingValueAtCfgNode(access, cfgNode) and kind.isWrite()
     or
@@ -48,7 +50,7 @@ predicate performsVariableAccess(
   )
   or
   exists(UnqualifiedMemberAccess access |
-    access.isInstanceAccess() and var = access.getImplicitQualifierVariable() and expr = access
+    access.isInstanceAccess() and var = access.getImplicitQualifierVariable() and repr = access
   |
     kind.isRead() and cfgNode.isBefore(access)
     or
@@ -61,8 +63,8 @@ newtype TDataFlowNode =
   TValueNode(Expr expr) { hasResultValue(expr) or hasIncomingValue(expr, _) } or
   TStrictlyIncomingValue(Expr expr) { hasResultValue(expr) and hasIncomingValue(expr, _) } or
   TExprPostUpdateNode(Expr expr) { hasPostUpdate(expr, _) } or
-  TLocalVariableRefNode(Expr expr, LocalVariable var, VariableRefKind kind) {
-    performsVariableAccess(expr, var, kind, _)
+  TLocalVariableRefNode(AstNode repr, LocalVariable var, VariableRefKind kind) {
+    performsVariableAccess(repr, var, kind, _)
   } or
   TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node) or
   TReceiverParameterNode(DataFlowCallable callable) or
@@ -87,24 +89,24 @@ class Node extends TDataFlowNode {
     this = TStrictlyIncomingValue(expr)
   }
 
-  /** Holds if this represents the reference to `v` at `access`. */
-  predicate isLocalVariableRef(Expr access, LocalVariable v, VariableRefKind kind) {
-    this = TLocalVariableRefNode(access, v, kind)
+  /** Holds if this represents the reference to `v` at `repr`. */
+  predicate isLocalVariableRef(AstNode repr, LocalVariable v, VariableRefKind kind) {
+    this = TLocalVariableRefNode(repr, v, kind)
   }
 
-  /** Holds if this represents the value read from `v` at `access`. */
-  predicate isLocalVariableRead(Expr access, LocalVariable v) {
-    this.isLocalVariableRef(access, v, TRead())
+  /** Holds if this represents the value read from `v` at `repr`. */
+  predicate isLocalVariableRead(AstNode repr, LocalVariable v) {
+    this.isLocalVariableRef(repr, v, TRead())
   }
 
-  /** Holds if this represents the value written to `v` at `access`. */
-  predicate isLocalVariableWrite(Expr access, LocalVariable v) {
-    this.isLocalVariableRef(access, v, TWrite())
+  /** Holds if this represents the value written to `v` at `repr`. */
+  predicate isLocalVariableWrite(AstNode repr, LocalVariable v) {
+    this.isLocalVariableRef(repr, v, TWrite())
   }
 
   /** Holds if this represents the updated state of the value held in `v` after it has been mutated by the surrounding assignment or call. */
-  predicate isLocalVariablePostUpdate(Expr access, LocalVariable v) {
-    this.isLocalVariableRef(access, v, TPostUpdate())
+  predicate isLocalVariablePostUpdate(AstNode repr, LocalVariable v) {
+    this.isLocalVariableRef(repr, v, TPostUpdate())
   }
 
   /** Holds if this represents the updated state of the value returned by `expr` after it has been mutated by the surrounding assignment or call. */

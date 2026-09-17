@@ -40,11 +40,11 @@ private import LocalSsaOutput
 module LocalSsaDataFlowInput implements DataFlowIntegrationInputSig {
   class Expr extends TLocalVariableRefNode {
     predicate hasCfgNode(BasicBlock bb, int i) {
-      exists(U::Expr expr, LocalVariable var, VariableRefKind kind |
-        this = TLocalVariableRefNode(expr, var, kind) and
+      exists(U::AstNode repr, LocalVariable var, VariableRefKind kind |
+        this = TLocalVariableRefNode(repr, var, kind) and
         // Note: the synthetic read we insert for post-updates must also have an Expr
         (kind.isRead() or kind.isPostUpdate()) and
-        performsVariableAccess(expr, var, kind, bb.getNode(i))
+        performsVariableAccess(repr, var, kind, bb.getNode(i))
       )
     }
 
@@ -64,9 +64,9 @@ module LocalSsaDataFlowInput implements DataFlowIntegrationInputSig {
   predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue val) { none() }
 
   predicate postUpdateCfgNode(Expr read, BasicBlock bb, int i) {
-    exists(LocalVariable var, U::Expr expr |
-      read = TLocalVariableRefNode(expr, var, TRead()) and
-      performsVariableAccess(expr, var, TPostUpdate(), bb.getNode(i))
+    exists(LocalVariable var, U::AstNode repr |
+      read = TLocalVariableRefNode(repr, var, TRead()) and
+      performsVariableAccess(repr, var, TPostUpdate(), bb.getNode(i))
     )
   }
 }
@@ -93,10 +93,10 @@ Node getNodeFromLocalSsaNode(Ssa::Node n) {
   or
   result = getPostUpdateNode(n.(Ssa::ExprPostUpdateNode).getExpr())
   or
-  exists(LocalVariable v, BasicBlock bb, int i, Expr expr |
+  exists(LocalVariable v, BasicBlock bb, int i, AstNode repr |
     n.(Ssa::WriteDefSourceNode).getDefinition().definesAt(v, bb, i) and
-    performsVariableAccess(expr, v, TWrite(), bb.getNode(i)) and
-    result.isLocalVariableWrite(expr, v)
+    performsVariableAccess(repr, v, TWrite(), bb.getNode(i)) and
+    result.isLocalVariableWrite(repr, v)
   )
 }
 
