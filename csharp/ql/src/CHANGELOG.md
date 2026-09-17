@@ -1,3 +1,14 @@
+## 1.10.0
+
+### New Queries
+
+* Added a new query, `cs/linq/missed-firstordefault`, that detects `foreach` loops that can be expressed more clearly using LINQ's `FirstOrDefault` method.
+
+### Minor Analysis Improvements
+
+* The `cs/linq/missed-*` queries no longer suggest rewrites that would capture `in`, `out`, or `ref` parameters in a lambda, fixing false-positive results for transformations that would not compile.
+* The `cs/web/missing-token-validation` query now recognizes an ASP.NET Core `AutoValidateAntiforgeryTokenAttribute` registered as a global MVC filter through `AddControllersWithViews` (and friends), avoiding false-positive results for covered actions.
+
 ## 1.9.3
 
 ### Minor Analysis Improvements

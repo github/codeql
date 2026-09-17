@@ -1,3 +1,11 @@
+## 12.1.1
+
+### Minor Analysis Improvements
+
+* Added taint flow models for the `boost::asio::ip::basic_resolver::resolve` function.
+* Added flow summaries for the BDE `BloombergLP::bdlbb::Blob` segmented byte buffer.
+* Added flow summaries for the Protocol Buffers `google::protobuf::MessageLite` C++ API.
+
 ## 12.1.0
 
 ### New Features
