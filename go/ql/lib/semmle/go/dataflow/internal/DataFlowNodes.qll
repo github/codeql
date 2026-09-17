@@ -13,7 +13,10 @@ private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
-  MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
+  MkImplicitVarargsSlice(IR::EvalInstruction ins) {
+    // We only use CallExprs with an EvalInstruction to guarantee reachability.
+    ins.getExpr().(CallExpr).hasImplicitVarargs()
+  } or
   MkSliceElementNode(SliceExpr se) or
   MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
   MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) }
@@ -430,7 +433,7 @@ module Public {
   class ImplicitVarargsSlice extends Node, MkImplicitVarargsSlice {
     CallNode call;
 
-    ImplicitVarargsSlice() { this = MkImplicitVarargsSlice(call.getCall()) }
+    ImplicitVarargsSlice() { this = MkImplicitVarargsSlice(call.asInstruction()) }
 
     override ControlFlow::Root getRoot() { result = call.getRoot() }
 
@@ -1123,15 +1126,6 @@ module Public {
         left = DataFlow::exprNode(assgn.getLhs()) and
         right = DataFlow::exprNode(assgn.getRhs()) and
         op = o.substring(0, o.length() - 1)
-      )
-      or
-      exists(IR::EvalIncDecRhsInstruction rhs, IncDecStmt ids |
-        rhs = this.asInstruction() and ids = rhs.getStmt()
-      |
-        left = DataFlow::exprNode(ids.getOperand()) and
-        right =
-          DataFlow::instructionNode(any(IR::EvalImplicitOneInstruction one | one.getStmt() = ids)) and
-        op = ids.getOperator().charAt(0)
       )
     }
 

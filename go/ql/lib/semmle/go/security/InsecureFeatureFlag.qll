@@ -3,6 +3,7 @@
  */
 
 import go
+private import semmle.go.controlflow.Guards
 
 /**
  * Provides classes and predicates relating to flags that may indicate security expectations.
@@ -114,9 +115,9 @@ module InsecureFeatureFlag {
   }
 
   /**
-   * Gets a control-flow node that represents a (likely) security feature-flag check
+   * Gets a guard that represents a (likely) security feature-flag check.
    */
-  ControlFlow::ConditionGuardNode getASecurityFeatureFlagCheck() {
-    result.ensures(any(SecurityFeatureFlag f).getAFlag().getANode(), _)
+  Guard getASecurityFeatureFlagCheck() {
+    result = any(SecurityFeatureFlag f).getAFlag().getANode().asExpr()
   }
 }

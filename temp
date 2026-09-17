@@ -1,0 +1,11 @@
+./go/ql/test/example-tests/snippets/typeinfo.expected
+./go/ql/test/extractor-tests/go1.17/CFG.expected
+./go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph/ControlFlowNode_getASuccessor.expected
+./go/ql/test/library-tests/semmle/go/dataflow/FlowSteps/LocalFlowStep.expected
+./go/ql/test/library-tests/semmle/go/dataflow/SSA/VarDefs.expected
+./go/ql/test/query-tests/Security/CWE-601/BadRedirectCheck/BadRedirectCheck.expected
+./go/ql/test/extractor-tests/go1.17/CFG.expected
+./go/ql/test/library-tests/semmle/go/Scopes/EntityWrite.expected
+./go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph/ControlFlowNode_getASuccessor.expected
+./go/ql/test/library-tests/semmle/go/dataflow/FunctionInputsAndOutputs/FunctionInput_getExitNode.expected
+./go/ql/test/library-tests/semmle/go/dataflow/SSA/VarDefs.expected
