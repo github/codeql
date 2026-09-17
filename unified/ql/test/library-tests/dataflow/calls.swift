@@ -5,7 +5,7 @@ func sink(_ s: String) -> String { return "" }
 
 func t1() {
     func target(_ x: String) {
-        sink(x)  // $ MISSING: hasValueFlow=t1.1
+        sink(x)  // $ hasValueFlow=t1.1
     }
     target(source("t1.1"))
 }
@@ -14,7 +14,7 @@ func t2() {
     func target() -> String {
         return source("t2.1")
     }
-    sink(target())  // $ MISSING: hasValueFlow=t2.1
+    sink(target())  // $ hasValueFlow=t2.1
 }
 
 func t3() {
@@ -28,14 +28,14 @@ func t4() {
     func target(_ x: String) -> String {
         return x + "foo"
     }
-    sink(target(source("t4.1")))  // $ MISSING: hasTaintFlow=t4.1
-    sink(target(source("t4.2")))  // $ MISSING: hasTaintFlow=t4.2
+    sink(target(source("t4.1")))  // $ hasTaintFlow=t4.1
+    sink(target(source("t4.2")))  // $ hasTaintFlow=t4.2
     sink(target("safe"))
 }
 
 func t5() {
     func target1(name x: String) {
-        sink(x)  // $ MISSING: hasValueFlow=t5.1
+        sink(x)  // $ hasValueFlow=t5.1
     }
     target1(name: source("t5.1"))
 
@@ -47,8 +47,8 @@ func t5() {
 
 func t6() {
     func target(_ x: String, _ y: String) {
-        sink(x)  // $ MISSING: hasValueFlow=t6.1
-        sink(y)  // $ MISSING: hasValueFlow=t6.2
+        sink(x)  // $ hasValueFlow=t6.1
+        sink(y)  // $ hasValueFlow=t6.2
     }
     target(source("t6.1"), source("t6.2"))
 }

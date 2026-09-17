@@ -1,5 +1,20 @@
 models
 edges
+| calls.swift:7:19:7:19 | x | calls.swift:8:14:8:14 | x | provenance |  |
+| calls.swift:10:12:10:25 | source(...) | calls.swift:7:19:7:19 | x | provenance |  |
+| calls.swift:15:16:15:29 | source(...) | calls.swift:17:10:17:17 | target(...) | provenance |  |
+| calls.swift:28:19:28:19 | x | calls.swift:29:16:29:16 | x | provenance |  |
+| calls.swift:29:16:29:16 | x | calls.swift:29:16:29:24 | ... + ... | provenance |  |
+| calls.swift:31:17:31:30 | source(...) | calls.swift:28:19:28:19 | x | provenance |  |
+| calls.swift:31:17:31:30 | source(...) | calls.swift:31:10:31:31 | target(...) | provenance |  |
+| calls.swift:32:17:32:30 | source(...) | calls.swift:28:19:28:19 | x | provenance |  |
+| calls.swift:32:17:32:30 | source(...) | calls.swift:32:10:32:31 | target(...) | provenance |  |
+| calls.swift:37:23:37:23 | x | calls.swift:38:14:38:14 | x | provenance |  |
+| calls.swift:40:13:40:32 | source(...) | calls.swift:37:23:37:23 | x | provenance |  |
+| calls.swift:49:19:49:19 | x | calls.swift:50:14:50:14 | x | provenance |  |
+| calls.swift:49:32:49:32 | y | calls.swift:51:14:51:14 | y | provenance |  |
+| calls.swift:53:12:53:26 | source(...) | calls.swift:49:19:49:19 | x | provenance |  |
+| calls.swift:53:28:53:41 | source(...) | calls.swift:49:32:49:32 | y | provenance |  |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | implicit-self.swift:17:14:17:17 | self [x] | provenance |  |
 | implicit-self.swift:16:9:16:14 | ... .x | implicit-self.swift:16:9:16:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:16:9:16:14 | ... .x | provenance |  |
@@ -141,6 +156,27 @@ edges
 | test.swift:175:42:175:66 | ... + ... | test.swift:175:14:175:67 | TupleExpr [1] | provenance |  |
 | test.swift:175:52:175:66 | source(...) | test.swift:175:42:175:66 | ... + ... | provenance |  |
 nodes
+| calls.swift:7:19:7:19 | x | semmle.label | x |
+| calls.swift:8:14:8:14 | x | semmle.label | x |
+| calls.swift:10:12:10:25 | source(...) | semmle.label | source(...) |
+| calls.swift:15:16:15:29 | source(...) | semmle.label | source(...) |
+| calls.swift:17:10:17:17 | target(...) | semmle.label | target(...) |
+| calls.swift:28:19:28:19 | x | semmle.label | x |
+| calls.swift:29:16:29:16 | x | semmle.label | x |
+| calls.swift:29:16:29:24 | ... + ... | semmle.label | ... + ... |
+| calls.swift:31:10:31:31 | target(...) | semmle.label | target(...) |
+| calls.swift:31:17:31:30 | source(...) | semmle.label | source(...) |
+| calls.swift:32:10:32:31 | target(...) | semmle.label | target(...) |
+| calls.swift:32:17:32:30 | source(...) | semmle.label | source(...) |
+| calls.swift:37:23:37:23 | x | semmle.label | x |
+| calls.swift:38:14:38:14 | x | semmle.label | x |
+| calls.swift:40:13:40:32 | source(...) | semmle.label | source(...) |
+| calls.swift:49:19:49:19 | x | semmle.label | x |
+| calls.swift:49:32:49:32 | y | semmle.label | y |
+| calls.swift:50:14:50:14 | x | semmle.label | x |
+| calls.swift:51:14:51:14 | y | semmle.label | y |
+| calls.swift:53:12:53:26 | source(...) | semmle.label | source(...) |
+| calls.swift:53:28:53:41 | source(...) | semmle.label | source(...) |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | semmle.label | [post] self [x] |
 | implicit-self.swift:16:9:16:14 | ... .x | semmle.label | ... .x |
 | implicit-self.swift:16:18:16:31 | source(...) | semmle.label | source(...) |
@@ -322,8 +358,17 @@ nodes
 | test.swift:176:10:176:10 | a | semmle.label | a |
 | test.swift:177:10:177:10 | b | semmle.label | b |
 subpaths
+| calls.swift:31:17:31:30 | source(...) | calls.swift:28:19:28:19 | x | calls.swift:29:16:29:24 | ... + ... | calls.swift:31:10:31:31 | target(...) |
+| calls.swift:32:17:32:30 | source(...) | calls.swift:28:19:28:19 | x | calls.swift:29:16:29:24 | ... + ... | calls.swift:32:10:32:31 | target(...) |
 testFailures
 #select
+| calls.swift:8:14:8:14 | x | calls.swift:10:12:10:25 | source(...) | calls.swift:8:14:8:14 | x | $@ | calls.swift:10:12:10:25 | source(...) | source(...) |
+| calls.swift:17:10:17:17 | target(...) | calls.swift:15:16:15:29 | source(...) | calls.swift:17:10:17:17 | target(...) | $@ | calls.swift:15:16:15:29 | source(...) | source(...) |
+| calls.swift:31:10:31:31 | target(...) | calls.swift:31:17:31:30 | source(...) | calls.swift:31:10:31:31 | target(...) | $@ | calls.swift:31:17:31:30 | source(...) | source(...) |
+| calls.swift:32:10:32:31 | target(...) | calls.swift:32:17:32:30 | source(...) | calls.swift:32:10:32:31 | target(...) | $@ | calls.swift:32:17:32:30 | source(...) | source(...) |
+| calls.swift:38:14:38:14 | x | calls.swift:40:13:40:32 | source(...) | calls.swift:38:14:38:14 | x | $@ | calls.swift:40:13:40:32 | source(...) | source(...) |
+| calls.swift:50:14:50:14 | x | calls.swift:53:12:53:26 | source(...) | calls.swift:50:14:50:14 | x | $@ | calls.swift:53:12:53:26 | source(...) | source(...) |
+| calls.swift:51:14:51:14 | y | calls.swift:53:28:53:41 | source(...) | calls.swift:51:14:51:14 | y | $@ | calls.swift:53:28:53:41 | source(...) | source(...) |
 | implicit-self.swift:17:14:17:19 | ... .x | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:17:14:17:19 | ... .x | $@ | implicit-self.swift:16:18:16:31 | source(...) | source(...) |
 | implicit-self.swift:23:14:23:14 | x | implicit-self.swift:22:13:22:26 | source(...) | implicit-self.swift:23:14:23:14 | x | $@ | implicit-self.swift:22:13:22:26 | source(...) | source(...) |
 | implicit-self.swift:29:14:29:19 | ... .x | implicit-self.swift:28:13:28:26 | source(...) | implicit-self.swift:29:14:29:19 | ... .x | $@ | implicit-self.swift:28:13:28:26 | source(...) | source(...) |

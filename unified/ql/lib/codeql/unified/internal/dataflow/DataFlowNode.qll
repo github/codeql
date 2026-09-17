@@ -3,9 +3,20 @@ private import AllDataFlow
 private import codeql.unified.internal.ExprPositions
 
 private predicate hasIncomingValueAtCfgNode(Expr expr, ControlFlowNode cfgNode) {
-  exists(AstNode declOrAssignment |
-    hasIncomingValue(expr, declOrAssignment) and
-    cfgNode.injects(declOrAssignment)
+  exists(AstNode declOrAssignment | hasIncomingValue(expr, declOrAssignment) |
+    // In cases where the CFG node for 'expr' appears before its actual assignment,
+    // use the CFG node from the surrounding assignment-like node
+    cfgNode.injects(declOrAssignment.(Assignment))
+    or
+    // Variable declarations are pre-order and visit the target first.
+    // Use the after node.
+    cfgNode.isAfter(declOrAssignment.(VariableDeclaration))
+    or
+    // In other cases, it's a binding pattern whose CFG node can be used
+    // as its assignment time
+    not declOrAssignment instanceof Assignment and
+    not declOrAssignment instanceof VariableDeclaration and
+    cfgNode.injects(expr)
   )
 }
 
