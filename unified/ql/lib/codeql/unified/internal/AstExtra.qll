@@ -7,7 +7,7 @@ private import codeql.unified.internal.NameBindingPlugin
 
 module Public {
   /** An assignment, possibly a compound assignment. */
-  abstract class AssignmentImpl extends BinaryExpr {
+  abstract private class AssignmentImpl extends BinaryExpr {
     /** Gets the target of this assignment. */
     abstract Expr getTarget();
 
@@ -30,7 +30,10 @@ module Public {
   final class CompoundAssignExpr extends BinaryExpr, AssignmentImpl {
     CompoundAssignExpr() {
       this.getOperator().getValue() =
-        ["+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "|=", "^=", "&+=", "&-=", "&*="]
+        [
+          "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "|=", "^=", "&+=", "&-=", "&*=", "&&=",
+          "||=", "??="
+        ]
     }
 
     override Expr getTarget() { result = this.getLeft() }
