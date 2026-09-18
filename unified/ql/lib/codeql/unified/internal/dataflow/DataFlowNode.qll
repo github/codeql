@@ -177,8 +177,7 @@ class Node extends TDataFlowNode {
   AstNode getWrappedAstNode() {
     result = this.asExpr() or
     this = TStrictlyIncomingValue(result) or
-    this = TExprPostUpdateNode(result) or
-    this = TLocalVariableRefNode(result, _, _)
+    this = TExprPostUpdateNode(result)
   }
 
   /** Get a string representation of this element. */
@@ -221,6 +220,11 @@ class Node extends TDataFlowNode {
   Location getLocation() {
     result = this.getWrappedAstNode().getLocation()
     or
+    exists(AstNode repr |
+      this.isLocalVariableRef(repr, _, _) and
+      result = repr.getLocation()
+    )
+    or
     exists(LocalSsaDataFlowOutput::SsaNode node |
       this = TLocalSsaNode(node) and
       result = node.getLocation()
@@ -240,6 +244,12 @@ class Node extends TDataFlowNode {
   /** Gets the data-flow callable containing this data flow node. */
   DataFlowCallable getEnclosingCallableEx() {
     result.asSourceCallable() = this.getWrappedAstNode().getEnclosingCallable()
+    or
+    exists(AstNode repr, LocalVariable var, VariableRefKind kind, ControlFlowNode cfgNode |
+      this.isLocalVariableRef(repr, var, kind) and
+      performsVariableAccess(repr, var, kind, cfgNode) and
+      result.asSourceCallable() = cfgNode.getEnclosingCallable()
+    )
     or
     exists(LocalSsaDataFlowOutput::SsaNode node |
       this = TLocalSsaNode(node) and
