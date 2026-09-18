@@ -74,10 +74,53 @@ func t8() {
         func store() {
             field = source("t8.1")
         }
-        func read() {
+
+        func read1() {
             sink(field)  // no flow
             store()
             sink(field)  // $ hasValueFlow=t8.1
+        }
+
+        func read2() {
+            sink(field)  // no flow
+            store()
+            sink(self.field)  // $ hasValueFlow=t8.1
+        }
+
+        func read3() {
+            sink(field)  // no flow
+            self.store()
+            sink(field)  // $ MISSING: hasValueFlow=t8.1 // self.store() not yet resolved by call graph
+        }
+
+        func read4() {
+            sink(field)  // no flow
+            self.store()
+            sink(self.field)  // $ MISSING: hasValueFlow=t8.1 // self.store() not yet resolved by call graph
+        }
+
+        func read5() {
+            sink(self.field)  // no flow
+            store()
+            sink(field)  // $ hasValueFlow=t8.1
+        }
+
+        func read6() {
+            sink(self.field)  // no flow
+            store()
+            sink(self.field)  // $ hasValueFlow=t8.1
+        }
+
+        func read7() {
+            sink(self.field)  // no flow
+            self.store()
+            sink(field)  // $ MISSING: hasValueFlow=t8.1 // self.store() not yet resolved by call graph
+        }
+
+        func read8() {
+            sink(self.field)  // no flow
+            self.store()
+            sink(self.field)  // $ MISSING: hasValueFlow=t8.1 // self.store() not yet resolved by call graph
         }
     }
 }
