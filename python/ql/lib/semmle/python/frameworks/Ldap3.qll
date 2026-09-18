@@ -23,6 +23,15 @@ private module Ldap3 {
             .getReturn()
             .getMember("search")
             .getACall()
+      or
+      this =
+        API::moduleImport("ldap3")
+            .getMember("Connection")
+            .getReturn()
+            .getMember("extend")
+            .getMember("standard")
+            .getMember("paged_search")
+            .getACall()
     }
 
     override DataFlow::Node getFilter() {
