@@ -205,7 +205,7 @@ module Unified {
       exists(Expr callee | callee = this.getCallee() |
         result = callee.(Token).getValue() + "(...)"
         or
-        result = callee.(MemberAccessExpr).getMemberName() + "(...)"
+        result = "... ." + callee.(MemberAccessExpr).getMemberName() + "(...)"
         or
         not callee instanceof Token and
         not callee instanceof MemberAccessExpr and
