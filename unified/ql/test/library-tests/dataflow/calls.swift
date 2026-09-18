@@ -66,3 +66,18 @@ func t7() {
     target(b)
     sink(b.field)  // $ hasValueFlow=t7.1
 }
+
+func t8() {
+    class C {
+        var field: String = ""
+
+        func store() {
+            field = source("t8.1")
+        }
+        func read() {
+            sink(field)  // no flow
+            store()
+            sink(field)  // $ hasValueFlow=t8.1
+        }
+    }
+}
