@@ -12,8 +12,8 @@ bbStep
 | cfg.swift:33:5:33:33 | print(...) | 'print(...) : successor -> 0(+11)' |
 | cfg.swift:35:5:35:5 | OrPattern | 'OrPattern : match -> Block(+0)' |
 | cfg.swift:35:5:35:5 | OrPattern | 'OrPattern : no-match -> CatchClause(+2)' |
-| cfg.swift:37:11:37:39 | error3(...) | 'error3(...) : match -> Block(+0)' |
-| cfg.swift:37:11:37:39 | error3(...) | 'error3(...) : no-match -> CatchClause(+2)' |
+| cfg.swift:37:11:37:39 | ... .error3(...) | '... .error3(...) : match -> Block(+0)' |
+| cfg.swift:37:11:37:39 | ... .error3(...) | '... .error3(...) : no-match -> CatchClause(+2)' |
 | cfg.swift:39:11:39:20 |  | ' : match -> Block(+0)' |
 | cfg.swift:39:11:39:20 |  | ' : no-match -> CatchClause(+2)' |
 | cfg.swift:40:5:40:20 | print(...) | 'print(...) : successor -> 0(+4)' |
@@ -114,8 +114,8 @@ bbStep
 | cfg.swift:518:5:518:10 | ... += ... | '... += ... : successor -> x(+3)' |
 | cfg.swift:528:26:528:32 | ... ... ... | '... ... ... : empty -> continuation(+3)' |
 | cfg.swift:528:26:528:32 | ... ... ... | '... ... ... : non-empty -> i(+0)' |
-| cfg.swift:529:21:529:41 | yield(...) | 'yield(...) : successor -> continuation(+2)' |
-| cfg.swift:529:21:529:41 | yield(...) | 'yield(...) : successor -> i(-1)' |
+| cfg.swift:529:21:529:41 | ... .yield(...) | '... .yield(...) : successor -> continuation(+2)' |
+| cfg.swift:529:21:529:41 | ... .yield(...) | '... .yield(...) : successor -> i(-1)' |
 | cfg.swift:535:24:535:29 | stream | 'stream : non-empty -> i(+0)' |
 | cfg.swift:536:9:536:16 | print(...) | 'print(...) : successor -> i(-1)' |
 | cfg.swift:542:5:542:5 | x | 'x : non-null -> ReturnExpr(-1)' |
@@ -162,5 +162,5 @@ nonSimple
 | cfg.swift:10:1:10:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyError -^ BaseType -V Error' |
 | cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |
 | cfg.swift:390:1:390:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Derived -^ BaseType -V C' |
-| cfg.swift:527:13:527:16 | Task | 'Task -^ ... .detached -^ Argument -V FunctionExpr -^ detached(...)' |
+| cfg.swift:527:13:527:16 | Task | 'Task -^ ... .detached -^ Argument -V FunctionExpr -^ ... .detached(...)' |
 | cfg.swift:569:1:569:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyProcotolImpl -^ BaseType -V MyProtocol' |

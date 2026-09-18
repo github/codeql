@@ -34,7 +34,7 @@ func tryCatch(x : Int) -> Int {
 
   } catch MyError.error1 , MyError.error2 where isZero(x: x) { // $ bbStep='OrPattern : match -> Block(+0)' bbStep='OrPattern : no-match -> CatchClause(+2)' nonSimple='CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern'
     return 0
-  } catch MyError.error3(let withParam) { // $ bbStep='error3(...) : match -> Block(+0)' bbStep='error3(...) : no-match -> CatchClause(+2)'
+  } catch MyError.error3(let withParam) { // $ bbStep='... .error3(...) : match -> Block(+0)' bbStep='... .error3(...) : no-match -> CatchClause(+2)'
     return withParam
   } catch is MyError { // $ bbStep=' : match -> Block(+0)' bbStep=' : no-match -> CatchClause(+2)'
     print("MyError") // $ bbStep='print(...) : successor -> 0(+4)'
@@ -524,9 +524,9 @@ func testAvailable() -> Int { // $ noCfg
 func testAsyncFor () async { // $ noCfg
     var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), { // $ bbContinues='Block goto Task(+2)'
         continuation in // $ bbContinues='continuation goto Block(-1)'
-            Task.detached { // $ nonSimple='Task -^ ... .detached -^ Argument -V FunctionExpr -^ detached(...)'
+            Task.detached { // $ nonSimple='Task -^ ... .detached -^ Argument -V FunctionExpr -^ ... .detached(...)'
                 for i in 1...100 { // $ bbStep='... ... ... : empty -> continuation(+3)' bbStep='... ... ... : non-empty -> i(+0)'
-                    continuation.yield(i) // $ bbStep='yield(...) : successor -> continuation(+2)' bbStep='yield(...) : successor -> i(-1)'
+                    continuation.yield(i) // $ bbStep='... .yield(...) : successor -> continuation(+2)' bbStep='... .yield(...) : successor -> i(-1)'
                 }
                 continuation.finish()
             }

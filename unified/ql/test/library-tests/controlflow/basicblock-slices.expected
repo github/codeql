@@ -19,7 +19,7 @@
 | 21 | cfg.swift:21:11:21:17 | MyError | 'MyError -^ ... .error1 -^ ThrowExpr' |
 | 23 | cfg.swift:23:3:25:3 | GuardIfStmt | 'GuardIfStmt -V x -> 0 -^ ... <= ...' |
 | 23 | cfg.swift:23:21:25:3 | Block | 'Block' |
-| 24 | cfg.swift:24:11:24:17 | MyError | 'MyError -^ ... .error3 -> Argument -V x -> 1 -^ ... + ... -^ error3(...) -^ ThrowExpr' |
+| 24 | cfg.swift:24:11:24:17 | MyError | 'MyError -^ ... .error3 -> Argument -V x -> 1 -^ ... + ... -^ ... .error3(...) -^ ThrowExpr' |
 | 28 | cfg.swift:28:1:45:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 28 | cfg.swift:28:15:28:15 | x | 'x -^ Block' |
 | 29 | cfg.swift:29:3:43:3 | TryExpr | 'TryExpr -V Block' |
@@ -31,7 +31,7 @@
 | 35 | cfg.swift:35:5:37:3 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |
 | 35 | cfg.swift:35:62:37:3 | Block | 'Block' |
 | 36 | cfg.swift:36:12:36:12 | 0 | '0 -^ ReturnExpr' |
-| 37 | cfg.swift:37:5:39:3 | CatchClause | 'CatchClause -V MyError -^ ... .error3 -> Argument -V withParam -^ ExprPattern -^ error3(...)' |
+| 37 | cfg.swift:37:5:39:3 | CatchClause | 'CatchClause -V MyError -^ ... .error3 -> Argument -V withParam -^ ExprPattern -^ ... .error3(...)' |
 | 37 | cfg.swift:37:41:39:3 | Block | 'Block' |
 | 38 | cfg.swift:38:12:38:20 | withParam | 'withParam -^ ReturnExpr' |
 | 39 | cfg.swift:39:5:41:3 | CatchClause | 'CatchClause -V ' |
@@ -97,24 +97,24 @@
 | 112 | cfg.swift:112:3:112:18 | VariableDeclaration | 'VariableDeclaration -V c -> C -> Argument -V 42 -^ C(...)' |
 | 113 | cfg.swift:113:3:113:18 | VariableDeclaration | 'VariableDeclaration -V n1 -> c -^ ... .myInt' |
 | 114 | cfg.swift:114:3:114:23 | VariableDeclaration | 'VariableDeclaration -V n2 -> c -^ ... .self -^ ... .myInt' |
-| 115 | cfg.swift:115:3:115:23 | VariableDeclaration | 'VariableDeclaration -V n3 -> c -^ ... .getMyInt -^ getMyInt(...)' |
-| 116 | cfg.swift:116:3:116:28 | VariableDeclaration | 'VariableDeclaration -V n4 -> c -^ ... .self -^ ... .getMyInt -^ getMyInt(...)' |
+| 115 | cfg.swift:115:3:115:23 | VariableDeclaration | 'VariableDeclaration -V n3 -> c -^ ... .getMyInt -^ ... .getMyInt(...)' |
+| 116 | cfg.swift:116:3:116:28 | VariableDeclaration | 'VariableDeclaration -V n4 -> c -^ ... .self -^ ... .getMyInt -^ ... .getMyInt(...)' |
 | 117 | cfg.swift:117:3:117:22 | VariableDeclaration | 'VariableDeclaration -V n5 -> param -^ ... .myInt' |
 | 118 | cfg.swift:118:3:118:27 | VariableDeclaration | 'VariableDeclaration -V n6 -> param -^ ... .self -^ ... .myInt' |
-| 120 | cfg.swift:120:3:120:32 | VariableDeclaration | 'VariableDeclaration -V n8 -> param -^ ... .self -^ ... .getMyInt -^ getMyInt(...)' |
+| 120 | cfg.swift:120:3:120:32 | VariableDeclaration | 'VariableDeclaration -V n8 -> param -^ ... .self -^ ... .getMyInt -^ ... .getMyInt(...)' |
 | 122 | cfg.swift:122:3:122:27 | VariableDeclaration | 'VariableDeclaration -V n9 -> inoutParam -^ ... .myInt' |
-| 123 | cfg.swift:123:3:123:27 | VariableDeclaration | 'VariableDeclaration -V n7 -> param -^ ... .getMyInt -^ getMyInt(...)' |
+| 123 | cfg.swift:123:3:123:27 | VariableDeclaration | 'VariableDeclaration -V n7 -> param -^ ... .getMyInt -^ ... .getMyInt(...)' |
 | 124 | cfg.swift:124:3:124:33 | VariableDeclaration | 'VariableDeclaration -V n10 -> inoutParam -^ ... .self -^ ... .myInt' |
-| 125 | cfg.swift:125:3:125:33 | VariableDeclaration | 'VariableDeclaration -V n11 -> inoutParam -^ ... .getMyInt -^ getMyInt(...)' |
-| 126 | cfg.swift:126:3:126:38 | VariableDeclaration | 'VariableDeclaration -V n12 -> inoutParam -^ ... .self -^ ... .getMyInt -^ getMyInt(...)' |
+| 125 | cfg.swift:125:3:125:33 | VariableDeclaration | 'VariableDeclaration -V n11 -> inoutParam -^ ... .getMyInt -^ ... .getMyInt(...)' |
+| 126 | cfg.swift:126:3:126:38 | VariableDeclaration | 'VariableDeclaration -V n12 -> inoutParam -^ ... .self -^ ... .getMyInt -^ ... .getMyInt(...)' |
 | 128 | cfg.swift:128:3:128:22 | VariableDeclaration | 'VariableDeclaration -V n13 -> opt -^ ... ! -^ ... .myInt' |
 | 129 | cfg.swift:129:3:129:27 | VariableDeclaration | 'VariableDeclaration -V n14 -> opt -^ ... ! -^ ... .self -^ ... .myInt' |
-| 130 | cfg.swift:130:3:130:27 | VariableDeclaration | 'VariableDeclaration -V n15 -> opt -^ ... ! -^ ... .getMyInt -^ getMyInt(...)' |
-| 131 | cfg.swift:131:3:131:32 | VariableDeclaration | 'VariableDeclaration -V n16 -> opt -^ ... ! -^ ... .self -^ ... .getMyInt -^ getMyInt(...)' |
+| 130 | cfg.swift:130:3:130:27 | VariableDeclaration | 'VariableDeclaration -V n15 -> opt -^ ... ! -^ ... .getMyInt -^ ... .getMyInt(...)' |
+| 131 | cfg.swift:131:3:131:32 | VariableDeclaration | 'VariableDeclaration -V n16 -> opt -^ ... ! -^ ... .self -^ ... .getMyInt -^ ... .getMyInt(...)' |
 | 133 | cfg.swift:133:3:133:22 | VariableDeclaration | 'VariableDeclaration -V n17 -> opt -^ ... .myInt' |
 | 134 | cfg.swift:134:3:134:27 | VariableDeclaration | 'VariableDeclaration -V n18 -> opt -^ ... .self -^ ... .myInt' |
-| 135 | cfg.swift:135:3:135:27 | VariableDeclaration | 'VariableDeclaration -V n19 -> opt -^ ... .getMyInt -^ getMyInt(...)' |
-| 136 | cfg.swift:136:3:136:32 | VariableDeclaration | 'VariableDeclaration -V n20 -> opt -^ ... .self -^ ... .getMyInt -^ getMyInt(...)' |
+| 135 | cfg.swift:135:3:135:27 | VariableDeclaration | 'VariableDeclaration -V n19 -> opt -^ ... .getMyInt -^ ... .getMyInt(...)' |
+| 136 | cfg.swift:136:3:136:32 | VariableDeclaration | 'VariableDeclaration -V n20 -> opt -^ ... .self -^ ... .getMyInt -^ ... .getMyInt(...)' |
 | 139 | cfg.swift:139:1:166:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 139 | cfg.swift:139:15:139:15 | x | 'x -^ Block' |
 | 140 | cfg.swift:140:3:141:12 | ForEachStmt | 'ForEachStmt -V 0 -> 10 -^ ... ... ...' |
@@ -311,7 +311,7 @@
 | 372 | cfg.swift:372:12:372:12 | c | 'c -^ ReturnExpr' |
 | 376 | cfg.swift:376:1:378:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 376 | cfg.swift:376:19:376:19 | c | 'c -^ Block' |
-| 377 | cfg.swift:377:10:377:10 | c | 'c -^ ... .getOptional -^ getOptional(...) -^ ... .getMyInt -^ getMyInt(...) -^ ReturnExpr' |
+| 377 | cfg.swift:377:10:377:10 | c | 'c -^ ... .getOptional -^ ... .getOptional(...) -^ ... .getMyInt -^ ... .getMyInt(...) -^ ReturnExpr' |
 | 380 | cfg.swift:380:1:384:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 380 | cfg.swift:380:18:380:18 | x | 'x -> y -^ Block' |
 | 381 | cfg.swift:381:10:383:3 | Block | 'Block' |
@@ -323,7 +323,7 @@
 | 390 | cfg.swift:390:1:394:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Derived -^ BaseType -V C' |
 | 391 | cfg.swift:391:3:393:3 | Block | 'Block' |
 | 391 | cfg.swift:391:3:393:3 | ConstructorDeclaration | 'ConstructorDeclaration' |
-| 392 | cfg.swift:392:5:392:9 |  | ' -^ ... .init -> Argument -V 0 -^ init(...)' |
+| 392 | cfg.swift:392:5:392:9 |  | ' -^ ... .init -> Argument -V 0 -^ ... .init(...)' |
 | 396 | cfg.swift:396:1:404:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 396 | cfg.swift:396:21:396:21 | x | 'x -^ Block' |
 | 397 | cfg.swift:397:3:402:3 | TryExpr | 'TryExpr -V Block' |
@@ -407,15 +407,15 @@
 | 521 | cfg.swift:521:10:521:10 | x | 'x -^ ReturnExpr' |
 | 524 | cfg.swift:524:1:538:1 | Block | 'Block' |
 | 524 | cfg.swift:524:1:538:1 | FunctionDeclaration | 'FunctionDeclaration' |
-| 525 | cfg.swift:525:5:533:6 | VariableDeclaration | 'VariableDeclaration -V stream -> AsyncStream -> Argument -V Int -^ ... .self -> Argument -V . -^ ... .bufferingNewest -> Argument -V 5 -^ bufferingNewest(...) -> Argument -V FunctionExpr -^ AsyncStream(...)' |
+| 525 | cfg.swift:525:5:533:6 | VariableDeclaration | 'VariableDeclaration -V stream -> AsyncStream -> Argument -V Int -^ ... .self -> Argument -V . -^ ... .bufferingNewest -> Argument -V 5 -^ ... .bufferingNewest(...) -> Argument -V FunctionExpr -^ AsyncStream(...)' |
 | 525 | cfg.swift:525:78:533:5 | Block | 'Block' |
 | 526 | cfg.swift:526:9:526:20 | continuation | 'continuation' |
-| 527 | cfg.swift:527:13:527:16 | Task | 'Task -^ ... .detached -^ Argument -V FunctionExpr -^ detached(...)' |
+| 527 | cfg.swift:527:13:527:16 | Task | 'Task -^ ... .detached -^ Argument -V FunctionExpr -^ ... .detached(...)' |
 | 527 | cfg.swift:527:27:532:13 | Block | 'Block' |
 | 528 | cfg.swift:528:17:530:17 | ForEachStmt | 'ForEachStmt -V 1 -> 100 -^ ... ... ...' |
 | 528 | cfg.swift:528:21:528:21 | i | 'i -> Block' |
-| 529 | cfg.swift:529:21:529:32 | continuation | 'continuation -^ ... .yield -> Argument -V i -^ yield(...)' |
-| 531 | cfg.swift:531:17:531:28 | continuation | 'continuation -^ ... .finish -^ finish(...)' |
+| 529 | cfg.swift:529:21:529:32 | continuation | 'continuation -^ ... .yield -> Argument -V i -^ ... .yield(...)' |
+| 531 | cfg.swift:531:17:531:28 | continuation | 'continuation -^ ... .finish -^ ... .finish(...)' |
 | 535 | cfg.swift:535:5:537:5 | ForEachStmt | 'ForEachStmt -V stream' |
 | 535 | cfg.swift:535:19:535:19 | i | 'i -> Block' |
 | 536 | cfg.swift:536:9:536:13 | print | 'print -> Argument -V i -^ print(...)' |
@@ -452,10 +452,10 @@
 | 576 | cfg.swift:576:11:576:13 | arg | 'arg -^ Block' |
 | 578 | cfg.swift:578:1:583:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 578 | cfg.swift:578:30:578:30 | x | 'x -> y -^ Block' |
-| 579 | cfg.swift:579:2:579:5 | sink | 'sink -> Argument -V x -^ ... .source -^ source(...) -^ sink(...)' |
-| 580 | cfg.swift:580:2:580:5 | sink | 'sink -> Argument -V y -^ ... .source -^ source(...) -^ sink(...)' |
-| 581 | cfg.swift:581:2:581:5 | sink | 'sink -> Argument -V getMyProtocol -^ getMyProtocol(...) -^ ... .source -^ source(...) -^ sink(...)' |
-| 582 | cfg.swift:582:2:582:5 | sink | 'sink -> Argument -V getMyProtocolImpl -^ getMyProtocolImpl(...) -^ ... .source -^ source(...) -^ sink(...)' |
+| 579 | cfg.swift:579:2:579:5 | sink | 'sink -> Argument -V x -^ ... .source -^ ... .source(...) -^ sink(...)' |
+| 580 | cfg.swift:580:2:580:5 | sink | 'sink -> Argument -V y -^ ... .source -^ ... .source(...) -^ sink(...)' |
+| 581 | cfg.swift:581:2:581:5 | sink | 'sink -> Argument -V getMyProtocol -^ getMyProtocol(...) -^ ... .source -^ ... .source(...) -^ sink(...)' |
+| 582 | cfg.swift:582:2:582:5 | sink | 'sink -> Argument -V getMyProtocolImpl -^ getMyProtocolImpl(...) -^ ... .source -^ ... .source(...) -^ sink(...)' |
 | 585 | cfg.swift:585:1:593:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 585 | cfg.swift:585:23:585:23 | x | 'x -^ Block' |
 | 586 | cfg.swift:586:3:589:3 | VariableDeclaration | 'VariableDeclaration -V a -> SwitchExpr -V x' |
