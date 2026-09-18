@@ -1,0 +1,2 @@
+format *ARGS=".":
+    npx prettier --write {{ ARGS }}

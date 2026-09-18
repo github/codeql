@@ -1,0 +1,12 @@
+import "../justfile"
+
+# A whole language test suite is slow and needs a CodeQL CLI, so it only runs when
+# asked for by name.
+explicit_verbs := ['test']
+
+base_flags := ['--include-location-in-star']
+
+all_checks := default_db_checks ++ ['--check-undefined-labels', '--check-unused-labels', '--consistency-queries=' + consistency_queries]
+
+[no-cd]
+test *ARGS=".": (_codeql_test "cpp" (base_flags ++ prepend('--all-checks=', all_checks) ++ ARGS))
