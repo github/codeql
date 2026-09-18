@@ -1,0 +1,10 @@
+import '../lib.just'
+import? '../../buildutils-internal/just/cpp-coding-standards.just'
+
+[group('build')]
+build: (_build_dist "cpp")
+
+roots := [source_dir() / 'ql/test', SEMMLE_CODE / 'semmlecode-cpp-tests']
+
+[group('test')]
+language-tests *EXTRA_ARGS: (_language_tests (roots ++ EXTRA_ARGS))
