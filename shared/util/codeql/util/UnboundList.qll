@@ -53,6 +53,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   /** Gets the rank of element `e`, which is used internally in the string encoding. */
   int getRank(Element e) { e = DenseRank<DenseRankInput>::denseRank(result) }
 
+  /** Gets the ASCII printable excluding `.` with zero-based index `code`. */
   pragma[nomagic]
   private string interpretAsciiCode(int code) {
     exists(int dot, int c |
@@ -65,14 +66,18 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   private int asciiCodes() { result = strictcount(interpretAsciiCode(_)) }
 
+  /**
+   * Gets the `i`th digit (modulo `asciiCodes()`) in a base-`asciiCodes()` integer
+   * representation of `getRank(e)`.
+   */
   private int getAsciiCodePart(Element e, int i) {
     result = getRank(e) and
     i = 0
     or
     exists(int mid |
       mid = getAsciiCodePart(e, i - 1) and
-      mid > 0 and
-      result = mid / asciiCodes()
+      result = mid / asciiCodes() and
+      result > 0
     )
   }
 
