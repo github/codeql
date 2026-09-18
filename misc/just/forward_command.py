@@ -96,22 +96,31 @@ def list_value(assignments, name):
     return []
 
 
+def is_variadic(recipe):
+    parameters = recipe["parameters"]
+    return bool(parameters and parameters[-1]["kind"] in ("star", "plus"))
+
+
 def accepts(recipe, argc):
     """Check whether a recipe can be called with a given number of arguments."""
     parameters = recipe["parameters"]
-    variadic = parameters and parameters[-1]["kind"] in ("star", "plus")
     required = sum(
         1
         for parameter in parameters
         if parameter["default"] is None and parameter["kind"] != "star"
     )
-    return required <= argc and (variadic or argc <= len(parameters))
+    return required <= argc and (is_variadic(recipe) or argc <= len(parameters))
 
 
 def implements(dump, command, argc):
     """Return the recipe a justfile runs for a command, if it has a usable one."""
     recipes = dump["recipes"]
-    recipe = recipes.get(dump["aliases"].get(command, command))
+    # An alias dumps as an object rather than as its target, so the name has to be read
+    # out of it. Resolved once and used throughout: a verb reached by an alias is the
+    # verb, so the justfile's own answer to it is named after the target too.
+    alias = dump["aliases"].get(command)
+    name = alias["target"] if alias else command
+    recipe = recipes.get(name)
     if recipe is None or recipe["private"]:
         return None
     if any(
@@ -120,7 +129,7 @@ def implements(dump, command, argc):
         # Here the plain name is the forwarder's own, so it says nothing about what this
         # directory does. A justfile that both forwards and answers the command itself
         # spells its own answer `_root_<command>`, the one name the two can share.
-        recipe = recipes.get(f"{ROOT_PREFIX}{command}")
+        recipe = recipes.get(f"{ROOT_PREFIX}{name}")
         if recipe is None:
             return None
     return recipe if accepts(recipe, argc) else None
@@ -136,12 +145,14 @@ def dump_all(justfiles):
     with ThreadPoolExecutor(PROBE_WORKERS) as executor:
         dumps = list(executor.map(dump_justfile, justfiles))
     parsed = []
+    failed = False
     for justfile, (dump, failure) in zip(justfiles, dumps):
         if dump is None:
+            failed = True
             error(f"could not read {justfile}:\n{failure}")
         else:
             parsed.append((justfile, dump))
-    return parsed
+    return parsed, failed
 
 
 def git(directory, *args):
@@ -154,28 +165,26 @@ def git(directory, *args):
     )
     if result.returncode != 0:
         error(f"`git {' '.join(args)}` failed in {directory}:\n{result.stderr.strip()}")
-        return []
-    return result.stdout.splitlines()
+        return [], True
+    return result.stdout.splitlines(), False
 
 
 def submodules(directory):
     """List the initialised submodules under a directory."""
-    toplevel = git(directory, "rev-parse", "--show-toplevel")
+    toplevel, failed = git(directory, "rev-parse", "--show-toplevel")
     if not toplevel or not (Path(toplevel[0]) / ".gitmodules").exists():
-        return []
-    paths = [
-        Path(toplevel[0]) / line.split(" ", 1)[1]
-        for line in git(
-            toplevel[0], "config", "--file", ".gitmodules", "--get-regexp", r"\.path$"
-        )
-    ]
+        return [], failed
+    lines, config_failed = git(
+        toplevel[0], "config", "--file", ".gitmodules", "--get-regexp", r"\.path$"
+    )
+    paths = [Path(toplevel[0]) / line.split(" ", 1)[1] for line in lines]
     within = Path(directory).resolve()
     return [
         Path(directory) / os.path.relpath(path, within)
         for path in paths
         # An uninitialised submodule is an empty directory, with nothing to run.
         if path.is_relative_to(within) and (path / ".git").exists()
-    ]
+    ], failed or config_failed
 
 
 def find_justfiles(directory):
@@ -186,21 +195,21 @@ def find_justfiles(directory):
     worth finding.
     """
     justfiles = set()
-    for repository in [directory, *submodules(directory)]:
-        justfiles.update(
-            Path(repository) / line
-            for line in git(
-                repository,
-                "ls-files",
-                "--cached",
-                "--others",
-                "--exclude-standard",
-                "--",
-                "justfile",
-                "*/justfile",
-            )
+    repositories, failed = submodules(directory)
+    for repository in [directory, *repositories]:
+        lines, git_failed = git(
+            repository,
+            "ls-files",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+            "--",
+            "justfile",
+            "*/justfile",
         )
-    return justfiles
+        failed = failed or git_failed
+        justfiles.update(Path(repository) / line for line in lines)
+    return justfiles, failed
 
 
 def invocation_path(path, *, like):
@@ -225,7 +234,8 @@ def find_justfiles_above(command, arg):
     ]
     found = []
     seen = []
-    for justfile, dump in dump_all(candidates):
+    parsed, failed = dump_all(candidates)
+    for justfile, dump in parsed:
         # A justfile sitting exactly on the argument is called without it, as the
         # argument would only repeat where it already is.
         argc = 0 if justfile.parent.resolve() == directory else 1
@@ -236,13 +246,14 @@ def find_justfiles_above(command, arg):
         # Two repositories that each define a root recipe are not that case: the text
         # can match while the workspace, the tool it runs and the paths it excludes all
         # differ, so they have to stay apart. Nothing here says so. They are told apart
-        # only by the doc comment one of them happens to carry, which means dropping
-        # `doc` from this comparison silently discards an invocation unless a real
-        # discriminator arrives in the same change.
+        # only by whatever the two happened not to write identically, which today is a
+        # doc comment on one of them, so dropping a field from this comparison silently
+        # discards an invocation unless a real discriminator arrives in the same change.
+        # `TestFindJustfilesAbove` holds both shapes.
         if recipe is not None and recipe not in seen:
             seen.append(recipe)
             found.append((justfile, recipe))
-    return found
+    return found, failed
 
 
 def find_justfiles_below(command, directory, covered=()):
@@ -257,10 +268,13 @@ def find_justfiles_below(command, directory, covered=()):
     but ask to be named rather than found.
     """
     # The justfile at `directory` is covered by the search above it.
-    candidates = sorted(find_justfiles(directory) - {Path(directory) / "justfile"})
+    justfiles, failed = find_justfiles(directory)
+    candidates = sorted(justfiles - {Path(directory) / "justfile"})
     matches = []
     opted_out = []
-    for justfile, dump in dump_all(candidates):
+    parsed, dump_failed = dump_all(candidates)
+    failed = failed or dump_failed
+    for justfile, dump in parsed:
         recipe = implements(dump, command, 0)
         if recipe is None:
             continue
@@ -277,7 +291,7 @@ def find_justfiles_below(command, directory, covered=()):
             continue
         contributed.setdefault(justfile.parent, []).append(recipe)
         found.append((justfile, recipe))
-    return sorted(found, key=lambda match: match[0]), sorted(opted_out)
+    return sorted(found, key=lambda match: match[0]), sorted(opted_out), failed
 
 
 def resolve(command, arg):
@@ -288,18 +302,18 @@ def resolve(command, arg):
     on. One found below gets its own directory instead, as there the argument only said
     where to look. Justfiles below that asked to be named are returned separately.
     """
-    above = find_justfiles_above(command, arg)
-    resolved = [(justfile, arg, recipe["name"]) for justfile, recipe in above]
+    above, failed = find_justfiles_above(command, arg)
+    resolved = [(justfile, arg, recipe) for justfile, recipe in above]
     opted_out = []
     if os.path.isdir(arg):
-        below, opted_out = find_justfiles_below(
+        below, opted_out, below_failed = find_justfiles_below(
             command, arg, [recipe for _, recipe in above]
         )
+        failed = failed or below_failed
         resolved += [
-            (justfile, str(justfile.parent), recipe["name"])
-            for justfile, recipe in below
+            (justfile, str(justfile.parent), recipe) for justfile, recipe in below
         ]
-    return resolved, opted_out
+    return resolved, opted_out, failed
 
 
 def report_opted_out(command, justfiles, *, ran):
@@ -334,6 +348,19 @@ def invoke_just(cwd, args):
     return 0
 
 
+def invocation_argument_groups(recipe, pos_args):
+    """Split arguments into what the recipe can be called with at once.
+
+    Every recipe reachable from a verb today is variadic or takes none, so this only
+    ever yields one group. It is here because the arguments are paths and running the
+    verb once per path is what a fixed-arity recipe would mean, where passing them
+    together would fail on arity alone and say nothing useful about why.
+    """
+    if is_variadic(recipe) or len(pos_args) <= 1:
+        return [pos_args]
+    return [[arg] for arg in pos_args]
+
+
 def forward(cmd, args):
     """Forward a command to language-specific justfiles."""
     is_non_positional = re.compile(r"^(-.*|\+|[A-Z_][A-Z_0-9]*=.*)$")
@@ -342,15 +369,25 @@ def forward(cmd, args):
 
     justfiles = {}
     opted_out = []
+    resolution_failed = False
     for arg in positional_args or ["."]:
-        resolved, skipped = resolve(cmd, arg)
+        resolved, skipped, failed = resolve(cmd, arg)
         opted_out += skipped
+        resolution_failed = resolution_failed or failed
         if not resolved:
+            # A candidate that could not be read is reported below rather than here:
+            # saying nothing matched would blame the argument for a broken justfile.
+            if failed:
+                continue
             error(f"No justfile found for {cmd} on {arg}")
             report_opted_out(cmd, skipped, ran=False)
             return 1
         for justfile, justfile_arg, recipe in resolved:
             justfiles.setdefault(justfile, (recipe, []))[1].append(justfile_arg)
+
+    if resolution_failed:
+        report_opted_out(cmd, opted_out, ran=False)
+        return 1
 
     invocations = []
     for justfile, (recipe, pos_args) in justfiles.items():
@@ -359,10 +396,11 @@ def forward(cmd, args):
         whole_directory = str(justfile.parent)
         if whole_directory in pos_args:
             pos_args = [whole_directory]
-        cwd, just_args = get_just_context(justfile, recipe, flags, pos_args)
-        prefix = f"cd {cwd}; " if cwd else ""
-        print(f"-> {prefix}just {' '.join(just_args)}")
-        invocations.append((cwd, just_args))
+        for group in invocation_argument_groups(recipe, pos_args):
+            cwd, just_args = get_just_context(justfile, recipe["name"], flags, group)
+            prefix = f"cd {cwd}; " if cwd else ""
+            print(f"-> {prefix}just {' '.join(just_args)}")
+            invocations.append((cwd, just_args))
 
     report_opted_out(cmd, opted_out, ran=True)
 

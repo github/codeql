@@ -15,7 +15,10 @@ from pathlib import Path
 
 
 def main():
-    argv = sys.argv[1:]
+    # Blank arguments are dropped before the count is taken: one comes of a caller
+    # interpolating a variable that was never set, and a list of nothing but those is no
+    # arguments at all rather than a root to find a justfile above.
+    argv = [arg for arg in sys.argv[1:] if arg]
     if not argv:
         print("Usage: language_tests.py ROOT [ARG...]", file=sys.stderr)
         return 1
@@ -25,9 +28,7 @@ def main():
     # the internal checkout, so relativize them there to keep command lines readable.
     # Anything else (flags, environment assignments, relative paths) is passed verbatim.
     args = [
-        os.path.relpath(arg, semmle_code) if os.path.isabs(arg) else arg
-        for arg in argv
-        if arg
+        os.path.relpath(arg, semmle_code) if os.path.isabs(arg) else arg for arg in argv
     ]
 
     just = os.environ.get("JUST_EXECUTABLE", "just")

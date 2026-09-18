@@ -57,11 +57,15 @@ therefore reads its default `.` as the whole repository rather than the director
 caller is in, so one that does its own work needs `[no-cd]` itself.
 
 Being a recipe like any other, a `_root_<verb>` is inherited by a justfile importing the
-one defining it, which is how the internal repository gets this one for free. It runs
-once either way, as the two spellings are the same recipe. A root that defines its own
-instead replaces it, and then both run, each over the files of the repository that
-defines it: bazel formatting asks bazel from the root of the checkout the files belong
-to, so that a repository formats its own files with its own pin.
+one defining it. It runs once either way, as the two spellings are the same recipe. A
+root that defines its own instead replaces it, and then both run, each over the files of
+the repository that defines it: bazel formatting asks bazel from the root of the checkout
+the files belong to, so that a repository formats its own files with its own pin.
+
+Nothing in a justfile says which of the two happened, so they are told apart by comparing
+the recipes. A root whose own copy is identical to the one it would otherwise inherit,
+down to the comment above it, is therefore taken for the inherited one and runs once.
+Copy such a recipe to start from if it helps, but leave its comment behind.
 
 That last part is arranged by variables rather than by recipes. `set
 allow-duplicate-variables` in `defs.just` lets an importing justfile assign a variable
@@ -186,3 +190,17 @@ With no terminal to ask — a pipe, a log, a shell without `stty` — it falls b
 fixed 57 columns, so logs and CI output are the same width every time. That is one
 branch rather than a platform test: `just` runs `sh` everywhere, so Windows takes
 whichever arm fits rather than a path of its own.
+
+# Tests
+
+The scripts here have tests, run by `just test misc/just`, by `bazel test
+//misc/just/...`, or by CI on any change under this directory. They are plain
+`unittest`: this is the layer that runs other tooling, so it should not need a package
+manager to check itself.
+
+They exist for the class of bug that leaves no trace. An exclusion that stops excluding,
+a verb that stops being found, an argument that arrives split in two — each of those
+still exits zero, and the only symptom is work quietly not done. So the tests come in
+pairs: one asserting the quiet outcome, and one positive control asserting the same
+setup can produce the loud one. Without the second, a passing first test is also what a
+test that runs nothing at all looks like.

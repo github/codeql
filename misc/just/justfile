@@ -1,4 +1,15 @@
+import "defs.just"
+
 [no-cd]
 [positional-arguments]
 format *ARGS=".":
     npx prettier --write "$@"
+
+# Test the tooling in this directory.
+# Arguments are `unittest` ones, so a test file or a dotted test name rather than a
+# directory. A path given stays valid as this does not change directory: `PYTHONPATH` is
+# what lets the tests import the modules they are about, wherever they are run from.
+[no-cd]
+[positional-arguments]
+@test *ARGS=['discover', '-s', source_dir()]:
+    PYTHONPATH="{{ source_dir() }}" {{ py }} -m unittest "$@"
