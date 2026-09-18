@@ -58,6 +58,12 @@ predicate performsVariableAccess(
     or
     (hasIncomingValueAtCfgNode(access, cfgNode) or hasPostUpdate(access, cfgNode)) and
     kind.isPostUpdate()
+    or
+    exists(CallExpr call |
+      access = call.getCallee() and
+      cfgNode.isAfter(call) and
+      kind.isPostUpdate()
+    )
   )
   or
   exists(Callable callable |
