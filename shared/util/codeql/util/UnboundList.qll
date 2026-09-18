@@ -220,6 +220,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     UnboundList nil() { result.isEmpty() }
 
     /** Gets the singleton list `e`. */
+    bindingset[e]
+    pragma[inline_late]
     UnboundList singleton(Element e) { result = encode(e) + "." }
 
     /**
