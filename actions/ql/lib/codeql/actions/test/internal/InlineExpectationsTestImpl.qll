@@ -6,7 +6,7 @@ module Impl implements InlineExpectationsTestSig {
   class ExpectationComment extends YamlNode {
     ExpectationComment() { this.toString().matches("%$ %") }
 
-    string getContents() { result = "$ " + this.toString().regexpCapture(".*\\$ (.*)", 1) }
+    string getContents() { result = this.toString().regexpCapture(".*(\\$ .*)", 1) }
   }
 
   class Location = L::Location;
