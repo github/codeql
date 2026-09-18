@@ -62,28 +62,28 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "combine"
+        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩⟨parameter⟩"
+          name_node: identifier "combine" source="combine"
           parameter:
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Int"
-              pattern: identifier "a"
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Int"
-              pattern: identifier "b"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩,"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "a" source="a"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "b" source="b"
           body:
-            block
+            block source="func combine(_ a: Int, _ b: Int) {\n  ⟨stmt⟩\n}"
               stmt:
-                unresolved_operator_sequence
+                unresolved_operator_sequence source="⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩"
                   element:
-                    identifier "_"
-                    infix_operator "="
-                    identifier "a"
-                    infix_operator ".&"
-                    identifier "b"
+                    identifier "_" source="_"
+                    infix_operator "=" source="="
+                    identifier "a" source="a"
+                    infix_operator ".&" source=".&"
+                    identifier "b" source="b"

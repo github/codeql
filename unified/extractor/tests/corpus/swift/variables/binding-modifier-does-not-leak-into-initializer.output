@@ -61,23 +61,23 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern: identifier "x"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "x" source="x"
           value:
-            switch_expr
-              value: identifier "y"
+            switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n}"
+              value: identifier "y" source="y"
               case:
-                switch_case
-                  pattern: identifier "someConstant"
+                switch_case source="⟨body⟩⟨pattern⟩"
+                  pattern: identifier "someConstant" source="someConstant"
                   body:
-                    block
-                      stmt: int_literal "1"
-                switch_case
+                    block source="case someConstant: ⟨stmt⟩"
+                      stmt: int_literal "1" source="1"
+                switch_case source="⟨body⟩"
                   body:
-                    block
-                      stmt: int_literal "2"
+                    block source="default: ⟨stmt⟩"
+                      stmt: int_literal "2" source="2"

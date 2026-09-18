@@ -123,53 +123,53 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        switch_expr
-          value: identifier "x"
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "x" source="x"
           case:
-            switch_case
+            switch_case source="⟨body⟩⟨pattern⟩"
               pattern:
-                call_expr
+                call_expr source="⟨callee⟩(⟨argument⟩)"
                   callee:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member_name_node: identifier "implicit"
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: inferred_type_expr "." source="."
+                      member_name_node: identifier "implicit" source="implicit"
                   argument:
-                    argument
-                      name_node: identifier "isAcknowledged"
-                      value: boolean_literal "false"
+                    argument source="⟨name_node⟩: ⟨value⟩"
+                      name_node: identifier "isAcknowledged" source="isAcknowledged"
+                      value: boolean_literal "false" source="false"
               body:
-                block
+                block source="case .implicit(isAcknowledged: false):\n  ⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"yes\""
-            switch_case
+                        argument source="⟨value⟩"
+                          value: string_literal "\"yes\"" source="\"yes\""
+            switch_case source="⟨body⟩⟨pattern⟩"
               pattern:
-                call_expr
+                call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
                   callee:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member_name_node: identifier "thread"
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: inferred_type_expr "." source="."
+                      member_name_node: identifier "thread" source="thread"
                   argument:
-                    argument
-                      name_node: identifier "threadRowId"
-                      value: identifier "_"
-                    argument
+                    argument source="⟨name_node⟩: ⟨value⟩,"
+                      name_node: identifier "threadRowId" source="threadRowId"
+                      value: identifier "_" source="_"
+                    argument source="⟨value⟩"
                       value:
-                        expr_pattern
-                          modifier: modifier "let"
-                          expr: identifier "rowId"
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "rowId" source="rowId"
               body:
-                block
+                block source="case .thread(threadRowId: _, let rowId):\n  ⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: identifier "rowId"
+                        argument source="⟨value⟩"
+                          value: identifier "rowId" source="rowId"

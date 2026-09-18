@@ -82,29 +82,29 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "classify"
+        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩"
+          name_node: identifier "classify" source="classify"
           parameter:
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Int"
-              pattern: identifier "x"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "x" source="x"
           body:
-            block
+            block source="func classify(_ x: Int) {\n  ⟨stmt⟩\n}"
               stmt:
-                switch_expr
-                  value: identifier "x"
+                switch_expr source="switch ⟨value⟩ {\n  ⟨case⟩\n  ⟨case⟩\n  }"
+                  value: identifier "x" source="x"
                   case:
-                    switch_case
-                      pattern: int_literal "1"
+                    switch_case source="⟨body⟩⟨pattern⟩"
+                      pattern: int_literal "1" source="1"
                       body:
-                        block
-                          stmt: unsupported_node "fallthrough"
-                    switch_case
+                        block source="case 1:\n    ⟨stmt⟩"
+                          stmt: unsupported_node "fallthrough" source="fallthrough"
+                    switch_case source="⟨body⟩"
                       body:
-                        block
-                          stmt: break_expr "break"
+                        block source="default:\n    ⟨stmt⟩"
+                          stmt: break_expr "break" source="break"

@@ -72,39 +72,39 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        if_expr
+        if_expr source="if ⟨condition⟩ ⟨then⟩"
           condition:
-            pattern_guard_expr
+            pattern_guard_expr source="case ⟨pattern⟩ = ⟨value⟩"
               pattern:
-                call_expr
+                call_expr source="⟨argument⟩⟨callee⟩"
                   callee:
-                    member_access_expr
-                      base: identifier "Optional"
-                      member_name_node: identifier "some"
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: identifier "Optional" source=".some(let value)?"
+                      member_name_node: identifier "some" source=".some(let value)?"
                   argument:
-                    argument
+                    argument source="⟨value⟩?"
                       value:
-                        call_expr
+                        call_expr source="⟨callee⟩(⟨argument⟩)"
                           callee:
-                            member_access_expr
-                              base: inferred_type_expr "."
-                              member_name_node: identifier "some"
+                            member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                              base: inferred_type_expr "." source="."
+                              member_name_node: identifier "some" source="some"
                           argument:
-                            argument
+                            argument source="⟨value⟩"
                               value:
-                                expr_pattern
-                                  modifier: modifier "let"
-                                  expr: identifier "value"
-              value: identifier "input"
+                                expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                                  modifier: modifier "let" source="let"
+                                  expr: identifier "value" source="value"
+              value: identifier "input" source="input"
           then:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                call_expr
-                  callee: identifier "print"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
                   argument:
-                    argument
-                      value: identifier "value"
+                    argument source="⟨value⟩"
+                      value: identifier "value" source="value"

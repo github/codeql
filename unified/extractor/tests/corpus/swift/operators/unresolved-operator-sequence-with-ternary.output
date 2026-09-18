@@ -95,41 +95,41 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "choose"
+        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩⟨parameter⟩⟨parameter⟩⟨parameter⟩⟨return_type⟩"
+          name_node: identifier "choose" source="choose"
           parameter:
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Bool"
-              pattern: identifier "c"
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Int"
-              pattern: identifier "a"
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Int"
-              pattern: identifier "b"
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Int"
-              pattern: identifier "d"
-          return_type: identifier "Int"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩,"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Bool" source="Bool"
+              pattern: identifier "c" source="c"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩,"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "a" source="a"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩,"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "b" source="b"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "d" source="d"
+          return_type: identifier "Int" source="Int"
           body:
-            block
+            block source="func choose(_ c: Bool, _ a: Int, _ b: Int, _ d: Int) -> Int {\n  ⟨stmt⟩\n}"
               stmt:
-                return_expr
+                return_expr source="return ⟨value⟩"
                   value:
-                    unresolved_operator_sequence
+                    unresolved_operator_sequence source="⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩"
                       element:
-                        identifier "c"
-                        infix_operator "?"
-                        identifier "a"
-                        infix_operator ":"
-                        identifier "b"
-                        infix_operator ".&"
-                        identifier "d"
+                        identifier "c" source="c"
+                        infix_operator "?" source="?"
+                        identifier "a" source="a"
+                        infix_operator ":" source=":"
+                        identifier "b" source="b"
+                        infix_operator ".&" source=".&"
+                        identifier "d" source="d"

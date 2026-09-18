@@ -61,22 +61,22 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "greet"
+        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩"
+          name_node: identifier "greet" source="greet"
           parameter:
-            parameter
-              type: identifier "String"
-              pattern: identifier "name"
-              default: string_literal "\"world\""
+            parameter source="⟨pattern⟩: ⟨type⟩ = ⟨default⟩"
+              type: identifier "String" source="String"
+              pattern: identifier "name" source="name"
+              default: string_literal "\"world\"" source="\"world\""
           body:
-            block
+            block source="func greet(name: String = \"world\") {\n  ⟨stmt⟩\n}"
               stmt:
-                call_expr
-                  callee: identifier "print"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
                   argument:
-                    argument
-                      value: identifier "name"
+                    argument source="⟨value⟩"
+                      value: identifier "name" source="name"
