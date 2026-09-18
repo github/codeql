@@ -19,6 +19,12 @@ edges
 | calls.swift:49:32:49:32 | y | calls.swift:51:14:51:14 | y | provenance |  |
 | calls.swift:53:12:53:26 | source(...) | calls.swift:49:19:49:19 | x | provenance |  |
 | calls.swift:53:28:53:41 | source(...) | calls.swift:49:32:49:32 | y | provenance |  |
+| calls.swift:61:19:61:19 | x [Return] [field] | calls.swift:66:12:66:12 | [post] b [field] | provenance |  |
+| calls.swift:62:9:62:9 | [post] x [field] | calls.swift:61:19:61:19 | x [Return] [field] | provenance |  |
+| calls.swift:62:9:62:15 | ... .field | calls.swift:62:9:62:9 | [post] x [field] | provenance |  |
+| calls.swift:62:19:62:32 | source(...) | calls.swift:62:9:62:15 | ... .field | provenance |  |
+| calls.swift:66:12:66:12 | [post] b [field] | calls.swift:67:10:67:10 | b [field] | provenance |  |
+| calls.swift:67:10:67:10 | b [field] | calls.swift:67:10:67:16 | ... .field | provenance |  |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | implicit-self.swift:17:14:17:17 | self [x] | provenance |  |
 | implicit-self.swift:16:9:16:14 | ... .x | implicit-self.swift:16:9:16:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:16:9:16:14 | ... .x | provenance |  |
@@ -187,6 +193,13 @@ nodes
 | calls.swift:51:14:51:14 | y | semmle.label | y |
 | calls.swift:53:12:53:26 | source(...) | semmle.label | source(...) |
 | calls.swift:53:28:53:41 | source(...) | semmle.label | source(...) |
+| calls.swift:61:19:61:19 | x [Return] [field] | semmle.label | x [Return] [field] |
+| calls.swift:62:9:62:9 | [post] x [field] | semmle.label | [post] x [field] |
+| calls.swift:62:9:62:15 | ... .field | semmle.label | ... .field |
+| calls.swift:62:19:62:32 | source(...) | semmle.label | source(...) |
+| calls.swift:66:12:66:12 | [post] b [field] | semmle.label | [post] b [field] |
+| calls.swift:67:10:67:10 | b [field] | semmle.label | b [field] |
+| calls.swift:67:10:67:16 | ... .field | semmle.label | ... .field |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | semmle.label | [post] self [x] |
 | implicit-self.swift:16:9:16:14 | ... .x | semmle.label | ... .x |
 | implicit-self.swift:16:18:16:31 | source(...) | semmle.label | source(...) |
@@ -381,6 +394,7 @@ testFailures
 | calls.swift:43:14:43:17 | name | calls.swift:45:13:45:32 | source(...) | calls.swift:43:14:43:17 | name | $@ | calls.swift:45:13:45:32 | source(...) | source(...) |
 | calls.swift:50:14:50:14 | x | calls.swift:53:12:53:26 | source(...) | calls.swift:50:14:50:14 | x | $@ | calls.swift:53:12:53:26 | source(...) | source(...) |
 | calls.swift:51:14:51:14 | y | calls.swift:53:28:53:41 | source(...) | calls.swift:51:14:51:14 | y | $@ | calls.swift:53:28:53:41 | source(...) | source(...) |
+| calls.swift:67:10:67:16 | ... .field | calls.swift:62:19:62:32 | source(...) | calls.swift:67:10:67:16 | ... .field | $@ | calls.swift:62:19:62:32 | source(...) | source(...) |
 | implicit-self.swift:17:14:17:19 | ... .x | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:17:14:17:19 | ... .x | $@ | implicit-self.swift:16:18:16:31 | source(...) | source(...) |
 | implicit-self.swift:23:14:23:14 | x | implicit-self.swift:22:13:22:26 | source(...) | implicit-self.swift:23:14:23:14 | x | $@ | implicit-self.swift:22:13:22:26 | source(...) | source(...) |
 | implicit-self.swift:29:14:29:19 | ... .x | implicit-self.swift:28:13:28:26 | source(...) | implicit-self.swift:29:14:29:19 | ... .x | $@ | implicit-self.swift:28:13:28:26 | source(...) | source(...) |

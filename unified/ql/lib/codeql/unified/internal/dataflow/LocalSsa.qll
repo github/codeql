@@ -42,7 +42,8 @@ module LocalSsaDataFlowInput implements DataFlowIntegrationInputSig {
     predicate hasCfgNode(BasicBlock bb, int i) {
       exists(U::Expr expr, LocalVariable var, VariableRefKind kind |
         this = TLocalVariableRefNode(expr, var, kind) and
-        kind.isRead() and
+        // Note: the synthetic read we insert for post-updates must also have an Expr
+        (kind.isRead() or kind.isPostUpdate()) and
         performsVariableAccess(expr, var, kind, bb.getNode(i))
       )
     }

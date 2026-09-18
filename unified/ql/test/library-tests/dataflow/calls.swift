@@ -64,5 +64,5 @@ func t7() {
     let b = Box()
     sink(b.field)  // no flow
     target(b)
-    sink(b.field)  // $ MISSING: hasValueFlow=t7.1
+    sink(b.field)  // $ hasValueFlow=t7.1
 }

@@ -25,6 +25,12 @@ private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
     (hasIncomingValueAtCfgNode(member, cfgNode) or hasPostUpdate(member, cfgNode)) and
     expr = member.getBase()
   )
+  or
+  exists(CallExpr call | cfgNode.isAfter(call) |
+    expr = call.getAnArgument().getValue()
+    or
+    expr = call.getCallee().(MemberAccessExpr).getBase()
+  )
 }
 
 /**
