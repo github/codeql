@@ -89,39 +89,39 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "casts"
+        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩⟨parameter⟩"
+          name_node: identifier "casts" source="casts"
           parameter:
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Any"
-              pattern: identifier "a"
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Int"
-              pattern: identifier "b"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩,"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Any" source="Any"
+              pattern: identifier "a" source="a"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "b" source="b"
           body:
-            block
+            block source="func casts(_ a: Any, _ b: Int) {\n  ⟨stmt⟩\n  ⟨stmt⟩\n}"
               stmt:
-                unresolved_operator_sequence
+                unresolved_operator_sequence source="⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩"
                   element:
-                    identifier "_"
-                    infix_operator "="
-                    identifier "a"
-                    infix_operator "as"
-                    unsupported_node "Int"
-                    infix_operator ".&"
-                    identifier "b"
-                unresolved_operator_sequence
+                    identifier "_" source="_"
+                    infix_operator "=" source="="
+                    identifier "a" source="a"
+                    infix_operator "as" source="as"
+                    unsupported_node "Int" source="Int"
+                    infix_operator ".&" source=".&"
+                    identifier "b" source="b"
+                unresolved_operator_sequence source="⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩"
                   element:
-                    identifier "_"
-                    infix_operator "="
-                    identifier "a"
-                    infix_operator "is"
-                    unsupported_node "Int"
-                    infix_operator ".&"
-                    identifier "b"
+                    identifier "_" source="_"
+                    infix_operator "=" source="="
+                    identifier "a" source="a"
+                    infix_operator "is" source="is"
+                    unsupported_node "Int" source="Int"
+                    infix_operator ".&" source=".&"
+                    identifier "b" source="b"

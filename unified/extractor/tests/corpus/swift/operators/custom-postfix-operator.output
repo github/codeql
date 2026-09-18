@@ -35,12 +35,12 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩\n⟨stmt⟩"
       stmt:
-        unsupported_node "postfix operator ^^"
-        variable_declaration
-          modifier: modifier "let"
-          pattern: identifier "squared"
-          value: unsupported_node "3^^"
+        unsupported_node "postfix operator ^^" source="postfix operator ^^"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "squared" source="squared"
+          value: unsupported_node "3^^" source="3^^"

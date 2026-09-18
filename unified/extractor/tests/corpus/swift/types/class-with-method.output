@@ -73,24 +73,24 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "class"
-          name_node: identifier "Counter"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩\n}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "Counter" source="Counter"
           member:
-            variable_declaration
-              modifier: modifier "var"
-              pattern: identifier "n"
-              value: int_literal "0"
-            function_declaration
-              name_node: identifier "bump"
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+              modifier: modifier "var" source="var"
+              pattern: identifier "n" source="n"
+              value: int_literal "0" source="0"
+            function_declaration source="⟨body⟩⟨name_node⟩"
+              name_node: identifier "bump" source="bump"
               body:
-                block
+                block source="func bump() {\n    ⟨stmt⟩\n  }"
                   stmt:
-                    binary_expr
-                      left: identifier "n"
-                      operator: infix_operator "+="
-                      right: int_literal "1"
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "n" source="n"
+                      operator: infix_operator "+=" source="+="
+                      right: int_literal "1" source="1"

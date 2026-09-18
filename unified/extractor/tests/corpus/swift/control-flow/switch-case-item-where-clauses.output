@@ -150,62 +150,62 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        switch_expr
-          value: identifier "n"
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "n" source="n"
           case:
-            switch_case
+            switch_case source="⟨body⟩⟨pattern⟩"
               pattern:
-                conditional_pattern
+                conditional_pattern source="⟨pattern⟩ where ⟨condition⟩"
                   condition:
-                    binary_expr
-                      left: identifier "x"
-                      operator: infix_operator ">"
-                      right: int_literal "0"
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "x" source="x"
+                      operator: infix_operator ">" source=">"
+                      right: int_literal "0" source="0"
                   pattern:
-                    expr_pattern
-                      modifier: modifier "let"
-                      expr: identifier "x"
+                    expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                      modifier: modifier "let" source="let"
+                      expr: identifier "x" source="x"
               body:
-                block
+                block source="case let x where x > 0:\n  ⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"positive\""
-            switch_case
+                        argument source="⟨value⟩"
+                          value: string_literal "\"positive\"" source="\"positive\""
+            switch_case source="⟨body⟩⟨pattern⟩"
               pattern:
-                or_pattern
+                or_pattern source="case ⟨pattern⟩ ⟨pattern⟩:\n  print(\"non-positive\")"
                   pattern:
-                    conditional_pattern
+                    conditional_pattern source="⟨pattern⟩ where ⟨condition⟩,"
                       condition:
-                        binary_expr
-                          left: identifier "y"
-                          operator: infix_operator "<"
-                          right: int_literal "0"
+                        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                          left: identifier "y" source="y"
+                          operator: infix_operator "<" source="<"
+                          right: int_literal "0" source="0"
                       pattern:
-                        expr_pattern
-                          modifier: modifier "let"
-                          expr: identifier "y"
-                    int_literal "0"
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "y" source="y"
+                    int_literal "0" source="0"
               body:
-                block
+                block source="case let y where y < 0, 0:\n  ⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"non-positive\""
-            switch_case
+                        argument source="⟨value⟩"
+                          value: string_literal "\"non-positive\"" source="\"non-positive\""
+            switch_case source="⟨body⟩"
               body:
-                block
+                block source="default:\n  ⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"other\""
+                        argument source="⟨value⟩"
+                          value: string_literal "\"other\"" source="\"other\""

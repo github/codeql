@@ -896,28 +896,6 @@ fn test_desugar_for_loop() {
     );
 }
 
-#[test]
-fn test_shorthand_rule() {
-    let rule: Rule = yeast::rule!(
-        (assignment
-            left: (_) @method
-            right: (_) @receiver
-        )
-        => call
-    );
-
-    let dump = run_and_dump("x = 1", vec![rule]);
-    assert_dump_eq(
-        &dump,
-        r#"
-        program
-          call
-            method: identifier "x"
-            receiver: integer "1"
-    "#,
-    );
-}
-
 #[derive(Clone, Default)]
 struct GuardTestContext {
     enabled: bool,
@@ -1024,19 +1002,19 @@ fn test_chained_rules_output_only_kind() {
     //   first_node        → second_node         (output-only → output-only)
     // The matcher must look up `first_node` against the schema, which only
     // knows about it via the YAML node-types file.
-    let assignment_to_first = yeast::rule!(
+    let assignment_to_first: Rule = yeast::rule!(
         (assignment
             left: (_) @left
             right: (_) @right
         )
-        => first_node
+        => (first_node left: {left} right: {right})
     );
-    let first_to_second = yeast::rule!(
+    let first_to_second: Rule = yeast::rule!(
         (first_node
             left: (_) @left
             right: (_) @right
         )
-        => second_node
+        => (second_node left: {left} right: {right})
     );
 
     let dump = run_and_dump("x = 1", vec![assignment_to_first, first_to_second]);
@@ -1103,19 +1081,19 @@ fn test_phased_desugaring() {
     // Two phases that could equally have been a single one with chained
     // rules. Splitting them makes the intent (cleanup, then desugar)
     // explicit and provides per-phase error messages.
-    let cleanup = vec![yeast::rule!(
+    let cleanup: Vec<Rule> = vec![yeast::rule!(
         (assignment
             left: (_) @left
             right: (_) @right
         )
-        => first_node
+        => (first_node left: {left} right: {right})
     )];
-    let desugar = vec![yeast::rule!(
+    let desugar: Vec<Rule> = vec![yeast::rule!(
         (first_node
             left: (_) @left
             right: (_) @right
         )
-        => second_node
+        => (second_node left: {left} right: {right})
     )];
 
     let dump = run_phased_and_dump(
@@ -1731,33 +1709,6 @@ fn test_rules_macro_accepts_bare_rule_body() {
     );
 }
 
-/// The bare-rule-body shorthand `=> output_kind` should also be accepted.
-#[test]
-fn test_rules_macro_accepts_bare_shorthand_form() {
-    let rules: Vec<Rule> = yeast::rules! {
-        input: "tests/input-types.yml",
-        output: "tests/node-types.yml",
-        [
-            (assignment
-                left: (_) @method
-                right: (_) @receiver
-            )
-            => call,
-        ]
-    };
-
-    let dump = run_and_dump("x = 1", rules);
-    assert_dump_eq(
-        &dump,
-        r#"
-        program
-          call
-            method: identifier "x"
-            receiver: integer "1"
-    "#,
-    );
-}
-
 #[test]
 fn test_rules_macro_accepts_bare_guarded_rule() {
     let rules: Vec<Rule> = yeast::rules! {
@@ -1925,28 +1876,4 @@ fn test_rule_annotation_single() {
         }
     }
     assert!(has_assignment, "expected an assignment node");
-}
-
-/// The shorthand `=> kind` form (no body, no annotation) must still be
-/// distinguished from the annotation form and continue to work.
-#[test]
-fn test_shorthand_still_works_alongside_annotation_syntax() {
-    let r: Rule = rule!(
-        (assignment left: (_) @method right: (_) @receiver)
-        =>
-        call
-    );
-    let ast = run_and_ast("x = 1", vec![r]);
-    let mut has_call = false;
-    for id in ast.reachable_node_ids() {
-        if let Some(n) = ast.get_node(id) {
-            if n.kind_name() == "call" {
-                has_call = true;
-            }
-        }
-    }
-    assert!(
-        has_call,
-        "shorthand form should still produce a `call` node"
-    );
 }

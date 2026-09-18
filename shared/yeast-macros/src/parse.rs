@@ -768,8 +768,7 @@ fn extract_captures_inner(
 /// ```
 ///
 /// Template bodies (`=> (kind …)`) never carry an annotation — the
-/// output kind is the template root. The shorthand `=> kind` (no
-/// body) also carries no annotation. See `parse_rule_top` for dispatch.
+/// output kind is the template root.
 #[derive(Clone, Debug)]
 struct ReturnAnnotation {
     kind: Ident,
@@ -793,7 +792,6 @@ enum AnnotationMultiplicity {
 ///   `kind {`   → annotation (single)
 ///   `kind? {`  → annotation (optional)
 ///   `kind* {`  → annotation (repeated)
-///   `kind`     → shorthand form (no `{` follows) — NOT an annotation
 ///   anything else → template or bare block — NOT an annotation
 fn try_consume_return_annotation(tokens: &mut Tokens) -> Result<Option<ReturnAnnotation>> {
     // Must start with an identifier (the kind name).
@@ -881,15 +879,13 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
     let raw_bindings = capture_bindings(raw_captures.into_iter());
     let translated_bindings = capture_bindings(translated_captures.into_iter());
 
-    // Parse transform: the token(s) after `=>` fall into one of three
+    // Parse transform: the token(s) after `=>` fall into one of two
     // shapes, dispatched in order:
     //
     //   1. `kind [? | *] { rust_body }` — annotated Rust body (NEW).
     //      Static-analysis-ready: the annotation declares the output
     //      kind and multiplicity in the schema's own vocabulary.
-    //   2. `kind` alone — shorthand: emit `(kind field: {@cap})…` from
-    //      the query's captures.
-    //   3. anything else — full template form (`(kind …)` or bare
+    //   2. anything else — full template form (`(kind …)` or bare
     //      `{ … }` splice via `parse_direct_list`).
     let annotation = try_consume_return_annotation(&mut tokens)?;
 
@@ -925,65 +921,6 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
             let mut __ids: Vec<yeast::Id> = Vec::new();
             yeast::IntoFieldIds::extend_into(__value, &mut __ids);
             __ids
-        }
-    } else if peek_is_field(&mut tokens) && {
-        // Shorthand form: bare identifier = output node kind.
-        // Auto-generate template from captures.
-        let mut lookahead = tokens.clone();
-        lookahead.next(); // skip ident
-        lookahead.peek().is_none() // nothing after = shorthand
-    } {
-        let output_kind = expect_ident(&mut tokens, "expected output node kind")?;
-        let output_kind_str = output_kind.to_string();
-
-        // Generate field assignments from captures
-        let field_stmts: Vec<TokenStream> = captures
-            .iter()
-            .map(|cap| {
-                let name = Ident::new(&cap.name, Span::call_site());
-                let name_str = &cap.name;
-                match cap.multiplicity {
-                    CaptureMultiplicity::Repeated => quote! {
-                        let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
-                            .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
-                        __fields.insert(
-                            __field_id,
-                            #name.into_iter()
-                                .map(::std::convert::Into::<yeast::Id>::into)
-                                .collect(),
-                        );
-                    },
-                    CaptureMultiplicity::Optional => quote! {
-                        let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
-                            .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
-                        if let Some(__id) = #name {
-                            __fields.entry(__field_id).or_insert_with(Vec::new)
-                                .push(::std::convert::Into::<yeast::Id>::into(__id));
-                        }
-                    },
-                    CaptureMultiplicity::Single => quote! {
-                        let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
-                            .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
-                        __fields.entry(__field_id).or_insert_with(Vec::new)
-                            .push(::std::convert::Into::<yeast::Id>::into(#name));
-                    },
-                }
-            })
-            .collect();
-
-        quote! {
-            let __kind = #ctx_ident.ast.id_for_node_kind(#output_kind_str)
-                .unwrap_or_else(|| panic!("node kind '{}' not found", #output_kind_str));
-            let mut __fields = std::collections::BTreeMap::new();
-            #(#field_stmts)*
-            let __id = #ctx_ident.ast.create_node_with_range(
-                __kind,
-                yeast::NodeContent::DynamicString(String::new()),
-                __fields,
-                true,
-                __source_range,
-            );
-            vec![__id]
         }
     } else {
         // Reject bare `{ ... }` transforms — they used to be accepted
@@ -1482,8 +1419,5 @@ mod rules_tests {
         // Match expressions inside a block: `=>` is inside braces.
         let toks = quote! { { match x { 1 => 2, _ => 3 } } };
         assert!(!has_top_level_arrow(&toks));
-        // Bare shorthand form: top-level `=>` followed by a bare ident.
-        let toks = quote! { (a) => kind };
-        assert!(has_top_level_arrow(&toks));
     }
 }

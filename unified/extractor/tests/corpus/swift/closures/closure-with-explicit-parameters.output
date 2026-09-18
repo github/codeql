@@ -62,24 +62,24 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern: identifier "f"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "f" source="f"
           value:
-            function_expr
+            function_expr source="⟨body⟩⟨parameter⟩⟨return_type⟩"
               parameter:
-                parameter
-                  type: identifier "Int"
-                  pattern: identifier "x"
-              return_type: identifier "Int"
+                parameter source="⟨pattern⟩: ⟨type⟩"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "x" source="x"
+              return_type: identifier "Int" source="Int"
               body:
-                block
+                block source="{ (x: Int) -> Int in ⟨stmt⟩ }"
                   stmt:
-                    binary_expr
-                      left: identifier "x"
-                      operator: infix_operator "*"
-                      right: int_literal "2"
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "x" source="x"
+                      operator: infix_operator "*" source="*"
+                      right: int_literal "2" source="2"

@@ -41,11 +41,11 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩\n⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "doWork"
-          body: block "func doWork() {}"
-        unsupported_node "unsafe doWork()"
+        function_declaration source="⟨body⟩⟨name_node⟩"
+          name_node: identifier "doWork" source="doWork"
+          body: block "func doWork() {}" source="func doWork() {}"
+        unsupported_node "unsafe doWork()" source="unsafe doWork()"

@@ -102,28 +102,28 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "protocol"
-          name_node: identifier "P"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  var ⟨member⟩ }\n  var ⟨member⟩⟨member⟩ }\n  var ⟨member⟩ }\n}"
+          modifier: modifier "protocol" source="protocol"
+          name_node: identifier "P" source="P"
           member:
-            accessor_declaration
-              name_node: identifier "foo"
-              accessor_kind: accessor_kind "get"
-              type: identifier "Int"
-            accessor_declaration
-              name_node: identifier "bar"
-              accessor_kind: accessor_kind "get"
-              type: identifier "String"
-            accessor_declaration
-              modifier: modifier "chained_declaration"
-              name_node: identifier "bar"
-              accessor_kind: accessor_kind "set"
-              type: identifier "String"
-            accessor_declaration
-              name_node: identifier "count"
-              accessor_kind: accessor_kind "get"
-              type: identifier "Int"
+            accessor_declaration source="⟨name_node⟩: ⟨type⟩ { ⟨accessor_kind⟩"
+              name_node: identifier "foo" source="foo"
+              accessor_kind: accessor_kind "get" source="get"
+              type: identifier "Int" source="Int"
+            accessor_declaration source="⟨name_node⟩: ⟨type⟩ { ⟨accessor_kind⟩"
+              name_node: identifier "bar" source="bar"
+              accessor_kind: accessor_kind "get" source="get"
+              type: identifier "String" source="String"
+            accessor_declaration source="⟨name_node⟩: ⟨type⟩ { get ⟨accessor_kind⟩⟨modifier⟩"
+              modifier: modifier "chained_declaration" source="set"
+              name_node: identifier "bar" source="bar"
+              accessor_kind: accessor_kind "set" source="set"
+              type: identifier "String" source="String"
+            accessor_declaration source="⟨name_node⟩: ⟨type⟩ { ⟨accessor_kind⟩"
+              name_node: identifier "count" source="count"
+              accessor_kind: accessor_kind "get" source="get"
+              type: identifier "Int" source="Int"

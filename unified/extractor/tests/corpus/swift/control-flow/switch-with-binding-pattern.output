@@ -115,52 +115,52 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        switch_expr
-          value: identifier "shape"
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "shape" source="shape"
           case:
-            switch_case
+            switch_case source="⟨body⟩⟨pattern⟩"
               pattern:
-                call_expr
+                call_expr source="⟨callee⟩(⟨argument⟩)"
                   callee:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member_name_node: identifier "circle"
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: inferred_type_expr "." source="."
+                      member_name_node: identifier "circle" source="circle"
                   argument:
-                    argument
+                    argument source="⟨value⟩"
                       value:
-                        expr_pattern
-                          modifier: modifier "let"
-                          expr: identifier "r"
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "r" source="r"
               body:
-                block
+                block source="case .circle(let r):\n  ⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: identifier "r"
-            switch_case
+                        argument source="⟨value⟩"
+                          value: identifier "r" source="r"
+            switch_case source="⟨body⟩⟨pattern⟩"
               pattern:
-                call_expr
+                call_expr source="⟨callee⟩(⟨argument⟩)"
                   callee:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member_name_node: identifier "square"
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: inferred_type_expr "." source="."
+                      member_name_node: identifier "square" source="square"
                   argument:
-                    argument
+                    argument source="⟨value⟩"
                       value:
-                        expr_pattern
-                          modifier: modifier "let"
-                          expr: identifier "s"
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "s" source="s"
               body:
-                block
+                block source="case .square(let s):\n  ⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: identifier "s"
+                        argument source="⟨value⟩"
+                          value: identifier "s" source="s"

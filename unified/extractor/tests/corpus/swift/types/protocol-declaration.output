@@ -53,18 +53,18 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "protocol"
-          name_node: identifier "Drawable"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩\n}"
+          modifier: modifier "protocol" source="protocol"
+          name_node: identifier "Drawable" source="Drawable"
           member:
-            function_declaration
-              name_node: identifier "draw"
-              body: block "func draw()"
-            function_declaration
-              modifier: modifier "static"
-              name_node: identifier "make"
-              body: block "static func make()"
+            function_declaration source="⟨body⟩⟨name_node⟩"
+              name_node: identifier "draw" source="draw"
+              body: block "func draw()" source="func draw()"
+            function_declaration source="⟨modifier⟩⟨body⟩⟨name_node⟩"
+              modifier: modifier "static" source="static"
+              name_node: identifier "make" source="make"
+              body: block "static func make()" source="static func make()"

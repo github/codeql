@@ -50,18 +50,18 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "struct"
-          name_node: identifier "FileHandle"
+        class_like_declaration source="⟨modifier⟩⟨base_type⟩⟨name_node⟩⟨member⟩"
+          modifier: modifier "struct" source="struct"
+          name_node: identifier "FileHandle" source="FileHandle"
           base_type:
-            base_type
-              type: unsupported_node "~Copyable"
+            base_type source="struct FileHandle: ⟨type⟩ {\n  let descriptor: Int\n}"
+              type: unsupported_node "~Copyable" source="~Copyable"
           member:
-            variable_declaration
-              modifier: modifier "let"
-              pattern: identifier "descriptor"
-              type: identifier "Int"
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"
+              modifier: modifier "let" source="let"
+              pattern: identifier "descriptor" source="descriptor"
+              type: identifier "Int" source="Int"

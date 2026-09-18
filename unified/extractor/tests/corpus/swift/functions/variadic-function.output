@@ -73,30 +73,30 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "sum"
+        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩⟨return_type⟩"
+          name_node: identifier "sum" source="sum"
           parameter:
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Int"
-              pattern: identifier "values"
-          return_type: identifier "Int"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩..."
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "values" source="values"
+          return_type: identifier "Int" source="Int"
           body:
-            block
+            block source="func sum(_ values: Int...) -> Int {\n  ⟨stmt⟩\n}"
               stmt:
-                return_expr
+                return_expr source="return ⟨value⟩"
                   value:
-                    call_expr
+                    call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
                       callee:
-                        member_access_expr
-                          base: identifier "values"
-                          member_name_node: identifier "reduce"
+                        member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                          base: identifier "values" source="values"
+                          member_name_node: identifier "reduce" source="reduce"
                       argument:
-                        argument
-                          value: int_literal "0"
-                        argument
-                          value: identifier "+"
+                        argument source="⟨value⟩,"
+                          value: int_literal "0" source="0"
+                        argument source="⟨value⟩"
+                          value: identifier "+" source="+"

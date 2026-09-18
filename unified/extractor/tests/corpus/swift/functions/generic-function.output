@@ -59,23 +59,23 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "identity"
+        function_declaration source="⟨body⟩⟨name_node⟩⟨type_parameter⟩⟨parameter⟩⟨return_type⟩"
+          name_node: identifier "identity" source="identity"
           type_parameter:
-            type_parameter
-              name_node: identifier "T"
+            type_parameter source="⟨name_node⟩"
+              name_node: identifier "T" source="T"
           parameter:
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "T"
-              pattern: identifier "x"
-          return_type: identifier "T"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "T" source="T"
+              pattern: identifier "x" source="x"
+          return_type: identifier "T" source="T"
           body:
-            block
+            block source="func identity<T>(_ x: T) -> T {\n  ⟨stmt⟩\n}"
               stmt:
-                return_expr
-                  value: identifier "x"
+                return_expr source="return ⟨value⟩"
+                  value: identifier "x" source="x"
