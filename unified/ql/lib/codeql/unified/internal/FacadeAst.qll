@@ -152,6 +152,8 @@ module Unified {
   }
 
   class MemberAccessExpr extends G::MemberAccessExpr {
+    override string toString() { result = "... ." + this.getMemberName() }
+
     /** Gets the member name of this access. */
     string getMemberName() { result = this.getMemberNameNode().getValue() }
   }
@@ -183,12 +185,34 @@ module Unified {
 
   /** A binary expression. */
   class BinaryExpr extends G::BinaryExpr {
+    override string toString() { result = "... " + this.getOperator().getValue() + " ..." }
+
     /** Gets an operand of this binary expression. */
     Expr getAnOperand() { result = [this.getLeft(), this.getRight()] }
   }
 
+  /** A unary expression. */
+  class UnaryExpr extends G::UnaryExpr {
+    override string toString() {
+      result = this.getOperator().(PrefixOperator).getValue() + " ..." or
+      result = "... " + this.getOperator().(PostfixOperator).getValue()
+    }
+  }
+
   /** A function call */
   class CallExpr extends G::CallExpr {
+    override string toString() {
+      exists(Expr callee | callee = this.getCallee() |
+        result = callee.(Token).getValue() + "(...)"
+        or
+        result = callee.(MemberAccessExpr).getMemberName() + "(...)"
+        or
+        not callee instanceof Token and
+        not callee instanceof MemberAccessExpr and
+        result = "...(...)"
+      )
+    }
+
     /** Gets the named argument with the given `name`. */
     Expr getNamedArgument(string name) {
       exists(Argument arg |
