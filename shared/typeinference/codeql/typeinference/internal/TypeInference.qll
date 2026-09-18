@@ -70,7 +70,6 @@ overlay[local?]
 module;
 
 private import codeql.util.Location
-private import codeql.util.Strings
 
 /** Provides the input to `Make1`. */
 signature module InputSig1<LocationSig Location> {
@@ -1435,18 +1434,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         private module SatisfiesParameterConstraint =
           SatisfiesConstraint<RelevantAccess, RelevantTarget, SatisfiesParameterConstraintInput>;
 
-        private module InverseAppend2Input implements InverseAppend2InputSig {
-          class C1 = Declaration;
-
-          class C2 = AccessPosition;
-
-          class Result = TypeParameter;
-
-          predicate prefixCandidate(string prefix, C1 c1, C2 c2, Result res) {
-            argRootTypeSatisfiesTargetTypeCand(_, c1, c2, res, prefix)
-          }
-        }
-
         /**
          * Holds if the (transitive) base type `t` at `path` of `a` in environment `e`
          * for some `AccessPosition` matches the type parameter `tp`, which is used in
@@ -1483,11 +1470,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         predicate baseTypeMatch(
           Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
         ) {
-          exists(AccessPosition apos, TypePath pathFull |
+          exists(AccessPosition apos, TypePath pathToTp |
+            argRootTypeSatisfiesTargetTypeCand(_, target, pragma[only_bind_into](apos), tp, pathToTp) and
             SatisfiesParameterConstraint::satisfiesConstraint(MkRelevantAccess(a,
                 pragma[only_bind_into](apos), e),
-              MkRelevantTarget(target, pragma[only_bind_into](apos)), pathFull, t) and
-            InverseAppend2<InverseAppend2Input>::inverseAppend(pathFull, _, path, target, apos, tp) and
+              MkRelevantTarget(target, pragma[only_bind_into](apos)), pathToTp.appendInverse(path),
+              t) and
             hasNotTypeArgument(a, target, tp)
           )
         }
@@ -1642,29 +1630,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         constrainedTp != tp
       }
 
-      private module InverseAppend3Input implements InverseAppend3InputSig {
-        class C1 = Declaration;
-
-        class C2 = TypeParameter;
-
-        class C3 = TypeMention;
-
-        class Result = TypeParameter;
-
-        predicate prefixCandidate(string prefix, C1 c1, C2 c2, C3 c3, Result res) {
-          typeParameterConstraintHasTypeParameter(c1, c2, c3, prefix, res)
-        }
-      }
-
       pragma[nomagic]
       private predicate typeConstraintBaseTypeMatch(
         Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         hasNotTypeArgument(a, target, tp) and
-        exists(TypeParameter constrainedTp, TypeMention constraint, TypePath pathFull |
-          AccessConstraint::satisfiesConstraint(a, e, target, constrainedTp, constraint, pathFull, t) and
-          InverseAppend3<InverseAppend3Input>::inverseAppend(pathFull, _, path, target,
-            constrainedTp, constraint, tp)
+        exists(TypeMention constraint, TypeParameter constrainedTp, TypePath pathToTp |
+          typeParameterConstraintHasTypeParameter(target, constrainedTp, constraint, pathToTp, tp) and
+          AccessConstraint::satisfiesConstraint(a, e, target, constrainedTp, constraint,
+            pathToTp.appendInverse(path), t)
         )
       }
 
