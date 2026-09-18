@@ -97,7 +97,7 @@ mod qhelp_example_good {
         let allowed_names = ["report.pdf", "summary.txt", "data.csv"];
         if allowed_names.contains(&filename) {
             Command::new("cat")
-                .arg(filename) // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+                .arg(filename)
                 .output()
                 .expect("failed to execute");
         }
@@ -108,7 +108,7 @@ fn test_allowlist_sanitizers(command: &str) {
     let allowed_commands_array = ["cat", "git", "ls"];
 
     if allowed_commands_array.contains(&command) {
-        Command::new(command).output().expect("failed"); // $ SPURIOUS: Alert[rust/command-line-injection]=args2
+        Command::new(command).output().expect("failed");
     } else {
         Command::new(command).output().expect("failed"); // $ Alert[rust/command-line-injection]=args2
     }
