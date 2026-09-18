@@ -132,10 +132,10 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "values" source="values"
           value:
-            call_expr source="⟨callee⟩"
+            call_expr source="⟨callee⟩()"
               callee:
-                generic_type_expr source="⟨base⟩⟨type_argument⟩"
-                  base: identifier "Array" source="[Result<Void>]()"
+                generic_type_expr source="[⟨type_argument⟩]"
+                  base: identifier "Array" source=""
                   type_argument:
                     generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
                       base: identifier "Result" source="Result"
@@ -144,10 +144,10 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "initialized" source="initialized"
           value:
-            call_expr source="⟨argument⟩⟨callee⟩⟨argument⟩"
+            call_expr source="⟨callee⟩(⟨argument⟩) ⟨argument⟩"
               callee:
-                generic_type_expr source="⟨base⟩⟨type_argument⟩"
-                  base: identifier "Array" source="[Result<Void>](unsafeUninitializedCapacity: 1) { _, count in\n\tcount = 0\n}"
+                generic_type_expr source="[⟨type_argument⟩]"
+                  base: identifier "Array" source=""
                   type_argument:
                     generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
                       base: identifier "Result" source="Result"
@@ -156,11 +156,11 @@ top_level source="⟨body⟩"
                 argument source="⟨name_node⟩: ⟨value⟩"
                   name_node: identifier "unsafeUninitializedCapacity" source="unsafeUninitializedCapacity"
                   value: int_literal "1" source="1"
-                argument source="[Result<Void>](unsafeUninitializedCapacity: 1) ⟨value⟩"
+                argument source="⟨value⟩"
                   value:
                     function_expr source="⟨body⟩⟨parameter⟩⟨parameter⟩"
                       parameter:
-                        parameter source="⟨pattern⟩,"
+                        parameter source="⟨pattern⟩"
                           pattern: identifier "_" source="_"
                         parameter source="⟨pattern⟩"
                           pattern: identifier "count" source="count"

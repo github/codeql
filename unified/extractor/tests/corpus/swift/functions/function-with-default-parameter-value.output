@@ -65,7 +65,7 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩) ⟨body⟩"
           name_node: identifier "greet" source="greet"
           parameter:
             parameter source="⟨pattern⟩: ⟨type⟩ = ⟨default⟩"
@@ -73,7 +73,7 @@ top_level source="⟨body⟩"
               pattern: identifier "name" source="name"
               default: string_literal "\"world\"" source="\"world\""
           body:
-            block source="func greet(name: String = \"world\") {\n  ⟨stmt⟩\n}"
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
                 call_expr source="⟨callee⟩(⟨argument⟩)"
                   callee: identifier "print" source="print"

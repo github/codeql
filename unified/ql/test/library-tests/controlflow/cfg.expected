@@ -1,6 +1,5 @@
 bbContinues
 | cfg.swift:62:6:62:6 | y | 'y goto Block(-1)' |
-| cfg.swift:147:5:147:5 | Block | 'Block goto true(+3)' |
 | cfg.swift:525:78:525:78 | Block | 'Block goto Task(+2)' |
 | cfg.swift:526:9:526:20 | continuation | 'continuation goto Block(-1)' |
 bbStep
@@ -10,8 +9,8 @@ bbStep
 | cfg.swift:30:9:30:24 | mightThrow(...) | 'mightThrow(...) : exception -> CatchClause(+5)' |
 | cfg.swift:30:9:30:24 | mightThrow(...) | 'mightThrow(...) : successor -> try ...(+0)' |
 | cfg.swift:33:5:33:33 | print(...) | 'print(...) : successor -> 0(+11)' |
-| cfg.swift:35:5:35:5 | OrPattern | 'OrPattern : match -> Block(+0)' |
-| cfg.swift:35:5:35:5 | OrPattern | 'OrPattern : no-match -> CatchClause(+2)' |
+| cfg.swift:35:11:35:60 | OrPattern | 'OrPattern : match -> Block(+0)' |
+| cfg.swift:35:11:35:60 | OrPattern | 'OrPattern : no-match -> CatchClause(+2)' |
 | cfg.swift:37:11:37:39 | ... .error3(...) | '... .error3(...) : match -> Block(+0)' |
 | cfg.swift:37:11:37:39 | ... .error3(...) | '... .error3(...) : no-match -> CatchClause(+2)' |
 | cfg.swift:39:11:39:20 |  | ' : match -> Block(+0)' |
@@ -22,9 +21,9 @@ bbStep
 | cfg.swift:140:12:140:17 | ... ... ... | '... ... ... : non-empty -> _(+0)' |
 | cfg.swift:141:9:141:12 | Block | 'Block : successor -> SwitchExpr(+2)' |
 | cfg.swift:141:9:141:12 | Block | 'Block : successor -> _(-1)' |
-| cfg.swift:144:5:144:5 | OrPattern | 'OrPattern : match -> Block(+0)' |
-| cfg.swift:144:5:144:5 | OrPattern | 'OrPattern : no-match -> SwitchCase(+3)' |
-| cfg.swift:147:10:147:10 | ConditionalPattern | 'ConditionalPattern : match -> Block(+0)' |
+| cfg.swift:144:10:144:13 | OrPattern | 'OrPattern : match -> Block(+1)' |
+| cfg.swift:144:10:144:13 | OrPattern | 'OrPattern : no-match -> SwitchCase(+3)' |
+| cfg.swift:147:10:147:10 | ConditionalPattern | 'ConditionalPattern : match -> Block(+3)' |
 | cfg.swift:147:10:147:10 | ConditionalPattern | 'ConditionalPattern : no-match -> SwitchCase(+4)' |
 | cfg.swift:148:10:148:15 | ... >= ... | '... >= ... : false -> x(-1)' |
 | cfg.swift:148:10:148:15 | ... >= ... | '... >= ... : true -> x(+1)' |
@@ -159,8 +158,8 @@ noCfg
 | cfg.swift:524:6:524:17 | testAsyncFor |
 | cfg.swift:559:6:559:20 | autoclosureTest |
 nonSimple
-| cfg.swift:10:1:10:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyError -^ BaseType -V Error' |
+| cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
 | cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |
-| cfg.swift:390:1:390:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Derived -^ BaseType -V C' |
-| cfg.swift:527:13:527:16 | Task | 'Task -^ ... .detached -^ Argument -V FunctionExpr -^ ... .detached(...)' |
-| cfg.swift:569:1:569:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyProcotolImpl -^ BaseType -V MyProtocol' |
+testFailures
+| cfg.swift:32:27:32:103 | // $ nonSimple='mightThrow -> Argument -V 0 -^ CallExpr -? try! -^ UnaryExpr' | Missing result: nonSimple='mightThrow -> Argument -V 0 -^ CallExpr -? try! -^ UnaryExpr' |
+| cfg.swift:400:27:400:103 | // $ nonSimple='mightThrow -> Argument -V 0 -^ CallExpr -? try! -^ UnaryExpr' | Missing result: nonSimple='mightThrow -> Argument -V 0 -^ CallExpr -? try! -^ UnaryExpr' |

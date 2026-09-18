@@ -30,3 +30,70 @@ pub struct Range {
     pub start_point: Point,
     pub end_point: Point,
 }
+
+impl Range {
+    /// Return the smallest range containing both ranges.
+    pub fn union(self, other: Self) -> Self {
+        let (start_byte, start_point) = if self.start_byte <= other.start_byte {
+            (self.start_byte, self.start_point)
+        } else {
+            (other.start_byte, other.start_point)
+        };
+        let (end_byte, end_point) = if self.end_byte >= other.end_byte {
+            (self.end_byte, self.end_point)
+        } else {
+            (other.end_byte, other.end_point)
+        };
+        Self {
+            start_byte,
+            end_byte,
+            start_point,
+            end_point,
+        }
+    }
+
+    /// Return an empty range anchored at this range's start.
+    pub fn empty_at_start(self) -> Self {
+        Self {
+            end_byte: self.start_byte,
+            end_point: self.start_point,
+            ..self
+        }
+    }
+
+    /// Return an empty range anchored at this range's end.
+    pub fn empty_at_end(self) -> Self {
+        Self {
+            start_byte: self.end_byte,
+            start_point: self.end_point,
+            ..self
+        }
+    }
+
+    pub(crate) fn ignoring_boundary_ranges(
+        mut self,
+        ignored: impl IntoIterator<Item = Self>,
+    ) -> Self {
+        let ignored: Vec<_> = ignored.into_iter().collect();
+        loop {
+            let previous = self;
+            for range in &ignored {
+                if *range == self {
+                    self = self.empty_at_start();
+                    continue;
+                }
+                if range.start_byte == self.start_byte && range.end_byte > range.start_byte {
+                    self.start_byte = range.end_byte;
+                    self.start_point = range.end_point;
+                }
+                if range.end_byte == self.end_byte && range.end_byte > range.start_byte {
+                    self.end_byte = range.start_byte;
+                    self.end_point = range.start_point;
+                }
+            }
+            if self == previous {
+                return self;
+            }
+        }
+    }
+}

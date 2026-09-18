@@ -85,10 +85,10 @@ top_level source="⟨body⟩"
               modifier: modifier "var" source="var"
               pattern: identifier "n" source="n"
               value: int_literal "0" source="0"
-            function_declaration source="⟨body⟩⟨name_node⟩"
+            function_declaration source="func ⟨name_node⟩() ⟨body⟩"
               name_node: identifier "bump" source="bump"
               body:
-                block source="func bump() {\n    ⟨stmt⟩\n  }"
+                block source="{\n    ⟨stmt⟩\n  }"
                   stmt:
                     binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
                       left: identifier "n" source="n"

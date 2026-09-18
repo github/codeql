@@ -12,7 +12,7 @@ identifier
 | test.swift:4:18:4:18 | T | T |
 | test.swift:4:21:4:29 | Equatable | Equatable |
 | test.swift:5:9:5:13 | items | items |
-| test.swift:5:16:5:18 | Array | Array |
+| test.swift:5:16:5:15 | Array | Array |
 | test.swift:5:17:5:17 | T | T |
 | test.swift:7:19:7:21 | add | add |
 | test.swift:7:23:7:23 | _ | _ |
@@ -37,8 +37,8 @@ identifier
 | test.swift:20:15:20:16 | at | at |
 | test.swift:20:18:20:22 | index | index |
 | test.swift:20:25:20:27 | Int | Int |
+| test.swift:20:33:20:32 | Optional | Optional |
 | test.swift:20:33:20:39 | Element | Element |
-| test.swift:20:33:20:40 | Optional | Optional |
 | test.swift:24:6:24:10 | merge | merge |
 | test.swift:24:12:24:12 | T | T |
 | test.swift:24:15:24:24 | Collection | Collection |
@@ -48,7 +48,7 @@ identifier
 | test.swift:24:39:24:39 | _ | _ |
 | test.swift:24:41:24:46 | second | second |
 | test.swift:24:49:24:49 | T | T |
-| test.swift:24:55:24:65 | Array | Array |
+| test.swift:24:55:24:54 | Array | Array |
 | test.swift:24:56:24:56 | T | T |
 | test.swift:24:58:24:64 | Element | Element |
 | test.swift:25:9:25:14 | result | result |
@@ -69,7 +69,7 @@ identifier
 | test.swift:36:15:36:21 | Element | Element |
 | test.swift:36:25:36:25 | T | T |
 | test.swift:37:17:37:20 | data | data |
-| test.swift:37:23:37:25 | Array | Array |
+| test.swift:37:23:37:22 | Array | Array |
 | test.swift:37:24:37:24 | T | T |
 | test.swift:39:9:39:13 | count | count |
 | test.swift:39:16:39:18 | Int | Int |
@@ -83,8 +83,8 @@ identifier
 | test.swift:47:15:47:16 | at | at |
 | test.swift:47:18:47:22 | index | index |
 | test.swift:47:25:47:27 | Int | Int |
+| test.swift:47:33:47:32 | Optional | Optional |
 | test.swift:47:33:47:33 | T | T |
-| test.swift:47:33:47:34 | Optional | Optional |
 | test.swift:48:15:48:19 | index | index |
 | test.swift:48:29:48:33 | index | index |
 | test.swift:48:37:48:40 | data | data |
@@ -138,14 +138,14 @@ identifier
 | test.swift:85:14:85:14 | T | T |
 | test.swift:85:17:85:17 | _ | _ |
 | test.swift:85:19:85:24 | values | values |
-| test.swift:85:27:85:29 | Array | Array |
+| test.swift:85:27:85:26 | Array | Array |
 | test.swift:85:28:85:28 | T | T |
 | test.swift:85:32:85:40 | transform | transform |
 | test.swift:85:44:85:44 | T | T |
 | test.swift:85:47:85:47 | T | T |
 | test.swift:85:53:85:53 | T | T |
+| test.swift:85:59:85:58 | Optional | Optional |
 | test.swift:85:59:85:59 | T | T |
-| test.swift:85:59:85:60 | Optional | Optional |
 | test.swift:86:12:86:17 | values | values |
 | test.swift:86:19:86:25 | isEmpty | isEmpty |
 | test.swift:87:12:87:17 | values | values |

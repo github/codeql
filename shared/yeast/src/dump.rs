@@ -51,7 +51,7 @@ pub fn dump_ast(ast: &Ast, root: Id, source: &str) -> String {
 
 pub fn dump_ast_with_options(ast: &Ast, root: Id, source: &str, options: &DumpOptions) -> String {
     let mut out = String::new();
-    dump_node(ast, root, source, options, 0, None, &mut out);
+    dump_node(ast, root, source, options, 0, None, false, &mut out);
     out
 }
 
@@ -86,6 +86,7 @@ pub fn dump_ast_with_type_errors_and_options(
             expected: None,
             parent_field: None,
         }),
+        false,
         &mut out,
     );
     out
@@ -195,6 +196,7 @@ fn dump_node(
     options: &DumpOptions,
     indent: usize,
     type_check: Option<TypeCheckContext<'_>>,
+    external_to_parent: bool,
     out: &mut String,
 ) {
     let node = match ast.get_node(id) {
@@ -232,6 +234,9 @@ fn dump_node(
 
     if options.show_abridged_source {
         write_source_skeleton(ast, node, source, out);
+        if external_to_parent {
+            write!(out, " (external)").unwrap();
+        }
     }
 
     if let Some(context) = type_check {
@@ -300,9 +305,18 @@ fn dump_node(
             write!(out, "{prefix}  {field_name}:").unwrap();
             // Inline single child
             let child = ast.get_node(children[0]);
+            let external = child.is_some_and(|child| is_external_child(node, child));
             if child.is_some_and(is_leaf) {
                 write!(out, " ").unwrap();
-                dump_node_inline(ast, children[0], source, options, child_type_check, out);
+                dump_node_inline(
+                    ast,
+                    children[0],
+                    source,
+                    options,
+                    child_type_check,
+                    external,
+                    out,
+                );
             } else {
                 writeln!(out).unwrap();
                 dump_node(
@@ -312,12 +326,16 @@ fn dump_node(
                     options,
                     indent + 2,
                     child_type_check,
+                    external,
                     out,
                 );
             }
         } else {
             writeln!(out, "{prefix}  {field_name}:").unwrap();
             for &child_id in children {
+                let external = ast
+                    .get_node(child_id)
+                    .is_some_and(|child| is_external_child(node, child));
                 dump_node(
                     ast,
                     child_id,
@@ -325,6 +343,7 @@ fn dump_node(
                     options,
                     indent + 2,
                     child_type_check,
+                    external,
                     out,
                 );
             }
@@ -365,6 +384,7 @@ fn dump_node(
         for &child_id in children {
             if let Some(child) = ast.get_node(child_id) {
                 if child.is_named() {
+                    let external = is_external_child(node, child);
                     dump_node(
                         ast,
                         child_id,
@@ -372,6 +392,7 @@ fn dump_node(
                         options,
                         indent + 1,
                         child_type_check,
+                        external,
                         out,
                     );
                 }
@@ -387,6 +408,7 @@ fn dump_node_inline(
     source: &str,
     options: &DumpOptions,
     type_check: Option<TypeCheckContext<'_>>,
+    external_to_parent: bool,
     out: &mut String,
 ) {
     let node = match ast.get_node(id) {
@@ -419,6 +441,9 @@ fn dump_node_inline(
 
     if options.show_abridged_source {
         write_source_skeleton(ast, node, source, out);
+        if external_to_parent {
+            write!(out, " (external)").unwrap();
+        }
     }
 
     if let Some(context) = type_check {
@@ -455,6 +480,13 @@ fn node_source_range(node: &Node) -> Option<crate::Range> {
         NodeContent::Range(range) => Some(range),
         _ => node.source_range,
     }
+}
+
+fn is_external_child(parent: &Node, child: &Node) -> bool {
+    let (Some(parent), Some(child)) = (node_source_range(parent), node_source_range(child)) else {
+        return false;
+    };
+    child.start_byte < parent.start_byte || child.end_byte > parent.end_byte
 }
 
 fn source_skeleton(ast: &Ast, node: &Node, source: &str) -> SourceSkeleton {
@@ -494,10 +526,7 @@ fn source_skeleton(ast: &Ast, node: &Node, source: &str) -> SourceSkeleton {
                 ));
             }
             if child.start < parent.start || child.end > parent.end {
-                return SourceSkeleton::Invalid(format!(
-                    "child range {}..{} is outside node range {}..{}",
-                    child.start, child.end, parent.start, parent.end
-                ));
+                continue;
             }
             if child.start == child.end {
                 continue;
@@ -615,12 +644,6 @@ mod tests {
         let cases = [
             (
                 "abcdef",
-                range(0, 3),
-                range(4, 4),
-                "child range 4..4 is outside node range 0..3",
-            ),
-            (
-                "abcdef",
                 range(0, 6),
                 range(7, 7),
                 "child range 7..7 is outside the source or not on UTF-8 boundaries",
@@ -640,6 +663,13 @@ mod tests {
                 "unexpected dump: {dump}"
             );
         }
+
+        let dump = dump_with_children("abcdef", range(0, 3), &[("marker", range(4, 4))]);
+        assert!(dump.starts_with("parent source=\"abc\"\n"));
+        assert!(
+            dump.contains("marker: child source=\"\" (external)\n"),
+            "unexpected dump: {dump}"
+        );
     }
 
     #[test]
@@ -667,12 +697,15 @@ mod tests {
     }
 
     #[test]
-    fn source_skeleton_reports_children_outside_the_parent() {
+    fn source_skeleton_marks_children_outside_the_parent() {
         let source = "abcdefghi";
         let dump = dump_with_children(source, range(0, 6), &[("child", range(7, 9))]);
 
-        assert!(dump
-            .starts_with("parent source=<invalid: child range 7..9 is outside node range 0..6>\n"));
+        assert!(dump.starts_with("parent source=\"abcdef\"\n"));
+        assert!(
+            dump.contains("  child source=\"hi\" (external)\n"),
+            "unexpected dump: {dump}"
+        );
     }
 }
 

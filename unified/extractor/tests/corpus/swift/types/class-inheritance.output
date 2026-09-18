@@ -32,9 +32,9 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩⟨base_type⟩⟨name_node⟩"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨base_type⟩ {}"
           modifier: modifier "class" source="class"
           name_node: identifier "Dog" source="Dog"
           base_type:
-            base_type source="class Dog: ⟨type⟩ {}"
+            base_type source="⟨type⟩"
               type: identifier "Animal" source="Animal"

@@ -106,7 +106,7 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩⟨member⟩\n  }\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  var v: Int {\n    ⟨member⟩\n    ⟨member⟩\n  }\n}"
           modifier: modifier "class" source="class"
           name_node: identifier "Box" source="Box"
           member:
@@ -116,23 +116,23 @@ top_level source="⟨body⟩"
                 modifier "private" source="private"
               pattern: identifier "_v" source="_v"
               value: int_literal "0" source="0"
-            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ {\n    ⟨accessor_kind⟩ ⟨body⟩"
-              modifier: modifier "var" source="var"
-              name_node: identifier "v" source="v"
+            accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
+              modifier: modifier "var" source="var" (external)
+              name_node: identifier "v" source="v" (external)
               accessor_kind: accessor_kind "get" source="get"
-              type: identifier "Int" source="Int"
+              type: identifier "Int" source="Int" (external)
               body:
                 block source="{ ⟨stmt⟩ }"
                   stmt:
                     return_expr source="return ⟨value⟩"
                       value: identifier "_v" source="_v"
-            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ {\n    get { return _v }\n    ⟨accessor_kind⟩⟨modifier⟩⟨body⟩"
+            accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
               modifier:
-                modifier "var" source="var"
-                modifier "chained_declaration" source="set { _v = newValue }"
-              name_node: identifier "v" source="v"
+                modifier "var" source="var" (external)
+                modifier "chained_declaration" source=""
+              name_node: identifier "v" source="v" (external)
               accessor_kind: accessor_kind "set" source="set"
-              type: identifier "Int" source="Int"
+              type: identifier "Int" source="Int" (external)
               body:
                 block source="{ ⟨stmt⟩ }"
                   stmt:
