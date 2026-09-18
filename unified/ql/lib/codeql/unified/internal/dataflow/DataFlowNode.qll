@@ -2,6 +2,7 @@ private import unified
 private import AllDataFlow
 private import codeql.unified.internal.ExprPositions
 private import codeql.unified.internal.LocalNameBinding
+private import codeql.util.Boolean
 
 private predicate hasIncomingValueAtCfgNode(Expr expr, ControlFlowNode cfgNode) {
   exists(AstNode declOrAssignment | hasIncomingValue(expr, declOrAssignment) |
@@ -76,7 +77,7 @@ newtype TDataFlowNode =
   } or
   TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node) or
   TReceiverParameterNode(DataFlowCallable callable) or
-  TReceiverArgumentNode(DataFlowCall call)
+  TReceiverArgumentNode(DataFlowCall call, Boolean isPost)
 
 /**
  * A node representing something that can have a value.
@@ -142,11 +143,24 @@ class Node extends TDataFlowNode {
 
   /** Holds if this node represents the receiver argument passed to `call`. */
   predicate isReceiverArgument(CallExpr call) {
-    this = TReceiverArgumentNode(any(DataFlowCall c | c.asExplicitCall() = call))
+    this.isReceiverArgumentEx(any(DataFlowCall c | c.asExplicitCall() = call))
+  }
+
+  /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
+  predicate isReceiverPostUpdate(CallExpr call) {
+    this.isReceiverPostUpdateEx(any(DataFlowCall c | c.asExplicitCall() = call))
   }
 
   /** Holds if this node represents the receiver argument passed to `call`. */
-  predicate isReceiverArgumentEx(DataFlowCall call) { this = TReceiverArgumentNode(call) }
+  predicate isReceiverArgumentEx(DataFlowCall call) { this.isReceiverArgumentEx(call, false) }
+
+  /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
+  predicate isReceiverPostUpdateEx(DataFlowCall call) { this.isReceiverArgumentEx(call, true) }
+
+  /** Holds if this node represents the receiver argument passed to `call`. */
+  predicate isReceiverArgumentEx(DataFlowCall call, boolean isPost) {
+    this = TReceiverArgumentNode(call, isPost)
+  }
 
   /** Gets the expression represented by this node. */
   Expr asExpr() { this = TValueNode(result) }
@@ -191,6 +205,9 @@ class Node extends TDataFlowNode {
     exists(DataFlowCall call |
       this.isReceiverArgumentEx(call) and
       result = "[receiver arg] " + call.toString()
+      or
+      this.isReceiverPostUpdateEx(call) and
+      result = "[receiver post] " + call.toString()
     )
   }
 
@@ -209,7 +226,7 @@ class Node extends TDataFlowNode {
     )
     or
     exists(DataFlowCall call |
-      this.isReceiverArgumentEx(call) and
+      this.isReceiverArgumentEx(call, _) and
       result = call.getLocation()
     )
   }
@@ -226,7 +243,7 @@ class Node extends TDataFlowNode {
     this.isReceiverParameterEx(result)
     or
     exists(DataFlowCall call |
-      this.isReceiverArgumentEx(call) and
+      this.isReceiverArgumentEx(call, _) and
       result = call.getEnclosingCallable()
     )
   }
@@ -244,5 +261,10 @@ Node getPostUpdateNode(Node pre) {
   exists(Expr expr, LocalVariable var |
     pre.isLocalVariableRead(expr, var) and
     result.isLocalVariablePostUpdate(expr, var)
+  )
+  or
+  exists(DataFlowCall call |
+    pre.isReceiverArgumentEx(call) and
+    result.isReceiverPostUpdateEx(call)
   )
 }
