@@ -1,4 +1,4 @@
-- description: Security-extended queries for Rust
 - queries: .
-- apply: security-extended-selectors.yml
-  from: codeql/suite-helpers
+- include:
+    tags contain:
+      - type-inference-warmup
