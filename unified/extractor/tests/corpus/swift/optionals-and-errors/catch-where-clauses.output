@@ -152,9 +152,9 @@ top_level source="⟨body⟩"
           catch_clause:
             catch_clause source="catch ⟨pattern⟩ ⟨body⟩"
               pattern:
-                or_pattern source="⟨pattern⟩ ⟨pattern⟩"
+                or_pattern source="⟨pattern⟩, ⟨pattern⟩"
                   pattern:
-                    conditional_pattern source="⟨pattern⟩ where ⟨condition⟩,"
+                    conditional_pattern source="⟨pattern⟩ where ⟨condition⟩"
                       condition:
                         call_expr source="⟨callee⟩(⟨argument⟩)"
                           callee: identifier "isNetworkError" source="isNetworkError"

@@ -66,10 +66,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        function_declaration source="func ⟨name_node⟩(⟨parameter⟩ ⟨parameter⟩) ⟨body⟩"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) ⟨body⟩"
           name_node: identifier "combine" source="combine"
           parameter:
-            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩,"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
               external_name_node: identifier "_" source="_"
               type: identifier "Int" source="Int"
               pattern: identifier "a" source="a"

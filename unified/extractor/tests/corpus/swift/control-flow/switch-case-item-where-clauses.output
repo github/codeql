@@ -179,9 +179,9 @@ top_level source="⟨body⟩"
                           value: string_literal "\"positive\"" source="\"positive\""
             switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                or_pattern source="⟨pattern⟩ ⟨pattern⟩"
+                or_pattern source="⟨pattern⟩, ⟨pattern⟩"
                   pattern:
-                    conditional_pattern source="⟨pattern⟩ where ⟨condition⟩,"
+                    conditional_pattern source="⟨pattern⟩ where ⟨condition⟩"
                       condition:
                         binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
                           left: identifier "y" source="y"

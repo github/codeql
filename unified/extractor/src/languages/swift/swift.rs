@@ -480,13 +480,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (enumCaseElement
                 name: @name
-                parameterClause: (enumCaseParameterClause parameters: _* @params)) @@element
+                parameterClause: (enumCaseParameterClause parameters: _* @params) @@clause)
             =>
             class_like_declaration {
                 let body = tree!((block));
-                let constructor = tree_at!(
+                let constructor = tree_spanning!(
                     ctx,
-                    element,
+                    [name, clause],
                     (constructor_declaration parameter: {params} body: {body})
                 );
                 tree!((class_like_declaration
@@ -643,27 +643,41 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `Array<T>` generic type constructor instead.
         rule!(
             (functionCallExpr
-                calledExpression: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                calledExpression: (arrayExpr
+                    elements: (arrayElement expression: (genericSpecializationExpr) @element)) @@array
                 arguments: _* @args
                 trailingClosure: @tc)
             =>
-            (call_expr
-                callee: (generic_type_expr
+            call_expr {
+                let callee = tree_at!(
+                    ctx,
+                    array,
+                    (generic_type_expr
                     base: (identifier "Array")
                     type_argument: {element})
-                argument: {args}
-                argument: (argument value: {tc}))
+                );
+                tree!((call_expr
+                    callee: {callee}
+                    argument: {args}
+                    argument: (argument value: {tc})))
+            }
         ),
         rule!(
             (functionCallExpr
-                calledExpression: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                calledExpression: (arrayExpr
+                    elements: (arrayElement expression: (genericSpecializationExpr) @element)) @@array
                 arguments: _* @args)
             =>
-            (call_expr
-                callee: (generic_type_expr
+            call_expr {
+                let callee = tree_at!(
+                    ctx,
+                    array,
+                    (generic_type_expr
                     base: (identifier "Array")
                     type_argument: {element})
-                argument: {args})
+                );
+                tree!((call_expr callee: {callee} argument: {args}))
+            }
         ),
         // A function/method call (`foo(1, 2)`). `calledExpression` is the callee
         // and `arguments` is an (elided) list of `labeledExpr`, each translated
@@ -734,14 +748,22 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // meaning as `Array<T>` rather than an array literal.
         rule!(
             (memberAccessExpr
-                base: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                base: (arrayExpr
+                    elements: (arrayElement expression: (genericSpecializationExpr) @element)) @@array
                 declName: (declReferenceExpr baseName: @member))
             =>
-            (member_access_expr
-                base: (generic_type_expr
-                    base: (identifier "Array")
-                    type_argument: {element})
-                member_name_node: (identifier #{member}))
+            member_access_expr {
+                let base = tree_at!(
+                    ctx,
+                    array,
+                    (generic_type_expr
+                        base: (identifier "Array")
+                        type_argument: {element})
+                );
+                tree!((member_access_expr
+                    base: {base}
+                    member_name_node: (identifier #{member})))
+            }
         ),
         rule!(
             (memberAccessExpr base: @base declName: (declReferenceExpr baseName: @member))
@@ -863,7 +885,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (switch_case body: (block stmt: {body}))
         ),
         // A single case item unwraps to its pattern, possibly boxed in conditional_pattern
-        rule!((switchCaseItem pattern: @p whereClause: (whereClause condition: @cond)) => (conditional_pattern pattern: { p } condition: {cond})),
+        rule!(
+            (switchCaseItem
+                pattern: @p
+                whereClause: (whereClause condition: @cond))
+            =>
+            (conditional_pattern pattern: {p} condition: {cond})
+        ),
         rule!((switchCaseItem pattern: @p) => pattern { p }),
         // A pattern-matching condition (`if case let x = e`, `if case .foo(let x)
         // = e`) becomes a `pattern_guard_expr`: the matched pattern and the
@@ -1008,7 +1036,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 catch_clause: {catches})
         ),
         rule!(
-            (catchItem pattern: @pattern whereClause: (whereClause condition: @guard))
+            (catchItem
+                pattern: @pattern
+                whereClause: (whereClause condition: @guard))
             =>
             (conditional_pattern pattern: {pattern} condition: {guard})
         ),
@@ -1170,7 +1200,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         rule!(
-            (tupleTypeElement firstName: _? @@name type: @ty)
+            (tupleTypeElement
+                firstName: _? @@name
+                type: @ty)
             =>
             argument {
                 if ctx.in_function_type {
@@ -1399,6 +1431,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
 
 pub fn language_spec(desugared_ast_schema: &'static str) -> desugaring::LanguageSpec {
     let config = DesugaringConfig::<SwiftContext>::new()
+        .with_ignored_location_fields(["trailingComma"])
         .add_phase("translate", PhaseKind::OneShot, translation_rules())
         .with_output_node_types_yaml(desugared_ast_schema);
     let desugarer =

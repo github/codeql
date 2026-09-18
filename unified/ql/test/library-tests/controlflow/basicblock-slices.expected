@@ -6,7 +6,7 @@
 | 7 | cfg.swift:7:1:7:10 | returnZero | 'returnZero -^ returnZero(...)' |
 | 8 | cfg.swift:8:1:8:6 | Double | 'Double -> Argument -V topLevelDecl -^ Double(...)' |
 | 10 | cfg.swift:10:1:13:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyError -^ BaseType -V Error' |
-| 11 | cfg.swift:11:10:11:16 | VariableDeclaration | 'VariableDeclaration -V error1 -> VariableDeclaration -V error2' |
+| 11 | cfg.swift:11:10:11:15 | VariableDeclaration | 'VariableDeclaration -V error1 -> VariableDeclaration -V error2' |
 | 12 | cfg.swift:12:10:12:31 | ClassLikeDeclaration | 'ClassLikeDeclaration -V error3 -^ ConstructorDeclaration' |
 | 12 | cfg.swift:12:17:12:25 | withParam | 'withParam -^ Block' |
 | 15 | cfg.swift:15:1:17:1 | FunctionDeclaration | 'FunctionDeclaration' |
@@ -315,7 +315,7 @@
 | 380 | cfg.swift:380:1:384:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 380 | cfg.swift:380:18:380:18 | x | 'x -> y -^ Block' |
 | 381 | cfg.swift:381:10:383:3 | Block | 'Block' |
-| 381 | cfg.swift:381:13:381:22 | VariableDeclaration | 'VariableDeclaration -V z -> x -> y -^ ... + ... -> VariableDeclaration -V t -> "literal" -^ FunctionExpr -^ ReturnExpr' |
+| 381 | cfg.swift:381:13:381:21 | VariableDeclaration | 'VariableDeclaration -V z -> x -> y -^ ... + ... -> VariableDeclaration -V t -> "literal" -^ FunctionExpr -^ ReturnExpr' |
 | 382 | cfg.swift:382:12:382:12 | z | 'z -^ ReturnExpr' |
 | 386 | cfg.swift:386:1:388:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 386 | cfg.swift:386:23:386:23 | t | 't -^ Block' |

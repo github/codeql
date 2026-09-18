@@ -272,6 +272,12 @@ let synthetic = tree_at!(ctx, source, (synthetic_node child: (nested value: {chi
 let synthetic = tree_spanning!(ctx, nodes, (synthetic_node child: {child}));
 ```
 
+For input fields whose leading or trailing syntax should never belong to rule
+results, configure them once with
+`DesugaringConfig::with_ignored_location_fields(...)`. For example, ignoring
+`trailingComma` retains the rest of each matched list element without requiring
+every rule to capture or handle the comma.
+
 For literals, `ctx.literal_at_start_of(...)` creates an empty range at another
 node's start.
 

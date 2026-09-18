@@ -120,9 +120,9 @@ top_level source="⟨body⟩"
         type_alias_declaration source="typealias ⟨name_node⟩ = ⟨type⟩"
           name_node: identifier "MixedParametersAndTuples" source="MixedParametersAndTuples"
           type:
-            function_expr source="(⟨parameter⟩ ⟨parameter⟩) -> ⟨return_type⟩"
+            function_expr source="(⟨parameter⟩, ⟨parameter⟩) -> ⟨return_type⟩"
               parameter:
-                parameter source="⟨type⟩,"
+                parameter source="⟨type⟩"
                   type:
                     function_expr source="(⟨parameter⟩) -> ⟨return_type⟩"
                       parameter:
@@ -132,9 +132,9 @@ top_level source="⟨body⟩"
                 parameter source="⟨type⟩"
                   type: identifier "String" source="String"
               return_type:
-                tuple_expr source="(⟨element⟩ ⟨element⟩)"
+                tuple_expr source="(⟨element⟩, ⟨element⟩)"
                   element:
-                    argument source="⟨value⟩,"
+                    argument source="⟨value⟩"
                       value: identifier "Bool" source="Bool"
                     argument source="⟨value⟩"
                       value: identifier "Int" source="Int"

@@ -151,13 +151,13 @@ top_level source="⟨body⟩"
                           value: string_literal "\"yes\"" source="\"yes\""
             switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
+                call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
                   callee:
                     member_access_expr source="⟨base⟩⟨member_name_node⟩"
                       base: inferred_type_expr "." source="."
                       member_name_node: identifier "thread" source="thread"
                   argument:
-                    argument source="⟨name_node⟩: ⟨value⟩,"
+                    argument source="⟨name_node⟩: ⟨value⟩"
                       name_node: identifier "threadRowId" source="threadRowId"
                       value: identifier "_" source="_"
                     argument source="⟨value⟩"
