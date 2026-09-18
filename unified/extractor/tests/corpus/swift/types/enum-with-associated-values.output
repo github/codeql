@@ -65,31 +65,31 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "enum"
-          name_node: identifier "Shape"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨member⟩\n  case ⟨member⟩\n}"
+          modifier: modifier "enum" source="enum"
+          name_node: identifier "Shape" source="Shape"
           member:
-            class_like_declaration
-              modifier: modifier "enum_case"
-              name_node: identifier "circle"
+            class_like_declaration source="⟨name_node⟩⟨member⟩⟨modifier⟩"
+              modifier: modifier "enum_case" source="circle(radius: Double)"
+              name_node: identifier "circle" source="circle"
               member:
-                constructor_declaration
+                constructor_declaration source="⟨body⟩⟨parameter⟩"
                   parameter:
-                    parameter
-                      type: identifier "Double"
-                      pattern: identifier "radius"
-                  body: block "circle(radius: Double)"
-            class_like_declaration
-              modifier: modifier "enum_case"
-              name_node: identifier "square"
+                    parameter source="⟨pattern⟩: ⟨type⟩"
+                      type: identifier "Double" source="Double"
+                      pattern: identifier "radius" source="radius"
+                  body: block "circle(radius: Double)" source="circle(radius: Double)"
+            class_like_declaration source="⟨name_node⟩⟨member⟩⟨modifier⟩"
+              modifier: modifier "enum_case" source="square(side: Double)"
+              name_node: identifier "square" source="square"
               member:
-                constructor_declaration
+                constructor_declaration source="⟨body⟩⟨parameter⟩"
                   parameter:
-                    parameter
-                      type: identifier "Double"
-                      pattern: identifier "side"
-                  body: block "square(side: Double)"
+                    parameter source="⟨pattern⟩: ⟨type⟩"
+                      type: identifier "Double" source="Double"
+                      pattern: identifier "side" source="side"
+                  body: block "square(side: Double)" source="square(side: Double)"

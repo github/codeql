@@ -63,20 +63,20 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "struct"
-          name_node: identifier "Resource"
+        class_like_declaration source="⟨modifier⟩⟨base_type⟩⟨name_node⟩⟨member⟩"
+          modifier: modifier "struct" source="struct"
+          name_node: identifier "Resource" source="Resource"
           base_type:
-            base_type
-              type: unsupported_node "~Copyable"
+            base_type source="struct Resource: ⟨type⟩ {\n  consuming func close() {\n    discard self\n  }\n}"
+              type: unsupported_node "~Copyable" source="~Copyable"
           member:
-            function_declaration
-              modifier: modifier "consuming"
-              name_node: identifier "close"
+            function_declaration source="⟨modifier⟩⟨body⟩⟨name_node⟩"
+              modifier: modifier "consuming" source="consuming"
+              name_node: identifier "close" source="close"
               body:
-                block
-                  stmt: unsupported_node "discard self"
+                block source="consuming func close() {\n    ⟨stmt⟩\n  }"
+                  stmt: unsupported_node "discard self" source="discard self"

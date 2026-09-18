@@ -235,6 +235,17 @@ yeast::trees!(ctx,
 (identifier #{name})         // an identifier from a Rust variable
 ```
 
+For reviewing locations, `DumpOptions::show_abridged_source` prints each node's
+source range with every direct child replaced by its field name in Unicode
+angle brackets. This keeps delimiters and other parent-owned syntax visible
+without repeating entire subtrees:
+
+```text
+return_expr source="return ⟨value⟩"
+  value:
+    call_expr source="⟨callee⟩(⟨argument⟩)"
+```
+
 ### Optional fields (`?`)
 
 A `?` on a field's value makes that field fallible. If a `#{expr}` anywhere

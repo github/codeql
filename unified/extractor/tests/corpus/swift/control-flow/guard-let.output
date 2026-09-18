@@ -36,26 +36,26 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        guard_if_stmt
+        guard_if_stmt source="guard ⟨condition⟩ else ⟨else⟩"
           condition:
-            pattern_guard_expr
+            pattern_guard_expr source="⟨pattern⟩⟨value⟩"
               pattern:
-                call_expr
+                call_expr source="⟨argument⟩⟨callee⟩"
                   callee:
-                    member_access_expr
-                      base: identifier "Optional"
-                      member_name_node: identifier "some"
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: identifier "Optional" source="let value = optional"
+                      member_name_node: identifier "some" source="let value = optional"
                   argument:
-                    argument
+                    argument source="⟨value⟩"
                       value:
-                        expr_pattern
-                          modifier: modifier "let"
-                          expr: identifier "value"
-              value: identifier "optional"
+                        expr_pattern source="⟨modifier⟩⟨expr⟩"
+                          modifier: modifier "let" source="let value = optional"
+                          expr: identifier "value" source="value"
+              value: identifier "optional" source="optional"
           else:
-            block
-              stmt: return_expr "return"
+            block source="{ ⟨stmt⟩ }"
+              stmt: return_expr "return" source="return"

@@ -51,15 +51,15 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "read"
-          return_type: identifier "String"
+        function_declaration source="⟨body⟩⟨name_node⟩⟨return_type⟩"
+          name_node: identifier "read" source="read"
+          return_type: identifier "String" source="String"
           body:
-            block
+            block source="func read() throws -> String {\n  ⟨stmt⟩\n}"
               stmt:
-                return_expr
-                  value: string_literal "\"\""
+                return_expr source="return ⟨value⟩"
+                  value: string_literal "\"\"" source="\"\""

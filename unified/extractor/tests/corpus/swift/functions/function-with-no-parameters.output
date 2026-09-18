@@ -47,17 +47,17 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "greet"
+        function_declaration source="⟨body⟩⟨name_node⟩"
+          name_node: identifier "greet" source="greet"
           body:
-            block
+            block source="func greet() {\n  ⟨stmt⟩\n}"
               stmt:
-                call_expr
-                  callee: identifier "print"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
                   argument:
-                    argument
-                      value: string_literal "\"hello\""
+                    argument source="⟨value⟩"
+                      value: string_literal "\"hello\"" source="\"hello\""

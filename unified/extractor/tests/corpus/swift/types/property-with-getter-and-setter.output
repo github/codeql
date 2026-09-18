@@ -102,41 +102,41 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "class"
-          name_node: identifier "Box"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩⟨member⟩\n  }\n}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "Box" source="Box"
           member:
-            variable_declaration
+            variable_declaration source="⟨modifier⟩ ⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
               modifier:
-                modifier "var"
-                modifier "private"
-              pattern: identifier "_v"
-              value: int_literal "0"
-            accessor_declaration
-              modifier: modifier "var"
-              name_node: identifier "v"
-              accessor_kind: accessor_kind "get"
-              type: identifier "Int"
+                modifier "var" source="var"
+                modifier "private" source="private"
+              pattern: identifier "_v" source="_v"
+              value: int_literal "0" source="0"
+            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ {\n    ⟨accessor_kind⟩ ⟨body⟩"
+              modifier: modifier "var" source="var"
+              name_node: identifier "v" source="v"
+              accessor_kind: accessor_kind "get" source="get"
+              type: identifier "Int" source="Int"
               body:
-                block
+                block source="{ ⟨stmt⟩ }"
                   stmt:
-                    return_expr
-                      value: identifier "_v"
-            accessor_declaration
+                    return_expr source="return ⟨value⟩"
+                      value: identifier "_v" source="_v"
+            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ {\n    get { return _v }\n    ⟨accessor_kind⟩⟨modifier⟩⟨body⟩"
               modifier:
-                modifier "var"
-                modifier "chained_declaration"
-              name_node: identifier "v"
-              accessor_kind: accessor_kind "set"
-              type: identifier "Int"
+                modifier "var" source="var"
+                modifier "chained_declaration" source="set { _v = newValue }"
+              name_node: identifier "v" source="v"
+              accessor_kind: accessor_kind "set" source="set"
+              type: identifier "Int" source="Int"
               body:
-                block
+                block source="{ ⟨stmt⟩ }"
                   stmt:
-                    binary_expr
-                      left: identifier "_v"
-                      operator: infix_operator "="
-                      right: identifier "newValue"
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "_v" source="_v"
+                      operator: infix_operator "=" source="="
+                      right: identifier "newValue" source="newValue"

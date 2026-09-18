@@ -28,13 +28,13 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "class"
-          name_node: identifier "Dog"
+        class_like_declaration source="⟨modifier⟩⟨base_type⟩⟨name_node⟩"
+          modifier: modifier "class" source="class"
+          name_node: identifier "Dog" source="Dog"
           base_type:
-            base_type
-              type: identifier "Animal"
+            base_type source="class Dog: ⟨type⟩ {}"
+              type: identifier "Animal" source="Animal"

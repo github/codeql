@@ -48,20 +48,20 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern: identifier "type"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "type" source="type"
           value:
-            member_access_expr
+            member_access_expr source="⟨base⟩⟨member_name_node⟩"
               base:
-                generic_type_expr
-                  base: identifier "Array"
+                generic_type_expr source="⟨base⟩⟨type_argument⟩"
+                  base: identifier "Array" source="[Result<Void>].self"
                   type_argument:
-                    generic_type_expr
-                      base: identifier "Result"
-                      type_argument: identifier "Void"
-              member_name_node: identifier "self"
+                    generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                      base: identifier "Result" source="Result"
+                      type_argument: identifier "Void" source="Void"
+              member_name_node: identifier "self" source="self"

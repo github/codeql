@@ -49,31 +49,31 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        if_expr
+        if_expr source="if ⟨condition⟩ ⟨then⟩"
           condition:
-            pattern_guard_expr
+            pattern_guard_expr source="⟨pattern⟩⟨value⟩"
               pattern:
-                call_expr
+                call_expr source="⟨argument⟩⟨callee⟩"
                   callee:
-                    member_access_expr
-                      base: identifier "Optional"
-                      member_name_node: identifier "some"
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: identifier "Optional" source="let value = optional"
+                      member_name_node: identifier "some" source="let value = optional"
                   argument:
-                    argument
+                    argument source="⟨value⟩"
                       value:
-                        expr_pattern
-                          modifier: modifier "let"
-                          expr: identifier "value"
-              value: identifier "optional"
+                        expr_pattern source="⟨modifier⟩⟨expr⟩"
+                          modifier: modifier "let" source="let value = optional"
+                          expr: identifier "value" source="value"
+              value: identifier "optional" source="optional"
           then:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                call_expr
-                  callee: identifier "print"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
                   argument:
-                    argument
-                      value: identifier "value"
+                    argument source="⟨value⟩"
+                      value: identifier "value" source="value"

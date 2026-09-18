@@ -27,14 +27,14 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        call_expr
-          callee: identifier "foo"
+        call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
+          callee: identifier "foo" source="foo"
           argument:
-            argument
-              value: int_literal "1"
-            argument
-              value: int_literal "2"
+            argument source="⟨value⟩,"
+              value: int_literal "1" source="1"
+            argument source="⟨value⟩"
+              value: int_literal "2" source="2"
