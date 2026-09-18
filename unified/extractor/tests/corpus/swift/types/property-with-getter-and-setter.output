@@ -136,6 +136,7 @@ top_level
               body:
                 block
                   stmt:
-                    assign_expr
-                      target: identifier "_v"
-                      value: identifier "newValue"
+                    binary_expr
+                      left: identifier "_v"
+                      operator: infix_operator "="
+                      right: identifier "newValue"

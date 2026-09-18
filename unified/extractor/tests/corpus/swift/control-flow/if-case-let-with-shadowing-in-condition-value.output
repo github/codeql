@@ -151,7 +151,7 @@ top_level
           then:
             block
               stmt:
-                compound_assign_expr
-                  target: identifier "y"
+                binary_expr
+                  left: identifier "y"
                   operator: infix_operator "+="
-                  value: int_literal "1"
+                  right: int_literal "1"

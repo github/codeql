@@ -24,6 +24,7 @@ top_level
   body:
     block
       stmt:
-        assign_expr
-          target: identifier "x"
-          value: int_literal "1"
+        binary_expr
+          left: identifier "x"
+          operator: infix_operator "="
+          right: int_literal "1"

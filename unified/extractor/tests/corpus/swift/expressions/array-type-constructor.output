@@ -167,6 +167,7 @@ top_level
                       body:
                         block
                           stmt:
-                            assign_expr
-                              target: identifier "count"
-                              value: int_literal "0"
+                            binary_expr
+                              left: identifier "count"
+                              operator: infix_operator "="
+                              right: int_literal "0"

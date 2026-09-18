@@ -16,6 +16,14 @@ predicate step(Node node1, Step step, Node node2) {
     node2.isIncomingValue(assign.getTarget())
   )
   or
+  // For compound assignments, the result of the expression represents the result of the operator.
+  // Make it flow to the target of the assignment.
+  exists(CompoundAssignExpr assign |
+    node1.isResultValue(assign) and
+    step.value() and
+    node2.isIncomingValue(assign.getTarget())
+  )
+  or
   exists(LocalVariableAccess access |
     node1.isLocalVariableRead(access, access.getLocalVariable()) and
     step.value() and

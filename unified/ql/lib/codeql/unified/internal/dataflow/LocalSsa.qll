@@ -27,6 +27,9 @@ module LocalSsaInput implements InputSig<Location, BasicBlock> {
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     certain = true and
     performsVariableAccess(_, v, TRead(), bb.getNode(i))
+    or
+    certain = true and
+    performsVariableAccess(_, v, TPostUpdate(), bb.getNode(i))
   }
 }
 
@@ -58,6 +61,13 @@ module LocalSsaDataFlowInput implements DataFlowIntegrationInputSig {
   }
 
   predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue val) { none() }
+
+  predicate postUpdateCfgNode(Expr read, BasicBlock bb, int i) {
+    exists(LocalVariable var, U::Expr expr |
+      read = TLocalVariableRefNode(expr, var, TRead()) and
+      performsVariableAccess(expr, var, TPostUpdate(), bb.getNode(i))
+    )
+  }
 }
 
 module LocalSsaDataFlowOutput = DataFlowIntegration<LocalSsaDataFlowInput>;
