@@ -158,7 +158,8 @@ Another point is how launching QL tests can be tweaked:
 - you can add the additional checks that CI does with `--all-checks` or the `+`
   abbreviation. These additional checks are configured in justfiles per language, and
   correspond to all the additional checks that CI adds (but that a dev might not want to
-  run by default).
+  run by default). Checks a root passes unconditionally are not offers: what it offers
+  is what `--all-checks` can enable
 
 Test arguments are passed around as `just` lists (`set lists`), so they reach the
 underlying runner already split and arguments containing spaces survive intact.

@@ -5,9 +5,9 @@ import "format.just"
 
 # Run language tests for LANGUAGE.
 #
-# Arguments tagged with `--all-checks=` are held back and only applied when `--all-checks`
-# or `+` is passed along, which is how per-language justfiles express the extra checks CI
-# runs on top of the default ones.
+# `--extra-check=` offers a check without running it, and `--all-checks` or `+` runs the
+# offered ones. Per-language justfiles supply the offers, which is how the extra checks
+# CI runs stay next to the language they belong to.
 [no-cd]
 [no-exit-message]
 [positional-arguments]

@@ -109,13 +109,6 @@ class TestMain(unittest.TestCase):
         self.assertEqual(status, 1)
         run.assert_not_called()
 
-    def test_nothing_but_blank_arguments_is_no_arguments(self):
-        # An unset variable interpolated by a caller arrives as one of these. Counting
-        # it as an argument and then dropping it left nothing to take a root from.
-        status, run, _ = self.run_main("", "")
-        self.assertEqual(status, 1)
-        run.assert_not_called()
-
     def test_reports_a_root_with_no_justfile_above_it(self):
         orphan = self.semmle_code / "elsewhere"
         orphan.mkdir()

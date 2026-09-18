@@ -4,8 +4,10 @@
 Called from just recipes as:
     python3 language_tests.py ROOT [ARG...]
 
-Arguments are already split by `just` (see `set lists`). The first one must be a test
-root, which is used to locate the justfile implementing `test` for that suite.
+Arguments are already split by `just` (see `set lists`). Only the first locates a
+justfile: its `test` recipe is run once, and every argument after it is handed to that
+one recipe rather than visited in turn. Roots wanting different `test` recipes therefore
+cannot be run together.
 """
 
 import os
@@ -15,10 +17,7 @@ from pathlib import Path
 
 
 def main():
-    # Blank arguments are dropped before the count is taken: one comes of a caller
-    # interpolating a variable that was never set, and a list of nothing but those is no
-    # arguments at all rather than a root to find a justfile above.
-    argv = [arg for arg in sys.argv[1:] if arg]
+    argv = sys.argv[1:]
     if not argv:
         print("Usage: language_tests.py ROOT [ARG...]", file=sys.stderr)
         return 1

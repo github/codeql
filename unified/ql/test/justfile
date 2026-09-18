@@ -8,4 +8,4 @@ base_flags := []
 all_checks := default_db_checks ++ ['--check-repeated-labels', '--check-redefined-labels', '--check-use-before-definition', '--consistency-queries=' + consistency_queries]
 
 [no-cd]
-test *ARGS=".": (_codeql_test "unified" (base_flags ++ prepend('--all-checks=', all_checks) ++ ARGS))
+test *ARGS=".": (_codeql_test "unified" (base_flags ++ prepend('--extra-check=', all_checks) ++ ARGS))
