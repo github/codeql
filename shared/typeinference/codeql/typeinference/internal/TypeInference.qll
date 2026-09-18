@@ -70,6 +70,7 @@ overlay[local?]
 module;
 
 private import codeql.util.Location
+private import codeql.util.Strings
 
 /** Provides the input to `Make1`. */
 signature module InputSig1<LocationSig Location> {
@@ -1261,22 +1262,50 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     module MatchingWithEnvironment<MatchingWithEnvironmentInputSig Input> {
       private import Input
 
+      private Type getTypeArgumentNonPseudo(Access a, int pos, TypePath path) {
+        result = a.getTypeArgument(pos, path) and
+        not result instanceof PseudoType
+      }
+
       /**
        * Gets the type of the type argument at `path` in `a` that corresponds to
        * the type parameter `tp` in `target`, if any.
        *
        * Note that this predicate crucially does not depend on type inference,
-       * and hence can appear in negated position, e.g., as in
-       * `directTypeMatch`.
+       * and hence can appear in negated position, e.g., as in `directTypeMatch`.
        */
       bindingset[a, target]
       pragma[inline_late]
       Type getTypeArgument(Access a, Declaration target, TypeParameter tp, TypePath path) {
         exists(int pos |
-          result = a.getTypeArgument(pos, path) and
-          tp = target.getTypeParameter(pos) and
-          not result instanceof PseudoType
+          result = getTypeArgumentNonPseudo(a, pos, path) and
+          tp = target.getTypeParameter(pos)
         )
+      }
+
+      bindingset[a, target]
+      pragma[inline_late]
+      private predicate hasNotTypeArgument0(Access a, Declaration target, TypeParameter tp) {
+        exists(int pos |
+          tp = target.getTypeParameter(pragma[only_bind_into](pos)) and
+          not exists(getTypeArgumentNonPseudo(a, pos, _))
+        )
+      }
+
+      bindingset[target, tp]
+      pragma[inline_late]
+      private predicate hasNotTypeArgument1(Declaration target, TypeParameter tp) {
+        not tp = target.getTypeParameter(_)
+      }
+
+      /**
+       * A join-order optimized version of `not exists(getTypeArgument(a, target, tp, _)`.
+       */
+      pragma[inline]
+      private predicate hasNotTypeArgument(Access a, Declaration target, TypeParameter tp) {
+        hasNotTypeArgument0(a, target, tp)
+        or
+        hasNotTypeArgument1(target, tp)
       }
 
       pragma[nomagic]
@@ -1284,7 +1313,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Access a, DeclarationPosition dpos, AccessEnvironment e, Declaration target,
         TypePath pathToTypeParam, TypeParameter tp
       ) {
-        not exists(getTypeArgument(a, target, tp, _)) and
+        hasNotTypeArgument(a, target, tp) and
         tp = target.getDeclaredType(dpos, pathToTypeParam) and
         target = a.getTarget(e)
       }
@@ -1359,12 +1388,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           t = a.getInferredType(e, apos, TypePath::nil())
         }
 
+        private predicate relevantAccessTarget(
+          Access a, AccessPosition apos, AccessEnvironment e, Declaration target
+        ) {
+          exists(Type t |
+            accessTargetsWithArgRootType(a, e, target, apos, t) and
+            argRootTypeSatisfiesTargetTypeCand(t, target, apos, _, _)
+          )
+        }
+
         private newtype TRelevantAccess =
           MkRelevantAccess(Access a, AccessPosition apos, AccessEnvironment e) {
-            exists(Declaration target, Type t |
-              accessTargetsWithArgRootType(a, e, target, apos, t) and
-              argRootTypeSatisfiesTargetTypeCand(t, target, apos, _, _)
-            )
+            relevantAccessTarget(a, apos, e, _)
           }
 
         private class RelevantAccess extends MkRelevantAccess {
@@ -1374,7 +1409,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
           RelevantAccess() { this = MkRelevantAccess(a, apos, e) }
 
-          RelevantTarget getTarget() { result = MkRelevantTarget(a.getTarget(e), apos) }
+          RelevantTarget getTarget() {
+            exists(Declaration target |
+              relevantAccessTarget(a, apos, e, target) and
+              result = MkRelevantTarget(target, apos)
+            )
+          }
 
           pragma[nomagic]
           Type getTypeAt(TypePath path) { result = a.getInferredType(e, apos, path) }
@@ -1394,6 +1434,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
         private module SatisfiesParameterConstraint =
           SatisfiesConstraint<RelevantAccess, RelevantTarget, SatisfiesParameterConstraintInput>;
+
+        private module InverseAppend2Input implements InverseAppend2InputSig {
+          class C1 = Declaration;
+
+          class C2 = AccessPosition;
+
+          class Result = TypeParameter;
+
+          predicate prefixCandidate(string prefix, C1 c1, C2 c2, Result res) {
+            argRootTypeSatisfiesTargetTypeCand(_, c1, c2, res, prefix)
+          }
+        }
 
         /**
          * Holds if the (transitive) base type `t` at `path` of `a` in environment `e`
@@ -1431,13 +1483,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         predicate baseTypeMatch(
           Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
         ) {
-          exists(AccessPosition apos, TypePath pathToTp |
-            argRootTypeSatisfiesTargetTypeCand(_, target, pragma[only_bind_into](apos), tp, pathToTp) and
+          exists(AccessPosition apos, TypePath pathFull |
             SatisfiesParameterConstraint::satisfiesConstraint(MkRelevantAccess(a,
                 pragma[only_bind_into](apos), e),
-              MkRelevantTarget(target, pragma[only_bind_into](apos)), pathToTp.appendInverse(path),
-              t) and
-            not exists(getTypeArgument(a, target, tp, _))
+              MkRelevantTarget(target, pragma[only_bind_into](apos)), pathFull, t) and
+            InverseAppend2<InverseAppend2Input>::inverseAppend(pathFull, _, path, target, apos, tp) and
+            hasNotTypeArgument(a, target, tp)
           )
         }
       }
@@ -1591,15 +1642,29 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         constrainedTp != tp
       }
 
+      private module InverseAppend3Input implements InverseAppend3InputSig {
+        class C1 = Declaration;
+
+        class C2 = TypeParameter;
+
+        class C3 = TypeMention;
+
+        class Result = TypeParameter;
+
+        predicate prefixCandidate(string prefix, C1 c1, C2 c2, C3 c3, Result res) {
+          typeParameterConstraintHasTypeParameter(c1, c2, c3, prefix, res)
+        }
+      }
+
       pragma[nomagic]
       private predicate typeConstraintBaseTypeMatch(
         Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
-        not exists(getTypeArgument(a, target, tp, _)) and
-        exists(TypeMention constraint, TypeParameter constrainedTp, TypePath pathToTp |
-          typeParameterConstraintHasTypeParameter(target, constrainedTp, constraint, pathToTp, tp) and
-          AccessConstraint::satisfiesConstraint(a, e, target, constrainedTp, constraint,
-            pathToTp.appendInverse(path), t)
+        hasNotTypeArgument(a, target, tp) and
+        exists(TypeParameter constrainedTp, TypeMention constraint, TypePath pathFull |
+          AccessConstraint::satisfiesConstraint(a, e, target, constrainedTp, constraint, pathFull, t) and
+          InverseAppend3<InverseAppend3Input>::inverseAppend(pathFull, _, path, target,
+            constrainedTp, constraint, tp)
         )
       }
 
