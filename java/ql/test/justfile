@@ -3,9 +3,8 @@ import "../justfile"
 # A whole language test suite is slow, so it only runs when asked for by name.
 explicit_verbs := ['test']
 
-# The Kotlin extractor must see the diagnostic limit set, but blank: hence the single
-# trailing space.
-base_flags := ['CODEQL_EXTRACTOR_KOTLIN_DIAGNOSTIC_LIMIT= ']
+# Kotlin tests may fail the diags.ql consistency test if the diagnostic limit is set.
+base_flags := ['CODEQL_EXTRACTOR_KOTLIN_DIAGNOSTIC_LIMIT=']
 
 all_checks := default_db_checks ++ ['--check-undefined-labels', '--check-repeated-labels', '--check-redefined-labels', '--check-use-before-definition', '--consistency-queries=' + consistency_queries]
 

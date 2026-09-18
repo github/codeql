@@ -5,4 +5,4 @@ import "../../../lib.just"
 explicit_verbs := ['test']
 
 [no-cd]
-test *ARGS=".": (_if_not_on_ci_just ['generate', source_dir()]) (_integration_test ARGS)
+test *ARGS=".": (_if_not_on_ci_just ['generate']) (_integration_test ARGS)
