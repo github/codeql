@@ -107,19 +107,29 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             lazyExplicitFeeds = new Lazy<ImmutableHashSet<string>>(GetExplicitFeeds);
             lazyAllFeeds = new Lazy<ImmutableHashSet<string>>(GetAllFeeds);
-            lazyReachableExplicitFeeds = new Lazy<ImmutableHashSet<string>>(() => CheckSpecifiedFeeds(ExplicitFeeds));
+            lazyReachableExplicitFeeds = new Lazy<ImmutableHashSet<string>>(() =>
+            {
+                logger.LogInfo("Discovering reachable explicit NuGet feeds.");
+                return CheckSpecifiedFeeds(ExplicitFeeds);
+            });
             lazyReachableFeeds = new Lazy<ImmutableHashSet<string>>(() =>
             {
+                logger.LogInfo("Discovering reachable inherited NuGet feeds.");
                 // Inherited feeds should only be used, if they are indeed reachable (as they may be environment specific).
                 var reachableInheritedFeeds = CheckSpecifiedFeeds(InheritedFeeds);
                 return ReachableExplicitFeeds.Union(reachableInheritedFeeds).ToImmutableHashSet();
             });
             lazyReachableFallbackFeeds = new Lazy<ImmutableHashSet<string>>(() =>
             {
+                logger.LogInfo("Discovering reachable fallback NuGet feeds.");
                 var reachableFallbackFeeds = GetReachableFallbackNugetFeeds();
                 return reachableFallbackFeeds.ToImmutableHashSet();
             });
-            lazyReachableDefaultFeeds = new Lazy<ImmutableHashSet<string>>(() => CheckSpecifiedFeeds(DefaultFeeds));
+            lazyReachableDefaultFeeds = new Lazy<ImmutableHashSet<string>>(() =>
+            {
+                logger.LogInfo("Discovering reachable default NuGet feeds.");
+                return CheckSpecifiedFeeds(DefaultFeeds);
+            });
         }
 
         public FeedManager(ILogger logger, IDotNet dotnet, IRegistryProxy? registryProxy, IFileProvider fileProvider)
@@ -369,6 +379,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private ImmutableHashSet<string> GetExplicitFeeds()
         {
+            logger.LogInfo("Discovering explicit NuGet feeds from nuget.config files and private registries.");
             var nugetConfigs = fileProvider.NugetConfigs;
 
             // Find feeds that are explicitly configured in the NuGet configuration files that we found.
@@ -398,6 +409,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private ImmutableHashSet<string> GetAllFeeds()
         {
+            logger.LogInfo("Discovering all NuGet feeds.");
+
             var nugetConfigs = fileProvider.NugetConfigs;
 
             HashSet<string> allFeeds = [];
