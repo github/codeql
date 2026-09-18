@@ -89,6 +89,11 @@ newtype TParameterPosition =
 /** A parameter position. */
 overlay[local]
 class ParameterPosition extends TParameterPosition {
+  /** Gets the underlying integer position, if any. */
+  int getPosition() {
+    this = TPositionalParameterPosition(result)
+  }
+
   /** Holds if this position represents a `self`/`cls` parameter. */
   predicate isSelf() { this = TSelfParameterPosition() }
 
