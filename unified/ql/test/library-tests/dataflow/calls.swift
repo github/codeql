@@ -19,7 +19,7 @@ func t2() {
 
 func t3() {
     func target(x: String) {
-        sink(x)  // $ MISSING: hasValueFlow=t3.1
+        sink(x)  // $ hasValueFlow=t3.1
     }
     target(x: source("t3.1"))
 }
@@ -40,7 +40,7 @@ func t5() {
     target1(name: source("t5.1"))
 
     func target2(name: String) {
-        sink(name)  // $ MISSING: hasValueFlow=t5.2
+        sink(name)  // $ hasValueFlow=t5.2
     }
     target2(name: source("t5.2"))
 }
