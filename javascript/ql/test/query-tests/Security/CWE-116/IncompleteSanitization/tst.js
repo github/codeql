@@ -306,7 +306,7 @@ function incompleteHtmlAttributeSanitization2() {
 }
 
 function incompleteComplexSanitizers() {
-	'=\'' + s().replace(/[&<>"]/gm, function (str) {
+	'=\'' + s().replace(/[&<>"]/gm, function (str) { // $ Alert[js/incomplete-html-attribute-sanitization]
 		if (str === "&")
 			return "&amp;";
 		if (str === "<")
@@ -315,7 +315,7 @@ function incompleteComplexSanitizers() {
 			return "&gt;";
 		if (str === "\"")
 			return "&quot;";
-	}) + '\''; // $ Alert[js/incomplete-html-attribute-sanitization]
+	}) + '\'';
 
 	'="' + s().replace(/[&<>"]/gm, function (str) {
 		if (str === "&")

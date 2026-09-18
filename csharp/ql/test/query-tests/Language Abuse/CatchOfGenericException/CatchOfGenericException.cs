@@ -7,16 +7,16 @@ class CatchOfGenericException
         try
         {
         }
-        catch (Exception)
+        catch (Exception) // $ Alert
         { // BAD
-        } // $ Alert
+        }
 
         try
         {
         }
-        catch
+        catch // $ Alert
         { // BAD
-        } // $ Alert
+        }
 
         try
         {
@@ -49,10 +49,10 @@ class CatchOfGenericException
         {
             return 1 / input;
         }
-        catch
+        catch // $ Alert
         { // BAD
           // division by zero, return 0
             return 0;
-        } // $ Alert
+        }
     }
 }

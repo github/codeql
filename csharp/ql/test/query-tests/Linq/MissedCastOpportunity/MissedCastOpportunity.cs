@@ -7,11 +7,11 @@ class MissedCastOpportunity
     public void M1(List<Animal> animals)
     {
         // BAD: Can be replaced with animals.Cast<Dog>().
-        foreach (Animal a in animals)
+        foreach (Animal a in animals) // $ Alert
         {
             Dog d = (Dog)a;
             d.Woof();
-        } // $ Alert
+        }
     }
 
     public void M2(NonEnumerableClass nec)
@@ -27,31 +27,31 @@ class MissedCastOpportunity
     public void M3(Animal[] animals)
     {
         // BAD: Can be replaced with animals.Cast<Dog>().
-        foreach (Animal animal in animals)
+        foreach (Animal animal in animals) // $ Alert
         {
             Dog d = (Dog)animal;
             d.Woof();
-        } // $ Alert
+        }
     }
 
     public void M4(Array animals)
     {
         // BAD: Can be replaced with animals.Cast<Dog>().
-        foreach (Animal animal in animals)
+        foreach (Animal animal in animals) // $ Alert
         {
             Dog d = (Dog)animal;
             d.Woof();
-        } // $ Alert
+        }
     }
 
     public void M5(IEnumerable animals)
     {
         // BAD: Can be replaced with animals.Cast<Dog>().
-        foreach (object animal in animals)
+        foreach (object animal in animals) // $ Alert
         {
             Dog d = (Dog)animal;
             d.Woof();
-        } // $ Alert
+        }
     }
 
     public class NonEnumerableClass

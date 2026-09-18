@@ -7,9 +7,9 @@ class EmptyCatchBlock
         try
         {
         }
-        catch (Exception)
+        catch (Exception) // $ Alert
         {
-        } // $ Alert
+        }
     }
 
     void good()

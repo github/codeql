@@ -13,10 +13,10 @@
             <param-name>debug</param-name>
             <param-value>0</param-value>
         </init-param>
-        <init-param>
+        <init-param> <!-- $ Alert -->
             <param-name>listings</param-name>
             <param-value>true</param-value>
-        </init-param> <!-- $ Alert -->
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 

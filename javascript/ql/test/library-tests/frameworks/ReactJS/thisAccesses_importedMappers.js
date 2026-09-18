@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
-React.createClass({
+React.createClass({ // $ reactComponent
     render: function() {
         React.Children.map(whatEver, function () {
             this;
@@ -12,4 +12,4 @@ React.createClass({
 
         return <div/>;
     },
-}); // $ reactComponent
+});
