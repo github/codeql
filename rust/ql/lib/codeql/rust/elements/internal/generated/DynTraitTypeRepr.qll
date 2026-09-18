@@ -28,6 +28,8 @@ module Generated {
   class DynTraitTypeRepr extends Synth::TDynTraitTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "DynTraitTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the type bound list of this dyn trait type representation, if it exists.
      */

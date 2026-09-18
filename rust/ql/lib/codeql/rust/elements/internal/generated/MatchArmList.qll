@@ -33,6 +33,8 @@ module Generated {
   class MatchArmList extends Synth::TMatchArmList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "MatchArmList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th arm of this match arm list (0-based).
      */

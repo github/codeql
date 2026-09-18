@@ -31,6 +31,8 @@ module Generated {
   class TupleField extends Synth::TTupleField, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "TupleField" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this tuple field (0-based).
      */

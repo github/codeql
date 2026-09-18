@@ -29,6 +29,8 @@ module Generated {
   class AsmClobberAbi extends Synth::TAsmClobberAbi, AsmPieceImpl::AsmPiece {
     override string getAPrimaryQlClass() { result = "AsmClobberAbi" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this asm clobber abi (0-based).
      */

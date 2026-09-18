@@ -22,6 +22,8 @@ module Generated {
   class ArrayExprInternal extends Synth::TArrayExprInternal, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "ArrayExprInternal" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this array expression internal (0-based).
      */
