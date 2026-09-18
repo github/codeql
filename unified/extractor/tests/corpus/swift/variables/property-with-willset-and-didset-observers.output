@@ -110,11 +110,11 @@ top_level source="⟨body⟩"
               pattern: identifier "x" source="x"
               type: identifier "Int" source="Int"
               value: int_literal "0" source="0"
-            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: Int = 0 {\n    ⟨accessor_kind⟩ ⟨body⟩"
+            accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
               modifier:
-                modifier "var" source="var"
+                modifier "var" source="var" (external)
                 modifier "chained_declaration" source=""
-              name_node: identifier "x" source="x"
+              name_node: identifier "x" source="x" (external)
               accessor_kind: accessor_kind "willSet" source="willSet"
               body:
                 block source="{ ⟨stmt⟩ }"
@@ -124,11 +124,11 @@ top_level source="⟨body⟩"
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "newValue" source="newValue"
-            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: Int = 0 {\n    willSet { print(newValue) }\n    ⟨accessor_kind⟩ ⟨body⟩"
+            accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
               modifier:
-                modifier "var" source="var"
+                modifier "var" source="var" (external)
                 modifier "chained_declaration" source=""
-              name_node: identifier "x" source="x"
+              name_node: identifier "x" source="x" (external)
               accessor_kind: accessor_kind "didSet" source="didSet"
               body:
                 block source="{ ⟨stmt⟩ }"
