@@ -1,7 +1,11 @@
 private import unified
 private import AllDataFlow
+private import codeql.unified.internal.ExprPositions
 
-private newtype TDataFlowCall = TExplicitCall(CallExpr call)
+private newtype TDataFlowCall =
+  TExplicitCall(CallExpr call) {
+    not isInBindingContext(call, _) // ignore constructor patterns
+  }
 
 /**
  * A call site, covering both explicit calls such as `foo(1,2)`, as well an implicit
