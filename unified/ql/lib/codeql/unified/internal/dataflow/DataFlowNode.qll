@@ -65,7 +65,8 @@ newtype TDataFlowNode =
     performsVariableAccess(expr, var, kind, _)
   } or
   TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node) or
-  TReceiverParameterNode(DataFlowCallable callable)
+  TReceiverParameterNode(DataFlowCallable callable) or
+  TReceiverArgumentNode(DataFlowCall call)
 
 /**
  * A node representing something that can have a value.
@@ -129,6 +130,14 @@ class Node extends TDataFlowNode {
     this = TReceiverParameterNode(callable)
   }
 
+  /** Holds if this node represents the receiver argument passed to `call`. */
+  predicate isReceiverArgument(CallExpr call) {
+    this = TReceiverArgumentNode(any(DataFlowCall c | c.asExplicitCall() = call))
+  }
+
+  /** Holds if this node represents the receiver argument passed to `call`. */
+  predicate isReceiverArgumentEx(DataFlowCall call) { this = TReceiverArgumentNode(call) }
+
   /** Gets the expression represented by this node. */
   Expr asExpr() { this = TValueNode(result) }
 
@@ -168,6 +177,11 @@ class Node extends TDataFlowNode {
       this.isReceiverParameterEx(callable) and
       result = "[receiver] " + callable.toString()
     )
+    or
+    exists(DataFlowCall call |
+      this.isReceiverArgumentEx(call) and
+      result = "[receiver arg] " + call.toString()
+    )
   }
 
   /** Gets the location of this data flow node. */
@@ -183,6 +197,11 @@ class Node extends TDataFlowNode {
       this.isReceiverParameterEx(callable) and
       result = callable.getLocation()
     )
+    or
+    exists(DataFlowCall call |
+      this.isReceiverArgumentEx(call) and
+      result = call.getLocation()
+    )
   }
 
   /** Gets the data-flow callable containing this data flow node. */
@@ -195,6 +214,10 @@ class Node extends TDataFlowNode {
     )
     or
     this.isReceiverParameterEx(result)
+    or
+    exists(DataFlowCall call |
+      this.isReceiverArgumentEx(call) and
+      result = call.getEnclosingCallable()
     )
   }
 
