@@ -26,29 +26,43 @@ def batch_limit():
     along with some slack. This is worth doing rather than assuming the tightest of the
     two: `ARG_MAX` is 2MB on Linux, which turns the couple of thousand QL files of a
     language into a single invocation rather than several.
+
+    A single argument is capped far lower than the whole line, at 128KB on Linux, and a
+    command that hands its arguments on through a shell arrives as one of them. Batches
+    are kept below that too, as the resulting failure is reported by whatever did the
+    handing on rather than by anything naming this file.
     """
     if sys.platform == "win32":
         return 30000
+    single_argument = 100000
     try:
         arg_max = os.sysconf("SC_ARG_MAX")
     except (ValueError, OSError):
         return 30000
     environment = sum(len(name) + len(value) + 2 for name, value in os.environ.items())
-    return max(4096, arg_max - environment - 4096)
+    return max(4096, min(arg_max - environment - 4096, single_argument))
 
 
-def files_under(paths, patterns, excludes=(), absolute=False):
+def files_under(paths, patterns, excludes=(), absolute=False, within=None):
     """Collect the files matching one of the patterns at or below each path.
 
     Patterns are matched against the file name, as bazel files are identified by name
     rather than by extension. Exclusions are matched against the whole path instead,
-    which is how a directory of generated files is left alone.
+    which is how a directory of generated files is left alone. That path is the one the
+    walk built, so an exclusion has to allow for how the paths it is given are spelled:
+    `*/<directory>/*` does not match what is walked from `<directory>` itself.
+
+    A `within` directory bounds the result to the files below it, for a command that
+    answers for one project and may be handed a path reaching outside it.
 
     Symbolic links are not followed, which is what keeps the `bazel-*` convenience
     links out of the walk.
     """
+    boundary = Path(within).resolve() if within else None
 
     def wanted(path):
+        if boundary is not None and not path.resolve().is_relative_to(boundary):
+            return False
         return any(fnmatch(path.name, p) for p in patterns) and not any(
             fnmatch(str(path), e) for e in excludes
         )
@@ -77,6 +91,16 @@ def batched(files, limit):
         yield batch
 
 
+def comma_separated(value):
+    """Split an option value listing several patterns.
+
+    Patterns tend to come in groups, and a justfile passes them as one variable, so they
+    are spelled as one argument here rather than repeated. Repeating the option works
+    too, which is what lets a list be extended rather than restated.
+    """
+    return value.split(",")
+
+
 def parse_args():
     """Work out what to run, on which files, and what to hide of what it says."""
     parser = argparse.ArgumentParser(
@@ -87,9 +111,10 @@ def parse_args():
     )
     parser.add_argument(
         "--exclude",
-        action="append",
+        action="extend",
         default=[],
-        metavar="<pattern>",
+        type=comma_separated,
+        metavar="<pattern>[,<pattern>...]",
         help="leave out files whose path matches, repeatable",
     )
     parser.add_argument(
@@ -103,6 +128,12 @@ def parse_args():
         help="run the command from here, for one that must be run from a project root",
     )
     parser.add_argument(
+        "--within",
+        metavar="<directory>",
+        help="leave out files outside this directory, for a command answering for one "
+        "project that may be handed a path reaching beyond it",
+    )
+    parser.add_argument(
         "--drop",
         action="append",
         default=[],
@@ -112,7 +143,7 @@ def parse_args():
     parser.add_argument(
         "patterns",
         metavar="<pattern>[,<pattern>...]",
-        type=lambda patterns: set(patterns.split(",")),
+        type=comma_separated,
         help="what to match file names against",
     )
     parser.add_argument(
@@ -158,7 +189,9 @@ def run(command, drops, chdir=None):
 
 def main():
     args = parse_args()
-    files = files_under(args.paths, args.patterns, args.exclude, args.absolute)
+    files = files_under(
+        args.paths, args.patterns, args.exclude, args.absolute, args.within
+    )
     limit = batch_limit() - sum(len(argument) + 1 for argument in args.command)
     status = 0
     for batch in batched(files, limit):

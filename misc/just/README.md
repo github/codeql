@@ -23,8 +23,9 @@ The core of the functionality is given by forwarding. The idea is that:
 - finally, the forwarder also looks _below_ each argument, so that `just test ql/cpp`
   runs the tests defined underneath it. The argument only says where to look in this
   case, so each recipe found is run on its own directory rather than being passed the
-  argument. Several may be found, in which case they run sequentially: `just format
-  ql/cpp` formats everything under `ql/cpp` that knows how to format itself.
+  argument. Several may be found, in which case they run sequentially:
+  `just format ql/cpp` formats everything under `ql/cpp` that knows how to format
+  itself.
 
 Both directions are searched, and every distinct recipe found runs. This matters because
 a verb higher up is usually doing a different job from one further down rather than a
@@ -48,6 +49,13 @@ This is for work that belongs to no single directory. bazel files are the case i
 they sit throughout the tree rather than under any one language, so formatting them is
 the root's job, and taking the argument keeps `just format cpp` to the bazel files under
 `cpp`.
+
+Being a recipe like any other, a `_root_<verb>` is inherited by a justfile importing the
+one defining it, which is how the internal repository gets this one for free. It runs
+once either way, as the two spellings are the same recipe. A root that defines its own
+instead replaces it, and then both run, each over the files of the repository that
+defines it: bazel formatting asks bazel from the root of the checkout the files belong
+to, so that a repository formats its own files with its own pin.
 
 A directory that only makes sense when named explicitly can opt out of being found from
 above:
