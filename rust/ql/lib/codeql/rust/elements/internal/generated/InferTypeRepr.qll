@@ -26,7 +26,5 @@ module Generated {
    */
   class InferTypeRepr extends Synth::TInferTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "InferTypeRepr" }
-
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

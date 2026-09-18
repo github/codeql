@@ -23,7 +23,5 @@ module Generated {
    */
   class WildcardPat extends Synth::TWildcardPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "WildcardPat" }
-
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

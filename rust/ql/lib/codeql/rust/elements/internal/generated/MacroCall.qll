@@ -31,8 +31,6 @@ module Generated {
   class MacroCall extends Synth::TMacroCall, AssocItemImpl::AssocItem, ExternItemImpl::ExternItem {
     override string getAPrimaryQlClass() { result = "MacroCall" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this macro call (0-based).
      */

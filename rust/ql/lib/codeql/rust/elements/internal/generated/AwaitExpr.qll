@@ -29,8 +29,6 @@ module Generated {
   class AwaitExpr extends Synth::TAwaitExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "AwaitExpr" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this await expression (0-based).
      */

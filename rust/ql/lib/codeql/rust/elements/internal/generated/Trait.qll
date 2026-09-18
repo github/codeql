@@ -38,8 +38,6 @@ module Generated {
   class Trait extends Synth::TTrait, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "Trait" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the assoc item list of this trait, if it exists.
      */

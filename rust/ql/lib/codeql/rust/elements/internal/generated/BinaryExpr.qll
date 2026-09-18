@@ -30,8 +30,6 @@ module Generated {
   class BinaryExpr extends Synth::TBinaryExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "BinaryExpr" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this binary expression (0-based).
      */

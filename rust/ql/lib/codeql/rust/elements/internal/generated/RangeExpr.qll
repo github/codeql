@@ -31,8 +31,6 @@ module Generated {
   class RangeExpr extends Synth::TRangeExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "RangeExpr" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this range expression (0-based).
      */

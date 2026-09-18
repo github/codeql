@@ -32,8 +32,6 @@ module Generated {
   class BecomeExpr extends Synth::TBecomeExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "BecomeExpr" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this become expression (0-based).
      */

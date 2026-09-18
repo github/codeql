@@ -36,8 +36,6 @@ module Generated {
   class MatchExpr extends Synth::TMatchExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "MatchExpr" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this match expression (0-based).
      */

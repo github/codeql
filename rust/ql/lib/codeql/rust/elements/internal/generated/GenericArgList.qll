@@ -25,8 +25,6 @@ module Generated {
   class GenericArgList extends Synth::TGenericArgList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "GenericArgList" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th generic argument of this generic argument list (0-based).
      */

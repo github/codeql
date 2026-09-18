@@ -30,8 +30,6 @@ module Generated {
   class TupleStructPat extends Synth::TTupleStructPat, PatImpl::Pat, PathAstNodeImpl::PathAstNode {
     override string getAPrimaryQlClass() { result = "TupleStructPat" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th field of this tuple struct pattern (0-based).
      */

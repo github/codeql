@@ -33,8 +33,6 @@ module Generated {
   class ReturnExpr extends Synth::TReturnExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "ReturnExpr" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this return expression (0-based).
      */

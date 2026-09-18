@@ -37,8 +37,6 @@ module Generated {
   class ContinueExpr extends Synth::TContinueExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "ContinueExpr" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this continue expression (0-based).
      */

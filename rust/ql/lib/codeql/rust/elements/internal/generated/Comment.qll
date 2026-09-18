@@ -26,8 +26,6 @@ module Generated {
   class Comment extends Synth::TComment, TokenImpl::Token {
     override string getAPrimaryQlClass() { result = "Comment" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the parent of this comment.
      */

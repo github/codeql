@@ -30,8 +30,6 @@ module Generated {
   class Format extends Synth::TFormat, LocatableImpl::Locatable {
     override string getAPrimaryQlClass() { result = "Format" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the parent of this format.
      */

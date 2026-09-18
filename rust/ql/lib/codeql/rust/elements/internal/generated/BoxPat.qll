@@ -28,8 +28,6 @@ module Generated {
   class BoxPat extends Synth::TBoxPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "BoxPat" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the pattern of this box pattern, if it exists.
      */

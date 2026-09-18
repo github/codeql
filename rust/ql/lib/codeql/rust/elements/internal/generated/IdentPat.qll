@@ -36,8 +36,6 @@ module Generated {
   class IdentPat extends Synth::TIdentPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "IdentPat" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this ident pattern (0-based).
      */

@@ -27,8 +27,6 @@ module Generated {
   class Lifetime extends Synth::TLifetime, UseBoundGenericArgImpl::UseBoundGenericArg {
     override string getAPrimaryQlClass() { result = "Lifetime" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the text of this lifetime, if it exists.
      */

@@ -34,8 +34,6 @@ module Generated {
   class Impl extends Synth::TImpl, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "Impl" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the assoc item list of this impl, if it exists.
      */

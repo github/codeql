@@ -31,8 +31,6 @@ module Generated {
   class Static extends Synth::TStatic, ExternItemImpl::ExternItem {
     override string getAPrimaryQlClass() { result = "Static" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this static (0-based).
      */

@@ -237,6 +237,18 @@ def test_to_string_impl_from_primary_class(generate_classes):
     }
 
 
+def test_to_string_impl_from_primary_class_is_not_generated_when_custom():
+    cls = schema.Class(
+        "A",
+        pragmas={"ql_to_string_impl_from_primary_class": True},
+    )
+    # Pass `A` as a class with a custom `toStringImpl`
+    resolver = qlgen.Resolver({"A": cls}, {"A"})
+
+    # Resolving `A` gives a class where `to_string_impl_from_primary_class` does not hold.
+    assert not resolver.get_ql_class(cls).to_string_impl_from_primary_class
+
+
 def test_one_empty_internal_class(generate_classes):
     assert generate_classes([schema.Class("A", pragmas=["ql_internal"])]) == {
         "A.qll": (

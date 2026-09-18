@@ -28,8 +28,6 @@ module Generated {
   class RefPat extends Synth::TRefPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "RefPat" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Holds if this reference pattern is mut.
      */

@@ -30,8 +30,6 @@ module Generated {
   class UseTree extends Synth::TUseTree, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "UseTree" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Holds if this use tree is glob.
      */

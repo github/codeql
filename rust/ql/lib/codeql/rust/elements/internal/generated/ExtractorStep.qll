@@ -21,8 +21,6 @@ module Generated {
   class ExtractorStep extends Synth::TExtractorStep, ElementImpl::Element {
     override string getAPrimaryQlClass() { result = "ExtractorStep" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the action of this extractor step.
      */

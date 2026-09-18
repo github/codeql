@@ -27,8 +27,6 @@ module Generated {
   class CastExpr extends Synth::TCastExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "CastExpr" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this cast expression (0-based).
      */

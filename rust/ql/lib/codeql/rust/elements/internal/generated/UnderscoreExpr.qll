@@ -25,8 +25,6 @@ module Generated {
   class UnderscoreExpr extends Synth::TUnderscoreExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "UnderscoreExpr" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this underscore expression (0-based).
      */

@@ -27,8 +27,6 @@ module Generated {
   class OrPat extends Synth::TOrPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "OrPat" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th pattern of this or pattern (0-based).
      */

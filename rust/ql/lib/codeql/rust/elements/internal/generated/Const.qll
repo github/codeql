@@ -33,8 +33,6 @@ module Generated {
   class Const extends Synth::TConst, AssocItemImpl::AssocItem {
     override string getAPrimaryQlClass() { result = "Const" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th attr of this const (0-based).
      */

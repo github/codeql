@@ -25,8 +25,6 @@ module Generated {
   class ArrayRepeatExpr extends Synth::TArrayRepeatExpr, ArrayExprImpl::ArrayExpr {
     override string getAPrimaryQlClass() { result = "ArrayRepeatExpr" }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the repeat operand of this array repeat expression.
      */
