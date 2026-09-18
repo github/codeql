@@ -81,7 +81,16 @@ overriding several loses only the renamed one, leaving a half-applied configurat
 total failure would land in a state someone designed, while partial failure lands in one
 nobody has ever seen.
 
-Nothing can see it either, because the underscore that keeps these out of `just --list`
+An override also freezes what it replaces. A root assigns the whole value, so an
+exclusion or a name added here later never reaches one, and `just` offers no way to
+append: a root writing `_bazel_excluded := _bazel_excluded + ",mine"` is told the
+variable is defined in terms of itself. This runs the opposite way from a rename, where
+the override stops applying and the value here wins. Here the override keeps applying
+exactly as written, and the roots that never see the addition are the ones that cared
+enough about the setting to redirect it. Adding to one of these values is therefore a
+change to make on both sides at once.
+
+Neither shows up anywhere, because the underscore that keeps these out of `just --list`
 keeps them out of `--variables` and a bare `--evaluate` as well. Asked by name they do
 answer, which is how a root checks that an override of its own still overrides anything:
 
@@ -90,10 +99,12 @@ just --evaluate _bazel_excluded                      # what mine is now
 just --justfile <this-repo>/justfile --evaluate _bazel_excluded   # what it would be
 ```
 
-A name that has gone says so rather than reporting an empty value. That is a diagnostic
-to reach for once something looks wrong, though: it answers whether a name still exists,
-not whether its meaning has changed, so it passes happily when the value here gains or
-loses a pattern. Rename freely, but say so when handing the change over.
+A name that has gone says so rather than reporting an empty value. Read as two values
+rather than as two names, the same pair also shows a freeze: a pattern appearing only
+under what it would be is one this repository added and the override never received.
+Expect differences both ways, since a root that overrode a value usually added something
+of its own, and only the missing half is a bug. Rename freely, but say so when handing
+the change over.
 
 A directory that only makes sense when named explicitly can opt out of being found from
 above:
