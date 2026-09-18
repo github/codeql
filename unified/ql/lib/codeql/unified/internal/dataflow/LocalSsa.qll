@@ -75,10 +75,21 @@ module LocalSsaDataFlowOutput = DataFlowIntegration<LocalSsaDataFlowInput>;
 
 private module Ssa = LocalSsaDataFlowOutput;
 
+/**
+ * Holds if `node` represents the synthetic read we use to represent a post-update node.
+ *
+ * We want to skip use-use flow through such a node, as we don't want use-use ordinary flow
+ * targeting a post-update node.
+ */
+private predicate postUpdateReadNode(Ssa::Node node) {
+  node.(Ssa::ExprNode).getExpr() = TLocalVariableRefNode(_, _, TPostUpdate())
+}
+
 Node getNodeFromLocalSsaNode(Ssa::Node n) {
   result = TLocalSsaNode(n)
   or
-  result = n.(Ssa::ExprNode).getExpr()
+  result = n.(Ssa::ExprNode).getExpr() and
+  not postUpdateReadNode(n)
   or
   result = getPostUpdateNode(n.(Ssa::ExprPostUpdateNode).getExpr())
   or
@@ -89,9 +100,29 @@ Node getNodeFromLocalSsaNode(Ssa::Node n) {
   )
 }
 
+/**
+ * Holds if there is use-use flow from `node1`, through one or most post-update reads, into `node2`.
+ */
+predicate skipPostUpdateRead(Ssa::Node node1, Ssa::Node node2) {
+  Ssa::localFlowStep(_, node1, node2, true) and
+  postUpdateReadNode(node2)
+  or
+  exists(Ssa::Node mid |
+    skipPostUpdateRead(node1, mid) and
+    postUpdateReadNode(mid) and
+    Ssa::localFlowStep(_, mid, node2, _)
+  )
+}
+
 predicate localSsaStep(Node node1, Node node2, boolean isUseStep) {
   exists(Ssa::Node ssa1, Ssa::Node ssa2 |
-    Ssa::localFlowStep(_, ssa1, ssa2, isUseStep) and
+    (
+      Ssa::localFlowStep(_, ssa1, ssa2, isUseStep)
+      or
+      skipPostUpdateRead(ssa1, ssa2) and
+      isUseStep = true
+    ) and
+    not postUpdateReadNode(ssa2) and
     node1 = getNodeFromLocalSsaNode(ssa1) and
     node2 = getNodeFromLocalSsaNode(ssa2)
   )
