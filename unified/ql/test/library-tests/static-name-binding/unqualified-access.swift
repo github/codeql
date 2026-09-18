@@ -10,7 +10,7 @@ class ASub : A { // $ access=A
 
     class BSub : B { // $ access=A.B
         let x3: B = nil; // $ access=A.B
-        let x4: C = nil; // $ access=A.B.C SPURIOUS: access=Target3.C // spurious result from folder-based heuristic
+        let x4: C = nil; // $ access=A.B.C
     }
 
     class BSub2 : B { // $ access=A.B

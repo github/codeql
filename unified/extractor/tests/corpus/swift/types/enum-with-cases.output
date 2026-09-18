@@ -67,25 +67,17 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "enum"
-          name: identifier "Direction"
+          name_node: identifier "Direction"
           member:
             variable_declaration
               modifier: modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "north"
+              pattern: identifier "north"
             variable_declaration
               modifier: modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "south"
+              pattern: identifier "south"
             variable_declaration
               modifier: modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "east"
+              pattern: identifier "east"
             variable_declaration
               modifier: modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "west"
+              pattern: identifier "west"

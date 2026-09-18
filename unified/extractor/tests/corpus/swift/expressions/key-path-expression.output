@@ -42,7 +42,5 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "keyPath"
+          pattern: identifier "keyPath"
           value: unsupported_node "\\String.count"

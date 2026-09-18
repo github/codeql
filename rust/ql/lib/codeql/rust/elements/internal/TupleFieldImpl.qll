@@ -24,6 +24,8 @@ module Impl {
    * ```
    */
   class TupleField extends Generated::TupleField {
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /** Holds if this tuple field is the `pos`th field of variant `v`. */
     predicate isVariantField(Variant v, int pos) { this = v.getTupleField(pos) }
 

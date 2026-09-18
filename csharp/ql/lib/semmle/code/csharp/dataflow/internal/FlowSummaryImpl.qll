@@ -30,13 +30,9 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow>
     )
   }
 
-  class SourceBase extends Void {
+  class FlowSummaryCallBase extends Void {
     Location getLocation() { none() }
   }
-
-  class SinkBase = SourceBase;
-
-  class FlowSummaryCallBase = SourceBase;
 
   DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
     result.asSummarizedCallable() = c

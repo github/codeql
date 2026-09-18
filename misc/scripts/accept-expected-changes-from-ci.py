@@ -208,7 +208,7 @@ def get_log_content(status: GithubStatus) -> str:
     LOGGER.debug(f"'{status.context}': Getting logs")
     if status.job_ids:
         contents = [subprocess.check_output(
-            ["gh", "api", f"/repos/{status.nwo}/actions/jobs/{job_id}/logs"],
+            ["gh", "api", f"/repos/{status.nwo}/actions/jobs/{job_id}/logs", "--allow-escape-sequences"],
         ).decode("utf-8") for job_id in status.job_ids]
         content = "\n".join(contents)
     else:
@@ -275,7 +275,7 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
 
     lang_test_failures: List[GithubStatus] = list()
     for status in newest_status.values():
-        if " Language Tests" in status.context or status.context in supported_internal_status_language_test_names:
+        if " Language Tests" in status.context and not " Language Tests Windows" in status.context or status.context in supported_internal_status_language_test_names:
             if status.state == "failure":
                 lang_test_failures.append(status)
             elif status.state == "pending":

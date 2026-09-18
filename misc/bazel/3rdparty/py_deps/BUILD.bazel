@@ -102,15 +102,3 @@ alias(
     actual = "@vendor_py__tree-sitter-graph-0.12.0//:tree_sitter_graph",
     tags = ["manual"],
 )
-
-alias(
-    name = "tsp-0.19.0",
-    actual = "@vendor_py__tsp-0.19.0//:tsp",
-    tags = ["manual"],
-)
-
-alias(
-    name = "tsp",
-    actual = "@vendor_py__tsp-0.19.0//:tsp",
-    tags = ["manual"],
-)

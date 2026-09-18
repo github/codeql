@@ -24,6 +24,8 @@ module Impl {
    * ```
    */
   class FormatArgsExpr extends Generated::FormatArgsExpr {
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     override Format getFormat(int index) {
       result =
         rank[index + 1](Format f, int i | f.getParent() = this and f.getIndex() = i | f order by i)

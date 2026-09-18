@@ -176,7 +176,7 @@ module FromUntrustedConfig implements DataFlow::ConfigSig {
   additional predicate isSinkCgn(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn) {
     exists(IfStmt ifs |
       exists(Expr operand |
-        operand = ifs.getCond().getAChildExpr*() and
+        operand = ifs.getCondition().getAChildExpr*() and
         (
           exists(DataFlow::CallExpr call | call = operand |
             call.getTarget().hasQualifiedName("strings", "HasSuffix") and
@@ -202,7 +202,7 @@ module FromUntrustedConfig implements DataFlow::ConfigSig {
         )
       )
     |
-      cgn.getCondition() = ifs.getCond()
+      cgn.getCondition() = ifs.getCondition()
     )
   }
 }

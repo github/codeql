@@ -68,27 +68,17 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "Box"
+          name_node: identifier "Box"
           type_parameter:
             type_parameter
-              name: identifier "T"
-              bound:
-                named_type_expr
-                  name: identifier "Equatable"
+              name_node: identifier "T"
+              bound: identifier "Equatable"
             type_parameter
-              name: identifier "U"
+              name_node: identifier "U"
           type_constraint:
             bound_type_constraint
-              type:
-                named_type_expr
-                  name: identifier "U"
-              bound:
-                named_type_expr
-                  name: identifier "Equatable"
+              type: identifier "U"
+              bound: identifier "Equatable"
             equality_type_constraint
-              left:
-                named_type_expr
-                  name: identifier "U"
-              right:
-                named_type_expr
-                  name: identifier "T"
+              left: identifier "U"
+              right: identifier "T"

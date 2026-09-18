@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -34,7 +33,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class PackagesConfigRestoreFactory
     {
-        public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
+        public static IPackagesConfigRestore Create(IFileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
         {
             if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMonoInstalled())
             {
@@ -56,7 +55,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             public int PackageCount => fileProvider.PackagesConfigs.Count;
 
-            private readonly FileProvider fileProvider;
+            private readonly IFileProvider fileProvider;
 
             /// <summary>
             /// The packages directory.
@@ -68,14 +67,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             private bool IsWindows => SystemBuildActions.Instance.IsWindows();
 
-            private bool? isDefaultFeedReachable;
-            private bool IsDefaultFeedReachable =>
-                isDefaultFeedReachable ??= feedManager.IsDefaultFeedReachable();
-
             /// <summary>
             /// Create the package manager for a specified source tree.
             /// </summary>
-            public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
+            public NugetExeWrapper(IFileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
             {
                 this.fileProvider = fileProvider;
                 this.packageDirectory = packageDirectory;
@@ -168,19 +163,23 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 logger.LogInfo($"Restoring file \"{packagesConfig}\"...");
 
-                var sourcesArgument = "";
+                List<string> sourcesArgument = [];
                 var feedsToUse = feedManager.FeedsToUse(packagesConfig).ToList();
-                var useDefaultFeed = feedsToUse.Count == 0 && IsDefaultFeedReachable;
+                var defaultFeeds = feedManager.CheckNugetFeedResponsiveness
+                    ? feedManager.ReachableDefaultFeeds
+                    : feedManager.DefaultFeeds;
+                var useDefaultFeeds = feedsToUse.Count == 0 && defaultFeeds.Count > 0;
 
                 // Explicitly construct the sources to be used for the restore command when checking feed
-                // responsiveness, using private registries, or falling back to nuget.org.
-                if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds || useDefaultFeed)
+                // responsiveness, using private registries, or falling back to default feeds.
+                if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds || useDefaultFeeds)
                 {
-                    if (useDefaultFeed)
+                    if (useDefaultFeeds)
                     {
-                        feedsToUse.Add(FeedManager.PublicNugetOrgFeed);
+                        feedsToUse.AddRange(defaultFeeds);
                     }
-                    sourcesArgument = feedManager.FeedsToRestoreArgument(feedsToUse, "-Source");
+                    var restoreFeeds = feedManager.RestoreFeeds(feedsToUse);
+                    sourcesArgument = restoreFeeds.SelectMany<string, string>(feed => ["-Source", feed]).ToList();
                 }
 
                 /* Use nuget.exe to install a package.
@@ -189,16 +188,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                  * really unwieldy and this solution works for now.
                  */
 
-                string exe, args;
+                string exe;
+                List<string> args;
+
                 if (RunWithMono)
                 {
                     exe = "mono";
-                    args = $"\"{nugetExe}\" install -OutputDirectory \"{packageDirectory}\" {sourcesArgument} \"{packagesConfig}\"";
+                    args = [nugetExe!, "install", "-OutputDirectory", packageDirectory.ToString(), .. sourcesArgument, packagesConfig];
                 }
                 else
                 {
                     exe = nugetExe!;
-                    args = $"install -OutputDirectory \"{packageDirectory}\" {sourcesArgument} \"{packagesConfig}\"";
+                    args = ["install", "-OutputDirectory", packageDirectory.ToString(), .. sourcesArgument, packagesConfig];
                 }
 
                 var pi = new ProcessStartInfo(exe, args)
@@ -214,7 +215,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var exitCode = pi.ReadOutput(out _, onOut, onError);
                 if (exitCode != 0)
                 {
-                    logger.LogError($"Command {pi.FileName} {pi.Arguments} failed with exit code {exitCode}");
+                    logger.LogError($"Command {pi.FileName} {string.Join(" ", pi.ArgumentList)} failed with exit code {exitCode}");
                     return false;
                 }
                 else

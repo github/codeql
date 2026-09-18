@@ -34,12 +34,8 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "n"
+          pattern: identifier "n"
           value:
             unary_expr
-              operand:
-                name_expr
-                  identifier: identifier "opt"
+              operand: identifier "opt"
               operator: postfix_operator "!"

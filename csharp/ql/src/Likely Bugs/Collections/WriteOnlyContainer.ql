@@ -28,7 +28,7 @@ where
       any(LocalVariableDeclAndInitExpr ass | ass.getRightOperand() instanceof ObjectCreation)
           .getLeftOperand()
   ) and
-  not v = any(ForeachStmt fs).getVariable() and
+  not v = any(ForEachStmt fs).getVariable() and
   not v = any(BindingPatternExpr vpe).getVariableDeclExpr().getVariable() and
   not v = any(Attribute a).getTarget()
 select v, "The contents of this container are never accessed."

@@ -56,6 +56,15 @@ abstract class ParserConfig extends MethodCall {
   }
 }
 
+/**
+ * An expression that evaluates to a JAXP parser factory (such as a
+ * `DocumentBuilderFactory` or `SAXParserFactory`) that has already been hardened
+ * against XML external entity (XXE) attacks, for example by a helper library.
+ *
+ * Extend this class to model additional sources of pre-hardened JAXP factories.
+ */
+abstract class SafeXmlFactorySource extends Expr { }
+
 /*
  * https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#jaxp-documentbuilderfactory-saxparserfactory-and-dom4j
  */
@@ -156,6 +165,8 @@ private class DocumentBuilderConstruction extends MethodCall {
 
 private predicate safeDocumentBuilderFactoryNode(DataFlow::Node src) {
   src.asExpr() instanceof SafeDocumentBuilderFactory
+  or
+  src.asExpr().(SafeXmlFactorySource).getType() instanceof DocumentBuilderFactory
 }
 
 private module SafeDocumentBuilderFactoryToDocumentBuilderConstructionFlow =
@@ -219,6 +230,8 @@ class XmlInputFactoryStreamReader extends XmlParserCall {
 
 private predicate safeXmlInputFactoryNode(DataFlow::Node src) {
   src.asExpr() instanceof SafeXmlInputFactory
+  or
+  src.asExpr().(SafeXmlFactorySource).getType() instanceof XmlInputFactory
 }
 
 private module SafeXmlInputFactoryToXmlInputFactoryReaderFlow =
@@ -456,6 +469,8 @@ class SafeSaxParserFactory extends VarAccess {
 
 private predicate safeSaxParserFactoryNode(DataFlow::Node src) {
   src.asExpr() instanceof SafeSaxParserFactory
+  or
+  src.asExpr().(SafeXmlFactorySource).getType() instanceof SaxParserFactory
 }
 
 private module SafeSaxParserFactoryToNewSaxParserFlow =
@@ -831,6 +846,8 @@ class TransformerFactoryConfig extends TransformerConfig {
 
 private predicate safeTransformerFactoryNode(DataFlow::Node src) {
   src.asExpr() instanceof SafeTransformerFactory
+  or
+  src.asExpr().(SafeXmlFactorySource).getType() instanceof TransformerFactory
 }
 
 private module SafeTransformerFactoryFlow = DataFlow::SimpleGlobal<safeTransformerFactoryNode/1>;
@@ -920,6 +937,8 @@ class SchemaFactoryNewSchema extends XmlParserCall {
 
 private predicate safeSchemaFactoryNode(DataFlow::Node src) {
   src.asExpr() instanceof SafeSchemaFactory
+  or
+  src.asExpr().(SafeXmlFactorySource).getType() instanceof SchemaFactory
 }
 
 private module SafeSchemaFactoryToSchemaFactoryNewSchemaFlow =

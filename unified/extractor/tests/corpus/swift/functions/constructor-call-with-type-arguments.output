@@ -82,25 +82,19 @@ top_level
       stmt:
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "Foo"
+          name_node: identifier "Foo"
         class_like_declaration
           modifier: modifier "class"
-          name: identifier "C"
+          name_node: identifier "C"
           type_parameter:
             type_parameter
-              name: identifier "T"
+              name_node: identifier "T"
         variable_declaration
           modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "x"
+          pattern: identifier "x"
           value:
             call_expr
               callee:
                 generic_type_expr
-                  base:
-                    named_type_expr
-                      name: identifier "C"
-                  type_argument:
-                    named_type_expr
-                      name: identifier "Foo"
+                  base: identifier "C"
+                  type_argument: identifier "Foo"

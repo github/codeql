@@ -1,0 +1,150 @@
+Module: [6, 0] - [29, 0]
+  body: [
+    TypeAlias: [6, 0] - [6, 12]
+      name:
+        Name: [6, 5] - [6, 6]
+          variable: Variable('X', None)
+          ctx: Store
+      type_parameters: []
+      value:
+        Name: [6, 9] - [6, 12]
+          variable: Variable('int', None)
+          ctx: Load
+    Assign: [9, 0] - [9, 37]
+      targets: [
+        Name: [9, 0] - [9, 4]
+          variable: Variable('warn', None)
+          ctx: Store
+      ]
+      value:
+        Str: [9, 7] - [9, 37]
+          s: '⚠️  problem %s: %s'
+          prefix: '"'
+          implicitly_concatenated_parts: None
+    Assign: [10, 0] - [10, 35]
+      targets: [
+        Name: [10, 0] - [10, 8]
+          variable: Variable('warn_raw', None)
+          ctx: Store
+      ]
+      value:
+        Str: [10, 11] - [10, 35]
+          s: '⚠️  problem %s: %s'
+          prefix: '"'
+          implicitly_concatenated_parts: None
+    Assign: [13, 0] - [13, 19]
+      targets: [
+        Name: [13, 0] - [13, 3]
+          variable: Variable('zwj', None)
+          ctx: Store
+      ]
+      value:
+        Str: [13, 6] - [13, 19]
+          s: '👨\u200d💻'
+          prefix: '"'
+          implicitly_concatenated_parts: None
+    Assign: [16, 0] - [16, 14]
+      targets: [
+        Name: [16, 0] - [16, 3]
+          variable: Variable('nfd', None)
+          ctx: Store
+      ]
+      value:
+        Str: [16, 6] - [16, 14]
+          s: 'café'
+          prefix: '"'
+          implicitly_concatenated_parts: None
+    Assign: [17, 0] - [17, 28]
+      targets: [
+        Name: [17, 0] - [17, 11]
+          variable: Variable('soft_hyphen', None)
+          ctx: Store
+      ]
+      value:
+        Str: [17, 14] - [17, 28]
+          s: 'soft\xadhyphen'
+          prefix: '"'
+          implicitly_concatenated_parts: None
+    Assign: [20, 0] - [20, 12]
+      targets: [
+        Name: [20, 0] - [20, 6]
+          variable: Variable('café', None)
+          ctx: Store
+      ]
+      value:
+        Name: [20, 9] - [20, 12]
+          variable: Variable('nfd', None)
+          ctx: Load
+    Assign: [23, 0] - [23, 23]
+      targets: [
+        Name: [23, 0] - [23, 3]
+          variable: Variable('raw', None)
+          ctx: Store
+      ]
+      value:
+        Str: [23, 6] - [23, 23]
+          s: '⚠️\\u{fe0f}'
+          prefix: 'r"'
+          implicitly_concatenated_parts: None
+    Assign: [24, 0] - [24, 23]
+      targets: [
+        Name: [24, 0] - [24, 6]
+          variable: Variable('joined', None)
+          ctx: Store
+      ]
+      value:
+        JoinedStr: [24, 9] - [24, 23]
+          values: [
+            Str: [24, 9] - [24, 12]
+              s: ''
+              prefix: 'f"'
+              implicitly_concatenated_parts: None
+            Name: [24, 12] - [24, 15]
+              variable: Variable('zwj', None)
+              ctx: Load
+            Str: [24, 15] - [24, 23]
+              s: '⚠️'
+              prefix: 'f"'
+              implicitly_concatenated_parts: None
+          ]
+    Assign: [25, 0] - [25, 37]
+      targets: [
+        Name: [25, 0] - [25, 12]
+          variable: Variable('concatenated', None)
+          ctx: Store
+      ]
+      value:
+        Str: [25, 15] - [25, 37]
+          s: '⚠️👨\u200d💻'
+          prefix: '"'
+          implicitly_concatenated_parts: [
+            StringPart: [25, 15] - [25, 23]
+              prefix: '"'
+              text: '"⚠️"'
+              s: '⚠️'
+            StringPart: [25, 24] - [25, 37]
+              prefix: '"'
+              text: '"👨\u200d💻"'
+              s: '👨\u200d💻'
+          ]
+    Assign: [28, 0] - [28, 17]
+      targets: [
+        Name: [28, 0] - [28, 1]
+          variable: Variable('d', None)
+          ctx: Store
+      ]
+      value:
+        Dict: [28, 4] - [28, 17]
+          items: [
+            KeyValuePair: [28, 5] - [28, 16]
+              key:
+                Str: [28, 5] - [28, 13]
+                  s: '⚠️'
+                  prefix: '"'
+                  implicitly_concatenated_parts: None
+              value:
+                Num: [28, 15] - [28, 16]
+                  n: 1
+                  text: '1'
+          ]
+  ]

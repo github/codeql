@@ -1,3 +1,20 @@
+## 0.6.36
+
+### Minor Analysis Improvements
+
+* The `actions/unpinned-tag` query no longer reports action references pinned by a structurally valid `.github/workflows/actions.lock` entry for the enclosing workflow.
+* The `actions/unpinned-tag` query no longer reports `$/` self repository references (e.g. `uses: $/path/to/action`), which resolve to the same repository at the running commit and are therefore inherently pinned, just like `./` self workspace (local) references.
+
+## 0.6.35
+
+No user-facing changes.
+
+## 0.6.34
+
+### Minor Analysis Improvements
+
+* The `actions/unpinned-tag` query now detects mutable references to reusable workflows.
+
 ## 0.6.33
 
 ### Query Metadata Changes

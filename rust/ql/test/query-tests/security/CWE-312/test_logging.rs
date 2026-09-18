@@ -100,15 +100,15 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     info!("{}", m3); // $ Alert[rust/cleartext-logging]=m3
 
     let mut m4 = String::new();
-    write!(&mut m4, "message = {}", password); // $ MISSING: Source=m4
-    info!("{}", m4); // $ MISSING: Alert[rust/cleartext-logging]=m4
+    write!(&mut m4, "message = {}", password); // $ Source[rust/cleartext-logging]=m4
+    info!("{}", m4); // $ Alert[rust/cleartext-logging]=m4
 
     let mut m5 = String::new();
-    writeln!(&mut m5, "message = {}", password); // $ MISSING: Source=m5
-    info!("{}", m5); // $ MISSING: Alert[rust/cleartext-logging]=m5
+    writeln!(&mut m5, "message = {}", password); // $ Source[rust/cleartext-logging]=m5
+    info!("{}", m5); // $ Alert[rust/cleartext-logging]=m5
 
     let mut m6 = Vec::new();
-    write!(&mut m6, "message = {}", password); // $ MISSING: Source=m6
+    write!(&mut m6, "message = {}", password); // $ MISSING: Source[rust/cleartext-logging]=m6
     info!("{}", std::str::from_utf8(&m6).unwrap()); // $ MISSING: Alert[rust/cleartext-logging]=m6
     unsafe {
         info!("{}", std::str::from_utf8_unchecked(&m6)); // $ MISSING: Alert[rust/cleartext-logging]=m6
@@ -135,7 +135,7 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     // logging from a struct
     let s1 = MyStruct1 {
         harmless: "foo".to_string(),
-        password: "123456".to_string(), // $ MISSING: Source=s1
+        password: "123456".to_string(), // $ MISSING: Source[rust/cleartext-logging]=s1
     };
     warn!("message = {}", s1.harmless);
     warn!("message = {}", s1.password); // $ Alert[rust/cleartext-logging]
@@ -145,7 +145,7 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
 
     let s2 = MyStruct2 {
         harmless: "foo".to_string(),
-        password: "123456".to_string(), // $ MISSING: Source=s2
+        password: "123456".to_string(), // $ MISSING: Source[rust/cleartext-logging]=s2
     };
     warn!("message = {}", s2.harmless);
     warn!("message = {}", s2.password); // $ Alert[rust/cleartext-logging]

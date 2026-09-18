@@ -8,7 +8,6 @@
  */
 
 private import codeql.Locations
-private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl
 private import codeql.ruby.controlflow.ControlFlowGraph
 
 external string selectedSourceFile();
@@ -23,7 +22,7 @@ external int selectedSourceColumn();
 
 private predicate selectedSourceColumnAlias = selectedSourceColumn/0;
 
-module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
+module ViewCfgQueryInput implements ControlFlow::ViewCfgQueryInputSig<File> {
   predicate selectedSourceFile = selectedSourceFileAlias/0;
 
   predicate selectedSourceLine = selectedSourceLineAlias/0;
@@ -31,11 +30,11 @@ module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
   predicate selectedSourceColumn = selectedSourceColumnAlias/0;
 
   predicate cfgScopeSpan(
-    CfgScope scope, File file, int startLine, int startColumn, int endLine, int endColumn
+    CfgScopeImpl scope, File file, int startLine, int startColumn, int endLine, int endColumn
   ) {
     file = scope.getFile() and
     scope.getLocation().hasLocationInfo(_, startLine, startColumn, endLine, endColumn)
   }
 }
 
-import ViewCfgQuery<File, ViewCfgQueryInput>
+import ControlFlow::ViewCfgQuery<File, ViewCfgQueryInput>

@@ -1107,7 +1107,7 @@ class QualifiableExpr extends Expr, @qualifiable_expr {
 private Expr getAnAssignOrForeachChild() {
   result = any(AssignExpr e).getLeftOperand()
   or
-  result = any(ForeachStmt fs).getVariableDeclTuple()
+  result = any(ForEachStmt fs).getVariableDeclTuple()
   or
   result = getAnAssignOrForeachChild().getAChildExpr()
 }

@@ -1,10 +1,19 @@
 private import unified
 private import codeql.util.Unit
-private import codeql.unified.internal.LocalNameBinding
-private import codeql.unified.internal.NameBindingPluginSwift // ensure overrides are seen
+
+private module Plugins {
+  private import codeql.unified.internal.NameBindingPluginSwift
+}
 
 /** Extension point for language-specific inputs to name binding. */
 class NameBindingPlugin extends Unit {
+  /**
+   * Holds if `e`, occurring in pattern context, should be interpreted a sub-expression
+   * whose result is to be compared to the incoming value.
+   */
+  bindingset[e]
+  predicate isNonPattern(Expr e) { none() }
+
   /**
    * Holds if `member` is an instance member.
    *
@@ -25,6 +34,24 @@ class NameBindingPlugin extends Unit {
    */
   bindingset[member, binding]
   predicate isPrivateToLocalScope(Stmt member, AstNode binding) { none() }
+
+  /**
+   * Holds if `member` can be inherited by subclasses of `cls`.
+   *
+   * The caller has already restricted `member` to be a member of `cls`.
+   */
+  bindingset[cls, member]
+  predicate isInheritableMember(ClassLikeDeclaration cls, Member member) { none() }
+
+  /** Gets the name of the implicit receiver parameter in `callable`, if it has one. */
+  string getImplicitReceiverParameterName(Callable callable) { none() }
+
+  /**
+   * Gets the name through which static members of the enclosing class `cls` can be
+   * accessed, for example `Self` in Swift.
+   */
+  bindingset[cls]
+  string getStaticSelfName(ClassLikeDeclaration cls) { none() }
 }
 
 /** Holds if `member` is an instance member. */
@@ -35,17 +62,21 @@ predicate isInstanceMember(Member member) {
   )
 }
 
-/** Holds if `binding` is only visible in its local scope. */
-pragma[nomagic]
-predicate isPrivateToLocalScope(AstNode binding) {
-  exists(Stmt member |
-    bindingContext(binding, _, member) and
-    (
-      member = any(ClassLikeDeclaration cls).getAMember() or
-      member = any(TopLevel t).getBody().getAStmt()
-    ) and
-    (binding instanceof NameDeclaration or binding instanceof BulkImportingPattern) and
-    any(NameBindingPlugin p).isPrivateToLocalScope(member, binding)
+/**
+ * Holds if `member` is a non-instance member declared in the context of a class or top-level.
+ */
+predicate isStaticMember(Member member) {
+  exists(ClassLikeDeclaration cls | cls.getAMember() = member |
+    not any(NameBindingPlugin p).isInstanceMember(cls, member)
+  )
+  or
+  member = any(TopLevel t).getBody().getAStmt()
+}
+
+/** Holds if `member` is an inheritable member. */
+predicate isInheritableMember(Member member) {
+  exists(ClassLikeDeclaration cls | cls.getAMember() = member |
+    any(NameBindingPlugin p).isInheritableMember(cls, member)
   )
 }
 
@@ -67,8 +98,8 @@ abstract class ModuleScopeRepr extends AstNode {
   predicate shouldInclude(Container c, string path) { none() }
 
   /**
-   * Holds if this module scope can be referenced by an identifier `name`
-   * appearing as the leading identifier of an import path.
+   * Holds if this module scope can be referenced by the given `name`
+   * appearing as the leading name of an import path.
    */
   predicate hasImportableName(string name) { none() }
 

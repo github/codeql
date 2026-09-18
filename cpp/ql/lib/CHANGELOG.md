@@ -1,3 +1,26 @@
+## 12.1.1
+
+### Minor Analysis Improvements
+
+* Added taint flow models for the `boost::asio::ip::basic_resolver::resolve` function.
+* Added flow summaries for the BDE `BloombergLP::bdlbb::Blob` segmented byte buffer.
+* Added flow summaries for the Protocol Buffers `google::protobuf::MessageLite` C++ API.
+
+## 12.1.0
+
+### New Features
+
+* Sources and sinks defined using models-as-data now support access paths with fields. For example, the path `ReturnValue.Field[S::f]` makes the field `S::f` a flow source when it is returned by a call.
+
+### Minor Analysis Improvements
+
+* Added the PostgreSQL libpq (asynchronous) query-execution functions `PQexec`, `PQexecParams`, `PQprepare`, `PQsendQuery`, `PQsendQueryParams`, `PQsendPrepare` as `sql-injection` sinks.
+* Initializers of compiler-generated variables are now recognized as compiler-generated. A new predicate `isCompilerGenerated` on `Initializer` has been added to reflect this.
+
+## 12.0.3
+
+No user-facing changes.
+
 ## 12.0.2
 
 ### Minor Analysis Improvements

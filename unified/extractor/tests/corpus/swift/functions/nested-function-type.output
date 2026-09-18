@@ -105,52 +105,36 @@ top_level
     block
       stmt:
         type_alias_declaration
-          name: identifier "NestedFunction"
+          name_node: identifier "NestedFunction"
           type:
-            function_type_expr
+            function_expr
               parameter:
                 parameter
                   type:
-                    function_type_expr
+                    function_expr
                       parameter:
                         parameter
-                          type:
-                            named_type_expr
-                              name: identifier "Int"
-                      return_type:
-                        named_type_expr
-                          name: identifier "Bool"
-              return_type:
-                named_type_expr
-                  name: identifier "Bool"
+                          type: identifier "Int"
+                      return_type: identifier "Bool"
+              return_type: identifier "Bool"
         type_alias_declaration
-          name: identifier "MixedParametersAndTuples"
+          name_node: identifier "MixedParametersAndTuples"
           type:
-            function_type_expr
+            function_expr
               parameter:
                 parameter
                   type:
-                    function_type_expr
+                    function_expr
                       parameter:
                         parameter
-                          type:
-                            named_type_expr
-                              name: identifier "Int"
-                      return_type:
-                        named_type_expr
-                          name: identifier "Bool"
+                          type: identifier "Int"
+                      return_type: identifier "Bool"
                 parameter
-                  type:
-                    named_type_expr
-                      name: identifier "String"
+                  type: identifier "String"
               return_type:
-                tuple_type_expr
+                tuple_expr
                   element:
-                    tuple_type_element
-                      type:
-                        named_type_expr
-                          name: identifier "Bool"
-                    tuple_type_element
-                      type:
-                        named_type_expr
-                          name: identifier "Int"
+                    argument
+                      value: identifier "Bool"
+                    argument
+                      value: identifier "Int"
