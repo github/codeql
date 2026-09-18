@@ -8,11 +8,3 @@ buildifier(
     ],
     lint_mode = "fix",
 )
-
-# The binary behind the target above, which formats the paths it is given rather than
-# always the whole workspace. `just format` goes through this so that formatting a
-# directory formats that directory.
-alias(
-    name = "binary",
-    actual = "@buildifier_prebuilt//:buildifier",
-)

@@ -149,3 +149,40 @@ to be understood by all of them. That is fine when they speak the same language,
 a broad `just test .` reaches bazel and pytest suites alike, and a flag meant for one of
 them will fail on the other. It fails rather than being quietly ignored, so the answer
 is to aim the verb at something narrower.
+
+# Command separators
+
+Commands are echoed between rules that span the terminal. The formatters echo a summary
+rather than the line that runs: they name the formatter and what it is told to do, and
+leave out the wrapper that collects the files, the patterns it walks and the flags that
+only shape output. A leading `-> ` marks a line as that summary. `just -n` prints what
+actually runs, which it does whether or not the recipe is `@`-quiet.
+
+Nothing is lost by this, as a banner has never been something to paste: the echoed line
+carried an unexpanded `"$@"`, which matches no file in another shell, so pasting one
+formatted nothing and exited 0.
+
+What a formatter says for itself is filtered down to what happened, as several name every
+file they considered and most of them were left alone. One such line is kept on purpose:
+buildifier's count of the warnings it could not fix, which is the only notice of them,
+since it reports no detail in fix mode and exits 0 whether or not any remain. That tally
+grows with the tree and is mostly lint about docstrings. Finding it tiresome is a reason
+to configure what buildifier lints, never to widen the filter back over it, which would
+take the warnings worth having along with the rest.
+
+Measuring the width means a `shell()` call, and that runs on every parse, so the result
+is exported as `JUST_CMD_RULE` and an inherited value is preferred to measuring again.
+
+Inheritance crosses processes, which is what forwarding creates: a child per justfile
+reached, each of them measuring nothing. A `mod` spawns no process, so a module measures
+for itself, and the count is one per `mod` reached, however deeply nested, plus one for
+the file itself. That is cheap, and modules agree anyway since they share a terminal,
+but it is worth knowing before counting measurements. Presetting `JUST_CMD_RULE` skips
+all of them, and is also how to fix the width in CI or in a recording — it is the whole
+separator and ends up in a shell script, so every line of it has to be a comment, or it
+runs.
+
+With no terminal to ask — a pipe, a log, a shell without `stty` — it falls back to a
+fixed 57 columns, so logs and CI output are the same width every time. That is one
+branch rather than a platform test: `just` runs `sh` everywhere, so Windows takes
+whichever arm fits rather than a path of its own.

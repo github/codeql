@@ -7,7 +7,9 @@ paths in this repository that contain spaces.
 
 The command is run once per batch of file names rather than once per file, and the
 batches are sized so that no single command line runs into a length limit. Nothing is
-run at all when no file matches.
+run at all when no file matches, and nothing is announced either, so silence means that
+nothing here matched rather than that nothing was there: a path that does not exist is
+refused instead, naming one being an assertion that it does.
 """
 
 import argparse
@@ -48,34 +50,68 @@ def files_under(paths, patterns, excludes=(), absolute=False, within=None):
 
     Patterns are matched against the file name, as bazel files are identified by name
     rather than by extension. Exclusions are matched against the whole path instead,
-    which is how a directory of generated files is left alone. That path is the one the
-    walk built, so an exclusion has to allow for how the paths it is given are spelled:
-    `*/<directory>/*` does not match what is walked from `<directory>` itself.
+    which is how a directory of generated files is left alone. Both the path the walk
+    built and its resolved form are tried, as the walk only ever extends the path it
+    was given: walking `cpp` from inside a directory builds nothing naming that
+    directory, so an exclusion naming it could never match. An exclusion that has to
+    hold however the path was reached is therefore anchored absolutely, and resolving
+    is what makes that spelling hold for a path reached through a symbolic link too.
 
     A `within` directory bounds the result to the files below it, for a command that
     answers for one project and may be handed a path reaching outside it.
 
     Symbolic links are not followed, which is what keeps the `bazel-*` convenience
     links out of the walk.
+
+    Returns the file names, and the given paths that yielded one. The two differ
+    whenever a path is excluded or simply holds nothing matching, and telling them
+    apart is what lets the banner name the paths being acted on rather than the paths
+    that were asked about.
     """
     boundary = Path(within).resolve() if within else None
 
     def wanted(path):
-        if boundary is not None and not path.resolve().is_relative_to(boundary):
+        # The name decides most files and costs nothing, so it is asked first: resolving
+        # is a system call, and is only owed for a file that could still be collected.
+        if not any(fnmatch(path.name, p) for p in patterns):
             return False
-        return any(fnmatch(path.name, p) for p in patterns) and not any(
-            fnmatch(str(path), e) for e in excludes
+        if boundary is None and not excludes:
+            return True
+        resolved = path.resolve()
+        if boundary is not None and not resolved.is_relative_to(boundary):
+            return False
+        # A relative pattern is anchored at the start, so it cannot match the resolved
+        # spelling: trying both only ever gives a pattern the reach it was written with.
+        spellings = (str(path), str(resolved))
+        return not any(
+            fnmatch(spelling, e) for e in excludes for spelling in spellings
         )
 
-    found = set()
-    for path in map(Path, paths):
+    def collect(path):
         if path.is_file():
-            if wanted(path):
-                found.add(path)
-            continue
-        for directory, _, names in os.walk(path):
-            found.update(p for p in map(Path(directory).joinpath, names) if wanted(p))
-    return sorted(os.path.abspath(p) if absolute else str(p) for p in found)
+            return {path} if wanted(path) else set()
+        return {
+            file
+            for directory, _, names in os.walk(path)
+            for file in map(Path(directory).joinpath, names)
+            if wanted(file)
+        }
+
+    # Kept per path rather than in one set, as which path a file came from is not a
+    # question the collected names can be asked afterwards without resolving each of
+    # them again. A file reached by two paths still only appears once below.
+    contributed = {}
+    for given in paths:
+        collected = collect(Path(given))
+        if collected:
+            # Keyed by the spelling that was given rather than a normalised one, as
+            # this goes back to whoever wrote it and is theirs to recognise.
+            contributed[str(given)] = collected
+    files = sorted(
+        os.path.abspath(file) if absolute else str(file)
+        for file in set().union(*contributed.values())
+    )
+    return files, list(contributed)
 
 
 def batched(files, limit):
@@ -160,6 +196,9 @@ def parse_args():
     args.command, args.paths = args.rest[:separator], args.rest[separator + 1 :]
     if not args.command:
         parser.error("no command given")
+    missing = [path for path in args.paths if not os.path.exists(path)]
+    if missing:
+        parser.error("no such path: " + ", ".join(missing))
     return args
 
 
@@ -187,11 +226,35 @@ def run(command, drops, chdir=None):
     return process.wait()
 
 
+def banner(command, paths):
+    """Announce a command over the paths it turned out to have something to do in.
+
+    Only the paths that yielded a file are named: one whose files were all excluded is
+    not being acted on, and naming it claims work that is not about to happen. The file
+    names are left out, there being thousands of them and the paths being what was
+    asked for.
+
+    So this is a report rather than something to paste, the collecting being the whole
+    point. `just -n` prints what really runs.
+
+    `CMD_BEGIN` and `CMD_END` are the rules the justfiles put around a command; with
+    neither set this is a plain line.
+    """
+    begin = os.environ.get("CMD_BEGIN", "")
+    end = os.environ.get("CMD_END", "")
+    return f"{begin}-> {' '.join(command)} -- {' '.join(paths)}{end}"
+
+
 def main():
     args = parse_args()
-    files = files_under(
+    files, contributing = files_under(
         args.paths, args.patterns, args.exclude, args.absolute, args.within
     )
+    if files:
+        # Neither half of this is known where the caller would have to say it: whether
+        # anything is going to run at all, and which of the paths it named hold any of
+        # it.
+        print(banner(args.command, contributing), file=sys.stderr, flush=True)
     limit = batch_limit() - sum(len(argument) + 1 for argument in args.command)
     status = 0
     for batch in batched(files, limit):

@@ -27,5 +27,5 @@ import "format.just"
 [no-exit-message]
 [positional-arguments]
 @_integration_test *ARGS: _require_semmle_code
-    echo "$CMD_BEGIN$SEMMLE_CODE/tools/pytest --codeql=build-as-test $*$CMD_END"
+    echo "$CMD_BEGIN-> $SEMMLE_CODE/tools/pytest --codeql=build-as-test $*$CMD_END" >&2
     "$SEMMLE_CODE/tools/pytest" --codeql=build-as-test "$@"

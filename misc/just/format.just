@@ -1,83 +1,74 @@
 import "build.just"
 
-_ql_formatter := if SEMMLE_CODE != "" { '"$SEMMLE_CODE/target/intree/codeql-nolang/codeql"' } else { "codeql" }
+# These formatters take files rather than directories, so `run_on_files.py` collects them
+# and passes them positionally, which is what lets paths contain spaces. Both name every
+# file they were given, so the lines saying nothing happened are dropped: for buildifier
+# that is an empty warning tally, and a non-zero one is left alone, being the only notice
+# of what it could not fix now that the exit code is 0 either way.
+#
+# The collector announces the run, rather than each recipe saying what it is about to do.
+# A recipe reaches that line knowing neither whether any file matched nor which of the
+# paths it was handed hold one, and both are worth waiting for: a path whose files are all
+# excluded is the ordinary case here, as a repository formatting its own bazel files is
+# handed a nested repository's path too. The price of letting the collector speak is that
+# it names the command as it is really spelled, flags that only shape output and all. It
+# is a report rather than something to paste in any case, the collecting being the point;
+# `just -n` prints what actually runs, `@` or no `@`. `_format_py` echoes its own, having
+# no collector to defer to and nothing to decide.
+#
+# `[no-cd]` keeps a relative argument meaning the caller's directory: the forwarder passes
+# `--justfile`, so without it the default `.` would silently become the whole repository.
+
+_ql_formatter := (if SEMMLE_CODE != "" { '"$SEMMLE_CODE/target/intree/codeql-nolang/codeql"' } else { "codeql" }) + " query format --in-place"
+
+[no-cd]
+[no-exit-message]
+[positional-arguments]
+@_format_ql +ARGS: (_maybe_build_dist "nolang")
+    {{ py }} "{{ source_dir() }}/run_on_files.py" --drop '^Formatting ' --drop '^No change for ' "*.ql,*.qll" {{ _ql_formatter }} -v -- "$@"
 
 _py_formatter := if SEMMLE_CODE != "" { "uv run black" } else { "black" }
 
-_cpp_formatter := if SEMMLE_CODE != "" { "uv run clang-format" } else { "clang-format" }
+[no-cd]
+[no-exit-message]
+[positional-arguments]
+@_format_py *ARGS=".":
+    echo "$CMD_BEGIN-> "{{ quote(_py_formatter) }}" $*$CMD_END" >&2
+    {{ _py_formatter }} "$@"
 
-# The `buildifier` bazel target always covers the whole workspace, so the binary behind
-# it is used instead and given paths. bazel is asked from the root of this repository,
-# even when it sits inside another, and the files are bounded to that root as well: each
-# repository then formats its own bazel files with the buildifier version it pins, and a
-# verb aimed at a tree spanning both is answered once by each. This is the opposite of
-# building, where a target needs the enclosing workspace to resolve at all, hence
-# `_bazel` in build.just going the other way.
+_cpp_formatter := (if SEMMLE_CODE != "" { "uv run clang-format" } else { "clang-format" }) + " -i"
+
+[no-cd]
+[no-exit-message]
+[positional-arguments]
+@_format_cpp *ARGS=".":
+    {{ py }} "{{ source_dir() }}/run_on_files.py" "*.h,*.cpp" {{ _cpp_formatter }} -- "$@"
+
+# The `buildifier` target formats a whole workspace and so cannot take a path, so its
+# binary is driven directly. bazel is asked from this repository's root even when it sits
+# inside another, and the files are bounded to it, so each repository formats its own with
+# the version it pins. Building needs the enclosing workspace instead, hence `_bazel`.
 _bazel_workspace := quote(parent_directory(parent_directory(source_dir())))
 
-_bazel_formatter := "bazel run --noshow_progress --ui_event_filters=,+error,+fail //misc/bazel/buildifier:binary --"
+_bazel_formatter := (if SEMMLE_CODE != "" { '"$SEMMLE_CODE/tools/bazel"' } else { "bazel" }) + " run @buildifier_prebuilt//:buildifier"
 
-# bazel files are named rather than suffixed, and buildifier has no exclude option of its
-# own, so the files skipped by the target above are skipped here too. That target formats
-# the whole workspace at once and so cannot take the path this recipe is given, which is
-# why the two run the same binary through different entry points. Their exclusions are
-# therefore stated twice, in two places, in two syntaxes: keep them in step, or `just
-# format` rewrites what pre-commit and CI deliberately leave alone.
-#
-# bazel knows `BUILD` and `WORKSPACE` by those names and everything else by the `.bazel`
-# extension, so a file named `BUILD.<anything>` else is a template or a generator's input
-# rather than a bazel file, and is none of the formatter's business to parse.
-#
-# Both lists are comma-separated, so a root defining its own `_root_format` can name
-# several patterns in one variable. It has no need to repeat the ones here: the files
-# they cover belong to this repository, which formats them itself. Exclusions match the
-# path as walked rather than as spelled on the command line, so one naming a directory
-# has to cover both the path it is reached by and the path it is walked from.
-#
-# As with the QL formatter, buildifier only names what it rewrote if it also accounts for
-# every file it did not, so that accounting is dropped. It counts the warnings it could
-# not fix there, which are left for linting to report rather than raised on every format.
-_bazel_names := "BUILD,WORKSPACE,*.bazel,*.bzl,*.sky"
+# Kept out of the formatter, unlike the other three: bazel's own flags have to sit between
+# the target and `--`, so no single string spans both sides of it.
+_bazel_args := "-mode=fix -lint=fix"
+
+# Keep both in step with the `buildifier` target. The names are what it recognises walking a
+# workspace, a check it skips for paths handed to it, so anything extra here is rewritten
+# regardless. Being wider is deliberate: what it recognises differs between versions, and
+# each repository pins its own, so only a list covering every one of them can be shared. A
+# directory of one file per candidate name, formatted with `-r`, says what a version takes.
+# Exclusions match the path as walked and its absolute form, so one that has to hold
+# however the path was reached is anchored absolutely.
+_bazel_names := "BUILD,WORKSPACE,*.bazel,*.bzl,*.sky,*.star"
 
 _bazel_excluded := ".git/*,*/.git/*,*misc/bazel/3rdparty/*_deps/*"
 
-_bazel_accounting := ': applied fixes, [0-9]+ warnings left$'
-
-# `codeql query format` and `clang-format` take files rather than directories, so the
-# files are collected by `run_on_files.py`. Arguments are passed positionally so that
-# paths containing spaces survive, of which this repository has many.
-#
-# The files that were rewritten are worth reporting, but `codeql query format` only
-# names those once it also names every file it leaves alone, which buries them under
-# thousands of lines. So it is asked for all of it and the lines about files it did not
-# touch are dropped. Only those are dropped, so errors still come through, as does
-# anything unforeseen.
-#
-# `[no-cd]` is what keeps a relative argument meaning the directory the caller is in.
-# The forwarder reaches a recipe above its argument with `--justfile`, which otherwise
-# runs it from that justfile's own directory: dropping the attribute would silently turn
-# the default `.` into the whole repository, and the only symptom would be slowness.
-
 [no-cd]
 [no-exit-message]
 [positional-arguments]
-_format_ql +ARGS: (_maybe_build_dist "nolang")
-    {{ cmd_sep }}{{ py }} "{{ source_dir() }}/run_on_files.py" --drop '^Formatting ' --drop '^No change for ' "*.ql,*.qll" {{ _ql_formatter }} query format --in-place -v -- "$@"{{ cmd_sep }}
-
-[no-cd]
-[no-exit-message]
-[positional-arguments]
-_format_py *ARGS=".":
-    {{ cmd_sep }}{{ _py_formatter }} "$@"{{ cmd_sep }}
-
-[no-cd]
-[no-exit-message]
-[positional-arguments]
-_format_cpp *ARGS=".":
-    {{ cmd_sep }}{{ py }} "{{ source_dir() }}/run_on_files.py" "*.h,*.cpp" {{ _cpp_formatter }} -i -- "$@"{{ cmd_sep }}
-
-[no-cd]
-[no-exit-message]
-[positional-arguments]
-_format_bazel *ARGS=".":
-    {{ cmd_sep }}export MSYS2_ARG_CONV_EXCL="*"; {{ py }} "{{ source_dir() }}/run_on_files.py" --absolute --chdir {{ _bazel_workspace }} --within {{ _bazel_workspace }} --drop '{{ _bazel_accounting }}' --exclude '{{ _bazel_excluded }}' "{{ _bazel_names }}" {{ _bazel_formatter }} -mode=fix -lint=fix -v -- "$@"{{ cmd_sep }}
+@_format_bazel *ARGS=".":
+    {{ py }} "{{ source_dir() }}/run_on_files.py" --absolute --chdir {{ _bazel_workspace }} --within {{ _bazel_workspace }} --drop ': applied fixes, 0 warnings left$' --exclude '{{ _bazel_excluded }}' "{{ _bazel_names }}" {{ _bazel_formatter }} --noshow_progress --ui_event_filters=,+error,+fail -- {{ _bazel_args }} -v -- "$@"
