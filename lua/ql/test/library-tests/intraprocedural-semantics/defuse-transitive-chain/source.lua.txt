@@ -1,0 +1,12 @@
+local function source()
+  return "tainted"
+end
+
+local function sink(x)
+  return x
+end
+
+local a = source()
+local b = a
+local c = b
+return sink(c)

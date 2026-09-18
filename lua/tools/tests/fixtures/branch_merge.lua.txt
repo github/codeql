@@ -1,0 +1,9 @@
+local function choose(condition, original, replacement)
+  local value = original
+  if condition then
+    value = replacement
+  end
+  return value
+end
+
+return choose

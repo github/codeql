@@ -1,0 +1,9 @@
+local seed = "up"
+
+local function build(value)
+  local t = { key = value }
+  _G.analysis_global = t.key .. seed
+  return _G.analysis_global
+end
+
+return build("table")

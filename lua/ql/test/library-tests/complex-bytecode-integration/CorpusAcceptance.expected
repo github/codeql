@@ -1,0 +1,19 @@
+| active | usr/lib/lua/luci/controller/mtkwifi.luac | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc63:r6 | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc180:r12 |
+| active | usr/lib/lua/luci/controller/mtkwifi.luac | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc63:r6 | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc188:r12 |
+| active | usr/lib/lua/luci/controller/mtkwifi.luac | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc63:r6 | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc196:r12 |
+| active | usr/lib/lua/luci/controller/mtkwifi.luac | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc63:r6 | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc204:r12 |
+| active | usr/lib/lua/luci/controller/mtkwifi.luac | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc63:r6 | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc212:r12 |
+| active | usr/lib/lua/luci/controller/mtkwifi.luac | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc63:r6 | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc220:r12 |
+| active | usr/lib/lua/luci/controller/mtkwifi.luac | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc63:r6 | usr/lib/lua/luci/controller/mtkwifi.luac::root.61@pc228:r12 |
+| active | usr/lib/lua/luci/controller/mtkwifi.luac | usr/lib/lua/luci/controller/mtkwifi.luac::root.110@pc3:r0 | usr/lib/lua/luci/controller/mtkwifi.luac::root.110@pc12:r1 |
+| active | usr/lib/lua/mtkwifi.luac | usr/lib/lua/luci/controller/mtkwifi.luac::root.55@pc3:r0 | usr/lib/lua/mtkwifi.luac::root.12@pc5:r6 |
+| metric | accepted-artifacts | 46 |  |
+| metric | active-findings | 9 |  |
+| metric | active-projections-complete | 1 |  |
+| metric | bytecode-artifacts | 46 |  |
+| metric | cross-module-flow-present | 1 |  |
+| metric | diagnostics | 0 |  |
+| metric | interprocedural-analysis-present | 1 |  |
+| metric | module-analysis-present | 1 |  |
+| metric | sanitized-findings | 0 |  |
+| metric | source-files | 46 |  |
