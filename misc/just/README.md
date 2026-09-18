@@ -50,6 +50,12 @@ they sit throughout the tree rather than under any one language, so formatting t
 the root's job, and taking the argument keeps `just format cpp` to the bazel files under
 `cpp`.
 
+Note that this one delegates rather than doing the work itself. The forwarder reaches a
+recipe above its argument with `--justfile`, which runs it from the directory of the
+justfile defining it unless the recipe is `[no-cd]`. A `_root_<verb>` that grows a body
+therefore reads its default `.` as the whole repository rather than the directory the
+caller is in, so one that does its own work needs `[no-cd]` itself.
+
 Being a recipe like any other, a `_root_<verb>` is inherited by a justfile importing the
 one defining it, which is how the internal repository gets this one for free. It runs
 once either way, as the two spellings are the same recipe. A root that defines its own

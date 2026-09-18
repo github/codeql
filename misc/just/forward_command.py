@@ -232,6 +232,13 @@ def find_justfiles_above(command, arg):
         recipe = implements(dump, command, argc)
         # These justfiles are nested, so a recipe that was seen already is one this
         # one merely imported, and the nearest spelling of it has been taken.
+        #
+        # Two repositories that each define a root recipe are not that case: the text
+        # can match while the workspace, the tool it runs and the paths it excludes all
+        # differ, so they have to stay apart. Nothing here says so. They are told apart
+        # only by the doc comment one of them happens to carry, which means dropping
+        # `doc` from this comparison silently discards an invocation unless a real
+        # discriminator arrives in the same change.
         if recipe is not None and recipe not in seen:
             seen.append(recipe)
             found.append((justfile, recipe))
