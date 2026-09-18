@@ -1,16 +1,26 @@
 on:
-  push:
-    branches: [main]
+  push: # Callee cache alerts expected: unfiltered pushes include main, writable by default.
   workflow_dispatch:
     inputs:
       head_sha:
         description: Commit SHA to test
         required: true
         type: string
+  issue_comment: # No default-mode callee cache alert: low-trust trigger is read-only.
+    types: [created]
+  pull_request_target: # No default-mode callee cache alert: low-trust trigger is read-only.
+    branches: [main]
+  workflow_run: # No default-mode callee cache alert: current model treats this trigger as read-only.
+    workflows: [Build]
+    types: [completed]
 
 jobs:
   reusable:
     permissions: {}
-    uses: ./.github/workflows/cache_write_capable_reusable_workflow.yml
+    uses: ./.github/workflows/cache_write_capable_reusable_workflow.yml # Callee alerts on push/dispatch: default cache access permits writes.
     with:
       head_sha: ${{ github.event.inputs.head_sha }}
+
+  cache-modes:
+    permissions: {}
+    uses: ./.github/workflows/cache_mode_reusable.yml # No cache alert: harmless probes; unset caller mode allows callee write opt-in.
