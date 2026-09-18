@@ -17,11 +17,10 @@ private module Cfg2 = Make2<Input>;
 
 private import Cfg0
 private import Cfg1
-private import Cfg2
-import Public
+import Cfg2
 
 /** Provides an implementation of the AST signature for Unified. */
-private module Ast implements AstSig<Location> {
+module Ast implements AstSig<Location> {
   private import unified as U
 
   class AstNode = U::AstNode;
