@@ -196,14 +196,23 @@ class MicrosoftAspNetCoreMvcHtmlHelperRawSink extends AspNetCoreHtmlSink {
  * are the immediately enclosing bracket around `writeLiteral` on every path that reaches it (that
  * is, the bracket opened by `beginCall` is still open, and not yet closed by some other `endCall`,
  * at the point `writeLiteral` executes).
+ *
+ * `beginCall`, `writeLiteral`, and `endCall` are additionally required to have an implicit `this`
+ * qualifier, which is how the Razor source generator always emits these calls. This ensures all
+ * three calls act on the same page instance, so a bracket on one page cannot be mistaken for a
+ * bracket around a `WriteLiteral` call on a different page.
  */
 private predicate isBracketedForTagHelperAttribute(Call writeLiteral) {
   exists(
-    MicrosoftAspNetCoreMvcRazorPageBase page, Call beginCall, Call endCall, int i, int j, int k
+    MicrosoftAspNetCoreMvcRazorPageBase page, MethodCall beginCall, MethodCall endCall, int i,
+    int j, int k
   |
     writeLiteral = page.getWriteLiteralMethod().getACall() and
     beginCall = page.getBeginWriteTagHelperAttributeMethod().getACall() and
     endCall = page.getEndWriteTagHelperAttributeMethod().getACall() and
+    writeLiteral.(QualifiableExpr).hasImplicitThisQualifier() and
+    beginCall.hasImplicitThisQualifier() and
+    endCall.hasImplicitThisQualifier() and
     writeLiteral.getBasicBlock().getNode(i) = beginCall.getControlFlowNode() and
     writeLiteral.getBasicBlock().getNode(j) = writeLiteral.getControlFlowNode() and
     writeLiteral.getBasicBlock().getNode(k) = endCall.getControlFlowNode() and
