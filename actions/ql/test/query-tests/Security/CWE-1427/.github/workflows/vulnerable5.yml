@@ -1,0 +1,18 @@
+name: AI PR Title Analysis
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      models: read
+    steps:
+      - name: AI analysis
+        uses: actions/ai-inference@v2
+        with:
+          model: openai/gpt-4o
+          prompt: |
+            Analyze this PR title:
+            ${{ github.event.pull_request.title }}
