@@ -185,17 +185,21 @@ class Node extends TDataFlowNode {
     )
   }
 
-  /** Gets the callable containing this data flow node. */
-  Callable getEnclosingCallable() {
-    result = this.getWrappedAstNode().getEnclosingCallable()
+  /** Gets the data-flow callable containing this data flow node. */
+  DataFlowCallable getEnclosingCallableEx() {
+    result.asSourceCallable() = this.getWrappedAstNode().getEnclosingCallable()
     or
     exists(LocalSsaDataFlowOutput::SsaNode node |
       this = TLocalSsaNode(node) and
-      result = node.getSourceVariable().getDeclaringCallable()
+      result.asSourceCallable() = node.getSourceVariable().getDeclaringCallable()
     )
     or
-    this.isReceiverParameter(result)
+    this.isReceiverParameterEx(result)
+    )
   }
+
+  /** Gets the callable containing this data flow node. */
+  Callable getEnclosingCallable() { result = this.getEnclosingCallableEx().asSourceCallable() }
 }
 
 Node getPostUpdateNode(Node pre) {

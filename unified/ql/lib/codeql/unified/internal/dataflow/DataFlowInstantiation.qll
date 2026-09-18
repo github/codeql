@@ -42,11 +42,7 @@ module DataFlowInput implements InputSig<Location> {
   import DataFlowCallable
   import CallGraph
 
-  DataFlowCallable nodeGetEnclosingCallable(Node node) {
-    result.asSourceCallable() = node.getEnclosingCallable()
-    or
-    node.isReceiverParameterEx(result)
-  }
+  DataFlowCallable nodeGetEnclosingCallable(Node node) { result = node.getEnclosingCallableEx() }
 
   private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosition pos) {
     exists(Parameter param |
