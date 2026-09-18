@@ -44,19 +44,19 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨member⟩ ⟨member⟩ ⟨member⟩ ⟨member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨member⟩, ⟨member⟩, ⟨member⟩, ⟨member⟩\n}"
           modifier: modifier "enum" source="enum"
           name_node: identifier "Suit" source="Suit"
           member:
-            variable_declaration source="⟨pattern⟩,"
+            variable_declaration source="⟨pattern⟩"
               modifier: modifier "enum_case" source=""
               pattern: identifier "clubs" source="clubs"
-            variable_declaration source="⟨pattern⟩,"
+            variable_declaration source="⟨pattern⟩"
               modifier:
                 modifier "chained_declaration" source=""
                 modifier "enum_case" source=""
               pattern: identifier "diamonds" source="diamonds"
-            variable_declaration source="⟨pattern⟩,"
+            variable_declaration source="⟨pattern⟩"
               modifier:
                 modifier "chained_declaration" source=""
                 modifier "enum_case" source=""

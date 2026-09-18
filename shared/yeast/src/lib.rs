@@ -597,6 +597,25 @@ impl Ast {
         self.nodes.get(id.0)
     }
 
+    fn source_range_ignoring_fields(
+        &self,
+        id: Id,
+        ignored_fields: &[&str],
+    ) -> Option<Range> {
+        let node = self.get_node(id)?;
+        let source_range = node.source_range()?;
+        let ignored_ranges = node
+            .fields
+            .iter()
+            .filter(|(field_id, _)| {
+                self.field_name_for_id(**field_id)
+                    .is_some_and(|name| ignored_fields.contains(&name))
+            })
+            .flat_map(|(_, children)| children)
+            .filter_map(|child| self.get_node(*child).and_then(Node::source_range));
+        Some(source_range.ignoring_boundary_ranges(ignored_ranges))
+    }
+
     pub fn print(&self, source: &str, root_id: Id) -> Value {
         let root = &self.nodes()[root_id.0];
         self.print_node(root, source)
@@ -1100,6 +1119,7 @@ pub struct Rule<C = ()> {
     query: QueryNode,
     guard: Option<Guard<C>>,
     transform: Transform<C>,
+    ignored_location_fields: Vec<&'static str>,
     /// If true, after this rule fires on a node the engine will try to
     /// re-apply this same rule on the result root. Defaults to false:
     /// each rule fires at most once on a given node, which prevents
@@ -1114,6 +1134,7 @@ impl<C> Rule<C> {
             query,
             guard: None,
             transform,
+            ignored_location_fields: Vec::new(),
             repeated: false,
         }
     }
@@ -1125,6 +1146,7 @@ impl<C> Rule<C> {
             query,
             guard: Some(guard),
             transform,
+            ignored_location_fields: Vec::new(),
             repeated: false,
         }
     }
@@ -1136,6 +1158,10 @@ impl<C> Rule<C> {
     pub fn repeated(mut self) -> Self {
         self.repeated = true;
         self
+    }
+
+    fn set_ignored_location_fields(&mut self, fields: &[&'static str]) {
+        self.ignored_location_fields = fields.to_vec();
     }
 
     /// Attempt to match this rule's query against `node`, returning the raw
@@ -1176,10 +1202,8 @@ impl<C> Rule<C> {
         translator: TranslatorHandle<'_, C>,
     ) -> Result<Vec<Id>, String> {
         fresh.next_scope();
-        let source_range = ast.get_node(node).and_then(|n| match n.content {
-            NodeContent::Range(r) => Some(r),
-            _ => n.source_range,
-        });
+        let source_range =
+            ast.source_range_ignoring_fields(node, &self.ignored_location_fields);
         (self.transform)(ast, captures, fresh, source_range, user_ctx, translator)
     }
 }
@@ -1465,6 +1489,9 @@ pub struct DesugaringConfig<C = ()> {
     /// node types are used (i.e. the desugared AST has the same node types
     /// as the tree-sitter grammar).
     pub output_node_types_yaml: Option<&'static str>,
+    /// Input field names whose boundary ranges are excluded from rule-result
+    /// locations.
+    pub ignored_location_fields: Vec<&'static str>,
 }
 
 // Manual `Default` impl so users with a custom `C` that doesn't implement
@@ -1474,6 +1501,7 @@ impl<C> Default for DesugaringConfig<C> {
         Self {
             phases: Vec::new(),
             output_node_types_yaml: None,
+            ignored_location_fields: Vec::new(),
         }
     }
 }
@@ -1490,9 +1518,27 @@ impl<C> DesugaringConfig<C> {
         mut self,
         name: impl Into<String>,
         kind: PhaseKind,
-        rules: Vec<Rule<C>>,
+        mut rules: Vec<Rule<C>>,
     ) -> Self {
+        for rule in &mut rules {
+            rule.set_ignored_location_fields(&self.ignored_location_fields);
+        }
         self.phases.push(Phase::new(name, kind, rules));
+        self
+    }
+
+    /// Ignore boundary syntax stored under any of these input field names when
+    /// calculating matched locations for rule results.
+    pub fn with_ignored_location_fields(
+        mut self,
+        fields: impl IntoIterator<Item = &'static str>,
+    ) -> Self {
+        self.ignored_location_fields = fields.into_iter().collect();
+        for phase in &mut self.phases {
+            for rule in &mut phase.rules {
+                rule.set_ignored_location_fields(&self.ignored_location_fields);
+            }
+        }
         self
     }
 

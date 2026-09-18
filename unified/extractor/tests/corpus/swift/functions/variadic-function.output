@@ -90,13 +90,13 @@ top_level source="⟨body⟩"
               stmt:
                 return_expr source="return ⟨value⟩"
                   value:
-                    call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
+                    call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
                       callee:
                         member_access_expr source="⟨base⟩.⟨member_name_node⟩"
                           base: identifier "values" source="values"
                           member_name_node: identifier "reduce" source="reduce"
                       argument:
-                        argument source="⟨value⟩,"
+                        argument source="⟨value⟩"
                           value: int_literal "0" source="0"
                         argument source="⟨value⟩"
                           value: identifier "+" source="+"

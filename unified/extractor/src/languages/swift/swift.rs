@@ -480,13 +480,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (enumCaseElement
                 name: @name
-                parameterClause: (enumCaseParameterClause parameters: _* @params)) @@element
+                parameterClause: (enumCaseParameterClause parameters: _* @params) @@clause)
             =>
             class_like_declaration {
                 let body = tree!((block));
-                let constructor = tree_at!(
+                let constructor = tree_spanning!(
                     ctx,
-                    element,
+                    [name, clause],
                     (constructor_declaration parameter: {params} body: {body})
                 );
                 tree!((class_like_declaration
@@ -1439,6 +1439,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
 
 pub fn language_spec(desugared_ast_schema: &'static str) -> desugaring::LanguageSpec {
     let config = DesugaringConfig::<SwiftContext>::new()
+        .with_ignored_location_fields(["trailingComma"])
         .add_phase("translate", PhaseKind::OneShot, translation_rules())
         .with_output_node_types_yaml(desugared_ast_schema);
     let desugarer =

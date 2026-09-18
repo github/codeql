@@ -167,13 +167,13 @@ top_level source="⟨body⟩"
                 expr_pattern source="⟨modifier⟩ ⟨expr⟩"
                   modifier: modifier "let" source="let"
                   expr:
-                    call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
+                    call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
                       callee:
                         member_access_expr source="⟨base⟩⟨member_name_node⟩"
                           base: inferred_type_expr "." source="."
                           member_name_node: identifier "received" source="received"
                       argument:
-                        argument source="⟨value⟩,"
+                        argument source="⟨value⟩"
                           value:
                             call_expr source="⟨callee⟩(⟨argument⟩)"
                               callee:
@@ -188,10 +188,10 @@ top_level source="⟨body⟩"
               body:
                 block source="⟨stmt⟩"
                   stmt:
-                    call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
+                    call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
                       callee: identifier "print" source="print"
                       argument:
-                        argument source="⟨value⟩,"
+                        argument source="⟨value⟩"
                           value: identifier "value" source="value"
                         argument source="⟨value⟩"
                           value: identifier "timestamp" source="timestamp"

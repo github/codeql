@@ -1787,6 +1787,30 @@ fn test_returned_capture_keeps_its_location() {
     assert_eq!(identifier.byte_range(), 4..7);
 }
 
+#[test]
+fn test_ignored_location_field_is_excluded_from_rule_result_location() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left)
+        =>
+        (call method: {left})
+    );
+
+    let language: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let config = DesugaringConfig::new()
+        .with_ignored_location_fields(["right"])
+        .add_phase("test", PhaseKind::Repeating, vec![rule]);
+    let runner: Runner = Runner::from_config(language, &config).unwrap();
+    let ast = runner.run("x = 1").unwrap();
+    let call = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "call")
+        .expect("call exists");
+    assert_eq!(call.byte_range(), 0..4);
+}
+
 /// Nodes allocated by an explicit recursive translation belong to that nested
 /// rule invocation, even when the outer rule returns one directly.
 #[test]
