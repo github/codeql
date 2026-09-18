@@ -32,6 +32,23 @@ broader version of it: `rust` formats Rust sources while `rust/ql` formats QL, s
 `just format rust` has to do both. A recipe that only arrived through `import` is the
 same job, though, and runs once.
 
+A repository root forwards every verb, which leaves it no way to answer one itself: a
+recipe written next to the `import` overrides the imported one and takes the forwarder's
+place, so `just format cpp` would stop finding anything. The root spells its own
+implementation `_root_<verb>` instead, and the forwarder picks that up wherever the
+plain name turns out to be the forwarder's own:
+
+```just
+import 'misc/just/forward.just'
+
+_root_format *ARGS=".": (_format_bazel ARGS)
+```
+
+This is for work that belongs to no single directory. bazel files are the case in hand:
+they sit throughout the tree rather than under any one language, so formatting them is
+the root's job, and taking the argument keeps `just format cpp` to the bazel files under
+`cpp`.
+
 A directory that only makes sense when named explicitly can opt out of being found from
 above:
 
