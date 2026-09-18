@@ -399,7 +399,9 @@ fn convert_nodes(
         .collect();
     for node in nodes.values() {
         match &node.kind {
-            node_types::EntryKind::Union { members: n_members } => {
+            node_types::EntryKind::Union {
+                members: n_members, ..
+            } => {
                 // It's a tree-sitter supertype node, for which we create a union
                 // type.
                 let members: Set<&str> = n_members
