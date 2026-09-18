@@ -491,6 +491,16 @@ class MicrosoftAspNetCoreMvcRazorPageBase extends Class {
 
   /** Gets the `WriteLiteral` method. */
   Method getWriteLiteralMethod() { result = this.getAMethod("WriteLiteral") }
+
+  /** Gets the `BeginWriteTagHelperAttribute` method. */
+  Method getBeginWriteTagHelperAttributeMethod() {
+    result = this.getAMethod("BeginWriteTagHelperAttribute")
+  }
+
+  /** Gets the `EndWriteTagHelperAttribute` method. */
+  Method getEndWriteTagHelperAttributeMethod() {
+    result = this.getAMethod("EndWriteTagHelperAttribute")
+  }
 }
 
 /** A class deriving from `Microsoft.AspNetCore.Http.HttpRequest`, implements `HttpRequest` in ASP.NET Core. */
