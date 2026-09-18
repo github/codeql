@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.client", "Options", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.client", "ServiceClient", True, "ServiceClient", "(ConfigurationContext,URL,QName,String)", "", "Argument[1]", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.client", "ServiceClient", True, "fireAndForget", "(OMElement)", "", "this", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.client", "ServiceClient", True, "fireAndForget", "(QName,OMElement)", "", "this", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.client", "ServiceClient", True, "sendReceive", "(OMElement)", "", "this", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.client", "ServiceClient", True, "sendReceive", "(QName,OMElement)", "", "this", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.client", "ServiceClient", True, "sendReceiveNonBlocking", "(OMElement,AxisCallback)", "", "this", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.client", "ServiceClient", True, "sendReceiveNonBlocking", "(QName,OMElement,AxisCallback)", "", "this", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.client", "ServiceClient", True, "sendRobust", "(OMElement)", "", "this", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.client", "ServiceClient", True, "sendRobust", "(QName,OMElement)", "", "this", "request-forgery", "ai-generated"]
+      #- ["org.apache.axis2.client", "Stub", True, "addHttpHeader", "(MessageContext,String,String)", "", "Argument[1..2]", "response-splitting", "ai-generated"] # INVALID: Only stores header in memory; not response-splitting
+      #- ["org.apache.axis2.client", "Stub", True, "setServiceClientEPR", "(String)", "", "Argument[0]", "request-forgery", "ai-generated"] # INVALID: Just a setter; no request is made
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.client", "OperationClient", True, "getMessageContext", "(String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.client", "ServiceClient", True, "sendReceive", "(OMElement)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.client", "ServiceClient", True, "sendReceive", "(QName,OMElement)", "", "ReturnValue", "remote", "ai-generated"]
