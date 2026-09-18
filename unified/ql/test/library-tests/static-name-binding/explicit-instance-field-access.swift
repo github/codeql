@@ -15,7 +15,7 @@ private class A {
         return self.y // $ not handled by static name binding
     }
 
-    class func z() -> Int { // name=A.type.z
+    class func z() -> Int { // $ access=Int // name=A.type.z
         return 789
     }
 
@@ -37,7 +37,7 @@ private class B : A { // $ access=A
         return self.y // $ not handled by static name binding
     }
 
-    class func z() -> Int { // name=B.type.z
+    class func z() -> Int { // $ access=Int // name=B.type.z
         return 789
     }
 

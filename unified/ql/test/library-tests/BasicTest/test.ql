@@ -1,6 +1,8 @@
 import unified
 
-query predicate identifier(Identifier node, string value) { value = node.getValue() }
+query predicate identifier(Identifier node, string value) {
+  node.fromSource() and value = node.getValue()
+}
 
 query predicate namedPattern(NamedPattern node, string value) { value = node.getName() }
 
