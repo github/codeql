@@ -4,8 +4,11 @@ bbContinues
 | cfg.swift:525:78:525:78 | Block | 'Block goto Task(+2)' |
 | cfg.swift:526:9:526:20 | continuation | 'continuation goto Block(-1)' |
 bbStep
+| cfg.swift:20:9:20:14 | BinaryExpr | 'BinaryExpr : false -> Block(+0)' |
+| cfg.swift:20:9:20:14 | BinaryExpr | 'BinaryExpr : true -> GuardIfStmt(+3)' |
+| cfg.swift:23:9:23:14 | BinaryExpr | 'BinaryExpr : false -> Block(+0)' |
 | cfg.swift:30:9:30:24 | CallExpr | 'CallExpr : exception -> CatchClause(+5)' |
-| cfg.swift:30:9:30:24 | CallExpr | 'CallExpr : successor -> try(+0)' |
+| cfg.swift:30:9:30:24 | CallExpr | 'CallExpr : successor -> UnaryExpr(+0)' |
 | cfg.swift:33:5:33:33 | CallExpr | 'CallExpr : successor -> 0(+11)' |
 | cfg.swift:35:5:35:5 | OrPattern | 'OrPattern : match -> Block(+0)' |
 | cfg.swift:35:5:35:5 | OrPattern | 'OrPattern : no-match -> CatchClause(+2)' |
@@ -91,7 +94,7 @@ bbStep
 | cfg.swift:360:3:360:3 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
 | cfg.swift:360:9:360:14 | BinaryExpr | 'BinaryExpr : true -> Block(+0)' |
 | cfg.swift:361:5:361:10 | BinaryExpr | 'BinaryExpr : successor -> x(-1)' |
-| cfg.swift:398:9:398:24 | CallExpr | 'CallExpr : successor -> try(+0)' |
+| cfg.swift:398:9:398:24 | CallExpr | 'CallExpr : successor -> UnaryExpr(+0)' |
 | cfg.swift:500:6:500:28 |  | ' : false -> IfExpr(+4)' |
 | cfg.swift:500:6:500:28 |  | ' : true -> Block(+0)' |
 | cfg.swift:501:5:501:10 | BinaryExpr | 'BinaryExpr : successor -> IfExpr(+3)' |
@@ -101,6 +104,9 @@ bbStep
 | cfg.swift:508:6:508:47 |  | ' : false -> GuardIfStmt(+4)' |
 | cfg.swift:508:6:508:47 |  | ' : true -> Block(+0)' |
 | cfg.swift:509:5:509:10 | BinaryExpr | 'BinaryExpr : successor -> GuardIfStmt(+3)' |
+| cfg.swift:512:9:512:31 |  | ' : false -> Block(+0)' |
+| cfg.swift:512:9:512:31 |  | ' : true -> IfExpr(+4)' |
+| cfg.swift:513:5:513:10 | BinaryExpr | 'BinaryExpr : successor -> IfExpr(+3)' |
 | cfg.swift:516:6:516:28 |  | ' : false,false -> x(+5)' |
 | cfg.swift:516:6:516:28 |  | ' : true -> (+1)' |
 | cfg.swift:517:7:517:27 |  | ' : false,false -> x(+4)' |
@@ -126,8 +132,6 @@ bbStep
 | cfg.swift:591:13:591:18 | BinaryExpr | 'BinaryExpr : false -> Block(+1)' |
 | cfg.swift:591:13:591:18 | BinaryExpr | 'BinaryExpr : true -> Block(+0)' |
 noCfg
-| cfg.swift:23:9:23:9 | x |
-| cfg.swift:24:5:24:42 | ThrowExpr |
 | cfg.swift:47:42:47:47 | String |
 | cfg.swift:53:34:53:34 | _ |
 | cfg.swift:60:34:60:34 | _ |
@@ -149,7 +153,6 @@ noCfg
 | cfg.swift:358:6:358:28 | loop_with_identity_expr |
 | cfg.swift:371:8:371:18 | getOptional |
 | cfg.swift:380:45:380:47 | Int |
-| cfg.swift:381:13:381:13 | z |
 | cfg.swift:421:6:421:22 | localDeclarations |
 | cfg.swift:468:6:468:17 | testIfConfig |
 | cfg.swift:497:6:497:18 | testAvailable |
@@ -158,7 +161,6 @@ noCfg
 nonSimple
 | cfg.swift:10:1:10:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyError -^ BaseType -V Error' |
 | cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ MemberAccessExpr -> isZero -> Argument -V x -^ CallExpr -? MyError -^ MemberAccessExpr -^ ConditionalPattern -^ OrPattern' |
-| cfg.swift:209:5:209:5 | x | 'x -> = -> x -? - -^ UnaryExpr -^ BinaryExpr' |
 | cfg.swift:390:1:390:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Derived -^ BaseType -V C' |
 | cfg.swift:527:13:527:16 | Task | 'Task -^ MemberAccessExpr -^ Argument -V FunctionExpr -^ CallExpr' |
 | cfg.swift:569:1:569:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyProcotolImpl -^ BaseType -V MyProtocol' |

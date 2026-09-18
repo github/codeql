@@ -17,17 +17,17 @@ func isZero(x : Int) -> Bool {
 }
 
 func mightThrow(x : Int) throws -> Void {
-  guard x >= 0 else {
+  guard x >= 0 else { // $ bbStep='BinaryExpr : false -> Block(+0)' bbStep='BinaryExpr : true -> GuardIfStmt(+3)'
     throw MyError.error1
   }
-  guard x <= 0 else { // $ noCfg
-    throw MyError.error3(withParam: x + 1) // $ noCfg
+  guard x <= 0 else { // $ bbStep='BinaryExpr : false -> Block(+0)'
+    throw MyError.error3(withParam: x + 1)
   }
 }
 
 func tryCatch(x : Int) -> Int {
   do {
-    try mightThrow(x: 0) // $ bbStep='CallExpr : exception -> CatchClause(+5)' bbStep='CallExpr : successor -> try(+0)'
+    try mightThrow(x: 0) // $ bbStep='CallExpr : exception -> CatchClause(+5)' bbStep='CallExpr : successor -> UnaryExpr(+0)'
     print("Did not throw.")
     try! mightThrow(x: 0)
     print("Still did not throw.") // $ bbStep='CallExpr : successor -> 0(+11)'
@@ -206,7 +206,7 @@ func m2(b : Bool) -> Int {
 
 func m3(x : inout Int) -> Int {
   if x < 0 { // $ bbStep='BinaryExpr : true -> Block(+0)' bbStep='BinaryExpr : false -> x(+6)'
-    x = -x // $ nonSimple='x -> = -> x -? - -^ UnaryExpr -^ BinaryExpr'
+    x = -x
     if x > 10 { // $ bbStep='BinaryExpr : true -> Block(+0)' bbStep='BinaryExpr : false -> x(+4)'
       x = x - 1 // $ bbStep='BinaryExpr : successor -> x(+3)'
     }
@@ -378,7 +378,7 @@ func testOptional(c : OptionalC?) -> Int? {
 }
 
 func testCapture(x : Int, y : Int) -> () -> Int { // $ noCfg
-  return { [z = x + y, t = "literal"] in // $ noCfg
+  return { [z = x + y, t = "literal"] in
     return z
   }
 }
@@ -395,7 +395,7 @@ class Derived : C { // $ nonSimple='ClassLikeDeclaration -V Derived -^ BaseType 
 
 func doWithoutCatch(x : Int) throws -> Int {
   do {
-    try mightThrow(x: 0) // $ bbStep='CallExpr : successor -> try(+0)'
+    try mightThrow(x: 0) // $ bbStep='CallExpr : successor -> UnaryExpr(+0)'
     print("Did not throw.")
     try! mightThrow(x: 0)
     print("Still did not throw.")
@@ -509,8 +509,8 @@ func testAvailable() -> Int { // $ noCfg
     x += 1 // $ bbStep='BinaryExpr : successor -> GuardIfStmt(+3)'
   }
 
-  guard #available(macOS 12, *) else {
-    x += 1
+  guard #available(macOS 12, *) else { // $ bbStep=' : false -> Block(+0)' bbStep=' : true -> IfExpr(+4)'
+    x += 1 // $ bbStep='BinaryExpr : successor -> IfExpr(+3)'
   }
 
   if #available(macOS 12, *), // $ bbStep=' : true -> (+1)' bbStep=' : false,false -> x(+5)'

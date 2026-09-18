@@ -30,6 +30,8 @@ private module Ast implements AstSig<Location> {
     e instanceof Modifier
     or
     e instanceof Identifier and not e instanceof IdentifierExpr
+    or
+    e instanceof Operator
   }
 
   AstNode getChild(AstNode n, int index) {
@@ -38,6 +40,8 @@ private module Ast implements AstSig<Location> {
     not n instanceof Callable and
     not skipControlFlow(n) and
     not skipControlFlow(result)
+    or
+    n.(FunctionExpr).getCaptureDeclaration(index) = result
   }
 
   Callable getEnclosingCallable(AstNode node) { result = node.getEnclosingCallable() }
@@ -71,14 +75,12 @@ private module Ast implements AstSig<Location> {
     Expr getExpr() { none() }
   }
 
-  class IfStmt extends Stmt {
-    IfStmt() { none() }
-
-    Expr getCondition() { none() }
+  class IfStmt extends Stmt instanceof U::GuardIfStmt {
+    Expr getCondition() { result = super.getCondition() }
 
     Stmt getThen() { none() }
 
-    Stmt getElse() { none() }
+    Stmt getElse() { result = super.getElse() }
   }
 
   abstract class LoopStmt extends Stmt {
