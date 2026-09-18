@@ -106,24 +106,24 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  var ⟨member⟩ }\n  var ⟨member⟩⟨member⟩ }\n  var ⟨member⟩ }\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  var foo: Int { ⟨member⟩ }\n  var bar: String { ⟨member⟩ ⟨member⟩ }\n  var count: Int { ⟨member⟩ }\n}"
           modifier: modifier "protocol" source="protocol"
           name_node: identifier "P" source="P"
           member:
-            accessor_declaration source="⟨name_node⟩: ⟨type⟩ { ⟨accessor_kind⟩"
-              name_node: identifier "foo" source="foo"
+            accessor_declaration source="⟨accessor_kind⟩"
+              name_node: identifier "foo" source="foo" (external)
               accessor_kind: accessor_kind "get" source="get"
-              type: identifier "Int" source="Int"
-            accessor_declaration source="⟨name_node⟩: ⟨type⟩ { ⟨accessor_kind⟩"
-              name_node: identifier "bar" source="bar"
+              type: identifier "Int" source="Int" (external)
+            accessor_declaration source="⟨accessor_kind⟩"
+              name_node: identifier "bar" source="bar" (external)
               accessor_kind: accessor_kind "get" source="get"
-              type: identifier "String" source="String"
-            accessor_declaration source="⟨name_node⟩: ⟨type⟩ { get ⟨accessor_kind⟩"
+              type: identifier "String" source="String" (external)
+            accessor_declaration source="⟨accessor_kind⟩"
               modifier: modifier "chained_declaration" source=""
-              name_node: identifier "bar" source="bar"
+              name_node: identifier "bar" source="bar" (external)
               accessor_kind: accessor_kind "set" source="set"
-              type: identifier "String" source="String"
-            accessor_declaration source="⟨name_node⟩: ⟨type⟩ { ⟨accessor_kind⟩"
-              name_node: identifier "count" source="count"
+              type: identifier "String" source="String" (external)
+            accessor_declaration source="⟨accessor_kind⟩"
+              name_node: identifier "count" source="count" (external)
               accessor_kind: accessor_kind "get" source="get"
-              type: identifier "Int" source="Int"
+              type: identifier "Int" source="Int" (external)

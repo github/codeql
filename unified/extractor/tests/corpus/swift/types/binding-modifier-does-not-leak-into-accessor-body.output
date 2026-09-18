@@ -92,15 +92,15 @@ sourceFile
 
 ---
 
-top_level source="⟨body⟩\n}"
+top_level source="var p: Int {\n  ⟨body⟩\n}"
   body:
     block source="⟨stmt⟩"
       stmt:
-        accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ {\n  ⟨accessor_kind⟩ ⟨body⟩"
-          modifier: modifier "var" source="var"
-          name_node: identifier "p" source="p"
+        accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
+          modifier: modifier "var" source="var" (external)
+          name_node: identifier "p" source="p" (external)
           accessor_kind: accessor_kind "get" source="get"
-          type: identifier "Int" source="Int"
+          type: identifier "Int" source="Int" (external)
           body:
             block source="{\n    ⟨stmt⟩\n  }"
               stmt:

@@ -405,7 +405,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     }
                     None => None,
                 };
-                tree!(
+                tree_spanning!(
+                    ctx,
+                    std::iter::once(spec).chain(body),
                     (accessor_declaration
                         modifier: {binding}
                         modifier: {chained}
