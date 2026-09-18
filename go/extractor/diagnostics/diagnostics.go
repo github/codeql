@@ -422,10 +422,10 @@ func EmitGoModVersionTooHighAndNoGoEnv(msg string) {
 	)
 }
 
-func EmitGoModVersionTooHighAndEnvVersionTooHigh(msg string) {
+func EmitGoModVersionTooHighAndEnvVersionSupported(msg string) {
 	emitDiagnostic(
-		"go/autobuilder/env-go-mod-version-too-high-go-env-too-high",
-		"Go version in `go.mod` file above supported range and Go version in environment above supported range",
+		"go/autobuilder/env-go-mod-version-too-high-go-env-supported",
+		"Go version in `go.mod` file above supported range and Go version in environment is supported",
 		msg,
 		severityNote,
 		telemetryOnly,
@@ -444,10 +444,10 @@ func EmitGoModVersionTooHighAndEnvVersionTooLow(msg string) {
 	)
 }
 
-func EmitGoModVersionTooHighAndEnvVersionBelowMax(msg string) {
+func EmitGoModVersionTooHighAndEnvVersionTooHighButOlder(msg string) {
 	emitDiagnostic(
-		"go/autobuilder/env-go-mod-version-too-high-go-env-below-max",
-		"Go version in `go.mod` file above supported range and Go version in environment is supported and below the maximum supported version",
+		"go/autobuilder/env-go-mod-version-too-high-go-env-too-high-but-older",
+		"Go version in `go.mod` file above supported range and Go version in environment is above supported range but older",
 		msg,
 		severityNote,
 		telemetryOnly,
@@ -455,10 +455,10 @@ func EmitGoModVersionTooHighAndEnvVersionBelowMax(msg string) {
 	)
 }
 
-func EmitGoModVersionTooHighAndEnvVersionMax(msg string) {
+func EmitGoModVersionTooHighAndEnvTooHigh(msg string) {
 	emitDiagnostic(
-		"go/autobuilder/env-go-mod-version-too-high-go-env-max",
-		"Go version in `go.mod` file above supported range and Go version in environment is the maximum supported version",
+		"go/autobuilder/env-go-mod-version-too-high-go-env-too-high",
+		"Go version in `go.mod` file above supported range and Go version in environment is above supported range",
 		msg,
 		severityNote,
 		telemetryOnly,
