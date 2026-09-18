@@ -19,12 +19,12 @@ jobs:
     runs-on: ubuntu-latest-xl
     steps:
       ### Build the queries ###
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           fetch-depth: 0
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@main
+        uses: github/codeql-action/init@14c568a92663d5bba4fc64d9a8d97c0e00e015a2 # main
         with:
           languages: javascript # does not matter
           tools: nightly
@@ -33,7 +33,7 @@ jobs:
       ### Build the extractor ###
       - name: Cache entire extractor
         id: cache-extractor
-        uses: actions/cache@v3
+        uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c # v3.5.0
         with:
           path: |
             ql/extractor-pack/
@@ -41,7 +41,7 @@ jobs:
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('shared/tree-sitter-extractor') }}-${{ hashFiles('ql/**/*.rs') }}
       - name: Cache cargo
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        uses: actions/cache@v3
+        uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c # v3.5.0
         with:
           path: |
             ~/.cargo/registry
@@ -71,12 +71,12 @@ jobs:
             exclude:*/ql/lib/upgrades/
             exclude:java/ql/integration-tests
       - name: Upload sarif to code-scanning
-        uses: github/codeql-action/upload-sarif@main
+        uses: github/codeql-action/upload-sarif@14c568a92663d5bba4fc64d9a8d97c0e00e015a2 # main
         with:
           sarif_file: ql-for-ql.sarif
           category: ql-for-ql
       - name: Sarif as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ql-for-ql.sarif
           path: ql-for-ql.sarif
@@ -85,7 +85,7 @@ jobs:
           mkdir split-sarif
           node ./ql/scripts/split-sarif.js ql-for-ql.sarif split-sarif
       - name: Upload langs as artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ql-for-ql-langs
           path: split-sarif
