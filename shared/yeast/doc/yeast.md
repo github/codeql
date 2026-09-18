@@ -292,6 +292,17 @@ return_expr source="return ⟨value⟩"
     call_expr source="⟨callee⟩(⟨argument⟩)"
 ```
 
+Children outside the node's source range retain their own locations and are
+annotated where they are printed rather than being treated as errors:
+
+```text
+accessor_declaration source="⟨accessor_kind⟩"
+  name_node: identifier "value" source="value" (external)
+```
+
+Node and child ranges are still validated against the source text and UTF-8
+boundaries.
+
 ### Optional fields (`?`)
 
 A `?` on a field's value makes that field fallible. If a `#{expr}` anywhere
