@@ -1,7 +1,8 @@
 import "../justfile"
 
-# These are CI shards of the Kotlin language tests, run as `just java
-# kotlin-language-tests-1`, so they only run when asked for by name.
+# These are CI shards of the Kotlin language tests, too long to run by accident,
+# so a verb coming from above passes over them and they run only when this
+# directory is named.
 explicit_verbs := ['test']
 
 # Kotlin tests may fail the diags.ql consistency test if the diagnostic limit is set.

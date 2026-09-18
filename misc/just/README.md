@@ -4,10 +4,14 @@ have common verbs (`build`, `test`, `format`, `lint`, `generate`) that individua
 of the project can implement, and some common functionality that can be used to that
 effect.
 
-`just` 1.58 or newer is required: recipes forward argument lists using `set lists`, which
-is still unstable and did not exist before then. An older one stops with an
-`Unknown setting` error pointing at that line, which is clear enough but does not say
-which version to move to.
+`just` 1.53 or newer is required. Recipes forward argument lists rather than encoding
+them as whitespace separated strings, and every piece of that arrived in that one
+release: `set lists`, list literals, the `++` operator, and variadic parameters that pass
+their elements on one at a time rather than space-joined. Lists are still unstable, at
+1.58 as much as at 1.53, which is what `set unstable` in `defs.just` is for. An older
+`just` stops at the first list literal it parses, complaining about an unexpected `[` and
+saying nothing about versions; only `defs.just` read on its own gives the clearer
+`unknown setting` naming `lists`.
 
 # Forwarding
 

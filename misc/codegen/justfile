@@ -1,5 +1,5 @@
 import "../just/lib.just"
 
-test *ARGS="": (_bazel ['test', '@codeql//misc/codegen/...'])
+test *ARGS: (_bazel (['test', '@codeql//misc/codegen/...'] ++ ARGS))
 
 format *ARGS=".": (_format_py ARGS)

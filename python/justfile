@@ -6,7 +6,7 @@ build: (_build_dist "python")
 
 # Long filename needed for extractor tests (too long for Git on Windows)
 [no-cd]
-@_ensure_long_filename:
+@_ensure_long_filename: _require_semmle_code
     #!/usr/bin/env bash
     longfile="$SEMMLE_CODE/ql/python/ql/test/extractor-tests/long_path/really_rather_too_long_for_windows_path_length/with_unecessarily_longwinded_and_verbose_sub_folder/extremely_long_module_name_with_lots_of_digits_at_the_end_000000000000000000000000000000000000000000000000000000000000000000/test0000000000000000000000000000000000000000000000000000000.py"
     mkdir -p "$(dirname "$longfile")"

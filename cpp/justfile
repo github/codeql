@@ -1,5 +1,5 @@
 import '../lib.just'
-import? '../../cpp-coding-standards.just'
+import? '../../buildutils-internal/just/cpp-coding-standards.just'
 
 [group('build')]
 build: (_build_dist "cpp")
