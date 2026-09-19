@@ -321,7 +321,8 @@ public class CustomParser extends FlowParser {
   }
 
   @Override
-  protected Expression parseParenAndDistinguishExpression(boolean canBeArrow) {
+  protected Expression parseParenAndDistinguishExpression(
+      boolean canBeArrow, DestructuringErrors refDestructuringErrors) {
     if (options.mozExtensions()) {
       // check whether next token is `for`, suggesting a generator comprehension
       Position startLoc = this.startLoc;
@@ -338,7 +339,7 @@ public class CustomParser extends FlowParser {
       }
     }
 
-    Expression res = super.parseParenAndDistinguishExpression(canBeArrow);
+    Expression res = super.parseParenAndDistinguishExpression(canBeArrow, refDestructuringErrors);
     if (res instanceof ParenthesizedExpression) {
       ParenthesizedExpression p = (ParenthesizedExpression) res;
       if (p.getExpression() instanceof ComprehensionExpression) {

@@ -1,0 +1,1 @@
+({x: (value)}, y = 0) => value

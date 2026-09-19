@@ -1,0 +1,1 @@
+async ({...(rest)} = {}): Promise<number> => rest

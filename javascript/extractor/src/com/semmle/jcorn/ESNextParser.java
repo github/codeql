@@ -69,10 +69,18 @@ public class ESNextParser extends JSXParser {
 
     Property prop = null;
     if (this.type == TokenType.ellipsis) {
-      SpreadElement spread = this.parseSpread(null);
+      DestructuringErrors errors = new DestructuringErrors();
+      SpreadElement spread = this.parseSpread(errors);
+      if (this.type == TokenType.comma) errors.recordTrailingComma(this.startLoc);
       Expression val;
-      if (isPattern) val = new RestElement(spread.getLoc(), spread.getArgument());
-      else val = spread;
+      if (isPattern) {
+        this.checkPatternErrors(errors, true);
+        val = (Expression) this.toAssignable(spread, true);
+      } else {
+        if (refDestructuringErrors != null) refDestructuringErrors.merge(errors);
+        else this.checkExpressionErrors(errors, true);
+        val = spread;
+      }
       prop =
           this.finishNode(
               new Property(
@@ -88,8 +96,14 @@ public class ESNextParser extends JSXParser {
 
   @Override
   protected INode toAssignable(INode node, boolean isBinding) {
-    if (node instanceof SpreadElement)
-      return new RestElement(node.getLoc(), ((SpreadElement) node).getArgument());
+    if (node instanceof SpreadElement) {
+      Expression arg =
+          (Expression) this.toAssignable(((SpreadElement) node).getArgument(), isBinding);
+      Expression target = arg.stripParens();
+      if (!(target instanceof Identifier || target instanceof MemberExpression))
+        this.unexpected(arg.getLoc().getStart());
+      return new RestElement(node.getLoc(), arg);
+    }
     return super.toAssignable(node, isBinding);
   }
 
