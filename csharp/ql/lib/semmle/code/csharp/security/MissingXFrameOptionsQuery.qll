@@ -47,12 +47,6 @@ private predicate containsFrameAncestorsDirectiveExpr(Expr value) {
   containsFrameAncestorsDirective(value.stripImplicit().getValue())
 }
 
-private predicate isClickjackingHeader(Expr name, Expr value) {
-  isXFrameOptionsHeaderNameExpr(name)
-  or
-  isContentSecurityPolicyHeaderNameExpr(name) and containsFrameAncestorsDirectiveExpr(value)
-}
-
 private predicate isDirectResponseHeadersAccess(Expr expr) {
   exists(PropertyAccessExpr headers, MicrosoftAspNetCoreHttpHttpResponse response |
     expr.stripImplicit() = headers and headers.getProperty() = response.getHeadersProperty()
@@ -78,18 +72,33 @@ private predicate isClickjackingHeaderCall(MethodCall call) {
     call.getTarget() = any(SystemWebHttpResponseClass r).getAppendHeaderMethod() or
     call.getTarget() = any(SystemWebHttpResponseClass r).getAddHeaderMethod()
   ) and
-  isClickjackingHeader(call.getArgumentForName("name"), call.getArgumentForName("value"))
+  (
+    isXFrameOptionsHeaderNameExpr(call.getArgumentForName("name"))
+    or
+    isContentSecurityPolicyHeaderNameExpr(call.getArgumentForName("name")) and
+    containsFrameAncestorsDirectiveExpr(call.getArgumentForName("value"))
+  )
   or
   call.getTarget().hasUndecoratedName(["Append", "Add", "TryAdd"]) and
   isResponseHeadersAccess(getHeaderDictionaryReceiver(call)) and
-  isClickjackingHeader(call.getArgumentForName("key"), call.getArgumentForName("value"))
+  (
+    isXFrameOptionsHeaderNameExpr(call.getArgumentForName("key"))
+    or
+    isContentSecurityPolicyHeaderNameExpr(call.getArgumentForName("key")) and
+    containsFrameAncestorsDirectiveExpr(call.getArgumentForName("value"))
+  )
 }
 
 private predicate isClickjackingHeaderIndexerAssignment(AssignExpr assignment) {
   exists(IndexerCall indexer |
     assignment.getLeftOperand() = indexer and
     isResponseHeadersAccess(indexer.getQualifier()) and
-    isClickjackingHeader(indexer.getArgument(0), assignment.getRightOperand())
+    (
+      isXFrameOptionsHeaderNameExpr(indexer.getArgument(0))
+      or
+      isContentSecurityPolicyHeaderNameExpr(indexer.getArgument(0)) and
+      containsFrameAncestorsDirectiveExpr(assignment.getRightOperand())
+    )
   )
 }
 

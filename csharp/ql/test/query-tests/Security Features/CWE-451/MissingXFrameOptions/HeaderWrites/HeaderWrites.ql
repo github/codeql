@@ -5,7 +5,7 @@
  */
 
 import csharp
-import Security_Features.MissingXFrameOptionsLib
+import semmle.code.csharp.security.MissingXFrameOptionsQuery
 
 from Expr write
 where write = getAClickjackingHeaderWrite()

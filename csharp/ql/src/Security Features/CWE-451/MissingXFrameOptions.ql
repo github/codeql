@@ -15,7 +15,7 @@
 
 import csharp
 import semmle.code.asp.WebConfig
-import Security_Features.MissingXFrameOptionsLib
+import semmle.code.csharp.security.MissingXFrameOptionsQuery
 
 XmlElement getAWebConfigRoot(WebConfigXml webConfig) {
   result = webConfig.getARootElement()
