@@ -1,0 +1,2 @@
+query: HeaderWrites.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
