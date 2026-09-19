@@ -14,10 +14,10 @@ toplevels(#20001,0)
 locations_default(#20002,#10000,1,1,1,1)
 hasLocation(#20001,#20002)
 #20003=*
-js_parse_errors(#20003,#20001,"Error: Unexpected token","(...{length}) => length;
+js_parse_errors(#20003,#20001,"Error: Comma is not permitted after the rest element","[...xs, x = 1];
 ")
-#20004=@"loc,{#10000},1,5,1,5"
-locations_default(#20004,#10000,1,5,1,5)
+#20004=@"loc,{#10000},48,7,48,7"
+locations_default(#20004,#10000,48,7,48,7)
 hasLocation(#20003,#20004)
 #20005=*
 lines(#20005,#20001,"(...{length}) => length;","
