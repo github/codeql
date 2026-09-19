@@ -1838,7 +1838,7 @@ public class Parser {
       return false;
     } else if (this.type == TokenType.ellipsis) {
       parenExprs.spreadStart = this.start;
-      parenExprs.exprList.add(this.parseParenItem(this.parseRest(false), -1, null));
+      parenExprs.exprList.add(this.parseParenItem(this.parseRest(), -1, null));
       if (this.type == TokenType.comma)
         this.raise(this.startLoc, "Comma is not permitted after the rest element");
       return false;
@@ -2147,7 +2147,7 @@ public class Parser {
 
     this.expect(TokenType.parenL);
     List<Expression> params =
-        this.parseBindingList(TokenType.parenR, false, this.options.ecmaVersion() >= 8, false);
+        this.parseBindingList(TokenType.parenR, false, this.options.ecmaVersion() >= 8);
     this.checkYieldAwaitInDefaultParams();
     boolean generator = this.options.ecmaVersion() >= 6 && isGenerator;
     Node body = this.parseFunctionBody(null, params, false);
@@ -2433,17 +2433,22 @@ public class Parser {
       } else if (last != null && last instanceof SpreadElement) {
         Expression arg = ((SpreadElement) last).getArgument();
         arg = (Expression) this.toAssignable(arg, isBinding);
-        if (!(arg instanceof Identifier
-            || arg instanceof MemberExpression
-            || arg instanceof ArrayPattern)) this.unexpected(arg.getLoc().getStart());
+        Expression target = arg.stripParens();
+        if (!(target instanceof Identifier
+            || target instanceof MemberExpression
+            || target instanceof ArrayPattern
+            || target instanceof ObjectPattern)) this.unexpected(arg.getLoc().getStart());
         exprList.set(end - 1, last = new RestElement(last.getLoc(), arg));
         --end;
       }
 
-      if (isBinding
-          && last instanceof RestElement
-          && !(((RestElement) last).getArgument() instanceof Identifier))
-        this.unexpected(((RestElement) last).getArgument().getLoc().getStart());
+      if (isBinding && last instanceof RestElement) {
+        Expression arg = ((RestElement) last).getArgument();
+        if (!(arg instanceof Identifier
+            || arg instanceof ArrayPattern
+            || arg instanceof ObjectPattern))
+          this.unexpected(arg.getLoc().getStart());
+      }
     }
     for (int i = 0; i < end; ++i)
       exprList.set(i, (Expression) this.toAssignable(exprList.get(i), isBinding));
@@ -2460,19 +2465,11 @@ public class Parser {
     return this.finishNode(node);
   }
 
-  protected RestElement parseRest(boolean allowNonIdent) {
+  protected RestElement parseRest() {
     Position start = this.startLoc;
     this.next();
 
-    // RestElement inside of a function parameter must be an identifier
-    Expression argument = null;
-    if (allowNonIdent)
-      if (this.type == TokenType.name) argument = this.parseIdent(false);
-      else this.unexpected();
-    else if (this.type == TokenType.name || this.type == TokenType.bracketL)
-      argument = this.parseBindingAtom();
-    else this.unexpected();
-    RestElement node = new RestElement(new SourceLocation(start), argument);
+    RestElement node = new RestElement(new SourceLocation(start), this.parseBindingAtom());
     return this.finishNode(node);
   }
 
@@ -2483,7 +2480,7 @@ public class Parser {
     if (this.type == TokenType.bracketL) {
       Position start = this.startLoc;
       this.next();
-      List<Expression> elements = this.parseBindingList(TokenType.bracketR, true, true, false);
+      List<Expression> elements = this.parseBindingList(TokenType.bracketR, true, true);
       ArrayPattern node = new ArrayPattern(new SourceLocation(start), elements);
       return this.finishNode(node);
     }
@@ -2494,7 +2491,7 @@ public class Parser {
   }
 
   protected List<Expression> parseBindingList(
-      TokenType close, boolean allowEmpty, boolean allowTrailingComma, boolean allowNonIdent) {
+      TokenType close, boolean allowEmpty, boolean allowTrailingComma) {
     List<Expression> result = new ArrayList<Expression>();
     boolean first = true;
     while (!this.eat(close)) {
@@ -2505,7 +2502,7 @@ public class Parser {
       } else if (allowTrailingComma && this.afterTrailingComma(close, false)) {
         break;
       } else if (this.type == TokenType.ellipsis) {
-        result.add(this.processBindingListItem(this.parseRest(allowNonIdent)));
+        result.add(this.processBindingListItem(this.parseRest()));
         if (this.type == TokenType.comma)
           this.raise(this.start, "Comma is not permitted after the rest element");
         this.expect(close);
@@ -3280,7 +3277,7 @@ public class Parser {
   protected List<Expression> parseFunctionParams() {
     this.expect(TokenType.parenL);
     List<Expression> params =
-        this.parseBindingList(TokenType.parenR, false, this.options.ecmaVersion() >= 8, true);
+        this.parseBindingList(TokenType.parenR, false, this.options.ecmaVersion() >= 8);
     this.checkYieldAwaitInDefaultParams();
     return params;
   }
