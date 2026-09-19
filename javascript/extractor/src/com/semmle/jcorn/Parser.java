@@ -1239,28 +1239,48 @@ public class Parser {
     unexpected((Integer) null);
   }
 
+  /** Deferred errors for an expression that may still become a binding or assignment pattern. */
   public static class DestructuringErrors {
-    private int shorthandAssign, trailingComma;
+    private Position shorthandAssign, trailingComma;
+    private Position parenthesizedBinding, parenthesizedAssignment;
 
-    public void reset() {
-      this.shorthandAssign = 0;
-      this.trailingComma = 0;
+    /** Merge a child only when it can form part of this pattern, not an expression-only operand. */
+    void merge(DestructuringErrors child) {
+      shorthandAssign = first(shorthandAssign, child.shorthandAssign);
+      trailingComma = first(trailingComma, child.trailingComma);
+      parenthesizedBinding = first(parenthesizedBinding, child.parenthesizedBinding);
+      parenthesizedAssignment = first(parenthesizedAssignment, child.parenthesizedAssignment);
+    }
+
+    void recordTrailingComma(Position position) {
+      trailingComma = first(trailingComma, position);
+    }
+
+    private void clearPatternErrors() {
+      trailingComma = null;
+      parenthesizedBinding = null;
+      parenthesizedAssignment = null;
+    }
+
+    private static Position first(Position left, Position right) {
+      return left == null || right != null && right.getOffset() < left.getOffset() ? right : left;
     }
   }
 
-  protected boolean checkPatternErrors(
-      DestructuringErrors refDestructuringErrors, boolean andThrow) {
-    int trailing = refDestructuringErrors != null ? refDestructuringErrors.trailingComma : 0;
-    if (!andThrow) return trailing != 0;
-    if (trailing != 0) this.raise(trailing, "Comma is not permitted after the rest element");
-    return false;
+  /** Check deferred errors for a binding pattern, or for an assignment target if not binding. */
+  protected void checkPatternErrors(DestructuringErrors errors, boolean isBinding) {
+    if (errors == null) return;
+    if (errors.trailingComma != null)
+      this.raise(errors.trailingComma, "Comma is not permitted after the rest element");
+    Position parens = isBinding ? errors.parenthesizedBinding : errors.parenthesizedAssignment;
+    if (parens != null) this.raise(parens, "Parenthesized pattern");
   }
 
   protected boolean checkExpressionErrors(
       DestructuringErrors refDestructuringErrors, boolean andThrow) {
-    int pos = refDestructuringErrors != null ? refDestructuringErrors.shorthandAssign : 0;
-    if (!andThrow) return pos != 0;
-    if (pos != 0)
+    Position pos = refDestructuringErrors != null ? refDestructuringErrors.shorthandAssign : null;
+    if (!andThrow) return pos != null;
+    if (pos != null)
       this.raise(pos, "Shorthand property assignments are valid only in destructuring patterns");
     return false;
   }
@@ -1375,14 +1395,19 @@ public class Parser {
   // delayed syntax error at correct position).
   protected Expression parseExpression(boolean noIn, DestructuringErrors refDestructuringErrors) {
     Position startLoc = this.startLoc;
-    Expression expr = this.parseMaybeAssign(noIn, refDestructuringErrors, null);
+    DestructuringErrors errors = new DestructuringErrors();
+    Expression expr = this.parseMaybeAssign(noIn, errors, null);
     if (this.type == TokenType.comma) {
+      this.checkExpressionErrors(errors, true);
+      errors.clearPatternErrors();
       List<Expression> expressions = CollectionUtil.makeList(expr);
       SequenceExpression node = new SequenceExpression(new SourceLocation(startLoc), expressions);
       while (this.eat(TokenType.comma))
-        expressions.add(this.parseMaybeAssign(noIn, refDestructuringErrors, null));
-      return this.finishNode(node);
+        expressions.add(this.parseMaybeAssign(noIn, null, null));
+      expr = this.finishNode(node);
     }
+    if (refDestructuringErrors != null) refDestructuringErrors.merge(errors);
+    else this.checkExpressionErrors(errors, true);
     return expr;
   }
 
@@ -1396,33 +1421,30 @@ public class Parser {
       boolean noIn, DestructuringErrors refDestructuringErrors, AfterLeftParse afterLeftParse) {
     if (this.inGenerator && this.isContextual("yield")) return this.parseYield();
 
-    boolean ownDestructuringErrors = false;
-    if (refDestructuringErrors == null) {
-      refDestructuringErrors = new DestructuringErrors();
-      ownDestructuringErrors = true;
-    }
+    // An assignment must not report or consume deferred errors from an earlier sibling.
+    DestructuringErrors errors = new DestructuringErrors();
     int startPos = this.start;
     Position startLoc = this.startLoc;
     if (this.type == TokenType.parenL || this.type == TokenType.name)
       this.potentialArrowAt = this.start;
-    Expression left = this.parseMaybeConditional(noIn, refDestructuringErrors);
+    Expression left = this.parseMaybeConditional(noIn, errors);
     if (afterLeftParse != null) left = afterLeftParse.call(left, startPos, startLoc);
     if (this.type.isAssign) {
-      this.checkPatternErrors(refDestructuringErrors, true);
-      if (!ownDestructuringErrors) refDestructuringErrors.reset();
+      this.checkPatternErrors(errors, false);
       Expression l = this.type == TokenType.eq ? (Expression) this.toAssignable(left, false) : left;
-      refDestructuringErrors.shorthandAssign =
-          0; // reset because shorthand default was used correctly
+      // The LHS is a valid assignment pattern, but may still become a defaulted binding.
+      // Consume its expression error without discarding binding-only errors or sibling errors.
+      errors.shorthandAssign = null;
       String operator = String.valueOf(this.value);
       this.checkLVal(l, false, null);
       this.next();
       Expression r = this.parseMaybeAssign(noIn, null, null);
       AssignmentExpression node =
           new AssignmentExpression(new SourceLocation(startLoc), operator, l, r);
-      return this.finishNode(node);
-    } else {
-      if (ownDestructuringErrors) this.checkExpressionErrors(refDestructuringErrors, true);
+      left = this.finishNode(node);
     }
+    if (refDestructuringErrors != null) refDestructuringErrors.merge(errors);
+    else this.checkExpressionErrors(errors, true);
     return left;
   }
 
@@ -1433,7 +1455,11 @@ public class Parser {
     Expression expr = this.parseExprOps(noIn, refDestructuringErrors);
     if (this.checkExpressionErrors(refDestructuringErrors, false)) return expr;
     if (this.eat(TokenType.question)) {
-      return parseConditionalRest(noIn, startLoc, expr);
+      Expression result = parseConditionalRest(noIn, startLoc, expr);
+      // Flow optional parameters can return the original expression rather than a conditional.
+      if (result != expr && refDestructuringErrors != null)
+        refDestructuringErrors.clearPatternErrors();
+      return result;
     }
     return expr;
   }
@@ -1453,7 +1479,10 @@ public class Parser {
     Position startLoc = this.startLoc;
     Expression expr = this.parseMaybeUnary(refDestructuringErrors, false);
     if (this.checkExpressionErrors(refDestructuringErrors, false)) return expr;
-    return this.parseExprOp(expr, startPos, startLoc, -1, noIn);
+    Expression result = this.parseExprOp(expr, startPos, startLoc, -1, noIn);
+    if (result != expr && refDestructuringErrors != null)
+      refDestructuringErrors.clearPatternErrors();
+    return result;
   }
 
   // Parse binary operators with the operator precedence parsing
@@ -1500,6 +1529,7 @@ public class Parser {
       DestructuringErrors refDestructuringErrors, boolean sawUnary) {
     int startPos = this.start;
     Position startLoc = this.startLoc;
+    DestructuringErrors errors = new DestructuringErrors();
     Expression expr;
     if ((this.inAsync || options.esnext() && !this.inFunction) && this.isContextual("await")) {
       expr = this.parseAwait();
@@ -1508,48 +1538,67 @@ public class Parser {
       String operator = String.valueOf(this.value);
       boolean update = this.type == TokenType.incDec;
       this.next();
-      Expression argument = this.parseMaybeUnary(null, true);
+      Expression argument = this.parseMaybeUnary(errors, true);
       SourceLocation loc = new SourceLocation(startLoc);
       Expression node =
           update
               ? new UpdateExpression(loc, operator, argument, true)
               : new UnaryExpression(loc, operator, argument, true);
-      this.checkExpressionErrors(refDestructuringErrors, true);
-      if (update) this.checkLVal(argument, false, null);
-      else if (this.strict && operator.equals("delete") && argument instanceof Identifier)
+      this.checkExpressionErrors(errors, true);
+      if (update) {
+        this.checkPatternErrors(errors, false);
+        this.checkLVal(argument, false, null);
+      } else if (this.strict && operator.equals("delete") && argument instanceof Identifier)
         this.raiseRecoverable(node, "Deleting local variable in strict mode");
       else sawUnary = true;
       expr = this.finishNode(node);
+      errors.clearPatternErrors();
     } else {
-      expr = this.parseExprSubscripts(refDestructuringErrors);
-      if (this.checkExpressionErrors(refDestructuringErrors, false)) return expr;
+      expr = this.parseExprSubscripts(errors);
+      if (this.checkExpressionErrors(errors, false)) {
+        if (refDestructuringErrors != null) refDestructuringErrors.merge(errors);
+        else this.checkExpressionErrors(errors, true);
+        return expr;
+      }
       while (this.type.isPostfix && !this.canInsertSemicolon()) {
         UpdateExpression node =
             new UpdateExpression(
                 new SourceLocation(startLoc), String.valueOf(this.value), expr, false);
+        this.checkPatternErrors(errors, false);
         this.checkLVal(expr, false, null);
         this.next();
         expr = this.finishNode(node);
+        errors.clearPatternErrors();
       }
     }
 
-    if (!sawUnary && this.eat(TokenType.starstar))
-      return this.buildBinary(
+    if (!sawUnary && this.eat(TokenType.starstar)) {
+      expr =
+        this.buildBinary(
           startPos, startLoc, expr, this.parseMaybeUnary(null, false), "**", false);
-    else return expr;
+      errors.clearPatternErrors();
+    }
+    if (refDestructuringErrors != null) refDestructuringErrors.merge(errors);
+    else this.checkExpressionErrors(errors, true);
+    return expr;
   }
 
   // Parse call, dot, and `[]`-subscript expressions.
   protected Expression parseExprSubscripts(DestructuringErrors refDestructuringErrors) {
     int startPos = this.start;
     Position startLoc = this.startLoc;
-    Expression expr = this.parseExprAtom(refDestructuringErrors);
+    DestructuringErrors errors = new DestructuringErrors();
+    Expression expr = this.parseExprAtom(errors);
     boolean skipArrowSubscripts =
         expr instanceof ArrowFunctionExpression
             && !inputSubstring(this.lastTokStart, this.lastTokEnd).equals(")");
-    if (this.checkExpressionErrors(refDestructuringErrors, false) || skipArrowSubscripts)
-      return expr;
-    return this.parseSubscripts(expr, startPos, startLoc, false);
+    Expression result = expr;
+    if (!this.checkExpressionErrors(errors, false) && !skipArrowSubscripts)
+      result = this.parseSubscripts(expr, startPos, startLoc, false);
+    // A receiver or callee is an expression, even if the resulting member access is a target.
+    if (result == expr && refDestructuringErrors != null) refDestructuringErrors.merge(errors);
+    else this.checkExpressionErrors(errors, true);
+    return result;
   }
 
   protected Expression parseSubscripts(
@@ -2109,8 +2158,8 @@ public class Parser {
       if (pi.isPattern) {
         pi.value = this.parseMaybeDefault(pi.startLoc, pi.key);
       } else if (this.type == TokenType.eq && refDestructuringErrors != null) {
-        if (refDestructuringErrors.shorthandAssign == 0)
-          refDestructuringErrors.shorthandAssign = this.start;
+        if (refDestructuringErrors.shorthandAssign == null)
+          refDestructuringErrors.shorthandAssign = this.startLoc;
         pi.value = this.parseMaybeDefault(pi.startLoc, pi.key);
       } else {
         pi.value = pi.key;
@@ -2266,11 +2315,8 @@ public class Parser {
         elt = null;
       } else if (this.type == TokenType.ellipsis) {
         elt = this.processExprListItem(this.parseSpread(refDestructuringErrors));
-        if (this.type == TokenType.comma
-            && refDestructuringErrors != null
-            && refDestructuringErrors.trailingComma == 0) {
-          refDestructuringErrors.trailingComma = this.start;
-        }
+        if (this.type == TokenType.comma && refDestructuringErrors != null)
+          refDestructuringErrors.recordTrailingComma(this.startLoc);
       } else
         elt = this.processExprListItem(this.parseMaybeAssign(false, refDestructuringErrors, null));
       elts.add(elt);
