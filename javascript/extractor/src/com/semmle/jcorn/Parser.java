@@ -1745,7 +1745,7 @@ public class Parser {
       this.next();
       return this.finishNode(node);
     } else if (this.type == TokenType.parenL) {
-      return this.parseParenAndDistinguishExpression(canBeArrow);
+      return this.parseParenAndDistinguishExpression(canBeArrow, refDestructuringErrors);
     } else if (this.type == TokenType.bracketL) {
       Position startLoc = this.startLoc;
       this.next();
@@ -1788,20 +1788,21 @@ public class Parser {
     return val;
   }
 
-  protected Expression parseParenAndDistinguishExpression(boolean canBeArrow) {
+  protected Expression parseParenAndDistinguishExpression(
+      boolean canBeArrow, DestructuringErrors refDestructuringErrors) {
     Position startLoc = this.startLoc;
     Expression val;
     if (this.options.ecmaVersion() >= 6) {
       this.next();
 
-      DestructuringErrors refDestructuringErrors = new DestructuringErrors();
+      DestructuringErrors innerErrors = new DestructuringErrors();
       int oldYieldPos = this.yieldPos, oldAwaitPos = this.awaitPos;
-      ParenthesisedExpressions parenExprs = parseParenthesisedExpressions(refDestructuringErrors);
+      ParenthesisedExpressions parenExprs = parseParenthesisedExpressions(innerErrors);
 
       if (canBeArrow && !this.canInsertSemicolon() && this.eat(TokenType.arrow)) {
-        this.checkPatternErrors(refDestructuringErrors, true);
-        this.checkYieldAwaitInDefaultParams();
         if (parenExprs.innerParenStart != 0) this.unexpected(parenExprs.innerParenStart);
+        this.checkPatternErrors(innerErrors, true);
+        this.checkYieldAwaitInDefaultParams();
         this.yieldPos = oldYieldPos;
         this.awaitPos = oldAwaitPos;
         return this.parseParenArrowList(startLoc, parenExprs.exprList);
@@ -1810,7 +1811,7 @@ public class Parser {
       if (parenExprs.exprList.isEmpty() || parenExprs.lastIsComma)
         this.unexpected(this.lastTokStart);
       if (parenExprs.spreadStart != 0) this.unexpected(parenExprs.spreadStart);
-      this.checkExpressionErrors(refDestructuringErrors, true);
+      this.checkExpressionErrors(innerErrors, true);
       if (oldYieldPos > 0) this.yieldPos = oldYieldPos;
       if (oldAwaitPos > 0) this.awaitPos = oldAwaitPos;
 
@@ -1824,6 +1825,14 @@ public class Parser {
       val = this.parseParenExpression();
     }
 
+    if (refDestructuringErrors != null) {
+      refDestructuringErrors.parenthesizedBinding =
+          DestructuringErrors.first(refDestructuringErrors.parenthesizedBinding, startLoc);
+      Expression target = val.stripParens();
+      if (!(target instanceof Identifier || target instanceof MemberExpression))
+        refDestructuringErrors.parenthesizedAssignment =
+            DestructuringErrors.first(refDestructuringErrors.parenthesizedAssignment, startLoc);
+    }
     if (this.options.preserveParens()) {
       ParenthesizedExpression par = new ParenthesizedExpression(new SourceLocation(startLoc), val);
       return this.finishNode(par);
@@ -2956,7 +2965,7 @@ public class Parser {
     Expression init = this.parseExpression(true, refDestructuringErrors);
     if (this.type == TokenType._in
         || (this.options.ecmaVersion() >= 6 && this.isContextual("of"))) {
-      this.checkPatternErrors(refDestructuringErrors, true);
+      this.checkPatternErrors(refDestructuringErrors, false);
       init = (Expression) this.toAssignable(init, false);
       this.checkLVal(init, false, null);
       return this.parseForIn(startLoc, init);
