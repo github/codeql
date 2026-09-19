@@ -14,9 +14,9 @@ function f() {
   elm1;
   elm2;
 
-  ({ propB: b }) = g();
+  // ({ propB: b }) = g(); // Unexpected token '='
   
-  ({ propC: c, propD: d }) = g();
+  // ({ propC: c, propD: d }) = g(); // Invalid left-hand side in assignment
   
   [ elm1, elm2 ] = g();
   
