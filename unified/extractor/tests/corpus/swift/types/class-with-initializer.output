@@ -100,7 +100,8 @@ top_level source="⟨body⟩"
               type: identifier "Int" source="Int"
             constructor_declaration source="⟨body⟩⟨parameter⟩"
               parameter:
-                parameter source="⟨pattern⟩: ⟨type⟩"
+                parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+                  external_name_node: identifier "x" source="x"
                   type: identifier "Int" source="Int"
                   pattern: identifier "x" source="x"
               body:

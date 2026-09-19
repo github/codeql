@@ -596,26 +596,31 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // A function parameter. With two names (`firstName`+`secondName`) the
         // first is the external argument label and the second the internal name;
-        // with one name it is just the internal name. The declared type is
-        // emitted; the default value is optional.
+        // with one name it is both the external and internal name.
         rule!(
             (functionParameter
                 firstName: @@first
-                secondName: _? @@second
+                secondName: @@second
                 type: @ty
                 defaultValue: (initializerClause value: @val)?)
             =>
-            parameter {
-                let (external, name) = match second {
-                    Some(second) => (Some(tree!((identifier #{first}))), second),
-                    None => (None, first),
-                };
-                tree!((parameter
-                    external_name_node: {external}
-                    pattern: (identifier #{name})
-                    type: {ty}
-                    default: {val}))
-            }
+            (parameter
+                external_name_node: (identifier #{first})
+                pattern: (identifier #{second})
+                type: {ty}
+                default: {val})
+        ),
+        rule!(
+            (functionParameter
+                firstName: @@first
+                type: @ty
+                defaultValue: (initializerClause value: @val)?)
+            =>
+            (parameter
+                external_name_node: (identifier #{first}) // duplicate the parameter name
+                pattern: (identifier #{first})
+                type: {ty}
+                default: {val})
         ),
         // Swift's `[T](...)` array-type constructor syntax is parsed as a call
         // whose callee is an `arrayExpr` containing `T`. For a generic `T`,
