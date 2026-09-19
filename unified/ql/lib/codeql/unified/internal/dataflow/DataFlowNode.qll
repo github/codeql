@@ -266,6 +266,55 @@ class Node extends TDataFlowNode {
 
   /** Gets the callable containing this data flow node. */
   Callable getEnclosingCallable() { result = this.getEnclosingCallableEx().asSourceCallable() }
+
+  /**
+   * Holds if this data flow node is associated with the `i`'th index in the given basic block.
+   *
+   * Note that some data flow nodes may have an index appearing before the first or after the
+   * last `ControlFlowNode` node in the basic block. Multiple data flow nodes may share the same control flow position.
+   *
+   * Also note that some data flow nodes have no associated control flow position, either because they are
+   * in unreachable code, or belong to a synthesized callable that has no control flow graph.
+   */
+  predicate hasControlFlowPosition(BasicBlock bb, int i) {
+    exists(ControlFlowNode cfgNode | cfgNode = bb.getNode(i) |
+      exists(Expr expr |
+        this.isResultValue(expr) and cfgNode.asExpr() = expr
+        or
+        this.isIncomingValue(expr) and hasIncomingValueAtCfgNode(expr, cfgNode)
+        or
+        this.isPostUpdate(expr) and hasPostUpdate(expr, cfgNode)
+      )
+      or
+      exists(AstNode repr, LocalVariable var, VariableRefKind kind |
+        this.isLocalVariableRef(repr, var, kind) and
+        performsVariableAccess(repr, var, kind, cfgNode)
+      )
+      or
+      exists(DataFlowCallable callable |
+        this.isReceiverParameterEx(callable) and
+        cfgNode.(ControlFlow::EntryNode).getEnclosingCallable() = callable.asSourceCallable()
+      )
+      or
+      exists(DataFlowCall call, CallExpr sourceCall |
+        call.asExplicitCall() = sourceCall and
+        (
+          this.isReceiverArgumentEx(call) and cfgNode.injects(sourceCall)
+          or
+          this.isReceiverPostUpdateEx(call) and cfgNode.isAfter(sourceCall)
+        )
+      )
+    )
+    or
+    exists(LocalSsaDataFlowOutput::SsaNode node |
+      this = TLocalSsaNode(node) and
+      bb = node.getBasicBlock() and
+      i = node.getIndex() // TODO: why is this marked as internal in the SSA library?
+    )
+  }
+
+  /** Gets the basic block associated with this data flow node, if any. */
+  BasicBlock getBasicBlock() { this.hasControlFlowPosition(result, _) }
 }
 
 Node getPostUpdateNode(Node pre) {
