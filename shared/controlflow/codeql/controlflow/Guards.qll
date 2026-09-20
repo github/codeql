@@ -78,6 +78,14 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     BasicBlock getBasicBlock();
   }
 
+  /**
+   * Holds if `outcomeBlock` contains a control flow node indicating that
+   * `guard` evaluated to `branch`.
+   */
+  default predicate booleanOutcomeBlock(Expr guard, BasicBlock outcomeBlock, boolean branch) {
+    none()
+  }
+
   class ConstantValue {
     /** Gets a textual representation of this constant value. */
     string toString();
@@ -1426,6 +1434,11 @@ module Make<
           this.valueControlsBranchEdge(guard, succ, v) and
           dominatingEdge(guard, succ) and
           succ.dominates(bb)
+        )
+        or
+        exists(BasicBlock outcomeBlock |
+          booleanOutcomeBlock(this, outcomeBlock, v.asBooleanValue()) and
+          outcomeBlock.dominates(bb)
         )
       }
 
