@@ -5,6 +5,9 @@ controlsResult
 | guards.go:9:7:9:16 | ...==... | positive | false |
 | guards.go:9:7:9:16 | ...==... | zero | true |
 | guards.go:28:5:28:5 | a | compound true | true |
+| guards.go:28:5:28:17 | ...&&... | compound false | false |
+| guards.go:28:5:28:17 | ...&&... | compound true | true |
+| guards.go:28:11:28:16 | ...\|\|... | compound true | true |
 | guards.go:36:5:36:20 | ...==... | upcast | true |
 | guards.go:39:5:39:19 | ...==... | downcast | true |
 | guards.go:42:5:42:22 | ...==... | upcast narrow | true |
@@ -24,6 +27,9 @@ valueControlsResult
 | guards.go:9:7:9:16 | ...==... | positive | false |
 | guards.go:9:7:9:16 | ...==... | zero | true |
 | guards.go:28:5:28:5 | a | compound true | true |
+| guards.go:28:5:28:17 | ...&&... | compound false | false |
+| guards.go:28:5:28:17 | ...&&... | compound true | true |
+| guards.go:28:11:28:16 | ...\|\|... | compound true | true |
 | guards.go:36:5:36:15 | type conversion | upcast | 0 |
 | guards.go:36:5:36:20 | ...==... | upcast | true |
 | guards.go:36:11:36:14 | wide | upcast | 0 |
