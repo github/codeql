@@ -313,6 +313,7 @@ edges
 | main.rs:542:9:542:18 | mut vs_mut [element] | main.rs:544:10:544:15 | vs_mut [element] | provenance |  |
 | main.rs:542:9:542:18 | mut vs_mut [element] | main.rs:545:11:545:16 | vs_mut [element] | provenance |  |
 | main.rs:542:9:542:18 | mut vs_mut [element] | main.rs:546:11:546:16 | vs_mut [element] | provenance |  |
+| main.rs:542:9:542:18 | mut vs_mut [element] | main.rs:548:19:548:24 | vs_mut [element] | provenance |  |
 | main.rs:542:22:542:42 | [...] [element] | main.rs:542:9:542:18 | mut vs_mut [element] | provenance |  |
 | main.rs:542:23:542:32 | source(...) | main.rs:542:22:542:42 | [...] [element] | provenance |  |
 | main.rs:544:10:544:15 | vs_mut [element] | main.rs:544:10:544:18 | vs_mut[0] | provenance | MaD:14 |
@@ -324,6 +325,10 @@ edges
 | main.rs:546:11:546:23 | vs_mut.iter() [element, &ref] | main.rs:546:11:546:30 | ... .nth(...) [Some, &ref] | provenance | MaD:13 |
 | main.rs:546:11:546:30 | ... .nth(...) [Some, &ref] | main.rs:546:11:546:39 | ... .unwrap() [&ref] | provenance | MaD:15 |
 | main.rs:546:11:546:39 | ... .unwrap() [&ref] | main.rs:546:10:546:39 | * ... | provenance | MaD:1 |
+| main.rs:548:9:548:14 | &mut ... [&ref] | main.rs:548:14:548:14 | v | provenance |  |
+| main.rs:548:14:548:14 | v | main.rs:549:14:549:14 | v | provenance |  |
+| main.rs:548:19:548:24 | vs_mut [element] | main.rs:548:19:548:35 | vs_mut.iter_mut() [element, &ref] | provenance | MaD:2 |
+| main.rs:548:19:548:35 | vs_mut.iter_mut() [element, &ref] | main.rs:548:9:548:14 | &mut ... [&ref] | provenance |  |
 | main.rs:554:9:554:9 | a | main.rs:559:10:559:10 | a | provenance |  |
 | main.rs:554:13:554:22 | source(...) | main.rs:554:9:554:9 | a | provenance |  |
 | main.rs:555:9:555:9 | b | main.rs:560:15:560:15 | b | provenance |  |
@@ -698,6 +703,11 @@ nodes
 | main.rs:546:11:546:23 | vs_mut.iter() [element, &ref] | semmle.label | vs_mut.iter() [element, &ref] |
 | main.rs:546:11:546:30 | ... .nth(...) [Some, &ref] | semmle.label | ... .nth(...) [Some, &ref] |
 | main.rs:546:11:546:39 | ... .unwrap() [&ref] | semmle.label | ... .unwrap() [&ref] |
+| main.rs:548:9:548:14 | &mut ... [&ref] | semmle.label | &mut ... [&ref] |
+| main.rs:548:14:548:14 | v | semmle.label | v |
+| main.rs:548:19:548:24 | vs_mut [element] | semmle.label | vs_mut [element] |
+| main.rs:548:19:548:35 | vs_mut.iter_mut() [element, &ref] | semmle.label | vs_mut.iter_mut() [element, &ref] |
+| main.rs:549:14:549:14 | v | semmle.label | v |
 | main.rs:554:9:554:9 | a | semmle.label | a |
 | main.rs:554:13:554:22 | source(...) | semmle.label | source(...) |
 | main.rs:555:9:555:9 | b | semmle.label | b |
@@ -801,6 +811,7 @@ testFailures
 | main.rs:544:10:544:18 | vs_mut[0] | main.rs:542:23:542:32 | source(...) | main.rs:544:10:544:18 | vs_mut[0] | $@ | main.rs:542:23:542:32 | source(...) | source(...) |
 | main.rs:545:10:545:39 | * ... | main.rs:542:23:542:32 | source(...) | main.rs:545:10:545:39 | * ... | $@ | main.rs:542:23:542:32 | source(...) | source(...) |
 | main.rs:546:10:546:39 | * ... | main.rs:542:23:542:32 | source(...) | main.rs:546:10:546:39 | * ... | $@ | main.rs:542:23:542:32 | source(...) | source(...) |
+| main.rs:549:14:549:14 | v | main.rs:542:23:542:32 | source(...) | main.rs:549:14:549:14 | v | $@ | main.rs:542:23:542:32 | source(...) | source(...) |
 | main.rs:559:10:559:10 | a | main.rs:554:13:554:22 | source(...) | main.rs:559:10:559:10 | a | $@ | main.rs:554:13:554:22 | source(...) | source(...) |
 | main.rs:560:14:560:15 | &b | main.rs:555:13:555:22 | source(...) | main.rs:560:14:560:15 | &b | $@ | main.rs:555:13:555:22 | source(...) | source(...) |
 | main.rs:561:14:561:18 | c_ref | main.rs:556:13:556:22 | source(...) | main.rs:561:14:561:18 | c_ref | $@ | main.rs:556:13:556:22 | source(...) | source(...) |

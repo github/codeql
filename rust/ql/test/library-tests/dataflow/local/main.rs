@@ -546,7 +546,7 @@ fn iterators() {
     sink(*vs_mut.iter().nth(0).unwrap()); // $ hasValueFlow=92
 
     for &mut v in vs_mut.iter_mut() {
-        sink(v); // $ MISSING: hasValueFlow=92
+        sink(v); // $ hasValueFlow=92
     }
 }
 
