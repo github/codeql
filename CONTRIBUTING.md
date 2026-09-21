@@ -16,8 +16,9 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
 1. **Directory structure**
 
-    There are eight language-specific query directories in this repository:
+    There are ten language-specific query directories in this repository:
 
+      * Actions: `actions/ql/src`
       * C/C++: `cpp/ql/src`
       * C#: `csharp/ql/src`
       * Go: `go/ql/src`
@@ -25,6 +26,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
       * JavaScript: `javascript/ql/src`
       * Python: `python/ql/src`
       * Ruby: `ruby/ql/src`
+      * Rust: `rust/ql/src`
       * Swift: `swift/ql/src`
 
     Each language-specific directory contains further subdirectories that group queries based on their `@tags` or purpose.
