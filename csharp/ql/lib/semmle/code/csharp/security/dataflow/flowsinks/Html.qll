@@ -184,10 +184,10 @@ class MicrosoftAspNetCoreMvcHtmlHelperRawSink extends AspNetCoreHtmlSink {
  *
  * The Razor source generator emits this bracketing for every literal or expression segment of an
  * HTML attribute value on an element that also carries a tag helper (for example `asp-for`). Such
- * a `WriteLiteral` call does not write directly, unencoded, to the response: `WriteLiteral`
- * appends to an internal string buffer, `EndWriteTagHelperAttribute()` returns that buffer, and
- * the buffered text is subsequently stored as a tag helper attribute value and HTML-attribute-
- * encoded when the tag helper's output is rendered. This is therefore not a real sink.
+ * a `WriteLiteral` call does not write directly to the response: `WriteLiteral` appends to an
+ * internal string buffer, and `EndWriteTagHelperAttribute()` returns that buffer as a tag helper
+ * attribute value rather than as page markup. This is therefore not a direct-write sink, unlike an
+ * unbracketed `WriteLiteral` call, whose argument is written straight to the response.
  *
  * Because a basic block cannot contain a branch, requiring `beginCall`, `writeLiteral`, and
  * `endCall` to appear (in that order) in the same basic block, with no other
@@ -244,8 +244,8 @@ private predicate isBracketedForTagHelperAttribute(Call writeLiteral) {
  * a `.cshtml` file.
  *
  * `WriteLiteral` calls whose argument is captured for a tag helper attribute value (see
- * `isBracketedForTagHelperAttribute`) are excluded, since such values are HTML-attribute-encoded
- * later and are not written unencoded to the response.
+ * `isBracketedForTagHelperAttribute`) are excluded, since such calls buffer the value as a tag
+ * helper attribute rather than writing it directly to the response.
  */
 class MicrosoftAspNetRazorPageWriteLiteralSink extends AspNetCoreHtmlSink {
   MicrosoftAspNetRazorPageWriteLiteralSink() {
