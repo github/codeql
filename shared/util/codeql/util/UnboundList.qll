@@ -53,30 +53,25 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   /** Gets the rank of element `e`, which is used internally in the string encoding. */
   int getRank(Element e) { e = DenseRank<DenseRankInput>::denseRank(result) }
 
-  /** Gets the ASCII printable excluding `.` with zero-based index `code`. */
+  /** Gets the character that `code` represents when encoding elements. */
   pragma[nomagic]
-  private string interpretAsciiCode(int code) {
-    exists(int dot, int c |
-      c = code + 1 and
-      // `.` is used as element separator, so cannot be used to encode elements
-      dot = asciiPrintable(".") and
-      if c < dot then c = asciiPrintable(result) else c + 1 = asciiPrintable(result)
-    )
+  private string interpretCode(int code) {
+    result = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".charAt(code)
   }
 
-  private int asciiCodes() { result = strictcount(interpretAsciiCode(_)) }
+  private int codes() { result = strictcount(interpretCode(_)) }
 
   /**
-   * Gets the `i`th digit (modulo `asciiCodes()`) in a base-`asciiCodes()` integer
+   * Gets the `i`th code (modulo `codes()`) in a base-`codes()` integer
    * representation of `getRank(e)`.
    */
-  private int getAsciiCodePart(Element e, int i) {
+  private int getCodePart(Element e, int i) {
     result = getRank(e) and
     i = 0
     or
     exists(int mid |
-      mid = getAsciiCodePart(e, i - 1) and
-      result = mid / asciiCodes() and
+      mid = getCodePart(e, i - 1) and
+      result = mid / codes() and
       result > 0
     )
   }
@@ -84,11 +79,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   cached
   private string encode(Element e) {
     result =
-      strictconcat(string s, int i |
-        s = interpretAsciiCode(getAsciiCodePart(e, i) % asciiCodes())
-      |
-        s order by i
-      )
+      strictconcat(string s, int i | s = interpretCode(getCodePart(e, i) % codes()) | s order by i)
   }
 
   bindingset[s]
@@ -125,7 +116,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       // Same as
       // `result = count(this.indexOf("."))`
       // but performs better because it doesn't use an aggregate
-      result = this.regexpReplaceAll("[^\\.]+", "").length()
+      result = this.regexpReplaceAll("[a-zA-Z0-9]+", "").length()
     }
 
     /** Gets the list obtained by appending `suffix` onto this list. */
@@ -160,7 +151,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // `regexpCapture` will then always join in both groups, only to afterwards filter
         // based on the requested group (the group number is not part of the binding set
         // of `regexpCapture`)
-        elem = this.regexpCapture("^([^\\.]+)\\..*$", 1) and
+        elem = this.regexpCapture("^([a-zA-Z0-9]+)\\..*$", 1) and
         e = decode(elem) and
         suffix = this.suffix(elem.length() + 1)
       )
@@ -170,7 +161,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     bindingset[this]
     predicate isSnoc(UnboundList prefix, Element e) {
       // same remark as above about not using multiple capture groups
-      prefix = this.regexpCapture("^(|.+\\.)[^\\.]+\\.$", 1) and
+      prefix = this.regexpCapture("^(|.+\\.)[a-zA-Z0-9]+\\.$", 1) and
       e = decode(this.substring(prefix.stringLength(), this.stringLength() - 1))
     }
 
@@ -185,7 +176,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     bindingset[this]
     UnboundList getProperPrefix(int i) {
-      exists(string regexp, int occurrenceOffset | regexp = "[^\\.]+\\." |
+      exists(string regexp, int occurrenceOffset | regexp = "[a-zA-Z0-9]+\\." |
         exists(this.regexpFind(regexp, i, occurrenceOffset)) and
         result = this.prefix(occurrenceOffset)
       )
