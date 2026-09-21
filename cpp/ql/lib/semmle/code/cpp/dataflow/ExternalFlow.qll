@@ -1165,14 +1165,89 @@ private Type stripReference(Type unspecified) {
 }
 
 module ConstructorForwarding {
-  /**
-   * Gets `unspecifiedType`, but with the outermost `ReferenceType` removed, if any.
-   */
-  private Type stripReferences(Type unspecifiedType) {
-    result = unspecifiedType.(Cpp::ReferenceType).getBaseType().getUnspecifiedType()
+  private Type getForwardedArgumentType(Function forwarder, int start, int i) {
+    forwards(forwarder, _, start) and
+    i = [0 .. forwarder.getNumberOfParameters() - start - 1] and
+    result = forwarder.getParameter(start + i).getUnderlyingType()
+  }
+
+  private Type getConstructorParameterType(Cpp::Constructor constructor, int i) {
+    forwards(_, constructor.getDeclaringType(), _) and
+    result = constructor.getParameter(i).getUnderlyingType()
+  }
+
+  private newtype TTypeState = MkTypeState(Type type) { type = type.getUnderlyingType() }
+
+  private class TypeState extends TTypeState {
+    Type getType() { this = MkTypeState(result) }
+
+    string toString() { result = this.getType().toString() }
+
+    predicate isSource(Type argType) {
+      argType = getForwardedArgumentType(_, _, _) and
+      this = MkTypeState(argType)
+    }
+
+    predicate matchesParameter(Type paramType) {
+      this.getType().stripTopLevelSpecifiers() = paramType.stripTopLevelSpecifiers()
+    }
+
+    predicate isSink(Type paramType, Cpp::Constructor constructor) {
+      paramType = getConstructorParameterType(constructor, _) and
+      this.matchesParameter(paramType)
+    }
+  }
+
+  private Cpp::PointerType pointerType(Type base) {
+    result.getBaseType() = base.getUnderlyingType()
+  }
+
+  private predicate arrayToPointerStep(TypeState argState, TypeState paramState) {
+    exists(Cpp::ArrayType array |
+      argState = MkTypeState(array) and
+      paramState = MkTypeState(pointerType(array.getBaseType()))
+    )
+  }
+
+  private predicate step(TypeState argState, TypeState paramState) {
+    arrayToPointerStep(argState, paramState)
+  }
+
+  private predicate typeFwd(TypeState state) {
+    state.isSource(_)
     or
-    not unspecifiedType instanceof Cpp::ReferenceType and
-    result = unspecifiedType
+    exists(TypeState previous |
+      typeFwd(previous) and
+      step(previous, state)
+    )
+  }
+
+  private predicate typeRev(TypeState state, Cpp::Constructor constructor) {
+    typeFwd(state) and
+    (
+      state.isSink(_, constructor)
+      or
+      exists(TypeState next |
+        typeRev(next, constructor) and
+        step(state, next)
+      )
+    )
+  }
+
+  private predicate prunedStep(TypeState argState, TypeState paramState) {
+    exists(Cpp::Constructor constructor |
+      typeRev(argState, constructor) and
+      typeRev(paramState, constructor) and
+      step(argState, paramState)
+    )
+  }
+
+  private predicate compatible(Function forwarder, int start, int i, Cpp::Constructor constructor) {
+    exists(TypeState argState, TypeState paramState |
+      argState.isSource(getForwardedArgumentType(forwarder, start, i)) and
+      paramState.isSink(getConstructorParameterType(constructor, i), constructor) and
+      prunedStep*(argState, paramState)
+    )
   }
 
   Cpp::Constructor getForwardingConstructor(Function forwarder, int start) {
@@ -1194,8 +1269,7 @@ module ConstructorForwarding {
         // However, the constructor may not specify all the arguments by
         // reference.
         i < numberOfForwardedArguments and
-        stripReferences(forwarder.getParameter(start + i).getUnderlyingType()) =
-          stripReferences(result.getParameter(i).getUnspecifiedType())
+        compatible(forwarder, start, i, result)
         or
         // If the constructor has a default argument and we have processed all
         // the forwarded arguments then we don't need to check the types.
