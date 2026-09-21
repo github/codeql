@@ -118,13 +118,13 @@ mod async_blocks {
 
     async fn async_block_flow_out() {
         let future = async { source(206) };
-        sink(future.await); // $ MISSING: hasValueFlow=206
+        sink(future.await); // $ hasValueFlow=206
     }
 
     async fn async_block_flow_in() {
         let data = source(207);
         async {
-            sink(data); // $ MISSING: hasValueFlow=207
+            sink(data); // $ hasValueFlow=207
         }
         .await;
     }
@@ -132,7 +132,7 @@ mod async_blocks {
     async fn async_block_flow_through() {
         let data = source(208);
         let future = async { data };
-        sink(future.await); // $ MISSING: hasValueFlow=208
+        sink(future.await); // $ hasValueFlow=208
     }
 
     async fn async_block_captured_variable() {
@@ -142,7 +142,7 @@ mod async_blocks {
             captured = source(209);
         }
         .await;
-        sink(captured); // $ MISSING: hasValueFlow=209
+        sink(captured); // $ hasValueFlow=209
     }
 
     async fn boxed_async_block_captured_variable() {
