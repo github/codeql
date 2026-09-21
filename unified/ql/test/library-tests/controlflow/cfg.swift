@@ -388,7 +388,7 @@ func testTupleElement(t : (a: Int, Int, c: Int)) -> Int {
 }
 
 class Derived : C { // $ nonSimple='ClassLikeDeclaration -V Derived -^ BaseType -V C'
-  init() {
+  init() { // $ noCfg
     super.init(n: 0)
   }
 }
@@ -405,7 +405,7 @@ func doWithoutCatch(x : Int) throws -> Int {
 
 class Structors {
   var field: Int
-  init() {
+  init() { // $ noCfg
     field = 10
   }
 
@@ -421,14 +421,14 @@ func dictionaryLiteral(x: Int, y: Int) -> [String: Int] {
 func localDeclarations() -> Int { // $ noCfg
   class MyLocalClass {
     var x: Int
-    init() {
+    init() { // $ noCfg
       x = 10
     }
   }
 
   struct MyLocalStruct {
     var x: Int
-    init() {
+    init() { // $ noCfg
       x = 10
     }
   }
