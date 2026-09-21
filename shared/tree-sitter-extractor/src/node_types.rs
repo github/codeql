@@ -386,6 +386,7 @@ fn escape_name(name: &str) -> String {
             ':' => result.push_str("colon"),
             ';' => result.push_str("semicolon"),
             '"' => result.push_str("dquote"),
+            '\'' => result.push_str("squote"),
             '*' => result.push_str("star"),
             '+' => result.push_str("plus"),
             '-' => result.push_str("minus"),
@@ -446,6 +447,14 @@ fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
         .map(to_title_case)
         .collect::<Vec<String>>()
         .join("")
+}
+
+#[test]
+fn escape_name_quotes_test() {
+    // Both string delimiters need a name: a grammar whose node types contain
+    // `'` used to produce the invalid dbscheme identifier `@lang_string_'`.
+    assert_eq!("dquote", escape_name("\""));
+    assert_eq!("squote", escape_name("'"));
 }
 
 #[test]
