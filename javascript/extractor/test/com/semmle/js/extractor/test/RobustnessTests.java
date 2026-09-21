@@ -16,4 +16,15 @@ public class RobustnessTests {
     String src = new WholeIO(StandardCharsets.UTF_8.name()).strictread(test);
     new Parser(new Options(), src, 0).parse();
   }
+
+  @Test
+  public void permissiveDestructuringTest() {
+    String src =
+        "({ shorthand = 1 });\n"
+            + "([...rest,] = values);\n"
+            + "function f(...args,) {}\n"
+            + "const arrow = (...args,) => args;\n"
+            + "async (...args,) => args;\n";
+    new Parser(new Options(), src, 0).parse();
+  }
 }

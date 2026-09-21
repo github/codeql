@@ -276,7 +276,7 @@ public class JSXParser extends Parser {
         this.raise(node, "JSX attributes must only be assigned a non-empty expression");
       return node;
     } else if (type == jsxTagStart || type == string) {
-      return this.parseExprAtom(null);
+      return this.parseExprAtom();
     } else {
       this.raise(this.start, "JSX value should be either an expression or a quoted JSX text");
       return null;
@@ -298,7 +298,7 @@ public class JSXParser extends Parser {
     this.next();
     INode expression;
     if (this.type == braceR) expression = this.jsx_parseEmptyExpression();
-    else expression = this.parseExpression(false, null);
+    else expression = this.parseExpression(false);
     this.expect(braceR);
     return this.finishNode(new JSXExpressionContainer(loc, expression));
   }
@@ -308,7 +308,7 @@ public class JSXParser extends Parser {
     SourceLocation loc = new SourceLocation(this.startLoc);
     if (this.eat(braceL)) {
       this.expect(ellipsis);
-      Expression argument = this.parseMaybeAssign(false, null, null);
+      Expression argument = this.parseMaybeAssign(false, null);
       this.expect(braceR);
       return this.finishNode(new JSXSpreadAttribute(loc, argument));
     }
@@ -358,7 +358,7 @@ public class JSXParser extends Parser {
           }
           children.add(this.jsx_parseElementAt(startLoc));
         } else if (type == jsxText) {
-          children.add(this.parseExprAtom(null));
+          children.add(this.parseExprAtom());
         } else if (type == braceL) {
           children.add(this.jsx_parseExpressionContainer());
         } else {
@@ -389,13 +389,13 @@ public class JSXParser extends Parser {
   }
 
   @Override
-  protected Expression parseExprAtom(DestructuringErrors refDestructuringErrors) {
+  protected Expression parseExprAtom() {
     if (this.type == jsxText) {
       return this.parseLiteral(this.type, this.value);
     } else if (this.type == jsxTagStart) {
       return this.jsx_parseElement();
     } else {
-      return super.parseExprAtom(refDestructuringErrors);
+      return super.parseExprAtom();
     }
   }
 
