@@ -3,6 +3,7 @@ private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.cpp.dataflow.ExternalFlow as External
 private import DataFlowPrivate
 private import DataFlowUtil
 private import ModelUtil
@@ -192,7 +193,7 @@ private module Cached {
     TSsaSynthNode(SsaImpl::SynthNode n) or
     TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
     TForwarderConstructorArgumentNode(CallInstruction call) {
-      isForwarderConstructorArgumentNodeImpl(call)
+      External::ConstructorForwarding::isForwarderConstructorArgumentNodeImpl(call)
     } or
     TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
       SsaImpl::hasRawIndirectOperand(node.asOperand(), indirectionIndex)

@@ -1142,16 +1142,14 @@ private predicate interpretForwardsModelType(
  * at calls to `forwarder`.
  */
 private predicate interpretForwardsModel(
-  Function forwarder, Constructor constructor, int start, string output, string provenance,
-  string model
+  Function forwarder, Class c, int start, string output, string provenance, string model
 ) {
-  interpretForwardsModelType(forwarder, constructor.getDeclaringType(), start, output, provenance,
-    model)
+  interpretForwardsModelType(forwarder, c, start, output, provenance, model)
 }
 
 /** Holds if `forwarder` forwards its arguments starting at `start` to `constructor`. */
-predicate forwards(Function forwarder, Constructor constructor, int start) {
-  interpretForwardsModel(forwarder, constructor, start, _, _, _)
+predicate forwards(Function forwarder, Class c, int start) {
+  interpretForwardsModel(forwarder, c, start, _, _, _)
 }
 
 private int referenceIndirection(Type unspecified) {
@@ -1164,6 +1162,52 @@ private Type stripReference(Type unspecified) {
   or
   not unspecified instanceof ReferenceType and
   result = unspecified
+}
+
+module ConstructorForwarding {
+  /**
+   * Gets `unspecifiedType`, but with the outermost `ReferenceType` removed, if any.
+   */
+  private Type stripReferences(Type unspecifiedType) {
+    result = unspecifiedType.(Cpp::ReferenceType).getBaseType().getUnspecifiedType()
+    or
+    not unspecifiedType instanceof Cpp::ReferenceType and
+    result = unspecifiedType
+  }
+
+  Cpp::Constructor getForwardingConstructor(Function forwarder, int start) {
+    exists(int numberOfForwardedArguments |
+      numberOfForwardedArguments <= result.getNumberOfParameters()
+      or
+      result.isVarargs()
+    |
+      forwards(forwarder, result.getDeclaringType(), start) and
+      forwarder.getNumberOfParameters() = start + numberOfForwardedArguments and
+      forall(int i | i = [0 .. result.getNumberOfParameters() - 1] |
+        // If we are still processing the forwarded arguments then we need to
+        // check that the argument types match the parameter types.
+        // Functions that perform perfect forwarding are always written as:
+        // ```
+        // template<typename... Args> void emplace(Args&&... args) { ... }
+        // ```
+        // and so all the arguments will be reference typed (lvalue or rvalued).
+        // However, the constructor may not specify all the arguments by
+        // reference.
+        i < numberOfForwardedArguments and
+        stripReferences(forwarder.getParameter(start + i).getUnderlyingType()) =
+          stripReferences(result.getParameter(i).getUnspecifiedType())
+        or
+        // If the constructor has a default argument and we have processed all
+        // the forwarded arguments then we don't need to check the types.
+        i >= numberOfForwardedArguments and result.getParameter(i).hasInitializer()
+      )
+    )
+  }
+
+  /** Holds if `call` is a call that forwards arguments to a constructor call. */
+  predicate isForwarderConstructorArgumentNodeImpl(CallInstruction call) {
+    exists(getForwardingConstructor(call.getStaticCallTarget(), _))
+  }
 }
 
 /**
@@ -1189,12 +1233,14 @@ private Type stripReference(Type unspecified) {
 private predicate interpretForwardingSummary(
   Function forwarder, string input, string output, string provenance, string model
 ) {
-  exists(Constructor constructor, int start, string constructorOutput |
-    interpretForwardsModel(forwarder, constructor, start, constructorOutput, provenance, model)
+  exists(Class c, int start, string constructorOutput |
+    interpretForwardsModel(forwarder, c, start, constructorOutput, provenance, model)
   |
     // Generate the (1) summary
-    exists(int index, Parameter arg, Parameter p, int indirection |
+    exists(int index, Parameter arg, Parameter p, int indirection, Cpp::Constructor constructor |
       arg = forwarder.getParameter(start + index) and
+      constructor = ConstructorForwarding::getForwardingConstructor(forwarder, start) and
+      constructor.getDeclaringType() = c and
       p = constructor.getParameter(index) and
       indirection = [0 .. SsaImpl::getMaxIndirectionsForPRType(p.getUnspecifiedType())] and
       input =

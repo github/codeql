@@ -1,6 +1,6 @@
 import cpp
 import utils.test.InlineExpectationsTest
-import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+import semmle.code.cpp.dataflow.ExternalFlow
 import semmle.code.cpp.ir.IR
 
 bindingset[s]
@@ -19,7 +19,7 @@ module AsDefinitionTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(CallInstruction call, Constructor constructor |
-      forwardingCallTargetsConstructor(call, constructor, _) and
+      constructor = ConstructorForwarding::getForwardingConstructor(call.getStaticCallTarget(), _) and
       element = call.toString() and
       tag = "targets" and
       value = quote(getConstructorId(constructor)) and
