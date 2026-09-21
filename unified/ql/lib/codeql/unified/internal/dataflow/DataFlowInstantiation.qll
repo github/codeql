@@ -23,7 +23,10 @@ module DataFlowInput implements InputSig<Location> {
   // Parameter, argument, return, and out nodes and their positions/kinds
   //
   class ReturnNode extends Node {
-    ReturnNode() { this.asExpr() = any(ReturnExpr r).getValue() }
+    ReturnNode() {
+      // TODO: Handle short-hand returns such as `func foo() -> Int { 5 }`
+      this.asExpr() = any(ReturnExpr r).getValue()
+    }
 
     ReturnKind getKind() { exists(result) }
   }
