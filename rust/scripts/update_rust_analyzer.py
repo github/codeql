@@ -39,9 +39,9 @@ def run_codegen() -> None:
         raise SystemExit(error.returncode) from None
 
 
-def get_rust_analyzer_version() -> str:
+def get_min_rust_analyzer_version(manifest: str) -> str:
     """Get the minimum version of all ra_ap dependencies from `Cargo.toml`."""
-    dependencies = tomllib.loads(RUST_EXTRACTOR_MANIFEST.read_text())["dependencies"]
+    dependencies = tomllib.loads(manifest)["dependencies"]
     return min(
         (
             version
@@ -62,7 +62,7 @@ def fetch(url: str) -> bytes:
 
 
 def get_compatible_rust_toolchain(rust_analyzer_version: str) -> str:
-    """Get the latest Rust toolchain that precedes our version of rust-analyzer."""
+    """Get the latest Rust toolchain released no later than rust-analyzer."""
     # Get the release date of the rust-analyzer version
     crate_url = f"https://crates.io/api/v1/crates/ra_ap_syntax/{rust_analyzer_version}"
     crate = json.loads(fetch(crate_url))
@@ -72,12 +72,13 @@ def get_compatible_rust_toolchain(rust_analyzer_version: str) -> str:
     # ```
     # static.rust-lang.org/dist/YYYY-MM-DD/channel-rust-stable.toml
     # ```
-    # where `YYYY-MM-DD` is the last that is earlier than the rust-analyzer release.
+    # where `YYYY-MM-DD` is no later than the rust-analyzer release date.
+    manifests = (
+        fetch("https://static.rust-lang.org/manifests.txt").decode().splitlines()
+    )
     rust_manifest = next(
         manifest
-        for manifest in reversed(
-            fetch("https://static.rust-lang.org/manifests.txt").decode().splitlines()
-        )
+        for manifest in reversed(manifests)
         if manifest.endswith("/channel-rust-stable.toml")
         and manifest.split("/")[2] <= rust_analyzer_release
     )
@@ -86,7 +87,7 @@ def get_compatible_rust_toolchain(rust_analyzer_version: str) -> str:
     return manifest["pkg"]["rust"]["version"].split()[0]
 
 
-def update_fixed_rust_toolchain(version: str) -> None:
+def update_fixed_rust_toolchain_versions(version: str) -> None:
     """Change the fixed toolchain in the places where it's hardcoded"""
     toolchain_rs = TOOLCHAIN_RS.read_text()
     prefix = 'const FIXED_RUST_TOOLCHAIN: &str = "'
@@ -108,13 +109,12 @@ def update_fixed_rust_toolchain(version: str) -> None:
         )
 
 
-def align_rust_analyzer_versions() -> None:
-    """Align ra_ap dependencies and update the lockfile when versions differ.
+def align_rust_analyzer_versions(manifest: str) -> tuple[str, bool]:
+    """Align ra_ap dependency versions in a Cargo manifest.
 
     rust-analyzer crates may be published gradually, so this selects the newest
     version that is available for every ra_ap dependency.
     """
-    manifest = RUST_EXTRACTOR_MANIFEST.read_text()
     dependencies = {
         name: version
         for name, version in tomllib.loads(manifest)["dependencies"].items()
@@ -122,17 +122,16 @@ def align_rust_analyzer_versions() -> None:
     }
     if len(set(dependencies.values())) == 1:
         # All the `ra_ap_` dependencies agree
-        return
+        return manifest, False
 
-    version = get_rust_analyzer_version()
+    version = get_min_rust_analyzer_version(manifest)
 
     for name, old_version in dependencies.items():
         manifest = manifest.replace(
             f'{name} = "{old_version}"',
             f'{name} = "{version}"',
         )
-    RUST_EXTRACTOR_MANIFEST.write_text(manifest)
-    run("cargo", "update")
+    return manifest, True
 
 
 def commit_all(title: str) -> None:
@@ -152,20 +151,26 @@ def main() -> None:
         raise RuntimeError("the working tree must be clean")
 
     print_step(1, "Update dependencies")
-    old_rust_analyzer_version = get_rust_analyzer_version()
+    manifest = RUST_EXTRACTOR_MANIFEST.read_text()
+    old_rust_analyzer_version = get_min_rust_analyzer_version(manifest)
     run("cargo", "upgrade", "--incompatible", "--pinned")
-    new_rust_analyzer_version = get_rust_analyzer_version()
+    # Re-read the (potentially) changed manifest
+    manifest = RUST_EXTRACTOR_MANIFEST.read_text()
+    new_rust_analyzer_version = get_min_rust_analyzer_version(manifest)
     if new_rust_analyzer_version == old_rust_analyzer_version:
         run("git", "restore", ".")
         print("No new rust-analyzer version available.")
         return
 
-    align_rust_analyzer_versions()
+    aligned_manifest, manifest_changed = align_rust_analyzer_versions(manifest)
+    if manifest_changed:
+        RUST_EXTRACTOR_MANIFEST.write_text(aligned_manifest)
+        run("cargo", "update")
     commit_all("Cargo: Upgrade dependencies")
 
     print_step(2, "Update the fixed Rust toolchain used by the extractor")
     rust_toolchain = get_compatible_rust_toolchain(new_rust_analyzer_version)
-    update_fixed_rust_toolchain(rust_toolchain)
+    update_fixed_rust_toolchain_versions(rust_toolchain)
     commit_all("Rust: Update fixed toolchain")
 
     print_step(3, "Regenerate vendored bazel files")
