@@ -23,8 +23,11 @@ public class RobustnessTests {
         "({ shorthand = 1 });\n"
             + "([...rest,] = values);\n"
             + "function f(...args,) {}\n"
+            + "function g(...[first, { nested }],) {}\n"
             + "const arrow = (...args,) => args;\n"
-            + "async (...args,) => args;\n";
+            + "const destructuringArrow = (...{ value },) => value;\n"
+            + "async (...[first, { nested }],) => first;\n"
+            + "({ method(...{ value },) {} });\n";
     new Parser(new Options(), src, 0).parse();
   }
 }
