@@ -1183,7 +1183,7 @@ module ConstructorForwarding {
     |
       forwards(forwarder, result.getDeclaringType(), start) and
       forwarder.getNumberOfParameters() = start + numberOfForwardedArguments and
-      forall(int i | i = [0 .. result.getNumberOfParameters() - 1] |
+      forex(int i | i = [0 .. result.getNumberOfParameters() - 1] |
         // If we are still processing the forwarded arguments then we need to
         // check that the argument types match the parameter types.
         // Functions that perform perfect forwarding are always written as:
