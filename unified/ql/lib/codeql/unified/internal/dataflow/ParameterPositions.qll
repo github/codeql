@@ -21,7 +21,8 @@ class ParameterPosition extends TParameterPosition {
     or
     result = this.asPositional().toString()
     or
-    result = "\"" + this.asNamed() + "\""
+    // Suffix with a colon to prevent a confusing name clash with "receiver". This also aligns with MaD syntax.
+    result = this.asNamed() + ":"
   }
 }
 
