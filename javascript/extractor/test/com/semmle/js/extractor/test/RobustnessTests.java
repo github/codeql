@@ -1,11 +1,14 @@
 package com.semmle.js.extractor.test;
 
+import com.semmle.jcorn.CustomParser;
 import com.semmle.jcorn.Options;
 import com.semmle.jcorn.Parser;
+import com.semmle.jcorn.SyntaxError;
 import com.semmle.util.io.WholeIO;
 import com.semmle.util.tests.TestPaths;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class RobustnessTests {
@@ -29,5 +32,16 @@ public class RobustnessTests {
             + "async (...[first, { nested }],) => first;\n"
             + "({ method(...{ value },) {} });\n";
     new Parser(new Options(), src, 0).parse();
+  }
+
+  @Test
+  public void parenthesizedRestParameterTest() {
+    try {
+      new CustomParser(new Options().preserveParens(true), "async(...(x)) => x", 0)
+          .parse();
+      Assert.fail("Expected syntax error, but parsing succeeded.");
+    } catch (SyntaxError expected) {
+      Assert.assertEquals("Unexpected token (1:9)", expected.getMessage());
+    }
   }
 }

@@ -2359,6 +2359,7 @@ public class Parser {
       } else if (last != null && last instanceof SpreadElement) {
         Expression arg = ((SpreadElement) last).getArgument();
         arg = (Expression) this.toAssignable(arg, isBinding);
+        if (!(arg instanceof IPattern)) this.unexpected(arg.getLoc().getStart());
         exprList.set(end - 1, last = new RestElement(last.getLoc(), arg));
         --end;
       }
