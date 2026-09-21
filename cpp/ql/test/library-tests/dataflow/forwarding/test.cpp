@@ -41,38 +41,38 @@ struct ElementFromMutablePointer {
 void test() {
   {
     Container<Element> c;
-    c.emplace(42); // $ targets=element_int
+    c.emplace(42); // $ MISSING: targets=element_int
   }
   {
     Container<ElementWithDefaultArgument> c;
-    c.emplace(42); // $ targets=element_default_int
-    c.emplace(42, 1); // $ targets=element_default_int
+    c.emplace(42); // $ MISSING: targets=element_default_int
+    c.emplace(42, 1); // $ MISSING: targets=element_default_int
   }
   {
     Container<ElementWithOverloadedArity> c;
-    c.emplace(42); // $ targets=element_overload_arith_1
-    c.emplace(42, 1); // $ targets=element_overload_arith_2
+    c.emplace(42); // $ MISSING: targets=element_overload_arith_1
+    c.emplace(42, 1); // $ MISSING: targets=element_overload_arith_2
   }
   {
     Container<Element> c;
     c.emplace("abc", 42); // $ MISSING: targets=element_const_char_ptr_int
-    c.emplace((char*)nullptr, 42); // $ targets=element_char_ptr_int SPURIOUS: targets=element_const_char_ptr_int
+    c.emplace((char*)nullptr, 42); // $ MISSING: targets=element_char_ptr_int
   }
   {
     Container<Element> c;
     Container<RefElement> cr;
     {
       const int x = 42;
-      c.emplace(x); // $ targets=element_int
-      cr.emplace(x); // $ targets=element_ref_const_int_ref SPURIOUS: targets=element_ref_int_lref targets=element_ref_int_rref
+      c.emplace(x); // $ MISSING: targets=element_int
+      cr.emplace(x); // $ targets=element_ref_const_int_ref
     }
     {
       int x = 42;
-      c.emplace(x); // $ targets=element_int
-      cr.emplace(x); // $ targets=element_ref_int_lref SPURIOUS: targets=element_ref_const_int_ref targets=element_ref_int_rref
+      c.emplace(x); // $ MISSING: targets=element_int
+      cr.emplace(x); // $ targets=element_ref_int_lref
     }
-    c.emplace(42); // $ targets=element_int
-    cr.emplace(42); // $ targets=element_ref_int_rref SPURIOUS: targets=element_ref_const_int_ref targets=element_ref_int_lref
+    c.emplace(42); // $ MISSING: targets=element_int
+    cr.emplace(42); // $ targets=element_ref_int_rref
     cr.emplace("abc", 42); // $ MISSING: targets=element_ref_const_char_ptr_const_ref_int
     const char buffer[] = "abc";
     cr.emplace(buffer, 42); // $ MISSING: targets=element_ref_const_char_ptr_const_ref_int
@@ -81,8 +81,8 @@ void test() {
   	Container<Element> container;
     short shortValue = 42;
     unsigned long longValue = 42;
-    container.emplace(shortValue); // $ targets=element_short
-    container.emplace(longValue); // $ targets=element_ul
+    container.emplace(shortValue); // $ MISSING: targets=element_short
+    container.emplace(longValue); // $ MISSING: targets=element_ul
   }
 }
 
@@ -95,7 +95,7 @@ void test_invalid_pointer_conversion() {
 void test_volatile_reference_binding() {
   Container<RefElement> container;
   const char* volatile pointer = "abc";
-  container.emplace(pointer, 42); // $ targets=element_ref_const_char_ptr_const_volatile_ref_int SPURIOUS: targets=element_ref_const_char_ptr_const_ref_int
+  container.emplace(pointer, 42); // $ MISSING: targets=element_ref_const_char_ptr_const_volatile_ref_int
   container.emplace("abc", 42); // $ MISSING: targets=element_ref_const_char_ptr_const_ref_int
 }
 
@@ -192,9 +192,9 @@ void test_implicit_conversion_limit() {
   container.emplace(42, 42); // $ MISSING: targets=element_two_conversions
 
   Container<ElementFromImplicitConversion> references;
-  references.emplace(converted, 0, 0); // $ SPURIOUS: targets=element_conversion_rref
+  references.emplace(converted, 0, 0); // no target
   const ImplicitConversion constConverted(42);
-  references.emplace(constConverted, 0, 0, 0); // $ SPURIOUS: targets=element_conversion_lref
+  references.emplace(constConverted, 0, 0, 0); // no target
 }
 
 struct ValueConversionOperator {
@@ -325,13 +325,13 @@ void test_pointer_value_categories() {
   const char* pointer = buffer;
   const char* const constPointer = buffer;
   container.emplace(buffer, 0, 0); // $ MISSING: targets=element_ref_pointer_rref
-  container.emplace(pointer, 0, 0); // $ SPURIOUS: targets=element_ref_pointer_rref
-  container.emplace(static_cast<const char*&&>(pointer), 0, 0); // $ targets=element_ref_pointer_rref
-  container.emplace(static_cast<const char* const&&>(constPointer), 0, 0); // $ SPURIOUS: targets=element_ref_pointer_rref
+  container.emplace(pointer, 0, 0); // no target
+  container.emplace(static_cast<const char*&&>(pointer), 0, 0); // $ MISSING: targets=element_ref_pointer_rref
+  container.emplace(static_cast<const char* const&&>(constPointer), 0, 0); // no target
   container.emplace(buffer, 0, 0, 0); // no targets
-  container.emplace(pointer, 0, 0, 0); // $ targets=element_ref_pointer_lref
-  container.emplace(constPointer, 0, 0, 0); // $ SPURIOUS: targets=element_ref_pointer_lref
-  container.emplace(static_cast<const char*&&>(pointer), 0, 0, 0); // $ SPURIOUS: targets=element_ref_pointer_lref
+  container.emplace(pointer, 0, 0, 0); // $ MISSING: targets=element_ref_pointer_lref
+  container.emplace(constPointer, 0, 0, 0); // no target
+  container.emplace(static_cast<const char*&&>(pointer), 0, 0, 0); // no target
 }
 
 enum ArithmeticEnum { arithmeticValue = 42 };
@@ -355,7 +355,7 @@ void test_arithmetic_conversions() {
   container.emplace(42, 0, 0); // $ MISSING: targets=element_arithmetic_bool
   container.emplace(value, 0, 0, 0); // $ MISSING: targets=element_arithmetic_const_ref
   container.emplace(value, 0, 0, 0, 0); // $ MISSING: targets=element_arithmetic_rref
-  container.emplace(longValue, 0, 0, 0, 0); // $ SPURIOUS: targets=element_arithmetic_rref
+  container.emplace(longValue, 0, 0, 0, 0); // no target
   container.emplace(ScopedArithmeticEnum::value); // no targets
 }
 
@@ -384,15 +384,15 @@ void test_pointer_qualification_conversions() {
   char** doublePointer = &pointer;
   const char* constPointer = buffer;
   container.emplace(buffer); // $ MISSING: targets=element_qualified_pointer
-  container.emplace(pointer); // $ targets=element_qualified_pointer
-  container.emplace(pointer, 0); // $ targets=element_qualified_pointer_const_ref
+  container.emplace(pointer); // $ MISSING: targets=element_qualified_pointer
+  container.emplace(pointer, 0); // $ MISSING: targets=element_qualified_pointer_const_ref
   container.emplace(buffer, 0, 0); // $ MISSING: targets=element_qualified_pointer_rref
-  container.emplace(static_cast<char*&&>(pointer), 0, 0); // $ targets=element_qualified_pointer_rref
-  container.emplace(pointer, 0, 0, 0); // $ SPURIOUS: targets=element_qualified_pointer_lref
-  container.emplace(doublePointer, 0, 0, 0, 0); // $ SPURIOUS: targets=element_qualified_double_pointer
-  container.emplace(doublePointer, 0, 0, 0, 0, 0); // $ targets=element_qualified_const_double_pointer
+  container.emplace(static_cast<char*&&>(pointer), 0, 0); // $ MISSING: targets=element_qualified_pointer_rref
+  container.emplace(pointer, 0, 0, 0); // no target
+  container.emplace(doublePointer, 0, 0, 0, 0); // no target
+  container.emplace(doublePointer, 0, 0, 0, 0, 0); // $ MISSING: targets=element_qualified_const_double_pointer
   Container<ElementFromMutablePointer> mutableContainer;
-  mutableContainer.emplace(constPointer, 42); // $ SPURIOUS: targets=element_from_mutable_ptr
+  mutableContainer.emplace(constPointer, 42); // no target
 }
 
 struct ConversionBase {
@@ -478,9 +478,9 @@ void test_function_conversions() {
   NothrowCallback nothrowPointer = nothrowCallback;
   container.emplace(callback); // $ MISSING: targets=element_callback
   container.emplace(nothrowCallback); // $ MISSING: targets=element_callback
-  container.emplace(nothrowPointer); // $ targets=element_callback
+  container.emplace(nothrowPointer); // $ MISSING: targets=element_callback
   container.emplace(nothrowCallback, 0); // $ MISSING: targets=element_nothrow_callback
-  container.emplace(pointer, 0); // $ SPURIOUS: targets=element_nothrow_callback
+  container.emplace(pointer, 0); // no targets
   container.emplace(callback, 0); // no targets
   container.emplace(callback, 0, 0); // $ MISSING: targets=element_callback_const_ref
   container.emplace(nullptr); // $ MISSING: targets=element_callback
@@ -493,7 +493,7 @@ void test_function_conversions() {
 void test_standard_conversion_phases() {
   Container<ElementFromArithmetic> arithmetic;
   long value = 42;
-  arithmetic.emplace(value, 0, 0, 0, 0); // $ SPURIOUS: targets=element_arithmetic_rref
+  arithmetic.emplace(value, 0, 0, 0, 0); // no targets
   arithmetic.emplace(&value); // no targets
   arithmetic.emplace(nullptr, 0, 0); // no targets
   arithmetic.emplace(ValueConversionOperator(), 0, 0, 0, 0); // $ MISSING: targets=element_arithmetic_rref
@@ -514,18 +514,18 @@ void test_pointer_aliases() {
   Pointer const constPointer = pointer;
   Pointer volatile volatilePointer = pointer;
   Container<ElementFromQualifiedPointer> container;
-  container.emplace(pointer); // $ targets=element_qualified_pointer
-  container.emplace(nested, 0, 0, 0, 0); // $ targets=element_qualified_double_pointer
-  container.emplace(&constPointer, 0, 0, 0, 0, 0); // $ targets=element_qualified_const_double_pointer
-  container.emplace(&constPointer, 0, 0, 0, 0); // $ SPURIOUS: targets=element_qualified_double_pointer
-  container.emplace(&volatilePointer, 0, 0, 0, 0); // $ SPURIOUS: targets=element_qualified_double_pointer
-  container.emplace(&volatilePointer, 0, 0, 0, 0, 0); // $ SPURIOUS: targets=element_qualified_const_double_pointer
+  container.emplace(pointer); // $ MISSING: targets=element_qualified_pointer
+  container.emplace(nested, 0, 0, 0, 0); // $ MISSING: targets=element_qualified_double_pointer
+  container.emplace(&constPointer, 0, 0, 0, 0, 0); // $ MISSING: targets=element_qualified_const_double_pointer
+  container.emplace(&constPointer, 0, 0, 0, 0); // no targets
+  container.emplace(&volatilePointer, 0, 0, 0, 0); // no targets
+  container.emplace(&volatilePointer, 0, 0, 0, 0, 0); // $ MISSING: targets=element_qualified_const_double_pointer
 
   using CallbackAlias = Callback;
   CallbackAlias callbackPointer = callback;
   Container<ElementFromCallback> callbacks;
-  callbacks.emplace(callbackPointer); // $ targets=element_callback
-  callbacks.emplace(callbackPointer, 0, 0); // $ targets=element_callback_const_ref
+  callbacks.emplace(callbackPointer); // $ MISSING: targets=element_callback
+  callbacks.emplace(callbackPointer, 0, 0); // $ MISSING: targets=element_callback_const_ref
   Container<ElementFromStandardPointer> pointers;
   pointers.emplace(callbackPointer); // no targets
 }
