@@ -4,7 +4,7 @@ private import AllDataFlow
 private newtype TDataFlowCallable = TSourceCallable(Callable callable)
 
 /**
- * A callable entity, either an function-like entity in the source code,
+ * A callable entity: either a function-like entity in source code or
  * an entity derived from a library model.
  *
  * Currently only callables in source code are implemented.

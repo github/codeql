@@ -105,7 +105,7 @@ Node getNodeFromLocalSsaNode(Ssa::Node n) {
 }
 
 /**
- * Holds if there is use-use flow from `node1`, through one or most post-update reads, into `node2`.
+ * Holds if there is use-use flow from `node1`, through one or more post-update reads, into `node2`.
  */
 predicate skipPostUpdateRead(Ssa::Node node1, Ssa::Node node2) {
   Ssa::localFlowStep(_, node1, node2, true) and

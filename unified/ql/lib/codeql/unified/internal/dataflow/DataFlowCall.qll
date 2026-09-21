@@ -8,7 +8,7 @@ private newtype TDataFlowCall =
   }
 
 /**
- * A call site, covering both explicit calls such as `foo(1,2)`, as well an implicit
+ * A call site, covering explicit calls such as `foo(1,2)`, as well as implicit
  * calls and calls derived from library models.
  *
  * Currently only explicit calls are implemented.

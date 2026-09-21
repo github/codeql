@@ -93,6 +93,8 @@ module FilesCoveredByModuleManifestStatsReport =
 
 module CallGraphStats implements EntityStatsSig {
   class Candidate extends CallExpr {
+    Candidate() { exists(DataFlowCall c | c.asExplicitCall() = this) }
+
     DataFlowCall getDataFlowCall() { result.asExplicitCall() = this }
 
     DataFlowCallable getTarget() { result = viableCallable(this.getDataFlowCall()) }

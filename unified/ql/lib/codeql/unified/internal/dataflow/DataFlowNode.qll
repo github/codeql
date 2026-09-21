@@ -38,7 +38,7 @@ private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
 /**
  * Holds if `repr` performs an access to `var` of the given `kind` at `cfgNode`.
  *
- * `repr` should be an arbitary but unique representative for the access.
+ * `repr` should be an arbitrary but unique representative for the access.
  */
 predicate performsVariableAccess(
   AstNode repr, LocalVariable var, VariableRefKind kind, ControlFlowNode cfgNode
