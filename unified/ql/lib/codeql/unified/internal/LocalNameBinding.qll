@@ -475,7 +475,7 @@ class PotentialLocalNameAccess extends IdentifierExpr {
   predicate isBindingSite() { this instanceof NameBinding }
 }
 
-/** Gets implicitly-declared variable through which the given callable refers to its receiver. */
+/** Gets the implicitly-declared variable through which the given callable refers to its receiver. */
 LocalVariable getImplicitReceiverVariable(Callable callable) {
   exists(string name |
     name = any(NameBindingPlugin p).getImplicitReceiverParameterName(callable) and
