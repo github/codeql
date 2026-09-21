@@ -28,6 +28,8 @@ module Generated {
   class WhereClause extends Synth::TWhereClause, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "WhereClause" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th predicate of this where clause (0-based).
      */

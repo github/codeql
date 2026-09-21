@@ -31,6 +31,8 @@ module Generated {
   class ExternItemList extends Synth::TExternItemList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "ExternItemList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this extern item list (0-based).
      */

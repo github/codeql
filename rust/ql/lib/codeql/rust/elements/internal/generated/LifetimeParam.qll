@@ -30,6 +30,8 @@ module Generated {
   class LifetimeParam extends Synth::TLifetimeParam, GenericParamImpl::GenericParam {
     override string getAPrimaryQlClass() { result = "LifetimeParam" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this lifetime parameter (0-based).
      */

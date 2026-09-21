@@ -30,6 +30,8 @@ module Generated {
   class AsmOptionsList extends Synth::TAsmOptionsList, AsmPieceImpl::AsmPiece {
     override string getAPrimaryQlClass() { result = "AsmOptionsList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th asm option of this asm options list (0-based).
      */

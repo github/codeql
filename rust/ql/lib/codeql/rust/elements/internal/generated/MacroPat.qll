@@ -36,6 +36,8 @@ module Generated {
   class MacroPat extends Synth::TMacroPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "MacroPat" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the macro call of this macro pattern, if it exists.
      */

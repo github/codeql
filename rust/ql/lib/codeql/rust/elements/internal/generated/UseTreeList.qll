@@ -28,6 +28,8 @@ module Generated {
   class UseTreeList extends Synth::TUseTreeList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "UseTreeList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th use tree of this use tree list (0-based).
      */

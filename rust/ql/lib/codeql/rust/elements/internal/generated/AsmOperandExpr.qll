@@ -29,6 +29,8 @@ module Generated {
   class AsmOperandExpr extends Synth::TAsmOperandExpr, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "AsmOperandExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the in expression of this asm operand expression, if it exists.
      */

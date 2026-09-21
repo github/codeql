@@ -33,6 +33,8 @@ module Generated {
   class ParenthesizedArgList extends Synth::TParenthesizedArgList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "ParenthesizedArgList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th type argument of this parenthesized argument list (0-based).
      */
