@@ -1,0 +1,108 @@
+Module: [2, 0] - [12, 0]
+  body: [
+    Assign: [2, 0] - [2, 7]
+      targets: [
+        Name: [2, 0] - [2, 3]
+          variable: Variable('\u088f', None)
+          ctx: Store
+      ]
+      value:
+        Num: [2, 6] - [2, 7]
+          n: 1
+          text: '1'
+    Assign: [3, 0] - [3, 8]
+      targets: [
+        Name: [3, 0] - [3, 4]
+          variable: Variable('\U0001e6c0', None)
+          ctx: Store
+      ]
+      value:
+        Num: [3, 7] - [3, 8]
+          n: 2
+          text: '2'
+    Assign: [4, 0] - [4, 8]
+      targets: [
+        Name: [4, 0] - [4, 4]
+          variable: Variable('\U000323b0', None)
+          ctx: Store
+      ]
+      value:
+        Num: [4, 7] - [4, 8]
+          n: 3
+          text: '3'
+    Assign: [5, 0] - [5, 8]
+      targets: [
+        Name: [5, 0] - [5, 4]
+          variable: Variable('\U00011db0', None)
+          ctx: Store
+      ]
+      value:
+        Num: [5, 7] - [5, 8]
+          n: 4
+          text: '4'
+    Assign: [8, 0] - [8, 8]
+      targets: [
+        Name: [8, 0] - [8, 4]
+          variable: Variable('a\u1acf', None)
+          ctx: Store
+      ]
+      value:
+        Num: [8, 7] - [8, 8]
+          n: 5
+          text: '5'
+    Assign: [9, 0] - [9, 9]
+      targets: [
+        Name: [9, 0] - [9, 5]
+          variable: Variable('a\U00011de0', None)
+          ctx: Store
+      ]
+      value:
+        Num: [9, 8] - [9, 9]
+          n: 6
+          text: '6'
+    Assign: [11, 0] - [11, 48]
+      targets: [
+        Name: [11, 0] - [11, 6]
+          variable: Variable('result', None)
+          ctx: Store
+      ]
+      value:
+        BinOp: [11, 9] - [11, 48]
+          left:
+            BinOp: [11, 9] - [11, 40]
+              left:
+                BinOp: [11, 9] - [11, 33]
+                  left:
+                    BinOp: [11, 9] - [11, 26]
+                      left:
+                        BinOp: [11, 9] - [11, 19]
+                          left:
+                            Name: [11, 9] - [11, 12]
+                              variable: Variable('\u088f', None)
+                              ctx: Load
+                          op: Add
+                          right:
+                            Name: [11, 15] - [11, 19]
+                              variable: Variable('\U0001e6c0', None)
+                              ctx: Load
+                      op: Add
+                      right:
+                        Name: [11, 22] - [11, 26]
+                          variable: Variable('\U000323b0', None)
+                          ctx: Load
+                  op: Add
+                  right:
+                    Name: [11, 29] - [11, 33]
+                      variable: Variable('\U00011db0', None)
+                      ctx: Load
+              op: Add
+              right:
+                Name: [11, 36] - [11, 40]
+                  variable: Variable('a\u1acf', None)
+                  ctx: Load
+          op: Add
+          right:
+            Name: [11, 43] - [11, 48]
+              variable: Variable('a\U00011de0', None)
+              ctx: Load
+  ]
