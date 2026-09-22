@@ -277,13 +277,26 @@ module AssignableInternal {
     def = TParameterDefaultDefinition(_, result)
   }
 
-  /** A local variable declaration at the top-level of a pattern. */
-  class TopLevelPatternDecl extends LocalVariableDeclExpr {
+  /** A pattern containing a local variable declaration. */
+  class LocalVariablePatternDecl extends LocalVariableDeclExpr {
     private PatternMatch pm;
 
-    TopLevelPatternDecl() { this = pm.getPattern().(BindingPatternExpr).getVariableDeclExpr() }
+    LocalVariablePatternDecl() {
+      exists(BindingPatternExpr bpe |
+        this = bpe.getVariableDeclExpr() and pm = bpe.getPatternMatch()
+      )
+    }
 
+    /** Holds if the local variable definition is at the top level of the pattern. */
+    predicate isTopLevel() { this = pm.getPattern().(BindingPatternExpr).getVariableDeclExpr() }
+
+    /** Gets the pattern match that this local variable declaration (pattern) belongs to. */
     PatternMatch getMatch() { result = pm }
+  }
+
+  /** A local variable declaration at the top-level of a pattern. */
+  class TopLevelPatternDecl extends LocalVariablePatternDecl {
+    TopLevelPatternDecl() { this.isTopLevel() }
   }
 
   cached
