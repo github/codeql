@@ -100,7 +100,7 @@ and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/gi
    `Logrus <https://github.com/sirupsen/logrus>`_, Logging library
    `Macaron <https://gopkg.in/macaron.v1>`_, Web framework
    `mongo <https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo>`_, Database
-   `nhooyr.io/websocket <http://nhooyr.io/websocket>`_, Network communicator
+   `coder/websocket <https://github.com/coder/websocket>`_ (formerly nhooyr.io/websocket), Network communicator
    `protobuf <https://pkg.go.dev/google.golang.org/protobuf>`_, Serialization
    `Revel <https://revel.github.io/>`_, Web framework
    `SendGrid <https://github.com/sendgrid/sendgrid-go>`_, Email library
