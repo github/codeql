@@ -1335,7 +1335,27 @@ module ConstructorForwarding {
     )
   }
 
+  private predicate arithmeticConversion(Type t) {
+    t instanceof ArithmeticType
+    or
+    t instanceof Enum and not t instanceof ScopedEnum
+  }
+
   private predicate hasNoTopLevelSpecifiers(Type type) { type = type.stripTopLevelSpecifiers() }
+
+  private predicate valueConversionStep(TypeState argState, TypeState paramState) {
+    exists(Type argType, Type paramType, boolean conversionUsed |
+      argState = MkTypeState(_, _, conversionUsed, _) and
+      argState.canConvertValue() and
+      argType = argState.getType().stripTopLevelSpecifiers() and
+      hasNoTopLevelSpecifiers(paramType) and
+      argType != paramType and
+      paramState = MkTypeState(paramType, PRValue(), conversionUsed, AfterValueConversion())
+    |
+      paramType instanceof ArithmeticType and
+      arithmeticConversion(argType)
+    )
+  }
 
   private newtype PtrKind =
     NormalPtrKind() or
@@ -1396,6 +1416,8 @@ module ConstructorForwarding {
     arrayToPointerStep(argState, paramState)
     or
     functionToPointerStep(argState, paramState)
+    or
+    valueConversionStep(argState, paramState)
     or
     pointerQualificationStep(argState, paramState)
     or
