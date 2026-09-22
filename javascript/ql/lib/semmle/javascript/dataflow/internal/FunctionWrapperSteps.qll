@@ -146,13 +146,24 @@ private module Cached {
 
 import Cached
 
-private DataFlow::SourceNode forwardedCalleeSource(
-  DataFlow::CallNode call, DataFlow::TypeBackTracker t
+/** Gets a value referring to a forwarding-wrapper around `func`. */
+private DataFlow::SourceNode trackWrappedFunction(
+  DataFlow::FunctionNode func, DataFlow::TypeTracker t
 ) {
   t.start() and
-  result = call.getCalleeNode().getALocalSource()
+  functionOneWayForwardingStep(func, result) and
+  // Exclude functions since ordinary call edges can handle that case.
+  // This will typically match calls to a "wrapper factory".
+  not result instanceof DataFlow::FunctionNode
   or
-  exists(DataFlow::TypeBackTracker t2 | result = forwardedCalleeSource(call, t2).backtrack(t2, t))
+  functionOneWayForwardingStep(trackWrappedFunction(func, t.continue()), result)
+  or
+  exists(DataFlow::TypeTracker t2 | result = trackWrappedFunction(func, t2).track(t2, t))
+}
+
+/** Gets a value referring to a forwarding-wrapper around `func`. */
+DataFlow::SourceNode trackWrappedFunction(DataFlow::SourceNode func) {
+  result = trackWrappedFunction(func, DataFlow::TypeTracker::end())
 }
 
 /**
@@ -165,10 +176,7 @@ private class FunctionWrapperCallStep extends DataFlow::SharedFlowStep {
   DataFlow::CallNode call;
   DataFlow::FunctionNode wrapped;
 
-  FunctionWrapperCallStep() {
-    DataFlow::functionOneWayForwardingStep(wrapped,
-      forwardedCalleeSource(call, DataFlow::TypeBackTracker::end()))
-  }
+  FunctionWrapperCallStep() { call = trackWrappedFunction(wrapped).getACall() }
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(int index |
