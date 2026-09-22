@@ -451,10 +451,10 @@ void test_standard_pointer_conversions() {
   container.emplace(&value); // $ targets=element_void_pointer
   container.emplace(&constValue); // no targets
   container.emplace(&constValue, 0); // $ targets=element_const_void_pointer
-  container.emplace(nullptr); // $ MISSING: targets=element_void_pointer
-  container.emplace(nullptr, 0, 0); // $ MISSING: targets=element_int_pointer
+  container.emplace(nullptr); // $ targets=element_void_pointer
+  container.emplace(nullptr, 0, 0); // $ targets=element_int_pointer
   container.emplace(0, 0, 0); // no targets
-  container.emplace(&value, 0, 0, 0, 0); // $ MISSING: targets=element_pointer_bool
+  container.emplace(&value, 0, 0, 0, 0); // $ targets=element_pointer_bool
   container.emplace(nullptr, 0, 0, 0, 0); // no targets
   void* opaque = &value;
   container.emplace(opaque, 0, 0); // no targets
@@ -483,10 +483,10 @@ void test_function_conversions() {
   container.emplace(pointer, 0); // $ SPURIOUS: targets=element_nothrow_callback
   container.emplace(callback, 0); // $ SPURIOUS: targets=element_nothrow_callback
   container.emplace(callback, 0, 0); // $ targets=element_callback_const_ref
-  container.emplace(nullptr); // $ MISSING: targets=element_callback
+  container.emplace(nullptr); // $ targets=element_callback
   container.emplace(differentCallback); // no targets
   Container<ElementFromStandardPointer> boolean;
-  boolean.emplace(callback, 0, 0, 0, 0); // $ MISSING: targets=element_pointer_bool
+  boolean.emplace(callback, 0, 0, 0, 0); // $ targets=element_pointer_bool
   boolean.emplace(callback); // no targets
 }
 
