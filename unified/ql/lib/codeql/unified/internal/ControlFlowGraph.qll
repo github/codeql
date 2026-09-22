@@ -7,6 +7,7 @@ module;
 private import unified
 private import codeql.controlflow.ControlFlowGraph
 private import codeql.controlflow.SuccessorType
+private import ControlFlowGraphPlugin
 
 private module Cfg0 = Make0<Location, Ast>;
 
@@ -16,11 +17,10 @@ private module Cfg2 = Make2<Input>;
 
 private import Cfg0
 private import Cfg1
-private import Cfg2
-import Public
+import Cfg2
 
 /** Provides an implementation of the AST signature for Unified. */
-private module Ast implements AstSig<Location> {
+module Ast implements AstSig<Location> {
   private import unified as U
 
   class AstNode = U::AstNode;
@@ -29,6 +29,8 @@ private module Ast implements AstSig<Location> {
     e instanceof Modifier
     or
     e instanceof Identifier and not e instanceof IdentifierExpr
+    or
+    e instanceof Operator
   }
 
   AstNode getChild(AstNode n, int index) {
@@ -37,11 +39,15 @@ private module Ast implements AstSig<Location> {
     not n instanceof Callable and
     not skipControlFlow(n) and
     not skipControlFlow(result)
+    or
+    n.(FunctionExpr).getCaptureDeclaration(index) = result
   }
 
   Callable getEnclosingCallable(AstNode node) { result = node.getEnclosingCallable() }
 
-  class Callable = U::Callable;
+  class Callable extends U::Callable {
+    Callable() { this.fromSource() }
+  }
 
   AstNode callableGetBody(Callable c) { result = c.getBody() }
 
@@ -70,14 +76,12 @@ private module Ast implements AstSig<Location> {
     Expr getExpr() { none() }
   }
 
-  class IfStmt extends Stmt {
-    IfStmt() { none() }
-
-    Expr getCondition() { none() }
+  class IfStmt extends Stmt instanceof U::GuardIfStmt {
+    Expr getCondition() { result = super.getCondition() }
 
     Stmt getThen() { none() }
 
-    Stmt getElse() { none() }
+    Stmt getElse() { result = super.getElse() }
   }
 
   abstract class LoopStmt extends Stmt {
@@ -195,20 +199,23 @@ private module Ast implements AstSig<Location> {
 
   class LogicalNotExpr = U::LogicalNotExpr;
 
-  // TODO
-  class Assignment extends BinaryExpr {
-    Assignment() { none() }
+  class Assignment extends BinaryExpr, U::Assignment { }
+
+  class AssignExpr extends Assignment, U::AssignExpr { }
+
+  class CompoundAssignment extends Assignment, U::CompoundAssignExpr { }
+
+  class AssignLogicalAndExpr extends CompoundAssignment {
+    AssignLogicalAndExpr() { this.getOperator().getValue() = "&&=" }
   }
 
-  class AssignExpr extends Assignment { }
+  class AssignLogicalOrExpr extends CompoundAssignment {
+    AssignLogicalOrExpr() { this.getOperator().getValue() = "||=" }
+  }
 
-  class CompoundAssignment extends Assignment { }
-
-  class AssignLogicalAndExpr extends CompoundAssignment { }
-
-  class AssignLogicalOrExpr extends CompoundAssignment { }
-
-  class AssignNullCoalescingExpr extends CompoundAssignment { }
+  class AssignNullCoalescingExpr extends CompoundAssignment {
+    AssignNullCoalescingExpr() { this.getOperator().getValue() = "??=" }
+  }
 
   class BooleanLiteral extends U::BooleanLiteral {
     boolean getValue() { result.toString() = super.getValue() }
@@ -220,6 +227,8 @@ private module Ast implements AstSig<Location> {
     AstNode getPattern() { result = super.getPattern() }
   }
 }
+
+private predicate mayThrow(AstNode ast) { any(ControlFlowGraphPlugin p).mayThrow(ast) }
 
 private module Input implements InputSig1, InputSig2 {
   private import codeql.util.Void
@@ -256,7 +265,10 @@ private module Input implements InputSig1, InputSig2 {
   predicate beginAbruptCompletion(
     AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
   ) {
-    none()
+    mayThrow(ast) and
+    n.isIn(ast) and
+    c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+    always = false
   }
 
   predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c) { none() }

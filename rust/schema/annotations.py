@@ -2,6 +2,9 @@ from misc.codegen.lib.schemadefs import *
 from .ast import *
 
 
+@ql.to_string_impl_from_primary_class(
+    False
+)  # Disable since we have a final manual `toStringImpl` for this class
 class LabelableExpr(Expr):
     """
     The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).

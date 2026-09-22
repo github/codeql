@@ -35,6 +35,8 @@ module Generated {
   class StmtList extends Synth::TStmtList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "StmtList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this statement list (0-based).
      */

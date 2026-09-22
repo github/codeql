@@ -22,66 +22,80 @@ module DataFlowInput implements InputSig<Location> {
   //
   // Parameter, argument, return, and out nodes and their positions/kinds
   //
-  class ParameterNode extends Node {
-    ParameterNode() { none() } // TODO
-  }
-
-  class ArgumentNode extends Node {
-    ArgumentNode() { none() } // TODO
-  }
-
   class ReturnNode extends Node {
-    ReturnNode() { none() } // TODO
+    ReturnNode() {
+      // TODO: Handle short-hand returns such as `func foo() -> Int { 5 }`
+      this.asExpr() = any(ReturnExpr r).getValue()
+    }
 
-    ReturnKind getKind() { none() } // TODO
+    ReturnKind getKind() { exists(result) }
   }
 
   class OutNode extends Node {
-    OutNode() { none() } // TODO
+    OutNode() { this.asExpr() instanceof CallExpr }
   }
 
   class ReturnKind = Unit;
 
-  class ParameterPosition extends Void {
-    ParameterPosition() { none() } // TODO
-
-    bindingset[this]
-    string toString() { none() } // TODO
-  }
-
-  class ArgumentPosition extends Void {
-    ArgumentPosition() { none() } // TODO
-
-    bindingset[this]
-    string toString() { none() } // TODO
-  }
-
-  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { none() } // TODO
-
+  import ParameterPositions
   //
   // Calls and callables
   //
-  class DataFlowCall extends Void {
-    Location getLocation() { none() } // TODO
+  import DataFlowCall
+  import DataFlowCallable
+  import CallGraph
 
-    DataFlowCallable getEnclosingCallable() { none() } // TODO
+  DataFlowCallable nodeGetEnclosingCallable(Node node) { result = node.getEnclosingCallableEx() }
+
+  private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosition pos) {
+    exists(Parameter param |
+      p.asExpr() = param.getPattern() and
+      c.asSourceCallable() = param.getEnclosingCallable()
+    |
+      pos.asPositional() = param.getPositionalIndex()
+      or
+      pos.asNamed() = param.getExternalName()
+    )
+    or
+    p.isReceiverParameterEx(c) and
+    pos.isReceiver()
   }
 
-  class DataFlowCallable = Callable; // TODO: Use newtype
-
-  DataFlowCallable viableCallable(DataFlowCall c) { none() } // TODO
-
-  DataFlowCallable nodeGetEnclosingCallable(Node node) { result = node.getEnclosingCallable() }
+  class ParameterNode extends Node {
+    ParameterNode() { isParameterNodeImpl(this, _, _) }
+  }
 
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
-    none() // TODO
+    // This predicate is needed to implement the signature without empty recursion through ParameterNode
+    isParameterNodeImpl(p, c, pos)
+  }
+
+  private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition pos) {
+    exists(Argument arg |
+      n.asExpr() = arg.getValue() and
+      call.asExplicitCall().getAnArgument() = arg
+    |
+      pos.asPositional() = arg.getPositionalIndex()
+      or
+      pos.asNamed() = arg.getName()
+    )
+    or
+    n.isReceiverArgumentEx(call) and
+    pos.isReceiver()
+  }
+
+  class ArgumentNode extends Node {
+    ArgumentNode() { isArgumentNodeImpl(this, _, _) }
   }
 
   predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
-    none() // TODO
+    // This predicate is needed to implement the signature without empty recursion through ArgumentNode
+    isArgumentNodeImpl(n, call, pos)
   }
 
-  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { none() } // TODO
+  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
+    result.asExpr() = call.asExplicitCall() and exists(kind)
+  }
 
   //
   // Post-update nodes

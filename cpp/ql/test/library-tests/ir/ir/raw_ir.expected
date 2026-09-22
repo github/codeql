@@ -19777,6 +19777,24 @@ ir.cpp:
 # 2919|     v2919_11(void)          = AliasedUse                               : ~m?
 # 2919|     v2919_12(void)          = ExitFunction                             : 
 
+# 2927| void test()
+# 2927|   Block 0
+# 2927|     v2927_1(void)                  = EnterFunction                : 
+# 2927|     mu2927_2(unknown)              = AliasedDefinition            : 
+# 2927|     mu2927_3(unknown)              = InitializeNonLocal           : 
+# 2928|     r2928_1(glval<unknown>)        = FunctionAddress[get_wrapper] : 
+# 2928|     r2928_2(PointerWrapper)        = Call[get_wrapper]            : func:r2928_1
+# 2928|     mu2928_3(unknown)              = ^CallSideEffect              : ~m?
+# 2928|     r2928_4(glval<PointerWrapper>) = VariableAddress[#temp2928:3] : 
+# 2928|     mu2928_5(PointerWrapper)       = Store[#temp2928:3]           : &:r2928_4, r2928_2
+# 2928|     r2928_6(glval<Point>)          = FieldAddress[point]          : r2928_4
+# 2928|     r2928_7(glval<int>)            = FieldAddress[x]              : r2928_6
+# 2928|     r2928_8(int)                   = Load[?]                      : &:r2928_7, ~m?
+# 2929|     v2929_1(void)                  = NoOp                         : 
+# 2927|     v2927_4(void)                  = ReturnVoid                   : 
+# 2927|     v2927_5(void)                  = AliasedUse                   : ~m?
+# 2927|     v2927_6(void)                  = ExitFunction                 : 
+
 ir23.cpp:
 #    1| bool consteval_1()
 #    1|   Block 0

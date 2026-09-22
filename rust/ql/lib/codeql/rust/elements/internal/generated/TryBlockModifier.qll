@@ -21,6 +21,8 @@ module Generated {
   class TryBlockModifier extends Synth::TTryBlockModifier, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "TryBlockModifier" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Holds if this try block modifier is try.
      */

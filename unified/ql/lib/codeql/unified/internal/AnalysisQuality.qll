@@ -1,6 +1,9 @@
 private import unified
 private import codeql.util.ReportStats
 private import codeql.unified.internal.NameBinding
+private import codeql.unified.internal.dataflow.DataFlowCall
+private import codeql.unified.internal.dataflow.DataFlowCallable
+private import codeql.unified.internal.dataflow.CallGraph
 
 /** Stats about name nodes that static name binding could resolve. */
 module StaticNameResolutionStats implements EntityStatsSig {
@@ -87,3 +90,21 @@ module FilesCoveredByModuleManifestStats implements EntityStatsSig {
 
 module FilesCoveredByModuleManifestStatsReport =
   EntityReportStats<FilesCoveredByModuleManifestStats>;
+
+module CallGraphStats implements EntityStatsSig {
+  class Candidate extends CallExpr {
+    Candidate() { exists(DataFlowCall c | c.asExplicitCall() = this) }
+
+    DataFlowCall getDataFlowCall() { result.asExplicitCall() = this }
+
+    DataFlowCallable getTarget() { result = viableCallable(this.getDataFlowCall()) }
+
+    predicate isOk() { exists(this.getTarget()) }
+  }
+
+  string getOkText() { result = "calls with call target" }
+
+  string getNotOkText() { result = "calls with missing call target" }
+}
+
+module CallGraphStatsReport = EntityReportStats<CallGraphStats>;

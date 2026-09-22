@@ -1,0 +1,9 @@
+{
+  "swift.autoGenerateLaunchConfigurations": false,
+  "swift.disableAutoResolve": true,
+  "swift.disableSwiftPackageManagerIntegration": false,
+  "[swift]": {
+    "editor.defaultFormatter": "swiftlang.swift-vscode",
+    "editor.formatOnSave": true
+  }
+}

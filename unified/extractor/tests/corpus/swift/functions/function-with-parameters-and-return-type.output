@@ -69,28 +69,28 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "add"
+        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩⟨parameter⟩⟨return_type⟩"
+          name_node: identifier "add" source="add"
           parameter:
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Int"
-              pattern: identifier "a"
-            parameter
-              external_name_node: identifier "_"
-              type: identifier "Int"
-              pattern: identifier "b"
-          return_type: identifier "Int"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩,"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "a" source="a"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "b" source="b"
+          return_type: identifier "Int" source="Int"
           body:
-            block
+            block source="func add(_ a: Int, _ b: Int) -> Int {\n  ⟨stmt⟩\n}"
               stmt:
-                return_expr
+                return_expr source="return ⟨value⟩"
                   value:
-                    binary_expr
-                      left: identifier "a"
-                      operator: infix_operator "+"
-                      right: identifier "b"
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "a" source="a"
+                      operator: infix_operator "+" source="+"
+                      right: identifier "b" source="b"

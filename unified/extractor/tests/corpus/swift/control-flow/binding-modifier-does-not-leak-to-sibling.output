@@ -84,28 +84,28 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩\n⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern: identifier "x"
-          value: int_literal "1"
-        switch_expr
-          value: identifier "y"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "x" source="x"
+          value: int_literal "1" source="1"
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "y" source="y"
           case:
-            switch_case
-              pattern: identifier "someConstant"
+            switch_case source="⟨body⟩⟨pattern⟩"
+              pattern: identifier "someConstant" source="someConstant"
               body:
-                block
+                block source="case someConstant:\n  ⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"matched\""
-            switch_case
+                        argument source="⟨value⟩"
+                          value: string_literal "\"matched\"" source="\"matched\""
+            switch_case source="⟨body⟩"
               body:
-                block
-                  stmt: break_expr "break"
+                block source="default:\n  ⟨stmt⟩"
+                  stmt: break_expr "break" source="break"

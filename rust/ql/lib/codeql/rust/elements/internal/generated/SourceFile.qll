@@ -29,6 +29,8 @@ module Generated {
   class SourceFile extends Synth::TSourceFile, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "SourceFile" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this source file (0-based).
      */

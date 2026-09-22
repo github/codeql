@@ -124,49 +124,50 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩\n⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern: identifier "values"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "values" source="values"
           value:
-            call_expr
+            call_expr source="⟨callee⟩"
               callee:
-                generic_type_expr
-                  base: identifier "Array"
+                generic_type_expr source="⟨base⟩⟨type_argument⟩"
+                  base: identifier "Array" source="[Result<Void>]()"
                   type_argument:
-                    generic_type_expr
-                      base: identifier "Result"
-                      type_argument: identifier "Void"
-        variable_declaration
-          modifier: modifier "let"
-          pattern: identifier "initialized"
+                    generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                      base: identifier "Result" source="Result"
+                      type_argument: identifier "Void" source="Void"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "initialized" source="initialized"
           value:
-            call_expr
+            call_expr source="⟨argument⟩⟨callee⟩⟨argument⟩"
               callee:
-                generic_type_expr
-                  base: identifier "Array"
+                generic_type_expr source="⟨base⟩⟨type_argument⟩"
+                  base: identifier "Array" source="[Result<Void>](unsafeUninitializedCapacity: 1) { _, count in\n\tcount = 0\n}"
                   type_argument:
-                    generic_type_expr
-                      base: identifier "Result"
-                      type_argument: identifier "Void"
+                    generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                      base: identifier "Result" source="Result"
+                      type_argument: identifier "Void" source="Void"
               argument:
-                argument
-                  name_node: identifier "unsafeUninitializedCapacity"
-                  value: int_literal "1"
-                argument
+                argument source="⟨name_node⟩: ⟨value⟩"
+                  name_node: identifier "unsafeUninitializedCapacity" source="unsafeUninitializedCapacity"
+                  value: int_literal "1" source="1"
+                argument source="[Result<Void>](unsafeUninitializedCapacity: 1) ⟨value⟩"
                   value:
-                    function_expr
+                    function_expr source="⟨body⟩⟨parameter⟩⟨parameter⟩"
                       parameter:
-                        parameter
-                          pattern: identifier "_"
-                        parameter
-                          pattern: identifier "count"
+                        parameter source="⟨pattern⟩,"
+                          pattern: identifier "_" source="_"
+                        parameter source="⟨pattern⟩"
+                          pattern: identifier "count" source="count"
                       body:
-                        block
+                        block source="{ _, count in\n\t⟨stmt⟩\n}"
                           stmt:
-                            assign_expr
-                              target: identifier "count"
-                              value: int_literal "0"
+                            binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                              left: identifier "count" source="count"
+                              operator: infix_operator "=" source="="
+                              right: int_literal "0" source="0"

@@ -34,15 +34,15 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern: identifier "x"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "x" source="x"
           type:
-            generic_type_expr
-              base: identifier "Optional"
-              type_argument: identifier "Int"
-          value: builtin_expr "nil"
+            generic_type_expr source="⟨type_argument⟩⟨base⟩"
+              base: identifier "Optional" source="Int?"
+              type_argument: identifier "Int" source="Int"
+          value: builtin_expr "nil" source="nil"

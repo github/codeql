@@ -35,16 +35,16 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern: identifier "result"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "result" source="result"
           value:
-            unary_expr
+            unary_expr source="⟨operator⟩⟨operand⟩"
               operand:
-                call_expr
-                  callee: identifier "foo"
-              operator: prefix_operator "try!"
+                call_expr source="⟨callee⟩()"
+                  callee: identifier "foo" source="foo"
+              operator: prefix_operator "try!" source="try! foo()"

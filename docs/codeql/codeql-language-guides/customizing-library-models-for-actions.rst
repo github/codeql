@@ -83,3 +83,22 @@ To allow any Action from the publisher ``octodemo``, such as ``octodemo/3rd-part
 3. Ensure that the model pack is included in your CodeQL analysis.
 
 By following these steps, you will add ``octodemo`` to the list of trusted Action publishers, and the query will no longer generate security alerts for unpinned tags from this publisher.  For more information, see `Extending CodeQL coverage with CodeQL model packs in default setup <https://docs.github.com/en/code-security/code-scanning/managing-your-code-scanning-configuration/editing-your-configuration-of-default-setup#extending-codeql-coverage-with-codeql-model-packs-in-default-setup>`_ and `Creating and working with CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack>`_.
+
+Example: Remove a trusted Actions publisher for the ``actions/unpinned-tag`` query
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+GitHub's own organizations (``actions``, ``github`` and ``advanced-security``) are trusted by default. If you want unpinned tags for these first-party Actions to be reported as well, you can remove an owner from the trusted list by adding an entry prefixed with ``!``. A ``!`` entry always takes precedence over a plain entry for the same owner.
+
+To distrust the first-party ``github`` owner, add a data extension file with the following content:
+
+.. code-block:: yaml
+
+   extensions:
+     - addsTo:
+         pack: codeql/actions-all
+         extensible: trustedActionsOwnerDataModel
+       data:
+         - ["!github"]
+
+With this in place, the query will once again report unpinned tags for Actions published by ``github``.
+

@@ -1,0 +1,184 @@
+class Base {
+  var value = 0
+
+  func update() {}
+}
+
+class Derived: Base {
+  override func update() {
+    _ = super.value
+    super.update()
+  }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Base"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "0"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "value"
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                      name: identifier "update"
+                      modifiers:
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                      funcKeyword: func
+          modifiers:
+          classKeyword: class
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Derived"
+          inheritanceClause:
+            inheritanceClause
+              colon: :
+              inheritedTypes:
+                inheritedType
+                  type:
+                    identifierType
+                      name: identifier "Base"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                            codeBlockItem
+                              item:
+                                infixOperatorExpr
+                                  operator:
+                                    assignmentExpr
+                                      equal: =
+                                  leftOperand:
+                                    discardAssignmentExpr
+                                      wildcard: _
+                                  rightOperand:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "value"
+                                      base:
+                                        superExpr
+                                          superKeyword: super
+                            codeBlockItem
+                              item:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "update"
+                                      base:
+                                        superExpr
+                                          superKeyword: super
+                      name: identifier "update"
+                      modifiers:
+                        declModifier
+                          name: override
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                      funcKeyword: func
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n\n⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n\n  ⟨member⟩\n}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "Base" source="Base"
+          member:
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+              modifier: modifier "var" source="var"
+              pattern: identifier "value" source="value"
+              value: int_literal "0" source="0"
+            function_declaration source="⟨body⟩⟨name_node⟩"
+              name_node: identifier "update" source="update"
+              body: block "func update() {}" source="func update() {}"
+        class_like_declaration source="⟨modifier⟩⟨base_type⟩⟨name_node⟩⟨member⟩"
+          modifier: modifier "class" source="class"
+          name_node: identifier "Derived" source="Derived"
+          base_type:
+            base_type source="class Derived: ⟨type⟩ {\n  override func update() {\n    _ = super.value\n    super.update()\n  }\n}"
+              type: identifier "Base" source="Base"
+          member:
+            function_declaration source="⟨modifier⟩⟨body⟩⟨name_node⟩"
+              modifier: modifier "override" source="override"
+              name_node: identifier "update" source="update"
+              body:
+                block source="override func update() {\n    ⟨stmt⟩\n    ⟨stmt⟩\n  }"
+                  stmt:
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "_" source="_"
+                      operator: infix_operator "=" source="="
+                      right:
+                        member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                          base: super_expr "super" source="super"
+                          member_name_node: identifier "value" source="value"
+                    call_expr source="⟨callee⟩()"
+                      callee:
+                        member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                          base: super_expr "super" source="super"
+                          member_name_node: identifier "update" source="update"

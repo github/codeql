@@ -31,6 +31,8 @@ module Generated {
   class AsmOperandNamed extends Synth::TAsmOperandNamed, AsmPieceImpl::AsmPiece {
     override string getAPrimaryQlClass() { result = "AsmOperandNamed" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the asm operand of this asm operand named, if it exists.
      */

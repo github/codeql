@@ -1,8 +1,37 @@
 private import unified
 private import AllDataFlow
+private import codeql.unified.internal.LocalNameBinding
 
 predicate step(Node node1, Step step, Node node2) {
   any(DataFlowPlugin p).step(node1, step, node2)
+  or
+  exists(Callable callable |
+    node1.isReceiverParameter(callable) and
+    step.value() and
+    node2.isLocalVariableWrite(callable, getImplicitReceiverVariable(callable))
+  )
+  or
+  exists(CallExpr call, Expr receiverExpr |
+    receiverExpr = call.getCallee().(MemberAccessExpr).getBase()
+  |
+    node1.isResultValue(receiverExpr) and
+    step.value() and
+    node2.isReceiverArgument(call)
+    or
+    node1.isReceiverPostUpdate(call) and
+    step.value() and
+    node2.isPostUpdate(receiverExpr)
+  )
+  or
+  exists(CallExpr call, UnqualifiedMemberAccess callee | callee = call.getCallee() |
+    node1.isLocalVariableRead(callee, callee.getImplicitQualifierVariable()) and
+    step.value() and
+    node2.isReceiverArgument(call)
+    or
+    node1.isReceiverPostUpdate(call) and
+    step.value() and
+    node2.isLocalVariablePostUpdate(callee, callee.getImplicitQualifierVariable())
+  )
   or
   exists(VariableDeclaration decl |
     node1.isResultValue(decl.getValue()) and
@@ -12,6 +41,14 @@ predicate step(Node node1, Step step, Node node2) {
   or
   exists(AssignExpr assign |
     node1.isResultValue(assign.getValue()) and
+    step.value() and
+    node2.isIncomingValue(assign.getTarget())
+  )
+  or
+  // For compound assignments, the result of the expression represents the result of the operator.
+  // Make it flow to the target of the assignment.
+  exists(CompoundAssignExpr assign |
+    node1.isResultValue(assign) and
     step.value() and
     node2.isIncomingValue(assign.getTarget())
   )

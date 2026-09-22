@@ -33,6 +33,8 @@ module Generated {
   class WherePred extends Synth::TWherePred, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "WherePred" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the for binder of this where pred, if it exists.
      */

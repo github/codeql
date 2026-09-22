@@ -131,8 +131,6 @@ pub fn trees(input: TokenStream) -> TokenStream {
 ///     (output_template)
 /// )
 ///
-/// // Shorthand: captures become fields on the output node
-/// rule!((query ...) => output_kind)
 /// ```
 ///
 /// Captures become Rust variables automatically:

@@ -129,13 +129,6 @@ fn member_chain(
     result
 }
 
-/// Compound-assignment operator spellings (`+=`, `<<=`, ...). Used to tell a
-/// compound assignment from an ordinary binary application, both of which
-/// arrive as a `binaryOperator`-based `infixOperatorExpr`.
-const COMPOUND_ASSIGN_OPS: &[&str] = &[
-    "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "|=", "^=", "&+=", "&-=", "&*=",
-];
-
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
     vec![
         // ---- Top-level ----
@@ -243,29 +236,21 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // operator leaf. Used by `infixOperatorExpr` (folded) and `sequenceExpr`
         // (unresolved).
         rule!((binaryOperatorExpr operator: @op) => (infix_operator #{op})),
-        // Compound assignment (`x += y`) vs. an ordinary binary application
-        // (`a + b`): both are `binaryOperator`-based `infixOperatorExpr`s,
-        // distinguishable only by the operator's spelling. The query engine
-        // can't match on token text, so a small Rust block reads the spelling
-        // and routes to `compound_assign_expr` or `binary_expr`. The operator
-        // is captured raw (`@@op`) to read its spelling.
+        // A `binaryOperator`-based `infixOperatorExpr` represents both ordinary
+        // binary applications (`a + b`) and compound assignments (`x += y`).
+        // Both have the same target AST shape; the QL library distinguishes
+        // assignments by the operator spelling.
         rule!(
             (infixOperatorExpr leftOperand: @l operator: (binaryOperatorExpr) @@op rightOperand: @r)
             =>
-            expr {
-                if COMPOUND_ASSIGN_OPS.contains(&ctx.source_text(op).as_str()) {
-                    tree!((compound_assign_expr target: {l} operator: (infix_operator #{op}) value: {r}))
-                } else {
-                    tree!((binary_expr left: {l} operator: (infix_operator #{op}) right: {r}))
-                }
-            }
+            (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})
         ),
-        // Plain assignment (`x = y`). In a folded chain the `=` is an
-        // `assignmentExpr` node (distinct from other operators), matched by kind.
+        // Plain assignment (`x = y`). In a folded chain the `=` is represented
+        // by an `assignmentExpr` node rather than a `binaryOperatorExpr`.
         rule!(
-            (infixOperatorExpr leftOperand: @l operator: (assignmentExpr) rightOperand: @r)
+            (infixOperatorExpr leftOperand: @l operator: (assignmentExpr) @op rightOperand: @r)
             =>
-            (assign_expr target: {l} value: {r})
+            (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})
         ),
         // In an unresolved `sequenceExpr` (below) the operator positions are not
         // only `binaryOperatorExpr`s: a plain assignment (`=`), an `as`/`is` cast
@@ -611,26 +596,31 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // A function parameter. With two names (`firstName`+`secondName`) the
         // first is the external argument label and the second the internal name;
-        // with one name it is just the internal name. The declared type is
-        // emitted; the default value is optional.
+        // with one name it is both the external and internal name.
         rule!(
             (functionParameter
                 firstName: @@first
-                secondName: _? @@second
+                secondName: @@second
                 type: @ty
                 defaultValue: (initializerClause value: @val)?)
             =>
-            parameter {
-                let (external, name) = match second {
-                    Some(second) => (Some(tree!((identifier #{first}))), second),
-                    None => (None, first),
-                };
-                tree!((parameter
-                    external_name_node: {external}
-                    pattern: (identifier #{name})
-                    type: {ty}
-                    default: {val}))
-            }
+            (parameter
+                external_name_node: (identifier #{first})
+                pattern: (identifier #{second})
+                type: {ty}
+                default: {val})
+        ),
+        rule!(
+            (functionParameter
+                firstName: @@first
+                type: @ty
+                defaultValue: (initializerClause value: @val)?)
+            =>
+            (parameter
+                external_name_node: (identifier #{first}) // duplicate the parameter name
+                pattern: (identifier #{first})
+                type: {ty}
+                default: {val})
         ),
         // Swift's `[T](...)` array-type constructor syntax is parsed as a call
         // whose callee is an `arrayExpr` containing `T`. For a generic `T`,
@@ -1059,8 +1049,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // becomes a `modifier`; its source text is the modifier spelling.
         rule!((attribute) @m => (modifier #{m})),
         rule!((declModifier) @m => (modifier #{m})),
-        // A `super` expression.
-        rule!((superExpr) => (super_expr)),
+        // Preserve the `super` keyword as a dedicated expression, normally used
+        // as the base of a member access (`super.foo`).
+        rule!((superExpr superKeyword: @keyword) => (super_expr #{keyword})),
         // Type expressions. A generic type applied with explicit arguments
         // (`Set<Int>`) becomes a `generic_type_expr` whose `base` is the type
         // name and whose `type_argument`s are the (structured) arguments — the
@@ -1289,6 +1280,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // nest under `signature` (as for `functionDecl`).
         rule!(
             (initializerDecl
+                initKeyword: @initK
                 modifiers: _* @mods
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params))
@@ -1296,6 +1288,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (constructor_declaration
                 modifier: {mods}
+                name_node: (identifier #{initK})
                 parameter: {params}
                 body: (block stmt: {body_stmts}))
         ),

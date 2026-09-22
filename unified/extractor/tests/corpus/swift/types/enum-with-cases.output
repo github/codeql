@@ -61,23 +61,23 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "enum"
-          name_node: identifier "Direction"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨member⟩\n  case ⟨member⟩\n  case ⟨member⟩\n  case ⟨member⟩\n}"
+          modifier: modifier "enum" source="enum"
+          name_node: identifier "Direction" source="Direction"
           member:
-            variable_declaration
-              modifier: modifier "enum_case"
-              pattern: identifier "north"
-            variable_declaration
-              modifier: modifier "enum_case"
-              pattern: identifier "south"
-            variable_declaration
-              modifier: modifier "enum_case"
-              pattern: identifier "east"
-            variable_declaration
-              modifier: modifier "enum_case"
-              pattern: identifier "west"
+            variable_declaration source="⟨modifier⟩⟨pattern⟩"
+              modifier: modifier "enum_case" source="north"
+              pattern: identifier "north" source="north"
+            variable_declaration source="⟨modifier⟩⟨pattern⟩"
+              modifier: modifier "enum_case" source="south"
+              pattern: identifier "south" source="south"
+            variable_declaration source="⟨modifier⟩⟨pattern⟩"
+              modifier: modifier "enum_case" source="east"
+              pattern: identifier "east" source="east"
+            variable_declaration source="⟨modifier⟩⟨pattern⟩"
+              modifier: modifier "enum_case" source="west"
+              pattern: identifier "west" source="west"

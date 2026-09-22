@@ -474,3 +474,11 @@ class PotentialLocalNameAccess extends IdentifierExpr {
   /** Holds if this is one of the binding sites for a name, such as the `x` in `let x = 123`. */
   predicate isBindingSite() { this instanceof NameBinding }
 }
+
+/** Gets the implicitly-declared variable through which the given callable refers to its receiver. */
+LocalVariable getImplicitReceiverVariable(Callable callable) {
+  exists(string name |
+    name = any(NameBindingPlugin p).getImplicitReceiverParameterName(callable) and
+    result.(LocalNameBindingOutput::ImplicitLocal).hasNameAndScope(name, callable)
+  )
+}

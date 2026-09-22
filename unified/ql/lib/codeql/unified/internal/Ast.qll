@@ -183,23 +183,6 @@ module Unified {
     final override F::AstNode getAFieldOrChild() { unified_array_literal_element(this, _, result) }
   }
 
-  /** A class representing `assign_expr` nodes. */
-  class AssignExpr extends @unified_assign_expr, F::Expr {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "AssignExpr" }
-
-    /** Gets the node corresponding to the field `target`. */
-    final F::Expr getTarget() { unified_assign_expr_def(this, result, _) }
-
-    /** Gets the node corresponding to the field `value`. */
-    final F::Expr getValue() { unified_assign_expr_def(this, _, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_assign_expr_def(this, result, _) or unified_assign_expr_def(this, _, result)
-    }
-  }
-
   /** A class representing `associated_type_declaration` nodes. */
   class AssociatedTypeDeclaration extends @unified_associated_type_declaration, F::Member {
     /** Gets the name of the primary QL class for this element. */
@@ -465,28 +448,6 @@ module Unified {
       unified_class_like_declaration_name_node(this, result) or
       unified_class_like_declaration_type_constraint(this, _, result) or
       unified_class_like_declaration_type_parameter(this, _, result)
-    }
-  }
-
-  /** A class representing `compound_assign_expr` nodes. */
-  class CompoundAssignExpr extends @unified_compound_assign_expr, F::Expr {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "CompoundAssignExpr" }
-
-    /** Gets the node corresponding to the field `operator`. */
-    final F::InfixOperator getOperator() { unified_compound_assign_expr_def(this, result, _, _) }
-
-    /** Gets the node corresponding to the field `target`. */
-    final F::Expr getTarget() { unified_compound_assign_expr_def(this, _, result, _) }
-
-    /** Gets the node corresponding to the field `value`. */
-    final F::Expr getValue() { unified_compound_assign_expr_def(this, _, _, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_compound_assign_expr_def(this, result, _, _) or
-      unified_compound_assign_expr_def(this, _, result, _) or
-      unified_compound_assign_expr_def(this, _, _, result)
     }
   }
 
@@ -1576,10 +1537,6 @@ module Unified {
       or
       result = node.(ArrayLiteral).getElement(i) and name = "getElement"
       or
-      result = node.(AssignExpr).getTarget() and i = -1 and name = "getTarget"
-      or
-      result = node.(AssignExpr).getValue() and i = -1 and name = "getValue"
-      or
       result = node.(AssociatedTypeDeclaration).getBound() and i = -1 and name = "getBound"
       or
       result = node.(AssociatedTypeDeclaration).getModifier(i) and name = "getModifier"
@@ -1633,12 +1590,6 @@ module Unified {
       result = node.(ClassLikeDeclaration).getTypeConstraint(i) and name = "getTypeConstraint"
       or
       result = node.(ClassLikeDeclaration).getTypeParameter(i) and name = "getTypeParameter"
-      or
-      result = node.(CompoundAssignExpr).getOperator() and i = -1 and name = "getOperator"
-      or
-      result = node.(CompoundAssignExpr).getTarget() and i = -1 and name = "getTarget"
-      or
-      result = node.(CompoundAssignExpr).getValue() and i = -1 and name = "getValue"
       or
       result = node.(ConditionalPattern).getCondition() and i = -1 and name = "getCondition"
       or
@@ -1879,8 +1830,6 @@ module UnifiedFinal {
 
   final class ArrayLiteral = F::ArrayLiteral;
 
-  final class AssignExpr = F::AssignExpr;
-
   final class AssociatedTypeDeclaration = F::AssociatedTypeDeclaration;
 
   final class BaseType = F::BaseType;
@@ -1906,8 +1855,6 @@ module UnifiedFinal {
   final class CatchClause = F::CatchClause;
 
   final class ClassLikeDeclaration = F::ClassLikeDeclaration;
-
-  final class CompoundAssignExpr = F::CompoundAssignExpr;
 
   final class ConditionalPattern = F::ConditionalPattern;
 

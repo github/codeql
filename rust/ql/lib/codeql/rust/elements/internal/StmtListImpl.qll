@@ -27,8 +27,6 @@ module Impl {
    * ```
    */
   class StmtList extends Generated::StmtList {
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets the `index`th statement or expression of this statement list (0-based).
      *

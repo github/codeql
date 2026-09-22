@@ -36,17 +36,17 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
           pattern:
-            tuple_expr
+            tuple_expr source="(⟨element⟩ ⟨element⟩)"
               element:
-                argument
-                  value: identifier "a"
-                argument
-                  value: identifier "b"
-          value: identifier "pair"
+                argument source="⟨value⟩,"
+                  value: identifier "a" source="a"
+                argument source="⟨value⟩"
+                  value: identifier "b" source="b"
+          value: identifier "pair" source="pair"

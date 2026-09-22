@@ -25,8 +25,6 @@ module Impl {
    * ```
    */
   class DynTraitTypeRepr extends Generated::DynTraitTypeRepr {
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /** Gets the trait that this trait object refers to. */
     pragma[nomagic]
     Trait getTrait() {

@@ -29,6 +29,8 @@ module Generated {
   class YieldExpr extends Synth::TYieldExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "YieldExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this yield expression (0-based).
      */

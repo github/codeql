@@ -155,68 +155,68 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        switch_expr
-          value: identifier "event"
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "event" source="event"
           case:
-            switch_case
+            switch_case source="⟨body⟩⟨pattern⟩"
               pattern:
-                expr_pattern
-                  modifier: modifier "let"
+                expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                  modifier: modifier "let" source="let"
                   expr:
-                    call_expr
+                    call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
                       callee:
-                        member_access_expr
-                          base: inferred_type_expr "."
-                          member_name_node: identifier "received"
+                        member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                          base: inferred_type_expr "." source="."
+                          member_name_node: identifier "received" source="received"
                       argument:
-                        argument
+                        argument source="⟨value⟩"
                           value:
-                            call_expr
+                            call_expr source="⟨callee⟩(⟨argument⟩),"
                               callee:
-                                member_access_expr
-                                  base: inferred_type_expr "."
-                                  member_name_node: identifier "some"
+                                member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                                  base: inferred_type_expr "." source="."
+                                  member_name_node: identifier "some" source="some"
                               argument:
-                                argument
-                                  value: identifier "value"
-                        argument
-                          value: identifier "timestamp"
+                                argument source="⟨value⟩"
+                                  value: identifier "value" source="value"
+                        argument source="⟨value⟩"
+                          value: identifier "timestamp" source="timestamp"
               body:
-                block
+                block source="case let .received(.some(value), timestamp):\n  ⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: identifier "value"
-                        argument
-                          value: identifier "timestamp"
-            switch_case
+                        argument source="⟨value⟩,"
+                          value: identifier "value" source="value"
+                        argument source="⟨value⟩"
+                          value: identifier "timestamp" source="timestamp"
+            switch_case source="⟨body⟩⟨pattern⟩"
               pattern:
-                call_expr
+                call_expr source="⟨callee⟩(⟨argument⟩)"
                   callee:
-                    member_access_expr
-                      base: identifier "Type"
-                      member_name_node: identifier "some"
+                    member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                      base: identifier "Type" source="Type"
+                      member_name_node: identifier "some" source="some"
                   argument:
-                    argument
+                    argument source="⟨value⟩"
                       value:
-                        expr_pattern
-                          modifier: modifier "let"
-                          expr: identifier "value"
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "value" source="value"
               body:
-                block
+                block source="case Type.some(let value):\n  ⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: identifier "value"
-            switch_case
+                        argument source="⟨value⟩"
+                          value: identifier "value" source="value"
+            switch_case source="⟨body⟩"
               body:
-                block
-                  stmt: break_expr "break"
+                block source="default:\n  ⟨stmt⟩"
+                  stmt: break_expr "break" source="break"

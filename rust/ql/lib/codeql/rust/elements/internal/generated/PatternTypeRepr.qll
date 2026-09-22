@@ -28,6 +28,8 @@ module Generated {
   class PatternTypeRepr extends Synth::TPatternTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "PatternTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the pattern of this pattern type representation, if it exists.
      */

@@ -57,21 +57,21 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name_node: identifier "increment"
+        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩"
+          name_node: identifier "increment" source="increment"
           parameter:
-            parameter
-              external_name_node: identifier "_"
-              type: unsupported_node "inout Int"
-              pattern: identifier "x"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: unsupported_node "inout Int" source="inout Int"
+              pattern: identifier "x" source="x"
           body:
-            block
+            block source="func increment(_ x: inout Int) {\n  ⟨stmt⟩\n}"
               stmt:
-                compound_assign_expr
-                  target: identifier "x"
-                  operator: infix_operator "+="
-                  value: int_literal "1"
+                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                  left: identifier "x" source="x"
+                  operator: infix_operator "+=" source="+="
+                  right: int_literal "1" source="1"
