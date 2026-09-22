@@ -87,7 +87,7 @@ and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/gi
    `golang.org/x/crypto/ssh <https://pkg.go.dev/golang.org/x/crypto/ssh>`_, Network communicator
    `golang.org/x/net/websocket <https://pkg.go.dev/golang.org/x/net/websocket>`_, Network communicator
    `goproxy <https://github.com/elazarl/goproxy>`_, HTTP proxy library
-   `Gorilla mux <https://www.gorillatoolkit.org/pkg/mux>`_, HTTP request router and dispatcher
+   `Gorilla mux <https://github.com/gorilla/mux>`_, HTTP request router and dispatcher
    `Gorilla websocket <https://github.com/gorilla/websocket>`_, Network communicator
    `GORM <https://gorm.io/>`_, Database
    `GoWebsocket <https://github.com/sacOO7/gowebsocket>`_, Network communicator
