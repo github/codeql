@@ -648,27 +648,41 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `Array<T>` generic type constructor instead.
         rule!(
             (functionCallExpr
-                calledExpression: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                calledExpression: (arrayExpr
+                    elements: (arrayElement expression: (genericSpecializationExpr) @element)) @@array
                 arguments: _* @args
                 trailingClosure: @tc)
             =>
-            (call_expr
-                callee: (generic_type_expr
+            call_expr {
+                let callee = tree_at!(
+                    ctx,
+                    array,
+                    (generic_type_expr
                     base: (identifier "Array")
                     type_argument: {element})
-                argument: {args}
-                argument: (argument value: {tc}))
+                );
+                tree!((call_expr
+                    callee: {callee}
+                    argument: {args}
+                    argument: (argument value: {tc})))
+            }
         ),
         rule!(
             (functionCallExpr
-                calledExpression: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                calledExpression: (arrayExpr
+                    elements: (arrayElement expression: (genericSpecializationExpr) @element)) @@array
                 arguments: _* @args)
             =>
-            (call_expr
-                callee: (generic_type_expr
+            call_expr {
+                let callee = tree_at!(
+                    ctx,
+                    array,
+                    (generic_type_expr
                     base: (identifier "Array")
                     type_argument: {element})
-                argument: {args})
+                );
+                tree!((call_expr callee: {callee} argument: {args}))
+            }
         ),
         // A function/method call (`foo(1, 2)`). `calledExpression` is the callee
         // and `arguments` is an (elided) list of `labeledExpr`, each translated
@@ -739,14 +753,22 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // meaning as `Array<T>` rather than an array literal.
         rule!(
             (memberAccessExpr
-                base: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                base: (arrayExpr
+                    elements: (arrayElement expression: (genericSpecializationExpr) @element)) @@array
                 declName: (declReferenceExpr baseName: @member))
             =>
-            (member_access_expr
-                base: (generic_type_expr
-                    base: (identifier "Array")
-                    type_argument: {element})
-                member_name_node: (identifier #{member}))
+            member_access_expr {
+                let base = tree_at!(
+                    ctx,
+                    array,
+                    (generic_type_expr
+                        base: (identifier "Array")
+                        type_argument: {element})
+                );
+                tree!((member_access_expr
+                    base: {base}
+                    member_name_node: (identifier #{member})))
+            }
         ),
         rule!(
             (memberAccessExpr base: @base declName: (declReferenceExpr baseName: @member))

@@ -132,9 +132,9 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "values" source="values"
           value:
-            call_expr source="⟨callee⟩]()"
+            call_expr source="⟨callee⟩()"
               callee:
-                generic_type_expr source="[⟨type_argument⟩"
+                generic_type_expr source="[⟨type_argument⟩]"
                   base: identifier "Array" source=""
                   type_argument:
                     generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
@@ -144,9 +144,9 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "initialized" source="initialized"
           value:
-            call_expr source="⟨callee⟩](⟨argument⟩) ⟨argument⟩"
+            call_expr source="⟨callee⟩(⟨argument⟩) ⟨argument⟩"
               callee:
-                generic_type_expr source="[⟨type_argument⟩"
+                generic_type_expr source="[⟨type_argument⟩]"
                   base: identifier "Array" source=""
                   type_argument:
                     generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
