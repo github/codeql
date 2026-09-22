@@ -544,11 +544,20 @@ class SliceLit extends ArrayOrSliceLit {
 }
 
 /**
- * DEPRECATED: `ParenExpr` is no longer extracted. Parenthesized expressions are
- * transparent in the AST; the child expression takes the place of the parenthesized
- * expression directly.
+ * A parenthesized expression.
+ *
+ * Examples:
+ *
+ * ```go
+ * (x + y)
+ * ```
+ *
+ * Note that `ParenExpr` is no longer extracted - the child expression takes
+ * the place of the parenthesized expression directly. This class only exists
+ * for compatibility with old databases, and will be deprecated and removed in
+ * future.
  */
-deprecated class ParenExpr extends @parenexpr, Expr {
+class ParenExpr extends @parenexpr, Expr {
   /** Gets the expression between parentheses. */
   Expr getExpr() { result = this.getChildExpr(0) }
 
