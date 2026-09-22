@@ -890,7 +890,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (switch_case body: (block stmt: {body}))
         ),
         // A single case item unwraps to its pattern, possibly boxed in conditional_pattern
-        rule!((switchCaseItem pattern: @p whereClause: (whereClause condition: @cond)) => (conditional_pattern pattern: { p } condition: {cond})),
+        rule!(
+            (switchCaseItem
+                pattern: @p
+                whereClause: (whereClause condition: @cond))
+            =>
+            (conditional_pattern pattern: {p} condition: {cond})
+        ),
         rule!((switchCaseItem pattern: @p) => pattern { p }),
         // A pattern-matching condition (`if case let x = e`, `if case .foo(let x)
         // = e`) becomes a `pattern_guard_expr`: the matched pattern and the
@@ -1035,7 +1041,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 catch_clause: {catches})
         ),
         rule!(
-            (catchItem pattern: @pattern whereClause: (whereClause condition: @guard))
+            (catchItem
+                pattern: @pattern
+                whereClause: (whereClause condition: @guard))
             =>
             (conditional_pattern pattern: {pattern} condition: {guard})
         ),
@@ -1198,7 +1206,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         rule!(
-            (tupleTypeElement firstName: _? @@name type: @ty)
+            (tupleTypeElement
+                firstName: _? @@name
+                type: @ty)
             =>
             argument {
                 if ctx.in_function_type {
