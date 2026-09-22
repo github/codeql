@@ -154,10 +154,10 @@ struct ElementFromChainedConversion {
 
 void test_implicit_conversion() {
   Container<ElementFromImplicitConversion> container;
-  container.emplace(42); // $ MISSING: targets=element_conversion_value
-  container.emplace("abc"); // $ MISSING: targets=element_conversion_value
-  container.emplace(42, 0); // $ MISSING: targets=element_conversion_const_ref
-  container.emplace(42, 0, 0); // $ MISSING: targets=element_conversion_rref
+  container.emplace(42); // $ targets=element_conversion_value
+  container.emplace("abc"); // $ targets=element_conversion_value
+  container.emplace(42, 0); // $ targets=element_conversion_const_ref
+  container.emplace(42, 0, 0); // $ targets=element_conversion_rref
   container.emplace(42, 0, 0, 0); // no targets
   container.emplace(42, 0, 0, 0, 0); // no targets
 }
@@ -174,11 +174,11 @@ void test_implicit_conversion_input_references() {
   int value = 42;
   const int constValue = 42;
   volatile int volatileValue = 42;
-  container.emplace(value); // $ MISSING: targets=element_lvalue_conversion
+  container.emplace(value); // $ targets=element_lvalue_conversion
   container.emplace(42); // no targets
   container.emplace(constValue); // no targets
   container.emplace(volatileValue); // no targets
-  container.emplace(42, 0); // $ MISSING: targets=element_rvalue_conversion
+  container.emplace(42, 0); // $ targets=element_rvalue_conversion
   container.emplace(value, 0); // no targets
   container.emplace(static_cast<const int&&>(constValue), 0); // no targets
   container.emplace(static_cast<volatile int&&>(volatileValue), 0); // no targets
@@ -188,8 +188,8 @@ void test_implicit_conversion_limit() {
   Container<ElementFromChainedConversion> container;
   container.emplace(42); // no targets
   ImplicitConversion converted(42);
-  container.emplace(converted); // $ MISSING: targets=element_chained_conversion
-  container.emplace(42, 42); // $ MISSING: targets=element_two_conversions
+  container.emplace(converted); // $ targets=element_chained_conversion
+  container.emplace(42, 42); // $ targets=element_two_conversions
 
   Container<ElementFromImplicitConversion> references;
   references.emplace(converted, 0, 0); // no target
@@ -247,13 +247,13 @@ void test_value_conversion_operator() {
   ValueConversionOperator value;
   const ValueConversionOperator constValue;
   volatile ValueConversionOperator volatileValue;
-  container.emplace(value); // $ MISSING: targets=element_operator_value
-  container.emplace(ValueConversionOperator()); // $ MISSING: targets=element_operator_value
-  container.emplace(constValue); // no targets
-  container.emplace(volatileValue); // no targets
+  container.emplace(value); // $ targets=element_operator_value
+  container.emplace(ValueConversionOperator()); // $ targets=element_operator_value
+  container.emplace(constValue); // $ SPURIOUS: targets=element_operator_value
+  container.emplace(volatileValue); // $ SPURIOUS: targets=element_operator_value
   container.emplace(value, 0); // no targets
-  container.emplace(value, 0, 0); // $ MISSING: targets=element_operator_const_ref
-  container.emplace(value, 0, 0, 0); // $ MISSING: targets=element_operator_rref
+  container.emplace(value, 0, 0); // $ targets=element_operator_const_ref
+  container.emplace(value, 0, 0, 0); // $ targets=element_operator_rref
   container.emplace(value, 0, 0, 0, 0); // no targets
 }
 
@@ -262,27 +262,27 @@ void test_lvalue_conversion_operator() {
   LvalueConversionOperator value;
   const LvalueConversionOperator constValue;
   volatile LvalueConversionOperator volatileValue;
-  container.emplace(value); // $ MISSING: targets=element_operator_value
-  container.emplace(value, 0); // $ MISSING: targets=element_operator_lref
-  container.emplace(value, 0, 0); // $ MISSING: targets=element_operator_const_ref
+  container.emplace(value); // $ targets=element_operator_value
+  container.emplace(value, 0); // $ targets=element_operator_lref
+  container.emplace(value, 0, 0); // $ targets=element_operator_const_ref
   container.emplace(value, 0, 0, 0); // no targets
-  container.emplace(value, 0, 0, 0, 0); // $ MISSING: targets=element_operator_const_volatile_ref
-  container.emplace(value, ValueConversionOperator()); // $ MISSING: targets=element_operator_lref
-  container.emplace(LvalueConversionOperator()); // no targets
-  container.emplace(constValue); // no targets
-  container.emplace(volatileValue); // no targets
+  container.emplace(value, 0, 0, 0, 0); // $ targets=element_operator_const_volatile_ref
+  container.emplace(value, ValueConversionOperator()); // $ targets=element_operator_lref
+  container.emplace(LvalueConversionOperator()); // $ SPURIOUS: targets=element_operator_value
+  container.emplace(constValue);  // $ SPURIOUS: targets=element_operator_value
+  container.emplace(volatileValue); // $ SPURIOUS: targets=element_operator_value
 }
 
 void test_rvalue_conversion_operator() {
   Container<ElementFromConversionOperator> container;
   RvalueConversionOperator value;
   const RvalueConversionOperator constValue;
-  container.emplace(value); // no targets
-  container.emplace(static_cast<const RvalueConversionOperator&&>(constValue)); // no targets
-  container.emplace(RvalueConversionOperator()); // $ MISSING: targets=element_operator_value
+  container.emplace(value);  // $ SPURIOUS: targets=element_operator_value
+  container.emplace(static_cast<const RvalueConversionOperator&&>(constValue)); // $ SPURIOUS: targets=element_operator_value
+  container.emplace(RvalueConversionOperator()); // $ targets=element_operator_value
   container.emplace(RvalueConversionOperator(), 0); // no targets
-  container.emplace(RvalueConversionOperator(), 0, 0); // $ MISSING: targets=element_operator_const_ref
-  container.emplace(RvalueConversionOperator(), 0, 0, 0); // $ MISSING: targets=element_operator_rref
+  container.emplace(RvalueConversionOperator(), 0, 0); // $ targets=element_operator_const_ref
+  container.emplace(RvalueConversionOperator(), 0, 0, 0); // $ targets=element_operator_rref
   container.emplace(RvalueConversionOperator(), 0, 0, 0, 0); // no targets
 }
 
@@ -290,14 +290,14 @@ void test_conversion_operator_qualification() {
   Container<ElementFromConversionOperator> container;
   const ConstConversionOperator constValue;
   volatile ConstConversionOperator volatileValue;
-  container.emplace(constValue, 0, 0); // $ MISSING: targets=element_operator_const_ref
-  container.emplace(ConstConversionOperator(), 0, 0); // $ MISSING: targets=element_operator_const_ref
+  container.emplace(constValue, 0, 0); // $ targets=element_operator_const_ref
+  container.emplace(ConstConversionOperator(), 0, 0); // $ targets=element_operator_const_ref
   container.emplace(constValue, 0); // no targets
   container.emplace(constValue, 0, 0, 0); // no targets
-  container.emplace(volatileValue); // no targets
+  container.emplace(volatileValue); // $ targets=element_operator_value
 
   const volatile VolatileConversionOperator constVolatileValue;
-  container.emplace(constVolatileValue, 0, 0, 0, 0); // $ MISSING: targets=element_operator_const_volatile_ref
+  container.emplace(constVolatileValue, 0, 0, 0, 0); // $ targets=element_operator_const_volatile_ref
   container.emplace(constVolatileValue, 0, 0); // no targets
   container.emplace(constVolatileValue, 0); // no targets
 }
@@ -314,8 +314,8 @@ void test_conversion_operator_limit() {
 
 void test_array_conversion_operator() {
   Container<RefElement> container;
-  container.emplace(ArrayConversionOperator(), 42); // $ MISSING: targets=element_ref_const_char_ptr_const_ref_int
-  container.emplace(ArrayConversionOperator(), 0, 0); // no targets
+  container.emplace(ArrayConversionOperator(), 42); // $ targets=element_ref_const_char_ptr_const_ref_int
+  container.emplace(ArrayConversionOperator(), 0, 0); // $ SPURIOUS: targets=element_ref_pointer_rref
   container.emplace(ArrayConversionOperator(), 0, 0, 0); // no targets
 }
 
@@ -434,7 +434,7 @@ void test_inheritance_conversions() {
   downcast.emplace(base); // no targets
   downcast.emplace(&base, 0); // no targets
   Container<ElementFromConversionOperator> inherited;
-  inherited.emplace(derived); // $ MISSING: targets=element_operator_value
+  inherited.emplace(derived); // $ targets=element_operator_value
 }
 
 struct ElementFromStandardPointer {
