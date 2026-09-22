@@ -1,0 +1,15 @@
+| test.py:2:11:2:11 | UnaryExpr | UAdd |
+| test.py:4:11:4:13 | UnaryExpr | UAdd |
+| test.py:6:11:6:12 | UnaryExpr | UAdd |
+| test.py:8:11:8:11 | UnaryExpr | UAdd |
+| test.py:10:11:10:11 | UnaryExpr | UAdd |
+| test.py:12:11:12:14 | UnaryExpr | UAdd |
+| test.py:12:19:12:22 | UnaryExpr | UAdd |
+| test.py:12:27:12:30 | UnaryExpr | UAdd |
+| test.py:14:12:14:12 | UnaryExpr | UAdd |
+| test.py:14:16:14:18 | UnaryExpr | USub |
+| test.py:16:12:16:12 | UnaryExpr | UAdd |
+| test.py:16:19:16:21 | UnaryExpr | UAdd |
+| test.py:16:28:16:29 | UnaryExpr | UAdd |
+| test.py:18:11:18:11 | UnaryExpr | USub |
+| test.py:20:11:20:11 | UnaryExpr | USub |

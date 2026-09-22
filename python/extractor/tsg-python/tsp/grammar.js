@@ -426,7 +426,7 @@ module.exports = grammar({
 
     match_literal_pattern: $ => choice(
       seq(
-        optional(field('prefix_operator', '-')),
+        optional(field('prefix_operator', choice('-', '+'))),
         field('real', choice($.integer, $.float)),
         optional(seq(
           field('operator', choice('+', '-')),
