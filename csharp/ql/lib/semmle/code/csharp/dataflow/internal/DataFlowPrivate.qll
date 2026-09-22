@@ -560,7 +560,7 @@ module LocalFlow {
     or
     exists(AssignExpr ae | ae.getLeftOperand().(TupleExpr) = e2 and ae.getRightOperand() = e1)
     or
-    exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
+    exists(ControlFlowElement cfe | cfe = e2.(TuplePatternExpr).getPatternMatch() |
       cfe.(IsExpr).getExpr() = e1
       or
       exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1)
