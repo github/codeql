@@ -421,10 +421,10 @@ void test_inheritance_conversions() {
   const ConversionDerived constDerived{};
   ConversionBase base;
   Container<ElementFromBase> container;
-  container.emplace(derived); // $ MISSING: targets=element_base_value
-  container.emplace(derived, 0); // $ MISSING: targets=element_base_lref
-  container.emplace(constDerived, 0, 0); // $ MISSING: targets=element_base_const_ref
-  container.emplace(ConversionDerived(), 0, 0, 0); // $ MISSING: targets=element_base_rref
+  container.emplace(derived); // $ targets=element_base_value
+  container.emplace(derived, 0); // $ targets=element_base_lref
+  container.emplace(constDerived, 0, 0); // $ targets=element_base_const_ref
+  container.emplace(ConversionDerived(), 0, 0, 0); // $ targets=element_base_rref
   container.emplace(derived, 0, 0, 0); // no targets
   container.emplace(constDerived, 0); // no targets
   container.emplace(&derived, 0, 0, 0, 0); // $ MISSING: targets=element_base_pointer
