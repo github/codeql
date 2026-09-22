@@ -2,8 +2,9 @@ package main
 
 import (
 	"context"
-	oldcontext "golang.org/x/net/context"
 	"time"
+
+	oldcontext "golang.org/x/net/context"
 )
 
 func TaintStepTest_ContextWithCancel_B0I0O0(sourceCQL interface{}) interface{} {
