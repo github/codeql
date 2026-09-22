@@ -318,7 +318,7 @@ module AssignableInternal {
       TLocalVariableDefinition(LocalVariableDeclExpr lvde) {
         not lvde.hasInitializer() and
         not exists(getTupleSource(TTupleAssignmentDefinition(_, lvde))) and
-        not lvde instanceof TopLevelPatternDecl and
+        not lvde instanceof LocalVariablePatternDecl and
         not lvde.isOutArgument()
       } or
       TImplicitParameterDefinition(Parameter p) {
@@ -337,7 +337,7 @@ module AssignableInternal {
         default = p.getDefaultValue()
       } or
       TAddressOfDefinition(AddressOfExpr aoe) or
-      TPatternDefinition(TopLevelPatternDecl tlpd) or
+      TPatternDefinition(LocalVariablePatternDecl lvpd) or
       TAssignOperationDefinition(AssignOperation ao) {
         ao instanceof AssignCallExpr and not ao instanceof CompoundAssignmentOperatorCall
         or
@@ -750,22 +750,29 @@ module AssignableDefinitions {
   }
 
   /**
-   * A local variable definition in a pattern, for example `x is int i`.
+   * A local variable definition in a pattern, for example `int i` in `x is int i`.
    */
   class PatternDefinition extends AssignableDefinition, TPatternDefinition {
-    TopLevelPatternDecl tlpd;
+    LocalVariablePatternDecl lvpd;
 
-    PatternDefinition() { this = TPatternDefinition(tlpd) }
+    PatternDefinition() { this = TPatternDefinition(lvpd) }
 
     /** Gets the element matches against this pattern. */
-    PatternMatch getMatch() { result = tlpd.getMatch() }
+    PatternMatch getMatch() { result = lvpd.getMatch() }
 
     /** Gets the underlying local variable declaration. */
-    LocalVariableDeclExpr getDeclaration() { result = tlpd }
-
-    override Expr getSource() { result = this.getMatch().getExpr() }
+    LocalVariableDeclExpr getDeclaration() { result = lvpd }
 
     override string toString() { result = this.getDeclaration().toString() }
+  }
+
+  /**
+   * A local variable definition at the top level of a pattern.
+   */
+  class TopLevelPatternDefinition extends PatternDefinition {
+    TopLevelPatternDefinition() { lvpd.isTopLevel() }
+
+    override Expr getSource() { result = this.getMatch().getExpr() }
   }
 
   /**
