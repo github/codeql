@@ -1165,6 +1165,26 @@ private Type stripReference(Type unspecified) {
 }
 
 module ConstructorForwarding {
+  private import codeql.util.Boolean
+
+  private class ConvertingConstructor extends Constructor {
+    Type fromType;
+
+    ConvertingConstructor() {
+      not this.isFromUninstantiatedTemplate(_) and
+      not this.isExplicit() and
+      not this.isDeleted() and
+      not this instanceof CopyConstructor and
+      not this instanceof MoveConstructor and
+      fromType = this.getParameter(0).getUnderlyingType() and
+      forall(int index | index > 0 and exists(this.getParameter(index)) |
+        this.getParameter(index).hasInitializer()
+      )
+    }
+
+    Type getUnderlyingFromType() { result = fromType }
+  }
+
   private Type getForwardedArgumentType(Function forwarder, int start, int i) {
     forwards(forwarder, _, start) and
     i = [0 .. forwarder.getNumberOfParameters() - start - 1] and
@@ -1204,7 +1224,7 @@ module ConstructorForwarding {
   private predicate isUnderlyingType(Type type) { type = type.getUnderlyingType() }
 
   private newtype TTypeState =
-    MkTypeState(Type type, ValueCategory category) {
+    MkTypeState(Type type, ValueCategory category, Boolean conversionUsed) {
       not type instanceof Cpp::ReferenceType and
       not type instanceof FunctionReferenceType and
       isUnderlyingType(type)
@@ -1237,16 +1257,18 @@ module ConstructorForwarding {
   }
 
   private class TypeState extends TTypeState {
-    Type getType() { this = MkTypeState(result, _) }
+    Type getType() { this = MkTypeState(result, _, _) }
 
-    ValueCategory getCategory() { this = MkTypeState(_, result) }
+    ValueCategory getCategory() { this = MkTypeState(_, result, _) }
+
+    predicate hasNotUsedConversion() { this = MkTypeState(_, _, false) }
 
     string toString() { result = this.getType().toString() }
 
     predicate isSource(Type argType) {
       argType = getForwardedArgumentType(_, _, _) and
       exists(ValueCategory category |
-        this = MkTypeState(getValueType(argType, category), category)
+        this = MkTypeState(getValueType(argType, category), category, false)
       )
     }
 
@@ -1271,15 +1293,40 @@ module ConstructorForwarding {
   }
 
   private predicate arrayToPointerStep(TypeState argState, TypeState paramState) {
-    exists(Cpp::ArrayType array |
-      argState = MkTypeState(array, _) and
+    exists(Cpp::ArrayType array, boolean conversionUsed |
+      argState = MkTypeState(array, _, conversionUsed) and
+      paramState = MkTypeState(pointerType(array.getBaseType()), PRValue(), conversionUsed)
+    )
+  }
+
+  private predicate convertingConstructorStep(TypeState argState, TypeState paramState) {
+    exists(ConvertingConstructor constructor |
+      argState.hasNotUsedConversion() and
+      argState.matchesParameter(constructor.getUnderlyingFromType()) and
+      paramState = MkTypeState(constructor.getDeclaringType(), PRValue(), true)
+    )
+  }
+
+  private predicate conversionOperatorStep(TypeState argState, TypeState paramState) {
+    exists(ConversionOperator conversion, ValueCategory category |
+      not conversion.isFromUninstantiatedTemplate(_) and
+      not conversion.isExplicit() and
+      not conversion.isDeleted() and
+      argState.hasNotUsedConversion() and
+      conversion.getSourceType() =
+        argState.getType().stripTopLevelSpecifiers().(Class).getABaseClass*() and
       paramState =
-        MkTypeState(pointerType(array.getBaseType()), PRValue())
+        MkTypeState(getValueType(conversion.getDestType().getUnderlyingType(), category), category,
+          true)
     )
   }
 
   private predicate step(TypeState argState, TypeState paramState) {
     arrayToPointerStep(argState, paramState)
+    or
+    convertingConstructorStep(argState, paramState)
+    or
+    conversionOperatorStep(argState, paramState)
   }
 
   private predicate typeFwd(TypeState state) {
