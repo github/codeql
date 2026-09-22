@@ -1164,6 +1164,10 @@ private Type stripReference(Type unspecified) {
   result = unspecified
 }
 
+/**
+ * Encapsulates predicates used to compute which constructor a perfect
+ * forwarding function targets.
+ */
 module ConstructorForwarding {
   private import codeql.util.Boolean
 
@@ -1504,6 +1508,10 @@ module ConstructorForwarding {
     )
   }
 
+  /**
+   * Gets the `Constructor` that should be invoked with arguments `0 .. n`
+   * when `forwarder` is called with arguments `start + 0 .. start + n`.
+   */
   Cpp::Constructor getForwardingConstructor(Function forwarder, int start) {
     exists(int numberOfForwardedArguments |
       numberOfForwardedArguments <= result.getNumberOfParameters()
