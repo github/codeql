@@ -427,9 +427,9 @@ void test_inheritance_conversions() {
   container.emplace(ConversionDerived(), 0, 0, 0); // $ targets=element_base_rref
   container.emplace(derived, 0, 0, 0); // no targets
   container.emplace(constDerived, 0); // no targets
-  container.emplace(&derived, 0, 0, 0, 0); // $ MISSING: targets=element_base_pointer
+  container.emplace(&derived, 0, 0, 0, 0); // $ targets=element_base_pointer
   container.emplace(&constDerived, 0, 0, 0, 0); // no targets
-  container.emplace(&constDerived, 0, 0, 0, 0, 0); // $ MISSING: targets=element_const_base_pointer
+  container.emplace(&constDerived, 0, 0, 0, 0, 0); // $ targets=element_const_base_pointer
   Container<ElementFromDerived> downcast;
   downcast.emplace(base); // no targets
   downcast.emplace(&base, 0); // no targets
@@ -448,9 +448,9 @@ void test_standard_pointer_conversions() {
   Container<ElementFromStandardPointer> container;
   int value = 42;
   const int constValue = 42;
-  container.emplace(&value); // $ MISSING: targets=element_void_pointer
+  container.emplace(&value); // $ targets=element_void_pointer
   container.emplace(&constValue); // no targets
-  container.emplace(&constValue, 0); // $ MISSING: targets=element_const_void_pointer
+  container.emplace(&constValue, 0); // $ targets=element_const_void_pointer
   container.emplace(nullptr); // $ MISSING: targets=element_void_pointer
   container.emplace(nullptr, 0, 0); // $ MISSING: targets=element_int_pointer
   container.emplace(0, 0, 0); // no targets
