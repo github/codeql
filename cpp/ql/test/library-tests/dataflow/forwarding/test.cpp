@@ -476,13 +476,13 @@ void test_function_conversions() {
   Container<ElementFromCallback> container;
   Callback pointer = callback;
   NothrowCallback nothrowPointer = nothrowCallback;
-  container.emplace(callback); // $ MISSING: targets=element_callback
-  container.emplace(nothrowCallback); // $ MISSING: targets=element_callback
+  container.emplace(callback); // $ targets=element_callback
+  container.emplace(nothrowCallback); // $ targets=element_callback
   container.emplace(nothrowPointer); // $ targets=element_callback
-  container.emplace(nothrowCallback, 0); // $ MISSING: targets=element_nothrow_callback
+  container.emplace(nothrowCallback, 0); // $ targets=element_nothrow_callback
   container.emplace(pointer, 0); // $ SPURIOUS: targets=element_nothrow_callback
-  container.emplace(callback, 0); // no targets
-  container.emplace(callback, 0, 0); // $ MISSING: targets=element_callback_const_ref
+  container.emplace(callback, 0); // $ SPURIOUS: targets=element_nothrow_callback
+  container.emplace(callback, 0, 0); // $ targets=element_callback_const_ref
   container.emplace(nullptr); // $ MISSING: targets=element_callback
   container.emplace(differentCallback); // no targets
   Container<ElementFromStandardPointer> boolean;
