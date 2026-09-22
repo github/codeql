@@ -1230,6 +1230,20 @@ module ConstructorForwarding {
     )
   }
 
+  private predicate nullPointerConversion(Type t) {
+    t instanceof Cpp::PointerType or t instanceof FunctionPointerType
+  }
+
+  private predicate booleanConversion(Type t) {
+    t instanceof Cpp::PointerType
+    or
+    t instanceof FunctionPointerType
+    or
+    t instanceof Cpp::ArrayType
+    or
+    t instanceof RoutineType
+  }
+
   private predicate referenceAcceptsCategory(Cpp::ReferenceType t, ValueCategory category) {
     if t instanceof Cpp::LValueReferenceType
     then
@@ -1373,6 +1387,12 @@ module ConstructorForwarding {
       arithmeticConversion(argType)
       or
       pointerConversion(argType, paramType)
+      or
+      argType instanceof NullPointerType and
+      nullPointerConversion(paramType)
+      or
+      booleanConversion(argType) and
+      paramType instanceof BoolType
     )
   }
 
