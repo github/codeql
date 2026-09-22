@@ -82,6 +82,12 @@ func TaintStepTest_StringsJoin_B0I0O0(sourceCQL interface{}) interface{} {
 	return intoString957
 }
 
+func TaintStepTest_StringsJoin_B0I0O0_WholeSlice(sourceCQL interface{}) interface{} {
+	fromStrings := sourceCQL.([]string)
+	intoString := strings.Join(fromStrings, "")
+	return intoString
+}
+
 func TaintStepTest_StringsJoin_B0I1O0(sourceCQL interface{}) interface{} {
 	fromString520 := sourceCQL.(string)
 	intoString443 := strings.Join(nil, fromString520)
