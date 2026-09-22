@@ -9,5 +9,5 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
-      - ["coder/websocket", "Conn", True, "Read", "", "", "ReturnValue[1]", "remote", "manual"]
-      - ["coder/websocket", "Conn", True, "Reader", "", "", "ReturnValue[1]", "remote", "manual"]
+      - ["group:coder/websocket", "Conn", True, "Read", "", "", "ReturnValue[1]", "remote", "manual"]
+      - ["group:coder/websocket", "Conn", True, "Reader", "", "", "ReturnValue[1]", "remote", "manual"]
