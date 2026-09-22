@@ -173,14 +173,9 @@ DataFlow::SourceNode trackWrappedFunction(DataFlow::SourceNode func) {
  * modeled.
  */
 private class FunctionWrapperCallStep extends DataFlow::SharedFlowStep {
-  DataFlow::CallNode call;
-  DataFlow::FunctionNode wrapped;
-
-  FunctionWrapperCallStep() { call = trackWrappedFunction(wrapped).getACall() }
-
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(int index |
-      // getArgument only has a result when the argument position is statically known.
+    exists(DataFlow::CallNode call, DataFlow::FunctionNode wrapped, int index |
+      call = trackWrappedFunction(wrapped).getACall() and
       pred = call.getArgument(index) and
       succ = wrapped.getParameter(index) and
       // A rest parameter receives an array, not the argument at this index.
