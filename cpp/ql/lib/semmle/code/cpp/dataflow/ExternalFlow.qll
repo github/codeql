@@ -1213,6 +1213,23 @@ module ConstructorForwarding {
     preservesQualifiers(arg, param)
   }
 
+  private predicate voidType(Type t) { t.stripTopLevelSpecifiers() instanceof VoidType }
+
+  private predicate routineType(Type t) { t.stripTopLevelSpecifiers() instanceof RoutineType }
+
+  private predicate pointerConversion(Cpp::PointerType arg, Cpp::PointerType param) {
+    exists(Type argBase, Type paramBase |
+      argBase = arg.getBaseType() and
+      paramBase = param.getBaseType()
+    |
+      baseTypeCompatible(argBase, paramBase)
+      or
+      voidType(paramBase) and
+      not routineType(argBase) and
+      preservesQualifiers(argBase, paramBase)
+    )
+  }
+
   private predicate referenceAcceptsCategory(Cpp::ReferenceType t, ValueCategory category) {
     if t instanceof Cpp::LValueReferenceType
     then
@@ -1354,6 +1371,8 @@ module ConstructorForwarding {
     |
       paramType instanceof ArithmeticType and
       arithmeticConversion(argType)
+      or
+      pointerConversion(argType, paramType)
     )
   }
 
