@@ -1792,8 +1792,17 @@
                   "type": "FIELD",
                   "name": "prefix_operator",
                   "content": {
-                    "type": "STRING",
-                    "value": "-"
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "-"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "+"
+                      }
+                    ]
                   }
                 },
                 {
