@@ -143,6 +143,12 @@ module ModificationOfParameterWithDefault {
     }
   }
 
+  private predicate directlyControlledUse(
+    DataFlow::GuardNode guard, Cfg::NameNode use, boolean branch
+  ) {
+    guard != use and guard.controlsBlock(use.getBasicBlock(), branch)
+  }
+
   /** Holds if `barrier` is a use guarded by a direct truthiness check on `branch`. */
   private predicate directGuardedUse(DataFlow::ExprNode barrier, boolean branch) {
     exists(
@@ -150,10 +156,9 @@ module ModificationOfParameterWithDefault {
       Cfg::NameNode use
     |
       checked = guard and
+      directlyControlledUse(guard, use, branch) and
       SsaImpl::AdjacentUses::useOfDef(def, checked) and
       SsaImpl::AdjacentUses::useOfDef(def, use) and
-      checked != use and
-      guard.controlsBlock(use.getBasicBlock(), branch) and
       barrier.asCfgNode() = use
     )
   }
