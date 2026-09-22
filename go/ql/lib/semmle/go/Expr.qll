@@ -555,7 +555,7 @@ class SliceLit extends ArrayOrSliceLit {
  * Note that `ParenExpr` is no longer extracted - the child expression takes
  * the place of the parenthesized expression directly. This class only exists
  * for compatibility with old databases, and will be deprecated and removed in
- * future.
+ * the future.
  */
 class ParenExpr extends @parenexpr, Expr {
   /** Gets the expression between parentheses. */
