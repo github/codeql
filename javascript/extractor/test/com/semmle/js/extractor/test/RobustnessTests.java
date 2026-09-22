@@ -23,14 +23,16 @@ public class RobustnessTests {
   @Test
   public void permissiveDestructuringTest() {
     String src =
-        "({ shorthand = 1 });\n"
-            + "([...rest,] = values);\n"
-            + "function f(...args,) {}\n"
-            + "function g(...[first, { nested }],) {}\n"
-            + "const arrow = (...args,) => args;\n"
-            + "const destructuringArrow = (...{ value },) => value;\n"
-            + "async (...[first, { nested }],) => first;\n"
-            + "({ method(...{ value },) {} });\n";
+        """
+        ({ shorthand = 1 });
+        ([...rest,] = values);
+        function f(...args,) {}
+        function g(...[first, { nested }],) {}
+        const arrow = (...args,) => args;
+        const destructuringArrow = (...{ value },) => value;
+        async (...[first, { nested }],) => first;
+        ({ method(...{ value },) {} });
+        """;
     new Parser(new Options(), src, 0).parse();
   }
 
