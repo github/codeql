@@ -70,3 +70,12 @@ struct Tuple12<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
     T10,
     T11,
 );
+
+// model unsized coercion (https://doc.rust-lang.org/reference/type-coercions.html#r-coerce.unsize.slice)
+// as a `Deref` implementation in order to reuse type inference and data flow logic
+impl<T,const N: usize> std::ops::Deref for Array<T,N> {
+  type Target = Slice<T>;
+  fn deref(&self) -> &Slice<T> { 
+    // not a real implementation
+  }
+}
