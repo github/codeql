@@ -115,9 +115,23 @@ module InsecureFeatureFlag {
   }
 
   /**
-   * Gets a guard that represents a (likely) security feature-flag check.
+   * Holds if `block` is controlled by a flag of kind `flagKind`.
+   *
+   * For a switch case expression, only the matching branch is controlled by that flag. Other
+   * branches, including the default case, are reached when the flag does not match.
    */
-  Guard getASecurityFeatureFlagCheck() {
-    result = any(SecurityFeatureFlag f).getAFlag().getANode().asExpr()
+  predicate flagControls(FlagKind flagKind, BasicBlock block) {
+    exists(GVN flag, Guard guard, boolean branch |
+      flag = flagKind.getAFlag() and
+      guard = flag.getANode().asExpr() and
+      guard.controls(block, branch) and
+      (
+        branch = true
+        or
+        not exists(Expr caseExpr |
+          caseExpr = flag.getANode().asExpr() and caseExpr.getParent() instanceof CaseClause
+        )
+      )
+    )
   }
 }

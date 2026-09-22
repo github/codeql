@@ -51,13 +51,6 @@ class InsecureCertificateFlag extends FlagKind {
 }
 
 /**
- * Gets a guard that represents a (likely) flag controlling an insecure certificate setup.
- */
-Guard getAnInsecureCertificateCheck() {
-  result = any(InsecureCertificateFlag f).getAFlag().getANode().asExpr()
-}
-
-/**
  * Returns flag kinds relevant to this query: a generic security feature flag, or one
  * specifically controlling insecure certificate configuration.
  */
@@ -81,8 +74,7 @@ where
   f.hasQualifiedName("crypto/tls", "Config", "InsecureSkipVerify") and
   rhs.getBoolValue() = true and
   // exclude writes guarded by a feature flag
-  not [getASecurityFeatureFlagCheck(), getAnInsecureCertificateCheck()]
-      .controls(w.getBasicBlock(), _) and
+  not flagControls(securityOrTlsVersionFlag(), w.getBasicBlock()) and
   // exclude results in functions whose name documents the insecurity
   not exists(FuncDef fn | fn = w.getRoot() |
     isSecurityOrCertificateConfigFlag(fn.getEnclosingFunction*().getName())

@@ -248,13 +248,6 @@ class LegacyTlsVersionFlag extends FlagKind {
 }
 
 /**
- * Gets a guard that represents a (likely) flag controlling TLS version selection.
- */
-Guard getALegacyTlsVersionCheck() {
-  result = any(LegacyTlsVersionFlag f).getAFlag().getANode().asExpr()
-}
-
-/**
  * Returns flag kinds relevant to this query: a generic security feature flag, or one
  * specifically controlling TLS version selection.
  */
@@ -276,8 +269,7 @@ where
     isInsecureTlsCipherFlow(source.asPathNode2(), sink.asPathNode2(), message)
   ) and
   // Exclude sources or sinks guarded by a feature or legacy flag
-  not [getASecurityFeatureFlagCheck(), getALegacyTlsVersionCheck()]
-      .controls([source, sink].getNode().getBasicBlock(), _) and
+  not flagControls(securityOrTlsVersionFlag(), [source, sink].getNode().getBasicBlock()) and
   // Exclude sources or sinks that occur lexically within a block related to a feature or legacy flag
   not astNodeIsFlag([source, sink].getNode().asExpr().getParent*(), securityOrTlsVersionFlag()) and
   // Exclude results in functions whose name documents insecurity
