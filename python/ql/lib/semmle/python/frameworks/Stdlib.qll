@@ -3105,12 +3105,15 @@ module StdlibPrivate {
    */
   private class RegexExecutionMethod extends string {
     RegexExecutionMethod() {
-      this in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn"]
+      this in [
+          "match", "prefixmatch", "fullmatch", "search", "split", "findall", "finditer", "sub",
+          "subn"
+        ]
     }
 
     /** Gets the index of the argument representing the string to be searched by a regex. */
     int getStringArgIndex() {
-      this in ["match", "fullmatch", "search", "split", "findall", "finditer"] and
+      this in ["match", "prefixmatch", "fullmatch", "search", "split", "findall", "finditer"] and
       result = 1
       or
       this in ["sub", "subn"] and
@@ -3244,7 +3247,7 @@ module StdlibPrivate {
           this = "compiled re.Match"
         )
       |
-        result = re.getMember(["match", "search", "fullmatch"]).getACall()
+        result = re.getMember(["match", "prefixmatch", "search", "fullmatch"]).getACall()
       )
     }
 
