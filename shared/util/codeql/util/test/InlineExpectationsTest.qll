@@ -1269,11 +1269,12 @@ module TestPostProcessing {
        * keyed on the result's own location (a `relativePath`/line pair) rather than on a comment
        * location: there may be no comment on the line at all. Specifically it is keyed on the
        * result's *end* line, because an expectation matches a result when the expectation's start
-       * line equals the result's end line (see `onSameLine`); for most languages a result occupies a
-       * single line, but some (e.g. Rust) fold leading trivia into the location so its start and end
-       * lines differ, and the expectation must land on the end line to match. Whether the new
-       * expectation is appended as a fresh comment or merged into an existing one is decided by the
-       * callers (see the append disjunct of `learnEdits` and `mergedNewExpectation`).
+       * line equals the result's end line (see `onSameLine`). Multi-line results are deliberately
+       * excluded: appending a line comment at either endpoint can put it inside a string literal or
+       * change the meaning of the construct, so finding a safe source anchor is left to the
+       * block-comment/source-anchor follow-up. Whether a new single-line expectation is appended as
+       * a fresh comment or merged into an existing one is decided by the callers (see the append
+       * disjunct of `learnEdits` and `mergedNewExpectation`).
        *
        * `RelatedLocation` results are excluded: they are only reported when an expectation on the
        * line already references them (see `hasRelatedLocation`/`shouldReportRelatedLocations`), so
@@ -1288,7 +1289,7 @@ module TestPostProcessing {
               actualResult.getTag(), actualResult.getValue(), false)
           ) and
           text = actualResult.getExpectationText() and
-          parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, _, _,
+          parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, endLine, _,
             endLine, _)
         )
       }
@@ -1465,11 +1466,11 @@ module TestPostProcessing {
         // Unexpected result with no comment to merge into: append a fresh comment carrying every
         // expectation learned for the result's line (see `unexpectedResultExpectation`). The comment must
         // go on the result's *end* line, because an expectation matches a result when the
-        // expectation's start line equals the result's end line (see `onSameLine`). For most
-        // languages a result spans a single line, but some (e.g. Rust) include leading trivia in the
-        // location, so the start and end lines differ. If the line already has a rewritable comment,
-        // the new expectations are merged into it by the rewrite disjunct below (see
-        // `mergedNewExpectation`) rather than appended as a separate comment.
+        // expectation's start line equals the result's end line (see `onSameLine`).
+        // `unexpectedResultExpectation` deliberately has no result for a multi-line location because
+        // appending at either endpoint is not generally source-safe. If the line already has a
+        // rewritable comment, the new expectations are merged into it by the rewrite disjunct below
+        // (see `mergedNewExpectation`) rather than appended as a separate comment.
         exists(string relativePath, int el, string comment |
           unexpectedResultExpectation(relativePath, el, _) and
           not exists(TestImpl2::ExpectationComment existing |
