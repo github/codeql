@@ -323,7 +323,7 @@
 | 390 | cfg.swift:390:1:394:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Derived -^ BaseType -V C' |
 | 391 | cfg.swift:391:3:393:3 | Block | 'Block' |
 | 391 | cfg.swift:391:3:393:3 | ConstructorDeclaration | 'ConstructorDeclaration' |
-| 392 | cfg.swift:392:5:392:9 |  | ' -^ ... .init -> Argument -V 0 -^ ... .init(...)' |
+| 392 | cfg.swift:392:5:392:9 | super | 'super -^ ... .init -> Argument -V 0 -^ ... .init(...)' |
 | 396 | cfg.swift:396:1:404:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 396 | cfg.swift:396:21:396:21 | x | 'x -^ Block' |
 | 397 | cfg.swift:397:3:402:3 | TryExpr | 'TryExpr -V Block' |

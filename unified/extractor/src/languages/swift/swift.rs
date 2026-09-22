@@ -1049,8 +1049,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // becomes a `modifier`; its source text is the modifier spelling.
         rule!((attribute) @m => (modifier #{m})),
         rule!((declModifier) @m => (modifier #{m})),
-        // A `super` expression.
-        rule!((superExpr) => (super_expr)),
+        // Preserve the `super` keyword as a dedicated expression, normally used
+        // as the base of a member access (`super.foo`).
+        rule!((superExpr superKeyword: @keyword) => (super_expr #{keyword})),
         // Type expressions. A generic type applied with explicit arguments
         // (`Set<Int>`) becomes a `generic_type_expr` whose `base` is the type
         // name and whose `type_argument`s are the (structured) arguments — the
