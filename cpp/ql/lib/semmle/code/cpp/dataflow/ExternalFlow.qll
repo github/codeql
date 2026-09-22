@@ -1181,6 +1181,26 @@ module ConstructorForwarding {
     XValue() or
     PRValue()
 
+  bindingset[t1, t2]
+  pragma[inline_late]
+  private predicate preservesQualifiers(Type t1, Type t2) {
+    (t1.isConst() implies t2.isConst()) and
+    (t1.isVolatile() implies t2.isVolatile())
+  }
+
+  private predicate referenceAcceptsCategory(Cpp::ReferenceType t, ValueCategory category) {
+    if t instanceof Cpp::LValueReferenceType
+    then
+      category = LValue()
+      or
+      exists(Type base |
+        base = t.getBaseType() and
+        base.isConst() and
+        not base.isVolatile()
+      )
+    else category != LValue()
+  }
+
   private predicate isUnderlyingType(Type type) { type = type.getUnderlyingType() }
 
   private newtype TTypeState =
@@ -1209,6 +1229,13 @@ module ConstructorForwarding {
     category = PRValue()
   }
 
+  bindingset[arg, param]
+  pragma[inline_late]
+  private predicate qualificationCompatible(Type arg, Type param) {
+    arg.stripTopLevelSpecifiers() = param.stripTopLevelSpecifiers() and
+    preservesQualifiers(arg, param)
+  }
+
   private class TypeState extends TTypeState {
     Type getType() { this = MkTypeState(result, _) }
 
@@ -1224,6 +1251,12 @@ module ConstructorForwarding {
     }
 
     predicate matchesParameter(Type paramType) {
+      exists(Type base | base = paramType.(Cpp::ReferenceType).getBaseType() |
+        qualificationCompatible(this.getType(), base) and
+        referenceAcceptsCategory(paramType, this.getCategory())
+      )
+      or
+      not paramType instanceof Cpp::ReferenceType and
       this.getType().stripTopLevelSpecifiers() = paramType.stripTopLevelSpecifiers()
     }
 
