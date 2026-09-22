@@ -2677,7 +2677,7 @@ class CastNode extends Node {
     this.asExpr() instanceof Cast
     or
     this.(AssignableDefinitionNode).getDefinition() instanceof
-      AssignableDefinitions::PatternDefinition
+      AssignableDefinitions::TopLevelPatternDefinition
   }
 }
 
