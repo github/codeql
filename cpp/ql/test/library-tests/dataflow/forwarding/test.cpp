@@ -41,7 +41,7 @@ struct ElementFromMutablePointer {
 void test() {
   {
     Container<Element> c;
-    c.emplace(42); // $ targets=element_int
+    c.emplace(42); // $ targets=element_int SPURIOUS: targets=element_short targets=element_ul
   }
   {
     Container<ElementWithDefaultArgument> c;
@@ -63,15 +63,15 @@ void test() {
     Container<RefElement> cr;
     {
       const int x = 42;
-      c.emplace(x); // $ targets=element_int
+      c.emplace(x); // $ targets=element_int SPURIOUS: targets=element_short targets=element_ul
       cr.emplace(x); // $ targets=element_ref_const_int_ref
     }
     {
       int x = 42;
-      c.emplace(x); // $ targets=element_int
+      c.emplace(x); // $ targets=element_int SPURIOUS: targets=element_short targets=element_ul
       cr.emplace(x); // $ targets=element_ref_int_lref SPURIOUS: targets=element_ref_const_int_ref
     }
-    c.emplace(42); // $ targets=element_int
+    c.emplace(42); // $ targets=element_int SPURIOUS: targets=element_short targets=element_ul
     cr.emplace(42); // $ targets=element_ref_int_rref SPURIOUS: targets=element_ref_const_int_ref
     cr.emplace("abc", 42); // $ targets=element_ref_const_char_ptr_const_ref_int
     const char buffer[] = "abc";
@@ -81,8 +81,8 @@ void test() {
   	Container<Element> container;
     short shortValue = 42;
     unsigned long longValue = 42;
-    container.emplace(shortValue); // $ targets=element_short
-    container.emplace(longValue); // $ targets=element_ul
+    container.emplace(shortValue); // $ targets=element_short SPURIOUS: targets=element_int targets=element_ul
+    container.emplace(longValue); // $ targets=element_ul SPURIOUS: targets=element_int targets=element_short
   }
 }
 
@@ -349,12 +349,12 @@ void test_arithmetic_conversions() {
   Container<ElementFromArithmetic> container;
   short value = 42;
   long longValue = 42;
-  container.emplace(value); // $ MISSING: targets=element_arithmetic_long
-  container.emplace(1.5f, 0); // $ MISSING: targets=element_arithmetic_double
-  container.emplace(arithmeticValue); // $ MISSING: targets=element_arithmetic_long
-  container.emplace(42, 0, 0); // $ MISSING: targets=element_arithmetic_bool
-  container.emplace(value, 0, 0, 0); // $ MISSING: targets=element_arithmetic_const_ref
-  container.emplace(value, 0, 0, 0, 0); // $ MISSING: targets=element_arithmetic_rref
+  container.emplace(value); // $ targets=element_arithmetic_long
+  container.emplace(1.5f, 0); // $ targets=element_arithmetic_double
+  container.emplace(arithmeticValue); // $ targets=element_arithmetic_long
+  container.emplace(42, 0, 0); // $ targets=element_arithmetic_bool
+  container.emplace(value, 0, 0, 0); // $ targets=element_arithmetic_const_ref
+  container.emplace(value, 0, 0, 0, 0); // $ targets=element_arithmetic_rref
   container.emplace(longValue, 0, 0, 0, 0); // no target
   container.emplace(ScopedArithmeticEnum::value); // no targets
 }
@@ -362,10 +362,10 @@ void test_arithmetic_conversions() {
 void test_standard_and_user_defined_conversions() {
   short value = 42;
   Container<ElementFromImplicitConversion> before;
-  before.emplace(value); // $ MISSING: targets=element_conversion_value
+  before.emplace(value); // $ targets=element_conversion_value
   Container<ElementFromArithmetic> after;
-  after.emplace(ValueConversionOperator()); // $ MISSING: targets=element_arithmetic_long
-  after.emplace(ValueConversionOperator(), 0, 0, 0); // $ MISSING: targets=element_arithmetic_const_ref
+  after.emplace(ValueConversionOperator()); // $ targets=element_arithmetic_long
+  after.emplace(ValueConversionOperator(), 0, 0, 0); // $ targets=element_arithmetic_const_ref
 }
 
 struct ElementFromQualifiedPointer {
@@ -496,7 +496,7 @@ void test_standard_conversion_phases() {
   arithmetic.emplace(value, 0, 0, 0, 0); // no targets
   arithmetic.emplace(&value); // no targets
   arithmetic.emplace(nullptr, 0, 0); // no targets
-  arithmetic.emplace(ValueConversionOperator(), 0, 0, 0, 0); // $ MISSING: targets=element_arithmetic_rref
+  arithmetic.emplace(ValueConversionOperator(), 0, 0, 0, 0); // $ targets=element_arithmetic_rref
 
   Container<ElementFromImplicitConversion> converted;
   char buffer[] = "abc";
