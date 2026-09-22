@@ -4222,6 +4222,21 @@ module StdlibPrivate {
     }
   }
 
+  /** A flow summary for `frozendict`. */
+  class FrozendictSummary extends SummarizedCallable::Range {
+    FrozendictSummary() { this = "builtins.frozendict" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("frozendict").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("frozendict").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      any(DictSummary s).propagatesFlow(input, output, preservesValue)
+    }
+  }
+
   /** A flow summary for `list`. */
   class ListSummary extends SummarizedCallable::Range {
     ListSummary() { this = "builtins.list" }
