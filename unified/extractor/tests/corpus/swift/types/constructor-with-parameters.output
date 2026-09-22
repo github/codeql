@@ -67,7 +67,8 @@ top_level source="⟨body⟩"
           modifier: modifier "struct" source="struct"
           name_node: identifier "Size" source="Size"
           member:
-            constructor_declaration source="⟨body⟩⟨parameter⟩⟨parameter⟩"
+            constructor_declaration source="⟨name_node⟩⟨body⟩⟨parameter⟩⟨parameter⟩"
+              name_node: identifier "init" source="init"
               parameter:
                 parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩,"
                   external_name_node: identifier "width" source="width"

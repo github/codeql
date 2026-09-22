@@ -1279,6 +1279,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // nest under `signature` (as for `functionDecl`).
         rule!(
             (initializerDecl
+                initKeyword: @initK
                 modifiers: _* @mods
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params))
@@ -1286,6 +1287,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (constructor_declaration
                 modifier: {mods}
+                name_node: (identifier #{initK})
                 parameter: {params}
                 body: (block stmt: {body_stmts}))
         ),
