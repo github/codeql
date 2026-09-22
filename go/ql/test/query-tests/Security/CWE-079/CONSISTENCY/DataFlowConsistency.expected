@@ -18,4 +18,4 @@ reverseRead
 | tst.go:33:15:33:15 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |
 | tst.go:48:14:48:14 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |
 | tst.go:66:15:66:15 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |
-| websocketXss.go:26:9:26:9 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |
+| websocketXss.go:27:9:27:9 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |
