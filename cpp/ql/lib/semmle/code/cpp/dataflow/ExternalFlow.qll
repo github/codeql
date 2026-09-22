@@ -1176,16 +1176,51 @@ module ConstructorForwarding {
     result = constructor.getParameter(i).getUnderlyingType()
   }
 
-  private newtype TTypeState = MkTypeState(Type type) { type = type.getUnderlyingType() }
+  private newtype ValueCategory =
+    LValue() or
+    XValue() or
+    PRValue()
+
+  private predicate isUnderlyingType(Type type) { type = type.getUnderlyingType() }
+
+  private newtype TTypeState =
+    MkTypeState(Type type, ValueCategory category) {
+      not type instanceof Cpp::ReferenceType and
+      not type instanceof FunctionReferenceType and
+      isUnderlyingType(type)
+    }
+
+  private ValueCategory getCategoryForRef(Cpp::ReferenceType reference) {
+    reference instanceof Cpp::LValueReferenceType and result = LValue()
+    or
+    reference instanceof Cpp::RValueReferenceType and result = XValue()
+  }
+
+  private Type getValueType(Type t, ValueCategory category) {
+    result = t.(FunctionReferenceType).getBaseType().getUnderlyingType() and
+    category = LValue()
+    or
+    result = t.(Cpp::ReferenceType).getBaseType().getUnderlyingType() and
+    category = getCategoryForRef(t)
+    or
+    not t instanceof FunctionReferenceType and
+    not t instanceof Cpp::ReferenceType and
+    result = t and
+    category = PRValue()
+  }
 
   private class TypeState extends TTypeState {
-    Type getType() { this = MkTypeState(result) }
+    Type getType() { this = MkTypeState(result, _) }
+
+    ValueCategory getCategory() { this = MkTypeState(_, result) }
 
     string toString() { result = this.getType().toString() }
 
     predicate isSource(Type argType) {
       argType = getForwardedArgumentType(_, _, _) and
-      this = MkTypeState(argType)
+      exists(ValueCategory category |
+        this = MkTypeState(getValueType(argType, category), category)
+      )
     }
 
     predicate matchesParameter(Type paramType) {
@@ -1204,8 +1239,9 @@ module ConstructorForwarding {
 
   private predicate arrayToPointerStep(TypeState argState, TypeState paramState) {
     exists(Cpp::ArrayType array |
-      argState = MkTypeState(array) and
-      paramState = MkTypeState(pointerType(array.getBaseType()))
+      argState = MkTypeState(array, _) and
+      paramState =
+        MkTypeState(pointerType(array.getBaseType()), PRValue())
     )
   }
 
