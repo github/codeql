@@ -1208,6 +1208,11 @@ module ConstructorForwarding {
     (t1.isVolatile() implies t2.isVolatile())
   }
 
+  private predicate baseTypeCompatible(Type arg, Type param) {
+    param.stripTopLevelSpecifiers() = arg.stripTopLevelSpecifiers().(Class).getABaseClass+() and
+    preservesQualifiers(arg, param)
+  }
+
   private predicate referenceAcceptsCategory(Cpp::ReferenceType t, ValueCategory category) {
     if t instanceof Cpp::LValueReferenceType
     then
@@ -1330,6 +1335,15 @@ module ConstructorForwarding {
     )
   }
 
+  private predicate baseClassStep(TypeState argState, TypeState paramState) {
+    exists(Type arg, Type param, ValueCategory category, boolean conversionUsed |
+      argState = MkTypeState(arg, category, conversionUsed, _) and
+      argState.canConvertValue() and
+      baseTypeCompatible(arg, param) and
+      paramState = MkTypeState(param, category, conversionUsed, AfterValueConversion())
+    )
+  }
+
   private predicate convertingConstructorStep(TypeState argState, TypeState paramState) {
     exists(ConvertingConstructor constructor |
       argState.hasNotUsedConversion() and
@@ -1356,6 +1370,8 @@ module ConstructorForwarding {
     arrayToPointerStep(argState, paramState)
     or
     functionToPointerStep(argState, paramState)
+    or
+    baseClassStep(argState, paramState)
     or
     convertingConstructorStep(argState, paramState)
     or
