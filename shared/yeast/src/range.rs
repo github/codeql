@@ -78,9 +78,8 @@ impl Range {
         loop {
             let previous = self;
             for range in &ignored {
-                if *range == self {
-                    self = self.empty_at_start();
-                    continue;
+if *range == self {
+                    return self.empty_at_start();
                 }
                 if range.start_byte == self.start_byte && range.end_byte > range.start_byte {
                     self.start_byte = range.end_byte;
