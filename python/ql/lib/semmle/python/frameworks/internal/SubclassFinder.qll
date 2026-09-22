@@ -11,6 +11,7 @@ private import semmle.python.dataflow.new.internal.ImportResolution
 private import semmle.python.ApiGraphs
 private import semmle.python.filters.Tests
 private import semmle.python.Module
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 // very much inspired by the draft at https://github.com/github/codeql/pull/5632
 module NotExposed {
@@ -206,7 +207,7 @@ module NotExposed {
     string relevantName, Location loc
   ) {
     loc = mod.getLocation() and
-    exists(API::Node relevantClass, ControlFlowNode value |
+    exists(API::Node relevantClass, Cfg::ControlFlowNode value |
       relevantClass = newOrExistingModeling(spec).getASubclass*() and
       ImportResolution::module_export(mod, relevantName, def) and
       value = relevantClass.getAValueReachableFromSource().asCfgNode() and

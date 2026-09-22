@@ -35,10 +35,12 @@ private import codeql.controlflow.SuccessorType
  */
 class ControlFlowNode extends CfgImpl::ControlFlowNode {
   /** Gets the syntactic element corresponding to this flow node, if any. */
+  cached
   Py::AstNode getNode() {
     exists(CfgImpl::Ast::AstNode n | this.injects(n) | result = CfgImpl::astNodeToPyNode(n))
   }
 
+  /** Gets the Python expression corresponding to this flow node, if any. */
   Py::Expr asPyExpr() { result = this.getNode() }
 
   /** Gets a predecessor of this flow node. */
@@ -67,6 +69,7 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
   BasicBlock getBasicBlock() { result = super.getBasicBlock() }
 
   /** Gets the scope containing this flow node. */
+  cached
   Py::Scope getScope() { result = super.getEnclosingCallable().asScope() }
 
   /** Gets the enclosing module. */
@@ -85,13 +88,15 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
   }
 
   /** Holds if this strictly dominates `other`. */
+  bindingset[this, other]
   overlay[caller?]
-  pragma[inline]
+  pragma[inline_late]
   predicate strictlyDominates(ControlFlowNode other) { super.strictlyDominates(other) }
 
   /** Holds if this dominates `other` (reflexively). */
+  bindingset[this, other]
   overlay[caller?]
-  pragma[inline]
+  pragma[inline_late]
   predicate dominates(ControlFlowNode other) { super.dominates(other) }
 
   /** Holds if this is the first node in its enclosing scope. */

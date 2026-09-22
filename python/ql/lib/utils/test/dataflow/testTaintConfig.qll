@@ -21,12 +21,13 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 
 module TestConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
-    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "SOURCE"
+    node.(DataFlow::CfgNode).getNode().(Cfg::NameNode).getId() = "SOURCE"
     or
     node.(DataFlow::CfgNode).getNode().getNode().(StringLiteral).getS() = "source"
     or
@@ -37,8 +38,8 @@ module TestConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node node) {
-    exists(CallNode call |
-      call.getFunction().(NameNode).getId() in ["SINK", "SINK_F"] and
+    exists(Cfg::CallNode call |
+      call.getFunction().(Cfg::NameNode).getId() in ["SINK", "SINK_F"] and
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }

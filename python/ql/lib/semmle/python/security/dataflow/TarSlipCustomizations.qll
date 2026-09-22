@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.ApiGraphs
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -139,8 +140,8 @@ module TarSlip {
    * where `<check_path>` is any function matching `"%path"`.
    * `info` is assumed to be a `TarInfo` instance.
    */
-  predicate tarFileInfoSanitizer(DataFlow::GuardNode g, ControlFlowNode tarInfo, boolean branch) {
-    exists(CallNode call, AttrNode attr |
+  predicate tarFileInfoSanitizer(DataFlow::GuardNode g, Cfg::ControlFlowNode tarInfo, boolean branch) {
+    exists(Cfg::CallNode call, Cfg::AttrNode attr |
       g = call and
       // We must test the name of the tar info object.
       attr = call.getAnArg() and
@@ -148,9 +149,9 @@ module TarSlip {
       attr.getObject() = tarInfo
     |
       // The assumption that any test that matches %path is a sanitizer might be too broad.
-      call.getAChild*().(AttrNode).getName().matches("%path")
+      call.getAChild*().(Cfg::AttrNode).getName().matches("%path")
       or
-      call.getAChild*().(NameNode).getId().matches("%path")
+      call.getAChild*().(Cfg::NameNode).getId().matches("%path")
     ) and
     branch = false
   }

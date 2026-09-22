@@ -12,7 +12,7 @@ class Wat(object):
         except Exception as e:
             raise e
 
-        self.f2() # $ pt=Wat.f2 MISSING: tt=Wat.f2
+        self.f2() # $ pt=Wat.f2 tt=Wat.f2
 
 
 # ==============================================================================

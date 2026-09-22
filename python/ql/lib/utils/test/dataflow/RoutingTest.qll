@@ -1,4 +1,5 @@
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import semmle.python.dataflow.new.DataFlow
 import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
@@ -49,7 +50,7 @@ private string fromValue(DataFlow::Node fromNode) {
 
 pragma[inline]
 private string fromFunc(DataFlow::ArgumentNode fromNode) {
-  result = fromNode.getCall().getNode().(CallNode).getFunction().getNode().(Name).getId()
+  result = fromNode.getCall().getNode().(Cfg::CallNode).getFunction().getNode().(Name).getId()
 }
 
 pragma[inline]

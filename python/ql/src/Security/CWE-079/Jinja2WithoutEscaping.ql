@@ -14,6 +14,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /*
  * Jinja 2 Docs:
@@ -36,8 +37,8 @@ private API::Node jinja2EnvironmentOrTemplate() {
 from API::CallNode call
 where
   call = jinja2EnvironmentOrTemplate().getACall() and
-  not exists(call.asCfgNode().(CallNode).getNode().getStarargs()) and
-  not exists(call.asCfgNode().(CallNode).getNode().getKwargs()) and
+  not exists(call.asCfgNode().(Cfg::CallNode).getNode().getStarargs()) and
+  not exists(call.asCfgNode().(Cfg::CallNode).getNode().getKwargs()) and
   (
     not exists(call.getArgByName("autoescape"))
     or

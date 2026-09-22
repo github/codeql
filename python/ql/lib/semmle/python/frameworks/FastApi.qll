@@ -4,6 +4,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
@@ -441,7 +442,7 @@ module FastApi {
       DataFlow::Node value;
 
       HeaderSubscriptWrite() {
-        exists(SubscriptNode subscript, DataFlow::AttrRead headerLookup |
+        exists(Cfg::SubscriptNode subscript, DataFlow::AttrRead headerLookup |
           // To give `this` a value, we need to choose between either LHS or RHS,
           // and just go with the LHS
           this.asCfgNode() = subscript
@@ -450,7 +451,7 @@ module FastApi {
           exists(DataFlow::Node subscriptObj | subscriptObj.asCfgNode() = subscript.getObject() |
             headerLookup.flowsTo(subscriptObj)
           ) and
-          value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+          value.asCfgNode() = subscript.(Cfg::DefinitionNode).getValue() and
           index.asCfgNode() = subscript.getIndex()
         )
       }

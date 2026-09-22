@@ -8,6 +8,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
@@ -28,7 +29,7 @@ private module Yaml {
    * See https://pyyaml.org/wiki/PyYAMLDocumentation (you will have to scroll down).
    */
   private class YamlLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
-    override CallNode node;
+    override Cfg::CallNode node;
     string func_name;
 
     YamlLoadCall() {

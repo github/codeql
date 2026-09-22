@@ -3,6 +3,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 import SharedFlow::PathGraph
@@ -13,7 +14,7 @@ class MyClassGetValueAdditionalTaintStep extends TaintTracking::AdditionalTaintS
     // obj -> obj.get_value()
     exists(DataFlow::Node bound_method |
       bound_method = myClassGetValue(nodeFrom) and
-      nodeTo.asCfgNode().(CallNode).getFunction() = bound_method.asCfgNode()
+      nodeTo.asCfgNode().(Cfg::CallNode).getFunction() = bound_method.asCfgNode()
     )
   }
 }
