@@ -53,9 +53,9 @@ predicate hasWebConfigClickjackingProtection(WebConfigXml webConfig) {
           .getAChild("add") and
     name = add.getAttributeValue("name") and
     (
-      isXFrameOptionsHeaderName(name)
+      isXFrameOptionsText(name)
       or
-      isContentSecurityPolicyHeaderName(name) and
+      isContentSecurityPolicyText(name) and
       containsFrameAncestorsDirective(add.getAttributeValue("value"))
     )
   )

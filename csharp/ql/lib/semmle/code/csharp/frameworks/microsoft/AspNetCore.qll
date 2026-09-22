@@ -565,6 +565,19 @@ class MicrosoftAspNetCoreHttpHeaderDictionaryExtensions extends RefType {
   Method getSetCommaSeparatedValuesMethod() { result = this.getAMethod("SetCommaSeparatedValues") }
 }
 
+/** The `Microsoft.AspNetCore.Http.IHeaderDictionary` interface. */
+class MicrosoftAspNetCoreHttpIHeaderDictionary extends RefType {
+  MicrosoftAspNetCoreHttpIHeaderDictionary() {
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IHeaderDictionary")
+  }
+
+  /** Gets the `XFrameOptions` property. */
+  Property getXFrameOptionsProperty() { result = this.getProperty("XFrameOptions") }
+
+  /** Gets the `ContentSecurityPolicy` property. */
+  Property getContentSecurityPolicyProperty() { result = this.getProperty("ContentSecurityPolicy") }
+}
+
 /** The `Microsoft.AspNetCore.Http.CookieOptions` class. */
 class MicrosoftAspNetCoreHttpCookieOptions extends RefType {
   MicrosoftAspNetCoreHttpCookieOptions() {

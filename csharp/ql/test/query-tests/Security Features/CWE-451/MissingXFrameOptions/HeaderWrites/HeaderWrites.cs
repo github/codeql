@@ -14,14 +14,13 @@ public class HeaderWrites
             "default-src 'self'; FrAmE-AnCeStOrS 'none'"); // $ Alert
 
         context.Response.Headers["X-Frame-Options"] = "DENY"; // $ Alert
-        context.Response.Headers["Content-Security-Policy"] =
-            "default-src 'self'; frame-ancestors 'none'"; // $ Alert
-
+        context.Response.Headers["Content-Security-Policy"] = // $ Alert
+            "default-src 'self'; frame-ancestors 'none'";
         context.Response.Headers.XFrameOptions = "DENY"; // $ Alert
-        context.Response.Headers.ContentSecurityPolicy =
-            "default-src 'self'; frame-ancestors 'self'"; // $ Alert
-        context.Response.Headers["Content-Security-Policy"] =
-            "default-src 'self', frame-ancestors 'none'"; // $ Alert
+        context.Response.Headers.ContentSecurityPolicy = // $ Alert
+            "default-src 'self'; frame-ancestors 'self'";
+        context.Response.Headers["Content-Security-Policy"] = // $ Alert
+            "default-src 'self', frame-ancestors 'none'";
 
         IHeaderDictionary responseHeaders = context.Response.Headers;
         responseHeaders.Append("X-Frame-Options", "DENY"); // $ Alert
