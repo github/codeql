@@ -1322,6 +1322,14 @@ module ConstructorForwarding {
     )
   }
 
+  private predicate functionToPointerStep(TypeState argState, TypeState paramState) {
+    exists(RoutineType routine, FunctionPointerType pointer, boolean conversionUsed |
+      argState = MkTypeState(routine, _, conversionUsed, Initial()) and
+      routine = pointer.getBaseType().getUnderlyingType() and
+      paramState = MkTypeState(pointer, PRValue(), conversionUsed, AfterTransformation())
+    )
+  }
+
   private predicate convertingConstructorStep(TypeState argState, TypeState paramState) {
     exists(ConvertingConstructor constructor |
       argState.hasNotUsedConversion() and
@@ -1346,6 +1354,8 @@ module ConstructorForwarding {
 
   private predicate step(TypeState argState, TypeState paramState) {
     arrayToPointerStep(argState, paramState)
+    or
+    functionToPointerStep(argState, paramState)
     or
     convertingConstructorStep(argState, paramState)
     or
