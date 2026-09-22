@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["coder/websocket", "github.com/coder/websocket"]
+      - ["coder/websocket", "nhooyr.io/websocket"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["coder/websocket", "Conn", True, "Read", "", "", "ReturnValue[1]", "remote", "manual"]
+      - ["coder/websocket", "Conn", True, "Reader", "", "", "ReturnValue[1]", "remote", "manual"]

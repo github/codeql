@@ -313,12 +313,14 @@ module GolangOrgXNetWebsocket {
 }
 
 /**
- * Provides classes for working with the [nhooyr.io/websocket](http://nhooyr.io/websocket)
+ * Provides classes for working with the [coder/websocket](http://github.com/coder/websocket)
  * package.
  */
 module NhooyrWebSocket {
-  /** Gets the package name `nhooyr.io/websocket/`. */
-  string packagePath() { result = package("nhooyr.io/websocket", "") }
+  /** Gets the package name `github.com/coder/websocket` or `nhooyr.io/websocket`. */
+  string packagePath() {
+    result = package(["github.com/coder/websocket", "nhooyr.io/websocket"], "")
+  }
 }
 
 /**
