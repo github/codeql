@@ -117,6 +117,19 @@ module Unified {
   class Argument extends G::Argument {
     /** Gets the name of this argument. */
     string getName() { result = this.getNameNode().getValue() }
+
+    /** Holds if this is a positional argument. */
+    predicate isPositional() { not exists(this.getName()) }
+
+    /** Gets the 0-based index of this argument among the positional arguments in the surrounding call or tuple. */
+    int getPositionalIndex() {
+      this =
+        rank[result + 1](Argument a |
+          a.getParent() = this.getParent() and a.isPositional()
+        |
+          a order by a.getParentIndex()
+        )
+    }
   }
 
   class AssociatedTypeDeclaration extends G::AssociatedTypeDeclaration {
@@ -172,8 +185,28 @@ module Unified {
   }
 
   class Parameter extends G::Parameter {
-    /** Gets the external name of this parameter. */
-    string getExternalName() { result = this.getExternalNameNode().getValue() }
+    /**
+     * Gets the external name of this parameter.
+     *
+     * Has no result for pseudo-names like `_` that indicate that this is actually a positional parameter.
+     */
+    string getExternalName() { result = this.getExternalNameNode().getValue() and not result = "_" }
+
+    /** Gets the callable on which this parameter appears. */
+    Callable getDeclaringCallable() { result = this.getParent() }
+
+    /** Holds if this is a positional parameter. */
+    predicate isPositional() { not exists(this.getExternalName()) }
+
+    /** Gets the 0-based index of this parameter among the positional parameters of the declaring callable. */
+    int getPositionalIndex() {
+      this =
+        rank[result + 1](Parameter p |
+          p.getDeclaringCallable() = this.getDeclaringCallable() and p.isPositional()
+        |
+          p order by p.getParentIndex()
+        )
+    }
   }
 
   class TypeAliasDeclaration extends G::TypeAliasDeclaration {

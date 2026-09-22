@@ -41,7 +41,8 @@ where
     numberOfLinesOfCode(key, value) or
     numberOfLinesOfCodeByExtension(key, value) or
     StaticNameResolutionStatsReport::keyValuePair(key, value) or
-    FilesCoveredByModuleManifestStatsReport::keyValuePair(key, value)
+    FilesCoveredByModuleManifestStatsReport::keyValuePair(key, value) or
+    CallGraphStatsReport::keyValuePair(key, value)
   ) and
   /* Infinity */
   value != 1.0 / 0.0 and

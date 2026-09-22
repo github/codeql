@@ -1,372 +1,462 @@
 models
 edges
-| implicit-self.swift:11:9:11:12 | [post] self [x] | implicit-self.swift:12:14:12:17 | self [x] | provenance |  |
-| implicit-self.swift:11:9:11:14 | ... .x | implicit-self.swift:11:9:11:12 | [post] self [x] | provenance |  |
-| implicit-self.swift:11:18:11:31 | source(...) | implicit-self.swift:11:9:11:14 | ... .x | provenance |  |
-| implicit-self.swift:12:14:12:17 | self [x] | implicit-self.swift:12:14:12:19 | ... .x | provenance |  |
-| implicit-self.swift:17:9:17:9 | x | implicit-self.swift:18:14:18:14 | x | provenance |  |
-| implicit-self.swift:17:13:17:26 | source(...) | implicit-self.swift:17:9:17:9 | x | provenance |  |
-| implicit-self.swift:23:9:23:9 | x | implicit-self.swift:24:14:24:17 | self [x] | provenance |  |
-| implicit-self.swift:23:13:23:26 | source(...) | implicit-self.swift:23:9:23:9 | x | provenance |  |
-| implicit-self.swift:24:14:24:17 | self [x] | implicit-self.swift:24:14:24:19 | ... .x | provenance |  |
-| implicit-self.swift:29:9:29:12 | [post] self [x] | implicit-self.swift:30:14:30:14 | x | provenance |  |
-| implicit-self.swift:29:9:29:14 | ... .x | implicit-self.swift:29:9:29:12 | [post] self [x] | provenance |  |
-| implicit-self.swift:29:18:29:31 | source(...) | implicit-self.swift:29:9:29:14 | ... .x | provenance |  |
-| implicit-self.swift:35:9:35:12 | [post] self [box, x] | implicit-self.swift:36:14:36:17 | self [box, x] | provenance |  |
-| implicit-self.swift:35:9:35:16 | [post] ... .box [x] | implicit-self.swift:35:9:35:12 | [post] self [box, x] | provenance |  |
-| implicit-self.swift:35:9:35:18 | ... .x | implicit-self.swift:35:9:35:16 | [post] ... .box [x] | provenance |  |
-| implicit-self.swift:35:22:35:35 | source(...) | implicit-self.swift:35:9:35:18 | ... .x | provenance |  |
-| implicit-self.swift:36:14:36:17 | self [box, x] | implicit-self.swift:36:14:36:21 | ... .box [x] | provenance |  |
-| implicit-self.swift:36:14:36:21 | ... .box [x] | implicit-self.swift:36:14:36:23 | ... .x | provenance |  |
-| implicit-self.swift:41:9:41:11 | [post] box [x] | implicit-self.swift:42:14:42:16 | box [x] | provenance |  |
-| implicit-self.swift:41:9:41:13 | ... .x | implicit-self.swift:41:9:41:11 | [post] box [x] | provenance |  |
-| implicit-self.swift:41:17:41:30 | source(...) | implicit-self.swift:41:9:41:13 | ... .x | provenance |  |
-| implicit-self.swift:42:14:42:16 | box [x] | implicit-self.swift:42:14:42:18 | ... .x | provenance |  |
-| implicit-self.swift:47:9:47:11 | [post] box [x] | implicit-self.swift:48:14:48:17 | self [box, x] | provenance |  |
-| implicit-self.swift:47:9:47:13 | ... .x | implicit-self.swift:47:9:47:11 | [post] box [x] | provenance |  |
-| implicit-self.swift:47:17:47:30 | source(...) | implicit-self.swift:47:9:47:13 | ... .x | provenance |  |
-| implicit-self.swift:48:14:48:17 | self [box, x] | implicit-self.swift:48:14:48:21 | ... .box [x] | provenance |  |
-| implicit-self.swift:48:14:48:21 | ... .box [x] | implicit-self.swift:48:14:48:23 | ... .x | provenance |  |
-| implicit-self.swift:53:9:53:12 | [post] self [box, x] | implicit-self.swift:54:14:54:16 | box [x] | provenance |  |
-| implicit-self.swift:53:9:53:16 | [post] ... .box [x] | implicit-self.swift:53:9:53:12 | [post] self [box, x] | provenance |  |
-| implicit-self.swift:53:9:53:18 | ... .x | implicit-self.swift:53:9:53:16 | [post] ... .box [x] | provenance |  |
-| implicit-self.swift:53:22:53:35 | source(...) | implicit-self.swift:53:9:53:18 | ... .x | provenance |  |
-| implicit-self.swift:54:14:54:16 | box [x] | implicit-self.swift:54:14:54:18 | ... .x | provenance |  |
-| implicit-self.swift:59:9:59:9 | [incoming] x | implicit-self.swift:60:14:60:14 | x | provenance |  |
-| implicit-self.swift:59:9:59:9 | [incoming] x | implicit-self.swift:61:14:61:17 | self [x] | provenance |  |
-| implicit-self.swift:59:24:59:37 | source(...) | implicit-self.swift:59:9:59:9 | [incoming] x | provenance |  |
-| implicit-self.swift:61:14:61:17 | self [x] | implicit-self.swift:61:14:61:19 | ... .x | provenance |  |
-| implicit-self.swift:66:9:66:12 | [post] self [x] | implicit-self.swift:67:14:67:14 | x | provenance |  |
-| implicit-self.swift:66:9:66:12 | [post] self [x] | implicit-self.swift:68:14:68:17 | self [x] | provenance |  |
-| implicit-self.swift:66:9:66:14 | [incoming] ... .x | implicit-self.swift:66:9:66:12 | [post] self [x] | provenance |  |
-| implicit-self.swift:66:29:66:43 | source(...) | implicit-self.swift:66:9:66:14 | [incoming] ... .x | provenance |  |
-| implicit-self.swift:68:14:68:17 | self [x] | implicit-self.swift:68:14:68:19 | ... .x | provenance |  |
-| implicit-self.swift:73:9:73:9 | [incoming] x | implicit-self.swift:74:14:74:14 | x | provenance |  |
-| implicit-self.swift:73:9:73:9 | [incoming] x | implicit-self.swift:75:14:75:17 | self [x] | provenance |  |
-| implicit-self.swift:73:24:73:38 | source(...) | implicit-self.swift:73:9:73:9 | [incoming] x | provenance |  |
-| implicit-self.swift:75:14:75:17 | self [x] | implicit-self.swift:75:14:75:19 | ... .x | provenance |  |
-| implicit-self.swift:80:9:80:12 | [post] self [x] | implicit-self.swift:81:14:81:14 | x | provenance |  |
-| implicit-self.swift:80:9:80:12 | [post] self [x] | implicit-self.swift:82:14:82:17 | self [x] | provenance |  |
-| implicit-self.swift:80:9:80:14 | [incoming] ... .x | implicit-self.swift:80:9:80:12 | [post] self [x] | provenance |  |
-| implicit-self.swift:80:29:80:43 | source(...) | implicit-self.swift:80:9:80:14 | [incoming] ... .x | provenance |  |
-| implicit-self.swift:82:14:82:17 | self [x] | implicit-self.swift:82:14:82:19 | ... .x | provenance |  |
-| test.swift:6:10:6:23 | source(...) | test.swift:6:10:6:32 | ... + ... | provenance |  |
-| test.swift:7:19:7:32 | source(...) | test.swift:7:10:7:32 | ... + ... | provenance |  |
-| test.swift:9:13:9:26 | source(...) | test.swift:9:10:9:33 | StringInterpolationExpr | provenance |  |
-| test.swift:10:18:10:31 | source(...) | test.swift:10:10:10:33 | StringInterpolationExpr | provenance |  |
-| test.swift:11:18:11:31 | source(...) | test.swift:11:10:11:38 | StringInterpolationExpr | provenance |  |
-| test.swift:16:10:16:33 | TupleExpr [0] | test.swift:16:10:16:35 | ... .0 | provenance |  |
-| test.swift:16:11:16:25 | source(...) | test.swift:16:10:16:33 | TupleExpr [0] | provenance |  |
-| test.swift:19:10:19:33 | TupleExpr [1] | test.swift:19:10:19:35 | ... .1 | provenance |  |
-| test.swift:19:19:19:32 | source(...) | test.swift:19:10:19:33 | TupleExpr [1] | provenance |  |
-| test.swift:23:9:23:9 | a | test.swift:24:10:24:10 | a | provenance |  |
-| test.swift:23:13:23:26 | source(...) | test.swift:23:9:23:9 | a | provenance |  |
-| test.swift:28:9:28:14 | TupleExpr [0] | test.swift:28:10:28:10 | a | provenance |  |
-| test.swift:28:10:28:10 | a | test.swift:29:10:29:10 | a | provenance |  |
-| test.swift:28:18:28:41 | TupleExpr [0] | test.swift:28:9:28:14 | TupleExpr [0] | provenance |  |
-| test.swift:28:19:28:33 | source(...) | test.swift:28:18:28:41 | TupleExpr [0] | provenance |  |
-| test.swift:32:9:32:14 | TupleExpr [1] | test.swift:32:13:32:13 | d | provenance |  |
-| test.swift:32:13:32:13 | d | test.swift:34:10:34:10 | d | provenance |  |
-| test.swift:32:18:32:41 | TupleExpr [1] | test.swift:32:9:32:14 | TupleExpr [1] | provenance |  |
-| test.swift:32:27:32:40 | source(...) | test.swift:32:18:32:41 | TupleExpr [1] | provenance |  |
-| test.swift:38:9:38:9 | a | test.swift:39:10:39:10 | a | provenance |  |
-| test.swift:38:13:38:26 | source(...) | test.swift:38:9:38:9 | a | provenance |  |
-| test.swift:46:5:46:9 | [post] tuple [0] | test.swift:47:10:47:14 | tuple [0] | provenance |  |
-| test.swift:46:5:46:11 | ... .0 | test.swift:46:5:46:9 | [post] tuple [0] | provenance |  |
-| test.swift:46:15:46:28 | source(...) | test.swift:46:5:46:11 | ... .0 | provenance |  |
-| test.swift:47:10:47:14 | tuple [0] | test.swift:47:10:47:16 | ... .0 | provenance |  |
-| test.swift:53:5:53:14 | [post] deep_tuple [1, 0] | test.swift:58:10:58:19 | deep_tuple [1, 0] | provenance |  |
-| test.swift:53:5:53:16 | [post] ... .1 [0] | test.swift:53:5:53:14 | [post] deep_tuple [1, 0] | provenance |  |
-| test.swift:53:5:53:18 | ... .0 | test.swift:53:5:53:16 | [post] ... .1 [0] | provenance |  |
-| test.swift:53:22:53:35 | source(...) | test.swift:53:5:53:18 | ... .0 | provenance |  |
-| test.swift:58:10:58:19 | deep_tuple [1, 0] | test.swift:58:10:58:21 | ... .1 [0] | provenance |  |
-| test.swift:58:10:58:21 | ... .1 [0] | test.swift:58:10:58:23 | ... .0 | provenance |  |
-| test.swift:64:5:64:16 | TupleExpr [0] | test.swift:64:6:64:12 | ... .1 | provenance |  |
-| test.swift:64:6:64:10 | [post] tuple [1] | test.swift:66:10:66:14 | tuple [1] | provenance |  |
-| test.swift:64:6:64:12 | ... .1 | test.swift:64:6:64:10 | [post] tuple [1] | provenance |  |
-| test.swift:64:20:64:51 | TupleExpr [0] | test.swift:64:5:64:16 | TupleExpr [0] | provenance |  |
-| test.swift:64:21:64:35 | source(...) | test.swift:64:20:64:51 | TupleExpr [0] | provenance |  |
-| test.swift:66:10:66:14 | tuple [1] | test.swift:66:10:66:16 | ... .1 | provenance |  |
-| test.swift:74:5:74:9 | [post] tuple [0] | test.swift:75:10:75:14 | tuple [0] | provenance |  |
-| test.swift:74:5:74:11 | ... .0 | test.swift:74:5:74:9 | [post] tuple [0] | provenance |  |
-| test.swift:74:15:74:29 | source(...) | test.swift:74:5:74:11 | ... .0 | provenance |  |
-| test.swift:75:10:75:14 | tuple [0] | test.swift:75:10:75:16 | ... .0 | provenance |  |
-| test.swift:86:9:86:9 | x | test.swift:90:10:90:10 | x | provenance |  |
-| test.swift:86:9:86:9 | x | test.swift:99:14:99:14 | x | provenance |  |
-| test.swift:86:13:86:27 | source(...) | test.swift:86:9:86:9 | x | provenance |  |
-| test.swift:94:9:94:9 | y | test.swift:96:10:96:10 | y | provenance |  |
-| test.swift:94:9:94:9 | y | test.swift:100:14:100:14 | y | provenance |  |
-| test.swift:94:13:94:27 | source(...) | test.swift:94:9:94:9 | y | provenance |  |
-| test.swift:107:9:107:13 | [post] tuple [0] | test.swift:112:10:112:14 | tuple [0] | provenance |  |
-| test.swift:107:9:107:15 | ... .0 | test.swift:107:9:107:13 | [post] tuple [0] | provenance |  |
-| test.swift:107:19:107:33 | source(...) | test.swift:107:9:107:15 | ... .0 | provenance |  |
-| test.swift:112:10:112:14 | tuple [0] | test.swift:112:10:112:16 | ... .0 | provenance |  |
-| test.swift:117:9:117:13 | tuple [0] | test.swift:120:17:120:21 | tuple [0] | provenance |  |
-| test.swift:117:9:117:13 | tuple [1] | test.swift:120:17:120:21 | tuple [1] | provenance |  |
-| test.swift:117:17:117:50 | TupleExpr [0] | test.swift:117:9:117:13 | tuple [0] | provenance |  |
-| test.swift:117:17:117:50 | TupleExpr [1] | test.swift:117:9:117:13 | tuple [1] | provenance |  |
-| test.swift:117:18:117:33 | source(...) | test.swift:117:17:117:50 | TupleExpr [0] | provenance |  |
-| test.swift:117:35:117:49 | source(...) | test.swift:117:17:117:50 | TupleExpr [1] | provenance |  |
-| test.swift:120:9:120:13 | TupleExpr [0] | test.swift:120:10:120:10 | a | provenance |  |
-| test.swift:120:9:120:13 | TupleExpr [1] | test.swift:120:12:120:12 | b | provenance |  |
-| test.swift:120:10:120:10 | a | test.swift:125:10:125:10 | a | provenance |  |
-| test.swift:120:12:120:12 | b | test.swift:126:10:126:10 | b | provenance |  |
-| test.swift:120:17:120:21 | tuple [0] | test.swift:120:9:120:13 | TupleExpr [0] | provenance |  |
-| test.swift:120:17:120:21 | tuple [1] | test.swift:120:9:120:13 | TupleExpr [1] | provenance |  |
-| test.swift:131:5:131:5 | a | test.swift:132:10:132:10 | a | provenance |  |
-| test.swift:131:19:131:33 | source(...) | test.swift:131:5:131:5 | a | provenance |  |
-| test.swift:137:5:137:5 | [incoming] a | test.swift:138:10:138:10 | a | provenance |  |
-| test.swift:137:10:137:24 | source(...) | test.swift:137:5:137:5 | [incoming] a | provenance |  |
-| test.swift:143:5:143:5 | [incoming] a | test.swift:144:10:144:10 | a | provenance |  |
-| test.swift:143:20:143:34 | source(...) | test.swift:143:5:143:5 | [incoming] a | provenance |  |
-| test.swift:149:5:149:5 | [post] a [0] | test.swift:150:10:150:10 | a [0] | provenance |  |
-| test.swift:149:5:149:7 | ... .0 | test.swift:149:5:149:5 | [post] a [0] | provenance |  |
-| test.swift:149:23:149:37 | source(...) | test.swift:149:5:149:7 | ... .0 | provenance |  |
-| test.swift:150:10:150:10 | a [0] | test.swift:150:10:150:12 | ... .0 | provenance |  |
-| test.swift:156:5:156:12 | TupleExpr [0] | test.swift:156:6:156:8 | ... .0 | provenance |  |
-| test.swift:156:6:156:6 | [post] a [0] | test.swift:157:10:157:10 | a [0] | provenance |  |
-| test.swift:156:6:156:8 | ... .0 | test.swift:156:6:156:6 | [post] a [0] | provenance |  |
-| test.swift:156:16:156:61 | TupleExpr [0] | test.swift:156:5:156:12 | TupleExpr [0] | provenance |  |
-| test.swift:156:17:156:43 | ... + ... | test.swift:156:16:156:61 | TupleExpr [0] | provenance |  |
-| test.swift:156:29:156:43 | source(...) | test.swift:156:17:156:43 | ... + ... | provenance |  |
-| test.swift:157:10:157:10 | a [0] | test.swift:157:10:157:12 | ... .0 | provenance |  |
-| test.swift:164:5:164:10 | TupleExpr [0] | test.swift:164:6:164:6 | a | provenance |  |
-| test.swift:164:5:164:10 | TupleExpr [1] | test.swift:164:9:164:9 | b | provenance |  |
-| test.swift:164:6:164:6 | a | test.swift:165:10:165:10 | a | provenance |  |
-| test.swift:164:9:164:9 | b | test.swift:166:10:166:10 | b | provenance |  |
-| test.swift:164:14:164:67 | TupleExpr [0] | test.swift:164:5:164:10 | TupleExpr [0] | provenance |  |
-| test.swift:164:14:164:67 | TupleExpr [1] | test.swift:164:5:164:10 | TupleExpr [1] | provenance |  |
-| test.swift:164:15:164:39 | ... + ... | test.swift:164:14:164:67 | TupleExpr [0] | provenance |  |
-| test.swift:164:25:164:39 | source(...) | test.swift:164:15:164:39 | ... + ... | provenance |  |
-| test.swift:164:42:164:66 | ... + ... | test.swift:164:14:164:67 | TupleExpr [1] | provenance |  |
-| test.swift:164:52:164:66 | source(...) | test.swift:164:42:164:66 | ... + ... | provenance |  |
+| calls.swift:7:19:7:19 | x | calls.swift:8:14:8:14 | x | provenance |  |
+| calls.swift:10:12:10:25 | source(...) | calls.swift:7:19:7:19 | x | provenance |  |
+| calls.swift:15:16:15:29 | source(...) | calls.swift:17:10:17:17 | target(...) | provenance |  |
+| calls.swift:21:17:21:17 | x | calls.swift:22:14:22:14 | x | provenance |  |
+| calls.swift:24:12:24:28 | source(...) | calls.swift:21:17:21:17 | x | provenance |  |
+| calls.swift:28:19:28:19 | x | calls.swift:29:16:29:16 | x | provenance |  |
+| calls.swift:29:16:29:16 | x | calls.swift:29:16:29:24 | ... + ... | provenance |  |
+| calls.swift:31:17:31:30 | source(...) | calls.swift:28:19:28:19 | x | provenance |  |
+| calls.swift:31:17:31:30 | source(...) | calls.swift:31:10:31:31 | target(...) | provenance |  |
+| calls.swift:32:17:32:30 | source(...) | calls.swift:28:19:28:19 | x | provenance |  |
+| calls.swift:32:17:32:30 | source(...) | calls.swift:32:10:32:31 | target(...) | provenance |  |
+| calls.swift:37:23:37:23 | x | calls.swift:38:14:38:14 | x | provenance |  |
+| calls.swift:40:13:40:32 | source(...) | calls.swift:37:23:37:23 | x | provenance |  |
+| calls.swift:42:18:42:21 | name | calls.swift:43:14:43:17 | name | provenance |  |
+| calls.swift:45:13:45:32 | source(...) | calls.swift:42:18:42:21 | name | provenance |  |
+| calls.swift:49:19:49:19 | x | calls.swift:50:14:50:14 | x | provenance |  |
+| calls.swift:49:32:49:32 | y | calls.swift:51:14:51:14 | y | provenance |  |
+| calls.swift:53:12:53:26 | source(...) | calls.swift:49:19:49:19 | x | provenance |  |
+| calls.swift:53:28:53:41 | source(...) | calls.swift:49:32:49:32 | y | provenance |  |
+| calls.swift:61:19:61:19 | x [Return] [field] | calls.swift:66:12:66:12 | [post] b [field] | provenance |  |
+| calls.swift:62:9:62:9 | [post] x [field] | calls.swift:61:19:61:19 | x [Return] [field] | provenance |  |
+| calls.swift:62:9:62:15 | ... .field | calls.swift:62:9:62:9 | [post] x [field] | provenance |  |
+| calls.swift:62:19:62:32 | source(...) | calls.swift:62:9:62:15 | ... .field | provenance |  |
+| calls.swift:66:12:66:12 | [post] b [field] | calls.swift:67:10:67:10 | b [field] | provenance |  |
+| calls.swift:67:10:67:10 | b [field] | calls.swift:67:10:67:16 | ... .field | provenance |  |
+| calls.swift:75:13:75:17 | field | calls.swift:81:18:81:22 | field | provenance |  |
+| calls.swift:75:13:75:17 | field | calls.swift:87:18:87:21 | self [field] | provenance |  |
+| calls.swift:75:13:75:17 | field | calls.swift:105:18:105:22 | field | provenance |  |
+| calls.swift:75:13:75:17 | field | calls.swift:111:18:111:21 | self [field] | provenance |  |
+| calls.swift:75:21:75:34 | source(...) | calls.swift:75:13:75:17 | field | provenance |  |
+| calls.swift:87:18:87:21 | self [field] | calls.swift:87:18:87:27 | ... .field | provenance |  |
+| calls.swift:111:18:111:21 | self [field] | calls.swift:111:18:111:27 | ... .field | provenance |  |
+| implicit-self.swift:16:9:16:12 | [post] self [x] | implicit-self.swift:17:14:17:17 | self [x] | provenance |  |
+| implicit-self.swift:16:9:16:14 | ... .x | implicit-self.swift:16:9:16:12 | [post] self [x] | provenance |  |
+| implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:16:9:16:14 | ... .x | provenance |  |
+| implicit-self.swift:17:14:17:17 | self [x] | implicit-self.swift:17:14:17:19 | ... .x | provenance |  |
+| implicit-self.swift:22:9:22:9 | x | implicit-self.swift:23:14:23:14 | x | provenance |  |
+| implicit-self.swift:22:13:22:26 | source(...) | implicit-self.swift:22:9:22:9 | x | provenance |  |
+| implicit-self.swift:28:9:28:9 | x | implicit-self.swift:29:14:29:17 | self [x] | provenance |  |
+| implicit-self.swift:28:13:28:26 | source(...) | implicit-self.swift:28:9:28:9 | x | provenance |  |
+| implicit-self.swift:29:14:29:17 | self [x] | implicit-self.swift:29:14:29:19 | ... .x | provenance |  |
+| implicit-self.swift:34:9:34:12 | [post] self [x] | implicit-self.swift:35:14:35:14 | x | provenance |  |
+| implicit-self.swift:34:9:34:14 | ... .x | implicit-self.swift:34:9:34:12 | [post] self [x] | provenance |  |
+| implicit-self.swift:34:18:34:31 | source(...) | implicit-self.swift:34:9:34:14 | ... .x | provenance |  |
+| implicit-self.swift:40:9:40:12 | [post] self [box, x] | implicit-self.swift:41:14:41:17 | self [box, x] | provenance |  |
+| implicit-self.swift:40:9:40:16 | [post] ... .box [x] | implicit-self.swift:40:9:40:12 | [post] self [box, x] | provenance |  |
+| implicit-self.swift:40:9:40:18 | ... .x | implicit-self.swift:40:9:40:16 | [post] ... .box [x] | provenance |  |
+| implicit-self.swift:40:22:40:35 | source(...) | implicit-self.swift:40:9:40:18 | ... .x | provenance |  |
+| implicit-self.swift:41:14:41:17 | self [box, x] | implicit-self.swift:41:14:41:21 | ... .box [x] | provenance |  |
+| implicit-self.swift:41:14:41:21 | ... .box [x] | implicit-self.swift:41:14:41:23 | ... .x | provenance |  |
+| implicit-self.swift:46:9:46:11 | [post] box [x] | implicit-self.swift:47:14:47:16 | box [x] | provenance |  |
+| implicit-self.swift:46:9:46:13 | ... .x | implicit-self.swift:46:9:46:11 | [post] box [x] | provenance |  |
+| implicit-self.swift:46:17:46:30 | source(...) | implicit-self.swift:46:9:46:13 | ... .x | provenance |  |
+| implicit-self.swift:47:14:47:16 | box [x] | implicit-self.swift:47:14:47:18 | ... .x | provenance |  |
+| implicit-self.swift:52:9:52:11 | [post] box [x] | implicit-self.swift:53:14:53:17 | self [box, x] | provenance |  |
+| implicit-self.swift:52:9:52:13 | ... .x | implicit-self.swift:52:9:52:11 | [post] box [x] | provenance |  |
+| implicit-self.swift:52:17:52:30 | source(...) | implicit-self.swift:52:9:52:13 | ... .x | provenance |  |
+| implicit-self.swift:53:14:53:17 | self [box, x] | implicit-self.swift:53:14:53:21 | ... .box [x] | provenance |  |
+| implicit-self.swift:53:14:53:21 | ... .box [x] | implicit-self.swift:53:14:53:23 | ... .x | provenance |  |
+| implicit-self.swift:58:9:58:12 | [post] self [box, x] | implicit-self.swift:59:14:59:16 | box [x] | provenance |  |
+| implicit-self.swift:58:9:58:16 | [post] ... .box [x] | implicit-self.swift:58:9:58:12 | [post] self [box, x] | provenance |  |
+| implicit-self.swift:58:9:58:18 | ... .x | implicit-self.swift:58:9:58:16 | [post] ... .box [x] | provenance |  |
+| implicit-self.swift:58:22:58:35 | source(...) | implicit-self.swift:58:9:58:18 | ... .x | provenance |  |
+| implicit-self.swift:59:14:59:16 | box [x] | implicit-self.swift:59:14:59:18 | ... .x | provenance |  |
+| implicit-self.swift:64:9:64:9 | [incoming] x | implicit-self.swift:65:14:65:14 | x | provenance |  |
+| implicit-self.swift:64:9:64:9 | [incoming] x | implicit-self.swift:66:14:66:17 | self [x] | provenance |  |
+| implicit-self.swift:64:24:64:37 | source(...) | implicit-self.swift:64:9:64:9 | [incoming] x | provenance |  |
+| implicit-self.swift:66:14:66:17 | self [x] | implicit-self.swift:66:14:66:19 | ... .x | provenance |  |
+| implicit-self.swift:71:9:71:12 | [post] self [x] | implicit-self.swift:72:14:72:14 | x | provenance |  |
+| implicit-self.swift:71:9:71:12 | [post] self [x] | implicit-self.swift:73:14:73:17 | self [x] | provenance |  |
+| implicit-self.swift:71:9:71:14 | [incoming] ... .x | implicit-self.swift:71:9:71:12 | [post] self [x] | provenance |  |
+| implicit-self.swift:71:29:71:43 | source(...) | implicit-self.swift:71:9:71:14 | [incoming] ... .x | provenance |  |
+| implicit-self.swift:73:14:73:17 | self [x] | implicit-self.swift:73:14:73:19 | ... .x | provenance |  |
+| implicit-self.swift:78:9:78:9 | [incoming] x | implicit-self.swift:79:14:79:14 | x | provenance |  |
+| implicit-self.swift:78:9:78:9 | [incoming] x | implicit-self.swift:80:14:80:17 | self [x] | provenance |  |
+| implicit-self.swift:78:24:78:38 | source(...) | implicit-self.swift:78:9:78:9 | [incoming] x | provenance |  |
+| implicit-self.swift:80:14:80:17 | self [x] | implicit-self.swift:80:14:80:19 | ... .x | provenance |  |
+| implicit-self.swift:85:9:85:12 | [post] self [x] | implicit-self.swift:86:14:86:14 | x | provenance |  |
+| implicit-self.swift:85:9:85:12 | [post] self [x] | implicit-self.swift:87:14:87:17 | self [x] | provenance |  |
+| implicit-self.swift:85:9:85:14 | [incoming] ... .x | implicit-self.swift:85:9:85:12 | [post] self [x] | provenance |  |
+| implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:85:9:85:14 | [incoming] ... .x | provenance |  |
+| implicit-self.swift:87:14:87:17 | self [x] | implicit-self.swift:87:14:87:19 | ... .x | provenance |  |
+| test.swift:17:10:17:23 | source(...) | test.swift:17:10:17:32 | ... + ... | provenance |  |
+| test.swift:18:19:18:32 | source(...) | test.swift:18:10:18:32 | ... + ... | provenance |  |
+| test.swift:20:13:20:26 | source(...) | test.swift:20:10:20:33 | StringInterpolationExpr | provenance |  |
+| test.swift:21:18:21:31 | source(...) | test.swift:21:10:21:33 | StringInterpolationExpr | provenance |  |
+| test.swift:22:18:22:31 | source(...) | test.swift:22:10:22:38 | StringInterpolationExpr | provenance |  |
+| test.swift:27:10:27:33 | TupleExpr [0] | test.swift:27:10:27:35 | ... .0 | provenance |  |
+| test.swift:27:11:27:25 | source(...) | test.swift:27:10:27:33 | TupleExpr [0] | provenance |  |
+| test.swift:30:10:30:33 | TupleExpr [1] | test.swift:30:10:30:35 | ... .1 | provenance |  |
+| test.swift:30:19:30:32 | source(...) | test.swift:30:10:30:33 | TupleExpr [1] | provenance |  |
+| test.swift:34:9:34:9 | a | test.swift:35:10:35:10 | a | provenance |  |
+| test.swift:34:13:34:26 | source(...) | test.swift:34:9:34:9 | a | provenance |  |
+| test.swift:39:9:39:14 | TupleExpr [0] | test.swift:39:10:39:10 | a | provenance |  |
+| test.swift:39:10:39:10 | a | test.swift:40:10:40:10 | a | provenance |  |
+| test.swift:39:18:39:41 | TupleExpr [0] | test.swift:39:9:39:14 | TupleExpr [0] | provenance |  |
+| test.swift:39:19:39:33 | source(...) | test.swift:39:18:39:41 | TupleExpr [0] | provenance |  |
+| test.swift:43:9:43:14 | TupleExpr [1] | test.swift:43:13:43:13 | d | provenance |  |
+| test.swift:43:13:43:13 | d | test.swift:45:10:45:10 | d | provenance |  |
+| test.swift:43:18:43:41 | TupleExpr [1] | test.swift:43:9:43:14 | TupleExpr [1] | provenance |  |
+| test.swift:43:27:43:40 | source(...) | test.swift:43:18:43:41 | TupleExpr [1] | provenance |  |
+| test.swift:49:9:49:9 | a | test.swift:50:10:50:10 | a | provenance |  |
+| test.swift:49:13:49:26 | source(...) | test.swift:49:9:49:9 | a | provenance |  |
+| test.swift:57:5:57:9 | [post] tuple [0] | test.swift:58:10:58:14 | tuple [0] | provenance |  |
+| test.swift:57:5:57:11 | ... .0 | test.swift:57:5:57:9 | [post] tuple [0] | provenance |  |
+| test.swift:57:15:57:28 | source(...) | test.swift:57:5:57:11 | ... .0 | provenance |  |
+| test.swift:58:10:58:14 | tuple [0] | test.swift:58:10:58:16 | ... .0 | provenance |  |
+| test.swift:64:5:64:14 | [post] deep_tuple [1, 0] | test.swift:69:10:69:19 | deep_tuple [1, 0] | provenance |  |
+| test.swift:64:5:64:16 | [post] ... .1 [0] | test.swift:64:5:64:14 | [post] deep_tuple [1, 0] | provenance |  |
+| test.swift:64:5:64:18 | ... .0 | test.swift:64:5:64:16 | [post] ... .1 [0] | provenance |  |
+| test.swift:64:22:64:35 | source(...) | test.swift:64:5:64:18 | ... .0 | provenance |  |
+| test.swift:69:10:69:19 | deep_tuple [1, 0] | test.swift:69:10:69:21 | ... .1 [0] | provenance |  |
+| test.swift:69:10:69:21 | ... .1 [0] | test.swift:69:10:69:23 | ... .0 | provenance |  |
+| test.swift:75:5:75:16 | TupleExpr [0] | test.swift:75:6:75:12 | ... .1 | provenance |  |
+| test.swift:75:6:75:10 | [post] tuple [1] | test.swift:77:10:77:14 | tuple [1] | provenance |  |
+| test.swift:75:6:75:12 | ... .1 | test.swift:75:6:75:10 | [post] tuple [1] | provenance |  |
+| test.swift:75:20:75:51 | TupleExpr [0] | test.swift:75:5:75:16 | TupleExpr [0] | provenance |  |
+| test.swift:75:21:75:35 | source(...) | test.swift:75:20:75:51 | TupleExpr [0] | provenance |  |
+| test.swift:77:10:77:14 | tuple [1] | test.swift:77:10:77:16 | ... .1 | provenance |  |
+| test.swift:85:5:85:9 | [post] tuple [0] | test.swift:86:10:86:14 | tuple [0] | provenance |  |
+| test.swift:85:5:85:11 | ... .0 | test.swift:85:5:85:9 | [post] tuple [0] | provenance |  |
+| test.swift:85:15:85:29 | source(...) | test.swift:85:5:85:11 | ... .0 | provenance |  |
+| test.swift:86:10:86:14 | tuple [0] | test.swift:86:10:86:16 | ... .0 | provenance |  |
+| test.swift:97:9:97:9 | x | test.swift:101:10:101:10 | x | provenance |  |
+| test.swift:97:9:97:9 | x | test.swift:110:14:110:14 | x | provenance |  |
+| test.swift:97:13:97:27 | source(...) | test.swift:97:9:97:9 | x | provenance |  |
+| test.swift:105:9:105:9 | y | test.swift:107:10:107:10 | y | provenance |  |
+| test.swift:105:9:105:9 | y | test.swift:111:14:111:14 | y | provenance |  |
+| test.swift:105:13:105:27 | source(...) | test.swift:105:9:105:9 | y | provenance |  |
+| test.swift:118:9:118:13 | [post] tuple [0] | test.swift:123:10:123:14 | tuple [0] | provenance |  |
+| test.swift:118:9:118:15 | ... .0 | test.swift:118:9:118:13 | [post] tuple [0] | provenance |  |
+| test.swift:118:19:118:33 | source(...) | test.swift:118:9:118:15 | ... .0 | provenance |  |
+| test.swift:123:10:123:14 | tuple [0] | test.swift:123:10:123:16 | ... .0 | provenance |  |
+| test.swift:128:9:128:13 | tuple [0] | test.swift:131:18:131:22 | tuple [0] | provenance |  |
+| test.swift:128:9:128:13 | tuple [1] | test.swift:131:18:131:22 | tuple [1] | provenance |  |
+| test.swift:128:17:128:50 | TupleExpr [0] | test.swift:128:9:128:13 | tuple [0] | provenance |  |
+| test.swift:128:17:128:50 | TupleExpr [1] | test.swift:128:9:128:13 | tuple [1] | provenance |  |
+| test.swift:128:18:128:33 | source(...) | test.swift:128:17:128:50 | TupleExpr [0] | provenance |  |
+| test.swift:128:35:128:49 | source(...) | test.swift:128:17:128:50 | TupleExpr [1] | provenance |  |
+| test.swift:131:9:131:14 | TupleExpr [0] | test.swift:131:10:131:10 | a | provenance |  |
+| test.swift:131:9:131:14 | TupleExpr [1] | test.swift:131:13:131:13 | b | provenance |  |
+| test.swift:131:10:131:10 | a | test.swift:136:10:136:10 | a | provenance |  |
+| test.swift:131:13:131:13 | b | test.swift:137:10:137:10 | b | provenance |  |
+| test.swift:131:18:131:22 | tuple [0] | test.swift:131:9:131:14 | TupleExpr [0] | provenance |  |
+| test.swift:131:18:131:22 | tuple [1] | test.swift:131:9:131:14 | TupleExpr [1] | provenance |  |
+| test.swift:142:5:142:5 | a | test.swift:143:10:143:10 | a | provenance |  |
+| test.swift:142:19:142:33 | source(...) | test.swift:142:5:142:5 | a | provenance |  |
+| test.swift:148:5:148:5 | [incoming] a | test.swift:149:10:149:10 | a | provenance |  |
+| test.swift:148:10:148:24 | source(...) | test.swift:148:5:148:5 | [incoming] a | provenance |  |
+| test.swift:154:5:154:5 | [incoming] a | test.swift:155:10:155:10 | a | provenance |  |
+| test.swift:154:20:154:34 | source(...) | test.swift:154:5:154:5 | [incoming] a | provenance |  |
+| test.swift:160:5:160:5 | [post] a [0] | test.swift:161:10:161:10 | a [0] | provenance |  |
+| test.swift:160:5:160:7 | ... .0 | test.swift:160:5:160:5 | [post] a [0] | provenance |  |
+| test.swift:160:23:160:37 | source(...) | test.swift:160:5:160:7 | ... .0 | provenance |  |
+| test.swift:161:10:161:10 | a [0] | test.swift:161:10:161:12 | ... .0 | provenance |  |
+| test.swift:167:5:167:12 | TupleExpr [0] | test.swift:167:6:167:8 | ... .0 | provenance |  |
+| test.swift:167:6:167:6 | [post] a [0] | test.swift:168:10:168:10 | a [0] | provenance |  |
+| test.swift:167:6:167:8 | ... .0 | test.swift:167:6:167:6 | [post] a [0] | provenance |  |
+| test.swift:167:16:167:61 | TupleExpr [0] | test.swift:167:5:167:12 | TupleExpr [0] | provenance |  |
+| test.swift:167:17:167:43 | ... + ... | test.swift:167:16:167:61 | TupleExpr [0] | provenance |  |
+| test.swift:167:29:167:43 | source(...) | test.swift:167:17:167:43 | ... + ... | provenance |  |
+| test.swift:168:10:168:10 | a [0] | test.swift:168:10:168:12 | ... .0 | provenance |  |
+| test.swift:175:5:175:10 | TupleExpr [0] | test.swift:175:6:175:6 | a | provenance |  |
+| test.swift:175:5:175:10 | TupleExpr [1] | test.swift:175:9:175:9 | b | provenance |  |
+| test.swift:175:6:175:6 | a | test.swift:176:10:176:10 | a | provenance |  |
+| test.swift:175:9:175:9 | b | test.swift:177:10:177:10 | b | provenance |  |
+| test.swift:175:14:175:67 | TupleExpr [0] | test.swift:175:5:175:10 | TupleExpr [0] | provenance |  |
+| test.swift:175:14:175:67 | TupleExpr [1] | test.swift:175:5:175:10 | TupleExpr [1] | provenance |  |
+| test.swift:175:15:175:39 | ... + ... | test.swift:175:14:175:67 | TupleExpr [0] | provenance |  |
+| test.swift:175:25:175:39 | source(...) | test.swift:175:15:175:39 | ... + ... | provenance |  |
+| test.swift:175:42:175:66 | ... + ... | test.swift:175:14:175:67 | TupleExpr [1] | provenance |  |
+| test.swift:175:52:175:66 | source(...) | test.swift:175:42:175:66 | ... + ... | provenance |  |
 nodes
-| implicit-self.swift:11:9:11:12 | [post] self [x] | semmle.label | [post] self [x] |
-| implicit-self.swift:11:9:11:14 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:11:18:11:31 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:12:14:12:17 | self [x] | semmle.label | self [x] |
-| implicit-self.swift:12:14:12:19 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:17:9:17:9 | x | semmle.label | x |
-| implicit-self.swift:17:13:17:26 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:18:14:18:14 | x | semmle.label | x |
-| implicit-self.swift:23:9:23:9 | x | semmle.label | x |
-| implicit-self.swift:23:13:23:26 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:24:14:24:17 | self [x] | semmle.label | self [x] |
-| implicit-self.swift:24:14:24:19 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:29:9:29:12 | [post] self [x] | semmle.label | [post] self [x] |
-| implicit-self.swift:29:9:29:14 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:29:18:29:31 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:30:14:30:14 | x | semmle.label | x |
-| implicit-self.swift:35:9:35:12 | [post] self [box, x] | semmle.label | [post] self [box, x] |
-| implicit-self.swift:35:9:35:16 | [post] ... .box [x] | semmle.label | [post] ... .box [x] |
-| implicit-self.swift:35:9:35:18 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:35:22:35:35 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:36:14:36:17 | self [box, x] | semmle.label | self [box, x] |
-| implicit-self.swift:36:14:36:21 | ... .box [x] | semmle.label | ... .box [x] |
-| implicit-self.swift:36:14:36:23 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:41:9:41:11 | [post] box [x] | semmle.label | [post] box [x] |
-| implicit-self.swift:41:9:41:13 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:41:17:41:30 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:42:14:42:16 | box [x] | semmle.label | box [x] |
-| implicit-self.swift:42:14:42:18 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:47:9:47:11 | [post] box [x] | semmle.label | [post] box [x] |
-| implicit-self.swift:47:9:47:13 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:47:17:47:30 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:48:14:48:17 | self [box, x] | semmle.label | self [box, x] |
-| implicit-self.swift:48:14:48:21 | ... .box [x] | semmle.label | ... .box [x] |
-| implicit-self.swift:48:14:48:23 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:53:9:53:12 | [post] self [box, x] | semmle.label | [post] self [box, x] |
-| implicit-self.swift:53:9:53:16 | [post] ... .box [x] | semmle.label | [post] ... .box [x] |
-| implicit-self.swift:53:9:53:18 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:53:22:53:35 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:54:14:54:16 | box [x] | semmle.label | box [x] |
-| implicit-self.swift:54:14:54:18 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:59:9:59:9 | [incoming] x | semmle.label | [incoming] x |
-| implicit-self.swift:59:24:59:37 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:60:14:60:14 | x | semmle.label | x |
-| implicit-self.swift:61:14:61:17 | self [x] | semmle.label | self [x] |
-| implicit-self.swift:61:14:61:19 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:66:9:66:12 | [post] self [x] | semmle.label | [post] self [x] |
-| implicit-self.swift:66:9:66:14 | [incoming] ... .x | semmle.label | [incoming] ... .x |
-| implicit-self.swift:66:29:66:43 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:67:14:67:14 | x | semmle.label | x |
-| implicit-self.swift:68:14:68:17 | self [x] | semmle.label | self [x] |
-| implicit-self.swift:68:14:68:19 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:73:9:73:9 | [incoming] x | semmle.label | [incoming] x |
-| implicit-self.swift:73:24:73:38 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:74:14:74:14 | x | semmle.label | x |
-| implicit-self.swift:75:14:75:17 | self [x] | semmle.label | self [x] |
-| implicit-self.swift:75:14:75:19 | ... .x | semmle.label | ... .x |
-| implicit-self.swift:80:9:80:12 | [post] self [x] | semmle.label | [post] self [x] |
-| implicit-self.swift:80:9:80:14 | [incoming] ... .x | semmle.label | [incoming] ... .x |
-| implicit-self.swift:80:29:80:43 | source(...) | semmle.label | source(...) |
-| implicit-self.swift:81:14:81:14 | x | semmle.label | x |
-| implicit-self.swift:82:14:82:17 | self [x] | semmle.label | self [x] |
-| implicit-self.swift:82:14:82:19 | ... .x | semmle.label | ... .x |
-| test.swift:2:10:2:21 | source(...) | semmle.label | source(...) |
-| test.swift:6:10:6:23 | source(...) | semmle.label | source(...) |
-| test.swift:6:10:6:32 | ... + ... | semmle.label | ... + ... |
-| test.swift:7:10:7:32 | ... + ... | semmle.label | ... + ... |
-| test.swift:7:19:7:32 | source(...) | semmle.label | source(...) |
-| test.swift:9:10:9:33 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| test.swift:9:13:9:26 | source(...) | semmle.label | source(...) |
-| test.swift:10:10:10:33 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| test.swift:10:18:10:31 | source(...) | semmle.label | source(...) |
-| test.swift:11:10:11:38 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| test.swift:11:18:11:31 | source(...) | semmle.label | source(...) |
-| test.swift:16:10:16:33 | TupleExpr [0] | semmle.label | TupleExpr [0] |
-| test.swift:16:10:16:35 | ... .0 | semmle.label | ... .0 |
-| test.swift:16:11:16:25 | source(...) | semmle.label | source(...) |
-| test.swift:19:10:19:33 | TupleExpr [1] | semmle.label | TupleExpr [1] |
-| test.swift:19:10:19:35 | ... .1 | semmle.label | ... .1 |
-| test.swift:19:19:19:32 | source(...) | semmle.label | source(...) |
-| test.swift:23:9:23:9 | a | semmle.label | a |
-| test.swift:23:13:23:26 | source(...) | semmle.label | source(...) |
-| test.swift:24:10:24:10 | a | semmle.label | a |
-| test.swift:28:9:28:14 | TupleExpr [0] | semmle.label | TupleExpr [0] |
-| test.swift:28:10:28:10 | a | semmle.label | a |
-| test.swift:28:18:28:41 | TupleExpr [0] | semmle.label | TupleExpr [0] |
-| test.swift:28:19:28:33 | source(...) | semmle.label | source(...) |
-| test.swift:29:10:29:10 | a | semmle.label | a |
-| test.swift:32:9:32:14 | TupleExpr [1] | semmle.label | TupleExpr [1] |
-| test.swift:32:13:32:13 | d | semmle.label | d |
-| test.swift:32:18:32:41 | TupleExpr [1] | semmle.label | TupleExpr [1] |
-| test.swift:32:27:32:40 | source(...) | semmle.label | source(...) |
-| test.swift:34:10:34:10 | d | semmle.label | d |
-| test.swift:38:9:38:9 | a | semmle.label | a |
-| test.swift:38:13:38:26 | source(...) | semmle.label | source(...) |
+| calls.swift:7:19:7:19 | x | semmle.label | x |
+| calls.swift:8:14:8:14 | x | semmle.label | x |
+| calls.swift:10:12:10:25 | source(...) | semmle.label | source(...) |
+| calls.swift:15:16:15:29 | source(...) | semmle.label | source(...) |
+| calls.swift:17:10:17:17 | target(...) | semmle.label | target(...) |
+| calls.swift:21:17:21:17 | x | semmle.label | x |
+| calls.swift:22:14:22:14 | x | semmle.label | x |
+| calls.swift:24:12:24:28 | source(...) | semmle.label | source(...) |
+| calls.swift:28:19:28:19 | x | semmle.label | x |
+| calls.swift:29:16:29:16 | x | semmle.label | x |
+| calls.swift:29:16:29:24 | ... + ... | semmle.label | ... + ... |
+| calls.swift:31:10:31:31 | target(...) | semmle.label | target(...) |
+| calls.swift:31:17:31:30 | source(...) | semmle.label | source(...) |
+| calls.swift:32:10:32:31 | target(...) | semmle.label | target(...) |
+| calls.swift:32:17:32:30 | source(...) | semmle.label | source(...) |
+| calls.swift:37:23:37:23 | x | semmle.label | x |
+| calls.swift:38:14:38:14 | x | semmle.label | x |
+| calls.swift:40:13:40:32 | source(...) | semmle.label | source(...) |
+| calls.swift:42:18:42:21 | name | semmle.label | name |
+| calls.swift:43:14:43:17 | name | semmle.label | name |
+| calls.swift:45:13:45:32 | source(...) | semmle.label | source(...) |
+| calls.swift:49:19:49:19 | x | semmle.label | x |
+| calls.swift:49:32:49:32 | y | semmle.label | y |
+| calls.swift:50:14:50:14 | x | semmle.label | x |
+| calls.swift:51:14:51:14 | y | semmle.label | y |
+| calls.swift:53:12:53:26 | source(...) | semmle.label | source(...) |
+| calls.swift:53:28:53:41 | source(...) | semmle.label | source(...) |
+| calls.swift:61:19:61:19 | x [Return] [field] | semmle.label | x [Return] [field] |
+| calls.swift:62:9:62:9 | [post] x [field] | semmle.label | [post] x [field] |
+| calls.swift:62:9:62:15 | ... .field | semmle.label | ... .field |
+| calls.swift:62:19:62:32 | source(...) | semmle.label | source(...) |
+| calls.swift:66:12:66:12 | [post] b [field] | semmle.label | [post] b [field] |
+| calls.swift:67:10:67:10 | b [field] | semmle.label | b [field] |
+| calls.swift:67:10:67:16 | ... .field | semmle.label | ... .field |
+| calls.swift:75:13:75:17 | field | semmle.label | field |
+| calls.swift:75:21:75:34 | source(...) | semmle.label | source(...) |
+| calls.swift:81:18:81:22 | field | semmle.label | field |
+| calls.swift:87:18:87:21 | self [field] | semmle.label | self [field] |
+| calls.swift:87:18:87:27 | ... .field | semmle.label | ... .field |
+| calls.swift:105:18:105:22 | field | semmle.label | field |
+| calls.swift:111:18:111:21 | self [field] | semmle.label | self [field] |
+| calls.swift:111:18:111:27 | ... .field | semmle.label | ... .field |
+| implicit-self.swift:16:9:16:12 | [post] self [x] | semmle.label | [post] self [x] |
+| implicit-self.swift:16:9:16:14 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:16:18:16:31 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:17:14:17:17 | self [x] | semmle.label | self [x] |
+| implicit-self.swift:17:14:17:19 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:22:9:22:9 | x | semmle.label | x |
+| implicit-self.swift:22:13:22:26 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:23:14:23:14 | x | semmle.label | x |
+| implicit-self.swift:28:9:28:9 | x | semmle.label | x |
+| implicit-self.swift:28:13:28:26 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:29:14:29:17 | self [x] | semmle.label | self [x] |
+| implicit-self.swift:29:14:29:19 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:34:9:34:12 | [post] self [x] | semmle.label | [post] self [x] |
+| implicit-self.swift:34:9:34:14 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:34:18:34:31 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:35:14:35:14 | x | semmle.label | x |
+| implicit-self.swift:40:9:40:12 | [post] self [box, x] | semmle.label | [post] self [box, x] |
+| implicit-self.swift:40:9:40:16 | [post] ... .box [x] | semmle.label | [post] ... .box [x] |
+| implicit-self.swift:40:9:40:18 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:40:22:40:35 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:41:14:41:17 | self [box, x] | semmle.label | self [box, x] |
+| implicit-self.swift:41:14:41:21 | ... .box [x] | semmle.label | ... .box [x] |
+| implicit-self.swift:41:14:41:23 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:46:9:46:11 | [post] box [x] | semmle.label | [post] box [x] |
+| implicit-self.swift:46:9:46:13 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:46:17:46:30 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:47:14:47:16 | box [x] | semmle.label | box [x] |
+| implicit-self.swift:47:14:47:18 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:52:9:52:11 | [post] box [x] | semmle.label | [post] box [x] |
+| implicit-self.swift:52:9:52:13 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:52:17:52:30 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:53:14:53:17 | self [box, x] | semmle.label | self [box, x] |
+| implicit-self.swift:53:14:53:21 | ... .box [x] | semmle.label | ... .box [x] |
+| implicit-self.swift:53:14:53:23 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:58:9:58:12 | [post] self [box, x] | semmle.label | [post] self [box, x] |
+| implicit-self.swift:58:9:58:16 | [post] ... .box [x] | semmle.label | [post] ... .box [x] |
+| implicit-self.swift:58:9:58:18 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:58:22:58:35 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:59:14:59:16 | box [x] | semmle.label | box [x] |
+| implicit-self.swift:59:14:59:18 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:64:9:64:9 | [incoming] x | semmle.label | [incoming] x |
+| implicit-self.swift:64:24:64:37 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:65:14:65:14 | x | semmle.label | x |
+| implicit-self.swift:66:14:66:17 | self [x] | semmle.label | self [x] |
+| implicit-self.swift:66:14:66:19 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:71:9:71:12 | [post] self [x] | semmle.label | [post] self [x] |
+| implicit-self.swift:71:9:71:14 | [incoming] ... .x | semmle.label | [incoming] ... .x |
+| implicit-self.swift:71:29:71:43 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:72:14:72:14 | x | semmle.label | x |
+| implicit-self.swift:73:14:73:17 | self [x] | semmle.label | self [x] |
+| implicit-self.swift:73:14:73:19 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:78:9:78:9 | [incoming] x | semmle.label | [incoming] x |
+| implicit-self.swift:78:24:78:38 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:79:14:79:14 | x | semmle.label | x |
+| implicit-self.swift:80:14:80:17 | self [x] | semmle.label | self [x] |
+| implicit-self.swift:80:14:80:19 | ... .x | semmle.label | ... .x |
+| implicit-self.swift:85:9:85:12 | [post] self [x] | semmle.label | [post] self [x] |
+| implicit-self.swift:85:9:85:14 | [incoming] ... .x | semmle.label | [incoming] ... .x |
+| implicit-self.swift:85:29:85:43 | source(...) | semmle.label | source(...) |
+| implicit-self.swift:86:14:86:14 | x | semmle.label | x |
+| implicit-self.swift:87:14:87:17 | self [x] | semmle.label | self [x] |
+| implicit-self.swift:87:14:87:19 | ... .x | semmle.label | ... .x |
+| test.swift:9:10:9:21 | source(...) | semmle.label | source(...) |
+| test.swift:17:10:17:23 | source(...) | semmle.label | source(...) |
+| test.swift:17:10:17:32 | ... + ... | semmle.label | ... + ... |
+| test.swift:18:10:18:32 | ... + ... | semmle.label | ... + ... |
+| test.swift:18:19:18:32 | source(...) | semmle.label | source(...) |
+| test.swift:20:10:20:33 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
+| test.swift:20:13:20:26 | source(...) | semmle.label | source(...) |
+| test.swift:21:10:21:33 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
+| test.swift:21:18:21:31 | source(...) | semmle.label | source(...) |
+| test.swift:22:10:22:38 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
+| test.swift:22:18:22:31 | source(...) | semmle.label | source(...) |
+| test.swift:27:10:27:33 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:27:10:27:35 | ... .0 | semmle.label | ... .0 |
+| test.swift:27:11:27:25 | source(...) | semmle.label | source(...) |
+| test.swift:30:10:30:33 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:30:10:30:35 | ... .1 | semmle.label | ... .1 |
+| test.swift:30:19:30:32 | source(...) | semmle.label | source(...) |
+| test.swift:34:9:34:9 | a | semmle.label | a |
+| test.swift:34:13:34:26 | source(...) | semmle.label | source(...) |
+| test.swift:35:10:35:10 | a | semmle.label | a |
+| test.swift:39:9:39:14 | TupleExpr [0] | semmle.label | TupleExpr [0] |
 | test.swift:39:10:39:10 | a | semmle.label | a |
-| test.swift:46:5:46:9 | [post] tuple [0] | semmle.label | [post] tuple [0] |
-| test.swift:46:5:46:11 | ... .0 | semmle.label | ... .0 |
-| test.swift:46:15:46:28 | source(...) | semmle.label | source(...) |
-| test.swift:47:10:47:14 | tuple [0] | semmle.label | tuple [0] |
-| test.swift:47:10:47:16 | ... .0 | semmle.label | ... .0 |
-| test.swift:53:5:53:14 | [post] deep_tuple [1, 0] | semmle.label | [post] deep_tuple [1, 0] |
-| test.swift:53:5:53:16 | [post] ... .1 [0] | semmle.label | [post] ... .1 [0] |
-| test.swift:53:5:53:18 | ... .0 | semmle.label | ... .0 |
-| test.swift:53:22:53:35 | source(...) | semmle.label | source(...) |
-| test.swift:58:10:58:19 | deep_tuple [1, 0] | semmle.label | deep_tuple [1, 0] |
-| test.swift:58:10:58:21 | ... .1 [0] | semmle.label | ... .1 [0] |
-| test.swift:58:10:58:23 | ... .0 | semmle.label | ... .0 |
-| test.swift:64:5:64:16 | TupleExpr [0] | semmle.label | TupleExpr [0] |
-| test.swift:64:6:64:10 | [post] tuple [1] | semmle.label | [post] tuple [1] |
-| test.swift:64:6:64:12 | ... .1 | semmle.label | ... .1 |
-| test.swift:64:20:64:51 | TupleExpr [0] | semmle.label | TupleExpr [0] |
-| test.swift:64:21:64:35 | source(...) | semmle.label | source(...) |
-| test.swift:66:10:66:14 | tuple [1] | semmle.label | tuple [1] |
-| test.swift:66:10:66:16 | ... .1 | semmle.label | ... .1 |
-| test.swift:74:5:74:9 | [post] tuple [0] | semmle.label | [post] tuple [0] |
-| test.swift:74:5:74:11 | ... .0 | semmle.label | ... .0 |
-| test.swift:74:15:74:29 | source(...) | semmle.label | source(...) |
-| test.swift:75:10:75:14 | tuple [0] | semmle.label | tuple [0] |
-| test.swift:75:10:75:16 | ... .0 | semmle.label | ... .0 |
-| test.swift:86:9:86:9 | x | semmle.label | x |
-| test.swift:86:13:86:27 | source(...) | semmle.label | source(...) |
-| test.swift:90:10:90:10 | x | semmle.label | x |
-| test.swift:94:9:94:9 | y | semmle.label | y |
-| test.swift:94:13:94:27 | source(...) | semmle.label | source(...) |
-| test.swift:96:10:96:10 | y | semmle.label | y |
-| test.swift:99:14:99:14 | x | semmle.label | x |
-| test.swift:100:14:100:14 | y | semmle.label | y |
-| test.swift:107:9:107:13 | [post] tuple [0] | semmle.label | [post] tuple [0] |
-| test.swift:107:9:107:15 | ... .0 | semmle.label | ... .0 |
-| test.swift:107:19:107:33 | source(...) | semmle.label | source(...) |
-| test.swift:112:10:112:14 | tuple [0] | semmle.label | tuple [0] |
-| test.swift:112:10:112:16 | ... .0 | semmle.label | ... .0 |
-| test.swift:117:9:117:13 | tuple [0] | semmle.label | tuple [0] |
-| test.swift:117:9:117:13 | tuple [1] | semmle.label | tuple [1] |
-| test.swift:117:17:117:50 | TupleExpr [0] | semmle.label | TupleExpr [0] |
-| test.swift:117:17:117:50 | TupleExpr [1] | semmle.label | TupleExpr [1] |
-| test.swift:117:18:117:33 | source(...) | semmle.label | source(...) |
-| test.swift:117:35:117:49 | source(...) | semmle.label | source(...) |
-| test.swift:120:9:120:13 | TupleExpr [0] | semmle.label | TupleExpr [0] |
-| test.swift:120:9:120:13 | TupleExpr [1] | semmle.label | TupleExpr [1] |
-| test.swift:120:10:120:10 | a | semmle.label | a |
-| test.swift:120:12:120:12 | b | semmle.label | b |
-| test.swift:120:17:120:21 | tuple [0] | semmle.label | tuple [0] |
-| test.swift:120:17:120:21 | tuple [1] | semmle.label | tuple [1] |
-| test.swift:125:10:125:10 | a | semmle.label | a |
-| test.swift:126:10:126:10 | b | semmle.label | b |
-| test.swift:131:5:131:5 | a | semmle.label | a |
-| test.swift:131:19:131:33 | source(...) | semmle.label | source(...) |
-| test.swift:132:10:132:10 | a | semmle.label | a |
-| test.swift:137:5:137:5 | [incoming] a | semmle.label | [incoming] a |
-| test.swift:137:10:137:24 | source(...) | semmle.label | source(...) |
-| test.swift:138:10:138:10 | a | semmle.label | a |
-| test.swift:143:5:143:5 | [incoming] a | semmle.label | [incoming] a |
-| test.swift:143:20:143:34 | source(...) | semmle.label | source(...) |
-| test.swift:144:10:144:10 | a | semmle.label | a |
-| test.swift:149:5:149:5 | [post] a [0] | semmle.label | [post] a [0] |
-| test.swift:149:5:149:7 | ... .0 | semmle.label | ... .0 |
-| test.swift:149:23:149:37 | source(...) | semmle.label | source(...) |
-| test.swift:150:10:150:10 | a [0] | semmle.label | a [0] |
-| test.swift:150:10:150:12 | ... .0 | semmle.label | ... .0 |
-| test.swift:156:5:156:12 | TupleExpr [0] | semmle.label | TupleExpr [0] |
-| test.swift:156:6:156:6 | [post] a [0] | semmle.label | [post] a [0] |
-| test.swift:156:6:156:8 | ... .0 | semmle.label | ... .0 |
-| test.swift:156:16:156:61 | TupleExpr [0] | semmle.label | TupleExpr [0] |
-| test.swift:156:17:156:43 | ... + ... | semmle.label | ... + ... |
-| test.swift:156:29:156:43 | source(...) | semmle.label | source(...) |
-| test.swift:157:10:157:10 | a [0] | semmle.label | a [0] |
-| test.swift:157:10:157:12 | ... .0 | semmle.label | ... .0 |
-| test.swift:164:5:164:10 | TupleExpr [0] | semmle.label | TupleExpr [0] |
-| test.swift:164:5:164:10 | TupleExpr [1] | semmle.label | TupleExpr [1] |
-| test.swift:164:6:164:6 | a | semmle.label | a |
-| test.swift:164:9:164:9 | b | semmle.label | b |
-| test.swift:164:14:164:67 | TupleExpr [0] | semmle.label | TupleExpr [0] |
-| test.swift:164:14:164:67 | TupleExpr [1] | semmle.label | TupleExpr [1] |
-| test.swift:164:15:164:39 | ... + ... | semmle.label | ... + ... |
-| test.swift:164:25:164:39 | source(...) | semmle.label | source(...) |
-| test.swift:164:42:164:66 | ... + ... | semmle.label | ... + ... |
-| test.swift:164:52:164:66 | source(...) | semmle.label | source(...) |
-| test.swift:165:10:165:10 | a | semmle.label | a |
-| test.swift:166:10:166:10 | b | semmle.label | b |
+| test.swift:39:18:39:41 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:39:19:39:33 | source(...) | semmle.label | source(...) |
+| test.swift:40:10:40:10 | a | semmle.label | a |
+| test.swift:43:9:43:14 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:43:13:43:13 | d | semmle.label | d |
+| test.swift:43:18:43:41 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:43:27:43:40 | source(...) | semmle.label | source(...) |
+| test.swift:45:10:45:10 | d | semmle.label | d |
+| test.swift:49:9:49:9 | a | semmle.label | a |
+| test.swift:49:13:49:26 | source(...) | semmle.label | source(...) |
+| test.swift:50:10:50:10 | a | semmle.label | a |
+| test.swift:57:5:57:9 | [post] tuple [0] | semmle.label | [post] tuple [0] |
+| test.swift:57:5:57:11 | ... .0 | semmle.label | ... .0 |
+| test.swift:57:15:57:28 | source(...) | semmle.label | source(...) |
+| test.swift:58:10:58:14 | tuple [0] | semmle.label | tuple [0] |
+| test.swift:58:10:58:16 | ... .0 | semmle.label | ... .0 |
+| test.swift:64:5:64:14 | [post] deep_tuple [1, 0] | semmle.label | [post] deep_tuple [1, 0] |
+| test.swift:64:5:64:16 | [post] ... .1 [0] | semmle.label | [post] ... .1 [0] |
+| test.swift:64:5:64:18 | ... .0 | semmle.label | ... .0 |
+| test.swift:64:22:64:35 | source(...) | semmle.label | source(...) |
+| test.swift:69:10:69:19 | deep_tuple [1, 0] | semmle.label | deep_tuple [1, 0] |
+| test.swift:69:10:69:21 | ... .1 [0] | semmle.label | ... .1 [0] |
+| test.swift:69:10:69:23 | ... .0 | semmle.label | ... .0 |
+| test.swift:75:5:75:16 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:75:6:75:10 | [post] tuple [1] | semmle.label | [post] tuple [1] |
+| test.swift:75:6:75:12 | ... .1 | semmle.label | ... .1 |
+| test.swift:75:20:75:51 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:75:21:75:35 | source(...) | semmle.label | source(...) |
+| test.swift:77:10:77:14 | tuple [1] | semmle.label | tuple [1] |
+| test.swift:77:10:77:16 | ... .1 | semmle.label | ... .1 |
+| test.swift:85:5:85:9 | [post] tuple [0] | semmle.label | [post] tuple [0] |
+| test.swift:85:5:85:11 | ... .0 | semmle.label | ... .0 |
+| test.swift:85:15:85:29 | source(...) | semmle.label | source(...) |
+| test.swift:86:10:86:14 | tuple [0] | semmle.label | tuple [0] |
+| test.swift:86:10:86:16 | ... .0 | semmle.label | ... .0 |
+| test.swift:97:9:97:9 | x | semmle.label | x |
+| test.swift:97:13:97:27 | source(...) | semmle.label | source(...) |
+| test.swift:101:10:101:10 | x | semmle.label | x |
+| test.swift:105:9:105:9 | y | semmle.label | y |
+| test.swift:105:13:105:27 | source(...) | semmle.label | source(...) |
+| test.swift:107:10:107:10 | y | semmle.label | y |
+| test.swift:110:14:110:14 | x | semmle.label | x |
+| test.swift:111:14:111:14 | y | semmle.label | y |
+| test.swift:118:9:118:13 | [post] tuple [0] | semmle.label | [post] tuple [0] |
+| test.swift:118:9:118:15 | ... .0 | semmle.label | ... .0 |
+| test.swift:118:19:118:33 | source(...) | semmle.label | source(...) |
+| test.swift:123:10:123:14 | tuple [0] | semmle.label | tuple [0] |
+| test.swift:123:10:123:16 | ... .0 | semmle.label | ... .0 |
+| test.swift:128:9:128:13 | tuple [0] | semmle.label | tuple [0] |
+| test.swift:128:9:128:13 | tuple [1] | semmle.label | tuple [1] |
+| test.swift:128:17:128:50 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:128:17:128:50 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:128:18:128:33 | source(...) | semmle.label | source(...) |
+| test.swift:128:35:128:49 | source(...) | semmle.label | source(...) |
+| test.swift:131:9:131:14 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:131:9:131:14 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:131:10:131:10 | a | semmle.label | a |
+| test.swift:131:13:131:13 | b | semmle.label | b |
+| test.swift:131:18:131:22 | tuple [0] | semmle.label | tuple [0] |
+| test.swift:131:18:131:22 | tuple [1] | semmle.label | tuple [1] |
+| test.swift:136:10:136:10 | a | semmle.label | a |
+| test.swift:137:10:137:10 | b | semmle.label | b |
+| test.swift:142:5:142:5 | a | semmle.label | a |
+| test.swift:142:19:142:33 | source(...) | semmle.label | source(...) |
+| test.swift:143:10:143:10 | a | semmle.label | a |
+| test.swift:148:5:148:5 | [incoming] a | semmle.label | [incoming] a |
+| test.swift:148:10:148:24 | source(...) | semmle.label | source(...) |
+| test.swift:149:10:149:10 | a | semmle.label | a |
+| test.swift:154:5:154:5 | [incoming] a | semmle.label | [incoming] a |
+| test.swift:154:20:154:34 | source(...) | semmle.label | source(...) |
+| test.swift:155:10:155:10 | a | semmle.label | a |
+| test.swift:160:5:160:5 | [post] a [0] | semmle.label | [post] a [0] |
+| test.swift:160:5:160:7 | ... .0 | semmle.label | ... .0 |
+| test.swift:160:23:160:37 | source(...) | semmle.label | source(...) |
+| test.swift:161:10:161:10 | a [0] | semmle.label | a [0] |
+| test.swift:161:10:161:12 | ... .0 | semmle.label | ... .0 |
+| test.swift:167:5:167:12 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:167:6:167:6 | [post] a [0] | semmle.label | [post] a [0] |
+| test.swift:167:6:167:8 | ... .0 | semmle.label | ... .0 |
+| test.swift:167:16:167:61 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:167:17:167:43 | ... + ... | semmle.label | ... + ... |
+| test.swift:167:29:167:43 | source(...) | semmle.label | source(...) |
+| test.swift:168:10:168:10 | a [0] | semmle.label | a [0] |
+| test.swift:168:10:168:12 | ... .0 | semmle.label | ... .0 |
+| test.swift:175:5:175:10 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:175:5:175:10 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:175:6:175:6 | a | semmle.label | a |
+| test.swift:175:9:175:9 | b | semmle.label | b |
+| test.swift:175:14:175:67 | TupleExpr [0] | semmle.label | TupleExpr [0] |
+| test.swift:175:14:175:67 | TupleExpr [1] | semmle.label | TupleExpr [1] |
+| test.swift:175:15:175:39 | ... + ... | semmle.label | ... + ... |
+| test.swift:175:25:175:39 | source(...) | semmle.label | source(...) |
+| test.swift:175:42:175:66 | ... + ... | semmle.label | ... + ... |
+| test.swift:175:52:175:66 | source(...) | semmle.label | source(...) |
+| test.swift:176:10:176:10 | a | semmle.label | a |
+| test.swift:177:10:177:10 | b | semmle.label | b |
 subpaths
+| calls.swift:31:17:31:30 | source(...) | calls.swift:28:19:28:19 | x | calls.swift:29:16:29:24 | ... + ... | calls.swift:31:10:31:31 | target(...) |
+| calls.swift:32:17:32:30 | source(...) | calls.swift:28:19:28:19 | x | calls.swift:29:16:29:24 | ... + ... | calls.swift:32:10:32:31 | target(...) |
 testFailures
 #select
-| implicit-self.swift:12:14:12:19 | ... .x | implicit-self.swift:11:18:11:31 | source(...) | implicit-self.swift:12:14:12:19 | ... .x | $@ | implicit-self.swift:11:18:11:31 | source(...) | source(...) |
-| implicit-self.swift:18:14:18:14 | x | implicit-self.swift:17:13:17:26 | source(...) | implicit-self.swift:18:14:18:14 | x | $@ | implicit-self.swift:17:13:17:26 | source(...) | source(...) |
-| implicit-self.swift:24:14:24:19 | ... .x | implicit-self.swift:23:13:23:26 | source(...) | implicit-self.swift:24:14:24:19 | ... .x | $@ | implicit-self.swift:23:13:23:26 | source(...) | source(...) |
-| implicit-self.swift:30:14:30:14 | x | implicit-self.swift:29:18:29:31 | source(...) | implicit-self.swift:30:14:30:14 | x | $@ | implicit-self.swift:29:18:29:31 | source(...) | source(...) |
-| implicit-self.swift:36:14:36:23 | ... .x | implicit-self.swift:35:22:35:35 | source(...) | implicit-self.swift:36:14:36:23 | ... .x | $@ | implicit-self.swift:35:22:35:35 | source(...) | source(...) |
-| implicit-self.swift:42:14:42:18 | ... .x | implicit-self.swift:41:17:41:30 | source(...) | implicit-self.swift:42:14:42:18 | ... .x | $@ | implicit-self.swift:41:17:41:30 | source(...) | source(...) |
-| implicit-self.swift:48:14:48:23 | ... .x | implicit-self.swift:47:17:47:30 | source(...) | implicit-self.swift:48:14:48:23 | ... .x | $@ | implicit-self.swift:47:17:47:30 | source(...) | source(...) |
-| implicit-self.swift:54:14:54:18 | ... .x | implicit-self.swift:53:22:53:35 | source(...) | implicit-self.swift:54:14:54:18 | ... .x | $@ | implicit-self.swift:53:22:53:35 | source(...) | source(...) |
-| implicit-self.swift:60:14:60:14 | x | implicit-self.swift:59:24:59:37 | source(...) | implicit-self.swift:60:14:60:14 | x | $@ | implicit-self.swift:59:24:59:37 | source(...) | source(...) |
-| implicit-self.swift:61:14:61:19 | ... .x | implicit-self.swift:59:24:59:37 | source(...) | implicit-self.swift:61:14:61:19 | ... .x | $@ | implicit-self.swift:59:24:59:37 | source(...) | source(...) |
-| implicit-self.swift:67:14:67:14 | x | implicit-self.swift:66:29:66:43 | source(...) | implicit-self.swift:67:14:67:14 | x | $@ | implicit-self.swift:66:29:66:43 | source(...) | source(...) |
-| implicit-self.swift:68:14:68:19 | ... .x | implicit-self.swift:66:29:66:43 | source(...) | implicit-self.swift:68:14:68:19 | ... .x | $@ | implicit-self.swift:66:29:66:43 | source(...) | source(...) |
-| implicit-self.swift:74:14:74:14 | x | implicit-self.swift:73:24:73:38 | source(...) | implicit-self.swift:74:14:74:14 | x | $@ | implicit-self.swift:73:24:73:38 | source(...) | source(...) |
-| implicit-self.swift:75:14:75:19 | ... .x | implicit-self.swift:73:24:73:38 | source(...) | implicit-self.swift:75:14:75:19 | ... .x | $@ | implicit-self.swift:73:24:73:38 | source(...) | source(...) |
-| implicit-self.swift:81:14:81:14 | x | implicit-self.swift:80:29:80:43 | source(...) | implicit-self.swift:81:14:81:14 | x | $@ | implicit-self.swift:80:29:80:43 | source(...) | source(...) |
-| implicit-self.swift:82:14:82:19 | ... .x | implicit-self.swift:80:29:80:43 | source(...) | implicit-self.swift:82:14:82:19 | ... .x | $@ | implicit-self.swift:80:29:80:43 | source(...) | source(...) |
-| test.swift:2:10:2:21 | source(...) | test.swift:2:10:2:21 | source(...) | test.swift:2:10:2:21 | source(...) | $@ | test.swift:2:10:2:21 | source(...) | source(...) |
-| test.swift:6:10:6:32 | ... + ... | test.swift:6:10:6:23 | source(...) | test.swift:6:10:6:32 | ... + ... | $@ | test.swift:6:10:6:23 | source(...) | source(...) |
-| test.swift:7:10:7:32 | ... + ... | test.swift:7:19:7:32 | source(...) | test.swift:7:10:7:32 | ... + ... | $@ | test.swift:7:19:7:32 | source(...) | source(...) |
-| test.swift:9:10:9:33 | StringInterpolationExpr | test.swift:9:13:9:26 | source(...) | test.swift:9:10:9:33 | StringInterpolationExpr | $@ | test.swift:9:13:9:26 | source(...) | source(...) |
-| test.swift:10:10:10:33 | StringInterpolationExpr | test.swift:10:18:10:31 | source(...) | test.swift:10:10:10:33 | StringInterpolationExpr | $@ | test.swift:10:18:10:31 | source(...) | source(...) |
-| test.swift:11:10:11:38 | StringInterpolationExpr | test.swift:11:18:11:31 | source(...) | test.swift:11:10:11:38 | StringInterpolationExpr | $@ | test.swift:11:18:11:31 | source(...) | source(...) |
-| test.swift:16:10:16:35 | ... .0 | test.swift:16:11:16:25 | source(...) | test.swift:16:10:16:35 | ... .0 | $@ | test.swift:16:11:16:25 | source(...) | source(...) |
-| test.swift:19:10:19:35 | ... .1 | test.swift:19:19:19:32 | source(...) | test.swift:19:10:19:35 | ... .1 | $@ | test.swift:19:19:19:32 | source(...) | source(...) |
-| test.swift:24:10:24:10 | a | test.swift:23:13:23:26 | source(...) | test.swift:24:10:24:10 | a | $@ | test.swift:23:13:23:26 | source(...) | source(...) |
-| test.swift:29:10:29:10 | a | test.swift:28:19:28:33 | source(...) | test.swift:29:10:29:10 | a | $@ | test.swift:28:19:28:33 | source(...) | source(...) |
-| test.swift:34:10:34:10 | d | test.swift:32:27:32:40 | source(...) | test.swift:34:10:34:10 | d | $@ | test.swift:32:27:32:40 | source(...) | source(...) |
-| test.swift:39:10:39:10 | a | test.swift:38:13:38:26 | source(...) | test.swift:39:10:39:10 | a | $@ | test.swift:38:13:38:26 | source(...) | source(...) |
-| test.swift:47:10:47:16 | ... .0 | test.swift:46:15:46:28 | source(...) | test.swift:47:10:47:16 | ... .0 | $@ | test.swift:46:15:46:28 | source(...) | source(...) |
-| test.swift:58:10:58:23 | ... .0 | test.swift:53:22:53:35 | source(...) | test.swift:58:10:58:23 | ... .0 | $@ | test.swift:53:22:53:35 | source(...) | source(...) |
-| test.swift:66:10:66:16 | ... .1 | test.swift:64:21:64:35 | source(...) | test.swift:66:10:66:16 | ... .1 | $@ | test.swift:64:21:64:35 | source(...) | source(...) |
-| test.swift:75:10:75:16 | ... .0 | test.swift:74:15:74:29 | source(...) | test.swift:75:10:75:16 | ... .0 | $@ | test.swift:74:15:74:29 | source(...) | source(...) |
-| test.swift:90:10:90:10 | x | test.swift:86:13:86:27 | source(...) | test.swift:90:10:90:10 | x | $@ | test.swift:86:13:86:27 | source(...) | source(...) |
-| test.swift:96:10:96:10 | y | test.swift:94:13:94:27 | source(...) | test.swift:96:10:96:10 | y | $@ | test.swift:94:13:94:27 | source(...) | source(...) |
-| test.swift:99:14:99:14 | x | test.swift:86:13:86:27 | source(...) | test.swift:99:14:99:14 | x | $@ | test.swift:86:13:86:27 | source(...) | source(...) |
-| test.swift:100:14:100:14 | y | test.swift:94:13:94:27 | source(...) | test.swift:100:14:100:14 | y | $@ | test.swift:94:13:94:27 | source(...) | source(...) |
-| test.swift:112:10:112:16 | ... .0 | test.swift:107:19:107:33 | source(...) | test.swift:112:10:112:16 | ... .0 | $@ | test.swift:107:19:107:33 | source(...) | source(...) |
-| test.swift:125:10:125:10 | a | test.swift:117:18:117:33 | source(...) | test.swift:125:10:125:10 | a | $@ | test.swift:117:18:117:33 | source(...) | source(...) |
-| test.swift:126:10:126:10 | b | test.swift:117:35:117:49 | source(...) | test.swift:126:10:126:10 | b | $@ | test.swift:117:35:117:49 | source(...) | source(...) |
-| test.swift:132:10:132:10 | a | test.swift:131:19:131:33 | source(...) | test.swift:132:10:132:10 | a | $@ | test.swift:131:19:131:33 | source(...) | source(...) |
-| test.swift:138:10:138:10 | a | test.swift:137:10:137:24 | source(...) | test.swift:138:10:138:10 | a | $@ | test.swift:137:10:137:24 | source(...) | source(...) |
-| test.swift:144:10:144:10 | a | test.swift:143:20:143:34 | source(...) | test.swift:144:10:144:10 | a | $@ | test.swift:143:20:143:34 | source(...) | source(...) |
-| test.swift:150:10:150:12 | ... .0 | test.swift:149:23:149:37 | source(...) | test.swift:150:10:150:12 | ... .0 | $@ | test.swift:149:23:149:37 | source(...) | source(...) |
-| test.swift:157:10:157:12 | ... .0 | test.swift:156:29:156:43 | source(...) | test.swift:157:10:157:12 | ... .0 | $@ | test.swift:156:29:156:43 | source(...) | source(...) |
-| test.swift:165:10:165:10 | a | test.swift:164:25:164:39 | source(...) | test.swift:165:10:165:10 | a | $@ | test.swift:164:25:164:39 | source(...) | source(...) |
-| test.swift:166:10:166:10 | b | test.swift:164:52:164:66 | source(...) | test.swift:166:10:166:10 | b | $@ | test.swift:164:52:164:66 | source(...) | source(...) |
+| calls.swift:8:14:8:14 | x | calls.swift:10:12:10:25 | source(...) | calls.swift:8:14:8:14 | x | $@ | calls.swift:10:12:10:25 | source(...) | source(...) |
+| calls.swift:17:10:17:17 | target(...) | calls.swift:15:16:15:29 | source(...) | calls.swift:17:10:17:17 | target(...) | $@ | calls.swift:15:16:15:29 | source(...) | source(...) |
+| calls.swift:22:14:22:14 | x | calls.swift:24:12:24:28 | source(...) | calls.swift:22:14:22:14 | x | $@ | calls.swift:24:12:24:28 | source(...) | source(...) |
+| calls.swift:31:10:31:31 | target(...) | calls.swift:31:17:31:30 | source(...) | calls.swift:31:10:31:31 | target(...) | $@ | calls.swift:31:17:31:30 | source(...) | source(...) |
+| calls.swift:32:10:32:31 | target(...) | calls.swift:32:17:32:30 | source(...) | calls.swift:32:10:32:31 | target(...) | $@ | calls.swift:32:17:32:30 | source(...) | source(...) |
+| calls.swift:38:14:38:14 | x | calls.swift:40:13:40:32 | source(...) | calls.swift:38:14:38:14 | x | $@ | calls.swift:40:13:40:32 | source(...) | source(...) |
+| calls.swift:43:14:43:17 | name | calls.swift:45:13:45:32 | source(...) | calls.swift:43:14:43:17 | name | $@ | calls.swift:45:13:45:32 | source(...) | source(...) |
+| calls.swift:50:14:50:14 | x | calls.swift:53:12:53:26 | source(...) | calls.swift:50:14:50:14 | x | $@ | calls.swift:53:12:53:26 | source(...) | source(...) |
+| calls.swift:51:14:51:14 | y | calls.swift:53:28:53:41 | source(...) | calls.swift:51:14:51:14 | y | $@ | calls.swift:53:28:53:41 | source(...) | source(...) |
+| calls.swift:67:10:67:16 | ... .field | calls.swift:62:19:62:32 | source(...) | calls.swift:67:10:67:16 | ... .field | $@ | calls.swift:62:19:62:32 | source(...) | source(...) |
+| calls.swift:81:18:81:22 | field | calls.swift:75:21:75:34 | source(...) | calls.swift:81:18:81:22 | field | $@ | calls.swift:75:21:75:34 | source(...) | source(...) |
+| calls.swift:87:18:87:27 | ... .field | calls.swift:75:21:75:34 | source(...) | calls.swift:87:18:87:27 | ... .field | $@ | calls.swift:75:21:75:34 | source(...) | source(...) |
+| calls.swift:105:18:105:22 | field | calls.swift:75:21:75:34 | source(...) | calls.swift:105:18:105:22 | field | $@ | calls.swift:75:21:75:34 | source(...) | source(...) |
+| calls.swift:111:18:111:27 | ... .field | calls.swift:75:21:75:34 | source(...) | calls.swift:111:18:111:27 | ... .field | $@ | calls.swift:75:21:75:34 | source(...) | source(...) |
+| implicit-self.swift:17:14:17:19 | ... .x | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:17:14:17:19 | ... .x | $@ | implicit-self.swift:16:18:16:31 | source(...) | source(...) |
+| implicit-self.swift:23:14:23:14 | x | implicit-self.swift:22:13:22:26 | source(...) | implicit-self.swift:23:14:23:14 | x | $@ | implicit-self.swift:22:13:22:26 | source(...) | source(...) |
+| implicit-self.swift:29:14:29:19 | ... .x | implicit-self.swift:28:13:28:26 | source(...) | implicit-self.swift:29:14:29:19 | ... .x | $@ | implicit-self.swift:28:13:28:26 | source(...) | source(...) |
+| implicit-self.swift:35:14:35:14 | x | implicit-self.swift:34:18:34:31 | source(...) | implicit-self.swift:35:14:35:14 | x | $@ | implicit-self.swift:34:18:34:31 | source(...) | source(...) |
+| implicit-self.swift:41:14:41:23 | ... .x | implicit-self.swift:40:22:40:35 | source(...) | implicit-self.swift:41:14:41:23 | ... .x | $@ | implicit-self.swift:40:22:40:35 | source(...) | source(...) |
+| implicit-self.swift:47:14:47:18 | ... .x | implicit-self.swift:46:17:46:30 | source(...) | implicit-self.swift:47:14:47:18 | ... .x | $@ | implicit-self.swift:46:17:46:30 | source(...) | source(...) |
+| implicit-self.swift:53:14:53:23 | ... .x | implicit-self.swift:52:17:52:30 | source(...) | implicit-self.swift:53:14:53:23 | ... .x | $@ | implicit-self.swift:52:17:52:30 | source(...) | source(...) |
+| implicit-self.swift:59:14:59:18 | ... .x | implicit-self.swift:58:22:58:35 | source(...) | implicit-self.swift:59:14:59:18 | ... .x | $@ | implicit-self.swift:58:22:58:35 | source(...) | source(...) |
+| implicit-self.swift:65:14:65:14 | x | implicit-self.swift:64:24:64:37 | source(...) | implicit-self.swift:65:14:65:14 | x | $@ | implicit-self.swift:64:24:64:37 | source(...) | source(...) |
+| implicit-self.swift:66:14:66:19 | ... .x | implicit-self.swift:64:24:64:37 | source(...) | implicit-self.swift:66:14:66:19 | ... .x | $@ | implicit-self.swift:64:24:64:37 | source(...) | source(...) |
+| implicit-self.swift:72:14:72:14 | x | implicit-self.swift:71:29:71:43 | source(...) | implicit-self.swift:72:14:72:14 | x | $@ | implicit-self.swift:71:29:71:43 | source(...) | source(...) |
+| implicit-self.swift:73:14:73:19 | ... .x | implicit-self.swift:71:29:71:43 | source(...) | implicit-self.swift:73:14:73:19 | ... .x | $@ | implicit-self.swift:71:29:71:43 | source(...) | source(...) |
+| implicit-self.swift:79:14:79:14 | x | implicit-self.swift:78:24:78:38 | source(...) | implicit-self.swift:79:14:79:14 | x | $@ | implicit-self.swift:78:24:78:38 | source(...) | source(...) |
+| implicit-self.swift:80:14:80:19 | ... .x | implicit-self.swift:78:24:78:38 | source(...) | implicit-self.swift:80:14:80:19 | ... .x | $@ | implicit-self.swift:78:24:78:38 | source(...) | source(...) |
+| implicit-self.swift:86:14:86:14 | x | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:86:14:86:14 | x | $@ | implicit-self.swift:85:29:85:43 | source(...) | source(...) |
+| implicit-self.swift:87:14:87:19 | ... .x | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:87:14:87:19 | ... .x | $@ | implicit-self.swift:85:29:85:43 | source(...) | source(...) |
+| test.swift:9:10:9:21 | source(...) | test.swift:9:10:9:21 | source(...) | test.swift:9:10:9:21 | source(...) | $@ | test.swift:9:10:9:21 | source(...) | source(...) |
+| test.swift:17:10:17:32 | ... + ... | test.swift:17:10:17:23 | source(...) | test.swift:17:10:17:32 | ... + ... | $@ | test.swift:17:10:17:23 | source(...) | source(...) |
+| test.swift:18:10:18:32 | ... + ... | test.swift:18:19:18:32 | source(...) | test.swift:18:10:18:32 | ... + ... | $@ | test.swift:18:19:18:32 | source(...) | source(...) |
+| test.swift:20:10:20:33 | StringInterpolationExpr | test.swift:20:13:20:26 | source(...) | test.swift:20:10:20:33 | StringInterpolationExpr | $@ | test.swift:20:13:20:26 | source(...) | source(...) |
+| test.swift:21:10:21:33 | StringInterpolationExpr | test.swift:21:18:21:31 | source(...) | test.swift:21:10:21:33 | StringInterpolationExpr | $@ | test.swift:21:18:21:31 | source(...) | source(...) |
+| test.swift:22:10:22:38 | StringInterpolationExpr | test.swift:22:18:22:31 | source(...) | test.swift:22:10:22:38 | StringInterpolationExpr | $@ | test.swift:22:18:22:31 | source(...) | source(...) |
+| test.swift:27:10:27:35 | ... .0 | test.swift:27:11:27:25 | source(...) | test.swift:27:10:27:35 | ... .0 | $@ | test.swift:27:11:27:25 | source(...) | source(...) |
+| test.swift:30:10:30:35 | ... .1 | test.swift:30:19:30:32 | source(...) | test.swift:30:10:30:35 | ... .1 | $@ | test.swift:30:19:30:32 | source(...) | source(...) |
+| test.swift:35:10:35:10 | a | test.swift:34:13:34:26 | source(...) | test.swift:35:10:35:10 | a | $@ | test.swift:34:13:34:26 | source(...) | source(...) |
+| test.swift:40:10:40:10 | a | test.swift:39:19:39:33 | source(...) | test.swift:40:10:40:10 | a | $@ | test.swift:39:19:39:33 | source(...) | source(...) |
+| test.swift:45:10:45:10 | d | test.swift:43:27:43:40 | source(...) | test.swift:45:10:45:10 | d | $@ | test.swift:43:27:43:40 | source(...) | source(...) |
+| test.swift:50:10:50:10 | a | test.swift:49:13:49:26 | source(...) | test.swift:50:10:50:10 | a | $@ | test.swift:49:13:49:26 | source(...) | source(...) |
+| test.swift:58:10:58:16 | ... .0 | test.swift:57:15:57:28 | source(...) | test.swift:58:10:58:16 | ... .0 | $@ | test.swift:57:15:57:28 | source(...) | source(...) |
+| test.swift:69:10:69:23 | ... .0 | test.swift:64:22:64:35 | source(...) | test.swift:69:10:69:23 | ... .0 | $@ | test.swift:64:22:64:35 | source(...) | source(...) |
+| test.swift:77:10:77:16 | ... .1 | test.swift:75:21:75:35 | source(...) | test.swift:77:10:77:16 | ... .1 | $@ | test.swift:75:21:75:35 | source(...) | source(...) |
+| test.swift:86:10:86:16 | ... .0 | test.swift:85:15:85:29 | source(...) | test.swift:86:10:86:16 | ... .0 | $@ | test.swift:85:15:85:29 | source(...) | source(...) |
+| test.swift:101:10:101:10 | x | test.swift:97:13:97:27 | source(...) | test.swift:101:10:101:10 | x | $@ | test.swift:97:13:97:27 | source(...) | source(...) |
+| test.swift:107:10:107:10 | y | test.swift:105:13:105:27 | source(...) | test.swift:107:10:107:10 | y | $@ | test.swift:105:13:105:27 | source(...) | source(...) |
+| test.swift:110:14:110:14 | x | test.swift:97:13:97:27 | source(...) | test.swift:110:14:110:14 | x | $@ | test.swift:97:13:97:27 | source(...) | source(...) |
+| test.swift:111:14:111:14 | y | test.swift:105:13:105:27 | source(...) | test.swift:111:14:111:14 | y | $@ | test.swift:105:13:105:27 | source(...) | source(...) |
+| test.swift:123:10:123:16 | ... .0 | test.swift:118:19:118:33 | source(...) | test.swift:123:10:123:16 | ... .0 | $@ | test.swift:118:19:118:33 | source(...) | source(...) |
+| test.swift:136:10:136:10 | a | test.swift:128:18:128:33 | source(...) | test.swift:136:10:136:10 | a | $@ | test.swift:128:18:128:33 | source(...) | source(...) |
+| test.swift:137:10:137:10 | b | test.swift:128:35:128:49 | source(...) | test.swift:137:10:137:10 | b | $@ | test.swift:128:35:128:49 | source(...) | source(...) |
+| test.swift:143:10:143:10 | a | test.swift:142:19:142:33 | source(...) | test.swift:143:10:143:10 | a | $@ | test.swift:142:19:142:33 | source(...) | source(...) |
+| test.swift:149:10:149:10 | a | test.swift:148:10:148:24 | source(...) | test.swift:149:10:149:10 | a | $@ | test.swift:148:10:148:24 | source(...) | source(...) |
+| test.swift:155:10:155:10 | a | test.swift:154:20:154:34 | source(...) | test.swift:155:10:155:10 | a | $@ | test.swift:154:20:154:34 | source(...) | source(...) |
+| test.swift:161:10:161:12 | ... .0 | test.swift:160:23:160:37 | source(...) | test.swift:161:10:161:12 | ... .0 | $@ | test.swift:160:23:160:37 | source(...) | source(...) |
+| test.swift:168:10:168:12 | ... .0 | test.swift:167:29:167:43 | source(...) | test.swift:168:10:168:12 | ... .0 | $@ | test.swift:167:29:167:43 | source(...) | source(...) |
+| test.swift:176:10:176:10 | a | test.swift:175:25:175:39 | source(...) | test.swift:176:10:176:10 | a | $@ | test.swift:175:25:175:39 | source(...) | source(...) |
+| test.swift:177:10:177:10 | b | test.swift:175:52:175:66 | source(...) | test.swift:177:10:177:10 | b | $@ | test.swift:175:52:175:66 | source(...) | source(...) |
