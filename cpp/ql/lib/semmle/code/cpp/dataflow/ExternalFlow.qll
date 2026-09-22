@@ -1335,6 +1335,32 @@ module ConstructorForwarding {
     )
   }
 
+  private predicate hasNoTopLevelSpecifiers(Type type) { type = type.stripTopLevelSpecifiers() }
+
+  private newtype PtrKind =
+    NormalPtrKind() or
+    FunPtrKind()
+
+  private Type pointerBase(Type pointer, PtrKind k) {
+    result = pointer.(Cpp::PointerType).getBaseType() and
+    k = NormalPtrKind()
+    or
+    result = pointer.(FunctionPointerType).getBaseType() and
+    k = FunPtrKind()
+  }
+
+  private predicate pointerQualificationStep(TypeState argState, TypeState paramState) {
+    exists(Type argType, Type paramType, boolean conversionUsed, PtrKind k |
+      argState = MkTypeState(_, _, conversionUsed, _) and
+      argState.getPhase() != AfterQualification() and
+      argType = argState.getType().stripTopLevelSpecifiers() and
+      hasNoTopLevelSpecifiers(paramType) and
+      argType != paramType and
+      qualificationCompatible(pointerBase(argType, k), pointerBase(paramType, k)) and
+      paramState = MkTypeState(paramType, PRValue(), conversionUsed, AfterQualification())
+    )
+  }
+
   private predicate baseClassStep(TypeState argState, TypeState paramState) {
     exists(Type arg, Type param, ValueCategory category, boolean conversionUsed |
       argState = MkTypeState(arg, category, conversionUsed, _) and
@@ -1370,6 +1396,8 @@ module ConstructorForwarding {
     arrayToPointerStep(argState, paramState)
     or
     functionToPointerStep(argState, paramState)
+    or
+    pointerQualificationStep(argState, paramState)
     or
     baseClassStep(argState, paramState)
     or
