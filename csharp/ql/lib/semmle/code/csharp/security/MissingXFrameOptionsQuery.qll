@@ -7,11 +7,11 @@ import semmle.code.csharp.frameworks.system.Web
 
 /** Holds if `name` is the `X-Frame-Options` header name, ignoring case. */
 bindingset[name]
-predicate isXFrameOptionsHeaderName(string name) { name.toLowerCase() = "x-frame-options" }
+predicate isXFrameOptionsText(string name) { name.toLowerCase() = "x-frame-options" }
 
 /** Holds if `name` is the enforced `Content-Security-Policy` header name, ignoring case. */
 bindingset[name]
-predicate isContentSecurityPolicyHeaderName(string name) {
+predicate isContentSecurityPolicyText(string name) {
   name.toLowerCase() = "content-security-policy"
 }
 
@@ -24,23 +24,17 @@ predicate containsFrameAncestorsDirective(string value) {
   value.regexpMatch("(?is)(^|.*[;,])\\s*frame-ancestors(\\s|;|$).*")
 }
 
-private predicate isHeaderNamesField(Expr name, string fieldName) {
-  exists(FieldAccess access |
-    name.stripImplicit() = access and
-    access.getTarget().hasFullyQualifiedName("Microsoft.Net.Http.Headers", "HeaderNames", fieldName)
-  )
-}
-
 private predicate isXFrameOptionsHeaderNameExpr(Expr name) {
-  isXFrameOptionsHeaderName(name.stripImplicit().getValue())
+  isXFrameOptionsText(name.stripImplicit().getValue())
   or
-  isHeaderNamesField(name, "XFrameOptions")
+  name.stripImplicit().(FieldAccess).getTarget() =
+    any(MicrosoftNetHttpHeadersHeaderNames f).getXFrameOptionsField()
 }
 
 private predicate isContentSecurityPolicyHeaderNameExpr(Expr name) {
-  isContentSecurityPolicyHeaderName(name.stripImplicit().getValue())
-  or
-  isHeaderNamesField(name, "ContentSecurityPolicy")
+  isContentSecurityPolicyText(name.stripImplicit().getValue()) or
+  name.stripImplicit().(FieldAccess).getTarget() =
+    any(MicrosoftNetHttpHeadersHeaderNames f).getContentSecurityPolicyField()
 }
 
 private predicate containsFrameAncestorsDirectiveExpr(Expr value) {
@@ -48,23 +42,22 @@ private predicate containsFrameAncestorsDirectiveExpr(Expr value) {
 }
 
 private predicate isDirectResponseHeadersAccess(Expr expr) {
-  exists(PropertyAccessExpr headers, MicrosoftAspNetCoreHttpHttpResponse response |
+  exists(PropertyAccess headers, MicrosoftAspNetCoreHttpHttpResponse response |
     expr.stripImplicit() = headers and headers.getProperty() = response.getHeadersProperty()
   )
 }
 
-private predicate isResponseHeadersAccess(Expr expr) {
-  exists(Expr directAccess |
-    isDirectResponseHeadersAccess(directAccess) and
-    DataFlow::localExprFlow(directAccess, expr.stripImplicit())
+private predicate isCallOnResponseHeadersAccess(Call call) {
+  exists(Expr qualifier |
+    call.(MethodCall).getQualifier() = qualifier or
+    call.(ExtensionMethodCall).getArgument(0) = qualifier or
+    call.(AccessorCall).getQualifier() = qualifier
+  |
+    exists(Expr directAccess |
+      isDirectResponseHeadersAccess(directAccess) and
+      DataFlow::localExprFlow(directAccess, qualifier.stripImplicit())
+    )
   )
-}
-
-private Expr getHeaderDictionaryReceiver(MethodCall call) {
-  result = call.getQualifier()
-  or
-  call.getTarget().isExtensionMethod() and
-  result = call.getArgumentForParameter(call.getTarget().getParameter(0))
 }
 
 private predicate isClickjackingHeaderCall(MethodCall call) {
@@ -78,9 +71,14 @@ private predicate isClickjackingHeaderCall(MethodCall call) {
     isContentSecurityPolicyHeaderNameExpr(call.getArgumentForName("name")) and
     containsFrameAncestorsDirectiveExpr(call.getArgumentForName("value"))
   )
-  or
-  call.getTarget().hasUndecoratedName(["Append", "Add", "TryAdd"]) and
-  isResponseHeadersAccess(getHeaderDictionaryReceiver(call)) and
+}
+
+private predicate isClickjackingHeaderDictionaryLikeWrite(Call call) {
+  (
+    call.getTarget().hasUndecoratedName(["Append", "Add", "TryAdd"])
+    or
+    call.(IndexerCall).getTarget() instanceof Setter
+  ) and
   (
     isXFrameOptionsHeaderNameExpr(call.getArgumentForName("key"))
     or
@@ -89,39 +87,26 @@ private predicate isClickjackingHeaderCall(MethodCall call) {
   )
 }
 
-private predicate isClickjackingHeaderIndexerAssignment(AssignExpr assignment) {
-  exists(IndexerCall indexer |
-    assignment.getLeftOperand() = indexer and
-    isResponseHeadersAccess(indexer.getQualifier()) and
-    (
-      isXFrameOptionsHeaderNameExpr(indexer.getArgument(0))
-      or
-      isContentSecurityPolicyHeaderNameExpr(indexer.getArgument(0)) and
-      containsFrameAncestorsDirectiveExpr(assignment.getRightOperand())
-    )
-  )
-}
-
-private predicate isClickjackingNamedHeaderPropertyAssignment(AssignExpr assignment) {
-  exists(PropertyAccessExpr header |
-    assignment.getLeftOperand() = header and
-    isResponseHeadersAccess(header.(QualifiableExpr).getQualifier()) and
-    (
-      header.getProperty().hasName("XFrameOptions")
-      or
-      header.getProperty().hasName("ContentSecurityPolicy") and
-      containsFrameAncestorsDirectiveExpr(assignment.getRightOperand())
-    )
+private predicate isClickjackingPropertyWrite(Call c) {
+  c.getTarget() instanceof Setter and
+  (
+    c.(PropertyCall).getProperty() =
+      any(MicrosoftAspNetCoreHttpIHeaderDictionary dic).getXFrameOptionsProperty()
+    or
+    c.(PropertyCall).getProperty() =
+      any(MicrosoftAspNetCoreHttpIHeaderDictionary dic).getContentSecurityPolicyProperty() and
+    containsFrameAncestorsDirectiveExpr(c.getArgumentForName("value"))
   )
 }
 
 /** Gets an expression that configures a clickjacking-related response header. */
-Expr getAClickjackingHeaderWrite() {
-  result = any(MethodCall call | isClickjackingHeaderCall(call))
+Call getAClickjackingHeaderWrite() {
+  isClickjackingHeaderCall(result)
   or
-  result =
-    any(AssignExpr assignment |
-      isClickjackingHeaderIndexerAssignment(assignment) or
-      isClickjackingNamedHeaderPropertyAssignment(assignment)
-    )
+  isCallOnResponseHeadersAccess(result) and
+  (
+    isClickjackingHeaderDictionaryLikeWrite(result)
+    or
+    isClickjackingPropertyWrite(result)
+  )
 }
