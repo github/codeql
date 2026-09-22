@@ -56,7 +56,7 @@ void test() {
   {
     Container<Element> c;
     c.emplace("abc", 42); // $ targets=element_const_char_ptr_int
-    c.emplace((char*)nullptr, 42); // $ targets=element_char_ptr_int
+    c.emplace((char*)nullptr, 42); // $ targets=element_char_ptr_int SPURIOUS: targets=element_const_char_ptr_int
   }
   {
     Container<Element> c;
@@ -383,11 +383,11 @@ void test_pointer_qualification_conversions() {
   char* pointer = buffer;
   char** doublePointer = &pointer;
   const char* constPointer = buffer;
-  container.emplace(buffer); // $ MISSING: targets=element_qualified_pointer
-  container.emplace(pointer); // $ MISSING: targets=element_qualified_pointer
-  container.emplace(pointer, 0); // $ MISSING: targets=element_qualified_pointer_const_ref
-  container.emplace(buffer, 0, 0); // $ MISSING: targets=element_qualified_pointer_rref
-  container.emplace(static_cast<char*&&>(pointer), 0, 0); // $ MISSING: targets=element_qualified_pointer_rref
+  container.emplace(buffer); // $ targets=element_qualified_pointer
+  container.emplace(pointer); // $ targets=element_qualified_pointer
+  container.emplace(pointer, 0); // $ targets=element_qualified_pointer_const_ref
+  container.emplace(buffer, 0, 0); // $ targets=element_qualified_pointer_rref
+  container.emplace(static_cast<char*&&>(pointer), 0, 0); // $ targets=element_qualified_pointer_rref
   container.emplace(pointer, 0, 0, 0); // no target
   container.emplace(doublePointer, 0, 0, 0, 0); // no target
   container.emplace(doublePointer, 0, 0, 0, 0, 0); // $ MISSING: targets=element_qualified_const_double_pointer
@@ -500,7 +500,7 @@ void test_standard_conversion_phases() {
 
   Container<ElementFromImplicitConversion> converted;
   char buffer[] = "abc";
-  converted.emplace(buffer); // $ MISSING: targets=element_conversion_value
+  converted.emplace(buffer); // $ targets=element_conversion_value
   converted.emplace(&value); // no targets
   converted.emplace(ScopedArithmeticEnum::value); // no targets
 }
