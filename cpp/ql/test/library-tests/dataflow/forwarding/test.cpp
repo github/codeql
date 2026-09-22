@@ -64,18 +64,18 @@ void test() {
     {
       const int x = 42;
       c.emplace(x); // $ targets=element_int
-      cr.emplace(x); // $ MISSING: targets=element_ref_const_int_ref
+      cr.emplace(x); // $ targets=element_ref_const_int_ref
     }
     {
       int x = 42;
       c.emplace(x); // $ targets=element_int
-      cr.emplace(x); // $ MISSING: targets=element_ref_int_lref
+      cr.emplace(x); // $ targets=element_ref_int_lref SPURIOUS: targets=element_ref_const_int_ref
     }
     c.emplace(42); // $ targets=element_int
-    cr.emplace(42); // $ MISSING: targets=element_ref_int_rref
-    cr.emplace("abc", 42); // $ MISSING: targets=element_ref_const_char_ptr_const_ref_int
+    cr.emplace(42); // $ targets=element_ref_int_rref SPURIOUS: targets=element_ref_const_int_ref
+    cr.emplace("abc", 42); // $ targets=element_ref_const_char_ptr_const_ref_int
     const char buffer[] = "abc";
-    cr.emplace(buffer, 42); // $ MISSING: targets=element_ref_const_char_ptr_const_ref_int
+    cr.emplace(buffer, 42); // $ targets=element_ref_const_char_ptr_const_ref_int
   }
   {
   	Container<Element> container;
@@ -95,8 +95,8 @@ void test_invalid_pointer_conversion() {
 void test_volatile_reference_binding() {
   Container<RefElement> container;
   const char* volatile pointer = "abc";
-  container.emplace(pointer, 42); // $ MISSING: targets=element_ref_const_char_ptr_const_volatile_ref_int
-  container.emplace("abc", 42); // $ MISSING: targets=element_ref_const_char_ptr_const_ref_int
+  container.emplace(pointer, 42); // $ targets=element_ref_const_char_ptr_const_volatile_ref_int
+  container.emplace("abc", 42); // $ targets=element_ref_const_char_ptr_const_ref_int
 }
 
 struct ImplicitConversion {
@@ -324,12 +324,12 @@ void test_pointer_value_categories() {
   const char buffer[] = "abc";
   const char* pointer = buffer;
   const char* const constPointer = buffer;
-  container.emplace(buffer, 0, 0); // $ MISSING: targets=element_ref_pointer_rref
+  container.emplace(buffer, 0, 0); // $ targets=element_ref_pointer_rref
   container.emplace(pointer, 0, 0); // no target
-  container.emplace(static_cast<const char*&&>(pointer), 0, 0); // $ MISSING: targets=element_ref_pointer_rref
+  container.emplace(static_cast<const char*&&>(pointer), 0, 0); // $ targets=element_ref_pointer_rref
   container.emplace(static_cast<const char* const&&>(constPointer), 0, 0); // no target
   container.emplace(buffer, 0, 0, 0); // no targets
-  container.emplace(pointer, 0, 0, 0); // $ MISSING: targets=element_ref_pointer_lref
+  container.emplace(pointer, 0, 0, 0); // $ targets=element_ref_pointer_lref
   container.emplace(constPointer, 0, 0, 0); // no target
   container.emplace(static_cast<const char*&&>(pointer), 0, 0, 0); // no target
 }
@@ -525,7 +525,7 @@ void test_pointer_aliases() {
   CallbackAlias callbackPointer = callback;
   Container<ElementFromCallback> callbacks;
   callbacks.emplace(callbackPointer); // $ targets=element_callback
-  callbacks.emplace(callbackPointer, 0, 0); // $ MISSING: targets=element_callback_const_ref
+  callbacks.emplace(callbackPointer, 0, 0); // $ targets=element_callback_const_ref
   Container<ElementFromStandardPointer> pointers;
   pointers.emplace(callbackPointer); // no targets
 }
