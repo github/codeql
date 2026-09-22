@@ -192,10 +192,12 @@ class MicrosoftAspNetCoreMvcHtmlHelperRawSink extends AspNetCoreHtmlSink {
  * Because a basic block cannot contain a branch, requiring `beginCall`, `writeLiteral`, and
  * `endCall` to appear (in that order) in the same basic block, with no other
  * `Begin`/`EndWriteTagHelperAttribute` call from `page` strictly between `beginCall` and
- * `writeLiteral`, or between `writeLiteral` and `endCall`, guarantees that `beginCall`/`endCall`
- * are the immediately enclosing bracket around `writeLiteral` on every path that reaches it (that
- * is, the bracket opened by `beginCall` is still open, and not yet closed by some other `endCall`,
- * at the point `writeLiteral` executes).
+ * `endCall`, guarantees that `beginCall`/`endCall` are the immediately enclosing bracket around
+ * `writeLiteral` on every path that reaches it (that is, the bracket opened by `beginCall` is
+ * still open, and not yet closed by some other `endCall`, at the point `writeLiteral` executes).
+ * No other such call can coincide with `writeLiteral` itself, so checking the whole open interval
+ * between `beginCall` and `endCall` is equivalent to checking it on both sides of `writeLiteral`
+ * separately.
  *
  * `beginCall`, `writeLiteral`, and `endCall` are additionally required to have an implicit `this`
  * qualifier, which is how the Razor source generator always emits these calls. This ensures all
@@ -204,37 +206,29 @@ class MicrosoftAspNetCoreMvcHtmlHelperRawSink extends AspNetCoreHtmlSink {
  */
 private predicate isBracketedForTagHelperAttribute(Call writeLiteral) {
   exists(
-    MicrosoftAspNetCoreMvcRazorPageBase page, MethodCall beginCall, MethodCall endCall, int i,
-    int j, int k
+    MicrosoftAspNetCoreMvcRazorPageBase page, MethodCall beginCall, MethodCall endCall,
+    BasicBlock bb, int i, int j, int k
   |
+    bb = writeLiteral.getBasicBlock() and
     writeLiteral = page.getWriteLiteralMethod().getACall() and
     beginCall = page.getBeginWriteTagHelperAttributeMethod().getACall() and
     endCall = page.getEndWriteTagHelperAttributeMethod().getACall() and
     writeLiteral.(QualifiableExpr).hasImplicitThisQualifier() and
     beginCall.hasImplicitThisQualifier() and
     endCall.hasImplicitThisQualifier() and
-    writeLiteral.getBasicBlock().getNode(i) = beginCall.getControlFlowNode() and
-    writeLiteral.getBasicBlock().getNode(j) = writeLiteral.getControlFlowNode() and
-    writeLiteral.getBasicBlock().getNode(k) = endCall.getControlFlowNode() and
+    bb.getNode(i) = beginCall.getControlFlowNode() and
+    bb.getNode(j) = writeLiteral.getControlFlowNode() and
+    bb.getNode(k) = endCall.getControlFlowNode() and
     i < j and
     j < k and
-    not exists(int i2, Call other |
+    not exists(int l, Call other |
       (
         other = page.getBeginWriteTagHelperAttributeMethod().getACall() or
         other = page.getEndWriteTagHelperAttributeMethod().getACall()
       ) and
-      writeLiteral.getBasicBlock().getNode(i2) = other.getControlFlowNode() and
-      i < i2 and
-      i2 < j
-    ) and
-    not exists(int k2, Call other |
-      (
-        other = page.getBeginWriteTagHelperAttributeMethod().getACall() or
-        other = page.getEndWriteTagHelperAttributeMethod().getACall()
-      ) and
-      writeLiteral.getBasicBlock().getNode(k2) = other.getControlFlowNode() and
-      j < k2 and
-      k2 < k
+      bb.getNode(l) = other.getControlFlowNode() and
+      i < l and
+      l < k
     )
   )
 }
