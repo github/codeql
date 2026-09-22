@@ -96,6 +96,7 @@ private predicate localAdditionalForwardTaintStep(
     pred2 = pred.(DataFlow::PostUpdateNode).getPreUpdateNode()
   |
     referenceStep(pred2, succ) or
+    DataFlowPrivate::readStep(pred2, _, succ) or
     elementWriteStep(pred2, succ) or
     fieldReadStep(pred2, succ) or
     elementStep(pred2, succ) or
