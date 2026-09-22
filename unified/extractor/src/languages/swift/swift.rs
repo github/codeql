@@ -1378,12 +1378,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         rule!(
             (initializerDecl
+                initKeyword: @initK
                 modifiers: _* @mods
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params)))
             =>
             (constructor_declaration
                 modifier: {mods}
+                name_node: (identifier #{initK})
                 parameter: {params}
                 body: (block))
         ),
