@@ -650,9 +650,8 @@ fn test_tree_builder() {
     query.do_match(&ast, ast.get_root(), &mut captures).unwrap();
 
     // Swap left and right
-    let fresh = yeast::tree_builder::FreshScope::new();
     let mut user_ctx = ();
-    let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &fresh, &mut user_ctx);
+    let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &mut user_ctx);
     let new_id = yeast::tree!(ctx,
         (program
             child: (assignment
@@ -679,9 +678,8 @@ fn test_tree_builder() {
 /// content.
 fn build_optional_right(ast: &mut Ast, value: Option<yeast::Id>) -> (yeast::Id, yeast::Id) {
     let captures = yeast::captures::Captures::new();
-    let fresh = yeast::tree_builder::FreshScope::new();
     let mut user_ctx = ();
-    let mut ctx = yeast::build::BuildCtx::new(ast, &captures, &fresh, &mut user_ctx);
+    let mut ctx = yeast::build::BuildCtx::new(ast, &captures, &mut user_ctx);
     let left = yeast::tree!(ctx, (identifier "x"));
     let root = yeast::tree!(ctx,
         (assignment
@@ -734,9 +732,8 @@ fn test_optional_field_propagates_through_nested_nodes() {
     let mut ast = runner.run("x = 1").unwrap();
 
     let captures = yeast::captures::Captures::new();
-    let fresh = yeast::tree_builder::FreshScope::new();
     let mut user_ctx = ();
-    let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &fresh, &mut user_ctx);
+    let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &mut user_ctx);
 
     // The absent value sits two levels below the `?`, so the whole
     // `left_assignment_list` subtree is abandoned along with it.
@@ -764,9 +761,8 @@ fn test_innermost_optional_field_catches_first() {
     let mut ast = runner.run("x = 1").unwrap();
 
     let captures = yeast::captures::Captures::new();
-    let fresh = yeast::tree_builder::FreshScope::new();
     let mut user_ctx = ();
-    let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &fresh, &mut user_ctx);
+    let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &mut user_ctx);
 
     // The inner `?` catches, so only `child` is dropped; `left` survives.
     let absent: Option<yeast::Id> = None;
@@ -800,7 +796,7 @@ fn ruby_rules() -> Vec<Rule> {
         )
         =>
         (assignment
-            left: (identifier $tmp)
+            left: (identifier "assignment_tmp")
             right: {right}
         )
         {left.iter().enumerate().map(|(i, &lhs)|
@@ -808,7 +804,7 @@ fn ruby_rules() -> Vec<Rule> {
                 (assignment
                     left: {lhs}
                     right: (element_reference
-                        object: (identifier $tmp)
+                        object: (identifier "assignment_tmp")
                         index: (integer #{i})
                     )
                 )
@@ -828,12 +824,12 @@ fn ruby_rules() -> Vec<Rule> {
             method: (identifier "each")
             block: (block
                 parameters: (block_parameters
-                    parameter: (identifier $tmp)
+                    parameter: (identifier "loop_tmp")
                 )
                 body: (block_body
                     stmt: (assignment
                         left: {pat}
-                        right: (identifier $tmp)
+                        right: (identifier "loop_tmp")
                     )
                     stmt: {body}
                 )
@@ -852,19 +848,19 @@ fn test_desugar_multiple_assignment() {
         r#"
         program
           assignment
-            left: identifier "$tmp-0"
+            left: identifier "assignment_tmp"
             right: identifier "e"
           assignment
             left: identifier "x"
             right:
               element_reference
-                object: identifier "$tmp-0"
+                object: identifier "assignment_tmp"
                 index: integer "0"
           assignment
             left: identifier "y"
             right:
               element_reference
-                object: identifier "$tmp-0"
+                object: identifier "assignment_tmp"
                 index: integer "1"
     "#,
     );
@@ -885,11 +881,11 @@ fn test_desugar_for_loop() {
                     stmt:
                       assignment
                         left: identifier "x"
-                        right: identifier "$tmp-0"
+                        right: identifier "loop_tmp"
                       identifier "y"
                 parameters:
                   block_parameters
-                    parameter: identifier "$tmp-0"
+                    parameter: identifier "loop_tmp"
             method: identifier "each"
             receiver: identifier "list"
     "#,
@@ -1532,24 +1528,24 @@ fn test_desugar_for_with_multiple_assignment() {
                   block_body
                     stmt:
                       assignment
-                        left: identifier "$tmp-1"
-                        right: identifier "$tmp-0"
+                        left: identifier "assignment_tmp"
+                        right: identifier "loop_tmp"
                       assignment
                         left: identifier "a"
                         right:
                           element_reference
-                            object: identifier "$tmp-1"
+                            object: identifier "assignment_tmp"
                             index: integer "0"
                       assignment
                         left: identifier "b"
                         right:
                           element_reference
-                            object: identifier "$tmp-1"
+                            object: identifier "assignment_tmp"
                             index: integer "1"
                       identifier "x"
                 parameters:
                   block_parameters
-                    parameter: identifier "$tmp-0"
+                    parameter: identifier "loop_tmp"
             method: identifier "each"
             receiver: identifier "list"
     "#,

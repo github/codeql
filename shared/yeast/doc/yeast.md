@@ -184,8 +184,8 @@ yeast::rule!(
 );
 
 // Standalone — explicit context
-let fresh = yeast::tree_builder::FreshScope::new();
-let mut ctx = BuildCtx::new(ast, &captures, &fresh);
+let mut user_ctx = ();
+let mut ctx = BuildCtx::new(ast, &captures, &mut user_ctx);
 let id = yeast::tree!(ctx,
     (assignment
         left: {ctx.capture("lhs")}
@@ -374,25 +374,6 @@ Outside a `?`, interpolating an `Option` with `#{expr}` remains a compile error.
 That is deliberate: it keeps the choice between "leave the field unset" and
 "unwrap it" explicit at every interpolation.
 
-### Fresh identifiers
-
-`(kind $name)` creates a leaf node with an auto-generated unique name. All
-occurrences of the same `$name` within one `BuildCtx` share the same value:
-
-```rust
-(block
-    parameters: (block_parameters
-        (identifier $tmp)         // generates e.g. "$tmp-0"
-    )
-    body: (block_body
-        (assignment
-            left: {pat}
-            right: (identifier $tmp)   // same "$tmp-0" value
-        )
-    )
-)
-```
-
 ### Embedded Rust expressions
 
 `{expr}` embeds a Rust expression whose value is appended to the
@@ -478,43 +459,6 @@ yeast::rule!(
 Mix `@` and `@@` freely in the same rule. In a Repeating phase both
 markers are equivalent (auto-translation is a no-op for repeating
 rules).
-
-## Complete example: for-loop desugaring
-
-This rule rewrites Ruby's `for pat in val do body end` into
-`val.each { |tmp| pat = tmp; body }`:
-
-```rust
-let for_rule = yeast::rule!(
-    (for
-        pattern: (_) @pat
-        value: (in (_) @val)
-        body: (do (_)* @body)
-    )
-    =>
-    (call
-        receiver: {val}
-        method: (identifier "each")
-        block: (block
-            parameters: (block_parameters
-                (identifier $tmp)
-            )
-            body: (block_body
-                (assignment
-                    left: {pat}
-                    right: (identifier $tmp)
-                )
-                {..body}
-            )
-        )
-    )
-);
-```
-
-Captures from the query (`@pat`, `@val`, `@body`) become Rust variables
-automatically: single captures bind as `Id`, repeated captures (after
-`*` or `+`) as `Vec<Id>`, and optional captures (after `?`) as
-`Option<Id>`.
 
 ## The `rule!` macro
 
