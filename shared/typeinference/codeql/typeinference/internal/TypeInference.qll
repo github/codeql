@@ -2579,7 +2579,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             or
             exists(Parameter p, Variable v |
               implicitParameterDecl(p, v) and
-              result = p.getType().getTypeAt(path) and
+              tm = p.getType() and
               n = v.getAnAccess()
             )
           )
@@ -2606,6 +2606,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             or
             exists(VariableDeclaration decl |
               decl.preservesInitializerType() and
+              not exists(decl.getType()) and
               n1 = decl.getInitializer() and
               n2 = decl.getPattern()
             )
