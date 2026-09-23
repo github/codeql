@@ -435,7 +435,7 @@ unified_equality_type_constraint_def(
   int right: @unified_expr ref
 );
 
-@unified_expr = @unified_array_literal | @unified_binary_expr | @unified_block | @unified_break_expr | @unified_bulk_importing_pattern | @unified_call_expr | @unified_conditional_pattern | @unified_continue_expr | @unified_expr_pattern | @unified_function_expr | @unified_generic_type_expr | @unified_if_expr | @unified_key_value_pair | @unified_map_literal | @unified_member_access_expr | @unified_named_pattern | @unified_or_pattern | @unified_pattern_guard_expr | @unified_return_expr | @unified_string_interpolation_expr | @unified_switch_expr | @unified_throw_expr | @unified_token_boolean_literal | @unified_token_builtin_expr | @unified_token_empty_expr | @unified_token_float_literal | @unified_token_identifier | @unified_token_inferred_type_expr | @unified_token_int_literal | @unified_token_regex_literal | @unified_token_string_literal | @unified_token_super_expr | @unified_token_unsupported_node | @unified_try_expr | @unified_tuple_expr | @unified_type_cast_expr | @unified_type_test_expr | @unified_unary_expr | @unified_unresolved_operator_sequence
+@unified_expr = @unified_array_literal | @unified_binary_expr | @unified_block | @unified_break_expr | @unified_bulk_importing_pattern | @unified_call_expr | @unified_conditional_pattern | @unified_continue_expr | @unified_expr_pattern | @unified_function_expr | @unified_generic_type_expr | @unified_if_expr | @unified_key_value_pair | @unified_map_literal | @unified_member_access_expr | @unified_named_pattern | @unified_or_pattern | @unified_pattern_guard_expr | @unified_return_expr | @unified_string_interpolation_expr | @unified_switch_expr | @unified_throw_expr | @unified_token_boolean_literal | @unified_token_builtin_expr | @unified_token_empty_expr | @unified_token_float_literal | @unified_token_identifier | @unified_token_ignore_pattern | @unified_token_inferred_type_expr | @unified_token_int_literal | @unified_token_regex_literal | @unified_token_string_literal | @unified_token_super_expr | @unified_token_unsupported_node | @unified_try_expr | @unified_tuple_expr | @unified_type_cast_expr | @unified_type_test_expr | @unified_unary_expr | @unified_unresolved_operator_sequence
 
 @unified_expr_or_operator = @unified_expr | @unified_token_infix_operator
 
@@ -980,16 +980,17 @@ case @unified_token.kind of
 | 5 = @unified_token_fixity
 | 6 = @unified_token_float_literal
 | 7 = @unified_token_identifier
-| 8 = @unified_token_inferred_type_expr
-| 9 = @unified_token_infix_operator
-| 10 = @unified_token_int_literal
-| 11 = @unified_token_modifier
-| 12 = @unified_token_postfix_operator
-| 13 = @unified_token_prefix_operator
-| 14 = @unified_token_regex_literal
-| 15 = @unified_token_string_literal
-| 16 = @unified_token_super_expr
-| 17 = @unified_token_unsupported_node
+| 8 = @unified_token_ignore_pattern
+| 9 = @unified_token_inferred_type_expr
+| 10 = @unified_token_infix_operator
+| 11 = @unified_token_int_literal
+| 12 = @unified_token_modifier
+| 13 = @unified_token_postfix_operator
+| 14 = @unified_token_prefix_operator
+| 15 = @unified_token_regex_literal
+| 16 = @unified_token_string_literal
+| 17 = @unified_token_super_expr
+| 18 = @unified_token_unsupported_node
 ;
 
 

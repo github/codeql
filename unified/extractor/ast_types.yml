@@ -37,6 +37,7 @@ supertypes:
     - or_pattern
     - conditional_pattern
     - bulk_importing_pattern
+    - ignore_pattern
     - generic_type_expr
     - inferred_type_expr
   # An element of an `unresolved_operator_sequence`: either an operand (`expr`)
@@ -410,6 +411,9 @@ named:
   # Currently this can only appear in import declarations.
   bulk_importing_pattern:
     modifier*: modifier
+
+  # A pattern that accepts any incoming value, usually written as an `_`.
+  ignore_pattern:
 
   # A simple unqualified name token
   identifier:
