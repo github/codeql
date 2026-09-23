@@ -171,7 +171,7 @@ top_level source="⟨body⟩"
                 block source="{\n    ⟨stmt⟩\n    ⟨stmt⟩\n  }"
                   stmt:
                     binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
-                      left: identifier "_" source="_"
+                      left: ignore_pattern "_" source="_"
                       operator: infix_operator "=" source="="
                       right:
                         member_access_expr source="⟨base⟩.⟨member_name_node⟩"

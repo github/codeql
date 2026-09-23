@@ -82,7 +82,7 @@ top_level source="⟨body⟩"
               stmt:
                 unresolved_operator_sequence source="⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩"
                   element:
-                    identifier "_" source="_"
+                    ignore_pattern "_" source="_"
                     infix_operator "=" source="="
                     identifier "a" source="a"
                     infix_operator ".&" source=".&"
