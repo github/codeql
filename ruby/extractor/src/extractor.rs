@@ -371,7 +371,7 @@ fn get_overlay_changed_files() -> Option<HashSet<PathBuf>> {
     )
 }
 
-fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<str>> {
+fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<'_, str>> {
     let mut index = 0;
     // skip UTF-8 BOM marker if there is one
     if content.len() >= 3 && content[0] == 0xef && content[1] == 0xbb && content[2] == 0xbf {
