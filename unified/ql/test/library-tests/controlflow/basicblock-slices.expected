@@ -42,9 +42,8 @@
 | 44 | cfg.swift:44:10:44:10 | 0 | '0 -^ ReturnExpr' |
 | 47 | cfg.swift:47:1:51:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 47 | cfg.swift:47:21:47:21 | s | 's -> Block' |
-| 48 | cfg.swift:48:10:50:3 | Block | 'Block' |
 | 48 | cfg.swift:48:10:50:3 | FunctionExpr | 'FunctionExpr -^ ReturnExpr' |
-| 49 | cfg.swift:49:12:49:12 | s | 's -> "" -^ ... + ... -^ ReturnExpr' |
+| 49 | cfg.swift:49:5:49:17 | Block | 'Block -V s -> "" -^ ... + ... -^ ReturnExpr' |
 | 53 | cfg.swift:53:1:58:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 53 | cfg.swift:53:21:53:21 | x | 'x -> Block' |
 | 54 | cfg.swift:54:3:56:3 | FunctionDeclaration | 'FunctionDeclaration' |
@@ -53,10 +52,8 @@
 | 57 | cfg.swift:57:10:57:10 | f | 'f -^ ReturnExpr' |
 | 60 | cfg.swift:60:1:64:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 60 | cfg.swift:60:21:60:21 | x | 'x -> Block' |
-| 61 | cfg.swift:61:10:63:3 | Block | 'Block' |
 | 61 | cfg.swift:61:10:63:3 | FunctionExpr | 'FunctionExpr -^ ReturnExpr' |
-| 62 | cfg.swift:62:6:62:6 | y | 'y' |
-| 62 | cfg.swift:62:19:62:19 | x | 'x -> y -^ ... + ...' |
+| 62 | cfg.swift:62:6:62:6 | y | 'y -> Block -V x -> y -^ ... + ...' |
 | 66 | cfg.swift:66:1:70:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 66 | cfg.swift:66:21:70:1 | Block | 'Block' |
 | 67 | cfg.swift:67:3:67:34 | VariableDeclaration | 'VariableDeclaration -V x1 -> createClosure1 -> Argument -V "" -^ createClosure1(...) -^ ...(...)' |
@@ -312,9 +309,8 @@
 | 377 | cfg.swift:377:10:377:10 | c | 'c -^ ... .getOptional -^ ... .getOptional(...) -^ ... .getMyInt -^ ... .getMyInt(...) -^ ReturnExpr' |
 | 380 | cfg.swift:380:1:384:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 380 | cfg.swift:380:18:380:18 | x | 'x -> y -> Block' |
-| 381 | cfg.swift:381:10:383:3 | Block | 'Block' |
 | 381 | cfg.swift:381:13:381:21 | VariableDeclaration | 'VariableDeclaration -V z -> x -> y -^ ... + ... -> VariableDeclaration -V t -> "literal" -^ FunctionExpr -^ ReturnExpr' |
-| 382 | cfg.swift:382:12:382:12 | z | 'z -^ ReturnExpr' |
+| 382 | cfg.swift:382:5:382:12 | Block | 'Block -V z -^ ReturnExpr' |
 | 386 | cfg.swift:386:1:388:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 386 | cfg.swift:386:23:386:23 | t | 't -> Block' |
 | 387 | cfg.swift:387:10:387:10 | t | 't -^ ... .a -> t -^ ... .1 -^ ... + ... -> t -^ ... .c -^ ... + ... -> Argument -V 1 -> Argument -V 2 -> Argument -V 3 -^ TupleExpr -^ ... .0 -^ ... + ... -^ ReturnExpr' |
@@ -406,11 +402,9 @@
 | 524 | cfg.swift:524:1:538:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 524 | cfg.swift:524:28:538:1 | Block | 'Block' |
 | 525 | cfg.swift:525:5:533:6 | VariableDeclaration | 'VariableDeclaration -V stream -> AsyncStream -> Argument -V Int -^ ... .self -> Argument -V . -^ ... .bufferingNewest -> Argument -V 5 -^ ... .bufferingNewest(...) -> Argument -V FunctionExpr -^ AsyncStream(...)' |
-| 525 | cfg.swift:525:78:533:5 | Block | 'Block' |
 | 526 | cfg.swift:526:9:526:20 | continuation | 'continuation' |
-| 527 | cfg.swift:527:13:527:16 | Task | 'Task -^ ... .detached -> Argument -V FunctionExpr -^ ... .detached(...)' |
-| 527 | cfg.swift:527:27:532:13 | Block | 'Block' |
-| 528 | cfg.swift:528:17:530:17 | ForEachStmt | 'ForEachStmt -V 1 -> 100 -^ ... ... ...' |
+| 527 | cfg.swift:527:13:532:13 | Block | 'Block -V Task -^ ... .detached -> Argument -V FunctionExpr -^ ... .detached(...)' |
+| 528 | cfg.swift:528:17:531:37 | Block | 'Block -V ForEachStmt -V 1 -> 100 -^ ... ... ...' |
 | 528 | cfg.swift:528:21:528:21 | i | 'i -> Block' |
 | 529 | cfg.swift:529:21:529:32 | continuation | 'continuation -^ ... .yield -> Argument -V i -^ ... .yield(...)' |
 | 531 | cfg.swift:531:17:531:28 | continuation | 'continuation -^ ... .finish -^ ... .finish(...)' |

@@ -1,10 +1,4 @@
-nonSimple
-| cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
-| cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |
 bbContinues
-| cfg.swift:62:6:62:6 | y | 'y goto Block(-1)' |
-| cfg.swift:525:78:525:78 | Block | 'Block goto Task(+2)' |
-| cfg.swift:526:9:526:20 | continuation | 'continuation goto Block(-1)' |
 bbStep
 | cfg.swift:20:9:20:14 | ... >= ... | '... >= ... : false -> Block(+0)' |
 | cfg.swift:20:9:20:14 | ... >= ... | '... >= ... : true -> GuardIfStmt(+3)' |
@@ -164,3 +158,6 @@ noCfg
 | cfg.swift:497:6:497:18 | testAvailable |
 | cfg.swift:524:6:524:17 | testAsyncFor |
 | cfg.swift:559:6:559:20 | autoclosureTest |
+nonSimple
+| cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
+| cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |

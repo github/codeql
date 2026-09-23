@@ -59,7 +59,7 @@ func createClosure2(x : Int) -> (_ : Int) -> Int { // $ noCfg
 
 func createClosure3(x : Int) -> (_ : Int) -> Int { // $ noCfg
   return {
-    (y) -> Int in x + y // $ bbContinues='y goto Block(-1)'
+    (y) -> Int in x + y
   }
 }
 
@@ -522,8 +522,8 @@ func testAvailable() -> Int { // $ noCfg
 }
 
 func testAsyncFor () async { // $ noCfg
-    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), { // $ bbContinues='Block goto Task(+2)'
-        continuation in // $ bbContinues='continuation goto Block(-1)'
+    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
+        continuation in
             Task.detached {
                 for i in 1...100 { // $ bbStep='... ... ... : empty -> continuation(+3)' bbStep='... ... ... : non-empty -> i(+0)'
                     continuation.yield(i) // $ bbStep='... .yield(...) : successor -> continuation(+2)' bbStep='... .yield(...) : successor -> i(-1)'

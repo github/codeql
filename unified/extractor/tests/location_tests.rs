@@ -119,6 +119,14 @@ fn declaration_and_operator_tokens_keep_precise_ranges() {
 }
 
 #[test]
+fn closure_bodies_exclude_closure_delimiters() {
+    let source = "let f = { (x: Int) -> Int in x * 2 }";
+    let ast = desugar(source);
+
+    assert_has_span(&ast, source, "block", None, "x * 2");
+}
+
+#[test]
 fn synthetic_optional_binding_nodes_anchor_to_binding_keyword() {
     let source = "if let value = optional {}";
     let ast = desugar(source);

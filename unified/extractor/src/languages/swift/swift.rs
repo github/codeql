@@ -62,17 +62,6 @@ impl SwiftContext {
     }
 }
 
-fn block_with_anchor(
-    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
-    statements: Vec<yeast::Id>,
-    anchor: Option<yeast::Id>,
-) -> yeast::Id {
-    match anchor {
-        Some(anchor) => tree_at!(ctx, anchor, (block stmt: {statements})),
-        None => tree!(ctx, (block stmt: {statements})),
-    }
-}
-
 /// Build a freshly-created `chained_declaration` modifier node if
 /// `ctx.is_chained`, else `None`. Used by inner declaration rules to
 /// emit the chained tag for non-first children of a flattening outer
@@ -301,6 +290,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((tupleExpr elements: _* @elements) => (tuple_expr element: {elements})),
         // A code block contains its statements directly.
         rule!((codeBlock statements: _* @stmts) => (block stmt: {stmts})),
+        rule!((accessorBlock accessors: (codeBlockItem)* @stmts) => (block stmt: {stmts})),
         // ---- Properties with accessors ----
         // A computed property with an implicit getter (`var a: T { <stmts> }`)
         // becomes a single `accessor_declaration` of kind `get`. This form is
@@ -313,14 +303,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 bindings: (patternBinding
                     pattern: (identifierPattern identifier: @@name)
                     typeAnnotation: (typeAnnotation type: @ty)
-                    accessorBlock: (accessorBlock accessors: (codeBlockItem)+ @body) @@accessor_block))
+                    accessorBlock: (accessorBlock accessors: (codeBlockItem)+) @body))
             =>
             (accessor_declaration
                 modifier: (modifier #{spec})
                 name_node: (identifier #{name})
                 type: {ty}
-                accessor_kind: {ctx.literal_at_start_of("accessor_kind", "get", accessor_block)}
-                body: {block_with_anchor(&mut ctx, body, Some(accessor_block))})
+                accessor_kind: {ctx.literal_at_start_of("accessor_kind", "get", body)}
+                body: {body})
         ),
         // A property with an explicit accessor block. swift-syntax makes both
         // shapes plain `accessorDecl`s, so they are told apart by the presence
@@ -485,11 +475,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 parameterClause: (enumCaseParameterClause parameters: _* @params) @@clause)
             =>
             class_like_declaration {
-                let body = tree!((block));
                 let constructor = tree_spanning!(
                     ctx,
                     [name, clause],
-                    (constructor_declaration parameter: {params} body: {body})
+                    (constructor_declaration parameter: {params} body: (block))
                 );
                 tree!((class_like_declaration
                     modifier: {ctx.outer_modifiers.clone()}
@@ -803,14 +792,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     capture: (closureCaptureClause items: _* @captures)?
                     parameterClause: _* @params
                     returnClause: (returnClause type: @ret)?)?
-                statements: _* @body) @@closure
+                statements: _* @body)
             =>
             (function_expr
                 modifier: {attrs}
                 capture_declaration: {captures}
                 parameter: {params}
                 return_type: {ret}
-                body: {block_with_anchor(&mut ctx, body, Some(closure))})
+                body: (block stmt: {body}))
         ),
         // A closure capture (`[weak self]`, `[x]`, `[y = expr]`). The optional
         // ownership specifier (`weak`/`unowned`) becomes a modifier; the
