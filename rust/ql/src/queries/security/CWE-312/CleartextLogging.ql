@@ -35,6 +35,11 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
     isSource(node)
   }
 
+  predicate isBarrierOut(DataFlow::Node node) {
+    // make sinks barriers so that we only report the closest instance
+    isSink(node)
+  }
+
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from `a` to `&a`
     node2.asExpr().(RefExpr).getExpr() = node1.asExpr()

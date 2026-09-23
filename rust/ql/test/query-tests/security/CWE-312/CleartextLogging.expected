@@ -54,30 +54,18 @@
 | test_logging.rs:246:20:246:65 | ... .as_bytes() | test_logging.rs:246:46:246:53 | password | test_logging.rs:246:20:246:65 | ... .as_bytes() | This operation writes $@ to a log file. | test_logging.rs:246:46:246:53 | password | password |
 | test_logging.rs:249:15:249:60 | ... .as_bytes() | test_logging.rs:249:41:249:48 | password | test_logging.rs:249:15:249:60 | ... .as_bytes() | This operation writes $@ to a log file. | test_logging.rs:249:41:249:48 | password | password |
 | test_logging.rs:252:15:252:60 | ... .as_bytes() | test_logging.rs:252:41:252:48 | password | test_logging.rs:252:15:252:60 | ... .as_bytes() | This operation writes $@ to a log file. | test_logging.rs:252:41:252:48 | password | password |
-| test_logging.rs:257:21:257:44 | &... | test_logging.rs:257:37:257:44 | password | test_logging.rs:257:21:257:44 | &... | This operation writes $@ to a log file. | test_logging.rs:257:37:257:44 | password | password |
-| test_logging.rs:257:21:257:44 | &... | test_logging.rs:257:37:257:44 | password | test_logging.rs:257:21:257:44 | &... | This operation writes $@ to a log file. | test_logging.rs:257:37:257:44 | password | password |
 | test_logging.rs:257:37:257:44 | password | test_logging.rs:257:37:257:44 | password | test_logging.rs:257:37:257:44 | password | This operation writes $@ to a log file. | test_logging.rs:257:37:257:44 | password | password |
 | test_logging.rs:257:37:257:44 | password | test_logging.rs:257:37:257:44 | password | test_logging.rs:257:37:257:44 | password | This operation writes $@ to a log file. | test_logging.rs:257:37:257:44 | password | password |
-| test_logging.rs:258:21:258:44 | &... | test_logging.rs:258:37:258:44 | password | test_logging.rs:258:21:258:44 | &... | This operation writes $@ to a log file. | test_logging.rs:258:37:258:44 | password | password |
-| test_logging.rs:258:21:258:44 | &... | test_logging.rs:258:37:258:44 | password | test_logging.rs:258:21:258:44 | &... | This operation writes $@ to a log file. | test_logging.rs:258:37:258:44 | password | password |
 | test_logging.rs:258:37:258:44 | password | test_logging.rs:258:37:258:44 | password | test_logging.rs:258:37:258:44 | password | This operation writes $@ to a log file. | test_logging.rs:258:37:258:44 | password | password |
 | test_logging.rs:258:37:258:44 | password | test_logging.rs:258:37:258:44 | password | test_logging.rs:258:37:258:44 | password | This operation writes $@ to a log file. | test_logging.rs:258:37:258:44 | password | password |
-| test_logging.rs:259:20:259:43 | &... | test_logging.rs:259:36:259:43 | password | test_logging.rs:259:20:259:43 | &... | This operation writes $@ to a log file. | test_logging.rs:259:36:259:43 | password | password |
-| test_logging.rs:259:20:259:43 | &... | test_logging.rs:259:36:259:43 | password | test_logging.rs:259:20:259:43 | &... | This operation writes $@ to a log file. | test_logging.rs:259:36:259:43 | password | password |
 | test_logging.rs:259:36:259:43 | password | test_logging.rs:259:36:259:43 | password | test_logging.rs:259:36:259:43 | password | This operation writes $@ to a log file. | test_logging.rs:259:36:259:43 | password | password |
 | test_logging.rs:259:36:259:43 | password | test_logging.rs:259:36:259:43 | password | test_logging.rs:259:36:259:43 | password | This operation writes $@ to a log file. | test_logging.rs:259:36:259:43 | password | password |
-| test_logging.rs:260:21:260:44 | &... | test_logging.rs:260:37:260:44 | password | test_logging.rs:260:21:260:44 | &... | This operation writes $@ to a log file. | test_logging.rs:260:37:260:44 | password | password |
-| test_logging.rs:260:21:260:44 | &... | test_logging.rs:260:37:260:44 | password | test_logging.rs:260:21:260:44 | &... | This operation writes $@ to a log file. | test_logging.rs:260:37:260:44 | password | password |
 | test_logging.rs:260:37:260:44 | password | test_logging.rs:260:37:260:44 | password | test_logging.rs:260:37:260:44 | password | This operation writes $@ to a log file. | test_logging.rs:260:37:260:44 | password | password |
 | test_logging.rs:260:37:260:44 | password | test_logging.rs:260:37:260:44 | password | test_logging.rs:260:37:260:44 | password | This operation writes $@ to a log file. | test_logging.rs:260:37:260:44 | password | password |
-| test_logging.rs:261:20:261:43 | &... | test_logging.rs:261:36:261:43 | password | test_logging.rs:261:20:261:43 | &... | This operation writes $@ to a log file. | test_logging.rs:261:36:261:43 | password | password |
-| test_logging.rs:261:20:261:43 | &... | test_logging.rs:261:36:261:43 | password | test_logging.rs:261:20:261:43 | &... | This operation writes $@ to a log file. | test_logging.rs:261:36:261:43 | password | password |
 | test_logging.rs:261:36:261:43 | password | test_logging.rs:261:36:261:43 | password | test_logging.rs:261:36:261:43 | password | This operation writes $@ to a log file. | test_logging.rs:261:36:261:43 | password | password |
 | test_logging.rs:261:36:261:43 | password | test_logging.rs:261:36:261:43 | password | test_logging.rs:261:36:261:43 | password | This operation writes $@ to a log file. | test_logging.rs:261:36:261:43 | password | password |
 | test_logging.rs:264:66:264:73 | &password | test_logging.rs:264:66:264:73 | password | test_logging.rs:264:66:264:73 | &password | This operation writes $@ to a log file. | test_logging.rs:264:66:264:73 | password | password |
 | test_logging.rs:264:66:264:73 | &password | test_logging.rs:264:66:264:73 | password | test_logging.rs:264:66:264:73 | &password | This operation writes $@ to a log file. | test_logging.rs:264:66:264:73 | password | password |
-| test_logging.rs:267:43:267:64 | &... | test_logging.rs:267:57:267:64 | password | test_logging.rs:267:43:267:64 | &... | This operation writes $@ to a log file. | test_logging.rs:267:57:267:64 | password | password |
-| test_logging.rs:267:43:267:64 | &... | test_logging.rs:267:57:267:64 | password | test_logging.rs:267:43:267:64 | &... | This operation writes $@ to a log file. | test_logging.rs:267:57:267:64 | password | password |
 | test_logging.rs:267:57:267:64 | password | test_logging.rs:267:57:267:64 | password | test_logging.rs:267:57:267:64 | password | This operation writes $@ to a log file. | test_logging.rs:267:57:267:64 | password | password |
 | test_logging.rs:267:57:267:64 | password | test_logging.rs:267:57:267:64 | password | test_logging.rs:267:57:267:64 | password | This operation writes $@ to a log file. | test_logging.rs:267:57:267:64 | password | password |
 | test_logging.rs:268:70:268:77 | &password | test_logging.rs:268:70:268:77 | password | test_logging.rs:268:70:268:77 | &password | This operation writes $@ to a log file. | test_logging.rs:268:70:268:77 | password | password |
@@ -269,46 +257,10 @@ edges
 | test_logging.rs:252:23:252:48 | MacroExpr | test_logging.rs:252:23:252:48 | ...::format(...) | provenance | MaD:19 |
 | test_logging.rs:252:23:252:48 | { ... } | test_logging.rs:252:23:252:48 | ...::must_use(...) | provenance | MaD:20 |
 | test_logging.rs:252:41:252:48 | password | test_logging.rs:252:23:252:48 | MacroExpr | provenance |  |
-| test_logging.rs:257:21:257:44 | MacroExpr | test_logging.rs:257:21:257:44 | &... | provenance |  |
-| test_logging.rs:257:21:257:44 | MacroExpr | test_logging.rs:257:21:257:44 | &... | provenance |  |
-| test_logging.rs:257:21:257:44 | MacroExpr | test_logging.rs:257:21:257:44 | &... | provenance | Config |
-| test_logging.rs:257:21:257:44 | MacroExpr | test_logging.rs:257:21:257:44 | &... | provenance | Config |
-| test_logging.rs:257:37:257:44 | password | test_logging.rs:257:21:257:44 | MacroExpr | provenance |  |
-| test_logging.rs:257:37:257:44 | password | test_logging.rs:257:21:257:44 | MacroExpr | provenance |  |
-| test_logging.rs:258:21:258:44 | MacroExpr | test_logging.rs:258:21:258:44 | &... | provenance |  |
-| test_logging.rs:258:21:258:44 | MacroExpr | test_logging.rs:258:21:258:44 | &... | provenance |  |
-| test_logging.rs:258:21:258:44 | MacroExpr | test_logging.rs:258:21:258:44 | &... | provenance | Config |
-| test_logging.rs:258:21:258:44 | MacroExpr | test_logging.rs:258:21:258:44 | &... | provenance | Config |
-| test_logging.rs:258:37:258:44 | password | test_logging.rs:258:21:258:44 | MacroExpr | provenance |  |
-| test_logging.rs:258:37:258:44 | password | test_logging.rs:258:21:258:44 | MacroExpr | provenance |  |
-| test_logging.rs:259:20:259:43 | MacroExpr | test_logging.rs:259:20:259:43 | &... | provenance |  |
-| test_logging.rs:259:20:259:43 | MacroExpr | test_logging.rs:259:20:259:43 | &... | provenance |  |
-| test_logging.rs:259:20:259:43 | MacroExpr | test_logging.rs:259:20:259:43 | &... | provenance | Config |
-| test_logging.rs:259:20:259:43 | MacroExpr | test_logging.rs:259:20:259:43 | &... | provenance | Config |
-| test_logging.rs:259:36:259:43 | password | test_logging.rs:259:20:259:43 | MacroExpr | provenance |  |
-| test_logging.rs:259:36:259:43 | password | test_logging.rs:259:20:259:43 | MacroExpr | provenance |  |
-| test_logging.rs:260:21:260:44 | MacroExpr | test_logging.rs:260:21:260:44 | &... | provenance |  |
-| test_logging.rs:260:21:260:44 | MacroExpr | test_logging.rs:260:21:260:44 | &... | provenance |  |
-| test_logging.rs:260:21:260:44 | MacroExpr | test_logging.rs:260:21:260:44 | &... | provenance | Config |
-| test_logging.rs:260:21:260:44 | MacroExpr | test_logging.rs:260:21:260:44 | &... | provenance | Config |
-| test_logging.rs:260:37:260:44 | password | test_logging.rs:260:21:260:44 | MacroExpr | provenance |  |
-| test_logging.rs:260:37:260:44 | password | test_logging.rs:260:21:260:44 | MacroExpr | provenance |  |
-| test_logging.rs:261:20:261:43 | MacroExpr | test_logging.rs:261:20:261:43 | &... | provenance |  |
-| test_logging.rs:261:20:261:43 | MacroExpr | test_logging.rs:261:20:261:43 | &... | provenance |  |
-| test_logging.rs:261:20:261:43 | MacroExpr | test_logging.rs:261:20:261:43 | &... | provenance | Config |
-| test_logging.rs:261:20:261:43 | MacroExpr | test_logging.rs:261:20:261:43 | &... | provenance | Config |
-| test_logging.rs:261:36:261:43 | password | test_logging.rs:261:20:261:43 | MacroExpr | provenance |  |
-| test_logging.rs:261:36:261:43 | password | test_logging.rs:261:20:261:43 | MacroExpr | provenance |  |
 | test_logging.rs:264:66:264:73 | password | test_logging.rs:264:66:264:73 | &password | provenance |  |
 | test_logging.rs:264:66:264:73 | password | test_logging.rs:264:66:264:73 | &password | provenance |  |
 | test_logging.rs:264:66:264:73 | password | test_logging.rs:264:66:264:73 | &password | provenance | Config |
 | test_logging.rs:264:66:264:73 | password | test_logging.rs:264:66:264:73 | &password | provenance | Config |
-| test_logging.rs:267:43:267:64 | MacroExpr | test_logging.rs:267:43:267:64 | &... | provenance |  |
-| test_logging.rs:267:43:267:64 | MacroExpr | test_logging.rs:267:43:267:64 | &... | provenance |  |
-| test_logging.rs:267:43:267:64 | MacroExpr | test_logging.rs:267:43:267:64 | &... | provenance | Config |
-| test_logging.rs:267:43:267:64 | MacroExpr | test_logging.rs:267:43:267:64 | &... | provenance | Config |
-| test_logging.rs:267:57:267:64 | password | test_logging.rs:267:43:267:64 | MacroExpr | provenance |  |
-| test_logging.rs:267:57:267:64 | password | test_logging.rs:267:43:267:64 | MacroExpr | provenance |  |
 | test_logging.rs:268:70:268:77 | password | test_logging.rs:268:70:268:77 | &password | provenance |  |
 | test_logging.rs:268:70:268:77 | password | test_logging.rs:268:70:268:77 | &password | provenance |  |
 | test_logging.rs:268:70:268:77 | password | test_logging.rs:268:70:268:77 | &password | provenance | Config |
@@ -557,56 +509,20 @@ nodes
 | test_logging.rs:252:23:252:48 | MacroExpr | semmle.label | MacroExpr |
 | test_logging.rs:252:23:252:48 | { ... } | semmle.label | { ... } |
 | test_logging.rs:252:41:252:48 | password | semmle.label | password |
-| test_logging.rs:257:21:257:44 | &... | semmle.label | &... |
-| test_logging.rs:257:21:257:44 | &... | semmle.label | &... |
-| test_logging.rs:257:21:257:44 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:257:21:257:44 | MacroExpr | semmle.label | MacroExpr |
 | test_logging.rs:257:37:257:44 | password | semmle.label | password |
 | test_logging.rs:257:37:257:44 | password | semmle.label | password |
-| test_logging.rs:257:37:257:44 | password | semmle.label | password |
-| test_logging.rs:257:37:257:44 | password | semmle.label | password |
-| test_logging.rs:258:21:258:44 | &... | semmle.label | &... |
-| test_logging.rs:258:21:258:44 | &... | semmle.label | &... |
-| test_logging.rs:258:21:258:44 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:258:21:258:44 | MacroExpr | semmle.label | MacroExpr |
 | test_logging.rs:258:37:258:44 | password | semmle.label | password |
 | test_logging.rs:258:37:258:44 | password | semmle.label | password |
-| test_logging.rs:258:37:258:44 | password | semmle.label | password |
-| test_logging.rs:258:37:258:44 | password | semmle.label | password |
-| test_logging.rs:259:20:259:43 | &... | semmle.label | &... |
-| test_logging.rs:259:20:259:43 | &... | semmle.label | &... |
-| test_logging.rs:259:20:259:43 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:259:20:259:43 | MacroExpr | semmle.label | MacroExpr |
 | test_logging.rs:259:36:259:43 | password | semmle.label | password |
 | test_logging.rs:259:36:259:43 | password | semmle.label | password |
-| test_logging.rs:259:36:259:43 | password | semmle.label | password |
-| test_logging.rs:259:36:259:43 | password | semmle.label | password |
-| test_logging.rs:260:21:260:44 | &... | semmle.label | &... |
-| test_logging.rs:260:21:260:44 | &... | semmle.label | &... |
-| test_logging.rs:260:21:260:44 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:260:21:260:44 | MacroExpr | semmle.label | MacroExpr |
 | test_logging.rs:260:37:260:44 | password | semmle.label | password |
 | test_logging.rs:260:37:260:44 | password | semmle.label | password |
-| test_logging.rs:260:37:260:44 | password | semmle.label | password |
-| test_logging.rs:260:37:260:44 | password | semmle.label | password |
-| test_logging.rs:261:20:261:43 | &... | semmle.label | &... |
-| test_logging.rs:261:20:261:43 | &... | semmle.label | &... |
-| test_logging.rs:261:20:261:43 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:261:20:261:43 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:261:36:261:43 | password | semmle.label | password |
-| test_logging.rs:261:36:261:43 | password | semmle.label | password |
 | test_logging.rs:261:36:261:43 | password | semmle.label | password |
 | test_logging.rs:261:36:261:43 | password | semmle.label | password |
 | test_logging.rs:264:66:264:73 | &password | semmle.label | &password |
 | test_logging.rs:264:66:264:73 | &password | semmle.label | &password |
 | test_logging.rs:264:66:264:73 | password | semmle.label | password |
 | test_logging.rs:264:66:264:73 | password | semmle.label | password |
-| test_logging.rs:267:43:267:64 | &... | semmle.label | &... |
-| test_logging.rs:267:43:267:64 | &... | semmle.label | &... |
-| test_logging.rs:267:43:267:64 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:267:43:267:64 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:267:57:267:64 | password | semmle.label | password |
-| test_logging.rs:267:57:267:64 | password | semmle.label | password |
 | test_logging.rs:267:57:267:64 | password | semmle.label | password |
 | test_logging.rs:267:57:267:64 | password | semmle.label | password |
 | test_logging.rs:268:70:268:77 | &password | semmle.label | &password |
