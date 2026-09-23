@@ -10,9 +10,9 @@ func t2() -> Int {
         return "df"
     }
     // Note: This currently fails because the trailing closure is not extracted correctly
-    let a = 1 // $ SPURIOUS: Alert
+    let a = 1
     print(foo() { _ in
         print(a)
-        let b = 2 // $ MISSING: Alert[unified/unused-variable]
+        let b = 2 // $ Alert[unified/unused-variable]
     })
 }

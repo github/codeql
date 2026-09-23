@@ -58,8 +58,19 @@ top_level source="⟨body⟩"
           argument:
             argument source="⟨value⟩"
               value:
-                call_expr source="⟨callee⟩ { $0 * 2 }"
+                call_expr source="⟨callee⟩ ⟨argument⟩"
                   callee:
                     member_access_expr source="⟨base⟩.⟨member_name_node⟩"
                       base: identifier "xs" source="xs"
                       member_name_node: identifier "map" source="map"
+                  argument:
+                    argument source="⟨value⟩"
+                      value:
+                        function_expr source="{ ⟨body⟩ }"
+                          body:
+                            block source="⟨stmt⟩"
+                              stmt:
+                                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                                  left: identifier "$0" source="$0"
+                                  operator: infix_operator "*" source="*"
+                                  right: int_literal "2" source="2"

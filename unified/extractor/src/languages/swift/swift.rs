@@ -533,6 +533,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (identifier #{name})
         ),
+        rule!(
+            (patternExpr pattern: @p)
+            =>
+            expr { p }
+        ),
         // A `let`/`var` value-binding pattern (`let x`) inside a case or `if case`
         // preserves the binding specifier around its inner pattern.
         rule!(
@@ -696,44 +701,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 tree!((call_expr callee: {callee} argument: {args}))
             }
         ),
-        // A call or enum-case pattern argument. Both use the shared `argument`
-        // shape, preserving the optional label as `name` and the child as `value`.
-        // The pattern-only shapes (`patternExpr`, `discardAssignmentExpr`) are
-        // matched first; they never occur as ordinary call arguments.
-        rule!(
-            (labeledExpr
-                label: _? @@lbl
-                expression: (functionCallExpr
-                    calledExpression: @constructor
-                    arguments: _* @elements) @@call)
-            =>
-            argument {
-                let value = tree_at!(
-                    ctx,
-                    call,
-                    (call_expr callee: {constructor} argument: {elements})
-                );
-                tree!((argument
-                    name_node: (identifier #{lbl})?
-                    value: {value}))
-            }
-        ),
-        rule!(
-            (labeledExpr label: _? @@lbl expression: (patternExpr pattern: @p))
-            =>
-            (argument name_node: (identifier #{lbl})? value: {p})
-        ),
-        rule!(
-            (labeledExpr label: _? @@lbl expression: (discardAssignmentExpr) @@wildcard)
-            =>
-            (argument name_node: (identifier #{lbl})? value: (identifier #{wildcard}))
-        ),
+        // A call or enum-case pattern argument.
         rule!(
             (labeledExpr label: _? @@lbl expression: @val)
             =>
-            argument {
-                tree!((argument name_node: (identifier #{lbl})? value: {val}))
-            }
+            (argument name_node: (identifier #{lbl})? value: {val})
         ),
         // Member access (`list.append`). The `declName` is itself a
         // `declReferenceExpr`; pull its `baseName` out as the member identifier.
