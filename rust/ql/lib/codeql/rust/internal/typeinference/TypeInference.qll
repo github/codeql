@@ -2917,7 +2917,9 @@ private module Input3 implements InputSig3 {
     )
   }
 
-  class Closure extends Expr, Callable instanceof Rust::ClosureExpr { }
+  class Closure extends Expr, Callable instanceof Rust::ClosureExpr {
+    Expr getDefiningExpr() { result = this }
+  }
 
   class ClosureParameterPseudoType extends T::ClosureParameterPseudoType {
     Parameter getParameter() { result = this.getParam() }
