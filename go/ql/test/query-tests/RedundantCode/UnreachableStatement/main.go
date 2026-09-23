@@ -161,7 +161,7 @@ func test19() mystruct {
 
 func test20() {
 	go panic("panic in another goroutine")
-	select {} // $ SPURIOUS: Alert // reachable after starting the goroutine
+	select {} // OK: reachable after starting the goroutine
 }
 
 func main() {}
