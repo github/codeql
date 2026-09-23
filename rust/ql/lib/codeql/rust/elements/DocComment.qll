@@ -6,4 +6,13 @@
 private import internal.DocCommentImpl
 import codeql.rust.elements.AnyAttr
 
+/**
+ * A documentation comment.
+ *
+ * For example:
+ * ```rust
+ * /// Documents `documented`.
+ * fn documented() {}
+ * ```
+ */
 final class DocComment = Impl::DocComment;

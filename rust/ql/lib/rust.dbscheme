@@ -386,7 +386,7 @@ assoc_item_list_assoc_items(
 assoc_item_list_attrs(
   int id: @assoc_item_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 @callable =
@@ -404,7 +404,7 @@ callable_param_lists(
 callable_attrs(
   int id: @callable ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 @cfg_predicate =
@@ -457,7 +457,7 @@ extern_item_lists(
 extern_item_list_attrs(
   int id: @extern_item_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -551,7 +551,7 @@ item_lists(
 item_list_attrs(
   int id: @item_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -600,7 +600,7 @@ match_arms(
 match_arm_attrs(
   int id: @match_arm ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -636,7 +636,7 @@ match_arm_list_arms(
 match_arm_list_attrs(
   int id: @match_arm_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 match_guards(
@@ -692,7 +692,7 @@ name_texts(
 param_base_attrs(
   int id: @param_base ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -858,7 +858,7 @@ source_files(
 source_file_attrs(
   int id: @source_file ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -882,7 +882,7 @@ stmt_lists(
 stmt_list_attrs(
   int id: @stmt_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -906,7 +906,7 @@ struct_expr_fields(
 struct_expr_field_attrs(
   int id: @struct_expr_field ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -929,7 +929,7 @@ struct_expr_field_lists(
 struct_expr_field_list_attrs(
   int id: @struct_expr_field_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -953,7 +953,7 @@ struct_fields(
 struct_field_attrs(
   int id: @struct_field ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -999,7 +999,7 @@ struct_pat_fields(
 struct_pat_field_attrs(
   int id: @struct_pat_field ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1062,7 +1062,7 @@ tuple_fields(
 tuple_field_attrs(
   int id: @tuple_field ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1282,7 +1282,7 @@ array_expr_internals(
 array_expr_internal_attrs(
   int id: @array_expr_internal ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -1321,7 +1321,7 @@ asm_clobber_abis(
 asm_clobber_abi_attrs(
   int id: @asm_clobber_abi ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 asm_consts(
@@ -1363,7 +1363,7 @@ asm_operand_named_asm_operands(
 asm_operand_named_attrs(
   int id: @asm_operand_named ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1387,7 +1387,7 @@ asm_options_list_asm_options(
 asm_options_list_attrs(
   int id: @asm_options_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 asm_reg_operands(
@@ -1492,7 +1492,7 @@ await_exprs(
 await_expr_attrs(
   int id: @await_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1509,7 +1509,7 @@ become_exprs(
 become_expr_attrs(
   int id: @become_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1526,7 +1526,7 @@ binary_exprs(
 binary_expr_attrs(
   int id: @binary_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1565,7 +1565,7 @@ break_exprs(
 break_expr_attrs(
   int id: @break_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1594,7 +1594,7 @@ call_expr_arg_lists(
 call_expr_attrs(
   int id: @call_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1611,7 +1611,7 @@ cast_exprs(
 cast_expr_attrs(
   int id: @cast_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1754,7 +1754,7 @@ const_params(
 const_param_attrs(
   int id: @const_param ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1788,7 +1788,7 @@ continue_exprs(
 continue_expr_attrs(
   int id: @continue_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1839,7 +1839,7 @@ field_exprs(
 field_expr_attrs(
   int id: @field_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1922,7 +1922,7 @@ format_args_expr_args(
 format_args_expr_attrs(
   int id: @format_args_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1939,7 +1939,7 @@ ident_pats(
 ident_pat_attrs(
   int id: @ident_pat ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1972,7 +1972,7 @@ if_exprs(
 if_expr_attrs(
   int id: @if_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2015,7 +2015,7 @@ index_exprs(
 index_expr_attrs(
   int id: @index_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2090,7 +2090,7 @@ let_exprs(
 let_expr_attrs(
   int id: @let_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2113,7 +2113,7 @@ let_stmts(
 let_stmt_attrs(
   int id: @let_stmt ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2168,7 +2168,7 @@ lifetime_params(
 lifetime_param_attrs(
   int id: @lifetime_param ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2191,7 +2191,7 @@ literal_exprs(
 literal_expr_attrs(
   int id: @literal_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2248,7 +2248,7 @@ match_exprs(
 match_expr_attrs(
   int id: @match_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2277,7 +2277,7 @@ method_call_expr_arg_lists(
 method_call_expr_attrs(
   int id: @method_call_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2324,7 +2324,7 @@ offset_of_exprs(
 offset_of_expr_attrs(
   int id: @offset_of_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -2369,7 +2369,7 @@ paren_exprs(
 paren_expr_attrs(
   int id: @paren_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2450,7 +2450,7 @@ prefix_exprs(
 prefix_expr_attrs(
   int id: @prefix_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2493,7 +2493,7 @@ range_exprs(
 range_expr_attrs(
   int id: @range_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2544,7 +2544,7 @@ ref_exprs(
 ref_expr_attrs(
   int id: @ref_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2612,7 +2612,7 @@ rest_pats(
 rest_pat_attrs(
   int id: @rest_pat ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 return_exprs(
@@ -2623,7 +2623,7 @@ return_exprs(
 return_expr_attrs(
   int id: @return_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2734,7 +2734,7 @@ try_exprs(
 try_expr_attrs(
   int id: @try_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2751,7 +2751,7 @@ tuple_exprs(
 tuple_expr_attrs(
   int id: @tuple_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -2823,7 +2823,7 @@ type_params(
 type_param_attrs(
   int id: @type_param ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2852,7 +2852,7 @@ underscore_exprs(
 underscore_expr_attrs(
   int id: @underscore_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 unsafe_meta(
@@ -2878,7 +2878,7 @@ variants(
 variant_attrs(
   int id: @variant ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2917,7 +2917,7 @@ yeet_exprs(
 yeet_expr_attrs(
   int id: @yeet_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2934,7 +2934,7 @@ yield_exprs(
 yield_expr_attrs(
   int id: @yield_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2958,7 +2958,7 @@ asm_expr_asm_pieces(
 asm_expr_attrs(
   int id: @asm_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -2983,7 +2983,7 @@ block_exprs(
 block_expr_attrs(
   int id: @block_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3037,7 +3037,7 @@ extern_block_abis(
 extern_block_attrs(
   int id: @extern_block ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3059,7 +3059,7 @@ extern_crates(
 extern_crate_attrs(
   int id: @extern_crate ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3101,7 +3101,7 @@ impl_assoc_item_lists(
 impl_attrs(
   int id: @impl ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3175,7 +3175,7 @@ macro_def_args(
 macro_def_attrs(
   int id: @macro_def ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3204,7 +3204,7 @@ macro_rules(
 macro_rules_attrs(
   int id: @macro_rules ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3233,7 +3233,7 @@ modules(
 module_attrs(
   int id: @module ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3262,7 +3262,7 @@ path_exprs(
 path_expr_attrs(
   int id: @path_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 traits(
@@ -3279,7 +3279,7 @@ trait_assoc_item_lists(
 trait_attrs(
   int id: @trait ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3345,7 +3345,7 @@ type_item_derive_macro_expansions(
 type_item_attrs(
   int id: @type_item ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3380,7 +3380,7 @@ uses(
 use_attrs(
   int id: @use ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3403,7 +3403,7 @@ consts(
 const_attrs(
   int id: @const ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3475,7 +3475,7 @@ for_exprs(
 for_expr_attrs(
   int id: @for_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3574,7 +3574,7 @@ loop_exprs(
 loop_expr_attrs(
   int id: @loop_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 macro_calls(
@@ -3585,7 +3585,7 @@ macro_calls(
 macro_call_attrs(
   int id: @macro_call ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3614,7 +3614,7 @@ statics(
 static_attrs(
   int id: @static ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3674,7 +3674,7 @@ type_aliases(
 type_alias_attrs(
   int id: @type_alias ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3736,7 +3736,7 @@ while_exprs(
 while_expr_attrs(
   int id: @while_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]

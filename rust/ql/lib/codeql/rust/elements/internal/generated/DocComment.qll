@@ -14,6 +14,13 @@ import codeql.rust.elements.internal.AnyAttrImpl::Impl as AnyAttrImpl
  */
 module Generated {
   /**
+   * A documentation comment.
+   *
+   * For example:
+   * ```rust
+   * /// Documents `documented`.
+   * fn documented() {}
+   * ```
    * INTERNAL: Do not reference the `Generated::DocComment` class directly.
    * Use the subclass `DocComment`, where the following predicates are available.
    */

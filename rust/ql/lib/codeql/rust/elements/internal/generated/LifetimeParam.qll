@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.GenericParamImpl::Impl as GenericParamImpl
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeBoundList
@@ -35,9 +35,9 @@ module Generated {
     /**
      * Gets the `index`th attr of this lifetime parameter (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertLifetimeParamToRaw(this)
+        Synth::convertAnyAttrFromRaw(Synth::convertLifetimeParamToRaw(this)
               .(Raw::LifetimeParam)
               .getAttr(index))
     }
@@ -45,7 +45,7 @@ module Generated {
     /**
      * Gets any of the attrs of this lifetime parameter.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this lifetime parameter.

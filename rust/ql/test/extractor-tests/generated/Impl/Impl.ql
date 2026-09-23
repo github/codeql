@@ -26,7 +26,7 @@ query predicate getAssocItemList(Impl x, AssocItemList getAssocItemList) {
   toBeTested(x) and not x.isUnknown() and getAssocItemList = x.getAssocItemList()
 }
 
-query predicate getAttr(Impl x, int index, Attr getAttr) {
+query predicate getAttr(Impl x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

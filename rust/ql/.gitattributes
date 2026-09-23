@@ -745,7 +745,7 @@
 /test/extractor-tests/generated/ContinueExpr/ContinueExpr.ql linguist-generated
 /test/extractor-tests/generated/Crate/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/DerefPat/DerefPat.ql linguist-generated
-/test/extractor-tests/generated/DocComment/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/DocComment/DocComment.ql linguist-generated
 /test/extractor-tests/generated/DynTraitTypeRepr/DynTraitTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum.ql linguist-generated
 /test/extractor-tests/generated/ExprStmt/ExprStmt.ql linguist-generated

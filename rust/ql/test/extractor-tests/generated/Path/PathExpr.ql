@@ -8,6 +8,6 @@ query predicate getPath(PathExpr x, Path getPath) {
   toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
 }
 
-query predicate getAttr(PathExpr x, int index, Attr getAttr) {
+query predicate getAttr(PathExpr x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }

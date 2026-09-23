@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.AsmPieceImpl::Impl as AsmPieceImpl
-import codeql.rust.elements.Attr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AsmClobberAbi` and should not
@@ -34,9 +34,9 @@ module Generated {
     /**
      * Gets the `index`th attr of this asm clobber abi (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertAsmClobberAbiToRaw(this)
+        Synth::convertAnyAttrFromRaw(Synth::convertAsmClobberAbiToRaw(this)
               .(Raw::AsmClobberAbi)
               .getAttr(index))
     }
@@ -44,7 +44,7 @@ module Generated {
     /**
      * Gets any of the attrs of this asm clobber abi.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this asm clobber abi.

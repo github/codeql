@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.ArgList
-import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.GenericArgList
@@ -52,9 +52,9 @@ module Generated {
     /**
      * Gets the `index`th attr of this method call expression (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertMethodCallExprToRaw(this)
+        Synth::convertAnyAttrFromRaw(Synth::convertMethodCallExprToRaw(this)
               .(Raw::MethodCallExpr)
               .getAttr(index))
     }
@@ -62,7 +62,7 @@ module Generated {
     /**
      * Gets any of the attrs of this method call expression.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this method call expression.

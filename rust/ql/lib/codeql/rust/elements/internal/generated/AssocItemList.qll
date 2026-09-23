@@ -6,9 +6,9 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AssocItem
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.Attr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AssocItemList` and should not
@@ -48,9 +48,9 @@ module Generated {
     /**
      * Gets the `index`th attr of this assoc item list (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertAssocItemListToRaw(this)
+        Synth::convertAnyAttrFromRaw(Synth::convertAssocItemListToRaw(this)
               .(Raw::AssocItemList)
               .getAttr(index))
     }
@@ -58,7 +58,7 @@ module Generated {
     /**
      * Gets any of the attrs of this assoc item list.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this assoc item list.

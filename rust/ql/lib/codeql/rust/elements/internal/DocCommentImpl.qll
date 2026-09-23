@@ -12,5 +12,14 @@ private import codeql.rust.elements.internal.generated.DocComment
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A documentation comment.
+   *
+   * For example:
+   * ```rust
+   * /// Documents `documented`.
+   * fn documented() {}
+   * ```
+   */
   class DocComment extends Generated::DocComment { }
 }

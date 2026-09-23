@@ -14,7 +14,7 @@ query predicate getAsmPiece(AsmExpr x, int index, AsmPiece getAsmPiece) {
   toBeTested(x) and not x.isUnknown() and getAsmPiece = x.getAsmPiece(index)
 }
 
-query predicate getAttr(AsmExpr x, int index, Attr getAttr) {
+query predicate getAttr(AsmExpr x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

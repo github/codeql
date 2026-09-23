@@ -60,7 +60,7 @@ class ArgList(AstNode, ):
     args: list["Expr"] | child
 
 class ArrayExprInternal(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     exprs: list["Expr"] | child
     is_semicolon: predicate
 
@@ -69,7 +69,7 @@ class ArrayTypeRepr(TypeRepr, ):
     element_type_repr: optional["TypeRepr"] | child
 
 class AsmClobberAbi(AsmPiece, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
 
 class AsmConst(AsmOperand, ):
     expr: optional["Expr"] | child
@@ -80,7 +80,7 @@ class AsmDirSpec(AstNode, ):
 
 class AsmExpr(Expr, Item, ):
     asm_pieces: list["AsmPiece"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     template: list["Expr"] | child
 
 class AsmLabel(AsmOperand, ):
@@ -92,7 +92,7 @@ class AsmOperandExpr(AstNode, ):
 
 class AsmOperandNamed(AsmPiece, ):
     asm_operand: optional["AsmOperand"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     name: optional["Name"] | child
 
 class AsmOption(AstNode, ):
@@ -100,7 +100,7 @@ class AsmOption(AstNode, ):
 
 class AsmOptionsList(AsmPiece, ):
     asm_options: list["AsmOption"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
 
 class AsmRegOperand(AsmOperand, ):
     asm_dir_spec: optional["AsmDirSpec"] | child
@@ -115,7 +115,7 @@ class AsmSym(AsmOperand, ):
 
 class AssocItemList(AstNode, ):
     assoc_items: list["AssocItem"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
 
 class AssocTypeArg(GenericArg, ):
     const_arg: optional["ConstArg"] | child
@@ -131,21 +131,21 @@ class Attr(AnyAttr, ):
     meta: optional["Meta"] | child
 
 class AwaitExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
 
 class BecomeExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
 
 class BinaryExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     lhs: optional["Expr"] | child
     operator_name: optional[string]
     rhs: optional["Expr"] | child
 
 class BlockExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     is_async: predicate
     is_const: predicate
     is_gen: predicate
@@ -159,17 +159,17 @@ class BoxPat(Pat, ):
     pat: optional["Pat"] | child
 
 class BreakExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
     lifetime: optional["Lifetime"] | child
 
 class CallExpr(Expr, ):
     arg_list: optional["ArgList"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     function: optional["Expr"] | child
 
 class CastExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
     type_repr: optional["TypeRepr"] | child
 
@@ -187,7 +187,7 @@ class CfgMeta(Meta, ):
     cfg_predicate: optional["CfgPredicate"] | child
 
 class ClosureExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     closure_body: optional["Expr"] | child
     for_binder: optional["ForBinder"] | child
     is_async: predicate
@@ -199,7 +199,7 @@ class ClosureExpr(Expr, ):
     ret_type: optional["RetTypeRepr"] | child
 
 class Const(AssocItem, Item, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     body: optional["Expr"] | child
     generic_param_list: optional["GenericParamList"] | child
     is_const: predicate
@@ -217,14 +217,14 @@ class ConstBlockPat(Pat, ):
     is_const: predicate
 
 class ConstParam(GenericParam, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     default_val: optional["ConstArg"] | child
     is_const: predicate
     name: optional["Name"] | child
     type_repr: optional["TypeRepr"] | child
 
 class ContinueExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     lifetime: optional["Lifetime"] | child
 
 class DerefPat(Pat, ):
@@ -237,7 +237,7 @@ class DynTraitTypeRepr(TypeRepr, ):
     type_bound_list: optional["TypeBoundList"] | child
 
 class Enum(TypeItem, Item, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
     variant_list: optional["VariantList"] | child
@@ -249,28 +249,28 @@ class ExprStmt(Stmt, ):
 
 class ExternBlock(Item, ):
     abi: optional["Abi"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     extern_item_list: optional["ExternItemList"] | child
     is_unsafe: predicate
 
 class ExternCrate(Item, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     identifier: optional["NameRef"] | child
     rename: optional["Rename"] | child
     visibility: optional["Visibility"] | child
 
 class ExternItemList(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     extern_items: list["ExternItem"] | child
 
 class FieldExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     container: optional["Expr"] | child
     identifier: optional["NameRef"] | child
 
 class Function(AssocItem, ExternItem, Item, ):
     abi: optional["Abi"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     function_body: optional["BlockExpr"] | child
     generic_param_list: optional["GenericParamList"] | child
     is_async: predicate
@@ -296,7 +296,7 @@ class ForBinder(AstNode, ):
     generic_param_list: optional["GenericParamList"] | child
 
 class ForExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     iterable: optional["Expr"] | child
     label: optional["Label"] | child
     loop_body: optional["BlockExpr"] | child
@@ -312,7 +312,7 @@ class FormatArgsArg(AstNode, ):
 
 class FormatArgsExpr(Expr, ):
     args: list["FormatArgsArg"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     template: optional["Expr"] | child
 
 class GenericArgList(AstNode, ):
@@ -322,21 +322,21 @@ class GenericParamList(AstNode, ):
     generic_params: list["GenericParam"] | child
 
 class IdentPat(Pat, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     is_mut: predicate
     is_ref: predicate
     name: optional["Name"] | child
     pat: optional["Pat"] | child
 
 class IfExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     condition: optional["Expr"] | child
     else_: optional["Expr"] | child
     then: optional["BlockExpr"] | child
 
 class Impl(Item, ):
     assoc_item_list: optional["AssocItemList"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     generic_param_list: optional["GenericParamList"] | child
     is_const: predicate
     is_default: predicate
@@ -356,7 +356,7 @@ class IncludeBytesExpr(Expr, ):
     pass
 
 class IndexExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     base: optional["Expr"] | child
     index: optional["Expr"] | child
 
@@ -364,7 +364,7 @@ class InferTypeRepr(TypeRepr, ):
     pass
 
 class ItemList(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     items: list["Item"] | child
 
 class KeyValueMeta(Meta, ):
@@ -378,12 +378,12 @@ class LetElse(AstNode, ):
     block_expr: optional["BlockExpr"] | child
 
 class LetExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     scrutinee: optional["Expr"] | child
     pat: optional["Pat"] | child
 
 class LetStmt(Stmt, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     initializer: optional["Expr"] | child
     let_else: optional["LetElse"] | child
     pat: optional["Pat"] | child
@@ -396,30 +396,30 @@ class LifetimeArg(GenericArg, ):
     lifetime: optional["Lifetime"] | child
 
 class LifetimeParam(GenericParam, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     lifetime: optional["Lifetime"] | child
     type_bound_list: optional["TypeBoundList"] | child
 
 class LiteralExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     text_value: optional[string]
 
 class LiteralPat(Pat, ):
     literal: optional["LiteralExpr"] | child
 
 class LoopExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     label: optional["Label"] | child
     loop_body: optional["BlockExpr"] | child
 
 class MacroCall(AssocItem, ExternItem, Item, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     path: optional["Path"] | child
     token_tree: optional["TokenTree"] | child
 
 class MacroDef(Item, ):
     args: optional["TokenTree"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     body: optional["TokenTree"] | child
     name: optional["Name"] | child
     visibility: optional["Visibility"] | child
@@ -434,7 +434,7 @@ class MacroPat(Pat, ):
     macro_call: optional["MacroCall"] | child
 
 class MacroRules(Item, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     name: optional["Name"] | child
     token_tree: optional["TokenTree"] | child
     visibility: optional["Visibility"] | child
@@ -443,17 +443,17 @@ class MacroTypeRepr(TypeRepr, ):
     macro_call: optional["MacroCall"] | child
 
 class MatchArm(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
     guard: optional["MatchGuard"] | child
     pat: optional["Pat"] | child
 
 class MatchArmList(AstNode, ):
     arms: list["MatchArm"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
 
 class MatchExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     scrutinee: optional["Expr"] | child
     match_arm_list: optional["MatchArmList"] | child
 
@@ -462,13 +462,13 @@ class MatchGuard(AstNode, ):
 
 class MethodCallExpr(Expr, ):
     arg_list: optional["ArgList"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     generic_arg_list: optional["GenericArgList"] | child
     identifier: optional["NameRef"] | child
     receiver: optional["Expr"] | child
 
 class Module(Item, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     item_list: optional["ItemList"] | child
     name: optional["Name"] | child
     visibility: optional["Visibility"] | child
@@ -490,7 +490,7 @@ class NotNull(Pat, ):
     pass
 
 class OffsetOfExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     fields: list["NameRef"] | child
     type_repr: optional["TypeRepr"] | child
 
@@ -498,7 +498,7 @@ class OrPat(Pat, ):
     pats: list["Pat"] | child
 
 class Param(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     pat: optional["Pat"] | child
     type_repr: optional["TypeRepr"] | child
 
@@ -507,7 +507,7 @@ class ParamList(AstNode, ):
     self_param: optional["SelfParam"] | child
 
 class ParenExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
 
 class ParenPat(Pat, ):
@@ -524,7 +524,7 @@ class Path(AstNode, ):
     segment: optional["PathSegment"] | child
 
 class PathExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     path: optional["Path"] | child
 
 class PathMeta(Meta, ):
@@ -548,7 +548,7 @@ class PatternTypeRepr(TypeRepr, ):
     type_repr: optional["TypeRepr"] | child
 
 class PrefixExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
     operator_name: optional[string]
 
@@ -558,7 +558,7 @@ class PtrTypeRepr(TypeRepr, ):
     type_repr: optional["TypeRepr"] | child
 
 class RangeExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     end: optional["Expr"] | child
     operator_name: optional[string]
     start: optional["Expr"] | child
@@ -573,17 +573,17 @@ class StructExpr(Expr, ):
     struct_expr_field_list: optional["StructExprFieldList"] | child
 
 class StructExprField(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
     identifier: optional["NameRef"] | child
 
 class StructExprFieldList(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     fields: list["StructExprField"] | child
     spread: optional["Expr"] | child
 
 class StructField(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     default_val: optional["ConstArg"] | child
     is_unsafe: predicate
     mut_restriction: optional["MutRestriction"] | child
@@ -599,7 +599,7 @@ class StructPat(Pat, ):
     struct_pat_field_list: optional["StructPatFieldList"] | child
 
 class StructPatField(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     identifier: optional["NameRef"] | child
     pat: optional["Pat"] | child
 
@@ -608,7 +608,7 @@ class StructPatFieldList(AstNode, ):
     rest_pat: optional["RestPat"] | child
 
 class RefExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
     is_const: predicate
     is_mut: predicate
@@ -627,20 +627,20 @@ class Rename(AstNode, ):
     name: optional["Name"] | child
 
 class RestPat(Pat, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
 
 class RetTypeRepr(AstNode, ):
     type_repr: optional["TypeRepr"] | child
 
 class ReturnExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
 
 class ReturnTypeSyntax(AstNode, ):
     pass
 
 class SelfParam(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     is_ref: predicate
     is_mut: predicate
     lifetime: optional["Lifetime"] | child
@@ -654,11 +654,11 @@ class SliceTypeRepr(TypeRepr, ):
     type_repr: optional["TypeRepr"] | child
 
 class SourceFile(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     items: list["Item"] | child
 
 class Static(ExternItem, Item, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     body: optional["Expr"] | child
     is_mut: predicate
     is_static: predicate
@@ -668,12 +668,12 @@ class Static(ExternItem, Item, ):
     visibility: optional["Visibility"] | child
 
 class StmtList(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     statements: list["Stmt"] | child
     tail_expr: optional["Expr"] | child
 
 class Struct(TypeItem, Item, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     field_list: optional["FieldList"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
@@ -689,7 +689,7 @@ class TokenTreeMeta(Meta, ):
 
 class Trait(Item, ):
     assoc_item_list: optional["AssocItemList"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     generic_param_list: optional["GenericParamList"] | child
     impl_restriction: optional["ImplRestriction"] | child
     is_auto: predicate
@@ -704,15 +704,15 @@ class TryBlockModifier(AstNode, ):
     type_repr: optional["TypeRepr"] | child
 
 class TryExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
 
 class TupleExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     fields: list["Expr"] | child
 
 class TupleField(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     mut_restriction: optional["MutRestriction"] | child
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child
@@ -731,7 +731,7 @@ class TupleTypeRepr(TypeRepr, ):
     fields: list["TypeRepr"] | child
 
 class TypeAlias(AssocItem, ExternItem, Item, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     generic_param_list: optional["GenericParamList"] | child
     is_default: predicate
     name: optional["Name"] | child
@@ -755,16 +755,16 @@ class TypeBoundList(AstNode, ):
     bounds: list["TypeBound"] | child
 
 class TypeParam(GenericParam, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     default_type: optional["TypeRepr"] | child
     name: optional["Name"] | child
     type_bound_list: optional["TypeBoundList"] | child
 
 class UnderscoreExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
 
 class Union(TypeItem, Item, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
     struct_field_list: optional["StructFieldList"] | child
@@ -776,7 +776,7 @@ class UnsafeMeta(Meta, ):
     meta: optional["Meta"] | child
 
 class Use(Item, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     use_tree: optional["UseTree"] | child
     visibility: optional["Visibility"] | child
 
@@ -793,7 +793,7 @@ class UseTreeList(AstNode, ):
     use_trees: list["UseTree"] | child
 
 class Variant(AstNode, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     const_arg: optional["ConstArg"] | child
     field_list: optional["FieldList"] | child
     name: optional["Name"] | child
@@ -818,7 +818,7 @@ class WherePred(AstNode, ):
     type_bound_list: optional["TypeBoundList"] | child
 
 class WhileExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     condition: optional["Expr"] | child
     label: optional["Label"] | child
     loop_body: optional["BlockExpr"] | child
@@ -827,9 +827,9 @@ class WildcardPat(Pat, ):
     pass
 
 class YeetExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child
 
 class YieldExpr(Expr, ):
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     expr: optional["Expr"] | child

@@ -8,6 +8,6 @@ query predicate getArm(MatchArmList x, int index, MatchArm getArm) {
   toBeTested(x) and not x.isUnknown() and getArm = x.getArm(index)
 }
 
-query predicate getAttr(MatchArmList x, int index, Attr getAttr) {
+query predicate getAttr(MatchArmList x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }

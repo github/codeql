@@ -115,12 +115,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this array expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this array expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this array expression.
@@ -229,12 +229,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this asm expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this asm expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this asm expression.
@@ -287,12 +287,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this await expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this await expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this await expression.
@@ -343,12 +343,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this become expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this become expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this become expression.
@@ -399,12 +399,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this binary expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this binary expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this binary expression.
@@ -475,12 +475,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this block expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this block expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this block expression.
@@ -615,12 +615,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this break expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this break expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this break expression.
@@ -691,12 +691,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this call expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this call expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this call expression.
@@ -741,12 +741,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this cast expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this cast expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this cast expression.
@@ -851,12 +851,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this continue expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this continue expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this continue expression.
@@ -955,12 +955,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this field expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this field expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this field expression.
@@ -1021,12 +1021,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this for expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this for expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this for expression.
@@ -1155,12 +1155,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this format arguments expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this format arguments expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this format arguments expression.
@@ -1248,12 +1248,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this ident pattern (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this ident pattern.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this ident pattern.
@@ -1333,12 +1333,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this if expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this if expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this if expression.
@@ -1429,12 +1429,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this index expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this index expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this index expression.
@@ -1521,12 +1521,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this let expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this let expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this let expression.
@@ -1592,12 +1592,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this let statement (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this let statement.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this let statement.
@@ -1677,12 +1677,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this literal expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this literal expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this literal expression.
@@ -1777,12 +1777,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this loop expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this loop expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this loop expression.
@@ -1845,12 +1845,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this macro call (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this macro call.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this macro call.
@@ -2005,12 +2005,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this match expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this match expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this match expression.
@@ -2080,12 +2080,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this method call expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this method call expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this method call expression.
@@ -2200,12 +2200,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this offset of expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this offset of expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this offset of expression.
@@ -2335,12 +2335,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this parameter base (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this parameter base.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this parameter base.
@@ -2398,12 +2398,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this path expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this path expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this path expression.
@@ -2476,12 +2476,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this prefix expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this prefix expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this prefix expression.
@@ -2543,12 +2543,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this range expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this range expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this range expression.
@@ -2681,12 +2681,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this reference expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this reference expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this reference expression.
@@ -2788,12 +2788,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this rest pattern (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this rest pattern.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this rest pattern.
@@ -2833,12 +2833,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this return expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this return expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this return expression.
@@ -3056,12 +3056,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this try expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this try expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this try expression.
@@ -3108,12 +3108,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this tuple expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this tuple expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this tuple expression.
@@ -3244,12 +3244,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this underscore expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this underscore expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this underscore expression.
@@ -3286,12 +3286,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this while expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this while expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this while expression.
@@ -3357,12 +3357,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this yeet expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this yeet expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this yeet expression.
@@ -3410,12 +3410,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th attr of this yield expression (0-based).
        */
-      Attr getAttr(int index) { result = node.getAttr(index) }
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
 
       /**
        * Gets any of the attrs of this yield expression.
        */
-      Attr getAnAttr() { result = this.getAttr(_) }
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
 
       /**
        * Gets the number of attrs of this yield expression.
