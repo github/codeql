@@ -167,6 +167,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class AnyAttr extends @any_attr, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
    * A list of arguments in a function or method call.
    *
    * For example:
@@ -361,38 +366,6 @@ module Raw {
         result = e.getAssocItem(index - n)
         or
         result = e.getAttr(index - nAssocItem)
-      )
-    )
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * An attribute applied to an item.
-   *
-   * For example:
-   * ```rust
-   * #[derive(Debug)]
-   * //^^^^^^^^^^^^^
-   * struct S;
-   * ```
-   */
-  class Attr extends @attr, AstNode {
-    override string toString() { result = "Attr" }
-
-    /**
-     * Gets the meta of this attr, if it exists.
-     */
-    Meta getMeta() { attr_meta(this, result) }
-  }
-
-  private Element getImmediateChildOfAttr(Attr e, int index) {
-    exists(int n, int nMeta |
-      n = 0 and
-      nMeta = n + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getMeta()
       )
     )
   }
@@ -2837,6 +2810,38 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An attribute applied to an item.
+   *
+   * For example:
+   * ```rust
+   * #[derive(Debug)]
+   * //^^^^^^^^^^^^^
+   * struct S;
+   * ```
+   */
+  class Attr extends @attr, AnyAttr {
+    override string toString() { result = "Attr" }
+
+    /**
+     * Gets the meta of this attr, if it exists.
+     */
+    Meta getMeta() { attr_meta(this, result) }
+  }
+
+  private Element getImmediateChildOfAttr(Attr e, int index) {
+    exists(int n, int nMeta |
+      n = 0 and
+      nMeta = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getMeta()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * An `await` expression. For example:
    * ```rust
    * async {
@@ -3612,6 +3617,15 @@ module Raw {
       )
     )
   }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class DocComment extends @doc_comment, AnyAttr {
+    override string toString() { result = "DocComment" }
+  }
+
+  private Element getImmediateChildOfDocComment(DocComment e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -8095,8 +8109,6 @@ module Raw {
     or
     result = getImmediateChildOfAssocItemList(e, index)
     or
-    result = getImmediateChildOfAttr(e, index)
-    or
     result = getImmediateChildOfExternItemList(e, index)
     or
     result = getImmediateChildOfForBinder(e, index)
@@ -8201,6 +8213,8 @@ module Raw {
     or
     result = getImmediateChildOfAssocTypeArg(e, index)
     or
+    result = getImmediateChildOfAttr(e, index)
+    or
     result = getImmediateChildOfAwaitExpr(e, index)
     or
     result = getImmediateChildOfBecomeExpr(e, index)
@@ -8236,6 +8250,8 @@ module Raw {
     result = getImmediateChildOfContinueExpr(e, index)
     or
     result = getImmediateChildOfDerefPat(e, index)
+    or
+    result = getImmediateChildOfDocComment(e, index)
     or
     result = getImmediateChildOfDynTraitTypeRepr(e, index)
     or

@@ -3,6 +3,7 @@
 /lib/codeql/rust/controlflow/internal/generated/CfgNodes.qll linguist-generated
 /lib/codeql/rust/elements/Abi.qll linguist-generated
 /lib/codeql/rust/elements/Addressable.qll linguist-generated
+/lib/codeql/rust/elements/AnyAttr.qll linguist-generated
 /lib/codeql/rust/elements/ArgList.qll linguist-generated
 /lib/codeql/rust/elements/ArrayExpr.qll linguist-generated
 /lib/codeql/rust/elements/ArrayListExpr.qll linguist-generated
@@ -50,6 +51,7 @@
 /lib/codeql/rust/elements/ContinueExpr.qll linguist-generated
 /lib/codeql/rust/elements/Crate.qll linguist-generated
 /lib/codeql/rust/elements/DerefPat.qll linguist-generated
+/lib/codeql/rust/elements/DocComment.qll linguist-generated
 /lib/codeql/rust/elements/DynTraitTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/Element.qll linguist-generated
 /lib/codeql/rust/elements/Enum.qll linguist-generated
@@ -207,6 +209,7 @@
 /lib/codeql/rust/elements/YieldExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/AnyAttrImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArrayExprInternal.qll linguist-generated
@@ -276,6 +279,8 @@
 /lib/codeql/rust/elements/internal/CrateConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/DerefPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/DerefPatImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/DocCommentConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/DocCommentImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/DynTraitTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/EnumConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ExprImpl.qll linguist-generated
@@ -487,6 +492,7 @@
 /lib/codeql/rust/elements/internal/YieldExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Abi.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Addressable.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/AnyAttr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ArgList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ArrayExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ArrayExprInternal.qll linguist-generated
@@ -535,6 +541,7 @@
 /lib/codeql/rust/elements/internal/generated/ContinueExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Crate.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/DerefPat.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/DocComment.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/DynTraitTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Element.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Enum.qll linguist-generated
@@ -738,6 +745,7 @@
 /test/extractor-tests/generated/ContinueExpr/ContinueExpr.ql linguist-generated
 /test/extractor-tests/generated/Crate/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/DerefPat/DerefPat.ql linguist-generated
+/test/extractor-tests/generated/DocComment/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/DynTraitTypeRepr/DynTraitTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum.ql linguist-generated
 /test/extractor-tests/generated/ExprStmt/ExprStmt.ql linguist-generated

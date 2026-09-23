@@ -10,6 +10,16 @@ use ra_ap_syntax::ast::{
 #[rustfmt::skip]
 use ra_ap_syntax::{AstNode, ast};
 impl Translator<'_> {
+    pub(crate) fn emit_any_attr(
+        &mut self,
+        node: &ast::AnyAttr,
+    ) -> Option<Label<generated::AnyAttr>> {
+        let label = match node {
+            ast::AnyAttr::Attr(inner) => self.emit_attr(inner).map(Into::into),
+            ast::AnyAttr::DocComment(inner) => self.emit_doc_comment(inner).map(Into::into),
+        }?;
+        Some(label)
+    }
     pub(crate) fn emit_asm_operand(
         &mut self,
         node: &ast::AsmOperand,
@@ -946,6 +956,15 @@ impl Translator<'_> {
             id: TrapId::Star,
             pat,
         });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
+    pub(crate) fn emit_doc_comment(
+        &mut self,
+        node: &ast::DocComment,
+    ) -> Option<Label<generated::DocComment>> {
+        let label = self.trap.emit(generated::DocComment { id: TrapId::Star });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)

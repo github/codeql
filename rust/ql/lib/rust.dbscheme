@@ -183,6 +183,7 @@ named_crates(
 @ast_node =
   @abi
 | @addressable
+| @any_attr
 | @arg_list
 | @asm_dir_spec
 | @asm_operand
@@ -191,7 +192,6 @@ named_crates(
 | @asm_piece
 | @asm_reg_spec
 | @assoc_item_list
-| @attr
 | @callable
 | @cfg_predicate
 | @expr
@@ -303,6 +303,11 @@ abi_abi_strings(
 | @variant
 ;
 
+@any_attr =
+  @attr
+| @doc_comment
+;
+
 arg_lists(
   unique int id: @arg_list
 );
@@ -382,16 +387,6 @@ assoc_item_list_attrs(
   int id: @assoc_item_list ref,
   int index: int ref,
   int attr: @attr ref
-);
-
-attrs(
-  unique int id: @attr
-);
-
-#keyset[id]
-attr_meta(
-  int id: @attr ref,
-  int meta: @meta ref
 );
 
 @callable =
@@ -1479,6 +1474,16 @@ assoc_type_arg_type_bound_lists(
   int type_bound_list: @type_bound_list ref
 );
 
+attrs(
+  unique int id: @attr
+);
+
+#keyset[id]
+attr_meta(
+  int id: @attr ref,
+  int meta: @meta ref
+);
+
 await_exprs(
   unique int id: @await_expr
 );
@@ -1800,6 +1805,10 @@ deref_pats(
 deref_pat_pats(
   int id: @deref_pat ref,
   int pat: @pat ref
+);
+
+doc_comments(
+  unique int id: @doc_comment
 );
 
 dyn_trait_type_reprs(

@@ -5,6 +5,9 @@ from .prelude import *
 class TypeItem(AstNode, ):
     pass
 
+class AnyAttr(AstNode, ):
+    pass
+
 class AsmOperand(AstNode, ):
     pass
 
@@ -124,7 +127,7 @@ class AssocTypeArg(GenericArg, ):
     type_repr: optional["TypeRepr"] | child
     type_bound_list: optional["TypeBoundList"] | child
 
-class Attr(AstNode, ):
+class Attr(AnyAttr, ):
     meta: optional["Meta"] | child
 
 class AwaitExpr(Expr, ):
@@ -226,6 +229,9 @@ class ContinueExpr(Expr, ):
 
 class DerefPat(Pat, ):
     pat: optional["Pat"] | child
+
+class DocComment(AnyAttr, ):
+    pass
 
 class DynTraitTypeRepr(TypeRepr, ):
     type_bound_list: optional["TypeBoundList"] | child

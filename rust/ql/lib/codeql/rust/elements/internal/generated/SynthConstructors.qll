@@ -45,6 +45,7 @@ import codeql.rust.elements.internal.ConstParamConstructor
 import codeql.rust.elements.internal.ContinueExprConstructor
 import codeql.rust.elements.internal.CrateConstructor
 import codeql.rust.elements.internal.DerefPatConstructor
+import codeql.rust.elements.internal.DocCommentConstructor
 import codeql.rust.elements.internal.DynTraitTypeReprConstructor
 import codeql.rust.elements.internal.EnumConstructor
 import codeql.rust.elements.internal.ExprStmtConstructor
