@@ -93,8 +93,28 @@ predicate allowlist(Stmt s) {
   exists(getPreviousStmt(s).(IfStmt).getCondition().getBoolValue())
 }
 
+/** Holds if `s` is part of an allowlisted prefix of a run of unreachable statements. */
+predicate isInAllowlistedUnreachablePrefix(Stmt s) {
+  allowlist(s) and
+  (
+    firstUnreachableStmt(s)
+    or
+    isInAllowlistedUnreachablePrefix(getPreviousStmt(s))
+  )
+}
+
+/** Holds if `s` is the first non-allowlisted statement in a run of unreachable statements. */
+predicate firstNonAllowlistedUnreachableStmt(Stmt s) {
+  not isReachable(s) and
+  not s instanceof EmptyStmt and
+  not allowlist(s) and
+  (
+    firstUnreachableStmt(s)
+    or
+    isInAllowlistedUnreachablePrefix(getPreviousStmt(s))
+  )
+}
+
 from Stmt s
-where
-  firstUnreachableStmt(s) and
-  not allowlist(s)
+where firstNonAllowlistedUnreachableStmt(s)
 select s, "This statement is unreachable."
