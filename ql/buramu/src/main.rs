@@ -24,7 +24,7 @@ fn test_get_filename_and_lineno() {
 
 fn get_files_with_deprecations() -> FileDeprecations {
     let output = Command::new("git")
-        .args(&[
+        .args([
             "grep",
             "-n",
             "-E",
