@@ -217,3 +217,14 @@ DataFlow::Node getASink(string kind, string provenance) {
     result = getCallInput(call, input)
   )
 }
+
+module Public {
+  /** Provides access to data from library models. */
+  module Models {
+    /** Holds if `node` is a source of the given `kind`. */
+    predicate isSource(DataFlow::Node node, string kind) { node = getASource(kind, _) }
+
+    /** Holds if `node` is a sink of the given `kind`. */
+    predicate isSink(DataFlow::Node node, string kind) { node = getASink(kind, _) }
+  }
+}

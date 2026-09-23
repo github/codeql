@@ -1,0 +1,15 @@
+isSink
+| test.swift:8:28:8:33 | string | path-injection |
+| test.swift:10:25:10:30 | string | path-injection |
+| test.swift:13:25:13:30 | string | path-injection |
+| test.swift:17:17:17:22 | string | path-injection |
+| test.swift:20:5:20:16 | [receiver arg] ... .md5(...) | weak-hash-input-MD5 |
+| test.swift:22:20:22:25 | string | regex-use |
+| test.swift:23:20:23:25 | string | regex-use |
+isSource
+| test.swift:4:5:4:27 | String(...) | remote |
+| test.swift:5:5:5:44 | String(...) | remote |
+| test.swift:6:5:6:48 | String(...) | remote |
+| test.swift:8:5:8:34 | String(...) | local |
+| test.swift:9:5:11:24 | String(...) | local |
+| test.swift:12:5:14:28 | String(...) | local |
