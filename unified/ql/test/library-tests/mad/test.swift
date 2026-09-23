@@ -21,4 +21,13 @@ func test(url: URL, string: String) {
 
     _ = try! Regex(string)  // $ isSink=regex-use
     _ = try! Regex(string, as: Substring.self)  // $ isSink=regex-use
+
+    class TestTextInput: UITextInput {
+        func shouldChangeText(
+            in range: UITextRange,
+            replacementText text: String  // $ MISSING: isSource=local // parameters not detected yet
+        ) -> Bool {
+            return true
+        }
+    }
 }
