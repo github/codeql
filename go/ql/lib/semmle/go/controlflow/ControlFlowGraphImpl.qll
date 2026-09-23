@@ -664,6 +664,9 @@ module CfgImpl {
     /** Helper: blank identifier check */
     private predicate notBlankIdent(Go::Expr e) { not e instanceof Go::BlankIdent }
 
+    /** Holds if `e` is invoked in a newly started goroutine. */
+    private predicate isGoStmtCall(Ast::AstNode e) { e = any(Go::GoStmt s).getCall() }
+
     /** Helper: implicit field selection for promoted selectors */
     additional predicate implicitFieldSelection(Ast::AstNode e, int index, Go::Field implicitField) {
       exists(Go::StructType baseType, Go::PromotedField child, int implicitFieldDepth |
@@ -705,6 +708,7 @@ module CfgImpl {
       Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
     ) {
       ast instanceof Go::CallExpr and
+      not isGoStmtCall(ast) and
       (
         not exists(ast.(Go::CallExpr).getTarget()) or
         ast.(Go::CallExpr).getTarget().mayPanic()
@@ -728,6 +732,7 @@ module CfgImpl {
       // exception completion so that the shared library's default In->After step
       // is suppressed.
       ast instanceof Go::CallExpr and
+      not isGoStmtCall(ast) and
       exists(Go::Function target | target = ast.(Go::CallExpr).getTarget() |
         target.mustPanic() or target.mustNotReturnNormally()
       ) and
@@ -849,6 +854,7 @@ module CfgImpl {
     private predicate mayPanic(Ast::AstNode ast) {
       ast instanceof Go::CallExpr and
       not ast = any(Go::DeferStmt s).getCall() and
+      not isGoStmtCall(ast) and
       (not exists(ast.(Go::CallExpr).getTarget()) or ast.(Go::CallExpr).getTarget().mayPanic()) and
       not exists(Go::Function target | target = ast.(Go::CallExpr).getTarget() |
         target.mustNotReturnNormally() and not target.mustPanic()

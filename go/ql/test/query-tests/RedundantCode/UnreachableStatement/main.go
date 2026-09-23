@@ -178,7 +178,7 @@ func test20(x *recursive) []int {
 
 func test21() {
 	go panic("panic in another goroutine")
-	select {} // $ SPURIOUS: Alert // reachable after starting the goroutine
+	select {} // OK: reachable after starting the goroutine
 }
 
 func main() {}
