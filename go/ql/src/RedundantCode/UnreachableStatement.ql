@@ -37,13 +37,22 @@ Stmt getPreviousStmt(Stmt s) {
  */
 predicate firstUnreachableStmt(Stmt s) {
   not isReachable(s) and
-  not s instanceof EmptyStmt and
   (
     // a statement whose preceding statement in the same list is reachable
     isReachable(getPreviousStmt(s))
     or
     // the post statement of a `for` loop whose body is entered
     exists(ForStmt f | s = f.getPost() and isReachable(f.getBody().getAStmt()))
+  )
+}
+
+/** Holds if `s` is in a run of unreachable statements following a constant condition. */
+predicate isInUnreachableRunAfterConstantCondition(Stmt s) {
+  not isReachable(s) and
+  (
+    exists(getPreviousStmt(s).(IfStmt).getCondition().getBoolValue())
+    or
+    isInUnreachableRunAfterConstantCondition(getPreviousStmt(s))
   )
 }
 
@@ -87,14 +96,32 @@ predicate allowlist(Stmt s) {
   exists(ReturnStmt ret | ret = s |
     forall(Expr retval | retval = ret.getAnExpr() | isAllowedReturnValue(retval))
   )
-  or
-  // statements deliberately made unreachable by a constant condition, such as the code
-  // following `if true { return }`
-  exists(getPreviousStmt(s).(IfStmt).getCondition().getBoolValue())
+}
+
+/** Holds if `s` is part of a non-reportable prefix of a run of unreachable statements. */
+predicate isInNonReportableUnreachablePrefix(Stmt s) {
+  (allowlist(s) or s instanceof EmptyStmt) and
+  (
+    firstUnreachableStmt(s)
+    or
+    isInNonReportableUnreachablePrefix(getPreviousStmt(s))
+  )
+}
+
+/** Holds if `s` is the first non-allowlisted statement in a run of unreachable statements. */
+predicate firstNonAllowlistedUnreachableStmt(Stmt s) {
+  not isReachable(s) and
+  not s instanceof EmptyStmt and
+  not allowlist(s) and
+  (
+    firstUnreachableStmt(s)
+    or
+    isInNonReportableUnreachablePrefix(getPreviousStmt(s))
+  )
 }
 
 from Stmt s
 where
-  firstUnreachableStmt(s) and
-  not allowlist(s)
+  firstNonAllowlistedUnreachableStmt(s) and
+  not isInUnreachableRunAfterConstantCondition(s)
 select s, "This statement is unreachable."
