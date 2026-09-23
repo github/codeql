@@ -1,23 +1,15 @@
 use proc_macro2::{Delimiter, Ident, Literal, Span, TokenStream, TokenTree};
 use quote::quote;
 use std::iter::Peekable;
-use std::sync::atomic::{AtomicUsize, Ordering};
 use syn::{
-    Expr, Lifetime, Token,
     parse::{Parse, ParseStream},
+    Expr, Token,
 };
+
+use crate::ast::{Content, Field, Node, Template};
 
 type Tokens = Peekable<proc_macro2::token_stream::IntoIter>;
 type Result<T> = std::result::Result<T, syn::Error>;
-
-/// Mints the block label a fallible field breaks out of. Labels must be unique
-/// along a nesting chain, since a `?` nested inside another `?` has to break out
-/// of the inner field only.
-fn fresh_fallible_label() -> Lifetime {
-    static COUNTER: AtomicUsize = AtomicUsize::new(0);
-    let n = COUNTER.fetch_add(1, Ordering::Relaxed);
-    Lifetime::new(&format!("'__yeast_field_{n}"), Span::call_site())
-}
 
 /// Rejects a `?` in a position where there is no field for it to leave unset.
 ///
@@ -330,7 +322,7 @@ fn parse_query_list(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
 }
 
 // ---------------------------------------------------------------------------
-// tree! / trees! parsing — direct code generation against BuildCtx
+// tree! / trees! parsing
 // ---------------------------------------------------------------------------
 
 const IMPLICIT_CTX: &str = "ctx";
@@ -338,9 +330,7 @@ const IMPLICIT_CTX: &str = "ctx";
 /// Parse `tree!((template))` — returns single `Id`.
 pub fn parse_tree_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
-    let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
-
-    let first = parse_direct_node(&mut tokens, &ctx, None)?;
+    let template = parse_template(&mut tokens)?;
 
     reject_stray_optional(&mut tokens, false)?;
     if let Some(tok) = tokens.next() {
@@ -350,43 +340,35 @@ pub fn parse_tree_top(input: TokenStream) -> Result<TokenStream> {
         ));
     }
 
-    Ok(quote! { { #first } })
+    let template = template.lower_root();
+    Ok(quote! { { #template } })
 }
 
 /// Parse `trees!(...)` — returns `Vec<Id>`.
 pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
-    let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
-    let items = parse_direct_list(&mut tokens, &ctx)?;
+    let templates = parse_template_list(&mut tokens)?;
     if let Some(tok) = tokens.next() {
         return Err(syn::Error::new_spanned(
             tok,
             "unexpected token after trees! template",
         ));
     }
-    Ok(quote! {
-        {
-            let mut __nodes: Vec<yeast::Id> = Vec::new();
-            #(#items)*
-            __nodes
-        }
-    })
+    Ok(Template::lower_list(&templates))
 }
 
 pub fn parse_tree_at_top(input: TokenStream) -> Result<TokenStream> {
-    let LocatedTreeInput {
-        source,
-        template,
-    } = syn::parse2(input)?;
+    let LocatedTreeInput { source, template } = syn::parse2(input)?;
     let mut tokens = template.into_iter().peekable();
     let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
-    let node = parse_direct_node(&mut tokens, &ctx, None)?;
+    let template = parse_template(&mut tokens)?;
     if let Some(tok) = tokens.next() {
         return Err(syn::Error::new_spanned(
             tok,
             "unexpected token after tree_at! template",
         ));
     }
+    let node = template.lower_root();
 
     Ok(quote! {
         {
@@ -408,13 +390,14 @@ pub fn parse_tree_spanning_top(input: TokenStream) -> Result<TokenStream> {
     } = syn::parse2(input)?;
     let mut tokens = template.into_iter().peekable();
     let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
-    let node = parse_direct_node(&mut tokens, &ctx, None)?;
+    let template = parse_template(&mut tokens)?;
     if let Some(tok) = tokens.next() {
         return Err(syn::Error::new_spanned(
             tok,
             "unexpected token after tree_spanning! template",
         ));
     }
+    let node = template.lower_root();
 
     Ok(quote! {
         {
@@ -443,27 +426,15 @@ impl Parse for LocatedTreeInput {
     }
 }
 
-/// Parse a single node template and generate code that returns an `Id`.
-/// Handles: `(kind fields... children...)` and `{expr}`.
-///
-/// `scope` is the enclosing fallible field's label, if any: inside one, a
-/// `#{expr}` that interpolates an absent value breaks out to it, leaving that
-/// field unset. See [`parse_direct_node_inner`].
-fn parse_direct_node(
-    tokens: &mut Tokens,
-    ctx: &Ident,
-    scope: Option<&Lifetime>,
-) -> Result<TokenStream> {
+fn parse_template(tokens: &mut Tokens) -> Result<Template> {
     match tokens.peek() {
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => {
             let group = expect_group(tokens, Delimiter::Brace)?;
-            let expr = group.stream();
-            Ok(quote! { ::std::convert::Into::<yeast::Id>::into({ #expr }) })
+            Ok(Template::Splice(parse_block(group)?))
         }
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Parenthesis => {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
-            let mut inner = group.stream().into_iter().peekable();
-            parse_direct_node_inner(&mut inner, ctx, scope)
+            Ok(Template::Node(parse_node(group)?))
         }
         Some(tok) => Err(syn::Error::new_spanned(
             tok.clone(),
@@ -476,197 +447,89 @@ fn parse_direct_node(
     }
 }
 
-/// Parse the inside of a parenthesized node: `kind fields... children...`
-/// or `kind "literal"`.
-fn parse_direct_node_inner(
-    tokens: &mut Tokens,
-    ctx: &Ident,
-    scope: Option<&Lifetime>,
-) -> Result<TokenStream> {
-    let kind = expect_ident(tokens, "expected node kind")?;
-    let kind_str = kind.to_string();
+fn parse_node(group: proc_macro2::Group) -> Result<Node> {
+    let mut tokens = group.stream().into_iter().peekable();
+    let kind = expect_ident(&mut tokens, "expected node kind")?;
 
-    // Check for (kind "literal")
-    if peek_is_literal(tokens) {
-        let lit = expect_literal(tokens)?;
-        return Ok(quote! { #ctx.literal(#kind_str, #lit) });
-    }
+    let content = if peek_is_literal(&mut tokens) {
+        Some(Content::Static(expect_literal(&mut tokens)?))
+    } else if peek_is_hash(&mut tokens) {
+        tokens.next();
+        let group = expect_group(&mut tokens, Delimiter::Brace)?;
+        Some(Content::Computed(parse_block(group)?))
+    } else {
+        None
+    };
 
-    // Check for (kind #{expr}) — computed literal, expr converted via YeastDisplay
-    if peek_is_hash(tokens) {
-        tokens.next(); // consume #
-        let group = expect_group(tokens, Delimiter::Brace)?;
-        let expr = group.stream();
-
-        // Inside a fallible field the value is routed through `MaybeYeastValue`,
-        // so an absent one abandons the whole surrounding node and leaves the
-        // field unset. Outside one, `YeastDisplay` is used directly, which is
-        // what makes interpolating an `Option` without a `?` a compile error.
-        if let Some(label) = scope {
-            return Ok(quote! {
-                {
-                    let __expr = { #expr };
-                    let ::std::option::Option::Some(__value_ref) =
-                        yeast::MaybeYeastValue::maybe_yeast_value(&__expr)
-                    else {
-                        break #label ::std::option::Option::None;
-                    };
-                    let __value = yeast::YeastDisplay::yeast_to_string(__value_ref, &*#ctx.ast);
-                    let __source_range =
-                        yeast::YeastSourceRange::yeast_source_range(__value_ref, &*#ctx.ast);
-                    #ctx.literal_with_source_range(#kind_str, &__value, __source_range)
-                }
-            });
+    let mut fields = Vec::new();
+    while peek_is_field(&mut tokens) {
+        let name = expect_ident(&mut tokens, "expected field name")?;
+        if content.is_some() {
+            return Err(syn::Error::new_spanned(
+                name,
+                "literal nodes cannot have named fields",
+            ));
         }
-
-        return Ok(quote! {
-            {
-                let __expr = { #expr };
-                let __value = yeast::YeastDisplay::yeast_to_string(&__expr, &*#ctx.ast);
-                let __source_range = yeast::YeastSourceRange::yeast_source_range(&__expr, &*#ctx.ast);
-                #ctx.literal_with_source_range(#kind_str, &__value, __source_range)
-            }
+        expect_punct(&mut tokens, ':', "expected `:` after field name")?;
+        let value = parse_template(&mut tokens)?;
+        let optional = if matches!(value, Template::Splice(_)) {
+            reject_stray_optional(&mut tokens, true)?;
+            false
+        } else if peek_is_punct(&mut tokens, '?') {
+            tokens.next();
+            true
+        } else {
+            false
+        };
+        fields.push(Field::Named {
+            name,
+            value,
+            optional,
         });
     }
 
-    // Parse named fields
-    let mut stmts = Vec::new();
-    let mut field_args = Vec::new();
-    let mut field_counter = 0usize;
-
-    // Named fields — compute each value into a temp, then reference it
-    while peek_is_field(tokens) {
-        let field_name = expect_ident(tokens, "expected field name")?;
-        let field_str = field_name
-            .to_string()
-            .strip_prefix("r#")
-            .unwrap_or(&field_name.to_string())
-            .to_string();
-        expect_punct(tokens, ':', "expected `:` after field name")?;
-        let temp = Ident::new(
-            &format!("__field_{field_str}_{field_counter}"),
-            Span::call_site(),
-        );
-        field_counter += 1;
-
-        // Plain `field: {expr}` — trait-dispatched extend.
-        if peek_is_group(tokens, Delimiter::Brace) {
-            let group = expect_group(tokens, Delimiter::Brace)?;
-            reject_stray_optional(tokens, true)?;
-            let expr = group.stream();
-            stmts.push(quote! {
-                let mut #temp: Vec<yeast::Id> = Vec::new();
-                yeast::IntoFieldIds::extend_into({ #expr }, &mut #temp);
-            });
-            // An empty `{expr}` means the field is absent — skip it
-            // entirely rather than emitting an empty named field.
-            field_args.push(quote! {
-                if !#temp.is_empty() { __fields.push((#field_str, #temp)); }
-            });
-            continue;
-        }
-
-        // `field: (node)`, optionally suffixed with `?` to make the field
-        // fallible: if a `#{expr}` anywhere beneath it interpolates an absent
-        // value, the whole subtree is abandoned and the field is left unset.
-        if peek_is_group(tokens, Delimiter::Parenthesis) {
-            let group = expect_group(tokens, Delimiter::Parenthesis)?;
-            let optional = peek_is_punct(tokens, '?');
-            if optional {
-                tokens.next();
-            }
-
-            let mut inner = group.stream().into_iter().peekable();
-            if optional {
-                let label = fresh_fallible_label();
-                let value = parse_direct_node_inner(&mut inner, ctx, Some(&label))?;
-                // The label goes unused when nothing beneath the `?` can
-                // actually fail, which is not worth diagnosing: whether a given
-                // `#{expr}` is optional is a property of its type, which is not
-                // visible here.
-                stmts.push(quote! {
-                    #[allow(unused_labels)]
-                    let #temp: ::std::option::Option<yeast::Id> = #label: {
-                        ::std::option::Option::Some(#value)
-                    };
-                });
-                field_args.push(quote! {
-                    if let ::std::option::Option::Some(__id) = #temp {
-                        __fields.push((#field_str, vec![__id]));
-                    }
-                });
-            } else {
-                // No `?` of its own, so failures beneath it belong to whichever
-                // fallible field encloses this one, if any.
-                let value = parse_direct_node_inner(&mut inner, ctx, scope)?;
-                stmts.push(quote! { let #temp: yeast::Id = #value; });
-                field_args.push(quote! { __fields.push((#field_str, vec![#temp])); });
-            }
-            continue;
-        }
-
-        // Neither form matched; delegate for a consistent error message.
-        let value = parse_direct_node(tokens, ctx, scope)?;
-        stmts.push(quote! { let #temp: yeast::Id = #value; });
-        field_args.push(quote! { __fields.push((#field_str, vec![#temp])); });
-    }
-
-    // After all named fields, no other tokens are allowed.
-    // Output templates require all children to be in named fields.
-    if let Some(tok) = tokens.peek() {
+    if let Some(tok) = tokens.next() {
         return Err(syn::Error::new_spanned(
-            tok.clone(),
+            tok,
             "expected named field (`name:`) or end of node template; \
              output templates do not support unnamed children",
         ));
     }
 
-    Ok(quote! {
-        {
-            #(#stmts)*
-            let mut __fields: Vec<(&str, Vec<yeast::Id>)> = Vec::new();
-            #(#field_args)*
-            #ctx.node(#kind_str, __fields)
-        }
+    Ok(Node {
+        kind,
+        content,
+        fields,
     })
 }
 
-/// Parse the top-level list of a `trees!` template.
-/// Each item is a node template or `{expr}` splice.
-fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream>> {
-    let mut items = Vec::new();
+fn parse_template_list(tokens: &mut Tokens) -> Result<Vec<Template>> {
+    let mut templates = Vec::new();
     while tokens.peek().is_some() {
         if peek_is_group(tokens, Delimiter::Parenthesis) {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
-            let mut inner = group.stream().into_iter().peekable();
-
-            // Empty `()` represents an empty sequence — emit nothing.
-            if inner.peek().is_none() {
+            if group.stream().is_empty() {
                 continue;
             }
-
-            // Regular node
-            let node = parse_direct_node_inner(&mut inner, ctx, None)?;
+            templates.push(Template::Node(parse_node(group)?));
             reject_stray_optional(tokens, false)?;
-            items.push(quote! { __nodes.push(#node); });
             continue;
         }
 
-        // `{expr}` — extend `__nodes` via `IntoFieldIds`, which handles
-        // single ids and iterables uniformly.
         if peek_is_group(tokens, Delimiter::Brace) {
             let group = expect_group(tokens, Delimiter::Brace)?;
+            templates.push(Template::Splice(parse_block(group)?));
             reject_stray_optional(tokens, true)?;
-            let expr = group.stream();
-            items.push(quote! {
-                yeast::IntoFieldIds::extend_into({ #expr }, &mut __nodes);
-            });
             continue;
         }
 
         break;
     }
-    Ok(items)
+    Ok(templates)
+}
+
+fn parse_block(group: proc_macro2::Group) -> Result<syn::Block> {
+    syn::parse2(TokenStream::from(TokenTree::Group(group)))
 }
 
 // ---------------------------------------------------------------------------
@@ -933,7 +796,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
     //      Static-analysis-ready: the annotation declares the output
     //      kind and multiplicity in the schema's own vocabulary.
     //   2. anything else — full template form (`(kind …)` or bare
-    //      `{ … }` splice via `parse_direct_list`).
+    //      `{ … }` splice).
     let annotation = try_consume_return_annotation(&mut tokens)?;
 
     let transform_body = if let Some(annotation) = annotation {
@@ -991,7 +854,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
         }
 
         // Full template form
-        let transform_items = parse_direct_list(&mut tokens, &ctx_ident)?;
+        let templates = parse_template_list(&mut tokens)?;
 
         if let Some(tok) = tokens.next() {
             return Err(syn::Error::new_spanned(
@@ -1000,11 +863,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
             ));
         }
 
-        quote! {
-            let mut __nodes: Vec<yeast::Id> = Vec::new();
-            #(#transform_items)*
-            __nodes
-        }
+        Template::lower_list(&templates)
     };
 
     let guard = guard.unwrap_or_else(|| syn::parse_quote!(true));
@@ -1433,6 +1292,77 @@ fn maybe_wrap_list_capture(tokens: &mut Tokens, elem: TokenStream) -> Result<Tok
         })
     } else {
         Ok(elem)
+    }
+}
+
+#[cfg(test)]
+mod template_tests {
+    use super::*;
+    use quote::quote;
+
+    #[test]
+    fn parses_node_fields_into_template_ast() {
+        let mut tokens = quote! {
+            (call
+                argument: {args}
+                method: (identifier #{name})?)
+        }
+        .into_iter()
+        .peekable();
+
+        let template = parse_template(&mut tokens).unwrap();
+        assert!(tokens.next().is_none());
+
+        let Template::Node(node) = template else {
+            panic!("expected node template");
+        };
+        assert_eq!(node.kind, "call");
+        assert!(node.content.is_none());
+        assert_eq!(node.fields.len(), 2);
+
+        let Field::Named {
+            name,
+            value,
+            optional,
+        } = &node.fields[0];
+        assert_eq!(name, "argument");
+        assert!(matches!(value, Template::Splice(_)));
+        assert!(!optional);
+
+        let Field::Named {
+            name,
+            value,
+            optional,
+        } = &node.fields[1];
+        assert_eq!(name, "method");
+        assert!(*optional);
+        let Template::Node(node) = value else {
+            panic!("expected nested node template");
+        };
+        assert_eq!(node.kind, "identifier");
+        assert!(matches!(node.content, Some(Content::Computed(_))));
+    }
+
+    #[test]
+    fn parses_template_lists_and_skips_empty_nodes() {
+        let mut tokens = quote! {
+            (identifier "name")
+            {extra}
+            ()
+        }
+        .into_iter()
+        .peekable();
+
+        let templates = parse_template_list(&mut tokens).unwrap();
+        assert!(tokens.next().is_none());
+        assert_eq!(templates.len(), 2);
+
+        let Template::Node(node) = &templates[0] else {
+            panic!("expected node template");
+        };
+        assert_eq!(node.kind, "identifier");
+        assert!(matches!(node.content, Some(Content::Static(_))));
+        assert!(matches!(templates[1], Template::Splice(_)));
     }
 }
 
