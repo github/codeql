@@ -5,6 +5,7 @@ overlay[local?]
 module;
 
 private import codeql.files.FileSystem
+private import codeql.unified.internal.NameBinding as NameBinding
 
 module Unified {
   private import Ast::Unified as G
@@ -145,6 +146,13 @@ module Unified {
   class ClassLikeDeclaration extends G::ClassLikeDeclaration {
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
+
+    /** Gets a direct base class of this class. */
+    ClassLikeDeclaration getABaseClass() {
+      result.getNameNode() =
+        NameBinding::getStaticBindingTarget(NameBinding::getIdentifierFromRef(this.getABaseType()
+                .getType()))
+    }
   }
 
   class ConstructorDeclaration extends G::ConstructorDeclaration {

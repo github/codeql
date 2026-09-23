@@ -13,3 +13,4 @@ isSource
 | test.swift:8:5:8:34 | String(...) | local |
 | test.swift:9:5:11:24 | String(...) | local |
 | test.swift:12:5:14:28 | String(...) | local |
+| test.swift:28:29:28:32 | text | local |

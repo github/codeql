@@ -25,7 +25,7 @@ func test(url: URL, string: String) {
     class TestTextInput: UITextInput {
         func shouldChangeText(
             in range: UITextRange,
-            replacementText text: String  // $ MISSING: isSource=local // parameters not detected yet
+            replacementText text: String  // $ isSource=local // parameters not detected yet
         ) -> Bool {
             return true
         }

@@ -68,6 +68,46 @@ private predicate callSelector(CallExpr call, string name, string argLabels) {
   argLabels = getArgLabelsFromCall(call)
 }
 
+private import codeql.unified.internal.NameBinding as NameBinding
+
+private predicate isSubclassOfType(ClassLikeDeclaration cls, string typeName) {
+  typeName = any(Selector s).getTypeString() and
+  (
+    getNameFromExpr(cls.getABaseType().getType()) = typeName
+    or
+    isSubclassOfType(cls.getABaseClass(), typeName)
+  )
+}
+
+private string getArgLabelsFromCallable(Callable callable) {
+  result =
+    concat(Parameter param, string name, int group |
+      param.getParent() = callable and
+      (
+        param.isPositional() and
+        name = "_" and
+        group = 0
+        or
+        name = param.getExternalName() and
+        group = 1
+      )
+    |
+      name + ":" order by group, name
+    )
+}
+
+pragma[nomagic]
+private predicate callableSelector(
+  FunctionDeclaration callable, string type, string name, string argLabels
+) {
+  name = callable.getName() and
+  argLabels = getArgLabelsFromCallable(callable) and
+  exists(ClassLikeDeclaration cls |
+    callable = cls.getAMember() and
+    isSubclassOfType(cls, type)
+  )
+}
+
 private newtype TSelector =
   MkSelector(string type, boolean subtypes, string name, string argLabels, string argTypes) {
     exists(string rawName |
@@ -106,7 +146,7 @@ private class Selector extends TSelector {
   }
 
   /** Holds if `name,argLabels` should be used to join with `callSelector`. */
-  private predicate effectiveSelector(string name, string argLabels) {
+  private predicate effectiveCallSelector(string name, string argLabels) {
     this = MkSelector(_, _, name, argLabels, _) and
     name != "init"
     or
@@ -120,8 +160,15 @@ private class Selector extends TSelector {
 
   predicate matchesCall(CallExpr call) {
     exists(string name, string argLabels |
-      this.effectiveSelector(name, argLabels) and
+      this.effectiveCallSelector(name, argLabels) and
       callSelector(call, name, argLabels)
+    )
+  }
+
+  predicate matchesCallable(Callable callable) {
+    exists(string type, string name, string argLabels |
+      callableSelector(callable, type, name, argLabels) and
+      this = MkSelector(type, true, name, argLabels, _)
     )
   }
 }
@@ -144,8 +191,8 @@ private import AccessPathOutput
  * Gets the input to `call` specified by `token`. Only singleton access paths are supported.
  */
 bindingset[call, token]
-private DataFlow::Node getCallInput(CallExpr call, AccessPathToken token) {
-  token.getName() = ["Parameter", "Argument"] and
+private DataFlow::Node getSinkFromCall(CallExpr call, AccessPathToken token) {
+  token.getName() = "Argument" and
   exists(Argument arg |
     arg = call.getAnArgument() and
     result.asExpr() = arg.getValue()
@@ -155,7 +202,7 @@ private DataFlow::Node getCallInput(CallExpr call, AccessPathToken token) {
     arg.getName() + ":" = token.getAnArgument()
   )
   or
-  token = ["Parameter[self]", "Argument[self]"] and
+  token = "Argument[self]" and
   result.isReceiverArgument(call)
 }
 
@@ -165,11 +212,39 @@ private import codeql.unified.internal.dataflow.AllDataFlow
  * Gets the output from `call` specified by `token`. Only singleton access paths are supported.
  */
 bindingset[call, token]
-private DataFlow::Node getCallOutput(CallExpr call, AccessPathToken token) {
+private DataFlow::Node getSourceFromCall(CallExpr call, AccessPathToken token) {
   token = "ReturnValue" and
   result.asExpr() = call
   or
-  result = getPostUpdateNode(getCallInput(call, token))
+  result = getPostUpdateNode(getSinkFromCall(call, token))
+}
+
+/**
+ * Gets the sink from `callable` specified by `token`. Only singleton access paths are supported.
+ */
+bindingset[callable, token]
+private DataFlow::Node getSinkFromCallable(Callable callable, AccessPathToken token) {
+  token = "ReturnValue" and
+  result.asExpr() = any(ReturnExpr r | r.getEnclosingCallable() = callable).getValue() // TODO: expose canonical return node in data flow
+}
+
+/**
+ * Gets the source from `callable` specified by `token`. Only singleton access paths are supported.
+ */
+bindingset[callable, token]
+private DataFlow::Node getSourceFromCallable(Callable callable, AccessPathToken token) {
+  token.getName() = "Parameter" and
+  exists(Parameter param |
+    param.getParent() = callable and
+    result.asExpr() = param.getPattern()
+  |
+    param.getPositionalIndex() = parseIntUnbounded(token.getAnArgument())
+    or
+    param.getExternalName() + ":" = token.getAnArgument()
+  )
+  or
+  token = "Parameter[self]" and
+  result.isReceiverParameter(callable)
 }
 
 private predicate normalizedSourceModel(
@@ -200,10 +275,18 @@ private predicate normalizedSinkModel(
  * Gets a flow source with the given `kind` and `provenance`.
  */
 DataFlow::Node getASource(string kind, string provenance) {
-  exists(CallExpr call, Selector selector, AccessPath output |
-    normalizedSourceModel(selector, output, kind, provenance) and
-    selector.matchesCall(call) and
-    result = getCallOutput(call, output)
+  exists(Selector selector, AccessPath output |
+    normalizedSourceModel(selector, output, kind, provenance)
+  |
+    exists(CallExpr call |
+      selector.matchesCall(call) and
+      result = getSourceFromCall(call, output)
+    )
+    or
+    exists(Callable callable |
+      selector.matchesCallable(callable) and
+      result = getSourceFromCallable(callable, output)
+    )
   )
 }
 
@@ -211,10 +294,18 @@ DataFlow::Node getASource(string kind, string provenance) {
  * Gets a sink with the given `kind` and `provenance`.
  */
 DataFlow::Node getASink(string kind, string provenance) {
-  exists(CallExpr call, Selector selector, AccessPath input |
-    normalizedSinkModel(selector, input, kind, provenance) and
-    selector.matchesCall(call) and
-    result = getCallInput(call, input)
+  exists(Selector selector, AccessPath input |
+    normalizedSinkModel(selector, input, kind, provenance)
+  |
+    exists(CallExpr call |
+      selector.matchesCall(call) and
+      result = getSinkFromCall(call, input)
+    )
+    or
+    exists(Callable callable |
+      selector.matchesCallable(callable) and
+      result = getSinkFromCallable(callable, input)
+    )
   )
 }
 
