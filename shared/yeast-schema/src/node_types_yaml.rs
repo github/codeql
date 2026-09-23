@@ -205,11 +205,11 @@ pub fn convert(yaml_input: &str) -> Result<String, String> {
                 "types": types,
             });
 
-            if spec.name.is_none() {
+            if let Some(name) = spec.name {
+                json_fields.insert(name, field_info);
+            } else {
                 // $children
                 json_children = Some(field_info);
-            } else {
-                json_fields.insert(spec.name.unwrap(), field_info);
             }
         }
 
