@@ -1,8 +1,8 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 use crate::captures::Captures;
 use crate::tree_builder::FreshScope;
-use crate::{Ast, FieldId, Id, NodeContent, Range, TranslatorHandle};
+use crate::{Ast, FieldId, Id, KindId, NodeContent, Range, TranslatorHandle};
 
 /// Context for building new AST nodes during a transformation.
 ///
@@ -33,13 +33,24 @@ pub struct BuildCtx<'a, C: 'a = ()> {
     pub ast: &'a mut Ast,
     pub captures: &'a Captures,
     pub fresh: &'a FreshScope,
-    /// Source range of the matched node, inherited by synthetic nodes.
+    /// Source range of the node matched by the current rule.
+    ///
+    /// The `rule!` macro applies this range to locally-created result roots
+    /// after the transform completes. Nested synthetic nodes derive their
+    /// ranges from their children, falling back to an empty range at this
+    /// range's start.
     pub source_range: Option<Range>,
     /// User-supplied context, accessible directly via `ctx.field` (via Deref).
     pub user_ctx: &'a mut C,
     /// Optional translator handle, populated when the context is built by
     /// the framework's rule driver. None when the context is built by hand.
     pub(crate) translator: Option<TranslatorHandle<'a, C>>,
+    /// Nodes built directly through this context without an explicit source
+    /// range in either their content or constructor argument. Recursive
+    /// translations use their own context and therefore do not contribute to
+    /// this set. Membership checks identify result roots to widen, while
+    /// removals exclude nodes that are later assigned an explicit range.
+    created_nodes_without_source_range: BTreeSet<Id>,
 }
 
 impl<'a, C> BuildCtx<'a, C> {
@@ -56,9 +67,11 @@ impl<'a, C> BuildCtx<'a, C> {
             source_range: None,
             user_ctx,
             translator: None,
+            created_nodes_without_source_range: BTreeSet::new(),
         }
     }
 
+    /// Construct a context carrying a matched input source range.
     pub fn with_source_range(
         ast: &'a mut Ast,
         captures: &'a Captures,
@@ -73,6 +86,7 @@ impl<'a, C> BuildCtx<'a, C> {
             source_range,
             user_ctx,
             translator: None,
+            created_nodes_without_source_range: BTreeSet::new(),
         }
     }
 
@@ -93,7 +107,81 @@ impl<'a, C> BuildCtx<'a, C> {
             source_range,
             user_ctx,
             translator: Some(translator),
+            created_nodes_without_source_range: BTreeSet::new(),
         }
+    }
+
+    /// Create a node and record it as constructed by this rule invocation.
+    pub fn create_node_with_range(
+        &mut self,
+        kind: KindId,
+        content: NodeContent,
+        fields: BTreeMap<FieldId, Vec<Id>>,
+        is_named: bool,
+        source_range: Option<Range>,
+    ) -> Id {
+        let has_explicit_source_range =
+            source_range.is_some() || matches!(&content, NodeContent::Range(_));
+        let id = self
+            .ast
+            .create_node_with_range(kind, content, fields, is_named, source_range);
+        if self
+            .ast
+            .get_node(id)
+            .is_some_and(|node| node.source_range().is_none())
+        {
+            if let Some(source_range) = self.source_range {
+                self.ast
+                    .extend_source_range(id, source_range.empty_at_start());
+            }
+        }
+        if !has_explicit_source_range {
+            self.created_nodes_without_source_range.insert(id);
+        }
+        id
+    }
+
+    /// Create a named token and record it as constructed by this rule invocation.
+    pub fn create_named_token_with_range(
+        &mut self,
+        kind: &'static str,
+        content: String,
+        source_range: Option<Range>,
+    ) -> Id {
+        let has_explicit_source_range = source_range.is_some();
+        let source_range =
+            source_range.or_else(|| self.source_range.map(|range| range.empty_at_start()));
+        let id = self
+            .ast
+            .create_named_token_with_range(kind, content, source_range);
+        if !has_explicit_source_range {
+            self.created_nodes_without_source_range.insert(id);
+        }
+        id
+    }
+
+    /// Finish the current rule invocation by applying the matched source range
+    /// to locally-created result roots.
+    #[doc(hidden)]
+    pub fn finish_rule(self, results: Vec<Id>) -> Vec<Id> {
+        if let Some(source_range) = self.source_range {
+            for &id in &results {
+                if self.created_nodes_without_source_range.contains(&id) {
+                    self.ast.extend_source_range(id, source_range);
+                }
+            }
+        }
+        results
+    }
+
+    /// Assign an explicit source range to a newly-built result root.
+    #[doc(hidden)]
+    pub fn set_node_source_range(&mut self, node: Id, source_range: Option<Range>) -> Id {
+        if let Some(source_range) = source_range {
+            self.ast.set_source_range(node, source_range);
+            self.created_nodes_without_source_range.remove(&node);
+        }
+        node
     }
 
     /// Look up a capture variable, returning its node Id.
@@ -119,6 +207,18 @@ impl<'a, C> BuildCtx<'a, C> {
         self.ast.source_text(id)
     }
 
+    /// Return the source range of a parsed or synthetic node.
+    fn source_range_of(&self, id: Id) -> Option<Range> {
+        self.ast.get_node(id).and_then(|node| node.source_range())
+    }
+
+    /// Return an empty range between two non-overlapping nodes.
+    pub fn empty_source_range_between(&self, left: Id, right: Id) -> Option<Range> {
+        let left = self.source_range_of(left)?;
+        let right = self.source_range_of(right)?;
+        (left.end_byte <= right.start_byte).then(|| left.empty_at_end())
+    }
+
     /// Create a named AST node with the given kind and fields.
     pub fn node(&mut self, kind: &str, fields: Vec<(&str, Vec<Id>)>) -> Id {
         let kind_id = self
@@ -133,41 +233,40 @@ impl<'a, C> BuildCtx<'a, C> {
                 .unwrap_or_else(|| panic!("build: field '{name}' not found"));
             field_map.entry(field_id).or_default().extend(ids);
         }
-        self.ast.create_node_with_range(
+        self.create_node_with_range(
             kind_id,
             NodeContent::DynamicString(String::new()),
             field_map,
             true,
-            self.source_range,
+            None,
         )
     }
 
     /// Create a leaf node with a fixed string content.
     pub fn literal(&mut self, kind: &'static str, value: &str) -> Id {
-        self.ast
-            .create_named_token_with_range(kind, value.to_string(), self.source_range)
+        self.create_named_token_with_range(kind, value.to_string(), None)
     }
 
-    /// Create a leaf node with fixed content and an optional preferred source range.
-    /// If `source_range` is `None`, falls back to this context's inherited range.
+    /// Create a leaf node with fixed content and an optional source range.
     pub fn literal_with_source_range(
         &mut self,
         kind: &'static str,
         value: &str,
         source_range: Option<Range>,
     ) -> Id {
-        self.ast.create_named_token_with_range(
-            kind,
-            value.to_string(),
-            source_range.or(self.source_range),
-        )
+        self.create_named_token_with_range(kind, value.to_string(), source_range)
+    }
+
+    /// Create a literal with an empty range at another node's start.
+    pub fn literal_at_start_of(&mut self, kind: &'static str, value: &str, source: Id) -> Id {
+        let source_range = self.source_range_of(source).map(Range::empty_at_start);
+        self.literal_with_source_range(kind, value, source_range)
     }
 
     /// Create a leaf node with an auto-generated unique name.
     pub fn fresh(&mut self, kind: &'static str, name: &str) -> Id {
         let generated = self.fresh.resolve(name);
-        self.ast
-            .create_named_token_with_range(kind, generated, self.source_range)
+        self.create_named_token_with_range(kind, generated, None)
     }
 }
 
@@ -203,8 +302,9 @@ impl<C: Clone> BuildCtx<'_, C> {
 
     /// Run `f` with a temporary child [`BuildCtx`] whose `user_ctx` is
     /// a fresh clone of the current one, sharing everything else
-    /// (`ast`, `captures`, `fresh`, `source_range`, `translator`) by
-    /// re-borrow. Any mutations `f` makes to the child's `user_ctx`
+    /// (`ast`, `captures`, `fresh`, source ranges, `translator`) by re-borrow.
+    /// Nodes constructed through the child remain part of the current rule
+    /// invocation. Any mutations `f` makes to the child's `user_ctx`
     /// are discarded when it returns — no restore needed, because the
     /// mutations only ever happened on a local clone.
     ///
@@ -238,8 +338,15 @@ impl<C: Clone> BuildCtx<'_, C> {
             source_range: self.source_range,
             user_ctx: &mut child_user_ctx,
             translator: self.translator,
+            created_nodes_without_source_range: BTreeSet::new(),
         };
-        f(&mut child)
+        let result = f(&mut child);
+        let created_nodes_without_source_range =
+            std::mem::take(&mut child.created_nodes_without_source_range);
+        drop(child);
+        self.created_nodes_without_source_range
+            .extend(created_nodes_without_source_range);
+        result
         // child_user_ctx dropped; the outer `self` is unaffected.
     }
 }

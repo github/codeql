@@ -127,33 +127,33 @@ top_level source="⟨body⟩"
         switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n⟨case⟩\n}"
           value: identifier "x" source="x"
           case:
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern: int_literal "1" source="1"
               body:
-                block source="case 1:\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
                           value: string_literal "\"one\"" source="\"one\""
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                or_pattern source="case ⟨pattern⟩, ⟨pattern⟩:\n  print(\"two or three\")"
+                or_pattern source="⟨pattern⟩, ⟨pattern⟩"
                   pattern:
                     int_literal "2" source="2"
                     int_literal "3" source="3"
               body:
-                block source="case 2, 3:\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
                           value: string_literal "\"two or three\"" source="\"two or three\""
-            switch_case source="⟨body⟩"
+            switch_case source="default:\n  ⟨body⟩"
               body:
-                block source="default:\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"

@@ -93,10 +93,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩⟨parameter⟩"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) ⟨body⟩"
           name_node: identifier "casts" source="casts"
           parameter:
-            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩,"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
               external_name_node: identifier "_" source="_"
               type: identifier "Any" source="Any"
               pattern: identifier "a" source="a"
@@ -105,7 +105,7 @@ top_level source="⟨body⟩"
               type: identifier "Int" source="Int"
               pattern: identifier "b" source="b"
           body:
-            block source="func casts(_ a: Any, _ b: Int) {\n  ⟨stmt⟩\n  ⟨stmt⟩\n}"
+            block source="{\n  ⟨stmt⟩\n  ⟨stmt⟩\n}"
               stmt:
                 unresolved_operator_sequence source="⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩"
                   element:

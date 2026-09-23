@@ -1579,7 +1579,7 @@ fn test_hash_brace_renders_capture_source_text() {
         r#"
         program
           call
-            arguments: argument_list "foo.bar()"
+            arguments: argument_list
             method: identifier "bar"
             receiver: identifier "foo"
     "#,
@@ -1672,6 +1672,327 @@ fn test_elided_tokens_contribute_to_replacement_location() {
 
     assert_eq!(call.start_byte(), 0);
     assert_eq!(call.end_byte(), 9);
+}
+
+/// Nested nodes constructed by a rule derive their location from their own
+/// children rather than inheriting the range of the rule's matched root.
+#[test]
+fn test_nested_synthetic_node_uses_child_location() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        (call
+            method: {name}
+            receiver: {recv}
+            arguments: (argument_list argument: {recv})
+        )
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let call = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "call")
+        .expect("call exists");
+    assert_eq!(call.byte_range(), 0..9);
+
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    assert_eq!(arguments.byte_range(), 0..3);
+}
+
+/// A nested node with no explicit range or located children gets an empty
+/// location at the start of the rule's matched node.
+#[test]
+fn test_source_less_nested_node_uses_empty_match_start() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        (call
+            method: {name}
+            receiver: {recv}
+            arguments: (argument_list)
+        )
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    let range = arguments.source_range().unwrap();
+    assert_eq!(range.start_byte..range.end_byte, 0..0);
+}
+
+/// An explicit empty range at byte zero is a real location, not the sentinel
+/// for an absent location, and therefore contributes to parent ranges.
+#[test]
+fn test_empty_range_at_file_start_contributes_to_parent() {
+    use std::collections::BTreeMap;
+
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let mut ast = Ast::with_schema(schema);
+    let empty = Range {
+        start_byte: 0,
+        end_byte: 0,
+        start_point: Point::new(0, 0),
+        end_point: Point::new(0, 0),
+    };
+    let child =
+        ast.create_named_token_with_range("identifier", "synthetic".to_owned(), Some(empty));
+    let fields = BTreeMap::from([(ast.field_id_for_name("method").unwrap(), vec![child])]);
+    let parent = ast.create_node_with_range(
+        ast.id_for_node_kind("call").unwrap(),
+        NodeContent::DynamicString(String::new()),
+        fields,
+        true,
+        None,
+    );
+
+    assert_eq!(ast.get_node(parent).unwrap().source_range(), Some(empty));
+}
+
+/// A rule that only unwraps and returns a translated capture must not widen
+/// that capture to the wrapper's source range.
+#[test]
+fn test_returned_capture_keeps_its_location() {
+    let rule: Rule = rule!(
+        (call method: (identifier) @name)
+        =>
+        identifier { name }
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let identifier = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "identifier")
+        .expect("identifier exists");
+    assert_eq!(identifier.byte_range(), 4..7);
+}
+
+#[test]
+fn test_ignored_location_field_is_excluded_from_rule_result_location() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left)
+        =>
+        (call method: {left})
+    );
+
+    let language: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let config = DesugaringConfig::new()
+        .with_ignored_location_fields(["right"])
+        .add_phase("test", PhaseKind::Repeating, vec![rule]);
+    let runner: Runner = Runner::from_config(language, &config).unwrap();
+    let ast = runner.run("x = 1").unwrap();
+    let call = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "call")
+        .expect("call exists");
+    assert_eq!(call.byte_range(), 0..4);
+}
+
+/// Nodes allocated by an explicit recursive translation belong to that nested
+/// rule invocation, even when the outer rule returns one directly.
+#[test]
+fn test_explicit_recursive_translation_keeps_nested_rule_location() {
+    let program: Rule = rule!(
+        (program (_)* @stmts)
+        =>
+        (program stmt: {stmts})
+    );
+    let unwrap: Rule = rule!(
+        (call method: (identifier) @@name)
+        =>
+        identifier {
+            ctx.translate(name)?
+                .into_iter()
+                .next()
+                .ok_or("identifier translation produced no result")?
+        }
+    );
+    let translate_identifier: Rule = rule!((identifier) @@identifier => (identifier #{identifier}));
+
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let phases = vec![Phase::new(
+        "translate",
+        PhaseKind::OneShot,
+        vec![program, unwrap, translate_identifier],
+    )];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+    let ast = runner.run("foo.bar()").unwrap();
+    let identifier = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "identifier")
+        .expect("identifier exists");
+    assert_eq!(identifier.byte_range(), 4..7);
+}
+
+/// `tree_at!` assigns the captured node's range only to the template root.
+#[test]
+fn test_tree_at_assigns_capture_range_to_root_only() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        ) @@source
+        =>
+        call {
+            let arguments = tree_at!(ctx, source, (argument_list argument: (integer "0")));
+            tree!((call method: {name} receiver: {recv} arguments: {arguments}))
+        }
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    assert_eq!(arguments.byte_range(), 0..9);
+
+    let integer = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "integer")
+        .expect("integer exists");
+    assert_eq!(integer.byte_range(), 0..0);
+}
+
+/// `tree_spanning!` assigns the union of the captured node ranges only to the
+/// template root.
+#[test]
+fn test_tree_spanning_assigns_union_to_root_only() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        call {
+            let arguments = tree_spanning!(
+                ctx,
+                [recv, name],
+                (argument_list argument: (integer "0"))
+            );
+            tree!((call method: {name} receiver: {recv} arguments: {arguments}))
+        }
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    assert_eq!(arguments.byte_range(), 0..7);
+
+    let integer = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "integer")
+        .expect("integer exists");
+    assert_eq!(integer.byte_range(), 0..0);
+}
+
+/// Explicit ranges on multiple results must not be widened to the range of the
+/// input node matched by the rule.
+#[test]
+fn test_explicitly_located_multiple_results_keep_their_ranges() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @@left
+            right: (integer) @@right)
+        =>
+        identifier* {
+            let left_text = ctx.source_text(left);
+            let right_text = ctx.source_text(right);
+            let left_range = left.yeast_source_range(&*ctx.ast);
+            let right_range = right.yeast_source_range(&*ctx.ast);
+            vec![
+                ctx.literal_with_source_range("identifier", &left_text, left_range),
+                ctx.literal_with_source_range("identifier", &right_text, right_range),
+            ]
+        }
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let mut ranges: Vec<_> = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| {
+            let node = ast.get_node(id)?;
+            (node.kind_name() == "identifier").then(|| (ast.source_text(id), node.byte_range()))
+        })
+        .collect();
+    ranges.sort_by_key(|(_, range)| range.start);
+
+    assert_eq!(
+        ranges,
+        vec![("x".to_string(), 0..1), ("1".to_string(), 4..5)]
+    );
+}
+
+/// A range-backed node already carries an exact parsed range and must not be
+/// finalized as a synthetic result.
+#[test]
+fn test_range_backed_result_keeps_its_range() {
+    use std::collections::BTreeMap;
+
+    let rule: Rule = rule!(
+        (assignment left: (identifier) @@left)
+        =>
+        identifier {
+            let range = left.yeast_source_range(&*ctx.ast).unwrap();
+            let kind = ctx.ast.id_for_node_kind("identifier").unwrap();
+            ctx.create_node_with_range(
+                kind,
+                NodeContent::Range(range),
+                BTreeMap::new(),
+                true,
+                None,
+            )
+        }
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let identifiers: Vec<_> = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| {
+            let node = ast.get_node(id)?;
+            (node.kind_name() == "identifier").then(|| (ast.source_text(id), node.byte_range()))
+        })
+        .collect();
+
+    assert_eq!(identifiers, vec![("x".to_string(), 0..1)]);
 }
 
 // ---- `rules!` macro tests (compile-time type-checking) ----

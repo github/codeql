@@ -130,7 +130,7 @@ top_level source="⟨body⟩"
         switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n}"
           value: identifier "x" source="x"
           case:
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
                 call_expr source="⟨callee⟩(⟨argument⟩)"
                   callee:
@@ -142,22 +142,22 @@ top_level source="⟨body⟩"
                       name_node: identifier "isAcknowledged" source="isAcknowledged"
                       value: boolean_literal "false" source="false"
               body:
-                block source="case .implicit(isAcknowledged: false):\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
                           value: string_literal "\"yes\"" source="\"yes\""
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
+                call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
                   callee:
                     member_access_expr source="⟨base⟩⟨member_name_node⟩"
                       base: inferred_type_expr "." source="."
                       member_name_node: identifier "thread" source="thread"
                   argument:
-                    argument source="⟨name_node⟩: ⟨value⟩,"
+                    argument source="⟨name_node⟩: ⟨value⟩"
                       name_node: identifier "threadRowId" source="threadRowId"
                       value: identifier "_" source="_"
                     argument source="⟨value⟩"
@@ -166,7 +166,7 @@ top_level source="⟨body⟩"
                           modifier: modifier "let" source="let"
                           expr: identifier "rowId" source="rowId"
               body:
-                block source="case .thread(threadRowId: _, let rowId):\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"

@@ -72,12 +72,12 @@ top_level source="⟨body⟩"
             switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n}"
               value: identifier "y" source="y"
               case:
-                switch_case source="⟨body⟩⟨pattern⟩"
+                switch_case source="case ⟨pattern⟩: ⟨body⟩"
                   pattern: identifier "someConstant" source="someConstant"
                   body:
-                    block source="case someConstant: ⟨stmt⟩"
+                    block source="⟨stmt⟩"
                       stmt: int_literal "1" source="1"
-                switch_case source="⟨body⟩"
+                switch_case source="default: ⟨body⟩"
                   body:
-                    block source="default: ⟨stmt⟩"
+                    block source="⟨stmt⟩"
                       stmt: int_literal "2" source="2"

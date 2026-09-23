@@ -18,6 +18,40 @@ mod visitor;
 pub use range::{Point, Range};
 pub use yeast_macros::{query, rule, rules, tree, trees};
 
+/// Build a single AST node whose root uses another node's source range.
+///
+/// Nested nodes in the template are built normally and derive their locations
+/// from their own children.
+#[macro_export]
+macro_rules! tree_at {
+    ($ctx:ident, $source:expr, ($($tree:tt)*)) => {{
+        let __yeast_source: $crate::Id = $source;
+        let __yeast_source_range = $ctx
+            .ast
+            .get_node(__yeast_source)
+            .and_then(|node| node.source_range());
+        let __yeast_node: $crate::Id = $crate::tree!($ctx, ($($tree)*));
+        $ctx.set_node_source_range(__yeast_node, __yeast_source_range)
+    }};
+}
+
+/// Build a single AST node whose root spans a collection of nodes.
+///
+/// Nested nodes in the template are built normally and derive their locations
+/// from their own children.
+#[macro_export]
+macro_rules! tree_spanning {
+    ($ctx:ident, $sources:expr, ($($tree:tt)*)) => {{
+        let __yeast_source_range = ::std::iter::IntoIterator::into_iter($sources)
+            .filter_map(|source: $crate::Id| {
+                $ctx.ast.get_node(source).and_then(|node| node.source_range())
+            })
+            .reduce($crate::Range::union);
+        let __yeast_node: $crate::Id = $crate::tree!($ctx, ($($tree)*));
+        $ctx.set_node_source_range(__yeast_node, __yeast_source_range)
+    }};
+}
+
 use captures::Captures;
 use query::QueryNode;
 
@@ -128,9 +162,10 @@ pub trait YeastDisplay {
 
 /// Optional source range for values used in `#{expr}` interpolations.
 ///
-/// By default this returns `None`, so synthesized leaves inherit the matched
-/// rule's source range. `Id` returns the referenced node's range, letting
-/// `(kind #{capture})` carry the captured node's location.
+/// By default this returns `None`, so synthesized leaves use the current
+/// [`crate::build::BuildCtx`] default range, if any. `Id` returns the
+/// referenced node's range, letting `(kind #{capture})` carry the captured
+/// node's location.
 pub trait YeastSourceRange {
     fn yeast_source_range(&self, ast: &Ast) -> Option<Range>;
 }
@@ -143,10 +178,7 @@ impl YeastDisplay for Id {
 
 impl YeastSourceRange for Id {
     fn yeast_source_range(&self, ast: &Ast) -> Option<Range> {
-        ast.get_node(*self).and_then(|n| match &n.content {
-            NodeContent::Range(r) => Some(*r),
-            _ => n.source_range,
-        })
+        ast.get_node(*self).and_then(Node::source_range)
     }
 }
 
@@ -565,6 +597,25 @@ impl Ast {
         self.nodes.get(id.0)
     }
 
+    fn source_range_ignoring_fields(
+        &self,
+        id: Id,
+        ignored_fields: &[&str],
+    ) -> Option<Range> {
+        let node = self.get_node(id)?;
+        let source_range = node.source_range()?;
+        let ignored_ranges = node
+            .fields
+            .iter()
+            .filter(|(field_id, _)| {
+                self.field_name_for_id(**field_id)
+                    .is_some_and(|name| ignored_fields.contains(&name))
+            })
+            .flat_map(|(_, children)| children)
+            .filter_map(|child| self.get_node(*child).and_then(Node::source_range));
+        Some(source_range.ignoring_boundary_ranges(ignored_ranges))
+    }
+
     pub fn print(&self, source: &str, root_id: Id) -> Value {
         let root = &self.nodes()[root_id.0];
         self.print_node(root, source)
@@ -592,13 +643,12 @@ impl Ast {
             // Parsed nodes already carry an exact source range in their content.
             NodeContent::Range(_) => source_range,
             // Synthesized nodes derive location from both their children and
-            // the inherited rule-match range, so tokens matched by a rule but
-            // elided from its output still contribute to the replacement range.
+            // any explicitly supplied source range.
             _ => self
                 .union_source_range_of_children(&fields)
                 .map_or(source_range, |child_range| {
                     Some(match source_range {
-                        Some(source_range) => union_source_ranges(child_range, source_range),
+                        Some(source_range) => child_range.union(source_range),
                         None => child_range,
                     })
                 }),
@@ -616,6 +666,36 @@ impl Ast {
             source_range,
         });
         Id(id)
+    }
+
+    /// Extend a synthetic node's source range to include `source_range`.
+    ///
+    /// Parsed nodes carry their exact range in [`NodeContent::Range`] and must
+    /// not be modified through this API.
+    pub fn extend_source_range(&mut self, id: Id, source_range: Range) {
+        let node = self
+            .nodes
+            .get_mut(id.0)
+            .unwrap_or_else(|| panic!("extend_source_range: invalid node id {}", id.0));
+        if matches!(node.content, NodeContent::Range(_)) {
+            panic!("extend_source_range: cannot modify a parsed node");
+        }
+        node.source_range = Some(match node.source_range {
+            Some(existing) => existing.union(source_range),
+            None => source_range,
+        });
+    }
+
+    /// Replace a synthetic node's source range.
+    pub(crate) fn set_source_range(&mut self, id: Id, source_range: Range) {
+        let node = self
+            .nodes
+            .get_mut(id.0)
+            .unwrap_or_else(|| panic!("set_source_range: invalid node id {}", id.0));
+        if matches!(node.content, NodeContent::Range(_)) {
+            panic!("set_source_range: cannot modify a parsed node");
+        }
+        node.source_range = Some(source_range);
     }
 
     /// Register a named node kind, returning its id (idempotent). Lets callers
@@ -655,35 +735,30 @@ impl Ast {
                 let Some(child) = self.get_node(child_id) else {
                     continue;
                 };
-
-                let child_start_byte = child.start_byte();
-                let child_end_byte = child.end_byte();
-
-                // Skip children that carry no usable location.
-                if child_start_byte == 0 && child_end_byte == 0 {
+                let Some(child_range) = child.source_range() else {
                     continue;
-                }
+                };
 
                 match start_byte {
                     None => {
-                        start_byte = Some(child_start_byte);
-                        start_point = child.start_position();
+                        start_byte = Some(child_range.start_byte);
+                        start_point = child_range.start_point;
                     }
-                    Some(current_start) if child_start_byte < current_start => {
-                        start_byte = Some(child_start_byte);
-                        start_point = child.start_position();
+                    Some(current_start) if child_range.start_byte < current_start => {
+                        start_byte = Some(child_range.start_byte);
+                        start_point = child_range.start_point;
                     }
                     _ => {}
                 }
 
                 match end_byte {
                     None => {
-                        end_byte = Some(child_end_byte);
-                        end_point = child.end_position();
+                        end_byte = Some(child_range.end_byte);
+                        end_point = child_range.end_point;
                     }
-                    Some(current_end) if child_end_byte > current_end => {
-                        end_byte = Some(child_end_byte);
-                        end_point = child.end_position();
+                    Some(current_end) if child_range.end_byte > current_end => {
+                        end_byte = Some(child_range.end_byte);
+                        end_point = child_range.end_point;
                     }
                     _ => {}
                 }
@@ -792,25 +867,6 @@ impl Ast {
     }
 }
 
-fn union_source_ranges(first: Range, second: Range) -> Range {
-    let (start_byte, start_point) = if first.start_byte <= second.start_byte {
-        (first.start_byte, first.start_point)
-    } else {
-        (second.start_byte, second.start_point)
-    };
-    let (end_byte, end_point) = if first.end_byte >= second.end_byte {
-        (first.end_byte, first.end_point)
-    } else {
-        (second.end_byte, second.end_point)
-    };
-    Range {
-        start_byte,
-        end_byte,
-        start_point,
-        end_point,
-    }
-}
-
 /// A node in our AST
 #[derive(PartialEq, Eq, Debug, Clone, Serialize)]
 pub struct Node {
@@ -853,36 +909,29 @@ impl Node {
         Point { row: 0, column: 0 }
     }
 
-    pub fn start_position(&self) -> Point {
+    pub fn source_range(&self) -> Option<Range> {
         match self.content {
-            NodeContent::Range(range) => range.start_point,
-            _ => self
-                .source_range
-                .map_or_else(|| self.fake_point(), |r| r.start_point),
+            NodeContent::Range(range) => Some(range),
+            _ => self.source_range,
         }
+    }
+
+    pub fn start_position(&self) -> Point {
+        self.source_range()
+            .map_or_else(|| self.fake_point(), |range| range.start_point)
     }
 
     pub fn end_position(&self) -> Point {
-        match self.content {
-            NodeContent::Range(range) => range.end_point,
-            _ => self
-                .source_range
-                .map_or_else(|| self.fake_point(), |r| r.end_point),
-        }
+        self.source_range()
+            .map_or_else(|| self.fake_point(), |range| range.end_point)
     }
 
     pub fn start_byte(&self) -> usize {
-        match self.content {
-            NodeContent::Range(range) => range.start_byte,
-            _ => self.source_range.map_or(0, |r| r.start_byte),
-        }
+        self.source_range().map_or(0, |range| range.start_byte)
     }
 
     pub fn end_byte(&self) -> usize {
-        match self.content {
-            NodeContent::Range(range) => range.end_byte,
-            _ => self.source_range.map_or(0, |r| r.end_byte),
-        }
+        self.source_range().map_or(0, |range| range.end_byte)
     }
 
     pub fn byte_range(&self) -> std::ops::Range<usize> {
@@ -1070,6 +1119,7 @@ pub struct Rule<C = ()> {
     query: QueryNode,
     guard: Option<Guard<C>>,
     transform: Transform<C>,
+    ignored_location_fields: Vec<&'static str>,
     /// If true, after this rule fires on a node the engine will try to
     /// re-apply this same rule on the result root. Defaults to false:
     /// each rule fires at most once on a given node, which prevents
@@ -1084,6 +1134,7 @@ impl<C> Rule<C> {
             query,
             guard: None,
             transform,
+            ignored_location_fields: Vec::new(),
             repeated: false,
         }
     }
@@ -1095,6 +1146,7 @@ impl<C> Rule<C> {
             query,
             guard: Some(guard),
             transform,
+            ignored_location_fields: Vec::new(),
             repeated: false,
         }
     }
@@ -1106,6 +1158,10 @@ impl<C> Rule<C> {
     pub fn repeated(mut self) -> Self {
         self.repeated = true;
         self
+    }
+
+    fn set_ignored_location_fields(&mut self, fields: &[&'static str]) {
+        self.ignored_location_fields = fields.to_vec();
     }
 
     /// Attempt to match this rule's query against `node`, returning the raw
@@ -1134,8 +1190,8 @@ impl<C> Rule<C> {
         }
     }
 
-    /// Run this rule's transform with the given captures, using `node`'s
-    /// source range as the source range of the produced nodes.
+    /// Run this rule's transform with the given captures, making `node`'s
+    /// source range available to the transform.
     fn run_transform(
         &self,
         ast: &mut Ast,
@@ -1146,10 +1202,8 @@ impl<C> Rule<C> {
         translator: TranslatorHandle<'_, C>,
     ) -> Result<Vec<Id>, String> {
         fresh.next_scope();
-        let source_range = ast.get_node(node).and_then(|n| match n.content {
-            NodeContent::Range(r) => Some(r),
-            _ => n.source_range,
-        });
+        let source_range =
+            ast.source_range_ignoring_fields(node, &self.ignored_location_fields);
         (self.transform)(ast, captures, fresh, source_range, user_ctx, translator)
     }
 }
@@ -1435,6 +1489,9 @@ pub struct DesugaringConfig<C = ()> {
     /// node types are used (i.e. the desugared AST has the same node types
     /// as the tree-sitter grammar).
     pub output_node_types_yaml: Option<&'static str>,
+    /// Input field names whose boundary ranges are excluded from rule-result
+    /// locations.
+    pub ignored_location_fields: Vec<&'static str>,
 }
 
 // Manual `Default` impl so users with a custom `C` that doesn't implement
@@ -1444,6 +1501,7 @@ impl<C> Default for DesugaringConfig<C> {
         Self {
             phases: Vec::new(),
             output_node_types_yaml: None,
+            ignored_location_fields: Vec::new(),
         }
     }
 }
@@ -1460,9 +1518,27 @@ impl<C> DesugaringConfig<C> {
         mut self,
         name: impl Into<String>,
         kind: PhaseKind,
-        rules: Vec<Rule<C>>,
+        mut rules: Vec<Rule<C>>,
     ) -> Self {
+        for rule in &mut rules {
+            rule.set_ignored_location_fields(&self.ignored_location_fields);
+        }
         self.phases.push(Phase::new(name, kind, rules));
+        self
+    }
+
+    /// Ignore boundary syntax stored under any of these input field names when
+    /// calculating matched locations for rule results.
+    pub fn with_ignored_location_fields(
+        mut self,
+        fields: impl IntoIterator<Item = &'static str>,
+    ) -> Self {
+        self.ignored_location_fields = fields.into_iter().collect();
+        for phase in &mut self.phases {
+            for rule in &mut phase.rules {
+                rule.set_ignored_location_fields(&self.ignored_location_fields);
+            }
+        }
         self
     }
 

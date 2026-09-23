@@ -67,5 +67,5 @@ top_level source="⟨body⟩"
           pattern: identifier "callback" source="callback"
           type: unsupported_node "@convention(c) () -> Void" source="@convention(c) () -> Void"
           value:
-            function_expr source="⟨body⟩"
-              body: block "{}" source="{}"
+            function_expr source="{}"
+              body: block source=""

@@ -235,6 +235,81 @@ yeast::trees!(ctx,
 (identifier #{name})         // an identifier from a Rust variable
 ```
 
+### Source locations
+
+Captured nodes keep the locations assigned by their own translations. New
+nodes in an output template derive their locations from their children. A
+source-less nested node receives an empty location at the start of the matched
+input node. After the transform completes, the full matched range is added only
+to locally-created nodes returned as rule results:
+
+```rust
+rule!(
+    (wrapper child: (_) @child)
+    =>
+    (outer nested: (inner value: {child}))
+)
+```
+
+Here `inner` derives its range from `child`, while the returned `outer` node
+also includes the full `wrapper` range. A nested node with no located children
+would instead receive an empty range at the start of `wrapper`. This lets
+replacement roots include elided keywords or delimiters without assigning the
+same broad range to every synthetic descendant. A transform that simply
+returns a translated capture does not widen that capture to the wrapper's
+range.
+
+The following macros can be used to explicitly set the location associated
+with a newly-created node. They assign a location only to the root of their
+template; nested nodes still derive their locations normally.
+
+`tree_at!` assigns the range of one captured input node to the template root:
+
+```rust
+rule!(
+    (wrapper
+        source: (_) @source_node
+        child: (_) @child)
+    =>
+    synthetic_node {
+        tree_at!(
+            ctx,
+            source_node,
+            (synthetic_node child: (nested value: {child}))
+        )
+    }
+)
+```
+
+`tree_spanning!` assigns the smallest range containing several captured input
+nodes:
+
+```rust
+rule!(
+    (wrapper
+        first: (_) @first
+        second: (_) @second
+        child: (_) @child)
+    =>
+    synthetic_node {
+        tree_spanning!(
+            ctx,
+            [first, second],
+            (synthetic_node child: {child})
+        )
+    }
+)
+```
+
+For input fields whose leading or trailing syntax should never belong to rule
+results, configure them once with
+`DesugaringConfig::with_ignored_location_fields(...)`. For example, ignoring
+`trailingComma` retains the rest of each matched list element without requiring
+every rule to capture or handle the comma.
+
+For literals, `ctx.literal_at_start_of(...)` creates an empty range at another
+node's start.
+
 For reviewing locations, `DumpOptions::show_abridged_source` prints each node's
 source range with every direct child replaced by its field name in Unicode
 angle brackets. This keeps delimiters and other parent-owned syntax visible
@@ -245,6 +320,17 @@ return_expr source="return ⟨value⟩"
   value:
     call_expr source="⟨callee⟩(⟨argument⟩)"
 ```
+
+Children outside the node's source range retain their own locations and are
+annotated where they are printed rather than being treated as errors:
+
+```text
+accessor_declaration source="⟨accessor_kind⟩"
+  name_node: identifier "value" source="value" (external)
+```
+
+Node and child ranges are still validated against the source text and UTF-8
+boundaries.
 
 ### Optional fields (`?`)
 
