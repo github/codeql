@@ -168,7 +168,7 @@ func test21() {
 	select {}
 	panic("unreachable") // OK: allowlisted statement
 	// OK: empty statement
-	unreachable() // $ MISSING: Alert
+	unreachable() // $ Alert
 }
 
 func test23() {
