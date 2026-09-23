@@ -70,22 +70,30 @@ impl Range {
         }
     }
 
+    /// Return whether this range contains no source bytes.
+    pub fn is_empty(self) -> bool {
+        self.start_byte == self.end_byte
+    }
+
     pub(crate) fn ignoring_boundary_ranges(
         mut self,
         ignored: impl IntoIterator<Item = Self>,
     ) -> Self {
-        let ignored: Vec<_> = ignored.into_iter().collect();
+        let ignored: Vec<_> = ignored
+            .into_iter()
+            .filter(|range| !range.is_empty())
+            .collect();
         loop {
             let previous = self;
             for range in &ignored {
-if *range == self {
+                if *range == self {
                     return self.empty_at_start();
                 }
-                if range.start_byte == self.start_byte && range.end_byte > range.start_byte {
+                if range.start_byte == self.start_byte {
                     self.start_byte = range.end_byte;
                     self.start_point = range.end_point;
                 }
-                if range.end_byte == self.end_byte && range.end_byte > range.start_byte {
+                if range.end_byte == self.end_byte {
                     self.end_byte = range.start_byte;
                     self.end_point = range.start_point;
                 }
@@ -94,5 +102,29 @@ if *range == self {
                 return self;
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Point, Range};
+
+    fn range(start_byte: usize, end_byte: usize) -> Range {
+        Range {
+            start_byte,
+            end_byte,
+            start_point: Point::new(0, start_byte),
+            end_point: Point::new(0, end_byte),
+        }
+    }
+
+    #[test]
+    fn empty_ignored_ranges_do_not_change_boundaries() {
+        let source = range(0, 5);
+
+        assert_eq!(
+            source.ignoring_boundary_ranges([range(0, 0), range(5, 5)]),
+            source
+        );
     }
 }
