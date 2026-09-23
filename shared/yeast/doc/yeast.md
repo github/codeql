@@ -259,17 +259,46 @@ same broad range to every synthetic descendant. A transform that simply
 returns a translated capture does not widen that capture to the wrapper's
 range.
 
-When the desired range belongs to another node, `tree_at!` assigns that range
-to the template's root. Nested nodes still derive their own locations normally:
+The following macros can be used to explicitly set the location associated
+with a newly-created node. They assign a location only to the root of their
+template; nested nodes still derive their locations normally.
+
+`tree_at!` assigns the range of one captured input node to the template root:
 
 ```rust
-let synthetic = tree_at!(ctx, source, (synthetic_node child: (nested value: {child})));
+rule!(
+    (wrapper
+        source: (_) @source_node
+        child: (_) @child)
+    =>
+    synthetic_node {
+        tree_at!(
+            ctx,
+            source_node,
+            (synthetic_node child: (nested value: {child}))
+        )
+    }
+)
 ```
 
-`tree_spanning!` similarly assigns the union of several node ranges:
+`tree_spanning!` assigns the smallest range containing several captured input
+nodes:
 
 ```rust
-let synthetic = tree_spanning!(ctx, nodes, (synthetic_node child: {child}));
+rule!(
+    (wrapper
+        first: (_) @first
+        second: (_) @second
+        child: (_) @child)
+    =>
+    synthetic_node {
+        tree_spanning!(
+            ctx,
+            [first, second],
+            (synthetic_node child: {child})
+        )
+    }
+)
 ```
 
 For input fields whose leading or trailing syntax should never belong to rule
