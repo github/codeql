@@ -123,7 +123,7 @@ fn test_corpus() {
         let output_schema = yeast::node_types_yaml::schema_from_yaml(languages::OUTPUT_AST_SCHEMA)
             .expect("Failed to parse OUTPUT_AST_SCHEMA YAML");
 
-        let lang_corpus_dir = corpus_dir.join(&lang.prefix);
+        let lang_corpus_dir = corpus_dir.join(lang.prefix);
         if !lang_corpus_dir.exists() {
             continue;
         }
