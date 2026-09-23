@@ -9,7 +9,6 @@ func t2() -> Int {
         callback()
         return "df"
     }
-    // Note: This currently fails because the trailing closure is not extracted correctly
     let a = 1
     print(foo() { _ in
         print(a)
