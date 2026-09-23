@@ -176,4 +176,9 @@ func test20(x *recursive) []int {
 	return values // OK: reachable because value is a direct field of recursive
 }
 
+func test21() {
+	go panic("panic in another goroutine")
+	select {} // $ SPURIOUS: Alert // reachable after starting the goroutine
+}
+
 func main() {}
