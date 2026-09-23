@@ -173,7 +173,7 @@ func test20(x *recursive) []int {
 	if x.value != 0 {
 		values = append(values, x.value)
 	}
-	return values // $ SPURIOUS: Alert // BUG: reachable because value is a direct field of recursive
+	return values // OK: reachable because value is a direct field of recursive
 }
 
 func main() {}
