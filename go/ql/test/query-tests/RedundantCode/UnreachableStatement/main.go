@@ -159,4 +159,9 @@ func test19() mystruct {
 	return mystruct{test10(1), test10(2) == 2} // $ Alert
 }
 
+func test20() {
+	go panic("panic in another goroutine")
+	select {} // $ SPURIOUS: Alert // reachable after starting the goroutine
+}
+
 func main() {}
