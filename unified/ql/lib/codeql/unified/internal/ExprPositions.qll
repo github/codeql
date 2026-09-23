@@ -1,8 +1,9 @@
 private import unified
 private import NameBinding as NameBinding
+private import ExprPositionsPlugin
 
 /**
- * Holds if `expr` appears in the context of a type annotation.
+ * Holds if `expr` appears in a context where it must refer to a type.
  */
 predicate isInTypeContext(Expr expr) {
   expr = any(TypeCastExpr n).getType()
@@ -27,7 +28,21 @@ predicate isInTypeContext(Expr expr) {
   or
   expr = any(AssociatedTypeDeclaration n).getBound()
   or
+  expr = any(ClassLikeDeclaration c).getExtensionTarget()
+  or
+  expr = any(GenericTypeExpr gte).getATypeArgument()
+  or
   expr.getParent() instanceof TypeConstraint
+  or
+  exists(Identifier id | id = NameBinding::getStaticBindingTarget(expr) |
+    id = any(ClassLikeDeclaration c).getNameNode()
+    or
+    id = any(TypeAliasDeclaration t).getNameNode()
+    or
+    id = any(TypeParameter t).getNameNode()
+  )
+  or
+  any(ExprPositionsPlugin p).isInTypeContext(expr)
   or
   isInTypeContext(expr.getEnclosingExpr())
 }
