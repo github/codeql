@@ -55,7 +55,7 @@ module LogInjection {
       exists(Crate c, MacroRules m, MacroCall mc |
         // `c` is a tracing macro of interest
         c.getName() = "tracing" and
-        m.getName().getText() = ["event", "span"] and
+        m.getName().getText() = "valueset_all" and
         m.getLocation().getFile() = c.getASourceFile().getFile() and
         // candidate sinks are expressions inside the expansion of a call to `c`
         mc.resolveMacro() = m and
