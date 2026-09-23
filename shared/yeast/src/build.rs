@@ -48,8 +48,9 @@ pub struct BuildCtx<'a, C: 'a = ()> {
     /// Nodes built directly through this context without an explicit source
     /// range in either their content or constructor argument. Recursive
     /// translations use their own context and therefore do not contribute to
-    /// this list.
-    created_nodes: BTreeSet<Id>,
+    /// this set. Membership checks identify result roots to widen, while
+    /// removals exclude nodes that are later assigned an explicit range.
+    created_nodes_without_source_range: BTreeSet<Id>,
 }
 
 impl<'a, C> BuildCtx<'a, C> {
@@ -66,7 +67,7 @@ impl<'a, C> BuildCtx<'a, C> {
             source_range: None,
             user_ctx,
             translator: None,
-            created_nodes: BTreeSet::new(),
+            created_nodes_without_source_range: BTreeSet::new(),
         }
     }
 
@@ -85,7 +86,7 @@ impl<'a, C> BuildCtx<'a, C> {
             source_range,
             user_ctx,
             translator: None,
-            created_nodes: BTreeSet::new(),
+            created_nodes_without_source_range: BTreeSet::new(),
         }
     }
 
@@ -106,7 +107,7 @@ impl<'a, C> BuildCtx<'a, C> {
             source_range,
             user_ctx,
             translator: Some(translator),
-            created_nodes: BTreeSet::new(),
+            created_nodes_without_source_range: BTreeSet::new(),
         }
     }
 
@@ -135,7 +136,7 @@ impl<'a, C> BuildCtx<'a, C> {
             }
         }
         if !has_explicit_source_range {
-            self.created_nodes.insert(id);
+            self.created_nodes_without_source_range.insert(id);
         }
         id
     }
@@ -154,7 +155,7 @@ impl<'a, C> BuildCtx<'a, C> {
             .ast
             .create_named_token_with_range(kind, content, source_range);
         if !has_explicit_source_range {
-            self.created_nodes.insert(id);
+            self.created_nodes_without_source_range.insert(id);
         }
         id
     }
@@ -165,7 +166,7 @@ impl<'a, C> BuildCtx<'a, C> {
     pub fn finish_rule(self, results: Vec<Id>) -> Vec<Id> {
         if let Some(source_range) = self.source_range {
             for &id in &results {
-                if self.created_nodes.contains(&id) {
+                if self.created_nodes_without_source_range.contains(&id) {
                     self.ast.extend_source_range(id, source_range);
                 }
             }
@@ -178,7 +179,7 @@ impl<'a, C> BuildCtx<'a, C> {
     pub fn set_node_source_range(&mut self, node: Id, source_range: Option<Range>) -> Id {
         if let Some(source_range) = source_range {
             self.ast.set_source_range(node, source_range);
-            self.created_nodes.remove(&node);
+            self.created_nodes_without_source_range.remove(&node);
         }
         node
     }
@@ -337,12 +338,14 @@ impl<C: Clone> BuildCtx<'_, C> {
             source_range: self.source_range,
             user_ctx: &mut child_user_ctx,
             translator: self.translator,
-            created_nodes: BTreeSet::new(),
+            created_nodes_without_source_range: BTreeSet::new(),
         };
         let result = f(&mut child);
-        let created_nodes = std::mem::take(&mut child.created_nodes);
+        let created_nodes_without_source_range =
+            std::mem::take(&mut child.created_nodes_without_source_range);
         drop(child);
-        self.created_nodes.extend(created_nodes);
+        self.created_nodes_without_source_range
+            .extend(created_nodes_without_source_range);
         result
         // child_user_ctx dropped; the outer `self` is unaffected.
     }
