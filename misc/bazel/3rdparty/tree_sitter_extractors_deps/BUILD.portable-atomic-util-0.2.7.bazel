@@ -113,7 +113,7 @@ rust_library(
     version = "0.2.7",
     deps = [
         ":build_script_build",
-        "@vendor_ts__portable-atomic-1.14.0//:portable_atomic",
+        "@vendor_ts__portable-atomic-1.15.0//:portable_atomic",
     ],
 )
 

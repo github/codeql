@@ -109,7 +109,7 @@ rust_library(
     version = "0.166.0",
     deps = [
         "@vendor_ts__memchr-2.8.3//:memchr",
-        "@vendor_ts__unicode-ident-1.0.24//:unicode_ident",
+        "@vendor_ts__unicode-ident-1.0.26//:unicode_ident",
         "@vendor_ts__unicode-properties-0.1.4//:unicode_properties",
     ],
 )

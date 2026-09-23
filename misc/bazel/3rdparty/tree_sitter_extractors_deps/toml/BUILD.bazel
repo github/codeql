@@ -10,6 +10,6 @@ package(default_visibility = ["//visibility:public"])
 
 alias(
     name = "toml",
-    actual = "@vendor_ts__toml-1.1.4-spec-1.1.0//:toml",
+    actual = "@vendor_ts__toml-1.1.6-spec-1.1.0//:toml",
     tags = ["manual"],
 )
