@@ -164,4 +164,19 @@ func test20() {
 	select {} // OK: reachable after starting the goroutine
 }
 
+func test21() {
+	select {}
+	panic("unreachable") // OK: allowlisted statement
+	// OK: empty statement
+	unreachable() // $ MISSING: Alert
+}
+
+func test23() {
+	if true {
+		return
+	}
+	unreachable() // OK: deliberately unreachable
+	unreachable() // OK: deliberately unreachable
+}
+
 func main() {}

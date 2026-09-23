@@ -1,5 +1,5 @@
 consistencyOverview
-| deadEnd | 10 |
+| deadEnd | 11 |
 deadEnd
 | main.go:17:2:17:10 | select statement |
 | main.go:109:2:109:10 | select statement |
@@ -11,3 +11,4 @@ deadEnd
 | main.go:151:2:151:10 | select statement |
 | main.go:157:2:157:10 | select statement |
 | main.go:164:2:164:10 | select statement |
+| main.go:168:2:168:10 | select statement |
