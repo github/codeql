@@ -24,7 +24,7 @@ use tracing::{info, warn};
 /// toolchain release that precedes our version of rust-analyzer.
 ///
 /// When rust-analyzer is updated this version should be updated accordingly.
-const FIXED_RUST_TOOLCHAIN: &str = "1.97.0";
+const FIXED_RUST_TOOLCHAIN: &str = "1.98.1";
 
 /// The date of the oldest nightly toolchain known to work with our version of
 /// rust-analyzer.
