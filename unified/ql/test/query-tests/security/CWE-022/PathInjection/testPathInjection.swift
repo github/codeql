@@ -525,7 +525,7 @@ func testPathInjection2(
     u1.appendPathComponent(remoteString)
     _ = NSData(contentsOf: u1)  // $ Alert
 
-    let u2 = URL(filePath: remoteString)  // $ MISSING: Alert
+    let u2 = URL(filePath: remoteString)  // $ Alert
     _ = NSData(contentsOf: u2)  // $ MISSING: Alert
 
     let u3 = NSURL(string: "")!
@@ -576,15 +576,15 @@ class MyFile {
 }
 
 func testPathInjectionHeuristics() {
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)  // $ MISSING: Source
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)  // $ Source
 
-    myOpenFile1(atPath: remoteString)  // $ MISSING: Alert
+    myOpenFile1(atPath: remoteString)  // $ Alert
     myOpenFile2(remoteString)  // $ MISSING: Alert
-    myFindFiles(ofType: 0, inDirectory: remoteString)  // $ MISSING: Alert
+    myFindFiles(ofType: 0, inDirectory: remoteString)  // $ Alert
 
-    let mc = MyClass(contentsOfFile: remoteString)  // $ MISSING: Alert
+    let mc = MyClass(contentsOfFile: remoteString)  // $ Alert
     mc.doSomething(keyPath: remoteString)  // good - not a path
-    mc.write(toFile: remoteString)  // $ MISSING: Alert
+    mc.write(toFile: remoteString)  // $ Alert
 
     let mf1 = MyFile(path: "")
     let mf2 = MyFile(path: remoteString)  // $ MISSING: Alert // Originally missing

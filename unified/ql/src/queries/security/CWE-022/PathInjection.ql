@@ -16,10 +16,35 @@
 
 import unified
 
+/**
+ * A string that might be a label for a path argument.
+ */
+pragma[inline]
+private predicate pathLikeHeuristic(string label) {
+  label =
+    [
+      "atFile", "atPath", "atDirectory", "toFile", "toPath", "toDirectory", "inFile", "inPath",
+      "inDirectory", "contentsOfFile", "contentsOfPath", "contentsOfDirectory", "filePath",
+      "directory", "directoryPath"
+    ]
+}
+
+predicate heuristicSink(DataFlow::Node node) {
+  node.isIncomingValue(any(Identifier id | id.getValue() = "sqlite3_temp_directory"))
+  or
+  exists(Argument arg |
+    pathLikeHeuristic(arg.getName()) and
+    node.asExpr() = arg.getValue()
+  )
+}
+
 module PathInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
 
-  predicate isSink(DataFlow::Node node) { Models::isSink(node, "path-injection") }
+  predicate isSink(DataFlow::Node node) {
+    Models::isSink(node, "path-injection") or
+    heuristicSink(node)
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
