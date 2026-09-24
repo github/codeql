@@ -67,12 +67,12 @@ func testQualifiedConstructors(
     fileURL: String,
     seedFilePath: String
 ) {
-    _ = String.Index(encodedOffset: encodedOffset)  // $ MISSING: isSink=string-length
+    _ = String.Index(encodedOffset: encodedOffset)  // $ isSink=string-length
 
     _ = Realm.Configuration(
         deleteRealmIfMigrationNeeded: false,
-        encryptionKey: encryptionKey,  // $ MISSING: isSink=encryption-key
-        fileURL: fileURL,  // $ MISSING: isSink=path-injection
+        encryptionKey: encryptionKey,  // $ isSink=encryption-key
+        fileURL: fileURL,  // $ isSink=path-injection
         inMemoryIdentifier: nil,
         migrationBlock: nil,
         objectTypes: nil,
@@ -83,14 +83,14 @@ func testQualifiedConstructors(
 
     _ = Realm.Configuration(
         deleteRealmIfMigrationNeeded: false,
-        encryptionKey: encryptionKey,  // $ MISSING: isSink=encryption-key
-        fileURL: fileURL,  // $ MISSING: isSink=path-injection
+        encryptionKey: encryptionKey,  // $ isSink=encryption-key
+        fileURL: fileURL,  // $ isSink=path-injection
         inMemoryIdentifier: nil,
         migrationBlock: nil,
         objectTypes: nil,
         readOnly: false,
         schemaVersion: 0,
-        seedFilePath: seedFilePath,  // $ MISSING: isSink=path-injection
+        seedFilePath: seedFilePath,  // $ isSink=path-injection
         shouldCompactOnLaunch: nil,
         syncConfiguration: nil)
 }

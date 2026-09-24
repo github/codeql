@@ -38,13 +38,19 @@ private predicate parsedRawMethodName(string rawName, string name, string argLab
   )
 }
 
-private string getNameFromExpr(Expr e) {
+private string getSimpleNameFromExpr(Expr e) {
   result = e.(Identifier).getValue()
   or
   result = e.(MemberAccessExpr).getMemberName()
 }
 
-private string getCalleeName(CallExpr call) { result = getNameFromExpr(call.getCallee()) }
+private string getQualifiedNameFromExpr(Expr e) {
+  result = e.(Identifier).getValue()
+  or
+  exists(MemberAccessExpr access | e = access |
+    result = getQualifiedNameFromExpr(access.getBase()) + "." + access.getMemberName()
+  )
+}
 
 private string getArgLabelsFromCall(CallExpr call) {
   result =
@@ -64,8 +70,14 @@ private string getArgLabelsFromCall(CallExpr call) {
 }
 
 pragma[nomagic]
-private predicate callSelector(CallExpr call, string name, string argLabels) {
-  name = getCalleeName(call) and
+private predicate methodCallSelector(CallExpr call, string name, string argLabels) {
+  name = getSimpleNameFromExpr(call.getCallee()) and
+  argLabels = getArgLabelsFromCall(call)
+}
+
+pragma[nomagic]
+private predicate constructorCallSelector(CallExpr call, string name, string argLabels) {
+  name = getQualifiedNameFromExpr(call.getCallee()) and
   argLabels = getArgLabelsFromCall(call)
 }
 
@@ -74,7 +86,7 @@ private import codeql.unified.internal.NameBinding as NameBinding
 private predicate isSubclassOfType(ClassLikeDeclaration cls, string typeName) {
   typeName = any(Selector s).getTypeString() and
   (
-    getNameFromExpr(cls.getABaseType().getType()) = typeName
+    getQualifiedNameFromExpr(cls.getABaseType().getType()) = typeName
     or
     isSubclassOfType(cls.getABaseClass(), typeName)
   )
@@ -146,26 +158,26 @@ private class Selector extends TSelector {
         ")" + this.getArgTypes()
   }
 
-  /** Holds if `name,argLabels` should be used to join with `callSelector`. */
-  private predicate effectiveCallSelector(string name, string argLabels) {
+  /** Holds if `name,argLabels` should be used to join with `methodCallSelector`. */
+  pragma[nomagic]
+  private predicate matchesMethodCallSelector(string name, string argLabels) {
     this = MkSelector(_, _, name, argLabels, _) and
     name != "init"
-    or
-    // For "init" models there are two issues at play:
-    // - Constructor calls do not mention "init", they just mention the type name, e.g. `String(...)` not `String.init(...)`.
-    // - The name "init" is too common to match on anyway. It is more precise to match on the type name in this case.
-    //
-    // So to wire up "init" calls correctly, we just use the type name as the method name.
-    //
-    // TODO: does not work for compound access like `String.Index(...)` where the type is `String.Index` but the
-    // call selector only uses `Index`.
+  }
+
+  /** Holds if `name,argLabels` should be used to join with `constructorCallSelector`. */
+  pragma[nomagic]
+  private predicate matchesConstructorCallSelector(string name, string argLabels) {
     this = MkSelector(name, _, "init", argLabels, _)
   }
 
   predicate matchesCall(CallExpr call) {
     exists(string name, string argLabels |
-      this.effectiveCallSelector(name, argLabels) and
-      callSelector(call, name, argLabels)
+      this.matchesMethodCallSelector(name, argLabels) and
+      methodCallSelector(call, name, argLabels)
+      or
+      this.matchesConstructorCallSelector(name, argLabels) and
+      constructorCallSelector(call, name, argLabels)
     )
   }
 
