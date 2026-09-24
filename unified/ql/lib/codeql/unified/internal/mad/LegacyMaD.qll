@@ -29,6 +29,7 @@ private predicate modelContainsMethodName(string name) {
 }
 
 private predicate parsedRawMethodName(string rawName, string name, string argLabels) {
+  // NOTE: We only support method names at the moment, not property names like `String.count`.
   modelContainsMethodName(rawName) and
   exists(string regex |
     regex = "([^(]+)\\((.*)\\)" and
