@@ -1268,15 +1268,9 @@ mod tests {
                 .collect::<BTreeSet<_>>(),
             BTreeSet::from(["getAnItem", "getItem"]),
         );
-        assert!(
-            container
-                .predicates
-                .iter()
-                .all(|predicate| {
-                    predicate.body == Some(ql::Expression::Pred("none", vec![]))
-                        && !predicate.is_final
-                })
-        );
+        assert!(container.predicates.iter().all(|predicate| {
+            predicate.body == Some(ql::Expression::Pred("none", vec![])) && !predicate.is_final
+        }));
 
         let alpha = classes
             .iter()
