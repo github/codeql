@@ -7,8 +7,11 @@ isSink
 | test.swift:23:20:23:25 | string | regex-use |
 | test.swift:24:20:24:25 | string | regex-use |
 | test.swift:71:37:71:49 | encodedOffset | string-length |
+| test.swift:72:42:72:54 | encodedOffset | string-length |
 | test.swift:76:24:76:36 | encryptionKey | encryption-key |
 | test.swift:77:18:77:24 | fileURL | path-injection |
+| test.swift:88:24:88:36 | encryptionKey | encryption-key |
+| test.swift:89:18:89:24 | fileURL | path-injection |
 | test.swift:100:24:100:36 | encryptionKey | encryption-key |
 | test.swift:101:18:101:24 | fileURL | path-injection |
 | test.swift:107:23:107:34 | seedFilePath | path-injection |
@@ -16,6 +19,7 @@ isSource
 | test.swift:4:5:4:27 | String(...) | remote |
 | test.swift:5:5:5:44 | String(...) | remote |
 | test.swift:6:5:6:48 | String(...) | remote |
+| test.swift:7:5:7:32 | ... .init(...) | remote |
 | test.swift:9:5:9:34 | String(...) | local |
 | test.swift:10:5:12:24 | String(...) | local |
 | test.swift:13:5:15:28 | String(...) | local |
