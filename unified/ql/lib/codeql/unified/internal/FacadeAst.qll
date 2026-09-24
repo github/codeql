@@ -269,7 +269,7 @@ module Unified {
     /** Gets the number of arguments passed to this call, not counting implicit arguments like receiver. */
     int getNumberOfArguments() { result = count(this.getAnArgument()) }
 
-    /** Gets the number of arguments passed to this call, not counting implicit arguments like receiver. */
+    /** Gets the number of positional arguments passed to this call. */
     int getNumberOfPositionalArguments() {
       result = count(Argument arg | arg = this.getAnArgument() and arg.isPositional())
     }
