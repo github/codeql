@@ -101,9 +101,9 @@ module DataFlowInput implements InputSig<Location> {
   // Post-update nodes
   //
   class PostUpdateNode extends Node {
-    PostUpdateNode() { this = getPostUpdateNode(_) }
+    PostUpdateNode() { this = any(Node n).getPostUpdateNode() }
 
-    Node getPreUpdateNode() { this = getPostUpdateNode(result) }
+    Node getPreUpdateNode() { this = result.getPostUpdateNode() }
   }
 
   //

@@ -12,5 +12,7 @@ dependencies:
   codeql/dataflow: ${workspace}
   codeql/namebinding: ${workspace}
   codeql/util: ${workspace}
+dataExtensions:
+  - ext/*.model.yml
 warnOnImplicitThis: true
 compileForOverlayEval: true

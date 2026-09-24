@@ -148,7 +148,7 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
         if isUseStep = true then value = "use-use" else value = "def-use"
       )
       or
-      node2 = getPostUpdateNode(node1) and
+      node2 = node1.getPostUpdateNode() and
       value = "post-update"
     )
   }
