@@ -395,136 +395,146 @@ edges
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
 | azure.cpp:295:10:295:20 | contentType | azure.cpp:295:10:295:20 | contentType | provenance |  |
-| bal.cpp:144:19:144:26 | call to source | bal.cpp:145:23:145:51 | *call to data | provenance | TaintFunction |
-| bal.cpp:145:23:145:51 | *call to data | bal.cpp:148:17:148:18 | *sb | provenance |  |
-| bal.cpp:148:17:148:18 | *sb | bal.cpp:148:21:148:24 | decode output argument | provenance | MaD:99 |
-| bal.cpp:148:21:148:24 | decode output argument | bal.cpp:149:7:149:17 | * ... | provenance | TaintFunction |
-| bal.cpp:153:19:153:26 | call to source | bal.cpp:154:21:154:47 | *call to data | provenance | TaintFunction |
-| bal.cpp:154:21:154:47 | *call to data | bal.cpp:157:17:157:19 | ** ... | provenance |  |
-| bal.cpp:157:17:157:19 | ** ... | bal.cpp:157:22:157:25 | decode output argument | provenance | MaD:99 |
-| bal.cpp:157:22:157:25 | decode output argument | bal.cpp:158:7:158:17 | * ... | provenance | TaintFunction |
-| bal.cpp:162:19:162:26 | call to source | bal.cpp:163:23:163:51 | *call to data | provenance | TaintFunction |
-| bal.cpp:163:23:163:51 | *call to data | bal.cpp:166:20:166:21 | *sb | provenance |  |
-| bal.cpp:166:20:166:21 | *sb | bal.cpp:166:24:166:27 | decodeAny output argument | provenance | MaD:100 |
-| bal.cpp:166:24:166:27 | decodeAny output argument | bal.cpp:167:7:167:17 | * ... | provenance | TaintFunction |
-| bal.cpp:172:18:172:25 | call to source | bal.cpp:175:40:175:42 | *obj | provenance | TaintFunction |
-| bal.cpp:175:17:175:37 | encode output argument | bal.cpp:176:7:176:12 | access to array | provenance |  |
-| bal.cpp:175:40:175:42 | *obj | bal.cpp:175:17:175:37 | encode output argument | provenance | MaD:101 |
-| bal.cpp:180:18:180:25 | call to source | bal.cpp:183:43:183:45 | *obj | provenance | TaintFunction |
-| bal.cpp:183:20:183:40 | encodeAny output argument | bal.cpp:184:7:184:12 | access to array | provenance |  |
-| bal.cpp:183:43:183:45 | *obj | bal.cpp:183:20:183:40 | encodeAny output argument | provenance | MaD:102 |
-| bal.cpp:191:19:191:26 | call to source | bal.cpp:192:23:192:51 | *call to data | provenance | TaintFunction |
-| bal.cpp:192:23:192:51 | *call to data | bal.cpp:196:17:196:18 | *sb | provenance |  |
-| bal.cpp:196:17:196:18 | *sb | bal.cpp:196:21:196:24 | decode output argument | provenance | MaD:103 |
-| bal.cpp:196:21:196:24 | decode output argument | bal.cpp:197:7:197:17 | * ... | provenance | TaintFunction |
-| bal.cpp:201:19:201:26 | call to source | bal.cpp:202:21:202:47 | *call to data | provenance | TaintFunction |
-| bal.cpp:202:21:202:47 | *call to data | bal.cpp:206:17:206:19 | ** ... | provenance |  |
-| bal.cpp:206:17:206:19 | ** ... | bal.cpp:206:22:206:25 | decode output argument | provenance | MaD:103 |
-| bal.cpp:206:22:206:25 | decode output argument | bal.cpp:207:7:207:17 | * ... | provenance | TaintFunction |
-| bal.cpp:211:19:211:26 | call to source | bal.cpp:212:23:212:51 | *call to data | provenance | TaintFunction |
-| bal.cpp:212:23:212:51 | *call to data | bal.cpp:215:20:215:21 | *sb | provenance |  |
-| bal.cpp:215:20:215:21 | *sb | bal.cpp:215:24:215:27 | decodeAny output argument | provenance | MaD:104 |
-| bal.cpp:215:24:215:27 | decodeAny output argument | bal.cpp:216:7:216:17 | * ... | provenance | TaintFunction |
-| bal.cpp:220:18:220:25 | call to source | bal.cpp:224:40:224:42 | *obj | provenance | TaintFunction |
-| bal.cpp:224:17:224:37 | encode output argument | bal.cpp:225:7:225:12 | access to array | provenance |  |
-| bal.cpp:224:40:224:42 | *obj | bal.cpp:224:17:224:37 | encode output argument | provenance | MaD:105 |
-| bal.cpp:229:18:229:25 | call to source | bal.cpp:232:43:232:45 | *obj | provenance | TaintFunction |
-| bal.cpp:232:20:232:40 | encodeAny output argument | bal.cpp:233:7:233:12 | access to array | provenance |  |
-| bal.cpp:232:43:232:45 | *obj | bal.cpp:232:20:232:40 | encodeAny output argument | provenance | MaD:106 |
-| bal.cpp:238:19:238:26 | call to source | bal.cpp:239:23:239:51 | *call to data | provenance | TaintFunction |
-| bal.cpp:239:23:239:51 | *call to data | bal.cpp:242:17:242:18 | *sb | provenance |  |
-| bal.cpp:242:17:242:18 | *sb | bal.cpp:242:21:242:24 | decode output argument | provenance | MaD:103 |
-| bal.cpp:242:21:242:24 | decode output argument | bal.cpp:245:40:245:42 | *rec | provenance |  |
-| bal.cpp:245:17:245:37 | encode output argument | bal.cpp:246:7:246:12 | access to array | provenance |  |
-| bal.cpp:245:40:245:42 | *rec | bal.cpp:245:17:245:37 | encode output argument | provenance | MaD:105 |
-| bal.cpp:261:19:261:26 | call to source | bal.cpp:262:21:262:47 | *call to data | provenance | TaintFunction |
-| bal.cpp:262:21:262:47 | *call to data | bal.cpp:265:17:265:19 | ** ... | provenance |  |
-| bal.cpp:265:17:265:19 | ** ... | bal.cpp:265:22:265:25 | decode output argument | provenance | MaD:108 |
-| bal.cpp:265:22:265:25 | decode output argument | bal.cpp:266:7:266:17 | * ... | provenance | TaintFunction |
-| bal.cpp:270:19:270:26 | call to source | bal.cpp:271:21:271:47 | *call to data | provenance | TaintFunction |
-| bal.cpp:271:21:271:47 | *call to data | bal.cpp:274:35:274:37 | ** ... | provenance |  |
-| bal.cpp:274:34:274:52 | *call to decode | bal.cpp:274:34:274:52 | *call to decode | provenance |  |
-| bal.cpp:274:34:274:52 | *call to decode | bal.cpp:275:7:275:17 | * ... | provenance |  |
-| bal.cpp:274:35:274:37 | ** ... | bal.cpp:274:34:274:52 | *call to decode | provenance | MaD:109 |
-| bal.cpp:279:19:279:26 | call to source | bal.cpp:280:23:280:51 | *call to data | provenance | TaintFunction |
-| bal.cpp:280:23:280:51 | *call to data | bal.cpp:283:17:283:18 | *sb | provenance |  |
-| bal.cpp:283:17:283:18 | *sb | bal.cpp:283:21:283:24 | decode output argument | provenance | MaD:110 |
-| bal.cpp:283:21:283:24 | decode output argument | bal.cpp:284:7:284:17 | * ... | provenance | TaintFunction |
-| bal.cpp:288:19:288:26 | call to source | bal.cpp:291:22:291:25 | *call to data | provenance | TaintFunction |
-| bal.cpp:291:22:291:25 | *call to data | bal.cpp:291:43:291:46 | decode output argument | provenance | MaD:107 |
-| bal.cpp:291:43:291:46 | decode output argument | bal.cpp:292:7:292:17 | * ... | provenance | TaintFunction |
-| bal.cpp:316:19:316:26 | call to source | bal.cpp:317:21:317:47 | *call to data | provenance | TaintFunction |
-| bal.cpp:317:21:317:47 | *call to data | bal.cpp:320:20:320:22 | ** ... | provenance |  |
-| bal.cpp:320:20:320:22 | ** ... | bal.cpp:320:25:320:28 | decodeAny output argument | provenance | MaD:114 |
-| bal.cpp:320:25:320:28 | decodeAny output argument | bal.cpp:321:7:321:17 | * ... | provenance | TaintFunction |
-| bal.cpp:325:19:325:26 | call to source | bal.cpp:326:21:326:47 | *call to data | provenance | TaintFunction |
-| bal.cpp:326:21:326:47 | *call to data | bal.cpp:329:38:329:40 | ** ... | provenance |  |
-| bal.cpp:329:37:329:48 | *call to decodeAny | bal.cpp:329:37:329:48 | *call to decodeAny | provenance |  |
-| bal.cpp:329:37:329:48 | *call to decodeAny | bal.cpp:330:7:330:17 | * ... | provenance |  |
-| bal.cpp:329:38:329:40 | ** ... | bal.cpp:329:37:329:48 | *call to decodeAny | provenance | MaD:115 |
-| bal.cpp:334:19:334:26 | call to source | bal.cpp:335:23:335:51 | *call to data | provenance | TaintFunction |
-| bal.cpp:335:23:335:51 | *call to data | bal.cpp:338:20:338:21 | *sb | provenance |  |
-| bal.cpp:338:20:338:21 | *sb | bal.cpp:338:24:338:27 | decodeAny output argument | provenance | MaD:116 |
-| bal.cpp:338:24:338:27 | decodeAny output argument | bal.cpp:339:7:339:17 | * ... | provenance | TaintFunction |
-| bal.cpp:343:19:343:26 | call to source | bal.cpp:344:21:344:47 | *call to data | provenance | TaintFunction |
-| bal.cpp:344:21:344:47 | *call to data | bal.cpp:347:20:347:22 | ** ... | provenance |  |
-| bal.cpp:347:20:347:22 | ** ... | bal.cpp:347:25:347:28 | decodeAny output argument | provenance | MaD:111 |
-| bal.cpp:347:25:347:28 | decodeAny output argument | bal.cpp:348:7:348:19 | * ... | provenance |  |
-| bal.cpp:352:19:352:26 | call to source | bal.cpp:353:21:353:47 | *call to data | provenance | TaintFunction |
-| bal.cpp:353:21:353:47 | *call to data | bal.cpp:356:38:356:40 | ** ... | provenance |  |
-| bal.cpp:356:37:356:48 | *call to decodeAny | bal.cpp:356:37:356:48 | *call to decodeAny | provenance |  |
-| bal.cpp:356:37:356:48 | *call to decodeAny | bal.cpp:357:7:357:17 | * ... | provenance |  |
-| bal.cpp:356:38:356:40 | ** ... | bal.cpp:356:37:356:48 | *call to decodeAny | provenance | MaD:112 |
-| bal.cpp:361:19:361:26 | call to source | bal.cpp:362:23:362:51 | *call to data | provenance | TaintFunction |
-| bal.cpp:362:23:362:51 | *call to data | bal.cpp:365:20:365:21 | *sb | provenance |  |
-| bal.cpp:365:20:365:21 | *sb | bal.cpp:365:24:365:27 | decodeAny output argument | provenance | MaD:113 |
-| bal.cpp:365:24:365:27 | decodeAny output argument | bal.cpp:366:7:366:19 | * ... | provenance |  |
-| bal.cpp:370:18:370:25 | call to source | bal.cpp:373:40:373:42 | *obj | provenance | TaintFunction |
-| bal.cpp:373:17:373:37 | encode output argument | bal.cpp:374:7:374:12 | access to array | provenance |  |
-| bal.cpp:373:40:373:42 | *obj | bal.cpp:373:17:373:37 | encode output argument | provenance | MaD:119 |
-| bal.cpp:378:18:378:25 | call to source | bal.cpp:381:39:381:41 | *obj | provenance | TaintFunction |
-| bal.cpp:381:17:381:36 | encode output argument | bal.cpp:382:7:382:12 | access to array | provenance |  |
-| bal.cpp:381:39:381:41 | *obj | bal.cpp:381:17:381:36 | encode output argument | provenance | MaD:118 |
-| bal.cpp:386:18:386:25 | call to source | bal.cpp:389:57:389:59 | *obj | provenance | TaintFunction |
-| bal.cpp:389:34:389:61 | *call to encode | bal.cpp:389:34:389:61 | *call to encode | provenance |  |
-| bal.cpp:389:34:389:61 | *call to encode | bal.cpp:390:7:390:17 | * ... | provenance |  |
-| bal.cpp:389:57:389:59 | *obj | bal.cpp:389:34:389:61 | *call to encode | provenance | MaD:117 |
-| bal.cpp:394:19:394:26 | call to source | bal.cpp:395:21:395:47 | *call to data | provenance | TaintFunction |
-| bal.cpp:395:21:395:47 | *call to data | bal.cpp:398:35:398:37 | ** ... | provenance |  |
-| bal.cpp:398:34:398:44 | *call to encode | bal.cpp:398:34:398:44 | *call to encode | provenance |  |
-| bal.cpp:398:34:398:44 | *call to encode | bal.cpp:399:7:399:17 | * ... | provenance |  |
-| bal.cpp:398:35:398:37 | ** ... | bal.cpp:398:34:398:44 | *call to encode | provenance | MaD:117 |
-| bal.cpp:403:18:403:25 | call to source | bal.cpp:406:47:406:49 | *obj | provenance | TaintFunction |
-| bal.cpp:406:25:406:44 | encodeToStream output argument | bal.cpp:407:7:407:12 | access to array | provenance |  |
-| bal.cpp:406:47:406:49 | *obj | bal.cpp:406:25:406:44 | encodeToStream output argument | provenance | MaD:127 |
-| bal.cpp:421:18:421:25 | call to source | bal.cpp:424:43:424:45 | *obj | provenance | TaintFunction |
-| bal.cpp:424:20:424:40 | encodeAny output argument | bal.cpp:425:7:425:12 | access to array | provenance |  |
-| bal.cpp:424:43:424:45 | *obj | bal.cpp:424:20:424:40 | encodeAny output argument | provenance | MaD:125 |
-| bal.cpp:429:18:429:25 | call to source | bal.cpp:432:42:432:44 | *obj | provenance | TaintFunction |
-| bal.cpp:432:20:432:39 | encodeAny output argument | bal.cpp:433:7:433:12 | access to array | provenance |  |
-| bal.cpp:432:42:432:44 | *obj | bal.cpp:432:20:432:39 | encodeAny output argument | provenance | MaD:124 |
-| bal.cpp:437:18:437:25 | call to source | bal.cpp:440:60:440:62 | *obj | provenance | TaintFunction |
-| bal.cpp:440:37:440:64 | *call to encodeAny | bal.cpp:440:37:440:64 | *call to encodeAny | provenance |  |
-| bal.cpp:440:37:440:64 | *call to encodeAny | bal.cpp:441:7:441:17 | * ... | provenance |  |
-| bal.cpp:440:60:440:62 | *obj | bal.cpp:440:37:440:64 | *call to encodeAny | provenance | MaD:123 |
-| bal.cpp:445:18:445:25 | call to source | bal.cpp:448:50:448:52 | *obj | provenance | TaintFunction |
-| bal.cpp:448:28:448:47 | encodeAnyToStream output argument | bal.cpp:449:7:449:12 | access to array | provenance |  |
-| bal.cpp:448:50:448:52 | *obj | bal.cpp:448:28:448:47 | encodeAnyToStream output argument | provenance | MaD:126 |
-| bal.cpp:453:19:453:26 | call to source | bal.cpp:454:41:454:86 | *call to data | provenance | TaintFunction |
-| bal.cpp:454:41:454:86 | *call to data | bal.cpp:457:43:457:46 | ** ... | provenance |  |
-| bal.cpp:457:20:457:40 | encodeAny output argument | bal.cpp:458:7:458:12 | access to array | provenance |  |
-| bal.cpp:457:43:457:46 | ** ... | bal.cpp:457:20:457:40 | encodeAny output argument | provenance | MaD:122 |
-| bal.cpp:462:19:462:26 | call to source | bal.cpp:463:41:463:86 | *call to data | provenance | TaintFunction |
-| bal.cpp:463:41:463:86 | *call to data | bal.cpp:466:42:466:45 | ** ... | provenance |  |
-| bal.cpp:466:20:466:39 | encodeAny output argument | bal.cpp:467:7:467:12 | access to array | provenance |  |
-| bal.cpp:466:42:466:45 | ** ... | bal.cpp:466:20:466:39 | encodeAny output argument | provenance | MaD:121 |
-| bal.cpp:471:19:471:26 | call to source | bal.cpp:472:41:472:86 | *call to data | provenance | TaintFunction |
-| bal.cpp:472:41:472:86 | *call to data | bal.cpp:475:60:475:63 | ** ... | provenance |  |
-| bal.cpp:475:37:475:65 | *call to encodeAny | bal.cpp:475:37:475:65 | *call to encodeAny | provenance |  |
-| bal.cpp:475:37:475:65 | *call to encodeAny | bal.cpp:476:7:476:17 | * ... | provenance |  |
-| bal.cpp:475:38:475:57 | encodeAny output argument | bal.cpp:477:7:477:12 | access to array | provenance |  |
-| bal.cpp:475:60:475:63 | ** ... | bal.cpp:475:37:475:65 | *call to encodeAny | provenance | MaD:120 |
-| bal.cpp:475:60:475:63 | ** ... | bal.cpp:475:38:475:57 | encodeAny output argument | provenance | MaD:121 |
+| bal.cpp:145:19:145:26 | call to source | bal.cpp:146:23:146:51 | *call to data | provenance | TaintFunction |
+| bal.cpp:146:23:146:51 | *call to data | bal.cpp:149:17:149:18 | *sb | provenance |  |
+| bal.cpp:149:17:149:18 | *sb | bal.cpp:149:21:149:24 | decode output argument | provenance | MaD:99 |
+| bal.cpp:149:21:149:24 | decode output argument | bal.cpp:150:7:150:17 | * ... | provenance | TaintFunction |
+| bal.cpp:154:19:154:26 | call to source | bal.cpp:155:21:155:47 | *call to data | provenance | TaintFunction |
+| bal.cpp:155:21:155:47 | *call to data | bal.cpp:158:17:158:19 | ** ... | provenance |  |
+| bal.cpp:158:17:158:19 | ** ... | bal.cpp:158:22:158:25 | decode output argument | provenance | MaD:99 |
+| bal.cpp:158:22:158:25 | decode output argument | bal.cpp:159:7:159:17 | * ... | provenance | TaintFunction |
+| bal.cpp:163:19:163:26 | call to source | bal.cpp:164:23:164:51 | *call to data | provenance | TaintFunction |
+| bal.cpp:164:23:164:51 | *call to data | bal.cpp:167:20:167:21 | *sb | provenance |  |
+| bal.cpp:167:20:167:21 | *sb | bal.cpp:167:24:167:27 | decodeAny output argument | provenance | MaD:100 |
+| bal.cpp:167:24:167:27 | decodeAny output argument | bal.cpp:168:7:168:17 | * ... | provenance | TaintFunction |
+| bal.cpp:173:18:173:25 | call to source | bal.cpp:176:40:176:42 | *obj | provenance | TaintFunction |
+| bal.cpp:176:17:176:37 | encode output argument | bal.cpp:177:7:177:12 | access to array | provenance |  |
+| bal.cpp:176:40:176:42 | *obj | bal.cpp:176:17:176:37 | encode output argument | provenance | MaD:101 |
+| bal.cpp:181:18:181:25 | call to source | bal.cpp:184:43:184:45 | *obj | provenance | TaintFunction |
+| bal.cpp:184:20:184:40 | encodeAny output argument | bal.cpp:185:7:185:12 | access to array | provenance |  |
+| bal.cpp:184:43:184:45 | *obj | bal.cpp:184:20:184:40 | encodeAny output argument | provenance | MaD:102 |
+| bal.cpp:192:19:192:26 | call to source | bal.cpp:193:23:193:51 | *call to data | provenance | TaintFunction |
+| bal.cpp:193:23:193:51 | *call to data | bal.cpp:197:17:197:18 | *sb | provenance |  |
+| bal.cpp:197:17:197:18 | *sb | bal.cpp:197:21:197:24 | decode output argument | provenance | MaD:103 |
+| bal.cpp:197:21:197:24 | decode output argument | bal.cpp:198:7:198:17 | * ... | provenance | TaintFunction |
+| bal.cpp:202:19:202:26 | call to source | bal.cpp:203:21:203:47 | *call to data | provenance | TaintFunction |
+| bal.cpp:203:21:203:47 | *call to data | bal.cpp:207:17:207:19 | ** ... | provenance |  |
+| bal.cpp:207:17:207:19 | ** ... | bal.cpp:207:22:207:25 | decode output argument | provenance | MaD:103 |
+| bal.cpp:207:22:207:25 | decode output argument | bal.cpp:208:7:208:17 | * ... | provenance | TaintFunction |
+| bal.cpp:212:19:212:26 | call to source | bal.cpp:213:23:213:51 | *call to data | provenance | TaintFunction |
+| bal.cpp:213:23:213:51 | *call to data | bal.cpp:216:20:216:21 | *sb | provenance |  |
+| bal.cpp:216:20:216:21 | *sb | bal.cpp:216:24:216:27 | decodeAny output argument | provenance | MaD:104 |
+| bal.cpp:216:24:216:27 | decodeAny output argument | bal.cpp:217:7:217:17 | * ... | provenance | TaintFunction |
+| bal.cpp:221:18:221:25 | call to source | bal.cpp:225:40:225:42 | *obj | provenance | TaintFunction |
+| bal.cpp:225:17:225:37 | encode output argument | bal.cpp:226:7:226:12 | access to array | provenance |  |
+| bal.cpp:225:40:225:42 | *obj | bal.cpp:225:17:225:37 | encode output argument | provenance | MaD:105 |
+| bal.cpp:230:18:230:25 | call to source | bal.cpp:233:43:233:45 | *obj | provenance | TaintFunction |
+| bal.cpp:233:20:233:40 | encodeAny output argument | bal.cpp:234:7:234:12 | access to array | provenance |  |
+| bal.cpp:233:43:233:45 | *obj | bal.cpp:233:20:233:40 | encodeAny output argument | provenance | MaD:106 |
+| bal.cpp:239:19:239:26 | call to source | bal.cpp:240:23:240:51 | *call to data | provenance | TaintFunction |
+| bal.cpp:240:23:240:51 | *call to data | bal.cpp:243:17:243:18 | *sb | provenance |  |
+| bal.cpp:243:17:243:18 | *sb | bal.cpp:243:21:243:24 | decode output argument | provenance | MaD:103 |
+| bal.cpp:243:21:243:24 | decode output argument | bal.cpp:246:40:246:42 | *rec | provenance |  |
+| bal.cpp:246:17:246:37 | encode output argument | bal.cpp:247:7:247:12 | access to array | provenance |  |
+| bal.cpp:246:40:246:42 | *rec | bal.cpp:246:17:246:37 | encode output argument | provenance | MaD:105 |
+| bal.cpp:262:19:262:26 | call to source | bal.cpp:263:21:263:47 | *call to data | provenance | TaintFunction |
+| bal.cpp:263:21:263:47 | *call to data | bal.cpp:266:17:266:19 | ** ... | provenance |  |
+| bal.cpp:266:17:266:19 | ** ... | bal.cpp:266:22:266:25 | decode output argument | provenance | MaD:108 |
+| bal.cpp:266:22:266:25 | decode output argument | bal.cpp:267:7:267:17 | * ... | provenance | TaintFunction |
+| bal.cpp:271:19:271:26 | call to source | bal.cpp:272:21:272:47 | *call to data | provenance | TaintFunction |
+| bal.cpp:272:21:272:47 | *call to data | bal.cpp:275:35:275:37 | ** ... | provenance |  |
+| bal.cpp:275:34:275:52 | *call to decode | bal.cpp:275:34:275:52 | *call to decode | provenance |  |
+| bal.cpp:275:34:275:52 | *call to decode | bal.cpp:276:7:276:17 | * ... | provenance |  |
+| bal.cpp:275:35:275:37 | ** ... | bal.cpp:275:34:275:52 | *call to decode | provenance | MaD:109 |
+| bal.cpp:275:35:275:37 | ** ... | bal.cpp:275:40:275:43 | decode output argument | provenance | MaD:108 |
+| bal.cpp:275:40:275:43 | decode output argument | bal.cpp:277:7:277:9 | out | provenance |  |
+| bal.cpp:281:19:281:26 | call to source | bal.cpp:282:23:282:51 | *call to data | provenance | TaintFunction |
+| bal.cpp:282:23:282:51 | *call to data | bal.cpp:285:17:285:18 | *sb | provenance |  |
+| bal.cpp:285:17:285:18 | *sb | bal.cpp:285:21:285:24 | decode output argument | provenance | MaD:110 |
+| bal.cpp:285:21:285:24 | decode output argument | bal.cpp:286:7:286:17 | * ... | provenance | TaintFunction |
+| bal.cpp:290:19:290:26 | call to source | bal.cpp:293:22:293:25 | *call to data | provenance | TaintFunction |
+| bal.cpp:293:22:293:25 | *call to data | bal.cpp:293:43:293:46 | decode output argument | provenance | MaD:107 |
+| bal.cpp:293:43:293:46 | decode output argument | bal.cpp:294:7:294:17 | * ... | provenance | TaintFunction |
+| bal.cpp:318:19:318:26 | call to source | bal.cpp:319:21:319:47 | *call to data | provenance | TaintFunction |
+| bal.cpp:319:21:319:47 | *call to data | bal.cpp:322:20:322:22 | ** ... | provenance |  |
+| bal.cpp:322:20:322:22 | ** ... | bal.cpp:322:25:322:28 | decodeAny output argument | provenance | MaD:114 |
+| bal.cpp:322:25:322:28 | decodeAny output argument | bal.cpp:323:7:323:17 | * ... | provenance | TaintFunction |
+| bal.cpp:327:19:327:26 | call to source | bal.cpp:328:21:328:47 | *call to data | provenance | TaintFunction |
+| bal.cpp:328:21:328:47 | *call to data | bal.cpp:331:38:331:40 | ** ... | provenance |  |
+| bal.cpp:331:37:331:48 | *call to decodeAny | bal.cpp:331:37:331:48 | *call to decodeAny | provenance |  |
+| bal.cpp:331:37:331:48 | *call to decodeAny | bal.cpp:332:7:332:17 | * ... | provenance |  |
+| bal.cpp:331:38:331:40 | ** ... | bal.cpp:331:37:331:48 | *call to decodeAny | provenance | MaD:115 |
+| bal.cpp:331:38:331:40 | ** ... | bal.cpp:331:43:331:46 | decodeAny output argument | provenance | MaD:114 |
+| bal.cpp:331:43:331:46 | decodeAny output argument | bal.cpp:333:7:333:9 | out | provenance |  |
+| bal.cpp:337:19:337:26 | call to source | bal.cpp:338:23:338:51 | *call to data | provenance | TaintFunction |
+| bal.cpp:338:23:338:51 | *call to data | bal.cpp:341:20:341:21 | *sb | provenance |  |
+| bal.cpp:341:20:341:21 | *sb | bal.cpp:341:24:341:27 | decodeAny output argument | provenance | MaD:116 |
+| bal.cpp:341:24:341:27 | decodeAny output argument | bal.cpp:342:7:342:17 | * ... | provenance | TaintFunction |
+| bal.cpp:346:19:346:26 | call to source | bal.cpp:347:21:347:47 | *call to data | provenance | TaintFunction |
+| bal.cpp:347:21:347:47 | *call to data | bal.cpp:350:20:350:22 | ** ... | provenance |  |
+| bal.cpp:350:20:350:22 | ** ... | bal.cpp:350:25:350:28 | decodeAny output argument | provenance | MaD:111 |
+| bal.cpp:350:25:350:28 | decodeAny output argument | bal.cpp:351:7:351:19 | * ... | provenance |  |
+| bal.cpp:355:19:355:26 | call to source | bal.cpp:356:21:356:47 | *call to data | provenance | TaintFunction |
+| bal.cpp:356:21:356:47 | *call to data | bal.cpp:359:38:359:40 | ** ... | provenance |  |
+| bal.cpp:359:37:359:48 | *call to decodeAny | bal.cpp:359:37:359:48 | *call to decodeAny | provenance |  |
+| bal.cpp:359:37:359:48 | *call to decodeAny | bal.cpp:360:7:360:17 | * ... | provenance |  |
+| bal.cpp:359:38:359:40 | ** ... | bal.cpp:359:37:359:48 | *call to decodeAny | provenance | MaD:112 |
+| bal.cpp:359:38:359:40 | ** ... | bal.cpp:359:43:359:46 | decodeAny output argument | provenance | MaD:111 |
+| bal.cpp:359:43:359:46 | decodeAny output argument | bal.cpp:361:7:361:19 | * ... | provenance |  |
+| bal.cpp:365:19:365:26 | call to source | bal.cpp:366:23:366:51 | *call to data | provenance | TaintFunction |
+| bal.cpp:366:23:366:51 | *call to data | bal.cpp:369:20:369:21 | *sb | provenance |  |
+| bal.cpp:369:20:369:21 | *sb | bal.cpp:369:24:369:27 | decodeAny output argument | provenance | MaD:113 |
+| bal.cpp:369:24:369:27 | decodeAny output argument | bal.cpp:370:7:370:19 | * ... | provenance |  |
+| bal.cpp:374:18:374:25 | call to source | bal.cpp:377:40:377:42 | *obj | provenance | TaintFunction |
+| bal.cpp:377:17:377:37 | encode output argument | bal.cpp:378:7:378:12 | access to array | provenance |  |
+| bal.cpp:377:40:377:42 | *obj | bal.cpp:377:17:377:37 | encode output argument | provenance | MaD:119 |
+| bal.cpp:382:18:382:25 | call to source | bal.cpp:385:39:385:41 | *obj | provenance | TaintFunction |
+| bal.cpp:385:17:385:36 | encode output argument | bal.cpp:386:7:386:12 | access to array | provenance |  |
+| bal.cpp:385:39:385:41 | *obj | bal.cpp:385:17:385:36 | encode output argument | provenance | MaD:118 |
+| bal.cpp:390:18:390:25 | call to source | bal.cpp:393:57:393:59 | *obj | provenance | TaintFunction |
+| bal.cpp:393:34:393:61 | *call to encode | bal.cpp:393:34:393:61 | *call to encode | provenance |  |
+| bal.cpp:393:34:393:61 | *call to encode | bal.cpp:394:7:394:17 | * ... | provenance |  |
+| bal.cpp:393:35:393:54 | encode output argument | bal.cpp:395:7:395:12 | access to array | provenance |  |
+| bal.cpp:393:57:393:59 | *obj | bal.cpp:393:34:393:61 | *call to encode | provenance | MaD:117 |
+| bal.cpp:393:57:393:59 | *obj | bal.cpp:393:35:393:54 | encode output argument | provenance | MaD:118 |
+| bal.cpp:399:19:399:26 | call to source | bal.cpp:400:21:400:47 | *call to data | provenance | TaintFunction |
+| bal.cpp:400:21:400:47 | *call to data | bal.cpp:403:35:403:37 | ** ... | provenance |  |
+| bal.cpp:403:34:403:44 | *call to encode | bal.cpp:403:34:403:44 | *call to encode | provenance |  |
+| bal.cpp:403:34:403:44 | *call to encode | bal.cpp:404:7:404:17 | * ... | provenance |  |
+| bal.cpp:403:35:403:37 | ** ... | bal.cpp:403:34:403:44 | *call to encode | provenance | MaD:117 |
+| bal.cpp:408:18:408:25 | call to source | bal.cpp:411:47:411:49 | *obj | provenance | TaintFunction |
+| bal.cpp:411:25:411:44 | encodeToStream output argument | bal.cpp:412:7:412:12 | access to array | provenance |  |
+| bal.cpp:411:47:411:49 | *obj | bal.cpp:411:25:411:44 | encodeToStream output argument | provenance | MaD:127 |
+| bal.cpp:426:18:426:25 | call to source | bal.cpp:429:43:429:45 | *obj | provenance | TaintFunction |
+| bal.cpp:429:20:429:40 | encodeAny output argument | bal.cpp:430:7:430:12 | access to array | provenance |  |
+| bal.cpp:429:43:429:45 | *obj | bal.cpp:429:20:429:40 | encodeAny output argument | provenance | MaD:125 |
+| bal.cpp:434:18:434:25 | call to source | bal.cpp:437:42:437:44 | *obj | provenance | TaintFunction |
+| bal.cpp:437:20:437:39 | encodeAny output argument | bal.cpp:438:7:438:12 | access to array | provenance |  |
+| bal.cpp:437:42:437:44 | *obj | bal.cpp:437:20:437:39 | encodeAny output argument | provenance | MaD:124 |
+| bal.cpp:442:18:442:25 | call to source | bal.cpp:445:60:445:62 | *obj | provenance | TaintFunction |
+| bal.cpp:445:37:445:64 | *call to encodeAny | bal.cpp:445:37:445:64 | *call to encodeAny | provenance |  |
+| bal.cpp:445:37:445:64 | *call to encodeAny | bal.cpp:446:7:446:17 | * ... | provenance |  |
+| bal.cpp:445:38:445:57 | encodeAny output argument | bal.cpp:447:7:447:12 | access to array | provenance |  |
+| bal.cpp:445:60:445:62 | *obj | bal.cpp:445:37:445:64 | *call to encodeAny | provenance | MaD:123 |
+| bal.cpp:445:60:445:62 | *obj | bal.cpp:445:38:445:57 | encodeAny output argument | provenance | MaD:124 |
+| bal.cpp:451:18:451:25 | call to source | bal.cpp:454:50:454:52 | *obj | provenance | TaintFunction |
+| bal.cpp:454:28:454:47 | encodeAnyToStream output argument | bal.cpp:455:7:455:12 | access to array | provenance |  |
+| bal.cpp:454:50:454:52 | *obj | bal.cpp:454:28:454:47 | encodeAnyToStream output argument | provenance | MaD:126 |
+| bal.cpp:459:19:459:26 | call to source | bal.cpp:460:41:460:86 | *call to data | provenance | TaintFunction |
+| bal.cpp:460:41:460:86 | *call to data | bal.cpp:463:43:463:46 | ** ... | provenance |  |
+| bal.cpp:463:20:463:40 | encodeAny output argument | bal.cpp:464:7:464:12 | access to array | provenance |  |
+| bal.cpp:463:43:463:46 | ** ... | bal.cpp:463:20:463:40 | encodeAny output argument | provenance | MaD:122 |
+| bal.cpp:468:19:468:26 | call to source | bal.cpp:469:41:469:86 | *call to data | provenance | TaintFunction |
+| bal.cpp:469:41:469:86 | *call to data | bal.cpp:472:42:472:45 | ** ... | provenance |  |
+| bal.cpp:472:20:472:39 | encodeAny output argument | bal.cpp:473:7:473:12 | access to array | provenance |  |
+| bal.cpp:472:42:472:45 | ** ... | bal.cpp:472:20:472:39 | encodeAny output argument | provenance | MaD:121 |
+| bal.cpp:477:19:477:26 | call to source | bal.cpp:478:41:478:86 | *call to data | provenance | TaintFunction |
+| bal.cpp:478:41:478:86 | *call to data | bal.cpp:481:60:481:63 | ** ... | provenance |  |
+| bal.cpp:481:37:481:65 | *call to encodeAny | bal.cpp:481:37:481:65 | *call to encodeAny | provenance |  |
+| bal.cpp:481:37:481:65 | *call to encodeAny | bal.cpp:482:7:482:17 | * ... | provenance |  |
+| bal.cpp:481:38:481:57 | encodeAny output argument | bal.cpp:483:7:483:12 | access to array | provenance |  |
+| bal.cpp:481:60:481:63 | ** ... | bal.cpp:481:37:481:65 | *call to encodeAny | provenance | MaD:120 |
+| bal.cpp:481:60:481:63 | ** ... | bal.cpp:481:38:481:57 | encodeAny output argument | provenance | MaD:121 |
 | bdlbb.cpp:54:16:54:23 | call to source | bdlbb.cpp:56:49:56:52 | *call to data | provenance | TaintFunction |
 | bdlbb.cpp:56:37:56:41 | copy output argument | bdlbb.cpp:58:42:58:45 | *blob | provenance |  |
 | bdlbb.cpp:56:49:56:52 | *call to data | bdlbb.cpp:56:37:56:41 | copy output argument | provenance | MaD:132 |
@@ -1472,169 +1482,179 @@ nodes
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
-| bal.cpp:144:19:144:26 | call to source | semmle.label | call to source |
-| bal.cpp:145:23:145:51 | *call to data | semmle.label | *call to data |
-| bal.cpp:148:17:148:18 | *sb | semmle.label | *sb |
-| bal.cpp:148:21:148:24 | decode output argument | semmle.label | decode output argument |
-| bal.cpp:149:7:149:17 | * ... | semmle.label | * ... |
-| bal.cpp:153:19:153:26 | call to source | semmle.label | call to source |
-| bal.cpp:154:21:154:47 | *call to data | semmle.label | *call to data |
-| bal.cpp:157:17:157:19 | ** ... | semmle.label | ** ... |
-| bal.cpp:157:22:157:25 | decode output argument | semmle.label | decode output argument |
-| bal.cpp:158:7:158:17 | * ... | semmle.label | * ... |
-| bal.cpp:162:19:162:26 | call to source | semmle.label | call to source |
-| bal.cpp:163:23:163:51 | *call to data | semmle.label | *call to data |
-| bal.cpp:166:20:166:21 | *sb | semmle.label | *sb |
-| bal.cpp:166:24:166:27 | decodeAny output argument | semmle.label | decodeAny output argument |
-| bal.cpp:167:7:167:17 | * ... | semmle.label | * ... |
-| bal.cpp:172:18:172:25 | call to source | semmle.label | call to source |
-| bal.cpp:175:17:175:37 | encode output argument | semmle.label | encode output argument |
-| bal.cpp:175:40:175:42 | *obj | semmle.label | *obj |
-| bal.cpp:176:7:176:12 | access to array | semmle.label | access to array |
-| bal.cpp:180:18:180:25 | call to source | semmle.label | call to source |
-| bal.cpp:183:20:183:40 | encodeAny output argument | semmle.label | encodeAny output argument |
-| bal.cpp:183:43:183:45 | *obj | semmle.label | *obj |
-| bal.cpp:184:7:184:12 | access to array | semmle.label | access to array |
-| bal.cpp:191:19:191:26 | call to source | semmle.label | call to source |
-| bal.cpp:192:23:192:51 | *call to data | semmle.label | *call to data |
-| bal.cpp:196:17:196:18 | *sb | semmle.label | *sb |
-| bal.cpp:196:21:196:24 | decode output argument | semmle.label | decode output argument |
-| bal.cpp:197:7:197:17 | * ... | semmle.label | * ... |
-| bal.cpp:201:19:201:26 | call to source | semmle.label | call to source |
-| bal.cpp:202:21:202:47 | *call to data | semmle.label | *call to data |
-| bal.cpp:206:17:206:19 | ** ... | semmle.label | ** ... |
-| bal.cpp:206:22:206:25 | decode output argument | semmle.label | decode output argument |
-| bal.cpp:207:7:207:17 | * ... | semmle.label | * ... |
-| bal.cpp:211:19:211:26 | call to source | semmle.label | call to source |
-| bal.cpp:212:23:212:51 | *call to data | semmle.label | *call to data |
-| bal.cpp:215:20:215:21 | *sb | semmle.label | *sb |
-| bal.cpp:215:24:215:27 | decodeAny output argument | semmle.label | decodeAny output argument |
-| bal.cpp:216:7:216:17 | * ... | semmle.label | * ... |
-| bal.cpp:220:18:220:25 | call to source | semmle.label | call to source |
-| bal.cpp:224:17:224:37 | encode output argument | semmle.label | encode output argument |
-| bal.cpp:224:40:224:42 | *obj | semmle.label | *obj |
-| bal.cpp:225:7:225:12 | access to array | semmle.label | access to array |
-| bal.cpp:229:18:229:25 | call to source | semmle.label | call to source |
-| bal.cpp:232:20:232:40 | encodeAny output argument | semmle.label | encodeAny output argument |
-| bal.cpp:232:43:232:45 | *obj | semmle.label | *obj |
-| bal.cpp:233:7:233:12 | access to array | semmle.label | access to array |
-| bal.cpp:238:19:238:26 | call to source | semmle.label | call to source |
-| bal.cpp:239:23:239:51 | *call to data | semmle.label | *call to data |
-| bal.cpp:242:17:242:18 | *sb | semmle.label | *sb |
-| bal.cpp:242:21:242:24 | decode output argument | semmle.label | decode output argument |
-| bal.cpp:245:17:245:37 | encode output argument | semmle.label | encode output argument |
-| bal.cpp:245:40:245:42 | *rec | semmle.label | *rec |
-| bal.cpp:246:7:246:12 | access to array | semmle.label | access to array |
-| bal.cpp:261:19:261:26 | call to source | semmle.label | call to source |
-| bal.cpp:262:21:262:47 | *call to data | semmle.label | *call to data |
-| bal.cpp:265:17:265:19 | ** ... | semmle.label | ** ... |
-| bal.cpp:265:22:265:25 | decode output argument | semmle.label | decode output argument |
-| bal.cpp:266:7:266:17 | * ... | semmle.label | * ... |
-| bal.cpp:270:19:270:26 | call to source | semmle.label | call to source |
-| bal.cpp:271:21:271:47 | *call to data | semmle.label | *call to data |
-| bal.cpp:274:34:274:52 | *call to decode | semmle.label | *call to decode |
-| bal.cpp:274:34:274:52 | *call to decode | semmle.label | *call to decode |
-| bal.cpp:274:35:274:37 | ** ... | semmle.label | ** ... |
-| bal.cpp:275:7:275:17 | * ... | semmle.label | * ... |
-| bal.cpp:279:19:279:26 | call to source | semmle.label | call to source |
-| bal.cpp:280:23:280:51 | *call to data | semmle.label | *call to data |
-| bal.cpp:283:17:283:18 | *sb | semmle.label | *sb |
-| bal.cpp:283:21:283:24 | decode output argument | semmle.label | decode output argument |
-| bal.cpp:284:7:284:17 | * ... | semmle.label | * ... |
-| bal.cpp:288:19:288:26 | call to source | semmle.label | call to source |
-| bal.cpp:291:22:291:25 | *call to data | semmle.label | *call to data |
-| bal.cpp:291:43:291:46 | decode output argument | semmle.label | decode output argument |
-| bal.cpp:292:7:292:17 | * ... | semmle.label | * ... |
-| bal.cpp:316:19:316:26 | call to source | semmle.label | call to source |
-| bal.cpp:317:21:317:47 | *call to data | semmle.label | *call to data |
-| bal.cpp:320:20:320:22 | ** ... | semmle.label | ** ... |
-| bal.cpp:320:25:320:28 | decodeAny output argument | semmle.label | decodeAny output argument |
-| bal.cpp:321:7:321:17 | * ... | semmle.label | * ... |
-| bal.cpp:325:19:325:26 | call to source | semmle.label | call to source |
-| bal.cpp:326:21:326:47 | *call to data | semmle.label | *call to data |
-| bal.cpp:329:37:329:48 | *call to decodeAny | semmle.label | *call to decodeAny |
-| bal.cpp:329:37:329:48 | *call to decodeAny | semmle.label | *call to decodeAny |
-| bal.cpp:329:38:329:40 | ** ... | semmle.label | ** ... |
-| bal.cpp:330:7:330:17 | * ... | semmle.label | * ... |
-| bal.cpp:334:19:334:26 | call to source | semmle.label | call to source |
-| bal.cpp:335:23:335:51 | *call to data | semmle.label | *call to data |
-| bal.cpp:338:20:338:21 | *sb | semmle.label | *sb |
-| bal.cpp:338:24:338:27 | decodeAny output argument | semmle.label | decodeAny output argument |
-| bal.cpp:339:7:339:17 | * ... | semmle.label | * ... |
-| bal.cpp:343:19:343:26 | call to source | semmle.label | call to source |
-| bal.cpp:344:21:344:47 | *call to data | semmle.label | *call to data |
-| bal.cpp:347:20:347:22 | ** ... | semmle.label | ** ... |
-| bal.cpp:347:25:347:28 | decodeAny output argument | semmle.label | decodeAny output argument |
-| bal.cpp:348:7:348:19 | * ... | semmle.label | * ... |
-| bal.cpp:352:19:352:26 | call to source | semmle.label | call to source |
-| bal.cpp:353:21:353:47 | *call to data | semmle.label | *call to data |
-| bal.cpp:356:37:356:48 | *call to decodeAny | semmle.label | *call to decodeAny |
-| bal.cpp:356:37:356:48 | *call to decodeAny | semmle.label | *call to decodeAny |
-| bal.cpp:356:38:356:40 | ** ... | semmle.label | ** ... |
-| bal.cpp:357:7:357:17 | * ... | semmle.label | * ... |
-| bal.cpp:361:19:361:26 | call to source | semmle.label | call to source |
-| bal.cpp:362:23:362:51 | *call to data | semmle.label | *call to data |
-| bal.cpp:365:20:365:21 | *sb | semmle.label | *sb |
-| bal.cpp:365:24:365:27 | decodeAny output argument | semmle.label | decodeAny output argument |
-| bal.cpp:366:7:366:19 | * ... | semmle.label | * ... |
-| bal.cpp:370:18:370:25 | call to source | semmle.label | call to source |
-| bal.cpp:373:17:373:37 | encode output argument | semmle.label | encode output argument |
-| bal.cpp:373:40:373:42 | *obj | semmle.label | *obj |
-| bal.cpp:374:7:374:12 | access to array | semmle.label | access to array |
-| bal.cpp:378:18:378:25 | call to source | semmle.label | call to source |
-| bal.cpp:381:17:381:36 | encode output argument | semmle.label | encode output argument |
-| bal.cpp:381:39:381:41 | *obj | semmle.label | *obj |
-| bal.cpp:382:7:382:12 | access to array | semmle.label | access to array |
-| bal.cpp:386:18:386:25 | call to source | semmle.label | call to source |
-| bal.cpp:389:34:389:61 | *call to encode | semmle.label | *call to encode |
-| bal.cpp:389:34:389:61 | *call to encode | semmle.label | *call to encode |
-| bal.cpp:389:57:389:59 | *obj | semmle.label | *obj |
-| bal.cpp:390:7:390:17 | * ... | semmle.label | * ... |
-| bal.cpp:394:19:394:26 | call to source | semmle.label | call to source |
-| bal.cpp:395:21:395:47 | *call to data | semmle.label | *call to data |
-| bal.cpp:398:34:398:44 | *call to encode | semmle.label | *call to encode |
-| bal.cpp:398:34:398:44 | *call to encode | semmle.label | *call to encode |
-| bal.cpp:398:35:398:37 | ** ... | semmle.label | ** ... |
-| bal.cpp:399:7:399:17 | * ... | semmle.label | * ... |
-| bal.cpp:403:18:403:25 | call to source | semmle.label | call to source |
-| bal.cpp:406:25:406:44 | encodeToStream output argument | semmle.label | encodeToStream output argument |
-| bal.cpp:406:47:406:49 | *obj | semmle.label | *obj |
-| bal.cpp:407:7:407:12 | access to array | semmle.label | access to array |
-| bal.cpp:421:18:421:25 | call to source | semmle.label | call to source |
-| bal.cpp:424:20:424:40 | encodeAny output argument | semmle.label | encodeAny output argument |
-| bal.cpp:424:43:424:45 | *obj | semmle.label | *obj |
-| bal.cpp:425:7:425:12 | access to array | semmle.label | access to array |
-| bal.cpp:429:18:429:25 | call to source | semmle.label | call to source |
-| bal.cpp:432:20:432:39 | encodeAny output argument | semmle.label | encodeAny output argument |
-| bal.cpp:432:42:432:44 | *obj | semmle.label | *obj |
-| bal.cpp:433:7:433:12 | access to array | semmle.label | access to array |
-| bal.cpp:437:18:437:25 | call to source | semmle.label | call to source |
-| bal.cpp:440:37:440:64 | *call to encodeAny | semmle.label | *call to encodeAny |
-| bal.cpp:440:37:440:64 | *call to encodeAny | semmle.label | *call to encodeAny |
-| bal.cpp:440:60:440:62 | *obj | semmle.label | *obj |
-| bal.cpp:441:7:441:17 | * ... | semmle.label | * ... |
-| bal.cpp:445:18:445:25 | call to source | semmle.label | call to source |
-| bal.cpp:448:28:448:47 | encodeAnyToStream output argument | semmle.label | encodeAnyToStream output argument |
-| bal.cpp:448:50:448:52 | *obj | semmle.label | *obj |
-| bal.cpp:449:7:449:12 | access to array | semmle.label | access to array |
-| bal.cpp:453:19:453:26 | call to source | semmle.label | call to source |
-| bal.cpp:454:41:454:86 | *call to data | semmle.label | *call to data |
-| bal.cpp:457:20:457:40 | encodeAny output argument | semmle.label | encodeAny output argument |
-| bal.cpp:457:43:457:46 | ** ... | semmle.label | ** ... |
-| bal.cpp:458:7:458:12 | access to array | semmle.label | access to array |
-| bal.cpp:462:19:462:26 | call to source | semmle.label | call to source |
-| bal.cpp:463:41:463:86 | *call to data | semmle.label | *call to data |
-| bal.cpp:466:20:466:39 | encodeAny output argument | semmle.label | encodeAny output argument |
-| bal.cpp:466:42:466:45 | ** ... | semmle.label | ** ... |
-| bal.cpp:467:7:467:12 | access to array | semmle.label | access to array |
-| bal.cpp:471:19:471:26 | call to source | semmle.label | call to source |
-| bal.cpp:472:41:472:86 | *call to data | semmle.label | *call to data |
-| bal.cpp:475:37:475:65 | *call to encodeAny | semmle.label | *call to encodeAny |
-| bal.cpp:475:37:475:65 | *call to encodeAny | semmle.label | *call to encodeAny |
-| bal.cpp:475:38:475:57 | encodeAny output argument | semmle.label | encodeAny output argument |
-| bal.cpp:475:60:475:63 | ** ... | semmle.label | ** ... |
-| bal.cpp:476:7:476:17 | * ... | semmle.label | * ... |
-| bal.cpp:477:7:477:12 | access to array | semmle.label | access to array |
+| bal.cpp:145:19:145:26 | call to source | semmle.label | call to source |
+| bal.cpp:146:23:146:51 | *call to data | semmle.label | *call to data |
+| bal.cpp:149:17:149:18 | *sb | semmle.label | *sb |
+| bal.cpp:149:21:149:24 | decode output argument | semmle.label | decode output argument |
+| bal.cpp:150:7:150:17 | * ... | semmle.label | * ... |
+| bal.cpp:154:19:154:26 | call to source | semmle.label | call to source |
+| bal.cpp:155:21:155:47 | *call to data | semmle.label | *call to data |
+| bal.cpp:158:17:158:19 | ** ... | semmle.label | ** ... |
+| bal.cpp:158:22:158:25 | decode output argument | semmle.label | decode output argument |
+| bal.cpp:159:7:159:17 | * ... | semmle.label | * ... |
+| bal.cpp:163:19:163:26 | call to source | semmle.label | call to source |
+| bal.cpp:164:23:164:51 | *call to data | semmle.label | *call to data |
+| bal.cpp:167:20:167:21 | *sb | semmle.label | *sb |
+| bal.cpp:167:24:167:27 | decodeAny output argument | semmle.label | decodeAny output argument |
+| bal.cpp:168:7:168:17 | * ... | semmle.label | * ... |
+| bal.cpp:173:18:173:25 | call to source | semmle.label | call to source |
+| bal.cpp:176:17:176:37 | encode output argument | semmle.label | encode output argument |
+| bal.cpp:176:40:176:42 | *obj | semmle.label | *obj |
+| bal.cpp:177:7:177:12 | access to array | semmle.label | access to array |
+| bal.cpp:181:18:181:25 | call to source | semmle.label | call to source |
+| bal.cpp:184:20:184:40 | encodeAny output argument | semmle.label | encodeAny output argument |
+| bal.cpp:184:43:184:45 | *obj | semmle.label | *obj |
+| bal.cpp:185:7:185:12 | access to array | semmle.label | access to array |
+| bal.cpp:192:19:192:26 | call to source | semmle.label | call to source |
+| bal.cpp:193:23:193:51 | *call to data | semmle.label | *call to data |
+| bal.cpp:197:17:197:18 | *sb | semmle.label | *sb |
+| bal.cpp:197:21:197:24 | decode output argument | semmle.label | decode output argument |
+| bal.cpp:198:7:198:17 | * ... | semmle.label | * ... |
+| bal.cpp:202:19:202:26 | call to source | semmle.label | call to source |
+| bal.cpp:203:21:203:47 | *call to data | semmle.label | *call to data |
+| bal.cpp:207:17:207:19 | ** ... | semmle.label | ** ... |
+| bal.cpp:207:22:207:25 | decode output argument | semmle.label | decode output argument |
+| bal.cpp:208:7:208:17 | * ... | semmle.label | * ... |
+| bal.cpp:212:19:212:26 | call to source | semmle.label | call to source |
+| bal.cpp:213:23:213:51 | *call to data | semmle.label | *call to data |
+| bal.cpp:216:20:216:21 | *sb | semmle.label | *sb |
+| bal.cpp:216:24:216:27 | decodeAny output argument | semmle.label | decodeAny output argument |
+| bal.cpp:217:7:217:17 | * ... | semmle.label | * ... |
+| bal.cpp:221:18:221:25 | call to source | semmle.label | call to source |
+| bal.cpp:225:17:225:37 | encode output argument | semmle.label | encode output argument |
+| bal.cpp:225:40:225:42 | *obj | semmle.label | *obj |
+| bal.cpp:226:7:226:12 | access to array | semmle.label | access to array |
+| bal.cpp:230:18:230:25 | call to source | semmle.label | call to source |
+| bal.cpp:233:20:233:40 | encodeAny output argument | semmle.label | encodeAny output argument |
+| bal.cpp:233:43:233:45 | *obj | semmle.label | *obj |
+| bal.cpp:234:7:234:12 | access to array | semmle.label | access to array |
+| bal.cpp:239:19:239:26 | call to source | semmle.label | call to source |
+| bal.cpp:240:23:240:51 | *call to data | semmle.label | *call to data |
+| bal.cpp:243:17:243:18 | *sb | semmle.label | *sb |
+| bal.cpp:243:21:243:24 | decode output argument | semmle.label | decode output argument |
+| bal.cpp:246:17:246:37 | encode output argument | semmle.label | encode output argument |
+| bal.cpp:246:40:246:42 | *rec | semmle.label | *rec |
+| bal.cpp:247:7:247:12 | access to array | semmle.label | access to array |
+| bal.cpp:262:19:262:26 | call to source | semmle.label | call to source |
+| bal.cpp:263:21:263:47 | *call to data | semmle.label | *call to data |
+| bal.cpp:266:17:266:19 | ** ... | semmle.label | ** ... |
+| bal.cpp:266:22:266:25 | decode output argument | semmle.label | decode output argument |
+| bal.cpp:267:7:267:17 | * ... | semmle.label | * ... |
+| bal.cpp:271:19:271:26 | call to source | semmle.label | call to source |
+| bal.cpp:272:21:272:47 | *call to data | semmle.label | *call to data |
+| bal.cpp:275:34:275:52 | *call to decode | semmle.label | *call to decode |
+| bal.cpp:275:34:275:52 | *call to decode | semmle.label | *call to decode |
+| bal.cpp:275:35:275:37 | ** ... | semmle.label | ** ... |
+| bal.cpp:275:40:275:43 | decode output argument | semmle.label | decode output argument |
+| bal.cpp:276:7:276:17 | * ... | semmle.label | * ... |
+| bal.cpp:277:7:277:9 | out | semmle.label | out |
+| bal.cpp:281:19:281:26 | call to source | semmle.label | call to source |
+| bal.cpp:282:23:282:51 | *call to data | semmle.label | *call to data |
+| bal.cpp:285:17:285:18 | *sb | semmle.label | *sb |
+| bal.cpp:285:21:285:24 | decode output argument | semmle.label | decode output argument |
+| bal.cpp:286:7:286:17 | * ... | semmle.label | * ... |
+| bal.cpp:290:19:290:26 | call to source | semmle.label | call to source |
+| bal.cpp:293:22:293:25 | *call to data | semmle.label | *call to data |
+| bal.cpp:293:43:293:46 | decode output argument | semmle.label | decode output argument |
+| bal.cpp:294:7:294:17 | * ... | semmle.label | * ... |
+| bal.cpp:318:19:318:26 | call to source | semmle.label | call to source |
+| bal.cpp:319:21:319:47 | *call to data | semmle.label | *call to data |
+| bal.cpp:322:20:322:22 | ** ... | semmle.label | ** ... |
+| bal.cpp:322:25:322:28 | decodeAny output argument | semmle.label | decodeAny output argument |
+| bal.cpp:323:7:323:17 | * ... | semmle.label | * ... |
+| bal.cpp:327:19:327:26 | call to source | semmle.label | call to source |
+| bal.cpp:328:21:328:47 | *call to data | semmle.label | *call to data |
+| bal.cpp:331:37:331:48 | *call to decodeAny | semmle.label | *call to decodeAny |
+| bal.cpp:331:37:331:48 | *call to decodeAny | semmle.label | *call to decodeAny |
+| bal.cpp:331:38:331:40 | ** ... | semmle.label | ** ... |
+| bal.cpp:331:43:331:46 | decodeAny output argument | semmle.label | decodeAny output argument |
+| bal.cpp:332:7:332:17 | * ... | semmle.label | * ... |
+| bal.cpp:333:7:333:9 | out | semmle.label | out |
+| bal.cpp:337:19:337:26 | call to source | semmle.label | call to source |
+| bal.cpp:338:23:338:51 | *call to data | semmle.label | *call to data |
+| bal.cpp:341:20:341:21 | *sb | semmle.label | *sb |
+| bal.cpp:341:24:341:27 | decodeAny output argument | semmle.label | decodeAny output argument |
+| bal.cpp:342:7:342:17 | * ... | semmle.label | * ... |
+| bal.cpp:346:19:346:26 | call to source | semmle.label | call to source |
+| bal.cpp:347:21:347:47 | *call to data | semmle.label | *call to data |
+| bal.cpp:350:20:350:22 | ** ... | semmle.label | ** ... |
+| bal.cpp:350:25:350:28 | decodeAny output argument | semmle.label | decodeAny output argument |
+| bal.cpp:351:7:351:19 | * ... | semmle.label | * ... |
+| bal.cpp:355:19:355:26 | call to source | semmle.label | call to source |
+| bal.cpp:356:21:356:47 | *call to data | semmle.label | *call to data |
+| bal.cpp:359:37:359:48 | *call to decodeAny | semmle.label | *call to decodeAny |
+| bal.cpp:359:37:359:48 | *call to decodeAny | semmle.label | *call to decodeAny |
+| bal.cpp:359:38:359:40 | ** ... | semmle.label | ** ... |
+| bal.cpp:359:43:359:46 | decodeAny output argument | semmle.label | decodeAny output argument |
+| bal.cpp:360:7:360:17 | * ... | semmle.label | * ... |
+| bal.cpp:361:7:361:19 | * ... | semmle.label | * ... |
+| bal.cpp:365:19:365:26 | call to source | semmle.label | call to source |
+| bal.cpp:366:23:366:51 | *call to data | semmle.label | *call to data |
+| bal.cpp:369:20:369:21 | *sb | semmle.label | *sb |
+| bal.cpp:369:24:369:27 | decodeAny output argument | semmle.label | decodeAny output argument |
+| bal.cpp:370:7:370:19 | * ... | semmle.label | * ... |
+| bal.cpp:374:18:374:25 | call to source | semmle.label | call to source |
+| bal.cpp:377:17:377:37 | encode output argument | semmle.label | encode output argument |
+| bal.cpp:377:40:377:42 | *obj | semmle.label | *obj |
+| bal.cpp:378:7:378:12 | access to array | semmle.label | access to array |
+| bal.cpp:382:18:382:25 | call to source | semmle.label | call to source |
+| bal.cpp:385:17:385:36 | encode output argument | semmle.label | encode output argument |
+| bal.cpp:385:39:385:41 | *obj | semmle.label | *obj |
+| bal.cpp:386:7:386:12 | access to array | semmle.label | access to array |
+| bal.cpp:390:18:390:25 | call to source | semmle.label | call to source |
+| bal.cpp:393:34:393:61 | *call to encode | semmle.label | *call to encode |
+| bal.cpp:393:34:393:61 | *call to encode | semmle.label | *call to encode |
+| bal.cpp:393:35:393:54 | encode output argument | semmle.label | encode output argument |
+| bal.cpp:393:57:393:59 | *obj | semmle.label | *obj |
+| bal.cpp:394:7:394:17 | * ... | semmle.label | * ... |
+| bal.cpp:395:7:395:12 | access to array | semmle.label | access to array |
+| bal.cpp:399:19:399:26 | call to source | semmle.label | call to source |
+| bal.cpp:400:21:400:47 | *call to data | semmle.label | *call to data |
+| bal.cpp:403:34:403:44 | *call to encode | semmle.label | *call to encode |
+| bal.cpp:403:34:403:44 | *call to encode | semmle.label | *call to encode |
+| bal.cpp:403:35:403:37 | ** ... | semmle.label | ** ... |
+| bal.cpp:404:7:404:17 | * ... | semmle.label | * ... |
+| bal.cpp:408:18:408:25 | call to source | semmle.label | call to source |
+| bal.cpp:411:25:411:44 | encodeToStream output argument | semmle.label | encodeToStream output argument |
+| bal.cpp:411:47:411:49 | *obj | semmle.label | *obj |
+| bal.cpp:412:7:412:12 | access to array | semmle.label | access to array |
+| bal.cpp:426:18:426:25 | call to source | semmle.label | call to source |
+| bal.cpp:429:20:429:40 | encodeAny output argument | semmle.label | encodeAny output argument |
+| bal.cpp:429:43:429:45 | *obj | semmle.label | *obj |
+| bal.cpp:430:7:430:12 | access to array | semmle.label | access to array |
+| bal.cpp:434:18:434:25 | call to source | semmle.label | call to source |
+| bal.cpp:437:20:437:39 | encodeAny output argument | semmle.label | encodeAny output argument |
+| bal.cpp:437:42:437:44 | *obj | semmle.label | *obj |
+| bal.cpp:438:7:438:12 | access to array | semmle.label | access to array |
+| bal.cpp:442:18:442:25 | call to source | semmle.label | call to source |
+| bal.cpp:445:37:445:64 | *call to encodeAny | semmle.label | *call to encodeAny |
+| bal.cpp:445:37:445:64 | *call to encodeAny | semmle.label | *call to encodeAny |
+| bal.cpp:445:38:445:57 | encodeAny output argument | semmle.label | encodeAny output argument |
+| bal.cpp:445:60:445:62 | *obj | semmle.label | *obj |
+| bal.cpp:446:7:446:17 | * ... | semmle.label | * ... |
+| bal.cpp:447:7:447:12 | access to array | semmle.label | access to array |
+| bal.cpp:451:18:451:25 | call to source | semmle.label | call to source |
+| bal.cpp:454:28:454:47 | encodeAnyToStream output argument | semmle.label | encodeAnyToStream output argument |
+| bal.cpp:454:50:454:52 | *obj | semmle.label | *obj |
+| bal.cpp:455:7:455:12 | access to array | semmle.label | access to array |
+| bal.cpp:459:19:459:26 | call to source | semmle.label | call to source |
+| bal.cpp:460:41:460:86 | *call to data | semmle.label | *call to data |
+| bal.cpp:463:20:463:40 | encodeAny output argument | semmle.label | encodeAny output argument |
+| bal.cpp:463:43:463:46 | ** ... | semmle.label | ** ... |
+| bal.cpp:464:7:464:12 | access to array | semmle.label | access to array |
+| bal.cpp:468:19:468:26 | call to source | semmle.label | call to source |
+| bal.cpp:469:41:469:86 | *call to data | semmle.label | *call to data |
+| bal.cpp:472:20:472:39 | encodeAny output argument | semmle.label | encodeAny output argument |
+| bal.cpp:472:42:472:45 | ** ... | semmle.label | ** ... |
+| bal.cpp:473:7:473:12 | access to array | semmle.label | access to array |
+| bal.cpp:477:19:477:26 | call to source | semmle.label | call to source |
+| bal.cpp:478:41:478:86 | *call to data | semmle.label | *call to data |
+| bal.cpp:481:37:481:65 | *call to encodeAny | semmle.label | *call to encodeAny |
+| bal.cpp:481:37:481:65 | *call to encodeAny | semmle.label | *call to encodeAny |
+| bal.cpp:481:38:481:57 | encodeAny output argument | semmle.label | encodeAny output argument |
+| bal.cpp:481:60:481:63 | ** ... | semmle.label | ** ... |
+| bal.cpp:482:7:482:17 | * ... | semmle.label | * ... |
+| bal.cpp:483:7:483:12 | access to array | semmle.label | access to array |
 | bdlbb.cpp:54:16:54:23 | call to source | semmle.label | call to source |
 | bdlbb.cpp:56:37:56:41 | copy output argument | semmle.label | copy output argument |
 | bdlbb.cpp:56:49:56:52 | *call to data | semmle.label | *call to data |

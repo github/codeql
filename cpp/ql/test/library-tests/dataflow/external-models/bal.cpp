@@ -125,6 +125,7 @@ namespace balxml {
 
 char *source();
 void sink(char);
+void sink(bsl::string s);
 
 // Stand-in for a bdlat sequence type.
 struct Record {
@@ -134,8 +135,8 @@ struct Record {
 // A tainted stream is made by reinterpreting a tainted bsl::string, as in bslx.cpp. baljsn
 // and balxml only accept bdlat sequence/choice types; the stubs do not enforce that, and
 // most tests decode into a bsl::string so the result can be read back. The *_struct_* tests
-// show that a decoded struct is tainted as a whole but not through its fields, because
-// field accesses are not taint steps (see TaintTrackingUtil.qll).
+// show whole-object taint without general object-to-field flow. TaintInheritingContent
+// (FlowSteps.qll) enables inheritance for selected fields; Record::name is not modeled this way.
 
 // ===== balber (BER) =====
 
@@ -252,7 +253,7 @@ void test_baljsn_struct_field_no_flow() {
 	Record rec;
 	BloombergLP::baljsn::Decoder decoder;
 	decoder.decode(sb, &rec);
-	sink(rec.name[0]); // no flow: field reads from a tainted object are not taint steps
+	sink(rec.name[0]); // no flow: Record::name does not inherit whole-object taint
 }
 
 // ===== balxml (XML) =====
@@ -273,6 +274,7 @@ void test_balxml_decode_istream_return() {
 	BloombergLP::balxml::Decoder decoder;
 	bsl::istream &r = decoder.decode(*is, &out, "uri");
 	sink(*(char *)&r); // $ ir
+	sink(out); // $ ir
 }
 
 void test_balxml_decode_streambuf() {
@@ -328,6 +330,7 @@ void test_balxml_decodeAny_istream_return() {
 	BloombergLP::balxml::Decoder decoder;
 	bsl::istream &r = decoder.decodeAny(*is, &out);
 	sink(*(char *)&r); // $ ir
+	sink(out); // $ ir
 }
 
 void test_balxml_decodeAny_streambuf() {
@@ -355,6 +358,7 @@ void test_balxml_decodeAny_AnyRef_istream_return() {
 	BloombergLP::balxml::Decoder decoder;
 	bsl::istream &r = decoder.decodeAny(*is, &any);
 	sink(*(char *)&r); // $ ir
+	sink(*(char *)&any); // $ ir
 }
 
 void test_balxml_decodeAny_AnyRef_streambuf() {
@@ -388,6 +392,7 @@ void test_balxml_encode_ostream_return_from_object() {
 	BloombergLP::balxml::Encoder encoder;
 	bsl::ostream &r = encoder.encode(*(bsl::ostream *)buf, obj);
 	sink(*(char *)&r); // $ ir
+	sink(buf[0]); // $ ir
 }
 
 void test_balxml_encode_ostream_return_from_stream() {
@@ -397,6 +402,7 @@ void test_balxml_encode_ostream_return_from_stream() {
 	BloombergLP::balxml::Encoder encoder;
 	bsl::ostream &r = encoder.encode(*os, obj);
 	sink(*(char *)&r); // $ ir
+	sink(obj); // $ ir
 }
 
 void test_balxml_encodeToStream() {
@@ -439,6 +445,7 @@ void test_balxml_encodeAny_ostream_return_from_object() {
 	BloombergLP::balxml::Encoder encoder;
 	bsl::ostream &r = encoder.encodeAny(*(bsl::ostream *)buf, obj);
 	sink(*(char *)&r); // $ ir
+	sink(buf[0]); // $ ir
 }
 
 void test_balxml_encodeAnyToStream() {

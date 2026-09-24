@@ -68,61 +68,61 @@
 | azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument |
 | azure.cpp:287:79:287:98 | call to string | azure.cpp:287:62:287:99 | call to Url |
 | azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value |
-| bal.cpp:148:17:148:18 | *sb | bal.cpp:148:21:148:24 | decode output argument |
-| bal.cpp:157:17:157:19 | ** ... | bal.cpp:157:22:157:25 | decode output argument |
-| bal.cpp:166:20:166:21 | *sb | bal.cpp:166:24:166:27 | decodeAny output argument |
-| bal.cpp:175:40:175:42 | *obj | bal.cpp:175:17:175:37 | encode output argument |
-| bal.cpp:183:43:183:45 | *obj | bal.cpp:183:20:183:40 | encodeAny output argument |
-| bal.cpp:196:17:196:18 | *sb | bal.cpp:196:21:196:24 | decode output argument |
-| bal.cpp:206:17:206:19 | ** ... | bal.cpp:206:22:206:25 | decode output argument |
-| bal.cpp:215:20:215:21 | *sb | bal.cpp:215:24:215:27 | decodeAny output argument |
-| bal.cpp:224:40:224:42 | *obj | bal.cpp:224:17:224:37 | encode output argument |
-| bal.cpp:232:43:232:45 | *obj | bal.cpp:232:20:232:40 | encodeAny output argument |
-| bal.cpp:242:17:242:18 | *sb | bal.cpp:242:21:242:24 | decode output argument |
-| bal.cpp:245:40:245:42 | *rec | bal.cpp:245:17:245:37 | encode output argument |
-| bal.cpp:254:17:254:18 | *sb | bal.cpp:254:21:254:24 | decode output argument |
-| bal.cpp:265:17:265:19 | ** ... | bal.cpp:265:16:265:27 | *call to decode |
-| bal.cpp:265:17:265:19 | ** ... | bal.cpp:265:22:265:25 | decode output argument |
-| bal.cpp:274:35:274:37 | ** ... | bal.cpp:274:34:274:52 | *call to decode |
-| bal.cpp:274:35:274:37 | ** ... | bal.cpp:274:40:274:43 | decode output argument |
-| bal.cpp:283:17:283:18 | *sb | bal.cpp:283:21:283:24 | decode output argument |
-| bal.cpp:291:22:291:25 | *call to data | bal.cpp:291:43:291:46 | decode output argument |
-| bal.cpp:320:20:320:22 | ** ... | bal.cpp:320:19:320:30 | *call to decodeAny |
-| bal.cpp:320:20:320:22 | ** ... | bal.cpp:320:25:320:28 | decodeAny output argument |
-| bal.cpp:329:38:329:40 | ** ... | bal.cpp:329:37:329:48 | *call to decodeAny |
-| bal.cpp:329:38:329:40 | ** ... | bal.cpp:329:43:329:46 | decodeAny output argument |
-| bal.cpp:338:20:338:21 | *sb | bal.cpp:338:24:338:27 | decodeAny output argument |
-| bal.cpp:347:20:347:22 | ** ... | bal.cpp:347:19:347:30 | *call to decodeAny |
-| bal.cpp:347:20:347:22 | ** ... | bal.cpp:347:25:347:28 | decodeAny output argument |
-| bal.cpp:356:38:356:40 | ** ... | bal.cpp:356:37:356:48 | *call to decodeAny |
-| bal.cpp:356:38:356:40 | ** ... | bal.cpp:356:43:356:46 | decodeAny output argument |
-| bal.cpp:365:20:365:21 | *sb | bal.cpp:365:24:365:27 | decodeAny output argument |
-| bal.cpp:373:40:373:42 | *obj | bal.cpp:373:17:373:37 | encode output argument |
-| bal.cpp:381:17:381:36 | ** ... | bal.cpp:381:16:381:43 | *call to encode |
-| bal.cpp:381:39:381:41 | *obj | bal.cpp:381:16:381:43 | *call to encode |
-| bal.cpp:381:39:381:41 | *obj | bal.cpp:381:17:381:36 | encode output argument |
-| bal.cpp:389:35:389:54 | ** ... | bal.cpp:389:34:389:61 | *call to encode |
-| bal.cpp:389:57:389:59 | *obj | bal.cpp:389:34:389:61 | *call to encode |
-| bal.cpp:389:57:389:59 | *obj | bal.cpp:389:35:389:54 | encode output argument |
-| bal.cpp:398:35:398:37 | ** ... | bal.cpp:398:34:398:44 | *call to encode |
-| bal.cpp:398:40:398:42 | *obj | bal.cpp:398:34:398:44 | *call to encode |
-| bal.cpp:398:40:398:42 | *obj | bal.cpp:398:35:398:37 | encode output argument |
-| bal.cpp:406:47:406:49 | *obj | bal.cpp:406:25:406:44 | encodeToStream output argument |
-| bal.cpp:424:43:424:45 | *obj | bal.cpp:424:20:424:40 | encodeAny output argument |
-| bal.cpp:432:20:432:39 | ** ... | bal.cpp:432:19:432:46 | *call to encodeAny |
-| bal.cpp:432:42:432:44 | *obj | bal.cpp:432:19:432:46 | *call to encodeAny |
-| bal.cpp:432:42:432:44 | *obj | bal.cpp:432:20:432:39 | encodeAny output argument |
-| bal.cpp:440:38:440:57 | ** ... | bal.cpp:440:37:440:64 | *call to encodeAny |
-| bal.cpp:440:60:440:62 | *obj | bal.cpp:440:37:440:64 | *call to encodeAny |
-| bal.cpp:440:60:440:62 | *obj | bal.cpp:440:38:440:57 | encodeAny output argument |
-| bal.cpp:448:50:448:52 | *obj | bal.cpp:448:28:448:47 | encodeAnyToStream output argument |
-| bal.cpp:457:43:457:46 | ** ... | bal.cpp:457:20:457:40 | encodeAny output argument |
-| bal.cpp:466:20:466:39 | ** ... | bal.cpp:466:19:466:47 | *call to encodeAny |
-| bal.cpp:466:42:466:45 | ** ... | bal.cpp:466:19:466:47 | *call to encodeAny |
-| bal.cpp:466:42:466:45 | ** ... | bal.cpp:466:20:466:39 | encodeAny output argument |
-| bal.cpp:475:38:475:57 | ** ... | bal.cpp:475:37:475:65 | *call to encodeAny |
-| bal.cpp:475:60:475:63 | ** ... | bal.cpp:475:37:475:65 | *call to encodeAny |
-| bal.cpp:475:60:475:63 | ** ... | bal.cpp:475:38:475:57 | encodeAny output argument |
+| bal.cpp:149:17:149:18 | *sb | bal.cpp:149:21:149:24 | decode output argument |
+| bal.cpp:158:17:158:19 | ** ... | bal.cpp:158:22:158:25 | decode output argument |
+| bal.cpp:167:20:167:21 | *sb | bal.cpp:167:24:167:27 | decodeAny output argument |
+| bal.cpp:176:40:176:42 | *obj | bal.cpp:176:17:176:37 | encode output argument |
+| bal.cpp:184:43:184:45 | *obj | bal.cpp:184:20:184:40 | encodeAny output argument |
+| bal.cpp:197:17:197:18 | *sb | bal.cpp:197:21:197:24 | decode output argument |
+| bal.cpp:207:17:207:19 | ** ... | bal.cpp:207:22:207:25 | decode output argument |
+| bal.cpp:216:20:216:21 | *sb | bal.cpp:216:24:216:27 | decodeAny output argument |
+| bal.cpp:225:40:225:42 | *obj | bal.cpp:225:17:225:37 | encode output argument |
+| bal.cpp:233:43:233:45 | *obj | bal.cpp:233:20:233:40 | encodeAny output argument |
+| bal.cpp:243:17:243:18 | *sb | bal.cpp:243:21:243:24 | decode output argument |
+| bal.cpp:246:40:246:42 | *rec | bal.cpp:246:17:246:37 | encode output argument |
+| bal.cpp:255:17:255:18 | *sb | bal.cpp:255:21:255:24 | decode output argument |
+| bal.cpp:266:17:266:19 | ** ... | bal.cpp:266:16:266:27 | *call to decode |
+| bal.cpp:266:17:266:19 | ** ... | bal.cpp:266:22:266:25 | decode output argument |
+| bal.cpp:275:35:275:37 | ** ... | bal.cpp:275:34:275:52 | *call to decode |
+| bal.cpp:275:35:275:37 | ** ... | bal.cpp:275:40:275:43 | decode output argument |
+| bal.cpp:285:17:285:18 | *sb | bal.cpp:285:21:285:24 | decode output argument |
+| bal.cpp:293:22:293:25 | *call to data | bal.cpp:293:43:293:46 | decode output argument |
+| bal.cpp:322:20:322:22 | ** ... | bal.cpp:322:19:322:30 | *call to decodeAny |
+| bal.cpp:322:20:322:22 | ** ... | bal.cpp:322:25:322:28 | decodeAny output argument |
+| bal.cpp:331:38:331:40 | ** ... | bal.cpp:331:37:331:48 | *call to decodeAny |
+| bal.cpp:331:38:331:40 | ** ... | bal.cpp:331:43:331:46 | decodeAny output argument |
+| bal.cpp:341:20:341:21 | *sb | bal.cpp:341:24:341:27 | decodeAny output argument |
+| bal.cpp:350:20:350:22 | ** ... | bal.cpp:350:19:350:30 | *call to decodeAny |
+| bal.cpp:350:20:350:22 | ** ... | bal.cpp:350:25:350:28 | decodeAny output argument |
+| bal.cpp:359:38:359:40 | ** ... | bal.cpp:359:37:359:48 | *call to decodeAny |
+| bal.cpp:359:38:359:40 | ** ... | bal.cpp:359:43:359:46 | decodeAny output argument |
+| bal.cpp:369:20:369:21 | *sb | bal.cpp:369:24:369:27 | decodeAny output argument |
+| bal.cpp:377:40:377:42 | *obj | bal.cpp:377:17:377:37 | encode output argument |
+| bal.cpp:385:17:385:36 | ** ... | bal.cpp:385:16:385:43 | *call to encode |
+| bal.cpp:385:39:385:41 | *obj | bal.cpp:385:16:385:43 | *call to encode |
+| bal.cpp:385:39:385:41 | *obj | bal.cpp:385:17:385:36 | encode output argument |
+| bal.cpp:393:35:393:54 | ** ... | bal.cpp:393:34:393:61 | *call to encode |
+| bal.cpp:393:57:393:59 | *obj | bal.cpp:393:34:393:61 | *call to encode |
+| bal.cpp:393:57:393:59 | *obj | bal.cpp:393:35:393:54 | encode output argument |
+| bal.cpp:403:35:403:37 | ** ... | bal.cpp:403:34:403:44 | *call to encode |
+| bal.cpp:403:40:403:42 | *obj | bal.cpp:403:34:403:44 | *call to encode |
+| bal.cpp:403:40:403:42 | *obj | bal.cpp:403:35:403:37 | encode output argument |
+| bal.cpp:411:47:411:49 | *obj | bal.cpp:411:25:411:44 | encodeToStream output argument |
+| bal.cpp:429:43:429:45 | *obj | bal.cpp:429:20:429:40 | encodeAny output argument |
+| bal.cpp:437:20:437:39 | ** ... | bal.cpp:437:19:437:46 | *call to encodeAny |
+| bal.cpp:437:42:437:44 | *obj | bal.cpp:437:19:437:46 | *call to encodeAny |
+| bal.cpp:437:42:437:44 | *obj | bal.cpp:437:20:437:39 | encodeAny output argument |
+| bal.cpp:445:38:445:57 | ** ... | bal.cpp:445:37:445:64 | *call to encodeAny |
+| bal.cpp:445:60:445:62 | *obj | bal.cpp:445:37:445:64 | *call to encodeAny |
+| bal.cpp:445:60:445:62 | *obj | bal.cpp:445:38:445:57 | encodeAny output argument |
+| bal.cpp:454:50:454:52 | *obj | bal.cpp:454:28:454:47 | encodeAnyToStream output argument |
+| bal.cpp:463:43:463:46 | ** ... | bal.cpp:463:20:463:40 | encodeAny output argument |
+| bal.cpp:472:20:472:39 | ** ... | bal.cpp:472:19:472:47 | *call to encodeAny |
+| bal.cpp:472:42:472:45 | ** ... | bal.cpp:472:19:472:47 | *call to encodeAny |
+| bal.cpp:472:42:472:45 | ** ... | bal.cpp:472:20:472:39 | encodeAny output argument |
+| bal.cpp:481:38:481:57 | ** ... | bal.cpp:481:37:481:65 | *call to encodeAny |
+| bal.cpp:481:60:481:63 | ** ... | bal.cpp:481:37:481:65 | *call to encodeAny |
+| bal.cpp:481:60:481:63 | ** ... | bal.cpp:481:38:481:57 | encodeAny output argument |
 | bdlbb.cpp:56:49:56:52 | *call to data | bdlbb.cpp:56:37:56:41 | copy output argument |
 | bdlbb.cpp:58:42:58:45 | *blob | bdlbb.cpp:58:37:58:39 | copy output argument |
 | bdlbb.cpp:65:49:65:52 | *call to data | bdlbb.cpp:65:37:65:41 | copy output argument |
