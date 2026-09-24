@@ -129,9 +129,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
     vec![
         // ---- Top-level ----
         // These rules translate the swift-syntax AST (camelCase kind names),
-        // produced by the sibling `adapter` module from the `swift-syntax-parse`
-        // binary's JSON. Anything unmatched falls through to the
-        // `unsupported_node` fallback at the end.
+        // produced by the sibling `adapter` module from swift-syntax JSON.
+        // Known kinds without dedicated rules become `unsupported_node`;
+        // genuinely unknown kinds become `unhandled_node`.
         //
         // `sourceFile` holds its top-level statements in an (elided)
         // `statements` collection; each element is a `codeBlockItem` wrapping
@@ -1383,18 +1383,58 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 name_node: (identifier #{name})
                 bound: {bound})
         ),
-        // ---- Fallbacks ----
-        // Bare `_` (rather than `(_)`) so this matches both named nodes
-        // and unnamed tokens. Any unnamed token that escapes the
-        // input-schema-specific rules (e.g. captured operators in
-        // `additive_expression op: @op`) has its auto-translated value
-        // replaced with an `unsupported_node` whose source range is
-        // inherited from the original token, so `#{op}` still reads the
-        // original text.
+        // ---- Explicitly unsupported roots ----
+        // These kinds can reach translation independently, but we do not
+        // currently map them to the unified AST. Syntax nested inside one of
+        // these roots is discarded with its parent and needs no separate rule.
+        rule!((actorDecl) => (unsupported_node)),
+        rule!((attributedType) => (unsupported_node)),
+        rule!((borrowExpr) => (unsupported_node)),
+        rule!((classRestrictionType) => (unsupported_node)),
+        rule!((compositionType) => (unsupported_node)),
+        rule!((consumeExpr) => (unsupported_node)),
+        rule!((copyExpr) => (unsupported_node)),
+        rule!((deferStmt) => (unsupported_node)),
+        rule!((discardStmt) => (unsupported_node)),
+        rule!((fallThroughStmt) => (unsupported_node)),
+        rule!((ifConfigDecl) => (unsupported_node)),
+        rule!((implicitlyUnwrappedOptionalType) => (unsupported_node)),
+        rule!((inOutExpr) => (unsupported_node)),
+        rule!((inlineArrayType) => (unsupported_node)),
+        rule!((keyPathExpr) => (unsupported_node)),
+        rule!((macroDecl) => (unsupported_node)),
+        rule!((metatypeType) => (unsupported_node)),
+        rule!((namedOpaqueReturnType) => (unsupported_node)),
+        rule!((operatorDecl) => (unsupported_node)),
+        rule!((packElementExpr) => (unsupported_node)),
+        rule!((packElementType) => (unsupported_node)),
+        rule!((packExpansionExpr) => (unsupported_node)),
+        rule!((packExpansionType) => (unsupported_node)),
+        rule!((postfixIfConfigExpr) => (unsupported_node)),
+        rule!((postfixOperatorExpr) => (unsupported_node)),
+        rule!((poundSourceLocation) => (unsupported_node)),
+        rule!((precedenceGroupDecl) => (unsupported_node)),
+        rule!((someOrAnyType) => (unsupported_node)),
+        rule!((subscriptDecl) => (unsupported_node)),
+        rule!((suppressedType) => (unsupported_node)),
+        rule!((typeExpr) => (unsupported_node)),
+        rule!((unsafeExpr) => (unsupported_node)),
+        rule!((yieldStmt) => (unsupported_node)),
+        // Anything reaching this final generic handler has neither a
+        // dedicated rule nor an explicit unsupported entry.
         rule!(
-            _
+            _ @@node
             =>
-            (unsupported_node)
+            unhandled_node {
+                let input = ctx.ast.get_node(node).expect("matched node must exist");
+                tracing::error!(
+                    target: "unified_extractor",
+                    node_kind = input.kind_name(),
+                    source_range = ?input.source_range(),
+                    "Unhandled Swift syntax node reached translation"
+                );
+                tree!((unhandled_node))
+            }
         ),
     ]
 }
