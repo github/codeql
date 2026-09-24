@@ -82,6 +82,180 @@
 | bdlbb.cpp:92:48:92:51 | *call to data | bdlbb.cpp:92:37:92:40 | copy output argument |
 | bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument |
 | bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument |
+| bslx.cpp:138:11:138:16 | *stream | bslx.cpp:138:26:138:36 | *call to getInt32 |
+| bslx.cpp:154:46:154:49 | *call to data | bslx.cpp:154:34:154:39 | call to ByteInStream |
+| bslx.cpp:156:2:156:7 | *stream | bslx.cpp:156:17:156:20 | *call to getInt32 |
+| bslx.cpp:162:46:162:49 | *call to data | bslx.cpp:162:34:162:39 | call to ByteInStream |
+| bslx.cpp:164:2:164:7 | *stream | bslx.cpp:164:21:164:30 | *call to getArrayInt8 |
+| bslx.cpp:164:2:164:7 | *stream | bslx.cpp:164:22:164:24 | getArrayInt8 output argument |
+| bslx.cpp:170:46:170:49 | *call to data | bslx.cpp:170:34:170:39 | call to ByteInStream |
+| bslx.cpp:172:2:172:7 | *stream | bslx.cpp:172:18:172:23 | *call to getString |
+| bslx.cpp:172:2:172:7 | *stream | bslx.cpp:172:19:172:21 | getString output argument |
+| bslx.cpp:178:46:178:49 | *call to data | bslx.cpp:178:34:178:39 | call to ByteInStream |
+| bslx.cpp:181:2:181:7 | *stream | bslx.cpp:181:17:181:20 | *call to getInt32 |
+| bslx.cpp:181:17:181:20 | *call to getInt32 | bslx.cpp:181:30:181:35 | *call to getString |
+| bslx.cpp:181:17:181:20 | *call to getInt32 | bslx.cpp:181:31:181:33 | getString output argument |
+| bslx.cpp:188:20:188:23 | *call to data | bslx.cpp:188:2:188:7 | reset output argument |
+| bslx.cpp:190:2:190:7 | *stream | bslx.cpp:190:18:190:23 | *call to getString |
+| bslx.cpp:190:2:190:7 | *stream | bslx.cpp:190:19:190:21 | getString output argument |
+| bslx.cpp:197:57:197:58 | *sb | bslx.cpp:197:50:197:55 | call to GenericInStream |
+| bslx.cpp:199:2:199:7 | *stream | bslx.cpp:199:18:199:23 | *call to getString |
+| bslx.cpp:199:2:199:7 | *stream | bslx.cpp:199:19:199:21 | getString output argument |
+| bslx.cpp:206:57:206:58 | *sb | bslx.cpp:206:50:206:55 | call to GenericInStream |
+| bslx.cpp:208:2:208:7 | *stream | bslx.cpp:208:17:208:20 | *call to getInt32 |
+| bslx.cpp:214:46:214:49 | *call to data | bslx.cpp:214:34:214:39 | call to ByteInStream |
+| bslx.cpp:216:53:216:58 | *stream | bslx.cpp:216:52:216:65 | *call to bdexStreamIn |
+| bslx.cpp:216:53:216:58 | *stream | bslx.cpp:216:61:216:63 | bdexStreamIn output argument |
+| bslx.cpp:224:46:224:49 | *call to data | bslx.cpp:224:34:224:39 | call to ByteInStream |
+| bslx.cpp:247:2:247:7 | *stream | bslx.cpp:247:18:247:21 | *call to getLength |
+| bslx.cpp:247:18:247:21 | *call to getLength | bslx.cpp:247:32:247:35 | *call to getVersion |
+| bslx.cpp:247:32:247:35 | *call to getVersion | bslx.cpp:247:43:247:46 | *call to getInt8 |
+| bslx.cpp:247:43:247:46 | *call to getInt8 | bslx.cpp:247:55:247:59 | *call to getUint8 |
+| bslx.cpp:247:55:247:59 | *call to getUint8 | bslx.cpp:247:68:247:71 | *call to getInt16 |
+| bslx.cpp:247:68:247:71 | *call to getInt16 | bslx.cpp:247:81:247:85 | *call to getUint16 |
+| bslx.cpp:247:81:247:85 | *call to getUint16 | bslx.cpp:247:94:247:97 | *call to getInt24 |
+| bslx.cpp:247:94:247:97 | *call to getInt24 | bslx.cpp:247:107:247:111 | *call to getUint24 |
+| bslx.cpp:247:107:247:111 | *call to getUint24 | bslx.cpp:247:120:247:123 | *call to getInt32 |
+| bslx.cpp:247:120:247:123 | *call to getInt32 | bslx.cpp:247:133:247:137 | *call to getUint32 |
+| bslx.cpp:247:133:247:137 | *call to getUint32 | bslx.cpp:247:146:247:150 | *call to getInt40 |
+| bslx.cpp:247:146:247:150 | *call to getInt40 | bslx.cpp:247:160:247:165 | *call to getUint40 |
+| bslx.cpp:247:160:247:165 | *call to getUint40 | bslx.cpp:247:174:247:178 | *call to getInt48 |
+| bslx.cpp:247:174:247:178 | *call to getInt48 | bslx.cpp:247:188:247:193 | *call to getUint48 |
+| bslx.cpp:247:188:247:193 | *call to getUint48 | bslx.cpp:247:202:247:206 | *call to getInt56 |
+| bslx.cpp:247:202:247:206 | *call to getInt56 | bslx.cpp:247:216:247:221 | *call to getUint56 |
+| bslx.cpp:247:216:247:221 | *call to getUint56 | bslx.cpp:247:230:247:234 | *call to getInt64 |
+| bslx.cpp:247:230:247:234 | *call to getInt64 | bslx.cpp:247:244:247:249 | *call to getUint64 |
+| bslx.cpp:247:244:247:249 | *call to getUint64 | bslx.cpp:247:260:247:263 | *call to getFloat32 |
+| bslx.cpp:247:260:247:263 | *call to getFloat32 | bslx.cpp:247:274:247:277 | *call to getFloat64 |
+| bslx.cpp:247:274:247:277 | *call to getFloat64 | bslx.cpp:247:287:247:292 | *call to getString |
+| bslx.cpp:247:274:247:277 | *call to getFloat64 | bslx.cpp:247:288:247:290 | getString output argument |
+| bslx.cpp:247:287:247:292 | *call to getString | bslx.cpp:247:305:247:315 | *call to getArrayInt8 |
+| bslx.cpp:247:287:247:292 | *call to getString | bslx.cpp:247:306:247:309 | getArrayInt8 output argument |
+| bslx.cpp:247:305:247:315 | *call to getArrayInt8 | bslx.cpp:247:329:247:340 | *call to getArrayUint8 |
+| bslx.cpp:247:305:247:315 | *call to getArrayInt8 | bslx.cpp:247:330:247:334 | getArrayUint8 output argument |
+| bslx.cpp:247:329:247:340 | *call to getArrayUint8 | bslx.cpp:247:354:247:364 | *call to getArrayInt16 |
+| bslx.cpp:247:329:247:340 | *call to getArrayUint8 | bslx.cpp:247:355:247:358 | getArrayInt16 output argument |
+| bslx.cpp:247:354:247:364 | *call to getArrayInt16 | bslx.cpp:247:379:247:390 | *call to getArrayUint16 |
+| bslx.cpp:247:354:247:364 | *call to getArrayInt16 | bslx.cpp:247:380:247:384 | getArrayUint16 output argument |
+| bslx.cpp:247:379:247:390 | *call to getArrayUint16 | bslx.cpp:247:404:247:414 | *call to getArrayInt24 |
+| bslx.cpp:247:379:247:390 | *call to getArrayUint16 | bslx.cpp:247:405:247:408 | getArrayInt24 output argument |
+| bslx.cpp:247:404:247:414 | *call to getArrayInt24 | bslx.cpp:247:429:247:440 | *call to getArrayUint24 |
+| bslx.cpp:247:404:247:414 | *call to getArrayInt24 | bslx.cpp:247:430:247:434 | getArrayUint24 output argument |
+| bslx.cpp:247:429:247:440 | *call to getArrayUint24 | bslx.cpp:247:454:247:464 | *call to getArrayInt32 |
+| bslx.cpp:247:429:247:440 | *call to getArrayUint24 | bslx.cpp:247:455:247:458 | getArrayInt32 output argument |
+| bslx.cpp:247:454:247:464 | *call to getArrayInt32 | bslx.cpp:247:479:247:490 | *call to getArrayUint32 |
+| bslx.cpp:247:454:247:464 | *call to getArrayInt32 | bslx.cpp:247:480:247:484 | getArrayUint32 output argument |
+| bslx.cpp:247:479:247:490 | *call to getArrayUint32 | bslx.cpp:247:504:247:515 | *call to getArrayInt40 |
+| bslx.cpp:247:479:247:490 | *call to getArrayUint32 | bslx.cpp:247:505:247:509 | getArrayInt40 output argument |
+| bslx.cpp:247:504:247:515 | *call to getArrayInt40 | bslx.cpp:247:530:247:542 | *call to getArrayUint40 |
+| bslx.cpp:247:504:247:515 | *call to getArrayInt40 | bslx.cpp:247:531:247:536 | getArrayUint40 output argument |
+| bslx.cpp:247:530:247:542 | *call to getArrayUint40 | bslx.cpp:247:556:247:567 | *call to getArrayInt48 |
+| bslx.cpp:247:530:247:542 | *call to getArrayUint40 | bslx.cpp:247:557:247:561 | getArrayInt48 output argument |
+| bslx.cpp:247:556:247:567 | *call to getArrayInt48 | bslx.cpp:247:582:247:594 | *call to getArrayUint48 |
+| bslx.cpp:247:556:247:567 | *call to getArrayInt48 | bslx.cpp:247:583:247:588 | getArrayUint48 output argument |
+| bslx.cpp:247:582:247:594 | *call to getArrayUint48 | bslx.cpp:247:608:247:619 | *call to getArrayInt56 |
+| bslx.cpp:247:582:247:594 | *call to getArrayUint48 | bslx.cpp:247:609:247:613 | getArrayInt56 output argument |
+| bslx.cpp:247:608:247:619 | *call to getArrayInt56 | bslx.cpp:247:634:247:646 | *call to getArrayUint56 |
+| bslx.cpp:247:608:247:619 | *call to getArrayInt56 | bslx.cpp:247:635:247:640 | getArrayUint56 output argument |
+| bslx.cpp:247:634:247:646 | *call to getArrayUint56 | bslx.cpp:247:660:247:671 | *call to getArrayInt64 |
+| bslx.cpp:247:634:247:646 | *call to getArrayUint56 | bslx.cpp:247:661:247:665 | getArrayInt64 output argument |
+| bslx.cpp:247:660:247:671 | *call to getArrayInt64 | bslx.cpp:247:686:247:698 | *call to getArrayUint64 |
+| bslx.cpp:247:660:247:671 | *call to getArrayInt64 | bslx.cpp:247:687:247:692 | getArrayUint64 output argument |
+| bslx.cpp:247:686:247:698 | *call to getArrayUint64 | bslx.cpp:247:714:247:724 | *call to getArrayFloat32 |
+| bslx.cpp:247:686:247:698 | *call to getArrayUint64 | bslx.cpp:247:715:247:718 | getArrayFloat32 output argument |
+| bslx.cpp:247:714:247:724 | *call to getArrayFloat32 | bslx.cpp:247:740:247:750 | *call to getArrayFloat64 |
+| bslx.cpp:247:714:247:724 | *call to getArrayFloat32 | bslx.cpp:247:741:247:744 | getArrayFloat64 output argument |
+| bslx.cpp:247:740:247:750 | *call to getArrayFloat64 | bslx.cpp:247:760:247:765 | *call to getString |
+| bslx.cpp:247:740:247:750 | *call to getArrayFloat64 | bslx.cpp:247:761:247:763 | getString output argument |
+| bslx.cpp:254:57:254:58 | *sb | bslx.cpp:254:50:254:55 | call to GenericInStream |
+| bslx.cpp:277:2:277:7 | *stream | bslx.cpp:277:18:277:21 | *call to getLength |
+| bslx.cpp:277:18:277:21 | *call to getLength | bslx.cpp:277:32:277:35 | *call to getVersion |
+| bslx.cpp:277:32:277:35 | *call to getVersion | bslx.cpp:277:43:277:46 | *call to getInt8 |
+| bslx.cpp:277:43:277:46 | *call to getInt8 | bslx.cpp:277:55:277:59 | *call to getUint8 |
+| bslx.cpp:277:55:277:59 | *call to getUint8 | bslx.cpp:277:68:277:71 | *call to getInt16 |
+| bslx.cpp:277:68:277:71 | *call to getInt16 | bslx.cpp:277:81:277:85 | *call to getUint16 |
+| bslx.cpp:277:81:277:85 | *call to getUint16 | bslx.cpp:277:94:277:97 | *call to getInt24 |
+| bslx.cpp:277:94:277:97 | *call to getInt24 | bslx.cpp:277:107:277:111 | *call to getUint24 |
+| bslx.cpp:277:107:277:111 | *call to getUint24 | bslx.cpp:277:120:277:123 | *call to getInt32 |
+| bslx.cpp:277:120:277:123 | *call to getInt32 | bslx.cpp:277:133:277:137 | *call to getUint32 |
+| bslx.cpp:277:133:277:137 | *call to getUint32 | bslx.cpp:277:146:277:150 | *call to getInt40 |
+| bslx.cpp:277:146:277:150 | *call to getInt40 | bslx.cpp:277:160:277:165 | *call to getUint40 |
+| bslx.cpp:277:160:277:165 | *call to getUint40 | bslx.cpp:277:174:277:178 | *call to getInt48 |
+| bslx.cpp:277:174:277:178 | *call to getInt48 | bslx.cpp:277:188:277:193 | *call to getUint48 |
+| bslx.cpp:277:188:277:193 | *call to getUint48 | bslx.cpp:277:202:277:206 | *call to getInt56 |
+| bslx.cpp:277:202:277:206 | *call to getInt56 | bslx.cpp:277:216:277:221 | *call to getUint56 |
+| bslx.cpp:277:216:277:221 | *call to getUint56 | bslx.cpp:277:230:277:234 | *call to getInt64 |
+| bslx.cpp:277:230:277:234 | *call to getInt64 | bslx.cpp:277:244:277:249 | *call to getUint64 |
+| bslx.cpp:277:244:277:249 | *call to getUint64 | bslx.cpp:277:260:277:263 | *call to getFloat32 |
+| bslx.cpp:277:260:277:263 | *call to getFloat32 | bslx.cpp:277:274:277:277 | *call to getFloat64 |
+| bslx.cpp:277:274:277:277 | *call to getFloat64 | bslx.cpp:277:287:277:292 | *call to getString |
+| bslx.cpp:277:274:277:277 | *call to getFloat64 | bslx.cpp:277:288:277:290 | getString output argument |
+| bslx.cpp:277:287:277:292 | *call to getString | bslx.cpp:277:305:277:315 | *call to getArrayInt8 |
+| bslx.cpp:277:287:277:292 | *call to getString | bslx.cpp:277:306:277:309 | getArrayInt8 output argument |
+| bslx.cpp:277:305:277:315 | *call to getArrayInt8 | bslx.cpp:277:329:277:340 | *call to getArrayUint8 |
+| bslx.cpp:277:305:277:315 | *call to getArrayInt8 | bslx.cpp:277:330:277:334 | getArrayUint8 output argument |
+| bslx.cpp:277:329:277:340 | *call to getArrayUint8 | bslx.cpp:277:354:277:364 | *call to getArrayInt16 |
+| bslx.cpp:277:329:277:340 | *call to getArrayUint8 | bslx.cpp:277:355:277:358 | getArrayInt16 output argument |
+| bslx.cpp:277:354:277:364 | *call to getArrayInt16 | bslx.cpp:277:379:277:390 | *call to getArrayUint16 |
+| bslx.cpp:277:354:277:364 | *call to getArrayInt16 | bslx.cpp:277:380:277:384 | getArrayUint16 output argument |
+| bslx.cpp:277:379:277:390 | *call to getArrayUint16 | bslx.cpp:277:404:277:414 | *call to getArrayInt24 |
+| bslx.cpp:277:379:277:390 | *call to getArrayUint16 | bslx.cpp:277:405:277:408 | getArrayInt24 output argument |
+| bslx.cpp:277:404:277:414 | *call to getArrayInt24 | bslx.cpp:277:429:277:440 | *call to getArrayUint24 |
+| bslx.cpp:277:404:277:414 | *call to getArrayInt24 | bslx.cpp:277:430:277:434 | getArrayUint24 output argument |
+| bslx.cpp:277:429:277:440 | *call to getArrayUint24 | bslx.cpp:277:454:277:464 | *call to getArrayInt32 |
+| bslx.cpp:277:429:277:440 | *call to getArrayUint24 | bslx.cpp:277:455:277:458 | getArrayInt32 output argument |
+| bslx.cpp:277:454:277:464 | *call to getArrayInt32 | bslx.cpp:277:479:277:490 | *call to getArrayUint32 |
+| bslx.cpp:277:454:277:464 | *call to getArrayInt32 | bslx.cpp:277:480:277:484 | getArrayUint32 output argument |
+| bslx.cpp:277:479:277:490 | *call to getArrayUint32 | bslx.cpp:277:504:277:515 | *call to getArrayInt40 |
+| bslx.cpp:277:479:277:490 | *call to getArrayUint32 | bslx.cpp:277:505:277:509 | getArrayInt40 output argument |
+| bslx.cpp:277:504:277:515 | *call to getArrayInt40 | bslx.cpp:277:530:277:542 | *call to getArrayUint40 |
+| bslx.cpp:277:504:277:515 | *call to getArrayInt40 | bslx.cpp:277:531:277:536 | getArrayUint40 output argument |
+| bslx.cpp:277:530:277:542 | *call to getArrayUint40 | bslx.cpp:277:556:277:567 | *call to getArrayInt48 |
+| bslx.cpp:277:530:277:542 | *call to getArrayUint40 | bslx.cpp:277:557:277:561 | getArrayInt48 output argument |
+| bslx.cpp:277:556:277:567 | *call to getArrayInt48 | bslx.cpp:277:582:277:594 | *call to getArrayUint48 |
+| bslx.cpp:277:556:277:567 | *call to getArrayInt48 | bslx.cpp:277:583:277:588 | getArrayUint48 output argument |
+| bslx.cpp:277:582:277:594 | *call to getArrayUint48 | bslx.cpp:277:608:277:619 | *call to getArrayInt56 |
+| bslx.cpp:277:582:277:594 | *call to getArrayUint48 | bslx.cpp:277:609:277:613 | getArrayInt56 output argument |
+| bslx.cpp:277:608:277:619 | *call to getArrayInt56 | bslx.cpp:277:634:277:646 | *call to getArrayUint56 |
+| bslx.cpp:277:608:277:619 | *call to getArrayInt56 | bslx.cpp:277:635:277:640 | getArrayUint56 output argument |
+| bslx.cpp:277:634:277:646 | *call to getArrayUint56 | bslx.cpp:277:660:277:671 | *call to getArrayInt64 |
+| bslx.cpp:277:634:277:646 | *call to getArrayUint56 | bslx.cpp:277:661:277:665 | getArrayInt64 output argument |
+| bslx.cpp:277:660:277:671 | *call to getArrayInt64 | bslx.cpp:277:686:277:698 | *call to getArrayUint64 |
+| bslx.cpp:277:660:277:671 | *call to getArrayInt64 | bslx.cpp:277:687:277:692 | getArrayUint64 output argument |
+| bslx.cpp:277:686:277:698 | *call to getArrayUint64 | bslx.cpp:277:714:277:724 | *call to getArrayFloat32 |
+| bslx.cpp:277:686:277:698 | *call to getArrayUint64 | bslx.cpp:277:715:277:718 | getArrayFloat32 output argument |
+| bslx.cpp:277:714:277:724 | *call to getArrayFloat32 | bslx.cpp:277:740:277:750 | *call to getArrayFloat64 |
+| bslx.cpp:277:714:277:724 | *call to getArrayFloat32 | bslx.cpp:277:741:277:744 | getArrayFloat64 output argument |
+| bslx.cpp:277:740:277:750 | *call to getArrayFloat64 | bslx.cpp:277:760:277:765 | *call to getString |
+| bslx.cpp:277:740:277:750 | *call to getArrayFloat64 | bslx.cpp:277:761:277:763 | getString output argument |
+| bslx.cpp:283:46:283:49 | *call to data | bslx.cpp:283:34:283:39 | call to ByteInStream |
+| bslx.cpp:285:53:285:58 | *stream | bslx.cpp:285:52:285:63 | *call to bdexStreamIn |
+| bslx.cpp:285:53:285:58 | *stream | bslx.cpp:285:61:285:61 | bdexStreamIn output argument |
+| bslx.cpp:287:53:287:58 | *stream | bslx.cpp:287:52:287:66 | *call to bdexStreamIn |
+| bslx.cpp:287:53:287:58 | *stream | bslx.cpp:287:61:287:61 | bdexStreamIn output argument |
+| bslx.cpp:290:52:290:66 | *call to bdexStreamIn | bslx.cpp:290:76:290:81 | *call to getString |
+| bslx.cpp:290:52:290:66 | *call to bdexStreamIn | bslx.cpp:290:77:290:79 | getString output argument |
+| bslx.cpp:290:53:290:58 | *stream | bslx.cpp:290:52:290:66 | *call to bdexStreamIn |
+| bslx.cpp:290:53:290:58 | *stream | bslx.cpp:290:61:290:61 | bdexStreamIn output argument |
+| bslx.cpp:296:46:296:49 | *call to data | bslx.cpp:296:34:296:39 | call to ByteInStream |
+| bslx.cpp:298:53:298:58 | *stream | bslx.cpp:298:52:298:68 | *call to bdexStreamIn |
+| bslx.cpp:298:53:298:58 | *stream | bslx.cpp:298:61:298:63 | bdexStreamIn output argument |
+| bslx.cpp:310:46:310:49 | *call to data | bslx.cpp:310:34:310:39 | call to ByteInStream |
+| bslx.cpp:312:53:312:58 | *stream | bslx.cpp:312:52:312:68 | *call to bdexStreamIn |
+| bslx.cpp:312:53:312:58 | *stream | bslx.cpp:312:61:312:63 | bdexStreamIn output argument |
+| bslx.cpp:323:15:323:18 | *data | bslx.cpp:323:2:323:7 | reset output argument |
+| bslx.cpp:325:2:325:7 | *stream | bslx.cpp:325:18:325:23 | *call to getString |
+| bslx.cpp:325:2:325:7 | *stream | bslx.cpp:325:19:325:21 | getString output argument |
+| bslx.cpp:331:46:331:49 | *call to data | bslx.cpp:331:34:331:39 | call to ByteInStream |
+| bslx.cpp:334:2:334:7 | *stream | bslx.cpp:334:18:334:23 | *call to getString |
+| bslx.cpp:334:2:334:7 | *stream | bslx.cpp:334:19:334:21 | getString output argument |
+| bslx.cpp:341:15:341:18 | *data | bslx.cpp:341:2:341:7 | reset output argument |
+| bslx.cpp:344:2:344:7 | *stream | bslx.cpp:344:18:344:23 | *call to getString |
+| bslx.cpp:344:2:344:7 | *stream | bslx.cpp:344:19:344:21 | getString output argument |
+| bslx.cpp:350:46:350:49 | *call to data | bslx.cpp:350:34:350:39 | call to ByteInStream |
+| bslx.cpp:352:15:352:19 | *clean | bslx.cpp:352:2:352:7 | reset output argument |
+| bslx.cpp:354:2:354:7 | *stream | bslx.cpp:354:18:354:23 | *call to getString |
+| bslx.cpp:354:2:354:7 | *stream | bslx.cpp:354:19:354:21 | getString output argument |
 | protobuf.cpp:118:22:118:25 | data | protobuf.cpp:118:2:118:4 | ParseFromString output argument |
 | protobuf.cpp:125:22:125:25 | *data | protobuf.cpp:125:2:125:4 | ParseFromString output argument |
 | protobuf.cpp:132:29:132:32 | data | protobuf.cpp:132:2:132:4 | ParsePartialFromString output argument |
