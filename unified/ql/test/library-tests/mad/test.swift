@@ -4,6 +4,7 @@ func test(url: URL, string: String) {
     String(contentsOf: url)  // $ isSource=remote
     String(contentsOf: url, encoding: .utf8)  // $ isSource=remote
     String(contentsOf: url, usedEncoding: .utf8)  // $ isSource=remote
+    String.init(contentsOf: url)  // $ MISSING: isSource=remote
 
     String(contentsOfFile: string)  // $ isSource=local isSink=path-injection
     String(
@@ -68,11 +69,24 @@ func testQualifiedConstructors(
     seedFilePath: String
 ) {
     _ = String.Index(encodedOffset: encodedOffset)  // $ isSink=string-length
+    _ = String.Index.init(encodedOffset: encodedOffset)  // $ MISSING: isSink=string-length
 
     _ = Realm.Configuration(
         deleteRealmIfMigrationNeeded: false,
         encryptionKey: encryptionKey,  // $ isSink=encryption-key
         fileURL: fileURL,  // $ isSink=path-injection
+        inMemoryIdentifier: nil,
+        migrationBlock: nil,
+        objectTypes: nil,
+        readOnly: false,
+        schemaVersion: 0,
+        shouldCompactOnLaunch: nil,
+        syncConfiguration: nil)
+
+    _ = Realm.Configuration.init(
+        deleteRealmIfMigrationNeeded: false,
+        encryptionKey: encryptionKey,  // $ MISSING: isSink=encryption-key
+        fileURL: fileURL,  // $ MISSING: isSink=path-injection
         inMemoryIdentifier: nil,
         migrationBlock: nil,
         objectTypes: nil,
