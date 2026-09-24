@@ -226,169 +226,169 @@ edges
 | test.rs:373:5:373:10 | stream | test.rs:373:27:373:39 | [post] &mut response [&ref] | provenance | MaD:38 |
 | test.rs:373:27:373:39 | [post] &mut response [&ref] | test.rs:373:32:373:39 | [post] response | provenance |  |
 | test.rs:373:32:373:39 | [post] response | test.rs:375:10:375:17 | response | provenance |  |
-| test.rs:396:13:396:15 | tcp | test.rs:397:15:397:17 | tcp | provenance |  |
-| test.rs:396:13:396:15 | tcp | test.rs:403:57:403:59 | tcp | provenance |  |
-| test.rs:396:19:396:41 | ...::connect(...) | test.rs:396:19:396:41 | ...::connect(...) [future, Ok] | provenance | Src:MaD:1  |
-| test.rs:396:19:396:41 | ...::connect(...) [future, Ok] | test.rs:396:19:396:47 | await ... [Ok] | provenance |  |
-| test.rs:396:19:396:47 | await ... [Ok] | test.rs:396:19:396:48 | TryExpr | provenance |  |
-| test.rs:396:19:396:48 | TryExpr | test.rs:396:13:396:15 | tcp | provenance |  |
-| test.rs:397:15:397:17 | tcp | test.rs:397:14:397:17 | &tcp | provenance |  |
-| test.rs:403:13:403:22 | mut reader | test.rs:404:15:404:20 | reader | provenance |  |
-| test.rs:403:13:403:22 | mut reader | test.rs:409:44:409:49 | reader | provenance |  |
-| test.rs:403:13:403:22 | mut reader | test.rs:422:68:422:73 | reader | provenance |  |
-| test.rs:403:13:403:22 | mut reader | test.rs:426:31:426:36 | reader | provenance |  |
-| test.rs:403:13:403:22 | mut reader | test.rs:431:55:431:60 | reader | provenance |  |
-| test.rs:403:26:403:60 | connector.connect(...) [future, Ok] | test.rs:403:26:403:66 | await ... [Ok] | provenance |  |
-| test.rs:403:26:403:66 | await ... [Ok] | test.rs:403:26:403:67 | TryExpr | provenance |  |
-| test.rs:403:26:403:67 | TryExpr | test.rs:403:13:403:22 | mut reader | provenance |  |
-| test.rs:403:57:403:59 | tcp | test.rs:403:26:403:60 | connector.connect(...) [future, Ok] | provenance | MaD:17 |
-| test.rs:404:15:404:20 | reader | test.rs:404:14:404:20 | &reader | provenance |  |
-| test.rs:409:17:409:26 | mut pinned | test.rs:410:19:410:24 | pinned | provenance |  |
-| test.rs:409:17:409:26 | mut pinned | test.rs:412:30:412:35 | pinned | provenance |  |
-| test.rs:409:17:409:26 | mut pinned [Pin, &ref] | test.rs:410:19:410:24 | pinned [Pin, &ref] | provenance |  |
-| test.rs:409:30:409:50 | ...::new(...) | test.rs:409:17:409:26 | mut pinned | provenance |  |
-| test.rs:409:30:409:50 | ...::new(...) [Pin, &ref] | test.rs:409:17:409:26 | mut pinned [Pin, &ref] | provenance |  |
-| test.rs:409:39:409:49 | &mut reader [&ref] | test.rs:409:30:409:50 | ...::new(...) | provenance | MaD:12 |
-| test.rs:409:39:409:49 | &mut reader [&ref] | test.rs:409:30:409:50 | ...::new(...) [Pin, &ref] | provenance | MaD:13 |
-| test.rs:409:44:409:49 | reader | test.rs:409:39:409:49 | &mut reader [&ref] | provenance |  |
-| test.rs:410:19:410:24 | pinned | test.rs:410:18:410:24 | &pinned | provenance |  |
-| test.rs:410:19:410:24 | pinned [Pin, &ref] | test.rs:410:18:410:24 | &pinned | provenance |  |
-| test.rs:412:30:412:35 | pinned | test.rs:412:56:412:66 | [post] &mut buffer [&ref] | provenance | MaD:16 |
-| test.rs:412:56:412:66 | [post] &mut buffer [&ref] | test.rs:412:61:412:66 | [post] buffer | provenance |  |
-| test.rs:412:61:412:66 | [post] buffer | test.rs:414:23:414:28 | buffer | provenance |  |
-| test.rs:412:61:412:66 | [post] buffer | test.rs:415:23:415:28 | buffer | provenance |  |
-| test.rs:412:61:412:66 | [post] buffer | test.rs:415:23:415:33 | buffer[...] | provenance |  |
-| test.rs:414:23:414:28 | buffer | test.rs:414:22:414:28 | &buffer | provenance |  |
-| test.rs:415:23:415:28 | buffer | test.rs:415:23:415:33 | buffer[...] | provenance | MaD:10 |
-| test.rs:415:23:415:33 | buffer[...] | test.rs:415:22:415:33 | &... | provenance |  |
-| test.rs:422:63:422:73 | &mut reader [&ref] | test.rs:422:76:422:87 | [post] &mut buffer1 [&ref] | provenance | MaD:21 |
-| test.rs:422:68:422:73 | reader | test.rs:422:63:422:73 | &mut reader [&ref] | provenance |  |
-| test.rs:422:76:422:87 | [post] &mut buffer1 [&ref] | test.rs:422:81:422:87 | [post] buffer1 | provenance |  |
-| test.rs:422:81:422:87 | [post] buffer1 | test.rs:423:19:423:25 | buffer1 | provenance |  |
-| test.rs:422:81:422:87 | [post] buffer1 | test.rs:423:19:423:40 | buffer1[...] | provenance |  |
-| test.rs:423:19:423:25 | buffer1 | test.rs:423:19:423:40 | buffer1[...] | provenance | MaD:10 |
-| test.rs:423:19:423:40 | buffer1[...] | test.rs:423:18:423:40 | &... | provenance |  |
-| test.rs:426:31:426:36 | reader | test.rs:426:43:426:54 | [post] &mut buffer2 [&ref] | provenance | MaD:21 |
-| test.rs:426:43:426:54 | [post] &mut buffer2 [&ref] | test.rs:426:48:426:54 | [post] buffer2 | provenance |  |
-| test.rs:426:48:426:54 | [post] buffer2 | test.rs:428:19:428:25 | buffer2 | provenance |  |
-| test.rs:426:48:426:54 | [post] buffer2 | test.rs:428:19:428:40 | buffer2[...] | provenance |  |
-| test.rs:428:19:428:25 | buffer2 | test.rs:428:19:428:40 | buffer2[...] | provenance | MaD:10 |
-| test.rs:428:19:428:40 | buffer2[...] | test.rs:428:18:428:40 | &... | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:432:15:432:21 | reader2 | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:436:44:436:50 | reader2 | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:446:41:446:47 | reader2 | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:460:26:460:32 | reader2 | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:467:44:467:50 | reader2 | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:480:68:480:74 | reader2 | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:484:31:484:37 | reader2 | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:490:44:490:50 | reader2 | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:502:26:502:32 | reader2 | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:509:31:509:37 | reader2 | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:516:31:516:37 | reader2 | provenance |  |
-| test.rs:431:13:431:23 | mut reader2 | test.rs:523:31:523:37 | reader2 | provenance |  |
-| test.rs:431:27:431:61 | ...::new(...) | test.rs:431:13:431:23 | mut reader2 | provenance |  |
-| test.rs:431:55:431:60 | reader | test.rs:431:27:431:61 | ...::new(...) | provenance | MaD:23 |
-| test.rs:432:15:432:21 | reader2 | test.rs:432:14:432:21 | &reader2 | provenance |  |
-| test.rs:436:17:436:26 | mut pinned | test.rs:437:19:437:24 | pinned | provenance |  |
-| test.rs:436:17:436:26 | mut pinned | test.rs:439:26:439:31 | pinned | provenance |  |
-| test.rs:436:17:436:26 | mut pinned [Pin, &ref] | test.rs:437:19:437:24 | pinned [Pin, &ref] | provenance |  |
-| test.rs:436:30:436:51 | ...::new(...) | test.rs:436:17:436:26 | mut pinned | provenance |  |
-| test.rs:436:30:436:51 | ...::new(...) [Pin, &ref] | test.rs:436:17:436:26 | mut pinned [Pin, &ref] | provenance |  |
-| test.rs:436:39:436:50 | &mut reader2 [&ref] | test.rs:436:30:436:51 | ...::new(...) | provenance | MaD:12 |
-| test.rs:436:39:436:50 | &mut reader2 [&ref] | test.rs:436:30:436:51 | ...::new(...) [Pin, &ref] | provenance | MaD:13 |
-| test.rs:436:44:436:50 | reader2 | test.rs:436:39:436:50 | &mut reader2 [&ref] | provenance |  |
-| test.rs:437:19:437:24 | pinned | test.rs:437:18:437:24 | &pinned | provenance |  |
-| test.rs:437:19:437:24 | pinned [Pin, &ref] | test.rs:437:18:437:24 | &pinned | provenance |  |
-| test.rs:439:17:439:22 | buffer [Ready, Ok] | test.rs:440:20:440:39 | ...::Ready(...) [Ready, Ok] | provenance |  |
-| test.rs:439:17:439:22 | buffer [Ready, Ok] | test.rs:441:23:441:28 | buffer [Ready, Ok] | provenance |  |
-| test.rs:439:26:439:31 | pinned | test.rs:439:26:439:54 | pinned.poll_fill_buf(...) [Ready, Ok] | provenance | MaD:15 |
-| test.rs:439:26:439:54 | pinned.poll_fill_buf(...) [Ready, Ok] | test.rs:439:17:439:22 | buffer [Ready, Ok] | provenance |  |
-| test.rs:440:20:440:39 | ...::Ready(...) [Ready, Ok] | test.rs:440:32:440:38 | Ok(...) [Ok] | provenance |  |
-| test.rs:440:32:440:38 | Ok(...) [Ok] | test.rs:440:35:440:37 | buf | provenance |  |
-| test.rs:440:35:440:37 | buf | test.rs:442:22:442:24 | buf | provenance |  |
-| test.rs:441:23:441:28 | buffer [Ready, Ok] | test.rs:441:22:441:28 | &buffer | provenance |  |
-| test.rs:446:17:446:23 | buffer2 [Ready, Ok] | test.rs:447:20:447:26 | buffer2 [Ready, Ok] | provenance |  |
-| test.rs:446:27:446:48 | ...::new(...) | test.rs:446:27:446:71 | ... .poll_fill_buf(...) [Ready, Ok] | provenance | MaD:15 |
-| test.rs:446:27:446:71 | ... .poll_fill_buf(...) [Ready, Ok] | test.rs:446:17:446:23 | buffer2 [Ready, Ok] | provenance |  |
-| test.rs:446:36:446:47 | &mut reader2 [&ref] | test.rs:446:27:446:48 | ...::new(...) | provenance | MaD:12 |
-| test.rs:446:41:446:47 | reader2 | test.rs:446:36:446:47 | &mut reader2 [&ref] | provenance |  |
-| test.rs:447:20:447:26 | buffer2 [Ready, Ok] | test.rs:448:17:448:36 | ...::Ready(...) [Ready, Ok] | provenance |  |
-| test.rs:447:20:447:26 | buffer2 [Ready, Ok] | test.rs:449:27:449:33 | buffer2 [Ready, Ok] | provenance |  |
-| test.rs:448:17:448:36 | ...::Ready(...) [Ready, Ok] | test.rs:448:29:448:35 | Ok(...) [Ok] | provenance |  |
-| test.rs:448:29:448:35 | Ok(...) [Ok] | test.rs:448:32:448:34 | buf | provenance |  |
-| test.rs:448:32:448:34 | buf | test.rs:450:26:450:28 | buf | provenance |  |
-| test.rs:449:27:449:33 | buffer2 [Ready, Ok] | test.rs:449:26:449:33 | &buffer2 | provenance |  |
-| test.rs:460:17:460:22 | buffer | test.rs:461:18:461:23 | buffer | provenance |  |
-| test.rs:460:26:460:32 | reader2 | test.rs:460:26:460:43 | reader2.fill_buf() [future, Ok] | provenance | MaD:18 |
-| test.rs:460:26:460:43 | reader2.fill_buf() [future, Ok] | test.rs:460:26:460:49 | await ... [Ok] | provenance |  |
-| test.rs:460:26:460:49 | await ... [Ok] | test.rs:460:26:460:50 | TryExpr | provenance |  |
-| test.rs:460:26:460:50 | TryExpr | test.rs:460:17:460:22 | buffer | provenance |  |
-| test.rs:467:17:467:26 | mut pinned | test.rs:468:19:468:24 | pinned | provenance |  |
-| test.rs:467:17:467:26 | mut pinned | test.rs:470:30:470:35 | pinned | provenance |  |
-| test.rs:467:17:467:26 | mut pinned [Pin, &ref] | test.rs:468:19:468:24 | pinned [Pin, &ref] | provenance |  |
-| test.rs:467:30:467:51 | ...::new(...) | test.rs:467:17:467:26 | mut pinned | provenance |  |
-| test.rs:467:30:467:51 | ...::new(...) [Pin, &ref] | test.rs:467:17:467:26 | mut pinned [Pin, &ref] | provenance |  |
-| test.rs:467:39:467:50 | &mut reader2 [&ref] | test.rs:467:30:467:51 | ...::new(...) | provenance | MaD:12 |
-| test.rs:467:39:467:50 | &mut reader2 [&ref] | test.rs:467:30:467:51 | ...::new(...) [Pin, &ref] | provenance | MaD:13 |
-| test.rs:467:44:467:50 | reader2 | test.rs:467:39:467:50 | &mut reader2 [&ref] | provenance |  |
-| test.rs:468:19:468:24 | pinned | test.rs:468:18:468:24 | &pinned | provenance |  |
-| test.rs:468:19:468:24 | pinned [Pin, &ref] | test.rs:468:18:468:24 | &pinned | provenance |  |
-| test.rs:470:30:470:35 | pinned | test.rs:470:56:470:66 | [post] &mut buffer [&ref] | provenance | MaD:16 |
-| test.rs:470:56:470:66 | [post] &mut buffer [&ref] | test.rs:470:61:470:66 | [post] buffer | provenance |  |
-| test.rs:470:61:470:66 | [post] buffer | test.rs:471:19:471:24 | buffer | provenance |  |
-| test.rs:470:61:470:66 | [post] buffer | test.rs:473:23:473:28 | buffer | provenance |  |
-| test.rs:470:61:470:66 | [post] buffer | test.rs:473:23:473:33 | buffer[...] | provenance |  |
-| test.rs:471:19:471:24 | buffer | test.rs:471:18:471:24 | &buffer | provenance |  |
-| test.rs:473:23:473:28 | buffer | test.rs:473:23:473:33 | buffer[...] | provenance | MaD:10 |
-| test.rs:473:23:473:33 | buffer[...] | test.rs:473:22:473:33 | &... | provenance |  |
-| test.rs:480:63:480:74 | &mut reader2 [&ref] | test.rs:480:77:480:88 | [post] &mut buffer1 [&ref] | provenance | MaD:21 |
-| test.rs:480:68:480:74 | reader2 | test.rs:480:63:480:74 | &mut reader2 [&ref] | provenance |  |
-| test.rs:480:77:480:88 | [post] &mut buffer1 [&ref] | test.rs:480:82:480:88 | [post] buffer1 | provenance |  |
-| test.rs:480:82:480:88 | [post] buffer1 | test.rs:481:19:481:25 | buffer1 | provenance |  |
-| test.rs:480:82:480:88 | [post] buffer1 | test.rs:481:19:481:40 | buffer1[...] | provenance |  |
-| test.rs:481:19:481:25 | buffer1 | test.rs:481:19:481:40 | buffer1[...] | provenance | MaD:10 |
-| test.rs:481:19:481:40 | buffer1[...] | test.rs:481:18:481:40 | &... | provenance |  |
-| test.rs:484:31:484:37 | reader2 | test.rs:484:44:484:55 | [post] &mut buffer2 [&ref] | provenance | MaD:21 |
-| test.rs:484:44:484:55 | [post] &mut buffer2 [&ref] | test.rs:484:49:484:55 | [post] buffer2 | provenance |  |
-| test.rs:484:49:484:55 | [post] buffer2 | test.rs:485:19:485:25 | buffer2 | provenance |  |
-| test.rs:484:49:484:55 | [post] buffer2 | test.rs:485:19:485:40 | buffer2[...] | provenance |  |
-| test.rs:485:19:485:25 | buffer2 | test.rs:485:19:485:40 | buffer2[...] | provenance | MaD:10 |
-| test.rs:485:19:485:40 | buffer2[...] | test.rs:485:18:485:40 | &... | provenance |  |
-| test.rs:490:17:490:26 | mut pinned | test.rs:491:19:491:24 | pinned | provenance |  |
-| test.rs:490:17:490:26 | mut pinned | test.rs:493:26:493:31 | pinned | provenance |  |
-| test.rs:490:17:490:26 | mut pinned [Pin, &ref] | test.rs:491:19:491:24 | pinned [Pin, &ref] | provenance |  |
-| test.rs:490:30:490:51 | ...::new(...) | test.rs:490:17:490:26 | mut pinned | provenance |  |
-| test.rs:490:30:490:51 | ...::new(...) [Pin, &ref] | test.rs:490:17:490:26 | mut pinned [Pin, &ref] | provenance |  |
-| test.rs:490:39:490:50 | &mut reader2 [&ref] | test.rs:490:30:490:51 | ...::new(...) | provenance | MaD:12 |
-| test.rs:490:39:490:50 | &mut reader2 [&ref] | test.rs:490:30:490:51 | ...::new(...) [Pin, &ref] | provenance | MaD:13 |
-| test.rs:490:44:490:50 | reader2 | test.rs:490:39:490:50 | &mut reader2 [&ref] | provenance |  |
-| test.rs:491:19:491:24 | pinned | test.rs:491:18:491:24 | &pinned | provenance |  |
-| test.rs:491:19:491:24 | pinned [Pin, &ref] | test.rs:491:18:491:24 | &pinned | provenance |  |
-| test.rs:493:17:493:22 | buffer [Ready, Ok] | test.rs:494:19:494:24 | buffer [Ready, Ok] | provenance |  |
-| test.rs:493:17:493:22 | buffer [Ready, Ok] | test.rs:495:20:495:39 | ...::Ready(...) [Ready, Ok] | provenance |  |
-| test.rs:493:26:493:31 | pinned | test.rs:493:26:493:54 | pinned.poll_fill_buf(...) [Ready, Ok] | provenance | MaD:15 |
-| test.rs:493:26:493:54 | pinned.poll_fill_buf(...) [Ready, Ok] | test.rs:493:17:493:22 | buffer [Ready, Ok] | provenance |  |
-| test.rs:494:19:494:24 | buffer [Ready, Ok] | test.rs:494:18:494:24 | &buffer | provenance |  |
-| test.rs:495:20:495:39 | ...::Ready(...) [Ready, Ok] | test.rs:495:32:495:38 | Ok(...) [Ok] | provenance |  |
-| test.rs:495:32:495:38 | Ok(...) [Ok] | test.rs:495:35:495:37 | buf | provenance |  |
-| test.rs:495:35:495:37 | buf | test.rs:496:22:496:24 | buf | provenance |  |
-| test.rs:502:17:502:22 | buffer | test.rs:503:18:503:23 | buffer | provenance |  |
-| test.rs:502:26:502:32 | reader2 | test.rs:502:26:502:43 | reader2.fill_buf() [future, Ok] | provenance | MaD:18 |
-| test.rs:502:26:502:43 | reader2.fill_buf() [future, Ok] | test.rs:502:26:502:49 | await ... [Ok] | provenance |  |
-| test.rs:502:26:502:49 | await ... [Ok] | test.rs:502:26:502:50 | TryExpr | provenance |  |
-| test.rs:502:26:502:50 | TryExpr | test.rs:502:17:502:22 | buffer | provenance |  |
-| test.rs:509:31:509:37 | reader2 | test.rs:509:57:509:65 | [post] &mut line [&ref] | provenance | MaD:20 |
-| test.rs:509:57:509:65 | [post] &mut line [&ref] | test.rs:509:62:509:65 | [post] line | provenance |  |
-| test.rs:509:62:509:65 | [post] line | test.rs:510:19:510:22 | line | provenance |  |
-| test.rs:510:19:510:22 | line | test.rs:510:18:510:22 | &line | provenance |  |
-| test.rs:516:31:516:37 | reader2 | test.rs:516:49:516:57 | [post] &mut line [&ref] | provenance | MaD:19 |
-| test.rs:516:49:516:57 | [post] &mut line [&ref] | test.rs:516:54:516:57 | [post] line | provenance |  |
-| test.rs:516:54:516:57 | [post] line | test.rs:517:19:517:22 | line | provenance |  |
-| test.rs:517:19:517:22 | line | test.rs:517:18:517:22 | &line | provenance |  |
-| test.rs:523:31:523:37 | reader2 | test.rs:523:51:523:61 | [post] &mut buffer [&ref] | provenance | MaD:22 |
-| test.rs:523:51:523:61 | [post] &mut buffer [&ref] | test.rs:523:56:523:61 | [post] buffer | provenance |  |
-| test.rs:523:56:523:61 | [post] buffer | test.rs:524:19:524:24 | buffer | provenance |  |
-| test.rs:524:19:524:24 | buffer | test.rs:524:18:524:24 | &buffer | provenance |  |
+| test.rs:425:13:425:15 | tcp | test.rs:426:15:426:17 | tcp | provenance |  |
+| test.rs:425:13:425:15 | tcp | test.rs:432:57:432:59 | tcp | provenance |  |
+| test.rs:425:19:425:41 | ...::connect(...) | test.rs:425:19:425:41 | ...::connect(...) [future, Ok] | provenance | Src:MaD:1  |
+| test.rs:425:19:425:41 | ...::connect(...) [future, Ok] | test.rs:425:19:425:47 | await ... [Ok] | provenance |  |
+| test.rs:425:19:425:47 | await ... [Ok] | test.rs:425:19:425:48 | TryExpr | provenance |  |
+| test.rs:425:19:425:48 | TryExpr | test.rs:425:13:425:15 | tcp | provenance |  |
+| test.rs:426:15:426:17 | tcp | test.rs:426:14:426:17 | &tcp | provenance |  |
+| test.rs:432:13:432:22 | mut reader | test.rs:433:15:433:20 | reader | provenance |  |
+| test.rs:432:13:432:22 | mut reader | test.rs:438:44:438:49 | reader | provenance |  |
+| test.rs:432:13:432:22 | mut reader | test.rs:451:68:451:73 | reader | provenance |  |
+| test.rs:432:13:432:22 | mut reader | test.rs:455:31:455:36 | reader | provenance |  |
+| test.rs:432:13:432:22 | mut reader | test.rs:460:55:460:60 | reader | provenance |  |
+| test.rs:432:26:432:60 | connector.connect(...) [future, Ok] | test.rs:432:26:432:66 | await ... [Ok] | provenance |  |
+| test.rs:432:26:432:66 | await ... [Ok] | test.rs:432:26:432:67 | TryExpr | provenance |  |
+| test.rs:432:26:432:67 | TryExpr | test.rs:432:13:432:22 | mut reader | provenance |  |
+| test.rs:432:57:432:59 | tcp | test.rs:432:26:432:60 | connector.connect(...) [future, Ok] | provenance | MaD:17 |
+| test.rs:433:15:433:20 | reader | test.rs:433:14:433:20 | &reader | provenance |  |
+| test.rs:438:17:438:26 | mut pinned | test.rs:439:19:439:24 | pinned | provenance |  |
+| test.rs:438:17:438:26 | mut pinned | test.rs:441:30:441:35 | pinned | provenance |  |
+| test.rs:438:17:438:26 | mut pinned [Pin, &ref] | test.rs:439:19:439:24 | pinned [Pin, &ref] | provenance |  |
+| test.rs:438:30:438:50 | ...::new(...) | test.rs:438:17:438:26 | mut pinned | provenance |  |
+| test.rs:438:30:438:50 | ...::new(...) [Pin, &ref] | test.rs:438:17:438:26 | mut pinned [Pin, &ref] | provenance |  |
+| test.rs:438:39:438:49 | &mut reader [&ref] | test.rs:438:30:438:50 | ...::new(...) | provenance | MaD:12 |
+| test.rs:438:39:438:49 | &mut reader [&ref] | test.rs:438:30:438:50 | ...::new(...) [Pin, &ref] | provenance | MaD:13 |
+| test.rs:438:44:438:49 | reader | test.rs:438:39:438:49 | &mut reader [&ref] | provenance |  |
+| test.rs:439:19:439:24 | pinned | test.rs:439:18:439:24 | &pinned | provenance |  |
+| test.rs:439:19:439:24 | pinned [Pin, &ref] | test.rs:439:18:439:24 | &pinned | provenance |  |
+| test.rs:441:30:441:35 | pinned | test.rs:441:56:441:66 | [post] &mut buffer [&ref] | provenance | MaD:16 |
+| test.rs:441:56:441:66 | [post] &mut buffer [&ref] | test.rs:441:61:441:66 | [post] buffer | provenance |  |
+| test.rs:441:61:441:66 | [post] buffer | test.rs:443:23:443:28 | buffer | provenance |  |
+| test.rs:441:61:441:66 | [post] buffer | test.rs:444:23:444:28 | buffer | provenance |  |
+| test.rs:441:61:441:66 | [post] buffer | test.rs:444:23:444:33 | buffer[...] | provenance |  |
+| test.rs:443:23:443:28 | buffer | test.rs:443:22:443:28 | &buffer | provenance |  |
+| test.rs:444:23:444:28 | buffer | test.rs:444:23:444:33 | buffer[...] | provenance | MaD:10 |
+| test.rs:444:23:444:33 | buffer[...] | test.rs:444:22:444:33 | &... | provenance |  |
+| test.rs:451:63:451:73 | &mut reader [&ref] | test.rs:451:76:451:87 | [post] &mut buffer1 [&ref] | provenance | MaD:21 |
+| test.rs:451:68:451:73 | reader | test.rs:451:63:451:73 | &mut reader [&ref] | provenance |  |
+| test.rs:451:76:451:87 | [post] &mut buffer1 [&ref] | test.rs:451:81:451:87 | [post] buffer1 | provenance |  |
+| test.rs:451:81:451:87 | [post] buffer1 | test.rs:452:19:452:25 | buffer1 | provenance |  |
+| test.rs:451:81:451:87 | [post] buffer1 | test.rs:452:19:452:40 | buffer1[...] | provenance |  |
+| test.rs:452:19:452:25 | buffer1 | test.rs:452:19:452:40 | buffer1[...] | provenance | MaD:10 |
+| test.rs:452:19:452:40 | buffer1[...] | test.rs:452:18:452:40 | &... | provenance |  |
+| test.rs:455:31:455:36 | reader | test.rs:455:43:455:54 | [post] &mut buffer2 [&ref] | provenance | MaD:21 |
+| test.rs:455:43:455:54 | [post] &mut buffer2 [&ref] | test.rs:455:48:455:54 | [post] buffer2 | provenance |  |
+| test.rs:455:48:455:54 | [post] buffer2 | test.rs:457:19:457:25 | buffer2 | provenance |  |
+| test.rs:455:48:455:54 | [post] buffer2 | test.rs:457:19:457:40 | buffer2[...] | provenance |  |
+| test.rs:457:19:457:25 | buffer2 | test.rs:457:19:457:40 | buffer2[...] | provenance | MaD:10 |
+| test.rs:457:19:457:40 | buffer2[...] | test.rs:457:18:457:40 | &... | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:461:15:461:21 | reader2 | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:465:44:465:50 | reader2 | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:475:41:475:47 | reader2 | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:489:26:489:32 | reader2 | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:496:44:496:50 | reader2 | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:509:68:509:74 | reader2 | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:513:31:513:37 | reader2 | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:519:44:519:50 | reader2 | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:531:26:531:32 | reader2 | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:538:31:538:37 | reader2 | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:545:31:545:37 | reader2 | provenance |  |
+| test.rs:460:13:460:23 | mut reader2 | test.rs:552:31:552:37 | reader2 | provenance |  |
+| test.rs:460:27:460:61 | ...::new(...) | test.rs:460:13:460:23 | mut reader2 | provenance |  |
+| test.rs:460:55:460:60 | reader | test.rs:460:27:460:61 | ...::new(...) | provenance | MaD:23 |
+| test.rs:461:15:461:21 | reader2 | test.rs:461:14:461:21 | &reader2 | provenance |  |
+| test.rs:465:17:465:26 | mut pinned | test.rs:466:19:466:24 | pinned | provenance |  |
+| test.rs:465:17:465:26 | mut pinned | test.rs:468:26:468:31 | pinned | provenance |  |
+| test.rs:465:17:465:26 | mut pinned [Pin, &ref] | test.rs:466:19:466:24 | pinned [Pin, &ref] | provenance |  |
+| test.rs:465:30:465:51 | ...::new(...) | test.rs:465:17:465:26 | mut pinned | provenance |  |
+| test.rs:465:30:465:51 | ...::new(...) [Pin, &ref] | test.rs:465:17:465:26 | mut pinned [Pin, &ref] | provenance |  |
+| test.rs:465:39:465:50 | &mut reader2 [&ref] | test.rs:465:30:465:51 | ...::new(...) | provenance | MaD:12 |
+| test.rs:465:39:465:50 | &mut reader2 [&ref] | test.rs:465:30:465:51 | ...::new(...) [Pin, &ref] | provenance | MaD:13 |
+| test.rs:465:44:465:50 | reader2 | test.rs:465:39:465:50 | &mut reader2 [&ref] | provenance |  |
+| test.rs:466:19:466:24 | pinned | test.rs:466:18:466:24 | &pinned | provenance |  |
+| test.rs:466:19:466:24 | pinned [Pin, &ref] | test.rs:466:18:466:24 | &pinned | provenance |  |
+| test.rs:468:17:468:22 | buffer [Ready, Ok] | test.rs:469:20:469:39 | ...::Ready(...) [Ready, Ok] | provenance |  |
+| test.rs:468:17:468:22 | buffer [Ready, Ok] | test.rs:470:23:470:28 | buffer [Ready, Ok] | provenance |  |
+| test.rs:468:26:468:31 | pinned | test.rs:468:26:468:54 | pinned.poll_fill_buf(...) [Ready, Ok] | provenance | MaD:15 |
+| test.rs:468:26:468:54 | pinned.poll_fill_buf(...) [Ready, Ok] | test.rs:468:17:468:22 | buffer [Ready, Ok] | provenance |  |
+| test.rs:469:20:469:39 | ...::Ready(...) [Ready, Ok] | test.rs:469:32:469:38 | Ok(...) [Ok] | provenance |  |
+| test.rs:469:32:469:38 | Ok(...) [Ok] | test.rs:469:35:469:37 | buf | provenance |  |
+| test.rs:469:35:469:37 | buf | test.rs:471:22:471:24 | buf | provenance |  |
+| test.rs:470:23:470:28 | buffer [Ready, Ok] | test.rs:470:22:470:28 | &buffer | provenance |  |
+| test.rs:475:17:475:23 | buffer2 [Ready, Ok] | test.rs:476:20:476:26 | buffer2 [Ready, Ok] | provenance |  |
+| test.rs:475:27:475:48 | ...::new(...) | test.rs:475:27:475:71 | ... .poll_fill_buf(...) [Ready, Ok] | provenance | MaD:15 |
+| test.rs:475:27:475:71 | ... .poll_fill_buf(...) [Ready, Ok] | test.rs:475:17:475:23 | buffer2 [Ready, Ok] | provenance |  |
+| test.rs:475:36:475:47 | &mut reader2 [&ref] | test.rs:475:27:475:48 | ...::new(...) | provenance | MaD:12 |
+| test.rs:475:41:475:47 | reader2 | test.rs:475:36:475:47 | &mut reader2 [&ref] | provenance |  |
+| test.rs:476:20:476:26 | buffer2 [Ready, Ok] | test.rs:477:17:477:36 | ...::Ready(...) [Ready, Ok] | provenance |  |
+| test.rs:476:20:476:26 | buffer2 [Ready, Ok] | test.rs:478:27:478:33 | buffer2 [Ready, Ok] | provenance |  |
+| test.rs:477:17:477:36 | ...::Ready(...) [Ready, Ok] | test.rs:477:29:477:35 | Ok(...) [Ok] | provenance |  |
+| test.rs:477:29:477:35 | Ok(...) [Ok] | test.rs:477:32:477:34 | buf | provenance |  |
+| test.rs:477:32:477:34 | buf | test.rs:479:26:479:28 | buf | provenance |  |
+| test.rs:478:27:478:33 | buffer2 [Ready, Ok] | test.rs:478:26:478:33 | &buffer2 | provenance |  |
+| test.rs:489:17:489:22 | buffer | test.rs:490:18:490:23 | buffer | provenance |  |
+| test.rs:489:26:489:32 | reader2 | test.rs:489:26:489:43 | reader2.fill_buf() [future, Ok] | provenance | MaD:18 |
+| test.rs:489:26:489:43 | reader2.fill_buf() [future, Ok] | test.rs:489:26:489:49 | await ... [Ok] | provenance |  |
+| test.rs:489:26:489:49 | await ... [Ok] | test.rs:489:26:489:50 | TryExpr | provenance |  |
+| test.rs:489:26:489:50 | TryExpr | test.rs:489:17:489:22 | buffer | provenance |  |
+| test.rs:496:17:496:26 | mut pinned | test.rs:497:19:497:24 | pinned | provenance |  |
+| test.rs:496:17:496:26 | mut pinned | test.rs:499:30:499:35 | pinned | provenance |  |
+| test.rs:496:17:496:26 | mut pinned [Pin, &ref] | test.rs:497:19:497:24 | pinned [Pin, &ref] | provenance |  |
+| test.rs:496:30:496:51 | ...::new(...) | test.rs:496:17:496:26 | mut pinned | provenance |  |
+| test.rs:496:30:496:51 | ...::new(...) [Pin, &ref] | test.rs:496:17:496:26 | mut pinned [Pin, &ref] | provenance |  |
+| test.rs:496:39:496:50 | &mut reader2 [&ref] | test.rs:496:30:496:51 | ...::new(...) | provenance | MaD:12 |
+| test.rs:496:39:496:50 | &mut reader2 [&ref] | test.rs:496:30:496:51 | ...::new(...) [Pin, &ref] | provenance | MaD:13 |
+| test.rs:496:44:496:50 | reader2 | test.rs:496:39:496:50 | &mut reader2 [&ref] | provenance |  |
+| test.rs:497:19:497:24 | pinned | test.rs:497:18:497:24 | &pinned | provenance |  |
+| test.rs:497:19:497:24 | pinned [Pin, &ref] | test.rs:497:18:497:24 | &pinned | provenance |  |
+| test.rs:499:30:499:35 | pinned | test.rs:499:56:499:66 | [post] &mut buffer [&ref] | provenance | MaD:16 |
+| test.rs:499:56:499:66 | [post] &mut buffer [&ref] | test.rs:499:61:499:66 | [post] buffer | provenance |  |
+| test.rs:499:61:499:66 | [post] buffer | test.rs:500:19:500:24 | buffer | provenance |  |
+| test.rs:499:61:499:66 | [post] buffer | test.rs:502:23:502:28 | buffer | provenance |  |
+| test.rs:499:61:499:66 | [post] buffer | test.rs:502:23:502:33 | buffer[...] | provenance |  |
+| test.rs:500:19:500:24 | buffer | test.rs:500:18:500:24 | &buffer | provenance |  |
+| test.rs:502:23:502:28 | buffer | test.rs:502:23:502:33 | buffer[...] | provenance | MaD:10 |
+| test.rs:502:23:502:33 | buffer[...] | test.rs:502:22:502:33 | &... | provenance |  |
+| test.rs:509:63:509:74 | &mut reader2 [&ref] | test.rs:509:77:509:88 | [post] &mut buffer1 [&ref] | provenance | MaD:21 |
+| test.rs:509:68:509:74 | reader2 | test.rs:509:63:509:74 | &mut reader2 [&ref] | provenance |  |
+| test.rs:509:77:509:88 | [post] &mut buffer1 [&ref] | test.rs:509:82:509:88 | [post] buffer1 | provenance |  |
+| test.rs:509:82:509:88 | [post] buffer1 | test.rs:510:19:510:25 | buffer1 | provenance |  |
+| test.rs:509:82:509:88 | [post] buffer1 | test.rs:510:19:510:40 | buffer1[...] | provenance |  |
+| test.rs:510:19:510:25 | buffer1 | test.rs:510:19:510:40 | buffer1[...] | provenance | MaD:10 |
+| test.rs:510:19:510:40 | buffer1[...] | test.rs:510:18:510:40 | &... | provenance |  |
+| test.rs:513:31:513:37 | reader2 | test.rs:513:44:513:55 | [post] &mut buffer2 [&ref] | provenance | MaD:21 |
+| test.rs:513:44:513:55 | [post] &mut buffer2 [&ref] | test.rs:513:49:513:55 | [post] buffer2 | provenance |  |
+| test.rs:513:49:513:55 | [post] buffer2 | test.rs:514:19:514:25 | buffer2 | provenance |  |
+| test.rs:513:49:513:55 | [post] buffer2 | test.rs:514:19:514:40 | buffer2[...] | provenance |  |
+| test.rs:514:19:514:25 | buffer2 | test.rs:514:19:514:40 | buffer2[...] | provenance | MaD:10 |
+| test.rs:514:19:514:40 | buffer2[...] | test.rs:514:18:514:40 | &... | provenance |  |
+| test.rs:519:17:519:26 | mut pinned | test.rs:520:19:520:24 | pinned | provenance |  |
+| test.rs:519:17:519:26 | mut pinned | test.rs:522:26:522:31 | pinned | provenance |  |
+| test.rs:519:17:519:26 | mut pinned [Pin, &ref] | test.rs:520:19:520:24 | pinned [Pin, &ref] | provenance |  |
+| test.rs:519:30:519:51 | ...::new(...) | test.rs:519:17:519:26 | mut pinned | provenance |  |
+| test.rs:519:30:519:51 | ...::new(...) [Pin, &ref] | test.rs:519:17:519:26 | mut pinned [Pin, &ref] | provenance |  |
+| test.rs:519:39:519:50 | &mut reader2 [&ref] | test.rs:519:30:519:51 | ...::new(...) | provenance | MaD:12 |
+| test.rs:519:39:519:50 | &mut reader2 [&ref] | test.rs:519:30:519:51 | ...::new(...) [Pin, &ref] | provenance | MaD:13 |
+| test.rs:519:44:519:50 | reader2 | test.rs:519:39:519:50 | &mut reader2 [&ref] | provenance |  |
+| test.rs:520:19:520:24 | pinned | test.rs:520:18:520:24 | &pinned | provenance |  |
+| test.rs:520:19:520:24 | pinned [Pin, &ref] | test.rs:520:18:520:24 | &pinned | provenance |  |
+| test.rs:522:17:522:22 | buffer [Ready, Ok] | test.rs:523:19:523:24 | buffer [Ready, Ok] | provenance |  |
+| test.rs:522:17:522:22 | buffer [Ready, Ok] | test.rs:524:20:524:39 | ...::Ready(...) [Ready, Ok] | provenance |  |
+| test.rs:522:26:522:31 | pinned | test.rs:522:26:522:54 | pinned.poll_fill_buf(...) [Ready, Ok] | provenance | MaD:15 |
+| test.rs:522:26:522:54 | pinned.poll_fill_buf(...) [Ready, Ok] | test.rs:522:17:522:22 | buffer [Ready, Ok] | provenance |  |
+| test.rs:523:19:523:24 | buffer [Ready, Ok] | test.rs:523:18:523:24 | &buffer | provenance |  |
+| test.rs:524:20:524:39 | ...::Ready(...) [Ready, Ok] | test.rs:524:32:524:38 | Ok(...) [Ok] | provenance |  |
+| test.rs:524:32:524:38 | Ok(...) [Ok] | test.rs:524:35:524:37 | buf | provenance |  |
+| test.rs:524:35:524:37 | buf | test.rs:525:22:525:24 | buf | provenance |  |
+| test.rs:531:17:531:22 | buffer | test.rs:532:18:532:23 | buffer | provenance |  |
+| test.rs:531:26:531:32 | reader2 | test.rs:531:26:531:43 | reader2.fill_buf() [future, Ok] | provenance | MaD:18 |
+| test.rs:531:26:531:43 | reader2.fill_buf() [future, Ok] | test.rs:531:26:531:49 | await ... [Ok] | provenance |  |
+| test.rs:531:26:531:49 | await ... [Ok] | test.rs:531:26:531:50 | TryExpr | provenance |  |
+| test.rs:531:26:531:50 | TryExpr | test.rs:531:17:531:22 | buffer | provenance |  |
+| test.rs:538:31:538:37 | reader2 | test.rs:538:57:538:65 | [post] &mut line [&ref] | provenance | MaD:20 |
+| test.rs:538:57:538:65 | [post] &mut line [&ref] | test.rs:538:62:538:65 | [post] line | provenance |  |
+| test.rs:538:62:538:65 | [post] line | test.rs:539:19:539:22 | line | provenance |  |
+| test.rs:539:19:539:22 | line | test.rs:539:18:539:22 | &line | provenance |  |
+| test.rs:545:31:545:37 | reader2 | test.rs:545:49:545:57 | [post] &mut line [&ref] | provenance | MaD:19 |
+| test.rs:545:49:545:57 | [post] &mut line [&ref] | test.rs:545:54:545:57 | [post] line | provenance |  |
+| test.rs:545:54:545:57 | [post] line | test.rs:546:19:546:22 | line | provenance |  |
+| test.rs:546:19:546:22 | line | test.rs:546:18:546:22 | &line | provenance |  |
+| test.rs:552:31:552:37 | reader2 | test.rs:552:51:552:61 | [post] &mut buffer [&ref] | provenance | MaD:22 |
+| test.rs:552:51:552:61 | [post] &mut buffer [&ref] | test.rs:552:56:552:61 | [post] buffer | provenance |  |
+| test.rs:552:56:552:61 | [post] buffer | test.rs:553:19:553:24 | buffer | provenance |  |
+| test.rs:553:19:553:24 | buffer | test.rs:553:18:553:24 | &buffer | provenance |  |
 nodes
 | test.rs:11:9:11:22 | remote_string1 | semmle.label | remote_string1 |
 | test.rs:11:26:11:62 | ...::get(...) | semmle.label | ...::get(...) |
@@ -584,160 +584,160 @@ nodes
 | test.rs:373:27:373:39 | [post] &mut response [&ref] | semmle.label | [post] &mut response [&ref] |
 | test.rs:373:32:373:39 | [post] response | semmle.label | [post] response |
 | test.rs:375:10:375:17 | response | semmle.label | response |
-| test.rs:396:13:396:15 | tcp | semmle.label | tcp |
-| test.rs:396:19:396:41 | ...::connect(...) | semmle.label | ...::connect(...) |
-| test.rs:396:19:396:41 | ...::connect(...) [future, Ok] | semmle.label | ...::connect(...) [future, Ok] |
-| test.rs:396:19:396:47 | await ... [Ok] | semmle.label | await ... [Ok] |
-| test.rs:396:19:396:48 | TryExpr | semmle.label | TryExpr |
-| test.rs:397:14:397:17 | &tcp | semmle.label | &tcp |
-| test.rs:397:15:397:17 | tcp | semmle.label | tcp |
-| test.rs:403:13:403:22 | mut reader | semmle.label | mut reader |
-| test.rs:403:26:403:60 | connector.connect(...) [future, Ok] | semmle.label | connector.connect(...) [future, Ok] |
-| test.rs:403:26:403:66 | await ... [Ok] | semmle.label | await ... [Ok] |
-| test.rs:403:26:403:67 | TryExpr | semmle.label | TryExpr |
-| test.rs:403:57:403:59 | tcp | semmle.label | tcp |
-| test.rs:404:14:404:20 | &reader | semmle.label | &reader |
-| test.rs:404:15:404:20 | reader | semmle.label | reader |
-| test.rs:409:17:409:26 | mut pinned | semmle.label | mut pinned |
-| test.rs:409:17:409:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
-| test.rs:409:30:409:50 | ...::new(...) | semmle.label | ...::new(...) |
-| test.rs:409:30:409:50 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
-| test.rs:409:39:409:49 | &mut reader [&ref] | semmle.label | &mut reader [&ref] |
-| test.rs:409:44:409:49 | reader | semmle.label | reader |
-| test.rs:410:18:410:24 | &pinned | semmle.label | &pinned |
-| test.rs:410:19:410:24 | pinned | semmle.label | pinned |
-| test.rs:410:19:410:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
-| test.rs:412:30:412:35 | pinned | semmle.label | pinned |
-| test.rs:412:56:412:66 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
-| test.rs:412:61:412:66 | [post] buffer | semmle.label | [post] buffer |
-| test.rs:414:22:414:28 | &buffer | semmle.label | &buffer |
-| test.rs:414:23:414:28 | buffer | semmle.label | buffer |
-| test.rs:415:22:415:33 | &... | semmle.label | &... |
-| test.rs:415:23:415:28 | buffer | semmle.label | buffer |
-| test.rs:415:23:415:33 | buffer[...] | semmle.label | buffer[...] |
-| test.rs:422:63:422:73 | &mut reader [&ref] | semmle.label | &mut reader [&ref] |
-| test.rs:422:68:422:73 | reader | semmle.label | reader |
-| test.rs:422:76:422:87 | [post] &mut buffer1 [&ref] | semmle.label | [post] &mut buffer1 [&ref] |
-| test.rs:422:81:422:87 | [post] buffer1 | semmle.label | [post] buffer1 |
-| test.rs:423:18:423:40 | &... | semmle.label | &... |
-| test.rs:423:19:423:25 | buffer1 | semmle.label | buffer1 |
-| test.rs:423:19:423:40 | buffer1[...] | semmle.label | buffer1[...] |
-| test.rs:426:31:426:36 | reader | semmle.label | reader |
-| test.rs:426:43:426:54 | [post] &mut buffer2 [&ref] | semmle.label | [post] &mut buffer2 [&ref] |
-| test.rs:426:48:426:54 | [post] buffer2 | semmle.label | [post] buffer2 |
-| test.rs:428:18:428:40 | &... | semmle.label | &... |
-| test.rs:428:19:428:25 | buffer2 | semmle.label | buffer2 |
-| test.rs:428:19:428:40 | buffer2[...] | semmle.label | buffer2[...] |
-| test.rs:431:13:431:23 | mut reader2 | semmle.label | mut reader2 |
-| test.rs:431:27:431:61 | ...::new(...) | semmle.label | ...::new(...) |
-| test.rs:431:55:431:60 | reader | semmle.label | reader |
-| test.rs:432:14:432:21 | &reader2 | semmle.label | &reader2 |
-| test.rs:432:15:432:21 | reader2 | semmle.label | reader2 |
-| test.rs:436:17:436:26 | mut pinned | semmle.label | mut pinned |
-| test.rs:436:17:436:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
-| test.rs:436:30:436:51 | ...::new(...) | semmle.label | ...::new(...) |
-| test.rs:436:30:436:51 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
-| test.rs:436:39:436:50 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
-| test.rs:436:44:436:50 | reader2 | semmle.label | reader2 |
-| test.rs:437:18:437:24 | &pinned | semmle.label | &pinned |
-| test.rs:437:19:437:24 | pinned | semmle.label | pinned |
-| test.rs:437:19:437:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
-| test.rs:439:17:439:22 | buffer [Ready, Ok] | semmle.label | buffer [Ready, Ok] |
-| test.rs:439:26:439:31 | pinned | semmle.label | pinned |
-| test.rs:439:26:439:54 | pinned.poll_fill_buf(...) [Ready, Ok] | semmle.label | pinned.poll_fill_buf(...) [Ready, Ok] |
-| test.rs:440:20:440:39 | ...::Ready(...) [Ready, Ok] | semmle.label | ...::Ready(...) [Ready, Ok] |
-| test.rs:440:32:440:38 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
-| test.rs:440:35:440:37 | buf | semmle.label | buf |
-| test.rs:441:22:441:28 | &buffer | semmle.label | &buffer |
-| test.rs:441:23:441:28 | buffer [Ready, Ok] | semmle.label | buffer [Ready, Ok] |
-| test.rs:442:22:442:24 | buf | semmle.label | buf |
-| test.rs:446:17:446:23 | buffer2 [Ready, Ok] | semmle.label | buffer2 [Ready, Ok] |
-| test.rs:446:27:446:48 | ...::new(...) | semmle.label | ...::new(...) |
-| test.rs:446:27:446:71 | ... .poll_fill_buf(...) [Ready, Ok] | semmle.label | ... .poll_fill_buf(...) [Ready, Ok] |
-| test.rs:446:36:446:47 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
-| test.rs:446:41:446:47 | reader2 | semmle.label | reader2 |
-| test.rs:447:20:447:26 | buffer2 [Ready, Ok] | semmle.label | buffer2 [Ready, Ok] |
-| test.rs:448:17:448:36 | ...::Ready(...) [Ready, Ok] | semmle.label | ...::Ready(...) [Ready, Ok] |
-| test.rs:448:29:448:35 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
-| test.rs:448:32:448:34 | buf | semmle.label | buf |
-| test.rs:449:26:449:33 | &buffer2 | semmle.label | &buffer2 |
-| test.rs:449:27:449:33 | buffer2 [Ready, Ok] | semmle.label | buffer2 [Ready, Ok] |
-| test.rs:450:26:450:28 | buf | semmle.label | buf |
-| test.rs:460:17:460:22 | buffer | semmle.label | buffer |
-| test.rs:460:26:460:32 | reader2 | semmle.label | reader2 |
-| test.rs:460:26:460:43 | reader2.fill_buf() [future, Ok] | semmle.label | reader2.fill_buf() [future, Ok] |
-| test.rs:460:26:460:49 | await ... [Ok] | semmle.label | await ... [Ok] |
-| test.rs:460:26:460:50 | TryExpr | semmle.label | TryExpr |
-| test.rs:461:18:461:23 | buffer | semmle.label | buffer |
-| test.rs:467:17:467:26 | mut pinned | semmle.label | mut pinned |
-| test.rs:467:17:467:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
-| test.rs:467:30:467:51 | ...::new(...) | semmle.label | ...::new(...) |
-| test.rs:467:30:467:51 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
-| test.rs:467:39:467:50 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
-| test.rs:467:44:467:50 | reader2 | semmle.label | reader2 |
-| test.rs:468:18:468:24 | &pinned | semmle.label | &pinned |
-| test.rs:468:19:468:24 | pinned | semmle.label | pinned |
-| test.rs:468:19:468:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
-| test.rs:470:30:470:35 | pinned | semmle.label | pinned |
-| test.rs:470:56:470:66 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
-| test.rs:470:61:470:66 | [post] buffer | semmle.label | [post] buffer |
-| test.rs:471:18:471:24 | &buffer | semmle.label | &buffer |
-| test.rs:471:19:471:24 | buffer | semmle.label | buffer |
-| test.rs:473:22:473:33 | &... | semmle.label | &... |
-| test.rs:473:23:473:28 | buffer | semmle.label | buffer |
-| test.rs:473:23:473:33 | buffer[...] | semmle.label | buffer[...] |
-| test.rs:480:63:480:74 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
-| test.rs:480:68:480:74 | reader2 | semmle.label | reader2 |
-| test.rs:480:77:480:88 | [post] &mut buffer1 [&ref] | semmle.label | [post] &mut buffer1 [&ref] |
-| test.rs:480:82:480:88 | [post] buffer1 | semmle.label | [post] buffer1 |
-| test.rs:481:18:481:40 | &... | semmle.label | &... |
-| test.rs:481:19:481:25 | buffer1 | semmle.label | buffer1 |
-| test.rs:481:19:481:40 | buffer1[...] | semmle.label | buffer1[...] |
-| test.rs:484:31:484:37 | reader2 | semmle.label | reader2 |
-| test.rs:484:44:484:55 | [post] &mut buffer2 [&ref] | semmle.label | [post] &mut buffer2 [&ref] |
-| test.rs:484:49:484:55 | [post] buffer2 | semmle.label | [post] buffer2 |
-| test.rs:485:18:485:40 | &... | semmle.label | &... |
-| test.rs:485:19:485:25 | buffer2 | semmle.label | buffer2 |
-| test.rs:485:19:485:40 | buffer2[...] | semmle.label | buffer2[...] |
-| test.rs:490:17:490:26 | mut pinned | semmle.label | mut pinned |
-| test.rs:490:17:490:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
-| test.rs:490:30:490:51 | ...::new(...) | semmle.label | ...::new(...) |
-| test.rs:490:30:490:51 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
-| test.rs:490:39:490:50 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
-| test.rs:490:44:490:50 | reader2 | semmle.label | reader2 |
-| test.rs:491:18:491:24 | &pinned | semmle.label | &pinned |
-| test.rs:491:19:491:24 | pinned | semmle.label | pinned |
-| test.rs:491:19:491:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
-| test.rs:493:17:493:22 | buffer [Ready, Ok] | semmle.label | buffer [Ready, Ok] |
-| test.rs:493:26:493:31 | pinned | semmle.label | pinned |
-| test.rs:493:26:493:54 | pinned.poll_fill_buf(...) [Ready, Ok] | semmle.label | pinned.poll_fill_buf(...) [Ready, Ok] |
-| test.rs:494:18:494:24 | &buffer | semmle.label | &buffer |
-| test.rs:494:19:494:24 | buffer [Ready, Ok] | semmle.label | buffer [Ready, Ok] |
-| test.rs:495:20:495:39 | ...::Ready(...) [Ready, Ok] | semmle.label | ...::Ready(...) [Ready, Ok] |
-| test.rs:495:32:495:38 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
-| test.rs:495:35:495:37 | buf | semmle.label | buf |
-| test.rs:496:22:496:24 | buf | semmle.label | buf |
-| test.rs:502:17:502:22 | buffer | semmle.label | buffer |
-| test.rs:502:26:502:32 | reader2 | semmle.label | reader2 |
-| test.rs:502:26:502:43 | reader2.fill_buf() [future, Ok] | semmle.label | reader2.fill_buf() [future, Ok] |
-| test.rs:502:26:502:49 | await ... [Ok] | semmle.label | await ... [Ok] |
-| test.rs:502:26:502:50 | TryExpr | semmle.label | TryExpr |
-| test.rs:503:18:503:23 | buffer | semmle.label | buffer |
-| test.rs:509:31:509:37 | reader2 | semmle.label | reader2 |
-| test.rs:509:57:509:65 | [post] &mut line [&ref] | semmle.label | [post] &mut line [&ref] |
-| test.rs:509:62:509:65 | [post] line | semmle.label | [post] line |
-| test.rs:510:18:510:22 | &line | semmle.label | &line |
-| test.rs:510:19:510:22 | line | semmle.label | line |
-| test.rs:516:31:516:37 | reader2 | semmle.label | reader2 |
-| test.rs:516:49:516:57 | [post] &mut line [&ref] | semmle.label | [post] &mut line [&ref] |
-| test.rs:516:54:516:57 | [post] line | semmle.label | [post] line |
-| test.rs:517:18:517:22 | &line | semmle.label | &line |
-| test.rs:517:19:517:22 | line | semmle.label | line |
-| test.rs:523:31:523:37 | reader2 | semmle.label | reader2 |
-| test.rs:523:51:523:61 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
-| test.rs:523:56:523:61 | [post] buffer | semmle.label | [post] buffer |
-| test.rs:524:18:524:24 | &buffer | semmle.label | &buffer |
-| test.rs:524:19:524:24 | buffer | semmle.label | buffer |
+| test.rs:425:13:425:15 | tcp | semmle.label | tcp |
+| test.rs:425:19:425:41 | ...::connect(...) | semmle.label | ...::connect(...) |
+| test.rs:425:19:425:41 | ...::connect(...) [future, Ok] | semmle.label | ...::connect(...) [future, Ok] |
+| test.rs:425:19:425:47 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:425:19:425:48 | TryExpr | semmle.label | TryExpr |
+| test.rs:426:14:426:17 | &tcp | semmle.label | &tcp |
+| test.rs:426:15:426:17 | tcp | semmle.label | tcp |
+| test.rs:432:13:432:22 | mut reader | semmle.label | mut reader |
+| test.rs:432:26:432:60 | connector.connect(...) [future, Ok] | semmle.label | connector.connect(...) [future, Ok] |
+| test.rs:432:26:432:66 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:432:26:432:67 | TryExpr | semmle.label | TryExpr |
+| test.rs:432:57:432:59 | tcp | semmle.label | tcp |
+| test.rs:433:14:433:20 | &reader | semmle.label | &reader |
+| test.rs:433:15:433:20 | reader | semmle.label | reader |
+| test.rs:438:17:438:26 | mut pinned | semmle.label | mut pinned |
+| test.rs:438:17:438:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
+| test.rs:438:30:438:50 | ...::new(...) | semmle.label | ...::new(...) |
+| test.rs:438:30:438:50 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
+| test.rs:438:39:438:49 | &mut reader [&ref] | semmle.label | &mut reader [&ref] |
+| test.rs:438:44:438:49 | reader | semmle.label | reader |
+| test.rs:439:18:439:24 | &pinned | semmle.label | &pinned |
+| test.rs:439:19:439:24 | pinned | semmle.label | pinned |
+| test.rs:439:19:439:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
+| test.rs:441:30:441:35 | pinned | semmle.label | pinned |
+| test.rs:441:56:441:66 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:441:61:441:66 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:443:22:443:28 | &buffer | semmle.label | &buffer |
+| test.rs:443:23:443:28 | buffer | semmle.label | buffer |
+| test.rs:444:22:444:33 | &... | semmle.label | &... |
+| test.rs:444:23:444:28 | buffer | semmle.label | buffer |
+| test.rs:444:23:444:33 | buffer[...] | semmle.label | buffer[...] |
+| test.rs:451:63:451:73 | &mut reader [&ref] | semmle.label | &mut reader [&ref] |
+| test.rs:451:68:451:73 | reader | semmle.label | reader |
+| test.rs:451:76:451:87 | [post] &mut buffer1 [&ref] | semmle.label | [post] &mut buffer1 [&ref] |
+| test.rs:451:81:451:87 | [post] buffer1 | semmle.label | [post] buffer1 |
+| test.rs:452:18:452:40 | &... | semmle.label | &... |
+| test.rs:452:19:452:25 | buffer1 | semmle.label | buffer1 |
+| test.rs:452:19:452:40 | buffer1[...] | semmle.label | buffer1[...] |
+| test.rs:455:31:455:36 | reader | semmle.label | reader |
+| test.rs:455:43:455:54 | [post] &mut buffer2 [&ref] | semmle.label | [post] &mut buffer2 [&ref] |
+| test.rs:455:48:455:54 | [post] buffer2 | semmle.label | [post] buffer2 |
+| test.rs:457:18:457:40 | &... | semmle.label | &... |
+| test.rs:457:19:457:25 | buffer2 | semmle.label | buffer2 |
+| test.rs:457:19:457:40 | buffer2[...] | semmle.label | buffer2[...] |
+| test.rs:460:13:460:23 | mut reader2 | semmle.label | mut reader2 |
+| test.rs:460:27:460:61 | ...::new(...) | semmle.label | ...::new(...) |
+| test.rs:460:55:460:60 | reader | semmle.label | reader |
+| test.rs:461:14:461:21 | &reader2 | semmle.label | &reader2 |
+| test.rs:461:15:461:21 | reader2 | semmle.label | reader2 |
+| test.rs:465:17:465:26 | mut pinned | semmle.label | mut pinned |
+| test.rs:465:17:465:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
+| test.rs:465:30:465:51 | ...::new(...) | semmle.label | ...::new(...) |
+| test.rs:465:30:465:51 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
+| test.rs:465:39:465:50 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
+| test.rs:465:44:465:50 | reader2 | semmle.label | reader2 |
+| test.rs:466:18:466:24 | &pinned | semmle.label | &pinned |
+| test.rs:466:19:466:24 | pinned | semmle.label | pinned |
+| test.rs:466:19:466:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
+| test.rs:468:17:468:22 | buffer [Ready, Ok] | semmle.label | buffer [Ready, Ok] |
+| test.rs:468:26:468:31 | pinned | semmle.label | pinned |
+| test.rs:468:26:468:54 | pinned.poll_fill_buf(...) [Ready, Ok] | semmle.label | pinned.poll_fill_buf(...) [Ready, Ok] |
+| test.rs:469:20:469:39 | ...::Ready(...) [Ready, Ok] | semmle.label | ...::Ready(...) [Ready, Ok] |
+| test.rs:469:32:469:38 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
+| test.rs:469:35:469:37 | buf | semmle.label | buf |
+| test.rs:470:22:470:28 | &buffer | semmle.label | &buffer |
+| test.rs:470:23:470:28 | buffer [Ready, Ok] | semmle.label | buffer [Ready, Ok] |
+| test.rs:471:22:471:24 | buf | semmle.label | buf |
+| test.rs:475:17:475:23 | buffer2 [Ready, Ok] | semmle.label | buffer2 [Ready, Ok] |
+| test.rs:475:27:475:48 | ...::new(...) | semmle.label | ...::new(...) |
+| test.rs:475:27:475:71 | ... .poll_fill_buf(...) [Ready, Ok] | semmle.label | ... .poll_fill_buf(...) [Ready, Ok] |
+| test.rs:475:36:475:47 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
+| test.rs:475:41:475:47 | reader2 | semmle.label | reader2 |
+| test.rs:476:20:476:26 | buffer2 [Ready, Ok] | semmle.label | buffer2 [Ready, Ok] |
+| test.rs:477:17:477:36 | ...::Ready(...) [Ready, Ok] | semmle.label | ...::Ready(...) [Ready, Ok] |
+| test.rs:477:29:477:35 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
+| test.rs:477:32:477:34 | buf | semmle.label | buf |
+| test.rs:478:26:478:33 | &buffer2 | semmle.label | &buffer2 |
+| test.rs:478:27:478:33 | buffer2 [Ready, Ok] | semmle.label | buffer2 [Ready, Ok] |
+| test.rs:479:26:479:28 | buf | semmle.label | buf |
+| test.rs:489:17:489:22 | buffer | semmle.label | buffer |
+| test.rs:489:26:489:32 | reader2 | semmle.label | reader2 |
+| test.rs:489:26:489:43 | reader2.fill_buf() [future, Ok] | semmle.label | reader2.fill_buf() [future, Ok] |
+| test.rs:489:26:489:49 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:489:26:489:50 | TryExpr | semmle.label | TryExpr |
+| test.rs:490:18:490:23 | buffer | semmle.label | buffer |
+| test.rs:496:17:496:26 | mut pinned | semmle.label | mut pinned |
+| test.rs:496:17:496:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
+| test.rs:496:30:496:51 | ...::new(...) | semmle.label | ...::new(...) |
+| test.rs:496:30:496:51 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
+| test.rs:496:39:496:50 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
+| test.rs:496:44:496:50 | reader2 | semmle.label | reader2 |
+| test.rs:497:18:497:24 | &pinned | semmle.label | &pinned |
+| test.rs:497:19:497:24 | pinned | semmle.label | pinned |
+| test.rs:497:19:497:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
+| test.rs:499:30:499:35 | pinned | semmle.label | pinned |
+| test.rs:499:56:499:66 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:499:61:499:66 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:500:18:500:24 | &buffer | semmle.label | &buffer |
+| test.rs:500:19:500:24 | buffer | semmle.label | buffer |
+| test.rs:502:22:502:33 | &... | semmle.label | &... |
+| test.rs:502:23:502:28 | buffer | semmle.label | buffer |
+| test.rs:502:23:502:33 | buffer[...] | semmle.label | buffer[...] |
+| test.rs:509:63:509:74 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
+| test.rs:509:68:509:74 | reader2 | semmle.label | reader2 |
+| test.rs:509:77:509:88 | [post] &mut buffer1 [&ref] | semmle.label | [post] &mut buffer1 [&ref] |
+| test.rs:509:82:509:88 | [post] buffer1 | semmle.label | [post] buffer1 |
+| test.rs:510:18:510:40 | &... | semmle.label | &... |
+| test.rs:510:19:510:25 | buffer1 | semmle.label | buffer1 |
+| test.rs:510:19:510:40 | buffer1[...] | semmle.label | buffer1[...] |
+| test.rs:513:31:513:37 | reader2 | semmle.label | reader2 |
+| test.rs:513:44:513:55 | [post] &mut buffer2 [&ref] | semmle.label | [post] &mut buffer2 [&ref] |
+| test.rs:513:49:513:55 | [post] buffer2 | semmle.label | [post] buffer2 |
+| test.rs:514:18:514:40 | &... | semmle.label | &... |
+| test.rs:514:19:514:25 | buffer2 | semmle.label | buffer2 |
+| test.rs:514:19:514:40 | buffer2[...] | semmle.label | buffer2[...] |
+| test.rs:519:17:519:26 | mut pinned | semmle.label | mut pinned |
+| test.rs:519:17:519:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
+| test.rs:519:30:519:51 | ...::new(...) | semmle.label | ...::new(...) |
+| test.rs:519:30:519:51 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
+| test.rs:519:39:519:50 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
+| test.rs:519:44:519:50 | reader2 | semmle.label | reader2 |
+| test.rs:520:18:520:24 | &pinned | semmle.label | &pinned |
+| test.rs:520:19:520:24 | pinned | semmle.label | pinned |
+| test.rs:520:19:520:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
+| test.rs:522:17:522:22 | buffer [Ready, Ok] | semmle.label | buffer [Ready, Ok] |
+| test.rs:522:26:522:31 | pinned | semmle.label | pinned |
+| test.rs:522:26:522:54 | pinned.poll_fill_buf(...) [Ready, Ok] | semmle.label | pinned.poll_fill_buf(...) [Ready, Ok] |
+| test.rs:523:18:523:24 | &buffer | semmle.label | &buffer |
+| test.rs:523:19:523:24 | buffer [Ready, Ok] | semmle.label | buffer [Ready, Ok] |
+| test.rs:524:20:524:39 | ...::Ready(...) [Ready, Ok] | semmle.label | ...::Ready(...) [Ready, Ok] |
+| test.rs:524:32:524:38 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
+| test.rs:524:35:524:37 | buf | semmle.label | buf |
+| test.rs:525:22:525:24 | buf | semmle.label | buf |
+| test.rs:531:17:531:22 | buffer | semmle.label | buffer |
+| test.rs:531:26:531:32 | reader2 | semmle.label | reader2 |
+| test.rs:531:26:531:43 | reader2.fill_buf() [future, Ok] | semmle.label | reader2.fill_buf() [future, Ok] |
+| test.rs:531:26:531:49 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:531:26:531:50 | TryExpr | semmle.label | TryExpr |
+| test.rs:532:18:532:23 | buffer | semmle.label | buffer |
+| test.rs:538:31:538:37 | reader2 | semmle.label | reader2 |
+| test.rs:538:57:538:65 | [post] &mut line [&ref] | semmle.label | [post] &mut line [&ref] |
+| test.rs:538:62:538:65 | [post] line | semmle.label | [post] line |
+| test.rs:539:18:539:22 | &line | semmle.label | &line |
+| test.rs:539:19:539:22 | line | semmle.label | line |
+| test.rs:545:31:545:37 | reader2 | semmle.label | reader2 |
+| test.rs:545:49:545:57 | [post] &mut line [&ref] | semmle.label | [post] &mut line [&ref] |
+| test.rs:545:54:545:57 | [post] line | semmle.label | [post] line |
+| test.rs:546:18:546:22 | &line | semmle.label | &line |
+| test.rs:546:19:546:22 | line | semmle.label | line |
+| test.rs:552:31:552:37 | reader2 | semmle.label | reader2 |
+| test.rs:552:51:552:61 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:552:56:552:61 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:553:18:553:24 | &buffer | semmle.label | &buffer |
+| test.rs:553:19:553:24 | buffer | semmle.label | buffer |
 subpaths
 testFailures
 #select
@@ -772,29 +772,29 @@ testFailures
 | test.rs:362:10:362:16 | &stream | test.rs:359:18:359:54 | ...::connect(...) | test.rs:362:10:362:16 | &stream | $@ | test.rs:359:18:359:54 | ...::connect(...) | ...::connect(...) |
 | test.rs:370:10:370:30 | &... | test.rs:359:18:359:54 | ...::connect(...) | test.rs:370:10:370:30 | &... | $@ | test.rs:359:18:359:54 | ...::connect(...) | ...::connect(...) |
 | test.rs:375:10:375:17 | response | test.rs:359:18:359:54 | ...::connect(...) | test.rs:375:10:375:17 | response | $@ | test.rs:359:18:359:54 | ...::connect(...) | ...::connect(...) |
-| test.rs:397:14:397:17 | &tcp | test.rs:396:19:396:41 | ...::connect(...) | test.rs:397:14:397:17 | &tcp | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:404:14:404:20 | &reader | test.rs:396:19:396:41 | ...::connect(...) | test.rs:404:14:404:20 | &reader | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:410:18:410:24 | &pinned | test.rs:396:19:396:41 | ...::connect(...) | test.rs:410:18:410:24 | &pinned | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:414:22:414:28 | &buffer | test.rs:396:19:396:41 | ...::connect(...) | test.rs:414:22:414:28 | &buffer | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:415:22:415:33 | &... | test.rs:396:19:396:41 | ...::connect(...) | test.rs:415:22:415:33 | &... | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:423:18:423:40 | &... | test.rs:396:19:396:41 | ...::connect(...) | test.rs:423:18:423:40 | &... | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:428:18:428:40 | &... | test.rs:396:19:396:41 | ...::connect(...) | test.rs:428:18:428:40 | &... | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:432:14:432:21 | &reader2 | test.rs:396:19:396:41 | ...::connect(...) | test.rs:432:14:432:21 | &reader2 | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:437:18:437:24 | &pinned | test.rs:396:19:396:41 | ...::connect(...) | test.rs:437:18:437:24 | &pinned | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:441:22:441:28 | &buffer | test.rs:396:19:396:41 | ...::connect(...) | test.rs:441:22:441:28 | &buffer | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:442:22:442:24 | buf | test.rs:396:19:396:41 | ...::connect(...) | test.rs:442:22:442:24 | buf | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:449:26:449:33 | &buffer2 | test.rs:396:19:396:41 | ...::connect(...) | test.rs:449:26:449:33 | &buffer2 | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:450:26:450:28 | buf | test.rs:396:19:396:41 | ...::connect(...) | test.rs:450:26:450:28 | buf | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:461:18:461:23 | buffer | test.rs:396:19:396:41 | ...::connect(...) | test.rs:461:18:461:23 | buffer | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:468:18:468:24 | &pinned | test.rs:396:19:396:41 | ...::connect(...) | test.rs:468:18:468:24 | &pinned | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:471:18:471:24 | &buffer | test.rs:396:19:396:41 | ...::connect(...) | test.rs:471:18:471:24 | &buffer | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:473:22:473:33 | &... | test.rs:396:19:396:41 | ...::connect(...) | test.rs:473:22:473:33 | &... | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:481:18:481:40 | &... | test.rs:396:19:396:41 | ...::connect(...) | test.rs:481:18:481:40 | &... | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:485:18:485:40 | &... | test.rs:396:19:396:41 | ...::connect(...) | test.rs:485:18:485:40 | &... | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:491:18:491:24 | &pinned | test.rs:396:19:396:41 | ...::connect(...) | test.rs:491:18:491:24 | &pinned | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:494:18:494:24 | &buffer | test.rs:396:19:396:41 | ...::connect(...) | test.rs:494:18:494:24 | &buffer | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:496:22:496:24 | buf | test.rs:396:19:396:41 | ...::connect(...) | test.rs:496:22:496:24 | buf | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:503:18:503:23 | buffer | test.rs:396:19:396:41 | ...::connect(...) | test.rs:503:18:503:23 | buffer | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:510:18:510:22 | &line | test.rs:396:19:396:41 | ...::connect(...) | test.rs:510:18:510:22 | &line | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:517:18:517:22 | &line | test.rs:396:19:396:41 | ...::connect(...) | test.rs:517:18:517:22 | &line | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
-| test.rs:524:18:524:24 | &buffer | test.rs:396:19:396:41 | ...::connect(...) | test.rs:524:18:524:24 | &buffer | $@ | test.rs:396:19:396:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:426:14:426:17 | &tcp | test.rs:425:19:425:41 | ...::connect(...) | test.rs:426:14:426:17 | &tcp | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:433:14:433:20 | &reader | test.rs:425:19:425:41 | ...::connect(...) | test.rs:433:14:433:20 | &reader | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:439:18:439:24 | &pinned | test.rs:425:19:425:41 | ...::connect(...) | test.rs:439:18:439:24 | &pinned | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:443:22:443:28 | &buffer | test.rs:425:19:425:41 | ...::connect(...) | test.rs:443:22:443:28 | &buffer | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:444:22:444:33 | &... | test.rs:425:19:425:41 | ...::connect(...) | test.rs:444:22:444:33 | &... | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:452:18:452:40 | &... | test.rs:425:19:425:41 | ...::connect(...) | test.rs:452:18:452:40 | &... | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:457:18:457:40 | &... | test.rs:425:19:425:41 | ...::connect(...) | test.rs:457:18:457:40 | &... | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:461:14:461:21 | &reader2 | test.rs:425:19:425:41 | ...::connect(...) | test.rs:461:14:461:21 | &reader2 | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:466:18:466:24 | &pinned | test.rs:425:19:425:41 | ...::connect(...) | test.rs:466:18:466:24 | &pinned | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:470:22:470:28 | &buffer | test.rs:425:19:425:41 | ...::connect(...) | test.rs:470:22:470:28 | &buffer | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:471:22:471:24 | buf | test.rs:425:19:425:41 | ...::connect(...) | test.rs:471:22:471:24 | buf | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:478:26:478:33 | &buffer2 | test.rs:425:19:425:41 | ...::connect(...) | test.rs:478:26:478:33 | &buffer2 | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:479:26:479:28 | buf | test.rs:425:19:425:41 | ...::connect(...) | test.rs:479:26:479:28 | buf | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:490:18:490:23 | buffer | test.rs:425:19:425:41 | ...::connect(...) | test.rs:490:18:490:23 | buffer | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:497:18:497:24 | &pinned | test.rs:425:19:425:41 | ...::connect(...) | test.rs:497:18:497:24 | &pinned | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:500:18:500:24 | &buffer | test.rs:425:19:425:41 | ...::connect(...) | test.rs:500:18:500:24 | &buffer | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:502:22:502:33 | &... | test.rs:425:19:425:41 | ...::connect(...) | test.rs:502:22:502:33 | &... | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:510:18:510:40 | &... | test.rs:425:19:425:41 | ...::connect(...) | test.rs:510:18:510:40 | &... | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:514:18:514:40 | &... | test.rs:425:19:425:41 | ...::connect(...) | test.rs:514:18:514:40 | &... | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:520:18:520:24 | &pinned | test.rs:425:19:425:41 | ...::connect(...) | test.rs:520:18:520:24 | &pinned | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:523:18:523:24 | &buffer | test.rs:425:19:425:41 | ...::connect(...) | test.rs:523:18:523:24 | &buffer | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:525:22:525:24 | buf | test.rs:425:19:425:41 | ...::connect(...) | test.rs:525:22:525:24 | buf | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:532:18:532:23 | buffer | test.rs:425:19:425:41 | ...::connect(...) | test.rs:532:18:532:23 | buffer | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:539:18:539:22 | &line | test.rs:425:19:425:41 | ...::connect(...) | test.rs:539:18:539:22 | &line | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:546:18:546:22 | &line | test.rs:425:19:425:41 | ...::connect(...) | test.rs:546:18:546:22 | &line | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:553:18:553:24 | &buffer | test.rs:425:19:425:41 | ...::connect(...) | test.rs:553:18:553:24 | &buffer | $@ | test.rs:425:19:425:41 | ...::connect(...) | ...::connect(...) |

@@ -377,6 +377,35 @@ fn test_native_tls() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+async fn test_async_native_tls() -> Result<(), Box<dyn std::error::Error>> {
+    use futures::io::{
+        AsyncReadExt as FuturesAsyncReadExt, AsyncWriteExt as FuturesAsyncWriteExt,
+    };
+
+    let address = "www.example.com:443";
+    let stream0 = async_std::net::TcpStream::connect(address).await?; // $ Alert[rust/summary/taint-sources]
+    let connector = async_native_tls::TlsConnector::new();
+    let mut stream = async_native_tls::connect("www.example.com", stream0).await?;
+    sink(&stream); // $ MISSING: hasTaintFlow=address
+
+    stream
+        .write_all(b"GET / HTTP/1.1\r\nHost: www.example.com\r\nConnection: close\r\n\r\n")
+        .await?;
+
+    let mut buffer = [0u8; 100];
+    let bytes_read = stream.read(&mut buffer).await?;
+    println!("bytes_read = {}", bytes_read);
+    println!("buffer = {:?}", &buffer[..bytes_read]);
+    sink(&buffer[..bytes_read]); // $ MISSING: hasTaintFlow=address
+
+    let mut response = String::new();
+    stream.read_to_string(&mut response).await?;
+    println!("rest of response = '{}'", response);
+    sink(response); // $ MISSING: hasTaintFlow=address
+
+    Ok(())
+}
+
 mod futures_rustls {
     use async_std::net::TcpStream;
     use async_std::sync::Arc;
@@ -573,6 +602,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("test_native_tls...");
     match test_native_tls() {
+        Ok(_) => println!("complete"),
+        Err(e) => println!("error: {}", e),
+    }
+
+    println!("test_async_native_tls...");
+    match futures::executor::block_on(test_async_native_tls()) {
         Ok(_) => println!("complete"),
         Err(e) => println!("error: {}", e),
     }
