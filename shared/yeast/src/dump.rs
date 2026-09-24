@@ -551,6 +551,20 @@ fn source_skeleton(ast: &Ast, node: &Node, source: &str) -> SourceSkeleton {
     SourceSkeleton::Text(result)
 }
 
+fn node_content(node: &Node, source: &str) -> String {
+    match &node.content {
+        NodeContent::DynamicString(s) if !s.is_empty() => s.clone(),
+        _ => {
+            let range = node.byte_range();
+            if range.start < source.len() && range.end <= source.len() {
+                source[range.start..range.end].to_string()
+            } else {
+                String::new()
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -706,19 +720,5 @@ mod tests {
             dump.contains("  child source=\"hi\" (external)\n"),
             "unexpected dump: {dump}"
         );
-    }
-}
-
-fn node_content(node: &Node, source: &str) -> String {
-    match &node.content {
-        NodeContent::DynamicString(s) if !s.is_empty() => s.clone(),
-        _ => {
-            let range = node.byte_range();
-            if range.start < source.len() && range.end <= source.len() {
-                source[range.start..range.end].to_string()
-            } else {
-                String::new()
-            }
-        }
     }
 }
