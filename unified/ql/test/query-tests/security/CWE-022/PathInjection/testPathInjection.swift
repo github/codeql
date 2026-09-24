@@ -337,7 +337,7 @@ class Connection {
 // --- tests ---
 
 func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UInt8>) {
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)  // $ MISSING: Source
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)  // $ Source
     let remoteUrl = URL(string: remoteString)!
     let remoteNsUrl = NSURL(string: remoteString)!
     let safeUrl = URL(string: "")!
@@ -348,80 +348,80 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     let nsData = NSData()
     let _ = nsData.write(to: remoteUrl, atomically: false)  // $ MISSING: Alert
     nsData.write(to: remoteUrl, options: [])  // $ MISSING: Alert
-    let _ = nsData.write(toFile: remoteString, atomically: false)  // $ MISSING: Alert
-    nsData.write(toFile: remoteString, options: [])  // $ MISSING: Alert
+    let _ = nsData.write(toFile: remoteString, atomically: false)  // $ Alert
+    nsData.write(toFile: remoteString, options: [])  // $ Alert
 
     let fm = FileManager()
     let _ = fm.contentsOfDirectory(at: remoteUrl, includingPropertiesForKeys: [], options: [])  // $ MISSING: Alert
-    let _ = fm.contentsOfDirectory(atPath: remoteString)  // $ MISSING: Alert
+    let _ = fm.contentsOfDirectory(atPath: remoteString)  // $ Alert
     let _ = fm.enumerator(
         at: remoteUrl, includingPropertiesForKeys: [], options: [], errorHandler: nil)  // $ MISSING: Alert
-    let _ = fm.enumerator(atPath: remoteString)  // $ MISSING: Alert
-    let _ = fm.subpathsOfDirectory(atPath: remoteString)  // $ MISSING: Alert
-    let _ = fm.subpaths(atPath: remoteString)  // $ MISSING: Alert
-    fm.createDirectory(at: remoteUrl, withIntermediateDirectories: false, attributes: [:])  // $ MISSING: Alert
-    let _ = fm.createDirectory(atPath: remoteString, attributes: [:])  // $ MISSING: Alert
-    let _ = fm.createFile(atPath: remoteString, contents: nil, attributes: [:])  // $ MISSING: Alert
-    fm.removeItem(at: remoteUrl)  // $ MISSING: Alert
-    fm.removeItem(atPath: remoteString)  // $ MISSING: Alert
-    fm.trashItem(at: remoteUrl, resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert
-    let _ = fm.replaceItemAt(remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [])  // $ MISSING: Alert
-    let _ = fm.replaceItemAt(safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [])  // $ MISSING: Alert
+    let _ = fm.enumerator(atPath: remoteString)  // $ Alert
+    let _ = fm.subpathsOfDirectory(atPath: remoteString)  // $ Alert
+    let _ = fm.subpaths(atPath: remoteString)  // $ Alert
+    fm.createDirectory(at: remoteUrl, withIntermediateDirectories: false, attributes: [:])  // $ Alert
+    let _ = fm.createDirectory(atPath: remoteString, attributes: [:])  // $ Alert
+    let _ = fm.createFile(atPath: remoteString, contents: nil, attributes: [:])  // $ Alert
+    fm.removeItem(at: remoteUrl)  // $ Alert
+    fm.removeItem(atPath: remoteString)  // $ Alert
+    fm.trashItem(at: remoteUrl, resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ Alert
+    let _ = fm.replaceItemAt(remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [])  // $ Alert
+    let _ = fm.replaceItemAt(safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [])  // $ Alert
     fm.replaceItem(
-        at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [],
+        at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [], // $ SPURIOUS: Alert
         resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert
     fm.replaceItem(
-        at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [],
+        at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [], // $ SPURIOUS: Alert
         resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert
-    fm.copyItem(at: remoteUrl, to: safeUrl)  // $ MISSING: Alert
-    fm.copyItem(at: safeUrl, to: remoteUrl)  // $ MISSING: Alert
-    fm.copyItem(atPath: remoteString, toPath: "")  // $ MISSING: Alert
-    fm.copyItem(atPath: "", toPath: remoteString)  // $ MISSING: Alert
-    fm.moveItem(at: remoteUrl, to: safeUrl)  // $ MISSING: Alert
-    fm.moveItem(at: safeUrl, to: remoteUrl)  // $ MISSING: Alert
-    fm.moveItem(atPath: remoteString, toPath: "")  // $ MISSING: Alert
-    fm.moveItem(atPath: "", toPath: remoteString)  // $ MISSING: Alert
-    fm.createSymbolicLink(at: remoteUrl, withDestinationURL: safeUrl)  // $ MISSING: Alert
-    fm.createSymbolicLink(at: safeUrl, withDestinationURL: remoteUrl)  // $ MISSING: Alert
-    fm.createSymbolicLink(atPath: remoteString, withDestinationPath: "")  // $ MISSING: Alert
-    fm.createSymbolicLink(atPath: "", withDestinationPath: remoteString)  // $ MISSING: Alert
-    fm.linkItem(at: remoteUrl, to: safeUrl)  // $ MISSING: Alert
-    fm.linkItem(at: safeUrl, to: remoteUrl)  // $ MISSING: Alert
-    fm.linkItem(atPath: remoteString, toPath: "")  // $ MISSING: Alert
-    fm.linkItem(atPath: "", toPath: remoteString)  // $ MISSING: Alert
-    let _ = fm.destinationOfSymbolicLink(atPath: remoteString)  // $ MISSING: Alert
-    let _ = fm.fileExists(atPath: remoteString)  // $ MISSING: Alert
+    fm.copyItem(at: remoteUrl, to: safeUrl)  // $ Alert
+    fm.copyItem(at: safeUrl, to: remoteUrl)  // $ Alert
+    fm.copyItem(atPath: remoteString, toPath: "")  // $ Alert
+    fm.copyItem(atPath: "", toPath: remoteString)  // $ Alert
+    fm.moveItem(at: remoteUrl, to: safeUrl)  // $ Alert
+    fm.moveItem(at: safeUrl, to: remoteUrl)  // $ Alert
+    fm.moveItem(atPath: remoteString, toPath: "")  // $ Alert
+    fm.moveItem(atPath: "", toPath: remoteString)  // $ Alert
+    fm.createSymbolicLink(at: remoteUrl, withDestinationURL: safeUrl)  // $ Alert
+    fm.createSymbolicLink(at: safeUrl, withDestinationURL: remoteUrl)  // $ Alert
+    fm.createSymbolicLink(atPath: remoteString, withDestinationPath: "")  // $ Alert
+    fm.createSymbolicLink(atPath: "", withDestinationPath: remoteString)  // $ Alert
+    fm.linkItem(at: remoteUrl, to: safeUrl)  // $ Alert
+    fm.linkItem(at: safeUrl, to: remoteUrl)  // $ Alert
+    fm.linkItem(atPath: remoteString, toPath: "")  // $ Alert
+    fm.linkItem(atPath: "", toPath: remoteString)  // $ Alert
+    let _ = fm.destinationOfSymbolicLink(atPath: remoteString)  // $ Alert
+    let _ = fm.fileExists(atPath: remoteString)  // $ Alert
     let _ = fm.fileExists(
-        atPath: remoteString, isDirectory: UnsafeMutablePointer<ObjCBool>.init(bitPattern: 0))  // $ MISSING: Alert
-    fm.setAttributes([:], ofItemAtPath: remoteString)  // $ MISSING: Alert
-    let _ = fm.contents(atPath: remoteString)  // $ MISSING: Alert
-    let _ = fm.contentsEqual(atPath: remoteString, andPath: "")  // $ MISSING: Alert
-    let _ = fm.contentsEqual(atPath: "", andPath: remoteString)  // $ MISSING: Alert
-    let _ = fm.changeCurrentDirectoryPath(remoteString)  // $ MISSING: Alert
-    let _ = fm.unmountVolume(at: remoteUrl, options: [], completionHandler: { _ in })  // $ MISSING: Alert
+        atPath: remoteString, isDirectory: UnsafeMutablePointer<ObjCBool>.init(bitPattern: 0))  // $ Alert
+    fm.setAttributes([:], ofItemAtPath: remoteString)  // $ Alert
+    let _ = fm.contents(atPath: remoteString)  // $ Alert
+    let _ = fm.contentsEqual(atPath: remoteString, andPath: "")  // $ Alert
+    let _ = fm.contentsEqual(atPath: "", andPath: remoteString)  // $ Alert
+    let _ = fm.changeCurrentDirectoryPath(remoteString)  // $ Alert
+    let _ = fm.unmountVolume(at: remoteUrl, options: [], completionHandler: { _ in })  // $ Alert
     // Deprecated methods
-    let _ = fm.changeFileAttributes([:], atPath: remoteString)  // $ MISSING: Alert
-    let _ = fm.directoryContents(atPath: remoteString)  // $ MISSING: Alert
-    let _ = fm.createDirectory(atPath: remoteString, attributes: [:])  // $ MISSING: Alert
-    let _ = fm.createSymbolicLink(atPath: remoteString, pathContent: "")  // $ MISSING: Alert
-    let _ = fm.createSymbolicLink(atPath: "", pathContent: remoteString)  // $ MISSING: Alert
-    let _ = fm.pathContentOfSymbolicLink(atPath: remoteString)  // $ MISSING: Alert
+    let _ = fm.changeFileAttributes([:], atPath: remoteString)  // $ Alert
+    let _ = fm.directoryContents(atPath: remoteString)  // $ Alert
+    let _ = fm.createDirectory(atPath: remoteString, attributes: [:])  // $ Alert
+    let _ = fm.createSymbolicLink(atPath: remoteString, pathContent: "")  // $ Alert
+    let _ = fm.createSymbolicLink(atPath: "", pathContent: remoteString)  // $ Alert
+    let _ = fm.pathContentOfSymbolicLink(atPath: remoteString)  // $ Alert
     let _ = fm.replaceItemAtURL(
         originalItemURL: remoteNsUrl, withItemAtURL: safeNsUrl, backupItemName: nil, options: [])  // $ MISSING: Alert
     let _ = fm.replaceItemAtURL(
-        originalItemURL: safeNsUrl, withItemAtURL: remoteNsUrl, backupItemName: nil, options: [])  // $ MISSING: Alert
+        originalItemURL: safeNsUrl, withItemAtURL: remoteNsUrl, backupItemName: nil, options: [])  // $ Alert
 
     var encoding = String.Encoding.utf8
-    let _ = try! String(contentsOfFile: remoteString)  // $ MISSING: Alert
-    let _ = try! String(contentsOfFile: remoteString, encoding: String.Encoding.utf8)  // $ MISSING: Alert
-    let _ = try! String(contentsOfFile: remoteString, usedEncoding: &encoding)  // $ MISSING: Alert
+    let _ = try! String(contentsOfFile: remoteString)  // $ Alert
+    let _ = try! String(contentsOfFile: remoteString, encoding: String.Encoding.utf8)  // $ Alert
+    let _ = try! String(contentsOfFile: remoteString, usedEncoding: &encoding)  // $ Alert
 
-    let _ = try! NSString(contentsOfFile: remoteString, encoding: 0)  // $ MISSING: Alert
-    let _ = try! NSString(contentsOfFile: remoteString, usedEncoding: nil)  // $ MISSING: Alert
-    NSString().write(to: remoteUrl, atomically: true, encoding: 0)  // $ MISSING: Alert
-    NSString().write(toFile: remoteString, atomically: true, encoding: 0)  // $ MISSING: Alert
+    let _ = try! NSString(contentsOfFile: remoteString, encoding: 0)  // $ Alert
+    let _ = try! NSString(contentsOfFile: remoteString, usedEncoding: nil)  // $ Alert
+    NSString().write(to: remoteUrl, atomically: true, encoding: 0)  // $ Alert
+    NSString().write(toFile: remoteString, atomically: true, encoding: 0)  // $ Alert
 
-    let _ = NSKeyedUnarchiver().unarchiveObject(withFile: remoteString)  // $ MISSING: Alert
+    let _ = NSKeyedUnarchiver().unarchiveObject(withFile: remoteString)  // $ Alert
     let _ = ArchiveByteStream.fileStream(fd: remoteString as! FileDescriptor, automaticClose: true)  // $ MISSING: Alert
     ArchiveByteStream.withFileStream(fd: remoteString as! FileDescriptor, automaticClose: true) {
         _ in
@@ -433,18 +433,18 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
         path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append,
         permissions: .ownerRead
     ) { _ in }  // $ MISSING: Alert
-    let _ = Bundle(url: remoteUrl)  // $ MISSING: Alert
-    let _ = Bundle(path: remoteString)  // $ MISSING: Alert
+    let _ = Bundle(url: remoteUrl)  // $ Alert
+    let _ = Bundle(path: remoteString)  // $ Alert
 
     // GRDB
 
-    let _ = Database(path: remoteString, description: "", configuration: Configuration())  // $ MISSING: Alert
+    let _ = Database(path: remoteString, description: "", configuration: Configuration())  // $ Alert
     let _ = Database(path: "", description: "", configuration: Configuration())  // Safe
-    let _ = DatabasePool(path: remoteString, configuration: Configuration())  // $ MISSING: Alert
+    let _ = DatabasePool(path: remoteString, configuration: Configuration())  // $ Alert
     let _ = DatabasePool(path: "", configuration: Configuration())  // Safe
-    let _ = DatabaseQueue(path: remoteString, configuration: Configuration())  // $ MISSING: Alert
+    let _ = DatabaseQueue(path: remoteString, configuration: Configuration())  // $ Alert
     let _ = DatabaseQueue(path: "", configuration: Configuration())  // Safe
-    let _ = DatabaseSnapshotPool(path: remoteString, configuration: Configuration())  // $ MISSING: Alert
+    let _ = DatabaseSnapshotPool(path: remoteString, configuration: Configuration())  // $ Alert
     let _ = DatabaseSnapshotPool(path: "", configuration: Configuration())  // Safe
     let _ = SerializedDatabase(path: remoteString, defaultLabel: "")  // $ MISSING: Alert
     let _ = SerializedDatabase(path: "", defaultLabel: "")  // Safe
@@ -453,7 +453,7 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     let _ = SerializedDatabase(path: remoteString, configuration: Configuration(), defaultLabel: "")  // $ MISSING: Alert
     let _ = SerializedDatabase(path: "", configuration: Configuration(), defaultLabel: "")  // Safe
     let _ = SerializedDatabase(
-        path: remoteString, configuration: Configuration(), defaultLabel: "", purpose: nil)  // $ MISSING: Alert
+        path: remoteString, configuration: Configuration(), defaultLabel: "", purpose: nil)  // $ Alert
     let _ = SerializedDatabase(
         path: "", configuration: Configuration(), defaultLabel: "", purpose: nil)  // Safe
 
@@ -474,16 +474,16 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
 
     var db: OpaquePointer?
     let localData = Data(0)
-    let remoteData = Data(contentsOf: URL(string: "http://example.com/")!, options: [])  // $ MISSING: Source
+    let remoteData = Data(contentsOf: URL(string: "http://example.com/")!, options: [])  // $ Source
     localData.copyBytes(to: buffer1, count: localData.count)
     remoteData.copyBytes(to: buffer2, count: remoteData.count)
 
     _ = sqlite3_open("myFile.sqlite3", &db)  // GOOD
-    _ = sqlite3_open(remoteString, &db)  // $ MISSING: Alert
+    _ = sqlite3_open(remoteString, &db)  // $ Alert
     _ = sqlite3_open16(buffer1, &db)  // GOOD
-    _ = sqlite3_open16(buffer2, &db)  // $ MISSING: Alert
+    _ = sqlite3_open16(buffer2, &db)  // $ Alert
     _ = sqlite3_open_v2("myFile.sqlite3", &db, 0, nil)  // GOOD
-    _ = sqlite3_open_v2(remoteString, &db, 0, nil)  // $ MISSING: Alert
+    _ = sqlite3_open_v2(remoteString, &db, 0, nil)  // $ Alert
 
     sqlite3_temp_directory = UnsafeMutablePointer<CChar>(
         mutating: NSString(string: "myFile.sqlite3").utf8String)  // GOOD
@@ -500,22 +500,22 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
 }
 
 func testBarriers() {
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)  // $ MISSING: Source
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)  // $ Source
 
     let fm = FileManager()
 
     let filePath = FilePath(stringLiteral: remoteString)
     if filePath.lexicallyNormalized().starts(with: "/safe") {
-        let _ = fm.contents(atPath: remoteString)  // Safe
+        let _ = fm.contents(atPath: remoteString)  // $ SPURIOUS: Alert // Safe
     }
-    let _ = fm.contents(atPath: remoteString)  // $ MISSING: Alert
+    let _ = fm.contents(atPath: remoteString)  // $ Alert
 }
 
 func testPathInjection2(
     s1: UnsafeMutablePointer<String>, s2: UnsafeMutablePointer<String>,
     s3: UnsafeMutablePointer<String>, fm: FileManager
 ) throws {
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)  // $ MISSING: Source
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)  // $ Source
 
     var u1 = URL(filePath: "")
     _ = NSData(contentsOf: u1)
@@ -523,7 +523,7 @@ func testPathInjection2(
     _ = NSData(contentsOf: u1.appendingPathComponent(remoteString))  // $ MISSING: Alert
     _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent(""))  // $ MISSING: Alert
     u1.appendPathComponent(remoteString)
-    _ = NSData(contentsOf: u1)  // $ MISSING: Alert
+    _ = NSData(contentsOf: u1)  // $ Alert
 
     let u2 = URL(filePath: remoteString)  // $ MISSING: Alert
     _ = NSData(contentsOf: u2)  // $ MISSING: Alert
@@ -537,13 +537,13 @@ func testPathInjection2(
     Data("").write(to: u4.filePathURL!, options: [])  // $ MISSING: Alert
     Data("").write(to: u4.appendingPathComponent("")!, options: [])  // $ MISSING: Alert
 
-    _ = NSData(contentsOfFile: remoteString)!  // $ MISSING: Alert
-    _ = NSData(contentsOfMappedFile: remoteString)!  // $ MISSING: Alert
-    _ = NSData.dataWithContentsOfMappedFile(remoteString)!  // $ MISSING: Alert
+    _ = NSData(contentsOfFile: remoteString)!  // $ Alert
+    _ = NSData(contentsOfMappedFile: remoteString)!  // $ Alert
+    _ = NSData.dataWithContentsOfMappedFile(remoteString)!  // $ Alert
 
     _ = NSData().write(toFile: s1.pointee, atomically: true)
     s1.pointee = remoteString
-    _ = NSData().write(toFile: s1.pointee, atomically: true)  // $ MISSING: Alert
+    _ = NSData().write(toFile: s1.pointee, atomically: true)  // $ Alert
     _ = NSData().write(toFile: s1[0], atomically: true)  // $ MISSING: Alert // Originally missing
 
     _ = "".completePath(into: s2, caseSensitive: false, matchesInto: nil, filterTypes: nil)
@@ -555,8 +555,8 @@ func testPathInjection2(
     _ = NSData().write(toFile: s3.pointee, atomically: true)  // $ MISSING: Alert // Originally missing
     _ = NSData().write(toFile: s3[0], atomically: true)  // $ MISSING: Alert
 
-    _ = fm.fileAttributes(atPath: remoteString, traverseLink: true)  // $ MISSING: Alert
-    _ = try fm.attributesOfItem(atPath: remoteString)  // $ MISSING: Alert
+    _ = fm.fileAttributes(atPath: remoteString, traverseLink: true)  // $ Alert
+    _ = try fm.attributesOfItem(atPath: remoteString)  // $ Alert
 }
 
 // ---

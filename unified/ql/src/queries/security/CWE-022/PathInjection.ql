@@ -17,9 +17,9 @@
 import unified
 
 module PathInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { none() }
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
 
-  predicate isSink(DataFlow::Node node) { none() }
+  predicate isSink(DataFlow::Node node) { Models::isSink(node, "path-injection") }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
