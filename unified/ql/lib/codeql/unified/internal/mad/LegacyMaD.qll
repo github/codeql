@@ -187,6 +187,10 @@ private class Selector extends TSelector {
       this = MkSelector(type, true, name, argLabels, _)
     )
   }
+
+  int getPositionalArity() { result = count(int n | this.getArgLabels().splitAt(":", n) = "_") }
+
+  string getANamedArgument() { result = this.getArgLabels().splitAt(":") and result != "_" }
 }
 
 private predicate isAccessPath(string path) {
@@ -331,5 +335,27 @@ module Public {
 
     /** Holds if `node` is a sink of the given `kind`. */
     predicate isSink(DataFlow::Node node, string kind) { node = getASink(kind, _) }
+  }
+}
+
+private module Debug {
+  query predicate invalidAccessPath(Selector selector, AccessPathToken ap) {
+    (
+      normalizedSourceModel(selector, ap, _, _)
+      or
+      normalizedSinkModel(selector, ap, _, _)
+    ) and
+    ap.getName() = ["Argument", "Parameter"] and
+    (
+      exists(int n |
+        parseInt(ap.getAnArgument()) = n and
+        not n in [0 .. selector.getPositionalArity() - 1]
+      )
+      or
+      exists(string name |
+        name = ap.getAnArgument().regexpCapture("(.*):", 1) and
+        not name = selector.getANamedArgument()
+      )
+    )
   }
 }
