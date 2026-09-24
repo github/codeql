@@ -7,5 +7,5 @@ func weightedMeanGood(a, b float64, countA, countB, total int) float64 {
 }
 
 func parenthesizedGood(a, b, c int) int {
-	return (a ^ b)&c // $ SPURIOUS: Alert
+	return (a ^ b)&c
 }
