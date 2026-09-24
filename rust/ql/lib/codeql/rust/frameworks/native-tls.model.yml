@@ -13,5 +13,5 @@ extensions:
     data:
       - ["<native_tls::TlsConnector>::connect", "Argument[1]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<async_native_tls::connect::TlsConnector>::connect", "Argument[1]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["async_native_tls::connect", "Argument[1]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["async_native_tls::connect::connect", "Argument[1]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<tokio_native_tls::TlsConnector>::connect", "Argument[1]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]

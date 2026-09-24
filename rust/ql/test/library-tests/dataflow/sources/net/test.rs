@@ -386,7 +386,7 @@ async fn test_async_native_tls() -> Result<(), Box<dyn std::error::Error>> {
     let stream0 = async_std::net::TcpStream::connect(address).await?; // $ Alert[rust/summary/taint-sources]
     let connector = async_native_tls::TlsConnector::new();
     let mut stream = async_native_tls::connect("www.example.com", stream0).await?;
-    sink(&stream); // $ MISSING: hasTaintFlow=address
+    sink(&stream); // $ hasTaintFlow=address
 
     stream
         .write_all(b"GET / HTTP/1.1\r\nHost: www.example.com\r\nConnection: close\r\n\r\n")
@@ -396,7 +396,7 @@ async fn test_async_native_tls() -> Result<(), Box<dyn std::error::Error>> {
     let bytes_read = stream.read(&mut buffer).await?;
     println!("bytes_read = {}", bytes_read);
     println!("buffer = {:?}", &buffer[..bytes_read]);
-    sink(&buffer[..bytes_read]); // $ MISSING: hasTaintFlow=address
+    sink(&buffer[..bytes_read]); // $ hasTaintFlow=address
 
     let mut response = String::new();
     stream.read_to_string(&mut response).await?;
