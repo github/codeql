@@ -401,7 +401,7 @@ async fn test_async_native_tls() -> Result<(), Box<dyn std::error::Error>> {
     let mut response = String::new();
     stream.read_to_string(&mut response).await?;
     println!("rest of response = '{}'", response);
-    sink(response); // $ MISSING: hasTaintFlow=address
+    sink(response); // $ hasTaintFlow=address
 
     Ok(())
 }
