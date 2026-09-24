@@ -679,7 +679,7 @@ module CfgImpl {
           e.(Go::PromotedSelector).refersTo(explicitField) and
           baseType.getFieldAtDepth(_, explicitFieldDepth) = explicitField
         |
-          index = explicitFieldDepth - implicitFieldDepth
+          index = explicitFieldDepth - implicitFieldDepth and index > 0
         )
       )
       or
@@ -689,7 +689,8 @@ module CfgImpl {
         baseType = e.(Go::PromotedSelector).getSelectedStructType() and
         e.(Go::PromotedSelector).refersTo(method) and
         baseType.getMethodAtDepth(_, mDepth) = method and
-        index = mDepth - implicitFieldDepth
+        index = mDepth - implicitFieldDepth and
+        index > 0
       |
         method = baseType.getMethodOfEmbedded(implicitField, _, implicitFieldDepth + 1)
         or

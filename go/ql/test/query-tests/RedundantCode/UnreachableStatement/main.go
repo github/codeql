@@ -159,4 +159,21 @@ func test19() mystruct {
 	return mystruct{test10(1), test10(2) == 2} // $ Alert
 }
 
+type (
+	embedded  struct{}
+	recursive struct {
+		*embedded
+		value int
+		*recursive
+	}
+)
+
+func test20(x *recursive) []int {
+	values := []int{0}
+	if x.value != 0 {
+		values = append(values, x.value)
+	}
+	return values // OK: reachable because value is a direct field of recursive
+}
+
 func main() {}
