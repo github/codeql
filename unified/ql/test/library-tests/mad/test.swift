@@ -108,3 +108,13 @@ func testQualifiedConstructors(
         shouldCompactOnLaunch: nil,
         syncConfiguration: nil)
 }
+
+class Connection {
+    enum Location {
+        static func uri(_ path: String, parameters: String) {}
+    }
+}
+
+func testConnectionLocation(string: String) {
+    Connection.Location.uri(string, parameters: "")  // $ isSink=path-injection
+}

@@ -368,10 +368,10 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     let _ = fm.replaceItemAt(remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [])  // $ Alert
     let _ = fm.replaceItemAt(safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [])  // $ Alert
     fm.replaceItem(
-        at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [], // $ SPURIOUS: Alert
+        at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [],  // $ SPURIOUS: Alert
         resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert
     fm.replaceItem(
-        at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [], // $ SPURIOUS: Alert
+        at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [],  // $ SPURIOUS: Alert
         resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert
     fm.copyItem(at: remoteUrl, to: safeUrl)  // $ Alert
     fm.copyItem(at: safeUrl, to: remoteUrl)  // $ Alert
@@ -495,6 +495,7 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     try! _ = Connection()
     try! _ = Connection(Connection.Location.uri("myFile.sqlite3"))  // GOOD
     try! _ = Connection(Connection.Location.uri(remoteString))  // $ MISSING: Alert
+    try! _ = Connection(Connection.Location.uri(remoteString, parameters: []))  // $ Alert
     try! _ = Connection("myFile.sqlite3")  // GOOD
     try! _ = Connection(remoteString)  // $ MISSING: Alert
 }
