@@ -48,7 +48,10 @@ module PathInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
-  predicate isBarrier(DataFlow::Node node) { none() }
+  predicate isBarrier(DataFlow::Node node) {
+    // TODO: add barriers
+    none()
+  }
 }
 
 module PathInjectionFlow = DataFlow::Global<PathInjectionConfig>;
