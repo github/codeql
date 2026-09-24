@@ -5,3 +5,7 @@ package main
 func weightedMeanGood(a, b float64, countA, countB, total int) float64 {
 	return ((a * float64(countA)) + (b * float64(countB))) / float64(total)
 }
+
+func parenthesizedGood(a, b, c int) int {
+	return (a ^ b)&c // $ SPURIOUS: Alert
+}
