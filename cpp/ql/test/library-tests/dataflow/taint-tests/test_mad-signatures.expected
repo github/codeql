@@ -16099,6 +16099,7 @@ getSignatureParameterName
 | (const SXNET *,unsigned char **) |  | i2d_SXNET | 1 | unsigned char ** |
 | (const SXNETID *,unsigned char **) |  | i2d_SXNETID | 0 | const SXNETID * |
 | (const SXNETID *,unsigned char **) |  | i2d_SXNETID | 1 | unsigned char ** |
+| (const StringRef &) | ByteInStream | reset | 0 | const StringRef & |
 | (const T &,BOOL) | CComSafeArray<T> | Add | 0 | const class:0 & |
 | (const T &,BOOL) | CComSafeArray<T> | Add | 1 | BOOL |
 | (const TS_ACCURACY *) |  | TS_ACCURACY_dup | 0 | const TS_ACCURACY * |
@@ -18075,6 +18076,8 @@ getSignatureParameterName
 | (const char *,size_t) |  | uv__strndup | 1 | size_t |
 | (const char *,size_t) |  | xstrndup | 0 | const char * |
 | (const char *,size_t) |  | xstrndup | 1 | size_t |
+| (const char *,size_t) | ByteInStream | reset | 0 | const char * |
+| (const char *,size_t) | ByteInStream | reset | 1 | size_t |
 | (const char *,size_t,char **,size_t *,urlreject) |  | Curl_urldecode | 0 | const char * |
 | (const char *,size_t,char **,size_t *,urlreject) |  | Curl_urldecode | 1 | size_t |
 | (const char *,size_t,char **,size_t *,urlreject) |  | Curl_urldecode | 2 | char ** |
