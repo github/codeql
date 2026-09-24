@@ -31,6 +31,8 @@ module Generated {
   class ConstParam extends Synth::TConstParam, GenericParamImpl::GenericParam {
     override string getAPrimaryQlClass() { result = "ConstParam" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this const parameter (0-based).
      */

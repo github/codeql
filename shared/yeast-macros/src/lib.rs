@@ -122,14 +122,30 @@ pub fn trees(input: TokenStream) -> TokenStream {
 ///     (output_template field: {name} {repeated})
 /// )
 ///
-/// // Shorthand: captures become fields on the output node
-/// rule!((query ...) => output_kind)
+/// // A guard filters a successful query match. Every capture is raw in the
+/// // guard because guards run before capture translation.
+/// rule!(
+///     (query_pattern field: _? @value)
+///     where value.is_none()
+///     =>
+///     (output_template)
+/// )
+///
 /// ```
 ///
 /// Captures become Rust variables automatically:
 /// - `@name` (no quantifier) → `name: Id`
 /// - `@name` (after `*`/`+`) → `name: Vec<Id>`
 /// - `@name` (after `?`) → `name: Option<Id>`
+///
+/// A guard is an optional Rust condition between the query and `=>`. It is
+/// evaluated after the query matches and before any `@` captures are
+/// translated. Returning false makes the driver try the next rule. All
+/// captures are therefore raw in the guard; `@` versus `@@` controls only
+/// whether the capture is translated for the transform. `ctx` provides
+/// mutable user-context access, and `ast` provides read-only AST access.
+/// Mutations to `ctx` are visible to the transform when the guard succeeds.
+/// Omitting the guard is equivalent to writing `where true`.
 ///
 /// `tree!` and `trees!` can be used without explicit context inside `{...}`.
 #[proc_macro]

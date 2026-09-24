@@ -8,6 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.AsmOperand
 import codeql.rust.elements.internal.AsmPieceImpl::Impl as AsmPieceImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Name
 
 /**
@@ -30,6 +31,8 @@ module Generated {
   class AsmOperandNamed extends Synth::TAsmOperandNamed, AsmPieceImpl::AsmPiece {
     override string getAPrimaryQlClass() { result = "AsmOperandNamed" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the asm operand of this asm operand named, if it exists.
      */
@@ -44,6 +47,26 @@ module Generated {
      * Holds if `getAsmOperand()` exists.
      */
     final predicate hasAsmOperand() { exists(this.getAsmOperand()) }
+
+    /**
+     * Gets the `index`th attr of this asm operand named (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertAsmOperandNamedToRaw(this)
+              .(Raw::AsmOperandNamed)
+              .getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this asm operand named.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this asm operand named.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the name of this asm operand named, if it exists.

@@ -59,17 +59,14 @@ public class ESNextParser extends JSXParser {
    */
 
   @Override
-  protected Property parseProperty(
-      boolean isPattern,
-      DestructuringErrors refDestructuringErrors,
-      Map<String, PropInfo> propHash) {
+  protected Property parseProperty(boolean isPattern, Map<String, PropInfo> propHash) {
     Position start = this.startLoc;
 
     List<Decorator> decorators = parseDecorators();
 
     Property prop = null;
     if (this.type == TokenType.ellipsis) {
-      SpreadElement spread = this.parseSpread(null);
+      SpreadElement spread = this.parseSpread();
       Expression val;
       if (isPattern) val = new RestElement(spread.getLoc(), spread.getArgument());
       else val = spread;
@@ -79,7 +76,7 @@ public class ESNextParser extends JSXParser {
                   new SourceLocation(start), null, val, Property.Kind.INIT.name(), false, false));
     }
 
-    if (prop == null) prop = super.parseProperty(isPattern, refDestructuringErrors, propHash);
+    if (prop == null) prop = super.parseProperty(isPattern, propHash);
 
     prop.addDecorators(decorators);
 
@@ -129,7 +126,7 @@ public class ESNextParser extends JSXParser {
       this.next();
       boolean oldInFunc = this.inFunction;
       this.inFunction = true;
-      value = parseMaybeAssign(false, null, null);
+      value = parseMaybeAssign(false, null);
       this.inFunction = oldInFunc;
     }
     this.semicolon();
@@ -220,7 +217,7 @@ public class ESNextParser extends JSXParser {
   }
 
   @Override
-  protected Expression parseExprAtom(DestructuringErrors refDestructuringErrors) {
+  protected Expression parseExprAtom() {
     if (this.type == at) {
       List<Decorator> decorators = parseDecorators();
       ClassExpression ce = (ClassExpression) this.parseClass(startLoc, false);
@@ -232,7 +229,7 @@ public class ESNextParser extends JSXParser {
       this.next();
       int innerStart = this.start;
       Position innerStartLoc = this.startLoc;
-      Expression callee = parseSubscripts(parseExprAtom(null), innerStart, innerStartLoc, true);
+      Expression callee = parseSubscripts(parseExprAtom(), innerStart, innerStartLoc, true);
       if (!(callee instanceof MemberExpression))
         this.raiseRecoverable(callee, "Binding should be performed on a member expression.");
       return this.finishNode(new BindExpression(startLoc, null, callee));
@@ -246,7 +243,7 @@ public class ESNextParser extends JSXParser {
       this.expect(TokenType.parenL);
       return parseDynamicImport(startLoc);
     }
-    return super.parseExprAtom(refDestructuringErrors);
+    return super.parseExprAtom();
   }
 
   @Override
@@ -373,7 +370,7 @@ public class ESNextParser extends JSXParser {
   protected Pair<Expression, Boolean> parseSubscript(
       Expression base, Position startLoc, boolean noCalls) {
     if (!noCalls && this.eat(doubleColon)) {
-      Expression callee = parseSubscripts(parseExprAtom(null), this.start, this.startLoc, true);
+      Expression callee = parseSubscripts(parseExprAtom(), this.start, this.startLoc, true);
       BindExpression bind = new BindExpression(new SourceLocation(startLoc), base, callee);
       return Pair.make(this.finishNode(bind), true);
     }
@@ -438,11 +435,11 @@ public class ESNextParser extends JSXParser {
    * already been consumed.
    */
   private DynamicImport parseDynamicImport(Position startLoc) {
-    Expression source = parseMaybeAssign(false, null, null);
+    Expression source = parseMaybeAssign(false, null);
     Expression attributes = null;
     if (this.eat(TokenType.comma)) {
       if (this.type != TokenType.parenR) { // Skip if the comma was a trailing comma
-        attributes = this.parseMaybeAssign(false, null, null);
+        attributes = this.parseMaybeAssign(false, null);
         this.eat(TokenType.comma); // Allow trailing comma
       }
     }

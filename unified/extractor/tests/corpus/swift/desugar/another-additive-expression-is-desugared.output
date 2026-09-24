@@ -20,15 +20,11 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        binary_expr
-          left:
-            name_expr
-              identifier: identifier "foo"
-          operator: infix_operator "+"
-          right:
-            name_expr
-              identifier: identifier "bar"
+        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+          left: identifier "foo" source="foo"
+          operator: infix_operator "+" source="+"
+          right: identifier "bar" source="bar"

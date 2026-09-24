@@ -76,31 +76,25 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩\n⟨stmt⟩\n⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "class"
-          name: identifier "Foo"
-        class_like_declaration
-          modifier: modifier "class"
-          name: identifier "C"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "Foo" source="Foo"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩> {}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "C" source="C"
           type_parameter:
-            type_parameter
-              name: identifier "T"
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "x"
+            type_parameter source="⟨name_node⟩"
+              name_node: identifier "T" source="T"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "x" source="x"
           value:
-            call_expr
+            call_expr source="⟨callee⟩()"
               callee:
-                generic_type_expr
-                  base:
-                    named_type_expr
-                      name: identifier "C"
-                  type_argument:
-                    named_type_expr
-                      name: identifier "Foo"
+                generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                  base: identifier "C" source="C"
+                  type_argument: identifier "Foo" source="Foo"

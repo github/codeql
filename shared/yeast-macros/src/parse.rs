@@ -645,6 +645,32 @@ enum CaptureMultiplicity {
     Repeated,
 }
 
+fn capture_bindings<'a>(captures: impl Iterator<Item = &'a CaptureInfo>) -> Vec<TokenStream> {
+    captures
+        .map(|cap| {
+            let name = Ident::new(&cap.name, Span::call_site());
+            let name_str = &cap.name;
+            match cap.multiplicity {
+                CaptureMultiplicity::Repeated => {
+                    quote! {
+                        let #name: Vec<yeast::Id> = __captures.get_all(#name_str);
+                    }
+                }
+                CaptureMultiplicity::Optional => {
+                    quote! {
+                        let #name: Option<yeast::Id> = __captures.get_opt(#name_str);
+                    }
+                }
+                CaptureMultiplicity::Single => {
+                    quote! {
+                        let #name: yeast::Id = __captures.get_var(#name_str).unwrap();
+                    }
+                }
+            }
+        })
+        .collect()
+}
+
 /// Walk a token stream and extract all `@name` captures, noting whether
 /// they appear after `*` or `+` (repeated) or not.
 fn extract_captures(stream: &TokenStream) -> Vec<CaptureInfo> {
@@ -742,8 +768,7 @@ fn extract_captures_inner(
 /// ```
 ///
 /// Template bodies (`=> (kind …)`) never carry an annotation — the
-/// output kind is the template root. The shorthand `=> kind` (no
-/// body) also carries no annotation. See `parse_rule_top` for dispatch.
+/// output kind is the template root.
 #[derive(Clone, Debug)]
 struct ReturnAnnotation {
     kind: Ident,
@@ -767,7 +792,6 @@ enum AnnotationMultiplicity {
 ///   `kind {`   → annotation (single)
 ///   `kind? {`  → annotation (optional)
 ///   `kind* {`  → annotation (repeated)
-///   `kind`     → shorthand form (no `{` follows) — NOT an annotation
 ///   anything else → template or bare block — NOT an annotation
 fn try_consume_return_annotation(tokens: &mut Tokens) -> Result<Option<ReturnAnnotation>> {
     // Must start with an identifier (the kind name).
@@ -806,7 +830,7 @@ fn try_consume_return_annotation(tokens: &mut Tokens) -> Result<Option<ReturnAnn
 pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
 
-    // Collect query tokens up to `=>`
+    // Collect query and optional `where` guard tokens up to `=>`.
     let mut query_tokens = Vec::new();
     loop {
         match tokens.peek() {
@@ -830,7 +854,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
         }
     }
 
-    let query_stream: TokenStream = query_tokens.into_iter().collect();
+    let (query_stream, guard) = split_rule_guard(query_tokens)?;
 
     // Extract captures from query
     let captures = extract_captures(&query_stream);
@@ -838,50 +862,30 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
     // Parse query
     let query_code = parse_query_top(query_stream.clone())?;
 
+    let (raw_captures, translated_captures): (Vec<_>, Vec<_>) =
+        captures.iter().partition(|capture| capture.raw);
+
     // Capture names marked `@@name` (raw) — passed to the auto-translate
     // prefix as a skip list so those captures keep their input-schema ids.
-    let raw_capture_names: Vec<&str> = captures
+    let raw_capture_names: Vec<&str> = raw_captures
         .iter()
-        .filter(|c| c.raw)
-        .map(|c| c.name.as_str())
+        .map(|capture| capture.name.as_str())
         .collect();
 
-    // Generate capture bindings
+    // Both capture sets are bound raw in the guard, which runs before
+    // auto-translation. In the transform, raw captures remain unchanged
+    // while translated captures are bound after auto-translation.
     let ctx_ident = Ident::new(IMPLICIT_CTX, Span::call_site());
-    let bindings: Vec<TokenStream> = captures
-        .iter()
-        .map(|cap| {
-            let name = Ident::new(&cap.name, Span::call_site());
-            let name_str = &cap.name;
-            match cap.multiplicity {
-                CaptureMultiplicity::Repeated => {
-                    quote! {
-                        let #name: Vec<yeast::Id> = __captures.get_all(#name_str);
-                    }
-                }
-                CaptureMultiplicity::Optional => {
-                    quote! {
-                        let #name: Option<yeast::Id> = __captures.get_opt(#name_str);
-                    }
-                }
-                CaptureMultiplicity::Single => {
-                    quote! {
-                        let #name: yeast::Id = __captures.get_var(#name_str).unwrap();
-                    }
-                }
-            }
-        })
-        .collect();
+    let raw_bindings = capture_bindings(raw_captures.into_iter());
+    let translated_bindings = capture_bindings(translated_captures.into_iter());
 
-    // Parse transform: the token(s) after `=>` fall into one of three
+    // Parse transform: the token(s) after `=>` fall into one of two
     // shapes, dispatched in order:
     //
     //   1. `kind [? | *] { rust_body }` — annotated Rust body (NEW).
     //      Static-analysis-ready: the annotation declares the output
     //      kind and multiplicity in the schema's own vocabulary.
-    //   2. `kind` alone — shorthand: emit `(kind field: {@cap})…` from
-    //      the query's captures.
-    //   3. anything else — full template form (`(kind …)` or bare
+    //   2. anything else — full template form (`(kind …)` or bare
     //      `{ … }` splice via `parse_direct_list`).
     let annotation = try_consume_return_annotation(&mut tokens)?;
 
@@ -917,65 +921,6 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
             let mut __ids: Vec<yeast::Id> = Vec::new();
             yeast::IntoFieldIds::extend_into(__value, &mut __ids);
             __ids
-        }
-    } else if peek_is_field(&mut tokens) && {
-        // Shorthand form: bare identifier = output node kind.
-        // Auto-generate template from captures.
-        let mut lookahead = tokens.clone();
-        lookahead.next(); // skip ident
-        lookahead.peek().is_none() // nothing after = shorthand
-    } {
-        let output_kind = expect_ident(&mut tokens, "expected output node kind")?;
-        let output_kind_str = output_kind.to_string();
-
-        // Generate field assignments from captures
-        let field_stmts: Vec<TokenStream> = captures
-            .iter()
-            .map(|cap| {
-                let name = Ident::new(&cap.name, Span::call_site());
-                let name_str = &cap.name;
-                match cap.multiplicity {
-                    CaptureMultiplicity::Repeated => quote! {
-                        let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
-                            .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
-                        __fields.insert(
-                            __field_id,
-                            #name.into_iter()
-                                .map(::std::convert::Into::<yeast::Id>::into)
-                                .collect(),
-                        );
-                    },
-                    CaptureMultiplicity::Optional => quote! {
-                        let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
-                            .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
-                        if let Some(__id) = #name {
-                            __fields.entry(__field_id).or_insert_with(Vec::new)
-                                .push(::std::convert::Into::<yeast::Id>::into(__id));
-                        }
-                    },
-                    CaptureMultiplicity::Single => quote! {
-                        let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
-                            .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
-                        __fields.entry(__field_id).or_insert_with(Vec::new)
-                            .push(::std::convert::Into::<yeast::Id>::into(#name));
-                    },
-                }
-            })
-            .collect();
-
-        quote! {
-            let __kind = #ctx_ident.ast.id_for_node_kind(#output_kind_str)
-                .unwrap_or_else(|| panic!("node kind '{}' not found", #output_kind_str));
-            let mut __fields = std::collections::BTreeMap::new();
-            #(#field_stmts)*
-            let __id = #ctx_ident.ast.create_node_with_range(
-                __kind,
-                yeast::NodeContent::DynamicString(String::new()),
-                __fields,
-                true,
-                __source_range,
-            );
-            vec![__id]
         }
     } else {
         // Reject bare `{ ... }` transforms — they used to be accepted
@@ -1015,24 +960,37 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
         }
     };
 
+    let guard = guard.unwrap_or_else(|| syn::parse_quote!(true));
     Ok(quote! {
         {
             let __query = #query_code;
-            yeast::Rule::new(__query, Box::new(|__ast: &mut yeast::Ast, mut __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<yeast::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
-                // Auto-translation prefix: recursively translate every
-                // captured node before invoking the user's transform body,
-                // except for `@@name` captures listed in `__skip` which the
-                // body consumes raw.
-                // For OneShot rules this preserves the legacy behaviour
-                // (input-schema captures translated to output-schema
-                // nodes); for Repeating rules it is a no-op.
-                let __skip: &[&str] = &[#(#raw_capture_names),*];
-                __translator.auto_translate_captures(&mut __captures, __ast, __user_ctx, __skip)?;
-                #(#bindings)*
-                let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __fresh, __source_range, __user_ctx, __translator);
-                let __result: Vec<yeast::Id> = { #transform_body };
-                Ok(__result)
-            }))
+            yeast::Rule::guarded(
+                __query,
+                Box::new(|__ast: &yeast::Ast, __captures: &yeast::captures::Captures, __user_ctx: &mut _| {
+                    #(#raw_bindings)*
+                    #(#translated_bindings)*
+                    let ast = __ast;
+                    let #ctx_ident = __user_ctx;
+                    Ok(#guard)
+                }),
+                Box::new(|__ast: &mut yeast::Ast, mut __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<yeast::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
+                    // Auto-translation prefix: recursively translate every
+                    // captured node before invoking the user's transform body,
+                    // except for `@@name` captures listed in `__skip` which the
+                    // body consumes raw.
+                    // For OneShot rules this preserves the legacy behaviour
+                    // (input-schema captures translated to output-schema
+                    // nodes); for Repeating rules it is a no-op.
+                    let __skip: &[&str] = &[#(#raw_capture_names),*];
+                    __translator.auto_translate_captures(&mut __captures, __ast, __user_ctx, __skip)?;
+                    #(#raw_bindings)*
+                    #(#translated_bindings)*
+                    let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __fresh, __source_range, __user_ctx, __translator);
+                    let __result: Vec<yeast::Id> = { #transform_body };
+                    let __result = #ctx_ident.finish_rule(__result);
+                    Ok(__result)
+                }),
+            )
         }
     })
 }
@@ -1040,6 +998,37 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
 // ---------------------------------------------------------------------------
 // Token utilities
 // ---------------------------------------------------------------------------
+
+/// Split the tokens before a rule's `=>` into its query and optional
+/// top-level `where guard`. Groups are opaque `TokenTree`s, so a `where`
+/// inside the query or guard expression is not mistaken for the separator.
+fn split_rule_guard(tokens: Vec<TokenTree>) -> Result<(TokenStream, Option<syn::Expr>)> {
+    let guard_index = tokens
+        .iter()
+        .position(|tok| matches!(tok, TokenTree::Ident(ident) if ident == "where"));
+
+    let Some(guard_index) = guard_index else {
+        return Ok((tokens.into_iter().collect(), None));
+    };
+
+    let query: TokenStream = tokens[..guard_index].iter().cloned().collect();
+    if query.is_empty() {
+        return Err(syn::Error::new(
+            Span::call_site(),
+            "expected query before rule guard",
+        ));
+    }
+
+    let guard_tokens: TokenStream = tokens[guard_index + 1..].iter().cloned().collect();
+    if guard_tokens.is_empty() {
+        return Err(syn::Error::new_spanned(
+            tokens[guard_index].clone(),
+            "expected expression after rule guard `where`",
+        ));
+    }
+    let guard = syn::parse2::<syn::Expr>(guard_tokens)?;
+    Ok((query, Some(guard)))
+}
 
 fn peek_is_at(tokens: &mut Tokens) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '@')
@@ -1431,8 +1420,5 @@ mod rules_tests {
         // Match expressions inside a block: `=>` is inside braces.
         let toks = quote! { { match x { 1 => 2, _ => 3 } } };
         assert!(!has_top_level_arrow(&toks));
-        // Bare shorthand form: top-level `=>` followed by a bare ident.
-        let toks = quote! { (a) => kind };
-        assert!(has_top_level_arrow(&toks));
     }
 }

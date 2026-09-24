@@ -235,6 +235,103 @@ yeast::trees!(ctx,
 (identifier #{name})         // an identifier from a Rust variable
 ```
 
+### Source locations
+
+Captured nodes keep the locations assigned by their own translations. New
+nodes in an output template derive their locations from their children. A
+source-less nested node receives an empty location at the start of the matched
+input node. After the transform completes, the full matched range is added only
+to locally-created nodes returned as rule results:
+
+```rust
+rule!(
+    (wrapper child: (_) @child)
+    =>
+    (outer nested: (inner value: {child}))
+)
+```
+
+Here `inner` derives its range from `child`, while the returned `outer` node
+also includes the full `wrapper` range. A nested node with no located children
+would instead receive an empty range at the start of `wrapper`. This lets
+replacement roots include elided keywords or delimiters without assigning the
+same broad range to every synthetic descendant. A transform that simply
+returns a translated capture does not widen that capture to the wrapper's
+range.
+
+The following macros can be used to explicitly set the location associated
+with a newly-created node. They assign a location only to the root of their
+template; nested nodes still derive their locations normally.
+
+`tree_at!` assigns the range of one captured input node to the template root:
+
+```rust
+rule!(
+    (wrapper
+        source: (_) @source_node
+        child: (_) @child)
+    =>
+    synthetic_node {
+        tree_at!(
+            ctx,
+            source_node,
+            (synthetic_node child: (nested value: {child}))
+        )
+    }
+)
+```
+
+`tree_spanning!` assigns the smallest range containing several captured input
+nodes:
+
+```rust
+rule!(
+    (wrapper
+        first: (_) @first
+        second: (_) @second
+        child: (_) @child)
+    =>
+    synthetic_node {
+        tree_spanning!(
+            ctx,
+            [first, second],
+            (synthetic_node child: {child})
+        )
+    }
+)
+```
+
+For input fields whose leading or trailing syntax should never belong to rule
+results, configure them once with
+`DesugaringConfig::with_ignored_location_fields(...)`. For example, ignoring
+`trailingComma` retains the rest of each matched list element without requiring
+every rule to capture or handle the comma.
+
+For literals, `ctx.literal_at_start_of(...)` creates an empty range at another
+node's start.
+
+For reviewing locations, `DumpOptions::show_abridged_source` prints each node's
+source range with every direct child replaced by its field name in Unicode
+angle brackets. This keeps delimiters and other parent-owned syntax visible
+without repeating entire subtrees:
+
+```text
+return_expr source="return ⟨value⟩"
+  value:
+    call_expr source="⟨callee⟩(⟨argument⟩)"
+```
+
+Children outside the node's source range retain their own locations and are
+annotated where they are printed rather than being treated as errors:
+
+```text
+accessor_declaration source="⟨accessor_kind⟩"
+  name_node: identifier "value" source="value" (external)
+```
+
+Node and child ranges are still validated against the source text and UTF-8
+boundaries.
+
 ### Optional fields (`?`)
 
 A `?` on a field's value makes that field fallible. If a `#{expr}` anywhere
@@ -422,7 +519,7 @@ automatically: single captures bind as `Id`, repeated captures (after
 ## The `rule!` macro
 
 `rule!` combines a query and a transform into a single declaration.
-There are three transform forms, each suited to a different level of
+There are two transform forms, each suited to a different level of
 rule complexity:
 
 ```rust
@@ -433,13 +530,7 @@ yeast::rule!(
     (output_template field: {capture})
 )
 
-// 2. Shorthand form — captures become fields on a bare output kind.
-yeast::rule!(
-    (query_pattern field: (_) @capture)
-    => output_kind
-)
-
-// 3. Annotation form — a Rust block body preceded by the output kind.
+// 2. Annotation form — a Rust block body preceded by the output kind.
 yeast::rule!(
     (query_pattern child: (_)+ @@children)
     =>
@@ -455,8 +546,53 @@ yeast::rule!(
 )
 ```
 
-The shorthand `=> kind` form auto-generates the template, mapping each
-capture name to a field of the same name on the output node.
+### Guards
+
+A rule may include a Rust guard between its query and `=>`. The guard runs
+after the query matches but before any captures are translated. If it returns
+`false`, the rule is treated as a non-match and the driver tries the next rule.
+Omitting the guard is equivalent to writing `where true`:
+
+```rust
+rule!(
+    (tupleExpr
+        elements: (labeledExpr
+            label: _? @label
+            expression: @inner)
+        elements: _* @rest)
+    where label.is_none() && rest.is_empty()
+    =>
+    expr { inner }
+)
+```
+
+Every capture is a raw input-schema id in the guard, regardless of whether it
+uses `@` or `@@`, because the guard runs before translation. The marker controls
+the transform binding only: `@inner` is translated after the guard accepts the
+rule, while a capture marked `@@` would remain raw in the transform as well.
+In this example `label` and `rest` are empty whenever the guard succeeds, so
+there is nothing to translate for those captures.
+
+Guards receive the mutable user context as `ctx` and the raw AST as `ast`.
+The framework clones the user context before evaluating each guard. If the
+guard succeeds, its context mutations are visible to the rule transform and
+recursive translation; if it fails, the clone is discarded before the next
+rule is tried:
+
+```rust
+rule!(
+    (tupleExpr elements: _* @elements)
+    where {
+        ctx.in_pattern = true;
+        elements
+            .first()
+            .and_then(|element| ast.get_node(*element))
+            .is_some()
+    }
+    =>
+    (tuple_pattern element: {elements})
+)
+```
 
 ### Annotation form
 
@@ -489,8 +625,6 @@ having to inspect the block's expression.
 Prefer the simplest form that fits:
 
 - If the whole transform is a tree literal, use the **template form**.
-- If the transform is a template whose root matches a query capture
-  1:1, use the **shorthand form**.
 - If the transform needs Rust logic (loops, `let` bindings, calls to
   `ctx.translate`, etc.), use the **annotation form**.
 

@@ -98,48 +98,36 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        for_each_stmt
-          pattern:
-            name_pattern
-              identifier: identifier "x"
-          iterable:
-            name_expr
-              identifier: identifier "xs"
+        for_each_stmt source="for ⟨pattern⟩ in ⟨iterable⟩ ⟨body⟩"
+          pattern: identifier "x" source="x"
+          iterable: identifier "xs" source="xs"
           body:
-            block
+            block source="{\n  ⟨stmt⟩\n  ⟨stmt⟩\n  ⟨stmt⟩\n}"
               stmt:
-                if_expr
+                if_expr source="if ⟨condition⟩ ⟨then⟩"
                   condition:
-                    binary_expr
-                      left:
-                        name_expr
-                          identifier: identifier "x"
-                      operator: infix_operator "<"
-                      right: int_literal "0"
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "x" source="x"
+                      operator: infix_operator "<" source="<"
+                      right: int_literal "0" source="0"
                   then:
-                    block
-                      stmt: continue_expr "continue"
-                if_expr
+                    block source="{ ⟨stmt⟩ }"
+                      stmt: continue_expr "continue" source="continue"
+                if_expr source="if ⟨condition⟩ ⟨then⟩"
                   condition:
-                    binary_expr
-                      left:
-                        name_expr
-                          identifier: identifier "x"
-                      operator: infix_operator ">"
-                      right: int_literal "100"
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "x" source="x"
+                      operator: infix_operator ">" source=">"
+                      right: int_literal "100" source="100"
                   then:
-                    block
-                      stmt: break_expr "break"
-                call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                    block source="{ ⟨stmt⟩ }"
+                      stmt: break_expr "break" source="break"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
                   argument:
-                    argument
-                      value:
-                        name_expr
-                          identifier: identifier "x"
+                    argument source="⟨value⟩"
+                      value: identifier "x" source="x"

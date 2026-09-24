@@ -13,7 +13,10 @@ private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
-  MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
+  MkImplicitVarargsSlice(IR::EvalInstruction ins) {
+    // We only use CallExprs with an EvalInstruction to guarantee reachability.
+    ins.getExpr().(CallExpr).hasImplicitVarargs()
+  } or
   MkSliceElementNode(SliceExpr se) or
   MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
   MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) }
@@ -430,7 +433,7 @@ module Public {
   class ImplicitVarargsSlice extends Node, MkImplicitVarargsSlice {
     CallNode call;
 
-    ImplicitVarargsSlice() { this = MkImplicitVarargsSlice(call.getCall()) }
+    ImplicitVarargsSlice() { this = MkImplicitVarargsSlice(call.asInstruction()) }
 
     override ControlFlow::Root getRoot() { result = call.getRoot() }
 
@@ -769,6 +772,8 @@ module Public {
   private IR::Instruction getADirectlyWrittenInsn() {
     exists(Write w | w.writesComponentInstruction(result, _))
     or
+    result = any(Write w).getLhs().(IR::PointerTarget).getBase()
+    or
     result = IR::evalExprInstruction(any(SendStmt s).getChannel())
   }
 
@@ -785,7 +790,23 @@ module Public {
   }
 
   private IR::Instruction getAWrittenInsn() {
-    result = getAccessPathPredecessorInsn*(getADirectlyWrittenInsn())
+    result = getADirectlyWrittenInsn()
+    or
+    result = getAccessPathPredecessorInsn(getAWrittenInsn())
+  }
+
+  private IR::Instruction getAMethodReceiverInsn() {
+    exists(CallExpr call, IR::MethodReadInstruction methodRead |
+      call.getTarget() instanceof Method and
+      methodRead = IR::evalExprInstruction(call.getCalleeExpr()) and
+      result = methodRead.getReceiver()
+    )
+    or
+    // If a.x is reading a promoted field, and it's equivalent to a.b.c.x,
+    // then methodRead.getReceiver() will give us the implicit field read a.b.c
+    // and we want to have post-update nodes for a, the implicit field
+    // read a.b and the implicit field read a.b.c.
+    result = IR::lookThroughImplicitFieldRead(getAMethodReceiverInsn())
   }
 
   /**
@@ -832,23 +853,17 @@ module Public {
       e = any(IR::EvalImplicitDerefInstruction eidi).getOperand()
     )
     or
-    exists(CallExpr ce |
-      ce.getArgument(0).getType() instanceof TupleType and
-      insn = IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0)), _)
-      or
-      not ce.getArgument(0).getType() instanceof TupleType and
-      insn = IR::evalExprInstruction(ce.getAnArgument())
+    (
+      exists(CallExpr ce |
+        ce.getArgument(0).getType() instanceof TupleType and
+        insn = IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0)), _)
+        or
+        not ce.getArgument(0).getType() instanceof TupleType and
+        insn = IR::evalExprInstruction(ce.getAnArgument())
+      )
       or
       // Receiver of a method call
-      exists(IR::MethodReadInstruction mri |
-        ce.getTarget() instanceof Method and
-        mri = IR::evalExprInstruction(ce.getCalleeExpr()) and
-        // If a.x is reading a promoted field, and it's equivalent to a.b.c.x,
-        // then mri.getReceiver() will give us the implicit field read a.b.c
-        // and we want to have post-update nodes for a, the implicit field
-        // read a.b and the implicit field read a.b.c.
-        insn = IR::lookThroughImplicitFieldRead*(mri.getReceiver())
-      )
+      insn = getAMethodReceiverInsn()
     ) and
     mutableType(insn.getResultType())
     or
@@ -1123,15 +1138,6 @@ module Public {
         left = DataFlow::exprNode(assgn.getLhs()) and
         right = DataFlow::exprNode(assgn.getRhs()) and
         op = o.substring(0, o.length() - 1)
-      )
-      or
-      exists(IR::EvalIncDecRhsInstruction rhs, IncDecStmt ids |
-        rhs = this.asInstruction() and ids = rhs.getStmt()
-      |
-        left = DataFlow::exprNode(ids.getOperand()) and
-        right =
-          DataFlow::instructionNode(any(IR::EvalImplicitOneInstruction one | one.getStmt() = ids)) and
-        op = ids.getOperator().charAt(0)
       )
     }
 

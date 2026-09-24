@@ -558,6 +558,14 @@ trait MyTrait {
     fn my_func2(&self, x: i32) -> i32;
 }
 
+fn unimplemented(x : i32) {
+    unimplemented!()
+}
+
+fn todo(x : i32) {
+    todo!()
+}
+
 // --- main ---
 
 fn main() {

@@ -1,0 +1,395 @@
+// Arbitrary expressions may appear in pattern context.
+switch subject {
+case value, value + offset, -value, lower...upper, makeValue(), makeValue().member,
+    .inferred, (value, offset), [value], [key: value], optional?, try value,
+    value!, value as Target, value is Target, await value:
+    consume(value)
+case condition ? value : fallback:
+    consume(fallback)
+default:
+    break
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            switchExpr
+              leftBrace: {
+              rightBrace: }
+              cases:
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "value"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator "+"
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "value"
+                                  rightOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "offset"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                prefixOperatorExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "value"
+                                  operator: prefixOperator "-"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator "..."
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "lower"
+                                  rightOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "upper"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    declReferenceExpr
+                                      baseName: identifier "makeValue"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "member"
+                                  base:
+                                    functionCallExpr
+                                      leftParen: (
+                                      rightParen: )
+                                      arguments:
+                                      additionalTrailingClosures:
+                                      calledExpression:
+                                        declReferenceExpr
+                                          baseName: identifier "makeValue"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "inferred"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                tupleExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  elements:
+                                    labeledExpr
+                                      expression:
+                                        declReferenceExpr
+                                          baseName: identifier "value"
+                                      trailingComma: ,
+                                    labeledExpr
+                                      expression:
+                                        declReferenceExpr
+                                          baseName: identifier "offset"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                arrayExpr
+                                  elements:
+                                    arrayElement
+                                      expression:
+                                        declReferenceExpr
+                                          baseName: identifier "value"
+                                  leftSquare: [
+                                  rightSquare: ]
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                dictionaryExpr
+                                  leftSquare: [
+                                  rightSquare: ]
+                                  content:
+                                    dictionaryElement
+                                      colon: :
+                                      value:
+                                        declReferenceExpr
+                                          baseName: identifier "value"
+                                      key:
+                                        declReferenceExpr
+                                          baseName: identifier "key"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                optionalChainingExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "optional"
+                                  questionMark: ?
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                tryExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "value"
+                                  tryKeyword: try
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                forceUnwrapExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "value"
+                                  exclamationMark: !
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                asExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "value"
+                                  asKeyword: as
+                                  type:
+                                    identifierType
+                                      name: identifier "Target"
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                isExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "value"
+                                  type:
+                                    identifierType
+                                      name: identifier "Target"
+                                  isKeyword: is
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                awaitExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "value"
+                                  awaitKeyword: await
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "value"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "consume"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                ternaryExpr
+                                  colon: :
+                                  condition:
+                                    declReferenceExpr
+                                      baseName: identifier "condition"
+                                  questionMark: ?
+                                  elseExpression:
+                                    declReferenceExpr
+                                      baseName: identifier "fallback"
+                                  thenExpression:
+                                    declReferenceExpr
+                                      baseName: identifier "value"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "fallback"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "consume"
+                switchCase
+                  label:
+                    switchDefaultLabel
+                      colon: :
+                      defaultKeyword: default
+                  statements:
+                    codeBlockItem
+                      item:
+                        breakStmt
+                          breakKeyword: break
+              subject:
+                declReferenceExpr
+                  baseName: identifier "subject"
+              switchKeyword: switch
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "subject" source="subject"
+          case:
+            switch_case source="case ⟨pattern⟩:\n    ⟨body⟩"
+              pattern:
+                or_pattern source="⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩,\n    ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩,\n    ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩, ⟨pattern⟩"
+                  pattern:
+                    identifier "value" source="value"
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "value" source="value"
+                      operator: infix_operator "+" source="+"
+                      right: identifier "offset" source="offset"
+                    unary_expr source="⟨operator⟩⟨operand⟩"
+                      operand: identifier "value" source="value"
+                      operator: prefix_operator "-" source="-"
+                    binary_expr source="⟨left⟩⟨operator⟩⟨right⟩"
+                      left: identifier "lower" source="lower"
+                      operator: infix_operator "..." source="..."
+                      right: identifier "upper" source="upper"
+                    call_expr source="⟨callee⟩()"
+                      callee: identifier "makeValue" source="makeValue"
+                    member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                      base:
+                        call_expr source="⟨callee⟩()"
+                          callee: identifier "makeValue" source="makeValue"
+                      member_name_node: identifier "member" source="member"
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: inferred_type_expr "." source="."
+                      member_name_node: identifier "inferred" source="inferred"
+                    tuple_expr source="(⟨element⟩, ⟨element⟩)"
+                      element:
+                        argument source="⟨value⟩"
+                          value: identifier "value" source="value"
+                        argument source="⟨value⟩"
+                          value: identifier "offset" source="offset"
+                    array_literal source="[⟨element⟩]"
+                      element: identifier "value" source="value"
+                    map_literal "[key: value]" source="[key: value]"
+                    call_expr source="⟨argument⟩?"
+                      callee:
+                        member_access_expr source=""
+                          base: identifier "Optional" source=""
+                          member_name_node: identifier "some" source=""
+                      argument:
+                        argument source="⟨value⟩"
+                          value: identifier "optional" source="optional"
+                    unary_expr source="⟨operator⟩ ⟨operand⟩"
+                      operand: identifier "value" source="value"
+                      operator: prefix_operator "try" source="try"
+                    unary_expr source="⟨operand⟩⟨operator⟩"
+                      operand: identifier "value" source="value"
+                      operator: postfix_operator "!" source="!"
+                    type_cast_expr source="⟨expr⟩ ⟨operator⟩ ⟨type⟩"
+                      expr: identifier "value" source="value"
+                      operator: infix_operator "as" source="as"
+                      type: identifier "Target" source="Target"
+                    type_test_expr source="⟨expr⟩ ⟨operator⟩ ⟨type⟩"
+                      expr: identifier "value" source="value"
+                      operator: infix_operator "is" source="is"
+                      type: identifier "Target" source="Target"
+                    unary_expr source="⟨operator⟩ ⟨operand⟩"
+                      operand: identifier "value" source="value"
+                      operator: prefix_operator "await" source="await"
+              body:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "consume" source="consume"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: identifier "value" source="value"
+            switch_case source="case ⟨pattern⟩:\n    ⟨body⟩"
+              pattern:
+                if_expr source="⟨condition⟩ ? ⟨then⟩ : ⟨else⟩"
+                  condition: identifier "condition" source="condition"
+                  then: identifier "value" source="value"
+                  else: identifier "fallback" source="fallback"
+              body:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "consume" source="consume"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: identifier "fallback" source="fallback"
+            switch_case source="default:\n    ⟨body⟩"
+              body:
+                block source="⟨stmt⟩"
+                  stmt: break_expr "break" source="break"

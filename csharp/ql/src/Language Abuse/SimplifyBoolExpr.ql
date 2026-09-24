@@ -75,6 +75,23 @@ predicate negatedOperators(string op, string negated) {
   negatedOperators(negated, op)
 }
 
+/** Holds if replacing `expr` with `operatorName` could call an enclosing operator. */
+private predicate couldCallEnclosingOperator(LogicalNotExpr expr, string operatorName) {
+  exists(BinaryOperation binary, Operator enclosingOperator |
+    binary = expr.getOperand() and
+    enclosingOperator = expr.getEnclosingCallable().getEnclosingCallable*() and
+    enclosingOperator.getName() = operatorName and
+    binary
+        .getLeftOperand()
+        .getType()
+        .isImplicitlyConvertibleTo(enclosingOperator.getParameter(0).getType()) and
+    binary
+        .getRightOperand()
+        .getType()
+        .isImplicitlyConvertibleTo(enclosingOperator.getParameter(1).getType())
+  )
+}
+
 predicate simplifyBinaryExpr(string op, string withFalseOperand, string withTrueOperand) {
   op = "==" and withTrueOperand = "A" and withFalseOperand = "!A"
   or
@@ -90,7 +107,8 @@ predicate pushNegation(LogicalNotExpr expr, string oldPattern, string newPattern
   or
   exists(string oldOperator, string newOperator |
     oldOperator = expr.getOperand().(BinaryOperation).getOperator() and
-    negatedOperators(oldOperator, newOperator)
+    negatedOperators(oldOperator, newOperator) and
+    not couldCallEnclosingOperator(expr, newOperator)
   |
     oldPattern = "!(A " + oldOperator + " B)" and
     newPattern = "A " + newOperator + " B"

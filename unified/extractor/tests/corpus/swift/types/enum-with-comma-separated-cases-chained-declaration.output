@@ -40,37 +40,29 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "enum"
-          name: identifier "Suit"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨member⟩, ⟨member⟩, ⟨member⟩, ⟨member⟩\n}"
+          modifier: modifier "enum" source="enum"
+          name_node: identifier "Suit" source="Suit"
           member:
-            variable_declaration
-              modifier: modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "clubs"
-            variable_declaration
+            variable_declaration source="⟨pattern⟩"
+              modifier: modifier "enum_case" source=""
+              pattern: identifier "clubs" source="clubs"
+            variable_declaration source="⟨pattern⟩"
               modifier:
-                modifier "chained_declaration"
-                modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "diamonds"
-            variable_declaration
+                modifier "chained_declaration" source=""
+                modifier "enum_case" source=""
+              pattern: identifier "diamonds" source="diamonds"
+            variable_declaration source="⟨pattern⟩"
               modifier:
-                modifier "chained_declaration"
-                modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "hearts"
-            variable_declaration
+                modifier "chained_declaration" source=""
+                modifier "enum_case" source=""
+              pattern: identifier "hearts" source="hearts"
+            variable_declaration source="⟨pattern⟩"
               modifier:
-                modifier "chained_declaration"
-                modifier "enum_case"
-              pattern:
-                name_pattern
-                  identifier: identifier "spades"
+                modifier "chained_declaration" source=""
+                modifier "enum_case" source=""
+              pattern: identifier "spades" source="spades"

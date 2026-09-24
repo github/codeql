@@ -2,7 +2,7 @@ use std::fs;
 use std::path::Path;
 
 use codeql_extractor::extractor::desugaring;
-use yeast::{dump::dump_ast, dump::dump_ast_with_type_errors};
+use yeast::dump::{DumpOptions, dump_ast, dump_ast_with_type_errors_and_options};
 
 #[path = "../src/languages/mod.rs"]
 mod languages;
@@ -98,9 +98,8 @@ fn collect_corpus_stems(dir: &Path, out: &mut Vec<std::path::PathBuf>) {
 
 #[cfg(bazel)]
 fn corpus_dir() -> std::path::PathBuf {
-    let base = std::path::PathBuf::from(
-         std::env::var("RUNFILES_DIR").expect("RUNFILES_DIR not set"),
-    );
+    let base =
+        std::path::PathBuf::from(std::env::var("RUNFILES_DIR").expect("RUNFILES_DIR not set"));
     std::fs::read_dir(&base)
         .expect("failed to read RUNFILES_DIR")
         .filter_map(Result::ok)
@@ -224,11 +223,15 @@ fn test_corpus() {
                         ));
                     }
                     Ok(actual) => {
-                        let actual_dump = dump_ast_with_type_errors(
+                        let actual_dump = dump_ast_with_type_errors_and_options(
                             &actual,
                             actual.get_root(),
                             &case_input,
                             &output_schema,
+                            &DumpOptions {
+                                show_abridged_source: true,
+                                ..DumpOptions::default()
+                            },
                         );
                         if update_mode {
                             case.expected = actual_dump.trim().to_string();

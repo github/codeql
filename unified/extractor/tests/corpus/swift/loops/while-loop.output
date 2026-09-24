@@ -44,24 +44,20 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        while_stmt
+        while_stmt source="while ⟨condition⟩ ⟨body⟩"
           condition:
-            binary_expr
-              left:
-                name_expr
-                  identifier: identifier "x"
-              operator: infix_operator ">"
-              right: int_literal "0"
+            binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+              left: identifier "x" source="x"
+              operator: infix_operator ">" source=">"
+              right: int_literal "0" source="0"
           body:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                compound_assign_expr
-                  target:
-                    name_expr
-                      identifier: identifier "x"
-                  operator: infix_operator "-="
-                  value: int_literal "1"
+                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                  left: identifier "x" source="x"
+                  operator: infix_operator "-=" source="-="
+                  right: int_literal "1" source="1"

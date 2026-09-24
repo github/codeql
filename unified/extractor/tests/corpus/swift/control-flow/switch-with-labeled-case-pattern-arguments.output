@@ -123,62 +123,53 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        switch_expr
-          value:
-            name_expr
-              identifier: identifier "x"
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "x" source="x"
           case:
-            switch_case
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                constructor_pattern
-                  constructor:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member: identifier "implicit"
-                  element:
-                    pattern_element
-                      key: identifier "isAcknowledged"
-                      pattern:
-                        expr_equality_pattern
-                          expr: boolean_literal "false"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee:
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: inferred_type_expr "." source="."
+                      member_name_node: identifier "implicit" source="implicit"
+                  argument:
+                    argument source="⟨name_node⟩: ⟨value⟩"
+                      name_node: identifier "isAcknowledged" source="isAcknowledged"
+                      value: boolean_literal "false" source="false"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"yes\""
-            switch_case
+                        argument source="⟨value⟩"
+                          value: string_literal "\"yes\"" source="\"yes\""
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                constructor_pattern
-                  constructor:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member: identifier "thread"
-                  element:
-                    pattern_element
-                      key: identifier "threadRowId"
-                      pattern: ignore_pattern "_"
-                    pattern_element
-                      pattern:
-                        name_pattern
-                          identifier: identifier "rowId"
+                call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
+                  callee:
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: inferred_type_expr "." source="."
+                      member_name_node: identifier "thread" source="thread"
+                  argument:
+                    argument source="⟨name_node⟩: ⟨value⟩"
+                      name_node: identifier "threadRowId" source="threadRowId"
+                      value: identifier "_" source="_"
+                    argument source="⟨value⟩"
+                      value:
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "rowId" source="rowId"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "rowId"
+                        argument source="⟨value⟩"
+                          value: identifier "rowId" source="rowId"

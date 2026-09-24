@@ -8,6 +8,9 @@ import traceback
 import multiprocessing
 import enum
 import datetime
+import platform
+
+from semmle.util import VERSION, get_analysis_version
 
 
 #Use standard Semmle logging levels
@@ -65,6 +68,14 @@ def write_message_with_proc(level, proc_id, text):
 
 _logging_process = None
 
+def format_message(fmt, args):
+    '''Applies `%`-formatting to `fmt`, but only when there are arguments to interpolate.
+
+    This mirrors the standard library's `logging` behaviour, and means that a message that has
+    already been formatted -- and may therefore contain arbitrary `%` directives coming from the
+    code being analysed -- is passed through unharmed.'''
+    return fmt % args if args else fmt
+
 def stop():
     _logging_process.join()
 
@@ -105,7 +116,7 @@ class Logger(object):
         '''Log a message in a process safe fashion.
         Message will be of the form [level] fmt%args.'''
         if level <= self.level:
-            txt = fmt % args
+            txt = format_message(fmt, args)
             try:
                 self.queue.put((self.color | level, self.proc_id, txt), False)
             except Exception:
@@ -346,6 +357,24 @@ class DiagnosticMessage(StructuredLogObject):
     def with_timestamp(self, timestamp):
         self.timestamp = timestamp
         return self
+
+def extractor_telemetry_message(extractor_flags):
+    return (DiagnosticMessage(Source("py/extractor/summary", "Python extractor telemetry"), Severity.NOTE)
+            .markdown("Internal telemetry for the Python extractor.\n\nNo action needed.")
+            .attribute("python_analysis_version", get_analysis_version())
+            .attribute("python_runtime_version", platform.python_version())
+            .attribute("extractor_version", VERSION)
+            .attribute("extractor_flags", " ".join(extractor_flags) or "default")
+            .telemetry()
+    )
+
+def parser_statistics_telemetry_message(old_parser_file_count, tree_sitter_parser_file_count):
+    return (DiagnosticMessage(Source("py/extractor/parser-statistics", "Python parser statistics"), Severity.NOTE)
+            .markdown("Internal parser telemetry for the Python extractor.\n\nNo action needed.")
+            .attribute("old_parser_file_count", old_parser_file_count)
+            .attribute("tree_sitter_parser_file_count", tree_sitter_parser_file_count)
+            .telemetry()
+    )
 
 def get_stack_trace_lines():
     """Creates a stack trace for inclusion into the `attributes` part of a diagnostic message.

@@ -48,7 +48,7 @@ cryptographically secure method.</p>
 </example>
 
 <references>
-<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
 <li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/338.html">CWE-338</a>.</li>
 <li>Ruby-doc: <a href="https://ruby-doc.org/core-3.1.2/Random.html">Random</a>.</li>
 </references>

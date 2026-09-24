@@ -1,0 +1,21 @@
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  # The `if:` condition compares an association field that is never populated
+  # for `issues` events, so it is always true and does not protect the
+  # injectable step.
+  vacuous-association-check:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.author_association != 'NONE'
+    steps:
+      - run: echo '${{ github.event.issue.title }}'
+
+  # `github.event.issue` is populated for `issues` events, so this check is
+  # effective and the injectable step is protected.
+  valid-association-check:
+    runs-on: ubuntu-latest
+    if: github.event.issue.author_association == 'MEMBER'
+    steps:
+      - run: echo '${{ github.event.issue.title }}'

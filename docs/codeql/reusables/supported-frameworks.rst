@@ -74,7 +74,7 @@ and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/gi
    `AWS Lambda <https://docs.aws.amazon.com/lambda/latest/dg/lambda-golang.html>`_, Serverless framework
    `beego <https://beego.me/>`_, Web/logging/database framework
    `Chi <https://github.com/go-chi/chi>`_, Web framework
-   Couchbase (`gocb <https://github.com/couchbase/gocb>`_ and `go-couchbase <http://www.github.com/couchbase/go-couchbase>`_), Database
+   Couchbase (`gocb <https://github.com/couchbase/gocb>`_ and `go-couchbase <https://www.github.com/couchbase/go-couchbase>`_), Database
    `Echo <https://echo.labstack.com/>`_, Web framework
    `Gin <https://github.com/gin-gonic/gin>`_, Web framework
    `glog <https://github.com/golang/glog>`_, Logging library
@@ -87,7 +87,7 @@ and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/gi
    `golang.org/x/crypto/ssh <https://pkg.go.dev/golang.org/x/crypto/ssh>`_, Network communicator
    `golang.org/x/net/websocket <https://pkg.go.dev/golang.org/x/net/websocket>`_, Network communicator
    `goproxy <https://github.com/elazarl/goproxy>`_, HTTP proxy library
-   `Gorilla mux <http://www.gorillatoolkit.org/pkg/mux>`_, HTTP request router and dispatcher
+   `Gorilla mux <https://github.com/gorilla/mux>`_, HTTP request router and dispatcher
    `Gorilla websocket <https://github.com/gorilla/websocket>`_, Network communicator
    `GORM <https://gorm.io/>`_, Database
    `GoWebsocket <https://github.com/sacOO7/gowebsocket>`_, Network communicator
@@ -100,11 +100,11 @@ and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/gi
    `Logrus <https://github.com/sirupsen/logrus>`_, Logging library
    `Macaron <https://gopkg.in/macaron.v1>`_, Web framework
    `mongo <https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo>`_, Database
-   `nhooyr.io/websocket <http://nhooyr.io/websocket>`_, Network communicator
+   `coder/websocket <https://github.com/coder/websocket>`_ (formerly nhooyr.io/websocket), Network communicator
    `protobuf <https://pkg.go.dev/google.golang.org/protobuf>`_, Serialization
-   `Revel <http://revel.github.io/>`_, Web framework
+   `Revel <https://revel.github.io/>`_, Web framework
    `SendGrid <https://github.com/sendgrid/sendgrid-go>`_, Email library
-   `sqlx <http://jmoiron.github.io/sqlx/>`_, Database
+   `sqlx <https://jmoiron.github.io/sqlx/>`_, Database
    `Squirrel <https://github.com/Masterminds/squirrel>`_, Database
    `ws <https://github.com/gobwas/ws>`_, Network communicator
    `xmlpath <https://gopkg.in/xmlpath.v2>`_, XPath library
@@ -329,7 +329,7 @@ and the CodeQL library pack ``codeql/rust-all`` (`changelog <https://github.com/
    `async-std <https://crates.io/crates/async-std>`__, Asynchronous programming library
    `axum <https://crates.io/crates/axum>`__, Web framework
    `biscotti <https://crates.io/crates/biscotti>`__, Cookie management
-   `clap <http://crates.io/crates/clap>`__, Utility library
+   `clap <https://crates.io/crates/clap>`__, Utility library
    `cookie <https://crates.io/crates/cookie>`__, Cookie management
    core, Standard library
    `digest <https://crates.io/crates/digest>`__, Cryptography library

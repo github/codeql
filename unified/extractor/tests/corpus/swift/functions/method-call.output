@@ -28,17 +28,15 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        call_expr
+        call_expr source="⟨callee⟩(⟨argument⟩)"
           callee:
-            member_access_expr
-              base:
-                name_expr
-                  identifier: identifier "list"
-              member: identifier "append"
+            member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+              base: identifier "list" source="list"
+              member_name_node: identifier "append" source="append"
           argument:
-            argument
-              value: int_literal "1"
+            argument source="⟨value⟩"
+              value: int_literal "1" source="1"

@@ -15,10 +15,10 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        unary_expr
-          operand: int_literal "7"
-          operator: prefix_operator "-"
+        unary_expr source="⟨operator⟩⟨operand⟩"
+          operand: int_literal "7" source="7"
+          operator: prefix_operator "-" source="-"

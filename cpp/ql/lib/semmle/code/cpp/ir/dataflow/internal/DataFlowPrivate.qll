@@ -122,6 +122,47 @@ private module Cached {
     FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
   }
 
+  bindingset[store]
+  pragma[inline_late]
+  private predicate nodeHasInstructionLate(Node node, StoreInstruction store, int indirectionIndex) {
+    nodeHasInstruction(node, store, indirectionIndex)
+  }
+
+  pragma[nomagic]
+  private predicate storeStepSource(
+    Operand fieldAddress, int contentIndirectionIndex, Node node, boolean certain
+  ) {
+    exists(int indirectionIndex, int numberOfLoads, StoreInstruction store |
+      nodeHasInstructionLate(node, store, indirectionIndex) and
+      numberOfLoadsFromOperand(fieldAddress, store.getDestinationAddressOperand(), numberOfLoads,
+        certain) and
+      contentIndirectionIndex = 1 + indirectionIndex + numberOfLoads
+    )
+  }
+
+  pragma[nomagic]
+  private predicate hasFieldAddressAndField(Field f, PostFieldUpdateNode pfu, Operand fieldAddress) {
+    pfu.getIndirectionIndex() = 1 and
+    pfu.getUpdatedField() = f and
+    pfu.getFieldAddress() = fieldAddress
+  }
+
+  pragma[nomagic]
+  private predicate hasFieldAndIndirectionIndex(Field f, int indirectionIndex, FieldContent fc) {
+    fc.getAField() = f and
+    fc.getIndirectionIndex() = indirectionIndex
+  }
+
+  pragma[nomagic]
+  private predicate storeStepTarget(
+    Operand address, int indirectionIndex, PostFieldUpdateNode pfu, FieldContent fc
+  ) {
+    exists(Field f |
+      hasFieldAddressAndField(f, pfu, address) and
+      hasFieldAndIndirectionIndex(f, indirectionIndex, fc)
+    )
+  }
+
   /**
    * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
    * Thus, `node2` references an object with a field `f` that contains the
@@ -132,19 +173,9 @@ private module Cached {
    */
   cached
   predicate storeStepImpl(Node node1, Content c, Node node2, boolean certain) {
-    exists(
-      PostFieldUpdateNode postFieldUpdate, int indirectionIndex1, int numberOfLoads,
-      StoreInstruction store, FieldContent fc
-    |
-      postFieldUpdate = node2 and
-      fc = c and
-      nodeHasInstruction(node1, pragma[only_bind_into](store),
-        pragma[only_bind_into](indirectionIndex1)) and
-      postFieldUpdate.getIndirectionIndex() = 1 and
-      numberOfLoadsFromOperand(postFieldUpdate.getFieldAddress(),
-        store.getDestinationAddressOperand(), numberOfLoads, certain) and
-      fc.getAField() = postFieldUpdate.getUpdatedField() and
-      getIndirectionIndexLate(fc) = 1 + indirectionIndex1 + numberOfLoads
+    exists(Operand fieldAddress, int indirectionIndex |
+      storeStepSource(fieldAddress, indirectionIndex, node1, certain) and
+      storeStepTarget(fieldAddress, indirectionIndex, node2, c)
     )
     or
     // models-as-data summarized flow
@@ -509,10 +540,30 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
  */
 abstract class ArgumentNode extends Node {
   /**
+   * Holds if this argument occurs at the given position in the given call,
+   * and this call is represented in the source code.
+   * The instance argument is considered to have index `-1`.
+   */
+  predicate sourceArgumentOf(CallInstruction call, ArgumentPosition pos) { none() }
+
+  /**
+   * Holds if this argument occurs at the given position in the given call,
+   * and this call is part of a summary.
+   * The instance argument is considered to have index `-1`.
+   */
+  predicate summaryArgumentOf(FlowSummaryImpl::Public::SummarizedCallable call, ArgumentPosition pos) {
+    none()
+  }
+
+  /**
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
-  abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
+  final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    this.sourceArgumentOf(call.asCallInstruction(), pos)
+    or
+    this.summaryArgumentOf(call.asSummaryCall(), pos)
+  }
 
   /** Gets the call in which this node is an argument. */
   DataFlowCall getCall() { this.argumentOf(result, _) }
@@ -527,19 +578,118 @@ private class PrimaryArgumentNode extends ArgumentNode, OperandNode {
 
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
-  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+  override predicate sourceArgumentOf(CallInstruction call, ArgumentPosition pos) {
     op = call.getArgumentOperand(pos.(DirectPosition).getArgumentIndex())
   }
 }
 
 private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode {
-  override predicate argumentOf(DataFlowCall dfCall, ArgumentPosition pos) {
+  override predicate sourceArgumentOf(CallInstruction c, ArgumentPosition pos) {
     exists(int indirectionIndex |
       pos = TIndirectionPosition(argumentIndex, pragma[only_bind_into](indirectionIndex)) and
-      this.getCallInstruction() = dfCall.asCallInstruction() and
+      this.getCallInstruction() = c and
       super.hasAddressOperandAndIndirectionIndex(arg, pragma[only_bind_into](indirectionIndex))
     )
   }
+}
+
+/**
+ * Gets `unspecifiedType`, but with the outermost `ReferenceType` removed, if any.
+ */
+private Type stripReferences(Type unspecifiedType) {
+  result = unspecifiedType.(Cpp::ReferenceType).getBaseType().getUnspecifiedType()
+  or
+  not unspecifiedType instanceof Cpp::ReferenceType and
+  result = unspecifiedType
+}
+
+predicate forwardingCallTargetsConstructor(
+  CallInstruction call, Cpp::Constructor constructor, int start
+) {
+  exists(int numberOfForwardedArguments |
+    numberOfForwardedArguments <= constructor.getNumberOfParameters()
+    or
+    constructor.isVarargs()
+  |
+    External::forwards(call.getStaticCallTarget(), constructor, start) and
+    call.getNumberOfPositionalArguments() = start + numberOfForwardedArguments and
+    forall(int i | i = [0 .. constructor.getNumberOfParameters() - 1] |
+      // If we are still processing the forwarded arguments then we need to
+      // check that the argument types match the parameter types.
+      // Functions that perform perfect forwarding are always written as:
+      // ```
+      // template<typename... Args> void emplace(Args&&... args) { ... }
+      // ```
+      // and so all the arguments will be reference typed (lvalue or rvalued).
+      // However, the constructor may not specify all the arguments by
+      // reference.
+      i < numberOfForwardedArguments and
+      stripReferences(call.getPositionalArgument(start + i).getResultType()) =
+        stripReferences(constructor.getParameter(i).getUnspecifiedType())
+      or
+      // If the constructor has a default argument and we have processed all
+      // the forwarded arguments then we don't need to check the types.
+      i >= numberOfForwardedArguments and constructor.getParameter(i).hasInitializer()
+    )
+  )
+}
+
+/** Holds if `call` is a call that forwards arguments to a constructor call. */
+predicate isForwarderConstructorArgumentNodeImpl(CallInstruction call) {
+  forwardingCallTargetsConstructor(call, _, _)
+}
+
+/**
+ * In order to implement a MaD summary for a flow such as:
+ * ```
+ * struct Foo {
+ *   int x;
+ *   Foo(int x) { // (2)
+ *     this->x = x;
+ *   }
+ * }
+ *
+ * std::vector<Foo> v;
+ * int x = source();
+ * v.emplace_back(x); // (1)
+ * sink(v.back());
+ * ```
+ * we model it as if the code was:
+ * ```
+ * v.__emplace_back(x, &Foo)
+ * ```
+ * (never mind that this is not real C++ since you cannot take the address of a
+ * constructor.)
+ * where `__emplace_back` invokes `Foo` with the `x` argument and returns the
+ * result.
+ *
+ * This class serves as the argument node for `&Foo`.
+ */
+private class ForwarderConstructorArgumentNode extends ArgumentNode,
+  TForwarderConstructorArgumentNode
+{
+  private CallInstruction call;
+
+  ForwarderConstructorArgumentNode() { this = TForwarderConstructorArgumentNode(call) }
+
+  override predicate sourceArgumentOf(CallInstruction c, ArgumentPosition pos) {
+    c = call and pos = TForwardPosition()
+  }
+
+  /**
+   * Gets a constructor which may be targeted by this forwarding call.
+   */
+  Cpp::Constructor getAConstructor() { forwardingCallTargetsConstructor(call, result, _) }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
+
+  override Declaration getFunction() { result = call.getEnclosingFunction() }
+
+  override Location getLocationImpl() { result = call.getLocation() }
+
+  override string toStringImpl() { result = "forwarder for " + call.toString() }
 }
 
 /**
@@ -554,8 +704,10 @@ class SummaryArgumentNode extends ArgumentNode, FlowSummaryNode {
     FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
   }
 
-  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    call = call_ and
+  override predicate summaryArgumentOf(
+    FlowSummaryImpl::Public::SummarizedCallable call, ArgumentPosition pos
+  ) {
+    call = call_.asSummaryCall() and
     pos = pos_
   }
 }
@@ -569,8 +721,8 @@ private class FlowSummaryArgumentNode extends ArgumentNode, FlowSummaryNode {
     this.getSummaryNode() = FlowSummaryImpl::Private::summaryArgumentNode(callInstruction, rk)
   }
 
-  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    call.asCallInstruction() = callInstruction and
+  override predicate sourceArgumentOf(CallInstruction call, ArgumentPosition pos) {
+    call = callInstruction and
     pos = TFlowSummaryPosition(rk)
   }
 }
@@ -593,6 +745,38 @@ abstract class Position extends TPosition {
 
   /** Gets the indirection index of this position. */
   abstract int getIndirectionIndex();
+
+  /**
+   * Gets the parameter of `f` associated with this position, if any.
+   *
+   * Since a `Position` is defined by both an argument index and an
+   * indirection multiple `Position`s can be associated with the
+   * same `Parameter`.
+   */
+  Parameter getParameter(Function f) {
+    result.getFunction() = f and
+    this.getArgumentIndex() = result.getIndex()
+  }
+
+  /**
+   * Gets the argument (or qualifier) of `call` associated with this position, if any.
+   *
+   * Since a `Position` is defined by both an argument index and an
+   * indirection multiple `Position`s can be associated with the
+   * same argument/qualifier.
+   */
+  Expr getArgument(Cpp::Call call) {
+    result = call.getArgument(this.getArgumentIndex())
+    or
+    this.getArgumentIndex() = -1 and
+    result = call.getQualifier()
+  }
+
+  /**
+   * Holds if this position is the synthetic argument for an address of a
+   * constructor used for functions which perform "perfect forwarding".
+   */
+  predicate isForward() { none() }
 }
 
 class DirectPosition extends Position, TDirectPosition {
@@ -642,6 +826,16 @@ class FlowSummaryPosition extends Position, TFlowSummaryPosition {
   final override int getIndirectionIndex() { result = rk.getIndirectionIndex() }
 }
 
+class ForwardPosition extends Position, TForwardPosition {
+  final override predicate isForward() { any() }
+
+  override int getArgumentIndex() { none() }
+
+  final override int getIndirectionIndex() { result = 0 }
+
+  override string toString() { result = "forward" }
+}
+
 newtype TPosition =
   TDirectPosition(int argumentIndex) {
     exists(any(CallInstruction c).getArgument(argumentIndex))
@@ -658,9 +852,10 @@ newtype TPosition =
     // the function.
     exists(Cpp::Function f, Cpp::Parameter p |
       p = f.getParameter(argumentIndex) and
-      indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1]
+      indirectionIndex = [1 .. Ssa::getMaxIndirectionsForPRType(p.getUnspecifiedType())]
     )
   } or
+  TForwardPosition() or
   TFlowSummaryPosition(ReturnKind rk) { FlowSummaryImpl::Private::relevantFlowSummaryPosition(rk) }
 
 private newtype TReturnKind =
@@ -676,7 +871,7 @@ private newtype TReturnKind =
       [0 .. max(Cpp::Function f |
           not exists(f.getBlock())
         |
-          Ssa::getMaxIndirectionsForType(f.getUnspecifiedType()) - 1 // -1 because a returned value is a prvalue not a glvalue
+          Ssa::getMaxIndirectionsForPRType(f.getUnspecifiedType())
         )]
   } or
   TIndirectReturnKind(int argumentIndex, int indirectionIndex) {
@@ -691,7 +886,7 @@ private newtype TReturnKind =
       [0 .. max(Cpp::Function f |
           not exists(f.getBlock())
         |
-          Ssa::getMaxIndirectionsForType(f.getParameter(argumentIndex).getUnspecifiedType()) - 1 // -1 because an argument is a prvalue not a glvalue
+          Ssa::getMaxIndirectionsForPRType(f.getParameter(argumentIndex).getUnspecifiedType())
         )]
   }
 
@@ -1179,6 +1374,19 @@ private predicate summarizedCallableIsManual(SummarizedCallable sc) {
   sc.asSummarizedCallable().hasManualModel()
 }
 
+private DataFlowCallable getTarget(Declaration target) {
+  // Don't use the source callable if there is a manual model for the target.
+  not exists(SummarizedCallable sc |
+    sc.asSummarizedCallable() = target and
+    summarizedCallableIsManual(sc)
+  ) and
+  result.asSourceCallable() = target
+  or
+  // When there is no function body, or when we have a manual model, dispatch to the summary.
+  (not target.hasDefinition() or summarizedCallableIsManual(result)) and
+  result.asSummarizedCallable() = target
+}
+
 /**
  * A function call relevant for data flow. This includes calls from source
  * code and calls inside library callables with a flow summary.
@@ -1188,6 +1396,11 @@ class DataFlowCall extends TDataFlowCall {
    * Gets the underlying data flow call instruction, if any.
    */
   CallInstruction asCallInstruction() { none() }
+
+  /**
+   * Gets the underlying summarized call, if any.
+   */
+  FlowSummaryImpl::Public::SummarizedCallable asSummaryCall() { none() }
 
   /**
    * Gets the operand the specifies the target function of the call.
@@ -1209,20 +1422,7 @@ class DataFlowCall extends TDataFlowCall {
    * whether is it manual or generated.
    */
   final DataFlowCallable getStaticCallTarget() {
-    exists(Declaration target | target = this.getStaticCallSourceTarget() |
-      // Don't use the source callable if there is a manual model for the
-      // target
-      not exists(SummarizedCallable sc |
-        sc.asSummarizedCallable() = target and
-        summarizedCallableIsManual(sc)
-      ) and
-      result.asSourceCallable() = target
-      or
-      // When there is no function body, or when we have a manual model then
-      // we dispatch to the summary.
-      (not target.hasDefinition() or summarizedCallableIsManual(result)) and
-      result.asSummarizedCallable() = target
-    )
+    result = getTarget(this.getStaticCallSourceTarget())
   }
 
   /**
@@ -1305,6 +1505,8 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
    * targets.
    */
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
+
+  final override FlowSummaryImpl::Public::SummarizedCallable asSummaryCall() { result = c }
 
   // no implementation for `getCallTargetOperand()`, `getStaticCallTarget()`
   // or `getArgumentOperand(int index)`. This is because the flow summary
@@ -1407,6 +1609,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof SsaSynthNode
   or
   n.(FlowSummaryNode).getSummaryNode().isHidden()
+  or
+  n instanceof ForwarderConstructorArgumentNode
 }
 
 predicate neverSkipInPathGraph(Node n) {
@@ -1487,6 +1691,9 @@ private predicate isFunctorCreationWithConstructor(Node creation, OperatorCall o
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
   kind.isFunctionPointer() and
   creation.asInstruction().(FunctionAddressInstruction).getFunctionSymbol() = c.asSourceCallable()
+  or
+  kind.isFunctionPointer() and
+  c = getTarget(creation.(ForwarderConstructorArgumentNode).getAConstructor())
   or
   kind.isFunctor() and
   exists(OperatorCall operator | operator = c.asSourceCallable() |
@@ -1922,13 +2129,23 @@ module IteratorFlow {
     }
 
     /**
-     * Gets an ultimate definition of `def`.
-     *
-     * Note: Unlike `def.getAnUltimateDefinition()` this predicate also
-     * traverses back through iterator increment and decrement operations.
+     * Holds if `write` is an instruction that writes to address `address`
      */
-    private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
-      result = def.getAnUltimateDefinition()
+    private predicate isIteratorWrite(Instruction write, Operand address) {
+      exists(Ssa::DefImpl writeDef, IRBlock bb, int i |
+        writeDef.hasIndexInBlock(_, bb, i) and
+        bb.getInstruction(i) = write and
+        address = writeDef.getAddressOperand()
+      )
+    }
+
+    private module GetAnUltimateDefinitionInput implements Ssa::GetAnUltimateDefinitionSig {
+      predicate isRelevantUltimateDefinition(Ssa::Definition def) { fwd(_, def) }
+    }
+
+    private Ssa::Definition getAnUltimateDefinitionStep(Ssa::Definition def) {
+      result =
+        Ssa::GetAnUltimateDefinition<GetAnUltimateDefinitionInput>::getAnUltimateDefinition(def)
       or
       exists(IRBlock bb, int i, IteratorCrementCall crementCall, Ssa::SourceVariable sv |
         crementCall = def.getValue().asInstruction().(StoreInstruction).getSourceValue() and
@@ -1938,14 +2155,28 @@ module IteratorFlow {
       )
     }
 
-    /**
-     * Holds if `write` is an instruction that writes to address `address`
-     */
-    private predicate isIteratorWrite(Instruction write, Operand address) {
-      exists(Ssa::DefImpl writeDef, IRBlock bb, int i |
-        writeDef.hasIndexInBlock(_, bb, i) and
-        bb.getInstruction(i) = write and
-        address = writeDef.getAddressOperand()
+    private predicate isSource(GetsIteratorCall beginCall, Ssa::Definition def) {
+      exists(StoreInstruction beginStore |
+        beginStore = def.getValue().asInstruction() and
+        operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)
+      )
+    }
+
+    private predicate isSink(Instruction writeToDeref, Ssa::Definition def) {
+      exists(IteratorPointerDereferenceCall starCall, Operand address, IRBlock bbStar, int iStar |
+        isIteratorWrite(writeToDeref, address) and
+        operandForFullyConvertedCall(address, starCall) and
+        bbStar.getInstruction(iStar) = starCall and
+        Ssa::ssaDefReachesRead(_, def, bbStar, iStar)
+      )
+    }
+
+    private predicate fwd(GetsIteratorCall beginCall, Ssa::Definition def) {
+      isSource(beginCall, def)
+      or
+      exists(Ssa::Definition def0 |
+        fwd(beginCall, def0) and
+        def0 = getAnUltimateDefinitionStep(def)
       )
     }
 
@@ -1961,17 +2192,9 @@ module IteratorFlow {
     private predicate isIteratorStoreInstruction(
       GetsIteratorCall beginCall, Instruction writeToDeref
     ) {
-      exists(
-        StoreInstruction beginStore, IRBlock bbStar, int iStar, Ssa::Definition def,
-        IteratorPointerDereferenceCall starCall, Ssa::Definition ultimate, Operand address
-      |
-        isIteratorWrite(writeToDeref, address) and
-        operandForFullyConvertedCall(address, starCall) and
-        bbStar.getInstruction(iStar) = starCall and
-        Ssa::ssaDefReachesRead(_, def, bbStar, iStar) and
-        ultimate = getAnUltimateDefinition*(def) and
-        beginStore = ultimate.getValue().asInstruction() and
-        operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)
+      exists(Ssa::Definition def |
+        fwd(beginCall, def) and
+        isSink(writeToDeref, def)
       )
     }
 

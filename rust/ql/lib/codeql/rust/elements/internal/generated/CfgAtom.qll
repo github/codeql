@@ -19,5 +19,7 @@ module Generated {
    */
   class CfgAtom extends Synth::TCfgAtom, CfgPredicateImpl::CfgPredicate {
     override string getAPrimaryQlClass() { result = "CfgAtom" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

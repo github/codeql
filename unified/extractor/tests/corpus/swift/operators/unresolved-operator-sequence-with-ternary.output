@@ -95,63 +95,41 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name: identifier "choose"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩, ⟨parameter⟩, ⟨parameter⟩) -> ⟨return_type⟩ ⟨body⟩"
+          name_node: identifier "choose" source="choose"
           parameter:
-            parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Bool"
-              pattern:
-                name_pattern
-                  identifier: identifier "c"
-            parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "a"
-            parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "b"
-            parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "d"
-          return_type:
-            named_type_expr
-              name: identifier "Int"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Bool" source="Bool"
+              pattern: identifier "c" source="c"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "a" source="a"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "b" source="b"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "d" source="d"
+          return_type: identifier "Int" source="Int"
           body:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                return_expr
+                return_expr source="return ⟨value⟩"
                   value:
-                    unresolved_operator_sequence
+                    unresolved_operator_sequence source="⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩"
                       element:
-                        name_expr
-                          identifier: identifier "c"
-                        infix_operator "?"
-                        name_expr
-                          identifier: identifier "a"
-                        infix_operator ":"
-                        name_expr
-                          identifier: identifier "b"
-                        infix_operator ".&"
-                        name_expr
-                          identifier: identifier "d"
+                        identifier "c" source="c"
+                        infix_operator "?" source="?"
+                        identifier "a" source="a"
+                        infix_operator ":" source=":"
+                        identifier "b" source="b"
+                        infix_operator ".&" source=".&"
+                        identifier "d" source="d"

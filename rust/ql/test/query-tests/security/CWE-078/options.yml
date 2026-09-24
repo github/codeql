@@ -1,0 +1,4 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - reqwest = { version = "0.12.9", features = ["blocking"] }
+    - tokio = { version = "1", features = ["full"] }

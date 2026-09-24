@@ -43,21 +43,17 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "n"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "n" source="n"
           value:
-            member_access_expr
+            member_access_expr source="⟨base⟩?.⟨member_name_node⟩"
               base:
-                member_access_expr
-                  base:
-                    name_expr
-                      identifier: identifier "obj"
-                  member: identifier "foo"
-              member: identifier "bar"
+                member_access_expr source="⟨base⟩?.⟨member_name_node⟩"
+                  base: identifier "obj" source="obj"
+                  member_name_node: identifier "foo" source="foo"
+              member_name_node: identifier "bar" source="bar"

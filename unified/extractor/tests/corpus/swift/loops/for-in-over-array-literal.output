@@ -56,29 +56,23 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        for_each_stmt
-          pattern:
-            name_pattern
-              identifier: identifier "x"
+        for_each_stmt source="for ⟨pattern⟩ in ⟨iterable⟩ ⟨body⟩"
+          pattern: identifier "x" source="x"
           iterable:
-            array_literal
+            array_literal source="[⟨element⟩, ⟨element⟩, ⟨element⟩]"
               element:
-                int_literal "1"
-                int_literal "2"
-                int_literal "3"
+                int_literal "1" source="1"
+                int_literal "2" source="2"
+                int_literal "3" source="3"
           body:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
                   argument:
-                    argument
-                      value:
-                        name_expr
-                          identifier: identifier "x"
+                    argument source="⟨value⟩"
+                      value: identifier "x" source="x"

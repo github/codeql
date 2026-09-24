@@ -120,55 +120,43 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        switch_expr
-          value:
-            name_expr
-              identifier: identifier "x"
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "x" source="x"
           case:
-            switch_case
-              pattern:
-                expr_equality_pattern
-                  expr: int_literal "1"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
+              pattern: int_literal "1" source="1"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"one\""
-            switch_case
+                        argument source="⟨value⟩"
+                          value: string_literal "\"one\"" source="\"one\""
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                or_pattern
+                or_pattern source="⟨pattern⟩, ⟨pattern⟩"
                   pattern:
-                    expr_equality_pattern
-                      expr: int_literal "2"
-                    expr_equality_pattern
-                      expr: int_literal "3"
+                    int_literal "2" source="2"
+                    int_literal "3" source="3"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"two or three\""
-            switch_case
+                        argument source="⟨value⟩"
+                          value: string_literal "\"two or three\"" source="\"two or three\""
+            switch_case source="default:\n  ⟨body⟩"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"other\""
+                        argument source="⟨value⟩"
+                          value: string_literal "\"other\"" source="\"other\""

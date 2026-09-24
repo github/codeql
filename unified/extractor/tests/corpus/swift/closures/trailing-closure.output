@@ -39,27 +39,23 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        call_expr
+        call_expr source="⟨callee⟩ ⟨argument⟩"
           callee:
-            member_access_expr
-              base:
-                name_expr
-                  identifier: identifier "xs"
-              member: identifier "map"
+            member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+              base: identifier "xs" source="xs"
+              member_name_node: identifier "map" source="map"
           argument:
-            argument
+            argument source="⟨value⟩"
               value:
-                function_expr
+                function_expr source="{ ⟨body⟩ }"
                   body:
-                    block
+                    block source="⟨stmt⟩"
                       stmt:
-                        binary_expr
-                          left:
-                            name_expr
-                              identifier: identifier "$0"
-                          operator: infix_operator "*"
-                          right: int_literal "2"
+                        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                          left: identifier "$0" source="$0"
+                          operator: infix_operator "*" source="*"
+                          right: int_literal "2" source="2"

@@ -1,6 +1,6 @@
 load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup")
+load("//misc/bazel:os.bzl", "codeql_platform_select")
 load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pkg_files")
-load("//misc/bazel:utils.bzl", "select_os")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -41,14 +41,21 @@ codeql_pkg_files(
 
 codeql_pkg_files(
     name = "extractor-arch",
-    exes = select_os(
-        posix = ["//unified/extractor"],
-        windows = ["//unified/extractor-unsupported-os:extractor"],
-    ) + select_os(
-        linux = ["//unified/swift-syntax-rs:swift_runtime_libs"],
-        otherwise = [],
+    exes = codeql_platform_select(
+        otherwise = ["//unified/extractor"],
+        win64 = ["//unified/extractor-unsupported-os:extractor"],
     ),
-    prefix = "tools/{CODEQL_PLATFORM}",
+    prefix = "{CODEQL_PLATFORM}",
+)
+
+pkg_filegroup(
+    name = "tools",
+    srcs = [
+        ":extractor-arch",
+        "//unified/tools",
+        "//unified/tools/builtins",
+    ],
+    prefix = "tools",
 )
 
 codeql_pack(
@@ -56,7 +63,6 @@ codeql_pack(
     srcs = [
         ":codeql-extractor-yml",
         ":dbscheme-group",
-        ":extractor-arch",
-        "//unified/tools",
+        ":tools",
     ],
 )

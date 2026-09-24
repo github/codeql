@@ -29,6 +29,8 @@ module Generated {
   class Attr extends Synth::TAttr, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "Attr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the meta of this attr, if it exists.
      */

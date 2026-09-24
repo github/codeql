@@ -8,7 +8,7 @@ private import codeql.rust.elements.Variable
 private import codeql.rust.elements.Locatable
 private import codeql.rust.elements.FormatArgsExpr
 private import codeql.rust.elements.FormatArgsArg
-private import codeql.rust.elements.FormatArgsArgName
+private import codeql.rust.elements.Name
 private import codeql.rust.elements.Format
 private import codeql.rust.elements.MacroCall
 private import codeql.rust.elements.NamedFormatArgument
@@ -34,7 +34,7 @@ private module Cached {
   cached
   newtype TDef =
     TVariable(Variable v) or
-    TFormatArgsArgDef(FormatArgsArgName name) { name = any(FormatArgsArg a).getArgName() } or
+    TFormatArgsArgDef(Name name) { name = any(FormatArgsArg a).getName() } or
     TFormatArgsArgIndex(Expr e) { e = any(FormatArgsArg a).getExpr() } or
     TItemNode(ItemNode i)
 
@@ -68,7 +68,7 @@ class Definition extends Cached::TDef {
   Variable asVariable() { this = Cached::TVariable(result) }
 
   /** Gets this definition as a format argument name */
-  FormatArgsArgName asFormatArgsArgName() { this = Cached::TFormatArgsArgDef(result) }
+  Name asFormatArgsArgName() { this = Cached::TFormatArgsArgDef(result) }
 
   /** Gets this definition as an `Expr` */
   Expr asExpr() { this = Cached::TFormatArgsArgIndex(result) }
@@ -96,12 +96,12 @@ private class LocalVariableUse extends Use instanceof VariableAccess {
 }
 
 private class NamedFormatArgumentUse extends Use instanceof NamedFormatArgument {
-  private FormatArgsArgName def;
+  private Name def;
 
   NamedFormatArgumentUse() {
     exists(FormatArgsExpr parent |
       parent = this.getParent().getParent() and
-      parent.getAnArg().getArgName() = def
+      parent.getAnArg().getName() = def
     )
   }
 

@@ -20,18 +20,16 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        import_declaration
+        import_declaration source="⟨pattern⟩⟨imported_expr⟩"
           imported_expr:
-            member_access_expr
-              base:
-                name_expr
-                  identifier: identifier "Foundation"
-              member: identifier "Networking"
+            member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+              base: identifier "Foundation" source="Foundation"
+              member_name_node: identifier "Networking" source="Networking"
           pattern:
-            name_pattern
-              identifier: identifier "Networking"
-              sub_pattern: bulk_importing_pattern "import Foundation.Networking"
+            named_pattern source="⟨sub_pattern⟩⟨name_node⟩"
+              name_node: identifier "Networking" source="Networking"
+              sub_pattern: bulk_importing_pattern "import Foundation.Networking" source="import Foundation.Networking"

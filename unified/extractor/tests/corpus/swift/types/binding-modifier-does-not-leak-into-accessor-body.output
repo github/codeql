@@ -92,39 +92,31 @@ sourceFile
 
 ---
 
-top_level
+top_level source="var p: Int {\n  ⟨body⟩\n}"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        accessor_declaration
-          modifier: modifier "var"
-          name: identifier "p"
-          accessor_kind: accessor_kind "get"
-          type:
-            named_type_expr
-              name: identifier "Int"
+        accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
+          modifier: modifier "var" source="var" (external)
+          name_node: identifier "p" source="p" (external)
+          accessor_kind: accessor_kind "get" source="get"
+          type: identifier "Int" source="Int" (external)
           body:
-            block
+            block source="{\n    ⟨stmt⟩\n  }"
               stmt:
-                switch_expr
-                  value:
-                    name_expr
-                      identifier: identifier "y"
+                switch_expr source="switch ⟨value⟩ {\n    ⟨case⟩\n    ⟨case⟩\n    }"
+                  value: identifier "y" source="y"
                   case:
-                    switch_case
-                      pattern:
-                        expr_equality_pattern
-                          expr:
-                            name_expr
-                              identifier: identifier "someConstant"
+                    switch_case source="case ⟨pattern⟩:\n      ⟨body⟩"
+                      pattern: identifier "someConstant" source="someConstant"
                       body:
-                        block
+                        block source="⟨stmt⟩"
                           stmt:
-                            return_expr
-                              value: int_literal "1"
-                    switch_case
+                            return_expr source="return ⟨value⟩"
+                              value: int_literal "1" source="1"
+                    switch_case source="default:\n      ⟨body⟩"
                       body:
-                        block
+                        block source="⟨stmt⟩"
                           stmt:
-                            return_expr
-                              value: int_literal "2"
+                            return_expr source="return ⟨value⟩"
+                              value: int_literal "2" source="2"

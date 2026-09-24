@@ -22,6 +22,8 @@ module Generated {
   class KeyValueMeta extends Synth::TKeyValueMeta, MetaImpl::Meta {
     override string getAPrimaryQlClass() { result = "KeyValueMeta" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the expression of this key value meta, if it exists.
      */

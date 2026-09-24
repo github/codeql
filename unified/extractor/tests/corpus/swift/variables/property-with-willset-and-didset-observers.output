@@ -97,56 +97,44 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "class"
-          name: identifier "C"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩⟨member⟩⟨member⟩\n}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "C" source="C"
           member:
-            variable_declaration
-              modifier: modifier "var"
-              pattern:
-                name_pattern
-                  identifier: identifier "x"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              value: int_literal "0"
-            accessor_declaration
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩ {\n    willSet { print(newValue) }\n    didSet { print(oldValue) }\n  }"
+              modifier: modifier "var" source="var"
+              pattern: identifier "x" source="x"
+              type: identifier "Int" source="Int"
+              value: int_literal "0" source="0"
+            accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
               modifier:
-                modifier "var"
-                modifier "chained_declaration"
-              name: identifier "x"
-              accessor_kind: accessor_kind "willSet"
+                modifier "var" source="var" (external)
+                modifier "chained_declaration" source=""
+              name_node: identifier "x" source="x" (external)
+              accessor_kind: accessor_kind "willSet" source="willSet"
               body:
-                block
+                block source="{ ⟨stmt⟩ }"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "newValue"
-            accessor_declaration
+                        argument source="⟨value⟩"
+                          value: identifier "newValue" source="newValue"
+            accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
               modifier:
-                modifier "var"
-                modifier "chained_declaration"
-              name: identifier "x"
-              accessor_kind: accessor_kind "didSet"
+                modifier "var" source="var" (external)
+                modifier "chained_declaration" source=""
+              name_node: identifier "x" source="x" (external)
+              accessor_kind: accessor_kind "didSet" source="didSet"
               body:
-                block
+                block source="{ ⟨stmt⟩ }"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "oldValue"
+                        argument source="⟨value⟩"
+                          value: identifier "oldValue" source="oldValue"

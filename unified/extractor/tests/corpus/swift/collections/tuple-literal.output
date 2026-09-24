@@ -45,13 +45,19 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "t"
-          value: tuple_expr "(1, \"two\", 3.0)"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "t" source="t"
+          value:
+            tuple_expr source="(⟨element⟩, ⟨element⟩, ⟨element⟩)"
+              element:
+                argument source="⟨value⟩"
+                  value: int_literal "1" source="1"
+                argument source="⟨value⟩"
+                  value: string_literal "\"two\"" source="\"two\""
+                argument source="⟨value⟩"
+                  value: float_literal "3.0" source="3.0"

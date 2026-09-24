@@ -15,6 +15,9 @@ pub struct DumpOptions {
     pub show_locations: bool,
     /// Whether to include source text for leaf nodes.
     pub show_content: bool,
+    /// Whether to include each node's source range with direct-child ranges
+    /// replaced by their field names in `⟨angle brackets⟩`.
+    pub show_abridged_source: bool,
 }
 
 impl Default for DumpOptions {
@@ -22,6 +25,7 @@ impl Default for DumpOptions {
         Self {
             show_locations: false,
             show_content: true,
+            show_abridged_source: false,
         }
     }
 }
@@ -47,7 +51,7 @@ pub fn dump_ast(ast: &Ast, root: Id, source: &str) -> String {
 
 pub fn dump_ast_with_options(ast: &Ast, root: Id, source: &str, options: &DumpOptions) -> String {
     let mut out = String::new();
-    dump_node(ast, root, source, options, 0, None, &mut out);
+    dump_node(ast, root, source, options, 0, None, false, &mut out);
     out
 }
 
@@ -82,6 +86,7 @@ pub fn dump_ast_with_type_errors_and_options(
             expected: None,
             parent_field: None,
         }),
+        false,
         &mut out,
     );
     out
@@ -191,6 +196,7 @@ fn dump_node(
     options: &DumpOptions,
     indent: usize,
     type_check: Option<TypeCheckContext<'_>>,
+    external_to_parent: bool,
     out: &mut String,
 ) {
     let node = match ast.get_node(id) {
@@ -223,6 +229,13 @@ fn dump_node(
         let content = node_content(node, source);
         if !content.is_empty() {
             write!(out, " {content:?}").unwrap();
+        }
+    }
+
+    if options.show_abridged_source {
+        write_source_skeleton(ast, node, source, out);
+        if external_to_parent {
+            write!(out, " (external)").unwrap();
         }
     }
 
@@ -292,9 +305,18 @@ fn dump_node(
             write!(out, "{prefix}  {field_name}:").unwrap();
             // Inline single child
             let child = ast.get_node(children[0]);
+            let external = child.is_some_and(|child| is_external_child(node, child));
             if child.is_some_and(is_leaf) {
                 write!(out, " ").unwrap();
-                dump_node_inline(ast, children[0], source, options, child_type_check, out);
+                dump_node_inline(
+                    ast,
+                    children[0],
+                    source,
+                    options,
+                    child_type_check,
+                    external,
+                    out,
+                );
             } else {
                 writeln!(out).unwrap();
                 dump_node(
@@ -304,12 +326,16 @@ fn dump_node(
                     options,
                     indent + 2,
                     child_type_check,
+                    external,
                     out,
                 );
             }
         } else {
             writeln!(out, "{prefix}  {field_name}:").unwrap();
             for &child_id in children {
+                let external = ast
+                    .get_node(child_id)
+                    .is_some_and(|child| is_external_child(node, child));
                 dump_node(
                     ast,
                     child_id,
@@ -317,6 +343,7 @@ fn dump_node(
                     options,
                     indent + 2,
                     child_type_check,
+                    external,
                     out,
                 );
             }
@@ -357,6 +384,7 @@ fn dump_node(
         for &child_id in children {
             if let Some(child) = ast.get_node(child_id) {
                 if child.is_named() {
+                    let external = is_external_child(node, child);
                     dump_node(
                         ast,
                         child_id,
@@ -364,6 +392,7 @@ fn dump_node(
                         options,
                         indent + 1,
                         child_type_check,
+                        external,
                         out,
                     );
                 }
@@ -379,6 +408,7 @@ fn dump_node_inline(
     source: &str,
     options: &DumpOptions,
     type_check: Option<TypeCheckContext<'_>>,
+    external_to_parent: bool,
     out: &mut String,
 ) {
     let node = match ast.get_node(id) {
@@ -409,6 +439,13 @@ fn dump_node_inline(
         }
     }
 
+    if options.show_abridged_source {
+        write_source_skeleton(ast, node, source, out);
+        if external_to_parent {
+            write!(out, " (external)").unwrap();
+        }
+    }
+
     if let Some(context) = type_check {
         if let Some(err) =
             type_error_for_node(context.schema, node, context.expected, context.parent_field)
@@ -422,6 +459,254 @@ fn dump_node_inline(
 
 fn is_leaf(node: &Node) -> bool {
     node.fields.is_empty()
+}
+
+enum SourceSkeleton {
+    Missing,
+    Text(String),
+    Invalid(String),
+}
+
+fn write_source_skeleton(ast: &Ast, node: &Node, source: &str, out: &mut String) {
+    match source_skeleton(ast, node, source) {
+        SourceSkeleton::Missing => write!(out, " source=<no location>").unwrap(),
+        SourceSkeleton::Text(text) => write!(out, " source={text:?}").unwrap(),
+        SourceSkeleton::Invalid(error) => write!(out, " source=<invalid: {error}>").unwrap(),
+    }
+}
+
+fn node_source_range(node: &Node) -> Option<crate::Range> {
+    match node.content {
+        NodeContent::Range(range) => Some(range),
+        _ => node.source_range,
+    }
+}
+
+fn is_external_child(parent: &Node, child: &Node) -> bool {
+    let (Some(parent), Some(child)) = (node_source_range(parent), node_source_range(child)) else {
+        return false;
+    };
+    child.start_byte < parent.start_byte || child.end_byte > parent.end_byte
+}
+
+fn source_skeleton(ast: &Ast, node: &Node, source: &str) -> SourceSkeleton {
+    let Some(parent) = node_source_range(node) else {
+        return SourceSkeleton::Missing;
+    };
+    let parent = parent.start_byte..parent.end_byte;
+    if parent.start > parent.end || source.get(parent.clone()).is_none() {
+        return SourceSkeleton::Invalid(format!(
+            "node range {}..{} is outside the source or not on UTF-8 boundaries",
+            parent.start, parent.end
+        ));
+    }
+
+    let mut children = Vec::new();
+    for (field_id, child_ids) in &node.fields {
+        let field_name = if *field_id == CHILD_FIELD {
+            "child"
+        } else {
+            ast.field_name_for_id(*field_id).unwrap_or("?")
+        };
+        for child_id in child_ids {
+            let Some(child) = ast.get_node(*child_id) else {
+                continue;
+            };
+            if !child.is_named() {
+                continue;
+            }
+            let Some(child) = node_source_range(child) else {
+                continue;
+            };
+            let child = child.start_byte..child.end_byte;
+            if child.start > child.end || source.get(child.clone()).is_none() {
+                return SourceSkeleton::Invalid(format!(
+                    "child range {}..{} is outside the source or not on UTF-8 boundaries",
+                    child.start, child.end
+                ));
+            }
+            if child.start < parent.start || child.end > parent.end {
+                continue;
+            }
+            if child.start == child.end {
+                continue;
+            }
+            children.push((child, field_name));
+        }
+    }
+    children.sort_by_key(|(range, field_name)| (range.start, range.end, *field_name));
+
+    let mut result = String::new();
+    let mut cursor = parent.start;
+    for (range, field_name) in children {
+        if cursor < range.start {
+            result.push_str(source.get(cursor..range.start).unwrap());
+        }
+        result.push('⟨');
+        result.push_str(field_name);
+        result.push('⟩');
+        cursor = cursor.max(range.end);
+    }
+    result.push_str(source.get(cursor..parent.end).unwrap());
+    SourceSkeleton::Text(result)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{NodeContent, Point, Range};
+    use std::collections::BTreeMap;
+
+    fn range(start: usize, end: usize) -> Range {
+        Range {
+            start_byte: start,
+            end_byte: end,
+            start_point: Point::new(0, start),
+            end_point: Point::new(0, end),
+        }
+    }
+
+    fn dump_with_children(source: &str, parent_range: Range, children: &[(&str, Range)]) -> String {
+        let mut ast = Ast::with_schema(crate::schema::Schema::new());
+        let parent_kind = ast.register_kind("parent");
+        let child_kind = ast.register_kind("child");
+        let mut fields = BTreeMap::new();
+        for (field_name, range) in children {
+            let field = ast.register_field(field_name);
+            let child = ast.create_node_with_range(
+                child_kind,
+                NodeContent::Range(*range),
+                BTreeMap::new(),
+                true,
+                None,
+            );
+            fields.entry(field).or_insert_with(Vec::new).push(child);
+        }
+        let parent = ast.create_node_with_range(
+            parent_kind,
+            NodeContent::Range(parent_range),
+            fields,
+            true,
+            None,
+        );
+        ast.set_root(parent);
+
+        dump_ast_with_options(
+            &ast,
+            parent,
+            source,
+            &DumpOptions {
+                show_locations: false,
+                show_content: false,
+                show_abridged_source: true,
+            },
+        )
+    }
+
+    #[test]
+    fn source_skeleton_elides_direct_children_and_ignores_empty_ranges() {
+        let source = "αbefore(child)afterω";
+        let child_start = source.find("child").unwrap();
+        let child_end = child_start + "child".len();
+        let dump = dump_with_children(
+            source,
+            range(0, source.len()),
+            &[
+                ("value", range(child_start, child_end)),
+                ("marker", range(child_start, child_start)),
+            ],
+        );
+
+        assert!(dump.starts_with("parent source=\"αbefore(⟨value⟩)afterω\"\n"));
+    }
+
+    #[test]
+    fn source_skeleton_preserves_unnamed_tokens() {
+        let source = "x = 1";
+        let runner: crate::Runner = crate::Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+        let ast = runner.run(source).unwrap();
+        let dump = dump_ast_with_options(
+            &ast,
+            ast.get_root(),
+            source,
+            &DumpOptions {
+                show_locations: false,
+                show_content: false,
+                show_abridged_source: true,
+            },
+        );
+
+        assert!(dump.contains("assignment source=\"⟨left⟩ = ⟨right⟩\""));
+    }
+
+    #[test]
+    fn source_skeleton_validates_empty_child_ranges() {
+        let cases = [
+            (
+                "abcdef",
+                range(0, 6),
+                range(7, 7),
+                "child range 7..7 is outside the source or not on UTF-8 boundaries",
+            ),
+            (
+                "αbc",
+                range(0, 4),
+                range(1, 1),
+                "child range 1..1 is outside the source or not on UTF-8 boundaries",
+            ),
+        ];
+
+        for (source, parent, child, error) in cases {
+            let dump = dump_with_children(source, parent, &[("marker", child)]);
+            assert!(
+                dump.starts_with(&format!("parent source=<invalid: {error}>\n")),
+                "unexpected dump: {dump}"
+            );
+        }
+
+        let dump = dump_with_children("abcdef", range(0, 3), &[("marker", range(4, 4))]);
+        assert!(dump.starts_with("parent source=\"abc\"\n"));
+        assert!(
+            dump.contains("marker: child source=\"\" (external)\n"),
+            "unexpected dump: {dump}"
+        );
+    }
+
+    #[test]
+    fn source_skeleton_keeps_adjacent_child_fields_separate() {
+        let source = "abcdef";
+        let dump = dump_with_children(
+            source,
+            range(0, source.len()),
+            &[("left", range(1, 3)), ("right", range(3, 5))],
+        );
+
+        assert!(dump.starts_with("parent source=\"a⟨left⟩⟨right⟩f\"\n"));
+    }
+
+    #[test]
+    fn source_skeleton_keeps_overlapping_child_fields_separate() {
+        let source = "abcdef";
+        let dump = dump_with_children(
+            source,
+            range(0, source.len()),
+            &[("left", range(1, 4)), ("right", range(3, 5))],
+        );
+
+        assert!(dump.starts_with("parent source=\"a⟨left⟩⟨right⟩f\"\n"));
+    }
+
+    #[test]
+    fn source_skeleton_marks_children_outside_the_parent() {
+        let source = "abcdefghi";
+        let dump = dump_with_children(source, range(0, 6), &[("child", range(7, 9))]);
+
+        assert!(dump.starts_with("parent source=\"abcdef\"\n"));
+        assert!(
+            dump.contains("  child source=\"hi\" (external)\n"),
+            "unexpected dump: {dump}"
+        );
+    }
 }
 
 fn node_content(node: &Node, source: &str) -> String {

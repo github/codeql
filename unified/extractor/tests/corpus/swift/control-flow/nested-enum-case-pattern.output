@@ -155,82 +155,68 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        switch_expr
-          value:
-            name_expr
-              identifier: identifier "event"
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "event" source="event"
           case:
-            switch_case
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                constructor_pattern
-                  constructor:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member: identifier "received"
-                  element:
-                    pattern_element
-                      pattern:
-                        constructor_pattern
-                          constructor:
-                            member_access_expr
-                              base: inferred_type_expr "."
-                              member: identifier "some"
-                          element:
-                            pattern_element
-                              pattern:
-                                name_pattern
-                                  identifier: identifier "value"
-                    pattern_element
-                      pattern:
-                        name_pattern
-                          identifier: identifier "timestamp"
-              body:
-                block
-                  stmt:
-                    call_expr
+                expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                  modifier: modifier "let" source="let"
+                  expr:
+                    call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
                       callee:
-                        name_expr
-                          identifier: identifier "print"
+                        member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                          base: inferred_type_expr "." source="."
+                          member_name_node: identifier "received" source="received"
                       argument:
-                        argument
+                        argument source="⟨value⟩"
                           value:
-                            name_expr
-                              identifier: identifier "value"
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "timestamp"
-            switch_case
+                            call_expr source="⟨callee⟩(⟨argument⟩)"
+                              callee:
+                                member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                                  base: inferred_type_expr "." source="."
+                                  member_name_node: identifier "some" source="some"
+                              argument:
+                                argument source="⟨value⟩"
+                                  value: identifier "value" source="value"
+                        argument source="⟨value⟩"
+                          value: identifier "timestamp" source="timestamp"
+              body:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
+                      callee: identifier "print" source="print"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: identifier "value" source="value"
+                        argument source="⟨value⟩"
+                          value: identifier "timestamp" source="timestamp"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                constructor_pattern
-                  constructor:
-                    member_access_expr
-                      base:
-                        name_expr
-                          identifier: identifier "Type"
-                      member: identifier "some"
-                  element:
-                    pattern_element
-                      pattern:
-                        name_pattern
-                          identifier: identifier "value"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee:
+                    member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                      base: identifier "Type" source="Type"
+                      member_name_node: identifier "some" source="some"
+                  argument:
+                    argument source="⟨value⟩"
+                      value:
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "value" source="value"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "value"
-            switch_case
+                        argument source="⟨value⟩"
+                          value: identifier "value" source="value"
+            switch_case source="default:\n  ⟨body⟩"
               body:
-                block
-                  stmt: break_expr "break"
+                block source="⟨stmt⟩"
+                  stmt: break_expr "break" source="break"

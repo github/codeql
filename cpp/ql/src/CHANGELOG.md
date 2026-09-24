@@ -1,3 +1,21 @@
+## 1.9.0
+
+### New Queries
+
+* Added a new query, `cpp/ambiguous-assignment-of-comparison`, to detect potentially
+  ambiguous expressions where a comparison result is assigned to a variable and the
+  assignment is used as a truth value.
+
+## 1.8.3
+
+### Minor Analysis Improvements
+
+* The `cpp/leap-year/unsafe-array-for-days-of-the-year` query ("Unsafe array for days of the year") no longer reports an alert on the `__PRETTY_FUNCTION__` variable (and related variables) when the enclosing function has a signature that is exactly 364 characters.
+
+## 1.8.2
+
+No user-facing changes.
+
 ## 1.8.1
 
 No user-facing changes.

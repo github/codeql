@@ -6,6 +6,7 @@ include("prefix.dbscheme")
 File = imported("File", "codeql.files.FileSystem")
 
 
+@ql.to_string_impl_from_primary_class(True)
 @qltest.skip
 class Element:
     pass

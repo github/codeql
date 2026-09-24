@@ -27,6 +27,8 @@ module Generated {
   class MacroExpr extends Synth::TMacroExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "MacroExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the macro call of this macro expression, if it exists.
      */

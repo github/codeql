@@ -59,30 +59,23 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "struct"
-          name: identifier "Size"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n}"
+          modifier: modifier "struct" source="struct"
+          name_node: identifier "Size" source="Size"
           member:
-            constructor_declaration
+            constructor_declaration source="⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) ⟨body⟩"
+              name_node: identifier "init" source="init"
               parameter:
-                parameter
-                  external_name: identifier "width"
-                  type:
-                    named_type_expr
-                      name: identifier "Int"
-                  pattern:
-                    name_pattern
-                      identifier: identifier "w"
-                parameter
-                  external_name: identifier "height"
-                  type:
-                    named_type_expr
-                      name: identifier "Int"
-                  pattern:
-                    name_pattern
-                      identifier: identifier "h"
-              body: block "init(width w: Int, height h: Int) {}"
+                parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+                  external_name_node: identifier "width" source="width"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "w" source="w"
+                parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+                  external_name_node: identifier "height" source="height"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "h" source="h"
+              body: block "{}" source="{}"

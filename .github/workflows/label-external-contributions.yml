@@ -1,0 +1,80 @@
+name: Label external contributions
+
+on:
+  schedule:
+    - cron: "7,22,37,52 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: label-external-contributions
+  cancel-in-progress: false
+
+jobs:
+  label:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Label external contributions
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          label="external-contribution"
+          updated_cutoff=$(date -u -d "1 hour ago" "+%Y-%m-%dT%H:%M:%SZ")
+
+          while IFS= read -r pr_number; do
+            if [[ ! "$pr_number" =~ ^[1-9][0-9]*$ ]]; then
+              echo "Skipping malformed pull request number."
+              continue
+            fi
+
+            pr_json=$(gh api "repos/$REPO/pulls/$pr_number")
+            if ! jq -e \
+              --arg repo "$REPO" \
+              --arg label "$label" \
+              '.state == "open" and
+               .draft == false and
+               .base.repo.full_name == $repo and
+               (.head.repo.full_name | type == "string") and
+               .head.repo.full_name != $repo and
+               .user.type == "User" and
+               .author_association != "MEMBER" and
+               .author_association != "OWNER" and
+               (any(.labels[]?; .name == $label) | not)' \
+              >/dev/null <<<"$pr_json"; then
+              continue
+            fi
+
+            events=$(gh api --paginate \
+              "repos/$REPO/issues/$pr_number/events?per_page=100" |
+              jq -cs 'add')
+
+            if jq -e --arg label "$label" \
+              'any(.[]; .event == "labeled" and .label.name == $label)' \
+              >/dev/null <<<"$events"; then
+              continue
+            fi
+
+            jq -n --arg label "$label" '{labels: [$label]}' |
+              gh api --method POST \
+                "repos/$REPO/issues/$pr_number/labels" \
+                --input - \
+                >/dev/null
+            echo "Labelled pull request #$pr_number."
+          done < <(
+            gh api --method GET --paginate "repos/$REPO/issues" \
+              -f state=open \
+              -f since="$updated_cutoff" \
+              -f sort=updated \
+              -f direction=desc \
+              -f per_page=100 |
+              jq -r '.[] | select(.pull_request != null) | .number'
+          )

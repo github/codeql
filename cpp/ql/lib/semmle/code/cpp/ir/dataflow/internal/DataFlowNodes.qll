@@ -144,7 +144,7 @@ private module Cached {
     TNonUnionContent(CanonicalField f, int indirectionIndex) {
       // the indirection index for field content starts at 1 (because `TNonUnionContent` is thought of as
       // the address of the field, `FieldAddress` in the IR).
-      indirectionIndex = [1 .. max(SsaImpl::getMaxIndirectionsForType(f.getAnUnspecifiedType()))] and
+      indirectionIndex = [1 .. max(SsaImpl::getMaxIndirectionsForGLType(f.getAnUnspecifiedType()))] and
       // Reads and writes of union fields are tracked using `UnionContent`.
       not f.getDeclaringType() instanceof Union
     } or
@@ -156,7 +156,7 @@ private module Cached {
         // field can be read by any read of the union's fields. Again, the indirection index
         // is 1-based (because 0 is considered the address).
         indirectionIndex =
-          [1 .. max(SsaImpl::getMaxIndirectionsForType(getAFieldWithSize(u, bytes)
+          [1 .. max(SsaImpl::getMaxIndirectionsForGLType(getAFieldWithSize(u, bytes)
                       .getAnUnspecifiedType())
             )]
       )
@@ -184,13 +184,16 @@ private module Cached {
     TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
     TGlobalLikeVariableNode(GlobalLikeVariable var, int indirectionIndex) {
       indirectionIndex =
-        [getMinIndirectionsForType(var.getUnspecifiedType()) .. SsaImpl::getMaxIndirectionsForType(var.getUnspecifiedType())]
+        [getMinIndirectionsForType(var.getUnspecifiedType()) .. SsaImpl::getMaxIndirectionsForGLType(var.getUnspecifiedType())]
     } or
     TPostUpdateNodeImpl(Operand operand, int indirectionIndex) {
       isPostUpdateNodeImpl(operand, indirectionIndex)
     } or
     TSsaSynthNode(SsaImpl::SynthNode n) or
     TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
+    TForwarderConstructorArgumentNode(CallInstruction call) {
+      isForwarderConstructorArgumentNodeImpl(call)
+    } or
     TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
       SsaImpl::hasRawIndirectOperand(node.asOperand(), indirectionIndex)
     } or
@@ -209,10 +212,7 @@ private module Cached {
     TBodyLessParameterNodeImpl(Parameter p, int indirectionIndex) {
       // Rule out parameters of catch blocks.
       not exists(p.getCatchBlock()) and
-      // We subtract one because `getMaxIndirectionsForType` returns the maximum
-      // indirection for a glvalue of a given type, and this doesn't apply to
-      // parameters.
-      indirectionIndex = [0 .. SsaImpl::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1] and
+      indirectionIndex = [0 .. SsaImpl::getMaxIndirectionsForPRType(p.getUnspecifiedType())] and
       not any(InitializeParameterInstruction init).getParameter() = p
     } or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
@@ -1541,6 +1541,43 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   override Location getLocationImpl() { result = this.getSummaryNode().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
+
+  /** Gets the source element that this node belongs to, if any. */
+  FlowSummaryImpl::Public::SourceElement getSourceElement() {
+    result = this.getSummaryNode().getSourceElement()
+  }
+
+  /** Gets the sink element that this node belongs to, if any. */
+  FlowSummaryImpl::Public::SinkElement getSinkElement() {
+    result = this.getSummaryNode().getSinkElement()
+  }
+
+  /** Holds if this node is a source node of kind `kind`. */
+  predicate isSource(string kind, string model) {
+    this.getSummaryNode().(FlowSummaryImpl::Private::SourceOutputNode).isEntry(kind, model)
+  }
+
+  /** Holds if this node is a sink node of kind `kind`. */
+  predicate isSink(string kind, string model) {
+    this.getSummaryNode().(FlowSummaryImpl::Private::SinkInputNode).isExit(kind, model)
+  }
+}
+
+private class SourceOutputNode extends FlowSummaryImpl::Private::SourceOutputNode {
+  final override string toString() {
+    exists(Call call |
+      this.isOutArgument(call) and
+      result = call.getTarget() + " output argument"
+    )
+    or
+    not this.isOutArgument(_) and
+    result = super.toString()
+  }
+
+  private predicate isOutArgument(Call call) {
+    call.getTarget() = this.getSourceElement() and
+    [call.getAnArgument(), call.getQualifier()] = this.getSourceSinkReportingElement()
+  }
 }
 
 /**
@@ -1655,12 +1692,12 @@ abstract private class AbstractParameterNode extends Node {
    * Holds if this node represents an implicit `this` parameter, if it exists.
    */
   predicate isThis() { none() } // overridden by subclasses
+
+  /** Gets the indirection index of this parameter node. */
+  int getIndirectionIndex() { none() }
 }
 
-abstract private class AbstractIndirectParameterNode extends AbstractParameterNode {
-  /** Gets the indirection index of this parameter node. */
-  abstract int getIndirectionIndex();
-}
+abstract private class AbstractIndirectParameterNode extends AbstractParameterNode { }
 
 pragma[noinline]
 private predicate indirectParameterNodeHasArgumentIndexAndIndex(
@@ -1725,7 +1762,9 @@ private class IndirectInstructionParameterNode extends AbstractIndirectParameter
   final override int getIndirectionIndex() { this.hasInstructionAndIndirectionIndex(init, result) }
 }
 
-abstract private class AbstractDirectParameterNode extends AbstractParameterNode { }
+abstract private class AbstractDirectParameterNode extends AbstractParameterNode {
+  override int getIndirectionIndex() { result = 0 }
+}
 
 /**
  * A non-indirect parameter node that is represented as an `Instruction`.
@@ -1796,6 +1835,8 @@ private class DirectBodyLessParameterNode extends AbstractExplicitParameterNode,
   }
 
   override Parameter getParameter() { result = p }
+
+  final override int getIndirectionIndex() { result = 0 }
 }
 
 private class IndirectBodyLessParameterNode extends AbstractIndirectParameterNode,

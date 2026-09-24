@@ -8,6 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Attr
+import codeql.rust.elements.MutRestriction
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 
@@ -30,6 +31,8 @@ module Generated {
   class TupleField extends Synth::TTupleField, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "TupleField" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this tuple field (0-based).
      */
@@ -49,6 +52,21 @@ module Generated {
      * Gets the number of attrs of this tuple field.
      */
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the mut restriction of this tuple field, if it exists.
+     */
+    MutRestriction getMutRestriction() {
+      result =
+        Synth::convertMutRestrictionFromRaw(Synth::convertTupleFieldToRaw(this)
+              .(Raw::TupleField)
+              .getMutRestriction())
+    }
+
+    /**
+     * Holds if `getMutRestriction()` exists.
+     */
+    final predicate hasMutRestriction() { exists(this.getMutRestriction()) }
 
     /**
      * Gets the type representation of this tuple field, if it exists.

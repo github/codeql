@@ -25,15 +25,11 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "var"
-          pattern:
-            name_pattern
-              identifier: identifier "x"
-          type:
-            named_type_expr
-              name: identifier "Int"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"
+          modifier: modifier "var" source="var"
+          pattern: identifier "x" source="x"
+          type: identifier "Int" source="Int"

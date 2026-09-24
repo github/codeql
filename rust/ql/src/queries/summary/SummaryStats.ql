@@ -15,6 +15,8 @@ where
   or
   extractionStats(key, value)
   or
+  extractionStatsExtra(key, value)
+  or
   inconsistencyStats(key, value)
   or
   typeInferenceInconsistencyStats(key, value)

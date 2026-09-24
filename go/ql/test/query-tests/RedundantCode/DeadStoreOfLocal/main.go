@@ -26,6 +26,11 @@ func deadParameter(x int) bool { // we don't want to flag x here
 	return true
 }
 
+func usedOnlyAfterFalse() bool {
+	s := deadStore()
+	return false && s == 0
+}
+
 func test2(x int) (int, int) {
 	y := x >> 5
 	z := x % (1)

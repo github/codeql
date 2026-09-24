@@ -9,6 +9,7 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.AssocItemList
 import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.ImplRestriction
 import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeBoundList
@@ -83,6 +84,21 @@ module Generated {
      * Holds if `getGenericParamList()` exists.
      */
     final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
+
+    /**
+     * Gets the impl restriction of this trait, if it exists.
+     */
+    ImplRestriction getImplRestriction() {
+      result =
+        Synth::convertImplRestrictionFromRaw(Synth::convertTraitToRaw(this)
+              .(Raw::Trait)
+              .getImplRestriction())
+    }
+
+    /**
+     * Holds if `getImplRestriction()` exists.
+     */
+    final predicate hasImplRestriction() { exists(this.getImplRestriction()) }
 
     /**
      * Holds if this trait is auto.

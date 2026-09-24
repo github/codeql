@@ -96,7 +96,7 @@ module Unified {
   }
 
   /** A class representing `accessor_declaration` nodes. */
-  class AccessorDeclaration extends @unified_accessor_declaration, F::Member, F::Stmt {
+  class AccessorDeclaration extends @unified_accessor_declaration, F::Callable, F::Member, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AccessorDeclaration" }
 
@@ -104,7 +104,7 @@ module Unified {
     final F::AccessorKind getAccessorKind() { unified_accessor_declaration_def(this, result, _) }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_accessor_declaration_body(this, result) }
+    final override F::Block getBody() { unified_accessor_declaration_body(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_accessor_declaration_modifier(this, i, result) }
@@ -112,8 +112,8 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
-    /** Gets the node corresponding to the field `name`. */
-    final F::Identifier getName() { unified_accessor_declaration_def(this, _, result) }
+    /** Gets the node corresponding to the field `name_node`. */
+    final F::Identifier getNameNode() { unified_accessor_declaration_def(this, _, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
     final F::Parameter getParameter(int i) {
@@ -124,7 +124,7 @@ module Unified {
     final F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_accessor_declaration_type(this, result) }
+    final F::Expr getType() { unified_accessor_declaration_type(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -154,8 +154,8 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
-    /** Gets the node corresponding to the field `name`. */
-    final F::Identifier getName() { unified_argument_name(this, result) }
+    /** Gets the node corresponding to the field `name_node`. */
+    final F::Identifier getNameNode() { unified_argument_name_node(this, result) }
 
     /** Gets the node corresponding to the field `value`. */
     final F::Expr getValue() { unified_argument_def(this, result) }
@@ -163,7 +163,7 @@ module Unified {
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_argument_modifier(this, _, result) or
-      unified_argument_name(this, result) or
+      unified_argument_name_node(this, result) or
       unified_argument_def(this, result)
     }
   }
@@ -183,30 +183,13 @@ module Unified {
     final override F::AstNode getAFieldOrChild() { unified_array_literal_element(this, _, result) }
   }
 
-  /** A class representing `assign_expr` nodes. */
-  class AssignExpr extends @unified_assign_expr, F::Expr {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "AssignExpr" }
-
-    /** Gets the node corresponding to the field `target`. */
-    final F::ExprOrPattern getTarget() { unified_assign_expr_def(this, result, _) }
-
-    /** Gets the node corresponding to the field `value`. */
-    final F::Expr getValue() { unified_assign_expr_def(this, _, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_assign_expr_def(this, result, _) or unified_assign_expr_def(this, _, result)
-    }
-  }
-
   /** A class representing `associated_type_declaration` nodes. */
   class AssociatedTypeDeclaration extends @unified_associated_type_declaration, F::Member {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AssociatedTypeDeclaration" }
 
     /** Gets the node corresponding to the field `bound`. */
-    final F::TypeExpr getBound() { unified_associated_type_declaration_bound(this, result) }
+    final F::Expr getBound() { unified_associated_type_declaration_bound(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
@@ -216,8 +199,8 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
-    /** Gets the node corresponding to the field `name`. */
-    final F::Identifier getName() { unified_associated_type_declaration_def(this, result) }
+    /** Gets the node corresponding to the field `name_node`. */
+    final F::Identifier getNameNode() { unified_associated_type_declaration_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -239,7 +222,7 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_base_type_def(this, result) }
+    final F::Expr getType() { unified_base_type_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -296,10 +279,10 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "BoundTypeConstraint" }
 
     /** Gets the node corresponding to the field `bound`. */
-    final F::TypeExpr getBound() { unified_bound_type_constraint_def(this, result, _) }
+    final F::Expr getBound() { unified_bound_type_constraint_def(this, result, _) }
 
     /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_bound_type_constraint_def(this, _, result) }
+    final F::Expr getType() { unified_bound_type_constraint_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -313,11 +296,13 @@ module Unified {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BreakExpr" }
 
-    /** Gets the node corresponding to the field `label`. */
-    final F::Identifier getLabel() { unified_break_expr_label(this, result) }
+    /** Gets the node corresponding to the field `label_name_node`. */
+    final F::Identifier getLabelNameNode() { unified_break_expr_label_name_node(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() { unified_break_expr_label(this, result) }
+    final override F::AstNode getAFieldOrChild() {
+      unified_break_expr_label_name_node(this, result)
+    }
   }
 
   /** A class representing `builtin_expr` tokens. */
@@ -327,7 +312,7 @@ module Unified {
   }
 
   /** A class representing `bulk_importing_pattern` nodes. */
-  class BulkImportingPattern extends @unified_bulk_importing_pattern, F::Pattern {
+  class BulkImportingPattern extends @unified_bulk_importing_pattern, F::Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BulkImportingPattern" }
 
@@ -357,7 +342,7 @@ module Unified {
     final F::Argument getAnArgument() { result = this.getArgument(_) }
 
     /** Gets the node corresponding to the field `callee`. */
-    final F::ExprOrType getCallee() { unified_call_expr_def(this, result) }
+    final F::Expr getCallee() { unified_call_expr_def(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_call_expr_modifier(this, i, result) }
@@ -371,6 +356,11 @@ module Unified {
       unified_call_expr_def(this, result) or
       unified_call_expr_modifier(this, _, result)
     }
+  }
+
+  class Callable extends @unified_callable, F::AstNode {
+    /** Gets the node corresponding to the field `body`. */
+    abstract F::Block getBody();
   }
 
   /** A class representing `catch_clause` nodes. */
@@ -388,7 +378,7 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_catch_clause_pattern(this, result) }
+    final F::Expr getPattern() { unified_catch_clause_pattern(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -411,6 +401,11 @@ module Unified {
     /** Gets the node corresponding to the field `base_type`. */
     final F::BaseType getABaseType() { result = this.getBaseType(_) }
 
+    /** Gets the node corresponding to the field `extension_target`. */
+    final F::Expr getExtensionTarget() {
+      unified_class_like_declaration_extension_target(this, result)
+    }
+
     /** Gets the node corresponding to the field `member`. */
     final F::Member getMember(int i) { unified_class_like_declaration_member(this, i, result) }
 
@@ -425,8 +420,8 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
-    /** Gets the node corresponding to the field `name`. */
-    final F::Identifier getName() { unified_class_like_declaration_name(this, result) }
+    /** Gets the node corresponding to the field `name_node`. */
+    final F::Identifier getNameNode() { unified_class_like_declaration_name_node(this, result) }
 
     /** Gets the node corresponding to the field `type_constraint`. */
     final F::TypeConstraint getTypeConstraint(int i) {
@@ -447,38 +442,17 @@ module Unified {
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_class_like_declaration_base_type(this, _, result) or
+      unified_class_like_declaration_extension_target(this, result) or
       unified_class_like_declaration_member(this, _, result) or
       unified_class_like_declaration_modifier(this, _, result) or
-      unified_class_like_declaration_name(this, result) or
+      unified_class_like_declaration_name_node(this, result) or
       unified_class_like_declaration_type_constraint(this, _, result) or
       unified_class_like_declaration_type_parameter(this, _, result)
     }
   }
 
-  /** A class representing `compound_assign_expr` nodes. */
-  class CompoundAssignExpr extends @unified_compound_assign_expr, F::Expr {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "CompoundAssignExpr" }
-
-    /** Gets the node corresponding to the field `operator`. */
-    final F::InfixOperator getOperator() { unified_compound_assign_expr_def(this, result, _, _) }
-
-    /** Gets the node corresponding to the field `target`. */
-    final F::Expr getTarget() { unified_compound_assign_expr_def(this, _, result, _) }
-
-    /** Gets the node corresponding to the field `value`. */
-    final F::Expr getValue() { unified_compound_assign_expr_def(this, _, _, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_compound_assign_expr_def(this, result, _, _) or
-      unified_compound_assign_expr_def(this, _, result, _) or
-      unified_compound_assign_expr_def(this, _, _, result)
-    }
-  }
-
   /** A class representing `conditional_pattern` nodes. */
-  class ConditionalPattern extends @unified_conditional_pattern, F::Pattern {
+  class ConditionalPattern extends @unified_conditional_pattern, F::Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ConditionalPattern" }
 
@@ -492,7 +466,7 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_conditional_pattern_def(this, _, result) }
+    final F::Expr getPattern() { unified_conditional_pattern_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -503,12 +477,14 @@ module Unified {
   }
 
   /** A class representing `constructor_declaration` nodes. */
-  class ConstructorDeclaration extends @unified_constructor_declaration, F::Member, F::Stmt {
+  class ConstructorDeclaration extends @unified_constructor_declaration, F::Callable, F::Member,
+    F::Stmt
+  {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ConstructorDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_constructor_declaration_def(this, result) }
+    final override F::Block getBody() { unified_constructor_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
@@ -518,8 +494,8 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
-    /** Gets the node corresponding to the field `name`. */
-    final F::Identifier getName() { unified_constructor_declaration_name(this, result) }
+    /** Gets the node corresponding to the field `name_node`. */
+    final F::Identifier getNameNode() { unified_constructor_declaration_name_node(this, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
     final F::Parameter getParameter(int i) {
@@ -533,38 +509,8 @@ module Unified {
     final override F::AstNode getAFieldOrChild() {
       unified_constructor_declaration_def(this, result) or
       unified_constructor_declaration_modifier(this, _, result) or
-      unified_constructor_declaration_name(this, result) or
+      unified_constructor_declaration_name_node(this, result) or
       unified_constructor_declaration_parameter(this, _, result)
-    }
-  }
-
-  /** A class representing `constructor_pattern` nodes. */
-  class ConstructorPattern extends @unified_constructor_pattern, F::Pattern {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "ConstructorPattern" }
-
-    /** Gets the node corresponding to the field `constructor`. */
-    final F::ExprOrType getConstructor() { unified_constructor_pattern_def(this, result) }
-
-    /** Gets the node corresponding to the field `element`. */
-    final F::PatternElement getElement(int i) {
-      unified_constructor_pattern_element(this, i, result)
-    }
-
-    /** Gets the node corresponding to the field `element`. */
-    final F::PatternElement getAnElement() { result = this.getElement(_) }
-
-    /** Gets the node corresponding to the field `modifier`. */
-    final F::Modifier getModifier(int i) { unified_constructor_pattern_modifier(this, i, result) }
-
-    /** Gets the node corresponding to the field `modifier`. */
-    final F::Modifier getAModifier() { result = this.getModifier(_) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_constructor_pattern_def(this, result) or
-      unified_constructor_pattern_element(this, _, result) or
-      unified_constructor_pattern_modifier(this, _, result)
     }
   }
 
@@ -573,20 +519,24 @@ module Unified {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ContinueExpr" }
 
-    /** Gets the node corresponding to the field `label`. */
-    final F::Identifier getLabel() { unified_continue_expr_label(this, result) }
+    /** Gets the node corresponding to the field `label_name_node`. */
+    final F::Identifier getLabelNameNode() { unified_continue_expr_label_name_node(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() { unified_continue_expr_label(this, result) }
+    final override F::AstNode getAFieldOrChild() {
+      unified_continue_expr_label_name_node(this, result)
+    }
   }
 
   /** A class representing `destructor_declaration` nodes. */
-  class DestructorDeclaration extends @unified_destructor_declaration, F::Member, F::Stmt {
+  class DestructorDeclaration extends @unified_destructor_declaration, F::Callable, F::Member,
+    F::Stmt
+  {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DestructorDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_destructor_declaration_def(this, result) }
+    final override F::Block getBody() { unified_destructor_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
@@ -640,10 +590,10 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "EqualityTypeConstraint" }
 
     /** Gets the node corresponding to the field `left`. */
-    final F::TypeExpr getLeft() { unified_equality_type_constraint_def(this, result, _) }
+    final F::Expr getLeft() { unified_equality_type_constraint_def(this, result, _) }
 
     /** Gets the node corresponding to the field `right`. */
-    final F::TypeExpr getRight() { unified_equality_type_constraint_def(this, _, result) }
+    final F::Expr getRight() { unified_equality_type_constraint_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -652,25 +602,29 @@ module Unified {
     }
   }
 
-  class Expr extends @unified_expr, F::ExprOrOperator, F::ExprOrPattern, F::ExprOrType, F::Stmt { }
-
-  /** A class representing `expr_equality_pattern` nodes. */
-  class ExprEqualityPattern extends @unified_expr_equality_pattern, F::Pattern {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "ExprEqualityPattern" }
-
-    /** Gets the node corresponding to the field `expr`. */
-    final F::Expr getExpr() { unified_expr_equality_pattern_def(this, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() { unified_expr_equality_pattern_def(this, result) }
-  }
+  class Expr extends @unified_expr, F::ExprOrOperator, F::Stmt { }
 
   class ExprOrOperator extends @unified_expr_or_operator, F::AstNode { }
 
-  class ExprOrPattern extends @unified_expr_or_pattern, F::AstNode { }
+  /** A class representing `expr_pattern` nodes. */
+  class ExprPattern extends @unified_expr_pattern, F::Expr {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ExprPattern" }
 
-  class ExprOrType extends @unified_expr_or_type, F::AstNode { }
+    /** Gets the node corresponding to the field `expr`. */
+    final F::Expr getExpr() { unified_expr_pattern_def(this, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getModifier(int i) { unified_expr_pattern_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
+    /** Gets a field or child node of this node. */
+    final override F::AstNode getAFieldOrChild() {
+      unified_expr_pattern_def(this, result) or unified_expr_pattern_modifier(this, _, result)
+    }
+  }
 
   /** A class representing `fixity` tokens. */
   class Fixity extends @unified_token_fixity, F::AstNode, F::Token {
@@ -705,7 +659,7 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_for_each_stmt_def(this, _, result) }
+    final F::Expr getPattern() { unified_for_each_stmt_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -718,12 +672,12 @@ module Unified {
   }
 
   /** A class representing `function_declaration` nodes. */
-  class FunctionDeclaration extends @unified_function_declaration, F::Member, F::Stmt {
+  class FunctionDeclaration extends @unified_function_declaration, F::Callable, F::Member, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_function_declaration_body(this, result) }
+    final override F::Block getBody() { unified_function_declaration_body(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_function_declaration_modifier(this, i, result) }
@@ -731,8 +685,8 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
-    /** Gets the node corresponding to the field `name`. */
-    final F::Identifier getName() { unified_function_declaration_def(this, result) }
+    /** Gets the node corresponding to the field `name_node`. */
+    final F::Identifier getNameNode() { unified_function_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
     final F::Parameter getParameter(int i) {
@@ -743,7 +697,7 @@ module Unified {
     final F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `return_type`. */
-    final F::TypeExpr getReturnType() { unified_function_declaration_return_type(this, result) }
+    final F::Expr getReturnType() { unified_function_declaration_return_type(this, result) }
 
     /** Gets the node corresponding to the field `type_constraint`. */
     final F::TypeConstraint getTypeConstraint(int i) {
@@ -774,12 +728,12 @@ module Unified {
   }
 
   /** A class representing `function_expr` nodes. */
-  class FunctionExpr extends @unified_function_expr, F::Expr {
+  class FunctionExpr extends @unified_function_expr, F::Callable, F::Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionExpr" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_function_expr_def(this, result) }
+    final override F::Block getBody() { unified_function_expr_body(this, result) }
 
     /** Gets the node corresponding to the field `capture_declaration`. */
     final F::VariableDeclaration getCaptureDeclaration(int i) {
@@ -802,11 +756,11 @@ module Unified {
     final F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `return_type`. */
-    final F::TypeExpr getReturnType() { unified_function_expr_return_type(this, result) }
+    final F::Expr getReturnType() { unified_function_expr_return_type(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
-      unified_function_expr_def(this, result) or
+      unified_function_expr_body(this, result) or
       unified_function_expr_capture_declaration(this, _, result) or
       unified_function_expr_modifier(this, _, result) or
       unified_function_expr_parameter(this, _, result) or
@@ -814,42 +768,21 @@ module Unified {
     }
   }
 
-  /** A class representing `function_type_expr` nodes. */
-  class FunctionTypeExpr extends @unified_function_type_expr, F::TypeExpr {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "FunctionTypeExpr" }
-
-    /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getParameter(int i) { unified_function_type_expr_parameter(this, i, result) }
-
-    /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getAParameter() { result = this.getParameter(_) }
-
-    /** Gets the node corresponding to the field `return_type`. */
-    final F::TypeExpr getReturnType() { unified_function_type_expr_def(this, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_function_type_expr_parameter(this, _, result) or
-      unified_function_type_expr_def(this, result)
-    }
-  }
-
   /** A class representing `generic_type_expr` nodes. */
-  class GenericTypeExpr extends @unified_generic_type_expr, F::TypeExpr {
+  class GenericTypeExpr extends @unified_generic_type_expr, F::Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "GenericTypeExpr" }
 
     /** Gets the node corresponding to the field `base`. */
-    final F::TypeExpr getBase() { unified_generic_type_expr_def(this, result) }
+    final F::Expr getBase() { unified_generic_type_expr_def(this, result) }
 
     /** Gets the node corresponding to the field `type_argument`. */
-    final F::TypeExpr getTypeArgument(int i) {
+    final F::Expr getTypeArgument(int i) {
       unified_generic_type_expr_type_argument(this, i, result)
     }
 
     /** Gets the node corresponding to the field `type_argument`. */
-    final F::TypeExpr getATypeArgument() { result = this.getTypeArgument(_) }
+    final F::Expr getATypeArgument() { result = this.getTypeArgument(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -876,7 +809,7 @@ module Unified {
   }
 
   /** A class representing `identifier` tokens. */
-  class Identifier extends @unified_token_identifier, F::AstNode, F::Token {
+  class Identifier extends @unified_token_identifier, F::Expr, F::Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Identifier" }
   }
@@ -903,12 +836,6 @@ module Unified {
     }
   }
 
-  /** A class representing `ignore_pattern` tokens. */
-  class IgnorePattern extends @unified_token_ignore_pattern, F::Pattern, F::Token {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "IgnorePattern" }
-  }
-
   /** A class representing `import_declaration` nodes. */
   class ImportDeclaration extends @unified_import_declaration, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
@@ -924,7 +851,7 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_import_declaration_pattern(this, result) }
+    final F::Expr getPattern() { unified_import_declaration_pattern(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -935,7 +862,7 @@ module Unified {
   }
 
   /** A class representing `inferred_type_expr` tokens. */
-  class InferredTypeExpr extends @unified_token_inferred_type_expr, F::Token, F::TypeExpr {
+  class InferredTypeExpr extends @unified_token_inferred_type_expr, F::Expr, F::Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InferredTypeExpr" }
   }
@@ -949,12 +876,12 @@ module Unified {
   }
 
   /** A class representing `initializer_declaration` nodes. */
-  class InitializerDeclaration extends @unified_initializer_declaration, F::Member {
+  class InitializerDeclaration extends @unified_initializer_declaration, F::Callable, F::Member {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InitializerDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_initializer_declaration_def(this, result) }
+    final override F::Block getBody() { unified_initializer_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
@@ -999,8 +926,8 @@ module Unified {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "LabeledStmt" }
 
-    /** Gets the node corresponding to the field `label`. */
-    final F::Identifier getLabel() { unified_labeled_stmt_def(this, result, _) }
+    /** Gets the node corresponding to the field `label_name_node`. */
+    final F::Identifier getLabelNameNode() { unified_labeled_stmt_def(this, result, _) }
 
     /** Gets the node corresponding to the field `stmt`. */
     final F::Stmt getStmt() { unified_labeled_stmt_def(this, _, result) }
@@ -1034,10 +961,10 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "MemberAccessExpr" }
 
     /** Gets the node corresponding to the field `base`. */
-    final F::ExprOrType getBase() { unified_member_access_expr_def(this, result, _) }
+    final F::Expr getBase() { unified_member_access_expr_def(this, result, _) }
 
-    /** Gets the node corresponding to the field `member`. */
-    final F::Identifier getMember() { unified_member_access_expr_def(this, _, result) }
+    /** Gets the node corresponding to the field `member_name_node`. */
+    final F::Identifier getMemberNameNode() { unified_member_access_expr_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1052,57 +979,28 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "Modifier" }
   }
 
-  /** A class representing `name_expr` nodes. */
-  class NameExpr extends @unified_name_expr, F::Expr {
+  /** A class representing `named_pattern` nodes. */
+  class NamedPattern extends @unified_named_pattern, F::Expr {
     /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "NameExpr" }
-
-    /** Gets the node corresponding to the field `identifier`. */
-    final F::Identifier getIdentifier() { unified_name_expr_def(this, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() { unified_name_expr_def(this, result) }
-  }
-
-  /** A class representing `name_pattern` nodes. */
-  class NamePattern extends @unified_name_pattern, F::Pattern {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "NamePattern" }
-
-    /** Gets the node corresponding to the field `identifier`. */
-    final F::Identifier getIdentifier() { unified_name_pattern_def(this, result) }
+    final override string getAPrimaryQlClass() { result = "NamedPattern" }
 
     /** Gets the node corresponding to the field `modifier`. */
-    final F::Modifier getModifier(int i) { unified_name_pattern_modifier(this, i, result) }
+    final F::Modifier getModifier(int i) { unified_named_pattern_modifier(this, i, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
+    /** Gets the node corresponding to the field `name_node`. */
+    final F::Identifier getNameNode() { unified_named_pattern_def(this, result, _) }
+
     /** Gets the node corresponding to the field `sub_pattern`. */
-    final F::Pattern getSubPattern() { unified_name_pattern_sub_pattern(this, result) }
+    final F::Expr getSubPattern() { unified_named_pattern_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
-      unified_name_pattern_def(this, result) or
-      unified_name_pattern_modifier(this, _, result) or
-      unified_name_pattern_sub_pattern(this, result)
-    }
-  }
-
-  /** A class representing `named_type_expr` nodes. */
-  class NamedTypeExpr extends @unified_named_type_expr, F::TypeExpr {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "NamedTypeExpr" }
-
-    /** Gets the node corresponding to the field `name`. */
-    final F::Identifier getName() { unified_named_type_expr_def(this, result) }
-
-    /** Gets the node corresponding to the field `qualifier`. */
-    final F::TypeExpr getQualifier() { unified_named_type_expr_qualifier(this, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_named_type_expr_def(this, result) or unified_named_type_expr_qualifier(this, result)
+      unified_named_pattern_modifier(this, _, result) or
+      unified_named_pattern_def(this, result, _) or
+      unified_named_pattern_def(this, _, result)
     }
   }
 
@@ -1124,8 +1022,8 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
-    /** Gets the node corresponding to the field `name`. */
-    final F::Identifier getName() { unified_operator_syntax_declaration_def(this, result) }
+    /** Gets the node corresponding to the field `name_node`. */
+    final F::Identifier getNameNode() { unified_operator_syntax_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `precedence`. */
     final F::Expr getPrecedence() { unified_operator_syntax_declaration_precedence(this, result) }
@@ -1140,7 +1038,7 @@ module Unified {
   }
 
   /** A class representing `or_pattern` nodes. */
-  class OrPattern extends @unified_or_pattern, F::Pattern {
+  class OrPattern extends @unified_or_pattern, F::Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "OrPattern" }
 
@@ -1151,10 +1049,10 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern(int i) { unified_or_pattern_pattern(this, i, result) }
+    final F::Expr getPattern(int i) { unified_or_pattern_pattern(this, i, result) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getAPattern() { result = this.getPattern(_) }
+    final F::Expr getAPattern() { result = this.getPattern(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1170,8 +1068,8 @@ module Unified {
     /** Gets the node corresponding to the field `default`. */
     final F::Expr getDefault() { unified_parameter_default(this, result) }
 
-    /** Gets the node corresponding to the field `external_name`. */
-    final F::Identifier getExternalName() { unified_parameter_external_name(this, result) }
+    /** Gets the node corresponding to the field `external_name_node`. */
+    final F::Identifier getExternalNameNode() { unified_parameter_external_name_node(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_parameter_modifier(this, i, result) }
@@ -1180,45 +1078,18 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_parameter_pattern(this, result) }
+    final F::Expr getPattern() { unified_parameter_pattern(this, result) }
 
     /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_parameter_type(this, result) }
+    final F::Expr getType() { unified_parameter_type(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_parameter_default(this, result) or
-      unified_parameter_external_name(this, result) or
+      unified_parameter_external_name_node(this, result) or
       unified_parameter_modifier(this, _, result) or
       unified_parameter_pattern(this, result) or
       unified_parameter_type(this, result)
-    }
-  }
-
-  class Pattern extends @unified_pattern, F::ExprOrPattern { }
-
-  /** A class representing `pattern_element` nodes. */
-  class PatternElement extends @unified_pattern_element, F::AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "PatternElement" }
-
-    /** Gets the node corresponding to the field `key`. */
-    final F::Identifier getKey() { unified_pattern_element_key(this, result) }
-
-    /** Gets the node corresponding to the field `modifier`. */
-    final F::Modifier getModifier(int i) { unified_pattern_element_modifier(this, i, result) }
-
-    /** Gets the node corresponding to the field `modifier`. */
-    final F::Modifier getAModifier() { result = this.getModifier(_) }
-
-    /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_pattern_element_def(this, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_pattern_element_key(this, result) or
-      unified_pattern_element_modifier(this, _, result) or
-      unified_pattern_element_def(this, result)
     }
   }
 
@@ -1228,7 +1099,7 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "PatternGuardExpr" }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_pattern_guard_expr_def(this, result, _) }
+    final F::Expr getPattern() { unified_pattern_guard_expr_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
     final F::Expr getValue() { unified_pattern_guard_expr_def(this, _, result) }
@@ -1272,6 +1143,32 @@ module Unified {
 
   class Stmt extends @unified_stmt, F::AstNode { }
 
+  /** A class representing `string_interpolation_expr` nodes. */
+  class StringInterpolationExpr extends @unified_string_interpolation_expr, F::Expr {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "StringInterpolationExpr" }
+
+    /** Gets the node corresponding to the field `element`. */
+    final F::Expr getElement(int i) { unified_string_interpolation_expr_element(this, i, result) }
+
+    /** Gets the node corresponding to the field `element`. */
+    final F::Expr getAnElement() { result = this.getElement(_) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getModifier(int i) {
+      unified_string_interpolation_expr_modifier(this, i, result)
+    }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
+    /** Gets a field or child node of this node. */
+    final override F::AstNode getAFieldOrChild() {
+      unified_string_interpolation_expr_element(this, _, result) or
+      unified_string_interpolation_expr_modifier(this, _, result)
+    }
+  }
+
   /** A class representing `string_literal` tokens. */
   class StringLiteral extends @unified_token_string_literal, F::Expr, F::Token {
     /** Gets the name of the primary QL class for this element. */
@@ -1299,7 +1196,7 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_switch_case_pattern(this, result) }
+    final F::Expr getPattern() { unified_switch_case_pattern(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1350,12 +1247,12 @@ module Unified {
   }
 
   /** A class representing `top_level` nodes. */
-  class TopLevel extends @unified_top_level, F::AstNode {
+  class TopLevel extends @unified_top_level, F::Callable {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TopLevel" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_top_level_def(this, result) }
+    final override F::Block getBody() { unified_top_level_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_top_level_def(this, result) }
@@ -1395,71 +1292,13 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "TupleExpr" }
 
     /** Gets the node corresponding to the field `element`. */
-    final F::Expr getElement(int i) { unified_tuple_expr_element(this, i, result) }
+    final F::Argument getElement(int i) { unified_tuple_expr_element(this, i, result) }
 
     /** Gets the node corresponding to the field `element`. */
-    final F::Expr getAnElement() { result = this.getElement(_) }
+    final F::Argument getAnElement() { result = this.getElement(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_tuple_expr_element(this, _, result) }
-  }
-
-  /** A class representing `tuple_pattern` nodes. */
-  class TuplePattern extends @unified_tuple_pattern, F::Pattern {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "TuplePattern" }
-
-    /** Gets the node corresponding to the field `element`. */
-    final F::PatternElement getElement(int i) { unified_tuple_pattern_element(this, i, result) }
-
-    /** Gets the node corresponding to the field `element`. */
-    final F::PatternElement getAnElement() { result = this.getElement(_) }
-
-    /** Gets the node corresponding to the field `modifier`. */
-    final F::Modifier getModifier(int i) { unified_tuple_pattern_modifier(this, i, result) }
-
-    /** Gets the node corresponding to the field `modifier`. */
-    final F::Modifier getAModifier() { result = this.getModifier(_) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_tuple_pattern_element(this, _, result) or
-      unified_tuple_pattern_modifier(this, _, result)
-    }
-  }
-
-  /** A class representing `tuple_type_element` nodes. */
-  class TupleTypeElement extends @unified_tuple_type_element, F::AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "TupleTypeElement" }
-
-    /** Gets the node corresponding to the field `name`. */
-    final F::Identifier getName() { unified_tuple_type_element_name(this, result) }
-
-    /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_tuple_type_element_def(this, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_tuple_type_element_name(this, result) or unified_tuple_type_element_def(this, result)
-    }
-  }
-
-  /** A class representing `tuple_type_expr` nodes. */
-  class TupleTypeExpr extends @unified_tuple_type_expr, F::TypeExpr {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "TupleTypeExpr" }
-
-    /** Gets the node corresponding to the field `element`. */
-    final F::TupleTypeElement getElement(int i) { unified_tuple_type_expr_element(this, i, result) }
-
-    /** Gets the node corresponding to the field `element`. */
-    final F::TupleTypeElement getAnElement() { result = this.getElement(_) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_tuple_type_expr_element(this, _, result)
-    }
   }
 
   /** A class representing `type_alias_declaration` nodes. */
@@ -1475,11 +1314,11 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
-    /** Gets the node corresponding to the field `name`. */
-    final F::Identifier getName() { unified_type_alias_declaration_def(this, result, _) }
+    /** Gets the node corresponding to the field `name_node`. */
+    final F::Identifier getNameNode() { unified_type_alias_declaration_def(this, result, _) }
 
     /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_type_alias_declaration_def(this, _, result) }
+    final F::Expr getType() { unified_type_alias_declaration_def(this, _, result) }
 
     /** Gets the node corresponding to the field `type_constraint`. */
     final F::TypeConstraint getTypeConstraint(int i) {
@@ -1519,7 +1358,7 @@ module Unified {
     final F::InfixOperator getOperator() { unified_type_cast_expr_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_type_cast_expr_def(this, _, _, result) }
+    final F::Expr getType() { unified_type_cast_expr_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1531,15 +1370,13 @@ module Unified {
 
   class TypeConstraint extends @unified_type_constraint, F::AstNode { }
 
-  class TypeExpr extends @unified_type_expr, F::ExprOrType { }
-
   /** A class representing `type_parameter` nodes. */
   class TypeParameter extends @unified_type_parameter, F::AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeParameter" }
 
     /** Gets the node corresponding to the field `bound`. */
-    final F::TypeExpr getBound() { unified_type_parameter_bound(this, result) }
+    final F::Expr getBound() { unified_type_parameter_bound(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_type_parameter_modifier(this, i, result) }
@@ -1547,8 +1384,8 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
-    /** Gets the node corresponding to the field `name`. */
-    final F::Identifier getName() { unified_type_parameter_def(this, result) }
+    /** Gets the node corresponding to the field `name_node`. */
+    final F::Identifier getNameNode() { unified_type_parameter_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1564,37 +1401,19 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "TypeTestExpr" }
 
     /** Gets the node corresponding to the field `expr`. */
-    final F::Expr getExpr() { unified_type_test_expr_def(this, result, _, _) }
+    final F::Expr getExpr() { unified_type_test_expr_def(this, result, _) }
 
     /** Gets the node corresponding to the field `operator`. */
-    final F::InfixOperator getOperator() { unified_type_test_expr_def(this, _, result, _) }
+    final F::InfixOperator getOperator() { unified_type_test_expr_operator(this, result) }
 
     /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_type_test_expr_def(this, _, _, result) }
+    final F::Expr getType() { unified_type_test_expr_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
-      unified_type_test_expr_def(this, result, _, _) or
-      unified_type_test_expr_def(this, _, result, _) or
-      unified_type_test_expr_def(this, _, _, result)
-    }
-  }
-
-  /** A class representing `type_test_pattern` nodes. */
-  class TypeTestPattern extends @unified_type_test_pattern, F::AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "TypeTestPattern" }
-
-    /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_type_test_pattern_def(this, result, _) }
-
-    /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_type_test_pattern_def(this, _, result) }
-
-    /** Gets a field or child node of this node. */
-    final override F::AstNode getAFieldOrChild() {
-      unified_type_test_pattern_def(this, result, _) or
-      unified_type_test_pattern_def(this, _, result)
+      unified_type_test_expr_def(this, result, _) or
+      unified_type_test_expr_operator(this, result) or
+      unified_type_test_expr_def(this, _, result)
     }
   }
 
@@ -1635,9 +1454,7 @@ module Unified {
   }
 
   /** A class representing `unsupported_node` tokens. */
-  class UnsupportedNode extends @unified_token_unsupported_node, F::Expr, F::Member, F::Pattern,
-    F::Token, F::TypeExpr
-  {
+  class UnsupportedNode extends @unified_token_unsupported_node, F::Expr, F::Member, F::Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "UnsupportedNode" }
   }
@@ -1654,10 +1471,10 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Pattern getPattern() { unified_variable_declaration_def(this, result) }
+    final F::Expr getPattern() { unified_variable_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `type`. */
-    final F::TypeExpr getType() { unified_variable_declaration_type(this, result) }
+    final F::Expr getType() { unified_variable_declaration_type(this, result) }
 
     /** Gets the node corresponding to the field `value`. */
     final F::Expr getValue() { unified_variable_declaration_value(this, result) }
@@ -1706,7 +1523,7 @@ module Unified {
       or
       result = node.(AccessorDeclaration).getModifier(i) and name = "getModifier"
       or
-      result = node.(AccessorDeclaration).getName() and i = -1 and name = "getName"
+      result = node.(AccessorDeclaration).getNameNode() and i = -1 and name = "getNameNode"
       or
       result = node.(AccessorDeclaration).getParameter(i) and name = "getParameter"
       or
@@ -1714,21 +1531,17 @@ module Unified {
       or
       result = node.(Argument).getModifier(i) and name = "getModifier"
       or
-      result = node.(Argument).getName() and i = -1 and name = "getName"
+      result = node.(Argument).getNameNode() and i = -1 and name = "getNameNode"
       or
       result = node.(Argument).getValue() and i = -1 and name = "getValue"
       or
       result = node.(ArrayLiteral).getElement(i) and name = "getElement"
       or
-      result = node.(AssignExpr).getTarget() and i = -1 and name = "getTarget"
-      or
-      result = node.(AssignExpr).getValue() and i = -1 and name = "getValue"
-      or
       result = node.(AssociatedTypeDeclaration).getBound() and i = -1 and name = "getBound"
       or
       result = node.(AssociatedTypeDeclaration).getModifier(i) and name = "getModifier"
       or
-      result = node.(AssociatedTypeDeclaration).getName() and i = -1 and name = "getName"
+      result = node.(AssociatedTypeDeclaration).getNameNode() and i = -1 and name = "getNameNode"
       or
       result = node.(BaseType).getModifier(i) and name = "getModifier"
       or
@@ -1746,7 +1559,7 @@ module Unified {
       or
       result = node.(BoundTypeConstraint).getType() and i = -1 and name = "getType"
       or
-      result = node.(BreakExpr).getLabel() and i = -1 and name = "getLabel"
+      result = node.(BreakExpr).getLabelNameNode() and i = -1 and name = "getLabelNameNode"
       or
       result = node.(BulkImportingPattern).getModifier(i) and name = "getModifier"
       or
@@ -1764,21 +1577,19 @@ module Unified {
       or
       result = node.(ClassLikeDeclaration).getBaseType(i) and name = "getBaseType"
       or
+      result = node.(ClassLikeDeclaration).getExtensionTarget() and
+      i = -1 and
+      name = "getExtensionTarget"
+      or
       result = node.(ClassLikeDeclaration).getMember(i) and name = "getMember"
       or
       result = node.(ClassLikeDeclaration).getModifier(i) and name = "getModifier"
       or
-      result = node.(ClassLikeDeclaration).getName() and i = -1 and name = "getName"
+      result = node.(ClassLikeDeclaration).getNameNode() and i = -1 and name = "getNameNode"
       or
       result = node.(ClassLikeDeclaration).getTypeConstraint(i) and name = "getTypeConstraint"
       or
       result = node.(ClassLikeDeclaration).getTypeParameter(i) and name = "getTypeParameter"
-      or
-      result = node.(CompoundAssignExpr).getOperator() and i = -1 and name = "getOperator"
-      or
-      result = node.(CompoundAssignExpr).getTarget() and i = -1 and name = "getTarget"
-      or
-      result = node.(CompoundAssignExpr).getValue() and i = -1 and name = "getValue"
       or
       result = node.(ConditionalPattern).getCondition() and i = -1 and name = "getCondition"
       or
@@ -1790,17 +1601,11 @@ module Unified {
       or
       result = node.(ConstructorDeclaration).getModifier(i) and name = "getModifier"
       or
-      result = node.(ConstructorDeclaration).getName() and i = -1 and name = "getName"
+      result = node.(ConstructorDeclaration).getNameNode() and i = -1 and name = "getNameNode"
       or
       result = node.(ConstructorDeclaration).getParameter(i) and name = "getParameter"
       or
-      result = node.(ConstructorPattern).getConstructor() and i = -1 and name = "getConstructor"
-      or
-      result = node.(ConstructorPattern).getElement(i) and name = "getElement"
-      or
-      result = node.(ConstructorPattern).getModifier(i) and name = "getModifier"
-      or
-      result = node.(ContinueExpr).getLabel() and i = -1 and name = "getLabel"
+      result = node.(ContinueExpr).getLabelNameNode() and i = -1 and name = "getLabelNameNode"
       or
       result = node.(DestructorDeclaration).getBody() and i = -1 and name = "getBody"
       or
@@ -1816,7 +1621,9 @@ module Unified {
       or
       result = node.(EqualityTypeConstraint).getRight() and i = -1 and name = "getRight"
       or
-      result = node.(ExprEqualityPattern).getExpr() and i = -1 and name = "getExpr"
+      result = node.(ExprPattern).getExpr() and i = -1 and name = "getExpr"
+      or
+      result = node.(ExprPattern).getModifier(i) and name = "getModifier"
       or
       result = node.(ForEachStmt).getBody() and i = -1 and name = "getBody"
       or
@@ -1832,7 +1639,7 @@ module Unified {
       or
       result = node.(FunctionDeclaration).getModifier(i) and name = "getModifier"
       or
-      result = node.(FunctionDeclaration).getName() and i = -1 and name = "getName"
+      result = node.(FunctionDeclaration).getNameNode() and i = -1 and name = "getNameNode"
       or
       result = node.(FunctionDeclaration).getParameter(i) and name = "getParameter"
       or
@@ -1851,10 +1658,6 @@ module Unified {
       result = node.(FunctionExpr).getParameter(i) and name = "getParameter"
       or
       result = node.(FunctionExpr).getReturnType() and i = -1 and name = "getReturnType"
-      or
-      result = node.(FunctionTypeExpr).getParameter(i) and name = "getParameter"
-      or
-      result = node.(FunctionTypeExpr).getReturnType() and i = -1 and name = "getReturnType"
       or
       result = node.(GenericTypeExpr).getBase() and i = -1 and name = "getBase"
       or
@@ -1884,7 +1687,7 @@ module Unified {
       or
       result = node.(KeyValuePair).getValue() and i = -1 and name = "getValue"
       or
-      result = node.(LabeledStmt).getLabel() and i = -1 and name = "getLabel"
+      result = node.(LabeledStmt).getLabelNameNode() and i = -1 and name = "getLabelNameNode"
       or
       result = node.(LabeledStmt).getStmt() and i = -1 and name = "getStmt"
       or
@@ -1892,25 +1695,19 @@ module Unified {
       or
       result = node.(MemberAccessExpr).getBase() and i = -1 and name = "getBase"
       or
-      result = node.(MemberAccessExpr).getMember() and i = -1 and name = "getMember"
+      result = node.(MemberAccessExpr).getMemberNameNode() and i = -1 and name = "getMemberNameNode"
       or
-      result = node.(NameExpr).getIdentifier() and i = -1 and name = "getIdentifier"
+      result = node.(NamedPattern).getModifier(i) and name = "getModifier"
       or
-      result = node.(NamePattern).getIdentifier() and i = -1 and name = "getIdentifier"
+      result = node.(NamedPattern).getNameNode() and i = -1 and name = "getNameNode"
       or
-      result = node.(NamePattern).getModifier(i) and name = "getModifier"
-      or
-      result = node.(NamePattern).getSubPattern() and i = -1 and name = "getSubPattern"
-      or
-      result = node.(NamedTypeExpr).getName() and i = -1 and name = "getName"
-      or
-      result = node.(NamedTypeExpr).getQualifier() and i = -1 and name = "getQualifier"
+      result = node.(NamedPattern).getSubPattern() and i = -1 and name = "getSubPattern"
       or
       result = node.(OperatorSyntaxDeclaration).getFixity() and i = -1 and name = "getFixity"
       or
       result = node.(OperatorSyntaxDeclaration).getModifier(i) and name = "getModifier"
       or
-      result = node.(OperatorSyntaxDeclaration).getName() and i = -1 and name = "getName"
+      result = node.(OperatorSyntaxDeclaration).getNameNode() and i = -1 and name = "getNameNode"
       or
       result = node.(OperatorSyntaxDeclaration).getPrecedence() and
       i = -1 and
@@ -1922,7 +1719,7 @@ module Unified {
       or
       result = node.(Parameter).getDefault() and i = -1 and name = "getDefault"
       or
-      result = node.(Parameter).getExternalName() and i = -1 and name = "getExternalName"
+      result = node.(Parameter).getExternalNameNode() and i = -1 and name = "getExternalNameNode"
       or
       result = node.(Parameter).getModifier(i) and name = "getModifier"
       or
@@ -1930,17 +1727,15 @@ module Unified {
       or
       result = node.(Parameter).getType() and i = -1 and name = "getType"
       or
-      result = node.(PatternElement).getKey() and i = -1 and name = "getKey"
-      or
-      result = node.(PatternElement).getModifier(i) and name = "getModifier"
-      or
-      result = node.(PatternElement).getPattern() and i = -1 and name = "getPattern"
-      or
       result = node.(PatternGuardExpr).getPattern() and i = -1 and name = "getPattern"
       or
       result = node.(PatternGuardExpr).getValue() and i = -1 and name = "getValue"
       or
       result = node.(ReturnExpr).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(StringInterpolationExpr).getElement(i) and name = "getElement"
+      or
+      result = node.(StringInterpolationExpr).getModifier(i) and name = "getModifier"
       or
       result = node.(SwitchCase).getBody() and i = -1 and name = "getBody"
       or
@@ -1966,19 +1761,9 @@ module Unified {
       or
       result = node.(TupleExpr).getElement(i) and name = "getElement"
       or
-      result = node.(TuplePattern).getElement(i) and name = "getElement"
-      or
-      result = node.(TuplePattern).getModifier(i) and name = "getModifier"
-      or
-      result = node.(TupleTypeElement).getName() and i = -1 and name = "getName"
-      or
-      result = node.(TupleTypeElement).getType() and i = -1 and name = "getType"
-      or
-      result = node.(TupleTypeExpr).getElement(i) and name = "getElement"
-      or
       result = node.(TypeAliasDeclaration).getModifier(i) and name = "getModifier"
       or
-      result = node.(TypeAliasDeclaration).getName() and i = -1 and name = "getName"
+      result = node.(TypeAliasDeclaration).getNameNode() and i = -1 and name = "getNameNode"
       or
       result = node.(TypeAliasDeclaration).getType() and i = -1 and name = "getType"
       or
@@ -1996,17 +1781,13 @@ module Unified {
       or
       result = node.(TypeParameter).getModifier(i) and name = "getModifier"
       or
-      result = node.(TypeParameter).getName() and i = -1 and name = "getName"
+      result = node.(TypeParameter).getNameNode() and i = -1 and name = "getNameNode"
       or
       result = node.(TypeTestExpr).getExpr() and i = -1 and name = "getExpr"
       or
       result = node.(TypeTestExpr).getOperator() and i = -1 and name = "getOperator"
       or
       result = node.(TypeTestExpr).getType() and i = -1 and name = "getType"
-      or
-      result = node.(TypeTestPattern).getPattern() and i = -1 and name = "getPattern"
-      or
-      result = node.(TypeTestPattern).getType() and i = -1 and name = "getType"
       or
       result = node.(UnaryExpr).getOperand() and i = -1 and name = "getOperand"
       or
@@ -2049,8 +1830,6 @@ module UnifiedFinal {
 
   final class ArrayLiteral = F::ArrayLiteral;
 
-  final class AssignExpr = F::AssignExpr;
-
   final class AssociatedTypeDeclaration = F::AssociatedTypeDeclaration;
 
   final class BaseType = F::BaseType;
@@ -2071,17 +1850,15 @@ module UnifiedFinal {
 
   final class CallExpr = F::CallExpr;
 
+  final class Callable = F::Callable;
+
   final class CatchClause = F::CatchClause;
 
   final class ClassLikeDeclaration = F::ClassLikeDeclaration;
 
-  final class CompoundAssignExpr = F::CompoundAssignExpr;
-
   final class ConditionalPattern = F::ConditionalPattern;
 
   final class ConstructorDeclaration = F::ConstructorDeclaration;
-
-  final class ConstructorPattern = F::ConstructorPattern;
 
   final class ContinueExpr = F::ContinueExpr;
 
@@ -2095,13 +1872,9 @@ module UnifiedFinal {
 
   final class Expr = F::Expr;
 
-  final class ExprEqualityPattern = F::ExprEqualityPattern;
-
   final class ExprOrOperator = F::ExprOrOperator;
 
-  final class ExprOrPattern = F::ExprOrPattern;
-
-  final class ExprOrType = F::ExprOrType;
+  final class ExprPattern = F::ExprPattern;
 
   final class Fixity = F::Fixity;
 
@@ -2113,8 +1886,6 @@ module UnifiedFinal {
 
   final class FunctionExpr = F::FunctionExpr;
 
-  final class FunctionTypeExpr = F::FunctionTypeExpr;
-
   final class GenericTypeExpr = F::GenericTypeExpr;
 
   final class GuardIfStmt = F::GuardIfStmt;
@@ -2122,8 +1893,6 @@ module UnifiedFinal {
   final class Identifier = F::Identifier;
 
   final class IfExpr = F::IfExpr;
-
-  final class IgnorePattern = F::IgnorePattern;
 
   final class ImportDeclaration = F::ImportDeclaration;
 
@@ -2147,11 +1916,7 @@ module UnifiedFinal {
 
   final class Modifier = F::Modifier;
 
-  final class NameExpr = F::NameExpr;
-
-  final class NamePattern = F::NamePattern;
-
-  final class NamedTypeExpr = F::NamedTypeExpr;
+  final class NamedPattern = F::NamedPattern;
 
   final class Operator = F::Operator;
 
@@ -2160,10 +1925,6 @@ module UnifiedFinal {
   final class OrPattern = F::OrPattern;
 
   final class Parameter = F::Parameter;
-
-  final class Pattern = F::Pattern;
-
-  final class PatternElement = F::PatternElement;
 
   final class PatternGuardExpr = F::PatternGuardExpr;
 
@@ -2176,6 +1937,8 @@ module UnifiedFinal {
   final class ReturnExpr = F::ReturnExpr;
 
   final class Stmt = F::Stmt;
+
+  final class StringInterpolationExpr = F::StringInterpolationExpr;
 
   final class StringLiteral = F::StringLiteral;
 
@@ -2193,25 +1956,15 @@ module UnifiedFinal {
 
   final class TupleExpr = F::TupleExpr;
 
-  final class TuplePattern = F::TuplePattern;
-
-  final class TupleTypeElement = F::TupleTypeElement;
-
-  final class TupleTypeExpr = F::TupleTypeExpr;
-
   final class TypeAliasDeclaration = F::TypeAliasDeclaration;
 
   final class TypeCastExpr = F::TypeCastExpr;
 
   final class TypeConstraint = F::TypeConstraint;
 
-  final class TypeExpr = F::TypeExpr;
-
   final class TypeParameter = F::TypeParameter;
 
   final class TypeTestExpr = F::TypeTestExpr;
-
-  final class TypeTestPattern = F::TypeTestPattern;
 
   final class UnaryExpr = F::UnaryExpr;
 

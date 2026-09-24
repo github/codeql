@@ -31,6 +31,8 @@ module Generated {
   class ItemList extends Synth::TItemList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "ItemList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this item list (0-based).
      */

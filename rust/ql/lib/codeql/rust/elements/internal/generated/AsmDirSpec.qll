@@ -27,5 +27,7 @@ module Generated {
    */
   class AsmDirSpec extends Synth::TAsmDirSpec, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "AsmDirSpec" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }
