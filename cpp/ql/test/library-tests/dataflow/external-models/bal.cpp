@@ -402,7 +402,6 @@ void test_balxml_encode_ostream_return_from_stream() {
 	BloombergLP::balxml::Encoder encoder;
 	bsl::ostream &r = encoder.encode(*os, obj);
 	sink(*(char *)&r); // $ ir
-	sink(obj); // $ ir
 }
 
 void test_balxml_encodeToStream() {
