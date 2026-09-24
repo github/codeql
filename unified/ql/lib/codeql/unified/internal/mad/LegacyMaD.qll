@@ -206,8 +206,6 @@ private DataFlow::Node getSinkFromCall(CallExpr call, AccessPathToken token) {
   result.isReceiverArgument(call)
 }
 
-private import codeql.unified.internal.dataflow.AllDataFlow
-
 /**
  * Gets the output from `call` specified by `token`. Only singleton access paths are supported.
  */
@@ -216,7 +214,7 @@ private DataFlow::Node getSourceFromCall(CallExpr call, AccessPathToken token) {
   token = "ReturnValue" and
   result.asExpr() = call
   or
-  result = getPostUpdateNode(getSinkFromCall(call, token))
+  result = getSinkFromCall(call, token).getPostUpdateNode()
 }
 
 /**

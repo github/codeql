@@ -315,21 +315,26 @@ class Node extends TDataFlowNode {
 
   /** Gets the basic block associated with this data flow node, if any. */
   BasicBlock getBasicBlock() { this.hasControlFlowPosition(result, _) }
-}
 
-Node getPostUpdateNode(Node pre) {
-  exists(Expr expr |
-    pre.isResultValue(expr) and
-    result.isPostUpdate(expr)
-  )
-  or
-  exists(Expr expr, LocalVariable var |
-    pre.isLocalVariableRead(expr, var) and
-    result.isLocalVariablePostUpdate(expr, var)
-  )
-  or
-  exists(DataFlowCall call |
-    pre.isReceiverArgumentEx(call) and
-    result.isReceiverPostUpdateEx(call)
-  )
+  /**
+   * Gets the post-update node for this node, if any.
+   *
+   * The post-update node represents the updated state of the value held in this node, after it has been mutated by the surrounding assignment or call.
+   */
+  Node getPostUpdateNode() {
+    exists(Expr expr |
+      this.isResultValue(expr) and
+      result.isPostUpdate(expr)
+    )
+    or
+    exists(Expr expr, LocalVariable var |
+      this.isLocalVariableRead(expr, var) and
+      result.isLocalVariablePostUpdate(expr, var)
+    )
+    or
+    exists(DataFlowCall call |
+      this.isReceiverArgumentEx(call) and
+      result.isReceiverPostUpdateEx(call)
+    )
+  }
 }
