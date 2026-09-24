@@ -1,15 +1,13 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use crate::captures::Captures;
-use crate::tree_builder::FreshScope;
 use crate::{Ast, FieldId, Id, KindId, NodeContent, Range, TranslatorHandle};
 
 /// Context for building new AST nodes during a transformation.
 ///
 /// Used by the `tree!` and `trees!` macros. Holds a mutable reference to the
-/// AST, a reference to the captures from a query match, a `FreshScope` for
-/// generating unique identifiers, and a mutable reference to a user-defined
-/// context of type `C`.
+/// AST, a reference to the captures from a query match, and a mutable reference
+/// to a user-defined context of type `C`.
 ///
 /// The user context `C` is shared across rules via the framework's driver:
 /// outer rules can write to it before recursive translation, and inner rules
@@ -32,7 +30,6 @@ use crate::{Ast, FieldId, Id, KindId, NodeContent, Range, TranslatorHandle};
 pub struct BuildCtx<'a, C: 'a = ()> {
     pub ast: &'a mut Ast,
     pub captures: &'a Captures,
-    pub fresh: &'a FreshScope,
     /// Source range of the node matched by the current rule.
     ///
     /// The `rule!` macro applies this range to locally-created result roots
@@ -54,16 +51,10 @@ pub struct BuildCtx<'a, C: 'a = ()> {
 }
 
 impl<'a, C> BuildCtx<'a, C> {
-    pub fn new(
-        ast: &'a mut Ast,
-        captures: &'a Captures,
-        fresh: &'a FreshScope,
-        user_ctx: &'a mut C,
-    ) -> Self {
+    pub fn new(ast: &'a mut Ast, captures: &'a Captures, user_ctx: &'a mut C) -> Self {
         Self {
             ast,
             captures,
-            fresh,
             source_range: None,
             user_ctx,
             translator: None,
@@ -75,14 +66,12 @@ impl<'a, C> BuildCtx<'a, C> {
     pub fn with_source_range(
         ast: &'a mut Ast,
         captures: &'a Captures,
-        fresh: &'a FreshScope,
         source_range: Option<Range>,
         user_ctx: &'a mut C,
     ) -> Self {
         Self {
             ast,
             captures,
-            fresh,
             source_range,
             user_ctx,
             translator: None,
@@ -95,7 +84,6 @@ impl<'a, C> BuildCtx<'a, C> {
     pub fn with_translator(
         ast: &'a mut Ast,
         captures: &'a Captures,
-        fresh: &'a FreshScope,
         source_range: Option<Range>,
         user_ctx: &'a mut C,
         translator: TranslatorHandle<'a, C>,
@@ -103,7 +91,6 @@ impl<'a, C> BuildCtx<'a, C> {
         Self {
             ast,
             captures,
-            fresh,
             source_range,
             user_ctx,
             translator: Some(translator),
@@ -262,12 +249,6 @@ impl<'a, C> BuildCtx<'a, C> {
         let source_range = self.source_range_of(source).map(Range::empty_at_start);
         self.literal_with_source_range(kind, value, source_range)
     }
-
-    /// Create a leaf node with an auto-generated unique name.
-    pub fn fresh(&mut self, kind: &'static str, name: &str) -> Id {
-        let generated = self.fresh.resolve(name);
-        self.create_named_token_with_range(kind, generated, None)
-    }
 }
 
 impl<C: Clone> BuildCtx<'_, C> {
@@ -302,7 +283,7 @@ impl<C: Clone> BuildCtx<'_, C> {
 
     /// Run `f` with a temporary child [`BuildCtx`] whose `user_ctx` is
     /// a fresh clone of the current one, sharing everything else
-    /// (`ast`, `captures`, `fresh`, source ranges, `translator`) by re-borrow.
+    /// (`ast`, `captures`, source ranges, `translator`) by re-borrow.
     /// Nodes constructed through the child remain part of the current rule
     /// invocation. Any mutations `f` makes to the child's `user_ctx`
     /// are discarded when it returns — no restore needed, because the
@@ -334,7 +315,6 @@ impl<C: Clone> BuildCtx<'_, C> {
         let mut child = BuildCtx {
             ast: &mut *self.ast,
             captures: self.captures,
-            fresh: self.fresh,
             source_range: self.source_range,
             user_ctx: &mut child_user_ctx,
             translator: self.translator,

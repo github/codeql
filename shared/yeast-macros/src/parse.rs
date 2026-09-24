@@ -422,7 +422,7 @@ fn parse_direct_node(
 }
 
 /// Parse the inside of a parenthesized node: `kind fields... children...`
-/// or `kind "literal"` or `kind $fresh`.
+/// or `kind "literal"`.
 fn parse_direct_node_inner(
     tokens: &mut Tokens,
     ctx: &Ident,
@@ -472,14 +472,6 @@ fn parse_direct_node_inner(
                 #ctx.literal_with_source_range(#kind_str, &__value, __source_range)
             }
         });
-    }
-
-    // Check for (kind $fresh)
-    if peek_is_dollar(tokens) {
-        tokens.next();
-        let name = expect_ident(tokens, "expected fresh variable name after $")?;
-        let name_str = name.to_string();
-        return Ok(quote! { #ctx.fresh(#kind_str, #name_str) });
     }
 
     // Parse named fields
@@ -973,7 +965,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                     let #ctx_ident = __user_ctx;
                     Ok(#guard)
                 }),
-                Box::new(|__ast: &mut yeast::Ast, mut __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<yeast::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
+                Box::new(|__ast: &mut yeast::Ast, mut __captures: yeast::captures::Captures, __source_range: Option<yeast::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
                     // Auto-translation prefix: recursively translate every
                     // captured node before invoking the user's transform body,
                     // except for `@@name` captures listed in `__skip` which the
@@ -985,7 +977,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                     __translator.auto_translate_captures(&mut __captures, __ast, __user_ctx, __skip)?;
                     #(#raw_bindings)*
                     #(#translated_bindings)*
-                    let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __fresh, __source_range, __user_ctx, __translator);
+                    let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __source_range, __user_ctx, __translator);
                     let __result: Vec<yeast::Id> = { #transform_body };
                     let __result = #ctx_ident.finish_rule(__result);
                     Ok(__result)
@@ -1046,10 +1038,6 @@ fn consume_capture_marker(tokens: &mut Tokens) -> Result<Ident> {
 
 fn peek_is_literal(tokens: &mut Tokens) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Literal(_)))
-}
-
-fn peek_is_dollar(tokens: &mut Tokens) -> bool {
-    matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '$')
 }
 
 fn peek_is_hash(tokens: &mut Tokens) -> bool {

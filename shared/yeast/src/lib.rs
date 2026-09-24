@@ -12,7 +12,6 @@ pub mod node_types_yaml;
 pub mod query;
 mod range;
 pub mod schema;
-pub mod tree_builder;
 mod visitor;
 
 pub use range::{Point, Range};
@@ -1006,7 +1005,6 @@ enum TranslatorImpl<'a, C> {
     /// OneShot phase translator: recursively applies OneShot rules.
     OneShot {
         index: &'a RuleIndex<'a, C>,
-        fresh: &'a tree_builder::FreshScope,
         rewrite_depth: usize,
         /// The id of the node the current rule is matching. Used by
         /// [`auto_translate_captures`] to avoid infinite recursion when a
@@ -1038,10 +1036,9 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
         match &self.inner {
             TranslatorImpl::OneShot {
                 index,
-                fresh,
                 rewrite_depth,
                 ..
-            } => apply_one_shot_rules_inner(index, ast, user_ctx, id, fresh, rewrite_depth + 1),
+            } => apply_one_shot_rules_inner(index, ast, user_ctx, id, rewrite_depth + 1),
             TranslatorImpl::Repeating => {
                 Err("translate() is not available in a Repeating phase".into())
             }
@@ -1085,11 +1082,11 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
 
 /// The transform function for a rule.
 ///
-/// Takes the AST, the (raw, untranslated) captured variables, a fresh-name
-/// scope, the source range of the matched node, a mutable reference to the
-/// user context of type `C`, and a [`TranslatorHandle`] for recursively
-/// translating nodes. Returns the IDs of the replacement nodes, or an
-/// error message if the transform could not be completed.
+/// Takes the AST, the (raw, untranslated) captured variables, the source range
+/// of the matched node, a mutable reference to the user context of type `C`,
+/// and a [`TranslatorHandle`] for recursively translating nodes. Returns the
+/// IDs of the replacement nodes, or an error message if the transform could
+/// not be completed.
 ///
 /// Transforms produced by [`Rule::new`] receive **raw** captures and must
 /// translate them themselves (via the handle). Transforms produced by the
@@ -1099,7 +1096,6 @@ pub type Transform<C = ()> = Box<
     dyn Fn(
             &mut Ast,
             Captures,
-            &tree_builder::FreshScope,
             Option<Range>,
             &mut C,
             TranslatorHandle<'_, C>,
@@ -1197,14 +1193,11 @@ impl<C> Rule<C> {
         ast: &mut Ast,
         captures: Captures,
         node: Id,
-        fresh: &tree_builder::FreshScope,
         user_ctx: &mut C,
         translator: TranslatorHandle<'_, C>,
     ) -> Result<Vec<Id>, String> {
-        fresh.next_scope();
-        let source_range =
-            ast.source_range_ignoring_fields(node, &self.ignored_location_fields);
-        (self.transform)(ast, captures, fresh, source_range, user_ctx, translator)
+        let source_range = ast.source_range_ignoring_fields(node, &self.ignored_location_fields);
+        (self.transform)(ast, captures, source_range, user_ctx, translator)
     }
 }
 
@@ -1245,10 +1238,9 @@ fn apply_repeating_rules<C: Clone>(
     ast: &mut Ast,
     user_ctx: &mut C,
     id: Id,
-    fresh: &tree_builder::FreshScope,
 ) -> Result<Vec<Id>, String> {
     let index = RuleIndex::new(rules);
-    apply_repeating_rules_inner(&index, ast, user_ctx, id, fresh, 0, None)
+    apply_repeating_rules_inner(&index, ast, user_ctx, id, 0, None)
 }
 
 fn apply_repeating_rules_inner<C: Clone>(
@@ -1256,7 +1248,6 @@ fn apply_repeating_rules_inner<C: Clone>(
     ast: &mut Ast,
     user_ctx: &mut C,
     id: Id,
-    fresh: &tree_builder::FreshScope,
     rewrite_depth: usize,
     skip_rule: Option<*const Rule<C>>,
 ) -> Result<Vec<Id>, String> {
@@ -1293,7 +1284,7 @@ fn apply_repeating_rules_inner<C: Clone>(
         let translator = TranslatorHandle {
             inner: TranslatorImpl::Repeating,
         };
-        let result_nodes = rule.run_transform(ast, captures, id, fresh, &mut local, translator)?;
+        let result_nodes = rule.run_transform(ast, captures, id, &mut local, translator)?;
 
         // For non-repeated rules, suppress further application of *this*
         // rule on the result root, so a rule whose output matches its own
@@ -1306,7 +1297,6 @@ fn apply_repeating_rules_inner<C: Clone>(
                 ast,
                 &mut local,
                 node,
-                fresh,
                 rewrite_depth + 1,
                 next_skip,
             )?);
@@ -1326,15 +1316,8 @@ fn apply_repeating_rules_inner<C: Clone>(
     for children in fields.values_mut() {
         let mut new_children: Option<Vec<Id>> = None;
         for (i, &child_id) in children.iter().enumerate() {
-            let result = apply_repeating_rules_inner(
-                index,
-                ast,
-                user_ctx,
-                child_id,
-                fresh,
-                rewrite_depth,
-                None,
-            )?;
+            let result =
+                apply_repeating_rules_inner(index, ast, user_ctx, child_id, rewrite_depth, None)?;
             let unchanged = result.len() == 1 && result[0] == child_id;
             match (&mut new_children, unchanged) {
                 (None, true) => {} // unchanged so far, no allocation needed
@@ -1368,10 +1351,9 @@ fn apply_one_shot_rules<C: Clone>(
     ast: &mut Ast,
     user_ctx: &mut C,
     id: Id,
-    fresh: &tree_builder::FreshScope,
 ) -> Result<Vec<Id>, String> {
     let index = RuleIndex::new(rules);
-    apply_one_shot_rules_inner(&index, ast, user_ctx, id, fresh, 0)
+    apply_one_shot_rules_inner(&index, ast, user_ctx, id, 0)
 }
 
 fn apply_one_shot_rules_inner<C: Clone>(
@@ -1379,7 +1361,6 @@ fn apply_one_shot_rules_inner<C: Clone>(
     ast: &mut Ast,
     user_ctx: &mut C,
     id: Id,
-    fresh: &tree_builder::FreshScope,
     rewrite_depth: usize,
 ) -> Result<Vec<Id>, String> {
     if rewrite_depth > MAX_REWRITE_DEPTH {
@@ -1412,12 +1393,11 @@ fn apply_one_shot_rules_inner<C: Clone>(
         let translator = TranslatorHandle {
             inner: TranslatorImpl::OneShot {
                 index,
-                fresh,
                 rewrite_depth,
                 matched_root: id,
             },
         };
-        let result = rule.run_transform(ast, captures, id, fresh, &mut local, translator)?;
+        let result = rule.run_transform(ast, captures, id, &mut local, translator)?;
         return Ok(result);
     }
 
@@ -1677,19 +1657,12 @@ impl<'a, C: Clone> Runner<'a, C> {
     }
 
     /// Apply each phase in turn to the AST, threading the root through.
-    /// A single `FreshScope` is shared across phases so that fresh
-    /// identifiers generated in different phases don't collide.
     fn run_phases(&self, ast: &mut Ast, user_ctx: &mut C) -> Result<(), String> {
-        let fresh = tree_builder::FreshScope::new();
         let mut root = ast.get_root();
         for phase in self.phases {
             let res = match phase.kind {
-                PhaseKind::Repeating => {
-                    apply_repeating_rules(&phase.rules, ast, user_ctx, root, &fresh)
-                }
-                PhaseKind::OneShot => {
-                    apply_one_shot_rules(&phase.rules, ast, user_ctx, root, &fresh)
-                }
+                PhaseKind::Repeating => apply_repeating_rules(&phase.rules, ast, user_ctx, root),
+                PhaseKind::OneShot => apply_one_shot_rules(&phase.rules, ast, user_ctx, root),
             }
             .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
             if res.len() != 1 {

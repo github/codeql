@@ -40,7 +40,6 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// ```text
 /// (kind "literal")             - leaf with static content
 /// (kind #{expr})               - leaf with computed content (expr.to_string())
-/// (kind $fresh)                - leaf with auto-generated unique name
 /// {expr}                       - embed a Rust expression, dispatched via
 ///                                the `IntoFieldIds` trait: `Id` pushes a
 ///                                single id; iterables (`Vec<Id>`,
