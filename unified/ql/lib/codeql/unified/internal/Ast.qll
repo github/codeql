@@ -836,6 +836,12 @@ module Unified {
     }
   }
 
+  /** A class representing `ignore_pattern` tokens. */
+  class IgnorePattern extends @unified_token_ignore_pattern, F::Expr, F::Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "IgnorePattern" }
+  }
+
   /** A class representing `import_declaration` nodes. */
   class ImportDeclaration extends @unified_import_declaration, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
@@ -1893,6 +1899,8 @@ module UnifiedFinal {
   final class Identifier = F::Identifier;
 
   final class IfExpr = F::IfExpr;
+
+  final class IgnorePattern = F::IgnorePattern;
 
   final class ImportDeclaration = F::ImportDeclaration;
 

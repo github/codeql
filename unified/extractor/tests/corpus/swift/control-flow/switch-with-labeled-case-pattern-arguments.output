@@ -159,7 +159,7 @@ top_level source="⟨body⟩"
                   argument:
                     argument source="⟨name_node⟩: ⟨value⟩"
                       name_node: identifier "threadRowId" source="threadRowId"
-                      value: identifier "_" source="_"
+                      value: ignore_pattern "_" source="_"
                     argument source="⟨value⟩"
                       value:
                         expr_pattern source="⟨modifier⟩ ⟨expr⟩"

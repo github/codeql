@@ -206,9 +206,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // referenced identifier / operator symbol.
         rule!((declReferenceExpr baseName: @name) => (identifier #{name})),
         // A discard `_` used as an expression — e.g. the target of a discarding
-        // assignment `_ = x`. swift-syntax models it as a `discardAssignmentExpr`;
-        // the target AST represents it as a `name_node` over the `_` token.
-        rule!((discardAssignmentExpr wildcard: @@w) => (identifier #{w})),
+        // assignment `_ = x`. swift-syntax models it as a `discardAssignmentExpr`.
+        rule!((discardAssignmentExpr wildcard: @@w) => (ignore_pattern #{w})),
         // A generic specialization in expression position (`C<Foo>`,
         // `Array<Int>`) is represented by swift-syntax as a
         // `genericSpecializationExpr`. When used as a call target
@@ -560,7 +559,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A wildcard *binding* pattern (`let _ = x`, `for _ in xs`). swift-syntax
         // models this as a `wildcardPattern`, distinct from the `_` match form
         // handled by the context-aware `discardAssignmentExpr` rule.
-        rule!((wildcardPattern) @@wildcard => (identifier #{wildcard})),
+        rule!((wildcardPattern) @@wildcard => (ignore_pattern #{wildcard})),
         // An expression pattern only establishes pattern context; its child
         // determines the concrete pattern shape.
         rule!((expressionPattern expression: @@e) => expr {
