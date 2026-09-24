@@ -75,12 +75,10 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// error, so the choice between "unset the field" and "unwrap it" stays
 /// explicit.
 ///
-/// Can be called with an explicit context or using the implicit context
-/// from an enclosing `rule!`:
+/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
 ///
 /// ```text
-/// tree!(ctx, (kind ...))     // explicit BuildCtx
-/// tree!((kind ...))          // implicit context from rule!
+/// tree!((kind ...))
 /// ```
 #[proc_macro]
 pub fn tree(input: TokenStream) -> TokenStream {
@@ -96,17 +94,47 @@ pub fn tree(input: TokenStream) -> TokenStream {
 /// Like `tree!` but returns `Vec<Id>` and supports multiple top-level
 /// elements. All syntax from `tree!` is available.
 ///
-/// Can be called with an explicit context or using the implicit context
-/// from an enclosing `rule!`:
+/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
 ///
 /// ```text
-/// trees!(ctx, (node1 ...) (node2 ...))   // explicit BuildCtx
-/// trees!((node1 ...) (node2 ...))        // implicit context from rule!
+/// trees!((node1 ...) (node2 ...))
 /// ```
 #[proc_macro]
 pub fn trees(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
     match parse::parse_trees_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
+/// Build one AST node whose root uses another node's source range.
+///
+/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
+///
+/// ```text
+/// tree_at!(source, (kind ...))
+/// ```
+#[proc_macro]
+pub fn tree_at(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_tree_at_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
+/// Build one AST node whose root spans a collection of nodes.
+///
+/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
+///
+/// ```text
+/// tree_spanning!(sources, (kind ...))
+/// ```
+#[proc_macro]
+pub fn tree_spanning(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_tree_spanning_top(input2) {
         Ok(output) => output.into(),
         Err(err) => err.to_compile_error().into(),
     }
@@ -146,7 +174,7 @@ pub fn trees(input: TokenStream) -> TokenStream {
 /// Mutations to `ctx` are visible to the transform when the guard succeeds.
 /// Omitting the guard is equivalent to writing `where true`.
 ///
-/// `tree!` and `trees!` can be used without explicit context inside `{...}`.
+/// `tree!` and `trees!` use the rule transform's `ctx` binding inside `{...}`.
 #[proc_macro]
 pub fn rule(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();

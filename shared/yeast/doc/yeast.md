@@ -160,22 +160,21 @@ Templates construct new AST nodes using the `tree!` and `trees!` macros.
 All children in a template must be in named fields — output AST nodes are
 always fully fielded.
 
-When used inside a `rule!` macro, the context is implicit — no explicit
-`BuildCtx` argument is needed. When used standalone, they take a `BuildCtx`
-as the first argument:
+The macros use a `BuildCtx` binding named `ctx` from the surrounding scope.
+`rule!` provides this binding automatically; standalone uses must create it:
 
 ```rust
-// Inside rule! — implicit context, captures are Rust variables
+// Inside rule! — ctx is provided automatically, captures are Rust variables
 yeast::rule!(
     (assignment left: (_) @left right: (_) @right)
     =>
     (assignment left: {right} right: {left})
 );
 
-// Standalone — explicit context
+// Standalone — create a binding named ctx
 let mut user_ctx = ();
 let mut ctx = BuildCtx::new(ast, &captures, &mut user_ctx);
-let id = yeast::tree!(ctx,
+let id = yeast::tree!(
     (assignment
         left: {ctx.capture("lhs")}
         right: {ctx.capture("rhs")}
@@ -188,7 +187,7 @@ let id = yeast::tree!(ctx,
 `tree!(...)` returns a single node `Id`:
 
 ```rust
-yeast::tree!(ctx,
+yeast::tree!(
     (assignment
         left: {ctx.capture("lhs")}
         right: {ctx.capture("rhs")}
@@ -201,7 +200,7 @@ yeast::tree!(ctx,
 `trees!(...)` returns `Vec<Id>`:
 
 ```rust
-yeast::trees!(ctx,
+yeast::trees!(
     (assignment left: {tmp} right: {right})
     {body}
 )
@@ -262,7 +261,6 @@ rule!(
     =>
     synthetic_node {
         tree_at!(
-            ctx,
             source_node,
             (synthetic_node child: (nested value: {child}))
         )
@@ -282,7 +280,6 @@ rule!(
     =>
     synthetic_node {
         tree_spanning!(
-            ctx,
             [first, second],
             (synthetic_node child: {child})
         )
@@ -382,7 +379,7 @@ options uniformly:
     right: {rhs}               // a captured value (inside rule!)
 )
 
-yeast::trees!(ctx,
+yeast::trees!(
     (assignment left: {tmp} right: {right})
     {extra_nodes}              // splices a Vec<Id>
 )
