@@ -87,6 +87,12 @@ where
   elementRead(ea, array, index, bb) and
   // and the read is guarded by the comparison
   cond.dominates(bb) and
+  // and report the innermost guard that establishes the comparison
+  not exists(ControlFlow::ConditionGuardNode innerCond |
+    innerCond = getLengthLEGuard(index, array) and
+    innerCond.dominates(bb) and
+    innerCond.getCondition().getParent+() = cond.getCondition()
+  ) and
   // but the read is not guarded by another check that `index != len(array)`
   not getLengthNEGuard(index, array).dominates(bb) and
   // and it is not additionally guarded by a stronger index check
