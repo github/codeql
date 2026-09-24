@@ -321,6 +321,7 @@ class Node extends TDataFlowNode {
    *
    * The post-update node represents the updated state of the value held in this node, after it has been mutated by the surrounding assignment or call.
    */
+  pragma[nomagic]
   Node getPostUpdateNode() {
     exists(Expr expr |
       this.isResultValue(expr) and
