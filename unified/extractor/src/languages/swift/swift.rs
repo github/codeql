@@ -198,13 +198,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (unsupported_node)
         ),
-        rule!((declReferenceExpr baseName: (identifier) @name) => expr {
+        rule!((declReferenceExpr baseName: (identifier) @@name) => expr {
             tree!((identifier #{name}))
         }),
         // A bare name reference (`x`), and an operator used as a value (`+` in
         // `reduce(0, +)`), are both `declReferenceExpr`; its `baseName` is the
         // referenced identifier / operator symbol.
-        rule!((declReferenceExpr baseName: @name) => (identifier #{name})),
+        rule!((declReferenceExpr baseName: @@name) => (identifier #{name})),
         // A discard `_` used as an expression — e.g. the target of a discarding
         // assignment `_ = x`. swift-syntax models it as a `discardAssignmentExpr`.
         rule!((discardAssignmentExpr wildcard: @@w) => (ignore_pattern #{w})),
@@ -215,7 +215,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `generic_type_expr`, so we map it directly to that shape.
         rule!(
             (genericSpecializationExpr
-                expression: (declReferenceExpr baseName: @name)
+                expression: (declReferenceExpr baseName: @@name)
                 genericArgumentClause: (genericArgumentClause arguments: (genericArgument argument: @args)*))
             =>
             (generic_type_expr
@@ -230,7 +230,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A `binaryOperatorExpr` wraps the operator token; unwrap it to the
         // operator leaf. Used by `infixOperatorExpr` (folded) and `sequenceExpr`
         // (unresolved).
-        rule!((binaryOperatorExpr operator: @op) => (infix_operator #{op})),
+        rule!((binaryOperatorExpr operator: @@op) => (infix_operator #{op})),
         // A `binaryOperator`-based `infixOperatorExpr` represents both ordinary
         // binary applications (`a + b`) and compound assignments (`x += y`).
         // Both have the same target AST shape; the QL library distinguishes
@@ -276,7 +276,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // infix operators, rather than guessing a structure.
         rule!((sequenceExpr elements: _* @els) => (unresolved_operator_sequence element: {els})),
         // Prefix unary operators (`!a`, `-x`).
-        rule!((prefixOperatorExpr operator: @op expression: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
+        rule!((prefixOperatorExpr operator: @@op expression: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
         // A parenthesised expression has a single tuple element; elide the
         // grouping and preserve the expression itself. Actual tuple literals
         // retain their translated labeled elements as `argument` children.
@@ -468,7 +468,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `chained_declaration` tag.
         rule!(
             (enumCaseElement
-                name: @name
+                name: @@name
                 parameterClause: (enumCaseParameterClause parameters: _* @params) @@clause)
             =>
             class_like_declaration {
@@ -486,7 +486,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         rule!(
-            (enumCaseElement name: @name rawValue: (initializerClause value: @val))
+            (enumCaseElement name: @@name rawValue: (initializerClause value: @val))
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -496,7 +496,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 value: {val})
         ),
         rule!(
-            (enumCaseElement name: @name)
+            (enumCaseElement name: @@name)
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -526,7 +526,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // `identifierPattern` wraps a single identifier token.
         rule!(
-            (identifierPattern identifier: @name)
+            (identifierPattern identifier: @@name)
             =>
             (identifier #{name})
         ),
@@ -574,7 +574,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (functionDecl
                 modifiers: _* @mods
-                name: @name
+                name: @@name
                 genericParameterClause: (genericParameterClause parameters: _* @type_params)?
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params)
@@ -592,7 +592,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (functionDecl
                 modifiers: _* @mods
-                name: @name
+                name: @@name
                 genericParameterClause: (genericParameterClause parameters: _* @type_params)?
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params)
@@ -715,7 +715,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (memberAccessExpr
                 base: (arrayExpr
                     elements: (arrayElement expression: (genericSpecializationExpr) @element)) @@array
-                declName: (declReferenceExpr baseName: @member))
+                declName: (declReferenceExpr baseName: @@member))
             =>
             member_access_expr {
                 let base = tree_at!(
@@ -731,12 +731,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         rule!(
-            (memberAccessExpr base: @base declName: (declReferenceExpr baseName: @member))
+            (memberAccessExpr base: @base declName: (declReferenceExpr baseName: @@member))
             =>
             (member_access_expr base: {base} member_name_node: (identifier #{member}))
         ),
         rule!(
-            (memberAccessExpr period: @dot declName: (declReferenceExpr baseName: @member))
+            (memberAccessExpr period: @@dot declName: (declReferenceExpr baseName: @@member))
             =>
             (member_access_expr base: (inferred_type_expr #{dot}) member_name_node: (identifier #{member}))
         ),
@@ -790,14 +790,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A closure parameter (`x: Int`, or just `x`). Unlike a function
         // parameter it has no external label; the type is optional.
         rule!(
-            (closureParameter firstName: @name type: _? @ty)
+            (closureParameter firstName: @@name type: _? @ty)
             =>
             (parameter pattern: (identifier #{name}) type: {ty})
         ),
         // A shorthand closure parameter (`x` in `{ x, y in … }`): a bare name
         // with no parentheses and no type.
         rule!(
-            (closureShorthandParameter name: @name)
+            (closureShorthandParameter name: @@name)
             =>
             (parameter pattern: (identifier #{name}))
         ),
@@ -872,7 +872,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (optionalBindingCondition
                 bindingSpecifier: @@spec
-                pattern: (identifierPattern identifier: @name)
+                pattern: (identifierPattern identifier: @@name)
                 initializer: (initializerClause value: @val))
             =>
             (pattern_guard_expr
@@ -886,7 +886,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (optionalBindingCondition
                 bindingSpecifier: @@spec
-                pattern: (identifierPattern identifier: @name))
+                pattern: (identifierPattern identifier: @@name))
             =>
             (pattern_guard_expr
                 value: (identifier #{name})
@@ -1091,7 +1091,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((declModifier) @m => (modifier #{m})),
         // Preserve the `super` keyword as a dedicated expression, normally used
         // as the base of a member access (`super.foo`).
-        rule!((superExpr superKeyword: @keyword) => (super_expr #{keyword})),
+        rule!((superExpr superKeyword: @@keyword) => (super_expr #{keyword})),
         // Type expressions. A generic type applied with explicit arguments
         // (`Set<Int>`) becomes a `generic_type_expr` whose `base` is the type
         // name and whose `type_argument`s are the (structured) arguments — the
@@ -1213,9 +1213,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // Class declaration with body containing members
         rule!(
             (classDecl
-                classKeyword: @kind
+                classKeyword: @@kind
                 modifiers: _* @mods
-                name: @name
+                name: @@name
                 genericParameterClause: (genericParameterClause
                     parameters: _* @params
                     genericWhereClause: (genericWhereClause requirements: _* @parameter_constraints)?)?
@@ -1236,9 +1236,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // Enum class declaration: same as a regular class but with an enum body.
         rule!(
             (enumDecl
-                enumKeyword: @kind
+                enumKeyword: @@kind
                 modifiers: _* @mods
-                name: @name
+                name: @@name
                 genericParameterClause: (genericParameterClause
                     parameters: _* @params
                     genericWhereClause: (genericWhereClause requirements: _* @parameter_constraints)?)?
@@ -1259,9 +1259,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A `struct` declaration.
         rule!(
             (structDecl
-                structKeyword: @kind
+                structKeyword: @@kind
                 modifiers: _* @mods
-                name: @name
+                name: @@name
                 genericParameterClause: (genericParameterClause
                     parameters: _* @params
                     genericWhereClause: (genericWhereClause requirements: _* @parameter_constraints)?)?
@@ -1282,9 +1282,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // Protocol declaration
         rule!(
             (protocolDecl
-                protocolKeyword: @kind
+                protocolKeyword: @@kind
                 modifiers: _* @mods
-                name: @name
+                name: @@name
                 genericParameterClause: (genericParameterClause parameters: _* @params)?
                 inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
                 genericWhereClause: (genericWhereClause requirements: _* @declaration_constraints)?
@@ -1302,7 +1302,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // An `extension Foo.Bar { … }` is likewise a `class_like_declaration`.
         rule!(
             (extensionDecl
-                extensionKeyword: @kind
+                extensionKeyword: @@kind
                 modifiers: _* @mods
                 extendedType: @extendedType
                 inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
@@ -1322,7 +1322,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // nest under `signature` (as for `functionDecl`).
         rule!(
             (initializerDecl
-                initKeyword: @initK
+                initKeyword: @@initK
                 modifiers: _* @mods
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params))
@@ -1336,7 +1336,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         rule!(
             (initializerDecl
-                initKeyword: @initK
+                initKeyword: @@initK
                 modifiers: _* @mods
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params)))
