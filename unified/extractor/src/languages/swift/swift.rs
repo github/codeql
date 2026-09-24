@@ -1,7 +1,5 @@
 use codeql_extractor::extractor::desugaring;
-use yeast::{
-    ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule, rule, tree, tree_at, tree_spanning,
-};
+use yeast::{ConcreteDesugarer, DesugaringConfig, Rule, rule, tree, tree_at, tree_spanning};
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
@@ -1433,7 +1431,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
 pub fn language_spec(desugared_ast_schema: &'static str) -> desugaring::LanguageSpec {
     let config = DesugaringConfig::<SwiftContext>::new()
         .with_ignored_location_fields(["trailingComma"])
-        .add_phase("translate", PhaseKind::OneShot, translation_rules())
+        .add_phase("translate", translation_rules())
         .with_output_node_types_yaml(desugared_ast_schema);
     let desugarer =
         ConcreteDesugarer::without_language(config).expect("failed to build Swift desugarer");

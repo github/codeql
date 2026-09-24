@@ -253,10 +253,8 @@ impl<'a, C> BuildCtx<'a, C> {
 
 impl<C: Clone> BuildCtx<'_, C> {
     /// Recursively translate every id in the given iterable via the
-    /// framework's rule machinery. In a OneShot phase, applies OneShot
-    /// rules to each id and returns the accumulated resulting node ids
-    /// in order. In a Repeating phase, errors (translation is not
-    /// meaningful when input and output share a schema).
+    /// framework's rule machinery and return the accumulated resulting node
+    /// ids in order.
     ///
     /// The single-`Id` case works too, because `Id: IntoIterator<Item
     /// = Id>` is a singleton iterator — so `ctx.translate(some_id)?`

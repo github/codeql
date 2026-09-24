@@ -970,9 +970,6 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                     // captured node before invoking the user's transform body,
                     // except for `@@name` captures listed in `__skip` which the
                     // body consumes raw.
-                    // For OneShot rules this preserves the legacy behaviour
-                    // (input-schema captures translated to output-schema
-                    // nodes); for Repeating rules it is a no-op.
                     let __skip: &[&str] = &[#(#raw_capture_names),*];
                     __translator.auto_translate_captures(&mut __captures, __ast, __user_ctx, __skip)?;
                     #(#raw_bindings)*
@@ -1141,8 +1138,8 @@ fn expect_repetition(tokens: &mut Tokens) -> Result<TokenStream> {
 /// Each item in the bracketed list can be:
 /// * a **bare rule body** `(query) => (template)` — wrapped implicitly
 ///   in `yeast::rule! { ... }` for codegen;
-/// * an explicit `rule!(...)` (or `rule!(...).repeated()`,
-///   `yeast::rule!(...)`, etc.) — passed through verbatim;
+/// * an explicit `rule!(...)` (including `yeast::rule!(...)`) — passed
+///   through verbatim;
 /// * any other expression returning a `Rule` (helper-function calls,
 ///   conditionals) — passed through verbatim.
 ///
