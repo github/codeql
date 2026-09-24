@@ -1440,6 +1440,12 @@ module Unified {
     }
   }
 
+  /** A class representing `unhandled_node` tokens. */
+  class UnhandledNode extends @unified_token_unhandled_node, F::Expr, F::Member, F::Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "UnhandledNode" }
+  }
+
   /** A class representing `unresolved_operator_sequence` nodes. */
   class UnresolvedOperatorSequence extends @unified_unresolved_operator_sequence, F::Expr {
     /** Gets the name of the primary QL class for this element. */
@@ -1975,6 +1981,8 @@ module UnifiedFinal {
   final class TypeTestExpr = F::TypeTestExpr;
 
   final class UnaryExpr = F::UnaryExpr;
+
+  final class UnhandledNode = F::UnhandledNode;
 
   final class UnresolvedOperatorSequence = F::UnresolvedOperatorSequence;
 
