@@ -85,8 +85,6 @@ private predicate constructorCallSelector(CallExpr call, string name, string arg
   argLabels = getArgLabelsFromCall(call)
 }
 
-private import codeql.unified.internal.NameBinding as NameBinding
-
 private predicate isSubclassOfType(ClassLikeDeclaration cls, string typeName) {
   typeName = any(Selector s).getTypeString() and
   (
