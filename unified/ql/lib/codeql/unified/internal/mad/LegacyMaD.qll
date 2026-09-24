@@ -156,6 +156,9 @@ private class Selector extends TSelector {
     // - The name "init" is too common to match on anyway. It is more precise to match on the type name in this case.
     //
     // So to wire up "init" calls correctly, we just use the type name as the method name.
+    //
+    // TODO: does not work for compound access like `String.Index(...)` where the type is `String.Index` but the
+    // call selector only uses `Index`.
     this = MkSelector(name, _, "init", argLabels, _)
   }
 

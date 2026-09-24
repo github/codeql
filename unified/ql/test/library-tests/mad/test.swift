@@ -56,3 +56,41 @@ func testProperties(
     configuration.tlsMaximumSupportedProtocolVersion = 0  // $ MISSING: isSink=tls-protocol-version
     configuration.tlsMinimumSupportedProtocolVersion = 0  // $ MISSING: isSink=tls-protocol-version
 }
+
+class Realm {
+    struct Configuration {}
+}
+
+func testQualifiedConstructors(
+    encodedOffset: Int,
+    encryptionKey: String,
+    fileURL: String,
+    seedFilePath: String
+) {
+    _ = String.Index(encodedOffset: encodedOffset)  // $ MISSING: isSink=string-length
+
+    _ = Realm.Configuration(
+        deleteRealmIfMigrationNeeded: false,
+        encryptionKey: encryptionKey,  // $ MISSING: isSink=encryption-key
+        fileURL: fileURL,  // $ MISSING: isSink=path-injection
+        inMemoryIdentifier: nil,
+        migrationBlock: nil,
+        objectTypes: nil,
+        readOnly: false,
+        schemaVersion: 0,
+        shouldCompactOnLaunch: nil,
+        syncConfiguration: nil)
+
+    _ = Realm.Configuration(
+        deleteRealmIfMigrationNeeded: false,
+        encryptionKey: encryptionKey,  // $ MISSING: isSink=encryption-key
+        fileURL: fileURL,  // $ MISSING: isSink=path-injection
+        inMemoryIdentifier: nil,
+        migrationBlock: nil,
+        objectTypes: nil,
+        readOnly: false,
+        schemaVersion: 0,
+        seedFilePath: seedFilePath,  // $ MISSING: isSink=path-injection
+        shouldCompactOnLaunch: nil,
+        syncConfiguration: nil)
+}
