@@ -34,6 +34,7 @@ supertypes:
     - switch_expr
     - unresolved_operator_sequence
     - unsupported_node
+    - unhandled_node
     - or_pattern
     - conditional_pattern
     - bulk_importing_pattern
@@ -84,6 +85,7 @@ supertypes:
     - type_alias_declaration
     - associated_type_declaration
     - unsupported_node
+    - unhandled_node
   type_constraint:
     - equality_type_constraint
     - bound_type_constraint
@@ -420,6 +422,9 @@ named:
 
   # A node that we don't yet translate
   unsupported_node:
+
+  # A node kind that has no explicit translation or unsupported classification
+  unhandled_node:
 
   infix_operator:
 
