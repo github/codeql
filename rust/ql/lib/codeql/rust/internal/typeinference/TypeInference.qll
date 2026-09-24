@@ -36,6 +36,7 @@ private module Input1 implements InputSig1<Location> {
   class TypeAbstraction = TA::TypeAbstraction;
 
   int getTypeParameterId(TypeParameter tp) {
+    CachedStage::ref() and
     tp =
       rank[result](TypeParameter tp0, int kind, int id1, int id2 |
         kind = 1 and
