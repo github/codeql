@@ -1,0 +1,46 @@
+`tfm_filegroup` binds a TFM to a RID without gating on it in two cases:
+
+* when a TFM maps to a single RID the alias points straight at that RID's files, so
+  e.g. `Microsoft.Management.Infrastructure.Runtime.Unix` is published for every RID.
+  Its `Microsoft.Management.Infrastructure.dll` then collides with the lowercase
+  `microsoft.management.infrastructure.dll` from `...Runtime.Win` on case-insensitive
+  filesystems. Route these through the same `select` as the multi-RID case.
+* when a TFM only has RIDs and no compatible sibling the `select` has no
+  `//conditions:default`, which fails analysis on every other platform.
+  `rid_filegroup` already resolves to an empty list in that situation; do the same here.
+
+--- a/dotnet/private/rules/nuget/nuget_archive.bzl
++++ b/dotnet/private/rules/nuget/nuget_archive.bzl
+@@ -621,15 +621,10 @@
+     # that are incompatible with the current configuration
+     tfm_target_mapping = {}
+     for (tfm, rids) in tfm_rids.items():
+-        if len(rids) == 1:
+-            actual = None
+-            if rids[0] == "default":
+-                actual = "%s_%s_files" % (name, tfm)
+-            else:
+-                actual = "%s_%s_%s_files" % (name, tfm, rids[0])
++        if len(rids) == 1 and rids[0] == "default":
+             native.alias(
+                 name = "%s_%s_alias" % (name, tfm),
+-                actual = actual,
++                actual = "%s_%s_files" % (name, tfm),
+                 visibility = ["//visibility:public"],
+             )
+             tfm_target_mapping[tfm] = ":%s_%s_alias" % (name, tfm)
+@@ -642,6 +637,14 @@
+                 next_tfm = get_highest_compatible_target_framework(tfm, [t for t in tfm_rids.keys() if t != tfm])
+                 if next_tfm:
+                     map["//conditions:default"] = ":%s_%s_alias" % (name, next_tfm)
++                else:
++                    empty = "%s_%s_empty" % (name, tfm)
++                    native.filegroup(
++                        name = empty,
++                        srcs = [],
++                        visibility = ["//visibility:public"],
++                    )
++                    map["//conditions:default"] = ":%s" % empty
+             native.alias(
+                 name = "%s_%s_alias" % (name, tfm),
+                 actual = select(map),
