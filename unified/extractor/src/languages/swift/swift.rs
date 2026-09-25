@@ -393,7 +393,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     None => None,
                 };
                 tree_spanning!(
-                    ctx,
                     std::iter::once(spec).chain(body),
                     (accessor_declaration
                         modifier: {binding}
@@ -473,7 +472,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             class_like_declaration {
                 let constructor = tree_spanning!(
-                    ctx,
                     [name, clause],
                     (constructor_declaration parameter: {params} body: (block))
                 );
@@ -648,7 +646,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             call_expr {
                 let callee = tree_at!(
-                    ctx,
                     array,
                     (generic_type_expr
                     base: (identifier "Array")
@@ -668,7 +665,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             call_expr {
                 let callee = tree_at!(
-                    ctx,
                     array,
                     (generic_type_expr
                     base: (identifier "Array")
@@ -719,7 +715,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             member_access_expr {
                 let base = tree_at!(
-                    ctx,
                     array,
                     (generic_type_expr
                         base: (identifier "Array")
@@ -985,7 +980,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             expr {
                 let op = format!("try{}", m.map(|m| ctx.source_text(m)).unwrap_or_default());
                 let operator = tree_spanning!(
-                    ctx,
                     std::iter::once(keyword).chain(m),
                     (prefix_operator #{op})
                 );
@@ -1028,7 +1022,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((asExpr expression: @val asKeyword: @@keyword questionOrExclamationMark: _? @@mark type: @ty) => type_cast_expr {
             let op = format!("as{}", mark.map(|m| ctx.source_text(m)).unwrap_or_default());
             let operator = tree_spanning!(
-                ctx,
                 std::iter::once(keyword).chain(mark),
                 (infix_operator #{op})
             );
@@ -1037,16 +1030,16 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // Check expression (`x is T`) → type_test_expr
         rule!((isExpr expression: @val isKeyword: @@keyword type: @ty) => (type_test_expr
             expr: {val}
-            operator: {tree_at!(ctx, keyword, (infix_operator "is"))}
+            operator: {tree_at!(keyword, (infix_operator "is"))}
             type: {ty})),
         // Await expression → unary_expr with operator "await"
         rule!((awaitExpr awaitKeyword: @@keyword expression: @val) => (unary_expr
-            operator: {tree_at!(ctx, keyword, (prefix_operator "await"))}
+            operator: {tree_at!(keyword, (prefix_operator "await"))}
             operand: {val})),
         // Force-unwrap (`x!`) → postfix unary_expr, via swift-syntax's dedicated
         // `forceUnwrapExpr` node.
         rule!((forceUnwrapExpr expression: @e exclamationMark: @@mark) => (unary_expr
-            operator: {tree_at!(ctx, mark, (postfix_operator "!"))}
+            operator: {tree_at!(mark, (postfix_operator "!"))}
             operand: {e})),
         // ---- Imports ----
         // An import declaration. The dotted path (a list of
@@ -1068,7 +1061,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let last = *parts.last().ok_or("import has no path")?;
                 let pattern = match kind {
                     None => {
-                        let bulk = tree_at!(ctx, decl, (bulk_importing_pattern));
+                        let bulk = tree_at!(decl, (bulk_importing_pattern));
                         tree!((named_pattern
                             name_node: (identifier #{last})
                             sub_pattern: {bulk}))

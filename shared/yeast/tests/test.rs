@@ -695,7 +695,7 @@ fn test_tree_builder() {
     // Swap left and right
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &mut user_ctx);
-    let new_id = yeast::tree!(ctx,
+    let new_id = yeast::tree!(
         (program
             child: (assignment
                 left: {ctx.capture("right")}
@@ -723,8 +723,8 @@ fn build_optional_right(ast: &mut Ast, value: Option<yeast::Id>) -> (yeast::Id, 
     let captures = yeast::captures::Captures::new();
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(ast, &captures, &mut user_ctx);
-    let left = yeast::tree!(ctx, (identifier "x"));
-    let root = yeast::tree!(ctx,
+    let left = yeast::tree!((identifier "x"));
+    let root = yeast::tree!(
         (assignment
             left: {left}
             right: (integer #{value})?
@@ -781,8 +781,8 @@ fn test_optional_field_propagates_through_nested_nodes() {
     // The absent value sits two levels below the `?`, so the whole
     // `left_assignment_list` subtree is abandoned along with it.
     let absent: Option<yeast::Id> = None;
-    let right = yeast::tree!(ctx, (integer "1"));
-    let root = yeast::tree!(ctx,
+    let right = yeast::tree!((integer "1"));
+    let root = yeast::tree!(
         (assignment
             left: (left_assignment_list child: (identifier #{absent}))?
             right: {right}
@@ -809,7 +809,7 @@ fn test_innermost_optional_field_catches_first() {
 
     // The inner `?` catches, so only `child` is dropped; `left` survives.
     let absent: Option<yeast::Id> = None;
-    let root = yeast::tree!(ctx,
+    let root = yeast::tree!(
         (assignment
             left: (left_assignment_list child: (identifier #{absent})?)?
         )
@@ -1782,7 +1782,7 @@ fn test_tree_at_assigns_capture_range_to_root_only() {
         ) @@source
         =>
         call {
-            let arguments = tree_at!(ctx, source, (argument_list argument: (integer "0")));
+            let arguments = tree_at!(source, (argument_list argument: (integer "0")));
             tree!((call method: {name} receiver: {recv} arguments: {arguments}))
         }
     );
@@ -1817,7 +1817,6 @@ fn test_tree_spanning_assigns_union_to_root_only() {
         =>
         call {
             let arguments = tree_spanning!(
-                ctx,
                 [recv, name],
                 (argument_list argument: (integer "0"))
             );
