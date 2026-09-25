@@ -58,6 +58,53 @@ const VARYING_TOKEN_KINDS: &[&str] = &[
     "unknown",
 ];
 
+/// Maximum structural nesting accepted in the serialized JSON tree.
+///
+/// This exceeds the deepest tree in the Swift corpus while bounding the
+/// recursive serde deserialization and AST construction that follow.
+const MAX_JSON_DEPTH: usize = 2048;
+
+/// Check JSON structural depth without recursively parsing it.
+///
+/// Brackets and braces inside strings are ignored. Full JSON validation is
+/// still performed by serde_json afterward.
+fn check_json_depth(json: &str) -> Result<(), String> {
+    let mut depth = 0;
+    let mut in_string = false;
+    let mut escaped = false;
+
+    for byte in json.bytes() {
+        if in_string {
+            if escaped {
+                escaped = false;
+            } else {
+                match byte {
+                    b'\\' => escaped = true,
+                    b'"' => in_string = false,
+                    _ => {}
+                }
+            }
+        } else {
+            match byte {
+                b'"' => in_string = true,
+                b'{' | b'[' => {
+                    depth += 1;
+                    if depth > MAX_JSON_DEPTH {
+                        return Err(format!(
+                            "invalid JSON: nesting depth exceeds supported maximum \
+                             ({MAX_JSON_DEPTH})"
+                        ));
+                    }
+                }
+                b'}' | b']' => depth = depth.saturating_sub(1),
+                _ => {}
+            }
+        }
+    }
+
+    Ok(())
+}
+
 /// Keys of a node object that carry metadata rather than a structural child.
 fn is_metadata_key(key: &str) -> bool {
     matches!(
@@ -326,6 +373,7 @@ const SWIFT_NODE_TYPES: &str = include_str!("../../../swift_node_types.yml");
 /// authoritative swift-syntax schema ([`SWIFT_NODE_TYPES`]); the adapter only
 /// ever consumes swift-syntax input, so the schema is not a parameter.
 pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
+    check_json_depth(json)?;
     let mut deserializer = serde_json::Deserializer::from_str(json);
     deserializer.disable_recursion_limit();
     let root = Value::deserialize(&mut deserializer).map_err(|e| format!("invalid JSON: {e}"))?;
@@ -348,6 +396,14 @@ pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn deeply_nested_json(depth: usize) -> String {
+        let mut child = r#"{"$pos":0,"$end":0,"kind":"sourceFile"}"#.to_string();
+        for _ in 0..depth {
+            child = format!(r#"{{"$pos":0,"$end":0,"kind":"sourceFile","child":{child}}}"#);
+        }
+        format!(r#"{{"$lineStarts":[0],"$pos":0,"$end":0,"kind":"sourceFile","child":{child}}}"#)
+    }
 
     /// A hand-written JSON tree exercising layout nodes, a named (varying)
     /// token, a fixed keyword token, and an elided collection field — so the
@@ -522,15 +578,27 @@ mod tests {
 
     #[test]
     fn accepts_deeply_nested_json() {
-        let mut child = r#"{"$pos":0,"$end":0,"kind":"sourceFile"}"#.to_string();
-        for _ in 0..256 {
-            child = format!(r#"{{"$pos":0,"$end":0,"kind":"sourceFile","child":{child}}}"#);
-        }
-        let json = format!(
-            r#"{{"$lineStarts":[0],"$pos":0,"$end":0,"kind":"sourceFile","child":{child}}}"#
-        );
-
+        let json = deeply_nested_json(256);
         json_to_ast(&json).expect("adapter should accept JSON nested beyond serde_json's default");
+    }
+
+    #[test]
+    fn rejects_json_beyond_supported_depth() {
+        let json = deeply_nested_json(MAX_JSON_DEPTH);
+        let error = match json_to_ast(&json) {
+            Ok(_) => panic!("adapter should reject excessively nested JSON"),
+            Err(error) => error,
+        };
+        assert!(
+            error.contains("nesting depth exceeds supported maximum"),
+            "{error}"
+        );
+    }
+
+    #[test]
+    fn ignores_brackets_inside_json_strings_when_checking_depth() {
+        check_json_depth(r#"{"text":"[[[{{{\\\""}"#)
+            .expect("string contents should not contribute to JSON depth");
     }
 
     #[test]
