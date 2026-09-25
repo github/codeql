@@ -15,6 +15,7 @@ isSink
 | test.swift:100:24:100:36 | encryptionKey | encryption-key |
 | test.swift:101:18:101:24 | fileURL | path-injection |
 | test.swift:107:23:107:34 | seedFilePath | path-injection |
+| test.swift:119:29:119:34 | string | path-injection |
 isSource
 | test.swift:4:5:4:27 | String(...) | remote |
 | test.swift:5:5:5:44 | String(...) | remote |

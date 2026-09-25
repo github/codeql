@@ -1,0 +1,58 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Accessing paths controlled by users can expose resources to attackers.</p>
+
+<p>Paths that are naively constructed from data controlled by a user may contain unexpected special characters,
+such as <code>..</code>. Such a path could point to any directory on the file system.</p>
+</overview>
+
+<recommendation>
+
+<p>Validate user input before using it to construct a file path. Ideally, follow these rules:</p>
+
+<ul>
+<li>Do not allow more than a single <code>.</code> character.</li>
+<li>Do not allow directory separators such as <code>/</code> or <code>\</code> (depending on the file system).</li>
+<li>Do not rely on simply replacing problematic sequences such as <code>../</code>. For example, after applying this filter to
+<code>.../...//</code> the resulting string would still be <code>../</code>.</li>
+<li>Use a whitelist of known good patterns.</li>
+</ul>
+
+</recommendation>
+
+<example>
+<p>
+The following code shows two bad examples. 
+</p>
+
+<sample src="PathInjectionBad.swift" />
+
+<p>
+In the first, a file name is read from an HTTP request and then used to access a file. In this case, a malicious response could include a file name that is an absolute path, such as
+<code>"/Applications/(current_application)/Documents/sensitive.data"</code>.
+</p>
+
+<p>
+In the second bad example, it appears that the user is restricted to opening a file within the
+<code>"/Library/Caches"</code> home directory. In this case, a malicious response could contain a file name containing
+special characters. For example, the string <code>"../../Documents/sensitive.data"</code> will result in the code
+reading the file located at <code>"/Applications/(current_application)/Library/Caches/../../Documents/sensitive.data"</code>, 
+which contains users' sensitive data. This file may then be made accessible to an attacker, giving them access to all this data.
+</p>
+
+<p>
+In the following (good) example, the path used to access the file system is normalized <em>before</em> being checked against a
+known prefix. This ensures that regardless of the user input, the resulting path is safe.
+</p>
+
+<sample src="PathInjectionGood.swift" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.</li>
+</references>
+</qhelp>
