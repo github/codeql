@@ -842,7 +842,7 @@ func test() {
 		s := source()
 		isValid := !guardBool(s)
 		if isValid {
-			sink(s) // $ SPURIOUS: hasValueFlow="s"
+			sink(s)
 		} else {
 			sink(s) // $ hasValueFlow="s"
 		}

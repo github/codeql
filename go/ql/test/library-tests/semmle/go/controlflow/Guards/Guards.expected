@@ -1,0 +1,78 @@
+controlsResult
+| guards.go:7:7:7:15 | ...<... | negative | true |
+| guards.go:7:7:7:15 | ...<... | positive | false |
+| guards.go:7:7:7:15 | ...<... | zero | false |
+| guards.go:9:7:9:16 | ...==... | positive | false |
+| guards.go:9:7:9:16 | ...==... | zero | true |
+| guards.go:18:7:18:7 | 0 | tagged one or two | false |
+| guards.go:18:7:18:7 | 0 | tagged other | false |
+| guards.go:18:7:18:7 | 0 | tagged zero | true |
+| guards.go:20:7:20:7 | 1 | tagged other | false |
+| guards.go:20:10:20:10 | 2 | tagged other | false |
+| guards.go:28:5:28:5 | a | compound true | true |
+| guards.go:28:5:28:17 | ...&&... | compound false | false |
+| guards.go:28:5:28:17 | ...&&... | compound true | true |
+| guards.go:28:11:28:16 | ...\|\|... | compound true | true |
+| guards.go:36:5:36:20 | ...==... | upcast | true |
+| guards.go:39:5:39:19 | ...==... | downcast | true |
+| guards.go:42:5:42:22 | ...==... | upcast narrow | true |
+| guards.go:48:5:48:15 | ...<=... | above ten | false |
+| guards.go:48:5:48:15 | ...<=... | at most ten | true |
+| guards.go:53:5:53:15 | ...<=... | at least ten | true |
+| guards.go:53:5:53:15 | ...<=... | below ten | false |
+valueControlsResult
+| guards.go:7:7:7:11 | value | negative | Upper bound -1 |
+| guards.go:7:7:7:11 | value | positive | Lower bound 0 |
+| guards.go:7:7:7:11 | value | zero | Lower bound 0 |
+| guards.go:7:7:7:15 | ...<... | negative | true |
+| guards.go:7:7:7:15 | ...<... | positive | false |
+| guards.go:7:7:7:15 | ...<... | zero | false |
+| guards.go:9:7:9:11 | value | positive | not 0 |
+| guards.go:9:7:9:11 | value | zero | 0 |
+| guards.go:9:7:9:16 | ...==... | positive | false |
+| guards.go:9:7:9:16 | ...==... | zero | true |
+| guards.go:17:9:17:13 | value | tagged one or two | not 0 |
+| guards.go:17:9:17:13 | value | tagged other | not 0 |
+| guards.go:17:9:17:13 | value | tagged other | not 1 |
+| guards.go:17:9:17:13 | value | tagged other | not 2 |
+| guards.go:17:9:17:13 | value | tagged zero | 0 |
+| guards.go:18:7:18:7 | 0 | tagged one or two | false |
+| guards.go:18:7:18:7 | 0 | tagged other | false |
+| guards.go:18:7:18:7 | 0 | tagged zero | true |
+| guards.go:20:7:20:7 | 1 | tagged other | false |
+| guards.go:20:10:20:10 | 2 | tagged other | false |
+| guards.go:28:5:28:5 | a | compound true | true |
+| guards.go:28:5:28:17 | ...&&... | compound false | false |
+| guards.go:28:5:28:17 | ...&&... | compound true | true |
+| guards.go:28:11:28:16 | ...\|\|... | compound true | true |
+| guards.go:36:5:36:15 | type conversion | upcast | 0 |
+| guards.go:36:5:36:20 | ...==... | upcast | true |
+| guards.go:36:11:36:14 | wide | upcast | 0 |
+| guards.go:39:5:39:14 | type conversion | downcast | 0 |
+| guards.go:39:5:39:19 | ...==... | downcast | true |
+| guards.go:42:5:42:17 | type conversion | upcast narrow | 0 |
+| guards.go:42:5:42:22 | ...==... | upcast narrow | true |
+| guards.go:42:11:42:16 | narrow | upcast narrow | 0 |
+| guards.go:48:5:48:9 | value | above ten | Lower bound 11 |
+| guards.go:48:5:48:9 | value | at most ten | Upper bound 10 |
+| guards.go:48:5:48:15 | ...<=... | above ten | false |
+| guards.go:48:5:48:15 | ...<=... | at most ten | true |
+| guards.go:53:5:53:15 | ...<=... | at least ten | true |
+| guards.go:53:5:53:15 | ...<=... | below ten | false |
+| guards.go:53:11:53:15 | value | at least ten | Lower bound 10 |
+| guards.go:53:11:53:15 | value | below ten | Upper bound 9 |
+ensuresEqResult
+| guards.go:9:7:9:16 | ...==... | 0 = value | true |
+| guards.go:9:7:9:16 | ...==... | value = 0 | true |
+| guards.go:18:7:18:7 | 0 | 0 = value | true |
+| guards.go:18:7:18:7 | 0 | value = 0 | true |
+| guards.go:20:7:20:7 | 1 | 1 = value | true |
+| guards.go:20:7:20:7 | 1 | value = 1 | true |
+| guards.go:20:10:20:10 | 2 | 2 = value | true |
+| guards.go:20:10:20:10 | 2 | value = 2 | true |
+| guards.go:36:5:36:20 | ...==... | 0 = type conversion | true |
+| guards.go:36:5:36:20 | ...==... | type conversion = 0 | true |
+| guards.go:39:5:39:19 | ...==... | 0 = type conversion | true |
+| guards.go:39:5:39:19 | ...==... | type conversion = 0 | true |
+| guards.go:42:5:42:22 | ...==... | 0 = type conversion | true |
+| guards.go:42:5:42:22 | ...==... | type conversion = 0 | true |
