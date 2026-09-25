@@ -23,6 +23,7 @@
 use std::collections::BTreeMap;
 
 use codeql_extractor::extractor::ExtraToken;
+use serde::Deserialize;
 use serde_json::Value;
 use yeast::{Ast, Id, NodeContent, Point, Range};
 
@@ -325,7 +326,12 @@ const SWIFT_NODE_TYPES: &str = include_str!("../../../swift_node_types.yml");
 /// authoritative swift-syntax schema ([`SWIFT_NODE_TYPES`]); the adapter only
 /// ever consumes swift-syntax input, so the schema is not a parameter.
 pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
-    let root: Value = serde_json::from_str(json).map_err(|e| format!("invalid JSON: {e}"))?;
+    let mut deserializer = serde_json::Deserializer::from_str(json);
+    deserializer.disable_recursion_limit();
+    let root = Value::deserialize(&mut deserializer).map_err(|e| format!("invalid JSON: {e}"))?;
+    deserializer
+        .end()
+        .map_err(|e| format!("invalid JSON: {e}"))?;
     let locations = LocationTable::from_root(&root)?;
 
     let mut ast = Ast::with_schema(yeast::node_types_yaml::schema_from_yaml(SWIFT_NODE_TYPES)?);
@@ -512,6 +518,19 @@ mod tests {
             Err(error) => error,
         };
         assert!(error.contains("must start with offset 0"), "{error}");
+    }
+
+    #[test]
+    fn accepts_deeply_nested_json() {
+        let mut child = r#"{"$pos":0,"$end":0,"kind":"sourceFile"}"#.to_string();
+        for _ in 0..256 {
+            child = format!(r#"{{"$pos":0,"$end":0,"kind":"sourceFile","child":{child}}}"#);
+        }
+        let json = format!(
+            r#"{{"$lineStarts":[0],"$pos":0,"$end":0,"kind":"sourceFile","child":{child}}}"#
+        );
+
+        json_to_ast(&json).expect("adapter should accept JSON nested beyond serde_json's default");
     }
 
     #[test]

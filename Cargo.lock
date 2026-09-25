@@ -417,6 +417,7 @@ dependencies = [
  "lazy_static",
  "rayon",
  "regex",
+ "serde",
  "serde_json",
  "swift-syntax-rs",
  "tracing",
