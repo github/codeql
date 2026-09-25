@@ -3,7 +3,7 @@
  * @description Finds all potential usage of signing algorithms using the supported libraries.
  * @kind problem
  * @id py/quantum-readiness/cbom/signing-algorithms
- * @problem.severity error
+ * @severity recommendation
  * @tags cbom
  *       cryptography
  */
