@@ -1,0 +1,9 @@
+local function conditional_effects(first, second, replacement)
+  local selected = first or replacement
+  local less = first < second
+  local equal = first == second
+  local less_or_equal = first <= second
+  return selected, less, equal, less_or_equal
+end
+
+return conditional_effects

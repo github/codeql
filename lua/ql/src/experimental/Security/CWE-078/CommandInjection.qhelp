@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Building a system command from externally controlled data can allow an attacker to execute
+additional commands or change the intended command.</p>
+
+<p>This query follows unsanitized data through Lua 5.1 bytecode to command-execution APIs. Lua
+source must first be compiled with <code>luac5.1</code>, preserving its relative file layout.</p>
+
+</overview>
+<recommendation>
+
+<p>Avoid constructing shell commands from externally controlled strings. Prefer fixed commands
+and map validated input to a small allowlist of arguments or operations.</p>
+
+<p>When a command must contain external data, validate or sanitize the value before it reaches the
+command-execution API.</p>
+
+</recommendation>
+<example>
+
+<p>The following example contrasts unsafe command construction with an allowlist-based approach.</p>
+
+<sample src="examples/CommandInjection.lua" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/attacks/Command_Injection">Command Injection</a>.
+</li>
+
+</references>
+</qhelp>

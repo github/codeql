@@ -18,6 +18,9 @@ JS:
   - any: [ 'javascript/**/*' ]
   - change-notes/**/*javascript*
 
+Lua:
+  - lua/**/*
+
 Kotlin:
   - java/kotlin-extractor/**/*
   - java/ql/test-kotlin*/**/*

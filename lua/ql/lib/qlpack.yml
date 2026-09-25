@@ -1,0 +1,9 @@
+name: codeql/lua-all
+version: 0.1.0-dev
+groups: lua
+library: true
+extractor: lua
+dbscheme: lua.dbscheme
+dependencies:
+  codeql/util: ${workspace}
+warnOnImplicitThis: true

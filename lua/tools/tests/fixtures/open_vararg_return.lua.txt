@@ -1,0 +1,5 @@
+local function forward(...)
+  return ...
+end
+
+return forward

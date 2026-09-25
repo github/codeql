@@ -1,0 +1,6 @@
+| bc-constants-call | root:k0 | string | alpha |
+| bc-constants-call | root:k1 | number | 7.0 |
+| bc-prototype-params | root | prototype | exists |
+| bc-prototype-params | root.0 | parent=root | num_params=2 |
+| bc-prototype-params | root@pc0 | instruction | CLOSURE |
+| bc-stripped-metadata | root.0 | mapping-state | stripped/unavailable |

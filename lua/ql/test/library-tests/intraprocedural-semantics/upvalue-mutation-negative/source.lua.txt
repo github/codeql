@@ -1,0 +1,10 @@
+local seed = "old"
+
+local function mutate()
+  local before = seed
+  seed = "new"
+  local after = seed
+  return before, after
+end
+
+return mutate()

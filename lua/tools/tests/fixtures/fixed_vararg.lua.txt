@@ -1,0 +1,6 @@
+local function collect(...)
+  local first, second, third = ...
+  return first, second, third
+end
+
+return collect
