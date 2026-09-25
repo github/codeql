@@ -51,6 +51,13 @@ class TrapLabelManager {
      * to avoid duplication.
      */
     val fileClassLocationsExtracted = HashSet<IrFile>()
+
+    /**
+     * Tracks external file classes (by FqName) whose location has been set from a binary path.
+     * Used to avoid writing duplicate hasLocation facts for external file class entities extracted
+     * through the K2 code path where declarations sit directly under IrExternalPackageFragment.
+     */
+    val externalFileClassLocationsExtracted = HashSet<org.jetbrains.kotlin.name.FqName>()
 }
 
 /**
