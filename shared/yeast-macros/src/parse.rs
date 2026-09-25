@@ -2,7 +2,10 @@ use proc_macro2::{Delimiter, Ident, Literal, Span, TokenStream, TokenTree};
 use quote::quote;
 use std::iter::Peekable;
 use std::sync::atomic::{AtomicUsize, Ordering};
-use syn::Lifetime;
+use syn::{
+    Expr, Lifetime, Token,
+    parse::{Parse, ParseStream},
+};
 
 type Tokens = Peekable<proc_macro2::token_stream::IntoIter>;
 type Result<T> = std::result::Result<T, syn::Error>;
@@ -371,8 +374,11 @@ pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
 }
 
 pub fn parse_tree_at_top(input: TokenStream) -> Result<TokenStream> {
-    let mut tokens = input.into_iter().peekable();
-    let source = parse_argument(&mut tokens, "expected `,` after source node")?;
+    let LocatedTreeInput {
+        source,
+        template,
+    } = syn::parse2(input)?;
+    let mut tokens = template.into_iter().peekable();
     let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
     let node = parse_direct_node(&mut tokens, &ctx, None)?;
     if let Some(tok) = tokens.next() {
@@ -396,8 +402,11 @@ pub fn parse_tree_at_top(input: TokenStream) -> Result<TokenStream> {
 }
 
 pub fn parse_tree_spanning_top(input: TokenStream) -> Result<TokenStream> {
-    let mut tokens = input.into_iter().peekable();
-    let sources = parse_argument(&mut tokens, "expected `,` after source nodes")?;
+    let LocatedTreeInput {
+        source: sources,
+        template,
+    } = syn::parse2(input)?;
+    let mut tokens = template.into_iter().peekable();
     let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
     let node = parse_direct_node(&mut tokens, &ctx, None)?;
     if let Some(tok) = tokens.next() {
@@ -420,18 +429,18 @@ pub fn parse_tree_spanning_top(input: TokenStream) -> Result<TokenStream> {
     })
 }
 
-fn parse_argument(tokens: &mut Tokens, missing_comma: &str) -> Result<TokenStream> {
-    let mut argument = TokenStream::new();
-    while let Some(token) = tokens.next() {
-        if matches!(&token, TokenTree::Punct(p) if p.as_char() == ',') {
-            if argument.is_empty() {
-                return Err(syn::Error::new_spanned(token, "expected expression"));
-            }
-            return Ok(argument);
-        }
-        argument.extend([token]);
+struct LocatedTreeInput {
+    source: Expr,
+    template: TokenStream,
+}
+
+impl Parse for LocatedTreeInput {
+    fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
+        let source = input.parse()?;
+        input.parse::<Token![,]>()?;
+        let template = input.parse()?;
+        Ok(Self { source, template })
     }
-    Err(syn::Error::new(Span::call_site(), missing_comma))
 }
 
 /// Parse a single node template and generate code that returns an `Id`.
