@@ -10,7 +10,7 @@ inner:
 		goto done // $ gotoTarget=done
 
 	back:
-		goto inner // $ MISSING: gotoTarget=inner
+		goto inner // $ gotoTarget=inner
 	done:
 		flag = false
 	}
