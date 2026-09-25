@@ -3684,12 +3684,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__unicode-ident-1.0.26",
-        sha256 = "d245f478577f809a851594d02313b640fb437e0bb33866753cff937863096954",
+        name = "vendor_ts__unicode-ident-1.0.24",
+        sha256 = "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/unicode-ident/1.0.26/download"],
-        strip_prefix = "unicode-ident-1.0.26",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.unicode-ident-1.0.26.bazel"),
+        urls = ["https://static.crates.io/crates/unicode-ident/1.0.24/download"],
+        strip_prefix = "unicode-ident-1.0.24",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.unicode-ident-1.0.24.bazel"),
     )
 
     maybe(
@@ -3984,12 +3984,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__winnow-0.7.15",
-        sha256 = "df79d97927682d2fd8adb29682d1140b343be4ac0f08fd68b7765d9c059d3945",
+        name = "vendor_ts__winnow-0.7.13",
+        sha256 = "21a0236b59786fed61e2a80582dd500fe61f18b5dca67a4a067d0bc9039339cf",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/winnow/0.7.15/download"],
-        strip_prefix = "winnow-0.7.15",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.winnow-0.7.15.bazel"),
+        urls = ["https://static.crates.io/crates/winnow/0.7.13/download"],
+        strip_prefix = "winnow-0.7.13",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.winnow-0.7.13.bazel"),
     )
 
     maybe(

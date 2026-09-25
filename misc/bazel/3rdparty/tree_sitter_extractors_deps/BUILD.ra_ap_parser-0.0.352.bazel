@@ -119,6 +119,6 @@ rust_library(
         "@vendor_ts__ra_ap_edition-0.0.352//:ra_ap_edition",
         "@vendor_ts__rustc-literal-escaper-0.0.7//:rustc_literal_escaper",
         "@vendor_ts__tracing-0.1.44//:tracing",
-        "@vendor_ts__winnow-0.7.15//:winnow",
+        "@vendor_ts__winnow-0.7.13//:winnow",
     ],
 )
