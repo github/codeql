@@ -202,13 +202,26 @@ fn field_entries(node: &Value) -> Vec<(&str, &Value)> {
         .unwrap_or_default()
 }
 
-/// The child node objects held by a field value, which is either a single node
-/// object or an array of them (an elided collection).
+/// The child node objects held by a field value.
+///
+/// Collection nodes are elided by the Swift serializer, so nested collections
+/// can produce nested arrays (notably inside `UnexpectedNodesSyntax`). Flatten
+/// arrays recursively to preserve the intended collection elision.
 fn children_of(value: &Value) -> Vec<&Value> {
-    match value {
-        Value::Array(items) => items.iter().collect(),
-        other => vec![other],
+    fn collect<'a>(value: &'a Value, children: &mut Vec<&'a Value>) {
+        match value {
+            Value::Array(items) => {
+                for item in items {
+                    collect(item, children);
+                }
+            }
+            other => children.push(other),
+        }
     }
+
+    let mut children = Vec::new();
+    collect(value, &mut children);
+    children
 }
 
 /// Recursively build `node` (and its descendants) into `ast`, returning its id.
@@ -454,6 +467,41 @@ mod tests {
         assert_eq!(ident.end_byte(), 16);
         assert_eq!(ident.start_position(), Point::new(1, 4));
         assert_eq!(ident.end_position(), Point::new(1, 5));
+    }
+
+    #[test]
+    fn flattens_nested_elided_collections() {
+        let json = r#"{
+            "$lineStarts": [0],
+            "$pos": 0,
+            "$end": 20,
+            "kind": "sourceFile",
+            "unexpected": [
+                {
+                    "$pos": 0,
+                    "$end": 1,
+                    "kind": "token",
+                    "tokenKind": "leftBrace",
+                    "text": "{"
+                },
+                [
+                    {
+                        "$pos": 2,
+                        "$end": 20,
+                        "kind": "precedenceGroupAssociativity"
+                    }
+                ]
+            ]
+        }"#;
+        let ast = json_to_ast(json)
+            .expect("adapter should flatten nested collections")
+            .ast;
+
+        assert!(
+            ast.nodes()
+                .iter()
+                .any(|node| node.kind_name() == "precedenceGroupAssociativity")
+        );
     }
 
     #[test]
