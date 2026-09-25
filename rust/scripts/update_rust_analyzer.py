@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
+import base64
+import hashlib
 import json
+import re
 import shlex
 import subprocess
 import sys
@@ -10,6 +13,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+MODULE_BAZEL = REPO_ROOT / "MODULE.bazel"
 RUST_EXTRACTOR_MANIFEST = REPO_ROOT / "rust/extractor/Cargo.toml"
 
 # The files that mention the fixed Rust toolchain version
@@ -32,7 +36,7 @@ def run_codegen() -> None:
         run("bazel", "run", "//rust/codegen")
     except subprocess.CalledProcessError as error:
         print(
-            "\nCodegen failed. Carry out the instructions from step 4 in rust/updating-rust-analyzer.md manually.",
+            "\nCodegen failed. Carry out the instructions from step 5 in rust/updating-rust-analyzer.md manually.",
             file=sys.stderr,
             flush=True,
         )
@@ -61,12 +65,48 @@ def fetch(url: str) -> bytes:
         return response.read()
 
 
-def get_compatible_rust_toolchain(rust_analyzer_version: str) -> str:
-    """Get the latest Rust toolchain released no later than rust-analyzer."""
-    # Get the release date of the rust-analyzer version
+def get_rust_analyzer_release_date(rust_analyzer_version: str) -> str:
+    """Get the release date of a rust-analyzer crate version."""
     crate_url = f"https://crates.io/api/v1/crates/ra_ap_syntax/{rust_analyzer_version}"
     crate = json.loads(fetch(crate_url))
-    rust_analyzer_release = crate["version"]["created_at"].split("T")[0]
+    return crate["version"]["created_at"].split("T")[0]
+
+
+def update_rust_analyzer_sources(rust_analyzer_version: str) -> None:
+    """
+    Update the rust-analyzer source archive used by the AST generator.
+
+    Concretly, this updates `RUST_ANALYZER_SRC_TAG` and
+    `RUST_ANALYZER_SRC_INTEGRITY` in the MODULE.bazel file.
+    """
+
+    release_date = get_rust_analyzer_release_date(rust_analyzer_version)
+    archive_url = (
+        "https://github.com/rust-lang/rust-analyzer/archive/refs/tags/"
+        f"{release_date}.tar.gz"
+    )
+    archive = fetch(archive_url)
+    integrity = "sha256-" + base64.b64encode(hashlib.sha256(archive).digest()).decode()
+
+    module = MODULE_BAZEL.read_text()
+    module = re.sub(
+        r'RUST_ANALYZER_SRC_TAG = "[^"]+"',
+        f'RUST_ANALYZER_SRC_TAG = "{release_date}"',
+        module,
+        count=1,
+    )
+    module = re.sub(
+        r'RUST_ANALYZER_SRC_INTEGRITY = "[^"]+"',
+        f'RUST_ANALYZER_SRC_INTEGRITY = "{integrity}"',
+        module,
+        count=1,
+    )
+    MODULE_BAZEL.write_text(module)
+
+
+def get_compatible_rust_toolchain(rust_analyzer_version: str) -> str:
+    """Get the latest Rust toolchain released no later than rust-analyzer."""
+    rust_analyzer_release = get_rust_analyzer_release_date(rust_analyzer_version)
 
     # `manifests.txt` is a list of all toolchains. The one we're interested in looks like
     # ```
@@ -168,20 +208,24 @@ def main() -> None:
         run("cargo", "update")
     commit_all("Cargo: Upgrade dependencies")
 
-    print_step(2, "Update the fixed Rust toolchain used by the extractor")
+    print_step(2, "Update the rust-analyzer sources used by the AST generator")
+    update_rust_analyzer_sources(new_rust_analyzer_version)
+    commit_all("Rust: Update rust-analyzer sources")
+
+    print_step(3, "Update the fixed Rust toolchain used by the extractor")
     rust_toolchain = get_compatible_rust_toolchain(new_rust_analyzer_version)
     update_fixed_rust_toolchain_versions(rust_toolchain)
     commit_all("Rust: Update fixed toolchain")
 
-    print_step(3, "Regenerate vendored bazel files")
+    print_step(4, "Regenerate vendored bazel files")
     run("misc/bazel/3rdparty/update_tree_sitter_extractors_deps.sh")
     commit_all("Bazel: Regenerate vendored cargo dependencies")
 
-    print_step(4, "Run codegen")
+    print_step(5, "Run codegen")
     run_codegen()
     commit_all("Rust: Run codegen")
 
-    print_step(5, "Try compiling")
+    print_step(6, "Try compiling")
     run("bazel", "run", "//rust:install")
 
 

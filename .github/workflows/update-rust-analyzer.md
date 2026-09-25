@@ -75,6 +75,14 @@ safe-outputs:
       - "ruby/extractor/Cargo.toml"
       - "unified/extractor/Cargo.toml"
       - "unified/swift-syntax-rs/Cargo.toml"
+      # A rust-analyzer update can require a newer Rust toolchain whose Clippy
+      # lints require compatibility fixes in any of the Rust sources.
+      # rust-analyzer dependency updates can also update tree-sitter APIs,
+      # requiring compatibility fixes in the shared extractor implementation.
+      - "shared/yeast/src/**"
+      - "shared/yeast-macros/src/**"
+      - "shared/yeast-schema/src/**"
+      - "shared/tree-sitter-extractor/src/**"
       - "MODULE.bazel"
       - "MODULE.bazel.lock"
       - "rust-toolchain.toml"
