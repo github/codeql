@@ -110,3 +110,4 @@ private class ConstantDataSource extends Crypto::GenericConstantSourceInstance i
 }
 
 import OpenSSL.OpenSSL
+import Standard.Random
