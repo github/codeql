@@ -836,13 +836,23 @@ module CfgImpl {
         n.isAdditional(fd.getBody(), "result-read:0")
       )
       or
-      // Function bodies are excluded from `Ast::BlockStmt`, so handle goto
-      // targets among their top-level statements here.
-      exists(Go::FuncDef fd, Go::Stmt target, Label l |
-        ast = fd.getBody() and
-        target = fd.getBody().getAStmt() and
+      // Handle goto targets that the shared block logic cannot see: top-level
+      // statements of function bodies and labels enclosing the current node.
+      exists(Go::Stmt target, Label l |
+        (
+          exists(Go::FuncDef fd |
+            ast = fd.getBody() and
+            target = fd.getBody().getAStmt() and
+            hasLabel(target, l)
+          )
+          or
+          exists(Go::LabeledStmt lbl |
+            ast = lbl.getStmt() and
+            target = lbl and
+            l = lbl.getLabel()
+          )
+        ) and
         not target instanceof Go::GotoStmt and
-        hasLabel(target, l) and
         n.isBefore(target) and
         c.getSuccessorType() instanceof GotoSuccessor and
         c.hasLabel(l)
