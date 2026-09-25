@@ -10,6 +10,16 @@ use ra_ap_syntax::ast::{
 #[rustfmt::skip]
 use ra_ap_syntax::{AstNode, ast};
 impl Translator<'_> {
+    pub(crate) fn emit_any_attr(
+        &mut self,
+        node: &ast::AnyAttr,
+    ) -> Option<Label<generated::AnyAttr>> {
+        let label = match node {
+            ast::AnyAttr::Attr(inner) => self.emit_attr(inner).map(Into::into),
+            ast::AnyAttr::DocComment(inner) => self.emit_doc_comment(inner).map(Into::into),
+        }?;
+        Some(label)
+    }
     pub(crate) fn emit_asm_operand(
         &mut self,
         node: &ast::AsmOperand,
@@ -296,7 +306,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let exprs = node.exprs().filter_map(|x| self.emit_expr(&x)).collect();
         let is_semicolon = node.semicolon_token().is_some();
         let label = self.trap.emit(generated::ArrayExprInternal {
@@ -331,7 +344,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let label = self.trap.emit(generated::AsmClobberAbi {
             id: TrapId::Star,
             attrs,
@@ -375,7 +391,10 @@ impl Translator<'_> {
             .asm_pieces()
             .filter_map(|x| self.emit_asm_piece(&x))
             .collect();
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let template = node.template().filter_map(|x| self.emit_expr(&x)).collect();
         let label = self.trap.emit(generated::AsmExpr {
             id: TrapId::Star,
@@ -423,7 +442,10 @@ impl Translator<'_> {
             return None;
         }
         let asm_operand = node.asm_operand().and_then(|x| self.emit_asm_operand(&x));
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let name = node.name().and_then(|x| self.emit_name(&x));
         let label = self.trap.emit(generated::AsmOperandNamed {
             id: TrapId::Star,
@@ -459,7 +481,10 @@ impl Translator<'_> {
             .asm_options()
             .filter_map(|x| self.emit_asm_option(&x))
             .collect();
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let label = self.trap.emit(generated::AsmOptionsList {
             id: TrapId::Star,
             asm_options,
@@ -522,7 +547,10 @@ impl Translator<'_> {
             .assoc_items()
             .filter_map(|x| self.emit_assoc_item(&x))
             .collect();
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let label = self.trap.emit(generated::AssocItemList {
             id: TrapId::Star,
             assoc_items,
@@ -582,7 +610,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let label = self.trap.emit(generated::AwaitExpr {
             id: TrapId::Star,
@@ -600,7 +631,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let label = self.trap.emit(generated::BecomeExpr {
             id: TrapId::Star,
@@ -618,7 +652,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let lhs = node.lhs().and_then(|x| self.emit_expr(&x));
         let operator_name = node.try_get_text();
         let rhs = node.rhs().and_then(|x| self.emit_expr(&x));
@@ -640,7 +677,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
         let is_gen = node.gen_token().is_some();
@@ -684,7 +724,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(&x));
         let label = self.trap.emit(generated::BreakExpr {
@@ -705,7 +748,10 @@ impl Translator<'_> {
             return None;
         }
         let arg_list = node.arg_list().and_then(|x| self.emit_arg_list(&x));
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let function = node.expr().and_then(|x| self.emit_expr(&x));
         let label = self.trap.emit(generated::CallExpr {
             id: TrapId::Star,
@@ -724,7 +770,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let type_repr = node.ty().and_then(|x| self.emit_type(&x));
         let label = self.trap.emit(generated::CastExpr {
@@ -801,7 +850,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let closure_body = node.body().and_then(|x| self.emit_expr(&x));
         let for_binder = node.for_binder().and_then(|x| self.emit_for_binder(&x));
         let is_async = node.async_token().is_some();
@@ -835,7 +887,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let body = if self.should_skip_bodies() {
             None
         } else {
@@ -902,7 +957,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let default_val = node.default_val().and_then(|x| self.emit_const_arg(&x));
         let is_const = node.const_token().is_some();
         let name = node.name().and_then(|x| self.emit_name(&x));
@@ -926,7 +984,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(&x));
         let label = self.trap.emit(generated::ContinueExpr {
             id: TrapId::Star,
@@ -946,6 +1007,15 @@ impl Translator<'_> {
             id: TrapId::Star,
             pat,
         });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
+    pub(crate) fn emit_doc_comment(
+        &mut self,
+        node: &ast::DocComment,
+    ) -> Option<Label<generated::DocComment>> {
+        let label = self.trap.emit(generated::DocComment { id: TrapId::Star });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
@@ -972,7 +1042,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let generic_param_list = node
             .generic_param_list()
             .and_then(|x| self.emit_generic_param_list(&x));
@@ -1015,7 +1088,10 @@ impl Translator<'_> {
             return None;
         }
         let abi = node.abi().and_then(|x| self.emit_abi(&x));
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let extern_item_list = node
             .extern_item_list()
             .and_then(|x| self.emit_extern_item_list(&x));
@@ -1038,7 +1114,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let identifier = node.name_ref().and_then(|x| self.emit_name_ref(&x));
         let rename = node.rename().and_then(|x| self.emit_rename(&x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(&x));
@@ -1060,7 +1139,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let extern_items = node
             .extern_items()
             .filter_map(|x| self.emit_extern_item(&x))
@@ -1081,7 +1163,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let container = node.expr().and_then(|x| self.emit_expr(&x));
         let identifier = node.name_ref().and_then(|x| self.emit_name_ref(&x));
         let label = self.trap.emit(generated::FieldExpr {
@@ -1102,7 +1187,10 @@ impl Translator<'_> {
             return None;
         }
         let abi = node.abi().and_then(|x| self.emit_abi(&x));
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let function_body = if self.should_skip_bodies() {
             None
         } else {
@@ -1188,7 +1276,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let iterable = node.iterable().and_then(|x| self.emit_expr(&x));
         let label = node.label().and_then(|x| self.emit_label(&x));
         let loop_body = node.loop_body().and_then(|x| self.emit_block_expr(&x));
@@ -1246,7 +1337,10 @@ impl Translator<'_> {
             .args()
             .filter_map(|x| self.emit_format_args_arg(&x))
             .collect();
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let template = node.template().and_then(|x| self.emit_expr(&x));
         let label = self.trap.emit(generated::FormatArgsExpr {
             id: TrapId::Star,
@@ -1297,7 +1391,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let is_mut = node.mut_token().is_some();
         let is_ref = node.ref_token().is_some();
         let name = node.name().and_then(|x| self.emit_name(&x));
@@ -1318,7 +1415,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let condition = node.condition().and_then(|x| self.emit_expr(&x));
         let else_ = node.else_branch().and_then(|x| self.emit_else_branch(&x));
         let then = node.then_branch().and_then(|x| self.emit_block_expr(&x));
@@ -1340,7 +1440,10 @@ impl Translator<'_> {
         let assoc_item_list = node
             .assoc_item_list()
             .and_then(|x| self.emit_assoc_item_list(&x));
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let generic_param_list = node
             .generic_param_list()
             .and_then(|x| self.emit_generic_param_list(&x));
@@ -1416,7 +1519,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let base = node.base().and_then(|x| self.emit_expr(&x));
         let index = node.index().and_then(|x| self.emit_expr(&x));
         let label = self.trap.emit(generated::IndexExpr {
@@ -1447,7 +1553,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let items = node.items().filter_map(|x| self.emit_item(&x)).collect();
         let label = self.trap.emit(generated::ItemList {
             id: TrapId::Star,
@@ -1503,7 +1612,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let scrutinee = node.expr().and_then(|x| self.emit_expr(&x));
         let pat = node.pat().and_then(|x| self.emit_pat(&x));
         let label = self.trap.emit(generated::LetExpr {
@@ -1523,7 +1635,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let initializer = node.initializer().and_then(|x| self.emit_expr(&x));
         let let_else = node.let_else().and_then(|x| self.emit_let_else(&x));
         let pat = node.pat().and_then(|x| self.emit_pat(&x));
@@ -1573,7 +1688,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(&x));
         let type_bound_list = node
             .type_bound_list()
@@ -1595,7 +1713,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let text_value = node.try_get_text();
         let label = self.trap.emit(generated::LiteralExpr {
             id: TrapId::Star,
@@ -1626,7 +1747,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let label = node.label().and_then(|x| self.emit_label(&x));
         let loop_body = node.loop_body().and_then(|x| self.emit_block_expr(&x));
         let label = self.trap.emit(generated::LoopExpr {
@@ -1649,7 +1773,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let path = node.path().and_then(|x| self.emit_path(&x));
         let token_tree = if self.should_skip_bodies() {
             None
@@ -1679,7 +1806,10 @@ impl Translator<'_> {
         } else {
             node.args().and_then(|x| self.emit_token_tree(&x))
         };
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let body = if self.should_skip_bodies() {
             None
         } else {
@@ -1745,7 +1875,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let name = node.name().and_then(|x| self.emit_name(&x));
         let token_tree = node.token_tree().and_then(|x| self.emit_token_tree(&x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(&x));
@@ -1780,7 +1913,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let guard = node.guard().and_then(|x| self.emit_match_guard(&x));
         let pat = node.pat().and_then(|x| self.emit_pat(&x));
@@ -1806,7 +1942,10 @@ impl Translator<'_> {
             .arms()
             .filter_map(|x| self.emit_match_arm(&x))
             .collect();
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let label = self.trap.emit(generated::MatchArmList {
             id: TrapId::Star,
             arms,
@@ -1823,7 +1962,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let scrutinee = node.expr().and_then(|x| self.emit_expr(&x));
         let match_arm_list = node
             .match_arm_list()
@@ -1859,7 +2001,10 @@ impl Translator<'_> {
             return None;
         }
         let arg_list = node.arg_list().and_then(|x| self.emit_arg_list(&x));
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let generic_arg_list = node
             .generic_arg_list()
             .and_then(|x| self.emit_generic_arg_list(&x));
@@ -1881,7 +2026,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let item_list = node.item_list().and_then(|x| self.emit_item_list(&x));
         let name = node.name().and_then(|x| self.emit_name(&x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(&x));
@@ -1963,7 +2111,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let fields = node
             .fields()
             .filter_map(|x| self.emit_name_ref(&x))
@@ -1993,7 +2144,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let pat = if self.should_skip_bodies() {
             None
         } else {
@@ -2032,7 +2186,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let label = self.trap.emit(generated::ParenExpr {
             id: TrapId::Star,
@@ -2104,7 +2261,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let path = node.path().and_then(|x| self.emit_path(&x));
         let label = self.trap.emit(generated::PathExpr {
             id: TrapId::Star,
@@ -2207,7 +2367,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let operator_name = node.try_get_text();
         let label = self.trap.emit(generated::PrefixExpr {
@@ -2244,7 +2407,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let end = node.end().and_then(|x| self.emit_expr(&x));
         let operator_name = node.try_get_text();
         let start = node.start().and_then(|x| self.emit_expr(&x));
@@ -2300,7 +2466,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let identifier = node.name_ref().and_then(|x| self.emit_name_ref(&x));
         let label = self.trap.emit(generated::StructExprField {
@@ -2320,7 +2489,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let fields = node
             .fields()
             .filter_map(|x| self.emit_record_expr_field(&x))
@@ -2343,7 +2515,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let default_val = node.default_val().and_then(|x| self.emit_const_arg(&x));
         let is_unsafe = node.unsafe_token().is_some();
         let mut_restriction = node
@@ -2406,7 +2581,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let identifier = node.name_ref().and_then(|x| self.emit_name_ref(&x));
         let pat = node.pat().and_then(|x| self.emit_pat(&x));
         let label = self.trap.emit(generated::StructPatField {
@@ -2444,7 +2622,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let is_const = node.const_token().is_some();
         let is_mut = node.mut_token().is_some();
@@ -2507,7 +2688,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let label = self.trap.emit(generated::RestPat {
             id: TrapId::Star,
             attrs,
@@ -2536,7 +2720,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let label = self.trap.emit(generated::ReturnExpr {
             id: TrapId::Star,
@@ -2565,7 +2752,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let is_ref = node.amp_token().is_some();
         let is_mut = node.mut_token().is_some();
         let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(&x));
@@ -2617,7 +2807,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let items = node.items().filter_map(|x| self.emit_item(&x)).collect();
         let label = self.trap.emit(generated::SourceFile {
             id: TrapId::Star,
@@ -2632,7 +2825,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let body = if self.should_skip_bodies() {
             None
         } else {
@@ -2666,7 +2862,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let statements = node
             .statements()
             .filter_map(|x| self.emit_stmt(&x))
@@ -2689,7 +2888,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let field_list = node.field_list().and_then(|x| self.emit_field_list(&x));
         let generic_param_list = node
             .generic_param_list()
@@ -2742,7 +2944,10 @@ impl Translator<'_> {
         let assoc_item_list = node
             .assoc_item_list()
             .and_then(|x| self.emit_assoc_item_list(&x));
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let generic_param_list = node
             .generic_param_list()
             .and_then(|x| self.emit_generic_param_list(&x));
@@ -2796,7 +3001,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let label = self.trap.emit(generated::TryExpr {
             id: TrapId::Star,
@@ -2814,7 +3022,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let fields = node.fields().filter_map(|x| self.emit_expr(&x)).collect();
         let label = self.trap.emit(generated::TupleExpr {
             id: TrapId::Star,
@@ -2832,7 +3043,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let mut_restriction = node
             .mut_restriction()
             .and_then(|x| self.emit_mut_restriction(&x));
@@ -2913,7 +3127,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let generic_param_list = node
             .generic_param_list()
             .and_then(|x| self.emit_generic_param_list(&x));
@@ -3001,7 +3218,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let default_type = node.default_type().and_then(|x| self.emit_type(&x));
         let name = node.name().and_then(|x| self.emit_name(&x));
         let type_bound_list = node
@@ -3025,7 +3245,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let label = self.trap.emit(generated::UnderscoreExpr {
             id: TrapId::Star,
             attrs,
@@ -3041,7 +3264,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let generic_param_list = node
             .generic_param_list()
             .and_then(|x| self.emit_generic_param_list(&x));
@@ -3084,7 +3310,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let use_tree = node.use_tree().and_then(|x| self.emit_use_tree(&x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(&x));
         let label = self.trap.emit(generated::Use {
@@ -3157,7 +3386,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let const_arg = node.const_arg().and_then(|x| self.emit_const_arg(&x));
         let field_list = node.field_list().and_then(|x| self.emit_field_list(&x));
         let name = node.name().and_then(|x| self.emit_name(&x));
@@ -3262,7 +3494,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let condition = node.condition().and_then(|x| self.emit_expr(&x));
         let label = node.label().and_then(|x| self.emit_label(&x));
         let loop_body = node.loop_body().and_then(|x| self.emit_block_expr(&x));
@@ -3293,7 +3528,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let label = self.trap.emit(generated::YeetExpr {
             id: TrapId::Star,
@@ -3311,7 +3549,10 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
+        let attrs = node
+            .attrs_with_doc()
+            .filter_map(|x| self.emit_any_attr(&x))
+            .collect();
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
         let label = self.trap.emit(generated::YieldExpr {
             id: TrapId::Star,

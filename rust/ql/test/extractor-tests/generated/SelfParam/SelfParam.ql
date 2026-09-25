@@ -13,7 +13,7 @@ query predicate instances(
   if x.isMut() then isMut = "yes" else isMut = "no"
 }
 
-query predicate getAttr(SelfParam x, int index, Attr getAttr) {
+query predicate getAttr(SelfParam x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

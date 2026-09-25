@@ -19,6 +19,7 @@ module Generated {
    * ```rust
    * // this is a comment
    * /// This is a doc comment
+   * fn documented() {}
    * ```
    * INTERNAL: Do not reference the `Generated::Comment` class directly.
    * Use the subclass `Comment`, where the following predicates are available.

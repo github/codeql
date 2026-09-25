@@ -113,8 +113,8 @@ rust_library(
     version = "0.2.3+llvm-462a31f5a5ab",
     deps = [
         ":build_script_build",
-        "@vendor_ts__bitflags-2.13.1//:bitflags",
-        "@vendor_ts__smallvec-1.15.2//:smallvec",
+        "@vendor_ts__bitflags-2.13.2//:bitflags",
+        "@vendor_ts__smallvec-1.16.1//:smallvec",
     ],
 )
 

@@ -6,9 +6,9 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AsmOperand
 import codeql.rust.elements.internal.AsmPieceImpl::Impl as AsmPieceImpl
-import codeql.rust.elements.Attr
 import codeql.rust.elements.Name
 
 /**
@@ -51,9 +51,9 @@ module Generated {
     /**
      * Gets the `index`th attr of this asm operand named (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertAsmOperandNamedToRaw(this)
+        Synth::convertAnyAttrFromRaw(Synth::convertAsmOperandNamedToRaw(this)
               .(Raw::AsmOperandNamed)
               .getAttr(index))
     }
@@ -61,7 +61,7 @@ module Generated {
     /**
      * Gets any of the attrs of this asm operand named.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this asm operand named.

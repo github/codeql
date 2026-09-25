@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -43,12 +43,12 @@ module Generated {
     /**
      * Gets the `index`th attr of this array expression (0-based).
      */
-    Attr getAttr(int index) { none() }
+    AnyAttr getAttr(int index) { none() }
 
     /**
      * Gets any of the attrs of this array expression.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this array expression.

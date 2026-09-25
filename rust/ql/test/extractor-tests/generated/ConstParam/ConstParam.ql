@@ -9,7 +9,7 @@ query predicate instances(ConstParam x, string isConst__label, string isConst) {
   if x.isConst() then isConst = "yes" else isConst = "no"
 }
 
-query predicate getAttr(ConstParam x, int index, Attr getAttr) {
+query predicate getAttr(ConstParam x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

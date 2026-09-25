@@ -10,7 +10,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 # Install the fixed toolchain used by the extractor. The version here should
 # match `FIXED_RUST_TOOLCHAIN`.
-rustup toolchain install 1.97.0 --profile minimal --component rust-src
+rustup toolchain install 1.98.1 --profile minimal --component rust-src
 pushd ../../extractor/src/nightly-toolchain
 rustup install
 popd

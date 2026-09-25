@@ -9,7 +9,7 @@ query predicate instances(StructField x, string isUnsafe__label, string isUnsafe
   if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
 }
 
-query predicate getAttr(StructField x, int index, Attr getAttr) {
+query predicate getAttr(StructField x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

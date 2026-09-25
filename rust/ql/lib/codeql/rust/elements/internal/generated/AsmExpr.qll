@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AsmPiece
-import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
@@ -56,15 +56,15 @@ module Generated {
     /**
      * Gets the `index`th attr of this asm expression (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertAsmExprToRaw(this).(Raw::AsmExpr).getAttr(index))
+        Synth::convertAnyAttrFromRaw(Synth::convertAsmExprToRaw(this).(Raw::AsmExpr).getAttr(index))
     }
 
     /**
      * Gets any of the attrs of this asm expression.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this asm expression.

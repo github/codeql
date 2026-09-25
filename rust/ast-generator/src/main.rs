@@ -149,7 +149,7 @@ fn get_additional_fields(node_name: &str) -> Vec<FieldInfo> {
 
 fn get_trait_fields(trait_name: &str) -> Vec<FieldInfo> {
     match trait_name {
-        "HasAttrs" => vec![FieldInfo::list("attrs", "Attr")],
+        "HasAttrs" => vec![FieldInfo::list("attrs", "AnyAttr")],
         "HasName" => vec![FieldInfo::optional("name", "Name")],
         "HasVisibility" => vec![FieldInfo::optional("visibility", "Visibility")],
         "HasGenericParams" => vec![
@@ -440,7 +440,11 @@ fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeF
         },
         FieldType::List(ty) => ExtractorNodeFieldInfo {
             name,
-            method: field.name.clone(),
+            method: if ty == "AnyAttr" {
+                "attrs_with_doc".to_owned()
+            } else {
+                field.name.clone()
+            },
             snake_case_ty: to_lower_snake_case(ty),
             list: true,
             ..Default::default()
