@@ -238,6 +238,10 @@ allLiterals
 | literals.rb:199:2:199:2 | :y | SymbolLiteral | :y |
 | literals.rb:199:7:199:7 | :Z | SymbolLiteral | :Z |
 | literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | StringLiteral | <none> |
+| literals.rb:202:1:202:27 | /foo #{...}/ | RegExpLiteral | foo a |
+| literals.rb:202:22:202:24 | "a" | StringLiteral | a |
+| literals.rb:203:1:203:29 | /foo #{...}/ | RegExpLiteral | foo \\[x\\] |
+| literals.rb:203:22:203:26 | "[x]" | StringLiteral | [x] |
 stringlikeLiterals
 | literals.rb:59:1:59:2 | "" |  |
 | literals.rb:60:1:60:2 | "" |  |
@@ -353,6 +357,10 @@ stringlikeLiterals
 | literals.rb:199:2:199:2 | :y | :y |
 | literals.rb:199:7:199:7 | :Z | :Z |
 | literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | <none> |
+| literals.rb:202:1:202:27 | /foo #{...}/ | foo a |
+| literals.rb:202:22:202:24 | "a" | a |
+| literals.rb:203:1:203:29 | /foo #{...}/ | foo \\[x\\] |
+| literals.rb:203:22:203:26 | "[x]" | [x] |
 stringLiterals
 | literals.rb:59:1:59:2 | "" |  |
 | literals.rb:60:1:60:2 | "" |  |
@@ -408,6 +416,8 @@ stringLiterals
 | literals.rb:164:1:164:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
 | literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\foobar\\foobar\\foobar\\foobar |
 | literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | <none> |
+| literals.rb:202:22:202:24 | "a" | a |
+| literals.rb:203:22:203:26 | "[x]" | [x] |
 regExpLiterals
 | literals.rb:149:1:149:2 | // |  |  |
 | literals.rb:150:1:150:5 | /foo/ | foo |  |
@@ -421,6 +431,8 @@ regExpLiterals
 | literals.rb:158:1:158:15 | /foo+\\sbar\\S/ | foo+\\sbar\\S |  |
 | literals.rb:159:1:159:32 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |  |
 | literals.rb:160:1:160:10 | /foo/ | <none> | mxo |
+| literals.rb:202:1:202:27 | /foo #{...}/ | foo a |  |
+| literals.rb:203:1:203:29 | /foo #{...}/ | foo \\[x\\] |  |
 regExpInterpolations
 | literals.rb:153:5:153:14 | #{...} | 0 | literals.rb:153:8:153:12 | ... + ... | AddExpr |
 | literals.rb:153:18:153:23 | #{...} | 0 | literals.rb:153:20:153:22 | bar | LocalVariableAccess |
@@ -428,6 +440,8 @@ regExpInterpolations
 | literals.rb:159:7:159:16 | #{...} | 0 | literals.rb:159:10:159:14 | ... + ... | AddExpr |
 | literals.rb:159:20:159:25 | #{...} | 0 | literals.rb:159:22:159:24 | bar | LocalVariableAccess |
 | literals.rb:159:26:159:31 | #{...} | 0 | literals.rb:159:28:159:30 | BAR | ConstantReadAccess |
+| literals.rb:202:6:202:26 | #{...} | 0 | literals.rb:202:8:202:25 | call to escape | MethodCall |
+| literals.rb:203:6:203:28 | #{...} | 0 | literals.rb:203:8:203:27 | call to escape | MethodCall |
 symbolLiterals
 | literals.rb:97:1:97:3 | :"" | : |
 | literals.rb:98:1:98:6 | :hello | :hello |
@@ -641,6 +655,12 @@ stringComponents
 | literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | StringLiteral | 3 | literals.rb:201:21:201:26 | #{...} | StringInterpolationComponent |
 | literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | StringLiteral | 4 | literals.rb:201:27:201:31 |  $_:  | StringTextComponent |
 | literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | StringLiteral | 5 | literals.rb:201:32:201:34 | #{...} | StringInterpolationComponent |
+| literals.rb:202:1:202:27 | /foo #{...}/ | RegExpLiteral | 0 | literals.rb:202:2:202:5 | foo  | RegExpTextComponent |
+| literals.rb:202:1:202:27 | /foo #{...}/ | RegExpLiteral | 1 | literals.rb:202:6:202:26 | #{...} | RegExpInterpolationComponent |
+| literals.rb:202:22:202:24 | "a" | StringLiteral | 0 | literals.rb:202:23:202:23 | a | StringTextComponent |
+| literals.rb:203:1:203:29 | /foo #{...}/ | RegExpLiteral | 0 | literals.rb:203:2:203:5 | foo  | RegExpTextComponent |
+| literals.rb:203:1:203:29 | /foo #{...}/ | RegExpLiteral | 1 | literals.rb:203:6:203:28 | #{...} | RegExpInterpolationComponent |
+| literals.rb:203:22:203:26 | "[x]" | StringLiteral | 0 | literals.rb:203:23:203:25 | [x] | StringTextComponent |
 stringInterpolations
 | literals.rb:71:10:71:19 | #{...} | 0 | literals.rb:71:13:71:17 | ... + ... | AddExpr |
 | literals.rb:72:12:72:21 | #{...} | 0 | literals.rb:72:15:72:19 | ... + ... | AddExpr |
