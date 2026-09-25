@@ -90,13 +90,13 @@ func t8() {
         func read3() {
             sink(field)  // no flow
             self.store()
-            sink(field)  // $ MISSING: hasValueFlow=t8.1 // self.store() not yet resolved by call graph
+            sink(field)  // $ hasValueFlow=t8.1
         }
 
         func read4() {
             sink(field)  // no flow
             self.store()
-            sink(self.field)  // $ MISSING: hasValueFlow=t8.1 // self.store() not yet resolved by call graph
+            sink(self.field)  // $ hasValueFlow=t8.1
         }
 
         func read5() {
@@ -114,13 +114,13 @@ func t8() {
         func read7() {
             sink(self.field)  // no flow
             self.store()
-            sink(field)  // $ MISSING: hasValueFlow=t8.1 // self.store() not yet resolved by call graph
+            sink(field)  // $ hasValueFlow=t8.1
         }
 
         func read8() {
             sink(self.field)  // no flow
             self.store()
-            sink(self.field)  // $ MISSING: hasValueFlow=t8.1 // self.store() not yet resolved by call graph
+            sink(self.field)  // $ hasValueFlow=t8.1
         }
     }
 }

@@ -1,46 +1,55 @@
 // Provides built-in Swift types
 
-struct Bool { }
+struct Bool {}
 
-struct Int { }
+struct Int {}
 
-struct String { }
+struct String {
+    public init<T>(_ value: T) where T: LosslessStringConvertible {
+        fatalError("Dummy implementation.")
+    }
+}
 
-struct Character { }
+struct Character {}
 
-struct Substring { }
+struct Substring {}
 
-struct Int8 { }
+struct Int8 {}
 
-struct Int16 { }
+struct Int16 {}
 
-struct Int32 { }
+struct Int32 {}
 
-struct Int64 { }
+struct Int64 {}
 
-struct UInt { }
+struct UInt {}
 
-struct UInt8 { }
+struct UInt8 {}
 
-struct UInt16 { }
+struct UInt16 {}
 
-struct UInt32 { }
+struct UInt32 {}
 
-struct UInt64 { }
+struct UInt64 {}
 
-struct Float16 { }
+struct Float16 {}
 
-struct Float { }
+struct Float {}
 
-struct Double { }
+struct Double {}
 
-struct Float80 { }
+struct Float80 {}
 
-struct Array<T> { }
+struct Array<Element> {
+    public func map<T, E>(_ transform: (Element) throws(E) -> T) throws(E) -> [T]
+    where E: Error {
+        fatalError("Dummy implementation.")
+    }
+}
 
-struct Dictionary<Key, Value> { }
+struct Dictionary<Key, Value> {}
 
-struct Set<Element> { }
+struct Set<Element> {}
 
 enum Optional<Wrapped> {
     case none
@@ -52,41 +61,45 @@ enum Result<Success, Failure> {
     case failure(Failure)
 }
 
-struct Range<Bound> { }
+struct Range<Bound> {}
 
-struct ClosedRange<Bound> { }
+struct ClosedRange<Bound> {}
 
-struct PartialRangeFrom<Bound> { }
+struct PartialRangeFrom<Bound> {}
 
-struct PartialRangeThrough<Bound> { }
+struct PartialRangeThrough<Bound> {}
 
-struct PartialRangeUpTo<Bound> { }
+struct PartialRangeUpTo<Bound> {}
 
-enum Never { }
+enum Never {}
 
-struct UnsafePointer<Pointee> { }
+struct UnsafePointer<Pointee> {}
 
-struct UnsafeMutablePointer<Pointee> { }
+struct UnsafeMutablePointer<Pointee> {}
 
-struct UnsafeRawPointer { }
+struct UnsafeRawPointer {}
 
-struct UnsafeMutableRawPointer { }
+struct UnsafeMutableRawPointer {}
 
-struct UnsafeBufferPointer<Element> { }
+struct UnsafeBufferPointer<Element> {}
 
-struct UnsafeMutableBufferPointer<Element> { }
+struct UnsafeMutableBufferPointer<Element> {}
 
-struct UnsafeRawBufferPointer { }
+struct UnsafeRawBufferPointer {}
 
-struct UnsafeMutableRawBufferPointer { }
+struct UnsafeMutableRawBufferPointer {}
 
-struct AutoreleasingUnsafeMutablePointer<Pointee> { }
+struct AutoreleasingUnsafeMutablePointer<Pointee> {}
 
-struct OpaquePointer { }
+struct OpaquePointer {}
 
-struct Unmanaged<Instance> { }
+struct Unmanaged<Instance> {}
 
-struct Function<Args, Return> { } // `Args` is always instantiated as a tuple type
+struct Function<Args, Return> {  // `Args` is always instantiated as a tuple type
+    public func callAsFunction(args: Args) -> Return {
+        fatalError("Dummy implementation.")
+    }
+}
 
 typealias Void = Tuple0
 

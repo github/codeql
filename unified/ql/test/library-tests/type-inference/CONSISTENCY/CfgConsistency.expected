@@ -1,0 +1,7 @@
+consistencyOverview
+| deadEnd | 4 |
+deadEnd
+| generics.swift:46:8:46:17 | Entry |
+| generics.swift:47:8:47:22 | Entry |
+| pattern_matching.swift:9:8:9:15 | Entry |
+| pattern_matching.swift:10:8:10:34 | Entry |

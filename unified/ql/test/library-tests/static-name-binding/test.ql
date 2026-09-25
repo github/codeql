@@ -8,7 +8,7 @@ module StaticDeclAccess implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(NameBinding decl, Identifier access |
-      decl = getStaticBindingTarget(access) and
+      decl = getStaticBindingTargetFromIdentifier(access) and
       not access instanceof NameBinding and
       location = access.getLocation() and
       element = access.toString() and
