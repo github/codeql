@@ -10,15 +10,15 @@
 //! by the extractor's own pure-Rust adapter module, keeping the Swift toolchain
 //! out of the extractor's build.
 
-use std::ffi::{CStr, CString};
+use std::ffi::CStr;
 use std::os::raw::c_char;
 
 // C ABI exported by the `SwiftSyntaxFFI` dynamic library.
 unsafe extern "C" {
-    /// Parse a NUL-terminated Swift source string, returning a heap-allocated
+    /// Parse a UTF-8 Swift source buffer, returning a heap-allocated
     /// NUL-terminated JSON string (or null on failure). The caller owns the
     /// returned pointer and must release it with `ssr_string_free`.
-    fn ssr_parse_json(source: *const c_char) -> *mut c_char;
+    fn ssr_parse_json(source: *const u8, source_len: usize) -> *mut c_char;
 
     /// Free a string previously returned by `ssr_parse_json`.
     fn ssr_string_free(ptr: *mut c_char);
@@ -27,8 +27,6 @@ unsafe extern "C" {
 /// Errors that can occur while parsing Swift source.
 #[derive(Debug)]
 pub enum ParseError {
-    /// The provided source contained an interior NUL byte.
-    NulByte,
     /// The Swift shim returned no result. `SwiftParser` recovers from invalid
     /// syntax (it always produces a tree, possibly with error nodes), so this
     /// does *not* indicate a syntax error in the source — it means the shim
@@ -39,7 +37,6 @@ pub enum ParseError {
 impl std::fmt::Display for ParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ParseError::NulByte => write!(f, "source contained an interior NUL byte"),
             ParseError::SwiftFailure => {
                 write!(f, "the swift-syntax shim failed to produce a JSON result")
             }
@@ -58,13 +55,11 @@ impl std::error::Error for ParseError {}
 /// println!("{json}");
 /// ```
 pub fn parse_to_json(source: &str) -> Result<String, ParseError> {
-    let c_source = CString::new(source).map_err(|_| ParseError::NulByte)?;
-
-    // SAFETY: `c_source` is a valid NUL-terminated string for the duration of
-    // the call. The returned pointer, if non-null, is owned by us and freed via
-    // `ssr_string_free` before returning.
+    // SAFETY: `source` is valid UTF-8 and its buffer remains alive for the
+    // duration of the call. The returned pointer, if non-null, is owned by us
+    // and freed via `ssr_string_free` before returning.
     unsafe {
-        let ptr = ssr_parse_json(c_source.as_ptr());
+        let ptr = ssr_parse_json(source.as_ptr(), source.len());
         if ptr.is_null() {
             return Err(ParseError::SwiftFailure);
         }
@@ -129,6 +124,15 @@ mod tests {
         assert!(
             json.contains("\"statements\":[]"),
             "empty collections should be serialized as JSON arrays: {json}"
+        );
+    }
+
+    #[test]
+    fn parses_source_with_interior_nul() {
+        let json = parse_to_json("let x =\0 1").expect("parsing interior NUL should succeed");
+        assert!(
+            json.contains(r#"\u0000"#),
+            "interior NUL should be preserved in the JSON tree: {json}"
         );
     }
 
