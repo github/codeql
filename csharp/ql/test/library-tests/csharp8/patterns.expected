@@ -205,111 +205,111 @@ patternExprTypes
 | patterns.cs:9:18:9:29 | MyStruct ms1 | MyStruct |
 | patterns.cs:13:18:13:25 | access to type MyStruct | MyStruct |
 | patterns.cs:13:18:13:40 | MyStruct s | MyStruct |
-| patterns.cs:13:18:13:40 | { ... } | null |
+| patterns.cs:13:18:13:40 | { ... } | MyStruct |
 | patterns.cs:13:27:13:38 | { ... } | null |
 | patterns.cs:13:32:13:36 | Int32 x | Int32 |
 | patterns.cs:17:18:17:19 | { ... } | null |
 | patterns.cs:17:18:17:21 | Object p | Object |
-| patterns.cs:17:18:17:21 | { ... } | null |
+| patterns.cs:17:18:17:21 | { ... } | Object |
 | patterns.cs:22:18:22:25 | access to type MyStruct | MyStruct |
-| patterns.cs:22:18:22:53 | { ... } | null |
+| patterns.cs:22:18:22:53 | { ... } | MyStruct |
 | patterns.cs:22:27:22:53 | { ... } | null |
 | patterns.cs:22:31:22:32 | 12 | Int32 |
-| patterns.cs:22:38:22:51 | { ... } | null |
+| patterns.cs:22:38:22:51 | { ... } | MyStruct |
 | patterns.cs:22:38:22:51 | { ... } | null |
 | patterns.cs:22:42:22:49 | Int32 subX | Int32 |
 | patterns.cs:27:18:27:25 | access to type MyStruct | MyStruct |
-| patterns.cs:27:18:27:58 | { ... } | null |
+| patterns.cs:27:18:27:58 | { ... } | MyStruct |
 | patterns.cs:27:27:27:58 | { ... } | null |
 | patterns.cs:27:31:27:32 | 12 | Int32 |
 | patterns.cs:27:38:27:45 | access to type MyStruct | MyStruct |
 | patterns.cs:27:38:27:56 | MyStruct ms | MyStruct |
-| patterns.cs:27:38:27:56 | { ... } | null |
+| patterns.cs:27:38:27:56 | { ... } | MyStruct |
 | patterns.cs:27:47:27:53 | { ... } | null |
 | patterns.cs:27:51:27:51 | _ | Int32 |
 | patterns.cs:38:18:38:29 | MyStruct ms1 | MyStruct |
 | patterns.cs:41:18:41:29 | MyStruct ms2 | MyStruct |
 | patterns.cs:48:18:48:25 | access to type MyStruct | MyStruct |
-| patterns.cs:48:18:48:38 | { ... } | null |
+| patterns.cs:48:18:48:38 | { ... } | MyStruct |
 | patterns.cs:48:27:48:38 | { ... } | null |
 | patterns.cs:48:32:48:36 | Int32 x | Int32 |
 | patterns.cs:51:18:51:25 | access to type MyStruct | MyStruct |
 | patterns.cs:51:18:51:38 | MyStruct ms | MyStruct |
-| patterns.cs:51:18:51:38 | { ... } | null |
+| patterns.cs:51:18:51:38 | { ... } | MyStruct |
 | patterns.cs:51:27:51:35 | { ... } | null |
 | patterns.cs:51:32:51:33 | 10 | Int32 |
-| patterns.cs:54:18:54:30 | { ... } | null |
+| patterns.cs:54:18:54:30 | { ... } | MyStruct |
 | patterns.cs:54:18:54:30 | { ... } | null |
 | patterns.cs:54:23:54:28 | Int32 x2 | Int32 |
 | patterns.cs:57:18:57:23 | ( ... ) | null |
-| patterns.cs:57:18:57:23 | { ... } | null |
+| patterns.cs:57:18:57:23 | { ... } | MyStruct |
 | patterns.cs:57:19:57:19 | 1 | Int32 |
 | patterns.cs:57:22:57:22 | 2 | Int32 |
 | patterns.cs:59:18:59:27 | (..., ...) | (Int32,Int32) |
 | patterns.cs:59:23:59:23 | Int32 x | Int32 |
 | patterns.cs:59:26:59:26 | Int32 y | Int32 |
 | patterns.cs:67:18:67:25 | access to type MyStruct | MyStruct |
-| patterns.cs:67:18:67:38 | { ... } | null |
+| patterns.cs:67:18:67:38 | { ... } | MyStruct |
 | patterns.cs:67:27:67:38 | { ... } | null |
 | patterns.cs:67:32:67:36 | Int32 x | Int32 |
 | patterns.cs:70:18:70:25 | access to type MyStruct | MyStruct |
 | patterns.cs:70:18:70:38 | MyStruct ms | MyStruct |
-| patterns.cs:70:18:70:38 | { ... } | null |
+| patterns.cs:70:18:70:38 | { ... } | MyStruct |
 | patterns.cs:70:27:70:35 | { ... } | null |
 | patterns.cs:70:32:70:33 | 10 | Int32 |
 | patterns.cs:78:18:78:33 | ( ... ) | null |
-| patterns.cs:78:18:78:33 | { ... } | null |
+| patterns.cs:78:18:78:33 | { ... } | ITuple |
 | patterns.cs:78:19:78:23 | Int32 x | Int32 |
 | patterns.cs:78:26:78:32 | Single y | Single |
 | patterns.cs:80:18:80:19 | ( ... ) | null |
-| patterns.cs:80:18:80:19 | { ... } | null |
-| patterns.cs:82:18:82:19 | { ... } | null |
+| patterns.cs:80:18:80:19 | { ... } | ITuple |
+| patterns.cs:82:18:82:19 | { ... } | Object |
 | patterns.cs:82:18:82:19 | { ... } | null |
 | patterns.cs:88:18:88:23 | ( ... ) | null |
-| patterns.cs:88:18:88:23 | { ... } | null |
+| patterns.cs:88:18:88:23 | { ... } | (Int32,Int32) |
 | patterns.cs:88:19:88:19 | 1 | Int32 |
 | patterns.cs:88:22:88:22 | 2 | Int32 |
 | patterns.cs:93:18:93:27 | ( ... ) | null |
-| patterns.cs:93:18:93:27 | { ... } | null |
+| patterns.cs:93:18:93:27 | { ... } | (Int32,Int32) |
 | patterns.cs:93:19:93:19 | 1 | Int32 |
 | patterns.cs:93:22:93:26 | Int32 x | Int32 |
 | patterns.cs:94:18:94:23 | ( ... ) | null |
-| patterns.cs:94:18:94:23 | { ... } | null |
+| patterns.cs:94:18:94:23 | { ... } | (Int32,Int32) |
 | patterns.cs:94:19:94:19 | 2 | Int32 |
 | patterns.cs:94:22:94:22 | _ | Int32 |
 | patterns.cs:101:13:101:17 | Int32 y | Int32 |
 | patterns.cs:102:13:102:13 | _ | Int32 |
 | patterns.cs:110:13:110:17 | ( ... ) | null |
-| patterns.cs:110:13:110:17 | { ... } | null |
+| patterns.cs:110:13:110:17 | { ... } | (Int32,Int32) |
 | patterns.cs:110:14:110:14 | 0 | Int32 |
 | patterns.cs:110:16:110:16 | 1 | Int32 |
 | patterns.cs:111:13:111:17 | ( ... ) | null |
-| patterns.cs:111:13:111:17 | { ... } | null |
+| patterns.cs:111:13:111:17 | { ... } | (Int32,Int32) |
 | patterns.cs:111:14:111:14 | 1 | Int32 |
 | patterns.cs:111:16:111:16 | 0 | Int32 |
 | patterns.cs:117:13:117:22 | ( ... ) | null |
-| patterns.cs:117:13:117:22 | { ... } | null |
+| patterns.cs:117:13:117:22 | { ... } | (Int32,Int32) |
 | patterns.cs:117:14:117:14 | 0 | Int32 |
 | patterns.cs:117:16:117:21 | Int32 y2 | Int32 |
 | patterns.cs:118:13:118:23 | ( ... ) | null |
-| patterns.cs:118:13:118:23 | { ... } | null |
+| patterns.cs:118:13:118:23 | { ... } | (Int32,Int32) |
 | patterns.cs:118:14:118:19 | Int32 x2 | Int32 |
 | patterns.cs:118:22:118:22 | 0 | Int32 |
 | patterns.cs:119:13:119:28 | ( ... ) | null |
-| patterns.cs:119:13:119:28 | { ... } | null |
+| patterns.cs:119:13:119:28 | { ... } | (Int32,Int32) |
 | patterns.cs:119:14:119:19 | Int32 x2 | Int32 |
 | patterns.cs:119:22:119:27 | Int32 y2 | Int32 |
 | patterns.cs:128:13:128:20 | access to type MyStruct | MyStruct |
-| patterns.cs:128:13:128:33 | { ... } | null |
+| patterns.cs:128:13:128:33 | { ... } | MyStruct |
 | patterns.cs:128:22:128:33 | { ... } | null |
 | patterns.cs:128:27:128:31 | Int32 x | Int32 |
 | patterns.cs:129:13:129:20 | access to type MyStruct | MyStruct |
 | patterns.cs:129:13:129:33 | MyStruct ms | MyStruct |
-| patterns.cs:129:13:129:33 | { ... } | null |
+| patterns.cs:129:13:129:33 | { ... } | MyStruct |
 | patterns.cs:129:22:129:30 | { ... } | null |
 | patterns.cs:129:27:129:28 | 10 | Int32 |
 | patterns.cs:130:13:130:18 | ( ... ) | null |
-| patterns.cs:130:13:130:18 | { ... } | null |
+| patterns.cs:130:13:130:18 | { ... } | MyStruct |
 | patterns.cs:130:14:130:14 | 1 | Int32 |
 | patterns.cs:130:17:130:17 | 2 | Int32 |
 | patterns.cs:131:13:131:22 | (..., ...) | (Int32,Object) |
@@ -318,10 +318,10 @@ patternExprTypes
 | patterns.cs:138:17:138:17 | 1 | Int32 |
 | patterns.cs:139:17:139:17 | 2 | Int32 |
 | patterns.cs:140:17:140:24 | Object y | Object |
-| patterns.cs:140:36:140:37 | { ... } | null |
+| patterns.cs:140:36:140:37 | { ... } | Object |
 | patterns.cs:140:36:140:37 | { ... } | null |
 | patterns.cs:141:17:141:22 | access to type String | String |
 | patterns.cs:142:17:142:24 | access to type MyStruct | MyStruct |
-| patterns.cs:142:17:142:36 | { ... } | null |
+| patterns.cs:142:17:142:36 | { ... } | MyStruct |
 | patterns.cs:142:26:142:34 | { ... } | null |
 | patterns.cs:142:31:142:32 | 10 | Int32 |
