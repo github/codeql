@@ -96,7 +96,7 @@ struct OpaquePointer {}
 struct Unmanaged<Instance> {}
 
 struct Function<Args, Return> {  // `Args` is always instantiated as a tuple type
-    public func invoke(args: Args) -> Return {
+    public func callAsFunction(args: Args) -> Return {
         fatalError("Dummy implementation.")
     }
 }

@@ -10,6 +10,8 @@ private module Plugins {
   private import TypeInferencePluginSwift
 }
 
+// todo: once we support multiple languages, these predicates  will need to be
+// tagged with the language
 class TypeInferencePlugin extends Unit {
   /** Gets the boolean type which will be assigned to boolean literals. */
   abstract Type getBoolType();

@@ -67,7 +67,7 @@ func testEnum() {
 // --- Closures and type inference ---
 
 func applyTransform<T, U>(_ value: T, _ transform: (T) -> U) -> U {
-  let result = transform(value)  // $ type=result:U target=Function.invoke
+  let result = transform(value)  // $ type=result:U target=Function.callAsFunction
   return result
 }
 

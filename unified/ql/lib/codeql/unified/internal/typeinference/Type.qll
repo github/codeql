@@ -32,7 +32,7 @@ predicate associatedTypeParameterInherited(
 ) {
   associatedTypeParameter(base, a, _) and
   baseRef = c.getABaseType().getType() and
-  base.getNameNode() = getStaticBindingTarget(baseRef) and
+  base.getNameNode() = getStaticBindingTargetFromRef(baseRef) and
   name = a.getName()
 }
 

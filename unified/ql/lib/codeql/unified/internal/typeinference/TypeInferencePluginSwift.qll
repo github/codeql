@@ -147,7 +147,7 @@ private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
   pragma[nomagic]
   override FunctionDeclaration getFunctionInvoke(Type t) {
     result = t.(FunctionType).getClassLikeDeclaration().getAMember() and
-    result.getName() = "invoke"
+    result.getName() = "callAsFunction"
   }
 
   bindingset[t, arity, i]

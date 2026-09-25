@@ -435,7 +435,7 @@ private module Input3 implements InputSig3 {
       )
       or
       // no mutual recursion; can be resolved directly with static name binding
-      result.getNameNode() = getStaticBindingTarget(getIdentifierFromRef(this))
+      result.getNameNode() = getStaticBindingTargetFromRef(this)
     }
   }
 
@@ -457,7 +457,7 @@ private module Input3 implements InputSig3 {
     result = inferType(fa.getReceiver(), path)
     or
     // static field with type qualifier
-    result = fa.getReceiver().(TypeMention).getTypeAt(path)
+    result = fa.(MemberAccessExpr).getBase().(TypeMention).getTypeAt(path)
     or
     // field with implicit receiver
     result = getImplicitReceiverType(fa, path)
@@ -546,6 +546,7 @@ private module Input3 implements InputSig3 {
       exists(TypeMention tm | result = tm.getTypeAt(path) |
         tm = super.getCallee()
         or
+        not super.getCallee() instanceof TypeMention and
         tm = super.getCallee().(MemberAccessExpr).getBase()
       )
     }
@@ -573,7 +574,7 @@ private module Input3 implements InputSig3 {
     }
 
     private Unified::Callable getTargetViaStaticNameBinding() {
-      exists(NameBinding b | b = getStaticBindingTarget(getIdentifierFromRef(this.getCallee())) |
+      exists(NameBinding b | b = getStaticBindingTargetFromRef(this.getCallee()) |
         // object creation (including enum constructors): `String(42)`, `Optional.Some(42)`
         exists(ClassLikeDeclaration cls, ConstructorDeclaration init |
           cls.getNameNode() = b and
@@ -727,7 +728,7 @@ private module Input3 implements InputSig3 {
       tp = f.getType().getType().getATypeParameter() and
       path = TypePath::singleton(tp) and
       // `Optional<String>.none` does not have an unknown `Wrapper` type
-      not exists(n.(FieldAccess).getReceiver().(TypeMention).getTypeAt(path))
+      not exists(n.(MemberAccessExpr).getBase().(TypeMention).getTypeAt(path))
     ) and
     result instanceof UnknownType
   }

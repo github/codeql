@@ -7,7 +7,7 @@ private string deriveClassName(ClassLikeDeclaration cls) {
   not exists(cls.getEnclosingClass()) and
   result = cls.getName()
   or
-  result = getStaticBindingTarget(cls.getExtensionTarget()).getValue()
+  result = getStaticBindingTargetFromRef(cls.getExtensionTarget()).getValue()
   or
   result = deriveClassName(cls.getEnclosingClass()) + "." + cls.getName()
 }

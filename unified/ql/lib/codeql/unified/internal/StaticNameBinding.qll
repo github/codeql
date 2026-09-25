@@ -717,14 +717,25 @@ module Public {
   }
 }
 
-/** Gets the declaration being accessed by `access`, as determined by static name binding. */
-NameBinding getStaticBindingTarget(Identifier access) {
+/** Gets the declaration being accessed by identifier `i`, as determined by static name binding. */
+NameBinding getStaticBindingTargetFromIdentifier(Identifier i) {
   // For unqualified accesses, use the shadowing-aware lookup
-  result = access.(UnqualifiedMemberAccess).getTarget()
+  result = i.(UnqualifiedMemberAccess).getTarget()
   or
   // For others, just follow the name binding graph
-  not access instanceof UnqualifiedMemberAccess and
-  trackNameBinding(result).asIdentifier() = access
+  not i instanceof UnqualifiedMemberAccess and
+  trackNameBinding(result).asIdentifier() = i
+}
+
+/**
+ * Gets the declaration being accessed by `access`, as determined by static name binding.
+ *
+ * Unlike `getStaticBindingTargetFromIdentifier`, this works with any AST node that contains
+ * a reference to an identifier, for example `x.foo` and `foo<Int>` resolve to whatever the
+ * identifiers `foo` resolve to.
+ */
+NameBinding getStaticBindingTargetFromRef(AstNode access) {
+  result = getStaticBindingTargetFromIdentifier(getIdentifierFromRef(access))
 }
 
 /**

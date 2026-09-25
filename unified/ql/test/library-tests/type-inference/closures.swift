@@ -2,16 +2,16 @@ func testExplicitClosureCall() {
     let addOne = { value in  // $ type=value:Int
         value + 1
     }
-    let result = addOne(41)  // $ target=Function.invoke
+    let result = addOne(41)  // $ target=Function.callAsFunction
     _ = result  // $ type=result:Int
 }
 
 func callWithIntCallback(_ callback: (Int) -> String) -> String {
-    callback(42)  // $ target=Function.invoke
+    callback(42)  // $ target=Function.callAsFunction
 }
 
 func callWithGenericCallback<T1>(_ callback: (T1) -> Void, _ arg: T1) -> T1 {
-    callback(arg)  // $ target=Function.invoke
+    callback(arg)  // $ target=Function.callAsFunction
     return arg
 }
 
@@ -44,8 +44,8 @@ class ClosureField {
 
     func callsMethod(_ value: Int) -> Int {
         // when both a method and a closure have the same name, the method takes precedence
-        self.f(value)  // $ target=f_method $ SPURIOUS: field=f_closure target=Function.invoke
-        return self.f2(value)  // $ field=f2_closure target=Function.invoke
+        self.f(value)  // $ target=f_method $ SPURIOUS: field=f_closure target=Function.callAsFunction
+        return self.f2(value)  // $ field=f2_closure target=Function.callAsFunction
     }
 }
 
@@ -58,7 +58,7 @@ func foo() {
 }
 
 func apply<T1, T2>(_ callback: (T1) -> T2, _ arg: T1) -> T2 {
-    callback(arg)  // $ target=Function.invoke
+    callback(arg)  // $ target=Function.callAsFunction
 }
 
 func testApply() {

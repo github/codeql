@@ -150,8 +150,7 @@ module Unified {
     /** Gets a direct base class of this class. */
     ClassLikeDeclaration getABaseClass() {
       result.getNameNode() =
-        NameBinding::getStaticBindingTarget(NameBinding::getIdentifierFromRef(this.getABaseType()
-                .getType()))
+        NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
     }
   }
 

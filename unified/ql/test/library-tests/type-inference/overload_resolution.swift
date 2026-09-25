@@ -402,15 +402,15 @@ class Processor {
   init() {}
 
   func apply(_ f: (Int) -> Int) -> Int {  // name=Processor.apply1
-    return f(0)  // $ target=Function.invoke
+    return f(0)  // $ target=Function.callAsFunction
   }
 
   func apply(_ f: (String) -> String) -> String {  // name=Processor.apply2
-    return f("")  // $ target=Function.invoke
+    return f("")  // $ target=Function.callAsFunction
   }
 
   func apply(_ f: (Int, Int) -> Int) -> Int {  // name=Processor.apply3
-    return f(0, 0)  // $ target=Function.invoke
+    return f(0, 0)  // $ target=Function.callAsFunction
   }
 }
 

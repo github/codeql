@@ -20,7 +20,7 @@ abstract class TypeMention extends AstNode {
 }
 
 private Type resolveType(Identifier access) {
-  exists(NameBinding b | b = getStaticBindingTarget(access) |
+  exists(NameBinding b | b = getStaticBindingTargetFromIdentifier(access) |
     b = result.(ClassLikeDeclarationType).getClassLikeDeclaration().getNameNode()
     or
     b = result.(TypeParameterType).getTypeParameter().getNameNode()
@@ -40,7 +40,7 @@ abstract private class ExprTypeMention extends TypeMention, Expr {
 private class AliasExprTypeMention extends ExprTypeMention {
   private TypeAliasDeclaration alias;
 
-  AliasExprTypeMention() { alias.getNameNode() = getStaticBindingTarget(this) }
+  AliasExprTypeMention() { alias.getNameNode() = getStaticBindingTargetFromRef(this) }
 
   private TypeParameterType getAliasTypeParameter(int i) {
     result.getTypeParameter() = alias.getTypeParameter(i)
