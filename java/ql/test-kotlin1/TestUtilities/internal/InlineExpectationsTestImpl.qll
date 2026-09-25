@@ -42,4 +42,10 @@ module Impl implements InlineExpectationsTestSig {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    relativePath.matches(["%.java", "%.kt"]) and
+    result = "//"
+  }
 }
