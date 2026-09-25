@@ -24,16 +24,16 @@ jobs:
   qltest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@main
+        uses: github/codeql-action/init@14c568a92663d5bba4fc64d9a8d97c0e00e015a2 # main
         with:
           languages: javascript # does not matter
           tools: nightly
       - uses: ./.github/actions/os-version
         id: os_version
-      - uses: actions/cache@v3
+      - uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c # v3.5.0
         with:
           path: |
             ~/.cargo/registry
@@ -65,7 +65,7 @@ jobs:
     needs: [qltest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - name: Install GNU tar
         if: runner.os == 'macOS'
         run: |
@@ -73,13 +73,13 @@ jobs:
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@main
+        uses: github/codeql-action/init@14c568a92663d5bba4fc64d9a8d97c0e00e015a2 # main
         with:
           languages: javascript # does not matter
           tools: nightly
       - uses: ./.github/actions/os-version
         id: os_version
-      - uses: actions/cache@v3
+      - uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c # v3.5.0
         with:
           path: |
             ~/.cargo/registry

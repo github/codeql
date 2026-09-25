@@ -32,16 +32,16 @@ jobs:
 
     steps:
     - name: Setup dotnet
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
       with:
         dotnet-version: 10.0.100
 
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@main
+      uses: github/codeql-action/init@14c568a92663d5bba4fc64d9a8d97c0e00e015a2 # main
       with:
         languages: ${{ matrix.language }}
         config-file: ./.github/codeql/codeql-config.yml
@@ -64,4 +64,4 @@ jobs:
        dotnet build .
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@main
+      uses: github/codeql-action/analyze@14c568a92663d5bba4fc64d9a8d97c0e00e015a2 # main
