@@ -1,55 +1,55 @@
-| ListPattern.cs:7:18:7:19 | [ ... ] | null |
-| ListPattern.cs:8:18:8:20 | [ ... ] | null |
+| ListPattern.cs:7:18:7:19 | [ ... ] | Int32[] |
+| ListPattern.cs:8:18:8:20 | [ ... ] | Int32[] |
 | ListPattern.cs:8:19:8:19 | 1 | Int32 |
-| ListPattern.cs:9:18:9:23 | [ ... ] | null |
+| ListPattern.cs:9:18:9:23 | [ ... ] | Int32[] |
 | ListPattern.cs:9:19:9:19 | _ | Int32 |
 | ListPattern.cs:9:22:9:22 | 2 | Int32 |
-| ListPattern.cs:10:18:10:30 | [ ... ] | null |
+| ListPattern.cs:10:18:10:30 | [ ... ] | Int32[] |
 | ListPattern.cs:10:19:10:23 | Int32 y | Int32 |
 | ListPattern.cs:10:26:10:26 | 3 | Int32 |
 | ListPattern.cs:10:29:10:29 | 4 | Int32 |
-| ListPattern.cs:11:18:11:31 | [ ... ] | null |
+| ListPattern.cs:11:18:11:31 | [ ... ] | Int32[] |
 | ListPattern.cs:11:19:11:19 | 5 | Int32 |
-| ListPattern.cs:11:19:11:24 | ... or ... | null |
+| ListPattern.cs:11:19:11:24 | ... or ... | Int32 |
 | ListPattern.cs:11:24:11:24 | 6 | Int32 |
 | ListPattern.cs:11:27:11:27 | _ | Int32 |
 | ListPattern.cs:11:30:11:30 | 7 | Int32 |
-| ListPattern.cs:12:18:12:31 | [ ... ] | null |
+| ListPattern.cs:12:18:12:31 | [ ... ] | Int32[] |
 | ListPattern.cs:12:19:12:23 | Int32 a | Int32 |
-| ListPattern.cs:12:26:12:27 | .. | null |
+| ListPattern.cs:12:26:12:27 | .. | Int32[] |
 | ListPattern.cs:12:30:12:30 | 2 | Int32 |
-| ListPattern.cs:13:18:13:50 | [ ... ] | null |
+| ListPattern.cs:13:18:13:50 | [ ... ] | Int32[] |
 | ListPattern.cs:13:19:13:23 | Int32 b | Int32 |
-| ListPattern.cs:13:26:13:46 | .. | null |
-| ListPattern.cs:13:29:13:46 | { ... } | null |
+| ListPattern.cs:13:26:13:46 | .. | Int32[] |
+| ListPattern.cs:13:29:13:46 | { ... } | Int32[] |
 | ListPattern.cs:13:29:13:46 | { ... } | null |
 | ListPattern.cs:13:39:13:39 | 2 | Int32 |
-| ListPattern.cs:13:39:13:44 | ... or ... | null |
+| ListPattern.cs:13:39:13:44 | ... or ... | Int32 |
 | ListPattern.cs:13:44:13:44 | 5 | Int32 |
 | ListPattern.cs:13:49:13:49 | 2 | Int32 |
-| ListPattern.cs:20:18:20:19 | [ ... ] | null |
-| ListPattern.cs:22:18:22:22 | [ ... ] | null |
+| ListPattern.cs:20:18:20:19 | [ ... ] | String[] |
+| ListPattern.cs:22:18:22:22 | [ ... ] | String[] |
 | ListPattern.cs:22:19:22:21 | "A" | String |
-| ListPattern.cs:24:18:24:25 | [ ... ] | null |
+| ListPattern.cs:24:18:24:25 | [ ... ] | String[] |
 | ListPattern.cs:24:19:24:19 | _ | String |
 | ListPattern.cs:24:22:24:24 | "B" | String |
-| ListPattern.cs:26:18:26:34 | [ ... ] | null |
+| ListPattern.cs:26:18:26:34 | [ ... ] | String[] |
 | ListPattern.cs:26:19:26:23 | String y | String |
 | ListPattern.cs:26:26:26:28 | "C" | String |
 | ListPattern.cs:26:31:26:33 | "D" | String |
-| ListPattern.cs:28:18:28:37 | [ ... ] | null |
+| ListPattern.cs:28:18:28:37 | [ ... ] | String[] |
 | ListPattern.cs:28:19:28:21 | "E" | String |
-| ListPattern.cs:28:19:28:28 | ... or ... | null |
+| ListPattern.cs:28:19:28:28 | ... or ... | String |
 | ListPattern.cs:28:26:28:28 | "F" | String |
 | ListPattern.cs:28:31:28:31 | _ | String |
 | ListPattern.cs:28:34:28:36 | "G" | String |
-| ListPattern.cs:30:18:30:33 | [ ... ] | null |
+| ListPattern.cs:30:18:30:33 | [ ... ] | String[] |
 | ListPattern.cs:30:19:30:23 | String a | String |
-| ListPattern.cs:30:26:30:27 | .. | null |
+| ListPattern.cs:30:26:30:27 | .. | String[] |
 | ListPattern.cs:30:30:30:32 | "H" | String |
-| ListPattern.cs:32:18:32:39 | [ ... ] | null |
+| ListPattern.cs:32:18:32:39 | [ ... ] | String[] |
 | ListPattern.cs:32:19:32:23 | String b | String |
-| ListPattern.cs:32:26:32:33 | .. | null |
+| ListPattern.cs:32:26:32:33 | .. | String[] |
 | ListPattern.cs:32:29:32:33 | String[] c | String[] |
 | ListPattern.cs:32:36:32:38 | "I" | String |
 | PatternMatchSpan.cs:8:19:8:23 | "ABC" | String |
