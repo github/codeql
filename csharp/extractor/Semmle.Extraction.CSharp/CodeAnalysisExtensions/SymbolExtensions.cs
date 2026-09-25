@@ -786,6 +786,18 @@ namespace Semmle.Extraction.CSharp
         }
 
         /// <summary>
+        /// Gets the converted type of a syntax node, or default if it could not be determined.
+        /// </summary>
+        /// <param name="cx">Extractor context.</param>
+        /// <param name="node">The syntax node to determine the converted type for.</param>
+        /// <returns>The converted type symbol of the node, or default.</returns>
+        public static AnnotatedTypeSymbol GetConvertedType(this Context cx, Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode node)
+        {
+            var info = GetTypeInfo(cx, node);
+            return new AnnotatedTypeSymbol(info.ConvertedType.DisambiguateType(), info.ConvertedNullability.Annotation);
+        }
+
+        /// <summary>
         /// Gets the annotated type arguments of an INamedTypeSymbol.
         /// This has not yet been exposed on the public API.
         /// </summary>
