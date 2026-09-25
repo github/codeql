@@ -419,7 +419,9 @@ fn collect_extras(node: Node<'_>, source: &[u8], out: &mut Vec<ExtraToken>) {
 /// TRAP extraction, and the `extra` tokens (comments and similar, which the
 /// desugared AST does not carry) are emitted from the side channel. Both
 /// tree-sitter grammars (via [`tree_sitter_parser`]) and custom parsers plug in
-/// here; languages that don't desugar use [`extract`] instead.
+/// here; languages that don't desugar use [`extract`] instead. Parse and
+/// desugaring errors are returned to the multi-file driver so it can skip only
+/// this file and continue extracting the rest.
 #[allow(clippy::too_many_arguments)]
 pub fn extract_parsed(
     parse: &(dyn Fn(&[u8]) -> Result<ParsedTree, String> + Send + Sync),
@@ -431,7 +433,7 @@ pub fn extract_parsed(
     path: &Path,
     source: &[u8],
     desugarer: &dyn yeast::Desugarer,
-) {
+) -> Result<(), String> {
     let path_str = file_paths::normalize_and_transform_path(path, transformer);
     let source_root = std::env::current_dir()
         .ok()
@@ -440,6 +442,11 @@ pub fn extract_parsed(
     let span = tracing::span!(tracing::Level::TRACE, "extract", file = %path_str);
     let _enter = span.enter();
     tracing::debug!("extracting: {}", path_str);
+
+    let parsed = parse(source).map_err(|e| format!("Parsing failed: {e}"))?;
+    let ast = desugarer
+        .run_from_ast(parsed.ast)
+        .map_err(|e| format!("Desugaring failed: {e}"))?;
 
     trap_writer.comment(format!("Auto-generated TRAP file for {path_str}"));
     let file_label = populate_file(trap_writer, path, transformer);
@@ -453,16 +460,13 @@ pub fn extract_parsed(
         schema,
     );
 
-    let parsed = parse(source).unwrap_or_else(|e| panic!("Parsing failed for {path_str}: {e}"));
-    let ast = desugarer
-        .run_from_ast(parsed.ast)
-        .unwrap_or_else(|e| panic!("Desugaring failed for {path_str}: {e}"));
     traverse_yeast(&ast, &mut visitor);
     // Comments and other `extra` tokens are not part of the desugared AST; emit
     // them directly from the parser's side channel.
     for extra in &parsed.extras {
         visitor.emit_extra(extra);
     }
+    Ok(())
 }
 
 /// A lightweight [`AstNode`] over a piece of side-channel `extra` content
