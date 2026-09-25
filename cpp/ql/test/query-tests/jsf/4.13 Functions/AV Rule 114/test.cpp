@@ -13,9 +13,9 @@ MyValue g1()
 }
 
 MyValue g2()
-{
+{ // $ Alert
 	// BAD
-} // $ Alert
+}
 
 MyValue g3()
 {
@@ -71,9 +71,9 @@ TypePair<void, int>::first g9()
 }
 
 TypePair<void, int>::second g10()
-{
+{ // $ Alert
 	// BAD (the return type amounts to int)
-} // $ Alert
+}
 
 template<class T>
 typename TypePair<void, T>::first g11()
@@ -83,9 +83,9 @@ typename TypePair<void, T>::first g11()
 
 template<class T>
 typename TypePair<void, T>::second g12()
-{
+{ // $ Alert
 	// BAD (the return type amounts to T / int)
-} // $ Alert
+}
 
 void instantiate()
 {

@@ -14,41 +14,41 @@
     <description>An example of using bintray as a repository</description>
 
     <distributionManagement>
-        <repository>
+        <repository> <!-- $ Alert -->
             <id>jcenter</id>
             <name>JCenter</name>
             <!-- BAD! Don't use JCenter -->
             <url>https://jcenter.bintray.com</url>
-        </repository> <!-- $ Alert -->
-        <snapshotRepository>
+        </repository>
+        <snapshotRepository> <!-- $ Alert -->
             <id>jcenter-snapshots</id>
             <name>JCenter</name>
             <!-- BAD! Don't use JCenter -->
             <url>https://jcenter.bintray.com</url>
-        </snapshotRepository> <!-- $ Alert -->
+        </snapshotRepository>
     </distributionManagement>
     <repositories>
-        <repository>
+        <repository> <!-- $ Alert -->
             <id>jcenter</id>
             <name>JCenter</name>
             <!-- BAD! Don't use JCenter -->
             <url>https://jcenter.bintray.com</url>
-        </repository> <!-- $ Alert -->
+        </repository>
     </repositories>
     <repositories>
-        <repository>
+        <repository> <!-- $ Alert -->
             <id>jcenter</id>
             <name>JCenter</name>
             <!-- BAD! Don't use Bintray -->
             <url>https://dl.bintray.com/groovy/maven</url>
-        </repository> <!-- $ Alert -->
+        </repository>
     </repositories>
     <pluginRepositories>
-        <pluginRepository>
+        <pluginRepository> <!-- $ Alert -->
             <id>jcenter-plugins</id>
             <name>JCenter</name>
             <!-- BAD! Don't use JCenter -->
             <url>https://jcenter.bintray.com</url>
-        </pluginRepository> <!-- $ Alert -->
+        </pluginRepository>
     </pluginRepositories>
 </project>

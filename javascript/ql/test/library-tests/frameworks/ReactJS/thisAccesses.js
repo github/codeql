@@ -1,4 +1,4 @@
-class C extends React.Component {
+class C extends React.Component { // $ reactComponent
     constructor () {
         this;
 
@@ -13,9 +13,9 @@ class C extends React.Component {
     someInstanceMethod() {
         this;
     }
-} // $ reactComponent
+}
 
-React.createClass({
+React.createClass({ // $ reactComponent
     render: function() {
         (function () {
             this;
@@ -26,32 +26,32 @@ React.createClass({
     someInstanceMethod: function() {
         this;
     }
-}); // $ reactComponent
+});
 
-(function (props) { // $ threatModelSource=view-component-input
+(function (props) { // $ threatModelSource=view-component-input reactComponent
     (function () {
         this; props;
     }).bind(this);
     return <div/>;
-}) // $ reactComponent
+})
 
-React.createClass({
+React.createClass({ // $ reactComponent
     render: function() {
         React.Children.map(whatEver, function () {
             this;
         }, this)
         return <div/>;
     },
-}); // $ reactComponent
+});
 
-class C2 extends React.Component {
+class C2 extends React.Component { // $ reactComponent
     constructor (y) { // $ threatModelSource=view-component-input
         this.state = x;
         this.state = y;
     }
-} // $ reactComponent
+}
 
-class C3 extends React.Component {
+class C3 extends React.Component { // $ reactComponent
     constructor() {
 
     }
@@ -60,4 +60,4 @@ class C3 extends React.Component {
         var foo = <this.name></this.name>;
         var bar = <this.this></this.this>;
     }
-} // $ reactComponent
+}

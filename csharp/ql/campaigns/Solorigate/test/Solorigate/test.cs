@@ -31,10 +31,10 @@ class TestCases
 				num *= 1099511628211UL; // $ Alert[cs/solorigate/number-of-known-hashes-above-threshold]
 			}
 		}
-		catch // BUG : SwallowEverythingExceptionHandler
+		catch // $ Alert[cs/solorigate/swallow-everything-exception] // BUG : SwallowEverythingExceptionHandler
 		{
 
-		} // $ Alert[cs/solorigate/swallow-everything-exception]
+		}
 
 		return num ^ 6605813339339102567UL; // $ Alert[cs/solorigate/modified-fnv-function-detection] Alert[cs/solorigate/number-of-known-hashes-above-threshold] // BUG (ModifiedFnvFunctionDetection.ql)
 	}
@@ -285,16 +285,16 @@ class TestCases
 		try{
 			Literals();
 		}
-		catch // BUG : SwallowEverythingExceptionHandler
-		{} // $ Alert[cs/solorigate/swallow-everything-exception]
+		catch // $ Alert[cs/solorigate/swallow-everything-exception] // BUG : SwallowEverythingExceptionHandler
+		{}
 
 		try{
 			Literals();
 		}
-		catch( Exception e) // BUG : SwallowEverythingExceptionHandler
+		catch( Exception e) // $ Alert[cs/solorigate/swallow-everything-exception] // BUG : SwallowEverythingExceptionHandler
 		{
 			//
-		} // $ Alert[cs/solorigate/swallow-everything-exception]
+		}
 
 		try{
 			Literals();

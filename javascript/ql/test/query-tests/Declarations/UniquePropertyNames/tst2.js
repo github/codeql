@@ -1,13 +1,13 @@
 var o = {
   x: 42,
 
-  getX: function() {
+  getX: function() { // $ Alert
     return this.x;
-  }, // $ Alert
+  },
 
-  setX: function(x) {
+  setX: function(x) { // $ Alert
     this.x = x;
-  }, // $ Alert
+  },
 
   getX: function() {
     return this.x;
