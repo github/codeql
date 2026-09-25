@@ -3,7 +3,7 @@
  * @description Outputs operations where the algorithm applied is unknown
  * @id java/quantum/slices/operation-with-unknown-algorithm
  * @kind problem
- * @severity info
+ * @severity recommendation
  * @tags quantum
  *       experimental
  */
