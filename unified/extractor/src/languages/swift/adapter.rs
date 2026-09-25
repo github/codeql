@@ -23,6 +23,7 @@
 use std::collections::BTreeMap;
 
 use codeql_extractor::extractor::ExtraToken;
+use serde::Deserialize;
 use serde_json::Value;
 use yeast::{Ast, Id, NodeContent, Point, Range};
 
@@ -56,6 +57,53 @@ const VARYING_TOKEN_KINDS: &[&str] = &[
     "shebang",
     "unknown",
 ];
+
+/// Maximum structural nesting accepted in the serialized JSON tree.
+///
+/// This exceeds the deepest tree in the Swift corpus while bounding the
+/// recursive serde deserialization and AST construction that follow.
+const MAX_JSON_DEPTH: usize = 2048;
+
+/// Check JSON structural depth without recursively parsing it.
+///
+/// Brackets and braces inside strings are ignored. Full JSON validation is
+/// still performed by serde_json afterward.
+fn check_json_depth(json: &str) -> Result<(), String> {
+    let mut depth = 0;
+    let mut in_string = false;
+    let mut escaped = false;
+
+    for byte in json.bytes() {
+        if in_string {
+            if escaped {
+                escaped = false;
+            } else {
+                match byte {
+                    b'\\' => escaped = true,
+                    b'"' => in_string = false,
+                    _ => {}
+                }
+            }
+        } else {
+            match byte {
+                b'"' => in_string = true,
+                b'{' | b'[' => {
+                    depth += 1;
+                    if depth > MAX_JSON_DEPTH {
+                        return Err(format!(
+                            "invalid JSON: nesting depth exceeds supported maximum \
+                             ({MAX_JSON_DEPTH})"
+                        ));
+                    }
+                }
+                b'}' | b']' => depth = depth.saturating_sub(1),
+                _ => {}
+            }
+        }
+    }
+
+    Ok(())
+}
 
 /// Keys of a node object that carry metadata rather than a structural child.
 fn is_metadata_key(key: &str) -> bool {
@@ -202,13 +250,26 @@ fn field_entries(node: &Value) -> Vec<(&str, &Value)> {
         .unwrap_or_default()
 }
 
-/// The child node objects held by a field value, which is either a single node
-/// object or an array of them (an elided collection).
+/// The child node objects held by a field value.
+///
+/// Collection nodes are elided by the Swift serializer, so nested collections
+/// can produce nested arrays (notably inside `UnexpectedNodesSyntax`). Flatten
+/// arrays recursively to preserve the intended collection elision.
 fn children_of(value: &Value) -> Vec<&Value> {
-    match value {
-        Value::Array(items) => items.iter().collect(),
-        other => vec![other],
+    fn collect<'a>(value: &'a Value, children: &mut Vec<&'a Value>) {
+        match value {
+            Value::Array(items) => {
+                for item in items {
+                    collect(item, children);
+                }
+            }
+            other => children.push(other),
+        }
     }
+
+    let mut children = Vec::new();
+    collect(value, &mut children);
+    children
 }
 
 /// Recursively build `node` (and its descendants) into `ast`, returning its id.
@@ -312,7 +373,13 @@ const SWIFT_NODE_TYPES: &str = include_str!("../../../swift_node_types.yml");
 /// authoritative swift-syntax schema ([`SWIFT_NODE_TYPES`]); the adapter only
 /// ever consumes swift-syntax input, so the schema is not a parameter.
 pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
-    let root: Value = serde_json::from_str(json).map_err(|e| format!("invalid JSON: {e}"))?;
+    check_json_depth(json)?;
+    let mut deserializer = serde_json::Deserializer::from_str(json);
+    deserializer.disable_recursion_limit();
+    let root = Value::deserialize(&mut deserializer).map_err(|e| format!("invalid JSON: {e}"))?;
+    deserializer
+        .end()
+        .map_err(|e| format!("invalid JSON: {e}"))?;
     let locations = LocationTable::from_root(&root)?;
 
     let mut ast = Ast::with_schema(yeast::node_types_yaml::schema_from_yaml(SWIFT_NODE_TYPES)?);
@@ -329,6 +396,14 @@ pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn deeply_nested_json(depth: usize) -> String {
+        let mut child = r#"{"$pos":0,"$end":0,"kind":"sourceFile"}"#.to_string();
+        for _ in 0..depth {
+            child = format!(r#"{{"$pos":0,"$end":0,"kind":"sourceFile","child":{child}}}"#);
+        }
+        format!(r#"{{"$lineStarts":[0],"$pos":0,"$end":0,"kind":"sourceFile","child":{child}}}"#)
+    }
 
     /// A hand-written JSON tree exercising layout nodes, a named (varying)
     /// token, a fixed keyword token, and an elided collection field — so the
@@ -457,6 +532,41 @@ mod tests {
     }
 
     #[test]
+    fn flattens_nested_elided_collections() {
+        let json = r#"{
+            "$lineStarts": [0],
+            "$pos": 0,
+            "$end": 20,
+            "kind": "sourceFile",
+            "unexpected": [
+                {
+                    "$pos": 0,
+                    "$end": 1,
+                    "kind": "token",
+                    "tokenKind": "leftBrace",
+                    "text": "{"
+                },
+                [
+                    {
+                        "$pos": 2,
+                        "$end": 20,
+                        "kind": "precedenceGroupAssociativity"
+                    }
+                ]
+            ]
+        }"#;
+        let ast = json_to_ast(json)
+            .expect("adapter should flatten nested collections")
+            .ast;
+
+        assert!(
+            ast.nodes()
+                .iter()
+                .any(|node| node.kind_name() == "precedenceGroupAssociativity")
+        );
+    }
+
+    #[test]
     fn rejects_invalid_line_starts() {
         let json = r#"{"$lineStarts":[1],"$pos":0,"$end":0,"kind":"sourceFile"}"#;
         let error = match json_to_ast(json) {
@@ -464,6 +574,31 @@ mod tests {
             Err(error) => error,
         };
         assert!(error.contains("must start with offset 0"), "{error}");
+    }
+
+    #[test]
+    fn accepts_deeply_nested_json() {
+        let json = deeply_nested_json(256);
+        json_to_ast(&json).expect("adapter should accept JSON nested beyond serde_json's default");
+    }
+
+    #[test]
+    fn rejects_json_beyond_supported_depth() {
+        let json = deeply_nested_json(MAX_JSON_DEPTH);
+        let error = match json_to_ast(&json) {
+            Ok(_) => panic!("adapter should reject excessively nested JSON"),
+            Err(error) => error,
+        };
+        assert!(
+            error.contains("nesting depth exceeds supported maximum"),
+            "{error}"
+        );
+    }
+
+    #[test]
+    fn ignores_brackets_inside_json_strings_when_checking_depth() {
+        check_json_depth(r#"{"text":"[[[{{{\\\""}"#)
+            .expect("string contents should not contribute to JSON depth");
     }
 
     #[test]

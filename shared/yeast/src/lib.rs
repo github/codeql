@@ -1139,7 +1139,7 @@ impl<C> Rule<C> {
     }
 }
 
-const MAX_REWRITE_DEPTH: usize = 100;
+const MAX_REWRITE_DEPTH: usize = 1000;
 
 /// Index of rules by their root query kind for fast lookup.
 struct RuleIndex<'a, C> {
