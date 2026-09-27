@@ -1,0 +1,13 @@
+consistencyOverview
+| multipleSuccessors | 10 |
+multipleSuccessors
+| testdata.go:418:2:423:2 | select statement | successor | testdata.go:419:2:420:7 | comm clause |
+| testdata.go:418:2:423:2 | select statement | successor | testdata.go:421:2:422:7 | comm clause |
+| testdata.go:430:2:437:2 | select statement | successor | testdata.go:431:2:432:17 | comm clause |
+| testdata.go:430:2:437:2 | select statement | successor | testdata.go:433:2:434:17 | comm clause |
+| testdata.go:430:2:437:2 | select statement | successor | testdata.go:435:2:436:7 | comm clause |
+| testdata.go:443:2:450:2 | select statement | successor | testdata.go:444:2:445:7 | comm clause |
+| testdata.go:443:2:450:2 | select statement | successor | testdata.go:446:2:447:7 | comm clause |
+| testdata.go:443:2:450:2 | select statement | successor | testdata.go:448:2:449:7 | comm clause |
+| testdata.go:457:2:462:2 | select statement | successor | testdata.go:458:2:459:7 | comm clause |
+| testdata.go:457:2:462:2 | select statement | successor | testdata.go:460:2:461:7 | comm clause |

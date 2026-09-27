@@ -86,41 +86,32 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "class"
-          name: identifier "Point"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩\n}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "Point" source="Point"
           member:
-            variable_declaration
-              modifier: modifier "var"
-              pattern:
-                name_pattern
-                  identifier: identifier "x"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-            constructor_declaration
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"
+              modifier: modifier "var" source="var"
+              pattern: identifier "x" source="x"
+              type: identifier "Int" source="Int"
+            constructor_declaration source="⟨name_node⟩(⟨parameter⟩) ⟨body⟩"
+              name_node: identifier "init" source="init"
               parameter:
-                parameter
-                  type:
-                    named_type_expr
-                      name: identifier "Int"
-                  pattern:
-                    name_pattern
-                      identifier: identifier "x"
+                parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+                  external_name_node: identifier "x" source="x"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "x" source="x"
               body:
-                block
+                block source="{\n    ⟨stmt⟩\n  }"
                   stmt:
-                    assign_expr
-                      target:
-                        member_access_expr
-                          base:
-                            name_expr
-                              identifier: identifier "self"
-                          member: identifier "x"
-                      value:
-                        name_expr
-                          identifier: identifier "x"
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left:
+                        member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                          base: identifier "self" source="self"
+                          member_name_node: identifier "x" source="x"
+                      operator: infix_operator "=" source="="
+                      right: identifier "x" source="x"

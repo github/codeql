@@ -13,9 +13,11 @@ class SwiftBodyEmissionStrategy {
       : currentModule(currentModule),
         currentPrimarySourceFile(currentPrimarySourceFile),
         currentLazyDeclaration(currentLazyDeclaration) {
-    llvm::SmallVector<swift::Decl*> decls;
-    currentModule.getTopLevelDecls(decls);
-    currentTopLevelDecls.insert(decls.begin(), decls.end());
+    if (!currentLazyDeclaration) {
+      llvm::SmallVector<swift::Decl*> decls;
+      currentModule.getTopLevelDecls(decls);
+      currentTopLevelDecls.insert(decls.begin(), decls.end());
+    }
   }
 
   bool shouldEmitDeclBody(const swift::Decl& decl);

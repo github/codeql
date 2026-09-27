@@ -1,0 +1,39 @@
+models
+| 1 | Summary: java.lang; CharSequence; true; charAt; ; ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Summary: java.lang; String; false; toCharArray; ; ; Argument[this]; ReturnValue; taint; manual |
+| 3 | Summary: java.lang; String; false; valueOf; (char); ; Argument[0]; ReturnValue; taint; manual |
+| 4 | Summary: java.lang; String; false; valueOf; (char[]); ; Argument[0]; ReturnValue; taint; manual |
+| 5 | Summary: java.lang; StringBuilder; true; StringBuilder; ; ; Argument[0]; Argument[this]; taint; manual |
+edges
+| A.java:7:16:7:23 | source(...) : String | A.java:9:25:9:25 | s : String | provenance |  |
+| A.java:7:16:7:23 | source(...) : String | A.java:12:25:12:27 | seq : String | provenance |  |
+| A.java:7:16:7:23 | source(...) : String | A.java:14:42:14:42 | s : String | provenance |  |
+| A.java:7:16:7:23 | source(...) : String | A.java:17:25:17:25 | s : String | provenance |  |
+| A.java:7:16:7:23 | source(...) : String | A.java:19:25:19:25 | s : String | provenance |  |
+| A.java:9:25:9:25 | s : String | A.java:9:10:9:26 | valueOf(...) | provenance | java.lang.String.valueOf(Object)+CharSequence |
+| A.java:12:25:12:27 | seq : String | A.java:12:10:12:28 | valueOf(...) | provenance | java.lang.String.valueOf(Object)+CharSequence |
+| A.java:14:24:14:43 | new StringBuilder(...) : StringBuilder | A.java:15:25:15:26 | sb : StringBuilder | provenance |  |
+| A.java:14:42:14:42 | s : String | A.java:14:24:14:43 | new StringBuilder(...) : StringBuilder | provenance | MaD:5 |
+| A.java:15:25:15:26 | sb : StringBuilder | A.java:15:10:15:27 | valueOf(...) | provenance | java.lang.String.valueOf(Object)+CharSequence |
+| A.java:17:25:17:25 | s : String | A.java:17:25:17:39 | toCharArray(...) : char[] | provenance | MaD:2 |
+| A.java:17:25:17:39 | toCharArray(...) : char[] | A.java:17:10:17:40 | valueOf(...) | provenance | MaD:4 |
+| A.java:19:25:19:25 | s : String | A.java:19:25:19:35 | charAt(...) : Number | provenance | MaD:1 |
+| A.java:19:25:19:35 | charAt(...) : Number | A.java:19:10:19:36 | valueOf(...) | provenance | MaD:3 |
+nodes
+| A.java:7:16:7:23 | source(...) : String | semmle.label | source(...) : String |
+| A.java:9:10:9:26 | valueOf(...) | semmle.label | valueOf(...) |
+| A.java:9:25:9:25 | s : String | semmle.label | s : String |
+| A.java:12:10:12:28 | valueOf(...) | semmle.label | valueOf(...) |
+| A.java:12:25:12:27 | seq : String | semmle.label | seq : String |
+| A.java:14:24:14:43 | new StringBuilder(...) : StringBuilder | semmle.label | new StringBuilder(...) : StringBuilder |
+| A.java:14:42:14:42 | s : String | semmle.label | s : String |
+| A.java:15:10:15:27 | valueOf(...) | semmle.label | valueOf(...) |
+| A.java:15:25:15:26 | sb : StringBuilder | semmle.label | sb : StringBuilder |
+| A.java:17:10:17:40 | valueOf(...) | semmle.label | valueOf(...) |
+| A.java:17:25:17:25 | s : String | semmle.label | s : String |
+| A.java:17:25:17:39 | toCharArray(...) : char[] | semmle.label | toCharArray(...) : char[] |
+| A.java:19:10:19:36 | valueOf(...) | semmle.label | valueOf(...) |
+| A.java:19:25:19:25 | s : String | semmle.label | s : String |
+| A.java:19:25:19:35 | charAt(...) : Number | semmle.label | charAt(...) : Number |
+subpaths
+testFailures

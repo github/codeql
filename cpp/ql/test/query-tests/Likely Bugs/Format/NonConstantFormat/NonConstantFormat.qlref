@@ -1,2 +1,4 @@
 query: Likely Bugs/Format/NonConstantFormat.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+postprocess:
+ - utils/test/PrettyPrintModels.ql
+ - utils/test/InlineExpectationsTestQuery.ql

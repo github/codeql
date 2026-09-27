@@ -1,4 +1,20 @@
+// Simple interpolation
 "hello \(name)"
+
+// Multiple interpolations
+"hello \(first) \(last)"
+
+// Interpolation with expression
+"result: \(x + y)"
+
+// Plain string before and after interpolation
+"prefix \(value) suffix"
+
+// Calls to custom DefaultStringInterpolation.appendInterpolation impls
+"foo \(x, y)"
+"foo \(x, y, z)"
+"foo \(arg: x)"
+"foo \(arg: x, arg2: y)"
 
 ---
 
@@ -24,10 +40,281 @@ sourceFile
                       baseName: identifier "name"
             stringSegment
               content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "hello "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "first"
+            stringSegment
+              content: stringSegment " "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "last"
+            stringSegment
+              content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "result: "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator "+"
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      rightOperand:
+                        declReferenceExpr
+                          baseName: identifier "y"
+            stringSegment
+              content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "prefix "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "value"
+            stringSegment
+              content: stringSegment " suffix"
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "foo "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "x"
+                  trailingComma: ,
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "y"
+            stringSegment
+              content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "foo "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "x"
+                  trailingComma: ,
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "y"
+                  trailingComma: ,
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "z"
+            stringSegment
+              content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "foo "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  colon: :
+                  label: identifier "arg"
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "x"
+            stringSegment
+              content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "foo "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  colon: :
+                  label: identifier "arg"
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "x"
+                  trailingComma: ,
+                labeledExpr
+                  colon: :
+                  label: identifier "arg2"
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "y"
+            stringSegment
+              content: stringSegment
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
-      stmt: string_literal "\"hello \\(name)\""
+    block source="⟨stmt⟩\n\n// Multiple interpolations\n⟨stmt⟩\n\n// Interpolation with expression\n⟨stmt⟩\n\n// Plain string before and after interpolation\n⟨stmt⟩\n\n// Calls to custom DefaultStringInterpolation.appendInterpolation impls\n⟨stmt⟩\n⟨stmt⟩\n⟨stmt⟩\n⟨stmt⟩"
+      stmt:
+        string_interpolation_expr source="\"⟨element⟩⟨element⟩\""
+          element:
+            string_literal "hello " source="hello "
+            call_expr source="\\(⟨argument⟩)"
+              callee: builtin_expr "interpolation" source=""
+              argument:
+                argument source="⟨value⟩"
+                  value: identifier "name" source="name"
+            string_literal source=""
+        string_interpolation_expr source="\"⟨element⟩⟨element⟩⟨element⟩⟨element⟩\""
+          element:
+            string_literal "hello " source="hello "
+            call_expr source="\\(⟨argument⟩)"
+              callee: builtin_expr "interpolation" source=""
+              argument:
+                argument source="⟨value⟩"
+                  value: identifier "first" source="first"
+            string_literal " " source=" "
+            call_expr source="\\(⟨argument⟩)"
+              callee: builtin_expr "interpolation" source=""
+              argument:
+                argument source="⟨value⟩"
+                  value: identifier "last" source="last"
+            string_literal source=""
+        string_interpolation_expr source="\"⟨element⟩⟨element⟩\""
+          element:
+            string_literal "result: " source="result: "
+            call_expr source="\\(⟨argument⟩)"
+              callee: builtin_expr "interpolation" source=""
+              argument:
+                argument source="⟨value⟩"
+                  value:
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "x" source="x"
+                      operator: infix_operator "+" source="+"
+                      right: identifier "y" source="y"
+            string_literal source=""
+        string_interpolation_expr source="\"⟨element⟩⟨element⟩⟨element⟩\""
+          element:
+            string_literal "prefix " source="prefix "
+            call_expr source="\\(⟨argument⟩)"
+              callee: builtin_expr "interpolation" source=""
+              argument:
+                argument source="⟨value⟩"
+                  value: identifier "value" source="value"
+            string_literal " suffix" source=" suffix"
+        string_interpolation_expr source="\"⟨element⟩⟨element⟩\""
+          element:
+            string_literal "foo " source="foo "
+            call_expr source="\\(⟨argument⟩, ⟨argument⟩)"
+              callee: builtin_expr "interpolation" source=""
+              argument:
+                argument source="⟨value⟩"
+                  value: identifier "x" source="x"
+                argument source="⟨value⟩"
+                  value: identifier "y" source="y"
+            string_literal source=""
+        string_interpolation_expr source="\"⟨element⟩⟨element⟩\""
+          element:
+            string_literal "foo " source="foo "
+            call_expr source="\\(⟨argument⟩, ⟨argument⟩, ⟨argument⟩)"
+              callee: builtin_expr "interpolation" source=""
+              argument:
+                argument source="⟨value⟩"
+                  value: identifier "x" source="x"
+                argument source="⟨value⟩"
+                  value: identifier "y" source="y"
+                argument source="⟨value⟩"
+                  value: identifier "z" source="z"
+            string_literal source=""
+        string_interpolation_expr source="\"⟨element⟩⟨element⟩\""
+          element:
+            string_literal "foo " source="foo "
+            call_expr source="\\(⟨argument⟩)"
+              callee: builtin_expr "interpolation" source=""
+              argument:
+                argument source="⟨name_node⟩: ⟨value⟩"
+                  name_node: identifier "arg" source="arg"
+                  value: identifier "x" source="x"
+            string_literal source=""
+        string_interpolation_expr source="\"⟨element⟩⟨element⟩\""
+          element:
+            string_literal "foo " source="foo "
+            call_expr source="\\(⟨argument⟩, ⟨argument⟩)"
+              callee: builtin_expr "interpolation" source=""
+              argument:
+                argument source="⟨name_node⟩: ⟨value⟩"
+                  name_node: identifier "arg" source="arg"
+                  value: identifier "x" source="x"
+                argument source="⟨name_node⟩: ⟨value⟩"
+                  name_node: identifier "arg2" source="arg2"
+                  value: identifier "y" source="y"
+            string_literal source=""

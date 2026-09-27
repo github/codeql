@@ -30,6 +30,8 @@ module Generated {
   class FnPtrTypeRepr extends Synth::TFnPtrTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "FnPtrTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the abi of this fn ptr type representation, if it exists.
      */

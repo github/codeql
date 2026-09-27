@@ -1,5 +1,6 @@
 files
 | .github/workflows/commands.yml:0:0:0:0 | .github/workflows/commands.yml |
+| .github/workflows/controlcheck.yml:0:0:0:0 | .github/workflows/controlcheck.yml |
 | .github/workflows/expression_nodes.yml:0:0:0:0 | .github/workflows/expression_nodes.yml |
 | .github/workflows/many_strings.yml:0:0:0:0 | .github/workflows/many_strings.yml |
 | .github/workflows/multiline2.yml:0:0:0:0 | .github/workflows/multiline2.yml |
@@ -7,8 +8,10 @@ files
 | .github/workflows/poisonable_steps.yml:0:0:0:0 | .github/workflows/poisonable_steps.yml |
 | .github/workflows/shell.yml:0:0:0:0 | .github/workflows/shell.yml |
 | .github/workflows/test.yml:0:0:0:0 | .github/workflows/test.yml |
+| controlchecktest.ext.yml:0:0:0:0 | controlchecktest.ext.yml |
 workflows
 | .github/workflows/commands.yml:1:1:39:30 | on: push |
+| .github/workflows/controlcheck.yml:1:1:16:25 | on: |
 | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
 | .github/workflows/many_strings.yml:1:1:18:1211 | on: |
 | .github/workflows/multiline2.yml:1:1:89:35 | on:  |
@@ -21,6 +24,8 @@ compositeActions
 jobs
 | .github/workflows/commands.yml:9:5:31:2 | Job: local_commands |
 | .github/workflows/commands.yml:32:5:39:30 | Job: local_commands2 |
+| .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 |
+| .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 |
 | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
 | .github/workflows/many_strings.yml:9:5:18:1211 | Job: Test |
 | .github/workflows/multiline2.yml:9:5:89:35 | Job: Test |
@@ -35,6 +40,8 @@ jobs
 localJobs
 | .github/workflows/commands.yml:9:5:31:2 | Job: local_commands |
 | .github/workflows/commands.yml:32:5:39:30 | Job: local_commands2 |
+| .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 |
+| .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 |
 | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
 | .github/workflows/many_strings.yml:9:5:18:1211 | Job: Test |
 | .github/workflows/multiline2.yml:9:5:89:35 | Job: Test |
@@ -57,6 +64,8 @@ steps
 | .github/workflows/commands.yml:28:9:31:2 | Run Step |
 | .github/workflows/commands.yml:34:9:37:6 | Run Step |
 | .github/workflows/commands.yml:37:9:39:30 | Run Step |
+| .github/workflows/controlcheck.yml:9:9:11:2 | Run Step |
+| .github/workflows/controlcheck.yml:15:9:16:25 | Run Step |
 | .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step |
 | .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step |
 | .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step |
@@ -180,6 +189,10 @@ runStepChildren
 | .github/workflows/commands.yml:34:9:37:6 | Run Step | .github/workflows/commands.yml:35:14:36:30 | command1 ; command2\n |
 | .github/workflows/commands.yml:37:9:39:30 | Run Step | .github/workflows/commands.yml:37:16:37:19 | pwsh |
 | .github/workflows/commands.yml:37:9:39:30 | Run Step | .github/workflows/commands.yml:38:14:39:30 | command3 \| command4\n |
+| .github/workflows/controlcheck.yml:9:9:11:2 | Run Step | .github/workflows/controlcheck.yml:9:15:9:20 | Test 1 |
+| .github/workflows/controlcheck.yml:9:9:11:2 | Run Step | .github/workflows/controlcheck.yml:10:14:10:25 | echo "test1" |
+| .github/workflows/controlcheck.yml:15:9:16:25 | Run Step | .github/workflows/controlcheck.yml:15:15:15:20 | Test 2 |
+| .github/workflows/controlcheck.yml:15:9:16:25 | Run Step | .github/workflows/controlcheck.yml:16:14:16:25 | echo "test2" |
 | .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step | .github/workflows/expression_nodes.yml:7:14:7:58 | LINE 1echo '${{ github.event.comment.body }}' |
 | .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step | .github/workflows/expression_nodes.yml:8:14:9:57 | LINE 1 echo '${{ github.event.comment.body }}'\n |
 | .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step | .github/workflows/expression_nodes.yml:10:14:12:53 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\n |
@@ -347,6 +360,43 @@ parentNodes
 | .github/workflows/commands.yml:38:14:39:30 | command3 \| command4\n | .github/workflows/commands.yml:1:1:39:30 | on: push |
 | .github/workflows/commands.yml:38:14:39:30 | command3 \| command4\n | .github/workflows/commands.yml:32:5:39:30 | Job: local_commands2 |
 | .github/workflows/commands.yml:38:14:39:30 | command3 \| command4\n | .github/workflows/commands.yml:37:9:39:30 | Run Step |
+| .github/workflows/controlcheck.yml:2:3:2:21 | pull_request_target | .github/workflows/controlcheck.yml:2:3:3:21 | pull_request_target: |
+| .github/workflows/controlcheck.yml:2:3:3:21 | pull_request_target: | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:3:13:3:19 | Created | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:3:13:3:19 | Created | .github/workflows/controlcheck.yml:2:3:2:21 | pull_request_target |
+| .github/workflows/controlcheck.yml:3:13:3:19 | Created | .github/workflows/controlcheck.yml:2:3:3:21 | pull_request_target: |
+| .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:6:18:6:34 | EnvironmentInRepo | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:6:18:6:34 | EnvironmentInRepo | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:6:18:6:34 | EnvironmentInRepo | .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 |
+| .github/workflows/controlcheck.yml:6:18:6:34 | EnvironmentInRepo | .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 |
+| .github/workflows/controlcheck.yml:6:18:6:34 | EnvironmentInRepo | .github/workflows/controlcheck.yml:6:18:6:34 | EnvironmentInRepo |
+| .github/workflows/controlcheck.yml:6:18:6:34 | EnvironmentInRepo | .github/workflows/controlcheck.yml:6:18:6:34 | EnvironmentInRepo |
+| .github/workflows/controlcheck.yml:7:14:7:26 | ubuntu-latest | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:7:14:7:26 | ubuntu-latest | .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 |
+| .github/workflows/controlcheck.yml:9:9:11:2 | Run Step | .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 |
+| .github/workflows/controlcheck.yml:9:15:9:20 | Test 1 | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:9:15:9:20 | Test 1 | .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 |
+| .github/workflows/controlcheck.yml:9:15:9:20 | Test 1 | .github/workflows/controlcheck.yml:9:9:11:2 | Run Step |
+| .github/workflows/controlcheck.yml:10:14:10:25 | echo "test1" | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:10:14:10:25 | echo "test1" | .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 |
+| .github/workflows/controlcheck.yml:10:14:10:25 | echo "test1" | .github/workflows/controlcheck.yml:9:9:11:2 | Run Step |
+| .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:12:18:12:37 | EnvironmentNotInRepo | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:12:18:12:37 | EnvironmentNotInRepo | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:12:18:12:37 | EnvironmentNotInRepo | .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 |
+| .github/workflows/controlcheck.yml:12:18:12:37 | EnvironmentNotInRepo | .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 |
+| .github/workflows/controlcheck.yml:12:18:12:37 | EnvironmentNotInRepo | .github/workflows/controlcheck.yml:12:18:12:37 | EnvironmentNotInRepo |
+| .github/workflows/controlcheck.yml:12:18:12:37 | EnvironmentNotInRepo | .github/workflows/controlcheck.yml:12:18:12:37 | EnvironmentNotInRepo |
+| .github/workflows/controlcheck.yml:13:14:13:26 | ubuntu-latest | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:13:14:13:26 | ubuntu-latest | .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 |
+| .github/workflows/controlcheck.yml:15:9:16:25 | Run Step | .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 |
+| .github/workflows/controlcheck.yml:15:15:15:20 | Test 2 | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:15:15:15:20 | Test 2 | .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 |
+| .github/workflows/controlcheck.yml:15:15:15:20 | Test 2 | .github/workflows/controlcheck.yml:15:9:16:25 | Run Step |
+| .github/workflows/controlcheck.yml:16:14:16:25 | echo "test2" | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:16:14:16:25 | echo "test2" | .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 |
+| .github/workflows/controlcheck.yml:16:14:16:25 | echo "test2" | .github/workflows/controlcheck.yml:15:9:16:25 | Run Step |
 | .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
 | .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
 | .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment | .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment |
@@ -905,6 +955,16 @@ cfgNodes
 | .github/workflows/commands.yml:35:14:36:30 | command1 ; command2\n |
 | .github/workflows/commands.yml:37:9:39:30 | Run Step |
 | .github/workflows/commands.yml:38:14:39:30 | command3 \| command4\n |
+| .github/workflows/controlcheck.yml:1:1:16:25 | enter on: |
+| .github/workflows/controlcheck.yml:1:1:16:25 | exit on: |
+| .github/workflows/controlcheck.yml:1:1:16:25 | exit on: (normal) |
+| .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 |
+| .github/workflows/controlcheck.yml:9:9:11:2 | Run Step |
+| .github/workflows/controlcheck.yml:10:14:10:25 | echo "test1" |
+| .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 |
+| .github/workflows/controlcheck.yml:15:9:16:25 | Run Step |
+| .github/workflows/controlcheck.yml:16:14:16:25 | echo "test2" |
 | .github/workflows/expression_nodes.yml:1:1:21:47 | enter on: issue_comment |
 | .github/workflows/expression_nodes.yml:1:1:21:47 | exit on: issue_comment |
 | .github/workflows/expression_nodes.yml:1:1:21:47 | exit on: issue_comment (normal) |
@@ -1140,6 +1200,12 @@ dfNodes
 | .github/workflows/commands.yml:35:14:36:30 | command1 ; command2\n |
 | .github/workflows/commands.yml:37:9:39:30 | Run Step |
 | .github/workflows/commands.yml:38:14:39:30 | command3 \| command4\n |
+| .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 |
+| .github/workflows/controlcheck.yml:9:9:11:2 | Run Step |
+| .github/workflows/controlcheck.yml:10:14:10:25 | echo "test1" |
+| .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 |
+| .github/workflows/controlcheck.yml:15:9:16:25 | Run Step |
+| .github/workflows/controlcheck.yml:16:14:16:25 | echo "test2" |
 | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
 | .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step |
 | .github/workflows/expression_nodes.yml:7:14:7:58 | LINE 1echo '${{ github.event.comment.body }}' |
@@ -1353,6 +1419,12 @@ nodeLocations
 | .github/workflows/commands.yml:35:14:36:30 | command1 ; command2\n | .github/workflows/commands.yml:35:14:36:30 | .github/workflows/commands.yml@35:14:36:30 |
 | .github/workflows/commands.yml:37:9:39:30 | Run Step | .github/workflows/commands.yml:37:9:39:30 | .github/workflows/commands.yml@37:9:39:30 |
 | .github/workflows/commands.yml:38:14:39:30 | command3 \| command4\n | .github/workflows/commands.yml:38:14:39:30 | .github/workflows/commands.yml@38:14:39:30 |
+| .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 | .github/workflows/controlcheck.yml:6:5:11:2 | .github/workflows/controlcheck.yml@6:5:11:2 |
+| .github/workflows/controlcheck.yml:9:9:11:2 | Run Step | .github/workflows/controlcheck.yml:9:9:11:2 | .github/workflows/controlcheck.yml@9:9:11:2 |
+| .github/workflows/controlcheck.yml:10:14:10:25 | echo "test1" | .github/workflows/controlcheck.yml:10:14:10:25 | .github/workflows/controlcheck.yml@10:14:10:25 |
+| .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 | .github/workflows/controlcheck.yml:12:5:16:25 | .github/workflows/controlcheck.yml@12:5:16:25 |
+| .github/workflows/controlcheck.yml:15:9:16:25 | Run Step | .github/workflows/controlcheck.yml:15:9:16:25 | .github/workflows/controlcheck.yml@15:9:16:25 |
+| .github/workflows/controlcheck.yml:16:14:16:25 | echo "test2" | .github/workflows/controlcheck.yml:16:14:16:25 | .github/workflows/controlcheck.yml@16:14:16:25 |
 | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber | .github/workflows/expression_nodes.yml:5:5:21:47 | .github/workflows/expression_nodes.yml@5:5:21:47 |
 | .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step | .github/workflows/expression_nodes.yml:7:9:8:6 | .github/workflows/expression_nodes.yml@7:9:8:6 |
 | .github/workflows/expression_nodes.yml:7:14:7:58 | LINE 1echo '${{ github.event.comment.body }}' | .github/workflows/expression_nodes.yml:7:14:7:58 | .github/workflows/expression_nodes.yml@7:14:7:58 |
@@ -1541,6 +1613,7 @@ nodeLocations
 | .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output | .github/workflows/test.yml:40:20:40:53 | .github/workflows/test.yml@40:20:40:53 |
 scopes
 | .github/workflows/commands.yml:1:1:39:30 | on: push |
+| .github/workflows/controlcheck.yml:1:1:16:25 | on: |
 | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
 | .github/workflows/many_strings.yml:1:1:18:1211 | on: |
 | .github/workflows/multiline2.yml:1:1:89:35 | on:  |

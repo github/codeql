@@ -31,6 +31,8 @@ module Generated {
   class AsmExpr extends Synth::TAsmExpr, ExprImpl::Expr, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "AsmExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th asm piece of this asm expression (0-based).
      */

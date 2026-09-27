@@ -12,11 +12,44 @@ pub mod node_types_yaml;
 pub mod query;
 mod range;
 pub mod schema;
-pub mod tree_builder;
 mod visitor;
 
 pub use range::{Point, Range};
 pub use yeast_macros::{query, rule, rules, tree, trees};
+
+/// Build a single AST node whose root uses another node's source range.
+///
+/// Nested nodes in the template are built normally and derive their locations
+/// from their own children.
+#[macro_export]
+macro_rules! tree_at {
+    ($ctx:ident, $source:expr, ($($tree:tt)*)) => {{
+        let __yeast_source: $crate::Id = $source;
+        let __yeast_source_range = $ctx
+            .ast
+            .get_node(__yeast_source)
+            .and_then(|node| node.source_range());
+        let __yeast_node: $crate::Id = $crate::tree!($ctx, ($($tree)*));
+        $ctx.set_node_source_range(__yeast_node, __yeast_source_range)
+    }};
+}
+
+/// Build a single AST node whose root spans a collection of nodes.
+///
+/// Nested nodes in the template are built normally and derive their locations
+/// from their own children.
+#[macro_export]
+macro_rules! tree_spanning {
+    ($ctx:ident, $sources:expr, ($($tree:tt)*)) => {{
+        let __yeast_source_range = ::std::iter::IntoIterator::into_iter($sources)
+            .filter_map(|source: $crate::Id| {
+                $ctx.ast.get_node(source).and_then(|node| node.source_range())
+            })
+            .reduce($crate::Range::union);
+        let __yeast_node: $crate::Id = $crate::tree!($ctx, ($($tree)*));
+        $ctx.set_node_source_range(__yeast_node, __yeast_source_range)
+    }};
+}
 
 use captures::Captures;
 use query::QueryNode;
@@ -128,9 +161,10 @@ pub trait YeastDisplay {
 
 /// Optional source range for values used in `#{expr}` interpolations.
 ///
-/// By default this returns `None`, so synthesized leaves inherit the matched
-/// rule's source range. `Id` returns the referenced node's range, letting
-/// `(kind #{capture})` carry the captured node's location.
+/// By default this returns `None`, so synthesized leaves use the current
+/// [`crate::build::BuildCtx`] default range, if any. `Id` returns the
+/// referenced node's range, letting `(kind #{capture})` carry the captured
+/// node's location.
 pub trait YeastSourceRange {
     fn yeast_source_range(&self, ast: &Ast) -> Option<Range>;
 }
@@ -143,10 +177,7 @@ impl YeastDisplay for Id {
 
 impl YeastSourceRange for Id {
     fn yeast_source_range(&self, ast: &Ast) -> Option<Range> {
-        ast.get_node(*self).and_then(|n| match &n.content {
-            NodeContent::Range(r) => Some(*r),
-            _ => n.source_range,
-        })
+        ast.get_node(*self).and_then(Node::source_range)
     }
 }
 
@@ -323,7 +354,7 @@ impl<'a> AstCursor<'a> {
     fn goto_first_child_opt(&mut self) -> Option<()> {
         let parent_id = self.node_id;
         let parent = self.ast.get_node(parent_id)?;
-        let mut children = ChildrenIter::new(parent);
+        let mut children = ChildrenIter::new(self.ast, parent);
         let first_child = children.next()?;
         self.node_id = first_child;
         self.parents.push((parent_id, children));
@@ -340,15 +371,35 @@ impl<'a> AstCursor<'a> {
 #[derive(Debug)]
 struct ChildrenIter<'a> {
     current_field: Option<FieldId>,
-    fields: std::collections::btree_map::Iter<'a, FieldId, Vec<Id>>,
+    fields: &'a BTreeMap<FieldId, Vec<Id>>,
+    field_order: std::vec::IntoIter<FieldId>,
     field_children: Option<std::slice::Iter<'a, Id>>,
 }
 
 impl<'a> ChildrenIter<'a> {
-    fn new(node: &'a Node) -> Self {
+    fn new(ast: &'a Ast, node: &'a Node) -> Self {
+        let fields = &node.fields;
+        let present: Vec<FieldId> = fields.keys().copied().collect();
+        let field_order = match ast.schema.field_order(node.kind_name()) {
+            Some(order) => {
+                let mut fields: Vec<FieldId> = order
+                    .iter()
+                    .copied()
+                    .filter(|field| fields.contains_key(field))
+                    .collect();
+                for field in present {
+                    if !fields.contains(&field) {
+                        fields.push(field);
+                    }
+                }
+                fields.into_iter()
+            }
+            None => present.into_iter(),
+        };
         Self {
             current_field: None,
-            fields: node.fields.iter(),
+            fields,
+            field_order,
             field_children: None,
         }
     }
@@ -363,20 +414,20 @@ impl Iterator for ChildrenIter<'_> {
 
     fn next(&mut self) -> Option<Self::Item> {
         match self.field_children.as_mut() {
-            None => match self.fields.next() {
-                Some((field, children)) => {
-                    self.current_field = Some(*field);
-                    self.field_children = Some(children.iter());
+            None => match self.field_order.next() {
+                Some(field) => {
+                    self.current_field = Some(field);
+                    self.field_children = Some(self.fields[&field].iter());
                     self.next()
                 }
                 None => None,
             },
             Some(children) => match children.next() {
-                None => match self.fields.next() {
+                None => match self.field_order.next() {
                     None => None,
-                    Some((field, children)) => {
-                        self.current_field = Some(*field);
-                        self.field_children = Some(children.iter());
+                    Some(field) => {
+                        self.current_field = Some(field);
+                        self.field_children = Some(self.fields[&field].iter());
                         self.next()
                     }
                 },
@@ -492,7 +543,7 @@ impl Ast {
         }
     }
 
-    pub fn walk(&self) -> AstCursor {
+    pub fn walk(&self) -> AstCursor<'_> {
         AstCursor::new(self)
     }
 
@@ -545,6 +596,21 @@ impl Ast {
         self.nodes.get(id.0)
     }
 
+    fn source_range_ignoring_fields(&self, id: Id, ignored_fields: &[&str]) -> Option<Range> {
+        let node = self.get_node(id)?;
+        let source_range = node.source_range()?;
+        let ignored_ranges = node
+            .fields
+            .iter()
+            .filter(|(field_id, _)| {
+                self.field_name_for_id(**field_id)
+                    .is_some_and(|name| ignored_fields.contains(&name))
+            })
+            .flat_map(|(_, children)| children)
+            .filter_map(|child| self.get_node(*child).and_then(Node::source_range));
+        Some(source_range.ignoring_boundary_ranges(ignored_ranges))
+    }
+
     pub fn print(&self, source: &str, root_id: Id) -> Value {
         let root = &self.nodes()[root_id.0];
         self.print_node(root, source)
@@ -571,11 +637,16 @@ impl Ast {
         let source_range = match &content {
             // Parsed nodes already carry an exact source range in their content.
             NodeContent::Range(_) => source_range,
-            // Synthesized nodes derive location from children when possible,
-            // and fall back to the inherited rule-match range otherwise.
+            // Synthesized nodes derive location from both their children and
+            // any explicitly supplied source range.
             _ => self
                 .union_source_range_of_children(&fields)
-                .or(source_range),
+                .map_or(source_range, |child_range| {
+                    Some(match source_range {
+                        Some(source_range) => child_range.union(source_range),
+                        None => child_range,
+                    })
+                }),
         };
         let id = self.nodes.len();
         self.nodes.push(Node {
@@ -590,6 +661,36 @@ impl Ast {
             source_range,
         });
         Id(id)
+    }
+
+    /// Extend a synthetic node's source range to include `source_range`.
+    ///
+    /// Parsed nodes carry their exact range in [`NodeContent::Range`] and must
+    /// not be modified through this API.
+    pub fn extend_source_range(&mut self, id: Id, source_range: Range) {
+        let node = self
+            .nodes
+            .get_mut(id.0)
+            .unwrap_or_else(|| panic!("extend_source_range: invalid node id {}", id.0));
+        if matches!(node.content, NodeContent::Range(_)) {
+            panic!("extend_source_range: cannot modify a parsed node");
+        }
+        node.source_range = Some(match node.source_range {
+            Some(existing) => existing.union(source_range),
+            None => source_range,
+        });
+    }
+
+    /// Replace a synthetic node's source range.
+    pub(crate) fn set_source_range(&mut self, id: Id, source_range: Range) {
+        let node = self
+            .nodes
+            .get_mut(id.0)
+            .unwrap_or_else(|| panic!("set_source_range: invalid node id {}", id.0));
+        if matches!(node.content, NodeContent::Range(_)) {
+            panic!("set_source_range: cannot modify a parsed node");
+        }
+        node.source_range = Some(source_range);
     }
 
     /// Register a named node kind, returning its id (idempotent). Lets callers
@@ -629,35 +730,30 @@ impl Ast {
                 let Some(child) = self.get_node(child_id) else {
                     continue;
                 };
-
-                let child_start_byte = child.start_byte();
-                let child_end_byte = child.end_byte();
-
-                // Skip children that carry no usable location.
-                if child_start_byte == 0 && child_end_byte == 0 {
+                let Some(child_range) = child.source_range() else {
                     continue;
-                }
+                };
 
                 match start_byte {
                     None => {
-                        start_byte = Some(child_start_byte);
-                        start_point = child.start_position();
+                        start_byte = Some(child_range.start_byte);
+                        start_point = child_range.start_point;
                     }
-                    Some(current_start) if child_start_byte < current_start => {
-                        start_byte = Some(child_start_byte);
-                        start_point = child.start_position();
+                    Some(current_start) if child_range.start_byte < current_start => {
+                        start_byte = Some(child_range.start_byte);
+                        start_point = child_range.start_point;
                     }
                     _ => {}
                 }
 
                 match end_byte {
                     None => {
-                        end_byte = Some(child_end_byte);
-                        end_point = child.end_position();
+                        end_byte = Some(child_range.end_byte);
+                        end_point = child_range.end_point;
                     }
-                    Some(current_end) if child_end_byte > current_end => {
-                        end_byte = Some(child_end_byte);
-                        end_point = child.end_position();
+                    Some(current_end) if child_range.end_byte > current_end => {
+                        end_byte = Some(child_range.end_byte);
+                        end_point = child_range.end_point;
                     }
                     _ => {}
                 }
@@ -808,36 +904,29 @@ impl Node {
         Point { row: 0, column: 0 }
     }
 
-    pub fn start_position(&self) -> Point {
+    pub fn source_range(&self) -> Option<Range> {
         match self.content {
-            NodeContent::Range(range) => range.start_point,
-            _ => self
-                .source_range
-                .map_or_else(|| self.fake_point(), |r| r.start_point),
+            NodeContent::Range(range) => Some(range),
+            _ => self.source_range,
         }
+    }
+
+    pub fn start_position(&self) -> Point {
+        self.source_range()
+            .map_or_else(|| self.fake_point(), |range| range.start_point)
     }
 
     pub fn end_position(&self) -> Point {
-        match self.content {
-            NodeContent::Range(range) => range.end_point,
-            _ => self
-                .source_range
-                .map_or_else(|| self.fake_point(), |r| r.end_point),
-        }
+        self.source_range()
+            .map_or_else(|| self.fake_point(), |range| range.end_point)
     }
 
     pub fn start_byte(&self) -> usize {
-        match self.content {
-            NodeContent::Range(range) => range.start_byte,
-            _ => self.source_range.map_or(0, |r| r.start_byte),
-        }
+        self.source_range().map_or(0, |range| range.start_byte)
     }
 
     pub fn end_byte(&self) -> usize {
-        match self.content {
-            NodeContent::Range(range) => range.end_byte,
-            _ => self.source_range.map_or(0, |r| r.end_byte),
-        }
+        self.source_range().map_or(0, |range| range.end_byte)
     }
 
     pub fn byte_range(&self) -> std::ops::Range<usize> {
@@ -893,12 +982,17 @@ impl From<tree_sitter::Range> for NodeContent {
 /// directly) can call [`TranslatorHandle::translate`] selectively on
 /// specific node ids to control when translation happens.
 pub struct TranslatorHandle<'a, C> {
-    inner: TranslatorImpl<'a, C>,
+    index: &'a RuleIndex<'a, C>,
+    rewrite_depth: usize,
+    /// The id of the node the current rule is matching. Used by
+    /// [`auto_translate_captures`] to avoid infinite recursion when a
+    /// rule captures its own match root (e.g. via `(_) @_`).
+    matched_root: Id,
 }
 
 // Manual `Copy` / `Clone` so `TranslatorHandle<'_, C>: Copy` holds
-// regardless of whether `C: Copy`. `TranslatorImpl` contains only
-// shared references, which are `Copy` unconditionally.
+// regardless of whether `C: Copy`. All fields are shared references or
+// small `Copy` scalars.
 impl<C> Copy for TranslatorHandle<'_, C> {}
 impl<C> Clone for TranslatorHandle<'_, C> {
     fn clone(&self) -> Self {
@@ -906,59 +1000,16 @@ impl<C> Clone for TranslatorHandle<'_, C> {
     }
 }
 
-/// Internal phase-specific translation state. Kept private — callers
-/// interact with [`TranslatorHandle`] only.
-enum TranslatorImpl<'a, C> {
-    /// OneShot phase translator: recursively applies OneShot rules.
-    OneShot {
-        index: &'a RuleIndex<'a, C>,
-        fresh: &'a tree_builder::FreshScope,
-        rewrite_depth: usize,
-        /// The id of the node the current rule is matching. Used by
-        /// [`auto_translate_captures`] to avoid infinite recursion when a
-        /// rule captures its own match root (e.g. via `(_) @_`).
-        matched_root: Id,
-    },
-    /// Repeating phase translator: translation is not meaningful here
-    /// (input and output schemas are the same). [`translate`] errors;
-    /// [`auto_translate_captures`] is a no-op so the macro's auto-prefix
-    /// works unchanged for Repeating rules.
-    Repeating,
-}
-
-// Manual `Copy` / `Clone` so `TranslatorImpl<'_, C>: Copy` holds
-// regardless of whether `C: Copy`. All variants hold only shared
-// references and small `Copy` scalars.
-impl<C> Copy for TranslatorImpl<'_, C> {}
-impl<C> Clone for TranslatorImpl<'_, C> {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
-
 impl<'a, C: Clone> TranslatorHandle<'a, C> {
-    /// Recursively apply OneShot rules to `id` and return the resulting
-    /// node ids. Errors in a Repeating phase (where translation is not
-    /// meaningful).
+    /// Recursively apply the current phase's rules to `id` and return the
+    /// resulting node ids.
     pub fn translate(&self, ast: &mut Ast, user_ctx: &mut C, id: Id) -> Result<Vec<Id>, String> {
-        match &self.inner {
-            TranslatorImpl::OneShot {
-                index,
-                fresh,
-                rewrite_depth,
-                ..
-            } => apply_one_shot_rules_inner(index, ast, user_ctx, id, fresh, rewrite_depth + 1),
-            TranslatorImpl::Repeating => {
-                Err("translate() is not available in a Repeating phase".into())
-            }
-        }
+        apply_rules_inner(self.index, ast, user_ctx, id, self.rewrite_depth + 1)
     }
 
-    /// Translate every captured node in `captures` in place (OneShot phase
-    /// only), except for captures whose name appears in `skip` — those are
-    /// left as raw (input-schema) ids for the rule body to consume
-    /// directly. In a Repeating phase this is a no-op — Repeating rules
-    /// receive raw captures regardless of `skip`.
+    /// Translate every captured node in `captures` in place, except for
+    /// captures whose name appears in `skip` — those are left as raw
+    /// (input-schema) ids for the rule body to consume directly.
     ///
     /// Used by the `rule!` macro's generated prefix. `skip` is populated
     /// from the macro's `@@name` capture markers; for plain `@name`
@@ -973,39 +1024,32 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
         user_ctx: &mut C,
         skip: &[&str],
     ) -> Result<(), String> {
-        match &self.inner {
-            TranslatorImpl::OneShot { matched_root, .. } => {
-                let root = *matched_root;
-                captures.try_map_captures_except(skip, |cid| {
-                    if cid == root {
-                        Ok(vec![cid])
-                    } else {
-                        self.translate(ast, user_ctx, cid)
-                    }
-                })
+        captures.try_map_captures_except(skip, |cid| {
+            if cid == self.matched_root {
+                Ok(vec![cid])
+            } else {
+                self.translate(ast, user_ctx, cid)
             }
-            TranslatorImpl::Repeating => Ok(()),
-        }
+        })
     }
 }
 
 /// The transform function for a rule.
 ///
-/// Takes the AST, the (raw, untranslated) captured variables, a fresh-name
-/// scope, the source range of the matched node, a mutable reference to the
-/// user context of type `C`, and a [`TranslatorHandle`] for recursively
-/// translating nodes. Returns the IDs of the replacement nodes, or an
-/// error message if the transform could not be completed.
+/// Takes the AST, the (raw, untranslated) captured variables, the source range
+/// of the matched node, a mutable reference to the user context of type `C`,
+/// and a [`TranslatorHandle`] for recursively translating nodes. Returns the
+/// IDs of the replacement nodes, or an error message if the transform could
+/// not be completed.
 ///
 /// Transforms produced by [`Rule::new`] receive **raw** captures and must
 /// translate them themselves (via the handle). Transforms produced by the
-/// `rule!` macro have an auto-translation prefix injected for backward
-/// compatibility.
+/// `rule!` macro have an auto-translation prefix that recursively translates
+/// captures.
 pub type Transform<C = ()> = Box<
     dyn Fn(
             &mut Ast,
             Captures,
-            &tree_builder::FreshScope,
             Option<Range>,
             &mut C,
             TranslatorHandle<'_, C>,
@@ -1014,78 +1058,84 @@ pub type Transform<C = ()> = Box<
         + Sync,
 >;
 
+/// Predicate evaluated after a rule's query matches and before its transform
+/// runs. Returning `false` makes the rule behave as if its query did not
+/// match, so the driver continues to the next rule. The user context is a
+/// private clone for this rule attempt; mutations are retained for the
+/// transform when the guard succeeds and discarded when it fails.
+pub type Guard<C = ()> = Box<dyn Fn(&Ast, &Captures, &mut C) -> Result<bool, String> + Send + Sync>;
+
 pub struct Rule<C = ()> {
     query: QueryNode,
+    guard: Option<Guard<C>>,
     transform: Transform<C>,
-    /// If true, after this rule fires on a node the engine will try to
-    /// re-apply this same rule on the result root. Defaults to false:
-    /// each rule fires at most once on a given node, which prevents
-    /// accidental loops where a rule's output matches its own query.
-    repeated: bool,
+    ignored_location_fields: Vec<&'static str>,
 }
 
 impl<C> Rule<C> {
+    /// Construct an unguarded rule from its query and transform.
     pub fn new(query: QueryNode, transform: Transform<C>) -> Self {
         Self {
             query,
+            guard: None,
             transform,
-            repeated: false,
+            ignored_location_fields: Vec::new(),
         }
     }
 
-    /// Mark this rule as allowed to fire multiple times on the same node.
-    /// Use when the rule is intentionally iterative (its output may match
-    /// its own query). Without this, a rule fires at most once per node;
-    /// other rules can still fire on the result.
-    pub fn repeated(mut self) -> Self {
-        self.repeated = true;
-        self
-    }
-
-    fn try_rule(
-        &self,
-        ast: &mut Ast,
-        node: Id,
-        fresh: &tree_builder::FreshScope,
-        user_ctx: &mut C,
-        translator: TranslatorHandle<'_, C>,
-    ) -> Result<Option<Vec<Id>>, String> {
-        match self.try_match(ast, node)? {
-            Some(captures) => Ok(Some(
-                self.run_transform(ast, captures, node, fresh, user_ctx, translator)?,
-            )),
-            None => Ok(None),
+    /// Construct a guarded rule. The guard sees raw captures and shares its
+    /// private user-context clone with the transform when it succeeds.
+    pub fn guarded(query: QueryNode, guard: Guard<C>, transform: Transform<C>) -> Self {
+        Self {
+            query,
+            guard: Some(guard),
+            transform,
+            ignored_location_fields: Vec::new(),
         }
     }
 
-    /// Attempt to match this rule's query against `node`, returning the
-    /// resulting captures on success. Does not invoke the transform.
-    fn try_match(&self, ast: &Ast, node: Id) -> Result<Option<Captures>, String> {
+    fn set_ignored_location_fields(&mut self, fields: &[&'static str]) {
+        self.ignored_location_fields = fields.to_vec();
+    }
+
+    /// Attempt to match this rule's query against `node`, returning the raw
+    /// captures on success. Does not evaluate the guard or invoke the
+    /// transform.
+    fn match_query(&self, ast: &Ast, node: Id) -> Result<Option<Captures>, String> {
         let mut captures = Captures::new();
-        if self.query.do_match(ast, node, &mut captures)? {
-            Ok(Some(captures))
+        if !self.query.do_match(ast, node, &mut captures)? {
+            return Ok(None);
+        }
+        Ok(Some(captures))
+    }
+
+    /// Evaluate this rule's guard against a successful query match. An
+    /// unguarded rule always succeeds.
+    fn guard_matches(
+        &self,
+        ast: &Ast,
+        captures: &Captures,
+        user_ctx: &mut C,
+    ) -> Result<bool, String> {
+        if let Some(guard) = &self.guard {
+            guard(ast, captures, user_ctx)
         } else {
-            Ok(None)
+            Ok(true)
         }
     }
 
-    /// Run this rule's transform with the given captures, using `node`'s
-    /// source range as the source range of the produced nodes.
+    /// Run this rule's transform with the given captures, making `node`'s
+    /// source range available to the transform.
     fn run_transform(
         &self,
         ast: &mut Ast,
         captures: Captures,
         node: Id,
-        fresh: &tree_builder::FreshScope,
         user_ctx: &mut C,
         translator: TranslatorHandle<'_, C>,
     ) -> Result<Vec<Id>, String> {
-        fresh.next_scope();
-        let source_range = ast.get_node(node).and_then(|n| match n.content {
-            NodeContent::Range(r) => Some(r),
-            _ => n.source_range,
-        });
-        (self.transform)(ast, captures, fresh, source_range, user_ctx, translator)
+        let source_range = ast.source_range_ignoring_fields(node, &self.ignored_location_fields);
+        (self.transform)(ast, captures, source_range, user_ctx, translator)
     }
 }
 
@@ -1121,25 +1171,25 @@ impl<'a, C> RuleIndex<'a, C> {
     }
 }
 
-fn apply_repeating_rules<C: Clone>(
+/// Apply the first matching rule to each visited node. Recursion proceeds
+/// only through captured nodes (not through the input node's children
+/// directly), and an error is returned if no rule matches a visited node.
+fn apply_rules<C: Clone>(
     rules: &[Rule<C>],
     ast: &mut Ast,
     user_ctx: &mut C,
     id: Id,
-    fresh: &tree_builder::FreshScope,
 ) -> Result<Vec<Id>, String> {
     let index = RuleIndex::new(rules);
-    apply_repeating_rules_inner(&index, ast, user_ctx, id, fresh, 0, None)
+    apply_rules_inner(&index, ast, user_ctx, id, 0)
 }
 
-fn apply_repeating_rules_inner<C: Clone>(
+fn apply_rules_inner<C: Clone>(
     index: &RuleIndex<C>,
     ast: &mut Ast,
     user_ctx: &mut C,
     id: Id,
-    fresh: &tree_builder::FreshScope,
     rewrite_depth: usize,
-    skip_rule: Option<*const Rule<C>>,
 ) -> Result<Vec<Id>, String> {
     if rewrite_depth > MAX_REWRITE_DEPTH {
         return Err(format!(
@@ -1149,190 +1199,51 @@ fn apply_repeating_rules_inner<C: Clone>(
     }
 
     let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
+
     for rule in index.rules_for_kind(node_kind) {
-        let rule_ptr = *rule as *const Rule<C>;
-        if Some(rule_ptr) == skip_rule {
+        let Some(captures) = rule.match_query(ast, id)? else {
+            continue;
+        };
+
+        // Clone only after the query matches, but before the guard runs.
+        // Guard mutations are visible to the transform and transitively-
+        // translated captures when the guard succeeds; a failed guard drops
+        // the clone before trying the next rule.
+        let mut local = user_ctx.clone();
+        if !rule.guard_matches(ast, &captures, &mut local)? {
             continue;
         }
-        // Give each rule attempt a private clone of the user context.
-        // Any mutations the rule makes are visible to its transform and
-        // to the recursive translation of its result, but never leak
-        // back to the parent — the clone is simply dropped when we
-        // return. This is also `?`-safe: an error return drops `local`
-        // without touching the caller's `user_ctx`.
-        let mut local = user_ctx.clone();
-        // Repeating rules don't need a real translator: their captures
-        // aren't auto-translated (Repeating preserves the input schema),
-        // and `ctx.translate(id)` errors if invoked from a Repeating
-        // transform.
+
+        // Build the translator handle the transform will use to recursively
+        // translate captures (or, for macro-generated rules, the
+        // auto-translate prefix uses it to translate every capture up front).
         let translator = TranslatorHandle {
-            inner: TranslatorImpl::Repeating,
+            index,
+            rewrite_depth,
+            matched_root: id,
         };
-        let try_result = rule.try_rule(ast, id, fresh, &mut local, translator)?;
-        if let Some(result_node) = try_result {
-            // For non-repeated rules, suppress further application of *this*
-            // rule on the result root, so a rule whose output matches its own
-            // query doesn't loop. Other rules and child traversal are
-            // unaffected.
-            let next_skip = if rule.repeated { None } else { Some(rule_ptr) };
-            let mut results = Vec::new();
-            for node in result_node {
-                results.extend(apply_repeating_rules_inner(
-                    index,
-                    ast,
-                    &mut local,
-                    node,
-                    fresh,
-                    rewrite_depth + 1,
-                    next_skip,
-                )?);
-            }
-            return Ok(results);
-        }
-        // Rule didn't match; `local` is dropped as we loop to the next
-        // rule.
+        let result = rule.run_transform(ast, captures, id, &mut local, translator)?;
+        return Ok(result);
     }
 
-    // Take the parent's fields by ownership: the recursion will rewrite
-    // each child Id, and we'll write the (possibly mutated) field map back
-    // when we're done. Avoids cloning the whole BTreeMap and its child
-    // Vecs on entry. Each child Vec is only re-allocated if a rewrite
-    // actually changes its contents.
-    //
-    // Child traversal does not increment rewrite depth and starts fresh
-    // (no rule is skipped on child subtrees).
-    let mut fields = std::mem::take(&mut ast.nodes[id.0].fields);
-    for children in fields.values_mut() {
-        let mut new_children: Option<Vec<Id>> = None;
-        for (i, &child_id) in children.iter().enumerate() {
-            let result = apply_repeating_rules_inner(
-                index,
-                ast,
-                user_ctx,
-                child_id,
-                fresh,
-                rewrite_depth,
-                None,
-            )?;
-            let unchanged = result.len() == 1 && result[0] == child_id;
-            match (&mut new_children, unchanged) {
-                (None, true) => {} // unchanged so far, no allocation needed
-                (None, false) => {
-                    // First divergence — copy already-processed Ids and
-                    // start collecting the rewritten sequence.
-                    let mut new = Vec::with_capacity(children.len());
-                    new.extend_from_slice(&children[..i]);
-                    new.extend(result);
-                    new_children = Some(new);
-                }
-                (Some(new), _) => {
-                    new.extend(result);
-                }
-            }
-        }
-        if let Some(new) = new_children {
-            *children = new;
-        }
-    }
-    ast.nodes[id.0].fields = fields;
-    Ok(vec![id])
+    Err(format!("no rule matched node of kind '{node_kind}'"))
 }
 
-/// Apply rules using `OneShot` semantics: the first matching rule fires on
-/// each visited node, recursion proceeds only through captured nodes (not
-/// through the input node's children directly), and an error is returned if
-/// no rule matches a visited node.
-fn apply_one_shot_rules<C: Clone>(
-    rules: &[Rule<C>],
-    ast: &mut Ast,
-    user_ctx: &mut C,
-    id: Id,
-    fresh: &tree_builder::FreshScope,
-) -> Result<Vec<Id>, String> {
-    let index = RuleIndex::new(rules);
-    apply_one_shot_rules_inner(&index, ast, user_ctx, id, fresh, 0)
-}
-
-fn apply_one_shot_rules_inner<C: Clone>(
-    index: &RuleIndex<C>,
-    ast: &mut Ast,
-    user_ctx: &mut C,
-    id: Id,
-    fresh: &tree_builder::FreshScope,
-    rewrite_depth: usize,
-) -> Result<Vec<Id>, String> {
-    if rewrite_depth > MAX_REWRITE_DEPTH {
-        return Err(format!(
-            "Desugaring exceeded maximum rewrite depth ({MAX_REWRITE_DEPTH}). \
-             This likely indicates a non-terminating rule cycle."
-        ));
-    }
-
-    let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
-
-    for rule in index.rules_for_kind(node_kind) {
-        if let Some(captures) = rule.try_match(ast, id)? {
-            // Give the rule a private clone of the user context. Any
-            // mutations the rule (or its transitively-translated
-            // captures) make are visible during this rule's transform,
-            // but never leak back — the clone is dropped when we
-            // return. `?`-safe: an error return drops `local` without
-            // touching the caller's `user_ctx`.
-            let mut local = user_ctx.clone();
-            // Build the translator handle the transform will use to
-            // recursively translate captures (or, for macro-generated
-            // rules, the auto-translate prefix uses it to translate every
-            // capture up front, preserving the legacy behavior).
-            let translator = TranslatorHandle {
-                inner: TranslatorImpl::OneShot {
-                    index,
-                    fresh,
-                    rewrite_depth,
-                    matched_root: id,
-                },
-            };
-            let result = rule.run_transform(ast, captures, id, fresh, &mut local, translator)?;
-            return Ok(result);
-        }
-    }
-
-    Err(format!(
-        "OneShot: no rule matched node of kind '{node_kind}'"
-    ))
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum PhaseKind {
-    /// A node is re-processed until none of the rules in the phase matches,
-    /// albeit a single rule cannot be applied twice in a row unless that rule is also marked as repeating.
-    /// When a node no longer matches any rules, its children are recursively processed (top down).
-    Repeating,
-
-    /// A node is processed by the first matching rule, and the engine panics if no rule matches.
-    /// Rules are then recursively applied to every captured node.
-    /// In practice this is used when translating from one AST schema to another, where every node must be rewritten,
-    /// and it would be a type error to match the rule patterns (based on the input schema) against the output nodes (which conform to the output schema).
-    OneShot,
-}
-
-/// One phase of a desugaring pass: a named bundle of rules that runs to
-/// completion (a full traversal applying its rules) before the next phase
-/// starts. Rules within a phase compete for matches as usual; rules in
-/// different phases never compete because each traversal only considers the
-/// current phase's rules.
+/// One phase of a translation pass: a named bundle of exhaustive rules that
+/// runs before the next phase starts. Rules within a phase compete for matches
+/// as usual; rules in different phases never compete because each translation
+/// only considers the current phase's rules.
 pub struct Phase<C = ()> {
     /// Name used in error messages.
     pub name: String,
     pub rules: Vec<Rule<C>>,
-    pub kind: PhaseKind,
 }
 
 impl<C> Phase<C> {
-    pub fn new(name: impl Into<String>, kind: PhaseKind, rules: Vec<Rule<C>>) -> Self {
+    pub fn new(name: impl Into<String>, rules: Vec<Rule<C>>) -> Self {
         Self {
             name: name.into(),
             rules,
-            kind,
         }
     }
 }
@@ -1350,8 +1261,8 @@ impl<C> Phase<C> {
 ///
 /// ```ignore
 /// let config = yeast::DesugaringConfig::new()
-///     .add_phase("cleanup", PhaseKind::Repeating, cleanup_rules)
-///     .add_phase("desugar", PhaseKind::Repeating, desugar_rules)
+///     .add_phase("normalize", normalization_rules)
+///     .add_phase("translate", translation_rules)
 ///     .with_output_node_types_yaml(yaml);
 /// ```
 ///
@@ -1364,6 +1275,9 @@ pub struct DesugaringConfig<C = ()> {
     /// node types are used (i.e. the desugared AST has the same node types
     /// as the tree-sitter grammar).
     pub output_node_types_yaml: Option<&'static str>,
+    /// Input field names whose boundary ranges are excluded from rule-result
+    /// locations.
+    pub ignored_location_fields: Vec<&'static str>,
 }
 
 // Manual `Default` impl so users with a custom `C` that doesn't implement
@@ -1373,6 +1287,7 @@ impl<C> Default for DesugaringConfig<C> {
         Self {
             phases: Vec::new(),
             output_node_types_yaml: None,
+            ignored_location_fields: Vec::new(),
         }
     }
 }
@@ -1384,14 +1299,27 @@ impl<C> DesugaringConfig<C> {
         Self::default()
     }
 
-    /// Append a new phase with the given name, kind, and rules.
-    pub fn add_phase(
+    /// Append a new phase with the given name and exhaustive rules.
+    pub fn add_phase(mut self, name: impl Into<String>, mut rules: Vec<Rule<C>>) -> Self {
+        for rule in &mut rules {
+            rule.set_ignored_location_fields(&self.ignored_location_fields);
+        }
+        self.phases.push(Phase::new(name, rules));
+        self
+    }
+
+    /// Ignore boundary syntax stored under any of these input field names when
+    /// calculating matched locations for rule results.
+    pub fn with_ignored_location_fields(
         mut self,
-        name: impl Into<String>,
-        kind: PhaseKind,
-        rules: Vec<Rule<C>>,
+        fields: impl IntoIterator<Item = &'static str>,
     ) -> Self {
-        self.phases.push(Phase::new(name, kind, rules));
+        self.ignored_location_fields = fields.into_iter().collect();
+        for phase in &mut self.phases {
+            for rule in &mut phase.rules {
+                rule.set_ignored_location_fields(&self.ignored_location_fields);
+            }
+        }
         self
     }
 
@@ -1530,21 +1458,11 @@ impl<'a, C: Clone> Runner<'a, C> {
     }
 
     /// Apply each phase in turn to the AST, threading the root through.
-    /// A single `FreshScope` is shared across phases so that fresh
-    /// identifiers generated in different phases don't collide.
     fn run_phases(&self, ast: &mut Ast, user_ctx: &mut C) -> Result<(), String> {
-        let fresh = tree_builder::FreshScope::new();
         let mut root = ast.get_root();
         for phase in self.phases {
-            let res = match phase.kind {
-                PhaseKind::Repeating => {
-                    apply_repeating_rules(&phase.rules, ast, user_ctx, root, &fresh)
-                }
-                PhaseKind::OneShot => {
-                    apply_one_shot_rules(&phase.rules, ast, user_ctx, root, &fresh)
-                }
-            }
-            .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
+            let res = apply_rules(&phase.rules, ast, user_ctx, root)
+                .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
             if res.len() != 1 {
                 return Err(format!(
                     "Phase `{}`: expected exactly one result node, got {}",

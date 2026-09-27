@@ -1,3 +1,19 @@
+## 1.0.58
+
+No user-facing changes.
+
+## 1.0.57
+
+No user-facing changes.
+
+## 1.0.56
+
+No user-facing changes.
+
+## 1.0.55
+
+No user-facing changes.
+
 ## 1.0.54
 
 No user-facing changes.

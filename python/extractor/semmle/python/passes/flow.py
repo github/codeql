@@ -12,7 +12,7 @@ from semmle.python.passes import splitter
 from semmle.python.passes import unroller
 from semmle.python import modules
 import semmle.graph as graph
-from semmle.logging import Logger
+from semmle.logging import Logger, format_message
 
 __all__ = [ 'FlowPass' ]
 
@@ -1916,7 +1916,8 @@ def main():
         import semmle.python.parser.tsg_parser
         parsed_ast = semmle.python.parser.tsg_parser.parse(inputfile, FakeLogger())
     else:
-        module = modules.PythonSourceModule("__main__", inputfile, FakeLogger())
+        from semmle.worker import DiagnosticsWriter
+        module = modules.PythonSourceModule("__main__", inputfile, FakeLogger(), DiagnosticsWriter(0))
         parsed_ast = module.ast
     FlowPass(options.split, options.prune, options.unroll).extract(parsed_ast, writer)
     writer.close()
@@ -1924,7 +1925,7 @@ def main():
 class FakeLogger(object):
 
     def debug(self, fmt, *args):
-        print(fmt % args)
+        print(format_message(fmt, args))
 
     def traceback(self):
         print(traceback.format_exc())

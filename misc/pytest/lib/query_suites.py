@@ -9,8 +9,8 @@ def check_query_suite(codeql, cwd, expected_files, semmle_code_dir):
         actual = sorted(actual.splitlines())
         actual = [os.path.relpath(q, semmle_code_dir) for q in actual]
         actual_file_name = query_suite + '.actual'
-        expected_files.add(actual_file_name)
-        (cwd / actual_file_name).write_text('\n'.join(actual) + '\n')
+        with expected_files.add(actual_file_name) as f:
+            f.write('\n'.join(actual) + '\n')
     return ret
 
 @pytest.fixture
@@ -25,6 +25,6 @@ def check_queries_not_included(codeql, cwd, expected_files, semmle_code_dir):
         not_included = sorted(set(all_queries) - included_in_qls)
         not_included = [os.path.relpath(q, semmle_code_dir) for q in not_included]
         not_included_file_name = 'not_included_in_qls.actual'
-        expected_files.add(not_included_file_name)
-        (cwd / not_included_file_name).write_text('\n'.join(not_included) + '\n')
+        with expected_files.add(not_included_file_name) as f:
+            f.write('\n'.join(not_included) + '\n')
     return ret

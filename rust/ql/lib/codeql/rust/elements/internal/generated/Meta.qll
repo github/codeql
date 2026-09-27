@@ -7,9 +7,6 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.Expr
-import codeql.rust.elements.Path
-import codeql.rust.elements.TokenTree
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Meta` and should not
@@ -32,49 +29,5 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Meta` class directly.
    * Use the subclass `Meta`, where the following predicates are available.
    */
-  class Meta extends Synth::TMeta, AstNodeImpl::AstNode {
-    override string getAPrimaryQlClass() { result = "Meta" }
-
-    /**
-     * Gets the expression of this meta, if it exists.
-     */
-    Expr getExpr() {
-      result = Synth::convertExprFromRaw(Synth::convertMetaToRaw(this).(Raw::Meta).getExpr())
-    }
-
-    /**
-     * Holds if `getExpr()` exists.
-     */
-    final predicate hasExpr() { exists(this.getExpr()) }
-
-    /**
-     * Holds if this meta is unsafe.
-     */
-    predicate isUnsafe() { Synth::convertMetaToRaw(this).(Raw::Meta).isUnsafe() }
-
-    /**
-     * Gets the path of this meta, if it exists.
-     */
-    Path getPath() {
-      result = Synth::convertPathFromRaw(Synth::convertMetaToRaw(this).(Raw::Meta).getPath())
-    }
-
-    /**
-     * Holds if `getPath()` exists.
-     */
-    final predicate hasPath() { exists(this.getPath()) }
-
-    /**
-     * Gets the token tree of this meta, if it exists.
-     */
-    TokenTree getTokenTree() {
-      result =
-        Synth::convertTokenTreeFromRaw(Synth::convertMetaToRaw(this).(Raw::Meta).getTokenTree())
-    }
-
-    /**
-     * Holds if `getTokenTree()` exists.
-     */
-    final predicate hasTokenTree() { exists(this.getTokenTree()) }
-  }
+  class Meta extends Synth::TMeta, AstNodeImpl::AstNode { }
 }

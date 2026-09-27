@@ -108,6 +108,9 @@ signature module InlineExpectationsTestSig {
     );
   }
 
+  /** Gets the relative URL of the given location, if any. */
+  string getRelativeUrl(Location location);
+
   /** A comment that may contain inline expectations. */
   class ExpectationComment {
     /** Gets the contents of this comment, _excluding_ the comment indicator. */
@@ -242,9 +245,13 @@ module Make<InlineExpectationsTestSig Impl> {
       TActualResult(
         Impl::Location location, string element, string tag, string value, boolean optional
       ) {
-        TestImpl::hasActualResult(location, element, tag, value) and optional = false
-        or
-        TestImpl::hasOptionalResult(location, element, tag, value) and optional = true
+        (
+          TestImpl::hasActualResult(location, element, tag, value) and optional = false
+          or
+          TestImpl::hasOptionalResult(location, element, tag, value) and optional = true
+        ) and
+        // test expectations can only be defined in source code
+        exists(Impl::getRelativeUrl(location))
       } or
       TValidExpectation(
         Impl::ExpectationComment comment, string tag, string value, string knownFailure
@@ -633,11 +640,7 @@ module TestPostProcessing {
 
   private string getQueryKind() { queryMetadata("kind", result) }
 
-  signature module InputSig<InlineExpectationsTestSig Input> {
-    string getRelativeUrl(Input::Location location);
-  }
-
-  module Make<InlineExpectationsTestSig Input, InputSig<Input> Input2> {
+  module Make<InlineExpectationsTestSig Input> {
     private import InlineExpectationsTest as InlineExpectationsTest
 
     bindingset[loc]
@@ -655,7 +658,7 @@ module TestPostProcessing {
     private string getRelativePathTo(string absolutePath) {
       exists(Input::Location loc |
         loc.hasLocationInfo(absolutePath, _, _, _, _) and
-        parseLocationString(Input2::getRelativeUrl(loc), result, _, _, _, _)
+        parseLocationString(Input::getRelativeUrl(loc), result, _, _, _, _)
       )
     }
 
@@ -665,7 +668,7 @@ module TestPostProcessing {
         exists(string data |
           queryResults(_, _, _, data) and
           parseLocationString(data, relativePath, sl, sc, el, ec) and
-          not Input2::getRelativeUrl(_) = data // avoid duplicate locations
+          not Input::getRelativeUrl(_) = data // avoid duplicate locations
         )
       }
 
@@ -711,7 +714,7 @@ module TestPostProcessing {
 
       LocationFromInput() { this = MkInputLocation(loc) }
 
-      override string getRelativeUrl() { result = Input2::getRelativeUrl(loc) }
+      override string getRelativeUrl() { result = Input::getRelativeUrl(loc) }
 
       override predicate hasLocationInfo(string file, int sl, int sc, int el, int ec) {
         loc.hasLocationInfo(file, sl, sc, el, ec)
@@ -722,6 +725,8 @@ module TestPostProcessing {
 
     module TestImpl2 implements InlineExpectationsTestSig {
       final class Location = TestLocation;
+
+      string getRelativeUrl(Location location) { result = location.getRelativeUrl() }
 
       final private class ExpectationCommentFinal = Input::ExpectationComment;
 

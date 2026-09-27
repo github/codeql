@@ -29,8 +29,6 @@ module JSFlowSummary implements FlowSummaryImpl::InputSig<Location, JSDataFlow> 
   private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
   import FlowSummaryPrivate
 
-  class FlowSummaryCallBase = Void;
-
   overlay[local]
   predicate callableFromSource(SummarizedCallableBase c) { none() }
 

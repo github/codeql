@@ -25,6 +25,17 @@ class MissedSelectOpportunity
         }
     }
 
+    public void M3(List<int> lst, out int x)
+    {
+        // GOOD: Linq can't be used here as the Select would capture an out parameter.
+        x = 2;
+        foreach (int i in lst)
+        {
+            int j = i * x;
+            Console.WriteLine(j);
+        }
+    }
+
     public interface ICounter
     {
         Task<int> CountAsync();

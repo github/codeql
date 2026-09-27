@@ -31,6 +31,10 @@ query predicate getGenericParamList(Trait x, GenericParamList getGenericParamLis
   toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
 }
 
+query predicate getImplRestriction(Trait x, ImplRestriction getImplRestriction) {
+  toBeTested(x) and not x.isUnknown() and getImplRestriction = x.getImplRestriction()
+}
+
 query predicate getName(Trait x, Name getName) {
   toBeTested(x) and not x.isUnknown() and getName = x.getName()
 }

@@ -6,9 +6,9 @@ class ModulePrinter(object):
 
     name = "module printer"
 
-    def __init__(self, options, trap_folder, src_archive, renamer, logger):
+    def __init__(self, options, trap_folder, src_archive, renamer, logger, diagnostics_writer):
         self.logger = logger
-        self.py_extractor = PythonExtractor(options, trap_folder, src_archive, logger)
+        self.py_extractor = PythonExtractor(options, trap_folder, src_archive, logger, diagnostics_writer)
 
     def process(self, unit):
         imports = ()

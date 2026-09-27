@@ -40,7 +40,6 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// ```text
 /// (kind "literal")             - leaf with static content
 /// (kind #{expr})               - leaf with computed content (expr.to_string())
-/// (kind $fresh)                - leaf with auto-generated unique name
 /// {expr}                       - embed a Rust expression, dispatched via
 ///                                the `IntoFieldIds` trait: `Id` pushes a
 ///                                single id; iterables (`Vec<Id>`,
@@ -122,14 +121,30 @@ pub fn trees(input: TokenStream) -> TokenStream {
 ///     (output_template field: {name} {repeated})
 /// )
 ///
-/// // Shorthand: captures become fields on the output node
-/// rule!((query ...) => output_kind)
+/// // A guard filters a successful query match. Every capture is raw in the
+/// // guard because guards run before capture translation.
+/// rule!(
+///     (query_pattern field: _? @value)
+///     where value.is_none()
+///     =>
+///     (output_template)
+/// )
+///
 /// ```
 ///
 /// Captures become Rust variables automatically:
 /// - `@name` (no quantifier) → `name: Id`
 /// - `@name` (after `*`/`+`) → `name: Vec<Id>`
 /// - `@name` (after `?`) → `name: Option<Id>`
+///
+/// A guard is an optional Rust condition between the query and `=>`. It is
+/// evaluated after the query matches and before any `@` captures are
+/// translated. Returning false makes the driver try the next rule. All
+/// captures are therefore raw in the guard; `@` versus `@@` controls only
+/// whether the capture is translated for the transform. `ctx` provides
+/// mutable user-context access, and `ast` provides read-only AST access.
+/// Mutations to `ctx` are visible to the transform when the guard succeeds.
+/// Omitting the guard is equivalent to writing `where true`.
 ///
 /// `tree!` and `trees!` can be used without explicit context inside `{...}`.
 #[proc_macro]
@@ -149,8 +164,8 @@ pub fn rule(input: TokenStream) -> TokenStream {
 ///
 /// 1. A **bare rule body** `(query) => (template)` — the `rule!(...)`
 ///    wrapper is implicit.
-/// 2. An explicit `rule!(...)` invocation, possibly chained as
-///    `rule!(...).repeated()` or path-prefixed as `yeast::rule!(...)`.
+/// 2. An explicit `rule!(...)` invocation, possibly path-prefixed as
+///    `yeast::rule!(...)`.
 /// 3. Any other expression returning a `Rule` (helper-function calls,
 ///    conditionals).
 ///
@@ -161,7 +176,7 @@ pub fn rule(input: TokenStream) -> TokenStream {
 ///     [
 ///         (source_file (_)* @cs) => (top_level body: {..cs}),
 ///         (simple_identifier) @id => (name_expr identifier: (identifier #{id})),
-///         rule!((integer_literal) @lit => (int_literal #{lit})).repeated(),
+///         rule!((integer_literal) @lit => (int_literal #{lit})),
 ///         helper_fn(),
 ///     ]
 /// };

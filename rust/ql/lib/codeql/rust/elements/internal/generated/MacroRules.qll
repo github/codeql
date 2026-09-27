@@ -32,6 +32,8 @@ module Generated {
   class MacroRules extends Synth::TMacroRules, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "MacroRules" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this macro rules (0-based).
      */

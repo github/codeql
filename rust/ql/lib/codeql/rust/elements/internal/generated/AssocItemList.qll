@@ -23,6 +23,8 @@ module Generated {
   class AssocItemList extends Synth::TAssocItemList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "AssocItemList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th assoc item of this assoc item list (0-based).
      */

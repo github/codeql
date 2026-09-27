@@ -4,8 +4,8 @@ import TestUtils
 
 query predicate instances(
   BlockExpr x, string isAsync__label, string isAsync, string isConst__label, string isConst,
-  string isGen__label, string isGen, string isMove__label, string isMove, string isTry__label,
-  string isTry, string isUnsafe__label, string isUnsafe
+  string isGen__label, string isGen, string isMove__label, string isMove, string isUnsafe__label,
+  string isUnsafe
 ) {
   toBeTested(x) and
   not x.isUnknown() and
@@ -17,8 +17,6 @@ query predicate instances(
   (if x.isGen() then isGen = "yes" else isGen = "no") and
   isMove__label = "isMove:" and
   (if x.isMove() then isMove = "yes" else isMove = "no") and
-  isTry__label = "isTry:" and
-  (if x.isTry() then isTry = "yes" else isTry = "no") and
   isUnsafe__label = "isUnsafe:" and
   if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
 }
@@ -33,4 +31,8 @@ query predicate getAttr(BlockExpr x, int index, Attr getAttr) {
 
 query predicate getStmtList(BlockExpr x, StmtList getStmtList) {
   toBeTested(x) and not x.isUnknown() and getStmtList = x.getStmtList()
+}
+
+query predicate getTryBlockModifier(BlockExpr x, TryBlockModifier getTryBlockModifier) {
+  toBeTested(x) and not x.isUnknown() and getTryBlockModifier = x.getTryBlockModifier()
 }

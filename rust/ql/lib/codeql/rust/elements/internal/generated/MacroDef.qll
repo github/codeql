@@ -32,6 +32,8 @@ module Generated {
   class MacroDef extends Synth::TMacroDef, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "MacroDef" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the arguments of this macro def, if it exists.
      */

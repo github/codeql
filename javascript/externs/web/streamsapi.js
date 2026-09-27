@@ -38,9 +38,27 @@ var QueuingStrategy;
 
 
 /**
+ * A transform stream (https://streams.spec.whatwg.org/#transform-stream).
  * @record
  */
-function TransformStream() {};
+function ITransformStream() {};
+
+/** @type {!WritableStream} */
+ITransformStream.prototype.writable;
+
+/** @type {!ReadableStream} */
+ITransformStream.prototype.readable;
+
+
+/**
+ * @constructor
+ * @implements {ITransformStream}
+ * @param {Object=} transformer
+ * @param {!QueuingStrategy=} writableStrategy
+ * @param {!QueuingStrategy=} readableStrategy
+ * @see https://streams.spec.whatwg.org/#ts-class
+ */
+function TransformStream(transformer, writableStrategy, readableStrategy) {};
 
 /** @type {!WritableStream} */
 TransformStream.prototype.writable;
@@ -120,7 +138,7 @@ ReadableStream.prototype.cancel = function(reason) {};
 ReadableStream.prototype.getReader = function(opt_options) {};
 
 /**
- * @param {!TransformStream} transform
+ * @param {!ITransformStream} transform
  * @param {!PipeOptions=} opt_options
  * @return {!ReadableStream}
  * @see https://streams.spec.whatwg.org/#rs-pipe-through

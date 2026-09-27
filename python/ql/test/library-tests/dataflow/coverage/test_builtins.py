@@ -181,6 +181,16 @@ def test_list_append():
     l.append(SOURCE)
     SINK(l[1]) # $ flow="SOURCE, l:-1 -> l[1]"
 
+def test_list_extend():
+    l = [NONSOURCE]
+    l.extend([SOURCE])
+    SINK(l[1]) # $ flow="SOURCE, l:-1 -> l[1]"
+
+def test_list_insert():
+    l = [NONSOURCE]
+    l.insert(0, SOURCE)
+    SINK(l[0]) # $ flow="SOURCE, l:-1 -> l[0]"
+
 ### Set
 
 def test_set_pop():

@@ -7,6 +7,7 @@ private import internal.TraitImpl
 import codeql.rust.elements.AssocItemList
 import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.ImplRestriction
 import codeql.rust.elements.Item
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeBoundList

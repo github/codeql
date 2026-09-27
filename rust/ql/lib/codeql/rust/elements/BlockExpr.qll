@@ -7,6 +7,7 @@ private import internal.BlockExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.LabelableExpr
 import codeql.rust.elements.StmtList
+import codeql.rust.elements.TryBlockModifier
 
 /**
  * A block expression. For example:

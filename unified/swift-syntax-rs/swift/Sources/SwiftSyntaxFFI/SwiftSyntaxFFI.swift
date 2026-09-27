@@ -1,4 +1,3 @@
-import Foundation
 import SwiftOperators
 import SwiftParser
 
@@ -12,25 +11,24 @@ import SwiftParser
     import Darwin
 #endif
 
-/// Convert an absolute position into an `{ offset, line, column }` dictionary.
+/// Return the UTF-8 byte offset of the start of every physical source line.
 ///
-/// `offset` is a UTF-8 byte offset; `line`/`column` are 1-based.
-private func location(
-    _ position: AbsolutePosition,
-    _ converter: SourceLocationConverter
-) -> [String: Any] {
-    let loc = converter.location(for: position)
-    return [
-        "offset": position.utf8Offset,
-        "line": loc.line,
-        "column": loc.column,
-    ]
+/// Deriving this from `SourceLocationConverter.sourceLines` keeps newline
+/// handling exactly aligned with swift-syntax (`\n`, `\r`, and `\r\n`).
+private func lineStarts(_ converter: SourceLocationConverter) -> [Any] {
+    var result: [Any] = []
+    var offset = 0
+    for line in converter.sourceLines {
+        result.append(offset)
+        offset += line.utf8.count
+    }
+    return result
 }
 
 /// Trivia kinds worth preserving in the serialized tree. Comments carry
 /// developer intent (including doc comments), and `unexpectedText` flags source
 /// the parser had to skip. Whitespace and multi-line-string escape markers are
-/// dropped: node ranges already encode positions, so they would only bloat the
+/// dropped: node offsets already encode positions, so they would only bloat the
 /// output.
 private let keptTriviaKinds: Set<String> = [
     "lineComment",
@@ -40,7 +38,7 @@ private let keptTriviaKinds: Set<String> = [
     "unexpectedText",
 ]
 
-/// Serialize a trivia collection into an array of `{ kind, text, range }`
+/// Serialize a trivia collection into an array of `{ kind, text, $pos, $end }`
 /// pieces, keeping only the kinds in `keptTriviaKinds`.
 ///
 /// `start` is the absolute position of the first piece (a token's leading
@@ -49,8 +47,7 @@ private let keptTriviaKinds: Set<String> = [
 /// accumulating piece lengths, so kept pieces carry an exact source location.
 private func serializeTrivia(
     _ trivia: Trivia,
-    startingAt start: AbsolutePosition,
-    _ converter: SourceLocationConverter
+    startingAt start: AbsolutePosition
 ) -> [Any] {
     var result: [Any] = []
     var offset = start.utf8Offset
@@ -62,12 +59,10 @@ private func serializeTrivia(
         let kind = Mirror(reflecting: piece).children.first?.label ?? "\(piece)"
         if keptTriviaKinds.contains(kind) {
             result.append([
+                "$pos": offset,
+                "$end": offset + length,
                 "kind": kind,
                 "text": Trivia(pieces: [piece]).description,
-                "range": [
-                    "start": location(AbsolutePosition(utf8Offset: offset), converter),
-                    "end": location(AbsolutePosition(utf8Offset: offset + length), converter),
-                ],
             ])
         }
         offset += length
@@ -77,55 +72,50 @@ private func serializeTrivia(
 
 /// Recursively convert a SwiftSyntax node into a JSON-serializable value.
 ///
-///   * Tokens carry `kind`, `tokenKind`, `text`, and `range`, plus
+///   * Tokens carry `kind`, `tokenKind`, `text`, `$pos`, and `$end`, plus
 ///     `leadingTrivia`/`trailingTrivia` — but only when non-empty (after
 ///     filtering, most tokens have no trivia, so the keys are simply absent).
-///   * Layout nodes (e.g. `functionDecl`) carry `kind` and source `range`, and
-///     additionally embed their children directly as members keyed by the
+///   * Layout nodes (e.g. `functionDecl`) carry `kind`, `$pos`, and `$end`,
+///     and additionally embed their children directly as members keyed by the
 ///     child's name in the parent (e.g. `name`, `signature`, `body`); absent
-///     optional children are omitted. Field names never collide with
-///     `kind`/`range`.
+///     optional children are omitted.
 ///   * Collection nodes (e.g. `codeBlockItemList`) are *elided*: they become a
 ///     plain array of their serialized elements, taking the place of the
 ///     collection node itself. A list-valued layout field (e.g. `parameters`) is
 ///     therefore simply a JSON array. This drops the collection node's own
-///     `kind`/`range`, which are unnamed and largely recoverable from the
+///     `kind`/location, which are unnamed and largely recoverable from the
 ///     elements.
-private func serialize(
-    _ node: Syntax,
-    _ converter: SourceLocationConverter
-) -> Any {
+private func serialize(_ node: Syntax) -> Any {
     if node.kind.isSyntaxCollection {
         return node.children(viewMode: .sourceAccurate).map {
-            serialize($0, converter)
+            serialize($0)
         }
     }
 
-    // Source range covering the node's content, excluding surrounding trivia.
-    let range: [String: Any] = [
-        "start": location(node.positionAfterSkippingLeadingTrivia, converter),
-        "end": location(node.endPositionBeforeTrailingTrivia, converter),
-    ]
+    // Half-open UTF-8 byte range covering the node's content, excluding
+    // surrounding trivia.
+    let start = node.positionAfterSkippingLeadingTrivia.utf8Offset
+    let end = node.endPositionBeforeTrailingTrivia.utf8Offset
 
     if let token = node.as(TokenSyntax.self) {
         var result: [String: Any] = [
+            "$pos": start,
+            "$end": end,
             "kind": "token",
             "tokenKind": "\(token.tokenKind)",
             "text": token.text,
-            "range": range,
         ]
         // Only emit trivia when present; after filtering, most tokens have none.
         // Leading trivia starts at the token's own position; trailing trivia
         // starts just after the token's content.
         let leading = serializeTrivia(
-            token.leadingTrivia, startingAt: token.position, converter)
+            token.leadingTrivia, startingAt: token.position)
         if !leading.isEmpty {
             result["leadingTrivia"] = leading
         }
         let trailing = serializeTrivia(
             token.trailingTrivia,
-            startingAt: token.endPositionBeforeTrailingTrivia,
-            converter)
+            startingAt: token.endPositionBeforeTrailingTrivia)
         if !trailing.isEmpty {
             result["trailingTrivia"] = trailing
         }
@@ -133,8 +123,9 @@ private func serialize(
     }
 
     var result: [String: Any] = [
+        "$pos": start,
+        "$end": end,
         "kind": "\(node.kind)",
-        "range": range,
     ]
     var unnamed = 0
     for child in node.children(viewMode: .sourceAccurate) {
@@ -142,10 +133,10 @@ private func serialize(
         // parent (the same mechanism SwiftSyntax uses for its debug dump). A
         // child that is a collection serializes to an array (see above).
         if let keyPath = child.keyPathInParent, let name = childName(keyPath) {
-            result[name] = serialize(child, converter)
+            result[name] = serialize(child)
         } else {
             // Defensive fallback for any unnamed layout child.
-            result["child\(unnamed)"] = serialize(child, converter)
+            result["child\(unnamed)"] = serialize(child)
             unnamed += 1
         }
     }
@@ -214,6 +205,93 @@ private final class PerSequenceFolder: SyntaxRewriter {
     }
 }
 
+/// Write directly to stderr without Foundation, whose output APIs would pull ICU into static builds.
+private func writeToStandardError(_ message: String) {
+    message.withCString { start in
+        var pointer = UnsafeRawPointer(start)
+        let end = pointer.advanced(by: strlen(start))
+        while pointer != end {
+            let written = write(STDERR_FILENO, pointer, end - pointer)
+            if written <= 0 {
+                return
+            }
+            pointer = pointer.advanced(by: written)
+        }
+    }
+}
+
+private struct JSONEncodingError: Error, CustomStringConvertible {
+    let type: Any.Type
+
+    var description: String {
+        "unsupported JSON value of type \(String(reflecting: type))"
+    }
+}
+
+private let hexDigits = Array("0123456789abcdef".utf8)
+
+private func appendJSONString(_ string: String, to output: inout [UInt8]) {
+    output.append(UInt8(ascii: "\""))
+    for scalar in string.unicodeScalars {
+        switch scalar.value {
+        case 0x08:
+            output.append(contentsOf: "\\b".utf8)
+        case 0x09:
+            output.append(contentsOf: "\\t".utf8)
+        case 0x0a:
+            output.append(contentsOf: "\\n".utf8)
+        case 0x0c:
+            output.append(contentsOf: "\\f".utf8)
+        case 0x0d:
+            output.append(contentsOf: "\\r".utf8)
+        case 0x22:
+            output.append(contentsOf: "\\\"".utf8)
+        case 0x2f:
+            output.append(contentsOf: "\\/".utf8)
+        case 0x5c:
+            output.append(contentsOf: "\\\\".utf8)
+        case 0x00...0x1f:
+            output.append(contentsOf: "\\u00".utf8)
+            output.append(hexDigits[Int(scalar.value >> 4)])
+            output.append(hexDigits[Int(scalar.value & 0x0f)])
+        default:
+            output.append(contentsOf: String(scalar).utf8)
+        }
+    }
+    output.append(UInt8(ascii: "\""))
+}
+
+private func appendJSON(_ value: Any, to output: inout [UInt8]) throws {
+    switch value {
+    case let string as String:
+        appendJSONString(string, to: &output)
+    case let integer as Int:
+        output.append(contentsOf: String(integer).utf8)
+    case let array as [Any]:
+        output.append(UInt8(ascii: "["))
+        for (index, element) in array.enumerated() {
+            if index != 0 {
+                output.append(UInt8(ascii: ","))
+            }
+            try appendJSON(element, to: &output)
+        }
+        output.append(UInt8(ascii: "]"))
+    case let object as [String: Any]:
+        output.append(UInt8(ascii: "{"))
+        for (index, key) in object.keys.sorted().enumerated() {
+            if index != 0 {
+                output.append(UInt8(ascii: ","))
+            }
+            appendJSONString(key, to: &output)
+            output.append(UInt8(ascii: ":"))
+            try appendJSON(object[key]!, to: &output)
+        }
+        output.append(UInt8(ascii: "}"))
+    default:
+        throw JSONEncodingError(type: type(of: value))
+    }
+}
+
 /// Parse the given NUL-terminated Swift source string and return a
 /// heap-allocated, NUL-terminated JSON representation of the syntax tree.
 ///
@@ -229,15 +307,19 @@ public func ssr_parse_json(_ source: UnsafePointer<CChar>?) -> UnsafeMutablePoin
     // converter built from the original tree maps the folded tree correctly.
     let folded = foldOperators(in: tree)
     let converter = SourceLocationConverter(fileName: "<input>", tree: tree)
-    let json = serialize(folded, converter)
-
-    guard
-        let data = try? JSONSerialization.data(
-            withJSONObject: json, options: [.sortedKeys]),
-        let string = String(data: data, encoding: .utf8)
-    else {
+    guard var json = serialize(folded) as? [String: Any] else {
         return nil
     }
+    json["$lineStarts"] = lineStarts(converter)
+
+    var bytes: [UInt8] = []
+    do {
+        try appendJSON(json, to: &bytes)
+    } catch {
+        writeToStandardError("SwiftSyntaxFFI: JSON serialization failed: \(error)\n")
+        return nil
+    }
+    let string = String(decoding: bytes, as: UTF8.self)
     return strdup(string)
 }
 

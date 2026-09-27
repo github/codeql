@@ -4,7 +4,7 @@
 
 import csharp
 
-from Method m, ForeachStmt s
+from Method m, ForEachStmt s
 where
   m.getName() = "MainForeach" and
   s.getEnclosingCallable() = m and

@@ -29,6 +29,8 @@ module Generated {
   class AsmRegSpec extends Synth::TAsmRegSpec, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "AsmRegSpec" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the identifier of this asm reg spec, if it exists.
      */

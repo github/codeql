@@ -6,6 +6,7 @@
 private import internal.AsmOptionsListImpl
 import codeql.rust.elements.AsmOption
 import codeql.rust.elements.AsmPiece
+import codeql.rust.elements.Attr
 
 /**
  * A list of options in an inline assembly block.

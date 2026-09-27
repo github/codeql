@@ -1,45 +1,36 @@
 import unified
 import utils.test.InlineExpectationsTest
-import codeql.unified.internal.LocalNameBinding
-
-/** Holds if a comment with `text` appears at `filepath:line`, excluding the text in a `$` section. */
-predicate plainCommentAt(string filepath, int line, string text) {
-  exists(Comment comment |
-    comment.getLocation().hasLocationInfo(filepath, line, _, _, _) and
-    text = comment.getCommentText().regexpReplaceAll("\\$([^/]|/[^/])*", "")
-  )
-}
-
-/** Holds if a `key=value` comment appears on `filepath:line` (not in the `$` section). */
-predicate keyValueCommentAt(string filepath, int line, string key, string value) {
-  exists(string text, string regexp, string match |
-    plainCommentAt(filepath, line, text) and
-    regexp = "(\\w+)=([\\w.]+)" and
-    match = text.regexpFind(regexp, _, _) and
-    key = match.regexpCapture(regexp, 1) and
-    value = match.regexpCapture(regexp, 2)
-  )
-}
+import utils.test.CommentUtil
+import codeql.unified.internal.NameBinding
 
 module VariableAccessTest implements TestSig {
-  string getARelevantTag() { result = "access" }
+  string getARelevantTag() { result = ["access", "implicit-qualifier", "captured"] }
 
   additional predicate declAt(LocalName v, string filepath, int line) {
     v.getLocation().hasLocationInfo(filepath, line, _, _, _)
   }
 
   private predicate decl(LocalName v, string alias) {
-    exists(string filepath, int line | declAt(v, filepath, line) |
-      keyValueCommentAt(filepath, line, "name", alias)
+    exists(string filepath, int line, string tag |
+      declAt(v, filepath, line) and
+      if exists(v.getABinding())
+      then
+        // explicit declarations must be annotated with 'name'
+        tag = "name"
+      else (
+        // implicit declarations have their own tags
+        v.getName() = "self" and tag = "implicit-self"
+      )
+    |
+      keyValueCommentAt(filepath, line, tag, alias)
       or
-      not keyValueCommentAt(filepath, line, "name", _) and
+      not keyValueCommentAt(filepath, line, tag, _) and
       alias = v.getName()
     )
   }
 
   private PotentialLocalNameAccess getUniqueDeclarationSite(LocalName name) {
-    result =
-      unique(PotentialLocalNameAccess ac | ac.isDeclarationSite() and ac.getLocalName() = name)
+    result = unique(PotentialLocalNameAccess ac | ac.isBindingSite() and ac.getLocalName() = name)
   }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -50,6 +41,23 @@ module VariableAccessTest implements TestSig {
       element = va.toString() and
       decl(v, value) and
       tag = "access"
+    )
+    or
+    exists(UnqualifiedMemberAccess access, LocalName v |
+      v = access.getImplicitQualifierVariable() and
+      location = access.getLocation() and
+      element = access.toString() and
+      decl(v, value) and
+      access.isInstanceAccess() and // For now, don't annotate receiver access in static methods. It technically exists, it's just not important yet.
+      tag = "implicit-qualifier"
+    )
+    or
+    exists(LocalVariable v |
+      v.isCaptured() and
+      location = v.getLocation() and
+      element = v.toString() and
+      decl(v, value) and
+      tag = "captured"
     )
   }
 }

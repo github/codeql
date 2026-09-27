@@ -32,6 +32,8 @@ module Generated {
   class FormatArgsExpr extends Synth::TFormatArgsExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "FormatArgsExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th argument of this format arguments expression (0-based).
      */

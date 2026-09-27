@@ -14,6 +14,7 @@ include:.github/reusable_workflows/**/*.yml
 include:.github/reusable_workflows/**/*.yaml
 include:**/action.yml
 include:**/action.yaml
+include:**/actions.lock
 END
 )
 

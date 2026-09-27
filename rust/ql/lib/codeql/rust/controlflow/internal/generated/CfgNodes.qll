@@ -508,11 +508,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate isMove() { node.isMove() }
 
       /**
-       * Holds if this block expression is try.
-       */
-      predicate isTry() { node.isTry() }
-
-      /**
        * Holds if this block expression is unsafe.
        */
       predicate isUnsafe() { node.isUnsafe() }
@@ -526,6 +521,16 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getStmtList()` exists.
        */
       predicate hasStmtList() { exists(this.getStmtList()) }
+
+      /**
+       * Gets the try block modifier of this block expression, if it exists.
+       */
+      TryBlockModifier getTryBlockModifier() { result = node.getTryBlockModifier() }
+
+      /**
+       * Holds if `getTryBlockModifier()` exists.
+       */
+      predicate hasTryBlockModifier() { exists(this.getTryBlockModifier()) }
     }
 
     final private class ParentBoxPat extends ParentAstNode, BoxPat {
@@ -867,6 +872,46 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getLifetime()` exists.
        */
       predicate hasLifetime() { exists(this.getLifetime()) }
+    }
+
+    final private class ParentDerefPat extends ParentAstNode, DerefPat {
+      override predicate relevantChild(AstNode child) {
+        none()
+        or
+        child = this.getPat()
+      }
+    }
+
+    /**
+     * A deref pattern, matching the value behind a smart pointer. This is an experimental
+     * Rust feature that cannot be written directly in stable Rust; the example below uses
+     * rust-analyzer's canonical `builtin#deref` syntax for such patterns:
+     * ```rust
+     * match x {
+     *     builtin#deref(y) => y,
+     *     _ => 0,
+     * };
+     * ```
+     */
+    final class DerefPatCfgNode extends CfgNodeFinal, PatCfgNode {
+      private DerefPat node;
+
+      DerefPatCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `DerefPat`. */
+      DerefPat getDerefPat() { result = node }
+
+      /**
+       * Gets the pattern of this deref pattern, if it exists.
+       */
+      PatCfgNode getPat() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getPat(), this, result)
+      }
+
+      /**
+       * Holds if `getPat()` exists.
+       */
+      predicate hasPat() { exists(this.getPat()) }
     }
 
     final private class ParentExpr extends ParentAstNode, Expr {
@@ -1335,6 +1380,25 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getThen()` exists.
        */
       predicate hasThen() { exists(this.getThen()) }
+    }
+
+    final private class ParentIncludeBytesExpr extends ParentAstNode, IncludeBytesExpr {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     * An expression produced by the built-in `include_bytes!` macro, embedding the contents of a file as a byte array. For example:
+     * ```rust
+     * let data = include_bytes!("data.bin");
+     * ```
+     */
+    final class IncludeBytesExprCfgNode extends CfgNodeFinal, ExprCfgNode {
+      private IncludeBytesExpr node;
+
+      IncludeBytesExprCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `IncludeBytesExpr`. */
+      IncludeBytesExpr getIncludeBytesExpr() { result = node }
     }
 
     final private class ParentIndexExpr extends ParentAstNode, IndexExpr {
@@ -2091,6 +2155,28 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getText()` exists.
        */
       predicate hasText() { exists(this.getText()) }
+    }
+
+    final private class ParentNotNull extends ParentAstNode, NotNull {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     * The `!null` pattern used in a pattern type to denote a non-null value. Pattern types
+     * are an experimental, mostly compiler-internal feature (used in the standard library for
+     * types such as `NonZero` and `NonNull`) and cannot be written directly in stable Rust;
+     * the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
+     * ```rust
+     * type NonNull = builtin#pattern_type(*const () is !null);
+     * ```
+     */
+    final class NotNullCfgNode extends CfgNodeFinal, PatCfgNode {
+      private NotNull node;
+
+      NotNullCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `NotNull`. */
+      NotNull getNotNull() { result = node }
     }
 
     final private class ParentOffsetOfExpr extends ParentAstNode, OffsetOfExpr {
@@ -3506,6 +3592,18 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           i = -1 and
           hasCfgNode(child) and
           not child = cfgNode.getBlockExpr().getAstNode()
+        |
+          cfgNode
+        )
+      or
+      pred = "getPat" and
+      parent =
+        any(Nodes::DerefPatCfgNode cfgNode, DerefPat astNode |
+          astNode = cfgNode.getDerefPat() and
+          child = getDesugared(astNode.getPat()) and
+          i = -1 and
+          hasCfgNode(child) and
+          not child = cfgNode.getPat().getAstNode()
         |
           cfgNode
         )

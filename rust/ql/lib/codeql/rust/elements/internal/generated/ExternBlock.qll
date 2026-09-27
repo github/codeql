@@ -31,6 +31,8 @@ module Generated {
   class ExternBlock extends Synth::TExternBlock, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "ExternBlock" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the abi of this extern block, if it exists.
      */

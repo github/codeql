@@ -136,72 +136,60 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        try_expr
+        try_expr source="do ⟨body⟩ ⟨catch_clause⟩ ⟨catch_clause⟩"
           body:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                unary_expr
+                unary_expr source="⟨operator⟩ ⟨operand⟩"
                   operand:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "foo"
-                  operator: prefix_operator "try"
+                    call_expr source="⟨callee⟩()"
+                      callee: identifier "foo" source="foo"
+                  operator: prefix_operator "try" source="try"
           catch_clause:
-            catch_clause
+            catch_clause source="catch ⟨pattern⟩ ⟨body⟩"
               pattern:
-                or_pattern
+                or_pattern source="⟨pattern⟩, ⟨pattern⟩"
                   pattern:
-                    conditional_pattern
+                    conditional_pattern source="⟨pattern⟩ where ⟨condition⟩"
                       condition:
-                        call_expr
-                          callee:
-                            name_expr
-                              identifier: identifier "isNetworkError"
+                        call_expr source="⟨callee⟩(⟨argument⟩)"
+                          callee: identifier "isNetworkError" source="isNetworkError"
                           argument:
-                            argument
-                              value:
-                                name_expr
-                                  identifier: identifier "e"
+                            argument source="⟨value⟩"
+                              value: identifier "e" source="e"
                       pattern:
-                        name_pattern
-                          identifier: identifier "e"
-                    conditional_pattern
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "e" source="e"
+                    conditional_pattern source="⟨pattern⟩ where ⟨condition⟩"
                       condition:
-                        call_expr
-                          callee:
-                            name_expr
-                              identifier: identifier "isTimeout"
+                        call_expr source="⟨callee⟩(⟨argument⟩)"
+                          callee: identifier "isTimeout" source="isTimeout"
                           argument:
-                            argument
-                              value:
-                                name_expr
-                                  identifier: identifier "f"
+                            argument source="⟨value⟩"
+                              value: identifier "f" source="f"
                       pattern:
-                        name_pattern
-                          identifier: identifier "f"
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "f" source="f"
               body:
-                block
+                block source="{\n  ⟨stmt⟩\n}"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"retry\""
-            catch_clause
+                        argument source="⟨value⟩"
+                          value: string_literal "\"retry\"" source="\"retry\""
+            catch_clause source="catch ⟨body⟩"
               body:
-                block
+                block source="{\n  ⟨stmt⟩\n}"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"fallback\""
+                        argument source="⟨value⟩"
+                          value: string_literal "\"fallback\"" source="\"fallback\""

@@ -29,6 +29,8 @@ module Generated {
   class TryExpr extends Synth::TTryExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "TryExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this try expression (0-based).
      */
