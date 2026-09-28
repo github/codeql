@@ -100,24 +100,18 @@ predicate allowlist(Stmt s) {
   )
 }
 
-/** Holds if `s` is part of a non-reportable prefix of a run of unreachable statements. */
-predicate isInNonReportableUnreachablePrefix(Stmt s) {
+Stmt firstNonAllowlisted(Stmt s) {
+  not allowlist(s) and result = s
+  or
   allowlist(s) and
-  (
-    firstUnreachableStmt(s)
-    or
-    isInNonReportableUnreachablePrefix(getPreviousStmt(s))
-  )
+  exists(Stmt next | getPreviousStmt(next) = s | result = firstNonAllowlisted(next))
 }
 
 /** Holds if `s` is the first non-allowlisted statement in a run of unreachable statements. */
 predicate firstNonAllowlistedUnreachableStmt(Stmt s) {
-  not isReachable(s) and
-  not allowlist(s) and
-  (
-    firstUnreachableStmt(s)
-    or
-    isInNonReportableUnreachablePrefix(getPreviousStmt(s))
+  exists(Stmt unreachable |
+    firstUnreachableStmt(unreachable) and
+    s = firstNonAllowlisted(unreachable)
   )
 }
 
