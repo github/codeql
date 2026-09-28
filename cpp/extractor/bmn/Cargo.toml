@@ -1,3 +1,5 @@
+[workspace]
+
 [package]
 name = "bmn"
 version = "0.1.0"
@@ -5,7 +7,7 @@ edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-# when updating, run `./update_cargo_deps.sh` to update bazel bindings
+# When updating, run `misc/bazel/3rdparty/update_cpp_bmn_deps.sh` to update Bazel bindings.
 [dependencies]
 anyhow = "1"
 cached = "0.54"
