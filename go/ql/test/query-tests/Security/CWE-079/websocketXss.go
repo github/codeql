@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 
+	coder "github.com/coder/websocket"
 	gorilla "github.com/gorilla/websocket"
 	websocket "golang.org/x/net/websocket"
 	nhooyr "nhooyr.io/websocket"
@@ -39,6 +40,11 @@ func xss(w http.ResponseWriter, r *http.Request) {
 		n, _, _ := nhooyr.Dial(context.TODO(), uri, nil)
 		_, nhooyr, _ := n.Read(context.TODO()) // $ Source[go/reflected-xss]
 		fmt.Fprintf(w, "%v", nhooyr)           // $ Alert[go/reflected-xss]
+	}
+	{
+		n, _, _ := coder.Dial(context.TODO(), uri, nil)
+		_, coderMsg, _ := n.Read(context.TODO()) // $ Source[go/reflected-xss]
+		fmt.Fprintf(w, "%v", coderMsg)           // $ Alert[go/reflected-xss]
 	}
 	{
 		dialer := gorilla.Dialer{}
