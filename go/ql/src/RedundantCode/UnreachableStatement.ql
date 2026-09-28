@@ -101,10 +101,13 @@ predicate allowlist(Stmt s) {
 }
 
 Stmt firstNonAllowlisted(Stmt s) {
-  not allowlist(s) and result = s
-  or
-  allowlist(s) and
-  exists(Stmt next | getPreviousStmt(next) = s | result = firstNonAllowlisted(next))
+  not isReachable(s) and
+  (
+    not allowlist(s) and result = s
+    or
+    allowlist(s) and
+    exists(Stmt next | getPreviousStmt(next) = s | result = firstNonAllowlisted(next))
+  )
 }
 
 /** Holds if `s` is the first non-allowlisted statement in a run of unreachable statements. */
