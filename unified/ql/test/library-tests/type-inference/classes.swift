@@ -78,8 +78,6 @@ func testNestedTypes() {
 class Builder {
   var value: Int = 0
 
-  init() {}
-
   func set(_ v: Int) -> Builder {
     value = v  // $ type=v:Int field=Builder.value
     return self
@@ -103,8 +101,6 @@ func testChaining() {
 // --- Default parameter values ---
 
 class Config {
-  init() {}
-
   func setup(retries: Int = 3, timeout: Double = 30.0) -> Int {
     return retries  // $ type=retries:Int
   }
@@ -144,8 +140,6 @@ func testTemperature() {
 // --- Inheritance with overriding ---
 
 class Animal {
-  init() {}
-
   func speak() -> String {
     return "..."
   }
