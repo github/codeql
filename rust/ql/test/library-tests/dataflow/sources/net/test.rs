@@ -378,9 +378,7 @@ fn test_native_tls() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 async fn test_async_native_tls() -> Result<(), Box<dyn std::error::Error>> {
-    use futures::io::{
-        AsyncReadExt as FuturesAsyncReadExt, AsyncWriteExt as FuturesAsyncWriteExt,
-    };
+    use futures::io::{AsyncReadExt, AsyncWriteExt};
 
     let address = "www.example.com:443";
     let stream0 = async_std::net::TcpStream::connect(address).await?; // $ Alert[rust/summary/taint-sources]
