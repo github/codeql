@@ -31,10 +31,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
+        call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
           callee: identifier "foo" source="foo"
           argument:
-            argument source="⟨value⟩,"
+            argument source="⟨value⟩"
               value: int_literal "1" source="1"
             argument source="⟨value⟩"
               value: int_literal "2" source="2"

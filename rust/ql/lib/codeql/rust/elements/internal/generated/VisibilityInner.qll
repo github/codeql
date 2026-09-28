@@ -26,6 +26,8 @@ module Generated {
   class VisibilityInner extends Synth::TVisibilityInner, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "VisibilityInner" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the path of this visibility inner, if it exists.
      */

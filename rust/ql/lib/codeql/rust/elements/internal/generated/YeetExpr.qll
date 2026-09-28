@@ -28,6 +28,8 @@ module Generated {
   class YeetExpr extends Synth::TYeetExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "YeetExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this yeet expression (0-based).
      */

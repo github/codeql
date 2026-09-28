@@ -178,13 +178,93 @@ class MicrosoftAspNetCoreMvcHtmlHelperRawSink extends AspNetCoreHtmlSink {
 }
 
 /**
+ * Holds if `writeLiteral` is a call to `RazorPageBase.WriteLiteral` whose argument is captured
+ * between a matching pair of `BeginWriteTagHelperAttribute()`/`EndWriteTagHelperAttribute()`
+ * calls, in the same basic block, with no other such calls in between.
+ *
+ * The Razor source generator emits this bracketing for every literal or expression segment of an
+ * HTML attribute value on an element that also carries a tag helper (for example `asp-for`). Such
+ * a `WriteLiteral` call does not write directly to the response: `WriteLiteral` appends to an
+ * internal string buffer, and `EndWriteTagHelperAttribute()` returns that buffer as a tag helper
+ * attribute value rather than as page markup. This is therefore not a direct-write sink, unlike an
+ * unbracketed `WriteLiteral` call, whose argument is written straight to the response.
+ *
+ * Because a basic block cannot contain a branch, requiring `beginCall`, `writeLiteral`, and
+ * `endCall` to appear (in that order) in the same basic block, with no other
+ * `Begin`/`EndWriteTagHelperAttribute` call strictly between `beginCall` and `endCall`,
+ * guarantees that `beginCall`/`endCall` are the immediately enclosing bracket around
+ * `writeLiteral` on every path that reaches it (that is, the bracket opened by `beginCall` is
+ * still open, and not yet closed by some other `endCall`, at the point `writeLiteral` executes).
+ * No other such call can coincide with `writeLiteral` itself, so checking the whole open interval
+ * between `beginCall` and `endCall` is equivalent to checking it on both sides of `writeLiteral`
+ * separately.
+ *
+ * `beginCall`, `writeLiteral`, and `endCall` are additionally required to have an implicit `this`
+ * qualifier, which is how the Razor source generator always emits these calls. Combined with all
+ * three calls being required to lie in the same basic block (and hence the same method body),
+ * this ensures all three calls act on the same page instance, so a bracket on one page cannot be
+ * mistaken for a bracket around a `WriteLiteral` call on a different page.
+ *
+ * The `WriteLiteral`/`BeginWriteTagHelperAttribute`/`EndWriteTagHelperAttribute` methods are
+ * looked up via `any(MicrosoftAspNetCoreMvcRazorPageBase page).get...Method()` rather than
+ * through a single shared `page` variable bound across `writeLiteral`, `beginCall`, and
+ * `endCall`. These methods are inherited (not overridden) from the shared `RazorPageBase`
+ * framework type, so every generated Razor page class resolves to the same handful of `Method`
+ * entities; binding a single `page` variable across all three calls would force the join to be
+ * repeated once per generated page class in the codebase, rather than once per distinct `Method`,
+ * causing severe performance degradation on codebases with many Razor views.
+ */
+private predicate isBracketedForTagHelperAttribute(Call writeLiteral) {
+  exists(MethodCall beginCall, MethodCall endCall, BasicBlock bb, int i, int j, int k |
+    bb = writeLiteral.getBasicBlock() and
+    writeLiteral = any(MicrosoftAspNetCoreMvcRazorPageBase page).getWriteLiteralMethod().getACall() and
+    beginCall =
+      any(MicrosoftAspNetCoreMvcRazorPageBase page)
+          .getBeginWriteTagHelperAttributeMethod()
+          .getACall() and
+    endCall =
+      any(MicrosoftAspNetCoreMvcRazorPageBase page).getEndWriteTagHelperAttributeMethod().getACall() and
+    writeLiteral.(QualifiableExpr).hasImplicitThisQualifier() and
+    beginCall.hasImplicitThisQualifier() and
+    endCall.hasImplicitThisQualifier() and
+    bb.getNode(i) = beginCall.getControlFlowNode() and
+    bb.getNode(j) = writeLiteral.getControlFlowNode() and
+    bb.getNode(k) = endCall.getControlFlowNode() and
+    i < j and
+    j < k and
+    not exists(int l, Call other |
+      (
+        other =
+          any(MicrosoftAspNetCoreMvcRazorPageBase page)
+              .getBeginWriteTagHelperAttributeMethod()
+              .getACall() or
+        other =
+          any(MicrosoftAspNetCoreMvcRazorPageBase page)
+              .getEndWriteTagHelperAttributeMethod()
+              .getACall()
+      ) and
+      bb.getNode(l) = other.getControlFlowNode() and
+      i < l and
+      l < k
+    )
+  )
+}
+
+/**
  * An expression that is used as an argument to `Page.WriteLiteral` in ASP.NET 6.0 razor page, typically in
  * a `.cshtml` file.
+ *
+ * `WriteLiteral` calls whose argument is captured for a tag helper attribute value (see
+ * `isBracketedForTagHelperAttribute`) are excluded, since such calls buffer the value as a tag
+ * helper attribute rather than writing it directly to the response.
  */
 class MicrosoftAspNetRazorPageWriteLiteralSink extends AspNetCoreHtmlSink {
   MicrosoftAspNetRazorPageWriteLiteralSink() {
-    this.getExpr() =
-      any(MicrosoftAspNetCoreMvcRazorPageBase h).getWriteLiteralMethod().getACall().getAnArgument()
+    exists(Call writeLiteral |
+      writeLiteral = any(MicrosoftAspNetCoreMvcRazorPageBase h).getWriteLiteralMethod().getACall() and
+      this.getExpr() = writeLiteral.getAnArgument() and
+      not isBracketedForTagHelperAttribute(writeLiteral)
+    )
   }
 }
 

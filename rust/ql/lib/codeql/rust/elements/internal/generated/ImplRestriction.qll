@@ -22,6 +22,8 @@ module Generated {
   class ImplRestriction extends Synth::TImplRestriction, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "ImplRestriction" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the visibility inner of this impl restriction, if it exists.
      */

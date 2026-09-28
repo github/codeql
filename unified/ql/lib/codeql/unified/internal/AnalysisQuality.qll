@@ -1,6 +1,9 @@
 private import unified
 private import codeql.util.ReportStats
 private import codeql.unified.internal.NameBinding
+private import codeql.unified.internal.dataflow.DataFlowCall
+private import codeql.unified.internal.dataflow.DataFlowCallable
+private import codeql.unified.internal.dataflow.CallGraph
 
 /** Stats about name nodes that static name binding could resolve. */
 module StaticNameResolutionStats implements EntityStatsSig {
@@ -10,7 +13,7 @@ module StaticNameResolutionStats implements EntityStatsSig {
    */
   private predicate resolvesToValue(Identifier name) {
     exists(AstNode decl |
-      decl = getStaticBindingTarget(name).getDeclaration() and
+      decl = getStaticBindingTargetFromIdentifier(name).getDeclaration() and
       not decl instanceof ClassLikeDeclaration and
       not decl instanceof TypeAliasDeclaration and
       not decl instanceof TypeParameter and
@@ -46,7 +49,7 @@ module StaticNameResolutionStats implements EntityStatsSig {
     }
 
     NameBindingNode getTarget() {
-      result.asIdentifier() = getStaticBindingTarget(this)
+      result.asIdentifier() = getStaticBindingTargetFromIdentifier(this)
       or
       result.isModuleScopeNode(_) and
       result.(NamespaceNode).ref().isIdentifier(this)
@@ -87,3 +90,46 @@ module FilesCoveredByModuleManifestStats implements EntityStatsSig {
 
 module FilesCoveredByModuleManifestStatsReport =
   EntityReportStats<FilesCoveredByModuleManifestStats>;
+
+module CallGraphStats implements EntityStatsSig {
+  class Candidate extends CallExpr {
+    Candidate() { exists(DataFlowCall c | c.asExplicitCall() = this) }
+
+    DataFlowCall getDataFlowCall() { result.asExplicitCall() = this }
+
+    DataFlowCallable getTarget() { result = viableCallable(this.getDataFlowCall()) }
+
+    predicate isOk() { exists(this.getTarget()) }
+  }
+
+  string getOkText() { result = "calls with call target" }
+
+  string getNotOkText() { result = "calls with missing call target" }
+}
+
+module CallGraphStatsReport = EntityReportStats<CallGraphStats>;
+
+/**
+ * Gets summary statistics about taint.
+ */
+predicate taintStats(string key, int value) {
+  // The keys must match those in DCA summary profiles
+  key = "Taint sources - active" and value = count(DataFlow::Node n | Models::isSource(n, "remote"))
+  or
+  key = "Taint sources - disabled" and
+  value = count(DataFlow::Node n | Models::isSource(n, any(string s | s != "remote")))
+  or
+  key = "Taint sources - sensitive data" and none()
+  or
+  key = "Taint edges - number of edges" and none()
+  or
+  key = "Taint reach - nodes tainted" and none()
+  or
+  key = "Taint reach - total non-summary nodes" and none()
+  or
+  key = "Taint reach - per million nodes" and none()
+  or
+  key = "Taint sinks - query sinks" and value = count(DataFlow::Node n | Models::isSink(n, _))
+  or
+  key = "Taint sinks - cryptographic operations" and none()
+}

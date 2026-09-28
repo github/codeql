@@ -28,6 +28,8 @@ module Generated {
   class UseBoundGenericArgs extends Synth::TUseBoundGenericArgs, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "UseBoundGenericArgs" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th use bound generic argument of this use bound generic arguments (0-based).
      */

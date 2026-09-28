@@ -5,6 +5,7 @@ overlay[local?]
 module;
 
 private import codeql.files.FileSystem
+private import codeql.unified.internal.NameBinding as NameBinding
 
 module Unified {
   private import Ast::Unified as G
@@ -117,6 +118,19 @@ module Unified {
   class Argument extends G::Argument {
     /** Gets the name of this argument. */
     string getName() { result = this.getNameNode().getValue() }
+
+    /** Holds if this is a positional argument. */
+    predicate isPositional() { not exists(this.getName()) }
+
+    /** Gets the 0-based index of this argument among the positional arguments in the surrounding call or tuple. */
+    int getPositionalIndex() {
+      this =
+        rank[result + 1](Argument a |
+          a.getParent() = this.getParent() and a.isPositional()
+        |
+          a order by a.getParentIndex()
+        )
+    }
   }
 
   class AssociatedTypeDeclaration extends G::AssociatedTypeDeclaration {
@@ -132,6 +146,12 @@ module Unified {
   class ClassLikeDeclaration extends G::ClassLikeDeclaration {
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
+
+    /** Gets a direct base class of this class. */
+    ClassLikeDeclaration getABaseClass() {
+      result.getNameNode() =
+        NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
+    }
   }
 
   class ConstructorDeclaration extends G::ConstructorDeclaration {
@@ -172,8 +192,34 @@ module Unified {
   }
 
   class Parameter extends G::Parameter {
-    /** Gets the external name of this parameter. */
-    string getExternalName() { result = this.getExternalNameNode().getValue() }
+    /**
+     * Gets the external name of this parameter.
+     *
+     * Has no result for pseudo-names like `_` that indicate that this is actually a positional parameter.
+     */
+    string getExternalName() { result = this.getExternalNameNode().getValue() and not result = "_" }
+
+    /** Gets the callable on which this parameter appears. */
+    Callable getDeclaringCallable() { result = this.getParent() }
+
+    /** Holds if this is a positional parameter. */
+    predicate isPositional() { not exists(this.getExternalName()) }
+
+    /** Gets the 0-based index of this parameter among the positional parameters of the declaring callable. */
+    int getPositionalIndex() {
+      this =
+        rank[result + 1](Parameter p |
+          p.getDeclaringCallable() = this.getDeclaringCallable() and p.isPositional()
+        |
+          p order by p.getParentIndex()
+        )
+    }
+  }
+
+  /** A tuple expression. */
+  class TupleExpr extends G::TupleExpr {
+    /** Gets the number of elements in this tuple expression. */
+    int getNumberOfElements() { result = count(this.getAnElement()) }
   }
 
   class TypeAliasDeclaration extends G::TypeAliasDeclaration {
@@ -227,5 +273,16 @@ module Unified {
 
     /** Gets the number of arguments passed to this call, not counting implicit arguments like receiver. */
     int getNumberOfArguments() { result = count(this.getAnArgument()) }
+
+    /** Gets the number of positional arguments passed to this call. */
+    int getNumberOfPositionalArguments() {
+      result = count(Argument arg | arg = this.getAnArgument() and arg.isPositional())
+    }
+  }
+
+  /** A function expression. */
+  class FunctionExpr extends G::FunctionExpr {
+    /** Gets the number of parameters of this function. */
+    int getNumberOfParameters() { result = count(this.getAParameter()) }
   }
 }

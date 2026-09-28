@@ -75,6 +75,9 @@
 /ruby/extractor/cargo-bazel-lock.json linguist-generated=true
 /ruby/extractor/cargo-bazel-lock.json -merge
 
+# GitHub Agentic Workflows compiled output
+.github/workflows/*.lock.yml linguist-generated=true
+
 # auto-generated files for the C# build
 /csharp/paket.lock linguist-generated=true
 # needs eol=crlf, as `paket` touches this file and saves it as crlf

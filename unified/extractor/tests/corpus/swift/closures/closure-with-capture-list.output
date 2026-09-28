@@ -68,13 +68,13 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "f" source="f"
           value:
-            function_expr source="⟨body⟩⟨capture_declaration⟩"
+            function_expr source="{ [⟨capture_declaration⟩] in ⟨body⟩ }"
               capture_declaration:
                 variable_declaration source="⟨modifier⟩ ⟨pattern⟩"
                   modifier: modifier "weak" source="weak"
                   pattern: identifier "self" source="self"
               body:
-                block source="{ [weak self] in ⟨stmt⟩ }"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩()"
                       callee:

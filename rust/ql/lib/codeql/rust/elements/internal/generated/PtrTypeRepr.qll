@@ -29,6 +29,8 @@ module Generated {
   class PtrTypeRepr extends Synth::TPtrTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "PtrTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Holds if this ptr type representation is const.
      */

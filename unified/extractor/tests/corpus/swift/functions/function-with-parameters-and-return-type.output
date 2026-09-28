@@ -73,10 +73,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩⟨parameter⟩⟨return_type⟩"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> ⟨return_type⟩ ⟨body⟩"
           name_node: identifier "add" source="add"
           parameter:
-            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩,"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
               external_name_node: identifier "_" source="_"
               type: identifier "Int" source="Int"
               pattern: identifier "a" source="a"
@@ -86,7 +86,7 @@ top_level source="⟨body⟩"
               pattern: identifier "b" source="b"
           return_type: identifier "Int" source="Int"
           body:
-            block source="func add(_ a: Int, _ b: Int) -> Int {\n  ⟨stmt⟩\n}"
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
                 return_expr source="return ⟨value⟩"
                   value:

@@ -18,6 +18,7 @@ class Assignable extends Declaration, @assignable {
   final AnnotatedType getAnnotatedType() { result.appliesTo(this) }
 
   /** Gets an access to this assignable. */
+  pragma[nomagic]
   AssignableAccess getAnAccess() { result.getTarget() = this }
 
   /** Gets an expression assigned to this assignable, if any. */
@@ -31,6 +32,7 @@ class Assignable extends Declaration, @assignable {
  * property (`Property`), an indexer (`Indexer`), or an event (`Event`).
  */
 class AssignableMember extends Member, Assignable, Attributable {
+  pragma[nomagic]
   override AssignableMemberAccess getAnAccess() { result = Assignable.super.getAnAccess() }
 
   override string toString() { result = Assignable.super.toString() }

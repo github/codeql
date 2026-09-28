@@ -55,10 +55,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        type_alias_declaration source="typealias ⟨name_node⟩<⟨type_parameter⟩ ⟨type_parameter⟩> = ⟨type⟩"
+        type_alias_declaration source="typealias ⟨name_node⟩<⟨type_parameter⟩, ⟨type_parameter⟩> = ⟨type⟩"
           name_node: identifier "Box" source="Box"
           type_parameter:
-            type_parameter source="⟨name_node⟩: ⟨bound⟩,"
+            type_parameter source="⟨name_node⟩: ⟨bound⟩"
               name_node: identifier "T" source="T"
               bound: identifier "Equatable" source="Equatable"
             type_parameter source="⟨name_node⟩"

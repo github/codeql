@@ -28,6 +28,8 @@ module Generated {
   class TupleTypeRepr extends Synth::TTupleTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "TupleTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th field of this tuple type representation (0-based).
      */

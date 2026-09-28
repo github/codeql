@@ -491,6 +491,16 @@ class MicrosoftAspNetCoreMvcRazorPageBase extends Class {
 
   /** Gets the `WriteLiteral` method. */
   Method getWriteLiteralMethod() { result = this.getAMethod("WriteLiteral") }
+
+  /** Gets the `BeginWriteTagHelperAttribute` method. */
+  Method getBeginWriteTagHelperAttributeMethod() {
+    result = this.getAMethod("BeginWriteTagHelperAttribute")
+  }
+
+  /** Gets the `EndWriteTagHelperAttribute` method. */
+  Method getEndWriteTagHelperAttributeMethod() {
+    result = this.getAMethod("EndWriteTagHelperAttribute")
+  }
 }
 
 /** A class deriving from `Microsoft.AspNetCore.Http.HttpRequest`, implements `HttpRequest` in ASP.NET Core. */
@@ -563,6 +573,19 @@ class MicrosoftAspNetCoreHttpHeaderDictionaryExtensions extends RefType {
 
   /** Gets the `SetCommaSeparatedValues` extension method. */
   Method getSetCommaSeparatedValuesMethod() { result = this.getAMethod("SetCommaSeparatedValues") }
+}
+
+/** The `Microsoft.AspNetCore.Http.IHeaderDictionary` interface. */
+class MicrosoftAspNetCoreHttpIHeaderDictionary extends RefType {
+  MicrosoftAspNetCoreHttpIHeaderDictionary() {
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IHeaderDictionary")
+  }
+
+  /** Gets the `XFrameOptions` property. */
+  Property getXFrameOptionsProperty() { result = this.getProperty("XFrameOptions") }
+
+  /** Gets the `ContentSecurityPolicy` property. */
+  Property getContentSecurityPolicyProperty() { result = this.getProperty("ContentSecurityPolicy") }
 }
 
 /** The `Microsoft.AspNetCore.Http.CookieOptions` class. */

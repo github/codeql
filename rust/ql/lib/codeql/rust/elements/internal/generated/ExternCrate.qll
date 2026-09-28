@@ -30,6 +30,8 @@ module Generated {
   class ExternCrate extends Synth::TExternCrate, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "ExternCrate" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this extern crate (0-based).
      */

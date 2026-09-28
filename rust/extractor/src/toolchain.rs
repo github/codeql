@@ -17,6 +17,7 @@
 
 use std::{io, process};
 
+use chrono::NaiveDate;
 use tracing::{info, warn};
 
 /// The toolchain target by the extractor. This should usually be latest Rust
@@ -24,6 +25,12 @@ use tracing::{info, warn};
 ///
 /// When rust-analyzer is updated this version should be updated accordingly.
 const FIXED_RUST_TOOLCHAIN: &str = "1.97.0";
+
+/// The date of the oldest nightly toolchain known to work with our version of
+/// rust-analyzer.
+///
+/// When rust-analyzer is updated this version may need to be updated.
+const MINIMUM_NIGHTLY_DATE: NaiveDate = NaiveDate::from_ymd_opt(2026, 7, 15).unwrap();
 
 /// The command output of asking `rustup` which toolchain is used by the Rust
 /// project in the current working directory. This main looks at
@@ -43,17 +50,42 @@ pub fn project_toolchain() -> io::Result<process::Output> {
 /// Returns the fixed toolchain except when the project is using a nightly
 /// toolchain.
 ///
-/// When the project is using `nightly`, anything below is almost certain to not
-/// work. In that case using the specified nightly toolchain may work if the
-/// toolchain is compatible with our rust-analyzer version.
+/// Recent nightly toolchains are preserved so that projects can use unstable
+/// features. Older dated nightlies are replaced with the oldest nightly known
+/// to be compatible with our rust-analyzer version.
 pub fn select_toolchain() -> String {
-    let nightly = project_toolchain()
+    let project_toolchain = project_toolchain()
         .ok()
         .filter(|output| output.status.success())
         .and_then(|output| String::from_utf8(output.stdout).ok())
-        .and_then(|toolchain| toolchain.split_whitespace().next().map(str::to_owned))
-        .filter(|toolchain| toolchain.starts_with("nightly"));
-    nightly.unwrap_or_else(|| FIXED_RUST_TOOLCHAIN.to_owned())
+        .unwrap_or_default();
+    select_toolchain_from_project_toolchain(&project_toolchain)
+}
+
+fn select_toolchain_from_project_toolchain(project_toolchain: &str) -> String {
+    let nightly_toolchain = project_toolchain
+        .split_whitespace()
+        .next()
+        .filter(|toolchain| toolchain.starts_with("nightly"))
+        .map(str::to_owned)
+        .map(cap_nightly_toolchain);
+    nightly_toolchain.unwrap_or_else(|| FIXED_RUST_TOOLCHAIN.to_owned())
+}
+
+fn cap_nightly_toolchain(nightly_toolchain: String) -> String {
+    if let Some(project_date) = nightly_date(&nightly_toolchain)
+        && project_date < MINIMUM_NIGHTLY_DATE
+    {
+        format!("nightly-{MINIMUM_NIGHTLY_DATE}")
+    } else {
+        nightly_toolchain
+    }
+}
+
+/// Parse the date from a nightly toolchain string.
+fn nightly_date(toolchain: &str) -> Option<NaiveDate> {
+    let suffix = toolchain.strip_prefix("nightly-")?;
+    (suffix.len() >= 10).then(|| NaiveDate::parse_from_str(suffix.get(..10)?, "%Y-%m-%d").ok())?
 }
 
 pub fn log_project_toolchain() {
@@ -67,5 +99,65 @@ pub fn log_project_toolchain() {
             String::from_utf8_lossy(&output.stderr).trim()
         ),
         Err(error) => warn!("unable to determine project Rust toolchain: {error}"),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{MINIMUM_NIGHTLY_DATE, select_toolchain_from_project_toolchain};
+
+    #[test]
+    fn preserves_rolling_nightly_toolchain() {
+        assert_eq!(
+            select_toolchain_from_project_toolchain("nightly-aarch64-apple-darwin"),
+            "nightly-aarch64-apple-darwin"
+        );
+    }
+
+    #[test]
+    fn replaces_old_dated_nightly_toolchain() {
+        assert_eq!(
+            select_toolchain_from_project_toolchain("nightly-2025-07-15-aarch64-apple-darwin"),
+            format!("nightly-{MINIMUM_NIGHTLY_DATE}")
+        );
+        assert_eq!(
+            select_toolchain_from_project_toolchain("nightly-2025-07-15"),
+            format!("nightly-{MINIMUM_NIGHTLY_DATE}")
+        );
+    }
+
+    #[test]
+    fn preserves_minimum_dated_nightly_toolchain() {
+        assert_eq!(
+            select_toolchain_from_project_toolchain("nightly-2026-07-15-aarch64-apple-darwin"),
+            "nightly-2026-07-15-aarch64-apple-darwin"
+        );
+    }
+
+    #[test]
+    fn preserves_newer_dated_nightly_toolchain() {
+        assert_eq!(
+            select_toolchain_from_project_toolchain("nightly-2026-09-01-aarch64-apple-darwin"),
+            "nightly-2026-09-01-aarch64-apple-darwin"
+        );
+    }
+
+    #[test]
+    fn preserves_unrecognized_nightly_toolchain() {
+        assert_eq!(
+            select_toolchain_from_project_toolchain("nightly-custom"),
+            "nightly-custom"
+        );
+        assert_eq!(
+            select_toolchain_from_project_toolchain("nightly-2026-99-99-aarch64-apple-darwin"),
+            "nightly-2026-99-99-aarch64-apple-darwin"
+        );
+    }
+
+    #[test]
+    fn minimum_nightly_matches_qltest_toolchain() {
+        // The minimum nightly toolchain should match the one we test against.
+        let toolchain_file = include_str!("nightly-toolchain/rust-toolchain.toml");
+        assert!(toolchain_file.contains(&format!("channel = \"nightly-{MINIMUM_NIGHTLY_DATE}\"")));
     }
 }

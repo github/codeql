@@ -14,9 +14,5 @@ rustup toolchain install 1.97.0 --profile minimal --component rust-src
 pushd ../../extractor/src/nightly-toolchain
 rustup install
 popd
-# pre-1.94 toolchain exercising the extractor's `FormatArgsExpr` reconstruction
-pushd library-tests/format-macros-legacy
-rustup install
-popd
 # this needs to be last to set the default toolchain
 rustup install

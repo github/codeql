@@ -23,5 +23,7 @@ module Generated {
    */
   class IncludeBytesExpr extends Synth::TIncludeBytesExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "IncludeBytesExpr" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

@@ -28,6 +28,8 @@ module Generated {
   class TupleExpr extends Synth::TTupleExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "TupleExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this tuple expression (0-based).
      */

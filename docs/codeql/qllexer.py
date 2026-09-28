@@ -1,7 +1,7 @@
 """
     Custom Pygments lexer for highlighting QL code.
     
-    Based on instructions from http://pygments.org/docs/lexerdevelopment/.
+    Based on instructions from https://pygments.org/docs/lexerdevelopment/.
 """
 
 import re

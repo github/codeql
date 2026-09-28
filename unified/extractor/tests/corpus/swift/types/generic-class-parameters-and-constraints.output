@@ -66,17 +66,17 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩ ⟨type_parameter⟩> where ⟨type_constraint⟩ ⟨type_constraint⟩ {\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩, ⟨type_parameter⟩> where ⟨type_constraint⟩, ⟨type_constraint⟩ {\n}"
           modifier: modifier "class" source="class"
           name_node: identifier "Box" source="Box"
           type_parameter:
-            type_parameter source="⟨name_node⟩: ⟨bound⟩,"
+            type_parameter source="⟨name_node⟩: ⟨bound⟩"
               name_node: identifier "T" source="T"
               bound: identifier "Equatable" source="Equatable"
             type_parameter source="⟨name_node⟩"
               name_node: identifier "U" source="U"
           type_constraint:
-            bound_type_constraint source="⟨type⟩: ⟨bound⟩,"
+            bound_type_constraint source="⟨type⟩: ⟨bound⟩"
               type: identifier "U" source="U"
               bound: identifier "Equatable" source="Equatable"
             equality_type_constraint source="⟨left⟩ == ⟨right⟩"

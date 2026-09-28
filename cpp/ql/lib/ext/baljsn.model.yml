@@ -1,0 +1,14 @@
+# Model of the BDE baljsn JSON codec (BloombergLP::baljsn).
+# All overloads, including those taking DecoderOptions/EncoderOptions, take the stream at
+# argument 0 and the object at argument 1 and return int.
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      # Decoding: stream -> object
+      - ["BloombergLP::baljsn", "Decoder", true, "decode", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["BloombergLP::baljsn", "Decoder", true, "decodeAny", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      # Encoding: object -> stream
+      - ["BloombergLP::baljsn", "Encoder", true, "encode", "", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::baljsn", "Encoder", true, "encodeAny", "", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]

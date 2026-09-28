@@ -1,4 +1,3 @@
-use super::format_args;
 use super::mappings::Emission;
 use crate::generated::{self};
 use crate::rust_analyzer::FileSemanticInformation;
@@ -461,9 +460,6 @@ impl<'db> Translator<'db> {
                 ));
             }
         } else if self.semantics.is_some() {
-            if self.reconstruct_format_args_expansion(mcall, label) {
-                return;
-            }
             // let's not spam warnings if we don't have semantics, we already emitted one
             let range = self.text_range_for_node(mcall);
             self.emit_parse_error(
@@ -783,67 +779,6 @@ impl<'db> Translator<'db> {
         let result = self.emit_macro_items(&items);
         self.builtin_derive_span_map = previous;
         result
-    }
-
-    /// Reconstructs and emits the expansion of a format-family macro (`format!`,
-    /// `println!`, `write!`, `panic!`, ...).
-    ///
-    /// On `rustc <1.94` sysroots these macros no longer resolve, so `expand_macro_call`
-    /// returns `None` and we get a bare unexpanded `MacroCall` with no flow through it.
-    /// We rebuild the token tree of the real expansion ourselves (see
-    /// [`super::format_args`]), parse it, and register the result as the macro
-    /// expansion. Locations of the synthesized nodes are routed through the expansion
-    /// span map via `builtin_derive_span_map`.
-    ///
-    /// Returns `true` when the macro was recognized and an expansion was emitted.
-    fn reconstruct_format_args_expansion(
-        &mut self,
-        mcall: &ast::MacroCall,
-        label: Label<generated::MacroCall>,
-    ) -> bool {
-        self.try_reconstruct_format_args_expansion(mcall, label)
-            .is_some()
-    }
-
-    /// Attempts to reconstruct and emit a format-family macro expansion.
-    fn try_reconstruct_format_args_expansion(
-        &mut self,
-        mcall: &ast::MacroCall,
-        label: Label<generated::MacroCall>,
-    ) -> Option<()> {
-        let name = mcall.path()?.segment()?.name_ref()?.text().to_string();
-        let wrap = format_args::Wrap::for_macro(&name)?;
-        let tt_node = mcall.token_tree()?;
-        let semantics = self.semantics?;
-        let db = semantics.db;
-        let file_id = semantics.hir_file_for(mcall.syntax());
-        let span_map = file_id.span_map(db);
-        let call_site = span_map.span_for_range(mcall.syntax().text_range());
-        let input = syntax_node_to_token_tree(
-            tt_node.syntax(),
-            span_map,
-            call_site,
-            DocCommentDesugarMode::ProcMacro,
-        );
-        let output = format_args::reconstruct(wrap, &input, call_site)?;
-
-        let edition = self.file_id.map(|f| f.edition(db))?;
-        let (parsed, output_span_map) =
-            token_tree_to_syntax_node(&output, TopEntryPoint::Expr, &mut |_| edition);
-        let root = parsed.syntax_node();
-        let expr = ast::Expr::cast(root.clone())
-            .or_else(|| root.descendants().find_map(ast::Expr::cast))?;
-        // Sanity check: the parsed expression must contain the reconstructed
-        // `FormatArgsExpr` (either directly, or wrapped in the callee above).
-        expr.syntax()
-            .descendants()
-            .find_map(ast::FormatArgsExpr::cast)?;
-        let previous = self.builtin_derive_span_map.replace(output_span_map);
-        let emitted = self.emit_expr(&expr);
-        self.builtin_derive_span_map = previous;
-        let value = emitted?;
-        generated::MacroCall::emit_macro_call_expansion(label, value.into(), &mut self.trap.writer);
-        Some(())
     }
 
     pub(crate) fn emit_derive_expansion(

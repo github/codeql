@@ -238,6 +238,7 @@ class Modifiable extends Declaration, @modifiable {
 /** A declaration that is a member of a type. */
 class Member extends Modifiable, @member {
   /** Gets an access to this member. */
+  pragma[nomagic]
   MemberAccess getAnAccess() { result.getTarget() = this }
 
   /**
