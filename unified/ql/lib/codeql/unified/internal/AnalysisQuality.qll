@@ -13,7 +13,7 @@ module StaticNameResolutionStats implements EntityStatsSig {
    */
   private predicate resolvesToValue(Identifier name) {
     exists(AstNode decl |
-      decl = getStaticBindingTarget(name).getDeclaration() and
+      decl = getStaticBindingTargetFromIdentifier(name).getDeclaration() and
       not decl instanceof ClassLikeDeclaration and
       not decl instanceof TypeAliasDeclaration and
       not decl instanceof TypeParameter and
@@ -49,7 +49,7 @@ module StaticNameResolutionStats implements EntityStatsSig {
     }
 
     NameBindingNode getTarget() {
-      result.asIdentifier() = getStaticBindingTarget(this)
+      result.asIdentifier() = getStaticBindingTargetFromIdentifier(this)
       or
       result.isModuleScopeNode(_) and
       result.(NamespaceNode).ref().isIdentifier(this)

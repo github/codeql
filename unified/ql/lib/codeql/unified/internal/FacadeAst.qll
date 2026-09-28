@@ -150,8 +150,7 @@ module Unified {
     /** Gets a direct base class of this class. */
     ClassLikeDeclaration getABaseClass() {
       result.getNameNode() =
-        NameBinding::getStaticBindingTarget(NameBinding::getIdentifierFromRef(this.getABaseType()
-                .getType()))
+        NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
     }
   }
 
@@ -217,6 +216,12 @@ module Unified {
     }
   }
 
+  /** A tuple expression. */
+  class TupleExpr extends G::TupleExpr {
+    /** Gets the number of elements in this tuple expression. */
+    int getNumberOfElements() { result = count(this.getAnElement()) }
+  }
+
   class TypeAliasDeclaration extends G::TypeAliasDeclaration {
     /** Gets the name of this type alias. */
     string getName() { result = this.getNameNode().getValue() }
@@ -273,5 +278,11 @@ module Unified {
     int getNumberOfPositionalArguments() {
       result = count(Argument arg | arg = this.getAnArgument() and arg.isPositional())
     }
+  }
+
+  /** A function expression. */
+  class FunctionExpr extends G::FunctionExpr {
+    /** Gets the number of parameters of this function. */
+    int getNumberOfParameters() { result = count(this.getAParameter()) }
   }
 }
