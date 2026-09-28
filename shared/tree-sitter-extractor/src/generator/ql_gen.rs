@@ -834,16 +834,14 @@ fn class_supertypes<'a>(
     supertypes
 }
 
-/// Returns whether `a` and `b` have the same signature, i.e. the same name,
-/// return type, and formal parameters. Predicates with the same signature can
-/// override one another.
-fn same_predicate_signature(a: &ql::Predicate, b: &ql::Predicate) -> bool {
-    a.name == b.name && a.return_type == b.return_type && a.formal_parameters == b.formal_parameters
+/// Returns the light-signature of 'pred', for use in override detection.
+fn get_light_signature(pred: &ql::Predicate) -> String {
+    format!("{}/{}", pred.name, pred.formal_parameters.len())
 }
 
-/// Computes the predicates explicitly exposed by a node. For a table these are
-/// its field predicates; for a union they are the predicates declared by the
-/// fields on that supertype.
+/// Computes the light-signatures of the predicates explicitly exposed by a
+/// node. For a table these are its field predicates; for a union they are the
+/// predicates declared by the fields on that supertype.
 ///
 /// The result for a given node is memoized in `cache` (keyed by its QL class
 /// name), and also used to answer the query for any other node that
@@ -854,23 +852,20 @@ fn compute_exposed_predicates<'a, 'b>(
     type_name: &'a node_types::TypeName,
     nodes: &'a node_types::NodeTypeMap,
     field_predicates: &BTreeMap<&node_types::TypeName, Vec<ql::Predicate<'a>>>,
-    cache: &'b mut BTreeMap<&'a str, Vec<ql::Predicate<'a>>>,
-) -> &'b Vec<ql::Predicate<'a>> {
+    cache: &'b mut BTreeMap<&'a str, BTreeSet<String>>,
+) -> &'b BTreeSet<String> {
     let node = nodes.get(type_name);
     let class_name = node.map_or(type_name.kind.as_str(), |node| node.ql_class_name.as_str());
     if !cache.contains_key(class_name) {
         // Supertype declarations that recursively refer to themselves are a mistake, but we don't
         // want to cause infinite recursion, so we insert a temporary sentinel.
-        cache.insert(class_name, Vec::new());
-        let exposed = match node.map(|node| &node.kind) {
-            Some(node_types::EntryKind::Table { .. }) => {
-                field_predicates.get(type_name).cloned().unwrap_or_default()
-            }
-            Some(node_types::EntryKind::Union { .. }) => {
-                field_predicates.get(type_name).cloned().unwrap_or_default()
-            }
-            Some(node_types::EntryKind::Token { .. }) | None => Vec::new(),
-        };
+        cache.insert(class_name, BTreeSet::new());
+        let exposed = field_predicates
+            .get(type_name)
+            .into_iter()
+            .flatten()
+            .map(get_light_signature)
+            .collect();
         cache.insert(class_name, exposed);
     }
     cache.get(class_name).unwrap()
@@ -885,15 +880,14 @@ fn is_predicate_inherited(
     predicate: &ql::Predicate,
     type_name: &node_types::TypeName,
     direct_supertypes: &BTreeMap<node_types::TypeName, BTreeSet<&str>>,
-    exposed_predicates: &BTreeMap<&str, Vec<ql::Predicate>>,
+    exposed_predicates: &BTreeMap<&str, BTreeSet<String>>,
 ) -> bool {
+    let light_signature = get_light_signature(predicate);
     direct_supertypes.get(type_name).is_some_and(|supertypes| {
         supertypes.iter().any(|supertype| {
-            exposed_predicates.get(supertype).is_some_and(|predicates| {
-                predicates
-                    .iter()
-                    .any(|other| same_predicate_signature(predicate, other))
-            })
+            exposed_predicates
+                .get(supertype)
+                .is_some_and(|signatures| signatures.contains(&light_signature))
         })
     })
 }
@@ -961,7 +955,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     }
 
     // Next, collect the predicates explicitly exposed by every supertype.
-    let mut exposed_predicates: BTreeMap<&str, Vec<ql::Predicate<'_>>> = BTreeMap::new();
+    let mut exposed_predicates: BTreeMap<&str, BTreeSet<String>> = BTreeMap::new();
     for (type_name, node) in nodes {
         if let node_types::EntryKind::Union { .. } = &node.kind {
             compute_exposed_predicates(
@@ -1212,7 +1206,7 @@ mod tests {
                     "item": {
                         "multiple": true,
                         "required": false,
-                        "types": [{ "type": "item", "named": true }]
+                        "types": [{ "type": "container_item", "named": true }]
                     }
                 }
             },
@@ -1248,6 +1242,7 @@ mod tests {
                     }
                 }
             },
+            { "type": "container_item", "named": true, "fields": {} },
             { "type": "item", "named": true, "fields": {} }
         ]"#;
         let nodes = node_types::read_node_types_str("test", node_types).unwrap();
@@ -1279,14 +1274,18 @@ mod tests {
                 _ => None,
             })
             .unwrap();
-        assert!(
-            alpha
-                .predicates
-                .iter()
-                .find(|predicate| predicate.name == "getItem")
-                .unwrap()
-                .overridden
-        );
+        let container_get_item = container
+            .predicates
+            .iter()
+            .find(|predicate| predicate.name == "getItem")
+            .unwrap();
+        let alpha_get_item = alpha
+            .predicates
+            .iter()
+            .find(|predicate| predicate.name == "getItem")
+            .unwrap();
+        assert!(container_get_item.return_type != alpha_get_item.return_type);
+        assert!(alpha_get_item.overridden);
         assert!(
             !alpha
                 .predicates
