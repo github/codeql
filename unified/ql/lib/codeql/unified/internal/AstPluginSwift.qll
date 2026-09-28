@@ -10,6 +10,12 @@ private class AstPluginSwift extends AstPlugin {
     exists(f) and result = "func"
   }
 
+  bindingset[c]
+  override string getConstructorDeclarationKeyword(ConstructorDeclaration c) {
+    c.hasModifier(result) and
+    result = "convenience"
+  }
+
   override string getClassLikeDeclarationKeyword(ClassLikeDeclaration cls) {
     cls.hasModifier(result) and
     result in ["class", "struct", "enum", "actor", "extension", "protocol"]
