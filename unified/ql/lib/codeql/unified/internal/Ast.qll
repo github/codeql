@@ -678,9 +678,7 @@ module Unified {
   }
 
   /** A class representing `function_declaration` nodes. */
-  class FunctionDeclaration extends @unified_function_declaration, F::FunctionLike, F::Member,
-    F::Stmt
-  {
+  class FunctionDeclaration extends @unified_function_declaration, F::Callable, F::Member, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionDeclaration" }
 
@@ -736,7 +734,7 @@ module Unified {
   }
 
   /** A class representing `function_expr` nodes. */
-  class FunctionExpr extends @unified_function_expr, F::Expr, F::FunctionLike {
+  class FunctionExpr extends @unified_function_expr, F::Callable, F::Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionExpr" }
 
@@ -777,8 +775,6 @@ module Unified {
       unified_function_expr_return_type(this, result)
     }
   }
-
-  class FunctionLike extends @unified_function_like, F::Callable { }
 
   /** A class representing `generic_type_expr` nodes. */
   class GenericTypeExpr extends @unified_generic_type_expr, F::Expr {
@@ -1897,8 +1893,6 @@ module UnifiedFinal {
   final class FunctionDeclaration = F::FunctionDeclaration;
 
   final class FunctionExpr = F::FunctionExpr;
-
-  final class FunctionLike = F::FunctionLike;
 
   final class GenericTypeExpr = F::GenericTypeExpr;
 

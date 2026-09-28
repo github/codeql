@@ -286,7 +286,7 @@ unified_call_expr_def(
   int callee: @unified_expr ref
 );
 
-@unified_callable = @unified_accessor_declaration | @unified_constructor_declaration | @unified_destructor_declaration | @unified_function_like | @unified_initializer_declaration | @unified_top_level
+@unified_callable = @unified_accessor_declaration | @unified_constructor_declaration | @unified_destructor_declaration | @unified_function_declaration | @unified_function_expr | @unified_initializer_declaration | @unified_top_level
 
 #keyset[unified_catch_clause, index]
 unified_catch_clause_modifier(
@@ -551,8 +551,6 @@ unified_function_expr_return_type(
 unified_function_expr_def(
   unique int id: @unified_function_expr
 );
-
-@unified_function_like = @unified_function_declaration | @unified_function_expr
 
 #keyset[unified_generic_type_expr, index]
 unified_generic_type_expr_type_argument(

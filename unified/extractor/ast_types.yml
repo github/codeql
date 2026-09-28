@@ -63,13 +63,11 @@ supertypes:
     - while_stmt
     - do_while_stmt
     - labeled_stmt
-  function_like:
-    - function_declaration
-    - function_expr
   callable:
     subtypes:
       - top_level
-      - function_like
+      - function_expr
+      - function_declaration
       - constructor_declaration
       - destructor_declaration
       - accessor_declaration
