@@ -1000,8 +1000,8 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                 // union type. Fields declared on the supertype get an empty
                 // default implementation so members without the field can
                 // inherit it.
-                let predicates = exposed_predicates
-                    .get(node.ql_class_name.as_str())
+                let predicates = field_predicates
+                    .get(type_name)
                     .cloned()
                     .unwrap_or_default()
                     .into_iter()
