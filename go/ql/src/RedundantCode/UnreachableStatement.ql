@@ -37,13 +37,22 @@ Stmt getPreviousStmt(Stmt s) {
  */
 predicate firstUnreachableStmt(Stmt s) {
   not isReachable(s) and
-  not s instanceof EmptyStmt and
   (
     // a statement whose preceding statement in the same list is reachable
     isReachable(getPreviousStmt(s))
     or
     // the post statement of a `for` loop whose body is entered
     exists(ForStmt f | s = f.getPost() and isReachable(f.getBody().getAStmt()))
+  )
+}
+
+/** Holds if `s` is in a run of unreachable statements following a constant condition. */
+predicate isInUnreachableRunAfterConstantCondition(Stmt s) {
+  not isReachable(s) and
+  (
+    exists(getPreviousStmt(s).(IfStmt).getCondition().getBoolValue())
+    or
+    isInUnreachableRunAfterConstantCondition(getPreviousStmt(s))
   )
 }
 
@@ -78,6 +87,8 @@ predicate isAllowedReturnValue(Expr retval) {
  * Matches if `s` is an allowed unreachable statement.
  */
 predicate allowlist(Stmt s) {
+  s instanceof EmptyStmt
+  or
   // `panic("unreachable")` and similar
   exists(CallExpr ce | ce = s.(ExprStmt).getExpr() or ce = s.(ReturnStmt).getExpr() |
     ce.getTarget().mustPanic() or ce.getCalleeName().toLowerCase() = "error"
@@ -87,14 +98,28 @@ predicate allowlist(Stmt s) {
   exists(ReturnStmt ret | ret = s |
     forall(Expr retval | retval = ret.getAnExpr() | isAllowedReturnValue(retval))
   )
-  or
-  // statements deliberately made unreachable by a constant condition, such as the code
-  // following `if true { return }`
-  exists(getPreviousStmt(s).(IfStmt).getCondition().getBoolValue())
+}
+
+Stmt firstNonAllowlisted(Stmt s) {
+  not isReachable(s) and
+  (
+    not allowlist(s) and result = s
+    or
+    allowlist(s) and
+    exists(Stmt next | getPreviousStmt(next) = s | result = firstNonAllowlisted(next))
+  )
+}
+
+/** Holds if `s` is the first non-allowlisted statement in a run of unreachable statements. */
+predicate firstNonAllowlistedUnreachableStmt(Stmt s) {
+  exists(Stmt unreachable |
+    firstUnreachableStmt(unreachable) and
+    s = firstNonAllowlisted(unreachable)
+  )
 }
 
 from Stmt s
 where
-  firstUnreachableStmt(s) and
-  not allowlist(s)
+  firstNonAllowlistedUnreachableStmt(s) and
+  not isInUnreachableRunAfterConstantCondition(s)
 select s, "This statement is unreachable."
