@@ -7,9 +7,9 @@ func returnZero() -> Int { return 0 }
 returnZero()
 Double(topLevelDecl)
 
-enum MyError: Error { // $ nonSimple='ClassLikeDeclaration -V MyError -^ BaseType -V Error'
+enum MyError: Error {
     case error1, error2
-    case error3(withParam: Int)
+    case error3(withParam: Int) // $ nonSimple='withParam -? Block'
 }
 
 func isZero(x : Int) -> Bool {
@@ -59,7 +59,7 @@ func createClosure2(x : Int) -> (_ : Int) -> Int { // $ noCfg
 
 func createClosure3(x : Int) -> (_ : Int) -> Int { // $ noCfg
   return {
-    (y) -> Int in x + y // $ bbContinues='y goto Block(-1)'
+    (y) -> Int in x + y
   }
 }
 
@@ -141,10 +141,10 @@ func patterns(x : Int) -> Bool {
         {  } // $ bbStep='Block : successor -> _(-1)' bbStep='Block : successor -> SwitchExpr(+2)'
 
   switch x {
-    case 0, 1: // $ bbStep='OrPattern : match -> Block(+0)' bbStep='OrPattern : no-match -> SwitchCase(+3)'
+    case 0, 1: // $ bbStep='OrPattern : match -> Block(+1)' bbStep='OrPattern : no-match -> SwitchCase(+3)'
       return true
       return true // $ noCfg
-    case x where // $ bbContinues='Block goto true(+3)' bbStep='ConditionalPattern : match -> Block(+0)' bbStep='ConditionalPattern : no-match -> SwitchCase(+4)'
+    case x where // $ bbStep='ConditionalPattern : match -> Block(+3)' bbStep='ConditionalPattern : no-match -> SwitchCase(+4)'
         (x >= 2) && // $ bbStep='... >= ... : false -> x(-1)' bbStep='... >= ... : true -> x(+1)'
             x < 5: // $ bbStep='... < ... : successor -> x(-2)'
       return true
@@ -387,7 +387,7 @@ func testTupleElement(t : (a: Int, Int, c: Int)) -> Int {
   return t.a + t.1 + t.c + (1, 2, 3).0
 }
 
-class Derived : C { // $ nonSimple='ClassLikeDeclaration -V Derived -^ BaseType -V C'
+class Derived : C {
   init() { // $ noCfg
     super.init(n: 0)
   }
@@ -522,9 +522,9 @@ func testAvailable() -> Int { // $ noCfg
 }
 
 func testAsyncFor () async { // $ noCfg
-    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), { // $ bbContinues='Block goto Task(+2)'
-        continuation in // $ bbContinues='continuation goto Block(-1)'
-            Task.detached { // $ nonSimple='Task -^ ... .detached -^ Argument -V FunctionExpr -^ ... .detached(...)'
+    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
+        continuation in
+            Task.detached {
                 for i in 1...100 { // $ bbStep='... ... ... : empty -> continuation(+3)' bbStep='... ... ... : non-empty -> i(+0)'
                     continuation.yield(i) // $ bbStep='... .yield(...) : successor -> continuation(+2)' bbStep='... .yield(...) : successor -> i(-1)'
                 }
@@ -566,7 +566,7 @@ protocol MyProtocol {
 	func source() -> Int
 }
 
-class MyProcotolImpl : MyProtocol { // $ nonSimple='ClassLikeDeclaration -V MyProcotolImpl -^ BaseType -V MyProtocol'
+class MyProcotolImpl : MyProtocol {
 	func source() -> Int { return 0 }
 }
 

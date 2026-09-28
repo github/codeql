@@ -86,7 +86,7 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩) ⟨body⟩"
           name_node: identifier "classify" source="classify"
           parameter:
             parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
@@ -94,17 +94,17 @@ top_level source="⟨body⟩"
               type: identifier "Int" source="Int"
               pattern: identifier "x" source="x"
           body:
-            block source="func classify(_ x: Int) {\n  ⟨stmt⟩\n}"
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
                 switch_expr source="switch ⟨value⟩ {\n  ⟨case⟩\n  ⟨case⟩\n  }"
                   value: identifier "x" source="x"
                   case:
-                    switch_case source="⟨body⟩⟨pattern⟩"
+                    switch_case source="case ⟨pattern⟩:\n    ⟨body⟩"
                       pattern: int_literal "1" source="1"
                       body:
-                        block source="case 1:\n    ⟨stmt⟩"
+                        block source="⟨stmt⟩"
                           stmt: unsupported_node "fallthrough" source="fallthrough"
-                    switch_case source="⟨body⟩"
+                    switch_case source="default:\n    ⟨body⟩"
                       body:
-                        block source="default:\n    ⟨stmt⟩"
+                        block source="⟨stmt⟩"
                           stmt: break_expr "break" source="break"

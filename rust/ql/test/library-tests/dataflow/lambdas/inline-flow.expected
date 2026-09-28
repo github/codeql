@@ -63,6 +63,14 @@ edges
 | main.rs:111:26:111:36 | \|...\| ... : ... => .. [captured a] | main.rs:111:35:111:35 | a | provenance | heuristic-callback |
 | main.rs:112:26:112:36 | \|...\| ... : ... => .. [captured a] | main.rs:112:35:112:35 | a | provenance | heuristic-callback |
 | main.rs:113:26:113:36 | \|...\| ... : ... => .. [captured a] | main.rs:113:35:113:35 | a | provenance | heuristic-callback |
+| main.rs:120:30:120:40 | source(...) | main.rs:121:14:121:25 | await future | provenance |  |
+| main.rs:125:20:125:30 | source(...) | main.rs:126:9:128:9 | { ... } : ... => .. [captured data] | provenance |  |
+| main.rs:126:9:128:9 | { ... } : ... => .. [captured data] | main.rs:127:18:127:21 | data | provenance |  |
+| main.rs:133:20:133:30 | source(...) | main.rs:135:14:135:19 | future [captured data] | provenance |  |
+| main.rs:135:14:135:19 | future [captured data] | main.rs:134:30:134:33 | data | provenance |  |
+| main.rs:135:14:135:19 | future [captured data] | main.rs:135:14:135:25 | await future | provenance |  |
+| main.rs:141:9:143:9 | [post] { ... } : ... => .. [captured captured] | main.rs:145:14:145:21 | captured | provenance |  |
+| main.rs:142:24:142:34 | source(...) | main.rs:141:9:143:9 | [post] { ... } : ... => .. [captured captured] | provenance |  |
 nodes
 | main.rs:10:20:10:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
 | main.rs:10:30:10:39 | source(...) | semmle.label | source(...) |
@@ -138,9 +146,22 @@ nodes
 | main.rs:112:35:112:35 | a | semmle.label | a |
 | main.rs:113:26:113:36 | \|...\| ... : ... => .. [captured a] | semmle.label | \|...\| ... : ... => .. [captured a] |
 | main.rs:113:35:113:35 | a | semmle.label | a |
+| main.rs:120:30:120:40 | source(...) | semmle.label | source(...) |
+| main.rs:121:14:121:25 | await future | semmle.label | await future |
+| main.rs:125:20:125:30 | source(...) | semmle.label | source(...) |
+| main.rs:126:9:128:9 | { ... } : ... => .. [captured data] | semmle.label | { ... } : ... => .. [captured data] |
+| main.rs:127:18:127:21 | data | semmle.label | data |
+| main.rs:133:20:133:30 | source(...) | semmle.label | source(...) |
+| main.rs:134:30:134:33 | data | semmle.label | data |
+| main.rs:135:14:135:19 | future [captured data] | semmle.label | future [captured data] |
+| main.rs:135:14:135:25 | await future | semmle.label | await future |
+| main.rs:141:9:143:9 | [post] { ... } : ... => .. [captured captured] | semmle.label | [post] { ... } : ... => .. [captured captured] |
+| main.rs:142:24:142:34 | source(...) | semmle.label | source(...) |
+| main.rs:145:14:145:21 | captured | semmle.label | captured |
 subpaths
 | main.rs:29:21:29:21 | a | main.rs:27:20:27:23 | ... | main.rs:27:26:27:52 | if cond {...} else {...} | main.rs:29:13:29:22 | f(...) |
 | main.rs:77:21:77:21 | a | main.rs:66:24:66:32 | ...: i64 | main.rs:66:42:72:1 | { ... } | main.rs:77:13:77:22 | f(...) |
+| main.rs:135:14:135:19 | future [captured data] | main.rs:134:30:134:33 | data | main.rs:134:30:134:33 | data | main.rs:135:14:135:25 | await future |
 testFailures
 #select
 | main.rs:11:10:11:16 | f(...) | main.rs:10:30:10:39 | source(...) | main.rs:11:10:11:16 | f(...) | $@ | main.rs:10:30:10:39 | source(...) | source(...) |
@@ -161,3 +182,7 @@ testFailures
 | main.rs:111:35:111:35 | a | main.rs:109:13:109:22 | source(...) | main.rs:111:35:111:35 | a | $@ | main.rs:109:13:109:22 | source(...) | source(...) |
 | main.rs:112:35:112:35 | a | main.rs:109:13:109:22 | source(...) | main.rs:112:35:112:35 | a | $@ | main.rs:109:13:109:22 | source(...) | source(...) |
 | main.rs:113:35:113:35 | a | main.rs:109:13:109:22 | source(...) | main.rs:113:35:113:35 | a | $@ | main.rs:109:13:109:22 | source(...) | source(...) |
+| main.rs:121:14:121:25 | await future | main.rs:120:30:120:40 | source(...) | main.rs:121:14:121:25 | await future | $@ | main.rs:120:30:120:40 | source(...) | source(...) |
+| main.rs:127:18:127:21 | data | main.rs:125:20:125:30 | source(...) | main.rs:127:18:127:21 | data | $@ | main.rs:125:20:125:30 | source(...) | source(...) |
+| main.rs:135:14:135:25 | await future | main.rs:133:20:133:30 | source(...) | main.rs:135:14:135:25 | await future | $@ | main.rs:133:20:133:30 | source(...) | source(...) |
+| main.rs:145:14:145:21 | captured | main.rs:142:24:142:34 | source(...) | main.rs:145:14:145:21 | captured | $@ | main.rs:142:24:142:34 | source(...) | source(...) |

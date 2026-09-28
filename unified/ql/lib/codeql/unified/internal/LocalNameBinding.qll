@@ -395,9 +395,26 @@ module Public {
     LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
   }
 
+  final class LocalVariable = LocalVariableImpl;
+
   /** A representative for a lexically scoped local variable. */
-  class LocalVariable extends LocalName {
-    LocalVariable() {
+  abstract private class LocalVariableImpl extends LocalName {
+    /** Gets the callable containing the declaration of this local variable. */
+    abstract Callable getDeclaringCallable();
+
+    /** Holds if this local variable is captured, that is, it is accessed from another callable than the one declaring it. */
+    predicate isCaptured() {
+      this.getAnAccess().getEnclosingCallable() != this.getDeclaringCallable()
+    }
+
+    /**
+     * Holds if this local variable represents an implicit receiver parameter of the given callable.
+     */
+    abstract predicate isImplicitReceiverParameter(Callable c);
+  }
+
+  private class ExplicitLocalVariable extends LocalVariableImpl {
+    ExplicitLocalVariable() {
       exists(AstNode decl |
         decl = this.getABinding().getDeclaration() and
         not isInstanceMember(decl) and
@@ -411,29 +428,34 @@ module Public {
         decl instanceof CatchClause or
         decl instanceof SwitchCase
       )
-      or
+    }
+
+    override Callable getDeclaringCallable() { result = this.getABinding().getEnclosingCallable() }
+
+    override predicate isImplicitReceiverParameter(Callable c) { none() }
+  }
+
+  private class ImplicitLocalVariable extends LocalVariableImpl instanceof LocalNameBindingOutput::ImplicitLocal
+  {
+    AstNode scope;
+    string name;
+
+    ImplicitLocalVariable() {
       // For implicitly-declared locals we can't expect to find a binding. Check 'implicitDeclInScope' directly.
-      exists(AstNode scope, string name |
-        this.(LocalNameBindingOutput::ImplicitLocal).hasNameAndScope(name, scope) and
-        LocalNameBindingInput::implicitDeclInScope(name, scope, true)
-      )
+      super.hasNameAndScope(name, scope) and
+      LocalNameBindingInput::implicitDeclInScope(name, scope, true)
     }
 
-    /** Gets the callable containing the declaration of this local variable. */
-    Callable getDeclaringCallable() {
-      result = this.getABinding().getEnclosingCallable()
+    override Callable getDeclaringCallable() {
+      result = scope
       or
-      exists(AstNode scope | scope = this.(LocalNameBindingOutput::ImplicitLocal).getScope() |
-        result = scope
-        or
-        not scope instanceof Callable and
-        result = scope.getEnclosingCallable()
-      )
+      not scope instanceof Callable and
+      result = scope.getEnclosingCallable()
     }
 
-    /** Holds if this local variable is captured, that is, it is accessed from another callable than the one declaring it. */
-    predicate isCaptured() {
-      this.getAnAccess().getEnclosingCallable() != this.getDeclaringCallable()
+    override predicate isImplicitReceiverParameter(Callable c) {
+      name = any(NameBindingPlugin p).getImplicitReceiverParameterName(scope) and
+      scope = c
     }
   }
 

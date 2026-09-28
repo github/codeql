@@ -20,9 +20,21 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Create organization membership token
+        id: membership-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.CODEQL_ORG_MEMBERS_APP_CLIENT_ID }}
+          private-key: ${{ secrets.CODEQL_ORG_MEMBERS_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          permission-members: read
+
       - name: Label external contributions
         env:
+          API_URL: ${{ github.api_url }}
           GH_TOKEN: ${{ github.token }}
+          MEMBERS_TOKEN: ${{ steps.membership-token.outputs.token }}
+          ORG: ${{ github.repository_owner }}
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
@@ -46,13 +58,13 @@ jobs:
                (.head.repo.full_name | type == "string") and
                .head.repo.full_name != $repo and
                .user.type == "User" and
-               .author_association != "MEMBER" and
-               .author_association != "OWNER" and
+               (.user.login | type == "string" and length > 0) and
                (any(.labels[]?; .name == $label) | not)' \
               >/dev/null <<<"$pr_json"; then
               continue
             fi
 
+            author=$(jq -r '.user.login' <<<"$pr_json")
             events=$(gh api --paginate \
               "repos/$REPO/issues/$pr_number/events?per_page=100" |
               jq -cs 'add')
@@ -62,6 +74,34 @@ jobs:
               >/dev/null <<<"$events"; then
               continue
             fi
+
+            if ! membership_status=$(curl \
+              --silent \
+              --show-error \
+              --output /dev/null \
+              --write-out '%{http_code}' \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --header "Accept: application/vnd.github+json" \
+              --header "Authorization: Bearer $MEMBERS_TOKEN" \
+              --header "X-GitHub-Api-Version: 2022-11-28" \
+              "$API_URL/orgs/$ORG/members/$author"); then
+              echo "::error::Membership check failed for pull request #$pr_number."
+              exit 1
+            fi
+
+            case "$membership_status" in
+              204)
+                echo "Pull request #$pr_number was opened by an organization member; skipping."
+                continue
+                ;;
+              404)
+                ;;
+              *)
+                echo "::error::Membership check for pull request #$pr_number returned HTTP $membership_status."
+                exit 1
+                ;;
+            esac
 
             jq -n --arg label "$label" '{labels: [$label]}' |
               gh api --method POST \

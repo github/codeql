@@ -836,6 +836,12 @@ module Unified {
     }
   }
 
+  /** A class representing `ignore_pattern` tokens. */
+  class IgnorePattern extends @unified_token_ignore_pattern, F::Expr, F::Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "IgnorePattern" }
+  }
+
   /** A class representing `import_declaration` nodes. */
   class ImportDeclaration extends @unified_import_declaration, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
@@ -1434,6 +1440,12 @@ module Unified {
     }
   }
 
+  /** A class representing `unhandled_node` tokens. */
+  class UnhandledNode extends @unified_token_unhandled_node, F::Expr, F::Member, F::Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "UnhandledNode" }
+  }
+
   /** A class representing `unresolved_operator_sequence` nodes. */
   class UnresolvedOperatorSequence extends @unified_unresolved_operator_sequence, F::Expr {
     /** Gets the name of the primary QL class for this element. */
@@ -1894,6 +1906,8 @@ module UnifiedFinal {
 
   final class IfExpr = F::IfExpr;
 
+  final class IgnorePattern = F::IgnorePattern;
+
   final class ImportDeclaration = F::ImportDeclaration;
 
   final class InferredTypeExpr = F::InferredTypeExpr;
@@ -1967,6 +1981,8 @@ module UnifiedFinal {
   final class TypeTestExpr = F::TypeTestExpr;
 
   final class UnaryExpr = F::UnaryExpr;
+
+  final class UnhandledNode = F::UnhandledNode;
 
   final class UnresolvedOperatorSequence = F::UnresolvedOperatorSequence;
 

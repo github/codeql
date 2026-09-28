@@ -5,6 +5,7 @@ overlay[local?]
 module;
 
 private import codeql.files.FileSystem
+private import codeql.unified.internal.NameBinding as NameBinding
 
 module Unified {
   private import Ast::Unified as G
@@ -145,6 +146,12 @@ module Unified {
   class ClassLikeDeclaration extends G::ClassLikeDeclaration {
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
+
+    /** Gets a direct base class of this class. */
+    ClassLikeDeclaration getABaseClass() {
+      result.getNameNode() =
+        NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
+    }
   }
 
   class ConstructorDeclaration extends G::ConstructorDeclaration {
@@ -209,6 +216,12 @@ module Unified {
     }
   }
 
+  /** A tuple expression. */
+  class TupleExpr extends G::TupleExpr {
+    /** Gets the number of elements in this tuple expression. */
+    int getNumberOfElements() { result = count(this.getAnElement()) }
+  }
+
   class TypeAliasDeclaration extends G::TypeAliasDeclaration {
     /** Gets the name of this type alias. */
     string getName() { result = this.getNameNode().getValue() }
@@ -260,5 +273,16 @@ module Unified {
 
     /** Gets the number of arguments passed to this call, not counting implicit arguments like receiver. */
     int getNumberOfArguments() { result = count(this.getAnArgument()) }
+
+    /** Gets the number of positional arguments passed to this call. */
+    int getNumberOfPositionalArguments() {
+      result = count(Argument arg | arg = this.getAnArgument() and arg.isPositional())
+    }
+  }
+
+  /** A function expression. */
+  class FunctionExpr extends G::FunctionExpr {
+    /** Gets the number of parameters of this function. */
+    int getNumberOfParameters() { result = count(this.getAParameter()) }
   }
 }

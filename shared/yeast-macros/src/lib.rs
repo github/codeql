@@ -40,7 +40,6 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// ```text
 /// (kind "literal")             - leaf with static content
 /// (kind #{expr})               - leaf with computed content (expr.to_string())
-/// (kind $fresh)                - leaf with auto-generated unique name
 /// {expr}                       - embed a Rust expression, dispatched via
 ///                                the `IntoFieldIds` trait: `Id` pushes a
 ///                                single id; iterables (`Vec<Id>`,
@@ -165,8 +164,8 @@ pub fn rule(input: TokenStream) -> TokenStream {
 ///
 /// 1. A **bare rule body** `(query) => (template)` — the `rule!(...)`
 ///    wrapper is implicit.
-/// 2. An explicit `rule!(...)` invocation, possibly chained as
-///    `rule!(...).repeated()` or path-prefixed as `yeast::rule!(...)`.
+/// 2. An explicit `rule!(...)` invocation, possibly path-prefixed as
+///    `yeast::rule!(...)`.
 /// 3. Any other expression returning a `Rule` (helper-function calls,
 ///    conditionals).
 ///
@@ -177,7 +176,7 @@ pub fn rule(input: TokenStream) -> TokenStream {
 ///     [
 ///         (source_file (_)* @cs) => (top_level body: {..cs}),
 ///         (simple_identifier) @id => (name_expr identifier: (identifier #{id})),
-///         rule!((integer_literal) @lit => (int_literal #{lit})).repeated(),
+///         rule!((integer_literal) @lit => (int_literal #{lit})),
 ///         helper_fn(),
 ///     ]
 /// };

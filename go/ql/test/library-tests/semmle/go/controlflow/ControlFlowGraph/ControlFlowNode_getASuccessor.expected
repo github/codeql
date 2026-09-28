@@ -3127,7 +3127,6 @@
 | stmts.go:135:3:135:14 | expression statement | stmts.go:135:3:135:14 | Before call to test5 |
 | stmts.go:135:9:135:13 | false | stmts.go:135:3:135:14 | call to test5 |
 | stmts.go:140:1:142:1 | Entry | stmts.go:140:13:140:13 | f |
-| stmts.go:140:1:142:1 | Exceptional Exit | stmts.go:140:1:142:1 | Exit |
 | stmts.go:140:1:142:1 | Normal Exit | stmts.go:140:1:142:1 | Exit |
 | stmts.go:140:1:142:1 | function declaration | stmts.go:145:1:159:1 | function declaration |
 | stmts.go:140:13:140:13 | f | stmts.go:140:23:142:1 | block statement |
@@ -3139,7 +3138,6 @@
 | stmts.go:141:5:141:5 | f | stmts.go:141:5:141:7 | call to f |
 | stmts.go:141:5:141:7 | After call to f | stmts.go:141:2:141:7 | go statement |
 | stmts.go:141:5:141:7 | Before call to f | stmts.go:141:5:141:5 | f |
-| stmts.go:141:5:141:7 | call to f | stmts.go:140:1:142:1 | Exceptional Exit |
 | stmts.go:141:5:141:7 | call to f | stmts.go:141:5:141:7 | After call to f |
 | stmts.go:145:1:159:1 | Entry | stmts.go:145:13:145:14 | xs |
 | stmts.go:145:1:159:1 | Exceptional Exit | stmts.go:145:1:159:1 | Exit |

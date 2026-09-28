@@ -95,7 +95,7 @@ Node getNodeFromLocalSsaNode(Ssa::Node n) {
   result = n.(Ssa::ExprNode).getExpr() and
   not postUpdateReadNode(n)
   or
-  result = getPostUpdateNode(n.(Ssa::ExprPostUpdateNode).getExpr())
+  result = n.(Ssa::ExprPostUpdateNode).getExpr().(Node).getPostUpdateNode()
   or
   exists(LocalVariable v, BasicBlock bb, int i, AstNode repr |
     n.(Ssa::WriteDefSourceNode).getDefinition().definesAt(v, bb, i) and

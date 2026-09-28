@@ -67,16 +67,16 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩⟨base_type⟩⟨name_node⟩⟨member⟩"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨base_type⟩ {\n  ⟨member⟩\n}"
           modifier: modifier "struct" source="struct"
           name_node: identifier "Resource" source="Resource"
           base_type:
-            base_type source="struct Resource: ⟨type⟩ {\n  consuming func close() {\n    discard self\n  }\n}"
+            base_type source="⟨type⟩"
               type: unsupported_node "~Copyable" source="~Copyable"
           member:
-            function_declaration source="⟨modifier⟩⟨body⟩⟨name_node⟩"
+            function_declaration source="⟨modifier⟩ func ⟨name_node⟩() ⟨body⟩"
               modifier: modifier "consuming" source="consuming"
               name_node: identifier "close" source="close"
               body:
-                block source="consuming func close() {\n    ⟨stmt⟩\n  }"
+                block source="{\n    ⟨stmt⟩\n  }"
                   stmt: unsupported_node "discard self" source="discard self"

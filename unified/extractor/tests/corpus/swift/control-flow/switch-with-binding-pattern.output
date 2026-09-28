@@ -122,7 +122,7 @@ top_level source="⟨body⟩"
         switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n}"
           value: identifier "shape" source="shape"
           case:
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
                 call_expr source="⟨callee⟩(⟨argument⟩)"
                   callee:
@@ -136,14 +136,14 @@ top_level source="⟨body⟩"
                           modifier: modifier "let" source="let"
                           expr: identifier "r" source="r"
               body:
-                block source="case .circle(let r):\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "r" source="r"
-            switch_case source="⟨body⟩⟨pattern⟩"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
                 call_expr source="⟨callee⟩(⟨argument⟩)"
                   callee:
@@ -157,7 +157,7 @@ top_level source="⟨body⟩"
                           modifier: modifier "let" source="let"
                           expr: identifier "s" source="s"
               body:
-                block source="case .square(let s):\n  ⟨stmt⟩"
+                block source="⟨stmt⟩"
                   stmt:
                     call_expr source="⟨callee⟩(⟨argument⟩)"
                       callee: identifier "print" source="print"

@@ -92,31 +92,31 @@ sourceFile
 
 ---
 
-top_level source="⟨body⟩"
+top_level source="var p: Int {\n  ⟨body⟩\n}"
   body:
-    block source="⟨stmt⟩\n}"
+    block source="⟨stmt⟩"
       stmt:
-        accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ {\n  ⟨accessor_kind⟩ ⟨body⟩"
-          modifier: modifier "var" source="var"
-          name_node: identifier "p" source="p"
+        accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
+          modifier: modifier "var" source="var" (external)
+          name_node: identifier "p" source="p" (external)
           accessor_kind: accessor_kind "get" source="get"
-          type: identifier "Int" source="Int"
+          type: identifier "Int" source="Int" (external)
           body:
             block source="{\n    ⟨stmt⟩\n  }"
               stmt:
                 switch_expr source="switch ⟨value⟩ {\n    ⟨case⟩\n    ⟨case⟩\n    }"
                   value: identifier "y" source="y"
                   case:
-                    switch_case source="⟨body⟩⟨pattern⟩"
+                    switch_case source="case ⟨pattern⟩:\n      ⟨body⟩"
                       pattern: identifier "someConstant" source="someConstant"
                       body:
-                        block source="case someConstant:\n      ⟨stmt⟩"
+                        block source="⟨stmt⟩"
                           stmt:
                             return_expr source="return ⟨value⟩"
                               value: int_literal "1" source="1"
-                    switch_case source="⟨body⟩"
+                    switch_case source="default:\n      ⟨body⟩"
                       body:
-                        block source="default:\n      ⟨stmt⟩"
+                        block source="⟨stmt⟩"
                           stmt:
                             return_expr source="return ⟨value⟩"
                               value: int_literal "2" source="2"

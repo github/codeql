@@ -1,0 +1,32 @@
+# Model of the BDE balxml XML codec (BloombergLP::balxml).
+# Rows name their overload where the overloads differ in argument layout. Not modelled:
+# decode(const char *filename, TYPE *), the two-step open() + decode(TYPE *) form, and the
+# Formatter overloads.
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      # Decoding: stream -> object; the istream overloads also return the stream
+      - ["BloombergLP::balxml", "Decoder", true, "decode<TYPE>", "(istream &,TYPE *,const char *)", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Decoder", true, "decode<TYPE>", "(istream &,TYPE *,const char *)", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Decoder", true, "decode<TYPE>", "(streambuf *,TYPE *,const char *)", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Decoder", true, "decode<TYPE>", "(const char *,size_t,TYPE *,const char *)", "", "Argument[*0]", "Argument[*2]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Decoder", true, "decodeAny<TYPE>", "(istream &,TYPE *,const char *)", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Decoder", true, "decodeAny<TYPE>", "(istream &,TYPE *,const char *)", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Decoder", true, "decodeAny<TYPE>", "(streambuf *,TYPE *,const char *)", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Decoder", true, "decodeAny", "(istream &,AnyRef *,const char *)", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Decoder", true, "decodeAny", "(istream &,AnyRef *,const char *)", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Decoder", true, "decodeAny", "(streambuf *,AnyRef *,const char *)", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      # Encoding: object -> stream; the ostream overloads also return the stream
+      - ["BloombergLP::balxml", "Encoder", true, "encode<TYPE>", "(streambuf *,const TYPE &)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Encoder", true, "encode<TYPE>", "(ostream &,const TYPE &)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Encoder", true, "encode<TYPE>", "(ostream &,const TYPE &)", "", "Argument[*0..1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Encoder", true, "encodeToStream", "", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Encoder", true, "encodeAny<TYPE>", "(streambuf *,const TYPE &)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Encoder", true, "encodeAny<TYPE>", "(ostream &,const TYPE &)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Encoder", true, "encodeAny<TYPE>", "(ostream &,const TYPE &)", "", "Argument[*0..1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Encoder", true, "encodeAnyToStream", "", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Encoder", true, "encodeAny", "(streambuf *,const AnyConstRef &)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Encoder", true, "encodeAny", "(ostream &,const AnyConstRef &)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::balxml", "Encoder", true, "encodeAny", "(ostream &,const AnyConstRef &)", "", "Argument[*0..1]", "ReturnValue[*]", "taint", "manual"]

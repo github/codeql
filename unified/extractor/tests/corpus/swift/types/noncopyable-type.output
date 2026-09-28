@@ -54,11 +54,11 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩⟨base_type⟩⟨name_node⟩⟨member⟩"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨base_type⟩ {\n  ⟨member⟩\n}"
           modifier: modifier "struct" source="struct"
           name_node: identifier "FileHandle" source="FileHandle"
           base_type:
-            base_type source="struct FileHandle: ⟨type⟩ {\n  let descriptor: Int\n}"
+            base_type source="⟨type⟩"
               type: unsupported_node "~Copyable" source="~Copyable"
           member:
             variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"

@@ -51,6 +51,13 @@ ControlFlow::ConditionGuardNode getLengthLEGuard(Index index, DataFlow::SsaNode 
   )
 }
 
+predicate isDominatingLengthLEGuard(
+  ControlFlow::ConditionGuardNode guard, Index index, DataFlow::SsaNode array, BasicBlock bb
+) {
+  guard = getLengthLEGuard(index, array) and
+  guard.dominates(bb)
+}
+
 /**
  * Gets a condition that checks that `index` is not equal to `array.length`.
  */
@@ -81,19 +88,22 @@ from
   ControlFlow::ConditionGuardNode cond, DataFlow::SsaNode array, Index index,
   DataFlow::ElementReadNode ea, BasicBlock bb
 where
-  // there is a comparison `index <= len(array)`
-  cond = getLengthLEGuard(index, array) and
   // there is a read from `array[index]`
   elementRead(ea, array, index, bb) and
-  // and the read is guarded by the comparison
-  cond.dominates(bb) and
+  // and it is guarded by a comparison `index <= len(array)`
+  isDominatingLengthLEGuard(cond, index, array, bb) and
+  // and report the innermost guard that establishes the comparison
+  not exists(ControlFlow::ConditionGuardNode innerCond |
+    isDominatingLengthLEGuard(innerCond, index, array, bb) and
+    innerCond.getCondition().getParent+() = cond.getCondition()
+  ) and
   // but the read is not guarded by another check that `index != len(array)`
   not getLengthNEGuard(index, array).dominates(bb) and
   // and it is not additionally guarded by a stronger index check
   not exists(Index index2, int i, int i2 |
     index = ConstantIndex(i) and index2 = ConstantIndex(i2) and i < i2
   |
-    getLengthLEGuard(index2, array).dominates(bb)
+    isDominatingLengthLEGuard(_, index2, array, bb)
   ) and
   not isRegexpMethodCall(array.getInit())
 select cond.getCondition(),
