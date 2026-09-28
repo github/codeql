@@ -522,7 +522,7 @@ func testPathInjection2(
     _ = NSData(contentsOf: u1)
     _ = NSData(contentsOf: u1.appendingPathComponent(""))
     _ = NSData(contentsOf: u1.appendingPathComponent(remoteString))  // $ MISSING: Alert
-    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent(""))  // $ MISSING: Alert
+    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent(""))  // $ Alert
     u1.appendPathComponent(remoteString)
     _ = NSData(contentsOf: u1)  // $ Alert
 
