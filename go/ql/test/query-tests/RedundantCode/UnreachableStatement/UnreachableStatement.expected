@@ -11,3 +11,4 @@
 | main.go:153:2:153:22 | return statement | This statement is unreachable. |
 | main.go:159:2:159:43 | return statement | This statement is unreachable. |
 | main.go:171:2:171:14 | expression statement | This statement is unreachable. |
+| main.go:177:1:178:12 | labeled statement | This statement is unreachable. |

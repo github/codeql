@@ -171,6 +171,13 @@ func test21() {
 	unreachable() // $ Alert
 }
 
+func test22() {
+	goto reachableLabel
+	panic("unreachable") // OK: allowlisted statement
+reachableLabel:
+	reachable() // $ SPURIOUS: Alert // OK: reachable through the goto
+}
+
 func test23() {
 	if true {
 		return
