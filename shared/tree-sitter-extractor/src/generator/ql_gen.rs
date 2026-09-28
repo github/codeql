@@ -841,9 +841,8 @@ fn get_light_signature(pred: &ql::Predicate) -> String {
     format!("{}/{}", pred.name, pred.formal_parameters.len())
 }
 
-/// Computes the light-signatures of the predicates explicitly exposed by a
-/// node. For a table these are its field predicates; for a union they are the
-/// predicates declared by the fields on that supertype.
+/// Computes the light-signatures of the predicates exposed by a node, including
+/// those inherited from its direct supertypes.
 ///
 /// The result for a given node is memoized in `cache`, and also used to answer
 /// the query for any other node that
@@ -853,18 +852,33 @@ fn get_light_signature(pred: &ql::Predicate) -> String {
 fn compute_exposed_predicates<'a, 'b>(
     type_name: &'a node_types::TypeName,
     field_predicates: &BTreeMap<&node_types::TypeName, Vec<ql::Predicate<'a>>>,
+    direct_supertypes: &BTreeMap<&'a node_types::TypeName, BTreeSet<&'a node_types::TypeName>>,
     cache: &'b mut BTreeMap<&'a node_types::TypeName, BTreeSet<String>>,
 ) -> &'b BTreeSet<String> {
     if !cache.contains_key(type_name) {
         // Supertype declarations that recursively refer to themselves are a mistake, but we don't
         // want to cause infinite recursion, so we insert a temporary sentinel.
         cache.insert(type_name, BTreeSet::new());
-        let exposed = field_predicates
+        let mut exposed: BTreeSet<String> = field_predicates
             .get(type_name)
             .into_iter()
             .flatten()
             .map(get_light_signature)
             .collect();
+        if let Some(supertypes) = direct_supertypes.get(type_name) {
+            for supertype in supertypes {
+                exposed.extend(
+                    compute_exposed_predicates(
+                        supertype,
+                        field_predicates,
+                        direct_supertypes,
+                        cache,
+                    )
+                    .iter()
+                    .cloned(),
+                );
+            }
+        }
         cache.insert(type_name, exposed);
     }
     cache.get(type_name).unwrap()
@@ -957,7 +971,12 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     let mut exposed_predicates: BTreeMap<&node_types::TypeName, BTreeSet<String>> = BTreeMap::new();
     for (type_name, node) in nodes {
         if let node_types::EntryKind::Union { .. } = &node.kind {
-            compute_exposed_predicates(type_name, &field_predicates, &mut exposed_predicates);
+            compute_exposed_predicates(
+                type_name,
+                &field_predicates,
+                &direct_supertypes,
+                &mut exposed_predicates,
+            );
         }
     }
 
@@ -1196,7 +1215,14 @@ mod tests {
                 "named": true,
                 "subtypes": [
                     { "type": "container", "named": true }
-                ]
+                ],
+                "fields": {
+                    "ancestor": {
+                        "multiple": false,
+                        "required": true,
+                        "types": [{ "type": "item", "named": true }]
+                    }
+                }
             },
             {
                 "type": "container",
@@ -1217,6 +1243,11 @@ mod tests {
                 "type": "alpha",
                 "named": true,
                 "fields": {
+                    "ancestor": {
+                        "multiple": false,
+                        "required": true,
+                        "types": [{ "type": "item", "named": true }]
+                    },
                     "hidden": {
                         "multiple": false,
                         "required": true,
@@ -1306,6 +1337,14 @@ mod tests {
             .unwrap();
         assert!(container_get_item.return_type != alpha_get_item.return_type);
         assert!(alpha_get_item.overridden);
+        assert!(
+            alpha
+                .predicates
+                .iter()
+                .find(|predicate| predicate.name == "getAncestor")
+                .unwrap()
+                .overridden
+        );
         assert!(
             !alpha
                 .predicates
