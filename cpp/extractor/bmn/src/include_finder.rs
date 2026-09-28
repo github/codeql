@@ -638,6 +638,7 @@ mod tests {
 
     mod find_includes {
         use crate::project_definitions::IncludeKind;
+        use std::slice;
 
         use super::*;
 
@@ -836,7 +837,7 @@ mod tests {
                 &project_files,
                 &system_files,
                 &compiler_defaults,
-                &[include_directive.clone()],
+                slice::from_ref(&include_directive),
             );
 
             let empty: Vec<PathBuf> = vec![];
