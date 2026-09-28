@@ -587,13 +587,15 @@ mod tests {
     use super::*;
     use crate::test_utils::create_populate_tmp_dir;
     use all_asserts::assert_true;
+    use std::slice;
 
     #[test]
     fn test_indexing_compiler_default_folders() {
         let tmp_dir = create_populate_tmp_dir();
         let dirname = tmp_dir.path().to_path_buf();
 
-        let include_finder = CompilerDefaultIncludes::new(&[dirname.clone()], &[dirname]);
+        let include_finder =
+            CompilerDefaultIncludes::new(slice::from_ref(&dirname), slice::from_ref(&dirname));
         let default_c_include_dir_content = &include_finder.default_c_include_dir_content;
         let default_cpp_include_dir_content = &include_finder.default_cpp_include_dir_content;
 

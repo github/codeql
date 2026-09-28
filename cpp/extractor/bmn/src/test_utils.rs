@@ -2,7 +2,7 @@ use all_asserts::assert_true;
 use std::fs::File;
 use std::path::PathBuf;
 use std::{env, fs};
-use tempfile::{tempdir, TempDir};
+use tempfile::{TempDir, tempdir};
 
 /// This function tries to get the root test resource path.
 /// If `allow_symlinks` is `false` will avoid the bazel off-tree test directory as this contains
@@ -124,9 +124,7 @@ mod tests {
         assert_true!(file_maybe_symlinked.exists());
         assert_true!(file_maybe_symlinked.ends_with("tests/resources/dir1/file1.c"));
 
-        let is_bazel = env::var("BAZEL_TEST")
-            .map(|bazel| bazel == "1")
-            .unwrap_or(false);
+        let is_bazel = env::var("BAZEL_TEST").is_ok_and(|bazel| bazel == "1");
         if is_bazel {
             assert_true!(file_maybe_symlinked.is_symlink());
         } else {

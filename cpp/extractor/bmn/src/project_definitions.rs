@@ -116,7 +116,7 @@ impl Hash for SourceFile {
 
 impl PartialOrd<Self> for SourceFile {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.path.cmp(&other.path))
+        Some(self.cmp(other))
     }
 }
 
