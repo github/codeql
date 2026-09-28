@@ -796,15 +796,15 @@ fn create_field_getters<'a>(
 
 fn compute_direct_supertypes(
     nodes: &node_types::NodeTypeMap,
-) -> std::collections::BTreeMap<node_types::TypeName, BTreeSet<&str>> {
+) -> BTreeMap<&node_types::TypeName, BTreeSet<&node_types::TypeName>> {
     let mut supertypes = std::collections::BTreeMap::new();
-    for node in nodes.values() {
+    for (supertype, node) in nodes {
         if let node_types::EntryKind::Union { members, .. } = &node.kind {
             for member in members {
                 supertypes
-                    .entry(member.clone())
+                    .entry(member)
                     .or_insert_with(BTreeSet::new)
-                    .insert(node.ql_class_name.as_str());
+                    .insert(supertype);
             }
         }
     }
@@ -813,12 +813,13 @@ fn compute_direct_supertypes(
 
 fn ast_base_types<'a>(
     type_name: &node_types::TypeName,
-    direct_supertypes: &std::collections::BTreeMap<node_types::TypeName, BTreeSet<&'a str>>,
+    nodes: &'a node_types::NodeTypeMap,
+    direct_supertypes: &BTreeMap<&node_types::TypeName, BTreeSet<&node_types::TypeName>>,
 ) -> BTreeSet<ql::Type<'a>> {
     match direct_supertypes.get(type_name) {
         Some(supertypes) if !supertypes.is_empty() => supertypes
             .iter()
-            .map(|name| ql::Type::Facade(name))
+            .map(|name| ql::Type::Facade(nodes.get(*name).unwrap().ql_class_name.as_str()))
             .collect(),
         _ => vec![ql::Type::Facade("AstNode")].into_iter().collect(),
     }
@@ -827,9 +828,10 @@ fn ast_base_types<'a>(
 fn class_supertypes<'a>(
     type_name: &node_types::TypeName,
     dbscheme_name: &'a str,
-    direct_supertypes: &std::collections::BTreeMap<node_types::TypeName, BTreeSet<&'a str>>,
+    nodes: &'a node_types::NodeTypeMap,
+    direct_supertypes: &BTreeMap<&node_types::TypeName, BTreeSet<&node_types::TypeName>>,
 ) -> BTreeSet<ql::Type<'a>> {
-    let mut supertypes = ast_base_types(type_name, direct_supertypes);
+    let mut supertypes = ast_base_types(type_name, nodes, direct_supertypes);
     supertypes.insert(ql::Type::At(dbscheme_name));
     supertypes
 }
@@ -843,32 +845,29 @@ fn get_light_signature(pred: &ql::Predicate) -> String {
 /// node. For a table these are its field predicates; for a union they are the
 /// predicates declared by the fields on that supertype.
 ///
-/// The result for a given node is memoized in `cache` (keyed by its QL class
-/// name), and also used to answer the query for any other node that
+/// The result for a given node is memoized in `cache`, and also used to answer
+/// the query for any other node that
 /// (directly, or transitively through further supertypes) has that node as a
 /// member. The same cache also serves as the answer to "what does the class
 /// named X expose?", used by `is_predicate_inherited`.
 fn compute_exposed_predicates<'a, 'b>(
     type_name: &'a node_types::TypeName,
-    nodes: &'a node_types::NodeTypeMap,
     field_predicates: &BTreeMap<&node_types::TypeName, Vec<ql::Predicate<'a>>>,
-    cache: &'b mut BTreeMap<&'a str, BTreeSet<String>>,
+    cache: &'b mut BTreeMap<&'a node_types::TypeName, BTreeSet<String>>,
 ) -> &'b BTreeSet<String> {
-    let node = nodes.get(type_name);
-    let class_name = node.map_or(type_name.kind.as_str(), |node| node.ql_class_name.as_str());
-    if !cache.contains_key(class_name) {
+    if !cache.contains_key(type_name) {
         // Supertype declarations that recursively refer to themselves are a mistake, but we don't
         // want to cause infinite recursion, so we insert a temporary sentinel.
-        cache.insert(class_name, BTreeSet::new());
+        cache.insert(type_name, BTreeSet::new());
         let exposed = field_predicates
             .get(type_name)
             .into_iter()
             .flatten()
             .map(get_light_signature)
             .collect();
-        cache.insert(class_name, exposed);
+        cache.insert(type_name, exposed);
     }
-    cache.get(class_name).unwrap()
+    cache.get(type_name).unwrap()
 }
 
 /// Returns whether `predicate` (declared, or about to be declared, on the
@@ -879,8 +878,8 @@ fn compute_exposed_predicates<'a, 'b>(
 fn is_predicate_inherited(
     predicate: &ql::Predicate,
     type_name: &node_types::TypeName,
-    direct_supertypes: &BTreeMap<node_types::TypeName, BTreeSet<&str>>,
-    exposed_predicates: &BTreeMap<&str, BTreeSet<String>>,
+    direct_supertypes: &BTreeMap<&node_types::TypeName, BTreeSet<&node_types::TypeName>>,
+    exposed_predicates: &BTreeMap<&node_types::TypeName, BTreeSet<String>>,
 ) -> bool {
     let light_signature = get_light_signature(predicate);
     direct_supertypes.get(type_name).is_some_and(|supertypes| {
@@ -955,15 +954,10 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     }
 
     // Next, collect the predicates explicitly exposed by every supertype.
-    let mut exposed_predicates: BTreeMap<&str, BTreeSet<String>> = BTreeMap::new();
+    let mut exposed_predicates: BTreeMap<&node_types::TypeName, BTreeSet<String>> = BTreeMap::new();
     for (type_name, node) in nodes {
         if let node_types::EntryKind::Union { .. } = &node.kind {
-            compute_exposed_predicates(
-                type_name,
-                nodes,
-                &field_predicates,
-                &mut exposed_predicates,
-            );
+            compute_exposed_predicates(type_name, &field_predicates, &mut exposed_predicates);
         }
     }
 
@@ -974,7 +968,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     let get_a_primary_ql_class =
                         create_get_a_primary_ql_class(&node.ql_class_name, true);
                     let mut supertypes =
-                        class_supertypes(type_name, &node.dbscheme_name, &direct_supertypes);
+                        class_supertypes(type_name, &node.dbscheme_name, nodes, &direct_supertypes);
                     supertypes.insert(ql::Type::Facade("Token"));
                     classes.push(ql::TopLevel::Class(ql::Class {
                         qldoc: Some(format!("A class representing `{}` tokens.", type_name.kind)),
@@ -1022,6 +1016,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     supertypes: class_supertypes(
                         type_name,
                         &node.dbscheme_name,
+                        nodes,
                         &direct_supertypes,
                     ),
                     characteristic_predicate: None,
@@ -1040,6 +1035,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     supertypes: class_supertypes(
                         type_name,
                         &node.dbscheme_name,
+                        nodes,
                         &direct_supertypes,
                     ),
                     characteristic_predicate: None,
@@ -1196,6 +1192,13 @@ mod tests {
     fn supertype_exposes_only_declared_fields() {
         let node_types = r#"[
             {
+                "type": "root",
+                "named": true,
+                "subtypes": [
+                    { "type": "container", "named": true }
+                ]
+            },
+            {
                 "type": "container",
                 "named": true,
                 "subtypes": [
@@ -1246,6 +1249,23 @@ mod tests {
             { "type": "item", "named": true, "fields": {} }
         ]"#;
         let nodes = node_types::read_node_types_str("test", node_types).unwrap();
+        let direct_supertypes = compute_direct_supertypes(&nodes);
+        let alpha = nodes.keys().find(|name| name.kind == "alpha").unwrap();
+        let container = direct_supertypes
+            .get(alpha)
+            .unwrap()
+            .iter()
+            .find(|name| name.kind == "container")
+            .copied()
+            .unwrap();
+        assert!(
+            direct_supertypes
+                .get(container)
+                .unwrap()
+                .iter()
+                .any(|name| name.kind == "root")
+        );
+
         let classes = convert_nodes(&nodes);
 
         let container = classes
