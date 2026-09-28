@@ -1,20 +1,24 @@
 use all_asserts::assert_true;
-use std::fs;
 use std::fs::File;
 use std::path::PathBuf;
-use tempfile::{TempDir, tempdir};
+use std::{env, fs};
+use tempfile::{tempdir, TempDir};
 
 /// This function tries to get the root test resource path.
 /// If `allow_symlinks` is `false` will avoid the bazel off-tree test directory as this contains
 /// symlinks instead of the files, and we will return the folder containing the canonicalized
 /// `Cargo.toml` file.
 fn get_in_tree_resource_root(allow_symlinks: bool) -> PathBuf {
-    // Use CARGO_MANIFEST_DIR runtime environment variable to get the path
-    // This is the path where the resources are expected to be, but it can be the bazel out-of-tree path
-    let manifest_path = std::env::var("CARGO_MANIFEST_DIR")
-        .map(PathBuf::from)
-        .expect("$CARGO_MANIFEST_DIR not set")
-        .join("Cargo.toml");
+    // The below ensures that we support both `bazel test` and `cargo test`.
+    let manifest_path = if let Ok(runfiles_manifest) = env::var("BMN_TEST_MANIFEST") {
+        let runfiles_dir = env::var("TEST_SRCDIR").expect("$TEST_SRCDIR not set");
+        PathBuf::from(runfiles_dir).join(runfiles_manifest)
+    } else {
+        env::var("CARGO_MANIFEST_DIR")
+            .map(PathBuf::from)
+            .expect("$CARGO_MANIFEST_DIR not set")
+            .join("Cargo.toml")
+    };
 
     let final_manifest_path = if !allow_symlinks {
         // If we do not want symlinks ()created by Bazel), we can canonicalize the manifest path to
@@ -120,7 +124,7 @@ mod tests {
         assert_true!(file_maybe_symlinked.exists());
         assert_true!(file_maybe_symlinked.ends_with("tests/resources/dir1/file1.c"));
 
-        let is_bazel = std::env::var("BAZEL_TEST")
+        let is_bazel = env::var("BAZEL_TEST")
             .map(|bazel| bazel == "1")
             .unwrap_or(false);
         if is_bazel {

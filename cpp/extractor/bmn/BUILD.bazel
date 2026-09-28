@@ -1,4 +1,33 @@
+load("@rules_rust//rust:defs.bzl", "rust_test")
+load("//misc/bazel:rust.bzl", "codeql_rust_binary")
+load("//misc/bazel/3rdparty/cpp_bmn_deps:defs.bzl", "all_crate_deps")
+
 exports_files([
     "Cargo.lock",
     "Cargo.toml",
 ])
+
+codeql_rust_binary(
+    name = "bmn",
+    srcs = glob(["src/**/*.rs"]),
+    proc_macro_deps = all_crate_deps(proc_macro = True),
+    visibility = ["//visibility:public"],
+    deps = all_crate_deps(normal = True),
+)
+
+rust_test(
+    name = "unit_tests",
+    crate = ":single_arch/bmn",
+    data = glob([
+        "tests/resources/**",
+        "Cargo.toml",
+    ]),
+    env = {
+        "BMN_TEST_MANIFEST": "$(rlocationpath :Cargo.toml)",
+    },
+)
+
+test_suite(
+    name = "tests",
+    tests = [":unit_tests"],
+)
