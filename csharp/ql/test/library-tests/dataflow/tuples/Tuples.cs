@@ -142,8 +142,8 @@ class Tuples
         switch (x)
         {
             case (var a1, (var b1, var c1), _):
-                Sink(a1);        // $ MISSING: hasValueFlow=10
-                Sink(c1);        // $ MISSING: hasValueFlow=11
+                Sink(a1);        // $ hasValueFlow=10
+                Sink(c1);        // $ hasValueFlow=11
                 Sink(b1);
                 break;
         }
@@ -153,8 +153,8 @@ class Tuples
         var y = (o3, (2, o4), 3);
         if (y is (var a2, var (b2, c2), _))
         {
-            Sink(a2);        // $ MISSING: hasValueFlow=12
-            Sink(c2);        // $ MISSING: hasValueFlow=13
+            Sink(a2);        // $ hasValueFlow=12
+            Sink(c2);        // $ hasValueFlow=13
             Sink(b2);
         }
     }
