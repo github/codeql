@@ -1,3 +1,8 @@
+models
+edges
+nodes
+subpaths
+testFailures
 | Test.java:15:58:15:74 | // $ hasValueFlow | Missing result: hasValueFlow |
 | Test.java:17:75:17:91 | // $ hasValueFlow | Missing result: hasValueFlow |
 | Test.java:19:46:19:62 | // $ hasValueFlow | Missing result: hasValueFlow |
