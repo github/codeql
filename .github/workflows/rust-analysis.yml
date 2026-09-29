@@ -57,6 +57,7 @@ jobs:
         languages: ${{ matrix.language }}
         config-file: ./.github/codeql/codeql-config.yml
 
+    # TODO: Remove once Rust extractor no longer errors on this file
     - name: Remove malformed rust-analyzer parser fixture
       shell: bash
       run: |
