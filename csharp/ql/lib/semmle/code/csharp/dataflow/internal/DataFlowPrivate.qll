@@ -2221,10 +2221,26 @@ private predicate readStepPattern(Node node1, Content c, Node node2) {
     c.(FieldContent).getField() =
       pattern.getType().(TupleType).getElement(i).getUnboundDeclaration()
   |
+    // item = { ... } in node1 = (var ..., { ... })
     item = node2.asExpr().(RecursivePatternExpr)
     or
+    // item = (...,...) in node1 = (var ..., (..., ...))
     item = node2.asExpr().(TuplePatternExpr)
     or
+    // item = variable in node1 = (..., variable, ...) in a case/is (var ..., var ...)
+    exists(AssignableDefinitions::PatternDefinition lvd |
+      node2.(AssignableDefinitionNode).getDefinition() = lvd and
+      item = lvd.getDeclaration()
+    )
+  )
+  or
+  // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
+  exists(TuplePatternExpr pattern, PatternExpr item, int i |
+    node1.asExpr() = pattern and
+    c.(FieldContent).getField() =
+      pattern.getType().(TupleType).getElement(i).getUnboundDeclaration() and
+    item = pattern.getArgument(i)
+  |
     exists(AssignableDefinitions::PatternDefinition lvd |
       node2.(AssignableDefinitionNode).getDefinition() = lvd and
       item = lvd.getDeclaration()
@@ -2269,13 +2285,6 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
     exists(AssignableDefinitions::TupleAssignmentDefinition tad |
       node2.(AssignableDefinitionNode).getDefinition() = tad and
       tad.getLeaf() = item
-    )
-    or
-    // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
-    te instanceof TuplePatternExpr and
-    exists(AssignableDefinitions::PatternDefinition lvd |
-      node2.(AssignableDefinitionNode).getDefinition() = lvd and
-      lvd.getDeclaration() = item
     )
   )
   or
