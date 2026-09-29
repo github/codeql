@@ -57,7 +57,7 @@ module DataFlowInput implements InputSig<Location> {
       pos.asNamed() = param.getExternalName()
     )
     or
-    p.isReceiverParameterEx(c) and
+    p.(BuilderNode).isReceiverParameterEx(c) and
     pos.isReceiver()
   }
 
@@ -80,7 +80,7 @@ module DataFlowInput implements InputSig<Location> {
       pos.asNamed() = arg.getName()
     )
     or
-    n.isReceiverArgumentEx(call) and
+    n.(BuilderNode).isReceiverArgumentEx(call) and
     pos.isReceiver()
   }
 
