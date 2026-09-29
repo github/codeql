@@ -828,11 +828,78 @@ fn class_supertypes<'a>(
     supertypes
 }
 
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+struct PredicateSignature<'a> {
+    name: &'a str,
+    arity: usize,
+}
+
+fn field_predicate_signatures(field: &node_types::Field) -> Vec<PredicateSignature<'_>> {
+    let getter_arity = match field.storage {
+        node_types::Storage::Table {
+            has_index: true, ..
+        } => 1,
+        _ => 0,
+    };
+    let mut signatures = vec![PredicateSignature {
+        name: &field.getter_name,
+        arity: getter_arity,
+    }];
+    if let Some(any_getter_name) = &field.any_getter_name {
+        signatures.push(PredicateSignature {
+            name: any_getter_name,
+            arity: 0,
+        });
+    }
+    signatures
+}
+
+/// Builds an index of the field getter signatures exposed by each generated
+/// class, including getters inherited from supertypes.
+fn compute_exposed_predicate_signatures(
+    nodes: &node_types::NodeTypeMap,
+) -> std::collections::BTreeMap<node_types::TypeName, BTreeSet<PredicateSignature<'_>>> {
+    let mut exposed = nodes
+        .iter()
+        .map(|(type_name, node)| {
+            let fields = match &node.kind {
+                node_types::EntryKind::Union { fields, .. }
+                | node_types::EntryKind::Table { fields, .. } => fields.as_slice(),
+                node_types::EntryKind::Token { .. } => &[],
+            };
+            let signatures = fields.iter().flat_map(field_predicate_signatures).collect();
+            (type_name.clone(), signatures)
+        })
+        .collect::<std::collections::BTreeMap<_, BTreeSet<_>>>();
+
+    loop {
+        let mut changed = false;
+        for (supertype, node) in nodes {
+            let node_types::EntryKind::Union { members, .. } = &node.kind else {
+                continue;
+            };
+            let inherited = exposed.get(supertype).cloned().unwrap_or_default();
+            for member in members {
+                let member_signatures = exposed.entry(member.clone()).or_default();
+                let previous_len = member_signatures.len();
+                member_signatures.extend(inherited.iter().copied());
+                changed |= member_signatures.len() != previous_len;
+            }
+        }
+        if !changed {
+            break;
+        }
+    }
+
+    exposed
+}
+
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
 pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     let mut classes = Vec::new();
     let mut token_kinds = BTreeSet::new();
     let direct_supertypes = compute_direct_supertypes(nodes);
+    let _exposed_predicate_signatures = compute_exposed_predicate_signatures(nodes);
     for (type_name, node) in nodes {
         if let node_types::EntryKind::Token { .. } = &node.kind
             && type_name.named
@@ -1050,4 +1117,59 @@ pub fn create_print_ast_module(nodes: &node_types::NodeTypeMap) -> ql::TopLevel<
         body: vec![ql::TopLevel::Predicate(get_child)],
         overlay: None,
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn indexes_predicate_signatures_exposed_by_classes() {
+        let yaml = r#"
+supertypes:
+  callable:
+    subtypes: [function_like]
+    fields:
+      parameter*: parameter
+      body?: block
+  function_like:
+    subtypes: [function]
+    fields:
+      name: identifier
+named:
+  function:
+    parameter*: parameter
+    body?: block
+    name: identifier
+  parameter:
+  block:
+  identifier:
+"#;
+        let json = yeast::node_types_yaml::convert(yaml).unwrap();
+        let nodes = node_types::read_node_types_str("test", &json).unwrap();
+        let signatures = compute_exposed_predicate_signatures(&nodes);
+        let function = signatures
+            .get(&node_types::TypeName {
+                kind: "function".to_owned(),
+                named: true,
+            })
+            .unwrap();
+
+        assert!(function.contains(&PredicateSignature {
+            name: "getParameter",
+            arity: 1,
+        }));
+        assert!(function.contains(&PredicateSignature {
+            name: "getAParameter",
+            arity: 0,
+        }));
+        assert!(function.contains(&PredicateSignature {
+            name: "getBody",
+            arity: 0,
+        }));
+        assert!(function.contains(&PredicateSignature {
+            name: "getName",
+            arity: 0,
+        }));
+    }
 }
