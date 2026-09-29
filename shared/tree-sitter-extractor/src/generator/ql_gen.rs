@@ -793,7 +793,7 @@ fn compute_direct_supertypes(
 ) -> std::collections::BTreeMap<node_types::TypeName, BTreeSet<&str>> {
     let mut supertypes = std::collections::BTreeMap::new();
     for node in nodes.values() {
-        if let node_types::EntryKind::Union { members } = &node.kind {
+        if let node_types::EntryKind::Union { members, .. } = &node.kind {
             for member in members {
                 supertypes
                     .entry(member.clone())
@@ -863,7 +863,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     }));
                 }
             }
-            node_types::EntryKind::Union { members: _ } => {
+            node_types::EntryKind::Union { .. } => {
                 // It's a tree-sitter supertype node, so we're wrapping a dbscheme
                 // union type.
                 classes.push(ql::TopLevel::Class(ql::Class {

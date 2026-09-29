@@ -17,9 +17,17 @@ pub struct Entry {
 
 #[derive(Debug)]
 pub enum EntryKind {
-    Union { members: Set<TypeName> },
-    Table { name: String, fields: Vec<Field> },
-    Token { kind_id: usize },
+    Union {
+        members: Set<TypeName>,
+        fields: Vec<Field>,
+    },
+    Table {
+        name: String,
+        fields: Vec<Field>,
+    },
+    Token {
+        kind_id: usize,
+    },
 }
 
 #[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq)]
@@ -135,16 +143,39 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
         if !subtypes.is_empty() {
             // It's a tree-sitter supertype node, for which we create a union
             // type.
+            let type_name = TypeName {
+                kind: node.kind.clone(),
+                named: node.named,
+            };
+            let mut fields = Vec::new();
+            for (field_name, field_info) in &node.fields {
+                add_field(
+                    prefix,
+                    &type_name,
+                    Some(field_name.to_string()),
+                    field_info,
+                    &mut fields,
+                    &token_kinds,
+                );
+            }
+            if let Some(children) = &node.children {
+                add_field(
+                    prefix,
+                    &type_name,
+                    None,
+                    children,
+                    &mut fields,
+                    &token_kinds,
+                );
+            }
             entries.insert(
-                TypeName {
-                    kind: node.kind.clone(),
-                    named: node.named,
-                },
+                type_name,
                 Entry {
                     dbscheme_name,
                     ql_class_name,
                     kind: EntryKind::Union {
                         members: convert_types(subtypes),
+                        fields,
                     },
                 },
             );
@@ -453,4 +484,50 @@ fn to_snake_case_test() {
     assert_eq!("ruby", to_snake_case("Ruby"));
     assert_eq!("erb", to_snake_case("ERB"));
     assert_eq!("embedded_template", to_snake_case("EmbeddedTemplate"));
+}
+
+#[test]
+fn supertype_fields_are_preserved() {
+    let yaml = r#"
+supertypes:
+  callable:
+    subtypes: [function]
+    fields:
+      parameter*: parameter
+      body?: block
+named:
+  function:
+  parameter:
+  block:
+"#;
+    let json = yeast::node_types_yaml::convert(yaml).unwrap();
+    let nodes = read_node_types_str("test", &json).unwrap();
+    let callable = nodes
+        .get(&TypeName {
+            kind: "callable".to_owned(),
+            named: true,
+        })
+        .unwrap();
+    let EntryKind::Union { fields, .. } = &callable.kind else {
+        panic!("callable should be a union");
+    };
+
+    assert_eq!(fields.len(), 2);
+    assert_eq!(fields[0].getter_name, "getBody");
+    assert!(matches!(
+        fields[0].storage,
+        Storage::Table {
+            has_index: false,
+            ..
+        }
+    ));
+    assert_eq!(fields[1].getter_name, "getParameter");
+    assert_eq!(fields[1].any_getter_name.as_deref(), Some("getAParameter"));
+    assert!(matches!(
+        fields[1].storage,
+        Storage::Table {
+            has_index: true,
+            ..
+        }
+    ));
 }
