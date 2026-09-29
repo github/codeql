@@ -629,30 +629,8 @@ fn create_field_getters<'a>(
     field: &'a node_types::Field,
     nodes: &'a node_types::NodeTypeMap,
 ) -> (Vec<ql::Predicate<'a>>, Option<ql::Expression<'a>>) {
-    let return_type = match &field.type_info {
-        node_types::FieldTypeInfo::Single(t) => {
-            Some(ql::Type::Facade(&nodes.get(t).unwrap().ql_class_name))
-        }
-        node_types::FieldTypeInfo::Multiple {
-            types: _,
-            dbscheme_union: _,
-            ql_class,
-        } => Some(ql::Type::Facade(ql_class)),
-        node_types::FieldTypeInfo::ReservedWordInt(_) => Some(ql::Type::String),
-    };
-    let formal_parameters = match &field.storage {
-        node_types::Storage::Column { .. } => vec![],
-        node_types::Storage::Table { has_index, .. } => {
-            if *has_index {
-                vec![ql::FormalParameter {
-                    name: "i",
-                    param_type: ql::Type::Int,
-                }]
-            } else {
-                vec![]
-            }
-        }
-    };
+    let return_type = field_getter_return_type(field, nodes);
+    let formal_parameters = field_getter_formal_parameters(field);
 
     // For the expression to get a value, what variable name should the result
     // be bound to?
@@ -742,16 +720,7 @@ fn create_field_getters<'a>(
             (get_value, Some(get_value_any_index))
         }
     };
-    let qldoc = match &field.name {
-        Some(name) => format!("Gets the node corresponding to the field `{name}`."),
-        None => {
-            if formal_parameters.is_empty() {
-                "Gets the child of this node.".to_owned()
-            } else {
-                "Gets the `i`th child of this node.".to_owned()
-            }
-        }
-    };
+    let qldoc = field_getter_qldoc(field, !formal_parameters.is_empty());
     let mut predicates = vec![ql::Predicate {
         qldoc: Some(qldoc.clone()),
         name: &field.getter_name,
@@ -766,7 +735,7 @@ fn create_field_getters<'a>(
 
     if let Some(any_getter_name) = &field.any_getter_name {
         predicates.push(ql::Predicate {
-            qldoc: Some(qldoc.clone()),
+            qldoc: Some(qldoc),
             name: any_getter_name,
             overridden: false,
             is_private: false,
@@ -786,6 +755,86 @@ fn create_field_getters<'a>(
     }
 
     (predicates, optional_expr)
+}
+
+fn field_getter_return_type<'a>(
+    field: &'a node_types::Field,
+    nodes: &'a node_types::NodeTypeMap,
+) -> Option<ql::Type<'a>> {
+    match &field.type_info {
+        node_types::FieldTypeInfo::Single(t) => {
+            Some(ql::Type::Facade(&nodes.get(t).unwrap().ql_class_name))
+        }
+        node_types::FieldTypeInfo::Multiple {
+            types: _,
+            dbscheme_union: _,
+            ql_class,
+        } => Some(ql::Type::Facade(ql_class)),
+        node_types::FieldTypeInfo::ReservedWordInt(_) => Some(ql::Type::String),
+    }
+}
+
+fn field_getter_formal_parameters(field: &node_types::Field) -> Vec<ql::FormalParameter<'_>> {
+    match &field.storage {
+        node_types::Storage::Column { .. } => vec![],
+        node_types::Storage::Table { has_index, .. } => {
+            if *has_index {
+                vec![ql::FormalParameter {
+                    name: "i",
+                    param_type: ql::Type::Int,
+                }]
+            } else {
+                vec![]
+            }
+        }
+    }
+}
+
+fn field_getter_qldoc(field: &node_types::Field, has_index: bool) -> String {
+    match &field.name {
+        Some(name) => format!("Gets the node corresponding to the field `{name}`."),
+        None => {
+            if has_index {
+                "Gets the `i`th child of this node.".to_owned()
+            } else {
+                "Gets the child of this node.".to_owned()
+            }
+        }
+    }
+}
+
+fn create_supertype_field_getters<'a>(
+    field: &'a node_types::Field,
+    nodes: &'a node_types::NodeTypeMap,
+) -> Vec<ql::Predicate<'a>> {
+    let return_type = field_getter_return_type(field, nodes);
+    let formal_parameters = field_getter_formal_parameters(field);
+    let qldoc = field_getter_qldoc(field, !formal_parameters.is_empty());
+    let mut predicates = vec![ql::Predicate {
+        qldoc: Some(qldoc.clone()),
+        name: &field.getter_name,
+        overridden: false,
+        is_private: false,
+        is_final: false,
+        return_type: return_type.clone(),
+        formal_parameters,
+        body: ql::Expression::Pred("none", vec![]),
+        overlay: None,
+    }];
+    if let Some(any_getter_name) = &field.any_getter_name {
+        predicates.push(ql::Predicate {
+            qldoc: Some(qldoc),
+            name: any_getter_name,
+            overridden: false,
+            is_private: false,
+            is_final: false,
+            return_type,
+            formal_parameters: vec![],
+            body: ql::Expression::Pred("none", vec![]),
+            overlay: None,
+        });
+    }
+    predicates
 }
 
 fn compute_direct_supertypes(
@@ -894,12 +943,34 @@ fn compute_exposed_predicate_signatures(
     exposed
 }
 
+fn is_predicate_inherited(
+    type_name: &node_types::TypeName,
+    predicate: &ql::Predicate,
+    nodes: &node_types::NodeTypeMap,
+    exposed: &std::collections::BTreeMap<node_types::TypeName, BTreeSet<PredicateSignature<'_>>>,
+) -> bool {
+    let signature = PredicateSignature {
+        name: predicate.name,
+        arity: predicate.formal_parameters.len(),
+    };
+    nodes.iter().any(|(supertype, node)| {
+        matches!(
+            &node.kind,
+            node_types::EntryKind::Union { members, .. }
+                if members.contains(type_name)
+                    && exposed
+                        .get(supertype)
+                        .is_some_and(|signatures| signatures.contains(&signature))
+        )
+    })
+}
+
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
 pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     let mut classes = Vec::new();
     let mut token_kinds = BTreeSet::new();
     let direct_supertypes = compute_direct_supertypes(nodes);
-    let _exposed_predicate_signatures = compute_exposed_predicate_signatures(nodes);
+    let exposed_predicate_signatures = compute_exposed_predicate_signatures(nodes);
     for (type_name, node) in nodes {
         if let node_types::EntryKind::Token { .. } = &node.kind
             && type_name.named
@@ -930,9 +1001,22 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     }));
                 }
             }
-            node_types::EntryKind::Union { .. } => {
+            node_types::EntryKind::Union { fields, .. } => {
                 // It's a tree-sitter supertype node, so we're wrapping a dbscheme
                 // union type.
+                let predicates = fields
+                    .iter()
+                    .flat_map(|field| create_supertype_field_getters(field, nodes))
+                    .map(|mut predicate| {
+                        predicate.overridden = is_predicate_inherited(
+                            type_name,
+                            &predicate,
+                            nodes,
+                            &exposed_predicate_signatures,
+                        );
+                        predicate
+                    })
+                    .collect();
                 classes.push(ql::TopLevel::Class(ql::Class {
                     qldoc: None,
                     name: &node.ql_class_name,
@@ -946,7 +1030,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                         &direct_supertypes,
                     ),
                     characteristic_predicate: None,
-                    predicates: vec![],
+                    predicates,
                 }));
             }
             node_types::EntryKind::Table {
@@ -990,13 +1074,21 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                 // - predicates to access the fields,
                 // - the QL expressions to access the fields that will be part of getAFieldOrChild.
                 for field in fields {
-                    let (get_preds, get_child_expr) = create_field_getters(
+                    let (mut get_preds, get_child_expr) = create_field_getters(
                         main_table_name,
                         main_table_arity,
                         &mut main_table_column_index,
                         field,
                         nodes,
                     );
+                    for predicate in &mut get_preds {
+                        predicate.overridden = is_predicate_inherited(
+                            type_name,
+                            predicate,
+                            nodes,
+                            &exposed_predicate_signatures,
+                        );
+                    }
                     main_class.predicates.extend(get_preds);
                     if let Some(get_child_expr) = get_child_expr {
                         get_child_exprs.push(get_child_expr)
@@ -1171,5 +1263,46 @@ named:
             name: "getName",
             arity: 0,
         }));
+    }
+
+    #[test]
+    fn generates_supertype_getters_and_concrete_overrides() {
+        let yaml = r#"
+supertypes:
+  callable:
+    subtypes: [function]
+    fields:
+      parameter*: parameter
+      body?: block
+named:
+  function:
+    parameter*: parameter
+    body?: block
+  parameter:
+  block:
+"#;
+        let json = yeast::node_types_yaml::convert(yaml).unwrap();
+        let nodes = node_types::read_node_types_str("test", &json).unwrap();
+        let generated = convert_nodes(&nodes)
+            .into_iter()
+            .map(|element| element.to_string())
+            .collect::<Vec<_>>()
+            .join("\n");
+
+        assert!(generated.contains("F::Parameter getParameter(int i) { none() }"));
+        assert!(generated.contains("F::Parameter getAParameter() { none() }"));
+        assert!(generated.contains("F::Block getBody() { none() }"));
+        assert!(
+            generated.contains(
+                "final override F::Parameter getParameter(int i) { test_function_parameter"
+            )
+        );
+        assert!(generated.contains(
+            "final override F::Parameter getAParameter() { result = this.getParameter(_) }"
+        ));
+        assert!(
+            generated
+                .contains("final override F::Block getBody() { test_function_body(this, result) }")
+        );
     }
 }
