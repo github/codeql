@@ -6,7 +6,10 @@ module Impl implements InlineExpectationsTestSig {
    * A class representing line comments in Python. As this is the only form of comment Python
    * permits, we simply reuse the `Comment` class.
    */
-  class ExpectationComment = PY::Comment;
+  class ExpectationComment extends PY::Comment {
+    /** Python comments use line-comment syntax. */
+    predicate isLineComment() { any() }
+  }
 
   class Location = PY::Location;
 

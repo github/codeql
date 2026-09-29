@@ -138,6 +138,9 @@ signature module InlineExpectationsTestSig {
     /** Gets the contents of this comment, _excluding_ the comment indicator. */
     string getContents();
 
+    /** Holds if this is a line comment rather than a block comment. */
+    predicate isLineComment();
+
     /** Gets the location of this comment. */
     Location getLocation();
 
