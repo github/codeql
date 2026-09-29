@@ -146,6 +146,18 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node2.isIncomingValue(stmt.getPattern())
   )
   or
+  exists(FunctionExpr expr |
+    node1.isCallable(expr) and
+    step.value() and
+    node2.isResultValue(expr)
+  )
+  or
+  exists(FunctionDeclaration fun |
+    node1.isCallable(fun) and
+    step.value() and
+    node2.isIncomingValue(fun.getNameNode())
+  )
+  or
   none() // Temporarily disable compilation errors from unsatisfiable types
 }
 
