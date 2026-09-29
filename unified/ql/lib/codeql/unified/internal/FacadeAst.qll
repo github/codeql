@@ -152,6 +152,13 @@ module Unified {
       result.getNameNode() =
         NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
     }
+
+    private string getKind() {
+      this.hasModifier(result) and
+      result in ["class", "struct", "interface", "enum", "actor", "extension", "protocol"]
+    }
+
+    override string toString() { result = concat(this.getKind() + " ") + concat(this.getName()) }
   }
 
   class ConstructorDeclaration extends G::ConstructorDeclaration {

@@ -5,9 +5,9 @@
 | 5 | cfg.swift:5:26:5:37 | Block | 'Block -V 0 -^ ReturnExpr' |
 | 7 | cfg.swift:7:1:7:10 | returnZero | 'returnZero -^ returnZero(...)' |
 | 8 | cfg.swift:8:1:8:6 | Double | 'Double -> Argument -V topLevelDecl -^ Double(...)' |
-| 10 | cfg.swift:10:1:13:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyError -> BaseType -V Error' |
+| 10 | cfg.swift:10:1:13:1 | enum MyError | 'enum MyError -V MyError -> BaseType -V Error' |
 | 11 | cfg.swift:11:10:11:15 | VariableDeclaration | 'VariableDeclaration -V error1 -> VariableDeclaration -V error2' |
-| 12 | cfg.swift:12:10:12:31 | ClassLikeDeclaration | 'ClassLikeDeclaration -V error3 -^ ConstructorDeclaration' |
+| 12 | cfg.swift:12:10:12:31 | error3 | 'error3 -V error3 -^ ConstructorDeclaration' |
 | 12 | cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
 | 15 | cfg.swift:15:1:17:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 15 | cfg.swift:15:13:15:13 | x | 'x -> Block' |
@@ -81,7 +81,7 @@
 | 95 | cfg.swift:95:3:95:30 | VariableDeclaration | 'VariableDeclaration -V tempOptional -> Optional -> Int -^ GenericTypeExpr -> 10' |
 | 96 | cfg.swift:96:3:96:13 | addOptional | 'addOptional -> Argument -V  -^ addOptional(...)' |
 | 97 | cfg.swift:97:10:97:13 | temp | 'temp -> tempOptional -^ ... ! -^ ... + ... -^ ReturnExpr' |
-| 100 | cfg.swift:100:1:109:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V C' |
+| 100 | cfg.swift:100:1:109:1 | class C | 'class C -V C' |
 | 101 | cfg.swift:101:3:101:16 | VariableDeclaration | 'VariableDeclaration -V myInt -> Int' |
 | 102 | cfg.swift:102:3:104:3 | ConstructorDeclaration | 'ConstructorDeclaration' |
 | 102 | cfg.swift:102:8:102:8 | n | 'n -> Block' |
@@ -296,7 +296,7 @@
 | 360 | cfg.swift:360:9:360:9 | x | 'x -> 10 -^ ... < ...' |
 | 360 | cfg.swift:360:17:362:3 | Block | 'Block' |
 | 361 | cfg.swift:361:5:361:5 | x | 'x -> 1 -^ ... += ...' |
-| 365 | cfg.swift:365:1:374:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V OptionalC' |
+| 365 | cfg.swift:365:1:374:1 | class OptionalC | 'class OptionalC -V OptionalC' |
 | 366 | cfg.swift:366:3:366:11 | VariableDeclaration | 'VariableDeclaration -V c -> Optional -> C -^ GenericTypeExpr' |
 | 367 | cfg.swift:367:3:369:3 | ConstructorDeclaration | 'ConstructorDeclaration' |
 | 367 | cfg.swift:367:8:367:10 | arg | 'arg -> Block' |
@@ -314,7 +314,7 @@
 | 386 | cfg.swift:386:1:388:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 386 | cfg.swift:386:23:386:23 | t | 't -> Block' |
 | 387 | cfg.swift:387:10:387:10 | t | 't -^ ... .a -> t -^ ... .1 -^ ... + ... -> t -^ ... .c -^ ... + ... -> Argument -V 1 -> Argument -V 2 -> Argument -V 3 -^ TupleExpr -^ ... .0 -^ ... + ... -^ ReturnExpr' |
-| 390 | cfg.swift:390:1:394:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Derived -> BaseType -V C' |
+| 390 | cfg.swift:390:1:394:1 | class Derived | 'class Derived -V Derived -> BaseType -V C' |
 | 391 | cfg.swift:391:3:393:3 | ConstructorDeclaration | 'ConstructorDeclaration' |
 | 391 | cfg.swift:391:10:393:3 | Block | 'Block' |
 | 392 | cfg.swift:392:5:392:9 | super | 'super -^ ... .init -> Argument -V 0 -^ ... .init(...)' |
@@ -327,7 +327,7 @@
 | 400 | cfg.swift:400:10:400:19 | mightThrow | 'mightThrow -> Argument -V 0 -^ mightThrow(...) -^ try! ...' |
 | 401 | cfg.swift:401:5:401:9 | print | 'print -> Argument -V "Still did not throw." -^ print(...)' |
 | 403 | cfg.swift:403:10:403:10 | 0 | '0 -^ ReturnExpr' |
-| 406 | cfg.swift:406:1:415:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Structors' |
+| 406 | cfg.swift:406:1:415:1 | class Structors | 'class Structors -V Structors' |
 | 407 | cfg.swift:407:3:407:16 | VariableDeclaration | 'VariableDeclaration -V field -> Int' |
 | 408 | cfg.swift:408:3:410:3 | ConstructorDeclaration | 'ConstructorDeclaration' |
 | 408 | cfg.swift:408:10:410:3 | Block | 'Block' |
@@ -340,24 +340,24 @@
 | 418 | cfg.swift:418:10:418:25 | MapLiteral | 'MapLiteral -^ ReturnExpr' |
 | 421 | cfg.swift:421:1:444:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 421 | cfg.swift:421:33:444:1 | Block | 'Block' |
-| 422 | cfg.swift:422:3:427:3 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyLocalClass' |
+| 422 | cfg.swift:422:3:427:3 | class MyLocalClass | 'class MyLocalClass -V MyLocalClass' |
 | 423 | cfg.swift:423:5:423:14 | VariableDeclaration | 'VariableDeclaration -V x -> Int' |
 | 424 | cfg.swift:424:5:426:5 | ConstructorDeclaration | 'ConstructorDeclaration' |
 | 424 | cfg.swift:424:12:426:5 | Block | 'Block' |
 | 425 | cfg.swift:425:7:425:7 | x | 'x -> 10 -^ ... = ...' |
-| 429 | cfg.swift:429:3:434:3 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyLocalStruct' |
+| 429 | cfg.swift:429:3:434:3 | struct MyLocalStruct | 'struct MyLocalStruct -V MyLocalStruct' |
 | 430 | cfg.swift:430:5:430:14 | VariableDeclaration | 'VariableDeclaration -V x -> Int' |
 | 431 | cfg.swift:431:5:433:5 | ConstructorDeclaration | 'ConstructorDeclaration' |
 | 431 | cfg.swift:431:12:433:5 | Block | 'Block' |
 | 432 | cfg.swift:432:7:432:7 | x | 'x -> 10 -^ ... = ...' |
-| 436 | cfg.swift:436:3:439:3 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyLocalEnum' |
+| 436 | cfg.swift:436:3:439:3 | enum MyLocalEnum | 'enum MyLocalEnum -V MyLocalEnum' |
 | 437 | cfg.swift:437:10:437:10 | VariableDeclaration | 'VariableDeclaration -V A' |
 | 438 | cfg.swift:438:10:438:10 | VariableDeclaration | 'VariableDeclaration -V B' |
 | 441 | cfg.swift:441:3:441:22 | VariableDeclaration | 'VariableDeclaration -V myLocalVar -> Int' |
 | 443 | cfg.swift:443:10:443:10 | 0 | '0 -^ ReturnExpr' |
-| 446 | cfg.swift:446:1:448:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V B' |
+| 446 | cfg.swift:446:1:448:1 | struct B | 'struct B -V B' |
 | 447 | cfg.swift:447:3:447:13 | VariableDeclaration | 'VariableDeclaration -V x -> Int' |
-| 450 | cfg.swift:450:1:454:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V A' |
+| 450 | cfg.swift:450:1:454:1 | struct A | 'struct A -V A' |
 | 451 | cfg.swift:451:3:451:11 | VariableDeclaration | 'VariableDeclaration -V b -> B' |
 | 452 | cfg.swift:452:3:452:14 | VariableDeclaration | 'VariableDeclaration -V bs -> Array -> B -^ GenericTypeExpr' |
 | 453 | cfg.swift:453:3:453:15 | VariableDeclaration | 'VariableDeclaration -V mayB -> Optional -> B -^ GenericTypeExpr' |
@@ -430,10 +430,10 @@
 | 559 | cfg.swift:559:1:561:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 559 | cfg.swift:559:24:561:1 | Block | 'Block' |
 | 560 | cfg.swift:560:3:560:17 | usesAutoclosure | 'usesAutoclosure -> Argument -V 1 -^ usesAutoclosure(...)' |
-| 565 | cfg.swift:565:1:567:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyProtocol' |
+| 565 | cfg.swift:565:1:567:1 | protocol MyProtocol | 'protocol MyProtocol -V MyProtocol' |
 | 566 | cfg.swift:566:2:566:1 | Block | 'Block' |
 | 566 | cfg.swift:566:2:566:21 | FunctionDeclaration | 'FunctionDeclaration' |
-| 569 | cfg.swift:569:1:571:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyProcotolImpl -> BaseType -V MyProtocol' |
+| 569 | cfg.swift:569:1:571:1 | class MyProcotolImpl | 'class MyProcotolImpl -V MyProcotolImpl -> BaseType -V MyProtocol' |
 | 570 | cfg.swift:570:2:570:34 | FunctionDeclaration | 'FunctionDeclaration' |
 | 570 | cfg.swift:570:23:570:34 | Block | 'Block -V 0 -^ ReturnExpr' |
 | 573 | cfg.swift:573:1:573:62 | FunctionDeclaration | 'FunctionDeclaration' |
@@ -458,7 +458,7 @@
 | 591 | cfg.swift:591:9:592:18 | IfExpr | 'IfExpr -V x -> 42 -^ ... < ...' |
 | 591 | cfg.swift:591:21:591:25 | Block | 'Block -V 1' |
 | 592 | cfg.swift:592:14:592:18 | Block | 'Block -V 2' |
-| 596 | cfg.swift:596:1:598:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V ValueGenericsStruct -> TypeParameter -V N -> Int' |
+| 596 | cfg.swift:596:1:598:1 | struct ValueGenericsStruct | 'struct ValueGenericsStruct -V ValueGenericsStruct -> TypeParameter -V N -> Int' |
 | 597 | cfg.swift:597:5:597:13 | VariableDeclaration | 'VariableDeclaration -V x -> N' |
 | 600 | cfg.swift:600:1:604:1 | FunctionDeclaration | 'FunctionDeclaration' |
 | 600 | cfg.swift:600:36:600:40 | value | 'value -> Block' |
