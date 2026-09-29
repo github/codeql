@@ -453,6 +453,7 @@ _NORMAL_DEPENDENCIES = {
             "lazy_static": Label("@vendor_ts//lazy_static-1.5.0"),
             "rayon": Label("@vendor_ts//rayon-1.12.0"),
             "regex": Label("@vendor_ts//regex-1.13.1"),
+            "serde": Label("@vendor_ts//serde-1.0.229"),
             "serde_json": Label("@vendor_ts//serde_json-1.0.151"),
             "tracing": Label("@vendor_ts//tracing-0.1.44"),
             "tracing-subscriber": Label("@vendor_ts//tracing-subscriber-0.3.23"),
