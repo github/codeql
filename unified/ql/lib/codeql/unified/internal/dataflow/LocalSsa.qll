@@ -38,22 +38,7 @@ module LocalSsaOutput = Make<Location, Cfg, LocalSsaInput>;
 private import LocalSsaOutput
 
 module LocalSsaDataFlowInput implements DataFlowIntegrationInputSig {
-  class Expr extends TLocalVariableRefNode {
-    U::AstNode repr;
-    LocalVariable var;
-    VariableRefKind kind;
-
-    Expr() { this = TLocalVariableRefNode(repr, var, kind) }
-
-    predicate hasCfgNode(BasicBlock bb, int i) {
-      this = TLocalVariableRefNode(repr, var, kind) and
-      // Note: the synthetic read we insert for post-updates must also have an Expr
-      (kind.isRead() or kind.isPostUpdate()) and
-      performsVariableAccess(repr, var, kind, bb.getNode(i))
-    }
-
-    string toString() { result = this.(Node).toString() }
-  }
+  class Expr = LocalVariableRefNode;
 
   class GuardValue = Void;
 
