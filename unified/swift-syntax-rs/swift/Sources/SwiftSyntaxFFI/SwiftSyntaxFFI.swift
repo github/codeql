@@ -85,10 +85,22 @@ private func serializeTrivia(
 ///     therefore simply a JSON array. This drops the collection node's own
 ///     `kind`/location, which are unnamed and largely recoverable from the
 ///     elements.
-private func serialize(_ node: Syntax) -> Any {
+private let maximumSerializationDepth = 2048
+
+private struct SerializationDepthError: Error, CustomStringConvertible {
+    var description: String {
+        "syntax tree exceeds maximum serialization depth (\(maximumSerializationDepth))"
+    }
+}
+
+private func serialize(_ node: Syntax, depth: Int = 1) throws -> Any {
+    if depth > maximumSerializationDepth {
+        throw SerializationDepthError()
+    }
+
     if node.kind.isSyntaxCollection {
-        return node.children(viewMode: .sourceAccurate).map {
-            serialize($0)
+        return try node.children(viewMode: .sourceAccurate).map {
+            try serialize($0, depth: depth + 1)
         }
     }
 
@@ -133,10 +145,10 @@ private func serialize(_ node: Syntax) -> Any {
         // parent (the same mechanism SwiftSyntax uses for its debug dump). A
         // child that is a collection serializes to an array (see above).
         if let keyPath = child.keyPathInParent, let name = childName(keyPath) {
-            result[name] = serialize(child)
+            result[name] = try serialize(child, depth: depth + 1)
         } else {
             // Defensive fallback for any unnamed layout child.
-            result["child\(unnamed)"] = serialize(child)
+            result["child\(unnamed)"] = try serialize(child, depth: depth + 1)
             unnamed += 1
         }
     }
@@ -311,7 +323,14 @@ public func ssr_parse_json(
     // converter built from the original tree maps the folded tree correctly.
     let folded = foldOperators(in: tree)
     let converter = SourceLocationConverter(fileName: "<input>", tree: tree)
-    guard var json = serialize(folded) as? [String: Any] else {
+    let serialized: Any
+    do {
+        serialized = try serialize(folded)
+    } catch {
+        writeToStandardError("SwiftSyntaxFFI: JSON serialization failed: \(error)\n")
+        return nil
+    }
+    guard var json = serialized as? [String: Any] else {
         return nil
     }
     json["$lineStarts"] = lineStarts(converter)
