@@ -45,6 +45,12 @@ module Unified {
         this = func.getACaptureDeclaration() and
         result = func.getParent()
       )
+      or
+      exists(FunctionDeclaration func |
+        // The name of a function declaration is a variable belonging to the enclosing callable.
+        this = func.getNameNode() and
+        result = func.getParent()
+      )
     }
 
     /**

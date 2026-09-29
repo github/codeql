@@ -41,6 +41,8 @@ module Ast implements AstSig<Location> {
     not skipControlFlow(result)
     or
     n.(FunctionExpr).getCaptureDeclaration(index) = result
+    or
+    n.(FunctionDeclaration).getNameNode() = result and index = 0
   }
 
   Callable getEnclosingCallable(AstNode node) { result = node.getEnclosingCallable() }
