@@ -14,3 +14,4 @@ import ParameterPositions
 import Step
 import TaintTrackingInstantiation
 import VariableRefKind
+import LocalVariableRefNode
