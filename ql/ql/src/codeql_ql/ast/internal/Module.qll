@@ -375,7 +375,8 @@ module ModConsistency {
 
   query predicate noName(AstNode mod) {
     mod instanceof Module and
-    not exists(mod.(Module).getName())
+    not exists(mod.(Module).getName()) and
+    not mod.getParent() instanceof TopLevel
     or
     mod instanceof ModuleExpr and
     not exists(mod.(ModuleExpr).getName())

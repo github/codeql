@@ -833,7 +833,11 @@ class Module extends TModule, ModuleDeclaration {
 
   Module() { this = TModule(mod) }
 
-  override Location getLocation() { result = mod.asLeft().getName().getLocation() }
+  override Location getLocation() {
+    result = mod.asLeft().getName().getLocation()
+    or
+    not exists(mod.asLeft().getName()) and result = mod.asLeft().getLocation()
+  }
 
   override string getAPrimaryQlClass() { result = "Module" }
 
