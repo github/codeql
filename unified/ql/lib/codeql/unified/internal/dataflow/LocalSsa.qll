@@ -74,18 +74,18 @@ private predicate postUpdateReadNode(Ssa::Node node) {
   node.(Ssa::ExprNode).getExpr() = TLocalVariableRefNode(_, _, TPostUpdate())
 }
 
-Node getNodeFromLocalSsaNode(Ssa::Node n) {
+Stage2Node getNodeFromLocalSsaNode(Ssa::Node n) {
   result = TLocalSsaNode(n)
   or
   result = n.(Ssa::ExprNode).getExpr() and
   not postUpdateReadNode(n)
   or
-  result = n.(Ssa::ExprPostUpdateNode).getExpr().(Node).getPostUpdateNode()
+  result = n.(Ssa::ExprPostUpdateNode).getExpr().(BuilderNode).getPostUpdateNode()
   or
   exists(LocalVariable v, BasicBlock bb, int i, AstNode repr |
     n.(Ssa::WriteDefSourceNode).getDefinition().definesAt(v, bb, i) and
     performsVariableAccess(repr, v, TWrite(), bb.getNode(i)) and
-    result.isLocalVariableWrite(repr, v)
+    result.(BuilderNode).isLocalVariableWrite(repr, v)
   )
 }
 
@@ -103,7 +103,7 @@ predicate skipPostUpdateRead(Ssa::Node node1, Ssa::Node node2) {
   )
 }
 
-predicate localSsaStep(Node node1, Node node2, boolean isUseStep) {
+predicate localSsaStep(Stage2Node node1, Stage2Node node2, boolean isUseStep) {
   exists(Ssa::Node ssa1, Ssa::Node ssa2 |
     (
       Ssa::localFlowStep(_, ssa1, ssa2, isUseStep)
@@ -117,7 +117,7 @@ predicate localSsaStep(Node node1, Node node2, boolean isUseStep) {
   )
 }
 
-predicate localSsaMustFlowStep(Node node1, Node node2) {
+predicate localSsaMustFlowStep(Stage2Node node1, Stage2Node node2) {
   exists(Ssa::Node ssa1, Ssa::Node ssa2 |
     Ssa::localMustFlowStep(_, ssa1, ssa2) and
     node1 = getNodeFromLocalSsaNode(ssa1) and

@@ -90,6 +90,8 @@ class TDataFlowNodeStage1 =
   TValueNode or TStrictlyIncomingValue or TExprPostUpdateNode or TLocalVariableRefNode or
       TCallableNode or TReceiverParameterNode or TReceiverArgumentNode;
 
+class TDataFlowNodeStage2 = TDataFlowNodeStage1 or TLocalSsaNode;
+
 /**
  * A data-flow node used during construction of the local data flow graph.
  *
@@ -275,6 +277,29 @@ class BuilderNode extends TDataFlowNodeStage1 {
   }
 }
 
+/** A node in stage 2, which includes stage 1 and local SSA nodes. */
+class Stage2Node extends TDataFlowNodeStage2 {
+  /** Get a string representation of this element. */
+  string toString() {
+    result = this.(BuilderNode).toString()
+    or
+    exists(LocalSsaDataFlowOutput::SsaNode node |
+      this = TLocalSsaNode(node) and
+      result = node.toString()
+    )
+  }
+
+  /** Gets the location of this data flow node. */
+  Location getLocation() {
+    result = this.(BuilderNode).getLocation()
+    or
+    exists(LocalSsaDataFlowOutput::SsaNode node |
+      this = TLocalSsaNode(node) and
+      result = node.getLocation()
+    )
+  }
+}
+
 class Node extends TDataFlowNode {
   /** Gets the expression represented by this node. */
   Expr asExpr() { this = TValueNode(result) }
@@ -338,24 +363,10 @@ class Node extends TDataFlowNode {
   AstNode getWrappedAstNode() { result = this.(BuilderNode).getWrappedAstNode() }
 
   /** Get a string representation of this element. */
-  string toString() {
-    result = this.(BuilderNode).toString()
-    or
-    exists(LocalSsaDataFlowOutput::SsaNode node |
-      this = TLocalSsaNode(node) and
-      result = node.toString()
-    )
-  }
+  string toString() { result = this.(Stage2Node).toString() }
 
   /** Gets the location of this data flow node. */
-  Location getLocation() {
-    result = this.(BuilderNode).getLocation()
-    or
-    exists(LocalSsaDataFlowOutput::SsaNode node |
-      this = TLocalSsaNode(node) and
-      result = node.getLocation()
-    )
-  }
+  Location getLocation() { result = this.(Stage2Node).getLocation() }
 
   /** Gets the data-flow callable containing this data flow node. */
   DataFlowCallable getEnclosingCallableEx() {
