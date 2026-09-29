@@ -368,7 +368,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     /** Gets the type at the empty path of `tm`. */
     bindingset[tm]
     pragma[inline_late]
-    private Type getTypeMentionRoot(TypeMention tm) { result = tm.getTypeAt(TypePath::nil()) }
+    private Type getTypeMentionRoot(TypeMention tm) {
+      result = tm.getTypeAt(TypePath::nil()) and
+      not result instanceof PseudoType
+    }
 
     /** Provides the input to `IsInstantiationOf`. */
     signature module IsInstantiationOfInputSig<HasTypeTreeSig App, HasTypeTreeSig Constraint> {
@@ -658,7 +661,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         ) {
           exists(Type type |
             typeConstraint(type, constraint) and typeCondition(type, abs, condition)
-          )
+          ) and
+          conditionSatisfiesConstraint(_, _, constraint, true)
         }
       }
 
