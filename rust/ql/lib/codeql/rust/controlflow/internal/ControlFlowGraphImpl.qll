@@ -624,6 +624,10 @@ module PatternTrees {
     override Pat getPat(int i) { i = 0 and result = this.getPat() }
   }
 
+  class DerefPatTree extends PreOrderPatTree, DerefPat {
+    override Pat getPat(int i) { i = 0 and result = this.getPat() }
+  }
+
   class RestPatTree extends LeafTree, RestPat { }
 
   class LiteralPatTree extends StandardPostOrderTree, LiteralPat {

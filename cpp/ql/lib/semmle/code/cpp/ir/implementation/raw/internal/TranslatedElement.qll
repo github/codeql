@@ -430,14 +430,18 @@ private predicate mustTransformToGLValue(Expr expr) {
 }
 
 /**
- * Holds if `expr` has an lvalue-to-rvalue conversion that should be ignored
- * when generating IR. This occurs for conversion from an lvalue of function type
- * to an rvalue of function pointer type. The conversion is represented in the
- * AST as an lvalue-to-rvalue conversion, but the IR represents both a function
+ * Holds if `expr` has an explicit or implicit load that should be ignored
+ * when generating IR. For example, this occurs for conversion from an lvalue of
+ * function type to an rvalue of function pointer type. The conversion is represented
+ * in the AST as an lvalue-to-rvalue conversion, but the IR represents both a function
  * lvalue and a function pointer prvalue the same.
  */
 predicate ignoreLoad(Expr expr) {
-  expr.hasLValueToRValueConversion() and
+  (
+    expr.hasLValueToRValueConversion()
+    or
+    isPRValueFieldAccessWithImplicitLoad(expr)
+  ) and
   (
     expr instanceof ThisExpr
     or
@@ -517,8 +521,11 @@ predicate hasTranslatedLoad(Expr expr) {
 predicate hasTranslatedSyntheticTemporaryObject(Expr expr) {
   not ignoreExpr(expr) and
   mustTransformToGLValue(expr) and
-  // If it's a load, we'll just ignore the load in `ignoreLoad()`.
-  not expr.hasLValueToRValueConversion()
+  // If it's an explicit or implicit field load, reuse the existing address by
+  // ignoring the load in `ignoreLoad` instead of materializing another
+  // temporary.
+  not expr.hasLValueToRValueConversion() and
+  not isPRValueFieldAccessWithImplicitLoad(expr)
 }
 
 Opcode comparisonOpcode(ComparisonOperation expr) {

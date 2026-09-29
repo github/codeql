@@ -21,6 +21,8 @@ module Generated {
   class CfgComposite extends Synth::TCfgComposite, CfgPredicateImpl::CfgPredicate {
     override string getAPrimaryQlClass() { result = "CfgComposite" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th cfg predicate of this cfg composite (0-based).
      */

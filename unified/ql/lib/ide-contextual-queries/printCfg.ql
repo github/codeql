@@ -8,6 +8,7 @@
  */
 
 private import unified
+private import codeql.unified.internal.ControlFlowGraph
 private import codeql.Locations
 
 external string selectedSourceFile();
@@ -30,7 +31,7 @@ module ViewCfgQueryInput implements ControlFlow::ViewCfgQueryInputSig<File> {
   predicate selectedSourceColumn = selectedSourceColumnAlias/0;
 
   predicate cfgScopeSpan(
-    Callable scope, File file, int startLine, int startColumn, int endLine, int endColumn
+    Ast::Callable scope, File file, int startLine, int startColumn, int endLine, int endColumn
   ) {
     file = scope.getFile() and
     scope.getLocation().hasLocationInfo(_, startLine, startColumn, endLine, endColumn)

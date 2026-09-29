@@ -11,8 +11,8 @@ func test() {
     let local = 2 // name=local2
     local // $ definition=local2
     Derived.member // $ definition=Derived definition=Base.member
-    let _: Derived.Nested? // $ definition=Derived definition=Base.Nested
+    let _: Derived.Nested? // $ definition=Derived definition=Base.Nested definition=Optional
 }
 
 typealias Alias = Derived // $ definition=Derived
-let _: Alias.Nested? // $ definition=Alias definition=Base.Nested
+let _: Alias.Nested? // $ definition=Alias definition=Base.Nested definition=Optional

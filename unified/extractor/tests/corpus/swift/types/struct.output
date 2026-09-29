@@ -57,27 +57,19 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "struct"
-          name: identifier "Point"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩\n}"
+          modifier: modifier "struct" source="struct"
+          name_node: identifier "Point" source="Point"
           member:
-            variable_declaration
-              modifier: modifier "let"
-              pattern:
-                name_pattern
-                  identifier: identifier "x"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-            variable_declaration
-              modifier: modifier "let"
-              pattern:
-                name_pattern
-                  identifier: identifier "y"
-              type:
-                named_type_expr
-                  name: identifier "Int"
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"
+              modifier: modifier "let" source="let"
+              pattern: identifier "x" source="x"
+              type: identifier "Int" source="Int"
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"
+              modifier: modifier "let" source="let"
+              pattern: identifier "y" source="y"
+              type: identifier "Int" source="Int"

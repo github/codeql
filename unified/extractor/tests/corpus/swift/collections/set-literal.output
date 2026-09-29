@@ -56,26 +56,20 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "s"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "s" source="s"
           type:
-            generic_type_expr
-              base:
-                named_type_expr
-                  name: identifier "Set"
-              type_argument:
-                named_type_expr
-                  name: identifier "Int"
+            generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+              base: identifier "Set" source="Set"
+              type_argument: identifier "Int" source="Int"
           value:
-            array_literal
+            array_literal source="[⟨element⟩, ⟨element⟩, ⟨element⟩]"
               element:
-                int_literal "1"
-                int_literal "2"
-                int_literal "3"
+                int_literal "1" source="1"
+                int_literal "2" source="2"
+                int_literal "3" source="3"

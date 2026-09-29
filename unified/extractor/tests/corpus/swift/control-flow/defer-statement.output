@@ -75,20 +75,18 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name: identifier "withCleanup"
+        function_declaration source="func ⟨name_node⟩() ⟨body⟩"
+          name_node: identifier "withCleanup" source="withCleanup"
           body:
-            block
+            block source="{\n  ⟨stmt⟩\n  ⟨stmt⟩\n}"
               stmt:
-                unsupported_node "defer { print(\"cleanup\") }"
-                call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                unsupported_node "defer { print(\"cleanup\") }" source="defer { print(\"cleanup\") }"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
                   argument:
-                    argument
-                      value: string_literal "\"work\""
+                    argument source="⟨value⟩"
+                      value: string_literal "\"work\"" source="\"work\""

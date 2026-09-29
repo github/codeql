@@ -97,47 +97,33 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "class"
-          name: identifier "Rect"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩\n  ⟨member⟩\n}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "Rect" source="Rect"
           member:
-            variable_declaration
-              modifier: modifier "var"
-              pattern:
-                name_pattern
-                  identifier: identifier "w"
-              type:
-                named_type_expr
-                  name: identifier "Double"
-            variable_declaration
-              modifier: modifier "var"
-              pattern:
-                name_pattern
-                  identifier: identifier "h"
-              type:
-                named_type_expr
-                  name: identifier "Double"
-            accessor_declaration
-              modifier: modifier "var"
-              name: identifier "area"
-              accessor_kind: accessor_kind "get"
-              type:
-                named_type_expr
-                  name: identifier "Double"
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"
+              modifier: modifier "var" source="var"
+              pattern: identifier "w" source="w"
+              type: identifier "Double" source="Double"
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"
+              modifier: modifier "var" source="var"
+              pattern: identifier "h" source="h"
+              type: identifier "Double" source="Double"
+            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨type⟩ ⟨body⟩"
+              modifier: modifier "var" source="var"
+              name_node: identifier "area" source="area"
+              accessor_kind: accessor_kind "get" source=""
+              type: identifier "Double" source="Double"
               body:
-                block
+                block source="{\n    ⟨stmt⟩\n  }"
                   stmt:
-                    return_expr
+                    return_expr source="return ⟨value⟩"
                       value:
-                        binary_expr
-                          left:
-                            name_expr
-                              identifier: identifier "w"
-                          operator: infix_operator "*"
-                          right:
-                            name_expr
-                              identifier: identifier "h"
+                        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                          left: identifier "w" source="w"
+                          operator: infix_operator "*" source="*"
+                          right: identifier "h" source="h"

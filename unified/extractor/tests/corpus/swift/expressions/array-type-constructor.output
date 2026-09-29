@@ -124,71 +124,50 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩\n⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "values"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "values" source="values"
           value:
-            call_expr
+            call_expr source="⟨callee⟩()"
               callee:
-                generic_type_expr
-                  base:
-                    named_type_expr
-                      name: identifier "Array"
+                generic_type_expr source="[⟨type_argument⟩]"
+                  base: identifier "Array" source=""
                   type_argument:
-                    generic_type_expr
-                      base:
-                        named_type_expr
-                          name: identifier "Result"
-                      type_argument:
-                        named_type_expr
-                          name: identifier "Void"
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "initialized"
+                    generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                      base: identifier "Result" source="Result"
+                      type_argument: identifier "Void" source="Void"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "initialized" source="initialized"
           value:
-            call_expr
+            call_expr source="⟨callee⟩(⟨argument⟩) ⟨argument⟩"
               callee:
-                generic_type_expr
-                  base:
-                    named_type_expr
-                      name: identifier "Array"
+                generic_type_expr source="[⟨type_argument⟩]"
+                  base: identifier "Array" source=""
                   type_argument:
-                    generic_type_expr
-                      base:
-                        named_type_expr
-                          name: identifier "Result"
-                      type_argument:
-                        named_type_expr
-                          name: identifier "Void"
+                    generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                      base: identifier "Result" source="Result"
+                      type_argument: identifier "Void" source="Void"
               argument:
-                argument
-                  name: identifier "unsafeUninitializedCapacity"
-                  value: int_literal "1"
-                argument
+                argument source="⟨name_node⟩: ⟨value⟩"
+                  name_node: identifier "unsafeUninitializedCapacity" source="unsafeUninitializedCapacity"
+                  value: int_literal "1" source="1"
+                argument source="⟨value⟩"
                   value:
-                    function_expr
+                    function_expr source="{ ⟨parameter⟩, ⟨parameter⟩ in\n\t⟨body⟩\n}"
                       parameter:
-                        parameter
-                          pattern:
-                            name_pattern
-                              identifier: identifier "_"
-                        parameter
-                          pattern:
-                            name_pattern
-                              identifier: identifier "count"
+                        parameter source="⟨pattern⟩"
+                          pattern: identifier "_" source="_"
+                        parameter source="⟨pattern⟩"
+                          pattern: identifier "count" source="count"
                       body:
-                        block
+                        block source="⟨stmt⟩"
                           stmt:
-                            assign_expr
-                              target:
-                                name_expr
-                                  identifier: identifier "count"
-                              value: int_literal "0"
+                            binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                              left: identifier "count" source="count"
+                              operator: infix_operator "=" source="="
+                              right: int_literal "0" source="0"

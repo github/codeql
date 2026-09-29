@@ -6,6 +6,7 @@
 import codeql.files.FileSystem
 import codeql.rust.elements.Abi
 import codeql.rust.elements.Addressable
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.ArgList
 import codeql.rust.elements.ArrayExpr
 import codeql.rust.elements.ArrayListExpr
@@ -52,6 +53,8 @@ import codeql.rust.elements.ConstBlockPat
 import codeql.rust.elements.ConstParam
 import codeql.rust.elements.ContinueExpr
 import codeql.rust.elements.Crate
+import codeql.rust.elements.DerefPat
+import codeql.rust.elements.DocComment
 import codeql.rust.elements.DynTraitTypeRepr
 import codeql.rust.elements.Element
 import codeql.rust.elements.Enum
@@ -69,7 +72,6 @@ import codeql.rust.elements.ForExpr
 import codeql.rust.elements.ForTypeRepr
 import codeql.rust.elements.Format
 import codeql.rust.elements.FormatArgsArg
-import codeql.rust.elements.FormatArgsArgName
 import codeql.rust.elements.FormatArgsExpr
 import codeql.rust.elements.FormatArgument
 import codeql.rust.elements.FormatTemplateVariableAccess
@@ -81,7 +83,9 @@ import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.IdentPat
 import codeql.rust.elements.IfExpr
 import codeql.rust.elements.Impl
+import codeql.rust.elements.ImplRestriction
 import codeql.rust.elements.ImplTraitTypeRepr
+import codeql.rust.elements.IncludeBytesExpr
 import codeql.rust.elements.IndexExpr
 import codeql.rust.elements.InferTypeRepr
 import codeql.rust.elements.Item
@@ -115,9 +119,11 @@ import codeql.rust.elements.Meta
 import codeql.rust.elements.MethodCallExpr
 import codeql.rust.elements.Missing
 import codeql.rust.elements.Module
+import codeql.rust.elements.MutRestriction
 import codeql.rust.elements.Name
 import codeql.rust.elements.NameRef
 import codeql.rust.elements.NeverTypeRepr
+import codeql.rust.elements.NotNull
 import codeql.rust.elements.OffsetOfExpr
 import codeql.rust.elements.OrPat
 import codeql.rust.elements.Param
@@ -136,6 +142,7 @@ import codeql.rust.elements.PathMeta
 import codeql.rust.elements.PathPat
 import codeql.rust.elements.PathSegment
 import codeql.rust.elements.PathTypeRepr
+import codeql.rust.elements.PatternTypeRepr
 import codeql.rust.elements.PrefixExpr
 import codeql.rust.elements.PtrTypeRepr
 import codeql.rust.elements.RangeExpr
@@ -196,6 +203,7 @@ import codeql.rust.elements.UseTreeList
 import codeql.rust.elements.Variant
 import codeql.rust.elements.VariantList
 import codeql.rust.elements.Visibility
+import codeql.rust.elements.VisibilityInner
 import codeql.rust.elements.WhereClause
 import codeql.rust.elements.WherePred
 import codeql.rust.elements.WhileExpr

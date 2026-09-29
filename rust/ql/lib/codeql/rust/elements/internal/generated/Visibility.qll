@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.Path
+import codeql.rust.elements.VisibilityInner
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Visibility` and should not
@@ -29,16 +29,18 @@ module Generated {
     override string getAPrimaryQlClass() { result = "Visibility" }
 
     /**
-     * Gets the path of this visibility, if it exists.
+     * Gets the visibility inner of this visibility, if it exists.
      */
-    Path getPath() {
+    VisibilityInner getVisibilityInner() {
       result =
-        Synth::convertPathFromRaw(Synth::convertVisibilityToRaw(this).(Raw::Visibility).getPath())
+        Synth::convertVisibilityInnerFromRaw(Synth::convertVisibilityToRaw(this)
+              .(Raw::Visibility)
+              .getVisibilityInner())
     }
 
     /**
-     * Holds if `getPath()` exists.
+     * Holds if `getVisibilityInner()` exists.
      */
-    final predicate hasPath() { exists(this.getPath()) }
+    final predicate hasVisibilityInner() { exists(this.getVisibilityInner()) }
   }
 }

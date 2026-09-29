@@ -6,6 +6,7 @@ include("prefix.dbscheme")
 File = imported("File", "codeql.files.FileSystem")
 
 
+@ql.to_string_impl_from_primary_class(True)
 @qltest.skip
 class Element:
     pass
@@ -35,6 +36,7 @@ class Comment(Token):
     ```rust
     // this is a comment
     /// This is a doc comment
+    fn documented() {}
     ```
     """
     parent: AstNode
@@ -72,7 +74,7 @@ class Callable(AstNode):
     A callable. Either a `Function` or a `ClosureExpr`.
     """
     param_list: optional["ParamList"] | child
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     params: list["Param"] | synth
     body: optional["Expr"] | synth
 

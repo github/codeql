@@ -28,6 +28,8 @@ module Generated {
   class TypeArg extends Synth::TTypeArg, GenericArgImpl::GenericArg {
     override string getAPrimaryQlClass() { result = "TypeArg" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the type representation of this type argument, if it exists.
      */

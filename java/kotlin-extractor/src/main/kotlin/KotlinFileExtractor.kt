@@ -3905,7 +3905,14 @@ open class KotlinFileExtractor(
 
         val prop =
             getPropertiesByFqName(pluginContext, propertyPkg, propertyName)
-                .firstOrNull { it.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type }
+                .firstOrNull {
+                    val owner = it.owner
+                    when (val parent = owner.parent) {
+                        is IrClass -> parent.fqNameWhenAvailable?.asString()
+                        is IrExternalPackageFragment -> getFileClassFqName(owner)?.asString()
+                        else -> null
+                    } == type
+                }
                 ?.owner
 
         if (prop != null) {

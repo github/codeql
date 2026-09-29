@@ -52,13 +52,11 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "d"
-          value: map_literal "[\"a\": 1, \"b\": 2]"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "d" source="d"
+          value: map_literal "[\"a\": 1, \"b\": 2]" source="[\"a\": 1, \"b\": 2]"

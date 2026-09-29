@@ -69,28 +69,22 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩\n⟨stmt⟩\n⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "var"
-          pattern:
-            name_pattern
-              identifier: identifier "a"
-          value: int_literal "1"
-        variable_declaration
-          modifier: modifier "var"
-          pattern:
-            name_pattern
-              identifier: identifier "b"
-          value: int_literal "2"
-        call_expr
-          callee:
-            name_expr
-              identifier: identifier "swap"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "var" source="var"
+          pattern: identifier "a" source="a"
+          value: int_literal "1" source="1"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "var" source="var"
+          pattern: identifier "b" source="b"
+          value: int_literal "2" source="2"
+        call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
+          callee: identifier "swap" source="swap"
           argument:
-            argument
-              value: unsupported_node "&a"
-            argument
-              value: unsupported_node "&b"
+            argument source="⟨value⟩"
+              value: unsupported_node "&a" source="&a"
+            argument source="⟨value⟩"
+              value: unsupported_node "&b" source="&b"

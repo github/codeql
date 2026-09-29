@@ -2918,4 +2918,14 @@ T VariableTemplateFunc(T x) {
 
 int VariableTemplateFuncUse = VariableTemplateFunc(2.3);
 
+struct PointerWrapper {
+  Point point;
+};
+
+PointerWrapper get_wrapper();
+
+void test() {
+  get_wrapper().point.x;
+}
+
 // semmle-extractor-options: -std=c++20 --clang

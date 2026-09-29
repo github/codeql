@@ -68,5 +68,5 @@ protocol P { }
 extension H // $ access=H1
   : P { } // $ access=P
 
-extension A.B.C // $ MISSING: access=A access=A.B access=A.B.C (`A.B.C` is currently parsed as a single identifier)
+extension A.B.C // $ access=A access=A.B access=A.B.C
   : P { } // $ access=P

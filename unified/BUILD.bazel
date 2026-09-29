@@ -45,7 +45,17 @@ codeql_pkg_files(
         otherwise = ["//unified/extractor"],
         win64 = ["//unified/extractor-unsupported-os:extractor"],
     ),
-    prefix = "tools/{CODEQL_PLATFORM}",
+    prefix = "{CODEQL_PLATFORM}",
+)
+
+pkg_filegroup(
+    name = "tools",
+    srcs = [
+        ":extractor-arch",
+        "//unified/tools",
+        "//unified/tools/builtins",
+    ],
+    prefix = "tools",
 )
 
 codeql_pack(
@@ -53,7 +63,6 @@ codeql_pack(
     srcs = [
         ":codeql-extractor-yml",
         ":dbscheme-group",
-        ":extractor-arch",
-        "//unified/tools",
+        ":tools",
     ],
 )

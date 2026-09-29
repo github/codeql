@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         IList<string> GetListedRuntimes();
         IList<string> GetListedSdks();
         bool Exec(List<string> execArgs);
-        IList<string> GetNugetFeeds(string nugetConfig);
+        IList<string> GetNugetFeedsFromConfig(string nugetConfig);
         IList<string> GetNugetFeedsFromFolder(string folderPath);
     }
 

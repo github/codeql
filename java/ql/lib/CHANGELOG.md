@@ -1,3 +1,10 @@
+## 9.3.1
+
+### Minor Analysis Improvements
+
+* Support for Kotlin 2.4.20 has been added.
+* Fixed an issue where `Foo::class.java` arguments were dropped during extraction under the Kotlin K2 compiler, which could cause false positives in queries such as `java/android/implicit-pendingintents`.
+
 ## 9.3.0
 
 ### New Features

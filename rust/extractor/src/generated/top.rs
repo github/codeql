@@ -363,6 +363,42 @@ impl From<trap::Label<Addressable>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
+pub struct AnyAttr {
+    _unused: ()
+}
+
+impl trap::TrapClass for AnyAttr {
+    fn class_name() -> &'static str { "AnyAttr" }
+}
+
+impl From<trap::Label<AnyAttr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<AnyAttr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AnyAttr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<AnyAttr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<AnyAttr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AnyAttr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<AnyAttr>> for trap::Label<Element> {
+    fn from(value: trap::Label<AnyAttr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AnyAttr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct ArgList {
     pub id: trap::TrapId<ArgList>,
     pub args: Vec<trap::Label<Expr>>,
@@ -688,7 +724,7 @@ impl From<trap::Label<AsmRegSpec>> for trap::Label<Element> {
 pub struct AssocItemList {
     pub id: trap::TrapId<AssocItemList>,
     pub assoc_items: Vec<trap::Label<AssocItem>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
 }
 
 impl trap::TrapEntry for AssocItemList {
@@ -732,56 +768,6 @@ impl From<trap::Label<AssocItemList>> for trap::Label<Locatable> {
 impl From<trap::Label<AssocItemList>> for trap::Label<Element> {
     fn from(value: trap::Label<AssocItemList>) -> Self {
         // SAFETY: this is safe because in the dbscheme AssocItemList is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct Attr {
-    pub id: trap::TrapId<Attr>,
-    pub meta: Option<trap::Label<Meta>>,
-}
-
-impl trap::TrapEntry for Attr {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("attrs", vec![id.into()]);
-        if let Some(v) = self.meta {
-            out.add_tuple("attr_meta", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for Attr {
-    fn class_name() -> &'static str { "Attr" }
-}
-
-impl From<trap::Label<Attr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<Attr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Attr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Attr>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<Attr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Attr is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Attr>> for trap::Label<Element> {
-    fn from(value: trap::Label<Attr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Attr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -899,7 +885,7 @@ impl From<trap::Label<Expr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct ExternItemList {
     pub id: trap::TrapId<ExternItemList>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub extern_items: Vec<trap::Label<ExternItem>>,
 }
 
@@ -1039,8 +1025,8 @@ impl From<trap::Label<ForBinder>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct FormatArgsArg {
     pub id: trap::TrapId<FormatArgsArg>,
-    pub arg_name: Option<trap::Label<FormatArgsArgName>>,
     pub expr: Option<trap::Label<Expr>>,
+    pub name: Option<trap::Label<Name>>,
 }
 
 impl trap::TrapEntry for FormatArgsArg {
@@ -1050,11 +1036,11 @@ impl trap::TrapEntry for FormatArgsArg {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("format_args_args", vec![id.into()]);
-        if let Some(v) = self.arg_name {
-            out.add_tuple("format_args_arg_arg_names", vec![id.into(), v.into()]);
-        }
         if let Some(v) = self.expr {
             out.add_tuple("format_args_arg_exprs", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.name {
+            out.add_tuple("format_args_arg_names", vec![id.into(), v.into()]);
         }
     }
 }
@@ -1084,52 +1070,6 @@ impl From<trap::Label<FormatArgsArg>> for trap::Label<Locatable> {
 impl From<trap::Label<FormatArgsArg>> for trap::Label<Element> {
     fn from(value: trap::Label<FormatArgsArg>) -> Self {
         // SAFETY: this is safe because in the dbscheme FormatArgsArg is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct FormatArgsArgName {
-    pub id: trap::TrapId<FormatArgsArgName>,
-}
-
-impl trap::TrapEntry for FormatArgsArgName {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("format_args_arg_names", vec![id.into()]);
-    }
-}
-
-impl trap::TrapClass for FormatArgsArgName {
-    fn class_name() -> &'static str { "FormatArgsArgName" }
-}
-
-impl From<trap::Label<FormatArgsArgName>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<FormatArgsArgName>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FormatArgsArgName is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<FormatArgsArgName>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<FormatArgsArgName>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FormatArgsArgName is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<FormatArgsArgName>> for trap::Label<Element> {
-    fn from(value: trap::Label<FormatArgsArgName>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FormatArgsArgName is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1309,9 +1249,59 @@ impl From<trap::Label<GenericParamList>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
+pub struct ImplRestriction {
+    pub id: trap::TrapId<ImplRestriction>,
+    pub visibility_inner: Option<trap::Label<VisibilityInner>>,
+}
+
+impl trap::TrapEntry for ImplRestriction {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("impl_restrictions", vec![id.into()]);
+        if let Some(v) = self.visibility_inner {
+            out.add_tuple("impl_restriction_visibility_inners", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for ImplRestriction {
+    fn class_name() -> &'static str { "ImplRestriction" }
+}
+
+impl From<trap::Label<ImplRestriction>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ImplRestriction>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ImplRestriction is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ImplRestriction>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<ImplRestriction>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ImplRestriction is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ImplRestriction>> for trap::Label<Element> {
+    fn from(value: trap::Label<ImplRestriction>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ImplRestriction is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct ItemList {
     pub id: trap::TrapId<ItemList>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub items: Vec<trap::Label<Item>>,
 }
 
@@ -1515,7 +1505,7 @@ impl From<trap::Label<MacroItems>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct MatchArm {
     pub id: trap::TrapId<MatchArm>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
     pub guard: Option<trap::Label<MatchGuard>>,
     pub pat: Option<trap::Label<Pat>>,
@@ -1578,7 +1568,7 @@ impl From<trap::Label<MatchArm>> for trap::Label<Element> {
 pub struct MatchArmList {
     pub id: trap::TrapId<MatchArmList>,
     pub arms: Vec<trap::Label<MatchArm>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
 }
 
 impl trap::TrapEntry for MatchArmList {
@@ -1708,6 +1698,60 @@ impl From<trap::Label<Meta>> for trap::Label<Locatable> {
 impl From<trap::Label<Meta>> for trap::Label<Element> {
     fn from(value: trap::Label<Meta>) -> Self {
         // SAFETY: this is safe because in the dbscheme Meta is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct MutRestriction {
+    pub id: trap::TrapId<MutRestriction>,
+    pub is_mut: bool,
+    pub visibility_inner: Option<trap::Label<VisibilityInner>>,
+}
+
+impl trap::TrapEntry for MutRestriction {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("mut_restrictions", vec![id.into()]);
+        if self.is_mut {
+            out.add_tuple("mut_restriction_is_mut", vec![id.into()]);
+        }
+        if let Some(v) = self.visibility_inner {
+            out.add_tuple("mut_restriction_visibility_inners", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for MutRestriction {
+    fn class_name() -> &'static str { "MutRestriction" }
+}
+
+impl From<trap::Label<MutRestriction>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<MutRestriction>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MutRestriction is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MutRestriction>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<MutRestriction>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MutRestriction is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MutRestriction>> for trap::Label<Element> {
+    fn from(value: trap::Label<MutRestriction>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MutRestriction is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2256,7 +2300,7 @@ impl From<trap::Label<ReturnTypeSyntax>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct SourceFile {
     pub id: trap::TrapId<SourceFile>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub items: Vec<trap::Label<Item>>,
 }
 
@@ -2346,7 +2390,7 @@ impl From<trap::Label<Stmt>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct StmtList {
     pub id: trap::TrapId<StmtList>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub statements: Vec<trap::Label<Stmt>>,
     pub tail_expr: Option<trap::Label<Expr>>,
 }
@@ -2404,7 +2448,7 @@ impl From<trap::Label<StmtList>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct StructExprField {
     pub id: trap::TrapId<StructExprField>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
     pub identifier: Option<trap::Label<NameRef>>,
 }
@@ -2462,7 +2506,7 @@ impl From<trap::Label<StructExprField>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct StructExprFieldList {
     pub id: trap::TrapId<StructExprFieldList>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub fields: Vec<trap::Label<StructExprField>>,
     pub spread: Option<trap::Label<Expr>>,
 }
@@ -2520,9 +2564,10 @@ impl From<trap::Label<StructExprFieldList>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct StructField {
     pub id: trap::TrapId<StructField>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub default_val: Option<trap::Label<ConstArg>>,
     pub is_unsafe: bool,
+    pub mut_restriction: Option<trap::Label<MutRestriction>>,
     pub name: Option<trap::Label<Name>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -2543,6 +2588,9 @@ impl trap::TrapEntry for StructField {
         }
         if self.is_unsafe {
             out.add_tuple("struct_field_is_unsafe", vec![id.into()]);
+        }
+        if let Some(v) = self.mut_restriction {
+            out.add_tuple("struct_field_mut_restrictions", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("struct_field_names", vec![id.into(), v.into()]);
@@ -2590,7 +2638,7 @@ impl From<trap::Label<StructField>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct StructPatField {
     pub id: trap::TrapId<StructPatField>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub identifier: Option<trap::Label<NameRef>>,
     pub pat: Option<trap::Label<Pat>>,
 }
@@ -2838,7 +2886,8 @@ impl From<trap::Label<TryBlockModifier>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct TupleField {
     pub id: trap::TrapId<TupleField>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
+    pub mut_restriction: Option<trap::Label<MutRestriction>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
 }
@@ -2852,6 +2901,9 @@ impl trap::TrapEntry for TupleField {
         out.add_tuple("tuple_fields", vec![id.into()]);
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("tuple_field_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.mut_restriction {
+            out.add_tuple("tuple_field_mut_restrictions", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.type_repr {
             out.add_tuple("tuple_field_type_reprs", vec![id.into(), v.into()]);
@@ -3300,7 +3352,7 @@ impl From<trap::Label<VariantList>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct Visibility {
     pub id: trap::TrapId<Visibility>,
-    pub path: Option<trap::Label<Path>>,
+    pub visibility_inner: Option<trap::Label<VisibilityInner>>,
 }
 
 impl trap::TrapEntry for Visibility {
@@ -3310,8 +3362,8 @@ impl trap::TrapEntry for Visibility {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("visibilities", vec![id.into()]);
-        if let Some(v) = self.path {
-            out.add_tuple("visibility_paths", vec![id.into(), v.into()]);
+        if let Some(v) = self.visibility_inner {
+            out.add_tuple("visibility_visibility_inners", vec![id.into(), v.into()]);
         }
     }
 }
@@ -3341,6 +3393,56 @@ impl From<trap::Label<Visibility>> for trap::Label<Locatable> {
 impl From<trap::Label<Visibility>> for trap::Label<Element> {
     fn from(value: trap::Label<Visibility>) -> Self {
         // SAFETY: this is safe because in the dbscheme Visibility is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct VisibilityInner {
+    pub id: trap::TrapId<VisibilityInner>,
+    pub path: Option<trap::Label<Path>>,
+}
+
+impl trap::TrapEntry for VisibilityInner {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("visibility_inners", vec![id.into()]);
+        if let Some(v) = self.path {
+            out.add_tuple("visibility_inner_paths", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for VisibilityInner {
+    fn class_name() -> &'static str { "VisibilityInner" }
+}
+
+impl From<trap::Label<VisibilityInner>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<VisibilityInner>) -> Self {
+        // SAFETY: this is safe because in the dbscheme VisibilityInner is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<VisibilityInner>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<VisibilityInner>) -> Self {
+        // SAFETY: this is safe because in the dbscheme VisibilityInner is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<VisibilityInner>> for trap::Label<Element> {
+    fn from(value: trap::Label<VisibilityInner>) -> Self {
+        // SAFETY: this is safe because in the dbscheme VisibilityInner is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3462,7 +3564,7 @@ impl From<trap::Label<WherePred>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct ArrayExprInternal {
     pub id: trap::TrapId<ArrayExprInternal>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub exprs: Vec<trap::Label<Expr>>,
     pub is_semicolon: bool,
 }
@@ -3592,6 +3694,7 @@ impl From<trap::Label<ArrayTypeRepr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct AsmClobberAbi {
     pub id: trap::TrapId<AsmClobberAbi>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
 }
 
 impl trap::TrapEntry for AsmClobberAbi {
@@ -3601,6 +3704,9 @@ impl trap::TrapEntry for AsmClobberAbi {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("asm_clobber_abis", vec![id.into()]);
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("asm_clobber_abi_attrs", vec![id.into(), i.into(), v.into()]);
+        }
     }
 }
 
@@ -3770,6 +3876,7 @@ impl From<trap::Label<AsmLabel>> for trap::Label<Element> {
 pub struct AsmOperandNamed {
     pub id: trap::TrapId<AsmOperandNamed>,
     pub asm_operand: Option<trap::Label<AsmOperand>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub name: Option<trap::Label<Name>>,
 }
 
@@ -3782,6 +3889,9 @@ impl trap::TrapEntry for AsmOperandNamed {
         out.add_tuple("asm_operand_nameds", vec![id.into()]);
         if let Some(v) = self.asm_operand {
             out.add_tuple("asm_operand_named_asm_operands", vec![id.into(), v.into()]);
+        }
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("asm_operand_named_attrs", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("asm_operand_named_names", vec![id.into(), v.into()]);
@@ -3833,6 +3943,7 @@ impl From<trap::Label<AsmOperandNamed>> for trap::Label<Element> {
 pub struct AsmOptionsList {
     pub id: trap::TrapId<AsmOptionsList>,
     pub asm_options: Vec<trap::Label<AsmOption>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
 }
 
 impl trap::TrapEntry for AsmOptionsList {
@@ -3844,6 +3955,9 @@ impl trap::TrapEntry for AsmOptionsList {
         out.add_tuple("asm_options_lists", vec![id.into()]);
         for (i, v) in self.asm_options.into_iter().enumerate() {
             out.add_tuple("asm_options_list_asm_options", vec![id.into(), i.into(), v.into()]);
+        }
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("asm_options_list_attrs", vec![id.into(), i.into(), v.into()]);
         }
     }
 }
@@ -4102,9 +4216,68 @@ impl From<trap::Label<AssocTypeArg>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
+pub struct Attr {
+    pub id: trap::TrapId<Attr>,
+    pub meta: Option<trap::Label<Meta>>,
+}
+
+impl trap::TrapEntry for Attr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("attrs", vec![id.into()]);
+        if let Some(v) = self.meta {
+            out.add_tuple("attr_meta", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for Attr {
+    fn class_name() -> &'static str { "Attr" }
+}
+
+impl From<trap::Label<Attr>> for trap::Label<AnyAttr> {
+    fn from(value: trap::Label<Attr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Attr is a subclass of AnyAttr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Attr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<Attr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Attr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Attr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<Attr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Attr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Attr>> for trap::Label<Element> {
+    fn from(value: trap::Label<Attr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Attr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct AwaitExpr {
     pub id: trap::TrapId<AwaitExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
 }
 
@@ -4167,7 +4340,7 @@ impl From<trap::Label<AwaitExpr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct BecomeExpr {
     pub id: trap::TrapId<BecomeExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
 }
 
@@ -4230,7 +4403,7 @@ impl From<trap::Label<BecomeExpr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct BinaryExpr {
     pub id: trap::TrapId<BinaryExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub lhs: Option<trap::Label<Expr>>,
     pub operator_name: Option<String>,
     pub rhs: Option<trap::Label<Expr>>,
@@ -4360,7 +4533,7 @@ impl From<trap::Label<BoxPat>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct BreakExpr {
     pub id: trap::TrapId<BreakExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
     pub lifetime: Option<trap::Label<Lifetime>>,
 }
@@ -4428,7 +4601,7 @@ impl From<trap::Label<BreakExpr>> for trap::Label<Element> {
 pub struct CallExpr {
     pub id: trap::TrapId<CallExpr>,
     pub arg_list: Option<trap::Label<ArgList>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub function: Option<trap::Label<Expr>>,
 }
 
@@ -4494,7 +4667,7 @@ impl From<trap::Label<CallExpr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct CastExpr {
     pub id: trap::TrapId<CastExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
 }
@@ -4798,7 +4971,7 @@ impl From<trap::Label<CfgMeta>> for trap::Label<Element> {
 pub struct ClosureExpr {
     pub id: trap::TrapId<ClosureExpr>,
     pub param_list: Option<trap::Label<ParamList>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub closure_body: Option<trap::Label<Expr>>,
     pub for_binder: Option<trap::Label<ForBinder>>,
     pub is_async: bool,
@@ -5080,7 +5253,7 @@ impl From<trap::Label<ConstBlockPat>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct ConstParam {
     pub id: trap::TrapId<ConstParam>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub default_val: Option<trap::Label<ConstArg>>,
     pub is_const: bool,
     pub name: Option<trap::Label<Name>>,
@@ -5155,7 +5328,7 @@ impl From<trap::Label<ConstParam>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct ContinueExpr {
     pub id: trap::TrapId<ContinueExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub lifetime: Option<trap::Label<Lifetime>>,
 }
 
@@ -5209,6 +5382,120 @@ impl From<trap::Label<ContinueExpr>> for trap::Label<Locatable> {
 impl From<trap::Label<ContinueExpr>> for trap::Label<Element> {
     fn from(value: trap::Label<ContinueExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme ContinueExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct DerefPat {
+    pub id: trap::TrapId<DerefPat>,
+    pub pat: Option<trap::Label<Pat>>,
+}
+
+impl trap::TrapEntry for DerefPat {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("deref_pats", vec![id.into()]);
+        if let Some(v) = self.pat {
+            out.add_tuple("deref_pat_pats", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for DerefPat {
+    fn class_name() -> &'static str { "DerefPat" }
+}
+
+impl From<trap::Label<DerefPat>> for trap::Label<Pat> {
+    fn from(value: trap::Label<DerefPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme DerefPat is a subclass of Pat
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<DerefPat>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<DerefPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme DerefPat is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<DerefPat>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<DerefPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme DerefPat is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<DerefPat>> for trap::Label<Element> {
+    fn from(value: trap::Label<DerefPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme DerefPat is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct DocComment {
+    pub id: trap::TrapId<DocComment>,
+}
+
+impl trap::TrapEntry for DocComment {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("doc_comments", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for DocComment {
+    fn class_name() -> &'static str { "DocComment" }
+}
+
+impl From<trap::Label<DocComment>> for trap::Label<AnyAttr> {
+    fn from(value: trap::Label<DocComment>) -> Self {
+        // SAFETY: this is safe because in the dbscheme DocComment is a subclass of AnyAttr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<DocComment>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<DocComment>) -> Self {
+        // SAFETY: this is safe because in the dbscheme DocComment is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<DocComment>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<DocComment>) -> Self {
+        // SAFETY: this is safe because in the dbscheme DocComment is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<DocComment>> for trap::Label<Element> {
+    fn from(value: trap::Label<DocComment>) -> Self {
+        // SAFETY: this is safe because in the dbscheme DocComment is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5336,7 +5623,7 @@ impl From<trap::Label<ExprStmt>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct FieldExpr {
     pub id: trap::TrapId<FieldExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub container: Option<trap::Label<Expr>>,
     pub identifier: Option<trap::Label<NameRef>>,
 }
@@ -5546,7 +5833,7 @@ impl From<trap::Label<ForTypeRepr>> for trap::Label<Element> {
 pub struct FormatArgsExpr {
     pub id: trap::TrapId<FormatArgsExpr>,
     pub args: Vec<trap::Label<FormatArgsArg>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub template: Option<trap::Label<Expr>>,
 }
 
@@ -5612,7 +5899,7 @@ impl From<trap::Label<FormatArgsExpr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct IdentPat {
     pub id: trap::TrapId<IdentPat>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub is_mut: bool,
     pub is_ref: bool,
     pub name: Option<trap::Label<Name>>,
@@ -5687,7 +5974,7 @@ impl From<trap::Label<IdentPat>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct IfExpr {
     pub id: trap::TrapId<IfExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub condition: Option<trap::Label<Expr>>,
     pub else_: Option<trap::Label<Expr>>,
     pub then: Option<trap::Label<BlockExpr>>,
@@ -5815,9 +6102,64 @@ impl From<trap::Label<ImplTraitTypeRepr>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
+pub struct IncludeBytesExpr {
+    pub id: trap::TrapId<IncludeBytesExpr>,
+}
+
+impl trap::TrapEntry for IncludeBytesExpr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("include_bytes_exprs", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for IncludeBytesExpr {
+    fn class_name() -> &'static str { "IncludeBytesExpr" }
+}
+
+impl From<trap::Label<IncludeBytesExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<IncludeBytesExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme IncludeBytesExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<IncludeBytesExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<IncludeBytesExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme IncludeBytesExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<IncludeBytesExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<IncludeBytesExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme IncludeBytesExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<IncludeBytesExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<IncludeBytesExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme IncludeBytesExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct IndexExpr {
     pub id: trap::TrapId<IndexExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub base: Option<trap::Label<Expr>>,
     pub index: Option<trap::Label<Expr>>,
 }
@@ -6108,7 +6450,7 @@ impl From<trap::Label<LabelableExpr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct LetExpr {
     pub id: trap::TrapId<LetExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub scrutinee: Option<trap::Label<Expr>>,
     pub pat: Option<trap::Label<Pat>>,
 }
@@ -6175,7 +6517,7 @@ impl From<trap::Label<LetExpr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct LetStmt {
     pub id: trap::TrapId<LetStmt>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub initializer: Option<trap::Label<Expr>>,
     pub let_else: Option<trap::Label<LetElse>>,
     pub pat: Option<trap::Label<Pat>>,
@@ -6368,7 +6710,7 @@ impl From<trap::Label<LifetimeArg>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct LifetimeParam {
     pub id: trap::TrapId<LifetimeParam>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub lifetime: Option<trap::Label<Lifetime>>,
     pub type_bound_list: Option<trap::Label<TypeBoundList>>,
 }
@@ -6435,7 +6777,7 @@ impl From<trap::Label<LifetimeParam>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct LiteralExpr {
     pub id: trap::TrapId<LiteralExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub text_value: Option<String>,
 }
 
@@ -6734,7 +7076,7 @@ impl From<trap::Label<MacroTypeRepr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct MatchExpr {
     pub id: trap::TrapId<MatchExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub scrutinee: Option<trap::Label<Expr>>,
     pub match_arm_list: Option<trap::Label<MatchArmList>>,
 }
@@ -6802,7 +7144,7 @@ impl From<trap::Label<MatchExpr>> for trap::Label<Element> {
 pub struct MethodCallExpr {
     pub id: trap::TrapId<MethodCallExpr>,
     pub arg_list: Option<trap::Label<ArgList>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub generic_arg_list: Option<trap::Label<GenericArgList>>,
     pub identifier: Option<trap::Label<NameRef>>,
     pub receiver: Option<trap::Label<Expr>>,
@@ -6988,9 +7330,64 @@ impl From<trap::Label<NeverTypeRepr>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
+pub struct NotNull {
+    pub id: trap::TrapId<NotNull>,
+}
+
+impl trap::TrapEntry for NotNull {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("not_nulls", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for NotNull {
+    fn class_name() -> &'static str { "NotNull" }
+}
+
+impl From<trap::Label<NotNull>> for trap::Label<Pat> {
+    fn from(value: trap::Label<NotNull>) -> Self {
+        // SAFETY: this is safe because in the dbscheme NotNull is a subclass of Pat
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<NotNull>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<NotNull>) -> Self {
+        // SAFETY: this is safe because in the dbscheme NotNull is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<NotNull>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<NotNull>) -> Self {
+        // SAFETY: this is safe because in the dbscheme NotNull is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<NotNull>> for trap::Label<Element> {
+    fn from(value: trap::Label<NotNull>) -> Self {
+        // SAFETY: this is safe because in the dbscheme NotNull is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct OffsetOfExpr {
     pub id: trap::TrapId<OffsetOfExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub fields: Vec<trap::Label<NameRef>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
 }
@@ -7116,7 +7513,7 @@ impl From<trap::Label<OrPat>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct Param {
     pub id: trap::TrapId<Param>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
     pub pat: Option<trap::Label<Pat>>,
 }
@@ -7183,7 +7580,7 @@ impl From<trap::Label<Param>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct ParenExpr {
     pub id: trap::TrapId<ParenExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
 }
 
@@ -7593,9 +7990,72 @@ impl From<trap::Label<PathTypeRepr>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
+pub struct PatternTypeRepr {
+    pub id: trap::TrapId<PatternTypeRepr>,
+    pub pat: Option<trap::Label<Pat>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
+}
+
+impl trap::TrapEntry for PatternTypeRepr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("pattern_type_reprs", vec![id.into()]);
+        if let Some(v) = self.pat {
+            out.add_tuple("pattern_type_repr_pats", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.type_repr {
+            out.add_tuple("pattern_type_repr_type_reprs", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for PatternTypeRepr {
+    fn class_name() -> &'static str { "PatternTypeRepr" }
+}
+
+impl From<trap::Label<PatternTypeRepr>> for trap::Label<TypeRepr> {
+    fn from(value: trap::Label<PatternTypeRepr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PatternTypeRepr is a subclass of TypeRepr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PatternTypeRepr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<PatternTypeRepr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PatternTypeRepr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PatternTypeRepr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<PatternTypeRepr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PatternTypeRepr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PatternTypeRepr>> for trap::Label<Element> {
+    fn from(value: trap::Label<PatternTypeRepr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PatternTypeRepr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct PrefixExpr {
     pub id: trap::TrapId<PrefixExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
     pub operator_name: Option<String>,
 }
@@ -7729,7 +8189,7 @@ impl From<trap::Label<PtrTypeRepr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct RangeExpr {
     pub id: trap::TrapId<RangeExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub end: Option<trap::Label<Expr>>,
     pub operator_name: Option<String>,
     pub start: Option<trap::Label<Expr>>,
@@ -7867,7 +8327,7 @@ impl From<trap::Label<RangePat>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct RefExpr {
     pub id: trap::TrapId<RefExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
     pub is_const: bool,
     pub is_mut: bool,
@@ -8072,7 +8532,7 @@ impl From<trap::Label<RefTypeRepr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct RestPat {
     pub id: trap::TrapId<RestPat>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
 }
 
 impl trap::TrapEntry for RestPat {
@@ -8131,7 +8591,7 @@ impl From<trap::Label<RestPat>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct ReturnExpr {
     pub id: trap::TrapId<ReturnExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
 }
 
@@ -8194,7 +8654,7 @@ impl From<trap::Label<ReturnExpr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct SelfParam {
     pub id: trap::TrapId<SelfParam>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
     pub is_ref: bool,
     pub is_mut: bool,
@@ -8657,7 +9117,7 @@ impl From<trap::Label<TokenTreeMeta>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct TryExpr {
     pub id: trap::TrapId<TryExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
 }
 
@@ -8720,7 +9180,7 @@ impl From<trap::Label<TryExpr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct TupleExpr {
     pub id: trap::TrapId<TupleExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub fields: Vec<trap::Label<Expr>>,
 }
 
@@ -9091,7 +9551,7 @@ impl From<trap::Label<TypeArg>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct TypeParam {
     pub id: trap::TrapId<TypeParam>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub default_type: Option<trap::Label<TypeRepr>>,
     pub name: Option<trap::Label<Name>>,
     pub type_bound_list: Option<trap::Label<TypeBoundList>>,
@@ -9162,7 +9622,7 @@ impl From<trap::Label<TypeParam>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct UnderscoreExpr {
     pub id: trap::TrapId<UnderscoreExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
 }
 
 impl trap::TrapEntry for UnderscoreExpr {
@@ -9284,7 +9744,7 @@ impl From<trap::Label<UnsafeMeta>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct Variant {
     pub id: trap::TrapId<Variant>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub const_arg: Option<trap::Label<ConstArg>>,
     pub field_list: Option<trap::Label<FieldList>>,
     pub name: Option<trap::Label<Name>>,
@@ -9414,7 +9874,7 @@ impl From<trap::Label<WildcardPat>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct YeetExpr {
     pub id: trap::TrapId<YeetExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
 }
 
@@ -9477,7 +9937,7 @@ impl From<trap::Label<YeetExpr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct YieldExpr {
     pub id: trap::TrapId<YieldExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub expr: Option<trap::Label<Expr>>,
 }
 
@@ -9541,7 +10001,7 @@ impl From<trap::Label<YieldExpr>> for trap::Label<Element> {
 pub struct AsmExpr {
     pub id: trap::TrapId<AsmExpr>,
     pub asm_pieces: Vec<trap::Label<AsmPiece>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub template: Vec<trap::Label<Expr>>,
 }
 
@@ -9698,7 +10158,7 @@ impl From<trap::Label<AssocItem>> for trap::Label<Addressable> {
 pub struct BlockExpr {
     pub id: trap::TrapId<BlockExpr>,
     pub label: Option<trap::Label<Label>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub is_async: bool,
     pub is_const: bool,
     pub is_gen: bool,
@@ -9798,7 +10258,7 @@ impl From<trap::Label<BlockExpr>> for trap::Label<Element> {
 pub struct ExternBlock {
     pub id: trap::TrapId<ExternBlock>,
     pub abi: Option<trap::Label<Abi>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub extern_item_list: Option<trap::Label<ExternItemList>>,
     pub is_unsafe: bool,
 }
@@ -9886,7 +10346,7 @@ impl From<trap::Label<ExternBlock>> for trap::Label<Addressable> {
 #[derive(Debug)]
 pub struct ExternCrate {
     pub id: trap::TrapId<ExternCrate>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub identifier: Option<trap::Label<NameRef>>,
     pub rename: Option<trap::Label<Rename>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -10039,7 +10499,7 @@ impl From<trap::Label<ExternItem>> for trap::Label<Addressable> {
 pub struct Impl {
     pub id: trap::TrapId<Impl>,
     pub assoc_item_list: Option<trap::Label<AssocItemList>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub is_const: bool,
     pub is_default: bool,
@@ -10206,7 +10666,7 @@ impl From<trap::Label<LoopingExpr>> for trap::Label<Element> {
 pub struct MacroDef {
     pub id: trap::TrapId<MacroDef>,
     pub args: Option<trap::Label<TokenTree>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub body: Option<trap::Label<TokenTree>>,
     pub name: Option<trap::Label<Name>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -10298,7 +10758,7 @@ impl From<trap::Label<MacroDef>> for trap::Label<Addressable> {
 #[derive(Debug)]
 pub struct MacroRules {
     pub id: trap::TrapId<MacroRules>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub name: Option<trap::Label<Name>>,
     pub token_tree: Option<trap::Label<TokenTree>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -10387,7 +10847,7 @@ impl From<trap::Label<MacroRules>> for trap::Label<Addressable> {
 #[derive(Debug)]
 pub struct Module {
     pub id: trap::TrapId<Module>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub item_list: Option<trap::Label<ItemList>>,
     pub name: Option<trap::Label<Name>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -10477,7 +10937,7 @@ impl From<trap::Label<Module>> for trap::Label<Addressable> {
 pub struct PathExpr {
     pub id: trap::TrapId<PathExpr>,
     pub path: Option<trap::Label<Path>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
 }
 
 impl trap::TrapEntry for PathExpr {
@@ -10558,8 +11018,9 @@ impl From<trap::Label<PathExpr>> for trap::Label<PathAstNode> {
 pub struct Trait {
     pub id: trap::TrapId<Trait>,
     pub assoc_item_list: Option<trap::Label<AssocItemList>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
+    pub impl_restriction: Option<trap::Label<ImplRestriction>>,
     pub is_auto: bool,
     pub is_unsafe: bool,
     pub name: Option<trap::Label<Name>>,
@@ -10583,6 +11044,9 @@ impl trap::TrapEntry for Trait {
         }
         if let Some(v) = self.generic_param_list {
             out.add_tuple("trait_generic_param_lists", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.impl_restriction {
+            out.add_tuple("trait_impl_restrictions", vec![id.into(), v.into()]);
         }
         if self.is_auto {
             out.add_tuple("trait_is_auto", vec![id.into()]);
@@ -10742,7 +11206,7 @@ impl From<trap::Label<TypeItem>> for trap::Label<Addressable> {
 #[derive(Debug)]
 pub struct Use {
     pub id: trap::TrapId<Use>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub use_tree: Option<trap::Label<UseTree>>,
     pub visibility: Option<trap::Label<Visibility>>,
 }
@@ -10827,7 +11291,7 @@ impl From<trap::Label<Use>> for trap::Label<Addressable> {
 #[derive(Debug)]
 pub struct Const {
     pub id: trap::TrapId<Const>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub body: Option<trap::Label<Expr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub is_const: bool,
@@ -10952,7 +11416,7 @@ impl From<trap::Label<Const>> for trap::Label<Addressable> {
 #[derive(Debug)]
 pub struct Enum {
     pub id: trap::TrapId<Enum>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub name: Option<trap::Label<Name>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -11060,7 +11524,7 @@ pub struct ForExpr {
     pub id: trap::TrapId<ForExpr>,
     pub label: Option<trap::Label<Label>>,
     pub loop_body: Option<trap::Label<BlockExpr>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub iterable: Option<trap::Label<Expr>>,
     pub pat: Option<trap::Label<Pat>>,
 }
@@ -11152,7 +11616,7 @@ impl From<trap::Label<ForExpr>> for trap::Label<Element> {
 pub struct Function {
     pub id: trap::TrapId<Function>,
     pub param_list: Option<trap::Label<ParamList>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub abi: Option<trap::Label<Abi>>,
     pub function_body: Option<trap::Label<BlockExpr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
@@ -11316,7 +11780,7 @@ pub struct LoopExpr {
     pub id: trap::TrapId<LoopExpr>,
     pub label: Option<trap::Label<Label>>,
     pub loop_body: Option<trap::Label<BlockExpr>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
 }
 
 impl trap::TrapEntry for LoopExpr {
@@ -11399,7 +11863,7 @@ impl From<trap::Label<LoopExpr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct MacroCall {
     pub id: trap::TrapId<MacroCall>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub path: Option<trap::Label<Path>>,
     pub token_tree: Option<trap::Label<TokenTree>>,
 }
@@ -11509,7 +11973,7 @@ impl From<trap::Label<MacroCall>> for trap::Label<ExternItem> {
 #[derive(Debug)]
 pub struct Static {
     pub id: trap::TrapId<Static>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub body: Option<trap::Label<Expr>>,
     pub is_mut: bool,
     pub is_static: bool,
@@ -11623,7 +12087,7 @@ impl From<trap::Label<Static>> for trap::Label<Addressable> {
 #[derive(Debug)]
 pub struct Struct {
     pub id: trap::TrapId<Struct>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub name: Option<trap::Label<Name>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -11729,7 +12193,7 @@ impl From<trap::Label<Struct>> for trap::Label<Addressable> {
 #[derive(Debug)]
 pub struct TypeAlias {
     pub id: trap::TrapId<TypeAlias>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub is_default: bool,
     pub name: Option<trap::Label<Name>>,
@@ -11852,7 +12316,7 @@ impl From<trap::Label<TypeAlias>> for trap::Label<ExternItem> {
 #[derive(Debug)]
 pub struct Union {
     pub id: trap::TrapId<Union>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub name: Option<trap::Label<Name>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -11960,7 +12424,7 @@ pub struct WhileExpr {
     pub id: trap::TrapId<WhileExpr>,
     pub label: Option<trap::Label<Label>>,
     pub loop_body: Option<trap::Label<BlockExpr>>,
-    pub attrs: Vec<trap::Label<Attr>>,
+    pub attrs: Vec<trap::Label<AnyAttr>>,
     pub condition: Option<trap::Label<Expr>>,
 }
 

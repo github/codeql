@@ -82,37 +82,29 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name: identifier "classify"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩) ⟨body⟩"
+          name_node: identifier "classify" source="classify"
           parameter:
-            parameter
-              external_name: identifier "_"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              pattern:
-                name_pattern
-                  identifier: identifier "x"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "x" source="x"
           body:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                switch_expr
-                  value:
-                    name_expr
-                      identifier: identifier "x"
+                switch_expr source="switch ⟨value⟩ {\n  ⟨case⟩\n  ⟨case⟩\n  }"
+                  value: identifier "x" source="x"
                   case:
-                    switch_case
-                      pattern:
-                        expr_equality_pattern
-                          expr: int_literal "1"
+                    switch_case source="case ⟨pattern⟩:\n    ⟨body⟩"
+                      pattern: int_literal "1" source="1"
                       body:
-                        block
-                          stmt: unsupported_node "fallthrough"
-                    switch_case
+                        block source="⟨stmt⟩"
+                          stmt: unsupported_node "fallthrough" source="fallthrough"
+                    switch_case source="default:\n    ⟨body⟩"
                       body:
-                        block
-                          stmt: break_expr "break"
+                        block source="⟨stmt⟩"
+                          stmt: break_expr "break" source="break"

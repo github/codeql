@@ -102,52 +102,41 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "class"
-          name: identifier "Box"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  var v: Int {\n    ⟨member⟩\n    ⟨member⟩\n  }\n}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "Box" source="Box"
           member:
-            variable_declaration
+            variable_declaration source="⟨modifier⟩ ⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
               modifier:
-                modifier "var"
-                modifier "private"
-              pattern:
-                name_pattern
-                  identifier: identifier "_v"
-              value: int_literal "0"
-            accessor_declaration
-              modifier: modifier "var"
-              name: identifier "v"
-              accessor_kind: accessor_kind "get"
-              type:
-                named_type_expr
-                  name: identifier "Int"
+                modifier "var" source="var"
+                modifier "private" source="private"
+              pattern: identifier "_v" source="_v"
+              value: int_literal "0" source="0"
+            accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
+              modifier: modifier "var" source="var" (external)
+              name_node: identifier "v" source="v" (external)
+              accessor_kind: accessor_kind "get" source="get"
+              type: identifier "Int" source="Int" (external)
               body:
-                block
+                block source="{ ⟨stmt⟩ }"
                   stmt:
-                    return_expr
-                      value:
-                        name_expr
-                          identifier: identifier "_v"
-            accessor_declaration
+                    return_expr source="return ⟨value⟩"
+                      value: identifier "_v" source="_v"
+            accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
               modifier:
-                modifier "var"
-                modifier "chained_declaration"
-              name: identifier "v"
-              accessor_kind: accessor_kind "set"
-              type:
-                named_type_expr
-                  name: identifier "Int"
+                modifier "var" source="var" (external)
+                modifier "chained_declaration" source=""
+              name_node: identifier "v" source="v" (external)
+              accessor_kind: accessor_kind "set" source="set"
+              type: identifier "Int" source="Int" (external)
               body:
-                block
+                block source="{ ⟨stmt⟩ }"
                   stmt:
-                    assign_expr
-                      target:
-                        name_expr
-                          identifier: identifier "_v"
-                      value:
-                        name_expr
-                          identifier: identifier "newValue"
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "_v" source="_v"
+                      operator: infix_operator "=" source="="
+                      right: identifier "newValue" source="newValue"

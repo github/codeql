@@ -30,7 +30,7 @@ namespace Semmle.Extraction.Tests
 
         public bool Exec(List<string> execArgs) => true;
 
-        public IList<string> GetNugetFeeds(string nugetConfig) => nugetFeedsFromConfig;
+        public IList<string> GetNugetFeedsFromConfig(string nugetConfig) => nugetFeedsFromConfig;
 
         public IList<string> GetNugetFeedsFromFolder(string folderPath) => nugetFeedsFromFolder;
     }

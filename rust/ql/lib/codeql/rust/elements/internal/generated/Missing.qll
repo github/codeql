@@ -20,5 +20,7 @@ module Generated {
    */
   class Missing extends Synth::TMissing, UnextractedImpl::Unextracted {
     override string getAPrimaryQlClass() { result = "Missing" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

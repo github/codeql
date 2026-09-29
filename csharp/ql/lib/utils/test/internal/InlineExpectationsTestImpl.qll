@@ -49,4 +49,14 @@ module Impl implements InlineExpectationsTestSig {
   }
 
   class Location = CS::Location;
+
+  string getRelativeUrl(Location location) {
+    exists(CS::File f, int startline, int startcolumn, int endline, int endcolumn |
+      location.hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
+      f = location.getFile()
+    |
+      result =
+        f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
+    )
+  }
 }

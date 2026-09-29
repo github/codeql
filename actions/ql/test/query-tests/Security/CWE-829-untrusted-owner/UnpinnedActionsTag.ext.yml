@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: trustedActionsOwnerDataModel
+    data:
+      # Distrust the first-party `actions` owner so unpinned tags for its
+      # Actions are reported. `github` is intentionally left trusted.
+      - ["!actions"]

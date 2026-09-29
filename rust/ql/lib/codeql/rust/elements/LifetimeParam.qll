@@ -4,7 +4,7 @@
  */
 
 private import internal.LifetimeParamImpl
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.GenericParam
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeBoundList

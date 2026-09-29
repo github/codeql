@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
 import codeql.rust.elements.TokenTree
@@ -32,12 +32,14 @@ module Generated {
   class MacroRules extends Synth::TMacroRules, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "MacroRules" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this macro rules (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertMacroRulesToRaw(this)
+        Synth::convertAnyAttrFromRaw(Synth::convertMacroRulesToRaw(this)
               .(Raw::MacroRules)
               .getAttr(index))
     }
@@ -45,7 +47,7 @@ module Generated {
     /**
      * Gets any of the attrs of this macro rules.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this macro rules.

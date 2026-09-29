@@ -83,4 +83,14 @@ func f10(i int, a intintmap) int {
 	return -1
 }
 
+func f11(a []int) int {
+	if !(len(a) >= 3 && // $ Alert
+		a[0] == 0 &&
+		a[1] == 0 &&
+		a[2] == 0) {
+		return -1
+	}
+	return a[3] // $ Source
+}
+
 func main() {}

@@ -28,6 +28,8 @@ module Generated {
   class VariantList extends Synth::TVariantList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "VariantList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th variant of this variant list (0-based).
      */

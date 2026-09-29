@@ -5,6 +5,16 @@
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
 
+private predicate missingToString(Element e) { not exists(e.toString()) }
+
+/**
+ * Holds if `e` lacks a `toString()` result.
+ */
+query predicate missingToString(Element e, string cls) {
+  missingToString(e) and
+  cls = e.getPrimaryQlClasses()
+}
+
 private predicate multipleToStrings(Element e) { strictcount(e.toString()) > 1 }
 
 /**
@@ -86,6 +96,9 @@ query predicate multipleVariableTargets(VariableAccess va, Variable v1) {
  */
 int getAstInconsistencyCounts(string type) {
   // total results from all the AST consistency query predicates.
+  type = "Missing toString" and
+  result = count(Element e | missingToString(e) | e)
+  or
   type = "Multiple toStrings" and
   result = count(Element e | multipleToStrings(e) | e)
   or

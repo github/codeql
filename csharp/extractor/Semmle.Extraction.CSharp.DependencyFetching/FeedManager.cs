@@ -10,13 +10,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal sealed partial class FeedManager : IDisposable
     {
-        internal const string PublicNugetOrgFeed = "https://api.nuget.org/v3/index.json";
+        private const string PublicNugetOrg = "nuget.org";
+        private const string PublicDotNugetOrg = $".{PublicNugetOrg}";
+        internal const string PublicApiNugetOrgFeed = $"https://api{PublicDotNugetOrg}/v3/index.json";
 
         private readonly ILogger logger;
         private readonly IDotNet dotnet;
         private readonly IFileProvider fileProvider;
         private readonly DependencyDirectory emptyPackageDirectory;
         private readonly ImmutableHashSet<string> privateRegistryFeeds;
+        private readonly bool hasPrivateRegistryBaseFeeds;
+        private readonly ImmutableHashSet<string> privateRegistryBaseFeeds;
         private readonly IFeedManagerIO feedManagerIo;
 
         /// <summary>
@@ -72,35 +76,79 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public ImmutableHashSet<string> ReachableFallbackFeeds => lazyReachableFallbackFeeds.Value;
 
-        public FeedManager(ILogger logger, IDotNet dotnet, IDependabotProxy? dependabotProxy, IFileProvider fileProvider, IFeedManagerIO feedManagerIo)
+        private readonly Lazy<ImmutableHashSet<string>> lazyReachableDefaultFeeds;
+
+        /// <summary>
+        /// Gets the list of default NuGet feeds that are configured in the environment.
+        /// This is either the public NuGet feed or a set of feeds specified by the environment.
+        /// </summary>
+        public ImmutableHashSet<string> DefaultFeeds { get; init; }
+
+        /// <summary>
+        /// Gets the list of reachable default NuGet feeds.
+        /// </summary>
+        public ImmutableHashSet<string> ReachableDefaultFeeds => lazyReachableDefaultFeeds.Value;
+
+        public FeedManager(ILogger logger, IDotNet dotnet, IRegistryProxy? registryProxy, IFileProvider fileProvider, IFeedManagerIO feedManagerIo)
         {
             this.logger = logger;
             this.dotnet = dotnet;
             this.fileProvider = fileProvider;
             this.feedManagerIo = feedManagerIo;
-            privateRegistryFeeds = dependabotProxy?.RegistryURLs.ToImmutableHashSet() ?? [];
+            privateRegistryFeeds = registryProxy?.RegistryURLs ?? [];
             HasPrivateRegistryFeeds = privateRegistryFeeds.Count > 0;
+            privateRegistryBaseFeeds = registryProxy?.RegistryBaseURLs ?? [];
+            hasPrivateRegistryBaseFeeds = privateRegistryBaseFeeds.Count > 0;
+
+            DefaultFeeds = hasPrivateRegistryBaseFeeds
+                ? privateRegistryBaseFeeds
+                : [PublicApiNugetOrgFeed];
             emptyPackageDirectory = new DependencyDirectory("empty", "empty package", logger);
 
             lazyExplicitFeeds = new Lazy<ImmutableHashSet<string>>(GetExplicitFeeds);
             lazyAllFeeds = new Lazy<ImmutableHashSet<string>>(GetAllFeeds);
-            lazyReachableExplicitFeeds = new Lazy<ImmutableHashSet<string>>(() => CheckSpecifiedFeeds(ExplicitFeeds));
+            lazyReachableExplicitFeeds = new Lazy<ImmutableHashSet<string>>(() =>
+            {
+                logger.LogInfo("Discovering reachable explicit NuGet feeds.");
+                return CheckSpecifiedFeeds(ExplicitFeeds);
+            });
             lazyReachableFeeds = new Lazy<ImmutableHashSet<string>>(() =>
             {
+                logger.LogInfo("Discovering reachable inherited NuGet feeds.");
                 // Inherited feeds should only be used, if they are indeed reachable (as they may be environment specific).
                 var reachableInheritedFeeds = CheckSpecifiedFeeds(InheritedFeeds);
                 return ReachableExplicitFeeds.Union(reachableInheritedFeeds).ToImmutableHashSet();
             });
             lazyReachableFallbackFeeds = new Lazy<ImmutableHashSet<string>>(() =>
             {
+                logger.LogInfo("Discovering reachable fallback NuGet feeds.");
                 var reachableFallbackFeeds = GetReachableFallbackNugetFeeds();
                 return reachableFallbackFeeds.ToImmutableHashSet();
             });
+            lazyReachableDefaultFeeds = new Lazy<ImmutableHashSet<string>>(() =>
+            {
+                logger.LogInfo("Discovering reachable default NuGet feeds.");
+                return CheckSpecifiedFeeds(DefaultFeeds);
+            });
         }
 
-        public FeedManager(ILogger logger, IDotNet dotnet, IDependabotProxy? dependabotProxy, IFileProvider fileProvider)
-            : this(logger, dotnet, dependabotProxy, fileProvider, new FeedManagerIO(logger, dependabotProxy))
+        public FeedManager(ILogger logger, IDotNet dotnet, IRegistryProxy? registryProxy, IFileProvider fileProvider)
+            : this(logger, dotnet, registryProxy, fileProvider, new FeedManagerIO(logger, registryProxy))
         {
+        }
+
+        private bool IsNugetOrgFeed(string url)
+        {
+            try
+            {
+                var uri = new Uri(url);
+                return uri.Host.EndsWith(PublicDotNugetOrg, StringComparison.InvariantCultureIgnoreCase) ||
+                    string.Equals(uri.Host, PublicNugetOrg, StringComparison.InvariantCultureIgnoreCase);
+            }
+            catch (UriFormatException)
+            {
+                return false;
+            }
         }
 
         private IEnumerable<string> GetFeeds(Func<IList<string>> getNugetFeeds)
@@ -124,10 +172,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     continue;
                 }
 
-                if (!string.IsNullOrWhiteSpace(url))
+                if (hasPrivateRegistryBaseFeeds && IsNugetOrgFeed(url))
                 {
-                    yield return url;
+                    // Use private registry base feeds.
+                    foreach (var feed in privateRegistryBaseFeeds)
+                    {
+                        logger.LogDebug($"Using private registry base feed '{feed}'.");
+                        yield return feed;
+                    }
+                    continue;
                 }
+
+                yield return url;
             }
         }
 
@@ -135,7 +191,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             GetFeeds(() => dotnet.GetNugetFeedsFromFolder(folderPath));
 
         private IEnumerable<string> GetFeedsFromNugetConfig(string nugetConfigPath) =>
-            GetFeeds(() => dotnet.GetNugetFeeds(nugetConfigPath));
+            GetFeeds(() => dotnet.GetNugetFeedsFromConfig(nugetConfigPath));
 
         /// <summary>
         /// Constructs the NuGet sources argument for the restore command based on the given feeds.
@@ -267,22 +323,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Return true if the default NuGet feed is reachable, false otherwise.
-        /// If the reachability check is disabled, this method will always return true.
-        /// </summary>
-        /// <returns>True if the default NuGet feed is reachable, false otherwise.</returns>
-        public bool IsDefaultFeedReachable()
-        {
-            if (CheckNugetFeedResponsiveness)
-            {
-                var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback: false);
-                return feedManagerIo.IsFeedReachable(PublicNugetOrgFeed, initialTimeout, tryCount);
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// Tests which of the feeds given by <paramref name="feedsToCheck"/> are reachable.
         /// </summary>
         /// <param name="feedsToCheck">The feeds to check.</param>
@@ -315,8 +355,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var fallbackFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.FallbackNugetFeeds).ToHashSet();
             if (fallbackFeeds.Count == 0)
             {
-                fallbackFeeds.Add(PublicNugetOrgFeed);
-                logger.LogInfo($"No fallback NuGet feeds specified. Adding default feed: {PublicNugetOrgFeed}");
+                fallbackFeeds.UnionWith(DefaultFeeds);
+                logger.LogInfo($"No fallback NuGet feeds specified. Adding default feeds: {string.Join(", ", DefaultFeeds.OrderBy(f => f))}");
 
                 var shouldAddNugetConfigFeeds = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.AddNugetConfigFeedsToFallback);
                 logger.LogInfo($"Adding feeds from nuget.config to fallback restore: {shouldAddNugetConfigFeeds}");
@@ -329,12 +369,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     logger.LogInfo($"Using NuGet feeds from nuget.config files as fallback feeds: {string.Join(", ", ExplicitFeeds.OrderBy(f => f))}");
                 }
             }
+            else
+            {
+                logger.LogInfo($"Using fallback NuGet feeds from environment variable '{EnvironmentVariableNames.FallbackNugetFeeds}'.");
+            }
 
             return GetReachableNuGetFeeds(fallbackFeeds, isFallback: true);
         }
 
         private ImmutableHashSet<string> GetExplicitFeeds()
         {
+            logger.LogInfo("Discovering explicit NuGet feeds from nuget.config files and private registries.");
             var nugetConfigs = fileProvider.NugetConfigs;
 
             // Find feeds that are explicitly configured in the NuGet configuration files that we found.
@@ -364,6 +409,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private ImmutableHashSet<string> GetAllFeeds()
         {
+            logger.LogInfo("Discovering all NuGet feeds.");
+
             var nugetConfigs = fileProvider.NugetConfigs;
 
             HashSet<string> allFeeds = [];

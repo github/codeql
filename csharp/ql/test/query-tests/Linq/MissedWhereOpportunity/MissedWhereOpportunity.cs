@@ -174,6 +174,18 @@ class MissedWhereOpportunity
         }
     }
 
+    public void M13(List<int> lst, in int x)
+    {
+        // GOOD: Linq can't be used here because the condition uses an in parameter.
+        foreach (int i in lst)
+        {
+            if (i % 2 != x)
+                continue;
+            Console.WriteLine(i);
+            Console.WriteLine((i / 2));
+        }
+    }
+
     public class NonEnumerableClass
     {
         public IEnumerator<int> GetEnumerator() => throw null;

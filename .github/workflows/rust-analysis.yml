@@ -57,6 +57,15 @@ jobs:
         languages: ${{ matrix.language }}
         config-file: ./.github/codeql/codeql-config.yml
 
+    # TODO: Remove once Rust extractor no longer errors on this file
+    - name: Remove malformed rust-analyzer parser fixture
+      shell: bash
+      run: |
+        cargo fetch
+        find "${CARGO_HOME:-$HOME/.cargo}/registry/src" \
+          -path '*/ra_ap_parser-0.0.352/test_data/lexer/err/incomplete_frontmatter_before_unicode.rs' \
+          -delete
+
     - name: Autobuild
       uses: github/codeql-action/autobuild@main
 

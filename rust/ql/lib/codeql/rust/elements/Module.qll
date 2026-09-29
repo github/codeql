@@ -4,7 +4,7 @@
  */
 
 private import internal.ModuleImpl
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Item
 import codeql.rust.elements.ItemList
 import codeql.rust.elements.Name

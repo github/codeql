@@ -1,3 +1,7 @@
+## 1.11.11
+
+No user-facing changes.
+
 ## 1.11.10
 
 No user-facing changes.

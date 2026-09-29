@@ -10,15 +10,15 @@
 //! by the extractor's own pure-Rust adapter module, keeping the Swift toolchain
 //! out of the extractor's build.
 
-use std::ffi::{CStr, CString};
+use std::ffi::CStr;
 use std::os::raw::c_char;
 
 // C ABI exported by the `SwiftSyntaxFFI` dynamic library.
 unsafe extern "C" {
-    /// Parse a NUL-terminated Swift source string, returning a heap-allocated
+    /// Parse a UTF-8 Swift source buffer, returning a heap-allocated
     /// NUL-terminated JSON string (or null on failure). The caller owns the
     /// returned pointer and must release it with `ssr_string_free`.
-    fn ssr_parse_json(source: *const c_char) -> *mut c_char;
+    fn ssr_parse_json(source: *const u8, source_len: usize) -> *mut c_char;
 
     /// Free a string previously returned by `ssr_parse_json`.
     fn ssr_string_free(ptr: *mut c_char);
@@ -27,8 +27,6 @@ unsafe extern "C" {
 /// Errors that can occur while parsing Swift source.
 #[derive(Debug)]
 pub enum ParseError {
-    /// The provided source contained an interior NUL byte.
-    NulByte,
     /// The Swift shim returned no result. `SwiftParser` recovers from invalid
     /// syntax (it always produces a tree, possibly with error nodes), so this
     /// does *not* indicate a syntax error in the source — it means the shim
@@ -39,7 +37,6 @@ pub enum ParseError {
 impl std::fmt::Display for ParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ParseError::NulByte => write!(f, "source contained an interior NUL byte"),
             ParseError::SwiftFailure => {
                 write!(f, "the swift-syntax shim failed to produce a JSON result")
             }
@@ -58,13 +55,11 @@ impl std::error::Error for ParseError {}
 /// println!("{json}");
 /// ```
 pub fn parse_to_json(source: &str) -> Result<String, ParseError> {
-    let c_source = CString::new(source).map_err(|_| ParseError::NulByte)?;
-
-    // SAFETY: `c_source` is a valid NUL-terminated string for the duration of
-    // the call. The returned pointer, if non-null, is owned by us and freed via
-    // `ssr_string_free` before returning.
+    // SAFETY: `source` is valid UTF-8 and its buffer remains alive for the
+    // duration of the call. The returned pointer, if non-null, is owned by us
+    // and freed via `ssr_string_free` before returning.
     unsafe {
-        let ptr = ssr_parse_json(c_source.as_ptr());
+        let ptr = ssr_parse_json(source.as_ptr(), source.len());
         if ptr.is_null() {
             return Err(ParseError::SwiftFailure);
         }
@@ -86,11 +81,17 @@ mod tests {
             "unexpected tree: {json}"
         );
         assert!(json.contains("\"text\":\"x\""), "unexpected tree: {json}");
-        // Source ranges are emitted for every node.
-        assert!(json.contains("\"range\""), "missing ranges: {json}");
+        // Compact UTF-8 source ranges are emitted for every node, with one
+        // source-wide line-start table.
         assert!(
-            json.contains("\"line\"") && json.contains("\"column\"") && json.contains("\"offset\""),
+            json.contains("\"$pos\"")
+                && json.contains("\"$end\"")
+                && json.contains("\"$lineStarts\""),
             "missing location fields: {json}"
+        );
+        assert!(
+            !json.contains("\"range\""),
+            "unexpected verbose range: {json}"
         );
     }
 
@@ -127,6 +128,24 @@ mod tests {
     }
 
     #[test]
+    fn parses_source_with_interior_nul() {
+        let json = parse_to_json("let x =\0 1").expect("parsing interior NUL should succeed");
+        assert!(
+            json.contains(r#"\u0000"#),
+            "interior NUL should be preserved in the JSON tree: {json}"
+        );
+    }
+
+    #[test]
+    fn rejects_excessively_deep_syntax_tree() {
+        let source = format!("let x = a{}\n", ".a".repeat(2100));
+        assert!(
+            matches!(parse_to_json(&source), Err(ParseError::SwiftFailure)),
+            "serialization should reject syntax trees beyond the supported depth"
+        );
+    }
+
+    #[test]
     fn serializes_json_strings_and_keys_deterministically() {
         let source = "/* quote \" slash / backslash \\ tab \t newline\n emoji 😀 combining e\u{301} control \u{1} */\nlet x = 1";
         let json = parse_to_json(source).expect("parsing should succeed");
@@ -138,8 +157,29 @@ mod tests {
             "JSON string was not escaped correctly: {json}"
         );
         assert!(
-            json.contains(r#""start":{"column":1,"line":1,"offset":0}"#),
+            json.starts_with(r#"{"$end":"#) && json.contains(r#","$lineStarts":[0,"#),
             "JSON object keys were not sorted: {json}"
+        );
+    }
+
+    #[test]
+    fn emits_utf8_offsets_with_swift_syntax_line_boundaries() {
+        let source = "// é😀\r\nlet x = 1\rlet y = 2\n";
+        let json = parse_to_json(source).expect("parsing should succeed");
+
+        // SwiftSyntax recognizes LF, CR, and CRLF as physical line breaks. The
+        // offsets are UTF-8 bytes, so the first CRLF ends at byte 11.
+        assert!(
+            json.contains(r#""$lineStarts":[0,11,21,31]"#),
+            "unexpected line starts: {json}"
+        );
+        assert!(
+            json.contains(r#""$end":16,"$pos":15,"kind":"token","text":"x""#),
+            "unexpected UTF-8 token range: {json}"
+        );
+        assert!(
+            json.contains(r#""$end":26,"$pos":25,"kind":"token","text":"y""#),
+            "unexpected UTF-8 token range: {json}"
         );
     }
 

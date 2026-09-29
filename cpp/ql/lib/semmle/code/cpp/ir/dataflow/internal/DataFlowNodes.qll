@@ -144,7 +144,7 @@ private module Cached {
     TNonUnionContent(CanonicalField f, int indirectionIndex) {
       // the indirection index for field content starts at 1 (because `TNonUnionContent` is thought of as
       // the address of the field, `FieldAddress` in the IR).
-      indirectionIndex = [1 .. max(SsaImpl::getMaxIndirectionsForType(f.getAnUnspecifiedType()))] and
+      indirectionIndex = [1 .. max(SsaImpl::getMaxIndirectionsForGLType(f.getAnUnspecifiedType()))] and
       // Reads and writes of union fields are tracked using `UnionContent`.
       not f.getDeclaringType() instanceof Union
     } or
@@ -156,7 +156,7 @@ private module Cached {
         // field can be read by any read of the union's fields. Again, the indirection index
         // is 1-based (because 0 is considered the address).
         indirectionIndex =
-          [1 .. max(SsaImpl::getMaxIndirectionsForType(getAFieldWithSize(u, bytes)
+          [1 .. max(SsaImpl::getMaxIndirectionsForGLType(getAFieldWithSize(u, bytes)
                       .getAnUnspecifiedType())
             )]
       )
@@ -184,13 +184,16 @@ private module Cached {
     TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
     TGlobalLikeVariableNode(GlobalLikeVariable var, int indirectionIndex) {
       indirectionIndex =
-        [getMinIndirectionsForType(var.getUnspecifiedType()) .. SsaImpl::getMaxIndirectionsForType(var.getUnspecifiedType())]
+        [getMinIndirectionsForType(var.getUnspecifiedType()) .. SsaImpl::getMaxIndirectionsForGLType(var.getUnspecifiedType())]
     } or
     TPostUpdateNodeImpl(Operand operand, int indirectionIndex) {
       isPostUpdateNodeImpl(operand, indirectionIndex)
     } or
     TSsaSynthNode(SsaImpl::SynthNode n) or
     TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
+    TForwarderConstructorArgumentNode(CallInstruction call) {
+      isForwarderConstructorArgumentNodeImpl(call)
+    } or
     TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
       SsaImpl::hasRawIndirectOperand(node.asOperand(), indirectionIndex)
     } or
@@ -209,10 +212,7 @@ private module Cached {
     TBodyLessParameterNodeImpl(Parameter p, int indirectionIndex) {
       // Rule out parameters of catch blocks.
       not exists(p.getCatchBlock()) and
-      // We subtract one because `getMaxIndirectionsForType` returns the maximum
-      // indirection for a glvalue of a given type, and this doesn't apply to
-      // parameters.
-      indirectionIndex = [0 .. SsaImpl::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1] and
+      indirectionIndex = [0 .. SsaImpl::getMaxIndirectionsForPRType(p.getUnspecifiedType())] and
       not any(InitializeParameterInstruction init).getParameter() = p
     } or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)

@@ -31,18 +31,14 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "n"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "n" source="n"
           value:
-            member_access_expr
-              base:
-                name_expr
-                  identifier: identifier "t"
-              member: identifier "0"
+            member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+              base: identifier "t" source="t"
+              member_name_node: identifier "0" source="0"

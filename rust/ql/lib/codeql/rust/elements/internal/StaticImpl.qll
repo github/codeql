@@ -28,7 +28,7 @@ module Impl {
     /** Gets an access to this static item. */
     StaticAccess getAnAccess() { this = result.getStatic() }
 
-    override string toStringImpl() { result = "static " + this.getName().getText() }
+    override string toStringImpl() { result = "static " + concat(this.getName().getText()) }
   }
 
   /**

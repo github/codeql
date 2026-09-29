@@ -15,6 +15,8 @@
  *   `namespace; type; subtypes; name; signature; ext; output; kind; provenance`
  * - BarrierGuards:
  *   `namespace; type; subtypes; name; signature; ext; input; acceptingValue; kind; provenance`
+ * - Forwards:
+ *   `namespace; type; subtypes; name; signature; ext; start; constructor; output; provenance`
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -108,6 +110,15 @@
  *    - "manual": The model has been written by hand.
  *    This information is used in a heuristic for dataflow analysis to determine, if a
  *    model or source code should be used for determining flow.
+ *
+ * The "Forwards" relation allows modeling of function that perform C++11-style "perfect
+ * forwarding" where a function receives a number of arguments and forwards those arguments
+ * to a constructor of another type. For example, the row:
+ * `"std"; "vector<T>"; "True"; "emplace"; ""; ""; "1"; T; Argument[-1].Element; manual`
+ * says that `std::vector<T>::emplace(arg0, arg1, ..., argn)` forwards arguments
+ * `arg1, ..., argn` to a constructor for `T`, and the result of `T(arg1, ..., argn)`
+ * flows to `Argument[-1].Element` (see information about the semantics of the `output`
+ * column further above).
  */
 
 import cpp
@@ -115,6 +126,7 @@ private import new.DataFlow
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowNodes as Nodes
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as Private
+private import semmle.code.cpp.ir.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
@@ -160,6 +172,20 @@ predicate summaryModel(
   )
 }
 
+/**
+ * Holds if a forward model exists for the given parameters.
+ */
+predicate forwardsModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string start, string constructor, string output, string provenance, string model
+) {
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::forwardsModel(namespace, type, subtypes, name, signature, ext, start, constructor,
+      output, provenance, madId) and
+    model = "MaD:" + madId.toString()
+  )
+}
+
 /** Provides a query predicate to check the data for validation errors. */
 module ModelValidation {
   private string getInvalidModelInput() {
@@ -186,6 +212,8 @@ module ModelValidation {
       sourceModel(_, _, _, _, _, _, output, _, _, _) and pred = "source"
       or
       summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
+      or
+      forwardsModel(_, _, _, _, _, _, _, _, output, _, _) and pred = "forwards"
     |
       invalidSpecComponent(output, part) and
       not part = "" and
@@ -259,7 +287,8 @@ private predicate elementSpec(
   sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
   barrierModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
   barrierGuardModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _) or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
+  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _) or
+  forwardsModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
 }
 
 /**
@@ -596,6 +625,14 @@ private string getAtIndex(string s, int i) {
   not (s = "" and i = 0)
 }
 
+/** Gets the number of comma-separated arguments in `s`. */
+bindingset[s]
+private int getNumberOfArguments(string s) {
+  s = "" and result = 0
+  or
+  s != "" and result = count(s.indexOf(",")) + 1
+}
+
 /**
  * Normalizes `partiallyNormalizedSignature` by replacing the `remaining`
  * number of template arguments in `partiallyNormalizedSignature` with their
@@ -605,7 +642,7 @@ private string getSignatureWithoutClassTemplateNames(
   string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
 ) {
   elementSpecWithArguments0(_, _, _, partiallyNormalizedSignature, typeArgs, nameArgs) and
-  remaining = count(partiallyNormalizedSignature.indexOf(",")) + 1 and
+  remaining = getNumberOfArguments(typeArgs) and
   result = partiallyNormalizedSignature
   or
   exists(string mid |
@@ -619,7 +656,7 @@ private string getSignatureWithoutClassTemplateNames(
     )
     or
     // Make sure `remaining` is properly bound
-    remaining = [0 .. count(partiallyNormalizedSignature.indexOf(",")) + 1] and
+    remaining = [0 .. getNumberOfArguments(typeArgs)] and
     not exists(getAtIndex(typeArgs, remaining)) and
     result = mid
   )
@@ -636,7 +673,7 @@ pragma[nomagic]
 private string getSignatureWithoutFunctionTemplateNames(
   string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
 ) {
-  remaining = count(partiallyNormalizedSignature.indexOf(",")) + 1 and
+  remaining = getNumberOfArguments(nameArgs) and
   result =
     getSignatureWithoutClassTemplateNames(partiallyNormalizedSignature, typeArgs, nameArgs, 0)
   or
@@ -651,7 +688,7 @@ private string getSignatureWithoutFunctionTemplateNames(
     )
     or
     // Make sure `remaining` is properly bound
-    remaining = [0 .. count(partiallyNormalizedSignature.indexOf(",")) + 1] and
+    remaining = [0 .. getNumberOfArguments(nameArgs)] and
     not exists(getAtIndex(nameArgs, remaining)) and
     result = mid
   )
@@ -1046,6 +1083,148 @@ private module Cached {
 
 import Cached
 
+/** Gets the constructor type selected by `constructorType` in a forwarding model. */
+private Type getForwardedConstructorType(
+  Function forwarder, string namespace, string type, boolean subtypes, string name,
+  string signature, string ext, string constructorType
+) {
+  exists(int index |
+    forwardsModel(namespace, type, subtypes, name, signature, ext, _, constructorType, _, _, _) and
+    forwarder = interpretElement(namespace, type, subtypes, name, signature, ext)
+  |
+    exists(string typeArguments |
+      parseAngles(type, _, typeArguments, "") and
+      constructorType = getAtIndex(typeArguments, index) and
+      result = forwarder.getDeclaringType().getTemplateArgument(index)
+    )
+    or
+    exists(string nameArguments |
+      parseAngles(name, _, nameArguments, "") and
+      constructorType = getAtIndex(nameArguments, index) and
+      result = forwarder.getTemplateArgument(index)
+    )
+  )
+}
+
+/** Interprets a forwarding model, retaining its constructed type, output, and provenance. */
+private predicate interpretForwardsModelType(
+  Function forwarder, Type constructedType, int start, string output, string provenance,
+  string model
+) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string startString, string constructorType
+  |
+    forwardsModel(namespace, type, subtypes, name, signature, ext, startString, constructorType,
+      output, provenance, model) and
+    forwarder = interpretElement(namespace, type, subtypes, name, signature, ext) and
+    start = startString.toInt()
+  |
+    // Either the row specifies forwarding to a type given by the type or
+    // function template, in which case we need to resolve that from the type
+    // or function name.
+    constructedType =
+      getForwardedConstructorType(forwarder, namespace, type, subtypes, name, signature, ext,
+        constructorType).getUnspecifiedType()
+    or
+    // Or the row specifies forwarding to a specific type.
+    not exists(
+      getForwardedConstructorType(forwarder, namespace, type, subtypes, name, signature, ext,
+        constructorType)
+    ) and
+    classHasQualifiedName(constructedType, namespace, constructorType)
+  )
+}
+
+/**
+ * Holds if `forwarder` may forward its arguments starting at `start` to `constructor`. The
+ * actual constructor being forwarded to depends on the types of arguments from `start`
+ * at calls to `forwarder`.
+ */
+private predicate interpretForwardsModel(
+  Function forwarder, Constructor constructor, int start, string output, string provenance,
+  string model
+) {
+  interpretForwardsModelType(forwarder, constructor.getDeclaringType(), start, output, provenance,
+    model)
+}
+
+/** Holds if `forwarder` forwards its arguments starting at `start` to `constructor`. */
+predicate forwards(Function forwarder, Constructor constructor, int start) {
+  interpretForwardsModel(forwarder, constructor, start, _, _, _)
+}
+
+private int referenceIndirection(Type unspecified) {
+  if unspecified instanceof ReferenceType then result = 1 else result = 0
+}
+
+/** Gets `unspecified`, but with its outermost reference removed, if any. */
+private Type stripReference(Type unspecified) {
+  result = unspecified.(ReferenceType).getBaseType().getUnspecifiedType()
+  or
+  not unspecified instanceof ReferenceType and
+  result = unspecified
+}
+
+/**
+ * In order to support flow summaries for functions that perform "perfect
+ * forwarding" we interpret a call such as:
+ * ```cpp
+ * struct Foo { Foo(int) };
+ * std::vector<Foo> v;
+ * v.emplace_back(42);
+ * ```
+ * as:
+ * ```cpp
+ * v.emplace_back(42, &Foo);
+ * ```
+ * and add two summaries:
+ * (1) One flow from `42` to the first argument of a call to `Foo`
+ * (2) One flow from the return value of `Foo` to the `this` argument of the call
+ * to `emplace_back` (with a sequence of output `Content`s).
+ *
+ * These two summaries are automatically generated when a forwarding model
+ * for `emplace_back` exists.
+ */
+private predicate interpretForwardingSummary(
+  Function forwarder, string input, string output, string provenance, string model
+) {
+  exists(Constructor constructor, int start, string constructorOutput |
+    interpretForwardsModel(forwarder, constructor, start, constructorOutput, provenance, model)
+  |
+    // Generate the (1) summary
+    exists(int index, Parameter arg, Parameter p, int indirection |
+      arg = forwarder.getParameter(start + index) and
+      p = constructor.getParameter(index) and
+      indirection = [0 .. SsaImpl::getMaxIndirectionsForPRType(p.getUnspecifiedType())] and
+      input =
+        "Argument[" + repeatStars(indirection + referenceIndirection(arg.getUnspecifiedType())) +
+          (start + index) + "]" and
+      output =
+        "Argument[forward].Parameter[" +
+          repeatStars(indirection + referenceIndirection(p.getUnspecifiedType())) + index + "]"
+    )
+    or
+    // Generate the (2) summary
+    input = "Argument[forward].Parameter[-1]" and
+    output = constructorOutput
+  )
+  or
+  // Scalar types have no constructor to synthesize. In this case, directly
+  // preserve the value of the single forwarded argument at the modeled output.
+  exists(Type constructedType, int start, Parameter p, int indirection |
+    interpretForwardsModelType(forwarder, constructedType, start, output, provenance, model) and
+    not constructedType instanceof Class and
+    forwarder.getNumberOfParameters() = start + 1 and
+    p = forwarder.getParameter(start) and
+    stripReference(p.getUnspecifiedType()) = constructedType and
+    indirection = [0 .. SsaImpl::getMaxIndirectionsForPRType(constructedType)] and
+    input =
+      "Argument[" + repeatStars(indirection + referenceIndirection(p.getUnspecifiedType())) + start +
+        "]"
+  )
+}
+
 /**
  * Holds if `node` is specified as a source with the given kind in a MaD flow
  * model.
@@ -1074,6 +1253,9 @@ private predicate interpretSummary(
       model) and
     f = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
+  or
+  interpretForwardingSummary(f, input, output, provenance, model) and
+  kind = "value"
 }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s

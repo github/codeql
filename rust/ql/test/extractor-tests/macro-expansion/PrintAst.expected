@@ -174,7 +174,7 @@ macro_expansion.rs:
 #    1|           getPath(): [Path] MyTrait
 #    1|             getSegment(): [PathSegment] MyTrait
 #    1|               getIdentifier(): [NameRef] MyTrait
-#    3|   getItem(1): [Function] (item with attribute macro expansion)
+#    3|   getItem(1): [Function] fn 
 #    4|     getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    4|       getItem(0): [Function] fn foo
 #    4|         getParamList(): [ParamList] ParamList
@@ -190,7 +190,7 @@ macro_expansion.rs:
 #    5|                         getIdentifier(): [NameRef] concat
 #    5|                     getTokenTree(): [TokenTree] TokenTree
 #    5|                     getMacroCallExpansion(): [StringLiteralExpr] "Hello world!"
-#    7|             getStatement(1): [Function] (item with attribute macro expansion)
+#    7|             getStatement(1): [Function] fn 
 #    8|               getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    8|                 getItem(0): [Function] fn inner_0
 #    8|                   getParamList(): [ParamList] ParamList
@@ -238,7 +238,7 @@ macro_expansion.rs:
 #    5|                         getIdentifier(): [NameRef] concat
 #    5|                     getTokenTree(): [TokenTree] TokenTree
 #    5|                     getMacroCallExpansion(): [StringLiteralExpr] "Hello world!"
-#    7|             getStatement(1): [Function] (item with attribute macro expansion)
+#    7|             getStatement(1): [Function] fn 
 #    8|               getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    8|                 getItem(0): [Function] fn inner_0
 #    8|                   getParamList(): [ParamList] ParamList
@@ -277,9 +277,9 @@ macro_expansion.rs:
 #    3|         getPath(): [Path] add_one
 #    3|           getSegment(): [PathSegment] add_one
 #    3|             getIdentifier(): [NameRef] add_one
-#   14|   getItem(2): [Function] (item with attribute macro expansion)
+#   14|   getItem(2): [Function] fn 
 #   15|     getAttributeMacroExpansion(): [MacroItems] MacroItems
-#   15|       getItem(0): [Function] (item with attribute macro expansion)
+#   15|       getItem(0): [Function] fn 
 #   16|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   16|           getItem(0): [Function] fn bar_0
 #   16|             getParamList(): [ParamList] ParamList
@@ -298,7 +298,7 @@ macro_expansion.rs:
 #   15|             getPath(): [Path] add_one
 #   15|               getSegment(): [PathSegment] add_one
 #   15|                 getIdentifier(): [NameRef] add_one
-#   15|       getItem(1): [Function] (item with attribute macro expansion)
+#   15|       getItem(1): [Function] fn 
 #   16|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   16|           getItem(0): [Function] fn bar_1
 #   16|             getParamList(): [ParamList] ParamList
@@ -328,7 +328,7 @@ macro_expansion.rs:
 #   15|         getPath(): [Path] add_one
 #   15|           getSegment(): [PathSegment] add_one
 #   15|             getIdentifier(): [NameRef] add_one
-#   18|   getItem(3): [Function] (item with attribute macro expansion)
+#   18|   getItem(3): [Function] fn 
 #   18|     getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   18|     getAttr(0): [Attr] Attr
 #   18|       getMeta(): [PathMeta] PathMeta
@@ -343,7 +343,7 @@ macro_expansion.rs:
 #   28|     getVisibility(): [Visibility] pub
 #   30|   getItem(6): [Impl] impl S { ... }
 #   30|     getAssocItemList(): [AssocItemList] AssocItemList
-#   31|       getAssocItem(0): [Function] (item with attribute macro expansion)
+#   31|       getAssocItem(0): [Function] fn 
 #   32|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   32|           getItem(0): [Function] fn bzz_0
 #   32|             getParamList(): [ParamList] ParamList

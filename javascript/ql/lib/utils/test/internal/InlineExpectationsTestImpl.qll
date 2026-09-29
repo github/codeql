@@ -8,6 +8,16 @@ module Impl implements InlineExpectationsTestSig {
 
   class Location = JS::Location;
 
+  string getRelativeUrl(Location location) {
+    exists(JS::File f, int startline, int startcolumn, int endline, int endcolumn |
+      location.hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
+      f = location.getFile()
+    |
+      result =
+        f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
+    )
+  }
+
   abstract private class ExpectationCommentImpl extends Locatable {
     abstract string getContents();
 

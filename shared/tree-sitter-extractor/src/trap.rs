@@ -298,7 +298,7 @@ impl Compression {
         match std::env::var(var_name) {
             Ok(method) => match Compression::from_string(&method) {
                 Some(c) => Ok(c),
-                None => Err(format!("Unknown compression method '{}'", &method)),
+                None => Err(format!("Unknown compression method '{}'", method)),
             },
             // Default compression method if the env var isn't set:
             Err(_) => Ok(Compression::Gzip),

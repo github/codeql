@@ -38,20 +38,16 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "first"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "first" source="first"
           value:
-            call_expr
-              callee:
-                name_expr
-                  identifier: identifier "xs"
+            call_expr source="⟨callee⟩[⟨argument⟩]"
+              callee: identifier "xs" source="xs"
               argument:
-                argument
-                  value: int_literal "0"
+                argument source="⟨value⟩"
+                  value: int_literal "0" source="0"

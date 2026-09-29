@@ -67,20 +67,31 @@ class HarmlessNestedExpr extends BinaryExpr {
  */
 predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
   inner = outer.getAChildExpr() and
+  not isParenthesized(inner, _) and
   not inner instanceof AssocNestedExpr and
   not inner instanceof HarmlessNestedExpr
 }
 
+private int getNumberOfParentheses(Expr expr) {
+  isParenthesized(expr, result)
+  or
+  not isParenthesized(expr, _) and result = 0
+}
+
 /** Gets the number of whitespace characters around the operator `op` of `be`. */
 int getWhitespaceAroundOperator(BinaryExpr be, string op) {
-  exists(Location left, Location right |
+  exists(Location left, Location right, int leftParens, int rightParens |
     be.getLeftOperand().getLocation() = left and
     be.getRightOperand().getLocation() = right and
     left.getFile() = right.getFile() and
-    left.getStartLine() = right.getStartLine()
+    left.getStartLine() = right.getStartLine() and
+    leftParens = getNumberOfParentheses(be.getLeftOperand()) and
+    rightParens = getNumberOfParentheses(be.getRightOperand())
   |
     op = be.getOperator() and
-    result = (right.getStartColumn() - left.getEndColumn() - op.length() - 1) / 2
+    result =
+      (right.getStartColumn() - left.getEndColumn() - op.length() - leftParens - rightParens - 1) /
+        2
   )
 }
 
