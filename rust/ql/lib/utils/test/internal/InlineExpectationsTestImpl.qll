@@ -8,6 +8,9 @@ module Impl implements InlineExpectationsTestSig {
 
     /** Gets the contents of the given comment, _without_ the preceding comment marker (`//`). */
     string getContents() { result = this.getCommentText() }
+
+    /** Holds if this comment uses `//` or `///` syntax. */
+    predicate isLineComment() { this.getCommentMarker() = ["//", "///"] }
   }
 
   class Location = R::Location;

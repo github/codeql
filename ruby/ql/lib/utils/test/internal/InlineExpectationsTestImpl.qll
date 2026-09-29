@@ -33,6 +33,9 @@ module Impl implements InlineExpectationsTestSig {
       or
       result = this.asErbComment().getValue().suffix(1)
     }
+
+    /** Holds if this is a Ruby `#` comment. */
+    predicate isLineComment() { exists(this.asRubyComment()) }
   }
 
   class Location = R::Location;
