@@ -11,16 +11,20 @@
 
 import ql
 
-predicate mayBeLocal(AstNode n) {
+private predicate isDirectlyLocal(AstNode n) {
   n.getAnAnnotation() instanceof OverlayLocal
   or
   n.getAnAnnotation() instanceof OverlayLocalQ
+}
+
+predicate mayBeLocal(AstNode n) {
+  isDirectlyLocal(n)
   or
   // File-level module annotations belong to an anonymous `Module` sibling of
   // the file's declarations, so consider every node in that file potentially local.
   exists(AstNode m |
     n.getLocation().getFile() = m.getLocation().getFile() and
-    mayBeLocal(m)
+    isDirectlyLocal(m)
   )
 }
 
