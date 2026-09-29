@@ -54,6 +54,48 @@ query predicate nodeLocations(DataFlow::Node n, Location l) { n.getLocation() = 
 
 query predicate scopes(Cfg::CfgScope c) { any() }
 
+query predicate workflowScopes(Cfg::WorkflowScope c) { any() }
+
+query predicate compositeActionScopes(Cfg::CompositeActionScope c) { any() }
+
+query predicate workflowCfgBounds(Workflow workflow, int entryLine, int exitLine) {
+  exists(AstNode entry, AstNode exit |
+    entry = Cfg::getAControlFlowEntryNode(workflow) and
+    exit = Cfg::getAControlFlowExitNode(workflow) and
+    entryLine = entry.getLocation().getStartLine() and
+    exitLine = exit.getLocation().getStartLine()
+  )
+}
+
+query predicate workflowCfgNodes(Cfg::AstCfgNode node) {
+  Cfg::forceCachingInSameStage() and
+  node.getAstNode() instanceof Workflow and
+  Cfg::getNodeCfgScope(node) = node.getAstNode()
+}
+
+query predicate entryScopes(Cfg::EntryNode entry, Cfg::CfgScope scope) { scope = entry.getScope() }
+
+query predicate normalExitNodes(Cfg::AnnotatedExitNode exit) { exit.isNormal() }
+
+query predicate legacyNodeProperties(
+  Cfg::Node node, Cfg::SuccessorType successorType, string property
+) {
+  node = node.getASuccessor(successorType) and property = "successor"
+  or
+  node = node.getAPredecessor(successorType) and property = "predecessor"
+  or
+  node.isCondition() and property = "condition"
+  or
+  node.isJoin() and property = "join"
+  or
+  node.isBranch() and property = "branch"
+}
+
+query predicate legacyCfgSplits(Cfg::AstCfgNode node) {
+  exists(node.getSplitsString()) or
+  exists(node.getASplit())
+}
+
 query predicate sources(string action, string version, string output, string kind, string provenance) {
   actionsSourceModel(action, version, output, kind, provenance)
 }
