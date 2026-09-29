@@ -1,0 +1,7 @@
+consistencyOverview
+| multipleSuccessors | 4 |
+multipleSuccessors
+| .github/workflows/test1.yml:20:16:20:130 | github.event_name == 'workflow_dispatch' && github.event.inputs.action \|\| github.event.client_payload.action | successor | .github/workflows/test1.yml:23:14:27:13 | if [[ "${ACTION}" != "promote" && "${ACTION}" != "rollback" ]]; then\n  echo "Invalid action: ${ACTION}"\n  exit 1\nfi\n |
+| .github/workflows/test1.yml:20:16:20:130 | github.event_name == 'workflow_dispatch' && github.event.inputs.action \|\| github.event.client_payload.action | successor | .github/workflows/test1.yml:29:9:31:6 | After Uses Step |
+| .github/workflows/test1.yml:20:16:20:130 | github.event_name == 'workflow_dispatch' && github.event.inputs.action \|\| github.event.client_payload.action | successor | .github/workflows/test1.yml:37:32:37:66 | secrets.DAGGER_CLOUD_TOKEN_2 |
+| .github/workflows/test1.yml:20:16:20:130 | github.event_name == 'workflow_dispatch' && github.event.inputs.action \|\| github.event.client_payload.action | successor | .github/workflows/test1.yml:53:32:53:66 | secrets.DAGGER_CLOUD_TOKEN_2 |
