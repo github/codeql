@@ -6,6 +6,9 @@ module Impl implements InlineExpectationsTestSig {
   class ExpectationComment extends U::Comment {
     /** Gets the text inside this comment, without the surrounding comment delimiters. */
     string getContents() { result = this.getCommentText() }
+
+    /** Holds if this comment uses `//` syntax. */
+    predicate isLineComment() { this.getValue().matches("//%") }
   }
 
   class Location = U::Location;

@@ -29,6 +29,9 @@ module Impl implements InlineExpectationsTestSig {
       result = this.asAspComment().getBody()
     }
 
+    /** Holds if this is a C# `//` comment. */
+    predicate isLineComment() { exists(this.asCSharpComment()) }
+
     /** Gets the location of this comment. */
     Location getLocation() {
       result = this.asCSharpComment().getLocation()

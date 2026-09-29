@@ -28,6 +28,8 @@ private module Impl implements T::InlineExpectationsTestSig {
 
   class ExpectationComment extends Yaml::YamlComment {
     string getContents() { result = this.getText() }
+
+    predicate isLineComment() { any() }
   }
 }
 
