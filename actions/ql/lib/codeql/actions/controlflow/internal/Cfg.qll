@@ -1,288 +1,367 @@
 private import codeql.actions.Ast
-private import codeql.controlflow.Cfg as CfgShared
+private import codeql.controlflow.ControlFlowGraph as CfgShared
 private import codeql.Locations
+private import codeql.util.Void
 
-module Completion {
-  import codeql.controlflow.SuccessorType
+private class ActionsAstNode = AstNode;
 
-  private newtype TCompletion =
-    TSimpleCompletion() or
-    TBooleanCompletion(boolean b) { b in [false, true] } or
-    TReturnCompletion()
-
-  abstract class Completion extends TCompletion {
-    abstract string toString();
-
-    predicate isValidForSpecific(AstNode e) { none() }
-
-    predicate isValidFor(AstNode e) { this.isValidForSpecific(e) }
-
-    abstract SuccessorType getAMatchingSuccessorType();
-  }
-
-  abstract class NormalCompletion extends Completion { }
-
-  class SimpleCompletion extends NormalCompletion, TSimpleCompletion {
-    override string toString() { result = "SimpleCompletion" }
-
-    override predicate isValidFor(AstNode e) { not any(Completion c).isValidForSpecific(e) }
-
-    override DirectSuccessor getAMatchingSuccessorType() { any() }
-  }
-
-  class BooleanCompletion extends NormalCompletion, TBooleanCompletion {
-    boolean value;
-
-    BooleanCompletion() { this = TBooleanCompletion(value) }
-
-    override string toString() { result = "BooleanCompletion(" + value + ")" }
-
-    override predicate isValidForSpecific(AstNode e) { none() }
-
-    override BooleanSuccessor getAMatchingSuccessorType() { result.getValue() = value }
-
-    final boolean getValue() { result = value }
-  }
-
-  class ReturnCompletion extends Completion, TReturnCompletion {
-    override string toString() { result = "ReturnCompletion" }
-
-    override predicate isValidForSpecific(AstNode e) { none() }
-
-    override ReturnSuccessor getAMatchingSuccessorType() { any() }
-  }
-}
-
-module CfgScope {
-  abstract class CfgScope extends AstNode { }
-
-  class WorkflowScope extends CfgScope instanceof Workflow { }
-
-  class CompositeActionScope extends CfgScope instanceof CompositeAction { }
-}
-
-private module Implementation implements CfgShared::InputSig<Location> {
-  import codeql.actions.Ast
-  import Completion
-  import CfgScope
-
-  predicate completionIsNormal(Completion c) { not c instanceof ReturnCompletion }
-
-  // Not using CFG splitting, so the following are just dummy types.
-  private newtype TUnit = Unit()
-
-  additional class SplitKindBase = TUnit;
-
-  additional class Split extends TUnit {
-    abstract string toString();
-  }
-
-  predicate completionIsSimple(Completion c) { c instanceof SimpleCompletion }
-
-  predicate completionIsValidFor(Completion c, AstNode e) { c.isValidFor(e) }
-
-  CfgScope getCfgScope(AstNode e) {
-    exists(AstNode p | p = e.getParentNode() |
-      result = p
-      or
-      not p instanceof CfgScope and result = getCfgScope(p)
+module CfgImpl {
+  private predicate isCfgChild(AstNode parent, AstNode child) {
+    exists(CompositeAction action |
+      parent = action and
+      (child = action.getAnInput() or child = action.getOutputs() or child = action.getRuns())
+    )
+    or
+    exists(ReusableWorkflow workflow |
+      parent = workflow and
+      (
+        child = workflow.getAnInput() or
+        child = workflow.getOutputs() or
+        child = workflow.getStrategy() or
+        child = workflow.getAJob()
+      )
+    )
+    or
+    exists(Workflow workflow |
+      parent = workflow and
+      not workflow instanceof ReusableWorkflow and
+      (child = workflow.getStrategy() or child = workflow.getAJob())
+    )
+    or
+    exists(Runs runs | parent = runs and child = runs.getStep(_))
+    or
+    exists(Outputs outputs | parent = outputs and child = outputs.getAnOutputExpr())
+    or
+    exists(Strategy strategy | parent = strategy and child = strategy.getAMatrixVarExpr())
+    or
+    exists(LocalJob job |
+      parent = job and
+      (child = job.getAStep() or child = job.getOutputs() or child = job.getStrategy())
+    )
+    or
+    exists(ExternalJob job |
+      parent = job and
+      (
+        child = job.getArgumentExpr(_) or
+        child = job.getInScopeEnvVarExpr(_) or
+        child = job.getOutputs() or
+        child = job.getStrategy()
+      )
+    )
+    or
+    exists(UsesStep uses |
+      parent = uses and
+      (child = uses.getArgumentExpr(_) or child = uses.getInScopeEnvVarExpr(_))
+    )
+    or
+    exists(Run run |
+      parent = run and
+      (
+        child = run.getInScopeEnvVarExpr(_) or
+        child = run.getAnScriptExpr() or
+        child = run.getScript()
+      )
     )
   }
 
-  additional int maxSplits() { result = 0 }
-
-  predicate scopeFirst(CfgScope scope, AstNode e) {
-    first(scope.(Workflow), e) or
-    first(scope.(CompositeAction), e)
-  }
-
-  predicate scopeLast(CfgScope scope, AstNode e, Completion c) {
-    last(scope.(Workflow), e, c) or
-    last(scope.(CompositeAction), e, c)
-  }
-
-  SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
-
-  int idOfAstNode(AstNode node) { none() }
-
-  int idOfCfgScope(CfgScope scope) { none() }
-}
-
-module CfgImpl = CfgShared::Make<Location, Implementation>;
-
-private import CfgImpl
-private import Completion
-private import CfgScope
-
-private class CompositeActionTree extends StandardPreOrderTree instanceof CompositeAction {
-  override ControlFlowTree getChildNode(int i) {
+  private AstNode getCfgChild(AstNode parent, int index) {
     result =
-      rank[i](AstNode child, Location l |
-        (
-          child = this.(CompositeAction).getAnInput() or
-          child = this.(CompositeAction).getOutputs() or
-          child = this.(CompositeAction).getRuns()
-        ) and
-        l = child.getLocation()
+      rank[index](AstNode child, Location l |
+        isCfgChild(parent, child) and l = child.getLocation()
       |
         child
         order by
           l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
       )
   }
-}
 
-private class RunsTree extends StandardPreOrderTree instanceof Runs {
-  override ControlFlowTree getChildNode(int i) { result = super.getStep(i) }
-}
+  private module CfgAst implements CfgShared::AstSig<Location> {
+    class AstNode = ActionsAstNode;
 
-private class WorkflowTree extends StandardPreOrderTree instanceof Workflow {
-  override ControlFlowTree getChildNode(int i) {
-    if this instanceof ReusableWorkflow
-    then
-      result =
-        rank[i](AstNode child, Location l |
-          (
-            child = this.(ReusableWorkflow).getAnInput() or
-            child = this.(ReusableWorkflow).getOutputs() or
-            child = this.(ReusableWorkflow).getStrategy() or
-            child = this.(ReusableWorkflow).getAJob()
-          ) and
-          l = child.getLocation()
-        |
-          child
-          order by
-            l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
-        )
-    else
-      result =
-        rank[i](AstNode child, Location l |
-          (
-            child = super.getStrategy() or
-            child = super.getAJob()
-          ) and
-          l = child.getLocation()
-        |
-          child
-          order by
-            l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
-        )
+    AstNode getChild(AstNode node, int index) { result = getCfgChild(node, index) }
+
+    class Callable extends AstNode {
+      Callable() { this instanceof Workflow or this instanceof CompositeAction }
+    }
+
+    AstNode callableGetBody(Callable callable) { result = callable }
+
+    Callable getEnclosingCallable(AstNode node) {
+      result = node.(Callable)
+      or
+      result = getEnclosingCallable(node.getParentNode())
+    }
+
+    class Parameter extends AstNode {
+      Parameter() { none() }
+
+      AstNode getPattern() { none() }
+
+      Expr getDefaultValue() { none() }
+    }
+
+    Parameter callableGetParameter(Callable callable, int index) { none() }
+
+    class Stmt extends AstNode {
+      Stmt() { none() }
+    }
+
+    class Expr extends AstNode {
+      Expr() { none() }
+    }
+
+    class BlockStmt extends Stmt {
+      BlockStmt() { none() }
+
+      Stmt getStmt(int index) { none() }
+
+      Stmt getLastStmt() { none() }
+    }
+
+    class ExprStmt extends Stmt {
+      ExprStmt() { none() }
+
+      Expr getExpr() { none() }
+    }
+
+    class IfStmt extends Stmt {
+      IfStmt() { none() }
+
+      Expr getCondition() { none() }
+
+      Stmt getThen() { none() }
+
+      Stmt getElse() { none() }
+    }
+
+    class LoopStmt extends Stmt {
+      LoopStmt() { none() }
+
+      Stmt getBody() { none() }
+    }
+
+    class WhileStmt extends LoopStmt {
+      WhileStmt() { none() }
+
+      Expr getCondition() { none() }
+    }
+
+    class DoStmt extends LoopStmt {
+      DoStmt() { none() }
+
+      Expr getCondition() { none() }
+    }
+
+    class UntilStmt extends LoopStmt {
+      UntilStmt() { none() }
+
+      Expr getCondition() { none() }
+    }
+
+    class ForStmt extends LoopStmt {
+      ForStmt() { none() }
+
+      AstNode getInit(int index) { none() }
+
+      Expr getCondition() { none() }
+
+      AstNode getUpdate(int index) { none() }
+    }
+
+    class ForEachStmt extends LoopStmt {
+      ForEachStmt() { none() }
+
+      Expr getVariable() { none() }
+
+      Expr getCollection() { none() }
+    }
+
+    class BreakStmt extends Stmt {
+      BreakStmt() { none() }
+    }
+
+    class ContinueStmt extends Stmt {
+      ContinueStmt() { none() }
+    }
+
+    class GotoStmt extends Stmt {
+      GotoStmt() { none() }
+    }
+
+    class ReturnStmt extends Stmt {
+      ReturnStmt() { none() }
+
+      Expr getExpr() { none() }
+    }
+
+    class Throw extends AstNode {
+      Throw() { none() }
+
+      Expr getExpr() { none() }
+    }
+
+    class TryStmt extends Stmt {
+      TryStmt() { none() }
+
+      AstNode getBody(int index) { none() }
+
+      CatchClause getCatch(int index) { none() }
+
+      Stmt getFinally() { none() }
+    }
+
+    class CatchClause extends AstNode {
+      CatchClause() { none() }
+
+      AstNode getPattern() { none() }
+
+      AstNode getVariable() { none() }
+
+      Expr getCondition() { none() }
+
+      Stmt getBody() { none() }
+    }
+
+    class Switch extends AstNode {
+      Switch() { none() }
+
+      Expr getExpr() { none() }
+
+      Case getCase(int index) { none() }
+
+      Stmt getStmt(int index) { none() }
+    }
+
+    class Case extends AstNode {
+      Case() { none() }
+
+      AstNode getPattern(int index) { none() }
+
+      Expr getGuard() { none() }
+
+      AstNode getBody() { none() }
+    }
+
+    class DefaultCase extends Case {
+      DefaultCase() { none() }
+    }
+
+    class ConditionalExpr extends Expr {
+      ConditionalExpr() { none() }
+
+      Expr getCondition() { none() }
+
+      Expr getThen() { none() }
+
+      Expr getElse() { none() }
+    }
+
+    class BinaryExpr extends Expr {
+      BinaryExpr() { none() }
+
+      Expr getLeftOperand() { none() }
+
+      Expr getRightOperand() { none() }
+    }
+
+    class LogicalAndExpr extends BinaryExpr {
+      LogicalAndExpr() { none() }
+    }
+
+    class LogicalOrExpr extends BinaryExpr {
+      LogicalOrExpr() { none() }
+    }
+
+    class NullCoalescingExpr extends BinaryExpr {
+      NullCoalescingExpr() { none() }
+    }
+
+    class UnaryExpr extends Expr {
+      UnaryExpr() { none() }
+
+      Expr getOperand() { none() }
+    }
+
+    class LogicalNotExpr extends UnaryExpr {
+      LogicalNotExpr() { none() }
+    }
+
+    class Assignment extends BinaryExpr {
+      Assignment() { none() }
+    }
+
+    class AssignExpr extends Assignment {
+      AssignExpr() { none() }
+    }
+
+    class CompoundAssignment extends Assignment {
+      CompoundAssignment() { none() }
+    }
+
+    class AssignLogicalAndExpr extends CompoundAssignment {
+      AssignLogicalAndExpr() { none() }
+    }
+
+    class AssignLogicalOrExpr extends CompoundAssignment {
+      AssignLogicalOrExpr() { none() }
+    }
+
+    class AssignNullCoalescingExpr extends CompoundAssignment {
+      AssignNullCoalescingExpr() { none() }
+    }
+
+    class BooleanLiteral extends Expr {
+      BooleanLiteral() { none() }
+
+      boolean getValue() { none() }
+    }
+
+    class PatternMatchExpr extends Expr {
+      PatternMatchExpr() { none() }
+
+      Expr getExpr() { none() }
+
+      AstNode getPattern() { none() }
+    }
+  }
+
+  private module Cfg0 = CfgShared::Make0<Location, CfgAst>;
+
+  private module Input1 implements Cfg0::InputSig1 {
+    predicate cfgCachedStageRef() { CfgCachedStage::ref() }
+
+    class Label = Void;
+
+    class CallableContext = Void;
+  }
+
+  private module Cfg1 = Cfg0::Make1<Input1>;
+
+  private module Input2 implements Cfg1::InputSig2 {
+    predicate beginAbruptCompletion(
+      AstNode ast, PreControlFlowNode node, AbruptCompletion completion, boolean always
+    ) {
+      none()
+    }
+
+    predicate endAbruptCompletion(AstNode ast, PreControlFlowNode node, AbruptCompletion completion) {
+      none()
+    }
+
+    predicate step(PreControlFlowNode predecessor, PreControlFlowNode successor) { none() }
+  }
+
+  private module Cfg2 = Cfg1::Make2<Input2>;
+
+  private import Cfg0
+  private import Cfg1
+  private import Cfg2
+  import Public
+  import ControlFlow
+
+  class CfgScope = CfgAst::Callable;
+
+  class Node extends ControlFlowNode {
+    CfgScope getScope() { result = this.getEnclosingCallable() }
   }
 }
-
-private class OutputsTree extends StandardPreOrderTree instanceof Outputs {
-  override ControlFlowTree getChildNode(int i) {
-    result =
-      rank[i](AstNode child, Location l |
-        child = super.getAnOutputExpr() and l = child.getLocation()
-      |
-        child
-        order by
-          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
-      )
-  }
-}
-
-private class StrategyTree extends StandardPreOrderTree instanceof Strategy {
-  override ControlFlowTree getChildNode(int i) {
-    result =
-      rank[i](AstNode child, Location l |
-        child = super.getAMatrixVarExpr() and l = child.getLocation()
-      |
-        child
-        order by
-          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
-      )
-  }
-}
-
-private class JobTree extends StandardPreOrderTree instanceof LocalJob {
-  override ControlFlowTree getChildNode(int i) {
-    result =
-      rank[i](AstNode child, Location l |
-        (
-          child = super.getAStep() or
-          child = super.getOutputs() or
-          child = super.getStrategy()
-        ) and
-        l = child.getLocation()
-      |
-        child
-        order by
-          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
-      )
-  }
-}
-
-private class ExternalJobTree extends StandardPreOrderTree instanceof ExternalJob {
-  override ControlFlowTree getChildNode(int i) {
-    result =
-      rank[i](AstNode child, Location l |
-        (
-          child = super.getArgumentExpr(_) or
-          child = super.getInScopeEnvVarExpr(_) or
-          child = super.getOutputs() or
-          child = super.getStrategy()
-        ) and
-        l = child.getLocation()
-      |
-        child
-        order by
-          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
-      )
-  }
-}
-
-private class UsesTree extends StandardPreOrderTree instanceof UsesStep {
-  override ControlFlowTree getChildNode(int i) {
-    result =
-      rank[i](AstNode child, Location l |
-        (child = super.getArgumentExpr(_) or child = super.getInScopeEnvVarExpr(_)) and
-        l = child.getLocation()
-      |
-        child
-        order by
-          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
-      )
-  }
-}
-
-private class RunTree extends StandardPreOrderTree instanceof Run {
-  override ControlFlowTree getChildNode(int i) {
-    result =
-      rank[i](AstNode child, Location l |
-        (
-          child = super.getInScopeEnvVarExpr(_) or
-          child = super.getAnScriptExpr() or
-          child = super.getScript()
-        ) and
-        l = child.getLocation()
-      |
-        child
-        order by
-          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
-      )
-  }
-}
-
-private class ScalarValueTree extends StandardPreOrderTree instanceof ScalarValue {
-  override ControlFlowTree getChildNode(int i) {
-    result =
-      rank[i](Expression child, Location l |
-        child = super.getAChildNode() and
-        l = child.getLocation()
-      |
-        child
-        order by
-          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
-      )
-  }
-}
-
-private class UsesLeaf extends LeafTree instanceof Uses { }
-
-private class InputTree extends LeafTree instanceof Input { }
-
-private class ScalarValueLeaf extends LeafTree instanceof ScalarValue { }
-
-private class ExpressionLeaf extends LeafTree instanceof Expression { }

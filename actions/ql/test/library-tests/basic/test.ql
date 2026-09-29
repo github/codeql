@@ -37,6 +37,13 @@ query predicate parentNodes(AstNode child, AstNode parent) { child.getParentNode
 
 query predicate cfgNodes(Cfg::Node n) { any() }
 
+query predicate cfgCycles(Cfg::Node n) { n.getASuccessor+() = n }
+
+query predicate cfgDeadEnds(Cfg::Node n) {
+  not n instanceof Cfg::ExitNode and
+  not exists(n.getASuccessor())
+}
+
 query predicate dfNodes(DataFlow::Node e) { any() }
 
 query predicate argumentNodes(DataFlow::ArgumentNode e) { any() }

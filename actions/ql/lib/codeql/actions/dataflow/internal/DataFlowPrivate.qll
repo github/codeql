@@ -59,13 +59,16 @@ predicate nodeIsHidden(Node node) { none() }
 
 class DataFlowExpr extends Cfg::Node {
   DataFlowExpr() {
-    this.getAstNode() instanceof Job or
-    this.getAstNode() instanceof Expression or
-    this.getAstNode() instanceof Uses or
-    this.getAstNode() instanceof Run or
-    this.getAstNode() instanceof Outputs or
-    this.getAstNode() instanceof Input or
-    this.getAstNode() instanceof ScalarValue
+    this.injects(this.getAstNode()) and
+    (
+      this.getAstNode() instanceof Job or
+      this.getAstNode() instanceof Expression or
+      this.getAstNode() instanceof Uses or
+      this.getAstNode() instanceof Run or
+      this.getAstNode() instanceof Outputs or
+      this.getAstNode() instanceof Input or
+      this.getAstNode() instanceof ScalarValue
+    )
   }
 }
 
@@ -73,7 +76,10 @@ class DataFlowExpr extends Cfg::Node {
  * A call corresponds to a Uses steps where a composite action or a reusable workflow get called
  */
 class DataFlowCall instanceof Cfg::Node {
-  DataFlowCall() { super.getAstNode() instanceof Uses }
+  DataFlowCall() {
+    this.injects(this.getAstNode()) and
+    super.getAstNode() instanceof Uses
+  }
 
   /** Gets a textual representation of this element. */
   string toString() { result = super.toString() }
