@@ -210,13 +210,12 @@ fn field_entries(node: &Value) -> Vec<(&str, &Value)> {
 /// arrays recursively to preserve the intended collection elision.
 fn children_of(value: &Value) -> Vec<&Value> {
     fn collect<'a>(value: &'a Value, children: &mut Vec<&'a Value>) {
-        match value {
-            Value::Array(items) => {
-                for item in items {
-                    collect(item, children);
-                }
+        if let Value::Array(items) = value {
+            for item in items {
+                collect(item, children);
             }
-            other => children.push(other),
+        } else {
+            children.push(value);
         }
     }
 
