@@ -6,7 +6,17 @@ private import codeql.util.Void
 private class ActionsAstNode = AstNode;
 
 module CfgImpl {
+  private predicate isDeclaredEnvExpr(AstNode parent, AstNode child) {
+    exists(Workflow workflow | parent = workflow and child = workflow.getEnv().getAnEnvVarExpr())
+    or
+    exists(Job job | parent = job and child = job.getEnv().getAnEnvVarExpr())
+    or
+    exists(Step step | parent = step and child = step.getEnv().getAnEnvVarExpr())
+  }
+
   private predicate isCfgChild(AstNode parent, AstNode child) {
+    isDeclaredEnvExpr(parent, child)
+    or
     exists(CompositeAction action |
       parent = action and
       (child = action.getAnInput() or child = action.getOutputs() or child = action.getRuns())
@@ -43,24 +53,16 @@ module CfgImpl {
       parent = job and
       (
         child = job.getArgumentExpr(_) or
-        child = job.getInScopeEnvVarExpr(_) or
         child = job.getOutputs() or
         child = job.getStrategy()
       )
     )
     or
-    exists(UsesStep uses |
-      parent = uses and
-      (child = uses.getArgumentExpr(_) or child = uses.getInScopeEnvVarExpr(_))
-    )
+    exists(UsesStep uses | parent = uses and child = uses.getArgumentExpr(_))
     or
     exists(Run run |
       parent = run and
-      (
-        child = run.getInScopeEnvVarExpr(_) or
-        child = run.getAnScriptExpr() or
-        child = run.getScript()
-      )
+      (child = run.getAnScriptExpr() or child = run.getScript())
     )
   }
 
