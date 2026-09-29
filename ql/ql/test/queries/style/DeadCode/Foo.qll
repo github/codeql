@@ -9,7 +9,7 @@ private module Mixed {
 
   predicate alive1() { none() }
 
-  predicate dead2() { none() } // $ MISSING: Alert
+  predicate dead2() { none() } // $ Alert
 }
 
 predicate usesAlive() { Mixed::alive1() }
@@ -84,7 +84,7 @@ module Empty { }
 private module OuterInstance = External::Outer<Empty>;
 
 private module NestedInput implements OuterInstance::InputSig {
-  predicate callback() { any() } // $ SPURIOUS: Alert
+  predicate callback() { any() }
 }
 
 private module NestedUse = OuterInstance::Make<NestedInput>;
