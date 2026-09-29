@@ -11,7 +11,7 @@ def pytest_configure(config):
     # match `FIXED_RUST_TOOLCHAIN`.
     if not hasattr(config, "workerinput"):
         commands.run(
-            "rustup toolchain install 1.97.0 --profile minimal --component rust-src"
+            "rustup toolchain install 1.98.1 --profile minimal --component rust-src"
         )
 
 

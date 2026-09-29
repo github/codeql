@@ -1,19 +1,19 @@
 diff --git a/xtask/src/codegen/grammar.rs b/xtask/src/codegen/grammar.rs
-index 257429c..ddbe321 100644
+index 0aad1e2..68f679f 100644
 --- a/xtask/src/codegen/grammar.rs
 +++ b/xtask/src/codegen/grammar.rs
-@@ -3,7 +3,9 @@
+@@ -3,6 +3,10 @@
  //! Specifically, it generates the `SyntaxKind` enum and a number of newtype
  //! wrappers around `SyntaxNode` which implement `syntax::AstNode`.
  
--#![allow(clippy::disallowed_types)]
 +#![allow(warnings)]
 +#![allow(clippy)]
 +#![cfg_attr(any(), rustfmt::skip)]
- 
++
  use std::{
      collections::{BTreeSet, HashSet},
-@@ -23,7 +25,7 @@ use crate::{
+     fmt::Write,
+@@ -21,7 +25,7 @@ use crate::{
      project_root,
  };
  
@@ -22,7 +22,7 @@ index 257429c..ddbe321 100644
  use self::ast_src::{AstEnumSrc, AstNodeSrc, AstSrc, Cardinality, Field, KindsSrc};
  
  pub(crate) fn generate(check: bool) {
-@@ -775,7 +777,7 @@ fn pluralize(s: &str) -> String {
+@@ -775,7 +779,7 @@ fn pluralize(s: &str) -> String {
  }
  
  impl Field {
@@ -31,7 +31,7 @@ index 257429c..ddbe321 100644
          matches!(self, Field::Node { cardinality: Cardinality::Many, .. })
      }
      fn token_kind(&self) -> Option<proc_macro2::TokenStream> {
-@@ -787,7 +789,7 @@ impl Field {
+@@ -787,7 +791,7 @@ impl Field {
              _ => None,
          }
      }
@@ -40,7 +40,7 @@ index 257429c..ddbe321 100644
          match self {
              Field::Token { name, token, .. } => {
                  if let Some(name) = name {
-@@ -836,7 +838,7 @@ impl Field {
+@@ -836,7 +840,7 @@ impl Field {
              }
          }
      }
@@ -49,7 +49,7 @@ index 257429c..ddbe321 100644
          match self {
              Field::Token { .. } => format_ident!("SyntaxToken"),
              Field::Node { ty, .. } => format_ident!("{}", ty),
-@@ -849,7 +851,7 @@ fn clean_token_name(name: &str) -> String {
+@@ -849,7 +853,7 @@ fn clean_token_name(name: &str) -> String {
      if cleaned.is_empty() { name.to_owned() } else { cleaned.to_owned() }
  }
  
@@ -59,7 +59,7 @@ index 257429c..ddbe321 100644
          tokens:
              "Whitespace Comment String ByteString CString IntNumber FloatNumber Char Byte Ident"
 diff --git a/xtask/src/codegen/grammar/ast_src.rs b/xtask/src/codegen/grammar/ast_src.rs
-index a0abdf0..5f59f97 100644
+index 1ae139f..d4d791e 100644
 --- a/xtask/src/codegen/grammar/ast_src.rs
 +++ b/xtask/src/codegen/grammar/ast_src.rs
 @@ -1,5 +1,8 @@

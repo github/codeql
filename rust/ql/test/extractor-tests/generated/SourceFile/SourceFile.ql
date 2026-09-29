@@ -4,7 +4,7 @@ import TestUtils
 
 query predicate instances(SourceFile x) { toBeTested(x) and not x.isUnknown() }
 
-query predicate getAttr(SourceFile x, int index, Attr getAttr) {
+query predicate getAttr(SourceFile x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

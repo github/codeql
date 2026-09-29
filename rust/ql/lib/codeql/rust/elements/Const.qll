@@ -4,8 +4,8 @@
  */
 
 private import internal.ConstImpl
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AssocItem
-import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Name

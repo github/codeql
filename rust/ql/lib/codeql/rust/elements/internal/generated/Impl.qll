@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AssocItemList
-import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.TypeRepr
@@ -52,14 +52,15 @@ module Generated {
     /**
      * Gets the `index`th attr of this impl (0-based).
      */
-    Attr getAttr(int index) {
-      result = Synth::convertAttrFromRaw(Synth::convertImplToRaw(this).(Raw::Impl).getAttr(index))
+    AnyAttr getAttr(int index) {
+      result =
+        Synth::convertAnyAttrFromRaw(Synth::convertImplToRaw(this).(Raw::Impl).getAttr(index))
     }
 
     /**
      * Gets any of the attrs of this impl.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this impl.
