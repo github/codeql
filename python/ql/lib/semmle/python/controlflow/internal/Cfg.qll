@@ -204,7 +204,15 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
   }
 
   /** Holds if this flow node strictly reaches `other`. */
-  predicate strictlyReaches(ControlFlowNode other) { this.getASuccessor+() = other }
+  overlay[caller?]
+  pragma[inline]
+  predicate strictlyReaches(ControlFlowNode other) {
+    this.getBasicBlock().strictlyReaches(other.getBasicBlock())
+    or
+    exists(BasicBlock block, int i, int j |
+      this = block.getNode(i) and other = block.getNode(j) and i < j
+    )
+  }
 }
 
 /**
