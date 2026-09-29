@@ -2,7 +2,7 @@ private import unified
 private import AllDataFlow
 private import codeql.unified.internal.LocalNameBinding
 
-predicate step(Node node1, Step step, Node node2) {
+predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   any(DataFlowPlugin p).step(node1, step, node2)
   or
   exists(Callable callable |
