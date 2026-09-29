@@ -29,6 +29,9 @@ module Impl implements InlineExpectationsTestSig {
   abstract private class ExpectationCommentImpl extends Locatable {
     abstract string getContents();
 
+    /** Holds if this comment uses line-comment syntax. */
+    predicate isLineComment() { this instanceof LineComment }
+
     /** Gets this element's location. */
     Location getLocation() { result = super.getLocation() }
   }

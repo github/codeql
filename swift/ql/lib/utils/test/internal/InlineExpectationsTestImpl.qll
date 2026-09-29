@@ -17,6 +17,9 @@ module Impl implements InlineExpectationsTestSig {
     /** Returns the contents of the given comment, _without_ the preceding comment marker (`//`). */
     string getContents() { result = comment.getText().suffix(2).trim() }
 
+    /** Swift expectation comments use line-comment syntax. */
+    predicate isLineComment() { any() }
+
     /** Gets a textual representation of this element. */
     string toString() { result = comment.toString() }
 

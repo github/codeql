@@ -9,6 +9,9 @@ module Impl implements InlineExpectationsTestSig {
   abstract class ExpectationComment extends J::Top {
     /** Gets the contents of the given comment, _without_ the preceding comment marker (`//`). */
     abstract string getContents();
+
+    /** Java and Kotlin expectation comments use line-comment syntax. */
+    predicate isLineComment() { any() }
   }
 
   private class JavadocExpectationComment extends J::Javadoc, ExpectationComment {
