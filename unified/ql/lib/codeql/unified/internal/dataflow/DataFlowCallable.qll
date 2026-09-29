@@ -1,7 +1,9 @@
 private import unified
 private import AllDataFlow
+private import codeql.unified.internal.ExprPositions
 
-private newtype TDataFlowCallable = TSourceCallable(Callable callable)
+private newtype TDataFlowCallable =
+  TSourceCallable(Callable callable) { not isInTypeContext(callable) }
 
 /**
  * A callable entity: either a function-like entity in source code or
