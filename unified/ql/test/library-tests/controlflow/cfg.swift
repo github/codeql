@@ -63,7 +63,7 @@ func createClosure3(x : Int) -> (_ : Int) -> Int { // $ noCfg
   }
 }
 
-func callClosures() { // $ noCfg
+func callClosures() {
   var x1 = createClosure1(s: "")()
   var x2 = createClosure2(x: 0)(10)
   var x3 = createClosure3(x: 0)(10)
@@ -233,7 +233,7 @@ func conversionsInSplitEntry (b : Bool) -> String {
   }
 }
 
-func constant_condition() { // $ noCfg
+func constant_condition() {
   if !true {
     print("Impossible") // $ noCfg
   }
@@ -355,7 +355,7 @@ func testRepeat(x : inout Int) {
   } while x >= 0 // $ bbStep='... >= ... : true -> Block(-3)'
 }
 
-func loop_with_identity_expr() { // $ noCfg
+func loop_with_identity_expr() {
   var x = 0
   while(x < 10) { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='... < ... : true -> Block(+0)'
     x += 1 // $ bbStep='... += ... : successor -> x(-1)'
@@ -465,7 +465,7 @@ func test(a : A) {
   var apply_kpGet_mayB_x = a[keyPath: kpGet_mayB_x]
 }
 
-func testIfConfig() { // $ noCfg
+func testIfConfig() {
 #if FOO
   1
   2
@@ -521,7 +521,7 @@ func testAvailable() -> Int { // $ noCfg
   return x
 }
 
-func testAsyncFor () async { // $ noCfg
+func testAsyncFor () async {
     var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
         continuation in
             Task.detached {
@@ -556,7 +556,7 @@ func usesAutoclosure(_ expr: @autoclosure () -> Int) -> Int {
   return expr()
 }
 
-func autoclosureTest() { // $ noCfg
+func autoclosureTest() {
   usesAutoclosure(1)
 }
 
