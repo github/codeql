@@ -81,13 +81,14 @@ newtype TDataFlowNode =
   TLocalVariableRefNode(AstNode repr, LocalVariable var, VariableRefKind kind) {
     performsVariableAccess(repr, var, kind, _)
   } or
+  TCallableNode(DataFlowCallable callable) or
   TReceiverParameterNode(DataFlowCallable callable) or
   TReceiverArgumentNode(DataFlowCall call, Boolean isPost) or
   TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node)
 
 class TDataFlowNodeStage1 =
   TValueNode or TStrictlyIncomingValue or TExprPostUpdateNode or TLocalVariableRefNode or
-      TReceiverParameterNode or TReceiverArgumentNode;
+      TCallableNode or TReceiverParameterNode or TReceiverArgumentNode;
 
 /**
  * A data-flow node used during construction of the local data flow graph.
@@ -175,6 +176,14 @@ class BuilderNode extends TDataFlowNodeStage1 {
     this = TReceiverArgumentNode(call, isPost)
   }
 
+  /** Holds if this is the canonical representative for the given `callable`. */
+  predicate isCallableEx(DataFlowCallable callable) { this = TCallableNode(callable) }
+
+  /** Holds if this is the canonical representative for the given `callable`. */
+  predicate isCallable(Callable callable) {
+    this = TCallableNode(any(DataFlowCallable c | c.asSourceCallable() = callable))
+  }
+
   /**
    * Gets the post-update node for this node, if any.
    *
@@ -228,6 +237,9 @@ class BuilderNode extends TDataFlowNodeStage1 {
     exists(DataFlowCallable callable |
       this.isReceiverParameterEx(callable) and
       result = "[receiver] " + callable.toString()
+      or
+      this.isCallableEx(callable) and
+      result = "[callable] " + callable.toString()
     )
     or
     exists(DataFlowCall call |
@@ -249,7 +261,10 @@ class BuilderNode extends TDataFlowNodeStage1 {
     )
     or
     exists(DataFlowCallable callable |
-      this.isReceiverParameterEx(callable) and
+      this.isReceiverParameterEx(callable)
+      or
+      this.isCallableEx(callable)
+    |
       result = callable.getLocation()
     )
     or
@@ -311,6 +326,12 @@ class Node extends TDataFlowNode {
   /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
   predicate isReceiverPostUpdate(CallExpr call) { this.(BuilderNode).isReceiverPostUpdate(call) }
 
+  /** Holds if this is the canonical representative for the given `callable`. */
+  predicate isCallableEx(DataFlowCallable callable) { this.(BuilderNode).isCallableEx(callable) }
+
+  /** Holds if this is the canonical representative for the given `callable`. */
+  predicate isCallable(Callable callable) { this.(BuilderNode).isCallable(callable) }
+
   /**
    * Gets the AST node wrapped by this data flow, if any.
    */
@@ -357,6 +378,11 @@ class Node extends TDataFlowNode {
       this.(BuilderNode).isReceiverArgumentEx(call, _) and
       result = call.getEnclosingCallable()
     )
+    or
+    exists(DataFlowCallable callable |
+      this.isCallableEx(callable) and
+      result.asSourceCallable() = callable.asSourceCallable().getEnclosingCallable()
+    )
   }
 
   /** Gets the callable containing this data flow node. */
@@ -389,6 +415,9 @@ class Node extends TDataFlowNode {
       exists(DataFlowCallable callable |
         this.(BuilderNode).isReceiverParameterEx(callable) and
         cfgNode.(ControlFlow::EntryNode).getEnclosingCallable() = callable.asSourceCallable()
+        or
+        this.isCallableEx(callable) and
+        cfgNode.injects(callable.asSourceCallable())
       )
       or
       exists(DataFlowCall call, CallExpr sourceCall |
