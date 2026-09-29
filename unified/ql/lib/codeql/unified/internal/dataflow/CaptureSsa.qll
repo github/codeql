@@ -73,6 +73,32 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     CapturedVariable getVariable() { result = super.getVariable() }
   }
 
+  /**
+   * Holds if `node` is a possible alias for `callable`.
+   */
+  private predicate callableHasLocalAlias(Callable callable, Stage2Node node) {
+    node.(BuilderNode).isCallable(callable)
+    or
+    exists(Stage2Node prev | callableHasLocalAlias(callable, prev) |
+      step(prev, any(Step s | s.value()), node)
+      or
+      localSsaStep(prev, node, _)
+    )
+    or
+    exists(CapturedVariable var |
+      callableHasLocalAliasVar(callable, var) and
+      node.(BuilderNode).isLocalVariableRead(_, var)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate callableHasLocalAliasVar(Callable callable, CapturedVariable var) {
+    exists(BuilderNode ref |
+      callableHasLocalAlias(callable, ref) and
+      ref.isLocalVariableWrite(_, var)
+    )
+  }
+
   class ClosureExpr extends Expr instanceof TCallableNode {
     private Callable callable;
 
@@ -80,7 +106,7 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
 
     predicate hasBody(Callable body) { callable = body }
 
-    predicate hasAliasedAccess(Expr f) { this = f } // TODO
+    predicate hasAliasedAccess(Expr f) { callableHasLocalAlias(callable, f) }
   }
 }
 
