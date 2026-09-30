@@ -138,6 +138,17 @@ extensions:
       - ["tempfile", "Member[mkstemp]", "Argument[0,suffix:,1,prefix:,2,dir:]", "ReturnValue.TupleElement[0,1]", "taint"]
       # See https://docs.python.org/3/library/textwrap.html#textwrap.dedent
       - ["textwrap", "Member[dedent]", "Argument[0,text:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/threading.html#threading.serialize_iterator
+      - ["threading", "Member[serialize_iterator]", "Argument[0,iterable:].ListElement", "ReturnValue.ListElement", "value"]
+      - ["threading", "Member[serialize_iterator]", "Argument[0,iterable:].SetElement", "ReturnValue.ListElement", "value"]
+      - ["threading", "Member[serialize_iterator]", "Argument[0,iterable:].AnyTupleElement", "ReturnValue.ListElement", "value"]
+      - ["threading", "Member[serialize_iterator]", "Argument[0,iterable:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/threading.html#threading.concurrent_tee
+      # All returned iterators have the same contents, so the outer tuple is modeled as an index-insensitive sequence.
+      - ["threading", "Member[concurrent_tee]", "Argument[0,iterable:].ListElement", "ReturnValue.ListElement.ListElement", "value"]
+      - ["threading", "Member[concurrent_tee]", "Argument[0,iterable:].SetElement", "ReturnValue.ListElement.ListElement", "value"]
+      - ["threading", "Member[concurrent_tee]", "Argument[0,iterable:].AnyTupleElement", "ReturnValue.ListElement.ListElement", "value"]
+      - ["threading", "Member[concurrent_tee]", "Argument[0,iterable:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/traceback.html#traceback.StackSummary.from_list
       - ["traceback.StackSummary", "Member[from_list]", "Argument[0,a_list:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/typing.html#typing.cast
