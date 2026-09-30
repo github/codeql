@@ -84,7 +84,8 @@ newtype TDataFlowNode =
   TCallableNode(DataFlowCallable callable) or
   TReceiverParameterNode(DataFlowCallable callable) or
   TReceiverArgumentNode(DataFlowCall call, Boolean isPost) or
-  TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node)
+  TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node) or
+  TCaptureSsaNode(CaptureSsaOutput::SynthesizedCaptureNode node)
 
 class TDataFlowNodeStage1 =
   TValueNode or TStrictlyIncomingValue or TExprPostUpdateNode or TLocalVariableRefNode or
@@ -363,10 +364,24 @@ class Node extends TDataFlowNode {
   AstNode getWrappedAstNode() { result = this.(BuilderNode).getWrappedAstNode() }
 
   /** Get a string representation of this element. */
-  string toString() { result = this.(Stage2Node).toString() }
+  string toString() {
+    result = this.(Stage2Node).toString()
+    or
+    exists(CaptureSsaOutput::SynthesizedCaptureNode node |
+      this = TCaptureSsaNode(node) and
+      result = "[capture] " + node.toString()
+    )
+  }
 
   /** Gets the location of this data flow node. */
-  Location getLocation() { result = this.(Stage2Node).getLocation() }
+  Location getLocation() {
+    result = this.(Stage2Node).getLocation()
+    or
+    exists(CaptureSsaOutput::SynthesizedCaptureNode node |
+      this = TCaptureSsaNode(node) and
+      result = node.getLocation()
+    )
+  }
 
   /** Gets the data-flow callable containing this data flow node. */
   DataFlowCallable getEnclosingCallableEx() {
@@ -384,6 +399,13 @@ class Node extends TDataFlowNode {
     )
     or
     this.(BuilderNode).isReceiverParameterEx(result)
+    or
+    exists(CaptureSsaOutput::SynthesizedCaptureNode node |
+      this = TCaptureSsaNode(node) and
+      result.asSourceCallable() = node.getEnclosingCallable()
+    )
+    or
+    this.(BuilderNode).isImplicitParameter(result, _)
     or
     exists(DataFlowCall call |
       this.(BuilderNode).isReceiverArgumentEx(call, _) and
@@ -446,6 +468,11 @@ class Node extends TDataFlowNode {
       bb = node.getBasicBlock() and
       i = node.getIndex() // TODO: why is this marked as internal in the SSA library?
     )
+    or
+    exists(CaptureSsaOutput::SynthesizedCaptureNode node |
+      this = TCaptureSsaNode(node) and
+      node.hasCfgNode(bb, i)
+    )
   }
 
   /** Gets the basic block associated with this data flow node, if any. */
@@ -456,5 +483,9 @@ class Node extends TDataFlowNode {
    *
    * The post-update node represents the updated state of the value held in this node, after it has been mutated by the surrounding assignment or call.
    */
-  Node getPostUpdateNode() { result = this.(BuilderNode).getPostUpdateNode() }
+  Node getPostUpdateNode() {
+    result = this.(BuilderNode).getPostUpdateNode()
+    or
+    result = getCaptureSsaPostUpdate(this)
+  }
 }
