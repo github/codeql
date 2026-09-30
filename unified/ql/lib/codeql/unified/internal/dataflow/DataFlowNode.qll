@@ -82,14 +82,14 @@ newtype TDataFlowNode =
     performsVariableAccess(repr, var, kind, _)
   } or
   TCallableNode(DataFlowCallable callable) or
-  TReceiverParameterNode(DataFlowCallable callable) or
-  TReceiverArgumentNode(DataFlowCall call, Boolean isPost) or
+  TImplicitParameterNode(DataFlowCallable callable, ImplicitParameterPosition pos) or
+  TImplicitArgumentNode(DataFlowCall call, ImplicitArgumentPosition pos, Boolean isPost) or
   TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node) or
   TCaptureSsaNode(CaptureSsaOutput::SynthesizedCaptureNode node)
 
 class TDataFlowNodeStage1 =
   TValueNode or TStrictlyIncomingValue or TExprPostUpdateNode or TLocalVariableRefNode or
-      TCallableNode or TReceiverParameterNode or TReceiverArgumentNode;
+      TCallableNode or TImplicitParameterNode or TImplicitArgumentNode;
 
 class TDataFlowNodeStage2 = TDataFlowNodeStage1 or TLocalSsaNode;
 
@@ -137,6 +137,16 @@ class BuilderNode extends TDataFlowNodeStage1 {
   /** Holds if this represents the updated state of the value returned by `expr` after it has been mutated by the surrounding assignment or call. */
   predicate isPostUpdate(Expr expr) { this = TExprPostUpdateNode(expr) }
 
+  /** Holds if this node represents an implicit parameter of `callable`. */
+  predicate isImplicitParameter(DataFlowCallable callable, ImplicitParameterPosition pos) {
+    this = TImplicitParameterNode(callable, pos)
+  }
+
+  /** Holds if this node represents an implicit argument to `call` (or its post-update). */
+  predicate isImplicitArgument(DataFlowCall call, ImplicitArgumentPosition pos, boolean isPost) {
+    this = TImplicitArgumentNode(call, pos, isPost)
+  }
+
   /**
    * Holds if this represents the receiver passed to the given callable.
    *
@@ -144,39 +154,20 @@ class BuilderNode extends TDataFlowNodeStage1 {
    * this node still exists but will typically not flow anywhere.
    */
   predicate isReceiverParameter(Callable callable) {
-    this.(BuilderNode)
-        .isReceiverParameterEx(any(DataFlowCallable c | c.asSourceCallable() = callable))
-  }
-
-  /**
-   * Holds if this represents the receiver passed to the given callable.
-   *
-   * Note that for non-methods and closures that capture the receiver from the enclosing method,
-   * this node still exists but will typically not flow anywhere.
-   */
-  predicate isReceiverParameterEx(DataFlowCallable callable) {
-    this = TReceiverParameterNode(callable)
+    this.isImplicitParameter(any(DataFlowCallable c | c.asSourceCallable() = callable),
+      any(ParameterPosition p | p.isReceiver()))
   }
 
   /** Holds if this node represents the receiver argument passed to `call`. */
   predicate isReceiverArgument(CallExpr call) {
-    this.isReceiverArgumentEx(any(DataFlowCall c | c.asExplicitCall() = call))
+    this.isImplicitArgument(any(DataFlowCall c | c.asExplicitCall() = call),
+      any(ArgumentPosition p | p.isReceiver()), false)
   }
 
   /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
   predicate isReceiverPostUpdate(CallExpr call) {
-    this.isReceiverPostUpdateEx(any(DataFlowCall c | c.asExplicitCall() = call))
-  }
-
-  /** Holds if this node represents the receiver argument passed to `call`. */
-  predicate isReceiverArgumentEx(DataFlowCall call) { this.isReceiverArgumentEx(call, false) }
-
-  /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
-  predicate isReceiverPostUpdateEx(DataFlowCall call) { this.isReceiverArgumentEx(call, true) }
-
-  /** Holds if this node represents the receiver argument passed to `call`. */
-  predicate isReceiverArgumentEx(DataFlowCall call, boolean isPost) {
-    this = TReceiverArgumentNode(call, isPost)
+    this.isImplicitArgument(any(DataFlowCall c | c.asExplicitCall() = call),
+      any(ArgumentPosition p | p.isReceiver()), true)
   }
 
   /** Holds if this is the canonical representative for the given `callable`. */
@@ -185,6 +176,16 @@ class BuilderNode extends TDataFlowNodeStage1 {
   /** Holds if this is the canonical representative for the given `callable`. */
   predicate isCallable(Callable callable) {
     this = TCallableNode(any(DataFlowCallable c | c.asSourceCallable() = callable))
+  }
+
+  /** Holds if this node represents the function being invoked at `call`. */
+  predicate isCalleeArgument(CallExpr call) {
+    this.isImplicitArgument(getDataFlowCall(call), any(ArgumentPosition p | p.isCallee()), false)
+  }
+
+  /** Holds if this node represents the updated state of the function being invoked at `call`, after the call returns. */
+  predicate isCalleePostUpdate(CallExpr call) {
+    this.isImplicitArgument(getDataFlowCall(call), any(ArgumentPosition p | p.isCallee()), true)
   }
 
   /**
@@ -204,9 +205,9 @@ class BuilderNode extends TDataFlowNodeStage1 {
       result.isLocalVariablePostUpdate(expr, var)
     )
     or
-    exists(DataFlowCall call |
-      this.isReceiverArgumentEx(call) and
-      result.isReceiverPostUpdateEx(call)
+    exists(DataFlowCall call, ArgumentPosition pos |
+      this.isImplicitArgument(call, pos, false) and
+      result.isImplicitArgument(call, pos, true)
     )
   }
 
@@ -237,20 +238,20 @@ class BuilderNode extends TDataFlowNodeStage1 {
       result = "[variable " + kind + "] " + v.toString()
     )
     or
-    exists(DataFlowCallable callable |
-      this.isReceiverParameterEx(callable) and
-      result = "[receiver] " + callable.toString()
+    exists(DataFlowCallable callable, ParameterPosition pos |
+      this.isImplicitParameter(callable, pos) and
+      result = "[" + pos + " param] " + callable.toString()
       or
       this.isCallableEx(callable) and
       result = "[callable] " + callable.toString()
     )
     or
-    exists(DataFlowCall call |
-      this.isReceiverArgumentEx(call) and
-      result = "[receiver arg] " + call.toString()
+    exists(DataFlowCall call, ArgumentPosition pos |
+      this.isImplicitArgument(call, pos, false) and
+      result = "[" + pos + " arg] " + call.toString()
       or
-      this.isReceiverPostUpdateEx(call) and
-      result = "[receiver post] " + call.toString()
+      this.isImplicitArgument(call, pos, true) and
+      result = "[" + pos + " post] " + call.toString()
     )
   }
 
@@ -264,7 +265,7 @@ class BuilderNode extends TDataFlowNodeStage1 {
     )
     or
     exists(DataFlowCallable callable |
-      this.isReceiverParameterEx(callable)
+      this.isImplicitParameter(callable, _)
       or
       this.isCallableEx(callable)
     |
@@ -272,7 +273,7 @@ class BuilderNode extends TDataFlowNodeStage1 {
     )
     or
     exists(DataFlowCall call |
-      this.isReceiverArgumentEx(call, _) and
+      this.isImplicitArgument(call, _, _) and
       result = call.getLocation()
     )
   }
@@ -398,7 +399,7 @@ class Node extends TDataFlowNode {
       result.asSourceCallable() = node.getSourceVariable().getDeclaringCallable()
     )
     or
-    this.(BuilderNode).isReceiverParameterEx(result)
+    this.(BuilderNode).isImplicitParameter(result, _)
     or
     exists(CaptureSsaOutput::SynthesizedCaptureNode node |
       this = TCaptureSsaNode(node) and
@@ -408,7 +409,7 @@ class Node extends TDataFlowNode {
     this.(BuilderNode).isImplicitParameter(result, _)
     or
     exists(DataFlowCall call |
-      this.(BuilderNode).isReceiverArgumentEx(call, _) and
+      this.(BuilderNode).isImplicitArgument(call, _, _) and
       result = call.getEnclosingCallable()
     )
     or
@@ -446,19 +447,20 @@ class Node extends TDataFlowNode {
       )
       or
       exists(DataFlowCallable callable |
-        this.(BuilderNode).isReceiverParameterEx(callable) and
+        this.(BuilderNode).isImplicitParameter(callable, _) and
         cfgNode.(ControlFlow::EntryNode).getEnclosingCallable() = callable.asSourceCallable()
         or
         this.isCallableEx(callable) and
         cfgNode.injects(callable.asSourceCallable())
       )
       or
-      exists(DataFlowCall call, CallExpr sourceCall |
+      exists(DataFlowCall call, CallExpr sourceCall, boolean isPost |
         call.asExplicitCall() = sourceCall and
+        this.(BuilderNode).isImplicitArgument(call, _, isPost) and
         (
-          this.(BuilderNode).isReceiverArgumentEx(call) and cfgNode.injects(sourceCall)
+          isPost = false and cfgNode.injects(sourceCall)
           or
-          this.(BuilderNode).isReceiverPostUpdateEx(call) and cfgNode.isAfter(sourceCall)
+          isPost = true and cfgNode.isAfter(sourceCall)
         )
       )
     )
