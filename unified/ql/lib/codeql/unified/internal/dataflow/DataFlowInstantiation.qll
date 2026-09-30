@@ -189,15 +189,17 @@ module DataFlowInput implements InputSig<Location> {
 
   predicate allowParameterReturnInSelf(ParameterNode p) { captureSsaAllowParameterReturnInSelf(p) }
 
-  class LambdaCallKind extends Void {
-    LambdaCallKind() { none() } // TODO
+  class LambdaCallKind extends Unit { }
 
-    string toString() { none() } // TODO
+  predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+    creation.isCallableEx(c) and
+    exists(kind)
   }
 
-  predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() } // TODO
-
-  predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() } // TODO
+  predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+    receiver.(BuilderNode).isImplicitArgument(call, any(ArgumentPosition p | p.isCallee()), false) and
+    exists(kind)
+  }
 
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) {
     none() // TODO
