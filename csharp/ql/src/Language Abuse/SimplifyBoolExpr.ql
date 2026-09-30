@@ -13,46 +13,79 @@
 import csharp
 
 /**
- * Holds if expression `expr` has Boolean `value` at child `child`.
- * No other child nodes are boolean literals.
+ * Holds if the left operand of a binary operation is a Boolean literal with the specified value
+ * and the right operand is not a Boolean literal.
  */
-predicate literalChild(Expr expr, int child, boolean value) {
-  value = expr.getChild(child).(BoolLiteral).getBoolValue() and
-  forall(int c | c != child | not expr.getChild(c) instanceof BoolLiteral)
+predicate binaryLiteralLeft(BinaryOperation op, boolean value) {
+  value = op.getLeftOperand().(BoolLiteral).getBoolValue() and
+  not op.getRightOperand() instanceof BoolLiteral
 }
 
 /**
- * Expression `expr` has Boolean `value1` at child `child1`, and boolean `value2` at `child2`.
- * No other child nodes are boolean literals.
+ * Holds if the right operand of a binary operation is a Boolean literal with the specified value
+ * and the left operand is not a Boolean literal.
  */
-predicate literalChildren(Expr expr, int child1, boolean value1, int child2, boolean value2) {
-  value1 = expr.getChild(child1).(BoolLiteral).getBoolValue() and
-  value2 = expr.getChild(child2).(BoolLiteral).getBoolValue() and
-  forall(int c | c != child1 and c != child2 | not expr.getChild(c) instanceof BoolLiteral)
+predicate binaryLiteralRight(BinaryOperation op, boolean value) {
+  value = op.getRightOperand().(BoolLiteral).getBoolValue() and
+  not op.getLeftOperand() instanceof BoolLiteral
+}
+
+/**
+ * Holds if the 'then' branch of a conditional expression is a Boolean literal with the specified value
+ * and the 'condition' or 'else' branch are not Boolean literals.
+ */
+predicate conditionalThenLiteral(ConditionalExpr cond, boolean value) {
+  value = cond.getThen().(BoolLiteral).getBoolValue() and
+  not cond.getCondition() instanceof BoolLiteral and
+  not cond.getElse() instanceof BoolLiteral
+}
+
+/**
+ * Holds if the 'else' branch of a conditional expression is a Boolean literal with the specified value
+ * and the 'condition' or 'then' branch are not Boolean literals.
+ */
+predicate conditionalElseLiteral(ConditionalExpr cond, boolean value) {
+  value = cond.getElse().(BoolLiteral).getBoolValue() and
+  not cond.getCondition() instanceof BoolLiteral and
+  not cond.getThen() instanceof BoolLiteral
+}
+
+/**
+ * Holds if both the 'then' and 'else' branches of a conditional expression are Boolean literals with the specified values
+ * and the 'condition' branch is not a Boolean literal.
+ */
+predicate conditionalThenAndElseLiteral(ConditionalExpr cond, boolean thenValue, boolean elseValue) {
+  thenValue = cond.getThen().(BoolLiteral).getBoolValue() and
+  elseValue = cond.getElse().(BoolLiteral).getBoolValue() and
+  not cond.getCondition() instanceof BoolLiteral
 }
 
 predicate rewriteBinaryExpr(BinaryOperation op, boolean value, string oldPattern) {
-  literalChild(op, 0, value) and oldPattern = value + " " + op.getOperator() + " A"
+  binaryLiteralLeft(op, value) and oldPattern = value + " " + op.getOperator() + " A"
   or
-  literalChild(op, 1, value) and oldPattern = "A " + op.getOperator() + " " + value
+  binaryLiteralRight(op, value) and oldPattern = "A " + op.getOperator() + " " + value
 }
 
 predicate rewriteConditionalExpr(ConditionalExpr cond, string oldPattern, string newPattern) {
-  literalChild(cond, 1, false) and oldPattern = "A ? false : B" and newPattern = "!A && B"
+  conditionalThenLiteral(cond, false) and oldPattern = "A ? false : B" and newPattern = "!A && B"
   or
-  literalChild(cond, 1, true) and oldPattern = "A ? true : B" and newPattern = "A || B"
+  conditionalThenLiteral(cond, true) and oldPattern = "A ? true : B" and newPattern = "A || B"
   or
-  literalChild(cond, 2, false) and oldPattern = "A ? B : false" and newPattern = "A && B"
+  conditionalElseLiteral(cond, false) and oldPattern = "A ? B : false" and newPattern = "A && B"
   or
-  literalChild(cond, 2, true) and oldPattern = "A ? B : true" and newPattern = "!A || B"
+  conditionalElseLiteral(cond, true) and oldPattern = "A ? B : true" and newPattern = "!A || B"
   or
-  exists(boolean b | literalChildren(cond, 1, b, 2, b) |
+  exists(boolean b | conditionalThenAndElseLiteral(cond, b, b) |
     oldPattern = "A ? " + b + " : " + b and newPattern = b.toString()
   )
   or
-  literalChildren(cond, 1, true, 2, false) and oldPattern = "A ? true : false" and newPattern = "A"
+  conditionalThenAndElseLiteral(cond, true, false) and
+  oldPattern = "A ? true : false" and
+  newPattern = "A"
   or
-  literalChildren(cond, 1, false, 2, true) and oldPattern = "A ? false : true" and newPattern = "!A"
+  conditionalThenAndElseLiteral(cond, false, true) and
+  oldPattern = "A ? false : true" and
+  newPattern = "!A"
 }
 
 predicate negatedOperators(string op, string negated) {
