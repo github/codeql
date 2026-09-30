@@ -37,6 +37,8 @@ function good() {
     "use cache";
     "use cache: remote";
     "use cache: private";
+    "use workflow";
+    "use step";
 }
 
 function data() {
