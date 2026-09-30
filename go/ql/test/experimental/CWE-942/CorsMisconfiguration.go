@@ -219,7 +219,7 @@ func main() {
 			origin := req.Header.Get("origin")
 			switch req.Method {
 			case "allowed":
-				w.Header().Set("Access-Control-Allow-Origin", origin) // $ SPURIOUS: Alert
+				w.Header().Set("Access-Control-Allow-Origin", origin)
 			default:
 				w.Header().Set("Access-Control-Allow-Origin", origin) // $ Alert
 			}
