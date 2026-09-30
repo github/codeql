@@ -154,29 +154,25 @@ class BuilderNode extends TDataFlowNodeStage1 {
    * this node still exists but will typically not flow anywhere.
    */
   predicate isReceiverParameter(Callable callable) {
-    this.isImplicitParameter(any(DataFlowCallable c | c.asSourceCallable() = callable),
+    this.isImplicitParameter(getDataFlowCallable(callable),
       any(ParameterPosition p | p.isReceiver()))
   }
 
   /** Holds if this node represents the receiver argument passed to `call`. */
   predicate isReceiverArgument(CallExpr call) {
-    this.isImplicitArgument(any(DataFlowCall c | c.asExplicitCall() = call),
-      any(ArgumentPosition p | p.isReceiver()), false)
+    this.isImplicitArgument(getDataFlowCall(call), any(ArgumentPosition p | p.isReceiver()), false)
   }
 
   /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
   predicate isReceiverPostUpdate(CallExpr call) {
-    this.isImplicitArgument(any(DataFlowCall c | c.asExplicitCall() = call),
-      any(ArgumentPosition p | p.isReceiver()), true)
+    this.isImplicitArgument(getDataFlowCall(call), any(ArgumentPosition p | p.isReceiver()), true)
   }
 
   /** Holds if this is the canonical representative for the given `callable`. */
   predicate isCallableEx(DataFlowCallable callable) { this = TCallableNode(callable) }
 
   /** Holds if this is the canonical representative for the given `callable`. */
-  predicate isCallable(Callable callable) {
-    this = TCallableNode(any(DataFlowCallable c | c.asSourceCallable() = callable))
-  }
+  predicate isCallable(Callable callable) { this = TCallableNode(getDataFlowCallable(callable)) }
 
   /** Holds if this node represents the function being invoked at `call`. */
   predicate isCalleeArgument(CallExpr call) {
