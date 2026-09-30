@@ -277,6 +277,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((sequenceExpr elements: _* @els) => (unresolved_operator_sequence element: {els})),
         // Prefix unary operators (`!a`, `-x`).
         rule!((prefixOperatorExpr operator: @@op expression: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
+        // In-out expressions, `&x`, are translated to unary expressions.
+        rule!(
+            (inOutExpr ampersand: @@amp expression: @operand)
+            =>
+            (unary_expr operator: (prefix_operator #{amp}) operand: {operand})
+        ),
         // A parenthesised expression has a single tuple element; elide the
         // grouping and preserve the expression itself. Actual tuple literals
         // retain their translated labeled elements as `argument` children.
@@ -1393,7 +1399,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((fallThroughStmt) => (unsupported_node)),
         rule!((ifConfigDecl) => (unsupported_node)),
         rule!((implicitlyUnwrappedOptionalType) => (unsupported_node)),
-        rule!((inOutExpr) => (unsupported_node)),
         rule!((inlineArrayType) => (unsupported_node)),
         rule!((keyPathExpr) => (unsupported_node)),
         rule!((macroDecl) => (unsupported_node)),
