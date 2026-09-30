@@ -28,3 +28,5 @@ class DataFlowCall extends TDataFlowCall {
     result.asSourceCallable() = this.asExplicitCall().getEnclosingCallable()
   }
 }
+
+DataFlowCall getDataFlowCall(CallExpr call) { result.asExplicitCall() = call }
