@@ -186,4 +186,21 @@ func test23() {
 	unreachable() // OK: deliberately unreachable
 }
 
+type (
+	embedded  struct{}
+	recursive struct {
+		*embedded
+		value int
+		*recursive
+	}
+)
+
+func test24(x *recursive) []int {
+	values := []int{0}
+	if x.value != 0 {
+		values = append(values, x.value)
+	}
+	return values // OK: reachable because value is a direct field of recursive
+}
+
 func main() {}
