@@ -103,7 +103,7 @@ func t9() {
 func t10() {
     let x = source("t10.1")
     let closure1 = { [x1 = x] in
-        sink(x1)  // $ MISSING: hasValueFlow=t10.1
+        sink(x1)  // $ hasValueFlow=t10.1
     }
     let closure2 = { [x] in
         sink(x)  // $ MISSING: hasValueFlow=t10.1

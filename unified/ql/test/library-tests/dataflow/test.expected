@@ -772,7 +772,6 @@ subpaths
 | test.swift:214:43:214:57 | source(...) | test.swift:193:30:193:30 | s | test.swift:193:73:193:73 | s | test.swift:214:21:214:58 | asyncThrowingIdentity(...) |
 
 testFailures
-| capture.swift:109:18:109:40 | // $ hasValueFlow=t10.1 | Missing result: hasValueFlow=t10.1 |
 #select
 | calls.swift:8:14:8:14 | x | calls.swift:10:12:10:25 | source(...) | calls.swift:8:14:8:14 | x | $@ | calls.swift:10:12:10:25 | source(...) | source(...) |
 | calls.swift:17:10:17:17 | target(...) | calls.swift:15:16:15:29 | source(...) | calls.swift:17:10:17:17 | target(...) | $@ | calls.swift:15:16:15:29 | source(...) | source(...) |
