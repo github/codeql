@@ -111,3 +111,24 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
 }
 
 module CaptureSsaOutput = Flow<Location, Cfg, CaptureSsaInput>;
+
+Node getNodeFromCaptureSsaNode(CaptureSsaOutput::ClosureNode n) {
+  result = TCaptureSsaNode(n)
+  or
+  result = n.(CaptureSsaOutput::ExprNode).getExpr()
+  or
+  result = n.(CaptureSsaOutput::ExprPostUpdateNode).getExpr().(BuilderNode).getPostUpdateNode()
+  or
+  result = n.(CaptureSsaOutput::VariableWriteSourceNode).getVariableWrite()
+  or
+  // NOTE: This only supports lambdas at the moment. Local classes in Swift cannot capture variables.
+  result = n.(CaptureSsaOutput::MallocNode).getClosureExpr()
+  or
+  exists(CaptureSsaOutput::ThisParameterNode thisParam, Callable callable |
+    n = thisParam and
+    callable = thisParam.getCallable() and
+    result
+        .(BuilderNode)
+        .isImplicitParameter(getDataFlowCallable(callable), any(ParameterPosition p | p.isCallee()))
+  )
+}
