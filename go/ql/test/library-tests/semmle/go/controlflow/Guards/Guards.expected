@@ -266,3 +266,8 @@ defaultCaseResult
 | guards.go:164:2:165:32 | case clause | expressionless default | true |
 modelBarrierResult
 | guards.go:351:27:351:33 | pointer | model bool | model-bool |
+| guards.go:354:27:354:33 | pointer | model zero | model-zero |
+| guards.go:357:31:357:37 | pointer | model not zero | model-not-zero |
+| guards.go:360:27:360:33 | pointer | model null | model-null |
+| guards.go:363:31:363:37 | pointer | model not null | model-not-null |
+| guards.go:366:34:366:40 | pointer | model no exception | model-no-exception |
