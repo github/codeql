@@ -31,7 +31,7 @@ private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
   exists(CallExpr call | cfgNode.isAfter(call) |
     expr = call.getAnArgument().getValue()
     or
-    expr = call.getCallee().(MemberAccessExpr).getBase()
+    expr = call.getCallee()
   )
 }
 
