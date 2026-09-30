@@ -277,6 +277,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((sequenceExpr elements: _* @els) => (unresolved_operator_sequence element: {els})),
         // Prefix unary operators (`!a`, `-x`).
         rule!((prefixOperatorExpr operator: @@op expression: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
+        // Postfix unary operators (e.g., `x!`, `x...`, `x++`).
+        rule!(
+            (postfixOperatorExpr expression: @operand operator: @@op)
+            =>
+            (unary_expr operator: (postfix_operator #{op}) operand: {operand})
+        ),
         // In-out expressions, `&x`, are translated to unary expressions.
         rule!(
             (inOutExpr ampersand: @@amp expression: @operand)
@@ -1410,7 +1416,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((packExpansionExpr) => (unsupported_node)),
         rule!((packExpansionType) => (unsupported_node)),
         rule!((postfixIfConfigExpr) => (unsupported_node)),
-        rule!((postfixOperatorExpr) => (unsupported_node)),
         rule!((poundSourceLocation) => (unsupported_node)),
         rule!((precedenceGroupDecl) => (unsupported_node)),
         rule!((someOrAnyType) => (unsupported_node)),
