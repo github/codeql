@@ -109,6 +109,32 @@ module CallGraphStats implements EntityStatsSig {
 
 module CallGraphStatsReport = EntityReportStats<CallGraphStats>;
 
+module TaintReach {
+  private class Candidate extends DataFlow::Node {
+    Candidate() { exists(this.asExpr()) }
+  }
+
+  module TaintReachConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+
+    predicate isSink(DataFlow::Node node) { node instanceof Candidate }
+  }
+
+  module TaintReachFlow = TaintTracking::Global<TaintReachConfig>;
+
+  DataFlow::Node taintedNode() { TaintReachFlow::flowTo(result) }
+
+  int numberOfTaintedNodes() { result = count(taintedNode()) }
+
+  int numberOfCandidates() { result = count(Candidate c) }
+
+  int perMillionNodes() {
+    result = (numberOfTaintedNodes() * 1000000) / numberOfCandidates()
+    or
+    numberOfCandidates() = 0 and result = 0
+  }
+}
+
 /**
  * Gets summary statistics about taint.
  */
@@ -123,11 +149,11 @@ predicate taintStats(string key, int value) {
   or
   key = "Taint edges - number of edges" and none()
   or
-  key = "Taint reach - nodes tainted" and none()
+  key = "Taint reach - nodes tainted" and value = TaintReach::numberOfTaintedNodes()
   or
   key = "Taint reach - total non-summary nodes" and none()
   or
-  key = "Taint reach - per million nodes" and none()
+  key = "Taint reach - per million nodes" and value = TaintReach::perMillionNodes()
   or
   key = "Taint sinks - query sinks" and value = count(DataFlow::Node n | Models::isSink(n, _))
   or
