@@ -4,6 +4,7 @@
 overlay[local?]
 module;
 
+private import AstPlugin
 private import codeql.files.FileSystem
 private import codeql.unified.internal.NameBinding as NameBinding
 
@@ -153,17 +154,18 @@ module Unified {
         NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
     }
 
-    private string getKind() {
-      this.hasModifier(result) and
-      result in ["class", "struct", "interface", "enum", "actor", "extension", "protocol"]
+    override string toString() {
+      result = concat(getClassLikeDeclarationKeyword(this) + " ") + concat(this.getName())
     }
-
-    override string toString() { result = concat(this.getKind() + " ") + concat(this.getName()) }
   }
 
   class ConstructorDeclaration extends G::ConstructorDeclaration {
     /** Gets the name of this constructor. */
     string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result = concat(getConstructorDeclarationKeyword(this) + " ") + concat(this.getName())
+    }
   }
 
   class ContinueExpr extends G::ContinueExpr {
@@ -174,6 +176,22 @@ module Unified {
   class FunctionDeclaration extends G::FunctionDeclaration {
     /** Gets the name of this function. */
     string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result = concat(getFunctionDeclarationKeyword(this) + " ") + concat(this.getName())
+    }
+  }
+
+  class VariableDeclaration extends G::VariableDeclaration {
+    /** Gets the name node of this variable declaration, if any. */
+    Identifier getNameNode() { result = this.getPattern() }
+
+    /** Gets the name of the variable being declared, if any. */
+    string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result = concat(getVariableDeclarationKeyword(this) + " ") + concat(this.getName())
+    }
   }
 
   class LabeledStmt extends G::LabeledStmt {
