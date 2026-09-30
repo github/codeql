@@ -14,10 +14,15 @@ private predicate hasIncomingValueAtCfgNode(Expr expr, ControlFlowNode cfgNode) 
     // Use the after node.
     cfgNode.isAfter(declOrAssignment.(VariableDeclaration))
     or
+    // Hoist local functions to the top of their block
+    declOrAssignment instanceof LocalFunctionDeclaration and
+    cfgNode.isBefore(declOrAssignment.getParent())
+    or
     // In other cases, it's a binding pattern whose CFG node can be used
     // as its assignment time
     not declOrAssignment instanceof Assignment and
     not declOrAssignment instanceof VariableDeclaration and
+    not declOrAssignment instanceof LocalFunctionDeclaration and
     cfgNode.injects(expr)
   )
 }
