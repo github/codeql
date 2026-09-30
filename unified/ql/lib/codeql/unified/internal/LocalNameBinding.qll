@@ -9,6 +9,12 @@ private import codeql.unified.internal.NameBindingPlugin
 private import codeql.unified.internal.StaticNameBinding
 
 private module LocalNameBindingInput implements LocalNameBindingInputSig<Location> {
+  predicate cacheRevRef() {
+    (bindingContext(_, _, _) implies any())
+    or
+    (implicitDeclInScope(_, _, _) implies any())
+  }
+
   class AstNode = U::AstNode;
 
   private class LogicalAndRoot extends LogicalAndExpr {
@@ -201,7 +207,9 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     any(NameBindingPlugin p).isNonPattern(e)
   }
 
+  cached
   additional predicate bindingContext(AstNode pattern, AstNode scope, AstNode declaration) {
+    LocalNameBindingOutput::CachedStage::ref() and
     not isNonPattern(pattern) and
     (
       exists(SiblingShadowingDecl decl |
@@ -326,8 +334,9 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     )
   }
 
-  pragma[nomagic]
+  cached
   additional predicate implicitDeclInScope(string name, AstNode scope, boolean isLocalVariable) {
+    LocalNameBindingOutput::CachedStage::ref() and
     exists(Callable callable |
       isLocalVariable = true and
       name = any(NameBindingPlugin p).getImplicitReceiverParameterName(callable) and
@@ -356,7 +365,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   }
 }
 
-import LocalNameBindingInput
+predicate bindingContext = LocalNameBindingInput::bindingContext/3;
 
 module LocalNameBindingOutput = LocalNameBinding<Location, LocalNameBindingInput>;
 
@@ -383,10 +392,10 @@ module Public {
 
   /** An identifier appearing in a name-binding position, such as the `x` in `let x = 123`. */
   class NameBinding extends Identifier {
-    NameBinding() { LocalNameBindingInput::bindingContext(this, _, _) }
+    NameBinding() { bindingContext(this, _, _) }
 
     /** Gets the statement-like node declaring this name, such as a `VariableDeclaration` or `CatchClause`. */
-    AstNode getDeclaration() { LocalNameBindingInput::bindingContext(this, _, result) }
+    AstNode getDeclaration() { bindingContext(this, _, result) }
 
     /** Gets the name being declared. */
     string getName() { result = this.getValue() }
