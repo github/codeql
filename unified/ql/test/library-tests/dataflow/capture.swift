@@ -69,3 +69,21 @@ func t6() {
     x = source("t6.1")
     closure(123)
 }
+
+func t7() {
+    let x = source("t7.1")
+    func local(_: Int) {
+        sink(x)  // $ hasValueFlow=t7.1
+    }
+    local(123)
+}
+
+func t8() {
+    var x = "safe"
+    func local(arg: Int) {
+        x = source("t8.1")
+    }
+    sink(x)  // no flow
+    local(arg: 123)
+    sink(x)  // $ hasValueFlow=t8.1
+}
