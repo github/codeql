@@ -99,3 +99,83 @@ func t9() {
         return x
     }
 }
+
+func t10() {
+    let x = source("t10.1")
+    let closure1 = { [x1 = x] in
+        sink(x1)  // $ MISSING: hasValueFlow=t10.1
+    }
+    let closure2 = { [x] in
+        sink(x)  // $ MISSING: hasValueFlow=t10.1
+    }
+    closure1()
+    closure2()
+}
+
+func t11() {
+    let x = source("t11.1")
+    let closure = { [x = x, blah = x] in
+        sink(x)  // $ MISSING: hasValueFlow=t11.1
+        sink(blah)  // $ MISSING: hasValueFlow=t11.1
+    }
+    closure()
+}
+
+func t12() {
+    class Box {
+        var value: String
+        init(_ x: String) { self.value = x }
+    }
+    let x = Box(source("t12.1"))
+    let closure = { [weak x] in
+        guard let x else { return }
+        sink(x.value)  // $ MISSING: hasValueFlow=t12.1
+    }
+    closure()
+}
+
+func t13() {
+    var x = "safe"
+    let closure1 = { [x] in
+        sink(x)  // no flow
+    }
+    let closure2 = {
+        sink(x)  // $ hasValueFlow=t13.1
+    }
+    closure1()
+    closure2()
+    x = source("t13.1")
+    closure1()
+    closure2()
+}
+
+class C {
+    var x: String
+
+    func capture_self_by_ref() {
+        x = source("C.1")
+        let closure = {
+            sink(self.x)  // $ hasValueFlow=C.1
+        }
+        closure()
+    }
+
+    func capture_self() {
+        x = source("C.2")
+        let closure = { [self] in
+            sink(self.x)  // $ MISSING: hasValueFlow=C.2
+            sink(x)  // $ MISSING: hasValueFlow=C.2
+        }
+        closure()
+    }
+
+    func capture_weak_self() {
+        x = source("C.3")
+        let closure = { [weak self] in
+            guard let self else { return }
+            sink(self.x)  // $ MISSING: hasValueFlow=C.3
+            sink(x)  // $ MISSING: hasValueFlow=C.3
+        }
+        closure()
+    }
+}
