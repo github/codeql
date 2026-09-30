@@ -41,7 +41,7 @@ func handlePanic(w http.ResponseWriter, r *http.Request) {
 	}
 	switch "production" {
 	case "debug":
-		w.Write(buf) // $ SPURIOUS: Alert
+		w.Write(buf)
 	default:
 		w.Write(buf) // $ Alert
 	}
