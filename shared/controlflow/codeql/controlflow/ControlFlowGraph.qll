@@ -71,6 +71,12 @@ signature module AstSig<LocationSig Location> {
   /** A statement. */
   class Stmt extends AstNode;
 
+  /** A labeled statement. */
+  class LabeledStmt extends Stmt {
+    /** Gets the statement carrying the label. */
+    Stmt getStmt();
+  }
+
   /** An expression. */
   class Expr extends AstNode;
 
@@ -439,10 +445,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       string toString();
     }
 
-    /**
-     * Holds if the node `n` has the label `l`. For example, a label in a goto
-     * statement or a goto target.
-     */
+    /** Holds if the node `n` directly has the label `l`. */
     default predicate hasLabel(AstNode n, Label l) { none() }
 
     /**
@@ -1282,9 +1285,23 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
       }
 
-      private Stmt getAStmtInBlock(AstNode block) {
-        result = block.(BlockStmt).getStmt(_) or
-        result = block.(Switch).getStmt(_)
+      /** Holds if `n` has `l`, possibly through enclosing labeled statements. */
+      private predicate hasLabel(AstNode n, Input1::Label l) {
+        Input1::hasLabel(n, l)
+        or
+        exists(LabeledStmt labeled | labeled.getStmt() = n and hasLabel(labeled, l))
+      }
+
+      /**
+       * Holds if `target` is a labeled statement at the start of `root`,
+       * possibly nested under other labeled statements.
+       */
+      private predicate labeledTargetInRoot(Stmt root, LabeledStmt target) {
+        root = target
+        or
+        exists(LabeledStmt labeled |
+          root = labeled and labeledTargetInRoot(labeled.getStmt(), target)
+        )
       }
 
       private predicate callableHasParamDefault(Callable c, Expr defaultValue) {
@@ -1325,7 +1342,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             exists(Input1::Label l |
               c.hasLabel(l) and
-              Input1::hasLabel(loop, l)
+              hasLabel(loop, l)
             )
           )
         )
@@ -1365,16 +1382,32 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           exists(Input1::Label l |
             c.hasLabel(l) and
-            Input1::hasLabel(switch, l)
+            hasLabel(switch, l)
           )
         )
         or
-        exists(AstNode block, Input1::Label l, Stmt lblstmt |
-          ast = getAStmtInBlock(block) and
-          lblstmt = getAStmtInBlock(block) and
-          not lblstmt instanceof GotoStmt and
-          Input1::hasLabel(pragma[only_bind_into](lblstmt), l) and
-          n.isBefore(lblstmt) and
+        exists(LabeledStmt target, Input1::Label l |
+          ast = target.getStmt() and
+          Input1::hasLabel(target, l) and
+          n.isAfter(target) and
+          c.getSuccessorType() instanceof BreakSuccessor and
+          c.hasLabel(l)
+        )
+        or
+        exists(AstNode parent, Stmt root, LabeledStmt target, Input1::Label l |
+          ast = getChild(parent, _) and
+          root = getChild(parent, _) and
+          labeledTargetInRoot(root, target) and
+          Input1::hasLabel(target, l) and
+          n.isBefore(target) and
+          c.getSuccessorType() instanceof GotoSuccessor and
+          c.hasLabel(l)
+        )
+        or
+        exists(LabeledStmt target, Input1::Label l |
+          ast = target.getStmt() and
+          Input1::hasLabel(target, l) and
+          n.isBefore(target) and
           c.getSuccessorType() instanceof GotoSuccessor and
           c.hasLabel(l)
         )

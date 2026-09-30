@@ -186,6 +186,8 @@ module CfgImpl {
 
     class Stmt = Go::Stmt;
 
+    class LabeledStmt = Go::LabeledStmt;
+
     class Expr = Go::Expr;
 
     class BlockStmt extends Go::BlockStmt {
@@ -434,27 +436,21 @@ module CfgImpl {
     }
 
     predicate hasLabel(Ast::AstNode n, Label l) {
-      // A statement carries the label of every `LabeledStmt` that wraps it.
-      // This is recursive because Go allows stacked labels (`L1: L2: stmt`),
-      // which the extractor represents as nested `LabeledStmt`s, so a single
-      // statement may have several labels.
-      exists(Go::LabeledStmt ls | n = ls.getStmt() | l = ls.getLabel() or hasLabel(ls, l))
-      or
-      // The `LabeledStmt` wrapper itself also carries its label. Blocks contain
-      // the wrapper (not the inner statement) as a direct child, so the shared
-      // library's block-level `goto` target resolution -- which looks for a
-      // labelled statement that is a direct child of a block -- matches on the
-      // wrapper.
       l = n.(Go::LabeledStmt).getLabel()
       or
       l = n.(Go::BreakStmt).getLabel()
       or
       l = n.(Go::ContinueStmt).getLabel()
       or
-      // A `goto` statement carries its target label, so that the shared
-      // library's `beginAbruptCompletion` produces a *labelled* goto completion
-      // (matching the target label) rather than an unlabelled one.
       l = n.(Go::GotoStmt).getLabel()
+    }
+
+    private predicate hasLabelOrEnclosingLabel(Ast::AstNode n, Label l) {
+      hasLabel(n, l)
+      or
+      exists(Go::LabeledStmt labeled |
+        labeled.getStmt() = n and hasLabelOrEnclosingLabel(labeled, l)
+      )
     }
 
     predicate preOrderExpr(Ast::Expr e) {
@@ -800,13 +796,6 @@ module CfgImpl {
       n.isAdditional(ast, "catch-return") and
       c.getSuccessorType() instanceof ReturnSuccessor
       or
-      exists(Go::LabeledStmt lbl |
-        ast = lbl.getStmt() and
-        n.isAfter(lbl) and
-        c.getSuccessorType() instanceof BreakSuccessor and
-        c.hasLabel(lbl.getLabel())
-      )
-      or
       // A `break` in a communication clause body terminates the enclosing
       // `select` statement, continuing after it. This mirrors the shared
       // library's handling of `break` in a `switch` case body, but `select` is
@@ -824,7 +813,7 @@ module CfgImpl {
       |
         not c.hasLabel(_)
         or
-        exists(Label l | c.hasLabel(l) and hasLabel(sel, l))
+        exists(Label l | c.hasLabel(l) and hasLabelOrEnclosingLabel(sel, l))
       )
       or
       exists(Go::FuncDef fd |
@@ -835,18 +824,6 @@ module CfgImpl {
         // through the result-read epilogue before reaching the function exit.
         exists(fd.getResultVar(0)) and
         n.isAdditional(fd.getBody(), "result-read:0")
-      )
-      or
-      // Function bodies are excluded from `Ast::BlockStmt`, so handle goto
-      // targets among their top-level statements here.
-      exists(Go::FuncDef fd, Go::Stmt target, Label l |
-        ast = fd.getBody() and
-        target = fd.getBody().getAStmt() and
-        not target instanceof Go::GotoStmt and
-        hasLabel(target, l) and
-        n.isBefore(target) and
-        c.getSuccessorType() instanceof GotoSuccessor and
-        c.hasLabel(l)
       )
     }
 
