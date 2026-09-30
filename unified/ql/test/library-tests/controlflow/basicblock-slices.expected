@@ -77,9 +77,9 @@
 | 90 | cfg.swift:90:3:92:3 | func addOptional | 'func addOptional' |
 | 90 | cfg.swift:90:20:90:20 | a | 'a -> Block' |
 | 91 | cfg.swift:91:5:91:5 | a | 'a -> nil -^ ... = ...' |
-| 94 | cfg.swift:94:3:94:5 | add | 'add -> Argument -V  -^ add(...)' |
+| 94 | cfg.swift:94:3:94:5 | add | 'add -> Argument -V temp -^ & ... -^ add(...)' |
 | 95 | cfg.swift:95:3:95:30 | var tempOptional | 'var tempOptional -V tempOptional -> Optional -> Int -^ GenericTypeExpr -> 10' |
-| 96 | cfg.swift:96:3:96:13 | addOptional | 'addOptional -> Argument -V  -^ addOptional(...)' |
+| 96 | cfg.swift:96:3:96:13 | addOptional | 'addOptional -> Argument -V tempOptional -^ & ... -^ addOptional(...)' |
 | 97 | cfg.swift:97:10:97:13 | temp | 'temp -> tempOptional -^ ... ! -^ ... + ... -^ ReturnExpr' |
 | 100 | cfg.swift:100:1:109:1 | class C | 'class C -V C' |
 | 101 | cfg.swift:101:3:101:16 | let myInt | 'let myInt -V myInt -> Int' |
