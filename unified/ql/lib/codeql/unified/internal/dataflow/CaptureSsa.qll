@@ -106,7 +106,9 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
 
     predicate hasBody(Callable body) { callable = body }
 
-    predicate hasAliasedAccess(Expr f) { callableHasLocalAlias(callable, f) }
+    predicate hasAliasedAccess(Expr f) {
+      callableHasLocalAlias(callable, f) and not f.(LocalVariableRefNode).getRefKind().isWrite()
+    }
   }
 }
 
@@ -130,5 +132,43 @@ Node getNodeFromCaptureSsaNode(CaptureSsaOutput::ClosureNode n) {
     result
         .(BuilderNode)
         .isImplicitParameter(getDataFlowCallable(callable), any(ParameterPosition p | p.isCallee()))
+  )
+}
+
+CaptureSsaOutput::ClosureNode getCaptureSsaNodeFromNode(Node n) {
+  n = getNodeFromCaptureSsaNode(result)
+}
+
+predicate captureSsaLocalFlowStep(Node node1, Node node2) {
+  CaptureSsaOutput::localFlowStep(getCaptureSsaNodeFromNode(node1), getCaptureSsaNodeFromNode(node2))
+}
+
+predicate captureSsaStoreStep(Node node1, ContentSet contents, Node node2) {
+  CaptureSsaOutput::storeStep(getCaptureSsaNodeFromNode(node1),
+    contents.asSingleton().asCapturedVariable(), getCaptureSsaNodeFromNode(node2))
+}
+
+predicate captureSsaReadStep(Node node1, ContentSet contents, Node node2) {
+  CaptureSsaOutput::readStep(getCaptureSsaNodeFromNode(node1),
+    contents.asSingleton().asCapturedVariable(), getCaptureSsaNodeFromNode(node2))
+}
+
+predicate captureSsaClearsContent(Node node, ContentSet contents) {
+  CaptureSsaOutput::clearsContent(getCaptureSsaNodeFromNode(node),
+    contents.asSingleton().asCapturedVariable())
+}
+
+Node getCaptureSsaPostUpdate(Node pre) {
+  CaptureSsaOutput::capturePostUpdateNode(getCaptureSsaNodeFromNode(result),
+    getCaptureSsaNodeFromNode(pre))
+}
+
+predicate captureSsaAllowParameterReturnInSelf(Node param) {
+  exists(Callable callable |
+    CaptureSsaOutput::heuristicAllowInstanceParameterReturnInSelf(callable) and
+    param =
+      getNodeFromCaptureSsaNode(any(CaptureSsaOutput::ThisParameterNode n |
+          n.getCallable() = callable
+        ))
   )
 }
