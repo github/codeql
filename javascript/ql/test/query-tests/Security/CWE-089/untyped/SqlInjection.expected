@@ -115,6 +115,13 @@
 | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | mongooseModelClient.js:12:22:12:29 | req.body | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | This query object depends on a $@. | mongooseModelClient.js:12:22:12:29 | req.body | user-provided value |
 | mysql.js:15:18:15:65 | 'SELECT ...  + temp | mysql.js:6:16:6:31 | req.params.value | mysql.js:15:18:15:65 | 'SELECT ...  + temp | This query string depends on a $@. | mysql.js:6:16:6:31 | req.params.value | user-provided value |
 | mysql.js:19:26:19:73 | 'SELECT ...  + temp | mysql.js:6:16:6:31 | req.params.value | mysql.js:19:26:19:73 | 'SELECT ...  + temp | This query string depends on a $@. | mysql.js:6:16:6:31 | req.params.value | user-provided value |
+| openapi-backend-typed.ts:6:49:6:104 | `SELECT ... ms.id}` | openapi-backend-typed.ts:6:84:6:92 | c.request | openapi-backend-typed.ts:6:49:6:104 | `SELECT ... ms.id}` | This query string depends on a $@. | openapi-backend-typed.ts:6:84:6:92 | c.request | user-provided value |
+| openapi-backend.js:10:29:10:82 | `SELECT ... ms.id}` | openapi-backend.js:10:62:10:70 | c.request | openapi-backend.js:10:29:10:82 | `SELECT ... ms.id}` | This query string depends on a $@. | openapi-backend.js:10:62:10:70 | c.request | user-provided value |
+| openapi-backend.js:14:29:14:96 | `SELECT ... ey']}'` | openapi-backend.js:14:64:14:72 | c.request | openapi-backend.js:14:29:14:96 | `SELECT ... ey']}'` | This query string depends on a $@. | openapi-backend.js:14:64:14:72 | c.request | user-provided value |
+| openapi-backend.js:20:19:20:61 | `SELECT ... name}'` | openapi-backend.js:19:20:19:28 | c.request | openapi-backend.js:20:19:20:61 | `SELECT ... name}'` | This query string depends on a $@. | openapi-backend.js:19:20:19:28 | c.request | user-provided value |
+| openapi-backend.js:24:30:24:95 | `INSERT ... ame}')` | openapi-backend.js:24:66:24:74 | c.request | openapi-backend.js:24:30:24:95 | `INSERT ... ame}')` | This query string depends on a $@. | openapi-backend.js:24:66:24:74 | c.request | user-provided value |
+| openapi-backend.js:28:12:28:73 | `SELECT ... .sid}'` | openapi-backend.js:28:50:28:58 | c.request | openapi-backend.js:28:12:28:73 | `SELECT ... .sid}'` | This query string depends on a $@. | openapi-backend.js:28:50:28:58 | c.request | user-provided value |
+| openapi-backend.js:33:53:33:104 | `DELETE ... ms.id}` | openapi-backend.js:33:84:33:92 | c.request | openapi-backend.js:33:53:33:104 | `DELETE ... ms.id}` | This query string depends on a $@. | openapi-backend.js:33:84:33:92 | c.request | user-provided value |
 | pg-promise-types.ts:8:17:8:21 | taint | pg-promise-types.ts:7:17:7:28 | req.params.x | pg-promise-types.ts:8:17:8:21 | taint | This query string depends on a $@. | pg-promise-types.ts:7:17:7:28 | req.params.x | user-provided value |
 | pg-promise.js:9:10:9:14 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:9:10:9:14 | query | This query string depends on a $@. | pg-promise.js:7:16:7:34 | req.params.category | user-provided value |
 | pg-promise.js:10:11:10:15 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:10:11:10:15 | query | This query string depends on a $@. | pg-promise.js:7:16:7:34 | req.params.category | user-provided value |
@@ -549,6 +556,16 @@ edges
 | mysql.js:6:16:6:31 | req.params.value | mysql.js:6:9:6:12 | temp | provenance |  |
 | mysql.js:15:62:15:65 | temp | mysql.js:15:18:15:65 | 'SELECT ...  + temp | provenance |  |
 | mysql.js:19:70:19:73 | temp | mysql.js:19:26:19:73 | 'SELECT ...  + temp | provenance |  |
+| openapi-backend-typed.ts:6:84:6:92 | c.request | openapi-backend-typed.ts:6:49:6:104 | `SELECT ... ms.id}` | provenance |  |
+| openapi-backend.js:10:62:10:70 | c.request | openapi-backend.js:10:29:10:82 | `SELECT ... ms.id}` | provenance |  |
+| openapi-backend.js:14:64:14:72 | c.request | openapi-backend.js:14:29:14:96 | `SELECT ... ey']}'` | provenance |  |
+| openapi-backend.js:19:9:19:16 | { name } | openapi-backend.js:19:11:19:14 | name | provenance |  |
+| openapi-backend.js:19:11:19:14 | name | openapi-backend.js:20:55:20:58 | name | provenance |  |
+| openapi-backend.js:19:20:19:28 | c.request | openapi-backend.js:19:9:19:16 | { name } | provenance |  |
+| openapi-backend.js:20:55:20:58 | name | openapi-backend.js:20:19:20:61 | `SELECT ... name}'` | provenance |  |
+| openapi-backend.js:24:66:24:74 | c.request | openapi-backend.js:24:30:24:95 | `INSERT ... ame}')` | provenance |  |
+| openapi-backend.js:28:50:28:58 | c.request | openapi-backend.js:28:12:28:73 | `SELECT ... .sid}'` | provenance |  |
+| openapi-backend.js:33:84:33:92 | c.request | openapi-backend.js:33:53:33:104 | `DELETE ... ms.id}` | provenance |  |
 | pg-promise-types.ts:7:9:7:13 | taint | pg-promise-types.ts:8:17:8:21 | taint | provenance |  |
 | pg-promise-types.ts:7:17:7:28 | req.params.x | pg-promise-types.ts:7:9:7:13 | taint | provenance |  |
 | pg-promise.js:6:7:6:11 | query | pg-promise.js:9:10:9:14 | query | provenance |  |
@@ -958,6 +975,23 @@ nodes
 | mysql.js:15:62:15:65 | temp | semmle.label | temp |
 | mysql.js:19:26:19:73 | 'SELECT ...  + temp | semmle.label | 'SELECT ...  + temp |
 | mysql.js:19:70:19:73 | temp | semmle.label | temp |
+| openapi-backend-typed.ts:6:49:6:104 | `SELECT ... ms.id}` | semmle.label | `SELECT ... ms.id}` |
+| openapi-backend-typed.ts:6:84:6:92 | c.request | semmle.label | c.request |
+| openapi-backend.js:10:29:10:82 | `SELECT ... ms.id}` | semmle.label | `SELECT ... ms.id}` |
+| openapi-backend.js:10:62:10:70 | c.request | semmle.label | c.request |
+| openapi-backend.js:14:29:14:96 | `SELECT ... ey']}'` | semmle.label | `SELECT ... ey']}'` |
+| openapi-backend.js:14:64:14:72 | c.request | semmle.label | c.request |
+| openapi-backend.js:19:9:19:16 | { name } | semmle.label | { name } |
+| openapi-backend.js:19:11:19:14 | name | semmle.label | name |
+| openapi-backend.js:19:20:19:28 | c.request | semmle.label | c.request |
+| openapi-backend.js:20:19:20:61 | `SELECT ... name}'` | semmle.label | `SELECT ... name}'` |
+| openapi-backend.js:20:55:20:58 | name | semmle.label | name |
+| openapi-backend.js:24:30:24:95 | `INSERT ... ame}')` | semmle.label | `INSERT ... ame}')` |
+| openapi-backend.js:24:66:24:74 | c.request | semmle.label | c.request |
+| openapi-backend.js:28:12:28:73 | `SELECT ... .sid}'` | semmle.label | `SELECT ... .sid}'` |
+| openapi-backend.js:28:50:28:58 | c.request | semmle.label | c.request |
+| openapi-backend.js:33:53:33:104 | `DELETE ... ms.id}` | semmle.label | `DELETE ... ms.id}` |
+| openapi-backend.js:33:84:33:92 | c.request | semmle.label | c.request |
 | pg-promise-types.ts:7:9:7:13 | taint | semmle.label | taint |
 | pg-promise-types.ts:7:17:7:28 | req.params.x | semmle.label | req.params.x |
 | pg-promise-types.ts:8:17:8:21 | taint | semmle.label | taint |
