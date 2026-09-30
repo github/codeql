@@ -271,3 +271,5 @@ modelBarrierResult
 | guards.go:360:27:360:33 | pointer | model null | model-null |
 | guards.go:363:31:363:37 | pointer | model not null | model-not-null |
 | guards.go:366:34:366:40 | pointer | model no exception | model-no-exception |
+legacyConditionGuardCount
+| 88 |

@@ -49,3 +49,7 @@ query predicate modelBarrierResult(DataFlow::Node node, string label, string kin
     barrierNode(node, kind, _)
   )
 }
+
+deprecated query predicate legacyConditionGuardCount(int guardCount) {
+  guardCount = count(ControlFlow::ConditionGuardNode guard)
+}
