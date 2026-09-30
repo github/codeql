@@ -61,31 +61,39 @@ predicate conditionalThenAndElseLiteral(ConditionalExpr cond, boolean thenValue,
 }
 
 predicate rewriteBinaryExpr(BinaryOperation op, boolean value, string oldPattern) {
-  binaryLiteralLeft(op, value) and oldPattern = value + " " + op.getOperator() + " A"
-  or
-  binaryLiteralRight(op, value) and oldPattern = "A " + op.getOperator() + " " + value
+  op.getLeftOperand().getType() instanceof BoolType and
+  op.getRightOperand().getType() instanceof BoolType and
+  (
+    binaryLiteralLeft(op, value) and oldPattern = value + " " + op.getOperator() + " A"
+    or
+    binaryLiteralRight(op, value) and oldPattern = "A " + op.getOperator() + " " + value
+  )
 }
 
 predicate rewriteConditionalExpr(ConditionalExpr cond, string oldPattern, string newPattern) {
-  conditionalThenLiteral(cond, false) and oldPattern = "A ? false : B" and newPattern = "!A && B"
-  or
-  conditionalThenLiteral(cond, true) and oldPattern = "A ? true : B" and newPattern = "A || B"
-  or
-  conditionalElseLiteral(cond, false) and oldPattern = "A ? B : false" and newPattern = "A && B"
-  or
-  conditionalElseLiteral(cond, true) and oldPattern = "A ? B : true" and newPattern = "!A || B"
-  or
-  exists(boolean b | conditionalThenAndElseLiteral(cond, b, b) |
-    oldPattern = "A ? " + b + " : " + b and newPattern = b.toString()
+  cond.getThen().getType() instanceof BoolType and
+  cond.getElse().getType() instanceof BoolType and
+  (
+    conditionalThenLiteral(cond, false) and oldPattern = "A ? false : B" and newPattern = "!A && B"
+    or
+    conditionalThenLiteral(cond, true) and oldPattern = "A ? true : B" and newPattern = "A || B"
+    or
+    conditionalElseLiteral(cond, false) and oldPattern = "A ? B : false" and newPattern = "A && B"
+    or
+    conditionalElseLiteral(cond, true) and oldPattern = "A ? B : true" and newPattern = "!A || B"
+    or
+    exists(boolean b | conditionalThenAndElseLiteral(cond, b, b) |
+      oldPattern = "A ? " + b + " : " + b and newPattern = b.toString()
+    )
+    or
+    conditionalThenAndElseLiteral(cond, true, false) and
+    oldPattern = "A ? true : false" and
+    newPattern = "A"
+    or
+    conditionalThenAndElseLiteral(cond, false, true) and
+    oldPattern = "A ? false : true" and
+    newPattern = "!A"
   )
-  or
-  conditionalThenAndElseLiteral(cond, true, false) and
-  oldPattern = "A ? true : false" and
-  newPattern = "A"
-  or
-  conditionalThenAndElseLiteral(cond, false, true) and
-  oldPattern = "A ? false : true" and
-  newPattern = "!A"
 }
 
 predicate negatedOperators(string op, string negated) {
