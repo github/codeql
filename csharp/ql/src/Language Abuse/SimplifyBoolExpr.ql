@@ -37,16 +37,6 @@ predicate rewriteBinaryExpr(BinaryOperation op, boolean value, string oldPattern
   literalChild(op, 1, value) and oldPattern = "A " + op.getOperator() + " " + value
 }
 
-bindingset[withFalseOperand, withTrueOperand]
-predicate rewriteBinaryExpr(
-  BinaryOperation op, string oldPattern, string withFalseOperand, string withTrueOperand,
-  string newPattern
-) {
-  rewriteBinaryExpr(op, false, oldPattern) and newPattern = withFalseOperand
-  or
-  rewriteBinaryExpr(op, true, oldPattern) and newPattern = withTrueOperand
-}
-
 predicate rewriteConditionalExpr(ConditionalExpr cond, string oldPattern, string newPattern) {
   literalChild(cond, 1, false) and oldPattern = "A ? false : B" and newPattern = "!A && B"
   or
@@ -115,12 +105,20 @@ predicate pushNegation(LogicalNotExpr expr, string oldPattern, string newPattern
   )
 }
 
-predicate rewrite(Expr expr, string oldPattern, string newPattern) {
+predicate rewriteBinaryOperation(BinaryOperation op, string oldPattern, string newPattern) {
   exists(string withFalseOperand, string withTrueOperand |
-    simplifyBinaryExpr(expr.(BinaryOperation).getOperator(), withFalseOperand, withTrueOperand)
+    simplifyBinaryExpr(op.getOperator(), withFalseOperand, withTrueOperand)
   |
-    rewriteBinaryExpr(expr, oldPattern, withFalseOperand, withTrueOperand, newPattern)
+    rewriteBinaryExpr(op, false, oldPattern) and
+    newPattern = withFalseOperand
+    or
+    rewriteBinaryExpr(op, true, oldPattern) and
+    newPattern = withTrueOperand
   )
+}
+
+predicate rewrite(Expr expr, string oldPattern, string newPattern) {
+  rewriteBinaryOperation(expr, oldPattern, newPattern)
   or
   rewriteConditionalExpr(expr, oldPattern, newPattern)
   or
