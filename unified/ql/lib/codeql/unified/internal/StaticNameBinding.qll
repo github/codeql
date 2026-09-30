@@ -341,8 +341,8 @@ module Track<TrackInputSig Input> {
 pragma[nomagic]
 private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode node2) {
   exists(NamespaceNode namespace, string name |
-    node1 = namespace.getMember(name) and // getMember() combines a store step with subsequent inheritance steps
-    readStep(namespace.ref(), name, node2) and
+    node1 = namespace.getMember(pragma[only_bind_into](name)) and // getMember() combines a store step with subsequent inheritance steps
+    readStep(namespace.ref(), pragma[only_bind_into](name), node2) and
     node1 != node2
   )
 }
