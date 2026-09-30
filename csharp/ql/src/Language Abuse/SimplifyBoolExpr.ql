@@ -71,6 +71,7 @@ predicate rewriteBinaryExpr(BinaryOperation op, boolean value, string oldPattern
 }
 
 predicate rewriteConditionalExpr(ConditionalExpr cond, string oldPattern, string newPattern) {
+  cond.getCondition().getType() instanceof BoolType and
   cond.getThen().getType() instanceof BoolType and
   cond.getElse().getType() instanceof BoolType and
   (
