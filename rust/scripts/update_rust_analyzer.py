@@ -76,7 +76,7 @@ def update_rust_analyzer_sources(rust_analyzer_version: str) -> None:
     """
     Update the rust-analyzer source archive used by the AST generator.
 
-    Concretly, this updates `RUST_ANALYZER_SRC_TAG` and
+    Concretely, this updates `RUST_ANALYZER_SRC_TAG` and
     `RUST_ANALYZER_SRC_INTEGRITY` in the MODULE.bazel file.
     """
 
