@@ -524,7 +524,7 @@ module Make<InlineExpectationsTestSig Impl> {
  * is treated as part of the expected results, except that the comment may contain a `//` or `#`
  * sequence to treat the remainder of the line as a regular (non-interpreted) comment.
  */
-private string expectationCommentPattern() { result = "\\s*\\$ ((?:[^/]|/[^/])*)(?:(//|#).*)?" }
+private string expectationCommentPattern() { result = "\\s*\\$ ((?:[^/#]|/[^/])*)(?:(//|#).*)?" }
 
 /**
  * The possible columns in an expectation comment. The `TDefaultColumn` branch represents the first
@@ -1180,22 +1180,22 @@ module TestPostProcessing {
        * Holds if `comment` carries a trailing regular (non-interpreted) note `note`, with the note's
        * own comment marker and surrounding whitespace stripped. This is either:
        *
-       * - the text after a `//` that follows the expectations in an expectation comment (for example
-       *   `note` in `// $ Alert // note` or `# $ Alert // note`), which the framework treats as an
-       *   ordinary comment (see `expectationCommentPattern`); or
+       * - the text after a `//` or `#` that follows the expectations in an expectation comment (for
+       *   example `note` in `// $ Alert // note`, `# $ Alert // note`, or
+       *   `# $ Alert # note`), which the framework treats as an ordinary comment (see
+       *   `expectationCommentPattern`); or
        * - the whole content of a plain comment that carries no expectation at all (for example `note`
        *   in `// note` or `# note`), into which `--learn` may merge a freshly learned tag.
        *
        * `codeql test run --learn` keeps this note when it rewrites, deletes, or merges into the
        * comment, re-wrapping it with the appropriate markers (`<marker> $ ... // note` when
        * expectations remain, or `<marker> note` when none do), so an explanatory note written next to
-       * code is never lost. Only `//` delimits such a note within an expectation comment, mirroring
-       * `expectationCommentPattern`'s `(?:[^/]|/[^/])*` expectation region, which ends only at `//`; a
-       * `#` never does, so `# $ Alert # note` reads `note` as a tag rather than a note.
+       * code is never lost.
        */
       private string getTrailingNote(TestImpl2::ExpectationComment comment) {
         (
-          result = comment.getContents().regexpCapture("\\s*\\$ (?:[^/]|/[^/])*//(.*)", 1).trim()
+          result =
+            comment.getContents().regexpCapture("\\s*\\$ (?:[^/#]|/[^/])*(?://|#)(.*)", 1).trim()
           or
           // A plain comment with no expectation of its own: its whole content is the note.
           not hasExpectation(comment, _, _, _, _) and
@@ -1409,12 +1409,12 @@ module TestPostProcessing {
         exists(string body, string trailingSuffix |
           // Preserve a trailing regular note (e.g. the `note` in `// $ Alert // note`) that sits
           // after the expectations, so rewriting the expectations never drops an explanatory note.
-          // The inner delimiter is always `//`, which the framework recognises regardless of the
-          // outer comment marker (so a `#`-comment file renders `# $ Alert // note`).
+          // Use the file's line-comment marker for the inner delimiter, so a `#`-comment file renders
+          // `# $ Alert # note`.
           (
             exists(string note |
               note = getTrailingNote(comment) and
-              trailingSuffix = " // " + note
+              trailingSuffix = " " + Input::getStartCommentMarker(relativePath) + " " + note
             )
             or
             not exists(getTrailingNote(comment)) and trailingSuffix = ""
