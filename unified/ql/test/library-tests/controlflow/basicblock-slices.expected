@@ -129,9 +129,14 @@
 | 152 | cfg.swift:152:7:152:18 | Block | 'Block -V false -^ ReturnExpr' |
 | 168 | cfg.swift:168:1:184:1 | func testDefer | 'func testDefer' |
 | 168 | cfg.swift:168:16:168:16 | x | 'x -> Block' |
-| 170 | cfg.swift:170:3:172:3 |  | '' |
-| 174 | cfg.swift:174:3:176:3 |  | '' |
-| 178 | cfg.swift:178:3:183:3 |  | '' |
+| 170 | cfg.swift:170:3:172:3 | DeferStmt | 'DeferStmt -V Block' |
+| 171 | cfg.swift:171:5:171:9 | print | 'print -> Argument -V "4" -^ print(...)' |
+| 174 | cfg.swift:174:3:176:3 | DeferStmt | 'DeferStmt -V Block' |
+| 175 | cfg.swift:175:5:175:9 | print | 'print -> Argument -V "3" -^ print(...)' |
+| 178 | cfg.swift:178:3:183:3 | DeferStmt | 'DeferStmt -V Block' |
+| 179 | cfg.swift:179:5:179:9 | print | 'print -> Argument -V "1" -^ print(...)' |
+| 180 | cfg.swift:180:6:182:5 | DeferStmt | 'DeferStmt -V Block' |
+| 181 | cfg.swift:181:7:181:11 | print | 'print -> Argument -V "2" -^ print(...)' |
 | 186 | cfg.swift:186:1:198:1 | func m1 | 'func m1' |
 | 186 | cfg.swift:186:9:186:9 | x | 'x -> Block' |
 | 187 | cfg.swift:187:3:197:3 | IfExpr | 'IfExpr -V x -> 2 -^ ... > ...' |
