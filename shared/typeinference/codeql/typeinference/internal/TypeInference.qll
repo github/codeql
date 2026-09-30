@@ -365,10 +365,27 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
   module Make2<HasTypeTreeSig TypeMention, InputSig2<TypeMention> Input2> {
     private import Input2
 
-    /** Gets the type at the empty path of `tm`. */
+    /**
+     * Gets the non-pseudo root type mentioned at `tm`.
+     *
+     * Type mentions are allowed to resolve to `UnknownType` (which this predicate
+     * will filter away), for example in
+     *
+     * ```rust
+     * let x: Vec<Unresolved> = Vec::new();
+     * x.push(foo());
+     * ```
+     *
+     * by resolving `Unresolved` to `UnknownType` (that is, treating it as if it was
+     * `_`), we allow for the element type to be inferred from the return type of
+     * `foo`.
+     */
     bindingset[tm]
     pragma[inline_late]
-    private Type getTypeMentionRoot(TypeMention tm) { result = tm.getTypeAt(TypePath::nil()) }
+    private Type getTypeMentionNonPseudoRoot(TypeMention tm) {
+      result = tm.getTypeAt(TypePath::nil()) and
+      not result instanceof PseudoType
+    }
 
     /** Provides the input to `IsInstantiationOf`. */
     signature module IsInstantiationOfInputSig<HasTypeTreeSig App, HasTypeTreeSig Constraint> {
@@ -644,13 +661,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         pragma[nomagic]
         private predicate typeCondition(Type type, TypeAbstraction abs, TypeMention condition) {
           conditionSatisfiesConstraint(abs, condition, _, _) and
-          type = getTypeMentionRoot(condition)
+          type = getTypeMentionNonPseudoRoot(condition)
         }
 
         pragma[nomagic]
         private predicate typeConstraint(Type type, TypeMention constraint) {
           conditionSatisfiesConstraint(_, _, constraint, _) and
-          type = getTypeMentionRoot(constraint)
+          type = getTypeMentionNonPseudoRoot(constraint)
         }
 
         predicate potentialInstantiationOf(
@@ -658,7 +675,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         ) {
           exists(Type type |
             typeConstraint(type, constraint) and typeCondition(type, abs, condition)
-          )
+          ) and
+          conditionSatisfiesConstraint(_, _, constraint, true)
         }
       }
 
@@ -704,8 +722,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeMention constraint
       ) {
         conditionSatisfiesConstraintTypeAt(abs, condition, constraint, _, _) and
-        conditionRoot = getTypeMentionRoot(condition) and
-        constraintRoot = getTypeMentionRoot(constraint)
+        conditionRoot = getTypeMentionNonPseudoRoot(condition) and
+        constraintRoot = getTypeMentionNonPseudoRoot(constraint)
       }
 
       /**
@@ -810,8 +828,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           //
           // not exists(countConstraintImplementations(type, constraint)) and
           // conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
-          // getTypeMentionRoot(condition) = abs.getATypeParameter() and
-          // constraint = getTypeMentionRoot(constraintMention)
+          // getTypeMentionNonPseudoRoot(condition) = abs.getATypeParameter() and
+          // constraint = getTypeMentionNonPseudoRoot(constraintMention)
           // or
           countConstraintImplementations(type, constraintRoot) > 0 and
           rootTypesSatisfaction(type, constraintRoot, abs, condition, constraintMention) and
@@ -850,9 +868,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           //   or
           //   forall(TypeAbstraction abs, TypeMention condition, TypeMention constraintMention |
           //     conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
-          //     getTypeMentionRoot(condition) = abs.getATypeParameter()
+          //     getTypeMentionNonPseudoRoot(condition) = abs.getATypeParameter()
           //   |
-          //     not constraint = getTypeMentionRoot(constraintMention)
+          //     not constraint = getTypeMentionNonPseudoRoot(constraintMention)
           //   )
           // ) and
           (
