@@ -89,18 +89,20 @@ def update_rust_analyzer_sources(rust_analyzer_version: str) -> None:
     integrity = "sha256-" + base64.b64encode(hashlib.sha256(archive).digest()).decode()
 
     module = MODULE_BAZEL.read_text()
-    module = re.sub(
+    module, tag_replacements = re.subn(
         r'RUST_ANALYZER_SRC_TAG = "[^"]+"',
         f'RUST_ANALYZER_SRC_TAG = "{release_date}"',
         module,
-        count=1,
     )
-    module = re.sub(
+    if tag_replacements != 1:
+        raise RuntimeError("expected exactly one RUST_ANALYZER_SRC_TAG assignment")
+    module, integrity_replacements = re.subn(
         r'RUST_ANALYZER_SRC_INTEGRITY = "[^"]+"',
         f'RUST_ANALYZER_SRC_INTEGRITY = "{integrity}"',
         module,
-        count=1,
     )
+    if integrity_replacements != 1:
+        raise RuntimeError("expected exactly one RUST_ANALYZER_SRC_INTEGRITY assignment")
     MODULE_BAZEL.write_text(module)
 
 
