@@ -87,3 +87,15 @@ func t8() {
     local(arg: 123)
     sink(x)  // $ hasValueFlow=t8.1
 }
+
+func t9() {
+    // Use of a local function before its declaration
+    let x = source("t9.1")
+    let y = local()
+    sink(y)  // $ MISSING: hasValueFlow=t9.1
+
+    func local() -> String {
+        sink(x)  // $ MISSING: hasValueFlow=t9.1
+        return x
+    }
+}
