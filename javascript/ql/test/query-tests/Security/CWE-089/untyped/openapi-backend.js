@@ -32,3 +32,13 @@ async function main() {
   const initialized = await new OpenAPIBackendDefault({ definition: './openapi.yml' }).init();
   initialized.register('deletePet', (c) => db.query(`DELETE FROM pets WHERE id = ${c.request.params.id}`)); // $ Alert
 }
+
+api.registerHandler('updatePet', (c) => db.query(`UPDATE pets SET name = 'x' WHERE id = ${c.request.params.id}`)); // $ Alert
+
+const audited = new OpenAPIBackend({
+  definition: './openapi.yml',
+  validate: (c) => {
+    db.query(`INSERT INTO audit (path) VALUES ('${c.request.path}')`); // $ Alert
+    return true;
+  },
+});

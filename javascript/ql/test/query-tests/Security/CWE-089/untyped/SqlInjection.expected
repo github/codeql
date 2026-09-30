@@ -122,6 +122,8 @@
 | openapi-backend.js:24:30:24:95 | `INSERT ... ame}')` | openapi-backend.js:24:66:24:74 | c.request | openapi-backend.js:24:30:24:95 | `INSERT ... ame}')` | This query string depends on a $@. | openapi-backend.js:24:66:24:74 | c.request | user-provided value |
 | openapi-backend.js:28:12:28:73 | `SELECT ... .sid}'` | openapi-backend.js:28:50:28:58 | c.request | openapi-backend.js:28:12:28:73 | `SELECT ... .sid}'` | This query string depends on a $@. | openapi-backend.js:28:50:28:58 | c.request | user-provided value |
 | openapi-backend.js:33:53:33:104 | `DELETE ... ms.id}` | openapi-backend.js:33:84:33:92 | c.request | openapi-backend.js:33:53:33:104 | `DELETE ... ms.id}` | This query string depends on a $@. | openapi-backend.js:33:84:33:92 | c.request | user-provided value |
+| openapi-backend.js:36:50:36:111 | `UPDATE ... ms.id}` | openapi-backend.js:36:91:36:99 | c.request | openapi-backend.js:36:50:36:111 | `UPDATE ... ms.id}` | This query string depends on a $@. | openapi-backend.js:36:91:36:99 | c.request | user-provided value |
+| openapi-backend.js:41:14:41:68 | `INSERT ... ath}')` | openapi-backend.js:41:51:41:59 | c.request | openapi-backend.js:41:14:41:68 | `INSERT ... ath}')` | This query string depends on a $@. | openapi-backend.js:41:51:41:59 | c.request | user-provided value |
 | pg-promise-types.ts:8:17:8:21 | taint | pg-promise-types.ts:7:17:7:28 | req.params.x | pg-promise-types.ts:8:17:8:21 | taint | This query string depends on a $@. | pg-promise-types.ts:7:17:7:28 | req.params.x | user-provided value |
 | pg-promise.js:9:10:9:14 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:9:10:9:14 | query | This query string depends on a $@. | pg-promise.js:7:16:7:34 | req.params.category | user-provided value |
 | pg-promise.js:10:11:10:15 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:10:11:10:15 | query | This query string depends on a $@. | pg-promise.js:7:16:7:34 | req.params.category | user-provided value |
@@ -566,6 +568,8 @@ edges
 | openapi-backend.js:24:66:24:74 | c.request | openapi-backend.js:24:30:24:95 | `INSERT ... ame}')` | provenance |  |
 | openapi-backend.js:28:50:28:58 | c.request | openapi-backend.js:28:12:28:73 | `SELECT ... .sid}'` | provenance |  |
 | openapi-backend.js:33:84:33:92 | c.request | openapi-backend.js:33:53:33:104 | `DELETE ... ms.id}` | provenance |  |
+| openapi-backend.js:36:91:36:99 | c.request | openapi-backend.js:36:50:36:111 | `UPDATE ... ms.id}` | provenance |  |
+| openapi-backend.js:41:51:41:59 | c.request | openapi-backend.js:41:14:41:68 | `INSERT ... ath}')` | provenance |  |
 | pg-promise-types.ts:7:9:7:13 | taint | pg-promise-types.ts:8:17:8:21 | taint | provenance |  |
 | pg-promise-types.ts:7:17:7:28 | req.params.x | pg-promise-types.ts:7:9:7:13 | taint | provenance |  |
 | pg-promise.js:6:7:6:11 | query | pg-promise.js:9:10:9:14 | query | provenance |  |
@@ -992,6 +996,10 @@ nodes
 | openapi-backend.js:28:50:28:58 | c.request | semmle.label | c.request |
 | openapi-backend.js:33:53:33:104 | `DELETE ... ms.id}` | semmle.label | `DELETE ... ms.id}` |
 | openapi-backend.js:33:84:33:92 | c.request | semmle.label | c.request |
+| openapi-backend.js:36:50:36:111 | `UPDATE ... ms.id}` | semmle.label | `UPDATE ... ms.id}` |
+| openapi-backend.js:36:91:36:99 | c.request | semmle.label | c.request |
+| openapi-backend.js:41:14:41:68 | `INSERT ... ath}')` | semmle.label | `INSERT ... ath}')` |
+| openapi-backend.js:41:51:41:59 | c.request | semmle.label | c.request |
 | pg-promise-types.ts:7:9:7:13 | taint | semmle.label | taint |
 | pg-promise-types.ts:7:17:7:28 | req.params.x | semmle.label | req.params.x |
 | pg-promise-types.ts:8:17:8:21 | taint | semmle.label | taint |

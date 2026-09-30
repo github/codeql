@@ -55,6 +55,8 @@
 | openapi-backend.js:24:21:24:96 | db.quer ... me}')`) |
 | openapi-backend.js:28:3:28:74 | db.quer ... sid}'`) |
 | openapi-backend.js:33:44:33:105 | db.quer ... s.id}`) |
+| openapi-backend.js:36:41:36:112 | db.quer ... s.id}`) |
+| openapi-backend.js:41:5:41:69 | db.quer ... th}')`) |
 | pg-promise-types.ts:8:5:8:22 | this.db.one(taint) |
 | pg-promise.js:9:3:9:15 | db.any(query) |
 | pg-promise.js:10:3:10:16 | db.many(query) |
