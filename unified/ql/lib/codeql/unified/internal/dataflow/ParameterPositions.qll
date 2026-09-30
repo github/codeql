@@ -35,4 +35,12 @@ class ParameterPosition extends TParameterPosition {
 
 class ArgumentPosition = ParameterPosition;
 
+/** A parameter position that is either `receiver` or `callee`. */
+class ImplicitParameterPosition extends ParameterPosition {
+  ImplicitParameterPosition() { this.isReceiver() or this.isCallee() }
+}
+
+/** An argument position that is either `receiver` or `callee`. */
+class ImplicitArgumentPosition = ImplicitParameterPosition;
+
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { apos = ppos }

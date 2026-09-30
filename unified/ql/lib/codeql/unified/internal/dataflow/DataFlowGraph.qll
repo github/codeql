@@ -23,6 +23,16 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node2.isPostUpdate(receiverExpr)
   )
   or
+  exists(CallExpr call |
+    node1.isResultValue(call.getCallee()) and
+    step.value() and
+    node2.isCalleeArgument(call)
+    or
+    node1.isCalleePostUpdate(call) and
+    step.value() and
+    node2.isPostUpdate(call.getCallee())
+  )
+  or
   exists(CallExpr call, UnqualifiedMemberAccess callee | callee = call.getCallee() |
     node1.isLocalVariableRead(callee, callee.getImplicitQualifierVariable()) and
     step.value() and
