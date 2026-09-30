@@ -80,9 +80,11 @@ module IR {
       typeSwitchCaseMatch(this, _)
       or
       // `NotExpr` and `LogicalBinaryExpr` are not in `postOrInOrder`, so they
-      // have no `isIn` node. Use their combined after-node as the value-producing
-      // instruction, but not a value-specific after-node, which is already a
-      // `ConditionGuardInstruction`.
+      // have no `isIn` node. When such an expression is not in a conditional
+      // context (so it has a single combined after-node rather than per-branch
+      // value-after-nodes), use that after-node as the value-producing
+      // instruction. In conditional contexts the value is already split
+      // across branches, so no separate value instruction is needed.
       exists(Expr e |
         (e instanceof NotExpr or e instanceof LogicalBinaryExpr) and
         this.isAfter(e) and
