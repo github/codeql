@@ -812,6 +812,16 @@ module Flow<
       or
       exists(SsaFlow::SsaNode n | this = TSynthSsa(n) and n.getSourceVariable() = TThis(_))
     }
+
+    predicate hasCfgNode(BasicBlock bb, int i) {
+      this = TSynthRead(_, bb, i, _)
+      or
+      this = TSynthThisQualifier(bb, i, _)
+      or
+      exists(SsaFlow::SsaNode n |
+        this = TSynthSsa(n) and n.getBasicBlock() = bb and n.getIndex() = i
+      )
+    }
   }
 
   class ExprNode extends ClosureNode, TExprNode {
