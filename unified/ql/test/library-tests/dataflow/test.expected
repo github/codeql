@@ -68,6 +68,11 @@ edges
 | capture.swift:69:5:69:5 | x | capture.swift:70:5:70:11 | closure [x] | provenance |  |
 | capture.swift:69:9:69:22 | source(...) | capture.swift:69:5:69:5 | x | provenance |  |
 | capture.swift:70:5:70:11 | closure [x] | capture.swift:67:14:67:14 | x | provenance |  |
+| capture.swift:74:9:74:9 | x | capture.swift:78:5:78:9 | local [x] | provenance |  |
+| capture.swift:74:13:74:26 | source(...) | capture.swift:74:9:74:9 | x | provenance |  |
+| capture.swift:78:5:78:9 | local [x] | capture.swift:76:14:76:14 | x | provenance |  |
+| capture.swift:84:9:84:9 | x | capture.swift:88:10:88:10 | x | provenance |  |
+| capture.swift:84:13:84:26 | source(...) | capture.swift:84:9:84:9 | x | provenance |  |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | implicit-self.swift:17:14:17:17 | self [x] | provenance |  |
 | implicit-self.swift:16:9:16:14 | ... .x | implicit-self.swift:16:9:16:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:16:9:16:14 | ... .x | provenance |  |
@@ -293,6 +298,13 @@ nodes
 | capture.swift:69:5:69:5 | x | semmle.label | x |
 | capture.swift:69:9:69:22 | source(...) | semmle.label | source(...) |
 | capture.swift:70:5:70:11 | closure [x] | semmle.label | closure [x] |
+| capture.swift:74:9:74:9 | x | semmle.label | x |
+| capture.swift:74:13:74:26 | source(...) | semmle.label | source(...) |
+| capture.swift:76:14:76:14 | x | semmle.label | x |
+| capture.swift:78:5:78:9 | local [x] | semmle.label | local [x] |
+| capture.swift:84:9:84:9 | x | semmle.label | x |
+| capture.swift:84:13:84:26 | source(...) | semmle.label | source(...) |
+| capture.swift:88:10:88:10 | x | semmle.label | x |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | semmle.label | [post] self [x] |
 | implicit-self.swift:16:9:16:14 | ... .x | semmle.label | ... .x |
 | implicit-self.swift:16:18:16:31 | source(...) | semmle.label | source(...) |
@@ -507,6 +519,8 @@ testFailures
 | capture.swift:50:10:50:10 | y | capture.swift:43:13:43:26 | source(...) | capture.swift:50:10:50:10 | y | $@ | capture.swift:43:13:43:26 | source(...) | source(...) |
 | capture.swift:61:10:61:12 | ... .0 | capture.swift:54:13:54:26 | source(...) | capture.swift:61:10:61:12 | ... .0 | $@ | capture.swift:54:13:54:26 | source(...) | source(...) |
 | capture.swift:67:14:67:14 | x | capture.swift:69:9:69:22 | source(...) | capture.swift:67:14:67:14 | x | $@ | capture.swift:69:9:69:22 | source(...) | source(...) |
+| capture.swift:76:14:76:14 | x | capture.swift:74:13:74:26 | source(...) | capture.swift:76:14:76:14 | x | $@ | capture.swift:74:13:74:26 | source(...) | source(...) |
+| capture.swift:88:10:88:10 | x | capture.swift:84:13:84:26 | source(...) | capture.swift:88:10:88:10 | x | $@ | capture.swift:84:13:84:26 | source(...) | source(...) |
 | implicit-self.swift:17:14:17:19 | ... .x | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:17:14:17:19 | ... .x | $@ | implicit-self.swift:16:18:16:31 | source(...) | source(...) |
 | implicit-self.swift:23:14:23:14 | x | implicit-self.swift:22:13:22:26 | source(...) | implicit-self.swift:23:14:23:14 | x | $@ | implicit-self.swift:22:13:22:26 | source(...) | source(...) |
 | implicit-self.swift:29:14:29:19 | ... .x | implicit-self.swift:28:13:28:26 | source(...) | implicit-self.swift:29:14:29:19 | ... .x | $@ | implicit-self.swift:28:13:28:26 | source(...) | source(...) |
