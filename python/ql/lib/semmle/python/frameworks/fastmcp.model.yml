@@ -1,0 +1,35 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sourceModel
+    data:
+      # `fastmcp` (PyPI), a standalone MCP server framework. The parameters of tool, resource and
+      # prompt handlers are chosen by the MCP client; `tool` and `prompt` also work without parentheses.
+      - ['fastmcp.FastMCP', 'Member[tool,prompt].Argument[0,name_or_fn:].Parameter[any]', 'remote']
+      - ['fastmcp.FastMCP', 'Member[tool,resource,prompt].ReturnValue.Argument[0].Parameter[any]', 'remote']
+      - ['fastmcp.FastMCP', 'Member[add_tool].Argument[0,tool:].Parameter[any]', 'remote']
+      - ['fastmcp.FastMCP', 'Member[add_prompt].Argument[0,prompt:].Parameter[any]', 'remote']
+      - ['fastmcp.tools.Tool!', 'Member[from_function].Argument[0,fn:].Parameter[any]', 'remote']
+      - ['fastmcp', 'Member[tools].Member[tool].Argument[0,name_or_fn:].Parameter[any]', 'remote']
+      - ['fastmcp', 'Member[tools].Member[tool].ReturnValue.Argument[0].Parameter[any]', 'remote']
+      # The HTTP headers of the transport.
+      - ['fastmcp', 'Member[server].Member[dependencies].Member[get_http_headers].ReturnValue', 'remote']
+      - ['fastmcp', 'Member[server].Member[dependencies].Member[get_http_request].ReturnValue.Member[headers]', 'remote']
+      # The bearer token of the Authorization header reaches token verifiers and the access-token helper.
+      - ['fastmcp.server.auth.TokenVerifier!', 'Subclass.Member[verify_token].Parameter[0,token:]', 'remote']
+      - ['fastmcp.server.auth.AuthProvider!', 'Subclass.Member[verify_token].Parameter[0,token:]', 'remote']
+      - ['fastmcp', 'Member[server].Member[dependencies].Member[get_access_token].ReturnValue.Member[token]', 'remote']
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      # The classes are re-exported; instances of any import path are instances of the class.
+      - ['fastmcp.FastMCP!', 'fastmcp', 'Member[server].Member[FastMCP]']
+      - ['fastmcp.FastMCP!', 'fastmcp', 'Member[server].Member[server].Member[FastMCP]']
+      - ['fastmcp.FastMCP', 'fastmcp.FastMCP!', 'Instance']
+      - ['fastmcp.tools.Tool!', 'fastmcp', 'Member[tools].Member[FunctionTool]']
+      - ['fastmcp.tools.Tool!', 'fastmcp', 'Member[tools].Member[base].Member[Tool]']
+      - ['fastmcp.tools.Tool!', 'fastmcp', 'Member[tools].Member[function_tool].Member[FunctionTool]']
+      - ['fastmcp.server.auth.TokenVerifier!', 'fastmcp', 'Member[server].Member[auth].Member[auth].Member[TokenVerifier]']
+      - ['fastmcp.server.auth.AuthProvider!', 'fastmcp', 'Member[server].Member[auth].Member[auth].Member[AuthProvider]']
