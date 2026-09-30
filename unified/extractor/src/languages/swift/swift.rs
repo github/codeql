@@ -927,6 +927,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (do_while_stmt condition: {cond} body: {body})
         ),
+        // A `defer` statement
+        rule!((deferStmt body: @body) => (defer_stmt body: {body})),
         // A labeled statement (`outer: for … { }`). swift-syntax stores the
         // label and colon as separate tokens, so the label token is already the
         // bare name (no trailing `:` to strip).
@@ -1387,7 +1389,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((compositionType) => (unsupported_node)),
         rule!((consumeExpr) => (unsupported_node)),
         rule!((copyExpr) => (unsupported_node)),
-        rule!((deferStmt) => (unsupported_node)),
         rule!((discardStmt) => (unsupported_node)),
         rule!((fallThroughStmt) => (unsupported_node)),
         rule!((ifConfigDecl) => (unsupported_node)),

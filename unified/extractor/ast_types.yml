@@ -64,6 +64,7 @@ supertypes:
     - for_each_stmt
     - while_stmt
     - do_while_stmt
+    - defer_stmt
     - labeled_stmt
   callable:
     - top_level
@@ -345,6 +346,9 @@ named:
     modifier*: modifier
     body?: block
     condition: expr
+
+  defer_stmt:
+    body: expr
 
   # `do { body } catch pattern { ... } catch ...`. Swift uses `do`/`catch`
   # for error handling; for languages with `try`/`catch`, this is the same shape.
