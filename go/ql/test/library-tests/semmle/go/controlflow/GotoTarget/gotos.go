@@ -35,6 +35,13 @@ self:
 	goto self // $ gotoTarget=self
 }
 
+func gotoDirectTarget() {
+step1:
+	goto step2 // $ gotoTarget=step2
+step2:
+	goto step1 // $ gotoTarget=step1
+}
+
 func gotoEnclosingStackedLabel(flag bool) {
 outer:
 inner:

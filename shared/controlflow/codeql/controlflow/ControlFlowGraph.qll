@@ -1285,23 +1285,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
       }
 
-      /** Holds if `n` has `l`, possibly through enclosing labeled statements. */
-      private predicate hasLabel(AstNode n, Input1::Label l) {
-        Input1::hasLabel(n, l)
-        or
-        exists(LabeledStmt labeled | labeled.getStmt() = n and hasLabel(labeled, l))
-      }
-
-      /**
-       * Holds if `target` is a labeled statement at the start of `root`,
-       * possibly nested under other labeled statements.
-       */
-      private predicate labeledTargetInRoot(Stmt root, LabeledStmt target) {
-        root = target
-        or
-        exists(LabeledStmt labeled |
-          root = labeled and labeledTargetInRoot(labeled.getStmt(), target)
-        )
+      /** Holds if `n` is marked with a `LabeledStmt` with label `l`. */
+      private predicate hasEnclosingLabel(AstNode n, Input1::Label l) {
+        exists(LabeledStmt labeled | labeled.getStmt+() = n and Input1::hasLabel(labeled, l))
       }
 
       private predicate callableHasParamDefault(Callable c, Expr defaultValue) {
@@ -1342,7 +1328,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             exists(Input1::Label l |
               c.hasLabel(l) and
-              hasLabel(loop, l)
+              hasEnclosingLabel(loop, l)
             )
           )
         )
@@ -1382,7 +1368,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           exists(Input1::Label l |
             c.hasLabel(l) and
-            hasLabel(switch, l)
+            hasEnclosingLabel(switch, l)
           )
         )
         or
@@ -1394,19 +1380,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           c.hasLabel(l)
         )
         or
-        exists(AstNode parent, Stmt root, LabeledStmt target, Input1::Label l |
+        exists(AstNode parent, LabeledStmt root, LabeledStmt target, Input1::Label l |
           ast = getChild(parent, _) and
           root = getChild(parent, _) and
-          labeledTargetInRoot(root, target) and
-          Input1::hasLabel(target, l) and
-          n.isBefore(target) and
-          c.getSuccessorType() instanceof GotoSuccessor and
-          c.hasLabel(l)
-        )
-        or
-        exists(LabeledStmt target, Input1::Label l |
-          ast = target.getStmt() and
-          Input1::hasLabel(target, l) and
+          root.getStmt*() = target and
+          Input1::hasLabel(pragma[only_bind_into](target), l) and
           n.isBefore(target) and
           c.getSuccessorType() instanceof GotoSuccessor and
           c.hasLabel(l)

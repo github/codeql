@@ -445,14 +445,6 @@ module CfgImpl {
       l = n.(Go::GotoStmt).getLabel()
     }
 
-    private predicate hasLabelOrEnclosingLabel(Ast::AstNode n, Label l) {
-      hasLabel(n, l)
-      or
-      exists(Go::LabeledStmt labeled |
-        labeled.getStmt() = n and hasLabelOrEnclosingLabel(labeled, l)
-      )
-    }
-
     predicate preOrderExpr(Ast::Expr e) {
       // The call of a `defer` statement is not invoked at the statement
       // itself; its callee expression and arguments are evaluated in place,
@@ -796,15 +788,9 @@ module CfgImpl {
       n.isAdditional(ast, "catch-return") and
       c.getSuccessorType() instanceof ReturnSuccessor
       or
-      // A `break` in a communication clause body terminates the enclosing
-      // `select` statement, continuing after it. This mirrors the shared
-      // library's handling of `break` in a `switch` case body, but `select` is
-      // modeled language-specifically (it is not a `Switch`), so the break
-      // must be caught here. The break completion bubbles up the AST until it
-      // reaches a top-level statement of the comm clause body, at which point
-      // flow resumes after the `select`. An unlabeled `break` targets the
-      // innermost enclosing construct; a labeled `break` only targets this
-      // `select` if it (or a `LabeledStmt` wrapping it) carries that label.
+      // An unlabeled `break` in a communication clause body terminates the
+      // enclosing `select`. Labeled breaks are handled by the shared
+      // `LabeledStmt` logic.
       exists(Go::SelectStmt sel, Go::CommClause cc |
         cc = sel.getACommClause() and
         ast = cc.getStmt(_) and
@@ -812,8 +798,6 @@ module CfgImpl {
         c.getSuccessorType() instanceof BreakSuccessor
       |
         not c.hasLabel(_)
-        or
-        exists(Label l | c.hasLabel(l) and hasLabelOrEnclosingLabel(sel, l))
       )
       or
       exists(Go::FuncDef fd |
