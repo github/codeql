@@ -364,7 +364,7 @@ def parse(path, logger):
             if field.startswith("_"): continue
             if field == "ctx": continue
             if field != "parenthesised" and field not in expected_fields:
-                logger.warning("Unknown field {} found among {} in node {}\n".format(field, attrs, id))
+                logger.warning("Unknown field {} found among {} in node {}\n".format(field, _format_node_attributes(attrs), id))
 
             # For fields that point to other AST nodes.
             if isinstance(val, Node):
