@@ -1,2 +1,1 @@
-| test.cpp:16:3:16:25 | throw ... | This should throw a MyException rather than a pointer to one. |
-| test.cpp:20:3:20:28 | throw ... | This should throw a OtherException rather than a pointer to one. |
+| test.cpp:5:3:5:25 | throw ... | This should throw a MyException rather than a pointer to one. |
