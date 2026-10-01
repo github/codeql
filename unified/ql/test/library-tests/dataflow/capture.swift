@@ -106,7 +106,7 @@ func t10() {
         sink(x1)  // $ hasValueFlow=t10.1
     }
     let closure2 = { [x] in
-        sink(x)  // $ MISSING: hasValueFlow=t10.1
+        sink(x)  // $ hasValueFlow=t10.1
     }
     closure1()
     closure2()
@@ -115,8 +115,8 @@ func t10() {
 func t11() {
     let x = source("t11.1")
     let closure = { [x = x, blah = x] in
-        sink(x)  // $ MISSING: hasValueFlow=t11.1
-        sink(blah)  // $ MISSING: hasValueFlow=t11.1
+        sink(x)  // $ hasValueFlow=t11.1
+        sink(blah)  // $ hasValueFlow=t11.1
     }
     closure()
 }
@@ -163,8 +163,8 @@ class C {
     func capture_self() {
         x = source("C.2")
         let closure = { [self] in
-            sink(self.x)  // $ MISSING: hasValueFlow=C.2
-            sink(x)  // $ MISSING: hasValueFlow=C.2
+            sink(self.x)  // $ hasValueFlow=C.2
+            sink(x)  // $ hasValueFlow=C.2
         }
         closure()
     }

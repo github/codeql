@@ -101,6 +101,16 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       index = 2 and result = decl.getValue()
     )
     or
+    exists(FunctionExpr expr | n = expr |
+      result = expr.getCaptureDeclaration(index)
+      or
+      // Put other children after the capture declarations.
+      // They act as sibling-shadowing declarations, so they are in scope with in the other children.
+      result = expr.getAFieldOrChild() and
+      not result = expr.getACaptureDeclaration() and
+      index = count(expr.getACaptureDeclaration())
+    )
+    or
     index = 0 and
     relocatedClassMember(n, result)
   }
@@ -176,11 +186,6 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   private class LocalVariableDeclarationSiblingShadowingDecl extends SiblingShadowingDecl instanceof LocalVariableDeclaration
   {
-    LocalVariableDeclarationSiblingShadowingDecl() {
-      // Capture-declarations act as local variables, but are not sibling-shadowing
-      not this = any(FunctionExpr e).getACaptureDeclaration()
-    }
-
     override Expr getPattern() { result = LocalVariableDeclaration.super.getPattern() }
 
     override AstNode getRhs() { result = LocalVariableDeclaration.super.getValue() }
