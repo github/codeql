@@ -1,0 +1,2 @@
+| ComplexCondition.cpp:3:7:3:62 | ... \|\| ... | Complex condition: too many logical operations in this expression. |
+| ComplexCondition.cpp:9:7:9:67 | ... \|\| ... | Complex condition: too many logical operations in this expression. |
