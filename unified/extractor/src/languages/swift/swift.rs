@@ -873,13 +873,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (pattern_guard_expr pattern: {pat} value: {val})
         ),
-        // Optional binding (`if let x = foo`, or shorthand `if let x`) desugars
-        // to a `pattern_guard_expr` matching `Optional.some(x)`. The initialized
-        // form is matched first.
+        // Optional binding conditions with an initializer (the `let p = y` in
+        // `if let p = y { ... }`). We translate this to a `pattern_guard_expr`
+        // matching `Optional.some(p)`.
         rule!(
             (optionalBindingCondition
                 bindingSpecifier: @@spec
-                pattern: (identifierPattern identifier: @@name)
+                pattern: @pattern
                 initializer: (initializerClause value: @val))
             =>
             (pattern_guard_expr
@@ -888,8 +888,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     callee: (member_access_expr base: (identifier "Optional") member_name_node: (identifier "some"))
                     argument: (argument value: (expr_pattern
                         modifier: (modifier #{spec})
-                        expr: (identifier #{name})))))
+                        expr: {pattern}))))
         ),
+        // Optional binding conditions in shorthand form, that is, _without_ an
+        // initializer (the `let p` in `if let p { ... }`). In this case the
+        // pattern is always an identifier.
         rule!(
             (optionalBindingCondition
                 bindingSpecifier: @@spec

@@ -60,7 +60,27 @@ top_level source="⟨body⟩"
     block source="⟨stmt⟩"
       stmt:
         guard_if_stmt source="guard ⟨condition⟩ else ⟨else⟩"
-          condition: unhandled_node "let (call, thread) = optional" source="let (call, thread) = optional"
+          condition:
+            pattern_guard_expr source="⟨pattern⟩ = ⟨value⟩"
+              pattern:
+                call_expr source="⟨argument⟩"
+                  callee:
+                    member_access_expr source=""
+                      base: identifier "Optional" source=""
+                      member_name_node: identifier "some" source=""
+                  argument:
+                    argument source="⟨value⟩"
+                      value:
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr:
+                            tuple_expr source="(⟨element⟩, ⟨element⟩)"
+                              element:
+                                argument source="⟨value⟩"
+                                  value: identifier "call" source="call"
+                                argument source="⟨value⟩"
+                                  value: identifier "thread" source="thread"
+              value: identifier "optional" source="optional"
           else:
             block source="{\n  ⟨stmt⟩\n}"
               stmt: return_expr "return" source="return"
