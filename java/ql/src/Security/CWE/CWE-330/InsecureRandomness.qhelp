@@ -53,7 +53,7 @@
 	</example>
 
 	<references>
-		<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
         <li>
             Java Docs: <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Random.html">Random</a>.
         </li>

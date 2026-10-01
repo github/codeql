@@ -1,5 +1,5 @@
 /**
- * @name Cache Poisoning via low-privileged code injection
+ * @name Cache Poisoning via code injection
  * @description The cache can be poisoned by untrusted code, leading to a cache poisoning attack.
  * @kind path-problem
  * @problem.severity error
@@ -22,10 +22,11 @@ from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, Event
 where
   CodeInjectionFlow::flowPath(source, sink) and
   event = getRelevantCachePoisoningEventForSink(sink.getNode()) and
+  source.getNode().(RemoteFlowSource).getEventName() = event.getName() and
   // the checkout is not controlled by an access check
   not exists(ControlCheck check |
     check.protects(source.getNode().asExpr(), event, "code-injection")
   )
 select sink.getNode(), source, sink,
-  "Unprivileged code injection in $@, which may lead to cache poisoning ($@).", sink,
+  "Code injection in $@ may allow poisoning the default-branch cache (event trigger: $@).", sink,
   sink.getNode().asExpr().(Expression).getRawExpression(), event, event.getName()

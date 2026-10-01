@@ -65,6 +65,7 @@ ql/cpp/ql/src/Likely Bugs/InconsistentCheckReturnNull.ql
 ql/cpp/ql/src/Likely Bugs/Leap Year/Adding365DaysPerYear.ql
 ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql
 ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedReturnValueForTimeFunctions.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/AmbiguousAssignmentOfComparison.ql
 ql/cpp/ql/src/Likely Bugs/Likely Typos/AssignWhereCompareMeant.ql
 ql/cpp/ql/src/Likely Bugs/Likely Typos/CompareWhereAssignMeant.ql
 ql/cpp/ql/src/Likely Bugs/Likely Typos/DubiousNullCheck.ql

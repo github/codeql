@@ -59,7 +59,7 @@ module DisposeCallOnLocalIDisposableConfig implements DataFlow::ConfigSig {
       exists(UsingStmt us | us.getAnExpr() = e)
       or
       // Foreach calls Dispose
-      exists(ForeachStmt fs | fs.getIterableExpr() = e)
+      exists(ForEachStmt fs | fs.getIterableExpr() = e)
       or
       // As are disposables on which the Dispose method is called explicitly
       exists(MethodCall mc |

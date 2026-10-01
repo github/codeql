@@ -1,3 +1,44 @@
+## 12.2.0
+
+### New Features
+
+* Added a C++ regular-expression parser for the ECMAScript grammar used by `std::regex`.
+
+### Minor Analysis Improvements
+
+* Added SQL-injection sink models for the Comdb2 C API functions `cdb2_run_statement` and `cdb2_run_statement_typed`.
+* Added flow summaries for the BDE codecs `BloombergLP::balber::BerDecoder`/`BerEncoder`, `BloombergLP::baljsn::Decoder`/`Encoder` and `BloombergLP::balxml::Decoder`/`Encoder`.
+* Added taint flow summaries for the BDE `bslx` byte-stream deserializers `BloombergLP::bslx::ByteInStream`, `BloombergLP::bslx::GenericInStream`, and `BloombergLP::bslx::InStreamFunctions::bdexStreamIn`.
+
+## 12.1.1
+
+### Minor Analysis Improvements
+
+* Added taint flow models for the `boost::asio::ip::basic_resolver::resolve` function.
+* Added flow summaries for the BDE `BloombergLP::bdlbb::Blob` segmented byte buffer.
+* Added flow summaries for the Protocol Buffers `google::protobuf::MessageLite` C++ API.
+
+## 12.1.0
+
+### New Features
+
+* Sources and sinks defined using models-as-data now support access paths with fields. For example, the path `ReturnValue.Field[S::f]` makes the field `S::f` a flow source when it is returned by a call.
+
+### Minor Analysis Improvements
+
+* Added the PostgreSQL libpq (asynchronous) query-execution functions `PQexec`, `PQexecParams`, `PQprepare`, `PQsendQuery`, `PQsendQueryParams`, `PQsendPrepare` as `sql-injection` sinks.
+* Initializers of compiler-generated variables are now recognized as compiler-generated. A new predicate `isCompilerGenerated` on `Initializer` has been added to reflect this.
+
+## 12.0.3
+
+No user-facing changes.
+
+## 12.0.2
+
+### Minor Analysis Improvements
+
+* Added flow source models for `RegQueryValue` and related functions from the `winreg.h` Windows header.
+
 ## 12.0.1
 
 No user-facing changes.

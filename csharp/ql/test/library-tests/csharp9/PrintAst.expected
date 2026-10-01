@@ -241,7 +241,7 @@ ForeachExtension.cs:
 #   23|                 0: [TypeMention] Enumerable
 #   23|               0: [IntLiteral] 0
 #   23|               1: [IntLiteral] 10
-#   24|       1: [ForeachStmt] foreach (... ... in ...) ...
+#   24|       1: [ForEachStmt] foreach (... ... in ...) ...
 #   24|         0: [LocalVariableDeclExpr] Int32 item
 #   24|           0: [TypeMention] int
 #   24|         1: [LocalVariableAccess] access to local variable enumerator1
@@ -252,17 +252,17 @@ ForeachExtension.cs:
 #   28|             1: [TypeMention] int
 #   28|           0: [LocalVariableAccess] access to local variable enumerator2
 #   28|           1: [MethodCall] call to method GetAsyncEnumerator
-#   29|       3: [ForeachStmt] foreach (... ... in ...) ...
+#   29|       3: [ForEachStmt] foreach (... ... in ...) ...
 #   29|         0: [LocalVariableDeclExpr] Int32 item
 #   29|           0: [TypeMention] int
 #   29|         1: [LocalVariableAccess] access to local variable enumerator2
 #   30|         2: [BlockStmt] {...}
-#   33|       4: [ForeachStmt] foreach (... ... in ...) ...
+#   33|       4: [ForEachStmt] foreach (... ... in ...) ...
 #   33|         0: [LocalVariableDeclExpr] Int32 item
 #   33|           0: [TypeMention] int
 #   33|         1: [IntLiteral] 42
 #   34|         2: [BlockStmt] {...}
-#   37|       5: [ForeachStmt] foreach (... ... in ...) ...
+#   37|       5: [ForEachStmt] foreach (... ... in ...) ...
 #   37|         0: [LocalVariableDeclExpr] Int32 i
 #   37|           0: [TypeMention] int
 #   37|         1: [ArrayCreation] array creation of type Int32[]

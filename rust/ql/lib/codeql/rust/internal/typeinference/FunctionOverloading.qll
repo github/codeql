@@ -166,9 +166,9 @@ predicate traitTypeParameterOccurrence(
 }
 
 pragma[nomagic]
-private predicate functionResolutionDependsOnArgumentCand(
-  ImplItemNode impl, Function f, string functionName, TypeParameter traitTp, FunctionPosition pos,
-  TypePath path
+predicate functionResolutionDependsOnArgumentCand(
+  ImplItemNode impl, Function f, string functionName, TypeParamTypeParameter traitTp,
+  FunctionPosition pos, TypePath path
 ) {
   /*
    * As seen in the example below, when an implementation has a sibling for a
@@ -199,12 +199,14 @@ private predicate functionResolutionDependsOnArgumentCand(
   )
 }
 
-private predicate functionResolutionDependsOnPositionalArgumentCand(
-  ImplItemNode impl, Function f, string functionName, TypeParameter traitTp
+pragma[nomagic]
+predicate functionResolutionDependsOnPositionalArgumentCand(
+  ImplItemNode impl, Function f, string functionName, TypeParamTypeParameter traitTp, int pos,
+  TypePath path
 ) {
-  exists(FunctionPosition pos |
-    functionResolutionDependsOnArgumentCand(impl, f, functionName, traitTp, pos, _) and
-    pos.isPosition()
+  exists(FunctionPosition pos0 |
+    functionResolutionDependsOnArgumentCand(impl, f, functionName, traitTp, pos0, path) and
+    pos = pos0.asPosition()
   )
 }
 
@@ -223,7 +225,7 @@ private Type getAssocFunctionNonTypeParameterTypeAt(
  */
 pragma[nomagic]
 private predicate hasEquivalentPositionalSibling(
-  ImplItemNode impl, ImplItemNode sibling, Function f, TypeParameter traitTp
+  ImplItemNode impl, ImplItemNode sibling, Function f, TypeParamTypeParameter traitTp
 ) {
   exists(string functionName, FunctionPosition pos, TypePath path |
     functionResolutionDependsOnArgumentCand(impl, f, functionName, traitTp, pos, path) and
@@ -255,7 +257,7 @@ private predicate hasEquivalentPositionalSibling(
  *
  * `traitTp` is a type parameter of the trait being implemented by `impl`, and
  * we need to check that the type of `f` corresponding to `traitTp` is satisfied
- * at any one of the positions `pos` in which that type occurs in `f`.
+ * at any one of the positions `pos` in which that type occurs at `path` in `f`.
  *
  * Type parameters that only occur in return positions are only included when
  * all other type parameters that occur in a positional position are insufficient
@@ -283,19 +285,20 @@ private predicate hasEquivalentPositionalSibling(
  */
 pragma[nomagic]
 predicate functionResolutionDependsOnArgument(
-  ImplItemNode impl, Function f, TypeParameter traitTp, FunctionPosition pos
+  ImplItemNode impl, Function f, TypeParamTypeParameter traitTp, FunctionPosition pos, TypePath path
 ) {
   exists(string functionName |
-    functionResolutionDependsOnArgumentCand(impl, f, functionName, traitTp, pos, _)
+    functionResolutionDependsOnArgumentCand(impl, f, functionName, traitTp, pos, path)
   |
-    if functionResolutionDependsOnPositionalArgumentCand(impl, f, functionName, traitTp)
+    if functionResolutionDependsOnPositionalArgumentCand(impl, f, functionName, traitTp, _, _)
     then any()
     else
       // `traitTp` only occurs in return position; check that it is indeed needed for disambiguation
       exists(ImplItemNode sibling |
         implSiblings(_, impl, sibling) and
-        forall(TypeParameter otherTraitTp |
-          functionResolutionDependsOnPositionalArgumentCand(impl, f, functionName, otherTraitTp)
+        forall(TypeParamTypeParameter otherTraitTp |
+          functionResolutionDependsOnPositionalArgumentCand(impl, f, functionName, otherTraitTp, _,
+            _)
         |
           hasEquivalentPositionalSibling(impl, sibling, f, otherTraitTp)
         )

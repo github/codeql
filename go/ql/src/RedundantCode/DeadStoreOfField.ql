@@ -86,7 +86,7 @@ Type getTypeEmbeddedViaPointer(Type t) {
   result = getEmbeddedType*(getEmbeddedType(getEmbeddedType*(t), true))
 }
 
-from Write w, LocalVariable v, Field f
+from Write w, LocalVariable v, Field f, Expr lhs
 where
   // `w` writes `f` on `v`
   w.writesFieldPreUpdate(v.getARead(), f, _) and
@@ -97,5 +97,9 @@ where
   // exclude escaping `v`; there may be reads in other functions
   not exists(Read r | r.reads(v) | escapes(r)) and
   // exclude fields promoted through an embedded pointer type
-  not f = getTypeEmbeddedViaPointer(v.getType()).getField(_)
-select w, "This assignment to " + f + " is useless since its value is never read."
+  not f = getTypeEmbeddedViaPointer(v.getType()).getField(_) and
+  // Report the assigned field expression rather than the whole write instruction. A field write
+  // `v.f = ...` always has an explicit left-hand side expression (the `v.f` selector), so this
+  // does not drop any results.
+  lhs = w.getLhs().getExpr()
+select lhs, "This assignment to " + f + " is useless since its value is never read."

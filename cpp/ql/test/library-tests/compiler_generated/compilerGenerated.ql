@@ -9,4 +9,6 @@ where
   e.(Variable).isCompilerGenerated() and type = "Variable"
   or
   e.(Stmt).isCompilerGenerated() and type = "Stmt"
+  or
+  e.(Initializer).isCompilerGenerated() and type = "Initializer"
 select e, type

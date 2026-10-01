@@ -73,7 +73,9 @@ module AllocationSizeOverflow {
 
   private predicate allocationSizeCheck(DataFlow::Node g, Expr e, boolean branch) {
     exists(DataFlow::Node lesser |
-      g.(DataFlow::RelationalComparisonNode).leq(branch, lesser, _, _) and
+      pragma[only_bind_into](g)
+          .(DataFlow::RelationalComparisonNode)
+          .leq(pragma[only_bind_into](branch), pragma[only_bind_into](lesser), _, _) and
       not lesser.isConst() and
       globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(lesser)
     )

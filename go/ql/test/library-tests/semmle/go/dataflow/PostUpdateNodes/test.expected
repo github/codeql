@@ -10,12 +10,12 @@
 | test.go:25:2:25:2 | a | test.go:25:2:25:2 | a [postupdate] |
 | test.go:25:2:25:5 | selection of bs | test.go:25:2:25:5 | selection of bs [postupdate] |
 | test.go:25:2:25:8 | index expression | test.go:25:2:25:8 | index expression [postupdate] |
-| test.go:25:2:25:13 | implicit dereference | test.go:25:2:25:13 | implicit dereference [postupdate] |
+| test.go:25:2:25:13 | implicit-deref selection of cptr | test.go:25:2:25:13 | implicit-deref selection of cptr [postupdate] |
 | test.go:25:2:25:13 | selection of cptr | test.go:25:2:25:13 | selection of cptr [postupdate] |
 | test.go:26:2:26:2 | a | test.go:26:2:26:2 | a [postupdate] |
-| test.go:26:2:26:7 | implicit dereference | test.go:26:2:26:7 | implicit dereference [postupdate] |
+| test.go:26:2:26:7 | implicit-deref selection of bptr | test.go:26:2:26:7 | implicit-deref selection of bptr [postupdate] |
 | test.go:26:2:26:7 | selection of bptr | test.go:26:2:26:7 | selection of bptr [postupdate] |
-| test.go:26:2:26:12 | implicit dereference | test.go:26:2:26:12 | implicit dereference [postupdate] |
+| test.go:26:2:26:12 | implicit-deref selection of cptr | test.go:26:2:26:12 | implicit-deref selection of cptr [postupdate] |
 | test.go:26:2:26:12 | selection of cptr | test.go:26:2:26:12 | selection of cptr [postupdate] |
 | test.go:28:7:28:10 | struct literal | test.go:28:7:28:10 | struct literal [postupdate] |
 | test.go:29:2:29:2 | c | test.go:29:2:29:2 | c [postupdate] |

@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.ArrayExpr
 private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
+private import codeql.rust.elements.AnyAttr
 
 /**
  * INTERNAL: This module contains the customizable definition of `ArrayExpr` and should not
@@ -31,8 +32,8 @@ module Impl {
       result = Synth::convertExprFromRaw(this.getUnderlyingEntity().getExpr(index))
     }
 
-    override Attr getAttr(int index) {
-      result = Synth::convertAttrFromRaw(this.getUnderlyingEntity().getAttr(index))
+    override AnyAttr getAttr(int index) {
+      result = Synth::convertAnyAttrFromRaw(this.getUnderlyingEntity().getAttr(index))
     }
   }
 }

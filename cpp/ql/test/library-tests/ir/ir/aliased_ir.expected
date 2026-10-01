@@ -21772,6 +21772,26 @@ ir.cpp:
 # 2919|     v2919_13(void)          = AliasedUse                               : ~m2919_11
 # 2919|     v2919_14(void)          = ExitFunction                             : 
 
+# 2927| void test()
+# 2927|   Block 0
+# 2927|     v2927_1(void)                  = EnterFunction                : 
+# 2927|     m2927_2(unknown)               = AliasedDefinition            : 
+# 2927|     m2927_3(unknown)               = InitializeNonLocal           : 
+# 2927|     m2927_4(unknown)               = Chi                          : total:m2927_2, partial:m2927_3
+# 2928|     r2928_1(glval<unknown>)        = FunctionAddress[get_wrapper] : 
+# 2928|     r2928_2(PointerWrapper)        = Call[get_wrapper]            : func:r2928_1
+# 2928|     m2928_3(unknown)               = ^CallSideEffect              : ~m2927_4
+# 2928|     m2928_4(unknown)               = Chi                          : total:m2927_4, partial:m2928_3
+# 2928|     r2928_5(glval<PointerWrapper>) = VariableAddress[#temp2928:3] : 
+# 2928|     m2928_6(PointerWrapper)        = Store[#temp2928:3]           : &:r2928_5, r2928_2
+# 2928|     r2928_7(glval<Point>)          = FieldAddress[point]          : r2928_5
+# 2928|     r2928_8(glval<int>)            = FieldAddress[x]              : r2928_7
+# 2928|     r2928_9(int)                   = Load[?]                      : &:r2928_8, ~m2928_6
+# 2929|     v2929_1(void)                  = NoOp                         : 
+# 2927|     v2927_5(void)                  = ReturnVoid                   : 
+# 2927|     v2927_6(void)                  = AliasedUse                   : ~m2928_4
+# 2927|     v2927_7(void)                  = ExitFunction                 : 
+
 ir23.cpp:
 #    1| bool consteval_1()
 #    1|   Block 0

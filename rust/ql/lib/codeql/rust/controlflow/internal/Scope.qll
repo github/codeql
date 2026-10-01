@@ -35,7 +35,8 @@ final class CallableScope extends CfgScopeImpl, Callable {
   CallableScope() {
     // A function without a body corresponds to a trait method signature and
     // should not have a CFG scope.
-    this.hasBody()
+    this.hasBody() and
+    this.fromSource() // exclude stubs in tests defined using `additionalExternalFile`
   }
 
   override predicate scopeFirst(AstNode first) {

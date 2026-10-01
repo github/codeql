@@ -131,6 +131,15 @@ private predicate qualifierSourceImpl(RelevantNode n, Class c) {
   )
 }
 
+pragma[nomagic]
+private predicate hasKindAndEnclosingCallable(
+  DataFlowPrivate::DataFlowCallable callable, DataFlowPrivate::ReturnKind kind,
+  DataFlowPrivate::ReturnNode return
+) {
+  return.getEnclosingCallable() = callable and
+  return.getKind() = kind
+}
+
 private module TrackVirtualDispatch<methodDispatchSig/1 virtualDispatch0> {
   /**
    * Gets a possible runtime target of `c` using both static call-target
@@ -197,11 +206,21 @@ private module TrackVirtualDispatch<methodDispatchSig/1 virtualDispatch0> {
       )
     }
 
+    pragma[nomagic]
+    private predicate hasDispatchWithKind(
+      DataFlowPrivate::DataFlowCallable callable, DataFlowPrivate::ReturnKind kind,
+      LocalSourceNode n2
+    ) {
+      exists(DataFlowPrivate::DataFlowCall call |
+        n2 = DataFlowPrivate::getAnOutNode(call, kind) and
+        callable = dispatch(call)
+      )
+    }
+
     predicate returnStep(Node n1, LocalSourceNode n2) {
-      exists(DataFlowPrivate::DataFlowCallable callable, DataFlowPrivate::DataFlowCall call |
-        n1.(DataFlowPrivate::ReturnNode).getEnclosingCallable() = callable and
-        callable = dispatch(call) and
-        n2 = DataFlowPrivate::getAnOutNode(call, n1.(DataFlowPrivate::ReturnNode).getKind())
+      exists(DataFlowPrivate::DataFlowCallable callable, DataFlowPrivate::ReturnKind kind |
+        hasKindAndEnclosingCallable(callable, kind, n1) and
+        hasDispatchWithKind(callable, kind, n2)
       )
     }
 

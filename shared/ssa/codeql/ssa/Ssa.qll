@@ -1419,6 +1419,22 @@ module Make<
      */
     default predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) { none() }
 
+    /**
+     * Holds if the post-update node corresponding to the given `read` occurs at `bb,i`, meaning
+     * it will propagate to the next use (strictly) after that point in the CFG.
+     *
+     * The default is to use the CFG node associated with the read itself, meaning the post-update
+     * always flows to the next use. The default can however lead to spurious flow in cases like:
+     * ```
+     * x.f = foo(x)
+     * ```
+     * where the post-update node for `x` on the left-hand side flows into the `x` on the right-hand side.
+     *
+     * NOTE: When implementing this predicate, you must ensure that `variableRead` is defined to contain
+     * a synthetic read of this variable at `bb,i`.
+     */
+    default predicate postUpdateCfgNode(Expr read, BasicBlock bb, int i) { read.hasCfgNode(bb, i) }
+
     /** An abstract value that a `Guard` may evaluate to. */
     class GuardValue {
       /** Gets a textual representation of this value. */
@@ -1892,6 +1908,13 @@ module Make<
       override string toString() { result = "[input] " + def_.toString() }
     }
 
+    private predicate postUpdateNodeAt(
+      ExprPostUpdateNode node, BasicBlock bb, int i, SourceVariable v
+    ) {
+      node.getPreUpdateNode().(ReadNode).readsAt(_, _, v) and
+      DfInput::postUpdateCfgNode(node.getExpr(), bb, i)
+    }
+
     /**
      * Holds if `nodeFrom` corresponds to the reference to `v` at index `i` in
      * `bb`. The boolean `isUseStep` indicates whether `nodeFrom` is an actual
@@ -1907,7 +1930,10 @@ module Make<
         isUseStep = false
       )
       or
-      [nodeFrom, nodeFrom.(ExprPostUpdateNode).getPreUpdateNode()].(ReadNode).readsAt(bb, i, v) and
+      nodeFrom.(ReadNode).readsAt(bb, i, v) and
+      isUseStep = true
+      or
+      postUpdateNodeAt(nodeFrom, bb, i, v) and
       isUseStep = true
     }
 

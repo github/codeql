@@ -90,7 +90,7 @@ public class CustomParser extends FlowParser {
     if (this.eat(TokenType.parenL)) {
       param = this.parseBindingAtom();
       this.checkLVal(param, true, null);
-      if (this.eat(TokenType._if)) guard = this.parseExpression(false, null);
+      if (this.eat(TokenType._if)) guard = this.parseExpression(false);
       this.expect(TokenType.parenR);
     } else if (!options.esnext()) {
       this.unexpected();
@@ -123,7 +123,7 @@ public class CustomParser extends FlowParser {
   }
 
   @Override
-  protected Expression parseExprAtom(DestructuringErrors refDestructuringErrors) {
+  protected Expression parseExprAtom() {
     Position startLoc = this.startLoc;
     if (options.mozExtensions() && this.isContextual("let")) {
       this.next();
@@ -141,9 +141,9 @@ public class CustomParser extends FlowParser {
       if (this.type == TokenType.comma
           || this.type == TokenType.bracketR
           || this.type == TokenType.ellipsis) {
-        elements = this.parseExprList(TokenType.bracketR, true, true, refDestructuringErrors);
+        elements = this.parseExprList(TokenType.bracketR, true, true);
       } else {
-        Expression firstExpr = this.parseMaybeAssign(false, refDestructuringErrors, null);
+        Expression firstExpr = this.parseMaybeAssign(false, null);
         // check whether this is a postfix array comprehension
         if (this.type == TokenType._for || this.type == TokenType._if) {
           ComprehensionExpression c = this.parseComprehension(startLoc, false, firstExpr);
@@ -154,7 +154,7 @@ public class CustomParser extends FlowParser {
           elements = new ArrayList<Expression>();
           elements.add(firstExpr);
           elements.addAll(
-              this.parseExprList(TokenType.bracketR, true, true, refDestructuringErrors));
+              this.parseExprList(TokenType.bracketR, true, true));
         }
       }
       return this.finishNode(new ArrayExpression(new SourceLocation(startLoc), elements));
@@ -164,7 +164,7 @@ public class CustomParser extends FlowParser {
       Identifier buildinName = this.parseIdent(true);
       Identifier name = this.finishNode(new Identifier(new SourceLocation(startLoc), "%" + buildinName.getName()));
       this.expect(TokenType.parenL);
-      List<Expression> args = this.parseExprList(TokenType.parenR, false, false, null);
+      List<Expression> args = this.parseExprList(TokenType.parenR, false, false);
       CallExpression node =
           new CallExpression(
               new SourceLocation(startLoc), name, new ArrayList<>(), args, false, false);
@@ -184,7 +184,7 @@ public class CustomParser extends FlowParser {
       }
       return attr;
     } else {
-      return super.parseExprAtom(refDestructuringErrors);
+      return super.parseExprAtom();
     }
   }
 
@@ -197,7 +197,7 @@ public class CustomParser extends FlowParser {
     if (this.type == TokenType.braceL) {
       if (!maybeStatement) {
         // must be the start of an object literal
-        Expression body = this.parseObj(false, null);
+        Expression body = this.parseObj(false);
         return this.finishNode(
             new LetExpression(new SourceLocation(startLoc), decl.getDeclarations(), body));
       }
@@ -212,7 +212,7 @@ public class CustomParser extends FlowParser {
       return this.finishNode(
           new LetStatement(new SourceLocation(startLoc), decl.getDeclarations(), body));
     } else {
-      Expression body = this.parseExpression(false, null);
+      Expression body = this.parseExpression(false);
       return this.finishNode(
           new LetExpression(new SourceLocation(startLoc), decl.getDeclarations(), body));
     }
@@ -283,13 +283,12 @@ public class CustomParser extends FlowParser {
 
   // accept `yield` in non-generator functions
   @Override
-  protected Expression parseMaybeAssign(
-      boolean noIn, DestructuringErrors refDestructuringErrors, AfterLeftParse afterLeftParse) {
+  protected Expression parseMaybeAssign(boolean noIn, AfterLeftParse afterLeftParse) {
     if (options.mozExtensions() && isContextual("yield")) {
       if (!this.inFunction) this.raise(this.startLoc, "Yield not in function");
       return this.parseYield();
     }
-    return super.parseMaybeAssign(noIn, refDestructuringErrors, afterLeftParse);
+    return super.parseMaybeAssign(noIn, afterLeftParse);
   }
 
   // add parsing of comprehensions
@@ -309,12 +308,12 @@ public class CustomParser extends FlowParser {
       } else {
         this.expect(TokenType._in);
       }
-      Expression right = this.parseExpression(false, null);
+      Expression right = this.parseExpression(false);
       this.expect(TokenType.parenR);
       blocks.add(this.finishNode(new ComprehensionBlock(blockStart, (IPattern) left, right, of)));
     }
     Expression filter = this.eat(TokenType._if) ? this.parseParenExpression() : null;
-    if (body == null) body = this.parseExpression(false, null);
+    if (body == null) body = this.parseExpression(false);
 
     return new ComprehensionExpression(
         new SourceLocation(startLoc), body, blocks, filter, isGenerator);
@@ -353,13 +352,11 @@ public class CustomParser extends FlowParser {
 
   @Override
   protected boolean parseParenthesisedExpression(
-      DestructuringErrors refDestructuringErrors,
       boolean allowTrailingComma,
       ParenthesisedExpressions parenExprs,
       boolean first) {
     boolean cont =
-        super.parseParenthesisedExpression(
-            refDestructuringErrors, allowTrailingComma, parenExprs, first);
+        super.parseParenthesisedExpression(allowTrailingComma, parenExprs, first);
     if (options.mozExtensions() && parenExprs.exprList.size() == 1 && this.type == TokenType._for) {
       Expression body = parenExprs.exprList.remove(0);
       ComprehensionExpression c = parseComprehension(body.getLoc().getStart(), true, body);
@@ -399,7 +396,7 @@ public class CustomParser extends FlowParser {
         && options.mozExtensions()
         && !canInsertSemicolon()
         && this.type == TokenType.braceL) {
-      ((NewExpression) res).getArguments().add(this.parseObj(false, null));
+      ((NewExpression) res).getArguments().add(this.parseObj(false));
       res = this.finishNode(res);
     }
     return res;
@@ -465,7 +462,7 @@ public class CustomParser extends FlowParser {
     if (options.e4x() && this.eat(TokenType.dot)) {
       SourceLocation start = new SourceLocation(startLoc);
       if (this.eat(TokenType.parenL)) {
-        Expression filter = parseExpression(false, null);
+        Expression filter = parseExpression(false);
         this.expect(TokenType.parenR);
         return Pair.make(this.finishNode(new XMLFilterExpression(start, base, filter)), true);
       }
@@ -515,7 +512,7 @@ public class CustomParser extends FlowParser {
    */
   protected Expression parseAttributeIdentifier(SourceLocation start) {
     if (this.eat(TokenType.bracketL)) {
-      Expression idx = parseExpression(false, null);
+      Expression idx = parseExpression(false);
       this.expect(TokenType.bracketR);
       return this.finishNode(new XMLAttributeSelector(start, idx, true));
     } else {
@@ -533,7 +530,7 @@ public class CustomParser extends FlowParser {
       // followed by a right bracket, which will later be converted by
       // `decoratorToAttributeSelector` below
       List<Expression> elements = new ArrayList<>();
-      elements.add(parseExpression(false, null));
+      elements.add(parseExpression(false));
       this.expect(TokenType.bracketR);
       return this.finishNode(new ArrayExpression(start, elements));
     }

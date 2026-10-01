@@ -67,8 +67,7 @@ private module Cached {
     model = ""
     or
     // models-as-data summarized flow
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
-      nodeTo.(FlowSummaryNode).getSummaryNode(), false, model)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false, model)
     or
     // object->field conflation for content that is a `TaintInheritingContent`.
     exists(DataFlow::ContentSet f |

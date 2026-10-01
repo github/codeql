@@ -13,15 +13,15 @@ func multipleReturns(selector int) int {
 	return 3 // $ Alert[result-node]
 }
 
-func resultParameter1() (r int) { // $ Alert[result-node] // implicit reads of result parameters are located at the result parameter declaration
+func resultParameter1() (r int) {
 	r = 0
 	return
-}
+} // $ Alert[result-node] // implicit reads of result parameters use the function body's location
 
-func resultParameter2(selector int) (r int) { // $ Alert[result-node] // implicit reads of result parameters are located at the result parameter declaration
+func resultParameter2(selector int) (r int) {
 	r = 0
 	if selector == 1 {
 		return 1
 	}
 	return
-}
+} // $ Alert[result-node] // implicit reads of result parameters use the function body's location

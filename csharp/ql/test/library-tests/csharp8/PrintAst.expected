@@ -33,7 +33,7 @@ AsyncStreams.cs:
 #   15|   7: [Method] F
 #   15|     -1: [TypeMention] Void
 #   16|     4: [BlockStmt] {...}
-#   17|       0: [ForeachStmt] foreach (... ... in ...) ...
+#   17|       0: [ForEachStmt] foreach (... ... in ...) ...
 #   17|         0: [LocalVariableDeclExpr] Int32 item
 #   17|           0: [TypeMention] int
 #   17|         1: [MethodCall] call to method Items

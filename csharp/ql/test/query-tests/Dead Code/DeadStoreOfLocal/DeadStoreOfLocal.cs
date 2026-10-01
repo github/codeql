@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class DeadStoreOfLocal
 {
@@ -483,4 +484,17 @@ class StringInterpolation
         const int align = 6; // GOOD
         Console.WriteLine($"Pi, {pi,align:F3}");
     }
+}
+
+class LinqFields
+{
+    private readonly IEnumerable<int> QueryBackedField =
+        from x1 in new[] { 1, 2, 3 }
+        where x1 > 1
+        select x1; // GOOD: The query range variable is used by the LINQ expression.
+
+    public static readonly IEnumerable<int> StaticQueryBackedField =
+        from x2 in new[] { 1, 2, 3 }
+        where x2 > 1
+        select x2; // GOOD: The query range variable is used by the LINQ expression.
 }

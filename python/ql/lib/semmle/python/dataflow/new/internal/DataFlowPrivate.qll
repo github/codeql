@@ -529,8 +529,7 @@ predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
 }
 
 private predicate summaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model)
 }
 
 predicate variableCaptureLocalFlowStep(Node nodeFrom, Node nodeTo) {
@@ -697,8 +696,7 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
   or
   jumpStepNotSharedWithTypeTracker(nodeFrom, nodeTo)
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode())
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(nodeFrom, nodeTo)
 }
 
 /**

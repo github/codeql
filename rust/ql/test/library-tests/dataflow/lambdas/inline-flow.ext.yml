@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: additionalExternalFile
+    data:
+      - ["external_file.rs"]

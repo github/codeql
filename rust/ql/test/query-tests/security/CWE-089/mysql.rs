@@ -28,15 +28,15 @@ mod sync_test {
         let _: i64 = conn.query_first(unsafe_query.as_str())?.unwrap(); // $ sql-sink Alert[rust/sql-injection]=remote10
         let _: Result<i64, FromRowError> = conn.query_first_opt(unsafe_query.as_str())?.unwrap(); // $ sql-sink Alert[rust/sql-injection]=remote10
         let _ = conn.query_fold(unsafe_query.as_str(), 0, |_: i64, _: i64| -> i64 { 0 })?; // $ sql-sink Alert[rust/sql-injection]=remote10
-        let _ = conn.query_fold_opt( // $ sql-sink Alert[rust/sql-injection]=remote10
-            unsafe_query.as_str(),
+        let _ = conn.query_fold_opt(
+            unsafe_query.as_str(), // $ sql-sink Alert[rust/sql-injection]=remote10
             0,
             |_: i64, _: Result<i64, FromRowError>| -> i64 { 0 },
         )?;
         let _ = conn.query_iter(unsafe_query.as_str())?; // $ sql-sink Alert[rust/sql-injection]=remote10
         let _ = conn.query_map(unsafe_query.as_str(), |_: i64| -> () {})?; // $ sql-sink Alert[rust/sql-injection]=remote10
-        let _ = conn.query_map_opt( // $ sql-sink Alert[rust/sql-injection]=remote10
-            unsafe_query.as_str(),
+        let _ = conn.query_map_opt(
+            unsafe_query.as_str(), // $ sql-sink Alert[rust/sql-injection]=remote10
             |_: Result<i64, FromRowError>| -> () {},
         )?;
         let _: Vec<i64> = conn2.query(unsafe_query.as_str())?; // $ sql-sink Alert[rust/sql-injection]=remote10

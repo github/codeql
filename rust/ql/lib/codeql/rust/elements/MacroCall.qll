@@ -4,9 +4,9 @@
  */
 
 private import internal.MacroCallImpl
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AssocItem
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.Attr
 import codeql.rust.elements.ExternItem
 import codeql.rust.elements.Path
 import codeql.rust.elements.TokenTree

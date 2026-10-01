@@ -36,7 +36,7 @@ class LoopingCall extends DataFlow::CallNode {
   }
 
   /** Holds if `c` is executed as part of the body of this loop. */
-  predicate executesCall(DataFlow::CallNode c) { c.asExpr().getScope() = loopScope }
+  predicate executesCall(DataFlow::CallNode c) { c.asExpr().getEnclosingCallable() = loopScope }
 }
 
 /** Holds if `ar` influences a guard that may control the execution of a loop. */

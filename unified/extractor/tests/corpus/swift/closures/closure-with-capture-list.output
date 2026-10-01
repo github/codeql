@@ -60,30 +60,24 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "f"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "f" source="f"
           value:
-            function_expr
+            function_expr source="{ [⟨capture_declaration⟩] in ⟨body⟩ }"
               capture_declaration:
-                variable_declaration
-                  modifier: modifier "weak"
-                  pattern:
-                    name_pattern
-                      identifier: identifier "self"
+                variable_declaration source="⟨modifier⟩ ⟨pattern⟩"
+                  modifier: modifier "weak" source="weak"
+                  pattern: identifier "self" source="self"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    call_expr
+                    call_expr source="⟨callee⟩()"
                       callee:
-                        member_access_expr
-                          base:
-                            name_expr
-                              identifier: identifier "self"
-                          member: identifier "doThing"
+                        member_access_expr source="⟨base⟩?.⟨member_name_node⟩"
+                          base: identifier "self" source="self"
+                          member_name_node: identifier "doThing" source="doThing"

@@ -2,7 +2,7 @@ use std::fs;
 use std::path::Path;
 
 use codeql_extractor::extractor::desugaring;
-use yeast::{dump::dump_ast, dump::dump_ast_with_type_errors};
+use yeast::dump::{DumpOptions, dump_ast, dump_ast_with_type_errors_and_options};
 
 #[path = "../src/languages/mod.rs"]
 mod languages;
@@ -18,20 +18,6 @@ fn update_mode_enabled() -> bool {
     std::env::var("UNIFIED_UPDATE_CORPUS")
         .map(|v| matches!(v.to_ascii_lowercase().as_str(), "1" | "true" | "yes" | "on"))
         .unwrap_or(false)
-}
-
-/// Whether the external swift-syntax parser is available. When the parser
-/// binary genuinely cannot be found/launched (e.g. no Swift toolchain, and
-/// neither `CODEQL_EXTRACTOR_UNIFIED_SWIFT_SYNTAX_PARSE` nor a `swift-syntax-parse`
-/// on `PATH`), the corpus test is skipped rather than failed — it cannot run
-/// without the Swift-backed parser.
-///
-/// Crucially this checks only that the executable *launches*: a parser that is
-/// present but crashes, emits invalid JSON, or otherwise regresses is
-/// considered available, so the suite runs and fails (rather than silently
-/// skipping the very failures CI needs to catch).
-fn parser_available() -> bool {
-    languages::swift_parse::binary_available()
 }
 
 /// Parse a corpus `.output` file. The file holds a single test case made of
@@ -110,25 +96,34 @@ fn collect_corpus_stems(dir: &Path, out: &mut Vec<std::path::PathBuf>) {
     }
 }
 
+#[cfg(bazel)]
+fn corpus_dir() -> std::path::PathBuf {
+    let base =
+        std::path::PathBuf::from(std::env::var("RUNFILES_DIR").expect("RUNFILES_DIR not set"));
+    std::fs::read_dir(&base)
+        .expect("failed to read RUNFILES_DIR")
+        .filter_map(Result::ok)
+        .map(|entry| entry.path().join("unified/extractor/tests/corpus"))
+        .find(|path| path.exists())
+        .expect("corpus not found under any runfiles repo root")
+}
+
+#[cfg(not(bazel))]
+fn corpus_dir() -> std::path::PathBuf {
+    std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/corpus")
+}
+
 #[test]
 fn test_corpus() {
-    if !parser_available() {
-        eprintln!(
-            "skipping test_corpus: the swift-syntax parser is unavailable \
-             (set CODEQL_EXTRACTOR_UNIFIED_SWIFT_SYNTAX_PARSE or put \
-             `swift-syntax-parse` on PATH)"
-        );
-        return;
-    }
     let update_mode = update_mode_enabled();
     let all_languages = languages::all_language_specs();
-    let corpus_dir = Path::new("tests/corpus");
+    let corpus_dir = corpus_dir();
 
     for lang in all_languages {
         let output_schema = yeast::node_types_yaml::schema_from_yaml(languages::OUTPUT_AST_SCHEMA)
             .expect("Failed to parse OUTPUT_AST_SCHEMA YAML");
 
-        let lang_corpus_dir = corpus_dir.join(&lang.prefix);
+        let lang_corpus_dir = corpus_dir.join(lang.prefix);
         if !lang_corpus_dir.exists() {
             continue;
         }
@@ -228,11 +223,15 @@ fn test_corpus() {
                         ));
                     }
                     Ok(actual) => {
-                        let actual_dump = dump_ast_with_type_errors(
+                        let actual_dump = dump_ast_with_type_errors_and_options(
                             &actual,
                             actual.get_root(),
                             &case_input,
                             &output_schema,
+                            &DumpOptions {
+                                show_abridged_source: true,
+                                ..DumpOptions::default()
+                            },
                         );
                         if update_mode {
                             case.expected = actual_dump.trim().to_string();

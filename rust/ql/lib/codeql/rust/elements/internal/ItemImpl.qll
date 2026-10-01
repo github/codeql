@@ -22,11 +22,11 @@ module Impl {
    * enum E {}
    * ```
    */
-  class Item extends Generated::Item { }
-
-  private class ItemWithAttributeMacroExpansion extends Item {
-    ItemWithAttributeMacroExpansion() { this.hasAttributeMacroExpansion() }
-
-    override string toStringImpl() { result = "(item with attribute macro expansion)" }
+  class Item extends Generated::Item {
+    override string toStringImpl() {
+      if this.hasAttributeMacroExpansion()
+      then result = "(item with attribute macro expansion)"
+      else result = super.toStringImpl()
+    }
   }
 }

@@ -22,17 +22,6 @@ private module Input implements InputSig<Location, RubyDataFlow> {
     not isNonConstantExpr(n.asExpr())
   }
 
-  predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
-    // An argument such as `x` in `if not x then ...` has two successors (and hence
-    // two calls); one for each Boolean outcome of `x`.
-    exists(CfgNodes::ExprCfgNode n |
-      arg.argumentOf(call, _) and
-      n = call.asCall() and
-      arg.asExpr().getASuccessor(any(ConditionalSuccessor c)).getASuccessor*() = n and
-      n.getASplit() instanceof Split::ConditionalCompletionSplit
-    )
-  }
-
   predicate uniqueTypeExclude(Node n) {
     n =
       any(DataFlow::CallNode call |

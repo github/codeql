@@ -34,25 +34,35 @@ Due to the above design, if something is cached in the context of the default br
 
 ## Example
 
+GitHub gives workflows triggered by low-trust events, such as `issue_comment`,
+`pull_request_target`, and `workflow_run`, read-only access to the default branch cache scope.
+This query therefore reports only workflows whose trigger can write to that scope.
+
 ### Incorrect Usage
 
-The following workflow runs untrusted code in a non-privileged job but in the context of the default branch.
+The following write-capable manually dispatched workflow fetches an unvalidated revision and then
+executes code from it. The executed code can use the cache token to poison the default branch cache
+if an untrusted integration or automation can influence the dispatch input.
 
 ```yaml
 name: Vulnerable Workflow
 on:
-  pull_request_target:
-    branches: [main]
-permissions: {}
+  workflow_dispatch:
+    inputs:
+      head_sha:
+        required: true
 jobs:
   test:
+    permissions: {}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
+      - env:
+          HEAD_SHA: ${{ github.event.inputs.head_sha }}
+        run: |
+          git fetch origin "$HEAD_SHA"
+          git checkout "$HEAD_SHA"
       - name: Run tests
-        run: ./run_tests.sh
+        run: npm install
 ```
 
 ### Correct Usage
@@ -79,5 +89,5 @@ jobs:
 ## References
 
 - Adnan Khan's Blog: [The Monsters in Your Build Cache – GitHub Actions Cache Poisoning](https://adnanthekhan.com/2024/05/06/the-monsters-in-your-build-cache-github-actions-cache-poisoning/).
-- GitHub Docs: [GitHub Actions Caching Documentation](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows).
+- GitHub Docs: [Cache access for low-trust workflow triggers](https://docs.github.com/actions/reference/workflows-and-actions/dependency-caching#cache-access-for-low-trust-workflow-triggers).
 - Scribe Security Blog: [Cache Poisoning in GitHub Actions](https://scribesecurity.com/blog/github-cache-poisoning/).

@@ -76,8 +76,7 @@ private module Cached {
     model = ""
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
-      nodeTo.(FlowSummaryNode).getSummaryNode(), false, model)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false, model)
     or
     any(AdditionalTaintStep a).step(nodeFrom, nodeTo) and model = "AdditionalTaintStep"
   }

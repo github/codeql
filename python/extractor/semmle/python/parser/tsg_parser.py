@@ -3,6 +3,7 @@
 # Functions and classes used for parsing Python files using `tree-sitter-graph`
 
 from ast import literal_eval
+import json
 import sys
 import os
 import semmle.python.parser
@@ -113,67 +114,67 @@ else:
     cargo_file = os.path.join(tsg_python_path, "Cargo.toml")
     tsg_command = ["cargo", "run", "--quiet", "--release", "--manifest-path="+cargo_file]
 
+def _decode_tsg_value(value):
+    value_type = value["type"]
+    if value_type == "null":
+        return None
+    if value_type in ("bool", "int", "string"):
+        return value[value_type]
+    if value_type == "list":
+        return [_decode_tsg_value(item) for item in value["values"]]
+    if value_type == "graphNode":
+        return Node(value["id"])
+    raise ValueError("Unsupported TSG value type '{}'".format(value_type))
+
+def _decode_tsg_node_attributes(encoded_attrs, path, logger):
+    # Decode every attribute first so location information is available if string decoding fails.
+    attrs = {
+        key: _decode_tsg_value(value)
+        for key, value in encoded_attrs.items()
+    }
+    if "s" not in attrs:
+        return attrs
+
+    try:
+        attrs["s"] = evaluate_string(attrs["s"])
+    except Exception as ex:
+        loc = ":".join(str(i) for i in get_location_info(attrs))
+        error = ex.args[0] if ex.args else "unknown"
+        logger.warning(
+            "Error '{}' while parsing value {} at {}:{}\n".format(
+                error, repr(attrs["s"]), path, loc
+            )
+        )
+    return attrs
+
 def read_tsg_python_output(path, logger):
+    command_args = tsg_command + [path]
+    p = subprocess.Popen(command_args, stdout=subprocess.PIPE)
+    stdout, _ = p.communicate()
+    if p.returncode:
+        raise subprocess.CalledProcessError(p.returncode, command_args, stdout)
+
     # Mapping from node id (an integer) to a dictionary containing attribute data.
     node_attr = {}
     # Mapping a start node to a map from attribute names to lists of (value, end_node) pairs.
     edge_attr = {}
 
-    command_args = tsg_command + [path]
-    p = subprocess.Popen(command_args, stdout=subprocess.PIPE)
-    for line in p.stdout:
-        line = line.decode(sys.getfilesystemencoding())
-        line = line.rstrip()
-        if line.startswith("node"): # e.g. `node 5`
-            current_node = int(line.split(" ")[1])
-            d = {}
-            node_attr[current_node] = d
-            in_node = True
-        elif line.startswith("edge"): # e.g. `edge 5 -> 6`
-            current_start, current_end = tuple(map(int, line[4:].split("->")))
-            d = edge_attr.setdefault(current_start, {})
-            in_node = False
-        else: # attribute, e.g. `_kind: "Class"`
-            key, value = line[2:].split(": ", 1)
-            if value.startswith("[graph node"): # e.g. `_skip_to: [graph node 5]`
-                value = Node(int(value.split(" ")[2][:-1]))
-            elif value == "#true": # e.g. `_is_parenthesised: #true`
-                value = True
-            elif value == "#false": # e.g. `top: #false`
-                value = False
-            elif value == "#null": # e.g. `exc: #null`
-                value = None
-            else: # literal values, e.g. `name: "k1.k2"` or `level: 5`
-                try:
-                    if key =="s" and value[0] == '"': # e.g. `s: "k1.k2"`
-                        value = evaluate_string(value)
-                    else:
-                        value  = literal_eval(value)
-                        if isinstance(value, bytes):
-                            try:
-                                value = value.decode(sys.getfilesystemencoding())
-                            except UnicodeDecodeError:
-                                # just include the bytes as-is
-                                pass
-                except Exception as ex:
-                    # We may not know the location at this point -- for instance if we forgot to set
-                    # it -- but `get_location_info` will degrade gracefully in this case.
-                    loc = ":".join(str(i) for i in get_location_info(d))
-                    error = ex.args[0] if ex.args else "unknown"
-                    logger.warning("Error '{}' while parsing value {} at {}:{}\n".format(error, repr(value), path, loc))
-            if in_node:
-                d[key] = value
-            else:
-                d.setdefault(key, []).append((value, current_end))
-    p.stdout.close()
-    p.terminate()
-    p.wait()
+    for encoded_node in json.loads(stdout):
+        current_node = encoded_node["id"]
+        attrs = _decode_tsg_node_attributes(encoded_node["attrs"], path, logger)
+        node_attr[current_node] = attrs
+        for encoded_edge in encoded_node["edges"]:
+            current_end = encoded_edge["sink"]
+            edge_fields = edge_attr.setdefault(current_node, {})
+            for key, value in encoded_edge["attrs"].items():
+                value = _decode_tsg_value(value)
+                edge_fields.setdefault(key, []).append((value, current_end))
     logger.debug("Read {} nodes and {} edges from TSG output".format(len(node_attr), len(edge_attr)))
     return node_attr, edge_attr
 
-def evaluate_string(s):
-    s = literal_eval(s)
-    prefix, quotes, content = split_string(s, None)
+def evaluate_string(source_literal):
+    """Evaluates Python string literal text that has already been decoded from the wire format."""
+    prefix, quotes, content = split_string(source_literal, None)
     ends_with_illegal_character = False
     # If the string ends with the same quote character as the outer quotes (and/or backslashes)
     # (e.g. the first string part of `f"""hello"{0}"""`), we must take care to not accidently create

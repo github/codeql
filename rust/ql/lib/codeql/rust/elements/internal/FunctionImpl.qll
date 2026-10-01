@@ -27,7 +27,7 @@ module Impl {
    * ```
    */
   class Function extends Generated::Function {
-    override string toStringImpl() { result = "fn " + this.getName().getText() }
+    override string toStringImpl() { result = "fn " + concat(this.getName().getText()) }
 
     pragma[nomagic]
     private predicate hasPotentialCommentAt(File f, int line) {

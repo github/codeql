@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    public class FileProvider
+    public class FileProvider : IFileProvider
     {
         private static readonly HashSet<string> binaryFileExtensions = [".dll", ".exe"]; // TODO: add more binary file extensions.
 

@@ -1,3 +1,61 @@
+## 8.0.0
+
+### Breaking Changes
+
+* The Go control flow graph (CFG) implementation has been completely rewritten
+  to use the shared CFG library. The CFG now includes additional nodes to more
+  accurately represent certain constructs, including assignments, function
+  parameters and results, range statements, and deferred calls. The CFG now
+  only includes nodes that are reachable from the entry point. Basic blocks are
+  also now constructed directly from the shared CFG. Existing code that relies
+  on specific CFG nodes, edges, locations, textual representations, or basic
+  block boundaries may need to be updated.  Additionally, the following API
+  changes have been made:
+  - `BasicBlocks::Cfg` has been removed. `BasicBlock` now directly uses the
+    basic-block implementation provided by the shared CFG library.
+  - `ControlFlow::EntryNode` and `ControlFlow::ExitNode` have been added, and
+    `ControlFlow::entryNode` and `ControlFlow::exitNode` now return these more
+    specific types.
+  - `IfStmt.getCond` has been deprecated. Please use the new `IfStmt.getCondition` instead.
+  - The result types of `IfStmt.getThen` and `LoopStmt.getBody` have been
+    widened from `BlockStmt` to `Stmt`.
+  - `SwitchStmt.getExpr` has been added, providing a common accessor for the
+    expression examined by expression and type switches.
+  - Several IR instruction classes have been removed or consolidated, including
+    `ReadArgumentInstruction`, `InitResultInstruction`, `IncDecInstruction`,
+    `EvalIncDecRhsInstruction`, `EvalImplicitOneInstruction`,
+    `SelectInstruction`, and `SendInstruction`.
+  - `EvalCompoundAssignRhsInstruction` now also represents increment and
+    decrement operations, and it and `EvalImplicitInitInstruction` directly
+    represent their associated writes.
+
+### Minor Analysis Improvements
+
+* Models for the `nhooyr.io/websocket` package have been updated to also support its new import path `github.com/coder/websocket`.
+
+## 7.3.2
+
+### Minor Analysis Improvements
+
+* Added or improved data flow models for the following Go standard-library APIs introduced or updated in Go 1.27:
+	* `bytes.CutLast`, `database/sql.ConvertAssign`, `database/sql/driver.RowsColumnScanner.ScanColumn`, `net/url.URL.Clone`, `net/url.Values.Clone` and `strings.CutLast`.
+	* The new `encoding/json/jsontext` package.
+* Added more data flow models for the `strings` package: `strings.Clone`, `Cut`, `CutPrefix`, `CutSuffix`, `Fields`, `FieldsFunc`, and `Join`; `strings.Builder.String`, `Builder.WriteByte`, and `Builder.WriteRune`; `strings.Reader.ReadByte` and `Reader.ReadRune`; and `strings.Replacer.Replace` and `Replacer.WriteString`.
+
+## 7.3.1
+
+No user-facing changes.
+
+## 7.3.0
+
+### Major Analysis Improvements
+
+* Go 1.27 is now supported.
+
+## 7.2.3
+
+No user-facing changes.
+
 ## 7.2.2
 
 ### Minor Analysis Improvements

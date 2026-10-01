@@ -33,7 +33,7 @@ query predicate getParamList(Function x, ParamList getParamList) {
   toBeTested(x) and not x.isUnknown() and getParamList = x.getParamList()
 }
 
-query predicate getAttr(Function x, int index, Attr getAttr) {
+query predicate getAttr(Function x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

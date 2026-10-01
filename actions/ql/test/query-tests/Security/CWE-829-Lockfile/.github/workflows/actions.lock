@@ -1,0 +1,30 @@
+version: future-version
+workflows:
+  .github/workflows/rust-ci.yml:
+    - DToLnAy/RuSt-ToOlChAiN@v1
+    - mismatched/action@v1
+    - malformed/action@v1
+    - missing/action@v1
+  .github/workflows/other.yml:
+    - other-workflow/action@v1
+dependencies:
+  DToLnAy/RuSt-ToOlChAiN@v1:
+    ref: v1
+    commit: sha1-6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772
+    owner_id: 1940490
+    repo_id: 260749683
+  other-workflow/action@v1:
+    ref: v1
+    commit: sha1-1111111111111111111111111111111111111111
+    owner_id: 1
+    repo_id: 2
+  mismatched/action@v1:
+    ref: V1
+    commit: sha1-2222222222222222222222222222222222222222
+    owner_id: 3
+    repo_id: 4
+  malformed/action@v1:
+    ref: v1
+    commit: 6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772
+    owner_id: 5
+    repo_id: 6

@@ -149,7 +149,7 @@ fn get_additional_fields(node_name: &str) -> Vec<FieldInfo> {
 
 fn get_trait_fields(trait_name: &str) -> Vec<FieldInfo> {
     match trait_name {
-        "HasAttrs" => vec![FieldInfo::list("attrs", "Attr")],
+        "HasAttrs" => vec![FieldInfo::list("attrs", "AnyAttr")],
         "HasName" => vec![FieldInfo::optional("name", "Name")],
         "HasVisibility" => vec![FieldInfo::optional("visibility", "Visibility")],
         "HasGenericParams" => vec![
@@ -309,13 +309,13 @@ fn write_schema(
 fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
     let mut result = Vec::new();
     for field in &node.fields {
-        if let Field::Token(name) = field {
-            if should_predicate_be_extracted(name) {
-                result.push(FieldInfo {
-                    name: format!("is_{name}"),
-                    ty: FieldType::Predicate,
-                });
-            }
+        if let Field::Token { token, .. } = field
+            && should_predicate_be_extracted(token)
+        {
+            result.push(FieldInfo {
+                name: format!("is_{token}"),
+                ty: FieldType::Predicate,
+            });
         }
     }
 
@@ -327,7 +327,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
             continue;
         }
         let ty = match field {
-            Field::Token(_) => continue,
+            Field::Token { .. } => continue,
             Field::Node {
                 ty, cardinality, ..
             } => match cardinality {
@@ -402,7 +402,7 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
                 EnumVariantInfo {
                     name,
                     snake_case_name,
-                    variant_ast_name: v.clone(),
+                    variant_ast_name: v.to_string(),
                 }
             })
             .collect(),
@@ -440,7 +440,11 @@ fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeF
         },
         FieldType::List(ty) => ExtractorNodeFieldInfo {
             name,
-            method: field.name.clone(),
+            method: if ty == "AnyAttr" {
+                "attrs_with_doc".to_owned()
+            } else {
+                field.name.clone()
+            },
             snake_case_ty: to_lower_snake_case(ty),
             list: true,
             ..Default::default()

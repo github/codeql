@@ -8,7 +8,7 @@ query predicate getArgList(MethodCallExpr x, ArgList getArgList) {
   toBeTested(x) and not x.isUnknown() and getArgList = x.getArgList()
 }
 
-query predicate getAttr(MethodCallExpr x, int index, Attr getAttr) {
+query predicate getAttr(MethodCallExpr x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

@@ -10,7 +10,7 @@ edges
 | InsecureHostKeyCallbackExample.go:45:3:47:3 | function literal | InsecureHostKeyCallbackExample.go:52:20:52:48 | type conversion | provenance |  |
 | InsecureHostKeyCallbackExample.go:58:39:58:46 | SSA def(callback) | InsecureHostKeyCallbackExample.go:62:20:62:27 | callback | provenance |  |
 | InsecureHostKeyCallbackExample.go:68:48:68:55 | SSA def(callback) | InsecureHostKeyCallbackExample.go:78:28:78:35 | callback | provenance |  |
-| InsecureHostKeyCallbackExample.go:94:3:94:43 | ... := ...[0] | InsecureHostKeyCallbackExample.go:95:28:95:35 | callback | provenance |  |
+| InsecureHostKeyCallbackExample.go:94:3:94:43 | extract:0 ... := ... | InsecureHostKeyCallbackExample.go:95:28:95:35 | callback | provenance |  |
 | InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion | InsecureHostKeyCallbackExample.go:107:35:107:50 | insecureCallback | provenance |  |
 | InsecureHostKeyCallbackExample.go:103:3:105:3 | function literal | InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion | provenance |  |
 | InsecureHostKeyCallbackExample.go:107:35:107:50 | insecureCallback | InsecureHostKeyCallbackExample.go:58:39:58:46 | SSA def(callback) | provenance |  |
@@ -35,7 +35,7 @@ nodes
 | InsecureHostKeyCallbackExample.go:76:28:76:54 | call to InsecureIgnoreHostKey | semmle.label | call to InsecureIgnoreHostKey |
 | InsecureHostKeyCallbackExample.go:78:28:78:35 | callback | semmle.label | callback |
 | InsecureHostKeyCallbackExample.go:92:28:92:54 | call to InsecureIgnoreHostKey | semmle.label | call to InsecureIgnoreHostKey |
-| InsecureHostKeyCallbackExample.go:94:3:94:43 | ... := ...[0] | semmle.label | ... := ...[0] |
+| InsecureHostKeyCallbackExample.go:94:3:94:43 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
 | InsecureHostKeyCallbackExample.go:95:28:95:35 | callback | semmle.label | callback |
 | InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion | semmle.label | type conversion |
 | InsecureHostKeyCallbackExample.go:103:3:105:3 | function literal | semmle.label | function literal |

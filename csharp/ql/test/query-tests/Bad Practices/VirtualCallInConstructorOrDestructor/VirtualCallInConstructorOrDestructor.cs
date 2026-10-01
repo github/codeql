@@ -15,6 +15,7 @@ namespace TestVirtualCalls
         public void f_interface() { }
 
         public virtual int p_virtual { get { return 0; } }
+        public virtual string p_virtual_string { get { return ""; } }
         public virtual int p_sealed { get { return 0; } }
         public int p_nonvirtual { get { return 0; } }
 
@@ -55,11 +56,14 @@ namespace TestVirtualCalls
             a = f_sealed; // GOOD
             a = f_nonvirtual; // GOOD
             a = f_interface;  // GOOD
+            var f_name = nameof(f_virtual); // GOOD
 
             // Property access
             int i = p_virtual;  // $ Alert // BAD
             i = p_sealed;   // GOOD
             i = p_nonvirtual; // GOOD
+            var p_name = nameof(p_virtual_string); // GOOD
+            var p_length_name = nameof(p_virtual_string.Length); // GOOD
 
             // Indexer access
             i = this[0];  // $ Alert // BAD

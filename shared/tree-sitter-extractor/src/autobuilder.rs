@@ -76,7 +76,7 @@ impl Autobuilder {
             cmd.arg(format!("--size-limit={limit}"));
         }
 
-        cmd.arg(format!("--language={}", &self.language));
+        cmd.arg(format!("--language={}", self.language));
         cmd.arg("--working-dir=.");
         cmd.arg(&self.database);
 

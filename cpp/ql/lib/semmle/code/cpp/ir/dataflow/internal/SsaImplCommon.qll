@@ -40,8 +40,19 @@ CppType getLanguageType(Operand operand) { result = getResultLanguageType(operan
  * - If `type = MyStruct`, the result is 1
  * - If `type = char*`, the result is 2
  */
-int getMaxIndirectionsForType(Type type) {
+int getMaxIndirectionsForGLType(Type type) {
   result = countIndirectionsForCppType(getTypeForGLValue(type))
+}
+
+/**
+ * Gets the maximum number of indirections a prvalue of type `type` can have.
+ * For example:
+ * - If `type = int`, the result is 0
+ * - If `type = MyStruct`, the result is 0
+ * - If `type = char*`, the result is 1
+ */
+int getMaxIndirectionsForPRType(Type type) {
+  result = countIndirectionsForCppType(getTypeForPRValue(type))
 }
 
 private class PointerOrArrayOrReferenceType extends Cpp::DerivedType {

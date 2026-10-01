@@ -106,10 +106,10 @@ private module LibraryCallbackSummaries {
     LibraryLambdaMethod() { this = "<library method accepting a callback>" }
 
     final override MethodCall getACall() {
-      libraryCall(result.getAControlFlowNode()) and
+      libraryCall(result.getControlFlowNode()) and
       result.hasBlock()
       or
-      libraryCallHasLambdaArg(result.getAControlFlowNode(), _)
+      libraryCallHasLambdaArg(result.getControlFlowNode(), _)
     }
 
     override predicate propagatesFlow(

@@ -4,5 +4,5 @@
 | resultParameters.go:9:10:9:10 | 1 | Result node with index 0 |
 | resultParameters.go:11:10:11:10 | 2 | Result node with index 0 |
 | resultParameters.go:13:9:13:9 | 3 | Result node with index 0 |
-| resultParameters.go:16:26:16:26 | implicit read of r | Result node with index 0 |
-| resultParameters.go:21:38:21:38 | implicit read of r | Result node with index 0 |
+| resultParameters.go:16:33:19:1 | result-read:0 block statement | Result node with index 0 |
+| resultParameters.go:21:45:27:1 | result-read:0 block statement | Result node with index 0 |

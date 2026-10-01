@@ -28,6 +28,8 @@ module Generated {
   class LifetimeArg extends Synth::TLifetimeArg, GenericArgImpl::GenericArg {
     override string getAPrimaryQlClass() { result = "LifetimeArg" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the lifetime of this lifetime argument, if it exists.
      */

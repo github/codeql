@@ -1,0 +1,149 @@
+private import unified
+private import codeql.util.ReportStats
+private import codeql.unified.internal.NameBinding
+private import codeql.unified.internal.dataflow.DataFlowCall
+private import codeql.unified.internal.dataflow.DataFlowCallable
+private import codeql.unified.internal.dataflow.CallGraph
+private import codeql.unified.internal.typeinference.Type as Type
+private import codeql.unified.internal.typeinference.TypeMention
+
+/** Stats about name nodes that static name binding could resolve. */
+module StaticNameResolutionStats implements EntityStatsSig {
+  /**
+   * Holds if `name` has been positively identified as referring to a value, so static name binding
+   * is not expected to resolve its members.
+   */
+  private predicate resolvesToValue(Identifier name) {
+    exists(AstNode decl |
+      decl = getStaticBindingTargetFromIdentifier(name).getDeclaration() and
+      not decl instanceof ClassLikeDeclaration and
+      not decl instanceof TypeAliasDeclaration and
+      not decl instanceof TypeParameter and
+      not decl instanceof AssociatedTypeDeclaration
+    )
+  }
+
+  /**
+   * Holds if name-binding for `expr` depends on type inference, and is thus not subject to static name binding.
+   *
+   * Usually this holds for qualified instance member accesses (`foo().x`) and leading-dot expressions (`.x`).
+   */
+  private predicate memberAccessDependsOnTypeInference(MemberAccessExpr expr) {
+    exists(Expr base | base = expr.getBase() |
+      // Base expression resolves to a value, e.g. a field, variable, or function (for languages where functions are values).
+      resolvesToValue(getIdentifierFromRef(base))
+      or
+      // Base expression is of a kind that is not subject to static name resolution, e.g. `foo().x`
+      not exists(getIdentifierFromRef(base))
+      or
+      // Base expression is a confirmed to depend on type inference
+      memberAccessDependsOnTypeInference(base)
+    )
+  }
+
+  class Candidate extends Identifier {
+    Candidate() {
+      exists(AstNode ref |
+        this = getIdentifierFromRef(ref) and
+        not memberAccessDependsOnTypeInference(ref)
+      ) and
+      not this instanceof NameBinding
+    }
+
+    NameBindingNode getTarget() {
+      result.asIdentifier() = getStaticBindingTargetFromIdentifier(this)
+      or
+      result.isModuleScopeNode(_) and
+      result.(NamespaceNode).ref().isIdentifier(this)
+      or
+      // Resolving to an implicitly-declared local such as "self" should count as
+      // as a successfully resolved name
+      exists(LocalName implicitLocal |
+        implicitLocal = this.(LocalNameAccess).getLocalName() and
+        not exists(implicitLocal.getABinding()) and
+        result.isLocalName(implicitLocal)
+      )
+    }
+
+    predicate isOk() { exists(this.getTarget()) }
+  }
+
+  string getOkText() { result = "statically resolvable names" }
+
+  string getNotOkText() { result = "statically unresolvable names" }
+}
+
+module StaticNameResolutionStatsReport = EntityReportStats<StaticNameResolutionStats>;
+
+/** Stats about which files are covered by a module manifest. */
+module FilesCoveredByModuleManifestStats implements EntityStatsSig {
+  class Candidate extends File {
+    Candidate() { this.getExtension() = "swift" }
+
+    ModuleScopeRepr getAModule() { result.getAnIncludedFile() = this }
+
+    predicate isOk() { exists(this.getAModule()) }
+  }
+
+  string getOkText() { result = "files covered by a module manifest" }
+
+  string getNotOkText() { result = "files not covered by any module manifest" }
+}
+
+module FilesCoveredByModuleManifestStatsReport =
+  EntityReportStats<FilesCoveredByModuleManifestStats>;
+
+module CallGraphStats implements EntityStatsSig {
+  class Candidate extends CallExpr {
+    Candidate() { exists(DataFlowCall c | c.asExplicitCall() = this) }
+
+    DataFlowCall getDataFlowCall() { result.asExplicitCall() = this }
+
+    DataFlowCallable getTarget() { result = viableCallable(this.getDataFlowCall()) }
+
+    predicate isOk() { exists(this.getTarget()) }
+  }
+
+  string getOkText() { result = "calls with call target" }
+
+  string getNotOkText() { result = "calls with missing call target" }
+}
+
+module CallGraphStatsReport = EntityReportStats<CallGraphStats>;
+
+module TypeMentionStats implements EntityStatsSig {
+  class Candidate extends ExprTypeMention {
+    predicate isOk() { this.getType() = any(Type::Type t | not t instanceof Type::UnknownType) }
+  }
+
+  string getOkText() { result = "resolvable type mentions" }
+
+  string getNotOkText() { result = "unresolvable type mentions" }
+}
+
+module TypeMentionStatsReport = EntityReportStats<TypeMentionStats>;
+
+/**
+ * Gets summary statistics about taint.
+ */
+predicate taintStats(string key, int value) {
+  // The keys must match those in DCA summary profiles
+  key = "Taint sources - active" and value = count(DataFlow::Node n | Models::isSource(n, "remote"))
+  or
+  key = "Taint sources - disabled" and
+  value = count(DataFlow::Node n | Models::isSource(n, any(string s | s != "remote")))
+  or
+  key = "Taint sources - sensitive data" and none()
+  or
+  key = "Taint edges - number of edges" and none()
+  or
+  key = "Taint reach - nodes tainted" and none()
+  or
+  key = "Taint reach - total non-summary nodes" and none()
+  or
+  key = "Taint reach - per million nodes" and none()
+  or
+  key = "Taint sinks - query sinks" and value = count(DataFlow::Node n | Models::isSink(n, _))
+  or
+  key = "Taint sinks - cryptographic operations" and none()
+}

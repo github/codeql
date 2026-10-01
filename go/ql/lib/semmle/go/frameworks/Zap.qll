@@ -54,7 +54,7 @@ module Zap {
       this.hasQualifiedName(packagePath(), "SugaredLogger", "Fatal" + getSuffix())
     }
 
-    override predicate mayReturnNormally() { none() }
+    override predicate mustNotReturnNormally() { any() }
   }
 
   /** A Zap logging function which always panics. */
