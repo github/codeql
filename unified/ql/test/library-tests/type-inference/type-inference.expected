@@ -1602,6 +1602,10 @@ inferType
 | key_paths.swift:204:22:204:23 | 30 |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:205:15:205:17 | arr |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:205:15:205:17 | arr | Element | {EXTERNAL LOCATION} | Int |
+| key_paths.swift:208:15:208:17 | "x" |  | {EXTERNAL LOCATION} | String |
+| key_paths.swift:208:20:208:20 | 1 |  | {EXTERNAL LOCATION} | Int |
+| key_paths.swift:208:23:208:25 | "y" |  | {EXTERNAL LOCATION} | String |
+| key_paths.swift:208:28:208:28 | 2 |  | {EXTERNAL LOCATION} | Int |
 | lub.swift:12:7:12:7 | b |  | lub.swift:5:1:7:1 | B |
 | lub.swift:12:11:12:13 | B(...) |  | lub.swift:5:1:7:1 | B |
 | lub.swift:14:7:14:7 | x |  | lub.swift:5:1:7:1 | B |
@@ -2094,6 +2098,8 @@ inferType
 | overload_resolution.swift:428:7:428:10 | dict |  | {EXTERNAL LOCATION} | Dictionary |
 | overload_resolution.swift:428:7:428:10 | dict | Key | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:428:7:428:10 | dict | Value | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:428:30:428:32 | "a" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:428:35:428:35 | 1 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:432:14:432:18 | index |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:433:12:433:15 | data |  | {EXTERNAL LOCATION} | Array |
 | overload_resolution.swift:433:12:433:15 | data | Element | {EXTERNAL LOCATION} | Int |
