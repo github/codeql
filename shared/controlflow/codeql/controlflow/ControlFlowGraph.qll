@@ -1328,7 +1328,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             exists(Input1::Label l |
               c.hasLabel(l) and
-              hasEnclosingLabel(loop, l)
+              (Input1::hasLabel(loop, l) or hasEnclosingLabel(loop, l))
             )
           )
         )
@@ -1368,7 +1368,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           exists(Input1::Label l |
             c.hasLabel(l) and
-            hasEnclosingLabel(switch, l)
+            (Input1::hasLabel(switch, l) or hasEnclosingLabel(switch, l))
           )
         )
         or
