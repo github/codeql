@@ -1,3 +1,5 @@
+// --- definitions ---
+
 class MyException {
 public:
   void ReportError() {}
@@ -11,18 +13,23 @@ public:
 
 void handle(OtherException *e) {}
 
+// --- test cases ---
+
 void leakyCatchEmpty() {
   try {
+    // ...
   } catch (MyException *e) { } // $ Alert
 }
 
 void leakyCatchNoDelete() {
   try {
+    // ...
   } catch (OtherException *e) { e->ReportError(); } // $ Alert
 }
 
 void catchWithDeleteMethodCall() {
   try {
+    // ...
   } catch (MyException *e) {
     e->ReportError();
     e->Delete();
@@ -31,6 +38,7 @@ void catchWithDeleteMethodCall() {
 
 void catchWithOperatorDelete() {
   try {
+    // ...
   } catch (MyException *e) {
     e->ReportError();
     delete e;
@@ -39,6 +47,7 @@ void catchWithOperatorDelete() {
 
 void catchWithPassToFunction() {
   try {
+    // ...
   } catch (OtherException *e) {
     handle(e);
   }
@@ -46,5 +55,6 @@ void catchWithPassToFunction() {
 
 void catchByValueNotPointer() {
   try {
+    // ...
   } catch (MyException e) { }
 }
