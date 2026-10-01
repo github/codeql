@@ -20,8 +20,12 @@ void catchByValueDerived() {
   } catch (DerivedException &e) { }
 
   try {
-    throw new DerivedException();
-  } catch (DerivedException *e) { }
+    throw DerivedException();
+  } catch (BaseException &e) { }
+
+  try {
+    throw new BaseException();
+  } catch (BaseException *e) { }
 
   try {
     throw DerivedException();
