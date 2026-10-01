@@ -28,9 +28,9 @@ class Overloaded {
 }
 
 func testOverloading() {
-  let o = Overloaded()  // $ MISSING: target=Overloaded.init
-  let r1 = o.process(42)  // $ MISSING: type=r1:Int target=Overloaded.process1
-  let r2 = o.process("hello")  // $ MISSING: type=r2:String target=Overloaded.process2
+  let o = Overloaded()  // $ target=Overloaded.init
+  let r1 = o.process(42)  // $ type=r1:Int target=process1 $ SPURIOUS: target=process2
+  let r2 = o.process("hello")  // $ type=r2:String target=process2 $ SPURIOUS: target=process1
 }
 
 // --- Structs and methods ---
@@ -199,7 +199,7 @@ struct Counter {
 }
 
 func testMutating() {
-  var ctr = Counter()  // $ MISSING: type=ctr:Counter target=init()
-  ctr.increment()  // $ MISSING: target=Counter.increment
-  let val = ctr.getCount()  // $ MISSING: type=val:Int target=Counter.getCount
+  var ctr = Counter()  // $ type=ctr:Counter target=Counter.init
+  ctr.increment()  // $ target=Counter.increment
+  let val = ctr.getCount()  // $ type=val:Int target=Counter.getCount
 }

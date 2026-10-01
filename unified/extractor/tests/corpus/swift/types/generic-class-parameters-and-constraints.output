@@ -82,3 +82,8 @@ top_level source="⟨body⟩"
             equality_type_constraint source="⟨left⟩ == ⟨right⟩"
               left: identifier "U" source="U"
               right: identifier "T" source="T"
+          member:
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""

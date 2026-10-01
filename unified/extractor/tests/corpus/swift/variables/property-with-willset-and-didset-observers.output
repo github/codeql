@@ -138,3 +138,7 @@ top_level source="⟨body⟩"
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "oldValue" source="oldValue"
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""
