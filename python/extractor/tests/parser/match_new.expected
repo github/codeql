@@ -85,7 +85,7 @@ Module: [1, 0] - [61, 0]
               literal:
                 BinOp: [8, 9] - [8, 18]
                   left:
-                    UnaryOp: [8, 10] - [8, 11]
+                    UnaryOp: [8, 9] - [8, 11]
                       op: USub
                       operand:
                         Num: [8, 10] - [8, 11]
@@ -104,7 +104,7 @@ Module: [1, 0] - [61, 0]
           pattern:
             MatchLiteralPattern: [10, 9] - [10, 11]
               literal:
-                UnaryOp: [10, 10] - [10, 11]
+                UnaryOp: [10, 9] - [10, 11]
                   op: USub
                   operand:
                     Num: [10, 10] - [10, 11]
@@ -131,7 +131,7 @@ Module: [1, 0] - [61, 0]
               literal:
                 BinOp: [14, 9] - [14, 16]
                   left:
-                    UnaryOp: [14, 10] - [14, 13]
+                    UnaryOp: [14, 9] - [14, 13]
                       op: USub
                       operand:
                         Num: [14, 10] - [14, 13]
@@ -389,7 +389,7 @@ Module: [1, 0] - [61, 0]
           pattern:
             MatchLiteralPattern: [45, 9] - [45, 11]
               literal:
-                UnaryOp: [45, 10] - [45, 11]
+                UnaryOp: [45, 9] - [45, 11]
                   op: UAdd
                   operand:
                     Num: [45, 10] - [45, 11]
@@ -403,7 +403,7 @@ Module: [1, 0] - [61, 0]
           pattern:
             MatchLiteralPattern: [47, 9] - [47, 13]
               literal:
-                UnaryOp: [47, 10] - [47, 13]
+                UnaryOp: [47, 9] - [47, 13]
                   op: UAdd
                   operand:
                     Num: [47, 10] - [47, 13]
@@ -417,7 +417,7 @@ Module: [1, 0] - [61, 0]
           pattern:
             MatchLiteralPattern: [49, 9] - [49, 12]
               literal:
-                UnaryOp: [49, 10] - [49, 12]
+                UnaryOp: [49, 9] - [49, 12]
                   op: UAdd
                   operand:
                     Num: [49, 10] - [49, 12]
@@ -433,7 +433,7 @@ Module: [1, 0] - [61, 0]
               literal:
                 BinOp: [51, 9] - [51, 14]
                   left:
-                    UnaryOp: [51, 10] - [51, 11]
+                    UnaryOp: [51, 9] - [51, 11]
                       op: UAdd
                       operand:
                         Num: [51, 10] - [51, 11]
@@ -454,7 +454,7 @@ Module: [1, 0] - [61, 0]
               literal:
                 BinOp: [53, 9] - [53, 14]
                   left:
-                    UnaryOp: [53, 10] - [53, 11]
+                    UnaryOp: [53, 9] - [53, 11]
                       op: UAdd
                       operand:
                         Num: [53, 10] - [53, 11]
@@ -475,7 +475,7 @@ Module: [1, 0] - [61, 0]
               patterns: [
                 MatchLiteralPattern: [55, 9] - [55, 14]
                   literal:
-                    UnaryOp: [55, 10] - [55, 14]
+                    UnaryOp: [55, 9] - [55, 14]
                       op: UAdd
                       operand:
                         Num: [55, 10] - [55, 14]
@@ -483,7 +483,7 @@ Module: [1, 0] - [61, 0]
                           text: '0x10'
                 MatchLiteralPattern: [55, 17] - [55, 22]
                   literal:
-                    UnaryOp: [55, 18] - [55, 22]
+                    UnaryOp: [55, 17] - [55, 22]
                       op: UAdd
                       operand:
                         Num: [55, 18] - [55, 22]
@@ -491,7 +491,7 @@ Module: [1, 0] - [61, 0]
                           text: '0o10'
                 MatchLiteralPattern: [55, 25] - [55, 30]
                   literal:
-                    UnaryOp: [55, 26] - [55, 30]
+                    UnaryOp: [55, 25] - [55, 30]
                       op: UAdd
                       operand:
                         Num: [55, 26] - [55, 30]
@@ -508,7 +508,7 @@ Module: [1, 0] - [61, 0]
               patterns: [
                 MatchLiteralPattern: [57, 10] - [57, 12]
                   literal:
-                    UnaryOp: [57, 11] - [57, 12]
+                    UnaryOp: [57, 10] - [57, 12]
                       op: UAdd
                       operand:
                         Num: [57, 11] - [57, 12]
@@ -516,7 +516,7 @@ Module: [1, 0] - [61, 0]
                           text: '0'
                 MatchLiteralPattern: [57, 14] - [57, 18]
                   literal:
-                    UnaryOp: [57, 15] - [57, 18]
+                    UnaryOp: [57, 14] - [57, 18]
                       op: USub
                       operand:
                         Num: [57, 15] - [57, 18]
@@ -535,7 +535,7 @@ Module: [1, 0] - [61, 0]
                   key:
                     MatchLiteralPattern: [59, 10] - [59, 12]
                       literal:
-                        UnaryOp: [59, 11] - [59, 12]
+                        UnaryOp: [59, 10] - [59, 12]
                           op: UAdd
                           operand:
                             Num: [59, 11] - [59, 12]
@@ -551,7 +551,7 @@ Module: [1, 0] - [61, 0]
                   key:
                     MatchLiteralPattern: [59, 17] - [59, 21]
                       literal:
-                        UnaryOp: [59, 18] - [59, 21]
+                        UnaryOp: [59, 17] - [59, 21]
                           op: UAdd
                           operand:
                             Num: [59, 18] - [59, 21]
@@ -567,7 +567,7 @@ Module: [1, 0] - [61, 0]
                   key:
                     MatchLiteralPattern: [59, 26] - [59, 29]
                       literal:
-                        UnaryOp: [59, 27] - [59, 29]
+                        UnaryOp: [59, 26] - [59, 29]
                           op: UAdd
                           operand:
                             Num: [59, 27] - [59, 29]
