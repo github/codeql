@@ -31,7 +31,7 @@ class C6<T1, T2> {
 class C7<T3, T4>: C6<T4, T3> {}  // inherits `init(x: T4, y: T3)` and `convenience init(x: T4)`
 
 class C8: C7<Int, String> {  // inherits `init(x: String, y: Int)`
-    convenience init(x: String) {  // todo: currently also inherits `convenience init` from C6
+    convenience init(x: String) {
         self.init(x: x, y: 0)
     }
 }

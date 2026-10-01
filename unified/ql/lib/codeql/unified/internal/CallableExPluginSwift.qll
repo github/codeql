@@ -7,11 +7,6 @@ class CallableExPluginSwift extends CallableExPlugin {
     name = "init"
   }
 
-  bindingset[c]
-  override predicate constructorPreventsImplicit(ConstructorDeclaration c) {
-    not c.hasModifier("convenience")
-  }
-
   bindingset[cls]
   override predicate defaultConstructorParameter(ClassLikeDeclaration cls, int i, string name) {
     i = 0 and
@@ -34,7 +29,4 @@ class CallableExPluginSwift extends CallableExPlugin {
         s order by j
       )
   }
-
-  bindingset[cls]
-  override predicate mayInheritConstructor(ClassLikeDeclaration cls) { any() }
 }

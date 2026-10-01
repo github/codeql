@@ -6,24 +6,14 @@ private import unified
 private import CallableExPlugin
 private import NameBinding
 
-private predicate mayHaveImplicitConstructor(ClassLikeDeclaration cls, string name) {
-  mayHaveConstructor(cls, name) and
-  forall(ConstructorDeclaration c | c = cls.getAMember() | not constructorPreventsImplicit(c))
-}
-
-private predicate mayInheritConstructorFrom(ClassLikeDeclaration cls, ClassLikeDeclaration base) {
-  mayInheritConstructor(cls) and
-  mayHaveImplicitConstructor(cls, _) and
-  base.getNameNode() = getStaticBindingTargetFromRef(cls.getABaseType().getType()) and
-  mayHaveConstructor(base, _)
-}
-
 private newtype TCallableEx =
   TAstCallableEx(Callable c) or
   TDefaultConstructor(ClassLikeDeclaration cls, string name) {
-    mayHaveImplicitConstructor(cls, name) and
-    forall(ClassLikeDeclaration base | mayInheritConstructorFrom(cls, base) |
-      not mayHaveConstructor(cls, _)
+    mayHaveConstructor(cls, name) and
+    not cls.getAMember() instanceof ConstructorDeclaration and
+    not exists(ClassLikeDeclaration base |
+      base.getNameNode() = getStaticBindingTargetFromRef(cls.getABaseType().getType()) and
+      mayHaveConstructor(base, _)
     )
   }
 
