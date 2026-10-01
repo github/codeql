@@ -1,0 +1,2 @@
+| UseOfGoto.cpp:1:6:1:46 | definition of multiple_forward_and_backward_targets_one | Multiple forward and backward goto statements may make function multiple_forward_and_backward_targets_one hard to understand. |
+| UseOfGoto.cpp:16:6:16:46 | definition of multiple_forward_and_backward_targets_two | Multiple forward and backward goto statements may make function multiple_forward_and_backward_targets_two hard to understand. |
