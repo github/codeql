@@ -147,6 +147,9 @@ def _decode_tsg_node_attributes(encoded_attrs, path, logger):
         )
     return attrs
 
+def _format_node_attributes(attrs):
+    return repr(dict(sorted(attrs.items())))
+
 def read_tsg_python_output(path, logger):
     command_args = tsg_command + [path]
     p = subprocess.Popen(command_args, stdout=subprocess.PIPE)
@@ -203,7 +206,11 @@ def get_context(id, node_attr, path, logger):
 
     while "ctx" not in node_attr[id]:
         if "_inherited_ctx" not in node_attr[id]:
-            logger.error("No context for node {} in file {} with attributes {}\n".format(id, path, node_attr[id]))
+            logger.error(
+                "No context for node {} in file {} with attributes {}\n".format(
+                    id, path, _format_node_attributes(node_attr[id])
+                )
+            )
             # A missing context is most likely to be a "load", so return that.
             return ast.Load()
         id = node_attr[id]["_inherited_ctx"].id
@@ -315,7 +322,11 @@ def parse(path, logger):
             nodes[id] = attrs["_is_literal"]
             continue
         if "_kind" not in attrs:
-            logger.error("Error: Graph node {} with attributes {} has no `_kind`!\n".format(id, attrs))
+            logger.error(
+                "Error: Graph node {} with attributes {} has no `_kind`!\n".format(
+                    id, _format_node_attributes(attrs)
+                )
+            )
             continue
         # This is not the node we are looking for (so don't bother creating it).
         if "_skip_to" in attrs:
