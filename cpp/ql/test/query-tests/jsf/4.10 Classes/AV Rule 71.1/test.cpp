@@ -1,17 +1,17 @@
 class Base {
 public:
   Base() {
-    init(); // $ Alert // BAD: virtual call, overridden in Derived
-    this->init(); // $ Alert // BAD: virtual call, overridden in Derived
-    (*this).init(); // $ Alert // BAD: virtual call, overridden in Derived
-    helper(); // $ Alert // BAD: indirectly calls a virtual function
+    init(); // $ Alert
+    this->init(); // $ Alert
+    (*this).init(); // $ Alert
+    helper(); // $ Alert (indirectly calls a virtual function)
     Base::init(); // GOOD: explicitly qualified, so statically bound
     notOverridden(); // GOOD: not overridden in any derived class
     nonVirtual(); // GOOD: not virtual
   }
 
   ~Base() {
-    cleanup(); // $ Alert // BAD: virtual call, overridden in Derived
+    cleanup(); // $ Alert
     Base::cleanup(); // GOOD: explicitly qualified
   }
 
