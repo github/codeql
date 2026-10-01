@@ -1,0 +1,2 @@
+| test.cpp:16:28:16:30 | { ... } | This catch block does not free the caught exception, thereby leaking memory. |
+| test.cpp:21:31:21:51 | { ... } | This catch block does not free the caught exception, thereby leaking memory. |
