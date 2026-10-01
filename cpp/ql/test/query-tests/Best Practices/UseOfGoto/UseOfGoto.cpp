@@ -1,41 +1,25 @@
-void multiple_forward_and_backward_targets_one() { // $ Alert
-  goto forward_one;
-  goto forward_two;
+bool cond();
+
+void multiple_forward_and_backward_goto() { // $ Alert
+backward_one:
+  if (cond()) goto forward_one;
+backward_two:
+  if (cond()) goto forward_two;
 forward_one:
-  ;
+  if (cond()) goto backward_one;
 forward_two:
-  ;
-backward_one:
-  ;
-backward_two:
-  ;
-  goto backward_one;
-  goto backward_two;
+  if (cond()) goto backward_two;
 }
 
-void multiple_forward_and_backward_targets_two() { // $ Alert
-  goto next_one;
-  goto next_two;
-next_one:
-  ;
-next_two:
-  ;
-earlier_one:
-  ;
-earlier_two:
-  ;
-  goto earlier_one;
-  goto earlier_two;
-}
+void only_forward_goto() {
+  if (cond()) goto end;
 
-void one_forward_target_is_not_enough() {
-  goto forward;
-forward:
-  ;
-backward_one:
-  ;
-backward_two:
-  ;
-  goto backward_one;
-  goto backward_two;
+  // ...
+
+  if (cond()) goto end;
+
+  // ...
+
+end:
+  // ...
 }
