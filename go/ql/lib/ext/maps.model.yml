@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      # All should be modeled when we have a way to model iterators
+      - ["maps", "", False, "Clone", "", "", "Argument[0].MapKey", "ReturnValue.MapKey", "value", "manual"]
+      - ["maps", "", False, "Clone", "", "", "Argument[0].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      # Collect should be modeled when we have a way to model iterators
+      - ["maps", "", False, "Copy", "", "", "Argument[1].MapKey", "Argument[0].MapKey", "value", "manual"]
+      - ["maps", "", False, "Copy", "", "", "Argument[1].MapValue", "Argument[0].MapValue", "value", "manual"]
+      # DeleteFunc does not need to be modeled since it only removes key/value pairs from m in place and does not return a value
+      # Equal does not need to be modeled since it returns a bool
+      # EqualFunc does not need to be modeled since it returns a bool
+      # Insert should be modeled when we have a way to model iterators
+      # Keys should be modeled when we have a way to model iterators
+      # Values should be modeled when we have a way to model iterators
