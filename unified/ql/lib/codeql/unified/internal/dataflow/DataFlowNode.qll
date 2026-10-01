@@ -141,7 +141,8 @@ class BuilderNode extends TDataFlowNodeStage1 {
    * this node still exists but will typically not flow anywhere.
    */
   predicate isReceiverParameter(Callable callable) {
-    this.isReceiverParameterEx(any(DataFlowCallable c | c.asSourceCallable() = callable))
+    this.(BuilderNode)
+        .isReceiverParameterEx(any(DataFlowCallable c | c.asSourceCallable() = callable))
   }
 
   /**
@@ -371,10 +372,10 @@ class Node extends TDataFlowNode {
       result.asSourceCallable() = node.getSourceVariable().getDeclaringCallable()
     )
     or
-    this.isReceiverParameterEx(result)
+    this.(BuilderNode).isReceiverParameterEx(result)
     or
     exists(DataFlowCall call |
-      this.isReceiverArgumentEx(call, _) and
+      this.(BuilderNode).isReceiverArgumentEx(call, _) and
       result = call.getEnclosingCallable()
     )
     or
@@ -412,7 +413,7 @@ class Node extends TDataFlowNode {
       )
       or
       exists(DataFlowCallable callable |
-        this.isReceiverParameterEx(callable) and
+        this.(BuilderNode).isReceiverParameterEx(callable) and
         cfgNode.(ControlFlow::EntryNode).getEnclosingCallable() = callable.asSourceCallable()
         or
         this.isCallableEx(callable) and
@@ -422,9 +423,9 @@ class Node extends TDataFlowNode {
       exists(DataFlowCall call, CallExpr sourceCall |
         call.asExplicitCall() = sourceCall and
         (
-          this.isReceiverArgumentEx(call) and cfgNode.injects(sourceCall)
+          this.(BuilderNode).isReceiverArgumentEx(call) and cfgNode.injects(sourceCall)
           or
-          this.isReceiverPostUpdateEx(call) and cfgNode.isAfter(sourceCall)
+          this.(BuilderNode).isReceiverPostUpdateEx(call) and cfgNode.isAfter(sourceCall)
         )
       )
     )
