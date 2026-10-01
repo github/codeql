@@ -247,7 +247,7 @@ func getInheritedAssociatedType<T: SubAssociatedTypeProtocol>(_ value: T) -> T.V
 }
 
 func testInheritedAssociatedType() {
-  let value = getInheritedAssociatedType(StringAssociatedType())  // $ target=getInheritedAssociatedType $ MISSING: type=value:String
+  let value = getInheritedAssociatedType(StringAssociatedType())  // $ target=getInheritedAssociatedType target=StringAssociatedType.init $ MISSING: type=value:String
 }
 
 // --- Primary associated types ---
@@ -271,5 +271,5 @@ func getPrimaryAssociatedType(_ value: some PrimaryAssociatedTypeProtocol<Int>) 
 }
 
 func testPrimaryAssociatedType() {
-  let value = getPrimaryAssociatedType(IntPrimaryAssociatedType())  // $ type=value:Int target=getPrimaryAssociatedType
+  let value = getPrimaryAssociatedType(IntPrimaryAssociatedType())  // $ type=value:Int target=getPrimaryAssociatedType target=IntPrimaryAssociatedType.init
 }

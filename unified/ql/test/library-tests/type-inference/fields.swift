@@ -38,6 +38,6 @@ func testFieldAccesses() {
   let inherited = container.inheritedField  // $ type=.inheritedField:Int field=FieldBase.inheritedField
   let staticValue = StaticFieldContainer.staticField  // $ type=.staticField:Bool field=StaticFieldContainer.staticField
 
-  let outer = OuterField(nested: NestedField(value: 1.0))  // $ MISSING: target=OuterField.init target=NestedField.init
-  let nestedValue = outer.nested.value  // $ MISSING: type=.nested:NestedField field=OuterField.nested type=.value:Double field=NestedField.value
+  let outer = OuterField(nested: NestedField(value: 1.0))  // $ target=OuterField.init target=NestedField.init
+  let nestedValue = outer.nested.value  // $ type=.nested:NestedField field=OuterField.nested type=.value:Double field=NestedField.value
 }

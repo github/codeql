@@ -44,27 +44,27 @@ inferCertainType
 | classes.swift:62:20:62:24 | value |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:66:14:66:17 | self |  | classes.swift:58:3:68:3 | Inner |
 | classes.swift:79:7:79:11 | value |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:83:14:83:14 | v |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:84:5:84:9 | value |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:84:13:84:13 | v |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:85:12:85:15 | self |  | classes.swift:78:1:96:1 | Builder |
-| classes.swift:88:14:88:14 | v |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:89:5:89:9 | value |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:89:14:89:14 | v |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:90:12:90:15 | self |  | classes.swift:78:1:96:1 | Builder |
-| classes.swift:94:12:94:16 | value |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:108:14:108:20 | retries |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:108:32:108:38 | timeout |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:109:12:109:18 | retries |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:123:7:123:13 | celsius |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:125:8:125:14 | celsius |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:126:5:126:8 | self |  | classes.swift:122:1:136:1 | Temperature |
-| classes.swift:126:20:126:26 | celsius |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:81:14:81:14 | v |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:82:5:82:9 | value |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:82:13:82:13 | v |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:83:12:83:15 | self |  | classes.swift:78:1:94:1 | Builder |
+| classes.swift:86:14:86:14 | v |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:87:5:87:9 | value |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:87:14:87:14 | v |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:88:12:88:15 | self |  | classes.swift:78:1:94:1 | Builder |
+| classes.swift:92:12:92:16 | value |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:104:14:104:20 | retries |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:104:32:104:38 | timeout |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:105:12:105:18 | retries |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:119:7:119:13 | celsius |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:121:8:121:14 | celsius |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:122:5:122:8 | self |  | classes.swift:118:1:132:1 | Temperature |
+| classes.swift:122:20:122:26 | celsius |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:126:12:126:18 | celsius |  | {EXTERNAL LOCATION} | Double |
 | classes.swift:130:12:130:18 | celsius |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:134:12:134:18 | celsius |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:190:7:190:11 | count |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:193:5:193:9 | count |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:197:12:197:16 | count |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:184:7:184:11 | count |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:187:5:187:9 | count |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:191:12:191:16 | count |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:2:9:2:14 | addOne |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:2:9:2:14 | addOne | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:2:18:4:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
@@ -303,127 +303,127 @@ inferCertainType
 | key_paths.swift:204:7:204:9 | arr |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:204:13:204:24 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:205:15:205:17 | arr |  | {EXTERNAL LOCATION} | Array |
-| overload_resolution.swift:6:17:6:17 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:10:17:10:17 | x |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:14:17:14:17 | x |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:18:17:18:17 | x |  | {EXTERNAL LOCATION} | Bool |
-| overload_resolution.swift:36:18:36:22 | width |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:40:18:40:23 | height |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:44:18:44:22 | width |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:44:30:44:35 | height |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:48:18:48:21 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:70:18:70:18 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:71:12:71:12 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:74:18:74:18 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:74:28:74:28 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:75:12:75:12 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:75:16:75:16 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:78:18:78:18 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:78:28:78:28 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:78:38:78:38 | z |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:79:12:79:12 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:79:16:79:16 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:79:20:79:20 | z |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:111:7:111:8 | r1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:112:7:112:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:113:7:113:8 | r3 |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:121:18:121:18 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:125:21:125:21 | x |  | overload_resolution.swift:125:16:125:16 | T |
-| overload_resolution.swift:139:21:139:21 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:143:21:143:21 | x |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:147:21:147:21 | x |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:160:7:160:11 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:163:5:163:9 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:166:8:166:10 | int |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:167:5:167:9 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:170:8:170:10 | str |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:171:5:171:9 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:171:13:171:15 | str |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:174:8:174:8 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:174:16:174:16 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:175:5:175:9 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:179:12:179:16 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:299:16:299:21 | target |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:300:12:300:17 | target |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:303:18:303:23 | source |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:304:12:304:17 | source |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:307:16:307:21 | target |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:307:37:307:42 | source |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:308:12:308:17 | target |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:308:21:308:26 | source |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:333:35:333:35 | x |  | overload_resolution.swift:333:20:333:30 | T |
-| overload_resolution.swift:334:10:334:10 | x |  | overload_resolution.swift:333:20:333:30 | T |
-| overload_resolution.swift:337:36:337:36 | x |  | overload_resolution.swift:337:20:337:31 | T |
-| overload_resolution.swift:338:10:338:10 | x |  | overload_resolution.swift:337:20:337:31 | T |
-| overload_resolution.swift:349:7:349:10 | item |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:351:10:351:13 | item |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:352:5:352:8 | self |  | overload_resolution.swift:348:1:362:1 | Box |
-| overload_resolution.swift:352:5:352:8 | self | T | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:352:17:352:20 | item |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:356:12:356:15 | item |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:359:18:359:24 | newItem |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:360:5:360:8 | item |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:360:12:360:18 | newItem |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:376:7:376:10 | name |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:377:7:377:10 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:379:8:379:11 | name |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:379:22:379:25 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:380:5:380:8 | self |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:380:17:380:20 | name |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:381:5:381:8 | self |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:381:17:381:20 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:384:20:384:23 | name |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:385:5:385:8 | self |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:385:21:385:24 | name |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:388:20:388:23 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:389:5:389:8 | self |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:389:38:389:41 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:404:16:404:16 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:404:16:404:16 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:404:16:404:16 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:404:16:404:16 | f | Return | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:405:12:405:12 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:405:12:405:12 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:405:12:405:12 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:405:12:405:12 | f | Return | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:408:16:408:16 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:408:16:408:16 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:408:16:408:16 | f | Args.T0 | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:408:16:408:16 | f | Return | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:409:12:409:12 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:409:12:409:12 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:409:12:409:12 | f | Args.T0 | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:409:12:409:12 | f | Return | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:412:16:412:16 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:412:16:412:16 | f | Args | {EXTERNAL LOCATION} | Tuple2 |
-| overload_resolution.swift:412:16:412:16 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:412:16:412:16 | f | Args.T1 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:412:16:412:16 | f | Return | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:413:12:413:12 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:413:12:413:12 | f | Args | {EXTERNAL LOCATION} | Tuple2 |
-| overload_resolution.swift:413:12:413:12 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:413:12:413:12 | f | Args.T1 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:413:12:413:12 | f | Return | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:419:20:419:33 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:419:20:419:33 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:420:20:420:35 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:420:20:420:35 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:421:20:421:36 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:427:7:427:10 | data |  | {EXTERNAL LOCATION} | Array |
-| overload_resolution.swift:427:7:427:10 | data | Element | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:427:21:427:29 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
-| overload_resolution.swift:428:7:428:10 | dict |  | {EXTERNAL LOCATION} | Dictionary |
-| overload_resolution.swift:428:7:428:10 | dict | Key | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:428:7:428:10 | dict | Value | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:432:14:432:18 | index |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:433:12:433:15 | data |  | {EXTERNAL LOCATION} | Array |
-| overload_resolution.swift:433:12:433:15 | data | Element | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:433:17:433:21 | index |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:436:14:436:16 | key |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:437:12:437:15 | dict |  | {EXTERNAL LOCATION} | Dictionary |
-| overload_resolution.swift:437:12:437:15 | dict | Key | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:437:12:437:15 | dict | Value | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:437:17:437:19 | key |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:4:17:4:17 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:8:17:8:17 | x |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:12:17:12:17 | x |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:16:17:16:17 | x |  | {EXTERNAL LOCATION} | Bool |
+| overload_resolution.swift:32:18:32:22 | width |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:36:18:36:23 | height |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:40:18:40:22 | width |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:40:30:40:35 | height |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:44:18:44:21 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:64:18:64:18 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:65:12:65:12 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:68:18:68:18 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:68:28:68:28 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:69:12:69:12 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:69:16:69:16 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:72:18:72:18 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:72:28:72:28 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:72:38:72:38 | z |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:73:12:73:12 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:73:16:73:16 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:73:20:73:20 | z |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:103:7:103:8 | r1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:104:7:104:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:105:7:105:8 | r3 |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:111:18:111:18 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:115:21:115:21 | x |  | overload_resolution.swift:115:16:115:16 | T |
+| overload_resolution.swift:129:21:129:21 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:133:21:133:21 | x |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:137:21:137:21 | x |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:150:7:150:11 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:153:5:153:9 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:156:8:156:10 | int |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:157:5:157:9 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:160:8:160:10 | str |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:161:5:161:9 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:161:13:161:15 | str |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:164:8:164:8 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:164:16:164:16 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:165:5:165:9 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:169:12:169:16 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:285:16:285:21 | target |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:286:12:286:17 | target |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:289:18:289:23 | source |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:290:12:290:17 | source |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:293:16:293:21 | target |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:293:37:293:42 | source |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:294:12:294:17 | target |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:294:21:294:26 | source |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:319:35:319:35 | x |  | overload_resolution.swift:319:20:319:30 | T |
+| overload_resolution.swift:320:10:320:10 | x |  | overload_resolution.swift:319:20:319:30 | T |
+| overload_resolution.swift:323:36:323:36 | x |  | overload_resolution.swift:323:20:323:31 | T |
+| overload_resolution.swift:324:10:324:10 | x |  | overload_resolution.swift:323:20:323:31 | T |
+| overload_resolution.swift:335:7:335:10 | item |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:337:10:337:13 | item |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:338:5:338:8 | self |  | overload_resolution.swift:334:1:348:1 | Box |
+| overload_resolution.swift:338:5:338:8 | self | T | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:338:17:338:20 | item |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:342:12:342:15 | item |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:345:18:345:24 | newItem |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:346:5:346:8 | item |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:346:12:346:18 | newItem |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:362:7:362:10 | name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:363:7:363:10 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:365:8:365:11 | name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:365:22:365:25 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:366:5:366:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:366:17:366:20 | name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:367:5:367:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:367:17:367:20 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:370:20:370:23 | name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:371:5:371:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:371:21:371:24 | name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:374:20:374:23 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:375:5:375:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:375:38:375:41 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:388:16:388:16 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:388:16:388:16 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:388:16:388:16 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:388:16:388:16 | f | Return | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:389:12:389:12 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:389:12:389:12 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:389:12:389:12 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:389:12:389:12 | f | Return | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:392:16:392:16 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:392:16:392:16 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:392:16:392:16 | f | Args.T0 | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:392:16:392:16 | f | Return | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:393:12:393:12 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:393:12:393:12 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:393:12:393:12 | f | Args.T0 | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:393:12:393:12 | f | Return | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:396:16:396:16 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:396:16:396:16 | f | Args | {EXTERNAL LOCATION} | Tuple2 |
+| overload_resolution.swift:396:16:396:16 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:396:16:396:16 | f | Args.T1 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:396:16:396:16 | f | Return | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:397:12:397:12 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:397:12:397:12 | f | Args | {EXTERNAL LOCATION} | Tuple2 |
+| overload_resolution.swift:397:12:397:12 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:397:12:397:12 | f | Args.T1 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:397:12:397:12 | f | Return | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:403:20:403:33 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:403:20:403:33 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:404:20:404:35 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:404:20:404:35 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:405:20:405:36 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:411:7:411:10 | data |  | {EXTERNAL LOCATION} | Array |
+| overload_resolution.swift:411:7:411:10 | data | Element | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:411:21:411:29 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| overload_resolution.swift:412:7:412:10 | dict |  | {EXTERNAL LOCATION} | Dictionary |
+| overload_resolution.swift:412:7:412:10 | dict | Key | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:412:7:412:10 | dict | Value | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:414:14:414:18 | index |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:415:12:415:15 | data |  | {EXTERNAL LOCATION} | Array |
+| overload_resolution.swift:415:12:415:15 | data | Element | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:415:17:415:21 | index |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:418:14:418:16 | key |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:419:12:419:15 | dict |  | {EXTERNAL LOCATION} | Dictionary |
+| overload_resolution.swift:419:12:419:15 | dict | Key | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:419:12:419:15 | dict | Value | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:419:17:419:19 | key |  | {EXTERNAL LOCATION} | String |
 | pattern_matching.swift:1:26:1:29 | pair |  | {EXTERNAL LOCATION} | Tuple2 |
 | pattern_matching.swift:1:26:1:29 | pair | T0 | {EXTERNAL LOCATION} | Int |
 | pattern_matching.swift:1:26:1:29 | pair | T1 | {EXTERNAL LOCATION} | String |
@@ -602,26 +602,26 @@ inferCertainType
 | type_constraints.swift:208:12:208:17 | values | Element | type_constraints.swift:200:20:200:20 | T |
 | type_constraints.swift:220:35:222:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | type_constraints.swift:227:36:227:44 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
-| type_constraints.swift:238:33:238:37 | items |  | {EXTERNAL LOCATION} | Array |
-| type_constraints.swift:238:33:238:37 | items | Element | type_constraints.swift:238:18:238:28 | T |
-| type_constraints.swift:239:12:239:16 | items |  | {EXTERNAL LOCATION} | Array |
-| type_constraints.swift:239:12:239:16 | items | Element | type_constraints.swift:238:18:238:28 | T |
-| type_constraints.swift:239:23:239:27 | items |  | {EXTERNAL LOCATION} | Array |
-| type_constraints.swift:239:23:239:27 | items | Element | type_constraints.swift:238:18:238:28 | T |
-| type_constraints.swift:242:44:242:44 | a |  | type_constraints.swift:242:14:242:25 | A |
-| type_constraints.swift:242:52:242:52 | b |  | type_constraints.swift:242:28:242:39 | B |
-| type_constraints.swift:249:24:249:32 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
-| type_constraints.swift:250:24:250:38 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
-| type_constraints.swift:256:29:256:33 | value |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:256:43:256:47 | lower |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:256:57:256:61 | upper |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:257:6:257:10 | value |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:257:14:257:18 | lower |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:257:29:257:33 | lower |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:258:6:258:10 | value |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:258:14:258:18 | upper |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:258:29:258:33 | upper |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:259:10:259:14 | value |  | type_constraints.swift:256:12:256:24 | T |
+| type_constraints.swift:236:33:236:37 | items |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:236:33:236:37 | items | Element | type_constraints.swift:236:18:236:28 | T |
+| type_constraints.swift:237:12:237:16 | items |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:237:12:237:16 | items | Element | type_constraints.swift:236:18:236:28 | T |
+| type_constraints.swift:237:23:237:27 | items |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:237:23:237:27 | items | Element | type_constraints.swift:236:18:236:28 | T |
+| type_constraints.swift:240:44:240:44 | a |  | type_constraints.swift:240:14:240:25 | A |
+| type_constraints.swift:240:52:240:52 | b |  | type_constraints.swift:240:28:240:39 | B |
+| type_constraints.swift:247:24:247:32 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:248:24:248:38 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:254:29:254:33 | value |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:254:43:254:47 | lower |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:254:57:254:61 | upper |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:255:6:255:10 | value |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:255:14:255:18 | lower |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:255:29:255:33 | lower |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:256:6:256:10 | value |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:256:14:256:18 | upper |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:256:29:256:33 | upper |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:257:10:257:14 | value |  | type_constraints.swift:254:12:254:24 | T |
 inferType
 | basics.swift:1:5:1:16 | topLevelDecl |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:1:25:1:25 | 0 |  | {EXTERNAL LOCATION} | Int |
@@ -710,7 +710,19 @@ inferType
 | classes.swift:25:18:25:18 | s |  | {EXTERNAL LOCATION} | String |
 | classes.swift:25:39:27:3 | Block |  | {EXTERNAL LOCATION} | String |
 | classes.swift:26:12:26:12 | s |  | {EXTERNAL LOCATION} | String |
+| classes.swift:31:7:31:7 | o |  | classes.swift:20:1:28:1 | Overloaded |
+| classes.swift:31:11:31:22 | Overloaded(...) |  | classes.swift:20:1:28:1 | Overloaded |
+| classes.swift:32:7:32:8 | r1 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:32:7:32:8 | r1 |  | {EXTERNAL LOCATION} | String |
+| classes.swift:32:12:32:12 | o |  | classes.swift:20:1:28:1 | Overloaded |
+| classes.swift:32:12:32:24 | ... .process(...) |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:32:12:32:24 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
 | classes.swift:32:22:32:23 | 42 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:33:7:33:8 | r2 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:33:7:33:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| classes.swift:33:12:33:12 | o |  | classes.swift:20:1:28:1 | Overloaded |
+| classes.swift:33:12:33:29 | ... .process(...) |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:33:12:33:29 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
 | classes.swift:33:22:33:28 | "hello" |  | {EXTERNAL LOCATION} | String |
 | classes.swift:39:7:39:10 | data |  | {EXTERNAL LOCATION} | Array |
 | classes.swift:39:7:39:10 | data | Element | {EXTERNAL LOCATION} | Array |
@@ -768,110 +780,116 @@ inferType
 | classes.swift:73:11:73:26 | ... .getValue(...) |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:79:7:79:11 | value |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:79:20:79:20 | 0 |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:83:14:83:14 | v |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:83:33:86:3 | Block |  | classes.swift:78:1:96:1 | Builder |
-| classes.swift:84:5:84:9 | value |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:84:5:84:13 | ... = ... |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:84:13:84:13 | v |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:85:12:85:15 | self |  | classes.swift:78:1:96:1 | Builder |
-| classes.swift:88:14:88:14 | v |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:88:33:91:3 | Block |  | classes.swift:78:1:96:1 | Builder |
-| classes.swift:89:5:89:9 | value |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:89:5:89:14 | ... += ... |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:89:14:89:14 | v |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:90:12:90:15 | self |  | classes.swift:78:1:96:1 | Builder |
-| classes.swift:93:23:95:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:94:12:94:16 | value |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:99:7:99:7 | b |  | classes.swift:78:1:96:1 | Builder |
-| classes.swift:99:11:99:19 | Builder(...) |  | classes.swift:78:1:96:1 | Builder |
-| classes.swift:100:7:100:12 | result |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:100:16:100:16 | b |  | classes.swift:78:1:96:1 | Builder |
-| classes.swift:100:16:100:24 | ... .set(...) |  | classes.swift:78:1:96:1 | Builder |
-| classes.swift:100:16:100:31 | ... .add(...) |  | classes.swift:78:1:96:1 | Builder |
-| classes.swift:100:16:100:39 | ... .build(...) |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:100:22:100:23 | 10 |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:100:30:100:30 | 5 |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:108:14:108:20 | retries |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:108:29:108:29 | 3 |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:108:32:108:38 | timeout |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:108:50:108:53 | 30.0 |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:108:63:110:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:109:12:109:18 | retries |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:114:7:114:9 | cfg |  | classes.swift:105:1:111:1 | Config |
-| classes.swift:114:13:114:20 | Config(...) |  | classes.swift:105:1:111:1 | Config |
-| classes.swift:115:7:115:8 | r1 |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:115:12:115:14 | cfg |  | classes.swift:105:1:111:1 | Config |
-| classes.swift:115:12:115:22 | ... .setup(...) |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:116:7:116:8 | r2 |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:116:12:116:14 | cfg |  | classes.swift:105:1:111:1 | Config |
-| classes.swift:116:12:116:32 | ... .setup(...) |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:116:31:116:31 | 5 |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:117:7:117:8 | r3 |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:117:12:117:14 | cfg |  | classes.swift:105:1:111:1 | Config |
-| classes.swift:117:12:117:47 | ... .setup(...) |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:117:31:117:31 | 2 |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:117:43:117:46 | 60.0 |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:123:7:123:13 | celsius |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:125:8:125:14 | celsius |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:125:25:127:3 | Block |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:126:5:126:8 | self |  | classes.swift:122:1:136:1 | Temperature |
-| classes.swift:126:5:126:16 | ... .celsius |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:126:5:126:26 | ... = ... |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:126:20:126:26 | celsius |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:129:30:131:3 | Block |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:81:14:81:14 | v |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:81:33:84:3 | Block |  | classes.swift:78:1:94:1 | Builder |
+| classes.swift:82:5:82:9 | value |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:82:5:82:13 | ... = ... |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:82:13:82:13 | v |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:83:12:83:15 | self |  | classes.swift:78:1:94:1 | Builder |
+| classes.swift:86:14:86:14 | v |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:86:33:89:3 | Block |  | classes.swift:78:1:94:1 | Builder |
+| classes.swift:87:5:87:9 | value |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:87:5:87:14 | ... += ... |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:87:14:87:14 | v |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:88:12:88:15 | self |  | classes.swift:78:1:94:1 | Builder |
+| classes.swift:91:23:93:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:92:12:92:16 | value |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:97:7:97:7 | b |  | classes.swift:78:1:94:1 | Builder |
+| classes.swift:97:11:97:19 | Builder(...) |  | classes.swift:78:1:94:1 | Builder |
+| classes.swift:98:7:98:12 | result |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:98:16:98:16 | b |  | classes.swift:78:1:94:1 | Builder |
+| classes.swift:98:16:98:24 | ... .set(...) |  | classes.swift:78:1:94:1 | Builder |
+| classes.swift:98:16:98:31 | ... .add(...) |  | classes.swift:78:1:94:1 | Builder |
+| classes.swift:98:16:98:39 | ... .build(...) |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:98:22:98:23 | 10 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:98:30:98:30 | 5 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:104:14:104:20 | retries |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:104:29:104:29 | 3 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:104:32:104:38 | timeout |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:104:50:104:53 | 30.0 |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:104:63:106:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:105:12:105:18 | retries |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:110:7:110:9 | cfg |  | classes.swift:103:1:107:1 | Config |
+| classes.swift:110:13:110:20 | Config(...) |  | classes.swift:103:1:107:1 | Config |
+| classes.swift:111:7:111:8 | r1 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:111:12:111:14 | cfg |  | classes.swift:103:1:107:1 | Config |
+| classes.swift:111:12:111:22 | ... .setup(...) |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:112:7:112:8 | r2 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:112:12:112:14 | cfg |  | classes.swift:103:1:107:1 | Config |
+| classes.swift:112:12:112:32 | ... .setup(...) |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:112:31:112:31 | 5 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:113:7:113:8 | r3 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:113:12:113:14 | cfg |  | classes.swift:103:1:107:1 | Config |
+| classes.swift:113:12:113:47 | ... .setup(...) |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:113:31:113:31 | 2 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:113:43:113:46 | 60.0 |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:119:7:119:13 | celsius |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:121:8:121:14 | celsius |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:121:25:123:3 | Block |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:122:5:122:8 | self |  | classes.swift:118:1:132:1 | Temperature |
+| classes.swift:122:5:122:16 | ... .celsius |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:122:5:122:26 | ... = ... |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:122:20:122:26 | celsius |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:125:30:127:3 | Block |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:126:12:126:18 | celsius |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:129:33:131:3 | Block |  | {EXTERNAL LOCATION} | Double |
 | classes.swift:130:12:130:18 | celsius |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:133:33:135:3 | Block |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:134:12:134:18 | celsius |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:134:12:134:24 | ... * ... |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:134:12:134:30 | ... / ... |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:134:12:134:37 | ... + ... |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:134:22:134:24 | 9.0 |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:134:28:134:30 | 5.0 |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:134:34:134:37 | 32.0 |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:139:7:139:7 | t |  | classes.swift:122:1:136:1 | Temperature |
-| classes.swift:139:11:139:37 | Temperature(...) |  | classes.swift:122:1:136:1 | Temperature |
-| classes.swift:139:32:139:36 | 100.0 |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:140:7:140:7 | c |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:140:11:140:11 | t |  | classes.swift:122:1:136:1 | Temperature |
-| classes.swift:140:11:140:23 | ... .toCelsius(...) |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:141:7:141:7 | f |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:141:11:141:11 | t |  | classes.swift:122:1:136:1 | Temperature |
-| classes.swift:141:11:141:26 | ... .toFahrenheit(...) |  | {EXTERNAL LOCATION} | Double |
-| classes.swift:149:26:151:3 | Block |  | {EXTERNAL LOCATION} | String |
-| classes.swift:150:12:150:16 | "..." |  | {EXTERNAL LOCATION} | String |
-| classes.swift:155:19:157:3 | Block |  | classes.swift:146:1:152:1 | Animal |
-| classes.swift:156:5:156:9 | super |  | classes.swift:146:1:152:1 | Animal |
-| classes.swift:156:5:156:16 | ... .init(...) |  | classes.swift:146:1:152:1 | Animal |
-| classes.swift:159:35:161:3 | Block |  | {EXTERNAL LOCATION} | String |
-| classes.swift:160:12:160:17 | "Woof" |  | {EXTERNAL LOCATION} | String |
-| classes.swift:163:26:165:3 | Block |  | {EXTERNAL LOCATION} | String |
-| classes.swift:164:12:164:17 | "ball" |  | {EXTERNAL LOCATION} | String |
-| classes.swift:169:19:171:3 | Block |  | classes.swift:146:1:152:1 | Animal |
-| classes.swift:170:5:170:9 | super |  | classes.swift:146:1:152:1 | Animal |
-| classes.swift:170:5:170:16 | ... .init(...) |  | classes.swift:146:1:152:1 | Animal |
-| classes.swift:173:35:175:3 | Block |  | {EXTERNAL LOCATION} | String |
-| classes.swift:174:12:174:17 | "Meow" |  | {EXTERNAL LOCATION} | String |
-| classes.swift:179:7:179:7 | d |  | classes.swift:154:1:166:1 | Dog |
-| classes.swift:179:11:179:15 | Dog(...) |  | classes.swift:154:1:166:1 | Dog |
-| classes.swift:180:7:180:8 | ds |  | {EXTERNAL LOCATION} | String |
-| classes.swift:180:12:180:12 | d |  | classes.swift:154:1:166:1 | Dog |
-| classes.swift:180:12:180:20 | ... .speak(...) |  | {EXTERNAL LOCATION} | String |
-| classes.swift:181:7:181:8 | df |  | {EXTERNAL LOCATION} | String |
-| classes.swift:181:12:181:12 | d |  | classes.swift:154:1:166:1 | Dog |
-| classes.swift:181:12:181:20 | ... .fetch(...) |  | {EXTERNAL LOCATION} | String |
-| classes.swift:183:7:183:8 | ct |  | classes.swift:168:1:176:1 | Cat |
-| classes.swift:183:12:183:16 | Cat(...) |  | classes.swift:168:1:176:1 | Cat |
-| classes.swift:184:7:184:8 | cs |  | {EXTERNAL LOCATION} | String |
-| classes.swift:184:12:184:13 | ct |  | classes.swift:168:1:176:1 | Cat |
-| classes.swift:184:12:184:21 | ... .speak(...) |  | {EXTERNAL LOCATION} | String |
-| classes.swift:190:7:190:11 | count |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:190:20:190:20 | 0 |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:192:29:194:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:193:5:193:9 | count |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:193:5:193:14 | ... += ... |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:193:14:193:14 | 1 |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:196:26:198:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| classes.swift:197:12:197:16 | count |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:130:12:130:24 | ... * ... |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:130:12:130:30 | ... / ... |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:130:12:130:37 | ... + ... |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:130:22:130:24 | 9.0 |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:130:28:130:30 | 5.0 |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:130:34:130:37 | 32.0 |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:135:7:135:7 | t |  | classes.swift:118:1:132:1 | Temperature |
+| classes.swift:135:11:135:37 | Temperature(...) |  | classes.swift:118:1:132:1 | Temperature |
+| classes.swift:135:32:135:36 | 100.0 |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:136:7:136:7 | c |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:136:11:136:11 | t |  | classes.swift:118:1:132:1 | Temperature |
+| classes.swift:136:11:136:23 | ... .toCelsius(...) |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:137:7:137:7 | f |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:137:11:137:11 | t |  | classes.swift:118:1:132:1 | Temperature |
+| classes.swift:137:11:137:26 | ... .toFahrenheit(...) |  | {EXTERNAL LOCATION} | Double |
+| classes.swift:143:26:145:3 | Block |  | {EXTERNAL LOCATION} | String |
+| classes.swift:144:12:144:16 | "..." |  | {EXTERNAL LOCATION} | String |
+| classes.swift:149:19:151:3 | Block |  | classes.swift:142:1:146:1 | Animal |
+| classes.swift:150:5:150:9 | super |  | classes.swift:142:1:146:1 | Animal |
+| classes.swift:150:5:150:16 | ... .init(...) |  | classes.swift:142:1:146:1 | Animal |
+| classes.swift:153:35:155:3 | Block |  | {EXTERNAL LOCATION} | String |
+| classes.swift:154:12:154:17 | "Woof" |  | {EXTERNAL LOCATION} | String |
+| classes.swift:157:26:159:3 | Block |  | {EXTERNAL LOCATION} | String |
+| classes.swift:158:12:158:17 | "ball" |  | {EXTERNAL LOCATION} | String |
+| classes.swift:163:19:165:3 | Block |  | classes.swift:142:1:146:1 | Animal |
+| classes.swift:164:5:164:9 | super |  | classes.swift:142:1:146:1 | Animal |
+| classes.swift:164:5:164:16 | ... .init(...) |  | classes.swift:142:1:146:1 | Animal |
+| classes.swift:167:35:169:3 | Block |  | {EXTERNAL LOCATION} | String |
+| classes.swift:168:12:168:17 | "Meow" |  | {EXTERNAL LOCATION} | String |
+| classes.swift:173:7:173:7 | d |  | classes.swift:148:1:160:1 | Dog |
+| classes.swift:173:11:173:15 | Dog(...) |  | classes.swift:148:1:160:1 | Dog |
+| classes.swift:174:7:174:8 | ds |  | {EXTERNAL LOCATION} | String |
+| classes.swift:174:12:174:12 | d |  | classes.swift:148:1:160:1 | Dog |
+| classes.swift:174:12:174:20 | ... .speak(...) |  | {EXTERNAL LOCATION} | String |
+| classes.swift:175:7:175:8 | df |  | {EXTERNAL LOCATION} | String |
+| classes.swift:175:12:175:12 | d |  | classes.swift:148:1:160:1 | Dog |
+| classes.swift:175:12:175:20 | ... .fetch(...) |  | {EXTERNAL LOCATION} | String |
+| classes.swift:177:7:177:8 | ct |  | classes.swift:162:1:170:1 | Cat |
+| classes.swift:177:12:177:16 | Cat(...) |  | classes.swift:162:1:170:1 | Cat |
+| classes.swift:178:7:178:8 | cs |  | {EXTERNAL LOCATION} | String |
+| classes.swift:178:12:178:13 | ct |  | classes.swift:162:1:170:1 | Cat |
+| classes.swift:178:12:178:21 | ... .speak(...) |  | {EXTERNAL LOCATION} | String |
+| classes.swift:184:7:184:11 | count |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:184:20:184:20 | 0 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:186:29:188:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:187:5:187:9 | count |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:187:5:187:14 | ... += ... |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:187:14:187:14 | 1 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:190:26:192:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:191:12:191:16 | count |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:196:7:196:9 | ctr |  | classes.swift:183:1:193:1 | Counter |
+| classes.swift:196:13:196:21 | Counter(...) |  | classes.swift:183:1:193:1 | Counter |
+| classes.swift:197:3:197:5 | ctr |  | classes.swift:183:1:193:1 | Counter |
+| classes.swift:198:7:198:9 | val |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:198:13:198:15 | ctr |  | classes.swift:183:1:193:1 | Counter |
+| classes.swift:198:13:198:26 | ... .getCount(...) |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:1:32:7:1 | Block |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:2:9:2:14 | addOne |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:2:9:2:14 | addOne | Args | {EXTERNAL LOCATION} | Tuple1 |
@@ -1070,7 +1088,14 @@ inferType
 | fields.swift:38:19:38:42 | ... .inheritedField |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:39:7:39:17 | staticValue |  | {EXTERNAL LOCATION} | Bool |
 | fields.swift:39:21:39:52 | ... .staticField |  | {EXTERNAL LOCATION} | Bool |
+| fields.swift:41:7:41:11 | outer |  | fields.swift:30:1:32:1 | OuterField |
+| fields.swift:41:15:41:57 | OuterField(...) |  | fields.swift:30:1:32:1 | OuterField |
+| fields.swift:41:34:41:56 | NestedField(...) |  | fields.swift:26:1:28:1 | NestedField |
 | fields.swift:41:53:41:55 | 1.0 |  | {EXTERNAL LOCATION} | Double |
+| fields.swift:42:7:42:17 | nestedValue |  | {EXTERNAL LOCATION} | Double |
+| fields.swift:42:21:42:25 | outer |  | fields.swift:30:1:32:1 | OuterField |
+| fields.swift:42:21:42:32 | ... .nested |  | fields.swift:26:1:28:1 | NestedField |
+| fields.swift:42:21:42:38 | ... .value |  | {EXTERNAL LOCATION} | Double |
 | generics.swift:3:20:3:20 | x |  | generics.swift:3:15:3:15 | T |
 | generics.swift:3:31:5:1 | Block |  | generics.swift:3:15:3:15 | T |
 | generics.swift:4:10:4:10 | x |  | generics.swift:3:15:3:15 | T |
@@ -1341,10 +1366,12 @@ inferType
 | generics.swift:241:12:241:16 | "sub" |  | {EXTERNAL LOCATION} | String |
 | generics.swift:245:65:245:69 | value |  | generics.swift:245:33:245:60 | T |
 | generics.swift:246:10:246:14 | value |  | generics.swift:245:33:245:60 | T |
+| generics.swift:250:42:250:63 | StringAssociatedType(...) |  | generics.swift:233:1:243:1 | StringAssociatedType |
 | generics.swift:264:25:266:3 | Block |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:265:12:265:13 | 42 |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:274:7:274:11 | value |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:274:15:274:66 | getPrimaryAssociatedType(...) |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:274:40:274:65 | IntPrimaryAssociatedType(...) |  | generics.swift:261:1:267:1 | IntPrimaryAssociatedType |
 | key_paths.swift:4:7:4:7 | x |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:5:7:5:7 | y |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:7:8:7:8 | x |  | {EXTERNAL LOCATION} | Double |
@@ -1608,518 +1635,523 @@ inferType
 | key_paths.swift:208:28:208:28 | 2 |  | {EXTERNAL LOCATION} | Int |
 | lub.swift:12:7:12:7 | b |  | lub.swift:5:1:7:1 | B |
 | lub.swift:12:11:12:13 | B(...) |  | lub.swift:5:1:7:1 | B |
+| lub.swift:13:7:13:7 | c |  | lub.swift:9:1:9:13 | C |
+| lub.swift:13:11:13:13 | C(...) |  | lub.swift:9:1:9:13 | C |
 | lub.swift:14:7:14:7 | x |  | lub.swift:5:1:7:1 | B |
+| lub.swift:14:7:14:7 | x |  | lub.swift:9:1:9:13 | C |
 | lub.swift:14:11:14:11 | 2 |  | {EXTERNAL LOCATION} | Int |
 | lub.swift:14:11:14:15 | ... > ... |  | {EXTERNAL LOCATION} | Int |
 | lub.swift:14:11:14:23 | IfExpr |  | lub.swift:5:1:7:1 | B |
+| lub.swift:14:11:14:23 | IfExpr |  | lub.swift:9:1:9:13 | C |
 | lub.swift:14:15:14:15 | 3 |  | {EXTERNAL LOCATION} | Int |
 | lub.swift:14:19:14:19 | b |  | lub.swift:5:1:7:1 | B |
-| overload_resolution.swift:6:17:6:17 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:6:35:8:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:7:12:7:16 | "int" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:10:17:10:17 | x |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:10:38:12:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:11:12:11:19 | "double" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:14:17:14:17 | x |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:14:38:16:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:15:12:15:19 | "string" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:18:17:18:17 | x |  | {EXTERNAL LOCATION} | Bool |
-| overload_resolution.swift:18:36:20:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:19:12:19:17 | "bool" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:24:7:24:7 | o |  | overload_resolution.swift:3:1:21:1 | OverloadByType |
-| overload_resolution.swift:24:11:24:26 | OverloadByType(...) |  | overload_resolution.swift:3:1:21:1 | OverloadByType |
-| overload_resolution.swift:25:7:25:8 | r1 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:25:12:25:12 | o |  | overload_resolution.swift:3:1:21:1 | OverloadByType |
-| overload_resolution.swift:25:12:25:23 | ... .handle(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:25:21:25:22 | 42 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:26:7:26:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:26:12:26:12 | o |  | overload_resolution.swift:3:1:21:1 | OverloadByType |
+| lub.swift:14:23:14:23 | c |  | lub.swift:9:1:9:13 | C |
+| overload_resolution.swift:4:17:4:17 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:4:35:6:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:5:12:5:16 | "int" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:8:17:8:17 | x |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:8:38:10:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:9:12:9:19 | "double" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:12:17:12:17 | x |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:12:38:14:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:13:12:13:19 | "string" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:16:17:16:17 | x |  | {EXTERNAL LOCATION} | Bool |
+| overload_resolution.swift:16:36:18:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:17:12:17:17 | "bool" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:22:7:22:7 | o |  | overload_resolution.swift:3:1:19:1 | OverloadByType |
+| overload_resolution.swift:22:11:22:26 | OverloadByType(...) |  | overload_resolution.swift:3:1:19:1 | OverloadByType |
+| overload_resolution.swift:23:7:23:8 | r1 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:23:12:23:12 | o |  | overload_resolution.swift:3:1:19:1 | OverloadByType |
+| overload_resolution.swift:23:12:23:23 | ... .handle(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:23:21:23:22 | 42 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:24:7:24:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:24:12:24:12 | o |  | overload_resolution.swift:3:1:19:1 | OverloadByType |
+| overload_resolution.swift:24:12:24:25 | ... .handle(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:24:21:24:24 | 3.14 |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:25:7:25:8 | r3 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:25:12:25:12 | o |  | overload_resolution.swift:3:1:19:1 | OverloadByType |
+| overload_resolution.swift:25:12:25:25 | ... .handle(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:25:21:25:24 | "hi" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:26:7:26:8 | r4 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:26:12:26:12 | o |  | overload_resolution.swift:3:1:19:1 | OverloadByType |
 | overload_resolution.swift:26:12:26:25 | ... .handle(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:26:21:26:24 | 3.14 |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:27:7:27:8 | r3 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:27:12:27:12 | o |  | overload_resolution.swift:3:1:21:1 | OverloadByType |
-| overload_resolution.swift:27:12:27:25 | ... .handle(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:27:21:27:24 | "hi" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:28:7:28:8 | r4 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:28:12:28:12 | o |  | overload_resolution.swift:3:1:21:1 | OverloadByType |
-| overload_resolution.swift:28:12:28:25 | ... .handle(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:28:21:28:24 | true |  | {EXTERNAL LOCATION} | Bool |
-| overload_resolution.swift:36:18:36:22 | width |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:36:40:38:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:37:12:37:18 | "width" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:40:18:40:23 | height |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:40:41:42:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:41:12:41:19 | "height" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:44:18:44:22 | width |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:44:30:44:35 | height |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:44:53:46:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:45:12:45:17 | "both" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:48:18:48:21 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:48:39:50:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:49:12:49:17 | "size" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:54:7:54:7 | o |  | overload_resolution.swift:33:1:51:1 | OverloadByLabel |
-| overload_resolution.swift:54:11:54:27 | OverloadByLabel(...) |  | overload_resolution.swift:33:1:51:1 | OverloadByLabel |
-| overload_resolution.swift:55:7:55:8 | r1 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:55:12:55:12 | o |  | overload_resolution.swift:33:1:51:1 | OverloadByLabel |
-| overload_resolution.swift:55:12:55:33 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:55:31:55:32 | 10 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:56:7:56:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:56:12:56:12 | o |  | overload_resolution.swift:33:1:51:1 | OverloadByLabel |
-| overload_resolution.swift:56:12:56:34 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:56:32:56:33 | 20 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:57:7:57:8 | r3 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:57:12:57:12 | o |  | overload_resolution.swift:33:1:51:1 | OverloadByLabel |
-| overload_resolution.swift:57:12:57:45 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:57:31:57:32 | 10 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:57:43:57:44 | 20 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:58:7:58:8 | r4 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:58:12:58:12 | o |  | overload_resolution.swift:33:1:51:1 | OverloadByLabel |
-| overload_resolution.swift:58:12:58:32 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:58:30:58:31 | 30 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:66:25:68:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:67:12:67:12 | 0 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:70:18:70:18 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:70:33:72:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:71:12:71:12 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:74:18:74:18 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:74:28:74:28 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:74:43:76:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:75:12:75:12 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:75:12:75:16 | ... + ... |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:75:16:75:16 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:78:18:78:18 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:78:28:78:28 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:78:38:78:38 | z |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:78:53:80:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:79:12:79:12 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:79:12:79:16 | ... + ... |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:79:12:79:20 | ... + ... |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:79:16:79:16 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:79:20:79:20 | z |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:84:7:84:7 | o |  | overload_resolution.swift:63:1:81:1 | OverloadByArity |
-| overload_resolution.swift:84:11:84:27 | OverloadByArity(...) |  | overload_resolution.swift:63:1:81:1 | OverloadByArity |
-| overload_resolution.swift:85:7:85:8 | r0 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:85:12:85:12 | o |  | overload_resolution.swift:63:1:81:1 | OverloadByArity |
-| overload_resolution.swift:85:12:85:22 | ... .compute(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:86:7:86:8 | r1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:86:12:86:12 | o |  | overload_resolution.swift:63:1:81:1 | OverloadByArity |
-| overload_resolution.swift:86:12:86:23 | ... .compute(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:86:22:86:22 | 1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:87:7:87:8 | r2 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:87:12:87:12 | o |  | overload_resolution.swift:63:1:81:1 | OverloadByArity |
-| overload_resolution.swift:87:12:87:26 | ... .compute(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:87:22:87:22 | 1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:87:25:87:25 | 2 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:88:7:88:8 | r3 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:88:12:88:12 | o |  | overload_resolution.swift:63:1:81:1 | OverloadByArity |
-| overload_resolution.swift:88:12:88:29 | ... .compute(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:88:22:88:22 | 1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:88:25:88:25 | 2 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:88:28:88:28 | 3 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:96:24:98:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:97:12:97:12 | 0 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:100:27:102:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:101:12:101:13 | "" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:104:27:106:3 | Block |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:105:12:105:14 | 0.0 |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:110:7:110:7 | o |  | overload_resolution.swift:93:1:107:1 | OverloadByReturn |
-| overload_resolution.swift:110:11:110:28 | OverloadByReturn(...) |  | overload_resolution.swift:93:1:107:1 | OverloadByReturn |
-| overload_resolution.swift:111:7:111:8 | r1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:111:17:111:17 | o |  | overload_resolution.swift:93:1:107:1 | OverloadByReturn |
-| overload_resolution.swift:111:17:111:26 | ... .create(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:111:17:111:26 | ... .create(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:111:17:111:26 | ... .create(...) |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:112:7:112:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:112:20:112:20 | o |  | overload_resolution.swift:93:1:107:1 | OverloadByReturn |
-| overload_resolution.swift:112:20:112:29 | ... .create(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:112:20:112:29 | ... .create(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:112:20:112:29 | ... .create(...) |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:113:7:113:8 | r3 |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:113:20:113:20 | o |  | overload_resolution.swift:93:1:107:1 | OverloadByReturn |
-| overload_resolution.swift:113:20:113:29 | ... .create(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:113:20:113:29 | ... .create(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:113:20:113:29 | ... .create(...) |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:121:18:121:18 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:121:36:123:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:122:12:122:21 | "concrete" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:125:21:125:21 | x |  | overload_resolution.swift:125:16:125:16 | T |
-| overload_resolution.swift:125:37:127:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:126:12:126:20 | "generic" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:131:7:131:7 | o |  | overload_resolution.swift:118:1:128:1 | OverloadGenericVsConcrete |
-| overload_resolution.swift:131:11:131:37 | OverloadGenericVsConcrete(...) |  | overload_resolution.swift:118:1:128:1 | OverloadGenericVsConcrete |
-| overload_resolution.swift:132:7:132:8 | r1 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:132:12:132:12 | o |  | overload_resolution.swift:118:1:128:1 | OverloadGenericVsConcrete |
-| overload_resolution.swift:132:12:132:24 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:132:22:132:23 | 42 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:133:7:133:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:133:12:133:12 | o |  | overload_resolution.swift:118:1:128:1 | OverloadGenericVsConcrete |
-| overload_resolution.swift:133:12:133:29 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:133:22:133:28 | "hello" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:134:7:134:8 | r3 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:134:12:134:12 | o |  | overload_resolution.swift:118:1:128:1 | OverloadGenericVsConcrete |
-| overload_resolution.swift:134:12:134:26 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:134:22:134:25 | true |  | {EXTERNAL LOCATION} | Bool |
-| overload_resolution.swift:139:21:139:21 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:139:39:141:1 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:140:10:140:14 | "int" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:143:21:143:21 | x |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:143:42:145:1 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:144:10:144:17 | "string" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:147:21:147:21 | x |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:147:42:149:1 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:148:10:148:17 | "double" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:152:7:152:8 | r1 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:152:12:152:27 | freeOverload(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:152:25:152:26 | 42 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:153:7:153:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:153:12:153:29 | freeOverload(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:153:25:153:28 | "hi" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:154:7:154:8 | r3 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:154:12:154:28 | freeOverload(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:154:25:154:27 | 1.5 |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:160:7:160:11 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:162:10:164:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:163:5:163:9 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:163:5:163:21 | ... = ... |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:163:13:163:21 | "default" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:166:8:166:10 | int |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:166:18:168:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:167:5:167:9 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:167:5:167:17 | ... = ... |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:167:13:167:17 | "int" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:170:8:170:10 | str |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:170:21:172:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:171:5:171:9 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:171:5:171:15 | ... = ... |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:171:13:171:15 | str |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:174:8:174:8 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:174:16:174:16 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:174:24:176:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:175:5:175:9 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:175:5:175:18 | ... = ... |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:175:13:175:18 | "pair" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:178:29:180:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:179:12:179:16 | value |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:184:7:184:8 | m1 |  | overload_resolution.swift:159:1:181:1 | MultiInit |
-| overload_resolution.swift:184:12:184:22 | MultiInit(...) |  | overload_resolution.swift:159:1:181:1 | MultiInit |
-| overload_resolution.swift:185:7:185:8 | m2 |  | overload_resolution.swift:159:1:181:1 | MultiInit |
-| overload_resolution.swift:185:12:185:28 | MultiInit(...) |  | overload_resolution.swift:159:1:181:1 | MultiInit |
-| overload_resolution.swift:185:27:185:27 | 5 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:186:7:186:8 | m3 |  | overload_resolution.swift:159:1:181:1 | MultiInit |
-| overload_resolution.swift:186:12:186:30 | MultiInit(...) |  | overload_resolution.swift:159:1:181:1 | MultiInit |
-| overload_resolution.swift:186:27:186:29 | "x" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:187:7:187:8 | m4 |  | overload_resolution.swift:159:1:181:1 | MultiInit |
-| overload_resolution.swift:187:12:187:32 | MultiInit(...) |  | overload_resolution.swift:159:1:181:1 | MultiInit |
-| overload_resolution.swift:187:25:187:25 | 1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:187:31:187:31 | 2 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:188:7:188:7 | v |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:188:11:188:12 | m1 |  | overload_resolution.swift:159:1:181:1 | MultiInit |
-| overload_resolution.swift:188:11:188:23 | ... .getValue(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:194:27:196:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:195:12:195:21 | "instance" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:198:34:200:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:199:12:199:19 | "static" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:206:7:206:7 | o |  | overload_resolution.swift:193:1:203:1 | StaticVsInstance |
-| overload_resolution.swift:206:11:206:28 | StaticVsInstance(...) |  | overload_resolution.swift:193:1:203:1 | StaticVsInstance |
-| overload_resolution.swift:207:7:207:8 | r1 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:207:12:207:12 | o |  | overload_resolution.swift:193:1:203:1 | StaticVsInstance |
-| overload_resolution.swift:207:12:207:21 | ... .action(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:208:7:208:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:208:12:208:36 | ... .action(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:26:21:26:24 | true |  | {EXTERNAL LOCATION} | Bool |
+| overload_resolution.swift:32:18:32:22 | width |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:32:40:34:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:33:12:33:18 | "width" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:36:18:36:23 | height |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:36:41:38:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:37:12:37:19 | "height" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:40:18:40:22 | width |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:40:30:40:35 | height |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:40:53:42:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:41:12:41:17 | "both" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:44:18:44:21 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:44:39:46:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:45:12:45:17 | "size" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:50:7:50:7 | o |  | overload_resolution.swift:31:1:47:1 | OverloadByLabel |
+| overload_resolution.swift:50:11:50:27 | OverloadByLabel(...) |  | overload_resolution.swift:31:1:47:1 | OverloadByLabel |
+| overload_resolution.swift:51:7:51:8 | r1 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:51:12:51:12 | o |  | overload_resolution.swift:31:1:47:1 | OverloadByLabel |
+| overload_resolution.swift:51:12:51:33 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:51:31:51:32 | 10 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:52:7:52:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:52:12:52:12 | o |  | overload_resolution.swift:31:1:47:1 | OverloadByLabel |
+| overload_resolution.swift:52:12:52:34 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:52:32:52:33 | 20 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:53:7:53:8 | r3 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:53:12:53:12 | o |  | overload_resolution.swift:31:1:47:1 | OverloadByLabel |
+| overload_resolution.swift:53:12:53:45 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:53:31:53:32 | 10 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:53:43:53:44 | 20 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:54:7:54:8 | r4 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:54:12:54:12 | o |  | overload_resolution.swift:31:1:47:1 | OverloadByLabel |
+| overload_resolution.swift:54:12:54:32 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:54:30:54:31 | 30 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:60:25:62:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:61:12:61:12 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:64:18:64:18 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:64:33:66:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:65:12:65:12 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:68:18:68:18 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:68:28:68:28 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:68:43:70:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:69:12:69:12 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:69:12:69:16 | ... + ... |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:69:16:69:16 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:72:18:72:18 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:72:28:72:28 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:72:38:72:38 | z |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:72:53:74:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:73:12:73:12 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:73:12:73:16 | ... + ... |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:73:12:73:20 | ... + ... |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:73:16:73:16 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:73:20:73:20 | z |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:78:7:78:7 | o |  | overload_resolution.swift:59:1:75:1 | OverloadByArity |
+| overload_resolution.swift:78:11:78:27 | OverloadByArity(...) |  | overload_resolution.swift:59:1:75:1 | OverloadByArity |
+| overload_resolution.swift:79:7:79:8 | r0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:79:12:79:12 | o |  | overload_resolution.swift:59:1:75:1 | OverloadByArity |
+| overload_resolution.swift:79:12:79:22 | ... .compute(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:80:7:80:8 | r1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:80:12:80:12 | o |  | overload_resolution.swift:59:1:75:1 | OverloadByArity |
+| overload_resolution.swift:80:12:80:23 | ... .compute(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:80:22:80:22 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:81:7:81:8 | r2 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:81:12:81:12 | o |  | overload_resolution.swift:59:1:75:1 | OverloadByArity |
+| overload_resolution.swift:81:12:81:26 | ... .compute(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:81:22:81:22 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:81:25:81:25 | 2 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:82:7:82:8 | r3 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:82:12:82:12 | o |  | overload_resolution.swift:59:1:75:1 | OverloadByArity |
+| overload_resolution.swift:82:12:82:29 | ... .compute(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:82:22:82:22 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:82:25:82:25 | 2 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:82:28:82:28 | 3 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:88:24:90:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:89:12:89:12 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:92:27:94:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:93:12:93:13 | "" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:96:27:98:3 | Block |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:97:12:97:14 | 0.0 |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:102:7:102:7 | o |  | overload_resolution.swift:87:1:99:1 | OverloadByReturn |
+| overload_resolution.swift:102:11:102:28 | OverloadByReturn(...) |  | overload_resolution.swift:87:1:99:1 | OverloadByReturn |
+| overload_resolution.swift:103:7:103:8 | r1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:103:17:103:17 | o |  | overload_resolution.swift:87:1:99:1 | OverloadByReturn |
+| overload_resolution.swift:103:17:103:26 | ... .create(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:103:17:103:26 | ... .create(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:103:17:103:26 | ... .create(...) |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:104:7:104:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:104:20:104:20 | o |  | overload_resolution.swift:87:1:99:1 | OverloadByReturn |
+| overload_resolution.swift:104:20:104:29 | ... .create(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:104:20:104:29 | ... .create(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:104:20:104:29 | ... .create(...) |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:105:7:105:8 | r3 |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:105:20:105:20 | o |  | overload_resolution.swift:87:1:99:1 | OverloadByReturn |
+| overload_resolution.swift:105:20:105:29 | ... .create(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:105:20:105:29 | ... .create(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:105:20:105:29 | ... .create(...) |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:111:18:111:18 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:111:36:113:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:112:12:112:21 | "concrete" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:115:21:115:21 | x |  | overload_resolution.swift:115:16:115:16 | T |
+| overload_resolution.swift:115:37:117:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:116:12:116:20 | "generic" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:121:7:121:7 | o |  | overload_resolution.swift:110:1:118:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:121:11:121:37 | OverloadGenericVsConcrete(...) |  | overload_resolution.swift:110:1:118:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:122:7:122:8 | r1 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:122:12:122:12 | o |  | overload_resolution.swift:110:1:118:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:122:12:122:24 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:122:22:122:23 | 42 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:123:7:123:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:123:12:123:12 | o |  | overload_resolution.swift:110:1:118:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:123:12:123:29 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:123:22:123:28 | "hello" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:124:7:124:8 | r3 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:124:12:124:12 | o |  | overload_resolution.swift:110:1:118:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:124:12:124:26 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:124:22:124:25 | true |  | {EXTERNAL LOCATION} | Bool |
+| overload_resolution.swift:129:21:129:21 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:129:39:131:1 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:130:10:130:14 | "int" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:133:21:133:21 | x |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:133:42:135:1 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:134:10:134:17 | "string" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:137:21:137:21 | x |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:137:42:139:1 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:138:10:138:17 | "double" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:142:7:142:8 | r1 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:142:12:142:27 | freeOverload(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:142:25:142:26 | 42 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:143:7:143:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:143:12:143:29 | freeOverload(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:143:25:143:28 | "hi" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:144:7:144:8 | r3 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:144:12:144:28 | freeOverload(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:144:25:144:27 | 1.5 |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:150:7:150:11 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:152:10:154:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:153:5:153:9 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:153:5:153:21 | ... = ... |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:153:13:153:21 | "default" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:156:8:156:10 | int |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:156:18:158:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:157:5:157:9 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:157:5:157:17 | ... = ... |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:157:13:157:17 | "int" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:160:8:160:10 | str |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:160:21:162:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:161:5:161:9 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:161:5:161:15 | ... = ... |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:161:13:161:15 | str |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:164:8:164:8 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:164:16:164:16 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:164:24:166:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:165:5:165:9 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:165:5:165:18 | ... = ... |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:165:13:165:18 | "pair" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:168:29:170:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:169:12:169:16 | value |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:174:7:174:8 | m1 |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:174:12:174:22 | MultiInit(...) |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:175:7:175:8 | m2 |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:175:12:175:28 | MultiInit(...) |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:175:27:175:27 | 5 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:176:7:176:8 | m3 |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:176:12:176:30 | MultiInit(...) |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:176:27:176:29 | "x" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:177:7:177:8 | m4 |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:177:12:177:32 | MultiInit(...) |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:177:25:177:25 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:177:31:177:31 | 2 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:178:7:178:7 | v |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:178:11:178:12 | m1 |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:178:11:178:23 | ... .getValue(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:184:27:186:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:185:12:185:21 | "instance" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:188:34:190:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:189:12:189:19 | "static" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:194:7:194:7 | o |  | overload_resolution.swift:183:1:191:1 | StaticVsInstance |
+| overload_resolution.swift:194:11:194:28 | StaticVsInstance(...) |  | overload_resolution.swift:183:1:191:1 | StaticVsInstance |
+| overload_resolution.swift:195:7:195:8 | r1 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:195:12:195:12 | o |  | overload_resolution.swift:183:1:191:1 | StaticVsInstance |
+| overload_resolution.swift:195:12:195:21 | ... .action(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:196:7:196:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:196:12:196:36 | ... .action(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:206:29:208:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:207:12:207:20 | "default" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:210:26:212:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:211:12:211:18 | "extra" |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:218:29:220:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:219:12:219:20 | "default" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:222:26:224:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:223:12:223:18 | "extra" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:230:29:232:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:231:12:231:21 | "concrete" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:236:7:236:7 | d |  | overload_resolution.swift:227:1:233:1 | DescribableImpl |
-| overload_resolution.swift:236:11:236:27 | DescribableImpl(...) |  | overload_resolution.swift:227:1:233:1 | DescribableImpl |
-| overload_resolution.swift:237:7:237:8 | r1 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:237:12:237:12 | d |  | overload_resolution.swift:227:1:233:1 | DescribableImpl |
-| overload_resolution.swift:237:12:237:23 | ... .describe(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:238:7:238:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:238:12:238:12 | d |  | overload_resolution.swift:227:1:233:1 | DescribableImpl |
-| overload_resolution.swift:238:12:238:20 | ... .extra(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:246:27:248:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:247:12:247:17 | "base" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:250:29:252:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:251:12:251:21 | "baseOnly" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:256:19:258:3 | Block |  | overload_resolution.swift:243:1:253:1 | Base |
-| overload_resolution.swift:257:5:257:9 | super |  | overload_resolution.swift:243:1:253:1 | Base |
-| overload_resolution.swift:257:5:257:16 | ... .init(...) |  | overload_resolution.swift:243:1:253:1 | Base |
-| overload_resolution.swift:260:36:262:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:261:12:261:16 | "sub" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:264:28:266:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:265:12:265:20 | "subOnly" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:270:19:272:3 | Block |  | overload_resolution.swift:255:1:267:1 | Sub |
-| overload_resolution.swift:271:5:271:9 | super |  | overload_resolution.swift:255:1:267:1 | Sub |
-| overload_resolution.swift:271:5:271:16 | ... .init(...) |  | overload_resolution.swift:255:1:267:1 | Sub |
-| overload_resolution.swift:274:36:276:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:275:12:275:19 | "subsub" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:280:7:280:7 | b |  | overload_resolution.swift:243:1:253:1 | Base |
-| overload_resolution.swift:280:11:280:16 | Base(...) |  | overload_resolution.swift:243:1:253:1 | Base |
-| overload_resolution.swift:281:7:281:8 | rb |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:281:12:281:12 | b |  | overload_resolution.swift:243:1:253:1 | Base |
-| overload_resolution.swift:281:12:281:21 | ... .action(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:283:7:283:7 | s |  | overload_resolution.swift:255:1:267:1 | Sub |
-| overload_resolution.swift:283:11:283:15 | Sub(...) |  | overload_resolution.swift:255:1:267:1 | Sub |
-| overload_resolution.swift:284:7:284:8 | rs |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:284:12:284:12 | s |  | overload_resolution.swift:255:1:267:1 | Sub |
-| overload_resolution.swift:284:12:284:21 | ... .action(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:285:7:285:9 | rbo |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:285:13:285:13 | s |  | overload_resolution.swift:255:1:267:1 | Sub |
-| overload_resolution.swift:285:13:285:24 | ... .baseOnly(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:286:7:286:9 | rso |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:286:13:286:13 | s |  | overload_resolution.swift:255:1:267:1 | Sub |
-| overload_resolution.swift:286:13:286:23 | ... .subOnly(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:288:7:288:8 | ss |  | overload_resolution.swift:269:1:277:1 | SubSub |
-| overload_resolution.swift:288:12:288:19 | SubSub(...) |  | overload_resolution.swift:269:1:277:1 | SubSub |
-| overload_resolution.swift:289:7:289:9 | rss |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:289:13:289:14 | ss |  | overload_resolution.swift:269:1:277:1 | SubSub |
-| overload_resolution.swift:289:13:289:23 | ... .action(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:290:7:290:10 | rbo2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:290:14:290:15 | ss |  | overload_resolution.swift:269:1:277:1 | SubSub |
-| overload_resolution.swift:290:14:290:26 | ... .baseOnly(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:291:7:291:10 | rso2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:291:14:291:15 | ss |  | overload_resolution.swift:269:1:277:1 | SubSub |
-| overload_resolution.swift:291:14:291:25 | ... .subOnly(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:299:16:299:21 | target |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:299:42:301:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:300:12:300:17 | target |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:303:18:303:23 | source |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:303:44:305:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:304:12:304:17 | source |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:307:16:307:21 | target |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:307:37:307:42 | source |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:307:63:309:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:308:12:308:17 | target |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:308:12:308:26 | ... + ... |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:308:21:308:26 | source |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:313:7:313:7 | o |  | overload_resolution.swift:296:1:310:1 | LabelVariants |
-| overload_resolution.swift:313:11:313:25 | LabelVariants(...) |  | overload_resolution.swift:296:1:310:1 | LabelVariants |
-| overload_resolution.swift:314:7:314:8 | r1 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:314:12:314:12 | o |  | overload_resolution.swift:296:1:310:1 | LabelVariants |
-| overload_resolution.swift:314:12:314:26 | ... .send(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:314:23:314:25 | "x" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:315:7:315:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:315:12:315:12 | o |  | overload_resolution.swift:296:1:310:1 | LabelVariants |
-| overload_resolution.swift:315:12:315:28 | ... .send(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:315:25:315:27 | "y" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:316:7:316:8 | r3 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:316:12:316:12 | o |  | overload_resolution.swift:296:1:310:1 | LabelVariants |
-| overload_resolution.swift:316:12:316:37 | ... .send(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:316:23:316:25 | "x" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:316:34:316:36 | "y" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:326:29:326:40 | Block |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:326:38:326:38 | 0 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:330:32:330:45 | Block |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:330:41:330:43 | 0.0 |  | {EXTERNAL LOCATION} | Double |
-| overload_resolution.swift:333:35:333:35 | x |  | overload_resolution.swift:333:20:333:30 | T |
-| overload_resolution.swift:333:46:335:1 | Block |  | overload_resolution.swift:333:20:333:30 | T |
-| overload_resolution.swift:334:10:334:10 | x |  | overload_resolution.swift:333:20:333:30 | T |
-| overload_resolution.swift:337:36:337:36 | x |  | overload_resolution.swift:337:20:337:31 | T |
-| overload_resolution.swift:337:47:339:1 | Block |  | overload_resolution.swift:337:20:337:31 | T |
-| overload_resolution.swift:338:10:338:10 | x |  | overload_resolution.swift:337:20:337:31 | T |
-| overload_resolution.swift:342:7:342:8 | r1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:342:12:342:28 | constrainedId(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:342:26:342:27 | 42 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:343:7:343:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:343:12:343:33 | constrainedId(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:343:26:343:32 | "hello" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:349:7:349:10 | item |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:351:10:351:13 | item |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:351:19:353:3 | Block |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:352:5:352:8 | self |  | overload_resolution.swift:348:1:362:1 | Box |
-| overload_resolution.swift:352:5:352:8 | self | T | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:352:5:352:13 | ... .item |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:352:5:352:20 | ... = ... |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:352:17:352:20 | item |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:355:19:357:3 | Block |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:356:12:356:15 | item |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:359:18:359:24 | newItem |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:359:30:361:3 | Block |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:360:5:360:8 | item |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:360:5:360:18 | ... = ... |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:360:12:360:18 | newItem |  | overload_resolution.swift:348:11:348:11 | T |
-| overload_resolution.swift:365:7:365:12 | intBox |  | overload_resolution.swift:348:1:362:1 | Box |
-| overload_resolution.swift:365:7:365:12 | intBox | T | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:365:16:365:22 | Box(...) |  | overload_resolution.swift:348:1:362:1 | Box |
-| overload_resolution.swift:365:16:365:22 | Box(...) | T | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:365:20:365:21 | 10 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:366:7:366:12 | strBox |  | overload_resolution.swift:348:1:362:1 | Box |
-| overload_resolution.swift:366:7:366:12 | strBox | T | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:366:16:366:24 | Box(...) |  | overload_resolution.swift:348:1:362:1 | Box |
-| overload_resolution.swift:366:16:366:24 | Box(...) | T | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:366:20:366:23 | "hi" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:367:7:367:8 | v1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:367:12:367:17 | intBox |  | overload_resolution.swift:348:1:362:1 | Box |
-| overload_resolution.swift:367:12:367:17 | intBox | T | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:367:12:367:23 | ... .get(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:368:7:368:8 | v2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:368:12:368:17 | strBox |  | overload_resolution.swift:348:1:362:1 | Box |
-| overload_resolution.swift:368:12:368:17 | strBox | T | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:368:12:368:23 | ... .get(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:369:3:369:8 | intBox |  | overload_resolution.swift:348:1:362:1 | Box |
-| overload_resolution.swift:369:3:369:8 | intBox | T | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:369:18:369:19 | 20 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:370:3:370:8 | strBox |  | overload_resolution.swift:348:1:362:1 | Box |
-| overload_resolution.swift:370:3:370:8 | strBox | T | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:370:18:370:22 | "bye" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:376:7:376:10 | name |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:377:7:377:10 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:379:8:379:11 | name |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:379:22:379:25 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:379:33:382:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:380:5:380:8 | self |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:380:5:380:13 | ... .name |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:380:5:380:20 | ... = ... |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:380:17:380:20 | name |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:381:5:381:8 | self |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:381:5:381:13 | ... .size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:381:5:381:20 | ... = ... |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:381:17:381:20 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:384:20:384:23 | name |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:384:34:386:3 | Block |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:385:5:385:8 | self |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:385:5:385:34 | ... .init(...) |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:385:21:385:24 | name |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:385:33:385:33 | 1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:388:20:388:23 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:388:31:390:3 | Block |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:389:5:389:8 | self |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:389:5:389:42 | ... .init(...) |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:389:21:389:29 | "default" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:389:38:389:41 | size |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:394:7:394:8 | w1 |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:394:12:394:37 | Widget(...) |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:394:25:394:27 | "a" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:394:36:394:36 | 5 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:395:7:395:8 | w2 |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:395:12:395:28 | Widget(...) |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:395:25:395:27 | "b" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:396:7:396:8 | w3 |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:396:12:396:27 | Widget(...) |  | overload_resolution.swift:375:1:391:1 | Widget |
-| overload_resolution.swift:396:25:396:26 | 10 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:404:16:404:16 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:404:16:404:16 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:404:16:404:16 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:404:16:404:16 | f | Return | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:404:40:406:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:405:12:405:12 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:405:12:405:12 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:405:12:405:12 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:405:12:405:12 | f | Return | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:405:12:405:15 | f(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:405:14:405:14 | 0 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:408:16:408:16 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:408:16:408:16 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:408:16:408:16 | f | Args.T0 | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:408:16:408:16 | f | Return | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:408:49:410:3 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:409:12:409:12 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:409:12:409:12 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:409:12:409:12 | f | Args.T0 | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:409:12:409:12 | f | Return | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:409:12:409:16 | f(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:409:14:409:15 | "" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:412:16:412:16 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:412:16:412:16 | f | Args | {EXTERNAL LOCATION} | Tuple2 |
-| overload_resolution.swift:412:16:412:16 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:412:16:412:16 | f | Args.T1 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:412:16:412:16 | f | Return | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:412:45:414:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:413:12:413:12 | f |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:413:12:413:12 | f | Args | {EXTERNAL LOCATION} | Tuple2 |
-| overload_resolution.swift:413:12:413:12 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:413:12:413:12 | f | Args.T1 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:413:12:413:12 | f | Return | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:413:12:413:18 | f(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:413:14:413:14 | 0 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:413:17:413:17 | 0 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:418:7:418:7 | p |  | overload_resolution.swift:401:1:415:1 | Processor |
-| overload_resolution.swift:418:11:418:21 | Processor(...) |  | overload_resolution.swift:401:1:415:1 | Processor |
-| overload_resolution.swift:419:7:419:8 | r1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:419:7:419:8 | r1 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:419:12:419:12 | p |  | overload_resolution.swift:401:1:415:1 | Processor |
-| overload_resolution.swift:419:12:419:34 | ... .apply(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:419:12:419:34 | ... .apply(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:419:20:419:33 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:419:20:419:33 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:419:20:419:33 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:419:20:419:33 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:419:20:419:33 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:419:22:419:22 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:419:22:419:22 | x |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:419:27:419:27 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:419:27:419:27 | x |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:419:27:419:31 | ... + ... |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:419:27:419:31 | Block |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:419:31:419:31 | 1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:420:7:420:8 | r2 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:420:7:420:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:420:12:420:12 | p |  | overload_resolution.swift:401:1:415:1 | Processor |
-| overload_resolution.swift:420:12:420:36 | ... .apply(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:420:12:420:36 | ... .apply(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:420:20:420:35 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:420:20:420:35 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
-| overload_resolution.swift:420:20:420:35 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:420:20:420:35 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:420:20:420:35 | FunctionExpr | Return | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:420:22:420:22 | s |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:420:22:420:22 | s |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:420:27:420:27 | s |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:420:27:420:27 | s |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:420:27:420:33 | ... + ... |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:420:27:420:33 | Block |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:420:31:420:33 | "!" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:421:7:421:8 | r3 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:421:7:421:8 | r3 |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:421:12:421:12 | p |  | overload_resolution.swift:401:1:415:1 | Processor |
-| overload_resolution.swift:421:12:421:37 | ... .apply(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:421:12:421:37 | ... .apply(...) |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:421:20:421:36 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
-| overload_resolution.swift:421:20:421:36 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple2 |
-| overload_resolution.swift:421:20:421:36 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:421:20:421:36 | FunctionExpr | Args.T1 | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:421:20:421:36 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:421:22:421:22 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:421:25:421:25 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:421:30:421:30 | x |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:421:30:421:34 | ... + ... |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:421:30:421:34 | Block |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:421:34:421:34 | y |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:427:7:427:10 | data |  | {EXTERNAL LOCATION} | Array |
-| overload_resolution.swift:427:7:427:10 | data | Element | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:427:21:427:29 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
-| overload_resolution.swift:427:21:427:29 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:427:22:427:22 | 1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:427:25:427:25 | 2 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:427:28:427:28 | 3 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:428:7:428:10 | dict |  | {EXTERNAL LOCATION} | Dictionary |
-| overload_resolution.swift:428:7:428:10 | dict | Key | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:428:7:428:10 | dict | Value | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:428:30:428:32 | "a" |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:428:35:428:35 | 1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:432:14:432:18 | index |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:433:12:433:15 | data |  | {EXTERNAL LOCATION} | Array |
-| overload_resolution.swift:433:12:433:15 | data | Element | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:433:17:433:21 | index |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:436:14:436:16 | key |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:437:12:437:15 | dict |  | {EXTERNAL LOCATION} | Dictionary |
-| overload_resolution.swift:437:12:437:15 | dict | Key | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:437:12:437:15 | dict | Value | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:437:17:437:19 | key |  | {EXTERNAL LOCATION} | String |
-| overload_resolution.swift:437:25:437:25 | 0 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:442:7:442:8 | ms |  | overload_resolution.swift:426:1:439:1 | MultiSubscript |
-| overload_resolution.swift:442:12:442:27 | MultiSubscript(...) |  | overload_resolution.swift:426:1:439:1 | MultiSubscript |
-| overload_resolution.swift:443:7:443:8 | r1 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:443:12:443:13 | ms |  | overload_resolution.swift:426:1:439:1 | MultiSubscript |
-| overload_resolution.swift:443:12:443:20 | ... .get(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:443:19:443:19 | 0 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:444:7:444:8 | r2 |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:444:12:444:13 | ms |  | overload_resolution.swift:426:1:439:1 | MultiSubscript |
-| overload_resolution.swift:444:12:444:22 | ... .get(...) |  | {EXTERNAL LOCATION} | Int |
-| overload_resolution.swift:444:19:444:21 | "a" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:219:12:219:21 | "concrete" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:224:7:224:7 | d |  | overload_resolution.swift:215:1:221:1 | DescribableImpl |
+| overload_resolution.swift:224:11:224:27 | DescribableImpl(...) |  | overload_resolution.swift:215:1:221:1 | DescribableImpl |
+| overload_resolution.swift:225:7:225:8 | r1 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:225:12:225:12 | d |  | overload_resolution.swift:215:1:221:1 | DescribableImpl |
+| overload_resolution.swift:225:12:225:23 | ... .describe(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:226:7:226:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:226:12:226:12 | d |  | overload_resolution.swift:215:1:221:1 | DescribableImpl |
+| overload_resolution.swift:226:12:226:20 | ... .extra(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:234:27:236:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:235:12:235:17 | "base" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:238:29:240:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:239:12:239:21 | "baseOnly" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:244:19:246:3 | Block |  | overload_resolution.swift:231:1:241:1 | Base |
+| overload_resolution.swift:245:5:245:9 | super |  | overload_resolution.swift:231:1:241:1 | Base |
+| overload_resolution.swift:245:5:245:16 | ... .init(...) |  | overload_resolution.swift:231:1:241:1 | Base |
+| overload_resolution.swift:248:36:250:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:249:12:249:16 | "sub" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:252:28:254:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:253:12:253:20 | "subOnly" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:258:19:260:3 | Block |  | overload_resolution.swift:243:1:255:1 | Sub |
+| overload_resolution.swift:259:5:259:9 | super |  | overload_resolution.swift:243:1:255:1 | Sub |
+| overload_resolution.swift:259:5:259:16 | ... .init(...) |  | overload_resolution.swift:243:1:255:1 | Sub |
+| overload_resolution.swift:262:36:264:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:263:12:263:19 | "subsub" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:268:7:268:7 | b |  | overload_resolution.swift:231:1:241:1 | Base |
+| overload_resolution.swift:268:11:268:16 | Base(...) |  | overload_resolution.swift:231:1:241:1 | Base |
+| overload_resolution.swift:269:7:269:8 | rb |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:269:12:269:12 | b |  | overload_resolution.swift:231:1:241:1 | Base |
+| overload_resolution.swift:269:12:269:21 | ... .action(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:271:7:271:7 | s |  | overload_resolution.swift:243:1:255:1 | Sub |
+| overload_resolution.swift:271:11:271:15 | Sub(...) |  | overload_resolution.swift:243:1:255:1 | Sub |
+| overload_resolution.swift:272:7:272:8 | rs |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:272:12:272:12 | s |  | overload_resolution.swift:243:1:255:1 | Sub |
+| overload_resolution.swift:272:12:272:21 | ... .action(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:273:7:273:9 | rbo |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:273:13:273:13 | s |  | overload_resolution.swift:243:1:255:1 | Sub |
+| overload_resolution.swift:273:13:273:24 | ... .baseOnly(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:274:7:274:9 | rso |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:274:13:274:13 | s |  | overload_resolution.swift:243:1:255:1 | Sub |
+| overload_resolution.swift:274:13:274:23 | ... .subOnly(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:276:7:276:8 | ss |  | overload_resolution.swift:257:1:265:1 | SubSub |
+| overload_resolution.swift:276:12:276:19 | SubSub(...) |  | overload_resolution.swift:257:1:265:1 | SubSub |
+| overload_resolution.swift:277:7:277:9 | rss |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:277:13:277:14 | ss |  | overload_resolution.swift:257:1:265:1 | SubSub |
+| overload_resolution.swift:277:13:277:23 | ... .action(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:278:7:278:10 | rbo2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:278:14:278:15 | ss |  | overload_resolution.swift:257:1:265:1 | SubSub |
+| overload_resolution.swift:278:14:278:26 | ... .baseOnly(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:279:7:279:10 | rso2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:279:14:279:15 | ss |  | overload_resolution.swift:257:1:265:1 | SubSub |
+| overload_resolution.swift:279:14:279:25 | ... .subOnly(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:285:16:285:21 | target |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:285:42:287:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:286:12:286:17 | target |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:289:18:289:23 | source |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:289:44:291:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:290:12:290:17 | source |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:293:16:293:21 | target |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:293:37:293:42 | source |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:293:63:295:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:294:12:294:17 | target |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:294:12:294:26 | ... + ... |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:294:21:294:26 | source |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:299:7:299:7 | o |  | overload_resolution.swift:284:1:296:1 | LabelVariants |
+| overload_resolution.swift:299:11:299:25 | LabelVariants(...) |  | overload_resolution.swift:284:1:296:1 | LabelVariants |
+| overload_resolution.swift:300:7:300:8 | r1 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:300:12:300:12 | o |  | overload_resolution.swift:284:1:296:1 | LabelVariants |
+| overload_resolution.swift:300:12:300:26 | ... .send(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:300:23:300:25 | "x" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:301:7:301:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:301:12:301:12 | o |  | overload_resolution.swift:284:1:296:1 | LabelVariants |
+| overload_resolution.swift:301:12:301:28 | ... .send(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:301:25:301:27 | "y" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:302:7:302:8 | r3 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:302:12:302:12 | o |  | overload_resolution.swift:284:1:296:1 | LabelVariants |
+| overload_resolution.swift:302:12:302:37 | ... .send(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:302:23:302:25 | "x" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:302:34:302:36 | "y" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:312:29:312:40 | Block |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:312:38:312:38 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:316:32:316:45 | Block |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:316:41:316:43 | 0.0 |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:319:35:319:35 | x |  | overload_resolution.swift:319:20:319:30 | T |
+| overload_resolution.swift:319:46:321:1 | Block |  | overload_resolution.swift:319:20:319:30 | T |
+| overload_resolution.swift:320:10:320:10 | x |  | overload_resolution.swift:319:20:319:30 | T |
+| overload_resolution.swift:323:36:323:36 | x |  | overload_resolution.swift:323:20:323:31 | T |
+| overload_resolution.swift:323:47:325:1 | Block |  | overload_resolution.swift:323:20:323:31 | T |
+| overload_resolution.swift:324:10:324:10 | x |  | overload_resolution.swift:323:20:323:31 | T |
+| overload_resolution.swift:328:7:328:8 | r1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:328:12:328:28 | constrainedId(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:328:26:328:27 | 42 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:329:7:329:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:329:12:329:33 | constrainedId(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:329:26:329:32 | "hello" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:335:7:335:10 | item |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:337:10:337:13 | item |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:337:19:339:3 | Block |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:338:5:338:8 | self |  | overload_resolution.swift:334:1:348:1 | Box |
+| overload_resolution.swift:338:5:338:8 | self | T | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:338:5:338:13 | ... .item |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:338:5:338:20 | ... = ... |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:338:17:338:20 | item |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:341:19:343:3 | Block |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:342:12:342:15 | item |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:345:18:345:24 | newItem |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:345:30:347:3 | Block |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:346:5:346:8 | item |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:346:5:346:18 | ... = ... |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:346:12:346:18 | newItem |  | overload_resolution.swift:334:11:334:11 | T |
+| overload_resolution.swift:351:7:351:12 | intBox |  | overload_resolution.swift:334:1:348:1 | Box |
+| overload_resolution.swift:351:7:351:12 | intBox | T | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:351:16:351:22 | Box(...) |  | overload_resolution.swift:334:1:348:1 | Box |
+| overload_resolution.swift:351:16:351:22 | Box(...) | T | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:351:20:351:21 | 10 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:352:7:352:12 | strBox |  | overload_resolution.swift:334:1:348:1 | Box |
+| overload_resolution.swift:352:7:352:12 | strBox | T | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:352:16:352:24 | Box(...) |  | overload_resolution.swift:334:1:348:1 | Box |
+| overload_resolution.swift:352:16:352:24 | Box(...) | T | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:352:20:352:23 | "hi" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:353:7:353:8 | v1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:353:12:353:17 | intBox |  | overload_resolution.swift:334:1:348:1 | Box |
+| overload_resolution.swift:353:12:353:17 | intBox | T | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:353:12:353:23 | ... .get(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:354:7:354:8 | v2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:354:12:354:17 | strBox |  | overload_resolution.swift:334:1:348:1 | Box |
+| overload_resolution.swift:354:12:354:17 | strBox | T | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:354:12:354:23 | ... .get(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:355:3:355:8 | intBox |  | overload_resolution.swift:334:1:348:1 | Box |
+| overload_resolution.swift:355:3:355:8 | intBox | T | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:355:18:355:19 | 20 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:356:3:356:8 | strBox |  | overload_resolution.swift:334:1:348:1 | Box |
+| overload_resolution.swift:356:3:356:8 | strBox | T | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:356:18:356:22 | "bye" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:362:7:362:10 | name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:363:7:363:10 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:365:8:365:11 | name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:365:22:365:25 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:365:33:368:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:366:5:366:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:366:5:366:13 | ... .name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:366:5:366:20 | ... = ... |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:366:17:366:20 | name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:367:5:367:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:367:5:367:13 | ... .size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:367:5:367:20 | ... = ... |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:367:17:367:20 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:370:20:370:23 | name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:370:34:372:3 | Block |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:371:5:371:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:371:5:371:34 | ... .init(...) |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:371:21:371:24 | name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:371:33:371:33 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:374:20:374:23 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:374:31:376:3 | Block |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:375:5:375:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:375:5:375:42 | ... .init(...) |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:375:21:375:29 | "default" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:375:38:375:41 | size |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:380:7:380:8 | w1 |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:380:12:380:37 | Widget(...) |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:380:25:380:27 | "a" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:380:36:380:36 | 5 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:381:7:381:8 | w2 |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:381:12:381:28 | Widget(...) |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:381:25:381:27 | "b" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:382:7:382:8 | w3 |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:382:12:382:27 | Widget(...) |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:382:25:382:26 | 10 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:388:16:388:16 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:388:16:388:16 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:388:16:388:16 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:388:16:388:16 | f | Return | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:388:40:390:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:389:12:389:12 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:389:12:389:12 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:389:12:389:12 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:389:12:389:12 | f | Return | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:389:12:389:15 | f(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:389:14:389:14 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:392:16:392:16 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:392:16:392:16 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:392:16:392:16 | f | Args.T0 | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:392:16:392:16 | f | Return | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:392:49:394:3 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:393:12:393:12 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:393:12:393:12 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:393:12:393:12 | f | Args.T0 | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:393:12:393:12 | f | Return | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:393:12:393:16 | f(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:393:14:393:15 | "" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:396:16:396:16 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:396:16:396:16 | f | Args | {EXTERNAL LOCATION} | Tuple2 |
+| overload_resolution.swift:396:16:396:16 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:396:16:396:16 | f | Args.T1 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:396:16:396:16 | f | Return | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:396:45:398:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:397:12:397:12 | f |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:397:12:397:12 | f | Args | {EXTERNAL LOCATION} | Tuple2 |
+| overload_resolution.swift:397:12:397:12 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:397:12:397:12 | f | Args.T1 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:397:12:397:12 | f | Return | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:397:12:397:18 | f(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:397:14:397:14 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:397:17:397:17 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:402:7:402:7 | p |  | overload_resolution.swift:387:1:399:1 | Processor |
+| overload_resolution.swift:402:11:402:21 | Processor(...) |  | overload_resolution.swift:387:1:399:1 | Processor |
+| overload_resolution.swift:403:7:403:8 | r1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:403:7:403:8 | r1 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:403:12:403:12 | p |  | overload_resolution.swift:387:1:399:1 | Processor |
+| overload_resolution.swift:403:12:403:34 | ... .apply(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:403:12:403:34 | ... .apply(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:403:20:403:33 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:403:20:403:33 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:403:20:403:33 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:403:20:403:33 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:403:20:403:33 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:403:22:403:22 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:403:22:403:22 | x |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:403:27:403:27 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:403:27:403:27 | x |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:403:27:403:31 | ... + ... |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:403:27:403:31 | Block |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:403:31:403:31 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:404:7:404:8 | r2 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:404:7:404:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:404:12:404:12 | p |  | overload_resolution.swift:387:1:399:1 | Processor |
+| overload_resolution.swift:404:12:404:36 | ... .apply(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:404:12:404:36 | ... .apply(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:404:20:404:35 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:404:20:404:35 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:404:20:404:35 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:404:20:404:35 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:404:20:404:35 | FunctionExpr | Return | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:404:22:404:22 | s |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:404:22:404:22 | s |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:404:27:404:27 | s |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:404:27:404:27 | s |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:404:27:404:33 | ... + ... |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:404:27:404:33 | Block |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:404:31:404:33 | "!" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:405:7:405:8 | r3 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:7:405:8 | r3 |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:405:12:405:12 | p |  | overload_resolution.swift:387:1:399:1 | Processor |
+| overload_resolution.swift:405:12:405:37 | ... .apply(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:12:405:37 | ... .apply(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:405:20:405:36 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:405:20:405:36 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple2 |
+| overload_resolution.swift:405:20:405:36 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:20:405:36 | FunctionExpr | Args.T1 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:20:405:36 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:22:405:22 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:25:405:25 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:30:405:30 | x |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:30:405:34 | ... + ... |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:30:405:34 | Block |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:34:405:34 | y |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:411:7:411:10 | data |  | {EXTERNAL LOCATION} | Array |
+| overload_resolution.swift:411:7:411:10 | data | Element | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:411:21:411:29 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| overload_resolution.swift:411:21:411:29 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:411:22:411:22 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:411:25:411:25 | 2 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:411:28:411:28 | 3 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:412:7:412:10 | dict |  | {EXTERNAL LOCATION} | Dictionary |
+| overload_resolution.swift:412:7:412:10 | dict | Key | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:412:7:412:10 | dict | Value | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:412:30:412:32 | "a" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:412:35:412:35 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:414:14:414:18 | index |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:415:12:415:15 | data |  | {EXTERNAL LOCATION} | Array |
+| overload_resolution.swift:415:12:415:15 | data | Element | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:415:17:415:21 | index |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:418:14:418:16 | key |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:419:12:419:15 | dict |  | {EXTERNAL LOCATION} | Dictionary |
+| overload_resolution.swift:419:12:419:15 | dict | Key | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:419:12:419:15 | dict | Value | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:419:17:419:19 | key |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:419:25:419:25 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:424:7:424:8 | ms |  | overload_resolution.swift:410:1:421:1 | MultiSubscript |
+| overload_resolution.swift:424:12:424:27 | MultiSubscript(...) |  | overload_resolution.swift:410:1:421:1 | MultiSubscript |
+| overload_resolution.swift:425:7:425:8 | r1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:425:12:425:13 | ms |  | overload_resolution.swift:410:1:421:1 | MultiSubscript |
+| overload_resolution.swift:425:12:425:20 | ... .get(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:425:19:425:19 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:426:7:426:8 | r2 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:426:12:426:13 | ms |  | overload_resolution.swift:410:1:421:1 | MultiSubscript |
+| overload_resolution.swift:426:12:426:22 | ... .get(...) |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:426:19:426:21 | "a" |  | {EXTERNAL LOCATION} | String |
 | pattern_matching.swift:1:26:1:29 | pair |  | {EXTERNAL LOCATION} | Tuple2 |
 | pattern_matching.swift:1:26:1:29 | pair | T0 | {EXTERNAL LOCATION} | Int |
 | pattern_matching.swift:1:26:1:29 | pair | T1 | {EXTERNAL LOCATION} | String |
@@ -2596,67 +2628,67 @@ inferType
 | type_constraints.swift:230:13:230:18 | intAcc | T | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:230:13:230:30 | ... .contains(...) |  | {EXTERNAL LOCATION} | Bool |
 | type_constraints.swift:230:29:230:29 | 2 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:238:33:238:37 | items |  | {EXTERNAL LOCATION} | Array |
-| type_constraints.swift:238:33:238:37 | items | Element | type_constraints.swift:238:18:238:28 | T |
-| type_constraints.swift:239:12:239:16 | items |  | {EXTERNAL LOCATION} | Array |
-| type_constraints.swift:239:12:239:16 | items | Element | type_constraints.swift:238:18:238:28 | T |
-| type_constraints.swift:239:18:239:18 | 0 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:239:23:239:27 | items |  | {EXTERNAL LOCATION} | Array |
-| type_constraints.swift:239:23:239:27 | items | Element | type_constraints.swift:238:18:238:28 | T |
-| type_constraints.swift:239:29:239:29 | 1 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:242:44:242:44 | a |  | type_constraints.swift:242:14:242:25 | A |
-| type_constraints.swift:242:52:242:52 | b |  | type_constraints.swift:242:28:242:39 | B |
-| type_constraints.swift:242:66:244:3 | Block |  | {EXTERNAL LOCATION} | Bool |
-| type_constraints.swift:243:12:243:15 | true |  | {EXTERNAL LOCATION} | Bool |
-| type_constraints.swift:248:7:248:7 | t |  | type_constraints.swift:235:1:245:1 | Transformer |
-| type_constraints.swift:248:11:248:23 | Transformer(...) |  | type_constraints.swift:235:1:245:1 | Transformer |
-| type_constraints.swift:249:7:249:8 | r1 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:249:12:249:12 | t |  | type_constraints.swift:235:1:245:1 | Transformer |
-| type_constraints.swift:249:12:249:33 | ... .transform(...) |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:249:24:249:32 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
-| type_constraints.swift:249:24:249:32 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:249:25:249:25 | 3 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:249:28:249:28 | 1 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:249:31:249:31 | 2 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:250:7:250:8 | r2 |  | {EXTERNAL LOCATION} | String |
-| type_constraints.swift:250:12:250:12 | t |  | type_constraints.swift:235:1:245:1 | Transformer |
-| type_constraints.swift:250:12:250:39 | ... .transform(...) |  | {EXTERNAL LOCATION} | String |
-| type_constraints.swift:250:24:250:38 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
-| type_constraints.swift:250:24:250:38 | ArrayLiteral | Element | {EXTERNAL LOCATION} | String |
-| type_constraints.swift:250:25:250:27 | "c" |  | {EXTERNAL LOCATION} | String |
-| type_constraints.swift:250:30:250:32 | "a" |  | {EXTERNAL LOCATION} | String |
-| type_constraints.swift:250:35:250:37 | "b" |  | {EXTERNAL LOCATION} | String |
-| type_constraints.swift:251:7:251:8 | r3 |  | {EXTERNAL LOCATION} | Bool |
-| type_constraints.swift:251:12:251:12 | t |  | type_constraints.swift:235:1:245:1 | Transformer |
-| type_constraints.swift:251:12:251:26 | ... .merge(...) |  | {EXTERNAL LOCATION} | Bool |
-| type_constraints.swift:251:20:251:20 | 1 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:251:23:251:25 | "x" |  | {EXTERNAL LOCATION} | String |
-| type_constraints.swift:256:29:256:33 | value |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:256:43:256:47 | lower |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:256:57:256:61 | upper |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:256:72:260:1 | Block |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:257:6:257:10 | value |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:257:6:257:18 | ... < ... |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:257:14:257:18 | lower |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:257:29:257:33 | lower |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:258:6:258:10 | value |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:258:6:258:18 | ... > ... |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:258:14:258:18 | upper |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:258:29:258:33 | upper |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:259:10:259:14 | value |  | type_constraints.swift:256:12:256:24 | T |
-| type_constraints.swift:263:7:263:8 | r1 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:263:12:263:36 | clamp(...) |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:263:18:263:18 | 5 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:263:26:263:26 | 0 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:263:34:263:35 | 10 |  | {EXTERNAL LOCATION} | Int |
-| type_constraints.swift:264:7:264:8 | r2 |  | {EXTERNAL LOCATION} | Double |
-| type_constraints.swift:264:12:264:41 | clamp(...) |  | {EXTERNAL LOCATION} | Double |
-| type_constraints.swift:264:18:264:20 | 3.5 |  | {EXTERNAL LOCATION} | Double |
-| type_constraints.swift:264:28:264:30 | 1.0 |  | {EXTERNAL LOCATION} | Double |
-| type_constraints.swift:264:38:264:40 | 2.0 |  | {EXTERNAL LOCATION} | Double |
-| type_constraints.swift:265:7:265:8 | r3 |  | {EXTERNAL LOCATION} | String |
-| type_constraints.swift:265:12:265:41 | clamp(...) |  | {EXTERNAL LOCATION} | String |
-| type_constraints.swift:265:18:265:20 | "m" |  | {EXTERNAL LOCATION} | String |
-| type_constraints.swift:265:28:265:30 | "a" |  | {EXTERNAL LOCATION} | String |
-| type_constraints.swift:265:38:265:40 | "z" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:236:33:236:37 | items |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:236:33:236:37 | items | Element | type_constraints.swift:236:18:236:28 | T |
+| type_constraints.swift:237:12:237:16 | items |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:237:12:237:16 | items | Element | type_constraints.swift:236:18:236:28 | T |
+| type_constraints.swift:237:18:237:18 | 0 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:237:23:237:27 | items |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:237:23:237:27 | items | Element | type_constraints.swift:236:18:236:28 | T |
+| type_constraints.swift:237:29:237:29 | 1 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:240:44:240:44 | a |  | type_constraints.swift:240:14:240:25 | A |
+| type_constraints.swift:240:52:240:52 | b |  | type_constraints.swift:240:28:240:39 | B |
+| type_constraints.swift:240:66:242:3 | Block |  | {EXTERNAL LOCATION} | Bool |
+| type_constraints.swift:241:12:241:15 | true |  | {EXTERNAL LOCATION} | Bool |
+| type_constraints.swift:246:7:246:7 | t |  | type_constraints.swift:235:1:243:1 | Transformer |
+| type_constraints.swift:246:11:246:23 | Transformer(...) |  | type_constraints.swift:235:1:243:1 | Transformer |
+| type_constraints.swift:247:7:247:8 | r1 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:247:12:247:12 | t |  | type_constraints.swift:235:1:243:1 | Transformer |
+| type_constraints.swift:247:12:247:33 | ... .transform(...) |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:247:24:247:32 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:247:24:247:32 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:247:25:247:25 | 3 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:247:28:247:28 | 1 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:247:31:247:31 | 2 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:248:7:248:8 | r2 |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:248:12:248:12 | t |  | type_constraints.swift:235:1:243:1 | Transformer |
+| type_constraints.swift:248:12:248:39 | ... .transform(...) |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:248:24:248:38 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:248:24:248:38 | ArrayLiteral | Element | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:248:25:248:27 | "c" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:248:30:248:32 | "a" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:248:35:248:37 | "b" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:249:7:249:8 | r3 |  | {EXTERNAL LOCATION} | Bool |
+| type_constraints.swift:249:12:249:12 | t |  | type_constraints.swift:235:1:243:1 | Transformer |
+| type_constraints.swift:249:12:249:26 | ... .merge(...) |  | {EXTERNAL LOCATION} | Bool |
+| type_constraints.swift:249:20:249:20 | 1 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:249:23:249:25 | "x" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:254:29:254:33 | value |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:254:43:254:47 | lower |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:254:57:254:61 | upper |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:254:72:258:1 | Block |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:255:6:255:10 | value |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:255:6:255:18 | ... < ... |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:255:14:255:18 | lower |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:255:29:255:33 | lower |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:256:6:256:10 | value |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:256:6:256:18 | ... > ... |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:256:14:256:18 | upper |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:256:29:256:33 | upper |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:257:10:257:14 | value |  | type_constraints.swift:254:12:254:24 | T |
+| type_constraints.swift:261:7:261:8 | r1 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:261:12:261:36 | clamp(...) |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:261:18:261:18 | 5 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:261:26:261:26 | 0 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:261:34:261:35 | 10 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:262:7:262:8 | r2 |  | {EXTERNAL LOCATION} | Double |
+| type_constraints.swift:262:12:262:41 | clamp(...) |  | {EXTERNAL LOCATION} | Double |
+| type_constraints.swift:262:18:262:20 | 3.5 |  | {EXTERNAL LOCATION} | Double |
+| type_constraints.swift:262:28:262:30 | 1.0 |  | {EXTERNAL LOCATION} | Double |
+| type_constraints.swift:262:38:262:40 | 2.0 |  | {EXTERNAL LOCATION} | Double |
+| type_constraints.swift:263:7:263:8 | r3 |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:263:12:263:41 | clamp(...) |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:263:18:263:20 | "m" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:263:28:263:30 | "a" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:263:38:263:40 | "z" |  | {EXTERNAL LOCATION} | String |
 testFailures

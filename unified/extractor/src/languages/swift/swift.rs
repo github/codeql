@@ -72,6 +72,23 @@ fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Optio
     }
 }
 
+fn implicit_parameterless_initializer(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    members: &[yeast::Id],
+) -> Option<yeast::Id> {
+    let has_explicit_initializer = members.iter().any(|member| {
+        ctx.ast
+            .get_node(*member)
+            .is_some_and(|node| node.kind_name() == "constructor_declaration")
+    });
+    (!has_explicit_initializer).then(|| {
+        tree!((constructor_declaration
+            modifier: (modifier "generated")
+            name_node: (identifier "init")
+            body: (block)))
+    })
+}
+
 /// Combine a list of boolean sub-conditions into a single expression by
 /// left-folding with the infix `&&` operator. Used by control-flow
 /// rules (`if`, `guard`, `while`, `repeat-while`), which carry one or
@@ -1231,7 +1248,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (equality_type_constraint left: {left} right: {right})
         ),
-        // Class declaration with body containing members
+        // Class declaration with body containing members. If the class has no
+        // explicit initializer, add a (possibly dead) implicit `init`. The implicit
+        // `init` is dead when the class inherits a constructor from its base class,
+        // which we cannot check in the extractor.
         rule!(
             (classDecl
                 classKeyword: @@kind
@@ -1244,15 +1264,19 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 genericWhereClause: (genericWhereClause requirements: _* @declaration_constraints)?
                 memberBlock: (memberBlock members: _* @members))
             =>
-            (class_like_declaration
-                modifier: (modifier #{kind})
-                modifier: {mods}
-                name_node: (identifier #{name})
-                type_parameter: {params}
-                type_constraint: {parameter_constraints}
-                type_constraint: {declaration_constraints}
-                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                member: {members})
+            class_like_declaration {
+                let implicit_initializer = implicit_parameterless_initializer(&mut ctx, &members);
+                tree!((class_like_declaration
+                    modifier: (modifier #{kind})
+                    modifier: {mods}
+                    name_node: (identifier #{name})
+                    type_parameter: {params}
+                    type_constraint: {parameter_constraints}
+                    type_constraint: {declaration_constraints}
+                    base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
+                    member: {members}
+                    member: {implicit_initializer}))
+            }
         ),
         // Enum class declaration: same as a regular class but with an enum body.
         rule!(
@@ -1277,7 +1301,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
-        // A `struct` declaration.
+        // A `struct` declaration, including an implicit parameter-less `init`
+        // when no explicit initializer is present.
         rule!(
             (structDecl
                 structKeyword: @@kind
@@ -1290,15 +1315,19 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 genericWhereClause: (genericWhereClause requirements: _* @declaration_constraints)?
                 memberBlock: (memberBlock members: _* @members))
             =>
-            (class_like_declaration
-                modifier: (modifier #{kind})
-                modifier: {mods}
-                name_node: (identifier #{name})
-                type_parameter: {params}
-                type_constraint: {parameter_constraints}
-                type_constraint: {declaration_constraints}
-                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                member: {members})
+            class_like_declaration {
+                let implicit_initializer = implicit_parameterless_initializer(&mut ctx, &members);
+                tree!((class_like_declaration
+                    modifier: (modifier #{kind})
+                    modifier: {mods}
+                    name_node: (identifier #{name})
+                    type_parameter: {params}
+                    type_constraint: {parameter_constraints}
+                    type_constraint: {declaration_constraints}
+                    base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
+                    member: {members}
+                    member: {implicit_initializer}))
+            }
         ),
         // Protocol declaration
         rule!(

@@ -17,8 +17,17 @@ module Unified {
     /** Gets the file containing this AST node. */
     File getFile() { result = this.getLocation().getFile() }
 
+    private predicate isGenerated() {
+      this.hasModifier("generated")
+      or
+      this.getParent().isGenerated()
+    }
+
     /** Holds if this AST node comes from ordinary source code. */
-    predicate fromSource() { this.getFile().fromSource() }
+    predicate fromSource() {
+      this.getFile().fromSource() and
+      not this.isGenerated()
+    }
 
     /** Holds if this AST node has a modifier with the given text. */
     predicate hasModifier(string text) {

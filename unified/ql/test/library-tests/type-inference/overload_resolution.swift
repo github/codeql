@@ -1,8 +1,6 @@
 // --- Overload by parameter type ---
 
 class OverloadByType {
-  public init() {}
-
   func handle(_ x: Int) -> String {  // name=OverloadByType.handle1
     return "int"
   }
@@ -31,8 +29,6 @@ func testOverloadByType() {
 // --- Overload by argument label ---
 
 class OverloadByLabel {
-  public init() {}
-
   func configure(width: Int) -> String {  // name=OverloadByLabel.configure1
     return "width"
   }
@@ -61,8 +57,6 @@ func testOverloadByLabel() {
 // --- Overload by arity (number of parameters) ---
 
 class OverloadByArity {
-  public init() {}
-
   func compute() -> Int {  // name=OverloadByArity.compute1
     return 0
   }
@@ -91,8 +85,6 @@ func testOverloadByArity() {
 // --- Overload by return type (contextual type) ---
 
 class OverloadByReturn {
-  public init() {}
-
   func create() -> Int {  // name=OverloadByReturn.create1
     return 0
   }
@@ -116,8 +108,6 @@ func testOverloadByReturn() {
 // --- Overload: generic vs non-generic (non-generic preferred) ---
 
 class OverloadGenericVsConcrete {
-  public init() {}
-
   func process(_ x: Int) -> String {  // name=OverloadGenericVsConcrete.process1
     return "concrete"
   }
@@ -198,8 +188,6 @@ class StaticVsInstance {
   static func action() -> String {  // name=StaticVsInstance.action2
     return "static"
   }
-
-  init() {}
 }
 
 func testStaticVsInstance() {
@@ -294,8 +282,6 @@ func testOverrideResolution() {
 // --- Overload: by external vs internal parameter names ---
 
 class LabelVariants {
-  public init() {}
-
   func send(to target: String) -> String {  // name=LabelVariants.send1
     return target  // $ type=target:String
   }
@@ -399,8 +385,6 @@ func testConvenienceInit() {
 // --- Overload: methods with closure parameters of different signatures ---
 
 class Processor {
-  init() {}
-
   func apply(_ f: (Int) -> Int) -> Int {  // name=Processor.apply1
     return f(0)  // $ target=Function.callAsFunction
   }
@@ -426,8 +410,6 @@ func testClosureOverload() {
 class MultiSubscript {
   var data: [Int] = [1, 2, 3]
   var dict: [String: Int] = ["a": 1]
-
-  init() {}
 
   func get(_ index: Int) -> Int {  // name=MultiSubscript.get1
     return data[index]  // $ field=MultiSubscript.data

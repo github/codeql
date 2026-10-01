@@ -233,8 +233,6 @@ func testConstrainedExtensions() {
 // --- Generic method with its own constrained type parameter ---
 
 class Transformer {
-  init() {}
-
   func transform<T: Summable>(_ items: [T]) -> T {
     return items[0] + items[1]  // $ MISSING: target=Summable.+
   }
