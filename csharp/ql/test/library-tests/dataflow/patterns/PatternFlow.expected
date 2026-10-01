@@ -1,6 +1,42 @@
 models
 edges
+| Patterns.cs:84:13:84:14 | access to local variable o2 : Object | Patterns.cs:85:51:85:52 | access to local variable o2 : Object | provenance |  |
+| Patterns.cs:84:13:84:14 | access to local variable o2 : Object | Patterns.cs:85:51:85:52 | access to local variable o2 : Object | provenance |  |
+| Patterns.cs:84:18:84:34 | call to method Source<Object> : Object | Patterns.cs:84:13:84:14 | access to local variable o2 : Object | provenance |  |
+| Patterns.cs:84:18:84:34 | call to method Source<Object> : Object | Patterns.cs:84:13:84:14 | access to local variable o2 : Object | provenance |  |
+| Patterns.cs:85:13:85:13 | access to local variable t : ValueTuple<Nested,Object> [field Item2] : Object | Patterns.cs:88:18:88:63 | { ... } : ValueTuple<Nested,Object> [field Item2] : Object | provenance |  |
+| Patterns.cs:85:13:85:13 | access to local variable t : ValueTuple<Nested,Object> [field Item2] : Object | Patterns.cs:88:18:88:63 | { ... } : ValueTuple<Nested,Object> [field Item2] : Object | provenance |  |
+| Patterns.cs:85:17:85:53 | (..., ...) : ValueTuple<Nested,Object> [field Item2] : Object | Patterns.cs:85:13:85:13 | access to local variable t : ValueTuple<Nested,Object> [field Item2] : Object | provenance |  |
+| Patterns.cs:85:17:85:53 | (..., ...) : ValueTuple<Nested,Object> [field Item2] : Object | Patterns.cs:85:13:85:13 | access to local variable t : ValueTuple<Nested,Object> [field Item2] : Object | provenance |  |
+| Patterns.cs:85:51:85:52 | access to local variable o2 : Object | Patterns.cs:85:17:85:53 | (..., ...) : ValueTuple<Nested,Object> [field Item2] : Object | provenance |  |
+| Patterns.cs:85:51:85:52 | access to local variable o2 : Object | Patterns.cs:85:17:85:53 | (..., ...) : ValueTuple<Nested,Object> [field Item2] : Object | provenance |  |
+| Patterns.cs:88:18:88:63 | { ... } : ValueTuple<Nested,Object> [field Item2] : Object | Patterns.cs:90:22:90:22 | access to local variable o | provenance |  |
+| Patterns.cs:88:18:88:63 | { ... } : ValueTuple<Nested,Object> [field Item2] : Object | Patterns.cs:90:22:90:22 | access to local variable o | provenance |  |
 nodes
+| Patterns.cs:84:13:84:14 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| Patterns.cs:84:13:84:14 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| Patterns.cs:84:18:84:34 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Patterns.cs:84:18:84:34 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Patterns.cs:85:13:85:13 | access to local variable t : ValueTuple<Nested,Object> [field Item2] : Object | semmle.label | access to local variable t : ValueTuple<Nested,Object> [field Item2] : Object |
+| Patterns.cs:85:13:85:13 | access to local variable t : ValueTuple<Nested,Object> [field Item2] : Object | semmle.label | access to local variable t : ValueTuple<Nested,Object> [field Item2] : Object |
+| Patterns.cs:85:17:85:53 | (..., ...) : ValueTuple<Nested,Object> [field Item2] : Object | semmle.label | (..., ...) : ValueTuple<Nested,Object> [field Item2] : Object |
+| Patterns.cs:85:17:85:53 | (..., ...) : ValueTuple<Nested,Object> [field Item2] : Object | semmle.label | (..., ...) : ValueTuple<Nested,Object> [field Item2] : Object |
+| Patterns.cs:85:51:85:52 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| Patterns.cs:85:51:85:52 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| Patterns.cs:88:18:88:63 | { ... } : ValueTuple<Nested,Object> [field Item2] : Object | semmle.label | { ... } : ValueTuple<Nested,Object> [field Item2] : Object |
+| Patterns.cs:88:18:88:63 | { ... } : ValueTuple<Nested,Object> [field Item2] : Object | semmle.label | { ... } : ValueTuple<Nested,Object> [field Item2] : Object |
+| Patterns.cs:90:22:90:22 | access to local variable o | semmle.label | access to local variable o |
+| Patterns.cs:90:22:90:22 | access to local variable o | semmle.label | access to local variable o |
 subpaths
 testFailures
+| Patterns.cs:25:22:25:40 | // ... | Missing result: hasValueFlow=1 |
+| Patterns.cs:36:26:36:44 | // ... | Missing result: hasValueFlow=2 |
+| Patterns.cs:47:22:47:40 | // ... | Missing result: hasValueFlow=3 |
+| Patterns.cs:57:22:57:40 | // ... | Missing result: hasValueFlow=4 |
+| Patterns.cs:67:22:67:40 | // ... | Missing result: hasValueFlow=5 |
+| Patterns.cs:77:27:77:45 | // ... | Missing result: hasValueFlow=6 |
+| Patterns.cs:89:26:89:44 | // ... | Missing result: hasValueFlow=7 |
+| Patterns.cs:101:22:101:40 | // ... | Missing result: hasValueFlow=9 |
 #select
+| Patterns.cs:90:22:90:22 | access to local variable o | Patterns.cs:84:18:84:34 | call to method Source<Object> : Object | Patterns.cs:90:22:90:22 | access to local variable o | $@ | Patterns.cs:84:18:84:34 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Patterns.cs:90:22:90:22 | access to local variable o | Patterns.cs:84:18:84:34 | call to method Source<Object> : Object | Patterns.cs:90:22:90:22 | access to local variable o | $@ | Patterns.cs:84:18:84:34 | call to method Source<Object> : Object | call to method Source<Object> : Object |
