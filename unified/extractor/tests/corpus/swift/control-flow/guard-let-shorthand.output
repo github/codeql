@@ -1,0 +1,55 @@
+guard let value else { return }
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        guardStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      returnKeyword: return
+          conditions:
+            conditionElement
+              condition:
+                optionalBindingCondition
+                  pattern:
+                    identifierPattern
+                      identifier: identifier "value"
+                  bindingSpecifier: let
+          elseKeyword: else
+          guardKeyword: guard
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        guard_if_stmt source="guard ⟨condition⟩ else ⟨else⟩"
+          condition:
+            pattern_guard_expr source="⟨pattern⟩⟨value⟩"
+              pattern:
+                call_expr source="⟨argument⟩"
+                  callee:
+                    member_access_expr source=""
+                      base: identifier "Optional" source=""
+                      member_name_node: identifier "some" source=""
+                  argument:
+                    argument source="⟨value⟩"
+                      value:
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "value" source="value"
+              value: identifier "value" source="value"
+          else:
+            block source="{ ⟨stmt⟩ }"
+              stmt: return_expr "return" source="return"
