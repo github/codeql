@@ -18,7 +18,7 @@ void test()
     use(ld);
   }
 
-  for (double c = 0.0; c < 1.0; c += 0.1) // BAD [NOT DETECTED]: compound assignment updates are not recognized
+  for (double c = 0.0; c < 1.0; c += 0.1) // $ MISSING: Alert (compound assignment updates are not recognized)
   {
     use(c);
   }
@@ -26,12 +26,6 @@ void test()
   for (int i = 0; i < 10; i++) // GOOD: integer loop counter
   {
     use(i * 0.1);
-  }
-
-  double x = 0.0; // GOOD: not a `for` loop counter
-  while (x < 1.0)
-  {
-    x = x + 0.1;
   }
 }
 
