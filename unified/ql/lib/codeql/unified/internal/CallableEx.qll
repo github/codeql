@@ -25,12 +25,6 @@ private newtype TCallableEx =
     forall(ClassLikeDeclaration base | mayInheritConstructorFrom(cls, base) |
       not mayHaveConstructor(cls, _)
     )
-  } or
-  TInheritedConstructor(ClassLikeDeclaration cls, CallableEx baseCtor) {
-    exists(ClassLikeDeclaration baseClass |
-      mayInheritConstructorFrom(cls, baseClass) and
-      baseCtor.isConstructor(baseClass, true)
-    )
   }
 
 private newtype TParameterEx =
@@ -40,10 +34,6 @@ private newtype TParameterEx =
   } or
   TDefaultConstructorParameter(ClassLikeDeclaration cls, int i, string name) {
     defaultConstructorParameter(cls, i, name)
-  } or
-  TInheritedConstructorParameter(CallableEx ctor, CallableEx baseCtor, int i) {
-    ctor.isInheritedConstructor(_, baseCtor) and
-    exists(baseCtor.getParameter(i))
   }
 
 final class CallableEx = CallableExImpl;
@@ -65,14 +55,6 @@ abstract private class CallableExImpl extends TCallableEx {
   predicate isDefaultConstructor(ClassLikeDeclaration cls) { this = TDefaultConstructor(cls, _) }
 
   /**
-   * Holds if this entity represents an inherited constructor for `cls` from the
-   * base constructor `baseCtor` (which may itself be inherited).
-   */
-  predicate isInheritedConstructor(ClassLikeDeclaration cls, CallableEx baseCtor) {
-    this = TInheritedConstructor(cls, baseCtor)
-  }
-
-  /**
    * Holds if this entity represents a constructor for `cls`.
    */
   predicate isConstructor(ClassLikeDeclaration cls, boolean inheritable) {
@@ -83,8 +65,6 @@ abstract private class CallableExImpl extends TCallableEx {
     )
     or
     this.isDefaultConstructor(cls) and inheritable = true
-    or
-    this.isInheritedConstructor(cls, _) and inheritable = true
   }
 
   /**
@@ -208,36 +188,6 @@ private class DefaultConstructor extends CallableExImpl, TDefaultConstructor {
   override Location getLocation() { result = c.getLocation() }
 }
 
-private class InheritedConstructor extends CallableExImpl, TInheritedConstructor {
-  ClassLikeDeclaration cls;
-  CallableEx baseCtor;
-
-  InheritedConstructor() { this = TInheritedConstructor(cls, baseCtor) }
-
-  override TypeParameter getTypeParameter(int i) { none() }
-
-  override ParameterEx getParameter(int i) {
-    result.isInheritedConstructorParameter(this, baseCtor, i)
-  }
-
-  override Expr getReturnType() { none() }
-
-  override AstNode getBody() { none() }
-
-  override Identifier getNameNode() { none() }
-
-  override string getName() { result = baseCtor.getName() }
-
-  override string toString() {
-    exists(ClassLikeDeclaration baseCls |
-      baseCtor.isMemberOf(baseCls) and
-      result = cls.getName() + " [inherited from " + baseCls.getName() + "]"
-    )
-  }
-
-  override Location getLocation() { result = cls.getLocation() }
-}
-
 final class ParameterEx = ParameterExImpl;
 
 /**
@@ -265,14 +215,6 @@ abstract private class ParameterExImpl extends TParameterEx {
    */
   predicate isDefaultConstructorParameter(ClassLikeDeclaration cls, int i, string name) {
     this = TDefaultConstructorParameter(cls, i, name)
-  }
-
-  /**
-   * Holds if this entity represents the `i`th parameter of the inherited constructor
-   * `ctor` where `baseCtor` is the base constructor.
-   */
-  predicate isInheritedConstructorParameter(CallableEx ctor, CallableEx baseCtor, int i) {
-    this = TInheritedConstructorParameter(ctor, baseCtor, i)
   }
 
   /** Gets the callable that this parameter belongs to. */
@@ -320,25 +262,4 @@ private class DefaultConstructorParameterEx extends ParameterExImpl, TDefaultCon
   override string toString() { result = name + " [" + c.getName() + " default constructor]" }
 
   override Location getLocation() { result = c.getLocation() }
-}
-
-private class InheritedConstructorParameterEx extends ParameterExImpl,
-  TInheritedConstructorParameter
-{
-  CallableEx ctor;
-  CallableEx baseCtor;
-  int i;
-
-  InheritedConstructorParameterEx() { this = TInheritedConstructorParameter(ctor, baseCtor, i) }
-
-  override string toString() {
-    exists(ParameterEx baseParam, ClassLikeDeclaration baseCls |
-      baseCtor.isMemberOf(baseCls) and
-      baseParam = baseCtor.getParameter(i) and
-      result =
-        "parameter " + i + " of " + ctor.getName() + " [inherited from " + baseCls.getName() + "]"
-    )
-  }
-
-  override Location getLocation() { result = ctor.getLocation() }
 }
