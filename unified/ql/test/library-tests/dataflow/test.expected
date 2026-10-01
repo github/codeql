@@ -81,10 +81,23 @@ edges
 | capture.swift:94:13:94:17 | local [x] | capture.swift:99:16:99:16 | x | provenance |  |
 | capture.swift:94:13:94:19 | local(...) | capture.swift:94:9:94:9 | y | provenance |  |
 | capture.swift:104:9:104:9 | x | capture.swift:105:28:105:28 | x | provenance |  |
+| capture.swift:104:9:104:9 | x | capture.swift:108:23:108:23 | x | provenance |  |
 | capture.swift:104:13:104:27 | source(...) | capture.swift:104:9:104:9 | x | provenance |  |
 | capture.swift:105:23:105:24 | x1 | capture.swift:111:5:111:12 | closure1 [x1] | provenance |  |
 | capture.swift:105:28:105:28 | x | capture.swift:105:23:105:24 | x1 | provenance |  |
+| capture.swift:108:23:108:23 | x | capture.swift:108:23:108:23 | x | provenance |  |
+| capture.swift:108:23:108:23 | x | capture.swift:112:5:112:12 | closure2 [x] | provenance |  |
 | capture.swift:111:5:111:12 | closure1 [x1] | capture.swift:106:14:106:15 | x1 | provenance |  |
+| capture.swift:112:5:112:12 | closure2 [x] | capture.swift:109:14:109:14 | x | provenance |  |
+| capture.swift:116:9:116:9 | x | capture.swift:117:26:117:26 | x | provenance |  |
+| capture.swift:116:13:116:27 | source(...) | capture.swift:116:9:116:9 | x | provenance |  |
+| capture.swift:117:22:117:22 | x | capture.swift:117:36:117:36 | x | provenance |  |
+| capture.swift:117:22:117:22 | x | capture.swift:121:5:121:11 | closure [x] | provenance |  |
+| capture.swift:117:26:117:26 | x | capture.swift:117:22:117:22 | x | provenance |  |
+| capture.swift:117:29:117:32 | blah | capture.swift:121:5:121:11 | closure [blah] | provenance |  |
+| capture.swift:117:36:117:36 | x | capture.swift:117:29:117:32 | blah | provenance |  |
+| capture.swift:121:5:121:11 | closure [blah] | capture.swift:119:14:119:17 | blah | provenance |  |
+| capture.swift:121:5:121:11 | closure [x] | capture.swift:118:14:118:14 | x | provenance |  |
 | capture.swift:147:5:147:5 | x | capture.swift:149:5:149:12 | closure2 [x] | provenance |  |
 | capture.swift:147:9:147:23 | source(...) | capture.swift:147:5:147:5 | x | provenance |  |
 | capture.swift:149:5:149:12 | closure2 [x] | capture.swift:143:14:143:14 | x | provenance |  |
@@ -92,6 +105,13 @@ edges
 | capture.swift:156:13:156:25 | source(...) | capture.swift:156:9:156:9 | x | provenance |  |
 | capture.swift:158:18:158:21 | self [x] | capture.swift:158:18:158:23 | ... .x | provenance |  |
 | capture.swift:160:9:160:15 | closure [self, x] | capture.swift:158:18:158:21 | self [x] | provenance |  |
+| capture.swift:164:9:164:9 | x | capture.swift:165:26:165:29 | self [x] | provenance |  |
+| capture.swift:164:13:164:25 | source(...) | capture.swift:164:9:164:9 | x | provenance |  |
+| capture.swift:165:26:165:29 | self [x] | capture.swift:165:26:165:29 | self [x] | provenance |  |
+| capture.swift:165:26:165:29 | self [x] | capture.swift:169:9:169:15 | closure [self, x] | provenance |  |
+| capture.swift:166:18:166:21 | self [x] | capture.swift:166:18:166:23 | ... .x | provenance |  |
+| capture.swift:169:9:169:15 | closure [self, x] | capture.swift:166:18:166:21 | self [x] | provenance |  |
+| capture.swift:169:9:169:15 | closure [self, x] | capture.swift:167:18:167:18 | x | provenance |  |
 | enums.swift:12:9:12:9 | e [case1.0] | enums.swift:14:12:14:12 | e [case1.0] | provenance |  |
 | enums.swift:12:13:12:35 | ... .case1(...) [case1.0] | enums.swift:12:9:12:9 | e [case1.0] | provenance |  |
 | enums.swift:12:21:12:34 | source(...) | enums.swift:12:13:12:35 | ... .case1(...) [case1.0] | provenance |  |
@@ -142,6 +162,7 @@ edges
 | enums.swift:82:12:82:12 | e [foo.0] | enums.swift:83:10:83:23 | ... .foo(...) [foo.0] | provenance |  |
 | enums.swift:83:10:83:23 | ... .foo(...) [foo.0] | enums.swift:83:22:83:22 | x | provenance |  |
 | enums.swift:83:22:83:22 | x | enums.swift:84:14:84:14 | x | provenance |  |
+
 
 
 | implicit-self.swift:16:9:16:12 | [post] self [x] | implicit-self.swift:17:14:17:17 | self [x] | provenance |  |
@@ -444,7 +465,21 @@ nodes
 | capture.swift:105:23:105:24 | x1 | semmle.label | x1 |
 | capture.swift:105:28:105:28 | x | semmle.label | x |
 | capture.swift:106:14:106:15 | x1 | semmle.label | x1 |
+| capture.swift:108:23:108:23 | x | semmle.label | x |
+| capture.swift:108:23:108:23 | x | semmle.label | x |
+| capture.swift:109:14:109:14 | x | semmle.label | x |
 | capture.swift:111:5:111:12 | closure1 [x1] | semmle.label | closure1 [x1] |
+| capture.swift:112:5:112:12 | closure2 [x] | semmle.label | closure2 [x] |
+| capture.swift:116:9:116:9 | x | semmle.label | x |
+| capture.swift:116:13:116:27 | source(...) | semmle.label | source(...) |
+| capture.swift:117:22:117:22 | x | semmle.label | x |
+| capture.swift:117:26:117:26 | x | semmle.label | x |
+| capture.swift:117:29:117:32 | blah | semmle.label | blah |
+| capture.swift:117:36:117:36 | x | semmle.label | x |
+| capture.swift:118:14:118:14 | x | semmle.label | x |
+| capture.swift:119:14:119:17 | blah | semmle.label | blah |
+| capture.swift:121:5:121:11 | closure [blah] | semmle.label | closure [blah] |
+| capture.swift:121:5:121:11 | closure [x] | semmle.label | closure [x] |
 | capture.swift:143:14:143:14 | x | semmle.label | x |
 | capture.swift:147:5:147:5 | x | semmle.label | x |
 | capture.swift:147:9:147:23 | source(...) | semmle.label | source(...) |
@@ -454,6 +489,14 @@ nodes
 | capture.swift:158:18:158:21 | self [x] | semmle.label | self [x] |
 | capture.swift:158:18:158:23 | ... .x | semmle.label | ... .x |
 | capture.swift:160:9:160:15 | closure [self, x] | semmle.label | closure [self, x] |
+| capture.swift:164:9:164:9 | x | semmle.label | x |
+| capture.swift:164:13:164:25 | source(...) | semmle.label | source(...) |
+| capture.swift:165:26:165:29 | self [x] | semmle.label | self [x] |
+| capture.swift:165:26:165:29 | self [x] | semmle.label | self [x] |
+| capture.swift:166:18:166:21 | self [x] | semmle.label | self [x] |
+| capture.swift:166:18:166:23 | ... .x | semmle.label | ... .x |
+| capture.swift:167:18:167:18 | x | semmle.label | x |
+| capture.swift:169:9:169:15 | closure [self, x] | semmle.label | closure [self, x] |
 | enums.swift:12:9:12:9 | e [case1.0] | semmle.label | e [case1.0] |
 | enums.swift:12:13:12:35 | ... .case1(...) [case1.0] | semmle.label | ... .case1(...) [case1.0] |
 | enums.swift:12:21:12:34 | source(...) | semmle.label | source(...) |
@@ -511,6 +554,7 @@ nodes
 | enums.swift:83:10:83:23 | ... .foo(...) [foo.0] | semmle.label | ... .foo(...) [foo.0] |
 | enums.swift:83:22:83:22 | x | semmle.label | x |
 | enums.swift:84:14:84:14 | x | semmle.label | x |
+
 
 
 | implicit-self.swift:16:9:16:12 | [post] self [x] | semmle.label | [post] self [x] |
@@ -803,8 +847,13 @@ testFailures
 | capture.swift:95:10:95:10 | y | capture.swift:93:13:93:26 | source(...) | capture.swift:95:10:95:10 | y | $@ | capture.swift:93:13:93:26 | source(...) | source(...) |
 | capture.swift:98:14:98:14 | x | capture.swift:93:13:93:26 | source(...) | capture.swift:98:14:98:14 | x | $@ | capture.swift:93:13:93:26 | source(...) | source(...) |
 | capture.swift:106:14:106:15 | x1 | capture.swift:104:13:104:27 | source(...) | capture.swift:106:14:106:15 | x1 | $@ | capture.swift:104:13:104:27 | source(...) | source(...) |
+| capture.swift:109:14:109:14 | x | capture.swift:104:13:104:27 | source(...) | capture.swift:109:14:109:14 | x | $@ | capture.swift:104:13:104:27 | source(...) | source(...) |
+| capture.swift:118:14:118:14 | x | capture.swift:116:13:116:27 | source(...) | capture.swift:118:14:118:14 | x | $@ | capture.swift:116:13:116:27 | source(...) | source(...) |
+| capture.swift:119:14:119:17 | blah | capture.swift:116:13:116:27 | source(...) | capture.swift:119:14:119:17 | blah | $@ | capture.swift:116:13:116:27 | source(...) | source(...) |
 | capture.swift:143:14:143:14 | x | capture.swift:147:9:147:23 | source(...) | capture.swift:143:14:143:14 | x | $@ | capture.swift:147:9:147:23 | source(...) | source(...) |
 | capture.swift:158:18:158:23 | ... .x | capture.swift:156:13:156:25 | source(...) | capture.swift:158:18:158:23 | ... .x | $@ | capture.swift:156:13:156:25 | source(...) | source(...) |
+| capture.swift:166:18:166:23 | ... .x | capture.swift:164:13:164:25 | source(...) | capture.swift:166:18:166:23 | ... .x | $@ | capture.swift:164:13:164:25 | source(...) | source(...) |
+| capture.swift:167:18:167:18 | x | capture.swift:164:13:164:25 | source(...) | capture.swift:167:18:167:18 | x | $@ | capture.swift:164:13:164:25 | source(...) | source(...) |
 | enums.swift:16:14:16:14 | x | enums.swift:12:21:12:34 | source(...) | enums.swift:16:14:16:14 | x | $@ | enums.swift:12:21:12:34 | source(...) | source(...) |
 | enums.swift:27:14:27:14 | x | enums.swift:23:21:23:34 | source(...) | enums.swift:27:14:27:14 | x | $@ | enums.swift:23:21:23:34 | source(...) | source(...) |
 | enums.swift:36:10:36:10 | x | enums.swift:34:21:34:34 | source(...) | enums.swift:36:10:36:10 | x | $@ | enums.swift:34:21:34:34 | source(...) | source(...) |
@@ -814,6 +863,7 @@ testFailures
 | enums.swift:65:10:65:14 | opt_x | enums.swift:63:31:63:44 | source(...) | enums.swift:65:10:65:14 | opt_x | $@ | enums.swift:63:31:63:44 | source(...) | source(...) |
 | enums.swift:76:14:76:14 | x | enums.swift:73:34:73:47 | source(...) | enums.swift:76:14:76:14 | x | $@ | enums.swift:73:34:73:47 | source(...) | source(...) |
 | enums.swift:84:14:84:14 | x | enums.swift:73:34:73:47 | source(...) | enums.swift:84:14:84:14 | x | $@ | enums.swift:73:34:73:47 | source(...) | source(...) |
+
 
 
 | implicit-self.swift:17:14:17:19 | ... .x | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:17:14:17:19 | ... .x | $@ | implicit-self.swift:16:18:16:31 | source(...) | source(...) |
