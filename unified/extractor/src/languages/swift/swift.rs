@@ -958,9 +958,20 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (array_literal element: {els})
         ),
         rule!((arrayElement expression: @e) => expr { e }),
-        // A dictionary literal (`["a": 1]`) is kept as an opaque `map_literal`
-        // leaf (its source span).
-        rule!((dictionaryExpr) => (map_literal)),
+        // An empty dictionary literal, `[:]`.
+        rule!((dictionaryExpr content: ":") => (map_literal)),
+        // A non-empty dictionary literal, `[key: value]`.
+        rule!(
+            (dictionaryExpr content: (dictionaryElement)* @els)
+            =>
+            (map_literal element: {els})
+        ),
+        // A key-value pair, `key: value`.
+        rule!(
+            (dictionaryElement key: @key value: @value)
+            =>
+            (key_value_pair key: {key} value: {value})
+        ),
         // A subscript access (`xs[0]`) is modelled as a call. swift-syntax does
         // report a distinct `subscriptCallExpr`, so giving
         // subscripts their own shape needs only a `subscript_expr` node in

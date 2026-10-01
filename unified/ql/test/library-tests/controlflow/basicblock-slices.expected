@@ -342,7 +342,7 @@
 | 413 | cfg.swift:413:5:413:9 | field | 'field -> 0 -^ ... = ...' |
 | 417 | cfg.swift:417:1:419:1 | func dictionaryLiteral | 'func dictionaryLiteral' |
 | 417 | cfg.swift:417:24:417:24 | x | 'x -> y -> Block' |
-| 418 | cfg.swift:418:10:418:25 | MapLiteral | 'MapLiteral -^ ReturnExpr' |
+| 418 | cfg.swift:418:11:418:13 | "x" | '"x" -> x -^ KeyValuePair -> "y" -> y -^ KeyValuePair -^ MapLiteral -^ ReturnExpr' |
 | 421 | cfg.swift:421:1:444:1 | func localDeclarations | 'func localDeclarations' |
 | 421 | cfg.swift:421:33:444:1 | Block | 'Block' |
 | 422 | cfg.swift:422:3:427:3 | class MyLocalClass | 'class MyLocalClass -V MyLocalClass' |
