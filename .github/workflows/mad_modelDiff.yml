@@ -28,12 +28,12 @@ jobs:
         slug: ${{fromJson(github.event.inputs.projects || '["apache/commons-codec", "apache/commons-io", "apache/commons-beanutils", "apache/commons-logging", "apache/commons-fileupload", "apache/commons-lang", "apache/commons-validator", "apache/commons-csv", "apache/dubbo"]' )}}
     steps:
       - name: Clone github/codeql from PR
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         if: github.event.pull_request
         with:
           path: codeql-pr
       - name: Clone github/codeql from main
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           path: codeql-main
           ref: main
@@ -99,12 +99,12 @@ jobs:
             name="diff_${basename/.model.yml/""}"
             (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
           done
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: models-${{ steps.shortname.outputs.SHORTNAME }}
           path: tmp-models/**/**/*.model.yml
           retention-days: 20
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: diffs-${{ steps.shortname.outputs.SHORTNAME }}
           path: tmp-models/*.html

@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
       - name: Create empty database
@@ -37,13 +37,13 @@ jobs:
         run: |
           DATABASE="${{ runner.temp }}/java-database"
           codeql database analyze --format=sarif-latest --output=metrics-java.sarif -- "$DATABASE" ./java/ql/src/Metrics/Summaries/FrameworkCoverage.ql
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: metrics-java.sarif
           path: metrics-java.sarif
           retention-days: 20
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@main
+        uses: github/codeql-action/upload-sarif@14c568a92663d5bba4fc64d9a8d97c0e00e015a2 # main
         with:
           sarif_file: metrics-java.sarif
   
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
       - name: Create empty database
@@ -64,12 +64,12 @@ jobs:
         run: |
           DATABASE="${{ runner.temp }}/csharp-database"
           codeql database analyze --format=sarif-latest --output=metrics-csharp.sarif -- "$DATABASE" ./csharp/ql/src/Metrics/Summaries/FrameworkCoverage.ql
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: metrics-csharp.sarif
           path: metrics-csharp.sarif
           retention-days: 20
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@main
+        uses: github/codeql-action/upload-sarif@14c568a92663d5bba4fc64d9a8d97c0e00e015a2 # main
         with:
           sarif_file: metrics-csharp.sarif

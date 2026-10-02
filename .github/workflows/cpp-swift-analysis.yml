@@ -28,11 +28,11 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@main
+      uses: github/codeql-action/init@14c568a92663d5bba4fc64d9a8d97c0e00e015a2 # main
       # Override language selection by uncommenting this and choosing your languages
       with:
         languages: cpp
@@ -50,4 +50,4 @@ jobs:
         bazel shutdown
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@main
+      uses: github/codeql-action/analyze@14c568a92663d5bba4fc64d9a8d97c0e00e015a2 # main
