@@ -1142,16 +1142,14 @@ private predicate interpretForwardsModelType(
  * at calls to `forwarder`.
  */
 private predicate interpretForwardsModel(
-  Function forwarder, Constructor constructor, int start, string output, string provenance,
-  string model
+  Function forwarder, Class c, int start, string output, string provenance, string model
 ) {
-  interpretForwardsModelType(forwarder, constructor.getDeclaringType(), start, output, provenance,
-    model)
+  interpretForwardsModelType(forwarder, c, start, output, provenance, model)
 }
 
 /** Holds if `forwarder` forwards its arguments starting at `start` to `constructor`. */
-predicate forwards(Function forwarder, Constructor constructor, int start) {
-  interpretForwardsModel(forwarder, constructor, start, _, _, _)
+predicate forwards(Function forwarder, Class c, int start) {
+  interpretForwardsModel(forwarder, c, start, _, _, _)
 }
 
 private int referenceIndirection(Type unspecified) {
@@ -1164,6 +1162,388 @@ private Type stripReference(Type unspecified) {
   or
   not unspecified instanceof ReferenceType and
   result = unspecified
+}
+
+/**
+ * Encapsulates predicates used to compute which constructor a perfect
+ * forwarding function targets.
+ */
+module ConstructorForwarding {
+  private import codeql.util.Boolean
+
+  private class ConvertingConstructor extends Constructor {
+    Type fromType;
+
+    ConvertingConstructor() {
+      not this.isFromUninstantiatedTemplate(_) and
+      not this.isExplicit() and
+      not this.isDeleted() and
+      not this instanceof CopyConstructor and
+      not this instanceof MoveConstructor and
+      fromType = this.getParameter(0).getUnderlyingType() and
+      forall(int index | index > 0 and exists(this.getParameter(index)) |
+        this.getParameter(index).hasInitializer()
+      )
+    }
+
+    Type getUnderlyingFromType() { result = fromType }
+  }
+
+  private Type getForwardedArgumentType(Function forwarder, int start, int i) {
+    forwards(forwarder, _, start) and
+    i = [0 .. forwarder.getNumberOfParameters() - start - 1] and
+    result = forwarder.getParameter(start + i).getUnderlyingType()
+  }
+
+  private Type getConstructorParameterType(Cpp::Constructor constructor, int i) {
+    forwards(_, constructor.getDeclaringType(), _) and
+    result = constructor.getParameter(i).getUnderlyingType()
+  }
+
+  private newtype ValueCategory =
+    LValue() or
+    XValue() or
+    PRValue()
+
+  bindingset[t1, t2]
+  pragma[inline_late]
+  private predicate preservesQualifiers(Type t1, Type t2) {
+    (t1.isConst() implies t2.isConst()) and
+    (t1.isVolatile() implies t2.isVolatile())
+  }
+
+  private predicate baseTypeCompatible(Type arg, Type param) {
+    param.stripTopLevelSpecifiers() = arg.stripTopLevelSpecifiers().(Class).getABaseClass+() and
+    preservesQualifiers(arg, param)
+  }
+
+  private predicate voidType(Type t) { t.stripTopLevelSpecifiers() instanceof VoidType }
+
+  private predicate routineType(Type t) { t.stripTopLevelSpecifiers() instanceof RoutineType }
+
+  private predicate pointerConversion(Cpp::PointerType arg, Cpp::PointerType param) {
+    exists(Type argBase, Type paramBase |
+      argBase = arg.getBaseType() and
+      paramBase = param.getBaseType()
+    |
+      baseTypeCompatible(argBase, paramBase)
+      or
+      voidType(paramBase) and
+      not routineType(argBase) and
+      preservesQualifiers(argBase, paramBase)
+    )
+  }
+
+  private predicate nullPointerConversion(Type t) {
+    t instanceof Cpp::PointerType or t instanceof FunctionPointerType
+  }
+
+  private predicate booleanConversion(Type t) {
+    t instanceof Cpp::PointerType
+    or
+    t instanceof FunctionPointerType
+    or
+    t instanceof Cpp::ArrayType
+    or
+    t instanceof RoutineType
+  }
+
+  private predicate referenceAcceptsCategory(Cpp::ReferenceType t, ValueCategory category) {
+    if t instanceof Cpp::LValueReferenceType
+    then
+      category = LValue()
+      or
+      exists(Type base |
+        base = t.getBaseType() and
+        base.isConst() and
+        not base.isVolatile()
+      )
+    else category != LValue()
+  }
+
+  /**
+   * Tracks the ordering of standard conversions. All phases allow parameter matching
+   * and, if none has been used, a user-defined conversion that resets to `Initial()`.
+   */
+  private newtype Phase =
+    // Allows array/function decay, a value or base-class conversion, or pointer qualification.
+    Initial() or
+    // Allows a value or base-class conversion or pointer qualification, but no further decay.
+    AfterTransformation() or
+    // Allows only pointer qualification among the remaining conversion steps.
+    AfterValueConversion() or
+    // Allows no further conversion steps.
+    AfterQualification()
+
+  private predicate isUnderlyingType(Type type) { type = type.getUnderlyingType() }
+
+  private newtype TTypeState =
+    MkTypeState(Type type, ValueCategory category, Boolean conversionUsed, Phase phase) {
+      not type instanceof Cpp::ReferenceType and
+      not type instanceof FunctionReferenceType and
+      isUnderlyingType(type)
+    }
+
+  private ValueCategory getCategoryForRef(Cpp::ReferenceType reference) {
+    reference instanceof Cpp::LValueReferenceType and result = LValue()
+    or
+    reference instanceof Cpp::RValueReferenceType and result = XValue()
+  }
+
+  private Type getValueType(Type t, ValueCategory category) {
+    result = t.(FunctionReferenceType).getBaseType().getUnderlyingType() and
+    category = LValue()
+    or
+    result = t.(Cpp::ReferenceType).getBaseType().getUnderlyingType() and
+    category = getCategoryForRef(t)
+    or
+    not t instanceof FunctionReferenceType and
+    not t instanceof Cpp::ReferenceType and
+    result = t and
+    category = PRValue()
+  }
+
+  bindingset[arg, param]
+  pragma[inline_late]
+  private predicate qualificationCompatible(Type arg, Type param) {
+    arg.stripTopLevelSpecifiers() = param.stripTopLevelSpecifiers() and
+    preservesQualifiers(arg, param)
+  }
+
+  private class TypeState extends TTypeState {
+    Type getType() { this = MkTypeState(result, _, _, _) }
+
+    ValueCategory getCategory() { this = MkTypeState(_, result, _, _) }
+
+    Phase getPhase() { this = MkTypeState(_, _, _, result) }
+
+    /** Holds if this state's phase permits a value or base-class conversion. */
+    predicate canConvertValue() {
+      this.getPhase() = Initial() or this.getPhase() = AfterTransformation()
+    }
+
+    predicate hasNotUsedConversion() { this = MkTypeState(_, _, false, _) }
+
+    string toString() { result = this.getType().toString() }
+
+    predicate isSource(Type argType) {
+      argType = getForwardedArgumentType(_, _, _) and
+      exists(ValueCategory category |
+        this = MkTypeState(getValueType(argType, category), category, false, Initial())
+      )
+    }
+
+    predicate matchesParameter(Type paramType) {
+      exists(Type base | base = paramType.(Cpp::ReferenceType).getBaseType() |
+        qualificationCompatible(this.getType(), base) and
+        referenceAcceptsCategory(paramType, this.getCategory())
+      )
+      or
+      not paramType instanceof Cpp::ReferenceType and
+      this.getType().stripTopLevelSpecifiers() = paramType.stripTopLevelSpecifiers()
+    }
+
+    predicate isSink(Type paramType, Cpp::Constructor constructor) {
+      paramType = getConstructorParameterType(constructor, _) and
+      this.matchesParameter(paramType)
+    }
+  }
+
+  private Cpp::PointerType pointerType(Type base) {
+    result.getBaseType() = base.getUnderlyingType()
+  }
+
+  private predicate arrayToPointerStep(TypeState argState, TypeState paramState) {
+    exists(Cpp::ArrayType array, boolean conversionUsed |
+      argState = MkTypeState(array, _, conversionUsed, Initial()) and
+      paramState =
+        MkTypeState(pointerType(array.getBaseType()), PRValue(), conversionUsed,
+          AfterTransformation())
+    )
+  }
+
+  private predicate functionToPointerStep(TypeState argState, TypeState paramState) {
+    exists(RoutineType routine, FunctionPointerType pointer, boolean conversionUsed |
+      argState = MkTypeState(routine, _, conversionUsed, Initial()) and
+      routine = pointer.getBaseType().getUnderlyingType() and
+      paramState = MkTypeState(pointer, PRValue(), conversionUsed, AfterTransformation())
+    )
+  }
+
+  private predicate arithmeticConversion(Type t) {
+    t instanceof ArithmeticType
+    or
+    t instanceof Enum and not t instanceof ScopedEnum
+  }
+
+  private predicate hasNoTopLevelSpecifiers(Type type) { type = type.stripTopLevelSpecifiers() }
+
+  private predicate valueConversionStep(TypeState argState, TypeState paramState) {
+    exists(Type argType, Type paramType, boolean conversionUsed |
+      argState = MkTypeState(_, _, conversionUsed, _) and
+      argState.canConvertValue() and
+      argType = argState.getType().stripTopLevelSpecifiers() and
+      hasNoTopLevelSpecifiers(paramType) and
+      argType != paramType and
+      paramState = MkTypeState(paramType, PRValue(), conversionUsed, AfterValueConversion())
+    |
+      paramType instanceof ArithmeticType and
+      arithmeticConversion(argType)
+      or
+      pointerConversion(argType, paramType)
+      or
+      argType instanceof NullPointerType and
+      nullPointerConversion(paramType)
+      or
+      booleanConversion(argType) and
+      paramType instanceof BoolType
+    )
+  }
+
+  private newtype PtrKind =
+    NormalPtrKind() or
+    FunPtrKind()
+
+  private Type pointerBase(Type pointer, PtrKind k) {
+    result = pointer.(Cpp::PointerType).getBaseType() and
+    k = NormalPtrKind()
+    or
+    result = pointer.(FunctionPointerType).getBaseType() and
+    k = FunPtrKind()
+  }
+
+  private predicate pointerQualificationStep(TypeState argState, TypeState paramState) {
+    exists(Type argType, Type paramType, boolean conversionUsed, PtrKind k |
+      argState = MkTypeState(_, _, conversionUsed, _) and
+      argState.getPhase() != AfterQualification() and
+      argType = argState.getType().stripTopLevelSpecifiers() and
+      hasNoTopLevelSpecifiers(paramType) and
+      argType != paramType and
+      qualificationCompatible(pointerBase(argType, k), pointerBase(paramType, k)) and
+      paramState = MkTypeState(paramType, PRValue(), conversionUsed, AfterQualification())
+    )
+  }
+
+  private predicate baseClassStep(TypeState argState, TypeState paramState) {
+    exists(Type arg, Type param, ValueCategory category, boolean conversionUsed |
+      argState = MkTypeState(arg, category, conversionUsed, _) and
+      argState.canConvertValue() and
+      baseTypeCompatible(arg, param) and
+      paramState = MkTypeState(param, category, conversionUsed, AfterValueConversion())
+    )
+  }
+
+  private predicate convertingConstructorStep(TypeState argState, TypeState paramState) {
+    exists(ConvertingConstructor constructor |
+      argState.hasNotUsedConversion() and
+      argState.matchesParameter(constructor.getUnderlyingFromType()) and
+      paramState = MkTypeState(constructor.getDeclaringType(), PRValue(), true, Initial())
+    )
+  }
+
+  private predicate conversionOperatorStep(TypeState argState, TypeState paramState) {
+    exists(ConversionOperator conversion, ValueCategory category |
+      not conversion.isFromUninstantiatedTemplate(_) and
+      not conversion.isExplicit() and
+      not conversion.isDeleted() and
+      argState.hasNotUsedConversion() and
+      conversion.getSourceType() =
+        argState.getType().stripTopLevelSpecifiers().(Class).getABaseClass*() and
+      paramState =
+        MkTypeState(getValueType(conversion.getDestType().getUnderlyingType(), category), category,
+          true, Initial())
+    )
+  }
+
+  private predicate step(TypeState argState, TypeState paramState) {
+    arrayToPointerStep(argState, paramState)
+    or
+    functionToPointerStep(argState, paramState)
+    or
+    valueConversionStep(argState, paramState)
+    or
+    pointerQualificationStep(argState, paramState)
+    or
+    baseClassStep(argState, paramState)
+    or
+    convertingConstructorStep(argState, paramState)
+    or
+    conversionOperatorStep(argState, paramState)
+  }
+
+  private predicate typeFwd(TypeState state) {
+    state.isSource(_)
+    or
+    exists(TypeState previous |
+      typeFwd(previous) and
+      step(previous, state)
+    )
+  }
+
+  private predicate typeRev(TypeState state, Cpp::Constructor constructor) {
+    typeFwd(state) and
+    (
+      state.isSink(_, constructor)
+      or
+      exists(TypeState next |
+        typeRev(next, constructor) and
+        step(state, next)
+      )
+    )
+  }
+
+  private predicate prunedStep(TypeState argState, TypeState paramState) {
+    exists(Cpp::Constructor constructor |
+      typeRev(argState, constructor) and
+      typeRev(paramState, constructor) and
+      step(argState, paramState)
+    )
+  }
+
+  private predicate compatible(Function forwarder, int start, int i, Cpp::Constructor constructor) {
+    exists(TypeState argState, TypeState paramState |
+      argState.isSource(getForwardedArgumentType(forwarder, start, i)) and
+      paramState.isSink(getConstructorParameterType(constructor, i), constructor) and
+      prunedStep*(argState, paramState)
+    )
+  }
+
+  /**
+   * Gets the `Constructor` that should be invoked with arguments `0 .. n`
+   * when `forwarder` is called with arguments `start + 0 .. start + n`.
+   */
+  Cpp::Constructor getForwardingConstructor(Function forwarder, int start) {
+    exists(int numberOfForwardedArguments |
+      numberOfForwardedArguments <= result.getNumberOfParameters()
+      or
+      result.isVarargs()
+    |
+      forwards(forwarder, result.getDeclaringType(), start) and
+      forwarder.getNumberOfParameters() = start + numberOfForwardedArguments and
+      forex(int i | i = [0 .. result.getNumberOfParameters() - 1] |
+        // If we are still processing the forwarded arguments then we need to
+        // check that the argument types match the parameter types.
+        // Functions that perform perfect forwarding are always written as:
+        // ```
+        // template<typename... Args> void emplace(Args&&... args) { ... }
+        // ```
+        // and so all the arguments will be reference typed (lvalue or rvalued).
+        // However, the constructor may not specify all the arguments by
+        // reference.
+        i < numberOfForwardedArguments and
+        compatible(forwarder, start, i, result)
+        or
+        // If the constructor has a default argument and we have processed all
+        // the forwarded arguments then we don't need to check the types.
+        i >= numberOfForwardedArguments and result.getParameter(i).hasInitializer()
+      )
+    )
+  }
+
+  /** Holds if `call` is a call that forwards arguments to a constructor call. */
+  predicate isForwarderConstructorArgumentNodeImpl(CallInstruction call) {
+    exists(getForwardingConstructor(call.getStaticCallTarget(), _))
+  }
 }
 
 /**
@@ -1189,12 +1569,14 @@ private Type stripReference(Type unspecified) {
 private predicate interpretForwardingSummary(
   Function forwarder, string input, string output, string provenance, string model
 ) {
-  exists(Constructor constructor, int start, string constructorOutput |
-    interpretForwardsModel(forwarder, constructor, start, constructorOutput, provenance, model)
+  exists(Class c, int start, string constructorOutput |
+    interpretForwardsModel(forwarder, c, start, constructorOutput, provenance, model)
   |
     // Generate the (1) summary
-    exists(int index, Parameter arg, Parameter p, int indirection |
+    exists(int index, Parameter arg, Parameter p, int indirection, Cpp::Constructor constructor |
       arg = forwarder.getParameter(start + index) and
+      constructor = ConstructorForwarding::getForwardingConstructor(forwarder, start) and
+      constructor.getDeclaringType() = c and
       p = constructor.getParameter(index) and
       indirection = [0 .. SsaImpl::getMaxIndirectionsForPRType(p.getUnspecifiedType())] and
       input =
