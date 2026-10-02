@@ -5,8 +5,11 @@
 /// ```yaml
 /// supertypes:
 ///   _expression:
-///     - assignment
-///     - binary
+///     subtypes:
+///       - assignment
+///       - binary
+///     fields:
+///       operand*: _expression
 ///
 /// named:
 ///   assignment:
@@ -31,11 +34,37 @@ use serde_json::json;
 #[derive(Deserialize, Default)]
 struct YamlNodeTypes {
     #[serde(default)]
-    supertypes: BTreeMap<String, Vec<TypeRef>>,
+    supertypes: BTreeMap<String, YamlSupertype>,
     #[serde(default)]
     named: BTreeMap<String, Option<BTreeMap<String, TypeRefOrList>>>,
     #[serde(default)]
     unnamed: Vec<String>,
+}
+
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum YamlSupertype {
+    Subtypes(Vec<TypeRef>),
+    Detailed {
+        subtypes: Vec<TypeRef>,
+        #[serde(default)]
+        fields: BTreeMap<String, TypeRefOrList>,
+    },
+}
+
+impl YamlSupertype {
+    fn subtypes(&self) -> &[TypeRef] {
+        match self {
+            Self::Subtypes(subtypes) | Self::Detailed { subtypes, .. } => subtypes,
+        }
+    }
+
+    fn fields(&self) -> Option<&BTreeMap<String, TypeRefOrList>> {
+        match self {
+            Self::Subtypes(_) => None,
+            Self::Detailed { fields, .. } => Some(fields),
+        }
+    }
 }
 
 /// A reference to a node type. Can be:
@@ -151,16 +180,19 @@ pub fn convert(yaml_input: &str) -> Result<String, String> {
     let mut output = Vec::new();
 
     // 1. Supertypes
-    for (name, members) in &yaml.supertypes {
-        let subtypes: Vec<_> = members
+    for (name, supertype) in &yaml.supertypes {
+        let subtypes: Vec<_> = supertype
+            .subtypes()
             .iter()
             .map(|m| resolve_type_ref(m, &named_types, &unnamed_types))
             .collect();
-        output.push(json!({
+        let mut entry = json!({
             "type": name,
             "named": true,
             "subtypes": subtypes,
-        }));
+        });
+        add_fields_to_json_entry(&mut entry, supertype.fields(), &named_types, &unnamed_types);
+        output.push(entry);
     }
 
     // 2. Named nodes
@@ -186,19 +218,33 @@ pub fn convert(yaml_input: &str) -> Result<String, String> {
             Some(m) => m,
         };
 
-        let mut json_fields = serde_json::Map::new();
-        let mut json_children: Option<serde_json::Value> = None;
+        let mut entry = json!({
+            "type": name,
+            "named": true,
+            "fields": {},
+        });
+        add_fields_to_json_entry(&mut entry, Some(fields_map), &named_types, &unnamed_types);
 
-        for (raw_field_name, type_refs) in fields_map {
+        output.push(entry);
+    }
+
+    fn add_fields_to_json_entry(
+        entry: &mut serde_json::Value,
+        fields: Option<&BTreeMap<String, TypeRefOrList>>,
+        named_types: &BTreeSet<String>,
+        unnamed_types: &BTreeSet<String>,
+    ) {
+        let mut json_fields = serde_json::Map::new();
+        let mut json_children = None;
+
+        for (raw_field_name, type_refs) in fields.into_iter().flatten() {
             let spec = parse_field_name(raw_field_name);
             let types: Vec<_> = type_refs
                 .clone()
                 .into_vec()
                 .iter()
-                .map(|t| resolve_type_ref(t, &named_types, &unnamed_types))
+                .map(|t| resolve_type_ref(t, named_types, unnamed_types))
                 .collect();
-
-            // Cloning to make the borrow checker happy
             let field_info = json!({
                 "multiple": spec.multiple,
                 "required": spec.required,
@@ -208,25 +254,20 @@ pub fn convert(yaml_input: &str) -> Result<String, String> {
             if let Some(name) = spec.name {
                 json_fields.insert(name, field_info);
             } else {
-                // $children
                 json_children = Some(field_info);
             }
         }
 
-        let mut entry = json!({
-            "type": name,
-            "named": true,
-            "fields": json_fields,
-        });
-
+        entry
+            .as_object_mut()
+            .unwrap()
+            .insert("fields".to_string(), json_fields.into());
         if let Some(children) = json_children {
             entry
                 .as_object_mut()
                 .unwrap()
                 .insert("children".to_string(), children);
         }
-
-        output.push(entry);
     }
 
     // 3. Unnamed tokens
@@ -265,35 +306,53 @@ pub fn extend_schema_from_yaml(
 fn record_field_order(schema: &mut crate::schema::Schema, yaml_input: &str) -> Result<(), String> {
     let value: serde_yaml::Value = serde_yaml::from_str(yaml_input)
         .map_err(|e| format!("Failed to parse YAML for field order: {e}"))?;
-    let Some(named) = value.get("named").and_then(|v| v.as_mapping()) else {
-        return Ok(());
-    };
-    for (node_name, fields) in named {
-        let Some(node_name) = node_name.as_str() else {
-            continue;
-        };
-        let Some(fields) = fields.as_mapping() else {
-            continue; // node with no fields (null)
-        };
-        let mut order = Vec::new();
-        for (raw_field_name, _) in fields {
-            let Some(raw) = raw_field_name.as_str() else {
-                continue;
-            };
-            // Skip the unnamed/`child` slot; the dump handles it separately.
-            if let Some(name) = parse_field_name(raw).name {
-                order.push(schema.register_field(&name));
-            }
+    record_field_order_for_nodes(schema, value.get("named").and_then(|v| v.as_mapping()));
+    let supertypes = value.get("supertypes").and_then(|v| v.as_mapping());
+    if let Some(supertypes) = supertypes {
+        for (node_name, declaration) in supertypes {
+            let fields = declaration
+                .as_mapping()
+                .and_then(|mapping| mapping.get("fields"));
+            record_field_order_for_node(schema, node_name, fields);
         }
-        schema.set_field_order(node_name, order);
     }
     Ok(())
 }
 
-fn apply_yaml_to_schema(
-    yaml: &YamlNodeTypes,
+fn record_field_order_for_nodes(
     schema: &mut crate::schema::Schema,
+    nodes: Option<&serde_yaml::Mapping>,
 ) {
+    for (node_name, fields) in nodes.into_iter().flatten() {
+        record_field_order_for_node(schema, node_name, Some(fields));
+    }
+}
+
+fn record_field_order_for_node(
+    schema: &mut crate::schema::Schema,
+    node_name: &serde_yaml::Value,
+    fields: Option<&serde_yaml::Value>,
+) {
+    let Some(node_name) = node_name.as_str() else {
+        return;
+    };
+    let Some(fields) = fields.and_then(|fields| fields.as_mapping()) else {
+        return;
+    };
+    let mut order = Vec::new();
+    for (raw_field_name, _) in fields {
+        let Some(raw) = raw_field_name.as_str() else {
+            continue;
+        };
+        // Skip the unnamed/`child` slot; the dump handles it separately.
+        if let Some(name) = parse_field_name(raw).name {
+            order.push(schema.register_field(&name));
+        }
+    }
+    schema.set_field_order(node_name, order);
+}
+
+fn apply_yaml_to_schema(yaml: &YamlNodeTypes, schema: &mut crate::schema::Schema) {
     // Register all supertypes as node kinds
     for name in yaml.supertypes.keys() {
         schema.register_kind(name);
@@ -302,14 +361,10 @@ fn apply_yaml_to_schema(
     // Register named node kinds and their fields
     for (name, fields_opt) in &yaml.named {
         schema.register_kind(name);
-        if let Some(fields) = fields_opt {
-            for raw_field_name in fields.keys() {
-                let spec = parse_field_name(raw_field_name);
-                if let Some(field_name) = &spec.name {
-                    schema.register_field(field_name);
-                }
-            }
-        }
+        register_fields(schema, fields_opt.as_ref());
+    }
+    for supertype in yaml.supertypes.values() {
+        register_fields(schema, supertype.fields());
     }
 
     // Register unnamed tokens as node kinds
@@ -326,8 +381,9 @@ fn apply_yaml_to_schema(
     }
     let unnamed_types: BTreeSet<String> = yaml.unnamed.iter().cloned().collect();
 
-    for (supertype, members) in &yaml.supertypes {
-        let node_types = members
+    for (supertype, declaration) in &yaml.supertypes {
+        let node_types = declaration
+            .subtypes()
             .iter()
             .map(|m| {
                 let (kind, named) = resolve_type_ref_pair(m, &named_types, &unnamed_types);
@@ -339,38 +395,71 @@ fn apply_yaml_to_schema(
 
     // Register allowed field child types for type checking.
     for (parent_kind, fields_opt) in &yaml.named {
-        let Some(fields) = fields_opt else {
-            continue;
-        };
+        apply_fields_to_schema(
+            schema,
+            parent_kind,
+            fields_opt.as_ref(),
+            &named_types,
+            &unnamed_types,
+        );
+    }
+    for (parent_kind, supertype) in &yaml.supertypes {
+        apply_fields_to_schema(
+            schema,
+            parent_kind,
+            supertype.fields(),
+            &named_types,
+            &unnamed_types,
+        );
+    }
+}
 
-        for (raw_field_name, type_refs) in fields {
-            let spec = parse_field_name(raw_field_name);
-            let field_id = match &spec.name {
-                Some(name) => schema.register_field(name),
-                None => CHILD_FIELD,
-            };
-
-            let mut node_types = type_refs
-                .clone()
-                .into_vec()
-                .into_iter()
-                .map(|type_ref| {
-                    let (kind, named) = resolve_type_ref_pair(&type_ref, &named_types, &unnamed_types);
-                    crate::schema::NodeType { kind, named }
-                })
-                .collect::<Vec<_>>();
-            node_types.sort_by(|a, b| a.kind.cmp(&b.kind).then(a.named.cmp(&b.named)));
-            node_types.dedup_by(|a, b| a.kind == b.kind && a.named == b.named);
-            schema.set_field_types(parent_kind, field_id, node_types);
-            schema.set_field_cardinality(
-                parent_kind,
-                field_id,
-                crate::schema::FieldCardinality {
-                    multiple: spec.multiple,
-                    required: spec.required,
-                },
-            );
+fn register_fields(
+    schema: &mut crate::schema::Schema,
+    fields: Option<&BTreeMap<String, TypeRefOrList>>,
+) {
+    if let Some(fields) = fields {
+        for raw_field_name in fields.keys() {
+            if let Some(field_name) = parse_field_name(raw_field_name).name {
+                schema.register_field(&field_name);
+            }
         }
+    }
+}
+
+fn apply_fields_to_schema(
+    schema: &mut crate::schema::Schema,
+    parent_kind: &str,
+    fields: Option<&BTreeMap<String, TypeRefOrList>>,
+    named_types: &BTreeSet<String>,
+    unnamed_types: &BTreeSet<String>,
+) {
+    for (raw_field_name, type_refs) in fields.into_iter().flatten() {
+        let spec = parse_field_name(raw_field_name);
+        let field_id = match &spec.name {
+            Some(name) => schema.register_field(name),
+            None => CHILD_FIELD,
+        };
+        let mut node_types = type_refs
+            .clone()
+            .into_vec()
+            .into_iter()
+            .map(|type_ref| {
+                let (kind, named) = resolve_type_ref_pair(&type_ref, named_types, unnamed_types);
+                crate::schema::NodeType { kind, named }
+            })
+            .collect::<Vec<_>>();
+        node_types.sort_by(|a, b| a.kind.cmp(&b.kind).then(a.named.cmp(&b.named)));
+        node_types.dedup_by(|a, b| a.kind == b.kind && a.named == b.named);
+        schema.set_field_types(parent_kind, field_id, node_types);
+        schema.set_field_cardinality(
+            parent_kind,
+            field_id,
+            crate::schema::FieldCardinality {
+                multiple: spec.multiple,
+                required: spec.required,
+            },
+        );
     }
 }
 
@@ -411,6 +500,12 @@ struct JsonFieldInfo {
     types: Vec<JsonNodeType>,
 }
 
+struct JsonSupertype {
+    subtypes: Vec<JsonNodeType>,
+    fields: BTreeMap<String, JsonFieldInfo>,
+    children: Option<JsonFieldInfo>,
+}
+
 /// Convert a tree-sitter node-types.json string to the YAML format.
 pub fn convert_from_json(json_input: &str) -> Result<String, String> {
     let nodes: Vec<JsonNodeInfo> =
@@ -427,7 +522,7 @@ pub fn convert_from_json(json_input: &str) -> Result<String, String> {
         }
     }
 
-    let mut supertypes: BTreeMap<String, Vec<JsonNodeType>> = BTreeMap::new();
+    let mut supertypes: BTreeMap<String, JsonSupertype> = BTreeMap::new();
     let mut named: BTreeMap<String, Option<BTreeMap<String, JsonFieldInfo>>> = BTreeMap::new();
     let mut unnamed: Vec<String> = Vec::new();
 
@@ -438,7 +533,14 @@ pub fn convert_from_json(json_input: &str) -> Result<String, String> {
         }
 
         if !node.subtypes.is_empty() {
-            supertypes.insert(node.kind, node.subtypes);
+            supertypes.insert(
+                node.kind,
+                JsonSupertype {
+                    subtypes: node.subtypes,
+                    fields: node.fields,
+                    children: node.children,
+                },
+            );
             continue;
         }
 
@@ -463,13 +565,35 @@ pub fn convert_from_json(json_input: &str) -> Result<String, String> {
     // Supertypes
     if !supertypes.is_empty() {
         writeln!(out, "supertypes:").unwrap();
-        for (name, members) in &supertypes {
-            writeln!(out, "  {name}:").unwrap();
-            for member in members {
+        for (name, supertype) in &supertypes {
+            if supertype.fields.is_empty() && supertype.children.is_none() {
+                writeln!(out, "  {name}:").unwrap();
+            } else {
+                writeln!(out, "  {name}:").unwrap();
+                writeln!(out, "    subtypes:").unwrap();
+            }
+            let indent = if supertype.fields.is_empty() && supertype.children.is_none() {
+                "    "
+            } else {
+                "      "
+            };
+            for member in &supertype.subtypes {
                 let ref_str = format_type_ref(&member.kind, member.named, &all_named, &all_unnamed);
-                writeln!(out, "    - {ref_str}").unwrap();
+                writeln!(out, "{indent}- {ref_str}").unwrap();
+            }
+            if !supertype.fields.is_empty() || supertype.children.is_some() {
+                writeln!(out, "    fields:").unwrap();
+                write_json_fields(
+                    &mut out,
+                    &supertype.fields,
+                    supertype.children.as_ref(),
+                    "      ",
+                    &all_named,
+                    &all_unnamed,
+                );
             }
         }
+
         writeln!(out).unwrap();
     }
 
@@ -483,31 +607,7 @@ pub fn convert_from_json(json_input: &str) -> Result<String, String> {
                 }
                 Some(fields) => {
                     writeln!(out, "  {name}:").unwrap();
-                    for (field_name, info) in fields {
-                        let suffix = field_suffix(info.multiple, info.required);
-                        let yaml_name = if field_name == "$children" {
-                            format!("$children{suffix}")
-                        } else {
-                            format!("{field_name}{suffix}")
-                        };
-
-                        let type_refs: Vec<String> = info
-                            .types
-                            .iter()
-                            .map(|t| format_type_ref(&t.kind, t.named, &all_named, &all_unnamed))
-                            .collect();
-
-                        if type_refs.len() == 1 {
-                            writeln!(out, "    {yaml_name}: {}", type_refs[0]).unwrap();
-                        } else {
-                            let list = type_refs
-                                .iter()
-                                .map(|s| s.as_str())
-                                .collect::<Vec<_>>()
-                                .join(", ");
-                            writeln!(out, "    {yaml_name}: [{list}]").unwrap();
-                        }
-                    }
+                    write_json_fields(&mut out, fields, None, "    ", &all_named, &all_unnamed);
                 }
             }
         }
@@ -523,6 +623,38 @@ pub fn convert_from_json(json_input: &str) -> Result<String, String> {
     }
 
     Ok(out)
+}
+
+fn write_json_fields(
+    out: &mut String,
+    fields: &BTreeMap<String, JsonFieldInfo>,
+    children: Option<&JsonFieldInfo>,
+    indent: &str,
+    all_named: &BTreeSet<String>,
+    all_unnamed: &BTreeSet<String>,
+) {
+    for (field_name, info) in fields
+        .iter()
+        .map(|(name, info)| (Some(name.as_str()), info))
+        .chain(children.map(|info| (None, info)))
+    {
+        let suffix = field_suffix(info.multiple, info.required);
+        let yaml_name = match field_name {
+            Some(name) => format!("{name}{suffix}"),
+            None => format!("$children{suffix}"),
+        };
+        let type_refs: Vec<String> = info
+            .types
+            .iter()
+            .map(|t| format_type_ref(&t.kind, t.named, all_named, all_unnamed))
+            .collect();
+
+        if type_refs.len() == 1 {
+            writeln!(out, "{indent}{yaml_name}: {}", type_refs[0]).unwrap();
+        } else {
+            writeln!(out, "{indent}{yaml_name}: [{}]", type_refs.join(", ")).unwrap();
+        }
+    }
 }
 
 fn field_suffix(multiple: bool, required: bool) -> &'static str {
@@ -725,6 +857,50 @@ named:
     }
 
     #[test]
+    fn test_supertype_fields() {
+        let yaml = r#"
+supertypes:
+  callable:
+    subtypes:
+      - function
+      - closure
+    fields:
+      parameter*: parameter
+      body?: block
+
+named:
+  function:
+  closure:
+  parameter:
+  block:
+"#;
+
+        let json = convert(yaml).unwrap();
+        let result: Vec<serde_json::Value> = serde_json::from_str(&json).unwrap();
+        let callable = result.iter().find(|n| n["type"] == "callable").unwrap();
+        assert_eq!(callable["subtypes"].as_array().unwrap().len(), 2);
+        assert_eq!(callable["fields"]["parameter"]["multiple"], true);
+        assert_eq!(callable["fields"]["parameter"]["required"], false);
+        assert_eq!(callable["fields"]["body"]["multiple"], false);
+        assert_eq!(callable["fields"]["body"]["required"], false);
+
+        let schema = schema_from_yaml(yaml).unwrap();
+        let parameter = schema.field_id_for_name("parameter").unwrap();
+        assert!(schema.field_types("callable", parameter).is_some());
+        assert_eq!(
+            schema.field_cardinality("callable", parameter),
+            Some(crate::schema::FieldCardinality {
+                multiple: true,
+                required: false,
+            })
+        );
+        assert_eq!(
+            schema.field_order("callable"),
+            Some(&vec![parameter, schema.field_id_for_name("body").unwrap()])
+        );
+    }
+
+    #[test]
     fn test_json_to_yaml() {
         let json = r#"[
             {"type": "_expression", "named": true, "subtypes": [
@@ -793,5 +969,31 @@ unnamed:
         let v1: serde_json::Value = serde_json::from_str(&json).unwrap();
         let v2: serde_json::Value = serde_json::from_str(&json2).unwrap();
         assert_eq!(v1, v2);
+    }
+
+    #[test]
+    fn test_supertype_fields_round_trip() {
+        let yaml = r#"
+supertypes:
+  callable:
+    subtypes: [function, closure]
+    fields:
+      parameter*: parameter
+      body?: block
+
+named:
+  function:
+  closure:
+  parameter:
+  block:
+"#;
+
+        let json = convert(yaml).unwrap();
+        let yaml_output = convert_from_json(&json).unwrap();
+        let json_output = convert(&yaml_output).unwrap();
+        assert_eq!(
+            serde_json::from_str::<serde_json::Value>(&json).unwrap(),
+            serde_json::from_str::<serde_json::Value>(&json_output).unwrap()
+        );
     }
 }
