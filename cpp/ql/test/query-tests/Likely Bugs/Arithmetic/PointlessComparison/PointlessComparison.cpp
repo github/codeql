@@ -43,3 +43,9 @@ int extreme_values(void)
 	if (y >> 1 >= 0x7FFFFFFFFFFF) {} // $ Alert[cpp/constant-comparison] // always true
 	if (y >> 1 >= 0xFFFFFFFFFFF) {} // $ Alert[cpp/constant-comparison] // always true
 }
+
+// Test for overlap between PointlessComparison and PointlessSelfComparison
+// (PointlessComparison should *not* report this)
+bool selfCmp1(int x) {
+  return (x == (int)x);
+}
