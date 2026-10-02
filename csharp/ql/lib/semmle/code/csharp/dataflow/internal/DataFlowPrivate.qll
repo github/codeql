@@ -2230,7 +2230,7 @@ private predicate readStepPattern(Node node1, Content c, Node node2) {
     // item = variable in node1 = (..., variable, ...) in a case/is (var ..., var ...)
     exists(AssignableDefinitions::PatternDefinition lvd |
       node2.(AssignableDefinitionNode).getDefinition() = lvd and
-      item = lvd.getDeclaration()
+      item.(BindingPatternExpr).getVariableDeclExpr() = lvd.getDeclaration()
     )
   )
   or
