@@ -215,6 +215,16 @@ func main() {
 			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-Token, X-Client")
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 		})
+		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+			origin := req.Header.Get("origin")
+			switch req.Method {
+			case "allowed":
+				w.Header().Set("Access-Control-Allow-Origin", origin)
+			default:
+				w.Header().Set("Access-Control-Allow-Origin", origin) // $ Alert
+			}
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+		})
 	}
 }
 

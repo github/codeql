@@ -1,0 +1,273 @@
+controlsResult
+| guards.go:12:7:12:15 | ...<... | negative | true |
+| guards.go:12:7:12:15 | ...<... | positive | false |
+| guards.go:12:7:12:15 | ...<... | zero | false |
+| guards.go:14:7:14:16 | ...==... | positive | false |
+| guards.go:14:7:14:16 | ...==... | zero | true |
+| guards.go:16:2:17:18 | case clause | positive | true |
+| guards.go:23:2:24:21 | case clause | tagged one or two | false |
+| guards.go:23:2:24:21 | case clause | tagged other | false |
+| guards.go:23:2:24:21 | case clause | tagged zero | true |
+| guards.go:25:2:26:27 | case clause | tagged other | false |
+| guards.go:27:2:28:22 | case clause | tagged other | true |
+| guards.go:34:2:35:30 | case clause | tagged false boolean | true |
+| guards.go:34:7:34:11 | value | tagged false boolean | false |
+| guards.go:38:2:39:29 | case clause | tagged true boolean | true |
+| guards.go:38:7:38:11 | value | tagged true boolean | true |
+| guards.go:42:2:43:33 | case clause | tagged false comparison | true |
+| guards.go:42:7:42:17 | ...<... | tagged false comparison | false |
+| guards.go:48:5:48:5 | a | compound true | true |
+| guards.go:48:5:48:17 | ...&&... | compound false | false |
+| guards.go:48:5:48:17 | ...&&... | compound true | true |
+| guards.go:48:11:48:16 | ...\|\|... | compound true | true |
+| guards.go:56:5:56:20 | ...==... | upcast | true |
+| guards.go:59:5:59:19 | ...==... | downcast | true |
+| guards.go:62:5:62:22 | ...==... | upcast narrow | true |
+| guards.go:68:5:68:15 | ...<=... | above ten | false |
+| guards.go:68:5:68:15 | ...<=... | at most ten | true |
+| guards.go:73:5:73:15 | ...<=... | at least ten | true |
+| guards.go:73:5:73:15 | ...<=... | below ten | false |
+| guards.go:81:10:81:14 | value | ssa copy | true |
+| guards.go:82:5:82:8 | copy | ssa copy | true |
+| guards.go:87:5:87:9 | value | ssa phi | true |
+| guards.go:90:5:90:7 | phi | ssa phi | true |
+| guards.go:96:5:96:18 | ...==... | nil pointer | true |
+| guards.go:96:5:96:18 | ...==... | non-nil pointer | false |
+| guards.go:102:5:102:26 | ...==... | typed nil pointer | true |
+| guards.go:106:5:106:21 | ...==... | new result | true |
+| guards.go:110:5:110:27 | ...==... | make result | true |
+| guards.go:114:5:114:24 | ...==... | composite literal | true |
+| guards.go:118:5:118:32 | ...==... | errors new | true |
+| guards.go:122:5:122:32 | ...==... | fmt errorf | true |
+| guards.go:126:5:126:28 | ...==... | source non-nil return | true |
+| guards.go:137:2:138:26 | case clause | default case | false |
+| guards.go:137:2:138:26 | case clause | non-default case | true |
+| guards.go:139:2:140:22 | case clause | default case | true |
+| guards.go:146:2:147:29 | case clause | default before case | true |
+| guards.go:148:2:149:28 | case clause | case after default | true |
+| guards.go:148:2:149:28 | case clause | default before case | false |
+| guards.go:155:2:156:22 | case clause | default only | true |
+| guards.go:162:7:162:11 | value | expressionless case | true |
+| guards.go:162:7:162:11 | value | expressionless default | false |
+| guards.go:164:2:165:32 | case clause | expressionless default | true |
+| guards.go:183:5:183:21 | call to isNotNil | non-variadic wrapper | true |
+| guards.go:194:5:194:32 | call to namedResultIsNotNil | named result wrapper | true |
+| guards.go:208:5:208:43 | call to conditionalNamedResultIsNotNil | conditional named result wrapper | true |
+| guards.go:224:5:224:31 | call to isNotNil | method wrapper | true |
+| guards.go:230:5:230:50 | call to isNotNil | method expression wrapper | true |
+| guards.go:236:5:236:31 | call to isNotNil | interface method wrapper | true |
+| guards.go:248:5:248:24 | call to isNotNil | receiver method wrapper | true |
+| guards.go:254:5:254:44 | call to isNotNil | receiver method expression wrapper | true |
+| guards.go:264:5:264:24 | call to isNotNil | promoted receiver method wrapper | true |
+| guards.go:270:5:270:24 | call to isNotNil | implicit address receiver method wrapper | true |
+| guards.go:282:5:282:22 | call to isTrue | implicit dereference receiver method wrapper | true |
+| guards.go:296:5:296:18 | call to check | indirect wrapper | true |
+| guards.go:306:5:306:20 | call to hasArgs | implicit variadic wrapper | true |
+| guards.go:309:5:309:24 | call to hasArgs | explicit variadic wrapper | true |
+valueControlsResult
+| guards.go:12:7:12:11 | value | negative | Upper bound -1 |
+| guards.go:12:7:12:11 | value | positive | Lower bound 0 |
+| guards.go:12:7:12:11 | value | zero | Lower bound 0 |
+| guards.go:12:7:12:15 | ...<... | negative | true |
+| guards.go:12:7:12:15 | ...<... | positive | false |
+| guards.go:12:7:12:15 | ...<... | zero | false |
+| guards.go:14:7:14:11 | value | positive | not 0 |
+| guards.go:14:7:14:11 | value | zero | 0 |
+| guards.go:14:7:14:16 | ...==... | positive | false |
+| guards.go:14:7:14:16 | ...==... | zero | true |
+| guards.go:16:2:17:18 | case clause | positive | true |
+| guards.go:22:9:22:13 | value | tagged one or two | not 0 |
+| guards.go:22:9:22:13 | value | tagged other | not 0 |
+| guards.go:22:9:22:13 | value | tagged other | not 1 |
+| guards.go:22:9:22:13 | value | tagged other | not 2 |
+| guards.go:22:9:22:13 | value | tagged zero | 0 |
+| guards.go:23:2:24:21 | case clause | tagged one or two | false |
+| guards.go:23:2:24:21 | case clause | tagged other | false |
+| guards.go:23:2:24:21 | case clause | tagged zero | true |
+| guards.go:25:2:26:27 | case clause | tagged other | false |
+| guards.go:27:2:28:22 | case clause | tagged other | true |
+| guards.go:34:2:35:30 | case clause | tagged false boolean | true |
+| guards.go:34:7:34:11 | value | tagged false boolean | false |
+| guards.go:38:2:39:29 | case clause | tagged true boolean | true |
+| guards.go:38:7:38:11 | value | tagged true boolean | true |
+| guards.go:42:2:43:33 | case clause | tagged false comparison | true |
+| guards.go:42:7:42:12 | number | tagged false comparison | Lower bound 10 |
+| guards.go:42:7:42:17 | ...<... | tagged false comparison | false |
+| guards.go:48:5:48:5 | a | compound true | true |
+| guards.go:48:5:48:17 | ...&&... | compound false | false |
+| guards.go:48:5:48:17 | ...&&... | compound true | true |
+| guards.go:48:11:48:16 | ...\|\|... | compound true | true |
+| guards.go:56:5:56:15 | type conversion | upcast | 0 |
+| guards.go:56:5:56:20 | ...==... | upcast | true |
+| guards.go:56:11:56:14 | wide | upcast | 0 |
+| guards.go:59:5:59:14 | type conversion | downcast | 0 |
+| guards.go:59:5:59:19 | ...==... | downcast | true |
+| guards.go:62:5:62:17 | type conversion | upcast narrow | 0 |
+| guards.go:62:5:62:22 | ...==... | upcast narrow | true |
+| guards.go:62:11:62:16 | narrow | upcast narrow | 0 |
+| guards.go:68:5:68:9 | value | above ten | Lower bound 11 |
+| guards.go:68:5:68:9 | value | at most ten | Upper bound 10 |
+| guards.go:68:5:68:15 | ...<=... | above ten | false |
+| guards.go:68:5:68:15 | ...<=... | at most ten | true |
+| guards.go:73:5:73:15 | ...<=... | at least ten | true |
+| guards.go:73:5:73:15 | ...<=... | below ten | false |
+| guards.go:73:11:73:15 | value | at least ten | Lower bound 10 |
+| guards.go:73:11:73:15 | value | below ten | Upper bound 9 |
+| guards.go:81:10:81:14 | value | ssa copy | true |
+| guards.go:82:5:82:8 | copy | ssa copy | true |
+| guards.go:87:5:87:9 | value | ssa phi | true |
+| guards.go:90:5:90:7 | phi | ssa phi | true |
+| guards.go:96:5:96:11 | pointer | nil pointer | null |
+| guards.go:96:5:96:11 | pointer | non-nil pointer | not null |
+| guards.go:96:5:96:18 | ...==... | nil pointer | true |
+| guards.go:96:5:96:18 | ...==... | non-nil pointer | false |
+| guards.go:102:5:102:11 | pointer | typed nil pointer | null |
+| guards.go:102:5:102:26 | ...==... | typed nil pointer | true |
+| guards.go:106:5:106:9 | value | new result | not null |
+| guards.go:106:5:106:21 | ...==... | new result | true |
+| guards.go:110:5:110:9 | value | make result | not null |
+| guards.go:110:5:110:27 | ...==... | make result | true |
+| guards.go:110:14:110:27 | call to make | composite literal | no exception |
+| guards.go:110:14:110:27 | call to make | errors new | no exception |
+| guards.go:110:14:110:27 | call to make | fmt errorf | no exception |
+| guards.go:110:14:110:27 | call to make | make result | no exception |
+| guards.go:110:14:110:27 | call to make | source non-nil return | no exception |
+| guards.go:114:5:114:9 | value | composite literal | not null |
+| guards.go:114:5:114:24 | ...==... | composite literal | true |
+| guards.go:118:5:118:9 | value | errors new | not null |
+| guards.go:118:5:118:32 | ...==... | errors new | true |
+| guards.go:118:14:118:32 | call to New | errors new | no exception |
+| guards.go:118:14:118:32 | call to New | fmt errorf | no exception |
+| guards.go:118:14:118:32 | call to New | source non-nil return | no exception |
+| guards.go:122:5:122:9 | value | fmt errorf | not null |
+| guards.go:122:5:122:32 | ...==... | fmt errorf | true |
+| guards.go:122:14:122:32 | call to Errorf | fmt errorf | no exception |
+| guards.go:122:14:122:32 | call to Errorf | source non-nil return | no exception |
+| guards.go:126:5:126:9 | value | source non-nil return | not null |
+| guards.go:126:5:126:28 | ...==... | source non-nil return | true |
+| guards.go:126:14:126:28 | call to returnsNonNil | source non-nil return | no exception |
+| guards.go:136:9:136:13 | value | default case | not 0 |
+| guards.go:136:9:136:13 | value | non-default case | 0 |
+| guards.go:137:2:138:26 | case clause | default case | false |
+| guards.go:137:2:138:26 | case clause | non-default case | true |
+| guards.go:139:2:140:22 | case clause | default case | true |
+| guards.go:145:9:145:13 | value | case after default | 0 |
+| guards.go:145:9:145:13 | value | default before case | not 0 |
+| guards.go:146:2:147:29 | case clause | default before case | true |
+| guards.go:148:2:149:28 | case clause | case after default | true |
+| guards.go:148:2:149:28 | case clause | default before case | false |
+| guards.go:155:2:156:22 | case clause | default only | true |
+| guards.go:162:7:162:11 | value | expressionless case | true |
+| guards.go:162:7:162:11 | value | expressionless default | false |
+| guards.go:164:2:165:32 | case clause | expressionless default | true |
+| guards.go:183:5:183:21 | call to isNotNil | non-variadic wrapper | no exception |
+| guards.go:183:5:183:21 | call to isNotNil | non-variadic wrapper | true |
+| guards.go:183:14:183:20 | pointer | non-variadic wrapper | not null |
+| guards.go:194:5:194:32 | call to namedResultIsNotNil | named result wrapper | no exception |
+| guards.go:194:5:194:32 | call to namedResultIsNotNil | named result wrapper | true |
+| guards.go:194:25:194:31 | pointer | named result wrapper | not null |
+| guards.go:208:5:208:43 | call to conditionalNamedResultIsNotNil | conditional named result wrapper | no exception |
+| guards.go:208:5:208:43 | call to conditionalNamedResultIsNotNil | conditional named result wrapper | true |
+| guards.go:208:36:208:42 | pointer | conditional named result wrapper | not null |
+| guards.go:224:5:224:31 | call to isNotNil | method wrapper | no exception |
+| guards.go:224:5:224:31 | call to isNotNil | method wrapper | true |
+| guards.go:224:24:224:30 | pointer | method wrapper | not null |
+| guards.go:230:5:230:50 | call to isNotNil | method expression wrapper | no exception |
+| guards.go:230:5:230:50 | call to isNotNil | method expression wrapper | true |
+| guards.go:230:43:230:49 | pointer | method expression wrapper | not null |
+| guards.go:236:5:236:31 | call to isNotNil | interface method wrapper | no exception |
+| guards.go:236:5:236:31 | call to isNotNil | interface method wrapper | true |
+| guards.go:248:5:248:13 | validator | receiver method wrapper | not null |
+| guards.go:248:5:248:24 | call to isNotNil | receiver method wrapper | no exception |
+| guards.go:248:5:248:24 | call to isNotNil | receiver method wrapper | true |
+| guards.go:254:5:254:44 | call to isNotNil | receiver method expression wrapper | no exception |
+| guards.go:254:5:254:44 | call to isNotNil | receiver method expression wrapper | true |
+| guards.go:254:35:254:43 | validator | receiver method expression wrapper | not null |
+| guards.go:264:5:264:24 | call to isNotNil | promoted receiver method wrapper | no exception |
+| guards.go:264:5:264:24 | call to isNotNil | promoted receiver method wrapper | true |
+| guards.go:270:5:270:24 | call to isNotNil | implicit address receiver method wrapper | no exception |
+| guards.go:270:5:270:24 | call to isNotNil | implicit address receiver method wrapper | true |
+| guards.go:282:5:282:22 | call to isTrue | implicit dereference receiver method wrapper | no exception |
+| guards.go:282:5:282:22 | call to isTrue | implicit dereference receiver method wrapper | true |
+| guards.go:296:5:296:18 | call to check | indirect wrapper | no exception |
+| guards.go:296:5:296:18 | call to check | indirect wrapper | true |
+| guards.go:306:5:306:20 | call to hasArgs | implicit variadic wrapper | no exception |
+| guards.go:306:5:306:20 | call to hasArgs | implicit variadic wrapper | true |
+| guards.go:309:5:309:24 | call to hasArgs | explicit variadic wrapper | no exception |
+| guards.go:309:5:309:24 | call to hasArgs | explicit variadic wrapper | true |
+| guards.go:309:13:309:20 | pointers | explicit variadic wrapper | not null |
+| guards.go:321:2:321:22 | call to ensureNotNil | after assertion | no exception |
+| guards.go:321:15:321:21 | pointer | after assertion | not null |
+ensuresEqResult
+| guards.go:14:7:14:16 | ...==... | 0 = value | true |
+| guards.go:14:7:14:16 | ...==... | value = 0 | true |
+| guards.go:23:2:24:21 | case clause | 0 = value | true |
+| guards.go:23:2:24:21 | case clause | value = 0 | true |
+| guards.go:56:5:56:20 | ...==... | 0 = type conversion | true |
+| guards.go:56:5:56:20 | ...==... | type conversion = 0 | true |
+| guards.go:59:5:59:19 | ...==... | 0 = type conversion | true |
+| guards.go:59:5:59:19 | ...==... | type conversion = 0 | true |
+| guards.go:62:5:62:22 | ...==... | 0 = type conversion | true |
+| guards.go:62:5:62:22 | ...==... | type conversion = 0 | true |
+| guards.go:96:5:96:18 | ...==... | nil = pointer | true |
+| guards.go:96:5:96:18 | ...==... | pointer = nil | true |
+| guards.go:102:5:102:26 | ...==... | pointer = type conversion | true |
+| guards.go:102:5:102:26 | ...==... | type conversion = pointer | true |
+| guards.go:106:5:106:21 | ...==... | call to new = value | true |
+| guards.go:106:5:106:21 | ...==... | value = call to new | true |
+| guards.go:110:5:110:27 | ...==... | call to make = value | true |
+| guards.go:110:5:110:27 | ...==... | value = call to make | true |
+| guards.go:114:5:114:24 | ...==... | &... = value | true |
+| guards.go:114:5:114:24 | ...==... | value = &... | true |
+| guards.go:118:5:118:32 | ...==... | call to New = value | true |
+| guards.go:118:5:118:32 | ...==... | value = call to New | true |
+| guards.go:122:5:122:32 | ...==... | call to Errorf = value | true |
+| guards.go:122:5:122:32 | ...==... | value = call to Errorf | true |
+| guards.go:126:5:126:28 | ...==... | call to returnsNonNil = value | true |
+| guards.go:126:5:126:28 | ...==... | value = call to returnsNonNil | true |
+| guards.go:137:2:138:26 | case clause | 0 = value | true |
+| guards.go:137:2:138:26 | case clause | value = 0 | true |
+| guards.go:148:2:149:28 | case clause | 0 = value | true |
+| guards.go:148:2:149:28 | case clause | value = 0 | true |
+| guards.go:171:2:172:13 | case clause | 0 = value | true |
+| guards.go:171:2:172:13 | case clause | value = 0 | true |
+| guards.go:179:9:179:22 | ...!=... | nil = pointer | false |
+| guards.go:179:9:179:22 | ...!=... | pointer = nil | false |
+| guards.go:189:10:189:23 | ...!=... | nil = pointer | false |
+| guards.go:189:10:189:23 | ...!=... | pointer = nil | false |
+| guards.go:200:5:200:18 | ...==... | nil = pointer | true |
+| guards.go:200:5:200:18 | ...==... | pointer = nil | true |
+| guards.go:220:9:220:22 | ...!=... | nil = pointer | false |
+| guards.go:220:9:220:22 | ...!=... | pointer = nil | false |
+| guards.go:244:9:244:24 | ...!=... | nil = validator | false |
+| guards.go:244:9:244:24 | ...!=... | validator = nil | false |
+| guards.go:278:9:278:25 | ...==... | true = validator | true |
+| guards.go:278:9:278:25 | ...==... | validator = true | true |
+| guards.go:302:9:302:21 | ...!=... | nil = values | false |
+| guards.go:302:9:302:21 | ...!=... | values = nil | false |
+| guards.go:315:5:315:18 | ...==... | nil = pointer | true |
+| guards.go:315:5:315:18 | ...==... | pointer = nil | true |
+| guards.go:328:9:328:22 | ...!=... | nil = pointer | false |
+| guards.go:328:9:328:22 | ...!=... | pointer = nil | false |
+| guards.go:353:5:353:32 | ...==... | 0 = call to modelZeroGuard | true |
+| guards.go:353:5:353:32 | ...==... | call to modelZeroGuard = 0 | true |
+| guards.go:356:5:356:35 | ...!=... | 0 = call to modelNotZeroGuard | false |
+| guards.go:356:5:356:35 | ...!=... | call to modelNotZeroGuard = 0 | false |
+| guards.go:359:5:359:34 | ...==... | call to modelNullGuard = nil | true |
+| guards.go:359:5:359:34 | ...==... | nil = call to modelNullGuard | true |
+| guards.go:362:5:362:37 | ...!=... | call to modelNotNullGuard = nil | false |
+| guards.go:362:5:362:37 | ...!=... | nil = call to modelNotNullGuard | false |
+defaultCaseResult
+| guards.go:16:2:17:18 | case clause | positive | true |
+| guards.go:27:2:28:22 | case clause | tagged other | true |
+| guards.go:139:2:140:22 | case clause | default case | true |
+| guards.go:146:2:147:29 | case clause | default before case | true |
+| guards.go:155:2:156:22 | case clause | default only | true |
+| guards.go:164:2:165:32 | case clause | expressionless default | true |
+modelBarrierResult
+| guards.go:351:27:351:33 | pointer | model bool | model-bool |
+| guards.go:354:27:354:33 | pointer | model zero | model-zero |
+| guards.go:357:31:357:37 | pointer | model not zero | model-not-zero |
+| guards.go:360:27:360:33 | pointer | model null | model-null |
+| guards.go:363:31:363:37 | pointer | model not null | model-not-null |
+| guards.go:366:34:366:40 | pointer | model no exception | model-no-exception |

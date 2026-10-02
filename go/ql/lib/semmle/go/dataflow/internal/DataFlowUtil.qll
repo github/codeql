@@ -5,6 +5,7 @@ overlay[local?]
 module;
 
 private import go
+private import semmle.go.controlflow.Guards
 private import semmle.go.dataflow.FunctionInputsAndOutputs
 private import semmle.go.dataflow.ExternalFlow
 private import DataFlowPrivate
@@ -356,26 +357,64 @@ private module WithParam<ParamSig P> {
 }
 
 /**
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `value`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ */
+signature predicate valueGuardChecksSig(Guard g, Expr e, GuardValue value);
+
+bindingset[this]
+private signature class ValueParamSig;
+
+private module WithValueParam<ValueParamSig P> {
+  /**
+   * Holds if the guard `g` validates the expression `e` upon evaluating to `value`.
+   *
+   * The expression `e` is expected to be a syntactic part of the guard `g`.
+   */
+  signature predicate guardChecksSig(Guard g, Expr e, GuardValue value, P param);
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ */
+module BarrierGuardValue<valueGuardChecksSig/3 guardChecks> {
+  private predicate guardChecksWithParam(Guard g, Expr e, GuardValue value, Unit param) {
+    guardChecks(g, e, value) and exists(param)
+  }
+
+  private module B = ParameterizedBarrierGuardValue<Unit, guardChecksWithParam/4>;
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() { result = B::getABarrierNode(_) }
+}
+
+/**
  * Provides a set of barrier nodes for a guard that validates an expression.
  *
  * This is expected to be used in `isBarrier`/`isSanitizer` definitions
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
-  private predicate guardChecks(Node g, Expr e, boolean branch, Unit param) {
-    guardChecks(g, e, branch) and exists(param)
+  private predicate guardChecksValue(Guard g, Expr e, GuardValue value) {
+    guardChecks(DataFlow::exprNode(g), e, value.asBooleanValue())
   }
 
-  private module B = ParameterizedBarrierGuard<Unit, guardChecks/4>;
+  private module B = BarrierGuardValue<guardChecksValue/3>;
 
   /** Gets a node that is safely guarded by the given guard check. */
-  Node getABarrierNode() { result = B::getABarrierNode(_) }
+  Node getABarrierNode() { result = B::getABarrierNode() }
 
   /**
    * Gets a node that is safely guarded by the given guard check.
    */
   Node getABarrierNodeForGuard(Node guardCheck) {
-    result = B::getABarrierNodeForGuard(guardCheck, _)
+    result =
+      ParameterizedBarrierGuard<Unit, guardChecksWithParam/4>::getABarrierNodeForGuard(guardCheck, _)
+  }
+
+  private predicate guardChecksWithParam(Node g, Expr e, boolean branch, Unit param) {
+    guardChecks(g, e, branch) and exists(param)
   }
 }
 
@@ -385,14 +424,16 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
  * This is expected to be used in `isBarrier`/`isSanitizer` definitions
  * in data flow and taint tracking.
  */
-module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+module ParameterizedBarrierGuardValue<
+  ValueParamSig P, WithValueParam<P>::guardChecksSig/4 guardChecks>
+{
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode(P param) {
-    exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var |
+    exists(Guard guard, GuardValue value, SsaWithFields var |
       result = pragma[only_bind_out](var).getAUse()
     |
-      guards(_, guard, _, var, param) and
-      pragma[only_bind_out](guard).dominates(result.getBasicBlock())
+      guards(_, guard, value, _, var, param) and
+      pragma[only_bind_out](guard).valueControls(result.getBasicBlock(), value)
     )
   }
 
@@ -400,39 +441,36 @@ module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guar
    * Gets a node that is safely guarded by the given guard check.
    */
   Node getABarrierNodeForGuard(Node guardCheck, P param) {
-    exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var | result = var.getAUse() |
-      guards(guardCheck, guard, _, var, param) and
-      guard.dominates(result.getBasicBlock())
+    exists(Guard guard, GuardValue value, SsaWithFields var | result = var.getAUse() |
+      guards(guardCheck, guard, value, _, var, param) and
+      guard.valueControls(result.getBasicBlock(), value)
     )
   }
 
   /**
-   * Holds if `guard` marks a point in the control-flow graph where `g`
-   * is known to validate `nd`, which is represented by `ap`.
+   * Holds if `guard` evaluating to `branch` marks a point in the control-flow
+   * graph where `g` is known to validate `nd`, which is represented by `ap`.
    *
    * This predicate exists to enforce a good join order in `getAGuardedNode`.
    */
   pragma[noinline]
-  private predicate guards(
-    Node g, ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields ap, P param
-  ) {
-    guards(g, guard, nd, param) and nd = ap.getAUse()
+  private predicate guards(Node g, Guard guard, GuardValue value, Node nd, SsaWithFields ap, P param) {
+    guards(g, guard, value, nd, param) and nd = ap.getAUse()
   }
 
   /**
-   * Holds if `guard` marks a point in the control-flow graph where `g`
-   * is known to validate `nd`.
+   * Holds if `guard` evaluating to `branch` marks a point in the control-flow
+   * graph where `g` is known to validate `nd`.
    */
-  private predicate guards(Node g, ControlFlow::ConditionGuardNode guard, Node nd, P param) {
-    exists(boolean branch |
-      guardChecks(g, nd.asExpr(), branch, param) and
-      guard.ensures(g, branch)
-    )
+  private predicate guards(Node g, Guard guard, GuardValue value, Node nd, P param) {
+    guardChecks(g.asExpr(), nd.asExpr(), value, param) and
+    guard = g.asExpr()
     or
-    exists(DataFlow::Property p, Node resNode, Node check, boolean outcome |
+    exists(DataFlow::Property p, Node resNode, Node check, boolean branch |
       guardingCall(g, _, _, _, p, _, nd, resNode, param) and
-      p.checkOn(check, outcome, resNode) and
-      guard.ensures(pragma[only_bind_into](check), outcome)
+      p.checkOn(check, branch, resNode) and
+      value.asBooleanValue() = branch and
+      guard = pragma[only_bind_into](check).asExpr()
     )
   }
 
@@ -487,9 +525,9 @@ module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guar
       localFlow(inp.getExitNode(fd), pragma[only_bind_out](arg)) and
       (
         // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
-        exists(ControlFlow::ConditionGuardNode guard |
-          guards(g, pragma[only_bind_out](guard), arg, param) and
-          guard.dominates(pragma[only_bind_out](ret).getBasicBlock())
+        exists(Guard guard, GuardValue value |
+          guards(g, pragma[only_bind_out](guard), value, arg, param) and
+          guard.valueControls(pragma[only_bind_out](ret).getBasicBlock(), value)
         |
           onlyPossibleReturnSatisfyingProperty(fd, outp, ret, p)
         )
@@ -498,7 +536,8 @@ module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guar
         // or "return !someBarrierGuard(arg) && otherCond(...)"
         exists(boolean outcome |
           ret = getUniqueOutputNode(fd, outp) and
-          guardChecks(g, arg.asExpr(), outcome, param) and
+          guardChecks(g.asExpr(), arg.asExpr(),
+            any(GuardValue value | value.asBooleanValue() = outcome), param) and
           // This predicate's contract is (p holds of ret ==> arg is checked),
           // (and we have (this has outcome ==> arg is checked))
           // but p.checkOn(ret, outcome, this) gives us (ret has outcome ==> p holds of this),
@@ -527,6 +566,25 @@ module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guar
         )
       )
     )
+  }
+}
+
+/**
+ * Provides a set of barrier nodes for a Boolean guard that validates an expression.
+ */
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+  private predicate guardChecksValue(Guard g, Expr e, GuardValue value, P param) {
+    guardChecks(DataFlow::exprNode(g), e, value.asBooleanValue(), param)
+  }
+
+  private module B = ParameterizedBarrierGuardValue<P, guardChecksValue/4>;
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode(P param) { result = B::getABarrierNode(param) }
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNodeForGuard(Node guardCheck, P param) {
+    result = B::getABarrierNodeForGuard(guardCheck, param)
   }
 }
 
@@ -579,7 +637,7 @@ private predicate onlyPossibleReturnOfNonNil(FuncDecl fd, FunctionOutput res, No
 /**
  * Holds if function `f`'s result `output`, which must be a return value, cannot be nil.
  */
-private predicate certainlyReturnsNonNil(Function f, FunctionOutput output) {
+predicate certainlyReturnsNonNil(Function f, FunctionOutput output) {
   output.isResult(_) and
   (
     f.hasQualifiedName("errors", "New")
@@ -597,7 +655,7 @@ private predicate certainlyReturnsNonNil(Function f, FunctionOutput output) {
 /**
  * Holds if `node` cannot be `nil`.
  */
-private predicate isCertainlyNotNil(DataFlow::Node node) {
+predicate isCertainlyNotNil(DataFlow::Node node) {
   node instanceof DataFlow::AddressOperationNode
   or
   exists(DataFlow::CallNode c, FunctionOutput output | output.getExitNode(c) = node |
