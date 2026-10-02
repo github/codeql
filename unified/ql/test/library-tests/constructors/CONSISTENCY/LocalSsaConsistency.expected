@@ -1,5 +1,0 @@
-ambiguousReadNode
-| constructors.swift:35:9:35:29 | [variable post-update] self | constructors.swift:34:5:36:5 | self |
-| constructors.swift:35:9:35:29 | [variable post-update] self | constructors.swift:34:22:34:22 | x |
-| constructors.swift:35:9:35:29 | [variable post-update] x | constructors.swift:34:5:36:5 | self |
-| constructors.swift:35:9:35:29 | [variable post-update] x | constructors.swift:34:22:34:22 | x |

@@ -1,5 +1,0 @@
-ambiguousReadNode
-| test.swift:184:5:184:19 | [variable post-update] x | test.swift:182:9:182:9 | x |
-| test.swift:184:5:184:19 | [variable post-update] x | test.swift:183:9:183:9 | y |
-| test.swift:184:5:184:19 | [variable post-update] y | test.swift:182:9:182:9 | x |
-| test.swift:184:5:184:19 | [variable post-update] y | test.swift:183:9:183:9 | y |
