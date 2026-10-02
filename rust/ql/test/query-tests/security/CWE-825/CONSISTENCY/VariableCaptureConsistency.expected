@@ -1,0 +1,17 @@
+ambiguousReadNode
+| lifetime.rs:514:2:527:2 | return ... | lifetime.rs:509:16:509:17 | p3 |
+| lifetime.rs:514:2:527:2 | return ... | lifetime.rs:509:32:509:33 | p4 |
+| lifetime.rs:514:2:527:2 | return ... | lifetime.rs:511:6:511:14 | my_local2 |
+| lifetime.rs:514:2:527:2 | return ... | lifetime.rs:512:6:512:7 | p1 |
+| lifetime.rs:514:9:527:2 | \|...\| ... | lifetime.rs:509:16:509:17 | p3 |
+| lifetime.rs:514:9:527:2 | \|...\| ... | lifetime.rs:509:32:509:33 | p4 |
+| lifetime.rs:514:9:527:2 | \|...\| ... | lifetime.rs:511:6:511:14 | my_local2 |
+| lifetime.rs:514:9:527:2 | \|...\| ... | lifetime.rs:512:6:512:7 | p1 |
+| lifetime.rs:567:2:580:2 | return ... | lifetime.rs:562:22:562:23 | p3 |
+| lifetime.rs:567:2:580:2 | return ... | lifetime.rs:562:38:562:39 | p4 |
+| lifetime.rs:567:2:580:2 | return ... | lifetime.rs:564:6:564:14 | my_local2 |
+| lifetime.rs:567:2:580:2 | return ... | lifetime.rs:565:6:565:7 | p1 |
+| lifetime.rs:567:9:580:2 | { ... } | lifetime.rs:562:22:562:23 | p3 |
+| lifetime.rs:567:9:580:2 | { ... } | lifetime.rs:562:38:562:39 | p4 |
+| lifetime.rs:567:9:580:2 | { ... } | lifetime.rs:564:6:564:14 | my_local2 |
+| lifetime.rs:567:9:580:2 | { ... } | lifetime.rs:565:6:565:7 | p1 |

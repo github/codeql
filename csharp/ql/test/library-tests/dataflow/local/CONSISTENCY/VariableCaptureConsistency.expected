@@ -1,0 +1,17 @@
+ambiguousReadNode
+| Capture.cs:15:9:22:9 | CapIn2(...) | Capture.cs:5:17:5:17 | this in M |
+| Capture.cs:15:9:22:9 | CapIn2(...) | Capture.cs:7:13:7:13 | i |
+| Capture.cs:23:9:23:14 | access to local function CapIn2 | Capture.cs:5:17:5:17 | this in M |
+| Capture.cs:23:9:23:14 | access to local function CapIn2 | Capture.cs:7:13:7:13 | i |
+| Capture.cs:25:9:33:9 | CapIn4(...) | Capture.cs:5:17:5:17 | this in M |
+| Capture.cs:25:9:33:9 | CapIn4(...) | Capture.cs:7:13:7:13 | i |
+| Capture.cs:34:9:34:14 | access to local function CapIn4 | Capture.cs:5:17:5:17 | this in M |
+| Capture.cs:34:9:34:14 | access to local function CapIn4 | Capture.cs:7:13:7:13 | i |
+| Capture.cs:43:9:50:9 | CapOut2(...) | Capture.cs:5:17:5:17 | this in M |
+| Capture.cs:43:9:50:9 | CapOut2(...) | Capture.cs:7:13:7:13 | i |
+| Capture.cs:51:9:51:15 | access to local function CapOut2 | Capture.cs:5:17:5:17 | this in M |
+| Capture.cs:51:9:51:15 | access to local function CapOut2 | Capture.cs:7:13:7:13 | i |
+| Capture.cs:54:9:62:9 | CapOut4(...) | Capture.cs:5:17:5:17 | this in M |
+| Capture.cs:54:9:62:9 | CapOut4(...) | Capture.cs:7:13:7:13 | i |
+| Capture.cs:63:9:63:15 | access to local function CapOut4 | Capture.cs:5:17:5:17 | this in M |
+| Capture.cs:63:9:63:15 | access to local function CapOut4 | Capture.cs:7:13:7:13 | i |

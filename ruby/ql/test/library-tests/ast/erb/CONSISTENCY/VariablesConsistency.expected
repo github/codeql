@@ -1,0 +1,3 @@
+ambiguousReadNode
+| template.html.erb:27:6:31:8 | { ... } | template.html.erb:25:4:25:5 | xs |
+| template.html.erb:27:6:31:8 | { ... } | template.html.erb:27:10:27:10 | x |

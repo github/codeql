@@ -1,0 +1,5 @@
+ambiguousReadNode
+| cfg.rb:90:1:93:3 | { ... } | cfg.rb:1:1:221:1 | self |
+| cfg.rb:90:1:93:3 | { ... } | cfg.rb:74:1:74:1 | x |
+| raise.rb:155:16:155:50 | { ... } | raise.rb:154:1:156:3 | self |
+| raise.rb:155:16:155:50 | { ... } | raise.rb:154:9:154:15 | element |

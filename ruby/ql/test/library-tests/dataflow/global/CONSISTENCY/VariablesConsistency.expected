@@ -1,0 +1,85 @@
+ambiguousReadNode
+| captured_variables.rb:10:5:10:23 | ... = ... | captured_variables.rb:9:1:12:3 | self |
+| captured_variables.rb:10:5:10:23 | ... = ... | captured_variables.rb:9:24:9:24 | x |
+| captured_variables.rb:10:10:10:23 | -> { ... } | captured_variables.rb:9:1:12:3 | self |
+| captured_variables.rb:10:10:10:23 | -> { ... } | captured_variables.rb:9:24:9:24 | x |
+| captured_variables.rb:11:5:11:6 | fn | captured_variables.rb:9:1:12:3 | self |
+| captured_variables.rb:11:5:11:6 | fn | captured_variables.rb:9:24:9:24 | x |
+| captured_variables.rb:16:5:18:5 | -> { ... } | captured_variables.rb:15:1:19:3 | self |
+| captured_variables.rb:16:5:18:5 | -> { ... } | captured_variables.rb:15:28:15:28 | x |
+| captured_variables.rb:16:5:18:5 | ... | captured_variables.rb:15:1:19:3 | self |
+| captured_variables.rb:16:5:18:5 | ... | captured_variables.rb:15:28:15:28 | x |
+| captured_variables.rb:23:5:25:5 | -> { ... } | captured_variables.rb:22:1:26:3 | self |
+| captured_variables.rb:23:5:25:5 | -> { ... } | captured_variables.rb:22:28:22:28 | x |
+| captured_variables.rb:23:5:25:5 | ... | captured_variables.rb:22:1:26:3 | self |
+| captured_variables.rb:23:5:25:5 | ... | captured_variables.rb:22:28:22:28 | x |
+| captured_variables.rb:30:5:32:5 | ... = ... | captured_variables.rb:29:1:34:3 | self |
+| captured_variables.rb:30:5:32:5 | ... = ... | captured_variables.rb:29:33:29:33 | x |
+| captured_variables.rb:30:10:32:5 | -> { ... } | captured_variables.rb:29:1:34:3 | self |
+| captured_variables.rb:30:10:32:5 | -> { ... } | captured_variables.rb:29:33:29:33 | x |
+| captured_variables.rb:33:29:33:30 | fn | captured_variables.rb:29:1:34:3 | self |
+| captured_variables.rb:33:29:33:30 | fn | captured_variables.rb:29:33:29:33 | x |
+| captured_variables.rb:41:5:43:5 | ... = ... | captured_variables.rb:40:1:45:3 | self |
+| captured_variables.rb:41:5:43:5 | ... = ... | captured_variables.rb:40:31:40:31 | x |
+| captured_variables.rb:41:10:43:5 | -> { ... } | captured_variables.rb:40:1:45:3 | self |
+| captured_variables.rb:41:10:43:5 | -> { ... } | captured_variables.rb:40:31:40:31 | x |
+| captured_variables.rb:44:13:44:14 | fn | captured_variables.rb:40:1:45:3 | self |
+| captured_variables.rb:44:13:44:14 | fn | captured_variables.rb:40:31:40:31 | x |
+| captured_variables.rb:49:16:52:3 | do ... end | captured_variables.rb:1:1:244:2 | self |
+| captured_variables.rb:49:16:52:3 | do ... end | captured_variables.rb:48:1:48:1 | x |
+| captured_variables.rb:67:16:70:3 | do ... end | captured_variables.rb:1:1:244:2 | self |
+| captured_variables.rb:67:16:70:3 | do ... end | captured_variables.rb:65:1:65:3 | foo |
+| captured_variables.rb:78:20:80:7 | do ... end | captured_variables.rb:1:1:244:2 | self |
+| captured_variables.rb:78:20:80:7 | do ... end | captured_variables.rb:65:1:65:3 | foo |
+| captured_variables.rb:86:1:89:1 | ... = ... | captured_variables.rb:1:1:244:2 | self |
+| captured_variables.rb:86:1:89:1 | ... = ... | captured_variables.rb:85:1:85:1 | y |
+| captured_variables.rb:86:6:89:1 | -> { ... } | captured_variables.rb:1:1:244:2 | self |
+| captured_variables.rb:86:6:89:1 | -> { ... } | captured_variables.rb:85:1:85:1 | y |
+| captured_variables.rb:90:1:90:2 | fn | captured_variables.rb:1:1:244:2 | self |
+| captured_variables.rb:90:1:90:2 | fn | captured_variables.rb:85:1:85:1 | y |
+| captured_variables.rb:94:5:96:5 | -> { ... } | captured_variables.rb:93:1:97:3 | self |
+| captured_variables.rb:94:5:96:5 | -> { ... } | captured_variables.rb:93:17:93:17 | x |
+| captured_variables.rb:94:5:96:5 | ... | captured_variables.rb:93:1:97:3 | self |
+| captured_variables.rb:94:5:96:5 | ... | captured_variables.rb:93:17:93:17 | x |
+| captured_variables.rb:110:5:116:5 | ... = ... | captured_variables.rb:108:1:119:3 | self |
+| captured_variables.rb:110:5:116:5 | ... = ... | captured_variables.rb:109:5:109:5 | x |
+| captured_variables.rb:110:14:116:5 | -> { ... } | captured_variables.rb:108:1:119:3 | self |
+| captured_variables.rb:110:14:116:5 | -> { ... } | captured_variables.rb:109:5:109:5 | x |
+| captured_variables.rb:117:5:117:10 | middle | captured_variables.rb:108:1:119:3 | self |
+| captured_variables.rb:117:5:117:10 | middle | captured_variables.rb:109:5:109:5 | x |
+| captured_variables.rb:125:5:127:5 | ... = ... | captured_variables.rb:122:1:142:3 | self |
+| captured_variables.rb:125:5:127:5 | ... = ... | captured_variables.rb:123:5:123:5 | x |
+| captured_variables.rb:125:11:127:5 | -> { ... } | captured_variables.rb:122:1:142:3 | self |
+| captured_variables.rb:125:11:127:5 | -> { ... } | captured_variables.rb:123:5:123:5 | x |
+| captured_variables.rb:129:5:137:5 | ... = ... | captured_variables.rb:122:1:142:3 | self |
+| captured_variables.rb:129:5:137:5 | ... = ... | captured_variables.rb:123:5:123:5 | x |
+| captured_variables.rb:129:11:137:5 | -> { ... } | captured_variables.rb:122:1:142:3 | self |
+| captured_variables.rb:129:11:137:5 | -> { ... } | captured_variables.rb:123:5:123:5 | x |
+| captured_variables.rb:130:9:136:11 | ... | captured_variables.rb:129:11:137:5 | this |
+| captured_variables.rb:130:9:136:11 | ... | captured_variables.rb:130:9:130:9 | y |
+| captured_variables.rb:132:9:134:9 | ... = ... | captured_variables.rb:129:11:137:5 | this |
+| captured_variables.rb:132:9:134:9 | ... = ... | captured_variables.rb:130:9:130:9 | y |
+| captured_variables.rb:132:15:134:9 | -> { ... } | captured_variables.rb:129:11:137:5 | this |
+| captured_variables.rb:132:15:134:9 | -> { ... } | captured_variables.rb:130:9:130:9 | y |
+| captured_variables.rb:139:11:139:13 | fn3 | captured_variables.rb:122:1:142:3 | self |
+| captured_variables.rb:139:11:139:13 | fn3 | captured_variables.rb:123:5:123:5 | x |
+| captured_variables.rb:141:5:141:7 | fn1 | captured_variables.rb:122:1:142:3 | self |
+| captured_variables.rb:141:5:141:7 | fn1 | captured_variables.rb:123:5:123:5 | x |
+| captured_variables.rb:205:5:213:5 | ... = ... | captured_variables.rb:196:1:216:3 | self |
+| captured_variables.rb:205:5:213:5 | ... = ... | captured_variables.rb:197:5:197:5 | x |
+| captured_variables.rb:205:10:213:5 | -> { ... } | captured_variables.rb:196:1:216:3 | self |
+| captured_variables.rb:205:10:213:5 | -> { ... } | captured_variables.rb:197:5:197:5 | x |
+| captured_variables.rb:215:5:215:6 | fn | captured_variables.rb:196:1:216:3 | self |
+| captured_variables.rb:215:5:215:6 | fn | captured_variables.rb:197:5:197:5 | x |
+| captured_variables.rb:222:5:224:5 | ... = ... | captured_variables.rb:219:5:219:5 | x |
+| captured_variables.rb:222:5:224:5 | ... = ... | captured_variables.rb:220:5:220:5 | y |
+| captured_variables.rb:222:11:224:5 | -> { ... } | captured_variables.rb:219:5:219:5 | x |
+| captured_variables.rb:222:11:224:5 | -> { ... } | captured_variables.rb:220:5:220:5 | y |
+| captured_variables.rb:226:5:226:7 | fn1 | captured_variables.rb:219:5:219:5 | x |
+| captured_variables.rb:226:5:226:7 | fn1 | captured_variables.rb:220:5:220:5 | y |
+| captured_variables.rb:235:5:237:5 | ... = ... | captured_variables.rb:232:1:242:3 | self |
+| captured_variables.rb:235:5:237:5 | ... = ... | captured_variables.rb:233:5:233:5 | x |
+| captured_variables.rb:235:11:237:5 | -> { ... } | captured_variables.rb:232:1:242:3 | self |
+| captured_variables.rb:235:11:237:5 | -> { ... } | captured_variables.rb:233:5:233:5 | x |
+| captured_variables.rb:241:5:241:7 | fn1 | captured_variables.rb:232:1:242:3 | self |
+| captured_variables.rb:241:5:241:7 | fn1 | captured_variables.rb:233:5:233:5 | x |

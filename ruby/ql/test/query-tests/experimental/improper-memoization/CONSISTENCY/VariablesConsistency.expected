@@ -1,0 +1,5 @@
+ambiguousReadNode
+| improper_memoization.rb:42:25:44:7 | do ... end | improper_memoization.rb:41:20:45:5 | this |
+| improper_memoization.rb:42:25:44:7 | do ... end | improper_memoization.rb:41:28:41:31 | arg1 |
+| improper_memoization.rb:83:21:85:5 | do ... end | improper_memoization.rb:82:1:87:3 | self |
+| improper_memoization.rb:83:21:85:5 | do ... end | improper_memoization.rb:82:15:82:18 | arg2 |

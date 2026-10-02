@@ -1,0 +1,23 @@
+ambiguousReadNode
+| Capture.cs:10:20:27:9 | (...) => ... | Capture.cs:6:16:6:16 | i |
+| Capture.cs:10:20:27:9 | (...) => ... | Capture.cs:8:13:8:13 | x |
+| Capture.cs:19:24:23:13 | (...) => ... | Capture.cs:10:20:27:9 | this |
+| Capture.cs:19:24:23:13 | (...) => ... | Capture.cs:17:17:17:17 | y |
+| Capture.cs:25:13:25:13 | access to local variable b | Capture.cs:10:20:27:9 | this |
+| Capture.cs:25:13:25:13 | access to local variable b | Capture.cs:17:17:17:17 | y |
+| Capture.cs:38:9:38:9 | access to local variable a | Capture.cs:6:16:6:16 | i |
+| Capture.cs:38:9:38:9 | access to local variable a | Capture.cs:8:13:8:13 | x |
+| Capture.cs:46:12:46:12 | access to local variable a | Capture.cs:6:16:6:16 | i |
+| Capture.cs:46:12:46:12 | access to local variable a | Capture.cs:8:13:8:13 | x |
+| Capture.cs:169:9:178:9 | M8(...) | Capture.cs:112:10:112:28 | this in NestedFunctionsTest |
+| Capture.cs:169:9:178:9 | M8(...) | Capture.cs:168:13:168:13 | h |
+| Capture.cs:248:9:252:9 | CaptureAndRef(...) | Capture.cs:240:10:240:11 | this in M2 |
+| Capture.cs:248:9:252:9 | CaptureAndRef(...) | Capture.cs:242:13:242:13 | i |
+| Capture.cs:254:9:254:21 | access to local function CaptureAndRef | Capture.cs:240:10:240:11 | this in M2 |
+| Capture.cs:254:9:254:21 | access to local function CaptureAndRef | Capture.cs:242:13:242:13 | i |
+| Consistency.cs:39:20:39:43 | (...) => ... | Consistency.cs:36:10:36:27 | this in CapturedDeclNoInit |
+| Consistency.cs:39:20:39:43 | (...) => ... | Consistency.cs:38:13:38:13 | i |
+| Fields.cs:81:9:81:9 | access to local variable a | Fields.cs:77:13:77:13 | f |
+| Fields.cs:81:9:81:9 | access to local variable a | Fields.cs:78:23:78:23 | a |
+| Properties.cs:77:9:77:9 | access to local variable a | Properties.cs:73:13:73:13 | f |
+| Properties.cs:77:9:77:9 | access to local variable a | Properties.cs:74:23:74:23 | a |

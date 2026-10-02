@@ -1,0 +1,3 @@
+ambiguousReadNode
+| app/views/foo/bars/show.html.erb:10:37:12:6 | do ... end | app/views/foo/bars/show.html.erb:1:14:33:43 | self |
+| app/views/foo/bars/show.html.erb:10:37:12:6 | do ... end | app/views/foo/bars/show.html.erb:6:4:6:6 | key |

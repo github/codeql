@@ -1,0 +1,15 @@
+ambiguousReadNode
+| nested_scopes.rb:18:23:18:36 | { ... } | nested_scopes.rb:16:21:19:15 | this |
+| nested_scopes.rb:18:23:18:36 | { ... } | nested_scopes.rb:16:29:16:29 | a |
+| parameters.rb:54:9:57:3 | do ... end | parameters.rb:1:1:62:1 | self |
+| parameters.rb:54:9:57:3 | do ... end | parameters.rb:53:1:53:1 | x |
+| scopes.rb:9:9:18:3 | do ... end | scopes.rb:1:1:89:4 | self |
+| scopes.rb:9:9:18:3 | do ... end | scopes.rb:7:1:7:1 | a |
+| ssa.rb:26:3:28:5 | { ... } | ssa.rb:25:1:30:3 | self |
+| ssa.rb:26:3:28:5 | { ... } | ssa.rb:26:7:26:10 | elem |
+| ssa.rb:66:11:70:5 | do ... end | ssa.rb:64:1:72:3 | self |
+| ssa.rb:66:11:70:5 | do ... end | ssa.rb:65:3:65:10 | captured |
+| ssa.rb:76:7:78:5 | do ... end | ssa.rb:74:1:79:3 | self |
+| ssa.rb:76:7:78:5 | do ... end | ssa.rb:75:3:75:10 | captured |
+| ssa.rb:83:7:87:5 | do ... end | ssa.rb:81:1:88:3 | self |
+| ssa.rb:83:7:87:5 | do ... end | ssa.rb:82:3:82:10 | captured |

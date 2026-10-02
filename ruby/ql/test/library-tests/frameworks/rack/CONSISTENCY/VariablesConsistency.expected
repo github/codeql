@@ -1,0 +1,6 @@
+ambiguousReadNode
+| rack.rb:34:32:34:69 | { ... } | rack.rb:30:3:36:5 | self |
+| rack.rb:34:32:34:69 | { ... } | rack.rb:30:12:30:14 | env |
+| rack.rb:34:32:34:69 | { ... } | rack.rb:31:5:31:12 | began_at |
+| rack.rb:34:32:34:69 | { ... } | rack.rb:32:5:32:10 | status |
+| rack.rb:34:32:34:69 | { ... } | rack.rb:32:13:32:18 | header |

@@ -1,0 +1,5 @@
+ambiguousReadNode
+| DeadStoreOfLocal.rb:44:14:47:7 | do ... end | DeadStoreOfLocal.rb:43:1:48:3 | self |
+| DeadStoreOfLocal.rb:44:14:47:7 | do ... end | DeadStoreOfLocal.rb:43:20:43:20 | x |
+| DeadStoreOfLocal.rb:57:16:65:7 | do ... end | DeadStoreOfLocal.rb:56:1:66:3 | self |
+| DeadStoreOfLocal.rb:57:16:65:7 | do ... end | DeadStoreOfLocal.rb:56:17:56:17 | x |

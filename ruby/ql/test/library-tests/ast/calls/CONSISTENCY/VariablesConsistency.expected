@@ -1,0 +1,11 @@
+ambiguousReadNode
+| calls.rb:223:1:225:3 | { ... } | calls.rb:1:1:367:24 | self |
+| calls.rb:223:1:225:3 | { ... } | calls.rb:223:5:223:5 | x |
+| calls.rb:343:1:345:3 | { ... } | calls.rb:1:1:367:24 | self |
+| calls.rb:343:1:345:3 | { ... } | calls.rb:223:5:223:5 | x |
+| calls.rb:343:1:345:3 | { ... } | calls.rb:343:8:343:8 | y |
+| calls.rb:343:1:345:3 | { ... } | calls.rb:343:11:343:11 | z |
+| calls.rb:357:1:361:3 | ... = ... | calls.rb:1:1:367:24 | self |
+| calls.rb:357:1:361:3 | ... = ... | calls.rb:343:8:343:8 | y |
+| calls.rb:357:5:361:3 | -> { ... } | calls.rb:1:1:367:24 | self |
+| calls.rb:357:5:361:3 | -> { ... } | calls.rb:343:8:343:8 | y |

@@ -1,0 +1,3 @@
+ambiguousReadNode
+| test.rs:511:28:516:9 | { ... } | test.rs:511:22:516:9 | this |
+| test.rs:511:28:516:9 | { ... } | test.rs:511:23:511:25 | foo |
