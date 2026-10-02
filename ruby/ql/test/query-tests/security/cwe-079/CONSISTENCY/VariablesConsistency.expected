@@ -1,5 +1,0 @@
-ambiguousReadNode
-| app/views/foo/bars/show.html.erb:15:4:18:6 | { ... } | app/views/foo/bars/show.html.erb:2:14:89:48 | self |
-| app/views/foo/bars/show.html.erb:15:4:18:6 | { ... } | app/views/foo/bars/show.html.erb:10:4:10:6 | key |
-| app/views/foo/stores/show.html.erb:12:4:15:6 | { ... } | app/views/foo/stores/show.html.erb:2:5:90:48 | self |
-| app/views/foo/stores/show.html.erb:12:4:15:6 | { ... } | app/views/foo/stores/show.html.erb:7:4:7:6 | key |

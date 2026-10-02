@@ -1,3 +1,0 @@
-ambiguousReadNode
-| call_sensitivity.rb:75:20:77:7 | do ... end | call_sensitivity.rb:74:15:74:15 | x |
-| call_sensitivity.rb:75:20:77:7 | do ... end | call_sensitivity.rb:74:18:74:18 | y |

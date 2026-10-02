@@ -1,3 +1,0 @@
-ambiguousReadNode
-| app.rb:64:41:64:57 | { ... } | app.rb:64:21:64:59 | this |
-| app.rb:64:41:64:57 | { ... } | app.rb:64:24:64:28 | value |

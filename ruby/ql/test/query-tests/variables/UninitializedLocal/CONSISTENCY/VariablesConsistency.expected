@@ -1,3 +1,0 @@
-ambiguousReadNode
-| UninitializedLocal.rb:73:5:75:7 | { ... } | UninitializedLocal.rb:72:1:77:3 | self |
-| UninitializedLocal.rb:73:5:75:7 | { ... } | UninitializedLocal.rb:73:9:73:9 | i |

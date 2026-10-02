@@ -1,3 +1,0 @@
-ambiguousReadNode
-| calls.rb:492:35:494:11 | do ... end | calls.rb:491:18:495:7 | this |
-| calls.rb:492:35:494:11 | do ... end | calls.rb:491:22:491:22 | i |

@@ -1,3 +1,0 @@
-ambiguousReadNode
-| InsecureRandomness.rb:6:34:6:60 | { ... } | InsecureRandomness.rb:3:1:7:3 | self |
-| InsecureRandomness.rb:6:34:6:60 | { ... } | InsecureRandomness.rb:4:3:4:7 | chars |

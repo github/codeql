@@ -1,9 +1,0 @@
-ambiguousReadNode
-| SimplifyBoolExpr.cs:53:29:53:50 | (...) => ... | SimplifyBoolExpr.cs:50:65:50:68 | left |
-| SimplifyBoolExpr.cs:53:29:53:50 | (...) => ... | SimplifyBoolExpr.cs:50:100:50:104 | right |
-| SimplifyBoolExpr.cs:56:9:56:41 | Local(...) | SimplifyBoolExpr.cs:50:65:50:68 | left |
-| SimplifyBoolExpr.cs:56:9:56:41 | Local(...) | SimplifyBoolExpr.cs:50:100:50:104 | right |
-| SimplifyBoolExpr.cs:58:16:58:21 | access to local variable lambda | SimplifyBoolExpr.cs:50:65:50:68 | left |
-| SimplifyBoolExpr.cs:58:16:58:21 | access to local variable lambda | SimplifyBoolExpr.cs:50:100:50:104 | right |
-| SimplifyBoolExpr.cs:58:28:58:32 | access to local function Local | SimplifyBoolExpr.cs:50:65:50:68 | left |
-| SimplifyBoolExpr.cs:58:28:58:32 | access to local function Local | SimplifyBoolExpr.cs:50:100:50:104 | right |
