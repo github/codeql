@@ -1680,7 +1680,12 @@ module Make<
     cached
     private newtype TNode =
       TWriteDefSource(WriteDefinition def) { DfInput::ssaDefHasSource(def) } or
-      TExprNode(DfInput::Expr e, Boolean isPost) { e = DfInput::getARead(_) } or
+      TExprNode(DfInput::Expr e, SourceVariable v, Boolean isPost) {
+        exists(Definition def |
+          def.getSourceVariable() = v and
+          e = DfInput::getARead(def)
+        )
+      } or
       TSsaDefinitionNode(DefinitionExt def) {
         not phiHasUniqNextNode(def) and
         if DfInput::includeWriteDefsInFlowStep()
@@ -1730,8 +1735,9 @@ module Make<
     abstract private class ExprNodePreOrPostImpl extends NodeImpl, TExprNode {
       DfInput::Expr e;
       boolean isPost;
+      SourceVariable v_;
 
-      ExprNodePreOrPostImpl() { this = TExprNode(e, isPost) }
+      ExprNodePreOrPostImpl() { this = TExprNode(e, v_, isPost) }
 
       /** Gets the underlying expression. */
       DfInput::Expr getExpr() { result = e }
@@ -1742,6 +1748,9 @@ module Make<
           result = bb.getNode(i).getLocation()
         )
       }
+
+      /** Gets the variable accessed at this expression. */
+      SourceVariable getSourceVariable() { result = v_ }
     }
 
     final class ExprNodePreOrPost = ExprNodePreOrPostImpl;
@@ -1760,7 +1769,7 @@ module Make<
       ExprPostUpdateNodeImpl() { isPost = true }
 
       /** Gets the pre-update expression node. */
-      ExprNode getPreUpdateNode() { result = TExprNode(e, false) }
+      ExprNode getPreUpdateNode() { result = TExprNode(e, _, false) }
 
       override string toString() { result = e.toString() + " [postupdate]" }
     }
@@ -1770,7 +1779,6 @@ module Make<
     private class ReadNodeImpl extends ExprNodeImpl {
       private BasicBlock bb_;
       private int i_;
-      private SourceVariable v_;
 
       ReadNodeImpl() {
         variableRead(bb_, i_, v_, true) and
@@ -2142,6 +2150,17 @@ module Make<
             g.valueControlsBranchEdge(bb, phi.getBasicBlock(), val)
           )
         )
+      }
+    }
+
+    /** Provides consistency checks that depend on the DataFlowIntegration inputs. */
+    module DfConsistency {
+      /**
+       * The given `read` reads multiple variables at once. `var` is bound to one of them.
+       */
+      query predicate ambiguousReadNode(ReadNode read, SourceVariable var) {
+        strictcount(SourceVariable v | read.readsAt(_, _, v)) > 1 and
+        read.readsAt(_, _, var)
       }
     }
   }
