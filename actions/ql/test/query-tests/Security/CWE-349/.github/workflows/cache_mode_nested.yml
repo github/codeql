@@ -1,0 +1,34 @@
+on:
+  workflow_call:
+  workflow_dispatch:
+  push: # No cache alert: tag-only pushes cannot write the default-branch cache.
+    tags: ['v*']
+  pull_request: # No cache alert: closed PRs target a feature branch.
+    types: [closed]
+    branches: [feature]
+
+permissions: {}
+
+jobs:
+  inherited: # No cache alert: harmless inherited-mode probe.
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test
+
+  read: # No cache alert: read mode prevents saves and conflicts with write-only callers.
+    cache-mode: read
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test
+
+  write: # No cache alert: harmless probe; write exceeds a write-only caller's limit.
+    cache-mode: write
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test
+
+  write-only: # No cache alert: harmless probe of permitted cache saves.
+    cache-mode: write-only
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test

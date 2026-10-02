@@ -1,0 +1,42 @@
+on:
+  workflow_call:
+  pull_request: # No cache alert: ordinary PRs cannot write the default-branch cache.
+  push: # No cache alert: only feature-branch pushes match.
+    branches: [feature]
+
+permissions: {}
+cache-mode: write
+
+jobs:
+  inherited: # No cache alert: harmless probe of workflow write mode within caller limits.
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test
+
+  read: # No cache alert: read mode prevents saves.
+    cache-mode: read
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test
+
+  none: # No cache alert: none mode disables cache access.
+    cache-mode: none
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test
+
+  write: # No cache alert: harmless probe, even when caller limits permit writes.
+    cache-mode: write
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test
+
+  write-only: # No cache alert: harmless probe; a job cannot rescue an over-limit workflow mode.
+    cache-mode: write-only
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test
+
+  nested:
+    cache-mode: write-only
+    uses: ./.github/workflows/cache_mode_nested.yml # No cache alert: harmless probes under the nested write-only limit.
