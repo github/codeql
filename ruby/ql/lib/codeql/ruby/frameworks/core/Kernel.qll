@@ -42,7 +42,7 @@ module Kernel {
    * arr.send("push", 5) # => [5]
    * ```
    */
-  private predicate isPublicKernelMethod(string method) {
+  predicate isPublicKernelMethod(string method) {
     method in [
         "class", "clone", "frozen?", "tap", "then", "yield_self", "send", "public_send", "__send__",
         "method", "public_method", "singleton_method"
