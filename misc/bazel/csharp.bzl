@@ -10,8 +10,8 @@ def _gen_assembly_info(name):
     native.genrule(
         name = assembly_info_gen,
         outs = [name + "AssemblyInfo.cs"],
-        cmd = "$(execpath //csharp/scripts:gen-assembly-info) $@ " + name,
-        tools = ["//csharp/scripts:gen-assembly-info"],
+        cmd = "$(execpath //misc/bazel/csharp:gen-assembly-info) $@ " + name,
+        tools = ["//misc/bazel/csharp:gen-assembly-info"],
     )
     return ":" + assembly_info_gen
 
@@ -83,7 +83,7 @@ def codeql_csharp_binary(name, **kwargs):
     srcs.append(assembly_info_gen)
 
     # always add the assembly info file that sets the AssemblyInformationalVersion attribute to the extractor version
-    srcs.append("//csharp/scripts:git-assembly-info-src")
+    srcs.append("//misc/bazel/csharp:git-assembly-info-src")
 
     csharp_binary_target = "bin/" + name
     publish_binary_target = "publish/" + name
