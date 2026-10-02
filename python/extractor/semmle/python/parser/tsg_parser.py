@@ -163,6 +163,12 @@ def read_tsg_python_output(path, logger):
         current_node = encoded_node["id"]
         attrs = _decode_tsg_node_attributes(encoded_node["attrs"], path, logger)
         node_attr[current_node] = attrs
+        if attrs.get("_kind") == "SyntaxErrorNode":
+            lineno, offset, _, _ = get_location_info(attrs)
+            exc = SyntaxError("Syntax Error")
+            exc.lineno = lineno
+            exc.offset = offset
+            raise exc
         for encoded_edge in encoded_node["edges"]:
             current_end = encoded_edge["sink"]
             edge_fields = edge_attr.setdefault(current_node, {})
@@ -338,12 +344,6 @@ def parse(path, logger):
         # Set up location information.
         node.lineno, node.col_offset, end_line, end_column = get_location_info(attrs)
         node._end = (end_line, end_column)
-
-        if isinstance(node, SyntaxErrorNode):
-            exc = SyntaxError("Syntax Error")
-            exc.lineno = node.lineno
-            exc.offset = node.col_offset
-            raise exc
 
         # Set up context information, if any
         if "ctx" in expected_fields:

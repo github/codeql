@@ -74,6 +74,41 @@ class JsonOutputTest(unittest.TestCase):
         value = '"\u26a0\ufe0f  problem %s: %s"'
         self.assertEqual(evaluate_string(value), "\u26a0\ufe0f  problem %s: %s")
 
+    def test_syntax_error_node_raises(self):
+        output = json.dumps(
+            [
+                {
+                    "id": 0,
+                    "edges": [],
+                    "attrs": {
+                        "_kind": {"type": "string", "string": "SyntaxErrorNode"},
+                        "_location": {
+                            "type": "list",
+                            "values": [
+                                {"type": "int", "int": 4},
+                                {"type": "int", "int": 5},
+                                {"type": "int", "int": 4},
+                                {"type": "int", "int": 6},
+                            ],
+                        },
+                        "source": {"type": "string", "string": "!"},
+                    },
+                }
+            ]
+        ).encode("utf-8")
+
+        process = unittest.mock.Mock()
+        process.communicate.return_value = (output, None)
+        process.returncode = 0
+        with unittest.mock.patch(
+            "semmle.python.parser.tsg_parser.subprocess.Popen", return_value=process
+        ):
+            with self.assertRaises(SyntaxError) as raised:
+                read_tsg_python_output("test.py", unittest.mock.Mock())
+
+        self.assertEqual(raised.exception.lineno, 5)
+        self.assertEqual(raised.exception.offset, 5)
+
 
 class FormatMessageTest(unittest.TestCase):
     """A pre-formatted log message may contain `%` directives coming from the analysed source, and
