@@ -54,7 +54,7 @@ module PathInjectionConfig implements DataFlow::ConfigSig {
   }
 }
 
-module PathInjectionFlow = DataFlow::Global<PathInjectionConfig>;
+module PathInjectionFlow = TaintTracking::Global<PathInjectionConfig>;
 
 import PathInjectionFlow::PathGraph
 
