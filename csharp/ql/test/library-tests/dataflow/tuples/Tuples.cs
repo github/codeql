@@ -157,6 +157,16 @@ class Tuples
             Sink(c2);        // $ hasValueFlow=13
             Sink(b2);
         }
+
+        var o5 = Source<string>(14);
+        var o6 = Source<string>(15);
+        var z = (o5, (2, o6), 3);
+        if (z is (var a3, (var b3, var _) t, _))
+        {
+            Sink(a3);        // $ hasValueFlow=14
+            Sink(t.Item2);   // $ hasValueFlow=15
+            Sink(b3);
+        }
     }
 
     public static void Sink(object o) { }
