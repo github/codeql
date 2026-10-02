@@ -1,0 +1,1 @@
+export SEMMLE_CODE := ""
