@@ -1,0 +1,7 @@
+| Test.cs:20:13:20:129 | ... += ... | Certificate validation disabled. |
+| Test.cs:21:13:21:103 | ... += ... | Certificate validation disabled. |
+| Test.cs:22:13:22:91 | ... += ... | Certificate validation disabled. |
+| Test.cs:23:13:23:96 | ... += ... | Certificate validation disabled. |
+| Test.cs:26:13:26:134 | ... = ... | Certificate validation disabled. |
+| Test.cs:29:13:29:145 | ... = ... | Certificate validation disabled. |
+| Test.cs:69:13:69:148 | ... = ... | Certificate validation disabled. |
