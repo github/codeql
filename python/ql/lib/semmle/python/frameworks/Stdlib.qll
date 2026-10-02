@@ -2041,6 +2041,34 @@ module StdlibPrivate {
       override predicate valueAllowsNewline() { any() }
     }
 
+    /** Additional response headers supplied by construction or instance assignment. */
+    private class ExtraHeadersWrite extends Http::Server::ResponseHeaderBulkWrite::Range {
+      DataFlow::Node headers;
+
+      ExtraHeadersWrite() {
+        exists(API::Node cls |
+          cls =
+            API::moduleImport("http")
+                .getMember("server")
+                .getMember("SimpleHTTPRequestHandler")
+                .getASubclass*()
+        |
+          this = cls.getACall() and
+          headers = this.(DataFlow::CallCfgNode).getArgByName("extra_response_headers")
+          or
+          this.(DataFlow::AttrWrite)
+              .writes([cls.getAnInstance(), cls.getAMember().getSelfParameter()]
+                    .getAValueReachableFromSource(), "extra_response_headers", headers)
+        )
+      }
+
+      override DataFlow::Node getBulkArg() { result = headers }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { any() }
+    }
+
     private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         nodeFrom = instance() and
