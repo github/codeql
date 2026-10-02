@@ -1,0 +1,125 @@
+#expect(value == 42)
+
+#custom<Int>(value) {
+  value
+} completion: {
+  value
+}
+
+#Preview {
+  let previewValue = 42
+  previewValue
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        macroExpansionExpr
+          leftParen: (
+          rightParen: )
+          arguments:
+            labeledExpr
+              expression:
+                infixOperatorExpr
+                  operator:
+                    binaryOperatorExpr
+                      operator: binaryOperator "=="
+                  leftOperand:
+                    declReferenceExpr
+                      baseName: identifier "value"
+                  rightOperand:
+                    integerLiteralExpr
+                      literal: integerLiteral "42"
+          additionalTrailingClosures:
+          macroName: identifier "expect"
+          pound: #
+    codeBlockItem
+      item:
+        macroExpansionExpr
+          leftParen: (
+          rightParen: )
+          arguments:
+            labeledExpr
+              expression:
+                declReferenceExpr
+                  baseName: identifier "value"
+          additionalTrailingClosures:
+            multipleTrailingClosureElement
+              colon: :
+              label: identifier "completion"
+              closure:
+                closureExpr
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        declReferenceExpr
+                          baseName: identifier "value"
+          trailingClosure:
+            closureExpr
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    declReferenceExpr
+                      baseName: identifier "value"
+          genericArgumentClause:
+            genericArgumentClause
+              arguments:
+                genericArgument
+                  argument:
+                    identifierType
+                      name: identifier "Int"
+              leftAngle: <
+              rightAngle: >
+          macroName: identifier "custom"
+          pound: #
+    codeBlockItem
+      item:
+        macroExpansionExpr
+          arguments:
+          additionalTrailingClosures:
+          trailingClosure:
+            closureExpr
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "42"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "previewValue"
+                codeBlockItem
+                  item:
+                    declReferenceExpr
+                      baseName: identifier "previewValue"
+          macroName: identifier "Preview"
+          pound: #
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩"
+      stmt:
+        unsupported_node "#expect(value == 42)" source="#expect(value == 42)"
+        unsupported_node "#custom<Int>(value) {\n  value\n} completion: {\n  value\n}" source="#custom<Int>(value) {\n  value\n} completion: {\n  value\n}"
+        unsupported_node "#Preview {\n  let previewValue = 42\n  previewValue\n}" source="#Preview {\n  let previewValue = 42\n  previewValue\n}"
