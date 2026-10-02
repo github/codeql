@@ -4,13 +4,11 @@
  *  `CfgPredExpr` synthesized instances.
  *  INTERNAL: Do not use.
  */
+
 private import codeql.rust.elements.internal.generated.Raw
 
 /**
  *  The characteristic predicate of `CfgPredExpr` synthesized instances.
  *  INTERNAL: Do not use.
  */
-predicate constructCfgPredExpr(Raw::CfgPredExpr id) {
-  
-  any()
-}
+predicate constructCfgPredExpr(Raw::CfgPredExpr id) { any() }

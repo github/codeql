@@ -4,6 +4,7 @@
  *
  * INTERNAL: Do not use.
  */
+
 private import codeql.rust.elements.internal.generated.CfgPredPat
 
 /**
@@ -11,6 +12,5 @@ private import codeql.rust.elements.internal.generated.CfgPredPat
  * be referenced directly.
  */
 module Impl {
-  class CfgPredPat extends Generated::CfgPredPat {
-  }
+  class CfgPredPat extends Generated::CfgPredPat { }
 }

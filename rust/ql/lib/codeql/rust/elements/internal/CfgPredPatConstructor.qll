@@ -4,13 +4,11 @@
  *  `CfgPredPat` synthesized instances.
  *  INTERNAL: Do not use.
  */
+
 private import codeql.rust.elements.internal.generated.Raw
 
 /**
  *  The characteristic predicate of `CfgPredPat` synthesized instances.
  *  INTERNAL: Do not use.
  */
-predicate constructCfgPredPat(Raw::CfgPredPat id) {
-  
-  any()
-}
+predicate constructCfgPredPat(Raw::CfgPredPat id) { any() }

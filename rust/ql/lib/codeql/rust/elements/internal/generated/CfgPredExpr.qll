@@ -8,6 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.CfgPredicate
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
+
 /**
  * INTERNAL: This module contains the fully generated definition of `CfgPredExpr` and should not
  * be referenced directly.
@@ -24,17 +25,17 @@ module Generated {
 
     /**
      * Gets the cfg predicate of this cfg pred expression, if it exists.
-     *
      */
     CfgPredicate getCfgPredicate() {
-      result = Synth::convertCfgPredicateFromRaw(Synth::convertCfgPredExprToRaw(this).(Raw::CfgPredExpr).getCfgPredicate())
+      result =
+        Synth::convertCfgPredicateFromRaw(Synth::convertCfgPredExprToRaw(this)
+              .(Raw::CfgPredExpr)
+              .getCfgPredicate())
     }
 
     /**
      * Holds if `getCfgPredicate()` exists.
      */
-    final predicate hasCfgPredicate() {
-      exists(this.getCfgPredicate())
-    }
+    final predicate hasCfgPredicate() { exists(this.getCfgPredicate()) }
   }
 }

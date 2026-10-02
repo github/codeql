@@ -4,6 +4,7 @@
  *
  * INTERNAL: Do not use.
  */
+
 private import codeql.rust.elements.internal.generated.CfgPredExpr
 
 /**
@@ -11,6 +12,5 @@ private import codeql.rust.elements.internal.generated.CfgPredExpr
  * be referenced directly.
  */
 module Impl {
-  class CfgPredExpr extends Generated::CfgPredExpr {
-  }
+  class CfgPredExpr extends Generated::CfgPredExpr { }
 }
