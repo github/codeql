@@ -1,0 +1,4 @@
+import '../../../test.just'
+
+[group('test')]
+test *ARGS=".": (_integration_tests ARGS)
