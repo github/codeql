@@ -1,5 +1,28 @@
+generatedConstructor
 | constructors.swift:1:1:1:0 | init |
 | constructors.swift:3:1:3:0 | init |
 | constructors.swift:19:1:19:0 | init |
 | constructors.swift:31:1:31:0 | init |
 | constructors.swift:39:1:39:0 | init |
+implicitReceiverParameter
+| constructors.swift:1:1:1:0 | self | constructors.swift:1:1:1:0 | init |
+| constructors.swift:3:1:3:0 | self | constructors.swift:3:1:3:0 | init |
+| constructors.swift:6:5:6:13 | self | constructors.swift:6:5:6:13 | init |
+| constructors.swift:10:5:12:5 | self | constructors.swift:10:5:12:5 | init |
+| constructors.swift:14:5:16:5 | self | constructors.swift:14:5:16:5 | convenience init |
+| constructors.swift:19:1:19:0 | self | constructors.swift:19:1:19:0 | init |
+| constructors.swift:22:5:22:25 | self | constructors.swift:22:5:22:25 | init |
+| constructors.swift:24:5:24:30 | self | constructors.swift:24:5:24:30 | init |
+| constructors.swift:26:5:28:5 | self | constructors.swift:26:5:28:5 | convenience init |
+| constructors.swift:31:1:31:0 | self | constructors.swift:31:1:31:0 | init |
+| constructors.swift:34:5:36:5 | self | constructors.swift:34:5:36:5 | convenience init |
+| constructors.swift:39:1:39:0 | self | constructors.swift:39:1:39:0 | init |
+| constructors.swift:46:9:48:9 | self | constructors.swift:46:9:48:9 | AccessorDeclaration |
+| constructors.swift:49:9:51:9 | self | constructors.swift:49:9:51:9 | AccessorDeclaration |
+| constructors.swift:54:9:56:9 | self | constructors.swift:54:9:56:9 | AccessorDeclaration |
+| constructors.swift:57:9:59:9 | self | constructors.swift:57:9:59:9 | AccessorDeclaration |
+callableExDefaultConstructorParameter
+| constructors.swift:39:1:39:0 | init | 1 | constructors.swift:39:1:39:0 | f1 [init default constructor] | f1 |
+| constructors.swift:39:1:39:0 | init | 2 | constructors.swift:39:1:39:0 | f2 [init default constructor] | f2 |
+| constructors.swift:39:1:39:0 | init | 3 | constructors.swift:39:1:39:0 | f4 [init default constructor] | f4 |
+| constructors.swift:39:1:39:0 | init | 4 | constructors.swift:39:1:39:0 | f7 [init default constructor] | f7 |
