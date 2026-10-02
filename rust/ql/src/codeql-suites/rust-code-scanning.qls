@@ -1,4 +1,4 @@
-- description: Standard Code Scanning queries for Rust
 - queries: .
-- apply: code-scanning-selectors.yml
-  from: codeql/suite-helpers
+- include:
+    tags contain:
+      - type-inference-warmup
