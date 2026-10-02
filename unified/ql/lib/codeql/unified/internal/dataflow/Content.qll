@@ -8,14 +8,19 @@ private newtype TContent =
     // Tuple elements can be accessed as named members, e.g. `tuple.0`, `tuple.1`, etc,
     // so just model their elements as named members.
     name = [0 .. 20].toString()
-  }
+  } or
+  TCapturedVariable(CaptureSsaInput::CapturedVariable v)
 
 class Content extends TContent {
   string asNamedMember() { this = TNamedMember(result) }
 
-  string toString() { result = this.asNamedMember() }
+  string toString() {
+    result = this.asNamedMember() or result = this.asCapturedVariable().toString()
+  }
 
-  Location getLocation() { none() }
+  LocalVariable asCapturedVariable() { this = TCapturedVariable(result) }
+
+  Location getLocation() { result = this.asCapturedVariable().getLocation() }
 }
 
 private newtype TContentSet = TSingleton(Content content)
@@ -34,4 +39,6 @@ class ContentSet extends TContentSet {
 
 module ContentSet {
   ContentSet namedMember(string name) { result.asSingleton().asNamedMember() = name }
+
+  ContentSet capturedVariable(LocalVariable v) { result.asSingleton().asCapturedVariable() = v }
 }

@@ -1,6 +1,7 @@
 /** Re-exports all the files in the internal dataflow folder (except DataFlowPublic). */
 
 import CallGraph
+import CaptureSsa
 import Content
 import DataFlowCall
 import DataFlowCallable
@@ -13,3 +14,4 @@ import ParameterPositions
 import Step
 import TaintTrackingInstantiation
 import VariableRefKind
+import LocalVariableRefNode

@@ -57,8 +57,7 @@ module DataFlowInput implements InputSig<Location> {
       pos.asNamed() = param.getExternalName()
     )
     or
-    p.isReceiverParameterEx(c) and
-    pos.isReceiver()
+    p.(BuilderNode).isImplicitParameter(c, pos)
   }
 
   class ParameterNode extends Node {
@@ -80,8 +79,7 @@ module DataFlowInput implements InputSig<Location> {
       pos.asNamed() = arg.getName()
     )
     or
-    n.isReceiverArgumentEx(call) and
-    pos.isReceiver()
+    n.(BuilderNode).isImplicitArgument(call, pos, false)
   }
 
   class ArgumentNode extends Node {
@@ -131,19 +129,25 @@ module DataFlowInput implements InputSig<Location> {
     step(node1, any(Step s | s.value()), node2) and model = ""
     or
     localSsaStep(node1, node2, _) and model = ""
+    or
+    captureSsaLocalFlowStep(node1, node2) and model = ""
   }
 
   predicate jumpStep(Node node1, Node node2) { step(node1, any(Step s | s.jump()), node2) }
 
   predicate readStep(Node node1, ContentSet c, Node node2) {
     step(node1, any(Step s | s.read(c)), node2)
+    or
+    captureSsaReadStep(node1, c, node2)
   }
 
   predicate storeStep(Node node1, ContentSet c, Node node2) {
     step(node1, any(Step s | s.store(c)), node2)
+    or
+    captureSsaStoreStep(node1, c, node2)
   }
 
-  predicate clearsContent(Node n, ContentSet c) { none() } // TODO
+  predicate clearsContent(Node n, ContentSet c) { captureSsaClearsContent(n, c) }
 
   predicate expectsContent(Node n, ContentSet c) { none() } // TODO
 
@@ -183,17 +187,19 @@ module DataFlowInput implements InputSig<Location> {
 
   predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() } // TODO
 
-  predicate allowParameterReturnInSelf(ParameterNode p) { none() } // TODO
+  predicate allowParameterReturnInSelf(ParameterNode p) { captureSsaAllowParameterReturnInSelf(p) }
 
-  class LambdaCallKind extends Void {
-    LambdaCallKind() { none() } // TODO
+  class LambdaCallKind extends Unit { }
 
-    string toString() { none() } // TODO
+  predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+    creation.isCallableEx(c) and
+    exists(kind)
   }
 
-  predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() } // TODO
-
-  predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() } // TODO
+  predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+    receiver.(BuilderNode).isImplicitArgument(call, any(ArgumentPosition p | p.isCallee()), false) and
+    exists(kind)
+  }
 
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) {
     none() // TODO

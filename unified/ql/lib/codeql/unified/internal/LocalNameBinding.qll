@@ -70,34 +70,9 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   }
 
   private AstNode getChild1(AstNode n, int index) {
-    result = n.(Block).getStmt(index) and
-    not n instanceof BlockWithGuardStmts
-    or
     result = n.(BlockWithGuardStmts).getTranslatedChild(index)
     or
     result = n.(LogicalAndRoot).getNthLeaf(index)
-    or
-    exists(PatternGuardExpr guard | n = guard |
-      index = 0 and result = guard.getPattern()
-      or
-      index = 1 and result = guard.getValue()
-    )
-    or
-    exists(IfExpr expr | n = expr |
-      index = 0 and result = expr.getCondition()
-      or
-      index = 1 and result = expr.getThen()
-      or
-      index = 2 and result = expr.getElse()
-    )
-    or
-    exists(VariableDeclaration decl | n = decl |
-      index = 0 and result = decl.getPattern()
-      or
-      index = 1 and result = decl.getType()
-      or
-      index = 2 and result = decl.getValue()
-    )
     or
     index = 0 and
     relocatedClassMember(n, result)
@@ -121,7 +96,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     not n instanceof LogicalAndExpr and // also ignore intermediate nodes within a 'logical and' tree
     not n instanceof GuardIfStmt and
     not relocatedClassMember(_, result) and
-    index = 0 and
+    index = result.getParentIndex() and
     result = n.getAFieldOrChild()
   }
 
@@ -174,11 +149,6 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   private class LocalVariableDeclarationSiblingShadowingDecl extends SiblingShadowingDecl instanceof LocalVariableDeclaration
   {
-    LocalVariableDeclarationSiblingShadowingDecl() {
-      // Capture-declarations act as local variables, but are not sibling-shadowing
-      not this = any(FunctionExpr e).getACaptureDeclaration()
-    }
-
     override Expr getPattern() { result = LocalVariableDeclaration.super.getPattern() }
 
     override AstNode getRhs() { result = LocalVariableDeclaration.super.getValue() }

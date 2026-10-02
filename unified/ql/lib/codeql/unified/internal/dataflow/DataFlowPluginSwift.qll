@@ -7,7 +7,7 @@ private import AllDataFlow
 
 private class SwiftDataFlowPlugin extends DataFlowPlugin {
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
-  override predicate step(Node node1, Step step, Node node2) {
+  override predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     exists(BinaryExpr expr |
       expr.getOperator().getValue() = ["+", "+="] and
       node1.isResultValue([expr.getLeft(), expr.getRight()]) and
