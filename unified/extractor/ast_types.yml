@@ -13,6 +13,7 @@ supertypes:
     - binary_expr
     - unary_expr
     - call_expr
+    - macro_call_expr
     - member_access_expr
     - super_expr
     - function_expr
@@ -169,6 +170,13 @@ named:
   call_expr:
     modifier*: modifier
     callee: expr
+    argument*: argument
+
+  # A macro call expression, such as `#expect(x == y)` in Swift or
+  # `assert!(x == y)` in Rust.
+  macro_call_expr:
+    macro_name_node: identifier
+    type_argument*: expr
     argument*: argument
 
   argument:
