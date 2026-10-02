@@ -1,0 +1,25 @@
+ambiguousReadNode
+| test.swift:8:9:8:26 | [variable post-update] item | test.swift:7:5:9:5 | self |
+| test.swift:8:9:8:26 | [variable post-update] item | test.swift:7:25:7:28 | item |
+| test.swift:8:9:8:26 | [variable post-update] self | test.swift:7:5:9:5 | self |
+| test.swift:8:9:8:26 | [variable post-update] self | test.swift:7:25:7:28 | item |
+| test.swift:12:16:12:35 | [variable post-update] item | test.swift:11:5:13:5 | self |
+| test.swift:12:16:12:35 | [variable post-update] item | test.swift:11:21:11:24 | item |
+| test.swift:12:16:12:35 | [variable post-update] self | test.swift:11:5:13:5 | self |
+| test.swift:12:16:12:35 | [variable post-update] self | test.swift:11:21:11:24 | item |
+| test.swift:27:13:27:33 | [variable post-update] item | test.swift:25:9:25:14 | result |
+| test.swift:27:13:27:33 | [variable post-update] item | test.swift:26:9:26:12 | item |
+| test.swift:27:13:27:33 | [variable post-update] result | test.swift:25:9:25:14 | result |
+| test.swift:27:13:27:33 | [variable post-update] result | test.swift:26:9:26:12 | item |
+| test.swift:28:13:28:31 | [variable post-update] item | test.swift:25:9:25:14 | result |
+| test.swift:28:13:28:31 | [variable post-update] item | test.swift:26:9:26:12 | item |
+| test.swift:28:13:28:31 | [variable post-update] result | test.swift:25:9:25:14 | result |
+| test.swift:28:13:28:31 | [variable post-update] result | test.swift:26:9:26:12 | item |
+| test.swift:49:16:49:26 | [variable post-update] index | test.swift:47:5:50:5 | self |
+| test.swift:49:16:49:26 | [variable post-update] index | test.swift:47:18:47:22 | index |
+| test.swift:49:16:49:26 | [variable post-update] self | test.swift:47:5:50:5 | self |
+| test.swift:49:16:49:26 | [variable post-update] self | test.swift:47:18:47:22 | index |
+| test.swift:53:9:53:25 | [variable post-update] item | test.swift:52:5:54:5 | self |
+| test.swift:53:9:53:25 | [variable post-update] item | test.swift:52:16:52:19 | item |
+| test.swift:53:9:53:25 | [variable post-update] self | test.swift:52:5:54:5 | self |
+| test.swift:53:9:53:25 | [variable post-update] self | test.swift:52:16:52:19 | item |
