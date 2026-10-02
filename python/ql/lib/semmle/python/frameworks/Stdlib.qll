@@ -1761,6 +1761,59 @@ module StdlibPrivate {
   }
 
   // ---------------------------------------------------------------------------
+  // binascii
+  // ---------------------------------------------------------------------------
+  /** A call to a supported encoding function in the `binascii` module. */
+  private class BinasciiEncodeCall extends Encoding::Range, DataFlow::CallCfgNode {
+    string codec;
+
+    BinasciiEncodeCall() {
+      codec in ["base32", "base85", "ascii85"] and
+      this = API::moduleImport("binascii").getMember("b2a_" + codec).getACall()
+    }
+
+    override DataFlow::Node getAnInput() {
+      result = this.getArg(0)
+      or
+      codec in ["base32", "base85"] and
+      result = this.getArgByName("alphabet")
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() {
+      result in ["Base32", "Base85", "Ascii85"] and
+      result.toLowerCase() = codec
+    }
+  }
+
+  /** A call to a supported decoding function in the `binascii` module. */
+  private class BinasciiDecodeCall extends Decoding::Range, DataFlow::CallCfgNode {
+    string codec;
+
+    BinasciiDecodeCall() {
+      codec in ["base32", "base85", "ascii85"] and
+      this = API::moduleImport("binascii").getMember("a2b_" + codec).getACall()
+    }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getAnInput() {
+      result = this.getArg(0)
+      or
+      codec in ["base32", "base85"] and
+      result = this.getArgByName("alphabet")
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() {
+      result in ["Base32", "Base85", "Ascii85"] and
+      result.toLowerCase() = codec
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // json
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `json` module. */
