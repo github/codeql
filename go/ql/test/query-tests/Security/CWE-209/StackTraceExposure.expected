@@ -1,8 +1,13 @@
-edges
-| test.go:15:28:15:30 | buf [postupdate] | test.go:18:10:18:12 | buf | provenance |  |
-nodes
-| test.go:15:28:15:30 | buf [postupdate] | semmle.label | buf [postupdate] |
-| test.go:18:10:18:12 | buf | semmle.label | buf |
-subpaths
 #select
 | test.go:18:10:18:12 | buf | test.go:15:28:15:30 | buf [postupdate] | test.go:18:10:18:12 | buf | HTTP response depends on $@ and may be exposed to an external user. | test.go:15:28:15:30 | buf [postupdate] | stack trace information |
+edges
+| test.go:15:28:15:30 | buf [postupdate] | test.go:16:8:16:21 | slice element node | provenance |  |
+| test.go:15:28:15:30 | buf [postupdate] | test.go:18:10:18:12 | buf | provenance |  |
+| test.go:16:8:16:21 | slice element node | test.go:16:8:16:21 | slice expression [array] | provenance |  |
+| test.go:16:8:16:21 | slice expression [array] | test.go:18:10:18:12 | buf | provenance |  |
+nodes
+| test.go:15:28:15:30 | buf [postupdate] | semmle.label | buf [postupdate] |
+| test.go:16:8:16:21 | slice element node | semmle.label | slice element node |
+| test.go:16:8:16:21 | slice expression [array] | semmle.label | slice expression [array] |
+| test.go:18:10:18:12 | buf | semmle.label | buf |
+subpaths
