@@ -44,5 +44,8 @@ class Test
         if (true != false) ;
         if (true && true) ;
         if (true || false) ;
+
+        bool? boption = false;
+        if (boption == true) ; // GOOD. Can't be simplified like a regular bool
     }
 }
