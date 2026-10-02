@@ -389,6 +389,8 @@ module Flow<
       msg = "Callable has multiple locations" and 2 <= strictcount(c.getLocation())
     }
 
+    import SsaFlow::DfConsistency
+
     query predicate consistencyOverview(string msg, int n) {
       uniqueToString(msg, n) or
       n = strictcount(BasicBlock bb | uniqueEnclosingCallable(bb, msg)) or
