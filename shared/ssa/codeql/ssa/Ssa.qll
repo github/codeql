@@ -2144,6 +2144,17 @@ module Make<
         )
       }
     }
+
+    /** Provides consistency checks that depend on the DataFlowIntegration inputs. */
+    module DfConsistency {
+      /**
+       * The given `read` reads multiple variables at once. `var` is bound to one of them.
+       */
+      query predicate ambiguousReadNode(ReadNode read, SourceVariable var) {
+        strictcount(SourceVariable v | read.readsAt(_, _, v)) > 1 and
+        read.readsAt(_, _, var)
+      }
+    }
   }
 
   /**
