@@ -1,6 +1,5 @@
 /.generated.list linguist-generated
 /.gitattributes linguist-generated
-/lib/codeql/rust/controlflow/internal/generated/CfgNodes.qll linguist-generated
 /lib/codeql/rust/elements/Abi.qll linguist-generated
 /lib/codeql/rust/elements/Addressable.qll linguist-generated
 /lib/codeql/rust/elements/AnyAttr.qll linguist-generated
@@ -621,7 +620,6 @@
 /lib/codeql/rust/elements/internal/generated/ParenExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ParenPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ParenTypeRepr.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/ParentChild.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ParenthesizedArgList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Pat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Path.qll linguist-generated
@@ -638,7 +636,6 @@
 /lib/codeql/rust/elements/internal/generated/PureSynthConstructors.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RangeExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RangePat.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/Raw.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RefExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RefPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RefTypeRepr.qll linguist-generated
@@ -663,8 +660,6 @@
 /lib/codeql/rust/elements/internal/generated/StructPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/StructPatField.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/StructPatFieldList.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/Synth.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/SynthConstructors.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Token.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TokenTree.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TokenTreeMeta.qll linguist-generated
@@ -704,7 +699,6 @@
 /lib/codeql/rust/elements/internal/generated/WildcardPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/YeetExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/YieldExpr.qll linguist-generated
-/lib/codeql/rust/elements.qll linguist-generated
 /test/extractor-tests/generated/Abi/Abi.ql linguist-generated
 /test/extractor-tests/generated/ArgList/ArgList.ql linguist-generated
 /test/extractor-tests/generated/ArrayListExpr/ArrayListExpr.ql linguist-generated

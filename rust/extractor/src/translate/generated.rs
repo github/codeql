@@ -86,6 +86,7 @@ impl Translator<'_> {
             ast::Expr::BreakExpr(inner) => self.emit_break_expr(inner).map(Into::into),
             ast::Expr::CallExpr(inner) => self.emit_call_expr(inner).map(Into::into),
             ast::Expr::CastExpr(inner) => self.emit_cast_expr(inner).map(Into::into),
+            ast::Expr::CfgPredExpr(inner) => self.emit_cfg_pred_expr(inner).map(Into::into),
             ast::Expr::ClosureExpr(inner) => self.emit_closure_expr(inner).map(Into::into),
             ast::Expr::ContinueExpr(inner) => self.emit_continue_expr(inner).map(Into::into),
             ast::Expr::FieldExpr(inner) => self.emit_field_expr(inner).map(Into::into),
@@ -192,6 +193,7 @@ impl Translator<'_> {
     pub(crate) fn emit_pat(&mut self, node: &ast::Pat) -> Option<Label<generated::Pat>> {
         let label = match node {
             ast::Pat::BoxPat(inner) => self.emit_box_pat(inner).map(Into::into),
+            ast::Pat::CfgPredPat(inner) => self.emit_cfg_pred_pat(inner).map(Into::into),
             ast::Pat::ConstBlockPat(inner) => self.emit_const_block_pat(inner).map(Into::into),
             ast::Pat::DerefPat(inner) => self.emit_deref_pat(inner).map(Into::into),
             ast::Pat::IdentPat(inner) => self.emit_ident_pat(inner).map(Into::into),
@@ -836,6 +838,36 @@ impl Translator<'_> {
             .cfg_predicate()
             .and_then(|x| self.emit_cfg_predicate(&x));
         let label = self.trap.emit(generated::CfgMeta {
+            id: TrapId::Star,
+            cfg_predicate,
+        });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
+    pub(crate) fn emit_cfg_pred_expr(
+        &mut self,
+        node: &ast::CfgPredExpr,
+    ) -> Option<Label<generated::CfgPredExpr>> {
+        let cfg_predicate = node
+            .cfg_predicate()
+            .and_then(|x| self.emit_cfg_predicate(&x));
+        let label = self.trap.emit(generated::CfgPredExpr {
+            id: TrapId::Star,
+            cfg_predicate,
+        });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
+    pub(crate) fn emit_cfg_pred_pat(
+        &mut self,
+        node: &ast::CfgPredPat,
+    ) -> Option<Label<generated::CfgPredPat>> {
+        let cfg_predicate = node
+            .cfg_predicate()
+            .and_then(|x| self.emit_cfg_predicate(&x));
+        let label = self.trap.emit(generated::CfgPredPat {
             id: TrapId::Star,
             cfg_predicate,
         });
