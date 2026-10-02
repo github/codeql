@@ -1,0 +1,116 @@
+#select
+| test.cpp:134:49:134:50 | *& ... | test.cpp:133:21:133:41 | call to rand | test.cpp:134:49:134:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:133:21:133:41 | call to rand | a randomly generated number |
+| test.cpp:142:49:142:50 | *& ... | test.cpp:141:21:141:46 | call to rand | test.cpp:142:49:142:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:141:21:141:46 | call to rand | a randomly generated number |
+| test.cpp:150:49:150:50 | *& ... | test.cpp:149:21:149:43 | call to random | test.cpp:150:49:150:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:149:21:149:43 | call to random | a randomly generated number |
+| test.cpp:158:49:158:50 | *& ... | test.cpp:157:21:157:44 | call to drand48 | test.cpp:158:49:158:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:157:21:157:44 | call to drand48 | a randomly generated number |
+| test.cpp:167:49:167:50 | *& ... | test.cpp:166:21:166:45 | call to erand48 | test.cpp:167:49:167:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:166:21:166:45 | call to erand48 | a randomly generated number |
+| test.cpp:175:49:175:50 | *& ... | test.cpp:174:21:174:44 | call to lrand48 | test.cpp:175:49:175:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:174:21:174:44 | call to lrand48 | a randomly generated number |
+| test.cpp:184:49:184:50 | *& ... | test.cpp:183:21:183:45 | call to nrand48 | test.cpp:184:49:184:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:183:21:183:45 | call to nrand48 | a randomly generated number |
+| test.cpp:192:49:192:50 | *& ... | test.cpp:191:21:191:44 | call to mrand48 | test.cpp:192:49:192:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:191:21:191:44 | call to mrand48 | a randomly generated number |
+| test.cpp:201:49:201:50 | *& ... | test.cpp:200:21:200:45 | call to jrand48 | test.cpp:201:49:201:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:200:21:200:45 | call to jrand48 | a randomly generated number |
+| test.cpp:210:49:210:50 | *& ... | test.cpp:209:21:209:48 | call to rand_r | test.cpp:210:49:210:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:209:21:209:48 | call to rand_r | a randomly generated number |
+| test.cpp:222:54:222:56 | *& ... | test.cpp:221:22:221:42 | call to rand | test.cpp:222:54:222:56 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:221:22:221:42 | call to rand | a randomly generated number |
+| test.cpp:228:42:228:43 | *& ... | test.cpp:227:21:227:41 | call to rand | test.cpp:228:42:228:43 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:227:21:227:41 | call to rand | a randomly generated number |
+| test.cpp:240:49:240:50 | *& ... | test.cpp:239:21:239:40 | call to operator() | test.cpp:240:49:240:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:239:21:239:40 | call to operator() | a randomly generated number |
+| test.cpp:249:49:249:50 | *& ... | test.cpp:248:21:248:40 | call to operator() | test.cpp:249:49:249:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:248:21:248:40 | call to operator() | a randomly generated number |
+| test.cpp:258:49:258:50 | *& ... | test.cpp:257:21:257:40 | call to operator() | test.cpp:258:49:258:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:257:21:257:40 | call to operator() | a randomly generated number |
+| test.cpp:267:49:267:50 | *& ... | test.cpp:266:21:266:40 | call to operator() | test.cpp:267:49:267:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:266:21:266:40 | call to operator() | a randomly generated number |
+| test.cpp:276:49:276:50 | *& ... | test.cpp:275:21:275:40 | call to operator() | test.cpp:276:49:276:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:275:21:275:40 | call to operator() | a randomly generated number |
+| test.cpp:285:49:285:50 | *& ... | test.cpp:284:21:284:40 | call to operator() | test.cpp:285:49:285:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:284:21:284:40 | call to operator() | a randomly generated number |
+| test.cpp:298:49:298:50 | *& ... | test.cpp:297:21:297:22 | RAND_pseudo_bytes output argument | test.cpp:298:49:298:50 | *& ... | This security-sensitive value depends on $@, which is not cryptographically secure. | test.cpp:297:21:297:22 | RAND_pseudo_bytes output argument | a randomly generated number |
+edges
+| test.cpp:133:21:133:41 | call to rand | test.cpp:133:21:133:41 | call to rand | provenance |  |
+| test.cpp:133:21:133:41 | call to rand | test.cpp:134:49:134:50 | *& ... | provenance |  |
+| test.cpp:141:21:141:46 | call to rand | test.cpp:141:21:141:46 | call to rand | provenance |  |
+| test.cpp:141:21:141:46 | call to rand | test.cpp:142:49:142:50 | *& ... | provenance |  |
+| test.cpp:149:21:149:43 | call to random | test.cpp:149:21:149:43 | call to random | provenance |  |
+| test.cpp:149:21:149:43 | call to random | test.cpp:150:49:150:50 | *& ... | provenance |  |
+| test.cpp:157:21:157:44 | call to drand48 | test.cpp:157:21:157:44 | call to drand48 | provenance |  |
+| test.cpp:157:21:157:44 | call to drand48 | test.cpp:158:49:158:50 | *& ... | provenance |  |
+| test.cpp:166:21:166:45 | call to erand48 | test.cpp:166:21:166:45 | call to erand48 | provenance |  |
+| test.cpp:166:21:166:45 | call to erand48 | test.cpp:167:49:167:50 | *& ... | provenance |  |
+| test.cpp:174:21:174:44 | call to lrand48 | test.cpp:174:21:174:44 | call to lrand48 | provenance |  |
+| test.cpp:174:21:174:44 | call to lrand48 | test.cpp:175:49:175:50 | *& ... | provenance |  |
+| test.cpp:183:21:183:45 | call to nrand48 | test.cpp:183:21:183:45 | call to nrand48 | provenance |  |
+| test.cpp:183:21:183:45 | call to nrand48 | test.cpp:184:49:184:50 | *& ... | provenance |  |
+| test.cpp:191:21:191:44 | call to mrand48 | test.cpp:191:21:191:44 | call to mrand48 | provenance |  |
+| test.cpp:191:21:191:44 | call to mrand48 | test.cpp:192:49:192:50 | *& ... | provenance |  |
+| test.cpp:200:21:200:45 | call to jrand48 | test.cpp:200:21:200:45 | call to jrand48 | provenance |  |
+| test.cpp:200:21:200:45 | call to jrand48 | test.cpp:201:49:201:50 | *& ... | provenance |  |
+| test.cpp:209:21:209:48 | call to rand_r | test.cpp:209:21:209:48 | call to rand_r | provenance |  |
+| test.cpp:209:21:209:48 | call to rand_r | test.cpp:210:49:210:50 | *& ... | provenance |  |
+| test.cpp:221:22:221:42 | call to rand | test.cpp:221:22:221:42 | call to rand | provenance |  |
+| test.cpp:221:22:221:42 | call to rand | test.cpp:222:54:222:56 | *& ... | provenance |  |
+| test.cpp:227:21:227:41 | call to rand | test.cpp:227:21:227:41 | call to rand | provenance |  |
+| test.cpp:227:21:227:41 | call to rand | test.cpp:228:42:228:43 | *& ... | provenance |  |
+| test.cpp:239:21:239:40 | call to operator() | test.cpp:239:21:239:40 | call to operator() | provenance |  |
+| test.cpp:239:21:239:40 | call to operator() | test.cpp:240:49:240:50 | *& ... | provenance |  |
+| test.cpp:248:21:248:40 | call to operator() | test.cpp:248:21:248:40 | call to operator() | provenance |  |
+| test.cpp:248:21:248:40 | call to operator() | test.cpp:249:49:249:50 | *& ... | provenance |  |
+| test.cpp:257:21:257:40 | call to operator() | test.cpp:257:21:257:40 | call to operator() | provenance |  |
+| test.cpp:257:21:257:40 | call to operator() | test.cpp:258:49:258:50 | *& ... | provenance |  |
+| test.cpp:266:21:266:40 | call to operator() | test.cpp:266:21:266:40 | call to operator() | provenance |  |
+| test.cpp:266:21:266:40 | call to operator() | test.cpp:267:49:267:50 | *& ... | provenance |  |
+| test.cpp:275:21:275:40 | call to operator() | test.cpp:275:21:275:40 | call to operator() | provenance |  |
+| test.cpp:275:21:275:40 | call to operator() | test.cpp:276:49:276:50 | *& ... | provenance |  |
+| test.cpp:284:21:284:40 | call to operator() | test.cpp:284:21:284:40 | call to operator() | provenance |  |
+| test.cpp:284:21:284:40 | call to operator() | test.cpp:285:49:285:50 | *& ... | provenance |  |
+| test.cpp:297:21:297:22 | RAND_pseudo_bytes output argument | test.cpp:298:49:298:50 | *& ... | provenance |  |
+nodes
+| test.cpp:133:21:133:41 | call to rand | semmle.label | call to rand |
+| test.cpp:133:21:133:41 | call to rand | semmle.label | call to rand |
+| test.cpp:134:49:134:50 | *& ... | semmle.label | *& ... |
+| test.cpp:141:21:141:46 | call to rand | semmle.label | call to rand |
+| test.cpp:141:21:141:46 | call to rand | semmle.label | call to rand |
+| test.cpp:142:49:142:50 | *& ... | semmle.label | *& ... |
+| test.cpp:149:21:149:43 | call to random | semmle.label | call to random |
+| test.cpp:149:21:149:43 | call to random | semmle.label | call to random |
+| test.cpp:150:49:150:50 | *& ... | semmle.label | *& ... |
+| test.cpp:157:21:157:44 | call to drand48 | semmle.label | call to drand48 |
+| test.cpp:157:21:157:44 | call to drand48 | semmle.label | call to drand48 |
+| test.cpp:158:49:158:50 | *& ... | semmle.label | *& ... |
+| test.cpp:166:21:166:45 | call to erand48 | semmle.label | call to erand48 |
+| test.cpp:166:21:166:45 | call to erand48 | semmle.label | call to erand48 |
+| test.cpp:167:49:167:50 | *& ... | semmle.label | *& ... |
+| test.cpp:174:21:174:44 | call to lrand48 | semmle.label | call to lrand48 |
+| test.cpp:174:21:174:44 | call to lrand48 | semmle.label | call to lrand48 |
+| test.cpp:175:49:175:50 | *& ... | semmle.label | *& ... |
+| test.cpp:183:21:183:45 | call to nrand48 | semmle.label | call to nrand48 |
+| test.cpp:183:21:183:45 | call to nrand48 | semmle.label | call to nrand48 |
+| test.cpp:184:49:184:50 | *& ... | semmle.label | *& ... |
+| test.cpp:191:21:191:44 | call to mrand48 | semmle.label | call to mrand48 |
+| test.cpp:191:21:191:44 | call to mrand48 | semmle.label | call to mrand48 |
+| test.cpp:192:49:192:50 | *& ... | semmle.label | *& ... |
+| test.cpp:200:21:200:45 | call to jrand48 | semmle.label | call to jrand48 |
+| test.cpp:200:21:200:45 | call to jrand48 | semmle.label | call to jrand48 |
+| test.cpp:201:49:201:50 | *& ... | semmle.label | *& ... |
+| test.cpp:209:21:209:48 | call to rand_r | semmle.label | call to rand_r |
+| test.cpp:209:21:209:48 | call to rand_r | semmle.label | call to rand_r |
+| test.cpp:210:49:210:50 | *& ... | semmle.label | *& ... |
+| test.cpp:221:22:221:42 | call to rand | semmle.label | call to rand |
+| test.cpp:221:22:221:42 | call to rand | semmle.label | call to rand |
+| test.cpp:222:54:222:56 | *& ... | semmle.label | *& ... |
+| test.cpp:227:21:227:41 | call to rand | semmle.label | call to rand |
+| test.cpp:227:21:227:41 | call to rand | semmle.label | call to rand |
+| test.cpp:228:42:228:43 | *& ... | semmle.label | *& ... |
+| test.cpp:239:21:239:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:239:21:239:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:240:49:240:50 | *& ... | semmle.label | *& ... |
+| test.cpp:248:21:248:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:248:21:248:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:249:49:249:50 | *& ... | semmle.label | *& ... |
+| test.cpp:257:21:257:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:257:21:257:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:258:49:258:50 | *& ... | semmle.label | *& ... |
+| test.cpp:266:21:266:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:266:21:266:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:267:49:267:50 | *& ... | semmle.label | *& ... |
+| test.cpp:275:21:275:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:275:21:275:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:276:49:276:50 | *& ... | semmle.label | *& ... |
+| test.cpp:284:21:284:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:284:21:284:40 | call to operator() | semmle.label | call to operator() |
+| test.cpp:285:49:285:50 | *& ... | semmle.label | *& ... |
+| test.cpp:297:21:297:22 | RAND_pseudo_bytes output argument | semmle.label | RAND_pseudo_bytes output argument |
+| test.cpp:298:49:298:50 | *& ... | semmle.label | *& ... |
+subpaths
