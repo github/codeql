@@ -4,11 +4,11 @@ void emptyIfs(int value) {
   if (value > 1) {
   } // $ Alert[cpp/empty-if]
 
-  if (value) { // good
+  if (value) { // GOOD
     ++value;
   }
 
-  if (value) { // good
+  if (value) { // GOOD
   } else {
     ++value;
   }
