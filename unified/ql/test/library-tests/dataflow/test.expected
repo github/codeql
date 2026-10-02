@@ -179,9 +179,7 @@ edges
 | test.swift:175:42:175:66 | ... + ... | test.swift:175:14:175:67 | TupleExpr [1] | provenance |  |
 | test.swift:175:52:175:66 | source(...) | test.swift:175:42:175:66 | ... + ... | provenance |  |
 | test.swift:182:9:182:9 | x | test.swift:185:10:185:10 | x | provenance |  |
-| test.swift:182:9:182:9 | x | test.swift:186:10:186:10 | y | provenance |  |
 | test.swift:182:13:182:27 | source(...) | test.swift:182:9:182:9 | x | provenance |  |
-| test.swift:183:9:183:9 | y | test.swift:185:10:185:10 | x | provenance |  |
 | test.swift:183:9:183:9 | y | test.swift:186:10:186:10 | y | provenance |  |
 | test.swift:183:13:183:27 | source(...) | test.swift:183:9:183:9 | y | provenance |  |
 nodes
@@ -489,6 +487,4 @@ testFailures
 | test.swift:176:10:176:10 | a | test.swift:175:25:175:39 | source(...) | test.swift:176:10:176:10 | a | $@ | test.swift:175:25:175:39 | source(...) | source(...) |
 | test.swift:177:10:177:10 | b | test.swift:175:52:175:66 | source(...) | test.swift:177:10:177:10 | b | $@ | test.swift:175:52:175:66 | source(...) | source(...) |
 | test.swift:185:10:185:10 | x | test.swift:182:13:182:27 | source(...) | test.swift:185:10:185:10 | x | $@ | test.swift:182:13:182:27 | source(...) | source(...) |
-| test.swift:185:10:185:10 | x | test.swift:183:13:183:27 | source(...) | test.swift:185:10:185:10 | x | $@ | test.swift:183:13:183:27 | source(...) | source(...) |
-| test.swift:186:10:186:10 | y | test.swift:182:13:182:27 | source(...) | test.swift:186:10:186:10 | y | $@ | test.swift:182:13:182:27 | source(...) | source(...) |
 | test.swift:186:10:186:10 | y | test.swift:183:13:183:27 | source(...) | test.swift:186:10:186:10 | y | $@ | test.swift:183:13:183:27 | source(...) | source(...) |

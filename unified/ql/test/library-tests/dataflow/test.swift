@@ -182,6 +182,6 @@ func t20() {
     var x = source("t20.1")
     var y = source("t20.2")
     foo(x: x, y: y)
-    sink(x)  // $ hasValueFlow=t20.1 SPURIOUS: hasValueFlow=t20.2
-    sink(y)  // $ hasValueFlow=t20.2 SPURIOUS: hasValueFlow=t20.1
+    sink(x)  // $ hasValueFlow=t20.1
+    sink(y)  // $ hasValueFlow=t20.2
 }
