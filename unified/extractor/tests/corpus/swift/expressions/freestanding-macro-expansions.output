@@ -120,6 +120,45 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩"
       stmt:
-        unsupported_node "#expect(value == 42)" source="#expect(value == 42)"
-        unsupported_node "#custom<Int>(value) {\n  value\n} completion: {\n  value\n}" source="#custom<Int>(value) {\n  value\n} completion: {\n  value\n}"
-        unsupported_node "#Preview {\n  let previewValue = 42\n  previewValue\n}" source="#Preview {\n  let previewValue = 42\n  previewValue\n}"
+        macro_call_expr source="#⟨macro_name_node⟩(⟨argument⟩)"
+          macro_name_node: identifier "expect" source="expect"
+          argument:
+            argument source="⟨value⟩"
+              value:
+                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                  left: identifier "value" source="value"
+                  operator: infix_operator "==" source="=="
+                  right: int_literal "42" source="42"
+        macro_call_expr source="#⟨macro_name_node⟩<⟨type_argument⟩>(⟨argument⟩) ⟨argument⟩ ⟨argument⟩"
+          macro_name_node: identifier "custom" source="custom"
+          type_argument: identifier "Int" source="Int"
+          argument:
+            argument source="⟨value⟩"
+              value: identifier "value" source="value"
+            argument source="⟨value⟩"
+              value:
+                function_expr source="{\n  ⟨body⟩\n}"
+                  body:
+                    block source="⟨stmt⟩"
+                      stmt: identifier "value" source="value"
+            argument source="⟨name_node⟩: ⟨value⟩"
+              name_node: identifier "completion" source="completion"
+              value:
+                function_expr source="{\n  ⟨body⟩\n}"
+                  body:
+                    block source="⟨stmt⟩"
+                      stmt: identifier "value" source="value"
+        macro_call_expr source="#⟨macro_name_node⟩ ⟨argument⟩"
+          macro_name_node: identifier "Preview" source="Preview"
+          argument:
+            argument source="⟨value⟩"
+              value:
+                function_expr source="{\n  ⟨body⟩\n}"
+                  body:
+                    block source="⟨stmt⟩\n  ⟨stmt⟩"
+                      stmt:
+                        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                          modifier: modifier "let" source="let"
+                          pattern: identifier "previewValue" source="previewValue"
+                          value: int_literal "42" source="42"
+                        identifier "previewValue" source="previewValue"

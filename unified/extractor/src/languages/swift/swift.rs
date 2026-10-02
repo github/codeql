@@ -712,6 +712,31 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (argument name_node: (identifier #{lbl})? value: {val})
         ),
+        // An additional labeled trailing closure, such as the `c: { ... }` in
+        // `foo { 42 } c: { ... }`, is turned into an argument to the function.
+        rule!(
+            (multipleTrailingClosureElement label: @@label closure: @closure)
+            =>
+            (argument name_node: (identifier #{label}) value: {closure})
+        ),
+        rule!(
+            (macroExpansionExpr
+                macroName: @@name
+                genericArgumentClause: (genericArgumentClause arguments: (genericArgument argument: @type_args)*)?
+                arguments: _* @args
+                trailingClosure: _? @trailing
+                additionalTrailingClosures: _* @additional)
+            =>
+            macro_call_expr {
+                let mut arguments = args;
+                arguments.extend(trailing.into_iter().map(|trailing| tree!((argument value: {trailing}))));
+                arguments.extend(additional);
+                tree!((macro_call_expr
+                    macro_name_node: (identifier #{name})
+                    type_argument: {type_args}
+                    argument: {arguments}))
+            }
+        ),
         // Member access (`list.append`). The `declName` is itself a
         // `declReferenceExpr`; pull its `baseName` out as the member identifier.
         // A leading-dot access (`.foo`) has no explicit base — the base is an
@@ -1196,10 +1221,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 }
             }
         ),
-        // Selector expression: `#selector(inner)` -- not yet supported
-        // (swift-syntax represents `#selector`/`#keyPath` and other macro
-        // expansions uniformly as a `macroExpansionExpr`).
-        rule!((macroExpansionExpr) => (unsupported_node)),
         // A nominal type's `inheritanceClause` (`: Base, Proto`) becomes a list
         // of `base_type`s, one per inherited type. Each declaration keyword
         // gets its own rule; the bodies are identical but for the keyword.
