@@ -5,13 +5,13 @@
 #define int_g(n) int g##n;
 
 struct aa {
-  TEN(int_f)
-  TEN(int_g) // $ Alert
+  TEN(int_f) // $ Alert
+  TEN(int_g)
 };
 
 class bb {
-  TEN(int_f)
-  TEN(int_g) // $ Alert
+  TEN(int_f) // $ Alert
+  TEN(int_g)
 };
 
 union cc_not_flagged_up_because_unions_are_not_classes_in_this_sense {
@@ -21,14 +21,14 @@ union cc_not_flagged_up_because_unions_are_not_classes_in_this_sense {
 
 template <typename T>
 struct dd {
-  TEN(int_f)
-  TEN(int_g) // $ Alert
+  TEN(int_f) // $ Alert
+  TEN(int_g)
 };
 
 template <typename U>
 struct ee {
-  TEN(int_f)
-  TEN(int_g) // $ Alert
+  TEN(int_f) // $ Alert
+  TEN(int_g)
 };
 
 void instantiate() {
@@ -38,7 +38,7 @@ void instantiate() {
 
 // from the qhelp (30 fields)
 struct MyParticle {
-  bool isActive;
+  bool isActive; // $ Alert
   int priority;
 
   float x, y, z;
@@ -54,7 +54,7 @@ struct MyParticle {
   unsigned char r2, g2, b2, a2;
 
   class texture *tex;
-  float u1, v1, u2, v2; // $ Alert
+  float u1, v1, u2, v2;
 };
 
 struct MyAlphaClass1 { // $ Alert

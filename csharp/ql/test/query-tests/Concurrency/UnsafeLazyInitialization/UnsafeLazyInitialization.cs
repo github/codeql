@@ -14,7 +14,7 @@ class Program
     void Fn()
     {
         // BAD
-        if (obj1 == null)
+        if (obj1 == null) // $ Alert
         {
             lock (mutex)
             {
@@ -23,13 +23,13 @@ class Program
                     obj1 = null;
                 }
             }
-        } // $ Alert
+        }
 
         // BAD
-        if (obj1 == null)
+        if (obj1 == null) // $ Alert
             lock (mutex)
                 if (obj1 == null)
-                    obj1 = null; // $ Alert
+                    obj1 = null;
 
         // GOOD: A value-type
         if (cond1)
@@ -76,7 +76,7 @@ class Program
         }
 
         // BAD
-        if (null == obj1)
+        if (null == obj1) // $ Alert
         {
             lock (mutex)
             {
@@ -84,7 +84,7 @@ class Program
                 if (null == obj1)
                     obj1 = null;
             }
-        } // $ Alert
+        }
 
         // GOOD: not a field
         object a = null;
@@ -94,7 +94,7 @@ class Program
                     a = new object();
 
         // BAD: only obj1 is flagged.
-        if (obj1 == null && obj2 == null)
+        if (obj1 == null && obj2 == null) // $ Alert
         {
             lock (mutex)
             {
@@ -103,10 +103,10 @@ class Program
                     obj1 = null;
                 }
             }
-        } // $ Alert
+        }
 
         // BAD: both obj1 and obj3 are flagged.
-        if (obj1 == null && obj3 == null)
+        if (obj1 == null && obj3 == null) // $ Alert
         {
             lock (mutex)
             {
@@ -116,7 +116,7 @@ class Program
                     obj3 = null;
                 }
             }
-        } // $ Alert
+        }
 
         // GOOD: Locking a struct
         if (struct1 == struct2)
@@ -131,10 +131,10 @@ class Program
         }
 
         // BAD: Field x should be volatile
-        if (struct1.x is null)
+        if (struct1.x is null) // $ Alert
             lock (mutex)
                 if(struct1.x is null)
-                    struct1.x = 3; // $ Alert
+                    struct1.x = 3;
 
         // GOOD: Tuples are structs so cannot be volatile.
         if(pair1 == (1,2))

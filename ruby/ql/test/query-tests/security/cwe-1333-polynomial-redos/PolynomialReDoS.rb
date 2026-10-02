@@ -39,15 +39,15 @@ class FooController < ActionController::Base
     # GOOD - regex does not suffer from polynomial backtracking (regression test)
     params[:foo] =~ /\A[bc].*\Z/
 
-    case name # $ Sink // NOT GOOD
+    case name # $ Sink Alert // NOT GOOD
     when regex 
       puts "foo"
-    end # $ Alert
+    end
 
-    case name # $ Sink // NOT GOOD
+    case name # $ Sink Alert // NOT GOOD
     in /^\s+|\s+$/ then 
       puts "foo"
-    end # $ Alert
+    end
   end
 
   def some_other_request_handle
