@@ -1,0 +1,1 @@
+| CryptoClassificationTest.java:69:53:69:64 | KeyOperationAlgorithm | JWS PS256 protocol detected (RSA-PSS + SHA-256). |

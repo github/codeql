@@ -1,0 +1,10 @@
+| CryptoClassificationTest.java:75:28:75:51 | KeyGeneration | Quantum-vulnerable key size (2048 bits) for algorithm $@. | CryptoClassificationTest.java:73:64:73:68 | KeyOperationAlgorithm | RSA |
+| CryptoClassificationTest.java:137:9:137:33 | KeyGeneration | Quantum-vulnerable key size (1024 bits) for algorithm $@. | CryptoClassificationTest.java:135:65:135:69 | KeyOperationAlgorithm | RSA |
+| CryptoClassificationTest.java:141:9:141:33 | KeyGeneration | Quantum-vulnerable key size (2048 bits) for algorithm $@. | CryptoClassificationTest.java:139:65:139:69 | KeyOperationAlgorithm | RSA |
+| CryptoClassificationTest.java:145:9:145:33 | KeyGeneration | Quantum-vulnerable key size (3072 bits) for algorithm $@. | CryptoClassificationTest.java:143:65:143:69 | KeyOperationAlgorithm | RSA |
+| CryptoClassificationTest.java:149:9:149:33 | KeyGeneration | Quantum-vulnerable key size (4096 bits) for algorithm $@. | CryptoClassificationTest.java:147:65:147:69 | KeyOperationAlgorithm | RSA |
+| CryptoClassificationTest.java:154:9:154:33 | KeyGeneration | Quantum-vulnerable key size (1024 bits) for algorithm $@. | CryptoClassificationTest.java:152:65:152:69 | KeyOperationAlgorithm | DSA |
+| CryptoClassificationTest.java:158:9:158:33 | KeyGeneration | Quantum-vulnerable key size (2048 bits) for algorithm $@. | CryptoClassificationTest.java:156:65:156:69 | KeyOperationAlgorithm | DSA |
+| CryptoClassificationTest.java:163:9:163:32 | KeyGeneration | Quantum-vulnerable key size (1024 bits) for algorithm $@. | CryptoClassificationTest.java:161:64:161:67 | KeyAgreementAlgorithm | DH |
+| CryptoClassificationTest.java:167:9:167:32 | KeyGeneration | Quantum-vulnerable key size (2048 bits) for algorithm $@. | CryptoClassificationTest.java:165:64:165:67 | KeyAgreementAlgorithm | DH |
+| CryptoClassificationTest.java:171:9:171:32 | KeyGeneration | Quantum-vulnerable key size (4096 bits) for algorithm $@. | CryptoClassificationTest.java:169:64:169:67 | KeyAgreementAlgorithm | DH |
