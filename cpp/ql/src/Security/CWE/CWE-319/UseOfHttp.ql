@@ -38,17 +38,20 @@ predicate privateHostNameFlowsToExpr(Expr e) {
 /**
  * A string containing an HTTP URL not in a private domain.
  */
-class HttpStringLiteral extends StringLiteral {
-  HttpStringLiteral() {
+private class HttpStringLiteralCandidate extends StringLiteral {
+  HttpStringLiteralCandidate() {
     exists(string s | this.getValue() = s |
       s = "http"
       or
       exists(string tail |
         tail = s.regexpCapture("http://(.*)", 1) and not tail instanceof PrivateHostName
       )
-    ) and
-    not privateHostNameFlowsToExpr(this.getParent*())
+    )
   }
+}
+
+class HttpStringLiteral extends HttpStringLiteralCandidate {
+  HttpStringLiteral() { not privateHostNameFlowsToExpr(this.getParent*()) }
 }
 
 /**
