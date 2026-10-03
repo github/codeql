@@ -1,0 +1,36 @@
+# Sources for MCP servers built with the TypeScript SDK: "@modelcontextprotocol/sdk" (1.x) and
+# "@modelcontextprotocol/server" (2.x). The arguments of tool, prompt and resource callbacks are
+# input the server receives through MCP, and so are the transport headers and the bearer token the
+# SDK hands to a callback.
+#
+# A package name that contains a dot must be quoted with single quotes; otherwise CodeQL reads the
+# text after the first dot as a type name.
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["@modelcontextprotocol/sdk.McpServer", "'@modelcontextprotocol/sdk/server/mcp.js'", "Member[McpServer].Instance"]
+      - ["@modelcontextprotocol/sdk.McpServer", "@modelcontextprotocol/sdk/server/mcp", "Member[McpServer].Instance"]
+      - ["@modelcontextprotocol/sdk.McpServer", "@modelcontextprotocol/server", "Member[McpServer].Instance"]
+      - ["@modelcontextprotocol/sdk.McpServer", "'@modelcontextprotocol/sdk/server/mcp.js'.McpServer", ""]
+      - ["@modelcontextprotocol/sdk.Server", "'@modelcontextprotocol/sdk/server/index.js'", "Member[Server].Instance"]
+      - ["@modelcontextprotocol/sdk.Server", "@modelcontextprotocol/sdk/server/index", "Member[Server].Instance"]
+      - ["@modelcontextprotocol/sdk.Server", "@modelcontextprotocol/server", "Member[Server].Instance"]
+      - ["@modelcontextprotocol/sdk.Server", "@modelcontextprotocol/sdk.McpServer", "Member[server]"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      # High-level server: the callback is the last argument; its first parameter holds the arguments
+      - ["@modelcontextprotocol/sdk.McpServer", "Member[tool,registerTool,prompt,registerPrompt].Argument[1..].Parameter[0]", "remote"]
+      - ["@modelcontextprotocol/sdk.McpServer", "Member[resource,registerResource].Argument[1..].Parameter[0,1]", "remote"]
+      # Transport headers and the bearer token: `extra` in 1.x, `ctx` in 2.x
+      - ["@modelcontextprotocol/sdk.McpServer", "Member[tool,registerTool,prompt,registerPrompt].Argument[1..].Parameter[1,2].Member[requestInfo].Member[headers]", "remote"]
+      - ["@modelcontextprotocol/sdk.McpServer", "Member[tool,registerTool,prompt,registerPrompt].Argument[1..].Parameter[1,2].Member[authInfo].Member[token]", "remote"]
+      - ["@modelcontextprotocol/sdk.McpServer", "Member[tool,registerTool,prompt,registerPrompt].Argument[1..].Parameter[1,2].Member[http].Member[req].Member[headers].Member[get].ReturnValue", "remote"]
+      - ["@modelcontextprotocol/sdk.McpServer", "Member[tool,registerTool,prompt,registerPrompt].Argument[1..].Parameter[1,2].Member[http].Member[authInfo].Member[token]", "remote"]
+      # Low-level server: request handlers receive the request; custom methods (2.x) its params
+      - ["@modelcontextprotocol/sdk.Server", "Member[setRequestHandler].Argument[1].Parameter[0].Member[params]", "remote"]
+      - ["@modelcontextprotocol/sdk.Server", "Member[setRequestHandler].Argument[2].Parameter[0]", "remote"]

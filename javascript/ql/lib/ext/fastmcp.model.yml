@@ -1,0 +1,15 @@
+# Sources for MCP servers built with the npm package "fastmcp": the arguments of tools, resource
+# templates and prompts.
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["fastmcp.FastMCP", "fastmcp", "Member[FastMCP].Instance"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ["fastmcp.FastMCP", "Member[addTool].Argument[0].Member[execute].Parameter[0]", "remote"]
+      - ["fastmcp.FastMCP", "Member[addResourceTemplate,addPrompt].Argument[0].Member[load].Parameter[0]", "remote"]
