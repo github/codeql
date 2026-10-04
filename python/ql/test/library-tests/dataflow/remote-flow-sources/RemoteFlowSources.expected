@@ -1,0 +1,12 @@
+| mcp_test.py:16:15:16:21 | ControlFlowNode for command | MCP server handler parameter |
+| mcp_test.py:21:15:21:21 | ControlFlowNode for command | MCP server handler parameter |
+| mcp_test.py:26:16:26:20 | ControlFlowNode for topic | MCP server handler parameter |
+| mcp_test.py:26:31:26:35 | ControlFlowNode for style | MCP server handler parameter |
+| mcp_test.py:31:17:31:20 | ControlFlowNode for name | MCP server handler parameter |
+| mcp_test.py:35:23:35:25 | ControlFlowNode for url | MCP server handler parameter |
+| mcp_test.py:42:19:42:21 | ControlFlowNode for url | MCP server handler parameter |
+| mcp_test.py:50:17:50:19 | ControlFlowNode for cmd | MCP server handler parameter |
+| mcp_test.py:55:24:55:26 | ControlFlowNode for cmd | MCP server handler parameter |
+| mcp_test.py:61:23:61:25 | ControlFlowNode for cmd | MCP server handler parameter |
+| mcp_test.py:70:32:70:35 | ControlFlowNode for data | MCP server handler parameter |
+| mcp_test.py:80:29:80:32 | ControlFlowNode for host | MCP server handler parameter |
