@@ -286,6 +286,12 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
         declaration = decl
       )
       or
+      exists(ConstructorDeclaration decl |
+        getChild(scope, _) = decl and
+        pattern = decl.getNameNode() and
+        declaration = decl
+      )
+      or
       exists(ImportDeclaration imprt |
         getChild(scope, _) = imprt and
         pattern = imprt.getPattern() and
