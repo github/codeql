@@ -226,6 +226,8 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    Tornado, Web framework
    Twisted, Web framework
    Gradio, Web framework
+   fastmcp, MCP server framework
+   mcp, MCP server framework
    starlette, Asynchronous Server Gateway Interface (ASGI)
    ldap3, Lightweight Directory Access Protocol (LDAP)
    python-ldap, Lightweight Directory Access Protocol (LDAP)
