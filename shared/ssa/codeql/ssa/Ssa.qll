@@ -1776,20 +1776,21 @@ module Make<
 
     final class ExprPostUpdateNode = ExprPostUpdateNodeImpl;
 
-    private class ReadNodeImpl extends ExprNodeImpl {
-      private BasicBlock bb_;
-      private int i_;
+    pragma[nomagic]
+    private predicate exprReadAt(
+      DfInput::Expr e, BasicBlock bb, int i, SourceVariable v, boolean isPost, TExprNode node
+    ) {
+      variableRead(bb, i, v, true) and
+      e.hasCfgNode(bb, i) and
+      node = TExprNode(e, v, isPost)
+    }
 
-      ReadNodeImpl() {
-        variableRead(bb_, i_, v_, true) and
-        this.getExpr().hasCfgNode(bb_, i_)
-      }
+    private class ReadNodeImpl extends ExprNodeImpl {
+      ReadNodeImpl() { exprReadAt(e, _, _, _, false, this) }
 
       pragma[nomagic]
       predicate readsAt(BasicBlock bb, int i, SourceVariable v) {
-        bb = bb_ and
-        i = i_ and
-        v = v_
+        exprReadAt(e, bb, i, v, false, this)
       }
     }
 
