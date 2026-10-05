@@ -8,7 +8,7 @@ func t1() {
     sink(e)  // no flow
     switch e {
     case E.case1(let x):
-        sink(x)  // $ MISSING: hasValueFlow=t1.1
+        sink(x)  // $ hasValueFlow=t1.1
     default:
         break
     }
@@ -19,7 +19,7 @@ func t2() {
     sink(e)  // no flow
     switch e {
     case .case1(let x):  // use leading-dot syntax
-        sink(x)  // $ MISSING: hasValueFlow=t2.1
+        sink(x)  // $ hasValueFlow=t2.1
     default:
         break
     }
@@ -37,12 +37,12 @@ func t4() {
     case E.case1(let x):
         sink(x)  // no flow
     case E.case2(let x):
-        sink(x)  // $ MISSING: hasValueFlow=t4.1
+        sink(x)  // $ hasValueFlow=t4.1
     }
     // same but in opposite match order
     switch e {
     case E.case2(let x):
-        sink(x)  // $ MISSING: hasValueFlow=t4.1
+        sink(x)  // $ hasValueFlow=t4.1
     case E.case1(let x):
         sink(x)  // no flow
     }
@@ -51,13 +51,13 @@ func t4() {
 func t5() {
     let opt_x = Optional.some(source("t5.1"))
     guard let x = opt_x else { return }
-    sink(x)  // $ MISSING: hasValueFlow=t5.1
+    sink(x)  // $ hasValueFlow=t5.1
 }
 
 func t6() {
     let opt_x = Optional.some(source("t6.1"))
     guard let opt_x else { return }
-    sink(opt_x)  // $ MISSING: hasValueFlow=t6.1
+    sink(opt_x)  // $ hasValueFlow=t6.1
 }
 
 enum OptionalLabel {
@@ -68,7 +68,7 @@ func t7() {
     let e = OptionalLabel.foo(x: source("t7.1"))
     switch e {
     case .foo(let x):
-        sink(x)  // $ MISSING: hasValueFlow=t7.1
+        sink(x)  // $ hasValueFlow=t7.1
     default:
         break
     }
@@ -76,7 +76,7 @@ func t7() {
     // swift-format-ignore
     switch e {
     case .foo(x: let x):
-        sink(x)  // $ MISSING: hasValueFlow=t7.1
+        sink(x)  // $ hasValueFlow=t7.1
     default:
         break
     }

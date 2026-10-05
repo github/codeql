@@ -103,6 +103,37 @@ predicate step(Node node1, Step step, Node node2) {
     node2.isPostUpdate(expr.getBase())
   )
   or
+  // Calls and constructor-patterns targeting an enum-case constructor.
+  exists(CallExpr call, Argument arg, string field |
+    field = getEnumCaseParameterFieldFromArgument(call, arg)
+  |
+    node1.isResultValue(arg.getValue()) and
+    step.storeName(field) and
+    node2.isResultValue(call)
+    or
+    node1.isIncomingValue(call) and
+    step.readName(field) and
+    node2.isIncomingValue(arg.getValue())
+  )
+  or
+  exists(SwitchExpr expr |
+    node1.isResultValue(expr.getValue()) and
+    step.value() and
+    node2.isIncomingValue(expr.getACase().getPattern())
+  )
+  or
+  exists(PatternGuardExpr expr |
+    node1.isResultValue(expr.getValue()) and
+    step.value() and
+    node2.isIncomingValue(expr.getPattern())
+  )
+  or
+  exists(ExprPattern expr |
+    node1.isIncomingValue(expr) and
+    step.value() and
+    node2.isIncomingValue(expr.getExpr())
+  )
+  or
   none() // Temporarily disable compilation errors from unsatisfiable types
 }
 

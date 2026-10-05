@@ -8,6 +8,8 @@ private newtype TContent =
     // Tuple elements can be accessed as named members, e.g. `tuple.0`, `tuple.1`, etc,
     // so just model their elements as named members.
     name = [0 .. 20].toString()
+    or
+    name = getEnumCaseParameterFieldFromArgument(_, _)
   }
 
 class Content extends TContent {

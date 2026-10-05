@@ -38,6 +38,58 @@ edges
 | calls.swift:99:18:99:21 | self [field] | calls.swift:99:18:99:27 | ... .field | provenance |  |
 | calls.swift:111:18:111:21 | self [field] | calls.swift:111:18:111:27 | ... .field | provenance |  |
 | calls.swift:123:18:123:21 | self [field] | calls.swift:123:18:123:27 | ... .field | provenance |  |
+| enums.swift:7:9:7:9 | e [case1.0] | enums.swift:9:12:9:12 | e [case1.0] | provenance |  |
+| enums.swift:7:13:7:35 | ... .case1(...) [case1.0] | enums.swift:7:9:7:9 | e [case1.0] | provenance |  |
+| enums.swift:7:21:7:34 | source(...) | enums.swift:7:13:7:35 | ... .case1(...) [case1.0] | provenance |  |
+| enums.swift:9:12:9:12 | e [case1.0] | enums.swift:10:10:10:23 | ... .case1(...) [case1.0] | provenance |  |
+| enums.swift:10:10:10:23 | ... .case1(...) [case1.0] | enums.swift:10:18:10:22 | ExprPattern | provenance |  |
+| enums.swift:10:18:10:22 | ExprPattern | enums.swift:10:22:10:22 | x | provenance |  |
+| enums.swift:10:22:10:22 | x | enums.swift:11:14:11:14 | x | provenance |  |
+| enums.swift:18:9:18:9 | e [case1.0] | enums.swift:20:12:20:12 | e [case1.0] | provenance |  |
+| enums.swift:18:13:18:35 | ... .case1(...) [case1.0] | enums.swift:18:9:18:9 | e [case1.0] | provenance |  |
+| enums.swift:18:21:18:34 | source(...) | enums.swift:18:13:18:35 | ... .case1(...) [case1.0] | provenance |  |
+| enums.swift:20:12:20:12 | e [case1.0] | enums.swift:21:10:21:22 | ... .case1(...) [case1.0] | provenance |  |
+| enums.swift:21:10:21:22 | ... .case1(...) [case1.0] | enums.swift:21:17:21:21 | ExprPattern | provenance |  |
+| enums.swift:21:17:21:21 | ExprPattern | enums.swift:21:21:21:21 | x | provenance |  |
+| enums.swift:21:21:21:21 | x | enums.swift:22:14:22:14 | x | provenance |  |
+| enums.swift:35:9:35:9 | e [case2.0] | enums.swift:36:12:36:12 | e [case2.0] | provenance |  |
+| enums.swift:35:9:35:9 | e [case2.0] | enums.swift:43:12:43:12 | e [case2.0] | provenance |  |
+| enums.swift:35:13:35:35 | ... .case2(...) [case2.0] | enums.swift:35:9:35:9 | e [case2.0] | provenance |  |
+| enums.swift:35:21:35:34 | source(...) | enums.swift:35:13:35:35 | ... .case2(...) [case2.0] | provenance |  |
+| enums.swift:36:12:36:12 | e [case2.0] | enums.swift:39:10:39:23 | ... .case2(...) [case2.0] | provenance |  |
+| enums.swift:39:10:39:23 | ... .case2(...) [case2.0] | enums.swift:39:18:39:22 | ExprPattern | provenance |  |
+| enums.swift:39:18:39:22 | ExprPattern | enums.swift:39:22:39:22 | x | provenance |  |
+| enums.swift:39:22:39:22 | x | enums.swift:40:14:40:14 | x | provenance |  |
+| enums.swift:43:12:43:12 | e [case2.0] | enums.swift:44:10:44:23 | ... .case2(...) [case2.0] | provenance |  |
+| enums.swift:44:10:44:23 | ... .case2(...) [case2.0] | enums.swift:44:18:44:22 | ExprPattern | provenance |  |
+| enums.swift:44:18:44:22 | ExprPattern | enums.swift:44:22:44:22 | x | provenance |  |
+| enums.swift:44:22:44:22 | x | enums.swift:45:14:45:14 | x | provenance |  |
+| enums.swift:52:9:52:13 | opt_x [some.0] | enums.swift:53:19:53:23 | opt_x [some.0] | provenance |  |
+| enums.swift:52:17:52:45 | ... .some(...) [some.0] | enums.swift:52:9:52:13 | opt_x [some.0] | provenance |  |
+| enums.swift:52:31:52:44 | source(...) | enums.swift:52:17:52:45 | ... .some(...) [some.0] | provenance |  |
+| enums.swift:53:11:53:15 | ... .some(...) [some.0] | enums.swift:53:11:53:15 | ExprPattern | provenance |  |
+| enums.swift:53:11:53:15 | ExprPattern | enums.swift:53:15:53:15 | x | provenance |  |
+| enums.swift:53:15:53:15 | x | enums.swift:54:10:54:10 | x | provenance |  |
+| enums.swift:53:19:53:23 | opt_x [some.0] | enums.swift:53:11:53:15 | ... .some(...) [some.0] | provenance |  |
+| enums.swift:58:9:58:13 | opt_x [some.0] | enums.swift:59:15:59:19 | opt_x [some.0] | provenance |  |
+| enums.swift:58:17:58:45 | ... .some(...) [some.0] | enums.swift:58:9:58:13 | opt_x [some.0] | provenance |  |
+| enums.swift:58:31:58:44 | source(...) | enums.swift:58:17:58:45 | ... .some(...) [some.0] | provenance |  |
+| enums.swift:59:11:59:19 | ... .some(...) [some.0] | enums.swift:59:11:59:19 | ExprPattern | provenance |  |
+| enums.swift:59:11:59:19 | ExprPattern | enums.swift:59:15:59:19 | opt_x | provenance |  |
+| enums.swift:59:15:59:19 | opt_x | enums.swift:60:10:60:14 | opt_x | provenance |  |
+| enums.swift:59:15:59:19 | opt_x [some.0] | enums.swift:59:11:59:19 | ... .some(...) [some.0] | provenance |  |
+| enums.swift:68:9:68:9 | e [foo.0] | enums.swift:69:12:69:12 | e [foo.0] | provenance |  |
+| enums.swift:68:9:68:9 | e [foo.0] | enums.swift:77:12:77:12 | e [foo.0] | provenance |  |
+| enums.swift:68:13:68:48 | ... .foo(...) [foo.0] | enums.swift:68:9:68:9 | e [foo.0] | provenance |  |
+| enums.swift:68:34:68:47 | source(...) | enums.swift:68:13:68:48 | ... .foo(...) [foo.0] | provenance |  |
+| enums.swift:69:12:69:12 | e [foo.0] | enums.swift:70:10:70:20 | ... .foo(...) [foo.0] | provenance |  |
+| enums.swift:70:10:70:20 | ... .foo(...) [foo.0] | enums.swift:70:15:70:19 | ExprPattern | provenance |  |
+| enums.swift:70:15:70:19 | ExprPattern | enums.swift:70:19:70:19 | x | provenance |  |
+| enums.swift:70:19:70:19 | x | enums.swift:71:14:71:14 | x | provenance |  |
+| enums.swift:77:12:77:12 | e [foo.0] | enums.swift:78:10:78:23 | ... .foo(...) [foo.0] | provenance |  |
+| enums.swift:78:10:78:23 | ... .foo(...) [foo.0] | enums.swift:78:18:78:22 | ExprPattern | provenance |  |
+| enums.swift:78:18:78:22 | ExprPattern | enums.swift:78:22:78:22 | x | provenance |  |
+| enums.swift:78:22:78:22 | x | enums.swift:79:14:79:14 | x | provenance |  |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | implicit-self.swift:17:14:17:17 | self [x] | provenance |  |
 | implicit-self.swift:16:9:16:14 | ... .x | implicit-self.swift:16:9:16:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:16:9:16:14 | ... .x | provenance |  |
@@ -231,6 +283,64 @@ nodes
 | calls.swift:117:18:117:22 | field | semmle.label | field |
 | calls.swift:123:18:123:21 | self [field] | semmle.label | self [field] |
 | calls.swift:123:18:123:27 | ... .field | semmle.label | ... .field |
+| enums.swift:7:9:7:9 | e [case1.0] | semmle.label | e [case1.0] |
+| enums.swift:7:13:7:35 | ... .case1(...) [case1.0] | semmle.label | ... .case1(...) [case1.0] |
+| enums.swift:7:21:7:34 | source(...) | semmle.label | source(...) |
+| enums.swift:9:12:9:12 | e [case1.0] | semmle.label | e [case1.0] |
+| enums.swift:10:10:10:23 | ... .case1(...) [case1.0] | semmle.label | ... .case1(...) [case1.0] |
+| enums.swift:10:18:10:22 | ExprPattern | semmle.label | ExprPattern |
+| enums.swift:10:22:10:22 | x | semmle.label | x |
+| enums.swift:11:14:11:14 | x | semmle.label | x |
+| enums.swift:18:9:18:9 | e [case1.0] | semmle.label | e [case1.0] |
+| enums.swift:18:13:18:35 | ... .case1(...) [case1.0] | semmle.label | ... .case1(...) [case1.0] |
+| enums.swift:18:21:18:34 | source(...) | semmle.label | source(...) |
+| enums.swift:20:12:20:12 | e [case1.0] | semmle.label | e [case1.0] |
+| enums.swift:21:10:21:22 | ... .case1(...) [case1.0] | semmle.label | ... .case1(...) [case1.0] |
+| enums.swift:21:17:21:21 | ExprPattern | semmle.label | ExprPattern |
+| enums.swift:21:21:21:21 | x | semmle.label | x |
+| enums.swift:22:14:22:14 | x | semmle.label | x |
+| enums.swift:35:9:35:9 | e [case2.0] | semmle.label | e [case2.0] |
+| enums.swift:35:13:35:35 | ... .case2(...) [case2.0] | semmle.label | ... .case2(...) [case2.0] |
+| enums.swift:35:21:35:34 | source(...) | semmle.label | source(...) |
+| enums.swift:36:12:36:12 | e [case2.0] | semmle.label | e [case2.0] |
+| enums.swift:39:10:39:23 | ... .case2(...) [case2.0] | semmle.label | ... .case2(...) [case2.0] |
+| enums.swift:39:18:39:22 | ExprPattern | semmle.label | ExprPattern |
+| enums.swift:39:22:39:22 | x | semmle.label | x |
+| enums.swift:40:14:40:14 | x | semmle.label | x |
+| enums.swift:43:12:43:12 | e [case2.0] | semmle.label | e [case2.0] |
+| enums.swift:44:10:44:23 | ... .case2(...) [case2.0] | semmle.label | ... .case2(...) [case2.0] |
+| enums.swift:44:18:44:22 | ExprPattern | semmle.label | ExprPattern |
+| enums.swift:44:22:44:22 | x | semmle.label | x |
+| enums.swift:45:14:45:14 | x | semmle.label | x |
+| enums.swift:52:9:52:13 | opt_x [some.0] | semmle.label | opt_x [some.0] |
+| enums.swift:52:17:52:45 | ... .some(...) [some.0] | semmle.label | ... .some(...) [some.0] |
+| enums.swift:52:31:52:44 | source(...) | semmle.label | source(...) |
+| enums.swift:53:11:53:15 | ... .some(...) [some.0] | semmle.label | ... .some(...) [some.0] |
+| enums.swift:53:11:53:15 | ExprPattern | semmle.label | ExprPattern |
+| enums.swift:53:15:53:15 | x | semmle.label | x |
+| enums.swift:53:19:53:23 | opt_x [some.0] | semmle.label | opt_x [some.0] |
+| enums.swift:54:10:54:10 | x | semmle.label | x |
+| enums.swift:58:9:58:13 | opt_x [some.0] | semmle.label | opt_x [some.0] |
+| enums.swift:58:17:58:45 | ... .some(...) [some.0] | semmle.label | ... .some(...) [some.0] |
+| enums.swift:58:31:58:44 | source(...) | semmle.label | source(...) |
+| enums.swift:59:11:59:19 | ... .some(...) [some.0] | semmle.label | ... .some(...) [some.0] |
+| enums.swift:59:11:59:19 | ExprPattern | semmle.label | ExprPattern |
+| enums.swift:59:15:59:19 | opt_x | semmle.label | opt_x |
+| enums.swift:59:15:59:19 | opt_x [some.0] | semmle.label | opt_x [some.0] |
+| enums.swift:60:10:60:14 | opt_x | semmle.label | opt_x |
+| enums.swift:68:9:68:9 | e [foo.0] | semmle.label | e [foo.0] |
+| enums.swift:68:13:68:48 | ... .foo(...) [foo.0] | semmle.label | ... .foo(...) [foo.0] |
+| enums.swift:68:34:68:47 | source(...) | semmle.label | source(...) |
+| enums.swift:69:12:69:12 | e [foo.0] | semmle.label | e [foo.0] |
+| enums.swift:70:10:70:20 | ... .foo(...) [foo.0] | semmle.label | ... .foo(...) [foo.0] |
+| enums.swift:70:15:70:19 | ExprPattern | semmle.label | ExprPattern |
+| enums.swift:70:19:70:19 | x | semmle.label | x |
+| enums.swift:71:14:71:14 | x | semmle.label | x |
+| enums.swift:77:12:77:12 | e [foo.0] | semmle.label | e [foo.0] |
+| enums.swift:78:10:78:23 | ... .foo(...) [foo.0] | semmle.label | ... .foo(...) [foo.0] |
+| enums.swift:78:18:78:22 | ExprPattern | semmle.label | ExprPattern |
+| enums.swift:78:22:78:22 | x | semmle.label | x |
+| enums.swift:79:14:79:14 | x | semmle.label | x |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | semmle.label | [post] self [x] |
 | implicit-self.swift:16:9:16:14 | ... .x | semmle.label | ... .x |
 | implicit-self.swift:16:18:16:31 | source(...) | semmle.label | source(...) |
@@ -440,6 +550,14 @@ testFailures
 | calls.swift:111:18:111:27 | ... .field | calls.swift:75:21:75:34 | source(...) | calls.swift:111:18:111:27 | ... .field | $@ | calls.swift:75:21:75:34 | source(...) | source(...) |
 | calls.swift:117:18:117:22 | field | calls.swift:75:21:75:34 | source(...) | calls.swift:117:18:117:22 | field | $@ | calls.swift:75:21:75:34 | source(...) | source(...) |
 | calls.swift:123:18:123:27 | ... .field | calls.swift:75:21:75:34 | source(...) | calls.swift:123:18:123:27 | ... .field | $@ | calls.swift:75:21:75:34 | source(...) | source(...) |
+| enums.swift:11:14:11:14 | x | enums.swift:7:21:7:34 | source(...) | enums.swift:11:14:11:14 | x | $@ | enums.swift:7:21:7:34 | source(...) | source(...) |
+| enums.swift:22:14:22:14 | x | enums.swift:18:21:18:34 | source(...) | enums.swift:22:14:22:14 | x | $@ | enums.swift:18:21:18:34 | source(...) | source(...) |
+| enums.swift:40:14:40:14 | x | enums.swift:35:21:35:34 | source(...) | enums.swift:40:14:40:14 | x | $@ | enums.swift:35:21:35:34 | source(...) | source(...) |
+| enums.swift:45:14:45:14 | x | enums.swift:35:21:35:34 | source(...) | enums.swift:45:14:45:14 | x | $@ | enums.swift:35:21:35:34 | source(...) | source(...) |
+| enums.swift:54:10:54:10 | x | enums.swift:52:31:52:44 | source(...) | enums.swift:54:10:54:10 | x | $@ | enums.swift:52:31:52:44 | source(...) | source(...) |
+| enums.swift:60:10:60:14 | opt_x | enums.swift:58:31:58:44 | source(...) | enums.swift:60:10:60:14 | opt_x | $@ | enums.swift:58:31:58:44 | source(...) | source(...) |
+| enums.swift:71:14:71:14 | x | enums.swift:68:34:68:47 | source(...) | enums.swift:71:14:71:14 | x | $@ | enums.swift:68:34:68:47 | source(...) | source(...) |
+| enums.swift:79:14:79:14 | x | enums.swift:68:34:68:47 | source(...) | enums.swift:79:14:79:14 | x | $@ | enums.swift:68:34:68:47 | source(...) | source(...) |
 | implicit-self.swift:17:14:17:19 | ... .x | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:17:14:17:19 | ... .x | $@ | implicit-self.swift:16:18:16:31 | source(...) | source(...) |
 | implicit-self.swift:23:14:23:14 | x | implicit-self.swift:22:13:22:26 | source(...) | implicit-self.swift:23:14:23:14 | x | $@ | implicit-self.swift:22:13:22:26 | source(...) | source(...) |
 | implicit-self.swift:29:14:29:19 | ... .x | implicit-self.swift:28:13:28:26 | source(...) | implicit-self.swift:29:14:29:19 | ... .x | $@ | implicit-self.swift:28:13:28:26 | source(...) | source(...) |
