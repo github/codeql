@@ -26,11 +26,10 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node2.isResultValue(call)
     )
     or
-    // Taint flow through unary "!" (TODO: model as a read of Optional.some, possibly with implicit taint read)
     exists(UnaryExpr expr |
       expr.getOperator().(PostfixOperator).getValue() = "!" and
       node1.isResultValue(expr.getOperand()) and
-      step.taint() and
+      step.readName("some.0") and
       node2.isResultValue(expr)
     )
     or
