@@ -1742,6 +1742,9 @@ module Make<
       /** Gets the underlying expression. */
       DfInput::Expr getExpr() { result = e }
 
+      /** Holds if represents the access to `var` performed at `expr`. */
+      predicate isExprAndVariable(DfInput::Expr expr, SourceVariable var) { expr = e and var = v_ }
+
       override Location getLocation() {
         exists(BasicBlock bb, int i |
           e.hasCfgNode(bb, i) and
@@ -1769,7 +1772,7 @@ module Make<
       ExprPostUpdateNodeImpl() { isPost = true }
 
       /** Gets the pre-update expression node. */
-      ExprNode getPreUpdateNode() { result = TExprNode(e, _, false) }
+      ExprNode getPreUpdateNode() { result = TExprNode(e, v_, false) }
 
       override string toString() { result = e.toString() + " [postupdate]" }
     }
@@ -2026,13 +2029,13 @@ module Make<
         v = def.getSourceVariable() and
         if DfInput::includeWriteDefsInFlowStep()
         then nodeTo.(SsaDefinitionNode).getDefinition() = def
-        else nodeTo.(ExprNode).getExpr() = DfInput::getARead(def)
+        else nodeTo.(ExprNode).isExprAndVariable(DfInput::getARead(def), v)
       )
       or
       // Flow from SSA definition to read
       exists(DefinitionExt def |
         nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
-        nodeTo.(ExprNode).getExpr() = DfInput::getARead(def) and
+        nodeTo.(ExprNode).isExprAndVariable(DfInput::getARead(def), v) and
         v = def.getSourceVariable()
       )
     }
@@ -2138,7 +2141,7 @@ module Make<
             e = DfInput::getARead(def) and
             e.hasCfgNode(bb, _) and
             DfInput::guardControlsBlock(g, bb, val) and
-            result.(ExprNode).getExpr() = e
+            result.(ExprNode).isExprAndVariable(e, def.getSourceVariable())
           )
           or
           // guard controls input block to a phi node
