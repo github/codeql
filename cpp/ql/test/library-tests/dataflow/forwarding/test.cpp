@@ -294,7 +294,7 @@ void test_conversion_operator_qualification() {
   container.emplace(ConstConversionOperator(), 0, 0); // $ targets=element_operator_const_ref
   container.emplace(constValue, 0); // no targets
   container.emplace(constValue, 0, 0, 0); // no targets
-  container.emplace(volatileValue); // $ targets=element_operator_value
+  container.emplace(volatileValue); // $ SPURIOUS: targets=element_operator_value
 
   const volatile VolatileConversionOperator constVolatileValue;
   container.emplace(constVolatileValue, 0, 0, 0, 0); // $ targets=element_operator_const_volatile_ref
