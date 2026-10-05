@@ -422,10 +422,10 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     NSString().write(toFile: remoteString, atomically: true, encoding: 0)  // $ Alert
 
     let _ = NSKeyedUnarchiver().unarchiveObject(withFile: remoteString)  // $ Alert
-    let _ = ArchiveByteStream.fileStream(fd: remoteString as! FileDescriptor, automaticClose: true)  // $ MISSING: Alert
-    ArchiveByteStream.withFileStream(fd: remoteString as! FileDescriptor, automaticClose: true) {
+    let _ = ArchiveByteStream.fileStream(fd: remoteString as! FileDescriptor, automaticClose: true)  // $ Alert
+    ArchiveByteStream.withFileStream(fd: remoteString as! FileDescriptor, automaticClose: true) { // $ Alert
         _ in
-    }  // $ MISSING: Alert
+    }
     let _ = ArchiveByteStream.fileStream(
         path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append,
         permissions: .ownerRead)  // $ MISSING: Alert

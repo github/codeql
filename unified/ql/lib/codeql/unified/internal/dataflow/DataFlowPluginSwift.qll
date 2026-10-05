@@ -29,7 +29,7 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
     exists(UnaryExpr expr |
       expr.getOperator().(PostfixOperator).getValue() = "!" and
       node1.isResultValue(expr.getOperand()) and
-      step.readName("some.0") and
+      (step.readName("some.0") or step.taint()) and
       node2.isResultValue(expr)
       or
       expr.getOperator().(PrefixOperator).getValue() = ["try", "try!", "await"] and
