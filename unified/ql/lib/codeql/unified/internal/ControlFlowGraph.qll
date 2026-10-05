@@ -132,6 +132,12 @@ module Ast implements AstSig<Location> {
 
   class ContinueStmt = U::ContinueExpr;
 
+  class LabeledStmt extends Stmt {
+    LabeledStmt() { none() }
+
+    Stmt getStmt() { none() }
+  }
+
   class GotoStmt extends Stmt {
     GotoStmt() { none() }
   }
