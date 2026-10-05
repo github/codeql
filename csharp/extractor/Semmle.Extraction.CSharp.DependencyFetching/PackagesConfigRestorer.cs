@@ -33,11 +33,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class PackagesConfigRestoreFactory
     {
-        public static IPackagesConfigRestore Create(IFileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
+        public static IPackagesConfigRestore Create(IFileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, IRegistryProxy? registryProxy)
         {
             if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMonoInstalled())
             {
-                return new NugetExeWrapper(fileProvider, packageDirectory, logger, feedManager);
+                return new NugetExeWrapper(fileProvider, packageDirectory, logger, feedManager, registryProxy);
             }
 
             return new NoOpPackagesConfig(fileProvider.PackagesConfigs, logger);
@@ -52,6 +52,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             private readonly string? nugetExe;
             private readonly Semmle.Util.Logging.ILogger logger;
+            private readonly IRegistryProxy? registryProxy;
 
             public int PackageCount => fileProvider.PackagesConfigs.Count;
 
@@ -70,12 +71,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             /// <summary>
             /// Create the package manager for a specified source tree.
             /// </summary>
-            public NugetExeWrapper(IFileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
+            public NugetExeWrapper(IFileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, IRegistryProxy? registryProxy)
             {
                 this.fileProvider = fileProvider;
                 this.packageDirectory = packageDirectory;
                 this.logger = logger;
                 this.feedManager = feedManager;
+                this.registryProxy = registryProxy;
 
                 if (fileProvider.PackagesConfigs.Count > 0)
                 {
@@ -208,6 +210,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     RedirectStandardError = true,
                     UseShellExecute = false
                 };
+
+                // Configure the proxy settings, if applicable.
+                registryProxy?.SetProcessEnvironment(pi);
 
                 var threadId = Environment.CurrentManagedThreadId;
                 void onOut(string s) => logger.LogDebug(s, threadId);
