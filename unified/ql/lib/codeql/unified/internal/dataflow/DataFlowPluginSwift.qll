@@ -31,6 +31,30 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node1.isResultValue(expr.getOperand()) and
       step.readName("some.0") and
       node2.isResultValue(expr)
+      or
+      expr.getOperator().(PrefixOperator).getValue() = ["try", "try!", "await"] and
+      node1.isResultValue(expr.getOperand()) and
+      step.value() and
+      node2.isResultValue(expr)
+      or
+      expr.getOperator().(PrefixOperator).getValue() = "try?" and
+      node1.isResultValue(expr.getOperand()) and
+      step.storeName("some.0") and
+      node2.isResultValue(expr)
+    )
+    or
+    exists(TypeCastExpr expr |
+      // The `as?` type cast boxes the incoming value in Optional depending on whether the type cast succeeded
+      expr.getOperator().getValue() = "as?" and
+      node1.isResultValue(expr.getExpr()) and
+      step.storeName("some.0") and
+      node2.isResultValue(expr)
+      or
+      // Safe upcast conversion ("as") and downcast-or-throw ("as!") propagate the value directly
+      expr.getOperator().getValue() = ["as", "as!"] and
+      node1.isResultValue(expr.getExpr()) and
+      step.value() and
+      node2.isResultValue(expr)
     )
     or
     // Taint flow through URL(string: x). TODO: Model with MaD and flow summaries

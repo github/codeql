@@ -185,3 +185,40 @@ func t20() {
     sink(x)  // $ hasValueFlow=t20.1
     sink(y)  // $ hasValueFlow=t20.2
 }
+
+func asyncIdentity(_ s: String) async -> String { return s }
+
+func throwingIdentity(_ s: String) throws -> String { return s }
+
+func asyncThrowingIdentity(_ s: String) async throws -> String { return s }
+
+func t21() async {
+    sink(await asyncIdentity(source("t21.1")))  // $ hasValueFlow=t21.1
+}
+
+func t22() throws {
+    sink(try throwingIdentity(source("t22.1")))  // $ hasValueFlow=t22.1
+    let opt = try? throwingIdentity(source("t22.2"))
+    if let opt {
+        sink(opt)  // $ hasValueFlow=t22.2
+    }
+    sink(try! throwingIdentity(source("t22.3")))  // $ hasValueFlow=t22.3
+}
+
+func t23() async throws {
+    sink(try await asyncThrowingIdentity(source("t23.1")))  // $ hasValueFlow=t23.1
+    let opt = try? await asyncThrowingIdentity(source("t23.2"))
+    if let opt {
+        sink(opt)  // $ hasValueFlow=t23.2
+    }
+    sink(try! await asyncThrowingIdentity(source("t23.3")))  // $ hasValueFlow=t23.3
+}
+
+func t24() {
+    let x = source("t24.1")
+    sink(x as String)  // $ hasValueFlow=t24.1
+    sink(x as! String)  // $ hasValueFlow=t24.1
+    if let y = x as? String {
+        sink(y)  // $ hasValueFlow=t24.1
+    }
+}
