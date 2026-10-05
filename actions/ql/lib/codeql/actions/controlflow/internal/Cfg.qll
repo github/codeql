@@ -93,14 +93,26 @@ module CfgImpl {
     AstNode getChild(AstNode node, int index) { result = getCfgChild(node, index) }
 
     class Callable extends AstNode {
-      Callable() { this instanceof Workflow or this instanceof CompositeAction }
+      Callable() {
+        this instanceof CompositeAction
+        or
+        this instanceof Workflow and
+        not exists(CompositeAction action | action.getLocation() = this.getLocation())
+      }
     }
 
     AstNode callableGetBody(Callable callable) { result = callable }
 
+    /**
+     * Gets the unique callable containing `node`.
+     *
+     * An Actions AST node may have multiple parent paths, but they converge on
+     * the same root.
+     */
     Callable getEnclosingCallable(AstNode node) {
-      result = node.(Callable)
+      result = node
       or
+      not node instanceof Callable and
       result = getEnclosingCallable(node.getParentNode())
     }
 
