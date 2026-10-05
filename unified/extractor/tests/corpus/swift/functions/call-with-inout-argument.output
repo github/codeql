@@ -85,6 +85,12 @@ top_level source="⟨body⟩"
           callee: identifier "swap" source="swap"
           argument:
             argument source="⟨value⟩"
-              value: unsupported_node "&a" source="&a"
+              value:
+                unary_expr source="⟨operator⟩⟨operand⟩"
+                  operand: identifier "a" source="a"
+                  operator: prefix_operator "&" source="&"
             argument source="⟨value⟩"
-              value: unsupported_node "&b" source="&b"
+              value:
+                unary_expr source="⟨operator⟩⟨operand⟩"
+                  operand: identifier "b" source="b"
+                  operator: prefix_operator "&" source="&"

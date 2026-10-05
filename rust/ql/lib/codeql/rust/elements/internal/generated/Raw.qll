@@ -167,6 +167,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class AnyAttr extends @any_attr, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
    * A list of arguments in a function or method call.
    *
    * For example:
@@ -342,7 +347,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this assoc item list (0-based).
      */
-    Attr getAttr(int index) { assoc_item_list_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { assoc_item_list_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this assoc item list.
@@ -367,38 +372,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An attribute applied to an item.
-   *
-   * For example:
-   * ```rust
-   * #[derive(Debug)]
-   * //^^^^^^^^^^^^^
-   * struct S;
-   * ```
-   */
-  class Attr extends @attr, AstNode {
-    override string toString() { result = "Attr" }
-
-    /**
-     * Gets the meta of this attr, if it exists.
-     */
-    Meta getMeta() { attr_meta(this, result) }
-  }
-
-  private Element getImmediateChildOfAttr(Attr e, int index) {
-    exists(int n, int nMeta |
-      n = 0 and
-      nMeta = n + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getMeta()
-      )
-    )
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A callable. Either a `Function` or a `ClosureExpr`.
    */
   class Callable extends @callable, AstNode {
@@ -410,7 +383,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this callable (0-based).
      */
-    Attr getAttr(int index) { callable_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { callable_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this callable.
@@ -447,7 +420,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this extern item list (0-based).
      */
-    Attr getAttr(int index) { extern_item_list_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { extern_item_list_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this extern item list.
@@ -710,7 +683,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this item list (0-based).
      */
-    Attr getAttr(int index) { item_list_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { item_list_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this item list.
@@ -872,7 +845,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this match arm (0-based).
      */
-    Attr getAttr(int index) { match_arm_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { match_arm_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this match arm.
@@ -946,7 +919,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this match arm list (0-based).
      */
-    Attr getAttr(int index) { match_arm_list_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { match_arm_list_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this match arm list.
@@ -1079,7 +1052,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this parameter base (0-based).
      */
-    Attr getAttr(int index) { param_base_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { param_base_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this parameter base.
@@ -1421,7 +1394,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this source file (0-based).
      */
-    Attr getAttr(int index) { source_file_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { source_file_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this source file.
@@ -1481,7 +1454,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this statement list (0-based).
      */
-    Attr getAttr(int index) { stmt_list_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { stmt_list_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this statement list.
@@ -1541,7 +1514,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this struct expression field (0-based).
      */
-    Attr getAttr(int index) { struct_expr_field_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { struct_expr_field_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this struct expression field.
@@ -1593,7 +1566,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this struct expression field list (0-based).
      */
-    Attr getAttr(int index) { struct_expr_field_list_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { struct_expr_field_list_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this struct expression field list.
@@ -1650,7 +1623,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this struct field (0-based).
      */
-    Attr getAttr(int index) { struct_field_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { struct_field_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this struct field.
@@ -1731,7 +1704,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this struct pattern field (0-based).
      */
-    Attr getAttr(int index) { struct_pat_field_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { struct_pat_field_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this struct pattern field.
@@ -1882,7 +1855,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this tuple field (0-based).
      */
-    Attr getAttr(int index) { tuple_field_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { tuple_field_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this tuple field.
@@ -2371,7 +2344,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this array expression internal (0-based).
      */
-    Attr getAttr(int index) { array_expr_internal_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { array_expr_internal_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this array expression internal.
@@ -2465,7 +2438,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this asm clobber abi (0-based).
      */
-    Attr getAttr(int index) { asm_clobber_abi_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { asm_clobber_abi_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this asm clobber abi.
@@ -2579,7 +2552,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this asm operand named (0-based).
      */
-    Attr getAttr(int index) { asm_operand_named_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { asm_operand_named_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this asm operand named.
@@ -2637,7 +2610,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this asm options list (0-based).
      */
-    Attr getAttr(int index) { asm_options_list_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { asm_options_list_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this asm options list.
@@ -2837,6 +2810,38 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An attribute applied to an item.
+   *
+   * For example:
+   * ```rust
+   * #[derive(Debug)]
+   * //^^^^^^^^^^^^^
+   * struct S;
+   * ```
+   */
+  class Attr extends @attr, AnyAttr {
+    override string toString() { result = "Attr" }
+
+    /**
+     * Gets the meta of this attr, if it exists.
+     */
+    Meta getMeta() { attr_meta(this, result) }
+  }
+
+  private Element getImmediateChildOfAttr(Attr e, int index) {
+    exists(int n, int nMeta |
+      n = 0 and
+      nMeta = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getMeta()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * An `await` expression. For example:
    * ```rust
    * async {
@@ -2851,7 +2856,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this await expression (0-based).
      */
-    Attr getAttr(int index) { await_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { await_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this await expression.
@@ -2898,7 +2903,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this become expression (0-based).
      */
-    Attr getAttr(int index) { become_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { become_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this become expression.
@@ -2943,7 +2948,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this binary expression (0-based).
      */
-    Attr getAttr(int index) { binary_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { binary_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this binary expression.
@@ -3047,7 +3052,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this break expression (0-based).
      */
-    Attr getAttr(int index) { break_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { break_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this break expression.
@@ -3107,7 +3112,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this call expression (0-based).
      */
-    Attr getAttr(int index) { call_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { call_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this call expression.
@@ -3151,7 +3156,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this cast expression (0-based).
      */
-    Attr getAttr(int index) { cast_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { cast_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this cast expression.
@@ -3378,6 +3383,7 @@ module Raw {
    * ```rust
    * // this is a comment
    * /// This is a doc comment
+   * fn documented() {}
    * ```
    */
   class Comment extends @comment, Token {
@@ -3479,7 +3485,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this const parameter (0-based).
      */
-    Attr getAttr(int index) { const_param_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { const_param_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this const parameter.
@@ -3552,7 +3558,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this continue expression (0-based).
      */
-    Attr getAttr(int index) { continue_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { continue_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this continue expression.
@@ -3612,6 +3618,22 @@ module Raw {
       )
     )
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * A documentation comment.
+   *
+   * For example:
+   * ```rust
+   * /// Documents `documented`.
+   * fn documented() {}
+   * ```
+   */
+  class DocComment extends @doc_comment, AnyAttr {
+    override string toString() { result = "DocComment" }
+  }
+
+  private Element getImmediateChildOfDocComment(DocComment e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -3687,7 +3709,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this field expression (0-based).
      */
-    Attr getAttr(int index) { field_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { field_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this field expression.
@@ -3851,7 +3873,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this format arguments expression (0-based).
      */
-    Attr getAttr(int index) { format_args_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { format_args_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this format arguments expression.
@@ -3905,7 +3927,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this ident pattern (0-based).
      */
-    Attr getAttr(int index) { ident_pat_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { ident_pat_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this ident pattern.
@@ -3973,7 +3995,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this if expression (0-based).
      */
-    Attr getAttr(int index) { if_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { if_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this if expression.
@@ -4075,7 +4097,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this index expression (0-based).
      */
-    Attr getAttr(int index) { index_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { index_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this index expression.
@@ -4203,7 +4225,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this let expression (0-based).
      */
-    Attr getAttr(int index) { let_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { let_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this let expression.
@@ -4259,7 +4281,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this let statement (0-based).
      */
-    Attr getAttr(int index) { let_stmt_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { let_stmt_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this let statement.
@@ -4379,7 +4401,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this lifetime parameter (0-based).
      */
-    Attr getAttr(int index) { lifetime_param_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { lifetime_param_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this lifetime parameter.
@@ -4435,7 +4457,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this literal expression (0-based).
      */
-    Attr getAttr(int index) { literal_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { literal_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this literal expression.
@@ -4616,7 +4638,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this match expression (0-based).
      */
-    Attr getAttr(int index) { match_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { match_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this match expression.
@@ -4675,7 +4697,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this method call expression (0-based).
      */
-    Attr getAttr(int index) { method_call_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { method_call_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this method call expression.
@@ -4788,7 +4810,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this offset of expression (0-based).
      */
-    Attr getAttr(int index) { offset_of_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { offset_of_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this offset of expression.
@@ -4915,7 +4937,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this paren expression (0-based).
      */
-    Attr getAttr(int index) { paren_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { paren_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this paren expression.
@@ -5143,7 +5165,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this prefix expression (0-based).
      */
-    Attr getAttr(int index) { prefix_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { prefix_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this prefix expression.
@@ -5236,7 +5258,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this range expression (0-based).
      */
-    Attr getAttr(int index) { range_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { range_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this range expression.
@@ -5338,7 +5360,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this reference expression (0-based).
      */
-    Attr getAttr(int index) { ref_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { ref_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this reference expression.
@@ -5478,7 +5500,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this rest pattern (0-based).
      */
-    Attr getAttr(int index) { rest_pat_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { rest_pat_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this rest pattern.
@@ -5518,7 +5540,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this return expression (0-based).
      */
-    Attr getAttr(int index) { return_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { return_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this return expression.
@@ -5827,7 +5849,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this try expression (0-based).
      */
-    Attr getAttr(int index) { try_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { try_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this try expression.
@@ -5870,7 +5892,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this tuple expression (0-based).
      */
-    Attr getAttr(int index) { tuple_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { tuple_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this tuple expression.
@@ -6096,7 +6118,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this type parameter (0-based).
      */
-    Attr getAttr(int index) { type_param_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { type_param_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this type parameter.
@@ -6153,7 +6175,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this underscore expression (0-based).
      */
-    Attr getAttr(int index) { underscore_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { underscore_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this underscore expression.
@@ -6218,7 +6240,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this variant (0-based).
      */
-    Attr getAttr(int index) { variant_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { variant_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this variant.
@@ -6298,7 +6320,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this yeet expression (0-based).
      */
-    Attr getAttr(int index) { yeet_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { yeet_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this yeet expression.
@@ -6342,7 +6364,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this yield expression (0-based).
      */
-    Attr getAttr(int index) { yield_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { yield_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this yield expression.
@@ -6396,7 +6418,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this asm expression (0-based).
      */
-    Attr getAttr(int index) { asm_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { asm_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this asm expression.
@@ -6468,7 +6490,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this block expression (0-based).
      */
-    Attr getAttr(int index) { block_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { block_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this block expression.
@@ -6554,7 +6576,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this extern block (0-based).
      */
-    Attr getAttr(int index) { extern_block_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { extern_block_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this extern block.
@@ -6608,7 +6630,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this extern crate (0-based).
      */
-    Attr getAttr(int index) { extern_crate_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { extern_crate_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this extern crate.
@@ -6693,7 +6715,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this impl (0-based).
      */
-    Attr getAttr(int index) { impl_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { impl_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this impl.
@@ -6810,7 +6832,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this macro def (0-based).
      */
-    Attr getAttr(int index) { macro_def_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { macro_def_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this macro def.
@@ -6880,7 +6902,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this macro rules (0-based).
      */
-    Attr getAttr(int index) { macro_rules_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { macro_rules_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this macro rules.
@@ -6947,7 +6969,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this module (0-based).
      */
-    Attr getAttr(int index) { module_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { module_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this module.
@@ -7012,7 +7034,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this path expression (0-based).
      */
-    Attr getAttr(int index) { path_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { path_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this path expression.
@@ -7059,7 +7081,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this trait (0-based).
      */
-    Attr getAttr(int index) { trait_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { trait_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this trait.
@@ -7168,7 +7190,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this type item (0-based).
      */
-    Attr getAttr(int index) { type_item_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { type_item_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this type item.
@@ -7209,7 +7231,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this use (0-based).
      */
-    Attr getAttr(int index) { use_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { use_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this use.
@@ -7263,7 +7285,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this const (0-based).
      */
-    Attr getAttr(int index) { const_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { const_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this const.
@@ -7426,7 +7448,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this for expression (0-based).
      */
-    Attr getAttr(int index) { for_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { for_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this for expression.
@@ -7626,7 +7648,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this loop expression (0-based).
      */
-    Attr getAttr(int index) { loop_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { loop_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this loop expression.
@@ -7667,7 +7689,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this macro call (0-based).
      */
-    Attr getAttr(int index) { macro_call_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { macro_call_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this macro call.
@@ -7732,7 +7754,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this static (0-based).
      */
-    Attr getAttr(int index) { static_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { static_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this static.
@@ -7878,7 +7900,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this type alias (0-based).
      */
-    Attr getAttr(int index) { type_alias_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { type_alias_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this type alias.
@@ -8028,7 +8050,7 @@ module Raw {
     /**
      * Gets the `index`th attr of this while expression (0-based).
      */
-    Attr getAttr(int index) { while_expr_attrs(this, index, result) }
+    AnyAttr getAttr(int index) { while_expr_attrs(this, index, result) }
 
     /**
      * Gets the number of attrs of this while expression.
@@ -8094,8 +8116,6 @@ module Raw {
     result = getImmediateChildOfAsmRegSpec(e, index)
     or
     result = getImmediateChildOfAssocItemList(e, index)
-    or
-    result = getImmediateChildOfAttr(e, index)
     or
     result = getImmediateChildOfExternItemList(e, index)
     or
@@ -8201,6 +8221,8 @@ module Raw {
     or
     result = getImmediateChildOfAssocTypeArg(e, index)
     or
+    result = getImmediateChildOfAttr(e, index)
+    or
     result = getImmediateChildOfAwaitExpr(e, index)
     or
     result = getImmediateChildOfBecomeExpr(e, index)
@@ -8236,6 +8258,8 @@ module Raw {
     result = getImmediateChildOfContinueExpr(e, index)
     or
     result = getImmediateChildOfDerefPat(e, index)
+    or
+    result = getImmediateChildOfDocComment(e, index)
     or
     result = getImmediateChildOfDynTraitTypeRepr(e, index)
     or

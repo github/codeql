@@ -528,6 +528,18 @@ module Unified {
     }
   }
 
+  /** A class representing `defer_stmt` nodes. */
+  class DeferStmt extends @unified_defer_stmt, F::Stmt {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "DeferStmt" }
+
+    /** Gets the node corresponding to the field `body`. */
+    final F::Expr getBody() { unified_defer_stmt_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override F::AstNode getAFieldOrChild() { unified_defer_stmt_def(this, result) }
+  }
+
   /** A class representing `destructor_declaration` nodes. */
   class DestructorDeclaration extends @unified_destructor_declaration, F::Callable, F::Member,
     F::Stmt
@@ -1619,6 +1631,8 @@ module Unified {
       or
       result = node.(ContinueExpr).getLabelNameNode() and i = -1 and name = "getLabelNameNode"
       or
+      result = node.(DeferStmt).getBody() and i = -1 and name = "getBody"
+      or
       result = node.(DestructorDeclaration).getBody() and i = -1 and name = "getBody"
       or
       result = node.(DestructorDeclaration).getModifier(i) and name = "getModifier"
@@ -1873,6 +1887,8 @@ module UnifiedFinal {
   final class ConstructorDeclaration = F::ConstructorDeclaration;
 
   final class ContinueExpr = F::ContinueExpr;
+
+  final class DeferStmt = F::DeferStmt;
 
   final class DestructorDeclaration = F::DestructorDeclaration;
 

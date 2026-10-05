@@ -2,7 +2,10 @@ use proc_macro2::{Delimiter, Ident, Literal, Span, TokenStream, TokenTree};
 use quote::quote;
 use std::iter::Peekable;
 use std::sync::atomic::{AtomicUsize, Ordering};
-use syn::Lifetime;
+use syn::{
+    Expr, Lifetime, Token,
+    parse::{Parse, ParseStream},
+};
 
 type Tokens = Peekable<proc_macro2::token_stream::IntoIter>;
 type Result<T> = std::result::Result<T, syn::Error>;
@@ -332,28 +335,10 @@ fn parse_query_list(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
 
 const IMPLICIT_CTX: &str = "ctx";
 
-/// Determine the context identifier: either explicit `ctx,` or the implicit
-/// `ctx` from an enclosing `rule!`.
-fn parse_ctx_or_implicit(tokens: &mut Tokens) -> Ident {
-    // Check if first token is an ident followed by a comma
-    let mut lookahead = tokens.clone();
-    let is_explicit = matches!(lookahead.next(), Some(TokenTree::Ident(_)))
-        && matches!(lookahead.next(), Some(TokenTree::Punct(p)) if p.as_char() == ',');
-
-    if is_explicit {
-        let ctx = expect_ident(tokens, "unreachable: ident was just peeked")
-            .expect("unreachable: ident was just peeked");
-        let _ = tokens.next(); // consume comma
-        ctx
-    } else {
-        Ident::new(IMPLICIT_CTX, Span::call_site())
-    }
-}
-
-/// Parse `tree!(ctx, (template))` or `tree!((template))` — returns single `Id`.
+/// Parse `tree!((template))` — returns single `Id`.
 pub fn parse_tree_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
-    let ctx = parse_ctx_or_implicit(&mut tokens);
+    let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
 
     let first = parse_direct_node(&mut tokens, &ctx, None)?;
 
@@ -368,10 +353,10 @@ pub fn parse_tree_top(input: TokenStream) -> Result<TokenStream> {
     Ok(quote! { { #first } })
 }
 
-/// Parse `trees!(ctx, ...)` or `trees!(...)` — returns `Vec<Id>`.
+/// Parse `trees!(...)` — returns `Vec<Id>`.
 pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
-    let ctx = parse_ctx_or_implicit(&mut tokens);
+    let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
     let items = parse_direct_list(&mut tokens, &ctx)?;
     if let Some(tok) = tokens.next() {
         return Err(syn::Error::new_spanned(
@@ -386,6 +371,76 @@ pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
             __nodes
         }
     })
+}
+
+pub fn parse_tree_at_top(input: TokenStream) -> Result<TokenStream> {
+    let LocatedTreeInput {
+        source,
+        template,
+    } = syn::parse2(input)?;
+    let mut tokens = template.into_iter().peekable();
+    let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
+    let node = parse_direct_node(&mut tokens, &ctx, None)?;
+    if let Some(tok) = tokens.next() {
+        return Err(syn::Error::new_spanned(
+            tok,
+            "unexpected token after tree_at! template",
+        ));
+    }
+
+    Ok(quote! {
+        {
+            let __yeast_source: yeast::Id = { #source };
+            let __yeast_source_range = #ctx
+                .ast
+                .get_node(__yeast_source)
+                .and_then(|node| node.source_range());
+            let __yeast_node: yeast::Id = #node;
+            #ctx.set_node_source_range(__yeast_node, __yeast_source_range)
+        }
+    })
+}
+
+pub fn parse_tree_spanning_top(input: TokenStream) -> Result<TokenStream> {
+    let LocatedTreeInput {
+        source: sources,
+        template,
+    } = syn::parse2(input)?;
+    let mut tokens = template.into_iter().peekable();
+    let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
+    let node = parse_direct_node(&mut tokens, &ctx, None)?;
+    if let Some(tok) = tokens.next() {
+        return Err(syn::Error::new_spanned(
+            tok,
+            "unexpected token after tree_spanning! template",
+        ));
+    }
+
+    Ok(quote! {
+        {
+            let __yeast_source_range = ::std::iter::IntoIterator::into_iter({ #sources })
+                .filter_map(|source: yeast::Id| {
+                    #ctx.ast.get_node(source).and_then(|node| node.source_range())
+                })
+                .reduce(yeast::Range::union);
+            let __yeast_node: yeast::Id = #node;
+            #ctx.set_node_source_range(__yeast_node, __yeast_source_range)
+        }
+    })
+}
+
+struct LocatedTreeInput {
+    source: Expr,
+    template: TokenStream,
+}
+
+impl Parse for LocatedTreeInput {
+    fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
+        let source = input.parse()?;
+        input.parse::<Token![,]>()?;
+        let template = input.parse()?;
+        Ok(Self { source, template })
+    }
 }
 
 /// Parse a single node template and generate code that returns an `Id`.

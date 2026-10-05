@@ -262,9 +262,9 @@ Tuples.cs:
 #   65|                   -1: [LocalVariableAccess] access to local variable t
 #   66|         4: [BreakStmt] break;
 #   67|         5: [CaseStmt] case ...:
-#   67|           0: [TupleExpr] (..., ...)
+#   67|           0: [TuplePatternExpr] (..., ...)
 #   67|             0: [VariablePatternExpr] String a
-#   67|             1: [TupleExpr] (..., ...)
+#   67|             1: [TuplePatternExpr] (..., ...)
 #   67|               0: [VariablePatternExpr] Int32 b
 #   67|               1: [VariablePatternExpr] String c
 #   67|             2: [DiscardPatternExpr] _
@@ -302,7 +302,7 @@ Tuples.cs:
 #   78|           0: [RecursivePatternExpr] { ... }
 #   78|             2: [PositionalPatternExpr] ( ... )
 #   78|               0: [VariablePatternExpr] String a
-#   78|               1: [TupleExpr] (..., ...)
+#   78|               1: [TuplePatternExpr] (..., ...)
 #   78|                 0: [VariablePatternExpr] Int32 b
 #   78|                 1: [VariablePatternExpr] String c
 #   78|               2: [DiscardPatternExpr] _
@@ -335,9 +335,9 @@ Tuples.cs:
 #   87|       7: [IfStmt] if (...) ...
 #   87|         0: [IsExpr] ... is ...
 #   87|           0: [LocalVariableAccess] access to local variable x
-#   87|           1: [TupleExpr] (..., ...)
+#   87|           1: [TuplePatternExpr] (..., ...)
 #   87|             0: [VariablePatternExpr] String p
-#   87|             1: [TupleExpr] (..., ...)
+#   87|             1: [TuplePatternExpr] (..., ...)
 #   87|               0: [VariablePatternExpr] Int32 q
 #   87|               1: [VariablePatternExpr] String r
 #   87|             2: [DiscardPatternExpr] _
@@ -417,7 +417,7 @@ Tuples.cs:
 #  107|       6: [SwitchStmt] switch (...) {...}
 #  107|         0: [LocalVariableAccess] access to local variable r
 #  109|         0: [CaseStmt] case ...:
-#  109|           0: [TupleExpr] (..., ...)
+#  109|           0: [TuplePatternExpr] (..., ...)
 #  109|             0: [VariablePatternExpr] String x
 #  109|             1: [VariablePatternExpr] Int32 y
 #  110|         1: [ExprStmt] ...;

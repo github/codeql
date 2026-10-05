@@ -80,5 +80,25 @@ int f(int x) {
     }
   }
 
+  // BAD
+  if (x > 1) {
+  }
+
+  // GOOD
+  if (x) {
+    ++x;
+  }
+
+  // DUBIOUS (reported)
+  if (x) {
+  } else {
+    ++x;
+  }
+
+  // BAD (x2)
+  if (x) {
+  } else {
+  }
+
   return 1;
 }

@@ -4,6 +4,8 @@ private import codeql.unified.internal.NameBinding
 private import codeql.unified.internal.dataflow.DataFlowCall
 private import codeql.unified.internal.dataflow.DataFlowCallable
 private import codeql.unified.internal.dataflow.CallGraph
+private import codeql.unified.internal.typeinference.Type as Type
+private import codeql.unified.internal.typeinference.TypeMention
 
 /** Stats about name nodes that static name binding could resolve. */
 module StaticNameResolutionStats implements EntityStatsSig {
@@ -108,6 +110,18 @@ module CallGraphStats implements EntityStatsSig {
 }
 
 module CallGraphStatsReport = EntityReportStats<CallGraphStats>;
+
+module TypeMentionStats implements EntityStatsSig {
+  class Candidate extends ExprTypeMention {
+    predicate isOk() { this.getType() = any(Type::Type t | not t instanceof Type::UnknownType) }
+  }
+
+  string getOkText() { result = "resolvable type mentions" }
+
+  string getNotOkText() { result = "unresolvable type mentions" }
+}
+
+module TypeMentionStatsReport = EntityReportStats<TypeMentionStats>;
 
 /**
  * Gets summary statistics about taint.

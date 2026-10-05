@@ -114,7 +114,7 @@ rust_library(
         "@vendor_ts__ra-ap-rustc_index-0.166.0//:ra_ap_rustc_index",
         "@vendor_ts__rustc-hash-2.1.3//:rustc_hash",
         "@vendor_ts__rustc_apfloat-0.2.3-llvm-462a31f5a5ab//:rustc_apfloat",
-        "@vendor_ts__smallvec-1.15.2//:smallvec",
+        "@vendor_ts__smallvec-1.16.1//:smallvec",
         "@vendor_ts__tracing-0.1.44//:tracing",
     ],
 )

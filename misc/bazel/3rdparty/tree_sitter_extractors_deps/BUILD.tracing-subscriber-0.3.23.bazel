@@ -132,7 +132,7 @@ rust_library(
         "@vendor_ts__once_cell-1.21.4//:once_cell",
         "@vendor_ts__regex-automata-0.4.18//:regex_automata",
         "@vendor_ts__sharded-slab-0.1.7//:sharded_slab",
-        "@vendor_ts__smallvec-1.15.2//:smallvec",
+        "@vendor_ts__smallvec-1.16.1//:smallvec",
         "@vendor_ts__thread_local-1.1.10//:thread_local",
         "@vendor_ts__time-0.3.55//:time",
         "@vendor_ts__tracing-0.1.44//:tracing",

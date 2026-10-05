@@ -74,5 +74,6 @@ Go framework & library support
    `xpathparser <https://github.com/santhosh-tekuri/xpathparser>`_,``github.com/santhosh-tekuri/xpathparser*``,,,2
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,33
-   Totals,,688,1134,1580
+   Others,``github.com/coder/websocket``,2,,
+   Totals,,690,1134,1580
 

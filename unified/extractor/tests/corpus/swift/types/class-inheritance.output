@@ -38,3 +38,8 @@ top_level source="⟨body⟩"
           base_type:
             base_type source="⟨type⟩"
               type: identifier "Animal" source="Animal"
+          member:
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""

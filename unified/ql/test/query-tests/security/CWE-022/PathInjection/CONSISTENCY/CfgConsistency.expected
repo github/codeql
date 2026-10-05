@@ -1,0 +1,4 @@
+consistencyOverview
+| deadEnd | 1 |
+deadEnd
+| testPathInjection.swift:330:14:330:62 | Entry |

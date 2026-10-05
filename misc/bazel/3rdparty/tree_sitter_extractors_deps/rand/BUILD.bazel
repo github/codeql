@@ -10,6 +10,6 @@ package(default_visibility = ["//visibility:public"])
 
 alias(
     name = "rand",
-    actual = "@vendor_ts__rand-0.10.2//:rand",
+    actual = "@vendor_ts__rand-0.10.3//:rand",
     tags = ["manual"],
 )

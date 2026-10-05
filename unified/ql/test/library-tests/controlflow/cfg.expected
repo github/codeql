@@ -123,8 +123,8 @@ bbStep
 | cfg.swift:548:7:548:11 | false | 'false : false -> Block(+2)' |
 | cfg.swift:587:10:587:14 | ... ..< ... | '... ..< ... : match -> Block(+0)' |
 | cfg.swift:587:10:587:14 | ... ..< ... | '... ..< ... : no-match -> SwitchCase(+1)' |
-| cfg.swift:587:17:587:17 | 1 | '1 : successor -> VariableDeclaration(+3)' |
-| cfg.swift:588:14:588:14 | 2 | '2 : successor -> VariableDeclaration(+2)' |
+| cfg.swift:587:17:587:17 | 1 | '1 : successor -> let b(+3)' |
+| cfg.swift:588:14:588:14 | 2 | '2 : successor -> let b(+2)' |
 | cfg.swift:591:13:591:18 | ... < ... | '... < ... : false -> Block(+1)' |
 | cfg.swift:591:13:591:18 | ... < ... | '... < ... : true -> Block(+0)' |
 noCfg

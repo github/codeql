@@ -10,6 +10,6 @@ package(default_visibility = ["//visibility:public"])
 
 alias(
     name = "either",
-    actual = "@vendor_ts__either-1.17.0//:either",
+    actual = "@vendor_ts__either-1.18.0//:either",
     tags = ["manual"],
 )

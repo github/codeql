@@ -27,3 +27,8 @@ top_level source="⟨body⟩"
         class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {}"
           modifier: modifier "class" source="class"
           name_node: identifier "Foo" source="Foo"
+          member:
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""

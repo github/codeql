@@ -5,8 +5,10 @@ private import TypeInferencePlugin as Plugin
 private import codeql.unified.internal.StaticNameBinding
 private import codeql.unified.internal.ExprPositions
 
+final class TypeMention = TypeMentionImpl;
+
 /** An AST node that mentions a type. */
-abstract class TypeMention extends AstNode {
+abstract private class TypeMentionImpl extends AstNode {
   /**
    * Gets the type mentioned at `path`.
    */
@@ -27,8 +29,10 @@ private Type resolveType(Identifier access) {
   )
 }
 
-abstract private class ExprTypeMention extends TypeMention, Expr {
-  ExprTypeMention() { isInTypeContext(this) }
+final class ExprTypeMention = ExprTypeMentionImpl;
+
+abstract private class ExprTypeMentionImpl extends TypeMentionImpl, Expr {
+  ExprTypeMentionImpl() { isInTypeContext(this) }
 
   pragma[nomagic]
   abstract TypePath getTypeArgumentPath(int i);
@@ -37,7 +41,7 @@ abstract private class ExprTypeMention extends TypeMention, Expr {
 /**
  * A type mention that resolves via an alias (aliases are expanded).
  */
-private class AliasExprTypeMention extends ExprTypeMention {
+private class AliasExprTypeMention extends ExprTypeMentionImpl {
   private TypeAliasDeclaration alias;
 
   AliasExprTypeMention() { alias.getNameNode() = getStaticBindingTargetFromRef(this) }
@@ -62,7 +66,7 @@ private class AliasExprTypeMention extends ExprTypeMention {
 /**
  * A type mention that does not resolve via an alias.
  */
-private class NonAliasExprTypeMention extends ExprTypeMention {
+private class NonAliasExprTypeMention extends ExprTypeMentionImpl {
   NonAliasExprTypeMention() { not this instanceof AliasExprTypeMention }
 
   private Type getRootType0() {
@@ -141,7 +145,7 @@ private class NonAliasExprTypeMention extends ExprTypeMention {
   }
 }
 
-private class GenericTypeExprTypeMention extends TypeMention, GenericTypeExpr {
+private class GenericTypeExprTypeMention extends TypeMentionImpl, GenericTypeExpr {
   private ExprTypeMention base;
 
   GenericTypeExprTypeMention() { base = this.getBase() }
@@ -163,7 +167,7 @@ private class GenericTypeExprTypeMention extends TypeMention, GenericTypeExpr {
 }
 
 /** A class declaration mentions itself. */
-private class ClassLikeDeclarationTypeMention extends TypeMention, Identifier {
+private class ClassLikeDeclarationTypeMention extends TypeMentionImpl, Identifier {
   private ClassLikeDeclaration c;
 
   ClassLikeDeclarationTypeMention() { this = c.getNameNode() }

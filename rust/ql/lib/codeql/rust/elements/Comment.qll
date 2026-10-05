@@ -12,6 +12,7 @@ import codeql.rust.elements.Token
  * ```rust
  * // this is a comment
  * /// This is a doc comment
+ * fn documented() {}
  * ```
  */
 final class Comment = Impl::Comment;

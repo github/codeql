@@ -584,8 +584,8 @@ func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
 
 func singleStmtExpr(_ x: Int) {
   let a = switch x {
-    case 0..<5: 1 // $ bbStep='1 : successor -> VariableDeclaration(+3)' bbStep='... ..< ... : match -> Block(+0)' bbStep='... ..< ... : no-match -> SwitchCase(+1)'
-    default: 2 // $ bbStep='2 : successor -> VariableDeclaration(+2)'
+    case 0..<5: 1 // $ bbStep='1 : successor -> let b(+3)' bbStep='... ..< ... : match -> Block(+0)' bbStep='... ..< ... : no-match -> SwitchCase(+1)'
+    default: 2 // $ bbStep='2 : successor -> let b(+2)'
   }
   let b =
         if (x < 42) { 1 } // $ bbStep='... < ... : false -> Block(+1)' bbStep='... < ... : true -> Block(+0)'

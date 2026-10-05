@@ -80,3 +80,7 @@ top_level source="⟨body⟩"
               body:
                 block source="{\n    ⟨stmt⟩\n  }"
                   stmt: unsupported_node "discard self" source="discard self"
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""

@@ -560,10 +560,16 @@ module LocalFlow {
     or
     exists(AssignExpr ae | ae.getLeftOperand().(TupleExpr) = e2 and ae.getRightOperand() = e1)
     or
-    exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
-      cfe.(IsExpr).getExpr() = e1
-      or
-      exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1)
+    exists(IsExpr e |
+      e1 = e.getExpr() and
+      e2 = e.getPattern() and
+      e2 instanceof TuplePatternExpr
+    )
+    or
+    exists(Switch sw |
+      e1 = sw.getExpr() and
+      e2 = sw.getACase().getPattern() and
+      e2 instanceof TuplePatternExpr
     )
   }
 
@@ -2242,8 +2248,8 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
     )
     or
     // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
-    isPatternExprDescendant(te) and
-    exists(AssignableDefinitions::LocalVariableDefinition lvd |
+    te instanceof TuplePatternExpr and
+    exists(AssignableDefinitions::PatternDefinition lvd |
       node2.(AssignableDefinitionNode).getDefinition() = lvd and
       lvd.getDeclaration() = item
     )
@@ -2677,7 +2683,7 @@ class CastNode extends Node {
     this.asExpr() instanceof Cast
     or
     this.(AssignableDefinitionNode).getDefinition() instanceof
-      AssignableDefinitions::PatternDefinition
+      AssignableDefinitions::TopLevelPatternDefinition
   }
 }
 

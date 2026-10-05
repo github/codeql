@@ -6,8 +6,9 @@ private import unified
 private import codeql.unified.internal.LocalNameBinding
 private import codeql.unified.internal.NameBindingPlugin
 
+cached
 private newtype TNameBindingNode =
-  TIdentifier(Identifier n) or
+  TIdentifier(Identifier n) { CachedStage::ref() } or
   TBulkImport(BulkImportingPattern p) or
   TLocalName(LocalName local) or
   TStaticMemberNamespace(ClassLikeDeclaration cls) or
@@ -334,6 +335,11 @@ module Track<TrackInputSig Input> {
   }
 }
 
+pragma[nomagic]
+private predicate derivedStoreReadStep0(NamespaceNode namespace, string name, NameBindingNode node2) {
+  readStep(namespace.ref(), pragma[only_bind_into](name), node2)
+}
+
 /**
  * Holds if `node1 -> node2` is derived by combining a store and a read step, with zero or more value steps and inheritance steps in-between.
  */
@@ -341,7 +347,7 @@ pragma[nomagic]
 private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode node2) {
   exists(NamespaceNode namespace, string name |
     node1 = namespace.getMember(name) and // getMember() combines a store step with subsequent inheritance steps
-    readStep(namespace.ref(), name, node2) and
+    derivedStoreReadStep0(namespace, name, node2) and
     node1 != node2
   )
 }
@@ -357,10 +363,15 @@ private predicate isInheritableMemberNode(NameBindingNode node) {
 
 /** A name-binding node that can have members. */
 class NamespaceNode extends NameBindingNode {
+  cached
   NamespaceNode() {
-    storeStep(_, _, this) or
-    inheritanceStep(_, this) or
-    this.isInstanceMemberNamespace(_) or
+    CachedStage::ref() and
+    storeStep(_, _, this)
+    or
+    inheritanceStep(_, this)
+    or
+    this.isInstanceMemberNamespace(_)
+    or
     this.isStaticMemberNamespace(_)
   }
 
@@ -410,8 +421,9 @@ class NamespaceNode extends NameBindingNode {
   NamespaceNode getAnInheritanceChild() { result.getAnInheritanceParent() = this }
 
   /** Gets a member of this namespace of the given name. */
-  pragma[nomagic]
+  cached
   NameBindingNode getMember(string name) {
+    CachedStage::ref() and
     result = this.getOwnMember(name)
     or
     not this.hasOwnMember(name) and
@@ -468,7 +480,7 @@ private module TrackNameBindingInput implements TrackInputSig {
 private module TrackNameBinding = Track<TrackNameBindingInput>;
 
 /** Gets a name-binding node that may refer to the given declaration. */
-NameBindingNode trackNameBinding(NameBinding decl) {
+private NameBindingNode trackNameBinding(NameBinding decl) {
   exists(NameBindingNode start |
     start.isIdentifier(decl) and
     result = TrackNameBinding::track(start)
@@ -677,10 +689,12 @@ private int unqualifiedMemberAccessDepth(PotentialLocalNameAccess access) {
  * `accessingClass` is the enclosing class in which the member was found, and
  * `instanceAccess` indicates if it is an instance member or static member.
  */
+cached
 predicate unqualifiedMemberAccess(
   PotentialLocalNameAccess access, boolean instanceAccess, NameBinding target,
   ClassLikeDeclaration accessingClass
 ) {
+  CachedStage::ref() and
   unqualifiedMemberAccessCand(access, instanceAccess, target, accessingClass) and
   accessingClass.getDepth() = unqualifiedMemberAccessDepth(access)
 }
@@ -708,6 +722,7 @@ module Public {
     predicate isInstanceAccess() { instanceAccess = true }
 
     /** Gets the local variable implicitly referenced as the base of this access. */
+    cached
     LocalVariable getImplicitQualifierVariable() {
       ResolveImplicitReceiverAccess::access(this, result)
     }
@@ -718,7 +733,9 @@ module Public {
 }
 
 /** Gets the declaration being accessed by identifier `i`, as determined by static name binding. */
+cached
 NameBinding getStaticBindingTargetFromIdentifier(Identifier i) {
+  CachedStage::ref() and
   // For unqualified accesses, use the shadowing-aware lookup
   result = i.(UnqualifiedMemberAccess).getTarget()
   or
@@ -758,3 +775,26 @@ private predicate implicitReceiverAccess(AstNode access, string name) {
 
 private module ResolveImplicitReceiverAccess =
   LocalNameBindingOutput::ResolveAccesses<implicitReceiverAccess/2>;
+
+cached
+private module CachedStage {
+  /** Reference to the cached stage of this module. */
+  cached
+  predicate ref() { any() }
+
+  /** Reverse references to the predicates that reference `ref()`. */
+  cached
+  predicate revRef() {
+    any()
+    or
+    (exists(NameBindingNode n) implies any())
+    or
+    (exists(any(NamespaceNode n).getMember(_)) implies any())
+    or
+    (unqualifiedMemberAccess(_, _, _, _) implies any())
+    or
+    (exists(any(UnqualifiedMemberAccess u).getImplicitQualifierVariable()) implies any())
+    or
+    (exists(getStaticBindingTargetFromIdentifier(_)) implies any())
+  }
+}

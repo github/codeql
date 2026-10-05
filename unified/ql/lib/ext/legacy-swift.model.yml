@@ -235,6 +235,7 @@ extensions:
       - ["", "Connection", true, "scalar(_:_:)", "", "", "Argument[0]", "database-store", "manual"]
       - ["", "Connection", true, "scalar(_:_:)", "", "", "Argument[1]", "database-store", "manual"]
       - ["", "Connection", true, "init(_:readonly:)", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["", "Connection.Location", true, "uri(_:parameters:)", "", "", "Argument[0]", "path-injection", "manual"]
       - ["", "Database", true, "changePassphrase(_:)", "", "", "Argument[0]", "encryption-key", "manual"]
       - ["", "Database", true, "usePassphrase(_:)", "", "", "Argument[0]", "encryption-key", "manual"]
       - ["", "Database", true, "allStatements(arguments:sql:)", "", "", "Argument[arguments:]", "database-store", "manual"]
