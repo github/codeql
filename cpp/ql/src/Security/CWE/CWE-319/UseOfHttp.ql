@@ -35,9 +35,6 @@ predicate privateHostNameFlowsToExpr(Expr e) {
   TaintTracking::localExprTaint(any(StringLiteral p | p.getValue() instanceof PrivateHostName), e)
 }
 
-/**
- * A string containing an HTTP URL not in a private domain.
- */
 private class HttpStringLiteralCandidate extends StringLiteral {
   HttpStringLiteralCandidate() {
     exists(string s | this.getValue() = s |
@@ -50,6 +47,9 @@ private class HttpStringLiteralCandidate extends StringLiteral {
   }
 }
 
+/**
+ * A string containing an HTTP URL not in a private domain.
+ */
 class HttpStringLiteral extends HttpStringLiteralCandidate {
   HttpStringLiteral() { not privateHostNameFlowsToExpr(this.getParent*()) }
 }
