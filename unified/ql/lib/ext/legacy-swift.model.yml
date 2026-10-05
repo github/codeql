@@ -40,6 +40,7 @@ extensions:
       - ["", "NSString", true, "init(contentsOfFile:usedEncoding:)", "", "", "ReturnValue", "local", "manual"]
       - ["", "FileManager", true, "contents(atPath:)", "", "", "ReturnValue", "local", "manual"]
       - ["", "Data", true, "init(contentsOf:options:)", "", "", "ReturnValue", "remote", "manual"]
+      - ["", "Data", true, "init(contentsOf:)", "", "", "ReturnValue", "remote", "manual"]
       - ["", "UISceneDelegate", true, "scene(_:continue:)", "", "", "Parameter[continue:]", "remote", "manual"]
       - ["", "UISceneDelegate", true, "scene(_:didUpdate:)", "", "", "Parameter[didUpdate:]", "remote", "manual"]
       - ["", "UISceneDelegate", true, "scene(_:openURLContexts:)", "", "", "Parameter[openURLContexts:]", "remote", "manual"]
