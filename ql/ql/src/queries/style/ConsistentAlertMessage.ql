@@ -10,6 +10,12 @@
 
 import ql
 
+private predicate isInMessage(AstNode node, Select sel) {
+  node = sel.getExpr(any(int i | i % 2 = 1))
+  or
+  exists(AstNode parent | isInMessage(parent, sel) and node.getParent() = parent)
+}
+
 /**
  * Gets a string representation of the entire message in `sel`.
  * Ignores everything that is not a string constant.
@@ -18,7 +24,7 @@ string getMessage(Select sel) {
   result =
     strictconcat(String e, Location l |
       // is child of an expression in the select (in an odd-indexed position, that's where the message is)
-      e.getParent*() = sel.getExpr(any(int i | i % 2 = 1)) and l = e.getFullLocation()
+      isInMessage(e, sel) and l = e.getFullLocation()
     |
       e.getValue(), " | " order by l.getStartLine(), l.getStartColumn()
     ).trim()
@@ -36,7 +42,7 @@ string getSelectFingerPrint(Select sel) {
       doc.getQueryId() // query ID (without lang)
         + "-" + doc.getQueryKind() // @kind
         + "-" +
-        strictcount(String e | e.getParent*() = sel.getExpr(any(int i | i % 2 = 1))) // the number of string constants in the select
+        strictcount(String e | isInMessage(e, sel)) // the number of string constants in the select
         + "-" + count(sel.getExpr(_)) // and the total number of expressions in the select
   )
 }
