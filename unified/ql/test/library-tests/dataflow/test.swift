@@ -222,3 +222,11 @@ func t24() {
         sink(y)  // $ hasValueFlow=t24.1
     }
 }
+
+func t25() {
+    let x = [source("t25.1"), source("t25.2")]
+    for element in x {
+        sink(element)  // $ hasValueFlow=t25.1 hasValueFlow=t25.2
+    }
+
+}

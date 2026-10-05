@@ -282,6 +282,12 @@ edges
 | test.swift:221:12:221:12 | y | test.swift:222:14:222:14 | y | provenance |  |
 | test.swift:221:16:221:16 | x | test.swift:221:16:221:27 | TypeCastExpr [some.0] | provenance |  |
 | test.swift:221:16:221:27 | TypeCastExpr [some.0] | test.swift:221:8:221:12 | ... .some(...) [some.0] | provenance |  |
+| test.swift:227:9:227:9 | x [ArrayElement] | test.swift:228:20:228:20 | x [ArrayElement] | provenance |  |
+| test.swift:227:13:227:46 | ArrayLiteral [ArrayElement] | test.swift:227:9:227:9 | x [ArrayElement] | provenance |  |
+| test.swift:227:14:227:28 | source(...) | test.swift:227:13:227:46 | ArrayLiteral [ArrayElement] | provenance |  |
+| test.swift:227:31:227:45 | source(...) | test.swift:227:13:227:46 | ArrayLiteral [ArrayElement] | provenance |  |
+| test.swift:228:9:228:15 | element | test.swift:229:14:229:20 | element | provenance |  |
+| test.swift:228:20:228:20 | x [ArrayElement] | test.swift:228:9:228:15 | element | provenance |  |
 nodes
 | calls.swift:7:19:7:19 | x | semmle.label | x |
 | calls.swift:8:14:8:14 | x | semmle.label | x |
@@ -627,6 +633,13 @@ nodes
 | test.swift:221:16:221:16 | x | semmle.label | x |
 | test.swift:221:16:221:27 | TypeCastExpr [some.0] | semmle.label | TypeCastExpr [some.0] |
 | test.swift:222:14:222:14 | y | semmle.label | y |
+| test.swift:227:9:227:9 | x [ArrayElement] | semmle.label | x [ArrayElement] |
+| test.swift:227:13:227:46 | ArrayLiteral [ArrayElement] | semmle.label | ArrayLiteral [ArrayElement] |
+| test.swift:227:14:227:28 | source(...) | semmle.label | source(...) |
+| test.swift:227:31:227:45 | source(...) | semmle.label | source(...) |
+| test.swift:228:9:228:15 | element | semmle.label | element |
+| test.swift:228:20:228:20 | x [ArrayElement] | semmle.label | x [ArrayElement] |
+| test.swift:229:14:229:20 | element | semmle.label | element |
 subpaths
 | calls.swift:31:17:31:30 | source(...) | calls.swift:28:19:28:19 | x | calls.swift:29:16:29:24 | ... + ... | calls.swift:31:10:31:31 | target(...) |
 | calls.swift:32:17:32:30 | source(...) | calls.swift:28:19:28:19 | x | calls.swift:29:16:29:24 | ... + ... | calls.swift:32:10:32:31 | target(...) |
@@ -723,3 +736,5 @@ testFailures
 | test.swift:219:10:219:20 | TypeCastExpr | test.swift:218:13:218:27 | source(...) | test.swift:219:10:219:20 | TypeCastExpr | $@ | test.swift:218:13:218:27 | source(...) | source(...) |
 | test.swift:220:10:220:21 | TypeCastExpr | test.swift:218:13:218:27 | source(...) | test.swift:220:10:220:21 | TypeCastExpr | $@ | test.swift:218:13:218:27 | source(...) | source(...) |
 | test.swift:222:14:222:14 | y | test.swift:218:13:218:27 | source(...) | test.swift:222:14:222:14 | y | $@ | test.swift:218:13:218:27 | source(...) | source(...) |
+| test.swift:229:14:229:20 | element | test.swift:227:14:227:28 | source(...) | test.swift:229:14:229:20 | element | $@ | test.swift:227:14:227:28 | source(...) | source(...) |
+| test.swift:229:14:229:20 | element | test.swift:227:31:227:45 | source(...) | test.swift:229:14:229:20 | element | $@ | test.swift:227:31:227:45 | source(...) | source(...) |

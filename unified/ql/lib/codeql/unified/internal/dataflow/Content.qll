@@ -2,6 +2,7 @@ private import unified
 private import AllDataFlow
 
 private newtype TContent =
+  TArrayElement() or
   TNamedMember(string name) {
     name = any(Identifier id).getValue()
     or
@@ -15,7 +16,13 @@ private newtype TContent =
 class Content extends TContent {
   string asNamedMember() { this = TNamedMember(result) }
 
-  string toString() { result = this.asNamedMember() }
+  predicate isArrayElement() { this = TArrayElement() }
+
+  string toString() {
+    result = this.asNamedMember()
+    or
+    this.isArrayElement() and result = "ArrayElement"
+  }
 
   Location getLocation() { none() }
 }
@@ -36,4 +43,6 @@ class ContentSet extends TContentSet {
 
 module ContentSet {
   ContentSet namedMember(string name) { result.asSingleton().asNamedMember() = name }
+
+  ContentSet arrayElement() { result.asSingleton().isArrayElement() }
 }

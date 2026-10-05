@@ -134,6 +134,18 @@ predicate step(Node node1, Step step, Node node2) {
     node2.isIncomingValue(expr.getExpr())
   )
   or
+  exists(ArrayLiteral expr |
+    node1.isResultValue(expr.getAnElement()) and
+    step.store(ContentSet::arrayElement()) and
+    node2.isResultValue(expr)
+  )
+  or
+  exists(ForEachStmt stmt |
+    node1.isResultValue(stmt.getIterable()) and
+    step.readArrayElement() and
+    node2.isIncomingValue(stmt.getPattern())
+  )
+  or
   none() // Temporarily disable compilation errors from unsatisfiable types
 }
 
