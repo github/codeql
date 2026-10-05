@@ -1,5 +1,6 @@
 using Xunit;
 using System;
+using System.Diagnostics;
 using System.IO;
 using Semmle.Extraction.CSharp.DependencyFetching;
 using Semmle.Util;
@@ -244,6 +245,39 @@ namespace Semmle.Extraction.Tests
             Assert.Equal([
                 "https://example.com/org/index.json",
             ], proxy.RegistryBaseURLs);
+        }
+
+        /// <summary>
+        /// Verifies that the registry proxy correctly sets the environment variables needed for a .NET process to use the proxy.
+        /// In this case, the environment variables for the HTTP and HTTPS proxies, as well as the SSL certificate file, should be correctly set.
+        /// The http proxies should be set to the proxy address, and the SSL certificate file should point to the certificate path.
+        /// The latter is tested by verifying that the SSL_CERT_FILE environment variable ends with "proxy.crt" as we can't check the absolute path
+        /// due to temporary directories.
+        /// </summary>
+        [Fact]
+        public void TestRegistryProxyProcessEnvironment()
+        {
+            // Setup
+            var config = new RegistryConfigurationStub
+            {
+                Port = "8080",
+                Host = "localhost",
+                Certificate = ExampleCertificate
+            };
+
+            // Execute
+            using var tempWorkingDirectory = MakeTemporaryDirectory();
+            using var proxy = RegistryProxy.Make(config, new LoggerStub(), new DiagnosticsWriterStub(), tempWorkingDirectory);
+
+            var pi = new ProcessStartInfo("nuget");
+            proxy?.SetProcessEnvironment(pi);
+
+            // Verify
+            Assert.NotNull(proxy);
+            Assert.Equal("http://localhost:8080", proxy.Address);
+            Assert.Equal("http://localhost:8080", pi.EnvironmentVariables["HTTP_PROXY"]);
+            Assert.Equal("http://localhost:8080", pi.EnvironmentVariables["HTTPS_PROXY"]);
+            Assert.EndsWith("proxy.crt", pi.EnvironmentVariables["SSL_CERT_FILE"]);
         }
     }
 }

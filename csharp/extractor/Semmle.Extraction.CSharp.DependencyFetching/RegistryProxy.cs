@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using Semmle.Util;
@@ -36,6 +37,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public string Address { get; }
 
+        private readonly ILogger logger;
+
         /// <summary>
         /// A dictionary mapping registry URLs to a boolean indicating whether they replace the base registry.
         /// </summary>
@@ -65,8 +68,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public X509Certificate2? Certificate { get; private set; }
 
-        private RegistryProxy(IRegistryProxyConfiguration config, ILogger logger, TemporaryDirectory tempWorkingDirectory)
+        private RegistryProxy(IRegistryProxyConfiguration config, ILogger l, TemporaryDirectory tempWorkingDirectory)
         {
+            logger = l;
             Address = $"http://{config.Host}:{config.Port}";
 
             if (!string.IsNullOrWhiteSpace(config.Certificate))
@@ -177,6 +181,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             return result;
+        }
+
+        public void SetProcessEnvironment(ProcessStartInfo pi)
+        {
+            logger.LogDebug($"Configuring environment variables for the registry proxy at {Address}");
+
+            pi.EnvironmentVariables["HTTP_PROXY"] = Address;
+            pi.EnvironmentVariables["HTTPS_PROXY"] = Address;
+            if (CertificatePath != null)
+            {
+                pi.EnvironmentVariables["SSL_CERT_FILE"] = CertificatePath;
+            }
+            else
+            {
+                logger.LogDebug("No SSL certificate is configured for the registry proxy.");
+            }
         }
 
         public void Dispose()
