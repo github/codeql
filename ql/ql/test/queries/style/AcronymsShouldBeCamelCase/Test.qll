@@ -5,7 +5,8 @@ predicate isXML() { any() } // $ Alert
 predicate isAES() { any() }
 
 // BAD
-newtype TXMLElements = // $ Alert
+newtype TXMLElements =
+  // $ Alert
   TXmlElement() or // GOOD
   TXMLElement() // $ Alert // BAD
 
