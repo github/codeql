@@ -528,6 +528,18 @@ module Unified {
     }
   }
 
+  /** A class representing `defer_stmt` nodes. */
+  class DeferStmt extends @unified_defer_stmt, F::Stmt {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "DeferStmt" }
+
+    /** Gets the node corresponding to the field `body`. */
+    final F::Expr getBody() { unified_defer_stmt_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override F::AstNode getAFieldOrChild() { unified_defer_stmt_def(this, result) }
+  }
+
   /** A class representing `destructor_declaration` nodes. */
   class DestructorDeclaration extends @unified_destructor_declaration, F::Callable, F::Member,
     F::Stmt
@@ -834,6 +846,12 @@ module Unified {
       unified_if_expr_else(this, result) or
       unified_if_expr_then(this, result)
     }
+  }
+
+  /** A class representing `ignore_pattern` tokens. */
+  class IgnorePattern extends @unified_token_ignore_pattern, F::Expr, F::Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "IgnorePattern" }
   }
 
   /** A class representing `import_declaration` nodes. */
@@ -1434,6 +1452,12 @@ module Unified {
     }
   }
 
+  /** A class representing `unhandled_node` tokens. */
+  class UnhandledNode extends @unified_token_unhandled_node, F::Expr, F::Member, F::Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "UnhandledNode" }
+  }
+
   /** A class representing `unresolved_operator_sequence` nodes. */
   class UnresolvedOperatorSequence extends @unified_unresolved_operator_sequence, F::Expr {
     /** Gets the name of the primary QL class for this element. */
@@ -1606,6 +1630,8 @@ module Unified {
       result = node.(ConstructorDeclaration).getParameter(i) and name = "getParameter"
       or
       result = node.(ContinueExpr).getLabelNameNode() and i = -1 and name = "getLabelNameNode"
+      or
+      result = node.(DeferStmt).getBody() and i = -1 and name = "getBody"
       or
       result = node.(DestructorDeclaration).getBody() and i = -1 and name = "getBody"
       or
@@ -1862,6 +1888,8 @@ module UnifiedFinal {
 
   final class ContinueExpr = F::ContinueExpr;
 
+  final class DeferStmt = F::DeferStmt;
+
   final class DestructorDeclaration = F::DestructorDeclaration;
 
   final class DoWhileStmt = F::DoWhileStmt;
@@ -1893,6 +1921,8 @@ module UnifiedFinal {
   final class Identifier = F::Identifier;
 
   final class IfExpr = F::IfExpr;
+
+  final class IgnorePattern = F::IgnorePattern;
 
   final class ImportDeclaration = F::ImportDeclaration;
 
@@ -1967,6 +1997,8 @@ module UnifiedFinal {
   final class TypeTestExpr = F::TypeTestExpr;
 
   final class UnaryExpr = F::UnaryExpr;
+
+  final class UnhandledNode = F::UnhandledNode;
 
   final class UnresolvedOperatorSequence = F::UnresolvedOperatorSequence;
 

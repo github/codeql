@@ -1,3 +1,11 @@
+## 0.2.23
+
+### Minor Analysis Improvements
+
+* The Rust extractor has been upgraded to use `rust-analyzer` version 0.0.352. As a result, the AST exposed by the Rust libraries now includes the `AnyAttr` and `DocComment` classes.
+* Improve data flow for async blocks when used with `await`.
+* Added new flow summary models for the `native-tls`, `async-native-tls`, and `tokio-native-tls` crates.
+
 ## 0.2.22
 
 ### Minor Analysis Improvements

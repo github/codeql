@@ -80,6 +80,18 @@ alias(
 )
 
 alias(
+    name = "serde_json-1.0.138",
+    actual = "@vendor_py__serde_json-1.0.138//:serde_json",
+    tags = ["manual"],
+)
+
+alias(
+    name = "serde_json",
+    actual = "@vendor_py__serde_json-1.0.138//:serde_json",
+    tags = ["manual"],
+)
+
+alias(
     name = "tree-sitter-0.24.7",
     actual = "@vendor_py__tree-sitter-0.24.7//:tree_sitter",
     tags = ["manual"],

@@ -4,7 +4,7 @@ import TestUtils
 
 query predicate instances(StructExprFieldList x) { toBeTested(x) and not x.isUnknown() }
 
-query predicate getAttr(StructExprFieldList x, int index, Attr getAttr) {
+query predicate getAttr(StructExprFieldList x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

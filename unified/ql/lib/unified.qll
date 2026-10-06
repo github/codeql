@@ -9,3 +9,4 @@ import codeql.unified.internal.AstExtra::Public
 import codeql.unified.internal.ControlFlowGraph::Public
 import codeql.unified.internal.NameBinding::Public
 import codeql.unified.internal.dataflow.DataFlowPublic
+import codeql.unified.internal.mad.LegacyMaD::Public

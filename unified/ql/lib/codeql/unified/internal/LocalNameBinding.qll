@@ -9,6 +9,12 @@ private import codeql.unified.internal.NameBindingPlugin
 private import codeql.unified.internal.StaticNameBinding
 
 private module LocalNameBindingInput implements LocalNameBindingInputSig<Location> {
+  predicate cacheRevRef() {
+    (bindingContext(_, _, _) implies any())
+    or
+    (implicitDeclInScope(_, _, _) implies any())
+  }
+
   class AstNode = U::AstNode;
 
   private class LogicalAndRoot extends LogicalAndExpr {
@@ -201,7 +207,9 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     any(NameBindingPlugin p).isNonPattern(e)
   }
 
+  cached
   additional predicate bindingContext(AstNode pattern, AstNode scope, AstNode declaration) {
+    LocalNameBindingOutput::CachedStage::ref() and
     not isNonPattern(pattern) and
     (
       exists(SiblingShadowingDecl decl |
@@ -278,6 +286,12 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
         declaration = decl
       )
       or
+      exists(ConstructorDeclaration decl |
+        getChild(scope, _) = decl and
+        pattern = decl.getNameNode() and
+        declaration = decl
+      )
+      or
       exists(ImportDeclaration imprt |
         getChild(scope, _) = imprt and
         pattern = imprt.getPattern() and
@@ -326,8 +340,9 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     )
   }
 
-  pragma[nomagic]
+  cached
   additional predicate implicitDeclInScope(string name, AstNode scope, boolean isLocalVariable) {
+    LocalNameBindingOutput::CachedStage::ref() and
     exists(Callable callable |
       isLocalVariable = true and
       name = any(NameBindingPlugin p).getImplicitReceiverParameterName(callable) and
@@ -356,7 +371,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   }
 }
 
-import LocalNameBindingInput
+predicate bindingContext = LocalNameBindingInput::bindingContext/3;
 
 module LocalNameBindingOutput = LocalNameBinding<Location, LocalNameBindingInput>;
 
@@ -383,10 +398,10 @@ module Public {
 
   /** An identifier appearing in a name-binding position, such as the `x` in `let x = 123`. */
   class NameBinding extends Identifier {
-    NameBinding() { LocalNameBindingInput::bindingContext(this, _, _) }
+    NameBinding() { bindingContext(this, _, _) }
 
     /** Gets the statement-like node declaring this name, such as a `VariableDeclaration` or `CatchClause`. */
-    AstNode getDeclaration() { LocalNameBindingInput::bindingContext(this, _, result) }
+    AstNode getDeclaration() { bindingContext(this, _, result) }
 
     /** Gets the name being declared. */
     string getName() { result = this.getValue() }
@@ -395,9 +410,26 @@ module Public {
     LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
   }
 
+  final class LocalVariable = LocalVariableImpl;
+
   /** A representative for a lexically scoped local variable. */
-  class LocalVariable extends LocalName {
-    LocalVariable() {
+  abstract private class LocalVariableImpl extends LocalName {
+    /** Gets the callable containing the declaration of this local variable. */
+    abstract Callable getDeclaringCallable();
+
+    /** Holds if this local variable is captured, that is, it is accessed from another callable than the one declaring it. */
+    predicate isCaptured() {
+      this.getAnAccess().getEnclosingCallable() != this.getDeclaringCallable()
+    }
+
+    /**
+     * Holds if this local variable represents an implicit receiver parameter of the given callable.
+     */
+    abstract predicate isImplicitReceiverParameter(Callable c);
+  }
+
+  private class ExplicitLocalVariable extends LocalVariableImpl {
+    ExplicitLocalVariable() {
       exists(AstNode decl |
         decl = this.getABinding().getDeclaration() and
         not isInstanceMember(decl) and
@@ -411,29 +443,34 @@ module Public {
         decl instanceof CatchClause or
         decl instanceof SwitchCase
       )
-      or
+    }
+
+    override Callable getDeclaringCallable() { result = this.getABinding().getEnclosingCallable() }
+
+    override predicate isImplicitReceiverParameter(Callable c) { none() }
+  }
+
+  private class ImplicitLocalVariable extends LocalVariableImpl instanceof LocalNameBindingOutput::ImplicitLocal
+  {
+    AstNode scope;
+    string name;
+
+    ImplicitLocalVariable() {
       // For implicitly-declared locals we can't expect to find a binding. Check 'implicitDeclInScope' directly.
-      exists(AstNode scope, string name |
-        this.(LocalNameBindingOutput::ImplicitLocal).hasNameAndScope(name, scope) and
-        LocalNameBindingInput::implicitDeclInScope(name, scope, true)
-      )
+      super.hasNameAndScope(name, scope) and
+      LocalNameBindingInput::implicitDeclInScope(name, scope, true)
     }
 
-    /** Gets the callable containing the declaration of this local variable. */
-    Callable getDeclaringCallable() {
-      result = this.getABinding().getEnclosingCallable()
+    override Callable getDeclaringCallable() {
+      result = scope
       or
-      exists(AstNode scope | scope = this.(LocalNameBindingOutput::ImplicitLocal).getScope() |
-        result = scope
-        or
-        not scope instanceof Callable and
-        result = scope.getEnclosingCallable()
-      )
+      not scope instanceof Callable and
+      result = scope.getEnclosingCallable()
     }
 
-    /** Holds if this local variable is captured, that is, it is accessed from another callable than the one declaring it. */
-    predicate isCaptured() {
-      this.getAnAccess().getEnclosingCallable() != this.getDeclaringCallable()
+    override predicate isImplicitReceiverParameter(Callable c) {
+      name = any(NameBindingPlugin p).getImplicitReceiverParameterName(scope) and
+      scope = c
     }
   }
 
@@ -473,4 +510,12 @@ class PotentialLocalNameAccess extends IdentifierExpr {
 
   /** Holds if this is one of the binding sites for a name, such as the `x` in `let x = 123`. */
   predicate isBindingSite() { this instanceof NameBinding }
+}
+
+/** Gets the implicitly-declared variable through which the given callable refers to its receiver. */
+LocalVariable getImplicitReceiverVariable(Callable callable) {
+  exists(string name |
+    name = any(NameBindingPlugin p).getImplicitReceiverParameterName(callable) and
+    result.(LocalNameBindingOutput::ImplicitLocal).hasNameAndScope(name, callable)
+  )
 }

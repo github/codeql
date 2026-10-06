@@ -30,14 +30,13 @@ public class AngularExpressionParser extends CustomParser {
       boolean logical) {
     // Angular pipe expression: `x|f:a` is desugared to `f(x, a)`
     if (op.equals("|")) {
-      DestructuringErrors refDestructuringErrors = new DestructuringErrors();
       List<Expression> arguments = new ArrayList<>();
       arguments.add(left);
       while (this.type == TokenType.colon) {
         this.next();
         int argStartPos = this.pos;
         Position argStartLocation = this.curPosition();
-        Expression arg = parseMaybeUnary(refDestructuringErrors, false);
+        Expression arg = parseMaybeUnary(false);
         arguments.add(parseExprOp(arg, argStartPos, argStartLocation, TokenType.plusMin.binop, true));
       }
       SourceLocation loc = new SourceLocation(startLoc);
@@ -50,10 +49,10 @@ public class AngularExpressionParser extends CustomParser {
   }
 
   @Override
-  protected Expression parseExprAtom(DestructuringErrors refDestructuringErrors) {
+  protected Expression parseExprAtom() {
     // Parse postfix "!" operator
     Position startLoc = this.startLoc;
-    Expression expr = super.parseExprAtom(refDestructuringErrors);
+    Expression expr = super.parseExprAtom();
     if (this.type == TokenType.prefix && "!".equals(this.value)) {
       this.next(); // consume "!" token
       return finishNode(new NonNullAssertion(new SourceLocation(startLoc), expr));

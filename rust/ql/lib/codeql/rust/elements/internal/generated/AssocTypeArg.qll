@@ -40,6 +40,8 @@ module Generated {
   class AssocTypeArg extends Synth::TAssocTypeArg, GenericArgImpl::GenericArg {
     override string getAPrimaryQlClass() { result = "AssocTypeArg" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the const argument of this assoc type argument, if it exists.
      */

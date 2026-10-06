@@ -1,8 +1,4 @@
 bbContinues
-| cfg.swift:62:6:62:6 | y | 'y goto Block(-1)' |
-| cfg.swift:147:5:147:5 | Block | 'Block goto true(+3)' |
-| cfg.swift:525:78:525:78 | Block | 'Block goto Task(+2)' |
-| cfg.swift:526:9:526:20 | continuation | 'continuation goto Block(-1)' |
 bbStep
 | cfg.swift:20:9:20:14 | ... >= ... | '... >= ... : false -> Block(+0)' |
 | cfg.swift:20:9:20:14 | ... >= ... | '... >= ... : true -> GuardIfStmt(+3)' |
@@ -10,8 +6,8 @@ bbStep
 | cfg.swift:30:9:30:24 | mightThrow(...) | 'mightThrow(...) : exception -> CatchClause(+5)' |
 | cfg.swift:30:9:30:24 | mightThrow(...) | 'mightThrow(...) : successor -> try ...(+0)' |
 | cfg.swift:33:5:33:33 | print(...) | 'print(...) : successor -> 0(+11)' |
-| cfg.swift:35:5:35:5 | OrPattern | 'OrPattern : match -> Block(+0)' |
-| cfg.swift:35:5:35:5 | OrPattern | 'OrPattern : no-match -> CatchClause(+2)' |
+| cfg.swift:35:11:35:60 | OrPattern | 'OrPattern : match -> Block(+0)' |
+| cfg.swift:35:11:35:60 | OrPattern | 'OrPattern : no-match -> CatchClause(+2)' |
 | cfg.swift:37:11:37:39 | ... .error3(...) | '... .error3(...) : match -> Block(+0)' |
 | cfg.swift:37:11:37:39 | ... .error3(...) | '... .error3(...) : no-match -> CatchClause(+2)' |
 | cfg.swift:39:11:39:20 |  | ' : match -> Block(+0)' |
@@ -22,9 +18,9 @@ bbStep
 | cfg.swift:140:12:140:17 | ... ... ... | '... ... ... : non-empty -> _(+0)' |
 | cfg.swift:141:9:141:12 | Block | 'Block : successor -> SwitchExpr(+2)' |
 | cfg.swift:141:9:141:12 | Block | 'Block : successor -> _(-1)' |
-| cfg.swift:144:5:144:5 | OrPattern | 'OrPattern : match -> Block(+0)' |
-| cfg.swift:144:5:144:5 | OrPattern | 'OrPattern : no-match -> SwitchCase(+3)' |
-| cfg.swift:147:10:147:10 | ConditionalPattern | 'ConditionalPattern : match -> Block(+0)' |
+| cfg.swift:144:10:144:13 | OrPattern | 'OrPattern : match -> Block(+1)' |
+| cfg.swift:144:10:144:13 | OrPattern | 'OrPattern : no-match -> SwitchCase(+3)' |
+| cfg.swift:147:10:147:10 | ConditionalPattern | 'ConditionalPattern : match -> Block(+3)' |
 | cfg.swift:147:10:147:10 | ConditionalPattern | 'ConditionalPattern : no-match -> SwitchCase(+4)' |
 | cfg.swift:148:10:148:15 | ... >= ... | '... >= ... : false -> x(-1)' |
 | cfg.swift:148:10:148:15 | ... >= ... | '... >= ... : true -> x(+1)' |
@@ -127,8 +123,8 @@ bbStep
 | cfg.swift:548:7:548:11 | false | 'false : false -> Block(+2)' |
 | cfg.swift:587:10:587:14 | ... ..< ... | '... ..< ... : match -> Block(+0)' |
 | cfg.swift:587:10:587:14 | ... ..< ... | '... ..< ... : no-match -> SwitchCase(+1)' |
-| cfg.swift:587:17:587:17 | 1 | '1 : successor -> VariableDeclaration(+3)' |
-| cfg.swift:588:14:588:14 | 2 | '2 : successor -> VariableDeclaration(+2)' |
+| cfg.swift:587:17:587:17 | 1 | '1 : successor -> let b(+3)' |
+| cfg.swift:588:14:588:14 | 2 | '2 : successor -> let b(+2)' |
 | cfg.swift:591:13:591:18 | ... < ... | '... < ... : false -> Block(+1)' |
 | cfg.swift:591:13:591:18 | ... < ... | '... < ... : true -> Block(+0)' |
 noCfg
@@ -153,14 +149,15 @@ noCfg
 | cfg.swift:358:6:358:28 | loop_with_identity_expr |
 | cfg.swift:371:8:371:18 | getOptional |
 | cfg.swift:380:45:380:47 | Int |
+| cfg.swift:391:3:391:6 | init |
+| cfg.swift:408:3:408:6 | init |
 | cfg.swift:421:6:421:22 | localDeclarations |
+| cfg.swift:424:5:424:8 | init |
+| cfg.swift:431:5:431:8 | init |
 | cfg.swift:468:6:468:17 | testIfConfig |
 | cfg.swift:497:6:497:18 | testAvailable |
 | cfg.swift:524:6:524:17 | testAsyncFor |
 | cfg.swift:559:6:559:20 | autoclosureTest |
 nonSimple
-| cfg.swift:10:1:10:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyError -^ BaseType -V Error' |
+| cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
 | cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |
-| cfg.swift:390:1:390:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V Derived -^ BaseType -V C' |
-| cfg.swift:527:13:527:16 | Task | 'Task -^ ... .detached -^ Argument -V FunctionExpr -^ ... .detached(...)' |
-| cfg.swift:569:1:569:1 | ClassLikeDeclaration | 'ClassLikeDeclaration -V MyProcotolImpl -^ BaseType -V MyProtocol' |

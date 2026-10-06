@@ -5,6 +5,7 @@ private import codeql.util.FileSystem
 private import codeql.rust.elements.SourceFile
 private import codeql.rust.elements.AstNode
 private import codeql.rust.elements.Comment
+private import codeql.rust.elements.DocComment
 private import codeql.rust.Diagnostics
 private import codeql.rust.elements.internal.ExtractorStep
 
@@ -66,6 +67,7 @@ class File extends Container, Impl::File {
       count(int line |
         exists(AstNode node, Location loc |
           not node instanceof Comment and
+          not node instanceof DocComment and
           not node instanceof SourceFile and
           loc = node.getLocation()
         |

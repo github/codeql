@@ -16,6 +16,7 @@ private import TypeRef
 class Variable extends Assignable, @variable {
   override Variable getUnboundDeclaration() { result = this }
 
+  pragma[nomagic]
   override VariableAccess getAnAccess() { result.getTarget() = this }
 
   /** Gets the type of this variable. */
@@ -438,6 +439,7 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
 
   override Field getUnboundDeclaration() { fields(this, _, _, _, _, result) }
 
+  pragma[nomagic]
   override FieldAccess getAnAccess() { result = Variable.super.getAnAccess() }
 
   override ValueOrRefType getDeclaringType() { fields(this, _, _, result, _, _) }

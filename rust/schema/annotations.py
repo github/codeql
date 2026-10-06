@@ -2,6 +2,9 @@ from misc.codegen.lib.schemadefs import *
 from .ast import *
 
 
+@ql.to_string_impl_from_primary_class(
+    False
+)  # Disable since we have a final manual `toStringImpl` for this class
 class LabelableExpr(Expr):
     """
     The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
@@ -25,7 +28,7 @@ class _:
     """
 
     derive_macro_expansions: list[MacroItems] | child | rust.detach
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
     visibility: optional["Visibility"] | child
@@ -597,7 +600,7 @@ class ArrayExpr(Expr):
     """
 
     exprs: list[Expr] | child
-    attrs: list[Attr] | child
+    attrs: list[AnyAttr] | child
 
 
 @synth.from_class(ArrayExprInternal)
@@ -1585,12 +1588,25 @@ class _:
     """
 
 
+@annotate(DocComment)
+class _:
+    """
+    A documentation comment.
+
+    For example:
+    ```rust
+    /// Documents `documented`.
+    fn documented() {}
+    ```
+    """
+
+
 class ParamBase(AstNode):
     """
     A normal parameter, `Param`, or a self parameter `SelfParam`.
     """
 
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     type_repr: optional["TypeRepr"] | child
 
 

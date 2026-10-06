@@ -231,6 +231,12 @@ module Ast implements AstSig<Py::Location> {
     override Callable getEnclosingCallable() { result.asScope() = this.asStmt().getScope() }
   }
 
+  class LabeledStmt extends Stmt {
+    LabeledStmt() { none() }
+
+    Stmt getStmt() { none() }
+  }
+
   /** An expression. */
   class Expr extends AstNodeImpl, TExpr {
     // For `TPyExpr` instances, delegate to the wrapped Python expression.

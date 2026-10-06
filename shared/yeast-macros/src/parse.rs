@@ -2,7 +2,10 @@ use proc_macro2::{Delimiter, Ident, Literal, Span, TokenStream, TokenTree};
 use quote::quote;
 use std::iter::Peekable;
 use std::sync::atomic::{AtomicUsize, Ordering};
-use syn::Lifetime;
+use syn::{
+    Expr, Lifetime, Token,
+    parse::{Parse, ParseStream},
+};
 
 type Tokens = Peekable<proc_macro2::token_stream::IntoIter>;
 type Result<T> = std::result::Result<T, syn::Error>;
@@ -332,28 +335,10 @@ fn parse_query_list(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
 
 const IMPLICIT_CTX: &str = "ctx";
 
-/// Determine the context identifier: either explicit `ctx,` or the implicit
-/// `ctx` from an enclosing `rule!`.
-fn parse_ctx_or_implicit(tokens: &mut Tokens) -> Ident {
-    // Check if first token is an ident followed by a comma
-    let mut lookahead = tokens.clone();
-    let is_explicit = matches!(lookahead.next(), Some(TokenTree::Ident(_)))
-        && matches!(lookahead.next(), Some(TokenTree::Punct(p)) if p.as_char() == ',');
-
-    if is_explicit {
-        let ctx = expect_ident(tokens, "unreachable: ident was just peeked")
-            .expect("unreachable: ident was just peeked");
-        let _ = tokens.next(); // consume comma
-        ctx
-    } else {
-        Ident::new(IMPLICIT_CTX, Span::call_site())
-    }
-}
-
-/// Parse `tree!(ctx, (template))` or `tree!((template))` — returns single `Id`.
+/// Parse `tree!((template))` — returns single `Id`.
 pub fn parse_tree_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
-    let ctx = parse_ctx_or_implicit(&mut tokens);
+    let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
 
     let first = parse_direct_node(&mut tokens, &ctx, None)?;
 
@@ -368,10 +353,10 @@ pub fn parse_tree_top(input: TokenStream) -> Result<TokenStream> {
     Ok(quote! { { #first } })
 }
 
-/// Parse `trees!(ctx, ...)` or `trees!(...)` — returns `Vec<Id>`.
+/// Parse `trees!(...)` — returns `Vec<Id>`.
 pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
-    let ctx = parse_ctx_or_implicit(&mut tokens);
+    let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
     let items = parse_direct_list(&mut tokens, &ctx)?;
     if let Some(tok) = tokens.next() {
         return Err(syn::Error::new_spanned(
@@ -386,6 +371,76 @@ pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
             __nodes
         }
     })
+}
+
+pub fn parse_tree_at_top(input: TokenStream) -> Result<TokenStream> {
+    let LocatedTreeInput {
+        source,
+        template,
+    } = syn::parse2(input)?;
+    let mut tokens = template.into_iter().peekable();
+    let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
+    let node = parse_direct_node(&mut tokens, &ctx, None)?;
+    if let Some(tok) = tokens.next() {
+        return Err(syn::Error::new_spanned(
+            tok,
+            "unexpected token after tree_at! template",
+        ));
+    }
+
+    Ok(quote! {
+        {
+            let __yeast_source: yeast::Id = { #source };
+            let __yeast_source_range = #ctx
+                .ast
+                .get_node(__yeast_source)
+                .and_then(|node| node.source_range());
+            let __yeast_node: yeast::Id = #node;
+            #ctx.set_node_source_range(__yeast_node, __yeast_source_range)
+        }
+    })
+}
+
+pub fn parse_tree_spanning_top(input: TokenStream) -> Result<TokenStream> {
+    let LocatedTreeInput {
+        source: sources,
+        template,
+    } = syn::parse2(input)?;
+    let mut tokens = template.into_iter().peekable();
+    let ctx = Ident::new(IMPLICIT_CTX, Span::call_site());
+    let node = parse_direct_node(&mut tokens, &ctx, None)?;
+    if let Some(tok) = tokens.next() {
+        return Err(syn::Error::new_spanned(
+            tok,
+            "unexpected token after tree_spanning! template",
+        ));
+    }
+
+    Ok(quote! {
+        {
+            let __yeast_source_range = ::std::iter::IntoIterator::into_iter({ #sources })
+                .filter_map(|source: yeast::Id| {
+                    #ctx.ast.get_node(source).and_then(|node| node.source_range())
+                })
+                .reduce(yeast::Range::union);
+            let __yeast_node: yeast::Id = #node;
+            #ctx.set_node_source_range(__yeast_node, __yeast_source_range)
+        }
+    })
+}
+
+struct LocatedTreeInput {
+    source: Expr,
+    template: TokenStream,
+}
+
+impl Parse for LocatedTreeInput {
+    fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
+        let source = input.parse()?;
+        input.parse::<Token![,]>()?;
+        let template = input.parse()?;
+        Ok(Self { source, template })
+    }
 }
 
 /// Parse a single node template and generate code that returns an `Id`.
@@ -422,7 +477,7 @@ fn parse_direct_node(
 }
 
 /// Parse the inside of a parenthesized node: `kind fields... children...`
-/// or `kind "literal"` or `kind $fresh`.
+/// or `kind "literal"`.
 fn parse_direct_node_inner(
     tokens: &mut Tokens,
     ctx: &Ident,
@@ -472,14 +527,6 @@ fn parse_direct_node_inner(
                 #ctx.literal_with_source_range(#kind_str, &__value, __source_range)
             }
         });
-    }
-
-    // Check for (kind $fresh)
-    if peek_is_dollar(tokens) {
-        tokens.next();
-        let name = expect_ident(tokens, "expected fresh variable name after $")?;
-        let name_str = name.to_string();
-        return Ok(quote! { #ctx.fresh(#kind_str, #name_str) });
     }
 
     // Parse named fields
@@ -973,20 +1020,18 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                     let #ctx_ident = __user_ctx;
                     Ok(#guard)
                 }),
-                Box::new(|__ast: &mut yeast::Ast, mut __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<yeast::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
+                Box::new(|__ast: &mut yeast::Ast, mut __captures: yeast::captures::Captures, __source_range: Option<yeast::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
                     // Auto-translation prefix: recursively translate every
                     // captured node before invoking the user's transform body,
                     // except for `@@name` captures listed in `__skip` which the
                     // body consumes raw.
-                    // For OneShot rules this preserves the legacy behaviour
-                    // (input-schema captures translated to output-schema
-                    // nodes); for Repeating rules it is a no-op.
                     let __skip: &[&str] = &[#(#raw_capture_names),*];
                     __translator.auto_translate_captures(&mut __captures, __ast, __user_ctx, __skip)?;
                     #(#raw_bindings)*
                     #(#translated_bindings)*
-                    let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __fresh, __source_range, __user_ctx, __translator);
+                    let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __source_range, __user_ctx, __translator);
                     let __result: Vec<yeast::Id> = { #transform_body };
+                    let __result = #ctx_ident.finish_rule(__result);
                     Ok(__result)
                 }),
             )
@@ -1045,10 +1090,6 @@ fn consume_capture_marker(tokens: &mut Tokens) -> Result<Ident> {
 
 fn peek_is_literal(tokens: &mut Tokens) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Literal(_)))
-}
-
-fn peek_is_dollar(tokens: &mut Tokens) -> bool {
-    matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '$')
 }
 
 fn peek_is_hash(tokens: &mut Tokens) -> bool {
@@ -1152,8 +1193,8 @@ fn expect_repetition(tokens: &mut Tokens) -> Result<TokenStream> {
 /// Each item in the bracketed list can be:
 /// * a **bare rule body** `(query) => (template)` — wrapped implicitly
 ///   in `yeast::rule! { ... }` for codegen;
-/// * an explicit `rule!(...)` (or `rule!(...).repeated()`,
-///   `yeast::rule!(...)`, etc.) — passed through verbatim;
+/// * an explicit `rule!(...)` (including `yeast::rule!(...)`) — passed
+///   through verbatim;
 /// * any other expression returning a `Rule` (helper-function calls,
 ///   conditionals) — passed through verbatim.
 ///

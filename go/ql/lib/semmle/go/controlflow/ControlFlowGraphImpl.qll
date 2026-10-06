@@ -186,6 +186,8 @@ module CfgImpl {
 
     class Stmt = Go::Stmt;
 
+    class LabeledStmt = Go::LabeledStmt;
+
     class Expr = Go::Expr;
 
     class BlockStmt extends Go::BlockStmt {
@@ -434,26 +436,12 @@ module CfgImpl {
     }
 
     predicate hasLabel(Ast::AstNode n, Label l) {
-      // A statement carries the label of every `LabeledStmt` that wraps it.
-      // This is recursive because Go allows stacked labels (`L1: L2: stmt`),
-      // which the extractor represents as nested `LabeledStmt`s, so a single
-      // statement may have several labels.
-      exists(Go::LabeledStmt ls | n = ls.getStmt() | l = ls.getLabel() or hasLabel(ls, l))
-      or
-      // The `LabeledStmt` wrapper itself also carries its label. Blocks contain
-      // the wrapper (not the inner statement) as a direct child, so the shared
-      // library's block-level `goto` target resolution -- which looks for a
-      // labelled statement that is a direct child of a block -- matches on the
-      // wrapper.
       l = n.(Go::LabeledStmt).getLabel()
       or
       l = n.(Go::BreakStmt).getLabel()
       or
       l = n.(Go::ContinueStmt).getLabel()
       or
-      // A `goto` statement carries its target label, so that the shared
-      // library's `beginAbruptCompletion` produces a *labelled* goto completion
-      // (matching the target label) rather than an unlabelled one.
       l = n.(Go::GotoStmt).getLabel()
     }
 
@@ -664,6 +652,9 @@ module CfgImpl {
     /** Helper: blank identifier check */
     private predicate notBlankIdent(Go::Expr e) { not e instanceof Go::BlankIdent }
 
+    /** Holds if `e` is invoked in a newly started goroutine. */
+    private predicate isGoStmtCall(Ast::AstNode e) { e = any(Go::GoStmt s).getCall() }
+
     /** Helper: implicit field selection for promoted selectors */
     additional predicate implicitFieldSelection(Ast::AstNode e, int index, Go::Field implicitField) {
       exists(Go::StructType baseType, Go::PromotedField child, int implicitFieldDepth |
@@ -679,7 +670,7 @@ module CfgImpl {
           e.(Go::PromotedSelector).refersTo(explicitField) and
           baseType.getFieldAtDepth(_, explicitFieldDepth) = explicitField
         |
-          index = explicitFieldDepth - implicitFieldDepth
+          index = explicitFieldDepth - implicitFieldDepth and index > 0
         )
       )
       or
@@ -689,7 +680,8 @@ module CfgImpl {
         baseType = e.(Go::PromotedSelector).getSelectedStructType() and
         e.(Go::PromotedSelector).refersTo(method) and
         baseType.getMethodAtDepth(_, mDepth) = method and
-        index = mDepth - implicitFieldDepth
+        index = mDepth - implicitFieldDepth and
+        index > 0
       |
         method = baseType.getMethodOfEmbedded(implicitField, _, implicitFieldDepth + 1)
         or
@@ -704,6 +696,7 @@ module CfgImpl {
       Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
     ) {
       ast instanceof Go::CallExpr and
+      not isGoStmtCall(ast) and
       (
         not exists(ast.(Go::CallExpr).getTarget()) or
         ast.(Go::CallExpr).getTarget().mayPanic()
@@ -727,6 +720,7 @@ module CfgImpl {
       // exception completion so that the shared library's default In->After step
       // is suppressed.
       ast instanceof Go::CallExpr and
+      not isGoStmtCall(ast) and
       exists(Go::Function target | target = ast.(Go::CallExpr).getTarget() |
         target.mustPanic() or target.mustNotReturnNormally()
       ) and
@@ -794,22 +788,9 @@ module CfgImpl {
       n.isAdditional(ast, "catch-return") and
       c.getSuccessorType() instanceof ReturnSuccessor
       or
-      exists(Go::LabeledStmt lbl |
-        ast = lbl.getStmt() and
-        n.isAfter(lbl) and
-        c.getSuccessorType() instanceof BreakSuccessor and
-        c.hasLabel(lbl.getLabel())
-      )
-      or
-      // A `break` in a communication clause body terminates the enclosing
-      // `select` statement, continuing after it. This mirrors the shared
-      // library's handling of `break` in a `switch` case body, but `select` is
-      // modeled language-specifically (it is not a `Switch`), so the break
-      // must be caught here. The break completion bubbles up the AST until it
-      // reaches a top-level statement of the comm clause body, at which point
-      // flow resumes after the `select`. An unlabeled `break` targets the
-      // innermost enclosing construct; a labeled `break` only targets this
-      // `select` if it (or a `LabeledStmt` wrapping it) carries that label.
+      // An unlabeled `break` in a communication clause body terminates the
+      // enclosing `select`. Labeled breaks are handled by the shared
+      // `LabeledStmt` logic.
       exists(Go::SelectStmt sel, Go::CommClause cc |
         cc = sel.getACommClause() and
         ast = cc.getStmt(_) and
@@ -817,8 +798,6 @@ module CfgImpl {
         c.getSuccessorType() instanceof BreakSuccessor
       |
         not c.hasLabel(_)
-        or
-        exists(Label l | c.hasLabel(l) and hasLabel(sel, l))
       )
       or
       exists(Go::FuncDef fd |
@@ -830,24 +809,13 @@ module CfgImpl {
         exists(fd.getResultVar(0)) and
         n.isAdditional(fd.getBody(), "result-read:0")
       )
-      or
-      // Function bodies are excluded from `Ast::BlockStmt`, so handle goto
-      // targets among their top-level statements here.
-      exists(Go::FuncDef fd, Go::Stmt target, Label l |
-        ast = fd.getBody() and
-        target = fd.getBody().getAStmt() and
-        not target instanceof Go::GotoStmt and
-        hasLabel(target, l) and
-        n.isBefore(target) and
-        c.getSuccessorType() instanceof GotoSuccessor and
-        c.hasLabel(l)
-      )
     }
 
     /** Holds if `ast` or one of its CFG children may panic. */
     private predicate mayPanic(Ast::AstNode ast) {
       ast instanceof Go::CallExpr and
       not ast = any(Go::DeferStmt s).getCall() and
+      not isGoStmtCall(ast) and
       (not exists(ast.(Go::CallExpr).getTarget()) or ast.(Go::CallExpr).getTarget().mayPanic()) and
       not exists(Go::Function target | target = ast.(Go::CallExpr).getTarget() |
         target.mustNotReturnNormally() and not target.mustPanic()

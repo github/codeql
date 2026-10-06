@@ -77,7 +77,7 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        function_declaration source="⟨body⟩⟨name_node⟩⟨parameter⟩⟨return_type⟩"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩) -> ⟨return_type⟩ ⟨body⟩"
           name_node: identifier "sum" source="sum"
           parameter:
             parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩..."
@@ -86,17 +86,17 @@ top_level source="⟨body⟩"
               pattern: identifier "values" source="values"
           return_type: identifier "Int" source="Int"
           body:
-            block source="func sum(_ values: Int...) -> Int {\n  ⟨stmt⟩\n}"
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
                 return_expr source="return ⟨value⟩"
                   value:
-                    call_expr source="⟨callee⟩(⟨argument⟩ ⟨argument⟩)"
+                    call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
                       callee:
                         member_access_expr source="⟨base⟩.⟨member_name_node⟩"
                           base: identifier "values" source="values"
                           member_name_node: identifier "reduce" source="reduce"
                       argument:
-                        argument source="⟨value⟩,"
+                        argument source="⟨value⟩"
                           value: int_literal "0" source="0"
                         argument source="⟨value⟩"
                           value: identifier "+" source="+"

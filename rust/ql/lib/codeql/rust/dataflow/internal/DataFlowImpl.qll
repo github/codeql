@@ -62,6 +62,9 @@ final class DataFlowCall extends TDataFlowCall {
   /** Gets the underlying call, if any. */
   Call asCall() { this = TCall(result) }
 
+  /** Gets the underlying await expression, if any. */
+  AwaitExpr asAwaitExpr() { this = TAwaitExpr(result) }
+
   predicate isImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
     this = TImplicitDerefCall(e, derefChain, i, target)
   }
@@ -73,7 +76,8 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   DataFlowCallable getEnclosingCallable() {
-    result.asCfgScope() = this.asCall().getEnclosingCfgScope()
+    result.asCfgScope() =
+      [this.asCall().getEnclosingCfgScope(), this.asAwaitExpr().getEnclosingCfgScope()]
     or
     result.asCfgScope() = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getEnclosingCfgScope()
     or
@@ -81,7 +85,7 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   string toString() {
-    result = this.asCall().toString()
+    result = [this.asCall().toString(), this.asAwaitExpr().toString()]
     or
     exists(Expr e, DerefChain derefChain, int i |
       this.isImplicitDerefCall(e, derefChain, i, _) and
@@ -97,7 +101,7 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   Location getLocation() {
-    result = this.asCall().getLocation()
+    result = [this.asCall().getLocation(), this.asAwaitExpr().getLocation()]
     or
     result = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getLocation()
   }
@@ -1004,7 +1008,11 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
    */
   predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
     (
-      receiver.asExpr() = call.asCall().(CallExprImpl::DynamicCallExpr).getFunction()
+      receiver.asExpr() =
+        [
+          call.asCall().(CallExprImpl::DynamicCallExpr).getFunction(),
+          call.asAwaitExpr().getExpr()
+        ]
       or
       call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode())
     ) and
@@ -1176,6 +1184,7 @@ private module Cached {
       Stages::DataFlowStage::ref() and
       call.hasEnclosingCfgScope()
     } or
+    TAwaitExpr(AwaitExpr await) { await.hasEnclosingCfgScope() } or
     TImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
       TypeInference::implicitDerefChainBorrow(e, derefChain, _) and
       target = derefChain.getElement(i).getDerefFunction() and

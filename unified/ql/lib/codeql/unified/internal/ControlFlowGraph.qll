@@ -31,6 +31,8 @@ module Ast implements AstSig<Location> {
     e instanceof Identifier and not e instanceof IdentifierExpr
     or
     e instanceof Operator
+    or
+    not e.fromSource()
   }
 
   AstNode getChild(AstNode n, int index) {
@@ -129,6 +131,12 @@ module Ast implements AstSig<Location> {
   class BreakStmt = U::BreakExpr;
 
   class ContinueStmt = U::ContinueExpr;
+
+  class LabeledStmt extends Stmt {
+    LabeledStmt() { none() }
+
+    Stmt getStmt() { none() }
+  }
 
   class GotoStmt extends Stmt {
     GotoStmt() { none() }

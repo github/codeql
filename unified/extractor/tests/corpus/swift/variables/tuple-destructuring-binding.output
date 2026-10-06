@@ -43,9 +43,9 @@ top_level source="⟨body⟩"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern:
-            tuple_expr source="(⟨element⟩ ⟨element⟩)"
+            tuple_expr source="(⟨element⟩, ⟨element⟩)"
               element:
-                argument source="⟨value⟩,"
+                argument source="⟨value⟩"
                   value: identifier "a" source="a"
                 argument source="⟨value⟩"
                   value: identifier "b" source="b"

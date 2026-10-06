@@ -101,14 +101,14 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "f" source="f"
           value:
-            function_expr source="⟨body⟩⟨parameter⟩⟨return_type⟩"
+            function_expr source="{ (⟨parameter⟩) -> ⟨return_type⟩ in\n  ⟨body⟩\n}"
               parameter:
                 parameter source="⟨pattern⟩: ⟨type⟩"
                   type: identifier "Int" source="Int"
                   pattern: identifier "x" source="x"
               return_type: identifier "Int" source="Int"
               body:
-                block source="{ (x: Int) -> Int in\n  ⟨stmt⟩\n  ⟨stmt⟩\n}"
+                block source="⟨stmt⟩\n  ⟨stmt⟩"
                   stmt:
                     variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
                       modifier: modifier "let" source="let"

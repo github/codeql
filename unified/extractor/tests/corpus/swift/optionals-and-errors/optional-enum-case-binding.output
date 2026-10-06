@@ -80,13 +80,13 @@ top_level source="⟨body⟩"
           condition:
             pattern_guard_expr source="case ⟨pattern⟩ = ⟨value⟩"
               pattern:
-                call_expr source="⟨argument⟩⟨callee⟩"
+                call_expr source="⟨argument⟩?"
                   callee:
-                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
-                      base: identifier "Optional" source=".some(let value)?"
-                      member_name_node: identifier "some" source=".some(let value)?"
+                    member_access_expr source=""
+                      base: identifier "Optional" source=""
+                      member_name_node: identifier "some" source=""
                   argument:
-                    argument source="⟨value⟩?"
+                    argument source="⟨value⟩"
                       value:
                         call_expr source="⟨callee⟩(⟨argument⟩)"
                           callee:
