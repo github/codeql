@@ -16,9 +16,6 @@ on:
       - "shared/yeast-macros/**"
       - "shared/yeast-schema/**"
       - .github/workflows/yeast-test.yml
-    branches:
-      - main
-      - "rc/*"
 
 env:
   CARGO_TERM_COLOR: always
