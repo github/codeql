@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Proxy and certificate environment variables are now set for the subprocess that invokes the NuGet CLI, enabling it to access private registries during this part of the workflow.
+* The subprocess for the NuGet CLI is now provided with the proxy and certificate environment variables needed to access private registries if any are configured.

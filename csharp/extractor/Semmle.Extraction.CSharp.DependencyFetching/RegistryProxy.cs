@@ -197,11 +197,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (CertificatePath != null)
             {
+                logger.LogDebug("Setting the SSL certificate path for the registry proxy.");
                 pi.EnvironmentVariables["SSL_CERT_FILE"] = CertificatePath;
-            }
-            else
-            {
-                logger.LogDebug("No SSL certificate is configured for the registry proxy.");
             }
         }
 
