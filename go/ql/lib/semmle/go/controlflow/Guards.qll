@@ -304,33 +304,80 @@ private module GuardsInput implements
   pragma[inline]
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 
-  final private class FinalFunction = G::Function;
+  private newtype TNonOverridableMethod =
+    TMethod(G::Function function, int resultIndex) {
+      exists(function.getFuncDecl()) and
+      resultIndex in [-1 .. function.getNumResult() - 1]
+    }
 
   /**
-   * A declared function or concrete method.
+   * A result of a declared function or concrete method, or its normal completion.
    *
    * Calls are restricted separately to calls whose syntactic target is this
    * function or method, excluding interface dispatch.
    */
-  class NonOverridableMethod extends FinalFunction {
-    NonOverridableMethod() {
-      exists(super.getFuncDecl()) and
-      super.getNumResult() <= 1
+  class NonOverridableMethod extends TNonOverridableMethod {
+    G::Function getFunction() { this = TMethod(result, _) }
+
+    int getResultIndex() { this = TMethod(_, result) }
+
+    string toString() {
+      result = this.getFunction().toString() + " result " + this.getResultIndex().toString()
     }
 
-    Parameter getParameter(ParameterPosition ppos) { result = super.getParameter(ppos) }
+    int getNumParameter() { result = this.getFunction().getNumParameter() }
+
+    Parameter getParameter(ParameterPosition ppos) {
+      result = this.getFunction().getParameter(ppos)
+    }
+
+    /**
+     * Holds if every return maps one expression to each result position.
+     *
+     * Otherwise, the shared wrapper analysis would treat a partial set of
+     * return expressions as exhaustive.
+     */
+    private predicate hasOnlyPositionMappedReturns() {
+      forall(G::ReturnStmt ret | ret.getEnclosingFunction() = this.getFunction().getFuncDecl() |
+        ret.getNumExpr() = this.getFunction().getNumResult()
+      )
+    }
 
     /** Gets an expression being returned by this function. */
     Expr getAReturnExpr() {
       exists(G::ReturnStmt ret |
-        ret.getEnclosingFunction() = super.getFuncDecl() and
-        result = ret.getExpr()
+        this.getResultIndex() >= 0 and
+        this.hasOnlyPositionMappedReturns() and
+        ret.getEnclosingFunction() = this.getFunction().getFuncDecl() and
+        result = ret.getExpr(this.getResultIndex())
       )
     }
   }
 
-  private predicate nonOverridableCall(G::CallExpr call, NonOverridableMethod m) {
-    call.getTarget() = m
+  private predicate extractedCallResult(Expr use, G::CallExpr call, int resultIndex) {
+    exists(GoSsa::SsaDefinition def, IR::ExtractTupleElementInstruction extract |
+      use = def.getVariable().getAUse().(IR::EvalInstruction).getExpr() and
+      def.(GoSsa::SsaExplicitDefinition).getInstruction() = extract and
+      extract.extractsElement(IR::evalExprInstruction(call), resultIndex)
+    )
+  }
+
+  private predicate nonOverridableCall(
+    Expr resultExpr, G::CallExpr call, NonOverridableMethod method
+  ) {
+    call.getTarget() = method.getFunction() and
+    (
+      method.getResultIndex() = -1 and
+      resultExpr = call
+      or
+      method.getResultIndex() = 0 and
+      method.getFunction().getNumResult() = 1 and
+      resultExpr = call
+      or
+      method.getResultIndex() >= 0 and
+      method.getFunction().getNumResult() > 1 and
+      extractedCallResult(resultExpr, call, method.getResultIndex())
+    )
   }
 
   private predicate hasExplicitReceiverArgument(G::CallExpr call) {
@@ -352,28 +399,32 @@ private module GuardsInput implements
     )
   }
 
-  class NonOverridableMethodCall extends Expr instanceof G::CallExpr {
-    NonOverridableMethodCall() { nonOverridableCall(this, _) }
+  class NonOverridableMethodCall extends Expr {
+    NonOverridableMethodCall() { nonOverridableCall(this, _, _) }
 
-    NonOverridableMethod getMethod() { nonOverridableCall(this, result) }
+    private G::CallExpr getCall() { nonOverridableCall(this, result, _) }
+
+    NonOverridableMethod getMethod() { nonOverridableCall(this, _, result) }
 
     Expr getArgument(ArgumentPosition apos) {
-      (
-        not hasExplicitReceiverArgument(this) and
+      exists(G::CallExpr call | call = this.getCall() |
         (
-          apos = -1 and
-          result = getDirectReceiverArgument(this, this.getMethod())
+          not hasExplicitReceiverArgument(call) and
+          (
+            apos = -1 and
+            result = getDirectReceiverArgument(call, this.getMethod())
+            or
+            apos != -1 and
+            result = call.getArgument(apos)
+          )
           or
-          apos != -1 and
-          result = super.getArgument(apos)
+          hasExplicitReceiverArgument(call) and
+          result = call.getArgument(apos + 1)
+        ) and
+        not (
+          call.hasImplicitVarargs() and
+          apos = this.getMethod().getNumParameter() - 1
         )
-        or
-        hasExplicitReceiverArgument(this) and
-        result = super.getArgument(apos + 1)
-      ) and
-      not (
-        super.hasImplicitVarargs() and
-        apos = this.getMethod().getNumParameter() - 1
       )
     }
   }
@@ -413,8 +464,8 @@ private module LogicInput implements GuardsImpl::LogicInputSig {
 
   predicate implicitReturnDefinition(GuardsInput::NonOverridableMethod method, SsaDefinition def) {
     exists(IR::ReadResultInstruction read |
-      method.getNumResult() = 1 and
-      read.reads(method.getResult(0)) and
+      method.getResultIndex() >= 0 and
+      read.reads(method.getFunction().getResult(method.getResultIndex())) and
       def.getVariable().getAUse() = read
     )
   }
