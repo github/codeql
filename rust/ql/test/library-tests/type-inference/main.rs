@@ -2810,6 +2810,31 @@ fn empty_array() {
     pin_array(arr3, 1); // $ target=pin_array
 }
 
+mod contextual_bound {
+    #[derive(Default)]
+    struct S<T>(T);
+    struct MyThingA<A>(A);
+    struct MyThingB<B>(B);
+
+    trait MyTrait<T> {}
+
+    impl<T> MyTrait<T> for MyThingA<T> {}
+
+    impl<T> MyTrait<[T; 1]> for MyThingB<T> {}
+
+    fn bar<T1, T2: MyTrait<T1>>(x: T1, y: Option<T2>) {}
+
+    fn test_bar() {
+        let x = S(0);
+        let y = MyThingA(Default::default()); // $ type=y@MyThingA<A>.S<T>:i32 target=default
+        bar(x, Some(y)); // $ target=bar
+
+        let x = S(0);
+        let z = MyThingB(Default::default()); // $ MISSING: type=z@MyThingB<B>.S<T>:i32 target=default
+        bar([x], Some(z)); // $ target=bar
+    }
+}
+
 fn main() {
     field_access::f(); // $ target=f
     method_impl::f(); // $ target=f
