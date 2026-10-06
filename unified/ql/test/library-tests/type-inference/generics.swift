@@ -155,22 +155,64 @@ class Derived<T1, T2>: Base<T2, T1> {
   init(_ v1: T1, _ v2: T2) {
     super.init(v2, v1)  // $ type=v2:T2 type=v1:T1 target=Base.init
   }
-}
 
-class DerivedDerived<D>: Derived<D, Bool> {
-  init(_ v: D) {
-    super.init(v, true)  // $ type=v:D target=Derived.init
+  convenience init(_ v1: T1) {
+    fatalError()
   }
 }
+
+class DerivedDerived<D>: Derived<[D], Bool> {
+  init(_ v: [D]) {
+    super.init(v, true)  // $ type=v@Array<Element>:D target=Derived.init
+  }
+
+  convenience init() {
+    fatalError()
+  }
+}
+
+func foo<T1, T2, T3: Base<T1, T2>>(_ value1: T1, _ value2: T2, _ base: T3) -> T3 {
+  return base
+}
+
+func foo2<T1, T2>(_ value1: T1, _ value2: T2, _ base: Base<T1, T2>) {
+
+}
+
+func bar<A, B, C: Base<A, [B]>>(_ value1: A, _ value2: B, _ base: C) -> C {
+  return base
+
+}
+
+func bar2<A, B>(_ value1: A, _ value2: B, _ base: Base<A, [B]>) {}
+
+func baz<A, B, C: Base<A, B?>>(_ value1: A, _ value2: B, _ base: C) -> C {
+  return base
+
+}
+
+func baz2<A, B>(_ value1: A, _ value2: B, _ base: Base<A, B?>) {}
 
 func testDerived() {
   let d = Derived(1, "x")  // $ type=d@Derived<T1>:Int type=d@Derived<T2>:String target=Derived.init
   let v1 = d.getValue1()  // $ type=v1:String target=Base.getValue1
   let v2 = d.getValue2()  // $ type=v2:Int target=Base.getValue2
 
-  let dd = DerivedDerived("hello")  // $ type=dd@DerivedDerived<D>:String target=DerivedDerived.init
+  let dd = DerivedDerived(["hello"])  // $ type=dd@DerivedDerived<D>:String target=DerivedDerived.init
   let vv1 = dd.getValue1()  // $ type=vv1:Bool target=Base.getValue1
-  let vv2 = dd.getValue2()  // $ type=vv2:String target=Base.getValue2
+  let vv2 = dd.getValue2()  // $ type=vv2@Array<Element>:String target=Base.getValue2
+
+  let x = foo(false, [2], DerivedDerived([]))  // $ target=foo target=DerivedDerived.init type=x@DerivedDerived<D>:Int
+
+  foo2(false, [2], DerivedDerived([]))  // $ target=foo2 target=DerivedDerived.init $ MISSING: type=DerivedDerived(...)@DerivedDerived<D>:Int
+
+  let y = bar(false, 2, DerivedDerived([]))  // $ type=y@DerivedDerived<D>:Int target=bar target=DerivedDerived.init
+
+  bar2(false, 2, DerivedDerived([]))  // $ target=bar2 target=DerivedDerived.init $ MISSING: type=DerivedDerived(...)@DerivedDerived<D>:Int
+
+  let w = baz(false, 2, Derived(Optional.none))  // $ type=w@Derived<T1>.Optional<Wrapped>:Int target=baz target=Derived.init field=Optional.none
+
+  baz2(false, 2, Derived(Optional.none))  // $ target=baz2 target=Derived.init field=Optional.none $ MISSING: type=Derived(...)@Derived<T1>.Optional<Wrapped>:Int
 }
 
 // --- Generics and protocols ---
