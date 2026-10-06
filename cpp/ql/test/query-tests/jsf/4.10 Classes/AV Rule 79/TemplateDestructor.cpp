@@ -8,7 +8,7 @@ public:
   }
 
   void init(unsigned size) {
-    ptr = new T[size]; // $ SPURIOUS: Alert
+    ptr = new T[size]; // GOOD
   }
 
   void reset() {
@@ -30,7 +30,7 @@ public:
   }
 
   void init(unsigned size) {
-    ptr = new int[size]; // $ SPURIOUS: Alert
+    ptr = new int[size]; // GOOD
   }
 
   void reset() {
