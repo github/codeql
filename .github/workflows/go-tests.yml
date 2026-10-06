@@ -5,6 +5,10 @@ on:
       - "go/**"
       - "!go/documentation/**"
       - "shared/**"
+      - "!shared/tree-sitter-extractor/**"
+      - "!shared/yeast/**"
+      - "!shared/yeast-macros/**"
+      - "!shared/yeast-schema/**"
       - .github/workflows/go-tests.yml
       - .github/actions/**
       - codeql-workspace.yml
