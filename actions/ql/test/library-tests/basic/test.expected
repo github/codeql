@@ -1293,7 +1293,6 @@ cfgNodes
 | .github/workflows/test.yml:40:14:40:52 | echo ${{needs.job1.outputs.job_output}} |
 | .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output |
 cfgCycles
-cfgDeadEnds
 dfNodes
 | .github/workflows/commands.yml:9:5:31:2 | Job: local_commands |
 | .github/workflows/commands.yml:15:9:18:6 | Run Step |
@@ -1747,16 +1746,6 @@ workflowScopes
 | .github/workflows/shell.yml:1:1:22:32 | on: push |
 | .github/workflows/test.yml:1:1:40:53 | on: push |
 compositeActionScopes
-workflowCfgBounds
-| .github/workflows/commands.yml:1:1:39:30 | on: push | 1 | 38 |
-| .github/workflows/controlcheck.yml:1:1:16:25 | on: | 1 | 16 |
-| .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment | 1 | 20 |
-| .github/workflows/many_strings.yml:1:1:18:1211 | on: | 1 | 11 |
-| .github/workflows/multiline2.yml:1:1:89:35 | on:  | 1 | 86 |
-| .github/workflows/multiline.yml:1:1:89:29 | on:  | 1 | 86 |
-| .github/workflows/poisonable_steps.yml:1:1:46:111 | on: push | 1 | 44 |
-| .github/workflows/shell.yml:1:1:22:32 | on: push | 1 | 22 |
-| .github/workflows/test.yml:1:1:40:53 | on: push | 1 | 40 |
 workflowCfgNodes
 | .github/workflows/commands.yml:1:1:39:30 | on: push |
 | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
@@ -1787,8 +1776,6 @@ normalExitNodes
 | .github/workflows/poisonable_steps.yml:1:1:46:111 | Normal Exit |
 | .github/workflows/shell.yml:1:1:22:32 | Normal Exit |
 | .github/workflows/test.yml:1:1:40:53 | Normal Exit |
-legacyNodeProperties
-legacyCfgSplits
 sources
 | AvraamMavridis/files-changed-action | * | output.CHANGED_FILES | filename | manual |
 | AvraamMavridis/files-changed-action | * | output.CHANGED_FILES_EXTENSIONS | filename | manual |

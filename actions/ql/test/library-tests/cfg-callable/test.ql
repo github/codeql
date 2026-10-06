@@ -16,8 +16,3 @@ query predicate cfgScopes(Cfg::CfgScope scope, string kind) {
     scope instanceof Cfg::CompositeActionScope and kind = "composite action"
   )
 }
-
-query predicate cfgConsistency(string query, int results) {
-  Cfg::Consistency::consistencyOverview(query, results) and
-  results != 0
-}

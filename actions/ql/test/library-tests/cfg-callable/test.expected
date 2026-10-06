@@ -2,4 +2,3 @@ roots
 | 1 | 1 |
 cfgScopes
 | action.yml:1:1:12:61 | name: Ambiguous root | composite action |
-cfgConsistency

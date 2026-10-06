@@ -7,13 +7,3 @@ query predicate envCfgNodes(Expression expression) {
 }
 
 query predicate cfgCycles(Cfg::Node node) { node.getASuccessor+() = node }
-
-query predicate cfgDeadEnds(Cfg::Node node) {
-  not node instanceof Cfg::ExitNode and
-  not exists(node.getASuccessor())
-}
-
-query predicate cfgConsistency(string query, int results) {
-  Cfg::Consistency::consistencyOverview(query, results) and
-  results != 0
-}

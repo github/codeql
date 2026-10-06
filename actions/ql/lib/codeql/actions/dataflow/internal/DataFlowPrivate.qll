@@ -3,7 +3,6 @@ private import codeql.dataflow.DataFlow
 private import codeql.actions.Ast
 private import codeql.actions.Cfg as Cfg
 private import codeql.Locations
-private import codeql.actions.controlflow.BasicBlocks
 private import DataFlowPublic
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.dataflow.FlowSteps
@@ -50,7 +49,7 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall call, ArgumentPosition p
 }
 
 DataFlowCallable nodeGetEnclosingCallable(Node node) {
-  node = TExprNode(any(DataFlowExpr e | result = e.getScope()))
+  node = TExprNode(any(DataFlowExpr e | result = e.getEnclosingCallable()))
 }
 
 DataFlowType getNodeType(Node node) { any() }
@@ -86,7 +85,7 @@ class DataFlowCall instanceof Cfg::Node {
 
   string getName() { result = super.getAstNode().(Uses).getCallee() }
 
-  DataFlowCallable getEnclosingCallable() { result = super.getScope() }
+  DataFlowCallable getEnclosingCallable() { result = super.getEnclosingCallable() }
 
   /** Gets a best-effort total ordering. */
   int totalorder() { none() }

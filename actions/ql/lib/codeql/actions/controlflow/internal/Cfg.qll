@@ -77,16 +77,6 @@ module CfgImpl {
       )
   }
 
-  private AstNode getLastCfgAstNode(AstNode node) {
-    not exists(getCfgChild(node, _)) and result = node
-    or
-    exists(AstNode child, int index |
-      child = getCfgChild(node, index) and
-      not exists(int later | later > index and exists(getCfgChild(node, later))) and
-      result = getLastCfgAstNode(child)
-    )
-  }
-
   private module CfgAst implements CfgShared::AstSig<Location> {
     class AstNode = ActionsAstNode;
 
@@ -397,54 +387,23 @@ module CfgImpl {
   /** A CFG scope for a composite action. */
   class CompositeActionScope extends CfgScope instanceof CompositeAction { }
 
-  /**
-   * A control flow node.
-   *
-   * Only nodes that can be reached from an entry point are included in the CFG.
-   */
-  class Node extends ControlFlowNode {
-    /** Gets the CFG scope containing this node. */
-    CfgScope getScope() { result = this.getEnclosingCallable() }
-
-    Node getASuccessor(SuccessorType type) { result = super.getASuccessor(type) }
-
-    Node getASuccessor() { result = super.getASuccessor() }
-
-    /** Gets an immediate predecessor connected by an edge of type `type`, if any. */
-    Node getAPredecessor(SuccessorType type) { result.getASuccessor(type) = this }
-
-    Node getAPredecessor() { result = super.getAPredecessor() }
-
-    /** Holds if this node has a conditional successor. */
-    predicate isCondition() { exists(this.getASuccessor(any(ConditionalSuccessor successor))) }
-
-    /** Holds if this node has more than one predecessor. */
-    predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }
-
-    /** Holds if this node has more than one successor. */
-    predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
-  }
+  /** A control flow node. */
+  class Node = ControlFlowNode;
 
   /** The control flow node at the entry point of a scope. */
-  class EntryNode extends Node, ControlFlow::EntryNode { }
+  class EntryNode = ControlFlow::EntryNode;
 
   /** A control flow node indicating normal or exceptional termination of a scope. */
-  class AnnotatedExitNode extends Node, ControlFlow::AnnotatedExitNode {
-    /** Holds if this node represents a normal exit. */
-    predicate isNormal() { this instanceof NormalExitNode }
-  }
+  class AnnotatedExitNode = ControlFlow::AnnotatedExitNode;
 
   /** A control flow node indicating normal termination of a scope. */
-  class NormalExitNode extends AnnotatedExitNode, ControlFlow::NormalExitNode { }
+  class NormalExitNode = ControlFlow::NormalExitNode;
 
   /** A control flow node indicating exceptional termination of a scope. */
-  class ExceptionalExitNode extends AnnotatedExitNode, ControlFlow::ExceptionalExitNode { }
+  class ExceptionalExitNode = ControlFlow::ExceptionalExitNode;
 
   /** A control flow node indicating the termination of a scope. */
-  class ExitNode extends Node, ControlFlow::ExitNode { }
-
-  /** The empty split type retained for compatibility with the legacy Actions CFG. */
-  class Split = Void;
+  class ExitNode = ControlFlow::ExitNode;
 
   /**
    * A node that uniquely represents an AST node.
@@ -455,35 +414,5 @@ module CfgImpl {
     AstCfgNode() { this.injects(_) }
 
     AstNode getAstNode() { this.injects(result) }
-
-    /** Gets a comma-separated list of splits in this node, if any. */
-    string getSplitsString() { none() }
-
-    /** Gets a split for this control flow node, if any. */
-    Split getASplit() { none() }
   }
-
-  /**
-   * If needed, call this predicate to force a stage dependency on the cached CFG stage.
-   */
-  cached
-  predicate forceCachingInSameStage() { CfgCachedStage::ref() }
-
-  /** Gets the first AST node executed within `node`. */
-  cached
-  AstNode getAControlFlowEntryNode(AstNode node) {
-    result = node and
-    exists(Node cfgNode | cfgNode.injects(node))
-  }
-
-  /** Gets a potential last AST node executed within `node`. */
-  cached
-  AstNode getAControlFlowExitNode(AstNode node) {
-    exists(Node cfgNode | cfgNode.injects(node)) and
-    result = getLastCfgAstNode(node)
-  }
-
-  /** Gets the CFG scope of `node`. */
-  cached
-  CfgScope getNodeCfgScope(Node node) { result = node.getScope() }
 }
