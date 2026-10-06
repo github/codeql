@@ -277,6 +277,8 @@ namespace Semmle.Extraction.Tests
             Assert.Equal("http://localhost:8080", proxy.Address);
             Assert.Equal("http://localhost:8080", pi.EnvironmentVariables["HTTP_PROXY"]);
             Assert.Equal("http://localhost:8080", pi.EnvironmentVariables["HTTPS_PROXY"]);
+            Assert.Equal("http://localhost:8080", pi.EnvironmentVariables["http_proxy"]);
+            Assert.Equal("http://localhost:8080", pi.EnvironmentVariables["https_proxy"]);
             Assert.EndsWith("proxy.crt", pi.EnvironmentVariables["SSL_CERT_FILE"]);
         }
     }

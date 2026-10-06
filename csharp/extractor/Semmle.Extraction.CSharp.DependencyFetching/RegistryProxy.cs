@@ -189,6 +189,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             pi.EnvironmentVariables["HTTP_PROXY"] = Address;
             pi.EnvironmentVariables["HTTPS_PROXY"] = Address;
+
+            // Also set the lower case variants of the environment variables
+            // This might be needed on Linux systems.
+            pi.EnvironmentVariables["http_proxy"] = Address;
+            pi.EnvironmentVariables["https_proxy"] = Address;
+
             if (CertificatePath != null)
             {
                 pi.EnvironmentVariables["SSL_CERT_FILE"] = CertificatePath;
