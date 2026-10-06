@@ -45,10 +45,10 @@ getReadNode
 | file-access.js:101:1:101:58 | fsHolde ... stdout) | file-access.js:101:44:101:57 | process.stdout |
 | file-access.js:103:1:103:60 | require ... stdout) | file-access.js:103:1:103:60 | [synthetic node] nodejs.pipe.write.chunk |
 | file-access.js:104:1:104:65 | require ... stdout) | file-access.js:104:1:104:65 | [synthetic node] nodejs.pipe.write.chunk |
-| file-access.js:105:1:105:63 | require ... stdout) | file-access.js:105:49:105:62 | process.stdout |
-| file-access.js:106:1:106:69 | require ... stdout) | file-access.js:106:55:106:68 | process.stdout |
-| file-access.js:107:1:107:66 | require ... stdout) | file-access.js:107:52:107:65 | process.stdout |
-| file-access.js:108:1:108:69 | require ... stdout) | file-access.js:108:55:108:68 | process.stdout |
+| file-access.js:105:1:105:63 | require ... stdout) | file-access.js:105:1:105:63 | [synthetic node] nodejs.pipe.write.chunk |
+| file-access.js:106:1:106:69 | require ... stdout) | file-access.js:106:1:106:69 | [synthetic node] nodejs.pipe.write.chunk |
+| file-access.js:107:1:107:66 | require ... stdout) | file-access.js:107:1:107:66 | [synthetic node] nodejs.pipe.write.chunk |
+| file-access.js:108:1:108:69 | require ... stdout) | file-access.js:108:1:108:69 | [synthetic node] nodejs.pipe.write.chunk |
 getWriteNode
 | file-access.js:15:1:15:60 | writeFi ... rr) {}) | file-access.js:15:31:15:36 | 'Data' |
 | file-access.js:18:1:18:59 | writeFi ... tions]) | file-access.js:18:37:18:47 | "More data" |

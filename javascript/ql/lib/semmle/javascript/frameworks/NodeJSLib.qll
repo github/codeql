@@ -5,6 +5,9 @@
 import javascript
 import semmle.javascript.frameworks.HTTP
 import semmle.javascript.security.SensitiveActions
+private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
+private import semmle.javascript.dataflow.internal.DataFlowNode
+private import semmle.javascript.dataflow.internal.DataFlowPrivate
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 module NodeJSLib {
@@ -513,9 +516,7 @@ module NodeJSLib {
     }
 
     private DataFlow::SourceNode fsModule(DataFlow::TypeTracker t) {
-      exists(string moduleName |
-        moduleName = ["mz/fs", "original-fs", "fs-extra", "graceful-fs", "fs"]
-      |
+      exists(string moduleName | isFs(moduleName) |
         result = DataFlow::moduleImport(moduleName)
         or
         // extra support for flexible names
@@ -656,6 +657,354 @@ module NodeJSLib {
     }
   }
 
+  signature predicate hasModuleNameSig(string name);
+
+  overlay[local?]
+  private module BuiltinModule<hasModuleNameSig/1 hasModuleName> {
+    /**
+     * Holds if `node` represents a module import with a name
+     * satisfying `hasModuleName`.
+     *
+     * This predicate does not depend on the call graph.
+     */
+    predicate builtinModule(EarlyStageNode node) {
+      exists(string name, Import imported |
+        // A node module may be prefixed with `node:` (i.e., `node:fs` and `fs` is the
+        // same module).
+        hasModuleName(name) and imported.getImportedPathString() = ["", "node:"] + name
+      |
+        node = imported.getImportedModuleNode()
+        or
+        exists(ImportSpecifier spec |
+          spec = imported.(ImportDeclaration).getASpecifier() and
+          not spec.isTypeOnly() and
+          node = TValueNode(spec)
+        |
+          spec.getImportedName() = "default"
+          or
+          spec instanceof ImportNamespaceSpecifier
+        )
+      )
+      or
+      exists(EarlyStageNode pred |
+        builtinModule(pred) and
+        DataFlow::localFlowStep(pred, node)
+      )
+    }
+  }
+
+  overlay[local?]
+  private predicate isStream(string name) { name = "stream" }
+
+  overlay[local?]
+  private EarlyStageNode getAStreamModuleNode() { BuiltinModule<isStream/1>::builtinModule(result) }
+
+  overlay[local?]
+  private predicate isFs(string name) {
+    name = ["mz/fs", "original-fs", "fs-extra", "graceful-fs", "fs"]
+  }
+
+  overlay[local?]
+  private EarlyStageNode getAFsModuleNode() { BuiltinModule<isFs/1>::builtinModule(result) }
+
+  overlay[local?]
+  private predicate memberRead(EarlyStageNode base, string name, EarlyStageNode node) {
+    exists(PropAccess access |
+      base = TValueNode(access.getBase()) and
+      name = access.getPropertyName() and
+      node = TValueNode(access)
+    )
+    or
+    exists(PropertyPattern prop |
+      base = TValueNode(prop.getObjectPattern()) and
+      name = prop.getName() and
+      node = TPropNode(prop)
+    )
+    or
+    exists(ImportDeclaration decl, NamedImportSpecifier spec |
+      spec = decl.getASpecifier() and
+      not spec.isTypeOnly() and
+      base = TDestructuredModuleImportNode(decl) and
+      name = spec.getImportedName() and
+      node = TValueNode(spec)
+    )
+  }
+
+  /**
+   * Holds if `node` refers to a built-in constructor for a readable Node.js
+   * stream.
+   */
+  overlay[local?]
+  private predicate streamConstructor(EarlyStageNode node) {
+    exists(EarlyStageNode base |
+      base = getAStreamModuleNode() and
+      memberRead(base, ["Readable", "Duplex", "Transform"], node)
+      or
+      base = getAFsModuleNode() and
+      memberRead(base, "ReadStream", node)
+    )
+    or
+    exists(EarlyStageNode pred |
+      streamConstructor(pred) and
+      DataFlow::localFlowStep(pred, node)
+    )
+  }
+
+  /**
+   * Holds if `node` refers to the `from` factory of a built-in readable Node.js
+   * stream constructor.
+   */
+  overlay[local?]
+  private predicate readableFromFactory(EarlyStageNode node) {
+    exists(EarlyStageNode base |
+      streamConstructor(base) and
+      memberRead(base, "from", node)
+    )
+    or
+    exists(EarlyStageNode pred |
+      readableFromFactory(pred) and
+      DataFlow::localFlowStep(pred, node)
+    )
+  }
+
+  /**
+   * Holds if `node` refers to a built-in factory for a readable Node.js
+   * stream.
+   *
+   * Recognizes `fs.createReadStream` and the `from` methods of built-in
+   * readable stream constructors.
+   */
+  overlay[local?]
+  private predicate streamFactory(EarlyStageNode node) {
+    readableFromFactory(node)
+    or
+    exists(EarlyStageNode base |
+      base = getAFsModuleNode() and
+      memberRead(base, "createReadStream", node)
+    )
+    or
+    exists(EarlyStageNode pred |
+      streamFactory(pred) and
+      DataFlow::localFlowStep(pred, node)
+    )
+  }
+
+  overlay[local?]
+  private class ReadableFromCall extends CallExpr {
+    ReadableFromCall() {
+      readableFromFactory(TValueNode(this.getCallee())) and
+      exists(Expr e |
+        e = this.getArgument(0) and
+        not e instanceof SpreadElement and
+        not this.getTopLevel().isExterns()
+      )
+    }
+  }
+
+  overlay[local?]
+  private string getAFluentStreamMethodName() {
+    result =
+      [
+        "on", "once", "addListener", "prependListener", "prependOnceListener", "off",
+        "removeListener", "removeAllListeners", "setMaxListeners", "setEncoding", "pause", "resume",
+        "unpipe"
+      ]
+  }
+
+  /**
+   * Holds if `node` refers to a readable Node.js stream obtained from a
+   * built-in constructor or factory.
+   *
+   * Also recognizes results of `pipe` calls, which return their destination,
+   * to support chained pipes.
+   */
+  overlay[local?]
+  private predicate readableStream(EarlyStageNode node) {
+    exists(InvokeExpr invoke | node = TValueNode(invoke) |
+      streamConstructor(TValueNode(invoke.getCallee()))
+      or
+      invoke instanceof CallExpr and
+      streamFactory(TValueNode(invoke.getCallee()))
+    )
+    or
+    exists(EarlyStageNode pred |
+      readableStream(pred) and
+      DataFlow::localFlowStep(pred, node)
+    )
+    or
+    exists(MethodCallExpr call |
+      node = TValueNode(call) and
+      readableStream(TValueNode(call.getReceiver())) and
+      call.getMethodName() = getAFluentStreamMethodName()
+    )
+    or
+    node = TValueNode(any(PipeCall call))
+  }
+
+  overlay[local?]
+  private class PipeCall extends MethodCallExpr {
+    PipeCall() {
+      this.getMethodName() = "pipe" and
+      readableStream(TValueNode(this.getReceiver())) and
+      exists(Expr e |
+        e = this.getArgument(0) and
+        not e instanceof SpreadElement and
+        not this.getTopLevel().isExterns()
+      )
+    }
+  }
+
+  overlay[local?]
+  private class StreamFlowStep extends AdditionalFlowInternal {
+    override predicate needsSynthesizedNode(AstNode node, string tag, DataFlowCallable container) {
+      (
+        node instanceof PipeCall and
+        tag = ["nodejs.pipe.write.member", "nodejs.pipe.write.call", "nodejs.pipe.write.chunk"]
+        or
+        node instanceof ReadableFromCall and
+        tag = "nodejs.readable.from.chunk"
+      ) and
+      container.asSourceCallable() = node.getContainer()
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      // `pred` is the receiver of a fluent stream method call
+      exists(MethodCallExpr call |
+        readableStream(TValueNode(call.getReceiver())) and
+        call.getMethodName() = getAFluentStreamMethodName() and
+        pred = call.getReceiver().flow() and
+        succ = call.flow()
+      )
+      or
+      // `pred` is the destination argument of a `pipe` call
+      exists(PipeCall call |
+        pred = call.getArgument(0).flow() and
+        succ = call.flow()
+      )
+    }
+
+    override predicate readStep(
+      DataFlow::Node pred, DataFlow::ContentSet contents, DataFlow::Node succ
+    ) {
+      // `pred` is an iterable input to `Readable.from`
+      exists(ReadableFromCall call |
+        pred = call.getArgument(0).flow() and
+        contents =
+          [
+            DataFlow::ContentSet::arrayElement(), DataFlow::ContentSet::setElement(),
+            DataFlow::ContentSet::iteratorElement()
+          ] and
+        // `succ` is the synthesized chunk emitted by `Readable.from`
+        succ = getSynthesizedNode(call, "nodejs.readable.from.chunk")
+      )
+      or
+      // `pred` is the readable receiver of a `pipe` call
+      exists(PipeCall call |
+        pred = call.getReceiver().flow() and
+        contents = DataFlow::ContentSet::iteratorElement() and
+        succ = getSynthesizedNode(call, "nodejs.pipe.write.chunk")
+      )
+    }
+
+    override predicate storeStep(
+      DataFlow::Node pred, DataFlow::ContentSet contents, DataFlow::Node succ
+    ) {
+      // `pred` is a synthesized chunk stored in the readable content of
+      // a `Readable.from` result
+      exists(ReadableFromCall call |
+        pred = getSynthesizedNode(call, "nodejs.readable.from.chunk") and
+        contents = DataFlow::ContentSet::iteratorElement() and
+        succ = call.flow()
+      )
+    }
+  }
+
+  overlay[local?]
+  private class ReadableFromChunk extends GenericSynthesizedNode {
+    ReadableFromCall call;
+
+    ReadableFromChunk() { this = getSynthesizedNode(call, "nodejs.readable.from.chunk") }
+
+    override BasicBlock getBasicBlock() { result = call.getBasicBlock() }
+
+    override File getFile() { result = call.getFile() }
+
+    override Expr getEnclosingExpr() { result = call }
+  }
+
+  overlay[local?]
+  private class PipeNode extends GenericSynthesizedNode {
+    PipeCall pipe;
+
+    PipeNode() {
+      // `this` is a synthesized property read, call, or chunk argument
+      // for `destination.write(chunk)`
+      this =
+        getSynthesizedNode(pipe,
+          ["nodejs.pipe.write.member", "nodejs.pipe.write.call", "nodejs.pipe.write.chunk"])
+    }
+
+    override BasicBlock getBasicBlock() { result = pipe.getBasicBlock() }
+
+    override File getFile() { result = pipe.getFile() }
+
+    override Expr getEnclosingExpr() { result = pipe }
+  }
+
+  overlay[local?]
+  private class PipeWriteMember extends PipeNode, DataFlow::PropRead {
+    PipeWriteMember() { this = getSynthesizedNode(pipe, "nodejs.pipe.write.member") }
+
+    override DataFlow::Node getBase() { result = pipe.getArgument(0).flow() }
+
+    override string getPropertyName() { result = "write" }
+
+    override Expr getPropertyNameExpr() { none() }
+  }
+
+  /** Registers local sources separately to avoid a cycle with the property-read hierarchy. */
+  overlay[local?]
+  private class StreamSourceNodes extends DataFlow::SourceNode::Range {
+    StreamSourceNodes() {
+      // `this` is a synthesized property read or chunk argument
+      // for `destination.write(chunk)`
+      this =
+        getSynthesizedNode(any(PipeCall call),
+          ["nodejs.pipe.write.member", "nodejs.pipe.write.chunk"])
+      or
+      // `this` is the synthesized chunk emitted by `Readable.from`
+      this = getSynthesizedNode(any(ReadableFromCall call), "nodejs.readable.from.chunk")
+    }
+  }
+
+  /** An implicit `destination.write(chunk)` call at the explicit pipe's location. */
+  overlay[local?]
+  private class PipeWriteCall extends PipeNode, DataFlow::Impl::MethodCallNodeDef {
+    PipeWriteCall() { this = getSynthesizedNode(pipe, "nodejs.pipe.write.call") }
+
+    override InvokeExpr getInvokeExpr() { result = pipe }
+
+    override string getCalleeName() { result = "write" }
+
+    override string getMethodName() { result = "write" }
+
+    override DataFlow::Node getCalleeNode() {
+      result = getSynthesizedNode(pipe, "nodejs.pipe.write.member")
+    }
+
+    override DataFlow::Node getReceiver() { result = pipe.getArgument(0).flow() }
+
+    override DataFlow::Node getArgument(int index) {
+      index = 0 and result = getSynthesizedNode(pipe, "nodejs.pipe.write.chunk")
+    }
+
+    override DataFlow::Node getAnArgument() { result = this.getArgument(0) }
+
+    override DataFlow::Node getASpreadArgument() { none() }
+
+    override int getNumArgument() { result = 1 }
+  }
+
   /**
    * A write to the file system, using a stream.
    */
@@ -695,7 +1044,12 @@ module NodeJSLib {
       result = this
       or
       method = "pipe" and
-      result = this.getArgument(0)
+      exists(InvokeExpr invoke | invoke = this.getInvokeExpr() |
+        result = getSynthesizedNode(invoke, "nodejs.pipe.write.chunk")
+        or
+        not exists(getSynthesizedNode(invoke, "nodejs.pipe.write.chunk")) and
+        result = this.getArgument(0)
+      )
       or
       method = EventEmitter::on() and
       this.getArgument(0).mayHaveStringValue("data") and
