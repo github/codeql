@@ -322,6 +322,30 @@ func exceptionGuard(pointer *int) {
 	sink("after assertion") // pointer is not null
 }
 
+func ensureNotNilWithResult(pointer *int) *int {
+	if pointer == nil {
+		panic("nil pointer")
+	}
+	return pointer
+}
+
+func exceptionGuardWithResult(pointer *int) {
+	ensureNotNilWithResult(pointer)
+	sink("after single-result assertion") // pointer is not null
+}
+
+func ensureNotNilWithResults(pointer *int) (*int, bool) {
+	if pointer == nil {
+		panic("nil pointer")
+	}
+	return pointer, true
+}
+
+func exceptionGuardWithResults(pointer *int) {
+	ensureNotNilWithResults(pointer)
+	sink("after multi-result assertion") // pointer is not null
+}
+
 func valueSink(string, any) {}
 
 func modelBoolGuard(pointer *int) bool {

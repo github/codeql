@@ -198,6 +198,10 @@ valueControlsResult
 | guards.go:309:13:309:20 | pointers | explicit variadic wrapper | not null |
 | guards.go:321:2:321:22 | call to ensureNotNil | after assertion | no exception |
 | guards.go:321:15:321:21 | pointer | after assertion | not null |
+| guards.go:333:2:333:32 | call to ensureNotNilWithResult | after single-result assertion | no exception |
+| guards.go:333:25:333:31 | pointer | after single-result assertion | not null |
+| guards.go:345:2:345:33 | call to ensureNotNilWithResults | after multi-result assertion | no exception |
+| guards.go:345:26:345:32 | pointer | after multi-result assertion | not null |
 ensuresEqResult
 | guards.go:14:7:14:16 | ...==... | 0 = value | true |
 | guards.go:14:7:14:16 | ...==... | value = 0 | true |
@@ -247,16 +251,20 @@ ensuresEqResult
 | guards.go:302:9:302:21 | ...!=... | values = nil | false |
 | guards.go:315:5:315:18 | ...==... | nil = pointer | true |
 | guards.go:315:5:315:18 | ...==... | pointer = nil | true |
-| guards.go:328:9:328:22 | ...!=... | nil = pointer | false |
-| guards.go:328:9:328:22 | ...!=... | pointer = nil | false |
-| guards.go:353:5:353:32 | ...==... | 0 = call to modelZeroGuard | true |
-| guards.go:353:5:353:32 | ...==... | call to modelZeroGuard = 0 | true |
-| guards.go:356:5:356:35 | ...!=... | 0 = call to modelNotZeroGuard | false |
-| guards.go:356:5:356:35 | ...!=... | call to modelNotZeroGuard = 0 | false |
-| guards.go:359:5:359:34 | ...==... | call to modelNullGuard = nil | true |
-| guards.go:359:5:359:34 | ...==... | nil = call to modelNullGuard | true |
-| guards.go:362:5:362:37 | ...!=... | call to modelNotNullGuard = nil | false |
-| guards.go:362:5:362:37 | ...!=... | nil = call to modelNotNullGuard | false |
+| guards.go:326:5:326:18 | ...==... | nil = pointer | true |
+| guards.go:326:5:326:18 | ...==... | pointer = nil | true |
+| guards.go:338:5:338:18 | ...==... | nil = pointer | true |
+| guards.go:338:5:338:18 | ...==... | pointer = nil | true |
+| guards.go:352:9:352:22 | ...!=... | nil = pointer | false |
+| guards.go:352:9:352:22 | ...!=... | pointer = nil | false |
+| guards.go:377:5:377:32 | ...==... | 0 = call to modelZeroGuard | true |
+| guards.go:377:5:377:32 | ...==... | call to modelZeroGuard = 0 | true |
+| guards.go:380:5:380:35 | ...!=... | 0 = call to modelNotZeroGuard | false |
+| guards.go:380:5:380:35 | ...!=... | call to modelNotZeroGuard = 0 | false |
+| guards.go:383:5:383:34 | ...==... | call to modelNullGuard = nil | true |
+| guards.go:383:5:383:34 | ...==... | nil = call to modelNullGuard | true |
+| guards.go:386:5:386:37 | ...!=... | call to modelNotNullGuard = nil | false |
+| guards.go:386:5:386:37 | ...!=... | nil = call to modelNotNullGuard | false |
 defaultCaseResult
 | guards.go:16:2:17:18 | case clause | positive | true |
 | guards.go:27:2:28:22 | case clause | tagged other | true |
@@ -265,11 +273,11 @@ defaultCaseResult
 | guards.go:155:2:156:22 | case clause | default only | true |
 | guards.go:164:2:165:32 | case clause | expressionless default | true |
 modelBarrierResult
-| guards.go:351:27:351:33 | pointer | model bool | model-bool |
-| guards.go:354:27:354:33 | pointer | model zero | model-zero |
-| guards.go:357:31:357:37 | pointer | model not zero | model-not-zero |
-| guards.go:360:27:360:33 | pointer | model null | model-null |
-| guards.go:363:31:363:37 | pointer | model not null | model-not-null |
-| guards.go:366:34:366:40 | pointer | model no exception | model-no-exception |
+| guards.go:375:27:375:33 | pointer | model bool | model-bool |
+| guards.go:378:27:378:33 | pointer | model zero | model-zero |
+| guards.go:381:31:381:37 | pointer | model not zero | model-not-zero |
+| guards.go:384:27:384:33 | pointer | model null | model-null |
+| guards.go:387:31:387:37 | pointer | model not null | model-not-null |
+| guards.go:390:34:390:40 | pointer | model no exception | model-no-exception |
 legacyConditionGuardCount
-| 88 |
+| 92 |
