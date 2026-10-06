@@ -204,15 +204,15 @@ func testDerived() {
 
   let x = foo(false, [2], DerivedDerived([]))  // $ target=foo target=DerivedDerived.init type=x@DerivedDerived<D>:Int
 
-  foo2(false, [2], DerivedDerived([]))  // $ target=foo2 target=DerivedDerived.init $ MISSING: type=DerivedDerived(...)@DerivedDerived<D>:Int
+  foo2(false, [2], DerivedDerived([]))  // $ target=foo2 target=DerivedDerived.init type=DerivedDerived(...)@DerivedDerived<D>:Int
 
   let y = bar(false, 2, DerivedDerived([]))  // $ type=y@DerivedDerived<D>:Int target=bar target=DerivedDerived.init
 
-  bar2(false, 2, DerivedDerived([]))  // $ target=bar2 target=DerivedDerived.init $ MISSING: type=DerivedDerived(...)@DerivedDerived<D>:Int
+  bar2(false, 2, DerivedDerived([]))  // $ target=bar2 target=DerivedDerived.init type=DerivedDerived(...)@DerivedDerived<D>:Int
 
   let w = baz(false, 2, Derived(Optional.none))  // $ type=w@Derived<T1>.Optional<Wrapped>:Int target=baz target=Derived.init field=Optional.none
 
-  baz2(false, 2, Derived(Optional.none))  // $ target=baz2 target=Derived.init field=Optional.none $ MISSING: type=Derived(...)@Derived<T1>.Optional<Wrapped>:Int
+  baz2(false, 2, Derived(Optional.none))  // $ target=baz2 target=Derived.init field=Optional.none type=Derived(...)@Derived<T1>.Optional<Wrapped>:Int
 }
 
 // --- Generics and protocols ---

@@ -1429,7 +1429,9 @@ inferType
 | generics.swift:207:15:207:17 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:207:16:207:16 | 2 |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:207:20:207:37 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:207:20:207:37 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
 | generics.swift:207:35:207:36 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:207:35:207:36 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:209:7:209:7 | y |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:209:7:209:7 | y | D | {EXTERNAL LOCATION} | Int |
 | generics.swift:209:11:209:43 | bar(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
@@ -1443,7 +1445,9 @@ inferType
 | generics.swift:211:8:211:12 | false |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:211:15:211:15 | 2 |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:211:18:211:35 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:211:18:211:35 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
 | generics.swift:211:33:211:34 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:211:33:211:34 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:213:7:213:7 | w |  | generics.swift:154:1:162:1 | Derived |
 | generics.swift:213:7:213:7 | w | T1 | {EXTERNAL LOCATION} | Optional |
 | generics.swift:213:7:213:7 | w | T1.Wrapped | {EXTERNAL LOCATION} | Int |
@@ -1463,7 +1467,9 @@ inferType
 | generics.swift:215:15:215:15 | 2 |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:215:18:215:39 | Derived(...) |  | generics.swift:154:1:162:1 | Derived |
 | generics.swift:215:18:215:39 | Derived(...) | T1 | {EXTERNAL LOCATION} | Optional |
+| generics.swift:215:18:215:39 | Derived(...) | T1.Wrapped | {EXTERNAL LOCATION} | Int |
 | generics.swift:215:26:215:38 | ... .none |  | {EXTERNAL LOCATION} | Optional |
+| generics.swift:215:26:215:38 | ... .none | Wrapped | {EXTERNAL LOCATION} | Int |
 | generics.swift:227:22:229:3 | Block |  | generics.swift:220:1:224:1 | MyProtocol2 |
 | generics.swift:228:12:228:15 | self |  | generics.swift:220:1:224:1 | MyProtocol2 |
 | generics.swift:233:7:233:11 | value |  | generics.swift:232:15:232:15 | T |
