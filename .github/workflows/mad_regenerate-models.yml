@@ -30,11 +30,11 @@ jobs:
             ref: "placeholder"
     steps:
       - name: Clone self (github/codeql)
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - name: Setup CodeQL binaries
         uses: ./.github/actions/fetch-codeql
       - name: Clone repositories
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           path: repos/${{ matrix.ref }}
           ref: ${{ matrix.ref }}
@@ -59,7 +59,7 @@ jobs:
           find java -name "*.model.yml" -print0 | xargs -0 git add
           git status
           git diff --cached > models.patch
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: patch
           path: models.patch

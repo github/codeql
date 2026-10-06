@@ -36,7 +36,7 @@ jobs:
       fail-fast: false
     runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - name: Setup (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -53,7 +53,7 @@ jobs:
   clang-format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
         name: Check that python code is properly formatted
         with:
@@ -61,7 +61,7 @@ jobs:
   codegen:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - uses: ./.github/actions/fetch-codeql
       - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
         name: Check that QL generated code was checked in
@@ -70,13 +70,13 @@ jobs:
       - name: Generate C++ files
         run: |
           bazel run codegen -- --generate=trap,cpp --cpp-output=$PWD/generated-cpp-files
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: swift-generated-cpp-files
           path: generated-cpp-files/**
   check-no-override:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - name: Check that no override is present in load.bzl
         run: bazel test ... --test_tag_filters=override --test_output=errors
