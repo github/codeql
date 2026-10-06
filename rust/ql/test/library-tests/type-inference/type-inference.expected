@@ -12814,7 +12814,13 @@ inferType
 | main.rs:2832:17:2832:20 | S(...) | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2832:19:2832:19 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2833:13:2833:13 | z |  | main.rs:2817:5:2817:26 | MyThingB |
+| main.rs:2833:13:2833:13 | z | B | main.rs:2814:5:2815:19 | S |
+| main.rs:2833:13:2833:13 | z | B.T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2833:17:2833:44 | MyThingB(...) |  | main.rs:2817:5:2817:26 | MyThingB |
+| main.rs:2833:17:2833:44 | MyThingB(...) | B | main.rs:2814:5:2815:19 | S |
+| main.rs:2833:17:2833:44 | MyThingB(...) | B.T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2833:26:2833:43 | ...::default(...) |  | main.rs:2814:5:2815:19 | S |
+| main.rs:2833:26:2833:43 | ...::default(...) | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2834:9:2834:25 | bar(...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:2834:13:2834:15 | [...] |  | {EXTERNAL LOCATION} | [;] |
 | main.rs:2834:13:2834:15 | [...] | TArray | main.rs:2814:5:2815:19 | S |
@@ -12823,7 +12829,11 @@ inferType
 | main.rs:2834:14:2834:14 | x | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2834:18:2834:24 | Some(...) |  | {EXTERNAL LOCATION} | Option |
 | main.rs:2834:18:2834:24 | Some(...) | T | main.rs:2817:5:2817:26 | MyThingB |
+| main.rs:2834:18:2834:24 | Some(...) | T.B | main.rs:2814:5:2815:19 | S |
+| main.rs:2834:18:2834:24 | Some(...) | T.B.T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2834:23:2834:23 | z |  | main.rs:2817:5:2817:26 | MyThingB |
+| main.rs:2834:23:2834:23 | z | B | main.rs:2814:5:2815:19 | S |
+| main.rs:2834:23:2834:23 | z | B.T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2838:11:2874:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2839:5:2839:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:2840:5:2840:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |

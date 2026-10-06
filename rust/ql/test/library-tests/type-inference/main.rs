@@ -2830,7 +2830,7 @@ mod contextual_bound {
         bar(x, Some(y)); // $ target=bar
 
         let x = S(0);
-        let z = MyThingB(Default::default()); // $ MISSING: type=z@MyThingB<B>.S<T>:i32 target=default
+        let z = MyThingB(Default::default()); // $ type=z@MyThingB<B>.S<T>:i32 target=default
         bar([x], Some(z)); // $ target=bar
     }
 }
