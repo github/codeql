@@ -2309,6 +2309,31 @@ private predicate readStepDelegateCall(Node node1, ContentSet c, OutNode node2) 
 }
 
 /**
+ * Holds if data can flow from `node1` to `node2` via a property pattern.
+ */
+private predicate fieldOrPropertyPatternRead(Node node1, ContentSet c, Node node2) {
+  exists(PatternExpr pattern, LabeledPatternExpr label, FieldOrProperty f |
+    node1.asExpr() = pattern and
+    (
+      pattern.(RecursivePatternExpr).getPropertyPatterns().getPattern(_) = label
+      or
+      pattern.(PropertyPatternExpr).getPattern(_) = label
+    ) and
+    c = f.getContentSet() and
+    f.getName() = label.getLabel()
+  |
+    node2.asExpr() = label.(RecursivePatternExpr)
+    or
+    node2.asExpr() = label.(PropertyPatternExpr)
+    or
+    exists(AssignableDefinitions::PatternDefinition lvd |
+      node2.(AssignableDefinitionNode).getDefinition() = lvd and
+      label.(BindingPatternExpr).getVariableDeclExpr() = lvd.getDeclaration()
+    )
+  )
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` via a read of content `c`.
  */
 predicate readStep(Node node1, ContentSet c, Node node2) {
@@ -2318,6 +2343,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   fieldOrPropertyRead(node1.asExpr(), c, node2.asExpr())
+  or
+  fieldOrPropertyPatternRead(node1, c, node2)
   or
   dynamicPropertyRead(node1.asExpr(), c, node2.asExpr())
   or
