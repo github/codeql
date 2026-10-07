@@ -1811,7 +1811,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
              * bar(x, Some(y));
              * ```
              *
-             * At `term` = `bar([x], Some(y))`, we have
+             * At `term` = `bar(x, Some(y))`, we have
              * - `constraint = MyTrait<T1>`,
              * - `pathToTypeParamInConstraint` = `"MyTrait<B>"`,
              * - `pathToTypeParamInSub` = `"MyThing<A>"`,
