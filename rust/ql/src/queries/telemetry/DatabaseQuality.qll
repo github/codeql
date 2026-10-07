@@ -9,6 +9,7 @@ import codeql.util.ReportStats
 import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 import codeql.rust.internal.typeinference.TypeInference as TypeInference
 import codeql.rust.internal.typeinference.Type
+import codeql.rust.internal.typeinference.TypeMention
 
 /**
  * A file that is included in the quality statistics.
@@ -89,8 +90,28 @@ module ExprTypeStats implements StatsSig {
   string getNotOkText() { result = "expressions with unknown type" }
 }
 
+module TypeMentionStats implements StatsSig {
+  additional class Candidate extends TypeMention {
+    predicate isOk() { this.getType() = any(Type t | not t instanceof UnknownType) }
+  }
+
+  int getNumberOfOk() {
+    result = count(Candidate c | c.getFile() instanceof RelevantFile and c.isOk())
+  }
+
+  int getNumberOfNotOk() {
+    result = count(Candidate c | c.getFile() instanceof RelevantFile and not c.isOk())
+  }
+
+  string getOkText() { result = "resolvable type mentions" }
+
+  string getNotOkText() { result = "unresolvable type mentions" }
+}
+
 module CallTargetStatsReport = ReportStats<CallTargetStats>;
 
 module MacroCallTargetStatsReport = ReportStats<MacroCallTargetStats>;
 
 module ExprTypeStatsReport = ReportStats<ExprTypeStats>;
+
+module TypeMentionStatsReport = ReportStats<TypeMentionStats>;
