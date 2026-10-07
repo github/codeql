@@ -1,0 +1,28 @@
+load("@rules_python//python:defs.bzl", "py_test")
+load("//swift:rules.bzl", "swift_cc_binary")
+
+swift_cc_binary(
+    name = "mangle",
+    srcs = ["mangle.cpp"],
+    deps = [
+        "//swift/extractor/mangler",
+        "//swift/logging",
+        "//swift/third_party/resources:prebuilt",
+    ],
+)
+
+py_test(
+    name = "test",
+    size = "medium",
+    srcs = ["test.py"],
+    args = [
+        "$(rlocationpath :mangle)",
+        "$(rlocationpath //swift/third_party/resources:dir)",
+    ],
+    data = [
+        ":mangle",
+        "//swift/third_party/resources:dir",
+    ],
+    target_compatible_with = ["@platforms//os:macos"],
+    deps = ["@rules_python//python/runfiles"],
+)

@@ -8,7 +8,10 @@
 #include <swift/AST/GenericEnvironment.h>
 #include <swift/AST/GenericParamList.h>
 #include <swift/AST/ClangModuleLoader.h>
+#include <swift/ClangImporter/ClangModule.h>
 #include <clang/Basic/Module.h>
+#include <clang/AST/DeclObjC.h>
+#include <clang/Index/USRGeneration.h>
 
 using namespace codeql;
 
@@ -110,6 +113,25 @@ SwiftMangledName SwiftMangler::visitExtensionDecl(const swift::ExtensionDecl* de
 
   auto parent = getParent(decl);
   auto target = decl->getExtendedType();
+  if (auto category =
+          llvm::dyn_cast_or_null<clang::ObjCCategoryDecl>(decl->getClangNode().getAsDecl())) {
+    // Clang's category identity avoids loading every declaration in the imported module.
+    llvm::SmallString<128> usr;
+    if (!clang::index::generateUSRForDecl(category, usr)) {
+      return initMangled(decl) << fetch(target) << "|clang|" << usr.str().str();
+    }
+    LOG_WARNING("Unable to generate an imported category USR; using declaration indexes");
+  } else if (!decl->getClangNode() && llvm::isa<swift::ClangModuleUnit>(decl->getDeclContext())) {
+    // The importer creates one global-member extension per nominal type and Clang submodule.
+    for (auto member : decl->getAllMembers()) {
+      if (auto origin = member->getClangNode().getAsDecl()) {
+        auto module = origin->getOwningModule();
+        return initMangled(decl) << fetch(target) << "|clang_globals|"
+                                 << (module ? module->getFullModuleName() : "");
+      }
+    }
+    LOG_WARNING("Unable to identify an imported global-member module; using declaration indexes");
+  }
   auto index = getExtensionOrFilePrivateValueIndex(decl, parent);
   return initMangled(decl) << fetch(target) << index.index
                            << (index.kind == ExtensionOrFilePrivateValueKind::clang ? "_clang"
