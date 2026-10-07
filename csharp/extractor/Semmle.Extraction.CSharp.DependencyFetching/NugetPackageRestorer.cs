@@ -18,6 +18,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IFileProvider fileProvider;
         private readonly FileContent fileContent;
         private readonly IDotNet dotnet;
+        private readonly IRegistryProxy? registryProxy;
         private readonly IDiagnosticsWriter diagnosticsWriter;
         private readonly DependencyDirectory legacyPackageDirectory;
         private readonly DependencyDirectory missingPackageDirectory;
@@ -40,6 +41,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.fileProvider = fileProvider;
             this.fileContent = fileContent;
             this.dotnet = dotnet;
+            this.registryProxy = registryProxy;
             this.diagnosticsWriter = diagnosticsWriter;
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
@@ -133,7 +135,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
-                var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, feedManager);
+                var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, feedManager, registryProxy);
                 var count = packagesConfigRestore.InstallPackages();
                 if (packagesConfigRestore.PackageCount > 0)
                 {
