@@ -3295,6 +3295,54 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class CfgPredExpr extends @cfg_pred_expr, Expr {
+    override string toString() { result = "CfgPredExpr" }
+
+    /**
+     * Gets the cfg predicate of this cfg pred expression, if it exists.
+     */
+    CfgPredicate getCfgPredicate() { cfg_pred_expr_cfg_predicates(this, result) }
+  }
+
+  private Element getImmediateChildOfCfgPredExpr(CfgPredExpr e, int index) {
+    exists(int n, int nCfgPredicate |
+      n = 0 and
+      nCfgPredicate = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getCfgPredicate()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class CfgPredPat extends @cfg_pred_pat, Pat {
+    override string toString() { result = "CfgPredPat" }
+
+    /**
+     * Gets the cfg predicate of this cfg pred pattern, if it exists.
+     */
+    CfgPredicate getCfgPredicate() { cfg_pred_pat_cfg_predicates(this, result) }
+  }
+
+  private Element getImmediateChildOfCfgPredPat(CfgPredPat e, int index) {
+    exists(int n, int nCfgPredicate |
+      n = 0 and
+      nCfgPredicate = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getCfgPredicate()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A closure expression. For example:
    * ```rust
    * |x| x + 1;
@@ -8244,6 +8292,10 @@ module Raw {
     result = getImmediateChildOfCfgComposite(e, index)
     or
     result = getImmediateChildOfCfgMeta(e, index)
+    or
+    result = getImmediateChildOfCfgPredExpr(e, index)
+    or
+    result = getImmediateChildOfCfgPredPat(e, index)
     or
     result = getImmediateChildOfClosureExpr(e, index)
     or

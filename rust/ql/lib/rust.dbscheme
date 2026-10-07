@@ -421,6 +421,7 @@ callable_attrs(
 | @break_expr
 | @call_expr
 | @cast_expr
+| @cfg_pred_expr
 | @closure_expr
 | @continue_expr
 | @field_expr
@@ -731,6 +732,7 @@ parenthesized_arg_list_type_args(
 
 @pat =
   @box_pat
+| @cfg_pred_pat
 | @const_block_pat
 | @deref_pat
 | @ident_pat
@@ -1665,6 +1667,26 @@ cfg_meta(
 #keyset[id]
 cfg_meta_cfg_predicates(
   int id: @cfg_meta ref,
+  int cfg_predicate: @cfg_predicate ref
+);
+
+cfg_pred_exprs(
+  unique int id: @cfg_pred_expr
+);
+
+#keyset[id]
+cfg_pred_expr_cfg_predicates(
+  int id: @cfg_pred_expr ref,
+  int cfg_predicate: @cfg_predicate ref
+);
+
+cfg_pred_pats(
+  unique int id: @cfg_pred_pat
+);
+
+#keyset[id]
+cfg_pred_pat_cfg_predicates(
+  int id: @cfg_pred_pat ref,
   int cfg_predicate: @cfg_predicate ref
 );
 
