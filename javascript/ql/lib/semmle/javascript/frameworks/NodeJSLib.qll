@@ -855,6 +855,114 @@ module NodeJSLib {
     }
   }
 
+  signature predicate isSuperClassSig(ClassDefinition clazz);
+
+  overlay[local?]
+  private module StreamSuperClass<isSuperClassSig/1 isSuperClass> {
+    /** Gets a relevant super class of `subclass`. */
+    ClassDefinition streamSuperClass(ClassDefinition subclass) {
+      isSuperClass(result) and
+      DataFlow::localFlowStep*(TValueNode(result), TValueNode(subclass.getSuperClass()))
+    }
+  }
+
+  signature predicate hasStreamKindSig(string kind);
+
+  overlay[local?]
+  private module WritableStreamClass<hasStreamKindSig/1 hasStreamKind> {
+    /**
+     * Holds if `c` extends a built-in Node.js stream class whose name
+     * satisfies `hasStreamKind`.
+     */
+    predicate writableStreamClass(ClassDefinition c) {
+      exists(string kind, EarlyStageNode constructor |
+        hasStreamKind(kind) and
+        memberRead(getAStreamModuleNode(), kind, constructor) and
+        DataFlow::localFlowStep*(constructor, TValueNode(c.getSuperClass()))
+      )
+      or
+      exists(StreamSuperClass<writableStreamClass/1>::streamSuperClass(c))
+    }
+  }
+
+  overlay[local?]
+  private predicate isWritableOrDuplex(string kind) { kind = ["Writable", "Duplex"] }
+
+  overlay[local?]
+  private predicate isTransform(string kind) { kind = "Transform" }
+
+  signature predicate hasStreamMethodNameSig(string name);
+
+  overlay[local?]
+  private module StreamMethodOverride<hasStreamMethodNameSig/1 hasStreamMethodName> {
+    predicate overridesStreamMethod(ClassDefinition c) {
+      exists(string name, MemberDeclaration member |
+        hasStreamMethodName(name) and
+        member = StreamSuperClass<overridesStreamMethod/1>::streamSuperClass*(c).getMember(name) and
+        not member.isStatic()
+      )
+    }
+
+    predicate overridesStreamInstanceMethod(NewExpr creation) {
+      exists(Assignment assignment, PropAccess property |
+        property = assignment.getLhs() and
+        hasStreamMethodName(property.getPropertyName()) and
+        DataFlow::localFlowStep*(TValueNode(creation), TValueNode(property.getBase()))
+      )
+    }
+  }
+
+  overlay[local?]
+  private predicate isWriteMethod(string name) { name = "write" }
+
+  overlay[local?]
+  private predicate isWriteHook(string name) { name = "_write" }
+
+  overlay[local?]
+  private ClassDefinition instantiatedClassWithoutWriteOverride(NewExpr creation) {
+    DataFlow::localFlowStep*(TValueNode(result), TValueNode(creation.getCallee())) and
+    not StreamMethodOverride<isWriteMethod/1>::overridesStreamMethod(result)
+  }
+
+  overlay[local?]
+  private NewExpr pipeDestinationCreation(PipeCall pipe) {
+    DataFlow::localFlowStep*(TValueNode(result), TValueNode(pipe.getArgument(0)))
+  }
+
+  /** Gets the implementation hook invoked by an inherited stream `write` method. */
+  overlay[local?]
+  private predicate pipeImplementationHook(PipeCall pipe, string hook) {
+    exists(ClassDefinition c, NewExpr creation |
+      creation = pipeDestinationCreation(pipe) and
+      c = instantiatedClassWithoutWriteOverride(creation)
+    |
+      // For `Writable` and `Duplex` subclasses, inherited `write` delegates to `_write`.
+      WritableStreamClass<isWritableOrDuplex/1>::writableStreamClass(c) and
+      hook = "_write"
+      or
+      // For `Transform` subclasses, inherited `write` delegates to `_transform` unless the class
+      // overrides `_write`. Instance assignments also allow `_write` as a possible target.
+      WritableStreamClass<isTransform/1>::writableStreamClass(c) and
+      (
+        not StreamMethodOverride<isWriteHook/1>::overridesStreamMethod(c) and
+        hook = "_transform"
+        or
+        (
+          StreamMethodOverride<isWriteHook/1>::overridesStreamMethod(c) or
+          StreamMethodOverride<isWriteHook/1>::overridesStreamInstanceMethod(creation)
+        ) and
+        hook = "_write"
+      )
+    )
+  }
+
+  overlay[local?]
+  private string pipeHookTag(string hook, string part) {
+    hook = ["_write", "_transform"] and
+    part = ["member", "call", "encoding", "callback"] and
+    result = "nodejs.pipe." + hook + "." + part
+  }
+
   private DataFlow::SourceNode bufferInstance(DataFlow::TypeTracker t) {
     t.start() and
     exists(DataFlow::SourceNode constructor |
@@ -885,7 +993,14 @@ module NodeJSLib {
     override predicate needsSynthesizedNode(AstNode node, string tag, DataFlowCallable container) {
       (
         node instanceof PipeCall and
-        tag = ["nodejs.pipe.write.member", "nodejs.pipe.write.call", "nodejs.pipe.write.chunk"]
+        (
+          tag = ["nodejs.pipe.write.member", "nodejs.pipe.write.call", "nodejs.pipe.write.chunk"]
+          or
+          exists(string hook |
+            pipeImplementationHook(node, hook) and
+            tag = pipeHookTag(hook, _)
+          )
+        )
         or
         node instanceof ReadableFromCall and
         tag = "nodejs.readable.from.chunk"
@@ -980,6 +1095,11 @@ module NodeJSLib {
       this =
         getSynthesizedNode(pipe,
           ["nodejs.pipe.write.member", "nodejs.pipe.write.call", "nodejs.pipe.write.chunk"])
+      or
+      // `this` is a synthesized property read, call, encoding argument, or
+      // callback argument for an implicit `_write` or `_transform` call on
+      // the destination
+      this = getSynthesizedNode(pipe, pipeHookTag(_, _))
     }
 
     override BasicBlock getBasicBlock() { result = pipe.getBasicBlock() }
@@ -1009,6 +1129,12 @@ module NodeJSLib {
       this =
         getSynthesizedNode(any(PipeCall call),
           ["nodejs.pipe.write.member", "nodejs.pipe.write.chunk"])
+      or
+      // `this` is a synthesized property read, encoding argument, or callback
+      // argument for an implicit `_write` or `_transform` call on the
+      // destination
+      this =
+        getSynthesizedNode(any(PipeCall call), pipeHookTag(_, ["member", "encoding", "callback"]))
       or
       // `this` is the synthesized chunk emitted by `Readable.from`
       this = getSynthesizedNode(any(ReadableFromCall call), "nodejs.readable.from.chunk")
@@ -1041,6 +1167,53 @@ module NodeJSLib {
     override DataFlow::Node getASpreadArgument() { none() }
 
     override int getNumArgument() { result = 1 }
+  }
+
+  overlay[local?]
+  private class PipeHookMember extends PipeNode, DataFlow::PropRead {
+    string hook;
+
+    PipeHookMember() { this = getSynthesizedNode(pipe, pipeHookTag(hook, "member")) }
+
+    override DataFlow::Node getBase() { result = pipe.getArgument(0).flow() }
+
+    override string getPropertyName() { result = hook }
+
+    override Expr getPropertyNameExpr() { none() }
+  }
+
+  /** An implicit `_write` or `_transform` invocation made by the native `write` method. */
+  overlay[local?]
+  private class PipeHookCall extends PipeNode, DataFlow::Impl::MethodCallNodeDef {
+    string hook;
+
+    PipeHookCall() { this = getSynthesizedNode(pipe, pipeHookTag(hook, "call")) }
+
+    override InvokeExpr getInvokeExpr() { result = pipe }
+
+    override string getCalleeName() { result = hook }
+
+    override string getMethodName() { result = hook }
+
+    override DataFlow::Node getCalleeNode() {
+      result = getSynthesizedNode(pipe, pipeHookTag(hook, "member"))
+    }
+
+    override DataFlow::Node getReceiver() { result = pipe.getArgument(0).flow() }
+
+    override DataFlow::Node getArgument(int index) {
+      index = 0 and result = getSynthesizedNode(pipe, "nodejs.pipe.write.chunk")
+      or
+      index = 1 and result = getSynthesizedNode(pipe, pipeHookTag(hook, "encoding"))
+      or
+      index = 2 and result = getSynthesizedNode(pipe, pipeHookTag(hook, "callback"))
+    }
+
+    override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+
+    override DataFlow::Node getASpreadArgument() { none() }
+
+    override int getNumArgument() { result = 3 }
   }
 
   /**
