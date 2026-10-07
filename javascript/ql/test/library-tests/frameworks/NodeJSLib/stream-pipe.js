@@ -27,6 +27,22 @@ class SetDestination extends Writable {
 
 Readable.from(new Set([source("set")])).pipe(new SetDestination());
 
+class MapDestination extends Writable {
+  write(chunk) {
+    sink(chunk[0]); // $ MISSING: flow=map-key
+    sink(chunk[1]); // $ MISSING: flow=map-value
+    sink(chunk);
+    return true;
+  }
+}
+
+const iterableMap = new Map([[source("map-key"), source("map-value")]]);
+for (const [mapKey, mapValue] of iterableMap) {
+  sink(mapKey); // $ MISSING: flow=map-key
+  sink(mapValue); // $ MISSING: flow=map-value
+}
+Readable.from(iterableMap).pipe(new MapDestination());
+
 class GeneratorDestination extends Writable {
   write(chunk) {
     sink(chunk); // $ flow=generator
