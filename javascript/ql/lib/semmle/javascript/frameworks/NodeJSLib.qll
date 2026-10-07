@@ -5,6 +5,7 @@
 import javascript
 import semmle.javascript.frameworks.HTTP
 import semmle.javascript.security.SensitiveActions
+private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
 private import semmle.javascript.dataflow.internal.DataFlowNode
 private import semmle.javascript.dataflow.internal.DataFlowPrivate
@@ -854,6 +855,31 @@ module NodeJSLib {
     }
   }
 
+  private DataFlow::SourceNode bufferInstance(DataFlow::TypeTracker t) {
+    t.start() and
+    exists(DataFlow::SourceNode constructor |
+      constructor = [DataFlow::globalVarRef("Buffer"), DataFlow::moduleMember("buffer", "Buffer")]
+    |
+      result = constructor.getAnInvocation()
+      or
+      result =
+        constructor
+            .getAMemberInvocation([
+                "from", "alloc", "allocUnsafe", "allocUnsafeSlow", "concat", "of", "copyBytesFrom"
+              ])
+    )
+    or
+    exists(DataFlow::TypeTracker t0 | result = bufferInstance(t0).track(t0, t))
+  }
+
+  private predicate isBufferInstance(DataFlow::Node node) {
+    node.hasUnderlyingType("Buffer")
+    or
+    node.hasUnderlyingType(["buffer", "node:buffer"], "Buffer")
+    or
+    bufferInstance(DataFlow::TypeTracker::end()).flowsTo(node)
+  }
+
   overlay[local?]
   private class StreamFlowStep extends AdditionalFlowInternal {
     override predicate needsSynthesizedNode(AstNode node, string tag, DataFlowCallable container) {
@@ -868,6 +894,18 @@ module NodeJSLib {
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      // `pred` is a string or `Buffer` input to `Readable.from`
+      exists(ReadableFromCall call |
+        pred = call.getArgument(0).flow() and
+        succ = getSynthesizedNode(call, "nodejs.readable.from.chunk")
+      |
+        // Readable.from("hello") emits "hello" as one chunk, whereas arrays
+        // emit each element as a chunk. So we restrict this to strings only.
+        pred.analyze().getTheType() = TTString()
+        or
+        isBufferInstance(pred)
+      )
+      or
       // `pred` is the receiver of a fluent stream method call
       exists(MethodCallExpr call |
         readableStream(TValueNode(call.getReceiver())) and
