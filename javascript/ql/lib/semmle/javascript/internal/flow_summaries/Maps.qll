@@ -20,10 +20,12 @@ class MapConstructor extends SummarizedCallable::Range {
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
-      input = "Argument[0]." + ["ArrayElement", "SetElement", "IteratorElement"] + ".Member[0]" and
+      input =
+        "Argument[0]." + ["ArrayElement", "SetElement", "IteratorElement"] + ".ArrayElement[0]" and
       output = "ReturnValue.MapKey"
       or
-      input = "Argument[0]." + ["ArrayElement", "SetElement", "IteratorElement"] + ".Member[1]" and
+      input =
+        "Argument[0]." + ["ArrayElement", "SetElement", "IteratorElement"] + ".ArrayElement[1]" and
       output = "ReturnValue.MapValue"
       or
       input = ["Argument[0].WithMapKey", "Argument[0].WithMapValue"] and
