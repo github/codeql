@@ -25,14 +25,20 @@ private string getShortConstructorName(CallExpr call) {
 }
 
 /**
+ * Holds if `call` targets a member called `name` and has the given `arity`.
+ */
+pragma[nomagic]
+private predicate callSiteHasSignature(CallExpr call, string name, int arity) {
+  name = call.getCallee().(MemberAccessExpr).getMemberName() and
+  arity = call.getNumberOfArguments()
+}
+
+/**
  * Holds if a constructor pattern has the given short `name` and `arity`.
  */
 pragma[nomagic]
 private predicate isSignatureUsedInConstructorPattern(string name, int arity) {
-  exists(ConstructorPattern ctor |
-    name = getShortConstructorName(ctor) and
-    arity = ctor.getNumberOfArguments()
-  )
+  callSiteHasSignature(any(ConstructorPattern p), name, arity)
 }
 
 /** Holds if `callable` is an enum-case constructor */
@@ -50,12 +56,13 @@ private predicate assumeResolvesToEnumCaseConstructor(CallExpr call) {
   isEnumCaseConstructor(T::resolveCallTarget(call))
   or
   // If the `E` in `E.foo(...)` could not be resolved, check if the name `foo` matches a constructor pattern.
-  exists(MemberAccessExpr callee, Expr base |
+  exists(MemberAccessExpr callee, Expr base, string name, int arity |
     callee = call.getCallee() and
     base = callee.getBase() and
     not exists(NameBinding::getStaticBindingTargetFromRef(base)) and
     not exists(T::inferType(base)) and
-    isSignatureUsedInConstructorPattern(callee.getMemberName(), call.getNumberOfArguments())
+    callSiteHasSignature(call, name, arity) and
+    isSignatureUsedInConstructorPattern(name, arity)
   )
 }
 
