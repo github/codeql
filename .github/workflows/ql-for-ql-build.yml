@@ -2,11 +2,10 @@ name: Run QL for QL
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches: ['henrymercer/test-ql4ql-*']
 
 env:
+  CODEQL_ACTION_PER_LANGUAGE_BUNDLES: "true"
   CARGO_TERM_COLOR: always
 
 permissions:
