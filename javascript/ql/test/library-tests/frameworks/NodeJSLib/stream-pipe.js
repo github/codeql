@@ -145,8 +145,8 @@ class HookDestination extends Writable {
   }
 
   _write(chunk, encoding, callback) {
-    sink(chunk); // $ MISSING: flow=write-hook flow=inherited-write-hook
-    sink(this.value); // $ MISSING: flow=hook-receiver
+    sink(chunk); // $ flow=write-hook flow=inherited-write-hook
+    sink(this.value); // $ flow=hook-receiver
     sink(encoding);
     sink(callback);
     callback();
@@ -166,7 +166,7 @@ const { Transform, Duplex } = require("stream");
 
 class HookTransform extends Transform {
   _transform(chunk, encoding, callback) {
-    sink(chunk); // $ MISSING: flow=transform-hook
+    sink(chunk); // $ flow=transform-hook
     callback(null, chunk);
   }
 }
@@ -196,7 +196,7 @@ class HookDuplex extends Duplex {
   _read() {}
 
   _write(chunk, encoding, callback) {
-    sink(chunk); // $ MISSING: flow=duplex-hook
+    sink(chunk); // $ flow=duplex-hook
     callback();
   }
 }
@@ -205,7 +205,7 @@ Readable.from([source("duplex-hook")]).pipe(new HookDuplex());
 
 class OverriddenTransform extends Transform {
   _write(chunk, encoding, callback) {
-    sink(chunk); // $ MISSING: flow=transform-write-hook flow=inherited-transform-write-hook
+    sink(chunk); // $ flow=transform-write-hook flow=inherited-transform-write-hook
     callback();
   }
 
@@ -224,7 +224,7 @@ Readable.from([source("inherited-transform-write-hook")]).pipe(new InheritedTran
 
 class InstanceOverrideDestination extends Writable {
   _write(chunk, encoding, callback) {
-    sink(chunk);
+    sink(chunk); // $ SPURIOUS: flow=instance-override
     callback();
   }
 }
@@ -239,7 +239,7 @@ Readable.from([source("instance-override")]).pipe(instanceOverride);
 function conditionalPublicWriteOverride(condition) {
   class Destination extends Writable {
     _write(chunk, encoding, callback) {
-      sink(chunk); // $ MISSING: flow=conditional-public-write
+      sink(chunk); // $ flow=conditional-public-write
       callback();
     }
   }
@@ -271,7 +271,7 @@ async function latePublicWriteOverride() {
 function conditionalSubclassWriteHook(condition) {
   class Destination extends Transform {
     _transform(chunk, encoding, callback) {
-      sink(chunk); // $ MISSING: flow=conditional-subclass-hook
+      sink(chunk); // $ flow=conditional-subclass-hook
       callback(null, chunk);
     }
   }
@@ -279,7 +279,7 @@ function conditionalSubclassWriteHook(condition) {
   const destination = new Destination();
   if (condition) {
     destination._write = function(chunk, encoding, callback) {
-      sink(chunk); // $ MISSING: flow=conditional-subclass-hook
+      sink(chunk); // $ flow=conditional-subclass-hook
       callback();
     };
   }
