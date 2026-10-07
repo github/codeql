@@ -149,6 +149,14 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TCfgPredExpr(Raw::CfgPredExpr id) { constructCfgPredExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TCfgPredPat(Raw::CfgPredPat id) { constructCfgPredPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TClosureExpr(Raw::ClosureExpr id) { constructClosureExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -801,11 +809,12 @@ module Synth {
    */
   class TExpr =
     TArrayExpr or TArrayExprInternal or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or
-        TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
-        TFormatArgsExpr or TIfExpr or TIncludeBytesExpr or TIndexExpr or TLabelableExpr or
-        TLetExpr or TLiteralExpr or TMacroExpr or TMatchExpr or TMethodCallExpr or TOffsetOfExpr or
-        TParenExpr or TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or
-        TStructExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
+        TBreakExpr or TCallExpr or TCastExpr or TCfgPredExpr or TClosureExpr or TContinueExpr or
+        TFieldExpr or TFormatArgsExpr or TIfExpr or TIncludeBytesExpr or TIndexExpr or
+        TLabelableExpr or TLetExpr or TLiteralExpr or TMacroExpr or TMatchExpr or TMethodCallExpr or
+        TOffsetOfExpr or TParenExpr or TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or
+        TReturnExpr or TStructExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or
+        TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -864,9 +873,9 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TPat =
-    TBoxPat or TConstBlockPat or TDerefPat or TIdentPat or TLiteralPat or TMacroPat or TNotNull or
-        TOrPat or TParenPat or TPathPat or TRangePat or TRefPat or TRestPat or TSlicePat or
-        TStructPat or TTuplePat or TTupleStructPat or TWildcardPat;
+    TBoxPat or TCfgPredPat or TConstBlockPat or TDerefPat or TIdentPat or TLiteralPat or
+        TMacroPat or TNotNull or TOrPat or TParenPat or TPathPat or TRangePat or TRefPat or
+        TRestPat or TSlicePat or TStructPat or TTuplePat or TTupleStructPat or TWildcardPat;
 
   /**
    * INTERNAL: Do not use.
@@ -1158,6 +1167,20 @@ module Synth {
    * Converts a raw element to a synthesized `TCfgMeta`, if possible.
    */
   TCfgMeta convertCfgMetaFromRaw(Raw::Element e) { result = TCfgMeta(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TCfgPredExpr`, if possible.
+   */
+  TCfgPredExpr convertCfgPredExprFromRaw(Raw::Element e) { result = TCfgPredExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TCfgPredPat`, if possible.
+   */
+  TCfgPredPat convertCfgPredPatFromRaw(Raw::Element e) { result = TCfgPredPat(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2460,6 +2483,8 @@ module Synth {
     or
     result = convertCastExprFromRaw(e)
     or
+    result = convertCfgPredExprFromRaw(e)
+    or
     result = convertClosureExprFromRaw(e)
     or
     result = convertContinueExprFromRaw(e)
@@ -2663,6 +2688,8 @@ module Synth {
    */
   TPat convertPatFromRaw(Raw::Element e) {
     result = convertBoxPatFromRaw(e)
+    or
+    result = convertCfgPredPatFromRaw(e)
     or
     result = convertConstBlockPatFromRaw(e)
     or
@@ -3010,6 +3037,18 @@ module Synth {
    * Converts a synthesized `TCfgMeta` to a raw DB element, if possible.
    */
   Raw::Element convertCfgMetaToRaw(TCfgMeta e) { e = TCfgMeta(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCfgPredExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertCfgPredExprToRaw(TCfgPredExpr e) { e = TCfgPredExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCfgPredPat` to a raw DB element, if possible.
+   */
+  Raw::Element convertCfgPredPatToRaw(TCfgPredPat e) { e = TCfgPredPat(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -4164,6 +4203,8 @@ module Synth {
     or
     result = convertCastExprToRaw(e)
     or
+    result = convertCfgPredExprToRaw(e)
+    or
     result = convertClosureExprToRaw(e)
     or
     result = convertContinueExprToRaw(e)
@@ -4367,6 +4408,8 @@ module Synth {
    */
   Raw::Element convertPatToRaw(TPat e) {
     result = convertBoxPatToRaw(e)
+    or
+    result = convertCfgPredPatToRaw(e)
     or
     result = convertConstBlockPatToRaw(e)
     or

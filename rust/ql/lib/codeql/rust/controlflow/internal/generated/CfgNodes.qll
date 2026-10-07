@@ -776,6 +776,56 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasTypeRepr() { exists(this.getTypeRepr()) }
     }
 
+    final private class ParentCfgPredExpr extends ParentAstNode, CfgPredExpr {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     */
+    final class CfgPredExprCfgNode extends CfgNodeFinal, ExprCfgNode {
+      private CfgPredExpr node;
+
+      CfgPredExprCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `CfgPredExpr`. */
+      CfgPredExpr getCfgPredExpr() { result = node }
+
+      /**
+       * Gets the cfg predicate of this cfg pred expression, if it exists.
+       */
+      CfgPredicate getCfgPredicate() { result = node.getCfgPredicate() }
+
+      /**
+       * Holds if `getCfgPredicate()` exists.
+       */
+      predicate hasCfgPredicate() { exists(this.getCfgPredicate()) }
+    }
+
+    final private class ParentCfgPredPat extends ParentAstNode, CfgPredPat {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     */
+    final class CfgPredPatCfgNode extends CfgNodeFinal, PatCfgNode {
+      private CfgPredPat node;
+
+      CfgPredPatCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `CfgPredPat`. */
+      CfgPredPat getCfgPredPat() { result = node }
+
+      /**
+       * Gets the cfg predicate of this cfg pred pattern, if it exists.
+       */
+      CfgPredicate getCfgPredicate() { result = node.getCfgPredicate() }
+
+      /**
+       * Holds if `getCfgPredicate()` exists.
+       */
+      predicate hasCfgPredicate() { exists(this.getCfgPredicate()) }
+    }
+
     final private class ParentConstBlockPat extends ParentAstNode, ConstBlockPat {
       override predicate relevantChild(AstNode child) {
         none()

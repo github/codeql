@@ -186,6 +186,12 @@ class CfgComposite(CfgPredicate, ):
 class CfgMeta(Meta, ):
     cfg_predicate: optional["CfgPredicate"] | child
 
+class CfgPredExpr(Expr, ):
+    cfg_predicate: optional["CfgPredicate"] | child
+
+class CfgPredPat(Pat, ):
+    cfg_predicate: optional["CfgPredicate"] | child
+
 class ClosureExpr(Expr, ):
     attrs: list["AnyAttr"] | child
     closure_body: optional["Expr"] | child
