@@ -1421,11 +1421,15 @@ inferType
 | generics.swift:205:22:205:24 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:205:23:205:23 | 2 |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:205:27:205:44 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:205:27:205:44 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:205:42:205:43 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:205:42:205:43 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:207:8:207:12 | false |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:207:15:207:17 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:207:15:207:17 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:207:16:207:16 | 2 |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:207:20:207:37 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:207:35:207:36 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:209:7:209:7 | y |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:209:7:209:7 | y | D | {EXTERNAL LOCATION} | Int |
 | generics.swift:209:11:209:43 | bar(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
@@ -1433,9 +1437,13 @@ inferType
 | generics.swift:209:15:209:19 | false |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:209:22:209:22 | 2 |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:209:25:209:42 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:209:25:209:42 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:209:40:209:41 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:209:40:209:41 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:211:8:211:12 | false |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:211:15:211:15 | 2 |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:211:18:211:35 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:211:33:211:34 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:213:7:213:7 | w |  | generics.swift:154:1:162:1 | Derived |
 | generics.swift:213:7:213:7 | w | T1 | {EXTERNAL LOCATION} | Optional |
 | generics.swift:213:7:213:7 | w | T1.Wrapped | {EXTERNAL LOCATION} | Int |

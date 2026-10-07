@@ -319,4 +319,9 @@ module Unified {
     /** Gets the number of parameters of this function. */
     int getNumberOfParameters() { result = count(this.getAParameter()) }
   }
+
+  class ArrayLiteral extends G::ArrayLiteral {
+    /** Gets the number of elements in this array literal. */
+    int getNumberOfElements() { result = count(this.getAnElement()) }
+  }
 }
