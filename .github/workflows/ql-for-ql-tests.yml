@@ -2,19 +2,10 @@ name: Run QL for QL Tests
 
 on:
   push:
-    branches: [main]
-    paths:
-      - "ql/**"
-      - codeql-workspace.yml
-      - .github/workflows/ql-for-ql-tests.yml
-  pull_request:
-    branches: [main]
-    paths:
-      - "ql/**"
-      - codeql-workspace.yml
-      - .github/workflows/ql-for-ql-tests.yml
+    branches: ['henrymercer/test-ql4ql-*']
 
 env:
+  CODEQL_ACTION_PER_LANGUAGE_BUNDLES: "true"
   CARGO_TERM_COLOR: always
 
 permissions:
