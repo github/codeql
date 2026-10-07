@@ -17,8 +17,6 @@ permissions:
 
 jobs:
   measure:
-    env:
-      CODEQL_THREADS: 4 # TODO: remove this once it's set by the CLI
     strategy:
       matrix:
         repo:
