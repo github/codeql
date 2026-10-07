@@ -21,15 +21,6 @@ jobs:
         uses: github/codeql-action/setup-codeql@main
         with:
           tools: nightly
-      - uses: ./.github/actions/os-version
-        id: os_version
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            ql/target
-          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-qltest-cargo-${{ hashFiles('ql/rust-toolchain.toml', 'ql/**/Cargo.lock') }}
       - name: Check formatting
         run: cd ql; cargo fmt -- --check
       - name: Build extractor
@@ -37,14 +28,9 @@ jobs:
           cd ql;
           codeqlpath=$(dirname ${{ steps.find-codeql.outputs.codeql-path }});
           env "PATH=$PATH:$codeqlpath" ./scripts/create-extractor-pack.sh
-      - name: Cache compilation cache
-        id: query-cache
-        uses: ./.github/actions/cache-query-compilation
-        with:
-          key: ql-for-ql-tests
       - name: Run QL tests
         run: |
-          "${CODEQL}" test run --threads=0 --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}" --consistency-queries ql/ql/consistency-queries --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" ql/ql/test
+          "${CODEQL}" test run --threads=0 --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}" --consistency-queries ql/ql/consistency-queries ql/ql/test
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
 
@@ -66,15 +52,6 @@ jobs:
         uses: github/codeql-action/setup-codeql@main
         with:
           tools: nightly
-      - uses: ./.github/actions/os-version
-        id: os_version
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            ql/target
-          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-qltest-cargo-${{ hashFiles('ql/rust-toolchain.toml', 'ql/**/Cargo.lock') }}
       - name: Build extractor
         if: runner.os != 'Windows'
         run: |
