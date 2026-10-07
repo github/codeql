@@ -919,6 +919,48 @@ module NodeJSLib {
   private predicate isWriteHook(string name) { name = "_write" }
 
   overlay[local?]
+  private predicate builtinStreamCreation(NewExpr creation, string kind) {
+    exists(EarlyStageNode constructor |
+      kind = ["Writable", "Duplex", "Transform"] and
+      memberRead(getAStreamModuleNode(), kind, constructor) and
+      DataFlow::localFlowStep*(constructor, TValueNode(creation.getCallee())) and
+      not creation.getTopLevel().isExterns()
+    )
+  }
+
+  overlay[local?]
+  private Expr streamOptionValue(NewExpr creation, string name) {
+    exists(ObjectExpr options |
+      DataFlow::localFlowStep*(TValueNode(options), TValueNode(creation.getArgument(0))) and
+      result = options.getPropertyByName(name).getInit()
+    )
+  }
+
+  overlay[local?]
+  private predicate hasStreamWriteOption(NewExpr creation) {
+    DataFlow::localFlowStep*(TValueNode(any(Function callback)),
+      TValueNode(streamOptionValue(creation, "write")))
+  }
+
+  /**
+   * A step from the constructor options `write` and `transform` to the
+   * callee nodes of the corresponding synthesized `_write` and `_transform`
+   * calls at `pipe` invocations.
+   */
+  overlay[local?]
+  private class StreamConstructorHookStep extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(PipeCall pipe, NewExpr creation, string name |
+        builtinStreamCreation(creation, _) and
+        DataFlow::localFlowStep*(TValueNode(creation), TValueNode(pipe.getArgument(0))) and
+        name = ["write", "transform"] and
+        pred = streamOptionValue(creation, name).flow() and
+        succ = getSynthesizedNode(pipe, pipeHookTag("_" + name, "member"))
+      )
+    }
+  }
+
+  overlay[local?]
   private ClassDefinition instantiatedClassWithoutWriteOverride(NewExpr creation) {
     DataFlow::localFlowStep*(TValueNode(result), TValueNode(creation.getCallee())) and
     not StreamMethodOverride<isWriteMethod/1>::overridesStreamMethod(result)
@@ -952,6 +994,28 @@ module NodeJSLib {
           StreamMethodOverride<isWriteHook/1>::overridesStreamInstanceMethod(creation)
         ) and
         hook = "_write"
+      )
+    )
+    or
+    exists(NewExpr creation, string kind |
+      builtinStreamCreation(creation, kind) and
+      creation = pipeDestinationCreation(pipe)
+    |
+      // For `Writable` and `Duplex` instances, `write` delegates to `_write`.
+      kind = ["Writable", "Duplex"] and hook = "_write"
+      or
+      // For `Transform` instances, `write` delegates to `_transform` unless a constructor `write`
+      // option replaces `_write`. Instance assignments also allow `_write` as a possible target.
+      kind = "Transform" and
+      (
+        (
+          hasStreamWriteOption(creation) or
+          StreamMethodOverride<isWriteHook/1>::overridesStreamInstanceMethod(creation)
+        ) and
+        hook = "_write"
+        or
+        not hasStreamWriteOption(creation) and
+        hook = "_transform"
       )
     )
   }
