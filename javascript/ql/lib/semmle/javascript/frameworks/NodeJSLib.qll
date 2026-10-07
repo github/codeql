@@ -1052,6 +1052,22 @@ module NodeJSLib {
     bufferInstance(DataFlow::TypeTracker::end()).flowsTo(node)
   }
 
+  private DataFlow::SourceNode pipeTransformCallback(PipeHookCall call, DataFlow::TypeTracker t) {
+    t.start() and
+    call.getMethodName() = "_transform" and
+    result = call.getArgument(2)
+    or
+    exists(DataFlow::TypeTracker t0 | result = pipeTransformCallback(call, t0).track(t0, t))
+  }
+
+  private DataFlow::SourceNode pipeTransformReceiver(PipeHookCall call, DataFlow::TypeTracker t) {
+    t.start() and
+    call.getMethodName() = "_transform" and
+    result = call.getReceiver().getALocalSource()
+    or
+    exists(DataFlow::TypeTracker t0 | result = pipeTransformReceiver(call, t0).track(t0, t))
+  }
+
   overlay[local?]
   private class StreamFlowStep extends AdditionalFlowInternal {
     override predicate needsSynthesizedNode(AstNode node, string tag, DataFlowCallable container) {
@@ -1132,6 +1148,22 @@ module NodeJSLib {
         pred = getSynthesizedNode(call, "nodejs.readable.from.chunk") and
         contents = DataFlow::ContentSet::iteratorElement() and
         succ = call.flow()
+      )
+      or
+      // `pred` is the output argument to a transform completion callback
+      exists(PipeHookCall hook, DataFlow::CallNode callback |
+        callback = pipeTransformCallback(hook, DataFlow::TypeTracker::end()).getACall() and
+        pred = callback.getArgument(1) and
+        contents = DataFlow::ContentSet::iteratorElement() and
+        succ = hook.getReceiver()
+      )
+      or
+      // `pred` is the chunk argument of a `push` call on a transform receiver
+      exists(PipeHookCall hook, DataFlow::MethodCallNode push |
+        push = pipeTransformReceiver(hook, DataFlow::TypeTracker::end()).getAMethodCall("push") and
+        pred = push.getArgument(0) and
+        contents = DataFlow::ContentSet::iteratorElement() and
+        succ = hook.getReceiver()
       )
     }
   }
