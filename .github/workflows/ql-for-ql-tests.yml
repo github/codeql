@@ -27,9 +27,8 @@ jobs:
       - uses: actions/checkout@v5
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@main
+        uses: github/codeql-action/setup-codeql@main
         with:
-          languages: javascript # does not matter
           tools: nightly
       - uses: ./.github/actions/os-version
         id: os_version
@@ -73,9 +72,8 @@ jobs:
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@main
+        uses: github/codeql-action/setup-codeql@main
         with:
-          languages: javascript # does not matter
           tools: nightly
       - uses: ./.github/actions/os-version
         id: os_version

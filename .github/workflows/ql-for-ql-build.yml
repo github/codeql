@@ -24,9 +24,8 @@ jobs:
           fetch-depth: 0
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@main
+        uses: github/codeql-action/setup-codeql@main
         with:
-          languages: javascript # does not matter
           tools: nightly
       - uses: ./.github/actions/os-version
         id: os_version
