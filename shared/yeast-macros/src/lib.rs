@@ -4,8 +4,10 @@ use proc_macro2::TokenStream as TokenStream2;
 mod ast;
 mod lower;
 mod parse;
+mod rule_parse;
+mod template_parse;
 
-/// Proc macro for constructing a `QueryNode` from a tree-sitter-inspired pattern.
+/// Proc macro for constructing a tree-sitter-inspired query `Pattern`.
 ///
 /// # Syntax
 ///
