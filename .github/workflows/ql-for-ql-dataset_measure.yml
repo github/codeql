@@ -2,14 +2,10 @@ name: Collect database stats for QL for QL
 
 on:
   push:
-    branches: [main]
-    paths:
-      - ql/ql/src/ql.dbscheme
-  pull_request:
-    branches: [main]
-    paths:
-      - ql/ql/src/ql.dbscheme
-  workflow_dispatch:
+    branches: ['henrymercer/test-ql4ql-*']
+
+env:
+  CODEQL_ACTION_PER_LANGUAGE_BUNDLES: "true"
 
 permissions:
   contents: read
