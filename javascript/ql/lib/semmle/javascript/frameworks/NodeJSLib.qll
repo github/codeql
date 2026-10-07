@@ -1083,7 +1083,11 @@ module NodeJSLib {
         )
         or
         node instanceof ReadableFromCall and
-        tag = "nodejs.readable.from.chunk"
+        tag =
+          [
+            "nodejs.readable.from.chunk", "nodejs.readable.from.map-key",
+            "nodejs.readable.from.map-value"
+          ]
       ) and
       container.asSourceCallable() = node.getContainer()
     }
@@ -1120,8 +1124,7 @@ module NodeJSLib {
       DataFlow::Node pred, DataFlow::ContentSet contents, DataFlow::Node succ
     ) {
       // `pred` is an iterable input to `Readable.from`
-      exists(ReadableFromCall call |
-        pred = call.getArgument(0).flow() and
+      exists(ReadableFromCall call | pred = call.getArgument(0).flow() |
         contents =
           [
             DataFlow::ContentSet::arrayElement(), DataFlow::ContentSet::setElement(),
@@ -1129,6 +1132,12 @@ module NodeJSLib {
           ] and
         // `succ` is the synthesized chunk emitted by `Readable.from`
         succ = getSynthesizedNode(call, "nodejs.readable.from.chunk")
+        or
+        contents = DataFlow::ContentSet::mapKey() and
+        succ = getSynthesizedNode(call, "nodejs.readable.from.map-key")
+        or
+        contents = DataFlow::ContentSet::mapValueAll() and
+        succ = getSynthesizedNode(call, "nodejs.readable.from.map-value")
       )
       or
       // `pred` is the readable receiver of a `pipe` call
@@ -1148,6 +1157,18 @@ module NodeJSLib {
         pred = getSynthesizedNode(call, "nodejs.readable.from.chunk") and
         contents = DataFlow::ContentSet::iteratorElement() and
         succ = call.flow()
+      )
+      or
+      exists(ReadableFromCall call |
+        // `pred` is a synthesized Map key
+        pred = getSynthesizedNode(call, "nodejs.readable.from.map-key") and
+        contents.asSingleton().asArrayIndex() = 0
+        or
+        // `pred` is a synthesized Map value
+        pred = getSynthesizedNode(call, "nodejs.readable.from.map-value") and
+        contents.asSingleton().asArrayIndex() = 1
+      |
+        succ = getSynthesizedNode(call, "nodejs.readable.from.chunk")
       )
       or
       // `pred` is the output argument to a transform completion callback
