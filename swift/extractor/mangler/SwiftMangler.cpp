@@ -118,7 +118,10 @@ SwiftMangledName SwiftMangler::visitExtensionDecl(const swift::ExtensionDecl* de
     // Clang's category identity avoids loading every declaration in the imported module.
     llvm::SmallString<128> usr;
     if (!clang::index::generateUSRForDecl(category, usr)) {
-      return initMangled(decl) << fetch(target) << "|clang|" << usr.str().str();
+      auto module = category->getOwningModule();
+      return initMangled(decl) << fetch(target) << "|clang|"
+                               << (module ? module->getFullModuleName() : "") << "|"
+                               << usr.str().str();
     }
     LOG_WARNING("Unable to generate an imported category USR; using declaration indexes");
   } else if (!decl->getClangNode() && llvm::isa<swift::ClangModuleUnit>(decl->getDeclContext())) {

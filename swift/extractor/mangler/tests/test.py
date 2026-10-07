@@ -22,6 +22,7 @@ class ManglerTests(unittest.TestCase):
         private_values=False,
         reverse=False,
         global_members=False,
+        same_category=False,
         unused=200,
     ):
         with tempfile.TemporaryDirectory() as directory:
@@ -41,7 +42,9 @@ class ManglerTests(unittest.TestCase):
                 'extern const int firstValue __attribute__((swift_name("Item.firstValue")));\n'
             )
             (modules / "second.h").write_text(
-                '#include "root.h"\n@interface Item (Second)\n-(void)second;\n@end\n'
+                '#include "root.h"\n@interface Item ('
+                + ("First" if same_category else "Second")
+                + ')\n-(void)second;\n@end\n'
                 '@interface OtherItem (First)\n-(void)other;\n@end\n'
                 'extern const int secondValue __attribute__((swift_name("Item.secondValue")));\n'
             )
@@ -134,6 +137,11 @@ class ManglerTests(unittest.TestCase):
         rows = [row for row in self.run_fixture(other_type=True) if len(row) == 4]
         self.assertEqual({row[0] for row in rows}, {"first", "second", "other"})
         self.assertEqual(len({row[2] for row in rows}), 3)
+
+    def test_same_category_name_on_same_type_in_distinct_submodules_has_distinct_keys(self):
+        rows = [row for row in self.run_fixture(same_category=True) if len(row) == 4]
+        self.assertEqual({row[0] for row in rows}, {"first", "second"})
+        self.assertEqual(len({row[2] for row in rows}), 2)
 
     def test_late_import_preserves_existing_keys_and_gets_a_distinct_extension(self):
         rows = self.run_fixture(late=True)
