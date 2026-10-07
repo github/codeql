@@ -70,3 +70,7 @@ extension H // $ access=H1
 
 extension A.B.C // $ access=A access=A.B access=A.B.C
   : P { } // $ access=P
+
+A() // $ access=A
+
+A.init() // $ access=A access=A.init
