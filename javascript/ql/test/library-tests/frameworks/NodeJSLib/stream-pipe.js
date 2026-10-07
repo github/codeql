@@ -85,3 +85,55 @@ const unrelated = {
   }
 };
 unrelated.pipe(new UncalledDestination(source("unrelated")));
+
+function directStringInput() {
+  function source(label) {
+    return "string chunk";
+  }
+
+  Readable.from(source("string")).pipe({
+    write(chunk) {
+      sink(chunk); // $ MISSING: flow=string
+      return true;
+    }
+  });
+}
+
+function directBufferInput() {
+  function source(label) {
+    return Buffer.from("buffer chunk");
+  }
+
+  const buffer = source("buffer");
+  const alias = buffer;
+  Readable.from(alias).pipe({
+    write(chunk) {
+      sink(chunk); // $ MISSING: flow=buffer
+      return true;
+    }
+  });
+}
+
+
+Readable.from(source("unknown-input")).pipe({
+  write(chunk) {
+    sink(chunk);
+    return true;
+  }
+});
+
+function importedBufferInput() {
+  const { Buffer: ImportedBuffer } = require("node:buffer");
+  const allocate = ImportedBuffer.alloc;
+
+  function source(label) {
+    return allocate(8);
+  }
+
+  Readable.from(source("imported-buffer")).pipe({
+    write(chunk) {
+      sink(chunk); // $ MISSING: flow=imported-buffer
+      return true;
+    }
+  });
+}
