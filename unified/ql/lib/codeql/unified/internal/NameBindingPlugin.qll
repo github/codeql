@@ -56,7 +56,11 @@ class NameBindingPlugin extends Unit {
 
 /** Holds if `member` is an instance member. */
 predicate isInstanceMember(Member member) {
-  (member instanceof VariableDeclaration or member instanceof FunctionDeclaration) and
+  (
+    member instanceof VariableDeclaration or
+    member instanceof FunctionDeclaration or
+    member instanceof ConstructorDeclaration
+  ) and
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
     any(NameBindingPlugin p).isInstanceMember(cls, member)
   )
@@ -64,10 +68,15 @@ predicate isInstanceMember(Member member) {
 
 /**
  * Holds if `member` is a non-instance member declared in the context of a class or top-level.
+ *
+ * Instance constructors are also considered static members, in order to be able to look them
+ * up as both instance members (`self.init()`) and static members (`C1.init()`).
  */
 predicate isStaticMember(Member member) {
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
     not any(NameBindingPlugin p).isInstanceMember(cls, member)
+    or
+    member instanceof ConstructorDeclaration
   )
   or
   member = any(TopLevel t).getBody().getAStmt()

@@ -2,6 +2,7 @@ using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -17,6 +18,8 @@ namespace Semmle.Extraction.Tests
         public string? CertificatePath { get; } = null;
         public X509Certificate2? Certificate { get; } = null;
 
+        public void SetProcessEnvironment(ProcessStartInfo pi) { }
+
         public void Dispose() { }
     }
 
@@ -28,6 +31,7 @@ namespace Semmle.Extraction.Tests
         public string? CertificatePath { get; } = null;
         public X509Certificate2? Certificate { get; } = null;
 
+        public void SetProcessEnvironment(ProcessStartInfo pi) { }
         public void Dispose() { }
     }
 
