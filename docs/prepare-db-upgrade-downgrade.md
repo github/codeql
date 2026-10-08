@@ -101,6 +101,59 @@ relation1.rel: run upgrade.qlo predicate1
 relation2.rel: run upgrade.qlo predicate2
 ```
 
+### Creating new database entities
+
+An upgrade or downgrade query can create database entities that do not exist in
+the source database by using the compiler-provided `QlBuiltins::NewEntity`
+module. Define a `newtype` whose values uniquely identify the entities to
+create, and instantiate `NewEntity` with that type:
+
+```ql
+class Element extends @element {
+  string toString() { none() }
+}
+
+// Create one wrapper for each existing element.
+newtype TAddedElement = TWrapper(Element element)
+
+module Fresh = QlBuiltins::NewEntity<TAddedElement>;
+```
+
+`Fresh::map` maps each value of `TAddedElement` to a distinct new entity ID.
+Using an algebraic data type with multiple constructors allows several distinct
+entities to be created for the same source entity.
+
+The query is compiled against the source schema, so a fresh ID cannot belong to
+an entity type that exists only in the target schema. Define a union of the
+appropriate source-schema type and `Fresh::EntityId`, then use a class extending
+that union in the output predicates:
+
+```ql
+class TNewElement = @element or Fresh::EntityId;
+
+class NewElement extends TNewElement {
+  string toString() { none() }
+}
+
+query predicate new_wrappers(NewElement wrapper, Element element) {
+  wrapper = Fresh::map(TWrapper(element))
+}
+```
+
+Run the predicate to populate a relation in the target schema:
+
+```properties
+wrappers.rel: run upgrade.qlo new_wrappers
+```
+
+The target relation's column type determines the database type of each fresh
+ID. Emit every target relation needed to describe the new entity, including
+relationships such as its parent, location, or type. When rewriting an existing
+relation, its output predicate will usually need to preserve all existing rows
+as well as add rows containing the fresh IDs. Reuse the same
+`Fresh::map(...)` expression in each predicate that refers to a particular new
+entity.
+
 ### Testing your scripts
 
 Although we have some automated testing of the scripts (e.g. to test that you can upgrade databases all the way from an initial dbscheme to the newest, and back), it's essential that you apply some more rigorous testing for any non-trivial upgrade or downgrade. You might do so as follows:
