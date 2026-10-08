@@ -113,7 +113,7 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `name_node`. */
-    final F::Identifier getNameNode() { unified_accessor_declaration_def(this, _, result) }
+    final override F::Identifier getNameNode() { unified_accessor_declaration_def(this, _, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
     final override F::Parameter getParameter(int i) {
@@ -200,7 +200,9 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `name_node`. */
-    final F::Identifier getNameNode() { unified_associated_type_declaration_def(this, result) }
+    final override F::Identifier getNameNode() {
+      unified_associated_type_declaration_def(this, result)
+    }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -427,7 +429,9 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `name_node`. */
-    final F::Identifier getNameNode() { unified_class_like_declaration_name_node(this, result) }
+    final override F::Identifier getNameNode() {
+      unified_class_like_declaration_name_node(this, result)
+    }
 
     /** Gets the node corresponding to the field `type_constraint`. */
     final F::TypeConstraint getTypeConstraint(int i) {
@@ -501,7 +505,9 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `name_node`. */
-    final F::Identifier getNameNode() { unified_constructor_declaration_name_node(this, result) }
+    final override F::Identifier getNameNode() {
+      unified_constructor_declaration_name_node(this, result)
+    }
 
     /** Gets the node corresponding to the field `parameter`. */
     final override F::Parameter getParameter(int i) {
@@ -704,7 +710,7 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `name_node`. */
-    final F::Identifier getNameNode() { unified_function_declaration_def(this, result) }
+    final override F::Identifier getNameNode() { unified_function_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
     final override F::Parameter getParameter(int i) {
@@ -979,7 +985,10 @@ module Unified {
     final override F::AstNode getAFieldOrChild() { unified_map_literal_element(this, _, result) }
   }
 
-  class Member extends @unified_member, F::AstNode { }
+  class Member extends @unified_member, F::AstNode {
+    /** Gets the node corresponding to the field `name_node`. */
+    F::Identifier getNameNode() { none() }
+  }
 
   /** A class representing `member_access_expr` nodes. */
   class MemberAccessExpr extends @unified_member_access_expr, F::Expr {
@@ -1341,7 +1350,9 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `name_node`. */
-    final F::Identifier getNameNode() { unified_type_alias_declaration_def(this, result, _) }
+    final override F::Identifier getNameNode() {
+      unified_type_alias_declaration_def(this, result, _)
+    }
 
     /** Gets the node corresponding to the field `type`. */
     final F::Expr getType() { unified_type_alias_declaration_def(this, _, result) }

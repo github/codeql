@@ -193,7 +193,7 @@ module Unified {
 
   class VariableDeclaration extends G::VariableDeclaration {
     /** Gets the name node of this variable declaration, if any. */
-    Identifier getNameNode() { result = this.getPattern() }
+    override Identifier getNameNode() { result = this.getPattern() }
 
     /** Gets the name of the variable being declared, if any. */
     string getName() { result = this.getNameNode().getValue() }
