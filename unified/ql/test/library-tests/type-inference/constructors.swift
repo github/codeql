@@ -2,17 +2,17 @@ class C1 {
     init(_ x: Int) {}  // name=C1.init
 
     convenience init() {  // name=C1.init_conv
-        self.init(0)  // $ target=C1.init $ SPURIOUS: target=C1.init_conv
+        self.init(0)  // $ target=C1.init
     }
 }
 
-var c11 = C1()  // $ type=c11:C1 target=C1.init_conv $ SPURIOUS: target=C1.init
-var c12 = C1.init()  // $ type=c12:C1 target=C1.init_conv $ SPURIOUS: target=C1.init
+var c11 = C1()  // $ type=c11:C1 target=C1.init_conv
+var c12 = C1.init()  // $ type=c12:C1 target=C1.init_conv
 
 class C2: C1 {}  // inherits `init`
 
-var c21 = C2()  // $ type=c21:C2 $ MISSING: target=C1.init_conv $ SPURIOUS: target=C2.init
-var c22 = C2.init()  // $ target=C1.init_conv $ MISSING: type=c22:C2 $ SPURIOUS: target=C1.init
+var c21 = C2()  // $ type=c21:C2 target=C1.init_conv
+var c22 = C2.init()  // $ type=c22:C2 target=C1.init_conv
 
 class C3 {
     init() {}
@@ -32,8 +32,8 @@ class C4: C3 {
 
 class C5: C4 {}  // inherits `init` and `convenience init`
 
-var c51 = C5()  // $ type=c51:C5 $ MISSING: target=C4.init $ SPURIOUS: target=C5.init
-var c52 = C5(0)  // $ type=c52:C5 $ MISSING: target=C4.init $ SPURIOUS: target=C5.init
+var c51 = C5()  // $ type=c51:C5 target=C4.init
+var c52 = C5(0)  // $ type=c52:C5 target=C4.init
 
 class C6<T1, T2> {
     init(x: T1, y: T2) {}
@@ -47,12 +47,12 @@ class C6<T1, T2> {
 
 class C7<T3, T4>: C6<T4, T3> {}  // inherits `init(x: T4, y: T3)` and `convenience init(x: T4)`
 
-var c71 = C7(x: "string", y: true)  // $ MISSING: type=c71@C7<T3>:Bool type=c71@C7<T4>:String target=C6.init $ SPURIOUS: target=C7.init
-var c72 = C7<Bool, _>(x: 0)  // $ type=c72@C7<T3>:Bool $ MISSING: type=c72@C7<T4>:Int target=C6.init $ SPURIOUS: target=C7.init
+var c71 = C7(x: "string", y: true)  // $ type=c71@C7<T3>:Bool type=c71@C7<T4>:String target=C6.init
+var c72 = C7<Bool, _>(x: 0)  // $ type=c72@C7<T3>:Bool type=c72@C7<T4>:Int target=C6.init
 
 class C8: C7<Int, String> {  // inherits `init(x: String, y: Int)`
     convenience init(x: String) {  // name=C8.init_conv
-        self.init(x: x, y: 0)  // $ target=C6.init $ SPURIOUS: target=C8.init_conv
+        self.init(x: x, y: 0)  // $ target=C6.init
     }
 }
 
