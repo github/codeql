@@ -731,7 +731,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             macro_name_node: (identifier #{name})
             type_argument: {type_args}
             argument: {args}
-            argument: {trailing}
+            argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
             argument: {additional})
         ),
         // Member access (`list.append`). The `declName` is itself a
