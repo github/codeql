@@ -1681,9 +1681,9 @@ module Make<
     private newtype TNode =
       TWriteDefSource(WriteDefinition def) { DfInput::ssaDefHasSource(def) } or
       TExprNode(DfInput::Expr e, SourceVariable v, Boolean isPost) {
-        exists(Definition def |
-          def.getSourceVariable() = v and
-          e = DfInput::getARead(def)
+        exists(BasicBlock bb, int i |
+          e.hasCfgNode(bb, i) and
+          variableRead(bb, i, v, true)
         )
       } or
       TSsaDefinitionNode(DefinitionExt def) {
