@@ -65,5 +65,14 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       step.taint() and
       node2.isResultValue(call)
     )
+    or
+    exists(UnaryExpr expr |
+      // The AST mapping translates `[weak x]` into `[x = weak x]`.
+      // Model the `weak` UnaryExpr as a store into `Optional.some`.
+      expr.getOperator().(PrefixOperator).getValue() = "weak" and
+      node1.isResultValue(expr.getOperand()) and
+      step.storeName("some.0") and
+      node2.isResultValue(expr)
+    )
   }
 }

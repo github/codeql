@@ -173,8 +173,8 @@ class C {
         x = source("C.3")
         let closure = { [weak self] in
             guard let self else { return }
-            sink(self.x)  // $ MISSING: hasValueFlow=C.3
-            sink(x)  // $ MISSING: hasValueFlow=C.3
+            sink(self.x)  // $ hasValueFlow=C.3
+            sink(x)  // $ hasValueFlow=C.3
         }
         closure()
     }
