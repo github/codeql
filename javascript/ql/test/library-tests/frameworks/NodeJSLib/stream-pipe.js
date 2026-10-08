@@ -171,7 +171,12 @@ class HookTransform extends Transform {
   }
 }
 
-Readable.from([source("transform-hook")]).pipe(new HookTransform());
+Readable.from([source("transform-hook")]).pipe(new HookTransform()).pipe({
+  write(chunk) {
+    sink(chunk); // $ MISSING: flow=transform-hook
+    return true;
+  }
+});
 
 class OverriddenWriteDestination extends Writable {
   write(chunk) {
