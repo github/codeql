@@ -38,6 +38,7 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node2.isResultValue(expr)
       or
       expr.getOperator().(PrefixOperator).getValue() = "try?" and
+      // TODO: preserve the value of some.0 if it is already stored in that
       node1.isResultValue(expr.getOperand()) and
       step.storeName("some.0") and
       node2.isResultValue(expr)

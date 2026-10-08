@@ -237,3 +237,14 @@ func t26() {
     opt!.0 = source("t26.1")
     sink(opt!.0)  // $ MISSING: hasValueFlow=t26.1
 }
+
+func t27() {
+    func getOptional() throws -> String? {
+        return Optional.some(source("t27.1"))
+    }
+    // TODO: try? should not double-wrap in Optional
+    let x = try? getOptional()
+    if let x {
+        sink(x)  // $ MISSING: hasValueFlow=t27.1
+    }
+}
