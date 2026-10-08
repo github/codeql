@@ -1683,7 +1683,11 @@ module Make<
       TExprNode(DfInput::Expr e, SourceVariable v, Boolean isPost) {
         exists(BasicBlock bb, int i |
           e.hasCfgNode(bb, i) and
-          variableRead(bb, i, v, true)
+          variableRead(bb, i, v, true) and
+          // Only materialise if 'expr' has a reaching definition.
+          // Note that the read may correspond to a different variable than 'v', but the C++
+          // instantiation currently expects this particular behaviour.
+          DfInput::getARead(_) = e
         )
       } or
       TSsaDefinitionNode(DefinitionExt def) {
