@@ -1137,9 +1137,9 @@ private predicate interpretForwardsModelType(
 }
 
 /**
- * Holds if `forwarder` may forward its arguments starting at `start` to `constructor`. The
- * actual constructor being forwarded to depends on the types of arguments from `start`
- * at calls to `forwarder`.
+ * Holds if `forwarder` may forward its arguments starting at `start` to a
+ * constructor of `c`. The actual constructor being forwarded to depends on the
+ * types of arguments from `start` at calls to `forwarder`.
  */
 private predicate interpretForwardsModel(
   Function forwarder, Class c, int start, string output, string provenance, string model
@@ -1147,7 +1147,10 @@ private predicate interpretForwardsModel(
   interpretForwardsModelType(forwarder, c, start, output, provenance, model)
 }
 
-/** Holds if `forwarder` forwards its arguments starting at `start` to `constructor`. */
+/**
+ * Holds if `forwarder` forwards its arguments starting at `start` to a
+ * constructor of `c`.
+ */
 predicate forwards(Function forwarder, Class c, int start) {
   interpretForwardsModel(forwarder, c, start, _, _, _)
 }
