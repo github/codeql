@@ -1742,7 +1742,7 @@ module Make<
       /** Gets the underlying expression. */
       DfInput::Expr getExpr() { result = e }
 
-      /** Holds if represents the access to `var` performed at `expr`. */
+      /** Holds if this represents the access to `var` performed at `expr`. */
       predicate isExprAndVariable(DfInput::Expr expr, SourceVariable var) { expr = e and var = v_ }
 
       override Location getLocation() {
