@@ -1,3 +1,8 @@
+func source(_ s: String) -> String { return s }
+
+@discardableResult
+func sink(_ s: Any) -> String { return "" }
+
 enum E {
     case case1(String)
     case case2(String)
