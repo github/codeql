@@ -33,6 +33,9 @@ network:
     - bazel
     - python
 steps:
+  - name: Set up CodeQL
+    uses: ./.github/actions/fetch-codeql
+
   - name: Configure Git
     run: |
       git config user.name "github-actions[bot]"
