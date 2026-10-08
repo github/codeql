@@ -30,4 +30,11 @@ class C {
             print(instanceField) // $ access=instanceField implicit-qualifier=guarded.self
         }
     }
+
+    func t5() {  // implicit-self=t5.self
+        foo(123) { [unowned self] in  // $ captured=unowned.self access=t5.self // name=unowned.self
+            print(self)  // $ access=unowned.self
+            print(instanceField)  // $ access=instanceField implicit-qualifier=unowned.self
+        }
+    }
 }
