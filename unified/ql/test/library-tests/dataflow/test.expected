@@ -50,6 +50,12 @@ edges
 | enums.swift:20:12:20:12 | e [case1.0] | enums.swift:21:10:21:22 | ... .case1(...) [case1.0] | provenance |  |
 | enums.swift:21:10:21:22 | ... .case1(...) [case1.0] | enums.swift:21:21:21:21 | x | provenance |  |
 | enums.swift:21:21:21:21 | x | enums.swift:22:14:22:14 | x | provenance |  |
+| enums.swift:29:9:29:9 | e [case1.0] | enums.swift:30:33:30:33 | e [case1.0] | provenance |  |
+| enums.swift:29:13:29:35 | ... .case1(...) [case1.0] | enums.swift:29:9:29:9 | e [case1.0] | provenance |  |
+| enums.swift:29:21:29:34 | source(...) | enums.swift:29:13:29:35 | ... .case1(...) [case1.0] | provenance |  |
+| enums.swift:30:16:30:29 | ... .case1(...) [case1.0] | enums.swift:30:28:30:28 | x | provenance |  |
+| enums.swift:30:28:30:28 | x | enums.swift:31:10:31:10 | x | provenance |  |
+| enums.swift:30:33:30:33 | e [case1.0] | enums.swift:30:16:30:29 | ... .case1(...) [case1.0] | provenance |  |
 | enums.swift:35:9:35:9 | e [case2.0] | enums.swift:36:12:36:12 | e [case2.0] | provenance |  |
 | enums.swift:35:9:35:9 | e [case2.0] | enums.swift:43:12:43:12 | e [case2.0] | provenance |  |
 | enums.swift:35:13:35:35 | ... .case2(...) [case2.0] | enums.swift:35:9:35:9 | e [case2.0] | provenance |  |
@@ -340,6 +346,13 @@ nodes
 | enums.swift:21:10:21:22 | ... .case1(...) [case1.0] | semmle.label | ... .case1(...) [case1.0] |
 | enums.swift:21:21:21:21 | x | semmle.label | x |
 | enums.swift:22:14:22:14 | x | semmle.label | x |
+| enums.swift:29:9:29:9 | e [case1.0] | semmle.label | e [case1.0] |
+| enums.swift:29:13:29:35 | ... .case1(...) [case1.0] | semmle.label | ... .case1(...) [case1.0] |
+| enums.swift:29:21:29:34 | source(...) | semmle.label | source(...) |
+| enums.swift:30:16:30:29 | ... .case1(...) [case1.0] | semmle.label | ... .case1(...) [case1.0] |
+| enums.swift:30:28:30:28 | x | semmle.label | x |
+| enums.swift:30:33:30:33 | e [case1.0] | semmle.label | e [case1.0] |
+| enums.swift:31:10:31:10 | x | semmle.label | x |
 | enums.swift:35:9:35:9 | e [case2.0] | semmle.label | e [case2.0] |
 | enums.swift:35:13:35:35 | ... .case2(...) [case2.0] | semmle.label | ... .case2(...) [case2.0] |
 | enums.swift:35:21:35:34 | source(...) | semmle.label | source(...) |
@@ -650,6 +663,7 @@ testFailures
 | calls.swift:123:18:123:27 | ... .field | calls.swift:75:21:75:34 | source(...) | calls.swift:123:18:123:27 | ... .field | $@ | calls.swift:75:21:75:34 | source(...) | source(...) |
 | enums.swift:11:14:11:14 | x | enums.swift:7:21:7:34 | source(...) | enums.swift:11:14:11:14 | x | $@ | enums.swift:7:21:7:34 | source(...) | source(...) |
 | enums.swift:22:14:22:14 | x | enums.swift:18:21:18:34 | source(...) | enums.swift:22:14:22:14 | x | $@ | enums.swift:18:21:18:34 | source(...) | source(...) |
+| enums.swift:31:10:31:10 | x | enums.swift:29:21:29:34 | source(...) | enums.swift:31:10:31:10 | x | $@ | enums.swift:29:21:29:34 | source(...) | source(...) |
 | enums.swift:40:14:40:14 | x | enums.swift:35:21:35:34 | source(...) | enums.swift:40:14:40:14 | x | $@ | enums.swift:35:21:35:34 | source(...) | source(...) |
 | enums.swift:45:14:45:14 | x | enums.swift:35:21:35:34 | source(...) | enums.swift:45:14:45:14 | x | $@ | enums.swift:35:21:35:34 | source(...) | source(...) |
 | enums.swift:54:10:54:10 | x | enums.swift:52:31:52:44 | source(...) | enums.swift:54:10:54:10 | x | $@ | enums.swift:52:31:52:44 | source(...) | source(...) |

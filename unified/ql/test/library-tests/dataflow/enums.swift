@@ -27,8 +27,8 @@ func t2() {
 
 func t3() {
     let e = E.case1(source("t3.1"))
-    guard let E.case1(x) = e else { return }
-    sink(x)  // $ MISSING: hasValueFlow=t3.1
+    guard case E.case1(let x) = e else { return }
+    sink(x)  // $ hasValueFlow=t3.1
 }
 
 func t4() {
