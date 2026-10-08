@@ -8,7 +8,7 @@ edition = "2021"
 
 [dependencies]
 tree-sitter = ">= 0.26.0"
-tree-sitter-ql = { git = "https://github.com/tree-sitter/tree-sitter-ql.git", rev = "5b8ee9adaa1f2a1ea958064b61f8feb0a5a886c0"}
+tree-sitter-ql = { git = "https://github.com/tree-sitter/tree-sitter-ql.git", rev = "d9d6c853caf0f882e6371e4d4da5817c48c8a8d8"}
 tree-sitter-ql-dbscheme = { git = "https://github.com/tree-sitter/tree-sitter-ql-dbscheme.git", rev = "1980b4b6998a1138d326f863e6168f0f2c0c544d"}
 tree-sitter-blame = {path = "../buramu/tree-sitter-blame"}
 tree-sitter-json = {git = "https://github.com/tree-sitter/tree-sitter-json.git", rev = "8bfdb43f47ad805bb1ce093203cfcbaa8ed2c571"}
