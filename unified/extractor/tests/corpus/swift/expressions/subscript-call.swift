@@ -1,6 +1,6 @@
-foo(1, 2)
+handlers[0]
 
-handle {
+handlers[0] {
   first()
 } completion: {
   second()

@@ -1,6 +1,6 @@
-foo(1, 2)
+handlers[0]
 
-handle {
+handlers[0] {
   first()
 } completion: {
   second()
@@ -15,27 +15,28 @@ sourceFile
   statements:
     codeBlockItem
       item:
-        functionCallExpr
-          leftParen: (
-          rightParen: )
+        subscriptCallExpr
+          leftSquare: [
+          rightSquare: ]
           arguments:
             labeledExpr
               expression:
                 integerLiteralExpr
-                  literal: integerLiteral "1"
-              trailingComma: ,
-            labeledExpr
-              expression:
-                integerLiteralExpr
-                  literal: integerLiteral "2"
+                  literal: integerLiteral "0"
           additionalTrailingClosures:
           calledExpression:
             declReferenceExpr
-              baseName: identifier "foo"
+              baseName: identifier "handlers"
     codeBlockItem
       item:
-        functionCallExpr
+        subscriptCallExpr
+          leftSquare: [
+          rightSquare: ]
           arguments:
+            labeledExpr
+              expression:
+                integerLiteralExpr
+                  literal: integerLiteral "0"
           additionalTrailingClosures:
             multipleTrailingClosureElement
               colon: :
@@ -75,7 +76,7 @@ sourceFile
                               baseName: identifier "third"
           calledExpression:
             declReferenceExpr
-              baseName: identifier "handle"
+              baseName: identifier "handlers"
           trailingClosure:
             closureExpr
               leftBrace: {
@@ -98,16 +99,16 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩\n\n⟨stmt⟩"
       stmt:
-        call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
-          callee: identifier "foo" source="foo"
+        call_expr source="⟨callee⟩[⟨argument⟩]"
+          callee: identifier "handlers" source="handlers"
           argument:
             argument source="⟨value⟩"
-              value: int_literal "1" source="1"
-            argument source="⟨value⟩"
-              value: int_literal "2" source="2"
-        call_expr source="⟨callee⟩ ⟨argument⟩ ⟨argument⟩ ⟨argument⟩"
-          callee: identifier "handle" source="handle"
+              value: int_literal "0" source="0"
+        call_expr source="⟨callee⟩[⟨argument⟩] ⟨argument⟩ ⟨argument⟩ ⟨argument⟩"
+          callee: identifier "handlers" source="handlers"
           argument:
+            argument source="⟨value⟩"
+              value: int_literal "0" source="0"
             argument source="⟨value⟩"
               value:
                 function_expr source="{\n  ⟨body⟩\n}"
