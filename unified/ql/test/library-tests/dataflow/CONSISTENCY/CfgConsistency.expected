@@ -1,0 +1,5 @@
+consistencyOverview
+| deadEnd | 2 |
+deadEnd
+| enums.swift:2:10:2:22 | Entry |
+| enums.swift:3:10:3:22 | Entry |
