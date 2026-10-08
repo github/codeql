@@ -123,19 +123,12 @@ module Fresh = QlBuiltins::NewEntity<TAddedElement>;
 Using an algebraic data type with multiple constructors allows several distinct
 entities to be created for the same source entity.
 
-The query is compiled against the source schema, so a fresh ID cannot belong to
-an entity type that exists only in the target schema. Define a union of the
-appropriate source-schema type and `Fresh::EntityId`, then use a class extending
-that union in the output predicates:
+The query is compiled against the source schema, so its static QL types cannot
+refer to an entity type that exists only in the target schema. An output column
+that contains only fresh IDs can use `Fresh::EntityId` directly:
 
 ```ql
-class TNewElement = @element or Fresh::EntityId;
-
-class NewElement extends TNewElement {
-  string toString() { none() }
-}
-
-query predicate new_wrappers(NewElement wrapper, Element element) {
+query predicate new_wrappers(Fresh::EntityId wrapper, Element element) {
   wrapper = Fresh::map(TWrapper(element))
 }
 ```
@@ -146,13 +139,26 @@ Run the predicate to populate a relation in the target schema:
 wrappers.rel: run upgrade.qlo new_wrappers
 ```
 
-The target relation's column type determines the database type of each fresh
-ID. Emit every target relation needed to describe the new entity, including
-relationships such as its parent, location, or type. When rewriting an existing
-relation, its output predicate will usually need to preserve all existing rows
-as well as add rows containing the fresh IDs. Reuse the same
-`Fresh::map(...)` expression in each predicate that refers to a particular new
-entity.
+If an output column can contain both existing source IDs and fresh IDs, define a
+union of the source-schema type and `Fresh::EntityId`, then use a class extending
+that union as the column's static QL type:
+
+```ql
+class TExistingOrFreshElement = @element or Fresh::EntityId;
+
+class ExistingOrFreshElement extends TExistingOrFreshElement {
+  string toString() { none() }
+}
+```
+
+These QL types only describe values while evaluating the transformation against
+the source schema. The corresponding column type in the target database schema
+determines the database type assigned to each fresh ID. Emit every target
+relation needed to describe the new entity, including relationships such as its
+parent, location, or type. When rewriting an existing relation, its output
+predicate will usually need to preserve all existing rows as well as add rows
+containing the fresh IDs. Reuse the same `Fresh::map(...)` expression in each
+predicate that refers to a particular new entity.
 
 ### Testing your scripts
 
