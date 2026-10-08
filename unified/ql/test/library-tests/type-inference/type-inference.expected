@@ -129,15 +129,24 @@ inferCertainType
 | closures.swift:66:9:68:9 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |
-| constructors.swift:13:9:13:10 | f1 |  | constructors.swift:12:11:12:11 | T |
-| constructors.swift:14:9:14:10 | f2 |  | {EXTERNAL LOCATION} | String |
-| constructors.swift:15:9:15:10 | f3 |  | {EXTERNAL LOCATION} | Function |
-| constructors.swift:15:9:15:10 | f3 | Args | {EXTERNAL LOCATION} | Tuple1 |
-| constructors.swift:15:9:15:10 | f3 | Args.T0 | constructors.swift:12:11:12:11 | T |
-| constructors.swift:15:9:15:10 | f3 | Return | constructors.swift:12:11:12:11 | T |
-| constructors.swift:15:24:15:29 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
-| constructors.swift:20:23:20:32 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
-| constructors.swift:20:23:20:32 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:24:12:24:12 | x |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:29:9:29:12 | self |  | constructors.swift:23:1:31:1 | C4 |
+| constructors.swift:39:10:39:10 | x |  | constructors.swift:38:10:38:11 | T1 |
+| constructors.swift:39:17:39:17 | y |  | constructors.swift:38:14:38:15 | T2 |
+| constructors.swift:41:18:41:18 | s |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:43:22:43:22 | x |  | constructors.swift:38:10:38:11 | T1 |
+| constructors.swift:54:22:54:22 | x |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:55:9:55:12 | self |  | constructors.swift:53:1:57:1 | C8 |
+| constructors.swift:55:22:55:22 | x |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:60:9:60:10 | f1 |  | constructors.swift:59:11:59:11 | T |
+| constructors.swift:61:9:61:10 | f2 |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:62:9:62:10 | f3 |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:62:9:62:10 | f3 | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:62:9:62:10 | f3 | Args.T0 | constructors.swift:59:11:59:11 | T |
+| constructors.swift:62:9:62:10 | f3 | Return | constructors.swift:59:11:59:11 | T |
+| constructors.swift:62:24:62:29 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:67:23:67:32 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:67:23:67:32 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | fields.swift:2:7:2:20 | inheritedField |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:6:7:6:17 | storedField |  | {EXTERNAL LOCATION} | String |
 | fields.swift:7:7:7:18 | genericField |  | fields.swift:5:22:5:22 | T |
@@ -1093,8 +1102,8 @@ inferType
 | closures.swift:69:5:69:5 | _ |  | {EXTERNAL LOCATION} | String |
 | closures.swift:69:5:69:14 | ... = ... |  | {EXTERNAL LOCATION} | String |
 | closures.swift:69:9:69:14 | result |  | {EXTERNAL LOCATION} | String |
-| constructors.swift:1:1:20:33 | Block |  | constructors.swift:12:1:16:1 | S1 |
-| constructors.swift:1:1:20:33 | Block | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:1:1:67:33 | Block |  | constructors.swift:59:1:63:1 | S1 |
+| constructors.swift:1:1:67:33 | Block | T | {EXTERNAL LOCATION} | Int |
 | constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:4:24:6:5 | Block |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |
@@ -1104,36 +1113,81 @@ inferType
 | constructors.swift:9:11:9:14 | C1(...) |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:10:5:10:7 | c12 |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:10:11:10:19 | ... .init(...) |  | constructors.swift:1:1:7:1 | C1 |
-| constructors.swift:13:9:13:10 | f1 |  | constructors.swift:12:11:12:11 | T |
-| constructors.swift:14:9:14:10 | f2 |  | {EXTERNAL LOCATION} | String |
-| constructors.swift:14:22:14:30 | "default" |  | {EXTERNAL LOCATION} | String |
-| constructors.swift:15:9:15:10 | f3 |  | {EXTERNAL LOCATION} | Function |
-| constructors.swift:15:9:15:10 | f3 | Args | {EXTERNAL LOCATION} | Tuple1 |
-| constructors.swift:15:9:15:10 | f3 | Args.T0 | constructors.swift:12:11:12:11 | T |
-| constructors.swift:15:9:15:10 | f3 | Return | constructors.swift:12:11:12:11 | T |
-| constructors.swift:15:24:15:29 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
-| constructors.swift:18:5:18:7 | s11 |  | constructors.swift:12:1:16:1 | S1 |
-| constructors.swift:18:5:18:7 | s11 | T | {EXTERNAL LOCATION} | Int |
-| constructors.swift:18:11:18:19 | S1(...) |  | constructors.swift:12:1:16:1 | S1 |
-| constructors.swift:18:11:18:19 | S1(...) | T | {EXTERNAL LOCATION} | Int |
-| constructors.swift:18:18:18:18 | 0 |  | {EXTERNAL LOCATION} | Int |
-| constructors.swift:19:5:19:7 | s12 |  | constructors.swift:12:1:16:1 | S1 |
-| constructors.swift:19:5:19:7 | s12 | T | {EXTERNAL LOCATION} | Bool |
-| constructors.swift:19:11:19:30 | S1(...) |  | constructors.swift:12:1:16:1 | S1 |
-| constructors.swift:19:11:19:30 | S1(...) | T | {EXTERNAL LOCATION} | Bool |
-| constructors.swift:19:18:19:21 | true |  | {EXTERNAL LOCATION} | Bool |
-| constructors.swift:19:28:19:29 | "" |  | {EXTERNAL LOCATION} | String |
-| constructors.swift:20:1:20:33 | S1(...) |  | constructors.swift:12:1:16:1 | S1 |
-| constructors.swift:20:1:20:33 | S1(...) | T | {EXTERNAL LOCATION} | Int |
-| constructors.swift:20:8:20:8 | 0 |  | {EXTERNAL LOCATION} | Int |
-| constructors.swift:20:15:20:16 | "" |  | {EXTERNAL LOCATION} | String |
-| constructors.swift:20:23:20:32 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
-| constructors.swift:20:23:20:32 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
-| constructors.swift:20:23:20:32 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
-| constructors.swift:20:23:20:32 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
-| constructors.swift:20:25:20:25 | x |  | {EXTERNAL LOCATION} | Int |
-| constructors.swift:20:30:20:30 | Block |  | {EXTERNAL LOCATION} | Int |
-| constructors.swift:20:30:20:30 | x |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:14:5:14:7 | c21 |  | constructors.swift:12:1:12:15 | C2 |
+| constructors.swift:14:11:14:14 | C2(...) |  | constructors.swift:12:1:12:15 | C2 |
+| constructors.swift:15:5:15:7 | c22 |  | constructors.swift:1:1:7:1 | C1 |
+| constructors.swift:15:11:15:19 | ... .init(...) |  | constructors.swift:1:1:7:1 | C1 |
+| constructors.swift:21:5:21:6 | c3 |  | constructors.swift:17:1:19:1 | C3 |
+| constructors.swift:21:10:21:13 | C3(...) |  | constructors.swift:17:1:19:1 | C3 |
+| constructors.swift:24:12:24:12 | x |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:24:20:26:5 | Block |  | constructors.swift:17:1:19:1 | C3 |
+| constructors.swift:25:9:25:13 | super |  | constructors.swift:17:1:19:1 | C3 |
+| constructors.swift:25:9:25:20 | ... .init(...) |  | constructors.swift:17:1:19:1 | C3 |
+| constructors.swift:28:33:30:5 | Block |  | constructors.swift:23:1:31:1 | C4 |
+| constructors.swift:29:9:29:12 | self |  | constructors.swift:23:1:31:1 | C4 |
+| constructors.swift:29:9:29:20 | ... .init(...) |  | constructors.swift:23:1:31:1 | C4 |
+| constructors.swift:29:19:29:19 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:35:5:35:7 | c51 |  | constructors.swift:33:1:33:15 | C5 |
+| constructors.swift:35:11:35:14 | C5(...) |  | constructors.swift:33:1:33:15 | C5 |
+| constructors.swift:36:5:36:7 | c52 |  | constructors.swift:33:1:33:15 | C5 |
+| constructors.swift:36:11:36:15 | C5(...) |  | constructors.swift:33:1:33:15 | C5 |
+| constructors.swift:36:14:36:14 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:39:10:39:10 | x |  | constructors.swift:38:10:38:11 | T1 |
+| constructors.swift:39:17:39:17 | y |  | constructors.swift:38:14:38:15 | T2 |
+| constructors.swift:41:18:41:18 | s |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:43:22:43:22 | x |  | constructors.swift:38:10:38:11 | T1 |
+| constructors.swift:44:20:44:60 | "Convenience initializer not implemented" |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:50:5:50:7 | c71 |  | constructors.swift:48:1:48:31 | C7 |
+| constructors.swift:50:11:50:34 | C7(...) |  | constructors.swift:48:1:48:31 | C7 |
+| constructors.swift:50:17:50:24 | "string" |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:50:30:50:33 | true |  | {EXTERNAL LOCATION} | Bool |
+| constructors.swift:51:5:51:7 | c72 |  | constructors.swift:48:1:48:31 | C7 |
+| constructors.swift:51:5:51:7 | c72 | T3 | {EXTERNAL LOCATION} | Bool |
+| constructors.swift:51:11:51:27 | ...(...) |  | constructors.swift:48:1:48:31 | C7 |
+| constructors.swift:51:11:51:27 | ...(...) | T3 | {EXTERNAL LOCATION} | Bool |
+| constructors.swift:51:26:51:26 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:54:22:54:22 | x |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:54:33:56:5 | Block |  | constructors.swift:38:1:46:1 | C6 |
+| constructors.swift:54:33:56:5 | Block |  | constructors.swift:53:1:57:1 | C8 |
+| constructors.swift:54:33:56:5 | Block | T1 | {EXTERNAL LOCATION} | String |
+| constructors.swift:54:33:56:5 | Block | T2 | {EXTERNAL LOCATION} | Int |
+| constructors.swift:55:9:55:12 | self |  | constructors.swift:53:1:57:1 | C8 |
+| constructors.swift:55:9:55:29 | ... .init(...) |  | constructors.swift:38:1:46:1 | C6 |
+| constructors.swift:55:9:55:29 | ... .init(...) |  | constructors.swift:53:1:57:1 | C8 |
+| constructors.swift:55:9:55:29 | ... .init(...) | T1 | {EXTERNAL LOCATION} | String |
+| constructors.swift:55:9:55:29 | ... .init(...) | T2 | {EXTERNAL LOCATION} | Int |
+| constructors.swift:55:22:55:22 | x |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:55:28:55:28 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:60:9:60:10 | f1 |  | constructors.swift:59:11:59:11 | T |
+| constructors.swift:61:9:61:10 | f2 |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:61:22:61:30 | "default" |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:62:9:62:10 | f3 |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:62:9:62:10 | f3 | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:62:9:62:10 | f3 | Args.T0 | constructors.swift:59:11:59:11 | T |
+| constructors.swift:62:9:62:10 | f3 | Return | constructors.swift:59:11:59:11 | T |
+| constructors.swift:62:24:62:29 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:65:5:65:7 | s11 |  | constructors.swift:59:1:63:1 | S1 |
+| constructors.swift:65:5:65:7 | s11 | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:65:11:65:19 | S1(...) |  | constructors.swift:59:1:63:1 | S1 |
+| constructors.swift:65:11:65:19 | S1(...) | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:65:18:65:18 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:66:5:66:7 | s12 |  | constructors.swift:59:1:63:1 | S1 |
+| constructors.swift:66:5:66:7 | s12 | T | {EXTERNAL LOCATION} | Bool |
+| constructors.swift:66:11:66:30 | S1(...) |  | constructors.swift:59:1:63:1 | S1 |
+| constructors.swift:66:11:66:30 | S1(...) | T | {EXTERNAL LOCATION} | Bool |
+| constructors.swift:66:18:66:21 | true |  | {EXTERNAL LOCATION} | Bool |
+| constructors.swift:66:28:66:29 | "" |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:67:1:67:33 | S1(...) |  | constructors.swift:59:1:63:1 | S1 |
+| constructors.swift:67:1:67:33 | S1(...) | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:67:8:67:8 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:67:15:67:16 | "" |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:67:23:67:32 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:67:23:67:32 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:67:23:67:32 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| constructors.swift:67:23:67:32 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| constructors.swift:67:25:67:25 | x |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:67:30:67:30 | Block |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:67:30:67:30 | x |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:2:7:2:20 | inheritedField |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:2:29:2:29 | 0 |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:6:7:6:17 | storedField |  | {EXTERNAL LOCATION} | String |
