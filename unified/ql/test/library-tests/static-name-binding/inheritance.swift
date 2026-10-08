@@ -82,11 +82,11 @@ func t1() {
     let x5: E.C = E.C()  // $ access=E access=A.B.C
 
     let x6 = A.init()  // $ access=A access=A.init
-    let x7 = D.init()  // $ access=D $ MISSING: access=A.init $ SPURIOUS: access=D.init
+    let x7 = D.init()  // $ access=D access=A.init
 
     let x8 = A.f()  // $ access=A access=A.f
-    let x9 = D.f()  // $ access=D access=D.f -- type inference should filter away the `D.f` target $ MISSING: access=A.f
-    let x10 = D.f(x: 0)  // $ access=D access=D.f $ MISSING: access=A.f -- type inference should filter away the `A.f` target
+    let x9 = D.f()  // $ access=D access=A.f access=D.f -- type inference should filter away the `D.f` target
+    let x10 = D.f(x: 0)  // $ access=D access=A.f access=D.f -- type inference should filter away the `A.f` target
 
     let x11 = E.init()  // $ access=E access=E.init
 
@@ -94,21 +94,21 @@ func t1() {
 
     let x13 = H.init(x: "String")  // $ access=H access=H.init
 
-    let x14 = I.init(x: "String")  // $ access=I $ MISSING: access=H.init $ SPURIOUS: access=I.init
+    let x14 = I.init(x: "String")  // $ access=I access=H.init
 
-    let x15 = J.init()  // $ access=J access=J.init $ MISSING: access=H.init -- type inference should filter away the `H.init` target
+    let x15 = J.init()  // $ access=J access=J.init access=H.init -- type inference should filter away the `H.init` target
 
     let x16 = K.init()  // $ access=K access=K.init
 
     let x17 = S.init()  // $ access=S access=S.init
 
-    let x18 = M.init(x: 0)  // $ access=M access=M.init $ MISSING: access=L.init_conv -- type inference should filter away the `L.init_conv` target
+    let x18 = M.init(x: 0)  // $ access=M access=M.init access=L.init_conv -- type inference should filter away the `L.init_conv` target
 
-    let x19 = M.init()  // $ access=M access=M.init $ MISSING: access=L.init_conv -- type inference should filter away the `M.init` target
+    let x19 = M.init()  // $ access=M access=M.init access=L.init_conv -- type inference should filter away the `M.init` target
 
-    let x20 = N.init(x: 0)  // $ access=N access=N.init access=N.init_conv -- type inference should filter away the `N.init_conv` target
+    let x20 = N.init(x: 0)  // $ access=N access=N.init access=N.init_conv access=L.init_conv -- type inference should filter away the `N.init_conv` and `L.init_conv` targets
 
-    let x21 = O.init(x: 0)  // $ access=O access=O.init $ MISSING: access=N.init_conv -- type inference should filter away the `N.init_conv` target
+    let x21 = O.init(x: 0)  // $ access=O access=O.init access=N.init_conv access=L.init_conv -- type inference should filter away the `N.init_conv` and `L.init_conv` targets
 
-    let x22 = O.init(a: 1, b: 2, c: 3)  // $ access=O access=O.init $ MISSING: access=N.init_conv -- type inference should filter away the `O.init` target
+    let x22 = O.init(a: 1, b: 2, c: 3)  // $ access=O access=O.init access=N.init_conv access=L.init_conv -- type inference should filter away the `O.init` and `L.init_conv` targets
 }

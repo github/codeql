@@ -1,5 +1,7 @@
 private import unified
 private import codeql.util.Unit
+private import codeql.util.Option
+private import StaticNameBinding
 
 private module Plugins {
   private import codeql.unified.internal.NameBindingPluginSwift
@@ -42,6 +44,23 @@ class NameBindingPlugin extends Unit {
    */
   bindingset[cls, member]
   predicate isInheritableMember(ClassLikeDeclaration cls, Member member) { none() }
+
+  /**
+   * Holds if `member` is considered invalid within the namespace `n`.
+   */
+  bindingset[n, member]
+  predicate isInvalidMember(NamespaceNode n, Member member) { none() }
+
+  /**
+   * Gets the key used to determine if `m` is shadowed by another declaration
+   * with the same name and key.
+   *
+   * Nodes without shadowing keys will not shadow inherited declarations.
+   *
+   * This means that shadowing can be completely disabled by not implementing this
+   * predicate, and completely enabled by assigning the same key to all members.
+   */
+  string getShadowingKey(Member m) { none() }
 
   /** Gets the name of the implicit receiver parameter in `callable`, if it has one. */
   string getImplicitReceiverParameterName(Callable callable) { none() }
@@ -87,6 +106,28 @@ predicate isInheritableMember(Member member) {
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
     any(NameBindingPlugin p).isInheritableMember(cls, member)
   )
+}
+
+bindingset[n, member]
+predicate isInvalidMember(NamespaceNode n, Member member) {
+  any(NameBindingPlugin p).isInvalidMember(n, member)
+}
+
+private string getShadowingKey0(NameBindingNode n) {
+  result = any(NameBindingPlugin p).getShadowingKey(any(Member m | n.isMember(m)))
+}
+
+private class ShadowingKey extends string {
+  ShadowingKey() { this = getShadowingKey0(_) }
+}
+
+class ShadowingKeyOpt = Option<ShadowingKey>::Option;
+
+ShadowingKeyOpt getShadowingKey(NameBindingNode n) {
+  result.asSome() = getShadowingKey0(n)
+  or
+  not exists(getShadowingKey0(n)) and
+  result.isNone()
 }
 
 /**
