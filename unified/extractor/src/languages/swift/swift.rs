@@ -727,15 +727,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 trailingClosure: _? @trailing
                 additionalTrailingClosures: _* @additional)
             =>
-            macro_call_expr {
-                let mut arguments = args;
-                arguments.extend(trailing.into_iter().map(|trailing| tree!((argument value: {trailing}))));
-                arguments.extend(additional);
-                tree!((macro_call_expr
-                    macro_name_node: (identifier #{name})
-                    type_argument: {type_args}
-                    argument: {arguments}))
-            }
+        (macro_call_expr
+            macro_name_node: (identifier #{name})
+            type_argument: {type_args}
+            argument: {args}
+            argument: {trailing}
+            argument: {additional})
         ),
         // Member access (`list.append`). The `declName` is itself a
         // `declReferenceExpr`; pull its `baseName` out as the member identifier.
