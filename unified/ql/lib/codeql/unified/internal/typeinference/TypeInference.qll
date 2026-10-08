@@ -693,6 +693,14 @@ Callable resolveCallTarget(CallExpr ce) {
 
 private predicate typeTestAstNodeRepr(AstNode n, string repr) {
   repr = [n.toString(), n.(Identifier).getValue(), "." + n.(MemberAccessExpr).getMemberName()]
+  or
+  exists(string s |
+    typeTestAstNodeRepr(n.(CallExpr).getCallee(), s) and
+    repr = s + "(...)"
+    or
+    typeTestAstNodeRepr(n.(GenericTypeExpr).getBase(), s) and
+    repr = s + "<...>"
+  )
 }
 
 module TypeTest implements TestSig {
