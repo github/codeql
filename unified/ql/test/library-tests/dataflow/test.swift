@@ -230,3 +230,10 @@ func t25() {
     }
 
 }
+
+func t26() {
+    // TODO: This flow requires reverse-read through the "!" operator
+    var opt = Optional.some(("x", "y"))
+    opt!.0 = source("t26.1")
+    sink(opt!.0)  // $ MISSING: hasValueFlow=t26.1
+}
