@@ -1,0 +1,164 @@
+#expect(value == 42)
+
+#custom<Int>(value) {
+  value
+} completion: {
+  value
+}
+
+#Preview {
+  let previewValue = 42
+  previewValue
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        macroExpansionExpr
+          leftParen: (
+          rightParen: )
+          arguments:
+            labeledExpr
+              expression:
+                infixOperatorExpr
+                  operator:
+                    binaryOperatorExpr
+                      operator: binaryOperator "=="
+                  leftOperand:
+                    declReferenceExpr
+                      baseName: identifier "value"
+                  rightOperand:
+                    integerLiteralExpr
+                      literal: integerLiteral "42"
+          additionalTrailingClosures:
+          macroName: identifier "expect"
+          pound: #
+    codeBlockItem
+      item:
+        macroExpansionExpr
+          leftParen: (
+          rightParen: )
+          arguments:
+            labeledExpr
+              expression:
+                declReferenceExpr
+                  baseName: identifier "value"
+          additionalTrailingClosures:
+            multipleTrailingClosureElement
+              colon: :
+              label: identifier "completion"
+              closure:
+                closureExpr
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        declReferenceExpr
+                          baseName: identifier "value"
+          trailingClosure:
+            closureExpr
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    declReferenceExpr
+                      baseName: identifier "value"
+          genericArgumentClause:
+            genericArgumentClause
+              arguments:
+                genericArgument
+                  argument:
+                    identifierType
+                      name: identifier "Int"
+              leftAngle: <
+              rightAngle: >
+          macroName: identifier "custom"
+          pound: #
+    codeBlockItem
+      item:
+        macroExpansionExpr
+          arguments:
+          additionalTrailingClosures:
+          trailingClosure:
+            closureExpr
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "42"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "previewValue"
+                codeBlockItem
+                  item:
+                    declReferenceExpr
+                      baseName: identifier "previewValue"
+          macroName: identifier "Preview"
+          pound: #
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩"
+      stmt:
+        macro_call_expr source="#⟨macro_name_node⟩(⟨argument⟩)"
+          macro_name_node: identifier "expect" source="expect"
+          argument:
+            argument source="⟨value⟩"
+              value:
+                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                  left: identifier "value" source="value"
+                  operator: infix_operator "==" source="=="
+                  right: int_literal "42" source="42"
+        macro_call_expr source="#⟨macro_name_node⟩<⟨type_argument⟩>(⟨argument⟩) ⟨argument⟩ ⟨argument⟩"
+          macro_name_node: identifier "custom" source="custom"
+          type_argument: identifier "Int" source="Int"
+          argument:
+            argument source="⟨value⟩"
+              value: identifier "value" source="value"
+            argument source="⟨value⟩"
+              value:
+                function_expr source="{\n  ⟨body⟩\n}"
+                  body:
+                    block source="⟨stmt⟩"
+                      stmt: identifier "value" source="value"
+            argument source="⟨name_node⟩: ⟨value⟩"
+              name_node: identifier "completion" source="completion"
+              value:
+                function_expr source="{\n  ⟨body⟩\n}"
+                  body:
+                    block source="⟨stmt⟩"
+                      stmt: identifier "value" source="value"
+        macro_call_expr source="#⟨macro_name_node⟩ ⟨argument⟩"
+          macro_name_node: identifier "Preview" source="Preview"
+          argument:
+            argument source="⟨value⟩"
+              value:
+                function_expr source="{\n  ⟨body⟩\n}"
+                  body:
+                    block source="⟨stmt⟩\n  ⟨stmt⟩"
+                      stmt:
+                        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                          modifier: modifier "let" source="let"
+                          pattern: identifier "previewValue" source="previewValue"
+                          value: int_literal "42" source="42"
+                        identifier "previewValue" source="previewValue"
