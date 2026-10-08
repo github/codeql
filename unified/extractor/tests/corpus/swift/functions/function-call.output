@@ -105,7 +105,7 @@ top_level source="⟨body⟩"
               value: int_literal "1" source="1"
             argument source="⟨value⟩"
               value: int_literal "2" source="2"
-        call_expr source="⟨callee⟩ ⟨argument⟩ completion: {\n  second()\n} failure: {\n  third()\n}"
+        call_expr source="⟨callee⟩ ⟨argument⟩ ⟨argument⟩ ⟨argument⟩"
           callee: identifier "handle" source="handle"
           argument:
             argument source="⟨value⟩"
@@ -116,3 +116,21 @@ top_level source="⟨body⟩"
                       stmt:
                         call_expr source="⟨callee⟩()"
                           callee: identifier "first" source="first"
+            argument source="⟨name_node⟩: ⟨value⟩"
+              name_node: identifier "completion" source="completion"
+              value:
+                function_expr source="{\n  ⟨body⟩\n}"
+                  body:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        call_expr source="⟨callee⟩()"
+                          callee: identifier "second" source="second"
+            argument source="⟨name_node⟩: ⟨value⟩"
+              name_node: identifier "failure" source="failure"
+              value:
+                function_expr source="{\n  ⟨body⟩\n}"
+                  body:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        call_expr source="⟨callee⟩()"
+                          callee: identifier "third" source="third"
