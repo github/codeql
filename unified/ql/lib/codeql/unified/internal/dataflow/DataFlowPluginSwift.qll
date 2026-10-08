@@ -73,6 +73,12 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node1.isResultValue(expr.getOperand()) and
       step.storeName("some.0") and
       node2.isResultValue(expr)
+      or
+      // `[unowned x]` is translated to `[x = unowned x]`
+      expr.getOperator().(PrefixOperator).getValue() = "unowned" and
+      node1.isResultValue(expr.getOperand()) and
+      step.value() and
+      node2.isResultValue(expr)
     )
   }
 }

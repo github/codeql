@@ -178,4 +178,13 @@ class C {
         }
         closure()
     }
+
+    func capture_unowned_self() {
+        x = source("C.4")
+        let closure = { [unowned self] in
+            sink(self.x)  // $ hasValueFlow=C.4
+            sink(x)  // $ hasValueFlow=C.4
+        }
+        closure()
+    }
 }
