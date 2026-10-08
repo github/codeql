@@ -269,16 +269,8 @@ top_level source="⟨body⟩"
               pattern:
                 call_expr source="⟨callee⟩ ⟨argument⟩"
                   callee:
-                    member_access_expr source="⟨base⟩.⟨member_name_node⟩"
-                      base:
-                        call_expr source="⟨argument⟩?"
-                          callee:
-                            member_access_expr source=""
-                              base: identifier "Optional" source=""
-                              member_name_node: identifier "some" source=""
-                          argument:
-                            argument source="⟨value⟩"
-                              value: identifier "values" source="values"
+                    member_access_expr source="⟨base⟩?.⟨member_name_node⟩"
+                      base: identifier "values" source="values"
                       member_name_node: identifier "map" source="map"
                   argument:
                     argument source="⟨value⟩"

@@ -704,15 +704,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // A function/method call (`foo(1, 2)`). `calledExpression` is the callee
         // and `arguments` is an (elided) list of `labeledExpr`, each translated
-        // to an `argument` below. A trailing closure (`xs.map { … }`) becomes a
-        // final unlabelled argument; that variant is matched first.
+        // to an `argument` below. A trailing closure (`xs.map { … }`) becomes
+        // a final unlabelled argument.
         rule!(
-            (functionCallExpr calledExpression: @callee arguments: _* @args trailingClosure: @tc)
-            =>
-            (call_expr callee: {callee} argument: {args} argument: (argument value: {tc}))
-        ),
-        rule!(
-            (functionCallExpr calledExpression: @@rawCallee arguments: _* @args)
+            (functionCallExpr
+                calledExpression: @@rawCallee
+                arguments: _* @args
+                trailingClosure: _? @trailing)
             =>
             expr {
                 // Always translate the callee in non-pattern context.
@@ -720,7 +718,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     ctx.in_pattern = false;
                     ctx.translate(rawCallee)
                 })?;
-                tree!((call_expr callee: {callee} argument: {args}))
+                tree!((call_expr
+                    callee: {callee}
+                    argument: {args}
+                    argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
+                ))
             }
         ),
         // A call or enum-case pattern argument.
