@@ -49,17 +49,12 @@ query predicate new_exprs(NewExpr id, int kind, NewExprParent parent, int idx) {
     idx = 0
   )
   or
-  exists(Expr oldId, int oldKind, ExprParent oldParent, int oldIdx |
-    exprs(oldId, oldKind, oldParent, oldIdx) and
-    id = oldId and
-    kind = oldKind and
-    idx = oldIdx
-  |
-    exists(RangeStmt range | isRangeElementChild(oldParent, oldIdx, range) |
+  exists(ExprParent oldParent | exprs(id, kind, oldParent, idx) |
+    exists(RangeStmt range | isRangeElementChild(oldParent, idx, range) |
       parent = Fresh::map(TRangeElement(range))
     )
     or
-    not isRangeElementChild(oldParent, oldIdx, _) and
+    not isRangeElementChild(oldParent, idx, _) and
     parent = oldParent
   )
 }
