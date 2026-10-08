@@ -498,6 +498,8 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     try! _ = Connection(Connection.Location.uri(remoteString, parameters: []))  // $ Alert
     try! _ = Connection("myFile.sqlite3")  // GOOD
     try! _ = Connection(remoteString)  // $ MISSING: Alert
+    let remoteData2 = Data(contentsOf: URL(string: "http://example.com/")!)  // $ Source
+    nsData.write(toFile: remoteData2, options: [])  // $ Alert
 }
 
 func testBarriers() {
