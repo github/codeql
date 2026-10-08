@@ -25,7 +25,29 @@ Syntax used to define an element in an extension file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each model of an element is defined using a data extension where each tuple constitutes a model.
-A data extension file to extend the standard Go queries included with CodeQL is a YAML file with the form:
+A data extension file to extend the standard Go queries included with CodeQL can be written using either JSON or YAML. JSON is the preferred format, for performance reasons, and takes the following form:
+
+.. code-block:: json
+
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "<name of extensible predicate>"
+         },
+         "data": [
+           ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."],
+           ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+           // ...
+         ]
+       }
+     ]
+   }
+
+Files in the JSON format must use the ``.json`` file extension. Single-line (``//``) and multi-line (``/* ... */``) comments are supported as a non-standard JSON extension.
+
+A YAML file has the following form:
 
 .. code-block:: yaml
 
@@ -34,11 +56,11 @@ A data extension file to extend the standard Go queries included with CodeQL is 
          pack: codeql/go-all
          extensible: <name of extensible predicate>
        data:
-         - <tuple1>
-         - <tuple2>
+         - ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."]
+         - ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
          - ...
 
-Each YAML file may contain one or more top-level extensions.
+Each data extension file may contain one or more top-level extensions.
 
 - ``addsTo`` defines the CodeQL pack name and extensible predicate that the extension is injected into.
 - ``data`` defines one or more rows of tuples that are injected as values into the extensible predicate. The number of columns and their types must match the definition of the extensible predicate.
@@ -84,20 +106,27 @@ This is the ``Prepare`` method of the ``DB`` type in the ``database/sql`` packag
 
 We need to add a tuple to the ``sinkModel``\(package, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/go-all
-         extensible: sinkModel
-       data:
-         - ["database/sql", "DB", True, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["database/sql", "DB", true, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the function (in this case a method) to be modeled as a sink.
 
 - The first value ``database/sql`` is the package name.
 - The second value ``DB`` is the name of the type that the method is associated with.
-- The third value ``True`` is a flag that indicates whether or not the model also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
+- The third value ``true`` is a flag that indicates whether or not the model also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
 - The fourth value ``Prepare`` is the method name.
 - The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
@@ -123,20 +152,27 @@ This is the ``FormValue`` method of the ``Request`` type which is located in the
 
 We need to add a tuple to the ``sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/go-all
-         extensible: sourceModel
-       data:
-         - ["net/http", "Request", True, "FormValue", "", "", "ReturnValue", "remote", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["net/http", "Request", true, "FormValue", "", "", "ReturnValue", "remote", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the function to be modeled as a source.
 
 - The first value ``net/http`` is the package name.
 - The second value ``Request`` is the type name, since the function is a method of the ``Request`` type.
-- The third value ``True`` is a flag that indicates whether or not the model also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
+- The third value ``true`` is a flag that indicates whether or not the model also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
 - The fourth value ``FormValue`` is the function name.
 - The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
@@ -163,14 +199,21 @@ This pattern covers many of the cases where we need to summarize flow through a 
 
 We need to add a tuple to the ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/go-all
-         extensible: summaryModel
-       data:
-         - ["slices", "", False, "Max", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["slices", "", false, "Max", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first row defines flow from the first argument (``a`` in the example) to the return value (``max`` in the example).
 
@@ -178,7 +221,7 @@ The first five values identify the function to be modeled as a summary.
 
 - The first value ``slices`` is the package name.
 - The second value ``""`` is left blank, since the function is not a method of a type.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to subtypes. This has no effect for non-method functions.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to subtypes. This has no effect for non-method functions.
 - The fourth value ``Max`` is the function name.
 - The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
@@ -207,14 +250,21 @@ This pattern covers many of the cases where we need to summarize flow through a 
 
 We need to add a tuple to the ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/go-all
-         extensible: summaryModel
-       data:
-         - ["slices", "", False, "Concat", "", "", "Argument[0].ArrayElement.ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["slices", "", false, "Concat", "", "", "Argument[0].ArrayElement.ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first row defines flow from the arguments (``a`` and ``b`` in the example) to the return value (``c`` in the example).
 
@@ -222,7 +272,7 @@ The first five values identify the function to be modeled as a summary.
 
 - The first value ``slices`` is the package name.
 - The second value ``""`` is left blank, since the function is not a method of a type.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to subtypes. This has no effect for non-method functions.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to subtypes. This has no effect for non-method functions.
 - The fourth value ``Concat`` is the function name.
 - The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
@@ -250,15 +300,22 @@ This pattern covers many of the cases where we need to summarize flow through a 
 
 We need to add tuples to the ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/go-all
-         extensible: summaryModel
-       data:
-         - ["strings", "", False, "Join", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-         - ["strings", "", False, "Join", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["strings", "", false, "Join", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+           ["strings", "", false, "Join", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+         ]
+       }
+     ]
+   }
 
 Each tuple defines flow from one argument to the return value.
 The first row defines flow from the first argument (``elems`` in the example) to the return value (``t`` in the example) and the second row defines flow from the second argument (``sep`` in the example) to the return value (``t`` in the example).
@@ -268,7 +325,7 @@ These are the same for both of the rows above as we are adding two summaries for
 
 - The first value ``strings`` is the package name.
 - The second value ``""`` is left blank, since the function is not a method of a type.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to subtypes. This has no effect for non-method functions.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to subtypes. This has no effect for non-method functions.
 - The fourth value ``Join`` is the function name.
 - The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
@@ -282,14 +339,21 @@ The remaining values are used to define the ``access-path``, the ``kind``, and t
 
 It would also be possible to merge the two rows into one by using ".." to indicate a range in the seventh value. This would be useful if the method has many arguments and the flow is the same for all of them.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/go-all
-         extensible: summaryModel
-       data:
-         - ["strings", "", False, "Join", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["strings", "", false, "Join", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+         ]
+       }
+     ]
+   }
 
 This row defines flow from both the first and the second argument to the return value. The seventh value ``Argument[0..1]`` is shorthand for specifying an access path to both ``Argument[0]`` and ``Argument[1]``.
 
@@ -306,14 +370,21 @@ This example shows how the Go query pack models flow through a method for a simp
 
 We need to add a tuple to the ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/go-all
-         extensible: summaryModel
-       data:
-         - ["net/url", "URL", True, "Hostname", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["net/url", "URL", true, "Hostname", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+         ]
+       }
+     ]
+   }
 
 Each tuple defines flow from one argument to the return value.
 The first row defines flow from the qualifier of the method call (``u`` in the example) to the return value (``host`` in the example).
@@ -322,7 +393,7 @@ The first five values identify the function (in this case a method) to be modele
 
 - The first value ``net/url`` is the package name.
 - The second value ``URL`` is the receiver type.
-- The third value ``True`` is a flag that indicates whether or not the model also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
+- The third value ``true`` is a flag that indicates whether or not the model also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
 - The fourth value ``Hostname`` is the method name.
 - The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
@@ -349,20 +420,27 @@ The ``Htmlquote`` function from the `beego` framework HTML-escapes a string, whi
 
 We need to add a tuple to the ``barrierModel(package, type, subtypes, name, signature, ext, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/go-all
-         extensible: barrierModel
-       data:
-         - ["group:beego", "", True, "Htmlquote", "", "", "ReturnValue", "html-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "barrierModel"
+         },
+         "data": [
+           ["group:beego", "", true, "Htmlquote", "", "", "ReturnValue", "html-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the function to be modeled as a barrier.
 
 - The first value ``group:beego`` is the package group name. The ``group:`` prefix indicates that this is a package group, which is used to match multiple package paths that refer to the same package.
 - The second value ``""`` is left blank since the function is not a method of a type.
-- The third value ``True`` is a flag that indicates whether or not the model also applies to subtypes. This has no effect for non-method functions.
+- The third value ``true`` is a flag that indicates whether or not the model also applies to subtypes. This has no effect for non-method functions.
 - The fourth value ``Htmlquote`` is the function name.
 - The fifth value ``""`` is the input type signature. For Go it should always be an empty string.
 
@@ -389,20 +467,27 @@ Consider a function called ``IsSafe`` which returns ``true`` when the data is co
 
 We need to add a tuple to the ``barrierGuardModel(package, type, subtypes, name, signature, ext, input, acceptingValue, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/go-all
-         extensible: barrierGuardModel
-       data:
-         - ["example.com/example", "", False, "IsSafe", "", "", "Argument[0]", "true", "sql-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "barrierGuardModel"
+         },
+         "data": [
+           ["example.com/example", "", false, "IsSafe", "", "", "Argument[0]", "true", "sql-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the function to be modeled as a barrier guard.
 
 - The first value ``example.com/example`` is the package name.
 - The second value ``""`` is left blank since the function is not a method of a type.
-- The third value ``False`` is a flag that indicates whether or not the model guard also applies to subtypes. This has no effect for non-method functions.
+- The third value ``false`` is a flag that indicates whether or not the model guard also applies to subtypes. This has no effect for non-method functions.
 - The fourth value ``IsSafe`` is the function name.
 - The fifth value ``""`` is the input type signature. For Go it should always be an empty string.
 
@@ -427,20 +512,27 @@ This example shows how we can model a field read as a source of tainted data.
 
 We need to add a tuple to the ``sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-  - addsTo:
-      pack: codeql/go-all
-      extensible: sourceModel
-    data:
-      - ["net/http", "Request", True, "Body", "", "", "", "remote", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["net/http", "Request", true, "Body", "", "", "", "remote", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the field to be modeled as a source.
 
 - The first value ``net/http`` is the package name.
 - The second value ``Request`` is the name of the type that the field is associated with.
-- The third value ``True`` is a flag that indicates whether or not the model also applies to subtypes. For fields this means when the field is accessed as a promoted field in another type.
+- The third value ``true`` is a flag that indicates whether or not the model also applies to subtypes. For fields this means when the field is accessed as a promoted field in another type.
 - The fourth value ``Body`` is the field name.
 - The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
@@ -460,15 +552,22 @@ Note that packages hosted at ``gopkg.in`` use a slightly different syntax: the m
 
 To write models that only apply to ``github.com/couchbase/gocb/v2``, it is sufficient to include the major version suffix (``/v2``) in the package column. To write models that only apply to ``github.com/couchbase/gocb``, you may prefix the package column with ``fixed-version:``. For example, here are two models for a method that has changed name from v1 to v2.
 
-.. code-block:: yaml
+.. code-block:: json
 
-    extensions:
-    - addsTo:
-        pack: codeql/go-all
-        extensible: sinkModel
-      data:
-        - ["fixed-version:github.com/couchbase/gocb", "Cluster", True, "ExecuteAnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
-        - ["github.com/couchbase/gocb/v2", "Cluster", True, "AnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["fixed-version:github.com/couchbase/gocb", "Cluster", true, "ExecuteAnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"],
+           ["github.com/couchbase/gocb/v2", "Cluster", true, "AnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 Package grouping
 ~~~~~~~~~~~~~~~~
@@ -478,20 +577,31 @@ Since Go uses URLs for package identifiers, it is possible for packages to be im
 To handle this, the CodeQL Go library uses a mapping from the package path to a group name for the package. This mapping can be specified using the ``packageGrouping`` extensible predicate, and then the models for the APIs in the package
 will use the the prefix ``group:`` followed by the group name in place of the package path.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/go
-         extensible: packageGrouping
-       data:
-         - ["glog", "github.com/golang/glog"]
-         - ["glog", "gopkg.in/glog"]
-    - addsTo:
-        pack: codeql/go
-        extensible: sinkModel
-      data:
-        - ["group:glog", "", False, "Info", "", "", "Argument[0]", "log-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "packageGrouping"
+         },
+         "data": [
+           ["glog", "github.com/golang/glog"],
+           ["glog", "gopkg.in/glog"]
+         ]
+       },
+       {
+         "addsTo": {
+           "pack": "codeql/go-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["group:glog", "", false, "Info", "", "", "Argument[0]", "log-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 .. _threat-models-go:
 
