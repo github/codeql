@@ -76,7 +76,8 @@ def get_rust_analyzer_crate_release_date(rust_analyzer_version: str) -> str:
 def get_rust_analyzer_release_tag(rust_analyzer_version: str) -> str:
     """
     Get the latest rust-analyzer release tag in the git repository before or at
-    the crate publication.
+    the crate publication. The returned string has the format `YYYY-MM-DD.N`
+    where the `.N` part is optional.
 
     Empirically, the rust-analyzer crates are published after the corresponding
     git tag. We hence look for the latest git tag that is before or at the crate
@@ -145,6 +146,8 @@ def update_rust_analyzer_sources(
 
 def get_compatible_rust_toolchain(rust_analyzer_release_tag: str) -> str:
     """Get the latest Rust toolchain released no later than rust-analyzer."""
+    # Keep the `YYYY-MM-DD` part of the release tag, stripping off the optional
+    # incrementing suffix.
     rust_analyzer_release = rust_analyzer_release_tag[:10]
 
     # `manifests.txt` is a list of all toolchains. The one we're interested in looks like
