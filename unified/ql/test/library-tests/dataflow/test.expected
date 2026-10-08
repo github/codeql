@@ -162,9 +162,6 @@ edges
 | enums.swift:82:12:82:12 | e [foo.0] | enums.swift:83:10:83:23 | ... .foo(...) [foo.0] | provenance |  |
 | enums.swift:83:10:83:23 | ... .foo(...) [foo.0] | enums.swift:83:22:83:22 | x | provenance |  |
 | enums.swift:83:22:83:22 | x | enums.swift:84:14:84:14 | x | provenance |  |
-
-
-
 | implicit-self.swift:16:9:16:12 | [post] self [x] | implicit-self.swift:17:14:17:17 | self [x] | provenance |  |
 | implicit-self.swift:16:9:16:14 | ... .x | implicit-self.swift:16:9:16:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:16:9:16:14 | ... .x | provenance |  |
@@ -554,9 +551,6 @@ nodes
 | enums.swift:83:10:83:23 | ... .foo(...) [foo.0] | semmle.label | ... .foo(...) [foo.0] |
 | enums.swift:83:22:83:22 | x | semmle.label | x |
 | enums.swift:84:14:84:14 | x | semmle.label | x |
-
-
-
 | implicit-self.swift:16:9:16:12 | [post] self [x] | semmle.label | [post] self [x] |
 | implicit-self.swift:16:9:16:14 | ... .x | semmle.label | ... .x |
 | implicit-self.swift:16:18:16:31 | source(...) | semmle.label | source(...) |
@@ -814,7 +808,6 @@ subpaths
 | test.swift:209:42:209:56 | source(...) | test.swift:193:30:193:30 | s | test.swift:193:73:193:73 | s | test.swift:209:20:209:57 | asyncThrowingIdentity(...) |
 | test.swift:210:48:210:62 | source(...) | test.swift:193:30:193:30 | s | test.swift:193:73:193:73 | s | test.swift:210:26:210:63 | asyncThrowingIdentity(...) |
 | test.swift:214:43:214:57 | source(...) | test.swift:193:30:193:30 | s | test.swift:193:73:193:73 | s | test.swift:214:21:214:58 | asyncThrowingIdentity(...) |
-
 testFailures
 #select
 | calls.swift:8:14:8:14 | x | calls.swift:10:12:10:25 | source(...) | calls.swift:8:14:8:14 | x | $@ | calls.swift:10:12:10:25 | source(...) | source(...) |
@@ -863,9 +856,6 @@ testFailures
 | enums.swift:65:10:65:14 | opt_x | enums.swift:63:31:63:44 | source(...) | enums.swift:65:10:65:14 | opt_x | $@ | enums.swift:63:31:63:44 | source(...) | source(...) |
 | enums.swift:76:14:76:14 | x | enums.swift:73:34:73:47 | source(...) | enums.swift:76:14:76:14 | x | $@ | enums.swift:73:34:73:47 | source(...) | source(...) |
 | enums.swift:84:14:84:14 | x | enums.swift:73:34:73:47 | source(...) | enums.swift:84:14:84:14 | x | $@ | enums.swift:73:34:73:47 | source(...) | source(...) |
-
-
-
 | implicit-self.swift:17:14:17:19 | ... .x | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:17:14:17:19 | ... .x | $@ | implicit-self.swift:16:18:16:31 | source(...) | source(...) |
 | implicit-self.swift:23:14:23:14 | x | implicit-self.swift:22:13:22:26 | source(...) | implicit-self.swift:23:14:23:14 | x | $@ | implicit-self.swift:22:13:22:26 | source(...) | source(...) |
 | implicit-self.swift:29:14:29:19 | ... .x | implicit-self.swift:28:13:28:26 | source(...) | implicit-self.swift:29:14:29:19 | ... .x | $@ | implicit-self.swift:28:13:28:26 | source(...) | source(...) |
