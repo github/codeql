@@ -213,6 +213,18 @@ fn maybe_repeat(tokens: &mut Tokens, pattern: Pattern) -> Result<Pattern> {
         });
     }
 
+    if matches!(
+        &pattern,
+        Pattern::Sequence(patterns)
+            if patterns.iter().any(|pattern| matches!(pattern, Pattern::Repeated { .. }))
+    ) {
+        return Err(syn::Error::new_spanned(
+            tokens.peek().unwrap().clone(),
+            "cannot capture a repeated group containing a nested repetition; \
+             capture the desired inner patterns explicitly",
+        ));
+    }
+
     let (name, raw) = consume_capture(tokens)?;
     Ok(match pattern {
         Pattern::Sequence(patterns) => Pattern::Repeated {
@@ -538,5 +550,18 @@ mod tests {
         assert_eq!(name, "items");
         assert_eq!(*cardinality, Cardinality::ZERO_OR_MORE);
         assert!(matches!(captured.as_ref(), Pattern::Node { .. }));
+    }
+
+    #[test]
+    fn rejects_capture_on_repeated_group_with_nested_repetition() {
+        let result = parse_pattern(quote!((root ((item)* (separator))* @items)));
+        let Err(error) = result else {
+            panic!("expected nested repetition capture to be rejected");
+        };
+        assert_eq!(
+            error.to_string(),
+            "cannot capture a repeated group containing a nested repetition; \
+             capture the desired inner patterns explicitly"
+        );
     }
 }
