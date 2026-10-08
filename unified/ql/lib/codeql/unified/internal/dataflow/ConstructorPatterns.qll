@@ -16,7 +16,7 @@ class ConstructorPattern extends CallExpr {
 }
 
 /**
- * Gets the unqualified name of the enum-case contructor that might be referenced by `call`.
+ * Gets the unqualified name of the enum-case constructor that might be referenced by `call`.
  */
 private string getShortConstructorName(CallExpr call) {
   result = call.getCallee().(MemberAccessExpr).getMemberName()
