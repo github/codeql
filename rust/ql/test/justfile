@@ -1,0 +1,4 @@
+import '../../../test.just'
+
+[group('test')]
+test *ARGS=".": (_language_tests "rust" ARGS)
