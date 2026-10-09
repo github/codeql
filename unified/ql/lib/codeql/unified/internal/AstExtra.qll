@@ -143,5 +143,8 @@ module Public {
    */
   final class EnumCaseConstructor extends ConstructorDeclaration {
     EnumCaseConstructor() { this = any(EnumCaseClass cls).getAMember() }
+
+    /** Gets the class containing this constructor. */
+    EnumCaseClass getEnumCaseClass() { result.getAMember() = this }
   }
 }
