@@ -1,5 +1,7 @@
 on: workflow_dispatch
 
+cache-mode: none
+
 jobs:
   cache:
     permissions: {}
@@ -16,8 +18,38 @@ jobs:
         run: |
           git fetch origin "$HEAD_SHA"
           git checkout "$HEAD_SHA"
-      - run: npm install
-      - uses: actions/cache@v4
+      - run: npm install # No cache alert: inherits workflow none mode.
+      - uses: actions/cache@v4 # No cache alert: inherited none mode prevents saves.
         with:
           path: .npm
           key: workflow-dispatch
+
+  cache-write:
+    cache-mode: write
+    permissions: {}
+    runs-on: ubuntu-latest
+    steps:
+      - id: pr
+        env:
+          HEAD_SHA: ${{ github.event.inputs.head_sha }}
+        run: |
+          jq -cn --arg sha "$HEAD_SHA" '{head: {sha: $sha}}' |
+            sed 's/^/json=/' >> "$GITHUB_OUTPUT"
+      - env:
+          HEAD_SHA: ${{ fromJSON(steps.pr.outputs.json).head.sha }}
+        run: |
+          git fetch origin "$HEAD_SHA"
+          git checkout "$HEAD_SHA"
+      - run: npm install # Cache alert: job write override lets untrusted code save caches.
+      - uses: actions/cache@v4 # Cache alert: job write override permits caching untrusted files.
+        with:
+          path: .npm
+          key: workflow-dispatch-write
+
+  inherited-cache:
+    permissions: {}
+    uses: ./.github/workflows/cache_write_capable_reusable_workflow.yml # No cache alert: inherits the caller's none mode.
+
+  cache-modes:
+    permissions: {}
+    uses: ./.github/workflows/cache_mode_reusable.yml # No cache alert: callee write exceeds the caller's none limit.
