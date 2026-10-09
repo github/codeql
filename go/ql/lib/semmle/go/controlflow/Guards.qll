@@ -24,13 +24,7 @@ private module GuardsInput implements
 
   class AstNode = G::AstNode;
 
-  class Expr extends G::Expr {
-    /** Gets the associated control flow node. */
-    CfgImpl::Cfg::ControlFlowNode getControlFlowNode() { result = IR::evalExprInstruction(this) }
-
-    /** Gets the basic block containing this expression. */
-    CfgImpl::Cfg::BasicBlock getBasicBlock() { result = this.getControlFlowNode().getBasicBlock() }
-  }
+  class Expr = G::Expr;
 
   predicate booleanOutcomeBlock(Expr guard, CfgImpl::Cfg::BasicBlock outcomeBlock, boolean branch) {
     exists(CfgImpl::Cfg::ControlFlowNode outcomeNode |
@@ -204,20 +198,11 @@ private module GuardsInput implements
     )
   }
 
-  class AndExpr extends Expr instanceof G::LandExpr {
-    /** Gets an operand of this expression. */
-    Expr getAnOperand() { result = super.getAnOperand() }
-  }
+  class AndExpr = G::LandExpr;
 
-  class OrExpr extends Expr instanceof G::LorExpr {
-    /** Gets an operand of this expression. */
-    Expr getAnOperand() { result = super.getAnOperand() }
-  }
+  class OrExpr = G::LorExpr;
 
-  class NotExpr extends Expr instanceof G::NotExpr {
-    /** Gets the operand of this expression. */
-    Expr getOperand() { result = super.getOperand() }
-  }
+  class NotExpr = G::NotExpr;
 
   private predicate sameNumericTypeFamily(G::NumericType source, G::NumericType target) {
     source instanceof G::SignedIntegerType and target instanceof G::SignedIntegerType
