@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "dependencies": {
+    "linkify-it": "6.1.0"
+  }
+}
