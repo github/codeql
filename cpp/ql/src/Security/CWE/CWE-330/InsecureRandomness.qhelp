@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Using a cryptographically weak pseudo-random number generator to produce a security-sensitive value,
+such as an encryption key, an initialization vector, a nonce, or a session token, may allow an attacker
+to predict the value.
+</p>
+
+<p>
+A pseudo-random number generator produces a sequence of numbers that only approximates the properties of
+random numbers. The sequence is completely determined by a relatively small seed value. Generators such as
+<code>rand</code>, the <code>drand48</code> family, and the C++ <code>&lt;random&gt;</code> engines
+(for example <code>std::mt19937</code>) are not designed to resist prediction, so an attacker who observes
+some output, or who can reconstruct the seed, may be able to predict future values.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use a cryptographically secure random number generator when the output is used in a security-sensitive
+context. Suitable choices include <code>getrandom</code>, <code>getentropy</code>, the
+<code>arc4random</code> family, OpenSSL's <code>RAND_bytes</code>, the Windows
+<code>BCryptGenRandom</code> function, and C++'s <code>std::random_device</code> (where it is backed by a
+secure source).
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example seeds an AES key with <code>rand</code>. Because <code>rand</code> is not
+cryptographically secure, an attacker may be able to predict the key.
+</p>
+
+<sample src="InsecureRandomness.c" />
+
+<p>
+Instead, fill the key from a cryptographically secure generator such as <code>RAND_bytes</code>.
+</p>
+</example>
+
+<references>
+<li>Wikipedia:
+<a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudorandom number generator</a>.</li>
+<li>Common Weakness Enumeration:
+<a href="https://cwe.mitre.org/data/definitions/330.html">CWE-330: Use of Insufficiently Random Values</a>.</li>
+<li>Common Weakness Enumeration:
+<a href="https://cwe.mitre.org/data/definitions/338.html">CWE-338: Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)</a>.</li>
+</references>
+</qhelp>
