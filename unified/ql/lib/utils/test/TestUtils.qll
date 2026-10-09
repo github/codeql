@@ -1,6 +1,7 @@
 private import unified
 private import CommentUtil
 private import codeql.unified.internal.NameBinding
+private import codeql.unified.internal.typeinference.TypeInference as TypeInference
 private import codeql.unified.internal.typeinference.TypeInferencePlugin
 
 private string deriveClassName(ClassLikeDeclaration cls) {
@@ -46,32 +47,22 @@ predicate nameBinding(NameBinding v, string alias) {
   )
 }
 
-private string getCallableName(Callable c) {
-  result = c.(AccessorDeclaration).getName()
-  or
-  result = c.(ConstructorDeclaration).getName()
-  or
-  c instanceof DestructorDeclaration and
-  result = "<destructor>"
-  or
-  result = c.(FunctionDeclaration).getName()
-  or
-  c instanceof InitializerDeclaration and
-  result = "<initializer>"
-}
-
 private string defaultCallableName(Callable c) {
-  exists(ClassLikeDeclaration cls |
-    c = cls.getAMember() and
-    result = deriveClassName(cls) + "." + getCallableName(c)
-  )
-  or
-  not c = any(ClassLikeDeclaration cls).getAMember() and
-  result = getCallableName(c)
-  or
-  exists(ClassLikeDeclaration enum |
-    enum = c.(EnumConstructor).getEnum() and
-    result = deriveClassName(enum) + "." + c.getEnclosingClass().getName()
+  exists(TypeInference::Input3::Callable callable | callable.asCallable() = c |
+    not c instanceof EnumConstructor and
+    exists(ClassLikeDeclaration cls |
+      c = cls.getAMember() and
+      result = deriveClassName(cls) + "." + callable.getName()
+    )
+    or
+    not c = any(ClassLikeDeclaration cls).getAMember() and
+    result = callable.getName()
+    or
+    exists(ClassLikeDeclaration enum, EnumConstructor ctor |
+      ctor = c and
+      enum = ctor.getEnum() and
+      result = deriveClassName(enum) + "." + ctor.getEnclosingClass().getName()
+    )
   )
 }
 

@@ -21,8 +21,14 @@ implicitReceiverParameter
 | constructors.swift:49:9:51:9 | self | constructors.swift:49:9:51:9 | AccessorDeclaration |
 | constructors.swift:54:9:56:9 | self | constructors.swift:54:9:56:9 | AccessorDeclaration |
 | constructors.swift:57:9:59:9 | self | constructors.swift:57:9:59:9 | AccessorDeclaration |
-callableExDefaultConstructorParameter
-| constructors.swift:39:1:39:0 | init | 1 | constructors.swift:39:1:39:0 | f1 [init default constructor] | f1 |
-| constructors.swift:39:1:39:0 | init | 2 | constructors.swift:39:1:39:0 | f2 [init default constructor] | f2 |
-| constructors.swift:39:1:39:0 | init | 3 | constructors.swift:39:1:39:0 | f4 [init default constructor] | f4 |
-| constructors.swift:39:1:39:0 | init | 4 | constructors.swift:39:1:39:0 | f7 [init default constructor] | f7 |
+defaultConstructorParameter
+| constructors.swift:39:1:39:0 | init | 1 | constructors.swift:39:1:39:0 | f1 [init default constructor] | f1 | true |
+| constructors.swift:39:1:39:0 | init | 2 | constructors.swift:39:1:39:0 | f2 [init default constructor] | f2 | false |
+| constructors.swift:39:1:39:0 | init | 3 | constructors.swift:39:1:39:0 | f4 [init default constructor] | f4 | false |
+| constructors.swift:39:1:39:0 | init | 4 | constructors.swift:39:1:39:0 | f7 [init default constructor] | f7 | true |
+| constructors.swift:39:1:39:0 | init | 5 | constructors.swift:39:1:39:0 | f8 [init default constructor] | f8 | true |
+defaultConstructorParameterType
+| constructors.swift:39:1:39:0 | init | 2 | constructors.swift:39:1:39:0 | f2 [init default constructor] | f2 | constructors.swift:41:13:41:18 | String |
+| constructors.swift:39:1:39:0 | init | 3 | constructors.swift:39:1:39:0 | f4 [init default constructor] | f4 | constructors.swift:43:13:43:18 | Double |
+| constructors.swift:39:1:39:0 | init | 4 | constructors.swift:39:1:39:0 | f7 [init default constructor] | f7 | constructors.swift:53:13:53:18 | Double |
+| constructors.swift:39:1:39:0 | init | 5 | constructors.swift:39:1:39:0 | f8 [init default constructor] | f8 | constructors.swift:61:13:61:16 | GenericTypeExpr |
