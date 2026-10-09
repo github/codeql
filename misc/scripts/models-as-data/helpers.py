@@ -51,7 +51,10 @@ class ExtensionMerger:
             )
             target = os.path.join(dir, f"{sanitized_namespace}{file_extension}")
             with open(target, "w") as f:
-                extension.write_yaml(f)
+                if file_extension.endswith(".json"):
+                    extension.write_json(f)
+                else:
+                    extension.write_yaml(f)
             print("Models as data extensions written to " + target)
 
 

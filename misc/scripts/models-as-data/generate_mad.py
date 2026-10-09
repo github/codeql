@@ -119,6 +119,12 @@ class Generator:
             "--single-file",
             help="Generate a single file with all models instead of separate files for each namespace, using provided argument as the base filename.",
         )
+        p.add_argument(
+            "--extension-format",
+            choices=["json", "yaml"],
+            default="yaml",
+            help="Format for the generated data extension files (default %(default)s)",
+        )
         generator = p.parse_args(namespace=Generator())
 
         if (
@@ -222,17 +228,19 @@ class Generator:
             print("Models as data extensions generated, but not written to file.")
             sys.exit(0)
 
+        file_extension = ".json" if self.extension_format == "json" else ".yml"
+
         if (
             self.with_sinks
             or self.with_sources
             or self.with_summaries
             or self.with_neutrals
         ):
-            merger.save(self.generated_frameworks, ".model.yml")
+            merger.save(self.generated_frameworks, f".model{file_extension}")
 
         if self.with_typebased_summaries:
             type_based_extensions.save(
-                self.generated_frameworks, ".typebased.model.yml"
+                self.generated_frameworks, f".typebased.model{file_extension}"
             )
 
 
