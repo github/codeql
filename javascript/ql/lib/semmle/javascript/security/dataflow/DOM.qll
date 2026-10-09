@@ -58,6 +58,8 @@ class DomMethodCallNode extends DataFlow::MethodCallNode {
       name = "createElement" and argPos = 0
       or
       name = "appendChild" and argPos = 0
+      or
+      name = "setHTMLUnsafe" and argPos = 0
     )
   }
 
