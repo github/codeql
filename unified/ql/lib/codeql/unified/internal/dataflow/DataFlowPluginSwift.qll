@@ -53,6 +53,13 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node2.isResultValue(expr)
     )
     or
+    exists(NullCoalescingExpr expr |
+      // We bypass Optional<T> content so we add value-flow out of both operands of "??"
+      node1.isResultValue(expr.getAnOperand()) and
+      step.value() and
+      node2.isResultValue(expr)
+    )
+    or
     // Taint flow through URL(string: x). TODO: Model with MaD and flow summaries
     exists(CallExpr call |
       call.getCallee().(Identifier).getValue() = ["URL", "NSURL"] and

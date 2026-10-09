@@ -248,3 +248,11 @@ func t27() {
         sink(x)  // $ hasValueFlow=t27.1
     }
 }
+
+func t28() {
+    func getOptional() -> String? {
+        return Optional.some(source("t28.1"))
+    }
+    sink(getOptional() ?? "default")  // $ hasValueFlow=t28.1
+    sink("safe" ?? getOptional())  // $ hasValueFlow=t28.1
+}
