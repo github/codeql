@@ -842,7 +842,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                         Some(val) => val,
                         None => tree!((identifier #{name})),
                     };
-                    // Expand [weak x] into a unary_expr, to represent the boxing in Optional.same
+                    // Expand [weak x] into a unary_expr, to represent the boxing in Optional.some
                     match spec {
                         Some(spec) => tree!((unary_expr operator: (prefix_operator #{spec}) operand: {value})),
                         None => value,
