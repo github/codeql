@@ -28,6 +28,10 @@ module DoubleFreeParam implements FlowFromFreeParamSig {
   predicate isExcluded = isExcludedMmFreePageFromMdl/2;
 
   predicate sourceSinkIsRelated = defaultSourceSinkIsRelated/2;
+
+  DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureEqualSourceSinkCallContext
+  }
 }
 
 module DoubleFree = FlowFromFree<DoubleFreeParam>;
