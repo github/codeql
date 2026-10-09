@@ -1,0 +1,12 @@
+name: Ambiguous root
+
+runs:
+  using: composite
+  steps:
+    - run: echo "${{ github.actor }}"
+
+jobs:
+  unexpected:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This must not make action.yml a workflow"
