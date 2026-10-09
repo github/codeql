@@ -104,9 +104,11 @@ predicate isSymmetricEncryptionAlgorithm(string name) {
 predicate isKeyDerivationAlgorithm(string name) {
   name =
     [
-      "ARGON2", "CONCATKDF", "CONCATKDFHASH", "CONCATKDFHMAC", "KBKDFCMAC", "BCRYPT", "HKDF",
-      "HKDFEXPAND", "KBKDF", "KBKDFHMAC", "PBKDF1", "PBKDF2", "PBKDF2HMAC", "PKCS5", "SCRYPT",
-      "X963KDF", "EVPKDF"
+      // 'ARGON2' should only be used in cases where the specific variant in use cannot be discerned reliably
+      "ARGON2", "ARGON2D", "ARGON2I", "ARGON2ID",
+      "CONCATKDF", "CONCATKDFHASH", "CONCATKDFHMAC",
+      "KBKDFCMAC", "BCRYPT", "HKDF", "HKDFEXPAND", "KBKDF", "KBKDFHMAC", "PBKDF1", "PBKDF2",
+      "PBKDF2HMAC", "PKCS5", "SCRYPT", "X963KDF", "EVPKDF"
     ]
 }
 
