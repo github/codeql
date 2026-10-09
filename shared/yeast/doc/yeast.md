@@ -152,7 +152,30 @@ queries, are not supported.
 (_)+                   // one or more
 (_)?                   // zero or one
 (identifier)* @names   // capture each repeated match
+"+"* @operators        // repeat and capture an unnamed token
 ```
+
+Parentheses are not general-purpose grouping syntax. A parenthesized query
+group represents a sequence of at least two sibling patterns. It may be
+repeated, but it cannot itself be captured because the sequence does not
+correspond to one AST node:
+
+```rust
+((identifier) @items (integer) @items)*  // explicit flattened captures
+((identifier) (integer))* @items         // error: sequence capture
+```
+
+Use the bare literal form when quantifying an unnamed token. The parenthesized
+form is valid as a standalone token pattern, but not as a redundant
+single-pattern group:
+
+```rust
+"+"*       // valid
+("+")*     // error: remove the redundant parentheses
+```
+
+Empty query groups are also rejected. This does not affect the empty output
+template `()`, which intentionally means “emit no replacement nodes.”
 
 ## Template language
 

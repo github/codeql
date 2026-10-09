@@ -7,7 +7,7 @@ mod parse;
 mod rule_parse;
 mod template_parse;
 
-/// Proc macro for constructing a tree-sitter-inspired query `Pattern`.
+/// Proc macro for constructing a tree-sitter-inspired `yeast::query::QueryNode`.
 ///
 /// # Syntax
 ///
@@ -23,11 +23,23 @@ mod template_parse;
 /// (pattern) @capture           - capture the matched node
 /// "literal" @capture           - capture an unnamed token
 /// _ @capture                   - capture any node
-/// (pattern)* @capture          - capture each repeated match
-/// (pattern)?                   - zero or one
+/// (kind)* @capture             - capture each repeated named-node match
+/// "literal"* @capture          - capture each repeated unnamed-token match
+/// (kind)?                      - zero or one named node
 /// ```
 ///
 /// Named fields and bare child patterns may be intermixed in any order.
+///
+/// Parentheses do not provide general-purpose grouping. A parenthesized query
+/// group contains at least two sibling patterns and may be repeated, but the
+/// group itself cannot be captured because it does not represent one node:
+///
+/// ```text
+/// ((identifier) @items (integer) @items)*  // valid: explicit node captures
+/// ((identifier) (integer))* @items         // invalid: sequence capture
+/// ("+")*                                   // invalid: redundant grouping
+/// "+"*                                     // valid: repeated unnamed token
+/// ```
 #[proc_macro]
 pub fn query(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
