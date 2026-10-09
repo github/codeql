@@ -166,8 +166,8 @@ classes.kt:
 #    0|     3: [Method] valueOf
 #    0|       3: [TypeAccess] Direction
 #-----|       4: (Parameters)
-#    0|         0: [Parameter] value
-#    0|           0: [TypeAccess] String
+#   49|         0: [Parameter] value
+#   49|           0: [TypeAccess] String
 #    0|     4: [Method] values
 #    0|       3: [TypeAccess] Direction[]
 #    0|         0: [TypeAccess] Direction
@@ -203,8 +203,8 @@ classes.kt:
 #    0|     3: [Method] valueOf
 #    0|       3: [TypeAccess] Color
 #-----|       4: (Parameters)
-#    0|         0: [Parameter] value
-#    0|           0: [TypeAccess] String
+#   53|         0: [Parameter] value
+#   53|           0: [TypeAccess] String
 #    0|     4: [Method] values
 #    0|       3: [TypeAccess] Color[]
 #    0|         0: [TypeAccess] Color
@@ -279,7 +279,7 @@ classes.kt:
 #   66|                     1: [ExprStmt] <Expr>;
 #   66|                       0: [ClassInstanceExpr] new (...)
 #   66|                         -3: [TypeAccess] Object
-#   65|             1: [WhenBranch] ... -> ...
+#   68|             1: [WhenBranch] ... -> ...
 #   65|               0: [BooleanLiteral] true
 #   68|               1: [ReturnStmt] return ...
 #   68|                 0: [StmtExpr] <Stmt>
@@ -658,7 +658,14 @@ generic_anonymous.kt:
 #    1|         0: [ReturnStmt] return ...
 #    1|           0: [VarAccess] this.t
 #    1|             -1: [ThisAccess] this
-#    3|     4: [FieldDeclaration] new Object(...) { ... } x;
+#    3|     4: [Method] getX$private
+#    3|       3: [TypeAccess] new Object(...) { ... }
+#    3|         0: [TypeAccess] T
+#    3|       5: [BlockStmt] { ... }
+#    3|         0: [ReturnStmt] return ...
+#    3|           0: [VarAccess] this.x
+#    3|             -1: [ThisAccess] this
+#    3|     5: [FieldDeclaration] new Object(...) { ... } x;
 #    3|       -1: [TypeAccess] new Object(...) { ... }
 #    3|         0: [TypeAccess] T
 #    3|       0: [StmtExpr] <Stmt>
@@ -686,13 +693,6 @@ generic_anonymous.kt:
 #    3|           1: [ExprStmt] <Expr>;
 #    3|             0: [ClassInstanceExpr] new (...)
 #    3|               -3: [TypeAccess] Object
-#    3|     5: [Method] getX$private
-#    3|       3: [TypeAccess] new Object(...) { ... }
-#    3|         0: [TypeAccess] T
-#    3|       5: [BlockStmt] { ... }
-#    3|         0: [ReturnStmt] return ...
-#    3|           0: [VarAccess] this.x
-#    3|             -1: [ThisAccess] this
 #    7|     6: [Method] get
 #    7|       3: [TypeAccess] T
 #    7|       5: [BlockStmt] { ... }
@@ -892,7 +892,7 @@ localClassField.kt:
 #    4|             1: [ExprStmt] <Expr>;
 #    4|               0: [ClassInstanceExpr] new L(...)
 #    4|                 -3: [TypeAccess] L
-#    2|         1: [WhenBranch] ... -> ...
+#    5|         1: [WhenBranch] ... -> ...
 #    2|           0: [BooleanLiteral] true
 #    5|           1: [BlockStmt] { ... }
 #    2|     3: [Method] getX
@@ -916,7 +916,7 @@ localClassField.kt:
 #    9|             1: [ExprStmt] <Expr>;
 #    9|               0: [ClassInstanceExpr] new L(...)
 #    9|                 -3: [TypeAccess] L
-#    7|         1: [WhenBranch] ... -> ...
+#   10|         1: [WhenBranch] ... -> ...
 #    7|           0: [BooleanLiteral] true
 #   10|           1: [BlockStmt] { ... }
 #    7|     5: [Method] getY

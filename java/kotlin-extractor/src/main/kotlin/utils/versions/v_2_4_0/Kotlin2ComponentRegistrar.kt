@@ -24,6 +24,7 @@ abstract class Kotlin2ComponentRegistrar :
     ) {
         // Registration is done via ExtensionStorage in Kotlin 2.4+.
         // This legacy entry point remains for compatibility with service discovery.
+        com.github.codeql.comments.KDocProjectHolder.project = project
     }
 
     private var extensionStorage: CompilerPluginRegistrar.ExtensionStorage? = null

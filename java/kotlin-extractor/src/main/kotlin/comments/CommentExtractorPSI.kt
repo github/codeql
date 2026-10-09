@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtVisitor
+import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
@@ -95,8 +96,21 @@ class CommentExtractorPSI(
                     }
                 }
 
-                // Only storing the owner of doc comments:
-                val ownerPsi = getKDocOwner(comment) ?: return
+                val ownerPsi = getKDocOwner(comment)
+                if (ownerPsi == null) {
+                    // A file-level KDoc (one written before the file's package
+                    // directive) has no declaration owner. The K2/FIR extractor
+                    // attributes such a comment to the compilation unit (the KDOC
+                    // is a direct child of the FILE node there), so we do the same
+                    // here to keep the two frontends in agreement.
+                    if (comment.parent is KtFile) {
+                        val fileOwnerLabel = getLabel(file)
+                        if (fileOwnerLabel != null) {
+                            tw.writeKtCommentOwners(commentLabel, fileOwnerLabel)
+                        }
+                    }
+                    return
+                }
 
                 val owners = mutableListOf<IrElement>()
                 file.accept(IrVisitorLookup(psi2Ir, ownerPsi, file), owners)
@@ -111,7 +125,7 @@ class CommentExtractorPSI(
 
             private fun getKDocOwner(comment: KDoc): PsiElement? {
                 val owner = comment.owner
-                if (owner == null) {
+                if (owner == null && comment.parent !is KtFile) {
                     logger.warn(
                         "Couldn't get owner of KDoc. The comment is extracted without an owner."
                     )
