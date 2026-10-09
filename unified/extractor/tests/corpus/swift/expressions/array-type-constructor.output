@@ -1,6 +1,8 @@
 let values = [Result<Void>]()
 let initialized = [Result<Void>](unsafeUninitializedCapacity: 1) { _, count in
 	count = 0
+} completion: {
+	done()
 }
 
 ---
@@ -71,6 +73,24 @@ sourceFile
                             integerLiteralExpr
                               literal: integerLiteral "1"
                       additionalTrailingClosures:
+                        multipleTrailingClosureElement
+                          colon: :
+                          label: identifier "completion"
+                          closure:
+                            closureExpr
+                              leftBrace: {
+                              rightBrace: }
+                              statements:
+                                codeBlockItem
+                                  item:
+                                    functionCallExpr
+                                      leftParen: (
+                                      rightParen: )
+                                      arguments:
+                                      additionalTrailingClosures:
+                                      calledExpression:
+                                        declReferenceExpr
+                                          baseName: identifier "done"
                       calledExpression:
                         arrayExpr
                           elements:
@@ -144,7 +164,7 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "initialized" source="initialized"
           value:
-            call_expr source="⟨callee⟩(⟨argument⟩) ⟨argument⟩"
+            call_expr source="⟨callee⟩(⟨argument⟩) ⟨argument⟩ ⟨argument⟩"
               callee:
                 generic_type_expr source="[⟨type_argument⟩]"
                   base: identifier "Array" source=""
@@ -171,3 +191,12 @@ top_level source="⟨body⟩"
                               left: identifier "count" source="count"
                               operator: infix_operator "=" source="="
                               right: int_literal "0" source="0"
+                argument source="⟨name_node⟩: ⟨value⟩"
+                  name_node: identifier "completion" source="completion"
+                  value:
+                    function_expr source="{\n\t⟨body⟩\n}"
+                      body:
+                        block source="⟨stmt⟩"
+                          stmt:
+                            call_expr source="⟨callee⟩()"
+                              callee: identifier "done" source="done"

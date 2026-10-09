@@ -7,18 +7,42 @@ Customizing Library Models for JavaScript
 
 JavaScript analysis can be customized by adding library models in data extension files.
 
-A data extension for JavaScript is a YAML file of the form:
+A data extension for JavaScript can be written using either JSON or YAML. JSON is the preferred format, for performance reasons, and takes the following form:
+
+.. code-block:: json
+
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "<name of extensible predicate>"
+         },
+         "data": [
+           ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."],
+           ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+           // ...
+         ]
+       }
+     ]
+   }
+
+Files in the JSON format must use the ``.json`` file extension. Single-line (``//``) and multi-line (``/* ... */``) comments are supported as a non-standard JSON extension.
+
+A YAML file has the following form:
 
 .. code-block:: yaml
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: <name of extensible predicate>
-      data:
-        - <tuple1>
-        - <tuple2>
-        - ...
+   extensions:
+     - addsTo:
+         pack: codeql/javascript-all
+         extensible: <name of extensible predicate>
+       data:
+         - ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."]
+         - ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+         - ...
+
+Each data extension file may contain one or more top-level extensions.
 
 The CodeQL library for JavaScript exposes the following extensible predicates:
 
@@ -44,14 +68,21 @@ In this example, we'll show how to add the following argument, passed to ``execa
 Note that this sink is already recognized by the CodeQL JS analysis, but for this example, you could add a tuple to the
 ``sinkModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: sinkModel
-      data:
-        - ["execa", "Member[shell].Argument[0]", "command-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["execa", "Member[shell].Argument[0]", "command-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"execa"``, identifies a set of values from which to begin the search for the sink.
   The string ``"execa"`` means we start at the places where the codebase imports the NPM package ``execa``.
@@ -76,18 +107,21 @@ In this example, we'll show how the ``event.data`` expression below could be mar
 Note that this source is already recognized by the CodeQL JS analysis, but for this example, you could add a tuple to the
 ``sourceModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: sourceModel
-      data:
-        - [
-            "global",
-            "Member[addEventListener].Argument[1].Parameter[0].Member[data]",
-            "remote",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["global", "Member[addEventListener].Argument[1].Parameter[0].Member[data]", "remote"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"global"``, begins the search at references to the global object (also known as ``window`` in browser contexts). This is a special JavaScript object that contains all global variables and methods.
 - ``Member[addEventListener]`` selects accesses to the ``addEventListener`` member.
@@ -113,18 +147,21 @@ For example, it would also pick up this irrelevant source:
 
 We can refine the model by adding the ``WithStringArgument`` component to restrict the set of calls being considered:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: sourceModel
-      data:
-        - [
-            "global",
-            "Member[addEventListener].WithStringArgument[0=message].Argument[1].Parameter[0].Member[data]",
-            "remote",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["global", "Member[addEventListener].WithStringArgument[0=message].Argument[1].Parameter[0].Member[data]", "remote"]
+         ]
+       }
+     ]
+   }
 
 The ``WithStringArgument[0=message]`` component here selects the subset of calls to ``addEventListener`` where the first argument is a string literal with the value ``"message"``.
 
@@ -143,14 +180,21 @@ In this example, we'll show how to add the following SQL injection sink:
 
 We need to add a tuple to the ``sinkModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: sinkModel
-      data:
-        - ["mysql.Connection", "Member[query].Argument[0]", "sql-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["mysql.Connection", "Member[query].Argument[0]", "sql-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"mysql.Connection"``, begins the search at any expression whose value is known to be an instance of
   the ``Connection`` type from the ``mysql`` package. This will select the ``connection`` parameter above because of its type annotation.
@@ -162,11 +206,12 @@ This works in this example because the ``connection`` parameter has a type annot
 
 Note that there is a significant difference between the following two rows:
 
-.. code-block:: yaml
+.. code-block:: json
 
-        data:
-        - ["mysql.Connection", "", ...]
-        - ["mysql", "Member[Connection]", ...]
+   "data": [
+     ["mysql.Connection", "" /* ... */],
+     ["mysql", "Member[Connection]" /* ... */]
+   ]
 
 The first row matches instances of ``mysql.Connection``, which are objects that encapsulate a MySQL connection.
 The second row would match something like ``require('mysql').Connection``, which is not itself a connection object.
@@ -188,14 +233,21 @@ There is no type annotation on ``connection``, and there is no indication of wha
 By adding a tuple to the ``typeModel(type1, type2, path)`` extensible predicate we can tell our model that
 this function returns an instance of ``mysql.Connection``:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: typeModel
-      data:
-        - ["mysql.Connection", "@example/db", "Member[getConnection].ReturnValue"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "typeModel"
+         },
+         "data": [
+           ["mysql.Connection", "@example/db", "Member[getConnection].ReturnValue"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"mysql.Connection"``, names the type that we're adding a new definition for.
 - The second column, ``"@example/db"``, begins the search at imports of the hypothetical NPM package ``@example/db``.
@@ -209,9 +261,9 @@ The mechanism used here is how library models work for both TypeScript and plain
 A good library model contains ``typeModel`` tuples to ensure it works even in codebases without type annotations.
 For example, the ``mysql`` model that is included with the CodeQL JS analysis includes this type definition (among many others):
 
-.. code-block:: yaml
+.. code-block:: json
 
-  - ["mysql.Connection", "mysql", "Member[createConnection].ReturnValue"]
+   ["mysql.Connection", "mysql", "Member[createConnection].ReturnValue"]
 
 Example: Using fuzzy models to simplify modeling
 ------------------------------------------------
@@ -228,14 +280,21 @@ In this example, we'll show how to add the following SQL injection sink using a 
 
 We need to add a tuple for a fuzzy model to the ``sinkModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: sinkModel
-      data:
-        - ["mysql", "Fuzzy.Member[query].Argument[0]", "sql-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["mysql", "Fuzzy.Member[query].Argument[0]", "sql-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"mysql"``, begins the search at places where the `mysql` package is imported.
 - ``Fuzzy`` selects all objects that appear to originate from the `mysql` package, such as the `pool`, `conn`, `err`, and `rows` objects.
@@ -247,21 +306,31 @@ We need to add a tuple for a fuzzy model to the ``sinkModel(type, path, kind)`` 
 
 For reference, a more detailed model might look like this, as described in the preceding examples:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: sinkModel
-      data:
-        - ["mysql.Connection", "Member[query].Argument[0]", "sql-injection"]
-
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: typeModel
-      data:
-        - ["mysql.Pool", "mysql", "Member[createPool].ReturnValue"]
-        - ["mysql.Connection", "mysql.Pool", "Member[getConnection].Argument[0].Parameter[1]"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["mysql.Connection", "Member[query].Argument[0]", "sql-injection"]
+         ]
+       },
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "typeModel"
+         },
+         "data": [
+           ["mysql.Pool", "mysql", "Member[createPool].ReturnValue"],
+           ["mysql.Connection", "mysql.Pool", "Member[getConnection].Argument[0].Parameter[1]"]
+         ]
+       }
+     ]
+   }
 
 The model using the ``Fuzzy`` component is simpler, at the cost of being approximate.
 This technique is useful when modeling a large or complex library, where it is difficult to write a detailed model.
@@ -278,20 +347,21 @@ In this example, we'll show how to add flow through calls to `decodeURIComponent
 Note that this flow is already recognized by the CodeQL JS analysis, but for this example, you could add a tuple to the
 ``summaryModel(type, path, input, output, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: summaryModel
-      data:
-        - [
-            "global",
-            "Member[decodeURIComponent]",
-            "Argument[0]",
-            "ReturnValue",
-            "taint",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["global", "Member[decodeURIComponent]", "Argument[0]", "ReturnValue", "taint"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"global"``, begins the search for relevant calls at references to the global object.
   In JavaScript, global variables are properties of the global object, so this lets us access global variables or functions.
@@ -315,20 +385,21 @@ In this example, we'll show how to add flow through calls to ``forEach`` from th
 Note that this flow is already recognized by the CodeQL JS analysis, but for this example, you could add a tuple to the
 ``summaryModel(type, path, input, output, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: summaryModel
-      data:
-        - [
-            "underscore",
-            "Member[forEach]",
-            "Argument[0].ArrayElement",
-            "Argument[1].Parameter[0]",
-            "value",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["underscore", "Member[forEach]", "Argument[0].ArrayElement", "Argument[1].Parameter[0]", "value"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"underscore"``, begins the search for relevant calls at places where the ``underscore`` package is imported.
 - The second column, ``Member[forEach]``, selects references to the ``forEach`` member from the ``underscore`` package.
@@ -365,18 +436,21 @@ on the incoming request objects:
 
 We need to add a tuple to the ``sourceModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: sourceModel
-      data:
-        - [
-            "@example/middleware",
-            "Member[injectData].ReturnValue.GuardedRouteHandler.Parameter[0].Member[data]",
-            "remote",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["@example/middleware", "Member[injectData].ReturnValue.GuardedRouteHandler.Parameter[0].Member[data]", "remote"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"@example/middleware"``, begins the search at imports of the hypothetical NPM package ``@example/middleware``.
 - ``Member[injectData]`` selects accesses to the ``injectData`` member.
@@ -398,14 +472,21 @@ In this example, we'll show how to add the return value of ``encodeURIComponent`
 
 We need to add a tuple to the ``barrierModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: barrierModel
-      data:
-        - ["global", "Member[encodeURIComponent].ReturnValue", "html-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "barrierModel"
+         },
+         "data": [
+           ["global", "Member[encodeURIComponent].ReturnValue", "html-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"global"``, begins the search for relevant calls at references to the global object.
 - The second column, ``Member[encodeURIComponent].ReturnValue``, selects the return value of the ``encodeURIComponent`` function.
@@ -425,14 +506,21 @@ Consider a function called `isValid` which returns `true` when the data is consi
 
 We need to add a tuple to the ``barrierGuardModel(type, path, acceptingValue, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: barrierGuardModel
-      data:
-        - ["my-package", "Member[isValid].Argument[0]", "true", "sql-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "barrierGuardModel"
+         },
+         "data": [
+           ["my-package", "Member[isValid].Argument[0]", "true", "sql-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"my-package"``, begins the search at imports of the hypothetical NPM package ``my-package``.
 - The second column, ``Member[isValid].Argument[0]``, selects the first argument of the `isValid` function. This is the value being validated.
@@ -458,14 +546,21 @@ Adds a new taint source. Most taint-tracking queries will use the new source.
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: sourceModel
-      data:
-        - ["global", "Member[user].Member[name]", "remote"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["global", "Member[user].Member[name]", "remote"]
+         ]
+       }
+     ]
+   }
 
 sinkModel(type, path, kind)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -478,14 +573,21 @@ Adds a new taint sink. Sinks are query-specific and will typically affect one or
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: sinkModel
-      data:
-        - ["global", "Member[eval].Argument[0]", "code-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["global", "Member[eval].Argument[0]", "code-injection"]
+         ]
+       }
+     ]
+   }
 
 summaryModel(type, path, input, output, kind)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -500,20 +602,21 @@ Adds flow through a function call.
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/javascript-all
-        extensible: summaryModel
-      data:
-        - [
-            "global",
-            "Member[decodeURIComponent]",
-            "Argument[0]",
-            "ReturnValue",
-            "taint",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["global", "Member[decodeURIComponent]", "Argument[0]", "ReturnValue", "taint"]
+         ]
+       }
+     ]
+   }
 
 typeModel(type1, type2, path)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -526,18 +629,21 @@ Adds a new definition of a type.
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-  - addsTo:
-      pack: codeql/javascript-all
-      extensible: typeModel
-    data:
-      - [
-          "mysql.Connection",
-          "@example/db",
-          "Member[getConnection].ReturnValue",
-        ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/javascript-all",
+           "extensible": "typeModel"
+         },
+         "data": [
+           ["mysql.Connection", "@example/db", "Member[getConnection].ReturnValue"]
+         ]
+       }
+     ]
+   }
 
 Types
 -----

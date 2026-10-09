@@ -25,5 +25,21 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       step.value() and
       node2.isResultValue(call)
     )
+    or
+    // Taint flow through unary "!" (TODO: model as a read of Optional.some, possibly with implicit taint read)
+    exists(UnaryExpr expr |
+      expr.getOperator().(PostfixOperator).getValue() = "!" and
+      node1.isResultValue(expr.getOperand()) and
+      step.taint() and
+      node2.isResultValue(expr)
+    )
+    or
+    // Taint flow through URL(string: x). TODO: Model with MaD and flow summaries
+    exists(CallExpr call |
+      call.getCallee().(Identifier).getValue() = ["URL", "NSURL"] and
+      node1.isResultValue(call.getNamedArgument("string")) and
+      step.taint() and
+      node2.isResultValue(call)
+    )
   }
 }
