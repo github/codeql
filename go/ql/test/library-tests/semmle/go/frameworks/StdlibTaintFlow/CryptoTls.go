@@ -55,6 +55,71 @@ func TaintStepTest_CryptoTlsConnWrite_B0I0O0(sourceCQL interface{}) interface{} 
 	return intoConn584
 }
 
+func TaintStepTest_CryptoTlsSessionStateBytes(sourceCQL interface{}) interface{} {
+	out, _ := sourceCQL.(*tls.SessionState).Bytes()
+	return out
+}
+
+func TaintStepTest_CryptoTlsParseSessionState(sourceCQL interface{}) interface{} {
+	out, _ := tls.ParseSessionState(sourceCQL.([]byte))
+	return out
+}
+
+func TaintStepTest_CryptoTlsNewResumptionStateTicket(sourceCQL interface{}) interface{} {
+	out, _ := tls.NewResumptionState(sourceCQL.([]byte), nil)
+	return out
+}
+
+func TaintStepTest_CryptoTlsNewResumptionStateState(sourceCQL interface{}) interface{} {
+	out, _ := tls.NewResumptionState(nil, sourceCQL.(*tls.SessionState))
+	return out
+}
+
+func TaintStepTest_CryptoTlsClientSessionStateResumptionState(sourceCQL interface{}) interface{} {
+	ticket, _, _ := sourceCQL.(*tls.ClientSessionState).ResumptionState()
+	return ticket
+}
+
+func TaintStepTest_CryptoTlsConfigEncryptTicketState(sourceCQL interface{}) interface{} {
+	var config tls.Config
+	out, _ := config.EncryptTicket(tls.ConnectionState{}, sourceCQL.(*tls.SessionState))
+	return out
+}
+
+func TaintStepTest_CryptoTlsConfigDecryptTicket(sourceCQL interface{}) interface{} {
+	var config tls.Config
+	out, _ := config.DecryptTicket(sourceCQL.([]byte), tls.ConnectionState{})
+	return out
+}
+
+func TaintStepTest_CryptoTlsQUICClient(sourceCQL interface{}) interface{} {
+	return tls.QUICClient(sourceCQL.(*tls.QUICConfig))
+}
+
+func TaintStepTest_CryptoTlsQUICServer(sourceCQL interface{}) interface{} {
+	return tls.QUICServer(sourceCQL.(*tls.QUICConfig))
+}
+
+func TaintStepTest_CryptoTlsQUICConnHandleData(sourceCQL interface{}) interface{} {
+	conn := tls.QUICClient(&tls.QUICConfig{})
+	conn.HandleData(tls.QUICEncryptionLevelInitial, sourceCQL.([]byte))
+	return conn
+}
+
+func TaintStepTest_CryptoTlsQUICConnNextEvent(sourceCQL interface{}) interface{} {
+	return sourceCQL.(*tls.QUICConn).NextEvent()
+}
+
+func TaintStepTest_CryptoTlsQUICConnConnectionState(sourceCQL interface{}) interface{} {
+	return sourceCQL.(*tls.QUICConn).ConnectionState()
+}
+
+func TaintStepTest_CryptoTlsQUICConnSetTransportParameters(sourceCQL interface{}) interface{} {
+	conn := tls.QUICClient(&tls.QUICConfig{})
+	conn.SetTransportParameters(sourceCQL.([]byte))
+	return conn
+}
+
 func RunAllTaints_CryptoTls() {
 	{
 		source := newSource(0)
@@ -90,5 +155,70 @@ func RunAllTaints_CryptoTls() {
 		source := newSource(6)
 		out := TaintStepTest_CryptoTlsConnWrite_B0I0O0(source)
 		sink(6, out)
+	}
+	{
+		source := newSource(8)
+		out := TaintStepTest_CryptoTlsSessionStateBytes(source)
+		sink(8, out)
+	}
+	{
+		source := newSource(9)
+		out := TaintStepTest_CryptoTlsParseSessionState(source)
+		sink(9, out)
+	}
+	{
+		source := newSource(10)
+		out := TaintStepTest_CryptoTlsNewResumptionStateTicket(source)
+		sink(10, out)
+	}
+	{
+		source := newSource(11)
+		out := TaintStepTest_CryptoTlsNewResumptionStateState(source)
+		sink(11, out)
+	}
+	{
+		source := newSource(12)
+		out := TaintStepTest_CryptoTlsClientSessionStateResumptionState(source)
+		sink(12, out)
+	}
+	{
+		source := newSource(13)
+		out := TaintStepTest_CryptoTlsConfigEncryptTicketState(source)
+		sink(13, out)
+	}
+	{
+		source := newSource(14)
+		out := TaintStepTest_CryptoTlsConfigDecryptTicket(source)
+		sink(14, out)
+	}
+	{
+		source := newSource(15)
+		out := TaintStepTest_CryptoTlsQUICClient(source)
+		sink(15, out)
+	}
+	{
+		source := newSource(16)
+		out := TaintStepTest_CryptoTlsQUICServer(source)
+		sink(16, out)
+	}
+	{
+		source := newSource(17)
+		out := TaintStepTest_CryptoTlsQUICConnHandleData(source)
+		sink(17, out)
+	}
+	{
+		source := newSource(18)
+		out := TaintStepTest_CryptoTlsQUICConnNextEvent(source)
+		sink(18, out)
+	}
+	{
+		source := newSource(19)
+		out := TaintStepTest_CryptoTlsQUICConnConnectionState(source)
+		sink(19, out)
+	}
+	{
+		source := newSource(20)
+		out := TaintStepTest_CryptoTlsQUICConnSetTransportParameters(source)
+		sink(20, out)
 	}
 }
