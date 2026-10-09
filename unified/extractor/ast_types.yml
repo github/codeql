@@ -13,6 +13,7 @@ supertypes:
     - binary_expr
     - unary_expr
     - call_expr
+    - macro_call_expr
     - member_access_expr
     - super_expr
     - function_expr
@@ -67,13 +68,17 @@ supertypes:
     - defer_stmt
     - labeled_stmt
   callable:
-    - top_level
-    - function_expr
-    - function_declaration
-    - constructor_declaration
-    - destructor_declaration
-    - accessor_declaration
-    - initializer_declaration
+    subtypes:
+      - top_level
+      - function_expr
+      - function_declaration
+      - constructor_declaration
+      - destructor_declaration
+      - accessor_declaration
+      - initializer_declaration
+    fields:
+      parameter*: parameter
+      body?: block
   # A member is anything that can appear in the body of a class-like declaration
   member:
     - constructor_declaration
@@ -169,6 +174,13 @@ named:
   call_expr:
     modifier*: modifier
     callee: expr
+    argument*: argument
+
+  # A macro call expression, such as `#expect(x == y)` in Swift or
+  # `assert!(x == y)` in Rust.
+  macro_call_expr:
+    macro_name_node: identifier
+    type_argument*: expr
     argument*: argument
 
   argument:

@@ -7,8 +7,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tree-sitter = ">= 0.23.0"
-tree-sitter-ql = { git = "https://github.com/tree-sitter/tree-sitter-ql.git", rev = "c73c31c89cb0019ef56fe8bc1723e7c36e0be607"}
+tree-sitter = ">= 0.26.0"
+tree-sitter-ql = { git = "https://github.com/tree-sitter/tree-sitter-ql.git", rev = "d9d6c853caf0f882e6371e4d4da5817c48c8a8d8"}
 tree-sitter-ql-dbscheme = { git = "https://github.com/tree-sitter/tree-sitter-ql-dbscheme.git", rev = "1980b4b6998a1138d326f863e6168f0f2c0c544d"}
 tree-sitter-blame = {path = "../buramu/tree-sitter-blame"}
 tree-sitter-json = {git = "https://github.com/tree-sitter/tree-sitter-json.git", rev = "8bfdb43f47ad805bb1ce093203cfcbaa8ed2c571"}

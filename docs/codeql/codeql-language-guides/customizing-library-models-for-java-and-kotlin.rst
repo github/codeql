@@ -30,7 +30,29 @@ Syntax used to define an element in an extension file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each model of an element is defined using a data extension where each tuple constitutes a model.
-A data extension file to extend the standard Java queries included with CodeQL is a YAML file with the form:
+A data extension file to extend the standard Java queries included with CodeQL can be written using either JSON or YAML. JSON is the preferred format, for performance reasons, and takes the following form:
+
+.. code-block:: json
+
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/java-all",
+           "extensible": "<name of extensible predicate>"
+         },
+         "data": [
+           ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."],
+           ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+           // ...
+         ]
+       }
+     ]
+   }
+
+Files in the JSON format must use the ``.json`` file extension. Single-line (``//``) and multi-line (``/* ... */``) comments are supported as a non-standard JSON extension.
+
+A YAML file has the following form:
 
 .. code-block:: yaml
 
@@ -39,11 +61,11 @@ A data extension file to extend the standard Java queries included with CodeQL i
          pack: codeql/java-all
          extensible: <name of extensible predicate>
        data:
-         - <tuple1>
-         - <tuple2>
+         - ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."]
+         - ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
          - ...
 
-Each YAML file may contain one or more top-level extensions.
+Each data extension file may contain one or more top-level extensions.
 
 - ``addsTo`` defines the CodeQL pack name and extensible predicate that the extension is injected into.
 - ``data`` defines one or more rows of tuples that are injected as values into the extensible predicate. The number of columns and their types must match the definition of the extensible predicate.
@@ -74,9 +96,9 @@ Specifying types in Java and Kotlin models
 
 **Nested and inner classes** are denoted by joining the enclosing type and the nested type with a dollar sign (``$``), for example ``Outer$Inner``. This applies both to the type column and to nested types in a signature. For example, the ``Level`` enum nested inside the ``Logger`` interface, nested inside the ``System`` class, is written as ``System$Logger$Level``:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String)", "", "Argument[1]", "log-injection", "manual"]
+   ["java.lang", "System$Logger", true, "log", "(System$Logger$Level,String)", "", "Argument[1]", "log-injection", "manual"]
 
 **Generics** are erased, so type parameters are removed:
 
@@ -85,9 +107,9 @@ Specifying types in Java and Kotlin models
 
 For example, ``forEach`` on ``Iterable<T>`` takes a ``Consumer<? super T>`` argument, so the type is ``Iterable`` and the signature is ``(Consumer)``:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   - ["java.lang", "Iterable", True, "forEach", "(Consumer)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
+   ["java.lang", "Iterable", true, "forEach", "(Consumer)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
 
 Examples of custom model definitions
 ------------------------------------
@@ -109,20 +131,27 @@ This is the ``execute`` method in the ``Statement`` class, which is located in t
 
 We need to add a tuple to the ``sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/java-all
-         extensible: sinkModel
-       data:
-         - ["java.sql", "Statement", True, "execute", "(String)", "", "Argument[0]", "sql-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/java-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["java.sql", "Statement", true, "execute", "(String)", "", "Argument[0]", "sql-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case a method) to be modeled as a sink.
 
 - The first value ``java.sql`` is the package name.
 - The second value ``Statement`` is the name of the class (type) that contains the method.
-- The third value ``True`` is a flag that indicates whether or not the model also applies to all overrides of the method.
+- The third value ``true`` is a flag that indicates whether or not the model also applies to all overrides of the method.
 - The fourth value ``execute`` is the method name.
 - The fifth value ``(String)`` is the method input type signature.
 
@@ -147,20 +176,27 @@ This is the ``getInputStream`` method in the ``Socket`` class, which is located 
 
 We need to add a tuple to the ``sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/java-all
-         extensible: sourceModel
-       data:
-         - ["java.net", "Socket", False, "getInputStream", "()", "", "ReturnValue", "remote", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/java-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["java.net", "Socket", false, "getInputStream", "()", "", "ReturnValue", "remote", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case a method) to be modeled as a source.
 
 - The first value ``java.net`` is the package name.
 - The second value ``Socket`` is the name of the class (type) that contains the source.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method.
 - The fourth value ``getInputStream`` is the method name.
 - The fifth value ``()`` is the method input type signature.
 
@@ -185,15 +221,22 @@ This pattern covers many of the cases where we need to summarize flow through a 
 
 We need to add tuples to the ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/java-all
-         extensible: summaryModel
-       data:
-         - ["java.lang", "String", False, "concat", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-         - ["java.lang", "String", False, "concat", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/java-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["java.lang", "String", false, "concat", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"],
+           ["java.lang", "String", false, "concat", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+         ]
+       }
+     ]
+   }
 
 Each tuple defines flow from one argument to the return value.
 The first row defines flow from the qualifier (``s1`` in the example) to the return value (``t`` in the example) and the second row defines flow from the first argument (``s2`` in the example) to the return value (``t`` in the example).
@@ -203,7 +246,7 @@ These are the same for both of the rows above as we are adding two summaries for
 
 - The first value ``java.lang`` is the package name.
 - The second value ``String`` is the class (type) name.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method.
 - The fourth value ``concat`` is the method name.
 - The fifth value ``(String)`` is the method input type signature.
 
@@ -229,15 +272,22 @@ Here we model flow through higher order methods and collection types.
 
 We need to add tuples to the ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/java-all
-         extensible: summaryModel
-       data:
-         - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
-         - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/java-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["java.util.stream", "Stream", true, "map", "(Function)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"],
+           ["java.util.stream", "Stream", true, "map", "(Function)", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]
+         ]
+       }
+     ]
+   }
 
 Each tuple defines part of the flow that comprises the total flow through the ``map`` method.
 The first five values identify the callable (in this case a method) to be modeled as a summary.
@@ -245,7 +295,7 @@ These are the same for both of the rows above as we are adding two summaries for
 
 - The first value ``java.util.stream`` is the package name.
 - The second value ``Stream`` is the class (type) name.
-- The third value ``True`` is a flag that indicates whether or not the model also applies to all overrides of the method.
+- The third value ``true`` is a flag that indicates whether or not the model also applies to all overrides of the method.
 - The fourth value ``map`` is the method name.
 - The fifth value ``Function`` is the method input type signature.
 
@@ -286,20 +336,27 @@ This is the ``getName`` method in the ``File`` class, which is located in the ``
 
 We need to add a tuple to the ``barrierModel(package, type, subtypes, name, signature, ext, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/java-all
-         extensible: barrierModel
-       data:
-         - ["java.io", "File", True, "getName", "()", "", "ReturnValue", "path-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/java-all",
+           "extensible": "barrierModel"
+         },
+         "data": [
+           ["java.io", "File", true, "getName", "()", "", "ReturnValue", "path-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case a method) to be modeled as a barrier.
 
 - The first value ``java.io`` is the package name.
 - The second value ``File`` is the name of the class (type) that contains the method.
-- The third value ``True`` is a flag that indicates whether or not the model also applies to all overrides of the method.
+- The third value ``true`` is a flag that indicates whether or not the model also applies to all overrides of the method.
 - The fourth value ``getName`` is the method name.
 - The fifth value ``()`` is the method input type signature.
 
@@ -328,20 +385,27 @@ When the ``isAbsolute`` method returns ``false``, the URI is relative and theref
 
 We need to add a tuple to the ``barrierGuardModel(package, type, subtypes, name, signature, ext, input, acceptingValue, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/java-all
-         extensible: barrierGuardModel
-       data:
-         - ["java.net", "URI", True, "isAbsolute", "()", "", "Argument[this]", "false", "request-forgery", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/java-all",
+           "extensible": "barrierGuardModel"
+         },
+         "data": [
+           ["java.net", "URI", true, "isAbsolute", "()", "", "Argument[this]", "false", "request-forgery", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case a method) to be modeled as a barrier guard.
 
 - The first value ``java.net`` is the package name.
 - The second value ``URI`` is the name of the class (type) that contains the method.
-- The third value ``True`` is a flag that indicates whether or not the model guard also applies to all overrides of the method.
+- The third value ``true`` is a flag that indicates whether or not the model guard also applies to all overrides of the method.
 - The fourth value ``isAbsolute`` is the method name.
 - The fifth value ``()`` is the method input type signature.
 
@@ -367,14 +431,21 @@ A neutral model is used to define that there is no flow through a method.
 
 We need to add a tuple to the ``neutralModel(package, type, name, signature, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-   - addsTo:
-       pack: codeql/java-all
-       extensible: neutralModel
-     data:
-       - ["java.time", "Instant", "now", "()", "summary", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/java-all",
+           "extensible": "neutralModel"
+         },
+         "data": [
+           ["java.time", "Instant", "now", "()", "summary", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first four values identify the callable (in this case a method) to be modeled as a neutral, the fifth value is the kind, and the sixth value is the provenance (origin) of the neutral.
 

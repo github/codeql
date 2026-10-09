@@ -176,3 +176,12 @@ func t19() {
     sink(a)  // $ hasTaintFlow=t19.1
     sink(b)  // $ hasTaintFlow=t19.2
 }
+
+func t20() {
+    func foo(x: String, y: String) -> String { return x }
+    var x = source("t20.1")
+    var y = source("t20.2")
+    foo(x: x, y: y)
+    sink(x)  // $ hasValueFlow=t20.1
+    sink(y)  // $ hasValueFlow=t20.2
+}

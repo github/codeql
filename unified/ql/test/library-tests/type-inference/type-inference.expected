@@ -127,6 +127,8 @@ inferCertainType
 | closures.swift:61:14:61:16 | arg |  | closures.swift:60:12:60:13 | T1 |
 | closures.swift:66:9:68:9 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:66:9:68:9 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |
 | fields.swift:2:7:2:20 | inheritedField |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:6:7:6:17 | storedField |  | {EXTERNAL LOCATION} | String |
 | fields.swift:7:7:7:18 | genericField |  | fields.swift:5:22:5:22 | T |
@@ -1047,6 +1049,15 @@ inferType
 | closures.swift:69:5:69:5 | _ |  | {EXTERNAL LOCATION} | String |
 | closures.swift:69:5:69:14 | ... = ... |  | {EXTERNAL LOCATION} | String |
 | closures.swift:69:9:69:14 | result |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:4:24:6:5 | Block |  | constructors.swift:1:1:7:1 | C1 |
+| constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |
+| constructors.swift:5:9:5:20 | ... .init(...) |  | constructors.swift:1:1:7:1 | C1 |
+| constructors.swift:5:19:5:19 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:9:5:9:7 | c11 |  | constructors.swift:1:1:7:1 | C1 |
+| constructors.swift:9:11:9:14 | C1(...) |  | constructors.swift:1:1:7:1 | C1 |
+| constructors.swift:10:5:10:7 | c12 |  | constructors.swift:1:1:7:1 | C1 |
+| constructors.swift:10:11:10:19 | ... .init(...) |  | constructors.swift:1:1:7:1 | C1 |
 | fields.swift:2:7:2:20 | inheritedField |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:2:29:2:29 | 0 |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:6:7:6:17 | storedField |  | {EXTERNAL LOCATION} | String |

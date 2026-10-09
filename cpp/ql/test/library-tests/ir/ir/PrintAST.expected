@@ -4304,6 +4304,89 @@ destructors_for_temps.cpp:
 #  103|             Type = [IntType] int
 #  103|             ValueCategory = prvalue
 #  104|     getStmt(1): [ReturnStmt] return ...
+#  106| [CopyAssignmentOperator] ClassWithArrayAndDestructor& ClassWithArrayAndDestructor::operator=(ClassWithArrayAndDestructor const&)
+#  106|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ClassWithArrayAndDestructor &
+#  106| [Constructor] void ClassWithArrayAndDestructor::ClassWithArrayAndDestructor()
+#  106|   <params>: 
+#  106| [Destructor] void ClassWithArrayAndDestructor::~ClassWithArrayAndDestructor()
+#  106|   <params>: 
+#  108| [TopLevelFunction] void temp_test13(bool)
+#  108|   <params>: 
+#  108|     getParameter(0): [Parameter] b
+#  108|         Type = [BoolType] bool
+#  108|   getEntryPoint(): [BlockStmt] { ... }
+#  109|     getStmt(0): [DeclStmt] declaration
+#  109|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of t
+#  109|           Type = [LValueReferenceType] const int &
+#  109|         getVariable().getInitializer(): [Initializer] initializer for t
+#  109|           getExpr(): [ConditionalExpr] ... ? ... : ...
+#  109|               Type = [IntType] int
+#  109|               ValueCategory = lvalue
+#  109|             getCondition(): [VariableAccess] b
+#  109|                 Type = [BoolType] bool
+#  109|                 ValueCategory = prvalue(load)
+#  109|             getThen(): [ArrayExpr] access to array
+#  109|                 Type = [IntType] int
+#  109|                 ValueCategory = lvalue
+#  109|               getArrayBase(): [ValueFieldAccess] a
+#  109|                   Type = [ArrayType] int[2]
+#  109|                   ValueCategory = prvalue
+#  109|                 getQualifier(): [Literal] 0
+#  109|                     Type = [Struct] ClassWithArrayAndDestructor
+#  109|                     Value = [Literal] 0
+#  109|                     ValueCategory = prvalue
+#  109|                 getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  109|                     Type = [Struct] ClassWithArrayAndDestructor
+#  109|                     ValueCategory = prvalue(load)
+#  109|               getArrayOffset(): [Literal] 0
+#  109|                   Type = [IntType] int
+#  109|                   Value = [Literal] 0
+#  109|                   ValueCategory = prvalue
+#  109|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#  109|                   Type = [IntPointerType] int *
+#  109|                   ValueCategory = prvalue
+#  109|             getElse(): [ArrayExpr] access to array
+#  109|                 Type = [IntType] int
+#  109|                 ValueCategory = lvalue
+#  109|               getArrayBase(): [ValueFieldAccess] a
+#  109|                   Type = [ArrayType] int[2]
+#  109|                   ValueCategory = prvalue
+#  109|                 getQualifier(): [Literal] 0
+#  109|                     Type = [Struct] ClassWithArrayAndDestructor
+#  109|                     Value = [Literal] 0
+#  109|                     ValueCategory = prvalue
+#  109|                 getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  109|                     Type = [Struct] ClassWithArrayAndDestructor
+#  109|                     ValueCategory = prvalue(load)
+#  109|               getArrayOffset(): [Literal] 1
+#  109|                   Type = [IntType] int
+#  109|                   Value = [Literal] 1
+#  109|                   ValueCategory = prvalue
+#  109|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#  109|                   Type = [IntPointerType] int *
+#  109|                   ValueCategory = prvalue
+#  109|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithArrayAndDestructor
+#  109|                 Type = [VoidType] void
+#  109|                 ValueCategory = prvalue
+#  109|               getQualifier(): [ReuseExpr] reuse of temporary object
+#  109|                   Type = [Struct] ClassWithArrayAndDestructor
+#  109|                   ValueCategory = xvalue
+#  109|             getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithArrayAndDestructor
+#  109|                 Type = [VoidType] void
+#  109|                 ValueCategory = prvalue
+#  109|               getQualifier(): [ReuseExpr] reuse of temporary object
+#  109|                   Type = [Struct] ClassWithArrayAndDestructor
+#  109|                   ValueCategory = xvalue
+#  109|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#  109|               Type = [LValueReferenceType] const int &
+#  109|               ValueCategory = prvalue
+#  109|             getExpr(): [CStyleCast] (const int)...
+#  109|                 Conversion = [GlvalueConversion] glvalue conversion
+#  109|                 Type = [SpecifiedType] const int
+#  109|                 ValueCategory = lvalue
+#  110|     getStmt(1): [ReturnStmt] return ...
 generic.c:
 #    1| [TopLevelFunction] void c11_generic_test_with_load(unsigned int, int)
 #    1|   <params>: 

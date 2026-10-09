@@ -25,7 +25,29 @@ Syntax used to define an element in an extension file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each model of an element is defined using a data extension where each tuple constitutes a model.
-A data extension file to extend the standard Rust queries included with CodeQL is a YAML file with the form:
+A data extension file to extend the standard Rust queries included with CodeQL can be written using either JSON or YAML. JSON is the preferred format, for performance reasons, and takes the following form:
+
+.. code-block:: json
+
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "<name of extensible predicate>"
+         },
+         "data": [
+           ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."],
+           ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+           // ...
+         ]
+       }
+     ]
+   }
+
+Files in the JSON format must use the ``.json`` file extension. Single-line (``//``) and multi-line (``/* ... */``) comments are supported as a non-standard JSON extension.
+
+A YAML file has the following form:
 
 .. code-block:: yaml
 
@@ -34,11 +56,11 @@ A data extension file to extend the standard Rust queries included with CodeQL i
         pack: codeql/rust-all
         extensible: <name of extensible predicate>
       data:
-        - <tuple1>
-        - <tuple2>
+        - ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."]
+        - ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
         - ...
 
-Each YAML file may contain one or more top-level extensions.
+Each data extension file may contain one or more top-level extensions.
 
 - ``addsTo`` defines the CodeQL pack name and extensible predicate that the extension is injected into.
 - ``data`` defines one or more rows of tuples that are injected as values into the extensible predicate. The number of columns and their types must match the definition of the extensible predicate.
@@ -99,15 +121,21 @@ This example shows how the Rust query pack models the first argument of the ``sq
 
 We need to add a tuple to the ``sinkModel(path, input, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: sinkModel
-      data:
-        - ["sqlx_core::query::query", "Argument[0]", "sql-injection", "manual"]
-
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["sqlx_core::query::query", "Argument[0]", "sql-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 - The first value ``sqlx_core::query::query`` is the canonical path of the function to model. Note that this is the internal module path (``sqlx_core::query::query``), not the public re-export path (``sqlx::query``).
 - The second value ``Argument[0]`` is the access path to the first argument of the function call, which is the SQL query string. This is the location of the sink.
@@ -128,15 +156,21 @@ This example shows how the Rust query pack models the return value of the ``reqw
 
 We need to add a tuple to the ``sourceModel(path, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: sourceModel
-      data:
-        - ["reqwest::get", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "remote", "manual"]
-
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["reqwest::get", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "remote", "manual"]
+         ]
+       }
+     ]
+   }
 
 - The first value ``reqwest::get`` is the canonical path of the function.
 - The second value ``ReturnValue.Future.Field[core::result::Result::Ok(0)]`` is the access path to the output. This compound path is read left to right:
@@ -162,14 +196,21 @@ This example shows how the Rust query pack models the return value of ``std::env
 
 We need to add a tuple to the ``sourceModel(path, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: sourceModel
-      data:
-        - ["std::env::var", "ReturnValue.Field[core::result::Result::Ok(0)]", "environment", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["std::env::var", "ReturnValue.Field[core::result::Result::Ok(0)]", "environment", "manual"]
+         ]
+       }
+     ]
+   }
 
 - The first value ``std::env::var`` is the canonical path to the ``var`` function in the ``std::env`` module.
 - The second value ``ReturnValue.Field[core::result::Result::Ok(0)]`` selects the ``Ok`` variant of the returned ``Result<String, VarError>``.
@@ -190,15 +231,21 @@ This example shows how the Rust query pack models taint flow through the ``text`
 
 We need to add a tuple to the ``summaryModel(path, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: summaryModel
-      data:
-        - ["<reqwest::response::Response>::text", "Argument[self]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["<reqwest::response::Response>::text", "Argument[self]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+         ]
+       }
+     ]
+   }
 
 - The first value ``<reqwest::response::Response>::text`` is the canonical path. Note the format ``<Type>::method`` used for inherent methods. Also note that the canonical path uses the internal module path ``reqwest::response::Response``, not just ``reqwest::Response``.
 - The second value ``Argument[self]`` is the access path to the input. ``Argument[self]`` refers to the receiver of the method call (``response`` in the example).
@@ -222,15 +269,22 @@ This example shows how the Rust query pack models taint flow through the ``join`
 
 We need to add tuples to the ``summaryModel(path, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: summaryModel
-      data:
-        - ["<std::path::Path>::join", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
-        - ["<std::path::Path>::join", "Argument[0]", "ReturnValue", "taint", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["<std::path::Path>::join", "Argument[self].Reference", "ReturnValue", "taint", "manual"],
+           ["<std::path::Path>::join", "Argument[0]", "ReturnValue", "taint", "manual"]
+         ]
+       }
+     ]
+   }
 
 Since we are adding flow through a method, we need to add tuples to the ``summaryModel`` extensible predicate. Each tuple defines flow from one input to the output. The first row defines flow from the receiver and the second row defines flow from the first argument.
 
@@ -263,15 +317,21 @@ This example shows how the Rust query pack models a more complex flow through a 
 
 We need to add tuples to the ``summaryModel(path, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: summaryModel
-      data:
-        - ["<core::iter::traits::iterator::Iterator>::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
-
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["<core::iter::traits::iterator::Iterator>::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+         ]
+       }
+     ]
+   }
 
 - The first value ``<core::iter::traits::iterator::Iterator>::map`` is the canonical path. The ``<Trait>::method`` form matches any type that implements the ``Iterator`` trait.
 - The second value ``Argument[self].Element`` is the access path to the input — the elements of the iterator (the receiver).
@@ -290,14 +350,21 @@ This example shows how the Rust query pack models the ``Option::map`` method as 
 
 A neutral model prevents generated or inherited models of a specific category (``source``, ``sink``, or ``summary``) from being applied to a callable. This is useful when an automatically generated model incorrectly identifies a callable as, for example, a sink.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: neutralModel
-      data:
-        - ["<core::option::Option>::map", "sink", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "neutralModel"
+         },
+         "data": [
+           ["<core::option::Option>::map", "sink", "manual"]
+         ]
+       }
+     ]
+   }
 
 Since we are adding a neutral model, we need to add a tuple to the ``neutralModel`` extensible predicate. The tuple has three values:
 
@@ -322,15 +389,21 @@ Consider a hypothetical function ``my_crate::sanitize::escape_sql`` which escape
 
 We need to add a tuple to the ``barrierModel(path, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: barrierModel
-      data:
-        - ["my_crate::sanitize::escape_sql", "ReturnValue", "sql-injection", "manual"]
-
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "barrierModel"
+         },
+         "data": [
+           ["my_crate::sanitize::escape_sql", "ReturnValue", "sql-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 - The first value ``my_crate::sanitize::escape_sql`` is the canonical path of the function.
 - The second value ``ReturnValue`` is the access path to the output of the barrier, which means that the return value is considered sanitized.
@@ -356,15 +429,21 @@ Consider a hypothetical function ``my_crate::validate::is_safe_path`` which retu
 
 We need to add a tuple to the ``barrierGuardModel(path, input, acceptingValue, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: barrierGuardModel
-      data:
-        - ["my_crate::validate::is_safe_path", "Argument[0]", "true", "path-injection", "manual"]
-
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "barrierGuardModel"
+         },
+         "data": [
+           ["my_crate::validate::is_safe_path", "Argument[0]", "true", "path-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 - The first value ``my_crate::validate::is_safe_path`` is the canonical path of the function.
 - The second value ``Argument[0]`` is the access path to the input whose flow is blocked. In this case, the first argument to the function (``user_path`` in the example).
@@ -399,14 +478,21 @@ Adds a new taint source. Most taint-tracking queries will use the new source.
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: sourceModel
-      data:
-        - ["std::env::var", "ReturnValue.Field[core::result::Result::Ok(0)]", "environment", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["std::env::var", "ReturnValue.Field[core::result::Result::Ok(0)]", "environment", "manual"]
+         ]
+       }
+     ]
+   }
 
 sinkModel(path, input, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -420,14 +506,21 @@ Adds a new taint sink. Sinks are query-specific and will typically affect one or
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: sinkModel
-      data:
-        - ["sqlx_core::query::query", "Argument[0]", "sql-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["sqlx_core::query::query", "Argument[0]", "sql-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 summaryModel(path, input, output, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -442,14 +535,21 @@ Adds flow through a function or method call.
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: summaryModel
-      data:
-        - ["<reqwest::response::Response>::text", "Argument[self]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["<reqwest::response::Response>::text", "Argument[self]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+         ]
+       }
+     ]
+   }
 
 neutralModel(path, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -462,14 +562,21 @@ Prevents generated or inherited models of the specified category from being appl
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: neutralModel
-      data:
-        - ["<core::option::Option>::map", "sink", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "neutralModel"
+         },
+         "data": [
+           ["<core::option::Option>::map", "sink", "manual"]
+         ]
+       }
+     ]
+   }
 
 barrierModel(path, output, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -483,14 +590,21 @@ Adds a new barrier that stops the flow of taint at the specified element.
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: barrierModel
-      data:
-        - ["my_crate::sanitize::escape_sql", "ReturnValue", "sql-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "barrierModel"
+         },
+         "data": [
+           ["my_crate::sanitize::escape_sql", "ReturnValue", "sql-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 barrierGuardModel(path, input, acceptingValue, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -505,14 +619,21 @@ Adds a new barrier guard that stops the flow of taint when a conditional check i
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: barrierGuardModel
-      data:
-        - ["my_crate::validate::is_safe_path", "Argument[0]", "true", "path-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/rust-all",
+           "extensible": "barrierGuardModel"
+         },
+         "data": [
+           ["my_crate::validate::is_safe_path", "Argument[0]", "true", "path-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 Access paths
 ------------

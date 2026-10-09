@@ -116,12 +116,12 @@ module Unified {
     final F::Identifier getNameNode() { unified_accessor_declaration_def(this, _, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getParameter(int i) {
+    final override F::Parameter getParameter(int i) {
       unified_accessor_declaration_parameter(this, i, result)
     }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getAParameter() { result = this.getParameter(_) }
+    final override F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `type`. */
     final F::Expr getType() { unified_accessor_declaration_type(this, result) }
@@ -360,7 +360,13 @@ module Unified {
 
   class Callable extends @unified_callable, F::AstNode {
     /** Gets the node corresponding to the field `body`. */
-    abstract F::Block getBody();
+    F::Block getBody() { none() }
+
+    /** Gets the node corresponding to the field `parameter`. */
+    F::Parameter getParameter(int i) { none() }
+
+    /** Gets the node corresponding to the field `parameter`. */
+    F::Parameter getAParameter() { none() }
   }
 
   /** A class representing `catch_clause` nodes. */
@@ -498,12 +504,12 @@ module Unified {
     final F::Identifier getNameNode() { unified_constructor_declaration_name_node(this, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getParameter(int i) {
+    final override F::Parameter getParameter(int i) {
       unified_constructor_declaration_parameter(this, i, result)
     }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getAParameter() { result = this.getParameter(_) }
+    final override F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -701,12 +707,12 @@ module Unified {
     final F::Identifier getNameNode() { unified_function_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getParameter(int i) {
+    final override F::Parameter getParameter(int i) {
       unified_function_declaration_parameter(this, i, result)
     }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getAParameter() { result = this.getParameter(_) }
+    final override F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `return_type`. */
     final F::Expr getReturnType() { unified_function_declaration_return_type(this, result) }
@@ -762,10 +768,12 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getParameter(int i) { unified_function_expr_parameter(this, i, result) }
+    final override F::Parameter getParameter(int i) {
+      unified_function_expr_parameter(this, i, result)
+    }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final F::Parameter getAParameter() { result = this.getParameter(_) }
+    final override F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `return_type`. */
     final F::Expr getReturnType() { unified_function_expr_return_type(this, result) }
@@ -953,6 +961,34 @@ module Unified {
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_labeled_stmt_def(this, result, _) or unified_labeled_stmt_def(this, _, result)
+    }
+  }
+
+  /** A class representing `macro_call_expr` nodes. */
+  class MacroCallExpr extends @unified_macro_call_expr, F::Expr {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "MacroCallExpr" }
+
+    /** Gets the node corresponding to the field `argument`. */
+    final F::Argument getArgument(int i) { unified_macro_call_expr_argument(this, i, result) }
+
+    /** Gets the node corresponding to the field `argument`. */
+    final F::Argument getAnArgument() { result = this.getArgument(_) }
+
+    /** Gets the node corresponding to the field `macro_name_node`. */
+    final F::Identifier getMacroNameNode() { unified_macro_call_expr_def(this, result) }
+
+    /** Gets the node corresponding to the field `type_argument`. */
+    final F::Expr getTypeArgument(int i) { unified_macro_call_expr_type_argument(this, i, result) }
+
+    /** Gets the node corresponding to the field `type_argument`. */
+    final F::Expr getATypeArgument() { result = this.getTypeArgument(_) }
+
+    /** Gets a field or child node of this node. */
+    final override F::AstNode getAFieldOrChild() {
+      unified_macro_call_expr_argument(this, _, result) or
+      unified_macro_call_expr_def(this, result) or
+      unified_macro_call_expr_type_argument(this, _, result)
     }
   }
 
@@ -1717,6 +1753,12 @@ module Unified {
       or
       result = node.(LabeledStmt).getStmt() and i = -1 and name = "getStmt"
       or
+      result = node.(MacroCallExpr).getArgument(i) and name = "getArgument"
+      or
+      result = node.(MacroCallExpr).getMacroNameNode() and i = -1 and name = "getMacroNameNode"
+      or
+      result = node.(MacroCallExpr).getTypeArgument(i) and name = "getTypeArgument"
+      or
       result = node.(MapLiteral).getElement(i) and name = "getElement"
       or
       result = node.(MemberAccessExpr).getBase() and i = -1 and name = "getBase"
@@ -1937,6 +1979,8 @@ module UnifiedFinal {
   final class KeyValuePair = F::KeyValuePair;
 
   final class LabeledStmt = F::LabeledStmt;
+
+  final class MacroCallExpr = F::MacroCallExpr;
 
   final class MapLiteral = F::MapLiteral;
 

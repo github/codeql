@@ -1785,44 +1785,86 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           )
           or
           exists(TypeParameter tp, TypePath suffix, TypePath mid, TypePath pathToTp |
+            exists(TypeParameter constrainedTp, DeclarationPosition dpos |
+              typeParameterConstraintHasTypeParameter(target, constrainedTp, constraint, pathToTp,
+                tp) and
+              accessDeclarationPositionMatch(apos, dpos) and
+              constrainedTp = target.getDeclaredType(dpos, _)
+            )
+          |
             /*
              * Example:
              *
              * ```rust
+             * struct S<T> { ... }
+             *
              * struct MyThing<A> { ... }
              *
              * trait MyTrait<B> { ... }
              *
              * impl<T> MyTrait<T> for MyThing<T> { ... }
              *
-             * fn bar<T1, T2: MyTrait<T1>>(x: T1, y: T2) {}
+             * fn bar<T1, T2: MyTrait<T1>>(x: T1, y: Option<T2>) {}
              *
-             * let x: i32 = ...;
+             * let x: S<i32> = ...;
              * let y = MyThing(Default::default());
-             * bar(x, y);
+             * bar(x, Some(y));
              * ```
              *
-             * At `term` = `bar(x, y)`, we have
+             * At `term` = `bar(x, Some(y))`, we have
              * - `constraint = MyTrait<T1>`,
-             * - `pathToTypeParamInConstraint` = `"B"`,
-             * - `pathToTypeParamInSub` = `"A"`,
-             * - `prefix` = `suffix` = `mid` = `""`,
+             * - `pathToTypeParamInConstraint` = `"MyTrait<B>"`,
+             * - `pathToTypeParamInSub` = `"MyThing<A>"`,
+             * - `prefix` = `"Option<T>"`
+             * - `mid` = `""`,
              * - `tp = T1`,
-             * - `pathToTp` = `"B"`, and
-             * - `result` = `i32`.
+             * - `pathToTp` = `"MyTrait<B>"`, and
+             *   - `suffix` = `""` and `result` = `S`, or
+             *   - `suffix` = `"S<T>"` and `result` = `i32`.
              *
-             * That is, it allows us to infer that the type of `y` is `MyThing<i32>`.
+             * That is, it allows us to infer that the type of `y` is `MyThing<S<i32>>`.
              */
 
             typeMatch(a, e, target, suffix, result, tp) and
-            exists(TypeParameter constrainedTp, DeclarationPosition dpos |
-              typeParameterConstraintHasTypeParameter(target, constrainedTp, constraint, pathToTp,
-                tp) and
-              accessDeclarationPositionMatch(apos, dpos) and
-              constrainedTp = target.getDeclaredType(dpos, _)
-            ) and
             pathToTp = pathToTypeParamInConstraint.appendInverse(mid) and
             path = prefix.append(pathToTypeParamInSub.append(mid).append(suffix))
+            or
+            /*
+             * Example:
+             *
+             * ```rust
+             * struct S<T> { ... }
+             *
+             * struct MyThing<A> { ... }
+             *
+             * trait MyTrait<B> { ... }
+             *
+             * impl<T> MyTrait<[T;1]> for MyThing<T> { ... }
+             *
+             * fn bar<T1, T2: MyTrait<T1>>(x: T1, y: Option<T2>) {}
+             *
+             * let x: S<i32> = ...;
+             * let y = MyThing(Default::default());
+             * bar([x], Some(y));
+             * ```
+             *
+             * At `term` = `bar([x], Some(y))`, we have
+             * - `constraint = MyTrait<T1>`,
+             * - `pathToTypeParamInConstraint` = `"MyTrait<B>.[;]<TArray>"`,
+             * - `pathToTypeParamInSub` = `"MyThing<A>"`,
+             * - `prefix` = `"Option<T>"`
+             * - `mid` = `"[;]<TArray>"`,
+             * - `tp = T1`,
+             * - `pathToTp` = `"MyTrait<B>"`, and
+             *   - `suffix` = `""` and `result` = `S`, or
+             *   - `suffix` = `"S<T>"` and `result` = `i32`.
+             *
+             * That is, it allows us to infer that the type of `y` is `MyThing<S<i32>>`.
+             */
+
+            pathToTypeParamInConstraint = pathToTp.appendInverse(mid) and
+            typeMatch(a, e, target, mid.appendInverse(suffix), result, tp) and
+            path = prefix.append(pathToTypeParamInSub.append(suffix))
           )
         )
       }

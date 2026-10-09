@@ -300,13 +300,6 @@ private module Input3 implements InputSig3 {
       override AstNode getBody() { result = ConstructorDeclaration.super.getBody() }
 
       override Identifier getNameNode() { result = ConstructorDeclaration.super.getNameNode() }
-
-      override predicate isMemberOf(ClassLikeDeclaration cls, Identifier i, string name) {
-        // todo: constructors can be inherited
-        this = cls.getAMember() and
-        i = this.getNameNode() and
-        name = i.getValue()
-      }
     }
 
     private class EnumConstructorCallable extends ConstructorDeclarationCallable instanceof EnumConstructor

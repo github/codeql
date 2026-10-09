@@ -2,6 +2,7 @@
 
 import base64
 import hashlib
+import itertools
 import json
 import re
 import shlex
@@ -65,14 +66,57 @@ def fetch(url: str) -> bytes:
         return response.read()
 
 
-def get_rust_analyzer_release_date(rust_analyzer_version: str) -> str:
-    """Get the release date of a rust-analyzer crate version."""
+def get_rust_analyzer_crate_release_date(rust_analyzer_version: str) -> str:
+    """Get the creation date of a rust-analyzer crate version."""
     crate_url = f"https://crates.io/api/v1/crates/ra_ap_syntax/{rust_analyzer_version}"
     crate = json.loads(fetch(crate_url))
     return crate["version"]["created_at"].split("T")[0]
 
 
-def update_rust_analyzer_sources(rust_analyzer_version: str) -> None:
+def get_rust_analyzer_release_tag(rust_analyzer_version: str) -> str:
+    """
+    Get the latest rust-analyzer release tag in the git repository before or at
+    the crate publication. The returned string has the format `YYYY-MM-DD.N`
+    where the `.N` part is optional.
+
+    Empirically, the rust-analyzer crates are published after the corresponding
+    git tag. We hence look for the latest git tag that is before or at the crate
+    publication date.
+    """
+    crate_release_date = get_rust_analyzer_crate_release_date(rust_analyzer_version)
+
+    for page in itertools.count(1):
+        tags_url = (
+            "https://api.github.com/repos/rust-lang/rust-analyzer/tags"
+            f"?per_page=100&page={page}"
+        )
+        tags = json.loads(fetch(tags_url))
+        if not tags:
+            raise RuntimeError(
+                "could not find a rust-analyzer release tag published no later than "
+                f"ra_ap_syntax {rust_analyzer_version}"
+            )
+
+        for tag in tags:
+            name = tag["name"]
+            match = re.fullmatch(r"(\d{4}-\d{2}-\d{2})(?:\.(\d+))?", name)
+            if match and match[1] <= crate_release_date:
+                return name
+
+
+def get_rust_analyzer_source_integrity(release_tag: str) -> str:
+    """Download and compute the integrity of a rust-analyzer source archive."""
+    archive_url = (
+        "https://github.com/rust-lang/rust-analyzer/archive/refs/tags/"
+        f"{release_tag}.tar.gz"
+    )
+    archive = fetch(archive_url)
+    return "sha256-" + base64.b64encode(hashlib.sha256(archive).digest()).decode()
+
+
+def update_rust_analyzer_sources(
+    rust_analyzer_release_tag: str, integrity: str
+) -> None:
     """
     Update the rust-analyzer source archive used by the AST generator.
 
@@ -80,18 +124,10 @@ def update_rust_analyzer_sources(rust_analyzer_version: str) -> None:
     `RUST_ANALYZER_SRC_INTEGRITY` in the MODULE.bazel file.
     """
 
-    release_date = get_rust_analyzer_release_date(rust_analyzer_version)
-    archive_url = (
-        "https://github.com/rust-lang/rust-analyzer/archive/refs/tags/"
-        f"{release_date}.tar.gz"
-    )
-    archive = fetch(archive_url)
-    integrity = "sha256-" + base64.b64encode(hashlib.sha256(archive).digest()).decode()
-
     module = MODULE_BAZEL.read_text()
     module, tag_replacements = re.subn(
         r'RUST_ANALYZER_SRC_TAG = "[^"]+"',
-        f'RUST_ANALYZER_SRC_TAG = "{release_date}"',
+        f'RUST_ANALYZER_SRC_TAG = "{rust_analyzer_release_tag}"',
         module,
     )
     if tag_replacements != 1:
@@ -102,13 +138,17 @@ def update_rust_analyzer_sources(rust_analyzer_version: str) -> None:
         module,
     )
     if integrity_replacements != 1:
-        raise RuntimeError("expected exactly one RUST_ANALYZER_SRC_INTEGRITY assignment")
+        raise RuntimeError(
+            "expected exactly one RUST_ANALYZER_SRC_INTEGRITY assignment"
+        )
     MODULE_BAZEL.write_text(module)
 
 
-def get_compatible_rust_toolchain(rust_analyzer_version: str) -> str:
+def get_compatible_rust_toolchain(rust_analyzer_release_tag: str) -> str:
     """Get the latest Rust toolchain released no later than rust-analyzer."""
-    rust_analyzer_release = get_rust_analyzer_release_date(rust_analyzer_version)
+    # Keep the `YYYY-MM-DD` part of the release tag, stripping off the optional
+    # incrementing suffix.
+    rust_analyzer_release = rust_analyzer_release_tag[:10]
 
     # `manifests.txt` is a list of all toolchains. The one we're interested in looks like
     # ```
@@ -204,6 +244,11 @@ def main() -> None:
         print("No new rust-analyzer version available.")
         return
 
+    rust_analyzer_release_tag = get_rust_analyzer_release_tag(new_rust_analyzer_version)
+    rust_analyzer_source_integrity = get_rust_analyzer_source_integrity(
+        rust_analyzer_release_tag
+    )
+
     aligned_manifest, manifest_changed = align_rust_analyzer_versions(manifest)
     if manifest_changed:
         RUST_EXTRACTOR_MANIFEST.write_text(aligned_manifest)
@@ -211,11 +256,13 @@ def main() -> None:
     commit_all("Cargo: Upgrade dependencies")
 
     print_step(2, "Update the rust-analyzer sources used by the AST generator")
-    update_rust_analyzer_sources(new_rust_analyzer_version)
+    update_rust_analyzer_sources(
+        rust_analyzer_release_tag, rust_analyzer_source_integrity
+    )
     commit_all("Rust: Update rust-analyzer sources")
 
     print_step(3, "Update the fixed Rust toolchain used by the extractor")
-    rust_toolchain = get_compatible_rust_toolchain(new_rust_analyzer_version)
+    rust_toolchain = get_compatible_rust_toolchain(rust_analyzer_release_tag)
     update_fixed_rust_toolchain_versions(rust_toolchain)
     commit_all("Rust: Update fixed toolchain")
 

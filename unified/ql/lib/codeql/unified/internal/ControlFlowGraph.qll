@@ -132,6 +132,8 @@ module Ast implements AstSig<Location> {
 
   class ContinueStmt = U::ContinueExpr;
 
+  class LabeledStmt = U::LabeledStmt;
+
   class GotoStmt extends Stmt {
     GotoStmt() { none() }
   }
@@ -247,15 +249,8 @@ private module Input implements InputSig1, InputSig2 {
     string toString() { result = this }
   }
 
-  private Label getLabelOfStmt(Stmt s) {
-    exists(LabeledStmt l | s = l.getStmt() |
-      result = l.getLabelName() or
-      result = getLabelOfStmt(l)
-    )
-  }
-
   predicate hasLabel(Ast::AstNode n, Label l) {
-    l = getLabelOfStmt(n)
+    l = n.(LabeledStmt).getLabelName()
     or
     l = n.(BreakExpr).getLabelName()
     or
