@@ -128,6 +128,11 @@ impl Pattern {
     fn lower_list(&self) -> Vec<TokenStream> {
         match self {
             Pattern::Sequence(patterns) => patterns.iter().flat_map(Pattern::lower_list).collect(),
+            Pattern::Capture { capture, pattern }
+                if matches!(pattern.as_ref(), Pattern::Repeated { .. }) =>
+            {
+                pattern.lower_list_with_capture(&capture.name.to_string())
+            }
             Pattern::Repeated {
                 pattern,
                 cardinality,
@@ -152,6 +157,41 @@ impl Pattern {
             }
         }
     }
+
+    fn lower_list_with_capture(&self, capture: &str) -> Vec<TokenStream> {
+        match self {
+            Pattern::Repeated {
+                pattern,
+                cardinality,
+            } => {
+                let children = pattern.lower_list_with_capture(capture);
+                let repetition = match (cardinality.multiple, cardinality.required) {
+                    (true, false) => quote! { yeast::query::Rep::ZeroOrMore },
+                    (true, true) => quote! { yeast::query::Rep::OneOrMore },
+                    (false, false) => quote! { yeast::query::Rep::ZeroOrOne },
+                    (false, true) => unreachable!("single patterns are not wrapped as repeated"),
+                };
+                vec![quote! {
+                    yeast::query::QueryListElem::Repeated {
+                        children: vec![#(#children),*],
+                        rep: #repetition,
+                    }
+                }]
+            }
+            pattern => {
+                let pattern = pattern.lower();
+                vec![quote! {
+                    yeast::query::QueryListElem::SingleNode(
+                        yeast::query::QueryNode::Capture {
+                            capture: #capture,
+                            node: Box::new(#pattern),
+                        }
+                    )
+                }]
+            }
+        }
+    }
+
     fn captures(&self) -> Vec<BoundCapture> {
         let mut captures = Vec::new();
         self.collect_captures(Cardinality::SINGLE, &mut captures);
@@ -168,9 +208,12 @@ impl Pattern {
             }
             Pattern::Capture { capture, pattern } => {
                 pattern.collect_captures(cardinality, captures);
+                let captured = pattern
+                    .capture_cardinality()
+                    .expect("capture patterns are validated during parsing");
                 captures.push(BoundCapture {
                     capture: capture.clone(),
-                    cardinality,
+                    cardinality: combine_cardinality(cardinality, captured),
                 });
             }
             Pattern::Sequence(patterns) => {

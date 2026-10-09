@@ -54,6 +54,13 @@ impl Cardinality {
         multiple: true,
         required: true,
     };
+
+    pub(crate) fn combine(self, other: Self) -> Self {
+        Self {
+            multiple: self.multiple || other.multiple,
+            required: self.required && other.required,
+        }
+    }
 }
 
 /// An input pattern such as `(call method: (identifier) @name)`.
@@ -79,6 +86,27 @@ pub(crate) enum Pattern {
         pattern: Box<Pattern>,
         cardinality: Cardinality,
     },
+}
+
+impl Pattern {
+    /// The cardinality of an ordinary node capture around this pattern.
+    ///
+    /// Sequences require explicit inner captures.
+    pub(crate) fn capture_cardinality(&self) -> Option<Cardinality> {
+        match self {
+            Pattern::Any { .. } | Pattern::Node { .. } | Pattern::Unnamed(_) => {
+                Some(Cardinality::SINGLE)
+            }
+            Pattern::Capture { pattern, .. } => pattern.capture_cardinality(),
+            Pattern::Repeated {
+                pattern,
+                cardinality,
+            } => pattern
+                .capture_cardinality()
+                .map(|inner| inner.combine(*cardinality)),
+            Pattern::Sequence(_) => None,
+        }
+    }
 }
 
 #[derive(Clone)]
