@@ -42,14 +42,7 @@ fn parse_pattern_atom(tokens: &mut Tokens) -> Result<Pattern> {
         Some(TokenTree::Group(group)) if group.delimiter() == Delimiter::Parenthesis => {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
             let mut inner = group.stream().into_iter().peekable();
-            let pattern = parse_parenthesized_pattern(&mut inner)?;
-            if let Some(token) = inner.next() {
-                return Err(syn::Error::new_spanned(
-                    token,
-                    "unexpected token in query node",
-                ));
-            }
-            Ok(pattern)
+            parse_parenthesized_pattern(&mut inner, group.span())
         }
         Some(TokenTree::Ident(identifier)) if *identifier == "_" => {
             tokens.next();
@@ -65,30 +58,73 @@ fn parse_pattern_atom(tokens: &mut Tokens) -> Result<Pattern> {
     }
 }
 
-fn parse_parenthesized_pattern(tokens: &mut Tokens) -> Result<Pattern> {
+fn parse_parenthesized_pattern(tokens: &mut Tokens, span: Span) -> Result<Pattern> {
     match tokens.peek() {
-        None => Err(syn::Error::new(
-            Span::call_site(),
-            "empty parenthesized group in query",
-        )),
+        None => Err(syn::Error::new(span, "empty query groups are not allowed")),
         Some(TokenTree::Ident(identifier)) if *identifier == "_" => {
             tokens.next();
-            Ok(Pattern::Any {
-                match_unnamed: false,
-            })
+            if tokens.peek().is_none() {
+                Ok(Pattern::Any {
+                    match_unnamed: false,
+                })
+            } else {
+                let mut patterns = vec![Pattern::Any {
+                    match_unnamed: true,
+                }];
+                patterns.extend(parse_pattern_list(tokens)?);
+                finish_sequence(tokens, patterns, span)
+            }
         }
-        Some(TokenTree::Literal(_)) => Ok(Pattern::Unnamed(expect_string_literal(tokens)?)),
+        Some(TokenTree::Literal(_)) => {
+            let first = Pattern::Unnamed(expect_string_literal(tokens)?);
+            if tokens.peek().is_none() {
+                Ok(first)
+            } else {
+                let mut patterns = vec![first];
+                patterns.extend(parse_pattern_list(tokens)?);
+                finish_sequence(tokens, patterns, span)
+            }
+        }
         Some(TokenTree::Ident(_)) => {
             let kind = expect_ident(tokens, "expected node kind")?.to_string();
-            Ok(Pattern::Node {
+            let pattern = Pattern::Node {
                 kind,
                 fields: parse_pattern_fields(tokens)?,
-            })
+            };
+            if let Some(token) = tokens.next() {
+                Err(syn::Error::new_spanned(
+                    token,
+                    "unexpected token in query node",
+                ))
+            } else {
+                Ok(pattern)
+            }
+        }
+        Some(TokenTree::Group(group)) if group.delimiter() == Delimiter::Parenthesis => {
+            let patterns = parse_pattern_list(tokens)?;
+            finish_sequence(tokens, patterns, span)
         }
         Some(token) => Err(syn::Error::new_spanned(
             token.clone(),
             "expected node kind, `_`, or string literal",
         )),
+    }
+}
+
+fn finish_sequence(tokens: &mut Tokens, patterns: Vec<Pattern>, span: Span) -> Result<Pattern> {
+    if let Some(token) = tokens.next() {
+        return Err(syn::Error::new_spanned(
+            token,
+            "unexpected token in query sequence",
+        ));
+    }
+    match patterns.len() {
+        0 => Err(syn::Error::new(span, "empty query groups are not allowed")),
+        1 => Err(syn::Error::new(
+            span,
+            "single-pattern query groups are not allowed; remove the redundant parentheses",
+        )),
+        _ => Ok(Pattern::Sequence(patterns)),
     }
 }
 
@@ -152,33 +188,14 @@ fn parse_pattern_list(tokens: &mut Tokens) -> Result<Vec<Pattern>> {
             let mut inner = group.stream().into_iter().peekable();
             if peek_is_repetition(tokens) {
                 let cardinality = expect_cardinality(tokens)?;
-                let is_single_pattern = matches!(inner.peek(), Some(TokenTree::Ident(_)));
-                let repeated = if is_single_pattern {
-                    parse_parenthesized_pattern(&mut inner)?
-                } else {
-                    let patterns = parse_pattern_list(&mut inner)?;
-                    if patterns.is_empty() {
-                        return Err(syn::Error::new(
-                            group.span(),
-                            "empty query groups are not allowed",
-                        ));
-                    }
-                    if patterns.len() == 1 {
-                        return Err(syn::Error::new(
-                            group.span(),
-                            "single-pattern query groups are not allowed; \
-                             remove the redundant parentheses",
-                        ));
-                    }
-                    Pattern::Sequence(patterns)
-                };
+                let repeated = parse_parenthesized_pattern(&mut inner, group.span())?;
                 let repeated = Pattern::Repeated {
                     pattern: Box::new(repeated),
                     cardinality,
                 };
                 patterns.push(maybe_capture(tokens, repeated)?);
             } else {
-                let pattern = parse_parenthesized_pattern(&mut inner)?;
+                let pattern = parse_parenthesized_pattern(&mut inner, group.span())?;
                 patterns.push(maybe_capture(tokens, pattern)?);
             }
             continue;
@@ -592,5 +609,72 @@ mod tests {
             error.to_string(),
             "cannot capture a query sequence; capture the desired nodes explicitly"
         );
+    }
+
+    #[test]
+    fn parses_literal_led_repeated_sequence() {
+        let pattern = parse_pattern(quote!((root ("+" ",")*))).unwrap();
+        let Pattern::Node { fields, .. } = pattern else {
+            panic!("expected root node");
+        };
+        let Pattern::Sequence(children) = &fields[0].1 else {
+            panic!("expected child sequence");
+        };
+        let Pattern::Repeated {
+            pattern: repeated, ..
+        } = &children[0]
+        else {
+            panic!("expected repetition");
+        };
+        assert!(matches!(
+            repeated.as_ref(),
+            Pattern::Sequence(patterns)
+                if matches!(
+                    patterns.as_slice(),
+                    [Pattern::Unnamed(left), Pattern::Unnamed(right)]
+                        if left == "+" && right == ","
+                )
+        ));
+    }
+
+    #[test]
+    fn parses_wildcard_led_repeated_sequence() {
+        let pattern = parse_pattern(quote!((root (_ ",")*))).unwrap();
+        let Pattern::Node { fields, .. } = pattern else {
+            panic!("expected root node");
+        };
+        let Pattern::Sequence(children) = &fields[0].1 else {
+            panic!("expected child sequence");
+        };
+        let Pattern::Repeated {
+            pattern: repeated, ..
+        } = &children[0]
+        else {
+            panic!("expected repetition");
+        };
+        assert!(matches!(
+            repeated.as_ref(),
+            Pattern::Sequence(patterns)
+                if matches!(
+                    patterns.as_slice(),
+                    [
+                        Pattern::Any {
+                            match_unnamed: true
+                        },
+                        Pattern::Unnamed(comma)
+                    ] if comma == ","
+                )
+        ));
+    }
+
+    #[test]
+    fn rejects_unconsumed_node_pattern_tokens() {
+        for query in [quote!((root (foo . (bar) @x))), quote!((root(bar @ x)))] {
+            let result = parse_pattern(query);
+            let Err(error) = result else {
+                panic!("expected malformed node pattern to be rejected");
+            };
+            assert!(error.to_string().starts_with("unexpected token"));
+        }
     }
 }

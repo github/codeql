@@ -155,27 +155,28 @@ queries, are not supported.
 "+"* @operators        // repeat and capture an unnamed token
 ```
 
-Parentheses are not general-purpose grouping syntax. A parenthesized query
-group represents a sequence of at least two sibling patterns. It may be
-repeated, but it cannot itself be captured because the sequence does not
-correspond to one AST node:
+When a parenthesized query starts with a node-kind identifier, it is always
+parsed as that node pattern, and every remaining token must belong to that
+node's fields or children. Otherwise, two or more sibling patterns form a
+sequence. A sequence may be repeated, but it cannot itself be captured because
+the sequence does not correspond to one AST node:
 
 ```rust
 ((identifier) @items (integer) @items)*  // explicit flattened captures
 ((identifier) (integer))* @items         // error: sequence capture
 ```
 
-Use the bare literal form when quantifying an unnamed token. The parenthesized
-form is valid as a standalone token pattern, but not as a redundant
-single-pattern group:
+Literal- and wildcard-led sequences are valid and unambiguous because neither
+can introduce node fields:
 
 ```rust
-"+"*       // valid
-("+")*     // error: remove the redundant parentheses
+("+" ",")*  // repeat a two-token sequence
+(_ ",")*    // repeat a wildcard followed by a comma
 ```
 
-Empty query groups are also rejected. This does not affect the empty output
-template `()`, which intentionally means “emit no replacement nodes.”
+Single-pattern and empty query groups are rejected as redundant or meaningless.
+This does not affect the empty output template `()`, which intentionally means
+“emit no replacement nodes.”
 
 ## Template language
 
