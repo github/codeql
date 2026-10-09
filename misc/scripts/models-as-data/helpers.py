@@ -2,17 +2,60 @@ import json
 import os
 import shutil
 import subprocess
+import re
+import data_extension_file
 
 # Shared strings.
 summaryModelPredicate = "summaryModel"
 sinkModelPredicate = "sinkModel"
 sourceModelPredicate = "sourceModel"
 neutralModelPredicate = "neutralModel"
-addsToTemplate = """  - addsTo:
-      pack: {0}
-      extensible: {1}
-    data:
-{2}"""
+
+
+# Helper class for accumulating tuples grouped by namespace and predicate, and generating data
+# extensions for them.
+class ExtensionMerger:
+    def __init__(self, pack):
+        self.pack = pack
+        self.namespaces = {}
+
+    def add_row(self, namespace, predicate, row):
+        if namespace not in self.namespaces:
+            self.namespaces[namespace] = {}
+        if predicate not in self.namespaces[namespace]:
+            self.namespaces[namespace][predicate] = []
+        self.namespaces[namespace][predicate].append(row)
+
+    # Helper function to yield unique elements from a sorted list.
+    def uniq(self, sorted_list):
+        last = None
+        for element in sorted_list:
+            if element == last:
+                continue
+            yield element
+            last = element
+
+    def save(self, dir, file_extension):
+        # Create a file for each namespace and save models.
+        for namespace in self.namespaces:
+            # Sort and deduplicate rows for each predicate within this namespace.
+            for predicate in self.namespaces[namespace]:
+                l = self.namespaces[namespace][predicate]
+                self.namespaces[namespace][predicate] = list(self.uniq(sorted(l)))
+            extension = data_extension_file.DataExtensionFile(self.pack)
+            for predicate in self.namespaces[namespace]:
+                extension.add_rows(predicate, self.namespaces[namespace][predicate])
+            # Replace problematic characters with dashes, and collapse multiple dashes.
+            sanitized_namespace = re.sub(
+                r"-+", "-", namespace.replace("/", "-").replace(":", "-")
+            )
+            target = os.path.join(dir, f"{sanitized_namespace}{file_extension}")
+            with open(target, "w") as f:
+                if file_extension.endswith(".json"):
+                    extension.write_json(f)
+                else:
+                    extension.write_yaml(f)
+            print("Models as data extensions written to " + target)
 
 
 def remove_dir(dirName):

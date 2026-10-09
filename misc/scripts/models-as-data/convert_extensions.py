@@ -8,25 +8,6 @@ import sys
 import tempfile
 
 
-def quote_if_needed(v):
-    # string columns
-    if type(v) is str:
-        return '"' + v + '"'
-    # bool column
-    return str(v)
-
-
-def parseData(data):
-    rows = [{}, {}]
-    for row in data:
-        d = map(quote_if_needed, row)
-        provenance = row[-1]
-        targetRows = rows[1] if provenance.endswith("generated") else rows[0]
-        helpers.insert_update(targetRows, row[0], "      - [" + ", ".join(d) + "]\n")
-
-    return rows
-
-
 class Converter:
     def __init__(self, language, dbDir):
         self.language = language
@@ -63,48 +44,38 @@ class Converter:
         )
         return helpers.readData(self.workDir, resultBqrs)
 
-    def asAddsTo(self, rows, predicate):
-        extensions = [{}, {}]
-        for i in range(2):
-            for key in rows[i]:
-                extensions[i][key] = helpers.addsToTemplate.format(
-                    f"codeql/{self.language}-all", predicate, rows[i][key]
-                )
-
-        return extensions
-
-    def getAddsTo(self, query, predicate):
+    def merge_query_results(self, query, predicate, mergers):
         data = self.runQuery(query)
-        rows = parseData(data)
-        return self.asAddsTo(rows, predicate)
+        for row in data:
+            provenance = row[-1]
+            namespace = row[0]
+            target_merger = (
+                mergers[1] if provenance.endswith("generated") else mergers[0]
+            )
+            target_merger.add_row(namespace, predicate, row)
 
-    def makeContent(self):
-        summaries = self.getAddsTo("ExtractSummaries.ql", helpers.summaryModelPredicate)
-        sources = self.getAddsTo("ExtractSources.ql", helpers.sourceModelPredicate)
-        sinks = self.getAddsTo("ExtractSinks.ql", helpers.sinkModelPredicate)
-        neutrals = self.getAddsTo("ExtractNeutrals.ql", helpers.neutralModelPredicate)
-        return [
-            helpers.merge(sources[0], sinks[0], summaries[0], neutrals[0]),
-            helpers.merge(sources[1], sinks[1], summaries[1], neutrals[1]),
+    def make_extensions(self):
+        mergers = [
+            helpers.ExtensionMerger(f"codeql/{self.language}-all"),
+            helpers.ExtensionMerger(f"codeql/{self.language}-all"),
         ]
+        self.merge_query_results(
+            "ExtractSummaries.ql", helpers.summaryModelPredicate, mergers
+        )
+        self.merge_query_results(
+            "ExtractSources.ql", helpers.sourceModelPredicate, mergers
+        )
+        self.merge_query_results("ExtractSinks.ql", helpers.sinkModelPredicate, mergers)
+        self.merge_query_results(
+            "ExtractNeutrals.ql", helpers.neutralModelPredicate, mergers
+        )
+        return mergers
 
-    def save(self, extensions):
+    def run(self):
+        mergers = self.make_extensions()
+
         # Create directory if it doesn't exist
         os.makedirs(self.extDir, exist_ok=True)
 
-        # Create a file for each namespace and save models.
-        extensionTemplate = """extensions:
-{0}"""
-        for entry in extensions[0]:
-            with open(self.extDir + "/" + entry + self.modelFileExtension, "w") as f:
-                f.write(extensionTemplate.format(extensions[0][entry]))
-
-        for entry in extensions[1]:
-            with open(
-                self.extDir + "/generated/" + entry + self.modelFileExtension, "w"
-            ) as f:
-                f.write(extensionTemplate.format(extensions[1][entry]))
-
-    def run(self):
-        extensions = self.makeContent()
-        self.save(extensions)
+        mergers[0].save(self.extDir, self.modelFileExtension)
+        mergers[1].save(self.extDir + "/generated", self.modelFileExtension)

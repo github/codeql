@@ -6,28 +6,7 @@ import os.path
 import subprocess
 import sys
 import tempfile
-import re
 import argparse
-
-
-def quote_if_needed(row):
-    if row != "true" and row != "false":
-        return '"' + row + '"'
-    # subtypes column
-    return row[0].upper() + row[1:]
-
-
-def parseData(data):
-    rows = {}
-
-    for row in data:
-        d = row[0].split(";")
-        namespace = d[0]
-        d = map(quote_if_needed, d)
-        helpers.insert_update(rows, namespace, "      - [" + ", ".join(d) + "]\n")
-
-    return rows
-
 
 description = """\
 This generates summary, source, sink and neutral models for the code in the database.
@@ -140,6 +119,12 @@ class Generator:
             "--single-file",
             help="Generate a single file with all models instead of separate files for each namespace, using provided argument as the base filename.",
         )
+        p.add_argument(
+            "--extension-format",
+            choices=["json", "yaml"],
+            default="yaml",
+            help="Format for the generated data extension files (default %(default)s)",
+        )
         generator = p.parse_args(namespace=Generator())
 
         if (
@@ -182,80 +167,68 @@ class Generator:
 
         return helpers.readData(self.workDir, resultBqrs)
 
-    def asAddsTo(self, rows, predicate):
-        extensions = {}
-        for key in rows:
-            extensions[key] = helpers.addsToTemplate.format(
-                f"codeql/{self.language}-all", predicate, rows[key]
-            )
-        return extensions
+    def convert_if_needed(self, value):
+        # Convert a string value to a boolean if it is "true" or "false". Otherwise, return the original
+        # value as a string. Since no extensible predicate currently uses integers, don't attempt to
+        # convert numeric strings to integers.
+        if value == "true":
+            return True
+        if value == "false":
+            return False
+        return value
 
-    def getAddsTo(self, query, predicate):
+    def merge_query_results(self, query, predicate, merger):
         data = self.runQuery(query)
-        rows = parseData(data)
-        if self.single_file and rows:
-            rows = {self.single_file: "".join(rows.values())}
-        return self.asAddsTo(rows, predicate)
+        for row in data:
+            d = row[0].split(";")
+            namespace = d[0]
+            d = list(map(self.convert_if_needed, d))
+            merger.add_row(namespace, predicate, d)
 
-    def makeContent(self):
-        summaryAddsTo = {}
+    def make_extensions(self):
+        merger = helpers.ExtensionMerger(f"codeql/{self.language}-all")
+
         if self.with_summaries:
-            summaryAddsTo = self.getAddsTo(
-                "CaptureSummaryModels.ql", helpers.summaryModelPredicate
+            self.merge_query_results(
+                "CaptureSummaryModels.ql", helpers.summaryModelPredicate, merger
             )
 
-        sinkAddsTo = {}
         if self.with_sinks:
-            sinkAddsTo = self.getAddsTo(
-                "CaptureSinkModels.ql", helpers.sinkModelPredicate
+            self.merge_query_results(
+                "CaptureSinkModels.ql", helpers.sinkModelPredicate, merger
             )
 
-        sourceAddsTo = {}
         if self.with_sources:
-            sourceAddsTo = self.getAddsTo(
-                "CaptureSourceModels.ql", helpers.sourceModelPredicate
+            self.merge_query_results(
+                "CaptureSourceModels.ql", helpers.sourceModelPredicate, merger
             )
 
-        neutralAddsTo = {}
         if self.with_neutrals:
-            neutralAddsTo = self.getAddsTo(
-                "CaptureNeutralModels.ql", helpers.neutralModelPredicate
+            self.merge_query_results(
+                "CaptureNeutralModels.ql", helpers.neutralModelPredicate, merger
             )
 
-        return helpers.merge(summaryAddsTo, sinkAddsTo, sourceAddsTo, neutralAddsTo)
+        return merger
 
-    def makeTypeBasedContent(self):
+    def make_type_based_extensions(self):
+        merger = helpers.ExtensionMerger(f"codeql/{self.language}-all")
         if self.with_typebased_summaries:
-            typeBasedSummaryAddsTo = self.getAddsTo(
-                "CaptureTypeBasedSummaryModels.ql", helpers.summaryModelPredicate
+            self.merge_query_results(
+                "CaptureTypeBasedSummaryModels.ql",
+                helpers.summaryModelPredicate,
+                merger,
             )
-        else:
-            typeBasedSummaryAddsTo = {}
-
-        return typeBasedSummaryAddsTo
-
-    def save(self, extensions, extension):
-        # Create a file for each namespace and save models.
-        extensionTemplate = """# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-{0}"""
-        for entry in extensions:
-            # Replace problematic characters with dashes, and collapse multiple dashes.
-            sanitizedEntry = re.sub(
-                r"-+", "-", entry.replace("/", "-").replace(":", "-")
-            )
-            target = os.path.join(self.generated_frameworks, sanitizedEntry + extension)
-            with open(target, "w") as f:
-                f.write(extensionTemplate.format(extensions[entry]))
-            print("Models as data extensions written to " + target)
+        return merger
 
     def run(self):
-        content = self.makeContent()
-        typeBasedContent = self.makeTypeBasedContent()
+        merger = self.make_extensions()
+        type_based_extensions = self.make_type_based_extensions()
 
         if self.dry_run:
             print("Models as data extensions generated, but not written to file.")
             sys.exit(0)
+
+        file_extension = ".json" if self.extension_format == "json" else ".yml"
 
         if (
             self.with_sinks
@@ -263,10 +236,12 @@ extensions:
             or self.with_summaries
             or self.with_neutrals
         ):
-            self.save(content, ".model.yml")
+            merger.save(self.generated_frameworks, f".model{file_extension}")
 
         if self.with_typebased_summaries:
-            self.save(typeBasedContent, ".typebased.model.yml")
+            type_based_extensions.save(
+                self.generated_frameworks, f".typebased.model{file_extension}"
+            )
 
 
 if __name__ == "__main__":

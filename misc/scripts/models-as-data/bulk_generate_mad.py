@@ -430,10 +430,11 @@ def download_dca_databases(
 def clean_up_mad_destination_for_project(config, name: str):
     target = pathlib.Path(config["destination"], name)
     if config.get("single-file", False):
-        target = target.with_suffix(".model.yml")
-        if target.exists():
-            print(f"Deleting existing MaD file at {target}")
-            target.unlink()
+        for extension in (".model.json", ".model.yml"):
+            model_target = target.with_suffix(extension)
+            if model_target.exists():
+                print(f"Deleting existing MaD file at {model_target}")
+                model_target.unlink()
     elif target.exists():
         print(f"Deleting existing MaD directory at {target}")
         shutil.rmtree(target, ignore_errors=True)
