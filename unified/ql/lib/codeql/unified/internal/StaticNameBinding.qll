@@ -29,6 +29,8 @@ class NameBindingNode extends TNameBindingNode {
 
   Identifier asIdentifier() { this.isIdentifier(result) }
 
+  predicate isMember(Member m) { this.asIdentifier() = m.getNameNode() }
+
   predicate isBulkImport(BulkImportingPattern p) { this = TBulkImport(p) }
 
   predicate isLocalName(LocalName local) { this = TLocalName(local) }
@@ -39,6 +41,10 @@ class NameBindingNode extends TNameBindingNode {
   /** Holds if this represents the set of instance members available in the given class. */
   predicate isInstanceMemberNamespace(ClassLikeDeclaration cls) {
     this = TInstanceMemberNamespace(cls)
+  }
+
+  predicate isInstanceOrStaticMemberNamespace(ClassLikeDeclaration cls) {
+    this.isInstanceMemberNamespace(cls) or this.isStaticMemberNamespace(cls)
   }
 
   /** Holds if this represents the set of members that can be accessed unqualified within the given scope. */
@@ -312,6 +318,10 @@ signature module TrackInputSig {
   /** Holds if the forward-flow of `node` should be tracked. */
   predicate shouldTrack(NameBindingNode node);
 
+  default NameBindingNode getMember(NamespaceNode namespace, string name) {
+    result = namespace.getMember(name)
+  }
+
   default predicate additionalValueStep(NameBindingNode node1, NameBindingNode node2) { none() }
 }
 
@@ -327,6 +337,25 @@ module Track<TrackInputSig Input> {
     exists(NameBindingNode prev | prev = track(node) | valueStepEx(prev, result))
   }
 
+  pragma[nomagic]
+  private predicate derivedStoreReadStep0(
+    NamespaceNode namespace, string name, NameBindingNode node2
+  ) {
+    readStep(namespace.ref(), name, node2)
+  }
+
+  /**
+   * Holds if `node1 -> node2` is derived by combining a store and a read step, with zero or more value steps and inheritance steps in-between.
+   */
+  pragma[nomagic]
+  private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode node2) {
+    exists(NamespaceNode namespace, string name |
+      node1 = getMember(namespace, name) and // getMember() combines a store step with subsequent inheritance steps
+      derivedStoreReadStep0(namespace, name, node2) and
+      node1 != node2
+    )
+  }
+
   /** Holds if there is an effective value step `node1 -> node2`. */
   pragma[inline]
   private predicate valueStepEx(NameBindingNode node1, NameBindingNode node2) {
@@ -336,23 +365,6 @@ module Track<TrackInputSig Input> {
     or
     additionalValueStep(node1, node2)
   }
-}
-
-pragma[nomagic]
-private predicate derivedStoreReadStep0(NamespaceNode namespace, string name, NameBindingNode node2) {
-  readStep(namespace.ref(), pragma[only_bind_into](name), node2)
-}
-
-/**
- * Holds if `node1 -> node2` is derived by combining a store and a read step, with zero or more value steps and inheritance steps in-between.
- */
-pragma[nomagic]
-private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode node2) {
-  exists(NamespaceNode namespace, string name |
-    node1 = namespace.getMember(name) and // getMember() combines a store step with subsequent inheritance steps
-    derivedStoreReadStep0(namespace, name, node2) and
-    node1 != node2
-  )
 }
 
 /** Holds if the member represented by `node` can be inherited. */
@@ -382,10 +394,13 @@ class NamespaceNode extends NameBindingNode {
   NameBindingNode ref() { result = TrackNamespace::track(this) }
 
   /** Gets an own (non-inherited) member of this namespace of the given name. */
-  NameBindingNode getOwnMember(string name) { storeStep(result, name, this) }
+  NameBindingNode getOwnMember(string name, ShadowingKeyOpt shadowingKey) {
+    storeStep(result, name, this) and
+    shadowingKey = getShadowingKey(result)
+  }
 
-  /** Holds if this namespace has an own-member of the given name */
-  predicate hasOwnMember(string name) { exists(this.getOwnMember(name)) }
+  /** Gets an own (non-inherited) member of this namespace of the given name. */
+  NameBindingNode getOwnMember(string name) { result = this.getOwnMember(name, _) }
 
   /** If this is the static namespace for a class, gets the corresponding instance namespace. */
   NamespaceNode toInstanceNamespace() {
@@ -423,22 +438,57 @@ class NamespaceNode extends NameBindingNode {
   /** Gets a namespace that directly inherits from this one. */
   NamespaceNode getAnInheritanceChild() { result.getAnInheritanceParent() = this }
 
-  /** Gets a member of this namespace of the given name. */
-  cached
-  NameBindingNode getMember(string name) {
-    CachedStage::ref() and
-    result = this.getOwnMember(name)
+  pragma[nomagic]
+  private predicate hasOwnMemberWithShadowingKey(string name, string shadowingKey) {
+    exists(this.getOwnMember(name, any(ShadowingKeyOpt opt | opt.asSome() = shadowingKey)))
+  }
+
+  /**
+   * Gets a potential member of this namespace of the given name.
+   *
+   * Unlike `getMember`, this predicate does not filter away invalid members.
+   */
+  pragma[nomagic]
+  NameBindingNode getMemberFull(string name, ShadowingKeyOpt shadowingKey) {
+    result = this.getOwnMember(name) and
+    shadowingKey = getShadowingKey(result)
     or
-    not this.hasOwnMember(name) and
-    result = this.getAnInheritanceParent().getMember(name) and
+    not this.hasOwnMemberWithShadowingKey(name, shadowingKey.asSome()) and
+    result = this.getAnInheritanceParent().getMemberFull(name, shadowingKey) and
     isInheritableMemberNode(result)
     or
-    result = this.getAnExtension().getMember(name)
+    result = this.getAnExtension().getMemberFull(name, shadowingKey)
   }
+
+  private NameBindingNode getMember(string name, ShadowingKeyOpt shadowingKey) {
+    CachedStage::ref() and
+    not exists(Member m | result.isMember(m) | isInvalidMember(this, m)) and
+    (
+      result = this.getOwnMember(name) and
+      shadowingKey = getShadowingKey(result)
+      or
+      result = this.getAnExtension().getMember(name, shadowingKey)
+      or
+      exists(NamespaceNode parent |
+        parent = this.getAnInheritanceParent() and
+        not this.hasOwnMemberWithShadowingKey(name, shadowingKey.asSome()) and
+        result = parent.getMember(name, shadowingKey) and
+        isInheritableMemberNode(result)
+      )
+    )
+  }
+
+  /** Gets a member of this namespace of the given name. */
+  cached
+  NameBindingNode getMember(string name) { result = this.getMember(name, _) }
 }
 
 private module TrackNamespaceInput implements TrackInputSig {
   predicate shouldTrack(NameBindingNode node) { node instanceof NamespaceNode }
+
+  NameBindingNode getMember(NamespaceNode namespace, string name) {
+    result = namespace.getMemberFull(name, _)
+  }
 
   predicate additionalValueStep(NameBindingNode node1, NameBindingNode node2) {
     // Namespace-tracking goes through aliases, but declaration-tracking does not

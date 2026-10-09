@@ -81,17 +81,20 @@ supertypes:
       body?: block
   # A member is anything that can appear in the body of a class-like declaration
   member:
-    - constructor_declaration
-    - destructor_declaration
-    - function_declaration
-    - variable_declaration
-    - accessor_declaration
-    - initializer_declaration
-    - class_like_declaration
-    - type_alias_declaration
-    - associated_type_declaration
-    - unsupported_node
-    - unhandled_node
+    subtypes:
+      - constructor_declaration
+      - destructor_declaration
+      - function_declaration
+      - variable_declaration
+      - accessor_declaration
+      - initializer_declaration
+      - class_like_declaration
+      - type_alias_declaration
+      - associated_type_declaration
+      - unsupported_node
+      - unhandled_node
+    fields:
+      name_node: identifier
   type_constraint:
     - equality_type_constraint
     - bound_type_constraint
