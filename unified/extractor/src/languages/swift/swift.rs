@@ -671,7 +671,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 calledExpression: (arrayExpr
                     elements: (arrayElement expression: (genericSpecializationExpr) @element)) @@array
                 arguments: _* @args
-                trailingClosure: @tc)
+                trailingClosure: @tc
+                additionalTrailingClosures: _* @additional)
             =>
             call_expr {
                 let callee = tree_at!(
@@ -683,7 +684,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 tree!((call_expr
                     callee: {callee}
                     argument: {args}
-                    argument: (argument value: {tc})))
+                    argument: (argument value: {tc})
+                    argument: {additional}))
             }
         ),
         rule!(
@@ -704,15 +706,15 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // A function/method call (`foo(1, 2)`). `calledExpression` is the callee
         // and `arguments` is an (elided) list of `labeledExpr`, each translated
-        // to an `argument` below. A trailing closure (`xs.map { … }`) becomes a
-        // final unlabelled argument; that variant is matched first.
+        // to an `argument` below. A trailing closure (`xs.map { … }`) becomes
+        // a final unlabelled argument, followed by any additional labeled
+        // trailing closures.
         rule!(
-            (functionCallExpr calledExpression: @callee arguments: _* @args trailingClosure: @tc)
-            =>
-            (call_expr callee: {callee} argument: {args} argument: (argument value: {tc}))
-        ),
-        rule!(
-            (functionCallExpr calledExpression: @@rawCallee arguments: _* @args)
+            (functionCallExpr
+                calledExpression: @@rawCallee
+                arguments: _* @args
+                trailingClosure: _? @trailing
+                additionalTrailingClosures: _* @additional)
             =>
             expr {
                 // Always translate the callee in non-pattern context.
@@ -720,7 +722,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     ctx.in_pattern = false;
                     ctx.translate(rawCallee)
                 })?;
-                tree!((call_expr callee: {callee} argument: {args}))
+                tree!((call_expr
+                    callee: {callee}
+                    argument: {args}
+                    argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
+                    argument: {additional}
+                ))
             }
         ),
         // A call or enum-case pattern argument.
@@ -728,6 +735,28 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (labeledExpr label: _? @@lbl expression: @val)
             =>
             (argument name_node: (identifier #{lbl})? value: {val})
+        ),
+        // An additional labeled trailing closure, such as the `c: { ... }` in
+        // `foo { 42 } c: { ... }`, is turned into an argument to the function.
+        rule!(
+            (multipleTrailingClosureElement label: @@label closure: @closure)
+            =>
+            (argument name_node: (identifier #{label}) value: {closure})
+        ),
+        rule!(
+            (macroExpansionExpr
+                macroName: @@name
+                genericArgumentClause: (genericArgumentClause arguments: (genericArgument argument: @type_args)*)?
+                arguments: _* @args
+                trailingClosure: _? @trailing
+                additionalTrailingClosures: _* @additional)
+            =>
+        (macro_call_expr
+            macro_name_node: (identifier #{name})
+            type_argument: {type_args}
+            argument: {args}
+            argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
+            argument: {additional})
         ),
         // Member access (`list.append`). The `declName` is itself a
         // `declReferenceExpr`; pull its `baseName` out as the member identifier.
@@ -997,9 +1026,17 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // subscripts their own shape needs only a `subscript_expr` node in
         // ast_types.yml and a remap here.
         rule!(
-            (subscriptCallExpr calledExpression: @callee arguments: _* @args)
+            (subscriptCallExpr
+                calledExpression: @callee
+                arguments: _* @args
+                trailingClosure: _? @trailing
+                additionalTrailingClosures: _* @additional)
             =>
-            (call_expr callee: {callee} argument: {args})
+            (call_expr
+                callee: {callee}
+                argument: {args}
+                argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
+                argument: {additional})
         ),
         // ---- Optionals and errors ----
         // Optional chaining — unwrap the marker
@@ -1216,10 +1253,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 }
             }
         ),
-        // Selector expression: `#selector(inner)` -- not yet supported
-        // (swift-syntax represents `#selector`/`#keyPath` and other macro
-        // expansions uniformly as a `macroExpansionExpr`).
-        rule!((macroExpansionExpr) => (unsupported_node)),
         // A nominal type's `inheritanceClause` (`: Base, Proto`) becomes a list
         // of `base_type`s, one per inherited type. Each declaration keyword
         // gets its own rule; the bodies are identical but for the keyword.

@@ -964,6 +964,34 @@ module Unified {
     }
   }
 
+  /** A class representing `macro_call_expr` nodes. */
+  class MacroCallExpr extends @unified_macro_call_expr, F::Expr {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "MacroCallExpr" }
+
+    /** Gets the node corresponding to the field `argument`. */
+    final F::Argument getArgument(int i) { unified_macro_call_expr_argument(this, i, result) }
+
+    /** Gets the node corresponding to the field `argument`. */
+    final F::Argument getAnArgument() { result = this.getArgument(_) }
+
+    /** Gets the node corresponding to the field `macro_name_node`. */
+    final F::Identifier getMacroNameNode() { unified_macro_call_expr_def(this, result) }
+
+    /** Gets the node corresponding to the field `type_argument`. */
+    final F::Expr getTypeArgument(int i) { unified_macro_call_expr_type_argument(this, i, result) }
+
+    /** Gets the node corresponding to the field `type_argument`. */
+    final F::Expr getATypeArgument() { result = this.getTypeArgument(_) }
+
+    /** Gets a field or child node of this node. */
+    final override F::AstNode getAFieldOrChild() {
+      unified_macro_call_expr_argument(this, _, result) or
+      unified_macro_call_expr_def(this, result) or
+      unified_macro_call_expr_type_argument(this, _, result)
+    }
+  }
+
   /** A class representing `map_literal` nodes. */
   class MapLiteral extends @unified_map_literal, F::Expr {
     /** Gets the name of the primary QL class for this element. */
@@ -1725,6 +1753,12 @@ module Unified {
       or
       result = node.(LabeledStmt).getStmt() and i = -1 and name = "getStmt"
       or
+      result = node.(MacroCallExpr).getArgument(i) and name = "getArgument"
+      or
+      result = node.(MacroCallExpr).getMacroNameNode() and i = -1 and name = "getMacroNameNode"
+      or
+      result = node.(MacroCallExpr).getTypeArgument(i) and name = "getTypeArgument"
+      or
       result = node.(MapLiteral).getElement(i) and name = "getElement"
       or
       result = node.(MemberAccessExpr).getBase() and i = -1 and name = "getBase"
@@ -1945,6 +1979,8 @@ module UnifiedFinal {
   final class KeyValuePair = F::KeyValuePair;
 
   final class LabeledStmt = F::LabeledStmt;
+
+  final class MacroCallExpr = F::MacroCallExpr;
 
   final class MapLiteral = F::MapLiteral;
 
