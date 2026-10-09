@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Methods such as <code>Thread.sleep</code> can throw
+<code>InterruptedException</code> if the thread is interrupted.
+Failure to reset the thread interrupt flag can lead to deadlocks and an inability to stop work on a thread.
+</p>
+
+</overview>
+<recommendation>
+
+<p>It is usually best to handle <code>InterruptedException</code> in a <code>catch</code> clause
+by calling <code>Thread.currentThread().interrupt()</code>.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the first call to <code>Thread.sleep</code> does not handle the the exception propely.
+The second call does.
+</p>
+
+<sample src="DroppedInterruptedFlag.java" />
+
+</example>
+<references>
+
+<li>
+    DZone: <a href="https://dzone.com/articles/how-to-handle-the-interruptedexception">How to Handle an InterruptedException</a>.
+</li>
+<li>
+    Baeldung: <a href="https://www.baeldung.com/java-interrupted-exception">How to Handle InterruptedException in Java</a>.
+</li>
+<li>
+    SonarSource: <a href="https://rules.sonarsource.com/java/tag/multi-threading/RSPEC-2142">RSPEC-2142: "InterruptedException" should not be ignored</a>.
+</li>
+
+</references>
+</qhelp>
