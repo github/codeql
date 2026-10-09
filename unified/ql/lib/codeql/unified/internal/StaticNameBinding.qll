@@ -1,6 +1,8 @@
 /**
  * Provides classes for reasoning about static references to the members of classes and top-levels.
  */
+overlay[local?]
+module;
 
 private import unified
 private import codeql.unified.internal.LocalNameBinding

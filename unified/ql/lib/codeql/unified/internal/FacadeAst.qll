@@ -175,8 +175,12 @@ module Unified {
         this instanceof InitializerDeclaration and
         result = "(initializer block)"
         or
-        this instanceof ClassLikeDeclaration and
-        result = "(anonymous class)"
+        exists(ClassLikeDeclaration cls | this = cls |
+          result = NameBinding::getIdentifierFromRef(cls.getExtensionTarget()).getValue()
+          or
+          not exists(cls.getExtensionTarget()) and
+          result = "(anonymous class)"
+        )
         or
         this instanceof TypeAliasDeclaration and
         result = "(anonymous type alias)"

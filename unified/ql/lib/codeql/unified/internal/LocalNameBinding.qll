@@ -1,6 +1,8 @@
 /**
  * Provides classes for reasoning about lexically scoped names and references to these.
  */
+overlay[local?]
+module;
 
 private import unified
 private import unified as U
