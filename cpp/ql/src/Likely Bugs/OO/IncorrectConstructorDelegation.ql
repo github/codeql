@@ -7,7 +7,8 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/constructor-delegation
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  *       language-features
  */

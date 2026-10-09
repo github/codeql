@@ -7,7 +7,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id cpp/futile-params
- * @tags correctness
+ * @tags quality
+ *       correctness
  *       maintainability
  */
 

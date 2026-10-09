@@ -8,7 +8,8 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/return-c-str-of-std-string
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  */
 

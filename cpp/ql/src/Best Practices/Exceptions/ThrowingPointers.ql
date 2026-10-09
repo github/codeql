@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/throwing-pointer
- * @tags efficiency
+ * @tags quality
+ *       efficiency
  *       correctness
  *       exceptions
  */

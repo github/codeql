@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id cpp/dubious-null-check
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       readability
  */
 

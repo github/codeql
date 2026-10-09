@@ -5,7 +5,8 @@
  * @problem.severity error
  * @precision high
  * @id cpp/inconsistent-loop-direction
- * @tags correctness
+ * @tags quality
+ *       correctness
  *       external/cwe/cwe-835
  * @msrc.severity important
  */

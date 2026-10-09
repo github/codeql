@@ -5,7 +5,8 @@
  * @problem.severity error
  * @precision high
  * @id cpp/duplicate-include-guard
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       maintainability
  *       modularity
  */

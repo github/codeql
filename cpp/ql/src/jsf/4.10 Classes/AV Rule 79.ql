@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/resource-not-released-in-destructor
- * @tags efficiency
+ * @tags quality
+ *       efficiency
  *       readability
  *       external/cwe/cwe-404
  *       external/jsf

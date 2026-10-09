@@ -6,7 +6,8 @@
  * @id cpp/array-arg-size-mismatch
  * @problem.severity warning
  * @precision high
- * @tags reliability
+ * @tags quality
+ *       reliability
  */
 
 import cpp

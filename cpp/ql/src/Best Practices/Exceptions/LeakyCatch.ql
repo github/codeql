@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/catch-missing-free
- * @tags efficiency
+ * @tags quality
+ *       efficiency
  *       correctness
  *       exceptions
  *       external/cwe/cwe-401

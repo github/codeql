@@ -7,7 +7,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cpp/too-many-format-arguments
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  */
 

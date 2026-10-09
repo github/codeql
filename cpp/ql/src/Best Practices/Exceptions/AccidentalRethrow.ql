@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/rethrow-no-exception
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       exceptions
  */
