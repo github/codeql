@@ -12,6 +12,16 @@ func walkDirCallback(path string, d fs.DirEntry, _ error) error {
 
 func steps() {
 	{
+		source := newSource(17).(fs.DirEntry)
+		out := fs.FormatDirEntry(source)
+		sink(17, out)
+	}
+	{
+		source := newSource(18).(fs.FileInfo)
+		out := fs.FormatFileInfo(source)
+		sink(18, out)
+	}
+	{
 		source := newSource(16).(fs.FileInfo)
 		out := fs.FileInfoToDirEntry(source)
 		sink(16, out)
