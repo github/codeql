@@ -27,7 +27,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 return new FileInfo(path).Directory?.FullName;
             }
-            catch (Exception exc)
+            catch (ArgumentException exc)
+            {
+                logger.LogWarning($"Failed to get directory of '{path}': {exc}");
+            }
+            catch (NotSupportedException exc)
+            {
+                logger.LogWarning($"Failed to get directory of '{path}': {exc}");
+            }
+            catch (PathTooLongException exc)
             {
                 logger.LogWarning($"Failed to get directory of '{path}': {exc}");
             }
