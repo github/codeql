@@ -724,6 +724,11 @@ private module Input3 implements InputSig3 {
       not exists(n.(MemberAccessExpr).getBase().(TypeMention).getTypeAt(path))
     ) and
     result instanceof UnknownType
+    or
+    hasResultValue(n) and
+    n.(ArrayLiteral).getNumberOfElements() = 0 and
+    path = TypePath::singleton(getArrayElementTypeParameter()) and
+    result instanceof UnknownType
   }
 
   pragma[nomagic]
