@@ -369,6 +369,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `parameter`. */
     F::Parameter getAParameter() { none() }
+
+    /** Gets the node corresponding to the field `return_type`. */
+    F::Expr getReturnType() { none() }
   }
 
   /** A class representing `catch_clause` nodes. */
@@ -721,7 +724,9 @@ module Unified {
     final override F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `return_type`. */
-    final F::Expr getReturnType() { unified_function_declaration_return_type(this, result) }
+    final override F::Expr getReturnType() {
+      unified_function_declaration_return_type(this, result)
+    }
 
     /** Gets the node corresponding to the field `type_constraint`. */
     final F::TypeConstraint getTypeConstraint(int i) {
@@ -782,7 +787,7 @@ module Unified {
     final override F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `return_type`. */
-    final F::Expr getReturnType() { unified_function_expr_return_type(this, result) }
+    final override F::Expr getReturnType() { unified_function_expr_return_type(this, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {

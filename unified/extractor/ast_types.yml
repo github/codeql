@@ -79,6 +79,7 @@ supertypes:
     fields:
       parameter*: parameter
       body?: block
+      return_type?: expr
   # A member is anything that can appear in the body of a class-like declaration
   member:
     subtypes:

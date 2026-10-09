@@ -21,6 +21,7 @@
 
 private import codeql.util.Unit
 private import codeql.typeinference.internal.TypeInference
+private import codeql.unified.internal.ParameterEx
 private import codeql.unified.internal.ExprPositions
 private import codeql.unified.internal.NameBinding
 private import utils.test.InlineExpectationsTest
@@ -116,7 +117,7 @@ private module M2 = Make2<TypeMention, Input2>;
 
 import M2
 
-private module Input3 implements InputSig3 {
+module Input3 implements InputSig3 {
   private import unified as Unified
 
   predicate cacheRevRef() {
@@ -181,152 +182,10 @@ private module Input3 implements InputSig3 {
     Expr getExpr() { none() }
   }
 
-  /**
-   * Provides declarations with explicit AST node representations.
-   *
-   * Most declarations are explicitly declared, but for example implicit
-   * receiver parameters are not.
-   */
-  private module AstDeclaration {
-    abstract class Declaration extends AstNode {
-      abstract TypeMention getDeclaringType();
-
-      abstract TypeMention getType();
-
-      abstract Identifier getNameNode();
-
-      pragma[nomagic]
-      predicate isMemberOf(ClassLikeDeclaration cls, Identifier i, string name) {
-        exists(NamespaceNode ns |
-          ns.isInstanceMemberNamespace(cls) and
-          ns.getMember(name).isIdentifier(i) and
-          i = this.getNameNode()
-        )
-      }
-    }
-
-    abstract class VariableDeclaration extends Declaration {
-      abstract AstNode getPattern();
-
-      abstract AstNode getInitializer();
-
-      predicate isCoercionSite() { none() }
-
-      override TypeMention getDeclaringType() { none() }
-
-      override Identifier getNameNode() { result = this.getPattern() }
-    }
-
-    private class OrdinaryVariableDeclaration extends VariableDeclaration instanceof Unified::VariableDeclaration
-    {
-      override AstNode getPattern() { result = Unified::VariableDeclaration.super.getPattern() }
-
-      override AstNode getInitializer() { result = super.getValue() }
-
-      override TypeMention getType() { result = Unified::VariableDeclaration.super.getType() }
-    }
-
-    class Field extends OrdinaryVariableDeclaration {
-      ClassLikeDeclaration cls;
-
-      Field() { this = cls.getAMember() }
-
-      override TypeMention getDeclaringType() { result = getClassLikeDeclarationTypeMention(cls) }
-    }
-
-    private class EnumField_ extends Field instanceof EnumField {
-      override TypeMention getType() { result = super.getEnum().getNameNode() }
-    }
-
-    class Parameter extends VariableDeclaration instanceof Unified::Parameter {
-      override AstNode getInitializer() { none() }
-
-      override AstNode getPattern() { result = Unified::Parameter.super.getPattern() }
-
-      override TypeMention getType() { result = Unified::Parameter.super.getType() }
-    }
-
-    abstract class Callable extends Declaration instanceof Unified::Callable {
-      abstract TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp);
-
-      override TypeMention getDeclaringType() {
-        exists(ClassLikeDeclaration c |
-          result = getClassLikeDeclarationTypeMention(c) and
-          this = c.getAMember()
-        )
-      }
-
-      abstract TypeParameter getTypeParameter(int i);
-
-      abstract Parameter getParameter(int i);
-
-      abstract AstNode getBody();
-    }
-
-    private class FunctionDeclarationCallable extends Callable instanceof FunctionDeclaration {
-      override TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp) {
-        // todo: type equalities?
-        exists(BoundTypeConstraint constraint |
-          constraint = super.getATypeConstraint() and
-          tp = constraint.getType().(TypeMention).getType() and
-          result = constraint.getBound()
-        )
-      }
-
-      override TypeParameterType getTypeParameter(int i) {
-        result.getTypeParameter() = FunctionDeclaration.super.getTypeParameter(i)
-      }
-
-      override Parameter getParameter(int i) { result = FunctionDeclaration.super.getParameter(i) }
-
-      override TypeMention getType() { result = super.getReturnType() }
-
-      override AstNode getBody() { result = FunctionDeclaration.super.getBody() }
-
-      override Identifier getNameNode() { result = FunctionDeclaration.super.getNameNode() }
-    }
-
-    class ConstructorDeclarationCallable extends Callable instanceof ConstructorDeclaration {
-      override TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp) { none() }
-
-      override TypeParameterType getTypeParameter(int i) { none() }
-
-      override Parameter getParameter(int i) {
-        result = ConstructorDeclaration.super.getParameter(i)
-      }
-
-      override TypeMention getType() { result = this.getDeclaringType() }
-
-      override AstNode getBody() { result = ConstructorDeclaration.super.getBody() }
-
-      override Identifier getNameNode() { result = ConstructorDeclaration.super.getNameNode() }
-    }
-
-    private class EnumConstructorCallable extends ConstructorDeclarationCallable instanceof EnumConstructor
-    {
-      override TypeMention getDeclaringType() { result = super.getEnum().getNameNode() }
-
-      override Identifier getNameNode() { result = EnumConstructor.super.getNameNode() }
-    }
-
-    class Closure extends Expr, Callable instanceof Unified::FunctionExpr {
-      override TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp) { none() }
-
-      override TypeParameterType getTypeParameter(int i) { none() }
-
-      override Parameter getParameter(int i) { result = FunctionExpr.super.getParameter(i) }
-
-      override TypeMention getType() { result = super.getReturnType() }
-
-      override AstNode getBody() { result = FunctionExpr.super.getBody() }
-
-      override Identifier getNameNode() { none() }
-    }
-  }
-
   private newtype TDeclaration =
-    TExplicitDeclaration(AstDeclaration::Declaration decl) or
-    TImplicitParameterDeclaration(LocalVariable v) { v.isImplicitReceiverParameter(_) }
+    TAstVariableDeclaration(Unified::VariableDeclaration decl) or
+    TCallableDeclaration(Unified::Callable c) or
+    TParameterExDeclaration(ParameterEx p)
 
   final class Declaration = DeclarationImpl;
 
@@ -340,24 +199,17 @@ private module Input3 implements InputSig3 {
     abstract string toString();
 
     abstract Location getLocation();
-  }
 
-  private class ExplicitDeclarationImpl extends DeclarationImpl, TExplicitDeclaration {
-    AstDeclaration::Declaration decl;
+    pragma[nomagic]
+    predicate isInstanceMemberOf(ClassLikeDeclaration cls, string name) {
+      exists(NamespaceNode ns, Identifier i |
+        ns.isInstanceMemberNamespace(cls) and
+        ns.getMember(name).isIdentifier(i) and
+        i = this.getNameNode()
+      )
+    }
 
-    ExplicitDeclarationImpl() { this = TExplicitDeclaration(decl) }
-
-    AstDeclaration::Declaration getAstNode() { result = decl }
-
-    override TypeMention getDeclaringType() { result = decl.getDeclaringType() }
-
-    override TypeMention getType() { result = decl.getType() }
-
-    override Identifier getNameNode() { result = decl.getNameNode() }
-
-    override string toString() { result = decl.toString() }
-
-    override Location getLocation() { result = decl.getLocation() }
+    Unified::Callable asCallable() { this = TCallableDeclaration(result) }
   }
 
   class Variable extends LocalNameBindingOutput::Local {
@@ -374,18 +226,40 @@ private module Input3 implements InputSig3 {
     predicate preservesInitializerType() { any() }
   }
 
-  private class ExplicitVariableDeclarationImpl extends VariableDeclarationImpl,
-    ExplicitDeclarationImpl
-  {
-    override AstDeclaration::VariableDeclaration decl;
+  private class AstVariableDeclaration extends VariableDeclarationImpl, TAstVariableDeclaration {
+    Unified::VariableDeclaration decl;
+
+    AstVariableDeclaration() { this = TAstVariableDeclaration(decl) }
+
+    Unified::VariableDeclaration getDecl() { result = decl }
+
+    override TypeMention getDeclaringType() { none() }
+
+    override TypeMention getType() { result = decl.getType() }
+
+    override Identifier getNameNode() { result = decl.getPattern() }
 
     override AstNode getPattern() { result = decl.getPattern() }
 
-    override AstNode getInitializer() { result = decl.getInitializer() }
+    override AstNode getInitializer() { result = decl.getValue() }
+
+    override string toString() { result = decl.toString() }
+
+    override Location getLocation() { result = decl.getLocation() }
   }
 
-  class Field extends ExplicitDeclarationImpl {
-    override AstDeclaration::Field decl;
+  class Field extends AstVariableDeclaration {
+    ClassLikeDeclaration cls;
+
+    Field() { decl = cls.getAMember() }
+
+    override TypeMention getDeclaringType() { result = getClassLikeDeclarationTypeMention(cls) }
+  }
+
+  private class EnumField_ extends Field {
+    override EnumField decl;
+
+    override TypeMention getType() { result = decl.getEnum().getNameNode() }
   }
 
   abstract class FieldAccess extends Expr {
@@ -401,10 +275,10 @@ private module Input3 implements InputSig3 {
   }
 
   pragma[nomagic]
-  private Identifier lookupMember(MemberAccessExpr mae) {
-    exists(ClassLikeDeclaration cls, ExplicitDeclarationImpl decl, string name |
+  private Declaration lookupInstanceMember(MemberAccessExpr mae) {
+    exists(ClassLikeDeclaration cls, string name |
       lookupMember0(mae, cls, name) and
-      decl.getAstNode().isMemberOf(cls, result, name)
+      result.isInstanceMemberOf(cls, name)
     )
   }
 
@@ -419,12 +293,12 @@ private module Input3 implements InputSig3 {
 
     override Field getField() {
       // mutual recursion; resolving qualified fields requires resolving types and vice versa
-      result.getNameNode() = lookupMember(this)
+      result = lookupInstanceMember(this)
       or
       // also mutual recursion
       exists(TupleType tuple, string name |
         this.isTupleProjection(tuple, name) and
-        result.getAstNode() = tuple.getField(name)
+        result.getDecl() = tuple.getField(name)
       )
       or
       // no mutual recursion; can be resolved directly with static name binding
@@ -433,8 +307,9 @@ private module Input3 implements InputSig3 {
   }
 
   private Type getImplicitReceiverType(UnqualifiedMemberAccess uma, TypePath path) {
-    exists(ImplicitParameterDeclarationImpl p |
-      p.getVariable() = uma.getImplicitQualifierVariable() and
+    exists(Parameter p, Unified::Callable c |
+      p.getParameterEx().isImplicitReceiverParameter(c) and
+      c = uma.getImplicitQualifierVariable().getDeclaringCallable() and
       result = p.getType().getTypeAt(path)
     )
   }
@@ -464,73 +339,120 @@ private module Input3 implements InputSig3 {
     Expr getExpr() { result = this.getValue() }
   }
 
-  final class Parameter = ParameterImpl;
+  class Parameter extends VariableDeclarationImpl, TParameterExDeclaration {
+    ParameterEx p;
 
-  abstract private class ParameterImpl extends VariableDeclarationImpl { }
+    Parameter() { this = TParameterExDeclaration(p) }
 
-  private class ExplicitParameterImpl extends ParameterImpl, ExplicitDeclarationImpl {
-    override AstDeclaration::Parameter decl;
+    ParameterEx getParameterEx() { result = p }
 
-    override AstNode getPattern() { result = decl.getPattern() }
-
-    override AstNode getInitializer() { result = decl.getInitializer() }
-  }
-
-  private class ImplicitParameterDeclarationImpl extends ParameterImpl,
-    TImplicitParameterDeclaration
-  {
-    LocalVariable v;
-
-    ImplicitParameterDeclarationImpl() { this = TImplicitParameterDeclaration(v) }
-
-    LocalVariable getVariable() { result = v }
-
-    override AstNode getPattern() { none() }
+    override AstNode getPattern() { result = p.asParameter().getPattern() }
 
     override AstNode getInitializer() { none() }
 
     override TypeMention getDeclaringType() { none() }
 
     override TypeMention getType() {
-      result = v.getDeclaringCallable().(AstDeclaration::Callable).getDeclaringType()
+      result = p.getType()
+      or
+      exists(Callable c |
+        p.isImplicitReceiverParameter(_) and
+        this = c.getParameter(_) and
+        result = c.getDeclaringType()
+      )
     }
 
     override Identifier getNameNode() { none() }
 
-    override string toString() { result = v.toString() }
+    override string toString() { result = p.toString() }
 
-    override Location getLocation() { result = v.getLocation() }
+    override Location getLocation() { result = p.getLocation() }
   }
 
   predicate implicitParameterDecl(Parameter p, Variable v) {
-    v = p.(ImplicitParameterDeclarationImpl).getVariable()
+    exists(Unified::Callable c |
+      p.getParameterEx().isImplicitReceiverParameter(c) and
+      v.(LocalVariable).isImplicitReceiverParameter(c)
+    )
   }
 
-  class Callable extends ExplicitDeclarationImpl {
-    override AstDeclaration::Callable decl;
+  class Callable extends DeclarationImpl, TCallableDeclaration {
+    Unified::Callable c;
 
-    TypeParameter getTypeParameter(int i) { result = decl.getTypeParameter(i) }
+    Callable() { this = TCallableDeclaration(c) }
 
-    TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp) {
-      result = decl.getAdditionalTypeParameterConstraint(tp)
-    }
+    Unified::Callable getCallable() { result = c }
 
-    Parameter getParameter(int i) {
-      result = TExplicitDeclaration(decl.getParameter(i - 1))
+    override TypeMention getDeclaringType() {
+      result = c.(EnumConstructor).getEnum().getNameNode()
       or
-      i = 0 and
-      exists(LocalVariable v |
-        result = TImplicitParameterDeclaration(v) and
-        v.isImplicitReceiverParameter(decl)
+      not c instanceof EnumConstructor and
+      exists(ClassLikeDeclaration cls |
+        c = cls.getAMember() and
+        result = getClassLikeDeclarationTypeMention(cls)
       )
     }
 
-    AstNode getBody() { result = decl.getBody() }
+    override TypeMention getType() {
+      result = c.getReturnType()
+      or
+      c instanceof ConstructorDeclaration and
+      result = this.getDeclaringType()
+    }
+
+    override Identifier getNameNode() {
+      result = c.(AccessorDeclaration).getNameNode()
+      or
+      result = c.(FunctionDeclaration).getNameNode()
+      or
+      result = c.(EnumConstructor).getEnclosingClass().getNameNode()
+      or
+      not c instanceof EnumConstructor and
+      result = c.(ConstructorDeclaration).getNameNode()
+    }
+
+    string getName() {
+      result = this.getNameNode().getValue()
+      or
+      c instanceof DestructorDeclaration and
+      result = "<destructor>"
+      or
+      c instanceof InitializerDeclaration and
+      result = "<initializer>"
+    }
+
+    TypeParameter getTypeParameter(int i) {
+      result = TTypeParameterType(c.(FunctionDeclaration).getTypeParameter(i))
+    }
+
+    TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp) {
+      // todo: type equalities?
+      exists(BoundTypeConstraint constraint |
+        constraint = c.(FunctionDeclaration).getATypeConstraint() and
+        tp = constraint.getType().(TypeMention).getType() and
+        result = constraint.getBound()
+      )
+    }
+
+    Parameter getParameter(int i) {
+      exists(ParameterEx param | param = result.getParameterEx() |
+        param.isImplicitReceiverParameter(c) and
+        i = 0
+        or
+        param.asParameter() = c.getParameter(i - 1)
+        or
+        param.isDefaultConstructorParameter(c, i, _)
+      )
+    }
+
+    AstNode getBody() { result = c.getBody() }
+
+    override string toString() { result = c.toString() }
+
+    override Location getLocation() { result = c.getLocation() }
   }
 
-  Callable getEnclosingCallable(AstNode node) {
-    result = TExplicitDeclaration(node.getEnclosingCallable())
-  }
+  Callable getEnclosingCallable(AstNode node) { result.asCallable() = node.getEnclosingCallable() }
 
   class InvocationResolutionContext = Unit;
 
@@ -566,27 +488,27 @@ private module Input3 implements InputSig3 {
       result = getFunctionInvoke(t)
     }
 
-    private Unified::Callable getTargetViaStaticNameBinding() {
+    private Callable getTargetViaStaticNameBinding() {
       exists(NameBinding b | b = getStaticBindingTargetFromRef(this.getCallee()) |
         // object creation (including enum constructors): `String(42)`, `Optional.Some(42)`
         exists(ClassLikeDeclaration cls, ConstructorDeclaration init |
           cls.getNameNode() = b and
           init = cls.getAMember() and
-          result = init
+          result.asCallable() = init
         )
         or
         // call without explicit receiver: `foo(42)`
-        result.(AstDeclaration::Declaration).getNameNode() = b
+        result.getNameNode() = b
       )
     }
 
-    Unified::Callable getTargetImpl(boolean isFunctionExprInvoke) {
+    Callable getTargetImpl(boolean isFunctionExprInvoke) {
       // mutual recursion; call with explicit receiver: `obj.foo(42)`
-      result.(AstDeclaration::Declaration).getNameNode() = lookupMember(this.getCallee()) and
+      result = lookupInstanceMember(this.getCallee()) and
       isFunctionExprInvoke = false
       or
       // mutual recursion; call to a function expression: `callback(42)`
-      result = this.getInvokeTarget(_) and
+      result.asCallable() = this.getInvokeTarget(_) and
       isFunctionExprInvoke = true
       or
       // no mutual recursion; can be resolved directly with static name binding
@@ -595,13 +517,11 @@ private module Input3 implements InputSig3 {
     }
 
     Callable getTarget(InvocationResolutionContext c) {
-      result.getAstNode() = this.getTargetImpl(_) and
+      result = this.getTargetImpl(_) and
       exists(c)
     }
 
-    Callable getATargetForTypeQualifierMatching() {
-      result.getAstNode() = this.getTargetViaStaticNameBinding()
-    }
+    Callable getATargetForTypeQualifierMatching() { result = this.getTargetViaStaticNameBinding() }
   }
 
   Type inferInvocationArgumentType(
@@ -627,7 +547,7 @@ private module Input3 implements InputSig3 {
         result = inferType(invocation.getArgument(i), path)
         or
         i = 0 and
-        result = getImplicitReceiverType(invocation.(CallExpr).getCallee(), path)
+        result = getImplicitReceiverType(invocation.getCallee(), path)
       )
     )
   }
@@ -640,23 +560,25 @@ private module Input3 implements InputSig3 {
     result = M3::inferInvocationTypeDefault(invocation, _, path)
   }
 
-  class Closure extends Callable, ExplicitDeclarationImpl {
-    override AstDeclaration::Closure decl;
+  class Closure extends Callable {
+    private FunctionExpr fe;
 
-    Expr getDefiningExpr() { result = decl }
+    Closure() { fe = this.getCallable() }
+
+    Expr getDefiningExpr() { result = fe }
   }
 
   class ClosureParameterPseudoType extends T::ClosureParameterPseudoType {
-    Parameter getParameter() { result = TExplicitDeclaration(this.getParam()) }
+    Parameter getParameter() { result.getParameterEx().asParameter() = this.getParam() }
   }
 
   pragma[nomagic]
-  Type getClosureType(Closure c) { result = getFunctionExprType(c.getAstNode()) }
+  Type getClosureType(Closure c) { result = getFunctionExprType(c.getDefiningExpr()) }
 
   pragma[nomagic]
   TypePath getClosureParameterTypePath(Parameter p) {
     exists(FunctionExpr fe, Type t, int i |
-      p = TExplicitDeclaration(fe.getParameter(i)) and
+      p.getParameterEx().asParameter() = fe.getParameter(i) and
       t = getFunctionExprType(fe) and
       result = getFunctionExprParameterTypePath(t, fe.getNumberOfParameters(), i)
     )
@@ -715,9 +637,8 @@ private module Input3 implements InputSig3 {
     )
     or
     // `Optional.none` has an unknown `Wrapper` type
-    exists(Field f, TypeParameter tp |
+    exists(EnumField_ f, TypeParameter tp |
       n.(FieldAccess).getField() = f and
-      f.(ExplicitDeclarationImpl).getAstNode() instanceof EnumField and
       tp = f.getType().getType().getATypeParameter() and
       path = TypePath::singleton(tp) and
       // `Optional<String>.none` does not have an unknown `Wrapper` type
@@ -756,7 +677,7 @@ module CachedStage = M3::CachedStage;
 cached
 VariableDeclaration resolveFieldAccess(Expr access) {
   CachedStage::ref() and
-  result = access.(Input3::FieldAccess).getField().getAstNode()
+  result = access.(Input3::FieldAccess).getField().getDecl()
 }
 
 /**
@@ -767,7 +688,7 @@ VariableDeclaration resolveFieldAccess(Expr access) {
 cached
 Callable resolveCallTarget(CallExpr ce) {
   CachedStage::ref() and
-  result = ce.(Input3::Invocation).getTargetImpl(_)
+  result = ce.(Input3::Invocation).getTargetImpl(_).asCallable()
 }
 
 private predicate typeTestAstNodeRepr(AstNode n, string repr) {

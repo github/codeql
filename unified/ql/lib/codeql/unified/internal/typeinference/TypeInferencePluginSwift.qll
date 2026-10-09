@@ -1,6 +1,8 @@
 /**
  * Provides Swift-specific type inference logic.
  */
+overlay[local?]
+module;
 
 private import Type
 private import TypeInference
@@ -11,32 +13,44 @@ private class StructType extends ClassLikeDeclarationType {
   StructType() { c.getAModifier().getValue() = "struct" }
 }
 
-private class BuiltinType extends StructType {
+private class EnumType extends ClassLikeDeclarationType {
+  EnumType() { c.getAModifier().getValue() = "enum" }
+}
+
+private class BuiltinType extends ClassLikeDeclarationType {
   BuiltinType() { this.getClassLikeDeclaration() instanceof BuiltinClassLikeDeclaration }
 }
 
-private class BoolType extends BuiltinType {
+private class BuiltinStructType extends BuiltinType, StructType { }
+
+private class BuiltinEnumType extends BuiltinType, EnumType { }
+
+private class BoolType extends BuiltinStructType {
   BoolType() { this.getName() = "Bool" }
 }
 
-private class IntType extends BuiltinType {
+private class IntType extends BuiltinStructType {
   IntType() { this.getName() = "Int" }
 }
 
-private class DoubleType extends BuiltinType {
+private class DoubleType extends BuiltinStructType {
   DoubleType() { this.getName() = "Double" }
 }
 
-private class StringType extends BuiltinType {
+private class StringType extends BuiltinStructType {
   StringType() { this.getName() = "String" }
 }
 
-private class ArrayType extends BuiltinType {
+private class ArrayType extends BuiltinStructType {
   ArrayType() { this.getName() = "Array" }
 }
 
-class FunctionType extends BuiltinType {
+class FunctionType extends BuiltinStructType {
   FunctionType() { this.getName() = "Function" }
+}
+
+class OptionalType extends BuiltinEnumType {
+  OptionalType() { this.getName() = "Optional" }
 }
 
 pragma[nomagic]
@@ -62,7 +76,7 @@ private TypePath functionReturnPath() {
   result = TypePath::singleton(getFunctionReturnTypeParameter())
 }
 
-private class TupleType extends BuiltinType {
+private class TupleType extends BuiltinStructType {
   private int arity;
 
   TupleType() { arity = this.getName().regexpCapture("Tuple([0-9]+)", 1).toInt() }
