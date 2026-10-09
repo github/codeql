@@ -8,6 +8,9 @@ module Impl implements InlineExpectationsTestSig {
   class ExpectationComment extends Yaml::YamlComment {
     /** Gets the contents of this comment. */
     string getContents() { result = this.getText() }
+
+    /** YAML comments use line-comment syntax. */
+    predicate isLineComment() { any() }
   }
 
   class Location = L::Location;
@@ -20,5 +23,11 @@ module Impl implements InlineExpectationsTestSig {
         location.getFile().getRelativePath() + ":" + startLine + ":" + startColumn + ":" + endLine +
           ":" + endColumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    relativePath.regexpMatch(".*\\.ya?ml") and
+    result = "#"
   }
 }

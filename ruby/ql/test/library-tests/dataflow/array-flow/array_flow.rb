@@ -371,14 +371,14 @@ end
 def m42(i)
     a = [0, 1, source(42.1), source(42.2)]
     b = a.drop(i)
-    sink(b[0]) # $ hasValueFlow=42.1 # $ hasValueFlow=42.2
+    sink(b[0]) # $ hasValueFlow=42.1 hasValueFlow=42.2
     b = a.drop(1)
     sink(b[0])
     sink(b[1]) # $ hasValueFlow=42.1
-    sink(b[i]) # $ hasValueFlow=42.1 # $ hasValueFlow=42.2
+    sink(b[i]) # $ hasValueFlow=42.1 hasValueFlow=42.2
     a[i] = source(42.3)
     b = a.drop(1)
-    sink(b[1]) # $ hasValueFlow=42.1 # $ hasValueFlow=42.3
+    sink(b[1]) # $ hasValueFlow=42.1 hasValueFlow=42.3
     c = b.drop(100)
     sink(c[1]) # $ hasValueFlow=42.3
 end
@@ -386,9 +386,9 @@ end
 def m43
     a = [0, 1, source(43.1), source(43.2)]
     b = a.drop_while do |x|
-        sink x # $ hasValueFlow=43.1 # $ hasValueFlow=43.2
+        sink x # $ hasValueFlow=43.1 hasValueFlow=43.2
     end
-    sink(b[0]) # $ hasValueFlow=43.1 # $ hasValueFlow=43.2
+    sink(b[0]) # $ hasValueFlow=43.1 hasValueFlow=43.2
 end
 
 def m44
@@ -1464,7 +1464,7 @@ def m121(i)
     sink(b[i]) # $ hasValueFlow=121.1 $ hasValueFlow=121.2
     a[i] = source(121.3)
     b = a.take(3)
-    sink(b[2]) # $ hasValueFlow=121.1 # $ hasValueFlow=121.3
+    sink(b[2]) # $ hasValueFlow=121.1 hasValueFlow=121.3
 end
 
 def m122

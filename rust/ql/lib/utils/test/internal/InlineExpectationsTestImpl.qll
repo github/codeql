@@ -8,6 +8,9 @@ module Impl implements InlineExpectationsTestSig {
 
     /** Gets the contents of the given comment, _without_ the preceding comment marker (`//`). */
     string getContents() { result = this.getCommentText() }
+
+    /** Holds if this comment uses `//` or `///` syntax. */
+    predicate isLineComment() { this.getCommentMarker() = ["//", "///"] }
   }
 
   class Location = R::Location;
@@ -20,5 +23,13 @@ module Impl implements InlineExpectationsTestSig {
       result =
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // Rust databases can also contain YAML, whose `#` comment syntax differs, so we only
+    // render for Rust sources.
+    relativePath.matches("%.rs") and
+    result = "//"
   }
 }
