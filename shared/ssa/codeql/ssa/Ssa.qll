@@ -1680,7 +1680,16 @@ module Make<
     cached
     private newtype TNode =
       TWriteDefSource(WriteDefinition def) { DfInput::ssaDefHasSource(def) } or
-      TExprNode(DfInput::Expr e, Boolean isPost) { e = DfInput::getARead(_) } or
+      TExprNode(DfInput::Expr e, SourceVariable v, Boolean isPost) {
+        exists(BasicBlock bb, int i |
+          e.hasCfgNode(bb, i) and
+          variableRead(bb, i, v, true) and
+          // Only materialise if 'expr' has a reaching definition.
+          // Note that the read may correspond to a different variable than 'v', but the C++
+          // instantiation currently expects this particular behaviour.
+          DfInput::getARead(_) = e
+        )
+      } or
       TSsaDefinitionNode(DefinitionExt def) {
         not phiHasUniqNextNode(def) and
         if DfInput::includeWriteDefsInFlowStep()
@@ -1730,11 +1739,15 @@ module Make<
     abstract private class ExprNodePreOrPostImpl extends NodeImpl, TExprNode {
       DfInput::Expr e;
       boolean isPost;
+      SourceVariable v_;
 
-      ExprNodePreOrPostImpl() { this = TExprNode(e, isPost) }
+      ExprNodePreOrPostImpl() { this = TExprNode(e, v_, isPost) }
 
       /** Gets the underlying expression. */
       DfInput::Expr getExpr() { result = e }
+
+      /** Holds if this represents the access to `var` performed at `expr`. */
+      predicate isExprAndVariable(DfInput::Expr expr, SourceVariable var) { expr = e and var = v_ }
 
       override Location getLocation() {
         exists(BasicBlock bb, int i |
@@ -1742,6 +1755,9 @@ module Make<
           result = bb.getNode(i).getLocation()
         )
       }
+
+      /** Gets the variable accessed at this expression. */
+      SourceVariable getSourceVariable() { result = v_ }
     }
 
     final class ExprNodePreOrPost = ExprNodePreOrPostImpl;
@@ -1760,32 +1776,34 @@ module Make<
       ExprPostUpdateNodeImpl() { isPost = true }
 
       /** Gets the pre-update expression node. */
-      ExprNode getPreUpdateNode() { result = TExprNode(e, false) }
+      ExprNode getPreUpdateNode() { result = TExprNode(e, v_, false) }
 
       override string toString() { result = e.toString() + " [postupdate]" }
     }
 
     final class ExprPostUpdateNode = ExprPostUpdateNodeImpl;
 
+    pragma[nomagic]
+    private predicate exprReadAt(
+      DfInput::Expr e, BasicBlock bb, int i, SourceVariable v, boolean isPost, TExprNode node
+    ) {
+      variableRead(bb, i, v, true) and
+      e.hasCfgNode(bb, i) and
+      node = TExprNode(e, v, isPost)
+    }
+
     private class ReadNodeImpl extends ExprNodeImpl {
-      private BasicBlock bb_;
-      private int i_;
-      private SourceVariable v_;
+      ReadNodeImpl() { exprReadAt(e, _, _, _, false, this) }
 
-      ReadNodeImpl() {
-        variableRead(bb_, i_, v_, true) and
-        this.getExpr().hasCfgNode(bb_, i_)
-      }
-
+      /** Holds if this node reads `v` at `bb,i` */
       pragma[nomagic]
       predicate readsAt(BasicBlock bb, int i, SourceVariable v) {
-        bb = bb_ and
-        i = i_ and
-        v = v_
+        exprReadAt(e, bb, i, v, false, this)
       }
     }
 
-    final private class ReadNode = ReadNodeImpl;
+    /** A node corresponding to a `(bb,i,v)` tuple from `variableRead(bb,i,v,true)` */
+    final class ReadNode = ReadNodeImpl;
 
     /** A synthesized SSA data flow node. */
     abstract private class SsaNodeImpl extends NodeImpl {
@@ -2017,13 +2035,13 @@ module Make<
         v = def.getSourceVariable() and
         if DfInput::includeWriteDefsInFlowStep()
         then nodeTo.(SsaDefinitionNode).getDefinition() = def
-        else nodeTo.(ExprNode).getExpr() = DfInput::getARead(def)
+        else nodeTo.(ExprNode).isExprAndVariable(DfInput::getARead(def), v)
       )
       or
       // Flow from SSA definition to read
       exists(DefinitionExt def |
         nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
-        nodeTo.(ExprNode).getExpr() = DfInput::getARead(def) and
+        nodeTo.(ExprNode).isExprAndVariable(DfInput::getARead(def), v) and
         v = def.getSourceVariable()
       )
     }
@@ -2129,7 +2147,7 @@ module Make<
             e = DfInput::getARead(def) and
             e.hasCfgNode(bb, _) and
             DfInput::guardControlsBlock(g, bb, val) and
-            result.(ExprNode).getExpr() = e
+            result.(ExprNode).isExprAndVariable(e, def.getSourceVariable())
           )
           or
           // guard controls input block to a phi node
@@ -2142,6 +2160,17 @@ module Make<
             g.valueControlsBranchEdge(bb, phi.getBasicBlock(), val)
           )
         )
+      }
+    }
+
+    /** Provides consistency checks that depend on the DataFlowIntegration inputs. */
+    module DfConsistency {
+      /**
+       * The given `read` reads multiple variables at once. `var` is bound to one of them.
+       */
+      query predicate ambiguousReadNode(ReadNode read, SourceVariable var) {
+        strictcount(SourceVariable v | read.readsAt(_, _, v)) > 1 and
+        read.readsAt(_, _, var)
       }
     }
   }
