@@ -239,9 +239,11 @@ class BuilderNode extends TDataFlowNodeStage1 {
       result = "[variable " + kind + "] " + v.toString()
     )
     or
-    exists(DataFlowCallable callable, ParameterPosition pos |
-      this.isImplicitParameter(callable, pos) and
-      result = "[" + pos + " param] " + callable.toString()
+    exists(DataFlowCallable callable |
+      exists(ParameterPosition pos |
+        this.isImplicitParameter(callable, pos) and
+        result = "[" + pos + " param] " + callable.toString()
+      )
       or
       this.isCallableEx(callable) and
       result = "[callable] " + callable.toString()
