@@ -85,6 +85,16 @@ pub(crate) enum Pattern {
     },
 }
 
+impl Pattern {
+    pub(crate) fn matches_single_node(&self) -> bool {
+        match self {
+            Pattern::Any { .. } | Pattern::Node { .. } | Pattern::Unnamed(_) => true,
+            Pattern::Capture { cardinality, .. } => *cardinality == Cardinality::SINGLE,
+            Pattern::Sequence(_) | Pattern::Repeated { .. } => false,
+        }
+    }
+}
+
 pub(crate) enum Template {
     /// A parenthesized node template such as `(call method: {name})`.
     Node(Node),

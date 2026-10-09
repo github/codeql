@@ -146,7 +146,21 @@ fn parse_pattern_list(tokens: &mut Tokens) -> Result<Vec<Pattern>> {
                 if is_single_pattern {
                     parse_parenthesized_pattern(&mut inner)?
                 } else {
-                    Pattern::Sequence(parse_pattern_list(&mut inner)?)
+                    let patterns = parse_pattern_list(&mut inner)?;
+                    if patterns.is_empty() {
+                        return Err(syn::Error::new(
+                            group.span(),
+                            "empty query groups are not allowed",
+                        ));
+                    }
+                    if patterns.len() == 1 {
+                        return Err(syn::Error::new(
+                            group.span(),
+                            "single-pattern query groups are not allowed; \
+                             remove the redundant parentheses",
+                        ));
+                    }
+                    Pattern::Sequence(patterns)
                 }
             } else {
                 parse_parenthesized_pattern(&mut inner)?
@@ -183,6 +197,12 @@ fn maybe_capture(
     cardinality: Cardinality,
 ) -> Result<Pattern> {
     if peek_is_at(tokens) {
+        if !pattern.matches_single_node() {
+            return Err(syn::Error::new_spanned(
+                tokens.peek().unwrap().clone(),
+                "cannot capture a query sequence; capture the desired nodes explicitly",
+            ));
+        }
         let (name, raw) = consume_capture(tokens)?;
         Ok(Pattern::Capture {
             name,
@@ -201,53 +221,12 @@ fn maybe_capture(
 }
 
 fn maybe_repeat(tokens: &mut Tokens, pattern: Pattern) -> Result<Pattern> {
-    if !peek_is_repetition(tokens) {
-        return maybe_capture(tokens, pattern, Cardinality::SINGLE);
-    }
-
-    let cardinality = expect_cardinality(tokens)?;
-    if !peek_is_at(tokens) {
-        return Ok(Pattern::Repeated {
-            pattern: Box::new(pattern),
-            cardinality,
-        });
-    }
-
-    if matches!(
-        &pattern,
-        Pattern::Sequence(patterns)
-            if patterns.iter().any(|pattern| matches!(pattern, Pattern::Repeated { .. }))
-    ) {
-        return Err(syn::Error::new_spanned(
-            tokens.peek().unwrap().clone(),
-            "cannot capture a repeated group containing a nested repetition; \
-             capture the desired inner patterns explicitly",
-        ));
-    }
-
-    let (name, raw) = consume_capture(tokens)?;
-    Ok(match pattern {
-        Pattern::Sequence(patterns) => Pattern::Repeated {
-            pattern: Box::new(Pattern::Sequence(
-                patterns
-                    .into_iter()
-                    .map(|pattern| Pattern::Capture {
-                        name: name.clone(),
-                        raw,
-                        pattern: Box::new(pattern),
-                        cardinality: Cardinality::SINGLE,
-                    })
-                    .collect(),
-            )),
-            cardinality,
-        },
-        pattern => Pattern::Capture {
-            name,
-            raw,
-            pattern: Box::new(pattern),
-            cardinality,
-        },
-    })
+    let cardinality = if peek_is_repetition(tokens) {
+        expect_cardinality(tokens)?
+    } else {
+        Cardinality::SINGLE
+    };
+    maybe_capture(tokens, pattern, cardinality)
 }
 
 fn parse_replacement(input: TokenStream) -> Result<Replacement> {
@@ -553,15 +532,48 @@ mod tests {
     }
 
     #[test]
-    fn rejects_capture_on_repeated_group_with_nested_repetition() {
-        let result = parse_pattern(quote!((root ((item)* (separator))* @items)));
+    fn rejects_one_element_repeated_group() {
+        let result = parse_pattern(quote!((array ((identifier))* @items)));
         let Err(error) = result else {
-            panic!("expected nested repetition capture to be rejected");
+            panic!("expected redundant query group to be rejected");
         };
         assert_eq!(
             error.to_string(),
-            "cannot capture a repeated group containing a nested repetition; \
-             capture the desired inner patterns explicitly"
+            "single-pattern query groups are not allowed; remove the redundant parentheses"
+        );
+    }
+
+    #[test]
+    fn rejects_empty_repeated_group() {
+        let result = parse_pattern(quote!((array ()*)));
+        let Err(error) = result else {
+            panic!("expected empty query group to be rejected");
+        };
+        assert_eq!(error.to_string(), "empty query groups are not allowed");
+    }
+
+    #[test]
+    fn rejects_capture_of_query_sequence() {
+        let result = maybe_capture(
+            &mut quote!(@item).into_iter().peekable(),
+            Pattern::Sequence(vec![
+                Pattern::Node {
+                    kind: "identifier".to_string(),
+                    fields: Vec::new(),
+                },
+                Pattern::Node {
+                    kind: "integer".to_string(),
+                    fields: Vec::new(),
+                },
+            ]),
+            Cardinality::SINGLE,
+        );
+        let Err(error) = result else {
+            panic!("expected multi-node sequence capture to be rejected");
+        };
+        assert_eq!(
+            error.to_string(),
+            "cannot capture a query sequence; capture the desired nodes explicitly"
         );
     }
 }
