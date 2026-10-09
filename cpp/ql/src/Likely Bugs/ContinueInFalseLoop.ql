@@ -8,6 +8,7 @@
  * @problem.severity warning
  * @precision high
  * @tags quality
+ *       reliability
  *       correctness
  */
 

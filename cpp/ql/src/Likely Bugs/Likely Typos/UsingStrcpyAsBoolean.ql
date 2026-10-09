@@ -8,6 +8,7 @@
  * @precision high
  * @id cpp/string-copy-return-value-as-boolean
  * @tags quality
+ *       reliability
  *       correctness
  */
 

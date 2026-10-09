@@ -6,6 +6,7 @@
  * @precision high
  * @id cpp/catch-missing-free
  * @tags quality
+ *       reliability
  *       efficiency
  *       correctness
  *       exceptions

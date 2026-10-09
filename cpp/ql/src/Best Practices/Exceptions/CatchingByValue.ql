@@ -6,6 +6,7 @@
  * @precision very-high
  * @id cpp/catch-by-value
  * @tags quality
+ *       reliability
  *       efficiency
  *       correctness
  *       exceptions

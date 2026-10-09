@@ -6,6 +6,7 @@
  * @precision high
  * @id cpp/throwing-pointer
  * @tags quality
+ *       reliability
  *       efficiency
  *       correctness
  *       exceptions

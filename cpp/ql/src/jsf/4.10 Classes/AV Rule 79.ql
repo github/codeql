@@ -6,6 +6,7 @@
  * @precision high
  * @id cpp/resource-not-released-in-destructor
  * @tags quality
+ *       reliability
  *       efficiency
  *       readability
  *       external/cwe/cwe-404

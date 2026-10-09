@@ -6,6 +6,8 @@
  * @precision very-high
  * @id cpp/large-parameter
  * @tags quality
+ *       reliability
+ *       performance
  *       efficiency
  *       readability
  *       statistical

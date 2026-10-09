@@ -6,6 +6,7 @@
  * @precision high
  * @id cpp/inconsistent-loop-direction
  * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-835
  * @msrc.severity important
