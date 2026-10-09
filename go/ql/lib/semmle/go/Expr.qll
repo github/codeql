@@ -5,6 +5,8 @@ overlay[local]
 module;
 
 import go
+private import semmle.go.controlflow.ControlFlowGraphImpl
+private import semmle.go.controlflow.IR
 
 /**
  * An expression.
@@ -17,6 +19,12 @@ import go
  * ```
  */
 class Expr extends @expr, ExprParent {
+  /** Gets the control-flow node associated with this expression. */
+  CfgImpl::Cfg::ControlFlowNode getControlFlowNode() { result = IR::evalExprInstruction(this) }
+
+  /** Gets the basic block containing this expression. */
+  CfgImpl::Cfg::BasicBlock getBasicBlock() { result = this.getControlFlowNode().getBasicBlock() }
+
   /**
    * Gets the kind of this expression, which is an integer value representing the expression's
    * node type.
