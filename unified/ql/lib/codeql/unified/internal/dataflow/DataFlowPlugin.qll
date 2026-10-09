@@ -12,5 +12,5 @@ private module Plugins {
 
 class DataFlowPlugin extends Unit {
   /** Holds if there is a language-specific step from `node1 -> step -> node2`. */
-  predicate step(Node node1, Step step, Node node2) { none() }
+  predicate step(BuilderNode node1, Step step, BuilderNode node2) { none() }
 }

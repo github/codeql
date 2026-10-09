@@ -2,7 +2,7 @@ private import unified
 private import AllDataFlow
 private import codeql.unified.internal.LocalNameBinding
 
-predicate step(Node node1, Step step, Node node2) {
+predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   any(DataFlowPlugin p).step(node1, step, node2)
   or
   exists(Callable callable |
@@ -21,6 +21,16 @@ predicate step(Node node1, Step step, Node node2) {
     node1.isReceiverPostUpdate(call) and
     step.value() and
     node2.isPostUpdate(receiverExpr)
+  )
+  or
+  exists(CallExpr call |
+    node1.isResultValue(call.getCallee()) and
+    step.value() and
+    node2.isCalleeArgument(call)
+    or
+    node1.isCalleePostUpdate(call) and
+    step.value() and
+    node2.isPostUpdate(call.getCallee())
   )
   or
   exists(CallExpr call, UnqualifiedMemberAccess callee | callee = call.getCallee() |
@@ -146,6 +156,18 @@ predicate step(Node node1, Step step, Node node2) {
     node2.isIncomingValue(stmt.getPattern())
   )
   or
+  exists(FunctionExpr expr |
+    node1.isCallable(expr) and
+    step.value() and
+    node2.isResultValue(expr)
+  )
+  or
+  exists(FunctionDeclaration fun |
+    node1.isCallable(fun) and
+    step.value() and
+    node2.isIncomingValue(fun.getNameNode())
+  )
+  or
   none() // Temporarily disable compilation errors from unsatisfiable types
 }
 
@@ -153,14 +175,24 @@ predicate step(Node node1, Step step, Node node2) {
 private signature predicate relevantNodeSig(AstNode node);
 
 module DebugGraph<relevantNodeSig/1 relevantNode> {
-  private Node adjacent(Node n) {
+  private Node adjacent1(Node n) {
     step(n, _, result)
-    or
-    step(result, _, n)
     or
     localSsaStep(n, result, _)
     or
-    localSsaStep(result, n, _)
+    captureSsaLocalFlowStep(n, result)
+    or
+    captureSsaReadStep(n, _, result)
+    or
+    captureSsaStoreStep(n, _, result)
+    or
+    result = n.getPostUpdateNode()
+  }
+
+  private Node adjacent(Node n) {
+    result = adjacent1(n)
+    or
+    n = adjacent1(result)
   }
 
   private predicate relevantDataFlowNode(Node node) {
@@ -170,10 +202,16 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
     relevantDataFlowNode(adjacent(node))
   }
 
+  private string getANodeAnnotation(Node n) {
+    result =
+      " [capture-clear: " +
+        strictconcat(ContentSet c | captureSsaClearsContent(n, c) | c.toString(), ",") + "]"
+  }
+
   query predicate nodes(Node node, string key, string value) {
     relevantDataFlowNode(node) and
     key = "semmle.label" and
-    value = node.toString()
+    value = node.toString() + concat(getANodeAnnotation(node))
   }
 
   query predicate edges(Node node1, Node node2, string key, string value) {
@@ -193,6 +231,17 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
       or
       node2 = node1.getPostUpdateNode() and
       value = "post-update"
+      or
+      captureSsaLocalFlowStep(node1, node2) and
+      value = "value"
+      or
+      exists(ContentSet contents |
+        captureSsaReadStep(node1, contents, node2) and
+        value = "read[" + contents.toString() + "]"
+        or
+        captureSsaStoreStep(node1, contents, node2) and
+        value = "store[" + contents.toString() + "]"
+      )
     )
   }
 }

@@ -7,7 +7,7 @@ private import AllDataFlow
 
 private class SwiftDataFlowPlugin extends DataFlowPlugin {
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
-  override predicate step(Node node1, Step step, Node node2) {
+  override predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     exists(BinaryExpr expr |
       expr.getOperator().getValue() = ["+", "+="] and
       node1.isResultValue([expr.getLeft(), expr.getRight()]) and
@@ -64,6 +64,21 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node1.isResultValue(call.getNamedArgument("string")) and
       step.taint() and
       node2.isResultValue(call)
+    )
+    or
+    exists(UnaryExpr expr |
+      // The AST mapping translates `[weak x]` into `[x = weak x]`.
+      // Model the `weak` UnaryExpr as a store into `Optional.some`.
+      expr.getOperator().(PrefixOperator).getValue() = "weak" and
+      node1.isResultValue(expr.getOperand()) and
+      step.storeName("some.0") and
+      node2.isResultValue(expr)
+      or
+      // `[unowned x]` is translated to `[x = unowned x]`
+      expr.getOperator().(PrefixOperator).getValue() = "unowned" and
+      node1.isResultValue(expr.getOperand()) and
+      step.value() and
+      node2.isResultValue(expr)
     )
   }
 }
