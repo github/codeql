@@ -6,6 +6,10 @@ private import unified
 private import AllDataFlow
 
 private class SwiftDataFlowPlugin extends DataFlowPlugin {
+  override predicate bypassContentSet(ContentSet contents) {
+    contents.asSingleton().asNamedMember() = "some.0"
+  }
+
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
   override predicate step(Node node1, Step step, Node node2) {
     exists(BinaryExpr expr |
