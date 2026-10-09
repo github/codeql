@@ -1,0 +1,7 @@
+edges
+| Test.java:58:58:58:78 | getInputStream(...) : InputStream | Test.java:62:34:62:37 | size |
+nodes
+| Test.java:58:58:58:78 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| Test.java:62:34:62:37 | size | semmle.label | size |
+#select
+| Test.java:62:34:62:37 | size | Test.java:58:58:58:78 | getInputStream(...) : InputStream | Test.java:62:34:62:37 | size | Unbounded memory allocation from $@. | Test.java:58:58:58:78 | getInputStream(...) : InputStream | this user input |
