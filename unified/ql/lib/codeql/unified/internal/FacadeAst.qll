@@ -153,6 +153,59 @@ module Unified {
     string getLabelName() { result = this.getLabelNameNode().getValue() }
   }
 
+  class Member extends G::Member {
+    /** Gets the unqualified name of this member or a fallback name such as `(anonymous function)` if it has no explicit name. */
+    string getNameOrFallback() {
+      result = this.getNameNode().getValue()
+      or
+      not exists(this.getNameNode()) and
+      (
+        this instanceof ConstructorDeclaration and
+        result = "(constructor)"
+        or
+        this instanceof DestructorDeclaration and
+        result = "(destructor)"
+        or
+        this instanceof FunctionDeclaration and
+        result = "(anonymous function)"
+        or
+        this instanceof VariableDeclaration and
+        result = "(pattern assignment)" // this case is only reachable when the target is a destructuring pattern
+        or
+        this instanceof InitializerDeclaration and
+        result = "(initializer block)"
+        or
+        this instanceof ClassLikeDeclaration and
+        result = "(anonymous class)"
+        or
+        this instanceof TypeAliasDeclaration and
+        result = "(anonymous type alias)"
+        or
+        this instanceof AssociatedTypeDeclaration and
+        result = "(anonymous associated type)"
+        or
+        this instanceof UnsupportedNode and
+        result = "(unsupported node)"
+        or
+        this instanceof UnhandledNode and
+        result = "(unhandled node)"
+      )
+    }
+
+    /**
+     * Gets the name of this member qualified by the short names of each immediately-enclosing class.
+     */
+    string getQualifiedName() {
+      exists(ClassLikeDeclaration cls |
+        this = cls.getAMember() and
+        result = cls.getQualifiedName() + "." + this.getNameOrFallback()
+      )
+      or
+      not this = any(ClassLikeDeclaration cls).getAMember() and
+      result = this.getNameOrFallback()
+    }
+  }
+
   class ClassLikeDeclaration extends G::ClassLikeDeclaration {
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
@@ -164,7 +217,7 @@ module Unified {
     }
 
     override string toString() {
-      result = concat(getClassLikeDeclarationKeyword(this) + " ") + concat(this.getName())
+      result = concat(getClassLikeDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
     }
   }
 
@@ -173,7 +226,8 @@ module Unified {
     string getName() { result = this.getNameNode().getValue() }
 
     override string toString() {
-      result = concat(getConstructorDeclarationKeyword(this) + " ") + concat(this.getName())
+      result =
+        concat(getConstructorDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
     }
   }
 
@@ -187,7 +241,7 @@ module Unified {
     string getName() { result = this.getNameNode().getValue() }
 
     override string toString() {
-      result = concat(getFunctionDeclarationKeyword(this) + " ") + concat(this.getName())
+      result = concat(getFunctionDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
     }
   }
 
@@ -199,7 +253,7 @@ module Unified {
     string getName() { result = this.getNameNode().getValue() }
 
     override string toString() {
-      result = concat(getVariableDeclarationKeyword(this) + " ") + concat(this.getName())
+      result = concat(getVariableDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
     }
   }
 
