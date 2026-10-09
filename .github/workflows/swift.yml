@@ -74,7 +74,7 @@ jobs:
       - name: Generate C++ files
         run: |
           bazel run codegen -- --generate=trap,cpp --cpp-output=$PWD/generated-cpp-files
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: swift-generated-cpp-files
           path: generated-cpp-files/**
