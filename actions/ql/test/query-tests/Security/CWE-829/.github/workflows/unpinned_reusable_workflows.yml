@@ -33,3 +33,6 @@ jobs:
 
   local-workflow-dollar:
     uses: $/.github/workflows/reusable_local.yml
+
+  local-workflow-dollar-ref:
+    uses: $/.github/workflows/reusable_local.yml@v1

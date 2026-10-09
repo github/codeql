@@ -242,6 +242,10 @@ edges
 | .github/workflows/reusable_local.yml:23:9:26:6 | Uses Step | .github/workflows/reusable_local.yml:26:9:29:7 | Run Step |
 | .github/workflows/reusable_local.yml:25:17:25:36 | inputs.branch | .github/workflows/reusable_local.yml:23:9:26:6 | Uses Step |
 | .github/workflows/self_ref_dollar.yml:11:7:15:4 | Uses Step | .github/workflows/self_ref_dollar.yml:15:7:15:29 | Uses Step |
+| .github/workflows/self_repository_after_pr_checkout.yml:12:9:16:6 | Uses Step | .github/workflows/self_repository_after_pr_checkout.yml:16:9:16:57 | Uses Step |
+| .github/workflows/self_repository_after_pr_checkout.yml:14:17:14:57 | github.event.pull_request.head.sha | .github/workflows/self_repository_after_pr_checkout.yml:12:9:16:6 | Uses Step |
+| .github/workflows/self_repository_after_pr_checkout.yml:16:9:16:57 | Uses Step | .github/actions/self-repository-harmless/action.yml:6:7:7:18 | Run Step |
+| .github/workflows/self_repository_dispatch_reusable.yml:21:9:25:6 | Uses Step | .github/workflows/self_repository_dispatch_reusable.yml:25:9:25:23 | Run Step |
 | .github/workflows/test1.yml:18:9:21:6 | Uses Step | .github/workflows/test1.yml:21:9:24:6 | Run Step |
 | .github/workflows/test1.yml:21:9:24:6 | Run Step | .github/workflows/test1.yml:24:9:25:39 | Run Step |
 | .github/workflows/test2.yml:13:9:16:6 | Uses Step | .github/workflows/test2.yml:16:9:20:52 | Uses Step |
