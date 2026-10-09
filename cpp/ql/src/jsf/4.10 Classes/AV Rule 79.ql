@@ -89,7 +89,7 @@ Expr exprOrDereference(Expr e) {
  */
 private predicate exprReleases(Expr e, Expr released, string kind) {
   // `e` is a call to a release function and `released` is the released argument
-  releaseExpr(e, released, kind)
+  releaseExpr(e, pragma[only_bind_into](globalValueNumber(released).getAnExpr()), kind)
   or
   exists(int arg, VariableAccess access, Function f |
     // `e` is a call to a function that releases one of it's parameters,
