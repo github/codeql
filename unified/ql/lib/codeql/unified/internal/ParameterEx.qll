@@ -11,9 +11,9 @@ private newtype TParameterEx =
   TImplicitReceiverParameter(Callable c) {
     exists(LocalVariable v | v.isImplicitReceiverParameter(c))
   } or
-  TDefaultConstructorParameter(ConstructorDeclaration cd, int i, string name) {
+  TDefaultConstructorParameter(ConstructorDeclaration cd, int i, string name, boolean hasDefault) {
     cd.hasModifier("generated") and
-    defaultConstructorParameter(cd, i, name)
+    defaultConstructorParameter(cd, i, name, hasDefault)
   }
 
 final class ParameterEx = ParameterExImpl;
@@ -42,7 +42,7 @@ abstract private class ParameterExImpl extends TParameterEx {
    * constructor `cd` with name `name`.
    */
   predicate isDefaultConstructorParameter(ConstructorDeclaration cd, int i, string name) {
-    this = TDefaultConstructorParameter(cd, i, name)
+    this = TDefaultConstructorParameter(cd, i, name, _)
   }
 
   /** Gets the callable that this parameter belongs to. */
@@ -60,6 +60,12 @@ abstract private class ParameterExImpl extends TParameterEx {
     this.isDefaultConstructorParameter(result, _, _)
   }
 
+  /** Holds if this parameter has a default value. */
+  abstract predicate hasDefault();
+
+  /** Gets the type declaration of this parameter, if any. */
+  abstract AstNode getType();
+
   /** Gets a textual representation of this parameter. */
   abstract string toString();
 
@@ -72,6 +78,10 @@ private class AstParameterEx extends ParameterExImpl, TAstParameter {
 
   AstParameterEx() { this = TAstParameter(p) }
 
+  override predicate hasDefault() { exists(p.getDefault()) }
+
+  override AstNode getType() { result = p.getType() }
+
   override string toString() { result = p.toString() }
 
   override Location getLocation() { result = p.getLocation() }
@@ -81,6 +91,10 @@ private class ImplicitReceiverParameterEx extends ParameterExImpl, TImplicitRece
   Callable c;
 
   ImplicitReceiverParameterEx() { this = TImplicitReceiverParameter(c) }
+
+  override predicate hasDefault() { none() }
+
+  override AstNode getType() { none() }
 
   override string toString() {
     exists(LocalVariable v |
@@ -96,8 +110,13 @@ private class DefaultConstructorParameterEx extends ParameterExImpl, TDefaultCon
   ConstructorDeclaration cd;
   int i;
   string name;
+  boolean hasDefault;
 
-  DefaultConstructorParameterEx() { this = TDefaultConstructorParameter(cd, i, name) }
+  DefaultConstructorParameterEx() { this = TDefaultConstructorParameter(cd, i, name, hasDefault) }
+
+  override AstNode getType() { defaultConstructorParameterType(cd, i, result) }
+
+  override predicate hasDefault() { hasDefault = true }
 
   override string toString() { result = name + " [" + cd.getName() + " default constructor]" }
 

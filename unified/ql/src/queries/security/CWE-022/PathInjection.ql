@@ -46,7 +46,13 @@ module PathInjectionConfig implements DataFlow::ConfigSig {
     heuristicSink(node)
   }
 
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(MemberAccessExpr expr |
+      expr.getMemberName() = "path" and
+      node1.isResultValue(expr.getBase()) and
+      node2.isResultValue(expr)
+    )
+  }
 
   predicate isBarrier(DataFlow::Node node) {
     // TODO: add barriers

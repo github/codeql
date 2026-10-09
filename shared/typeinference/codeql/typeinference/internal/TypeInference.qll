@@ -1504,6 +1504,80 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             hasNotTypeArgument(a, target, tp)
           )
         }
+
+        predicate baseTypeMatchAtTypeParameter(
+          Access a, AccessEnvironment e, AccessPosition apos, Declaration target, TypeParameter tp,
+          TypePath prefix, TypePath requiredPrefix
+        ) {
+          exists(
+            TypePath pathToTypeParamInConstraint, TypePath pathToTp, TypePath pathToTypeParamInSub
+          |
+            argRootTypeSatisfiesTargetTypeCand(_, target, pragma[only_bind_into](apos), tp, pathToTp) and
+            SatisfiesParameterConstraint::satisfiesConstraintAtTypeParameter(MkRelevantAccess(a,
+                pragma[only_bind_into](apos), e),
+              MkRelevantTarget(target, pragma[only_bind_into](apos)), pathToTypeParamInConstraint,
+              pathToTypeParamInSub) and
+            hasNotTypeArgument(a, target, tp)
+          |
+            /*
+             * Example:
+             *
+             * ```swift
+             * class Base<B> {
+             *   init(_ value: B) {}
+             * }
+             *
+             * class Derived<D>: Base<[D]> {
+             *   init(_ value: D) { super.init([value]) }
+             * }
+             *
+             * func foo<T>(_ value: T, _ base: Base<T>) { }
+             *
+             * foo([2], Derived(<unknown>))
+             * ```
+             *
+             * - tp = T (bound by `foo`)
+             * - prefix = pathToTypeParamInSub = "D"
+             * - requiredPrefix = "Element"
+             * - pathToTypeParamInConstraint = "B.Element"
+             * - pathToTp = "B"
+             */
+
+            pathToTypeParamInConstraint = pathToTp.appendInverse(requiredPrefix) and
+            prefix = pathToTypeParamInSub
+            or
+            /*
+             * Example:
+             *
+             * ```swift
+             * class Base<B> {
+             *   init(_ value: B) {}
+             * }
+             *
+             * class Derived<D>: Base<D> {
+             *   override init(_ value: D) { super.init(value) }
+             * }
+             *
+             * func foo<T>(_ value: T, _ base: Base<T?>) {}
+             *
+             * foo(2, Derived(Optional.none))
+             * ```
+             *
+             * - tp = T (bound by `foo`)
+             * - prefix = "D.Wrapped"
+             * - pathToTypeParamInSub = "D"
+             * - requiredPrefix = ""
+             * - pathToTypeParamInConstraint = "B"
+             * - pathToTp = "B.Wrapped"
+             */
+
+            exists(TypePath path0 |
+              pathToTp = pathToTypeParamInConstraint.appendInverse(path0) and
+              prefix = pathToTypeParamInSub.append(path0) and
+              requiredPrefix = TypePath::nil()
+            )
+          )
+        }
       }
 
       private module AccessConstraint {
@@ -1743,6 +1817,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             target = a.getTarget(e) and
             not result instanceof TypeParameter
           )
+        )
+        or
+        exists(
+          Declaration target, TypePath prefix, TypePath requiredPrefix, TypePath suffix,
+          TypeParameter tp
+        |
+          AccessBaseType::baseTypeMatchAtTypeParameter(a, e, apos, target, tp, prefix,
+            requiredPrefix) and
+          typeMatch(a, e, target, requiredPrefix.appendInverse(suffix), result, tp) and
+          path = prefix.append(suffix)
         )
         or
         exists(

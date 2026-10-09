@@ -36,8 +36,8 @@ class C8: C7<Int, String> {  // inherits `init(x: String, y: Int)`
     }
 }
 
-struct S1 {  // implicit `init(f1: Int = 0, f2: String, f4: Double, f6: Double, f7: Double = 0)`
-    var f1: Int = 0
+struct S1 {  // implicit `init(f1: Int = 0, f2: String, f4: Double, f6: Double, f7: Double = 0, f8: Int? = nil)`
+    var f1 = 0
     var f2: String
     let f3: Bool = false
     let f4: Double
@@ -58,4 +58,5 @@ struct S1 {  // implicit `init(f1: Int = 0, f2: String, f4: Double, f6: Double, 
             print("Changed from \(oldValue) to \(f7)")
         }
     }
+    var f8: Int?
 }

@@ -185,3 +185,66 @@ func t20() {
     sink(x)  // $ hasValueFlow=t20.1
     sink(y)  // $ hasValueFlow=t20.2
 }
+
+func asyncIdentity(_ s: String) async -> String { return s }
+
+func throwingIdentity(_ s: String) throws -> String { return s }
+
+func asyncThrowingIdentity(_ s: String) async throws -> String { return s }
+
+func t21() async {
+    sink(await asyncIdentity(source("t21.1")))  // $ hasValueFlow=t21.1
+}
+
+func t22() throws {
+    sink(try throwingIdentity(source("t22.1")))  // $ hasValueFlow=t22.1
+    let opt = try? throwingIdentity(source("t22.2"))
+    if let opt {
+        sink(opt)  // $ hasValueFlow=t22.2
+    }
+    sink(try! throwingIdentity(source("t22.3")))  // $ hasValueFlow=t22.3
+}
+
+func t23() async throws {
+    sink(try await asyncThrowingIdentity(source("t23.1")))  // $ hasValueFlow=t23.1
+    let opt = try? await asyncThrowingIdentity(source("t23.2"))
+    if let opt {
+        sink(opt)  // $ hasValueFlow=t23.2
+    }
+    sink(try! await asyncThrowingIdentity(source("t23.3")))  // $ hasValueFlow=t23.3
+}
+
+func t24() {
+    let x = source("t24.1")
+    sink(x as String)  // $ hasValueFlow=t24.1
+    sink(x as! String)  // $ hasValueFlow=t24.1
+    if let y = x as? String {
+        sink(y)  // $ hasValueFlow=t24.1
+    }
+}
+
+func t25() {
+    let x = [source("t25.1"), source("t25.2")]
+    for element in x {
+        sink(element)  // $ hasValueFlow=t25.1 hasValueFlow=t25.2
+    }
+
+}
+
+func t26() {
+    // TODO: This flow requires reverse-read through the "!" operator
+    var opt = Optional.some(("x", "y"))
+    opt!.0 = source("t26.1")
+    sink(opt!.0)  // $ MISSING: hasValueFlow=t26.1
+}
+
+func t27() {
+    func getOptional() throws -> String? {
+        return Optional.some(source("t27.1"))
+    }
+    // TODO: try? should not double-wrap in Optional
+    let x = try? getOptional()
+    if let x {
+        sink(x)  // $ MISSING: hasValueFlow=t27.1
+    }
+}

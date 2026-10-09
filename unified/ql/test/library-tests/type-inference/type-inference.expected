@@ -129,6 +129,15 @@ inferCertainType
 | closures.swift:66:9:68:9 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |
+| constructors.swift:13:9:13:10 | f1 |  | constructors.swift:12:11:12:11 | T |
+| constructors.swift:14:9:14:10 | f2 |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:15:9:15:10 | f3 |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:15:9:15:10 | f3 | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:15:9:15:10 | f3 | Args.T0 | constructors.swift:12:11:12:11 | T |
+| constructors.swift:15:9:15:10 | f3 | Return | constructors.swift:12:11:12:11 | T |
+| constructors.swift:15:24:15:29 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:20:23:20:32 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:20:23:20:32 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | fields.swift:2:7:2:20 | inheritedField |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:6:7:6:17 | storedField |  | {EXTERNAL LOCATION} | String |
 | fields.swift:7:7:7:18 | genericField |  | fields.swift:5:22:5:22 | T |
@@ -209,20 +218,55 @@ inferCertainType
 | generics.swift:155:20:155:21 | v2 |  | generics.swift:154:19:154:20 | T2 |
 | generics.swift:156:16:156:17 | v2 |  | generics.swift:154:19:154:20 | T2 |
 | generics.swift:156:20:156:21 | v1 |  | generics.swift:154:15:154:16 | T1 |
-| generics.swift:161:10:161:10 | v |  | generics.swift:160:22:160:22 | D |
-| generics.swift:162:16:162:16 | v |  | generics.swift:160:22:160:22 | D |
-| generics.swift:186:12:186:15 | self |  | generics.swift:178:1:182:1 | MyProtocol2 |
-| generics.swift:191:7:191:11 | value |  | generics.swift:190:15:190:15 | T |
-| generics.swift:193:10:193:14 | value |  | generics.swift:190:15:190:15 | T |
-| generics.swift:194:5:194:8 | self |  | generics.swift:190:1:196:1 | MyClass |
-| generics.swift:194:5:194:8 | self | T | generics.swift:190:15:190:15 | T |
-| generics.swift:194:18:194:22 | value |  | generics.swift:190:15:190:15 | T |
-| generics.swift:206:32:206:32 | c |  | generics.swift:206:14:206:27 | T |
-| generics.swift:207:10:207:10 | c |  | generics.swift:206:14:206:27 | T |
-| generics.swift:210:32:210:32 | c |  | generics.swift:210:14:210:27 | T |
-| generics.swift:211:10:211:10 | c |  | generics.swift:210:14:210:27 | T |
-| generics.swift:245:65:245:69 | value |  | generics.swift:245:33:245:60 | T |
-| generics.swift:246:10:246:14 | value |  | generics.swift:245:33:245:60 | T |
+| generics.swift:159:22:159:23 | v1 |  | generics.swift:154:15:154:16 | T1 |
+| generics.swift:165:10:165:10 | v |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:165:10:165:10 | v | Element | generics.swift:164:22:164:22 | D |
+| generics.swift:166:16:166:16 | v |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:166:16:166:16 | v | Element | generics.swift:164:22:164:22 | D |
+| generics.swift:174:38:174:43 | value1 |  | generics.swift:174:10:174:11 | T1 |
+| generics.swift:174:52:174:57 | value2 |  | generics.swift:174:14:174:15 | T2 |
+| generics.swift:174:66:174:69 | base |  | generics.swift:174:18:174:33 | T3 |
+| generics.swift:175:10:175:13 | base |  | generics.swift:174:18:174:33 | T3 |
+| generics.swift:178:21:178:26 | value1 |  | generics.swift:178:11:178:12 | T1 |
+| generics.swift:178:35:178:40 | value2 |  | generics.swift:178:15:178:16 | T2 |
+| generics.swift:178:49:178:52 | base |  | generics.swift:136:1:152:1 | Base |
+| generics.swift:178:49:178:52 | base | T1 | generics.swift:178:11:178:12 | T1 |
+| generics.swift:178:49:178:52 | base | T2 | generics.swift:178:15:178:16 | T2 |
+| generics.swift:182:35:182:40 | value1 |  | generics.swift:182:10:182:10 | A |
+| generics.swift:182:48:182:53 | value2 |  | generics.swift:182:13:182:13 | B |
+| generics.swift:182:61:182:64 | base |  | generics.swift:182:16:182:30 | C |
+| generics.swift:183:10:183:13 | base |  | generics.swift:182:16:182:30 | C |
+| generics.swift:187:19:187:24 | value1 |  | generics.swift:187:11:187:11 | A |
+| generics.swift:187:32:187:37 | value2 |  | generics.swift:187:14:187:14 | B |
+| generics.swift:187:45:187:48 | base |  | generics.swift:136:1:152:1 | Base |
+| generics.swift:187:45:187:48 | base | T1 | generics.swift:187:11:187:11 | A |
+| generics.swift:187:45:187:48 | base | T2 | {EXTERNAL LOCATION} | Array |
+| generics.swift:187:45:187:48 | base | T2.Element | generics.swift:187:14:187:14 | B |
+| generics.swift:189:34:189:39 | value1 |  | generics.swift:189:10:189:10 | A |
+| generics.swift:189:47:189:52 | value2 |  | generics.swift:189:13:189:13 | B |
+| generics.swift:189:60:189:63 | base |  | generics.swift:189:16:189:29 | C |
+| generics.swift:190:10:190:13 | base |  | generics.swift:189:16:189:29 | C |
+| generics.swift:194:19:194:24 | value1 |  | generics.swift:194:11:194:11 | A |
+| generics.swift:194:32:194:37 | value2 |  | generics.swift:194:14:194:14 | B |
+| generics.swift:194:45:194:48 | base |  | generics.swift:136:1:152:1 | Base |
+| generics.swift:194:45:194:48 | base | T1 | generics.swift:194:11:194:11 | A |
+| generics.swift:194:45:194:48 | base | T2 | {EXTERNAL LOCATION} | Optional |
+| generics.swift:194:45:194:48 | base | T2.Wrapped | generics.swift:194:14:194:14 | B |
+| generics.swift:201:27:201:35 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:205:22:205:24 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:207:15:207:17 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:228:12:228:15 | self |  | generics.swift:220:1:224:1 | MyProtocol2 |
+| generics.swift:233:7:233:11 | value |  | generics.swift:232:15:232:15 | T |
+| generics.swift:235:10:235:14 | value |  | generics.swift:232:15:232:15 | T |
+| generics.swift:236:5:236:8 | self |  | generics.swift:232:1:238:1 | MyClass |
+| generics.swift:236:5:236:8 | self | T | generics.swift:232:15:232:15 | T |
+| generics.swift:236:18:236:22 | value |  | generics.swift:232:15:232:15 | T |
+| generics.swift:248:32:248:32 | c |  | generics.swift:248:14:248:27 | T |
+| generics.swift:249:10:249:10 | c |  | generics.swift:248:14:248:27 | T |
+| generics.swift:252:32:252:32 | c |  | generics.swift:252:14:252:27 | T |
+| generics.swift:253:10:253:10 | c |  | generics.swift:252:14:252:27 | T |
+| generics.swift:287:65:287:69 | value |  | generics.swift:287:33:287:60 | T |
+| generics.swift:288:10:288:14 | value |  | generics.swift:287:33:287:60 | T |
 | key_paths.swift:4:7:4:7 | x |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:5:7:5:7 | y |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:7:8:7:8 | x |  | {EXTERNAL LOCATION} | Double |
@@ -1049,6 +1093,8 @@ inferType
 | closures.swift:69:5:69:5 | _ |  | {EXTERNAL LOCATION} | String |
 | closures.swift:69:5:69:14 | ... = ... |  | {EXTERNAL LOCATION} | String |
 | closures.swift:69:9:69:14 | result |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:1:1:20:33 | Block |  | constructors.swift:12:1:16:1 | S1 |
+| constructors.swift:1:1:20:33 | Block | T | {EXTERNAL LOCATION} | Int |
 | constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:4:24:6:5 | Block |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |
@@ -1058,6 +1104,36 @@ inferType
 | constructors.swift:9:11:9:14 | C1(...) |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:10:5:10:7 | c12 |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:10:11:10:19 | ... .init(...) |  | constructors.swift:1:1:7:1 | C1 |
+| constructors.swift:13:9:13:10 | f1 |  | constructors.swift:12:11:12:11 | T |
+| constructors.swift:14:9:14:10 | f2 |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:14:22:14:30 | "default" |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:15:9:15:10 | f3 |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:15:9:15:10 | f3 | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:15:9:15:10 | f3 | Args.T0 | constructors.swift:12:11:12:11 | T |
+| constructors.swift:15:9:15:10 | f3 | Return | constructors.swift:12:11:12:11 | T |
+| constructors.swift:15:24:15:29 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:18:5:18:7 | s11 |  | constructors.swift:12:1:16:1 | S1 |
+| constructors.swift:18:5:18:7 | s11 | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:18:11:18:19 | S1(...) |  | constructors.swift:12:1:16:1 | S1 |
+| constructors.swift:18:11:18:19 | S1(...) | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:18:18:18:18 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:19:5:19:7 | s12 |  | constructors.swift:12:1:16:1 | S1 |
+| constructors.swift:19:5:19:7 | s12 | T | {EXTERNAL LOCATION} | Bool |
+| constructors.swift:19:11:19:30 | S1(...) |  | constructors.swift:12:1:16:1 | S1 |
+| constructors.swift:19:11:19:30 | S1(...) | T | {EXTERNAL LOCATION} | Bool |
+| constructors.swift:19:18:19:21 | true |  | {EXTERNAL LOCATION} | Bool |
+| constructors.swift:19:28:19:29 | "" |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:20:1:20:33 | S1(...) |  | constructors.swift:12:1:16:1 | S1 |
+| constructors.swift:20:1:20:33 | S1(...) | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:20:8:20:8 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:20:15:20:16 | "" |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:20:23:20:32 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:20:23:20:32 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:20:23:20:32 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| constructors.swift:20:23:20:32 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| constructors.swift:20:25:20:25 | x |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:20:30:20:30 | Block |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:20:30:20:30 | x |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:2:7:2:20 | inheritedField |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:2:29:2:29 | 0 |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:6:7:6:17 | storedField |  | {EXTERNAL LOCATION} | String |
@@ -1303,86 +1379,186 @@ inferType
 | generics.swift:156:5:156:22 | ... .init(...) | T2 | generics.swift:154:15:154:16 | T1 |
 | generics.swift:156:16:156:17 | v2 |  | generics.swift:154:19:154:20 | T2 |
 | generics.swift:156:20:156:21 | v1 |  | generics.swift:154:15:154:16 | T1 |
-| generics.swift:161:10:161:10 | v |  | generics.swift:160:22:160:22 | D |
-| generics.swift:161:16:163:3 | Block |  | generics.swift:154:1:158:1 | Derived |
-| generics.swift:161:16:163:3 | Block | T1 | generics.swift:160:22:160:22 | D |
-| generics.swift:161:16:163:3 | Block | T2 | {EXTERNAL LOCATION} | Bool |
-| generics.swift:162:5:162:9 | super |  | generics.swift:154:1:158:1 | Derived |
-| generics.swift:162:5:162:9 | super | T1 | generics.swift:160:22:160:22 | D |
-| generics.swift:162:5:162:9 | super | T2 | {EXTERNAL LOCATION} | Bool |
-| generics.swift:162:5:162:23 | ... .init(...) |  | generics.swift:154:1:158:1 | Derived |
-| generics.swift:162:5:162:23 | ... .init(...) | T1 | generics.swift:160:22:160:22 | D |
-| generics.swift:162:5:162:23 | ... .init(...) | T2 | {EXTERNAL LOCATION} | Bool |
-| generics.swift:162:16:162:16 | v |  | generics.swift:160:22:160:22 | D |
-| generics.swift:162:19:162:22 | true |  | {EXTERNAL LOCATION} | Bool |
-| generics.swift:167:7:167:7 | d |  | generics.swift:154:1:158:1 | Derived |
-| generics.swift:167:7:167:7 | d | T1 | {EXTERNAL LOCATION} | Int |
-| generics.swift:167:7:167:7 | d | T2 | {EXTERNAL LOCATION} | String |
-| generics.swift:167:11:167:25 | Derived(...) |  | generics.swift:154:1:158:1 | Derived |
-| generics.swift:167:11:167:25 | Derived(...) | T1 | {EXTERNAL LOCATION} | Int |
-| generics.swift:167:11:167:25 | Derived(...) | T2 | {EXTERNAL LOCATION} | String |
-| generics.swift:167:19:167:19 | 1 |  | {EXTERNAL LOCATION} | Int |
-| generics.swift:167:22:167:24 | "x" |  | {EXTERNAL LOCATION} | String |
-| generics.swift:168:7:168:8 | v1 |  | {EXTERNAL LOCATION} | String |
-| generics.swift:168:12:168:12 | d |  | generics.swift:154:1:158:1 | Derived |
-| generics.swift:168:12:168:12 | d | T1 | {EXTERNAL LOCATION} | Int |
-| generics.swift:168:12:168:12 | d | T2 | {EXTERNAL LOCATION} | String |
-| generics.swift:168:12:168:24 | ... .getValue1(...) |  | {EXTERNAL LOCATION} | String |
-| generics.swift:169:7:169:8 | v2 |  | {EXTERNAL LOCATION} | Int |
-| generics.swift:169:12:169:12 | d |  | generics.swift:154:1:158:1 | Derived |
-| generics.swift:169:12:169:12 | d | T1 | {EXTERNAL LOCATION} | Int |
-| generics.swift:169:12:169:12 | d | T2 | {EXTERNAL LOCATION} | String |
-| generics.swift:169:12:169:24 | ... .getValue2(...) |  | {EXTERNAL LOCATION} | Int |
-| generics.swift:171:7:171:8 | dd |  | generics.swift:160:1:164:1 | DerivedDerived |
-| generics.swift:171:7:171:8 | dd | D | {EXTERNAL LOCATION} | String |
-| generics.swift:171:12:171:34 | DerivedDerived(...) |  | generics.swift:160:1:164:1 | DerivedDerived |
-| generics.swift:171:12:171:34 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | String |
-| generics.swift:171:27:171:33 | "hello" |  | {EXTERNAL LOCATION} | String |
-| generics.swift:172:7:172:9 | vv1 |  | {EXTERNAL LOCATION} | Bool |
-| generics.swift:172:13:172:14 | dd |  | generics.swift:160:1:164:1 | DerivedDerived |
-| generics.swift:172:13:172:14 | dd | D | {EXTERNAL LOCATION} | String |
-| generics.swift:172:13:172:26 | ... .getValue1(...) |  | {EXTERNAL LOCATION} | Bool |
-| generics.swift:173:7:173:9 | vv2 |  | {EXTERNAL LOCATION} | String |
-| generics.swift:173:13:173:14 | dd |  | generics.swift:160:1:164:1 | DerivedDerived |
-| generics.swift:173:13:173:14 | dd | D | {EXTERNAL LOCATION} | String |
-| generics.swift:173:13:173:26 | ... .getValue2(...) |  | {EXTERNAL LOCATION} | String |
-| generics.swift:185:22:187:3 | Block |  | generics.swift:178:1:182:1 | MyProtocol2 |
-| generics.swift:186:12:186:15 | self |  | generics.swift:178:1:182:1 | MyProtocol2 |
-| generics.swift:191:7:191:11 | value |  | generics.swift:190:15:190:15 | T |
-| generics.swift:193:10:193:14 | value |  | generics.swift:190:15:190:15 | T |
-| generics.swift:193:20:195:3 | Block |  | generics.swift:190:15:190:15 | T |
-| generics.swift:194:5:194:8 | self |  | generics.swift:190:1:196:1 | MyClass |
-| generics.swift:194:5:194:8 | self | T | generics.swift:190:15:190:15 | T |
-| generics.swift:194:5:194:14 | ... .value |  | generics.swift:190:15:190:15 | T |
-| generics.swift:194:5:194:22 | ... = ... |  | generics.swift:190:15:190:15 | T |
-| generics.swift:194:18:194:22 | value |  | generics.swift:190:15:190:15 | T |
-| generics.swift:206:32:206:32 | c |  | generics.swift:206:14:206:27 | T |
-| generics.swift:207:10:207:10 | c |  | generics.swift:206:14:206:27 | T |
-| generics.swift:210:32:210:32 | c |  | generics.swift:210:14:210:27 | T |
-| generics.swift:211:10:211:10 | c |  | generics.swift:210:14:210:27 | T |
-| generics.swift:215:7:215:7 | c |  | generics.swift:190:1:196:1 | MyClass |
-| generics.swift:215:7:215:7 | c | T | {EXTERNAL LOCATION} | Int |
-| generics.swift:215:11:215:21 | MyClass(...) |  | generics.swift:190:1:196:1 | MyClass |
-| generics.swift:215:11:215:21 | MyClass(...) | T | {EXTERNAL LOCATION} | Int |
-| generics.swift:215:19:215:20 | 42 |  | {EXTERNAL LOCATION} | Int |
-| generics.swift:216:11:216:11 | c |  | generics.swift:190:1:196:1 | MyClass |
-| generics.swift:216:11:216:11 | c | T | {EXTERNAL LOCATION} | Int |
-| generics.swift:217:11:217:11 | c |  | generics.swift:190:1:196:1 | MyClass |
-| generics.swift:217:11:217:11 | c | T | {EXTERNAL LOCATION} | Int |
-| generics.swift:218:20:218:20 | c |  | generics.swift:190:1:196:1 | MyClass |
-| generics.swift:218:20:218:20 | c | T | {EXTERNAL LOCATION} | Int |
-| generics.swift:236:30:238:3 | Block |  | {EXTERNAL LOCATION} | String |
-| generics.swift:237:12:237:17 | "base" |  | {EXTERNAL LOCATION} | String |
-| generics.swift:240:29:242:3 | Block |  | {EXTERNAL LOCATION} | String |
-| generics.swift:241:12:241:16 | "sub" |  | {EXTERNAL LOCATION} | String |
-| generics.swift:245:65:245:69 | value |  | generics.swift:245:33:245:60 | T |
-| generics.swift:246:10:246:14 | value |  | generics.swift:245:33:245:60 | T |
-| generics.swift:250:42:250:63 | StringAssociatedType(...) |  | generics.swift:233:1:243:1 | StringAssociatedType |
-| generics.swift:264:25:266:3 | Block |  | {EXTERNAL LOCATION} | Int |
-| generics.swift:265:12:265:13 | 42 |  | {EXTERNAL LOCATION} | Int |
-| generics.swift:274:7:274:11 | value |  | {EXTERNAL LOCATION} | Int |
-| generics.swift:274:15:274:66 | getPrimaryAssociatedType(...) |  | {EXTERNAL LOCATION} | Int |
-| generics.swift:274:40:274:65 | IntPrimaryAssociatedType(...) |  | generics.swift:261:1:267:1 | IntPrimaryAssociatedType |
+| generics.swift:159:22:159:23 | v1 |  | generics.swift:154:15:154:16 | T1 |
+| generics.swift:165:10:165:10 | v |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:165:10:165:10 | v | Element | generics.swift:164:22:164:22 | D |
+| generics.swift:165:18:167:3 | Block |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:165:18:167:3 | Block | T1 | {EXTERNAL LOCATION} | Array |
+| generics.swift:165:18:167:3 | Block | T1.Element | generics.swift:164:22:164:22 | D |
+| generics.swift:165:18:167:3 | Block | T2 | {EXTERNAL LOCATION} | Bool |
+| generics.swift:166:5:166:9 | super |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:166:5:166:9 | super | T1 | {EXTERNAL LOCATION} | Array |
+| generics.swift:166:5:166:9 | super | T1.Element | generics.swift:164:22:164:22 | D |
+| generics.swift:166:5:166:9 | super | T2 | {EXTERNAL LOCATION} | Bool |
+| generics.swift:166:5:166:23 | ... .init(...) |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:166:5:166:23 | ... .init(...) | T1 | {EXTERNAL LOCATION} | Array |
+| generics.swift:166:5:166:23 | ... .init(...) | T1.Element | generics.swift:164:22:164:22 | D |
+| generics.swift:166:5:166:23 | ... .init(...) | T2 | {EXTERNAL LOCATION} | Bool |
+| generics.swift:166:16:166:16 | v |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:166:16:166:16 | v | Element | generics.swift:164:22:164:22 | D |
+| generics.swift:166:19:166:22 | true |  | {EXTERNAL LOCATION} | Bool |
+| generics.swift:174:38:174:43 | value1 |  | generics.swift:174:10:174:11 | T1 |
+| generics.swift:174:52:174:57 | value2 |  | generics.swift:174:14:174:15 | T2 |
+| generics.swift:174:66:174:69 | base |  | generics.swift:174:18:174:33 | T3 |
+| generics.swift:174:82:176:1 | Block |  | generics.swift:174:18:174:33 | T3 |
+| generics.swift:175:10:175:13 | base |  | generics.swift:174:18:174:33 | T3 |
+| generics.swift:178:21:178:26 | value1 |  | generics.swift:178:11:178:12 | T1 |
+| generics.swift:178:35:178:40 | value2 |  | generics.swift:178:15:178:16 | T2 |
+| generics.swift:178:49:178:52 | base |  | generics.swift:136:1:152:1 | Base |
+| generics.swift:178:49:178:52 | base | T1 | generics.swift:178:11:178:12 | T1 |
+| generics.swift:178:49:178:52 | base | T2 | generics.swift:178:15:178:16 | T2 |
+| generics.swift:182:35:182:40 | value1 |  | generics.swift:182:10:182:10 | A |
+| generics.swift:182:48:182:53 | value2 |  | generics.swift:182:13:182:13 | B |
+| generics.swift:182:61:182:64 | base |  | generics.swift:182:16:182:30 | C |
+| generics.swift:182:75:185:1 | Block |  | generics.swift:182:16:182:30 | C |
+| generics.swift:183:10:183:13 | base |  | generics.swift:182:16:182:30 | C |
+| generics.swift:187:19:187:24 | value1 |  | generics.swift:187:11:187:11 | A |
+| generics.swift:187:32:187:37 | value2 |  | generics.swift:187:14:187:14 | B |
+| generics.swift:187:45:187:48 | base |  | generics.swift:136:1:152:1 | Base |
+| generics.swift:187:45:187:48 | base | T1 | generics.swift:187:11:187:11 | A |
+| generics.swift:187:45:187:48 | base | T2 | {EXTERNAL LOCATION} | Array |
+| generics.swift:187:45:187:48 | base | T2.Element | generics.swift:187:14:187:14 | B |
+| generics.swift:189:34:189:39 | value1 |  | generics.swift:189:10:189:10 | A |
+| generics.swift:189:47:189:52 | value2 |  | generics.swift:189:13:189:13 | B |
+| generics.swift:189:60:189:63 | base |  | generics.swift:189:16:189:29 | C |
+| generics.swift:189:74:192:1 | Block |  | generics.swift:189:16:189:29 | C |
+| generics.swift:190:10:190:13 | base |  | generics.swift:189:16:189:29 | C |
+| generics.swift:194:19:194:24 | value1 |  | generics.swift:194:11:194:11 | A |
+| generics.swift:194:32:194:37 | value2 |  | generics.swift:194:14:194:14 | B |
+| generics.swift:194:45:194:48 | base |  | generics.swift:136:1:152:1 | Base |
+| generics.swift:194:45:194:48 | base | T1 | generics.swift:194:11:194:11 | A |
+| generics.swift:194:45:194:48 | base | T2 | {EXTERNAL LOCATION} | Optional |
+| generics.swift:194:45:194:48 | base | T2.Wrapped | generics.swift:194:14:194:14 | B |
+| generics.swift:197:7:197:7 | d |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:197:7:197:7 | d | T1 | {EXTERNAL LOCATION} | Int |
+| generics.swift:197:7:197:7 | d | T2 | {EXTERNAL LOCATION} | String |
+| generics.swift:197:11:197:25 | Derived(...) |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:197:11:197:25 | Derived(...) | T1 | {EXTERNAL LOCATION} | Int |
+| generics.swift:197:11:197:25 | Derived(...) | T2 | {EXTERNAL LOCATION} | String |
+| generics.swift:197:19:197:19 | 1 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:197:22:197:24 | "x" |  | {EXTERNAL LOCATION} | String |
+| generics.swift:198:7:198:8 | v1 |  | {EXTERNAL LOCATION} | String |
+| generics.swift:198:12:198:12 | d |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:198:12:198:12 | d | T1 | {EXTERNAL LOCATION} | Int |
+| generics.swift:198:12:198:12 | d | T2 | {EXTERNAL LOCATION} | String |
+| generics.swift:198:12:198:24 | ... .getValue1(...) |  | {EXTERNAL LOCATION} | String |
+| generics.swift:199:7:199:8 | v2 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:199:12:199:12 | d |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:199:12:199:12 | d | T1 | {EXTERNAL LOCATION} | Int |
+| generics.swift:199:12:199:12 | d | T2 | {EXTERNAL LOCATION} | String |
+| generics.swift:199:12:199:24 | ... .getValue2(...) |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:201:7:201:8 | dd |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:201:7:201:8 | dd | D | {EXTERNAL LOCATION} | String |
+| generics.swift:201:12:201:36 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:201:12:201:36 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | String |
+| generics.swift:201:27:201:35 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:201:27:201:35 | ArrayLiteral | Element | {EXTERNAL LOCATION} | String |
+| generics.swift:201:28:201:34 | "hello" |  | {EXTERNAL LOCATION} | String |
+| generics.swift:202:7:202:9 | vv1 |  | {EXTERNAL LOCATION} | Bool |
+| generics.swift:202:13:202:14 | dd |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:202:13:202:14 | dd | D | {EXTERNAL LOCATION} | String |
+| generics.swift:202:13:202:26 | ... .getValue1(...) |  | {EXTERNAL LOCATION} | Bool |
+| generics.swift:203:7:203:9 | vv2 |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:203:7:203:9 | vv2 | Element | {EXTERNAL LOCATION} | String |
+| generics.swift:203:13:203:14 | dd |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:203:13:203:14 | dd | D | {EXTERNAL LOCATION} | String |
+| generics.swift:203:13:203:26 | ... .getValue2(...) |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:203:13:203:26 | ... .getValue2(...) | Element | {EXTERNAL LOCATION} | String |
+| generics.swift:205:7:205:7 | x |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:205:7:205:7 | x | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:205:11:205:45 | foo(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:205:11:205:45 | foo(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:205:15:205:19 | false |  | {EXTERNAL LOCATION} | Bool |
+| generics.swift:205:22:205:24 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:205:22:205:24 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| generics.swift:205:23:205:23 | 2 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:205:27:205:44 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:205:27:205:44 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:205:42:205:43 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:205:42:205:43 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| generics.swift:207:8:207:12 | false |  | {EXTERNAL LOCATION} | Bool |
+| generics.swift:207:15:207:17 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:207:15:207:17 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| generics.swift:207:16:207:16 | 2 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:207:20:207:37 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:207:20:207:37 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:207:35:207:36 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:207:35:207:36 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| generics.swift:209:7:209:7 | y |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:209:7:209:7 | y | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:209:11:209:43 | bar(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:209:11:209:43 | bar(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:209:15:209:19 | false |  | {EXTERNAL LOCATION} | Bool |
+| generics.swift:209:22:209:22 | 2 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:209:25:209:42 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:209:25:209:42 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:209:40:209:41 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:209:40:209:41 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| generics.swift:211:8:211:12 | false |  | {EXTERNAL LOCATION} | Bool |
+| generics.swift:211:15:211:15 | 2 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:211:18:211:35 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:211:18:211:35 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:211:33:211:34 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:211:33:211:34 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| generics.swift:213:7:213:7 | w |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:213:7:213:7 | w | T1 | {EXTERNAL LOCATION} | Optional |
+| generics.swift:213:7:213:7 | w | T1.Wrapped | {EXTERNAL LOCATION} | Int |
+| generics.swift:213:7:213:7 | w | T2 | {EXTERNAL LOCATION} | Bool |
+| generics.swift:213:11:213:47 | baz(...) |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:213:11:213:47 | baz(...) | T1 | {EXTERNAL LOCATION} | Optional |
+| generics.swift:213:11:213:47 | baz(...) | T1.Wrapped | {EXTERNAL LOCATION} | Int |
+| generics.swift:213:11:213:47 | baz(...) | T2 | {EXTERNAL LOCATION} | Bool |
+| generics.swift:213:15:213:19 | false |  | {EXTERNAL LOCATION} | Bool |
+| generics.swift:213:22:213:22 | 2 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:213:25:213:46 | Derived(...) |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:213:25:213:46 | Derived(...) | T1 | {EXTERNAL LOCATION} | Optional |
+| generics.swift:213:25:213:46 | Derived(...) | T1.Wrapped | {EXTERNAL LOCATION} | Int |
+| generics.swift:213:33:213:45 | ... .none |  | {EXTERNAL LOCATION} | Optional |
+| generics.swift:213:33:213:45 | ... .none | Wrapped | {EXTERNAL LOCATION} | Int |
+| generics.swift:215:8:215:12 | false |  | {EXTERNAL LOCATION} | Bool |
+| generics.swift:215:15:215:15 | 2 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:215:18:215:39 | Derived(...) |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:215:18:215:39 | Derived(...) | T1 | {EXTERNAL LOCATION} | Optional |
+| generics.swift:215:18:215:39 | Derived(...) | T1.Wrapped | {EXTERNAL LOCATION} | Int |
+| generics.swift:215:26:215:38 | ... .none |  | {EXTERNAL LOCATION} | Optional |
+| generics.swift:215:26:215:38 | ... .none | Wrapped | {EXTERNAL LOCATION} | Int |
+| generics.swift:227:22:229:3 | Block |  | generics.swift:220:1:224:1 | MyProtocol2 |
+| generics.swift:228:12:228:15 | self |  | generics.swift:220:1:224:1 | MyProtocol2 |
+| generics.swift:233:7:233:11 | value |  | generics.swift:232:15:232:15 | T |
+| generics.swift:235:10:235:14 | value |  | generics.swift:232:15:232:15 | T |
+| generics.swift:235:20:237:3 | Block |  | generics.swift:232:15:232:15 | T |
+| generics.swift:236:5:236:8 | self |  | generics.swift:232:1:238:1 | MyClass |
+| generics.swift:236:5:236:8 | self | T | generics.swift:232:15:232:15 | T |
+| generics.swift:236:5:236:14 | ... .value |  | generics.swift:232:15:232:15 | T |
+| generics.swift:236:5:236:22 | ... = ... |  | generics.swift:232:15:232:15 | T |
+| generics.swift:236:18:236:22 | value |  | generics.swift:232:15:232:15 | T |
+| generics.swift:248:32:248:32 | c |  | generics.swift:248:14:248:27 | T |
+| generics.swift:249:10:249:10 | c |  | generics.swift:248:14:248:27 | T |
+| generics.swift:252:32:252:32 | c |  | generics.swift:252:14:252:27 | T |
+| generics.swift:253:10:253:10 | c |  | generics.swift:252:14:252:27 | T |
+| generics.swift:257:7:257:7 | c |  | generics.swift:232:1:238:1 | MyClass |
+| generics.swift:257:7:257:7 | c | T | {EXTERNAL LOCATION} | Int |
+| generics.swift:257:11:257:21 | MyClass(...) |  | generics.swift:232:1:238:1 | MyClass |
+| generics.swift:257:11:257:21 | MyClass(...) | T | {EXTERNAL LOCATION} | Int |
+| generics.swift:257:19:257:20 | 42 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:258:11:258:11 | c |  | generics.swift:232:1:238:1 | MyClass |
+| generics.swift:258:11:258:11 | c | T | {EXTERNAL LOCATION} | Int |
+| generics.swift:259:11:259:11 | c |  | generics.swift:232:1:238:1 | MyClass |
+| generics.swift:259:11:259:11 | c | T | {EXTERNAL LOCATION} | Int |
+| generics.swift:260:20:260:20 | c |  | generics.swift:232:1:238:1 | MyClass |
+| generics.swift:260:20:260:20 | c | T | {EXTERNAL LOCATION} | Int |
+| generics.swift:278:30:280:3 | Block |  | {EXTERNAL LOCATION} | String |
+| generics.swift:279:12:279:17 | "base" |  | {EXTERNAL LOCATION} | String |
+| generics.swift:282:29:284:3 | Block |  | {EXTERNAL LOCATION} | String |
+| generics.swift:283:12:283:16 | "sub" |  | {EXTERNAL LOCATION} | String |
+| generics.swift:287:65:287:69 | value |  | generics.swift:287:33:287:60 | T |
+| generics.swift:288:10:288:14 | value |  | generics.swift:287:33:287:60 | T |
+| generics.swift:292:42:292:63 | StringAssociatedType(...) |  | generics.swift:275:1:285:1 | StringAssociatedType |
+| generics.swift:306:25:308:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:307:12:307:13 | 42 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:316:7:316:11 | value |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:316:15:316:66 | getPrimaryAssociatedType(...) |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:316:40:316:65 | IntPrimaryAssociatedType(...) |  | generics.swift:303:1:309:1 | IntPrimaryAssociatedType |
 | key_paths.swift:4:7:4:7 | x |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:5:7:5:7 | y |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:7:8:7:8 | x |  | {EXTERNAL LOCATION} | Double |
