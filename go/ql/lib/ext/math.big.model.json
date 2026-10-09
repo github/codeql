@@ -6,6 +6,7 @@
         "extensible": "summaryModel"
       },
       "data": [
+        ["math/big", "Int", true, "Float64", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
         ["math/big", "Int", true, "Int64", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
       ]
     }
