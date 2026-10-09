@@ -8,11 +8,11 @@ class MissedSelectOpportunity
     public void M1(List<int> lst)
     {
         // BAD: Can be replaced with lst.Select(i => i * i)
-        foreach (int i in lst)
+        foreach (int i in lst) // $ Alert
         {
             int j = i * i;
             Console.WriteLine(j);
-        } // $ Alert
+        }
     }
 
     public async Task M2(IEnumerable<ICounter> counters)

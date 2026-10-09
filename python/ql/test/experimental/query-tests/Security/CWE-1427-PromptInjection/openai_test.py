@@ -20,7 +20,7 @@ async def get_input_openai():
 
     response2 = client.responses.create(
         instructions="Talks like a " + persona,  # $ Alert[py/prompt-injection]
-        input=[
+        input=[ # $ Alert[py/prompt-injection]
             {
                 "role": "developer",
                 "content": "Talk like a " + persona  # $ Alert[py/prompt-injection]
@@ -34,7 +34,7 @@ async def get_input_openai():
                     }
                 ]
             }
-        ]  # $ Alert[py/prompt-injection]
+        ]
     )
 
     response3 = await async_client.responses.create(

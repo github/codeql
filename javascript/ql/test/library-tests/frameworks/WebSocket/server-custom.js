@@ -4,9 +4,9 @@ const { MyWebSocketServer, myWebSocketServerInstance } = require('./server.js');
 	const wss = new MyWebSocketServer({ port: 8080 });
 
 	wss.on('connection', function connection(ws) { // $ serverSocket
-		ws.on('message', function incoming(message) { // $ remoteFlow
+		ws.on('message', function incoming(message) { // $ remoteFlow serverReceive
 			console.log('received: %s', message);
-		}); // $ serverReceive
+		});
 
 		ws.send('Hi from server!'); // $ serverSend
 	});
@@ -14,9 +14,9 @@ const { MyWebSocketServer, myWebSocketServerInstance } = require('./server.js');
 
 (function () {
 	myWebSocketServerInstance.on('connection', function connection(ws) { // $ serverSocket
-		ws.on('message', function incoming(message) { // $ remoteFlow
+		ws.on('message', function incoming(message) { // $ remoteFlow serverReceive
 			console.log('received: %s', message);
-		}); // $ serverReceive
+		});
 
 		ws.send('Hi from server!'); // $ serverSend
 	});

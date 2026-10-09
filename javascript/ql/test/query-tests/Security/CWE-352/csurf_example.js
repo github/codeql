@@ -28,7 +28,7 @@ app.post('/process', parseForm, csrfProtection, function (req, res) {
   res.send('data is being processed')
 })
 
-app.post('/process_unsafe', parseForm, function (req, res) {
+app.post('/process_unsafe', parseForm, function (req, res) { // $ RelatedLocation
   let newEmail = req.cookies["newEmail"];
   res.send('data is being processed')
-}) // $ RelatedLocation
+})

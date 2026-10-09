@@ -2,17 +2,17 @@ void Signed()
 {
     signed char i;
 
-    for (i = 0; i < 100; i--)   //BUG
+    for (i = 0; i < 100; i--) // $ Alert // BUG
     {
-    } // $ Alert
+    }
 
     for (i = 0; i < 100; i++)
     {
     }
 
-    for (i = 100; i >= 0; i++)   //BUG
+    for (i = 100; i >= 0; i++) // $ Alert // BUG
     {
-    } // $ Alert
+    }
 
     for (i = 100; i >= 0; i--)
     {
@@ -24,17 +24,17 @@ void Unsigned()
 {
     unsigned long i;
 
-    for (i = 0; i < 100; i--)   //BUG
+    for (i = 0; i < 100; i--) // $ Alert // BUG
     {
-    } // $ Alert
+    }
 
     for (i = 0; i < 100; i++)
     {
     }
 
-    for (i = 100; i >= 0; i++)   //BUG
+    for (i = 100; i >= 0; i++) // $ Alert // BUG
     {
-    } // $ Alert
+    }
 
     for (i = 100; i >= 0; i--)
     {
@@ -45,9 +45,9 @@ void InitializationOutsideLoop()
 {
     signed char i = 0;
 
-    for (; i < 100; i--)   //BUG
+    for (; i < 100; i--) // $ Alert // BUG
     {
-    } // $ Alert
+    }
 
     i = 0;
     for (; i < 100; i++)
@@ -55,9 +55,9 @@ void InitializationOutsideLoop()
     }
 
     i = 100;
-    for (; i >= 0; i++)   //BUG
+    for (; i >= 0; i++) // $ Alert // BUG
     {
-    } // $ Alert
+    }
 
     i = 100;
     for (; i >= 0; i--)

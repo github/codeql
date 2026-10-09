@@ -20,7 +20,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 func unzip2(f string, root string) {
 	r, _ := zip.OpenReader(f)
-	for _, f := range r.File {
+	for _, f := range r.File { // $ Alert[go/zipslip]
 		path := f.Name
 		relpath, err := filepath.Rel(root, path)
 		if err == nil {
@@ -40,7 +40,7 @@ func unzip2(f string, root string) {
 		if containedIn(f.Name, root) {
 			ioutil.WriteFile(f.Name, []byte("present"), 0666) // OK
 		}
-	} // $ Alert[go/zipslip]
+	}
 }
 
 func containedIn(f string, root string) bool {
