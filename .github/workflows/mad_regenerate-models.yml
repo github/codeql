@@ -30,11 +30,11 @@ jobs:
             ref: "placeholder"
     steps:
       - name: Clone self (github/codeql)
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: Setup CodeQL binaries
         uses: ./.github/actions/fetch-codeql
       - name: Clone repositories
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           path: repos/${{ matrix.ref }}
           ref: ${{ matrix.ref }}
