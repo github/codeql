@@ -84,20 +84,12 @@ private class Enum extends ClassLikeDeclaration {
   Enum() { this.getAModifier().getValue() = "enum" }
 }
 
-private class EnumConstructor extends ConstructorDeclaration {
+private class EnumConstructor extends EnumCaseConstructor {
   private Enum e;
-  private Identifier id;
 
-  EnumConstructor() {
-    exists(ClassLikeDeclaration c |
-      c = e.getAMember() and
-      c.getAModifier().getValue() = "enum_case" and
-      this = c.getAMember() and
-      id = c.getNameNode()
-    )
-  }
+  EnumConstructor() { this = e.getAMember().(EnumCaseClass).getConstructor() }
 
-  Identifier getNameNode() { result = id }
+  Identifier getNameNode() { result = this.getEnumCaseClass().getNameNode() }
 
   Enum getEnum() { result = e }
 }

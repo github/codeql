@@ -153,7 +153,10 @@ module DataFlowInput implements InputSig<Location> {
   // Misc
   //
   additional predicate nodeIsVisible(Node node) {
-    node instanceof TValueNode
+    exists(Expr e |
+      node = TValueNode(e) and
+      not e instanceof ExprPattern
+    )
     or
     node instanceof TStrictlyIncomingValue
     or

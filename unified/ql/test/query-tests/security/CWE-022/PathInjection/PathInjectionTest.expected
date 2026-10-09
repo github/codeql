@@ -61,6 +61,8 @@
 | testPathInjection.swift:421:26:421:34 | remoteUrl | testPathInjection.swift:340:24:340:78 | String(...) | testPathInjection.swift:421:26:421:34 | remoteUrl | This path depends on a $@. | testPathInjection.swift:340:24:340:78 | String(...) | user-provided value |
 | testPathInjection.swift:422:30:422:41 | remoteString | testPathInjection.swift:340:24:340:78 | String(...) | testPathInjection.swift:422:30:422:41 | remoteString | This path depends on a $@. | testPathInjection.swift:340:24:340:78 | String(...) | user-provided value |
 | testPathInjection.swift:424:59:424:70 | remoteString | testPathInjection.swift:340:24:340:78 | String(...) | testPathInjection.swift:424:59:424:70 | remoteString | This path depends on a $@. | testPathInjection.swift:340:24:340:78 | String(...) | user-provided value |
+| testPathInjection.swift:425:46:425:76 | TypeCastExpr | testPathInjection.swift:340:24:340:78 | String(...) | testPathInjection.swift:425:46:425:76 | TypeCastExpr | This path depends on a $@. | testPathInjection.swift:340:24:340:78 | String(...) | user-provided value |
+| testPathInjection.swift:426:42:426:72 | TypeCastExpr | testPathInjection.swift:340:24:340:78 | String(...) | testPathInjection.swift:426:42:426:72 | TypeCastExpr | This path depends on a $@. | testPathInjection.swift:340:24:340:78 | String(...) | user-provided value |
 | testPathInjection.swift:436:25:436:33 | remoteUrl | testPathInjection.swift:340:24:340:78 | String(...) | testPathInjection.swift:436:25:436:33 | remoteUrl | This path depends on a $@. | testPathInjection.swift:340:24:340:78 | String(...) | user-provided value |
 | testPathInjection.swift:437:26:437:37 | remoteString | testPathInjection.swift:340:24:340:78 | String(...) | testPathInjection.swift:437:26:437:37 | remoteString | This path depends on a $@. | testPathInjection.swift:340:24:340:78 | String(...) | user-provided value |
 | testPathInjection.swift:441:28:441:39 | remoteString | testPathInjection.swift:340:24:340:78 | String(...) | testPathInjection.swift:441:28:441:39 | remoteString | This path depends on a $@. | testPathInjection.swift:340:24:340:78 | String(...) | user-provided value |
@@ -71,19 +73,20 @@
 | testPathInjection.swift:482:22:482:33 | remoteString | testPathInjection.swift:340:24:340:78 | String(...) | testPathInjection.swift:482:22:482:33 | remoteString | This path depends on a $@. | testPathInjection.swift:340:24:340:78 | String(...) | user-provided value |
 | testPathInjection.swift:486:25:486:36 | remoteString | testPathInjection.swift:340:24:340:78 | String(...) | testPathInjection.swift:486:25:486:36 | remoteString | This path depends on a $@. | testPathInjection.swift:340:24:340:78 | String(...) | user-provided value |
 | testPathInjection.swift:498:49:498:60 | remoteString | testPathInjection.swift:340:24:340:78 | String(...) | testPathInjection.swift:498:49:498:60 | remoteString | This path depends on a $@. | testPathInjection.swift:340:24:340:78 | String(...) | user-provided value |
-| testPathInjection.swift:510:37:510:48 | remoteString | testPathInjection.swift:504:24:504:78 | String(...) | testPathInjection.swift:510:37:510:48 | remoteString | This path depends on a $@. | testPathInjection.swift:504:24:504:78 | String(...) | user-provided value |
-| testPathInjection.swift:512:33:512:44 | remoteString | testPathInjection.swift:504:24:504:78 | String(...) | testPathInjection.swift:512:33:512:44 | remoteString | This path depends on a $@. | testPathInjection.swift:504:24:504:78 | String(...) | user-provided value |
-| testPathInjection.swift:529:28:529:39 | remoteString | testPathInjection.swift:519:24:519:78 | String(...) | testPathInjection.swift:529:28:529:39 | remoteString | This path depends on a $@. | testPathInjection.swift:519:24:519:78 | String(...) | user-provided value |
-| testPathInjection.swift:541:32:541:43 | remoteString | testPathInjection.swift:519:24:519:78 | String(...) | testPathInjection.swift:541:32:541:43 | remoteString | This path depends on a $@. | testPathInjection.swift:519:24:519:78 | String(...) | user-provided value |
-| testPathInjection.swift:542:38:542:49 | remoteString | testPathInjection.swift:519:24:519:78 | String(...) | testPathInjection.swift:542:38:542:49 | remoteString | This path depends on a $@. | testPathInjection.swift:519:24:519:78 | String(...) | user-provided value |
-| testPathInjection.swift:543:45:543:56 | remoteString | testPathInjection.swift:519:24:519:78 | String(...) | testPathInjection.swift:543:45:543:56 | remoteString | This path depends on a $@. | testPathInjection.swift:519:24:519:78 | String(...) | user-provided value |
-| testPathInjection.swift:547:32:547:41 | ... .pointee | testPathInjection.swift:519:24:519:78 | String(...) | testPathInjection.swift:547:32:547:41 | ... .pointee | This path depends on a $@. | testPathInjection.swift:519:24:519:78 | String(...) | user-provided value |
-| testPathInjection.swift:559:35:559:46 | remoteString | testPathInjection.swift:519:24:519:78 | String(...) | testPathInjection.swift:559:35:559:46 | remoteString | This path depends on a $@. | testPathInjection.swift:519:24:519:78 | String(...) | user-provided value |
-| testPathInjection.swift:560:41:560:52 | remoteString | testPathInjection.swift:519:24:519:78 | String(...) | testPathInjection.swift:560:41:560:52 | remoteString | This path depends on a $@. | testPathInjection.swift:519:24:519:78 | String(...) | user-provided value |
-| testPathInjection.swift:582:25:582:36 | remoteString | testPathInjection.swift:580:24:580:78 | String(...) | testPathInjection.swift:582:25:582:36 | remoteString | This path depends on a $@. | testPathInjection.swift:580:24:580:78 | String(...) | user-provided value |
-| testPathInjection.swift:584:41:584:52 | remoteString | testPathInjection.swift:580:24:580:78 | String(...) | testPathInjection.swift:584:41:584:52 | remoteString | This path depends on a $@. | testPathInjection.swift:580:24:580:78 | String(...) | user-provided value |
-| testPathInjection.swift:586:38:586:49 | remoteString | testPathInjection.swift:580:24:580:78 | String(...) | testPathInjection.swift:586:38:586:49 | remoteString | This path depends on a $@. | testPathInjection.swift:580:24:580:78 | String(...) | user-provided value |
-| testPathInjection.swift:588:22:588:33 | remoteString | testPathInjection.swift:580:24:580:78 | String(...) | testPathInjection.swift:588:22:588:33 | remoteString | This path depends on a $@. | testPathInjection.swift:580:24:580:78 | String(...) | user-provided value |
+| testPathInjection.swift:502:26:502:36 | remoteData2 | testPathInjection.swift:501:23:501:75 | Data(...) | testPathInjection.swift:502:26:502:36 | remoteData2 | This path depends on a $@. | testPathInjection.swift:501:23:501:75 | Data(...) | user-provided value |
+| testPathInjection.swift:512:37:512:48 | remoteString | testPathInjection.swift:506:24:506:78 | String(...) | testPathInjection.swift:512:37:512:48 | remoteString | This path depends on a $@. | testPathInjection.swift:506:24:506:78 | String(...) | user-provided value |
+| testPathInjection.swift:514:33:514:44 | remoteString | testPathInjection.swift:506:24:506:78 | String(...) | testPathInjection.swift:514:33:514:44 | remoteString | This path depends on a $@. | testPathInjection.swift:506:24:506:78 | String(...) | user-provided value |
+| testPathInjection.swift:531:28:531:39 | remoteString | testPathInjection.swift:521:24:521:78 | String(...) | testPathInjection.swift:531:28:531:39 | remoteString | This path depends on a $@. | testPathInjection.swift:521:24:521:78 | String(...) | user-provided value |
+| testPathInjection.swift:543:32:543:43 | remoteString | testPathInjection.swift:521:24:521:78 | String(...) | testPathInjection.swift:543:32:543:43 | remoteString | This path depends on a $@. | testPathInjection.swift:521:24:521:78 | String(...) | user-provided value |
+| testPathInjection.swift:544:38:544:49 | remoteString | testPathInjection.swift:521:24:521:78 | String(...) | testPathInjection.swift:544:38:544:49 | remoteString | This path depends on a $@. | testPathInjection.swift:521:24:521:78 | String(...) | user-provided value |
+| testPathInjection.swift:545:45:545:56 | remoteString | testPathInjection.swift:521:24:521:78 | String(...) | testPathInjection.swift:545:45:545:56 | remoteString | This path depends on a $@. | testPathInjection.swift:521:24:521:78 | String(...) | user-provided value |
+| testPathInjection.swift:549:32:549:41 | ... .pointee | testPathInjection.swift:521:24:521:78 | String(...) | testPathInjection.swift:549:32:549:41 | ... .pointee | This path depends on a $@. | testPathInjection.swift:521:24:521:78 | String(...) | user-provided value |
+| testPathInjection.swift:561:35:561:46 | remoteString | testPathInjection.swift:521:24:521:78 | String(...) | testPathInjection.swift:561:35:561:46 | remoteString | This path depends on a $@. | testPathInjection.swift:521:24:521:78 | String(...) | user-provided value |
+| testPathInjection.swift:562:41:562:52 | remoteString | testPathInjection.swift:521:24:521:78 | String(...) | testPathInjection.swift:562:41:562:52 | remoteString | This path depends on a $@. | testPathInjection.swift:521:24:521:78 | String(...) | user-provided value |
+| testPathInjection.swift:584:25:584:36 | remoteString | testPathInjection.swift:582:24:582:78 | String(...) | testPathInjection.swift:584:25:584:36 | remoteString | This path depends on a $@. | testPathInjection.swift:582:24:582:78 | String(...) | user-provided value |
+| testPathInjection.swift:586:41:586:52 | remoteString | testPathInjection.swift:582:24:582:78 | String(...) | testPathInjection.swift:586:41:586:52 | remoteString | This path depends on a $@. | testPathInjection.swift:582:24:582:78 | String(...) | user-provided value |
+| testPathInjection.swift:588:38:588:49 | remoteString | testPathInjection.swift:582:24:582:78 | String(...) | testPathInjection.swift:588:38:588:49 | remoteString | This path depends on a $@. | testPathInjection.swift:582:24:582:78 | String(...) | user-provided value |
+| testPathInjection.swift:590:22:590:33 | remoteString | testPathInjection.swift:582:24:582:78 | String(...) | testPathInjection.swift:590:22:590:33 | remoteString | This path depends on a $@. | testPathInjection.swift:582:24:582:78 | String(...) | user-provided value |
 edges
 | testPathInjection.swift:340:9:340:20 | remoteString | testPathInjection.swift:341:33:341:44 | remoteString | provenance |  |
 | testPathInjection.swift:340:9:340:20 | remoteString | testPathInjection.swift:342:37:342:48 | remoteString | provenance |  |
@@ -125,6 +128,8 @@ edges
 | testPathInjection.swift:340:9:340:20 | remoteString | testPathInjection.swift:420:43:420:54 | remoteString | provenance |  |
 | testPathInjection.swift:340:9:340:20 | remoteString | testPathInjection.swift:422:30:422:41 | remoteString | provenance |  |
 | testPathInjection.swift:340:9:340:20 | remoteString | testPathInjection.swift:424:59:424:70 | remoteString | provenance |  |
+| testPathInjection.swift:340:9:340:20 | remoteString | testPathInjection.swift:425:46:425:57 | remoteString | provenance |  |
+| testPathInjection.swift:340:9:340:20 | remoteString | testPathInjection.swift:426:42:426:53 | remoteString | provenance |  |
 | testPathInjection.swift:340:9:340:20 | remoteString | testPathInjection.swift:437:26:437:37 | remoteString | provenance |  |
 | testPathInjection.swift:340:9:340:20 | remoteString | testPathInjection.swift:441:28:441:39 | remoteString | provenance |  |
 | testPathInjection.swift:340:9:340:20 | remoteString | testPathInjection.swift:443:32:443:43 | remoteString | provenance |  |
@@ -162,26 +167,30 @@ edges
 | testPathInjection.swift:342:9:342:19 | remoteNsUrl | testPathInjection.swift:410:26:410:36 | remoteNsUrl | provenance |  |
 | testPathInjection.swift:342:9:342:19 | remoteNsUrl | testPathInjection.swift:412:52:412:62 | remoteNsUrl | provenance |  |
 | testPathInjection.swift:342:37:342:48 | remoteString | testPathInjection.swift:342:9:342:19 | remoteNsUrl | provenance |  |
-| testPathInjection.swift:504:9:504:20 | remoteString | testPathInjection.swift:510:37:510:48 | remoteString | provenance |  |
-| testPathInjection.swift:504:9:504:20 | remoteString | testPathInjection.swift:512:33:512:44 | remoteString | provenance |  |
-| testPathInjection.swift:504:24:504:78 | String(...) | testPathInjection.swift:504:9:504:20 | remoteString | provenance |  |
-| testPathInjection.swift:519:9:519:20 | remoteString | testPathInjection.swift:529:28:529:39 | remoteString | provenance |  |
-| testPathInjection.swift:519:9:519:20 | remoteString | testPathInjection.swift:541:32:541:43 | remoteString | provenance |  |
-| testPathInjection.swift:519:9:519:20 | remoteString | testPathInjection.swift:542:38:542:49 | remoteString | provenance |  |
-| testPathInjection.swift:519:9:519:20 | remoteString | testPathInjection.swift:543:45:543:56 | remoteString | provenance |  |
-| testPathInjection.swift:519:9:519:20 | remoteString | testPathInjection.swift:546:18:546:29 | remoteString | provenance |  |
-| testPathInjection.swift:519:9:519:20 | remoteString | testPathInjection.swift:559:35:559:46 | remoteString | provenance |  |
-| testPathInjection.swift:519:9:519:20 | remoteString | testPathInjection.swift:560:41:560:52 | remoteString | provenance |  |
-| testPathInjection.swift:519:24:519:78 | String(...) | testPathInjection.swift:519:9:519:20 | remoteString | provenance |  |
-| testPathInjection.swift:546:5:546:6 | [post] s1 [pointee] | testPathInjection.swift:547:32:547:33 | s1 [pointee] | provenance |  |
-| testPathInjection.swift:546:5:546:14 | ... .pointee | testPathInjection.swift:546:5:546:6 | [post] s1 [pointee] | provenance |  |
-| testPathInjection.swift:546:18:546:29 | remoteString | testPathInjection.swift:546:5:546:14 | ... .pointee | provenance |  |
-| testPathInjection.swift:547:32:547:33 | s1 [pointee] | testPathInjection.swift:547:32:547:41 | ... .pointee | provenance |  |
-| testPathInjection.swift:580:9:580:20 | remoteString | testPathInjection.swift:582:25:582:36 | remoteString | provenance |  |
-| testPathInjection.swift:580:9:580:20 | remoteString | testPathInjection.swift:584:41:584:52 | remoteString | provenance |  |
-| testPathInjection.swift:580:9:580:20 | remoteString | testPathInjection.swift:586:38:586:49 | remoteString | provenance |  |
-| testPathInjection.swift:580:9:580:20 | remoteString | testPathInjection.swift:588:22:588:33 | remoteString | provenance |  |
-| testPathInjection.swift:580:24:580:78 | String(...) | testPathInjection.swift:580:9:580:20 | remoteString | provenance |  |
+| testPathInjection.swift:425:46:425:57 | remoteString | testPathInjection.swift:425:46:425:76 | TypeCastExpr | provenance |  |
+| testPathInjection.swift:426:42:426:53 | remoteString | testPathInjection.swift:426:42:426:72 | TypeCastExpr | provenance |  |
+| testPathInjection.swift:501:9:501:19 | remoteData2 | testPathInjection.swift:502:26:502:36 | remoteData2 | provenance |  |
+| testPathInjection.swift:501:23:501:75 | Data(...) | testPathInjection.swift:501:9:501:19 | remoteData2 | provenance |  |
+| testPathInjection.swift:506:9:506:20 | remoteString | testPathInjection.swift:512:37:512:48 | remoteString | provenance |  |
+| testPathInjection.swift:506:9:506:20 | remoteString | testPathInjection.swift:514:33:514:44 | remoteString | provenance |  |
+| testPathInjection.swift:506:24:506:78 | String(...) | testPathInjection.swift:506:9:506:20 | remoteString | provenance |  |
+| testPathInjection.swift:521:9:521:20 | remoteString | testPathInjection.swift:531:28:531:39 | remoteString | provenance |  |
+| testPathInjection.swift:521:9:521:20 | remoteString | testPathInjection.swift:543:32:543:43 | remoteString | provenance |  |
+| testPathInjection.swift:521:9:521:20 | remoteString | testPathInjection.swift:544:38:544:49 | remoteString | provenance |  |
+| testPathInjection.swift:521:9:521:20 | remoteString | testPathInjection.swift:545:45:545:56 | remoteString | provenance |  |
+| testPathInjection.swift:521:9:521:20 | remoteString | testPathInjection.swift:548:18:548:29 | remoteString | provenance |  |
+| testPathInjection.swift:521:9:521:20 | remoteString | testPathInjection.swift:561:35:561:46 | remoteString | provenance |  |
+| testPathInjection.swift:521:9:521:20 | remoteString | testPathInjection.swift:562:41:562:52 | remoteString | provenance |  |
+| testPathInjection.swift:521:24:521:78 | String(...) | testPathInjection.swift:521:9:521:20 | remoteString | provenance |  |
+| testPathInjection.swift:548:5:548:6 | [post] s1 [pointee] | testPathInjection.swift:549:32:549:33 | s1 [pointee] | provenance |  |
+| testPathInjection.swift:548:5:548:14 | ... .pointee | testPathInjection.swift:548:5:548:6 | [post] s1 [pointee] | provenance |  |
+| testPathInjection.swift:548:18:548:29 | remoteString | testPathInjection.swift:548:5:548:14 | ... .pointee | provenance |  |
+| testPathInjection.swift:549:32:549:33 | s1 [pointee] | testPathInjection.swift:549:32:549:41 | ... .pointee | provenance |  |
+| testPathInjection.swift:582:9:582:20 | remoteString | testPathInjection.swift:584:25:584:36 | remoteString | provenance |  |
+| testPathInjection.swift:582:9:582:20 | remoteString | testPathInjection.swift:586:41:586:52 | remoteString | provenance |  |
+| testPathInjection.swift:582:9:582:20 | remoteString | testPathInjection.swift:588:38:588:49 | remoteString | provenance |  |
+| testPathInjection.swift:582:9:582:20 | remoteString | testPathInjection.swift:590:22:590:33 | remoteString | provenance |  |
+| testPathInjection.swift:582:24:582:78 | String(...) | testPathInjection.swift:582:9:582:20 | remoteString | provenance |  |
 nodes
 | testPathInjection.swift:340:9:340:20 | remoteString | semmle.label | remoteString |
 | testPathInjection.swift:340:24:340:78 | String(...) | semmle.label | String(...) |
@@ -251,6 +260,10 @@ nodes
 | testPathInjection.swift:421:26:421:34 | remoteUrl | semmle.label | remoteUrl |
 | testPathInjection.swift:422:30:422:41 | remoteString | semmle.label | remoteString |
 | testPathInjection.swift:424:59:424:70 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:425:46:425:57 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:425:46:425:76 | TypeCastExpr | semmle.label | TypeCastExpr |
+| testPathInjection.swift:426:42:426:53 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:426:42:426:72 | TypeCastExpr | semmle.label | TypeCastExpr |
 | testPathInjection.swift:436:25:436:33 | remoteUrl | semmle.label | remoteUrl |
 | testPathInjection.swift:437:26:437:37 | remoteString | semmle.label | remoteString |
 | testPathInjection.swift:441:28:441:39 | remoteString | semmle.label | remoteString |
@@ -261,27 +274,30 @@ nodes
 | testPathInjection.swift:482:22:482:33 | remoteString | semmle.label | remoteString |
 | testPathInjection.swift:486:25:486:36 | remoteString | semmle.label | remoteString |
 | testPathInjection.swift:498:49:498:60 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:504:9:504:20 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:504:24:504:78 | String(...) | semmle.label | String(...) |
-| testPathInjection.swift:510:37:510:48 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:512:33:512:44 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:519:9:519:20 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:519:24:519:78 | String(...) | semmle.label | String(...) |
-| testPathInjection.swift:529:28:529:39 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:541:32:541:43 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:542:38:542:49 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:543:45:543:56 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:546:5:546:6 | [post] s1 [pointee] | semmle.label | [post] s1 [pointee] |
-| testPathInjection.swift:546:5:546:14 | ... .pointee | semmle.label | ... .pointee |
-| testPathInjection.swift:546:18:546:29 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:547:32:547:33 | s1 [pointee] | semmle.label | s1 [pointee] |
-| testPathInjection.swift:547:32:547:41 | ... .pointee | semmle.label | ... .pointee |
-| testPathInjection.swift:559:35:559:46 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:560:41:560:52 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:580:9:580:20 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:580:24:580:78 | String(...) | semmle.label | String(...) |
-| testPathInjection.swift:582:25:582:36 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:584:41:584:52 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:586:38:586:49 | remoteString | semmle.label | remoteString |
-| testPathInjection.swift:588:22:588:33 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:501:9:501:19 | remoteData2 | semmle.label | remoteData2 |
+| testPathInjection.swift:501:23:501:75 | Data(...) | semmle.label | Data(...) |
+| testPathInjection.swift:502:26:502:36 | remoteData2 | semmle.label | remoteData2 |
+| testPathInjection.swift:506:9:506:20 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:506:24:506:78 | String(...) | semmle.label | String(...) |
+| testPathInjection.swift:512:37:512:48 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:514:33:514:44 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:521:9:521:20 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:521:24:521:78 | String(...) | semmle.label | String(...) |
+| testPathInjection.swift:531:28:531:39 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:543:32:543:43 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:544:38:544:49 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:545:45:545:56 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:548:5:548:6 | [post] s1 [pointee] | semmle.label | [post] s1 [pointee] |
+| testPathInjection.swift:548:5:548:14 | ... .pointee | semmle.label | ... .pointee |
+| testPathInjection.swift:548:18:548:29 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:549:32:549:33 | s1 [pointee] | semmle.label | s1 [pointee] |
+| testPathInjection.swift:549:32:549:41 | ... .pointee | semmle.label | ... .pointee |
+| testPathInjection.swift:561:35:561:46 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:562:41:562:52 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:582:9:582:20 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:582:24:582:78 | String(...) | semmle.label | String(...) |
+| testPathInjection.swift:584:25:584:36 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:586:41:586:52 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:588:38:588:49 | remoteString | semmle.label | remoteString |
+| testPathInjection.swift:590:22:590:33 | remoteString | semmle.label | remoteString |
 subpaths

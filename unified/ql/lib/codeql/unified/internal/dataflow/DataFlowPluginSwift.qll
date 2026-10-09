@@ -26,11 +26,35 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node2.isResultValue(call)
     )
     or
-    // Taint flow through unary "!" (TODO: model as a read of Optional.some, possibly with implicit taint read)
     exists(UnaryExpr expr |
       expr.getOperator().(PostfixOperator).getValue() = "!" and
       node1.isResultValue(expr.getOperand()) and
-      step.taint() and
+      (step.readName("some.0") or step.taint()) and
+      node2.isResultValue(expr)
+      or
+      expr.getOperator().(PrefixOperator).getValue() = ["try", "try!", "await"] and
+      node1.isResultValue(expr.getOperand()) and
+      step.value() and
+      node2.isResultValue(expr)
+      or
+      expr.getOperator().(PrefixOperator).getValue() = "try?" and
+      // TODO: preserve the value of some.0 if it is already stored in that
+      node1.isResultValue(expr.getOperand()) and
+      step.storeName("some.0") and
+      node2.isResultValue(expr)
+    )
+    or
+    exists(TypeCastExpr expr |
+      // The `as?` type cast boxes the incoming value in Optional depending on whether the type cast succeeded
+      expr.getOperator().getValue() = "as?" and
+      node1.isResultValue(expr.getExpr()) and
+      step.storeName("some.0") and
+      node2.isResultValue(expr)
+      or
+      // Safe upcast conversion ("as") and downcast-or-throw ("as!") propagate the value directly
+      expr.getOperator().getValue() = ["as", "as!"] and
+      node1.isResultValue(expr.getExpr()) and
+      step.value() and
       node2.isResultValue(expr)
     )
     or
