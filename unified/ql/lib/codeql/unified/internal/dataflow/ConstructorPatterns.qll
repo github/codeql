@@ -41,11 +41,6 @@ private predicate isSignatureUsedInConstructorPattern(string name, int arity) {
   callSiteHasSignature(any(ConstructorPattern p), name, arity)
 }
 
-/** Holds if `callable` is an enum-case constructor */
-private predicate isEnumCaseConstructor(ConstructorDeclaration callable) {
-  callable = any(ClassLikeDeclaration cls | cls.hasModifier("enum_case")).getAMember()
-}
-
 /**
  * Holds if `call` resolves to a known enum-case constructor, or is assumed to resolve to an unseen enum-case constructor.
  */
@@ -53,7 +48,7 @@ pragma[nomagic]
 private predicate assumeResolvesToEnumCaseConstructor(CallExpr call) {
   call instanceof ConstructorPattern
   or
-  isEnumCaseConstructor(T::resolveCallTarget(call))
+  T::resolveCallTarget(call) instanceof EnumCaseConstructor
   or
   // If the `E` in `E.foo(...)` could not be resolved, check if the name `foo` matches a constructor pattern.
   exists(MemberAccessExpr callee, Expr base, string name, int arity |

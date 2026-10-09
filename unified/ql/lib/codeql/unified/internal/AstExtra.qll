@@ -111,4 +111,37 @@ module Public {
   final class IdentifierExpr extends Identifier {
     IdentifierExpr() { not this instanceof IdentifierLabel }
   }
+
+  /**
+   * A class representing one of the branches of an algebraic data type.
+   *
+   * In Swift, a class with a single constructor is generated for each `case` with data parameters in an `enum` declaration,
+   * such as `foo` below:
+   * ```Swift
+   * enum E {
+   *   case foo(Int)
+   * }
+   * ```
+   */
+  final class EnumCaseClass extends ClassLikeDeclaration {
+    EnumCaseClass() { this.hasModifier("enum_case") }
+
+    /** Gets the constructor of this algebraic data type. */
+    EnumCaseConstructor getConstructor() { result = this.getAMember() }
+  }
+
+  /**
+   * The constructor of a class representing one of the branches of an algebraic data type.
+   *
+   * In Swift, a class with a single constructor is generated for each `case` with data parameters in an `enum` declaration,
+   * such as `foo` below:
+   * ```Swift
+   * enum E {
+   *   case foo(Int)
+   * }
+   * ```
+   */
+  final class EnumCaseConstructor extends ConstructorDeclaration {
+    EnumCaseConstructor() { this = any(EnumCaseClass cls).getAMember() }
+  }
 }
