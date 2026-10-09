@@ -1,0 +1,111 @@
+from openai import OpenAI, AsyncOpenAI, AzureOpenAI
+from flask import Flask, request  # $ Source
+app = Flask(__name__)
+
+client = OpenAI()
+async_client = AsyncOpenAI()
+azure_client = AzureOpenAI()
+
+
+@app.route("/openai")
+async def get_input_openai():
+    persona = request.args.get("persona")
+    query = request.args.get("query")
+    role = request.args.get("role")
+
+    response1 = client.responses.create(
+        instructions="Talks like a " + persona,  # $ Alert[py/system-prompt-injection]
+        input=query,
+    )
+
+    response2 = client.responses.create(
+        instructions="Talks like a " + persona,  # $ Alert[py/system-prompt-injection]
+        input=[
+            {
+                "role": "developer",
+                "content": "Talk like a " + persona  # $ Alert[py/system-prompt-injection]
+            },
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "input_text",
+                        "text": query
+                    }
+                ]
+            }
+        ]
+    )
+
+    completion1 = client.chat.completions.create(
+        messages=[
+            {
+                "role": "developer",
+                "content": "Talk like a " + persona  # $ Alert[py/system-prompt-injection]
+            },
+            {
+                "role": "user",
+                "content": query,
+            },
+            {
+                "role": role,
+                "content": query,
+            }
+        ]
+    )
+
+    completion2 = azure_client.chat.completions.create(
+        messages=[
+            {
+                "role": "system",
+                "content": "Talk like a " + persona  # $ Alert[py/system-prompt-injection]
+            },
+            {
+                "role": "user",
+                "content": query,
+            }
+        ]
+    )
+
+    assistant = client.beta.assistants.create(
+        name="Test Agent",
+        model="gpt-4.1",
+        instructions="Talks like a " + persona  # $ Alert[py/system-prompt-injection]
+    )
+
+    session = client.beta.realtime.sessions.create(
+        instructions="Talks like a " + persona  # $ Alert[py/system-prompt-injection]
+    )
+
+    message = client.beta.threads.messages.create(
+        thread_id="thread_123",
+        role="assistant",
+        content="Always behave like a " + persona,  # $ Alert[py/system-prompt-injection]
+    )
+
+    chat_tool = client.chat.completions.create(
+        model="gpt-4.1",
+        messages=[{"role": "user", "content": query}],
+        tools=[
+            {
+                "type": "function",
+                "function": {
+                    "name": "lookup",
+                    "description": "Talk like a " + persona,  # $ Alert[py/system-prompt-injection]
+                },
+            }
+        ],
+    )
+
+    responses_tool = client.responses.create(
+        model="gpt-4.1",
+        input=query,
+        tools=[
+            {
+                "type": "function",
+                "name": "lookup",
+                "description": "Talk like a " + persona,  # $ Alert[py/system-prompt-injection]
+            }
+        ],
+    )
+    print(message, chat_tool, responses_tool)
