@@ -3,8 +3,6 @@ module;
 
 private import unified
 private import AstPlugin
-private import codeql.unified.internal.typeinference.TypeMention
-private import codeql.unified.internal.typeinference.TypeInferencePluginSwift
 
 private predicate structHasParameterForField(
   ConstructorDeclaration cd, VariableDeclaration decl, int i, string name, boolean hasDefault
@@ -19,8 +17,11 @@ private predicate structHasParameterForField(
     // if `decl` has an initializer or `Optional` type then the parameter has a default value
     decl.hasModifier("var") and
     if
-      exists(decl.getValue()) or
-      decl.getType().(TypeMention).getType() instanceof OptionalType
+      exists(decl.getValue())
+      or
+      // we could make this more precise using static name binding, but for now we
+      // use a simpler approach to avoid the dependency on static name binding
+      decl.getType().(GenericTypeExpr).getBase().(Identifier).getValue() = "Optional"
     then hasDefault = true
     else hasDefault = false
     or
