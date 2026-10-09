@@ -115,11 +115,21 @@ module Public {
   /**
    * A class representing one of the branches of an algebraic data type.
    *
-   * In Swift, a class with a single constructor is generated for each `case` with data parameters in an `enum` declaration,
-   * such as `foo` below:
-   * ```Swift
+   * In Swift, a class with a single constructor is generated for each `case` with data parameters in an `enum` declaration. Example:
+   *
+   * ```swift
    * enum E {
    *   case foo(Int)
+   * }
+   * ```
+   *
+   * is modeled as
+   *
+   * ```swift
+   * class E {
+   *   class foo {
+   *     init(_ x : Int)
+   *   }
    * }
    * ```
    */
@@ -133,11 +143,21 @@ module Public {
   /**
    * The constructor of a class representing one of the branches of an algebraic data type.
    *
-   * In Swift, a class with a single constructor is generated for each `case` with data parameters in an `enum` declaration,
-   * such as `foo` below:
-   * ```Swift
+   * In Swift, a class with a single constructor is generated for each `case` with data parameters in an `enum` declaration. Example:
+   *
+   * ```swift
    * enum E {
    *   case foo(Int)
+   * }
+   * ```
+   *
+   * is modeled as
+   *
+   * ```swift
+   * class E {
+   *   class foo {
+   *     init(_ x : Int)
+   *   }
    * }
    * ```
    */
