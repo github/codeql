@@ -116,6 +116,41 @@ public class EllipticCurve1 {
     }
 
     /**
+     * Generates an Ed448 key pair (for signatures).
+     */
+    public KeyPair generateEd448KeyPair() throws Exception {
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed448");
+        return kpg.generateKeyPair();
+    }
+
+    /**
+     * Generates a key pair using the NIST P-256 alias for secp256r1.
+     */
+    public KeyPair generateNISTP256KeyPair() throws Exception {
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
+        kpg.initialize(new java.security.spec.ECGenParameterSpec("P-256"));
+        return kpg.generateKeyPair();
+    }
+
+    /**
+     * Generates a key pair using the NIST P-384 alias for secp384r1.
+     */
+    public KeyPair generateNISTP384KeyPair() throws Exception {
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
+        kpg.initialize(new java.security.spec.ECGenParameterSpec("P-384"));
+        return kpg.generateKeyPair();
+    }
+
+    /**
+     * Generates a key pair using the NIST P-521 alias for secp521r1.
+     */
+    public KeyPair generateNISTP521KeyPair() throws Exception {
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
+        kpg.initialize(new java.security.spec.ECGenParameterSpec("P-521"));
+        return kpg.generateKeyPair();
+    }
+
+    /**
      * Generates a key pair for an "Other" elliptic curve type.
      * This serves as a fallback example (using secp256r1).
      */

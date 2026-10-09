@@ -1,0 +1,12 @@
+| CryptoClassificationTest.java:259:53:259:57 | KeyOperationAlgorithm | Secure symmetric cipher: AES. |
+| CryptoClassificationTest.java:263:47:263:68 | KeyOperationAlgorithm | Secure symmetric cipher: AES. |
+| CryptoClassificationTest.java:268:47:268:65 | KeyOperationAlgorithm | Secure symmetric cipher: AES. |
+| CryptoClassificationTest.java:273:47:273:65 | KeyOperationAlgorithm | Secure symmetric cipher: AES. |
+| CryptoClassificationTest.java:296:58:296:62 | KeyOperationAlgorithm | Secure symmetric cipher: AES. |
+| CryptoClassificationTest.java:299:47:299:65 | KeyOperationAlgorithm | Secure symmetric cipher: AES. |
+| CryptoClassificationTest.java:304:58:304:62 | KeyOperationAlgorithm | Secure symmetric cipher: AES. |
+| CryptoClassificationTest.java:307:47:307:65 | KeyOperationAlgorithm | Secure symmetric cipher: AES. |
+| CryptoClassificationTest.java:312:58:312:62 | KeyOperationAlgorithm | Secure symmetric cipher: AES. |
+| CryptoClassificationTest.java:315:47:315:65 | KeyOperationAlgorithm | Secure symmetric cipher: AES. |
+| CryptoClassificationTest.java:320:46:320:55 | KeyOperationAlgorithm | Secure symmetric cipher: ChaCha20 (256-bit key). |
+| CryptoClassificationTest.java:324:44:324:65 | KeyOperationAlgorithm | Secure symmetric cipher: AES. |
