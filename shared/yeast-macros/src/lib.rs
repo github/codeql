@@ -1,9 +1,13 @@
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 
+mod ast;
+mod lower;
 mod parse;
+mod rule_parse;
+mod template_parse;
 
-/// Proc macro for constructing a `QueryNode` from a tree-sitter-inspired pattern.
+/// Proc macro for constructing a tree-sitter-inspired `yeast::query::QueryNode`.
 ///
 /// # Syntax
 ///
@@ -19,11 +23,24 @@ mod parse;
 /// (pattern) @capture           - capture the matched node
 /// "literal" @capture           - capture an unnamed token
 /// _ @capture                   - capture any node
-/// (pattern)* @capture          - capture each repeated match
-/// (pattern)?                   - zero or one
+/// (kind)* @capture             - capture each repeated named-node match
+/// "literal"* @capture          - capture each repeated unnamed-token match
+/// (kind)?                      - zero or one named node
 /// ```
 ///
 /// Named fields and bare child patterns may be intermixed in any order.
+///
+/// A parenthesized query whose first element is a node kind is always parsed as
+/// that node pattern. Otherwise, two or more sibling patterns form a sequence.
+/// A sequence may be repeated, but cannot itself be captured because it does
+/// not represent one node:
+///
+/// ```text
+/// ((identifier) @items (integer) @items)*  // valid: explicit node captures
+/// ((identifier) (integer))* @items         // invalid: sequence capture
+/// ("+" ",")*                               // valid: repeated token sequence
+/// (_ ",")*                                 // valid: repeated wildcard/token sequence
+/// ```
 #[proc_macro]
 pub fn query(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();

@@ -152,7 +152,31 @@ queries, are not supported.
 (_)+                   // one or more
 (_)?                   // zero or one
 (identifier)* @names   // capture each repeated match
+"+"* @operators        // repeat and capture an unnamed token
 ```
+
+When a parenthesized query starts with a node-kind identifier, it is always
+parsed as that node pattern, and every remaining token must belong to that
+node's fields or children. Otherwise, two or more sibling patterns form a
+sequence. A sequence may be repeated, but it cannot itself be captured because
+the sequence does not correspond to one AST node:
+
+```rust
+((identifier) @items (integer) @items)*  // explicit flattened captures
+((identifier) (integer))* @items         // error: sequence capture
+```
+
+Literal- and wildcard-led sequences are valid and unambiguous because neither
+can introduce node fields:
+
+```rust
+("+" ",")*  // repeat a two-token sequence
+(_ ",")*    // repeat a wildcard followed by a comma
+```
+
+Single-pattern and empty query groups are rejected as redundant or meaningless.
+This does not affect the empty output template `()`, which intentionally means
+“emit no replacement nodes.”
 
 ## Template language
 
