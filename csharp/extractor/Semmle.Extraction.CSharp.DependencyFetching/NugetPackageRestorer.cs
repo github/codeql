@@ -547,7 +547,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var port = uri.IsDefaultPort ? string.Empty : $":{uri.Port}";
                 return $"{uri.Scheme}://{uri.Host}{port}{uri.AbsolutePath}";
             }
-            catch
+            catch (UriFormatException)
+            {
+                return feed;
+            }
+            catch (ArgumentNullException)
             {
                 return feed;
             }
