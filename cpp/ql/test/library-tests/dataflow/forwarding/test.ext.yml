@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: forwardsModel
+    data: # namespace, type, subtypes, name, signature, ext, start, constructor, output, provenance
+      - ["", "Container<T>", True, "emplace<Args>", "(Args &&)", "", "0", "T", "Argument[-1].Element", "manual"]
