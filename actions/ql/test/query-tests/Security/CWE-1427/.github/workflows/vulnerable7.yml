@@ -1,0 +1,20 @@
+name: Gemini PR Review
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Run Gemini review
+        id: gemini_pr_review
+        uses: google-github-actions/run-gemini-cli@v1
+        with:
+          prompt: |
+            Review this pull request:
+            Title: ${{ github.event.pull_request.title }}
+            Body: ${{ github.event.pull_request.body }}
