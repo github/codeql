@@ -266,4 +266,12 @@ module CppMetrics {
 
     override int getValue() { result = count(SyntaxError e) }
   }
+
+  class BuildModeNone extends ExtractionMetric {
+    BuildModeNone() { this = "build mode none" }
+
+    override int getValue() {
+      if exists(Compilation c | c.buildModeNone()) then result = 1 else result = 0
+    }
+  }
 }
