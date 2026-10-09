@@ -638,6 +638,7 @@ module.exports = grammar({
     type_parameters: $ => seq(
       '[',
       commaSep1(field('type_parameter', $._type_parameter)),
+      optional(','),
       ']'
     ),
 

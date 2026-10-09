@@ -2094,6 +2094,34 @@ module StdlibPrivate {
       override predicate valueAllowsNewline() { any() }
     }
 
+    /** Additional response headers supplied by construction or instance assignment. */
+    private class ExtraHeadersWrite extends Http::Server::ResponseHeaderBulkWrite::Range {
+      DataFlow::Node headers;
+
+      ExtraHeadersWrite() {
+        exists(API::Node cls |
+          cls =
+            API::moduleImport("http")
+                .getMember("server")
+                .getMember("SimpleHTTPRequestHandler")
+                .getASubclass*()
+        |
+          this = cls.getACall() and
+          headers = this.(DataFlow::CallCfgNode).getArgByName("extra_response_headers")
+          or
+          this.(DataFlow::AttrWrite)
+              .writes([cls.getAnInstance(), cls.getAMember().getSelfParameter()]
+                    .getAValueReachableFromSource(), "extra_response_headers", headers)
+        )
+      }
+
+      override DataFlow::Node getBulkArg() { result = headers }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { any() }
+    }
+
     private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         nodeFrom = instance() and
@@ -3158,12 +3186,15 @@ module StdlibPrivate {
    */
   private class RegexExecutionMethod extends string {
     RegexExecutionMethod() {
-      this in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn"]
+      this in [
+          "match", "prefixmatch", "fullmatch", "search", "split", "findall", "finditer", "sub",
+          "subn"
+        ]
     }
 
     /** Gets the index of the argument representing the string to be searched by a regex. */
     int getStringArgIndex() {
-      this in ["match", "fullmatch", "search", "split", "findall", "finditer"] and
+      this in ["match", "prefixmatch", "fullmatch", "search", "split", "findall", "finditer"] and
       result = 1
       or
       this in ["sub", "subn"] and
@@ -3297,7 +3328,7 @@ module StdlibPrivate {
           this = "compiled re.Match"
         )
       |
-        result = re.getMember(["match", "search", "fullmatch"]).getACall()
+        result = re.getMember(["match", "prefixmatch", "search", "fullmatch"]).getACall()
       )
     }
 
@@ -4272,6 +4303,21 @@ module StdlibPrivate {
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
+    }
+  }
+
+  /** A flow summary for `frozendict`. */
+  class FrozendictSummary extends SummarizedCallable::Range {
+    FrozendictSummary() { this = "builtins.frozendict" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("frozendict").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("frozendict").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      any(DictSummary s).propagatesFlow(input, output, preservesValue)
     }
   }
 

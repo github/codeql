@@ -193,7 +193,7 @@ module Unified {
 
   class VariableDeclaration extends G::VariableDeclaration {
     /** Gets the name node of this variable declaration, if any. */
-    Identifier getNameNode() { result = this.getPattern() }
+    override Identifier getNameNode() { result = this.getPattern() }
 
     /** Gets the name of the variable being declared, if any. */
     string getName() { result = this.getNameNode().getValue() }
@@ -318,5 +318,10 @@ module Unified {
   class FunctionExpr extends G::FunctionExpr {
     /** Gets the number of parameters of this function. */
     int getNumberOfParameters() { result = count(this.getAParameter()) }
+  }
+
+  class ArrayLiteral extends G::ArrayLiteral {
+    /** Gets the number of elements in this array literal. */
+    int getNumberOfElements() { result = count(this.getAnElement()) }
   }
 }

@@ -2,6 +2,7 @@
 
 import CallGraph
 import Content
+import ConstructorPatterns
 import DataFlowCall
 import DataFlowCallable
 import DataFlowGraph

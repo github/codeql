@@ -11,9 +11,17 @@ query predicate implicitReceiverParameter(ParameterEx p, Callable c) {
   c.getFile().fromSource()
 }
 
-query predicate callableExDefaultConstructorParameter(
-  ConstructorDeclaration cd, int i, ParameterEx p, string name
+query predicate defaultConstructorParameter(
+  ConstructorDeclaration cd, int i, ParameterEx p, string name, boolean hasDefault
 ) {
   p.isDefaultConstructorParameter(cd, i, name) and
-  cd.getFile().fromSource()
+  cd.getFile().fromSource() and
+  if p.hasDefault() then hasDefault = true else hasDefault = false
+}
+
+query predicate defaultConstructorParameterType(
+  ConstructorDeclaration cd, int i, ParameterEx p, string name, AstNode type
+) {
+  defaultConstructorParameter(cd, i, p, name, _) and
+  type = p.getType()
 }

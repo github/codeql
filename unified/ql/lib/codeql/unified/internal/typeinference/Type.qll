@@ -1,4 +1,6 @@
 /** Provides classes representing types without type arguments. */
+overlay[local?]
+module;
 
 import unified // reexport in order to shadow e.g. the `TypeParameter` class
 private import unified as Unified
