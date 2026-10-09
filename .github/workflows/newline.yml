@@ -1,0 +1,13 @@
+name: Final new line
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  build:
+    name: New line
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: Logerfo/newline-action@d994478bb3b285adf473adcc612693cbd08bd3a4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
