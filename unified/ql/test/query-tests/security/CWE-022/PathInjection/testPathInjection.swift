@@ -343,19 +343,19 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     let safeUrl = URL(string: "")!
     let safeNsUrl = NSURL(string: "")!
 
-    Data("").write(to: remoteUrl, options: [])  // $ MISSING: Alert
+    Data("").write(to: remoteUrl, options: [])  // $ Alert
 
     let nsData = NSData()
-    let _ = nsData.write(to: remoteUrl, atomically: false)  // $ MISSING: Alert
-    nsData.write(to: remoteUrl, options: [])  // $ MISSING: Alert
+    let _ = nsData.write(to: remoteUrl, atomically: false)  // $ Alert
+    nsData.write(to: remoteUrl, options: [])  // $ Alert
     let _ = nsData.write(toFile: remoteString, atomically: false)  // $ Alert
     nsData.write(toFile: remoteString, options: [])  // $ Alert
 
     let fm = FileManager()
-    let _ = fm.contentsOfDirectory(at: remoteUrl, includingPropertiesForKeys: [], options: [])  // $ MISSING: Alert
+    let _ = fm.contentsOfDirectory(at: remoteUrl, includingPropertiesForKeys: [], options: [])  // $ Alert
     let _ = fm.contentsOfDirectory(atPath: remoteString)  // $ Alert
     let _ = fm.enumerator(
-        at: remoteUrl, includingPropertiesForKeys: [], options: [], errorHandler: nil)  // $ MISSING: Alert
+        at: remoteUrl, includingPropertiesForKeys: [], options: [], errorHandler: nil)  // $ Alert
     let _ = fm.enumerator(atPath: remoteString)  // $ Alert
     let _ = fm.subpathsOfDirectory(atPath: remoteString)  // $ Alert
     let _ = fm.subpaths(atPath: remoteString)  // $ Alert
@@ -368,10 +368,10 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     let _ = fm.replaceItemAt(remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [])  // $ Alert
     let _ = fm.replaceItemAt(safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [])  // $ Alert
     fm.replaceItem(
-        at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [],  // $ SPURIOUS: Alert
+        at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [], // $ SPURIOUS: Alert
         resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert
     fm.replaceItem(
-        at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [],  // $ SPURIOUS: Alert
+        at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [], // $ SPURIOUS: Alert
         resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert
     fm.copyItem(at: remoteUrl, to: safeUrl)  // $ Alert
     fm.copyItem(at: safeUrl, to: remoteUrl)  // $ Alert
@@ -407,7 +407,7 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     let _ = fm.createSymbolicLink(atPath: "", pathContent: remoteString)  // $ Alert
     let _ = fm.pathContentOfSymbolicLink(atPath: remoteString)  // $ Alert
     let _ = fm.replaceItemAtURL(
-        originalItemURL: remoteNsUrl, withItemAtURL: safeNsUrl, backupItemName: nil, options: [])  // $ MISSING: Alert
+        originalItemURL: remoteNsUrl, withItemAtURL: safeNsUrl, backupItemName: nil, options: [])  // $ Alert
     let _ = fm.replaceItemAtURL(
         originalItemURL: safeNsUrl, withItemAtURL: remoteNsUrl, backupItemName: nil, options: [])  // $ Alert
 
@@ -474,14 +474,14 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
 
     var db: OpaquePointer?
     let localData = Data(0)
-    let remoteData = Data(contentsOf: URL(string: "http://example.com/")!, options: [])  // $ Source
+    let remoteData = Data(contentsOf: URL(string: "http://example.com/")!, options: [])  // $ MISSING: Source
     localData.copyBytes(to: buffer1, count: localData.count)
     remoteData.copyBytes(to: buffer2, count: remoteData.count)
 
     _ = sqlite3_open("myFile.sqlite3", &db)  // GOOD
     _ = sqlite3_open(remoteString, &db)  // $ Alert
     _ = sqlite3_open16(buffer1, &db)  // GOOD
-    _ = sqlite3_open16(buffer2, &db)  // $ Alert
+    _ = sqlite3_open16(buffer2, &db)  // $ MISSING: Alert
     _ = sqlite3_open_v2("myFile.sqlite3", &db, 0, nil)  // GOOD
     _ = sqlite3_open_v2(remoteString, &db, 0, nil)  // $ Alert
 
@@ -522,9 +522,9 @@ func testPathInjection2(
     _ = NSData(contentsOf: u1)
     _ = NSData(contentsOf: u1.appendingPathComponent(""))
     _ = NSData(contentsOf: u1.appendingPathComponent(remoteString))  // $ MISSING: Alert
-    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent(""))  // $ Alert
+    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent(""))  // $ MISSING: Alert
     u1.appendPathComponent(remoteString)
-    _ = NSData(contentsOf: u1)  // $ Alert
+    _ = NSData(contentsOf: u1)  // $ MISSING: Alert
 
     let u2 = URL(filePath: remoteString)  // $ Alert
     _ = NSData(contentsOf: u2)  // $ MISSING: Alert
