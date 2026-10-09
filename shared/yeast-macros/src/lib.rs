@@ -30,15 +30,16 @@ mod template_parse;
 ///
 /// Named fields and bare child patterns may be intermixed in any order.
 ///
-/// Parentheses do not provide general-purpose grouping. A parenthesized query
-/// group contains at least two sibling patterns and may be repeated, but the
-/// group itself cannot be captured because it does not represent one node:
+/// A parenthesized query whose first element is a node kind is always parsed as
+/// that node pattern. Otherwise, two or more sibling patterns form a sequence.
+/// A sequence may be repeated, but cannot itself be captured because it does
+/// not represent one node:
 ///
 /// ```text
 /// ((identifier) @items (integer) @items)*  // valid: explicit node captures
 /// ((identifier) (integer))* @items         // invalid: sequence capture
-/// ("+")*                                   // invalid: redundant grouping
-/// "+"*                                     // valid: repeated unnamed token
+/// ("+" ",")*                               // valid: repeated token sequence
+/// (_ ",")*                                 // valid: repeated wildcard/token sequence
 /// ```
 #[proc_macro]
 pub fn query(input: TokenStream) -> TokenStream {
