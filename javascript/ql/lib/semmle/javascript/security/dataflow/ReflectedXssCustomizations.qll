@@ -112,7 +112,9 @@ module ReflectedXss {
       1 =
         strictcount(Http::ResponseSendArgument sender |
           sender.getRouteHandler() = header.getRouteHandler() and
-          header.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
+          pragma[only_bind_out](header.getBasicBlock())
+              .(ReachableBasicBlock)
+              .dominates(pragma[only_bind_out](sender.getBasicBlock()))
         ) and
       // doesn't dominate something that looks like a callback.
       doesNotDominateCallback(headerBlock)
