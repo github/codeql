@@ -48,10 +48,10 @@ class OverloadByLabel {
 
 func testOverloadByLabel() {
   let o = OverloadByLabel()  // $ target=OverloadByLabel.init
-  let r1 = o.configure(width: 10)  // $ type=r1:String target=OverloadByLabel.configure1 $ SPURIOUS: target=OverloadByLabel.configure2 target=OverloadByLabel.configure3 target=OverloadByLabel.configure4
-  let r2 = o.configure(height: 20)  // $ type=r2:String target=OverloadByLabel.configure2 $ SPURIOUS: target=OverloadByLabel.configure1 target=OverloadByLabel.configure3 target=OverloadByLabel.configure4
-  let r3 = o.configure(width: 10, height: 20)  // $ type=r3:String target=OverloadByLabel.configure3 $ SPURIOUS: target=OverloadByLabel.configure1 target=OverloadByLabel.configure2 target=OverloadByLabel.configure4
-  let r4 = o.configure(size: 30)  // $ type=r4:String target=OverloadByLabel.configure4 $ SPURIOUS: target=OverloadByLabel.configure1 target=OverloadByLabel.configure2 target=OverloadByLabel.configure3
+  let r1 = o.configure(width: 10)  // $ type=r1:String target=OverloadByLabel.configure1 $ SPURIOUS: target=OverloadByLabel.configure2 target=OverloadByLabel.configure4
+  let r2 = o.configure(height: 20)  // $ type=r2:String target=OverloadByLabel.configure2 $ SPURIOUS: target=OverloadByLabel.configure1 target=OverloadByLabel.configure4
+  let r3 = o.configure(width: 10, height: 20)  // $ type=r3:String target=OverloadByLabel.configure3
+  let r4 = o.configure(size: 30)  // $ type=r4:String target=OverloadByLabel.configure4 $ SPURIOUS: target=OverloadByLabel.configure1 target=OverloadByLabel.configure2
 }
 
 // --- Overload by arity (number of parameters) ---
@@ -76,10 +76,10 @@ class OverloadByArity {
 
 func testOverloadByArity() {
   let o = OverloadByArity()  // $ target=OverloadByArity.init
-  let r0 = o.compute()  // $ type=r0:Int target=OverloadByArity.compute1 $ SPURIOUS: target=OverloadByArity.compute2 target=OverloadByArity.compute3 target=OverloadByArity.compute4
-  let r1 = o.compute(1)  // $ type=r1:Int target=OverloadByArity.compute2 $ SPURIOUS: target=OverloadByArity.compute1 target=OverloadByArity.compute3 target=OverloadByArity.compute4
-  let r2 = o.compute(1, 2)  // $ type=r2:Int target=OverloadByArity.compute3 $ SPURIOUS: target=OverloadByArity.compute1 target=OverloadByArity.compute2 target=OverloadByArity.compute4
-  let r3 = o.compute(1, 2, 3)  // $ type=r3:Int target=OverloadByArity.compute4 $ SPURIOUS: target=OverloadByArity.compute1 target=OverloadByArity.compute2 target=OverloadByArity.compute3
+  let r0 = o.compute()  // $ type=r0:Int target=OverloadByArity.compute1
+  let r1 = o.compute(1)  // $ type=r1:Int target=OverloadByArity.compute2
+  let r2 = o.compute(1, 2)  // $ type=r2:Int target=OverloadByArity.compute3
+  let r3 = o.compute(1, 2, 3)  // $ type=r3:Int target=OverloadByArity.compute4
 }
 
 // --- Overload by return type (contextual type) ---
@@ -171,10 +171,10 @@ class MultiInit {
 }
 
 func testInitOverloading() {
-  let m1 = MultiInit()  // $ type=m1:MultiInit target=MultiInit.init1 $ SPURIOUS: target=MultiInit.init2 target=MultiInit.init3 target=MultiInit.init4
-  let m2 = MultiInit(int: 5)  // $ type=m2:MultiInit target=MultiInit.init2 $ SPURIOUS: target=MultiInit.init1 target=MultiInit.init3 target=MultiInit.init4
-  let m3 = MultiInit(str: "x")  // $ type=m3:MultiInit target=MultiInit.init3 $ SPURIOUS: target=MultiInit.init1 target=MultiInit.init2 target=MultiInit.init4
-  let m4 = MultiInit(x: 1, y: 2)  // $ type=m4:MultiInit target=MultiInit.init4 $ SPURIOUS: target=MultiInit.init1 target=MultiInit.init2 target=MultiInit.init3
+  let m1 = MultiInit()  // $ type=m1:MultiInit target=MultiInit.init1
+  let m2 = MultiInit(int: 5)  // $ type=m2:MultiInit target=MultiInit.init2 $ SPURIOUS: target=MultiInit.init3
+  let m3 = MultiInit(str: "x")  // $ type=m3:MultiInit target=MultiInit.init3 $ SPURIOUS: target=MultiInit.init2
+  let m4 = MultiInit(x: 1, y: 2)  // $ type=m4:MultiInit target=MultiInit.init4
   let v = m1.getValue()  // $ type=v:String target=MultiInit.getValue
 }
 
@@ -297,9 +297,9 @@ class LabelVariants {
 
 func testLabelVariants() {
   let o = LabelVariants()  // $ target=LabelVariants.init
-  let r1 = o.send(to: "x")  // $ type=r1:String target=LabelVariants.send1 $ SPURIOUS: target=LabelVariants.send2 target=LabelVariants.send3
-  let r2 = o.send(from: "y")  // $ type=r2:String target=LabelVariants.send2 $ SPURIOUS: target=LabelVariants.send1 target=LabelVariants.send3
-  let r3 = o.send(to: "x", from: "y")  // $ type=r3:String target=LabelVariants.send3 $ SPURIOUS: target=LabelVariants.send1 target=LabelVariants.send2
+  let r1 = o.send(to: "x")  // $ type=r1:String target=LabelVariants.send1 $ SPURIOUS: target=LabelVariants.send2
+  let r2 = o.send(from: "y")  // $ type=r2:String target=LabelVariants.send2 $ SPURIOUS: target=LabelVariants.send1
+  let r3 = o.send(to: "x", from: "y")  // $ type=r3:String target=LabelVariants.send3
 }
 
 // --- Overload: generic function with different constraint satisfaction ---
@@ -368,18 +368,18 @@ class Widget {
   }
 
   convenience init(name: String) {  // name=Widget.init2
-    self.init(name: name, size: 1)  // $ target=Widget.init1 $ SPURIOUS: target=Widget.init2 target=Widget.init3
+    self.init(name: name, size: 1)  // $ target=Widget.init1
   }
 
   convenience init(size: Int) {  // name=Widget.init3
-    self.init(name: "default", size: size)  // $ target=Widget.init1 $ SPURIOUS: target=Widget.init2 target=Widget.init3
+    self.init(name: "default", size: size)  // $ target=Widget.init1
   }
 }
 
 func testConvenienceInit() {
-  let w1 = Widget(name: "a", size: 5)  // $ type=w1:Widget target=Widget.init1 $ SPURIOUS: target=Widget.init2 target=Widget.init3
-  let w2 = Widget(name: "b")  // $ type=w2:Widget target=Widget.init2 $ SPURIOUS: target=Widget.init1 target=Widget.init3
-  let w3 = Widget(size: 10)  // $ type=w3:Widget target=Widget.init3 $ SPURIOUS: target=Widget.init1 target=Widget.init2
+  let w1 = Widget(name: "a", size: 5)  // $ type=w1:Widget target=Widget.init1
+  let w2 = Widget(name: "b")  // $ type=w2:Widget target=Widget.init2 $ SPURIOUS: target=Widget.init3
+  let w3 = Widget(size: 10)  // $ type=w3:Widget target=Widget.init3 $ SPURIOUS: target=Widget.init2
 }
 
 // --- Overload: methods with closure parameters of different signatures ---
