@@ -506,5 +506,7 @@ class Node extends TDataFlowNode {
     result = this.(BuilderNode).getPostUpdateNode()
     or
     result = getCaptureSsaPostUpdate(this)
+    or
+    FlowSummaryOutput::summaryPostUpdateNode(getSummaryNode(result), getSummaryNode(this))
   }
 }
