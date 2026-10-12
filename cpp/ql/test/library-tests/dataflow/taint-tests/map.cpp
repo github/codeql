@@ -3,7 +3,7 @@
 
 using namespace std;
 namespace {
-char *source();
+char *source(); int source(int);
 }
 void sink(char *);
 void sink(const char *);
@@ -413,10 +413,10 @@ void test_unordered_map()
 	sink(m30.try_emplace(source(), 1, 2)); // $ MISSING: ast,ir
 	sink(m30); // $ MISSING: ast,ir
 	sink(m30["abc"]);
-	sink(m31.try_emplace("abc", source(), 2)); // $ ast,ir
+	sink(m31.try_emplace("abc", source(0), 2).first->second.first); // $ ast,ir
 	sink(m31); // $ ast,ir
 	sink(m31["abc"]); // $ ast,ir
-	sink(m32.try_emplace("abc", 1, source())); // $ ast,ir
+	sink(m32.try_emplace("abc", 1, source(0)).first->second.second); // $ ast,ir
 	sink(m32); // $ ast,ir
 	sink(m32["abc"]); // $ ast,ir
 
