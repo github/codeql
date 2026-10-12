@@ -689,6 +689,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       not postOrInOrder(n) and
       not additionalNode(n, _, _) and
       not inConditionalContext(n, _)
+      or
+      // A parameter pattern represented by the parameter itself should not be
+      // considered to have child nodes.
+      n.(Parameter).getPattern() = n and
+      not inConditionalContext(n, _)
     }
 
     private string catchClauseEmptyBodyTag() { result = "[CatchClauseEmptyBody]" }
@@ -1507,6 +1512,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isBefore(getParameterPatternOrBodyEntry(c, _, 1))
           or
           exists(CallableContextOption ctx, Parameter p, int i | p = getRankedParameter(c, ctx, i) |
+            exists(p.getDefaultValue()) and
+            p.getPattern() = p and
+            n1.isBefore(p) and
+            n2.isAfter(p)
+            or
             exists(MatchingSuccessor t |
               n1.isAfterValue(p.getPattern(), t) and
               if t.isMatch()
