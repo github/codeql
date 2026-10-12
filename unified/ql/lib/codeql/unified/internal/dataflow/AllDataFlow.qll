@@ -10,6 +10,7 @@ import DataFlowGraph
 import DataFlowInstantiation
 import DataFlowNode
 import DataFlowPlugin
+import FlowSummaries
 import LocalSsa
 import ParameterPositions
 import Step

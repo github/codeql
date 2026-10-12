@@ -139,7 +139,7 @@ private newtype TSelector =
 /**
  * A tuple from a model that identifies call sites.
  */
-private class Selector extends TSelector {
+class Selector extends TSelector {
   string getTypeString() { this = MkSelector(result, _, _, _, _) }
 
   boolean getSubtypesFlag() { this = MkSelector(_, result, _, _, _) }
@@ -286,6 +286,18 @@ private predicate normalizedSinkModel(
     string type, boolean subtypes, string rawName, string name, string argLabels, string argTypes
   |
     legacySinkModel(_, type, subtypes, rawName, argTypes, _, output, kind, provenance) and
+    parsedRawMethodName(rawName, name, argLabels) and
+    selector = MkSelector(type, subtypes, name, argLabels, argTypes)
+  )
+}
+
+predicate normalizedSummaryModel(
+  Selector selector, string input, string output, string kind, string provenance
+) {
+  exists(
+    string type, boolean subtypes, string rawName, string name, string argLabels, string argTypes
+  |
+    legacySummaryModel(_, type, subtypes, rawName, argTypes, _, input, output, kind, provenance) and
     parsedRawMethodName(rawName, name, argLabels) and
     selector = MkSelector(type, subtypes, name, argLabels, argTypes)
   )
