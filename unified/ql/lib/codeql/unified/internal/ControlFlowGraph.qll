@@ -56,7 +56,11 @@ module Ast implements AstSig<Location> {
   class Parameter extends U::Parameter {
     Expr getDefaultValue() { result = super.getDefault() }
 
-    AstNode getPattern() { result = super.getPattern() }
+    AstNode getPattern() {
+      result = super.getPattern()
+      or
+      not exists(super.getPattern()) and result = this
+    }
   }
 
   Parameter callableGetParameter(Callable c, int index) {
