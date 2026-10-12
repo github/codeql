@@ -22,18 +22,26 @@ module DataFlowInput implements InputSig<Location> {
   //
   // Parameter, argument, return, and out nodes and their positions/kinds
   //
-  class ReturnNode extends Node {
-    ReturnNode() {
-      // TODO: Handle short-hand returns such as `func foo() -> Int { 5 }`
-      this.asExpr() = any(ReturnExpr r).getValue()
-    }
+  private predicate isReturnNode(Node n, ReturnKind kind) {
+    // TODO: Handle short-hand returns such as `func foo() -> Int { 5 }`
+    n.asExpr() = any(ReturnExpr r).getValue() and exists(kind)
+  }
 
-    ReturnKind getKind() { exists(result) }
+  class ReturnNode extends Node {
+    ReturnNode() { isReturnNode(this, _) }
+
+    ReturnKind getKind() { isReturnNode(this, result) }
+  }
+
+  private predicate isOutNode(Node n, DataFlowCall call, ReturnKind kind) {
+    n.asExpr() = call.asExplicitCall() and exists(kind)
   }
 
   class OutNode extends Node {
-    OutNode() { this.asExpr() instanceof CallExpr }
+    OutNode() { isOutNode(this, _, _) }
   }
+
+  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { isOutNode(result, call, kind) }
 
   class ReturnKind = Unit;
 
@@ -89,10 +97,6 @@ module DataFlowInput implements InputSig<Location> {
   predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
     // This predicate is needed to implement the signature without empty recursion through ArgumentNode
     isArgumentNodeImpl(n, call, pos)
-  }
-
-  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-    result.asExpr() = call.asExplicitCall() and exists(kind)
   }
 
   //
