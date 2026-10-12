@@ -9,3 +9,7 @@ extensions:
       - ["", "TestType", true, "postUpdateArg(_:output:)", "", "", "Argument[0]", "Argument[output:].Member[outputField]", "value", "manual"]
       - ["", "TestType", true, "storeUnusualName(_:)", "", "", "Argument[0]", "ReturnValue.Member[unusualNameNotAppearingInSourceCode]", "value", "manual"]
       - ["", "TestType", true, "readUnusualName(_:)", "", "", "Argument[0].Member[unusualNameNotAppearingInSourceCode]", "ReturnValue", "value", "manual"]
+      - ["", "TestType", true, "intoCallback(_:_:)", "", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["", "TestType", true, "outOfCallback(_:)", "", "", "Argument[0].ReturnValue", "ReturnValue", "value", "manual"]
+      - ["", "TestType", true, "throughCallback(_:_:)", "", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["", "TestType", true, "throughCallback(_:_:)", "", "", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]
