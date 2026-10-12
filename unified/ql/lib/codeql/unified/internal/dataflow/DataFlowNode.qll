@@ -90,7 +90,8 @@ newtype TDataFlowNode =
   TImplicitParameterNode(DataFlowCallable callable, ImplicitParameterPosition pos) or
   TImplicitArgumentNode(DataFlowCall call, ImplicitArgumentPosition pos, Boolean isPost) or
   TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node) or
-  TCaptureSsaNode(CaptureSsaOutput::SynthesizedCaptureNode node)
+  TCaptureSsaNode(CaptureSsaOutput::SynthesizedCaptureNode node) or
+  TSummaryNode(FlowSummaryOutput::SummaryNode node)
 
 class TDataFlowNodeStage1 =
   TValueNode or TStrictlyIncomingValue or TExprPostUpdateNode or TLocalVariableRefNode or
@@ -375,6 +376,11 @@ class Node extends TDataFlowNode {
       this = TCaptureSsaNode(node) and
       result = "[capture] " + node.toString()
     )
+    or
+    exists(FlowSummaryOutput::SummaryNode node |
+      this = TSummaryNode(node) and
+      result = node.toString()
+    )
   }
 
   /** Gets the location of this data flow node. */
@@ -419,6 +425,11 @@ class Node extends TDataFlowNode {
     exists(DataFlowCallable callable |
       this.isCallableEx(callable) and
       result.asSourceCallable() = callable.asSourceCallable().getEnclosingCallable()
+    )
+    or
+    exists(FlowSummaryOutput::SummaryNode sn |
+      this = TSummaryNode(sn) and
+      result = sn.getEnclosingCallable()
     )
   }
 
