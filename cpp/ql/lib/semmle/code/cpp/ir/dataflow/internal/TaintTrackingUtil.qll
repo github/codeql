@@ -165,7 +165,11 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink, st
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
   node instanceof ArgumentNode and
-  c.isSingleton(any(ElementContent ec))
+  (
+    c.isSingleton(any(ElementContent ec))
+    or
+    c.isSingleton(any(FieldContent fc | fc.getField().hasName("second")))
+  )
 }
 
 /**
