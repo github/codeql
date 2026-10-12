@@ -391,6 +391,9 @@ class Node extends TDataFlowNode {
       this = TCaptureSsaNode(node) and
       result = node.getLocation()
     )
+    or
+    this instanceof TSummaryNode and
+    result instanceof EmptyLocation
   }
 
   /** Gets the data-flow callable containing this data flow node. */
