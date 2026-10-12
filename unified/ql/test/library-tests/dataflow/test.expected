@@ -182,6 +182,25 @@ edges
 | flow-summaries.swift:3:9:3:9 | y | flow-summaries.swift:4:10:4:10 | y | provenance |  |
 | flow-summaries.swift:3:13:3:36 | ... .identityFlow(...) | flow-summaries.swift:3:9:3:9 | y | provenance |  |
 | flow-summaries.swift:3:35:3:35 | x | flow-summaries.swift:3:13:3:36 | ... .identityFlow(...) | provenance |  |
+| flow-summaries.swift:8:9:8:9 | x | flow-summaries.swift:9:37:9:37 | x | provenance |  |
+| flow-summaries.swift:8:13:8:26 | source(...) | flow-summaries.swift:8:9:8:9 | x | provenance |  |
+| flow-summaries.swift:9:9:9:13 | array [ArrayElement] | flow-summaries.swift:10:18:10:22 | array [ArrayElement] | provenance |  |
+| flow-summaries.swift:9:17:9:38 | ... .storeArray(...) [ArrayElement] | flow-summaries.swift:9:9:9:13 | array [ArrayElement] | provenance |  |
+| flow-summaries.swift:9:37:9:37 | x | flow-summaries.swift:9:17:9:38 | ... .storeArray(...) [ArrayElement] | provenance |  |
+| flow-summaries.swift:10:13:10:13 | y | flow-summaries.swift:11:14:11:14 | y | provenance |  |
+| flow-summaries.swift:10:18:10:22 | array [ArrayElement] | flow-summaries.swift:10:13:10:13 | y | provenance |  |
+| flow-summaries.swift:16:9:16:13 | array [ArrayElement] | flow-summaries.swift:17:32:17:36 | array [ArrayElement] | provenance |  |
+| flow-summaries.swift:16:17:16:48 | ArrayLiteral [ArrayElement] | flow-summaries.swift:16:9:16:13 | array [ArrayElement] | provenance |  |
+| flow-summaries.swift:16:18:16:31 | source(...) | flow-summaries.swift:16:17:16:48 | ArrayLiteral [ArrayElement] | provenance |  |
+| flow-summaries.swift:16:34:16:47 | source(...) | flow-summaries.swift:16:17:16:48 | ArrayLiteral [ArrayElement] | provenance |  |
+| flow-summaries.swift:17:9:17:9 | y | flow-summaries.swift:18:10:18:10 | y | provenance |  |
+| flow-summaries.swift:17:13:17:37 | ... .readArray(...) | flow-summaries.swift:17:9:17:9 | y | provenance |  |
+| flow-summaries.swift:17:32:17:36 | array [ArrayElement] | flow-summaries.swift:17:13:17:37 | ... .readArray(...) | provenance |  |
+| flow-summaries.swift:25:9:25:9 | x | flow-summaries.swift:28:36:28:36 | x | provenance |  |
+| flow-summaries.swift:25:13:25:26 | source(...) | flow-summaries.swift:25:9:25:9 | x | provenance |  |
+| flow-summaries.swift:28:36:28:36 | x | flow-summaries.swift:28:47:28:49 | [post] box [outputField] | provenance |  |
+| flow-summaries.swift:28:47:28:49 | [post] box [outputField] | flow-summaries.swift:29:10:29:12 | box [outputField] | provenance |  |
+| flow-summaries.swift:29:10:29:12 | box [outputField] | flow-summaries.swift:29:10:29:24 | ... .outputField | provenance |  |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | implicit-self.swift:17:14:17:17 | self [x] | provenance |  |
 | implicit-self.swift:16:9:16:14 | ... .x | implicit-self.swift:16:9:16:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:16:9:16:14 | ... .x | provenance |  |
@@ -602,6 +621,28 @@ nodes
 | flow-summaries.swift:3:13:3:36 | ... .identityFlow(...) | semmle.label | ... .identityFlow(...) |
 | flow-summaries.swift:3:35:3:35 | x | semmle.label | x |
 | flow-summaries.swift:4:10:4:10 | y | semmle.label | y |
+| flow-summaries.swift:8:9:8:9 | x | semmle.label | x |
+| flow-summaries.swift:8:13:8:26 | source(...) | semmle.label | source(...) |
+| flow-summaries.swift:9:9:9:13 | array [ArrayElement] | semmle.label | array [ArrayElement] |
+| flow-summaries.swift:9:17:9:38 | ... .storeArray(...) [ArrayElement] | semmle.label | ... .storeArray(...) [ArrayElement] |
+| flow-summaries.swift:9:37:9:37 | x | semmle.label | x |
+| flow-summaries.swift:10:13:10:13 | y | semmle.label | y |
+| flow-summaries.swift:10:18:10:22 | array [ArrayElement] | semmle.label | array [ArrayElement] |
+| flow-summaries.swift:11:14:11:14 | y | semmle.label | y |
+| flow-summaries.swift:16:9:16:13 | array [ArrayElement] | semmle.label | array [ArrayElement] |
+| flow-summaries.swift:16:17:16:48 | ArrayLiteral [ArrayElement] | semmle.label | ArrayLiteral [ArrayElement] |
+| flow-summaries.swift:16:18:16:31 | source(...) | semmle.label | source(...) |
+| flow-summaries.swift:16:34:16:47 | source(...) | semmle.label | source(...) |
+| flow-summaries.swift:17:9:17:9 | y | semmle.label | y |
+| flow-summaries.swift:17:13:17:37 | ... .readArray(...) | semmle.label | ... .readArray(...) |
+| flow-summaries.swift:17:32:17:36 | array [ArrayElement] | semmle.label | array [ArrayElement] |
+| flow-summaries.swift:18:10:18:10 | y | semmle.label | y |
+| flow-summaries.swift:25:9:25:9 | x | semmle.label | x |
+| flow-summaries.swift:25:13:25:26 | source(...) | semmle.label | source(...) |
+| flow-summaries.swift:28:36:28:36 | x | semmle.label | x |
+| flow-summaries.swift:28:47:28:49 | [post] box [outputField] | semmle.label | [post] box [outputField] |
+| flow-summaries.swift:29:10:29:12 | box [outputField] | semmle.label | box [outputField] |
+| flow-summaries.swift:29:10:29:24 | ... .outputField | semmle.label | ... .outputField |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | semmle.label | [post] self [x] |
 | implicit-self.swift:16:9:16:14 | ... .x | semmle.label | ... .x |
 | implicit-self.swift:16:18:16:31 | source(...) | semmle.label | source(...) |
@@ -922,6 +963,10 @@ testFailures
 | enums.swift:76:14:76:14 | x | enums.swift:73:34:73:47 | source(...) | enums.swift:76:14:76:14 | x | $@ | enums.swift:73:34:73:47 | source(...) | source(...) |
 | enums.swift:84:14:84:14 | x | enums.swift:73:34:73:47 | source(...) | enums.swift:84:14:84:14 | x | $@ | enums.swift:73:34:73:47 | source(...) | source(...) |
 | flow-summaries.swift:4:10:4:10 | y | flow-summaries.swift:2:13:2:26 | source(...) | flow-summaries.swift:4:10:4:10 | y | $@ | flow-summaries.swift:2:13:2:26 | source(...) | source(...) |
+| flow-summaries.swift:11:14:11:14 | y | flow-summaries.swift:8:13:8:26 | source(...) | flow-summaries.swift:11:14:11:14 | y | $@ | flow-summaries.swift:8:13:8:26 | source(...) | source(...) |
+| flow-summaries.swift:18:10:18:10 | y | flow-summaries.swift:16:18:16:31 | source(...) | flow-summaries.swift:18:10:18:10 | y | $@ | flow-summaries.swift:16:18:16:31 | source(...) | source(...) |
+| flow-summaries.swift:18:10:18:10 | y | flow-summaries.swift:16:34:16:47 | source(...) | flow-summaries.swift:18:10:18:10 | y | $@ | flow-summaries.swift:16:34:16:47 | source(...) | source(...) |
+| flow-summaries.swift:29:10:29:24 | ... .outputField | flow-summaries.swift:25:13:25:26 | source(...) | flow-summaries.swift:29:10:29:24 | ... .outputField | $@ | flow-summaries.swift:25:13:25:26 | source(...) | source(...) |
 | implicit-self.swift:17:14:17:19 | ... .x | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:17:14:17:19 | ... .x | $@ | implicit-self.swift:16:18:16:31 | source(...) | source(...) |
 | implicit-self.swift:23:14:23:14 | x | implicit-self.swift:22:13:22:26 | source(...) | implicit-self.swift:23:14:23:14 | x | $@ | implicit-self.swift:22:13:22:26 | source(...) | source(...) |
 | implicit-self.swift:29:14:29:19 | ... .x | implicit-self.swift:28:13:28:26 | source(...) | implicit-self.swift:29:14:29:19 | ... .x | $@ | implicit-self.swift:28:13:28:26 | source(...) | source(...) |
