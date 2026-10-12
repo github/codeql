@@ -35,3 +35,24 @@ func t5() {
     let z = TestType.readUnusualName(y)
     sink(z)  // $ hasValueFlow=t5.1
 }
+
+func t6() {
+    let x = source("t6.1")
+    TestType.intoCallback(x) { y in
+        sink(y)  // $ hasValueFlow=t6.1
+    }
+}
+
+func t7() {
+    let y = TestType.outOfCallback {
+        return source("t7.1")
+    }
+    sink(y)  // $ hasValueFlow=t7.1
+}
+
+func t8() {
+    sink(TestType.throughCallback(source("t8.1")) { y in return y })  // $ hasValueFlow=t8.1
+    sink(TestType.throughCallback(source("t8.2")) { y in return y + "x" })  // $ hasTaintFlow=t8.2
+    sink(TestType.throughCallback("safe") { y in return y })  // no flow
+    sink(TestType.throughCallback(source("t8.3")) { y in return "safe" })  // no flow
+}
