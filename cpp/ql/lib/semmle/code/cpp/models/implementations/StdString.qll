@@ -36,43 +36,6 @@ private class StdBasicStringIterator extends Iterator, Type {
 }
 
 /**
- * A `std::string` function for which taint should be propagated.
- */
-abstract private class StdStringTaintFunction extends TaintFunction {
-  /**
-   * Gets the index of a parameter to this function that is a string.
-   */
-  final int getAStringParameterIndex() {
-    exists(Type paramType | paramType = this.getParameter(result).getUnspecifiedType() |
-      // e.g. `std::basic_string::CharT *`
-      paramType instanceof PointerType
-      or
-      // e.g. `std::basic_string &`, avoiding `const Allocator&`
-      paramType instanceof ReferenceType and
-      not paramType.(ReferenceType).getBaseType() =
-        this.getDeclaringType().getTemplateArgument(2).(Type).getUnspecifiedType()
-    )
-  }
-
-  /**
-   * Gets the index of a parameter to this function that is a character.
-   */
-  final int getACharParameterIndex() {
-    exists(Type paramType | paramType = this.getParameter(result).getUnspecifiedType() |
-      // i.e. `std::basic_string::CharT`
-      paramType = this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType()
-    )
-  }
-
-  /**
-   * Gets the index of a parameter to this function that is an iterator.
-   */
-  final int getAnIteratorParameterIndex() {
-    this.getParameter(result).getUnspecifiedType() instanceof Iterator
-  }
-}
-
-/**
  * Additional model for `std::string` constructors that reference the character
  * type of the container, or an iterator.  For example construction from
  * iterators:
@@ -80,24 +43,8 @@ abstract private class StdStringTaintFunction extends TaintFunction {
  * std::string b(a.begin(), a.end());
  * ```
  */
-private class StdStringConstructor extends Constructor, StdStringTaintFunction, SideEffectFunction,
-  AliasFunction
-{
+private class StdStringConstructor extends Constructor, SideEffectFunction, AliasFunction {
   StdStringConstructor() { this.getDeclaringType() instanceof StdBasicString }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from any parameter of the value type to the returned object
-    (
-      input.isParameterDeref(this.getAStringParameterIndex()) or
-      input.isParameter(this.getACharParameterIndex()) or
-      input.isParameter(this.getAnIteratorParameterIndex())
-    ) and
-    (
-      output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
-      or
-      output.isQualifierObject()
-    )
-  }
 
   override predicate parameterNeverEscapes(int index) { index = -1 }
 
@@ -143,14 +90,6 @@ class StdStringCStr extends MemberFunction {
   StdStringCStr() { this.getClassAndName("c_str") instanceof StdBasicString }
 }
 
-private class StdStringCStrModel extends StdStringCStr, StdStringTaintFunction {
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from string itself (qualifier) to return value
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
-  }
-}
-
 /**
  * The `std::string` function `data`.
  */
@@ -158,65 +97,13 @@ class StdStringData extends MemberFunction {
   StdStringData() { this.getClassAndName("data") instanceof StdBasicString }
 }
 
-private class StdStringDataModel extends StdStringData, StdStringTaintFunction {
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from string itself (qualifier) to return value
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
-    or
-    // reverse flow from returned reference to the qualifier (for writes to
-    // `data`)
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
-  }
-
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
-}
-
-/**
- * The `std::string` function `push_back`.
- */
-private class StdStringPush extends StdStringTaintFunction {
-  StdStringPush() { this.getClassAndName("push_back") instanceof StdBasicString }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from parameter to qualifier
-    input.isParameter(0) and
-    output.isQualifierObject()
-  }
-
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
-}
-
-/**
- * The `std::string` functions `front` and `back`.
- */
-private class StdStringFrontBack extends StdStringTaintFunction {
-  StdStringFrontBack() { this.getClassAndName(["front", "back"]) instanceof StdBasicString }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from object to returned reference
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
-  }
-}
-
 /**
  * The (non-member) `std::string` function `operator+`.
  */
-private class StdStringPlus extends StdStringTaintFunction, SideEffectFunction, AliasFunction {
+private class StdStringPlus extends SideEffectFunction, AliasFunction {
   StdStringPlus() {
     this.hasQualifiedName(["std", "bsl"], "operator+") and
     this.getUnspecifiedType() instanceof StdBasicString
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from parameters to return value
-    (
-      input.isParameterDeref(0) or
-      input.isParameterDeref(1)
-    ) and
-    output.isReturnValue()
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
@@ -241,31 +128,10 @@ private class StdStringPlus extends StdStringTaintFunction, SideEffectFunction, 
  * All of these functions combine the existing string with a new
  * string (or character) from one of the arguments.
  */
-private class StdStringAppend extends StdStringTaintFunction, SideEffectFunction, AliasFunction {
+private class StdStringAppend extends SideEffectFunction, AliasFunction {
   StdStringAppend() {
     this.getClassAndName(["operator+=", "append", "replace"]) instanceof StdBasicString
   }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from string and parameter to string (qualifier) and return value
-    (
-      input.isQualifierObject() or
-      input.isParameterDeref(this.getAStringParameterIndex()) or
-      input.isParameter(this.getACharParameterIndex()) or
-      input.isParameter(this.getAnIteratorParameterIndex())
-    ) and
-    (
-      output.isQualifierObject() or
-      output.isReturnValueDeref()
-    )
-    or
-    // reverse flow from returned reference to the qualifier (for writes to
-    // the result)
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
-  }
-
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
 
@@ -285,108 +151,10 @@ private class StdStringAppend extends StdStringTaintFunction, SideEffectFunction
 }
 
 /**
- * The `std::string` function `insert`.
- */
-private class StdStringInsert extends StdStringTaintFunction {
-  StdStringInsert() { this.getClassAndName("insert") instanceof StdBasicString }
-
-  /**
-   * Holds if the return type is an iterator.
-   */
-  predicate hasIteratorReturnValue() { this.getType() instanceof Iterator }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from string and parameter to string (qualifier) and return value
-    (
-      input.isQualifierObject() or
-      input.isParameterDeref(this.getAStringParameterIndex()) or
-      input.isParameter(this.getACharParameterIndex()) or
-      input.isParameter(this.getAnIteratorParameterIndex())
-    ) and
-    (
-      output.isQualifierObject()
-      or
-      if this.hasIteratorReturnValue() then output.isReturnValue() else output.isReturnValueDeref()
-    )
-    or
-    // reverse flow from returned reference to the qualifier (for writes to
-    // the result)
-    not this.hasIteratorReturnValue() and
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
-  }
-
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
-}
-
-/**
- * The standard function `std::string.assign`.
- */
-private class StdStringAssign extends StdStringTaintFunction {
-  StdStringAssign() { this.getClassAndName("assign") instanceof StdBasicString }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from parameter to string itself (qualifier) and return value
-    (
-      input.isParameterDeref(this.getAStringParameterIndex()) or
-      input.isParameter(this.getACharParameterIndex()) or
-      input.isParameter(this.getAnIteratorParameterIndex())
-    ) and
-    (
-      output.isQualifierObject() or
-      output.isReturnValueDeref()
-    )
-    or
-    // reverse flow from returned reference to the qualifier (for writes to
-    // the result)
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
-  }
-}
-
-/**
- * The standard function `std::string.copy`.
- */
-private class StdStringCopy extends StdStringTaintFunction {
-  StdStringCopy() { this.getClassAndName("copy") instanceof StdBasicString }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // copy(dest, num, pos)
-    input.isQualifierObject() and
-    output.isParameterDeref(0)
-  }
-}
-
-/**
- * The standard function `std::string.substr`.
- */
-private class StdStringSubstr extends StdStringTaintFunction {
-  StdStringSubstr() { this.getClassAndName("substr") instanceof StdBasicString }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // substr(pos, num)
-    input.isQualifierObject() and
-    output.isReturnValue()
-  }
-}
-
-/**
  * The `std::string` functions `at` and `operator[]`.
  */
-private class StdStringAt extends StdStringTaintFunction, SideEffectFunction, AliasFunction {
+private class StdStringAt extends SideEffectFunction, AliasFunction {
   StdStringAt() { this.getClassAndName(["at", "operator[]"]) instanceof StdBasicString }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from qualifier to referenced return value
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
-    or
-    // reverse flow from returned reference to the qualifier
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
-  }
-
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 
   override predicate parameterNeverEscapes(int index) { index = -1 }
 
