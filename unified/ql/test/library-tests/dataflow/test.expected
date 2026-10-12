@@ -204,6 +204,14 @@ edges
 | flow-summaries.swift:28:36:28:36 | x | flow-summaries.swift:28:47:28:49 | [post] box [outputField] | provenance |  |
 | flow-summaries.swift:28:47:28:49 | [post] box [outputField] | flow-summaries.swift:29:10:29:12 | box [outputField] | provenance |  |
 | flow-summaries.swift:29:10:29:12 | box [outputField] | flow-summaries.swift:29:10:29:24 | ... .outputField | provenance |  |
+| flow-summaries.swift:33:9:33:9 | x | flow-summaries.swift:34:39:34:39 | x | provenance |  |
+| flow-summaries.swift:33:13:33:26 | source(...) | flow-summaries.swift:33:9:33:9 | x | provenance |  |
+| flow-summaries.swift:34:9:34:9 | y [unusualNameNotAppearingInSourceCode] | flow-summaries.swift:35:38:35:38 | y [unusualNameNotAppearingInSourceCode] | provenance |  |
+| flow-summaries.swift:34:13:34:40 | ... .storeUnusualName(...) [unusualNameNotAppearingInSourceCode] | flow-summaries.swift:34:9:34:9 | y [unusualNameNotAppearingInSourceCode] | provenance |  |
+| flow-summaries.swift:34:39:34:39 | x | flow-summaries.swift:34:13:34:40 | ... .storeUnusualName(...) [unusualNameNotAppearingInSourceCode] | provenance |  |
+| flow-summaries.swift:35:9:35:9 | z | flow-summaries.swift:36:10:36:10 | z | provenance |  |
+| flow-summaries.swift:35:13:35:39 | ... .readUnusualName(...) | flow-summaries.swift:35:9:35:9 | z | provenance |  |
+| flow-summaries.swift:35:38:35:38 | y [unusualNameNotAppearingInSourceCode] | flow-summaries.swift:35:13:35:39 | ... .readUnusualName(...) | provenance |  |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | implicit-self.swift:17:14:17:17 | self [x] | provenance |  |
 | implicit-self.swift:16:9:16:14 | ... .x | implicit-self.swift:16:9:16:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:16:9:16:14 | ... .x | provenance |  |
@@ -641,6 +649,15 @@ nodes
 | flow-summaries.swift:28:47:28:49 | [post] box [outputField] | semmle.label | [post] box [outputField] |
 | flow-summaries.swift:29:10:29:12 | box [outputField] | semmle.label | box [outputField] |
 | flow-summaries.swift:29:10:29:24 | ... .outputField | semmle.label | ... .outputField |
+| flow-summaries.swift:33:9:33:9 | x | semmle.label | x |
+| flow-summaries.swift:33:13:33:26 | source(...) | semmle.label | source(...) |
+| flow-summaries.swift:34:9:34:9 | y [unusualNameNotAppearingInSourceCode] | semmle.label | y [unusualNameNotAppearingInSourceCode] |
+| flow-summaries.swift:34:13:34:40 | ... .storeUnusualName(...) [unusualNameNotAppearingInSourceCode] | semmle.label | ... .storeUnusualName(...) [unusualNameNotAppearingInSourceCode] |
+| flow-summaries.swift:34:39:34:39 | x | semmle.label | x |
+| flow-summaries.swift:35:9:35:9 | z | semmle.label | z |
+| flow-summaries.swift:35:13:35:39 | ... .readUnusualName(...) | semmle.label | ... .readUnusualName(...) |
+| flow-summaries.swift:35:38:35:38 | y [unusualNameNotAppearingInSourceCode] | semmle.label | y [unusualNameNotAppearingInSourceCode] |
+| flow-summaries.swift:36:10:36:10 | z | semmle.label | z |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | semmle.label | [post] self [x] |
 | implicit-self.swift:16:9:16:14 | ... .x | semmle.label | ... .x |
 | implicit-self.swift:16:18:16:31 | source(...) | semmle.label | source(...) |
@@ -955,6 +972,7 @@ testFailures
 | flow-summaries.swift:18:10:18:10 | y | flow-summaries.swift:16:18:16:31 | source(...) | flow-summaries.swift:18:10:18:10 | y | $@ | flow-summaries.swift:16:18:16:31 | source(...) | source(...) |
 | flow-summaries.swift:18:10:18:10 | y | flow-summaries.swift:16:34:16:47 | source(...) | flow-summaries.swift:18:10:18:10 | y | $@ | flow-summaries.swift:16:34:16:47 | source(...) | source(...) |
 | flow-summaries.swift:29:10:29:24 | ... .outputField | flow-summaries.swift:25:13:25:26 | source(...) | flow-summaries.swift:29:10:29:24 | ... .outputField | $@ | flow-summaries.swift:25:13:25:26 | source(...) | source(...) |
+| flow-summaries.swift:36:10:36:10 | z | flow-summaries.swift:33:13:33:26 | source(...) | flow-summaries.swift:36:10:36:10 | z | $@ | flow-summaries.swift:33:13:33:26 | source(...) | source(...) |
 | implicit-self.swift:17:14:17:19 | ... .x | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:17:14:17:19 | ... .x | $@ | implicit-self.swift:16:18:16:31 | source(...) | source(...) |
 | implicit-self.swift:23:14:23:14 | x | implicit-self.swift:22:13:22:26 | source(...) | implicit-self.swift:23:14:23:14 | x | $@ | implicit-self.swift:22:13:22:26 | source(...) | source(...) |
 | implicit-self.swift:29:14:29:19 | ... .x | implicit-self.swift:28:13:28:26 | source(...) | implicit-self.swift:29:14:29:19 | ... .x | $@ | implicit-self.swift:28:13:28:26 | source(...) | source(...) |
