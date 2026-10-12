@@ -427,10 +427,10 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
         _ in
     }
     let _ = ArchiveByteStream.fileStream(
-        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append,
+        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, // $ SPURIOUS: Alert
         permissions: .ownerRead)  // $ MISSING: Alert
     ArchiveByteStream.withFileStream(
-        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append,
+        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, // $ SPURIOUS: Alert
         permissions: .ownerRead
     ) { _ in }  // $ MISSING: Alert
     let _ = Bundle(url: remoteUrl)  // $ Alert
@@ -523,8 +523,8 @@ func testPathInjection2(
     var u1 = URL(filePath: "")
     _ = NSData(contentsOf: u1)
     _ = NSData(contentsOf: u1.appendingPathComponent(""))
-    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString))  // $ MISSING: Alert
-    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent(""))  // $ MISSING: Alert
+    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString))  // $ Alert
+    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent(""))  // $ Alert
     u1.appendPathComponent(remoteString)
     _ = NSData(contentsOf: u1)  // $ MISSING: Alert
 
@@ -534,7 +534,7 @@ func testPathInjection2(
     let u3 = NSURL(string: "")!
     Data("").write(to: u3.filePathURL!, options: [])
     Data("").write(to: u3.appendingPathComponent("")!, options: [])
-    Data("").write(to: u3.appendingPathComponent(remoteString)!, options: [])  // $ MISSING: Alert
+    Data("").write(to: u3.appendingPathComponent(remoteString)!, options: [])  // $ Alert
 
     let u4 = NSURL(string: remoteString)!
     Data("").write(to: u4.filePathURL!, options: [])  // $ MISSING: Alert
