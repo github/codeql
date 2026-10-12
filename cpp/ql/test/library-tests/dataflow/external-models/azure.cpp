@@ -81,6 +81,8 @@ namespace Azure
   template <typename T>
     class Nullable
     {
+      T m_value;
+
     public:
       Nullable();
       Nullable(const T);
