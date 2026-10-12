@@ -368,11 +368,11 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     let _ = fm.replaceItemAt(remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [])  // $ Alert
     let _ = fm.replaceItemAt(safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [])  // $ Alert
     fm.replaceItem(
-        at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [], // $ SPURIOUS: Alert
-        resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert
+        at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [], // $ Alert
+        resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert // reported on a different line
     fm.replaceItem(
-        at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [], // $ SPURIOUS: Alert
-        resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert
+        at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [], // $ Alert
+        resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert // reported on a different line
     fm.copyItem(at: remoteUrl, to: safeUrl)  // $ Alert
     fm.copyItem(at: safeUrl, to: remoteUrl)  // $ Alert
     fm.copyItem(atPath: remoteString, toPath: "")  // $ Alert
@@ -427,12 +427,12 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
         _ in
     }
     let _ = ArchiveByteStream.fileStream(
-        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, // $ SPURIOUS: Alert
-        permissions: .ownerRead)  // $ MISSING: Alert
+        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, // $ Alert
+        permissions: .ownerRead)  // $ MISSING: Alert // reported on a different line
     ArchiveByteStream.withFileStream(
-        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, // $ SPURIOUS: Alert
+        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, // $ Alert
         permissions: .ownerRead
-    ) { _ in }  // $ MISSING: Alert
+    ) { _ in }  // $ MISSING: Alert // reported on a different line
     let _ = Bundle(url: remoteUrl)  // $ Alert
     let _ = Bundle(path: remoteString)  // $ Alert
 
