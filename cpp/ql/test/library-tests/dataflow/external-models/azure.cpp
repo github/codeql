@@ -21,13 +21,28 @@ namespace std
 		void swap(pair& p) /*noexcept(...)*/;
 	};
 
-  class string
-  {
-  public:
-    string();
-    string(const char *);
-    ~string();
-  };
+	template<class charT> struct char_traits;
+
+	typedef size_t streamsize;
+
+	template <class T> class allocator {
+	public:
+		allocator() throw();
+		typedef size_t size_type;
+	};
+
+	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
+	class basic_string {
+	public:
+		using value_type = charT;
+		using reference = value_type&;
+		using const_reference = const value_type&;
+		typedef typename Allocator::size_type size_type;
+
+    basic_string(const charT* s, const Allocator& a = Allocator());
+	};
+
+	typedef basic_string<char> string;
 
   template <typename K, typename V>
   class map
