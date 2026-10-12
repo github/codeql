@@ -19,6 +19,9 @@ extensions:
       - ["file", "local"]
       - ["windows-registry", "local"]
 
+      # AI threat models
+      - ["ai", "all"]
+
       # Android threat models
       - ["android-external-storage-dir", "android"]
       - ["contentprovider", "android"]
