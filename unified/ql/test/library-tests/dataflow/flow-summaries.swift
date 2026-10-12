@@ -28,3 +28,10 @@ func t4() {
     let y = TestType.postUpdateArg(x, output: box)
     sink(box.outputField)  // $ hasValueFlow=t4.1
 }
+
+func t5() {
+    let x = source("t5.1")
+    let y = TestType.storeUnusualName(x)
+    let z = TestType.readUnusualName(y)
+    sink(z)  // $ MISSING: hasValueFlow=t5.1
+}

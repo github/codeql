@@ -7,3 +7,5 @@ extensions:
       - ["", "TestType", true, "storeArray(_:)", "", "", "Argument[0]", "ReturnValue.ArrayElement", "value", "manual"]
       - ["", "TestType", true, "readArray(_:)", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
       - ["", "TestType", true, "postUpdateArg(_:output:)", "", "", "Argument[0]", "Argument[output:].Member[outputField]", "value", "manual"]
+      - ["", "TestType", true, "storeUnusualName(_:)", "", "", "Argument[0]", "ReturnValue.Member[unusualNameNotAppearingInSourceCode]", "value", "manual"]
+      - ["", "TestType", true, "readUnusualName(_:)", "", "", "Argument[0].Member[unusualNameNotAppearingInSourceCode]", "ReturnValue", "value", "manual"]
