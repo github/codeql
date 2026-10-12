@@ -223,6 +223,7 @@ edges
 | flow-summaries.swift:55:35:55:48 | source(...) | flow-summaries.swift:55:53:55:53 | y | provenance |  |
 | flow-summaries.swift:55:53:55:53 | y | flow-summaries.swift:55:65:55:65 | y | provenance |  |
 | flow-summaries.swift:55:65:55:65 | y | flow-summaries.swift:55:65:55:71 | ... + ... | provenance |  |
+| flow-summaries.swift:61:29:61:42 | source(...) | flow-summaries.swift:61:10:61:43 | ... .taintFlow(...) | provenance |  |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | implicit-self.swift:17:14:17:17 | self [x] | provenance |  |
 | implicit-self.swift:16:9:16:14 | ... .x | implicit-self.swift:16:9:16:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:16:9:16:14 | ... .x | provenance |  |
@@ -692,6 +693,8 @@ nodes
 | flow-summaries.swift:55:53:55:53 | y | semmle.label | y |
 | flow-summaries.swift:55:65:55:65 | y | semmle.label | y |
 | flow-summaries.swift:55:65:55:71 | ... + ... | semmle.label | ... + ... |
+| flow-summaries.swift:61:10:61:43 | ... .taintFlow(...) | semmle.label | ... .taintFlow(...) |
+| flow-summaries.swift:61:29:61:42 | source(...) | semmle.label | source(...) |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | semmle.label | [post] self [x] |
 | implicit-self.swift:16:9:16:14 | ... .x | semmle.label | ... .x |
 | implicit-self.swift:16:18:16:31 | source(...) | semmle.label | source(...) |
@@ -1023,6 +1026,7 @@ testFailures
 | flow-summaries.swift:50:10:50:10 | y | flow-summaries.swift:48:16:48:29 | source(...) | flow-summaries.swift:50:10:50:10 | y | $@ | flow-summaries.swift:48:16:48:29 | source(...) | source(...) |
 | flow-summaries.swift:54:10:54:67 | ... .throughCallback(...) | flow-summaries.swift:54:35:54:48 | source(...) | flow-summaries.swift:54:10:54:67 | ... .throughCallback(...) | $@ | flow-summaries.swift:54:35:54:48 | source(...) | source(...) |
 | flow-summaries.swift:55:10:55:73 | ... .throughCallback(...) | flow-summaries.swift:55:35:55:48 | source(...) | flow-summaries.swift:55:10:55:73 | ... .throughCallback(...) | $@ | flow-summaries.swift:55:35:55:48 | source(...) | source(...) |
+| flow-summaries.swift:61:10:61:43 | ... .taintFlow(...) | flow-summaries.swift:61:29:61:42 | source(...) | flow-summaries.swift:61:10:61:43 | ... .taintFlow(...) | $@ | flow-summaries.swift:61:29:61:42 | source(...) | source(...) |
 | implicit-self.swift:17:14:17:19 | ... .x | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:17:14:17:19 | ... .x | $@ | implicit-self.swift:16:18:16:31 | source(...) | source(...) |
 | implicit-self.swift:23:14:23:14 | x | implicit-self.swift:22:13:22:26 | source(...) | implicit-self.swift:23:14:23:14 | x | $@ | implicit-self.swift:22:13:22:26 | source(...) | source(...) |
 | implicit-self.swift:29:14:29:19 | ... .x | implicit-self.swift:28:13:28:26 | source(...) | implicit-self.swift:29:14:29:19 | ... .x | $@ | implicit-self.swift:28:13:28:26 | source(...) | source(...) |

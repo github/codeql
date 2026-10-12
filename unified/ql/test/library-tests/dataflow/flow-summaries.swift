@@ -56,3 +56,7 @@ func t8() {
     sink(TestType.throughCallback("safe") { y in return y })  // no flow
     sink(TestType.throughCallback(source("t8.3")) { y in return "safe" })  // no flow
 }
+
+func t9() {
+    sink(TestType.taintFlow(source("t9.1")))  // $ hasTaintFlow=t9.1
+}
