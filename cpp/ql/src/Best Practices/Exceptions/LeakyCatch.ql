@@ -9,6 +9,7 @@
  *       reliability
  *       efficiency
  *       correctness
+ *       error-handling
  *       exceptions
  *       external/cwe/cwe-401
  */

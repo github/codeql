@@ -8,8 +8,8 @@
  * @precision high
  * @id cpp/constructor-delegation
  * @tags quality
- *       maintainability
- *       readability
+ *       reliability
+ *       correctness
  *       language-features
  */
 

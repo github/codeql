@@ -9,6 +9,7 @@
  * @tags quality
  *       maintainability
  *       readability
+ *       useless-code
  */
 
 import cpp

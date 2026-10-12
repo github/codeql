@@ -8,6 +8,7 @@
  * @tags quality
  *       maintainability
  *       readability
+ *       useless-code
  *       language-features
  */
 

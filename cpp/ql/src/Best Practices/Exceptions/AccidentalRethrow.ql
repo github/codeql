@@ -8,6 +8,7 @@
  * @tags quality
  *       reliability
  *       correctness
+ *       error-handling
  *       exceptions
  */
 

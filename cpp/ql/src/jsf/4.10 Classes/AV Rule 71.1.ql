@@ -7,6 +7,7 @@
  * @id cpp/virtual-call-in-constructor
  * @tags quality
  *       reliability
+ *       correctness
  *       readability
  *       language-features
  *       external/jsf

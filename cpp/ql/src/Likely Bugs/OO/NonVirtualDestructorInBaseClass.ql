@@ -7,7 +7,7 @@
  * @id cpp/virtual-destructor
  * @tags quality
  *       reliability
- *       readability
+ *       correctness
  *       language-features
  */
 

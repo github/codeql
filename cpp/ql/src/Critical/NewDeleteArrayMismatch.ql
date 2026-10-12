@@ -7,6 +7,7 @@
  * @id cpp/new-delete-array-mismatch
  * @tags quality
  *       reliability
+ *       correctness
  */
 
 import NewDelete

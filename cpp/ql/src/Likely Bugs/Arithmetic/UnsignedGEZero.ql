@@ -8,7 +8,8 @@
  * @precision very-high
  * @id cpp/unsigned-comparison-zero
  * @tags quality
- *       maintainability
+ *       reliability
+ *       correctness
  *       readability
  */
 

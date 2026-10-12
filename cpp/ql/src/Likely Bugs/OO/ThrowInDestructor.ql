@@ -8,7 +8,8 @@
  * @id cpp/throw-in-destructor
  * @tags quality
  *       reliability
- *       readability
+ *       correctness
+ *       error-handling
  *       language-features
  */
 

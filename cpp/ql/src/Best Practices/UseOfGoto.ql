@@ -9,6 +9,7 @@
  * @tags quality
  *       maintainability
  *       readability
+ *       complexity
  *       language-features
  */
 

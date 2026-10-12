@@ -6,7 +6,7 @@
  * @precision high
  * @id cpp/duplicate-include-guard
  * @tags quality
- *       reliability
+ *       maintainability
  *       modularity
  */
 
