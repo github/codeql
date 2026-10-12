@@ -1,6 +1,8 @@
 /**
  * Provides additional AST-like classes outside the generated tree-sitter classes.
  */
+overlay[local?]
+module;
 
 private import unified
 private import codeql.unified.internal.NameBindingPlugin
