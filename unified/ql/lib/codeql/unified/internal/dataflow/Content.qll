@@ -1,6 +1,13 @@
 private import unified
 private import AllDataFlow
 
+/**
+ * Holds if a MaD access path token of form `name[arg]` exists.
+ */
+predicate isAccessPathTokenPresent(string name, string arg) {
+  arg = any(FlowSummaryOutput::Private::AccessPathToken tok).getAnArgument(name)
+}
+
 private newtype TContent =
   TArrayElement() or
   TNamedMember(string name) {
@@ -11,6 +18,8 @@ private newtype TContent =
     name = [0 .. 20].toString()
     or
     name = getEnumCaseParameterFieldFromArgument(_, _)
+    or
+    isAccessPathTokenPresent("Member", name)
   } or
   TCapturedVariable(CaptureSsaInput::CapturedVariable v)
 

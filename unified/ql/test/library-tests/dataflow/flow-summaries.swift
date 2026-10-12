@@ -33,5 +33,5 @@ func t5() {
     let x = source("t5.1")
     let y = TestType.storeUnusualName(x)
     let z = TestType.readUnusualName(y)
-    sink(z)  // $ MISSING: hasValueFlow=t5.1
+    sink(z)  // $ hasValueFlow=t5.1
 }

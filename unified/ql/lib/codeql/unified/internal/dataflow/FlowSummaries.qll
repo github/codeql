@@ -116,6 +116,8 @@ private import StepsInput
 private module StepsOutput = Steps<StepsInput>;
 
 module FlowSummaryOutput {
+  module Private = FlowSummaryOutput1::Private;
+
   import FlowSummaryOutput1::Public
   import FlowSummaryOutput2
   import StepsOutput
