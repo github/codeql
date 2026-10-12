@@ -33,9 +33,15 @@ module DataFlowInput implements InputSig<Location> {
     ReturnKind getKind() { isReturnNode(this, result) }
   }
 
-  class OutNode extends Node {
-    OutNode() { this.asExpr() instanceof CallExpr }
+  private predicate isOutNode(Node n, DataFlowCall call, ReturnKind kind) {
+    n.asExpr() = call.asExplicitCall() and exists(kind)
   }
+
+  class OutNode extends Node {
+    OutNode() { isOutNode(this, _, _) }
+  }
+
+  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { isOutNode(result, call, kind) }
 
   class ReturnKind extends Unit {
     /** Holds if this is the standard return value */
@@ -102,10 +108,6 @@ module DataFlowInput implements InputSig<Location> {
   predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
     // This predicate is needed to implement the signature without empty recursion through ArgumentNode
     isArgumentNodeImpl(n, call, pos)
-  }
-
-  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-    result.asExpr() = call.asExplicitCall() and exists(kind)
   }
 
   //
