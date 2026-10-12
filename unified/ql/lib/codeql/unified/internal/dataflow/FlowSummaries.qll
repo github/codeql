@@ -119,6 +119,8 @@ module FlowSummaryOutput {
   import FlowSummaryOutput1::Public
   import FlowSummaryOutput2
   import StepsOutput
+
+  module RenderSummarizedCallable = FlowSummaryOutput2::RenderSummarizedCallable<StepsInput>;
 }
 
 class SummaryNode = FlowSummaryOutput::SummaryNode;
