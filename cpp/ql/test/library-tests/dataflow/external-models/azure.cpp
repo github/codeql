@@ -317,6 +317,7 @@ void test_RawResponse(Azure::Core::Http::RawResponse& resp) {
 }
 
 void test_GetHeader() {
+  std::pair<std::string, std::string>();
   Azure::Core::Http::Request request(Azure::Core::Http::Get, Azure::Core::Url("http://example.com"));
   {
     auto headerValue = request.GetHeader("Content-Type").Value();

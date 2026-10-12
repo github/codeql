@@ -219,7 +219,7 @@ void test_map()
 	sink(m22); // $ ast,ir
 
 	// erase, clear
-	std::map<const char *, const char *> m23;
+	std::map<const char *, const char *> m23; std::map<const char *, const char *>::value_type(source(), source()); // ensure instantiation
 	m23.insert(std::pair<const char *, const char *>(source(), source()));
 	m23.insert(std::pair<const char *, const char *>(source(), source()));
 	sink(m23); // $ ast,ir=223:49 ast,ir=224:49
@@ -229,7 +229,7 @@ void test_map()
 	sink(m23); // $ SPURIOUS: ast,ir=223:49 ast,ir=224:49
 
 	// emplace, emplace_hint
-	std::map<const char *, const char *> m24, m25;
+	std::map<const char *, const char *> m24, m25; std::map<const char *, const char *>::value_type("abc", source()); // force the template instantiation
 	sink(m24.emplace("abc", "def").first);
 	sink(m24);
 	sink(m24.emplace("abc", source()).first);
@@ -406,7 +406,7 @@ void test_unordered_map()
 	sink(m28); // $ MISSING: ast,ir
 
 	// additional try_emplace test cases
-	std::unordered_map<const char *, std::pair<int, int>> m29, m30, m31, m32;
+	std::unordered_map<const char *, std::pair<int, int>> m29, m30, m31, m32; std::pair<int, int> inst1(0, 0); int x; std::pair<int, int> inst2(x, x);
 	sink(m29.try_emplace("abc", 1, 2));
 	sink(m29);
 	sink(m29["abc"]);
