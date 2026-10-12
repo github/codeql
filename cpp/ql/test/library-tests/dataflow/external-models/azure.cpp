@@ -7,6 +7,20 @@ using uint32_t = unsigned int;
 
 namespace std
 {
+	template <class T1, class T2>
+	struct pair {
+		typedef T1 first_type;
+		typedef T2 second_type;
+
+		T1 first;
+		T2 second;
+		pair();
+		pair(const T1& x, const T2& y);
+		template<class U, class V> pair(const pair<U, V> &p);
+
+		void swap(pair& p) /*noexcept(...)*/;
+	};
+
   class string
   {
   public:
@@ -19,10 +33,12 @@ namespace std
   class map
   {
   public:
+    using key_type = K;
+    using value_type = pair<const K, V>;
     map();
     ~map();
 
-    V& operator[](const K& key);
+    V& operator[](const key_type& key);
   };
 
   template <typename T>
