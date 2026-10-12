@@ -1,4 +1,5 @@
 use proc_macro2::{Delimiter, Ident, Span, TokenStream, TokenTree};
+use std::collections::BTreeSet;
 use std::iter::Peekable;
 
 use crate::ast::{Cardinality, Pattern, Replacement, ReturnAnnotation, Rule};
@@ -15,7 +16,44 @@ pub(crate) fn parse_pattern(input: TokenStream) -> Result<Pattern> {
             "unexpected token after query",
         ));
     }
+    validate_unique_capture_names(&pattern, &mut BTreeSet::new())?;
     Ok(pattern)
+}
+
+fn validate_unique_capture_names(
+    pattern: &Pattern,
+    capture_names: &mut BTreeSet<String>,
+) -> Result<()> {
+    match pattern {
+        Pattern::Any { .. } | Pattern::Unnamed(_) => {}
+        Pattern::Node { fields, .. } => {
+            for (_, pattern) in fields {
+                validate_unique_capture_names(pattern, capture_names)?;
+            }
+        }
+        Pattern::Capture { name, pattern, .. } => {
+            validate_unique_capture_names(pattern, capture_names)?;
+            let name_string = name.to_string();
+            if !capture_names.insert(name_string.clone()) {
+                return Err(syn::Error::new_spanned(
+                    name,
+                    format!(
+                        "capture `{name_string}` is used more than once; \
+                         use a distinct name for each capture site"
+                    ),
+                ));
+            }
+        }
+        Pattern::Sequence(patterns) => {
+            for pattern in patterns {
+                validate_unique_capture_names(pattern, capture_names)?;
+            }
+        }
+        Pattern::Repeated { pattern, .. } => {
+            validate_unique_capture_names(pattern, capture_names)?;
+        }
+    }
+    Ok(())
 }
 
 pub(crate) fn parse_rule(input: TokenStream) -> Result<Rule> {
@@ -587,6 +625,22 @@ mod tests {
         assert_eq!(
             error.to_string(),
             "cannot capture a query sequence; capture the desired nodes explicitly"
+        );
+    }
+
+    #[test]
+    fn rejects_duplicate_capture_names() {
+        let result = parse_pattern(quote! {
+            (assignment
+                left: (_) @item
+                right: (_) @item)
+        });
+        let Err(error) = result else {
+            panic!("expected duplicate capture name to be rejected");
+        };
+        assert_eq!(
+            error.to_string(),
+            "capture `item` is used more than once; use a distinct name for each capture site"
         );
     }
 

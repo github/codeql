@@ -190,6 +190,7 @@ impl Pattern {
             }
         }
     }
+
     fn captures(&self) -> Vec<CaptureBinding> {
         let mut captures = Vec::new();
         self.collect_captures(Cardinality::SINGLE, &mut captures);
