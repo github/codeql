@@ -22,13 +22,15 @@ module DataFlowInput implements InputSig<Location> {
   //
   // Parameter, argument, return, and out nodes and their positions/kinds
   //
-  class ReturnNode extends Node {
-    ReturnNode() {
-      // TODO: Handle short-hand returns such as `func foo() -> Int { 5 }`
-      this.asExpr() = any(ReturnExpr r).getValue()
-    }
+  private predicate isReturnNode(Node n, ReturnKind kind) {
+    // TODO: Handle short-hand returns such as `func foo() -> Int { 5 }`
+    n.asExpr() = any(ReturnExpr r).getValue() and kind.isStandardReturnValue()
+  }
 
-    ReturnKind getKind() { exists(result) }
+  class ReturnNode extends Node {
+    ReturnNode() { isReturnNode(this, _) }
+
+    ReturnKind getKind() { isReturnNode(this, result) }
   }
 
   class OutNode extends Node {
