@@ -1164,6 +1164,24 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // becomes a `modifier`; its source text is the modifier spelling.
         rule!((attribute) @m => (modifier #{m})),
         rule!((declModifier) @m => (modifier #{m})),
+        // Type specifiers (`inout`, `sending`, ...) are mapped to modifiers.
+        rule!((simpleTypeSpecifier) @m => (modifier #{m})),
+        rule!((lifetimeTypeSpecifier) @m => (modifier #{m})),
+        rule!((nonisolatedTypeSpecifier) @m => (modifier #{m})),
+        // An attributed type is mapped to a modified type of its base type.
+        rule!(
+            (attributedType
+                specifiers: _* @specs
+                attributes: _* @attrs
+                lateSpecifiers: _* @late
+                baseType: @base)
+            =>
+            (modified_type_expr
+                modifier: {specs}
+                modifier: {attrs}
+                modifier: {late}
+                type: {base})
+        ),
         // Preserve the `super` keyword as a dedicated expression, normally used
         // as the base of a member access (`super.foo`).
         rule!((superExpr superKeyword: @@keyword) => (super_expr #{keyword})),
@@ -1471,7 +1489,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // currently map them to the unified AST. Syntax nested inside one of
         // these roots is discarded with its parent and needs no separate rule.
         rule!((actorDecl) => (unsupported_node)),
-        rule!((attributedType) => (unsupported_node)),
         rule!((borrowExpr) => (unsupported_node)),
         rule!((classRestrictionType) => (unsupported_node)),
         rule!((compositionType) => (unsupported_node)),
