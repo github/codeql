@@ -552,7 +552,7 @@ func testNilCoalescing2(x: Bool?) -> Int {
   }
 }
 
-func usesAutoclosure(_ expr: @autoclosure () -> Int) -> Int {
+func usesAutoclosure(_ expr: @autoclosure () -> Int) -> Int { // $ noCfg
   return expr()
 }
 

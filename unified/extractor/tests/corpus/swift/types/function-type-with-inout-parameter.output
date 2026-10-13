@@ -70,7 +70,10 @@ top_level source="⟨body⟩"
             function_expr source="(⟨parameter⟩) -> ⟨return_type⟩"
               parameter:
                 parameter source="⟨type⟩"
-                  type: unsupported_node "inout Int" source="inout Int"
+                  type:
+                    modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                      modifier: modifier "inout" source="inout"
+                      type: identifier "Int" source="Int"
               return_type: identifier "Void" source="Void"
           value:
             function_expr source="{ ⟨parameter⟩ in }"

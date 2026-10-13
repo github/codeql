@@ -157,6 +157,7 @@ noCfg
 | cfg.swift:468:6:468:17 | testIfConfig |
 | cfg.swift:497:6:497:18 | testAvailable |
 | cfg.swift:524:6:524:17 | testAsyncFor |
+| cfg.swift:555:49:555:51 | Int |
 | cfg.swift:559:6:559:20 | autoclosureTest |
 nonSimple
 | cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
