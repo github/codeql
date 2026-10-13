@@ -140,7 +140,7 @@ func patterns(x : Int) -> Bool {
   for _ in 0...10 // $ bbStep='... ... ... : empty -> ForEachStmt(+3)' bbStep='... ... ... : non-empty -> _(+0)'
         {  } // $ bbStep='Block : successor -> _(-1)' bbStep='Block : successor -> ForEachStmt(+2)'
 
-  for y in 0...10 where y != 5 { // $ bbStep='... ... ... : empty -> SwitchExpr(+4)' bbStep='... ... ... : non-empty -> y(+0)'
+  for y in 0...10 where y != 5 { // $ bbStep='... ... ... : empty -> SwitchExpr(+4)' bbStep='... ... ... : non-empty -> y(+0)' bbStep='... != ... : false -> SwitchExpr(+4)' bbStep='... != ... : false -> y(+0)' bbStep='... != ... : true -> Block(+0)'
     print(y) // $ bbStep='print(...) : successor -> SwitchExpr(+3)' bbStep='print(...) : successor -> y(-1)'
   }
 

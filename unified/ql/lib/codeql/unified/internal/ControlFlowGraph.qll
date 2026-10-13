@@ -127,12 +127,12 @@ module Ast implements AstSig<Location> {
   class ForEachStmt extends LoopStmt instanceof U::ForEachStmt {
     override Stmt getBody() { result = U::ForEachStmt.super.getBody() }
 
-    // TODO support foreach guard
-    //
     Expr getVariable() { result = super.getPattern() }
 
     Expr getCollection() { result = super.getIterable() }
   }
+
+  AstNode getLoopGuard(ForEachStmt foreachstmt) { result = foreachstmt.(U::ForEachStmt).getGuard() }
 
   class BreakStmt = U::BreakExpr;
 
