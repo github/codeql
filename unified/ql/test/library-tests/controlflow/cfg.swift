@@ -174,18 +174,18 @@ func patterns(x : Int) -> Bool {
 
 func testDefer(x : inout Int) {
   // Will print 1, 2, 3, 4
-  defer {
+  defer { // $ bbContinues='DeferStmt goto DeferStmt(+4)'
     print("4")
   }
 
-  defer {
-    print("3")
+  defer { // $ bbContinues='DeferStmt goto DeferStmt(+4)'
+    print("3") // $ bbContinues='print(...) goto Block(-5)'
   }
 
   defer {
     print("1")
      defer {
-      print("2")
+      print("2") // $ bbContinues='print(...) goto Block(-7)'
     }
   }
 }

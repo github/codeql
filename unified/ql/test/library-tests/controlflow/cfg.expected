@@ -1,4 +1,8 @@
 bbContinues
+| cfg.swift:177:3:177:3 | DeferStmt | 'DeferStmt goto DeferStmt(+4)' |
+| cfg.swift:181:3:181:3 | DeferStmt | 'DeferStmt goto DeferStmt(+4)' |
+| cfg.swift:182:5:182:14 | print(...) | 'print(...) goto Block(-5)' |
+| cfg.swift:188:7:188:16 | print(...) | 'print(...) goto Block(-7)' |
 bbStep
 | cfg.swift:20:9:20:14 | ... >= ... | '... >= ... : false -> Block(+0)' |
 | cfg.swift:20:9:20:14 | ... >= ... | '... >= ... : true -> GuardIfStmt(+3)' |
