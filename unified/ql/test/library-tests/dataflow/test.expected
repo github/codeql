@@ -66,18 +66,16 @@ edges
 | enums.swift:48:12:48:12 | e [case2.0] | enums.swift:49:10:49:23 | ... .case2(...) [case2.0] | provenance |  |
 | enums.swift:49:10:49:23 | ... .case2(...) [case2.0] | enums.swift:49:22:49:22 | x | provenance |  |
 | enums.swift:49:22:49:22 | x | enums.swift:50:14:50:14 | x | provenance |  |
-| enums.swift:57:9:57:13 | opt_x [some.0] | enums.swift:58:19:58:23 | opt_x [some.0] | provenance |  |
-| enums.swift:57:17:57:45 | ... .some(...) [some.0] | enums.swift:57:9:57:13 | opt_x [some.0] | provenance |  |
-| enums.swift:57:31:57:44 | source(...) | enums.swift:57:17:57:45 | ... .some(...) [some.0] | provenance |  |
-| enums.swift:58:11:58:15 | ... .some(...) [some.0] | enums.swift:58:15:58:15 | x | provenance |  |
+| enums.swift:57:9:57:13 | opt_x | enums.swift:58:19:58:23 | opt_x | provenance |  |
+| enums.swift:57:31:57:44 | source(...) | enums.swift:57:9:57:13 | opt_x | provenance |  |
+| enums.swift:58:11:58:15 | ... .some(...) | enums.swift:58:15:58:15 | x | provenance |  |
 | enums.swift:58:15:58:15 | x | enums.swift:59:10:59:10 | x | provenance |  |
-| enums.swift:58:19:58:23 | opt_x [some.0] | enums.swift:58:11:58:15 | ... .some(...) [some.0] | provenance |  |
-| enums.swift:63:9:63:13 | opt_x [some.0] | enums.swift:64:15:64:19 | opt_x [some.0] | provenance |  |
-| enums.swift:63:17:63:45 | ... .some(...) [some.0] | enums.swift:63:9:63:13 | opt_x [some.0] | provenance |  |
-| enums.swift:63:31:63:44 | source(...) | enums.swift:63:17:63:45 | ... .some(...) [some.0] | provenance |  |
-| enums.swift:64:11:64:19 | ... .some(...) [some.0] | enums.swift:64:15:64:19 | opt_x | provenance |  |
+| enums.swift:58:19:58:23 | opt_x | enums.swift:58:11:58:15 | ... .some(...) | provenance |  |
+| enums.swift:63:9:63:13 | opt_x | enums.swift:64:15:64:19 | opt_x | provenance |  |
+| enums.swift:63:31:63:44 | source(...) | enums.swift:63:9:63:13 | opt_x | provenance |  |
+| enums.swift:64:11:64:19 | ... .some(...) | enums.swift:64:15:64:19 | opt_x | provenance |  |
+| enums.swift:64:15:64:19 | opt_x | enums.swift:64:11:64:19 | ... .some(...) | provenance |  |
 | enums.swift:64:15:64:19 | opt_x | enums.swift:65:10:65:14 | opt_x | provenance |  |
-| enums.swift:64:15:64:19 | opt_x [some.0] | enums.swift:64:11:64:19 | ... .some(...) [some.0] | provenance |  |
 | enums.swift:73:9:73:9 | e [foo.0] | enums.swift:74:12:74:12 | e [foo.0] | provenance |  |
 | enums.swift:73:9:73:9 | e [foo.0] | enums.swift:82:12:82:12 | e [foo.0] | provenance |  |
 | enums.swift:73:13:73:48 | ... .foo(...) [foo.0] | enums.swift:73:9:73:9 | e [foo.0] | provenance |  |
@@ -241,29 +239,26 @@ edges
 | test.swift:200:14:200:46 | throwingIdentity(...) | test.swift:200:10:200:46 | try ... | provenance |  |
 | test.swift:200:31:200:45 | source(...) | test.swift:191:25:191:25 | s | provenance |  |
 | test.swift:200:31:200:45 | source(...) | test.swift:200:14:200:46 | throwingIdentity(...) | provenance |  |
-| test.swift:201:9:201:11 | opt [some.0] | test.swift:202:12:202:14 | opt [some.0] | provenance |  |
-| test.swift:201:15:201:52 | try? ... [some.0] | test.swift:201:9:201:11 | opt [some.0] | provenance |  |
-| test.swift:201:20:201:52 | throwingIdentity(...) | test.swift:201:15:201:52 | try? ... [some.0] | provenance |  |
+| test.swift:201:9:201:11 | opt | test.swift:202:12:202:14 | opt | provenance |  |
+| test.swift:201:20:201:52 | throwingIdentity(...) | test.swift:201:9:201:11 | opt | provenance |  |
 | test.swift:201:37:201:51 | source(...) | test.swift:191:25:191:25 | s | provenance |  |
 | test.swift:201:37:201:51 | source(...) | test.swift:201:20:201:52 | throwingIdentity(...) | provenance |  |
-| test.swift:202:8:202:14 | ... .some(...) [some.0] | test.swift:202:12:202:14 | opt | provenance |  |
+| test.swift:202:8:202:14 | ... .some(...) | test.swift:202:12:202:14 | opt | provenance |  |
+| test.swift:202:12:202:14 | opt | test.swift:202:8:202:14 | ... .some(...) | provenance |  |
 | test.swift:202:12:202:14 | opt | test.swift:203:14:203:16 | opt | provenance |  |
-| test.swift:202:12:202:14 | opt [some.0] | test.swift:202:8:202:14 | ... .some(...) [some.0] | provenance |  |
 | test.swift:205:15:205:47 | throwingIdentity(...) | test.swift:205:10:205:47 | try! ... | provenance |  |
 | test.swift:205:32:205:46 | source(...) | test.swift:191:25:191:25 | s | provenance |  |
 | test.swift:205:32:205:46 | source(...) | test.swift:205:15:205:47 | throwingIdentity(...) | provenance |  |
 | test.swift:209:20:209:57 | asyncThrowingIdentity(...) | test.swift:209:10:209:57 | try ... | provenance |  |
 | test.swift:209:42:209:56 | source(...) | test.swift:193:30:193:30 | s | provenance |  |
 | test.swift:209:42:209:56 | source(...) | test.swift:209:20:209:57 | asyncThrowingIdentity(...) | provenance |  |
-| test.swift:210:9:210:11 | opt [some.0] | test.swift:211:12:211:14 | opt [some.0] | provenance |  |
-| test.swift:210:15:210:63 | try? ... [some.0] | test.swift:210:9:210:11 | opt [some.0] | provenance |  |
-| test.swift:210:20:210:63 | await ... | test.swift:210:15:210:63 | try? ... [some.0] | provenance |  |
-| test.swift:210:26:210:63 | asyncThrowingIdentity(...) | test.swift:210:20:210:63 | await ... | provenance |  |
+| test.swift:210:9:210:11 | opt | test.swift:211:12:211:14 | opt | provenance |  |
+| test.swift:210:26:210:63 | asyncThrowingIdentity(...) | test.swift:210:9:210:11 | opt | provenance |  |
 | test.swift:210:48:210:62 | source(...) | test.swift:193:30:193:30 | s | provenance |  |
 | test.swift:210:48:210:62 | source(...) | test.swift:210:26:210:63 | asyncThrowingIdentity(...) | provenance |  |
-| test.swift:211:8:211:14 | ... .some(...) [some.0] | test.swift:211:12:211:14 | opt | provenance |  |
+| test.swift:211:8:211:14 | ... .some(...) | test.swift:211:12:211:14 | opt | provenance |  |
+| test.swift:211:12:211:14 | opt | test.swift:211:8:211:14 | ... .some(...) | provenance |  |
 | test.swift:211:12:211:14 | opt | test.swift:212:14:212:16 | opt | provenance |  |
-| test.swift:211:12:211:14 | opt [some.0] | test.swift:211:8:211:14 | ... .some(...) [some.0] | provenance |  |
 | test.swift:214:21:214:58 | asyncThrowingIdentity(...) | test.swift:214:10:214:58 | try! ... | provenance |  |
 | test.swift:214:43:214:57 | source(...) | test.swift:193:30:193:30 | s | provenance |  |
 | test.swift:214:43:214:57 | source(...) | test.swift:214:21:214:58 | asyncThrowingIdentity(...) | provenance |  |
@@ -273,16 +268,27 @@ edges
 | test.swift:218:13:218:27 | source(...) | test.swift:218:9:218:9 | x | provenance |  |
 | test.swift:219:10:219:10 | x | test.swift:219:10:219:20 | TypeCastExpr | provenance |  |
 | test.swift:220:10:220:10 | x | test.swift:220:10:220:21 | TypeCastExpr | provenance |  |
-| test.swift:221:8:221:12 | ... .some(...) [some.0] | test.swift:221:12:221:12 | y | provenance |  |
+| test.swift:221:8:221:12 | ... .some(...) | test.swift:221:12:221:12 | y | provenance |  |
 | test.swift:221:12:221:12 | y | test.swift:222:14:222:14 | y | provenance |  |
-| test.swift:221:16:221:16 | x | test.swift:221:16:221:27 | TypeCastExpr [some.0] | provenance |  |
-| test.swift:221:16:221:27 | TypeCastExpr [some.0] | test.swift:221:8:221:12 | ... .some(...) [some.0] | provenance |  |
+| test.swift:221:16:221:16 | x | test.swift:221:8:221:12 | ... .some(...) | provenance |  |
 | test.swift:227:9:227:9 | x [ArrayElement] | test.swift:228:20:228:20 | x [ArrayElement] | provenance |  |
 | test.swift:227:13:227:46 | ArrayLiteral [ArrayElement] | test.swift:227:9:227:9 | x [ArrayElement] | provenance |  |
 | test.swift:227:14:227:28 | source(...) | test.swift:227:13:227:46 | ArrayLiteral [ArrayElement] | provenance |  |
 | test.swift:227:31:227:45 | source(...) | test.swift:227:13:227:46 | ArrayLiteral [ArrayElement] | provenance |  |
 | test.swift:228:9:228:15 | element | test.swift:229:14:229:20 | element | provenance |  |
 | test.swift:228:20:228:20 | x [ArrayElement] | test.swift:228:9:228:15 | element | provenance |  |
+| test.swift:243:16:243:45 | ... .some(...) | test.swift:246:18:246:30 | getOptional(...) | provenance |  |
+| test.swift:243:30:243:44 | source(...) | test.swift:243:16:243:45 | ... .some(...) | provenance |  |
+| test.swift:246:9:246:9 | x | test.swift:247:12:247:12 | x | provenance |  |
+| test.swift:246:18:246:30 | getOptional(...) | test.swift:246:9:246:9 | x | provenance |  |
+| test.swift:247:8:247:12 | ... .some(...) | test.swift:247:12:247:12 | x | provenance |  |
+| test.swift:247:12:247:12 | x | test.swift:247:8:247:12 | ... .some(...) | provenance |  |
+| test.swift:247:12:247:12 | x | test.swift:248:14:248:14 | x | provenance |  |
+| test.swift:254:16:254:45 | ... .some(...) | test.swift:256:10:256:22 | getOptional(...) | provenance |  |
+| test.swift:254:16:254:45 | ... .some(...) | test.swift:257:20:257:32 | getOptional(...) | provenance |  |
+| test.swift:254:30:254:44 | source(...) | test.swift:254:16:254:45 | ... .some(...) | provenance |  |
+| test.swift:256:10:256:22 | getOptional(...) | test.swift:256:10:256:35 | ... ?? ... | provenance |  |
+| test.swift:257:20:257:32 | getOptional(...) | test.swift:257:10:257:32 | ... ?? ... | provenance |  |
 nodes
 | calls.swift:7:19:7:19 | x | semmle.label | x |
 | calls.swift:8:14:8:14 | x | semmle.label | x |
@@ -364,19 +370,17 @@ nodes
 | enums.swift:49:10:49:23 | ... .case2(...) [case2.0] | semmle.label | ... .case2(...) [case2.0] |
 | enums.swift:49:22:49:22 | x | semmle.label | x |
 | enums.swift:50:14:50:14 | x | semmle.label | x |
-| enums.swift:57:9:57:13 | opt_x [some.0] | semmle.label | opt_x [some.0] |
-| enums.swift:57:17:57:45 | ... .some(...) [some.0] | semmle.label | ... .some(...) [some.0] |
+| enums.swift:57:9:57:13 | opt_x | semmle.label | opt_x |
 | enums.swift:57:31:57:44 | source(...) | semmle.label | source(...) |
-| enums.swift:58:11:58:15 | ... .some(...) [some.0] | semmle.label | ... .some(...) [some.0] |
+| enums.swift:58:11:58:15 | ... .some(...) | semmle.label | ... .some(...) |
 | enums.swift:58:15:58:15 | x | semmle.label | x |
-| enums.swift:58:19:58:23 | opt_x [some.0] | semmle.label | opt_x [some.0] |
+| enums.swift:58:19:58:23 | opt_x | semmle.label | opt_x |
 | enums.swift:59:10:59:10 | x | semmle.label | x |
-| enums.swift:63:9:63:13 | opt_x [some.0] | semmle.label | opt_x [some.0] |
-| enums.swift:63:17:63:45 | ... .some(...) [some.0] | semmle.label | ... .some(...) [some.0] |
+| enums.swift:63:9:63:13 | opt_x | semmle.label | opt_x |
 | enums.swift:63:31:63:44 | source(...) | semmle.label | source(...) |
-| enums.swift:64:11:64:19 | ... .some(...) [some.0] | semmle.label | ... .some(...) [some.0] |
+| enums.swift:64:11:64:19 | ... .some(...) | semmle.label | ... .some(...) |
 | enums.swift:64:15:64:19 | opt_x | semmle.label | opt_x |
-| enums.swift:64:15:64:19 | opt_x [some.0] | semmle.label | opt_x [some.0] |
+| enums.swift:64:15:64:19 | opt_x | semmle.label | opt_x |
 | enums.swift:65:10:65:14 | opt_x | semmle.label | opt_x |
 | enums.swift:73:9:73:9 | e [foo.0] | semmle.label | e [foo.0] |
 | enums.swift:73:13:73:48 | ... .foo(...) [foo.0] | semmle.label | ... .foo(...) [foo.0] |
@@ -587,13 +591,12 @@ nodes
 | test.swift:200:10:200:46 | try ... | semmle.label | try ... |
 | test.swift:200:14:200:46 | throwingIdentity(...) | semmle.label | throwingIdentity(...) |
 | test.swift:200:31:200:45 | source(...) | semmle.label | source(...) |
-| test.swift:201:9:201:11 | opt [some.0] | semmle.label | opt [some.0] |
-| test.swift:201:15:201:52 | try? ... [some.0] | semmle.label | try? ... [some.0] |
+| test.swift:201:9:201:11 | opt | semmle.label | opt |
 | test.swift:201:20:201:52 | throwingIdentity(...) | semmle.label | throwingIdentity(...) |
 | test.swift:201:37:201:51 | source(...) | semmle.label | source(...) |
-| test.swift:202:8:202:14 | ... .some(...) [some.0] | semmle.label | ... .some(...) [some.0] |
+| test.swift:202:8:202:14 | ... .some(...) | semmle.label | ... .some(...) |
 | test.swift:202:12:202:14 | opt | semmle.label | opt |
-| test.swift:202:12:202:14 | opt [some.0] | semmle.label | opt [some.0] |
+| test.swift:202:12:202:14 | opt | semmle.label | opt |
 | test.swift:203:14:203:16 | opt | semmle.label | opt |
 | test.swift:205:10:205:47 | try! ... | semmle.label | try! ... |
 | test.swift:205:15:205:47 | throwingIdentity(...) | semmle.label | throwingIdentity(...) |
@@ -601,14 +604,12 @@ nodes
 | test.swift:209:10:209:57 | try ... | semmle.label | try ... |
 | test.swift:209:20:209:57 | asyncThrowingIdentity(...) | semmle.label | asyncThrowingIdentity(...) |
 | test.swift:209:42:209:56 | source(...) | semmle.label | source(...) |
-| test.swift:210:9:210:11 | opt [some.0] | semmle.label | opt [some.0] |
-| test.swift:210:15:210:63 | try? ... [some.0] | semmle.label | try? ... [some.0] |
-| test.swift:210:20:210:63 | await ... | semmle.label | await ... |
+| test.swift:210:9:210:11 | opt | semmle.label | opt |
 | test.swift:210:26:210:63 | asyncThrowingIdentity(...) | semmle.label | asyncThrowingIdentity(...) |
 | test.swift:210:48:210:62 | source(...) | semmle.label | source(...) |
-| test.swift:211:8:211:14 | ... .some(...) [some.0] | semmle.label | ... .some(...) [some.0] |
+| test.swift:211:8:211:14 | ... .some(...) | semmle.label | ... .some(...) |
 | test.swift:211:12:211:14 | opt | semmle.label | opt |
-| test.swift:211:12:211:14 | opt [some.0] | semmle.label | opt [some.0] |
+| test.swift:211:12:211:14 | opt | semmle.label | opt |
 | test.swift:212:14:212:16 | opt | semmle.label | opt |
 | test.swift:214:10:214:58 | try! ... | semmle.label | try! ... |
 | test.swift:214:21:214:58 | asyncThrowingIdentity(...) | semmle.label | asyncThrowingIdentity(...) |
@@ -619,10 +620,9 @@ nodes
 | test.swift:219:10:219:20 | TypeCastExpr | semmle.label | TypeCastExpr |
 | test.swift:220:10:220:10 | x | semmle.label | x |
 | test.swift:220:10:220:21 | TypeCastExpr | semmle.label | TypeCastExpr |
-| test.swift:221:8:221:12 | ... .some(...) [some.0] | semmle.label | ... .some(...) [some.0] |
+| test.swift:221:8:221:12 | ... .some(...) | semmle.label | ... .some(...) |
 | test.swift:221:12:221:12 | y | semmle.label | y |
 | test.swift:221:16:221:16 | x | semmle.label | x |
-| test.swift:221:16:221:27 | TypeCastExpr [some.0] | semmle.label | TypeCastExpr [some.0] |
 | test.swift:222:14:222:14 | y | semmle.label | y |
 | test.swift:227:9:227:9 | x [ArrayElement] | semmle.label | x [ArrayElement] |
 | test.swift:227:13:227:46 | ArrayLiteral [ArrayElement] | semmle.label | ArrayLiteral [ArrayElement] |
@@ -631,6 +631,20 @@ nodes
 | test.swift:228:9:228:15 | element | semmle.label | element |
 | test.swift:228:20:228:20 | x [ArrayElement] | semmle.label | x [ArrayElement] |
 | test.swift:229:14:229:20 | element | semmle.label | element |
+| test.swift:243:16:243:45 | ... .some(...) | semmle.label | ... .some(...) |
+| test.swift:243:30:243:44 | source(...) | semmle.label | source(...) |
+| test.swift:246:9:246:9 | x | semmle.label | x |
+| test.swift:246:18:246:30 | getOptional(...) | semmle.label | getOptional(...) |
+| test.swift:247:8:247:12 | ... .some(...) | semmle.label | ... .some(...) |
+| test.swift:247:12:247:12 | x | semmle.label | x |
+| test.swift:247:12:247:12 | x | semmle.label | x |
+| test.swift:248:14:248:14 | x | semmle.label | x |
+| test.swift:254:16:254:45 | ... .some(...) | semmle.label | ... .some(...) |
+| test.swift:254:30:254:44 | source(...) | semmle.label | source(...) |
+| test.swift:256:10:256:22 | getOptional(...) | semmle.label | getOptional(...) |
+| test.swift:256:10:256:35 | ... ?? ... | semmle.label | ... ?? ... |
+| test.swift:257:10:257:32 | ... ?? ... | semmle.label | ... ?? ... |
+| test.swift:257:20:257:32 | getOptional(...) | semmle.label | getOptional(...) |
 subpaths
 | calls.swift:31:17:31:30 | source(...) | calls.swift:28:19:28:19 | x | calls.swift:29:16:29:24 | ... + ... | calls.swift:31:10:31:31 | target(...) |
 | calls.swift:32:17:32:30 | source(...) | calls.swift:28:19:28:19 | x | calls.swift:29:16:29:24 | ... + ... | calls.swift:32:10:32:31 | target(...) |
@@ -730,3 +744,6 @@ testFailures
 | test.swift:222:14:222:14 | y | test.swift:218:13:218:27 | source(...) | test.swift:222:14:222:14 | y | $@ | test.swift:218:13:218:27 | source(...) | source(...) |
 | test.swift:229:14:229:20 | element | test.swift:227:14:227:28 | source(...) | test.swift:229:14:229:20 | element | $@ | test.swift:227:14:227:28 | source(...) | source(...) |
 | test.swift:229:14:229:20 | element | test.swift:227:31:227:45 | source(...) | test.swift:229:14:229:20 | element | $@ | test.swift:227:31:227:45 | source(...) | source(...) |
+| test.swift:248:14:248:14 | x | test.swift:243:30:243:44 | source(...) | test.swift:248:14:248:14 | x | $@ | test.swift:243:30:243:44 | source(...) | source(...) |
+| test.swift:256:10:256:35 | ... ?? ... | test.swift:254:30:254:44 | source(...) | test.swift:256:10:256:35 | ... ?? ... | $@ | test.swift:254:30:254:44 | source(...) | source(...) |
+| test.swift:257:10:257:32 | ... ?? ... | test.swift:254:30:254:44 | source(...) | test.swift:257:10:257:32 | ... ?? ... | $@ | test.swift:254:30:254:44 | source(...) | source(...) |

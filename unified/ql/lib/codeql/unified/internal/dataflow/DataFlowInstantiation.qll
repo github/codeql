@@ -127,8 +127,19 @@ module DataFlowInput implements InputSig<Location> {
   //
   // Steps
   //
+  pragma[nomagic]
+  private Step valueStepEx() {
+    result.value()
+    or
+    exists(ContentSet contents | bypassContentSet(contents) |
+      result.read(contents)
+      or
+      result.store(contents)
+    )
+  }
+
   predicate simpleLocalFlowStep(Node node1, Node node2, string model) {
-    step(node1, any(Step s | s.value()), node2) and model = ""
+    step(node1, valueStepEx(), node2) and model = ""
     or
     localSsaStep(node1, node2, _) and model = ""
   }
@@ -136,11 +147,13 @@ module DataFlowInput implements InputSig<Location> {
   predicate jumpStep(Node node1, Node node2) { step(node1, any(Step s | s.jump()), node2) }
 
   predicate readStep(Node node1, ContentSet c, Node node2) {
-    step(node1, any(Step s | s.read(c)), node2)
+    step(node1, any(Step s | s.read(c)), node2) and
+    not bypassContentSet(c)
   }
 
   predicate storeStep(Node node1, ContentSet c, Node node2) {
-    step(node1, any(Step s | s.store(c)), node2)
+    step(node1, any(Step s | s.store(c)), node2) and
+    not bypassContentSet(c)
   }
 
   predicate clearsContent(Node n, ContentSet c) { none() } // TODO
