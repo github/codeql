@@ -2,23 +2,6 @@
 
 // --- stub library headers ---
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 namespace BloombergLP {
 namespace bdlbb {
 	class BlobBuffer {

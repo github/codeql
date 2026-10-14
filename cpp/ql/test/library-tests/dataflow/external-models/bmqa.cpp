@@ -2,43 +2,6 @@
 
 // --- stub library headers ---
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 namespace BloombergLP {
 namespace bslma {
 	class Allocator {};
