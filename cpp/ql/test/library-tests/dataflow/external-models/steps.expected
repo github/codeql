@@ -144,13 +144,19 @@
 | bmqa.cpp:140:3:140:5 | *msg | bmqa.cpp:140:15:140:19 | getData output argument |
 | bmqa.cpp:142:43:142:46 | *blob | bmqa.cpp:142:38:142:40 | copy output argument |
 | bmqa.cpp:150:47:150:50 | *call to data | bmqa.cpp:150:37:150:39 | copy output argument |
+| bmqa.cpp:152:2:152:4 | *msg | bmqa.cpp:152:16:152:21 | *call to setDataRef |
 | bmqa.cpp:152:17:152:19 | *& ... | bmqa.cpp:152:2:152:4 | setDataRef output argument |
+| bmqa.cpp:152:17:152:19 | *& ... | bmqa.cpp:152:16:152:21 | *call to setDataRef |
 | bmqa.cpp:154:2:154:4 | *msg | bmqa.cpp:154:14:154:17 | getData output argument |
 | bmqa.cpp:156:42:156:44 | *out | bmqa.cpp:156:37:156:39 | copy output argument |
+| bmqa.cpp:163:2:163:4 | *msg | bmqa.cpp:163:16:163:36 | *call to setDataRef |
 | bmqa.cpp:163:19:163:22 | *call to data | bmqa.cpp:163:2:163:4 | setDataRef output argument |
+| bmqa.cpp:163:19:163:22 | *call to data | bmqa.cpp:163:16:163:36 | *call to setDataRef |
 | bmqa.cpp:165:2:165:4 | *msg | bmqa.cpp:165:14:165:17 | getData output argument |
 | bmqa.cpp:167:42:167:44 | *out | bmqa.cpp:167:37:167:39 | copy output argument |
+| bmqa.cpp:174:2:174:4 | *msg | bmqa.cpp:174:13:174:33 | *call to setData |
 | bmqa.cpp:174:16:174:19 | *call to data | bmqa.cpp:174:2:174:4 | setData output argument |
+| bmqa.cpp:174:16:174:19 | *call to data | bmqa.cpp:174:13:174:33 | *call to setData |
 | bmqa.cpp:176:2:176:4 | *msg | bmqa.cpp:176:14:176:17 | getData output argument |
 | bmqa.cpp:178:42:178:44 | *out | bmqa.cpp:178:37:178:39 | copy output argument |
 | bmqa.cpp:185:36:185:38 | *msg | bmqa.cpp:185:41:185:45 | call to clone |
@@ -170,7 +176,9 @@
 | bmqa.cpp:271:8:271:12 | *props | bmqa.cpp:271:33:271:40 | *call to getPropertyAsString |
 | bmqa.cpp:277:49:277:52 | *call to data | bmqa.cpp:277:37:277:41 | copy output argument |
 | bmqa.cpp:279:14:279:17 | *blob | bmqa.cpp:279:2:279:3 | streamIn output argument |
+| bmqa.cpp:281:2:281:4 | *msg | bmqa.cpp:281:22:281:27 | *call to setPropertiesRef |
 | bmqa.cpp:281:23:281:25 | *& ... | bmqa.cpp:281:2:281:4 | setPropertiesRef output argument |
+| bmqa.cpp:281:23:281:25 | *& ... | bmqa.cpp:281:22:281:27 | *call to setPropertiesRef |
 | bmqa.cpp:283:2:283:4 | *msg | bmqa.cpp:283:21:283:24 | loadProperties output argument |
 | bmqa.cpp:284:8:284:10 | *out | bmqa.cpp:284:31:284:38 | *call to getPropertyAsString |
 | bmqa.cpp:291:2:291:4 | *msg | bmqa.cpp:291:22:291:27 | loadProperties output argument |
