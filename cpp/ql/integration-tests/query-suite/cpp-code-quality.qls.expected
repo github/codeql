@@ -18,7 +18,6 @@ ql/cpp/ql/src/Header Cleanup/Cleanup-DuplicateIncludeGuard.ql
 ql/cpp/ql/src/Likely Bugs/Arithmetic/BitwiseSignCheck.ql
 ql/cpp/ql/src/Likely Bugs/Arithmetic/ComparisonPrecedence.ql
 ql/cpp/ql/src/Likely Bugs/Arithmetic/FloatComparison.ql
-ql/cpp/ql/src/Likely Bugs/Arithmetic/PointlessComparison.ql
 ql/cpp/ql/src/Likely Bugs/Arithmetic/PointlessSelfComparison.ql
 ql/cpp/ql/src/Likely Bugs/Arithmetic/UnsignedGEZero.ql
 ql/cpp/ql/src/Likely Bugs/ContinueInFalseLoop.ql
