@@ -19,9 +19,6 @@ extensions:
       - ["file", "local"]
       - ["windows-registry", "local"]
 
-      # AI threat models
-      - ["ai", "all"]
-
       # Android threat models
       - ["android-external-storage-dir", "android"]
       - ["contentprovider", "android"]
@@ -33,3 +30,5 @@ extensions:
       - ["file-write", "all"]
       - ["reverse-dns", "all"]
       - ["view-component-input", "all"]
+      # AI threat models
+      - ["ai", "all"]
