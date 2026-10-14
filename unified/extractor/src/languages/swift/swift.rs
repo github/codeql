@@ -823,10 +823,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 return_type: {ret}
                 body: (block stmt: {body}))
         ),
-        // A closure capture (`[weak self]`, `[x]`, `[y = expr]`). The optional
-        // ownership specifier (`weak`/`unowned`) becomes a modifier and a unary_expr; the
-        // captured name becomes the bound `name_node`; an explicit capture
-        // initializer (`[y = expr]`) becomes the bound value.
+        // A closure capture (`[weak self]`, `[x]`, `[y = expr]`).
+        // Normalize so there is always an explicit initializer, expanding `[x]` into `[x = x]`.
         rule!(
             (closureCapture
                 specifier: (closureCaptureSpecifier specifier: @@spec)?
@@ -838,14 +836,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 pattern: (identifier #{name})
                 value: {
                     // Expand [x] into [x = x]
-                    let value = match val {
+                    match val {
                         Some(val) => val,
                         None => tree!((identifier #{name})),
-                    };
-                    // Expand [weak x] into a unary_expr, to represent the boxing in Optional.same
-                    match spec {
-                        Some(spec) => tree!((unary_expr operator: (prefix_operator #{spec}) operand: {value})),
-                        None => value,
                     }
                 })
         ),
