@@ -27,6 +27,9 @@ pub(crate) trait LanguageExtractor: Sync {
     /// Build the TRAP node-type schema used to validate emitted tuples.
     fn build_schema(&self) -> std::io::Result<NodeTypeMap>;
     /// Extract a single file's `source` into `trap_writer`.
+    ///
+    /// A returned error is logged as a failure of this file only; the driver
+    /// archives its source, omits its TRAP, and continues.
     fn extract_file(
         &self,
         schema: &NodeTypeMap,
@@ -34,7 +37,7 @@ pub(crate) trait LanguageExtractor: Sync {
         trap_writer: &mut trap::Writer,
         path: &Path,
         source: &[u8],
-    );
+    ) -> Result<(), String>;
 }
 
 /// Drive extraction over `languages` for every file listed in `file_lists`.
@@ -171,7 +174,7 @@ pub(crate) fn run_extractor<L: LanguageExtractor>(
                             languages_processed[i] = true;
                             let lang = &languages[i];
 
-                            lang.extract_file(
+                            let result = lang.extract_file(
                                 &schemas[i],
                                 &mut diagnostics_writer,
                                 &mut trap_writer,
@@ -180,7 +183,18 @@ pub(crate) fn run_extractor<L: LanguageExtractor>(
                             );
                             std::fs::create_dir_all(src_archive_file.parent().unwrap())?;
                             std::fs::copy(&path, &src_archive_file)?;
-                            write_trap(trap_dir, &path, &trap_writer, trap_compression)?;
+                            match result {
+                                Ok(()) => {
+                                    write_trap(trap_dir, &path, &trap_writer, trap_compression)?;
+                                }
+                                Err(error) => {
+                                    tracing::error!(
+                                        file = %path.display(),
+                                        error,
+                                        "Failed to extract file"
+                                    );
+                                }
+                            }
                         }
                     }
                 }
@@ -207,4 +221,83 @@ fn write_trap(
     let trap_file = crate::file_paths::path_for(trap_dir, path, trap_compression.extension(), None);
     std::fs::create_dir_all(trap_file.parent().unwrap())?;
     trap_writer.write_to_file(&trap_file, trap_compression)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Write;
+
+    struct TestLanguage {
+        file_globs: Vec<String>,
+    }
+
+    impl LanguageExtractor for TestLanguage {
+        fn file_globs(&self) -> &[String] {
+            &self.file_globs
+        }
+
+        fn build_schema(&self) -> std::io::Result<NodeTypeMap> {
+            Ok(NodeTypeMap::new())
+        }
+
+        fn extract_file(
+            &self,
+            _schema: &NodeTypeMap,
+            _diagnostics_writer: &mut diagnostics::LogWriter,
+            trap_writer: &mut trap::Writer,
+            _path: &Path,
+            source: &[u8],
+        ) -> Result<(), String> {
+            if source == b"bad" {
+                Err("invalid parser output".to_string())
+            } else {
+                trap_writer.comment("success".to_string());
+                Ok(())
+            }
+        }
+    }
+
+    #[test]
+    fn file_extraction_error_does_not_abort_other_files() {
+        let root = std::env::temp_dir().join(format!("codeql-extractor-{}", rand::random::<u64>()));
+        let source_dir = root.join("input");
+        let source_archive_dir = root.join("source-archive");
+        let trap_dir = root.join("trap");
+        std::fs::create_dir_all(&source_dir).unwrap();
+
+        let good_path = source_dir.join("good.test");
+        let bad_path = source_dir.join("bad.test");
+        std::fs::write(&good_path, b"good").unwrap();
+        std::fs::write(&bad_path, b"bad").unwrap();
+
+        let file_list = root.join("files.txt");
+        let mut file = std::fs::File::create(&file_list).unwrap();
+        writeln!(file, "{}", good_path.display()).unwrap();
+        writeln!(file, "{}", bad_path.display()).unwrap();
+
+        run_extractor(
+            "test",
+            &[TestLanguage {
+                file_globs: vec!["*.test".to_string()],
+            }],
+            &trap_dir,
+            &source_archive_dir,
+            &[file_list],
+            &Ok(trap::Compression::Gzip),
+        )
+        .unwrap();
+
+        let good_trap = file_paths::path_for(&trap_dir, &good_path, "trap.gz", None);
+        let bad_trap = file_paths::path_for(&trap_dir, &bad_path, "trap.gz", None);
+        assert!(good_trap.is_file());
+        assert!(!bad_trap.exists());
+
+        let archived_good = file_paths::path_for(&source_archive_dir, &good_path, "", None);
+        let archived_bad = file_paths::path_for(&source_archive_dir, &bad_path, "", None);
+        assert!(archived_good.is_file());
+        assert!(archived_bad.is_file());
+
+        std::fs::remove_dir_all(root).unwrap();
+    }
 }

@@ -39,12 +39,15 @@ module DisabledCertificateCheckExtensions {
    */
   private class HeuristicSink extends Sink {
     HeuristicSink() {
-      exists(Call call |
+      exists(Call call, Expr arg |
+        arg = this.asExpr() and
         call.getStaticTarget().getName().getText() =
           ["danger_accept_invalid_certs", "danger_accept_invalid_hostnames"] and
-        call.getPositionalArgument(0) = this.asExpr() and
+        call.getPositionalArgument(0) = arg and
         // don't duplicate modeled sinks
-        not exists(ModelsAsDataSink s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = call)
+        not exists(ModelsAsDataSink s |
+          s.(Node::FlowSummaryNode).getSummaryNode().getSourceSinkReportingElement() = arg
+        )
       )
     }
   }

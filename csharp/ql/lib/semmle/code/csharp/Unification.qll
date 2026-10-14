@@ -348,6 +348,7 @@ module Gvn {
    *
    * `subsumes` indicates whether `arg1` in fact subsumes `arg2`.
    */
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   private predicate unifiableTypeArguments(
     CompoundTypeKind k, GvnTypeArgument arg1, GvnTypeArgument arg2, int i, boolean subsumes

@@ -9,14 +9,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal abstract class DotnetSourceGeneratorBase<T> : SourceGeneratorBase where T : DotnetSourceGeneratorWrapper
     {
-        protected readonly FileProvider fileProvider;
+        protected readonly IFileProvider fileProvider;
         protected readonly FileContent fileContent;
         protected readonly IDotNet dotnet;
         protected readonly ICompilationInfoContainer compilationInfoContainer;
         protected readonly IEnumerable<string> references;
 
         public DotnetSourceGeneratorBase(
-            FileProvider fileProvider,
+            IFileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
             ICompilationInfoContainer compilationInfoContainer,

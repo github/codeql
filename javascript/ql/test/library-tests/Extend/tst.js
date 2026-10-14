@@ -64,6 +64,7 @@ checkShallow(Object.assign(base(), arg()));
 checkShallow(require("defaults")(base(), arg()));
 checkShallow(require("extend-shallow")(base(), arg()));
 checkShallow(require("merge")(base(), arg()));
+checkShallow(require("merge-descriptors")(base(), arg()));
 checkShallow(require("mixin-object")(base(), arg()));
 checkShallow(require("object-assign")(base(), arg()));
 checkShallow(require("object.assign")(base(), arg()));

@@ -43,7 +43,7 @@ newtype DefLoc =
     meth = call.getATarget()
     or
     // include implicit `initialize` calls
-    meth = getInitializeTarget(call.getAControlFlowNode())
+    meth = getInitializeTarget(call.getControlFlowNode())
   } or
   /** A local variable. */
   LocalVariableLoc(VariableReadAccess read, VariableWriteAccess write) {

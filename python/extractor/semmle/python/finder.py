@@ -65,8 +65,8 @@ class PyModule(Module):
     def get_extractable(self):
         return FileExtractable(self.path)
 
-    def load(self, logger=None):
-        return PythonSourceModule(self.name, self.path, logger=logger)
+    def load(self, logger, diagnostics_writer):
+        return PythonSourceModule(self.name, self.path, logger=logger, diagnostics_writer=diagnostics_writer)
 
     def __str__(self):
         return "Python module at %s" % self.path

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace Testing
@@ -21,6 +22,27 @@ namespace Testing
         {
             throw null;
         }
+
+        public void BindingSources(
+            string ordinary,
+            [FromQuery] string fromQuery,
+            [FromBody] string fromBody,
+            [FromRoute] string fromRoute,
+            [FromHeader] string fromHeader,
+            [FromServices] IRequestService fromServices,
+            [CustomFromServices] IRequestService customFromServices,
+            [FromKeyedServices("cache")] IRequestService fromKeyedServices,
+            [CustomFromKeyedServices] IRequestService customFromKeyedServices)
+        { }
+    }
+
+    public interface IRequestService { }
+
+    public sealed class CustomFromServicesAttribute : FromServicesAttribute { }
+
+    public sealed class CustomFromKeyedServicesAttribute : FromKeyedServicesAttribute
+    {
+        public CustomFromKeyedServicesAttribute() : base("custom") { }
     }
 
     public class Item

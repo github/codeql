@@ -9,12 +9,16 @@ query predicate instances(StructField x, string isUnsafe__label, string isUnsafe
   if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
 }
 
-query predicate getAttr(StructField x, int index, Attr getAttr) {
+query predicate getAttr(StructField x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 
 query predicate getDefaultVal(StructField x, ConstArg getDefaultVal) {
   toBeTested(x) and not x.isUnknown() and getDefaultVal = x.getDefaultVal()
+}
+
+query predicate getMutRestriction(StructField x, MutRestriction getMutRestriction) {
+  toBeTested(x) and not x.isUnknown() and getMutRestriction = x.getMutRestriction()
 }
 
 query predicate getName(StructField x, Name getName) {

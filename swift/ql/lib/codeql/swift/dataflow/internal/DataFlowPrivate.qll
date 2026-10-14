@@ -305,8 +305,7 @@ private module Cached {
     model = ""
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
-      nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model)
   }
 
   /**
@@ -497,10 +496,10 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asSummarizedCallable() = this.getSummarizedCallable()
+    result = this.getSummaryNode().getEnclosingCallable()
   }
 
-  override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
+  override Location getLocationImpl() { result = this.getSummaryNode().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 }
@@ -1014,8 +1013,7 @@ predicate captureValueStep(Node node1, Node node2) {
 
 predicate jumpStep(Node pred, Node succ) {
   // models-as-data summarized flow
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
-    succ.(FlowSummaryNode).getSummaryNode())
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
 }
 
 predicate storeStep(Node node1, ContentSet c, Node node2) {

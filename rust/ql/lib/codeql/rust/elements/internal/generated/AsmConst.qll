@@ -29,6 +29,8 @@ module Generated {
   class AsmConst extends Synth::TAsmConst, AsmOperandImpl::AsmOperand {
     override string getAPrimaryQlClass() { result = "AsmConst" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the expression of this asm const, if it exists.
      */

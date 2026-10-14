@@ -100,57 +100,41 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩\n\n⟨stmt⟩"
       stmt:
-        type_alias_declaration
-          name: identifier "NestedFunction"
+        type_alias_declaration source="typealias ⟨name_node⟩ = ⟨type⟩"
+          name_node: identifier "NestedFunction" source="NestedFunction"
           type:
-            function_type_expr
+            function_expr source="(⟨parameter⟩) -> ⟨return_type⟩"
               parameter:
-                parameter
+                parameter source="⟨type⟩"
                   type:
-                    function_type_expr
+                    function_expr source="(⟨parameter⟩) -> ⟨return_type⟩"
                       parameter:
-                        parameter
-                          type:
-                            named_type_expr
-                              name: identifier "Int"
-                      return_type:
-                        named_type_expr
-                          name: identifier "Bool"
-              return_type:
-                named_type_expr
-                  name: identifier "Bool"
-        type_alias_declaration
-          name: identifier "MixedParametersAndTuples"
+                        parameter source="⟨type⟩"
+                          type: identifier "Int" source="Int"
+                      return_type: identifier "Bool" source="Bool"
+              return_type: identifier "Bool" source="Bool"
+        type_alias_declaration source="typealias ⟨name_node⟩ = ⟨type⟩"
+          name_node: identifier "MixedParametersAndTuples" source="MixedParametersAndTuples"
           type:
-            function_type_expr
+            function_expr source="(⟨parameter⟩, ⟨parameter⟩) -> ⟨return_type⟩"
               parameter:
-                parameter
+                parameter source="⟨type⟩"
                   type:
-                    function_type_expr
+                    function_expr source="(⟨parameter⟩) -> ⟨return_type⟩"
                       parameter:
-                        parameter
-                          type:
-                            named_type_expr
-                              name: identifier "Int"
-                      return_type:
-                        named_type_expr
-                          name: identifier "Bool"
-                parameter
-                  type:
-                    named_type_expr
-                      name: identifier "String"
+                        parameter source="⟨type⟩"
+                          type: identifier "Int" source="Int"
+                      return_type: identifier "Bool" source="Bool"
+                parameter source="⟨type⟩"
+                  type: identifier "String" source="String"
               return_type:
-                tuple_type_expr
+                tuple_expr source="(⟨element⟩, ⟨element⟩)"
                   element:
-                    tuple_type_element
-                      type:
-                        named_type_expr
-                          name: identifier "Bool"
-                    tuple_type_element
-                      type:
-                        named_type_expr
-                          name: identifier "Int"
+                    argument source="⟨value⟩"
+                      value: identifier "Bool" source="Bool"
+                    argument source="⟨value⟩"
+                      value: identifier "Int" source="Int"

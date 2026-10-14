@@ -15,12 +15,10 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        unary_expr
-          operand:
-            name_expr
-              identifier: identifier "a"
-          operator: prefix_operator "!"
+        unary_expr source="⟨operator⟩⟨operand⟩"
+          operand: identifier "a" source="a"
+          operator: prefix_operator "!" source="!"

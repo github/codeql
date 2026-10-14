@@ -5,6 +5,7 @@
         ".github/reusable_workflows/**/*.yml",
         ".github/reusable_workflows/**/*.yaml",
         "**/action.yml",
-        "**/action.yaml"
+        "**/action.yaml",
+        "**/actions.lock"
     ]
 }

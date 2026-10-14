@@ -3,6 +3,7 @@
  */
 
 private import codeql.ruby.AST
+private import codeql.util.SemVer
 
 /**
  * Provides classes and predicates for Gemfiles, including version constraint logic.
@@ -138,7 +139,7 @@ module Gemfile {
       exists(int thisMajor, int thisMinor, int otherMajor, int otherMinor |
         thisMajor = this.getVersion().getMajor() and
         thisMinor = this.getVersion().getMinor() and
-        exists(string maj, string mi | normalizeSemver(other, _, maj, mi, _) |
+        exists(string maj, string mi | exists(padSemVer(other, maj, mi, _)) |
           otherMajor = maj.toInt() and otherMinor = mi.toInt()
         )
       |
@@ -171,26 +172,26 @@ module Gemfile {
 
     Version() {
       this = any(Gem c).getAVersionConstraint().getVersionString() and
-      normalized = normalizeSemver(this)
+      normalized = padSemVer(this)
     }
 
     /**
      * Holds if this version is strictly before the version defined by `other`.
      */
     bindingset[other]
-    predicate before(string other) { normalized < normalizeSemver(other) }
+    predicate before(string other) { normalized < padSemVer(other) }
 
     /**
      * Holds if this versino is equal to the version defined by `other`.
      */
     bindingset[other]
-    predicate equal(string other) { normalized = normalizeSemver(other) }
+    predicate equal(string other) { normalized = padSemVer(other) }
 
     /**
      * Holds if this version is strictly after the version defined by `other`.
      */
     bindingset[other]
-    predicate after(string other) { normalized > normalizeSemver(other) }
+    predicate after(string other) { normalized > padSemVer(other) }
 
     /**
      * Holds if this version defines a patch number.
@@ -212,43 +213,4 @@ module Gemfile {
      */
     int getPatch() { result = getPatch(normalized).toInt() }
   }
-
-  /**
-   * Normalizes a SemVer string such that the lexicographical ordering
-   * of two normalized strings is consistent with the SemVer ordering.
-   *
-   * Pre-release information and build metadata is not supported.
-   */
-  bindingset[orig]
-  private predicate normalizeSemver(
-    string orig, string normalized, string major, string minor, string patch
-  ) {
-    major = getMajor(orig) and
-    (
-      minor = getMinor(orig)
-      or
-      not exists(getMinor(orig)) and minor = "0"
-    ) and
-    (
-      patch = getPatch(orig)
-      or
-      not exists(getPatch(orig)) and patch = "0"
-    ) and
-    normalized = leftPad(major) + "." + leftPad(minor) + "." + leftPad(patch)
-  }
-
-  bindingset[orig]
-  private string normalizeSemver(string orig) { normalizeSemver(orig, result, _, _, _) }
-
-  bindingset[s]
-  private string getMajor(string s) { result = s.regexpCapture("(\\d+).*", 1) }
-
-  bindingset[s]
-  private string getMinor(string s) { result = s.regexpCapture("(\\d+)\\.(\\d+).*", 2) }
-
-  bindingset[s]
-  private string getPatch(string s) { result = s.regexpCapture("(\\d+)\\.(\\d+)\\.(\\d+).*", 3) }
-
-  bindingset[str]
-  private string leftPad(string str) { result = ("000" + str).suffix(str.length()) }
 }

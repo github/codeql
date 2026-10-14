@@ -22,7 +22,7 @@ module Impl {
    * - `<T as Iterator>`
    */
   class PathSegment extends Generated::PathSegment {
-    override string toStringImpl() { result = this.toAbbreviatedString() }
+    override string toStringImpl() { result = concat(this.toAbbreviatedString()) }
 
     override string toAbbreviatedString() {
       result = strictconcat(int i | | this.toAbbreviatedStringPart(i), "::" order by i)

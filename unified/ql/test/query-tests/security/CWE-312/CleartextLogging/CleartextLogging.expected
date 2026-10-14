@@ -1,0 +1,8 @@
+#select
+| CleartextLoggingBad.swift:2:7:2:44 | StringInterpolationExpr | CleartextLoggingBad.swift:2:35:2:42 | password | CleartextLoggingBad.swift:2:7:2:44 | StringInterpolationExpr | Logging of $@ | CleartextLoggingBad.swift:2:35:2:42 | password | sensitive data |
+edges
+| CleartextLoggingBad.swift:2:35:2:42 | password | CleartextLoggingBad.swift:2:7:2:44 | StringInterpolationExpr | provenance |  |
+nodes
+| CleartextLoggingBad.swift:2:7:2:44 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
+| CleartextLoggingBad.swift:2:35:2:42 | password | semmle.label | password |
+subpaths

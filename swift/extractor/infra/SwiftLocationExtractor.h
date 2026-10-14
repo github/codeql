@@ -30,10 +30,11 @@ template <typename T>
 concept HasLAndRParenLoc = requires(T e) {
   e.getLParenLoc();
   e.getRParenLoc();
-} && !(HasSourceRange<T>)&&!(HasStartAndEndLoc<T>);
+} && !(HasSourceRange<T>) && !(HasStartAndEndLoc<T>);
 
 template <typename T>
-concept HasOneLoc = requires(T e) { e.getLoc(); } && !(HasSourceRange<T>)&&(!HasStartAndEndLoc<T>);
+concept HasOneLoc =
+    requires(T e) { e.getLoc(); } && !(HasSourceRange<T>) && (!HasStartAndEndLoc<T>);
 
 template <typename T>
 concept HasOneLocField = requires(T e) { e.Loc; };

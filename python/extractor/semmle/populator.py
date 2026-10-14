@@ -65,6 +65,11 @@ def main(sys_path = sys.path[:]):
     if options.language_version:
         last_version = options.language_version[-1]
         update_analysis_version(last_version)
+        # Worker processes are spawned rather than forked on macOS, so they do
+        # not inherit the value set above; they re-read it from the environment
+        # as this module did on import. Set it there too, or `--lang` would take
+        # effect in this process only, and on one platform only.
+        os.environ["CODEQL_EXTRACTOR_PYTHON_ANALYSIS_VERSION"] = last_version
 
     found_py2 = False
     if get_analysis_major_version() == 2 and options.extract_stdlib:

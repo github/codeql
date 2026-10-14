@@ -251,7 +251,8 @@ class AspNetCoreRedirectSink extends Sink {
   AspNetCoreRedirectSink() {
     exists(MethodCall mc |
       mc.getTarget() = any(MicrosoftAspNetCoreHttpHttpResponse response).getRedirectMethod() or
-      mc.getTarget() = any(MicrosoftAspNetCoreMvcController response).getARedirectMethod()
+      mc.getTarget() =
+        any(MicrosoftAspNetCoreMvcControllerHelperClass response).getAResponseMethod()
     |
       // Response.Redirect uses 'location' parameter
       this.getExpr() = mc.getArgumentForName("location")

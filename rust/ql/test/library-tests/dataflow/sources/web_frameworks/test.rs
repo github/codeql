@@ -118,8 +118,9 @@ mod actix_test {
         "".to_string()
     }
 
-    #[get("/4/{a}")] // $ Alert[rust/summary/taint-sources]
-    async fn my_actix_handler_4(path: web::Path<String>) -> String {
+    #[rustfmt::skip]
+    #[get("/4/{a}")]
+    async fn my_actix_handler_4(path: web::Path<String>) -> String { // $ Alert[rust/summary/taint-sources]
         let a = path.into_inner();
         sink(a); // $ hasTaintFlow=my_actix_handler_4
 
@@ -139,7 +140,7 @@ mod actix_test {
 
 mod axum_test {
     use super::sink;
-    use axum::extract::{Json, Path, Query, Request};
+    use axum::extract::{Json, Path, Query, Request, State};
     use axum::routing::{get, post, put, MethodFilter};
     use axum::Router;
     use std::collections::HashMap;
@@ -195,6 +196,13 @@ mod axum_test {
         ""
     }
 
+    async fn my_axum_handler_8(state: State<()>, body: String) -> &'static str {
+        sink(state.0);
+        sink(body); // $ hasTaintFlow=my_axum_handler_8
+
+        ""
+    }
+
     async fn test_axum() {
         let app = Router::<()>::new()
             .route("/1/{a}", get(my_axum_handler_1)) // $ Alert[rust/summary/taint-sources])
@@ -204,7 +212,8 @@ mod axum_test {
                 "/4/:a",
                 get(my_axum_handler_4).on(MethodFilter::DELETE, my_axum_handler_5), // $ Alert[rust/summary/taint-sources])
             )
-            .route("/5/:a", get(my_axum_handler_6).get(my_axum_handler_7)); // $ Alert[rust/summary/taint-sources])
+            .route("/5/:a", get(my_axum_handler_6).get(my_axum_handler_7)) // $ Alert[rust/summary/taint-sources])
+            .route("/6/:a", get(my_axum_handler_8)); // $ Alert[rust/summary/taint-sources])
 
         // ...
     }
@@ -219,24 +228,24 @@ mod warp_test {
     async fn test_warp() {
         // A route with parameter and `map`
         let map_route =
-            warp::path::param().map(|a: String| // $ Alert[rust/summary/taint-sources]
+            warp::path::param().map(|a: String|
             {
             sink(a); // $ hasTaintFlow
 
             "".to_string()
-        });
+        }); // $ Alert[rust/summary/taint-sources]
 
         // A route with parameter and `then`
-        let then_route = warp::path::param().then( // $ Alert[rust/summary/taint-sources]
+        let then_route = warp::path::param().then(
             async move |a: String| {
                 sink(a); // $ hasTaintFlow
 
                 "".to_string()
-            },
+            }, // $ Alert[rust/summary/taint-sources]
         );
 
         // A route with parameter and `and_then`
-        let and_then_route = warp::path::param().and_then( // $ Alert[rust/summary/taint-sources] 
+        let and_then_route = warp::path::param().and_then(
             async move | id: u64 |
             {
             if id != 0 {
@@ -245,17 +254,17 @@ mod warp_test {
             } else {
                 Err(warp::reject::not_found())
             }
-        },
+        }, // $ Alert[rust/summary/taint-sources] 
         );
 
         // A route with path, parameter, and `and_then`
-        let path_and_map_route = warp::path("1").and(warp::path::param()).map( // $ Alert[rust/summary/taint-sources] 
+        let path_and_map_route = warp::path("1").and(warp::path::param()).map(
             | a: String |
             {
                 sink(a); // $ hasTaintFlow
 
                 "".to_string()
-             },
+             }, // $ Alert[rust/summary/taint-sources]
         );
 
         let routes = warp::get().and(

@@ -1,0 +1,4 @@
+/.build
+# Copied from swift-syntax's CodeGeneration package by
+# `unified/scripts/regenerate-node-types.sh`; not ours to vendor.
+/Sources/SyntaxSupport

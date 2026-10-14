@@ -145,3 +145,41 @@ private module Cached {
 }
 
 import Cached
+
+/** Gets a value referring to a forwarding-wrapper around `func`. */
+private DataFlow::SourceNode trackWrappedFunction(
+  DataFlow::FunctionNode func, DataFlow::TypeTracker t
+) {
+  t.start() and
+  functionOneWayForwardingStep(func, result) and
+  // Exclude functions since ordinary call edges can handle that case.
+  // This will typically match calls to a "wrapper factory".
+  not result instanceof DataFlow::FunctionNode
+  or
+  functionOneWayForwardingStep(trackWrappedFunction(func, t.continue()), result)
+  or
+  exists(DataFlow::TypeTracker t2 | result = trackWrappedFunction(func, t2).track(t2, t))
+}
+
+/** Gets a value referring to a forwarding-wrapper around `func`. */
+DataFlow::SourceNode trackWrappedFunction(DataFlow::SourceNode func) {
+  result = trackWrappedFunction(func, DataFlow::TypeTracker::end())
+}
+
+/**
+ * Data flow into a concrete function invoked through a forwarding wrapper.
+ *
+ * Only arguments with a statically known position and a corresponding non-rest parameter are
+ * modeled.
+ */
+private class FunctionWrapperCallStep extends DataFlow::SharedFlowStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call, DataFlow::FunctionNode wrapped, int index |
+      call = trackWrappedFunction(wrapped).getACall() and
+      pred = call.getArgument(index) and
+      succ = wrapped.getParameter(index) and
+      // A rest parameter receives an array, not the argument at this index.
+      not succ.(DataFlow::ParameterNode).isRestParameter()
+    )
+  }
+}

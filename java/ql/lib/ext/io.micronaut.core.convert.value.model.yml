@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.micronaut.core.convert.value", "ConvertibleMultiValues", True, "get", "", "", "Argument[this].MapValue", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleMultiValues", True, "getAll", "", "", "Argument[this].MapValue", "ReturnValue.Element", "value", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleMultiValues", True, "getFirst", "", "", "Argument[this].MapValue", "ReturnValue.Element", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "asMap", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "asProperties", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "getValue", "", "", "Argument[this].MapValue", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "subMap", "", "", "Argument[this].MapValue", "ReturnValue.MapValue", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "values", "", "", "Argument[this].MapValue", "ReturnValue.Element", "taint", "manual"]

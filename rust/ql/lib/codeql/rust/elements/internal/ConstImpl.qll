@@ -28,7 +28,7 @@ module Impl {
     /** Gets an access to this constant item. */
     ConstAccess getAnAccess() { this = result.getConst() }
 
-    override string toStringImpl() { result = "const " + this.getName().getText() }
+    override string toStringImpl() { result = "const " + concat(this.getName().getText()) }
   }
 
   /**

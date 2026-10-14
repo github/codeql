@@ -1,0 +1,137 @@
+handlers[0]
+
+handlers[0] {
+  first()
+} completion: {
+  second()
+} failure: {
+  third()
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        subscriptCallExpr
+          leftSquare: [
+          rightSquare: ]
+          arguments:
+            labeledExpr
+              expression:
+                integerLiteralExpr
+                  literal: integerLiteral "0"
+          additionalTrailingClosures:
+          calledExpression:
+            declReferenceExpr
+              baseName: identifier "handlers"
+    codeBlockItem
+      item:
+        subscriptCallExpr
+          leftSquare: [
+          rightSquare: ]
+          arguments:
+            labeledExpr
+              expression:
+                integerLiteralExpr
+                  literal: integerLiteral "0"
+          additionalTrailingClosures:
+            multipleTrailingClosureElement
+              colon: :
+              label: identifier "completion"
+              closure:
+                closureExpr
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "second"
+            multipleTrailingClosureElement
+              colon: :
+              label: identifier "failure"
+              closure:
+                closureExpr
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "third"
+          calledExpression:
+            declReferenceExpr
+              baseName: identifier "handlers"
+          trailingClosure:
+            closureExpr
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "first"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n\n⟨stmt⟩"
+      stmt:
+        call_expr source="⟨callee⟩[⟨argument⟩]"
+          callee: identifier "handlers" source="handlers"
+          argument:
+            argument source="⟨value⟩"
+              value: int_literal "0" source="0"
+        call_expr source="⟨callee⟩[⟨argument⟩] ⟨argument⟩ ⟨argument⟩ ⟨argument⟩"
+          callee: identifier "handlers" source="handlers"
+          argument:
+            argument source="⟨value⟩"
+              value: int_literal "0" source="0"
+            argument source="⟨value⟩"
+              value:
+                function_expr source="{\n  ⟨body⟩\n}"
+                  body:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        call_expr source="⟨callee⟩()"
+                          callee: identifier "first" source="first"
+            argument source="⟨name_node⟩: ⟨value⟩"
+              name_node: identifier "completion" source="completion"
+              value:
+                function_expr source="{\n  ⟨body⟩\n}"
+                  body:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        call_expr source="⟨callee⟩()"
+                          callee: identifier "second" source="second"
+            argument source="⟨name_node⟩: ⟨value⟩"
+              name_node: identifier "failure" source="failure"
+              value:
+                function_expr source="{\n  ⟨body⟩\n}"
+                  body:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        call_expr source="⟨callee⟩()"
+                          callee: identifier "third" source="third"

@@ -295,7 +295,7 @@ New Features
 JavaScript/TypeScript
 """""""""""""""""""""
 
-*   Improved support for `Restify <http://restify.com/>`__ framework, leading to more results when scanning applications developed with this framework.
+*   Improved support for `Restify <https://restify.com/>`__ framework, leading to more results when scanning applications developed with this framework.
 *   Added support for the `Spife <https://github.com/npm/spife>`__ framework.
 
 Shared Libraries

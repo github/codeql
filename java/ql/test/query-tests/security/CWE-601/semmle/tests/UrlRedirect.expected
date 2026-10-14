@@ -1,4 +1,8 @@
 #select
+| MicronautUrlRedirect.java:14:38:14:55 | create(...) | MicronautUrlRedirect.java:12:39:12:63 | target : String | MicronautUrlRedirect.java:14:38:14:55 | create(...) | Untrusted URL redirection depends on a $@. | MicronautUrlRedirect.java:12:39:12:63 | target | user-provided value |
+| MicronautUrlRedirect.java:28:47:28:64 | create(...) | MicronautUrlRedirect.java:27:45:27:69 | target : String | MicronautUrlRedirect.java:28:47:28:64 | create(...) | Untrusted URL redirection depends on a $@. | MicronautUrlRedirect.java:27:45:27:69 | target | user-provided value |
+| MicronautUrlRedirect.java:33:38:33:55 | create(...) | MicronautUrlRedirect.java:32:44:32:68 | target : String | MicronautUrlRedirect.java:33:38:33:55 | create(...) | Untrusted URL redirection depends on a $@. | MicronautUrlRedirect.java:32:44:32:68 | target | user-provided value |
+| MicronautUrlRedirect.java:38:47:38:64 | create(...) | MicronautUrlRedirect.java:37:45:37:69 | target : String | MicronautUrlRedirect.java:38:47:38:64 | create(...) | Untrusted URL redirection depends on a $@. | MicronautUrlRedirect.java:37:45:37:69 | target | user-provided value |
 | SpringUrlRedirect.java:39:30:39:33 | next | SpringUrlRedirect.java:38:23:38:50 | getHeader(...) : String | SpringUrlRedirect.java:39:30:39:33 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:38:23:38:50 | getHeader(...) | user-provided value |
 | SpringUrlRedirect.java:45:47:45:50 | next | SpringUrlRedirect.java:44:23:44:50 | getHeader(...) : String | SpringUrlRedirect.java:45:47:45:50 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:44:23:44:50 | getHeader(...) | user-provided value |
 | SpringUrlRedirect.java:51:33:51:36 | next | SpringUrlRedirect.java:50:23:50:50 | getHeader(...) : String | SpringUrlRedirect.java:51:33:51:36 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:50:23:50:50 | getHeader(...) | user-provided value |
@@ -12,27 +16,52 @@
 | UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:42:43:42:72 | getParameter(...) | user-provided value |
 | mad/Test.java:14:22:14:38 | (...)... | mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:22:14:38 | (...)... | Untrusted URL redirection depends on a $@. | mad/Test.java:9:16:9:41 | getParameter(...) | user-provided value |
 edges
+| MicronautUrlRedirect.java:12:39:12:63 | target : String | MicronautUrlRedirect.java:14:49:14:54 | target : String | provenance |  |
+| MicronautUrlRedirect.java:14:49:14:54 | target : String | MicronautUrlRedirect.java:14:38:14:55 | create(...) | provenance | MaD:9 Sink:MaD:2 |
+| MicronautUrlRedirect.java:27:45:27:69 | target : String | MicronautUrlRedirect.java:28:58:28:63 | target : String | provenance |  |
+| MicronautUrlRedirect.java:28:58:28:63 | target : String | MicronautUrlRedirect.java:28:47:28:64 | create(...) | provenance | MaD:9 Sink:MaD:1 |
+| MicronautUrlRedirect.java:32:44:32:68 | target : String | MicronautUrlRedirect.java:33:49:33:54 | target : String | provenance |  |
+| MicronautUrlRedirect.java:33:49:33:54 | target : String | MicronautUrlRedirect.java:33:38:33:55 | create(...) | provenance | MaD:9 Sink:MaD:3 |
+| MicronautUrlRedirect.java:37:45:37:69 | target : String | MicronautUrlRedirect.java:38:58:38:63 | target : String | provenance |  |
+| MicronautUrlRedirect.java:38:58:38:63 | target : String | MicronautUrlRedirect.java:38:47:38:64 | create(...) | provenance | MaD:9 Sink:MaD:4 |
 | SpringUrlRedirect.java:12:31:12:41 | path : String | SpringUrlRedirect.java:13:16:13:33 | ... + ... : String | provenance |  |
-| SpringUrlRedirect.java:38:23:38:50 | getHeader(...) : String | SpringUrlRedirect.java:39:30:39:33 | next | provenance | Src:MaD:2  |
-| SpringUrlRedirect.java:44:23:44:50 | getHeader(...) : String | SpringUrlRedirect.java:45:47:45:50 | next | provenance | Src:MaD:2  |
-| SpringUrlRedirect.java:50:23:50:50 | getHeader(...) : String | SpringUrlRedirect.java:51:33:51:36 | next | provenance | Src:MaD:2  |
-| SpringUrlRedirect.java:56:23:56:50 | getHeader(...) : String | SpringUrlRedirect.java:57:25:57:28 | next : String | provenance | Src:MaD:2  |
+| SpringUrlRedirect.java:38:23:38:50 | getHeader(...) : String | SpringUrlRedirect.java:39:30:39:33 | next | provenance | Src:MaD:6  |
+| SpringUrlRedirect.java:44:23:44:50 | getHeader(...) : String | SpringUrlRedirect.java:45:47:45:50 | next | provenance | Src:MaD:6  |
+| SpringUrlRedirect.java:50:23:50:50 | getHeader(...) : String | SpringUrlRedirect.java:51:33:51:36 | next | provenance | Src:MaD:6  |
+| SpringUrlRedirect.java:56:23:56:50 | getHeader(...) : String | SpringUrlRedirect.java:57:25:57:28 | next : String | provenance | Src:MaD:6  |
 | SpringUrlRedirect.java:57:25:57:28 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | provenance |  |
 | SpringUrlRedirect.java:57:25:57:28 | next : String | SpringUrlRedirect.java:57:16:57:29 | redirect(...) | provenance |  |
-| SpringUrlRedirect.java:62:23:62:50 | getParameter(...) : String | SpringUrlRedirect.java:64:21:64:24 | next | provenance | Src:MaD:3  |
-| SpringUrlRedirect.java:70:23:70:50 | getParameter(...) : String | SpringUrlRedirect.java:71:33:71:36 | next | provenance | Src:MaD:3  |
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance | Src:MaD:3 MaD:4 |
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance | Src:MaD:3  |
+| SpringUrlRedirect.java:62:23:62:50 | getParameter(...) : String | SpringUrlRedirect.java:64:21:64:24 | next | provenance | Src:MaD:7  |
+| SpringUrlRedirect.java:70:23:70:50 | getParameter(...) : String | SpringUrlRedirect.java:71:33:71:36 | next | provenance | Src:MaD:7  |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance | Src:MaD:7 MaD:8 |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance | Src:MaD:7  |
 | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:14 | input : String | provenance |  |
-| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance | MaD:4 |
-| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance | Src:MaD:3  |
-| mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance | Sink:MaD:1 |
+| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance | MaD:8 |
+| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance | Src:MaD:7  |
+| mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance | Sink:MaD:5 |
 models
-| 1 | Sink: org.kohsuke.stapler; HttpResponses; true; redirectTo; (String); ; Argument[0]; url-redirection; ai-manual |
-| 2 | Source: javax.servlet.http; HttpServletRequest; false; getHeader; (String); ; ReturnValue; remote; manual |
-| 3 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
-| 4 | Summary: java.lang; String; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
+| 1 | Sink: io.micronaut.http; HttpResponse; true; permanentRedirect; (URI); ; Argument[0]; url-redirection; manual |
+| 2 | Sink: io.micronaut.http; HttpResponse; true; redirect; (URI); ; Argument[0]; url-redirection; manual |
+| 3 | Sink: io.micronaut.http; HttpResponse; true; seeOther; (URI); ; Argument[0]; url-redirection; manual |
+| 4 | Sink: io.micronaut.http; HttpResponse; true; temporaryRedirect; (URI); ; Argument[0]; url-redirection; manual |
+| 5 | Sink: org.kohsuke.stapler; HttpResponses; true; redirectTo; (String); ; Argument[0]; url-redirection; ai-manual |
+| 6 | Source: javax.servlet.http; HttpServletRequest; false; getHeader; (String); ; ReturnValue; remote; manual |
+| 7 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 8 | Summary: java.lang; String; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
+| 9 | Summary: java.net; URI; false; create; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
+| MicronautUrlRedirect.java:12:39:12:63 | target : String | semmle.label | target : String |
+| MicronautUrlRedirect.java:14:38:14:55 | create(...) | semmle.label | create(...) |
+| MicronautUrlRedirect.java:14:49:14:54 | target : String | semmle.label | target : String |
+| MicronautUrlRedirect.java:27:45:27:69 | target : String | semmle.label | target : String |
+| MicronautUrlRedirect.java:28:47:28:64 | create(...) | semmle.label | create(...) |
+| MicronautUrlRedirect.java:28:58:28:63 | target : String | semmle.label | target : String |
+| MicronautUrlRedirect.java:32:44:32:68 | target : String | semmle.label | target : String |
+| MicronautUrlRedirect.java:33:38:33:55 | create(...) | semmle.label | create(...) |
+| MicronautUrlRedirect.java:33:49:33:54 | target : String | semmle.label | target : String |
+| MicronautUrlRedirect.java:37:45:37:69 | target : String | semmle.label | target : String |
+| MicronautUrlRedirect.java:38:47:38:64 | create(...) | semmle.label | create(...) |
+| MicronautUrlRedirect.java:38:58:38:63 | target : String | semmle.label | target : String |
 | SpringUrlRedirect.java:12:31:12:41 | path : String | semmle.label | path : String |
 | SpringUrlRedirect.java:13:16:13:33 | ... + ... : String | semmle.label | ... + ... : String |
 | SpringUrlRedirect.java:38:23:38:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |

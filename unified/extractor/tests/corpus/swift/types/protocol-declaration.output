@@ -1,5 +1,6 @@
 protocol Drawable {
   func draw()
+  static func make()
 }
 
 ---
@@ -31,19 +32,39 @@ sourceFile
                               rightParen: )
                               parameters:
                       funcKeyword: func
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                      name: identifier "make"
+                      modifiers:
+                        declModifier
+                          name: static
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                      funcKeyword: func
           modifiers:
           protocolKeyword: protocol
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "protocol"
-          name: identifier "Drawable"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩\n}"
+          modifier: modifier "protocol" source="protocol"
+          name_node: identifier "Drawable" source="Drawable"
           member:
-            function_declaration
-              name: identifier "draw"
-              body: block "func draw()"
+            function_declaration source="func ⟨name_node⟩()"
+              name_node: identifier "draw" source="draw"
+              body: block source=""
+            function_declaration source="⟨modifier⟩ func ⟨name_node⟩()"
+              modifier: modifier "static" source="static"
+              name_node: identifier "make" source="make"
+              body: block source=""

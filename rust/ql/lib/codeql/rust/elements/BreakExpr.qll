@@ -4,7 +4,7 @@
  */
 
 private import internal.BreakExprImpl
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Lifetime
 

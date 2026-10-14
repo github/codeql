@@ -931,254 +931,368 @@ parentNodes
 | .github/workflows/test.yml:40:14:40:52 | echo ${{needs.job1.outputs.job_output}} | .github/workflows/test.yml:39:9:40:53 | Run Step: sink |
 | .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output | .github/workflows/test.yml:40:14:40:52 | echo ${{needs.job1.outputs.job_output}} |
 cfgNodes
-| .github/workflows/commands.yml:1:1:39:30 | enter on: push |
-| .github/workflows/commands.yml:1:1:39:30 | exit on: push |
-| .github/workflows/commands.yml:1:1:39:30 | exit on: push (normal) |
+| .github/workflows/commands.yml:1:1:39:30 | After on: push |
+| .github/workflows/commands.yml:1:1:39:30 | Entry |
+| .github/workflows/commands.yml:1:1:39:30 | Exit |
+| .github/workflows/commands.yml:1:1:39:30 | Normal Exit |
 | .github/workflows/commands.yml:1:1:39:30 | on: push |
+| .github/workflows/commands.yml:9:5:31:2 | After Job: local_commands |
 | .github/workflows/commands.yml:9:5:31:2 | Job: local_commands |
+| .github/workflows/commands.yml:15:9:18:6 | After Run Step |
 | .github/workflows/commands.yml:15:9:18:6 | Run Step |
 | .github/workflows/commands.yml:16:14:17:30 | command1 ; command2\n |
+| .github/workflows/commands.yml:18:9:20:6 | After Run Step |
 | .github/workflows/commands.yml:18:9:20:6 | Run Step |
 | .github/workflows/commands.yml:18:14:19:30 | command3 \| command4\n |
+| .github/workflows/commands.yml:20:9:22:6 | After Run Step |
 | .github/workflows/commands.yml:20:9:22:6 | Run Step |
 | .github/workflows/commands.yml:20:14:21:33 | command5 "$(command6)"\n |
+| .github/workflows/commands.yml:22:9:24:6 | After Run Step |
 | .github/workflows/commands.yml:22:9:24:6 | Run Step |
 | .github/workflows/commands.yml:22:14:23:31 | command7 && command8\n |
+| .github/workflows/commands.yml:24:9:26:6 | After Run Step |
 | .github/workflows/commands.yml:24:9:26:6 | Run Step |
 | .github/workflows/commands.yml:24:14:25:32 | command9 \|\| command10\n |
+| .github/workflows/commands.yml:26:9:28:6 | After Run Step |
 | .github/workflows/commands.yml:26:9:28:6 | Run Step |
 | .github/workflows/commands.yml:26:14:27:34 | command11 "`command12`"\n |
+| .github/workflows/commands.yml:28:9:31:2 | After Run Step |
 | .github/workflows/commands.yml:28:9:31:2 | Run Step |
 | .github/workflows/commands.yml:28:14:29:50 | command13 "`command14` $(date \| wc -l)"\n |
+| .github/workflows/commands.yml:32:5:39:30 | After Job: local_commands2 |
 | .github/workflows/commands.yml:32:5:39:30 | Job: local_commands2 |
+| .github/workflows/commands.yml:34:9:37:6 | After Run Step |
 | .github/workflows/commands.yml:34:9:37:6 | Run Step |
 | .github/workflows/commands.yml:35:14:36:30 | command1 ; command2\n |
+| .github/workflows/commands.yml:37:9:39:30 | After Run Step |
 | .github/workflows/commands.yml:37:9:39:30 | Run Step |
 | .github/workflows/commands.yml:38:14:39:30 | command3 \| command4\n |
-| .github/workflows/controlcheck.yml:1:1:16:25 | enter on: |
-| .github/workflows/controlcheck.yml:1:1:16:25 | exit on: |
-| .github/workflows/controlcheck.yml:1:1:16:25 | exit on: (normal) |
+| .github/workflows/controlcheck.yml:1:1:16:25 | After on: |
+| .github/workflows/controlcheck.yml:1:1:16:25 | Entry |
+| .github/workflows/controlcheck.yml:1:1:16:25 | Exit |
+| .github/workflows/controlcheck.yml:1:1:16:25 | Normal Exit |
 | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/controlcheck.yml:6:5:11:2 | After Job: test1 |
 | .github/workflows/controlcheck.yml:6:5:11:2 | Job: test1 |
+| .github/workflows/controlcheck.yml:9:9:11:2 | After Run Step |
 | .github/workflows/controlcheck.yml:9:9:11:2 | Run Step |
 | .github/workflows/controlcheck.yml:10:14:10:25 | echo "test1" |
+| .github/workflows/controlcheck.yml:12:5:16:25 | After Job: test2 |
 | .github/workflows/controlcheck.yml:12:5:16:25 | Job: test2 |
+| .github/workflows/controlcheck.yml:15:9:16:25 | After Run Step |
 | .github/workflows/controlcheck.yml:15:9:16:25 | Run Step |
 | .github/workflows/controlcheck.yml:16:14:16:25 | echo "test2" |
-| .github/workflows/expression_nodes.yml:1:1:21:47 | enter on: issue_comment |
-| .github/workflows/expression_nodes.yml:1:1:21:47 | exit on: issue_comment |
-| .github/workflows/expression_nodes.yml:1:1:21:47 | exit on: issue_comment (normal) |
+| .github/workflows/expression_nodes.yml:1:1:21:47 | After on: issue_comment |
+| .github/workflows/expression_nodes.yml:1:1:21:47 | Entry |
+| .github/workflows/expression_nodes.yml:1:1:21:47 | Exit |
+| .github/workflows/expression_nodes.yml:1:1:21:47 | Normal Exit |
 | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:5:5:21:47 | After Job: echo-chamber |
 | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:7:9:8:6 | After Run Step |
 | .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step |
 | .github/workflows/expression_nodes.yml:7:14:7:58 | LINE 1echo '${{ github.event.comment.body }}' |
 | .github/workflows/expression_nodes.yml:7:27:7:58 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:8:9:10:6 | After Run Step |
 | .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step |
 | .github/workflows/expression_nodes.yml:8:14:9:57 | LINE 1 echo '${{ github.event.comment.body }}'\n |
 | .github/workflows/expression_nodes.yml:9:25:9:56 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:10:9:13:6 | After Run Step |
 | .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step |
 | .github/workflows/expression_nodes.yml:10:14:12:53 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\n |
 | .github/workflows/expression_nodes.yml:11:25:11:56 | github.event.comment.body |
 | .github/workflows/expression_nodes.yml:12:24:12:51 | github.event.issue.body |
+| .github/workflows/expression_nodes.yml:13:9:16:6 | After Run Step |
 | .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step |
 | .github/workflows/expression_nodes.yml:13:14:15:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}'\n |
 | .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.comment.body |
 | .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.issue.body |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | After Run Step |
 | .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step |
 | .github/workflows/expression_nodes.yml:16:14:19:57 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\nLINE 3 echo '${{ github.event.comment.body }}'\n |
 | .github/workflows/expression_nodes.yml:17:25:17:56 | github.event.comment.body |
 | .github/workflows/expression_nodes.yml:18:24:18:51 | github.event.issue.body |
 | .github/workflows/expression_nodes.yml:19:24:19:55 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:20:9:21:47 | After Run Step |
 | .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body |
-| .github/workflows/many_strings.yml:1:1:18:1211 | enter on: |
-| .github/workflows/many_strings.yml:1:1:18:1211 | exit on: |
-| .github/workflows/many_strings.yml:1:1:18:1211 | exit on: (normal) |
+| .github/workflows/many_strings.yml:1:1:18:1211 | After on: |
+| .github/workflows/many_strings.yml:1:1:18:1211 | Entry |
+| .github/workflows/many_strings.yml:1:1:18:1211 | Exit |
+| .github/workflows/many_strings.yml:1:1:18:1211 | Normal Exit |
 | .github/workflows/many_strings.yml:1:1:18:1211 | on: |
+| .github/workflows/many_strings.yml:9:5:18:1211 | After Job: Test |
 | .github/workflows/many_strings.yml:9:5:18:1211 | Job: Test |
+| .github/workflows/many_strings.yml:11:9:18:1211 | After Run Step |
 | .github/workflows/many_strings.yml:11:9:18:1211 | Run Step |
 | .github/workflows/many_strings.yml:11:14:18:1211 | # Avoid choking on large chunks of data containing quotes\necho '["string1", "string2", "string3", "string4", "string5", "string6", "string7", "string8", "string9", "string10", "string11", "string12", "string13", "string14", "string15", "string16", "string17", "string18", "string19", "string20", "string21", "string22", "string23", "string24", "string25", "string26", "string27", "string28", "string29", "string30", "string31", "string32", "string33", "string34", "string35", "string36", "string37", "string38", "string39", "string40", "string41", "string42", "string43", "string44", "string45", "string46", "string47", "string48", "string49", "string50", "string51", "string52", "string53", "string54", "string55", "string56", "string57", "string58", "string59", "string60", "string61", "string62", "string63", "string64", "string65", "string66", "string67", "string68", "string69", "string70", "string71", "string72", "string73", "string74", "string75", "string76", "string77", "string78", "string79", "string80", "string81", "string82", "string83", "string84", "string85", "string86", "string87", "string88", "string89", "string90", "string91", "string92", "string93", "string94", "string95", "string96", "string97", "string98", "string99", "string100"]'\necho "['string1', 'string2', 'string3', 'string4', 'string5', 'string6', 'string7', 'string8', 'string9', 'string10', 'string11', 'string12', 'string13', 'string14', 'string15', 'string16', 'string17', 'string18', 'string19', 'string20', 'string21', 'string22', 'string23', 'string24', 'string25', 'string26', 'string27', 'string28', 'string29', 'string30', 'string31', 'string32', 'string33', 'string34', 'string35', 'string36', 'string37', 'string38', 'string39', 'string40', 'string41', 'string42', 'string43', 'string44', 'string45', 'string46', 'string47', 'string48', 'string49', 'string50', 'string51', 'string52', 'string53', 'string54', 'string55', 'string56', 'string57', 'string58', 'string59', 'string60', 'string61', 'string62', 'string63', 'string64', 'string65', 'string66', 'string67', 'string68', 'string69', 'string70', 'string71', 'string72', 'string73', 'string74', 'string75', 'string76', 'string77', 'string78', 'string79', 'string80', 'string81', 'string82', 'string83', 'string84', 'string85', 'string86', 'string87', 'string88', 'string89', 'string90', 'string91', 'string92', 'string93', 'string94', 'string95', 'string96', 'string97', 'string98', 'string99', 'string100']"\n\n# Same as above but where each line has an unbalanced internal quote near the end\necho '["string1", "string2", "string3", "string4", "string5", "string6", "string7", "string8", "string9", "string10", "string11", "string12", "string13", "string14", "string15", "string16", "string17", "string18", "string19", "string20", "string21", "string22", "string23", "string24", "string25", "string26", "string27", "string28", "string29", "string30", "string31", "string32", "string33", "string34", "string35", "string36", "string37", "string38", "string39", "string40", "string41", "string42", "string43", "string44", "string45", "string46", "string47", "string48", "string49", "string50", "string51", "string52", "string53", "string54", "string55", "string56", "string57", "string58", "string59", "string60", "string61", "string62", "string63", "string64", "string65", "string66", "string67", "string68", "string69", "string70", "string71", "string72", "string73", "string74", "string75", "string76", "string77", "string78", "string79", "string80", "string81", "string82", "string83", "string84", "string85", "string86", "string87", "string88", "string89", "string90", "string91", "string92", "string93", "string94", "string95", "string96", "string97", "string98", "string99", "string100"]"'\necho "['string1', 'string2', 'string3', 'string4', 'string5', 'string6', 'string7', 'string8', 'string9', 'string10', 'string11', 'string12', 'string13', 'string14', 'string15', 'string16', 'string17', 'string18', 'string19', 'string20', 'string21', 'string22', 'string23', 'string24', 'string25', 'string26', 'string27', 'string28', 'string29', 'string30', 'string31', 'string32', 'string33', 'string34', 'string35', 'string36', 'string37', 'string38', 'string39', 'string40', 'string41', 'string42', 'string43', 'string44', 'string45', 'string46', 'string47', 'string48', 'string49', 'string50', 'string51', 'string52', 'string53', 'string54', 'string55', 'string56', 'string57', 'string58', 'string59', 'string60', 'string61', 'string62', 'string63', 'string64', 'string65', 'string66', 'string67', 'string68', 'string69', 'string70', 'string71', 'string72', 'string73', 'string74', 'string75', 'string76', 'string77', 'string78', 'string79', 'string80', 'string81', 'string82', 'string83', 'string84', 'string85', 'string86', 'string87', 'string88', 'string89', 'string90', 'string91', 'string92', 'string93', 'string94', 'string95', 'string96', 'string97', 'string98', 'string99', 'string100']'"\n |
-| .github/workflows/multiline2.yml:1:1:89:35 | enter on:  |
-| .github/workflows/multiline2.yml:1:1:89:35 | exit on:  |
-| .github/workflows/multiline2.yml:1:1:89:35 | exit on:  (normal) |
+| .github/workflows/multiline2.yml:1:1:89:35 | After on:  |
+| .github/workflows/multiline2.yml:1:1:89:35 | Entry |
+| .github/workflows/multiline2.yml:1:1:89:35 | Exit |
+| .github/workflows/multiline2.yml:1:1:89:35 | Normal Exit |
 | .github/workflows/multiline2.yml:1:1:89:35 | on:  |
+| .github/workflows/multiline2.yml:9:5:89:35 | After Job: Test |
 | .github/workflows/multiline2.yml:9:5:89:35 | Job: Test |
+| .github/workflows/multiline2.yml:11:9:15:6 | After Run Step |
 | .github/workflows/multiline2.yml:11:9:15:6 | Run Step |
 | .github/workflows/multiline2.yml:11:14:14:54 | echo "changelog<<CHANGELOGEOF" \| tee -a $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" \| tee -a $GITHUB_OUTPUT\necho "CHANGELOGEOF" \| tee -a $GITHUB_OUTPUT\n |
+| .github/workflows/multiline2.yml:15:9:20:6 | After Run Step |
 | .github/workflows/multiline2.yml:15:9:20:6 | Run Step |
 | .github/workflows/multiline2.yml:15:14:19:46 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" \| tee -a $GITHUB_OUTPUT\necho "$(cat status.output.json)" \| tee -a $GITHUB_OUTPUT\necho "$EOF" \| tee -a $GITHUB_OUTPUT\n |
+| .github/workflows/multiline2.yml:20:9:24:6 | After Run Step |
 | .github/workflows/multiline2.yml:20:9:24:6 | Run Step |
 | .github/workflows/multiline2.yml:20:14:23:46 | echo "response<<$EOF" \| tee -a $GITHUB_OUTPUT\necho $output \| tee -a $GITHUB_OUTPUT\necho "$EOF" \| tee -a $GITHUB_OUTPUT\n |
+| .github/workflows/multiline2.yml:24:9:30:6 | After Run Step |
 | .github/workflows/multiline2.yml:24:9:30:6 | Run Step |
 | .github/workflows/multiline2.yml:24:14:29:35 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} \| tee -a "$GITHUB_ENV"\n |
+| .github/workflows/multiline2.yml:30:9:34:6 | After Run Step |
 | .github/workflows/multiline2.yml:30:9:34:6 | Run Step |
 | .github/workflows/multiline2.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
 | .github/workflows/multiline2.yml:32:13:32:39 | toJson(github.event) |
+| .github/workflows/multiline2.yml:34:9:40:6 | After Run Step |
 | .github/workflows/multiline2.yml:34:9:40:6 | Run Step |
 | .github/workflows/multiline2.yml:35:14:39:14 | cat \| tee -a $GITHUB_ENV << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline2.yml:40:9:46:6 | After Run Step |
 | .github/workflows/multiline2.yml:40:9:46:6 | Run Step |
 | .github/workflows/multiline2.yml:41:14:45:14 | cat > issue.txt << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline2.yml:46:9:52:6 | After Run Step |
 | .github/workflows/multiline2.yml:46:9:52:6 | Run Step |
 | .github/workflows/multiline2.yml:47:14:51:14 | cat << EOL \| tee -a $GITHUB_ENV\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline2.yml:52:9:58:6 | After Run Step |
 | .github/workflows/multiline2.yml:52:9:58:6 | Run Step |
 | .github/workflows/multiline2.yml:53:14:57:14 | cat <<EOF \|  sed 's/l/e/g' > file.txt\nHello\nWorld\nEOF\n |
+| .github/workflows/multiline2.yml:58:9:63:6 | After Run Step |
 | .github/workflows/multiline2.yml:58:9:63:6 | Run Step |
 | .github/workflows/multiline2.yml:59:14:62:14 | cat <<-EOF \| tee -a "$GITHUB_ENV"\necho "FOO=$TITLE"\nEOF\n |
+| .github/workflows/multiline2.yml:63:9:66:6 | After Run Step |
 | .github/workflows/multiline2.yml:63:9:66:6 | Run Step |
 | .github/workflows/multiline2.yml:64:14:65:142 | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') \| tee -a $GITHUB_ENV\n |
+| .github/workflows/multiline2.yml:66:9:71:6 | After Run Step |
 | .github/workflows/multiline2.yml:66:9:71:6 | Run Step |
 | .github/workflows/multiline2.yml:67:14:70:42 | echo "PR_TITLE<<EOF" \| tee -a $GITHUB_ENV\necho "$TITLE" \| tee -a $GITHUB_ENV\necho "EOF" \| tee -a $GITHUB_ENV\n |
+| .github/workflows/multiline2.yml:71:9:78:6 | After Run Step |
 | .github/workflows/multiline2.yml:71:9:78:6 | Run Step |
 | .github/workflows/multiline2.yml:72:14:77:35 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} \| tee -a "$GITHUB_ENV"\n |
+| .github/workflows/multiline2.yml:78:9:85:6 | After Run Step |
 | .github/workflows/multiline2.yml:78:9:85:6 | Run Step |
 | .github/workflows/multiline2.yml:79:14:84:35 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} \| tee -a "$GITHUB_ENV"\n |
+| .github/workflows/multiline2.yml:85:9:89:35 | After Run Step |
 | .github/workflows/multiline2.yml:85:9:89:35 | Run Step |
 | .github/workflows/multiline2.yml:86:14:89:35 | {\n  echo 'JSON_RESPONSE<<EOF'\n} \| tee -a "$GITHUB_ENV"\n |
-| .github/workflows/multiline.yml:1:1:89:29 | enter on:  |
-| .github/workflows/multiline.yml:1:1:89:29 | exit on:  |
-| .github/workflows/multiline.yml:1:1:89:29 | exit on:  (normal) |
+| .github/workflows/multiline.yml:1:1:89:29 | After on:  |
+| .github/workflows/multiline.yml:1:1:89:29 | Entry |
+| .github/workflows/multiline.yml:1:1:89:29 | Exit |
+| .github/workflows/multiline.yml:1:1:89:29 | Normal Exit |
 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:9:5:89:29 | After Job: Test |
 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:11:9:15:6 | After Run Step |
 | .github/workflows/multiline.yml:11:9:15:6 | Run Step |
 | .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n |
+| .github/workflows/multiline.yml:15:9:20:6 | After Run Step |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step |
 | .github/workflows/multiline.yml:15:14:19:40 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
+| .github/workflows/multiline.yml:20:9:24:6 | After Run Step |
 | .github/workflows/multiline.yml:20:9:24:6 | Run Step |
 | .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
+| .github/workflows/multiline.yml:24:9:30:6 | After Run Step |
 | .github/workflows/multiline.yml:24:9:30:6 | Run Step |
 | .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:30:9:34:6 | After Run Step |
 | .github/workflows/multiline.yml:30:9:34:6 | Run Step |
 | .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
 | .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) |
+| .github/workflows/multiline.yml:34:9:40:6 | After Run Step |
 | .github/workflows/multiline.yml:34:9:40:6 | Run Step |
 | .github/workflows/multiline.yml:35:14:39:14 | cat >> $GITHUB_ENV << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:40:9:46:6 | After Run Step |
 | .github/workflows/multiline.yml:40:9:46:6 | Run Step |
 | .github/workflows/multiline.yml:41:14:45:14 | cat > issue.txt << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:46:9:52:6 | After Run Step |
 | .github/workflows/multiline.yml:46:9:52:6 | Run Step |
 | .github/workflows/multiline.yml:47:14:51:14 | cat << EOL >> $GITHUB_ENV\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:52:9:58:6 | After Run Step |
 | .github/workflows/multiline.yml:52:9:58:6 | Run Step |
 | .github/workflows/multiline.yml:53:14:57:14 | cat <<EOF \|  sed 's/l/e/g' > file.txt\nHello\nWorld\nEOF\n |
+| .github/workflows/multiline.yml:58:9:63:6 | After Run Step |
 | .github/workflows/multiline.yml:58:9:63:6 | Run Step |
 | .github/workflows/multiline.yml:59:14:62:14 | cat <<-EOF >> "$GITHUB_ENV"\necho "FOO=$TITLE"\nEOF\n |
+| .github/workflows/multiline.yml:63:9:66:6 | After Run Step |
 | .github/workflows/multiline.yml:63:9:66:6 | Run Step |
 | .github/workflows/multiline.yml:64:14:65:136 | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') >> $GITHUB_ENV\n |
+| .github/workflows/multiline.yml:66:9:71:6 | After Run Step |
 | .github/workflows/multiline.yml:66:9:71:6 | Run Step |
 | .github/workflows/multiline.yml:67:14:70:36 | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n |
+| .github/workflows/multiline.yml:71:9:78:6 | After Run Step |
 | .github/workflows/multiline.yml:71:9:78:6 | Run Step |
 | .github/workflows/multiline.yml:72:14:77:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:78:9:85:6 | After Run Step |
 | .github/workflows/multiline.yml:78:9:85:6 | Run Step |
 | .github/workflows/multiline.yml:79:14:84:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:85:9:89:29 | After Run Step |
 | .github/workflows/multiline.yml:85:9:89:29 | Run Step |
 | .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n |
-| .github/workflows/poisonable_steps.yml:1:1:46:111 | enter on: push |
-| .github/workflows/poisonable_steps.yml:1:1:46:111 | exit on: push |
-| .github/workflows/poisonable_steps.yml:1:1:46:111 | exit on: push (normal) |
+| .github/workflows/poisonable_steps.yml:1:1:46:111 | After on: push |
+| .github/workflows/poisonable_steps.yml:1:1:46:111 | Entry |
+| .github/workflows/poisonable_steps.yml:1:1:46:111 | Exit |
+| .github/workflows/poisonable_steps.yml:1:1:46:111 | Normal Exit |
 | .github/workflows/poisonable_steps.yml:1:1:46:111 | on: push |
+| .github/workflows/poisonable_steps.yml:5:5:46:111 | After Job: local_commands |
 | .github/workflows/poisonable_steps.yml:5:5:46:111 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:7:9:8:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:7:9:8:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:7:14:7:30 | venv/bin/activate |
+| .github/workflows/poisonable_steps.yml:8:9:13:6 | After Uses Step |
 | .github/workflows/poisonable_steps.yml:8:9:13:6 | Uses Step |
 | .github/workflows/poisonable_steps.yml:11:53:11:75 | github.workspace |
+| .github/workflows/poisonable_steps.yml:13:9:14:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:13:9:14:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:13:14:13:32 | . venv/bin/activate |
+| .github/workflows/poisonable_steps.yml:14:9:15:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:14:9:15:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:14:14:14:42 | echo foo; . venv/bin/activate |
+| .github/workflows/poisonable_steps.yml:15:9:16:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:15:9:16:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:15:14:15:41 | echo foo;. venv/bin/activate |
+| .github/workflows/poisonable_steps.yml:16:9:17:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:16:9:17:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:16:14:16:42 | echo foo \|. venv/bin/activate |
+| .github/workflows/poisonable_steps.yml:17:9:18:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:17:9:18:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:17:14:17:32 | ./venv/bin/activate |
+| .github/workflows/poisonable_steps.yml:18:9:19:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:18:9:19:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:18:14:18:36 | sh venv/bin/activate.sh |
+| .github/workflows/poisonable_steps.yml:19:9:20:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:19:9:20:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:19:14:19:44 | echo $(sh venv/bin/activate.sh) |
+| .github/workflows/poisonable_steps.yml:20:9:21:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:20:9:21:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:20:14:20:56 | echo foo; sh venv/bin/activate.sh; echo bar |
+| .github/workflows/poisonable_steps.yml:21:9:22:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:21:9:22:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:21:14:21:56 | echo foo \| sh venv/bin/activate.sh > output |
+| .github/workflows/poisonable_steps.yml:22:9:23:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:22:9:23:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:22:14:22:40 | python venv/bin/activate.py |
+| .github/workflows/poisonable_steps.yml:23:9:24:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:23:9:24:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:23:14:23:50 | echo foo; python venv/bin/activate.py |
+| .github/workflows/poisonable_steps.yml:24:9:25:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:24:9:25:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:24:14:24:29 | pnpm run test:ct |
+| .github/workflows/poisonable_steps.yml:25:9:26:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:25:9:26:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:25:14:25:73 | pip install nbformat && python scripts/generate_notebooks.py |
+| .github/workflows/poisonable_steps.yml:26:9:27:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:26:9:27:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:26:14:26:78 | python scripts/generate_theme.py --outfile js/storybook/theme.css |
+| .github/workflows/poisonable_steps.yml:27:9:28:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:27:9:28:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:27:14:27:76 | ruby scripts/generate_theme.rb --outfile js/storybook/theme.css |
+| .github/workflows/poisonable_steps.yml:28:9:29:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:28:9:29:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:28:14:28:92 | bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css |
+| .github/workflows/poisonable_steps.yml:29:9:30:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:29:9:30:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package |
+| .github/workflows/poisonable_steps.yml:30:9:31:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:30:9:31:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:30:14:30:46 | echo "foo" && npm i && echo "bar" |
+| .github/workflows/poisonable_steps.yml:31:9:32:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:31:9:32:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:31:14:31:44 | echo "foo" \| npm i \| echo "bar" |
+| .github/workflows/poisonable_steps.yml:32:9:33:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:32:14:32:44 | echo "foo" \| npm i \| echo "bar" |
+| .github/workflows/poisonable_steps.yml:33:9:34:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:33:14:33:35 | echo "foo `npm i` bar" |
+| .github/workflows/poisonable_steps.yml:34:9:35:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:34:9:35:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:34:14:34:52 | dotnet test foo/Tests.csproj -c Release |
+| .github/workflows/poisonable_steps.yml:35:9:36:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:35:9:36:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:35:14:35:26 | go run foo.go |
+| .github/workflows/poisonable_steps.yml:36:9:37:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:36:14:36:86 | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json |
+| .github/workflows/poisonable_steps.yml:37:9:38:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:37:9:38:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:37:14:37:51 | sed -f ./config.sed file.txt > foo.txt |
+| .github/workflows/poisonable_steps.yml:38:9:39:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:38:9:39:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:38:14:38:45 | sed -f config file.txt > foo.txt |
+| .github/workflows/poisonable_steps.yml:39:9:40:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:39:9:40:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:39:14:39:55 | echo "foo" \| awk -f ./config.awk > foo.txt |
+| .github/workflows/poisonable_steps.yml:40:9:41:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:40:9:41:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:40:14:40:73 | gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo |
+| .github/workflows/poisonable_steps.yml:41:9:42:6 | After Run Step |
 | .github/workflows/poisonable_steps.yml:41:9:42:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:41:14:41:22 | ./foo/cmd |
+| .github/workflows/poisonable_steps.yml:42:9:46:111 | After Run Step |
 | .github/workflows/poisonable_steps.yml:42:9:46:111 | Run Step |
 | .github/workflows/poisonable_steps.yml:42:14:46:111 | sed -e 's#<branch_to_sync>#TITLE#' \\\n    -e 's#<sot_repo>#${{ env.sot_repo }}#' \\\n    -e 's#<destination_repo>#${TITLE}#' \\\n    .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky\n |
 | .github/workflows/poisonable_steps.yml:44:32:44:50 | env.sot_repo |
-| .github/workflows/shell.yml:1:1:22:32 | enter on: push |
-| .github/workflows/shell.yml:1:1:22:32 | exit on: push |
-| .github/workflows/shell.yml:1:1:22:32 | exit on: push (normal) |
+| .github/workflows/shell.yml:1:1:22:32 | After on: push |
+| .github/workflows/shell.yml:1:1:22:32 | Entry |
+| .github/workflows/shell.yml:1:1:22:32 | Exit |
+| .github/workflows/shell.yml:1:1:22:32 | Normal Exit |
 | .github/workflows/shell.yml:1:1:22:32 | on: push |
+| .github/workflows/shell.yml:5:5:9:2 | After Job: job1 |
 | .github/workflows/shell.yml:5:5:9:2 | Job: job1 |
+| .github/workflows/shell.yml:7:9:9:2 | After Run Step |
 | .github/workflows/shell.yml:7:9:9:2 | Run Step |
 | .github/workflows/shell.yml:8:14:8:31 | Write-Output "foo" |
+| .github/workflows/shell.yml:10:5:14:2 | After Job: job2 |
 | .github/workflows/shell.yml:10:5:14:2 | Job: job2 |
+| .github/workflows/shell.yml:12:9:14:2 | After Run Step |
 | .github/workflows/shell.yml:12:9:14:2 | Run Step |
 | .github/workflows/shell.yml:12:14:12:23 | echo "foo" |
+| .github/workflows/shell.yml:15:5:19:2 | After Job: job3 |
 | .github/workflows/shell.yml:15:5:19:2 | Job: job3 |
+| .github/workflows/shell.yml:17:9:19:2 | After Run Step |
 | .github/workflows/shell.yml:17:9:19:2 | Run Step |
 | .github/workflows/shell.yml:18:14:18:23 | echo "foo" |
+| .github/workflows/shell.yml:20:5:22:32 | After Job: job4 |
 | .github/workflows/shell.yml:20:5:22:32 | Job: job4 |
+| .github/workflows/shell.yml:22:9:22:32 | After Run Step |
 | .github/workflows/shell.yml:22:9:22:32 | Run Step |
 | .github/workflows/shell.yml:22:14:22:31 | Write-Output "foo" |
-| .github/workflows/test.yml:1:1:40:53 | enter on: push |
-| .github/workflows/test.yml:1:1:40:53 | exit on: push |
-| .github/workflows/test.yml:1:1:40:53 | exit on: push (normal) |
+| .github/workflows/test.yml:1:1:40:53 | After on: push |
+| .github/workflows/test.yml:1:1:40:53 | Entry |
+| .github/workflows/test.yml:1:1:40:53 | Exit |
+| .github/workflows/test.yml:1:1:40:53 | Normal Exit |
 | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:5:5:31:2 | After Job: job1 |
 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:8:7:10:4 | After Job outputs node |
 | .github/workflows/test.yml:8:7:10:4 | Job outputs node |
 | .github/workflows/test.yml:8:20:8:50 | steps.step.outputs.value |
 | .github/workflows/test.yml:11:9:15:6 | Uses Step |
 | .github/workflows/test.yml:15:9:19:6 | Uses Step: source |
+| .github/workflows/test.yml:19:9:26:6 | After Uses Step: step |
 | .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
 | .github/workflows/test.yml:23:20:23:64 | steps.source.outputs.all_changed_files |
+| .github/workflows/test.yml:26:9:28:6 | After Run Step: simplesink1 |
 | .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 |
 | .github/workflows/test.yml:27:14:27:63 | echo ${{ steps.source.outputs.all_changed_files }} |
 | .github/workflows/test.yml:27:20:27:64 | steps.source.outputs.all_changed_files |
+| .github/workflows/test.yml:28:9:31:2 | After Run Step: simplesink2 |
 | .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 |
 | .github/workflows/test.yml:29:14:29:54 | ${{ github.event.pull_request.head.ref }} |
 | .github/workflows/test.yml:29:15:29:55 | github.event.pull_request.head.ref |
+| .github/workflows/test.yml:32:5:40:53 | After Job: job2 |
 | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+| .github/workflows/test.yml:39:9:40:53 | After Run Step: sink |
 | .github/workflows/test.yml:39:9:40:53 | Run Step: sink |
 | .github/workflows/test.yml:40:14:40:52 | echo ${{needs.job1.outputs.job_output}} |
 | .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output |
+cfgCycles
 dfNodes
 | .github/workflows/commands.yml:9:5:31:2 | Job: local_commands |
 | .github/workflows/commands.yml:15:9:18:6 | Run Step |
@@ -1621,6 +1735,47 @@ scopes
 | .github/workflows/poisonable_steps.yml:1:1:46:111 | on: push |
 | .github/workflows/shell.yml:1:1:22:32 | on: push |
 | .github/workflows/test.yml:1:1:40:53 | on: push |
+workflowScopes
+| .github/workflows/commands.yml:1:1:39:30 | on: push |
+| .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/many_strings.yml:1:1:18:1211 | on: |
+| .github/workflows/multiline2.yml:1:1:89:35 | on:  |
+| .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/poisonable_steps.yml:1:1:46:111 | on: push |
+| .github/workflows/shell.yml:1:1:22:32 | on: push |
+| .github/workflows/test.yml:1:1:40:53 | on: push |
+compositeActionScopes
+workflowCfgNodes
+| .github/workflows/commands.yml:1:1:39:30 | on: push |
+| .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/many_strings.yml:1:1:18:1211 | on: |
+| .github/workflows/multiline2.yml:1:1:89:35 | on:  |
+| .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/poisonable_steps.yml:1:1:46:111 | on: push |
+| .github/workflows/shell.yml:1:1:22:32 | on: push |
+| .github/workflows/test.yml:1:1:40:53 | on: push |
+entryScopes
+| .github/workflows/commands.yml:1:1:39:30 | Entry | .github/workflows/commands.yml:1:1:39:30 | on: push |
+| .github/workflows/controlcheck.yml:1:1:16:25 | Entry | .github/workflows/controlcheck.yml:1:1:16:25 | on: |
+| .github/workflows/expression_nodes.yml:1:1:21:47 | Entry | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/many_strings.yml:1:1:18:1211 | Entry | .github/workflows/many_strings.yml:1:1:18:1211 | on: |
+| .github/workflows/multiline2.yml:1:1:89:35 | Entry | .github/workflows/multiline2.yml:1:1:89:35 | on:  |
+| .github/workflows/multiline.yml:1:1:89:29 | Entry | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/poisonable_steps.yml:1:1:46:111 | Entry | .github/workflows/poisonable_steps.yml:1:1:46:111 | on: push |
+| .github/workflows/shell.yml:1:1:22:32 | Entry | .github/workflows/shell.yml:1:1:22:32 | on: push |
+| .github/workflows/test.yml:1:1:40:53 | Entry | .github/workflows/test.yml:1:1:40:53 | on: push |
+normalExitNodes
+| .github/workflows/commands.yml:1:1:39:30 | Normal Exit |
+| .github/workflows/controlcheck.yml:1:1:16:25 | Normal Exit |
+| .github/workflows/expression_nodes.yml:1:1:21:47 | Normal Exit |
+| .github/workflows/many_strings.yml:1:1:18:1211 | Normal Exit |
+| .github/workflows/multiline2.yml:1:1:89:35 | Normal Exit |
+| .github/workflows/multiline.yml:1:1:89:29 | Normal Exit |
+| .github/workflows/poisonable_steps.yml:1:1:46:111 | Normal Exit |
+| .github/workflows/shell.yml:1:1:22:32 | Normal Exit |
+| .github/workflows/test.yml:1:1:40:53 | Normal Exit |
 sources
 | AvraamMavridis/files-changed-action | * | output.CHANGED_FILES | filename | manual |
 | AvraamMavridis/files-changed-action | * | output.CHANGED_FILES_EXTENSIONS | filename | manual |

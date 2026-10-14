@@ -18,7 +18,7 @@ class PythonSourceModule(object):
 
     kind = None
 
-    def __init__(self, name, path, logger, bytes_source = None):
+    def __init__(self, name, path, logger, diagnostics_writer, bytes_source = None):
         assert isinstance(path, str), path
         self.name = name # May be None
         self.path = path
@@ -34,6 +34,7 @@ class PythonSourceModule(object):
         self._line_types = None
         self._comments = None
         self._tokens = None
+        self.diagnostics_writer = diagnostics_writer
         self.logger = logger
         with timers["decode"]:
             self.encoding, self.bytes_source  = semmle.python.parser.tokenizer.encoding_from_source(bytes_source)
@@ -113,6 +114,7 @@ class PythonSourceModule(object):
                 self.logger.debug("Trying old parser on %s", self.path)
                 self._py_ast = semmle.python.parser.parse(self.tokens, self.logger)
                 self.logger.debug("Old parser successful on %s", self.path)
+                self.diagnostics_writer.record_old_parser()
         else:
             self.logger.debug("Found (during old_py_ast) parse tree for %s in cache", self.path)
         return self._py_ast
@@ -147,6 +149,7 @@ class PythonSourceModule(object):
                             self.logger.debug("Trying tsg-python on %s", self.path)
                             self._py_ast = semmle.python.parser.tsg_parser.parse(self.path, self.logger)
                             self.logger.debug("tsg-python successful on %s", self.path)
+                            self.diagnostics_writer.record_tree_sitter_parser()
                         else:
                             self.logger.debug("Found (during py_ast) parse tree for %s in cache", self.path)
                     return self._py_ast

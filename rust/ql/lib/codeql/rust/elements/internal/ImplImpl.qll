@@ -34,7 +34,7 @@ module Impl {
           or
           not this.hasTraitTy() and trait = ""
         ) and
-        result = "impl " + trait + this.getSelfTy().toAbbreviatedString() + " { ... }"
+        result = "impl " + trait + concat(this.getSelfTy().toAbbreviatedString()) + " { ... }"
       )
     }
 

@@ -2,7 +2,10 @@
 
 package main
 
-import "database/sql"
+import (
+	"database/sql"
+	"database/sql/driver"
+)
 
 func TaintStepTest_DatabaseSqlNamed_B0I0O0(sourceCQL interface{}) interface{} {
 	fromString656 := sourceCQL.(string)
@@ -79,6 +82,12 @@ func TaintStepTest_DatabaseSqlConnPrepareContext(sourceCQL interface{}) interfac
 	return intoPrepareResult0
 }
 
+func TaintStepTest_DatabaseSqlConvertAssign(sourceCQL interface{}) interface{} {
+	var destination interface{}
+	sql.ConvertAssign(driver.ScanContext{}, &destination, sourceCQL)
+	return destination
+}
+
 func RunAllTaints_DatabaseSql() {
 	{
 		source := newSource(0)
@@ -134,5 +143,10 @@ func RunAllTaints_DatabaseSql() {
 		source := newSource(10)
 		out := TaintStepTest_DatabaseSqlConnPrepareContext(source)
 		sink(10, out)
+	}
+	{
+		source := newSource(11)
+		out := TaintStepTest_DatabaseSqlConvertAssign(source)
+		sink(11, out)
 	}
 }

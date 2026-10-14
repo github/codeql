@@ -164,7 +164,7 @@ module ServerSideRequestForgery {
         ["isalnum", "isalpha", "isdecimal", "isdigit", "isidentifier", "isnumeric", "isspace"])
       or
       branch = true and
-      call = API::moduleImport("re").getMember(["match", "fullmatch"]).getACall() and
+      call = API::moduleImport("re").getMember(["match", "prefixmatch", "fullmatch"]).getACall() and
       strNode = [call.getArg(1), call.getArgByName("string")]
       or
       branch = true and
@@ -172,7 +172,7 @@ module ServerSideRequestForgery {
         API::moduleImport("re")
             .getMember("compile")
             .getReturn()
-            .getMember(["match", "fullmatch"])
+            .getMember(["match", "prefixmatch", "fullmatch"])
             .getACall() and
       strNode = [call.getArg(0), call.getArgByName("string")]
     )

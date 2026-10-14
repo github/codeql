@@ -146,6 +146,17 @@ private class ExtendCallShallow extends ExtendCall {
   override predicate isDeep() { none() }
 }
 
+/** A shallow extend call of form `mergeDescriptors(dst, src)`. */
+private class MergeDescriptorsCall extends ExtendCall {
+  MergeDescriptorsCall() { this = DataFlow::moduleImport("merge-descriptors").getACall() }
+
+  override DataFlow::Node getASourceOperand() { result = this.getArgument(1) }
+
+  override DataFlow::Node getDestinationOperand() { result = this.getArgument(0) }
+
+  override predicate isDeep() { none() }
+}
+
 /**
  * A shallow extend call of form `extend(src1, src2, ...)`.
  */

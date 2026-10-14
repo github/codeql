@@ -110,13 +110,13 @@ private predicate nonNullDef(SsaExplicitWrite def) {
   def.getValue() instanceof NonNullExpr
   or
   exists(AssignableDefinition ad | ad = def.getDefinition() |
-    ad instanceof AssignableDefinitions::PatternDefinition
+    ad instanceof AssignableDefinitions::TopLevelPatternDefinition
     or
     ad =
       any(AssignableDefinitions::LocalVariableDefinition d |
         d.getExpr() = any(SpecificCatchClause scc).getVariableDeclExpr()
         or
-        d.getExpr() = any(ForeachStmt fs).getAVariableDeclExpr()
+        d.getExpr() = any(ForEachStmt fs).getAVariableDeclExpr()
       )
   )
 }
@@ -306,7 +306,7 @@ class Dereference extends G::DereferenceableExpr {
       or
       this = any(LockStmt stmt).getExpr()
       or
-      this = any(ForeachStmt stmt).getIterableExpr()
+      this = any(ForEachStmt stmt).getIterableExpr()
       or
       exists(ExtensionMethodCall emc, Parameter p |
         this = emc.getArgumentForParameter(p) and

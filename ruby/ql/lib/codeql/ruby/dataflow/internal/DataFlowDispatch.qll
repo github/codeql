@@ -183,7 +183,7 @@ class NormalCall extends DataFlowCall, TNormalCall {
 
   override CfgNodes::ExprNodes::CallCfgNode asCall() { result = c }
 
-  override DataFlowCallable getEnclosingCallable() { result = TCfgScope(c.getScope()) }
+  override DataFlowCallable getEnclosingCallable() { result = TCfgScope(c.getEnclosingCallable()) }
 
   override string toString() { result = c.toString() }
 
@@ -692,6 +692,9 @@ private CfgScope getTargetInstance(DataFlowCall call, string method) {
   )
 }
 
+pragma[nomagic]
+private File callGetFile(DataFlowCall call) { result = call.asCall().getLocation().getFile() }
+
 bindingset[call, result]
 pragma[inline_late]
 private CfgScope privateFilter(DataFlowCall call) {
@@ -700,7 +703,7 @@ private CfgScope privateFilter(DataFlowCall call) {
   // This may remove some plausible targets, but also removes a lot of
   // implausible targets
   (
-    isToplevelMethodInFile(result, call.asCall().getFile()) or
+    isToplevelMethodInFile(result, callGetFile(call)) or
     not isToplevelMethodInFile(result, _)
   )
 }

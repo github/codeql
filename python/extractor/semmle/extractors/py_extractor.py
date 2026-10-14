@@ -16,6 +16,7 @@ class PythonExtractor(BaseExtractor):
         self.module_extractor = extractor.Extractor.from_options(options, trap_folder, src_archive, logger, diagnostics_writer)
         self.finder = finder.Finder.from_options_and_env(options, logger)
         self.importer = imports.importer_from_options(options, self.finder, logger)
+        self.diagnostics_writer = diagnostics_writer
 
     def _get_module_and_imports(self, unit):
         if not isinstance(unit, util.FileExtractable):
@@ -24,7 +25,7 @@ class PythonExtractor(BaseExtractor):
         module = self.finder.from_extractable(unit)
         if module is None:
             return None, ()
-        py_module = module.load(self.logger)
+        py_module = module.load(self.logger, self.diagnostics_writer)
         if py_module is None:
             return None, ()
         imports = set(mod.get_extractable() for mod in self.importer.get_imports(module, py_module))

@@ -10,69 +10,83 @@ builds that shim (via `build.rs`) and provides safe bindings on top of it.
 ## Output format
 
 The emitted JSON tree preserves the AST's named structure. Every node has a
-`kind` and a `range` with `start`/`end` positions (UTF-8 `offset` plus 1-based
-`line`/`column`). Beyond that:
+`kind` and a half-open UTF-8 byte range encoded as 0-based `$pos`/`$end`
+offsets. The root also has a `$lineStarts` array containing the UTF-8 byte
+offset of every physical source line, so line/column positions can be
+reconstructed without repeating them on every node. Beyond that:
 
 - **Tokens** carry `text`, `tokenKind`, and — only when non-empty —
-  `leadingTrivia`/`trailingTrivia` arrays of `{ kind, text }` pieces.
+  `leadingTrivia`/`trailingTrivia` arrays of `{ kind, text, $pos, $end }`
+  pieces.
 - **Layout nodes** (e.g. `functionDecl`) embed their children directly as
   members keyed by the child's name in the parent (`name`, `signature`,
-  `body`, …), alongside `kind`/`range`. Absent optional children are omitted.
+  `body`, …), alongside `kind`/`$pos`/`$end`. Absent optional children are
+  omitted.
 - **Collection nodes** (e.g. `codeBlockItemList`) are elided: a list-valued
   field is simply a JSON array of its elements (e.g. `parameters`, `statements`).
-  This drops the collection node's own `kind`/`range`.
+  This drops the collection node's own `kind`/location.
 
 Only meaningful trivia is kept — the four comment kinds (`lineComment`,
 `blockComment`, `docLineComment`, `docBlockComment`) and `unexpectedText`
-(source the parser skipped). Whitespace trivia is dropped, since node ranges
+(source the parser skipped). Whitespace trivia is dropped, since node offsets
 already encode positions.
 
 ### Example
 
-Parsing `let x = 1 // c` produces the following (each `range` object is
+Parsing `let x = 1 // c` produces the following (location offsets are
 abbreviated here as `…`):
 
 ```jsonc
 {
+  "$pos": 0,
+  "$end": …,
+  "$lineStarts": [0],
   "kind": "sourceFile",
-  "range": …,
   "statements": [                       // collection node elided to an array
     {
+      "$pos": 0,
+      "$end": …,
       "kind": "codeBlockItem",
-      "range": …,
       "item": {
+        "$pos": 0,
+        "$end": …,
         "kind": "variableDecl",
-        "range": …,
         "attributes": [],               // empty collection → empty array
         "modifiers": [],
         "bindingSpecifier": {           // a token
+          "$pos": 0,
+          "$end": 3,
           "kind": "token",
           "text": "let",
-          "tokenKind": "keyword(SwiftSyntax.Keyword.let)",
-          "range": …
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
         },
         "bindings": [
           {
+            "$pos": …,
+            "$end": …,
             "kind": "patternBinding",
-            "range": …,
             "pattern": {
+              "$pos": …,
+              "$end": …,
               "kind": "identifierPattern",
-              "range": …,
-              "identifier": { "kind": "token", "text": "x", "tokenKind": "identifier(\"x\")", "range": … }
+              "identifier": { "$pos": …, "$end": …, "kind": "token", "text": "x", "tokenKind": "identifier(\"x\")" }
             },
             "initializer": {
+              "$pos": …,
+              "$end": …,
               "kind": "initializerClause",
-              "range": …,
-              "equal": { "kind": "token", "text": "=", "tokenKind": "equal", "range": … },
+              "equal": { "$pos": …, "$end": …, "kind": "token", "text": "=", "tokenKind": "equal" },
               "value": {
+                "$pos": …,
+                "$end": …,
                 "kind": "integerLiteralExpr",
-                "range": …,
                 "literal": {
+                  "$pos": …,
+                  "$end": …,
                   "kind": "token",
                   "text": "1",
                   "tokenKind": "integerLiteral(\"1\")",
-                  "range": …,
-                  "trailingTrivia": [ { "kind": "lineComment", "text": "// c" } ]
+                  "trailingTrivia": [ { "$pos": …, "$end": …, "kind": "lineComment", "text": "// c" } ]
                 }
               }
             }
@@ -81,7 +95,7 @@ abbreviated here as `…`):
       }
     }
   ],
-  "endOfFileToken": { "kind": "token", "text": "", "tokenKind": "endOfFile", "range": … }
+  "endOfFileToken": { "$pos": …, "$end": …, "kind": "token", "text": "", "tokenKind": "endOfFile" }
 }
 ```
 
@@ -150,6 +164,20 @@ cargo test
 
 The first build compiles `swift-syntax` and can take several minutes.
 
+## Regenerating the extractor node types
+
+After updating the pinned swift-syntax version, regenerate the unified
+extractor's input schema:
+
+```sh
+../scripts/regenerate-node-types.sh
+```
+
+The script uses swift-syntax's authoritative `SyntaxSupport` definitions and
+requires the local Swift toolchain pinned by [`.swift-version`](.swift-version).
+Review the resulting `extractor/swift_node_types.yml` diff alongside the Swift
+mapping rules. See [`schemagen/README.md`](schemagen/README.md) for details.
+
 ## Building with Bazel (CI)
 
 CI builds this crate hermetically with Bazel. A Swift toolchain is downloaded
@@ -182,12 +210,15 @@ Requirements:
   swift.org. The Bazel C++ toolchain must still provide the macOS SDK, but a
   full Xcode installation is not required.
 
-The Swift compiler version is kept in sync across three places: the
+The Swift compiler version is kept in sync between the
 [`.swift-version`](.swift-version) file (read by the local `cargo`/`swift build`
-and by [swiftly](https://www.swift.org/swiftly/)), the literal `swift_version`
-pinned on `swift.toolchain(...)` in the root `MODULE.bazel` (the hermetic
-swift.org Bazel toolchain), and the `swift-syntax` release in
-`swift/Package.swift`.
+and by [swiftly](https://www.swift.org/swiftly/)) and the literal
+`swift_version` pinned on `swift.toolchain(...)` in the root `MODULE.bazel`
+(the hermetic swift.org Bazel toolchain).
+
+The swift-syntax version is independently pinned in the root `MODULE.bazel`,
+[`swift/Package.swift`](swift/Package.swift), and
+[`schemagen/Package.swift`](schemagen/Package.swift). Update all three together.
 
 (The Bazel toolchain pins a literal rather than reading `.swift-version` via
 `swift_version_file`, because the latter makes the module extension read a

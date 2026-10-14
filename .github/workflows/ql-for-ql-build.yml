@@ -24,9 +24,8 @@ jobs:
           fetch-depth: 0
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@main
+        uses: github/codeql-action/setup-codeql@main
         with:
-          languages: javascript # does not matter
           tools: nightly
       - uses: ./.github/actions/os-version
         id: os_version
@@ -61,7 +60,7 @@ jobs:
       - name: Make database and analyze
         run: |
           ./ql/target/release/buramu | tee deprecated.blame # Add a blame file for the extractor to parse.
-          ${CODEQL} database create -l=ql ${DB} --search-path "${{ github.workspace }}"
+          ${CODEQL} database create --threads=0 -l=ql ${DB} --search-path "${{ github.workspace }}"
           ${CODEQL} database analyze -j0 --format=sarif-latest --output=ql-for-ql.sarif ${DB} ql/ql/src/codeql-suites/ql-code-scanning.qls  --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}

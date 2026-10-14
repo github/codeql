@@ -547,6 +547,13 @@ class PositionalPatternExpr extends PatternExpr, @positional_pattern_expr {
   override string getAPrimaryQlClass() { result = "PositionalPatternExpr" }
 }
 
+/**
+ * A tuple pattern. For example, `var (x, y)`.
+ */
+class TuplePatternExpr extends TupleExpr, PatternExpr {
+  override string getAPrimaryQlClass() { result = "TuplePatternExpr" }
+}
+
 /** A list pattern. For example `[1, 2, int y]` in `x is [1, 2, int y]`. */
 class ListPatternExpr extends PatternExpr, @list_pattern_expr {
   override string toString() { result = "[ ... ]" }
@@ -1107,7 +1114,7 @@ class QualifiableExpr extends Expr, @qualifiable_expr {
 private Expr getAnAssignOrForeachChild() {
   result = any(AssignExpr e).getLeftOperand()
   or
-  result = any(ForeachStmt fs).getVariableDeclTuple()
+  result = any(ForEachStmt fs).getVariableDeclTuple()
   or
   result = getAnAssignOrForeachChild().getAChildExpr()
 }

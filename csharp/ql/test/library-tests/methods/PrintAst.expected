@@ -323,7 +323,7 @@ methods.cs:
 #  127|                 1: [StringLiteralUtf16] "22"
 #  127|                 2: [StringLiteralUtf16] "333"
 #  127|                 3: [StringLiteralUtf16] "4444"
-#  128|         1: [ForeachStmt] foreach (... ... in ...) ...
+#  128|         1: [ForEachStmt] foreach (... ... in ...) ...
 #  128|           0: [LocalVariableDeclExpr] String s
 #  128|             0: [TypeMention] string
 #  128|           1: [MethodCall] call to method Slice<String>

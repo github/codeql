@@ -32,6 +32,8 @@ module Generated {
   class AsmLabel extends Synth::TAsmLabel, AsmOperandImpl::AsmOperand {
     override string getAPrimaryQlClass() { result = "AsmLabel" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the block expression of this asm label, if it exists.
      */

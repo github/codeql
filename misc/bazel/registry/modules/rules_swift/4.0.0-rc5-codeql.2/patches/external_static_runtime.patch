@@ -1,0 +1,242 @@
+diff --git a/swift/extensions.bzl b/swift/extensions.bzl
+index b77f636..1255ba7 100644
+--- a/swift/extensions.bzl
++++ b/swift/extensions.bzl
+@@ -191,6 +191,7 @@ def _standalone_toolchain_impl(module_ctx):
+                 name = repository_name,
+                 sha256 = sha256,
+                 platform = platform,
++                static_runtime = toolchain.static_runtime if platform != "xcode" else None,
+                 swift_version = swift_version,
+             )
+             toolchains_build_file_content += toolchains_for_platform(
+@@ -266,6 +267,9 @@ their hashes. For instance:
+ `bazel run @rules_swift//tools/swift-releases -- list 6.2.4`
+ """,
+     ),
++    "static_runtime": attr.label(
++        doc = "External static runtime package to attach to the generated execution toolchains.",
++    ),
+     "swift_version": attr.string(doc = "Version of the swift toolchain to be installed. Cannot be used concurrently with `swift_version_file`"),
+     "swift_version_file": attr.label(doc = "A label to the .swift_version file to use. Cannot be used concurrently with `swift_version`"),
+ })
+diff --git a/swift/internal/extensions/standalone_toolchain.bzl b/swift/internal/extensions/standalone_toolchain.bzl
+index a1e09ea..1fcf56d 100644
+--- a/swift/internal/extensions/standalone_toolchain.bzl
++++ b/swift/internal/extensions/standalone_toolchain.bzl
+@@ -105,6 +105,9 @@ def _standalone_toolchain_impl(repository_ctx):
+         "BUILD.bazel",
+         repository_ctx.attr._build_template,
+         substitutions = {
++            "{external_static_runtime}": (
++                '    external_static_runtime = "{}",'.format(repository_ctx.attr.static_runtime) if repository_ctx.attr.static_runtime else ""
++            ),
+             "{macos_sdkroot}": macos_sdkroot,
+             "{swift_version}": repository_ctx.attr.swift_version,
+         },
+@@ -121,6 +124,9 @@ _STANDALONE_TOOLCHAIN_ATTRS = {
+     "sha256": attr.string(
+         doc = "The expected SHA-256 of the file downloaded. This must match the SHA-256 of the file downloaded.",
+     ),
++    "static_runtime": attr.label(
++        doc = "External static runtime package used by this execution toolchain.",
++    ),
+     "swift_version": attr.string(
+         doc = "Version of the swift toolchain to be installed.",
+         mandatory = True,
+diff --git a/swift/internal/extensions/toolchain.BUILD b/swift/internal/extensions/toolchain.BUILD
+index 1304dc2..ee77866 100644
+--- a/swift/internal/extensions/toolchain.BUILD
++++ b/swift/internal/extensions/toolchain.BUILD
+@@ -364,6 +364,7 @@ swift_toolchain(
+         ),
+         "//conditions:default": [],
+     }),
++{external_static_runtime}
+     swift_tools = "tools",
+     version_file = ".swift-version",
+ )
+diff --git a/swift/toolchains/BUILD b/swift/toolchains/BUILD
+index 1a8db31..fff0879 100644
+--- a/swift/toolchains/BUILD
++++ b/swift/toolchains/BUILD
+@@ -155,6 +155,7 @@ bzl_library(
+         "//swift/internal:features",
+         "//swift/internal:providers",
+         "//swift/internal:target_triples",
++        "//swift/internal:toolchain_utils",
+         "//swift/internal:utils",
+         "//swift/internal:wmo",
+         "//swift/toolchains/config:action_config",
+diff --git a/swift/toolchains/swift_toolchain.bzl b/swift/toolchains/swift_toolchain.bzl
+index 9fc2a49..6f10573 100644
+--- a/swift/toolchains/swift_toolchain.bzl
++++ b/swift/toolchains/swift_toolchain.bzl
+@@ -69,6 +69,11 @@ load(
+     "SwiftModuleAliasesInfo",
+ )
+ load("//swift/internal:target_triples.bzl", "target_triples")
++load(
++    "//swift/internal:toolchain_utils.bzl",
++    "get_swift_toolchain",
++    "use_swift_toolchain",
++)
+ load(
+     "//swift/internal:utils.bzl",
+     "collect_cross_import_overlays",
+@@ -101,6 +106,64 @@ load(
+ )
+ load("//swift/toolchains/config:tool_config.bzl", "ToolConfigInfo")
+-
++
++SwiftStaticRuntimeInfo = provider(
++    fields = {
++        "copts": "Compiler options required to use the runtime.",
++        "files": "Runtime and SDK files required by compile and link actions.",
++        "linkopts": "Linker options required to link the runtime.",
++        "root": "Execution-root-relative path to the runtime SDK.",
++    },
++)
++
++def _swift_static_runtime_impl(ctx):
++    root = ctx.label.workspace_root
++    files = depset(ctx.files.files)
++
++    def expand_root(options):
++        return [option.replace("{root}", root) for option in options]
++
++    return [
++        DefaultInfo(files = files),
++        SwiftStaticRuntimeInfo(
++            copts = expand_root(ctx.attr.copts),
++            files = files,
++            linkopts = expand_root(ctx.attr.linkopts),
++            root = root,
++        ),
++    ]
++
++swift_static_runtime = rule(
++    implementation = _swift_static_runtime_impl,
++    attrs = {
++        "copts": attr.string_list(),
++        "files": attr.label_list(allow_files = True, mandatory = True),
++        "linkopts": attr.string_list(),
++    },
++)
++
++def _swift_runtime_impl(ctx):
++    runtime_cc_info = get_swift_toolchain(ctx).dynamic_runtime_cc_info
++    files = []
++    if runtime_cc_info:
++        for linker_input in runtime_cc_info.linking_context.linker_inputs.to_list():
++            for library in linker_input.libraries:
++                dynamic_library = getattr(library, "dynamic_library", None)
++                if dynamic_library:
++                    files.append(dynamic_library)
++    runtime = depset(files)
++    providers = [DefaultInfo(
++        files = runtime,
++        runfiles = ctx.runfiles(transitive_files = runtime),
++    )]
++    if runtime_cc_info:
++        providers.append(runtime_cc_info)
++    return providers
++
++swift_runtime = rule(
++    implementation = _swift_runtime_impl,
++    toolchains = use_swift_toolchain(),
++)
++
+ def _swift_compile_resource_set(_os, inputs_size):
+     # The `os` argument is unused, but the Starlark API requires both
+     # positional arguments.
+@@ -662,6 +725,7 @@ def _resolve_sdkroot(ctx, cc_toolchain):
+-
++
+ def _swift_toolchain_impl(ctx):
+     toolchain_root = ctx.attr.root
++    external_static_runtime = ctx.attr.external_static_runtime[SwiftStaticRuntimeInfo] if ctx.attr.external_static_runtime else None
+     cc_toolchain = find_cc_toolchain(ctx)
+     target_system_name = _parse_target_system_name(
+         arch = ctx.attr.arch,
+@@ -684,7 +748,7 @@ def _swift_toolchain_impl(ctx):
+              "before invoking Bazel, or configure a Bazel LLVM CC toolchain. " +
+              "The current CC toolchain is configured to use '{}'.".format(cc_toolchain.compiler))
+-
++
+-    sdkroot = _resolve_sdkroot(ctx, cc_toolchain)
++    sdkroot = external_static_runtime.root if external_static_runtime else _resolve_sdkroot(ctx, cc_toolchain)
+-
++
+     if ctx.attr.swift_tools:
+         if ctx.attr.swift_executable:
+@@ -740,6 +804,18 @@ def _swift_toolchain_impl(ctx):
+             ctx.attr.linkopts,
+             ctx.files.linker_inputs,
+         )
++    elif external_static_runtime:
++        swift_linkopts_cc_info = CcInfo(
++            linking_context = cc_common.create_linking_context(
++                linker_inputs = depset([
++                    cc_common.create_linker_input(
++                        owner = ctx.label,
++                        user_link_flags = depset(external_static_runtime.linkopts),
++                        additional_inputs = external_static_runtime.files,
++                    ),
++                ]),
++            ),
++        )
+     else:
+         (
+             swift_linkopts_cc_info,
+@@ -763,6 +839,8 @@ def _swift_toolchain_impl(ctx):
+         swiftcopts.extend(ctx.attr._exec_copts[BuildSettingInfo].value)
+     else:
+         swiftcopts.extend(ctx.attr._copts[BuildSettingInfo].value)
++    if external_static_runtime:
++        swiftcopts.extend(external_static_runtime.copts)
+-
++
+     # Combine build mode features, autoconfigured features, and required
+     # features.
+@@ -774,7 +852,7 @@ def _swift_toolchain_impl(ctx):
+         target_triple = target_triple,
+     ))
+-
++
+-    if apple_common.dotted_version(ctx.attr.parsed_version) >= apple_common.dotted_version("6.3"):
++    if not external_static_runtime and apple_common.dotted_version(ctx.attr.parsed_version) >= apple_common.dotted_version("6.3"):
+         requested_features.append(SWIFT_FEATURE__SUPPORTS_HERMETIC_SWIFTMODULE)
+-
++
+     requested_features.extend(ctx.features)
+@@ -787,6 +865,8 @@ def _swift_toolchain_impl(ctx):
+     additional_tools = [ctx.file.version_file]
+     if ctx.attr.swift_tools:
+         additional_tools += ctx.attr.swift_tools[SwiftToolsInfo].additional_inputs
++    if external_static_runtime:
++        additional_tools += external_static_runtime.files.to_list()
+-
++
+     all_tool_configs = _all_tool_configs(
+         env = ctx.attr.env,
+@@ -873,7 +953,7 @@ def _swift_toolchain_impl(ctx):
+         system_modules = collect_implicit_deps_providers([]),
+         implicit_system_modules = collect_implicit_deps_providers([]),
+         swift_worker = ctx.attr._worker[DefaultInfo].files_to_run,
+-        const_protocols_to_gather = ctx.file.const_protocols_to_gather,
++        const_protocols_to_gather = None if external_static_runtime else ctx.file.const_protocols_to_gather,
+         test_configuration = struct(
+             binary_name = "{name}",
+             env = env,
+@@ -952,6 +1032,10 @@ context.
+ """,
+                 allow_files = True,
+             ),
++            "external_static_runtime": attr.label(
++                doc = "External static Swift runtime and SDK to use instead of the compiler's runtimes.",
++                providers = [[SwiftStaticRuntimeInfo]],
++            ),
+             "static_runtime": attr.label_list(
+                 doc = """\
+ Static Swift runtime archives and supporting linker files that are passed to

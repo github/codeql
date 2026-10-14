@@ -28,21 +28,15 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        binary_expr
-          left:
-            name_expr
-              identifier: identifier "a"
-          operator: infix_operator "+"
+        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+          left: identifier "a" source="a"
+          operator: infix_operator "+" source="+"
           right:
-            binary_expr
-              left:
-                name_expr
-                  identifier: identifier "b"
-              operator: infix_operator "*"
-              right:
-                name_expr
-                  identifier: identifier "c"
+            binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+              left: identifier "b" source="b"
+              operator: infix_operator "*" source="*"
+              right: identifier "c" source="c"

@@ -56,28 +56,19 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "cache"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "cache" source="cache"
           type:
-            generic_type_expr
-              base:
-                named_type_expr
-                  name: identifier "Dictionary"
+            generic_type_expr source="⟨base⟩<⟨type_argument⟩, ⟨type_argument⟩>"
+              base: identifier "Dictionary" source="Dictionary"
               type_argument:
-                named_type_expr
-                  name: identifier "String"
-                generic_type_expr
-                  base:
-                    named_type_expr
-                      name: identifier "Array"
-                  type_argument:
-                    named_type_expr
-                      name: identifier "Int"
-          value: map_literal "[:]"
+                identifier "String" source="String"
+                generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                  base: identifier "Array" source="Array"
+                  type_argument: identifier "Int" source="Int"
+          value: map_literal "[:]" source="[:]"

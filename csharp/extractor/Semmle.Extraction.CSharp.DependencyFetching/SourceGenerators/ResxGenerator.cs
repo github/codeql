@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly string? sourceGeneratorFolder = null;
 
         public ResxGenerator(
-            FileProvider fileProvider,
+            IFileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
             ICompilationInfoContainer compilationInfoContainer,

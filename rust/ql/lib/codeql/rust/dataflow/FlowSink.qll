@@ -36,9 +36,9 @@ module FlowSink {
     Range() { any() }
 
     override predicate isSink(
-      string input, string kind, Impl::Public::Provenance provenance, string model
+      string input, string kind, Impl::Public::Provenance provenance, boolean isExact, string model
     ) {
-      this.isSink(input, kind) and provenance = "manual" and model = ""
+      this.isSink(input, kind) and provenance = "manual" and isExact = true and model = ""
     }
 
     /**

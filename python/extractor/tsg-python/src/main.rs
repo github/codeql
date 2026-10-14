@@ -710,6 +710,6 @@ fn main() -> Result<()> {
         add_syntax_error_nodes(&mut graph, &syntax_errors);
     }
 
-    print!("{}", graph.pretty_print());
+    serde_json::to_writer(std::io::stdout().lock(), &graph)?;
     Ok(())
 }

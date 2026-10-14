@@ -18,7 +18,7 @@ In many cases, better alternatives are available and should be used instead.
 There are few genuine uses of <code>eval</code> and <code>Function</code>. If you are trying to
 assign to a property whose name is not known until runtime, use a computed property access. If you
 are trying to evaluate a string to a JSON object, use <code>JSON.parse</code>. In other cases,
-you may be able to use the <a href="http://en.wikipedia.org/wiki/Interpreter_pattern">Interpreter
+you may be able to use the <a href="https://en.wikipedia.org/wiki/Interpreter_pattern">Interpreter
 pattern</a>.
 </p>
 

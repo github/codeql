@@ -1,10 +1,10 @@
-use clap::Args;
-use std::path::PathBuf;
-
 use crate::languages;
+use clap::Args;
 use codeql_extractor::extractor::desugaring;
 use codeql_extractor::trap;
-
+use std::path::Path;
+use std::path::PathBuf;
+use std::{env, fs};
 #[derive(Args)]
 pub struct Options {
     /// Sets a custom source archive folder
@@ -31,6 +31,33 @@ pub fn run(options: Options) -> std::io::Result<()> {
         lang.prefix = "unified";
     }
 
+    let scratch_dir = std::env::var("CODEQL_EXTRACTOR_UNIFIED_SCRATCH_DIR")
+        .expect("failed to read CODEQL_EXTRACTOR_UNIFIED_SCRATCH_DIR environment variable");
+    let builtins_path = env::var("CODEQL_EXTRACTOR_UNIFIED_ROOT")
+        .map(|path| Path::new(&path).join("tools").join("builtins"))
+        .expect("failed to read CODEQL_EXTRACTOR_UNIFIED_ROOT environment variable");
+    let builtins_dir = fs::read_dir(builtins_path).expect("failed to read builtins directory");
+    let mut builtins_list = PathBuf::new();
+    builtins_list.push(scratch_dir.clone());
+    builtins_list.push("builtins");
+    builtins_list.set_extension("list");
+
+    let mut builtins_list_file = fs::OpenOptions::new()
+        .create_new(true)
+        .write(true)
+        .open(&builtins_list)
+        .expect("failed to open file list");
+    for entry in builtins_dir {
+        let entry = entry.expect("failed to read builtins directory");
+        let path = entry.path();
+        if path.extension().is_some_and(|ext| ext == "swift") {
+            use std::io::Write;
+            writeln!(builtins_list_file, "{}", path.display())
+                .expect("failed to write to file list");
+        }
+    }
+    drop(builtins_list_file);
+
     let extractor = desugaring::Extractor {
         prefix: "unified".to_string(),
         languages,
@@ -39,7 +66,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
             "CODEQL_EXTRACTOR_UNIFIED_OPTION_TRAP_COMPRESSION",
         ),
         source_archive_dir: options.source_archive_dir,
-        file_lists: vec![options.file_list],
+        file_lists: vec![options.file_list, builtins_list],
     };
 
     extractor.run()

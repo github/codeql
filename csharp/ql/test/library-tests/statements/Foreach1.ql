@@ -4,5 +4,5 @@
 
 import csharp
 
-where forall(ForeachStmt s | exists(s.getBody()) and exists(s.getIterableExpr()))
+where forall(ForEachStmt s | exists(s.getBody()) and exists(s.getIterableExpr()))
 select 1

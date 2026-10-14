@@ -27,6 +27,8 @@ module Generated {
   class ExprStmt extends Synth::TExprStmt, StmtImpl::Stmt {
     override string getAPrimaryQlClass() { result = "ExprStmt" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the expression of this expression statement, if it exists.
      */

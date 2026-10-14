@@ -28,6 +28,8 @@ module Generated {
   class TupleFieldList extends Synth::TTupleFieldList, FieldListImpl::FieldList {
     override string getAPrimaryQlClass() { result = "TupleFieldList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th field of this tuple field list (0-based).
      */

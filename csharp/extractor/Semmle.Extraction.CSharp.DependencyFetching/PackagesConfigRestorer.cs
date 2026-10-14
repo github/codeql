@@ -33,11 +33,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class PackagesConfigRestoreFactory
     {
-        public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, HashSet<string> reachableFeeds)
+        public static IPackagesConfigRestore Create(IFileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, IRegistryProxy? registryProxy)
         {
             if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMonoInstalled())
             {
-                return new NugetExeWrapper(fileProvider, packageDirectory, logger, feedManager, reachableFeeds);
+                return new NugetExeWrapper(fileProvider, packageDirectory, logger, feedManager, registryProxy);
             }
 
             return new NoOpPackagesConfig(fileProvider.PackagesConfigs, logger);
@@ -52,10 +52,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             private readonly string? nugetExe;
             private readonly Semmle.Util.Logging.ILogger logger;
+            private readonly IRegistryProxy? registryProxy;
 
             public int PackageCount => fileProvider.PackagesConfigs.Count;
 
-            private readonly FileProvider fileProvider;
+            private readonly IFileProvider fileProvider;
 
             /// <summary>
             /// The packages directory.
@@ -64,24 +65,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             /// </summary>
             private readonly DependencyDirectory packageDirectory;
             private readonly FeedManager feedManager;
-            private readonly HashSet<string> reachableFeeds;
 
             private bool IsWindows => SystemBuildActions.Instance.IsWindows();
-
-            private bool? isDefaultFeedReachable;
-            private bool IsDefaultFeedReachable =>
-                isDefaultFeedReachable ??= feedManager.IsDefaultFeedReachable();
 
             /// <summary>
             /// Create the package manager for a specified source tree.
             /// </summary>
-            public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, HashSet<string> reachableFeeds)
+            public NugetExeWrapper(IFileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, IRegistryProxy? registryProxy)
             {
                 this.fileProvider = fileProvider;
                 this.packageDirectory = packageDirectory;
                 this.logger = logger;
                 this.feedManager = feedManager;
-                this.reachableFeeds = reachableFeeds;
+                this.registryProxy = registryProxy;
 
                 if (fileProvider.PackagesConfigs.Count > 0)
                 {
@@ -169,19 +165,23 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 logger.LogInfo($"Restoring file \"{packagesConfig}\"...");
 
-                var sourcesArgument = "";
-                var feedsToUse = feedManager.FeedsToUse(packagesConfig, reachableFeeds).ToList();
-                var useDefaultFeed = feedsToUse.Count == 0 && IsDefaultFeedReachable;
+                List<string> sourcesArgument = [];
+                var feedsToUse = feedManager.FeedsToUse(packagesConfig).ToList();
+                var defaultFeeds = feedManager.CheckNugetFeedResponsiveness
+                    ? feedManager.ReachableDefaultFeeds
+                    : feedManager.DefaultFeeds;
+                var useDefaultFeeds = feedsToUse.Count == 0 && defaultFeeds.Count > 0;
 
                 // Explicitly construct the sources to be used for the restore command when checking feed
-                // responsiveness, using private registries, or falling back to nuget.org.
-                if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds || useDefaultFeed)
+                // responsiveness, using private registries, or falling back to default feeds.
+                if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds || useDefaultFeeds)
                 {
-                    if (useDefaultFeed)
+                    if (useDefaultFeeds)
                     {
-                        feedsToUse.Add(FeedManager.PublicNugetOrgFeed);
+                        feedsToUse.AddRange(defaultFeeds);
                     }
-                    sourcesArgument = feedManager.FeedsToRestoreArgument(feedsToUse, "-Source");
+                    var restoreFeeds = feedManager.RestoreFeeds(feedsToUse);
+                    sourcesArgument = restoreFeeds.SelectMany<string, string>(feed => ["-Source", feed]).ToList();
                 }
 
                 /* Use nuget.exe to install a package.
@@ -190,16 +190,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                  * really unwieldy and this solution works for now.
                  */
 
-                string exe, args;
+                string exe;
+                List<string> args;
+
                 if (RunWithMono)
                 {
                     exe = "mono";
-                    args = $"\"{nugetExe}\" install -OutputDirectory \"{packageDirectory}\" {sourcesArgument} \"{packagesConfig}\"";
+                    args = [nugetExe!, "install", "-OutputDirectory", packageDirectory.ToString(), .. sourcesArgument, packagesConfig];
                 }
                 else
                 {
                     exe = nugetExe!;
-                    args = $"install -OutputDirectory \"{packageDirectory}\" {sourcesArgument} \"{packagesConfig}\"";
+                    args = ["install", "-OutputDirectory", packageDirectory.ToString(), .. sourcesArgument, packagesConfig];
                 }
 
                 var pi = new ProcessStartInfo(exe, args)
@@ -209,13 +211,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     UseShellExecute = false
                 };
 
+                // Configure the proxy settings, if applicable.
+                registryProxy?.SetProcessEnvironment(pi);
+
                 var threadId = Environment.CurrentManagedThreadId;
                 void onOut(string s) => logger.LogDebug(s, threadId);
                 void onError(string s) => logger.LogError(s, threadId);
+                logger.LogInfo($"Running '{pi.FileName} {string.Join(" ", pi.ArgumentList)}'");
                 var exitCode = pi.ReadOutput(out _, onOut, onError);
                 if (exitCode != 0)
                 {
-                    logger.LogError($"Command {pi.FileName} {pi.Arguments} failed with exit code {exitCode}");
+                    logger.LogError($"Command {pi.FileName} {string.Join(" ", pi.ArgumentList)} failed with exit code {exitCode}");
                     return false;
                 }
                 else

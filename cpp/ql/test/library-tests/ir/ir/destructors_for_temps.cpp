@@ -102,3 +102,10 @@ void temp_test11() {
 void temp_test12(ClassWithDestructor3 x) {
     x.getClassWithDestructor2().get_x() + 5;
 }
+
+struct ClassWithArrayAndDestructor { int a[2]; ~ClassWithArrayAndDestructor(); };
+
+void temp_test13(bool b) {
+  const int &t = b ? ClassWithArrayAndDestructor().a[0] : ClassWithArrayAndDestructor().a[1];
+  return;
+}

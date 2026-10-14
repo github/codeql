@@ -1,20 +1,42 @@
 #select
+| MicronautResponseSplitting.java:16:53:16:63 | headerValue | MicronautResponseSplitting.java:14:39:14:68 | headerValue : String | MicronautResponseSplitting.java:16:53:16:63 | headerValue | This header depends on a $@, which may cause a response-splitting vulnerability. | MicronautResponseSplitting.java:14:39:14:68 | headerValue | user-provided value |
+| MicronautResponseSplitting.java:29:42:29:90 | singletonMap(...) | MicronautResponseSplitting.java:27:42:27:71 | headerValue : String | MicronautResponseSplitting.java:29:42:29:90 | singletonMap(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | MicronautResponseSplitting.java:27:42:27:71 | headerValue | user-provided value |
+| MicronautResponseSplitting.java:36:42:36:48 | headers | MicronautResponseSplitting.java:33:50:33:79 | headerValue : String | MicronautResponseSplitting.java:36:42:36:48 | headers | This header depends on a $@, which may cause a response-splitting vulnerability. | MicronautResponseSplitting.java:33:50:33:79 | headerValue | user-provided value |
 | ResponseSplitting.java:23:23:23:28 | cookie | ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:23:23:23:28 | cookie | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:22:39:22:66 | getParameter(...) | user-provided value |
 | ResponseSplitting.java:28:38:28:72 | getParameter(...) | ResponseSplitting.java:28:38:28:72 | getParameter(...) | ResponseSplitting.java:28:38:28:72 | getParameter(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:28:38:28:72 | getParameter(...) | user-provided value |
 | ResponseSplitting.java:29:38:29:72 | getParameter(...) | ResponseSplitting.java:29:38:29:72 | getParameter(...) | ResponseSplitting.java:29:38:29:72 | getParameter(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:29:38:29:72 | getParameter(...) | user-provided value |
 | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | ResponseSplitting.java:53:14:53:48 | getParameter(...) : String | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:53:14:53:48 | getParameter(...) | user-provided value |
 edges
-| ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | ResponseSplitting.java:23:23:23:28 | cookie | provenance | Sink:MaD:1 |
-| ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | provenance | Src:MaD:3 MaD:5 |
-| ResponseSplitting.java:53:14:53:48 | getParameter(...) : String | ResponseSplitting.java:59:27:59:27 | t : String | provenance | Src:MaD:3  |
-| ResponseSplitting.java:59:27:59:27 | t : String | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | provenance | MaD:4 Sink:MaD:2 |
+| MicronautResponseSplitting.java:14:39:14:68 | headerValue : String | MicronautResponseSplitting.java:16:53:16:63 | headerValue | provenance | Sink:MaD:1 |
+| MicronautResponseSplitting.java:27:42:27:71 | headerValue : String | MicronautResponseSplitting.java:29:79:29:89 | headerValue : String | provenance |  |
+| MicronautResponseSplitting.java:29:79:29:89 | headerValue : String | MicronautResponseSplitting.java:29:42:29:90 | singletonMap(...) | provenance | MaD:7 Sink:MaD:2 |
+| MicronautResponseSplitting.java:33:50:33:79 | headerValue : String | MicronautResponseSplitting.java:35:33:35:43 | headerValue : String | provenance |  |
+| MicronautResponseSplitting.java:35:9:35:15 | headers [post update] : HashMap [<map.value>] : String | MicronautResponseSplitting.java:36:42:36:48 | headers | provenance | Sink:MaD:2 |
+| MicronautResponseSplitting.java:35:33:35:43 | headerValue : String | MicronautResponseSplitting.java:35:9:35:15 | headers [post update] : HashMap [<map.value>] : String | provenance | MaD:8 |
+| ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | ResponseSplitting.java:23:23:23:28 | cookie | provenance | Sink:MaD:3 |
+| ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | provenance | Src:MaD:5 MaD:9 |
+| ResponseSplitting.java:53:14:53:48 | getParameter(...) : String | ResponseSplitting.java:59:27:59:27 | t : String | provenance | Src:MaD:5  |
+| ResponseSplitting.java:59:27:59:27 | t : String | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | provenance | MaD:6 Sink:MaD:4 |
 models
-| 1 | Sink: javax.servlet.http; HttpServletResponse; false; addCookie; ; ; Argument[0]; response-splitting; manual |
-| 2 | Sink: javax.servlet.http; HttpServletResponse; false; setHeader; ; ; Argument[0..1]; response-splitting; manual |
-| 3 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
-| 4 | Summary: java.lang; String; false; replaceFirst; ; ; Argument[this]; ReturnValue; taint; manual |
-| 5 | Summary: javax.servlet.http; Cookie; false; Cookie; ; ; Argument[1]; Argument[this]; taint; manual |
+| 1 | Sink: io.micronaut.http; MutableHttpResponse; true; header; (CharSequence,CharSequence); ; Argument[1]; response-splitting; manual |
+| 2 | Sink: io.micronaut.http; MutableHttpResponse; true; headers; (Map); ; Argument[0]; response-splitting; manual |
+| 3 | Sink: javax.servlet.http; HttpServletResponse; false; addCookie; ; ; Argument[0]; response-splitting; manual |
+| 4 | Sink: javax.servlet.http; HttpServletResponse; false; setHeader; ; ; Argument[0..1]; response-splitting; manual |
+| 5 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 6 | Summary: java.lang; String; false; replaceFirst; ; ; Argument[this]; ReturnValue; taint; manual |
+| 7 | Summary: java.util; Collections; false; singletonMap; (Object,Object); ; Argument[1]; ReturnValue.MapValue; value; manual |
+| 8 | Summary: java.util; Map; true; put; (Object,Object); ; Argument[1]; Argument[this].MapValue; value; manual |
+| 9 | Summary: javax.servlet.http; Cookie; false; Cookie; ; ; Argument[1]; Argument[this]; taint; manual |
 nodes
+| MicronautResponseSplitting.java:14:39:14:68 | headerValue : String | semmle.label | headerValue : String |
+| MicronautResponseSplitting.java:16:53:16:63 | headerValue | semmle.label | headerValue |
+| MicronautResponseSplitting.java:27:42:27:71 | headerValue : String | semmle.label | headerValue : String |
+| MicronautResponseSplitting.java:29:42:29:90 | singletonMap(...) | semmle.label | singletonMap(...) |
+| MicronautResponseSplitting.java:29:79:29:89 | headerValue : String | semmle.label | headerValue : String |
+| MicronautResponseSplitting.java:33:50:33:79 | headerValue : String | semmle.label | headerValue : String |
+| MicronautResponseSplitting.java:35:9:35:15 | headers [post update] : HashMap [<map.value>] : String | semmle.label | headers [post update] : HashMap [<map.value>] : String |
+| MicronautResponseSplitting.java:35:33:35:43 | headerValue : String | semmle.label | headerValue : String |
+| MicronautResponseSplitting.java:36:42:36:48 | headers | semmle.label | headers |
 | ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | semmle.label | new Cookie(...) : Cookie |
 | ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | ResponseSplitting.java:23:23:23:28 | cookie | semmle.label | cookie |

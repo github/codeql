@@ -17,6 +17,7 @@
 		"lodash.mergewith": "^4.6.1",
 		"merge": "^1.2.0",
 		"merge-deep": "^3.0.2",
+		"merge-descriptors": "^1.0.3",
 		"merge-options": "^1.0.1",
 		"mixin-deep": "^2.0.0",
 		"mixin-object": "^3.0.0",

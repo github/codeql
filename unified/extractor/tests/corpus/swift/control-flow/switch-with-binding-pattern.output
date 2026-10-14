@@ -115,60 +115,52 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        switch_expr
-          value:
-            name_expr
-              identifier: identifier "shape"
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "shape" source="shape"
           case:
-            switch_case
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                constructor_pattern
-                  constructor:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member: identifier "circle"
-                  element:
-                    pattern_element
-                      pattern:
-                        name_pattern
-                          identifier: identifier "r"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee:
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: inferred_type_expr "." source="."
+                      member_name_node: identifier "circle" source="circle"
+                  argument:
+                    argument source="⟨value⟩"
+                      value:
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "r" source="r"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "r"
-            switch_case
+                        argument source="⟨value⟩"
+                          value: identifier "r" source="r"
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                constructor_pattern
-                  constructor:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member: identifier "square"
-                  element:
-                    pattern_element
-                      pattern:
-                        name_pattern
-                          identifier: identifier "s"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee:
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: inferred_type_expr "." source="."
+                      member_name_node: identifier "square" source="square"
+                  argument:
+                    argument source="⟨value⟩"
+                      value:
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "s" source="s"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "s"
+                        argument source="⟨value⟩"
+                          value: identifier "s" source="s"

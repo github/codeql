@@ -172,3 +172,19 @@ function t16() {
     sink(array[2]); // $ hasValueFlow=t16.1
     sink(array); // $ hasTaintFlow=t16.1
 }
+
+function t17() {
+    function target(...[x, y]) {
+        sink(x); // $ hasValueFlow=t17.1
+        sink(y); // $ hasValueFlow=t17.2
+    }
+    target(source("t17.1"), source("t17.2"), source("t17.3"));
+}
+
+function t18() {
+    function target(...{0: x, 1: y}) {
+        sink(x); // $ hasValueFlow=t18.1
+        sink(y); // $ hasValueFlow=t18.2
+    }
+    target(source("t18.1"), source("t18.2"), source("t18.3"));
+}
