@@ -7,11 +7,17 @@ extensions:
       # Message payload
       - ["BloombergLP::bmqa", "Message", true, "getData", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
       - ["BloombergLP::bmqa", "Message", true, "setData", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "Message", true, "setData", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "Message", true, "setData", "", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
       - ["BloombergLP::bmqa", "Message", true, "setDataRef", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "Message", true, "setDataRef", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "Message", true, "setDataRef", "", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
       - ["BloombergLP::bmqa", "Message", true, "clone", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       # Message properties
       - ["BloombergLP::bmqa", "Message", true, "loadProperties", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
       - ["BloombergLP::bmqa", "Message", true, "setPropertiesRef", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "Message", true, "setPropertiesRef", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::bmqa", "Message", true, "setPropertiesRef", "", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
       - ["BloombergLP::bmqa", "MessageProperties", true, "MessageProperties", "(const MessageProperties &,Allocator *)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
       - ["BloombergLP::bmqa", "MessageProperties", true, "operator=", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
       - ["BloombergLP::bmqa", "MessageProperties", true, "operator=", "", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
