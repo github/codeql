@@ -14,6 +14,7 @@ private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.SSA
+private import semmle.code.java.security.ListOfConstantsSanitizer
 private import semmle.code.java.security.Sanitizers
 
 /**
@@ -149,18 +150,8 @@ private predicate isHostComparisonSanitizer(Guard guard, Expr e, boolean branch)
       )
     )
   or
-  exists(MethodCall comparison, Expr checked, Expr allowed |
-    guard = comparison and
-    comparison.getMethod().getDeclaringType() instanceof TypeString and
-    comparison.getMethod().hasName(["equals", "equalsIgnoreCase"]) and
-    branch = true and
-    (
-      checked = comparison.getQualifier() and allowed = comparison.getArgument(0)
-      or
-      checked = comparison.getArgument(0) and allowed = comparison.getQualifier()
-    ) and
-    // New cases require a fixed allowlist entry, not another untrusted value.
-    exists(allowed.(CompileTimeConstantExpr).getStringValue()) and
+  exists(Expr checked |
+    constantValueGuardChecks(guard, checked, branch) and
     e = getCheckedHost(checked).getQualifier()
   )
 }

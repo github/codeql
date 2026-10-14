@@ -32,4 +32,28 @@ public class A {
       sink(inp);
     }
   }
+
+  private void checkEquals(String input) {
+    if ("AA".equals(input)) {
+      sink(input);
+    }
+  }
+
+  private void checkEqualsIgnoreCase(String input) {
+    if (input.equalsIgnoreCase("AA")) {
+      sink(input);
+    }
+  }
+
+  private void checkWrongBranch(String input) {
+    if (!"AA".equals(input)) {
+      sink(input);
+    }
+  }
+
+  private void checkUntrustedValue(String input, String allowed) {
+    if (allowed.equals(input)) {
+      sink(input);
+    }
+  }
 }

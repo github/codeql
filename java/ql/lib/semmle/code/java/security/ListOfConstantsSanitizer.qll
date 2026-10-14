@@ -1,7 +1,4 @@
-/**
- * Provides a default taint sanitizer identifying comparisons against lists of
- * compile-time constants.
- */
+/** Provides a default taint sanitizer identifying checks against compile-time constants. */
 overlay[local?]
 module;
 
@@ -257,11 +254,39 @@ private predicate constantCollectionContainsCheck(Guard g, Expr e, boolean branc
 }
 
 /**
- * A comparison against a list of compile-time constants, sanitizing taint by
- * restricting to a set of known values.
+ * Holds if the guard `g` ensures that the string expression `e` equals a compile-time constant
+ * upon evaluating to `branch`.
  */
-private class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTaintSanitizer {
-  ListOfConstantsComparisonSanitizerGuard() {
-    this = DataFlow::BarrierGuard<constantCollectionContainsCheck/3>::getABarrierNode()
+private predicate constantStringEqualityCheck(Guard g, Expr e, boolean branch) {
+  exists(MethodCall comparison, Expr constant |
+    g = comparison and
+    comparison.getMethod().getDeclaringType() instanceof TypeString and
+    comparison.getMethod().hasName(["equals", "equalsIgnoreCase"]) and
+    branch = true and
+    (
+      e = comparison.getQualifier() and constant = comparison.getArgument(0)
+      or
+      e = comparison.getArgument(0) and constant = comparison.getQualifier()
+    ) and
+    exists(constant.(CompileTimeConstantExpr).getStringValue())
+  )
+}
+
+/**
+ * Holds if the guard `g` ensures that the expression `e` is one of a set of compile-time constants
+ * upon evaluating to `branch`.
+ */
+predicate constantValueGuardChecks(Guard g, Expr e, boolean branch) {
+  constantStringEqualityCheck(g, e, branch)
+  or
+  constantCollectionContainsCheck(g, e, branch)
+}
+
+/**
+ * A check against compile-time constants, sanitizing taint by restricting a value to a known set.
+ */
+private class ConstantValueSanitizerGuard extends TaintTracking::DefaultTaintSanitizer {
+  ConstantValueSanitizerGuard() {
+    this = DataFlow::BarrierGuard<constantValueGuardChecks/3>::getABarrierNode()
   }
 }
