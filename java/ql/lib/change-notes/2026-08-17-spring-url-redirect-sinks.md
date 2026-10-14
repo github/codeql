@@ -1,6 +1,6 @@
 ---
 category: minorAnalysis
 ---
-* The `java/unvalidated-url-redirection` query now detects untrusted URLs used in Spring MVC
-  `RedirectView` objects and `redirect:` view names, including view names constructed in helper
-  methods called by request handlers.
+* The `java/unvalidated-url-redirection` query now detects untrusted URLs used in returned Spring MVC
+  `RedirectView` objects and leading `redirect:` view names, including helper-generated names passed
+  to returned `ModelAndView` objects. View objects returned by response-body handlers are also covered.
