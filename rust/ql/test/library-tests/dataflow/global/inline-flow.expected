@@ -196,7 +196,9 @@ edges
 | main.rs:342:9:342:9 | a | main.rs:343:10:343:10 | a | provenance |  |
 | main.rs:342:13:342:26 | async_source(...) | main.rs:342:9:342:9 | a | provenance |  |
 | main.rs:346:13:346:13 | c | main.rs:347:14:347:14 | c | provenance |  |
+| main.rs:346:13:346:13 | c | main.rs:348:9:348:9 | c | provenance |  |
 | main.rs:346:17:346:25 | source(...) | main.rs:346:13:346:13 | c | provenance |  |
+| main.rs:348:9:348:9 | c | main.rs:350:10:350:16 | await b | provenance |  |
 | main.rs:354:9:354:9 | a | main.rs:355:10:355:10 | a | provenance |  |
 | main.rs:354:13:354:55 | ...::block_on(...) | main.rs:354:9:354:9 | a | provenance |  |
 | main.rs:354:41:354:54 | async_source(...) | main.rs:354:13:354:55 | ...::block_on(...) | provenance | MaD:3 |
@@ -443,6 +445,8 @@ nodes
 | main.rs:346:13:346:13 | c | semmle.label | c |
 | main.rs:346:17:346:25 | source(...) | semmle.label | source(...) |
 | main.rs:347:14:347:14 | c | semmle.label | c |
+| main.rs:348:9:348:9 | c | semmle.label | c |
+| main.rs:350:10:350:16 | await b | semmle.label | await b |
 | main.rs:354:9:354:9 | a | semmle.label | a |
 | main.rs:354:13:354:55 | ...::block_on(...) | semmle.label | ...::block_on(...) |
 | main.rs:354:41:354:54 | async_source(...) | semmle.label | async_source(...) |
@@ -539,6 +543,7 @@ testFailures
 | main.rs:337:10:337:10 | a | main.rs:336:13:336:21 | source(...) | main.rs:337:10:337:10 | a | $@ | main.rs:336:13:336:21 | source(...) | source(...) |
 | main.rs:343:10:343:10 | a | main.rs:336:13:336:21 | source(...) | main.rs:343:10:343:10 | a | $@ | main.rs:336:13:336:21 | source(...) | source(...) |
 | main.rs:347:14:347:14 | c | main.rs:346:17:346:25 | source(...) | main.rs:347:14:347:14 | c | $@ | main.rs:346:17:346:25 | source(...) | source(...) |
+| main.rs:350:10:350:16 | await b | main.rs:346:17:346:25 | source(...) | main.rs:350:10:350:16 | await b | $@ | main.rs:346:17:346:25 | source(...) | source(...) |
 | main.rs:355:10:355:10 | a | main.rs:336:13:336:21 | source(...) | main.rs:355:10:355:10 | a | $@ | main.rs:336:13:336:21 | source(...) | source(...) |
 | main.rs:404:14:404:15 | n1 | main.rs:379:13:379:21 | source(...) | main.rs:404:14:404:15 | n1 | $@ | main.rs:379:13:379:21 | source(...) | source(...) |
 | main.rs:408:14:408:15 | n2 | main.rs:379:13:379:21 | source(...) | main.rs:408:14:408:15 | n2 | $@ | main.rs:379:13:379:21 | source(...) | source(...) |

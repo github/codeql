@@ -28,6 +28,8 @@ module Generated {
   class Rename extends Synth::TRename, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "Rename" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the name of this rename, if it exists.
      */

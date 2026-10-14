@@ -39,6 +39,8 @@
 | test_path_validation.py:120:9:120:58 | ControlFlowNode for SecretClient() | test_path_validation.py:5:19:5:25 | ControlFlowNode for ImportMember | test_path_validation.py:120:32:120:34 | ControlFlowNode for url | Part of the URL of this request depends on a $@. | test_path_validation.py:5:19:5:25 | ControlFlowNode for ImportMember | user-provided value |
 | test_path_validation.py:127:9:127:58 | ControlFlowNode for SecretClient() | test_path_validation.py:5:19:5:25 | ControlFlowNode for ImportMember | test_path_validation.py:127:32:127:34 | ControlFlowNode for url | Part of the URL of this request depends on a $@. | test_path_validation.py:5:19:5:25 | ControlFlowNode for ImportMember | user-provided value |
 | test_path_validation.py:130:9:130:58 | ControlFlowNode for SecretClient() | test_path_validation.py:5:19:5:25 | ControlFlowNode for ImportMember | test_path_validation.py:130:32:130:34 | ControlFlowNode for url | Part of the URL of this request depends on a $@. | test_path_validation.py:5:19:5:25 | ControlFlowNode for ImportMember | user-provided value |
+| test_re_prefixmatch.py:11:9:11:51 | ControlFlowNode for Attribute() | test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | test_re_prefixmatch.py:11:22:11:50 | ControlFlowNode for Fstring | Part of the URL of this request depends on a $@. | test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
+| test_re_prefixmatch.py:37:9:37:51 | ControlFlowNode for Attribute() | test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | test_re_prefixmatch.py:37:22:37:50 | ControlFlowNode for Fstring | Part of the URL of this request depends on a $@. | test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
 edges
 | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | full_partial_test.py:1:19:1:25 | ControlFlowNode for request | provenance |  |
 | full_partial_test.py:1:19:1:25 | ControlFlowNode for request | full_partial_test.py:7:18:7:24 | ControlFlowNode for request | provenance |  |
@@ -226,6 +228,19 @@ edges
 | test_path_validation.py:61:5:61:7 | ControlFlowNode for url | test_path_validation.py:127:32:127:34 | ControlFlowNode for url | provenance | Sink:MaD:2 |
 | test_path_validation.py:61:5:61:7 | ControlFlowNode for url | test_path_validation.py:130:32:130:34 | ControlFlowNode for url | provenance | Sink:MaD:2 |
 | test_path_validation.py:61:5:61:7 | ControlFlowNode for url | test_path_validation.py:132:32:132:34 | ControlFlowNode for url | provenance | Sink:MaD:2 |
+| test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | provenance |  |
+| test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | test_re_prefixmatch.py:7:12:7:18 | ControlFlowNode for request | provenance |  |
+| test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | test_re_prefixmatch.py:15:11:15:17 | ControlFlowNode for request | provenance |  |
+| test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | test_re_prefixmatch.py:23:11:23:17 | ControlFlowNode for request | provenance |  |
+| test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | test_re_prefixmatch.py:32:12:32:18 | ControlFlowNode for request | provenance |  |
+| test_re_prefixmatch.py:7:5:7:8 | ControlFlowNode for path | test_re_prefixmatch.py:11:22:11:50 | ControlFlowNode for Fstring | provenance |  |
+| test_re_prefixmatch.py:7:12:7:18 | ControlFlowNode for request | test_re_prefixmatch.py:7:5:7:8 | ControlFlowNode for path | provenance | AdditionalTaintStep |
+| test_re_prefixmatch.py:15:5:15:7 | ControlFlowNode for url | test_re_prefixmatch.py:19:22:19:24 | ControlFlowNode for url | provenance |  |
+| test_re_prefixmatch.py:15:11:15:17 | ControlFlowNode for request | test_re_prefixmatch.py:15:5:15:7 | ControlFlowNode for url | provenance | AdditionalTaintStep |
+| test_re_prefixmatch.py:23:5:23:7 | ControlFlowNode for url | test_re_prefixmatch.py:28:22:28:24 | ControlFlowNode for url | provenance |  |
+| test_re_prefixmatch.py:23:11:23:17 | ControlFlowNode for request | test_re_prefixmatch.py:23:5:23:7 | ControlFlowNode for url | provenance | AdditionalTaintStep |
+| test_re_prefixmatch.py:32:5:32:8 | ControlFlowNode for path | test_re_prefixmatch.py:37:22:37:50 | ControlFlowNode for Fstring | provenance |  |
+| test_re_prefixmatch.py:32:12:32:18 | ControlFlowNode for request | test_re_prefixmatch.py:32:5:32:8 | ControlFlowNode for path | provenance | AdditionalTaintStep |
 | test_requests.py:1:19:1:25 | ControlFlowNode for ImportMember | test_requests.py:1:19:1:25 | ControlFlowNode for request | provenance |  |
 | test_requests.py:1:19:1:25 | ControlFlowNode for request | test_requests.py:7:18:7:24 | ControlFlowNode for request | provenance |  |
 | test_requests.py:1:19:1:25 | ControlFlowNode for request | test_requests.py:14:18:14:24 | ControlFlowNode for request | provenance |  |
@@ -418,6 +433,20 @@ nodes
 | test_path_validation.py:127:32:127:34 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | test_path_validation.py:130:32:130:34 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | test_path_validation.py:132:32:132:34 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| test_re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test_re_prefixmatch.py:7:5:7:8 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| test_re_prefixmatch.py:7:12:7:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test_re_prefixmatch.py:11:22:11:50 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| test_re_prefixmatch.py:15:5:15:7 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| test_re_prefixmatch.py:15:11:15:17 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test_re_prefixmatch.py:19:22:19:24 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| test_re_prefixmatch.py:23:5:23:7 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| test_re_prefixmatch.py:23:11:23:17 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test_re_prefixmatch.py:28:22:28:24 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| test_re_prefixmatch.py:32:5:32:8 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| test_re_prefixmatch.py:32:12:32:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test_re_prefixmatch.py:37:22:37:50 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
 | test_requests.py:1:19:1:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | test_requests.py:1:19:1:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | test_requests.py:7:5:7:14 | ControlFlowNode for user_input | semmle.label | ControlFlowNode for user_input |

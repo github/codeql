@@ -1,3 +1,12 @@
+#select
+| re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | This regular expression depends on a $@ and is executed by $@. | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_bad.py:14:5:14:33 | ControlFlowNode for Attribute() | re.search |
+| re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern | This regular expression depends on a $@ and is executed by $@. | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_bad.py:26:5:26:31 | ControlFlowNode for Attribute() | re.search |
+| re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | This regular expression depends on a $@ and is executed by $@. | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_bad.py:37:5:37:41 | ControlFlowNode for Attribute() | re.search |
+| re_prefixmatch.py:8:20:8:26 | ControlFlowNode for pattern | re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | re_prefixmatch.py:8:20:8:26 | ControlFlowNode for pattern | This regular expression depends on a $@ and is executed by $@. | re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_prefixmatch.py:8:5:8:35 | ControlFlowNode for Attribute() | re.prefixmatch |
+| re_prefixmatch.py:13:28:13:34 | ControlFlowNode for pattern | re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | re_prefixmatch.py:13:28:13:34 | ControlFlowNode for pattern | This regular expression depends on a $@ and is executed by $@. | re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_prefixmatch.py:13:5:13:50 | ControlFlowNode for Attribute() | re.prefixmatch |
+| re_prefixmatch.py:18:18:18:24 | ControlFlowNode for pattern | re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | re_prefixmatch.py:18:18:18:24 | ControlFlowNode for pattern | This regular expression depends on a $@ and is executed by $@. | re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_prefixmatch.py:18:5:18:33 | ControlFlowNode for prefix_match() | re.prefixmatch |
+| re_prefixmatch.py:23:35:23:41 | ControlFlowNode for pattern | re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | re_prefixmatch.py:23:35:23:41 | ControlFlowNode for pattern | This regular expression depends on a $@ and is executed by $@. | re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_prefixmatch.py:24:5:24:40 | ControlFlowNode for Attribute() | re.prefixmatch |
+| re_prefixmatch.py:29:43:29:49 | ControlFlowNode for pattern | re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | re_prefixmatch.py:29:43:29:49 | ControlFlowNode for pattern | This regular expression depends on a $@ and is executed by $@. | re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_prefixmatch.py:30:5:30:64 | ControlFlowNode for Attribute() | re.prefixmatch |
 edges
 | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | re_bad.py:1:19:1:25 | ControlFlowNode for request | provenance |  |
 | re_bad.py:1:19:1:25 | ControlFlowNode for request | re_bad.py:13:22:13:28 | ControlFlowNode for request | provenance |  |
@@ -9,6 +18,22 @@ edges
 | re_bad.py:24:22:24:28 | ControlFlowNode for request | re_bad.py:24:5:24:18 | ControlFlowNode for unsafe_pattern | provenance | AdditionalTaintStep |
 | re_bad.py:36:5:36:18 | ControlFlowNode for unsafe_pattern | re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | provenance |  |
 | re_bad.py:36:22:36:28 | ControlFlowNode for request | re_bad.py:36:5:36:18 | ControlFlowNode for unsafe_pattern | provenance | AdditionalTaintStep |
+| re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | provenance |  |
+| re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | re_prefixmatch.py:7:15:7:21 | ControlFlowNode for request | provenance |  |
+| re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | re_prefixmatch.py:12:15:12:21 | ControlFlowNode for request | provenance |  |
+| re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | re_prefixmatch.py:17:15:17:21 | ControlFlowNode for request | provenance |  |
+| re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | re_prefixmatch.py:22:15:22:21 | ControlFlowNode for request | provenance |  |
+| re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | re_prefixmatch.py:28:15:28:21 | ControlFlowNode for request | provenance |  |
+| re_prefixmatch.py:7:5:7:11 | ControlFlowNode for pattern | re_prefixmatch.py:8:20:8:26 | ControlFlowNode for pattern | provenance |  |
+| re_prefixmatch.py:7:15:7:21 | ControlFlowNode for request | re_prefixmatch.py:7:5:7:11 | ControlFlowNode for pattern | provenance | AdditionalTaintStep |
+| re_prefixmatch.py:12:5:12:11 | ControlFlowNode for pattern | re_prefixmatch.py:13:28:13:34 | ControlFlowNode for pattern | provenance |  |
+| re_prefixmatch.py:12:15:12:21 | ControlFlowNode for request | re_prefixmatch.py:12:5:12:11 | ControlFlowNode for pattern | provenance | AdditionalTaintStep |
+| re_prefixmatch.py:17:5:17:11 | ControlFlowNode for pattern | re_prefixmatch.py:18:18:18:24 | ControlFlowNode for pattern | provenance |  |
+| re_prefixmatch.py:17:15:17:21 | ControlFlowNode for request | re_prefixmatch.py:17:5:17:11 | ControlFlowNode for pattern | provenance | AdditionalTaintStep |
+| re_prefixmatch.py:22:5:22:11 | ControlFlowNode for pattern | re_prefixmatch.py:23:35:23:41 | ControlFlowNode for pattern | provenance |  |
+| re_prefixmatch.py:22:15:22:21 | ControlFlowNode for request | re_prefixmatch.py:22:5:22:11 | ControlFlowNode for pattern | provenance | AdditionalTaintStep |
+| re_prefixmatch.py:28:5:28:11 | ControlFlowNode for pattern | re_prefixmatch.py:29:43:29:49 | ControlFlowNode for pattern | provenance |  |
+| re_prefixmatch.py:28:15:28:21 | ControlFlowNode for request | re_prefixmatch.py:28:5:28:11 | ControlFlowNode for pattern | provenance | AdditionalTaintStep |
 nodes
 | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | re_bad.py:1:19:1:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -21,8 +46,21 @@ nodes
 | re_bad.py:36:5:36:18 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
 | re_bad.py:36:22:36:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
+| re_prefixmatch.py:1:19:1:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| re_prefixmatch.py:1:19:1:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| re_prefixmatch.py:7:5:7:11 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| re_prefixmatch.py:7:15:7:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| re_prefixmatch.py:8:20:8:26 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| re_prefixmatch.py:12:5:12:11 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| re_prefixmatch.py:12:15:12:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| re_prefixmatch.py:13:28:13:34 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| re_prefixmatch.py:17:5:17:11 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| re_prefixmatch.py:17:15:17:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| re_prefixmatch.py:18:18:18:24 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| re_prefixmatch.py:22:5:22:11 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| re_prefixmatch.py:22:15:22:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| re_prefixmatch.py:23:35:23:41 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| re_prefixmatch.py:28:5:28:11 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| re_prefixmatch.py:28:15:28:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| re_prefixmatch.py:29:43:29:49 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
 subpaths
-#select
-| re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | This regular expression depends on a $@ and is executed by $@. | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_bad.py:14:5:14:33 | ControlFlowNode for Attribute() | re.search |
-| re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern | This regular expression depends on a $@ and is executed by $@. | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_bad.py:26:5:26:31 | ControlFlowNode for Attribute() | re.search |
-| re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | This regular expression depends on a $@ and is executed by $@. | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_bad.py:37:5:37:41 | ControlFlowNode for Attribute() | re.search |

@@ -17,9 +17,17 @@ pub struct Entry {
 
 #[derive(Debug)]
 pub enum EntryKind {
-    Union { members: Set<TypeName> },
-    Table { name: String, fields: Vec<Field> },
-    Token { kind_id: usize },
+    Union {
+        members: Set<TypeName>,
+        fields: Vec<Field>,
+    },
+    Table {
+        name: String,
+        fields: Vec<Field>,
+    },
+    Token {
+        kind_id: usize,
+    },
 }
 
 #[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq)]
@@ -130,21 +138,44 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
         let flattened_name = &node_type_name(&node.kind, node.named);
         let dbscheme_name = escape_name(flattened_name);
         let ql_class_name = dbscheme_name_to_class_name(&dbscheme_name);
-        let dbscheme_name = format!("{}_{}", prefix, &dbscheme_name);
+        let dbscheme_name = format!("{}_{}", prefix, dbscheme_name);
         let subtypes = &node.subtypes;
         if !subtypes.is_empty() {
             // It's a tree-sitter supertype node, for which we create a union
             // type.
+            let type_name = TypeName {
+                kind: node.kind.clone(),
+                named: node.named,
+            };
+            let mut fields = Vec::new();
+            for (field_name, field_info) in &node.fields {
+                add_field(
+                    prefix,
+                    &type_name,
+                    Some(field_name.to_string()),
+                    field_info,
+                    &mut fields,
+                    &token_kinds,
+                );
+            }
+            if let Some(children) = &node.children {
+                add_field(
+                    prefix,
+                    &type_name,
+                    None,
+                    children,
+                    &mut fields,
+                    &token_kinds,
+                );
+            }
             entries.insert(
-                TypeName {
-                    kind: node.kind.clone(),
-                    named: node.named,
-                },
+                type_name,
                 Entry {
                     dbscheme_name,
                     ql_class_name,
                     kind: EntryKind::Union {
                         members: convert_types(subtypes),
+                        fields,
                     },
                 },
             );
@@ -156,8 +187,8 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                 kind: node.kind.clone(),
                 named: node.named,
             };
-            let table_name = escape_name(&(format!("{}_def", &flattened_name)));
-            let table_name = format!("{}_{}", prefix, &table_name);
+            let table_name = escape_name(&(format!("{}_def", flattened_name)));
+            let table_name = format!("{}_{}", prefix, table_name);
 
             let mut fields = Vec::new();
 
@@ -203,13 +234,13 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
             counter += 1;
             let unprefixed_name = node_type_name(&type_name.kind, true);
             Entry {
-                dbscheme_name: escape_name(&format!("{}_token_{}", &prefix, &unprefixed_name)),
+                dbscheme_name: escape_name(&format!("{}_token_{}", prefix, unprefixed_name)),
                 ql_class_name: dbscheme_name_to_class_name(&escape_name(&unprefixed_name)),
                 kind: EntryKind::Token { kind_id: counter },
             }
         } else {
             Entry {
-                dbscheme_name: format!("{}_reserved_word", &prefix),
+                dbscheme_name: format!("{}_reserved_word", prefix),
                 ql_class_name: "ReservedWord".to_owned(),
                 kind: EntryKind::Token { kind_id: 0 },
             }
@@ -238,9 +269,9 @@ fn add_field(
         let has_index = field_info.multiple;
         let field_table_name = escape_name(&format!(
             "{}_{}_{}",
-            &prefix,
+            prefix,
             parent_flattened_name,
-            &name_for_field_or_child(&field_name)
+            name_for_field_or_child(&field_name)
         ));
         Storage::Table {
             has_index,
@@ -261,7 +292,7 @@ fn add_field(
         let mut field_token_ints: BTreeMap<String, (usize, String)> = BTreeMap::new();
         for (counter, t) in converted_types.into_iter().enumerate() {
             let dbscheme_variant_name =
-                escape_name(&format!("{}_{}_{}", &prefix, parent_flattened_name, t.kind));
+                escape_name(&format!("{}_{}_{}", prefix, parent_flattened_name, t.kind));
             field_token_ints.insert(t.kind.to_owned(), (counter, dbscheme_variant_name));
         }
         FieldTypeInfo::ReservedWordInt(field_token_ints)
@@ -273,9 +304,9 @@ fn add_field(
             types: converted_types,
             dbscheme_union: format!(
                 "{}_{}_{}_type",
-                &prefix,
-                &parent_flattened_name,
-                &name_for_field_or_child(&field_name)
+                prefix,
+                parent_flattened_name,
+                name_for_field_or_child(&field_name)
             ),
             ql_class: "AstNode".to_owned(),
         }
@@ -386,6 +417,7 @@ fn escape_name(name: &str) -> String {
             ':' => result.push_str("colon"),
             ';' => result.push_str("semicolon"),
             '"' => result.push_str("dquote"),
+            '\'' => result.push_str("squote"),
             '*' => result.push_str("star"),
             '+' => result.push_str("plus"),
             '-' => result.push_str("minus"),
@@ -449,8 +481,60 @@ fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
 }
 
 #[test]
+fn escape_name_quotes_test() {
+    assert_eq!("dquote", escape_name("\""));
+    assert_eq!("squote", escape_name("'"));
+}
+
+#[test]
 fn to_snake_case_test() {
     assert_eq!("ruby", to_snake_case("Ruby"));
     assert_eq!("erb", to_snake_case("ERB"));
     assert_eq!("embedded_template", to_snake_case("EmbeddedTemplate"));
+}
+
+#[test]
+fn supertype_fields_are_preserved() {
+    let yaml = r#"
+supertypes:
+  callable:
+    subtypes: [function]
+    fields:
+      parameter*: parameter
+      body?: block
+named:
+  function:
+  parameter:
+  block:
+"#;
+    let json = yeast::node_types_yaml::convert(yaml).unwrap();
+    let nodes = read_node_types_str("test", &json).unwrap();
+    let callable = nodes
+        .get(&TypeName {
+            kind: "callable".to_owned(),
+            named: true,
+        })
+        .unwrap();
+    let EntryKind::Union { fields, .. } = &callable.kind else {
+        panic!("callable should be a union");
+    };
+
+    assert_eq!(fields.len(), 2);
+    assert_eq!(fields[0].getter_name, "getBody");
+    assert!(matches!(
+        fields[0].storage,
+        Storage::Table {
+            has_index: false,
+            ..
+        }
+    ));
+    assert_eq!(fields[1].getter_name, "getParameter");
+    assert_eq!(fields[1].any_getter_name.as_deref(), Some("getAParameter"));
+    assert!(matches!(
+        fields[1].storage,
+        Storage::Table {
+            has_index: true,
+            ..
+        }
+    ));
 }

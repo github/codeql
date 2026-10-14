@@ -7,7 +7,29 @@ Customizing library models for GitHub Actions
 
 GitHub Actions analysis can be customized by adding library models in data extension files.
 
-A data extension for GitHub Actions is a YAML file of the form:
+A data extension for GitHub Actions can be written using either JSON or YAML. JSON is the preferred format, for performance reasons, and takes the following form:
+
+.. code-block:: json
+
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/actions-all",
+           "extensible": "<name of extensible predicate>"
+         },
+         "data": [
+           ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."],
+           ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+           // ...
+         ]
+       }
+     ]
+   }
+
+Files in the JSON format must use the ``.json`` file extension. Single-line (``//``) and multi-line (``/* ... */``) comments are supported as a non-standard JSON extension.
+
+A YAML file has the following form:
 
 .. code-block:: yaml
 
@@ -16,8 +38,8 @@ A data extension for GitHub Actions is a YAML file of the form:
         pack: codeql/actions-all
         extensible: <name of extensible predicate>
       data:
-        - <tuple1>
-        - <tuple2>
+        - ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."]
+        - ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
         - ...
 
 The CodeQL library for GitHub Actions exposes the following extensible predicates:
@@ -57,16 +79,23 @@ If there is an Action publisher that you trust, you can include the owner name/o
 
 To allow any Action from the publisher ``octodemo``, such as ``octodemo/3rd-party-action``, follow these steps:
 
-1. Create a data extension file ``/models/trusted-owner.model.yml`` with the following content:
+1. Create a data extension file ``/models/trusted-owner.model.json`` with the following content:
 
-   .. code-block:: yaml
+   .. code-block:: json
 
-      extensions:
-        - addsTo:
-            pack: codeql/actions-all
-            extensible: trustedActionsOwnerDataModel
-          data:
-            - ["octodemo"]
+      {
+        "extensions": [
+          {
+            "addsTo": {
+              "pack": "codeql/actions-all",
+              "extensible": "trustedActionsOwnerDataModel"
+            },
+            "data": [
+              ["octodemo"]
+            ]
+          }
+        ]
+      }
 
 2. Create a model pack file ``/codeql-pack.yml`` with the following content:
 
@@ -78,8 +107,34 @@ To allow any Action from the publisher ``octodemo``, such as ``octodemo/3rd-part
       extensionTargets:
         codeql/actions-all: '*'
       dataExtensions:
-        - models/**/*.yml
+        - models/**/*.json
 
 3. Ensure that the model pack is included in your CodeQL analysis.
 
 By following these steps, you will add ``octodemo`` to the list of trusted Action publishers, and the query will no longer generate security alerts for unpinned tags from this publisher.  For more information, see `Extending CodeQL coverage with CodeQL model packs in default setup <https://docs.github.com/en/code-security/code-scanning/managing-your-code-scanning-configuration/editing-your-configuration-of-default-setup#extending-codeql-coverage-with-codeql-model-packs-in-default-setup>`_ and `Creating and working with CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack>`_.
+
+Example: Remove a trusted Actions publisher for the ``actions/unpinned-tag`` query
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+GitHub's own organizations (``actions``, ``github`` and ``advanced-security``) are trusted by default. If you want unpinned tags for these first-party Actions to be reported as well, you can remove an owner from the trusted list by adding an entry prefixed with ``!``. A ``!`` entry always takes precedence over a plain entry for the same owner.
+
+To distrust the first-party ``github`` owner, add a data extension file with the following content:
+
+.. code-block:: json
+
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/actions-all",
+           "extensible": "trustedActionsOwnerDataModel"
+         },
+         "data": [
+           ["!github"]
+         ]
+       }
+     ]
+   }
+
+With this in place, the query will once again report unpinned tags for Actions published by ``github``.
+

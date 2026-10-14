@@ -71,8 +71,7 @@ rust_library(
         exclude = ["src/main.rs"],
     ),
     edition = "2024",
-    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
-    deps = select({
+    link_deps = select({
         ":static_linux_runtime": [
             # Keep these in linker order; sorting them produces an invalid group.
             ":static_runtime_group_start",
@@ -87,6 +86,7 @@ rust_library(
             ":swift_syntax_ffi",
         ],
     }),
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
 )
 
 # A debugging aid, for looking at the raw swift-syntax JSON for some input:

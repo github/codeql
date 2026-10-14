@@ -59,19 +59,17 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "triple"
-          type: unsupported_node "[3 of Int]"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "triple" source="triple"
+          type: unsupported_node "[3 of Int]" source="[3 of Int]"
           value:
-            array_literal
+            array_literal source="[⟨element⟩, ⟨element⟩, ⟨element⟩]"
               element:
-                int_literal "1"
-                int_literal "2"
-                int_literal "3"
+                int_literal "1" source="1"
+                int_literal "2" source="2"
+                int_literal "3" source="3"

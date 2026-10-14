@@ -1243,14 +1243,6 @@ private module IntWithParam<ParamSig P> {
 }
 
 module BarrierGuardWithIntParam<ParamSig P, IntWithParam<P>::guardChecksNodeSig/5 guardChecksNode> {
-  private predicate ssaDefReachesCertainUse(Definition def, UseImpl use) {
-    exists(SourceVariable v, IRBlock bb, int i |
-      use.hasIndexInBlock(bb, i, v) and
-      variableRead(bb, i, v, true) and
-      ssaDefReachesRead(v, def, bb, i)
-    )
-  }
-
   private predicate guardChecksInstr(
     IRGuards::Guards_v1::Guard g, IRGuards::GuardsInput::Expr instr, IRGuards::GuardValue gv,
     ParamIntPair<P>::TPair pair
@@ -1279,24 +1271,9 @@ module BarrierGuardWithIntParam<ParamSig P, IntWithParam<P>::guardChecksNodeSig/
   }
 
   Node getABarrierNode(int indirectionIndex, P p) {
-    // Only get the SynthNodes from the shared implementation, as the ExprNodes cannot
-    // be matched on SourceVariable.
-    result.(SsaSynthNode).getSynthNode() =
+    fromDfNode(result) =
       DataFlowIntegrationImpl::BarrierGuardDefWithState<ParamIntPair<P>::MkPair, guardChecksWithWrappers/4>::getABarrierNode(ParamIntPair<P>::MkPair(p,
           indirectionIndex))
-    or
-    // Calculate the guarded UseImpls corresponding to ExprNodes directly.
-    exists(
-      DataFlowIntegrationInput::Guard g, IRGuards::GuardValue branch, Definition def, IRBlock bb
-    |
-      exists(UseImpl use |
-        guardChecksWithWrappers(g, def, branch, ParamIntPair<P>::MkPair(p, indirectionIndex)) and
-        ssaDefReachesCertainUse(def, use) and
-        use.getBlock() = bb and
-        DataFlowIntegrationInput::guardControlsBlock(g, bb, branch) and
-        result = use.getNode()
-      )
-    )
   }
 }
 
@@ -1313,13 +1290,12 @@ module BarrierGuard<ParamSig P, WithParam<P>::guardChecksNodeSig/4 guardChecksNo
   }
 }
 
-bindingset[result, v]
-pragma[inline_late]
-private DataFlowIntegrationImpl::Node fromDfNode(Node n, SourceVariable v) {
+pragma[nomagic]
+private DataFlowIntegrationImpl::Node fromDfNode(Node n) {
   result = n.(SsaSynthNode).getSynthNode()
   or
-  exists(UseImpl use, IRBlock bb, int i |
-    result.(DataFlowIntegrationImpl::ExprNode).getExpr().hasCfgNode(bb, i) and
+  exists(UseImpl use, IRBlock bb, int i, SourceVariable v |
+    result.(DataFlowIntegrationImpl::ReadNode).readsAt(bb, i, v) and
     use.hasIndexInBlock(bb, i, v) and
     use.isCertain() and
     use.getNode() = n
@@ -1329,10 +1305,8 @@ private DataFlowIntegrationImpl::Node fromDfNode(Node n, SourceVariable v) {
 }
 
 private predicate ssaFlowImpl(Node nodeFrom, Node nodeTo) {
-  exists(SourceVariable v |
-    nodeFrom != nodeTo and
-    DataFlowIntegrationImpl::localFlowStep(v, fromDfNode(nodeFrom, v), fromDfNode(nodeTo, v), _)
-  )
+  nodeFrom != nodeTo and
+  DataFlowIntegrationImpl::localFlowStep(_, fromDfNode(nodeFrom), fromDfNode(nodeTo), _)
 }
 
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */

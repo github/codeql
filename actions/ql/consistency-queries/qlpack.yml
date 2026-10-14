@@ -1,0 +1,5 @@
+name: codeql/actions-consistency-queries
+groups: [actions, test, consistency-queries]
+dependencies:
+  codeql/actions-all: ${workspace}
+warnOnImplicitThis: true

@@ -17,15 +17,13 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        import_declaration
-          imported_expr:
-            name_expr
-              identifier: identifier "Foundation"
+        import_declaration source="⟨pattern⟩⟨imported_expr⟩"
+          imported_expr: identifier "Foundation" source="Foundation"
           pattern:
-            name_pattern
-              identifier: identifier "Foundation"
-              sub_pattern: bulk_importing_pattern "import Foundation"
+            named_pattern source="⟨sub_pattern⟩⟨name_node⟩"
+              name_node: identifier "Foundation" source="Foundation"
+              sub_pattern: bulk_importing_pattern "import Foundation" source="import Foundation"

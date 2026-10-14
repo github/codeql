@@ -28,6 +28,8 @@ module Generated {
   class ArgList extends Synth::TArgList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "ArgList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th argument of this argument list (0-based).
      */

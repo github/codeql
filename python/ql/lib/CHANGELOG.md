@@ -1,3 +1,11 @@
+## 7.2.7
+
+No user-facing changes.
+
+## 7.2.6
+
+No user-facing changes.
+
 ## 7.2.5
 
 ### Bug Fixes

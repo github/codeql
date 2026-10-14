@@ -12,6 +12,6 @@ query predicate getLoopBody(LoopExpr x, BlockExpr getLoopBody) {
   toBeTested(x) and not x.isUnknown() and getLoopBody = x.getLoopBody()
 }
 
-query predicate getAttr(LoopExpr x, int index, Attr getAttr) {
+query predicate getAttr(LoopExpr x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }

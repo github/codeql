@@ -1,0 +1,2 @@
+query: Best Practices/Exceptions/CatchingByValue.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Name
 import codeql.rust.elements.Pat
 import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
@@ -39,15 +39,17 @@ module Generated {
     /**
      * Gets the `index`th attr of this ident pattern (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertIdentPatToRaw(this).(Raw::IdentPat).getAttr(index))
+        Synth::convertAnyAttrFromRaw(Synth::convertIdentPatToRaw(this)
+              .(Raw::IdentPat)
+              .getAttr(index))
     }
 
     /**
      * Gets any of the attrs of this ident pattern.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this ident pattern.

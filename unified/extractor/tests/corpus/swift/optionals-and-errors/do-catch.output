@@ -57,32 +57,26 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        try_expr
+        try_expr source="do ⟨body⟩ ⟨catch_clause⟩"
           body:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                unary_expr
+                unary_expr source="⟨operator⟩ ⟨operand⟩"
                   operand:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "foo"
-                  operator: prefix_operator "try"
+                    call_expr source="⟨callee⟩()"
+                      callee: identifier "foo" source="foo"
+                  operator: prefix_operator "try" source="try"
           catch_clause:
-            catch_clause
+            catch_clause source="catch ⟨body⟩"
               body:
-                block
+                block source="{\n  ⟨stmt⟩\n}"
                   stmt:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "error"
+                        argument source="⟨value⟩"
+                          value: identifier "error" source="error"

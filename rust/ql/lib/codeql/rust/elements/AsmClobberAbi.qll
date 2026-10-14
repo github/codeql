@@ -4,6 +4,7 @@
  */
 
 private import internal.AsmClobberAbiImpl
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AsmPiece
 
 /**

@@ -5,7 +5,7 @@
 
 private import internal.ExternBlockImpl
 import codeql.rust.elements.Abi
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.ExternItemList
 import codeql.rust.elements.Item
 

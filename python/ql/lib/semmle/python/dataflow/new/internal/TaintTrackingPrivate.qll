@@ -107,8 +107,8 @@ predicate subscriptStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
 }
 
 /**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to string
- * manipulation.
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` by manipulating string-like
+ * data, including text strings, byte strings, and byte arrays.
  *
  * Note that since we cannot easily distinguish when something is a string, this can
  * also make taint flow on `<non string>.replace(foo, bar)`.
@@ -122,6 +122,18 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
       call.getFunction().asCfgNode().(NameNode).getId() in ["str", "bytes", "unicode"]
     ) and
     nodeFrom in [call.getArg(0), call.getArgByName("object")]
+  )
+  or
+  // Bytearray construction and byte extraction.
+  exists(DataFlow::CallCfgNode call | call = nodeTo |
+    call = API::builtin("bytearray").getACall() and
+    nodeFrom in [call.getArg(0), call.getArgByName("source")]
+    or
+    call.(DataFlow::MethodCallNode).calls(nodeFrom, "take_bytes")
+    or
+    // Unbound calls: bytearray.take_bytes(buffer).
+    call = API::builtin("bytearray").getMember("take_bytes").getACall() and
+    nodeFrom = call.getArg(0)
   )
   or
   // String methods. Note that this doesn't recognize `meth = "foo".upper; meth()`

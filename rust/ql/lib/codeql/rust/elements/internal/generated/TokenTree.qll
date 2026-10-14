@@ -30,5 +30,7 @@ module Generated {
    */
   class TokenTree extends Synth::TTokenTree, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "TokenTree" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

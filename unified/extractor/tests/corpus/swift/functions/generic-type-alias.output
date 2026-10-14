@@ -51,27 +51,21 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        type_alias_declaration
-          name: identifier "Box"
+        type_alias_declaration source="typealias ⟨name_node⟩<⟨type_parameter⟩, ⟨type_parameter⟩> = ⟨type⟩"
+          name_node: identifier "Box" source="Box"
           type_parameter:
-            type_parameter
-              name: identifier "T"
-              bound:
-                named_type_expr
-                  name: identifier "Equatable"
-            type_parameter
-              name: identifier "U"
+            type_parameter source="⟨name_node⟩: ⟨bound⟩"
+              name_node: identifier "T" source="T"
+              bound: identifier "Equatable" source="Equatable"
+            type_parameter source="⟨name_node⟩"
+              name_node: identifier "U" source="U"
           type:
-            generic_type_expr
-              base:
-                named_type_expr
-                  name: identifier "Dictionary"
+            generic_type_expr source="⟨base⟩<⟨type_argument⟩, ⟨type_argument⟩>"
+              base: identifier "Dictionary" source="Dictionary"
               type_argument:
-                named_type_expr
-                  name: identifier "T"
-                named_type_expr
-                  name: identifier "U"
+                identifier "T" source="T"
+                identifier "U" source="U"

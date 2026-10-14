@@ -73,42 +73,32 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        if_expr
+        if_expr source="if ⟨condition⟩ ⟨then⟩ else ⟨else⟩"
           condition:
-            binary_expr
-              left:
-                name_expr
-                  identifier: identifier "x"
-              operator: infix_operator ">"
-              right: int_literal "0"
+            binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+              left: identifier "x" source="x"
+              operator: infix_operator ">" source=">"
+              right: int_literal "0" source="0"
           then:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
                   argument:
-                    argument
-                      value:
-                        name_expr
-                          identifier: identifier "x"
+                    argument source="⟨value⟩"
+                      value: identifier "x" source="x"
           else:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
                   argument:
-                    argument
+                    argument source="⟨value⟩"
                       value:
-                        unary_expr
-                          operand:
-                            name_expr
-                              identifier: identifier "x"
-                          operator: prefix_operator "-"
+                        unary_expr source="⟨operator⟩⟨operand⟩"
+                          operand: identifier "x" source="x"
+                          operator: prefix_operator "-" source="-"

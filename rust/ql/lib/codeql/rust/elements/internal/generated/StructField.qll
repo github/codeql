@@ -6,9 +6,10 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.Attr
 import codeql.rust.elements.ConstArg
+import codeql.rust.elements.MutRestriction
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
@@ -35,9 +36,9 @@ module Generated {
     /**
      * Gets the `index`th attr of this struct field (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertStructFieldToRaw(this)
+        Synth::convertAnyAttrFromRaw(Synth::convertStructFieldToRaw(this)
               .(Raw::StructField)
               .getAttr(index))
     }
@@ -45,7 +46,7 @@ module Generated {
     /**
      * Gets any of the attrs of this struct field.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this struct field.
@@ -71,6 +72,21 @@ module Generated {
      * Holds if this struct field is unsafe.
      */
     predicate isUnsafe() { Synth::convertStructFieldToRaw(this).(Raw::StructField).isUnsafe() }
+
+    /**
+     * Gets the mut restriction of this struct field, if it exists.
+     */
+    MutRestriction getMutRestriction() {
+      result =
+        Synth::convertMutRestrictionFromRaw(Synth::convertStructFieldToRaw(this)
+              .(Raw::StructField)
+              .getMutRestriction())
+    }
+
+    /**
+     * Holds if `getMutRestriction()` exists.
+     */
+    final predicate hasMutRestriction() { exists(this.getMutRestriction()) }
 
     /**
      * Gets the name of this struct field, if it exists.

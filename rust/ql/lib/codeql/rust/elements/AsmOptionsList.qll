@@ -4,6 +4,7 @@
  */
 
 private import internal.AsmOptionsListImpl
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AsmOption
 import codeql.rust.elements.AsmPiece
 

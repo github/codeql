@@ -1,24 +1,11 @@
 
 // --- stub library headers ---
 
+#include "std_string.h"
+
+#define SIZE_MAX 0xFFFFFFFF
+
 namespace std {
-	typedef unsigned long size_t;
-	#define SIZE_MAX 0xFFFFFFFF
-
-	template <class T> class allocator {
-	};
-
-	template<class charT> struct char_traits {
-	};
-
-	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
-	class basic_string {
-	public:
-		basic_string(const charT* s, const Allocator& a = Allocator());
-	};
-
-	typedef basic_string<char> string;
-
 	class string_view {
 	public:
 		string_view(const char* s);

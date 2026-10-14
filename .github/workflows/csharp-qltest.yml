@@ -5,6 +5,10 @@ on:
     paths:
       - "csharp/**"
       - "shared/**"
+      - "!shared/tree-sitter-extractor/**"
+      - "!shared/yeast/**"
+      - "!shared/yeast-macros/**"
+      - "!shared/yeast-schema/**"
       - "misc/bazel/**"
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
@@ -16,6 +20,10 @@ on:
     paths:
       - "csharp/**"
       - "shared/**"
+      - "!shared/tree-sitter-extractor/**"
+      - "!shared/yeast/**"
+      - "!shared/yeast-macros/**"
+      - "!shared/yeast-schema/**"
       - "misc/bazel/**"
       - .github/workflows/csharp-qltest.yml
       - .github/actions/fetch-codeql/action.yml

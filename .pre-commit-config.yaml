@@ -4,7 +4,7 @@ default_language_version:
   python: python3.12
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         exclude: /test([^/]*)/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
@@ -12,7 +12,7 @@ repos:
         exclude: Cargo.lock$|/test([^/]*)/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v17.0.6
+    rev: v20.1.8
     hooks:
       - id: clang-format
 

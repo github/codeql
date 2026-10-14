@@ -3,9 +3,25 @@
  */
 
 private import unified
+private import codeql.unified.internal.StaticNameBinding
 private import codeql.unified.internal.NameBindingPlugin
 
+private class GeneratedConstructor extends ConstructorDeclaration {
+  GeneratedConstructor() { this.hasModifier("generated") }
+}
+
+private class ConvenienceConstructor extends ConstructorDeclaration {
+  ConvenienceConstructor() { this.hasModifier("convenience") }
+}
+
+private class DesignatedConstructor extends ConstructorDeclaration {
+  DesignatedConstructor() { not this instanceof ConvenienceConstructor }
+}
+
 class NameBindingPluginSwift extends NameBindingPlugin {
+  bindingset[e]
+  override predicate isNonPattern(Expr e) { isUnboundPattern(e.(Identifier)) }
+
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
   bindingset[cls, member]
   override predicate isInstanceMember(ClassLikeDeclaration cls, Member member) {
@@ -33,8 +49,73 @@ class NameBindingPluginSwift extends NameBindingPlugin {
   bindingset[cls, member]
   override predicate isInheritableMember(ClassLikeDeclaration cls, Member member) {
     exists(cls) and
-    not member.hasModifier("private")
+    not member.hasModifier("private") and
+    not (cls.hasModifier("protocol") and member instanceof ConstructorDeclaration)
   }
+
+  bindingset[n, member]
+  override predicate isInvalidMember(NamespaceNode n, Member member) {
+    exists(NamespaceNode parent |
+      parent = n.getAnInheritanceParent() and
+      not parent
+          .isInstanceOrStaticMemberNamespace(any(ClassLikeDeclaration p | p.hasModifier("protocol")))
+    |
+      // Remove generated constructors when there are inherited constructors available
+      // Note: If the base class only has private constructors, this class must have an
+      // explicit constructor, in which case there is no generated constructor to begin
+      // with
+      member instanceof GeneratedConstructor and
+      n.getOwnMember(_).isMember(member) and
+      parent.getMemberFull(_, _).isMember(any(ConstructorDeclaration inherited))
+      or
+      // Remove inherited designated constructors (generated or not) when there are
+      // explicit designated constructors available
+      // Note: We always inherit convenience constructors, even though it may not actually
+      // be the case in Swift; this should be OK, since there can then not exist any calls
+      // that target those constructors
+      parent.getMemberFull(_, _).isMember(member.(DesignatedConstructor)) and
+      exists(DesignatedConstructor designated |
+        n.getOwnMember(_).isMember(designated) and
+        not designated instanceof GeneratedConstructor
+      )
+    )
+  }
+
+  override string getShadowingKey(Member m) {
+    not m instanceof Callable and result = ""
+    or
+    not m instanceof GeneratedConstructor and
+    result =
+      concat(int i, Parameter p |
+        p = m.(Callable).getParameter(i)
+      |
+        p.getExternalNameNode().getValue(), "," order by i
+      )
+  }
+
+  override string getImplicitReceiverParameterName(Callable callable) {
+    // TODO: field initializers can also reference 'self' but are not currently wrapped in a Callable
+    callable = any(ClassLikeDeclaration cls).getAMember() and
+    result = "self"
+  }
+
+  bindingset[cls]
+  override string getStaticSelfName(ClassLikeDeclaration cls) { exists(cls) and result = "Self" }
+}
+
+/** Holds if `node` is in a context where a bare name node should be seen as a reference rather than a declaration. */
+private predicate isUnboundPattern(Expr node) {
+  // 'case/catch/guard' start an unbound-pattern context, 'let/var' terminate it
+  (
+    node = any(SwitchCase c).getPattern()
+    or
+    node = any(CatchClause c).getPattern()
+    or
+    node = any(PatternGuardExpr c).getPattern()
+    or
+    isUnboundPattern(node.(Expr).getEnclosingExpr())
+  ) and
+  not node.(ExprPattern).hasModifier(["let", "var"])
 }
 
 private predicate predefinedSourceFolders(string folder, int ordering) {
@@ -63,7 +144,7 @@ class SwiftPackageTarget extends ModuleScopeRepr, CallExpr {
 
   SwiftPackageTarget() {
     this.getFile().getBaseName() = "Package.swift" and
-    this.getCallee().(MemberAccessExpr).getMember().getValue() = targetKind and
+    this.getCallee().(MemberAccessExpr).getMemberName() = targetKind and
     targetKind =
       [
         "target", "executableTarget", "testTarget", "systemLibrary", "binaryTarget", "plugin",

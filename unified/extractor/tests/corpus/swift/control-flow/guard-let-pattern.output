@@ -1,0 +1,86 @@
+guard let (call, thread) = optional else {
+  return
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        guardStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      returnKeyword: return
+          conditions:
+            conditionElement
+              condition:
+                optionalBindingCondition
+                  initializer:
+                    initializerClause
+                      equal: =
+                      value:
+                        declReferenceExpr
+                          baseName: identifier "optional"
+                  pattern:
+                    expressionPattern
+                      expression:
+                        tupleExpr
+                          leftParen: (
+                          rightParen: )
+                          elements:
+                            labeledExpr
+                              expression:
+                                patternExpr
+                                  pattern:
+                                    identifierPattern
+                                      identifier: identifier "call"
+                              trailingComma: ,
+                            labeledExpr
+                              expression:
+                                patternExpr
+                                  pattern:
+                                    identifierPattern
+                                      identifier: identifier "thread"
+                  bindingSpecifier: let
+          elseKeyword: else
+          guardKeyword: guard
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        guard_if_stmt source="guard ⟨condition⟩ else ⟨else⟩"
+          condition:
+            pattern_guard_expr source="⟨pattern⟩ = ⟨value⟩"
+              pattern:
+                call_expr source="⟨argument⟩"
+                  callee:
+                    member_access_expr source=""
+                      base: identifier "Optional" source=""
+                      member_name_node: identifier "some" source=""
+                  argument:
+                    argument source="⟨value⟩"
+                      value:
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr:
+                            tuple_expr source="(⟨element⟩, ⟨element⟩)"
+                              element:
+                                argument source="⟨value⟩"
+                                  value: identifier "call" source="call"
+                                argument source="⟨value⟩"
+                                  value: identifier "thread" source="thread"
+              value: identifier "optional" source="optional"
+          else:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt: return_expr "return" source="return"

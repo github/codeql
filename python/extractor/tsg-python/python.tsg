@@ -2825,9 +2825,13 @@
     var left_node = #null
     if some @prefix_op {
         set left_node = (ast-node @left "UnaryOp")
-        attr (left_node) _start_location = (location-start @prefix_op)
+        attr (left_node) _location_start = (location-start @prefix_op)
         attr (left_node) operand = @left.node
-        attr (left_node) op = "usub"
+        if (eq (source-text @prefix_op) "+") {
+            attr (left_node) op = "uadd"
+        } else {
+            attr (left_node) op = "usub"
+        }
     } else {
         set left_node = @left.node
     }

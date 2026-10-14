@@ -7,6 +7,7 @@ module;
 private import unified
 private import codeql.controlflow.ControlFlowGraph
 private import codeql.controlflow.SuccessorType
+private import ControlFlowGraphPlugin
 
 private module Cfg0 = Make0<Location, Ast>;
 
@@ -16,16 +17,23 @@ private module Cfg2 = Make2<Input>;
 
 private import Cfg0
 private import Cfg1
-private import Cfg2
-import Public
+import Cfg2
 
 /** Provides an implementation of the AST signature for Unified. */
-private module Ast implements AstSig<Location> {
+module Ast implements AstSig<Location> {
   private import unified as U
 
   class AstNode = U::AstNode;
 
-  private predicate skipControlFlow(AstNode e) { e instanceof Modifier or e instanceof Identifier }
+  private predicate skipControlFlow(AstNode e) {
+    e instanceof Modifier
+    or
+    e instanceof Identifier and not e instanceof IdentifierExpr
+    or
+    e instanceof Operator
+    or
+    not e.fromSource()
+  }
 
   AstNode getChild(AstNode n, int index) {
     result.getParent() = n and
@@ -33,25 +41,26 @@ private module Ast implements AstSig<Location> {
     not n instanceof Callable and
     not skipControlFlow(n) and
     not skipControlFlow(result)
+    or
+    n.(FunctionExpr).getCaptureDeclaration(index) = result
   }
 
-  Callable getEnclosingCallable(AstNode node) {
-    exists(AstNode parent | parent = node.getParent() |
-      result = parent
-      or
-      not parent instanceof Callable and
-      result = getEnclosingCallable(parent)
-    )
-  }
+  Callable getEnclosingCallable(AstNode node) { result = node.getEnclosingCallable() }
 
-  class Callable = U::Callable;
+  class Callable extends U::Callable {
+    Callable() { this.fromSource() }
+  }
 
   AstNode callableGetBody(Callable c) { result = c.getBody() }
 
   class Parameter extends U::Parameter {
     Expr getDefaultValue() { result = super.getDefault() }
 
-    AstNode getPattern() { result = super.getPattern() }
+    AstNode getPattern() {
+      result = super.getPattern()
+      or
+      not exists(super.getPattern()) and result = this
+    }
   }
 
   Parameter callableGetParameter(Callable c, int index) {
@@ -73,14 +82,12 @@ private module Ast implements AstSig<Location> {
     Expr getExpr() { none() }
   }
 
-  class IfStmt extends Stmt {
-    IfStmt() { none() }
-
-    Expr getCondition() { none() }
+  class IfStmt extends Stmt instanceof U::GuardIfStmt {
+    Expr getCondition() { result = super.getCondition() }
 
     Stmt getThen() { none() }
 
-    Stmt getElse() { none() }
+    Stmt getElse() { result = super.getElse() }
   }
 
   abstract class LoopStmt extends Stmt {
@@ -120,7 +127,6 @@ private module Ast implements AstSig<Location> {
 
     // TODO support foreach guard
     //
-    // TODO: Expr != Pattern
     Expr getVariable() { result = super.getPattern() }
 
     Expr getCollection() { result = super.getIterable() }
@@ -129,6 +135,8 @@ private module Ast implements AstSig<Location> {
   class BreakStmt = U::BreakExpr;
 
   class ContinueStmt = U::ContinueExpr;
+
+  class LabeledStmt = U::LabeledStmt;
 
   class GotoStmt extends Stmt {
     GotoStmt() { none() }
@@ -199,20 +207,23 @@ private module Ast implements AstSig<Location> {
 
   class LogicalNotExpr = U::LogicalNotExpr;
 
-  // TODO
-  class Assignment extends BinaryExpr {
-    Assignment() { none() }
+  class Assignment extends BinaryExpr, U::Assignment { }
+
+  class AssignExpr extends Assignment, U::AssignExpr { }
+
+  class CompoundAssignment extends Assignment, U::CompoundAssignExpr { }
+
+  class AssignLogicalAndExpr extends CompoundAssignment {
+    AssignLogicalAndExpr() { this.getOperator().getValue() = "&&=" }
   }
 
-  class AssignExpr extends Assignment { }
+  class AssignLogicalOrExpr extends CompoundAssignment {
+    AssignLogicalOrExpr() { this.getOperator().getValue() = "||=" }
+  }
 
-  class CompoundAssignment extends Assignment { }
-
-  class AssignLogicalAndExpr extends CompoundAssignment { }
-
-  class AssignLogicalOrExpr extends CompoundAssignment { }
-
-  class AssignNullCoalescingExpr extends CompoundAssignment { }
+  class AssignNullCoalescingExpr extends CompoundAssignment {
+    AssignNullCoalescingExpr() { this.getOperator().getValue() = "??=" }
+  }
 
   class BooleanLiteral extends U::BooleanLiteral {
     boolean getValue() { result.toString() = super.getValue() }
@@ -225,6 +236,8 @@ private module Ast implements AstSig<Location> {
   }
 }
 
+private predicate mayThrow(AstNode ast) { any(ControlFlowGraphPlugin p).mayThrow(ast) }
+
 private module Input implements InputSig1, InputSig2 {
   private import codeql.util.Void
 
@@ -232,27 +245,20 @@ private module Input implements InputSig1, InputSig2 {
 
   class Label extends string {
     Label() {
-      any(LabeledStmt l).getLabel().getValue() = this or
-      any(BreakExpr b).getLabel().getValue() = this or
-      any(ContinueExpr c).getLabel().getValue() = this
+      any(LabeledStmt l).getLabelName() = this or
+      any(BreakExpr b).getLabelName() = this or
+      any(ContinueExpr c).getLabelName() = this
     }
 
     string toString() { result = this }
   }
 
-  private Label getLabelOfStmt(Stmt s) {
-    exists(LabeledStmt l | s = l.getStmt() |
-      result = l.getLabel().getValue() or
-      result = getLabelOfStmt(l)
-    )
-  }
-
   predicate hasLabel(Ast::AstNode n, Label l) {
-    l = getLabelOfStmt(n)
+    l = n.(LabeledStmt).getLabelName()
     or
-    l = n.(BreakExpr).getLabel().getValue()
+    l = n.(BreakExpr).getLabelName()
     or
-    l = n.(ContinueExpr).getLabel().getValue()
+    l = n.(ContinueExpr).getLabelName()
   }
 
   class CallableContext = Void;
@@ -260,7 +266,10 @@ private module Input implements InputSig1, InputSig2 {
   predicate beginAbruptCompletion(
     AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
   ) {
-    none()
+    mayThrow(ast) and
+    n.isIn(ast) and
+    c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+    always = false
   }
 
   predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c) { none() }

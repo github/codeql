@@ -29,6 +29,8 @@ module Generated {
   class ArrayTypeRepr extends Synth::TArrayTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "ArrayTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the const argument of this array type representation, if it exists.
      */

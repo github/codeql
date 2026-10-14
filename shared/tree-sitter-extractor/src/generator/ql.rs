@@ -50,7 +50,7 @@ impl fmt::Display for Import<'_> {
         if self.is_private {
             write!(f, "private ")?;
         }
-        write!(f, "import {}", &self.module)?;
+        write!(f, "import {}", self.module)?;
         if let Some(name) = &self.alias {
             write!(f, " as {name}")?;
         }
@@ -82,13 +82,13 @@ impl fmt::Display for Class<'_> {
             write!(f, "private ")?;
         }
         if let Some(alias) = &self.alias {
-            write!(f, "class {} = {alias};", &self.name)?;
+            write!(f, "class {} = {alias};", self.name)?;
             return Ok(());
         }
         if self.is_abstract {
             write!(f, "abstract ")?;
         }
-        write!(f, "class {} extends ", &self.name)?;
+        write!(f, "class {} extends ", self.name)?;
         for (index, supertype) in self.supertypes.iter().enumerate() {
             if index > 0 {
                 write!(f, ", ")?;
@@ -109,7 +109,7 @@ impl fmt::Display for Class<'_> {
                     is_final: false,
                     return_type: None,
                     formal_parameters: vec![],
-                    body: Some(charpred.clone()),
+                    body: charpred.clone(),
                     overlay: None,
                 }
             )?;
@@ -307,9 +307,7 @@ pub struct Predicate<'a> {
     pub is_final: bool,
     pub return_type: Option<Type<'a>>,
     pub formal_parameters: Vec<FormalParameter<'a>>,
-    /// The body of the predicate, or `None` if this is an `abstract`
-    /// predicate declaration with no body.
-    pub body: Option<Expression<'a>>,
+    pub body: Expression<'a>,
     pub overlay: Option<OverlayAnnotation>,
 }
 
@@ -332,9 +330,6 @@ impl fmt::Display for Predicate<'_> {
         if self.is_final {
             write!(f, "final ")?;
         }
-        if self.body.is_none() {
-            write!(f, "abstract ")?;
-        }
         if self.overridden {
             write!(f, "override ")?;
         }
@@ -349,10 +344,7 @@ impl fmt::Display for Predicate<'_> {
             }
             write!(f, "{param}")?;
         }
-        match &self.body {
-            Some(body) => write!(f, ") {{ {body} }}")?,
-            None => write!(f, ");")?,
-        }
+        write!(f, ") {{ {} }}", self.body)?;
 
         Ok(())
     }
@@ -373,7 +365,7 @@ impl fmt::Display for FormalParameter<'_> {
 /// Generates a QL library by writing the given `elements` to the `file`.
 pub fn write(file: &mut dyn std::io::Write, elements: &[TopLevel]) -> std::io::Result<()> {
     for element in elements {
-        write!(file, "{}\n\n", &element)?;
+        write!(file, "{}\n\n", element)?;
     }
     Ok(())
 }

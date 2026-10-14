@@ -23,12 +23,16 @@ query predicate getAssocItemList(Trait x, AssocItemList getAssocItemList) {
   toBeTested(x) and not x.isUnknown() and getAssocItemList = x.getAssocItemList()
 }
 
-query predicate getAttr(Trait x, int index, Attr getAttr) {
+query predicate getAttr(Trait x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 
 query predicate getGenericParamList(Trait x, GenericParamList getGenericParamList) {
   toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getImplRestriction(Trait x, ImplRestriction getImplRestriction) {
+  toBeTested(x) and not x.isUnknown() and getImplRestriction = x.getImplRestriction()
 }
 
 query predicate getName(Trait x, Name getName) {

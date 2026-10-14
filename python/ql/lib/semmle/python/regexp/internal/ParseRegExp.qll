@@ -44,7 +44,7 @@ private module FindRegexMode {
     or
     name = "search" and result = 2
     or
-    name = "match" and result = 2
+    name in ["match", "prefixmatch"] and result = 2
     or
     name = "split" and result = 3
     or
