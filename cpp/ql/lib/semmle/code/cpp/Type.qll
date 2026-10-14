@@ -398,6 +398,8 @@ private predicate isIntegralType(@builtintype type, int kind) {
     kind = 44
     or
     kind = 51
+    or
+    67 <= kind and kind <= 69
   )
 }
 
@@ -484,6 +486,12 @@ private predicate integralTypeMapping(int original, int canonical, int unsigned,
   original = 44 and canonical = 44 and unsigned = -1 and signed = -1 // char32_t
   or
   original = 51 and canonical = 51 and unsigned = -1 and signed = -1 // char8_t
+  or
+  original = 67 and canonical = 67 and unsigned = 68 and signed = 69 // _BitInt(N)
+  or
+  original = 68 and canonical = 68 and unsigned = 68 and signed = 69 // unsigned _BitInt(N)
+  or
+  original = 69 and canonical = 67 and unsigned = 68 and signed = 69 // signed _BitInt(N)
 }
 
 /**
@@ -517,7 +525,8 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
     builtintypes(underlyingElement(this), _, 13, _, _, _) or
     builtintypes(underlyingElement(this), _, 16, _, _, _) or
     builtintypes(underlyingElement(this), _, 19, _, _, _) or
-    builtintypes(underlyingElement(this), _, 37, _, _, _)
+    builtintypes(underlyingElement(this), _, 37, _, _, _) or
+    builtintypes(underlyingElement(this), _, 69, _, _, _)
   }
 
   /** Holds if this integral type is explicitly unsigned. */
@@ -527,7 +536,8 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
     builtintypes(underlyingElement(this), _, 12, _, _, _) or
     builtintypes(underlyingElement(this), _, 15, _, _, _) or
     builtintypes(underlyingElement(this), _, 18, _, _, _) or
-    builtintypes(underlyingElement(this), _, 36, _, _, _)
+    builtintypes(underlyingElement(this), _, 36, _, _, _) or
+    builtintypes(underlyingElement(this), _, 68, _, _, _)
   }
 
   /** Holds if this integral type is implicitly signed. */
@@ -537,7 +547,8 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
     builtintypes(underlyingElement(this), _, 11, _, -1, _) or
     builtintypes(underlyingElement(this), _, 14, _, -1, _) or
     builtintypes(underlyingElement(this), _, 17, _, -1, _) or
-    builtintypes(underlyingElement(this), _, 35, _, -1, _)
+    builtintypes(underlyingElement(this), _, 35, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 67, _, -1, _)
   }
 
   /**
@@ -547,7 +558,14 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
   IntegralType getUnsigned() {
     exists(int unsignedKind |
       integralTypeMapping(kind, _, unsignedKind, _) and
-      builtintypes(unresolveElement(result), _, unsignedKind, _, _, _)
+      builtintypes(unresolveElement(result), _, unsignedKind, _, _, _) and
+      (
+        not kind in [67, 68, 69]
+        or
+        exists(int bitWidth | bit_precise_int_types(underlyingElement(this), bitWidth) |
+          bit_precise_int_types(unresolveElement(result), bitWidth)
+        )
+      )
     )
   }
 
@@ -562,7 +580,14 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
   IntegralType getCanonicalArithmeticType() {
     exists(int canonicalKind |
       integralTypeMapping(kind, canonicalKind, _, _) and
-      builtintypes(unresolveElement(result), _, canonicalKind, _, _, _)
+      builtintypes(unresolveElement(result), _, canonicalKind, _, _, _) and
+      (
+        not kind in [67, 68, 69]
+        or
+        exists(int bitWidth | bit_precise_int_types(underlyingElement(this), bitWidth) |
+          bit_precise_int_types(unresolveElement(result), bitWidth)
+        )
+      )
     )
   }
 }
@@ -1043,6 +1068,18 @@ class Char32Type extends IntegralType {
   Char32Type() { builtintypes(underlyingElement(this), _, 44, _, _, _) }
 
   override string getAPrimaryQlClass() { result = "Char32Type" }
+}
+
+/**
+ * A C23 bit-precise integer type `_BitInt(N)`.
+ */
+class BitPreciseIntType extends IntegralType {
+  BitPreciseIntType() { builtintypes(underlyingElement(this), _, [67, 68, 69], _, _, _) }
+
+  /** Get the bit-with of the bit-precise integer. */
+  int getBitWidth() { bit_precise_int_types(underlyingElement(this), result) }
+
+  override string getAPrimaryQlClass() { result = "BitPreciseIntType" }
 }
 
 /**
