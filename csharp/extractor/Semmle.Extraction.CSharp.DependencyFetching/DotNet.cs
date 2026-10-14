@@ -280,9 +280,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     getInstall = version =>
                     {
                         var psCommand = $"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version {version} -InstallDir {path}";
+                        var environment = new Dictionary<string, string>
+                        {
+                            // Starting with .NET 11, the installation script uses tar by default. However,
+                            // tar extraction fails in dotnet-install.ps1, so force the script to download
+                            // and extract the ZIP archive instead. This workaround may be removable in the future.
+                            {"DOTNET_INSTALL_SKIP_TAR", "1"}
+                        };
 
                         BuildScript GetInstall(string pwsh) =>
-                            new CommandBuilder(actions).
+                            new CommandBuilder(actions, environment: environment).
                             RunCommand(pwsh).
                             Argument("-NoProfile").
                             Argument("-ExecutionPolicy").

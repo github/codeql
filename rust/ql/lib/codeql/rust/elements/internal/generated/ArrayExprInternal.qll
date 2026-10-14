@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -22,12 +22,14 @@ module Generated {
   class ArrayExprInternal extends Synth::TArrayExprInternal, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "ArrayExprInternal" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this array expression internal (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertArrayExprInternalToRaw(this)
+        Synth::convertAnyAttrFromRaw(Synth::convertArrayExprInternalToRaw(this)
               .(Raw::ArrayExprInternal)
               .getAttr(index))
     }
@@ -35,7 +37,7 @@ module Generated {
     /**
      * Gets any of the attrs of this array expression internal.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this array expression internal.

@@ -23,7 +23,7 @@ query predicate getAssocItemList(Trait x, AssocItemList getAssocItemList) {
   toBeTested(x) and not x.isUnknown() and getAssocItemList = x.getAssocItemList()
 }
 
-query predicate getAttr(Trait x, int index, Attr getAttr) {
+query predicate getAttr(Trait x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

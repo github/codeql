@@ -104,7 +104,7 @@ main.rs:
 #-----| Crate(proc_macro@0.0.0)
 #-----| core -> Crate(core@0.0.0)
 #-----| std -> Crate(std@0.0.0)
-#-----| rustc_literal_escaper -> Crate(rustc_literal_escaper@0.0.7)
+#-----| rustc_literal_escaper -> Crate(rustc_literal_escaper@0.0.8)
 
 #-----| Crate(rand@0.9.2)
 #-----| rand_core -> Crate(rand_core@0.9.3)
@@ -117,7 +117,7 @@ main.rs:
 #-----| Crate(rustc_demangle@0.1.27)
 #-----| core -> Crate(core@0.0.0)
 
-#-----| Crate(rustc_literal_escaper@0.0.7)
+#-----| Crate(rustc_literal_escaper@0.0.8)
 #-----| core -> Crate(core@0.0.0)
 
 #-----| Crate(std@0.0.0)

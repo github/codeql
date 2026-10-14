@@ -25,7 +25,7 @@ query predicate getLabel(BlockExpr x, Label getLabel) {
   toBeTested(x) and not x.isUnknown() and getLabel = x.getLabel()
 }
 
-query predicate getAttr(BlockExpr x, int index, Attr getAttr) {
+query predicate getAttr(BlockExpr x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

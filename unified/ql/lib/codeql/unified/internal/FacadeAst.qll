@@ -4,7 +4,9 @@
 overlay[local?]
 module;
 
+private import AstPlugin
 private import codeql.files.FileSystem
+private import codeql.unified.internal.NameBinding as NameBinding
 
 module Unified {
   private import Ast::Unified as G
@@ -14,6 +16,18 @@ module Unified {
   class AstNode extends G::AstNode {
     /** Gets the file containing this AST node. */
     File getFile() { result = this.getLocation().getFile() }
+
+    private predicate isGenerated() {
+      this.hasModifier("generated")
+      or
+      this.getParent().isGenerated()
+    }
+
+    /** Holds if this AST node comes from ordinary source code. */
+    predicate fromSource() {
+      this.getFile().fromSource() and
+      not this.isGenerated()
+    }
 
     /** Holds if this AST node has a modifier with the given text. */
     predicate hasModifier(string text) {
@@ -114,6 +128,19 @@ module Unified {
   class Argument extends G::Argument {
     /** Gets the name of this argument. */
     string getName() { result = this.getNameNode().getValue() }
+
+    /** Holds if this is a positional argument. */
+    predicate isPositional() { not exists(this.getName()) }
+
+    /** Gets the 0-based index of this argument among the positional arguments in the surrounding call or tuple. */
+    int getPositionalIndex() {
+      this =
+        rank[result + 1](Argument a |
+          a.getParent() = this.getParent() and a.isPositional()
+        |
+          a order by a.getParentIndex()
+        )
+    }
   }
 
   class AssociatedTypeDeclaration extends G::AssociatedTypeDeclaration {
@@ -126,14 +153,86 @@ module Unified {
     string getLabelName() { result = this.getLabelNameNode().getValue() }
   }
 
+  class Member extends G::Member {
+    /** Gets the unqualified name of this member or a fallback name such as `(anonymous function)` if it has no explicit name. */
+    string getNameOrFallback() {
+      result = this.getNameNode().getValue()
+      or
+      not exists(this.getNameNode()) and
+      (
+        this instanceof ConstructorDeclaration and
+        result = "(constructor)"
+        or
+        this instanceof DestructorDeclaration and
+        result = "(destructor)"
+        or
+        this instanceof FunctionDeclaration and
+        result = "(anonymous function)"
+        or
+        this instanceof VariableDeclaration and
+        result = "(pattern assignment)" // this case is only reachable when the target is a destructuring pattern
+        or
+        this instanceof InitializerDeclaration and
+        result = "(initializer block)"
+        or
+        exists(ClassLikeDeclaration cls | this = cls |
+          result = NameBinding::getIdentifierFromRef(cls.getExtensionTarget()).getValue()
+          or
+          not exists(cls.getExtensionTarget()) and
+          result = "(anonymous class)"
+        )
+        or
+        this instanceof TypeAliasDeclaration and
+        result = "(anonymous type alias)"
+        or
+        this instanceof AssociatedTypeDeclaration and
+        result = "(anonymous associated type)"
+        or
+        this instanceof UnsupportedNode and
+        result = "(unsupported node)"
+        or
+        this instanceof UnhandledNode and
+        result = "(unhandled node)"
+      )
+    }
+
+    /**
+     * Gets the name of this member qualified by the short names of each immediately-enclosing class.
+     */
+    string getQualifiedName() {
+      exists(ClassLikeDeclaration cls |
+        this = cls.getAMember() and
+        result = cls.getQualifiedName() + "." + this.getNameOrFallback()
+      )
+      or
+      not this = any(ClassLikeDeclaration cls).getAMember() and
+      result = this.getNameOrFallback()
+    }
+  }
+
   class ClassLikeDeclaration extends G::ClassLikeDeclaration {
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
+
+    /** Gets a direct base class of this class. */
+    ClassLikeDeclaration getABaseClass() {
+      result.getNameNode() =
+        NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
+    }
+
+    override string toString() {
+      result = concat(getClassLikeDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
+    }
   }
 
   class ConstructorDeclaration extends G::ConstructorDeclaration {
     /** Gets the name of this constructor. */
     string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result =
+        concat(getConstructorDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
+    }
   }
 
   class ContinueExpr extends G::ContinueExpr {
@@ -144,6 +243,22 @@ module Unified {
   class FunctionDeclaration extends G::FunctionDeclaration {
     /** Gets the name of this function. */
     string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result = concat(getFunctionDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
+    }
+  }
+
+  class VariableDeclaration extends G::VariableDeclaration {
+    /** Gets the name node of this variable declaration, if any. */
+    override Identifier getNameNode() { result = this.getPattern() }
+
+    /** Gets the name of the variable being declared, if any. */
+    string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result = concat(getVariableDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
+    }
   }
 
   class LabeledStmt extends G::LabeledStmt {
@@ -152,6 +267,8 @@ module Unified {
   }
 
   class MemberAccessExpr extends G::MemberAccessExpr {
+    override string toString() { result = "... ." + this.getMemberName() }
+
     /** Gets the member name of this access. */
     string getMemberName() { result = this.getMemberNameNode().getValue() }
   }
@@ -167,8 +284,34 @@ module Unified {
   }
 
   class Parameter extends G::Parameter {
-    /** Gets the external name of this parameter. */
-    string getExternalName() { result = this.getExternalNameNode().getValue() }
+    /**
+     * Gets the external name of this parameter.
+     *
+     * Has no result for pseudo-names like `_` that indicate that this is actually a positional parameter.
+     */
+    string getExternalName() { result = this.getExternalNameNode().getValue() and not result = "_" }
+
+    /** Gets the callable on which this parameter appears. */
+    Callable getDeclaringCallable() { result = this.getParent() }
+
+    /** Holds if this is a positional parameter. */
+    predicate isPositional() { not exists(this.getExternalName()) }
+
+    /** Gets the 0-based index of this parameter among the positional parameters of the declaring callable. */
+    int getPositionalIndex() {
+      this =
+        rank[result + 1](Parameter p |
+          p.getDeclaringCallable() = this.getDeclaringCallable() and p.isPositional()
+        |
+          p order by p.getParentIndex()
+        )
+    }
+  }
+
+  /** A tuple expression. */
+  class TupleExpr extends G::TupleExpr {
+    /** Gets the number of elements in this tuple expression. */
+    int getNumberOfElements() { result = count(this.getAnElement()) }
   }
 
   class TypeAliasDeclaration extends G::TypeAliasDeclaration {
@@ -183,12 +326,34 @@ module Unified {
 
   /** A binary expression. */
   class BinaryExpr extends G::BinaryExpr {
+    override string toString() { result = "... " + this.getOperator().getValue() + " ..." }
+
     /** Gets an operand of this binary expression. */
     Expr getAnOperand() { result = [this.getLeft(), this.getRight()] }
   }
 
+  /** A unary expression. */
+  class UnaryExpr extends G::UnaryExpr {
+    override string toString() {
+      result = this.getOperator().(PrefixOperator).getValue() + " ..." or
+      result = "... " + this.getOperator().(PostfixOperator).getValue()
+    }
+  }
+
   /** A function call */
   class CallExpr extends G::CallExpr {
+    override string toString() {
+      exists(Expr callee | callee = this.getCallee() |
+        result = callee.(Token).getValue() + "(...)"
+        or
+        result = "... ." + callee.(MemberAccessExpr).getMemberName() + "(...)"
+        or
+        not callee instanceof Token and
+        not callee instanceof MemberAccessExpr and
+        result = "...(...)"
+      )
+    }
+
     /** Gets the named argument with the given `name`. */
     Expr getNamedArgument(string name) {
       exists(Argument arg |
@@ -200,5 +365,21 @@ module Unified {
 
     /** Gets the number of arguments passed to this call, not counting implicit arguments like receiver. */
     int getNumberOfArguments() { result = count(this.getAnArgument()) }
+
+    /** Gets the number of positional arguments passed to this call. */
+    int getNumberOfPositionalArguments() {
+      result = count(Argument arg | arg = this.getAnArgument() and arg.isPositional())
+    }
+  }
+
+  /** A function expression. */
+  class FunctionExpr extends G::FunctionExpr {
+    /** Gets the number of parameters of this function. */
+    int getNumberOfParameters() { result = count(this.getAParameter()) }
+  }
+
+  class ArrayLiteral extends G::ArrayLiteral {
+    /** Gets the number of elements in this array literal. */
+    int getNumberOfElements() { result = count(this.getAnElement()) }
   }
 }

@@ -17,9 +17,9 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩\n⟨stmt⟩"
       stmt:
-        boolean_literal "true"
-        boolean_literal "false"
+        boolean_literal "true" source="true"
+        boolean_literal "false" source="false"

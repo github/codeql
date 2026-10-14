@@ -1,0 +1,8 @@
+| fasthttp.go:165:3:165:45 | extract:0 ... := ... | Unexpected result: RemoteFlowSource="extract:0 ... := ..." |
+| fasthttp.go:165:53:165:89 | comment | Missing result: RemoteFlowSource="... := ...[0]" |
+| fasthttp.go:166:3:166:46 | extract:0 ... := ... | Unexpected result: RemoteFlowSource="extract:0 ... := ..." |
+| fasthttp.go:166:53:166:89 | comment | Missing result: RemoteFlowSource="... := ...[0]" |
+| fasthttp.go:167:3:167:47 | extract:0 ... := ... | Unexpected result: RemoteFlowSource="extract:0 ... := ..." |
+| fasthttp.go:167:53:167:89 | comment | Missing result: RemoteFlowSource="... := ...[0]" |
+| fasthttp.go:168:3:168:51 | extract:0 ... := ... | Unexpected result: RemoteFlowSource="extract:0 ... := ..." |
+| fasthttp.go:168:53:168:89 | comment | Missing result: RemoteFlowSource="... := ...[0]" |

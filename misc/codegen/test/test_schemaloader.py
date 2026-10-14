@@ -382,6 +382,29 @@ def test_class_with_pragmas():
     }
 
 
+def test_inherited_to_string_impl_from_primary_class_pragma():
+    @load
+    class data:
+        @defs.ql.to_string_impl_from_primary_class(True)
+        class A:
+            pass
+
+        class B(A):
+            pass
+
+        @defs.ql.to_string_impl_from_primary_class(False)
+        class C(B):
+            pass
+
+        class D(C):
+            pass
+
+    assert data.classes["A"].pragmas["ql_to_string_impl_from_primary_class"] is True
+    assert data.classes["B"].pragmas["ql_to_string_impl_from_primary_class"] is True
+    assert data.classes["C"].pragmas["ql_to_string_impl_from_primary_class"] is False
+    assert data.classes["D"].pragmas["ql_to_string_impl_from_primary_class"] is False
+
+
 def test_synth_from_class():
     @load
     class data:

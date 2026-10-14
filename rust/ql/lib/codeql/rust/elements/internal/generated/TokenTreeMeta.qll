@@ -22,6 +22,8 @@ module Generated {
   class TokenTreeMeta extends Synth::TTokenTreeMeta, MetaImpl::Meta {
     override string getAPrimaryQlClass() { result = "TokenTreeMeta" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the path of this token tree meta, if it exists.
      */

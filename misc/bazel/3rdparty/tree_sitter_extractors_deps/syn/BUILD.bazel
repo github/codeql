@@ -10,6 +10,6 @@ package(default_visibility = ["//visibility:public"])
 
 alias(
     name = "syn",
-    actual = "@vendor_ts__syn-3.0.3//:syn",
+    actual = "@vendor_ts__syn-3.0.6//:syn",
     tags = ["manual"],
 )

@@ -29,6 +29,8 @@ module Generated {
   class ForTypeRepr extends Synth::TForTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "ForTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the for binder of this for type representation, if it exists.
      */

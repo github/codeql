@@ -109,7 +109,7 @@ impl fmt::Display for Class<'_> {
                     is_final: false,
                     return_type: None,
                     formal_parameters: vec![],
-                    body: Some(charpred.clone()),
+                    body: charpred.clone(),
                     overlay: None,
                 }
             )?;
@@ -307,9 +307,7 @@ pub struct Predicate<'a> {
     pub is_final: bool,
     pub return_type: Option<Type<'a>>,
     pub formal_parameters: Vec<FormalParameter<'a>>,
-    /// The body of the predicate, or `None` if this is an `abstract`
-    /// predicate declaration with no body.
-    pub body: Option<Expression<'a>>,
+    pub body: Expression<'a>,
     pub overlay: Option<OverlayAnnotation>,
 }
 
@@ -332,9 +330,6 @@ impl fmt::Display for Predicate<'_> {
         if self.is_final {
             write!(f, "final ")?;
         }
-        if self.body.is_none() {
-            write!(f, "abstract ")?;
-        }
         if self.overridden {
             write!(f, "override ")?;
         }
@@ -349,10 +344,7 @@ impl fmt::Display for Predicate<'_> {
             }
             write!(f, "{param}")?;
         }
-        match &self.body {
-            Some(body) => write!(f, ") {{ {body} }}")?,
-            None => write!(f, ");")?,
-        }
+        write!(f, ") {{ {} }}", self.body)?;
 
         Ok(())
     }

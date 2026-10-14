@@ -1,13 +1,16 @@
 /**
  * Provides classes for reasoning about static references to the members of classes and top-levels.
  */
+overlay[local?]
+module;
 
 private import unified
 private import codeql.unified.internal.LocalNameBinding
 private import codeql.unified.internal.NameBindingPlugin
 
+cached
 private newtype TNameBindingNode =
-  TIdentifier(Identifier n) or
+  TIdentifier(Identifier n) { CachedStage::ref() } or
   TBulkImport(BulkImportingPattern p) or
   TLocalName(LocalName local) or
   TStaticMemberNamespace(ClassLikeDeclaration cls) or
@@ -28,6 +31,8 @@ class NameBindingNode extends TNameBindingNode {
 
   Identifier asIdentifier() { this.isIdentifier(result) }
 
+  predicate isMember(Member m) { this.asIdentifier() = m.getNameNode() }
+
   predicate isBulkImport(BulkImportingPattern p) { this = TBulkImport(p) }
 
   predicate isLocalName(LocalName local) { this = TLocalName(local) }
@@ -38,6 +43,10 @@ class NameBindingNode extends TNameBindingNode {
   /** Holds if this represents the set of instance members available in the given class. */
   predicate isInstanceMemberNamespace(ClassLikeDeclaration cls) {
     this = TInstanceMemberNamespace(cls)
+  }
+
+  predicate isInstanceOrStaticMemberNamespace(ClassLikeDeclaration cls) {
+    this.isInstanceMemberNamespace(cls) or this.isStaticMemberNamespace(cls)
   }
 
   /** Holds if this represents the set of members that can be accessed unqualified within the given scope. */
@@ -121,6 +130,8 @@ class NameBindingNode extends TNameBindingNode {
 Identifier getIdentifierFromRef(AstNode n) {
   result = n.(PotentialLocalNameAccess)
   or
+  result = getIdentifierFromRef(n.(GenericTypeExpr).getBase())
+  or
   result = n.(MemberAccessExpr).getMemberNameNode()
 }
 
@@ -188,10 +199,13 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
     not isPrivateToLocalScope(nameDecl) and
     nameDecl.getDeclaration() = member and
     node1.isIdentifier(nameDecl) and
-    name = nameDecl.getName() and
-    if isInstanceMember(member)
-    then node2.isInstanceMemberNamespace(cls)
-    else node2.isStaticMemberNamespace(cls)
+    name = nameDecl.getName()
+  |
+    isInstanceMember(member) and
+    node2.isInstanceMemberNamespace(cls)
+    or
+    isStaticMember(member) and
+    node2.isStaticMemberNamespace(cls)
   )
   or
   exists(TopLevel top, Stmt stmt, NameBinding nameDecl |
@@ -306,6 +320,10 @@ signature module TrackInputSig {
   /** Holds if the forward-flow of `node` should be tracked. */
   predicate shouldTrack(NameBindingNode node);
 
+  default NameBindingNode getMember(NamespaceNode namespace, string name) {
+    result = namespace.getMember(name)
+  }
+
   default predicate additionalValueStep(NameBindingNode node1, NameBindingNode node2) { none() }
 }
 
@@ -321,6 +339,25 @@ module Track<TrackInputSig Input> {
     exists(NameBindingNode prev | prev = track(node) | valueStepEx(prev, result))
   }
 
+  pragma[nomagic]
+  private predicate derivedStoreReadStep0(
+    NamespaceNode namespace, string name, NameBindingNode node2
+  ) {
+    readStep(namespace.ref(), name, node2)
+  }
+
+  /**
+   * Holds if `node1 -> node2` is derived by combining a store and a read step, with zero or more value steps and inheritance steps in-between.
+   */
+  pragma[nomagic]
+  private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode node2) {
+    exists(NamespaceNode namespace, string name |
+      node1 = getMember(namespace, name) and // getMember() combines a store step with subsequent inheritance steps
+      derivedStoreReadStep0(namespace, name, node2) and
+      node1 != node2
+    )
+  }
+
   /** Holds if there is an effective value step `node1 -> node2`. */
   pragma[inline]
   private predicate valueStepEx(NameBindingNode node1, NameBindingNode node2) {
@@ -330,18 +367,6 @@ module Track<TrackInputSig Input> {
     or
     additionalValueStep(node1, node2)
   }
-}
-
-/**
- * Holds if `node1 -> node2` is derived by combining a store and a read step, with zero or more value steps and inheritance steps in-between.
- */
-pragma[nomagic]
-private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode node2) {
-  exists(NamespaceNode namespace, string name |
-    node1 = namespace.getMember(name) and // getMember() combines a store step with subsequent inheritance steps
-    readStep(namespace.ref(), name, node2) and
-    node1 != node2
-  )
 }
 
 /** Holds if the member represented by `node` can be inherited. */
@@ -355,10 +380,15 @@ private predicate isInheritableMemberNode(NameBindingNode node) {
 
 /** A name-binding node that can have members. */
 class NamespaceNode extends NameBindingNode {
+  cached
   NamespaceNode() {
-    storeStep(_, _, this) or
-    inheritanceStep(_, this) or
-    this.isInstanceMemberNamespace(_) or
+    CachedStage::ref() and
+    storeStep(_, _, this)
+    or
+    inheritanceStep(_, this)
+    or
+    this.isInstanceMemberNamespace(_)
+    or
     this.isStaticMemberNamespace(_)
   }
 
@@ -366,10 +396,13 @@ class NamespaceNode extends NameBindingNode {
   NameBindingNode ref() { result = TrackNamespace::track(this) }
 
   /** Gets an own (non-inherited) member of this namespace of the given name. */
-  NameBindingNode getOwnMember(string name) { storeStep(result, name, this) }
+  NameBindingNode getOwnMember(string name, ShadowingKeyOpt shadowingKey) {
+    storeStep(result, name, this) and
+    shadowingKey = getShadowingKey(result)
+  }
 
-  /** Holds if this namespace has an own-member of the given name */
-  predicate hasOwnMember(string name) { exists(this.getOwnMember(name)) }
+  /** Gets an own (non-inherited) member of this namespace of the given name. */
+  NameBindingNode getOwnMember(string name) { result = this.getOwnMember(name, _) }
 
   /** If this is the static namespace for a class, gets the corresponding instance namespace. */
   NamespaceNode toInstanceNamespace() {
@@ -407,21 +440,57 @@ class NamespaceNode extends NameBindingNode {
   /** Gets a namespace that directly inherits from this one. */
   NamespaceNode getAnInheritanceChild() { result.getAnInheritanceParent() = this }
 
-  /** Gets a member of this namespace of the given name. */
   pragma[nomagic]
-  NameBindingNode getMember(string name) {
-    result = this.getOwnMember(name)
+  private predicate hasOwnMemberWithShadowingKey(string name, string shadowingKey) {
+    exists(this.getOwnMember(name, any(ShadowingKeyOpt opt | opt.asSome() = shadowingKey)))
+  }
+
+  /**
+   * Gets a potential member of this namespace of the given name.
+   *
+   * Unlike `getMember`, this predicate does not filter away invalid members.
+   */
+  pragma[nomagic]
+  NameBindingNode getMemberFull(string name, ShadowingKeyOpt shadowingKey) {
+    result = this.getOwnMember(name) and
+    shadowingKey = getShadowingKey(result)
     or
-    not this.hasOwnMember(name) and
-    result = this.getAnInheritanceParent().getMember(name) and
+    not this.hasOwnMemberWithShadowingKey(name, shadowingKey.asSome()) and
+    result = this.getAnInheritanceParent().getMemberFull(name, shadowingKey) and
     isInheritableMemberNode(result)
     or
-    result = this.getAnExtension().getMember(name)
+    result = this.getAnExtension().getMemberFull(name, shadowingKey)
   }
+
+  private NameBindingNode getMember(string name, ShadowingKeyOpt shadowingKey) {
+    CachedStage::ref() and
+    not exists(Member m | result.isMember(m) | isInvalidMember(this, m)) and
+    (
+      result = this.getOwnMember(name) and
+      shadowingKey = getShadowingKey(result)
+      or
+      result = this.getAnExtension().getMember(name, shadowingKey)
+      or
+      exists(NamespaceNode parent |
+        parent = this.getAnInheritanceParent() and
+        not this.hasOwnMemberWithShadowingKey(name, shadowingKey.asSome()) and
+        result = parent.getMember(name, shadowingKey) and
+        isInheritableMemberNode(result)
+      )
+    )
+  }
+
+  /** Gets a member of this namespace of the given name. */
+  cached
+  NameBindingNode getMember(string name) { result = this.getMember(name, _) }
 }
 
 private module TrackNamespaceInput implements TrackInputSig {
   predicate shouldTrack(NameBindingNode node) { node instanceof NamespaceNode }
+
+  NameBindingNode getMember(NamespaceNode namespace, string name) {
+    result = namespace.getMemberFull(name, _)
+  }
 
   predicate additionalValueStep(NameBindingNode node1, NameBindingNode node2) {
     // Namespace-tracking goes through aliases, but declaration-tracking does not
@@ -466,7 +535,7 @@ private module TrackNameBindingInput implements TrackInputSig {
 private module TrackNameBinding = Track<TrackNameBindingInput>;
 
 /** Gets a name-binding node that may refer to the given declaration. */
-NameBindingNode trackNameBinding(NameBinding decl) {
+private NameBindingNode trackNameBinding(NameBinding decl) {
   exists(NameBindingNode start |
     start.isIdentifier(decl) and
     result = TrackNameBinding::track(start)
@@ -675,10 +744,12 @@ private int unqualifiedMemberAccessDepth(PotentialLocalNameAccess access) {
  * `accessingClass` is the enclosing class in which the member was found, and
  * `instanceAccess` indicates if it is an instance member or static member.
  */
+cached
 predicate unqualifiedMemberAccess(
   PotentialLocalNameAccess access, boolean instanceAccess, NameBinding target,
   ClassLikeDeclaration accessingClass
 ) {
+  CachedStage::ref() and
   unqualifiedMemberAccessCand(access, instanceAccess, target, accessingClass) and
   accessingClass.getDepth() = unqualifiedMemberAccessDepth(access)
 }
@@ -706,6 +777,7 @@ module Public {
     predicate isInstanceAccess() { instanceAccess = true }
 
     /** Gets the local variable implicitly referenced as the base of this access. */
+    cached
     LocalVariable getImplicitQualifierVariable() {
       ResolveImplicitReceiverAccess::access(this, result)
     }
@@ -715,14 +787,27 @@ module Public {
   }
 }
 
-/** Gets the declaration being accessed by `access`, as determined by static name binding. */
-NameBinding getStaticBindingTarget(Identifier access) {
+/** Gets the declaration being accessed by identifier `i`, as determined by static name binding. */
+cached
+NameBinding getStaticBindingTargetFromIdentifier(Identifier i) {
+  CachedStage::ref() and
   // For unqualified accesses, use the shadowing-aware lookup
-  result = access.(UnqualifiedMemberAccess).getTarget()
+  result = i.(UnqualifiedMemberAccess).getTarget()
   or
   // For others, just follow the name binding graph
-  not access instanceof UnqualifiedMemberAccess and
-  trackNameBinding(result).asIdentifier() = access
+  not i instanceof UnqualifiedMemberAccess and
+  trackNameBinding(result).asIdentifier() = i
+}
+
+/**
+ * Gets the declaration being accessed by `access`, as determined by static name binding.
+ *
+ * Unlike `getStaticBindingTargetFromIdentifier`, this works with any AST node that contains
+ * a reference to an identifier, for example `x.foo` and `foo<Int>` resolve to whatever the
+ * identifiers `foo` resolve to.
+ */
+NameBinding getStaticBindingTargetFromRef(AstNode access) {
+  result = getStaticBindingTargetFromIdentifier(getIdentifierFromRef(access))
 }
 
 /**
@@ -745,3 +830,26 @@ private predicate implicitReceiverAccess(AstNode access, string name) {
 
 private module ResolveImplicitReceiverAccess =
   LocalNameBindingOutput::ResolveAccesses<implicitReceiverAccess/2>;
+
+cached
+private module CachedStage {
+  /** Reference to the cached stage of this module. */
+  cached
+  predicate ref() { any() }
+
+  /** Reverse references to the predicates that reference `ref()`. */
+  cached
+  predicate revRef() {
+    any()
+    or
+    (exists(NameBindingNode n) implies any())
+    or
+    (exists(any(NamespaceNode n).getMember(_)) implies any())
+    or
+    (unqualifiedMemberAccess(_, _, _, _) implies any())
+    or
+    (exists(any(UnqualifiedMemberAccess u).getImplicitQualifierVariable()) implies any())
+    or
+    (exists(getStaticBindingTargetFromIdentifier(_)) implies any())
+  }
+}

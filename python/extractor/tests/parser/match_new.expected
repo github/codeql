@@ -1,4 +1,4 @@
-Module: [1, 0] - [43, 0]
+Module: [1, 0] - [61, 0]
   body: [
     Match: [1, 0] - [3, 19]
       subject:
@@ -85,7 +85,7 @@ Module: [1, 0] - [43, 0]
               literal:
                 BinOp: [8, 9] - [8, 18]
                   left:
-                    UnaryOp: [8, 10] - [8, 11]
+                    UnaryOp: [8, 9] - [8, 11]
                       op: USub
                       operand:
                         Num: [8, 10] - [8, 11]
@@ -104,7 +104,7 @@ Module: [1, 0] - [43, 0]
           pattern:
             MatchLiteralPattern: [10, 9] - [10, 11]
               literal:
-                UnaryOp: [10, 10] - [10, 11]
+                UnaryOp: [10, 9] - [10, 11]
                   op: USub
                   operand:
                     Num: [10, 10] - [10, 11]
@@ -131,7 +131,7 @@ Module: [1, 0] - [43, 0]
               literal:
                 BinOp: [14, 9] - [14, 16]
                   left:
-                    UnaryOp: [14, 10] - [14, 13]
+                    UnaryOp: [14, 9] - [14, 13]
                       op: USub
                       operand:
                         Num: [14, 10] - [14, 13]
@@ -377,6 +377,212 @@ Module: [1, 0] - [43, 0]
           guard: None
           body: [
             Pass: [42, 8] - [42, 12]
+          ]
+      ]
+    Match: [44, 0] - [60, 12]
+      subject:
+        Name: [44, 6] - [44, 11]
+          variable: Variable('value', None)
+          ctx: Load
+      cases: [
+        Case: [45, 4] - [46, 12]
+          pattern:
+            MatchLiteralPattern: [45, 9] - [45, 11]
+              literal:
+                UnaryOp: [45, 9] - [45, 11]
+                  op: UAdd
+                  operand:
+                    Num: [45, 10] - [45, 11]
+                      n: 1
+                      text: '1'
+          guard: None
+          body: [
+            Pass: [46, 8] - [46, 12]
+          ]
+        Case: [47, 4] - [48, 12]
+          pattern:
+            MatchLiteralPattern: [47, 9] - [47, 13]
+              literal:
+                UnaryOp: [47, 9] - [47, 13]
+                  op: UAdd
+                  operand:
+                    Num: [47, 10] - [47, 13]
+                      n: 1.5
+                      text: '1.5'
+          guard: None
+          body: [
+            Pass: [48, 8] - [48, 12]
+          ]
+        Case: [49, 4] - [50, 12]
+          pattern:
+            MatchLiteralPattern: [49, 9] - [49, 12]
+              literal:
+                UnaryOp: [49, 9] - [49, 12]
+                  op: UAdd
+                  operand:
+                    Num: [49, 10] - [49, 12]
+                      n: 2j
+                      text: '2j'
+          guard: None
+          body: [
+            Pass: [50, 8] - [50, 12]
+          ]
+        Case: [51, 4] - [52, 12]
+          pattern:
+            MatchLiteralPattern: [51, 9] - [51, 14]
+              literal:
+                BinOp: [51, 9] - [51, 14]
+                  left:
+                    UnaryOp: [51, 9] - [51, 11]
+                      op: UAdd
+                      operand:
+                        Num: [51, 10] - [51, 11]
+                          n: 1
+                          text: '1'
+                  op: Add
+                  right:
+                    Num: [51, 12] - [51, 14]
+                      n: 2j
+                      text: '2j'
+          guard: None
+          body: [
+            Pass: [52, 8] - [52, 12]
+          ]
+        Case: [53, 4] - [54, 12]
+          pattern:
+            MatchLiteralPattern: [53, 9] - [53, 14]
+              literal:
+                BinOp: [53, 9] - [53, 14]
+                  left:
+                    UnaryOp: [53, 9] - [53, 11]
+                      op: UAdd
+                      operand:
+                        Num: [53, 10] - [53, 11]
+                          n: 1
+                          text: '1'
+                  op: Sub
+                  right:
+                    Num: [53, 12] - [53, 14]
+                      n: 2j
+                      text: '2j'
+          guard: None
+          body: [
+            Pass: [54, 8] - [54, 12]
+          ]
+        Case: [55, 4] - [56, 12]
+          pattern:
+            MatchOrPattern: [55, 9] - [55, 30]
+              patterns: [
+                MatchLiteralPattern: [55, 9] - [55, 14]
+                  literal:
+                    UnaryOp: [55, 9] - [55, 14]
+                      op: UAdd
+                      operand:
+                        Num: [55, 10] - [55, 14]
+                          n: 16
+                          text: '0x10'
+                MatchLiteralPattern: [55, 17] - [55, 22]
+                  literal:
+                    UnaryOp: [55, 17] - [55, 22]
+                      op: UAdd
+                      operand:
+                        Num: [55, 18] - [55, 22]
+                          n: 8
+                          text: '0o10'
+                MatchLiteralPattern: [55, 25] - [55, 30]
+                  literal:
+                    UnaryOp: [55, 25] - [55, 30]
+                      op: UAdd
+                      operand:
+                        Num: [55, 26] - [55, 30]
+                          n: 2
+                          text: '0b10'
+              ]
+          guard: None
+          body: [
+            Pass: [56, 8] - [56, 12]
+          ]
+        Case: [57, 4] - [58, 12]
+          pattern:
+            MatchSequencePattern: [57, 9] - [57, 19]
+              patterns: [
+                MatchLiteralPattern: [57, 10] - [57, 12]
+                  literal:
+                    UnaryOp: [57, 10] - [57, 12]
+                      op: UAdd
+                      operand:
+                        Num: [57, 11] - [57, 12]
+                          n: 0
+                          text: '0'
+                MatchLiteralPattern: [57, 14] - [57, 18]
+                  literal:
+                    UnaryOp: [57, 14] - [57, 18]
+                      op: USub
+                      operand:
+                        Num: [57, 15] - [57, 18]
+                          n: 0.0
+                          text: '0.0'
+              ]
+          guard: None
+          body: [
+            Pass: [58, 8] - [58, 12]
+          ]
+        Case: [59, 4] - [60, 12]
+          pattern:
+            MatchMappingPattern: [59, 9] - [59, 33]
+              mappings: [
+                MatchKeyValuePattern: [59, 10] - [59, 15]
+                  key:
+                    MatchLiteralPattern: [59, 10] - [59, 12]
+                      literal:
+                        UnaryOp: [59, 10] - [59, 12]
+                          op: UAdd
+                          operand:
+                            Num: [59, 11] - [59, 12]
+                              n: 1
+                              text: '1'
+                  value:
+                    MatchCapturePattern: [59, 14] - [59, 15]
+                      variable:
+                        Name: [59, 14] - [59, 15]
+                          variable: Variable('x', None)
+                          ctx: Store
+                MatchKeyValuePattern: [59, 17] - [59, 24]
+                  key:
+                    MatchLiteralPattern: [59, 17] - [59, 21]
+                      literal:
+                        UnaryOp: [59, 17] - [59, 21]
+                          op: UAdd
+                          operand:
+                            Num: [59, 18] - [59, 21]
+                              n: 1.5
+                              text: '1.5'
+                  value:
+                    MatchCapturePattern: [59, 23] - [59, 24]
+                      variable:
+                        Name: [59, 23] - [59, 24]
+                          variable: Variable('y', None)
+                          ctx: Store
+                MatchKeyValuePattern: [59, 26] - [59, 32]
+                  key:
+                    MatchLiteralPattern: [59, 26] - [59, 29]
+                      literal:
+                        UnaryOp: [59, 26] - [59, 29]
+                          op: UAdd
+                          operand:
+                            Num: [59, 27] - [59, 29]
+                              n: 2j
+                              text: '2j'
+                  value:
+                    MatchCapturePattern: [59, 31] - [59, 32]
+                      variable:
+                        Name: [59, 31] - [59, 32]
+                          variable: Variable('z', None)
+                          ctx: Store
+              ]
+          guard: None
+          body: [
+            Pass: [60, 8] - [60, 12]
           ]
       ]
   ]

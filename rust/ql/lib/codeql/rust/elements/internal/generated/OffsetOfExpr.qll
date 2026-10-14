@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.NameRef
 import codeql.rust.elements.TypeRepr
@@ -27,12 +27,14 @@ module Generated {
   class OffsetOfExpr extends Synth::TOffsetOfExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "OffsetOfExpr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this offset of expression (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertOffsetOfExprToRaw(this)
+        Synth::convertAnyAttrFromRaw(Synth::convertOffsetOfExprToRaw(this)
               .(Raw::OffsetOfExpr)
               .getAttr(index))
     }
@@ -40,7 +42,7 @@ module Generated {
     /**
      * Gets any of the attrs of this offset of expression.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this offset of expression.

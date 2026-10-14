@@ -10,6 +10,6 @@ package(default_visibility = ["//visibility:public"])
 
 alias(
     name = "ra_ap_vfs",
-    actual = "@vendor_ts__ra_ap_vfs-0.0.347//:ra_ap_vfs",
+    actual = "@vendor_ts__ra_ap_vfs-0.0.352//:ra_ap_vfs",
     tags = ["manual"],
 )

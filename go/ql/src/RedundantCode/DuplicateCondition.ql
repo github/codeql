@@ -16,7 +16,7 @@ import go
 
 /** Gets the `i`th condition in the `if`-`else if` chain starting at `stmt`. */
 Expr getCondition(IfStmt stmt, int i) {
-  i = 0 and result = stmt.getCond()
+  i = 0 and result = stmt.getCondition()
   or
   exists(IfStmt elsif | elsif = stmt.getElse() |
     not exists(elsif.getInit()) and

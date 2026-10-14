@@ -159,4 +159,48 @@ func test19() mystruct {
 	return mystruct{test10(1), test10(2) == 2} // $ Alert
 }
 
+func test20() {
+	go panic("panic in another goroutine")
+	select {} // OK: reachable after starting the goroutine
+}
+
+func test21() {
+	select {}
+	panic("unreachable") // OK: allowlisted statement
+	// OK: empty statement
+	unreachable() // $ Alert
+}
+
+func test22() {
+	goto reachableLabel
+	panic("unreachable") // OK: allowlisted statement
+reachableLabel:
+	reachable() // OK: reachable through the goto
+}
+
+func test23() {
+	if true {
+		return
+	}
+	unreachable() // OK: deliberately unreachable
+	unreachable() // OK: deliberately unreachable
+}
+
+type (
+	embedded  struct{}
+	recursive struct {
+		*embedded
+		value int
+		*recursive
+	}
+)
+
+func test24(x *recursive) []int {
+	values := []int{0}
+	if x.value != 0 {
+		values = append(values, x.value)
+	}
+	return values // OK: reachable because value is a direct field of recursive
+}
+
 func main() {}

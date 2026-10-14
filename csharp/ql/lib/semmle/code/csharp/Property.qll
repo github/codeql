@@ -217,6 +217,7 @@ class Property extends DeclarationWithGetSetAccessors, @property {
     result = DeclarationWithGetSetAccessors.super.getAnUltimateImplementor()
   }
 
+  pragma[nomagic]
   override PropertyAccess getAnAccess() { result.getTarget() = this }
 
   override Location getALocation() { property_location(this.getUnboundDeclaration(), result) }
@@ -326,6 +327,7 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
     indexers(this, _, _, getTypeRef(result), _)
   }
 
+  pragma[nomagic]
   override IndexerAccess getAnAccess() { result.getTarget() = this }
 
   /**

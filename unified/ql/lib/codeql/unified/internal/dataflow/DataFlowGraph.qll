@@ -1,8 +1,37 @@
 private import unified
 private import AllDataFlow
+private import codeql.unified.internal.LocalNameBinding
 
 predicate step(Node node1, Step step, Node node2) {
   any(DataFlowPlugin p).step(node1, step, node2)
+  or
+  exists(Callable callable |
+    node1.isReceiverParameter(callable) and
+    step.value() and
+    node2.isLocalVariableWrite(callable, getImplicitReceiverVariable(callable))
+  )
+  or
+  exists(CallExpr call, Expr receiverExpr |
+    receiverExpr = call.getCallee().(MemberAccessExpr).getBase()
+  |
+    node1.isResultValue(receiverExpr) and
+    step.value() and
+    node2.isReceiverArgument(call)
+    or
+    node1.isReceiverPostUpdate(call) and
+    step.value() and
+    node2.isPostUpdate(receiverExpr)
+  )
+  or
+  exists(CallExpr call, UnqualifiedMemberAccess callee | callee = call.getCallee() |
+    node1.isLocalVariableRead(callee, callee.getImplicitQualifierVariable()) and
+    step.value() and
+    node2.isReceiverArgument(call)
+    or
+    node1.isReceiverPostUpdate(call) and
+    step.value() and
+    node2.isLocalVariablePostUpdate(callee, callee.getImplicitQualifierVariable())
+  )
   or
   exists(VariableDeclaration decl |
     node1.isResultValue(decl.getValue()) and
@@ -12,6 +41,14 @@ predicate step(Node node1, Step step, Node node2) {
   or
   exists(AssignExpr assign |
     node1.isResultValue(assign.getValue()) and
+    step.value() and
+    node2.isIncomingValue(assign.getTarget())
+  )
+  or
+  // For compound assignments, the result of the expression represents the result of the operator.
+  // Make it flow to the target of the assignment.
+  exists(CompoundAssignExpr assign |
+    node1.isResultValue(assign) and
     step.value() and
     node2.isIncomingValue(assign.getTarget())
   )
@@ -66,6 +103,49 @@ predicate step(Node node1, Step step, Node node2) {
     node2.isPostUpdate(expr.getBase())
   )
   or
+  // Calls and constructor-patterns targeting an enum-case constructor.
+  exists(CallExpr call, Argument arg, string field |
+    field = getEnumCaseParameterFieldFromArgument(call, arg)
+  |
+    node1.isResultValue(arg.getValue()) and
+    step.storeName(field) and
+    node2.isResultValue(call)
+    or
+    node1.isIncomingValue(call) and
+    step.readName(field) and
+    node2.isIncomingValue(arg.getValue())
+  )
+  or
+  exists(SwitchExpr expr |
+    node1.isResultValue(expr.getValue()) and
+    step.value() and
+    node2.isIncomingValue(expr.getACase().getPattern())
+  )
+  or
+  exists(PatternGuardExpr expr |
+    node1.isResultValue(expr.getValue()) and
+    step.value() and
+    node2.isIncomingValue(expr.getPattern())
+  )
+  or
+  exists(ExprPattern expr |
+    node1.isIncomingValue(expr) and
+    step.value() and
+    node2.isIncomingValue(expr.getExpr())
+  )
+  or
+  exists(ArrayLiteral expr |
+    node1.isResultValue(expr.getAnElement()) and
+    step.store(ContentSet::arrayElement()) and
+    node2.isResultValue(expr)
+  )
+  or
+  exists(ForEachStmt stmt |
+    node1.isResultValue(stmt.getIterable()) and
+    step.readArrayElement() and
+    node2.isIncomingValue(stmt.getPattern())
+  )
+  or
   none() // Temporarily disable compilation errors from unsatisfiable types
 }
 
@@ -96,6 +176,16 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
     value = node.toString()
   }
 
+  private predicate isBypassedStoreReadStep(Step s) {
+    exists(ContentSet contents |
+      s.read(contents)
+      or
+      s.store(contents)
+    |
+      bypassContentSet(contents)
+    )
+  }
+
   query predicate edges(Node node1, Node node2, string key, string value) {
     key = "semmle.label" and
     relevantDataFlowNode(node1) and
@@ -103,7 +193,9 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
     (
       exists(Step step |
         step(node1, step, node2) and
-        value = step.toString()
+        if isBypassedStoreReadStep(step)
+        then value = "value [bypassed " + step.toString() + "]"
+        else value = step.toString()
       )
       or
       exists(boolean isUseStep |
@@ -111,7 +203,7 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
         if isUseStep = true then value = "use-use" else value = "def-use"
       )
       or
-      node2 = getPostUpdateNode(node1) and
+      node2 = node1.getPostUpdateNode() and
       value = "post-update"
     )
   }

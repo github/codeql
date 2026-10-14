@@ -10,7 +10,7 @@ query predicate getAttributeMacroExpansion(ExternCrate x, MacroItems getAttribut
   getAttributeMacroExpansion = x.getAttributeMacroExpansion()
 }
 
-query predicate getAttr(ExternCrate x, int index, Attr getAttr) {
+query predicate getAttr(ExternCrate x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

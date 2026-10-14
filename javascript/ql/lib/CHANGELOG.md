@@ -1,3 +1,19 @@
+## 2.10.3
+
+### Minor Analysis Improvements
+
+* The Workflow SDK directives `"use workflow"` and `"use step"` are now recognized as known directives, so the `js/unknown-directive` query no longer flags them.
+
+### Bug Fixes
+
+* Improved Hapi route handler and request input tracking through custom route registration helpers and higher-order function wrappers.
+
+## 2.10.2
+
+### Minor Analysis Improvements
+
+* Fastify servers reached through a chainable configuration method, such as `fastify().withTypeProvider<T>()` or `fastify().setValidatorCompiler(...)`, are now recognized as the same server instance. Routes registered on such an instance are now attributed to their server, which may add results for queries such as `js/missing-rate-limiting` where routes were previously not recognized at all, and remove false positives where a globally registered plugin guards them.
+
 ## 2.10.1
 
 No user-facing changes.

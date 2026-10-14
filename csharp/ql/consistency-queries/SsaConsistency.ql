@@ -1,6 +1,7 @@
 import csharp
 import semmle.code.csharp.dataflow.internal.SsaImpl as Impl
 import Impl::Consistency
+import Impl::DataFlowIntegration::DfConsistency
 import Ssa
 
 query predicate localDeclWithSsaDef(LocalVariableDeclExpr d) {

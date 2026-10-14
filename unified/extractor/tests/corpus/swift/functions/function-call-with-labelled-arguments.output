@@ -28,13 +28,13 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        call_expr
-          callee: identifier "greet"
+        call_expr source="⟨callee⟩(⟨argument⟩)"
+          callee: identifier "greet" source="greet"
           argument:
-            argument
-              name_node: identifier "person"
-              value: string_literal "\"Bob\""
+            argument source="⟨name_node⟩: ⟨value⟩"
+              name_node: identifier "person" source="person"
+              value: string_literal "\"Bob\"" source="\"Bob\""

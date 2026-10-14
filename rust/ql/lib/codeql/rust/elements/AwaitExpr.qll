@@ -4,7 +4,7 @@
  */
 
 private import internal.AwaitExprImpl
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Expr
 
 /**

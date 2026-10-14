@@ -77,6 +77,10 @@ module Generated {
     {{/root}}
     {{#final}}
     override string getAPrimaryQlClass() { result = "{{name}}" }
+    {{#to_string_impl_from_primary_class}}
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+    {{/to_string_impl_from_primary_class}}
     {{/final}}
     {{#properties}}
 

@@ -35,6 +35,7 @@
 /ConstParam/gen_const_param.rs linguist-generated
 /ContinueExpr/gen_continue_expr.rs linguist-generated
 /DerefPat/gen_deref_pat.rs linguist-generated
+/DocComment/gen_doc_comment.rs linguist-generated
 /DynTraitTypeRepr/gen_dyn_trait_type_repr.rs linguist-generated
 /Enum/gen_enum.rs linguist-generated
 /ExprStmt/gen_expr_stmt.rs linguist-generated

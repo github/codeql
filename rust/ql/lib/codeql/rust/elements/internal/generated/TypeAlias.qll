@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.AssocItemImpl::Impl as AssocItemImpl
-import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.ExternItemImpl::Impl as ExternItemImpl
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Name
@@ -40,15 +40,17 @@ module Generated {
     /**
      * Gets the `index`th attr of this type alias (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertTypeAliasToRaw(this).(Raw::TypeAlias).getAttr(index))
+        Synth::convertAnyAttrFromRaw(Synth::convertTypeAliasToRaw(this)
+              .(Raw::TypeAlias)
+              .getAttr(index))
     }
 
     /**
      * Gets any of the attrs of this type alias.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this type alias.

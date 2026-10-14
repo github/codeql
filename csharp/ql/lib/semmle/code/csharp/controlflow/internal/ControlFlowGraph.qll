@@ -162,6 +162,8 @@ module Ast implements AstSig<Location> {
 
   class Stmt = CS::Stmt;
 
+  class LabeledStmt = CS::LabelStmt;
+
   class Expr = CS::Expr;
 
   class BlockStmt = CS::BlockStmt;

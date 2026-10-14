@@ -20,3 +20,13 @@ def code_execution():
     reg2 = re.compile(r"(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)C.*Y")
     reg2.sub("", text) # $ Alert # NOT OK
 
+
+@app.route("/prefixmatch-poly-redos")
+def prefixmatch():
+    text = request.args.get("text")
+    re.prefixmatch(r"^0\.\d+E?\d+$", text) # $ Alert
+    re.prefixmatch(pattern=r"^0\.\d+E?\d+$", string=text) # $ Alert
+
+    pattern = re.compile(r"^0\.\d+E?\d+$")
+    pattern.prefixmatch(text) # $ Alert
+    pattern.prefixmatch(string=text) # $ Alert

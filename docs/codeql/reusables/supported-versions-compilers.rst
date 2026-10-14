@@ -4,11 +4,11 @@
    :stub-columns: 1
 
    Language,Variants,Compilers,Extensions
-   C/C++,"C89, C99, C11, C17, C23, C++98, C++03, C++11, C++14, C++17, C++20, C++23 [1]_ [2]_ [3]_","Clang (including clang-cl and armclang) extensions (up to Clang 22),
+   C/C++,"C89, C99, C11, C17, C23, C++98, C++03, C++11, C++14, C++17, C++20, C++23 [1]_ [2]_ [3]_","Clang (including clang-cl and armclang) extensions (up to Clang 23),
 
    GNU extensions (up to GCC 16),
 
-   Microsoft extensions (up to VS 2022),
+   Microsoft extensions (up to VS 2026),
 
    Arm Compiler 5 [4]_","``.cpp``, ``.c++``, ``.cxx``, ``.hpp``, ``.hh``, ``.h++``, ``.hxx``, ``.c``, ``.cc``, ``.h``"
    C#,C# up to 14,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
