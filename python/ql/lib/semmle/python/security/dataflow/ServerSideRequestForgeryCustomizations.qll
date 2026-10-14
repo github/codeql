@@ -50,10 +50,9 @@ module ServerSideRequestForgery {
    */
   deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
-  /**
-   * An active threat-model source, considered as a flow source.
-   */
-  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
+  /** An active threat-model source, considered as a flow source. */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+  }
 
   /** The URL of an HTTP request, considered as a sink. */
   class HttpRequestUrlAsSink extends Sink {
