@@ -14,7 +14,7 @@ private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.SSA
-private import semmle.code.java.security.ListOfConstantsSanitizer
+private import semmle.code.java.security.ConstantValueSanitizer
 private import semmle.code.java.security.Sanitizers
 
 /**
