@@ -36,6 +36,10 @@ private class DefaultLogInjectionSink extends LogInjectionSink {
 private class DefaultLogInjectionSanitizer extends LogInjectionSanitizer instanceof SimpleTypeSanitizer
 { }
 
+private class ExternalLogInjectionSanitizer extends LogInjectionSanitizer {
+  ExternalLogInjectionSanitizer() { barrierNode(this, "log-injection") }
+}
+
 private class LineBreaksLogInjectionSanitizer extends LogInjectionSanitizer {
   LineBreaksLogInjectionSanitizer() {
     logInjectionSanitizer(this.asExpr())
