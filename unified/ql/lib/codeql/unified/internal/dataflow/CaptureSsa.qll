@@ -40,9 +40,9 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
   class Expr extends TExpr {
     Expr() { not isTopLevelCallable(this) }
 
-    string toString() { result = this.(Node).toString() }
+    string toString() { result = this.(BuilderNode).toString() }
 
-    Location getLocation() { result = this.(Node).getLocation() }
+    Location getLocation() { result = this.(BuilderNode).getLocation() }
 
     predicate hasCfgNode(BasicBlock bb, int i) {
       this.(LocalVariableRefNode).hasCfgNode(bb, i)
