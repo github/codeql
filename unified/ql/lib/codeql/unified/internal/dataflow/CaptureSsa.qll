@@ -27,7 +27,11 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
   }
 
   class CapturedParameter extends CapturedVariable {
-    // This class is not needed. Variables aren't the first point of contact with parameter values.
+    // This class should be empty, as the capture library never gets to work with a node that corresponds to a `DataFlowInput::ParameterNode`.
+    //
+    // When a variable is mentioned in a pattern in the parameter list, the pattern itself (TValueNode) becomes the ParameterNode
+    // and the assignment to the variable is modeled as an ordinary variable-assignment at the point where the variable mention appears in the CFG.
+    // Likewise, the receiver is represented by TImplicitParameterNode and its assignment to 'self/this' is modeled as an ordinary assignment.
     CapturedParameter() { none() }
   }
 
