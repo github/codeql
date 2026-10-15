@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class A {
+public class ConstantValue {
   private static final Set<String> SEPARATORS =
       Collections.unmodifiableSet(
           new HashSet<>(Arrays.asList("\t", "\n", ";")));
