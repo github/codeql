@@ -1,3 +1,7 @@
+## 8.0.1
+
+No user-facing changes.
+
 ## 8.0.0
 
 ### Breaking Changes
