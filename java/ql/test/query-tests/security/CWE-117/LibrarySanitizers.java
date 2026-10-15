@@ -54,18 +54,18 @@ public class LibrarySanitizers {
         String source = source(); // $ Source
         Logger logger = null;
 
-        logger.debug(org.apache.commons.text.StringEscapeUtils.escapeJava(source)); // $ SPURIOUS: Alert
-        logger.debug(org.apache.commons.lang3.StringEscapeUtils.escapeJava(source)); // $ SPURIOUS: Alert
-        logger.debug(org.owasp.encoder.Encode.forJava(source)); // $ SPURIOUS: Alert
+        logger.debug(org.apache.commons.text.StringEscapeUtils.escapeJava(source));
+        logger.debug(org.apache.commons.lang3.StringEscapeUtils.escapeJava(source));
+        logger.debug(org.owasp.encoder.Encode.forJava(source));
 
         logger.debug(CharMatcher.anyOf("\r\n").removeFrom(source)); // $ SPURIOUS: Alert
         logger.debug(CharMatcher.anyOf("\r\n").replaceFrom(source, '_')); // $ SPURIOUS: Alert
         logger.debug(CharMatcher.anyOf("\r\n").replaceFrom(source, "_")); // $ SPURIOUS: Alert
 
         logger.debug(org.apache.commons.lang3.StringUtils.replaceChars(source, "\r\n", "__")); // $ SPURIOUS: Alert
-        logger.debug(org.apache.commons.lang3.StringUtils.deleteWhitespace(source)); // $ SPURIOUS: Alert
-        logger.debug(org.apache.commons.lang3.StringUtils.normalizeSpace(source)); // $ SPURIOUS: Alert
-        logger.debug(org.springframework.util.StringUtils.trimAllWhitespace(source)); // $ SPURIOUS: Alert
+        logger.debug(org.apache.commons.lang3.StringUtils.deleteWhitespace(source));
+        logger.debug(org.apache.commons.lang3.StringUtils.normalizeSpace(source));
+        logger.debug(org.springframework.util.StringUtils.trimAllWhitespace(source));
     }
 
     public void testAmbiguousGuavaMatcher(boolean condition) {

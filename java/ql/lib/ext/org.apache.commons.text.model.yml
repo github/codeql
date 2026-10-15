@@ -1,6 +1,11 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: barrierModel
+    data:
+      - ["org.apache.commons.text", "StringEscapeUtils", False, "escapeJava", "(String)", "", "ReturnValue", "log-injection", "manual"]
+  - addsTo:
+      pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["org.apache.commons.text", "StringEscapeUtils", False, "escapeJava", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

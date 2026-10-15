@@ -1,6 +1,13 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: barrierModel
+    data:
+      - ["org.apache.commons.lang3", "StringEscapeUtils", False, "escapeJava", "(String)", "", "ReturnValue", "log-injection", "manual"]
+      - ["org.apache.commons.lang3", "StringUtils", False, "deleteWhitespace", "", "", "ReturnValue", "log-injection", "manual"]
+      - ["org.apache.commons.lang3", "StringUtils", False, "normalizeSpace", "", "", "ReturnValue", "log-injection", "manual"]
+  - addsTo:
+      pack: codeql/java-all
       extensible: sinkModel
     data:
       - ["org.apache.commons.lang3", "SerializationUtils", False, "deserialize", "", "", "Argument[0]", "unsafe-deserialization", "manual"]

@@ -1,6 +1,11 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: barrierModel
+    data:
+      - ["org.owasp.encoder", "Encode", False, "forJava", "(String)", "", "ReturnValue", "log-injection", "manual"]
+  - addsTo:
+      pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["org.owasp.encoder", "Encode", False, "forJava", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
