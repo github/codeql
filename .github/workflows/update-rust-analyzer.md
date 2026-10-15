@@ -109,23 +109,16 @@ CI, modify files, or create a pull request.
 
 Otherwise, continue the update from the existing working tree and commits:
 
-1. Read `rust/updating-rust-analyzer.md` and all applicable repository
-   instructions.
-2. Review the updater log, exit status, commits, and working tree. Do not rerun
-   the updater script.
-3. Complete as much of the documented update as possible. Fix extractor or
-   code-generation breakage, keep all `ra_ap_` dependency versions aligned,
-   regenerate required files, and add schema upgrade/downgrade scripts, tests,
-   and a change note when the schema changed.
-4. Run the relevant formatting, linting, code generation, build, and tests,
-   including `bazel run //rust:install`. Use `gh` to inspect relevant existing
-   CI configuration and prior failures while diagnosing problems.
-5. Review the complete diff and commits. Do not include secrets. Do not refer
+1. Review the updater log, exit status, commits, and working tree. Do not rerun
+   the updater script or undo changes that it successfully made.
+2. Read `rust/updating-rust-analyzer.md` and all applicable repository
+   instructions, then complete the remaining update steps.
+3. Review the complete diff and commits. Do not include secrets. Do not refer
    to private repositories, internal issues, or internal pull requests in the
    public pull request.
-6. Use `create_pull_request` exactly once to create a focused draft pull
-   request. Summarize the updater output, changes, and validation. If the
-   update cannot be finished, still create a partial draft pull request when
+4. Use `create_pull_request` exactly once. Summarize the updater output,
+   changes, and validation. If the update cannot be finished, still create a
+   partial draft pull request when
    there are useful changes, and clearly list failures, missing work, and the
    next commands for a maintainer.
 
@@ -134,9 +127,3 @@ CI cannot be awaited in this run. Compensate with the strongest practical
 local validation and state this limitation accurately in the pull request.
 If the updater did not report `no-update` but no useful patch can be produced,
 call `report_incomplete` with the updater failure and exact blocker.
-
-## Safe Outputs
-
-- Use `create_pull_request` for the update or partial update.
-- Use `noop` only for the exact no-update result.
-- Use `report_incomplete` only when no useful pull request can be created.
