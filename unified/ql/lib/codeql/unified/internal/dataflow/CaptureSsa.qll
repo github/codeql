@@ -104,6 +104,7 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
   }
 
   class ClosureExpr extends Expr instanceof TCallableNode {
+    // TODO: In order to support classes with captures, this needs to cover constructor calls to such classes as well.
     private Callable callable;
 
     ClosureExpr() { this.(BuilderNode).isCallable(callable) }
