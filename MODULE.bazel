@@ -169,9 +169,9 @@ http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "ht
 
 # rust-analyzer sources needed by the rust ast-generator (see `rust/ast-generator/README.md`).
 # These should be updated through the `rust/scripts/update_rust_analyzer.py` script.
-RUST_ANALYZER_SRC_TAG = "2026-10-05"
+RUST_ANALYZER_SRC_TAG = "2026-10-12"
 
-RUST_ANALYZER_SRC_INTEGRITY = "sha256-1p+2oq6NqFQjdRezQijZRzLxsZfwnLA+sPXgIiuP8Us="
+RUST_ANALYZER_SRC_INTEGRITY = "sha256-S9tGdGw7wrZjiMVx+/tZ0RE39Uw/wvO6GKDkGNvAZCA="
 
 http_archive(
     name = "rust-analyzer-src",
