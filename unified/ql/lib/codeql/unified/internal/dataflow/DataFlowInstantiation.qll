@@ -164,7 +164,7 @@ module DataFlowInput implements InputSig<Location> {
     not bypassContentSet(c)
   }
 
-  predicate clearsContent(Node n, ContentSet c) { captureSsaClearsContent(n, c) }
+  predicate clearsContent(Node n, ContentSet c) { captureSsaClearsContent(n, c) } // TODO
 
   predicate expectsContent(Node n, ContentSet c) { none() } // TODO
 
