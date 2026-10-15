@@ -853,7 +853,7 @@ public class Test {
         {
             String source = (String) source();
             source = source.replace('.', '_').replace('/', '_');
-            sink(source); // $ SPURIOUS: hasTaintFlow
+            sink(source); // Safe
         }
         {
             String source = (String) source();

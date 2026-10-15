@@ -48,23 +48,55 @@ private class LineBreaksLogInjectionSanitizer extends LogInjectionSanitizer {
   }
 }
 
-private predicate stringMethodCall(
-  MethodCall mc, CompileTimeConstantExpr arg0, CompileTimeConstantExpr arg1
-) {
-  mc.getMethod().getDeclaringType() instanceof TypeString and
-  arg0 = mc.getArgument(0) and
-  arg1 = mc.getArgument(1)
-}
-
-private predicate stringMethodArgument(CompileTimeConstantExpr arg) {
-  stringMethodCall(_, arg, _) or stringMethodCall(_, _, arg)
-}
-
 bindingset[match]
 pragma[inline_late]
-private predicate stringMethodArgumentValueMatches(CompileTimeConstantExpr const, string match) {
-  stringMethodArgument(const) and
-  const.getStringValue().matches(match)
+private predicate stringOrCharValueMatches(CompileTimeConstantExpr const, string match) {
+  const.getStringOrCharValue().matches(match)
+}
+
+private predicate containsLineBreak(CompileTimeConstantExpr const) {
+  stringOrCharValueMatches(const, ["%\n%", "%\r%"])
+}
+
+private predicate containsBothLineBreaks(CompileTimeConstantExpr const) {
+  stringOrCharValueMatches(const, "%\n%") and stringOrCharValueMatches(const, "%\r%")
+}
+
+private predicate regexRemovesLineBreaks(CompileTimeConstantExpr target) {
+  // Replace anything not in an allow list
+  target.getStringValue().matches("[^%]") and
+  not stringOrCharValueMatches(target, "%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
+  or
+  // Replace line breaks
+  target.getStringValue() = ["\n", "\r", "\\n", "\\r", "\\R"]
+}
+
+private predicate replacementRemovesLineBreaks(
+  StringReplacement replacement, CompileTimeConstantExpr target
+) {
+  target = replacement.getMatchExpression() and
+  (
+    replacement.matchExpressionIsCharacterSet() and containsBothLineBreaks(target)
+    or
+    replacement.matchExpressionIsRegex() and regexRemovesLineBreaks(target)
+    or
+    not replacement.matchExpressionIsCharacterSet() and
+    not replacement.matchExpressionIsRegex() and
+    target.getStringOrCharValue() = ["\n", "\r"]
+  )
+}
+
+private predicate removalRemovesLineBreaks(StringRemoval removal, CompileTimeConstantExpr target) {
+  target = removal.getMatchExpression() and
+  (
+    removal.matchExpressionIsCharacterSet() and containsBothLineBreaks(target)
+    or
+    removal.matchExpressionIsRegex() and regexRemovesLineBreaks(target)
+    or
+    not removal.matchExpressionIsCharacterSet() and
+    not removal.matchExpressionIsRegex() and
+    target.getStringOrCharValue() = ["\n", "\r"]
+  )
 }
 
 /**
@@ -72,28 +104,14 @@ private predicate stringMethodArgumentValueMatches(CompileTimeConstantExpr const
  * breaks from it.
  */
 private predicate logInjectionSanitizer(Expr e) {
-  exists(MethodCall mc, CompileTimeConstantExpr target, CompileTimeConstantExpr replacement |
-    e = mc and
-    stringMethodCall(mc, target, replacement) and
-    not stringMethodArgumentValueMatches(replacement, ["%\n%", "%\r%"])
-  |
-    mc.getMethod().hasName("replace") and
-    not replacement.getIntValue() = [10, 13] and
-    (
-      target.getIntValue() = [10, 13] or // 10 == '\n', 13 == '\r'
-      target.getStringValue() = ["\n", "\r"]
-    )
-    or
-    mc.getMethod().hasName("replaceAll") and
-    (
-      // Replace anything not in an allow list
-      target.getStringValue().matches("[^%]") and
-      not stringMethodArgumentValueMatches(target, "%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
-      or
-      // Replace line breaks
-      target.getStringValue() = ["\n", "\r", "\\n", "\\r", "\\R"]
-    )
+  replacementRemovesLineBreaks(e, _) and
+  exists(CompileTimeConstantExpr replacement |
+    replacement = e.(StringReplacement).getReplacement() and
+    exists(replacement.getStringOrCharValue()) and
+    not containsLineBreak(replacement)
   )
+  or
+  removalRemovesLineBreaks(e, _)
 }
 
 /**

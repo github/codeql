@@ -14,6 +14,8 @@ import java
  */
 private module Frameworks {
   private import semmle.code.java.JDK
+  private import semmle.code.java.frameworks.apache.Lang
+  private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.JavaxAnnotations
 }
 
@@ -76,6 +78,110 @@ module RegexMatch {
      * method. This is used for nice alert messages and should include the
      * type-qualified name if possible.
      */
+    abstract string getName();
+  }
+}
+
+/**
+ * An expression that replaces every occurrence of a target in a string.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `StringReplacement::Range` instead.
+ */
+class StringReplacement extends Expr instanceof StringReplacement::Range {
+  /** Gets the input string whose contents are replaced. */
+  Expr getInputString() { result = super.getInputString() }
+
+  /** Gets the expression that identifies the content to replace. */
+  Expr getMatchExpression() { result = super.getMatchExpression() }
+
+  /** Gets the replacement expression. */
+  Expr getReplacement() { result = super.getReplacement() }
+
+  /** Holds if the match expression is interpreted as a regular expression. */
+  predicate matchExpressionIsRegex() { super.matchExpressionIsRegex() }
+
+  /** Holds if each character in the match expression is matched independently. */
+  predicate matchExpressionIsCharacterSet() { super.matchExpressionIsCharacterSet() }
+
+  /** Gets a descriptive name for this replacement operation. */
+  string getName() { result = super.getName() }
+}
+
+/** Provides classes for modeling string-replacement APIs. */
+module StringReplacement {
+  /**
+   * An expression that replaces every occurrence of a target in a string.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `StringReplacement` instead.
+   */
+  abstract class Range extends Expr {
+    /** Gets the input string whose contents are replaced. */
+    abstract Expr getInputString();
+
+    /** Gets the expression that identifies the content to replace. */
+    abstract Expr getMatchExpression();
+
+    /** Gets the replacement expression. */
+    abstract Expr getReplacement();
+
+    /** Holds if the match expression is interpreted as a regular expression. */
+    predicate matchExpressionIsRegex() { none() }
+
+    /** Holds if each character in the match expression is matched independently. */
+    predicate matchExpressionIsCharacterSet() { none() }
+
+    /** Gets a descriptive name for this replacement operation. */
+    abstract string getName();
+  }
+}
+
+/**
+ * An expression that removes every occurrence of a target from a string.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `StringRemoval::Range` instead.
+ */
+class StringRemoval extends Expr instanceof StringRemoval::Range {
+  /** Gets the input string whose contents are removed. */
+  Expr getInputString() { result = super.getInputString() }
+
+  /** Gets the expression that identifies the content to remove. */
+  Expr getMatchExpression() { result = super.getMatchExpression() }
+
+  /** Holds if the match expression is interpreted as a regular expression. */
+  predicate matchExpressionIsRegex() { super.matchExpressionIsRegex() }
+
+  /** Holds if each character in the match expression is matched independently. */
+  predicate matchExpressionIsCharacterSet() { super.matchExpressionIsCharacterSet() }
+
+  /** Gets a descriptive name for this removal operation. */
+  string getName() { result = super.getName() }
+}
+
+/** Provides classes for modeling string-removal APIs. */
+module StringRemoval {
+  /**
+   * An expression that removes every occurrence of a target from a string.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `StringRemoval` instead.
+   */
+  abstract class Range extends Expr {
+    /** Gets the input string whose contents are removed. */
+    abstract Expr getInputString();
+
+    /** Gets the expression that identifies the content to remove. */
+    abstract Expr getMatchExpression();
+
+    /** Holds if the match expression is interpreted as a regular expression. */
+    predicate matchExpressionIsRegex() { none() }
+
+    /** Holds if each character in the match expression is matched independently. */
+    predicate matchExpressionIsCharacterSet() { none() }
+
+    /** Gets a descriptive name for this removal operation. */
     abstract string getName();
   }
 }

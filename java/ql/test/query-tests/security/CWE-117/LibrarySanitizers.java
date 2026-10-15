@@ -51,18 +51,18 @@ public class LibrarySanitizers {
     }
 
     public void testSanitizers() {
-        String source = source(); // $ Source
+        String source = source();
         Logger logger = null;
 
         logger.debug(org.apache.commons.text.StringEscapeUtils.escapeJava(source));
         logger.debug(org.apache.commons.lang3.StringEscapeUtils.escapeJava(source));
         logger.debug(org.owasp.encoder.Encode.forJava(source));
 
-        logger.debug(CharMatcher.anyOf("\r\n").removeFrom(source)); // $ SPURIOUS: Alert
-        logger.debug(CharMatcher.anyOf("\r\n").replaceFrom(source, '_')); // $ SPURIOUS: Alert
-        logger.debug(CharMatcher.anyOf("\r\n").replaceFrom(source, "_")); // $ SPURIOUS: Alert
+        logger.debug(CharMatcher.anyOf("\r\n").removeFrom(source));
+        logger.debug(CharMatcher.anyOf("\r\n").replaceFrom(source, '_'));
+        logger.debug(CharMatcher.anyOf("\r\n").replaceFrom(source, "_"));
 
-        logger.debug(org.apache.commons.lang3.StringUtils.replaceChars(source, "\r\n", "__")); // $ SPURIOUS: Alert
+        logger.debug(org.apache.commons.lang3.StringUtils.replaceChars(source, "\r\n", "__"));
         logger.debug(org.apache.commons.lang3.StringUtils.deleteWhitespace(source));
         logger.debug(org.apache.commons.lang3.StringUtils.normalizeSpace(source));
         logger.debug(org.springframework.util.StringUtils.trimAllWhitespace(source));

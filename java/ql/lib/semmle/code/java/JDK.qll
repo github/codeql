@@ -64,23 +64,41 @@ class StringMatchesCall extends MethodCall, RegexMatch::Range {
 }
 
 /** A call to the `java.lang.String.replaceAll` method. */
-class StringReplaceAllCall extends MethodCall {
+class StringReplaceAllCall extends MethodCall, StringReplacement::Range {
   StringReplaceAllCall() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypeString and
       m.hasName("replaceAll")
     )
   }
+
+  override Expr getInputString() { result = this.getQualifier() }
+
+  override Expr getMatchExpression() { result = this.getArgument(0) }
+
+  override Expr getReplacement() { result = this.getArgument(1) }
+
+  override predicate matchExpressionIsRegex() { any() }
+
+  override string getName() { result = "String.replaceAll" }
 }
 
 /** A call to the `java.lang.String.replace` method. */
-class StringReplaceCall extends MethodCall {
+class StringReplaceCall extends MethodCall, StringReplacement::Range {
   StringReplaceCall() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypeString and
       m.hasName("replace")
     )
   }
+
+  override Expr getInputString() { result = this.getQualifier() }
+
+  override Expr getMatchExpression() { result = this.getArgument(0) }
+
+  override Expr getReplacement() { result = this.getArgument(1) }
+
+  override string getName() { result = "String.replace" }
 }
 
 /**

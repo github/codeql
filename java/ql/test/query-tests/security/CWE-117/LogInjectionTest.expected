@@ -25,10 +25,6 @@
 | LibrarySanitizers.java:48:22:48:57 | replaceAll(...) | LibrarySanitizers.java:12:25:12:32 | source(...) : String | LibrarySanitizers.java:48:22:48:57 | replaceAll(...) | This log entry depends on a $@. | LibrarySanitizers.java:12:25:12:32 | source(...) | user-provided value |
 | LibrarySanitizers.java:49:22:49:57 | replaceAll(...) | LibrarySanitizers.java:12:25:12:32 | source(...) : String | LibrarySanitizers.java:49:22:49:57 | replaceAll(...) | This log entry depends on a $@. | LibrarySanitizers.java:12:25:12:32 | source(...) | user-provided value |
 | LibrarySanitizers.java:50:22:50:58 | replaceAll(...) | LibrarySanitizers.java:12:25:12:32 | source(...) : String | LibrarySanitizers.java:50:22:50:58 | replaceAll(...) | This log entry depends on a $@. | LibrarySanitizers.java:12:25:12:32 | source(...) | user-provided value |
-| LibrarySanitizers.java:61:22:61:65 | removeFrom(...) | LibrarySanitizers.java:54:25:54:32 | source(...) : String | LibrarySanitizers.java:61:22:61:65 | removeFrom(...) | This log entry depends on a $@. | LibrarySanitizers.java:54:25:54:32 | source(...) | user-provided value |
-| LibrarySanitizers.java:62:22:62:71 | replaceFrom(...) | LibrarySanitizers.java:54:25:54:32 | source(...) : String | LibrarySanitizers.java:62:22:62:71 | replaceFrom(...) | This log entry depends on a $@. | LibrarySanitizers.java:54:25:54:32 | source(...) | user-provided value |
-| LibrarySanitizers.java:63:22:63:71 | replaceFrom(...) | LibrarySanitizers.java:54:25:54:32 | source(...) : String | LibrarySanitizers.java:63:22:63:71 | replaceFrom(...) | This log entry depends on a $@. | LibrarySanitizers.java:54:25:54:32 | source(...) | user-provided value |
-| LibrarySanitizers.java:65:22:65:92 | replaceChars(...) | LibrarySanitizers.java:54:25:54:32 | source(...) : String | LibrarySanitizers.java:65:22:65:92 | replaceChars(...) | This log entry depends on a $@. | LibrarySanitizers.java:54:25:54:32 | source(...) | user-provided value |
 | LibrarySanitizers.java:82:22:82:47 | removeFrom(...) | LibrarySanitizers.java:72:25:72:32 | source(...) : String | LibrarySanitizers.java:82:22:82:47 | removeFrom(...) | This log entry depends on a $@. | LibrarySanitizers.java:72:25:72:32 | source(...) | user-provided value |
 | LibrarySanitizers.java:94:26:94:31 | source | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:94:26:94:31 | source | This log entry depends on a $@. | LibrarySanitizers.java:86:25:86:32 | source(...) | user-provided value |
 | LibrarySanitizers.java:98:26:98:31 | source | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:98:26:98:31 | source | This log entry depends on a $@. | LibrarySanitizers.java:86:25:86:32 | source(...) | user-provided value |
@@ -1936,40 +1932,32 @@ edges
 | LibrarySanitizers.java:12:25:12:32 | source(...) : String | LibrarySanitizers.java:48:22:48:27 | source : String | provenance | Src:MaD:536  |
 | LibrarySanitizers.java:12:25:12:32 | source(...) : String | LibrarySanitizers.java:49:22:49:27 | source : String | provenance | Src:MaD:536  |
 | LibrarySanitizers.java:12:25:12:32 | source(...) : String | LibrarySanitizers.java:50:22:50:27 | source : String | provenance | Src:MaD:536  |
-| LibrarySanitizers.java:16:22:16:27 | source : String | LibrarySanitizers.java:16:22:16:47 | replace(...) | provenance | MaD:542 Sink:MaD:101 |
-| LibrarySanitizers.java:17:22:17:27 | source : String | LibrarySanitizers.java:17:22:17:47 | replace(...) | provenance | MaD:542 Sink:MaD:101 |
-| LibrarySanitizers.java:19:22:19:27 | source : String | LibrarySanitizers.java:19:22:19:47 | replace(...) | provenance | MaD:542 Sink:MaD:101 |
-| LibrarySanitizers.java:20:22:20:27 | source : String | LibrarySanitizers.java:20:22:20:47 | replace(...) | provenance | MaD:542 Sink:MaD:101 |
-| LibrarySanitizers.java:21:22:21:27 | source : String | LibrarySanitizers.java:21:22:21:57 | replace(...) | provenance | MaD:542 Sink:MaD:101 |
-| LibrarySanitizers.java:22:41:22:46 | source : String | LibrarySanitizers.java:22:22:22:47 | replace(...) | provenance | MaD:541 Sink:MaD:101 |
-| LibrarySanitizers.java:24:22:24:27 | source : String | LibrarySanitizers.java:24:22:24:47 | replace(...) | provenance | MaD:542 Sink:MaD:101 |
-| LibrarySanitizers.java:25:22:25:27 | source : String | LibrarySanitizers.java:25:22:25:47 | replace(...) | provenance | MaD:542 Sink:MaD:101 |
-| LibrarySanitizers.java:27:22:27:27 | source : String | LibrarySanitizers.java:27:22:27:47 | replace(...) | provenance | MaD:542 Sink:MaD:101 |
-| LibrarySanitizers.java:28:22:28:27 | source : String | LibrarySanitizers.java:28:22:28:47 | replace(...) | provenance | MaD:542 Sink:MaD:101 |
-| LibrarySanitizers.java:29:22:29:27 | source : String | LibrarySanitizers.java:29:22:29:45 | replace(...) | provenance | MaD:542 Sink:MaD:101 |
-| LibrarySanitizers.java:31:22:31:27 | source : String | LibrarySanitizers.java:31:22:31:50 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:32:22:32:27 | source : String | LibrarySanitizers.java:32:22:32:50 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:34:22:34:27 | source : String | LibrarySanitizers.java:34:22:34:50 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:35:22:35:27 | source : String | LibrarySanitizers.java:35:22:35:50 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:37:22:37:27 | source : String | LibrarySanitizers.java:37:22:37:51 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:38:22:38:27 | source : String | LibrarySanitizers.java:38:22:38:51 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:40:22:40:27 | source : String | LibrarySanitizers.java:40:22:40:51 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:41:22:41:27 | source : String | LibrarySanitizers.java:41:22:41:51 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:43:22:43:27 | source : String | LibrarySanitizers.java:43:22:43:51 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:44:22:44:27 | source : String | LibrarySanitizers.java:44:22:44:51 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:46:22:46:27 | source : String | LibrarySanitizers.java:46:22:46:57 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:47:22:47:27 | source : String | LibrarySanitizers.java:47:22:47:57 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:48:22:48:27 | source : String | LibrarySanitizers.java:48:22:48:57 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:49:22:49:27 | source : String | LibrarySanitizers.java:49:22:49:57 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:50:22:50:27 | source : String | LibrarySanitizers.java:50:22:50:58 | replaceAll(...) | provenance | MaD:543 Sink:MaD:101 |
-| LibrarySanitizers.java:54:25:54:32 | source(...) : String | LibrarySanitizers.java:61:59:61:64 | source : String | provenance | Src:MaD:536  |
-| LibrarySanitizers.java:54:25:54:32 | source(...) : String | LibrarySanitizers.java:62:60:62:65 | source : String | provenance | Src:MaD:536  |
-| LibrarySanitizers.java:54:25:54:32 | source(...) : String | LibrarySanitizers.java:63:60:63:65 | source : String | provenance | Src:MaD:536  |
-| LibrarySanitizers.java:54:25:54:32 | source(...) : String | LibrarySanitizers.java:65:72:65:77 | source : String | provenance | Src:MaD:536  |
-| LibrarySanitizers.java:61:59:61:64 | source : String | LibrarySanitizers.java:61:22:61:65 | removeFrom(...) | provenance | MaD:538 Sink:MaD:101 |
-| LibrarySanitizers.java:62:60:62:65 | source : String | LibrarySanitizers.java:62:22:62:71 | replaceFrom(...) | provenance | MaD:540 Sink:MaD:101 |
-| LibrarySanitizers.java:63:60:63:65 | source : String | LibrarySanitizers.java:63:22:63:71 | replaceFrom(...) | provenance | MaD:539 Sink:MaD:101 |
-| LibrarySanitizers.java:65:72:65:77 | source : String | LibrarySanitizers.java:65:22:65:92 | replaceChars(...) | provenance | MaD:544 Sink:MaD:101 |
+| LibrarySanitizers.java:16:22:16:27 | source : String | LibrarySanitizers.java:16:22:16:47 | replace(...) | provenance | MaD:540 Sink:MaD:101 |
+| LibrarySanitizers.java:17:22:17:27 | source : String | LibrarySanitizers.java:17:22:17:47 | replace(...) | provenance | MaD:540 Sink:MaD:101 |
+| LibrarySanitizers.java:19:22:19:27 | source : String | LibrarySanitizers.java:19:22:19:47 | replace(...) | provenance | MaD:540 Sink:MaD:101 |
+| LibrarySanitizers.java:20:22:20:27 | source : String | LibrarySanitizers.java:20:22:20:47 | replace(...) | provenance | MaD:540 Sink:MaD:101 |
+| LibrarySanitizers.java:21:22:21:27 | source : String | LibrarySanitizers.java:21:22:21:57 | replace(...) | provenance | MaD:540 Sink:MaD:101 |
+| LibrarySanitizers.java:22:41:22:46 | source : String | LibrarySanitizers.java:22:22:22:47 | replace(...) | provenance | MaD:539 Sink:MaD:101 |
+| LibrarySanitizers.java:24:22:24:27 | source : String | LibrarySanitizers.java:24:22:24:47 | replace(...) | provenance | MaD:540 Sink:MaD:101 |
+| LibrarySanitizers.java:25:22:25:27 | source : String | LibrarySanitizers.java:25:22:25:47 | replace(...) | provenance | MaD:540 Sink:MaD:101 |
+| LibrarySanitizers.java:27:22:27:27 | source : String | LibrarySanitizers.java:27:22:27:47 | replace(...) | provenance | MaD:540 Sink:MaD:101 |
+| LibrarySanitizers.java:28:22:28:27 | source : String | LibrarySanitizers.java:28:22:28:47 | replace(...) | provenance | MaD:540 Sink:MaD:101 |
+| LibrarySanitizers.java:29:22:29:27 | source : String | LibrarySanitizers.java:29:22:29:45 | replace(...) | provenance | MaD:540 Sink:MaD:101 |
+| LibrarySanitizers.java:31:22:31:27 | source : String | LibrarySanitizers.java:31:22:31:50 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:32:22:32:27 | source : String | LibrarySanitizers.java:32:22:32:50 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:34:22:34:27 | source : String | LibrarySanitizers.java:34:22:34:50 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:35:22:35:27 | source : String | LibrarySanitizers.java:35:22:35:50 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:37:22:37:27 | source : String | LibrarySanitizers.java:37:22:37:51 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:38:22:38:27 | source : String | LibrarySanitizers.java:38:22:38:51 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:40:22:40:27 | source : String | LibrarySanitizers.java:40:22:40:51 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:41:22:41:27 | source : String | LibrarySanitizers.java:41:22:41:51 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:43:22:43:27 | source : String | LibrarySanitizers.java:43:22:43:51 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:44:22:44:27 | source : String | LibrarySanitizers.java:44:22:44:51 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:46:22:46:27 | source : String | LibrarySanitizers.java:46:22:46:57 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:47:22:47:27 | source : String | LibrarySanitizers.java:47:22:47:57 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:48:22:48:27 | source : String | LibrarySanitizers.java:48:22:48:57 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:49:22:49:27 | source : String | LibrarySanitizers.java:49:22:49:57 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
+| LibrarySanitizers.java:50:22:50:27 | source : String | LibrarySanitizers.java:50:22:50:58 | replaceAll(...) | provenance | MaD:541 Sink:MaD:101 |
 | LibrarySanitizers.java:72:25:72:32 | source(...) : String | LibrarySanitizers.java:82:41:82:46 | source : String | provenance | Src:MaD:536  |
 | LibrarySanitizers.java:82:41:82:46 | source : String | LibrarySanitizers.java:82:22:82:47 | removeFrom(...) | provenance | MaD:538 Sink:MaD:101 |
 | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:94:26:94:31 | source | provenance | Src:MaD:536 Sink:MaD:101 |
@@ -4469,12 +4457,9 @@ models
 | 536 | Source: loginjection; LibrarySanitizers; false; source; (); ; ReturnValue; remote; manual |
 | 537 | Source: loginjection; LogInjectionTest; false; source; (); ; ReturnValue; remote; manual |
 | 538 | Summary: com.google.common.base; CharMatcher; true; removeFrom; (CharSequence); ; Argument[0]; ReturnValue; taint; manual |
-| 539 | Summary: com.google.common.base; CharMatcher; true; replaceFrom; (CharSequence,CharSequence); ; Argument[0]; ReturnValue; taint; manual |
-| 540 | Summary: com.google.common.base; CharMatcher; true; replaceFrom; (CharSequence,char); ; Argument[0]; ReturnValue; taint; manual |
-| 541 | Summary: java.lang; String; false; replace; ; ; Argument[1]; ReturnValue; taint; manual |
-| 542 | Summary: java.lang; String; false; replace; ; ; Argument[this]; ReturnValue; taint; manual |
-| 543 | Summary: java.lang; String; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
-| 544 | Summary: org.apache.commons.lang3; StringUtils; false; replaceChars; ; ; Argument[0]; ReturnValue; taint; manual |
+| 539 | Summary: java.lang; String; false; replace; ; ; Argument[1]; ReturnValue; taint; manual |
+| 540 | Summary: java.lang; String; false; replace; ; ; Argument[this]; ReturnValue; taint; manual |
+| 541 | Summary: java.lang; String; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | LibrarySanitizers.java:12:25:12:32 | source(...) : String | semmle.label | source(...) : String |
 | LibrarySanitizers.java:16:22:16:27 | source : String | semmle.label | source : String |
@@ -4529,15 +4514,6 @@ nodes
 | LibrarySanitizers.java:49:22:49:57 | replaceAll(...) | semmle.label | replaceAll(...) |
 | LibrarySanitizers.java:50:22:50:27 | source : String | semmle.label | source : String |
 | LibrarySanitizers.java:50:22:50:58 | replaceAll(...) | semmle.label | replaceAll(...) |
-| LibrarySanitizers.java:54:25:54:32 | source(...) : String | semmle.label | source(...) : String |
-| LibrarySanitizers.java:61:22:61:65 | removeFrom(...) | semmle.label | removeFrom(...) |
-| LibrarySanitizers.java:61:59:61:64 | source : String | semmle.label | source : String |
-| LibrarySanitizers.java:62:22:62:71 | replaceFrom(...) | semmle.label | replaceFrom(...) |
-| LibrarySanitizers.java:62:60:62:65 | source : String | semmle.label | source : String |
-| LibrarySanitizers.java:63:22:63:71 | replaceFrom(...) | semmle.label | replaceFrom(...) |
-| LibrarySanitizers.java:63:60:63:65 | source : String | semmle.label | source : String |
-| LibrarySanitizers.java:65:22:65:92 | replaceChars(...) | semmle.label | replaceChars(...) |
-| LibrarySanitizers.java:65:72:65:77 | source : String | semmle.label | source : String |
 | LibrarySanitizers.java:72:25:72:32 | source(...) : String | semmle.label | source(...) : String |
 | LibrarySanitizers.java:82:22:82:47 | removeFrom(...) | semmle.label | removeFrom(...) |
 | LibrarySanitizers.java:82:41:82:46 | source : String | semmle.label | source : String |

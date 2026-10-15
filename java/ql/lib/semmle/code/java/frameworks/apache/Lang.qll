@@ -47,3 +47,24 @@ class TypeApacheSystemUtils extends Class {
     this.hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "SystemUtils")
   }
 }
+
+/** A call to `StringUtils.replaceChars`. */
+private class ApacheStringUtilsReplaceCharsCall extends MethodCall, StringReplacement::Range {
+  ApacheStringUtilsReplaceCharsCall() {
+    this.getMethod()
+        .hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "StringUtils",
+          "replaceChars")
+  }
+
+  override Expr getInputString() { result = this.getArgument(0) }
+
+  override Expr getMatchExpression() { result = this.getArgument(1) }
+
+  override Expr getReplacement() { result = this.getArgument(2) }
+
+  override predicate matchExpressionIsCharacterSet() {
+    this.getMethod().getParameterType(1) instanceof TypeString
+  }
+
+  override string getName() { result = "StringUtils.replaceChars" }
+}
