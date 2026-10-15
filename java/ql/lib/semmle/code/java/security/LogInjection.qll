@@ -126,6 +126,15 @@ private predicate logInjectionGuard(Guard g, Expr e, boolean branch) {
     branch = false
   )
   or
+  exists(StringCharacterSetMatch match, CompileTimeConstantExpr characters, boolean matchingBranch |
+    match = g and
+    characters = match.getMatchExpression() and
+    containsBothLineBreaks(characters) and
+    e = match.getASanitizedExpr() and
+    match.hasMatchingCharacterOnBranch(matchingBranch) and
+    branch = matchingBranch.booleanNot()
+  )
+  or
   exists(RegexMatch rm, CompileTimeConstantExpr target |
     rm = g and
     target = rm.getRegex() and

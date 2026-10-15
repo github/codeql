@@ -9,7 +9,7 @@ module;
 import java
 
 /**
- * A module importing the frameworks that implement `RegexMatch`es,
+ * A module importing the frameworks that implement string matches,
  * ensuring that they are visible to the concepts library.
  */
 private module Frameworks {
@@ -78,6 +78,62 @@ module RegexMatch {
      * method. This is used for nice alert messages and should include the
      * type-qualified name if possible.
      */
+    abstract string getName();
+  }
+}
+
+/**
+ * An expression that tests whether an input string contains characters from a
+ * character set.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `StringCharacterSetMatch::Range` instead.
+ */
+class StringCharacterSetMatch extends Expr instanceof StringCharacterSetMatch::Range {
+  /** Gets the input string being tested. */
+  Expr getInputString() { result = super.getInputString() }
+
+  /** Gets the expression that specifies the character set. */
+  Expr getMatchExpression() { result = super.getMatchExpression() }
+
+  /** Gets an expression to be sanitized. */
+  Expr getASanitizedExpr() { result = [this.getInputString(), super.getAdditionalSanitizedExpr()] }
+
+  /**
+   * Holds if taking `branch` means that the input contains at least one
+   * character from the match expression.
+   */
+  predicate hasMatchingCharacterOnBranch(boolean branch) {
+    super.hasMatchingCharacterOnBranch(branch)
+  }
+
+  /** Gets a descriptive name for this character-set match. */
+  string getName() { result = super.getName() }
+}
+
+/** Provides classes for modeling character-set matching APIs. */
+module StringCharacterSetMatch {
+  /**
+   * A range class for APIs that test whether an input contains characters from
+   * a character set.
+   */
+  abstract class Range extends Expr {
+    /** Gets the input string being tested. */
+    abstract Expr getInputString();
+
+    /** Gets the expression that specifies the character set. */
+    abstract Expr getMatchExpression();
+
+    /** Gets an additional expression to be sanitized, if any. */
+    Expr getAdditionalSanitizedExpr() { none() }
+
+    /**
+     * Holds if taking `branch` means that the input contains at least one
+     * character from the match expression.
+     */
+    abstract predicate hasMatchingCharacterOnBranch(boolean branch);
+
+    /** Gets a descriptive name for this character-set match. */
     abstract string getName();
   }
 }

@@ -28,11 +28,6 @@
 | LibrarySanitizers.java:82:22:82:47 | removeFrom(...) | LibrarySanitizers.java:72:25:72:32 | source(...) : String | LibrarySanitizers.java:82:22:82:47 | removeFrom(...) | This log entry depends on a $@. | LibrarySanitizers.java:72:25:72:32 | source(...) | user-provided value |
 | LibrarySanitizers.java:94:26:94:31 | source | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:94:26:94:31 | source | This log entry depends on a $@. | LibrarySanitizers.java:86:25:86:32 | source(...) | user-provided value |
 | LibrarySanitizers.java:98:26:98:31 | source | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:98:26:98:31 | source | This log entry depends on a $@. | LibrarySanitizers.java:86:25:86:32 | source(...) | user-provided value |
-| LibrarySanitizers.java:102:26:102:31 | source | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:102:26:102:31 | source | This log entry depends on a $@. | LibrarySanitizers.java:86:25:86:32 | source(...) | user-provided value |
-| LibrarySanitizers.java:106:26:106:31 | source | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:106:26:106:31 | source | This log entry depends on a $@. | LibrarySanitizers.java:86:25:86:32 | source(...) | user-provided value |
-| LibrarySanitizers.java:110:26:110:31 | source | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:110:26:110:31 | source | This log entry depends on a $@. | LibrarySanitizers.java:86:25:86:32 | source(...) | user-provided value |
-| LibrarySanitizers.java:114:26:114:31 | source | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:114:26:114:31 | source | This log entry depends on a $@. | LibrarySanitizers.java:86:25:86:32 | source(...) | user-provided value |
-| LibrarySanitizers.java:118:26:118:31 | source | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:118:26:118:31 | source | This log entry depends on a $@. | LibrarySanitizers.java:86:25:86:32 | source(...) | user-provided value |
 | LogInjectionTest.java:39:26:39:31 | source | LogInjectionTest.java:35:34:35:41 | source(...) : Object | LogInjectionTest.java:39:26:39:31 | source | This log entry depends on a $@. | LogInjectionTest.java:35:34:35:41 | source(...) | user-provided value |
 | LogInjectionTest.java:45:26:45:31 | source | LogInjectionTest.java:35:34:35:41 | source(...) : Object | LogInjectionTest.java:45:26:45:31 | source | This log entry depends on a $@. | LogInjectionTest.java:35:34:35:41 | source(...) | user-provided value |
 | LogInjectionTest.java:51:26:51:31 | source | LogInjectionTest.java:35:34:35:41 | source(...) : Object | LogInjectionTest.java:51:26:51:31 | source | This log entry depends on a $@. | LogInjectionTest.java:35:34:35:41 | source(...) | user-provided value |
@@ -1962,11 +1957,6 @@ edges
 | LibrarySanitizers.java:82:41:82:46 | source : String | LibrarySanitizers.java:82:22:82:47 | removeFrom(...) | provenance | MaD:538 Sink:MaD:101 |
 | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:94:26:94:31 | source | provenance | Src:MaD:536 Sink:MaD:101 |
 | LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:98:26:98:31 | source | provenance | Src:MaD:536 Sink:MaD:101 |
-| LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:102:26:102:31 | source | provenance | Src:MaD:536 Sink:MaD:101 |
-| LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:106:26:106:31 | source | provenance | Src:MaD:536 Sink:MaD:101 |
-| LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:110:26:110:31 | source | provenance | Src:MaD:536 Sink:MaD:101 |
-| LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:114:26:114:31 | source | provenance | Src:MaD:536 Sink:MaD:101 |
-| LibrarySanitizers.java:86:25:86:32 | source(...) : String | LibrarySanitizers.java:118:26:118:31 | source | provenance | Src:MaD:536 Sink:MaD:101 |
 | LogInjectionTest.java:35:25:35:41 | (...)... : String | LogInjectionTest.java:39:26:39:31 | source | provenance | Sink:MaD:101 |
 | LogInjectionTest.java:35:25:35:41 | (...)... : String | LogInjectionTest.java:45:26:45:31 | source | provenance | Sink:MaD:101 |
 | LogInjectionTest.java:35:25:35:41 | (...)... : String | LogInjectionTest.java:51:26:51:31 | source | provenance | Sink:MaD:101 |
@@ -4520,11 +4510,6 @@ nodes
 | LibrarySanitizers.java:86:25:86:32 | source(...) : String | semmle.label | source(...) : String |
 | LibrarySanitizers.java:94:26:94:31 | source | semmle.label | source |
 | LibrarySanitizers.java:98:26:98:31 | source | semmle.label | source |
-| LibrarySanitizers.java:102:26:102:31 | source | semmle.label | source |
-| LibrarySanitizers.java:106:26:106:31 | source | semmle.label | source |
-| LibrarySanitizers.java:110:26:110:31 | source | semmle.label | source |
-| LibrarySanitizers.java:114:26:114:31 | source | semmle.label | source |
-| LibrarySanitizers.java:118:26:118:31 | source | semmle.label | source |
 | LogInjectionTest.java:35:25:35:41 | (...)... : String | semmle.label | (...)... : String |
 | LogInjectionTest.java:35:34:35:41 | source(...) : Object | semmle.label | source(...) : Object |
 | LogInjectionTest.java:39:26:39:31 | source | semmle.label | source |

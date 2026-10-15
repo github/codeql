@@ -99,23 +99,23 @@ public class LibrarySanitizers {
         }
 
         if (!org.apache.commons.lang3.StringUtils.containsAny(source, "\r\n")) {
-            logger.debug(source); // $ SPURIOUS: Alert
+            logger.debug(source);
         }
 
         if (org.apache.commons.lang3.StringUtils.containsNone(source, "\r\n")) {
-            logger.debug(source); // $ SPURIOUS: Alert
+            logger.debug(source);
         }
 
         if (!CharMatcher.anyOf("\r\n").matchesAnyOf(source)) {
-            logger.debug(source); // $ SPURIOUS: Alert
+            logger.debug(source);
         }
 
         if (CharMatcher.anyOf("\r\n").matchesNoneOf(source)) {
-            logger.debug(source); // $ SPURIOUS: Alert
+            logger.debug(source);
         }
 
         if (CharMatcher.noneOf("\r\n").matchesAllOf(source)) {
-            logger.debug(source); // $ SPURIOUS: Alert
+            logger.debug(source);
         }
     }
 }

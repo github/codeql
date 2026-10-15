@@ -24,6 +24,46 @@ private class CharMatcherAnyOfCall extends MethodCall {
   }
 }
 
+/** A call to `CharMatcher.noneOf`. */
+private class CharMatcherNoneOfCall extends MethodCall {
+  CharMatcherNoneOfCall() {
+    this.getMethod().hasQualifiedName("com.google.common.base", "CharMatcher", "noneOf")
+  }
+}
+
+/** A call that tests a string using a character-set `CharMatcher`. */
+private class CharMatcherCharacterSetMatch extends MethodCall, StringCharacterSetMatch::Range {
+  CharMatcherCharacterSetMatch() {
+    this.getMethod()
+        .hasQualifiedName("com.google.common.base", "CharMatcher",
+          ["matchesAllOf", "matchesAnyOf", "matchesNoneOf"]) and
+    (
+      this.getMethod().hasName(["matchesAnyOf", "matchesNoneOf"]) and
+      getUniqueLocalOrigin(this.getQualifier()) instanceof CharMatcherAnyOfCall
+      or
+      this.getMethod().hasName("matchesAllOf") and
+      getUniqueLocalOrigin(this.getQualifier()) instanceof CharMatcherNoneOfCall
+    )
+  }
+
+  override Expr getInputString() { result = this.getArgument(0) }
+
+  override Expr getMatchExpression() {
+    result = getUniqueLocalOrigin(this.getQualifier()).(MethodCall).getArgument(0)
+  }
+
+  override predicate hasMatchingCharacterOnBranch(boolean branch) {
+    this.getMethod().hasName("matchesAnyOf") and branch = true
+    or
+    this.getMethod().hasName("matchesNoneOf") and branch = false
+    or
+    this.getMethod().hasName("matchesAllOf") and
+    branch = false
+  }
+
+  override string getName() { result = "CharMatcher." + this.getMethod().getName() }
+}
+
 /** A call to `CharMatcher.replaceFrom`. */
 private class CharMatcherReplaceFromCall extends MethodCall, StringReplacement::Range {
   CharMatcherReplaceFromCall() {
