@@ -242,9 +242,17 @@ func t27() {
     func getOptional() throws -> String? {
         return Optional.some(source("t27.1"))
     }
-    // TODO: try? should not double-wrap in Optional
+    // try? should not double-wrap in Optional
     let x = try? getOptional()
     if let x {
-        sink(x)  // $ MISSING: hasValueFlow=t27.1
+        sink(x)  // $ hasValueFlow=t27.1
     }
+}
+
+func t28() {
+    func getOptional() -> String? {
+        return Optional.some(source("t28.1"))
+    }
+    sink(getOptional() ?? "default")  // $ hasValueFlow=t28.1
+    sink("safe" ?? getOptional())  // $ hasValueFlow=t28.1
 }

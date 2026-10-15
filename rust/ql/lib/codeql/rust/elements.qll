@@ -44,6 +44,8 @@ import codeql.rust.elements.CfgAtom
 import codeql.rust.elements.CfgAttrMeta
 import codeql.rust.elements.CfgComposite
 import codeql.rust.elements.CfgMeta
+import codeql.rust.elements.CfgPredExpr
+import codeql.rust.elements.CfgPredPat
 import codeql.rust.elements.CfgPredicate
 import codeql.rust.elements.ClosureExpr
 import codeql.rust.elements.Comment

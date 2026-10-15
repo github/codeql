@@ -176,6 +176,16 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
     value = node.toString()
   }
 
+  private predicate isBypassedStoreReadStep(Step s) {
+    exists(ContentSet contents |
+      s.read(contents)
+      or
+      s.store(contents)
+    |
+      bypassContentSet(contents)
+    )
+  }
+
   query predicate edges(Node node1, Node node2, string key, string value) {
     key = "semmle.label" and
     relevantDataFlowNode(node1) and
@@ -183,7 +193,9 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
     (
       exists(Step step |
         step(node1, step, node2) and
-        value = step.toString()
+        if isBypassedStoreReadStep(step)
+        then value = "value [bypassed " + step.toString() + "]"
+        else value = step.toString()
       )
       or
       exists(boolean isUseStep |

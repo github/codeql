@@ -30,3 +30,5 @@ extensions:
       - ["file-write", "all"]
       - ["reverse-dns", "all"]
       - ["view-component-input", "all"]
+      # AI threat models
+      - ["ai", "all"]
