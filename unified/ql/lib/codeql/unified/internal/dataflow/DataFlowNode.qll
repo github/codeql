@@ -159,8 +159,7 @@ class BuilderNode extends TDataFlowNodeStage1 {
    * this node still exists but will typically not flow anywhere.
    */
   predicate isReceiverParameter(Callable callable) {
-    this.isImplicitParameter(toDataFlowCallable(callable),
-      any(ParameterPosition p | p.isReceiver()))
+    this.isImplicitParameter(toDataFlowCallable(callable), any(ParameterPosition p | p.isReceiver()))
   }
 
   /** Holds if this node represents the receiver argument passed to `call`. */
