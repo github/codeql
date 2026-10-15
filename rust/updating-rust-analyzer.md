@@ -109,7 +109,8 @@ pkg-config`.
 
 7. Update `.expected` files by running:
    ```
-   codeql test run --learn --search-path=rust/extractor-pack:. rust/ql/test
+   codeql test run --learn --search-path=rust/extractor-pack:. \
+     --consistency-queries=rust/ql/consistency-queries rust/ql/test
    ```
    The search path selects the newly built extractor from step 6.
 
@@ -125,7 +126,7 @@ pkg-config`.
    For each separate problem address the issue, regenerate the `.expected`
    files with the command from step 7, and create a commit.
 
-   Repeat until no `testFailures` remain and the tests pass.
+   Repeat until no rows under `testFailures` remain and the tests pass.
 
 9. If in step 5 the schema was updated, add upgrade/downgrade scripts and a
    change note. This is best done last to reduce the chance of merge conflicts
