@@ -24,7 +24,7 @@ module DataFlowInput implements InputSig<Location> {
   //
   private predicate isReturnNode(Node n, ReturnKind kind) {
     // TODO: Handle short-hand returns such as `func foo() -> Int { 5 }`
-    n.asExpr() = any(ReturnExpr r).getValue() and exists(kind)
+    n.asExpr() = any(ReturnExpr r).getValue() and kind.isStandardReturnValue()
   }
 
   class ReturnNode extends Node {
@@ -34,7 +34,7 @@ module DataFlowInput implements InputSig<Location> {
   }
 
   private predicate isOutNode(Node n, DataFlowCall call, ReturnKind kind) {
-    n.asExpr() = call.asExplicitCall() and exists(kind)
+    n.asExpr() = call.asExplicitCall() and kind.isStandardReturnValue()
   }
 
   class OutNode extends Node {
@@ -43,7 +43,10 @@ module DataFlowInput implements InputSig<Location> {
 
   OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { isOutNode(result, call, kind) }
 
-  class ReturnKind = Unit;
+  class ReturnKind extends Unit {
+    /** Holds if this is the standard return value */
+    predicate isStandardReturnValue() { any() }
+  }
 
   import ParameterPositions
   //
