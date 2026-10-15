@@ -1189,6 +1189,8 @@ class Decltype extends Type, NameQualifyingElement {
 
   override int getSize() { result = this.getBaseType().getSize() }
 
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
+
   override int getAlignment() { result = this.getBaseType().getAlignment() }
 
   override int getPointerIndirectionLevel() {
@@ -1248,6 +1250,8 @@ class TypeofType extends Type {
   override string getName() { result = "typeof(...)" }
 
   override int getSize() { result = this.getBaseType().getSize() }
+
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
 
   override int getAlignment() { result = this.getBaseType().getAlignment() }
 
@@ -1394,6 +1398,8 @@ class IntrinsicTransformedType extends Type {
 
   override int getSize() { result = this.getBaseType().getSize() }
 
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
+
   override int getAlignment() { result = this.getBaseType().getAlignment() }
 
   override int getPointerIndirectionLevel() {
@@ -1519,6 +1525,8 @@ class SpecifiedType extends DerivedType {
 
   override int getSize() { result = this.getBaseType().getSize() }
 
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
+
   override int getAlignment() { result = this.getBaseType().getAlignment() }
 
   override int getPointerIndirectionLevel() {
@@ -1593,6 +1601,8 @@ class ArrayType extends DerivedType {
    * of elements.
    */
   override int getSize() { result = this.getByteSize() }
+
+  override int getBitWidth() { result = this.getByteSize() * 8 }
 
   override string explain() {
     if exists(this.getArraySize())
