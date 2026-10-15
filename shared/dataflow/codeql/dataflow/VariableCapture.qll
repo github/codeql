@@ -483,6 +483,7 @@ module Flow<
   }
 
   /** Gets the enclosing callable of `ce`. */
+  pragma[nomagic]
   private Callable closureExprGetEnclosingCallable(ClosureExpr ce) {
     exists(BasicBlock bb | ce.hasCfgNode(bb, _) and result = bb.getEnclosingCallable())
   }
@@ -494,6 +495,13 @@ module Flow<
       closure.hasBody(inner) and
       result = closureExprGetEnclosingCallable(closure)
     )
+  }
+
+  /** Holds if `outer` contains or equals `inner` */
+  bindingset[outer, inner]
+  pragma[inline_late]
+  private predicate isEnclosingCallable(Callable outer, Callable inner) {
+    outer = callableGetEnclosingCallable*(inner)
   }
 
   /**
@@ -512,7 +520,7 @@ module Flow<
       expr.hasCfgNode(bb, _) and
       result = bb.getEnclosingCallable() and
       // The reference to `ce` is allowed to occur in a more deeply nested context
-      closureExprGetEnclosingCallable(ce) = callableGetEnclosingCallable*(result)
+      isEnclosingCallable(closureExprGetEnclosingCallable(ce), result)
     )
   }
 
@@ -811,6 +819,16 @@ module Flow<
       this instanceof TSynthThisQualifier
       or
       exists(SsaFlow::SsaNode n | this = TSynthSsa(n) and n.getSourceVariable() = TThis(_))
+    }
+
+    predicate hasCfgNode(BasicBlock bb, int i) {
+      this = TSynthRead(_, bb, i, _)
+      or
+      this = TSynthThisQualifier(bb, i, _)
+      or
+      exists(SsaFlow::SsaNode n |
+        this = TSynthSsa(n) and n.getBasicBlock() = bb and n.getIndex() = i
+      )
     }
   }
 

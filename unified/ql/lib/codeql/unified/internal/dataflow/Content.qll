@@ -11,7 +11,8 @@ private newtype TContent =
     name = [0 .. 20].toString()
     or
     name = getEnumCaseParameterFieldFromArgument(_, _)
-  }
+  } or
+  TCapturedVariable(CaptureSsaInput::CapturedVariable v)
 
 class Content extends TContent {
   string asNamedMember() { this = TNamedMember(result) }
@@ -22,9 +23,13 @@ class Content extends TContent {
     result = this.asNamedMember()
     or
     this.isArrayElement() and result = "ArrayElement"
+    or
+    result = this.asCapturedVariable().toString()
   }
 
-  Location getLocation() { none() }
+  LocalVariable asCapturedVariable() { this = TCapturedVariable(result) }
+
+  Location getLocation() { result = this.asCapturedVariable().getLocation() }
 }
 
 private newtype TContentSet = TSingleton(Content content)
@@ -45,4 +50,6 @@ module ContentSet {
   ContentSet namedMember(string name) { result.asSingleton().asNamedMember() = name }
 
   ContentSet arrayElement() { result.asSingleton().isArrayElement() }
+
+  ContentSet capturedVariable(LocalVariable v) { result.asSingleton().asCapturedVariable() = v }
 }
