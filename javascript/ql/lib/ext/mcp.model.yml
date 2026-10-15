@@ -24,13 +24,13 @@ extensions:
       extensible: sourceModel
     data:
       # High-level server: the callback is the last argument; its first parameter holds the arguments
-      - ["@modelcontextprotocol/sdk.McpServer", "Member[tool,registerTool,prompt,registerPrompt].Argument[1..].Parameter[0]", "remote"]
-      - ["@modelcontextprotocol/sdk.McpServer", "Member[resource,registerResource].Argument[1..].Parameter[0,1]", "remote"]
+      - ["@modelcontextprotocol/sdk.McpServer", "Member[tool,registerTool,prompt,registerPrompt].Argument[1..].Parameter[0]", "ai"]
+      - ["@modelcontextprotocol/sdk.McpServer", "Member[resource,registerResource].Argument[1..].Parameter[0,1]", "ai"]
       # Transport headers and the bearer token: `extra` in 1.x, `ctx` in 2.x
       - ["@modelcontextprotocol/sdk.McpServer", "Member[tool,registerTool,prompt,registerPrompt].Argument[1..].Parameter[1,2].Member[requestInfo].Member[headers]", "remote"]
       - ["@modelcontextprotocol/sdk.McpServer", "Member[tool,registerTool,prompt,registerPrompt].Argument[1..].Parameter[1,2].Member[authInfo].Member[token]", "remote"]
       - ["@modelcontextprotocol/sdk.McpServer", "Member[tool,registerTool,prompt,registerPrompt].Argument[1..].Parameter[1,2].Member[http].Member[req].Member[headers].Member[get].ReturnValue", "remote"]
       - ["@modelcontextprotocol/sdk.McpServer", "Member[tool,registerTool,prompt,registerPrompt].Argument[1..].Parameter[1,2].Member[http].Member[authInfo].Member[token]", "remote"]
       # Low-level server: request handlers receive the request; custom methods (2.x) its params
-      - ["@modelcontextprotocol/sdk.Server", "Member[setRequestHandler].Argument[1].Parameter[0].Member[params]", "remote"]
-      - ["@modelcontextprotocol/sdk.Server", "Member[setRequestHandler].Argument[2].Parameter[0]", "remote"]
+      - ["@modelcontextprotocol/sdk.Server", "Member[setRequestHandler].Argument[1].Parameter[0].Member[params]", "ai"]
+      - ["@modelcontextprotocol/sdk.Server", "Member[setRequestHandler].Argument[2].Parameter[0]", "ai"]

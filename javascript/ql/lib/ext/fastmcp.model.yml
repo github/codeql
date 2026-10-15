@@ -11,5 +11,5 @@ extensions:
       pack: codeql/javascript-all
       extensible: sourceModel
     data:
-      - ["fastmcp.FastMCP", "Member[addTool].Argument[0].Member[execute].Parameter[0]", "remote"]
-      - ["fastmcp.FastMCP", "Member[addResourceTemplate,addPrompt].Argument[0].Member[load].Parameter[0]", "remote"]
+      - ["fastmcp.FastMCP", "Member[addTool].Argument[0].Member[execute].Parameter[0]", "ai"]
+      - ["fastmcp.FastMCP", "Member[addResourceTemplate,addPrompt].Argument[0].Member[load].Parameter[0]", "ai"]

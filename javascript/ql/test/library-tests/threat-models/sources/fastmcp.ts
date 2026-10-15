@@ -8,7 +8,7 @@ const server = new FastMCP({ name: "test", version: "1.0.0" });
 server.addTool({
   name: "run",
   parameters: z.object({ command: z.string() }),
-  execute: async (args) => { // $ threat-source=remote
+  execute: async (args) => { // $ threat-source=ai
     SINK(args.command); // $ hasFlow
     return "";
   },
@@ -18,7 +18,7 @@ server.addResourceTemplate({
   uriTemplate: "note://{name}",
   name: "note",
   arguments: [{ name: "name" }],
-  async load({ name }) { // $ threat-source=remote
+  async load({ name }) { // $ threat-source=ai
     SINK(name); // $ hasFlow
     return { text: "" };
   },
@@ -27,7 +27,7 @@ server.addResourceTemplate({
 server.addPrompt({
   name: "summarize",
   arguments: [{ name: "topic" }],
-  load: async ({ topic }) => { // $ threat-source=remote
+  load: async ({ topic }) => { // $ threat-source=ai
     SINK(topic); // $ hasFlow
     return "";
   },
