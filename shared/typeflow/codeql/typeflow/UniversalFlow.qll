@@ -242,6 +242,7 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
      * Holds if `t` is a candidate property for `n` that is also valid for data coming
      * through the edges into `n` ranked from `1` to `r`.
      */
+    pragma[no_dynamic_join_order]
     private predicate flowJoin(int r, Node n, T::Prop t) {
       (
         r = 1 and candJoinProp(n, t)

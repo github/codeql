@@ -3189,6 +3189,7 @@ private module Impl {
     )
   }
 
+  pragma[no_dynamic_join_order]
   cached
   Element getImmediateChild(Element e, int index, string partialAccessor) {
     // why does this look more complicated than it should?

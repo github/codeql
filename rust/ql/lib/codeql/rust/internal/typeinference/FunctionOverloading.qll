@@ -223,6 +223,7 @@ private Type getAssocFunctionNonTypeParameterTypeAt(
  * those two implementations agree on the instantiation of `traitTp`, which occurs
  * in a positional position inside `f`.
  */
+pragma[no_dynamic_join_order]
 pragma[nomagic]
 private predicate hasEquivalentPositionalSibling(
   ImplItemNode impl, ImplItemNode sibling, Function f, TypeParamTypeParameter traitTp

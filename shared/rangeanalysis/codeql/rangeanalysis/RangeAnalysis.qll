@@ -902,6 +902,7 @@ module RangeStage<
   /**
    * Holds if `v != b + delta` at `pos` and `v` is of integral type.
    */
+  pragma[no_dynamic_join_order]
   private predicate unequalIntegralSsa(
     Sem::SsaVariable v, SemBound b, D::Delta delta, SsaReadPosition pos, SemReason reason
   ) {
@@ -929,6 +930,7 @@ module RangeStage<
    * - `upper = true`  : `inp <= b + delta`
    * - `upper = false` : `inp >= b + delta`
    */
+  pragma[no_dynamic_join_order]
   private predicate boundedPhiInp(
     Sem::SsaPhiNode phi, int rix, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason
@@ -973,6 +975,7 @@ module RangeStage<
    *
    * Equivalent to `boundedPhiInp(phi, rix, b, delta, upper, _, _, _)`.
    */
+  pragma[no_dynamic_join_order]
   pragma[noinline]
   private predicate boundedPhiInp1(
     Sem::SsaPhiNode phi, SemBound b, boolean upper, int rix, D::Delta delta
@@ -986,6 +989,7 @@ module RangeStage<
    * - `upper = true`  : `inp <= phi`
    * - `upper = false` : `inp >= phi`
    */
+  pragma[no_dynamic_join_order]
   private predicate selfBoundedPhiInp(Sem::SsaPhiNode phi, int rix, boolean upper) {
     exists(D::Delta d, SemSsaBound phibound |
       phibound.getVariable() = phi and
@@ -1004,6 +1008,7 @@ module RangeStage<
    * - `upper = true`  : `inp <= b + delta`
    * - `upper = false` : `inp >= b + delta`
    */
+  pragma[no_dynamic_join_order]
   pragma[noinline]
   private predicate boundedPhiCand(
     Sem::SsaPhiNode phi, boolean upper, SemBound b, D::Delta delta, boolean fromBackEdge,
@@ -1016,6 +1021,7 @@ module RangeStage<
    * Holds if the candidate bound `b + delta` for `phi` is valid for the phi input
    * along the edge with rank `rix`.
    */
+  pragma[no_dynamic_join_order]
   private predicate boundedPhiCandValidForEdge(
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason, int rix
@@ -1040,6 +1046,7 @@ module RangeStage<
    * - `upper = true`  : `phi <= b + delta`
    * - `upper = false` : `phi >= b + delta`
    */
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   private predicate boundedPhiRankStep(
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
@@ -1058,6 +1065,7 @@ module RangeStage<
    * - `upper = true`  : `phi <= b + delta`
    * - `upper = false` : `phi >= b + delta`
    */
+  pragma[no_dynamic_join_order]
   private predicate boundedPhi(
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason
@@ -1101,6 +1109,7 @@ module RangeStage<
    * For `upper = true` this means that the cast will not overflow and for
    * `upper = false` this means that the cast will not underflow.
    */
+  pragma[no_dynamic_join_order]
   private predicate safeNarrowingCast(NarrowingCastExpr cast, boolean upper) {
     exists(D::Delta bound |
       bounded(cast.getOperand(), any(SemZeroBound zb), bound, upper, _, _, _)
@@ -1111,6 +1120,7 @@ module RangeStage<
     )
   }
 
+  pragma[no_dynamic_join_order]
   pragma[noinline]
   private predicate boundedCastExpr(
     NarrowingCastExpr cast, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
@@ -1119,6 +1129,7 @@ module RangeStage<
     bounded(cast.getOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   private predicate initialBoundedUpper(Sem::Expr e) {
     exists(D::Delta d |
@@ -1136,6 +1147,7 @@ module RangeStage<
     )
   }
 
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   private predicate initialBoundedLower(Sem::Expr e) {
     exists(D::Delta d |
@@ -1144,6 +1156,7 @@ module RangeStage<
     )
   }
 
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   private predicate noOverflow(Sem::Expr e, boolean upper) {
     noOverflow0(e, upper)
@@ -1457,6 +1470,7 @@ module RangeStage<
     bounded(cond.getBranchExpr(branch), b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   private predicate boundedAddOperand(
     Sem::AddExpr add, boolean upper, SemBound b, boolean isLeft, D::Delta delta,
@@ -1477,6 +1491,7 @@ module RangeStage<
    * Holds if `sub = left - right` and `left <= b + delta` if `upper` is `true`
    * and `left >= b + delta` is `upper` is `false`.
    */
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   private predicate boundedSubOperandLeft(
     Sem::SubExpr sub, boolean upper, SemBound b, D::Delta delta, boolean fromBackEdge,
@@ -1494,6 +1509,7 @@ module RangeStage<
    * Note that the boolean value of `upper` is flipped compared to many other predicates in
    * this file. This ensures a clean join at the call-site.
    */
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   private predicate boundedSubOperandRight(
     Sem::SubExpr sub, boolean upper, D::Delta delta, boolean fromBackEdge
@@ -1504,6 +1520,7 @@ module RangeStage<
       _)
   }
 
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   private predicate boundedRemExpr(
     Sem::RemExpr rem, boolean upper, D::Delta delta, boolean fromBackEdge, D::Delta origdelta,
@@ -1602,6 +1619,7 @@ module RangeStage<
    * The `fromBackEdge`, `origdelta`, `reason` triple are defined by the recursive
    * call to `bounded`.
    */
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   private predicate boundedMulOperand(
     Sem::MulExpr mul, boolean upper, boolean isLeft, D::Delta delta, boolean fromBackEdge,

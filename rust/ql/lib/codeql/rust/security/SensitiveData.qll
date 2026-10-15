@@ -49,6 +49,7 @@ private class SensitiveDataCall extends SensitiveData {
 private class SensitiveVariableAccess extends SensitiveData {
   SensitiveDataClassification classification;
 
+  pragma[no_dynamic_join_order]
   SensitiveVariableAccess() {
     HeuristicNames::nameIndicatesSensitiveData(this.asExpr()
           .(VariableAccess)

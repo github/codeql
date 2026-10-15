@@ -8087,6 +8087,7 @@ module Raw {
   /**
    * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct.
    */
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   Element getImmediateChild(Element e, int index) {
     // why does this look more complicated than it should?

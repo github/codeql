@@ -93,6 +93,7 @@ module Raw {
    * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct.
    */
   pragma[nomagic]
+  pragma[no_dynamic_join_order]
   Element getImmediateChild(Element e, int index) {
   // why does this look more complicated than it should?
   // * none() simplifies generation, as we can append `or ...` without a special case for the first item

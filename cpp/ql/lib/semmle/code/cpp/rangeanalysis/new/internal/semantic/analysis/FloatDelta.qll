@@ -24,6 +24,7 @@ module FloatDelta implements DeltaSig {
 }
 
 module FloatOverflow implements OverflowSig<SemLocation, Sem, FloatDelta> {
+  pragma[no_dynamic_join_order]
   predicate semExprDoesNotOverflow(boolean positively, SemExpr expr) {
     exists(float lb, float ub, float delta |
       typeBounds(expr.getSemType(), lb, ub) and

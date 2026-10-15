@@ -1622,6 +1622,7 @@ abstract class PathExt extends AstNode {
   abstract string getText();
 
   /** Holds if this is an unqualified path with the textual value `name`. */
+  pragma[no_dynamic_join_order]
   pragma[nomagic]
   abstract predicate isUnqualified(string name);
 
@@ -1652,6 +1653,7 @@ abstract class PathExt extends AstNode {
 private class PathExtPath extends PathExt instanceof Path {
   override string getText() { result = Path.super.getText() }
 
+  pragma[no_dynamic_join_order]
   override predicate isUnqualified(string name) {
     not exists(Path.super.getQualifier()) and
     not exists(UseTree tree |
@@ -1670,6 +1672,7 @@ private class PathExtPath extends PathExt instanceof Path {
 private class PathExtIdentPat extends PathExt, IdentPat {
   override string getText() { result = this.getName().getText() }
 
+  pragma[no_dynamic_join_order]
   override predicate isUnqualified(string name) { name = this.getText() }
 
   override Path getQualifier() { none() }
@@ -2273,6 +2276,7 @@ private predicate useImportEdge(Use use, string name, ItemNode item, SuccessorKi
 }
 
 /** Holds if `ec` imports `crate` as `name`. */
+pragma[no_dynamic_join_order]
 pragma[nomagic]
 private predicate externCrateEdge(
   ExternCrateItemNode ec, string name, SuccessorKind kind, CrateItemNode crate
