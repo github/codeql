@@ -83,7 +83,7 @@ public class LibrarySanitizers {
     }
 
     public void testGuards() {
-        String source = source(); // $ Source
+        String source = source();
         Logger logger = null;
 
         if (!source.contains("\n")) {
@@ -91,11 +91,11 @@ public class LibrarySanitizers {
         }
 
         if (!org.apache.commons.lang3.StringUtils.contains(source, "\n")) {
-            logger.debug(source); // $ SPURIOUS: Alert
+            logger.debug(source);
         }
 
         if (!org.apache.commons.lang3.StringUtils.containsIgnoreCase(source, "\n")) {
-            logger.debug(source); // $ SPURIOUS: Alert
+            logger.debug(source);
         }
 
         if (!org.apache.commons.lang3.StringUtils.containsAny(source, "\r\n")) {

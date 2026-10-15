@@ -119,11 +119,11 @@ private predicate logInjectionSanitizer(Expr e) {
  * by checking if there are line breaks in `e`.
  */
 private predicate logInjectionGuard(Guard g, Expr e, boolean branch) {
-  exists(MethodCall mc | mc = g |
-    mc.getMethod() instanceof StringContainsMethod and
-    mc.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ["\n", "\r"] and
-    e = mc.getQualifier() and
-    branch = false
+  exists(StringSubstringMatch match, boolean matchingBranch | match = g |
+    match.getMatchExpression().(CompileTimeConstantExpr).getStringValue() = ["\n", "\r"] and
+    e = match.getASanitizedExpr() and
+    match.hasSubstringOnBranch(matchingBranch) and
+    branch = matchingBranch.booleanNot()
   )
   or
   exists(StringCharacterSetMatch match, CompileTimeConstantExpr characters, boolean matchingBranch |

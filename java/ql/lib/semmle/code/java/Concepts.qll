@@ -83,6 +83,50 @@ module RegexMatch {
 }
 
 /**
+ * An expression that tests whether an input string contains a substring.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `StringSubstringMatch::Range` instead.
+ */
+class StringSubstringMatch extends Expr instanceof StringSubstringMatch::Range {
+  /** Gets the input string being tested. */
+  Expr getInputString() { result = super.getInputString() }
+
+  /** Gets the expression that specifies the substring. */
+  Expr getMatchExpression() { result = super.getMatchExpression() }
+
+  /** Gets an expression to be sanitized. */
+  Expr getASanitizedExpr() { result = [this.getInputString(), super.getAdditionalSanitizedExpr()] }
+
+  /** Holds if taking `branch` means that the input contains the substring. */
+  predicate hasSubstringOnBranch(boolean branch) { super.hasSubstringOnBranch(branch) }
+
+  /** Gets a descriptive name for this substring match. */
+  string getName() { result = super.getName() }
+}
+
+/** Provides classes for modeling substring-matching APIs. */
+module StringSubstringMatch {
+  /** A range class for APIs that test whether an input contains a substring. */
+  abstract class Range extends Expr {
+    /** Gets the input string being tested. */
+    abstract Expr getInputString();
+
+    /** Gets the expression that specifies the substring. */
+    abstract Expr getMatchExpression();
+
+    /** Gets an additional expression to be sanitized, if any. */
+    Expr getAdditionalSanitizedExpr() { none() }
+
+    /** Holds if taking `branch` means that the input contains the substring. */
+    abstract predicate hasSubstringOnBranch(boolean branch);
+
+    /** Gets a descriptive name for this substring match. */
+    abstract string getName();
+  }
+}
+
+/**
  * An expression that tests whether an input string contains characters from a
  * character set.
  *

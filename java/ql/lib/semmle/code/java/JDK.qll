@@ -47,6 +47,19 @@ class StringContainsMethod extends Method {
   }
 }
 
+/** A call to the `java.lang.String.contains` method. */
+class StringContainsCall extends MethodCall, StringSubstringMatch::Range {
+  StringContainsCall() { this.getMethod() instanceof StringContainsMethod }
+
+  override Expr getInputString() { result = this.getQualifier() }
+
+  override Expr getMatchExpression() { result = this.getArgument(0) }
+
+  override predicate hasSubstringOnBranch(boolean branch) { branch = true }
+
+  override string getName() { result = "String.contains" }
+}
+
 /** A call to the `java.lang.String.matches` method. */
 class StringMatchesCall extends MethodCall, RegexMatch::Range {
   StringMatchesCall() {
