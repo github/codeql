@@ -232,7 +232,7 @@ public class Test {
         {
             String source = (String) source();
             if (source.startsWith("/safe") && !StringUtils.contains(source, ".."))
-                sink(source); // $ SPURIOUS: hasTaintFlow
+                sink(source); // Safe
             else
                 sink(source); // $ hasTaintFlow
         }
@@ -453,8 +453,8 @@ public class Test {
             String source = (String) source();
             String normalized = Paths.get(source).normalize().toString();
             if (!StringUtils.contains(normalized, "/data")) {
-                sink(source); // $ SPURIOUS: hasTaintFlow
-                sink(normalized); // $ SPURIOUS: hasTaintFlow
+                sink(source); // Safe
+                sink(normalized); // Safe
             } else {
                 sink(source); // $ hasTaintFlow
                 sink(normalized); // $ hasTaintFlow
@@ -887,17 +887,17 @@ public class Test {
         {
             String source = (String) source();
             source = StringUtils.replaceChars(source, "./\\", "_");
-            sink(source); // $ SPURIOUS: hasTaintFlow
+            sink(source); // Safe
         }
         {
             String source = (String) source();
             source = CharMatcher.anyOf("./\\").replaceFrom(source, '_');
-            sink(source); // $ SPURIOUS: hasTaintFlow
+            sink(source); // Safe
         }
         {
             String source = (String) source();
             source = CharMatcher.anyOf("./\\").removeFrom(source);
-            sink(source); // $ SPURIOUS: hasTaintFlow
+            sink(source); // Safe
         }
         {
             String source = (String) source();
@@ -907,14 +907,14 @@ public class Test {
         {
             String source = (String) source();
             if (StringUtils.containsNone(source, "./\\"))
-                sink(source); // $ SPURIOUS: hasTaintFlow
+                sink(source); // Safe
             else
                 sink(source); // $ hasTaintFlow
         }
         {
             String source = (String) source();
             if (CharMatcher.anyOf("./\\").matchesNoneOf(source))
-                sink(source); // $ SPURIOUS: hasTaintFlow
+                sink(source); // Safe
             else
                 sink(source); // $ hasTaintFlow
         }

@@ -111,7 +111,9 @@ private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
   exists(Guard previousGuard |
     previousGuard.(AllowedPrefixGuard).controls(g.getBasicBlock(), true)
     or
-    previousGuard.(BlockListGuard).controls(g.getBasicBlock(), false)
+    previousGuard
+        .(BlockListGuard)
+        .controls(g.getBasicBlock(), previousGuard.(BlockListGuard).getBranch())
   )
   or
   // `File.getName` strips any directory prefix, returning only the final path
@@ -128,13 +130,31 @@ private class DotDotCheckSanitizer extends PathInjectionSanitizer {
   DotDotCheckSanitizer() { this = DataFlow::BarrierGuard<dotDotCheckGuard/3>::getABarrierNode() }
 }
 
-private class BlockListGuard extends PathGuard instanceof MethodCall {
+private class BlockListGuard extends PathGuard {
+  Expr checkedExpr;
+  boolean branch;
+
   BlockListGuard() {
-    (isStringPartialMatch(this) or isPathPrefixMatch(this)) and
-    isDisallowedWord(super.getAnArgument())
+    exists(StringSubstringMatch match, boolean matchingBranch |
+      this = match and
+      checkedExpr = match.getInputString() and
+      isDisallowedWord(match.getMatchExpression()) and
+      match.hasSubstringOnBranch(matchingBranch) and
+      branch = matchingBranch.booleanNot()
+    )
+    or
+    exists(MethodCall ma |
+      this = ma and
+      (isStringPartialMatch(ma) or isPathPrefixMatch(ma)) and
+      isDisallowedWord(ma.getAnArgument()) and
+      checkedExpr = getVisualQualifier(ma).getUnderlyingExpr() and
+      branch = false
+    )
   }
 
-  override Expr getCheckedExpr() { result = getVisualQualifier(this).getUnderlyingExpr() }
+  override Expr getCheckedExpr() { result = checkedExpr }
+
+  boolean getBranch() { result = branch }
 }
 
 /**
@@ -143,7 +163,7 @@ private class BlockListGuard extends PathGuard instanceof MethodCall {
  * or a sanitizer (`PathNormalizeSanitizer`), to ensure any internal `..` components are removed from the path.
  */
 private predicate blockListGuard(Guard g, Expr e, boolean branch) {
-  branch = false and
+  branch = g.(BlockListGuard).getBranch() and
   // Local taint-flow is used here to handle cases where the validated expression comes from the
   // expression reaching the sink, but it's not the same one, e.g.:
   //  File file = source();
@@ -202,8 +222,10 @@ private predicate isStringPartialMatch(MethodCall ma) {
   exists(RefType t | t = ma.getMethod().getDeclaringType() |
     t instanceof TypeString or t instanceof StringsKt
   ) and
-  getSourceMethod(ma.getMethod())
-      .hasName(["contains", "matches", "regionMatches", "indexOf", "lastIndexOf"])
+  getSourceMethod(ma.getMethod()).hasName(["matches", "regionMatches", "indexOf", "lastIndexOf"])
+  or
+  ma.getMethod().getDeclaringType() instanceof StringsKt and
+  getSourceMethod(ma.getMethod()).hasName("contains")
 }
 
 /**
@@ -223,8 +245,17 @@ private predicate isDisallowedWord(ConstantOrRegex word) {
 /** A complementary guard that protects against path traversal, by looking for the literal `..`. */
 private class PathTraversalGuard extends PathGuard {
   Expr checkedExpr;
+  boolean branch;
 
   PathTraversalGuard() {
+    exists(StringSubstringMatch match, boolean matchingBranch |
+      this = match and
+      checkedExpr = match.getInputString() and
+      match.getMatchExpression().(CompileTimeConstantExpr).getStringValue() = ".." and
+      match.hasSubstringOnBranch(matchingBranch) and
+      branch = matchingBranch.booleanNot()
+    )
+    or
     exists(MethodCall ma, Method m, RefType t |
       m = ma.getMethod() and
       t = m.getDeclaringType() and
@@ -233,24 +264,23 @@ private class PathTraversalGuard extends PathGuard {
       ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
     |
       this = ma and
-      getSourceMethod(m).hasName("contains")
+      t instanceof StringsKt and
+      getSourceMethod(m).hasName("contains") and
+      branch = false
       or
       exists(EqualityTest eq |
         this = eq and
         getSourceMethod(m).hasName(["indexOf", "lastIndexOf"]) and
         eq.getAnOperand() = ma and
-        eq.getAnOperand().(CompileTimeConstantExpr).getIntValue() = -1
+        eq.getAnOperand().(CompileTimeConstantExpr).getIntValue() = -1 and
+        branch = eq.polarity()
       )
     )
   }
 
   override Expr getCheckedExpr() { result = checkedExpr }
 
-  boolean getBranch() {
-    this instanceof MethodCall and result = false
-    or
-    result = this.(EqualityTest).polarity()
-  }
+  boolean getBranch() { result = branch }
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */
@@ -347,11 +377,24 @@ private class FileConstructorChildArgumentStep extends AdditionalTaintStep {
 /** Gets a character used for replacement. */
 private string getAReplacementChar() { result = ["", "_", "-"] }
 
+/** Holds if `replacement` is a safe replacement value. */
+private predicate isSafeReplacement(Expr replacement) {
+  replacement.(CompileTimeConstantExpr).getStringOrCharValue() = getAReplacementChar()
+}
+
 /** Gets a directory character represented as regex. */
 private string getADirRegexChar() { result = ["\\.", "/", "\\\\"] }
 
 /** Gets a directory character represented as a char. */
 private string getADirChar() { result = [".", "/", "\\"] }
+
+/** Holds if `value` contains every directory character. */
+bindingset[value]
+private predicate containsAllDirectoryCharacters(string value) {
+  forall(string directoryCharacter | directoryCharacter = getADirChar() |
+    exists(value.indexOf(directoryCharacter))
+  )
+}
 
 /** Holds if `replacement` replaces all directory characters. */
 private predicate replacesDirectoryCharactersWithSingleReplaceAll(StringReplacement replacement) {
@@ -359,8 +402,7 @@ private predicate replacesDirectoryCharactersWithSingleReplaceAll(StringReplacem
     replacement.matchExpressionIsRegex() and
     target = replacement.getMatchExpression() and
     target.getStringValue() = targetValue and
-    replacement.getReplacement().(CompileTimeConstantExpr).getStringOrCharValue() =
-      getAReplacementChar()
+    isSafeReplacement(replacement.getReplacement())
   |
     not targetValue.matches("%[^%]%") and
     targetValue.matches("[%.%]") and
@@ -372,6 +414,19 @@ private predicate replacesDirectoryCharactersWithSingleReplaceAll(StringReplacem
     targetValue.matches("%" + ["[.]", "\\."] + "%") and
     targetValue.matches("%/%") and
     targetValue.matches("%\\\\\\\\%")
+  )
+}
+
+/**
+ * Holds if a character-set replacement replaces all directory characters.
+ */
+private predicate replacesDirectoryCharactersWithCharacterSet(StringReplacement replacement) {
+  exists(CompileTimeConstantExpr target, string targetValue |
+    replacement.matchExpressionIsCharacterSet() and
+    target = replacement.getMatchExpression() and
+    target.getStringValue() = targetValue and
+    containsAllDirectoryCharacters(targetValue) and
+    isSafeReplacement(replacement.getReplacement())
   )
 }
 
@@ -403,8 +458,8 @@ private predicate replacesDirectoryCharactersWithDoubleReplaceOrReplaceAll(Strin
     rc2.getInputString() = rc1 and
     target1.getStringOrCharValue() = targetValue1 and
     target2.getStringOrCharValue() = targetValue2 and
-    rc1.getReplacement().(CompileTimeConstantExpr).getStringOrCharValue() = getAReplacementChar() and
-    rc2.getReplacement().(CompileTimeConstantExpr).getStringOrCharValue() = getAReplacementChar() and
+    isSafeReplacement(rc1.getReplacement()) and
+    isSafeReplacement(rc2.getReplacement()) and
     // make sure the calls replace different characters
     targetValue2 != targetValue1 and
     // make sure one of the calls replaces '.'
@@ -420,7 +475,23 @@ private predicate replacesDirectoryCharactersWithDoubleReplaceOrReplaceAll(Strin
 private class ReplaceDirectoryCharactersSanitizer extends StringReplacement {
   ReplaceDirectoryCharactersSanitizer() {
     replacesDirectoryCharactersWithSingleReplaceAll(this) or
+    replacesDirectoryCharactersWithCharacterSet(this) or
     replacesDirectoryCharactersWithDoubleReplaceOrReplaceAll(this)
+  }
+}
+
+/**
+ * A sanitizer that protects against path injection vulnerabilities by removing
+ * every directory character.
+ */
+private class RemoveDirectoryCharactersSanitizer extends StringRemoval {
+  RemoveDirectoryCharactersSanitizer() {
+    exists(CompileTimeConstantExpr target, string targetValue |
+      this.matchExpressionIsCharacterSet() and
+      target = this.getMatchExpression() and
+      target.getStringValue() = targetValue and
+      containsAllDirectoryCharacters(targetValue)
+    )
   }
 }
 
@@ -460,6 +531,23 @@ private predicate isMatchesCall(RegexMatch regexMatch, Expr checkedExpr, boolean
 }
 
 /**
+ * Holds if `match` confirms that `checkedExpr` does not contain any directory
+ * characters on `branch`.
+ */
+private predicate isCharacterSetMatch(
+  StringCharacterSetMatch match, Expr checkedExpr, boolean branch
+) {
+  exists(CompileTimeConstantExpr target, string targetValue, boolean matchingBranch |
+    target = match.getMatchExpression() and
+    target.getStringValue() = targetValue and
+    containsAllDirectoryCharacters(targetValue) and
+    checkedExpr = match.getInputString() and
+    match.hasMatchingCharacterOnBranch(matchingBranch) and
+    branch = matchingBranch.booleanNot()
+  )
+}
+
+/**
  * A guard that protects against path traversal by looking for patterns
  * that exclude directory characters: `..`, '/', and '\'.
  */
@@ -467,7 +555,10 @@ private class DirectoryCharactersGuard extends PathGuard {
   Expr checkedExpr;
   boolean branch;
 
-  DirectoryCharactersGuard() { isMatchesCall(this, checkedExpr, branch) }
+  DirectoryCharactersGuard() {
+    isMatchesCall(this, checkedExpr, branch) or
+    isCharacterSetMatch(this, checkedExpr, branch)
+  }
 
   override Expr getCheckedExpr() { result = checkedExpr }
 
@@ -491,6 +582,8 @@ private predicate directoryCharactersGuard(Guard g, Expr e, boolean branch) {
 private class DirectoryCharactersSanitizer extends PathInjectionSanitizer {
   DirectoryCharactersSanitizer() {
     this.asExpr() instanceof ReplaceDirectoryCharactersSanitizer
+    or
+    this.asExpr() instanceof RemoveDirectoryCharactersSanitizer
     or
     this = DataFlow::BarrierGuard<directoryCharactersGuard/3>::getABarrierNode()
   }
