@@ -3,6 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["org.apache.commons.text", "StringEscapeUtils", False, "escapeJava", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.text", "StrBuilder", False, "StrBuilder", "(java.lang.String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["org.apache.commons.text", "StrBuilder", False, "append", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.text", "StrBuilder", False, "append", "", "", "Argument[this]", "ReturnValue", "value", "manual"]

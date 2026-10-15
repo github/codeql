@@ -75,6 +75,7 @@ extensions:
       - ["org.apache.commons.lang3", "RegExUtils", False, "replaceFirst", "", "", "Argument[2]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "RegExUtils", False, "replacePattern", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "RegExUtils", False, "replacePattern", "", "", "Argument[2]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.lang3", "StringEscapeUtils", False, "escapeJava", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "StringEscapeUtils", False, "escapeJson", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "StringUtils", False, "abbreviate", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "StringUtils", False, "abbreviate", "(java.lang.String,java.lang.String,int)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
