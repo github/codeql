@@ -134,7 +134,7 @@ rust_library(
         "@vendor_ts__smallvec-1.16.1//:smallvec",
         "@vendor_ts__thin-vec-0.2.19//:thin_vec",
         "@vendor_ts__tracing-0.1.44//:tracing",
-        "@vendor_ts__triomphe-0.1.16//:triomphe",
+        "@vendor_ts__triomphe-0.1.17//:triomphe",
         "@vendor_ts__typeid-1.0.3//:typeid",
     ],
 )
