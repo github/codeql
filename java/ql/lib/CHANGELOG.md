@@ -1,3 +1,9 @@
+## 9.3.3
+
+### Minor Analysis Improvements
+
+* The queries `java/ssrf` and `java/unvalidated-url-redirection` recognize case-insensitive comparisons of `URI.getHost()` with fixed string allowlist entries, as well as equality and case-insensitive comparisons when the host is stored in a local variable.
+
 ## 9.3.2
 
 No user-facing changes.

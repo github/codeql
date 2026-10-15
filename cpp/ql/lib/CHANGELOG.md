@@ -1,3 +1,13 @@
+## 12.3.0
+
+### New Features
+
+* Added support for C23 bit-precise integers (`_BitInt(N)`).
+
+### Minor Analysis Improvements
+
+* Added flow summaries for the BlazingMQ `BloombergLP::bmqa::Message` and `MessageProperties` classes and their iterators.
+
 ## 12.2.0
 
 ### New Features
