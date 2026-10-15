@@ -159,34 +159,34 @@ class BuilderNode extends TDataFlowNodeStage1 {
    * this node still exists but will typically not flow anywhere.
    */
   predicate isReceiverParameter(Callable callable) {
-    this.isImplicitParameter(getDataFlowCallable(callable),
+    this.isImplicitParameter(toDataFlowCallable(callable),
       any(ParameterPosition p | p.isReceiver()))
   }
 
   /** Holds if this node represents the receiver argument passed to `call`. */
   predicate isReceiverArgument(CallExpr call) {
-    this.isImplicitArgument(getDataFlowCall(call), any(ArgumentPosition p | p.isReceiver()), false)
+    this.isImplicitArgument(toDataFlowCall(call), any(ArgumentPosition p | p.isReceiver()), false)
   }
 
   /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
   predicate isReceiverPostUpdate(CallExpr call) {
-    this.isImplicitArgument(getDataFlowCall(call), any(ArgumentPosition p | p.isReceiver()), true)
+    this.isImplicitArgument(toDataFlowCall(call), any(ArgumentPosition p | p.isReceiver()), true)
   }
 
   /** Holds if this is the canonical representative for the given `callable`. */
   predicate isCallableEx(DataFlowCallable callable) { this = TCallableNode(callable) }
 
   /** Holds if this is the canonical representative for the given `callable`. */
-  predicate isCallable(Callable callable) { this = TCallableNode(getDataFlowCallable(callable)) }
+  predicate isCallable(Callable callable) { this = TCallableNode(toDataFlowCallable(callable)) }
 
   /** Holds if this node represents the function being invoked at `call`. */
   predicate isCalleeArgument(CallExpr call) {
-    this.isImplicitArgument(getDataFlowCall(call), any(ArgumentPosition p | p.isCallee()), false)
+    this.isImplicitArgument(toDataFlowCall(call), any(ArgumentPosition p | p.isCallee()), false)
   }
 
   /** Holds if this node represents the updated state of the function being invoked at `call`, after the call returns. */
   predicate isCalleePostUpdate(CallExpr call) {
-    this.isImplicitArgument(getDataFlowCall(call), any(ArgumentPosition p | p.isCallee()), true)
+    this.isImplicitArgument(toDataFlowCall(call), any(ArgumentPosition p | p.isCallee()), true)
   }
 
   /**

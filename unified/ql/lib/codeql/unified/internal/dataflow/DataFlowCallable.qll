@@ -22,4 +22,4 @@ class DataFlowCallable extends TDataFlowCallable {
   Location getLocation() { result = this.asSourceCallable().getLocation() }
 }
 
-DataFlowCallable getDataFlowCallable(Callable callable) { result.asSourceCallable() = callable }
+DataFlowCallable toDataFlowCallable(Callable callable) { result.asSourceCallable() = callable }

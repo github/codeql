@@ -137,7 +137,7 @@ Node getNodeFromCaptureSsaNode(CaptureSsaOutput::ClosureNode n) {
     callable = thisParam.getCallable() and
     result
         .(BuilderNode)
-        .isImplicitParameter(getDataFlowCallable(callable), any(ParameterPosition p | p.isCallee()))
+        .isImplicitParameter(toDataFlowCallable(callable), any(ParameterPosition p | p.isCallee()))
   )
 }
 
