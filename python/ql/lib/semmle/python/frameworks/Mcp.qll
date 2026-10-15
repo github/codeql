@@ -1,6 +1,10 @@
 /**
  * Provides classes modeling security-relevant aspects of the `mcp` and `fastmcp` PyPI packages
  * (Model Context Protocol server SDKs).
+ *
+ * Baseline `@mcp.tool` / `@mcp.prompt` / `@mcp.resource` handlers on standalone functions are
+ * covered by Models-as-Data. This module only captures programmatic edge cases MaD misses:
+ * stacked/wrapped custom decorators and instance registrations such as `@self.mcp.tool()`.
  */
 
 private import python
@@ -37,55 +41,53 @@ module Mcp {
       ]
   }
 
-  /** Gets API nodes for module-level `fastmcp` registration decorators (`@tool`, etc.). */
-  private API::Node fastmcpModuleRegistration(string name) {
-    name = registrationMethod() and result = API::moduleImport("fastmcp").getMember(name)
-    or
-    name = "tool" and result = API::moduleImport("fastmcp").getMember("tools").getMember("tool")
-  }
-
-  private predicate isMcpHandler(Function handler) {
+  /** An MCP `@tool`/`@prompt`/`@resource` decorator expression on `handler`. */
+  private predicate mcpRegistrationDecorator(Function handler, Expr dec) {
+    dec = handler.getADecorator() and
     exists(API::Node cls | cls = mcpServerClass() |
       exists(API::CallNode call |
         call = cls.getAnInstance().getMember(registrationMethod()).getACall() and
-        call.getNode().getNode() = handler.getADecorator()
+        call.getNode().getNode() = dec
       )
       or
       exists(string name | name = registrationMethod() |
-        handler.getADecorator() =
-          cls.getAnInstance().getMember(name).getAValueReachableFromSource().asExpr()
-      )
-      or
-      exists(API::CallNode addCall |
-        addCall = cls.getAnInstance().getMember("add_tool").getACall() and
-        (
-          exists(DataFlow::LocalSourceNode funcSrc |
-            (
-              funcSrc.flowsTo(addCall.getArg(0)) or
-              funcSrc.flowsTo(addCall.getArgByName("fn")) or
-              funcSrc.flowsTo(addCall.getArgByName("tool"))
-            ) and
-            funcSrc.asExpr() = handler.getDefinition()
-          )
-          or
-          exists(DataFlow::Node arg |
-            arg in [addCall.getArg(0), addCall.getArgByName("fn"), addCall.getArgByName("tool")] and
-            arg.asExpr().(Name).getId() = handler.getName() and
-            arg.getScope() = handler.getScope()
-          )
-        )
+        dec = cls.getAnInstance().getMember(name).getAValueReachableFromSource().asExpr()
       )
     )
-    or
-    exists(string name | name = registrationMethod() |
-      exists(API::Node reg | reg = fastmcpModuleRegistration(name) |
-        exists(API::CallNode call |
-          call = reg.getACall() and call.getNode().getNode() = handler.getADecorator()
-        )
+  }
+
+  /**
+   * Holds if `handler` is an MCP registration wrapped by another decorator.
+   * MaD YAML currently drops these stacked/custom project wrappers.
+   */
+  private predicate isWrappedMcpHandler(Function handler) {
+    exists(Expr mcpDec, Expr extra |
+      mcpRegistrationDecorator(handler, mcpDec) and
+      extra = handler.getADecorator() and
+      extra != mcpDec
+    )
+  }
+
+  /**
+   * Holds if `handler` is registered via a nested instance lookup such as `@self.mcp.tool()`.
+   * The callee object is itself an `Attribute`, not a simple name (`mcp_app.tool()`).
+   */
+  private predicate isInstanceLookupHandler(Function handler) {
+    exists(Expr dec | mcpRegistrationDecorator(handler, dec) |
+      exists(Attribute callee |
+        callee = dec.(Call).getFunc()
         or
-        handler.getADecorator() = reg.getAValueReachableFromSource().asExpr()
+        callee = dec
+      |
+        callee.getObject() instanceof Attribute
       )
     )
+  }
+
+  private predicate isMcpHandler(Function handler) {
+    isWrappedMcpHandler(handler)
+    or
+    isInstanceLookupHandler(handler)
   }
 
   private predicate isContextAnnotation(Expr ann) {

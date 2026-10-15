@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Added `RemoteFlowSource` modeling for parameters of MCP server handlers registered via the `mcp` and `fastmcp` PyPI packages (`tool`, `prompt`, `resource`, and `add_tool`).
+* Added complementary `RemoteFlowSource` modeling for MCP/`fastmcp` handlers that Models-as-Data misses: stacked custom decorators and instance registrations such as `@self.mcp.tool()`.
