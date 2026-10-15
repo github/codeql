@@ -79,3 +79,9 @@ class Service:
         @self.mcp.tool()
         def instance_lookup(host: str) -> str:
             return host
+
+
+@other_decorator
+@mcp_app.tool()
+def stacked_with_context(ctx: Context, payload: str) -> str:
+    return payload
