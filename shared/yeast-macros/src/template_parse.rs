@@ -9,7 +9,6 @@ type Result<T> = std::result::Result<T, syn::Error>;
 pub(crate) fn parse_template(input: TokenStream) -> Result<Template> {
     let mut tokens = input.into_iter().peekable();
     let template = parse_one(&mut tokens)?;
-    reject_stray_optional(&mut tokens, false)?;
     if let Some(token) = tokens.next() {
         return Err(syn::Error::new_spanned(
             token,
@@ -93,33 +92,12 @@ fn parse_node(group: proc_macro2::Group) -> Result<Node> {
                 return Err(error);
             }
             let block = parse_block(expect_group(&mut tokens, Delimiter::Brace)?)?;
-            if let Some(TokenTree::Punct(punctuation)) = tokens.peek() {
-                if punctuation.as_char() == '?' {
-                    return Err(syn::Error::new_spanned(
-                        punctuation.clone(),
-                        "`?` is not valid on a `location` field",
-                    ));
-                }
-            }
             fields.push(Field::Location { block });
             continue;
         }
 
         let value = parse_one(&mut tokens)?;
-        let optional = if matches!(value, Template::Splice(_)) {
-            reject_stray_optional(&mut tokens, true)?;
-            false
-        } else if peek_is_punct(&mut tokens, '?') {
-            tokens.next();
-            true
-        } else {
-            false
-        };
-        fields.push(Field::Named {
-            name,
-            value,
-            optional,
-        });
+        fields.push(Field::Named { name, value });
     }
 
     if let Some(token) = tokens.next() {
@@ -146,7 +124,6 @@ fn parse_list(tokens: &mut Tokens) -> Result<Vec<Template>> {
                 continue;
             }
             templates.push(Template::Node(parse_node(group)?));
-            reject_stray_optional(tokens, false)?;
             continue;
         }
 
@@ -155,30 +132,12 @@ fn parse_list(tokens: &mut Tokens) -> Result<Vec<Template>> {
                 tokens,
                 Delimiter::Brace,
             )?)?));
-            reject_stray_optional(tokens, true)?;
             continue;
         }
 
         break;
     }
     Ok(templates)
-}
-
-fn reject_stray_optional(tokens: &mut Tokens, after_splice: bool) -> Result<()> {
-    let Some(TokenTree::Punct(punctuation)) = tokens.peek() else {
-        return Ok(());
-    };
-    if punctuation.as_char() != '?' {
-        return Ok(());
-    }
-    let message = if after_splice {
-        "`?` is not valid on a `{...}` splice; a splice that yields no value \
-         already leaves its field unset"
-    } else {
-        "`?` is only valid on the value of a named field, as in \
-         `label: (identifier #{lbl})?`"
-    };
-    Err(syn::Error::new_spanned(punctuation.clone(), message))
 }
 
 fn parse_block(group: proc_macro2::Group) -> Result<syn::Block> {
@@ -199,10 +158,6 @@ fn peek_is_field(tokens: &mut Tokens) -> bool {
 
 fn peek_is_group(tokens: &mut Tokens, delimiter: Delimiter) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Group(group)) if group.delimiter() == delimiter)
-}
-
-fn peek_is_punct(tokens: &mut Tokens, expected: char) -> bool {
-    matches!(tokens.peek(), Some(TokenTree::Punct(punctuation)) if punctuation.as_char() == expected)
 }
 
 fn expect_ident(tokens: &mut Tokens, message: &str) -> Result<Ident> {
@@ -256,7 +211,7 @@ mod tests {
         let template = parse_template(quote! {
             (call
                 argument: {args}
-                method: (identifier #{name})?)
+                method: (identifier #{name}))
         })
         .unwrap();
 
@@ -295,17 +250,6 @@ mod tests {
             error.to_string(),
             "`location` field value must be a Rust block"
         );
-    }
-
-    #[test]
-    fn rejects_optional_location_fields() {
-        let result = parse_template(quote! {
-            (identifier "name" location: {source}?)
-        });
-        let Err(error) = result else {
-            panic!("expected an optional location field to be rejected");
-        };
-        assert_eq!(error.to_string(), "`?` is not valid on a `location` field");
     }
 
     #[test]

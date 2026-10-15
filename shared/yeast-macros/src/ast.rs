@@ -121,15 +121,13 @@ pub(crate) enum Content {
 
 pub(crate) enum Field {
     /// A named field such as `argument: {args}` or
-    /// `label: (identifier #{name})?`.
+    /// `label: (identifier #{name})`.
     Named {
         /// The field name before `:`, such as `argument`.
         name: Ident,
         /// The node or Rust splice after `:`, such as `(identifier "x")` or
         /// `{args}`.
         value: Template,
-        /// Whether the field value has a trailing `?`.
-        optional: bool,
     },
     /// Source-location metadata such as `location: {source}`.
     Location {

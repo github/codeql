@@ -1,20 +1,7 @@
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::quote;
-use std::sync::atomic::{AtomicUsize, Ordering};
-use syn::Lifetime;
 
 use crate::ast::{Cardinality, Content, Field, Node, Pattern, Replacement, Rule, Template};
-
-struct LoweringContext<'a> {
-    /// Enclosing optional-field label to exit when a computed value is absent.
-    fallible_scope: Option<&'a Lifetime>,
-}
-
-fn fresh_fallible_label() -> Lifetime {
-    static COUNTER: AtomicUsize = AtomicUsize::new(0);
-    let n = COUNTER.fetch_add(1, Ordering::Relaxed);
-    Lifetime::new(&format!("'__yeast_field_{n}"), Span::call_site())
-}
 
 #[derive(Clone)]
 struct CaptureBinding {
@@ -286,20 +273,15 @@ fn capture_bindings<'a>(
 
 impl Template {
     pub(crate) fn lower_root(&self) -> TokenStream {
-        self.lower(&LoweringContext {
-            fallible_scope: None,
-        })
+        self.lower()
     }
 
     pub(crate) fn lower_list(templates: &[Self]) -> TokenStream {
-        let context = LoweringContext {
-            fallible_scope: None,
-        };
         let items = templates
             .iter()
             .map(|template| match template {
                 Template::Node(node) => {
-                    let node = node.lower(&context);
+                    let node = node.lower();
                     quote! { __nodes.push(#node); }
                 }
                 Template::Splice(block) => {
@@ -322,9 +304,9 @@ impl Template {
         }
     }
 
-    fn lower(&self, context: &LoweringContext<'_>) -> TokenStream {
+    fn lower(&self) -> TokenStream {
         match self {
-            Template::Node(node) => node.lower(context),
+            Template::Node(node) => node.lower(),
             Template::Splice(block) => {
                 let block = rust_block(block);
                 quote! { ::std::convert::Into::<yeast::OutputId>::into(#block) }
@@ -334,7 +316,7 @@ impl Template {
 }
 
 impl Node {
-    fn lower(&self, context: &LoweringContext<'_>) -> TokenStream {
+    fn lower(&self) -> TokenStream {
         let ctx = Ident::new("ctx", Span::call_site());
         let kind_str = self.kind.to_string();
 
@@ -343,40 +325,18 @@ impl Node {
                 Content::Static(lit) => quote! { #ctx.literal(#kind_str, #lit) },
                 Content::Computed(block) => {
                     let block = rust_block(block);
-                    if let Some(label) = context.fallible_scope {
-                        quote! {
-                            {
-                                let __expr = #block;
-                                let ::std::option::Option::Some(__value_ref) =
-                                    yeast::MaybeYeastValue::maybe_yeast_value(&__expr)
-                                else {
-                                    break #label ::std::option::Option::None;
-                                };
-                                let __value =
-                                    yeast::YeastDisplay::yeast_to_string(__value_ref, &#ctx);
-                                let __source_range =
-                                    yeast::YeastSourceRange::yeast_source_range(__value_ref, &#ctx);
-                                #ctx.literal_with_source_range(
-                                    #kind_str,
-                                    &__value,
-                                    __source_range,
-                                )
-                            }
-                        }
-                    } else {
-                        quote! {
-                            {
-                                let __expr = #block;
-                                let __value =
-                                    yeast::YeastDisplay::yeast_to_string(&__expr, &#ctx);
-                                let __source_range =
-                                    yeast::YeastSourceRange::yeast_source_range(&__expr, &#ctx);
-                                #ctx.literal_with_source_range(
-                                    #kind_str,
-                                    &__value,
-                                    __source_range,
-                                )
-                            }
+                    quote! {
+                        {
+                            let __expr = #block;
+                            let __value =
+                                yeast::YeastDisplay::yeast_to_string(&__expr, &#ctx);
+                            let __source_range =
+                                yeast::YeastSourceRange::yeast_source_range(&__expr, &#ctx);
+                            #ctx.literal_with_source_range(
+                                #kind_str,
+                                &__value,
+                                __source_range,
+                            )
                         }
                     }
                 }
@@ -399,11 +359,7 @@ impl Node {
                         #ctx.extend_location_ranges(__value, &mut __location_ranges);
                     });
                 }
-                Field::Named {
-                    name,
-                    value,
-                    optional,
-                } => {
+                Field::Named { name, value } => {
                     let field_name = name.to_string();
                     let field_str = field_name
                         .strip_prefix("r#")
@@ -413,10 +369,8 @@ impl Node {
                         &format!("__field_{field_str}_{field_counter}"),
                         Span::call_site(),
                     );
-
                     match value {
                         Template::Splice(block) => {
-                            debug_assert!(!optional);
                             let block = rust_block(block);
                             stmts.push(quote! {
                                 let mut #temp: Vec<yeast::OutputId> = Vec::new();
@@ -430,25 +384,8 @@ impl Node {
                                 }
                             });
                         }
-                        Template::Node(child) if *optional => {
-                            let label = fresh_fallible_label();
-                            let value = child.lower(&LoweringContext {
-                                fallible_scope: Some(&label),
-                            });
-                            stmts.push(quote! {
-                                #[allow(unused_labels)]
-                                let #temp: ::std::option::Option<yeast::OutputId> = #label: {
-                                    ::std::option::Option::Some(#value)
-                                };
-                            });
-                            field_args.push(quote! {
-                                if let ::std::option::Option::Some(__id) = #temp {
-                                    __fields.push((#field_str, vec![__id]));
-                                }
-                            });
-                        }
                         Template::Node(child) => {
-                            let value = child.lower(context);
+                            let value = child.lower();
                             stmts.push(quote! { let #temp: yeast::OutputId = #value; });
                             field_args.push(quote! {
                                 __fields.push((#field_str, vec![#temp]));
