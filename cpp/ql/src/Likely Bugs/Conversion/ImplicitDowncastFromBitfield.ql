@@ -20,7 +20,7 @@ where
     then fct = va.getFullyConverted().getType().(ReferenceType).getBaseType()
     else fct = va.getFullyConverted().getType()
   ) and
-  fi.getNumBits() > fct.getSize() * 8 and
+  fi.getNumBits() > fct.getBitWidth() and
   va.getExplicitlyConverted().getType().getSize() > fct.getSize() and
   va.getTarget() = fi and
   not fct.getUnspecifiedType() instanceof BoolType
