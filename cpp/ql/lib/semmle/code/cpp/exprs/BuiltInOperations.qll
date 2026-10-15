@@ -2054,11 +2054,13 @@ class BuiltInOperationIsStructural extends BuiltInOperation, @isstructural {
  * implementations).
  *
  * Returns `true` if the `<` operator is synthesized from the spaceship operator `<=>`.
- * 
+ *
  * ```
  * bool v = __builtin_lt_synthesizes_from_spaceship(MyType, OtherType);
  */
-class BuiltInOperationLtSynthesizesFromSpaceship extends BuiltInOperation, @ltsynthesizesfromspaceship {
+class BuiltInOperationLtSynthesizesFromSpaceship extends BuiltInOperation,
+  @ltsynthesizesfromspaceship
+{
   override string toString() { result = "__builtin_lt_synthesizes_from_spaceship" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationLtSynthesizesFromSpaceship" }
@@ -2073,7 +2075,9 @@ class BuiltInOperationLtSynthesizesFromSpaceship extends BuiltInOperation, @ltsy
  *  ```
  * bool v = __builtin_gt_synthesizes_from_spaceship(MyType, OtherType);
  */
-class BuiltInOperationGtSynthesizesFromSpaceship extends BuiltInOperation, @gtsynthesizesfromspaceship {
+class BuiltInOperationGtSynthesizesFromSpaceship extends BuiltInOperation,
+  @gtsynthesizesfromspaceship
+{
   override string toString() { result = "__builtin_gt_synthesizes_from_spaceship" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationGtSynthesizesFromSpaceship" }
@@ -2084,11 +2088,13 @@ class BuiltInOperationGtSynthesizesFromSpaceship extends BuiltInOperation, @gtsy
  * implementations).
  *
  * Returns `true` if the `<=` operator is synthesized from the spaceship operator `<=>`.
- * 
+ *
  * ```
  * bool v = __builtin_le_synthesizes_from_spaceship(MyType, OtherType);
  */
-class BuiltInOperationLeSynthesizesFromSpaceship extends BuiltInOperation, @lesynthesizesfromspaceship {
+class BuiltInOperationLeSynthesizesFromSpaceship extends BuiltInOperation,
+  @lesynthesizesfromspaceship
+{
   override string toString() { result = "__builtin_le_synthesizes_from_spaceship" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationLeSynthesizesFromSpaceship" }
@@ -2099,11 +2105,13 @@ class BuiltInOperationLeSynthesizesFromSpaceship extends BuiltInOperation, @lesy
  * implementations).
  *
  * Returns `true` if the `>=` operator is synthesized from the spaceship operator `<=>`.
- * 
+ *
  * ```
  * bool v = __builtin_ge_synthesizes_from_spaceship(MyType, OtherType);
  */
-class BuiltInOperationGeSynthesizesFromSpaceship extends BuiltInOperation, @gesynthesizesfromspaceship {
+class BuiltInOperationGeSynthesizesFromSpaceship extends BuiltInOperation,
+  @gesynthesizesfromspaceship
+{
   override string toString() { result = "__builtin_ge_synthesizes_from_spaceship" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationGeSynthesizesFromSpaceship" }
