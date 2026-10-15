@@ -21,8 +21,9 @@ models
 | 20 | Summary: <core::pin::Pin>::new; Argument[0]; ReturnValue.Field[core::pin::Pin::pointer]; value |
 | 21 | Summary: <core::pin::Pin>::new_unchecked; Argument[0]; ReturnValue.Field[core::pin::Pin::pointer]; value |
 | 22 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
-| 23 | Summary: core::ptr::read; Argument[0].Reference; ReturnValue; value |
-| 24 | Summary: core::ptr::write; Argument[1]; Argument[0].Reference; value |
+| 23 | Summary: core::pin::pin_new_unchecked_in_helper; Argument[0].Reference.Field[core::pin::PinMacroHelper::value]; ReturnValue.Field[core::pin::Pin::pointer].Reference; value |
+| 24 | Summary: core::ptr::read; Argument[0].Reference; ReturnValue; value |
+| 25 | Summary: core::ptr::write; Argument[1]; Argument[0].Reference; value |
 edges
 | main.rs:12:9:12:9 | a [Some] | main.rs:13:10:13:10 | a [Some] | provenance |  |
 | main.rs:12:9:12:9 | a [Some] | main.rs:14:13:14:13 | a [Some] | provenance |  |
@@ -83,12 +84,12 @@ edges
 | main.rs:79:33:79:46 | ... + ... | main.rs:79:17:79:47 | a.map_or(...) | provenance | MaD:12 |
 | main.rs:79:37:79:46 | source(...) | main.rs:79:33:79:46 | ... + ... | provenance | MaD:11 |
 | main.rs:92:29:92:29 | [post] y [&ref] | main.rs:93:33:93:33 | y [&ref] | provenance |  |
-| main.rs:92:32:92:41 | source(...) | main.rs:92:29:92:29 | [post] y [&ref] | provenance | MaD:24 |
-| main.rs:93:33:93:33 | y [&ref] | main.rs:93:18:93:34 | ...::read(...) | provenance | MaD:23 |
+| main.rs:92:32:92:41 | source(...) | main.rs:92:29:92:29 | [post] y [&ref] | provenance | MaD:25 |
+| main.rs:93:33:93:33 | y [&ref] | main.rs:93:18:93:34 | ...::read(...) | provenance | MaD:24 |
 | main.rs:108:13:108:17 | mut i | main.rs:109:34:109:34 | i | provenance |  |
 | main.rs:108:13:108:17 | mut i | main.rs:110:33:110:33 | i | provenance |  |
 | main.rs:108:13:108:17 | mut i | main.rs:111:47:111:47 | i | provenance |  |
-| main.rs:108:13:108:17 | mut i | main.rs:112:24:112:27 | mut pinned | provenance |  |
+| main.rs:108:13:108:17 | mut i | main.rs:112:29:112:29 | i | provenance |  |
 | main.rs:108:13:108:17 | mut i | main.rs:113:14:113:14 | i | provenance |  |
 | main.rs:108:21:108:30 | source(...) | main.rs:108:13:108:17 | mut i | provenance |  |
 | main.rs:109:13:109:20 | mut pin1 | main.rs:114:15:114:18 | pin1 | provenance |  |
@@ -108,10 +109,12 @@ edges
 | main.rs:111:38:111:48 | ...::new(...) [Box(0)] | main.rs:111:24:111:49 | ...::into_pin(...) [Pin, Box(0)] | provenance | MaD:2 |
 | main.rs:111:47:111:47 | i | main.rs:111:38:111:48 | ...::new(...) [Box(0)] | provenance | MaD:3 |
 | main.rs:112:13:112:20 | mut pin4 [Pin, &ref] | main.rs:118:15:118:18 | pin4 [Pin, &ref] | provenance |  |
-| main.rs:112:24:112:27 | &mut pinned [&ref] | main.rs:112:24:112:27 | ...::new_unchecked(...) [Pin, &ref] | provenance | MaD:21 |
-| main.rs:112:24:112:27 | ...::new_unchecked(...) [Pin, &ref] | main.rs:112:13:112:20 | mut pin4 [Pin, &ref] | provenance |  |
-| main.rs:112:24:112:27 | mut pinned | main.rs:112:24:112:27 | pinned | provenance |  |
-| main.rs:112:24:112:27 | pinned | main.rs:112:24:112:27 | &mut pinned [&ref] | provenance |  |
+| main.rs:112:24:112:27 | &mut pinned [&ref, PinMacroHelper] | main.rs:112:24:112:27 | ...::pin_new_unchecked_in_helper(...) [Pin, &ref] | provenance | MaD:23 |
+| main.rs:112:24:112:27 | ...::pin_new_unchecked_in_helper(...) [Pin, &ref] | main.rs:112:13:112:20 | mut pin4 [Pin, &ref] | provenance |  |
+| main.rs:112:24:112:27 | mut pinned [PinMacroHelper] | main.rs:112:24:112:27 | pinned [PinMacroHelper] | provenance |  |
+| main.rs:112:24:112:27 | pinned [PinMacroHelper] | main.rs:112:24:112:27 | &mut pinned [&ref, PinMacroHelper] | provenance |  |
+| main.rs:112:29:112:29 | ...::PinMacroHelper {...} [PinMacroHelper] | main.rs:112:24:112:27 | mut pinned [PinMacroHelper] | provenance |  |
+| main.rs:112:29:112:29 | i | main.rs:112:29:112:29 | ...::PinMacroHelper {...} [PinMacroHelper] | provenance |  |
 | main.rs:114:15:114:18 | pin1 | main.rs:114:14:114:18 | * ... | provenance | MaD:15 |
 | main.rs:114:15:114:18 | pin1 | main.rs:114:14:114:18 | * ... | provenance | MaD:16 |
 | main.rs:114:15:114:18 | pin1 [Pin, &ref] | main.rs:114:14:114:18 | * ... | provenance | MaD:16 |
@@ -253,10 +256,12 @@ nodes
 | main.rs:111:38:111:48 | ...::new(...) [Box(0)] | semmle.label | ...::new(...) [Box(0)] |
 | main.rs:111:47:111:47 | i | semmle.label | i |
 | main.rs:112:13:112:20 | mut pin4 [Pin, &ref] | semmle.label | mut pin4 [Pin, &ref] |
-| main.rs:112:24:112:27 | &mut pinned [&ref] | semmle.label | &mut pinned [&ref] |
-| main.rs:112:24:112:27 | ...::new_unchecked(...) [Pin, &ref] | semmle.label | ...::new_unchecked(...) [Pin, &ref] |
-| main.rs:112:24:112:27 | mut pinned | semmle.label | mut pinned |
-| main.rs:112:24:112:27 | pinned | semmle.label | pinned |
+| main.rs:112:24:112:27 | &mut pinned [&ref, PinMacroHelper] | semmle.label | &mut pinned [&ref, PinMacroHelper] |
+| main.rs:112:24:112:27 | ...::pin_new_unchecked_in_helper(...) [Pin, &ref] | semmle.label | ...::pin_new_unchecked_in_helper(...) [Pin, &ref] |
+| main.rs:112:24:112:27 | mut pinned [PinMacroHelper] | semmle.label | mut pinned [PinMacroHelper] |
+| main.rs:112:24:112:27 | pinned [PinMacroHelper] | semmle.label | pinned [PinMacroHelper] |
+| main.rs:112:29:112:29 | ...::PinMacroHelper {...} [PinMacroHelper] | semmle.label | ...::PinMacroHelper {...} [PinMacroHelper] |
+| main.rs:112:29:112:29 | i | semmle.label | i |
 | main.rs:113:14:113:14 | i | semmle.label | i |
 | main.rs:114:14:114:18 | * ... | semmle.label | * ... |
 | main.rs:114:15:114:18 | pin1 | semmle.label | pin1 |

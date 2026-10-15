@@ -4968,6 +4968,124 @@ impl From<trap::Label<CfgMeta>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
+pub struct CfgPredExpr {
+    pub id: trap::TrapId<CfgPredExpr>,
+    pub cfg_predicate: Option<trap::Label<CfgPredicate>>,
+}
+
+impl trap::TrapEntry for CfgPredExpr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("cfg_pred_exprs", vec![id.into()]);
+        if let Some(v) = self.cfg_predicate {
+            out.add_tuple("cfg_pred_expr_cfg_predicates", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for CfgPredExpr {
+    fn class_name() -> &'static str { "CfgPredExpr" }
+}
+
+impl From<trap::Label<CfgPredExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<CfgPredExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CfgPredExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<CfgPredExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<CfgPredExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CfgPredExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<CfgPredExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<CfgPredExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CfgPredExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<CfgPredExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<CfgPredExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CfgPredExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct CfgPredPat {
+    pub id: trap::TrapId<CfgPredPat>,
+    pub cfg_predicate: Option<trap::Label<CfgPredicate>>,
+}
+
+impl trap::TrapEntry for CfgPredPat {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("cfg_pred_pats", vec![id.into()]);
+        if let Some(v) = self.cfg_predicate {
+            out.add_tuple("cfg_pred_pat_cfg_predicates", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for CfgPredPat {
+    fn class_name() -> &'static str { "CfgPredPat" }
+}
+
+impl From<trap::Label<CfgPredPat>> for trap::Label<Pat> {
+    fn from(value: trap::Label<CfgPredPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CfgPredPat is a subclass of Pat
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<CfgPredPat>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<CfgPredPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CfgPredPat is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<CfgPredPat>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<CfgPredPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CfgPredPat is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<CfgPredPat>> for trap::Label<Element> {
+    fn from(value: trap::Label<CfgPredPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CfgPredPat is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct ClosureExpr {
     pub id: trap::TrapId<ClosureExpr>,
     pub param_list: Option<trap::Label<ParamList>>,
