@@ -3,6 +3,8 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import android.net.Uri;
+import com.google.common.base.CharMatcher;
+import org.apache.commons.lang3.StringUtils;
 
 public class Test {
 
@@ -229,6 +231,13 @@ public class Test {
         }
         {
             String source = (String) source();
+            if (source.startsWith("/safe") && !StringUtils.contains(source, ".."))
+                sink(source); // $ SPURIOUS: hasTaintFlow
+            else
+                sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
             if (source.startsWith("/safe") && source.indexOf("..") == -1)
                 sink(source); // Safe
             else
@@ -435,6 +444,17 @@ public class Test {
             if (!normalized.contains("/data")) {
                 sink(source); // Safe
                 sink(normalized); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(normalized); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            String normalized = Paths.get(source).normalize().toString();
+            if (!StringUtils.contains(normalized, "/data")) {
+                sink(source); // $ SPURIOUS: hasTaintFlow
+                sink(normalized); // $ SPURIOUS: hasTaintFlow
             } else {
                 sink(source); // $ hasTaintFlow
                 sink(normalized); // $ hasTaintFlow
@@ -832,6 +852,11 @@ public class Test {
         }
         {
             String source = (String) source();
+            source = source.replace('.', '_').replace('/', '_');
+            sink(source); // $ SPURIOUS: hasTaintFlow
+        }
+        {
+            String source = (String) source();
             source = source.replace(".", "").replace("/", "").replace("\\", "");
             sink(source); // Safe
         }
@@ -858,6 +883,47 @@ public class Test {
             // Bypassable with ".../...//"
             source = source.replace("../", "");
             sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            source = StringUtils.replaceChars(source, "./\\", "_");
+            sink(source); // $ SPURIOUS: hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            source = CharMatcher.anyOf("./\\").replaceFrom(source, '_');
+            sink(source); // $ SPURIOUS: hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            source = CharMatcher.anyOf("./\\").removeFrom(source);
+            sink(source); // $ SPURIOUS: hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            source = CharMatcher.anyOf("/\\").removeFrom(source);
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            if (StringUtils.containsNone(source, "./\\"))
+                sink(source); // $ SPURIOUS: hasTaintFlow
+            else
+                sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            if (CharMatcher.anyOf("./\\").matchesNoneOf(source))
+                sink(source); // $ SPURIOUS: hasTaintFlow
+            else
+                sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            if (CharMatcher.anyOf("/\\").matchesNoneOf(source))
+                sink(source); // $ hasTaintFlow
+            else
+                sink(source); // $ hasTaintFlow
         }
     }
 }
