@@ -7,4 +7,19 @@ private import internal.CfgPredPatImpl
 import codeql.rust.elements.CfgPredicate
 import codeql.rust.elements.Pat
 
+/**
+ * A configuration predicate pattern resulting from expansion of a `cfg!` macro call.
+ * It matches `true` when the configuration predicate holds and `false` otherwise.
+ *
+ * Rust-analyzer expands `cfg!(...)` in pattern position to its internal `builtin#cfg(...)`
+ * syntax, as illustrated below:
+ * ```rust
+ * match true {
+ *     builtin#cfg(unix) => (),
+ *     builtin#cfg(target_os = "windows") => (),
+ *     builtin#cfg(any(unix, target_os = "windows")) => (),
+ *     _ => (),
+ * };
+ * ```
+ */
 final class CfgPredPat = Impl::CfgPredPat;
