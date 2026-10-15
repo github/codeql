@@ -508,6 +508,11 @@ inferCertainType
 | blanket_impl.rs:299:44:299:44 | c |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
 | blanket_impl.rs:299:47:299:67 | "SELECT * FROM users" |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:299:47:299:67 | "SELECT * FROM users" | TRef | {EXTERNAL LOCATION} | str |
+| cfg.rs:1:22:7:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:12:23:12:24 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:13:40:13:41 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:14:51:14:52 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:15:14:15:15 | TupleExpr |  | {EXTERNAL LOCATION} | () |
 | closure.rs:4:19:39:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | closure.rs:6:13:6:22 | my_closure |  | {EXTERNAL LOCATION} | dyn Fn |
 | closure.rs:6:13:6:22 | my_closure | dyn(Args) | {EXTERNAL LOCATION} | (T_2) |
@@ -6003,6 +6008,13 @@ inferType
 | blanket_impl.rs:299:44:299:44 | c |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
 | blanket_impl.rs:299:47:299:67 | "SELECT * FROM users" |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:299:47:299:67 | "SELECT * FROM users" | TRef | {EXTERNAL LOCATION} | str |
+| cfg.rs:1:22:7:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:9:19:17:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:11:5:16:5 | match value { ... } |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:12:23:12:24 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:13:40:13:41 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:14:51:14:52 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:15:14:15:15 | TupleExpr |  | {EXTERNAL LOCATION} | () |
 | closure.rs:4:19:39:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | closure.rs:6:13:6:22 | my_closure |  | {EXTERNAL LOCATION} | dyn Fn |
 | closure.rs:6:13:6:22 | my_closure | dyn(Args) | {EXTERNAL LOCATION} | (T_2) |
