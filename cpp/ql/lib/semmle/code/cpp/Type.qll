@@ -124,6 +124,16 @@ class Type extends Locatable, @type {
   }
 
   /**
+   * Gets the bit width of this type.
+   */
+  int getBitWidth() {
+    not bit_precise_int_types(underlyingElement(this), _) and
+    result = this.getSize() * 8
+    or
+    bit_precise_int_types(underlyingElement(this), result)
+  }
+
+  /**
    * Gets the alignment of this type in bytes.
    */
   int getAlignment() {
@@ -1076,9 +1086,6 @@ class Char32Type extends IntegralType {
 class BitPreciseIntType extends IntegralType {
   BitPreciseIntType() { builtintypes(underlyingElement(this), _, [67, 68, 69], _, _, _) }
 
-  /** Get the bit-with of the bit-precise integer. */
-  int getBitWidth() { bit_precise_int_types(underlyingElement(this), result) }
-
   override string getAPrimaryQlClass() { result = "BitPreciseIntType" }
 }
 
@@ -1182,6 +1189,8 @@ class Decltype extends Type, NameQualifyingElement {
 
   override int getSize() { result = this.getBaseType().getSize() }
 
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
+
   override int getAlignment() { result = this.getBaseType().getAlignment() }
 
   override int getPointerIndirectionLevel() {
@@ -1241,6 +1250,8 @@ class TypeofType extends Type {
   override string getName() { result = "typeof(...)" }
 
   override int getSize() { result = this.getBaseType().getSize() }
+
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
 
   override int getAlignment() { result = this.getBaseType().getAlignment() }
 
@@ -1387,6 +1398,8 @@ class IntrinsicTransformedType extends Type {
 
   override int getSize() { result = this.getBaseType().getSize() }
 
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
+
   override int getAlignment() { result = this.getBaseType().getAlignment() }
 
   override int getPointerIndirectionLevel() {
@@ -1512,6 +1525,8 @@ class SpecifiedType extends DerivedType {
 
   override int getSize() { result = this.getBaseType().getSize() }
 
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
+
   override int getAlignment() { result = this.getBaseType().getAlignment() }
 
   override int getPointerIndirectionLevel() {
@@ -1586,6 +1601,8 @@ class ArrayType extends DerivedType {
    * of elements.
    */
   override int getSize() { result = this.getByteSize() }
+
+  override int getBitWidth() { result = this.getByteSize() * 8 }
 
   override string explain() {
     if exists(this.getArraySize())
