@@ -107,6 +107,7 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     predicate hasBody(Callable body) { callable = body }
 
     predicate hasAliasedAccess(Expr f) {
+      // TODO: Restrict to places where the function is called or escapes into a call where it might get called.
       callableHasLocalAlias(callable, f) and not f.(LocalVariableRefNode).getRefKind().isWrite()
     }
   }
