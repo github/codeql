@@ -2,15 +2,15 @@ from mcp.server import Server
 
 
 async def handle_call_tool(ctx, params):
-    return params.arguments # $ mad-source__remote=params.arguments
+    return params.arguments # $ mad-source__ai=params.arguments
 
 
 async def handle_read_resource(ctx, params):
-    return params.uri # $ mad-source__remote=params.uri
+    return params.uri # $ mad-source__ai=params.uri
 
 
 async def handle_get_prompt(ctx, params):
-    return params.arguments # $ mad-source__remote=params.arguments
+    return params.arguments # $ mad-source__ai=params.arguments
 
 
 async def not_registered(ctx, params):

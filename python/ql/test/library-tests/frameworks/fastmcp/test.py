@@ -14,57 +14,57 @@ module_app = ModuleFastMCP("test")
 
 
 @app.tool
-def bare(command): # $ mad-source__remote=command
+def bare(command): # $ mad-source__ai=command
     return command
 
 
 @server_app.tool(name="exec")
-def called(command): # $ mad-source__remote=command
+def called(command): # $ mad-source__ai=command
     return command
 
 
 @module_app.resource("files://{path}")
-def resource(path): # $ mad-source__remote=path
+def resource(path): # $ mad-source__ai=path
     return path
 
 
 @app.prompt
-def bare_prompt(topic): # $ mad-source__remote=topic
+def bare_prompt(topic): # $ mad-source__ai=topic
     return topic
 
 
 @app.prompt()
-def called_prompt(topic, style="short"): # $ mad-source__remote=topic mad-source__remote=style
+def called_prompt(topic, style="short"): # $ mad-source__ai=topic mad-source__ai=style
     return topic + style
 
 
-def added(command): # $ mad-source__remote=command
+def added(command): # $ mad-source__ai=command
     return command
 
 
 app.add_tool(added)
 
 
-def added_prompt(topic): # $ mad-source__remote=topic
+def added_prompt(topic): # $ mad-source__ai=topic
     return topic
 
 
 app.add_prompt(prompt=added_prompt)
 
 
-def via_tool(url): # $ mad-source__remote=url
+def via_tool(url): # $ mad-source__ai=url
     return url
 
 
-def via_function_tool(url): # $ mad-source__remote=url
+def via_function_tool(url): # $ mad-source__ai=url
     return url
 
 
-def via_base_tool(url): # $ mad-source__remote=url
+def via_base_tool(url): # $ mad-source__ai=url
     return url
 
 
-def via_module_function_tool(url): # $ mad-source__remote=url
+def via_module_function_tool(url): # $ mad-source__ai=url
     return url
 
 
@@ -75,12 +75,12 @@ ModuleFunctionTool.from_function(via_module_function_tool)
 
 
 @tool
-def standalone(command): # $ mad-source__remote=command
+def standalone(command): # $ mad-source__ai=command
     return command
 
 
 @tool()
-def standalone_called(command): # $ mad-source__remote=command
+def standalone_called(command): # $ mad-source__ai=command
     return command
 
 

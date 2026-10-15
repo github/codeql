@@ -5,13 +5,13 @@ extensions:
     data:
       # `fastmcp` (PyPI), a standalone MCP server framework. The parameters of tool, resource and
       # prompt handlers are chosen by the MCP client; `tool` and `prompt` also work without parentheses.
-      - ['fastmcp.FastMCP', 'Member[tool,prompt].Argument[0,name_or_fn:].Parameter[any]', 'remote']
-      - ['fastmcp.FastMCP', 'Member[tool,resource,prompt].ReturnValue.Argument[0].Parameter[any]', 'remote']
-      - ['fastmcp.FastMCP', 'Member[add_tool].Argument[0,tool:].Parameter[any]', 'remote']
-      - ['fastmcp.FastMCP', 'Member[add_prompt].Argument[0,prompt:].Parameter[any]', 'remote']
-      - ['fastmcp.tools.Tool!', 'Member[from_function].Argument[0,fn:].Parameter[any]', 'remote']
-      - ['fastmcp', 'Member[tools].Member[tool].Argument[0,name_or_fn:].Parameter[any]', 'remote']
-      - ['fastmcp', 'Member[tools].Member[tool].ReturnValue.Argument[0].Parameter[any]', 'remote']
+      - ['fastmcp.FastMCP', 'Member[tool,prompt].Argument[0,name_or_fn:].Parameter[any]', 'ai']
+      - ['fastmcp.FastMCP', 'Member[tool,resource,prompt].ReturnValue.Argument[0].Parameter[any]', 'ai']
+      - ['fastmcp.FastMCP', 'Member[add_tool].Argument[0,tool:].Parameter[any]', 'ai']
+      - ['fastmcp.FastMCP', 'Member[add_prompt].Argument[0,prompt:].Parameter[any]', 'ai']
+      - ['fastmcp.tools.Tool!', 'Member[from_function].Argument[0,fn:].Parameter[any]', 'ai']
+      - ['fastmcp', 'Member[tools].Member[tool].Argument[0,name_or_fn:].Parameter[any]', 'ai']
+      - ['fastmcp', 'Member[tools].Member[tool].ReturnValue.Argument[0].Parameter[any]', 'ai']
       # The HTTP headers of the transport.
       - ['fastmcp', 'Member[server].Member[dependencies].Member[get_http_headers].ReturnValue', 'remote']
       - ['fastmcp', 'Member[server].Member[dependencies].Member[get_http_request].ReturnValue.Member[headers]', 'remote']
