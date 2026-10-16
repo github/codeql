@@ -161,6 +161,9 @@ signature module AstSig<LocationSig Location> {
     Expr getCollection();
   }
 
+  /** Gets the loop guard of the given `loop`, if any. */
+  default AstNode getLoopGuard(ForEachStmt loop) { none() }
+
   /**
    * A `break` statement.
    *
@@ -656,6 +659,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         any(DoStmt dostmt).getCondition() = n or
         any(UntilStmt untilstmt).getCondition() = n or
         any(ForStmt forstmt).getCondition() = n or
+        getLoopGuard(_) = n or
         any(ConditionalExpr condexpr).getCondition() = n or
         any(CatchClause catch).getCondition() = n or
         any(Case case).getGuard() = n
@@ -1701,7 +1705,18 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isBefore(foreachstmt.getVariable())
           or
           n1.isAfter(foreachstmt.getVariable()) and
+          (
+            n2.isBefore(getLoopGuard(foreachstmt))
+            or
+            not exists(getLoopGuard(foreachstmt)) and
+            n2.isBefore(foreachstmt.getBody())
+          )
+          or
+          n1.isAfterTrue(getLoopGuard(foreachstmt)) and
           n2.isBefore(foreachstmt.getBody())
+          or
+          n1.isAfterFalse(getLoopGuard(foreachstmt)) and
+          n2.isAdditional(foreachstmt, loopHeaderTag())
           or
           n1.isAfter(foreachstmt.getBody()) and
           n2.isAdditional(foreachstmt, loopHeaderTag())
