@@ -1041,6 +1041,27 @@ module Unified {
     }
   }
 
+  /** A class representing `modified_type_expr` nodes. */
+  class ModifiedTypeExpr extends @unified_modified_type_expr, F::Expr {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ModifiedTypeExpr" }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getModifier(int i) { unified_modified_type_expr_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
+    /** Gets the node corresponding to the field `type`. */
+    final F::Expr getType() { unified_modified_type_expr_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override F::AstNode getAFieldOrChild() {
+      unified_modified_type_expr_modifier(this, _, result) or
+      unified_modified_type_expr_def(this, result)
+    }
+  }
+
   /** A class representing `modifier` tokens. */
   class Modifier extends @unified_token_modifier, F::AstNode, F::Token {
     /** Gets the name of the primary QL class for this element. */
@@ -1781,6 +1802,10 @@ module Unified {
       or
       result = node.(MemberAccessExpr).getMemberNameNode() and i = -1 and name = "getMemberNameNode"
       or
+      result = node.(ModifiedTypeExpr).getModifier(i) and name = "getModifier"
+      or
+      result = node.(ModifiedTypeExpr).getType() and i = -1 and name = "getType"
+      or
       result = node.(NamedPattern).getModifier(i) and name = "getModifier"
       or
       result = node.(NamedPattern).getNameNode() and i = -1 and name = "getNameNode"
@@ -2003,6 +2028,8 @@ module UnifiedFinal {
   final class Member = F::Member;
 
   final class MemberAccessExpr = F::MemberAccessExpr;
+
+  final class ModifiedTypeExpr = F::ModifiedTypeExpr;
 
   final class Modifier = F::Modifier;
 

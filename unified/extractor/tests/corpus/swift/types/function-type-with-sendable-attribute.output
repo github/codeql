@@ -58,7 +58,12 @@ top_level source="⟨body⟩"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "handler" source="handler"
-          type: unsupported_node "@Sendable () -> Void" source="@Sendable () -> Void"
+          type:
+            modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+              modifier: modifier "@Sendable" source="@Sendable"
+              type:
+                function_expr source="() -> ⟨return_type⟩"
+                  return_type: identifier "Void" source="Void"
           value:
             function_expr source="{}"
               body: block source=""

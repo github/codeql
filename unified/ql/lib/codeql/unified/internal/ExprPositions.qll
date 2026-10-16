@@ -32,6 +32,8 @@ predicate isInTypeContext(Expr expr) {
   or
   expr = any(GenericTypeExpr gte).getATypeArgument()
   or
+  expr = any(ModifiedTypeExpr m).getType()
+  or
   expr.getParent() instanceof TypeConstraint
   or
   exists(Identifier id | id = NameBinding::getStaticBindingTargetFromRef(expr) |

@@ -168,6 +168,7 @@ noCfg
 | cfg.swift:433:5:433:8 | init |
 | cfg.swift:440:5:440:8 | init |
 | cfg.swift:506:25:506:27 | Int |
+| cfg.swift:564:49:564:51 | Int |
 nonSimple
 | cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
 | cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |
