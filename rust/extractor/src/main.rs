@@ -212,12 +212,12 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
 }
 
 fn main() -> anyhow::Result<()> {
-    let mut cfg = config::Config::extract().context("failed to load configuration")?;
-    if cfg.qltest {
-        qltest::prepare(&mut cfg)?;
+    let mut config = config::Config::extract().context("failed to load configuration")?;
+    if config.qltest {
+        qltest::prepare(&mut config)?;
     }
     let start = Instant::now();
-    let (flame_layer, _flush_guard) = if let Some(path) = &cfg.logging_flamegraph {
+    let (flame_layer, _flush_guard) = if let Some(path) = &config.logging_flamegraph {
         tracing_flame::FlameLayer::with_file(path)
             .ok()
             .map(|(a, b)| (Some(a), Some(b)))
@@ -229,18 +229,18 @@ fn main() -> anyhow::Result<()> {
     tracing_subscriber::registry()
         .with(codeql_extractor::extractor::default_subscriber_with_level(
             "single_arch",
-            &cfg.logging_verbosity,
+            &config.logging_verbosity,
         ))
         .with(flame_layer)
         .init();
-    info!("{cfg:#?}\n");
+    info!("{config:#?}\n");
 
-    let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
+    let traps = trap::TrapFileProvider::new(&config).context("failed to set up trap files")?;
     let archiver = archive::Archiver {
-        root: cfg.source_archive_dir.clone(),
+        root: config.source_archive_dir.clone(),
     };
     let mut extractor = Extractor::new(&archiver, &traps);
-    let files: Vec<PathBuf> = cfg
+    let files = config
         .inputs
         .iter()
         .map(|file| {
@@ -250,7 +250,7 @@ fn main() -> anyhow::Result<()> {
             // [1]: https://github.com/rust-lang/rust-analyzer/issues/18894#issuecomment-2580014730
             dunce::canonicalize(&file).unwrap_or(file)
         })
-        .collect();
+        .collect::<Vec<_>>();
     let manifests = extractor.find_manifests(&files)?;
     let mut map: HashMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
         .iter()
@@ -272,13 +272,13 @@ fn main() -> anyhow::Result<()> {
     }
     let cwd = cwd()?;
     log_project_toolchain();
-    let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
-    let library_mode = if cfg.extract_dependencies_as_source {
+    let (cargo_config, load_cargo_config) = config.to_cargo_config(&cwd);
+    let library_mode = if config.extract_dependencies_as_source {
         SourceKind::Source
     } else {
         SourceKind::Library
     };
-    let source_mode = if cfg.force_library_mode {
+    let source_mode = if config.force_library_mode {
         library_mode
     } else {
         SourceKind::Source
@@ -335,5 +335,5 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
-    extractor.emit_extraction_diagnostics(start, &cfg)
+    extractor.emit_extraction_diagnostics(start, &config)
 }
