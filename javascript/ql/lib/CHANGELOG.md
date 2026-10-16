@@ -1,3 +1,7 @@
+## 2.10.4
+
+No user-facing changes.
+
 ## 2.10.3
 
 ### Minor Analysis Improvements
@@ -663,7 +667,7 @@ No user-facing changes.
 
 ### New Features
 
-* Improved support for [Restify](http://restify.com/) framework, leading to more results when scanning applications developed with this framework.
+* Improved support for [Restify](https://restify.com/) framework, leading to more results when scanning applications developed with this framework.
 * Added support for the [Spife](https://github.com/npm/spife) framework.
 
 ### Minor Analysis Improvements

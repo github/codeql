@@ -1,3 +1,9 @@
+## 1.10.2
+
+### Minor Analysis Improvements
+
+* The `cs/simplifiable-boolean-expression` query now produces fewer false-positive results when type information is incomplete.
+
 ## 1.10.1
 
 ### Minor Analysis Improvements
