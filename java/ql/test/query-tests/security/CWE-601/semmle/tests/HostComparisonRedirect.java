@@ -220,6 +220,22 @@ public class HostComparisonRedirect {
         }
     }
 
+    public void nullContainingCollection(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        URI uri = new URI(request.getParameter("url")); // $ MISSING: Source
+        String host = uri.getHost();
+        if (Arrays.asList("example.com", null).contains(host)) {
+            response.sendRedirect(uri.toString()); // $ MISSING: Alert
+        }
+    }
+
+    public void nullContainingCollectionWithNonNullHost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        URI uri = new URI(request.getParameter("url"));
+        String host = uri.getHost();
+        if (host != null && Arrays.asList("example.com", null).contains(host)) {
+            response.sendRedirect(uri.toString());
+        }
+    }
+
     public void untrustedCollection(HttpServletRequest request, HttpServletResponse response) throws Exception {
         URI uri = new URI(request.getParameter("url")); // $ Source
         String host = uri.getHost();

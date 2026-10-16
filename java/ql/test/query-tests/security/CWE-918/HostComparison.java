@@ -219,6 +219,22 @@ public class HostComparison {
         }
     }
 
+    public void nullContainingCollection(HttpServletRequest request) throws Exception {
+        URI uri = new URI(request.getParameter("url")); // $ MISSING: Source
+        String host = uri.getHost();
+        if (Arrays.asList("example.com", null).contains(host)) {
+            uri.toURL().openConnection(); // $ MISSING: Alert
+        }
+    }
+
+    public void nullContainingCollectionWithNonNullHost(HttpServletRequest request) throws Exception {
+        URI uri = new URI(request.getParameter("url"));
+        String host = uri.getHost();
+        if (host != null && Arrays.asList("example.com", null).contains(host)) {
+            uri.toURL().openConnection();
+        }
+    }
+
     public void untrustedCollection(HttpServletRequest request) throws Exception {
         URI uri = new URI(request.getParameter("url")); // $ Source
         String host = uri.getHost();
