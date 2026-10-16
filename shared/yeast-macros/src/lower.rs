@@ -1,7 +1,33 @@
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::quote;
+use std::cell::RefCell;
+use std::sync::atomic::{AtomicUsize, Ordering};
 
-use crate::ast::{Cardinality, Content, Field, Node, Pattern, Replacement, Rule, Template};
+use crate::ast::{
+    Alternative, Cardinality, Content, Field, Node, Pattern, Replacement, Rule, Template,
+};
+
+#[derive(Clone, Copy, Default)]
+struct LoweringContext<'a> {
+    dependency_scope: Option<DependencyScope<'a>>,
+}
+
+#[derive(Clone, Copy)]
+struct DependencyScope<'a> {
+    preparations: &'a RefCell<Vec<DependencyPreparation>>,
+}
+
+struct DependencyPreparation {
+    value: Ident,
+    source_range: Ident,
+    expression: TokenStream,
+}
+
+fn fresh_prepared_ident(suffix: &str) -> Ident {
+    static COUNTER: AtomicUsize = AtomicUsize::new(0);
+    let n = COUNTER.fetch_add(1, Ordering::Relaxed);
+    Ident::new(&format!("__yeast_prepared_{suffix}_{n}"), Span::call_site())
+}
 
 #[derive(Clone)]
 struct CaptureBinding {
@@ -273,15 +299,19 @@ fn capture_bindings<'a>(
 
 impl Template {
     pub(crate) fn lower_root(&self) -> TokenStream {
-        self.lower()
+        match self {
+            Template::Choice(alternatives) => Self::lower_choice(alternatives),
+            _ => self.lower_single(LoweringContext::default()),
+        }
     }
 
     pub(crate) fn lower_list(templates: &[Self]) -> TokenStream {
+        let context = LoweringContext::default();
         let items = templates
             .iter()
             .map(|template| match template {
                 Template::Node(node) => {
-                    let node = node.lower();
+                    let node = node.lower(context);
                     quote! { __nodes.push(#node); }
                 }
                 Template::Splice(block) => {
@@ -290,6 +320,14 @@ impl Template {
                         let __value = ::std::iter::IntoIterator::into_iter(#block)
                             .collect::<Vec<_>>();
                         ctx.extend_field_ids(__value, &mut __nodes);
+                    }
+                }
+                Template::Choice(alternatives) => {
+                    let pick = Self::lower_choice(alternatives);
+                    quote! {
+                        if let ::std::option::Option::Some(__id) = #pick {
+                            __nodes.push(__id);
+                        }
                     }
                 }
             })
@@ -304,19 +342,102 @@ impl Template {
         }
     }
 
-    fn lower(&self) -> TokenStream {
+    fn lower_single(&self, context: LoweringContext<'_>) -> TokenStream {
         match self {
-            Template::Node(node) => node.lower(),
+            Template::Node(node) => node.lower(context),
             Template::Splice(block) => {
                 let block = rust_block(block);
                 quote! { ::std::convert::Into::<yeast::OutputId>::into(#block) }
+            }
+            Template::Choice(_) => {
+                unreachable!("choices are lowered through Template::lower_choice")
+            }
+        }
+    }
+
+    fn lower_choice(alternatives: &[Alternative]) -> TokenStream {
+        let pick = alternatives.iter().rev().fold(
+            quote! { ::std::option::Option::None },
+            |fallback, alternative| {
+                alternative.lower_candidate(fallback)
+            },
+        );
+        quote! {{ #pick }}
+    }
+}
+
+impl Alternative {
+    fn lower_candidate(&self, fallback: TokenStream) -> TokenStream {
+        let preparations = RefCell::new(Vec::new());
+        let context = LoweringContext {
+            dependency_scope: Some(DependencyScope {
+                preparations: &preparations,
+            }),
+        };
+        let value = self.template.lower_single(context);
+        let preparations = preparations.into_inner();
+        let prepared_values = preparations
+            .iter()
+            .flat_map(|preparation| {
+                [
+                    preparation.value.clone(),
+                    preparation.source_range.clone(),
+                ]
+            })
+            .collect::<Vec<_>>();
+        let prepared = quote! {
+            ::std::option::Option::Some((#(#prepared_values),*))
+        };
+
+        // Nest dependency matches around preparation in reverse, so they are
+        // evaluated in source order. Construction happens only after the
+        // resulting option has been matched, keeping it in a separate branch
+        // from the fallback.
+        let prepared = preparations.into_iter().rev().fold(
+            prepared,
+            |candidate, preparation| {
+                let DependencyPreparation {
+                    value,
+                    source_range,
+                    expression,
+                } = preparation;
+                // Do not use `map`/`and_then` here: `candidate` may contain
+                // embedded user Rust, and putting it in a closure would change
+                // the target of `return` and the result type seen by `?`.
+                quote! {
+                    match #expression {
+                        ::std::option::Option::Some((#value, #source_range)) => #candidate,
+                        ::std::option::Option::None => ::std::option::Option::None,
+                    }
+                }
+            },
+        );
+        let prepared = if let Some(guard) = &self.guard {
+            let guard = rust_block(guard);
+            quote! {
+                if #guard {
+                    #prepared
+                } else {
+                    ::std::option::Option::None
+                }
+            }
+        } else {
+            prepared
+        };
+
+        quote! {
+            match #prepared {
+                ::std::option::Option::Some((#(#prepared_values),*)) => {
+                    ::std::option::Option::Some(#value)
+                }
+                ::std::option::Option::None => #fallback,
             }
         }
     }
 }
 
 impl Node {
-    fn lower(&self) -> TokenStream {
+    fn lower(&self, context: LoweringContext<'_>) -> TokenStream {
         let ctx = Ident::new("ctx", Span::call_site());
         let kind_str = self.kind.to_string();
 
@@ -325,18 +446,53 @@ impl Node {
                 Content::Static(lit) => quote! { #ctx.literal(#kind_str, #lit) },
                 Content::Computed(block) => {
                     let block = rust_block(block);
-                    quote! {
-                        {
-                            let __expr = #block;
-                            let __value =
-                                yeast::YeastDisplay::yeast_to_string(&__expr, &#ctx);
-                            let __source_range =
-                                yeast::YeastSourceRange::yeast_source_range(&__expr, &#ctx);
+                    if let Some(scope) = context.dependency_scope {
+                        let value = fresh_prepared_ident("value");
+                        let source_range = fresh_prepared_ident("source_range");
+                        scope.preparations.borrow_mut().push(DependencyPreparation {
+                            value: value.clone(),
+                            source_range: source_range.clone(),
+                            expression: quote! {
+                                {
+                                    let __expr = #block;
+                                    yeast::MaybeYeastValue::maybe_yeast_value(&__expr).map(
+                                        |__value_ref| {
+                                            (
+                                                yeast::YeastDisplay::yeast_to_string(
+                                                    __value_ref,
+                                                    &#ctx,
+                                                ),
+                                                yeast::YeastSourceRange::yeast_source_range(
+                                                    __value_ref,
+                                                    &#ctx,
+                                                ),
+                                            )
+                                        },
+                                    )
+                                }
+                            },
+                        });
+                        quote! {
                             #ctx.literal_with_source_range(
                                 #kind_str,
-                                &__value,
-                                __source_range,
+                                &#value,
+                                #source_range,
                             )
+                        }
+                    } else {
+                        quote! {
+                            {
+                                let __expr = #block;
+                                let __value =
+                                    yeast::YeastDisplay::yeast_to_string(&__expr, &#ctx);
+                                let __source_range =
+                                    yeast::YeastSourceRange::yeast_source_range(&__expr, &#ctx);
+                                #ctx.literal_with_source_range(
+                                    #kind_str,
+                                    &__value,
+                                    __source_range,
+                                )
+                            }
                         }
                     }
                 }
@@ -384,8 +540,19 @@ impl Node {
                                 }
                             });
                         }
+                        Template::Choice(alternatives) => {
+                            let pick = Template::lower_choice(alternatives);
+                            stmts.push(quote! {
+                                let #temp: ::std::option::Option<yeast::OutputId> = #pick;
+                            });
+                            field_args.push(quote! {
+                                if let ::std::option::Option::Some(__id) = #temp {
+                                    __fields.push((#field_str, vec![__id]));
+                                }
+                            });
+                        }
                         Template::Node(child) => {
-                            let value = child.lower();
+                            let value = child.lower(context);
                             stmts.push(quote! { let #temp: yeast::OutputId = #value; });
                             field_args.push(quote! {
                                 __fields.push((#field_str, vec![#temp]));

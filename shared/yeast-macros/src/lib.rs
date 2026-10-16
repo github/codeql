@@ -52,6 +52,8 @@ pub fn query(input: TokenStream) -> TokenStream {
 
 /// Build a single AST node from a template, returning its `OutputId`.
 ///
+/// A top-level choice returns `Option<OutputId>`.
+///
 /// # Template syntax
 ///
 /// ```text
@@ -65,7 +67,41 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// field: {expr}                - extend a named field with `{expr}`'s ids
 /// location: {expr}             - override this node's source range with the
 ///                                span of one or more nodes; may be repeated
+/// field: [(kind ...)]          - set the field only if the alternative can
+///                                be constructed (see below)
+/// field: [(a) (b)]             - use the first constructible alternative
+/// field: [(a) if {guard} (b)]  - skip an alternative when its guard is false
 /// ```
+///
+/// # Template choices
+///
+/// Brackets contain one or more ordered alternatives. For each alternative,
+/// its optional `if {guard}` is evaluated first, followed by every `#{expr}`
+/// dependency beneath it. An absent dependency — an `Option` that is `None` —
+/// skips the alternative without constructing any of its template nodes. The
+/// first alternative whose guard and dependencies succeed is constructed:
+///
+/// ```text
+/// (break_expr label: {lbl.map(|l| tree!((identifier #{l})))})   // before
+/// (break_expr label: [(identifier #{lbl})])                     // after
+/// ```
+///
+/// Dependencies may be nested arbitrarily deeply. A nested choice handles its
+/// own dependencies, so an inner absent value need not discard an outer node:
+///
+/// ```text
+/// (parameter pattern: [
+///     (name_pattern identifier: [(identifier #{name})])
+/// ] type: {ty})
+/// ```
+///
+/// Only `#{expr}` is treated as a dependency. A `{expr}` splice is unaffected,
+/// since yielding no ids already leaves its field unset. Outside a choice,
+/// interpolating an `Option` with `#{expr}` remains a compile error.
+///
+/// A choice used as a field or list item contributes zero or one node. A
+/// top-level choice passed to `tree!` returns `Option<OutputId>`; ordinary
+/// templates continue to return `OutputId`.
 ///
 /// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
 ///

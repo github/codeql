@@ -100,6 +100,15 @@ pub(crate) enum Template {
     Node(Node),
     /// An embedded Rust block such as `{args}`.
     Splice(syn::Block),
+    /// Ordered alternatives such as `[(identifier #{name}) (missing)]`.
+    Choice(Vec<Alternative>),
+}
+
+pub(crate) struct Alternative {
+    /// Template to construct when the guard and dependencies succeed.
+    pub(crate) template: Template,
+    /// Optional postfix guard such as `if { name.is_some() }`.
+    pub(crate) guard: Option<syn::Block>,
 }
 
 pub(crate) struct Node {

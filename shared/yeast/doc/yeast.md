@@ -331,6 +331,57 @@ accessor_declaration source="⟨accessor_kind⟩"
 Node and child ranges are still validated against the source text and UTF-8
 boundaries.
 
+### Template choices (`[]`)
+
+Brackets contain one or more ordered template alternatives. For each
+alternative, Yeast evaluates its optional `if {guard}` and preflights every
+`#{expr}` beneath it. If the guard is false or an interpolation produces
+`None`, that alternative is skipped without constructing any of its template
+nodes. The first alternative that can be constructed is emitted:
+
+```rust
+rule!((breakStmt label: _? @@lbl) => (break_expr label: [(identifier #{lbl})]))
+```
+
+Here an optional capture is being wrapped in a leaf. A multi-way choice can
+provide a fallback, and alternatives can have explicit guards:
+
+```rust
+(import_declaration
+    pattern: [
+        (identifier #{last}) if { kind.is_some() }
+        (bulk_importing_pattern)
+    ])
+```
+
+A choice may contain any nonzero number of alternatives. A single-alternative
+choice expresses an optional tree. Nested choices handle their own
+dependencies, so an inner absent value need not discard the outer node:
+
+```rust
+// If `name` is absent, `pattern` is left unset — but `type` is still set.
+(parameter
+    pattern: [
+        (name_pattern identifier: [(identifier #{name})])
+    ]
+    type: {ty})
+```
+
+Only `#{expr}` propagates absence, because it supplies a node's *content*: with
+no value there is no leaf to build. A `{expr}` splice supplies *children*, where
+yielding nothing already leaves the field unset (see below). How many children
+a `{expr}` contributes is a property of the expression rather than of the
+template syntax.
+
+Outside a choice, interpolating an `Option` with `#{expr}` remains a compile
+error. That is deliberate: it keeps the choice between rejecting an
+alternative and unwrapping the value explicit at every interpolation.
+
+Choice dependencies are evaluated before construction begins. A rejected
+alternative therefore leaves no partially constructed template nodes in the
+AST. Guards and dependencies are evaluated once, in source order. A nested
+choice is a separate dependency boundary.
+
 ### Embedded Rust expressions
 
 `{expr}` embeds a Rust expression whose value is appended to the
@@ -357,9 +408,10 @@ yeast::trees!(
 ```
 
 Because an `Option<Id>` splices as zero or one id, `field: {opt}` already
-leaves the field unset when `opt` is `None`. Use [`?`](#optional-fields-)
-instead when the optional value has to be *wrapped* in a node first, so that
-there is nothing to wrap when it is absent.
+leaves the field unset when `opt` is `None`. Use a
+[single-alternative template choice](#template-choices-) instead when the
+optional value has to be *wrapped* in a node first, so that there is nothing
+to wrap when it is absent.
 
 The contents of `{…}` are treated as a Rust block, so multi-statement
 expressions (with `let` bindings) work too:
