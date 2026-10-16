@@ -14,9 +14,10 @@
 | HostComparisonRedirect.java:157:35:157:48 | toString(...) | HostComparisonRedirect.java:155:27:155:53 | getParameter(...) : String | HostComparisonRedirect.java:157:35:157:48 | toString(...) | Untrusted URL redirection depends on a $@. | HostComparisonRedirect.java:155:27:155:53 | getParameter(...) | user-provided value |
 | HostComparisonRedirect.java:185:39:185:52 | toString(...) | HostComparisonRedirect.java:178:27:178:53 | getParameter(...) : String | HostComparisonRedirect.java:185:39:185:52 | toString(...) | Untrusted URL redirection depends on a $@. | HostComparisonRedirect.java:178:27:178:53 | getParameter(...) | user-provided value |
 | HostComparisonRedirect.java:227:35:227:48 | toString(...) | HostComparisonRedirect.java:224:27:224:53 | getParameter(...) : String | HostComparisonRedirect.java:227:35:227:48 | toString(...) | Untrusted URL redirection depends on a $@. | HostComparisonRedirect.java:224:27:224:53 | getParameter(...) | user-provided value |
-| HostComparisonRedirect.java:235:35:235:48 | toString(...) | HostComparisonRedirect.java:232:27:232:53 | getParameter(...) : String | HostComparisonRedirect.java:235:35:235:48 | toString(...) | Untrusted URL redirection depends on a $@. | HostComparisonRedirect.java:232:27:232:53 | getParameter(...) | user-provided value |
-| HostComparisonRedirect.java:261:35:261:48 | toString(...) | HostComparisonRedirect.java:257:27:257:53 | getParameter(...) : String | HostComparisonRedirect.java:261:35:261:48 | toString(...) | Untrusted URL redirection depends on a $@. | HostComparisonRedirect.java:257:27:257:53 | getParameter(...) | user-provided value |
-| HostComparisonRedirect.java:270:35:270:48 | toString(...) | HostComparisonRedirect.java:266:27:266:53 | getParameter(...) : String | HostComparisonRedirect.java:270:35:270:48 | toString(...) | Untrusted URL redirection depends on a $@. | HostComparisonRedirect.java:266:27:266:53 | getParameter(...) | user-provided value |
+| HostComparisonRedirect.java:243:35:243:48 | toString(...) | HostComparisonRedirect.java:240:27:240:53 | getParameter(...) : String | HostComparisonRedirect.java:243:35:243:48 | toString(...) | Untrusted URL redirection depends on a $@. | HostComparisonRedirect.java:240:27:240:53 | getParameter(...) | user-provided value |
+| HostComparisonRedirect.java:251:35:251:48 | toString(...) | HostComparisonRedirect.java:248:27:248:53 | getParameter(...) : String | HostComparisonRedirect.java:251:35:251:48 | toString(...) | Untrusted URL redirection depends on a $@. | HostComparisonRedirect.java:248:27:248:53 | getParameter(...) | user-provided value |
+| HostComparisonRedirect.java:277:35:277:48 | toString(...) | HostComparisonRedirect.java:273:27:273:53 | getParameter(...) : String | HostComparisonRedirect.java:277:35:277:48 | toString(...) | Untrusted URL redirection depends on a $@. | HostComparisonRedirect.java:273:27:273:53 | getParameter(...) | user-provided value |
+| HostComparisonRedirect.java:286:35:286:48 | toString(...) | HostComparisonRedirect.java:282:27:282:53 | getParameter(...) : String | HostComparisonRedirect.java:286:35:286:48 | toString(...) | Untrusted URL redirection depends on a $@. | HostComparisonRedirect.java:282:27:282:53 | getParameter(...) | user-provided value |
 | MicronautUrlRedirect.java:14:38:14:55 | create(...) | MicronautUrlRedirect.java:12:39:12:63 | target : String | MicronautUrlRedirect.java:14:38:14:55 | create(...) | Untrusted URL redirection depends on a $@. | MicronautUrlRedirect.java:12:39:12:63 | target | user-provided value |
 | MicronautUrlRedirect.java:28:47:28:64 | create(...) | MicronautUrlRedirect.java:27:45:27:69 | target : String | MicronautUrlRedirect.java:28:47:28:64 | create(...) | Untrusted URL redirection depends on a $@. | MicronautUrlRedirect.java:27:45:27:69 | target | user-provided value |
 | MicronautUrlRedirect.java:33:38:33:55 | create(...) | MicronautUrlRedirect.java:32:44:32:68 | target : String | MicronautUrlRedirect.java:33:38:33:55 | create(...) | Untrusted URL redirection depends on a $@. | MicronautUrlRedirect.java:32:44:32:68 | target | user-provided value |
@@ -73,15 +74,18 @@ edges
 | HostComparisonRedirect.java:224:19:224:54 | new URI(...) : URI | HostComparisonRedirect.java:227:35:227:37 | uri : URI | provenance |  |
 | HostComparisonRedirect.java:224:27:224:53 | getParameter(...) : String | HostComparisonRedirect.java:224:19:224:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
 | HostComparisonRedirect.java:227:35:227:37 | uri : URI | HostComparisonRedirect.java:227:35:227:48 | toString(...) | provenance | MaD:10 |
-| HostComparisonRedirect.java:232:19:232:54 | new URI(...) : URI | HostComparisonRedirect.java:235:35:235:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:232:27:232:53 | getParameter(...) : String | HostComparisonRedirect.java:232:19:232:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:235:35:235:37 | uri : URI | HostComparisonRedirect.java:235:35:235:48 | toString(...) | provenance | MaD:10 |
-| HostComparisonRedirect.java:257:19:257:54 | new URI(...) : URI | HostComparisonRedirect.java:261:35:261:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:257:27:257:53 | getParameter(...) : String | HostComparisonRedirect.java:257:19:257:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:261:35:261:37 | uri : URI | HostComparisonRedirect.java:261:35:261:48 | toString(...) | provenance | MaD:10 |
-| HostComparisonRedirect.java:266:19:266:54 | new URI(...) : URI | HostComparisonRedirect.java:270:35:270:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:266:27:266:53 | getParameter(...) : String | HostComparisonRedirect.java:266:19:266:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:270:35:270:37 | uri : URI | HostComparisonRedirect.java:270:35:270:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:240:19:240:54 | new URI(...) : URI | HostComparisonRedirect.java:243:35:243:37 | uri : URI | provenance |  |
+| HostComparisonRedirect.java:240:27:240:53 | getParameter(...) : String | HostComparisonRedirect.java:240:19:240:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
+| HostComparisonRedirect.java:243:35:243:37 | uri : URI | HostComparisonRedirect.java:243:35:243:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:248:19:248:54 | new URI(...) : URI | HostComparisonRedirect.java:251:35:251:37 | uri : URI | provenance |  |
+| HostComparisonRedirect.java:248:27:248:53 | getParameter(...) : String | HostComparisonRedirect.java:248:19:248:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
+| HostComparisonRedirect.java:251:35:251:37 | uri : URI | HostComparisonRedirect.java:251:35:251:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:273:19:273:54 | new URI(...) : URI | HostComparisonRedirect.java:277:35:277:37 | uri : URI | provenance |  |
+| HostComparisonRedirect.java:273:27:273:53 | getParameter(...) : String | HostComparisonRedirect.java:273:19:273:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
+| HostComparisonRedirect.java:277:35:277:37 | uri : URI | HostComparisonRedirect.java:277:35:277:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:282:19:282:54 | new URI(...) : URI | HostComparisonRedirect.java:286:35:286:37 | uri : URI | provenance |  |
+| HostComparisonRedirect.java:282:27:282:53 | getParameter(...) : String | HostComparisonRedirect.java:282:19:282:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
+| HostComparisonRedirect.java:286:35:286:37 | uri : URI | HostComparisonRedirect.java:286:35:286:48 | toString(...) | provenance | MaD:10 |
 | MicronautUrlRedirect.java:12:39:12:63 | target : String | MicronautUrlRedirect.java:14:49:14:54 | target : String | provenance |  |
 | MicronautUrlRedirect.java:14:49:14:54 | target : String | MicronautUrlRedirect.java:14:38:14:55 | create(...) | provenance | MaD:9 Sink:MaD:2 |
 | MicronautUrlRedirect.java:27:45:27:69 | target : String | MicronautUrlRedirect.java:28:58:28:63 | target : String | provenance |  |
@@ -168,18 +172,22 @@ nodes
 | HostComparisonRedirect.java:224:27:224:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | HostComparisonRedirect.java:227:35:227:37 | uri : URI | semmle.label | uri : URI |
 | HostComparisonRedirect.java:227:35:227:48 | toString(...) | semmle.label | toString(...) |
-| HostComparisonRedirect.java:232:19:232:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| HostComparisonRedirect.java:232:27:232:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| HostComparisonRedirect.java:235:35:235:37 | uri : URI | semmle.label | uri : URI |
-| HostComparisonRedirect.java:235:35:235:48 | toString(...) | semmle.label | toString(...) |
-| HostComparisonRedirect.java:257:19:257:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| HostComparisonRedirect.java:257:27:257:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| HostComparisonRedirect.java:261:35:261:37 | uri : URI | semmle.label | uri : URI |
-| HostComparisonRedirect.java:261:35:261:48 | toString(...) | semmle.label | toString(...) |
-| HostComparisonRedirect.java:266:19:266:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| HostComparisonRedirect.java:266:27:266:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| HostComparisonRedirect.java:270:35:270:37 | uri : URI | semmle.label | uri : URI |
-| HostComparisonRedirect.java:270:35:270:48 | toString(...) | semmle.label | toString(...) |
+| HostComparisonRedirect.java:240:19:240:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparisonRedirect.java:240:27:240:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparisonRedirect.java:243:35:243:37 | uri : URI | semmle.label | uri : URI |
+| HostComparisonRedirect.java:243:35:243:48 | toString(...) | semmle.label | toString(...) |
+| HostComparisonRedirect.java:248:19:248:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparisonRedirect.java:248:27:248:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparisonRedirect.java:251:35:251:37 | uri : URI | semmle.label | uri : URI |
+| HostComparisonRedirect.java:251:35:251:48 | toString(...) | semmle.label | toString(...) |
+| HostComparisonRedirect.java:273:19:273:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparisonRedirect.java:273:27:273:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparisonRedirect.java:277:35:277:37 | uri : URI | semmle.label | uri : URI |
+| HostComparisonRedirect.java:277:35:277:48 | toString(...) | semmle.label | toString(...) |
+| HostComparisonRedirect.java:282:19:282:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| HostComparisonRedirect.java:282:27:282:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| HostComparisonRedirect.java:286:35:286:37 | uri : URI | semmle.label | uri : URI |
+| HostComparisonRedirect.java:286:35:286:48 | toString(...) | semmle.label | toString(...) |
 | MicronautUrlRedirect.java:12:39:12:63 | target : String | semmle.label | target : String |
 | MicronautUrlRedirect.java:14:38:14:55 | create(...) | semmle.label | create(...) |
 | MicronautUrlRedirect.java:14:49:14:54 | target : String | semmle.label | target : String |

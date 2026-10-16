@@ -151,7 +151,7 @@ private predicate isHostComparisonSanitizer(Guard guard, Expr e, boolean branch)
     )
   or
   exists(Expr checked |
-    constantValueGuardChecks(guard, checked, branch) and
+    nonNullConstantValueGuardChecks(guard, checked, branch) and
     e = getCheckedHost(checked).getQualifier()
   )
 }

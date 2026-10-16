@@ -221,10 +221,10 @@ public class HostComparisonRedirect {
     }
 
     public void nullContainingCollection(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        URI uri = new URI(request.getParameter("url")); // $ MISSING: Source
+        URI uri = new URI(request.getParameter("url")); // $ Source
         String host = uri.getHost();
         if (Arrays.asList("example.com", null).contains(host)) {
-            response.sendRedirect(uri.toString()); // $ MISSING: Alert
+            response.sendRedirect(uri.toString()); // $ Alert
         }
     }
 

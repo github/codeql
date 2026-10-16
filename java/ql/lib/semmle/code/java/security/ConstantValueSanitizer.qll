@@ -7,6 +7,7 @@ private import codeql.typeflow.UniversalFlow as UniversalFlow
 private import semmle.code.java.Collections
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.internal.BaseSSA as Base
+private import semmle.code.java.dataflow.NullGuards
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.TypeFlow
 private import semmle.code.java.dispatch.VirtualDispatch
@@ -154,6 +155,29 @@ private predicate collectionWithPossibleMutation(FlowNode n) {
   )
 }
 
+/** Holds if `n` is a collection constructed by an API that rejects null elements. */
+private predicate nullRejectingCollectionCreation(FlowNode n) {
+  exists(Call c, Callable tgt |
+    n.asExpr() = c and
+    c.getCallee().getSourceDeclaration() = tgt
+  |
+    tgt.hasQualifiedName("java.util", ["List", "Set"], ["copyOf", "of"])
+    or
+    tgt.hasQualifiedName("com.google.common.collect", ["ImmutableList", "ImmutableSet"],
+      ["copyOf", "of"])
+  )
+}
+
+private module NullRejectingCollectionProp implements BaseUniversalFlow::NullaryPropertySig {
+  predicate hasPropertyBase(FlowNode n) { nullRejectingCollectionCreation(n) }
+
+  predicate barrier = collectionWithPossibleMutation/1;
+}
+
+/** Holds if the given collection cannot contain null. */
+private predicate nullRejectingCollection =
+  BaseUniversalFlow::FlowNullary<NullRejectingCollectionProp>::hasProperty/1;
+
 /**
  * A collection constructor that constructs an empty mutable collection.
  */
@@ -238,18 +262,23 @@ private MethodCall normalizeCaseCall(Expr arg) {
  * Holds if the guard `g` ensures that the expression `e` is one of a set of
  * known constants upon evaluating to `branch`.
  */
-private predicate constantCollectionContainsCheck(Guard g, Expr e, boolean branch) {
-  exists(MethodCall mc, Method m, FlowNode n, Expr checked |
-    g = mc and
-    mc.getMethod().getSourceDeclaration().overridesOrInstantiates*(m) and
+private predicate constantCollectionContainsCall(
+  MethodCall contains, FlowNode collection, Expr checked
+) {
+  exists(Method m, FlowNode n |
+    contains.getMethod().getSourceDeclaration().overridesOrInstantiates*(m) and
     m.hasQualifiedName("java.util", "Collection", "contains") and
-    n.asExpr() = mc.getQualifier() and
+    n.asExpr() = contains.getQualifier() and
     constantCollection(n) and
-    checked = mc.getAnArgument() and
+    checked = contains.getAnArgument() and
+    collection = n
+  )
+}
+
+private predicate constantCollectionContainsCheck(Guard g, Expr e, boolean branch) {
+  exists(Expr checked | checked = e or checked = normalizeCaseCall(e) |
+    constantCollectionContainsCall(g, _, checked) and
     branch = true
-  |
-    checked = e or
-    checked = normalizeCaseCall(e)
   )
 }
 
@@ -280,6 +309,35 @@ predicate constantValueGuardChecks(Guard g, Expr e, boolean branch) {
   constantStringEqualityCheck(g, e, branch)
   or
   constantCollectionContainsCheck(g, e, branch)
+}
+
+/**
+ * Holds if `g` ensures that `e` is a non-null member of a set of compile-time constants upon
+ * evaluating to `branch`.
+ */
+predicate nonNullConstantValueGuardChecks(Guard g, Expr e, boolean branch) {
+  constantStringEqualityCheck(g, e, branch)
+  or
+  exists(FlowNode collection, Expr checked |
+    constantCollectionContainsCall(g, collection, checked) and
+    branch = true
+  |
+    checked = e and
+    (
+      nullRejectingCollection(collection)
+      or
+      e = clearlyNotNullExpr()
+    )
+    or
+    checked = normalizeCaseCall(e) and
+    (
+      nullRejectingCollection(collection)
+      or
+      checked.(MethodCall).getQualifier() = e
+      or
+      e = clearlyNotNullExpr()
+    )
+  )
 }
 
 /**

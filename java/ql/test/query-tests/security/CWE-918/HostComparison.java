@@ -220,10 +220,10 @@ public class HostComparison {
     }
 
     public void nullContainingCollection(HttpServletRequest request) throws Exception {
-        URI uri = new URI(request.getParameter("url")); // $ MISSING: Source
+        URI uri = new URI(request.getParameter("url")); // $ Source
         String host = uri.getHost();
         if (Arrays.asList("example.com", null).contains(host)) {
-            uri.toURL().openConnection(); // $ MISSING: Alert
+            uri.toURL().openConnection(); // $ Alert
         }
     }
 
