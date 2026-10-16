@@ -380,6 +380,8 @@ module ExprTrees {
 
   class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
 
+  class CfgPredExprTree extends LeafTree instanceof CfgPredExpr { }
+
   abstract class LoopingExprTree extends PostOrderTree {
     override predicate propagatesAbnormal(AstNode child) { child = this.getLoopBody() }
 
@@ -629,6 +631,8 @@ module PatternTrees {
   }
 
   class RestPatTree extends LeafTree, RestPat { }
+
+  class CfgPredPatTree extends LeafTree, CfgPredPat { }
 
   class LiteralPatTree extends StandardPostOrderTree, LiteralPat {
     override AstNode getChildNode(int i) { i = 0 and result = this.getLiteral() }
