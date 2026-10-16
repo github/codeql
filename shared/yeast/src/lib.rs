@@ -15,7 +15,7 @@ pub mod schema;
 mod visitor;
 
 pub use range::{Point, Range};
-pub use yeast_macros::{query, rule, rules, tree, tree_at, tree_spanning, trees};
+pub use yeast_macros::{query, rule, rules, tree, trees};
 
 use captures::Captures;
 use query::QueryNode;

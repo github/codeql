@@ -1841,9 +1841,9 @@ fn test_explicit_recursive_translation_keeps_nested_rule_location() {
     assert_eq!(identifier.byte_range(), 4..7);
 }
 
-/// `tree_at!` assigns the captured node's range only to the template root.
+/// A `location` field assigns the captured node's range only to its node.
 #[test]
-fn test_tree_at_assigns_capture_range_to_root_only() {
+fn test_location_field_assigns_capture_range_to_node_only() {
     let rule: Rule = rule!(
         (call
             method: (identifier) @name
@@ -1851,7 +1851,9 @@ fn test_tree_at_assigns_capture_range_to_root_only() {
         ) @@source
         =>
         call {
-            let arguments = tree_at!(source, (argument_list argument: (integer "0")));
+            let arguments = tree!((argument_list
+                argument: (integer "0")
+                location: {source}));
             tree!((call method: {name} receiver: {recv} arguments: {arguments}))
         }
     );
@@ -1874,10 +1876,9 @@ fn test_tree_at_assigns_capture_range_to_root_only() {
     assert_eq!(integer.byte_range(), 0..0);
 }
 
-/// `tree_spanning!` assigns the union of the captured node ranges only to the
-/// template root.
+/// Multiple `location` fields assign their union only to their node.
 #[test]
-fn test_tree_spanning_assigns_union_to_root_only() {
+fn test_multiple_location_fields_assign_union_to_node_only() {
     let rule: Rule = rule!(
         (call
             method: (identifier) @name
@@ -1885,10 +1886,10 @@ fn test_tree_spanning_assigns_union_to_root_only() {
         )
         =>
         call {
-            let arguments = tree_spanning!(
-                [recv, name],
-                (argument_list argument: (integer "0"))
-            );
+            let arguments = tree!((argument_list
+                argument: (integer "0")
+                location: {recv}
+                location: {name}));
             tree!((call method: {name} receiver: {recv} arguments: {arguments}))
         }
     );
