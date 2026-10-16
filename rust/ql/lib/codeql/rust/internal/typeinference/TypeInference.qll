@@ -3119,6 +3119,10 @@ private module Input3 implements InputSig3 {
   Type inferTypeCertainLanguageSpecific(AstNode n, TypePath path) {
     result = inferLiteralType(n, path, true)
     or
+    (n instanceof CfgPredExpr or n instanceof CfgPredPat) and
+    path.isEmpty() and
+    result instanceof BoolType
+    or
     result = inferRefPatType(n) and
     path.isEmpty()
     or

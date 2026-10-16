@@ -1225,6 +1225,32 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCfgPredExpr(
+    CfgPredExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int n, int nCfgPredicate |
+      n = 0 and
+      nCfgPredicate = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getCfgPredicate() and partialPredicateCall = "CfgPredicate()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfCfgPredPat(CfgPredPat e, int index, string partialPredicateCall) {
+    exists(int n, int nCfgPredicate |
+      n = 0 and
+      nCfgPredicate = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getCfgPredicate() and partialPredicateCall = "CfgPredicate()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfClosureExpr(
     ClosureExpr e, int index, string partialPredicateCall
   ) {
@@ -3350,6 +3376,10 @@ private module Impl {
     result = getImmediateChildOfCfgComposite(e, index, partialAccessor)
     or
     result = getImmediateChildOfCfgMeta(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCfgPredExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCfgPredPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfClosureExpr(e, index, partialAccessor)
     or

@@ -823,10 +823,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 return_type: {ret}
                 body: (block stmt: {body}))
         ),
-        // A closure capture (`[weak self]`, `[x]`, `[y = expr]`). The optional
-        // ownership specifier (`weak`/`unowned`) becomes a modifier; the
-        // captured name becomes the bound `name_node`; an explicit capture
-        // initializer (`[y = expr]`) becomes the bound value.
+        // A closure capture (`[weak self]`, `[x]`, `[y = expr]`).
+        // Normalize so there is always an explicit initializer, expanding `[x]` into `[x = x]`.
         rule!(
             (closureCapture
                 specifier: (closureCaptureSpecifier specifier: @@spec)?
@@ -836,7 +834,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (variable_declaration
                 modifier: (modifier #{spec})?
                 pattern: (identifier #{name})
-                value: {val})
+                value: {
+                    // Expand [x] into [x = x]
+                    match val {
+                        Some(val) => val,
+                        None => tree!((identifier #{name})),
+                    }
+                })
         ),
         // A closure parameter clause (`(x: Int, y)`) unwraps to its parameters.
         rule!((closureParameterClause parameters: _* @params) => parameter* { params }),

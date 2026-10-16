@@ -29,7 +29,7 @@ where
   // GLib's gboolean is a typedef for a type representing BoolType.
   not bf.getType().hasName("gboolean") and
   // If this is true, then there cannot be unsigned sign extension or overflow.
-  not bf.getDeclaredNumBits() = bf.getType().getSize() * 8 and
+  not bf.getDeclaredNumBits() = bf.getType().getBitWidth() and
   not bf.isAnonymous() and
   not bf.isFromUninstantiatedTemplate(_)
 select bf,
