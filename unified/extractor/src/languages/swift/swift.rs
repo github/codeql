@@ -1208,7 +1208,17 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((identifierType name: @@n) => (identifier #{n})),
         // A qualified type (`Outer.Inner`, `NSString.CompareOptions`). swift-syntax
         // nests these as `memberType` nodes; preserve the nesting as ordinary
-        // member access.
+        // member access, wrapped in a generic type when it has type arguments.
+        rule!(
+            (memberType
+                baseType: @base
+                name: @@name
+                genericArgumentClause: (genericArgumentClause arguments: (genericArgument argument: @args)*))
+            =>
+            (generic_type_expr
+                base: (member_access_expr base: {base} member_name_node: (identifier #{name}))
+                type_argument: {args})
+        ),
         rule!(
             (memberType baseType: @base name: @@name)
             =>
