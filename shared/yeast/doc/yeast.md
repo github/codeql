@@ -271,6 +271,32 @@ same broad range to every synthetic descendant. A transform that simply
 returns a translated capture does not widen that capture to the wrapper's
 range.
 
+The special `location` field overrides the location of the node on which it
+appears. Its value must be a Rust block and uses the same node-splicing rules
+as an ordinary field block, but is metadata and is not added to the output AST:
+
+```rust
+rule!(
+    (wrapper
+        first: (_) @first
+        second: (_) @second
+        child: (_) @child)
+    =>
+    (synthetic_node
+        child: {child}
+        location: {[first, second]})
+)
+```
+
+If a `location` value yields several nodes, their locations are combined into
+the smallest range containing all of them. Multiple `location` fields on the
+same node are combined in the same way. The field can also be used on literal
+leaf nodes:
+
+```rust
+(identifier "synthetic" location: {source_node})
+```
+
 The following macros can be used to explicitly set the location associated
 with a newly-created node. They assign a location only to the root of their
 template; nested nodes still derive their locations normally.

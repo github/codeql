@@ -65,6 +65,8 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// field: {expr}                - extend a named field with `{expr}`'s ids
 /// field: (kind ...)?           - set the field only if every `#{expr}`
 ///                                beneath it has a value (see below)
+/// location: {expr}             - override this node's source range with the
+///                                span of one or more nodes; may be repeated
 /// ```
 ///
 /// # Optional fields

@@ -70,13 +70,41 @@ fn parse_node(group: proc_macro2::Group) -> Result<Node> {
     let mut fields = Vec::new();
     while peek_is_field(&mut tokens) {
         let name = expect_ident(&mut tokens, "expected field name")?;
-        if content.is_some() {
+        let is_location = name == "location";
+        if content.is_some() && !is_location {
             return Err(syn::Error::new_spanned(
                 name,
-                "literal nodes cannot have named fields",
+                "literal nodes can only have the special `location` field",
             ));
         }
         expect_punct(&mut tokens, ':', "expected `:` after field name")?;
+        if is_location {
+            if !peek_is_group(&mut tokens, Delimiter::Brace) {
+                let error = match tokens.peek() {
+                    Some(token) => syn::Error::new_spanned(
+                        token.clone(),
+                        "`location` field value must be a Rust block",
+                    ),
+                    None => syn::Error::new(
+                        Span::call_site(),
+                        "`location` field value must be a Rust block",
+                    ),
+                };
+                return Err(error);
+            }
+            let block = parse_block(expect_group(&mut tokens, Delimiter::Brace)?)?;
+            if let Some(TokenTree::Punct(punctuation)) = tokens.peek() {
+                if punctuation.as_char() == '?' {
+                    return Err(syn::Error::new_spanned(
+                        punctuation.clone(),
+                        "`?` is not valid on a `location` field",
+                    ));
+                }
+            }
+            fields.push(Field::Location { block });
+            continue;
+        }
+
         let value = parse_one(&mut tokens)?;
         let optional = if matches!(value, Template::Splice(_)) {
             reject_stray_optional(&mut tokens, true)?;
@@ -241,6 +269,46 @@ mod tests {
     }
 
     #[test]
+    fn parses_location_fields_on_literal_nodes() {
+        let template = parse_template(quote! {
+            (identifier "name" location: {source})
+        })
+        .unwrap();
+
+        let Template::Node(node) = template else {
+            panic!("expected node template");
+        };
+        assert_eq!(node.kind, "identifier");
+        assert!(node.content.is_some());
+        assert!(matches!(node.fields.as_slice(), [Field::Location { .. }]));
+    }
+
+    #[test]
+    fn rejects_non_block_location_fields() {
+        let result = parse_template(quote! {
+            (identifier "name" location: (identifier "source"))
+        });
+        let Err(error) = result else {
+            panic!("expected a non-block location value to be rejected");
+        };
+        assert_eq!(
+            error.to_string(),
+            "`location` field value must be a Rust block"
+        );
+    }
+
+    #[test]
+    fn rejects_optional_location_fields() {
+        let result = parse_template(quote! {
+            (identifier "name" location: {source}?)
+        });
+        let Err(error) = result else {
+            panic!("expected an optional location field to be rejected");
+        };
+        assert_eq!(error.to_string(), "`?` is not valid on a `location` field");
+    }
+
+    #[test]
     fn parses_lists_and_skips_empty_nodes() {
         let templates = parse_templates(quote! {
             (identifier "name")
@@ -254,13 +322,16 @@ mod tests {
     }
 
     #[test]
-    fn rejects_fields_on_literal_nodes() {
+    fn rejects_named_fields_on_literal_nodes() {
         let result = parse_template(quote! {
             (identifier "name" child: (identifier "nested"))
         });
         let Err(error) = result else {
             panic!("expected literal node fields to be rejected");
         };
-        assert_eq!(error.to_string(), "literal nodes cannot have named fields");
+        assert_eq!(
+            error.to_string(),
+            "literal nodes can only have the special `location` field"
+        );
     }
 }

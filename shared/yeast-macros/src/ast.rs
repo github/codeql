@@ -108,7 +108,7 @@ pub(crate) struct Node {
     /// Optional leaf content such as `"foo"` or `#{name}` in
     /// `(identifier "foo")` or `(identifier #{name})`.
     pub(crate) content: Option<Content>,
-    /// Named fields such as `method: {name}` in `(call method: {name})`.
+    /// Named fields and source-location metadata.
     pub(crate) fields: Vec<Field>,
 }
 
@@ -130,5 +130,10 @@ pub(crate) enum Field {
         value: Template,
         /// Whether the field value has a trailing `?`.
         optional: bool,
+    },
+    /// Source-location metadata such as `location: {source}`.
+    Location {
+        /// A Rust block yielding the node or nodes whose locations should be combined.
+        block: syn::Block,
     },
 }

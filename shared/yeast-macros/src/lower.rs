@@ -320,7 +320,7 @@ impl Node {
         let kind_str = self.kind.to_string();
 
         if let Some(content) = &self.content {
-            return match content {
+            let node = match content {
                 Content::Static(lit) => quote! { #ctx.literal(#kind_str, #lit) },
                 Content::Computed(block) => {
                     let block = rust_block(block);
@@ -362,6 +362,7 @@ impl Node {
                     }
                 }
             };
+            return self.with_location(node, &ctx);
         }
 
         let mut stmts = Vec::new();
@@ -372,7 +373,10 @@ impl Node {
                 name,
                 value,
                 optional,
-            } = field;
+            } = field
+            else {
+                continue;
+            };
             let field_name = name.to_string();
             let field_str = field_name
                 .strip_prefix("r#")
@@ -424,12 +428,41 @@ impl Node {
             }
         }
 
-        quote! {
+        let node = quote! {
             {
                 #(#stmts)*
                 let mut __fields: Vec<(&str, Vec<yeast::Id>)> = Vec::new();
                 #(#field_args)*
                 #ctx.node(#kind_str, __fields)
+            }
+        };
+        self.with_location(node, &ctx)
+    }
+
+    fn with_location(&self, node: TokenStream, ctx: &Ident) -> TokenStream {
+        let locations = self.fields.iter().filter_map(|field| match field {
+            Field::Named { .. } => None,
+            Field::Location { block } => Some(rust_block(block)),
+        });
+        let locations: Vec<_> = locations.collect();
+        if locations.is_empty() {
+            return node;
+        }
+
+        quote! {
+            {
+                let mut __location_ids: Vec<yeast::Id> = Vec::new();
+                #(yeast::IntoFieldIds::extend_into(#locations, &mut __location_ids);)*
+                let __source_range = __location_ids
+                    .into_iter()
+                    .filter_map(|__source| {
+                        #ctx.ast
+                            .get_node(__source)
+                            .and_then(|__node| __node.source_range())
+                    })
+                    .reduce(yeast::Range::union);
+                let __node: yeast::Id = #node;
+                #ctx.set_node_source_range(__node, __source_range)
             }
         }
     }

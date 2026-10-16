@@ -1709,6 +1709,75 @@ fn test_returned_capture_keeps_its_location() {
 }
 
 #[test]
+fn test_location_field_overrides_derived_location() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        (call
+            method: {left}
+            location: {right})
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let call = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "call")
+        .expect("call exists");
+
+    assert_eq!(call.byte_range(), 4..5);
+}
+
+#[test]
+fn test_multiple_location_fields_combine_iterable_locations() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        (call
+            method: {left}
+            arguments: (argument_list
+                location: {[left]}
+                location: {[right, left]}))
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+
+    assert_eq!(arguments.byte_range(), 0..5);
+}
+
+#[test]
+fn test_location_field_is_available_on_literal_nodes() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        (identifier "synthetic" location: {right})
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let identifier = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "identifier")
+        .expect("identifier exists");
+
+    assert_eq!(identifier.byte_range(), 4..5);
+}
+
+#[test]
 fn test_ignored_location_field_is_excluded_from_rule_result_location() {
     let rule: Rule = rule!(
         (assignment
