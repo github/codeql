@@ -9,3 +9,12 @@ app.get('/findKey', function(req, res) {
   var safeKey = _.escapeRegExp(key);
   var re = new RegExp("\\b" + safeKey + "=(.*)\n");
 });
+
+var { LinkifyIt } = require("linkify-it");
+
+app.get('/findLinks', function(req, res) {
+  var text = req.param("text");
+  var scanner = new LinkifyIt().set({ fuzzyLink: false });
+  var matches = scanner.match(text);
+  res.json(matches);
+});
