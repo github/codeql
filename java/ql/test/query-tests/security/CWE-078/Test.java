@@ -65,16 +65,16 @@ class Test {
   }
 
   public static void delegatingLauncherLiterals(String arg) throws java.io.IOException {
-    new ProcessBuilder(new String[]{"/usr/bin/env", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
-    new ProcessBuilder(new String[]{"/usr/bin/sudo", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
-    new ProcessBuilder(new String[]{"/usr/bin/xargs", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
-    new ProcessBuilder(new String[]{"/usr/sbin/chroot", "/tmp/root", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
-    new ProcessBuilder(new String[]{"/usr/bin/nice", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
-    new ProcessBuilder(new String[]{"/usr/bin/nohup", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
-    new ProcessBuilder(new String[]{"/usr/bin/setsid", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
-    new ProcessBuilder(new String[]{"/usr/bin/stdbuf", "-oL", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
-    new ProcessBuilder(new String[]{"/usr/bin/timeout", "10", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
-    new ProcessBuilder(new String[]{"/usr/bin/env", "/bin/sh", "-c", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{"/usr/bin/env", arg}).start(); // $ Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{"/usr/bin/sudo", arg}).start(); // $ Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{"/usr/bin/xargs", arg}).start(); // $ Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{"/usr/sbin/chroot", "/tmp/root", arg}).start(); // $ Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{"/usr/bin/nice", arg}).start(); // $ Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{"/usr/bin/nohup", arg}).start(); // $ Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{"/usr/bin/setsid", arg}).start(); // $ Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{"/usr/bin/stdbuf", "-oL", arg}).start(); // $ Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{"/usr/bin/timeout", "10", arg}).start(); // $ Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{"/usr/bin/env", "/bin/sh", "-c", arg}).start(); // $ Alert[java/command-line-injection]
   }
 
   public static void fixedDelegatingLauncherLiteral(String arg) throws java.io.IOException {
@@ -91,7 +91,7 @@ class Test {
     List<String> delegatedList = new ArrayList<String>();
     delegatedList.add("/usr/bin/env");
     delegatedList.add(arg);
-    new ProcessBuilder(delegatedList).start(); // $ MISSING: Alert[java/command-line-injection]
+    new ProcessBuilder(delegatedList).start(); // $ Alert[java/command-line-injection]
 
     List<String> branchingPosition = new ArrayList<String>();
     branchingPosition.add("/usr/bin/timeout");
@@ -99,7 +99,7 @@ class Test {
       branchingPosition.add("10");
     }
     branchingPosition.add(arg);
-    new ProcessBuilder(branchingPosition).start(); // $ MISSING: Alert[java/command-line-injection]
+    new ProcessBuilder(branchingPosition).start(); // $ Alert[java/command-line-injection]
 
     List<String> branchingLauncher = new ArrayList<String>();
     if (condition) {
@@ -109,7 +109,7 @@ class Test {
     }
     branchingLauncher.add("10");
     branchingLauncher.add(arg);
-    new ProcessBuilder(branchingLauncher).start(); // $ MISSING: Alert[java/command-line-injection]
+    new ProcessBuilder(branchingLauncher).start(); // $ Alert[java/command-line-injection]
   }
 
   public static void fixedDelegatingLauncherLaterListArgument(String arg)
@@ -147,7 +147,7 @@ class Test {
     String[] delegatedArray = new String[2];
     delegatedArray[0] = "/usr/bin/env";
     delegatedArray[1] = arg;
-    new ProcessBuilder(delegatedArray).start(); // $ MISSING: Alert[java/command-line-injection]
+    new ProcessBuilder(delegatedArray).start(); // $ Alert[java/command-line-injection]
 
     String launcher;
     if (condition) {
@@ -155,7 +155,7 @@ class Test {
     } else {
       launcher = "/usr/bin/timeout";
     }
-    new ProcessBuilder(new String[]{launcher, "10", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{launcher, "10", arg}).start(); // $ Alert[java/command-line-injection]
   }
 
   public static void fixedDelegatingLauncherArray(String arg) throws java.io.IOException {
@@ -167,17 +167,17 @@ class Test {
   public static void changedDelegatedCommand(String arg) throws java.io.IOException {
     String[] command = new String[]{"/usr/bin/env", "/bin/cp", "-c", arg};
     command[1] = "/bin/sh";
-    new ProcessBuilder(command).start(); // $ MISSING: Alert[java/command-line-injection]
+    new ProcessBuilder(command).start(); // $ Alert[java/command-line-injection]
 
     String[] copiedInline =
         Arrays.copyOf(new String[]{"/usr/bin/env", "/bin/cp", "-c", arg}, 4);
     copiedInline[1] = "/bin/sh";
-    new ProcessBuilder(copiedInline).start(); // $ MISSING: Alert[java/command-line-injection]
+    new ProcessBuilder(copiedInline).start(); // $ Alert[java/command-line-injection]
 
     String[] base = new String[]{"/usr/bin/env", "/bin/cp", "-c", arg};
     String[] copiedStored = Arrays.copyOf(base, 4);
     copiedStored[1] = "/bin/sh";
-    new ProcessBuilder(copiedStored).start(); // $ MISSING: Alert[java/command-line-injection]
+    new ProcessBuilder(copiedStored).start(); // $ Alert[java/command-line-injection]
   }
 
   public static String[] returnedNonShellCommand(String arg) {
@@ -197,7 +197,7 @@ class Test {
   }
 
   public static void unknownDelegatedCommand(String arg, String command) throws java.io.IOException {
-    new ProcessBuilder(new String[]{"/usr/bin/env", command, "-c", arg}).start(); // $ MISSING: Alert[java/command-line-injection]
+    new ProcessBuilder(new String[]{"/usr/bin/env", command, "-c", arg}).start(); // $ Alert[java/command-line-injection]
   }
 
   public static void unsupportedEnvAssignment(String arg) throws java.io.IOException {
@@ -212,7 +212,7 @@ class Test {
     String[] command = new String[]{"/usr/bin/env", "/bin/cp", "-c", arg};
     String[] alias = command;
     alias[1] = "/bin/sh";
-    new ProcessBuilder(command).start(); // $ MISSING: Alert[java/command-line-injection]
+    new ProcessBuilder(command).start(); // $ Alert[java/command-line-injection]
   }
 
   public static void relativeCommand() throws java.io.IOException {
