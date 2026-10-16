@@ -81,6 +81,37 @@ module Ast implements AstSig<Location> {
 
   class Expr = U::Expr;
 
+  /**
+   * Holds if `s` is the `n`th statement in the constructed `try` block of
+   * `defer`.
+   *
+   * For example, the following `defer` statements
+   * ```
+   * {
+   *   s1
+   *   defer { s5 }
+   *   s2
+   *   defer { s4 }
+   *   s3
+   * }
+   * ```
+   * are transformed into these `try`-`finally` blocks:
+   * ```
+   * {
+   *   s1
+   *   try {
+   *     s2
+   *     try {
+   *       s3
+   *     } finally {
+   *       s4
+   *     }
+   *   } finally {
+   *     s5
+   *   }
+   * }
+   * ```
+   */
   private predicate deferScope(U::DeferStmt defer, int n, Stmt s) {
     exists(U::Block block, int deferIdx | block.getStmt(deferIdx) = defer |
       block.getStmt(deferIdx + 1) = s and n = 0

@@ -1,8 +1,8 @@
 bbContinues
-| cfg.swift:177:3:177:3 | DeferStmt | 'DeferStmt goto DeferStmt(+4)' |
-| cfg.swift:181:3:181:3 | DeferStmt | 'DeferStmt goto DeferStmt(+4)' |
-| cfg.swift:182:5:182:14 | print(...) | 'print(...) goto Block(-5)' |
-| cfg.swift:188:7:188:16 | print(...) | 'print(...) goto Block(-7)' |
+| cfg.swift:177:3:177:3 | DeferStmt | 'DeferStmt goto print(+3)' |
+| cfg.swift:183:3:183:3 | DeferStmt | 'DeferStmt goto DeferStmt(+4)' |
+| cfg.swift:184:5:184:14 | print(...) | 'print(...) goto Block(-7)' |
+| cfg.swift:190:7:190:16 | print(...) | 'print(...) goto Block(-7)' |
 bbStep
 | cfg.swift:20:9:20:14 | ... >= ... | '... >= ... : false -> Block(+0)' |
 | cfg.swift:20:9:20:14 | ... >= ... | '... >= ... : true -> GuardIfStmt(+3)' |
@@ -45,111 +45,111 @@ bbStep
 | cfg.swift:163:6:163:13 | TypeTestExpr | 'TypeTestExpr : true -> Block(+0)' |
 | cfg.swift:168:6:168:34 | PatternGuardExpr | 'PatternGuardExpr : false -> Block(+2)' |
 | cfg.swift:168:6:168:34 | PatternGuardExpr | 'PatternGuardExpr : true -> .(+0)' |
-| cfg.swift:194:6:194:10 | ... > ... | '... > ... : false -> IfExpr(+3)' |
-| cfg.swift:194:6:194:10 | ... > ... | '... > ... : true -> Block(+0)' |
-| cfg.swift:197:11:197:16 | ... <= ... | '... <= ... : false,false,false -> Block(+5)' |
-| cfg.swift:197:11:197:16 | ... <= ... | '... <= ... : true -> x(+1)' |
-| cfg.swift:198:13:198:17 | ... > ... | '... > ... : false,false,false -> Block(+4)' |
-| cfg.swift:198:13:198:17 | ... > ... | '... > ... : true -> ! ...(+1)' |
-| cfg.swift:199:15:199:20 | ... == ... | '... == ... : false -> Block(+0)' |
-| cfg.swift:199:15:199:20 | ... == ... | '... == ... : true,false -> Block(+3)' |
-| cfg.swift:207:9:207:9 | b | 'b : match -> Block(+0)' |
-| cfg.swift:207:9:207:9 | b | 'b : no-match -> false(+0)' |
-| cfg.swift:207:20:207:24 | false | 'false : successor -> Block(+0)' |
-| cfg.swift:208:6:208:6 | b | 'b : false -> 1(+3)' |
-| cfg.swift:208:6:208:6 | b | 'b : true -> Block(+0)' |
-| cfg.swift:215:6:215:10 | ... < ... | '... < ... : false -> x(+6)' |
-| cfg.swift:215:6:215:10 | ... < ... | '... < ... : true -> Block(+0)' |
-| cfg.swift:217:8:217:13 | ... > ... | '... > ... : false -> x(+4)' |
-| cfg.swift:217:8:217:13 | ... > ... | '... > ... : true -> Block(+0)' |
-| cfg.swift:218:7:218:15 | ... = ... | '... = ... : successor -> x(+3)' |
-| cfg.swift:225:11:225:12 | b1 | 'b1 : false -> b3(+2)' |
-| cfg.swift:225:11:225:12 | b1 | 'b1 : true -> b2(+1)' |
-| cfg.swift:226:13:226:14 | b2 | 'b2 : false,false -> "!b2 \|\| !b3"(+3)' |
-| cfg.swift:226:13:226:14 | b2 | 'b2 : true,true -> "b2 \|\| b3"(+2)' |
-| cfg.swift:227:13:227:14 | b3 | 'b3 : false,false -> "!b2 \|\| !b3"(+2)' |
-| cfg.swift:227:13:227:14 | b3 | 'b3 : true,true -> "b2 \|\| b3"(+1)' |
-| cfg.swift:228:9:228:18 | "b2 \|\| b3" | '"b2 \|\| b3" : successor -> ReturnExpr(-3)' |
-| cfg.swift:229:9:229:20 | "!b2 \|\| !b3" | '"!b2 \|\| !b3" : successor -> ReturnExpr(-4)' |
-| cfg.swift:233:6:233:6 | b | 'b : false -> Bool(+2)' |
-| cfg.swift:233:6:233:6 | b | 'b : true -> true(+1)' |
-| cfg.swift:234:8:234:11 | true | 'true : true -> Block(+1)' |
-| cfg.swift:235:7:235:17 | Bool(...) | 'Bool(...) : false -> Block(+3)' |
-| cfg.swift:235:7:235:17 | Bool(...) | 'Bool(...) : true,true -> Block(+0)' |
-| cfg.swift:250:6:250:6 | b | 'b : false -> Block(+3)' |
-| cfg.swift:250:6:250:6 | b | 'b : true -> Block(+0)' |
-| cfg.swift:251:5:251:17 | print(...) | 'print(...) : successor -> print(+3)' |
-| cfg.swift:253:8:253:9 | Block | 'Block : successor -> print(+1)' |
-| cfg.swift:258:7:258:8 | b1 | 'b1 : false -> b2(+0)' |
-| cfg.swift:258:7:258:8 | b1 | 'b1 : true,true -> Block(+0)' |
-| cfg.swift:258:13:258:14 | b2 | 'b2 : true,true -> Block(+0)' |
-| cfg.swift:320:3:320:3 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
-| cfg.swift:320:9:320:14 | ... >= ... | '... >= ... : true -> Block(+0)' |
-| cfg.swift:322:5:322:10 | ... -= ... | '... -= ... : successor -> x(-2)' |
-| cfg.swift:327:3:327:3 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
-| cfg.swift:327:9:327:14 | ... >= ... | '... >= ... : false -> print(+11)' |
-| cfg.swift:327:9:327:14 | ... >= ... | '... >= ... : true -> Block(+0)' |
-| cfg.swift:330:8:330:14 | ... > ... | '... > ... : false -> IfExpr(+3)' |
-| cfg.swift:330:8:330:14 | ... > ... | '... > ... : true -> Block(+0)' |
-| cfg.swift:331:7:331:11 | BreakExpr | 'BreakExpr : break -> print(+7)' |
-| cfg.swift:333:13:333:18 | ... > ... | '... > ... : false -> print(+3)' |
-| cfg.swift:333:13:333:18 | ... > ... | '... > ... : true -> Block(+0)' |
-| cfg.swift:334:7:334:14 | ContinueExpr | 'ContinueExpr : continue -> x(-7)' |
-| cfg.swift:336:5:336:17 | print(...) | 'print(...) : successor -> x(-9)' |
-| cfg.swift:342:10:342:10 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
-| cfg.swift:342:16:342:21 | ... >= ... | '... >= ... : true -> Block(+0)' |
-| cfg.swift:343:12:343:12 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
-| cfg.swift:343:18:343:23 | ... >= ... | '... >= ... : false -> print(+11)' |
-| cfg.swift:343:18:343:23 | ... >= ... | '... >= ... : true -> Block(+0)' |
-| cfg.swift:346:10:346:16 | ... > ... | '... > ... : false -> IfExpr(+3)' |
-| cfg.swift:346:10:346:16 | ... > ... | '... > ... : true -> Block(+0)' |
-| cfg.swift:349:15:349:20 | ... > ... | '... > ... : false -> print(+3)' |
-| cfg.swift:349:15:349:20 | ... > ... | '... > ... : true -> Block(+0)' |
-| cfg.swift:350:9:350:22 | ContinueExpr | 'ContinueExpr : continue -> x(-7)' |
-| cfg.swift:352:7:352:19 | print(...) | 'print(...) : successor -> x(-9)' |
-| cfg.swift:354:5:354:17 | print(...) | 'print(...) : successor -> x(-12)' |
-| cfg.swift:359:3:359:3 | DoWhileStmt | 'DoWhileStmt : successor -> Block(+0)' |
-| cfg.swift:362:11:362:16 | ... >= ... | '... >= ... : true -> Block(-3)' |
-| cfg.swift:367:3:367:3 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
-| cfg.swift:367:9:367:14 | ... < ... | '... < ... : true -> Block(+0)' |
-| cfg.swift:368:5:368:10 | ... += ... | '... += ... : successor -> x(-1)' |
-| cfg.swift:405:9:405:24 | mightThrow(...) | 'mightThrow(...) : successor -> try ...(+0)' |
-| cfg.swift:507:6:507:28 |  | ' : false -> IfExpr(+4)' |
-| cfg.swift:507:6:507:28 |  | ' : true -> Block(+0)' |
-| cfg.swift:508:5:508:10 | ... += ... | '... += ... : successor -> IfExpr(+3)' |
-| cfg.swift:511:6:511:31 |  | ' : false -> IfExpr(+4)' |
-| cfg.swift:511:6:511:31 |  | ' : true -> Block(+0)' |
-| cfg.swift:512:5:512:10 | ... += ... | '... += ... : successor -> IfExpr(+3)' |
-| cfg.swift:515:6:515:47 |  | ' : false -> GuardIfStmt(+4)' |
-| cfg.swift:515:6:515:47 |  | ' : true -> Block(+0)' |
-| cfg.swift:516:5:516:10 | ... += ... | '... += ... : successor -> GuardIfStmt(+3)' |
-| cfg.swift:519:9:519:31 |  | ' : false -> Block(+0)' |
-| cfg.swift:519:9:519:31 |  | ' : true -> IfExpr(+4)' |
-| cfg.swift:520:5:520:10 | ... += ... | '... += ... : successor -> IfExpr(+3)' |
-| cfg.swift:523:6:523:28 |  | ' : false,false -> x(+5)' |
-| cfg.swift:523:6:523:28 |  | ' : true -> (+1)' |
-| cfg.swift:524:7:524:27 |  | ' : false,false -> x(+4)' |
-| cfg.swift:524:7:524:27 |  | ' : true -> Block(+0)' |
-| cfg.swift:525:5:525:10 | ... += ... | '... += ... : successor -> x(+3)' |
-| cfg.swift:535:26:535:32 | ... ... ... | '... ... ... : empty -> continuation(+3)' |
-| cfg.swift:535:26:535:32 | ... ... ... | '... ... ... : non-empty -> i(+0)' |
-| cfg.swift:536:21:536:41 | ... .yield(...) | '... .yield(...) : successor -> continuation(+2)' |
-| cfg.swift:536:21:536:41 | ... .yield(...) | '... .yield(...) : successor -> i(-1)' |
-| cfg.swift:542:24:542:29 | stream | 'stream : non-empty -> i(+0)' |
-| cfg.swift:543:9:543:16 | print(...) | 'print(...) : successor -> i(-1)' |
-| cfg.swift:549:5:549:5 | x | 'x : non-null -> ReturnExpr(-1)' |
-| cfg.swift:549:5:549:5 | x | 'x : null -> 0(+1)' |
-| cfg.swift:550:9:550:9 | 0 | '0 : successor -> ReturnExpr(-2)' |
-| cfg.swift:554:6:554:6 | x | 'x : non-null,false -> Block(+3)' |
-| cfg.swift:554:6:554:6 | x | 'x : non-null,true -> Block(+1)' |
-| cfg.swift:554:6:554:6 | x | 'x : null -> false(+1)' |
-| cfg.swift:555:7:555:11 | false | 'false : false -> Block(+2)' |
-| cfg.swift:594:10:594:14 | ... ..< ... | '... ..< ... : match -> Block(+0)' |
-| cfg.swift:594:10:594:14 | ... ..< ... | '... ..< ... : no-match -> SwitchCase(+1)' |
-| cfg.swift:594:17:594:17 | 1 | '1 : successor -> let b(+3)' |
-| cfg.swift:595:14:595:14 | 2 | '2 : successor -> let b(+2)' |
-| cfg.swift:598:13:598:18 | ... < ... | '... < ... : false -> Block(+1)' |
-| cfg.swift:598:13:598:18 | ... < ... | '... < ... : true -> Block(+0)' |
+| cfg.swift:196:6:196:10 | ... > ... | '... > ... : false -> IfExpr(+3)' |
+| cfg.swift:196:6:196:10 | ... > ... | '... > ... : true -> Block(+0)' |
+| cfg.swift:199:11:199:16 | ... <= ... | '... <= ... : false,false,false -> Block(+5)' |
+| cfg.swift:199:11:199:16 | ... <= ... | '... <= ... : true -> x(+1)' |
+| cfg.swift:200:13:200:17 | ... > ... | '... > ... : false,false,false -> Block(+4)' |
+| cfg.swift:200:13:200:17 | ... > ... | '... > ... : true -> ! ...(+1)' |
+| cfg.swift:201:15:201:20 | ... == ... | '... == ... : false -> Block(+0)' |
+| cfg.swift:201:15:201:20 | ... == ... | '... == ... : true,false -> Block(+3)' |
+| cfg.swift:209:9:209:9 | b | 'b : match -> Block(+0)' |
+| cfg.swift:209:9:209:9 | b | 'b : no-match -> false(+0)' |
+| cfg.swift:209:20:209:24 | false | 'false : successor -> Block(+0)' |
+| cfg.swift:210:6:210:6 | b | 'b : false -> 1(+3)' |
+| cfg.swift:210:6:210:6 | b | 'b : true -> Block(+0)' |
+| cfg.swift:217:6:217:10 | ... < ... | '... < ... : false -> x(+6)' |
+| cfg.swift:217:6:217:10 | ... < ... | '... < ... : true -> Block(+0)' |
+| cfg.swift:219:8:219:13 | ... > ... | '... > ... : false -> x(+4)' |
+| cfg.swift:219:8:219:13 | ... > ... | '... > ... : true -> Block(+0)' |
+| cfg.swift:220:7:220:15 | ... = ... | '... = ... : successor -> x(+3)' |
+| cfg.swift:227:11:227:12 | b1 | 'b1 : false -> b3(+2)' |
+| cfg.swift:227:11:227:12 | b1 | 'b1 : true -> b2(+1)' |
+| cfg.swift:228:13:228:14 | b2 | 'b2 : false,false -> "!b2 \|\| !b3"(+3)' |
+| cfg.swift:228:13:228:14 | b2 | 'b2 : true,true -> "b2 \|\| b3"(+2)' |
+| cfg.swift:229:13:229:14 | b3 | 'b3 : false,false -> "!b2 \|\| !b3"(+2)' |
+| cfg.swift:229:13:229:14 | b3 | 'b3 : true,true -> "b2 \|\| b3"(+1)' |
+| cfg.swift:230:9:230:18 | "b2 \|\| b3" | '"b2 \|\| b3" : successor -> ReturnExpr(-3)' |
+| cfg.swift:231:9:231:20 | "!b2 \|\| !b3" | '"!b2 \|\| !b3" : successor -> ReturnExpr(-4)' |
+| cfg.swift:235:6:235:6 | b | 'b : false -> Bool(+2)' |
+| cfg.swift:235:6:235:6 | b | 'b : true -> true(+1)' |
+| cfg.swift:236:8:236:11 | true | 'true : true -> Block(+1)' |
+| cfg.swift:237:7:237:17 | Bool(...) | 'Bool(...) : false -> Block(+3)' |
+| cfg.swift:237:7:237:17 | Bool(...) | 'Bool(...) : true,true -> Block(+0)' |
+| cfg.swift:252:6:252:6 | b | 'b : false -> Block(+3)' |
+| cfg.swift:252:6:252:6 | b | 'b : true -> Block(+0)' |
+| cfg.swift:253:5:253:17 | print(...) | 'print(...) : successor -> print(+3)' |
+| cfg.swift:255:8:255:9 | Block | 'Block : successor -> print(+1)' |
+| cfg.swift:260:7:260:8 | b1 | 'b1 : false -> b2(+0)' |
+| cfg.swift:260:7:260:8 | b1 | 'b1 : true,true -> Block(+0)' |
+| cfg.swift:260:13:260:14 | b2 | 'b2 : true,true -> Block(+0)' |
+| cfg.swift:322:3:322:3 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
+| cfg.swift:322:9:322:14 | ... >= ... | '... >= ... : true -> Block(+0)' |
+| cfg.swift:324:5:324:10 | ... -= ... | '... -= ... : successor -> x(-2)' |
+| cfg.swift:329:3:329:3 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
+| cfg.swift:329:9:329:14 | ... >= ... | '... >= ... : false -> print(+11)' |
+| cfg.swift:329:9:329:14 | ... >= ... | '... >= ... : true -> Block(+0)' |
+| cfg.swift:332:8:332:14 | ... > ... | '... > ... : false -> IfExpr(+3)' |
+| cfg.swift:332:8:332:14 | ... > ... | '... > ... : true -> Block(+0)' |
+| cfg.swift:333:7:333:11 | BreakExpr | 'BreakExpr : break -> print(+7)' |
+| cfg.swift:335:13:335:18 | ... > ... | '... > ... : false -> print(+3)' |
+| cfg.swift:335:13:335:18 | ... > ... | '... > ... : true -> Block(+0)' |
+| cfg.swift:336:7:336:14 | ContinueExpr | 'ContinueExpr : continue -> x(-7)' |
+| cfg.swift:338:5:338:17 | print(...) | 'print(...) : successor -> x(-9)' |
+| cfg.swift:344:10:344:10 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
+| cfg.swift:344:16:344:21 | ... >= ... | '... >= ... : true -> Block(+0)' |
+| cfg.swift:345:12:345:12 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
+| cfg.swift:345:18:345:23 | ... >= ... | '... >= ... : false -> print(+11)' |
+| cfg.swift:345:18:345:23 | ... >= ... | '... >= ... : true -> Block(+0)' |
+| cfg.swift:348:10:348:16 | ... > ... | '... > ... : false -> IfExpr(+3)' |
+| cfg.swift:348:10:348:16 | ... > ... | '... > ... : true -> Block(+0)' |
+| cfg.swift:351:15:351:20 | ... > ... | '... > ... : false -> print(+3)' |
+| cfg.swift:351:15:351:20 | ... > ... | '... > ... : true -> Block(+0)' |
+| cfg.swift:352:9:352:22 | ContinueExpr | 'ContinueExpr : continue -> x(-7)' |
+| cfg.swift:354:7:354:19 | print(...) | 'print(...) : successor -> x(-9)' |
+| cfg.swift:356:5:356:17 | print(...) | 'print(...) : successor -> x(-12)' |
+| cfg.swift:361:3:361:3 | DoWhileStmt | 'DoWhileStmt : successor -> Block(+0)' |
+| cfg.swift:364:11:364:16 | ... >= ... | '... >= ... : true -> Block(-3)' |
+| cfg.swift:369:3:369:3 | WhileStmt | 'WhileStmt : successor -> x(+0)' |
+| cfg.swift:369:9:369:14 | ... < ... | '... < ... : true -> Block(+0)' |
+| cfg.swift:370:5:370:10 | ... += ... | '... += ... : successor -> x(-1)' |
+| cfg.swift:407:9:407:24 | mightThrow(...) | 'mightThrow(...) : successor -> try ...(+0)' |
+| cfg.swift:509:6:509:28 |  | ' : false -> IfExpr(+4)' |
+| cfg.swift:509:6:509:28 |  | ' : true -> Block(+0)' |
+| cfg.swift:510:5:510:10 | ... += ... | '... += ... : successor -> IfExpr(+3)' |
+| cfg.swift:513:6:513:31 |  | ' : false -> IfExpr(+4)' |
+| cfg.swift:513:6:513:31 |  | ' : true -> Block(+0)' |
+| cfg.swift:514:5:514:10 | ... += ... | '... += ... : successor -> IfExpr(+3)' |
+| cfg.swift:517:6:517:47 |  | ' : false -> GuardIfStmt(+4)' |
+| cfg.swift:517:6:517:47 |  | ' : true -> Block(+0)' |
+| cfg.swift:518:5:518:10 | ... += ... | '... += ... : successor -> GuardIfStmt(+3)' |
+| cfg.swift:521:9:521:31 |  | ' : false -> Block(+0)' |
+| cfg.swift:521:9:521:31 |  | ' : true -> IfExpr(+4)' |
+| cfg.swift:522:5:522:10 | ... += ... | '... += ... : successor -> IfExpr(+3)' |
+| cfg.swift:525:6:525:28 |  | ' : false,false -> x(+5)' |
+| cfg.swift:525:6:525:28 |  | ' : true -> (+1)' |
+| cfg.swift:526:7:526:27 |  | ' : false,false -> x(+4)' |
+| cfg.swift:526:7:526:27 |  | ' : true -> Block(+0)' |
+| cfg.swift:527:5:527:10 | ... += ... | '... += ... : successor -> x(+3)' |
+| cfg.swift:537:26:537:32 | ... ... ... | '... ... ... : empty -> continuation(+3)' |
+| cfg.swift:537:26:537:32 | ... ... ... | '... ... ... : non-empty -> i(+0)' |
+| cfg.swift:538:21:538:41 | ... .yield(...) | '... .yield(...) : successor -> continuation(+2)' |
+| cfg.swift:538:21:538:41 | ... .yield(...) | '... .yield(...) : successor -> i(-1)' |
+| cfg.swift:544:24:544:29 | stream | 'stream : non-empty -> i(+0)' |
+| cfg.swift:545:9:545:16 | print(...) | 'print(...) : successor -> i(-1)' |
+| cfg.swift:551:5:551:5 | x | 'x : non-null -> ReturnExpr(-1)' |
+| cfg.swift:551:5:551:5 | x | 'x : null -> 0(+1)' |
+| cfg.swift:552:9:552:9 | 0 | '0 : successor -> ReturnExpr(-2)' |
+| cfg.swift:556:6:556:6 | x | 'x : non-null,false -> Block(+3)' |
+| cfg.swift:556:6:556:6 | x | 'x : non-null,true -> Block(+1)' |
+| cfg.swift:556:6:556:6 | x | 'x : null -> false(+1)' |
+| cfg.swift:557:7:557:11 | false | 'false : false -> Block(+2)' |
+| cfg.swift:596:10:596:14 | ... ..< ... | '... ..< ... : match -> Block(+0)' |
+| cfg.swift:596:10:596:14 | ... ..< ... | '... ..< ... : no-match -> SwitchCase(+1)' |
+| cfg.swift:596:17:596:17 | 1 | '1 : successor -> let b(+3)' |
+| cfg.swift:597:14:597:14 | 2 | '2 : successor -> let b(+2)' |
+| cfg.swift:600:13:600:18 | ... < ... | '... < ... : false -> Block(+1)' |
+| cfg.swift:600:13:600:18 | ... < ... | '... < ... : true -> Block(+0)' |
 noCfg
 | cfg.swift:47:42:47:47 | String |
 | cfg.swift:53:34:53:34 | _ |
@@ -158,16 +158,16 @@ noCfg
 | cfg.swift:83:21:83:23 | Int |
 | cfg.swift:106:22:106:24 | Int |
 | cfg.swift:150:7:150:17 | ReturnExpr |
-| cfg.swift:245:5:245:9 | print |
-| cfg.swift:286:29:286:53 | TupleExpr |
-| cfg.swift:378:25:378:24 | Optional |
-| cfg.swift:387:45:387:47 | Int |
-| cfg.swift:398:3:398:6 | init |
-| cfg.swift:415:3:415:6 | init |
-| cfg.swift:428:29:428:31 | Int |
-| cfg.swift:431:5:431:8 | init |
-| cfg.swift:438:5:438:8 | init |
-| cfg.swift:504:25:504:27 | Int |
+| cfg.swift:247:5:247:9 | print |
+| cfg.swift:288:29:288:53 | TupleExpr |
+| cfg.swift:380:25:380:24 | Optional |
+| cfg.swift:389:45:389:47 | Int |
+| cfg.swift:400:3:400:6 | init |
+| cfg.swift:417:3:417:6 | init |
+| cfg.swift:430:29:430:31 | Int |
+| cfg.swift:433:5:433:8 | init |
+| cfg.swift:440:5:440:8 | init |
+| cfg.swift:506:25:506:27 | Int |
 nonSimple
 | cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
 | cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |
