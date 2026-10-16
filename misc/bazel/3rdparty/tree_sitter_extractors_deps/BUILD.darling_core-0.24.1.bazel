@@ -116,6 +116,6 @@ rust_library(
         "@vendor_ts__proc-macro2-1.0.107//:proc_macro2",
         "@vendor_ts__quote-1.0.47//:quote",
         "@vendor_ts__strsim-0.11.1//:strsim",
-        "@vendor_ts__syn-3.0.6//:syn",
+        "@vendor_ts__syn-3.0.9//:syn",
     ],
 )
