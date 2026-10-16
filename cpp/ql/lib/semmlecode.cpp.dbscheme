@@ -2004,6 +2004,13 @@ case @expr.kind of
 | 394 = @isinvocable
 | 395 = @isnothrowinvocable
 | 396 = @isbitwisecloneable
+| 397 = @isvirtualbaseof
+| 398 = @isimplicitlifetime
+| 399 = @ltsynthesizesfromspaceship
+| 400 = @gtsynthesizesfromspaceship
+| 401 = @lesynthesizesfromspaceship
+| 402 = @gesynthesizesfromspaceship
+| 403 = @isstructural
 ;
 
 @var_args_expr = @vastartexpr
@@ -2123,6 +2130,13 @@ case @expr.kind of
             | @isinvocable
             | @isnothrowinvocable
             | @isbitwisecloneable
+            | @isvirtualbaseof
+            | @isimplicitlifetime
+            | @ltsynthesizesfromspaceship
+            | @gtsynthesizesfromspaceship
+            | @lesynthesizesfromspaceship
+            | @gesynthesizesfromspaceship
+            | @isstructural
             ;
 
 compound_requirement_is_noexcept(

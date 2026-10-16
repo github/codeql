@@ -354,6 +354,21 @@ class BuiltInOperationIsBaseOf extends BuiltInOperation, @isbaseofexpr {
 }
 
 /**
+ * A C++ `__builtin_is_virtual_base_of` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if the first type is a virtual base class of the second type.
+ * ```
+ * bool v = __builtin_is_virtual_base_of(MyType, OtherType);
+ * ```
+ */
+class BuiltInOperationIsVirtualBaseOf extends BuiltInOperation, @isvirtualbaseof {
+  override string toString() { result = "__builtin_is_virtual_base_of" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsVirtualBaseOf" }
+}
+
+/**
  * A C++ `__is_class` built-in operation (used by some implementations of the
  * `<type_traits>` header).
  *
@@ -1998,4 +2013,106 @@ class BuiltInOperationIsNothrowInvocable extends BuiltInOperation, @isnothrowinv
   override string toString() { result = "__is_nothrow_invocable" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationIsNothrowInvocable" }
+}
+
+/**
+ * A C++ `__builtin_is_implicit_lifetime` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type `_Tp` is an implicit lifetime type.
+ *
+ * ```
+ * template<typename _Tp>
+ * constexpr bool is_implicit_lifetime = __builtin_is_implicit_lifetime(_Tp);
+ * ```
+ */
+class BuiltInOperationIsImplicitLifetime extends BuiltInOperation, @isimplicitlifetime {
+  override string toString() { result = "__builtin_is_implicit_lifetime" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsImplicitLifetime" }
+}
+
+/**
+ * A C++ `__builtin_is_structural` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type `_Tp` is structural type.
+ *
+ * ```
+ * template<typename _Tp>
+ * constexpr bool is_structural = __builtin_is_structural(_Tp);
+ * ```
+ */
+class BuiltInOperationIsStructural extends BuiltInOperation, @isstructural {
+  override string toString() { result = "__builtin_is_structural" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsStructural" }
+}
+
+/**
+ * A C++ `__builtin_lt_synthesizes_from_spaceship` built-in operation (used by some container
+ * implementations).
+ *
+ * Returns `true` if the `<` operator is synthesized from the spaceship operator `<=>`.
+ *
+ * ```
+ * bool v = __builtin_lt_synthesizes_from_spaceship(MyType, OtherType);
+ */
+class BuiltInOperationLtSynthesizesFromSpaceship extends BuiltInOperation,
+  @ltsynthesizesfromspaceship
+{
+  override string toString() { result = "__builtin_lt_synthesizes_from_spaceship" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationLtSynthesizesFromSpaceship" }
+}
+
+/**
+ * A C++ `__builtin_gt_synthesizes_from_spaceship` built-in operation (used by some container
+ * implementations).
+ *
+ * Returns `true` if the `>` operator is synthesized from the spaceship operator `<=>`.
+ *
+ *  ```
+ * bool v = __builtin_gt_synthesizes_from_spaceship(MyType, OtherType);
+ */
+class BuiltInOperationGtSynthesizesFromSpaceship extends BuiltInOperation,
+  @gtsynthesizesfromspaceship
+{
+  override string toString() { result = "__builtin_gt_synthesizes_from_spaceship" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationGtSynthesizesFromSpaceship" }
+}
+
+/**
+ * A C++ `__builtin_le_synthesizes_from_spaceship` built-in operation (used by some container
+ * implementations).
+ *
+ * Returns `true` if the `<=` operator is synthesized from the spaceship operator `<=>`.
+ *
+ * ```
+ * bool v = __builtin_le_synthesizes_from_spaceship(MyType, OtherType);
+ */
+class BuiltInOperationLeSynthesizesFromSpaceship extends BuiltInOperation,
+  @lesynthesizesfromspaceship
+{
+  override string toString() { result = "__builtin_le_synthesizes_from_spaceship" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationLeSynthesizesFromSpaceship" }
+}
+
+/**
+ * A C++ `__builtin_ge_synthesizes_from_spaceship` built-in operation (used by some container
+ * implementations).
+ *
+ * Returns `true` if the `>=` operator is synthesized from the spaceship operator `<=>`.
+ *
+ * ```
+ * bool v = __builtin_ge_synthesizes_from_spaceship(MyType, OtherType);
+ */
+class BuiltInOperationGeSynthesizesFromSpaceship extends BuiltInOperation,
+  @gesynthesizesfromspaceship
+{
+  override string toString() { result = "__builtin_ge_synthesizes_from_spaceship" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationGeSynthesizesFromSpaceship" }
 }
