@@ -1,0 +1,55 @@
+name: C/C++ build mode none extractor
+
+on:
+  pull_request:
+    paths:
+      - "cpp/extractor/bmn/**"
+      - "misc/bazel/3rdparty/cpp_bmn_deps/**"
+      - "misc/bazel/3rdparty/cpp_bmn_deps_extension.bzl"
+      - "misc/bazel/3rdparty/update_cpp_bmn_deps.sh"
+      - "misc/bazel/3rdparty/BUILD.bazel"
+      - "misc/bazel/rust.bzl"
+      - "MODULE.bazel"
+      - ".github/workflows/cpp-bmn.yml"
+  push:
+    branches:
+      - main
+      - "rc/*"
+    paths:
+      - "cpp/extractor/bmn/**"
+      - "misc/bazel/3rdparty/cpp_bmn_deps/**"
+      - "misc/bazel/3rdparty/cpp_bmn_deps_extension.bzl"
+      - "misc/bazel/3rdparty/update_cpp_bmn_deps.sh"
+      - "misc/bazel/3rdparty/BUILD.bazel"
+      - "misc/bazel/rust.bzl"
+      - "MODULE.bazel"
+      - ".github/workflows/cpp-bmn.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  cargo:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cpp/extractor/bmn
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check formatting
+        run: cargo fmt --check
+      - name: Check
+        run: cargo check
+      - name: Clippy
+        run: cargo clippy -- -D warnings
+      - name: Test
+        run: cargo test
+
+  bazel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build
+        run: bazel build //cpp/extractor/bmn:bmn
+      - name: Test
+        run: bazel test //cpp/extractor/bmn:tests

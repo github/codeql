@@ -1,0 +1,35 @@
+[workspace]
+
+[package]
+name = "bmn"
+version = "0.1.0"
+edition = "2024"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# When updating, run `misc/bazel/3rdparty/update_cpp_bmn_deps.sh` to update Bazel bindings.
+[dependencies]
+anyhow = "1"
+cached = "0.54"
+chrono = "0.4"
+regex = "1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1"
+serde_with = "1"
+num_cpus = "1"
+tempfile = "3"
+walkdir = "2"
+which = "8"
+os_str_bytes = "7.1.1"
+rayon = "1.11.0"
+all_asserts = "2.3.3"
+itertools = "0.14.0"
+zip = "6.0.0"
+
+[lints.clippy]
+pedantic = "warn"
+missing_errors_doc = { level = "allow", priority = 1 }
+missing_panics_doc = { level = "allow", priority = 1 }
+must_use_candidate = { level = "allow", priority = 1 }
+implicit_hasher = { level = "allow", priority = 1 }
+if_not_else = { level = "allow", priority = 1 }

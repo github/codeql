@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -eu
+
+cd "$(dirname "$0")"
+
+case "${1:-}" in
+"--fix")
+    cargo fmt
+    cargo clippy --fix --allow-dirty --allow-staged --quiet
+    # raise up as an error anything that clippy wasn't able to fix
+    cargo clippy -- -D warnings
+    ;;
+"--check")
+    cargo fmt --check
+    cargo clippy -- -D warnings
+    ;;
+*)
+    echo "Usage: $0 [--fix|--check]" >&2
+    exit 1
+    ;;
+esac
