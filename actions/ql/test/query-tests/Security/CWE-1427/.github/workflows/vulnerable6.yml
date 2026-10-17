@@ -1,0 +1,18 @@
+name: Oz Agent Issue Handler
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  handle:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Run Oz agent
+        uses: warpdotdev/oz-agent-action@v1
+        with:
+          prompt: |
+            Investigate and respond to this issue:
+            Title: ${{ github.event.issue.title }}
+            Body: ${{ github.event.issue.body }}

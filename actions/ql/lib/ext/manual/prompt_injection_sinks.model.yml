@@ -1,0 +1,47 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    # AI actions whose prompt/input parameters accept user-controllable data.
+    # source: https://boostsecurityio.github.io/lotp/
+    # source: https://github.com/marketplace?type=actions&category=ai-assisted
+    data:
+      # === GitHub official AI actions ===
+      - ["actions/ai-inference", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["actions/ai-inference", "*", "input.system-prompt", "prompt-injection", "manual"]
+      - ["github/ai-moderator", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["github/ai-moderator", "*", "input.custom-instructions", "prompt-injection", "manual"]
+      # === Anthropic ===
+      - ["anthropics/claude-code-action", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["anthropics/claude-code-action", "*", "input.direct_prompt", "prompt-injection", "manual"]
+      - ["anthropics/claude-code-action", "*", "input.custom_instructions", "prompt-injection", "manual"]
+      # === Google ===
+      - ["google/gemini-code-assist-action", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["google-gemini/code-assist-action", "*", "input.prompt", "prompt-injection", "manual"]
+      # === OpenAI / GPT ===
+      - ["openai/chat-completion-action", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["openai/chat-completion-action", "*", "input.messages", "prompt-injection", "manual"]
+      - ["di-sukharev/opencommit", "*", "input.prompt", "prompt-injection", "manual"]
+      # === Community AI actions (marketplace) ===
+      - ["quixio/quix-streams-ci-ai-review", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["rubberduck-ai/rubberduck-review-action", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["coderabbitai/ai-pr-reviewer", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["coderabbitai/ai-pr-reviewer", "*", "input.system_message", "prompt-injection", "manual"]
+      - ["platisd/openai-pr-description", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["CodiumAI/pr-agent", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["arcee-ai/agent-action", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["langchain-ai/langsmith-action", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["abirismyname/create-discussion-with-ai", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["yousefed/ai-action", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["nickscamara/openai-github-action", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["austenstone/openai-completion-action", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["joshspicer/gpt-review", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["github/copilot-text-inference", "*", "input.prompt", "prompt-injection", "manual"]
+      # === Google (GitHub Actions org) ===
+      - ["google-github-actions/run-gemini-cli", "*", "input.prompt", "prompt-injection", "manual"]
+      # === Warp ===
+      - ["warpdotdev/oz-agent-action", "*", "input.prompt", "prompt-injection", "manual"]
+      # === Generic AI action patterns (common parameter names) ===
+      - ["togethercomputer/together-action", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["huggingface/inference-action", "*", "input.prompt", "prompt-injection", "manual"]
+      - ["replicate/action", "*", "input.prompt", "prompt-injection", "manual"]
