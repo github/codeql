@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["zod", "zod/v3", ""]
+      - ["zod", "zod/v4", ""]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: summaryModel
+    data:
+      - ["zod", "Fuzzy.Member[parse]", "Argument[0]", "ReturnValue", "value"]
+      - ["zod", "Fuzzy.Member[safeParse]", "Argument[0]", "ReturnValue.Member[data]", "value"]
+      - ["zod", "Fuzzy.Member[parseAsync]", "Argument[0]", "ReturnValue.Awaited", "value"]
+      - ["zod", "Fuzzy.Member[safeParseAsync]", "Argument[0]", "ReturnValue.Awaited.Member[data]", "value"]
