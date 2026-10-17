@@ -196,6 +196,11 @@ module DomBasedXss {
         ccf.getMethodName() = "createContextualFragment" and
         this = ccf.getArgument(0)
       )
+      or
+      exists(DataFlow::GlobalVarRefNode doc |
+        doc.getName() = "Document" and
+        this = doc.getAMethodCall("parseHTMLUnsafe").getArgument(0)
+      )
     }
   }
 
