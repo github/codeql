@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      # `LdapContextFactory.getLdapContext(principal, credentials)` binds to the
+      # directory using `principal` as the bind DN. An unescaped, attacker-controlled
+      # principal lets the caller manipulate the DN structure (LDAP DN injection,
+      # CWE-90). This is the sink in Apache Shiro CVE-2026-49268, where
+      # `DefaultLdapRealm.getUserDn` / `ActiveDirectoryRealm.getUsernameWithSuffix`
+      # concatenated the login username into the bind DN with no `Rdn.escapeValue`.
+      - ["org.apache.shiro.realm.ldap", "LdapContextFactory", True, "getLdapContext", "(Object,Object)", "", "Argument[0]", "ldap-injection", "manual"]
