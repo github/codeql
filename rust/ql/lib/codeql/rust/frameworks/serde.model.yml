@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      # serde_json deserialization functions
+      - ["crate::serde_json::from_str", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["crate::serde_json::from_slice", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["crate::serde_json::from_reader", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["crate::serde_json::from_value", "Argument[0]", "unsafe-deserialization", "manual"]
+      # bincode deserialization functions
+      - ["crate::bincode::deserialize", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["crate::bincode::deserialize_from", "Argument[0]", "unsafe-deserialization", "manual"]
+      # rmp_serde (MessagePack) deserialization functions
+      - ["crate::rmp_serde::from_slice", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["crate::rmp_serde::from_read", "Argument[0]", "unsafe-deserialization", "manual"]
+      # ciborium (CBOR) deserialization functions
+      - ["crate::ciborium::from_reader", "Argument[0]", "unsafe-deserialization", "manual"]
+      # serde_yaml deserialization functions
+      - ["crate::serde_yaml::from_str", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["crate::serde_yaml::from_slice", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["crate::serde_yaml::from_reader", "Argument[0]", "unsafe-deserialization", "manual"]
+      # toml deserialization
+      - ["crate::toml::from_str", "Argument[0]", "unsafe-deserialization", "manual"]
