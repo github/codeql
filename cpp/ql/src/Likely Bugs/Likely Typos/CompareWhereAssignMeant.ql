@@ -6,7 +6,8 @@
  * @problem.severity error
  * @precision high
  * @id cpp/compare-where-assign-meant
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-482
  */

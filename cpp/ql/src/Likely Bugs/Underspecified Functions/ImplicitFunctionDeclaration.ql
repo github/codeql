@@ -7,7 +7,8 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/implicit-function-declaration
- * @tags correctness
+ * @tags quality
+ *       correctness
  *       maintainability
  */
 

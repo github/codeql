@@ -5,8 +5,10 @@
  * @problem.severity warning
  * @precision very-high
  * @id cpp/member-const-no-effect
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
+ *       useless-code
  *       language-features
  */
 

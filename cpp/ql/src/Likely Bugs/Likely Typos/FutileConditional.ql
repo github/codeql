@@ -6,7 +6,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cpp/empty-if
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       readability
  */
 

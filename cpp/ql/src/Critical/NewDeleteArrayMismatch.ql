@@ -5,7 +5,9 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/new-delete-array-mismatch
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import NewDelete
