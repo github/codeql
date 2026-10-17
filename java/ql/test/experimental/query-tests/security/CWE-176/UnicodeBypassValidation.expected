@@ -1,0 +1,45 @@
+edges
+| src/main/java/BadServlet1.java:35:25:35:53 | getParameter(...) : String | src/main/java/BadServlet1.java:36:41:36:52 | inputEncoded : String |
+| src/main/java/BadServlet1.java:36:20:36:53 | htmlEscape(...) : String | src/main/java/BadServlet1.java:37:40:37:46 | escaped |
+| src/main/java/BadServlet1.java:36:41:36:52 | inputEncoded : String | src/main/java/BadServlet1.java:36:20:36:53 | htmlEscape(...) : String |
+| src/main/java/BadServlet2.java:35:25:35:53 | getParameter(...) : String | src/main/java/BadServlet2.java:36:22:36:33 | inputEncoded : String |
+| src/main/java/BadServlet2.java:36:22:36:33 | inputEncoded : String | src/main/java/BadServlet2.java:36:22:36:33 | inputEncoded : String |
+| src/main/java/BadServlet2.java:36:22:36:33 | inputEncoded : String | src/main/java/BadServlet2.java:40:34:40:45 | inputEncoded |
+| src/main/java/BadServlet3.java:35:25:35:53 | getParameter(...) : String | src/main/java/BadServlet3.java:36:39:36:50 | inputEncoded : String |
+| src/main/java/BadServlet3.java:36:25:36:51 | encodeForHtml(...) : String | src/main/java/BadServlet3.java:38:40:38:51 | inputEscaped |
+| src/main/java/BadServlet3.java:36:39:36:50 | inputEncoded : String | src/main/java/BadServlet3.java:36:25:36:51 | encodeForHtml(...) : String |
+| src/main/java/BadServlet3.java:36:39:36:50 | inputEncoded : String | src/main/java/BadServlet3.java:45:38:45:48 | text : String |
+| src/main/java/BadServlet3.java:45:38:45:48 | text : String | src/main/java/BadServlet3.java:46:10:46:13 | text : String |
+| src/main/java/BadServlet3.java:46:10:46:13 | text : String | src/main/java/BadServlet3.java:46:10:46:13 | text : String |
+| src/main/java/BadServlet3.java:46:10:46:13 | text : String | src/main/java/BadServlet3.java:46:10:46:34 | replace(...) : String |
+| src/main/java/BadServlet4.java:38:25:38:53 | getParameter(...) : String | src/main/java/BadServlet4.java:42:34:42:45 | inputEncoded |
+| src/main/java/BadServlet5.java:38:25:38:53 | getParameter(...) : String | src/main/java/BadServlet5.java:41:34:41:45 | inputEncoded |
+nodes
+| src/main/java/BadServlet1.java:35:25:35:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| src/main/java/BadServlet1.java:36:20:36:53 | htmlEscape(...) : String | semmle.label | htmlEscape(...) : String |
+| src/main/java/BadServlet1.java:36:41:36:52 | inputEncoded : String | semmle.label | inputEncoded : String |
+| src/main/java/BadServlet1.java:37:40:37:46 | escaped | semmle.label | escaped |
+| src/main/java/BadServlet2.java:35:25:35:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| src/main/java/BadServlet2.java:36:22:36:33 | inputEncoded : String | semmle.label | inputEncoded : String |
+| src/main/java/BadServlet2.java:36:22:36:33 | inputEncoded : String | semmle.label | inputEncoded : String |
+| src/main/java/BadServlet2.java:40:34:40:45 | inputEncoded | semmle.label | inputEncoded |
+| src/main/java/BadServlet3.java:35:25:35:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| src/main/java/BadServlet3.java:36:25:36:51 | encodeForHtml(...) : String | semmle.label | encodeForHtml(...) : String |
+| src/main/java/BadServlet3.java:36:39:36:50 | inputEncoded : String | semmle.label | inputEncoded : String |
+| src/main/java/BadServlet3.java:38:40:38:51 | inputEscaped | semmle.label | inputEscaped |
+| src/main/java/BadServlet3.java:45:38:45:48 | text : String | semmle.label | text : String |
+| src/main/java/BadServlet3.java:46:10:46:13 | text : String | semmle.label | text : String |
+| src/main/java/BadServlet3.java:46:10:46:13 | text : String | semmle.label | text : String |
+| src/main/java/BadServlet3.java:46:10:46:34 | replace(...) : String | semmle.label | replace(...) : String |
+| src/main/java/BadServlet4.java:38:25:38:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| src/main/java/BadServlet4.java:42:34:42:45 | inputEncoded | semmle.label | inputEncoded |
+| src/main/java/BadServlet5.java:38:25:38:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| src/main/java/BadServlet5.java:41:34:41:45 | inputEncoded | semmle.label | inputEncoded |
+subpaths
+| src/main/java/BadServlet3.java:36:39:36:50 | inputEncoded : String | src/main/java/BadServlet3.java:45:38:45:48 | text : String | src/main/java/BadServlet3.java:46:10:46:34 | replace(...) : String | src/main/java/BadServlet3.java:36:25:36:51 | encodeForHtml(...) : String |
+#select
+| src/main/java/BadServlet1.java:37:40:37:46 | escaped | src/main/java/BadServlet1.java:35:25:35:53 | getParameter(...) : String | src/main/java/BadServlet1.java:37:40:37:46 | escaped | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | src/main/java/BadServlet1.java:37:40:37:46 | escaped | Unicode transformation (Unicode normalization) | src/main/java/BadServlet1.java:35:25:35:53 | getParameter(...) | remote user-controlled data |
+| src/main/java/BadServlet2.java:40:34:40:45 | inputEncoded | src/main/java/BadServlet2.java:35:25:35:53 | getParameter(...) : String | src/main/java/BadServlet2.java:40:34:40:45 | inputEncoded | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | src/main/java/BadServlet2.java:40:34:40:45 | inputEncoded | Unicode transformation (Unicode normalization) | src/main/java/BadServlet2.java:35:25:35:53 | getParameter(...) | remote user-controlled data |
+| src/main/java/BadServlet3.java:38:40:38:51 | inputEscaped | src/main/java/BadServlet3.java:35:25:35:53 | getParameter(...) : String | src/main/java/BadServlet3.java:38:40:38:51 | inputEscaped | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | src/main/java/BadServlet3.java:38:40:38:51 | inputEscaped | Unicode transformation (Unicode normalization) | src/main/java/BadServlet3.java:35:25:35:53 | getParameter(...) | remote user-controlled data |
+| src/main/java/BadServlet4.java:42:34:42:45 | inputEncoded | src/main/java/BadServlet4.java:38:25:38:53 | getParameter(...) : String | src/main/java/BadServlet4.java:42:34:42:45 | inputEncoded | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | src/main/java/BadServlet4.java:42:34:42:45 | inputEncoded | Unicode transformation (Unicode normalization) | src/main/java/BadServlet4.java:38:25:38:53 | getParameter(...) | remote user-controlled data |
+| src/main/java/BadServlet5.java:41:34:41:45 | inputEncoded | src/main/java/BadServlet5.java:38:25:38:53 | getParameter(...) : String | src/main/java/BadServlet5.java:41:34:41:45 | inputEncoded | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | src/main/java/BadServlet5.java:41:34:41:45 | inputEncoded | Unicode transformation (Unicode normalization) | src/main/java/BadServlet5.java:38:25:38:53 | getParameter(...) | remote user-controlled data |
