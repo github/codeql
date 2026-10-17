@@ -214,7 +214,40 @@ public class KeyExchange {
     }
 
     //////////////////////////////////////////
-    // 5. Nuanced Insecure Key Exchange Example
+    // 5. ECMQV (Elliptic Curve Menezes-Qu-Vanstone)
+    //////////////////////////////////////////
+
+    /**
+     * Generates an ECMQV key pair.
+     *
+     * CBOM/SAST Classification:
+     * - Parent: Elliptic Curve Key Agreement (ECMQV).
+     * - ECMQV is quantum-vulnerable.
+     *
+     * @return An ECMQV KeyPair.
+     */
+    public KeyPair generateECMQVKeyPair() throws Exception {
+        KeyPairGenerator ecmqvKpg = KeyPairGenerator.getInstance("ECMQV");
+        ecmqvKpg.initialize(256);
+        return ecmqvKpg.generateKeyPair();
+    }
+
+    /**
+     * Derives a shared secret using the ECMQV key agreement.
+     *
+     * @param privateKey The ECMQV private key.
+     * @param publicKey The corresponding public key.
+     * @return The derived ECMQV shared secret.
+     */
+    public byte[] deriveECMQVSecret(PrivateKey privateKey, PublicKey publicKey) throws Exception {
+        KeyAgreement ka = KeyAgreement.getInstance("ECMQV");
+        ka.init(privateKey);
+        ka.doPhase(publicKey, true);
+        return ka.generateSecret();
+    }
+
+    //////////////////////////////////////////
+    // 6. Nuanced Insecure Key Exchange Example
     //////////////////////////////////////////
 
     /**
