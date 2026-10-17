@@ -135,7 +135,12 @@ module Input3 implements InputSig3 {
   class AstNode = Unified::AstNode;
 
   class Expr extends Unified::Expr {
-    Expr() { isInAssignmentContext(this, _) or hasResultValue(this) }
+    Expr() {
+      isInAssignmentContext(this, _) or
+      hasResultValue(this) or
+      this = any(CallExpr ce).getCallee() or
+      this = any(Expr e).(MemberAccessExpr).getBase()
+    }
   }
 
   class Cast extends Expr, TypeCastExpr {
@@ -270,6 +275,7 @@ module Input3 implements InputSig3 {
 
   pragma[nomagic]
   private predicate lookupMember0(MemberAccessExpr mae, ClassLikeDeclaration cls, string name) {
+    not exists(getStaticBindingTargetFromRef(mae)) and // if a static member can be resolved, use it
     cls = inferType(mae.getBase()).(ClassLikeDeclarationType).getClassLikeDeclaration() and
     name = mae.getMemberName()
   }
@@ -393,12 +399,7 @@ module Input3 implements InputSig3 {
       )
     }
 
-    override TypeMention getType() {
-      result = c.getReturnType()
-      or
-      c instanceof ConstructorDeclaration and
-      result = this.getDeclaringType()
-    }
+    override TypeMention getType() { result = c.getReturnType() }
 
     override Identifier getNameNode() {
       result = c.(AccessorDeclaration).getNameNode()
@@ -409,6 +410,21 @@ module Input3 implements InputSig3 {
       or
       not c instanceof EnumConstructor and
       result = c.(ConstructorDeclaration).getNameNode()
+    }
+
+    // todo: take varargs into account
+    predicate isValidNumberOfArguments(int args) {
+      exists(int required, int optional |
+        required =
+          count(ParameterEx p |
+            p = this.getParameter(_).getParameterEx() and
+            not p.hasDefault() and
+            not p.isImplicitReceiverParameter(_)
+          ) and
+        optional =
+          count(ParameterEx p | p = this.getParameter(_).getParameterEx() and p.hasDefault()) and
+        args in [required .. required + optional]
+      )
     }
 
     string getName() {
@@ -454,26 +470,29 @@ module Input3 implements InputSig3 {
 
   Callable getEnclosingCallable(AstNode node) { result.asCallable() = node.getEnclosingCallable() }
 
+  private newtype CallKind =
+    Invoke() or
+    Constructor() or
+    Ordinary()
+
   class InvocationResolutionContext = Unit;
 
   class Invocation extends Expr, CallExpr {
-    Type getTypeQualifier(TypePath path) {
-      exists(TypeMention tm | result = tm.getTypeAt(path) |
-        tm = super.getCallee()
-        or
-        not super.getCallee() instanceof TypeMention and
-        tm = super.getCallee().(MemberAccessExpr).getBase()
-      )
+    TypeMention getReceiverTypeMention() {
+      result = super.getCallee()
+      or
+      not super.getCallee() instanceof TypeMention and
+      result = super.getCallee().(MemberAccessExpr).getBase()
     }
+
+    Type getTypeQualifier(TypePath path) { result = this.getReceiverTypeMention().getTypeAt(path) }
 
     Type getTypeArgument(int i, TypePath path) { none() }
 
-    int getNumberOfArguments() { result = CallExpr.super.getNumberOfArguments() + 1 }
-
     Expr getArgument(int i) {
       i = 0 and
-      exists(boolean isFunctionExprInvoke | exists(this.getTargetImpl(isFunctionExprInvoke)) |
-        if isFunctionExprInvoke = true
+      exists(CallKind kind | exists(this.getTargetImpl(kind)) |
+        if kind = [Invoke().(CallKind), Constructor()]
         then result = CallExpr.super.getCallee()
         else result = CallExpr.super.getCallee().(MemberAccessExpr).getBase()
       )
@@ -488,32 +507,34 @@ module Input3 implements InputSig3 {
       result = getFunctionInvoke(t)
     }
 
-    private Callable getTargetViaStaticNameBinding() {
+    Callable getTargetViaStaticNameBinding(CallKind kind) {
       exists(NameBinding b | b = getStaticBindingTargetFromRef(this.getCallee()) |
         // object creation (including enum constructors): `String(42)`, `Optional.Some(42)`
-        exists(ClassLikeDeclaration cls, ConstructorDeclaration init |
+        exists(ClassLikeDeclaration cls |
           cls.getNameNode() = b and
-          init = cls.getAMember() and
-          result.asCallable() = init
+          result.isInstanceMemberOf(cls, _) and
+          result.asCallable() instanceof ConstructorDeclaration and
+          kind = Constructor()
         )
         or
         // call without explicit receiver: `foo(42)`
         result.getNameNode() = b
-      )
+      ) and
+      result.isValidNumberOfArguments(this.getNumberOfArguments())
     }
 
-    Callable getTargetImpl(boolean isFunctionExprInvoke) {
+    Callable getTargetImpl(CallKind kind) {
       // mutual recursion; call with explicit receiver: `obj.foo(42)`
       result = lookupInstanceMember(this.getCallee()) and
-      isFunctionExprInvoke = false
+      kind = Ordinary() and
+      result.isValidNumberOfArguments(this.getNumberOfArguments())
       or
       // mutual recursion; call to a function expression: `callback(42)`
       result.asCallable() = this.getInvokeTarget(_) and
-      isFunctionExprInvoke = true
+      kind = Invoke()
       or
       // no mutual recursion; can be resolved directly with static name binding
-      result = this.getTargetViaStaticNameBinding() and
-      isFunctionExprInvoke = false
+      result = this.getTargetViaStaticNameBinding(kind)
     }
 
     Callable getTarget(InvocationResolutionContext c) {
@@ -521,7 +542,7 @@ module Input3 implements InputSig3 {
       exists(c)
     }
 
-    Callable getATargetForTypeQualifierMatching() { result = this.getTargetViaStaticNameBinding() }
+    Callable getATargetForTypeQualifierMatching() { result = this.getTargetViaStaticNameBinding(_) }
   }
 
   Type inferInvocationArgumentType(
@@ -535,15 +556,17 @@ module Input3 implements InputSig3 {
         result = inferType(invocation.(CallExpr).getCallee(), path)
         or
         exists(TypePath prefix, TypePath suffix, int j |
-          functionInvokeSignature(t, invocation.getNumberOfArguments() - 1, j, i, prefix) and
+          functionInvokeSignature(t, invocation.getNumberOfArguments(), j, i, prefix) and
           result = inferType(invocation.getArgument(j + 1), suffix) and
           path = prefix.append(suffix)
         )
       )
       or
-      // A call to a regular function or method
-      exists(invocation.getTargetImpl(false)) and
-      (
+      // A non-function-expression call
+      exists(CallKind kind |
+        exists(invocation.getTargetImpl(kind)) and
+        kind != Invoke()
+      |
         result = inferType(invocation.getArgument(i), path)
         or
         i = 0 and
@@ -612,6 +635,36 @@ module Input3 implements InputSig3 {
       )
   }
 
+  /**
+   * Since we handle constructors as instance methods without return types,
+   * we need to explicitly handle constructors where (parts of) the type of
+   * the constructed object must be inferred from the context.
+   *
+   * Example:
+   *
+   * ```swift
+   * class C<T1, T2> {
+   *   init(x : T1) { ... } // `T2` must be inferred from the context
+   * }
+   * ```
+   */
+  private module ContextualConstructorReturnTypeInput implements
+    M3::ContextualTyping::ContextualReturnTypeInputSig
+  {
+    predicate callableHasTypeParameterAtReturnType(Callable c, TypePath path, TypeParameter tp) {
+      c.asCallable() instanceof ConstructorDeclaration and
+      tp = c.getDeclaringType().getTypeAt(path)
+    }
+
+    Parameter getACallableParameter(Callable c) {
+      result = c.getParameter(_) and
+      not result.getParameterEx().isImplicitReceiverParameter(_)
+    }
+  }
+
+  private module ContextualConstructorReturnType =
+    M3::ContextualTyping::ContextualReturnType<ContextualConstructorReturnTypeInput>;
+
   Type inferTypeLanguageSpecific(AstNode n, TypePath path) {
     result = Plugin::inferType(n, path)
     or
@@ -650,10 +703,41 @@ module Input3 implements InputSig3 {
     n.(ArrayLiteral).getNumberOfElements() = 0 and
     path = TypePath::singleton(getArrayElementTypeParameter()) and
     result instanceof UnknownType
+    or
+    exists(ConstructorDeclaration cd |
+      cd = n.(Invocation).getTargetImpl(_).asCallable() and
+      result = inferType(n.(Invocation).getArgument(0), path)
+    )
+    or
+    ContextualConstructorReturnType::needsContextualTyping(n, path) and
+    result instanceof UnknownType
+    or
+    exists(TypeMention tm, Invocation invocation |
+      n = invocation.getArgument(0) and
+      invocation.getTargetViaStaticNameBinding(_).asCallable() instanceof ConstructorDeclaration and
+      tm = invocation.getReceiverTypeMention() and
+      result = tm.getTypeAt(path)
+    )
   }
 
   pragma[nomagic]
   Type inferTypeCertainLanguageSpecific(AstNode n, TypePath path) { none() }
+
+  predicate allowContextualInference(AstNode n, TypePath path) {
+    exists(TypeMention tm, Invocation invocation | n = tm |
+      // or
+      // n = invocation and
+      // tm = invocation.getCallee()
+      tm = invocation.getReceiverTypeMention() and
+      exists(TypePath prefix, Type t, TypeParameter tp |
+        t = tm.getTypeAt(prefix) and
+        not t instanceof UnknownType and
+        tp = t.getATypeParameter() and
+        path = TypePath::snoc(prefix, tp) and
+        not exists(tm.getTypeAt(path))
+      )
+    )
+  }
 }
 
 private module M3 = Make3<Input3>;

@@ -1,10 +1,15 @@
 // Provides built-in Swift types
 
-struct Bool {}
+struct Bool {
+    public init() {}
+}
 
-struct Int {}
+struct Int {
+    public init() {}
+}
 
 struct String {
+    public init() {}
     public init<T>(_ value: T) where T: LosslessStringConvertible {
         fatalError("Dummy implementation.")
     }
@@ -12,44 +17,100 @@ struct String {
 
 struct Character {}
 
-struct Substring {}
+struct Substring {
+    public init() {}
+}
 
-struct Int8 {}
+struct Int8 {
+    public init() {}
+}
 
-struct Int16 {}
+struct Int16 {
+    public init() {}
+}
 
-struct Int32 {}
+struct Int32 {
+    public init() {}
+}
 
-struct Int64 {}
+struct Int64 {
+    public init() {}
+}
 
-struct UInt {}
+struct UInt {
+    public init() {}
+}
 
-struct UInt8 {}
+struct UInt8 {
+    public init() {}
+}
 
-struct UInt16 {}
+struct UInt16 {
+    public init() {}
+}
 
-struct UInt32 {}
+struct UInt32 {
+    public init() {}
+}
 
-struct UInt64 {}
+struct UInt64 {
+    public init() {}
+}
 
-struct Float16 {}
+struct Float16 {
+    public init() {}
+}
 
-struct Float {}
+struct Float {
+    public init() {}
+}
 
-struct Double {}
+struct Double {
+    public init() {}
+}
 
-struct Float80 {}
+struct Float80 {
+    public init() {}
+}
 
 struct Array<Element> {
+    public init() {}
+    public init<S>(_ elements: S) where S: Sequence, Element == S.Element {}
+    public init(
+        repeating repeatedValue: Element,
+        count: Int
+    ) {}
+    public init<E>(
+        unsafeUninitializedCapacity: Int,
+        initializingWith initializer: (inout UnsafeMutableBufferPointer<Element>, inout Int)
+            throws(E) -> Void
+    ) throws(E) where E: Error {}
     public func map<T, E>(_ transform: (Element) throws(E) -> T) throws(E) -> [T]
     where E: Error {
         fatalError("Dummy implementation.")
     }
 }
 
-struct Dictionary<Key, Value> {}
+struct Dictionary<Key, Value> {
+    public init() {}
+    public init(minimumCapacity: Int) {}
+    public init<S>(uniqueKeysWithValues keysAndValues: S)
+    where S: Sequence, S.Element == (Key, Value) {}
+    public init<S, E>(
+        _ keysAndValues: S,
+        uniquingKeysWith combine: (Value, Value) throws(E) -> Value
+    ) throws(E) where S: Sequence, E: Error, S.Element == (Key, Value) {}
+    public init<S, E>(
+        grouping values: S,
+        by keyForValue: (S.Element) throws(E) -> Key
+    ) throws(E) where Value == [S.Element], S: Sequence, E: Error {}
+}
 
-struct Set<Element> {}
+struct Set<Element> {
+    public init() {}
+    public init(minimumCapacity: Int) {}
+    public init<Source>(_ sequence: Source) where Element == Source.Element, Source: Sequence {}
+}
 
 enum Optional<Wrapped> {
     case none
