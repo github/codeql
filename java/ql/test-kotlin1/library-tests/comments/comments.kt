@@ -1,4 +1,4 @@
-/** Kdoc with no owner */
+/** Kdoc owned by CompilationUnit */
 package foo.bar
 
 /**
@@ -91,5 +91,3 @@ class XX {
          X() {
     }
 }
-
-// Diagnostic Matches: % Couldn't get owner of KDoc. The comment is extracted without an owner.  ...while extracting a file (comments.kt) at %comments.kt:1:1:96:0%

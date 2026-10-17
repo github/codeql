@@ -44,13 +44,7 @@ def.kt:
 #   50|         1: [LocalVariableDeclStmt] var ...;
 #   50|           1: [LocalVariableDeclExpr] x
 #   50|             0: [IntegerLiteral] 10
-#   53|     3: [FieldDeclaration] int p;
-#-----|       -2: (Annotations)
-#   56|         1: [Annotation] Annot0k
-#    0|           1: [IntegerLiteral] 0
-#   53|       -1: [TypeAccess] int
-#   57|       0: [IntegerLiteral] 5
-#   57|     4: [Method] getP
+#   57|     3: [Method] getP
 #-----|       1: (Annotations)
 #   54|         1: [Annotation] Annot0k
 #    0|           1: [IntegerLiteral] 0
@@ -59,6 +53,12 @@ def.kt:
 #   57|         0: [ReturnStmt] return ...
 #   57|           0: [VarAccess] DefKt.p
 #   57|             -1: [TypeAccess] DefKt
+#   57|     4: [FieldDeclaration] int p;
+#-----|       -2: (Annotations)
+#   56|         1: [Annotation] Annot0k
+#    0|           1: [IntegerLiteral] 0
+#   57|       -1: [TypeAccess] int
+#   57|       0: [IntegerLiteral] 5
 #   57|     5: [Method] setP
 #-----|       1: (Annotations)
 #   55|         1: [Annotation] Annot0k
@@ -72,7 +72,7 @@ def.kt:
 #   57|           0: [AssignExpr] ...=...
 #   57|             0: [VarAccess] DefKt.p
 #   57|               -1: [TypeAccess] DefKt
-#   57|             1: [VarAccess] <set-?>
+#   53|             1: [VarAccess] <set-?>
 #   59|     6: [ExtensionMethod] myExtension
 #   59|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
@@ -175,8 +175,8 @@ def.kt:
 #    0|     3: [Method] valueOf
 #    0|       3: [TypeAccess] Y
 #-----|       4: (Parameters)
-#    0|         0: [Parameter] value
-#    0|           0: [TypeAccess] String
+#   34|         0: [Parameter] value
+#   34|           0: [TypeAccess] String
 #    0|     4: [Method] values
 #    0|       3: [TypeAccess] Y[]
 #    0|         0: [TypeAccess] Y
@@ -223,7 +223,7 @@ def.kt:
 #-----|       1: (Annotations)
 #   41|         1: [Annotation] Annot0k
 #    0|           1: [IntegerLiteral] 0
-#   41|       5: [BlockStmt] { ... }
+#   42|       5: [BlockStmt] { ... }
 #   42|         0: [SuperConstructorInvocationStmt] super(...)
 #   42|         1: [BlockStmt] { ... }
 use.java:
