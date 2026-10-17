@@ -1,0 +1,3 @@
+import "../../just/lib.just"
+
+format *ARGS=".": (_format_py ARGS)

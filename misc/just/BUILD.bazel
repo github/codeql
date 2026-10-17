@@ -1,0 +1,27 @@
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
+
+py_library(
+    name = "tooling",
+    srcs = [
+        "codeql_test_run.py",
+        "forward_command.py",
+        "language_tests.py",
+        "run_on_files.py",
+    ],
+    imports = ["."],
+    visibility = ["//visibility:public"],
+)
+
+[
+    py_test(
+        name = src[:-len(".py")],
+        size = "small",
+        srcs = [src],
+        deps = [":tooling"],
+    )
+    for src in glob(["test_*.py"])
+]
+
+test_suite(
+    name = "test",
+)
