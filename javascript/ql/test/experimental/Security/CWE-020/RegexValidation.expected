@@ -1,0 +1,1 @@
+| RegexGlobalFlagBad.ts:5:25:5:32 | /['\\\\]/g | This call to FORBIDD ... st(str) uses a regular expression with a global flag. |
