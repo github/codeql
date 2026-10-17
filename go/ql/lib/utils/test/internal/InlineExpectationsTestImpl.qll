@@ -15,6 +15,9 @@ module Impl implements InlineExpectationsTestSig {
     /** Returns the contents of the given comment, _without_ the preceding comment marker (`//`). */
     string getContents() { result = this.getText() }
 
+    /** Holds if this comment uses `//` syntax. */
+    predicate isLineComment() { this instanceof G::LineComment }
+
     /** Gets this element's location. */
     G::Location getLocation() { result = super.getLocation() }
   }
@@ -29,5 +32,13 @@ module Impl implements InlineExpectationsTestSig {
       result =
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // Go databases can also contain XML, whose block-comment syntax is not yet supported, so
+    // we only render for Go sources.
+    relativePath.matches("%.go") and
+    result = "//"
   }
 }

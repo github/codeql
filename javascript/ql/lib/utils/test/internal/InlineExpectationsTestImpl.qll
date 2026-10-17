@@ -18,8 +18,19 @@ module Impl implements InlineExpectationsTestSig {
     )
   }
 
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // JavaScript databases can also contain HTML, whose block-comment syntax is not yet
+    // supported, so we only render for line-comment source files.
+    relativePath.regexpMatch(".*\\.(js|cjs|mjs|jsx|ts|cts|mts|tsx)") and
+    result = "//"
+  }
+
   abstract private class ExpectationCommentImpl extends Locatable {
     abstract string getContents();
+
+    /** Holds if this comment uses line-comment syntax. */
+    predicate isLineComment() { this instanceof LineComment }
 
     /** Gets this element's location. */
     Location getLocation() { result = super.getLocation() }

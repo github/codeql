@@ -68,7 +68,7 @@ class A
   end
 
   def self.singleton_method1 x
-    sink x # $ hasValueFlow=14 $ hasValueFlow=15 # $ hasValueFlow=16 $ hasValueFlow=17
+    sink x # $ hasValueFlow=14 hasValueFlow=15 hasValueFlow=16 hasValueFlow=17
   end
 
   def method4(x, y)
