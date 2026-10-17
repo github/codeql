@@ -83,7 +83,7 @@ class DataFlowCall instanceof Cfg::Node {
   /** Gets a textual representation of this element. */
   string toString() { result = super.toString() }
 
-  string getName() { result = super.getAstNode().(Uses).getCallee() }
+  string getName() { result = super.getAstNode().(UsesImpl).getCallableName() }
 
   DataFlowCallable getEnclosingCallable() { result = super.getEnclosingCallable() }
 

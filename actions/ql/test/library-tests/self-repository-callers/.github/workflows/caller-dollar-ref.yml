@@ -1,0 +1,12 @@
+# `$/` references must not have an `@ref` suffix, but it is ignored if present.
+on: push
+
+jobs:
+  call-reusable:
+    uses: $/.github/workflows/reusable.yml@v1
+  call-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: $/.github/actions/greet@v1
+        with:
+          who: world
