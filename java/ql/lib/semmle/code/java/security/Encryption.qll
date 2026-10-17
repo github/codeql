@@ -271,19 +271,15 @@ string getASecureAlgorithmName() {
 
 private string rankedSecureAlgorithm(int i) { result = rank[i](getASecureAlgorithmName()) }
 
-private string secureAlgorithmString(int i) {
-  i = 1 and result = rankedSecureAlgorithm(i)
-  or
-  result = rankedSecureAlgorithm(i) + "|" + secureAlgorithmString(i - 1)
+private string secureAlgorithmString() {
+  result = concat(int i | | rankedSecureAlgorithm(i), "|" order by i desc)
 }
 
 /**
  * Gets a regular expression for matching strings that look like they
  * contain an algorithm that is known to be secure.
  */
-string getSecureAlgorithmRegex() {
-  result = algorithmRegex(secureAlgorithmString(max(int i | exists(rankedSecureAlgorithm(i)))))
-}
+string getSecureAlgorithmRegex() { result = algorithmRegex(secureAlgorithmString()) }
 
 /**
  * Any use of a cryptographic element that specifies an encryption

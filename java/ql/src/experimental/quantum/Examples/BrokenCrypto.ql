@@ -34,19 +34,15 @@ private string rankedInsecureAlgorithm(int i) {
   result = rank[i](string s | s = getAnInsecureAlgorithmName())
 }
 
-private string insecureAlgorithmString(int i) {
-  i = 1 and result = rankedInsecureAlgorithm(i)
-  or
-  result = rankedInsecureAlgorithm(i) + "|" + insecureAlgorithmString(i - 1)
+private string insecureAlgorithmString() {
+  result = concat(int i | | rankedInsecureAlgorithm(i), "|" order by i desc)
 }
 
 /**
  * Gets the regular expression used for matching strings that look like they
  * contain an algorithm that is known to be insecure.
  */
-string getInsecureAlgorithmRegex() {
-  result = algorithmRegex(insecureAlgorithmString(max(int i | exists(rankedInsecureAlgorithm(i)))))
-}
+string getInsecureAlgorithmRegex() { result = algorithmRegex(insecureAlgorithmString()) }
 
 bindingset[algorithmString]
 private string algorithmRegex(string algorithmString) {
