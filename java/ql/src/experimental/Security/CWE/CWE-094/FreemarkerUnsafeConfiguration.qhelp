@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Apache FreeMarker is a template engine: a Java library to generate text output based on templates.
+Usually user input is passed throught key-value data model, and it is safe to use them.
+But sometimes developers allow to intepret user input as user directive with <code>interpret</code> filter function.
+It results in executing user-controlled data as part of template, which may lead up to remote code execution.
+</p>
+</overview>
+
+<recommendation>
+<p>
+It is generally recommended to avoid using <code>interpret</code> filter function.
+Additionally you should configure template engine by setting class resolver to <code>ALLOWS_NOTHING_RESOLVER</code>.
+</p>
+<p>
+Also there is method <code>setAPIBuiltinEnabled</code> which enables usage of builtin API.
+By default this property is set to false. And setting this value to true is unsafe.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example pass untrusted data through data model, then interpret it as user definec directive and execute it.
+</p>
+<sample src="FreemarkerUnsafeConfiguration.java" />
+</example>
+
+<references>
+<li>
+CVE-2021-25770:<a href="https://www.synacktiv.com/en/publications/exploiting-cve-2021-25770-a-server-side-template-injection-in-youtrack.html">BeanShell Injection</a>.
+</li>
+</references>
+</qhelp>
