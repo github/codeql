@@ -1,0 +1,90 @@
+expressions
+| a.go:1:9:1:12 | base |
+| a.go:3:8:3:16 | "strings" |
+| a.go:5:6:5:6 | A |
+| a.go:5:8:7:1 | struct type |
+| a.go:6:2:6:5 | name |
+| a.go:6:7:6:12 | string |
+| a.go:13:1:13:31 | function type |
+| a.go:13:7:13:7 | a |
+| a.go:13:9:13:10 | star expression |
+| a.go:13:10:13:10 | A |
+| a.go:13:13:13:25 | GetNameLength |
+| a.go:13:29:13:31 | int |
+| a.go:15:9:15:11 | len |
+| a.go:15:9:15:19 | call to len |
+| a.go:15:13:15:13 | a |
+| a.go:15:13:15:18 | selection of name |
+| a.go:15:15:15:18 | name |
+| a.go:22:1:22:33 | function type |
+| a.go:22:7:22:7 | a |
+| a.go:22:9:22:10 | star expression |
+| a.go:22:10:22:10 | A |
+| a.go:22:13:22:24 | GetNameUpper |
+| a.go:22:28:22:33 | string |
+| a.go:24:9:24:15 | strings |
+| a.go:24:9:24:23 | selection of ToUpper |
+| a.go:24:9:24:31 | call to ToUpper |
+| a.go:24:17:24:23 | ToUpper |
+| a.go:24:25:24:25 | a |
+| a.go:24:25:24:30 | selection of name |
+| a.go:24:27:24:30 | name |
+| a.go:27:1:27:26 | function type |
+| a.go:27:6:27:10 | FuncA |
+| a.go:27:12:27:15 | name |
+| a.go:27:17:27:22 | string |
+| a.go:27:25:27:26 | star expression |
+| a.go:27:26:27:26 | A |
+| a.go:28:9:28:22 | &... |
+| a.go:28:10:28:10 | A |
+| a.go:28:10:28:22 | struct literal |
+| a.go:28:12:28:15 | name |
+| a.go:28:12:28:21 | key-value pair |
+| a.go:28:18:28:21 | name |
+| a.go:31:1:31:27 | function type |
+| a.go:31:6:31:7 | Id |
+| a.go:31:9:31:12 | name |
+| a.go:31:14:31:19 | string |
+| a.go:31:22:31:27 | string |
+| a.go:32:9:32:12 | name |
+| a.go:35:6:35:6 | B |
+| a.go:35:8:37:1 | interface type |
+| a.go:36:2:36:8 | GetName |
+| a.go:36:9:36:17 | function type |
+| a.go:36:12:36:17 | string |
+statements
+| a.go:13:33:16:1 | block statement |
+| a.go:15:2:15:19 | return statement |
+| a.go:22:35:25:1 | block statement |
+| a.go:24:2:24:31 | return statement |
+| a.go:27:28:29:1 | block statement |
+| a.go:28:2:28:22 | return statement |
+| a.go:31:29:33:1 | block statement |
+| a.go:32:2:32:12 | return statement |
+functions
+| a.go:13:13:13:25 | GetNameLength |
+| a.go:22:13:22:24 | GetNameUpper |
+| a.go:27:6:27:10 | FuncA |
+| a.go:31:6:31:7 | Id |
+| a.go:36:2:36:8 | GetName |
+types
+| a.go:5:6:5:6 | A |
+| a.go:35:6:35:6 | B |
+parameters
+| a.go:13:7:13:7 | a |
+| a.go:22:7:22:7 | a |
+| a.go:27:12:27:15 | name |
+| a.go:31:9:31:12 | name |
+fields
+| a.go:6:2:6:5 | name |
+commentLines
+| a.go:9:1:12:3 | comment |
+| a.go:14:2:14:19 | comment |
+| a.go:18:1:21:3 | comment |
+| a.go:23:2:23:19 | comment |
+commentBlocks
+| a.go:9:1:12:3 | comment group |
+| a.go:14:2:14:19 | comment group |
+| a.go:18:1:21:3 | comment group |
+| a.go:23:2:23:19 | comment group |
+htmlElements
