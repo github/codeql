@@ -137,14 +137,14 @@ func defaultCase(value int) {
 	case 0:
 		sink("non-default case")
 	default:
-		sink("default case") // default case matches
+		sink("default case")
 	}
 }
 
 func defaultBeforeCase(value int) {
 	switch value {
 	default:
-		sink("default before case") // default case matches
+		sink("default before case")
 	case 0:
 		sink("case after default")
 	}
@@ -153,7 +153,7 @@ func defaultBeforeCase(value int) {
 func defaultOnly(value int) {
 	switch value {
 	default:
-		sink("default only") // default case matches
+		sink("default only") // No guard fact: matching the only case is tautological.
 	}
 }
 
@@ -162,7 +162,7 @@ func expressionlessDefault(value bool) {
 	case value:
 		sink("expressionless case")
 	default:
-		sink("expressionless default") // default case matches
+		sink("expressionless default")
 	}
 }
 

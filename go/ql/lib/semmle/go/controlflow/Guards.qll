@@ -163,16 +163,6 @@ private module GuardsInput implements
     }
   }
 
-  predicate caseOutcomeBlock(Case guard, CfgImpl::Cfg::BasicBlock outcomeBlock, boolean branch) {
-    branch = true and
-    guard.isDefaultCase() and
-    outcomeBlock =
-      any(CfgImpl::Cfg::ControlFlowNode outcomeNode |
-        outcomeNode
-            .isAfterValue(guard, any(MatchingSuccessor successor | successor.getValue() = true))
-      ).getBasicBlock()
-  }
-
   additional predicate caseExpressionBranch(
     Expr caseExpr, CfgImpl::Cfg::BasicBlock bb, MatchingSuccessor successor
   ) {

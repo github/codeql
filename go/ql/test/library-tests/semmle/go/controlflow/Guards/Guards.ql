@@ -31,16 +31,6 @@ query predicate ensuresEqResult(Guard guard, string label, string outcome) {
   )
 }
 
-query predicate defaultCaseResult(Guard guard, string label, string outcome) {
-  exists(DataFlow::CallNode call, GuardValue value, CaseClause defaultCase |
-    sinkCall(call, label) and
-    defaultCase = any(ExpressionSwitchStmt switch).getDefault() and
-    guard = defaultCase and
-    guard.valueControls(call.getBasicBlock(), value) and
-    outcome = value.toString()
-  )
-}
-
 query predicate modelBarrierResult(DataFlow::Node node, string label, string kind) {
   exists(DataFlow::CallNode call |
     call.getTarget().getName() = "valueSink" and

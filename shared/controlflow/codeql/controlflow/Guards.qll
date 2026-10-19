@@ -128,12 +128,6 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2);
   }
 
-  /**
-   * Holds if `outcomeBlock` contains a control flow node indicating that
-   * `guard` matched when `branch` is true, or did not match when `branch` is false.
-   */
-  default predicate caseOutcomeBlock(Case guard, BasicBlock outcomeBlock, boolean branch) { none() }
-
   class AndExpr extends Expr {
     /** Gets an operand of this expression. */
     Expr getAnOperand();
@@ -496,11 +490,6 @@ module Make<
         this.hasValueBranchEdge(guard, succ, v) and
         dominatingEdge(guard, succ) and
         succ.dominates(bb)
-      )
-      or
-      exists(BasicBlock outcomeBlock |
-        caseOutcomeBlock(this, outcomeBlock, v.asBooleanValue()) and
-        outcomeBlock.dominates(bb)
       )
     }
 
@@ -1554,11 +1543,6 @@ module Make<
         or
         exists(BasicBlock outcomeBlock |
           booleanOutcomeBlock(this, outcomeBlock, v.asBooleanValue()) and
-          outcomeBlock.dominates(bb)
-        )
-        or
-        exists(BasicBlock outcomeBlock |
-          caseOutcomeBlock(this, outcomeBlock, v.asBooleanValue()) and
           outcomeBlock.dominates(bb)
         )
       }

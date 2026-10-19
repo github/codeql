@@ -4,12 +4,10 @@ controlsResult
 | guards.go:12:7:12:15 | ...<... | zero | false |
 | guards.go:14:7:14:16 | ...==... | positive | false |
 | guards.go:14:7:14:16 | ...==... | zero | true |
-| guards.go:16:2:17:18 | case clause | positive | true |
 | guards.go:23:2:24:21 | case clause | tagged one or two | false |
 | guards.go:23:2:24:21 | case clause | tagged other | false |
 | guards.go:23:2:24:21 | case clause | tagged zero | true |
 | guards.go:25:2:26:27 | case clause | tagged other | false |
-| guards.go:27:2:28:22 | case clause | tagged other | true |
 | guards.go:34:2:35:30 | case clause | tagged false boolean | true |
 | guards.go:34:7:34:11 | value | tagged false boolean | false |
 | guards.go:38:2:39:29 | case clause | tagged true boolean | true |
@@ -42,14 +40,10 @@ controlsResult
 | guards.go:126:5:126:28 | ...==... | source non-nil return | true |
 | guards.go:137:2:138:26 | case clause | default case | false |
 | guards.go:137:2:138:26 | case clause | non-default case | true |
-| guards.go:139:2:140:22 | case clause | default case | true |
-| guards.go:146:2:147:29 | case clause | default before case | true |
 | guards.go:148:2:149:28 | case clause | case after default | true |
 | guards.go:148:2:149:28 | case clause | default before case | false |
-| guards.go:155:2:156:22 | case clause | default only | true |
 | guards.go:162:7:162:11 | value | expressionless case | true |
 | guards.go:162:7:162:11 | value | expressionless default | false |
-| guards.go:164:2:165:32 | case clause | expressionless default | true |
 | guards.go:183:5:183:21 | call to isNotNil | non-variadic wrapper | true |
 | guards.go:194:5:194:32 | call to namedResultIsNotNil | named result wrapper | true |
 | guards.go:208:5:208:43 | call to conditionalNamedResultIsNotNil | conditional named result wrapper | true |
@@ -75,7 +69,6 @@ valueControlsResult
 | guards.go:14:7:14:11 | value | zero | 0 |
 | guards.go:14:7:14:16 | ...==... | positive | false |
 | guards.go:14:7:14:16 | ...==... | zero | true |
-| guards.go:16:2:17:18 | case clause | positive | true |
 | guards.go:22:9:22:13 | value | tagged one or two | not 0 |
 | guards.go:22:9:22:13 | value | tagged other | not 0 |
 | guards.go:22:9:22:13 | value | tagged other | not 1 |
@@ -85,7 +78,6 @@ valueControlsResult
 | guards.go:23:2:24:21 | case clause | tagged other | false |
 | guards.go:23:2:24:21 | case clause | tagged zero | true |
 | guards.go:25:2:26:27 | case clause | tagged other | false |
-| guards.go:27:2:28:22 | case clause | tagged other | true |
 | guards.go:34:2:35:30 | case clause | tagged false boolean | true |
 | guards.go:34:7:34:11 | value | tagged false boolean | false |
 | guards.go:38:2:39:29 | case clause | tagged true boolean | true |
@@ -150,16 +142,12 @@ valueControlsResult
 | guards.go:136:9:136:13 | value | non-default case | 0 |
 | guards.go:137:2:138:26 | case clause | default case | false |
 | guards.go:137:2:138:26 | case clause | non-default case | true |
-| guards.go:139:2:140:22 | case clause | default case | true |
 | guards.go:145:9:145:13 | value | case after default | 0 |
 | guards.go:145:9:145:13 | value | default before case | not 0 |
-| guards.go:146:2:147:29 | case clause | default before case | true |
 | guards.go:148:2:149:28 | case clause | case after default | true |
 | guards.go:148:2:149:28 | case clause | default before case | false |
-| guards.go:155:2:156:22 | case clause | default only | true |
 | guards.go:162:7:162:11 | value | expressionless case | true |
 | guards.go:162:7:162:11 | value | expressionless default | false |
-| guards.go:164:2:165:32 | case clause | expressionless default | true |
 | guards.go:183:5:183:21 | call to isNotNil | non-variadic wrapper | no exception |
 | guards.go:183:5:183:21 | call to isNotNil | non-variadic wrapper | true |
 | guards.go:183:14:183:20 | pointer | non-variadic wrapper | not null |
@@ -265,13 +253,6 @@ ensuresEqResult
 | guards.go:383:5:383:34 | ...==... | nil = call to modelNullGuard | true |
 | guards.go:386:5:386:37 | ...!=... | call to modelNotNullGuard = nil | false |
 | guards.go:386:5:386:37 | ...!=... | nil = call to modelNotNullGuard | false |
-defaultCaseResult
-| guards.go:16:2:17:18 | case clause | positive | true |
-| guards.go:27:2:28:22 | case clause | tagged other | true |
-| guards.go:139:2:140:22 | case clause | default case | true |
-| guards.go:146:2:147:29 | case clause | default before case | true |
-| guards.go:155:2:156:22 | case clause | default only | true |
-| guards.go:164:2:165:32 | case clause | expressionless default | true |
 modelBarrierResult
 | guards.go:375:27:375:33 | pointer | model bool | model-bool |
 | guards.go:378:27:378:33 | pointer | model zero | model-zero |
