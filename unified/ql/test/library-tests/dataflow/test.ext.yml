@@ -14,3 +14,5 @@ extensions:
       - ["", "TestType", true, "throughCallback(_:_:)", "", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
       - ["", "TestType", true, "throughCallback(_:_:)", "", "", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]
       - ["", "TestType", true, "taintFlow(_:)", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["", "TestType", true, "swap(_:_:)", "", "", "Argument[0]", "Argument[1]", "value", "manual"]
+      - ["", "TestType", true, "swap(_:_:)", "", "", "Argument[1]", "Argument[0]", "value", "manual"]

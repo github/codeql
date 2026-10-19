@@ -60,3 +60,13 @@ func t8() {
 func t9() {
     sink(TestType.taintFlow(source("t9.1")))  // $ hasTaintFlow=t9.1
 }
+
+func t10() {
+    var x = source("t10.1")
+    var y = source("t10.2")
+    sink(x)  // $ hasValueFlow=t10.1
+    sink(y)  // $ hasValueFlow=t10.2
+    TestType.swap(&x, &y)
+    sink(x)  // $ MISSING: hasValueFlow=t10.2 SPURIOUS: hasValueFlow=t10.1
+    sink(y)  // $ MISSING: hasValueFlow=t10.1 SPURIOUS: hasValueFlow=t10.2
+}
