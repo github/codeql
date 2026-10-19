@@ -84,7 +84,7 @@ CodeQLPackInfo = provider(
         "pack_prefix": "A prefix to add to all paths, IF the user requests so. We omit it for local installation targets of single packs (but not pack groups)",
         "files": "PackageFilegroupInfo provider with list of all files in this pack (CODEQL_PLATFORM in paths unresolved)",
         "zips": "A _ZipInfo provider to include in the pack, (CODEQL_PLATFORM unresolved).",
-        "arch_overrides": "A list of files that should be included in the arch-specific bit, even though the path doesn't contain CODEQL_PLATFORM.",
+        "arch_overrides": "Files or imported zip prefixes to include in the arch-specific bit, even without CODEQL_PLATFORM in their paths.",
     },
 )
 
@@ -220,7 +220,7 @@ _codeql_pack_info = rule(
             allow_files = [".zip"],
         ),
         "prefix": attr.string(doc = "Prefix to add to all files."),
-        "arch_overrides": attr.string_list(doc = "A list of files that should be included in the arch package regardless of the path, specify the path _without_ `prefix`."),
+        "arch_overrides": attr.string_list(doc = "Files or imported zip prefixes to include in the arch package regardless of the path, specified _without_ `prefix`."),
     },
     provides = [CodeQLPackInfo],
 )
@@ -293,6 +293,8 @@ def _codeql_pack_group_extract_zips_impl(ctx):
         # for each zip file, resolve whether it's filtered out or not by the current kind, and add the pack prefix
         for zip, zip_prefix in src.zips.zips_to_prefixes.items():
             zip_kind, expanded_prefix = _expand_path(paths.join(prefix, zip_prefix), platform)
+            if zip_kind == "common" and zip_prefix in src.arch_overrides:
+                zip_kind = "arch"
             if include_all_files or zip_kind == ctx.attr.kind:
                 zips_to_prefixes[zip] = expanded_prefix
 
@@ -465,13 +467,13 @@ def codeql_pack(
     The distinction between arch-specific and common contents is made based on whether the paths (including possible
     prefixes added by rules) contain the special `{CODEQL_PLATFORM}` placeholder, which in case it is present will also
     be replaced by the appropriate platform (`linux64`, `linux-arm64`, `win64` or `osx64`).
-    Specific file paths can be placed in the arch-specific package by adding them to `arch_overrides`, even if their
-    path doesn't contain the `CODEQL_PLATFORM` placeholder.
+    Specific file paths or imported zip prefixes can be placed in the arch-specific package by adding them to
+    `arch_overrides`, even if their path doesn't contain the `CODEQL_PLATFORM` placeholder.
 
     The codeql pack rules will expand the `{CODEQL_PLATFORM}` marker in paths, and use that to split the files into a common and an arch-specific part.
     This placeholder will be replaced by the appropriate platform (`linux64`, `linux-arm64`, `win64` or `osx64`).
-    `arch_overrides` is a list of files that should be included in the arch-specific bits of the pack, even if their path doesn't
-    contain the `{CODEQL_PLATFORM}` marker.
+    `arch_overrides` is a list of files or imported zip prefixes that should be included in the arch-specific bits of the
+    pack, even if their path doesn't contain the `{CODEQL_PLATFORM}` marker.
     All files in the pack will be prefixed with `name`, unless `pack_prefix` is set, then is used instead.
 
     This rule also provides a convenient installer target named `<name>-installer`, with a path governed by `install_dest`,
