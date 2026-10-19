@@ -618,7 +618,7 @@ module Make<
     default predicate relevantImplicitReturnSsaDefinition(
       NonOverridableMethod method, SsaDefinition def
     ) {
-      any()
+      none()
     }
 
     /**

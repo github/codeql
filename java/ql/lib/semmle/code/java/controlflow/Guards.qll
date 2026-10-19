@@ -351,7 +351,7 @@ private module LogicInput_v3 implements GuardsImpl::LogicInputSig {
   predicate relevantImplicitReturnSsaDefinition(
     GuardsInput::NonOverridableMethod method, SsaDefinition def
   ) {
-    any()
+    none()
   }
 
   predicate rangeGuard(GuardsImpl::PreGuard guard, GuardValue val, Expr e, int k, boolean upper) {
