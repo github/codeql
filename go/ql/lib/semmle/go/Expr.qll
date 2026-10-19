@@ -6,7 +6,6 @@ module;
 
 import go
 private import semmle.go.controlflow.ControlFlowGraphImpl
-private import semmle.go.controlflow.IR
 
 /**
  * An expression.
@@ -20,7 +19,7 @@ private import semmle.go.controlflow.IR
  */
 class Expr extends @expr, ExprParent {
   /** Gets the control-flow node associated with this expression. */
-  CfgImpl::Cfg::ControlFlowNode getControlFlowNode() { result = IR::evalExprInstruction(this) }
+  CfgImpl::Cfg::ControlFlowNode getControlFlowNode() { result.injects(this) }
 
   /** Gets the basic block containing this expression. */
   CfgImpl::Cfg::BasicBlock getBasicBlock() { result = this.getControlFlowNode().getBasicBlock() }
