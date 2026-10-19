@@ -143,7 +143,7 @@ module TaintReach {
   int numberOfCandidates() { result = count(Candidate c) }
 
   int perMillionNodes() {
-    result = (numberOfTaintedNodes() * 1000000) / numberOfCandidates()
+    result = ((numberOfTaintedNodes() * 1000000.0) / numberOfCandidates()).floor()
     or
     numberOfCandidates() = 0 and result = 0
   }
