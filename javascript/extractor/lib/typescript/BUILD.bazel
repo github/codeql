@@ -59,9 +59,12 @@ genrule(
         "  cygwin|msys|win32) OUT=$$(cygpath -w $$OUT); NATIVE_OUT=$$(cygpath -w $$NATIVE_OUT);;",
         "esac",
         "",
-        "$$BAZEL_ROOT/$(execpath @bazel_tools//tools/zip:zipper) cC $$OUT $$(find typescript-parser-wrapper -name '*' -print)",
+        # Use response files to stay below Windows' command-line length limit.
+        "find typescript-parser-wrapper -print > wrapper-files",
+        "$$BAZEL_ROOT/$(execpath @bazel_tools//tools/zip:zipper) cC $$OUT @wrapper-files",
         "cd native",
-        "$$BAZEL_ROOT/$(execpath @bazel_tools//tools/zip:zipper) cC $$NATIVE_OUT $$(find typescript-* -print)",
+        "find typescript-* -print > native-files",
+        "$$BAZEL_ROOT/$(execpath @bazel_tools//tools/zip:zipper) cC $$NATIVE_OUT @native-files",
         "rm -rf $$TEMP",
     ]),
     tools = [
