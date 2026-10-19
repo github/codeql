@@ -238,6 +238,8 @@ edges
 | flow-summaries.swift:69:23:69:24 | & ... | flow-summaries.swift:69:19:69:20 | [post] & ... | provenance |  |
 | flow-summaries.swift:69:23:69:24 | [post] & ... | flow-summaries.swift:71:10:71:10 | y | provenance |  |
 | flow-summaries.swift:69:24:69:24 | y | flow-summaries.swift:69:23:69:24 | & ... | provenance |  |
+| flow-summaries.swift:76:16:76:30 | source(...) | flow-summaries.swift:77:10:77:10 | t [field] | provenance |  |
+| flow-summaries.swift:77:10:77:10 | t [field] | flow-summaries.swift:77:10:77:21 | ... .getField(...) | provenance |  |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | implicit-self.swift:17:14:17:17 | self [x] | provenance |  |
 | implicit-self.swift:16:9:16:14 | ... .x | implicit-self.swift:16:9:16:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:16:9:16:14 | ... .x | provenance |  |
@@ -728,6 +730,9 @@ nodes
 | flow-summaries.swift:69:24:69:24 | y | semmle.label | y |
 | flow-summaries.swift:70:10:70:10 | x | semmle.label | x |
 | flow-summaries.swift:71:10:71:10 | y | semmle.label | y |
+| flow-summaries.swift:76:16:76:30 | source(...) | semmle.label | source(...) |
+| flow-summaries.swift:77:10:77:10 | t [field] | semmle.label | t [field] |
+| flow-summaries.swift:77:10:77:21 | ... .getField(...) | semmle.label | ... .getField(...) |
 | implicit-self.swift:16:9:16:12 | [post] self [x] | semmle.label | [post] self [x] |
 | implicit-self.swift:16:9:16:14 | ... .x | semmle.label | ... .x |
 | implicit-self.swift:16:18:16:31 | source(...) | semmle.label | source(...) |
@@ -1072,6 +1077,7 @@ testFailures
 | flow-summaries.swift:70:10:70:10 | x | flow-summaries.swift:66:13:66:27 | source(...) | flow-summaries.swift:70:10:70:10 | x | $@ | flow-summaries.swift:66:13:66:27 | source(...) | source(...) |
 | flow-summaries.swift:71:10:71:10 | y | flow-summaries.swift:65:13:65:27 | source(...) | flow-summaries.swift:71:10:71:10 | y | $@ | flow-summaries.swift:65:13:65:27 | source(...) | source(...) |
 | flow-summaries.swift:71:10:71:10 | y | flow-summaries.swift:66:13:66:27 | source(...) | flow-summaries.swift:71:10:71:10 | y | $@ | flow-summaries.swift:66:13:66:27 | source(...) | source(...) |
+| flow-summaries.swift:77:10:77:21 | ... .getField(...) | flow-summaries.swift:76:16:76:30 | source(...) | flow-summaries.swift:77:10:77:21 | ... .getField(...) | $@ | flow-summaries.swift:76:16:76:30 | source(...) | source(...) |
 | implicit-self.swift:17:14:17:19 | ... .x | implicit-self.swift:16:18:16:31 | source(...) | implicit-self.swift:17:14:17:19 | ... .x | $@ | implicit-self.swift:16:18:16:31 | source(...) | source(...) |
 | implicit-self.swift:23:14:23:14 | x | implicit-self.swift:22:13:22:26 | source(...) | implicit-self.swift:23:14:23:14 | x | $@ | implicit-self.swift:22:13:22:26 | source(...) | source(...) |
 | implicit-self.swift:29:14:29:19 | ... .x | implicit-self.swift:28:13:28:26 | source(...) | implicit-self.swift:29:14:29:19 | ... .x | $@ | implicit-self.swift:28:13:28:26 | source(...) | source(...) |

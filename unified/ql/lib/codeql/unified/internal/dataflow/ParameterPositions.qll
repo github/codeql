@@ -23,7 +23,7 @@ class ParameterPosition extends TParameterPosition {
 
   /** Gets the operand to `Parameter`/`Argument` that represents this position in a MaD model. */
   string asModelOperand() {
-    this.isReceiver() and result = "receiver"
+    this.isReceiver() and result = "self"
     or
     this.isCallee() and result = "callee"
     or

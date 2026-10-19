@@ -74,5 +74,5 @@ func t10() {
 func t11() {
     let t = TestType()
     t.setField(source("t11.1"))
-    sink(t.getField())  // $ MISSING: hasValueFlow=t11.1
+    sink(t.getField())  // $ hasValueFlow=t11.1
 }
