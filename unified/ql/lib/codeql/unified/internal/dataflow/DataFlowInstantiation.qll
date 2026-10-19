@@ -166,6 +166,13 @@ module DataFlowInput implements InputSig<Location> {
     captureSsaLocalFlowStep(node1, node2) and model = ""
     or
     FlowSummaryOutput::summaryLocalStep(node1, node2, true, model)
+    or
+    model = "" and
+    exists(ContentSet contents | bypassContentSet(contents) |
+      FlowSummaryOutput::summaryReadStep(getSummaryNode(node1), contents, getSummaryNode(node2))
+      or
+      FlowSummaryOutput::summaryStoreStep(getSummaryNode(node1), contents, getSummaryNode(node2))
+    )
   }
 
   predicate jumpStep(Node node1, Node node2) {
@@ -198,12 +205,13 @@ module DataFlowInput implements InputSig<Location> {
   predicate clearsContent(Node n, ContentSet c) {
     captureSsaClearsContent(n, c)
     or
-    FlowSummaryOutput::summaryClearsContent(getSummaryNode(n), c)
+    FlowSummaryOutput::summaryClearsContent(getSummaryNode(n), c) and
+    not bypassContentSet(c)
   }
 
-
   predicate expectsContent(Node n, ContentSet c) {
-    FlowSummaryOutput::summaryExpectsContent(getSummaryNode(n), c)
+    FlowSummaryOutput::summaryExpectsContent(getSummaryNode(n), c) and
+    not bypassContentSet(c)
   }
 
   predicate localMustFlowStep(Node node1, Node node2) {
