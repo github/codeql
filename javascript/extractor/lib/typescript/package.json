@@ -1,15 +1,20 @@
 {
     "name": "typescript-parser-wrapper",
     "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=16.20.0"
+    },
     "dependencies": {
-        "typescript": "5.9"
+        "typescript": "7.1.0-dev.20261015.1"
     },
     "scripts": {
-        "build": "tsc --project tsconfig.json",
-        "check": "tsc --noEmit --project . && tslint --project .",
+        "build": "node node_modules/typescript/lib/tsc.js --project tsconfig.json",
+        "check": "node node_modules/typescript/lib/tsc.js --noEmit --project . && tslint --project .",
+        "test": "npm run build && node --test test/lifecycle.test.mjs test/wrapper.test.mjs",
         "lint": "tslint --project .",
         "lint-fix": "tslint --project . --fix",
-        "watch": "tsc -p . -w --sourceMap"
+        "watch": "node node_modules/typescript/lib/tsc.js -p . -w --sourceMap"
     },
     "devDependencies": {
         "@types/node": "^24.3.1"
