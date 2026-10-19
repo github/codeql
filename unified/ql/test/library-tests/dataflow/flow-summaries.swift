@@ -70,3 +70,9 @@ func t10() {
     sink(x)  // $ hasValueFlow=t10.2 SPURIOUS: hasValueFlow=t10.1
     sink(y)  // $ hasValueFlow=t10.1 SPURIOUS: hasValueFlow=t10.2
 }
+
+func t11() {
+    let t = TestType()
+    t.setField(source("t11.1"))
+    sink(t.getField())  // $ MISSING: hasValueFlow=t11.1
+}
