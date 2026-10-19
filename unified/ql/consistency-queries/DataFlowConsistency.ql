@@ -12,6 +12,11 @@ module ConsistencyInput implements InputSig<Location, DataFlowInput> {
     // have post-update nodes for reverse-reads.
     any(DataFlowPlugin p).step(n, any(Step s | s.read(_)), _)
   }
+
+  predicate postWithInFlowExclude(DataFlow::Node n) {
+    // In summaries, 'inout' parameters result in flow directly into the post-update node for an argument
+    n instanceof TSummaryNode
+  }
 }
 
 module ConsistencyOutput =
