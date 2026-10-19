@@ -14,7 +14,10 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
   override predicate exprStep(Expr expr1, Expr expr2, boolean mustFlow) {
     mustFlow = true and
     exists(UnaryExpr expr |
-      expr.getOperator().(PrefixOperator).getValue() = "&" and
+      expr.getOperator().(PrefixOperator).getValue() = "&"
+      or
+      expr.getOperator().(PostfixOperator).getValue() = "!"
+    |
       expr1 = expr.getOperand() and
       expr2 = expr
     )
@@ -40,10 +43,7 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
     )
     or
     exists(UnaryExpr expr |
-      expr.getOperator().(PostfixOperator).getValue() = "!"
-      or
-      expr.getOperator().(PrefixOperator).getValue() = ["try", "try!", "try?", "await"]
-    |
+      expr.getOperator().(PrefixOperator).getValue() = ["try", "try!", "try?", "await"] and
       node1.isResultValue(expr.getOperand()) and
       step.value() and
       node2.isResultValue(expr)
