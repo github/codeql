@@ -63,6 +63,9 @@ module FlowSummaryInput implements InputSig<Location, DataFlowInput> {
     token = "OptionalSome" and result = ContentSet::namedMember("some.0")
     or
     token = "CollectionElement" and result = ContentSet::arrayElement()
+    or
+    token.getName() = "TupleElement" and
+    result = ContentSet::namedMember(AccessPathSyntax::parseInt(token.getAnArgument()).toString())
   }
 
   bindingset[token]
