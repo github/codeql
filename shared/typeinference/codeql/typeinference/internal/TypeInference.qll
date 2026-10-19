@@ -3511,6 +3511,38 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
+       * Holds if the type of `n` at `path` is `t` and the `j`th element of `path`
+       * corresponds to the `i`th type parameter of the unknown type.
+       */
+      pragma[nomagic]
+      private predicate infersUnknownTypeArg0(AstNode n, int i, int j, TypePath path, Type t) {
+        exists(TypeParameter tp |
+          ContextualTyping::hasUnknownType(n) and
+          tp = any(UnknownType ut).getPositionalTypeParameter(i) and
+          t = inferType(n, path) and
+          not t instanceof UnknownType and
+          tp = path.getElement(j)
+        )
+      }
+
+      /**
+       * Holds if the type of `n` at `path` is `t`, where
+       * `path = prefix ++ tp_i ++ suffix` and `tp_i` is the `i`th type parameter
+       * of the unknown type.
+       */
+      pragma[nomagic]
+      private predicate infersUnknownTypeArg1(
+        AstNode n, TypePath prefix, int i, TypePath suffix, Type t
+      ) {
+        exists(TypePath path, int j, TypePath suffix0 |
+          infersUnknownTypeArg0(n, i, j, path, t) and
+          prefix = path.getProperPrefix(j) and
+          path = prefix.appendInverse(suffix0) and
+          suffix0.isCons(_, suffix)
+        )
+      }
+
+      /**
        * Holds if `n` has unknown type at `prefix`, but is still able to
        * infer a known type at `suffix` for the `i`th type parameter of whatever
        * the unknown type is.
@@ -3531,13 +3563,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate infersUnknownTypeArg(
         AstNode n, TypePath prefix, int i, TypePath suffix, Type t
       ) {
-        exists(TypeParameter tp, TypePath suffix0 |
-          ContextualTyping::hasUnknownTypeAt(n, prefix) and
-          suffix0.isCons(tp, suffix) and
-          tp = any(UnknownType ut).getPositionalTypeParameter(i) and
-          t = inferType(n, prefix.appendInverse(suffix0)) and
-          not t instanceof UnknownType
-        )
+        ContextualTyping::hasUnknownTypeAt(n, prefix) and
+        infersUnknownTypeArg1(n, prefix, i, suffix, t)
       }
 
       pragma[nomagic]
