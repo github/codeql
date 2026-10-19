@@ -26,16 +26,6 @@ private module GuardsInput implements
 
   class Expr = G::Expr;
 
-  predicate booleanOutcomeBlock(Expr guard, CfgImpl::Cfg::BasicBlock outcomeBlock, boolean branch) {
-    exists(CfgImpl::Cfg::ControlFlowNode outcomeNode |
-      branch = true and outcomeNode.isAfterTrue(guard)
-      or
-      branch = false and outcomeNode.isAfterFalse(guard)
-    |
-      outcomeBlock = outcomeNode.getBasicBlock()
-    )
-  }
-
   private newtype TConstantValue = TStringValue(string s) { s = any(G::Expr e).getStringValue() }
 
   class ConstantValue extends TConstantValue {
