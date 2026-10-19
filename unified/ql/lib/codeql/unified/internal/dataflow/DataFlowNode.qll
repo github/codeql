@@ -38,6 +38,11 @@ private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
     or
     expr = call.getCallee()
   )
+  or
+  exists(Expr target |
+    hasPostUpdate(target, cfgNode) and
+    exprStep(expr, target, _)
+  )
 }
 
 /**

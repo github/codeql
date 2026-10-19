@@ -6,11 +6,20 @@ private import unified
 private import AllDataFlow
 
 private class SwiftDataFlowPlugin extends DataFlowPlugin {
+  // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
   override predicate bypassContentSet(ContentSet contents) {
     contents.asSingleton().asNamedMember() = "some.0"
   }
 
-  // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
+  override predicate exprStep(Expr expr1, Expr expr2, boolean mustFlow) {
+    mustFlow = true and
+    exists(UnaryExpr expr |
+      expr.getOperator().(PrefixOperator).getValue() = "&" and
+      expr1 = expr.getOperand() and
+      expr2 = expr
+    )
+  }
+
   override predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     exists(BinaryExpr expr |
       expr.getOperator().getValue() = ["+", "+="] and

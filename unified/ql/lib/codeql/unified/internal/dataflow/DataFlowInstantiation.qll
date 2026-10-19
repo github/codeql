@@ -151,6 +151,8 @@ module DataFlowInput implements InputSig<Location> {
   private Step valueStepEx() {
     result.value()
     or
+    result.valueMustFlow()
+    or
     exists(ContentSet contents | bypassContentSet(contents) |
       result.read(contents)
       or
@@ -215,7 +217,7 @@ module DataFlowInput implements InputSig<Location> {
   }
 
   predicate localMustFlowStep(Node node1, Node node2) {
-    // TODO
+    step(node1, any(Step s | s.valueMustFlow()), node2) or
     localSsaMustFlowStep(node1, node2) or
     FlowSummaryOutput::summaryLocalMustFlowStep(getSummaryNode(node1), getSummaryNode(node2))
   }

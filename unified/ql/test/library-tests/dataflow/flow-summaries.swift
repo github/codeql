@@ -67,6 +67,6 @@ func t10() {
     sink(x)  // $ hasValueFlow=t10.1
     sink(y)  // $ hasValueFlow=t10.2
     TestType.swap(&x, &y)
-    sink(x)  // $ MISSING: hasValueFlow=t10.2 SPURIOUS: hasValueFlow=t10.1
-    sink(y)  // $ MISSING: hasValueFlow=t10.1 SPURIOUS: hasValueFlow=t10.2
+    sink(x)  // $ hasValueFlow=t10.2 SPURIOUS: hasValueFlow=t10.1
+    sink(y)  // $ hasValueFlow=t10.1 SPURIOUS: hasValueFlow=t10.2
 }

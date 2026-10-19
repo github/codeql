@@ -5,6 +5,18 @@ private import codeql.unified.internal.LocalNameBinding
 predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   any(DataFlowPlugin p).step(node1, step, node2)
   or
+  exists(Expr expr1, Expr expr2, boolean mustFlow |
+    any(DataFlowPlugin p).exprStep(expr1, expr2, mustFlow)
+  |
+    node1.isResultValue(expr1) and
+    (if mustFlow = true then step.valueMustFlow() else step.value()) and
+    node2.isResultValue(expr2)
+    or
+    node1.isPostUpdate(expr2) and
+    step.value() and
+    node2.isPostUpdate(expr1)
+  )
+  or
   exists(Callable callable |
     node1.isReceiverParameter(callable) and
     step.value() and
