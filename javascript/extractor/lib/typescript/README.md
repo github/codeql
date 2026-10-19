@@ -91,8 +91,8 @@ executable permissions using their central-directory metadata.
 
 All four distribution runtime ZIPs have been cross-assembled and inspected.
 Installed parsing has been verified with Node.js 18.15.0 on macOS arm64 and on
-macOS x64 through Rosetta. Linux x64, Linux arm64, and Windows x64 still require
-execution on matching hosts; cross-assembling their ZIPs is not execution coverage.
+macOS x64 through Rosetta. CI integration tests have also passed on Linux x64,
+Linux arm64, and Windows x64, including Windows 2022.
 
 Native lifecycle and memory
 ---------------------------

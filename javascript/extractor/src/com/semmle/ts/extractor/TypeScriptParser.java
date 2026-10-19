@@ -369,12 +369,7 @@ public class TypeScriptParser {
         throw getExceptionFromMalformedResponse(response, e);
       }
     } catch (IOException e) {
-      throw new CatastrophicError(
-          "Could not communicate with TypeScript parser wrapper "
-              + "(command: ."
-              + parserWrapperCommand
-              + ").",
-          e);
+      throw getExceptionFromMalformedResponse(response, e);
     }
   }
 
@@ -400,6 +395,14 @@ public class TypeScriptParser {
       }
     } catch (InterruptedException e1) {
       Exceptions.ignore(e, "This is for diagnostic purposes only.");
+    }
+    if (e instanceof IOException) {
+      return new CatastrophicError(
+          "Could not communicate with TypeScript parser wrapper "
+              + "(command: ."
+              + parserWrapperCommand
+              + ").",
+          e);
     }
     if (response == null) {
       return new CatastrophicError("No response from TypeScript parser wrapper", e);
