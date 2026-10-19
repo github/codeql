@@ -92,8 +92,12 @@ newtype TDataFlowNode =
     performsVariableAccess(repr, var, kind, _)
   } or
   TCallableNode(DataFlowCallable callable) or
-  TImplicitParameterNode(DataFlowCallable callable, ImplicitParameterPosition pos) or
-  TImplicitArgumentNode(DataFlowCall call, ImplicitArgumentPosition pos, Boolean isPost) or
+  TImplicitParameterNode(DataFlowCallable callable, ImplicitParameterPosition pos) {
+    not exists(callable.asSummarizedCallable()) // represented by TSummaryNode
+  } or
+  TImplicitArgumentNode(DataFlowCall call, ImplicitArgumentPosition pos, Boolean isPost) {
+    not call.isSummaryCall(_, _) // represented by TSummaryNode
+  } or
   TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node) or
   TCaptureSsaNode(CaptureSsaOutput::SynthesizedCaptureNode node) or
   TSummaryNode(FlowSummaryOutput::SummaryNode node)
