@@ -292,7 +292,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn counts_unique_manifests() {
+    fn counts_unique_manifests_but_includes_reload_duration() {
         let steps: Vec<_> = ["a/Cargo.toml", "b/Cargo.toml", "a/Cargo.toml"]
             .into_iter()
             .map(|path| ExtractionStep {
