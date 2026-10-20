@@ -127,7 +127,7 @@ func main() {
 				if origin != "" && origin != "null" {
 					if len(AccessControlAllowOrigins) == 0 ||
 						AccessControlAllowOrigins[origin] {
-						responseHeader.Set("Access-Control-Allow-Origin", origin)
+						responseHeader.Set("Access-Control-Allow-Origin", origin) // $ SPURIOUS: Alert
 						responseHeader.Set("Access-Control-Allow-Credentials", "true")
 					}
 				} else {
@@ -140,7 +140,7 @@ func main() {
 			// OK-ish: the input origin header is validated against a suffix.
 			origin := req.Header.Get("Origin")
 			if origin != "" && (originSuffix == "" || strings.HasSuffix(origin, originSuffix)) {
-				w.Header().Set("Access-Control-Allow-Origin", origin)
+				w.Header().Set("Access-Control-Allow-Origin", origin) // $ SPURIOUS: Alert
 				w.Header().Set("Access-Control-Allow-Credentials", "true")
 				w.Header().Set("Access-Control-Allow-Headers", "Content-Type, x-requested-by, *")
 				w.Header().Set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS")
@@ -155,7 +155,7 @@ func main() {
 			// OK-ish: the input origin header is validated against a whitelist.
 			origin := req.Header.Get("Origin")
 			if origin != "" && (originSuffix == "" || AccessControlAllowOrigins[origin]) {
-				w.Header().Set("Access-Control-Allow-Origin", origin)
+				w.Header().Set("Access-Control-Allow-Origin", origin) // $ SPURIOUS: Alert
 				w.Header().Set("Access-Control-Allow-Credentials", "true")
 				w.Header().Set("Access-Control-Allow-Headers", "Content-Type, x-requested-by, *")
 				w.Header().Set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS")
@@ -170,7 +170,7 @@ func main() {
 			origin := req.Header.Get("origin")
 			if origin != "" && origin != "null" {
 				if len(AccessControlAllowOrigins) == 0 || AccessControlAllowOrigins[origin] {
-					w.Header().Set("Access-Control-Allow-Origin", origin)
+					w.Header().Set("Access-Control-Allow-Origin", origin) // $ SPURIOUS: Alert
 					w.Header().Set("Access-Control-Allow-Credentials", "true")
 				}
 			} else {
