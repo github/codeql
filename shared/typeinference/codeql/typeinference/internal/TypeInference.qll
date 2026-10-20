@@ -2668,6 +2668,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       predicate stepLanguageSpecific(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2);
 
       /**
+       * Like `stepLanguageSpecific`, but allows for recursion. Only use this predicate when
+       * using `stepLanguageSpecific` results in non-monotonicity.
+       */
+      default predicate stepLanguageSpecificExtra(
+        AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2
+      ) {
+        none()
+      }
+
+      /**
        * Gets the inferred type of `n` at `path`.
        *
        * Use this predicate to implement any language-specific inference logic, but only for
@@ -2892,6 +2902,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       private predicate step(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
         stepLanguageSpecific(n1, prefix1, n2, prefix2)
+        or
+        stepLanguageSpecificExtra(n1, prefix1, n2, prefix2)
         or
         Certain::stepCertain(n1, prefix1, n2, prefix2)
         or
