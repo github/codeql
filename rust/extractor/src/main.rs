@@ -200,6 +200,39 @@ impl<'a> Extractor<'a> {
         self.steps.push(ExtractionStep::find_manifests(before));
         ret
     }
+
+    fn group_files<'b>(
+        &mut self,
+        manifests: &'b [ProjectManifest],
+        files: &'b [PathBuf],
+    ) -> HashMap<&'b Path, (&'b ProjectManifest, Vec<&'b Path>)> {
+        let mut workspaces: HashMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
+            .iter()
+            .map(|manifest| {
+                (
+                    manifest.manifest_path().parent().as_ref(),
+                    (manifest, Vec::new()),
+                )
+            })
+            .collect();
+
+        'outer: for file in files {
+            for ancestor in file.as_path().ancestors() {
+                if let Some((_, files)) = workspaces.get_mut(ancestor) {
+                    files.push(file);
+                    continue 'outer;
+                }
+            }
+            self.extract_without_semantics(
+                file,
+                SourceKind::Source,
+                RustAnalyzerNoSemantics::warning("no manifest found"),
+            );
+        }
+
+        workspaces.retain(|_, (_, files)| !files.is_empty());
+        workspaces
+    }
 }
 
 fn cwd() -> anyhow::Result<AbsPathBuf> {
@@ -252,24 +285,7 @@ fn main() -> anyhow::Result<()> {
         })
         .collect::<Vec<_>>();
     let manifests = extractor.find_manifests(&files)?;
-    let mut map: HashMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
-        .iter()
-        .map(|x| (x.manifest_path().parent().as_ref(), (x, Vec::new())))
-        .collect();
-
-    'outer: for file in &files {
-        for ancestor in file.as_path().ancestors() {
-            if let Some((_, files)) = map.get_mut(ancestor) {
-                files.push(file);
-                continue 'outer;
-            }
-        }
-        extractor.extract_without_semantics(
-            file,
-            SourceKind::Source,
-            RustAnalyzerNoSemantics::warning("no manifest found"),
-        );
-    }
+    let workspaces = extractor.group_files(&manifests, &files);
     let cwd = cwd()?;
     log_project_toolchain();
     let (cargo_config, load_cargo_config) = config.to_cargo_config(&cwd);
@@ -285,7 +301,7 @@ fn main() -> anyhow::Result<()> {
     };
     let mut processed_files: HashSet<PathBuf, RandomState> =
         HashSet::from_iter(files.iter().cloned());
-    for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
+    for (manifest, files) in workspaces.values() {
         if let Some((ref db, ref vfs)) =
             extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
         {
