@@ -358,6 +358,10 @@ private module Debug {
       normalizedSourceModel(selector, ap, _, _)
       or
       normalizedSinkModel(selector, ap, _, _)
+      or
+      normalizedSummaryModel(selector, ap, _, _, _)
+      or
+      normalizedSummaryModel(selector, _, ap, _, _)
     ) and
     ap.getName() = ["Argument", "Parameter"] and
     (
