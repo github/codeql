@@ -4,6 +4,7 @@ module;
 private import go
 private import semmle.go.dataflow.FunctionInputsAndOutputs
 private import semmle.go.dataflow.FlowSummary
+private import semmle.go.dataflow.SsaImpl as SsaImpl
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.go.dataflow.ExternalFlow
@@ -286,19 +287,27 @@ module Public {
 
     SsaNode() { this = MkSsaNode(ssa) }
 
-    /** Gets the node whose value is stored in this SSA variable, if any. */
-    Node getInit() { result = DataFlow::instructionNode(ssa.(SsaExplicitDefinition).getRhs()) }
+    /** Gets the node whose value is stored in this SSA definition, if any. */
+    Node getInit() {
+      result = DataFlow::instructionNode(ssa.(SsaExplicitWrite).getDefinition().getRhs())
+    }
 
-    /** Gets a use of this SSA variable. */
-    InstructionNode getAUse() { result = DataFlow::instructionNode(ssa.getVariable().getAUse()) }
+    /** Gets a use of this SSA definition. */
+    InstructionNode getAUse() {
+      exists(BasicBlock bb, int i |
+        result.asInstruction() = bb.getNode(i) and
+        SsaImpl::ssaDefReachesRead(ssa.getSourceVariable(), ssa, bb, i) and
+        SsaImpl::useAt(bb, i, ssa.getSourceVariable())
+      )
+    }
 
-    /** Gets the program variable corresponding to this SSA variable. */
+    /** Gets the program variable corresponding to this SSA definition. */
     SsaSourceVariable getSourceVariable() { result = ssa.getSourceVariable() }
 
-    /** Gets the unique definition of this SSA variable. */
+    /** Gets this SSA definition. */
     SsaDefinition getDefinition() { result = ssa }
 
-    override ControlFlow::Root getRoot() { result = ssa.getRoot() }
+    override ControlFlow::Root getRoot() { result = SsaImpl::getSsaDefinitionRoot(ssa) }
 
     override Type getType() { result = ssa.getSourceVariable().getType() }
 
@@ -732,7 +741,7 @@ module Public {
 
     UnusedParameterNode() {
       insn = IR::initParamInstruction(parm) and
-      not exists(SsaExplicitDefinition ssa | ssa.getInstruction() = insn)
+      not exists(SsaExplicitWrite ssa | ssa.getDefinition() = insn)
     }
 
     /** Gets the parameter this node initializes. */
@@ -745,10 +754,10 @@ module Public {
 
   /** A representation of a parameter initialization, defined in source via an SSA node. */
   class SsaParameterNode extends ParameterNode, SsaNode {
-    override SsaExplicitDefinition ssa;
+    override SsaParameterInit ssa;
     Parameter parm;
 
-    SsaParameterNode() { ssa.getInstruction() = IR::initParamInstruction(parm) }
+    SsaParameterNode() { ssa.getParameter() = parm }
 
     /** Gets the parameter this node initializes. */
     override Parameter asParameter() { result = parm }
@@ -976,9 +985,11 @@ module Public {
     predicate reads(ValueEntity v) { insn.reads(v) }
 
     /**
-     * Holds if this data-flow node reads the value of SSA variable `v`.
+     * Holds if this data-flow node reads the value of SSA definition `def`.
      */
-    predicate readsSsaVariable(SsaVariable v) { insn = v.getAUse() }
+    predicate readsSsaDefinition(SsaDefinition def) {
+      insn.(IR::EvalInstruction).getExpr() = def.getARead()
+    }
 
     /**
      * Holds if this data-flow node reads the value of field `f` on the value of `base` or its

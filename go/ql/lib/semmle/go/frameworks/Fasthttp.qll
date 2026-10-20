@@ -63,7 +63,7 @@ module Fasthttp {
     SsaWithFields v;
 
     ResponseWriter() {
-      this = v.getBaseVariable().getSourceVariable() and
+      this = v.getBaseDefinition().getSourceVariable() and
       (
         v.getType().hasQualifiedName(packagePath(), ["Response", "ResponseHeader"]) or
         v.getType().(PointerType).getBaseType().hasQualifiedName(packagePath(), "RequestCtx")
