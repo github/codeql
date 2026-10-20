@@ -1,5 +1,2 @@
 invalidModelRow
 testFailures
-| switch.go:83:49:83:87 | comment | Missing result: hasValueFlow="call to typeSwitch1" |
-| switch.go:84:49:84:87 | comment | Missing result: hasValueFlow="call to typeSwitch1" |
-| switch.go:85:49:85:87 | comment | Missing result: hasValueFlow="call to typeSwitch1" |
