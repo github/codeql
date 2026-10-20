@@ -255,3 +255,12 @@ func t28() {
     sink(getOptional() ?? "default")  // $ hasValueFlow=t28.1
     sink("safe" ?? getOptional())  // $ hasValueFlow=t28.1
 }
+
+func t29() {
+    class Box {
+        var field: String = ""
+    }
+    let box = Box()
+    (box as! Box).field = source("t29.1")
+    sink(box.field)  // $ MISSING: hasValueFlow=t29.1
+}
