@@ -3,7 +3,6 @@ package project
 import (
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"regexp"
 	"slices"
@@ -11,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/github/codeql-go/extractor/diagnostics"
+	"github.com/github/codeql-go/extractor/registries"
 	"github.com/github/codeql-go/extractor/toolchain"
 	"github.com/github/codeql-go/extractor/util"
 	"golang.org/x/mod/modfile"
@@ -49,12 +49,12 @@ func (module *GoModule) RequiredGoVersion() util.SemVer {
 }
 
 // Runs `go mod tidy` for this module.
-func (module *GoModule) Tidy() *exec.Cmd {
+func (module *GoModule) Tidy() *registries.ProxiedCmd {
 	return toolchain.TidyModule(filepath.Dir(module.Path))
 }
 
 // Runs `go mod vendor -e` for this module.
-func (module *GoModule) Vendor() *exec.Cmd {
+func (module *GoModule) Vendor() *registries.ProxiedCmd {
 	return toolchain.VendorModule(filepath.Dir(module.Path))
 }
 
@@ -149,7 +149,7 @@ func InitGoModForLegacyProject(path string) {
 
 	modInit := toolchain.InitModule(path)
 
-	if !util.RunCmd(modInit) {
+	if !modInit.RunCmd() {
 		log.Printf("Failed to initialize go.mod file for this project.")
 		return
 	}

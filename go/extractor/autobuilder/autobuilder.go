@@ -5,8 +5,8 @@ package autobuilder
 import (
 	"log"
 	"os"
-	"os/exec"
 
+	"github.com/github/codeql-go/extractor/registries"
 	"github.com/github/codeql-go/extractor/util"
 )
 
@@ -68,7 +68,7 @@ func tryBuildIfExists(buildFile, cmd string, args ...string) (scriptSuccess bool
 // tryBuild tries to run `cmd args...`, returning true if successful and false if not.
 func tryBuild(cmd string, args ...string) bool {
 	log.Printf("Trying build command %s %v", cmd, args)
-	res := util.RunCmd(exec.Command(cmd, args...))
+	res := registries.Command(cmd, args...).RunCmd()
 	return res && (!CheckExtracted || checkExtractorRun())
 }
 
