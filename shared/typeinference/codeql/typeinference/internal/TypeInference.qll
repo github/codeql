@@ -2694,6 +2694,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * in `inferTypeLanguageSpecific`; if in doubt, use `inferTypeLanguageSpecific` instead.
        */
       default Type inferTypeCertainLanguageSpecific(AstNode n, TypePath path) { none() }
+
+      /**
+       * Holds if full contextual inference is allowed for the node `n` at the
+       * type path `path`. This means that `n` does not need to be assigned
+       * `UnknownType` at (a prefix of) `path`.
+       */
+      default predicate allowFullContextualInference(AstNode n, TypePath path) { none() }
     }
 
     module Make3<InputSig3 Input3> {
@@ -3310,6 +3317,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         pragma[nomagic]
         predicate hasUnknownTypeAt(AstNode n, TypePath path) {
           inferType(n, path) instanceof UnknownType
+          or
+          allowFullContextualInference(n, path)
         }
 
         pragma[nomagic]
@@ -3338,10 +3347,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         private Type inferTypeContextualCand1(AstNode n, TypePath prefix, TypePath path) {
           result = inferTypeContextualCand0(n, path) and
           hasUnknownType(n) and
-          prefix = path.getAPrefix() and
-          // no need to propagate `UnknownType`s contextually; `n` must already have an
-          // `UnknownType` at some prefix of `path`
-          not result instanceof UnknownType
+          prefix = path.getAPrefix()
         }
 
         pragma[nomagic]
@@ -3379,6 +3385,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             path.isEmpty()
             or
             isValidContextualNonEmptyPath(n, path)
+            or
+            allowFullContextualInference(n, path.getAPrefix())
           )
         }
       }
