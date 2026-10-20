@@ -1757,6 +1757,31 @@ fn test_multiple_location_fields_combine_iterable_locations() {
 }
 
 #[test]
+fn test_location_and_named_fields_are_evaluated_left_to_right() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        call {
+            let mut order = Vec::new();
+            let call = tree!((call
+                location: {order.push("first location"); left}
+                method: {order.push("method"); left}
+                location: {order.push("second location"); right}
+                arguments: {order.push("arguments"); right}));
+            assert_eq!(
+                order,
+                ["first location", "method", "second location", "arguments"]
+            );
+            call
+        }
+    );
+
+    run_and_ast("x = 1", vec![rule]);
+}
+
+#[test]
 fn test_location_field_is_available_on_literal_nodes() {
     let rule: Rule = rule!(
         (assignment
