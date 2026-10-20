@@ -21,6 +21,19 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       expr1 = expr.getOperand() and
       expr2 = expr
     )
+    or
+    mustFlow = true and
+    exists(TypeCastExpr expr |
+      // Type-cast operators:
+      // - "as": Safe upcast conversion
+      // - "as?": Wrap in Optional<T> if cast succeeds
+      // - "as!": Throw if cast fails
+      //
+      // Since we bypass Optional<T> content, we model all of these as must-flow steps.
+      expr.getOperator().getValue() = ["as", "as?", "as!"] and
+      expr1 = expr.getExpr() and
+      expr2 = expr
+    )
   }
 
   override predicate step(BuilderNode node1, Step step, BuilderNode node2) {
@@ -45,19 +58,6 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
     exists(UnaryExpr expr |
       expr.getOperator().(PrefixOperator).getValue() = ["try", "try!", "try?", "await"] and
       node1.isResultValue(expr.getOperand()) and
-      step.value() and
-      node2.isResultValue(expr)
-    )
-    or
-    exists(TypeCastExpr expr |
-      // Type-cast operators:
-      // - "as": Safe upcast conversion
-      // - "as?": Wrap in Optional<T> if cast succeeds
-      // - "as!": Throw if cast fails
-      //
-      // Since we bypass Optional<T> content, we model all of these as value steps.
-      expr.getOperator().getValue() = ["as", "as?", "as!"] and
-      node1.isResultValue(expr.getExpr()) and
       step.value() and
       node2.isResultValue(expr)
     )

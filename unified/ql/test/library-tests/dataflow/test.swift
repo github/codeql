@@ -262,5 +262,5 @@ func t29() {
     }
     let box = Box()
     (box as! Box).field = source("t29.1")
-    sink(box.field)  // $ MISSING: hasValueFlow=t29.1
+    sink(box.field)  // $ hasValueFlow=t29.1
 }
