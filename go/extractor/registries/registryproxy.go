@@ -266,7 +266,7 @@ func run[R any](proxiedCmd *ProxiedCmd, fn func(cmd *exec.Cmd) R) R {
 	applyProxyEnvVars(proxiedCmd.cmd)
 
 	// If there are `git_source` registries, configure `git` to trust the proxy certificate.
-	if len(git_sources) > 0 {
+	if len(git_sources) > 0 && proxy_cert_file != "" {
 		applyProxyCertificateToGit()
 	}
 
