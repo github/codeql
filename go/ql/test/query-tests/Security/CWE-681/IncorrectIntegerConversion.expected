@@ -1,0 +1,5 @@
+| IncorrectIntegerConversion.go:493:40:493:50 | comment | Missing result: Source |
+| IncorrectIntegerConversion.go:501:23:501:32 | comment | Missing result: Alert |
+| IncorrectIntegerConversion.go:504:15:504:24 | comment | Missing result: Alert |
+| IncorrectIntegerConversion.go:506:15:506:24 | comment | Missing result: Alert |
+| IncorrectIntegerConversion.go:508:23:508:32 | comment | Missing result: Alert |
