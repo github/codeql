@@ -1,4 +1,10 @@
 #select
+| CharacterFilteringTest.java:11:21:11:44 | removeNewlines(...) | CharacterFilteringTest.java:11:36:11:43 | password : String | CharacterFilteringTest.java:11:21:11:44 | removeNewlines(...) | This $@ is written to a log file. | CharacterFilteringTest.java:11:36:11:43 | password | potentially sensitive information |
+| CharacterFilteringTest.java:26:21:26:54 | escapeControlCharacters(...) | CharacterFilteringTest.java:26:45:26:53 | authToken : String | CharacterFilteringTest.java:26:21:26:54 | escapeControlCharacters(...) | This $@ is written to a log file. | CharacterFilteringTest.java:26:45:26:53 | authToken | potentially sensitive information |
+| CharacterFilteringTest.java:48:21:48:56 | copyPrintableCodePoints(...) | CharacterFilteringTest.java:48:45:48:55 | accessToken : String | CharacterFilteringTest.java:48:21:48:56 | copyPrintableCodePoints(...) | This $@ is written to a log file. | CharacterFilteringTest.java:48:45:48:55 | accessToken | potentially sensitive information |
+| CharacterFilteringTest.java:70:21:70:53 | copyAsciiCharacters(...) | CharacterFilteringTest.java:70:41:70:52 | clientSecret : String | CharacterFilteringTest.java:70:21:70:53 | copyAsciiCharacters(...) | This $@ is written to a log file. | CharacterFilteringTest.java:70:41:70:52 | clientSecret | potentially sensitive information |
+| CharacterFilteringTest.java:86:21:86:47 | removeWhitespace(...) | CharacterFilteringTest.java:86:38:86:46 | apiSecret : String | CharacterFilteringTest.java:86:21:86:47 | removeWhitespace(...) | This $@ is written to a log file. | CharacterFilteringTest.java:86:38:86:46 | apiSecret | potentially sensitive information |
+| CharacterFilteringTest.java:101:21:101:55 | copyWithoutLineBreaks(...) | CharacterFilteringTest.java:101:43:101:54 | sessionToken : String | CharacterFilteringTest.java:101:21:101:55 | copyWithoutLineBreaks(...) | This $@ is written to a log file. | CharacterFilteringTest.java:101:43:101:54 | sessionToken | potentially sensitive information |
 | Test.java:11:21:11:53 | ... + ... | Test.java:11:46:11:53 | password : String | Test.java:11:21:11:53 | ... + ... | This $@ is written to a log file. | Test.java:11:46:11:53 | password | potentially sensitive information |
 | Test.java:12:22:12:52 | ... + ... | Test.java:12:44:12:52 | authToken : String | Test.java:12:22:12:52 | ... + ... | This $@ is written to a log file. | Test.java:12:44:12:52 | authToken | potentially sensitive information |
 | Test.java:21:22:21:75 | ... + ... | Test.java:21:44:21:52 | authToken : String | Test.java:21:22:21:75 | ... + ... | This $@ is written to a log file. | Test.java:21:44:21:52 | authToken | potentially sensitive information |
@@ -13,11 +19,23 @@
 | Test.java:81:21:81:44 | ... + ... | Test.java:81:33:81:44 | refreshToken : String | Test.java:81:21:81:44 | ... + ... | This $@ is written to a log file. | Test.java:81:33:81:44 | refreshToken | potentially sensitive information |
 | Test.java:82:21:82:43 | ... + ... | Test.java:82:33:82:43 | secretValue : String | Test.java:82:21:82:43 | ... + ... | This $@ is written to a log file. | Test.java:82:33:82:43 | secretValue | potentially sensitive information |
 edges
+| CharacterFilteringTest.java:11:36:11:43 | password : String | CharacterFilteringTest.java:11:21:11:44 | removeNewlines(...) | provenance | Config Sink:MaD:2 |
+| CharacterFilteringTest.java:26:45:26:53 | authToken : String | CharacterFilteringTest.java:26:21:26:54 | escapeControlCharacters(...) | provenance | Config Sink:MaD:2 |
+| CharacterFilteringTest.java:48:45:48:55 | accessToken : String | CharacterFilteringTest.java:48:21:48:56 | copyPrintableCodePoints(...) | provenance | Config Sink:MaD:2 |
+| CharacterFilteringTest.java:48:45:48:55 | accessToken : String | CharacterFilteringTest.java:51:43:51:54 | input : String | provenance |  |
+| CharacterFilteringTest.java:51:43:51:54 | input : String | CharacterFilteringTest.java:53:33:53:37 | input : String | provenance |  |
+| CharacterFilteringTest.java:53:33:53:37 | input : String | CharacterFilteringTest.java:53:40:53:45 | output : StringWriter | provenance | Config |
+| CharacterFilteringTest.java:53:40:53:45 | output : StringWriter | CharacterFilteringTest.java:54:16:54:21 | output : StringWriter | provenance |  |
+| CharacterFilteringTest.java:53:40:53:45 | output : StringWriter | CharacterFilteringTest.java:54:16:54:32 | toString(...) : String | provenance | %StringWriter |
+| CharacterFilteringTest.java:54:16:54:21 | output : StringWriter | CharacterFilteringTest.java:54:16:54:32 | toString(...) : String | provenance | MaD:3 |
+| CharacterFilteringTest.java:70:41:70:52 | clientSecret : String | CharacterFilteringTest.java:70:21:70:53 | copyAsciiCharacters(...) | provenance | Config Sink:MaD:2 |
+| CharacterFilteringTest.java:86:38:86:46 | apiSecret : String | CharacterFilteringTest.java:86:21:86:47 | removeWhitespace(...) | provenance | Config Sink:MaD:2 |
+| CharacterFilteringTest.java:101:43:101:54 | sessionToken : String | CharacterFilteringTest.java:101:21:101:55 | copyWithoutLineBreaks(...) | provenance | Config Sink:MaD:2 |
 | Test.java:11:46:11:53 | password : String | Test.java:11:21:11:53 | ... + ... | provenance | Sink:MaD:2 |
 | Test.java:12:44:12:52 | authToken : String | Test.java:12:22:12:52 | ... + ... | provenance | Sink:MaD:1 |
-| Test.java:21:44:21:52 | authToken : String | Test.java:21:44:21:67 | substring(...) : String | provenance | MaD:3 |
+| Test.java:21:44:21:52 | authToken : String | Test.java:21:44:21:67 | substring(...) : String | provenance | MaD:4 |
 | Test.java:21:44:21:67 | substring(...) : String | Test.java:21:22:21:75 | ... + ... | provenance | Sink:MaD:1 |
-| Test.java:22:44:22:52 | authToken : String | Test.java:22:44:22:67 | substring(...) : String | provenance | MaD:3 |
+| Test.java:22:44:22:52 | authToken : String | Test.java:22:44:22:67 | substring(...) : String | provenance | MaD:4 |
 | Test.java:22:44:22:67 | substring(...) : String | Test.java:22:22:22:75 | ... + ... | provenance | Sink:MaD:1 |
 | Test.java:31:30:31:37 | password : String | Test.java:31:21:31:37 | ... + ... | provenance | Sink:MaD:2 |
 | Test.java:75:33:75:43 | accessToken : String | Test.java:75:21:75:43 | ... + ... | provenance | Sink:MaD:2 |
@@ -31,8 +49,26 @@ edges
 models
 | 1 | Sink: org.apache.logging.log4j; Logger; true; error; (String); ; Argument[0]; log-injection; manual |
 | 2 | Sink: org.apache.logging.log4j; Logger; true; info; (String); ; Argument[0]; log-injection; manual |
-| 3 | Summary: java.lang; String; false; substring; ; ; Argument[this]; ReturnValue; taint; manual |
+| 3 | Summary: java.io; StringWriter; false; toString; (); ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: java.lang; String; false; substring; ; ; Argument[this]; ReturnValue; taint; manual |
 nodes
+| CharacterFilteringTest.java:11:21:11:44 | removeNewlines(...) | semmle.label | removeNewlines(...) |
+| CharacterFilteringTest.java:11:36:11:43 | password : String | semmle.label | password : String |
+| CharacterFilteringTest.java:26:21:26:54 | escapeControlCharacters(...) | semmle.label | escapeControlCharacters(...) |
+| CharacterFilteringTest.java:26:45:26:53 | authToken : String | semmle.label | authToken : String |
+| CharacterFilteringTest.java:48:21:48:56 | copyPrintableCodePoints(...) | semmle.label | copyPrintableCodePoints(...) |
+| CharacterFilteringTest.java:48:45:48:55 | accessToken : String | semmle.label | accessToken : String |
+| CharacterFilteringTest.java:51:43:51:54 | input : String | semmle.label | input : String |
+| CharacterFilteringTest.java:53:33:53:37 | input : String | semmle.label | input : String |
+| CharacterFilteringTest.java:53:40:53:45 | output : StringWriter | semmle.label | output : StringWriter |
+| CharacterFilteringTest.java:54:16:54:21 | output : StringWriter | semmle.label | output : StringWriter |
+| CharacterFilteringTest.java:54:16:54:32 | toString(...) : String | semmle.label | toString(...) : String |
+| CharacterFilteringTest.java:70:21:70:53 | copyAsciiCharacters(...) | semmle.label | copyAsciiCharacters(...) |
+| CharacterFilteringTest.java:70:41:70:52 | clientSecret : String | semmle.label | clientSecret : String |
+| CharacterFilteringTest.java:86:21:86:47 | removeWhitespace(...) | semmle.label | removeWhitespace(...) |
+| CharacterFilteringTest.java:86:38:86:46 | apiSecret : String | semmle.label | apiSecret : String |
+| CharacterFilteringTest.java:101:21:101:55 | copyWithoutLineBreaks(...) | semmle.label | copyWithoutLineBreaks(...) |
+| CharacterFilteringTest.java:101:43:101:54 | sessionToken : String | semmle.label | sessionToken : String |
 | Test.java:11:21:11:53 | ... + ... | semmle.label | ... + ... |
 | Test.java:11:46:11:53 | password : String | semmle.label | password : String |
 | Test.java:12:22:12:52 | ... + ... | semmle.label | ... + ... |
@@ -62,3 +98,4 @@ nodes
 | Test.java:82:21:82:43 | ... + ... | semmle.label | ... + ... |
 | Test.java:82:33:82:43 | secretValue : String | semmle.label | secretValue : String |
 subpaths
+| CharacterFilteringTest.java:48:45:48:55 | accessToken : String | CharacterFilteringTest.java:51:43:51:54 | input : String | CharacterFilteringTest.java:54:16:54:32 | toString(...) : String | CharacterFilteringTest.java:48:21:48:56 | copyPrintableCodePoints(...) |

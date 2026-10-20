@@ -8,7 +8,7 @@ class CharacterFilteringTest {
     private final Logger logger = null;
 
     void testStringBuilder(String password) {
-        logger.info(removeNewlines(password)); // $ MISSING: Alert
+        logger.info(removeNewlines(password)); // $ Alert
     }
 
     static String removeNewlines(String input) {
@@ -23,7 +23,7 @@ class CharacterFilteringTest {
     }
 
     void testReplacement(String authToken) {
-        logger.info(escapeControlCharacters(authToken)); // $ MISSING: Alert
+        logger.info(escapeControlCharacters(authToken)); // $ Alert
     }
 
     static String escapeControlCharacters(String input) {
@@ -45,7 +45,7 @@ class CharacterFilteringTest {
     }
 
     void testWriterParameter(String accessToken) throws IOException {
-        logger.info(copyPrintableCodePoints(accessToken)); // $ MISSING: Alert
+        logger.info(copyPrintableCodePoints(accessToken)); // $ Alert
     }
 
     static String copyPrintableCodePoints(String input) throws IOException {
@@ -67,7 +67,7 @@ class CharacterFilteringTest {
     }
 
     void testOutputArray(String clientSecret) {
-        logger.info(copyAsciiCharacters(clientSecret)); // $ MISSING: Alert
+        logger.info(copyAsciiCharacters(clientSecret)); // $ Alert
     }
 
     static String copyAsciiCharacters(String input) {
@@ -83,7 +83,7 @@ class CharacterFilteringTest {
     }
 
     void testConcatenation(String apiSecret) {
-        logger.info(removeWhitespace(apiSecret)); // $ MISSING: Alert
+        logger.info(removeWhitespace(apiSecret)); // $ Alert
     }
 
     static String removeWhitespace(String input) {
@@ -98,7 +98,7 @@ class CharacterFilteringTest {
     }
 
     void testReaderWriter(String sessionToken) throws IOException {
-        logger.info(copyWithoutLineBreaks(sessionToken)); // $ MISSING: Alert
+        logger.info(copyWithoutLineBreaks(sessionToken)); // $ Alert
     }
 
     static String copyWithoutLineBreaks(String input) throws IOException {
