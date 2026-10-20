@@ -50,7 +50,7 @@ bool TargetFile::init() {
     checkOutput("open");
     return true;
   }
-  CODEQL_ASSERT(errno == EEXIST, "Unable to open {} for writing ({})", targetPath,
+  CODEQL_EXPECT(errno == EEXIST, "Unable to open {} for writing ({})", targetPath,
                 currentErrorCode());
   // else the file already exists and we just lost the race
   return false;
