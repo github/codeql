@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/github/codeql-go/extractor/diagnostics"
+	"github.com/github/codeql-go/extractor/util"
 )
 
 const PROXY_HOST = "CODEQL_PROXY_HOST"
@@ -286,24 +287,7 @@ func (self ProxiedCmd) Run() error {
 // Runs the command and waits for it to complete. Returns a boolean indicating whether the command was successful
 // and logs errors if any occur.
 func (self ProxiedCmd) RunCmd() bool {
-	return run[bool](&self, func(cmd *exec.Cmd) bool {
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		in, _ := cmd.StdinPipe()
-		err := cmd.Start()
-		if err != nil {
-			slog.Warn(fmt.Sprintf("Running %s %v failed, continuing anyway: %s\n", cmd.Path, cmd.Args, err.Error()))
-			return false
-		}
-		in.Close()
-		err = cmd.Wait()
-		if err != nil {
-			slog.Warn(fmt.Sprintf("Running %s %v failed, continuing anyway: %s\n", cmd.Path, cmd.Args, err.Error()))
-			return false
-		}
-
-		return true
-	})
+	return run[bool](&self, util.RunCmd)
 }
 
 type Output struct {
