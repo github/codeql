@@ -3,6 +3,7 @@ package registries
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"log/slog"
 	"net/url"
 	"os"
@@ -202,4 +203,92 @@ func ApplyProxyEnvVars(cmd *exec.Cmd) {
 		slog.String("cmd_args", strings.Join(cmd.Args, " ")),
 		slog.String("proxy_vars", strings.Join(proxy_vars, ",")),
 	)
+}
+
+// Wrapper around [exec.Cmd] for commands that need proxy setup and cleanup.
+type ProxiedCmd struct {
+	cmd *exec.Cmd
+}
+
+// Constructs a new [ProxiedCmd].
+func Command(name string, arg ...string) *ProxiedCmd {
+	cmd := exec.Command(name, arg...)
+	return &ProxiedCmd{cmd}
+}
+
+// Applies proxy-related environment variables to the command, installs a clean-up handler and runs `fn`
+// with the underlying command as argument.
+func run[R any](proxiedCmd *ProxiedCmd, fn func(cmd *exec.Cmd) R) R {
+	// Apply registry proxy environment variables to the command.
+	ApplyProxyEnvVars(proxiedCmd.cmd)
+
+	return fn(proxiedCmd.cmd)
+}
+
+// Runs the command and waits for it to complete.
+func (self ProxiedCmd) Run() error {
+	return run[error](&self, func(cmd *exec.Cmd) error { return cmd.Run() })
+}
+
+// Runs the command and waits for it to complete. Returns a boolean indicating whether the command was successful
+// and logs errors if any occur.
+func (self ProxiedCmd) RunCmd() bool {
+	return run[bool](&self, func(cmd *exec.Cmd) bool {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		in, _ := cmd.StdinPipe()
+		err := cmd.Start()
+		if err != nil {
+			slog.Warn(fmt.Sprintf("Running %s %v failed, continuing anyway: %s\n", cmd.Path, cmd.Args, err.Error()))
+			return false
+		}
+		in.Close()
+		err = cmd.Wait()
+		if err != nil {
+			slog.Warn(fmt.Sprintf("Running %s %v failed, continuing anyway: %s\n", cmd.Path, cmd.Args, err.Error()))
+			return false
+		}
+
+		return true
+	})
+}
+
+type Output struct {
+	data []byte
+	err  error
+}
+
+func (self ProxiedCmd) Output() ([]byte, error) {
+	result := run[Output](&self, func(cmd *exec.Cmd) Output {
+		data, err := cmd.Output()
+		return Output{data, err}
+	})
+
+	return result.data, result.err
+}
+
+// Runs the command and returns its combined standard output and standard error.
+func (self ProxiedCmd) CombinedOutput() ([]byte, error) {
+	result := run[Output](&self, func(cmd *exec.Cmd) Output {
+		data, err := cmd.CombinedOutput()
+		return Output{data, err}
+	})
+
+	return result.data, result.err
+}
+
+func (self ProxiedCmd) AppendEnv(kvps ...string) {
+	self.cmd.Env = append(self.cmd.Env, kvps...)
+}
+
+func (self ProxiedCmd) SetDir(workingDir string) {
+	self.cmd.Dir = workingDir
+}
+
+func (self ProxiedCmd) SetStdout(writer io.Writer) {
+	self.cmd.Stdout = writer
+}
+
+func (self ProxiedCmd) SetStderr(writer io.Writer) {
+	self.cmd.Stderr = writer
 }
