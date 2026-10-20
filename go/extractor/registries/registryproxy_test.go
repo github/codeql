@@ -1,6 +1,8 @@
 package registries
 
 import (
+	"os/exec"
+	"strings"
 	"testing"
 )
 
@@ -129,5 +131,69 @@ func TestParseRegistryConfigsMultipleGoProxyServers(t *testing.T) {
 
 	if second.URL != "https://goproxy.io" {
 		t.Fatalf("Expected `URL` to be `https://goproxy.io`, but got `%s`", second.URL)
+	}
+}
+
+func TestApplyProxyEnvVarsPreservesCommandEnvironment(t *testing.T) {
+	originalProxyVars := proxy_vars
+	originalProxyVarsChecked := proxy_vars_checked
+	defer func() {
+		proxy_vars = originalProxyVars
+		proxy_vars_checked = originalProxyVarsChecked
+	}()
+
+	t.Setenv("CODEQL_REGISTRIES_TEST_INHERITED", "inherited")
+	proxy_vars = []string{"GOPROXY=https://proxy.example.com"}
+	proxy_vars_checked = true
+
+	cmd := Command("go", "version")
+	cmd.AppendEnv("GOTOOLCHAIN=local")
+	applyProxyEnvVars(cmd.cmd)
+
+	env := make(map[string]string)
+	for _, entry := range cmd.cmd.Env {
+		key, value, found := strings.Cut(entry, "=")
+		if found {
+			env[key] = value
+		}
+	}
+
+	expected := map[string]string{
+		"CODEQL_REGISTRIES_TEST_INHERITED": "inherited",
+		"GOTOOLCHAIN":                      "local",
+		"GOPROXY":                          "https://proxy.example.com",
+	}
+	for key, value := range expected {
+		if env[key] != value {
+			t.Errorf("Expected %s=%s, got %q", key, value, env[key])
+		}
+	}
+}
+
+func TestApplyProxyEnvVarsPreservesInheritedEnvironmentWithoutOverrides(t *testing.T) {
+	originalProxyVars := proxy_vars
+	originalProxyVarsChecked := proxy_vars_checked
+	defer func() {
+		proxy_vars = originalProxyVars
+		proxy_vars_checked = originalProxyVarsChecked
+	}()
+
+	t.Setenv("CODEQL_REGISTRIES_TEST_INHERITED", "inherited")
+	proxy_vars = []string{"GOPROXY=https://proxy.example.com"}
+	proxy_vars_checked = true
+
+	cmd := exec.Command("go", "version")
+	applyProxyEnvVars(cmd)
+
+	env := make(map[string]string)
+	for _, entry := range cmd.Env {
+		key, value, found := strings.Cut(entry, "=")
+		if found {
+			env[key] = value
+		}
+	}
+
+	if env["CODEQL_REGISTRIES_TEST_INHERITED"] != "inherited" {
+		t.Errorf("Expected inherited environment variable to be preserved, got %q", env["CODEQL_REGISTRIES_TEST_INHERITED"])
 	}
 }

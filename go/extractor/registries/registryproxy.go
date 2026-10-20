@@ -238,7 +238,7 @@ func applyProxyEnvVars(cmd *exec.Cmd) {
 	// variables to the existing environment to preserve those environment variables.
 	// If `cmd.Env` is not changed, then the existing environment is also preserved.
 	if proxy_vars != nil {
-		cmd.Env = append(os.Environ(), proxy_vars...)
+		cmd.Env = append(cmd.Environ(), proxy_vars...)
 	}
 
 	slog.Debug(
@@ -315,7 +315,7 @@ func (self ProxiedCmd) CombinedOutput() ([]byte, error) {
 }
 
 func (self ProxiedCmd) AppendEnv(kvps ...string) {
-	self.cmd.Env = append(self.cmd.Env, kvps...)
+	self.cmd.Env = append(self.cmd.Environ(), kvps...)
 }
 
 func (self ProxiedCmd) SetDir(workingDir string) {
