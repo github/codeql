@@ -437,4 +437,34 @@ module Unified {
     /** Gets the number of elements in this array literal. */
     int getNumberOfElements() { result = count(this.getAnElement()) }
   }
+
+  /**
+   * A declaration of a getter associated with a variable or field.
+   *
+   * For example, in Swift:
+   * ```swift
+   * var x: String {
+   *   get { "42" } // getter declaration
+   * }
+   * var x: String { "42" } // getter declaration
+   * ```
+   */
+  final class GetterDeclaration extends AccessorDeclaration {
+    GetterDeclaration() { this.getAccessorKind().getValue() = "get" }
+  }
+
+  /**
+   * A declaration of a setter associated with a variable or field.
+   *
+   * For example, in Swift:
+   * ```swift
+   * var x: String {
+   *   get { "42" }
+   *   set { print(newValue) } // setter declaration
+   * }
+   * ```
+   */
+  final class SetterDeclaration extends AccessorDeclaration {
+    SetterDeclaration() { this.getAccessorKind().getValue() = "set" }
+  }
 }

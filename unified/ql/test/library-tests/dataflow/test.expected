@@ -290,6 +290,7 @@ edges
 | implicit-self.swift:85:9:85:14 | [incoming] ... .x | implicit-self.swift:85:9:85:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:85:9:85:14 | [incoming] ... .x | provenance |  |
 | implicit-self.swift:87:14:87:17 | self [x] | implicit-self.swift:87:14:87:19 | ... .x | provenance |  |
+| short-return.swift:7:33:7:46 | source(...) | short-return.swift:8:10:8:19 | getValue(...) | provenance |  |
 | test.swift:17:10:17:23 | source(...) | test.swift:17:10:17:32 | ... + ... | provenance |  |
 | test.swift:18:19:18:32 | source(...) | test.swift:18:10:18:32 | ... + ... | provenance |  |
 | test.swift:20:13:20:26 | source(...) | test.swift:20:10:20:33 | StringInterpolationExpr | provenance |  |
@@ -799,6 +800,8 @@ nodes
 | implicit-self.swift:86:14:86:14 | x | semmle.label | x |
 | implicit-self.swift:87:14:87:17 | self [x] | semmle.label | self [x] |
 | implicit-self.swift:87:14:87:19 | ... .x | semmle.label | ... .x |
+| short-return.swift:7:33:7:46 | source(...) | semmle.label | source(...) |
+| short-return.swift:8:10:8:19 | getValue(...) | semmle.label | getValue(...) |
 | test.swift:9:10:9:21 | source(...) | semmle.label | source(...) |
 | test.swift:17:10:17:23 | source(...) | semmle.label | source(...) |
 | test.swift:17:10:17:32 | ... + ... | semmle.label | ... + ... |
@@ -1103,6 +1106,7 @@ testFailures
 | implicit-self.swift:80:14:80:19 | ... .x | implicit-self.swift:78:24:78:38 | source(...) | implicit-self.swift:80:14:80:19 | ... .x | $@ | implicit-self.swift:78:24:78:38 | source(...) | source(...) |
 | implicit-self.swift:86:14:86:14 | x | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:86:14:86:14 | x | $@ | implicit-self.swift:85:29:85:43 | source(...) | source(...) |
 | implicit-self.swift:87:14:87:19 | ... .x | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:87:14:87:19 | ... .x | $@ | implicit-self.swift:85:29:85:43 | source(...) | source(...) |
+| short-return.swift:8:10:8:19 | getValue(...) | short-return.swift:7:33:7:46 | source(...) | short-return.swift:8:10:8:19 | getValue(...) | $@ | short-return.swift:7:33:7:46 | source(...) | source(...) |
 | test.swift:9:10:9:21 | source(...) | test.swift:9:10:9:21 | source(...) | test.swift:9:10:9:21 | source(...) | $@ | test.swift:9:10:9:21 | source(...) | source(...) |
 | test.swift:17:10:17:32 | ... + ... | test.swift:17:10:17:23 | source(...) | test.swift:17:10:17:32 | ... + ... | $@ | test.swift:17:10:17:23 | source(...) | source(...) |
 | test.swift:18:10:18:32 | ... + ... | test.swift:18:19:18:32 | source(...) | test.swift:18:10:18:32 | ... + ... | $@ | test.swift:18:19:18:32 | source(...) | source(...) |

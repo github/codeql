@@ -76,5 +76,22 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       step.taint() and
       node2.isResultValue(call)
     )
+    or
+    // Short-hand return from a function body, e.g. `func foo() -> String { "42" }`
+    // This happens when the body contains a single expression and this expression resolves to a value.
+    // We don't detect precisely whether the expression resolves to a value, but we restrict to cases
+    // where a spurious flow edge would be harmless.
+    exists(Callable callable, Block body |
+      (
+        callable instanceof FunctionExpr or
+        callable instanceof FunctionDeclaration or
+        callable instanceof GetterDeclaration
+      ) and
+      body = callable.getBody() and
+      not exists(body.getStmt(1)) and // Check that only one statement exists
+      node1.isResultValue(body.getStmt(0)) and
+      step.value() and
+      node2.isReturnNode(callable)
+    )
   }
 }
