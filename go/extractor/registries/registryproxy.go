@@ -74,7 +74,7 @@ var previous_sslCAInfo string = ""
 // Tries to identify a current value for the `http.sslCAInfo` setting.
 func getCurrentGitSslInfo() string {
 	slog.Debug("Checking for current `git` certificate configuration")
-	cmd := exec.Command("git", "config", "get", "--global", "http.sslCAInfo")
+	cmd := exec.Command("git", "config", "--global", "--get", "http.sslCAInfo")
 	out, err := cmd.CombinedOutput()
 
 	if err == nil {
