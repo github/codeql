@@ -1,4 +1,4 @@
 ---
 applyTo: "**/*.expected"
 ---
-Ignore these files. These are generated to be correct by running the tests, and should not be edited manually.
+Do not edit these files directly. They are generated to be correct by running the tests.
