@@ -67,6 +67,57 @@ func parseRegistryConfigs(str string) ([]RegistryConfig, error) {
 	return configs, nil
 }
 
+// The previous `http.sslCAInfo` setting that should be restored after a command is run, if any.
+var previous_sslCAInfo string = ""
+
+// Tries to identify a current value for the `http.sslCAInfo` setting.
+func getCurrentGitSslInfo() string {
+	slog.Debug("Checking for current `git` certificate configuration")
+	cmd := exec.Command("git", "config", "get", "--global", "http.sslCAInfo")
+	out, err := cmd.CombinedOutput()
+
+	if err == nil {
+		val := strings.TrimSpace(string(out))
+
+		if val != "" {
+			slog.Info("Determined current `git` certificate configuration", slog.String("value", val))
+			return val
+		}
+	} else {
+		slog.Warn("Unable to determine current `git` certificate configuration", slog.String("error", err.Error()))
+	}
+
+	return ""
+}
+
+// Applies a `http.sslCAInfo` setting for `git`.
+func applyGitSslInfo(val string) {
+	cmd := exec.Command("git", "config", "--global", "http.sslCAInfo", val)
+
+	out, cmdErr := cmd.CombinedOutput()
+	slog.Info(string(out))
+
+	if cmdErr != nil {
+		slog.Error("Failed to configure `http.sslCAInfo` for `git`", slog.String("path", val), slog.String("error", cmdErr.Error()))
+	}
+}
+
+// Configures `git` to trust the registry proxy.
+func applyProxyCertificateToGit() {
+	slog.Info("Configuring `git` to use proxy certificate", slog.String("path", proxy_cert_file))
+	applyGitSslInfo(proxy_cert_file)
+}
+
+// Restores the `http.sslCAInfo` setting for `git` to its original setting, if any.
+func RestoreGitSslInfo() {
+	if previous_sslCAInfo == "" {
+		return
+	}
+
+	slog.Info("Restoring `http.sslCAInfo` setting for `git`", slog.String("path", previous_sslCAInfo))
+	applyGitSslInfo(previous_sslCAInfo)
+}
+
 func getEnvVars() []string {
 	var result []string
 
@@ -162,17 +213,8 @@ func getEnvVars() []string {
 			if len(git_sources) > 0 {
 				goprivate = append(goprivate, git_sources...)
 
-				if proxy_cert_file != "" {
-					slog.Info("Configuring `git` to use proxy certificate", slog.String("path", proxy_cert_file))
-					cmd := exec.Command("git", "config", "--global", "http.sslCAInfo", proxy_cert_file)
-
-					out, cmdErr := cmd.CombinedOutput()
-					slog.Info(string(out))
-
-					if cmdErr != nil {
-						slog.Error("Failed to configure `git` to accept the certificate file", slog.String("error", cmdErr.Error()))
-					}
-				}
+				// Determine if `git` has an existing `http.sslCAInfo` config and store it.
+				previous_sslCAInfo = getCurrentGitSslInfo()
 			}
 
 			result = append(result, fmt.Sprintf("GOPRIVATE=%s", strings.Join(goprivate, ",")))
@@ -183,7 +225,7 @@ func getEnvVars() []string {
 }
 
 // Applies private package proxy related environment variables to `cmd`.
-func ApplyProxyEnvVars(cmd *exec.Cmd) {
+func applyProxyEnvVars(cmd *exec.Cmd) {
 	// If we haven't done so yet, check whether the proxy environment variables are set
 	// and extract information from them.
 	if !proxy_vars_checked {
@@ -220,7 +262,18 @@ func Command(name string, arg ...string) *ProxiedCmd {
 // with the underlying command as argument.
 func run[R any](proxiedCmd *ProxiedCmd, fn func(cmd *exec.Cmd) R) R {
 	// Apply registry proxy environment variables to the command.
-	ApplyProxyEnvVars(proxiedCmd.cmd)
+	applyProxyEnvVars(proxiedCmd.cmd)
+
+	// If there are `git_source` registries, configure `git` to trust the proxy certificate.
+	if len(git_sources) > 0 {
+		applyProxyCertificateToGit()
+	}
+
+	// Clean up after the command has run.
+	defer func() {
+		// Restore the previous `http.sslCAInfo` config for `git` if there was one.
+		RestoreGitSslInfo()
+	}()
 
 	return fn(proxiedCmd.cmd)
 }
