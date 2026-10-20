@@ -9,6 +9,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//go/extractor/diagnostics",
+        "//go/extractor/registries",
         "//go/extractor/toolchain",
         "//go/extractor/util",
         "@org_golang_x_mod//modfile",
