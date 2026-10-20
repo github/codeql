@@ -5,7 +5,7 @@ use crate::translate::SourceKind;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
-use ra_ap_base_db::SourceDatabase;
+use configuration::{DependencyFiles, manifest_parent};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
@@ -14,13 +14,9 @@ use ra_ap_paths::{AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
 use rust_analyzer::{ParseResult, RustAnalyzer};
-use std::collections::HashSet;
-use std::hash::RandomState;
+use std::collections::{BTreeMap, HashSet};
+use std::path::{Path, PathBuf};
 use std::time::Instant;
-use std::{
-    collections::HashMap,
-    path::{Path, PathBuf},
-};
 use std::{env, fs};
 use tracing::{error, info, warn};
 use tracing_subscriber::layer::SubscriberExt;
@@ -28,6 +24,7 @@ use tracing_subscriber::util::SubscriberInitExt;
 
 mod archive;
 mod config;
+mod configuration;
 mod crate_graph;
 mod diagnostics;
 pub mod generated;
@@ -36,6 +33,7 @@ mod rust_analyzer;
 mod toolchain;
 mod translate;
 pub mod trap;
+mod util;
 
 struct Extractor<'a> {
     archiver: &'a Archiver,
@@ -205,15 +203,10 @@ impl<'a> Extractor<'a> {
         &mut self,
         manifests: &'b [ProjectManifest],
         files: &'b [PathBuf],
-    ) -> HashMap<&'b Path, (&'b ProjectManifest, Vec<&'b Path>)> {
-        let mut workspaces: HashMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
+    ) -> BTreeMap<&'b Path, (&'b ProjectManifest, Vec<&'b Path>)> {
+        let mut workspaces: BTreeMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
             .iter()
-            .map(|manifest| {
-                (
-                    manifest.manifest_path().parent().as_ref(),
-                    (manifest, Vec::new()),
-                )
-            })
+            .map(|manifest| (manifest_parent(manifest), (manifest, Vec::new())))
             .collect();
 
         'outer: for file in files {
@@ -299,35 +292,36 @@ fn main() -> anyhow::Result<()> {
     } else {
         SourceKind::Source
     };
-    let mut processed_files: HashSet<PathBuf, RandomState> =
-        HashSet::from_iter(files.iter().cloned());
+    let source_files = HashSet::from_iter(files.iter().cloned());
+
+    let mut dependencies = DependencyFiles::default();
     for (manifest, files) in workspaces.values() {
-        if let Some((ref db, ref vfs)) =
+        if let Some((db, vfs)) =
             extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
         {
             let before_crate_graph = Instant::now();
-            crate_graph::extract_crate_graph(extractor.traps, db, vfs);
+            crate_graph::extract_crate_graph(extractor.traps, &db, &vfs);
             extractor
                 .steps
                 .push(ExtractionStep::crate_graph(before_crate_graph));
-            let semantics = Semantics::new(db);
+            let semantics = Semantics::new(&db);
             for file in files {
-                match extractor.load_source(file, &semantics, vfs) {
-                    Ok(()) => extractor.extract_with_semantics(file, &semantics, vfs, source_mode),
+                match extractor.load_source(file, &semantics, &vfs) {
+                    Ok(()) => extractor.extract_with_semantics(file, &semantics, &vfs, source_mode),
                     Err(e) => extractor.extract_without_semantics(file, source_mode, e),
                 };
             }
+            // The same dependency path may appear in multiple workspaces' VFSs.
+            // We record it by updating its preferred context, but defer
+            // extraction until all workspaces have contributed their priority.
             for (file_id, file) in vfs.iter() {
-                if let Some(file) = file.as_path().map(<_ as AsRef<Path>>::as_ref)
-                    && file.extension().is_some_and(|ext| ext == "rs")
-                    && processed_files.insert(file.to_owned())
-                    && db
-                        .source_root(db.file_source_root(file_id).source_root_id(db))
-                        .source_root(db)
-                        .is_library
-                {
-                    extractor.extract_with_semantics(file, &semantics, vfs, library_mode);
-                    extractor.archiver.archive(file);
+                dependencies.add_file(manifest, file_id, file, &semantics, &source_files);
+            }
+            // A single workspace has no competing configurations, so reuse its loaded database.
+            if workspaces.len() == 1 {
+                let selected = std::mem::take(&mut dependencies).by_manifests();
+                for file in selected.into_values().flatten() {
+                    extractor.extract_with_semantics(&file, &semantics, &vfs, library_mode);
                 }
             }
         } else {
@@ -340,6 +334,28 @@ fn main() -> anyhow::Result<()> {
             }
         }
     }
+
+    // For each workspace extract the dependency files for which that workspace
+    // is the preferred one.
+    for (manifest, files) in dependencies.by_manifests() {
+        if let Some((db, vfs)) =
+            extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
+        {
+            let semantics = Semantics::new(&db);
+            for file in files {
+                extractor.extract_with_semantics(&file, &semantics, &vfs, library_mode);
+            }
+        } else {
+            for file in files {
+                extractor.extract_without_semantics(
+                    &file,
+                    library_mode,
+                    RustAnalyzerNoSemantics::warning("unable to reload manifest"),
+                );
+            }
+        }
+    }
+
     let builtins_dir = env::var("CODEQL_EXTRACTOR_RUST_ROOT")
         .map(|path| Path::new(&path).join("tools").join("builtins"))?;
     let builtins = fs::read_dir(builtins_dir).context("failed to read builtins directory")?;

@@ -5,7 +5,7 @@ use chrono::{DateTime, Utc};
 use ra_ap_project_model::ProjectManifest;
 use serde::Serialize;
 use serde::ser::SerializeMap;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::fmt::Display;
 use std::fs::File;
 use std::path::{Path, PathBuf};
@@ -220,13 +220,15 @@ struct ExtractionSummary {
 type ExtractionDiagnostics = Diagnostics<ExtractionSummary>;
 
 fn summary(start: Instant, steps: &[ExtractionStep]) -> ExtractionSummary {
-    let mut number_of_manifests = 0;
+    // The manifests loaded during extraction. We might load the same manifest
+    // multiple times, so we use a set to keep track of unique manifests.
+    let mut manifests = HashSet::new();
     let mut number_of_files = 0;
     let mut durations = HashMap::new();
     for step in steps {
         match &step.action {
             ExtractionStepKind::LoadManifest => {
-                number_of_manifests += 1;
+                manifests.extend(step.file.as_ref());
             }
             ExtractionStepKind::Parse => {
                 number_of_files += 1;
@@ -244,7 +246,7 @@ fn summary(start: Instant, steps: &[ExtractionStep]) -> ExtractionSummary {
     }
     info!("total duration: {total}");
     ExtractionSummary {
-        number_of_manifests,
+        number_of_manifests: manifests.len(),
         number_of_files,
         durations: DurationsSummary { durations, total },
     }
@@ -283,4 +285,23 @@ pub fn emit_extraction_diagnostics(
     serde_json::to_writer_pretty(&mut output, &diagnostics)
         .with_context(|| format!("writing to diagnostics file {}", target.display()))?;
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn counts_unique_manifests() {
+        let steps: Vec<_> = ["a/Cargo.toml", "b/Cargo.toml", "a/Cargo.toml"]
+            .into_iter()
+            .map(|path| ExtractionStep {
+                action: ExtractionStepKind::LoadManifest,
+                file: Some(PathBuf::from(path)),
+                ms: 1,
+            })
+            .collect();
+        let summary = summary(Instant::now(), &steps);
+        assert_eq!(summary.number_of_manifests, 2);
+    }
 }
