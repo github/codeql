@@ -1,5 +1,4 @@
 import * as ts from "./typescript";
-import { Project } from "./common";
 
 /**
  * Interface that exposes some internal properties we rely on, as well as
@@ -27,27 +26,6 @@ export interface Token {
     text: string;
 }
 
-function hasOwnProperty(o: object, p: string) {
-    return o && Object.prototype.hasOwnProperty.call(o, p);
-}
-
-// build our own copy of `ts.SyntaxKind` without `First*`/`Last*` markers
-let SyntaxKind: { [id: number]: string } = [];
-for (let p in ts.SyntaxKind) {
-    if (!hasOwnProperty(ts.SyntaxKind, p)) {
-        continue;
-    }
-    // skip numeric indices
-    if (+p === +p) {
-        continue;
-    }
-    // skip `First*`/`Last*`
-    if (p.substring(0, 5) === "First" || p.substring(0, 4) === "Last") {
-        continue;
-    }
-    SyntaxKind[ts.SyntaxKind[p] as any] = p;
-}
-
 let skipWhiteSpace = /(?:\s|\/\/.*|\/\*[^]*?\*\/)*/g;
 
 /**
@@ -61,18 +39,7 @@ function forEachNode(ast: ts.Node, callback: (node: ts.Node) => void) {
     visit(ast);
 }
 
-function tryGetTypeOfNode(typeChecker: ts.TypeChecker, node: AugmentedNode): ts.Type | null {
-    try {
-        return typeChecker.getTypeAtLocation(node);
-    } catch (e) {
-        let sourceFile = node.getSourceFile();
-        let { line, character } = sourceFile.getLineAndCharacterOfPosition(node.pos);
-        console.warn(`Could not compute type of ${ts.SyntaxKind[node.kind]} at ${sourceFile.fileName}:${line + 1}:${character + 1}`);
-        return null;
-    }
-}
-
-export function augmentAst(ast: AugmentedSourceFile, code: string, project: Project | null) {
+export function augmentAst(ast: AugmentedSourceFile, code: string) {
     ast.$lineStarts = ast.getLineStarts();
 
     /**
@@ -164,10 +131,9 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
         }
 
         if (ts.isVariableDeclarationList(node as any)) {
-            let tz = ts as any;
-            if (typeof tz.isLet === "function" && tz.isLet(node) || (node.flags & ts.NodeFlags.Let)) {
+            if (node.flags & ts.NodeFlags.Let) {
                 node.$declarationKind = "let";
-            } else if (typeof tz.isConst === "function" && tz.isConst(node) || (node.flags & ts.NodeFlags.Const)) {
+            } else if (node.flags & ts.NodeFlags.Const) {
                 node.$declarationKind = "const";
             } else {
                 node.$declarationKind = "var";
