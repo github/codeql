@@ -2668,8 +2668,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       predicate stepLanguageSpecific(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2);
 
       /**
-       * Like `stepLanguageSpecific`, but allows for recursion. Only use this predicate when
-       * using `stepLanguageSpecific` results in non-monotonicity.
+       * Like `stepLanguageSpecific`, but allows for recursion through type inference, which
+       * has the consequence that it cannot be used in the logic for inferring certain type
+       * information.
+       *
+       * Only use this predicate when using `stepLanguageSpecific` results in non-monotonicity.
        */
       default predicate stepLanguageSpecificExtra(
         AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2
@@ -2696,11 +2699,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       default Type inferTypeCertainLanguageSpecific(AstNode n, TypePath path) { none() }
 
       /**
-       * Holds if full contextual inference is allowed for the node `n` at the
-       * type path `path`. This means that `n` does not need to be assigned
-       * `UnknownType` at (a prefix of) `path`.
+       * Holds if contextual inference is allowed for the node `n` at the type path
+       * `path`. This has the same effect as assigning `UnknownType` to `n` at `path`,
+       * but prevents propagation of `UnknownType` from `n` to other nodes.
        */
-      default predicate allowFullContextualInference(AstNode n, TypePath path) { none() }
+      default predicate allowContextualInference(AstNode n, TypePath path) { none() }
     }
 
     module Make3<InputSig3 Input3> {
@@ -3343,7 +3346,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         predicate hasUnknownTypeAt(AstNode n, TypePath path) {
           inferType(n, path) instanceof UnknownType
           or
-          allowFullContextualInference(n, path)
+          allowContextualInference(n, path)
         }
 
         pragma[nomagic]
@@ -3410,8 +3413,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             path.isEmpty()
             or
             isValidContextualNonEmptyPath(n, path)
-            or
-            allowFullContextualInference(n, path.getAPrefix())
           )
         }
       }

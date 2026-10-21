@@ -750,7 +750,7 @@ module Input3 implements InputSig3 {
       result instanceof UnknownType
     }
 
-    predicate allowFullContextualInference(TypeMention tm, TypePath path) {
+    predicate allowContextualInference(TypeMention tm, TypePath path) {
       // For a construction such as `Optional.some(0)`, we need contextual inference
       // to infer the type of the wrapped object
       tm = getSyntheticConstructionReceiver(_) and
@@ -809,8 +809,8 @@ module Input3 implements InputSig3 {
   pragma[nomagic]
   Type inferTypeCertainLanguageSpecific(AstNode n, TypePath path) { none() }
 
-  predicate allowFullContextualInference(AstNode n, TypePath path) {
-    Construction::allowFullContextualInference(n, path)
+  predicate allowContextualInference(AstNode n, TypePath path) {
+    Construction::allowContextualInference(n, path)
   }
 }
 
