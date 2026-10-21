@@ -20,6 +20,7 @@ reverseRead
 | stdlib.go:176:6:176:6 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |
 | stdlib.go:177:35:177:35 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |
 | stdlib.go:220:3:220:3 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:222:20:222:20 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |
 | stdlib.go:226:23:226:23 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |
 | stdlib.go:227:23:227:23 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |
 | stdlib.go:228:23:228:23 | implicit-deref r | Origin of readStep is missing a PostUpdateNode. |

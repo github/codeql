@@ -1,0 +1,4 @@
+reverseRead
+| stmts7.go:23:2:23:8 | implicit-deref methods | Origin of readStep is missing a PostUpdateNode. |
+| stmts7.go:27:8:27:15 | callback | Origin of readStep is missing a PostUpdateNode. |
+| stmts7.go:28:9:28:17 | implicit-deref &... | Origin of readStep is missing a PostUpdateNode. |
