@@ -26,27 +26,6 @@ export interface Token {
     text: string;
 }
 
-function hasOwnProperty(o: object, p: string) {
-    return o && Object.prototype.hasOwnProperty.call(o, p);
-}
-
-// build our own copy of `ts.SyntaxKind` without `First*`/`Last*` markers
-let SyntaxKind: { [id: number]: string } = [];
-for (let p in ts.SyntaxKind) {
-    if (!hasOwnProperty(ts.SyntaxKind, p)) {
-        continue;
-    }
-    // skip numeric indices
-    if (+p === +p) {
-        continue;
-    }
-    // skip `First*`/`Last*`
-    if (p.substring(0, 5) === "First" || p.substring(0, 4) === "Last") {
-        continue;
-    }
-    SyntaxKind[ts.SyntaxKind[p] as any] = p;
-}
-
 let skipWhiteSpace = /(?:\s|\/\/.*|\/\*[^]*?\*\/)*/g;
 
 /**
