@@ -1,26 +1,10 @@
 private import rust
 private import codeql.rust.controlflow.internal.generated.CfgNodes
-private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 private import codeql.rust.controlflow.ControlFlowGraph
-private import codeql.rust.controlflow.BasicBlocks
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.internal.CachedStages
 
-private predicate isPostOrder(AstNode n) {
-  n instanceof Expr
-  or
-  n instanceof OrPat
-  or
-  n instanceof IdentPat
-  or
-  n instanceof LiteralPat
-  or
-  n instanceof Param
-}
-
 private module CfgNodesInput implements InputSig<Location> {
-  private import codeql.rust.controlflow.ControlFlowGraph as Cfg
-
   class CfgNode = AstCfgNode;
 
   private AstNode desugar(AstNode n) {
@@ -50,19 +34,27 @@ class MatchExprChildMapping extends ParentAstNode, MatchExpr {
 }
 
 class BlockExprChildMapping extends ParentAstNode, BlockExpr {
-  override predicate relevantChild(AstNode child) { child = this.getStmtList().getTailExpr() }
+  override predicate relevantChild(AstNode child) {
+    child = this.getStmtList().getTailExpr()
+  }
 }
 
 class BreakExprTargetChildMapping extends ParentAstNode, Expr {
-  override predicate relevantChild(AstNode child) { child.(BreakExpr).getTarget() = this }
+  override predicate relevantChild(AstNode child) {
+    child.(BreakExpr).getTarget() = this
+  }
 }
 
 class CallExprChildMapping extends ParentAstNode, CallExpr {
-  override predicate relevantChild(AstNode child) { child = this.getArgList().getAnArg() }
+  override predicate relevantChild(AstNode child) {
+    child = this.getArgList().getAnArg()
+  }
 }
 
 class MethodCallExprChildMapping extends ParentAstNode, MethodCallExpr {
-  override predicate relevantChild(AstNode child) { child = this.getArgList().getAnArg() }
+  override predicate relevantChild(AstNode child) {
+    child = this.getArgList().getAnArg()
+  }
 }
 
 class StructExprChildMapping extends ParentAstNode, StructExpr {
@@ -78,11 +70,31 @@ class StructPatChildMapping extends ParentAstNode, StructPat {
 }
 
 class MacroCallChildMapping extends ParentAstNode, MacroCall {
-  override predicate relevantChild(AstNode child) { child = this.getMacroCallExpansion() }
+  override predicate relevantChild(AstNode child) {
+    child = this.getMacroCallExpansion()
+  }
 }
 
-class FormatArgsExprChildMapping extends ParentAstNode, CfgImpl::ExprTrees::FormatArgsExprTree {
-  override predicate relevantChild(AstNode child) { child = this.getChildNode(_) }
+class FormatArgsExprChildMapping extends ParentAstNode, FormatArgsExpr {
+  override predicate relevantChild(AstNode child) {
+    child = this.getTemplate()
+    or
+    child = this.getAnArg().getExpr()
+    or
+    child =
+      any(FormatTemplateVariableAccess v, Format f |
+        f = this.getAFormat() and
+        (
+          v.getArgument() = f.getArgumentRef()
+          or
+          v.getArgument() = f.getWidthArgument()
+          or
+          v.getArgument() = f.getPrecisionArgument()
+        )
+      |
+        v
+      )
+  }
 }
 
 class AssignmentExprChildMapping extends ParentAstNode, AssignmentExpr {
@@ -92,76 +104,12 @@ class AssignmentExprChildMapping extends ParentAstNode, AssignmentExpr {
 }
 
 private class ChildMappingImpl extends ChildMapping {
-  /** Gets a CFG node for `child`, where `child` is a relevant child node of `parent`. */
-  private CfgNode getRelevantChildCfgNode(AstNode parent, AstNode child) {
-    this.relevantChild(parent, child) and
-    result = CfgNodesInput::getDesugared(child).getACfgNode()
-  }
-
-  pragma[nomagic]
-  private BasicBlock getARelevantBasicBlock(AstNode parent) {
-    result.getANode().getAstNode() = parent or
-    result.getANode() = this.getRelevantChildCfgNode(parent, _)
-  }
-
-  /**
-   * Holds if CFG node `cfnChild` can reach basic block `bb`, without going
-   * through an intermediate block that contains a CFG node for `parent` or
-   * any other relevant child of `parent`.
-   */
-  pragma[nomagic]
-  predicate childNodeReachesBasicBlock(
-    AstNode parent, AstNode child, CfgNode cfnChild, BasicBlock bb
+  override predicate hasCfgChild(
+    AstNode parent, AstNode child, AstCfgNode cfn, AstCfgNode cfnChild
   ) {
-    exists(BasicBlock bb0 |
-      cfnChild = this.getRelevantChildCfgNode(parent, child) and
-      bb0.getANode() = cfnChild
-    |
-      bb = bb0
-      or
-      not bb0.getANode().getAstNode() = parent and
-      if isPostOrder(parent) then bb = bb0.getASuccessor() else bb = bb0.getAPredecessor()
-    )
-    or
-    exists(BasicBlock mid |
-      this.childNodeReachesBasicBlock(parent, child, cfnChild, mid) and
-      not mid = this.getARelevantBasicBlock(parent) and
-      if isPostOrder(parent) then bb = mid.getASuccessor() else bb = mid.getAPredecessor()
-    )
-  }
-
-  /**
-   * Holds if CFG node `cfnChild` can reach CFG node `cfnParent`, without going
-   * through an intermediate block that contains a CFG node for `parent`.
-   */
-  pragma[nomagic]
-  predicate childNodeReachesParentNode(
-    AstNode parent, CfgNode cfnParent, AstNode child, CfgNode cfnChild
-  ) {
-    // `cfnChild` can reach `cfnParent` directly
-    exists(BasicBlock bb |
-      this.childNodeReachesBasicBlock(parent, child, cfnChild, bb) and
-      cfnParent.getAstNode() = parent
-    |
-      cfnParent = bb.getANode()
-      or
-      if isPostOrder(parent)
-      then cfnParent = bb.getASuccessor().getANode()
-      else cfnParent = bb.getAPredecessor().getANode()
-    )
-    or
-    // `cfnChild` can reach `cfnParent` by going via another relevant child
-    exists(CfgNode cfnOtherChild |
-      this.childNodeReachesParentNode(parent, cfnParent, _, cfnOtherChild) and
-      exists(BasicBlock bb |
-        this.childNodeReachesBasicBlock(parent, child, cfnChild, bb) and
-        bb.getANode() = cfnOtherChild
-      )
-    )
-  }
-
-  override predicate hasCfgChild(AstNode parent, AstNode child, AstCfgNode cfn, AstCfgNode cfnChild) {
     Stages::CfgStage::ref() and
-    this.childNodeReachesParentNode(parent, cfn, child, cfnChild)
+    this.relevantChild(parent, child) and
+    cfn.getAstNode() = CfgNodesInput::getDesugared(parent) and
+    cfnChild.getAstNode() = CfgNodesInput::getDesugared(child)
   }
 }

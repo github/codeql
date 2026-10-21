@@ -3,7 +3,6 @@ private import codeql.rust.controlflow.BasicBlocks as BasicBlocks
 private import BasicBlocks
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 private import Cfg
-private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import codeql.ssa.Ssa as SsaImplCommon
 
 /**
@@ -37,7 +36,7 @@ predicate variableWrite(AstNode write, AstNode access, Variable v) {
 }
 
 private predicate variableReadCertain(BasicBlock bb, int i, VariableAccess va, Variable v) {
-  bb.getNode(i).getAstNode() = va and
+  bb.getNode(i).injects(va) and
   va = v.getAnAccess() and
   (
     va instanceof VariableReadAccess
@@ -66,7 +65,7 @@ module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
     (
       capturedCallWrite(_, bb, i, v)
       or
-      mutablyBorrows(bb.getNode(i).getAstNode(), v)
+      exists(Expr e | bb.getNode(i).injects(e) and mutablyBorrows(e, v))
     ) and
     certain = false
   }
@@ -123,7 +122,7 @@ private predicate hasVariableReadWithCapturedWrite(
 }
 
 private VariableAccess getACapturedVariableAccess(BasicBlock bb, Variable v) {
-  result = bb.getANode().getAstNode() and
+  bb.getANode().injects(result) and
   result.isCapture() and
   result.getVariable() = v
 }
@@ -168,7 +167,7 @@ private predicate capturedCallRead(Expr call, BasicBlock bb, int i, Variable v) 
       variableWriteInOuterScope(bb, any(int j | j < i), v, scope) or
       variableWriteInOuterScope(bb.getImmediateDominator+(), _, v, scope)
     ) and
-    call = bb.getNode(i).getAstNode()
+    bb.getNode(i).injects(call)
   )
 }
 
@@ -178,7 +177,7 @@ private predicate capturedCallRead(Expr call, BasicBlock bb, int i, Variable v) 
  */
 predicate capturedCallWrite(Expr call, BasicBlock bb, int i, Variable v) {
   isControlFlowJump(call) and
-  call = bb.getNode(i).getAstNode() and
+  bb.getNode(i).injects(call) and
   exists(Cfg::CfgScope scope |
     hasVariableReadWithCapturedWrite(bb, any(int j | j > i), v, scope)
     or
@@ -224,6 +223,7 @@ private module Cached {
   cached
   predicate variableWriteActual(BasicBlock bb, int i, Variable v, CfgNode write) {
     bb.getNode(i) = write and
+    write.injects(write.getAstNode()) and
     variableWrite(write.getAstNode(), _, v)
   }
 
@@ -360,10 +360,11 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   }
 
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
-    exists(Variable v, BasicBlock bb, int i |
+    exists(Variable v, BasicBlock bb, int i, Expr e |
       def.definesAt(v, bb, i) and
-      mutablyBorrows(bb.getNode(i).getAstNode(), v) and
-      isArg(_, bb.getNode(i).getAstNode())
+      bb.getNode(i).injects(e) and
+      mutablyBorrows(e, v) and
+      isArg(_, e)
     )
   }
 

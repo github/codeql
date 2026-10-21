@@ -158,7 +158,11 @@ module Input2 implements Impl::Private::InputSig2 {
       exists(Callable c |
         sc = Impl::Private::SummaryComponent::return(_) and
         c = getCallable(this) and
-        result.getACfgNode().getASuccessor() instanceof AnnotatedExitCfgNode and
+        (
+          result.getACfgNode().getASuccessor() instanceof AnnotatedExitCfgNode
+          or
+          result = c.getBody()
+        ) and
         result.getEnclosingCfgScope() = c
       )
     }
