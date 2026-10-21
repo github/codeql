@@ -65,6 +65,8 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// field: {expr}                - extend a named field with `{expr}`'s ids
 /// field: (kind ...)?           - set the field only if every `#{expr}`
 ///                                beneath it has a value (see below)
+/// location: {expr}             - override this node's source range with the
+///                                span of one or more nodes; may be repeated
 /// ```
 ///
 /// # Optional fields
@@ -120,38 +122,6 @@ pub fn tree(input: TokenStream) -> TokenStream {
 pub fn trees(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
     match parse::parse_trees_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
-/// Build one AST node whose root uses another node's source range.
-///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// tree_at!(source, (kind ...))
-/// ```
-#[proc_macro]
-pub fn tree_at(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_tree_at_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
-/// Build one AST node whose root spans a collection of nodes.
-///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// tree_spanning!(sources, (kind ...))
-/// ```
-#[proc_macro]
-pub fn tree_spanning(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_tree_spanning_top(input2) {
         Ok(output) => output.into(),
         Err(err) => err.to_compile_error().into(),
     }

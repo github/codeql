@@ -1709,6 +1709,100 @@ fn test_returned_capture_keeps_its_location() {
 }
 
 #[test]
+fn test_location_field_overrides_derived_location() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        (call
+            method: {left}
+            location: {right})
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let call = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "call")
+        .expect("call exists");
+
+    assert_eq!(call.byte_range(), 4..5);
+}
+
+#[test]
+fn test_multiple_location_fields_combine_iterable_locations() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        (call
+            method: {left}
+            arguments: (argument_list
+                location: {[left]}
+                location: {[right, left]}))
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+
+    assert_eq!(arguments.byte_range(), 0..5);
+}
+
+#[test]
+fn test_location_and_named_fields_are_evaluated_left_to_right() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        call {
+            let mut order = Vec::new();
+            let call = tree!((call
+                location: {order.push("first location"); left}
+                method: {order.push("method"); left}
+                location: {order.push("second location"); right}
+                arguments: {order.push("arguments"); right}));
+            assert_eq!(
+                order,
+                ["first location", "method", "second location", "arguments"]
+            );
+            call
+        }
+    );
+
+    run_and_ast("x = 1", vec![rule]);
+}
+
+#[test]
+fn test_location_field_is_available_on_literal_nodes() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        (identifier "synthetic" location: {right})
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let identifier = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "identifier")
+        .expect("identifier exists");
+
+    assert_eq!(identifier.byte_range(), 4..5);
+}
+
+#[test]
 fn test_ignored_location_field_is_excluded_from_rule_result_location() {
     let rule: Rule = rule!(
         (assignment
@@ -1772,9 +1866,9 @@ fn test_explicit_recursive_translation_keeps_nested_rule_location() {
     assert_eq!(identifier.byte_range(), 4..7);
 }
 
-/// `tree_at!` assigns the captured node's range only to the template root.
+/// A `location` field assigns the captured node's range only to its node.
 #[test]
-fn test_tree_at_assigns_capture_range_to_root_only() {
+fn test_location_field_assigns_capture_range_to_node_only() {
     let rule: Rule = rule!(
         (call
             method: (identifier) @name
@@ -1782,7 +1876,9 @@ fn test_tree_at_assigns_capture_range_to_root_only() {
         ) @@source
         =>
         call {
-            let arguments = tree_at!(source, (argument_list argument: (integer "0")));
+            let arguments = tree!((argument_list
+                argument: (integer "0")
+                location: {source}));
             tree!((call method: {name} receiver: {recv} arguments: {arguments}))
         }
     );
@@ -1805,10 +1901,9 @@ fn test_tree_at_assigns_capture_range_to_root_only() {
     assert_eq!(integer.byte_range(), 0..0);
 }
 
-/// `tree_spanning!` assigns the union of the captured node ranges only to the
-/// template root.
+/// Multiple `location` fields assign their union only to their node.
 #[test]
-fn test_tree_spanning_assigns_union_to_root_only() {
+fn test_multiple_location_fields_assign_union_to_node_only() {
     let rule: Rule = rule!(
         (call
             method: (identifier) @name
@@ -1816,10 +1911,10 @@ fn test_tree_spanning_assigns_union_to_root_only() {
         )
         =>
         call {
-            let arguments = tree_spanning!(
-                [recv, name],
-                (argument_list argument: (integer "0"))
-            );
+            let arguments = tree!((argument_list
+                argument: (integer "0")
+                location: {recv}
+                location: {name}));
             tree!((call method: {name} receiver: {recv} arguments: {arguments}))
         }
     );

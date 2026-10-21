@@ -1,9 +1,5 @@
 use proc_macro2::{Span, TokenStream, TokenTree};
 use quote::quote;
-use syn::{
-    parse::{Parse, ParseStream},
-    Expr, Token,
-};
 
 type Result<T> = std::result::Result<T, syn::Error>;
 
@@ -26,47 +22,6 @@ pub fn parse_tree_top(input: TokenStream) -> Result<TokenStream> {
 pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
     let templates = crate::template_parse::parse_templates(input)?;
     Ok(crate::ast::Template::lower_list(&templates))
-}
-
-pub fn parse_tree_at_top(input: TokenStream) -> Result<TokenStream> {
-    let LocatedTreeInput { source, template } = syn::parse2(input)?;
-    let template = crate::template_parse::parse_template(template)?;
-    let node = template.lower_root();
-    let ctx = syn::Ident::new("ctx", Span::call_site());
-
-    Ok(quote! {
-        {
-            let __yeast_source: yeast::Id = { #source };
-            let __yeast_source_range = #ctx
-                .ast
-                .get_node(__yeast_source)
-                .and_then(|node| node.source_range());
-            let __yeast_node: yeast::Id = #node;
-            #ctx.set_node_source_range(__yeast_node, __yeast_source_range)
-        }
-    })
-}
-
-pub fn parse_tree_spanning_top(input: TokenStream) -> Result<TokenStream> {
-    let LocatedTreeInput {
-        source: sources,
-        template,
-    } = syn::parse2(input)?;
-    let template = crate::template_parse::parse_template(template)?;
-    let node = template.lower_root();
-    let ctx = syn::Ident::new("ctx", Span::call_site());
-
-    Ok(quote! {
-        {
-            let __yeast_source_range = ::std::iter::IntoIterator::into_iter({ #sources })
-                .filter_map(|source: yeast::Id| {
-                    #ctx.ast.get_node(source).and_then(|node| node.source_range())
-                })
-                .reduce(yeast::Range::union);
-            let __yeast_node: yeast::Id = #node;
-            #ctx.set_node_source_range(__yeast_node, __yeast_source_range)
-        }
-    })
 }
 
 pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
@@ -125,20 +80,6 @@ pub fn parse_rules_top(input: TokenStream) -> Result<TokenStream> {
             vec![ #(#emitted_items),* ]
         }
     })
-}
-
-struct LocatedTreeInput {
-    source: Expr,
-    template: TokenStream,
-}
-
-impl Parse for LocatedTreeInput {
-    fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
-        let source = input.parse()?;
-        input.parse::<Token![,]>()?;
-        let template = input.parse()?;
-        Ok(Self { source, template })
-    }
 }
 
 struct NamedString {

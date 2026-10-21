@@ -319,8 +319,8 @@ impl Node {
         let ctx = Ident::new("ctx", Span::call_site());
         let kind_str = self.kind.to_string();
 
-        if let Some(content) = &self.content {
-            return match content {
+        let node_init = if let Some(content) = &self.content {
+            let node = match content {
                 Content::Static(lit) => quote! { #ctx.literal(#kind_str, #lit) },
                 Content::Computed(block) => {
                     let block = rust_block(block);
@@ -362,74 +362,105 @@ impl Node {
                     }
                 }
             };
-        }
+            quote! { let __node: yeast::Id = #node; }
+        } else {
+            TokenStream::new()
+        };
 
         let mut stmts = Vec::new();
         let mut field_args = Vec::new();
 
         for (field_counter, field) in self.fields.iter().enumerate() {
-            let Field::Named {
-                name,
-                value,
-                optional,
-            } = field;
-            let field_name = name.to_string();
-            let field_str = field_name
-                .strip_prefix("r#")
-                .unwrap_or(&field_name)
-                .to_string();
-            let temp = Ident::new(
-                &format!("__field_{field_str}_{field_counter}"),
-                Span::call_site(),
-            );
-
-            match value {
-                Template::Splice(block) => {
-                    debug_assert!(!optional);
+            match field {
+                Field::Location { block } => {
                     let block = rust_block(block);
                     stmts.push(quote! {
-                        let mut #temp: Vec<yeast::Id> = Vec::new();
-                        yeast::IntoFieldIds::extend_into(#block, &mut #temp);
-                    });
-                    field_args.push(quote! {
-                        if !#temp.is_empty() {
-                            __fields.push((#field_str, #temp));
-                        }
+                        yeast::IntoFieldIds::extend_into(#block, &mut __location_ids);
                     });
                 }
-                Template::Node(child) if *optional => {
-                    let label = fresh_fallible_label();
-                    let value = child.lower(&LoweringContext {
-                        fallible_scope: Some(&label),
-                    });
-                    stmts.push(quote! {
-                        #[allow(unused_labels)]
-                        let #temp: ::std::option::Option<yeast::Id> = #label: {
-                            ::std::option::Option::Some(#value)
-                        };
-                    });
-                    field_args.push(quote! {
-                        if let ::std::option::Option::Some(__id) = #temp {
-                            __fields.push((#field_str, vec![__id]));
+                Field::Named {
+                    name,
+                    value,
+                    optional,
+                } => {
+                    let field_name = name.to_string();
+                    let field_str = field_name
+                        .strip_prefix("r#")
+                        .unwrap_or(&field_name)
+                        .to_string();
+                    let temp = Ident::new(
+                        &format!("__field_{field_str}_{field_counter}"),
+                        Span::call_site(),
+                    );
+
+                    match value {
+                        Template::Splice(block) => {
+                            debug_assert!(!optional);
+                            let block = rust_block(block);
+                            stmts.push(quote! {
+                                let mut #temp: Vec<yeast::Id> = Vec::new();
+                                yeast::IntoFieldIds::extend_into(#block, &mut #temp);
+                            });
+                            field_args.push(quote! {
+                                if !#temp.is_empty() {
+                                    __fields.push((#field_str, #temp));
+                                }
+                            });
                         }
-                    });
-                }
-                Template::Node(child) => {
-                    let value = child.lower(context);
-                    stmts.push(quote! { let #temp: yeast::Id = #value; });
-                    field_args.push(quote! {
-                        __fields.push((#field_str, vec![#temp]));
-                    });
+                        Template::Node(child) if *optional => {
+                            let label = fresh_fallible_label();
+                            let value = child.lower(&LoweringContext {
+                                fallible_scope: Some(&label),
+                            });
+                            stmts.push(quote! {
+                                #[allow(unused_labels)]
+                                let #temp: ::std::option::Option<yeast::Id> = #label: {
+                                    ::std::option::Option::Some(#value)
+                                };
+                            });
+                            field_args.push(quote! {
+                                if let ::std::option::Option::Some(__id) = #temp {
+                                    __fields.push((#field_str, vec![__id]));
+                                }
+                            });
+                        }
+                        Template::Node(child) => {
+                            let value = child.lower(context);
+                            stmts.push(quote! { let #temp: yeast::Id = #value; });
+                            field_args.push(quote! {
+                                __fields.push((#field_str, vec![#temp]));
+                            });
+                        }
+                    }
                 }
             }
         }
 
-        quote! {
-            {
-                #(#stmts)*
+        let build_node = if self.content.is_none() {
+            quote! {
                 let mut __fields: Vec<(&str, Vec<yeast::Id>)> = Vec::new();
                 #(#field_args)*
-                #ctx.node(#kind_str, __fields)
+                let __node: yeast::Id = #ctx.node(#kind_str, __fields);
+            }
+        } else {
+            TokenStream::new()
+        };
+
+        quote! {
+            {
+                let mut __location_ids: Vec<yeast::Id> = Vec::new();
+                #node_init
+                #(#stmts)*
+                #build_node
+                let __source_range = __location_ids
+                    .into_iter()
+                    .filter_map(|__source| {
+                        #ctx.ast
+                            .get_node(__source)
+                            .and_then(|__node| __node.source_range())
+                    })
+                    .reduce(yeast::Range::union);
+                #ctx.set_node_source_range(__node, __source_range)
             }
         }
     }
