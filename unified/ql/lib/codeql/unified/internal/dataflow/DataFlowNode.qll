@@ -445,8 +445,6 @@ class Node extends TDataFlowNode {
       result.asSourceCallable() = node.getSourceVariable().getDeclaringCallable()
     )
     or
-    this.(BuilderNode).isImplicitParameter(result, _)
-    or
     exists(CaptureSsaOutput::SynthesizedCaptureNode node |
       this = TCaptureSsaNode(node) and
       result.asSourceCallable() = node.getEnclosingCallable()
