@@ -91,6 +91,9 @@ newtype TDataFlowNode =
   TLocalVariableRefNode(AstNode repr, LocalVariable var, VariableRefKind kind) {
     performsVariableAccess(repr, var, kind, _)
   } or
+  TReturnNode(DataFlowCallable callable) {
+    not exists(callable.asSummarizedCallable()) // represented by TSummaryNode
+  } or
   TCallableNode(DataFlowCallable callable) or
   TImplicitParameterNode(DataFlowCallable callable, ImplicitParameterPosition pos) {
     not exists(callable.asSummarizedCallable()) // represented by TSummaryNode
@@ -104,7 +107,7 @@ newtype TDataFlowNode =
 
 class TDataFlowNodeStage1 =
   TValueNode or TStrictlyIncomingValue or TExprPostUpdateNode or TLocalVariableRefNode or
-      TCallableNode or TImplicitParameterNode or TImplicitArgumentNode;
+      TReturnNode or TCallableNode or TImplicitParameterNode or TImplicitArgumentNode;
 
 class TDataFlowNodeStage2 = TDataFlowNodeStage1 or TLocalSsaNode;
 
@@ -151,6 +154,16 @@ class BuilderNode extends TDataFlowNodeStage1 {
 
   /** Holds if this represents the updated state of the value returned by `expr` after it has been mutated by the surrounding assignment or call. */
   predicate isPostUpdate(Expr expr) { this = TExprPostUpdateNode(expr) }
+
+  /** Holds if this node is the canonical representative for the return value of `callable`. */
+  predicate isReturnNode(Callable callable) { this.isReturnNodeEx(toDataFlowCallable(callable)) }
+
+  /**
+   * Holds if this node is the canonical representative for the return value of `callable`.
+   *
+   * Note that this does not hold for the return node in a summarized callable.
+   */
+  predicate isReturnNodeEx(DataFlowCallable callable) { this = TReturnNode(callable) }
 
   /** Holds if this node represents an implicit parameter of `callable`. */
   predicate isImplicitParameter(DataFlowCallable callable, ImplicitParameterPosition pos) {
@@ -258,6 +271,11 @@ class BuilderNode extends TDataFlowNodeStage1 {
       result = "[callable] " + callable.toString()
     )
     or
+    exists(DataFlowCallable callable |
+      this.isReturnNodeEx(callable) and
+      result = "[return] " + callable.toString()
+    )
+    or
     exists(DataFlowCall call, ArgumentPosition pos |
       this.isImplicitArgument(call, pos, false) and
       result = "[" + pos + " arg] " + call.toString()
@@ -281,6 +299,11 @@ class BuilderNode extends TDataFlowNodeStage1 {
       or
       this.isCallableEx(callable)
     |
+      result = callable.getLocation()
+    )
+    or
+    exists(DataFlowCallable callable |
+      this.isReturnNodeEx(callable) and
       result = callable.getLocation()
     )
     or
@@ -371,6 +394,9 @@ class Node extends TDataFlowNode {
   /** Holds if this is the canonical representative for the given `callable`. */
   predicate isCallable(Callable callable) { this.(BuilderNode).isCallable(callable) }
 
+  /** Holds if this node is the canonical representative for the return value of `callable`. */
+  predicate isReturnNode(Callable callable) { this.(BuilderNode).isReturnNode(callable) }
+
   /**
    * Gets the AST node wrapped by this data flow, if any.
    */
@@ -432,6 +458,8 @@ class Node extends TDataFlowNode {
       this.(BuilderNode).isImplicitArgument(call, _, _) and
       result = call.getEnclosingCallable()
     )
+    or
+    this.(BuilderNode).isReturnNodeEx(result)
     or
     exists(DataFlowCallable callable |
       this.isCallableEx(callable) and

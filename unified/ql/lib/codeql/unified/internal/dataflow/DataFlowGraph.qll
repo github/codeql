@@ -180,6 +180,12 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node2.isIncomingValue(fun.getNameNode())
   )
   or
+  exists(ReturnExpr ret |
+    node1.isResultValue(ret.getValue()) and
+    step.value() and
+    node2.isReturnNode(ret.getEnclosingCallable())
+  )
+  or
   none() // Temporarily disable compilation errors from unsatisfiable types
 }
 
