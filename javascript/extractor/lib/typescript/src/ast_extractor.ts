@@ -39,17 +39,6 @@ function forEachNode(ast: ts.Node, callback: (node: ts.Node) => void) {
     visit(ast);
 }
 
-function tryGetTypeOfNode(typeChecker: ts.TypeChecker, node: AugmentedNode): ts.Type | null {
-    try {
-        return typeChecker.getTypeAtLocation(node);
-    } catch (e) {
-        let sourceFile = node.getSourceFile();
-        let { line, character } = sourceFile.getLineAndCharacterOfPosition(node.pos);
-        console.warn(`Could not compute type of ${ts.SyntaxKind[node.kind]} at ${sourceFile.fileName}:${line + 1}:${character + 1}`);
-        return null;
-    }
-}
-
 export function augmentAst(ast: AugmentedSourceFile, code: string) {
     ast.$lineStarts = ast.getLineStarts();
 
