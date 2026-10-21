@@ -7,29 +7,30 @@ private import internal.ControlFlowGraphImpl as CfgImpl
 
 class BasicBlock = CfgImpl::Cfg::BasicBlock;
 
+/** A basic block containing the entry node of a callable. */
 final class EntryBasicBlock extends BasicBlock {
   EntryBasicBlock() { this.getFirstNode() instanceof CfgImpl::ControlFlow::EntryNode }
 }
 
+/** A basic block containing the final exit node of a callable. */
 final class ExitBasicBlock extends BasicBlock {
   ExitBasicBlock() { this.getLastNode() instanceof CfgImpl::ControlFlow::ExitNode }
 }
 
+/** A basic block containing an annotated normal or exceptional exit node. */
 final class AnnotatedExitBasicBlock extends BasicBlock {
-  AnnotatedExitBasicBlock() {
-    this.getANode() instanceof CfgImpl::ControlFlow::AnnotatedExitNode
-  }
+  AnnotatedExitBasicBlock() { this.getANode() instanceof CfgImpl::ControlFlow::AnnotatedExitNode }
 
   /** Holds if this block represents normal exit. */
-  predicate isNormal() {
-    this.getANode() instanceof CfgImpl::ControlFlow::NormalExitNode
-  }
+  predicate isNormal() { this.getANode() instanceof CfgImpl::ControlFlow::NormalExitNode }
 }
 
+/** A basic block whose last node is a condition. */
 final class ConditionBasicBlock extends BasicBlock {
   ConditionBasicBlock() { this.getLastNode().(ControlFlowGraph::CfgNode).isCondition() }
 }
 
+/** A basic block whose first node joins multiple predecessors. */
 final class JoinBasicBlock extends BasicBlock {
   JoinBasicBlock() { this.getFirstNode().(ControlFlowGraph::CfgNode).isJoin() }
 
@@ -46,6 +47,7 @@ final class JoinBasicBlock extends BasicBlock {
   }
 }
 
+/** A predecessor basic block of a join block. */
 final class JoinPredecessorBasicBlock extends BasicBlock {
   JoinPredecessorBasicBlock() { this.getASuccessor() instanceof JoinBasicBlock }
 }

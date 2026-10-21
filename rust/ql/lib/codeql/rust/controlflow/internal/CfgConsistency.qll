@@ -13,9 +13,7 @@ private predicate successfullyExtractedFile(File f) {
   not exists(ExtractionWarning warning | warning.getLocation().getFile() = f)
 }
 
-query predicate missingCfgChild(
-  CfgImpl::ControlFlowNode parent, string pred, int i, AstNode child
-) {
+query predicate missingCfgChild(CfgImpl::ControlFlowNode parent, string pred, int i, AstNode child) {
   CfgNodes::missingCfgChild(parent, pred, i, child) and
   successfullyExtractedFile(child.getLocation().getFile())
 }

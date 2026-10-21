@@ -30,19 +30,13 @@ private AstNode desugar(AstNode n) {
  *
  * The shared control-flow library only creates nodes for reachable code.
  */
-private predicate reachable(AstNode n) {
-  any(CfgNode cfg).getAstNode() = desugar(n)
-}
+private predicate reachable(AstNode n) { any(CfgNode cfg).getAstNode() = desugar(n) }
 
 /** Holds if normal execution of `n` reaches its after-node. */
-private predicate reachesAfter(AstNode n) {
-  any(CfgNode cfg).isAfter(desugar(n))
-}
+private predicate reachesAfter(AstNode n) { any(CfgNode cfg).isAfter(desugar(n)) }
 
 /** Holds if `n` is a direct element of a statement list. */
-private predicate statementListElement(AstNode n) {
-  n = any(StmtList list).getStmtOrExpr(_)
-}
+private predicate statementListElement(AstNode n) { n = any(StmtList list).getStmtOrExpr(_) }
 
 /** Holds if `n` is a statement-list element that executes at runtime. */
 private predicate runtimeStatementListElement(AstNode n) {

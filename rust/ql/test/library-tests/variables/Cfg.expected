@@ -1133,8 +1133,6 @@ edges
 | main.rs:263:10:263:31 | After ...::First(...) [no-match] | main.rs:263:35:263:57 | ...::Second(...) |  |
 | main.rs:263:10:263:31 | [pattern-start] ...::First(...) | main.rs:263:29:263:30 | Before a5 |  |
 | main.rs:263:10:263:57 | ... \| ... | main.rs:263:10:263:31 | ...::First(...) |  |
-| main.rs:263:10:263:57 | ... \| ... | main.rs:263:10:263:57 | After ... \| ... [match] | match |
-| main.rs:263:10:263:57 | ... \| ... | main.rs:263:10:263:57 | After ... \| ... [no-match] | no-match |
 | main.rs:263:10:263:57 | After ... \| ... [match] | main.rs:263:9:263:83 | After ... \| ... [match] | match |
 | main.rs:263:10:263:57 | After ... \| ... [no-match] | main.rs:263:62:263:83 | ...::Third(...) |  |
 | main.rs:263:29:263:30 | After a5 [match] | main.rs:263:10:263:31 | After ...::First(...) [match] | match |
@@ -1182,7 +1180,6 @@ edges
 | main.rs:267:35:267:57 | After ...::Second(...) [no-match] | main.rs:267:61:267:82 | ...::Third(...) |  |
 | main.rs:267:35:267:57 | [pattern-start] ...::Second(...) | main.rs:267:55:267:56 | Before a6 |  |
 | main.rs:267:35:267:82 | ... \| ... | main.rs:267:35:267:57 | ...::Second(...) |  |
-| main.rs:267:35:267:82 | ... \| ... | main.rs:267:35:267:82 | After ... \| ... [match] | match |
 | main.rs:267:35:267:82 | After ... \| ... [match] | main.rs:267:9:267:83 | After ... \| ... [match] | match |
 | main.rs:267:55:267:56 | After a6 [match] | main.rs:267:35:267:57 | After ...::Second(...) [match] | match |
 | main.rs:267:55:267:56 | Before a6 | main.rs:267:55:267:56 | a6 |  |
@@ -1283,8 +1280,6 @@ edges
 | main.rs:287:14:287:30 | After ...::Left(...) [no-match] | main.rs:287:34:287:51 | ...::Right(...) |  |
 | main.rs:287:14:287:30 | [pattern-start] ...::Left(...) | main.rs:287:27:287:29 | Before a11 |  |
 | main.rs:287:14:287:51 | ... \| ... | main.rs:287:14:287:30 | ...::Left(...) |  |
-| main.rs:287:14:287:51 | ... \| ... | main.rs:287:14:287:51 | After ... \| ... [match] | match |
-| main.rs:287:14:287:51 | ... \| ... | main.rs:287:14:287:51 | After ... \| ... [no-match] | no-match |
 | main.rs:287:14:287:51 | After ... \| ... [match] | main.rs:286:13:286:13 | e |  |
 | main.rs:287:14:287:51 | After ... \| ... [no-match] | main.rs:286:9:287:52 | After ref e @ ... [no-match] | no-match |
 | main.rs:287:27:287:29 | After a11 [match] | main.rs:287:14:287:30 | After ...::Left(...) [match] | match |
@@ -1374,8 +1369,6 @@ edges
 | main.rs:309:35:309:57 | After ...::Second(...) [no-match] | main.rs:309:61:309:82 | ...::Third(...) |  |
 | main.rs:309:35:309:57 | [pattern-start] ...::Second(...) | main.rs:309:54:309:56 | Before a13 |  |
 | main.rs:309:35:309:82 | ... \| ... | main.rs:309:35:309:57 | ...::Second(...) |  |
-| main.rs:309:35:309:82 | ... \| ... | main.rs:309:35:309:82 | After ... \| ... [match] | match |
-| main.rs:309:35:309:82 | ... \| ... | main.rs:309:35:309:82 | After ... \| ... [no-match] | no-match |
 | main.rs:309:35:309:82 | After ... \| ... [match] | main.rs:309:9:309:109 | After ... \| ... \| ... [match] | match |
 | main.rs:309:35:309:82 | After ... \| ... [no-match] | main.rs:309:87:309:109 | ...::Fourth(...) |  |
 | main.rs:309:54:309:56 | After a13 [match] | main.rs:309:35:309:57 | After ...::Second(...) [match] | match |
@@ -1930,7 +1923,6 @@ edges
 | main.rs:431:20:431:35 | After ...::Left(...) [no-match] | main.rs:431:39:431:55 | ...::Right(...) |  |
 | main.rs:431:20:431:35 | [pattern-start] ...::Left(...) | main.rs:431:33:431:34 | Before a9 |  |
 | main.rs:431:20:431:55 | ... \| ... | main.rs:431:20:431:35 | ...::Left(...) |  |
-| main.rs:431:20:431:55 | ... \| ... | main.rs:431:20:431:55 | After ... \| ... [match] | match |
 | main.rs:431:20:431:55 | After ... \| ... [match] | main.rs:431:19:431:64 | ...: Either |  |
 | main.rs:431:33:431:34 | After a9 [match] | main.rs:431:20:431:35 | After ...::Left(...) [match] | match |
 | main.rs:431:33:431:34 | Before a9 | main.rs:431:33:431:34 | a9 |  |

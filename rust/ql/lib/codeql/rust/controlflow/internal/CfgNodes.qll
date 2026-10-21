@@ -34,27 +34,19 @@ class MatchExprChildMapping extends ParentAstNode, MatchExpr {
 }
 
 class BlockExprChildMapping extends ParentAstNode, BlockExpr {
-  override predicate relevantChild(AstNode child) {
-    child = this.getStmtList().getTailExpr()
-  }
+  override predicate relevantChild(AstNode child) { child = this.getStmtList().getTailExpr() }
 }
 
 class BreakExprTargetChildMapping extends ParentAstNode, Expr {
-  override predicate relevantChild(AstNode child) {
-    child.(BreakExpr).getTarget() = this
-  }
+  override predicate relevantChild(AstNode child) { child.(BreakExpr).getTarget() = this }
 }
 
 class CallExprChildMapping extends ParentAstNode, CallExpr {
-  override predicate relevantChild(AstNode child) {
-    child = this.getArgList().getAnArg()
-  }
+  override predicate relevantChild(AstNode child) { child = this.getArgList().getAnArg() }
 }
 
 class MethodCallExprChildMapping extends ParentAstNode, MethodCallExpr {
-  override predicate relevantChild(AstNode child) {
-    child = this.getArgList().getAnArg()
-  }
+  override predicate relevantChild(AstNode child) { child = this.getArgList().getAnArg() }
 }
 
 class StructExprChildMapping extends ParentAstNode, StructExpr {
@@ -70,9 +62,7 @@ class StructPatChildMapping extends ParentAstNode, StructPat {
 }
 
 class MacroCallChildMapping extends ParentAstNode, MacroCall {
-  override predicate relevantChild(AstNode child) {
-    child = this.getMacroCallExpansion()
-  }
+  override predicate relevantChild(AstNode child) { child = this.getMacroCallExpansion() }
 }
 
 class FormatArgsExprChildMapping extends ParentAstNode, FormatArgsExpr {
@@ -104,9 +94,7 @@ class AssignmentExprChildMapping extends ParentAstNode, AssignmentExpr {
 }
 
 private class ChildMappingImpl extends ChildMapping {
-  override predicate hasCfgChild(
-    AstNode parent, AstNode child, AstCfgNode cfn, AstCfgNode cfnChild
-  ) {
+  override predicate hasCfgChild(AstNode parent, AstNode child, AstCfgNode cfn, AstCfgNode cfnChild) {
     Stages::CfgStage::ref() and
     this.relevantChild(parent, child) and
     cfn.getAstNode() = CfgNodesInput::getDesugared(parent) and

@@ -13,9 +13,7 @@ class CfgNode extends CfgImpl::ControlFlowNode {
   CfgScope getScope() { result = this.getEnclosingCallable() }
 
   /** Holds if this node has conditional successors. */
-  predicate isCondition() {
-    exists(this.getASuccessor(any(ConditionalSuccessor t)))
-  }
+  predicate isCondition() { exists(this.getASuccessor(any(ConditionalSuccessor t))) }
 
   /** Holds if this node has more than one predecessor. */
   predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }

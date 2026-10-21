@@ -18,11 +18,11 @@ class AstCfgNode extends CfgNode {
   AstNode getAstNode() { this.injects(result) }
 }
 
-class ExitCfgNode extends CfgNode instanceof ControlFlow::ExitNode {
-}
+/** A CFG node representing the final exit from a callable. */
+class ExitCfgNode extends CfgNode instanceof ControlFlow::ExitNode { }
 
-class AnnotatedExitCfgNode extends CfgNode instanceof ControlFlow::AnnotatedExitNode {
-}
+/** A CFG node representing a normal or exceptional exit from a callable. */
+class AnnotatedExitCfgNode extends CfgNode instanceof ControlFlow::AnnotatedExitNode { }
 
 /** A variable access. */
 final class VariableAccessCfgNode extends PathExprBaseCfgNode {

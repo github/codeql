@@ -279,9 +279,7 @@ private module Ast implements AstSig<Location> {
     result = parent.(Rust::TupleStructPat).getField(index)
   }
 
-  AstNode getChild(AstNode parent, int index) {
-    result = desugar(runtimeChild(parent, index))
-  }
+  AstNode getChild(AstNode parent, int index) { result = desugar(runtimeChild(parent, index)) }
 
   private Callable getEnclosingCallableImpl(Rust::AstNode node) {
     exists(Rust::AstNode parent | parent = node.getParentNode() |
@@ -302,8 +300,7 @@ private module Ast implements AstSig<Location> {
 
   Callable getEnclosingCallable(AstNode node) { result = getEnclosingCallableImpl(node) }
 
-  class Callable extends AstNode instanceof Scope::CfgScope {
-  }
+  class Callable extends AstNode instanceof Scope::CfgScope { }
 
   AstNode callableGetBody(Callable c) {
     result = c.(Rust::Callable).getBody()
@@ -426,8 +423,7 @@ private module Ast implements AstSig<Location> {
     BreakStmt() { none() }
   }
 
-  class ContinueStmt extends Stmt instanceof Rust::ContinueExpr {
-  }
+  class ContinueStmt extends Stmt instanceof Rust::ContinueExpr { }
 
   class GotoStmt extends Stmt {
     GotoStmt() { none() }
@@ -503,11 +499,9 @@ private module Ast implements AstSig<Location> {
     Expr getRightOperand() { result = desugar(this.(Rust::BinaryExpr).getRhs()) }
   }
 
-  class LogicalAndExpr extends BinaryExpr instanceof Rust::LogicalAndExpr {
-  }
+  class LogicalAndExpr extends BinaryExpr instanceof Rust::LogicalAndExpr { }
 
-  class LogicalOrExpr extends BinaryExpr instanceof Rust::LogicalOrExpr {
-  }
+  class LogicalOrExpr extends BinaryExpr instanceof Rust::LogicalOrExpr { }
 
   class NullCoalescingExpr extends BinaryExpr {
     NullCoalescingExpr() { none() }
@@ -517,17 +511,13 @@ private module Ast implements AstSig<Location> {
     Expr getOperand() { result = desugar(this.(Rust::PrefixExpr).getExpr()) }
   }
 
-  class LogicalNotExpr extends UnaryExpr instanceof Rust::LogicalNotExpr {
-  }
+  class LogicalNotExpr extends UnaryExpr instanceof Rust::LogicalNotExpr { }
 
-  class Assignment extends BinaryExpr instanceof Rust::AssignmentOperation {
-  }
+  class Assignment extends BinaryExpr instanceof Rust::AssignmentOperation { }
 
-  class AssignExpr extends Assignment instanceof Rust::AssignmentExpr {
-  }
+  class AssignExpr extends Assignment instanceof Rust::AssignmentExpr { }
 
-  class CompoundAssignment extends Assignment instanceof Rust::CompoundAssignmentExpr {
-  }
+  class CompoundAssignment extends Assignment instanceof Rust::CompoundAssignmentExpr { }
 
   class AssignLogicalAndExpr extends CompoundAssignment {
     AssignLogicalAndExpr() { none() }
@@ -608,15 +598,11 @@ private predicate guaranteedMatch(Rust::Pat pat) {
 private module Input implements InputSig1, InputSig2 {
   private import codeql.util.Void
 
-  predicate cfgCachedStageRef() {
-    CfgCachedStage::ref()
-  }
+  predicate cfgCachedStageRef() { CfgCachedStage::ref() }
 
   private newtype TLabel =
     TTarget(Rust::Expr target) or
-    TTargetValue(Rust::Expr target, boolean value) {
-      value = true or value = false
-    }
+    TTargetValue(Rust::Expr target, boolean value) { value = true or value = false }
 
   class Label extends TLabel {
     string toString() {
@@ -804,17 +790,12 @@ private module Input implements InputSig1, InputSig2 {
       )
   }
 
-  private predicate isAfterMatch(
-    PreControlFlowNode n, Rust::AstNode ast, boolean value
-  ) {
-    n.isAfterValue(Ast::desugar(ast),
-      any(MatchingSuccessor t | t.getValue() = value))
+  private predicate isAfterMatch(PreControlFlowNode n, Rust::AstNode ast, boolean value) {
+    n.isAfterValue(Ast::desugar(ast), any(MatchingSuccessor t | t.getValue() = value))
   }
 
   private predicate parameterStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-    exists(Rust::ParamBase p, Ast::AstNode child |
-      child = Ast::getChild(p, _)
-    |
+    exists(Rust::ParamBase p, Ast::AstNode child | child = Ast::getChild(p, _) |
       n1.isBefore(p) and n2.isBefore(child)
       or
       p instanceof Rust::Param and
@@ -864,15 +845,11 @@ private module Input implements InputSig1, InputSig2 {
     )
   }
 
-  private predicate matchArmStart(
-    Rust::MatchExpr match, int index, PreControlFlowNode n
-  ) {
+  private predicate matchArmStart(Rust::MatchExpr match, int index, PreControlFlowNode n) {
     n.isBefore(Ast::desugar(match.getArm(index).getPat()))
   }
 
-  private predicate matchArmBodyStart(
-    Rust::MatchArm arm, PreControlFlowNode n
-  ) {
+  private predicate matchArmBodyStart(Rust::MatchArm arm, PreControlFlowNode n) {
     n.isBefore(Ast::desugar(arm.getGuard().getCondition()))
     or
     not arm.hasGuard() and n.isBefore(Ast::desugar(arm.getExpr()))
@@ -914,9 +891,7 @@ private module Input implements InputSig1, InputSig2 {
     )
   }
 
-  private predicate genericPatternStep(
-    Rust::Pat pat, PreControlFlowNode n1, PreControlFlowNode n2
-  ) {
+  private predicate genericPatternStep(Rust::Pat pat, PreControlFlowNode n1, PreControlFlowNode n2) {
     not pat instanceof Rust::IdentPat and
     not pat instanceof Rust::LiteralPat and
     not pat instanceof Rust::OrPat and
@@ -981,9 +956,7 @@ private module Input implements InputSig1, InputSig2 {
     n1.isIn(pat) and not guaranteedMatch(pat) and isAfterMatch(n2, pat, false)
   }
 
-  private predicate orPatternStep(
-    Rust::OrPat pat, PreControlFlowNode n1, PreControlFlowNode n2
-  ) {
+  private predicate orPatternStep(Rust::OrPat pat, PreControlFlowNode n1, PreControlFlowNode n2) {
     n1.isBefore(pat) and n2.isBefore(Ast::desugar(getRankedPatternChild(pat, 1)))
     or
     exists(int i, Rust::Pat child | child = getRankedPatternChild(pat, i) |
@@ -1002,13 +975,16 @@ private module Input implements InputSig1, InputSig2 {
 
   private predicate patternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
     exists(Rust::Pat pat |
-      genericPatternStep(pat, n1, n2)
-      or
-      literalPatternStep(pat, n1, n2)
-      or
-      identPatternStep(pat, n1, n2)
-      or
-      orPatternStep(pat, n1, n2)
+      Ast::desugar(pat) = pat and
+      (
+        genericPatternStep(pat, n1, n2)
+        or
+        literalPatternStep(pat, n1, n2)
+        or
+        identPatternStep(pat, n1, n2)
+        or
+        orPatternStep(pat, n1, n2)
+      )
     )
   }
 
@@ -1110,15 +1086,11 @@ private module Input implements InputSig1, InputSig2 {
     always = true
   }
 
-  private predicate targetChild(
-    Rust::Expr target, Ast::AstNode child
-  ) {
+  private predicate targetChild(Rust::Expr target, Ast::AstNode child) {
     child = Ast::getChild(target, _)
   }
 
-  predicate endAbruptCompletion(
-    Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c
-  ) {
+  predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
     exists(Rust::Expr target |
       targetChild(target, ast) and
       c.getSuccessorType() instanceof BreakSuccessor
