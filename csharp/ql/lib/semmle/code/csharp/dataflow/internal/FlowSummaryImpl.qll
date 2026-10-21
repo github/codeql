@@ -5,6 +5,7 @@
 private import csharp
 private import semmle.code.csharp.commons.QualifiedName
 private import semmle.code.csharp.frameworks.system.linq.Expressions
+private import semmle.code.csharp.frameworks.System
 private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
 private import DataFlowImplSpecific as DataFlowImplSpecific
@@ -478,5 +479,49 @@ private class SummarizedCallableWithCallback extends Public::SummarizedCallable 
     provenance = "hq-generated" and
     isExact = true and
     model = "heuristic-callback"
+  }
+}
+
+/**
+ * A class of summaries for compiler generated Deconstruct methods.
+ *
+ * For record types, the compiler generates a `Deconstruct` method that allows deconstructing the record into its components.
+ * ```csharp
+ * public record R(int X, int Y);
+ *
+ * var r = new R(1, 2);
+ * var (x, y) = r;
+ * ```
+ * In this case the compiler generates a `Deconstruct` method which is implicitly invoked on line 4 in the example above.
+ *
+ * The compiler generated `Deconstruct` method looks like:
+ * ```csharp
+ * public void Deconstruct(out int X, out int Y) {
+ *   X = this.X;
+ *   Y = this.Y;
+ * }
+ * ```
+ * That is, we need to create summaries for compiler generated `Deconstruct` methods that reflect the flow from the record's properties
+ * to the corresponding out parameters.
+ */
+private class SummarizedDeconstruct extends Public::SummarizedCallable instanceof DeconstructMethod {
+  SummarizedDeconstruct() { this.isCompilerGenerated() }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, Public::Provenance provenance,
+    boolean isExact, string model
+  ) {
+    exists(Parameter p, int i, Property prop, string qualifier, string name |
+      p = this.getParameter(i) and
+      prop = this.getDeclaringType().getProperty(p.getName())
+    |
+      prop.hasFullyQualifiedName(qualifier, name) and
+      input = "Argument[this].Property[" + getQualifiedName(qualifier, name) + "]" and
+      output = "Argument[" + i + "]" and
+      preservesValue = true and
+      provenance = "manual" and
+      isExact = true and
+      model = "deconstruct"
+    )
   }
 }
