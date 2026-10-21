@@ -74,8 +74,6 @@ class State {
 }
 let state = new State();
 
-const reloadMemoryThresholdMb = getEnvironmentVariable("SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD", Number, 1000);
-
 /**
  * Debugging method for finding cycles in the TypeScript AST. Should not be used in production.
  *
@@ -249,7 +247,6 @@ function extractFile(filename: string): string {
 function prepareNextFile() {
     if (state.pendingResponse != null) return;
     if (state.pendingFileIndex < state.pendingFiles.length) {
-        checkMemoryUsage();
         let nextFilename = state.pendingFiles[state.pendingFileIndex];
         state.pendingResponse = extractFile(nextFilename);
     }
@@ -358,37 +355,6 @@ function handleGetMetadataCommand(command: GetMetadataCommand) {
 
 function reset() {
     state = new State();
-}
-
-function getEnvironmentVariable<T>(name: string, parse: (x: string) => T, defaultValue: T) {
-    let value = process.env[name];
-    return value != null ? parse(value) : defaultValue;
-}
-
-/**
- * Whether the memory usage was last observed to be above the threshold for restarting the TypeScript compiler.
- *
- * This is to prevent repeatedly restarting the compiler if the GC does not immediately bring us below the
- * threshold again.
- */
-let hasReloadedSinceExceedingThreshold = false;
-
-/**
- * If memory usage has moved above a the threshold, reboot the TypeScript compiler instance.
- *
- * Make sure to call this only when stdout has been flushed.
- */
-function checkMemoryUsage() {
-    let bytesUsed = process.memoryUsage().heapUsed;
-    let megabytesUsed = bytesUsed / 1000000;
-    if (!hasReloadedSinceExceedingThreshold && megabytesUsed > reloadMemoryThresholdMb && state.project != null) {
-        console.warn('Restarting TypeScript compiler due to memory usage');
-        state.project.reload();
-        hasReloadedSinceExceedingThreshold = true;
-    }
-    else if (hasReloadedSinceExceedingThreshold && megabytesUsed < reloadMemoryThresholdMb) {
-        hasReloadedSinceExceedingThreshold = false;
-    }
 }
 
 function runReadLineInterface() {
