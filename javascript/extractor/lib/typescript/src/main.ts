@@ -79,83 +79,10 @@ class State {
     /** Next response to be delivered. */
     public pendingResponse: string = null;
 
-    /** Map from `package.json` files to their contents. */
-    public parsedPackageJson = new Map<string, any>();
-
-    /** Map from `package.json` files to the file referenced in its `types` or `typings` field. */
-    public packageTypings = new Map<string, string | undefined>();
-
-    /** Map from file path to the enclosing `package.json` file, if any. Will not traverse outside node_modules. */
-    public enclosingPackageJson = new Map<string, string | undefined>();
 }
 let state = new State();
 
 const reloadMemoryThresholdMb = getEnvironmentVariable("SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD", Number, 1000);
-
-function getPackageJson(file: string): any {
-    let cache = state.parsedPackageJson;
-    if (cache.has(file)) return cache.get(file);
-    let result = getPackageJsonRaw(file);
-    cache.set(file, result);
-    return result;
-}
-
-function getPackageJsonRaw(file: string): any {
-    if (!ts.sys.fileExists(file)) return undefined;
-    try {
-        let json = JSON.parse(ts.sys.readFile(file));
-        if (typeof json !== 'object') return undefined;
-        return json;
-    } catch (e) {
-        return undefined;
-    }
-}
-
-function getPackageTypings(file: string): string | undefined {
-    let cache = state.packageTypings;
-    if (cache.has(file)) return cache.get(file);
-    let result = getPackageTypingsRaw(file);
-    cache.set(file, result);
-    return result;
-}
-
-function getPackageTypingsRaw(packageJsonFile: string): string | undefined {
-    let json = getPackageJson(packageJsonFile);
-    if (json == null) return undefined;
-    let typings = json.types || json.typings; // "types" and "typings" are aliases
-    if (typeof typings !== 'string') return undefined;
-    let absolutePath = pathlib.join(pathlib.dirname(packageJsonFile), typings);
-    if (ts.sys.directoryExists(absolutePath)) {
-        absolutePath = pathlib.join(absolutePath, 'index.d.ts');
-    } else if (!absolutePath.endsWith('.ts')) {
-        absolutePath += '.d.ts';
-    }
-    if (!ts.sys.fileExists(absolutePath)) return undefined;
-    return ts.sys.resolvePath(absolutePath);
-}
-
-function getEnclosingPackageJson(file: string): string | undefined {
-    let cache = state.packageTypings;
-    if (cache.has(file)) return cache.get(file);
-    let result = getEnclosingPackageJsonRaw(file);
-    cache.set(file, result);
-    return result;
-}
-
-function getEnclosingPackageJsonRaw(file: string): string | undefined {
-    let packageJson = pathlib.join(file, 'package.json');
-    if (ts.sys.fileExists(packageJson)) {
-        return packageJson;
-    }
-    if (pathlib.basename(file) === 'node_modules') {
-        return undefined;
-    }
-    let dirname = pathlib.dirname(file);
-    if (dirname.length < file.length) {
-        return getEnclosingPackageJson(dirname);
-    }
-    return undefined;
-}
 
 /**
  * Debugging method for finding cycles in the TypeScript AST. Should not be used in production.
