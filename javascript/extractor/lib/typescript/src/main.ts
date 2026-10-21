@@ -276,7 +276,6 @@ function parseSingleFile(filename: string): { ast: ts.SourceFile, code: string }
     // parse `filename` with minimial checking
     let compilerOptions: ts.CompilerOptions = {
         experimentalDecorators: true,
-        experimentalAsyncFunctions: true,
         jsx: ts.JsxEmit.Preserve,
         noResolve: true,
     };
