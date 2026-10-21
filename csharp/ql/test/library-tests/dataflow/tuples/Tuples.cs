@@ -101,13 +101,13 @@ class Tuples
         Sink(r.i);          // $ hasValueFlow=9
 
         var (a, b) = r;
-        Sink(a);            // $ MISSING: hasValueFlow=9
+        Sink(a);            // $ hasValueFlow=9
         Sink(b);
 
         switch (r)
         {
             case var (x, y):
-                Sink(x);        // $ MISSING: hasValueFlow=9
+                Sink(x);        // $ hasValueFlow=9
                 Sink(y);
                 break;
         }
@@ -178,8 +178,8 @@ class Tuples
         var r = new R2(o1, o2);
         // Implicit call to the compiler-generated Deconstruct method of R2
         var (x1, y1) = r;
-        Sink(x1);             // $ MISSING: hasValueFlow=16
-        Sink(y1);             // $ MISSING: hasValueFlow=17
+        Sink(x1);             // $ hasValueFlow=16
+        Sink(y1);             // $ hasValueFlow=17
     }
 
     record R3(string X2, string Y2)
@@ -198,8 +198,8 @@ class Tuples
         var r = new R3(o1, o2);
         // Implicit call to the custom Deconstruct method of R3
         var (x, y) = r;
-        Sink(x);           // $ MISSING: hasValueFlow=19
-        Sink(y);           // $ MISSING: hasValueFlow=18
+        Sink(x);           // $ hasValueFlow=19
+        Sink(y);           // $ hasValueFlow=18
     }
 
     record R4(string X3, string Y3);
@@ -211,8 +211,8 @@ class Tuples
         var r = new R4(o1, o2);
         // Explicit call to the compiler-generated Deconstruct method of R4
         r.Deconstruct(out var x3, out var y3);
-        Sink(x3);         // $ MISSING: hasValueFlow=20
-        Sink(y3);         // $ MISSING: hasValueFlow=21
+        Sink(x3);         // $ hasValueFlow=20
+        Sink(y3);         // $ hasValueFlow=21
     }
 
     static void M11()
@@ -223,8 +223,8 @@ class Tuples
         var (x, y) = ("1", "2");
         // Using tuple deconstruction with an existing tuple variable.
         (x, y) = r;
-        Sink(x);           // $ MISSING: hasValueFlow=22
-        Sink(y);           // $ MISSING: hasValueFlow=23
+        Sink(x);           // $ hasValueFlow=22
+        Sink(y);           // $ hasValueFlow=23
     }
 
     static void M12()
@@ -234,7 +234,7 @@ class Tuples
         var r = new R4(o1, o2);
         // Ignoring certain tuple elements.
         (var x, var _) = r;
-        Sink(x);           // $ MISSING: hasValueFlow=24
+        Sink(x);           // $ hasValueFlow=24
     }
 
     static void M13()
@@ -245,8 +245,8 @@ class Tuples
         // Pattern matching with tuple deconstruction.
         if (r is var (x, y))
         {
-            Sink(x);           // $ MISSING: hasValueFlow=26
-            Sink(y);           // $ MISSING: hasValueFlow=27
+            Sink(x);           // $ hasValueFlow=26
+            Sink(y);           // $ hasValueFlow=27
         }
     }
 
@@ -258,8 +258,8 @@ class Tuples
         // Pattern matching with positional pattern deconstruction in an is expression.
         if (r is (var x, var y))
         {
-            Sink(x);           // $ MISSING: hasValueFlow=28
-            Sink(y);           // $ MISSING: hasValueFlow=29
+            Sink(x);           // $ hasValueFlow=28
+            Sink(y);           // $ hasValueFlow=29
         }
     }
 
@@ -273,8 +273,8 @@ class Tuples
         {
             // Pattern matching with tuple deconstruction in a switch statement.
             case var (x, y):
-                Sink(x);           // $ MISSING: hasValueFlow=30
-                Sink(y);           // $ MISSING: hasValueFlow=31
+                Sink(x);           // $ hasValueFlow=30
+                Sink(y);           // $ hasValueFlow=31
                 break;
         }
     }
@@ -288,8 +288,8 @@ class Tuples
         switch (r)
         {
             case (var x, var y):
-                Sink(x);           // $ MISSING: hasValueFlow=32
-                Sink(y);           // $ MISSING: hasValueFlow=33
+                Sink(x);           // $ hasValueFlow=32
+                Sink(y);           // $ hasValueFlow=33
                 break;
         }
     }
@@ -319,8 +319,8 @@ class Tuples
         var c = new C(o1, o2);
         // Implicit call to the custom Deconstruct method of C.
         var (x, y) = c;
-        Sink(x);           // $ MISSING: hasValueFlow=34
-        Sink(y);           // $ MISSING: hasValueFlow=35
+        Sink(x);           // $ hasValueFlow=34
+        Sink(y);           // $ hasValueFlow=35
     }
 
     public record GenericRecord<T1, T2>(T1 t1, T2 t2);
@@ -332,8 +332,8 @@ class Tuples
         var r = new GenericRecord<string, string>(o1, o2);
         // Implicit call to the compiler-generated Deconstruct method of GenericRecord.
         var (x, y) = r;
-        Sink(x);           // $ MISSING: hasValueFlow=36
-        Sink(y);           // $ MISSING: hasValueFlow=37
+        Sink(x);           // $ hasValueFlow=36
+        Sink(y);           // $ hasValueFlow=37
     }
 
     class D
@@ -357,8 +357,8 @@ class Tuples
 
         // Implicit call to the inherited Deconstruct method of D through E.
         var (x, y) = e;
-        Sink(x);           // $ MISSING: hasValueFlow=38
-        Sink(y);           // $ MISSING: hasValueFlow=39
+        Sink(x);           // $ hasValueFlow=38
+        Sink(y);           // $ hasValueFlow=39
     }
 
     public static void Sink(object o) { }
