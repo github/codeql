@@ -169,6 +169,198 @@ class Tuples
         }
     }
 
+    record R2(string X1, string Y1);
+
+    static void M8()
+    {
+        var o1 = Source<string>(16);
+        var o2 = Source<string>(17);
+        var r = new R2(o1, o2);
+        // Implicit call to the compiler-generated Deconstruct method of R2
+        var (x1, y1) = r;
+        Sink(x1);             // $ MISSING: hasValueFlow=16
+        Sink(y1);             // $ MISSING: hasValueFlow=17
+    }
+
+    record R3(string X2, string Y2)
+    {
+        public void Deconstruct(out string y2, out string x2)
+        {
+            x2 = X2;
+            y2 = Y2;
+        }
+    }
+
+    static void M9()
+    {
+        var o1 = Source<string>(18);
+        var o2 = Source<string>(19);
+        var r = new R3(o1, o2);
+        // Implicit call to the custom Deconstruct method of R3
+        var (x, y) = r;
+        Sink(x);           // $ MISSING: hasValueFlow=19
+        Sink(y);           // $ MISSING: hasValueFlow=18
+    }
+
+    record R4(string X3, string Y3);
+
+    static void M10()
+    {
+        var o1 = Source<string>(20);
+        var o2 = Source<string>(21);
+        var r = new R4(o1, o2);
+        // Explicit call to the compiler-generated Deconstruct method of R4
+        r.Deconstruct(out var x3, out var y3);
+        Sink(x3);         // $ MISSING: hasValueFlow=20
+        Sink(y3);         // $ MISSING: hasValueFlow=21
+    }
+
+    static void M11()
+    {
+        var o1 = Source<string>(22);
+        var o2 = Source<string>(23);
+        var r = new R4(o1, o2);
+        var (x, y) = ("1", "2");
+        // Using tuple deconstruction with an existing tuple variable.
+        (x, y) = r;
+        Sink(x);           // $ MISSING: hasValueFlow=22
+        Sink(y);           // $ MISSING: hasValueFlow=23
+    }
+
+    static void M12()
+    {
+        var o1 = Source<string>(24);
+        var o2 = Source<string>(25);
+        var r = new R4(o1, o2);
+        // Ignoring certain tuple elements.
+        (var x, var _) = r;
+        Sink(x);           // $ MISSING: hasValueFlow=24
+    }
+
+    static void M13()
+    {
+        var o1 = Source<string>(26);
+        var o2 = Source<string>(27);
+        var r = new R4(o1, o2);
+        // Pattern matching with tuple deconstruction.
+        if (r is var (x, y))
+        {
+            Sink(x);           // $ MISSING: hasValueFlow=26
+            Sink(y);           // $ MISSING: hasValueFlow=27
+        }
+    }
+
+    static void M14()
+    {
+        var o1 = Source<string>(28);
+        var o2 = Source<string>(29);
+        var r = new R4(o1, o2);
+        // Pattern matching with positional pattern deconstruction in an is expression.
+        if (r is (var x, var y))
+        {
+            Sink(x);           // $ MISSING: hasValueFlow=28
+            Sink(y);           // $ MISSING: hasValueFlow=29
+        }
+    }
+
+    static void M15()
+    {
+        var o1 = Source<string>(30);
+        var o2 = Source<string>(31);
+        var r = new R4(o1, o2);
+
+        switch (r)
+        {
+            // Pattern matching with tuple deconstruction in a switch statement.
+            case var (x, y):
+                Sink(x);           // $ MISSING: hasValueFlow=30
+                Sink(y);           // $ MISSING: hasValueFlow=31
+                break;
+        }
+    }
+
+    static void M16()
+    {
+        var o1 = Source<string>(32);
+        var o2 = Source<string>(33);
+        var r = new R4(o1, o2);
+        // Pattern matching with positional pattern deconstruction in a switch statement.
+        switch (r)
+        {
+            case (var x, var y):
+                Sink(x);           // $ MISSING: hasValueFlow=32
+                Sink(y);           // $ MISSING: hasValueFlow=33
+                break;
+        }
+    }
+
+    class C
+    {
+        private string x;
+        private string y;
+
+        public C(string x, string y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public void Deconstruct(out string x, out string y)
+        {
+            x = this.x;
+            y = this.y;
+        }
+    }
+
+    static void M17()
+    {
+        var o1 = Source<string>(34);
+        var o2 = Source<string>(35);
+        var c = new C(o1, o2);
+        // Implicit call to the custom Deconstruct method of C.
+        var (x, y) = c;
+        Sink(x);           // $ MISSING: hasValueFlow=34
+        Sink(y);           // $ MISSING: hasValueFlow=35
+    }
+
+    public record GenericRecord<T1, T2>(T1 t1, T2 t2);
+
+    static void M18()
+    {
+        var o1 = Source<string>(36);
+        var o2 = Source<string>(37);
+        var r = new GenericRecord<string, string>(o1, o2);
+        // Implicit call to the compiler-generated Deconstruct method of GenericRecord.
+        var (x, y) = r;
+        Sink(x);           // $ MISSING: hasValueFlow=36
+        Sink(y);           // $ MISSING: hasValueFlow=37
+    }
+
+    class D
+    {
+        public string X;
+        public string Y;
+        public void Deconstruct(out string x, out string y)
+        {
+            x = X;
+            y = Y;
+        }
+    }
+
+    class E : D { }
+
+    static void M100()
+    {
+        var o1 = Source<string>(38);
+        var o2 = Source<string>(39);
+        var e = new E { X = o1, Y = o2 };
+
+        // Implicit call to the inherited Deconstruct method of D through E.
+        var (x, y) = e;
+        Sink(x);           // $ MISSING: hasValueFlow=38
+        Sink(y);           // $ MISSING: hasValueFlow=39
+    }
+
     public static void Sink(object o) { }
 
     static T Source<T>(object source) => throw null;
