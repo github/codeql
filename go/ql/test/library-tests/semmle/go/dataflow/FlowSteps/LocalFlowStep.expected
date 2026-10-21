@@ -17,10 +17,12 @@
 | main.go:10:12:10:12 | y | main.go:10:17:10:17 | y |
 | main.go:10:17:10:27 | ...>=... | main.go:10:7:10:27 | After ...&&... |
 | main.go:11:14:11:14 | z | main.go:11:9:11:15 | type conversion |
-| main.go:15:9:15:9 | 0 | main.go:15:2:15:9 | SSA def(acc) |
-| main.go:16:9:19:2 | SSA implicit def(acc) | main.go:17:3:17:5 | acc |
-| main.go:17:3:17:7 | SSA def(acc) | main.go:18:10:18:12 | acc |
-| main.go:17:3:17:7 | increment statement | main.go:17:3:17:7 | SSA def(acc) |
+| main.go:15:9:15:9 | 0 | main.go:16:9:19:2 | acc |
+| main.go:16:9:19:2 | captured variables | main.go:17:3:17:5 | this |
+| main.go:17:3:17:5 | this | main.go:17:3:17:7 | this |
+| main.go:17:3:17:5 | this | main.go:17:3:17:7 | this |
+| main.go:17:3:17:7 | this | main.go:18:10:18:12 | this |
+| main.go:17:3:17:7 | this | main.go:18:10:18:12 | this |
 | main.go:22:12:22:12 | SSA param(b) | main.go:23:5:23:5 | b |
 | main.go:22:12:22:12 | b | main.go:22:12:22:12 | SSA param(b) |
 | main.go:22:20:22:20 | SSA param(x) | main.go:24:10:24:10 | x |

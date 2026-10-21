@@ -7,9 +7,12 @@ edges
 | rpc/notes/service.twirp.go:538:2:538:33 | extract:0 ... := ... | rpc/notes/service.twirp.go:544:27:544:29 | buf | provenance |  |
 | rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | rpc/notes/service.twirp.go:538:2:538:33 | extract:0 ... := ... | provenance | Src:MaD:1 MaD:3 |
 | rpc/notes/service.twirp.go:544:27:544:29 | buf | rpc/notes/service.twirp.go:544:32:544:41 | reqContent [postupdate] | provenance | MaD:2 |
-| rpc/notes/service.twirp.go:544:32:544:41 | reqContent [postupdate] | rpc/notes/service.twirp.go:574:2:577:2 | SSA implicit def(reqContent) | provenance |  |
-| rpc/notes/service.twirp.go:574:2:577:2 | SSA implicit def(reqContent) | rpc/notes/service.twirp.go:576:35:576:44 | reqContent | provenance |  |
+| rpc/notes/service.twirp.go:544:32:544:41 | reqContent [postupdate] | rpc/notes/service.twirp.go:574:2:577:2 | reqContent | provenance |  |
+| rpc/notes/service.twirp.go:574:2:577:2 | captured variables [captured reqContent] | rpc/notes/service.twirp.go:576:35:576:44 | this [captured reqContent] | provenance |  |
+| rpc/notes/service.twirp.go:574:2:577:2 | function literal [captured reqContent] | rpc/notes/service.twirp.go:574:2:577:2 | captured variables [captured reqContent] | provenance |  |
+| rpc/notes/service.twirp.go:574:2:577:2 | reqContent | rpc/notes/service.twirp.go:574:2:577:2 | function literal [captured reqContent] | provenance |  |
 | rpc/notes/service.twirp.go:576:35:576:44 | reqContent | server/main.go:19:56:19:61 | SSA param(params) | provenance |  |
+| rpc/notes/service.twirp.go:576:35:576:44 | this [captured reqContent] | rpc/notes/service.twirp.go:576:35:576:44 | reqContent | provenance |  |
 | server/main.go:19:56:19:61 | SSA param(params) | server/main.go:19:56:19:61 | SSA param(params) [Return] | provenance |  |
 | server/main.go:19:56:19:61 | SSA param(params) | server/main.go:30:38:30:48 | selection of Text | provenance |  |
 | server/main.go:19:56:19:61 | SSA param(params) | server/main.go:30:38:30:48 | selection of Text | provenance |  |
@@ -25,8 +28,11 @@ nodes
 | rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | semmle.label | selection of Body |
 | rpc/notes/service.twirp.go:544:27:544:29 | buf | semmle.label | buf |
 | rpc/notes/service.twirp.go:544:32:544:41 | reqContent [postupdate] | semmle.label | reqContent [postupdate] |
-| rpc/notes/service.twirp.go:574:2:577:2 | SSA implicit def(reqContent) | semmle.label | SSA implicit def(reqContent) |
+| rpc/notes/service.twirp.go:574:2:577:2 | captured variables [captured reqContent] | semmle.label | captured variables [captured reqContent] |
+| rpc/notes/service.twirp.go:574:2:577:2 | function literal [captured reqContent] | semmle.label | function literal [captured reqContent] |
+| rpc/notes/service.twirp.go:574:2:577:2 | reqContent | semmle.label | reqContent |
 | rpc/notes/service.twirp.go:576:35:576:44 | reqContent | semmle.label | reqContent |
+| rpc/notes/service.twirp.go:576:35:576:44 | this [captured reqContent] | semmle.label | this [captured reqContent] |
 | server/main.go:19:56:19:61 | SSA param(params) | semmle.label | SSA param(params) |
 | server/main.go:19:56:19:61 | SSA param(params) | semmle.label | SSA param(params) |
 | server/main.go:19:56:19:61 | SSA param(params) [Return] | semmle.label | SSA param(params) [Return] |

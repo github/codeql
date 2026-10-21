@@ -11,6 +11,7 @@ private import semmle.go.dataflow.ExternalFlow
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.util.Unit
+private import VariableCapture as VariableCapture
 import DataFlowNodes::Public
 
 /**
@@ -160,7 +161,8 @@ private newtype TContent =
   TPointerContent(PointerType p) or
   TMapKeyContent() or
   TMapValueContent() or
-  TSyntheticFieldContent(SyntheticField s)
+  TSyntheticFieldContent(SyntheticField s) or
+  TCapturedVariableContent(VariableCapture::CapturedVariable v)
 
 /**
  * A reference contained in an object. Examples include instance fields, the
@@ -265,6 +267,20 @@ class SyntheticFieldContent extends Content, TSyntheticFieldContent {
   override DataFlowType getType() { any() }
 
   override string toString() { result = s.toString() }
+}
+
+/** A variable stored in a closure object. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  VariableCapture::CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  /** Gets the captured variable. */
+  VariableCapture::CapturedVariable getVariable() { result = v }
+
+  override string toString() { result = "captured " + v.getName() }
+
+  override Location getLocation() { result = v.getLocation() }
 }
 
 private newtype TContentSet =

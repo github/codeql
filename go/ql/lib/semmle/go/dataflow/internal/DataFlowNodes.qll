@@ -8,6 +8,7 @@ private import semmle.go.dataflow.SsaImpl as SsaImpl
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.go.dataflow.ExternalFlow
+private import VariableCapture as VariableCapture
 
 cached
 private newtype TNode =
@@ -20,7 +21,9 @@ private newtype TNode =
   } or
   MkSliceElementNode(SliceExpr se) or
   MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
-  MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) }
+  MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) } or
+  MkCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode capture) or
+  MkCapturedVariablesParameterNode(FuncLit function)
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
@@ -106,6 +109,63 @@ module Private {
       // We do not currently have support for callback-based library models.
       none()
     }
+  }
+
+  /** A synthesized access to captured storage. */
+  class CaptureNode extends Node, MkCaptureNode {
+    VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() {
+      this = MkCaptureNode(result)
+    }
+
+    override ControlFlow::Root getRoot() {
+      result = this.getSynthesizedCaptureNode().getEnclosingCallable()
+    }
+
+    override Type getType() {
+      exists(VariableCapture::CapturedVariable v |
+        this.getSynthesizedCaptureNode().isVariableAccess(v) and
+        result = v.getType()
+      )
+      or
+      this.getSynthesizedCaptureNode().isInstanceAccess() and
+      result = this.getRoot().(FuncLit).getType()
+    }
+
+    override string getNodeKind() { result = "captured variable" }
+
+    override string toString() { result = this.getSynthesizedCaptureNode().toString() }
+
+    override Location getLocation() { result = this.getSynthesizedCaptureNode().getLocation() }
+  }
+
+  /** The closure object passed implicitly when invoking a function literal. */
+  class CapturedVariablesParameterNode extends ParameterNode, MkCapturedVariablesParameterNode {
+    FuncLit getFunction() { this = MkCapturedVariablesParameterNode(result) }
+
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      c.asCallable().getFuncDef() = this.getFunction() and i = -2
+    }
+
+    override ControlFlow::Root getRoot() { result = this.getFunction() }
+
+    override Type getType() { result = this.getFunction().getType() }
+
+    override string getNodeKind() { result = "captured variables parameter" }
+
+    override string toString() { result = "captured variables" }
+
+    override Location getLocation() { result = this.getFunction().getLocation() }
+  }
+
+  private class CapturePostUpdateNode extends CaptureNode, PostUpdateNode {
+    CaptureNode pre;
+
+    CapturePostUpdateNode() {
+      VariableCapture::Flow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+        pre.getSynthesizedCaptureNode())
+    }
+
+    override Node getPreUpdateNode() { result = pre }
   }
 }
 
@@ -472,9 +532,19 @@ module Public {
    * pointless recomputation of `getACallee()` each recursive iteration.
    */
   private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
-    result = cn.getCalleeNode() or
-    basicLocalFlowStep(result, getACalleeSource(cn)) or
-    jumpStep(result, getACalleeSource(cn)) or
+    result = cn.getCalleeNode()
+    or
+    basicLocalFlowStep(result, getACalleeSource(cn))
+    or
+    jumpStep(result, getACalleeSource(cn))
+    or
+    // every write to a captured function variable
+    exists(SsaSourceVariable v, IR::WriteInstruction write |
+      v.isCaptured() and
+      getACalleeSource(cn).asInstruction().reads(v) and
+      write.writes(v, result.asInstruction())
+    )
+    or
     result.asExpr() = getACalleeSource(cn).asExpr().(GenericFunctionInstantiationExpr).getBase()
   }
 
@@ -854,6 +924,8 @@ module Public {
 
   /** Holds if the node corresponding to `insn` has a post-update node. */
   predicate insnHasPostUpdateNode(IR::Instruction insn) {
+    insn = IR::evalExprInstruction(any(CallExpr call).getCalleeExpr())
+    or
     exists(Expr e | insn.(IR::EvalInstruction).getExpr() = e |
       e instanceof AddressExpr or
       e = any(AddressExpr ae).getOperand() or

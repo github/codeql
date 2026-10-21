@@ -11,6 +11,7 @@ private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.go.dataflow.FlowSummary as FlowSummary
 private import semmle.go.dataflow.ExternalFlow
 private import codeql.util.Unit
+private import VariableCapture as VariableCapture
 import DataFlowNodes::Private
 
 private newtype TReturnKind =
@@ -72,6 +73,7 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   // Instruction -> SSA defn
   exists(IR::Instruction pred, SsaExplicitWrite succ |
+    not succ.getSourceVariable() instanceof VariableCapture::CapturedVariable and
     succ.getDefinition().getRhs() = pred and
     (
       nodeFrom = instructionNode(pred) or
@@ -82,6 +84,7 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   // SSA defn -> first SSA use
   exists(SsaDefinition pred, IR::Instruction succ | SsaImpl::firstUse(pred, succ) |
+    not pred.getSourceVariable() instanceof VariableCapture::CapturedVariable and
     (pred instanceof SsaExplicitWrite or pred instanceof SsaUncertainWrite) and
     nodeFrom = ssaNode(pred) and
     nodeTo = instructionNode(succ)
@@ -90,6 +93,7 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // SSA use -> successive SSA use
   // Note this case includes Phi node traversal
   exists(IR::Instruction pred, IR::Instruction succ | succ = getAnAdjacentUse(pred) |
+    not exists(VariableCapture::CapturedVariable v | pred.reads(v)) and
     (
       nodeFrom = instructionNode(pred) or
       nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
@@ -97,6 +101,8 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
     nodeTo = instructionNode(succ) and
     nodeTo != nodeFrom
   )
+  or
+  VariableCapture::localFlowStep(nodeFrom, nodeTo)
 }
 
 pragma[noinline]
@@ -124,23 +130,6 @@ predicate jumpStep(Node n1, Node n2) {
       n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = v.getARead()
     ) and
     isValueEntityRead(v, n2)
-  )
-  or
-  exists(SsaExplicitWrite def, SsaUncertainWrite succ |
-    succ.getSourceVariable() = def.getSourceVariable() and
-    n2 = ssaNode(succ)
-  |
-    not SsaImpl::firstUse(def, _) and n1 = ssaNode(def)
-    or
-    exists(IR::Instruction lastUse |
-      exists(IR::Instruction firstUse |
-        SsaImpl::firstUse(def, firstUse) and lastUse = getAnAdjacentUse*(firstUse)
-      ) and
-      not exists(getAnAdjacentUse(lastUse))
-    |
-      n1 = instructionNode(lastUse) or
-      n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = instructionNode(lastUse)
-    )
   )
   or
   // If a channel-typed field is referenced exactly once in the context of
@@ -185,6 +174,8 @@ predicate storeStep(Node node1, ContentSet cs, Node node2) {
     c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
     or
     containerStoreStep(node1, node2, c)
+    or
+    VariableCapture::storeStep(node1, c, node2)
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
@@ -208,6 +199,8 @@ predicate readStep(Node node1, ContentSet cs, Node node2) {
     )
     or
     containerReadStep(node1, node2, c)
+    or
+    VariableCapture::readStep(node1, c, node2)
   )
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
@@ -222,14 +215,11 @@ predicate readStep(Node node1, ContentSet cs, Node node2) {
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
 predicate clearsContent(Node n, ContentSet c) {
-  // Because our post-update nodes are shared between multiple pre-update
-  // nodes, attempting to clear content causes summary stores into arg in
-  // particular to malfunction.
-  none()
-  // c instanceof FieldContent and
-  // FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n)
-  // or
-  // FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+  // TODO: Add summaryClearsContent for FlowSummaryNodes and clearing for definite field
+  // overwrites. First establish with regression tests that use-use flow cannot bypass
+  // summary clearing via pre-update nodes, and that overwrite rules only clear content
+  // that is definitely replaced, rather than merely stored into.
+  VariableCapture::clearsContent(n, c.asOneContent())
 }
 
 /**
@@ -357,7 +347,7 @@ class DataFlowCall extends Expr {
   /**
    * Gets the nth argument for this call.
    */
-  Node getArgument(int n) { result = call.getArgument(n) }
+  ArgumentNode getArgument(int n) { result.argumentOf(this, n) }
 
   /** Gets the data flow node corresponding to this call. */
   ExprNode getNode() { result = call }
@@ -438,13 +428,16 @@ predicate forceHighPrecision(Content c) {
 
 /**
  * Gets the `i`th argument of call `c`, where the receiver of a method call
- * counts as argument -1.
+ * counts as argument -1 and the closure object counts as argument -2.
  */
 Node getArgument(CallNode c, int i) {
   result = c.getArgument(i)
   or
   result = c.(MethodCallNode).getReceiver() and
   i = -1
+  or
+  result = exprNode(c.asExpr().(CallExpr).getCalleeExpr()) and
+  i = -2
 }
 
 /** Holds if `n` should be hidden from path explanations. */
@@ -453,10 +446,17 @@ predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+  creation.asExpr() = c.asCallable().asFuncLit() and
+  exists(kind)
+}
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
-predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  not exists(call.(CallExpr).getTarget()) and
+  receiver = call.getNode().(CallNode).getCalleeNode() and
+  exists(kind)
+}
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
@@ -475,6 +475,9 @@ class DataFlowSecondLevelScope = Unit;
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
+  VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(CapturedVariablesParameterNode)
+        .getFunction())
+  or
   exists(DataFlowCallable c, int pos |
     p.isParameterOf(c, pos) and
     FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
