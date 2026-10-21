@@ -38,6 +38,12 @@ predicate associatedTypeParameterInherited(
   name = a.getName()
 }
 
+private predicate isNestedType(ClassLikeDeclaration nested, ClassLikeDeclaration parent) {
+  exists(nested.getNameNode()) and
+  exists(parent.getNameNode()) and
+  parent.getAMemberIncludingExtensions() = nested
+}
+
 cached
 newtype TType =
   TClassLikeDeclarationType(ClassLikeDeclaration c) {
@@ -56,6 +62,7 @@ newtype TType =
   ) {
     associatedTypeParameter(c, a, inherited)
   } or
+  TParentTypeParameterType(ClassLikeDeclaration c) { isNestedType(c, _) } or
   TUnknownType() or
   TUnknownTypeTypeParameter(int i) { i in [0 .. 20] }
 
@@ -112,9 +119,11 @@ class ClassLikeDeclarationType extends TypeImpl, TClassLikeDeclarationType {
     result = super.getATypeParameter()
     or
     result = TAssociatedTypeParameterType(c, _, _)
+    or
+    result = TParentTypeParameterType(c)
   }
 
-  override string toString() { result = c.getName() }
+  override string toString() { result = c.getQualifiedName() }
 
   override Location getLocation() { result = c.getLocation() }
 }
@@ -212,6 +221,25 @@ class AssociatedTypeParameterType extends TypeParameter, TAssociatedTypeParamete
   override Location getLocation() {
     if inherited = true then result = c.getLocation() else result = assocTypeDecl.getLocation()
   }
+}
+
+/**
+ * A special type parameter used to represent the parent type of a nested class.
+ */
+class ParentTypeParameterType extends TypeParameter, TParentTypeParameterType {
+  private Unified::ClassLikeDeclaration c;
+
+  ParentTypeParameterType() { this = TParentTypeParameterType(c) }
+
+  ClassLikeDeclaration getParent() { isNestedType(c, result) }
+
+  override ClassLikeDeclaration getDeclaringItem() { result = c }
+
+  override Identifier getNameNode() { none() }
+
+  override string toString() { result = "(parent:" + c.getName() + ")" }
+
+  override Location getLocation() { result = c.getLocation() }
 }
 
 /**

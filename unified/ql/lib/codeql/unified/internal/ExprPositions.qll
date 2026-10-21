@@ -3,9 +3,11 @@ private import NameBinding as NameBinding
 private import ExprPositionsPlugin
 
 /**
- * Holds if `expr` appears in a context where it must refer to a type.
+ * Holds if `expr` appears in a context where it must refer to a type,
+ * and where omission of type arguments implicitly refer to the type
+ * parameters of the type being accessed (provided that they are in scope).
  */
-predicate isInTypeContext(Expr expr) {
+predicate isInTypeContextWithImplicitTypeArgs(Expr expr) {
   expr = any(TypeCastExpr n).getType()
   or
   expr = any(TypeTestExpr n).getType()
@@ -36,11 +38,26 @@ predicate isInTypeContext(Expr expr) {
   or
   expr.getParent() instanceof TypeConstraint
   or
+  any(ExprPositionsPlugin p).isInTypeContextWithImplicitTypeArgs(expr)
+  or
+  isInTypeContextWithImplicitTypeArgs(expr.getEnclosingExpr())
+}
+
+private predicate isInTypeContextWithoutImplicitTypeArgs(Expr expr) {
   exists(NameBinding::getTypeFromRef(expr))
   or
   any(ExprPositionsPlugin p).isInTypeContext(expr)
   or
-  isInTypeContext(expr.getEnclosingExpr())
+  isInTypeContextWithoutImplicitTypeArgs(expr.getEnclosingExpr())
+}
+
+/**
+ * Holds if `expr` appears in a context where it must refer to a type.
+ */
+predicate isInTypeContext(Expr expr) {
+  isInTypeContextWithImplicitTypeArgs(expr)
+  or
+  isInTypeContextWithoutImplicitTypeArgs(expr)
 }
 
 /** Holds if `e` appears in a name-binding position inside `declaration` */

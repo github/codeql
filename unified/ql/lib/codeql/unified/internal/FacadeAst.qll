@@ -50,6 +50,11 @@ module Unified {
       )
     }
 
+    /**
+     * Gets the nearest resolved enclosing class declaration, if any.
+     */
+    ClassLikeDeclaration getEnclosingClassResolved() { result = this.getEnclosingClass().resolve() }
+
     private AstNode overrideEnclosingCallableParent() {
       exists(FunctionExpr func |
         // Capture declarations are evaluated as part of the outer context, and

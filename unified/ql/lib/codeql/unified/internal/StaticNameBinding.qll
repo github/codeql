@@ -827,6 +827,21 @@ Identifier getTypeFromRef(AstNode access) {
 }
 
 /**
+ * Gets the type being accessed by `access`, where type aliases are resolved, if any.
+ */
+Identifier getTypeFromRefAliasesResolved(AstNode access) {
+  exists(Identifier i | i = getTypeFromRef(access) |
+    not i = any(TypeAliasDeclaration t).getNameNode() and
+    result = i
+    or
+    exists(TypeAliasDeclaration alias |
+      i = alias.getNameNode() and
+      result = getTypeFromRefAliasesResolved(alias.getType())
+    )
+  )
+}
+
+/**
  * Gets the name of the implicit receiver parameter in scope at `callable` (possibly declared by an outer callable).
  *
  * Note that we only propagate the name, not the LocalVariable, since capture-declarations and Swift's `guard let self` statements
