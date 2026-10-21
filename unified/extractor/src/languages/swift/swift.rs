@@ -143,7 +143,10 @@ fn member_chain(
 }
 
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
-    vec![
+    yeast::rules! {
+        input: "swift_node_types.yml",
+        output: "ast_types.yml",
+        [
         // ---- Top-level ----
         // These rules translate the swift-syntax AST (camelCase kind names),
         // produced by the sibling `adapter` module from swift-syntax JSON.
@@ -1568,7 +1571,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 tree!((unhandled_node))
             }
         ),
-    ]
+        ]
+    }
 }
 
 pub fn language_spec(desugared_ast_schema: &'static str) -> desugaring::LanguageSpec {
