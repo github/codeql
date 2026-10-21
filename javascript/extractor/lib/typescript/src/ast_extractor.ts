@@ -1,5 +1,4 @@
 import * as ts from "./typescript";
-import { Project } from "./common";
 
 /**
  * Interface that exposes some internal properties we rely on, as well as
@@ -72,7 +71,7 @@ function tryGetTypeOfNode(typeChecker: ts.TypeChecker, node: AugmentedNode): ts.
     }
 }
 
-export function augmentAst(ast: AugmentedSourceFile, code: string, project: Project | null) {
+export function augmentAst(ast: AugmentedSourceFile, code: string) {
     ast.$lineStarts = ast.getLineStarts();
 
     /**

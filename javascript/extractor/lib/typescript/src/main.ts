@@ -36,8 +36,6 @@ import * as readline from "readline";
 import * as ts from "./typescript";
 import * as ast_extractor from "./ast_extractor";
 
-import { Project } from "./common";
-
 // Remove limit on stack trace depth.
 Error.stackTraceLimit = Infinity;
 
@@ -62,15 +60,12 @@ type Command = ParseCommand | ResetCommand | QuitCommand | PrepareFilesCommand |
 
 /** The state to be shared between commands. */
 class State {
-    public project: Project = null;
-
     /** List of files that have been requested. */
     public pendingFiles: string[] = [];
     public pendingFileIndex = 0;
 
     /** Next response to be delivered. */
     public pendingResponse: string = null;
-
 }
 let state = new State();
 
@@ -284,13 +279,12 @@ function isExtractableSourceFile(ast: ast_extractor.AugmentedSourceFile): boolea
 }
 
 /**
- * Gets the AST and source code for the given file, either from
- * an already-open project, or by parsing the file.
+ * Gets the AST and source code by parsing the given file.
  */
 function getAstForFile(filename: string): ts.SourceFile {
     let { ast, code } = parseSingleFile(filename);
     if (ast != null && isExtractableSourceFile(ast)) {
-        ast_extractor.augmentAst(ast, code, null);
+        ast_extractor.augmentAst(ast, code);
     }
     return ast;
 }
