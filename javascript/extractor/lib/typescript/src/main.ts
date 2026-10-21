@@ -37,7 +37,6 @@ import * as ts from "./typescript";
 import * as ast_extractor from "./ast_extractor";
 
 import { Project } from "./common";
-import { VirtualSourceRoot } from "./virtual_source_root";
 
 // Remove limit on stack trace depth.
 Error.stackTraceLimit = Infinity;
@@ -45,13 +44,6 @@ Error.stackTraceLimit = Infinity;
 interface ParseCommand {
     command: "parse";
     filename: string;
-}
-interface LoadCommand {
-    tsConfig: string;
-    sourceRoot: string | null;
-    virtualSourceRoot: string | null;
-    packageEntryPoints: [string, string][];
-    packageJsonFiles: [string, string][];
 }
 interface ResetCommand {
     command: "reset";
@@ -338,98 +330,6 @@ function parseSingleFile(filename: string): { ast: ts.SourceFile, code: string }
     let ast = program.getSourceFile(filename);
 
     return { ast, code };
-}
-
-/**
- * Matches a path segment referencing a package in a node_modules folder, and extracts
- * two capture groups: the package name, and the relative path in the package.
- *
- * For example `lib/node_modules/@foo/bar/src/index.js` extracts the capture groups [`@foo/bar`, `src/index.js`].
- */
-const nodeModulesRex = /[/\\]node_modules[/\\]((?:@[\w.-]+[/\\])?\w[\w.-]*)[/\\](.*)/;
-
-interface LoadedConfig {
-    config: ts.ParsedCommandLine;
-    basePath: string;
-    packageEntryPoints: Map<string, string>;
-    packageJsonFiles: Map<string, string>;
-    virtualSourceRoot: VirtualSourceRoot;
-    ownFiles: string[];
-}
-
-function loadTsConfig(command: LoadCommand): LoadedConfig {
-    let tsConfig = ts.readConfigFile(command.tsConfig, ts.sys.readFile);
-    let basePath = pathlib.dirname(command.tsConfig);
-
-    let packageEntryPoints = new Map(command.packageEntryPoints);
-    let packageJsonFiles = new Map(command.packageJsonFiles);
-    let virtualSourceRoot = new VirtualSourceRoot(command.sourceRoot, command.virtualSourceRoot);
-
-    /**
-     * Rewrites path segments of form `node_modules/PACK/suffix` to be relative to
-     * the location of package PACK in the source tree, if it exists.
-     */
-    function redirectNodeModulesPath(path: string) {
-        let nodeModulesMatch = nodeModulesRex.exec(path);
-        if (nodeModulesMatch == null) return null;
-        let packageName = nodeModulesMatch[1];
-        let packageJsonFile = packageJsonFiles.get(packageName);
-        if (packageJsonFile == null) return null;
-        let packageDir = pathlib.dirname(packageJsonFile);
-        let suffix = nodeModulesMatch[2];
-        let finalPath = pathlib.join(packageDir, suffix);
-        if (!ts.sys.fileExists(finalPath)) return null;
-        return finalPath;
-    }
-
-    /**
-     * Create the host passed to the tsconfig.json parser.
-     *
-     * We override its file system access in case there is an "extends"
-     * clause pointing into "./node_modules", which must be redirected to
-     * the location of an installed package or a checked-in package.
-     */
-    let parseConfigHost: ts.ParseConfigHost = {
-        useCaseSensitiveFileNames: true,
-        readDirectory: (rootDir, extensions, excludes?, includes?, depth?) => {
-            // Perform the glob matching in both real and virtual source roots.
-            let exclusions = excludes == null ? [] : [...excludes];
-            if (virtualSourceRoot.virtualSourceRoot != null) {
-                // qltest puts the virtual source root inside the real source root (.testproj).
-                // Make sure we don't find files inside the virtual source root in this pass.
-                exclusions.push(virtualSourceRoot.virtualSourceRoot);
-            }
-            let originalResults = ts.sys.readDirectory(rootDir, extensions, exclusions, includes, depth)
-            let virtualDir = virtualSourceRoot.toVirtualPath(rootDir);
-            if (virtualDir == null) {
-                return originalResults;
-            }
-            // Make sure glob matching does not to discover anything in node_modules.
-            let virtualExclusions = excludes == null ? [] : [...excludes];
-            virtualExclusions.push('**/node_modules/**/*');
-            let virtualResults = ts.sys.readDirectory(virtualDir, extensions, virtualExclusions, includes, depth)
-            return [...originalResults, ...virtualResults];
-        },
-        fileExists: (path: string) => {
-            return ts.sys.fileExists(path)
-                || virtualSourceRoot.toVirtualPathIfFileExists(path) != null
-                || redirectNodeModulesPath(path) != null;
-        },
-        readFile: (path: string) => {
-            if (!ts.sys.fileExists(path)) {
-                let virtualPath = virtualSourceRoot.toVirtualPathIfFileExists(path);
-                if (virtualPath != null) return ts.sys.readFile(virtualPath);
-                virtualPath = redirectNodeModulesPath(path);
-                if (virtualPath != null) return ts.sys.readFile(virtualPath);
-            }
-            return ts.sys.readFile(path);
-        }
-    };
-    let config = ts.parseJsonConfigFileContent(tsConfig.config, parseConfigHost, basePath);
-
-    let ownFiles = config.fileNames.map(file => pathlib.resolve(file));
-
-    return { config, basePath, packageJsonFiles, packageEntryPoints, virtualSourceRoot, ownFiles };
 }
 
 function handleResetCommand(command: ResetCommand) {
