@@ -131,10 +131,9 @@ export function augmentAst(ast: AugmentedSourceFile, code: string) {
         }
 
         if (ts.isVariableDeclarationList(node as any)) {
-            let tz = ts as any;
-            if (typeof tz.isLet === "function" && tz.isLet(node) || (node.flags & ts.NodeFlags.Let)) {
+            if (node.flags & ts.NodeFlags.Let) {
                 node.$declarationKind = "let";
-            } else if (typeof tz.isConst === "function" && tz.isConst(node) || (node.flags & ts.NodeFlags.Const)) {
+            } else if (node.flags & ts.NodeFlags.Const) {
                 node.$declarationKind = "const";
             } else {
                 node.$declarationKind = "var";
