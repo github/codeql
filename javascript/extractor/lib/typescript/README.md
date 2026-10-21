@@ -46,11 +46,8 @@ run it separately without replacing the wrapper's build/runtime dependency:
 npm exec --yes --package=tslint@6.1.3 --package=typescript@5.9.2 -- tslint --project .
 ```
 
-`SEMMLE_TYPESCRIPT_HOME` still overrides the runtime dependency. It must point to
-the installed TypeScript package directory (containing `package.json`), with the
-native `typescript/sync` and `typescript/ast` entry points and matching executable.
-A legacy 5.x module or a directory from which the bundled package merely happens
-to be resolvable is not a valid override.
+The wrapper always uses the bundled TypeScript dependency.
+`SEMMLE_TYPESCRIPT_HOME` is no longer supported and is ignored.
 
 Distribution packaging
 ----------------------
@@ -59,12 +56,12 @@ The Bazel build produces two archives: `:typescript` (`javascript.zip`) contains
 the compiled ESM wrapper and JavaScript API; `:native` (`native.zip`) contains the
 matching native packages for the target CodeQL distribution:
 
-| Distribution | Native packages |
-| --- | --- |
-| `linux64` | `@typescript/typescript-linux-x64` |
-| `linux-arm64` | `@typescript/typescript-linux-arm64` |
-| `osx64` | `@typescript/typescript-darwin-arm64` and `@typescript/typescript-darwin-x64` |
-| `win64` | `@typescript/typescript-win32-x64` |
+| Distribution  | Native packages                                                               |
+| ------------- | ----------------------------------------------------------------------------- |
+| `linux64`     | `@typescript/typescript-linux-x64`                                            |
+| `linux-arm64` | `@typescript/typescript-linux-arm64`                                          |
+| `osx64`       | `@typescript/typescript-darwin-arm64` and `@typescript/typescript-darwin-x64` |
+| `win64`       | `@typescript/typescript-win32-x64`                                            |
 
 The build installs the selected packages explicitly with `--force --no-save`,
 using the pinned versions and integrities in the lockfile. Merely passing
@@ -97,12 +94,13 @@ Linux arm64, and Windows x64, including Windows 2022.
 Native lifecycle and memory
 ---------------------------
 
-Each file owns a fresh native API/process. AST projection and JSON serialization
-finish before the program is disposed and the API is closed, including on
-failure. No native process or compiler cache is retained between files, during
-stdout backpressure, or across reset/quit. This deliberately favors bounded
-resource lifetime over reusing a compiler process; the measured cost is described
-below.
+A single native API/process is created lazily and reused across files and
+prepare-files batches. Each file still owns a separate program: AST projection
+and JSON serialization finish before the program is disposed, including on
+failure. Program disposal releases its snapshot and reference-counted source-file
+caches without restarting the compiler. Reset closes the API, and the next parse
+creates a new one. Quit, EOF, failure, and completion of single-file mode also
+close the API.
 
 `SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD` remains a positive megabyte budget, defaulting
 to 1000 when the Java extractor does not supply it. At native-process creation,
@@ -111,9 +109,9 @@ and passes the remaining bytes, with a minimum of one, as the child's
 `GOMEMLIMIT`. The parent's original `GOMEMLIMIT` is restored after spawning.
 This is a Go garbage-collector soft limit, not a hard combined RSS ceiling:
 Node allocations during extraction, native non-Go allocations, and oversized
-individual files can exceed the budget. Closing the native process after every
-file prevents native caches and heap capacity from accumulating across files.
-Node RSS exceeding the budget produces a warning on stderr.
+individual files can exceed the budget. The child's budget is fixed until the
+API is closed; later changes to Node RSS do not resize it. Node RSS exceeding
+the budget at native-process creation produces a warning on stderr.
 
 Native stderr is inherited separately from the JSON stdout protocol. Syntax
 diagnostics remain successful AST responses; native, I/O, and protocol failures
@@ -137,7 +135,7 @@ Projection checks only the whitelisted properties applicable to each syntax kind
 including optional properties, and falls back to the full whitelist for unknown
 kinds. `src/ast_extractor.ts` loads the private
 `dist/api/node/protocol.generated.js` metadata once from the locally installed,
-pinned TypeScript dependency, independently of `SEMMLE_TYPESCRIPT_HOME`.
+pinned TypeScript dependency.
 Updating TypeScript may require adapting this internal path or metadata format.
 Scalar getters and kind-specific booleans are handled separately.
 The Java converter consumes native fields directly, including `postfixToken`,
@@ -146,8 +144,8 @@ spelling. Namespace classification and variable declaration kinds are derived
 in Java without synthetic flags or properties.
 
 The tests cover AST projection, metadata, UTF-16 source positions, syntax
-diagnostics, TSX, repeated parses, native process disposal, the child memory
-budget, reset/quit/EOF, cancelled prefetch, runtime overrides, and fatal native
+diagnostics, TSX, repeated parses, native process reuse and disposal, the child memory
+budget, reset/quit/EOF, cancelled prefetch, the ignored legacy override, and fatal native
 failures. Run them with Node.js 16.20.0 to verify the minimum supported runtime.
 
 Compatibility and regression coverage
@@ -200,19 +198,56 @@ codeql test run -j4 --search-path=javascript/extractor-pack:. \
 Performance comparison
 ----------------------
 
-On macOS arm64 with Node.js 18.15.0, a comparison against the pre-migration
-wrapper from `1971c368e1d` compiled with TypeScript 5.9.2 gave these medians over three
-runs:
+The current shared-API implementation was compared with refreshed `main` at
+`fb0ba8c8a8a` on October 21, 2026. Both ran on macOS arm64 with Node.js 18.15.0;
+`main` was built and run with TypeScript 5.9.2, and this branch used the pinned
+7.1 native compiler. These are medians of five fresh-process runs after one
+warm-up per variant and workload, alternating variant order:
 
-| Workload | 5.9.2 time | 7.1 time | 5.9.2 combined RSS | 7.1 combined RSS |
+| Workload | Main time | Branch time | Main combined RSS | Branch combined RSS |
 | --- | --- | --- | --- | --- |
-| 103 TypeScript fixtures (33,589 bytes) | 0.237 s | 1.349 s | 124.1 MiB | 113.9 MiB |
-| Five parses of TypeScript's 588,128-byte declaration file | 0.991 s | 1.116 s | 269.3 MiB | 249.1 MiB |
+| 104 TypeScript fixtures (33,779 bytes) | 0.081 s | 0.120 s | 105.5 MiB | 110.4 MiB |
+| Five parses of TypeScript's 588,128-byte declaration file | 0.886 s | 0.992 s | 263.7 MiB | 247.2 MiB |
+
+The branch takes 47.3% more time on the fixtures and 11.9% more on the declaration
+workload. Sampled combined RSS is 4.7% higher and 6.3% lower, respectively.
+Both variants parse identical inputs. Timing starts after the metadata handshake
+and includes prepare-files, AST extraction, serialization, and protocol responses,
+including the branch's first native-process startup. It excludes Java conversion
+and database import. RSS is the maximum sampled sum of Node and its native
+descendants, sampled at a nominal 5 ms interval; short-lived peaks may be missed.
+Current `main` includes parser cleanup absent from the older baseline below.
+
+### Historical and API-lifetime comparisons
+
+The initial implementation created a native process per file. On macOS arm64
+with Node.js 18.15.0, a comparison against the pre-migration wrapper from
+`1971c368e1d` compiled with TypeScript 5.9.2 gave these medians over three runs:
+
+| Workload                                                  | 5.9.2 time | 7.1 time | 5.9.2 combined RSS | 7.1 combined RSS |
+| --------------------------------------------------------- | ---------- | -------- | ------------------ | ---------------- |
+| 103 TypeScript fixtures (33,589 bytes)                    | 0.237 s    | 1.349 s  | 124.1 MiB          | 113.9 MiB        |
+| Five parses of TypeScript's 588,128-byte declaration file | 0.991 s    | 1.116 s  | 269.3 MiB          | 249.1 MiB        |
 
 Timing covers prepare-files, extraction, serialization, and protocol responses
 after the metadata handshake, not Java conversion or database import. Combined
 RSS is the maximum sampled sum of Node and its native descendants, sampled every
 5 ms; short-lived peaks may be missed. The per-file native process costs about
 5.7x on tiny files and 1.13x on the declaration workload, while measured memory is
-slightly lower. The bounded lifecycle is retained deliberately; this migration
-does not claim a speedup.
+slightly lower.
+
+A follow-up comparison on October 21, 2026, using the same platform and Node.js
+version, measured the per-file and shared-API lifetimes directly (medians of three
+runs):
+
+| Workload | Per-file API time | Shared API time | Per-file combined RSS | Shared combined RSS |
+| --- | --- | --- | --- | --- |
+| 104 TypeScript fixtures (33,779 bytes) | 1.017 s | 0.118 s | 115.8 MiB | 109.4 MiB |
+| Five parses of the same declaration file | 1.044 s | 0.985 s | 250.2 MiB | 260.2 MiB |
+
+AST responses were byte-identical between lifetimes. A longer shared-API run on
+Node.js 26.7.0 processed 50,000 distinct generated TypeScript files: native RSS
+was 27.9 MiB after 1,000 files and 30.4 MiB after 50,000, while combined RSS
+stabilized around 176 MiB. Another run completed 500 parses of the declaration
+file with peak native RSS of 56.5 MiB. These workloads showed no unbounded
+per-file retention, so the wrapper reuses the API without a fixed batch limit.

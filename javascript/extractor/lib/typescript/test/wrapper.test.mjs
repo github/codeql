@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawn } from "node:child_process";
-import { copyFileSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
-import { createRequire } from "node:module";
+import { copyFileSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { createInterface } from "node:readline";
@@ -15,11 +14,10 @@ const directory = mkdtempSync(join(tmpdir(), "codeql-typescript-wrapper-"));
 const entryPoint = join(directory, "main.js");
 copyFileSync(join(root, "package.json"), join(directory, "package.json"));
 symlinkSync(join(root, "node_modules"), join(directory, "node_modules"), "dir");
-for (const name of ["main.js", "ast_extractor.js", "typescript.js"]) {
+for (const name of ["main.js", "ast_extractor.js"]) {
     copyFileSync(join(root, "build", name), join(directory, name));
 }
 const { extractAst } = await import(pathToFileURL(join(directory, "ast_extractor.js")));
-const ts = await import(pathToFileURL(join(directory, "typescript.js")));
 const api = new API();
 
 after(() => {
@@ -47,57 +45,6 @@ function extract(text, extension = ".ts") {
 function declaration(ast, index = 0) {
     return ast.statements[index].declarationList.declarations[0];
 }
-
-test("wire metadata uses native syntax names and flags without compatibility aliases", () => {
-    assert.deepEqual(ts.SyntaxKind, SyntaxKind);
-    assert.deepEqual(ts.NodeFlags, NodeFlags);
-    assert(!("EndOfFileToken" in ts.SyntaxKind));
-    assert(!("GlobalAugmentation" in ts.NodeFlags));
-});
-
-test("per-kind property lists use the local dependency's metadata and syntax kinds", () => {
-    const require = createRequire(import.meta.url);
-    const override = join(directory, "metadata-runtime");
-    mkdirSync(join(override, "dist", "api", "node"), { recursive: true });
-    writeFileSync(join(override, "package.json"), JSON.stringify({
-        name: "typescript",
-        type: "module",
-        exports: {
-            ".": "./version.cjs",
-            "./package.json": "./package.json",
-            "./ast": "./ast.js",
-            "./sync": "./sync.js",
-        },
-    }));
-    const astModule = pathToFileURL(require.resolve("typescript/ast")).href;
-    const syncModule = pathToFileURL(require.resolve("typescript/sync")).href;
-    // An incomplete runtime enum must not restrict the locally derived property lists.
-    writeFileSync(join(override, "ast.js"), `
-        export * from ${JSON.stringify(astModule)};
-        export const SyntaxKind = { EndOfFile: ${SyntaxKind.EndOfFile} };
-    `);
-    writeFileSync(join(override, "sync.js"), `export * from ${JSON.stringify(syncModule)};`);
-    writeFileSync(join(override, "version.cjs"), 'exports.version = "metadata-test";');
-    writeFileSync(join(override, "dist", "api", "node", "protocol.generated.js"),
-        'throw new Error("Metadata must not come from the runtime override");');
-    const module = pathToFileURL(join(directory, "ast_extractor.js")).href;
-    const output = execFileSync(process.execPath, ["--input-type=module", "--eval", `
-        const { extractAst } = await import(${JSON.stringify(module)});
-        const ast = extractAst({
-            kind: ${SyntaxKind.SourceFile}, flags: 0, pos: 0, end: 0, text: "", statements: [],
-            forEachChild() {},
-            getLineStarts() { return [0]; },
-            get argument() { throw new Error("Unrelated child property was read"); },
-        }, []);
-        console.log(JSON.stringify(ast));
-    `], {
-        encoding: "utf8",
-        env: { ...process.env, SEMMLE_TYPESCRIPT_HOME: override },
-    });
-    const ast = JSON.parse(output);
-    assert.deepEqual(ast.statements, []);
-    assert.equal(ast.text, "");
-});
 
 test("AST getters are projected without native implementation details or unrelated booleans", () => {
     const text = "// comment\r\nexport const \\u0061 = \"\u{1f600}\";\r\nlet b = 2; var c = 3;";
@@ -372,6 +319,8 @@ test("the actual wrapper handles metadata, prepared files, out-of-order parsing,
         assert.equal(metadata.type, "metadata");
         assert.deepEqual(metadata.syntaxKinds, SyntaxKind);
         assert.deepEqual(metadata.nodeFlags, NodeFlags);
+        assert(!("EndOfFileToken" in metadata.syntaxKinds));
+        assert(!("GlobalAugmentation" in metadata.nodeFlags));
         assert.deepEqual(await request({ command: "prepare-files", filenames: [first, second] }), { type: "ok" });
         assert.equal(declaration((await request({ command: "parse", filename: first })).ast).name.text, "first");
         assert.equal(declaration((await request({ command: "parse", filename: second })).ast).name.text, "second");
@@ -389,12 +338,11 @@ test("the actual wrapper handles metadata, prepared files, out-of-order parsing,
     }
 });
 
-test("single-file invocation flushes JSON, supports the runtime override, and reports missing files", () => {
+test("single-file invocation flushes JSON and reports missing files", () => {
     const filename = join(directory, "command-line.ts");
     writeFileSync(filename, "const value = 1;");
     const options = {
         encoding: "utf8",
-        env: { ...process.env, SEMMLE_TYPESCRIPT_HOME: join(root, "node_modules", "typescript") },
     };
     const response = JSON.parse(execFileSync(process.execPath, [entryPoint, filename], options));
     assert.equal(declaration(response.ast).name.text, "value");

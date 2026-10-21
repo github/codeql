@@ -41,6 +41,10 @@ let stopped = false;
 let readLineInterface: readline.Interface | undefined;
 let reportedMemoryPressure = false;
 
+// The API instance used to interact with the TypeScript compiler. Should be
+// accessed through `getAPI` and `closeAPI`.
+let api: API | undefined;
+
 function createAPI(): API {
     const threshold = Number(process.env.SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD ?? 1000) * 1000000;
     if (!Number.isSafeInteger(threshold) || threshold <= 0) {
@@ -63,29 +67,34 @@ function createAPI(): API {
     }
 }
 
+function getAPI(): API {
+    return api ??= createAPI();
+}
+
+function closeAPI() {
+    const previous = api;
+    api = undefined;
+    previous?.close();
+}
+
 function extractFile(filename: string): string {
-    const api = createAPI();
+    const program = getAPI().createProgram([pathlib.resolve(filename)], {
+        experimentalDecorators: true,
+        jsx: JsxEmit.Preserve,
+        noResolve: true,
+        noLib: true,
+    });
     try {
-        const program = api.createProgram([pathlib.resolve(filename)], {
-            experimentalDecorators: true,
-            jsx: JsxEmit.Preserve,
-            noResolve: true,
-            noLib: true,
-        });
-        try {
-            const ast = program.getSourceFile(pathlib.resolve(filename));
-            if (ast == null) {
-                throw new Error("TypeScript did not return a source file for " + filename);
-            }
-            return JSON.stringify({
-                type: "ast",
-                ast: extractAst(ast, program.getSyntacticDiagnostics()),
-            });
-        } finally {
-            program.dispose();
+        const ast = program.getSourceFile(pathlib.resolve(filename));
+        if (ast == null) {
+            throw new Error("TypeScript did not return a source file for " + filename);
         }
+        return JSON.stringify({
+            type: "ast",
+            ast: extractAst(ast, program.getSyntacticDiagnostics()),
+        });
     } finally {
-        api.close();
+        program.dispose();
     }
 }
 
@@ -99,10 +108,16 @@ function prepareNextFile() {
 function fail(error: unknown) {
     stopped = true;
     state = new State();
-    readLineInterface?.close();
-    process.stdin.destroy();
     console.error(error);
     process.exitCode = 1;
+    try {
+        closeAPI();
+    } catch (closeError) {
+        console.error(closeError);
+    } finally {
+        readLineInterface?.close();
+        process.stdin.destroy();
+    }
 }
 
 function afterResponse(expectedState: State) {
@@ -141,6 +156,11 @@ function runReadLineInterface() {
         stopped = true;
         state = new State();
         process.stdin.destroy();
+        try {
+            closeAPI();
+        } catch (error) {
+            fail(error);
+        }
     });
     rl.on("error", fail);
     rl.on("line", (line: string) => {
@@ -158,6 +178,7 @@ function runReadLineInterface() {
                     break;
                 case "reset":
                     state = new State();
+                    closeAPI();
                     console.log('{"type":"reset-done"}');
                     break;
                 case "get-metadata":
@@ -187,7 +208,11 @@ try {
         if (argument === "--version") {
             console.log("parser-wrapper with TypeScript " + version);
         } else if (pathlib.extname(argument) === ".ts" || pathlib.extname(argument) === ".tsx") {
-            process.stdout.write(extractFile(argument) + "\n");
+            try {
+                process.stdout.write(extractFile(argument) + "\n");
+            } finally {
+                closeAPI();
+            }
         } else {
             console.error("Unrecognized file or flag: " + argument);
             process.exitCode = 1;

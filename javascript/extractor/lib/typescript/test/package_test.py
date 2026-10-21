@@ -173,7 +173,6 @@ class PackageTest(unittest.TestCase):
             self.extract(self.arch_zip, directory)
             wrapper = directory / "tools/typescript-parser-wrapper"
             environment = dict(os.environ)
-            environment.pop("SEMMLE_TYPESCRIPT_HOME", None)
             environment.pop("NODE_PATH", None)
             commands = []
             for name, source in [

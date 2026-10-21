@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn, spawnSync } from "node:child_process";
-import { copyFileSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { createInterface } from "node:readline";
@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const directory = mkdtempSync(join(tmpdir(), "codeql-typescript-lifecycle-"));
 const entryPoint = join(directory, "main.js");
-for (const name of ["main.js", "ast_extractor.js", "typescript.js"]) {
+for (const name of ["main.js", "ast_extractor.js"]) {
     copyFileSync(join(root, "build", name), join(directory, name));
 }
 copyFileSync(join(root, "package.json"), join(directory, "package.json"));
@@ -37,13 +37,11 @@ cp.spawn = function (...args) {
 after(() => rmSync(directory, { recursive: true, force: true }));
 
 function options(name, env = {}) {
-    const environment = { ...process.env };
-    delete environment.SEMMLE_TYPESCRIPT_HOME;
     return {
         encoding: "utf8",
         timeout: 10000,
         env: {
-            ...environment,
+            ...process.env,
             ...env,
             NATIVE_LOG: join(directory, name + ".log"),
         },
@@ -110,7 +108,7 @@ test("compiled wrapper preserves heritage, assertions and tokens, and accepts so
     assert(ast.$tokens.some(token => token.text === "}`" && token.kind === kinds.CloseBraceToken));
 });
 
-test("compiled ESM wrapper releases each native process and budgets its memory", { timeout: 15000 }, async () => {
+test("compiled ESM wrapper reuses its budgeted native process until reset or quit", { timeout: 15000 }, async () => {
     const name = "repeated";
     const opts = options(name, { SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD: "1000", GOMEMLIMIT: "900MiB" });
     const child = spawn(process.execPath, ["--require", preload, entryPoint], opts);
@@ -128,29 +126,51 @@ test("compiled ESM wrapper releases each native process and budgets its memory",
         return JSON.parse(line.value);
     }
     try {
-        for (let i = 0; i < 10; ++i) {
-            const response = await request({ command: "parse", filename });
-            assert.equal(response.type, "ast");
-            assert.deepEqual(response.ast.parseDiagnostics, []);
-            const processes = nativeProcesses(name);
-            assert.equal(processes.length, i + 1);
-            const native = processes[i];
-            assert(Number(native.memoryLimit) > 0);
-            assert(Number(native.memoryLimit) < 1000000000);
-            assert.deepEqual(native.stdio, process.platform === "win32"
-                ? ["ignore", "ignore", "inherit"] : ["pipe", "pipe", "inherit"]);
-            await assertTerminated(native.pid);
-            assert.deepEqual(await request({ command: "reset" }), { type: "reset-done" });
+        for (let session = 0; session < 2; ++session) {
+            for (let batch = 0; batch < 2; ++batch) {
+                assert.deepEqual(await request({ command: "prepare-files", filenames: Array(5).fill(filename) }),
+                    { type: "ok" });
+                for (let i = 0; i < 5; ++i) {
+                    const response = await request({ command: "parse", filename });
+                    assert.equal(response.type, "ast");
+                    assert.deepEqual(response.ast.parseDiagnostics, []);
+                    const processes = nativeProcesses(name);
+                    assert.equal(processes.length, session + 1);
+                    const native = processes[session];
+                    assert(Number(native.memoryLimit) > 0);
+                    assert(Number(native.memoryLimit) < 1000000000);
+                    assert.deepEqual(native.stdio, process.platform === "win32"
+                        ? ["ignore", "ignore", "inherit"] : ["pipe", "pipe", "inherit"]);
+                    process.kill(native.pid, 0);
+                }
+            }
+            if (session === 0) {
+                assert.deepEqual(await request({ command: "reset" }), { type: "reset-done" });
+                await assertTerminated(nativeProcesses(name)[session].pid);
+            }
         }
         // Quit must terminate even when the sender leaves stdin open.
         child.stdin.write('{"command":"quit"}\n');
         assert.equal(await exited, 0, stderr);
         assert.equal(stderr, "");
+        await assertTerminated(nativeProcesses(name)[1].pid);
     } finally {
         child.stdin.destroy();
         child.kill();
         await exited;
     }
+});
+
+test("metadata and reset do not start a native process", () => {
+    const result = run("lazy", [
+        { command: "get-metadata" },
+        { command: "reset" },
+        { command: "quit" },
+    ].map(command => JSON.stringify(command) + "\n").join(""));
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stderr, "");
+    assert.deepEqual(result.stdout.trim().split("\n").map(line => JSON.parse(line).type), ["metadata", "reset-done"]);
+    assert.equal(existsSync(options("lazy").env.NATIVE_LOG), false);
 });
 
 test("reset and quit invalidate queued prefetch callbacks", () => {
@@ -190,13 +210,29 @@ test("native failures are fatal, close the process, and never become JSON diagno
     await assertTerminated(nativeProcesses("killed")[0].pid);
 });
 
-test("invalid commands, files, memory settings, and runtime overrides fail on stderr", () => {
+test("protocol and extraction failures close an already running native process", async () => {
+    for (const [name, input, message] of [
+        ["active-json", "{\n", /SyntaxError/],
+        ["active-command", '{"command":"invalid"}\n', /Unknown command/],
+        ["active-missing", JSON.stringify({ command: "parse", filename: join(directory, "missing.ts") }) + "\n",
+            /did not return a source file/],
+    ]) {
+        const result = run(name, JSON.stringify({ command: "parse", filename }) + "\n" + input);
+        assert.equal(result.status, 1, name);
+        assert.equal(JSON.parse(result.stdout).type, "ast");
+        assert.match(result.stderr, message);
+        const processes = nativeProcesses(name);
+        assert.equal(processes.length, 1);
+        await assertTerminated(processes[0].pid);
+    }
+});
+
+test("invalid commands, files, and memory settings fail on stderr", () => {
     for (const [name, input, env, args, message] of [
         ["json", "{\n", {}, [], /SyntaxError/],
         ["command", '{"command":"invalid"}\n', {}, [], /Unknown command/],
         ["missing", "", {}, [join(directory, "missing.ts")], /did not return a source file/],
         ["memory", "", { SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD: "invalid" }, [filename], /MEMORY_THRESHOLD/],
-        ["override", "", { SEMMLE_TYPESCRIPT_HOME: directory }, [filename], /SEMMLE_TYPESCRIPT_HOME/],
     ]) {
         const result = run(name, input, env, args);
         assert.equal(result.status, 1, name);
@@ -205,9 +241,9 @@ test("invalid commands, files, memory settings, and runtime overrides fail on st
     }
 });
 
-test("SEMMLE_TYPESCRIPT_HOME selects the installed native package", () => {
-    const result = run("override-valid", "", {
-        SEMMLE_TYPESCRIPT_HOME: join(root, "node_modules", "typescript"),
+test("the removed SEMMLE_TYPESCRIPT_HOME variable is ignored", () => {
+    const result = run("override-ignored", "", {
+        SEMMLE_TYPESCRIPT_HOME: join(directory, "missing-typescript"),
     }, [filename]);
     assert.equal(result.status, 0, result.stderr);
     assert.equal(JSON.parse(result.stdout).type, "ast");

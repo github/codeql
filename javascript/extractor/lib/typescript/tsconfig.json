@@ -9,7 +9,6 @@
       "target": "es2022",
       "rootDir": "src",
       "outDir": "build",
-      "allowJs": true,
   },
   "include": [
     "src"
