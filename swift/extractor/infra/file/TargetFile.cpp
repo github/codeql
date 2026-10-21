@@ -52,7 +52,8 @@ bool TargetFile::init() {
   }
   CODEQL_EXPECT(errno == EEXIST, "Unable to open {} for writing ({})", targetPath,
                 currentErrorCode());
-  // else the file already exists and we just lost the race
+  // else the file already exists and we just lost the race, or some error occurred
+  // and the file could not be created
   return false;
 }
 
