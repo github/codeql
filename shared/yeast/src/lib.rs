@@ -1477,6 +1477,8 @@ pub struct Runner<'a, C = ()> {
     /// externally-built AST (`run_from_ast`), so no tree-sitter grammar is
     /// required.
     language: Option<tree_sitter::Language>,
+    /// Schema of the immutable parser input.
+    input_schema: Option<schema::Schema>,
     schema: schema::Schema,
     phases: &'a [Phase<C>],
 }
@@ -1484,10 +1486,11 @@ pub struct Runner<'a, C = ()> {
 impl<'a, C> Runner<'a, C> {
     /// Create a runner using the input grammar's schema for output.
     pub fn new(language: tree_sitter::Language, phases: &'a [Phase<C>]) -> Self {
-        let schema = schema::from_language(&language);
+        let input_schema = schema::from_language(&language);
         Self {
             language: Some(language),
-            schema,
+            schema: input_schema.clone(),
+            input_schema: Some(input_schema),
             phases,
         }
     }
@@ -1498,8 +1501,19 @@ impl<'a, C> Runner<'a, C> {
         schema: &schema::Schema,
         phases: &'a [Phase<C>],
     ) -> Self {
+        let input_schema = schema::from_language(&language);
+        Self::with_schemas(language, &input_schema, schema, phases)
+    }
+
+    fn with_schemas(
+        language: tree_sitter::Language,
+        input_schema: &schema::Schema,
+        schema: &schema::Schema,
+        phases: &'a [Phase<C>],
+    ) -> Self {
         Self {
             language: Some(language),
+            input_schema: Some(input_schema.clone()),
             schema: schema.clone(),
             phases,
         }
@@ -1511,6 +1525,7 @@ impl<'a, C> Runner<'a, C> {
     pub fn with_schema_no_language(schema: &schema::Schema, phases: &'a [Phase<C>]) -> Self {
         Self {
             language: None,
+            input_schema: None,
             schema: schema.clone(),
             phases,
         }
@@ -1521,9 +1536,14 @@ impl<'a, C> Runner<'a, C> {
         language: tree_sitter::Language,
         config: &'a DesugaringConfig<C>,
     ) -> Result<Self, String> {
-        let schema = config.build_schema(&language)?;
+        let input_schema = schema::from_language(&language);
+        let output_schema = config
+            .output_node_types_yaml
+            .ok_or("a desugaring config requires output_node_types_yaml")?;
+        let schema = node_types_yaml::schema_from_yaml_with_language(output_schema, &language)?;
         Ok(Self {
             language: Some(language),
+            input_schema: Some(input_schema),
             schema,
             phases: &config.phases,
         })
@@ -1544,8 +1564,12 @@ impl<'a, C: Clone> Runner<'a, C> {
             .language
             .as_ref()
             .ok_or("run_from_tree requires a tree-sitter language")?;
+        let input_schema = self
+            .input_schema
+            .as_ref()
+            .ok_or("run_from_tree requires an input schema")?;
         let input = Ast::from_tree_with_schema_and_source(
-            schema::from_language(language),
+            input_schema.clone(),
             tree,
             language,
             source.to_vec(),
@@ -1560,6 +1584,10 @@ impl<'a, C: Clone> Runner<'a, C> {
             .language
             .as_ref()
             .ok_or("run requires a tree-sitter language")?;
+        let input_schema = self
+            .input_schema
+            .as_ref()
+            .ok_or("run requires an input schema")?;
         let mut parser = tree_sitter::Parser::new();
         parser
             .set_language(language)
@@ -1568,7 +1596,7 @@ impl<'a, C: Clone> Runner<'a, C> {
             .parse(input, None)
             .ok_or_else(|| "Failed to parse input".to_string())?;
         let raw = Ast::from_tree_with_schema_and_source(
-            schema::from_language(language),
+            input_schema.clone(),
             &tree,
             language,
             input.as_bytes().to_vec(),
@@ -1660,13 +1688,14 @@ pub struct ConcreteDesugarer<C: Default + Clone + Send + Sync + 'static> {
     /// front-end that only ever desugars an externally-built AST
     /// (`run_from_ast`).
     language: Option<tree_sitter::Language>,
+    input_schema: Option<schema::Schema>,
     schema: schema::Schema,
     config: DesugaringConfig<C>,
 }
 
 impl<C: Default + Clone + Send + Sync + 'static> ConcreteDesugarer<C> {
     /// Build a desugarer for `language` from `config`. Parses the output
-    /// schema YAML once (if set) and stores it for reuse across files.
+    /// schema YAML once and stores it for reuse across files.
     pub fn new(
         language: tree_sitter::Language,
         config: DesugaringConfig<C>,
@@ -1674,9 +1703,14 @@ impl<C: Default + Clone + Send + Sync + 'static> ConcreteDesugarer<C> {
         if config.phases.len() > 1 {
             return Err("YEAST currently supports at most one translation phase".to_string());
         }
-        let schema = config.build_schema(&language)?;
+        let input_schema = schema::from_language(&language);
+        let output_schema = config
+            .output_node_types_yaml
+            .ok_or("a desugaring config requires output_node_types_yaml")?;
+        let schema = node_types_yaml::schema_from_yaml_with_language(output_schema, &language)?;
         Ok(Self {
             language: Some(language),
+            input_schema: Some(input_schema),
             schema,
             config,
         })
@@ -1693,6 +1727,7 @@ impl<C: Default + Clone + Send + Sync + 'static> ConcreteDesugarer<C> {
         let schema = config.build_schema_no_language()?;
         Ok(Self {
             language: None,
+            input_schema: None,
             schema,
             config,
         })
@@ -1709,7 +1744,12 @@ impl<C: Default + Clone + Send + Sync + 'static> Desugarer for ConcreteDesugarer
             .language
             .clone()
             .ok_or("run_from_tree requires a tree-sitter language")?;
-        let runner = Runner::with_schema(language, &self.schema, &self.config.phases);
+        let input_schema = self
+            .input_schema
+            .as_ref()
+            .ok_or("run_from_tree requires an input schema")?;
+        let runner =
+            Runner::with_schemas(language, input_schema, &self.schema, &self.config.phases);
         runner.run_from_tree(tree, source)
     }
 
