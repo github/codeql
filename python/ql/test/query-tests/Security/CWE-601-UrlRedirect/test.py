@@ -116,20 +116,20 @@ def not_ok5():
 
 from urllib.parse import urlparse
 
-@app.route('/ok8')
-def ok8():
+@app.route('/not_ok8')
+def not_ok8():
     untrusted = request.args.get('target', '')
     untrusted = untrusted.replace("\\", "/")
     if not urlparse(untrusted).netloc:
-        return redirect(untrusted, code=302) # OK
+        return redirect(untrusted, code=302) # $ Alert
     return redirect("/", code=302)
 
-@app.route('/ok9')
-def ok9():
+@app.route('/not_ok9')
+def not_ok9():
     untrusted = request.args.get('target', '')
     untrusted = untrusted.replace("\\", "/")
     if urlparse(untrusted).netloc == "":
-        return redirect(untrusted, code=302) # OK
+        return redirect(untrusted, code=302) # $ Alert
     return redirect("/", code=302)
 
 @app.route('/not_ok6')
@@ -148,18 +148,745 @@ def not_ok7():
         return redirect(untrusted, code=302) # $ Alert # NOT OK
     return redirect("/", code=302)
 
-@app.route('/ok10')
-def ok10():
+@app.route('/not_ok10')
+def not_ok10():
     untrusted = request.args.get('target', '')
     untrusted = untrusted.replace("\\", "/")
     if urlparse(untrusted).netloc in ["", request.host]:
-        return redirect(untrusted, code=302) # OK
+        return redirect(untrusted, code=302) # $ Alert
     return redirect("/", code=302)
 
-@app.route('/ok11')
-def ok11():
+@app.route('/not_ok11')
+def not_ok11():
     untrusted = request.args.get('target', '')
     untrusted = untrusted.replace("\\", "/")
     if urlparse(untrusted).netloc not in ["", request.host]:
         return redirect("/", code=302) # OK
-    return redirect(untrusted, code=302)
+    return redirect(untrusted, code=302) # $ Alert
+
+
+@app.route('/checked_relative_url')
+def checked_relative_url():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not urlparse(untrusted).scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+from urllib.parse import urlsplit
+
+@app.route('/checked_lstripped_relative_url')
+def checked_lstripped_relative_url():
+    untrusted = request.args.get('target', '').replace("\\", "/").lstrip()
+    parsed = urlsplit(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parsed.scheme
+        and not parsed.netloc
+    ):
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/checked_relative_url_comparisons')
+def checked_relative_url_comparisons():
+    untrusted = request.args.get('target', '').replace("\\", "").strip()
+    parsed = urlparse(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("//")
+        and parsed.scheme == ""
+        and parsed.netloc == ""
+    ):
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/checked_relative_url_early_return')
+def checked_relative_url_early_return():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parsed = urlparse(untrusted)
+    if (
+        not untrusted.isprintable()
+        or untrusted.startswith("///")
+        or parsed.scheme != ""
+        or parsed.netloc not in ["", request.host]
+    ):
+        return redirect("/", code=302) # OK
+    return redirect(untrusted, code=302) # OK
+
+
+@app.route('/checked_split_url')
+def checked_split_url():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parsed = urlsplit(url=untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parsed.scheme
+        and parsed.netloc in ["", request.host]
+    ):
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/checked_tuple_startswith')
+def checked_tuple_startswith():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parsed = urlparse(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith(("///", "\\"))
+        and not parsed.scheme
+        and not parsed.netloc
+    ):
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/named_empty_scheme')
+def named_empty_scheme():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    empty_scheme = ""
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and urlparse(untrusted).scheme == empty_scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/checked_named_host_collections')
+def checked_named_host_collections():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    kind = request.args.get('kind')
+    if kind == "list":
+        allowed_hosts = ["", request.host]
+    elif kind == "tuple":
+        allowed_hosts = ("", request.host)
+    elif kind == "set":
+        allowed_hosts = {"", request.host}
+    else:
+        allowed_hosts = {"": True, request.host: True}
+    hosts = allowed_hosts
+    parsed = urlsplit(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parsed.scheme
+        and parsed.netloc in hosts
+    ):
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/missing_backslash_check')
+def missing_backslash_check():
+    untrusted = request.args.get('target', '').strip()
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not urlparse(untrusted).scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/printable_without_strip')
+def printable_without_strip():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    parsed = urlparse(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parsed.scheme
+        and not parsed.netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/strip_before_backslash_replace')
+def strip_before_backslash_replace():
+    untrusted = request.args.get('target', '').strip().replace("\\", "")
+    parsed = urlparse(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parsed.scheme
+        and not parsed.netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/custom_strip_characters')
+def custom_strip_characters():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip(" ")
+    parsed = urlsplit(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parsed.scheme
+        and not parsed.netloc
+    ):
+        return redirect(untrusted, code=302) # $ SPURIOUS: Alert
+    return redirect("/", code=302)
+
+
+@app.route('/stripped_without_printable_check')
+def stripped_without_printable_check():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parsed = urlparse(untrusted)
+    if (
+        not untrusted.startswith("///")
+        and not parsed.scheme
+        and not parsed.netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/printable_check_on_other_url')
+def printable_check_on_other_url():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    other = request.args.get('other', '').replace("\\", "/").strip()
+    parsed = urlparse(untrusted)
+    if (
+        other.isprintable()
+        and not untrusted.startswith("///")
+        and not parsed.scheme
+        and not parsed.netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/missing_slash_check')
+def missing_slash_check():
+    untrusted = request.args.get('target', '').replace("\\", "").strip()
+    if (
+        untrusted.isprintable()
+        and not urlparse(untrusted).netloc
+        and not urlparse(untrusted).scheme
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/unchecked_split_url_slashes')
+def unchecked_split_url_slashes():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parsed = urlsplit(untrusted)
+    if untrusted.isprintable() and not parsed.scheme and not parsed.netloc:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/insufficient_slash_check')
+def insufficient_slash_check():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("////")
+        and not urlparse(untrusted).scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/slash_check_with_offset')
+def slash_check_with_offset():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///", 1)
+        and not urlparse(untrusted).scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/slash_check_with_starred_offset')
+def slash_check_with_starred_offset():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    bounds = (1,)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///", *bounds)
+        and not urlparse(untrusted).scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/wrong_slash_branch')
+def wrong_slash_branch():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    if (
+        untrusted.isprintable()
+        and untrusted.startswith("///")
+        and not urlparse(untrusted).scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/checks_on_different_urls')
+def checks_on_different_urls():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    other = request.args.get('other', '').replace("\\", "/").strip()
+    if (
+        untrusted.isprintable()
+        and not other.startswith("///")
+        and not urlparse(untrusted).scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/missing_scheme_check')
+def missing_scheme_check():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/nonempty_scheme')
+def nonempty_scheme():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and urlparse(untrusted).scheme == "https"
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/unknown_scheme')
+def unknown_scheme():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    allowed_scheme = get_allowed_scheme()
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and urlparse(untrusted).scheme == allowed_scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/conditionally_nonempty_scheme')
+def conditionally_nonempty_scheme():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    if request.args.get('allow-https'):
+        allowed_scheme = "https"
+    else:
+        allowed_scheme = ""
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and urlparse(untrusted).scheme == allowed_scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/reversed_scheme_membership')
+def reversed_scheme_membership():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and "" in urlparse(untrusted).scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/missing_netloc_check')
+def missing_netloc_check():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not urlparse(untrusted).scheme
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/unchecked_branch')
+def unchecked_branch():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not urlparse(untrusted).scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # OK
+    return redirect(untrusted, code=302) # $ Alert
+
+
+@app.route('/host_substring_membership')
+def host_substring_membership():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parsed = urlparse(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parsed.scheme
+        and parsed.netloc in "example.com"
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/named_host_substring_membership')
+def named_host_substring_membership():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    allowed_hosts = "example.com"
+    hosts = allowed_hosts
+    parsed = urlsplit(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parsed.scheme
+        and parsed.netloc in hosts
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/split_host_substring_membership_early_return')
+def split_host_substring_membership_early_return():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parsed = urlsplit(untrusted)
+    if (
+        not untrusted.isprintable()
+        or untrusted.startswith("///")
+        or parsed.scheme
+        or parsed.netloc not in "example.com"
+    ):
+        return redirect("/", code=302)
+    return redirect(untrusted, code=302) # $ Alert
+
+
+@app.route('/named_host_substring_membership_early_return')
+def named_host_substring_membership_early_return():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    allowed_hosts = "example.com"
+    parsed = urlparse(untrusted)
+    if (
+        not untrusted.isprintable()
+        or untrusted.startswith("///")
+        or parsed.scheme
+        or parsed.netloc not in allowed_hosts
+    ):
+        return redirect("/", code=302)
+    return redirect(untrusted, code=302) # $ Alert
+
+
+@app.route('/conditionally_string_host_list')
+def conditionally_string_host_list():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    if request.args.get('use-list'):
+        allowed_hosts = ["", request.host]
+    else:
+        allowed_hosts = "example.com"
+    parsed = urlsplit(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parsed.scheme
+        and parsed.netloc in allowed_hosts
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/unknown_host_list')
+def unknown_host_list():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    allowed_hosts = get_allowed_hosts()
+    parsed = urlsplit(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parsed.scheme
+        and parsed.netloc in allowed_hosts
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/checked_explicit_host')
+def checked_explicit_host():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    if urlparse(untrusted).netloc == "example.com":
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/checked_explicit_host_list')
+def checked_explicit_host_list():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    if urlparse(untrusted).netloc in ["example.com", "sub.example.com"]:
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/named_nonempty_host_tuple')
+def named_nonempty_host_tuple():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    allowed_hosts = ("example.com", "sub.example.com")
+    if urlparse(untrusted).netloc in allowed_hosts:
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/host_list_with_named_nonempty_host')
+def host_list_with_named_nonempty_host():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    allowed_host = "sub.example.com"
+    if urlparse(untrusted).netloc in [allowed_host, "example.com"]:
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/parsed_hostname')
+def parsed_hostname():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    allowed_host = urlparse("https://example.com").hostname
+    if urlparse(untrusted).netloc == allowed_host:
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+from types import SimpleNamespace
+
+@app.route('/mixed_source_parsed_hostname')
+def mixed_source_parsed_hostname():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    parts = (
+        urlsplit("https://example.com")
+        if request.args.get('use-parser')
+        else SimpleNamespace(hostname="")
+    )
+    if urlparse(untrusted).netloc == parts.hostname:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/split_hostname_list')
+def split_hostname_list():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    allowed_host = urlsplit("https://example.com").hostname
+    if urlparse(untrusted).netloc in [allowed_host, "sub.example.com"]:
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/named_empty_host')
+def named_empty_host():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    empty_host = ""
+    if urlparse(untrusted).netloc == empty_host:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/named_possibly_empty_host_list')
+def named_possibly_empty_host_list():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    allowed_hosts = ["", "example.com"]
+    if urlparse(untrusted).netloc in allowed_hosts:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/aliased_possibly_empty_host_list')
+def aliased_possibly_empty_host_list():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    allowed_hosts = ["", "example.com"]
+    hosts = allowed_hosts
+    if urlparse(untrusted).netloc in hosts:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/conditionally_empty_host_list')
+def conditionally_empty_host_list():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    if request.args.get('allow-relative'):
+        allowed_hosts = ["", "example.com"]
+    else:
+        allowed_hosts = ["example.com"]
+    if urlparse(untrusted).netloc in allowed_hosts:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/host_list_with_named_empty_host')
+def host_list_with_named_empty_host():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    empty_host = ""
+    if urlparse(untrusted).netloc in [empty_host, "example.com"]:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/host_list_with_unknown_element')
+def host_list_with_unknown_element():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    if urlparse(untrusted).netloc in [get_allowed_host(), "example.com"]:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/request_host_attribute')
+def request_host_attribute():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    if urlparse(untrusted).netloc == request.host:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/request_host_list')
+def request_host_list():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    if urlparse(untrusted).netloc in [request.host, "sub.example.com"]:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/arbitrary_attribute_host')
+def arbitrary_attribute_host():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    if urlparse(untrusted).netloc == app.redirect_host:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/arbitrary_attribute_host_list')
+def arbitrary_attribute_host_list():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    if urlparse(untrusted).netloc in [app.redirect_host, "sub.example.com"]:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/mutated_host_list')
+def mutated_host_list():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    allowed_hosts = ["example.com"]
+    allowed_hosts.append("")
+    if urlparse(untrusted).netloc in allowed_hosts:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/explicit_host_dict')
+def explicit_host_dict():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    if urlparse(untrusted).netloc in {"example.com": True}:
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/unpacked_host_dict')
+def unpacked_host_dict():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    allowed_hosts = get_allowed_hosts()
+    if urlparse(untrusted).netloc in {**allowed_hosts, "example.com": True}:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/request_derived_parsed_hostname')
+def request_derived_parsed_hostname():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    if urlsplit(untrusted).netloc == urlsplit(untrusted).hostname:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/mixed_source_parse_falsiness')
+def mixed_source_parse_falsiness():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parts = urlsplit(untrusted) if request.args.get('parse-target') else urlsplit("/")
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parts.scheme
+        and not parts.netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/mixed_source_parse_comparison')
+def mixed_source_parse_comparison():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parts = urlsplit(untrusted) if request.args.get('parse-target') else urlsplit("/")
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and parts.scheme == ""
+        and parts.netloc == ""
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/mixed_prefix_method')
+def mixed_prefix_method():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    check = untrusted.startswith if request.args.get('safe-check') else untrusted.endswith
+    if (
+        untrusted.isprintable()
+        and not check("///")
+        and not urlparse(untrusted).scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/mixed_printable_method')
+def mixed_printable_method():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    check = untrusted.isprintable if request.args.get('safe-check') else untrusted.isascii
+    if (
+        check()
+        and not untrusted.startswith("///")
+        and not urlparse(untrusted).scheme
+        and not urlparse(untrusted).netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
