@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import unified
 private import codeql.util.Unit
 private import codeql.util.Option

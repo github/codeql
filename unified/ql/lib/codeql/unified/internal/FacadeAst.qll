@@ -4,6 +4,7 @@
 overlay[local?]
 module;
 
+private import unified as U
 private import AstPlugin
 private import codeql.files.FileSystem
 private import codeql.unified.internal.NameBinding as NameBinding
@@ -37,7 +38,9 @@ module Unified {
       )
     }
 
-    /** Gets the nearest enclosing class declaration, if any. */
+    /**
+     * Gets the nearest syntactically enclosing class declaration, if any.
+     */
     ClassLikeDeclaration getEnclosingClass() {
       exists(AstNode parent | parent = this.getParent() |
         result = parent
@@ -205,16 +208,32 @@ module Unified {
     /**
      * Gets the name of this member qualified by the short names of each immediately-enclosing class.
      */
-    string getQualifiedName() {
-      exists(ClassLikeDeclaration cls |
-        this = cls.getAMember() and
-        result = cls.getQualifiedName() + "." + this.getNameOrFallback()
-      )
+    string getQualifiedName() { result = QualifiedName<getParentClass/1>::getQualifiedName(this) }
+  }
+
+  private signature ClassLikeDeclaration getDeclaringClassSig(Member m);
+
+  private module QualifiedName<getDeclaringClassSig/1 getDeclaringClass> {
+    string getQualifiedName(Member m) {
+      result = getQualifiedName(getDeclaringClass(m)) + "." + m.getNameOrFallback()
       or
-      not this = any(ClassLikeDeclaration cls).getAMember() and
-      result = this.getNameOrFallback()
+      not exists(getDeclaringClass(m)) and
+      result = m.getNameOrFallback()
     }
   }
+
+  private ClassLikeDeclaration getParentClass(Member m) {
+    result.getAMemberIncludingExtensions() = m
+  }
+
+  private ClassLikeDeclaration getEnclosingClass(Member m) { result.getAMember() = m }
+
+  /**
+   * Similar to `Member.getQualifiedName`, but avoids a dependency on name binding, making
+   * it suitable for use in `toString` predicates.
+   */
+  private predicate getQualifiedNameForToString =
+    QualifiedName<getEnclosingClass/1>::getQualifiedName/1;
 
   class ClassLikeDeclaration extends G::ClassLikeDeclaration {
     /** Gets the name of this declaration. */
@@ -226,8 +245,33 @@ module Unified {
         NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
     }
 
+    /**
+     * Gets the target of this extension class, or this class itself if it is not an extension.
+     */
+    ClassLikeDeclaration resolve() {
+      not exists(this.getExtensionTarget()) and
+      result = this
+      or
+      exists(NameBinding::NamespaceNode ns |
+        ns.isStaticMemberNamespace(result) and
+        ns.getAnExtension().isStaticMemberNamespace(this)
+      )
+    }
+
+    /**
+     * Gets a member of this class, including members from extensions.
+     */
+    Member getAMemberIncludingExtensions() {
+      exists(ClassLikeDeclaration cls |
+        this = cls.resolve() and
+        result = cls.getAMember()
+      )
+    }
+
     override string toString() {
-      result = concat(getClassLikeDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
+      result =
+        concat(getClassLikeDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
     }
   }
 
@@ -237,7 +281,8 @@ module Unified {
 
     override string toString() {
       result =
-        concat(getConstructorDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
+        concat(getConstructorDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
     }
   }
 
@@ -251,7 +296,9 @@ module Unified {
     string getName() { result = this.getNameNode().getValue() }
 
     override string toString() {
-      result = concat(getFunctionDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
+      result =
+        concat(getFunctionDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
     }
   }
 
@@ -263,7 +310,9 @@ module Unified {
     string getName() { result = this.getNameNode().getValue() }
 
     override string toString() {
-      result = concat(getVariableDeclarationKeyword(this) + " ") + concat(this.getQualifiedName())
+      result =
+        concat(getVariableDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
     }
   }
 
