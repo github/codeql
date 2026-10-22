@@ -246,7 +246,30 @@ private module Cached {
 
   /** Holds if `node` should be an `IndirectOperand` that maps `node.asExpr()` to `e`. */
   private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, int n) {
-    exists(ArgumentOperand operand |
+    exists(ArgumentOperand operand | isIndirectOperandOfArgument(node, operand, e, n) |
+      // If `x` has type `Foo` in a call such `x.f()` the `VariableAddress`
+      // instruction (which is of type `glvalue<Foo>`) is the qualifier.
+      // So the `DataFlow::Node` we want to represent `x` is the indirection of
+      // the qualifier (which will then have type `Foo`).
+      // Since the node -> expression mapping is one-to-many we additionally need to
+      // check that the specific expression we map to is also a glvalue. For example,
+      // in `(*x).f()` the qualifier generates IR like:
+      // ```
+      // r1(glval<Foo *>) = VariableAddress[x] :
+      // r2(Foo *)        = Load[x]            : &:r1
+      // r3(glval<Foo>)   = CopyValue          : r2
+      // ```
+      // The qualifier is associated with both `*x` and the lvalue-to-rvalue
+      // conversion of `x`. Only `*x` is a glvalue and should map to the
+      // indirect qualifier node; the converted `x` is a pointer prvalue and
+      // should map to the direct qualifier node. Restricting `e` to only be
+      // expressions for which `e.isGLValueCategory()` holds ensures that `*x`
+      // is the result of calling `asExpr()` while `asIndirectExpr()` gives
+      // `x`.
+      operand.isGLValue() and
+      operand instanceof ThisArgumentOperand and
+      e.isGLValueCategory()
+      or
       // When an argument (qualifier or positional) is a prvalue and the
       // parameter (qualifier or positional) is a (const) reference, IR
       // construction introduces a temporary `IRVariable`. The `VariableAddress`
@@ -254,7 +277,6 @@ private module Cached {
       // result. However, the instruction actually represents the _address_ of
       // the argument. So to fix this mismatch, we have the indirection of the
       // `VariableAddressInstruction` map to the expression.
-      isIndirectOperandOfArgument(node, operand, e, n) and
       irTempOperandConversionFlows(operand)
     )
   }

@@ -150,8 +150,8 @@ struct StringCredentials
 
 void test_source_glvalue(FILE* log, const StringCredentials& credentials)
 {
-	const char* pw = credentials.password.c_str(); // $ MISSING: Source[cpp/cleartext-storage-file]
-	fprintf(log, "%s", pw); // $ MISSING: Alert[cpp/cleartext-storage-file]
+	const char* pw = credentials.password.c_str(); // $ Source[cpp/cleartext-storage-file]
+	fprintf(log, "%s", pw); // $ Alert[cpp/cleartext-storage-file]
 }
 
 std::string copy_characters(std::string s)
