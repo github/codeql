@@ -6,8 +6,10 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id cpp/guarded-free
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
+ *       useless-code
  */
 
 import cpp

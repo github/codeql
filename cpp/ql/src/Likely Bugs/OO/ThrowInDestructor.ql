@@ -6,8 +6,10 @@
  * @problem.severity warning
  * @precision very-high
  * @id cpp/throw-in-destructor
- * @tags reliability
- *       readability
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       error-handling
  *       language-features
  */
 

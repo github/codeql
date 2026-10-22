@@ -7,7 +7,9 @@
  * @id cpp/continue-in-false-loop
  * @problem.severity warning
  * @precision high
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import cpp
