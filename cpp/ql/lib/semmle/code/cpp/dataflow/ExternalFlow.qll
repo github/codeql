@@ -1088,20 +1088,25 @@ private Type getForwardedConstructorType(
   Function forwarder, string namespace, string type, boolean subtypes, string name,
   string signature, string ext, string constructorType
 ) {
-  exists(int index |
-    forwardsModel(namespace, type, subtypes, name, signature, ext, _, constructorType, _, _, _) and
-    forwarder = interpretElement(namespace, type, subtypes, name, signature, ext)
-  |
-    exists(string typeArguments |
+  forwardsModel(namespace, type, subtypes, name, signature, ext, _, constructorType, _, _, _) and
+  forwarder = interpretElement(namespace, type, subtypes, name, signature, ext) and
+  (
+    exists(string typeArguments, int index |
       parseAngles(type, _, typeArguments, "") and
       constructorType = getAtIndex(typeArguments, index) and
       result = forwarder.getDeclaringType().getTemplateArgument(index)
     )
     or
-    exists(string nameArguments |
+    exists(string nameArguments, int index |
       parseAngles(name, _, nameArguments, "") and
       constructorType = getAtIndex(nameArguments, index) and
       result = forwarder.getTemplateArgument(index)
+    )
+    or
+    exists(TypedefType member |
+      member = forwarder.getDeclaringType().getAMember() and
+      member.hasName(constructorType) and
+      result = member.getUnderlyingType()
     )
   )
 }
