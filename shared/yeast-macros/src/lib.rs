@@ -192,8 +192,8 @@ pub fn rule(input: TokenStream) -> TokenStream {
 ///     output: "ast_types.yml",
 ///     [
 ///         (source_file (_)* @cs) => (top_level body: {..cs}),
-///         (simple_identifier) @id => (name_expr identifier: (identifier #{id})),
-///         rule!((integer_literal) @lit => (int_literal #{lit})),
+///         (simple_identifier) @@id => (name_expr identifier: (identifier #{id})),
+///         rule!((integer_literal) @@lit => (int_literal #{lit})),
 ///         helper_fn(),
 ///     ]
 /// };
