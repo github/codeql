@@ -1,6 +1,7 @@
 private import unified
 private import AllDataFlow
 private import codeql.unified.internal.LocalNameBinding
+private import codeql.unified.internal.ExprPositions
 
 predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   any(DataFlowPlugin p).step(node1, step, node2)
@@ -180,10 +181,11 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node2.isIncomingValue(fun.getNameNode())
   )
   or
-  exists(ReturnExpr ret |
-    node1.isResultValue(ret.getValue()) and
+  exists(Callable callable, Expr expr |
+    isReturnedExpr(callable, expr) and
+    node1.isResultValue(expr) and
     step.value() and
-    node2.isReturnNode(ret.getEnclosingCallable())
+    node2.isReturnNode(callable)
   )
   or
   none() // Temporarily disable compilation errors from unsatisfiable types
