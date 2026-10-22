@@ -246,8 +246,7 @@ module Unified {
     }
 
     /**
-     * Gets the class that this class resolves to. Either itself, when it
-     * is not extension, otherwise the class that it extends.
+     * Gets the target of this extension class, or this class itself if it is not an extension.
      */
     ClassLikeDeclaration resolve() {
       not exists(this.getExtensionTarget()) and
