@@ -988,7 +988,7 @@ module Public {
      * Holds if this data-flow node reads the value of SSA definition `def`.
      */
     predicate readsSsaDefinition(SsaDefinition def) {
-      insn.(IR::EvalInstruction).getExpr() = def.getARead()
+      exists(SsaNode ssa | ssa.getDefinition() = def and this = ssa.getAUse())
     }
 
     /**

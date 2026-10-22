@@ -190,8 +190,10 @@ private newtype TSsaWithFields =
  * Gets a representation of `insn` as an ssa-with-fields value if there is one.
  */
 private TSsaWithFields accessPath(IR::Instruction insn) {
-  exists(SsaDefinition def |
-    insn.(IR::EvalInstruction).getExpr() = def.getARead() and
+  exists(SsaDefinition def, BasicBlock bb, int i |
+    insn = bb.getNode(i) and
+    ssaDefReachesRead(def.getSourceVariable(), def, bb, i) and
+    useAt(bb, i, def.getSourceVariable()) and
     result = TRoot(def)
   )
   or
