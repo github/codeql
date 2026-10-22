@@ -138,33 +138,110 @@ type KindId = yeast_schema::KindId;
 /// single value.
 pub use yeast_schema::CHILD_FIELD;
 
-/// Trait for values that can be appended to a field's id list inside a
-/// `tree!`/`trees!`/`rule!` template (in `{expr}` placeholders).
+/// Trait for values that can be appended to a structural field inside a
+/// `tree!`/`trees!`/`rule!` template.
 ///
-/// The blanket impl for `IntoIterator<Item: Into<Id>>` handles all
-/// current shapes: `Vec<Id>`, `Option<Id>`, arbitrary iterators
-/// yielding `Id`, and a bare `Id` itself (which is `IntoIterator`
-/// via a singleton).
-///
-/// This lets `{expr}` interpolate any of these shapes without a
-/// dedicated splice syntax — the macro emits the same trait-dispatched
-/// call regardless of the value's type.
-pub trait IntoFieldIds {
-    fn extend_into(self, out: &mut Vec<Id>);
+#[doc(hidden)]
+pub trait IntoFieldId<C: Clone> {
+    fn extend_into(self, ctx: &mut build::BuildCtx<'_, C>, out: &mut Vec<OutputId>);
 }
 
-impl<I, T> IntoFieldIds for I
+impl<C: Clone> IntoFieldId<C> for OutputId {
+    fn extend_into(self, _ctx: &mut build::BuildCtx<'_, C>, out: &mut Vec<OutputId>) {
+        out.push(self);
+    }
+}
+
+impl<C: Clone> IntoFieldId<C> for Id {
+    fn extend_into(self, ctx: &mut build::BuildCtx<'_, C>, out: &mut Vec<OutputId>) {
+        ctx.translate_into(self, out);
+    }
+}
+
+impl<C: Clone, T> IntoFieldId<C> for &T
+where
+    T: IntoFieldId<C> + Copy,
+{
+    fn extend_into(self, ctx: &mut build::BuildCtx<'_, C>, out: &mut Vec<OutputId>) {
+        (*self).extend_into(ctx, out);
+    }
+}
+
+/// Trait for values that can be appended to a structural field inside a
+/// `tree!`/`trees!`/`rule!` template.
+///
+/// Output IDs are appended directly. Input IDs are recursively translated
+/// under the current [`build::BuildCtx`] before being appended.
+pub trait IntoFieldIds<C: Clone> {
+    fn extend_into(self, ctx: &mut build::BuildCtx<'_, C>, out: &mut Vec<OutputId>);
+}
+
+impl<C: Clone, I, T> IntoFieldIds<C> for I
 where
     I: IntoIterator<Item = T>,
-    T: Into<Id>,
+    T: IntoFieldId<C>,
 {
-    fn extend_into(self, out: &mut Vec<Id>) {
-        out.extend(self.into_iter().map(Into::into));
+    fn extend_into(self, ctx: &mut build::BuildCtx<'_, C>, out: &mut Vec<OutputId>) {
+        for id in self {
+            id.extend_into(ctx, out);
+        }
+    }
+}
+
+/// A node id that can be inspected through a [`build::BuildCtx`].
+pub trait ContextNodeId: Copy {
+    fn source_text<C>(self, ctx: &build::BuildCtx<'_, C>) -> String;
+    fn source_range<C>(self, ctx: &build::BuildCtx<'_, C>) -> Option<Range>;
+}
+
+impl ContextNodeId for OutputId {
+    fn source_text<C>(self, ctx: &build::BuildCtx<'_, C>) -> String {
+        ctx.output
+            .source_text_from(self, ctx.ast().source.as_slice())
+    }
+
+    fn source_range<C>(self, ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        ctx.output.get_node(self).and_then(Node::source_range)
+    }
+}
+
+impl ContextNodeId for Id {
+    fn source_text<C>(self, ctx: &build::BuildCtx<'_, C>) -> String {
+        ctx.ast().source_text(self)
+    }
+
+    fn source_range<C>(self, ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        ctx.ast().get_node(self).and_then(Node::source_range)
+    }
+}
+
+impl<T: ContextNodeId> ContextNodeId for &T {
+    fn source_text<C>(self, ctx: &build::BuildCtx<'_, C>) -> String {
+        (*self).source_text(ctx)
+    }
+
+    fn source_range<C>(self, ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        (*self).source_range(ctx)
+    }
+}
+
+/// Values accepted by `location: { ... }` template entries.
+pub trait IntoLocationRanges<C> {
+    fn extend_ranges(self, ctx: &build::BuildCtx<'_, C>, out: &mut Vec<Range>);
+}
+
+impl<C, I, T> IntoLocationRanges<C> for I
+where
+    I: IntoIterator<Item = T>,
+    T: ContextNodeId,
+{
+    fn extend_ranges(self, ctx: &build::BuildCtx<'_, C>, out: &mut Vec<Range>) {
+        out.extend(self.into_iter().filter_map(|id| id.source_range(ctx)));
     }
 }
 
 /// Like [`std::fmt::Display`], but the formatting routine is given access to
-/// the [`Ast`] so that node references can resolve to their source text.
+/// both input and output storage through the active [`build::BuildCtx`].
 ///
 /// All standard primitive and string types implement [`YeastDisplay`] via
 /// the [`impl_yeast_display_via_display`] macro below. Coherence prevents a
@@ -175,28 +252,39 @@ where
             that field unset when it is absent, as in `label: (identifier #{{lbl}})?`"
 )]
 pub trait YeastDisplay {
-    fn yeast_to_string(&self, ast: &Ast) -> String;
+    fn yeast_to_string<C>(&self, ctx: &build::BuildCtx<'_, C>) -> String;
 }
 
 /// Optional source range for values used in `#{expr}` interpolations.
 ///
 /// By default this returns `None`, so synthesized leaves use the current
-/// [`crate::build::BuildCtx`] default range, if any. `Id` returns the
-/// referenced node's range, letting `(kind #{capture})` carry the captured
-/// node's location.
+/// [`crate::build::BuildCtx`] default range, if any. `OutputId` and `Id` return
+/// the referenced output or input node's range, respectively.
 pub trait YeastSourceRange {
-    fn yeast_source_range(&self, ast: &Ast) -> Option<Range>;
+    fn yeast_source_range<C>(&self, ctx: &build::BuildCtx<'_, C>) -> Option<Range>;
+}
+
+impl YeastDisplay for OutputId {
+    fn yeast_to_string<C>(&self, ctx: &build::BuildCtx<'_, C>) -> String {
+        self.source_text(ctx)
+    }
+}
+
+impl YeastSourceRange for OutputId {
+    fn yeast_source_range<C>(&self, ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        self.source_range(ctx)
+    }
 }
 
 impl YeastDisplay for Id {
-    fn yeast_to_string(&self, ast: &Ast) -> String {
-        ast.source_text(*self)
+    fn yeast_to_string<C>(&self, ctx: &build::BuildCtx<'_, C>) -> String {
+        self.source_text(ctx)
     }
 }
 
 impl YeastSourceRange for Id {
-    fn yeast_source_range(&self, ast: &Ast) -> Option<Range> {
-        ast.get_node(*self).and_then(Node::source_range)
+    fn yeast_source_range<C>(&self, ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        self.source_range(ctx)
     }
 }
 
@@ -204,13 +292,13 @@ macro_rules! impl_yeast_display_via_display {
     ($($t:ty),* $(,)?) => {
         $(
             impl YeastDisplay for $t {
-                fn yeast_to_string(&self, _ast: &Ast) -> String {
+                fn yeast_to_string<C>(&self, _ctx: &build::BuildCtx<'_, C>) -> String {
                     ::std::string::ToString::to_string(self)
                 }
             }
 
             impl YeastSourceRange for $t {
-                fn yeast_source_range(&self, _ast: &Ast) -> Option<Range> {
+                fn yeast_source_range<C>(&self, _ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
                     None
                 }
             }
@@ -227,14 +315,14 @@ impl_yeast_display_via_display! {
 }
 
 impl<T: YeastDisplay + ?Sized> YeastDisplay for &T {
-    fn yeast_to_string(&self, ast: &Ast) -> String {
-        (**self).yeast_to_string(ast)
+    fn yeast_to_string<C>(&self, ctx: &build::BuildCtx<'_, C>) -> String {
+        (**self).yeast_to_string(ctx)
     }
 }
 
 impl<T: YeastSourceRange + ?Sized> YeastSourceRange for &T {
-    fn yeast_source_range(&self, ast: &Ast) -> Option<Range> {
-        (**self).yeast_source_range(ast)
+    fn yeast_source_range<C>(&self, ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        (**self).yeast_source_range(ctx)
     }
 }
 
@@ -282,7 +370,7 @@ macro_rules! impl_maybe_yeast_value {
 }
 
 impl_maybe_yeast_value! {
-    Id,
+    OutputId, Id,
     i8, i16, i32, i64, i128, isize,
     u8, u16, u32, u64, u128, usize,
     f32, f64,
@@ -508,6 +596,9 @@ impl Ast {
         ast
     }
 
+}
+
+impl<Id: TreeId> Ast<Id> {
     /// Construct an empty AST backed by `schema`, for building a tree
     /// programmatically from a source other than a tree-sitter parse (e.g. an
     /// external parser's output). Populate it with `create_node` /
@@ -535,17 +626,25 @@ impl Ast {
         self.source = source;
     }
 
+    fn into_source(self) -> Vec<u8> {
+        self.source
+    }
+
     /// Returns the source text for `id`, resolving `NodeContent::Range`
     /// against the stored source bytes when available.
     pub fn source_text(&self, id: Id) -> String {
+        self.source_text_from(id, &self.source)
+    }
+
+    fn source_text_from(&self, id: Id, source: &[u8]) -> String {
         let Some(node) = self.get_node(id) else {
             return String::new();
         };
         let read_range = |range: &Range| {
             let start = range.start_byte;
             let end = range.end_byte;
-            if end <= self.source.len() && start <= end {
-                String::from_utf8_lossy(&self.source[start..end]).into_owned()
+            if end <= source.len() && start <= end {
+                String::from_utf8_lossy(&source[start..end]).into_owned()
             } else {
                 String::new()
             }
