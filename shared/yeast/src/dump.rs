@@ -652,8 +652,16 @@ mod tests {
     #[test]
     fn source_skeleton_preserves_unnamed_tokens() {
         let source = "x = 1";
-        let runner: crate::Runner = crate::Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-        let ast = runner.run(source).unwrap();
+        let language: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+        let mut parser = tree_sitter::Parser::new();
+        parser.set_language(&language).unwrap();
+        let tree = parser.parse(source, None).unwrap();
+        let ast = Ast::from_tree_with_schema_and_source(
+            crate::schema::from_language(&language),
+            &tree,
+            &language,
+            source.as_bytes().to_vec(),
+        );
         let dump = dump_ast_with_options(
             &ast,
             ast.get_root(),
