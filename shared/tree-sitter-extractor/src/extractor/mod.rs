@@ -66,7 +66,7 @@ impl<'a> AstNode for Node<'a> {
     }
 }
 
-impl AstNode for yeast::Node {
+impl<I: yeast::TreeId> AstNode for yeast::Node<I> {
     fn kind(&self) -> &str {
         yeast::Node::kind_name(self)
     }

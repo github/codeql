@@ -40,21 +40,66 @@ impl From<tree_sitter::Range> for Range {
     }
 }
 
-/// Node id: an index into the [`Ast`] arena. A newtype around `usize`
+/// Node id: an index into the output [`OutputAst`] arena. A newtype around `usize`
 /// rather than a bare alias so that it can carry its own
 /// [`YeastDisplay`] / [`YeastSourceRange`] / [`IntoFieldIds`] impls
 /// without colliding with the impls for plain integers.
 ///
 /// Use `id.0` (or `id.into()`) to obtain the raw arena index.
 ///
-/// Implements [`IntoIterator`] as a singleton (`iter::once(self)`)
-/// so that a bare `Id` can be used interchangeably with `Option<Id>`
-/// / `Vec<Id>` in places that expect an iterable of ids (e.g.
-/// [`crate::build::BuildCtx::translate`] and the field-splice
-/// interpolation via [`IntoFieldIds`]).
+/// Implements [`IntoIterator`] as a singleton (`iter::once(self)`) so that a
+/// bare `OutputId` can be used interchangeably with `Option<OutputId>` / `Vec<OutputId>` in
+/// structural template interpolation.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Debug, Hash, Serialize)]
+pub struct OutputId(pub usize);
+
+/// Node id in the immutable [`Ast`] consumed by a translation.
+///
+/// Keeping input and output ids distinct prevents untranslated input nodes
+/// from being inserted into the output tree without going through the active
+/// translator.
 #[repr(transparent)]
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Debug, Hash, Serialize)]
 pub struct Id(pub usize);
+
+#[doc(hidden)]
+pub trait TreeId: Copy + Eq + std::fmt::Debug {
+    fn from_index(index: usize) -> Self;
+    fn index(self) -> usize;
+}
+
+impl TreeId for OutputId {
+    fn from_index(index: usize) -> Self {
+        Self(index)
+    }
+
+    fn index(self) -> usize {
+        self.0
+    }
+}
+
+impl TreeId for Id {
+    fn from_index(index: usize) -> Self {
+        Self(index)
+    }
+
+    fn index(self) -> usize {
+        self.0
+    }
+}
+
+impl From<usize> for OutputId {
+    fn from(value: usize) -> Self {
+        OutputId(value)
+    }
+}
+
+impl From<OutputId> for usize {
+    fn from(value: OutputId) -> Self {
+        value.0
+    }
+}
 
 impl From<usize> for Id {
     fn from(value: usize) -> Self {
@@ -65,6 +110,14 @@ impl From<usize> for Id {
 impl From<Id> for usize {
     fn from(value: Id) -> Self {
         value.0
+    }
+}
+
+impl IntoIterator for OutputId {
+    type Item = OutputId;
+    type IntoIter = std::iter::Once<OutputId>;
+    fn into_iter(self) -> Self::IntoIter {
+        std::iter::once(self)
     }
 }
 
@@ -261,15 +314,15 @@ impl<T: MaybeYeastValue + ?Sized> MaybeYeastValue for Option<&T> {
 }
 
 #[derive(Debug)]
-pub struct AstCursor<'a> {
-    ast: &'a Ast,
+pub struct AstCursor<'a, Id: TreeId = crate::Id> {
+    ast: &'a Ast<Id>,
     /// A stack of parents, along with iterators for their children.
-    parents: Vec<(Id, ChildrenIter<'a>)>,
+    parents: Vec<(Id, ChildrenIter<'a, Id>)>,
     node_id: Id,
 }
 
-impl<'a> AstCursor<'a> {
-    pub fn new(ast: &'a Ast) -> Self {
+impl<'a, Id: TreeId> AstCursor<'a, Id> {
+    pub fn new(ast: &'a Ast<Id>) -> Self {
         Self {
             ast,
             parents: vec![],
@@ -277,13 +330,13 @@ impl<'a> AstCursor<'a> {
         }
     }
 
-    /// The Id of the node currently under the cursor.
+    /// The id of the node currently under the cursor.
     pub fn node_id(&self) -> Id {
         self.node_id
     }
 
-    pub fn node(&self) -> &'a Node {
-        &self.ast.nodes[self.node_id.0]
+    pub fn node(&self) -> &'a Node<Id> {
+        &self.ast.nodes[self.node_id.index()]
     }
 
     pub fn field_id(&self) -> Option<FieldId> {
@@ -335,15 +388,15 @@ impl<'a> AstCursor<'a> {
 
 /// An iterator over the child Ids of a node.
 #[derive(Debug)]
-struct ChildrenIter<'a> {
+struct ChildrenIter<'a, Id: TreeId> {
     current_field: Option<FieldId>,
     fields: &'a BTreeMap<FieldId, Vec<Id>>,
     field_order: std::vec::IntoIter<FieldId>,
     field_children: Option<std::slice::Iter<'a, Id>>,
 }
 
-impl<'a> ChildrenIter<'a> {
-    fn new(ast: &'a Ast, node: &'a Node) -> Self {
+impl<'a, Id: TreeId> ChildrenIter<'a, Id> {
+    fn new(ast: &'a Ast<Id>, node: &'a Node<Id>) -> Self {
         let fields = &node.fields;
         let present: Vec<FieldId> = fields.keys().copied().collect();
         let field_order = match ast.schema.field_order(node.kind_name()) {
@@ -375,7 +428,7 @@ impl<'a> ChildrenIter<'a> {
     }
 }
 
-impl Iterator for ChildrenIter<'_> {
+impl<Id: TreeId> Iterator for ChildrenIter<'_, Id> {
     type Item = Id;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -403,17 +456,21 @@ impl Iterator for ChildrenIter<'_> {
     }
 }
 
-/// Our AST
-pub struct Ast {
+/// An AST arena whose node-id type determines whether it is translation input
+/// or output.
+pub struct Ast<Id: TreeId = crate::Id> {
     root: Id,
-    nodes: Vec<Node>,
+    nodes: Vec<Node<Id>>,
     schema: schema::Schema,
     /// Original source bytes the tree was parsed from. Used to resolve
     /// `NodeContent::Range` to text for synthesized literal nodes.
     source: Vec<u8>,
 }
 
-impl std::fmt::Debug for Ast {
+/// Output tree constructed by a translation.
+pub type OutputAst = Ast<OutputId>;
+
+impl<Id: TreeId> std::fmt::Debug for Ast<Id> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Ast")
             .field("root", &self.root)
@@ -453,19 +510,18 @@ impl Ast {
 
     /// Construct an empty AST backed by `schema`, for building a tree
     /// programmatically from a source other than a tree-sitter parse (e.g. an
-    /// external parser's output). Populate it with [`Ast::create_node`] /
-    /// [`Ast::create_node_with_range`] and then designate the root with
-    /// [`Ast::set_root`].
+    /// external parser's output). Populate it with `create_node` /
+    /// `create_node_with_range` and then designate the root with `set_root`.
     ///
     /// Node kind and field names may be registered in `schema` up front, or on
-    /// demand while building via [`Ast::register_kind`],
-    /// [`Ast::register_unnamed_kind`], and [`Ast::register_field`] (which return
-    /// the ids to pass to [`Ast::create_node_with_range`]). Passing a fresh
+    /// demand while building via `register_kind`, `register_unnamed_kind`, and
+    /// `register_field` (which return the ids to pass to
+    /// `create_node_with_range`). Passing a fresh
     /// [`schema::Schema::new`] and registering names during construction is
     /// therefore fine — see the swift-syntax adapter for an example.
     pub fn with_schema(schema: schema::Schema) -> Self {
         Self {
-            root: Id(0),
+            root: Id::from_index(0),
             nodes: Vec::new(),
             schema,
             source: Vec::new(),
@@ -508,8 +564,10 @@ impl Ast {
             },
         }
     }
+}
 
-    pub fn walk(&self) -> AstCursor<'_> {
+impl<Id: TreeId> Ast<Id> {
+    pub fn walk(&self) -> AstCursor<'_, Id> {
         AstCursor::new(self)
     }
 
@@ -518,7 +576,7 @@ impl Ast {
     /// This includes nodes that are no longer reachable from `get_root()`
     /// after desugaring rewrites. Use `reachable_node_ids()` for output-level
     /// validation/traversal semantics.
-    pub fn nodes(&self) -> &[Node] {
+    pub fn nodes(&self) -> &[Node<Id>] {
         &self.nodes
     }
 
@@ -532,10 +590,10 @@ impl Ast {
         let mut seen = vec![false; self.nodes.len()];
 
         while let Some(id) = stack.pop() {
-            if id.0 >= self.nodes.len() || seen[id.0] {
+            if id.index() >= self.nodes.len() || seen[id.index()] {
                 continue;
             }
-            seen[id.0] = true;
+            seen[id.index()] = true;
             reachable.push(id);
 
             if let Some(node) = self.get_node(id) {
@@ -558,8 +616,8 @@ impl Ast {
         self.root = root;
     }
 
-    pub fn get_node(&self, id: Id) -> Option<&Node> {
-        self.nodes.get(id.0)
+    pub fn get_node(&self, id: Id) -> Option<&Node<Id>> {
+        self.nodes.get(id.index())
     }
 
     fn source_range_ignoring_fields(&self, id: Id, ignored_fields: &[&str]) -> Option<Range> {
@@ -578,7 +636,7 @@ impl Ast {
     }
 
     pub fn print(&self, source: &str, root_id: Id) -> Value {
-        let root = &self.nodes()[root_id.0];
+        let root = &self.nodes()[root_id.index()];
         self.print_node(root, source)
     }
 
@@ -626,7 +684,7 @@ impl Ast {
             is_named,
             source_range,
         });
-        Id(id)
+        Id::from_index(id)
     }
 
     /// Extend a synthetic node's source range to include `source_range`.
@@ -636,8 +694,8 @@ impl Ast {
     pub fn extend_source_range(&mut self, id: Id, source_range: Range) {
         let node = self
             .nodes
-            .get_mut(id.0)
-            .unwrap_or_else(|| panic!("extend_source_range: invalid node id {}", id.0));
+            .get_mut(id.index())
+            .unwrap_or_else(|| panic!("extend_source_range: invalid node id {}", id.index()));
         if matches!(node.content, NodeContent::Range(_)) {
             panic!("extend_source_range: cannot modify a parsed node");
         }
@@ -651,8 +709,8 @@ impl Ast {
     pub(crate) fn set_source_range(&mut self, id: Id, source_range: Range) {
         let node = self
             .nodes
-            .get_mut(id.0)
-            .unwrap_or_else(|| panic!("set_source_range: invalid node id {}", id.0));
+            .get_mut(id.index())
+            .unwrap_or_else(|| panic!("set_source_range: invalid node id {}", id.index()));
         if matches!(node.content, NodeContent::Range(_)) {
             panic!("set_source_range: cannot modify a parsed node");
         }
@@ -762,7 +820,7 @@ impl Ast {
             fields: BTreeMap::new(),
             content: NodeContent::DynamicString(content),
         });
-        Id(id)
+        Id::from_index(id)
     }
 
     pub fn field_name_for_id(&self, id: FieldId) -> Option<&'static str> {
@@ -774,7 +832,7 @@ impl Ast {
     }
 
     /// Print a node for debugging
-    fn print_node(&self, node: &Node, source: &str) -> Value {
+    fn print_node(&self, node: &Node<Id>, source: &str) -> Value {
         let fields: BTreeMap<&'static str, Vec<Value>> = node
             .fields
             .iter()
@@ -830,7 +888,7 @@ impl Ast {
 
 /// A node in our AST
 #[derive(PartialEq, Eq, Debug, Clone, Serialize)]
-pub struct Node {
+pub struct Node<Id: TreeId = crate::Id> {
     kind: KindId,
     kind_name: &'static str,
     pub(crate) fields: BTreeMap<FieldId, Vec<Id>>,
@@ -845,7 +903,7 @@ pub struct Node {
     is_error: bool,
 }
 
-impl Node {
+impl<Id: TreeId> Node<Id> {
     pub fn kind_name(&self) -> &'static str {
         self.kind_name
     }
