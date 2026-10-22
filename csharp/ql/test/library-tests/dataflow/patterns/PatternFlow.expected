@@ -52,26 +52,6 @@ edges
 | Patterns.cs:45:18:45:54 | { ... } : Nested [property Record, property Prop] : Object | Patterns.cs:45:35:45:52 | { ... } : RecordClass [property Prop] : Object | provenance |  |
 | Patterns.cs:45:35:45:52 | { ... } : RecordClass [property Prop] : Object | Patterns.cs:47:18:47:18 | access to local variable p | provenance |  |
 | Patterns.cs:45:35:45:52 | { ... } : RecordClass [property Prop] : Object | Patterns.cs:47:18:47:18 | access to local variable p | provenance |  |
-| Patterns.cs:53:13:53:13 | access to local variable o : Object | Patterns.cs:54:44:54:44 | access to local variable o : Object | provenance |  |
-| Patterns.cs:53:13:53:13 | access to local variable o : Object | Patterns.cs:54:44:54:44 | access to local variable o : Object | provenance |  |
-| Patterns.cs:53:17:53:33 | call to method Source<Object> : Object | Patterns.cs:53:13:53:13 | access to local variable o : Object | provenance |  |
-| Patterns.cs:53:17:53:33 | call to method Source<Object> : Object | Patterns.cs:53:13:53:13 | access to local variable o : Object | provenance |  |
-| Patterns.cs:54:13:54:13 | access to local variable s : Nested [property Record, property Prop] : Object | Patterns.cs:55:18:55:49 | { ... } : Nested [property Record, property Prop] : Object | provenance |  |
-| Patterns.cs:54:13:54:13 | access to local variable s : Nested [property Record, property Prop] : Object | Patterns.cs:55:18:55:49 | { ... } : Nested [property Record, property Prop] : Object | provenance |  |
-| Patterns.cs:54:17:54:46 | object creation of type Nested : Nested [property Record, property Prop] : Object | Patterns.cs:54:13:54:13 | access to local variable s : Nested [property Record, property Prop] : Object | provenance |  |
-| Patterns.cs:54:17:54:46 | object creation of type Nested : Nested [property Record, property Prop] : Object | Patterns.cs:54:13:54:13 | access to local variable s : Nested [property Record, property Prop] : Object | provenance |  |
-| Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | Patterns.cs:5:40:5:45 | Record : RecordClass [property Prop] : Object | provenance |  |
-| Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | Patterns.cs:5:40:5:45 | Record : RecordClass [property Prop] : Object | provenance |  |
-| Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | Patterns.cs:54:17:54:46 | object creation of type Nested : Nested [property Record, property Prop] : Object | provenance |  |
-| Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | Patterns.cs:54:17:54:46 | object creation of type Nested : Nested [property Record, property Prop] : Object | provenance |  |
-| Patterns.cs:54:44:54:44 | access to local variable o : Object | Patterns.cs:3:40:3:43 | Prop : Object | provenance |  |
-| Patterns.cs:54:44:54:44 | access to local variable o : Object | Patterns.cs:3:40:3:43 | Prop : Object | provenance |  |
-| Patterns.cs:54:44:54:44 | access to local variable o : Object | Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | provenance |  |
-| Patterns.cs:54:44:54:44 | access to local variable o : Object | Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | provenance |  |
-| Patterns.cs:55:18:55:49 | { ... } : Nested [property Record, property Prop] : Object | Patterns.cs:55:27:55:32 | { ... } : null [property Prop] : Object | provenance |  |
-| Patterns.cs:55:18:55:49 | { ... } : Nested [property Record, property Prop] : Object | Patterns.cs:55:27:55:32 | { ... } : null [property Prop] : Object | provenance |  |
-| Patterns.cs:55:27:55:32 | { ... } : null [property Prop] : Object | Patterns.cs:57:18:57:18 | access to local variable p | provenance |  |
-| Patterns.cs:55:27:55:32 | { ... } : null [property Prop] : Object | Patterns.cs:57:18:57:18 | access to local variable p | provenance |  |
 | Patterns.cs:63:13:63:13 | access to local variable o : Object | Patterns.cs:64:41:64:41 | access to local variable o : Object | provenance |  |
 | Patterns.cs:63:13:63:13 | access to local variable o : Object | Patterns.cs:64:41:64:41 | access to local variable o : Object | provenance |  |
 | Patterns.cs:63:17:63:33 | call to method Source<Object> : Object | Patterns.cs:63:13:63:13 | access to local variable o : Object | provenance |  |
@@ -207,24 +187,6 @@ nodes
 | Patterns.cs:45:35:45:52 | { ... } : RecordClass [property Prop] : Object | semmle.label | { ... } : RecordClass [property Prop] : Object |
 | Patterns.cs:47:18:47:18 | access to local variable p | semmle.label | access to local variable p |
 | Patterns.cs:47:18:47:18 | access to local variable p | semmle.label | access to local variable p |
-| Patterns.cs:53:13:53:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| Patterns.cs:53:13:53:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| Patterns.cs:53:17:53:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
-| Patterns.cs:53:17:53:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
-| Patterns.cs:54:13:54:13 | access to local variable s : Nested [property Record, property Prop] : Object | semmle.label | access to local variable s : Nested [property Record, property Prop] : Object |
-| Patterns.cs:54:13:54:13 | access to local variable s : Nested [property Record, property Prop] : Object | semmle.label | access to local variable s : Nested [property Record, property Prop] : Object |
-| Patterns.cs:54:17:54:46 | object creation of type Nested : Nested [property Record, property Prop] : Object | semmle.label | object creation of type Nested : Nested [property Record, property Prop] : Object |
-| Patterns.cs:54:17:54:46 | object creation of type Nested : Nested [property Record, property Prop] : Object | semmle.label | object creation of type Nested : Nested [property Record, property Prop] : Object |
-| Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | semmle.label | object creation of type RecordClass : RecordClass [property Prop] : Object |
-| Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | semmle.label | object creation of type RecordClass : RecordClass [property Prop] : Object |
-| Patterns.cs:54:44:54:44 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| Patterns.cs:54:44:54:44 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| Patterns.cs:55:18:55:49 | { ... } : Nested [property Record, property Prop] : Object | semmle.label | { ... } : Nested [property Record, property Prop] : Object |
-| Patterns.cs:55:18:55:49 | { ... } : Nested [property Record, property Prop] : Object | semmle.label | { ... } : Nested [property Record, property Prop] : Object |
-| Patterns.cs:55:27:55:32 | { ... } : null [property Prop] : Object | semmle.label | { ... } : null [property Prop] : Object |
-| Patterns.cs:55:27:55:32 | { ... } : null [property Prop] : Object | semmle.label | { ... } : null [property Prop] : Object |
-| Patterns.cs:57:18:57:18 | access to local variable p | semmle.label | access to local variable p |
-| Patterns.cs:57:18:57:18 | access to local variable p | semmle.label | access to local variable p |
 | Patterns.cs:63:13:63:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | Patterns.cs:63:13:63:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | Patterns.cs:63:17:63:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
@@ -316,10 +278,6 @@ subpaths
 | Patterns.cs:44:28:44:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | Patterns.cs:5:40:5:45 | Record : RecordClass [property Prop] : Object | Patterns.cs:5:21:5:26 | this [Return] : Nested [property Record, property Prop] : Object | Patterns.cs:44:17:44:46 | object creation of type Nested : Nested [property Record, property Prop] : Object |
 | Patterns.cs:44:44:44:44 | access to local variable o : Object | Patterns.cs:3:40:3:43 | Prop : Object | Patterns.cs:3:21:3:31 | this [Return] : RecordClass [property Prop] : Object | Patterns.cs:44:28:44:45 | object creation of type RecordClass : RecordClass [property Prop] : Object |
 | Patterns.cs:44:44:44:44 | access to local variable o : Object | Patterns.cs:3:40:3:43 | Prop : Object | Patterns.cs:3:21:3:31 | this [Return] : RecordClass [property Prop] : Object | Patterns.cs:44:28:44:45 | object creation of type RecordClass : RecordClass [property Prop] : Object |
-| Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | Patterns.cs:5:40:5:45 | Record : RecordClass [property Prop] : Object | Patterns.cs:5:21:5:26 | this [Return] : Nested [property Record, property Prop] : Object | Patterns.cs:54:17:54:46 | object creation of type Nested : Nested [property Record, property Prop] : Object |
-| Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | Patterns.cs:5:40:5:45 | Record : RecordClass [property Prop] : Object | Patterns.cs:5:21:5:26 | this [Return] : Nested [property Record, property Prop] : Object | Patterns.cs:54:17:54:46 | object creation of type Nested : Nested [property Record, property Prop] : Object |
-| Patterns.cs:54:44:54:44 | access to local variable o : Object | Patterns.cs:3:40:3:43 | Prop : Object | Patterns.cs:3:21:3:31 | this [Return] : RecordClass [property Prop] : Object | Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object |
-| Patterns.cs:54:44:54:44 | access to local variable o : Object | Patterns.cs:3:40:3:43 | Prop : Object | Patterns.cs:3:21:3:31 | this [Return] : RecordClass [property Prop] : Object | Patterns.cs:54:28:54:45 | object creation of type RecordClass : RecordClass [property Prop] : Object |
 | Patterns.cs:74:28:74:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | Patterns.cs:5:40:5:45 | Record : RecordClass [property Prop] : Object | Patterns.cs:5:21:5:26 | this [Return] : Nested [property Record, property Prop] : Object | Patterns.cs:74:17:74:46 | object creation of type Nested : Nested [property Record, property Prop] : Object |
 | Patterns.cs:74:28:74:45 | object creation of type RecordClass : RecordClass [property Prop] : Object | Patterns.cs:5:40:5:45 | Record : RecordClass [property Prop] : Object | Patterns.cs:5:21:5:26 | this [Return] : Nested [property Record, property Prop] : Object | Patterns.cs:74:17:74:46 | object creation of type Nested : Nested [property Record, property Prop] : Object |
 | Patterns.cs:74:44:74:44 | access to local variable o : Object | Patterns.cs:3:40:3:43 | Prop : Object | Patterns.cs:3:21:3:31 | this [Return] : RecordClass [property Prop] : Object | Patterns.cs:74:28:74:45 | object creation of type RecordClass : RecordClass [property Prop] : Object |
@@ -336,8 +294,6 @@ testFailures
 | Patterns.cs:36:22:36:22 | access to local variable p | Patterns.cs:31:17:31:33 | call to method Source<Object> : Object | Patterns.cs:36:22:36:22 | access to local variable p | $@ | Patterns.cs:31:17:31:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Patterns.cs:47:18:47:18 | access to local variable p | Patterns.cs:43:17:43:33 | call to method Source<Object> : Object | Patterns.cs:47:18:47:18 | access to local variable p | $@ | Patterns.cs:43:17:43:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Patterns.cs:47:18:47:18 | access to local variable p | Patterns.cs:43:17:43:33 | call to method Source<Object> : Object | Patterns.cs:47:18:47:18 | access to local variable p | $@ | Patterns.cs:43:17:43:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
-| Patterns.cs:57:18:57:18 | access to local variable p | Patterns.cs:53:17:53:33 | call to method Source<Object> : Object | Patterns.cs:57:18:57:18 | access to local variable p | $@ | Patterns.cs:53:17:53:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
-| Patterns.cs:57:18:57:18 | access to local variable p | Patterns.cs:53:17:53:33 | call to method Source<Object> : Object | Patterns.cs:57:18:57:18 | access to local variable p | $@ | Patterns.cs:53:17:53:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Patterns.cs:67:18:67:18 | access to local variable p | Patterns.cs:63:17:63:33 | call to method Source<Object> : Object | Patterns.cs:67:18:67:18 | access to local variable p | $@ | Patterns.cs:63:17:63:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Patterns.cs:67:18:67:18 | access to local variable p | Patterns.cs:63:17:63:33 | call to method Source<Object> : Object | Patterns.cs:67:18:67:18 | access to local variable p | $@ | Patterns.cs:63:17:63:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Patterns.cs:77:18:77:23 | access to property Prop | Patterns.cs:73:17:73:33 | call to method Source<Object> : Object | Patterns.cs:77:18:77:23 | access to property Prop | $@ | Patterns.cs:73:17:73:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |

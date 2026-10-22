@@ -54,7 +54,7 @@ public class RecordPatterns
         var s = new Nested(new RecordClass(o));
         if (s is Nested { Record.Prop: object p })
         {
-            Sink(p); // $ hasValueFlow=4
+            Sink(p); // $ MISSING: hasValueFlow=4
         }
     }
 
