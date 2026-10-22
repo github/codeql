@@ -414,17 +414,17 @@ void forward_test_model() {
   c.emplace(0, x);
 
   Element e = c.get();
-  ymlSink(e.x); // $ MISSING: ir
+  ymlSink(e.x); // $ ir
 }
 
 void forward_test_member_alias_scalar() {
   Container<int> scalar;
   scalar.emplace(0, ymlSource());
-  ymlSink(scalar.get()); // $ MISSING: ir
+  ymlSink(scalar.get()); // $ ir
 
   Container<int*> pointer;
   pointer.emplace(0, ymlSourcePtr());
-  ymlSink(*pointer.get()); // $ MISSING: ir
+  ymlSink(*pointer.get()); // $ ir
 }
 
 struct ElementWithDefaultArgument {
@@ -438,7 +438,7 @@ void forward_test_model_with_default_argument() {
   c.emplace(0, x);
 
   ElementWithDefaultArgument e = c.get();
-  ymlSink(e.x); // $ MISSING: ir
+  ymlSink(e.x); // $ ir
 }
 
 struct ElementWithOverloadedArity {
@@ -452,7 +452,7 @@ void forward_test_constructor_arity() {
   {
     Container<ElementWithOverloadedArity> c;
     c.emplace(0, x);
-    ymlSink(c.get().x); // $ MISSING: ir
+    ymlSink(c.get().x); // $ ir
   }
   {
     Container<ElementWithOverloadedArity> c;
@@ -462,7 +462,7 @@ void forward_test_constructor_arity() {
   {
     Container<ElementWithOverloadedArity> c;
     c.emplace(0, 0, x);
-    ymlSink(c.get().x); // $ MISSING: ir
+    ymlSink(c.get().x); // $ ir
   }
 }
 
