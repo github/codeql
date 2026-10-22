@@ -17,7 +17,7 @@ mod visitor;
 pub use range::{Point, Range};
 pub use yeast_macros::{query, rule, rules, tree, trees};
 
-use captures::Captures;
+use captures::{Captures, TranslatedCaptures};
 use query::QueryNode;
 
 impl From<tree_sitter::Point> for Point {
@@ -595,7 +595,6 @@ impl Ast {
         ast.source = source;
         ast
     }
-
 }
 
 impl<Id: TreeId> Ast<Id> {
@@ -1099,17 +1098,12 @@ impl From<tree_sitter::Range> for NodeContent {
 /// the framework's rule machinery. Constructed by the driver and passed as
 /// the last argument of every [`Transform`] invocation.
 ///
-/// The `rule!` macro uses [`TranslatorHandle::auto_translate_captures`] in
-/// its generated prefix to translate captures before running the user's
-/// transform body. Manually-written transforms (using [`Rule::new`]
-/// directly) can call [`TranslatorHandle::translate`] selectively on
-/// specific node ids to control when translation happens.
+/// The `rule!` macro eagerly translates `@` captures and translates raw input
+/// ids when they are returned or structurally interpolated. Manually-written
+/// transforms can call [`TranslatorHandle::translate`] directly.
 pub struct TranslatorHandle<'a, C> {
     index: &'a RuleIndex<'a, C>,
     rewrite_depth: usize,
-    /// The id of the node the current rule is matching. Used by
-    /// [`auto_translate_captures`] to avoid infinite recursion when a
-    /// rule captures its own match root (e.g. via `(_) @_`).
     matched_root: Id,
 }
 
@@ -1126,32 +1120,36 @@ impl<C> Clone for TranslatorHandle<'_, C> {
 impl<'a, C: Clone> TranslatorHandle<'a, C> {
     /// Recursively apply the current phase's rules to `id` and return the
     /// resulting node ids.
-    pub fn translate(&self, ast: &mut Ast, user_ctx: &mut C, id: Id) -> Result<Vec<Id>, String> {
-        apply_rules_inner(self.index, ast, user_ctx, id, self.rewrite_depth + 1)
+    pub fn translate(
+        &self,
+        ast: &Ast,
+        output: &mut OutputAst,
+        user_ctx: &mut C,
+        id: Id,
+    ) -> Result<Vec<OutputId>, String> {
+        apply_rules_inner(
+            self.index,
+            ast,
+            output,
+            user_ctx,
+            id,
+            self.rewrite_depth + 1,
+        )
     }
 
-    /// Translate every captured node in `captures` in place, except for
-    /// captures whose name appears in `skip` — those are left as raw
-    /// (input-schema) ids for the rule body to consume directly.
-    ///
-    /// Used by the `rule!` macro's generated prefix. `skip` is populated
-    /// from the macro's `@@name` capture markers; for plain `@name`
-    /// captures (and rules with no `@@` markers) it is empty.
-    ///
-    /// To avoid infinite recursion, a capture whose id matches the rule's
-    /// matched root (e.g. from a `(_) @_` pattern) is left unchanged.
-    pub fn auto_translate_captures(
+    pub fn translate_captures(
         &self,
-        captures: &mut Captures,
-        ast: &mut Ast,
+        captures: &Captures,
+        ast: &Ast,
+        output: &mut OutputAst,
         user_ctx: &mut C,
         skip: &[&str],
-    ) -> Result<(), String> {
-        captures.try_map_captures_except(skip, |cid| {
-            if cid == self.matched_root {
-                Ok(vec![cid])
+    ) -> Result<TranslatedCaptures, String> {
+        captures.try_translate_except(skip, |id| {
+            if id == self.matched_root {
+                Err("cannot eagerly translate a capture of the matched rule root".to_string())
             } else {
-                self.translate(ast, user_ctx, cid)
+                self.translate(ast, output, user_ctx, id)
             }
         })
     }
@@ -1159,24 +1157,22 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
 
 /// The transform function for a rule.
 ///
-/// Takes the AST, the (raw, untranslated) captured variables, the source range
-/// of the matched node, a mutable reference to the user context of type `C`,
-/// and a [`TranslatorHandle`] for recursively translating nodes. Returns the
-/// IDs of the replacement nodes, or an error message if the transform could
-/// not be completed.
+/// Takes the immutable input AST, mutable output AST, raw captured variables,
+/// source range of the matched node, mutable user context, and a
+/// [`TranslatorHandle`]. Returns output IDs or an error.
 ///
-/// Transforms produced by [`Rule::new`] receive **raw** captures and must
-/// translate them themselves (via the handle). Transforms produced by the
-/// `rule!` macro have an auto-translation prefix that recursively translates
-/// captures.
+/// Transforms receive raw input captures. Macro-generated transforms eagerly
+/// translate `@` captures and translate raw ids when they are returned or
+/// structurally interpolated.
 pub type Transform<C = ()> = Box<
     dyn Fn(
-            &mut Ast,
+            &Ast,
+            &mut OutputAst,
             Captures,
             Option<Range>,
             &mut C,
             TranslatorHandle<'_, C>,
-        ) -> Result<Vec<Id>, String>
+        ) -> Result<Vec<OutputId>, String>
         + Send
         + Sync,
 >;
@@ -1251,14 +1247,15 @@ impl<C> Rule<C> {
     /// source range available to the transform.
     fn run_transform(
         &self,
-        ast: &mut Ast,
+        ast: &Ast,
+        output: &mut OutputAst,
         captures: Captures,
         node: Id,
         user_ctx: &mut C,
         translator: TranslatorHandle<'_, C>,
-    ) -> Result<Vec<Id>, String> {
+    ) -> Result<Vec<OutputId>, String> {
         let source_range = ast.source_range_ignoring_fields(node, &self.ignored_location_fields);
-        (self.transform)(ast, captures, source_range, user_ctx, translator)
+        (self.transform)(ast, output, captures, source_range, user_ctx, translator)
     }
 }
 
@@ -1299,21 +1296,23 @@ impl<'a, C> RuleIndex<'a, C> {
 /// directly), and an error is returned if no rule matches a visited node.
 fn apply_rules<C: Clone>(
     rules: &[Rule<C>],
-    ast: &mut Ast,
+    ast: &Ast,
+    output: &mut OutputAst,
     user_ctx: &mut C,
     id: Id,
-) -> Result<Vec<Id>, String> {
+) -> Result<Vec<OutputId>, String> {
     let index = RuleIndex::new(rules);
-    apply_rules_inner(&index, ast, user_ctx, id, 0)
+    apply_rules_inner(&index, ast, output, user_ctx, id, 0)
 }
 
 fn apply_rules_inner<C: Clone>(
     index: &RuleIndex<C>,
-    ast: &mut Ast,
+    ast: &Ast,
+    output: &mut OutputAst,
     user_ctx: &mut C,
     id: Id,
     rewrite_depth: usize,
-) -> Result<Vec<Id>, String> {
+) -> Result<Vec<OutputId>, String> {
     if rewrite_depth > MAX_REWRITE_DEPTH {
         return Err(format!(
             "Desugaring exceeded maximum rewrite depth ({MAX_REWRITE_DEPTH}). \
@@ -1338,24 +1337,20 @@ fn apply_rules_inner<C: Clone>(
         }
 
         // Build the translator handle the transform will use to recursively
-        // translate captures (or, for macro-generated rules, the
-        // auto-translate prefix uses it to translate every capture up front).
+        // translate captured input nodes when they are consumed.
         let translator = TranslatorHandle {
             index,
             rewrite_depth,
             matched_root: id,
         };
-        let result = rule.run_transform(ast, captures, id, &mut local, translator)?;
+        let result = rule.run_transform(ast, output, captures, id, &mut local, translator)?;
         return Ok(result);
     }
 
     Err(format!("no rule matched node of kind '{node_kind}'"))
 }
 
-/// One phase of a translation pass: a named bundle of exhaustive rules that
-/// runs before the next phase starts. Rules within a phase compete for matches
-/// as usual; rules in different phases never compete because each translation
-/// only considers the current phase's rules.
+/// A named bundle of exhaustive rules for the one-shot translation pass.
 pub struct Phase<C = ()> {
     /// Name used in error messages.
     pub name: String,
@@ -1379,12 +1374,11 @@ impl<C> Phase<C> {
 /// is used both to validate TRAP output (via JSON conversion) and to
 /// resolve output-only node kinds and fields at runtime.
 ///
-/// Construct with `DesugaringConfig::new()` and add phases via
+/// Construct with `DesugaringConfig::new()` and add the translation phase via
 /// `add_phase`:
 ///
 /// ```ignore
 /// let config = yeast::DesugaringConfig::new()
-///     .add_phase("normalize", normalization_rules)
 ///     .add_phase("translate", translation_rules)
 ///     .with_output_node_types_yaml(yaml);
 /// ```
@@ -1416,13 +1410,15 @@ impl<C> Default for DesugaringConfig<C> {
 }
 
 impl<C> DesugaringConfig<C> {
-    /// Create an empty configuration. Add phases via [`add_phase`] and an
+    /// Create an empty configuration. Add a phase via [`add_phase`] and an
     /// optional output schema via [`with_output_node_types_yaml`].
     pub fn new() -> Self {
         Self::default()
     }
 
-    /// Append a new phase with the given name and exhaustive rules.
+    /// Add a translation phase with the given name and exhaustive rules.
+    ///
+    /// Runners currently reject configurations containing more than one phase.
     pub fn add_phase(mut self, name: impl Into<String>, mut rules: Vec<Rule<C>>) -> Self {
         for rule in &mut rules {
             rule.set_ignored_location_fields(&self.ignored_location_fields);
@@ -1535,7 +1531,7 @@ impl<'a, C> Runner<'a, C> {
 }
 
 impl<'a, C: Clone> Runner<'a, C> {
-    /// Parse `tree` against `source` and run all phases, threading
+    /// Parse `tree` against `source` and run the configured translation, threading
     /// `user_ctx` through every rule transform. The caller owns the
     /// initial context state.
     pub fn run_from_tree_with_ctx(
@@ -1543,22 +1539,23 @@ impl<'a, C: Clone> Runner<'a, C> {
         tree: &tree_sitter::Tree,
         source: &[u8],
         user_ctx: &mut C,
-    ) -> Result<Ast, String> {
-        let mut ast = Ast::from_tree_with_schema_and_source(
-            self.schema.clone(),
+    ) -> Result<OutputAst, String> {
+        let language = self
+            .language
+            .as_ref()
+            .ok_or("run_from_tree requires a tree-sitter language")?;
+        let input = Ast::from_tree_with_schema_and_source(
+            schema::from_language(language),
             tree,
-            self.language
-                .as_ref()
-                .ok_or("run_from_tree requires a tree-sitter language")?,
+            language,
             source.to_vec(),
         );
-        self.run_phases(&mut ast, user_ctx)?;
-        Ok(ast)
+        self.run_once(input, user_ctx)
     }
 
-    /// Parse `input` and run all phases, threading `user_ctx` through
+    /// Parse `input` and run the configured translation, threading `user_ctx` through
     /// every rule transform. The caller owns the initial context state.
-    pub fn run_with_ctx(&self, input: &str, user_ctx: &mut C) -> Result<Ast, String> {
+    pub fn run_with_ctx(&self, input: &str, user_ctx: &mut C) -> Result<OutputAst, String> {
         let language = self
             .language
             .as_ref()
@@ -1570,61 +1567,59 @@ impl<'a, C: Clone> Runner<'a, C> {
         let tree = parser
             .parse(input, None)
             .ok_or_else(|| "Failed to parse input".to_string())?;
-        let mut ast = Ast::from_tree_with_schema_and_source(
-            self.schema.clone(),
+        let raw = Ast::from_tree_with_schema_and_source(
+            schema::from_language(language),
             &tree,
             language,
             input.as_bytes().to_vec(),
         );
-        self.run_phases(&mut ast, user_ctx)?;
-        Ok(ast)
+        self.run_once(raw, user_ctx)
     }
 
-    /// Apply each phase in turn to the AST, threading the root through.
-    fn run_phases(&self, ast: &mut Ast, user_ctx: &mut C) -> Result<(), String> {
-        let mut root = ast.get_root();
-        for phase in self.phases {
-            let res = apply_rules(&phase.rules, ast, user_ctx, root)
-                .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
-            if res.len() != 1 {
-                return Err(format!(
-                    "Phase `{}`: expected exactly one result node, got {}",
-                    phase.name,
-                    res.len()
-                ));
-            }
-            root = res[0];
+    fn run_once(&self, ast: Ast, user_ctx: &mut C) -> Result<OutputAst, String> {
+        if self.phases.len() != 1 {
+            return Err("YEAST requires exactly one translation phase".to_string());
         }
-        ast.set_root(root);
-        Ok(())
+        let phase = &self.phases[0];
+        let mut output = OutputAst::with_schema(self.schema.clone());
+        let res = apply_rules(&phase.rules, &ast, &mut output, user_ctx, ast.get_root())
+            .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
+        if res.len() != 1 {
+            return Err(format!(
+                "Phase `{}`: expected exactly one result node, got {}",
+                phase.name,
+                res.len()
+            ));
+        }
+        output.set_root(res[0]);
+        output.set_source(ast.into_source());
+        Ok(output)
     }
 }
 
 impl<'a, C: Clone + Default> Runner<'a, C> {
-    /// Parse `tree` against `source` and run all phases, using the
-    /// default context (`C::default()`) as the initial context state.
-    pub fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<Ast, String> {
+    /// Parse `tree` against `source` and run the configured translation, using
+    /// the default context (`C::default()`) as the initial context state.
+    pub fn run_from_tree(
+        &self,
+        tree: &tree_sitter::Tree,
+        source: &[u8],
+    ) -> Result<OutputAst, String> {
         let mut user_ctx = C::default();
         self.run_from_tree_with_ctx(tree, source, &mut user_ctx)
     }
 
-    /// Parse `input` and run all phases, using the default context
-    /// (`C::default()`) as the initial context state.
-    pub fn run(&self, input: &str) -> Result<Ast, String> {
+    /// Parse `input` and run the configured translation, using the default
+    /// context (`C::default()`) as the initial context state.
+    pub fn run(&self, input: &str) -> Result<OutputAst, String> {
         let mut user_ctx = C::default();
         self.run_with_ctx(input, &mut user_ctx)
     }
 
-    /// Run all phases over an already-built `ast`, using the default context
-    /// (`C::default()`). Unlike [`run_from_tree`](Self::run_from_tree), the AST
-    /// is supplied by the caller (e.g. built from an external parser's output)
-    /// rather than constructed from a tree-sitter tree. The caller is
-    /// responsible for ensuring the AST's schema knows any output kind/field
-    /// names the rules will build (see [`Ast::register_names_from_schema`]).
-    pub fn run_from_ast(&self, mut ast: Ast) -> Result<Ast, String> {
+    /// Run the configured translation over an already-built input AST.
+    pub fn run_from_ast(&self, ast: Ast) -> Result<OutputAst, String> {
         let mut user_ctx = C::default();
-        self.run_phases(&mut ast, &mut user_ctx)?;
-        Ok(ast)
+        self.run_once(ast, &mut user_ctx)
     }
 }
 
@@ -1647,13 +1642,13 @@ pub trait Desugarer: Send + Sync {
 
     /// Parse `tree` against `source` and run the desugaring pipeline.
     /// Each call constructs a fresh default user context internally.
-    fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<Ast, String>;
+    fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<OutputAst, String>;
 
     /// Run the desugaring pipeline over an already-built `ast` (e.g. produced
     /// by an external parser rather than tree-sitter). The desugarer ensures
     /// the AST's schema knows its output kind/field names before running the
     /// rules. Each call constructs a fresh default user context internally.
-    fn run_from_ast(&self, ast: Ast) -> Result<Ast, String>;
+    fn run_from_ast(&self, ast: Ast) -> Result<OutputAst, String>;
 }
 
 /// A concrete [`Desugarer`] backed by a [`DesugaringConfig<C>`] for a
@@ -1676,6 +1671,9 @@ impl<C: Default + Clone + Send + Sync + 'static> ConcreteDesugarer<C> {
         language: tree_sitter::Language,
         config: DesugaringConfig<C>,
     ) -> Result<Self, String> {
+        if config.phases.len() > 1 {
+            return Err("YEAST currently supports at most one translation phase".to_string());
+        }
         let schema = config.build_schema(&language)?;
         Ok(Self {
             language: Some(language),
@@ -1689,6 +1687,9 @@ impl<C: Default + Clone + Send + Sync + 'static> ConcreteDesugarer<C> {
     /// [`run_from_ast`](Desugarer::run_from_ast) is supported; the schema comes
     /// from the config's `output_node_types_yaml` (which must be set).
     pub fn without_language(config: DesugaringConfig<C>) -> Result<Self, String> {
+        if config.phases.len() > 1 {
+            return Err("YEAST currently supports at most one translation phase".to_string());
+        }
         let schema = config.build_schema_no_language()?;
         Ok(Self {
             language: None,
@@ -1703,7 +1704,7 @@ impl<C: Default + Clone + Send + Sync + 'static> Desugarer for ConcreteDesugarer
         self.config.output_node_types_yaml
     }
 
-    fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<Ast, String> {
+    fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<OutputAst, String> {
         let language = self
             .language
             .clone()
@@ -1712,10 +1713,7 @@ impl<C: Default + Clone + Send + Sync + 'static> Desugarer for ConcreteDesugarer
         runner.run_from_tree(tree, source)
     }
 
-    fn run_from_ast(&self, mut ast: Ast) -> Result<Ast, String> {
-        // The AST was built against its own (external) schema; make sure the
-        // output kind/field names the rules build are resolvable in it.
-        ast.register_names_from_schema(&self.schema);
+    fn run_from_ast(&self, ast: Ast) -> Result<OutputAst, String> {
         // `run_from_ast` never parses, so no tree-sitter language is needed.
         let runner = Runner::with_schema_no_language(&self.schema, &self.config.phases);
         runner.run_from_ast(ast)
