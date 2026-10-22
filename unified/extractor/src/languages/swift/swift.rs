@@ -403,34 +403,24 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (accessorDecl accessorSpecifier: @@spec body: _? @@body)
             =>
-            accessor_declaration {
-                let binding = if body.is_some() {
-                    ctx.outer_modifiers.clone()
-                } else {
-                    Vec::new()
-                };
-                let chained = chained_modifier(&mut ctx);
-                let name = ctx
-                    .property_name_node
-                    .ok_or("accessor outside property context")?;
-                let ty = ctx.property_type;
-                let body = match body {
-                    Some(block) => {
-                        ctx.reset();
-                        ctx.translate(block)?.into_iter().next()
+            (accessor_declaration
+                modifier: {
+                    if body.is_some() {
+                        ctx.outer_modifiers.clone()
+                    } else {
+                        Vec::new()
                     }
-                    None => None,
-                };
-                tree!((accessor_declaration
-                    modifier: {binding}
-                    modifier: {chained}
-                    name_node: {name}
-                    type: {ty}
-                    accessor_kind: (accessor_kind #{spec})
-                    body: {body}
-                    location: {spec}
-                    location: {body}))
-            }
+                }
+                modifier: {chained_modifier(&mut ctx)}
+                name_node: {
+                    ctx.property_name_node
+                        .ok_or("accessor outside property context")?
+                }
+                type: {ctx.property_type}
+                accessor_kind: (accessor_kind #{spec})
+                body: {ctx.reset(); body}
+                location: {spec}
+                location: {body})
         ),
         // ---- Variables ----
         // The individual bindings of a `variableDecl`. The binding modifier and
@@ -450,7 +440,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: {chained_modifier(&mut ctx)}
                 pattern: {pattern}
                 type: {ty}
-                value: {ctx.reset(); ctx.translate(val)?})
+                value: {ctx.reset(); val})
         ),
         // A `let`/`var` declaration binds one or more comma-separated patterns
         // (`let x = 1, y = 2`). The `bindingSpecifier` (`let`/`var`) is published
@@ -591,7 +581,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // determines the concrete pattern shape.
         rule!((expressionPattern expression: @@e) => expr {
             ctx.in_pattern = true;
-            ctx.translate(e)?.into_iter().next().ok_or("expression pattern has no child")?
+            e
         }),
         // ---- Functions ----
         // A function declaration (parameters/return type/body optional). The
@@ -1236,33 +1226,21 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A tuple type (`(Int, String)`) or function type (`(Int) -> Bool`).
         // Both hold their contents as `tupleTypeElement`s, but a tuple element
         // maps to `argument` while a function parameter maps to `parameter`.
-        // Each container sets `ctx.in_function_type` for its direct
-        // children (and translates them explicitly, so a nested type is
-        // translated in the right context) and the shared `tupleTypeElement`
-        // rule below reads it. An element's label (`firstName`) is optional.
+        // Each container sets `ctx.in_function_type` before returning its raw
+        // children, so structural interpolation translates them in the right
+        // context. The shared `tupleTypeElement` rule below reads it. An
+        // element's label (`firstName`) is optional.
         rule!(
             (tupleType elements: _* @@elems)
             =>
-            tuple_expr {
-                ctx.in_function_type = false;
-                let mut out = Vec::new();
-                for e in elems {
-                    out.extend(ctx.translate(e)?);
-                }
-                tree!((tuple_expr element: {out}))
-            }
+            (tuple_expr element: {ctx.in_function_type = false; elems})
         ),
         rule!(
             (functionType parameters: _* @@params returnClause: (returnClause type: @ret))
             =>
-            function_expr {
-                ctx.in_function_type = true;
-                let mut out = Vec::new();
-                for p in params {
-                    out.extend(ctx.translate(p)?);
-                }
-                tree!((function_expr parameter: {out} return_type: {ret}))
-            }
+            (function_expr
+                parameter: {ctx.in_function_type = true; params}
+                return_type: {ret})
         ),
         rule!(
             (tupleTypeElement
