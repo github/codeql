@@ -2314,17 +2314,12 @@ private predicate readStepDelegateCall(Node node1, ContentSet c, OutNode node2) 
 private predicate fieldOrPropertyPatternRead(Node node1, ContentSet c, Node node2) {
   exists(PatternExpr pattern, LabeledPatternExpr label, FieldOrProperty f |
     node1.asExpr() = pattern and
-    (
-      pattern.(RecursivePatternExpr).getPropertyPatterns().getPattern(_) = label
-      or
-      pattern.(PropertyPatternExpr).getPattern(_) = label
-    ) and
+    pattern.(RecursivePatternExpr).getPropertyPatterns().getPattern(_) = label and
     c = f.getContentSet() and
-    f.getName() = label.getLabel()
+    f.getName() = label.getLabel() and
+    pattern.getType().(ValueOrRefType).hasMember(f)
   |
     node2.asExpr() = label.(RecursivePatternExpr)
-    or
-    node2.asExpr() = label.(PropertyPatternExpr)
     or
     exists(AssignableDefinitions::PatternDefinition lvd |
       node2.(AssignableDefinitionNode).getDefinition() = lvd and
