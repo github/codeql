@@ -40,8 +40,6 @@ module Unified {
 
     /**
      * Gets the nearest syntactically enclosing class declaration, if any.
-     *
-     * For the semantically enclosing class, use `getParentClass()` instead.
      */
     ClassLikeDeclaration getEnclosingClass() {
       exists(AstNode parent | parent = this.getParent() |
@@ -49,33 +47,6 @@ module Unified {
         or
         not parent instanceof ClassLikeDeclaration and
         result = parent.getEnclosingClass()
-      )
-    }
-
-    /**
-     * Gets the class that this node belongs to, if any.
-     *
-     * Unlike `getEnclosingClass`, this takes extensions into account:
-     *
-     * ```swift
-     * class A {
-     *   let x : Int // belongs to class A
-     * }
-     *
-     * extension A {
-     *   func foo() {} // also belongs to the class A
-     * }
-     * ```
-     */
-    ClassLikeDeclaration getParentClass() {
-      exists(ClassLikeDeclaration encl | encl = this.getEnclosingClass() |
-        not exists(encl.getExtensionTarget()) and
-        result = encl
-        or
-        exists(NameBinding::NamespaceNode ns |
-          ns.isStaticMemberNamespace(result) and
-          ns.getAnExtension().isStaticMemberNamespace(encl)
-        )
       )
     }
 
@@ -244,13 +215,10 @@ module Unified {
 
   private module QualifiedName<getDeclaringClassSig/1 getDeclaringClass> {
     string getQualifiedName(Member m) {
-      not m instanceof U::EnumCaseConstructor and
       result = getQualifiedName(getDeclaringClass(m)) + "." + m.getNameOrFallback()
       or
       not exists(getDeclaringClass(m)) and
       result = m.getNameOrFallback()
-      or
-      result = getQualifiedName(m.(U::EnumCaseConstructor).getEnumCaseClass())
     }
   }
 
@@ -278,16 +246,26 @@ module Unified {
     }
 
     /**
+     * Gets the class that this class resolves to. Either itself, when it
+     * is not extension, otherwise the class that it extends.
+     */
+    ClassLikeDeclaration resolve() {
+      not exists(this.getExtensionTarget()) and
+      result = this
+      or
+      exists(NameBinding::NamespaceNode ns |
+        ns.isStaticMemberNamespace(result) and
+        ns.getAnExtension().isStaticMemberNamespace(this)
+      )
+    }
+
+    /**
      * Gets a member of this class, including members from extensions.
      */
     Member getAMemberIncludingExtensions() {
-      result = this.getAMember() and
-      not exists(this.getExtensionTarget())
-      or
-      exists(ClassLikeDeclaration ext, NameBinding::NamespaceNode ns |
-        ns.isStaticMemberNamespace(this) and
-        ns.getAnExtension().isStaticMemberNamespace(ext) and
-        result = ext.getAMember()
+      exists(ClassLikeDeclaration cls |
+        this = cls.resolve() and
+        result = cls.getAMember()
       )
     }
 

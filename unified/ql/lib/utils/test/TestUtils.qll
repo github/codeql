@@ -48,6 +48,11 @@ predicate callableName(Callable c, string alias) {
     keyValueCommentAt(filepath, line, "name", alias)
     or
     not keyValueCommentAt(filepath, line, "name", _) and
-    alias = c.(Member).getQualifiedName()
+    (
+      not c instanceof EnumCaseConstructor and
+      alias = c.(Member).getQualifiedName()
+      or
+      alias = c.(EnumCaseConstructor).getEnumCaseClass().getQualifiedName()
+    )
   )
 }

@@ -784,7 +784,7 @@ module Input3 implements InputSig3 {
     path.isEmpty()
     or
     exists(ClassLikeDeclaration c |
-      c = n.(SuperExpr).getParentClass() and
+      c = n.(SuperExpr).getEnclosingClass().resolve() and
       result = c.getBaseType(0).getType().(TypeMention).getTypeAt(path)
     )
     or

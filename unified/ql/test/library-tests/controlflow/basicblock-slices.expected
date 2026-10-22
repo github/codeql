@@ -7,7 +7,7 @@
 | 8 | cfg.swift:8:1:8:6 | Double | 'Double -> Argument -V topLevelDecl -^ Double(...)' |
 | 10 | cfg.swift:10:1:13:1 | enum MyError | 'enum MyError -V MyError -> BaseType -V Error' |
 | 11 | cfg.swift:11:10:11:15 | MyError.error1 | 'MyError.error1 -V error1 -> MyError.error2 -V error2' |
-| 12 | cfg.swift:12:10:12:31 | MyError.error3 | 'MyError.error3 -V error3 -^ MyError.error3' |
+| 12 | cfg.swift:12:10:12:31 | MyError.error3 | 'MyError.error3 -V error3 -^ MyError.error3.(constructor)' |
 | 12 | cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
 | 15 | cfg.swift:15:1:17:1 | func isZero | 'func isZero -V isZero' |
 | 15 | cfg.swift:15:13:15:13 | x | 'x -> Block' |
