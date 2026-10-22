@@ -68,6 +68,9 @@ private predicate unresolvedIdentifier(Ident id, string name) {
  * An SSA variable.
  */
 deprecated class SsaVariable extends SsaDefinition {
+  /** Gets the SSA variable defined by this definition. */
+  SsaVariable getVariable() { result = this }
+
   /** Gets the unique definition of this SSA variable. */
   SsaDefinition getDefinition() { result = this }
 
