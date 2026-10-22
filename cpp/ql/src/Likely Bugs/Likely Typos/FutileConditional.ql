@@ -7,8 +7,8 @@
  * @precision high
  * @id cpp/empty-if
  * @tags quality
- *       reliability
- *       readability
+ *       maintainability
+ *       useless-code
  */
 
 import cpp

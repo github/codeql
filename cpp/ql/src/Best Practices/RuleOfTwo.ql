@@ -9,7 +9,7 @@
  * @id cpp/rule-of-two
  * @tags quality
  *       reliability
- *       readability
+ *       correctness
  *       language-features
  */
 

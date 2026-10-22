@@ -7,8 +7,8 @@
  * @id cpp/resource-not-released-in-destructor
  * @tags quality
  *       reliability
+ *       correctness
  *       efficiency
- *       readability
  *       external/cwe/cwe-404
  *       external/jsf
  */

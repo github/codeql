@@ -8,8 +8,8 @@
  * @precision very-high
  * @id cpp/futile-params
  * @tags quality
+ *       reliability
  *       correctness
- *       maintainability
  */
 
 import cpp

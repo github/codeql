@@ -8,8 +8,8 @@
  * @precision high
  * @id cpp/implicit-function-declaration
  * @tags quality
+ *       reliability
  *       correctness
- *       maintainability
  */
 
 import cpp

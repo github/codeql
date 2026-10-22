@@ -8,7 +8,7 @@
  * @id cpp/dubious-null-check
  * @tags quality
  *       reliability
- *       readability
+ *       correctness
  */
 
 import cpp
