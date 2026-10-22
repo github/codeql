@@ -21,8 +21,9 @@ class ParameterPosition extends TParameterPosition {
 
   string asNamed() { this = TNamedParameter(result) }
 
-  string toString() {
-    this.isReceiver() and result = "receiver"
+  /** Gets the operand to `Parameter`/`Argument` that represents this position in a MaD model. */
+  string asModelOperand() {
+    this.isReceiver() and result = "self"
     or
     this.isCallee() and result = "callee"
     or
@@ -31,6 +32,9 @@ class ParameterPosition extends TParameterPosition {
     // Suffix with a colon to prevent a confusing name clash with "receiver". This also aligns with MaD syntax.
     result = this.asNamed() + ":"
   }
+
+  /** Gets a string representation of this position. */
+  string toString() { result = this.asModelOperand() }
 }
 
 class ArgumentPosition = ParameterPosition;

@@ -22,20 +22,38 @@ module DataFlowInput implements InputSig<Location> {
   //
   // Parameter, argument, return, and out nodes and their positions/kinds
   //
-  class ReturnNode extends Node {
-    ReturnNode() {
-      // TODO: Handle short-hand returns such as `func foo() -> Int { 5 }`
-      this.asExpr() = any(ReturnExpr r).getValue()
-    }
+  private predicate isReturnNode(Node n, ReturnKind kind) {
+    // TODO: Handle short-hand returns such as `func foo() -> Int { 5 }`
+    n.asExpr() = any(ReturnExpr r).getValue() and kind.isStandardReturnValue()
+    or
+    FlowSummaryOutput::summaryReturnNode(getSummaryNode(n), kind)
+  }
 
-    ReturnKind getKind() { exists(result) }
+  class ReturnNode extends Node {
+    ReturnNode() { isReturnNode(this, _) }
+
+    ReturnKind getKind() { isReturnNode(this, result) }
+  }
+
+  private predicate isOutNode(Node n, DataFlowCall call, ReturnKind kind) {
+    n.asExpr() = call.asExplicitCall() and kind.isStandardReturnValue()
+    or
+    exists(FlowSummaryOutput::SummaryNode callee |
+      FlowSummaryOutput::summaryOutNode(callee, getSummaryNode(n), kind) and
+      call.isSummaryCall(_, callee)
+    )
   }
 
   class OutNode extends Node {
-    OutNode() { this.asExpr() instanceof CallExpr }
+    OutNode() { isOutNode(this, _, _) }
   }
 
-  class ReturnKind = Unit;
+  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { isOutNode(result, call, kind) }
+
+  class ReturnKind extends Unit {
+    /** Holds if this is the standard return value */
+    predicate isStandardReturnValue() { any() }
+  }
 
   import ParameterPositions
   //
@@ -58,6 +76,9 @@ module DataFlowInput implements InputSig<Location> {
     )
     or
     p.(BuilderNode).isImplicitParameter(c, pos)
+    or
+    FlowSummaryOutput::summaryParameterNode(getSummaryNode(p), pos) and
+    c = p.getEnclosingCallableEx()
   }
 
   class ParameterNode extends Node {
@@ -80,6 +101,11 @@ module DataFlowInput implements InputSig<Location> {
     )
     or
     n.(BuilderNode).isImplicitArgument(call, pos, false)
+    or
+    exists(FlowSummaryOutput::SummaryNode callee |
+      FlowSummaryOutput::summaryArgumentNode(callee, getSummaryNode(n), pos) and
+      call.isSummaryCall(_, callee)
+    )
   }
 
   class ArgumentNode extends Node {
@@ -89,10 +115,6 @@ module DataFlowInput implements InputSig<Location> {
   predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
     // This predicate is needed to implement the signature without empty recursion through ArgumentNode
     isArgumentNodeImpl(n, call, pos)
-  }
-
-  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-    result.asExpr() = call.asExplicitCall() and exists(kind)
   }
 
   //
@@ -129,6 +151,8 @@ module DataFlowInput implements InputSig<Location> {
   private Step valueStepEx() {
     result.value()
     or
+    result.valueMustFlow()
+    or
     exists(ContentSet contents | bypassContentSet(contents) |
       result.read(contents)
       or
@@ -142,15 +166,29 @@ module DataFlowInput implements InputSig<Location> {
     localSsaStep(node1, node2, _) and model = ""
     or
     captureSsaLocalFlowStep(node1, node2) and model = ""
+    or
+    FlowSummaryOutput::summaryLocalStep(node1, node2, true, model)
+    or
+    model = "" and
+    exists(ContentSet contents | bypassContentSet(contents) |
+      FlowSummaryOutput::summaryReadStep(getSummaryNode(node1), contents, getSummaryNode(node2))
+      or
+      FlowSummaryOutput::summaryStoreStep(getSummaryNode(node1), contents, getSummaryNode(node2))
+    )
   }
 
-  predicate jumpStep(Node node1, Node node2) { step(node1, any(Step s | s.jump()), node2) }
+  predicate jumpStep(Node node1, Node node2) {
+    step(node1, any(Step s | s.jump()), node2) or
+    FlowSummaryOutput::summaryJumpStep(node1, node2)
+  }
 
   predicate readStep(Node node1, ContentSet c, Node node2) {
     (
       step(node1, any(Step s | s.read(c)), node2)
       or
       captureSsaReadStep(node1, c, node2)
+      or
+      FlowSummaryOutput::summaryReadStep(getSummaryNode(node1), c, getSummaryNode(node2))
     ) and
     not bypassContentSet(c)
   }
@@ -160,15 +198,29 @@ module DataFlowInput implements InputSig<Location> {
       step(node1, any(Step s | s.store(c)), node2)
       or
       captureSsaStoreStep(node1, c, node2)
+      or
+      FlowSummaryOutput::summaryStoreStep(getSummaryNode(node1), c, getSummaryNode(node2))
     ) and
     not bypassContentSet(c)
   }
 
-  predicate clearsContent(Node n, ContentSet c) { captureSsaClearsContent(n, c) } // TODO
+  predicate clearsContent(Node n, ContentSet c) {
+    captureSsaClearsContent(n, c)
+    or
+    FlowSummaryOutput::summaryClearsContent(getSummaryNode(n), c) and
+    not bypassContentSet(c)
+  }
 
-  predicate expectsContent(Node n, ContentSet c) { none() } // TODO
+  predicate expectsContent(Node n, ContentSet c) {
+    FlowSummaryOutput::summaryExpectsContent(getSummaryNode(n), c) and
+    not bypassContentSet(c)
+  }
 
-  predicate localMustFlowStep(Node node1, Node node2) { localSsaMustFlowStep(node1, node2) } // TODO
+  predicate localMustFlowStep(Node node1, Node node2) {
+    step(node1, any(Step s | s.valueMustFlow()), node2) or
+    localSsaMustFlowStep(node1, node2) or
+    FlowSummaryOutput::summaryLocalMustFlowStep(getSummaryNode(node1), getSummaryNode(node2))
+  }
 
   //
   // Misc
@@ -207,7 +259,14 @@ module DataFlowInput implements InputSig<Location> {
 
   predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() } // TODO
 
-  predicate allowParameterReturnInSelf(ParameterNode p) { captureSsaAllowParameterReturnInSelf(p) }
+  predicate allowParameterReturnInSelf(ParameterNode p) {
+    captureSsaAllowParameterReturnInSelf(p)
+    or
+    exists(DataFlowCallable c, ParameterPosition pos |
+      FlowSummaryOutput::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos) and
+      isParameterNodeImpl(p, c, pos)
+    )
+  }
 
   class LambdaCallKind extends Unit { }
 
@@ -216,9 +275,11 @@ module DataFlowInput implements InputSig<Location> {
     exists(kind)
   }
 
-  predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
-    receiver.(BuilderNode).isImplicitArgument(call, any(ArgumentPosition p | p.isCallee()), false) and
+  predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node callee) {
+    callee.(BuilderNode).isImplicitArgument(call, any(ArgumentPosition p | p.isCallee()), false) and
     exists(kind)
+    or
+    call.isSummaryCall(_, getSummaryNode(callee)) and exists(kind)
   }
 
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) {

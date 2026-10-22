@@ -139,7 +139,7 @@ private newtype TSelector =
 /**
  * A tuple from a model that identifies call sites.
  */
-private class Selector extends TSelector {
+class Selector extends TSelector {
   string getTypeString() { this = MkSelector(result, _, _, _, _) }
 
   boolean getSubtypesFlag() { this = MkSelector(_, result, _, _, _) }
@@ -291,6 +291,18 @@ private predicate normalizedSinkModel(
   )
 }
 
+predicate normalizedSummaryModel(
+  Selector selector, string input, string output, string kind, string provenance
+) {
+  exists(
+    string type, boolean subtypes, string rawName, string name, string argLabels, string argTypes
+  |
+    legacySummaryModel(_, type, subtypes, rawName, argTypes, _, input, output, kind, provenance) and
+    parsedRawMethodName(rawName, name, argLabels) and
+    selector = MkSelector(type, subtypes, name, argLabels, argTypes)
+  )
+}
+
 /**
  * Gets a flow source with the given `kind` and `provenance`.
  */
@@ -346,6 +358,10 @@ private module Debug {
       normalizedSourceModel(selector, ap, _, _)
       or
       normalizedSinkModel(selector, ap, _, _)
+      or
+      normalizedSummaryModel(selector, ap, _, _, _)
+      or
+      normalizedSummaryModel(selector, _, ap, _, _)
     ) and
     ap.getName() = ["Argument", "Parameter"] and
     (

@@ -1164,7 +1164,7 @@ extensions:
       - ["", "FilePath", true, "init(platformString:)", "", "", "Argument[platformString:]", "ReturnValue", "taint", "manual"]
       - ["", "FilePath", true, "withPlatformString(_:)", "", "", "Argument[self]", "Argument[0].Parameter[0].CollectionElement", "taint", "manual"]
       - ["", "FilePath", true, "withPlatformString(_:)", "", "", "Argument[0].ReturnValue", "ReturnValue", "taint", "manual"]
-      - ["", "FilePath", true, "init(_:root:)", "", "", "Argument[root:,1]", "ReturnValue", "taint", "manual"]
+      - ["", "FilePath", true, "init(_:root:)", "", "", "Argument[root:,0]", "ReturnValue", "taint", "manual"]
       - ["", "FilePath", true, "init(components:root:)", "", "", "Argument[root:,components:]", "ReturnValue", "taint", "manual"]
       - ["", "FilePath", true, "lexicallyNormalized()", "", "", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["", "FilePath", true, "lexicallyResolving(_:)", "", "", "Argument[self,0]", "ReturnValue", "taint", "manual"]

@@ -38,6 +38,11 @@ private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
     or
     expr = call.getCallee()
   )
+  or
+  exists(Expr target |
+    hasPostUpdate(target, cfgNode) and
+    exprStep(expr, target, _)
+  )
 }
 
 /**
@@ -87,10 +92,15 @@ newtype TDataFlowNode =
     performsVariableAccess(repr, var, kind, _)
   } or
   TCallableNode(DataFlowCallable callable) or
-  TImplicitParameterNode(DataFlowCallable callable, ImplicitParameterPosition pos) or
-  TImplicitArgumentNode(DataFlowCall call, ImplicitArgumentPosition pos, Boolean isPost) or
+  TImplicitParameterNode(DataFlowCallable callable, ImplicitParameterPosition pos) {
+    not exists(callable.asSummarizedCallable()) // represented by TSummaryNode
+  } or
+  TImplicitArgumentNode(DataFlowCall call, ImplicitArgumentPosition pos, Boolean isPost) {
+    not call.isSummaryCall(_, _) // represented by TSummaryNode
+  } or
   TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node) or
-  TCaptureSsaNode(CaptureSsaOutput::SynthesizedCaptureNode node)
+  TCaptureSsaNode(CaptureSsaOutput::SynthesizedCaptureNode node) or
+  TSummaryNode(FlowSummaryOutput::SummaryNode node)
 
 class TDataFlowNodeStage1 =
   TValueNode or TStrictlyIncomingValue or TExprPostUpdateNode or TLocalVariableRefNode or
@@ -374,6 +384,11 @@ class Node extends TDataFlowNode {
       this = TCaptureSsaNode(node) and
       result = "[capture] " + node.toString()
     )
+    or
+    exists(FlowSummaryOutput::SummaryNode node |
+      this = TSummaryNode(node) and
+      result = node.toString()
+    )
   }
 
   /** Gets the location of this data flow node. */
@@ -384,6 +399,9 @@ class Node extends TDataFlowNode {
       this = TCaptureSsaNode(node) and
       result = node.getLocation()
     )
+    or
+    this instanceof TSummaryNode and
+    result instanceof EmptyLocation
   }
 
   /** Gets the data-flow callable containing this data flow node. */
@@ -418,6 +436,11 @@ class Node extends TDataFlowNode {
     exists(DataFlowCallable callable |
       this.isCallableEx(callable) and
       result.asSourceCallable() = callable.asSourceCallable().getEnclosingCallable()
+    )
+    or
+    exists(FlowSummaryOutput::SummaryNode sn |
+      this = TSummaryNode(sn) and
+      result = sn.getEnclosingCallable()
     )
   }
 
@@ -491,5 +514,7 @@ class Node extends TDataFlowNode {
     result = this.(BuilderNode).getPostUpdateNode()
     or
     result = getCaptureSsaPostUpdate(this)
+    or
+    FlowSummaryOutput::summaryPostUpdateNode(getSummaryNode(result), getSummaryNode(this))
   }
 }

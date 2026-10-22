@@ -3,6 +3,7 @@ private import AllDataFlow
 
 private newtype TStep =
   TValueStep() or
+  TValueMustFlowStep() or
   TJumpStep() or
   TTaintStep() or
   TReadStep(ContentSet contents) or
@@ -14,6 +15,9 @@ private newtype TStep =
 class Step extends TStep {
   /** Holds if this represents a value-preserving step. */
   predicate value() { this = TValueStep() }
+
+  /** Holds if this represents a value-preserving step with must-flow, meaning this step is the only way a value can reach the target node. */
+  predicate valueMustFlow() { this = TValueMustFlowStep() }
 
   /** Holds if this represents a value-preserving jump step (propagating across unrelated call stacks). */
   predicate jump() { this = TJumpStep() }
@@ -45,6 +49,8 @@ class Step extends TStep {
 
   string toString() {
     this.value() and result = "value"
+    or
+    this.valueMustFlow() and result = "value-must"
     or
     this.jump() and result = "jump"
     or
