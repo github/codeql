@@ -35,6 +35,39 @@ private class DefaultLdapInjectionSink extends LdapInjectionSink {
   DefaultLdapInjectionSink() { sinkNode(this, "ldap-injection") }
 }
 
+/**
+ * The value of a `java.naming.security.principal` JNDI environment entry, i.e. the
+ * `value` argument of a `Hashtable`/`Map.put(key, value)` whose key is the
+ * `javax.naming.Context.SECURITY_PRINCIPAL` constant or the literal string
+ * `"java.naming.security.principal"`.
+ *
+ * This entry is the bind DN used to authenticate the directory connection. An
+ * unescaped, attacker-controlled value lets the caller manipulate the DN structure
+ * (LDAP DN injection, CWE-90). This pattern cannot be expressed as a Models-as-Data
+ * sink because it depends on the value of the `key` argument rather than the method
+ * signature.
+ *
+ * Note: `new javax.naming.ldap.LdapName(String)` is deliberately not modelled as a
+ * sink. It over-fires on the benign idiom of parsing an existing certificate or
+ * principal DN to read its RDNs (e.g.
+ * `new LdapName(cert.getSubjectX500Principal().getName()).getRdns()`), which is not
+ * injection. The injection sinks are the positions where a DN string is used to bind,
+ * look up, or authenticate.
+ */
+private class SecurityPrincipalEnvSink extends LdapInjectionSink {
+  SecurityPrincipalEnvSink() {
+    exists(MethodCall ma |
+      ma.getMethod().hasName("put") and
+      this.asExpr() = ma.getArgument(1)
+    |
+      ma.getArgument(0).(FieldRead).getField().hasName("SECURITY_PRINCIPAL")
+      or
+      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() =
+        "java.naming.security.principal"
+    )
+  }
+}
+
 /** A sanitizer that clears the taint on (boxed) primitive types. */
 private class DefaultLdapSanitizer extends LdapInjectionSanitizer instanceof SimpleTypeSanitizer { }
 
