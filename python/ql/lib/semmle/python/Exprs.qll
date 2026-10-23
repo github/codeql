@@ -61,6 +61,7 @@ private predicate hasNonLoadExpressionContextSeed(Expr e, TContext context) {
 }
 
 private predicate inferredNonLoadExpressionContext(Expr e, TContext context) {
+  hasExpressionContext(e) and
   exists(Expr root |
     hasNonLoadExpressionContextSeed(root, context) and
     propagatesExpressionContext*(root, e)
