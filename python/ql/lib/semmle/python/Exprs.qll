@@ -4,6 +4,77 @@ module;
 private import python
 private import semmle.python.internal.CachedStages
 
+private newtype TContext =
+  TDel() or
+  TLoad() or
+  TParam() or
+  TStore()
+
+private predicate hasExpressionContext(Expr e) {
+  e instanceof Attribute or
+  e instanceof List or
+  e instanceof Name or
+  e instanceof PlaceHolder or
+  e instanceof Starred or
+  e instanceof Subscript or
+  e instanceof TemplateDottedNotation_ or
+  e instanceof Tuple
+}
+
+private predicate propagatesExpressionContext(Expr parent, Expr child) {
+  child in [parent.(List).getAnElt(), parent.(Tuple).getAnElt(), parent.(Starred).getValue()]
+}
+
+private predicate hasNonLoadExpressionContextSeed(Expr e, TContext context) {
+  context = TStore() and
+  e in [
+      any(Assign a).getATarget(),
+      any(AnnAssign a).getTarget(),
+      any(AssignExpr a).getTarget(),
+      any(For f).getTarget(),
+      any(Comprehension c).getTarget(),
+      any(With w).getOptionalVars(),
+      any(ExceptStmt ex).getName(),
+      any(ExceptGroupStmt ex).getName(),
+      any(Alias a).getAsname(),
+      any(MatchAsPattern p).getAlias(),
+      any(MatchCapturePattern p).getVariable(),
+      any(TypeAlias t).getName(),
+      any(TypeVar t).getName(),
+      any(TypeVarTuple t).getName(),
+      any(ParamSpec p).getName()
+    ]
+  or
+  context = TParam() and
+  (
+    e = any(Function f).getAnArg()
+    or
+    e in [
+        any(Function f).getVararg(),
+        any(Function f).getAKwonlyarg(),
+        any(Function f).getKwarg()
+      ]
+  )
+  or
+  context = TDel() and
+  e = any(Delete d).getATarget()
+}
+
+private predicate inferredNonLoadExpressionContext(Expr e, TContext context) {
+  exists(Expr root |
+    hasNonLoadExpressionContextSeed(root, context) and
+    propagatesExpressionContext*(root, e)
+  )
+}
+
+private predicate inferredExpressionContext(Expr e, TContext context) {
+  inferredNonLoadExpressionContext(e, context)
+  or
+  context = TLoad() and
+  hasExpressionContext(e) and
+  not inferredNonLoadExpressionContext(e, _)
+}
+
 /** An expression */
 class Expr extends Expr_, AstNode {
   /** Gets the scope of this expression */
@@ -53,6 +124,18 @@ class Expr extends Expr_, AstNode {
 
   /** Gets an immediate (non-nested) sub-expression of this expression */
   Expr getASubExpression() { none() }
+
+  /** Whether this expression occurs in a load context. */
+  predicate isLoadContext() { inferredExpressionContext(this, TLoad()) }
+
+  /** Whether this expression occurs in a store context. */
+  predicate isStoreContext() { inferredExpressionContext(this, TStore()) }
+
+  /** Whether this expression occurs in a parameter context. */
+  predicate isParameterContext() { inferredExpressionContext(this, TParam()) }
+
+  /** Whether this expression occurs in a deletion context. */
+  predicate isDeleteContext() { inferredExpressionContext(this, TDel()) }
 
   override AstNode getAChildNode() { result = this.getASubExpression() }
 }
@@ -432,10 +515,10 @@ class Name extends Name_ {
 
   /** Whether this expression is a definition */
   predicate isDefinition() {
-    py_expr_contexts(_, 5, this)
+    this.isStoreContext()
     or
     /* Treat Param as a definition (which it is) */
-    py_expr_contexts(_, 4, this)
+    this.isParameterContext()
     or
     /* The target in an augmented assignment is also a definition (and a use) */
     exists(AugAssign aa | aa.getTarget() = this)
@@ -451,7 +534,7 @@ class Name extends Name_ {
   }
 
   /** Whether this expression is a deletion */
-  predicate isDeletion() { py_expr_contexts(_, 2, this) }
+  predicate isDeletion() { this.isDeleteContext() }
 
   /**
    * Whether this expression deletes variable `v`.
@@ -463,7 +546,7 @@ class Name extends Name_ {
   }
 
   /** Whether this expression is a use */
-  predicate isUse() { py_expr_contexts(_, 3, this) }
+  predicate isUse() { this.isLoadContext() }
 
   /**
    * Whether this expression is a use of variable `v`
