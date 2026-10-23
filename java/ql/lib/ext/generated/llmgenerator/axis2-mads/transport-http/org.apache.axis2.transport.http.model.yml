@@ -1,0 +1,42 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.transport.http", "AbstractAgent", True, "renderView", "(String,HttpServletRequest,HttpServletResponse)", "", "Argument[0]", "path-injection", "ai-generated"]
+      #- ["org.apache.axis2.transport.http", "AbstractAgent", True, "renderView", "(String,HttpServletRequest,HttpServletResponse)", "", "Argument[0]", "path-injection", "ai-generated"] # INVALID: Duplicate entry
+      - ["org.apache.axis2.transport.http", "AbstractHTTPTransportSender", True, "invoke", "(MessageContext)", "", "Argument[0]", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "HTTPSender", True, "send", "(MessageContext,URL,String)", "", "Argument[1]", "request-forgery", "ai-generated"]
+      #- ["org.apache.axis2.transport.http", "Request", True, "addHeader", "(String,String)", "", "Argument[0..1]", "response-splitting", "ai-generated"] # INVALID: Outbound request header setter, not response splitting
+      #- ["org.apache.axis2.transport.http", "Request", True, "setHeader", "(String,String)", "", "Argument[0..1]", "response-splitting", "ai-generated"] # INVALID: Outbound request header setter, not response splitting
+      - ["org.apache.axis2.transport.http", "ServletBasedOutTransportInfo", True, "addHeader", "(String,String)", "", "Argument[0..1]", "response-splitting", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "ServletBasedOutTransportInfo", True, "setContentType", "(String)", "", "Argument[0]", "response-splitting", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.transport.http", "AxisServlet", True, "createMessageContext", "(HttpServletRequest,HttpServletResponse)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "AxisServlet", True, "createMessageContext", "(HttpServletRequest,HttpServletResponse,boolean)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "AxisServlet", True, "getTransportHeaders", "(HttpServletRequest)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "CommonsTransportHeaders", True, "entrySet", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "CommonsTransportHeaders", True, "get", "(Object)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "CommonsTransportHeaders", True, "keySet", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "CommonsTransportHeaders", True, "remove", "(Object)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "CommonsTransportHeaders", True, "values", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "HTTPWorker", True, "getHost", "(AxisHttpRequest)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "HTTPWorker", True, "service", "(AxisHttpRequest,AxisHttpResponse,MessageContext)", "", "Argument[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "ListingAgent", True, "getParamtereIgnoreCase", "(HttpServletRequest,String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "Request", True, "getCookies", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "Request", True, "getResponseContent", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "Request", True, "getResponseContentEncoding", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "Request", True, "getResponseHeader", "(String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "Request", True, "getResponseHeaders", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "Request", True, "getStatusText", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "SimpleHTTPServer", True, "main", "(String[])", "", "Argument[0]", "commandargs", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "TransportHeaders", True, "entrySet", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "TransportHeaders", True, "get", "(Object)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "TransportHeaders", True, "keySet", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "TransportHeaders", True, "remove", "(Object)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.http", "TransportHeaders", True, "values", "()", "", "ReturnValue", "remote", "ai-generated"]

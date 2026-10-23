@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "buildServiceDescription", "(String,ConfigurationContext,boolean)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processFilesInFolder", "(File,HashMap)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processServiceGroup", "(String,DeploymentFileData,AxisServiceGroup,boolean,HashMap,ConfigurationContext)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "setClassLoader", "(boolean,ClassLoader,File,boolean)", "", "Argument[2]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "WSInfoList", True, "addWSInfoItem", "(File,Deployer,int)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "WSInfoList", True, "addWSInfoItem", "(URL,Deployer,int)", "", "Argument[0]", "path-injection", "ai-generated"]

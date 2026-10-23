@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      #- ["org.apache.axis2.context", "ConfigurationContext", True, "getRealPath", "(String)", "", "Argument[0]", "path-injection", "ai-generated"] # INVALID: Just resolves new File(repo,path); no file access
+      - ["org.apache.axis2.context", "ConfigurationContextFactory", True, "createConfigurationContextFromFileSystem", "(String)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.context", "ConfigurationContextFactory", True, "createConfigurationContextFromFileSystem", "(String,String)", "", "Argument[0..1]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.context", "ConfigurationContextFactory", True, "createConfigurationContextFromURIs", "(URL,URL)", "", "Argument[0..1]", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context", "OperationContext", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      #- ["org.apache.axis2.context", "SelfManagedDataManager", True, "deserializeSelfManagedData", "(ByteArrayInputStream,MessageContext)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"] # INVALID: Interface declaration only; no implementation
+      - ["org.apache.axis2.context", "ServiceContext", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context", "ServiceGroupContext", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context", "SessionContext", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.context", "MessageContext", True, "getAttachment", "(String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getAttachmentMap", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getAttachmentMap", "(boolean)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getEnvelope", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getFaultTo", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getFrom", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getMessageID", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getRelatesTo", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getRelatesTo", "(String)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getRelationships", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getReplyTo", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getSoapAction", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getTo", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.context", "MessageContext", True, "getWSAAction", "()", "", "ReturnValue", "remote", "ai-generated"]
