@@ -84,7 +84,7 @@ func testCommandInjectionQhelpExamples() {
 	if let validatedString = validateCommand(userControlledString) {
     	let task2 = Process()
     	task2.launchPath = "/bin/bash" // GOOD
-    	task2.arguments = ["-c", validatedString] // GOOD [FALSE POSITIVE]
+		task2.arguments = ["-c", validatedString] // GOOD (original Swift false positive)
 	    task2.launch()
 	}
 }
@@ -136,7 +136,7 @@ func testCommandInjectionMore(mySafeString: String) {
 	task6.executableURL = URL(fileURLWithPath: userControlledString) // $ MISSING: Alert
 	task6.executableURL = URL(string: userControlledString)! // $ MISSING: Alert
 	task6.arguments = [userControlledString] // $ MISSING: Alert
-	task6.setArguments([userControlledString]) // BAD (flagged inside `setArguments`)
+	task6.setArguments([userControlledString]) // BAD (expected inside setArguments; currently missing)
 	task6.harmlessField = userControlledString // GOOD
 	try! task6.run()
 
