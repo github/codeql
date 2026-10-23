@@ -92,11 +92,11 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   or
   exists(UnqualifiedMemberAccess access | access.isInstanceAccess() |
     node1.isLocalVariableRead(access, access.getImplicitQualifierVariable()) and
-    step.readName(access.getName()) and
+    step.readName(access.getMemberName()) and
     node2.isResultValue(access)
     or
     (node1.isIncomingValue(access) or node1.isPostUpdate(access)) and
-    step.storeName(access.getName()) and
+    step.storeName(access.getMemberName()) and
     node2.isLocalVariablePostUpdate(access, access.getImplicitQualifierVariable())
   )
   or
