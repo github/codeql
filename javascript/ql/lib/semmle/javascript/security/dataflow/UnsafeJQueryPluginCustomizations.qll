@@ -227,7 +227,7 @@ module UnsafeJQueryPlugin {
       hasDefaultOption(plugin, defaultDef) and
       defaultDef = getALikelyHtmlWrite(finalRead.getPropertyName()) and
       finalRead.flowsTo(sink) and
-      sink.getTopLevel() = plugin.getTopLevel()
+      pragma[only_bind_out](sink.getTopLevel()) = pragma[only_bind_out](plugin.getTopLevel())
     )
   }
 
