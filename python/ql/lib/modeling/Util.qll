@@ -11,7 +11,7 @@ private import semmle.python.filters.Tests
  */
 class TestFile extends File {
   TestFile() {
-    this.getRelativePath().regexpMatch(".*(test|spec|examples).+") and
+    this.getRelativePath().regexpMatch(".*(test|spec|examples|__main__).+") and
     not this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
   }
 }
