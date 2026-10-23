@@ -16,8 +16,10 @@
 import cpp
 import semmle.code.cpp.commons.Scanf
 import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.controlflow.IRGuards as IRGuards
 import semmle.code.cpp.dataflow.new.DataFlow::DataFlow
 import semmle.code.cpp.ir.IR
+import semmle.code.cpp.ir.ValueNumbering
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import ScanfChecks
 import ScanfToUseFlow::PathGraph
@@ -103,6 +105,10 @@ module ScanfToUseConfig implements ConfigSig {
 
   predicate isSink(Node sink) { isSink(sink, _) }
 
+  predicate isBarrier(Node node) {
+    node = BarrierGuard<scanfChecksOutput/3>::getAnIndirectBarrierNode(1)
+  }
+
   predicate isBarrierOut(Node n) {
     // We disable flow out of sinks to reduce result duplication
     isSink(n, _)
@@ -141,6 +147,45 @@ int getMinimumGuardConstant(ScanfFunctionCall call, int index) {
         // It does not increase the count returned by `scanf`.
         n <= index and f.getUse() = call and f.getConversionChar(n) = "n"
       )
+}
+
+/**
+ * Holds if `output` addresses a local non-reference variable whose other lvalue uses are
+ * assignments, increments, or output arguments of `scanf`-like calls.
+ * Aliased reads are not always tracked by this configuration, so retaining
+ * the successful flow for other address uses avoids hiding an unsafe read.
+ */
+private predicate isUnaliasedScanfOutput(Expr output) {
+  exists(LocalVariable variable, AddressOfExpr address |
+    output.getUnconverted() = address and
+    address.getOperand().(VariableAccess).getTarget() = variable and
+    not variable.getType().getUnspecifiedType() instanceof ReferenceType and
+    forall(VariableAccess access |
+      access.getTarget() = variable and access.isUsedAsLValue() and not access.isModified()
+    |
+      exists(ScanfFunctionCall call, int index |
+        call.getOutputArgument(index).getUnconverted() = access.getParent()
+      )
+    )
+  )
+}
+
+/** Holds if `guard` ensures that `output` was written when it evaluates to `branch`. */
+private predicate scanfChecksOutput(IRGuards::IRGuardCondition guard, Expr output, boolean branch) {
+  exists(
+    ScanfFunctionCall call, int index, CallInstruction instruction, int minGuard,
+    IRGuards::GuardValue value
+  |
+    value.asBooleanValue() = branch and
+    output = call.getOutputArgument(index).getFullyConverted() and
+    isUnaliasedScanfOutput(output) and
+    instruction.getUnconvertedResultExpression() = call and
+    minGuard = getMinimumGuardConstant(call, index)
+  |
+    guard.comparesEq(valueNumber(instruction).getAUse(), any(int k | minGuard <= k), true, value)
+    or
+    guard.comparesLt(valueNumber(instruction).getAUse(), any(int k | minGuard <= k), false, value)
+  )
 }
 
 /**
