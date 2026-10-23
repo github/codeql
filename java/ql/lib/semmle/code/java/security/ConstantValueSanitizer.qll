@@ -1,7 +1,4 @@
-/**
- * Provides a default taint sanitizer identifying comparisons against lists of
- * compile-time constants.
- */
+/** Provides a default taint sanitizer identifying checks against compile-time constants. */
 overlay[local?]
 module;
 
@@ -10,6 +7,7 @@ private import codeql.typeflow.UniversalFlow as UniversalFlow
 private import semmle.code.java.Collections
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.internal.BaseSSA as Base
+private import semmle.code.java.dataflow.NullGuards
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.TypeFlow
 private import semmle.code.java.dispatch.VirtualDispatch
@@ -157,6 +155,29 @@ private predicate collectionWithPossibleMutation(FlowNode n) {
   )
 }
 
+/** Holds if `n` is a collection constructed by an API that rejects null elements. */
+private predicate nullRejectingCollectionCreation(FlowNode n) {
+  exists(Call c, Callable tgt |
+    n.asExpr() = c and
+    c.getCallee().getSourceDeclaration() = tgt
+  |
+    tgt.hasQualifiedName("java.util", ["List", "Set"], ["copyOf", "of"])
+    or
+    tgt.hasQualifiedName("com.google.common.collect", ["ImmutableList", "ImmutableSet"],
+      ["copyOf", "of"])
+  )
+}
+
+private module NullRejectingCollectionProp implements BaseUniversalFlow::NullaryPropertySig {
+  predicate hasPropertyBase(FlowNode n) { nullRejectingCollectionCreation(n) }
+
+  predicate barrier = collectionWithPossibleMutation/1;
+}
+
+/** Holds if the given collection cannot contain null. */
+private predicate nullRejectingCollection =
+  BaseUniversalFlow::FlowNullary<NullRejectingCollectionProp>::hasProperty/1;
+
 /**
  * A collection constructor that constructs an empty mutable collection.
  */
@@ -241,27 +262,89 @@ private MethodCall normalizeCaseCall(Expr arg) {
  * Holds if the guard `g` ensures that the expression `e` is one of a set of
  * known constants upon evaluating to `branch`.
  */
-private predicate constantCollectionContainsCheck(Guard g, Expr e, boolean branch) {
-  exists(MethodCall mc, Method m, FlowNode n, Expr checked |
-    g = mc and
-    mc.getMethod().getSourceDeclaration().overridesOrInstantiates*(m) and
+private predicate constantCollectionContainsCall(
+  MethodCall contains, FlowNode collection, Expr checked
+) {
+  exists(Method m, FlowNode n |
+    contains.getMethod().getSourceDeclaration().overridesOrInstantiates*(m) and
     m.hasQualifiedName("java.util", "Collection", "contains") and
-    n.asExpr() = mc.getQualifier() and
+    n.asExpr() = contains.getQualifier() and
     constantCollection(n) and
-    checked = mc.getAnArgument() and
+    checked = contains.getAnArgument() and
+    collection = n
+  )
+}
+
+private predicate constantCollectionContainsCheck(Guard g, Expr e, boolean branch) {
+  exists(Expr checked | checked = e or checked = normalizeCaseCall(e) |
+    constantCollectionContainsCall(g, _, checked) and
     branch = true
-  |
-    checked = e or
-    checked = normalizeCaseCall(e)
   )
 }
 
 /**
- * A comparison against a list of compile-time constants, sanitizing taint by
- * restricting to a set of known values.
+ * Holds if the guard `g` ensures that the string expression `e` equals a compile-time constant
+ * upon evaluating to `branch`.
  */
-private class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTaintSanitizer {
-  ListOfConstantsComparisonSanitizerGuard() {
-    this = DataFlow::BarrierGuard<constantCollectionContainsCheck/3>::getABarrierNode()
+private predicate constantStringEqualityCheck(Guard g, Expr e, boolean branch) {
+  exists(MethodCall comparison, Expr constant |
+    g = comparison and
+    comparison.getMethod().getDeclaringType() instanceof TypeString and
+    comparison.getMethod().hasName(["equals", "equalsIgnoreCase"]) and
+    branch = true and
+    (
+      e = comparison.getQualifier() and constant = comparison.getArgument(0)
+      or
+      e = comparison.getArgument(0) and constant = comparison.getQualifier()
+    ) and
+    exists(constant.(CompileTimeConstantExpr).getStringValue())
+  )
+}
+
+/**
+ * Holds if the guard `g` ensures that the expression `e` is one of a set of compile-time constants
+ * upon evaluating to `branch`.
+ */
+predicate constantValueGuardChecks(Guard g, Expr e, boolean branch) {
+  constantStringEqualityCheck(g, e, branch)
+  or
+  constantCollectionContainsCheck(g, e, branch)
+}
+
+/**
+ * Holds if `g` ensures that `e` is a non-null member of a set of compile-time constants upon
+ * evaluating to `branch`.
+ */
+predicate nonNullConstantValueGuardChecks(Guard g, Expr e, boolean branch) {
+  constantStringEqualityCheck(g, e, branch)
+  or
+  exists(FlowNode collection, Expr checked |
+    constantCollectionContainsCall(g, collection, checked) and
+    branch = true
+  |
+    checked = e and
+    (
+      nullRejectingCollection(collection)
+      or
+      e = clearlyNotNullExpr()
+    )
+    or
+    checked = normalizeCaseCall(e) and
+    (
+      nullRejectingCollection(collection)
+      or
+      checked.(MethodCall).getQualifier() = e
+      or
+      e = clearlyNotNullExpr()
+    )
+  )
+}
+
+/**
+ * A check against compile-time constants, sanitizing taint by restricting a value to a known set.
+ */
+private class ConstantValueSanitizerGuard extends TaintTracking::DefaultTaintSanitizer {
+  ConstantValueSanitizerGuard() {
+    this = DataFlow::BarrierGuard<constantValueGuardChecks/3>::getABarrierNode()
   }
 }
