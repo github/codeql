@@ -33,9 +33,6 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-/**
- * Detect taint flow of tainted data that reaches a command injection sink.
- */
 module CommandInjectionFlow = TaintTracking::Global<CommandInjectionConfig>;
 
 import CommandInjectionFlow::PathGraph
