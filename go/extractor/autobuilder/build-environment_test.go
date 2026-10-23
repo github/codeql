@@ -20,11 +20,15 @@ func TestGetVersionToInstall(t *testing.T) {
 		{"", "1.20.3"}:   "",
 
 		// getVersionWhenGoModVersionTooHigh()
-		{"9999.0", ""}:                    maxGoVersion.String(),
+		{"9999.0", ""}:                    "9999.0",
 		{"9999.0", "9999.0.1"}:            "",
-		{"9999.0", "1.1"}:                 maxGoVersion.String(),
-		{"9999.0", minGoVersion.String()}: maxGoVersion.String(),
-		{"9999.0", maxGoVersion.String()}: "",
+		{"9999.0", "1.1"}:                 "9999.0",
+		{"9999.0", minGoVersion.String()}: "9999.0",
+		{"9999.0", maxGoVersion.String()}: "9999.0",
+		{"9999.1", "9999.0"}:              "9999.1",
+		{"9999.0", "9999.1"}:              "",
+		{"9999.0", "9999.0"}:              "",
+		{"9999.0rc2", ""}:                 "v9999.0.0-rc2",
 
 		// getVersionWhenGoModVersionTooLow()
 		{"0.0", ""}:       minGoVersion.String(),
