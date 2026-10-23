@@ -28,7 +28,7 @@ func t3() {
 func t4() {
     var x: String {
         get {}
-        set { sink(newValue) }  // $ MISSING: hasValueFlow=t4.1
+        set { sink(newValue) }  // $ hasValueFlow=t4.1
     }
     x = source("t4.1")
 }
@@ -36,7 +36,7 @@ func t4() {
 func t5() {
     var x: String {
         get { source("t5.1") }
-        set { sink(newValue) }  // $ MISSING: hasValueFlow=t5.1
+        set { sink(newValue) }  // $ hasValueFlow=t5.1
     }
     x = x
 }

@@ -4,6 +4,13 @@ edges
 | accessors_local.swift:7:21:7:34 | source(...) | accessors_local.swift:8:10:8:10 | x | provenance |  |
 | accessors_local.swift:15:15:15:28 | source(...) | accessors_local.swift:17:10:17:10 | x | provenance |  |
 | accessors_local.swift:22:15:22:28 | source(...) | accessors_local.swift:25:10:25:10 | x | provenance |  |
+| accessors_local.swift:31:9:31:11 | newValue | accessors_local.swift:31:20:31:27 | newValue | provenance |  |
+| accessors_local.swift:33:5:33:5 | x | accessors_local.swift:31:9:31:11 | newValue | provenance |  |
+| accessors_local.swift:33:9:33:22 | source(...) | accessors_local.swift:33:5:33:5 | x | provenance |  |
+| accessors_local.swift:38:15:38:28 | source(...) | accessors_local.swift:41:9:41:9 | x | provenance |  |
+| accessors_local.swift:39:9:39:11 | newValue | accessors_local.swift:39:20:39:27 | newValue | provenance |  |
+| accessors_local.swift:41:5:41:5 | x | accessors_local.swift:39:9:39:11 | newValue | provenance |  |
+| accessors_local.swift:41:9:41:9 | x | accessors_local.swift:41:5:41:5 | x | provenance |  |
 | accessors_static.swift:56:32:56:45 | source(...) | accessors_static.swift:64:18:64:18 | x | provenance |  |
 | calls.swift:7:19:7:19 | x | calls.swift:8:14:8:14 | x | provenance |  |
 | calls.swift:10:12:10:25 | source(...) | calls.swift:7:19:7:19 | x | provenance |  |
@@ -472,6 +479,15 @@ nodes
 | accessors_local.swift:17:10:17:10 | x | semmle.label | x |
 | accessors_local.swift:22:15:22:28 | source(...) | semmle.label | source(...) |
 | accessors_local.swift:25:10:25:10 | x | semmle.label | x |
+| accessors_local.swift:31:9:31:11 | newValue | semmle.label | newValue |
+| accessors_local.swift:31:20:31:27 | newValue | semmle.label | newValue |
+| accessors_local.swift:33:5:33:5 | x | semmle.label | x |
+| accessors_local.swift:33:9:33:22 | source(...) | semmle.label | source(...) |
+| accessors_local.swift:38:15:38:28 | source(...) | semmle.label | source(...) |
+| accessors_local.swift:39:9:39:11 | newValue | semmle.label | newValue |
+| accessors_local.swift:39:20:39:27 | newValue | semmle.label | newValue |
+| accessors_local.swift:41:5:41:5 | x | semmle.label | x |
+| accessors_local.swift:41:9:41:9 | x | semmle.label | x |
 | accessors_static.swift:56:32:56:45 | source(...) | semmle.label | source(...) |
 | accessors_static.swift:64:18:64:18 | x | semmle.label | x |
 | calls.swift:7:19:7:19 | x | semmle.label | x |
@@ -1055,6 +1071,8 @@ testFailures
 | accessors_local.swift:8:10:8:10 | x | accessors_local.swift:7:21:7:34 | source(...) | accessors_local.swift:8:10:8:10 | x | $@ | accessors_local.swift:7:21:7:34 | source(...) | source(...) |
 | accessors_local.swift:17:10:17:10 | x | accessors_local.swift:15:15:15:28 | source(...) | accessors_local.swift:17:10:17:10 | x | $@ | accessors_local.swift:15:15:15:28 | source(...) | source(...) |
 | accessors_local.swift:25:10:25:10 | x | accessors_local.swift:22:15:22:28 | source(...) | accessors_local.swift:25:10:25:10 | x | $@ | accessors_local.swift:22:15:22:28 | source(...) | source(...) |
+| accessors_local.swift:31:20:31:27 | newValue | accessors_local.swift:33:9:33:22 | source(...) | accessors_local.swift:31:20:31:27 | newValue | $@ | accessors_local.swift:33:9:33:22 | source(...) | source(...) |
+| accessors_local.swift:39:20:39:27 | newValue | accessors_local.swift:38:15:38:28 | source(...) | accessors_local.swift:39:20:39:27 | newValue | $@ | accessors_local.swift:38:15:38:28 | source(...) | source(...) |
 | accessors_static.swift:64:18:64:18 | x | accessors_static.swift:56:32:56:45 | source(...) | accessors_static.swift:64:18:64:18 | x | $@ | accessors_static.swift:56:32:56:45 | source(...) | source(...) |
 | calls.swift:8:14:8:14 | x | calls.swift:10:12:10:25 | source(...) | calls.swift:8:14:8:14 | x | $@ | calls.swift:10:12:10:25 | source(...) | source(...) |
 | calls.swift:17:10:17:17 | target(...) | calls.swift:15:16:15:29 | source(...) | calls.swift:17:10:17:17 | target(...) | $@ | calls.swift:15:16:15:29 | source(...) | source(...) |
