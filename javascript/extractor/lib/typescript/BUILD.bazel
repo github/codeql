@@ -1,12 +1,20 @@
-# Builds a zip file of the compiled typscript-parser-wrapper and its dependencies.
+load("@rules_python//python:defs.bzl", "py_test")
+load("//misc/bazel:os.bzl", "codeql_platform_select")
+load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pack_group")
+
+# Keep the JavaScript API common, but ship native executables in the arch package.
 genrule(
-    name = "typescript",
+    name = "build",
     srcs = [
         "tsconfig.json",
         "package.json",
         "package-lock.json",
+        "package-runtime.mjs",
     ] + glob(["src/**"]),
-    outs = ["javascript.zip"],
+    outs = [
+        "javascript.zip",
+        "native.zip",
+    ],
     cmd = "\n".join([
         # the original working directory is not preserved anywhere, but needs to be accessible, as
         # all paths are relative to this
@@ -25,20 +33,38 @@ genrule(
         "rm -rf $(RULEDIR)/inputs",
         "cp -L -R $$(dirname $(execpath package.json)) $(RULEDIR)/inputs",
         "cd $(RULEDIR)/inputs",
-        "$$NPM install",
+        "$$NPM ci",
         "$$NPM run build",
         "rm -rf node_modules",
-        # Install again with only runtime deps
-        "$$NPM install --prod",
+        "DISTRIBUTION=",
+    ]) + codeql_platform_select(
+        linux64 = "linux64",
+        linux_arm64 = "linux-arm64",
+        osx64 = "osx64",
+        win64 = "win64",
+    ) + "\n" + "\n".join([
+        "$$NPM ci --omit=dev --omit=optional --ignore-scripts",
+        # Optional dependencies are host-filtered even with --force. Install the
+        # selected packages explicitly, retaining the lockfile's versions/integrities.
+        "$$NPM install --omit=dev --ignore-scripts --no-save --force $$(node package-runtime.mjs --packages $$DISTRIBUTION)",
+        "node package-runtime.mjs $$DISTRIBUTION",
         "mv node_modules build/",
+        # Node needs the ESM package boundary in the installed wrapper too.
+        "cp package.json build/",
         "mkdir -p typescript-parser-wrapper",
         "mv build/* typescript-parser-wrapper",
-        "OUT=$$BAZEL_ROOT/$@",
+        "OUT=$$BAZEL_ROOT/$(execpath javascript.zip)",
+        "NATIVE_OUT=$$BAZEL_ROOT/$(execpath native.zip)",
         "case $$OSTYPE in",
-        "  cygwin|msys|win32) OUT=$$(cygpath -w $$OUT);;",
+        "  cygwin|msys|win32) OUT=$$(cygpath -w $$OUT); NATIVE_OUT=$$(cygpath -w $$NATIVE_OUT);;",
         "esac",
         "",
-        "$$BAZEL_ROOT/$(execpath @bazel_tools//tools/zip:zipper) cC $$OUT $$(find typescript-parser-wrapper -name '*' -print)",
+        # Use response files to stay below Windows' command-line length limit.
+        "find typescript-parser-wrapper -print > wrapper-files",
+        "$$BAZEL_ROOT/$(execpath @bazel_tools//tools/zip:zipper) cC $$OUT @wrapper-files",
+        "cd native",
+        "find typescript-* -print > native-files",
+        "$$BAZEL_ROOT/$(execpath @bazel_tools//tools/zip:zipper) cC $$NATIVE_OUT @native-files",
         "rm -rf $$TEMP",
     ]),
     tools = [
@@ -47,4 +73,60 @@ genrule(
         "@nodejs//:npm_bin",
     ],
     visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "typescript",
+    srcs = ["javascript.zip"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "native",
+    srcs = ["native.zip"],
+    visibility = ["//visibility:public"],
+)
+
+codeql_pack(
+    name = "package-test-pack",
+    srcs = [],
+    arch_overrides = ["tools/typescript-parser-wrapper/node_modules/@typescript"],
+    install_dest = None,
+    pack_prefix = "",
+    zips = {
+        ":native": "tools/typescript-parser-wrapper/node_modules/@typescript",
+        ":typescript": "tools",
+    },
+)
+
+codeql_pack_group(
+    name = "package-test-distribution",
+    srcs = [":package-test-pack"],
+    skip_installer = True,
+)
+
+py_test(
+    name = "package-test",
+    size = "small",
+    srcs = ["test/package_test.py"],
+    data = [
+        "package-runtime.mjs",
+        ":native",
+        ":package-test-distribution-arch-zip",
+        ":package-test-distribution-common-zip",
+        ":typescript",
+        "//misc/ripunzip",
+        "@nodejs//:node_bin",
+    ],
+    env = {
+        "NODE_BIN": "$(rlocationpath @nodejs//:node_bin)",
+        "PACKAGE_RUNTIME": "$(rlocationpath package-runtime.mjs)",
+        "RIPUNZIP": "$(rlocationpath //misc/ripunzip)",
+        "TS_ARCH_ZIP": "$(rlocationpath :package-test-distribution-arch-zip)",
+        "TS_COMMON_ZIP": "$(rlocationpath :package-test-distribution-common-zip)",
+        "TS_NATIVE_ZIP": "$(rlocationpath :native)",
+        "TS_WRAPPER_ZIP": "$(rlocationpath :typescript)",
+    },
+    main = "test/package_test.py",
+    deps = ["@rules_python//python/runfiles"],
 )
