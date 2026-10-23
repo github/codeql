@@ -188,6 +188,12 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node2.isReturnNode(callable)
   )
   or
+  exists(IfExpr expr |
+    node1.isResultValue(expr.getABranch()) and
+    step.value() and
+    node2.isResultValue(expr)
+  )
+  or
   none() // Temporarily disable compilation errors from unsatisfiable types
 }
 

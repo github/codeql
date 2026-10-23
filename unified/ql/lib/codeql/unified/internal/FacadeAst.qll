@@ -467,4 +467,10 @@ module Unified {
   final class SetterDeclaration extends AccessorDeclaration {
     SetterDeclaration() { this.getAccessorKind().getValue() = "set" }
   }
+
+  /** An `if` statement or conditional expression. */
+  class IfExpr extends G::IfExpr {
+    /** Gets then `then` or `else` branch. */
+    Expr getABranch() { result = [this.getThen(), this.getElse()] }
+  }
 }

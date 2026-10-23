@@ -266,10 +266,10 @@ func t29() {
 }
 
 func conditional(_ b: Bool) {
-    sink(b ? source("cond.1") : "clean")  // $ MISSING: hasValueFlow=cond.1
-    sink(b ? "clean" : source("cond.2"))  // $ MISSING: hasValueFlow=cond.2
+    sink(b ? source("cond.1") : "clean")  // $ hasValueFlow=cond.1
+    sink(b ? "clean" : source("cond.2"))  // $ hasValueFlow=cond.2
     let x = if b { source("cond.3") } else { "clean" }
-    sink(x)  // $ MISSING: hasValueFlow=cond.3
+    sink(x)  // $ hasValueFlow=cond.3
     func f() -> String { b ? source("cond.4") : "clean" }
-    sink(f())  // $ MISSING: hasValueFlow=cond.4
+    sink(f())  // $ hasValueFlow=cond.4
 }
