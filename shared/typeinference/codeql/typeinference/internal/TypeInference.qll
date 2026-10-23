@@ -1356,12 +1356,28 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       pragma[nomagic]
       private predicate directTypeMatch0(
-        Access a, DeclarationPosition dpos, AccessEnvironment e, Declaration target,
+        Access a, AccessEnvironment e, AccessPosition apos, Declaration target,
         TypePath pathToTypeParam, TypeParameter tp
       ) {
-        hasNotTypeArgument(a, target, tp) and
-        tp = target.getDeclaredType(dpos, pathToTypeParam) and
-        target = a.getTarget(e)
+        exists(DeclarationPosition dpos |
+          hasNotTypeArgument(a, target, tp) and
+          tp = target.getDeclaredType(dpos, pathToTypeParam) and
+          target = a.getTarget(e) and
+          accessDeclarationPositionMatch(apos, dpos)
+        )
+      }
+
+      pragma[nomagic]
+      private predicate directTypeMatch0Proj(Access a, AccessEnvironment e) {
+        directTypeMatch0(a, e, _, _, _, _)
+      }
+
+      pragma[nomagic]
+      private predicate directTypeMatch1(
+        Access a, AccessEnvironment e, AccessPosition apos, TypePath path, Type t
+      ) {
+        directTypeMatch0Proj(a, e) and
+        t = a.getInferredType(e, apos, path)
       }
 
       /**
@@ -1372,10 +1388,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate directTypeMatch(
         Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
-        exists(AccessPosition apos, DeclarationPosition dpos, TypePath pathToTypeParam |
-          directTypeMatch0(a, dpos, e, target, pathToTypeParam, tp) and
-          accessDeclarationPositionMatch(apos, dpos) and
-          t = a.getInferredType(e, apos, pathToTypeParam.appendInverse(path))
+        exists(AccessPosition apos, TypePath pathToTypeParam |
+          directTypeMatch0(a, e, apos, target, pathToTypeParam, tp) and
+          directTypeMatch1(a, e, apos, pathToTypeParam.appendInverse(path), t)
         )
       }
 
@@ -2307,7 +2322,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /** A parameter. */
-      class Parameter extends VariableDeclaration;
+      class Parameter extends VariableDeclaration {
+        /** Gets the external name of this parameter, if any. */
+        string getExternalName();
+      }
 
       /**
        * Holds if `p` is an implicit parameter declaration corresponding
@@ -2385,6 +2403,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         string toString();
       }
 
+      /** An argument to an invocation. */
+      class Argument extends AstNode {
+        /** Gets the value of this argument. */
+        Expr getValue();
+
+        /** Gets the name of this argument, if any. */
+        string getName();
+      }
+
       /** An invocation expression, for example a call or a variant construction. */
       class Invocation extends Expr {
         /**
@@ -2427,7 +2454,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          *
          * This should include the receiver argument for method calls.
          */
-        Expr getArgument(int i);
+        Argument getArgument(int i);
 
         /**
          * Gets the target of this invocation in the given resolution context.
@@ -2457,6 +2484,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * By default, this is the inferred type of `invocation.getArgument(i)`, but in for
        * example Rust, post-processing may be needed to take implicit dereferencing and
        * borrowing into account for the receiver type of a method call.
+       *
+       * Furthermore, this allows for synthetic arguments that do not correspond to actual
+       * source code arguments, such as implicit `self` or `this` arguments in method calls.
        */
       bindingset[ctx]
       default Type inferInvocationArgumentType(
@@ -2481,9 +2511,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * performing the dual post-processing of `inferInvocationArgumentType`.
        *
        * When no post-processing is needed, simply implement this predicate as
-       * `result = inferInvocationArgumentTypeContextualDefault(_, _, _, arg, path)`.
+       *
+       * ```ql
+       * exists(Invocation invocation, int pos |
+       *   result = M3::inferInvocationArgumentTypeContextualDefault(invocation, _, pos, path) and
+       *   arg = invocation.getArgument(pos)
+       * )
+       * ```
        */
-      Type inferInvocationArgumentTypeContextual(Expr arg, TypePath path);
+      Type inferInvocationArgumentTypeContextual(Argument arg, TypePath path);
 
       /**
        * Gets the inferred type of `invocation`, found by propagating type information
@@ -2720,6 +2756,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
               n1 = decl.getInitializer() and
               n2 = decl.getPattern()
             )
+            or
+            n1 = n2.(Argument).getValue() and
+            n1 != n2
           )
         }
 
@@ -3076,19 +3115,101 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private module InvocationMatchingInput implements MatchingWithEnvironmentInputSig {
         import InvocationTypeQualifierMatchingInput
 
-        class DeclarationPosition = int;
-
-        class AccessPosition = DeclarationPosition;
-
-        bindingset[apos]
-        bindingset[dpos]
-        predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
-          apos = dpos
+        // We account for overlapping external names, in which case we rank them by their position
+        private int getExternalNameRank(Callable c, Parameter p, string name) {
+          p =
+            rank[result](Parameter p0, int pos |
+              p0 = c.getParameter(pos) and
+              name = p0.getExternalName()
+            |
+              p0 order by pos
+            )
         }
 
-        /** Gets the position used to represent the return type of an invocation. */
-        additional int getReturnPosition() {
-          result = min(int i | i = 0 or exists(any(Callable c).getParameter(i)) | i) - 1
+        private predicate parameterPos(Callable c, Parameter p, int pos, string name, int rnk) {
+          p = c.getParameter(pos) and
+          (
+            rnk = getExternalNameRank(c, p, name)
+            or
+            not exists(p.getExternalName()) and
+            name = "" and
+            rnk = 1
+          )
+        }
+
+        private newtype TDeclarationPosition =
+          TParameterPosition(int pos, string name, int rnk) { parameterPos(_, _, pos, name, rnk) } or
+          TReturnTypePosition()
+
+        class DeclarationPosition extends TDeclarationPosition {
+          predicate isParameterPosition(int pos, string name, int rnk) {
+            this = TParameterPosition(pos, name, rnk)
+          }
+
+          predicate isReturnTypePosition() { this = TReturnTypePosition() }
+
+          string toString() {
+            exists(int pos, string name |
+              exists(int rnk |
+                this.isParameterPosition(pos, name, rnk) and
+                result = "pos: " + pos + ", name: " + name + ", rnk: " + rnk
+              )
+            )
+            or
+            this.isReturnTypePosition() and
+            result = "return"
+          }
+        }
+
+        private newtype TAccessPosition =
+          TPositionalArgumentPosition(int pos) { parameterPos(_, _, pos, _, _) } or
+          TNamedArgumentPosition(string name, int rnk) { parameterPos(_, _, _, name, rnk) } or
+          TReturnValuePosition()
+
+        class AccessPosition extends TAccessPosition {
+          int asPosition() { this = TPositionalArgumentPosition(result) }
+
+          string asNamed(int rnk) { this = TNamedArgumentPosition(result, rnk) }
+
+          predicate isReturn() { this = TReturnValuePosition() }
+
+          string toString() {
+            result = "pos: " + this.asPosition()
+            or
+            exists(int rnk | result = "name: " + this.asNamed(rnk) + ", rnk: " + rnk)
+            or
+            this.isReturn() and
+            result = "return"
+          }
+        }
+
+        // We account for overlapping names, in which case we rank them by their position
+        private int getNameRank(Invocation i, Argument arg, string name) {
+          arg =
+            rank[result](Argument arg0, int pos |
+              arg0 = i.getArgument(pos) and
+              name = arg0.getName()
+            |
+              arg0 order by pos
+            )
+        }
+
+        pragma[nomagic]
+        additional AccessPosition getArgumentPosition(Invocation i, Argument arg) {
+          exists(int pos | arg = i.getArgument(pos) |
+            exists(string name | result.asNamed(getNameRank(i, arg, name)) = name)
+            or
+            not exists(arg.getName()) and
+            result.asPosition() = pos
+          )
+        }
+
+        predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+          dpos = TParameterPosition(apos.asPosition(), _, _)
+          or
+          exists(int rnk | dpos = TParameterPosition(_, apos.asNamed(rnk), rnk))
+          or
+          dpos = TReturnTypePosition() and apos = TReturnValuePosition()
         }
 
         private int getFirstTypeParameterPosition() {
@@ -3116,9 +3237,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           }
 
           Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
-            result = this.getParameter(dpos).getType().getTypeAt(path)
+            exists(Parameter p, int pos, string name, int rnk |
+              parameterPos(this, p, pos, name, rnk) and
+              dpos.isParameterPosition(pos, name, rnk) and
+              result = p.getType().getTypeAt(path)
+            )
             or
-            dpos = getReturnPosition() and
+            dpos.isReturnTypePosition() and
             result = getCallableReturnType(this, path)
           }
         }
@@ -3145,12 +3270,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           pragma[nomagic]
           private Type getInferredReturnType(AccessPosition apos, TypePath path) {
             result = inferInvocationTypeContextual(this, path) and
-            apos = getReturnPosition()
+            apos.isReturn()
           }
 
           bindingset[e]
           Type getInferredType(AccessEnvironment e, AccessPosition apos, TypePath path) {
-            result = inferInvocationArgumentType(this, e, apos, path)
+            exists(int pos | result = inferInvocationArgumentType(this, e, pos, path) |
+              apos = getArgumentPosition(this, this.getArgument(pos))
+              or
+              // implicit argument
+              not exists(this.getArgument(pos)) and
+              apos.asPosition() = pos
+            )
             or
             result = this.getInferredReturnType(apos, path) and
             exists(e)
@@ -3171,25 +3302,54 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       Type inferInvocationTypeDefault(
         Invocation invocation, InvocationResolutionContext ctx, TypePath path
       ) {
-        result =
-          InvocationMatching::inferAccessType(invocation, ctx,
-            InvocationMatchingInput::getReturnPosition(), path)
+        exists(InvocationMatchingInput::AccessPosition apos |
+          result = InvocationMatching::inferAccessType(invocation, ctx, apos, path) and
+          apos.isReturn()
+        )
+      }
+
+      pragma[nomagic]
+      private predicate hasImplicitArgument(
+        Invocation invocation, InvocationResolutionContext ctx, int i,
+        InvocationMatchingInput::AccessPosition apos
+      ) {
+        exists(InvocationMatching::inferAccessType(invocation, ctx, apos, _)) and
+        i = apos.asPosition() and
+        not exists(invocation.getArgument(i))
+      }
+
+      pragma[nomagic]
+      private predicate hasImplicitArgumentWithUnknownType(
+        Invocation invocation, InvocationResolutionContext ctx,
+        InvocationMatchingInput::AccessPosition apos, int i
+      ) {
+        hasImplicitArgument(invocation, ctx, i, apos) and
+        inferInvocationArgumentType(invocation, ctx, i, _) instanceof UnknownType
       }
 
       /**
-       * Gets the contextually inferred type of call argument `arg` at `path`. For more info,
-       * see the QL doc of `InputSig3::inferInvocationArgumentTypeContextual`.
+       * Gets the contextually inferred type at `path` of the argument of
+       * `invocation` at position `pos`. For more info, see the QL doc of
+       * `InputSig3::inferInvocationArgumentTypeContextual`.
        */
       pragma[nomagic]
       Type inferInvocationArgumentTypeContextualDefault(
-        Invocation invocation, InvocationResolutionContext ctx, int pos, Expr arg, TypePath path
+        Invocation invocation, InvocationResolutionContext ctx, int pos, TypePath path
       ) {
-        arg = invocation.getArgument(pos) and
-        result = InvocationMatching::inferAccessType(invocation, ctx, pos, path) and
-        // `inferTypeContextualCand2` performs the proper check for contextual
-        // typing, but we can already rule out cases where arguments don't have
-        // an unknown type anywhere
-        ContextualTyping::hasUnknownType(arg)
+        exists(InvocationMatchingInput::AccessPosition apos |
+          result = InvocationMatching::inferAccessType(invocation, ctx, apos, path)
+        |
+          exists(Argument arg |
+            arg = invocation.getArgument(pos) and
+            apos = InvocationMatchingInput::getArgumentPosition(invocation, arg) and
+            // `inferTypeContextualCand2` performs the proper check for contextual
+            // typing, but we can already rule out cases where arguments don't have
+            // an unknown type anywhere
+            ContextualTyping::hasUnknownType(arg)
+          )
+          or
+          hasImplicitArgumentWithUnknownType(invocation, ctx, apos, pos)
+        )
       }
 
       /**
