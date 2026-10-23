@@ -32,7 +32,7 @@ namespace Semmle.Autobuild.CSharp
                 NotDotNetProjects = builder.ProjectsOrSolutionsToBuild
                     .SelectMany(p => new[] { p }.Concat(p.IncludedProjects))
                     .OfType<Project<CSharpAutobuildOptions>>()
-                    .Where(p => !p.DotNetProject);
+                    .Where(p => !p.MaybeDotNetProject);
                 var notDotNetProject = NotDotNetProjects.FirstOrDefault();
 
                 if (notDotNetProject is not null)
