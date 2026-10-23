@@ -33,8 +33,20 @@ impl Rule {
             .iter()
             .map(|capture| capture.name.to_string())
             .collect::<Vec<_>>();
-        let raw_bindings = capture_bindings(raw_captures.into_iter());
-        let translated_bindings = capture_bindings(translated_captures.into_iter());
+        let captures_ident = Ident::new("__captures", Span::call_site());
+        let translated_captures_ident = Ident::new("__translated_captures", Span::call_site());
+        let guard_bindings =
+            capture_bindings(captures.iter(), quote! { yeast::Id }, &captures_ident);
+        let raw_bindings = capture_bindings(
+            raw_captures.into_iter(),
+            quote! { yeast::Id },
+            &captures_ident,
+        );
+        let translated_bindings = capture_bindings(
+            translated_captures.into_iter(),
+            quote! { yeast::OutputId },
+            &translated_captures_ident,
+        );
         let replacement = self.replacement.lower();
         let guard = self
             .guard
@@ -48,20 +60,20 @@ impl Rule {
                 yeast::Rule::guarded(
                     __query,
                     Box::new(|__ast: &yeast::Ast, __captures: &yeast::captures::Captures, __user_ctx: &mut _| {
-                        #(#raw_bindings)*
-                        #(#translated_bindings)*
+                        #(#guard_bindings)*
                         let ast = __ast;
                         let #ctx = __user_ctx;
                         Ok(#guard)
                     }),
-                    Box::new(|__ast: &mut yeast::Ast, mut __captures: yeast::captures::Captures, __source_range: Option<yeast::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
+                    Box::new(|__ast: &yeast::Ast, __output: &mut yeast::OutputAst, __captures: yeast::captures::Captures, __source_range: Option<yeast::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
                         let __skip: &[&str] = &[#(#raw_capture_names),*];
-                        __translator.auto_translate_captures(&mut __captures, __ast, __user_ctx, __skip)?;
+                        let __translated_captures =
+                            __translator.translate_captures(&__captures, __ast, __output, __user_ctx, __skip)?;
                         #(#raw_bindings)*
                         #(#translated_bindings)*
-                        let mut #ctx = yeast::build::BuildCtx::with_translator(__ast, &__captures, __source_range, __user_ctx, __translator);
-                        let __result: Vec<yeast::Id> = { #replacement };
-                        let __result = #ctx.finish_rule(__result);
+                        let mut #ctx = yeast::build::BuildCtx::with_translator(__ast, __output, __source_range, __user_ctx, __translator);
+                        let __result: Vec<yeast::OutputId> = { #replacement };
+                        let __result = #ctx.finish_rule(__result)?;
                         Ok(__result)
                     }),
                 )
@@ -77,9 +89,10 @@ impl Replacement {
             Replacement::Rust { body, .. } => {
                 let body = rust_block(body);
                 quote! {
-                    let __value = #body;
-                    let mut __ids: Vec<yeast::Id> = Vec::new();
-                    yeast::IntoFieldIds::extend_into(__value, &mut __ids);
+                    let __value = ::std::iter::IntoIterator::into_iter(#body)
+                        .collect::<Vec<_>>();
+                    let mut __ids: Vec<yeast::OutputId> = Vec::new();
+                    ctx.extend_field_ids(__value, &mut __ids);
                     __ids
                 }
             }
@@ -241,7 +254,11 @@ fn combine_cardinality(parent: Cardinality, child: Cardinality) -> Cardinality {
     }
 }
 
-fn capture_bindings<'a>(captures: impl Iterator<Item = &'a CaptureBinding>) -> Vec<TokenStream> {
+fn capture_bindings<'a>(
+    captures: impl Iterator<Item = &'a CaptureBinding>,
+    id_type: TokenStream,
+    captures_ident: &Ident,
+) -> Vec<TokenStream> {
     captures
         .map(|capture| {
             let name_string = capture.name.to_string();
@@ -249,17 +266,17 @@ fn capture_bindings<'a>(captures: impl Iterator<Item = &'a CaptureBinding>) -> V
             match (capture.cardinality.multiple, capture.cardinality.required) {
                 (true, _) => {
                     quote! {
-                        let #name: Vec<yeast::Id> = __captures.get_all(#name_string);
+                        let #name: Vec<#id_type> = #captures_ident.get_all(#name_string);
                     }
                 }
                 (false, false) => {
                     quote! {
-                        let #name: Option<yeast::Id> = __captures.get_opt(#name_string);
+                        let #name: Option<#id_type> = #captures_ident.get_opt(#name_string);
                     }
                 }
                 (false, true) => {
                     quote! {
-                        let #name: yeast::Id = __captures.get_var(#name_string).unwrap();
+                        let #name: #id_type = #captures_ident.get_var(#name_string).unwrap();
                     }
                 }
             }
@@ -288,7 +305,9 @@ impl Template {
                 Template::Splice(block) => {
                     let block = rust_block(block);
                     quote! {
-                        yeast::IntoFieldIds::extend_into(#block, &mut __nodes);
+                        let __value = ::std::iter::IntoIterator::into_iter(#block)
+                            .collect::<Vec<_>>();
+                        ctx.extend_field_ids(__value, &mut __nodes);
                     }
                 }
             })
@@ -296,7 +315,7 @@ impl Template {
 
         quote! {
             {
-                let mut __nodes: Vec<yeast::Id> = Vec::new();
+                let mut __nodes: Vec<yeast::OutputId> = Vec::new();
                 #(#items)*
                 __nodes
             }
@@ -308,7 +327,7 @@ impl Template {
             Template::Node(node) => node.lower(context),
             Template::Splice(block) => {
                 let block = rust_block(block);
-                quote! { ::std::convert::Into::<yeast::Id>::into(#block) }
+                quote! { ::std::convert::Into::<yeast::OutputId>::into(#block) }
             }
         }
     }
@@ -334,9 +353,9 @@ impl Node {
                                     break #label ::std::option::Option::None;
                                 };
                                 let __value =
-                                    yeast::YeastDisplay::yeast_to_string(__value_ref, &*#ctx.ast);
+                                    yeast::YeastDisplay::yeast_to_string(__value_ref, &#ctx);
                                 let __source_range =
-                                    yeast::YeastSourceRange::yeast_source_range(__value_ref, &*#ctx.ast);
+                                    yeast::YeastSourceRange::yeast_source_range(__value_ref, &#ctx);
                                 #ctx.literal_with_source_range(
                                     #kind_str,
                                     &__value,
@@ -349,9 +368,9 @@ impl Node {
                             {
                                 let __expr = #block;
                                 let __value =
-                                    yeast::YeastDisplay::yeast_to_string(&__expr, &*#ctx.ast);
+                                    yeast::YeastDisplay::yeast_to_string(&__expr, &#ctx);
                                 let __source_range =
-                                    yeast::YeastSourceRange::yeast_source_range(&__expr, &*#ctx.ast);
+                                    yeast::YeastSourceRange::yeast_source_range(&__expr, &#ctx);
                                 #ctx.literal_with_source_range(
                                     #kind_str,
                                     &__value,
@@ -362,7 +381,7 @@ impl Node {
                     }
                 }
             };
-            quote! { let __node: yeast::Id = #node; }
+            quote! { let __node: yeast::OutputId = #node; }
         } else {
             TokenStream::new()
         };
@@ -375,7 +394,9 @@ impl Node {
                 Field::Location { block } => {
                     let block = rust_block(block);
                     stmts.push(quote! {
-                        yeast::IntoFieldIds::extend_into(#block, &mut __location_ids);
+                        let __value = ::std::iter::IntoIterator::into_iter(#block)
+                            .collect::<Vec<_>>();
+                        #ctx.extend_location_ranges(__value, &mut __location_ranges);
                     });
                 }
                 Field::Named {
@@ -398,8 +419,10 @@ impl Node {
                             debug_assert!(!optional);
                             let block = rust_block(block);
                             stmts.push(quote! {
-                                let mut #temp: Vec<yeast::Id> = Vec::new();
-                                yeast::IntoFieldIds::extend_into(#block, &mut #temp);
+                                let mut #temp: Vec<yeast::OutputId> = Vec::new();
+                                let __value = ::std::iter::IntoIterator::into_iter(#block)
+                                    .collect::<Vec<_>>();
+                                #ctx.extend_field_ids(__value, &mut #temp);
                             });
                             field_args.push(quote! {
                                 if !#temp.is_empty() {
@@ -414,7 +437,7 @@ impl Node {
                             });
                             stmts.push(quote! {
                                 #[allow(unused_labels)]
-                                let #temp: ::std::option::Option<yeast::Id> = #label: {
+                                let #temp: ::std::option::Option<yeast::OutputId> = #label: {
                                     ::std::option::Option::Some(#value)
                                 };
                             });
@@ -426,7 +449,7 @@ impl Node {
                         }
                         Template::Node(child) => {
                             let value = child.lower(context);
-                            stmts.push(quote! { let #temp: yeast::Id = #value; });
+                            stmts.push(quote! { let #temp: yeast::OutputId = #value; });
                             field_args.push(quote! {
                                 __fields.push((#field_str, vec![#temp]));
                             });
@@ -438,9 +461,9 @@ impl Node {
 
         let build_node = if self.content.is_none() {
             quote! {
-                let mut __fields: Vec<(&str, Vec<yeast::Id>)> = Vec::new();
+                let mut __fields: Vec<(&str, Vec<yeast::OutputId>)> = Vec::new();
                 #(#field_args)*
-                let __node: yeast::Id = #ctx.node(#kind_str, __fields);
+                let __node: yeast::OutputId = #ctx.node(#kind_str, __fields);
             }
         } else {
             TokenStream::new()
@@ -448,18 +471,11 @@ impl Node {
 
         quote! {
             {
-                let mut __location_ids: Vec<yeast::Id> = Vec::new();
+                let mut __location_ranges: Vec<yeast::Range> = Vec::new();
                 #node_init
                 #(#stmts)*
                 #build_node
-                let __source_range = __location_ids
-                    .into_iter()
-                    .filter_map(|__source| {
-                        #ctx.ast
-                            .get_node(__source)
-                            .and_then(|__node| __node.source_range())
-                    })
-                    .reduce(yeast::Range::union);
+                let __source_range = __location_ranges.into_iter().reduce(yeast::Range::union);
                 #ctx.set_node_source_range(__node, __source_range)
             }
         }
