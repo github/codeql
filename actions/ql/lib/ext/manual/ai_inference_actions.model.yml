@@ -1,0 +1,32 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    # AI inference actions whose output should be treated as untrusted.
+    # Used by CWE-1426 (ImproperValidationOfAiOutput) to identify AI action steps
+    # whose outputs may flow unsanitized to code execution sinks (LOTP gadgets).
+    # source: https://boostsecurityio.github.io/lotp/
+    # source: https://github.com/marketplace?type=actions&category=ai-assisted
+    data:
+      # === GitHub official ===
+      - ["actions/ai-inference", "*", "input.prompt", "ai-inference", "manual"]
+      - ["github/ai-moderator", "*", "input.prompt", "ai-inference", "manual"]
+      # === Anthropic ===
+      - ["anthropics/claude-code-action", "*", "input.prompt", "ai-inference", "manual"]
+      # === Google ===
+      - ["google/gemini-code-assist-action", "*", "input.prompt", "ai-inference", "manual"]
+      - ["google-gemini/code-assist-action", "*", "input.prompt", "ai-inference", "manual"]
+      # === OpenAI ===
+      - ["openai/chat-completion-action", "*", "input.prompt", "ai-inference", "manual"]
+      # === Community AI review/inference actions ===
+      - ["coderabbitai/ai-pr-reviewer", "*", "input.prompt", "ai-inference", "manual"]
+      - ["CodiumAI/pr-agent", "*", "input.prompt", "ai-inference", "manual"]
+      - ["platisd/openai-pr-description", "*", "input.prompt", "ai-inference", "manual"]
+      - ["austenstone/openai-completion-action", "*", "input.prompt", "ai-inference", "manual"]
+      - ["github/copilot-text-inference", "*", "input.prompt", "ai-inference", "manual"]
+      - ["huggingface/inference-action", "*", "input.prompt", "ai-inference", "manual"]
+      - ["replicate/action", "*", "input.prompt", "ai-inference", "manual"]
+      # === Google (GitHub Actions org) ===
+      - ["google-github-actions/run-gemini-cli", "*", "input.prompt", "ai-inference", "manual"]
+      # === Warp ===
+      - ["warpdotdev/oz-agent-action", "*", "input.prompt", "ai-inference", "manual"]
