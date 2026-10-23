@@ -18,9 +18,9 @@ struct SwiftContext {
     /// parameter type, when available.
     property_type: Option<yeast::OutputId>,
     /// Translated outer modifiers to attach to each child of a flattening
-    /// outer rule — e.g. the `let`/`var` binding modifier on each
-    /// `patternBinding` of a `variableDecl`, or the binding modifier on each
-    /// accessor of a property.
+    /// outer rule — e.g. the `let`/`var` binding modifier, attributes and
+    /// modifiers (`static`, `public`, …) on each `patternBinding` of a
+    /// `variableDecl`, or on each accessor of a property.
     outer_modifiers: Vec<yeast::OutputId>,
     /// True when the current child of a flattening outer rule is not
     /// the first one — its inner rule should emit a
@@ -325,6 +325,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // block.
         rule!(
             (variableDecl
+                attributes: _* @attrs
+                modifiers: _* @mods
                 bindingSpecifier: @@spec
                 bindings: (patternBinding
                     pattern: (identifierPattern identifier: @@name)
@@ -333,6 +335,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (accessor_declaration
                 modifier: (modifier #{spec})
+                modifier: {attrs}
+                modifier: {mods}
                 name_node: (identifier #{name})
                 return_type: {ty}
                 accessor_kind: {ctx.literal_at_start_of("accessor_kind", "get", body)}
@@ -355,6 +359,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // test). Must precede the plain `variableDecl` rules.
         rule!(
             (variableDecl
+                attributes: _* @attrs
+                modifiers: _* @mods
                 bindingSpecifier: @@spec
                 bindings: (patternBinding
                     pattern: (identifierPattern identifier: @@name)
@@ -363,7 +369,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     accessorBlock: (accessorBlock accessors: (accessorDecl)+ @@accessors)))
             =>
             member* {
-                ctx.outer_modifiers = vec![tree!((modifier #{spec}))];
+                // The binding (`let`/`var`) leads, then attributes then modifiers,
+                // matching the plain `variableDecl` rule.
+                ctx.outer_modifiers = std::iter::once(tree!((modifier #{spec})))
+                    .chain(attrs)
+                    .chain(mods)
+                    .collect();
                 ctx.property_name_node = Some(tree!((identifier #{name})));
                 ctx.property_type = Some(ty);
                 let mut result = Vec::new();
@@ -390,12 +401,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         // Each `accessorDecl` becomes an `accessor_declaration`, reading the
-        // property name/type and the binding/chained modifiers from `ctx`. The
+        // property name/type and the modifiers from `ctx`. The
         // accessor kind comes straight from the specifier keyword
         // (`get`/`set`/`willSet`/`didSet`). The body is optional: a body-bearing
         // accessor (a computed getter/setter, or a `willSet`/`didSet` observer)
-        // carries the binding modifier and a translated body, whereas a bodyless
-        // one (a protocol requirement) carries neither. The property context is
+        // has a translated body, whereas a bodyless one (a protocol requirement)
+        // has none. The property context is
         // read out *before* translating the body, which resets `ctx` so the
         // accessor's context does not leak into the body subtree.
         //
@@ -430,11 +441,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     }
                     (None, None) => None,
                 };
-                let binding = if body.is_some() {
-                    ctx.outer_modifiers.clone()
-                } else {
-                    Vec::new()
-                };
+                let modifiers = ctx.outer_modifiers.clone();
                 let chained = chained_modifier(&mut ctx);
                 let name = ctx
                     .property_name_node
@@ -452,7 +459,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     None => None,
                 };
                 tree!((accessor_declaration
-                    modifier: {binding}
+                    modifier: {modifiers}
                     modifier: {chained}
                     name_node: {name}
                     return_type: {return_ty}

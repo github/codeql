@@ -7,7 +7,7 @@ func t1() {
     class C {
         static var x: String { source("t1.1") }
     }
-    sink(C.x)  // $ MISSING: hasValueFlow=t1.1
+    sink(C.x)  // $ hasValueFlow=t1.1
 }
 
 func t2() {
@@ -18,7 +18,7 @@ func t2() {
             get { source("t2.1") }
         }
     }
-    sink(C.x)  // $ MISSING: hasValueFlow=t2.1
+    sink(C.x)  // $ hasValueFlow=t2.1
 }
 
 func t3() {
@@ -28,14 +28,14 @@ func t3() {
             set {}
         }
     }
-    sink(C.x)  // $ MISSING: hasValueFlow=t3.1
+    sink(C.x)  // $ hasValueFlow=t3.1
 }
 
 func t4() {
     class C {
         static var x: String {
             get {}
-            set { sink(newValue) }  // $ MISSING: hasValueFlow=t4.1
+            set { sink(newValue) }  // $ hasValueFlow=t4.1
         }
     }
     C.x = source("t4.1")
@@ -45,7 +45,7 @@ func t5() {
     class C {
         static var x: String {
             get { source("t5.1") }
-            set { sink(newValue) }  // $ MISSING: hasValueFlow=t5.1
+            set { sink(newValue) }  // $ hasValueFlow=t5.1
         }
     }
     C.x = C.x
@@ -56,11 +56,11 @@ func t6() {
         static var x: String { source("t6.1") }
 
         func method() {
-            sink(Self.x)  // $ MISSING: hasValueFlow=t6.1
+            sink(Self.x)  // $ hasValueFlow=t6.1
         }
 
         static func staticMethod() {
-            sink(Self.x)  // $ MISSING: hasValueFlow=t6.1
+            sink(Self.x)  // $ hasValueFlow=t6.1
             sink(x)  // $ hasValueFlow=t6.1
         }
     }
