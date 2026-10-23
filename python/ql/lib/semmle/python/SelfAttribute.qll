@@ -35,7 +35,7 @@ private predicate self_attribute(Attribute attr, Class cls) {
 /** A helper class for UndefinedClassAttribute.ql &amp; MaybeUndefinedClassAttribute.ql */
 class SelfAttributeRead extends SelfAttribute {
   SelfAttributeRead() {
-    this.getCtx() instanceof Load and
+    this.isLoadContext() and
     // Be stricter for loads.
     // We want to generous as to what is defined (i.e. stores),
     // but strict as to what needs to be defined (i.e. loads).
@@ -68,7 +68,7 @@ class SelfAttributeRead extends SelfAttribute {
 }
 
 class SelfAttributeStore extends SelfAttribute {
-  SelfAttributeStore() { this.getCtx() instanceof Store }
+  SelfAttributeStore() { this.isStoreContext() }
 
   Expr getAssignedValue() { exists(Assign a | a.getATarget() = this | result = a.getValue()) }
 }

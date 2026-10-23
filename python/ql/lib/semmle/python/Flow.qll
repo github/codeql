@@ -35,19 +35,19 @@ private Py::AstNode toAst(ControlFlowNode n) { py_flow_bb_node(n, result, _, _) 
 class ControlFlowNode extends @py_flow_node {
   /** Whether this control flow node is a load (including those in augmented assignments) */
   predicate isLoad() {
-    exists(Py::Expr e | e = toAst(this) | py_expr_contexts(_, 3, e) and not augstore(_, this))
+    exists(Py::Expr e | e = toAst(this) | e.isLoadContext() and not augstore(_, this))
   }
 
   /** Whether this control flow node is a store (including those in augmented assignments) */
   predicate isStore() {
-    exists(Py::Expr e | e = toAst(this) | py_expr_contexts(_, 5, e) or augstore(_, this))
+    exists(Py::Expr e | e = toAst(this) | e.isStoreContext() or augstore(_, this))
   }
 
   /** Whether this control flow node is a delete */
-  predicate isDelete() { exists(Py::Expr e | e = toAst(this) | py_expr_contexts(_, 2, e)) }
+  predicate isDelete() { exists(Py::Expr e | e = toAst(this) | e.isDeleteContext()) }
 
   /** Whether this control flow node is a parameter */
-  predicate isParameter() { exists(Py::Expr e | e = toAst(this) | py_expr_contexts(_, 4, e)) }
+  predicate isParameter() { exists(Py::Expr e | e = toAst(this) | e.isParameterContext()) }
 
   /** Whether this control flow node is a store in an augmented assignment */
   predicate isAugStore() { augstore(_, this) }
@@ -848,9 +848,7 @@ class NameNode extends ControlFlowNode {
     this.isLoad() and
     exists(Py::Name u | this.getNode() = u and u.uses(v))
     or
-    exists(Py::PlaceHolder u |
-      this.getNode() = u and u.getVariable() = v and u.getCtx() instanceof Py::Load
-    )
+    exists(Py::PlaceHolder u | this.getNode() = u and u.getVariable() = v and u.isLoadContext())
     or
     Scopes::use_of_global_variable(this, v.getScope(), v.getId())
   }
