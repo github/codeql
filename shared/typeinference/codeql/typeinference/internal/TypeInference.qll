@@ -2361,7 +2361,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /** A parameter. */
-      class Parameter extends VariableDeclaration;
+      class Parameter extends VariableDeclaration {
+        /** Gets the external name of this parameter, if any. */
+        string getExternalName();
+      }
 
       /**
        * Holds if `p` is an implicit parameter declaration corresponding
@@ -2439,6 +2442,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         string toString();
       }
 
+      /** An argument to an invocation. */
+      class Argument extends AstNode {
+        /** Gets the value of this argument. */
+        Expr getValue();
+
+        /** Gets the name of this argument, if any. */
+        string getName();
+      }
+
       /** An invocation expression, for example a call or a variant construction. */
       class Invocation extends Expr {
         /**
@@ -2481,7 +2493,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          *
          * This should include the receiver argument for method calls.
          */
-        Expr getArgument(int i);
+        Argument getArgument(int i);
+
+        /** Holds if the `i`th argument of this invocation is implicit. */
+        predicate hasImplicitArgument(int i);
 
         /**
          * Gets the target of this invocation in the given resolution context.
@@ -2537,7 +2552,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * When no post-processing is needed, simply implement this predicate as
        * `result = inferInvocationArgumentTypeContextualDefault(_, _, _, arg, path)`.
        */
-      Type inferInvocationArgumentTypeContextual(Expr arg, TypePath path);
+      Type inferInvocationArgumentTypeContextual(Argument arg, TypePath path);
 
       /**
        * Gets the inferred type of `invocation`, found by propagating type information
@@ -2776,6 +2791,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             )
             or
             n1 = n2.(ParenExpr).getExpr()
+            or
+            n1 = n2.(Argument).getValue() and
+            n1 != n2
           )
         }
 
@@ -3132,19 +3150,76 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private module InvocationMatchingInput implements MatchingWithEnvironmentInputSig {
         import InvocationTypeQualifierMatchingInput
 
-        class DeclarationPosition = int;
-
-        class AccessPosition = DeclarationPosition;
-
-        bindingset[apos]
-        bindingset[dpos]
-        predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
-          apos = dpos
+        private predicate parameterPos(Callable c, Parameter p, int pos, string name) {
+          p = c.getParameter(pos) and
+          (
+            name = p.getExternalName()
+            or
+            not exists(p.getExternalName()) and
+            name = ""
+          )
         }
 
-        /** Gets the position used to represent the return type of an invocation. */
-        additional int getReturnPosition() {
-          result = min(int i | i = 0 or exists(any(Callable c).getParameter(i)) | i) - 1
+        private newtype TDeclarationPosition =
+          TParameterPosition(int pos, string name) { parameterPos(_, _, pos, name) } or
+          TReturnTypePosition()
+
+        class DeclarationPosition extends TDeclarationPosition {
+          predicate isParameterPosition(int pos, string name) {
+            this = TParameterPosition(pos, name)
+          }
+
+          predicate isReturnTypePosition() { this = TReturnTypePosition() }
+
+          string toString() {
+            exists(int pos, string name |
+              this.isParameterPosition(pos, name) and
+              result = "pos: " + pos + ", name: " + name
+            )
+            or
+            this.isReturnTypePosition() and
+            result = "return"
+          }
+        }
+
+        private newtype TAccessPosition =
+          TPositionalArgumentPosition(int pos) { parameterPos(_, _, pos, _) } or
+          TNamedArgumentPosition(string name) { parameterPos(_, _, _, name) and name != "" } or
+          TReturnValuePosition()
+
+        class AccessPosition extends TAccessPosition {
+          int asPosition() { this = TPositionalArgumentPosition(result) }
+
+          string asNamed() { this = TNamedArgumentPosition(result) }
+
+          predicate isReturn() { this = TReturnValuePosition() }
+
+          string toString() {
+            result = "pos: " + this.asPosition()
+            or
+            result = "name: " + this.asNamed()
+            or
+            this.isReturn() and
+            result = "return"
+          }
+        }
+
+        pragma[nomagic]
+        additional AccessPosition getArgumentPosition(Invocation i, Argument arg) {
+          exists(int pos | arg = i.getArgument(pos) |
+            result.asNamed() = arg.getName()
+            or
+            not exists(arg.getName()) and
+            result.asPosition() = pos
+          )
+        }
+
+        predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+          dpos = TParameterPosition(apos.asPosition(), _)
+          or
+          dpos = TParameterPosition(_, apos.asNamed())
+          or
+          dpos = TReturnTypePosition() and apos = TReturnValuePosition()
         }
 
         private int getFirstTypeParameterPosition() {
@@ -3172,9 +3247,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           }
 
           Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
-            result = this.getParameter(dpos).getType().getTypeAt(path)
+            exists(Parameter p, int pos, string name |
+              parameterPos(this, p, pos, name) and
+              dpos.isParameterPosition(pos, name) and
+              result = p.getType().getTypeAt(path)
+            )
             or
-            dpos = getReturnPosition() and
+            dpos.isReturnTypePosition() and
             result = getCallableReturnType(this, path)
           }
         }
@@ -3201,12 +3280,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           pragma[nomagic]
           private Type getInferredReturnType(AccessPosition apos, TypePath path) {
             result = inferInvocationTypeContextual(this, path) and
-            apos = getReturnPosition()
+            apos.isReturn()
           }
 
           bindingset[e]
           Type getInferredType(AccessEnvironment e, AccessPosition apos, TypePath path) {
-            result = inferInvocationArgumentType(this, e, apos, path)
+            exists(int pos | result = inferInvocationArgumentType(this, e, pos, path) |
+              apos = getArgumentPosition(this, this.getArgument(pos))
+              or
+              this.hasImplicitArgument(pos) and
+              apos.asPosition() = pos
+            )
             or
             result = this.getInferredReturnType(apos, path) and
             exists(e)
@@ -3227,9 +3311,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       Type inferInvocationTypeDefault(
         Invocation invocation, InvocationResolutionContext ctx, TypePath path
       ) {
-        result =
-          InvocationMatching::inferAccessType(invocation, ctx,
-            InvocationMatchingInput::getReturnPosition(), path)
+        exists(InvocationMatchingInput::AccessPosition apos |
+          result = InvocationMatching::inferAccessType(invocation, ctx, apos, path) and
+          apos.isReturn()
+        )
       }
 
       /**
@@ -3238,10 +3323,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       Type inferInvocationArgumentTypeContextualDefault(
-        Invocation invocation, InvocationResolutionContext ctx, int pos, Expr arg, TypePath path
+        Invocation invocation, InvocationResolutionContext ctx, int pos, Argument arg, TypePath path
       ) {
         arg = invocation.getArgument(pos) and
-        result = InvocationMatching::inferAccessType(invocation, ctx, pos, path) and
+        result =
+          InvocationMatching::inferAccessType(invocation, ctx,
+            InvocationMatchingInput::getArgumentPosition(invocation, arg), path) and
         // `inferTypeContextualCand2` performs the proper check for contextual
         // typing, but we can already rule out cases where arguments don't have
         // an unknown type anywhere
