@@ -11,7 +11,7 @@ class A {
 let x1: B = nil  // $ access=top.B
 let x2: A.B = nil  // $ access=A access=A.B
 let x3: A.B.C = nil  // $ access=A access=A.B access=A.B.C
-let x4: A.BAlias.C = nil  // $ access=A $ MISSING: access=A.BAlias access=A.B.C
+let x4: A.BAlias.C = nil  // $ access=A access=A.BAlias access=A.B.C
 
 class D {
     let x1: B = nil  // $ access=top.B
