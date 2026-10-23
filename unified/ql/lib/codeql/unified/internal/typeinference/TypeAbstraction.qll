@@ -15,5 +15,8 @@ abstract class TypeAbstraction extends AstNode {
  */
 private class ClassLikeDeclarationTypeAbstraction extends TypeAbstraction instanceof Unified::ClassLikeDeclaration
 {
-  override TypeParameter getATypeParameter() { this = result.getDeclaringItem() }
+  override TypeParameter getATypeParameter() {
+    // type parameters from outer classes are also in scope
+    super.resolve().getEnclosingClassResolved*() = result.getDeclaringItem()
+  }
 }

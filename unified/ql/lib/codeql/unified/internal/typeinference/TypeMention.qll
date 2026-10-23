@@ -10,24 +10,85 @@ final class TypeMention = TypeMentionImpl;
 /** An AST node that mentions a type. */
 abstract private class TypeMentionImpl extends AstNode {
   /**
+   * Gets the type mentioned at the root of this type mention.
+   *
+   * This is the same as `this.getTypeAt(TypePath::nil())`, but does not depend
+   * on the full `getTypeAt` relation.
+   */
+  abstract Type getType();
+
+  /**
    * Gets the type mentioned at `path`.
    */
   pragma[nomagic]
   abstract Type getTypeAt(TypePath path);
 
-  /**
-   * Gets the type mentioned at the root of this type mention.
-   */
-  final Type getType() { result = this.getTypeAt(TypePath::nil()) }
+  /** Gets the explicit qualifier of this type mention, if any. */
+  abstract TypeMention getQualifier();
+
+  /** Holds if this type mention has an explicit qualifier. */
+  abstract predicate hasQualifier();
 }
 
 final class ExprTypeMention = ExprTypeMentionImpl;
 
 abstract private class ExprTypeMentionImpl extends TypeMentionImpl, Expr {
-  ExprTypeMentionImpl() { isInTypeContext(this) and not this instanceof GenericTypeExpr }
+  ExprTypeMentionImpl() {
+    isInTypeContext(this) and
+    not this instanceof GenericTypeExpr and
+    not this = any(MemberAccessExpr mae).getMemberNameNode()
+  }
 
   pragma[nomagic]
   abstract TypePath getTypeArgumentPath(int i);
+
+  abstract Type getTypeAtImpl(TypePath path);
+
+  final override Type getTypeAt(TypePath path) {
+    // recursion guard to check that `getType` does not recursively depend on `getTypeAt`
+    (exists(this.getType()) implies any()) and
+    result = this.getTypeAtImpl(path)
+    or
+    exists(TypeMention qualifier, ClassLikeDeclaration cls, TypePath suffix |
+      qualifier = this.getQualifier() and
+      cls = this.getType().(ClassLikeDeclarationType).getClassLikeDeclaration() and
+      path = TypePath::cons(TParentTypeParameterType(cls), suffix) and
+      qualifier.getType().(ClassLikeDeclarationType).getClassLikeDeclaration().getABaseClass*() =
+        cls.getEnclosingClassResolved() and
+      result = qualifier.getTypeAt(suffix)
+    )
+    or
+    // A mention of a nested type without an explicit qualifier implicitly mentions
+    // the parent type (including at the identifer that introduces the type)
+    //
+    // ```swift
+    // class Outer {
+    //     class Inner {
+    //         let y: Inner // short-hand for `Outer.Inner`
+    //     }
+    // }
+    // ```
+    not this.hasQualifier() and
+    not exists(TypeAliasDeclaration alias |
+      this = alias.getType() or
+      this = alias.getType().(GenericTypeExpr).getBase()
+    ) and
+    exists(
+      ClassLikeDeclarationType rootType, ClassLikeDeclaration parent, ParentTypeParameterType tp,
+      TypePath suffix
+    |
+      rootType = this.getType() and
+      tp = TParentTypeParameterType(rootType.getClassLikeDeclaration()) and
+      path = TypePath::cons(tp, suffix) and
+      parent = this.getEnclosingClassResolved+() and
+      result = parent.getNameNode().(TypeMention).getTypeAt(suffix)
+    |
+      parent = tp.getParent()
+      or
+      not tp.getParent() = this.getEnclosingClassResolved+() and
+      parent.getABaseClass+() = tp.getParent()
+    )
+  }
 }
 
 /**
@@ -49,7 +110,24 @@ private class AliasExprTypeMention extends ExprTypeMentionImpl {
     )
   }
 
-  override Type getTypeAt(TypePath path) {
+  private predicate aliasHasQualifier() { alias.getType().(TypeMention).hasQualifier() }
+
+  override TypeMention getQualifier() {
+    result = alias.getType().(TypeMention).getQualifier()
+    or
+    not this.aliasHasQualifier() and
+    result = this.(MemberAccessExpr).getBase()
+  }
+
+  override predicate hasQualifier() {
+    alias.getType().(TypeMention).hasQualifier()
+    or
+    this instanceof MemberAccessExpr
+  }
+
+  override Type getType() { result = alias.getType().(TypeMention).getType() }
+
+  override Type getTypeAtImpl(TypePath path) {
     result = alias.getType().(TypeMention).getTypeAt(path) and
     not result = this.getAliasTypeParameter(_)
   }
@@ -63,18 +141,11 @@ private class NonAliasExprTypeMention extends ExprTypeMentionImpl {
 
   private Type getRootType0() {
     exists(Identifier i | i = getTypeFromRef(this) |
-      // for now, we resolve enum cases to their enclosing class
-      exists(EnumCaseClass c |
-        i = c.getNameNode() and
-        result.getNameNode() = c.getEnclosingClass().getNameNode()
-      )
-      or
-      not i = any(EnumCaseClass c).getNameNode() and
       result.getNameNode() = i and
       (
         not result instanceof AssociatedTypeParameterType
         or
-        result = TAssociatedTypeParameterType(this.getEnclosingClass(), _, _)
+        result = TAssociatedTypeParameterType(this.getEnclosingClass().resolve(), _, _)
       )
     )
     or
@@ -83,7 +154,7 @@ private class NonAliasExprTypeMention extends ExprTypeMentionImpl {
     result.(Plugin::TupleType).getArity() = this.(TupleExpr).getNumberOfElements()
   }
 
-  Type getRootType() {
+  override Type getType() {
     result = this.getRootType0()
     or
     not exists(this.getRootType0()) and
@@ -91,11 +162,11 @@ private class NonAliasExprTypeMention extends ExprTypeMentionImpl {
   }
 
   override TypePath getTypeArgumentPath(int i) {
-    result = TypePath::singleton(this.getRootType().getPositionalTypeParameter(i))
+    result = TypePath::singleton(this.getType().getPositionalTypeParameter(i))
   }
 
-  override Type getTypeAt(TypePath path) {
-    result = this.getRootType() and
+  override Type getTypeAtImpl(TypePath path) {
+    result = this.getType() and
     path.isEmpty()
     or
     exists(
@@ -148,7 +219,30 @@ private class NonAliasExprTypeMention extends ExprTypeMentionImpl {
           path = TypePath::cons(tt.getPositionalTypeParameter(i), suffix)
         )
       )
+    or
+    // A mention of a generic type without explicit type arguments and within
+    // the scope of the type, implicitly mentions all type parameters (including
+    // at the identifer that introduces the type):
+    //
+    // ```swift
+    // class Generic<T> {
+    //     let x: Generic // short-hand for `Generic<T>
+    // }
+    // ```
+    not this = any(GenericTypeExpr g).getBase() and
+    exists(ClassLikeDeclarationType rootType |
+      rootType = this.getType() and
+      (isInTypeContextWithImplicitTypeArgs(this) or this = rootType.getNameNode()) and
+      rootType.getClassLikeDeclaration() = this.getEnclosingClassResolved+() and
+      result = rootType.getATypeParameter() and
+      path = TypePath::singleton(result) and
+      not result instanceof ParentTypeParameterType
+    )
   }
+
+  override TypeMention getQualifier() { result = this.(MemberAccessExpr).getBase() }
+
+  override predicate hasQualifier() { this instanceof MemberAccessExpr }
 }
 
 private class GenericTypeExprTypeMention extends TypeMentionImpl, GenericTypeExpr {
@@ -170,25 +264,12 @@ private class GenericTypeExprTypeMention extends TypeMentionImpl, GenericTypeExp
       path = prefix.append(suffix)
     )
   }
-}
 
-/** A class declaration mentions itself. */
-private class ClassLikeDeclarationTypeMention extends TypeMentionImpl, Identifier {
-  private ClassLikeDeclaration c;
+  override Type getType() { result = base.getType() }
 
-  ClassLikeDeclarationTypeMention() { this = c.getNameNode() }
+  override TypeMention getQualifier() { result = this.getBase().(TypeMention).getQualifier() }
 
-  ClassLikeDeclarationType getRootType() { c = result.getClassLikeDeclaration() }
-
-  ClassLikeDeclaration getClassLikeDeclaration() { result = c }
-
-  override Type getTypeAt(TypePath path) {
-    result = this.getRootType() and
-    path.isEmpty()
-    or
-    result = this.getRootType().getATypeParameter() and
-    path = TypePath::singleton(result)
-  }
+  override predicate hasQualifier() { this.getBase().(TypeMention).hasQualifier() }
 }
 
 TypeMention getClassLikeDeclarationTypeMention(ClassLikeDeclaration c) {

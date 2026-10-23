@@ -138,6 +138,9 @@ module Public {
   final class EnumCaseClass extends ClassLikeDeclaration {
     EnumCaseClass() { this.hasModifier("enum_case") }
 
+    /** Gets the enum declaration that this case class belongs to. */
+    ClassLikeDeclaration getEnum() { this = result.getAMember() }
+
     /** Gets the constructor of this algebraic data type. */
     EnumCaseConstructor getConstructor() { result = this.getAMember() }
   }
@@ -168,5 +171,31 @@ module Public {
 
     /** Gets the class containing this constructor. */
     EnumCaseClass getEnumCaseClass() { result.getAMember() = this }
+
+    /** Gets the enum declaration that this constructor belongs to. */
+    ClassLikeDeclaration getEnum() { result = this.getEnumCaseClass().getEnum() }
+  }
+
+  /**
+   * A field of an enum case in an algebraic data type. For example `a` and
+   * `b` in
+   *
+   * ```swift
+   * enum E {
+   *   case a
+   *   case b
+   * }
+   * ```
+   */
+  final class EnumField extends VariableDeclaration {
+    private ClassLikeDeclaration enum;
+
+    EnumField() {
+      this = enum.getAMember() and
+      this.hasModifier("enum_case")
+    }
+
+    /** Gets the enum declaration that this enum field belongs to. */
+    ClassLikeDeclaration getEnum() { result = enum }
   }
 }
