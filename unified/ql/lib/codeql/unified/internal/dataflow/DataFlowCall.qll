@@ -9,11 +9,19 @@ private newtype TDataFlowCall =
   } or
   TGetterCall(Expr expr) {
     hasResultValue(expr) and
-    N::getStaticBindingTargetFromRef(expr) = any(GetterDeclaration g).getNameNode()
+    (
+      N::getStaticBindingTargetFromRef(expr) = any(GetterDeclaration g).getNameNode()
+      or
+      expr instanceof MemberAccess
+    )
   } or
   TSetterCall(Expr expr) {
     isInAssignmentContext(expr, _) and
-    N::getStaticBindingTargetFromRef(expr) = any(SetterDeclaration g).getNameNode()
+    (
+      N::getStaticBindingTargetFromRef(expr) = any(SetterDeclaration g).getNameNode()
+      or
+      expr instanceof MemberAccess
+    )
   } or
   TSummaryCall(SummarizedCallable callable, SummaryNode callee) {
     FlowSummaryOutput::summaryCallbackRange(callable, callee)
