@@ -2,3 +2,6 @@
 - queries: .
 - apply: security-extended-selectors.yml
   from: codeql/suite-helpers
+# Explicitly include low-precision queries that are excluded by security-extended-selectors.yml.
+- include:
+    query path: Security/CWE-094/CodeInjectionLow.ql
