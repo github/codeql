@@ -199,3 +199,5 @@ x = 42
 {y: , Z:}
 
 "@foo: #@foo @@bar: #@@bar $_: #$_"
+/foo #{Regexp.escape("a")}/
+/foo #{Regexp.escape("[x]")}/
