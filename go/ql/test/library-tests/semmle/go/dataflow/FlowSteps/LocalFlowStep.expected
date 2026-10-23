@@ -1,7 +1,7 @@
-| main.go:3:12:3:12 | SSA def(x) | main.go:5:5:5:5 | x |
-| main.go:3:12:3:12 | x | main.go:3:12:3:12 | SSA def(x) |
-| main.go:3:19:3:20 | SSA def(fn) | main.go:10:24:10:25 | fn |
-| main.go:3:19:3:20 | fn | main.go:3:19:3:20 | SSA def(fn) |
+| main.go:3:12:3:12 | SSA param(x) | main.go:5:5:5:5 | x |
+| main.go:3:12:3:12 | x | main.go:3:12:3:12 | SSA param(x) |
+| main.go:3:19:3:20 | SSA param(fn) | main.go:10:24:10:25 | fn |
+| main.go:3:19:3:20 | fn | main.go:3:19:3:20 | SSA param(fn) |
 | main.go:5:5:5:5 | x | main.go:6:7:6:7 | x |
 | main.go:5:5:5:5 | x | main.go:8:8:8:8 | x |
 | main.go:6:3:6:7 | SSA def(y) | main.go:10:12:10:12 | y |
@@ -17,15 +17,17 @@
 | main.go:10:12:10:12 | y | main.go:10:17:10:17 | y |
 | main.go:10:17:10:27 | ...>=... | main.go:10:7:10:27 | After ...&&... |
 | main.go:11:14:11:14 | z | main.go:11:9:11:15 | type conversion |
-| main.go:15:9:15:9 | 0 | main.go:15:2:15:9 | SSA def(acc) |
-| main.go:16:9:19:2 | SSA def(acc) | main.go:17:3:17:5 | acc |
-| main.go:17:3:17:7 | SSA def(acc) | main.go:18:10:18:12 | acc |
-| main.go:17:3:17:7 | increment statement | main.go:17:3:17:7 | SSA def(acc) |
-| main.go:22:12:22:12 | SSA def(b) | main.go:23:5:23:5 | b |
-| main.go:22:12:22:12 | b | main.go:22:12:22:12 | SSA def(b) |
-| main.go:22:20:22:20 | SSA def(x) | main.go:24:10:24:10 | x |
-| main.go:22:20:22:20 | SSA def(x) | main.go:26:11:26:11 | x |
-| main.go:22:20:22:20 | x | main.go:22:20:22:20 | SSA def(x) |
+| main.go:15:9:15:9 | 0 | main.go:16:9:19:2 | acc |
+| main.go:16:9:19:2 | captured variables | main.go:17:3:17:5 | this |
+| main.go:17:3:17:5 | this | main.go:17:3:17:7 | this |
+| main.go:17:3:17:5 | this | main.go:17:3:17:7 | this |
+| main.go:17:3:17:7 | this | main.go:18:10:18:12 | this |
+| main.go:17:3:17:7 | this | main.go:18:10:18:12 | this |
+| main.go:22:12:22:12 | SSA param(b) | main.go:23:5:23:5 | b |
+| main.go:22:12:22:12 | b | main.go:22:12:22:12 | SSA param(b) |
+| main.go:22:20:22:20 | SSA param(x) | main.go:24:10:24:10 | x |
+| main.go:22:20:22:20 | SSA param(x) | main.go:26:11:26:11 | x |
+| main.go:22:20:22:20 | x | main.go:22:20:22:20 | SSA param(x) |
 | main.go:24:10:24:10 | x | main.go:24:10:24:19 | type assertion |
 | main.go:26:2:26:17 | SSA def(n) | main.go:27:11:27:11 | n |
 | main.go:26:2:26:17 | SSA def(ok) | main.go:27:5:27:6 | ok |
@@ -45,8 +47,8 @@
 | main.go:40:15:40:15 | s [postupdate] | main.go:42:7:42:7 | s |
 | main.go:41:2:41:21 | SSA def(s4) | main.go:42:10:42:11 | s4 |
 | main.go:41:8:41:21 | call to make | main.go:41:2:41:21 | SSA def(s4) |
-| main.go:46:13:46:14 | SSA def(xs) | main.go:47:20:47:21 | xs |
-| main.go:46:13:46:14 | xs | main.go:46:13:46:14 | SSA def(xs) |
+| main.go:46:13:46:14 | SSA param(xs) | main.go:47:20:47:21 | xs |
+| main.go:46:13:46:14 | xs | main.go:46:13:46:14 | SSA param(xs) |
 | main.go:46:44:52:1 | SSA def(keys) | main.go:46:44:52:1 | result-read:0 block statement |
 | main.go:46:44:52:1 | SSA def(keys) | main.go:49:3:49:6 | keys |
 | main.go:46:44:52:1 | SSA def(vals) | main.go:46:44:52:1 | result-read:1 block statement |
@@ -86,8 +88,8 @@
 | main.go:65:11:65:11 | x | main.go:65:7:65:18 | call to max |
 | main.go:65:14:65:14 | y | main.go:65:7:65:18 | call to max |
 | main.go:65:17:65:17 | z | main.go:65:7:65:18 | call to max |
-| strings.go:8:12:8:12 | SSA def(s) | strings.go:9:24:9:24 | s |
-| strings.go:8:12:8:12 | s | strings.go:8:12:8:12 | SSA def(s) |
+| strings.go:8:12:8:12 | SSA param(s) | strings.go:9:24:9:24 | s |
+| strings.go:8:12:8:12 | s | strings.go:8:12:8:12 | SSA param(s) |
 | strings.go:9:2:9:38 | SSA def(s2) | strings.go:11:20:11:21 | s2 |
 | strings.go:9:8:9:38 | call to Replace | strings.go:9:2:9:38 | SSA def(s2) |
 | strings.go:9:24:9:24 | s | strings.go:10:27:10:27 | s |
@@ -95,11 +97,11 @@
 | strings.go:10:8:10:42 | call to ReplaceAll | strings.go:10:2:10:42 | SSA def(s3) |
 | strings.go:11:20:11:21 | s2 | strings.go:11:48:11:49 | s2 |
 | strings.go:11:24:11:25 | s3 | strings.go:11:67:11:68 | s3 |
-| url.go:8:12:8:12 | SSA def(b) | url.go:11:5:11:5 | b |
-| url.go:8:12:8:12 | b | url.go:8:12:8:12 | SSA def(b) |
-| url.go:8:20:8:20 | SSA def(s) | url.go:12:46:12:46 | s |
-| url.go:8:20:8:20 | SSA def(s) | url.go:14:48:14:48 | s |
-| url.go:8:20:8:20 | s | url.go:8:20:8:20 | SSA def(s) |
+| url.go:8:12:8:12 | SSA param(b) | url.go:11:5:11:5 | b |
+| url.go:8:12:8:12 | b | url.go:8:12:8:12 | SSA param(b) |
+| url.go:8:20:8:20 | SSA param(s) | url.go:12:46:12:46 | s |
+| url.go:8:20:8:20 | SSA param(s) | url.go:14:48:14:48 | s |
+| url.go:8:20:8:20 | s | url.go:8:20:8:20 | SSA param(s) |
 | url.go:12:3:12:48 | SSA def(err) | url.go:16:5:16:7 | err |
 | url.go:12:3:12:48 | SSA def(res) | url.go:19:9:19:11 | res |
 | url.go:12:3:12:48 | extract:0 ... = ... | url.go:12:3:12:48 | SSA def(res) |
@@ -108,10 +110,10 @@
 | url.go:14:3:14:50 | SSA def(res) | url.go:19:9:19:11 | res |
 | url.go:14:3:14:50 | extract:0 ... = ... | url.go:14:3:14:50 | SSA def(res) |
 | url.go:14:3:14:50 | extract:1 ... = ... | url.go:14:3:14:50 | SSA def(err) |
-| url.go:22:12:22:12 | SSA def(i) | url.go:24:5:24:5 | i |
-| url.go:22:12:22:12 | i | url.go:22:12:22:12 | SSA def(i) |
-| url.go:22:19:22:19 | SSA def(s) | url.go:23:20:23:20 | s |
-| url.go:22:19:22:19 | s | url.go:22:19:22:19 | SSA def(s) |
+| url.go:22:12:22:12 | SSA param(i) | url.go:24:5:24:5 | i |
+| url.go:22:12:22:12 | i | url.go:22:12:22:12 | SSA param(i) |
+| url.go:22:19:22:19 | SSA param(s) | url.go:23:20:23:20 | s |
+| url.go:22:19:22:19 | s | url.go:22:19:22:19 | SSA param(s) |
 | url.go:23:2:23:21 | SSA def(u) | url.go:25:10:25:10 | u |
 | url.go:23:2:23:21 | extract:0 ... := ... | url.go:23:2:23:21 | SSA def(u) |
 | url.go:23:20:23:20 | s | url.go:27:29:27:29 | s |
@@ -145,16 +147,16 @@
 | url.go:43:11:43:12 | ui [postupdate] | url.go:45:14:45:15 | ui |
 | url.go:45:14:45:15 | ui | url.go:46:9:46:10 | ui |
 | url.go:45:14:45:15 | ui [postupdate] | url.go:46:9:46:10 | ui |
-| url.go:49:12:49:12 | SSA def(q) | url.go:50:25:50:25 | q |
-| url.go:49:12:49:12 | q | url.go:49:12:49:12 | SSA def(q) |
+| url.go:49:12:49:12 | SSA param(q) | url.go:50:25:50:25 | q |
+| url.go:49:12:49:12 | q | url.go:49:12:49:12 | SSA param(q) |
 | url.go:50:2:50:26 | SSA def(v) | url.go:51:14:51:14 | v |
 | url.go:50:2:50:26 | extract:0 ... := ... | url.go:50:2:50:26 | SSA def(v) |
 | url.go:51:14:51:14 | v | url.go:52:14:52:14 | v |
 | url.go:51:14:51:14 | v [postupdate] | url.go:52:14:52:14 | v |
 | url.go:52:14:52:14 | v | url.go:53:9:53:9 | v |
 | url.go:52:14:52:14 | v [postupdate] | url.go:53:9:53:9 | v |
-| url.go:56:12:56:12 | SSA def(q) | url.go:57:29:57:29 | q |
-| url.go:56:12:56:12 | q | url.go:56:12:56:12 | SSA def(q) |
+| url.go:56:12:56:12 | SSA param(q) | url.go:57:29:57:29 | q |
+| url.go:56:12:56:12 | q | url.go:56:12:56:12 | SSA param(q) |
 | url.go:57:2:57:39 | SSA def(joined1) | url.go:58:38:58:44 | joined1 |
 | url.go:57:2:57:39 | extract:0 ... := ... | url.go:57:2:57:39 | SSA def(joined1) |
 | url.go:58:2:58:45 | SSA def(joined2) | url.go:59:24:59:30 | joined2 |
@@ -163,7 +165,7 @@
 | url.go:59:2:59:31 | extract:0 ... := ... | url.go:59:2:59:31 | SSA def(asUrl) |
 | url.go:60:2:60:37 | SSA def(joinedUrl) | url.go:61:9:61:17 | joinedUrl |
 | url.go:60:15:60:37 | call to JoinPath | url.go:60:2:60:37 | SSA def(joinedUrl) |
-| url.go:64:13:64:13 | SSA def(q) | url.go:66:27:66:27 | q |
-| url.go:64:13:64:13 | q | url.go:64:13:64:13 | SSA def(q) |
+| url.go:64:13:64:13 | SSA param(q) | url.go:66:27:66:27 | q |
+| url.go:64:13:64:13 | q | url.go:64:13:64:13 | SSA param(q) |
 | url.go:65:2:65:48 | SSA def(cleanUrl) | url.go:66:9:66:16 | cleanUrl |
 | url.go:65:2:65:48 | extract:0 ... := ... | url.go:65:2:65:48 | SSA def(cleanUrl) |
