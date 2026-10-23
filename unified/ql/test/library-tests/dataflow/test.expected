@@ -1,5 +1,10 @@
 models
 edges
+| accessors_instance.swift:57:25:57:38 | source(...) | accessors_instance.swift:61:18:61:18 | x | provenance |  |
+| accessors_local.swift:7:21:7:34 | source(...) | accessors_local.swift:8:10:8:10 | x | provenance |  |
+| accessors_local.swift:15:15:15:28 | source(...) | accessors_local.swift:17:10:17:10 | x | provenance |  |
+| accessors_local.swift:22:15:22:28 | source(...) | accessors_local.swift:25:10:25:10 | x | provenance |  |
+| accessors_static.swift:56:32:56:45 | source(...) | accessors_static.swift:64:18:64:18 | x | provenance |  |
 | calls.swift:7:19:7:19 | x | calls.swift:8:14:8:14 | x | provenance |  |
 | calls.swift:10:12:10:25 | source(...) | calls.swift:7:19:7:19 | x | provenance |  |
 | calls.swift:15:16:15:29 | source(...) | calls.swift:17:10:17:17 | target(...) | provenance |  |
@@ -459,6 +464,16 @@ edges
 | test.swift:271:20:271:35 | source(...) | test.swift:271:9:271:9 | x | provenance |  |
 | test.swift:273:30:273:45 | source(...) | test.swift:274:10:274:12 | f(...) | provenance |  |
 nodes
+| accessors_instance.swift:57:25:57:38 | source(...) | semmle.label | source(...) |
+| accessors_instance.swift:61:18:61:18 | x | semmle.label | x |
+| accessors_local.swift:7:21:7:34 | source(...) | semmle.label | source(...) |
+| accessors_local.swift:8:10:8:10 | x | semmle.label | x |
+| accessors_local.swift:15:15:15:28 | source(...) | semmle.label | source(...) |
+| accessors_local.swift:17:10:17:10 | x | semmle.label | x |
+| accessors_local.swift:22:15:22:28 | source(...) | semmle.label | source(...) |
+| accessors_local.swift:25:10:25:10 | x | semmle.label | x |
+| accessors_static.swift:56:32:56:45 | source(...) | semmle.label | source(...) |
+| accessors_static.swift:64:18:64:18 | x | semmle.label | x |
 | calls.swift:7:19:7:19 | x | semmle.label | x |
 | calls.swift:8:14:8:14 | x | semmle.label | x |
 | calls.swift:10:12:10:25 | source(...) | semmle.label | source(...) |
@@ -1036,6 +1051,11 @@ subpaths
 | test.swift:214:43:214:57 | source(...) | test.swift:193:30:193:30 | s | test.swift:193:73:193:73 | s | test.swift:214:21:214:58 | asyncThrowingIdentity(...) |
 testFailures
 #select
+| accessors_instance.swift:61:18:61:18 | x | accessors_instance.swift:57:25:57:38 | source(...) | accessors_instance.swift:61:18:61:18 | x | $@ | accessors_instance.swift:57:25:57:38 | source(...) | source(...) |
+| accessors_local.swift:8:10:8:10 | x | accessors_local.swift:7:21:7:34 | source(...) | accessors_local.swift:8:10:8:10 | x | $@ | accessors_local.swift:7:21:7:34 | source(...) | source(...) |
+| accessors_local.swift:17:10:17:10 | x | accessors_local.swift:15:15:15:28 | source(...) | accessors_local.swift:17:10:17:10 | x | $@ | accessors_local.swift:15:15:15:28 | source(...) | source(...) |
+| accessors_local.swift:25:10:25:10 | x | accessors_local.swift:22:15:22:28 | source(...) | accessors_local.swift:25:10:25:10 | x | $@ | accessors_local.swift:22:15:22:28 | source(...) | source(...) |
+| accessors_static.swift:64:18:64:18 | x | accessors_static.swift:56:32:56:45 | source(...) | accessors_static.swift:64:18:64:18 | x | $@ | accessors_static.swift:56:32:56:45 | source(...) | source(...) |
 | calls.swift:8:14:8:14 | x | calls.swift:10:12:10:25 | source(...) | calls.swift:8:14:8:14 | x | $@ | calls.swift:10:12:10:25 | source(...) | source(...) |
 | calls.swift:17:10:17:17 | target(...) | calls.swift:15:16:15:29 | source(...) | calls.swift:17:10:17:17 | target(...) | $@ | calls.swift:15:16:15:29 | source(...) | source(...) |
 | calls.swift:22:14:22:14 | x | calls.swift:24:15:24:28 | source(...) | calls.swift:22:14:22:14 | x | $@ | calls.swift:24:15:24:28 | source(...) | source(...) |

@@ -5,7 +5,7 @@ func sink(_ s: Any) -> String { return "" }
 
 func t1() {
     var x: String { source("t1.1") }
-    sink(x)  // $ MISSING: hasValueFlow=t1.1
+    sink(x)  // $ hasValueFlow=t1.1
 }
 
 func t2() {
@@ -14,7 +14,7 @@ func t2() {
     var x: String {
         get { source("t2.1") }
     }
-    sink(x)  // $ MISSING: hasValueFlow=t2.1
+    sink(x)  // $ hasValueFlow=t2.1
 }
 
 func t3() {
@@ -22,7 +22,7 @@ func t3() {
         get { source("t3.1") }
         set {}
     }
-    sink(x)  // $ MISSING: hasValueFlow=t3.1
+    sink(x)  // $ hasValueFlow=t3.1
 }
 
 func t4() {

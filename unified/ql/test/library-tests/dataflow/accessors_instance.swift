@@ -58,7 +58,7 @@ func t6() {
 
         func method() {
             sink(self.x)  // $ MISSING: hasValueFlow=t6.1
-            sink(x)  // $ MISSING: hasValueFlow=t6.1
+            sink(x)  // $ hasValueFlow=t6.1
         }
     }
 }

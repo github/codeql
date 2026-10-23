@@ -61,7 +61,7 @@ func t6() {
 
         static func staticMethod() {
             sink(Self.x)  // $ MISSING: hasValueFlow=t6.1
-            sink(x)  // $ MISSING: hasValueFlow=t6.1
+            sink(x)  // $ hasValueFlow=t6.1
         }
     }
 }

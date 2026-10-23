@@ -41,6 +41,12 @@ module DataFlowInput implements InputSig<Location> {
       FlowSummaryOutput::summaryOutNode(callee, getSummaryNode(n), kind) and
       call.isSummaryCall(_, callee)
     )
+    or
+    exists(Expr access |
+      call.asGetterCall() = access and
+      n.isResultValue(access) and
+      kind.isStandardReturnValue()
+    )
   }
 
   class OutNode extends Node {
