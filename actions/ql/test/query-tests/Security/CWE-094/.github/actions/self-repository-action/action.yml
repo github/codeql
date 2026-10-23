@@ -1,0 +1,11 @@
+name: Self repository action
+description: Echo a name
+inputs:
+  who:
+    description: Name
+    required: true
+runs:
+  using: composite
+  steps:
+    - run: echo "Hello ${{ inputs.who }}"
+      shell: bash
