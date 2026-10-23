@@ -1,1 +1,3 @@
-queries/Security/CWE-078/CommandInjection.ql
+query: queries/security/CWE-078/CommandInjection.ql
+postprocess:
+  - utils/test/InlineExpectationsTestQuery.ql
