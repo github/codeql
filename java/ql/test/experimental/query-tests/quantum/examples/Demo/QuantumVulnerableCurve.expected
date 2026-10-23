@@ -1,0 +1,10 @@
+| CryptoClassificationTest.java:50:58:50:66 | EllipticCurve | Quantum-vulnerable elliptic curve: Ed25519 (CURVE25519 family). |
+| CryptoClassificationTest.java:56:56:56:62 | EllipticCurve | Quantum-vulnerable elliptic curve: Ed448 (CURVE448 family). |
+| CryptoClassificationTest.java:181:50:181:60 | EllipticCurve | Quantum-vulnerable elliptic curve: secp256r1 (SEC family). |
+| CryptoClassificationTest.java:185:50:185:60 | EllipticCurve | Quantum-vulnerable elliptic curve: secp384r1 (SEC family). |
+| CryptoClassificationTest.java:189:50:189:60 | EllipticCurve | Quantum-vulnerable elliptic curve: secp521r1 (SEC family). |
+| CryptoClassificationTest.java:193:50:193:60 | EllipticCurve | Quantum-vulnerable elliptic curve: secp256k1 (SEC family). |
+| CryptoClassificationTest.java:197:67:197:74 | EllipticCurve | Quantum-vulnerable elliptic curve: X25519 (CURVE25519 family). |
+| CryptoClassificationTest.java:200:65:200:70 | EllipticCurve | Quantum-vulnerable elliptic curve: X448 (CURVE448 family). |
+| CryptoClassificationTest.java:204:68:204:76 | EllipticCurve | Quantum-vulnerable elliptic curve: Ed25519 (CURVE25519 family). |
+| CryptoClassificationTest.java:207:66:207:72 | EllipticCurve | Quantum-vulnerable elliptic curve: Ed448 (CURVE448 family). |
