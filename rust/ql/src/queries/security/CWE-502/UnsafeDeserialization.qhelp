@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>
+Deserializing untrusted data without validation can allow an attacker to cause denial of service, consume excessive resources, or in some cases execute arbitrary code. In Rust, while memory safety mitigates some risks, deserializing untrusted data with libraries like <code>serde</code>, <code>bincode</code>, or <code>rmp-serde</code> can still lead to panics, excessive memory allocation, or logic bugs when trait objects or polymorphic types are involved.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Avoid deserializing untrusted data with formats that allow unbounded allocation or polymorphic dispatch. Prefer formats with schema validation (like Protocol Buffers) when processing untrusted input. If using <code>serde</code>, consider:
+</p>
+<ul>
+<li>Validating input size before deserialization.</li>
+<li>Using <code>#[serde(deny_unknown_fields)]</code> to reject unexpected data.</li>
+<li>Avoiding <code>#[typetag]</code> or trait object deserialization with untrusted input.</li>
+<li>Using bounded containers (e.g., limiting <code>Vec</code> length via custom deserializers).</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, data from an HTTP request is directly deserialized without any validation. An attacker could send a crafted payload that causes excessive memory allocation or other unintended behavior.
+</p>
+
+<sample src="UnsafeDeserializationBad.rs" />
+
+<p>
+A safer approach validates the input size and uses strict deserialization settings:
+</p>
+
+<sample src="UnsafeDeserializationGood.rs" />
+
+</example>
+<references>
+
+<li>OWASP: <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/16-Testing_for_HTTP_Incoming_Requests">Deserialization of untrusted data</a>.</li>
+<li>CWE-502: <a href="https://cwe.mitre.org/data/definitions/502.html">Deserialization of Untrusted Data</a>.</li>
+
+</references>
+</qhelp>
