@@ -151,8 +151,11 @@ func testCommandInjectionMore(mySafeString: String) {
 	_ = Process.launchedProcess(launchPath: mySafeString, arguments: ["abc", userControlledString]) // $ MISSING: Alert
 
 	_ = try? Process.run(URL(string: mySafeString)!, arguments: ["abc", mySafeString]) // GOOD
-	_ = try? Process.run(URL(string: userControlledString)!, arguments: ["abc", mySafeString]) // $ MISSING: Alert
+	_ = try? Process.run(URL(string: userControlledString)!, arguments: ["abc", mySafeString]) // $ Alert
 	_ = try? Process.run(URL(string: mySafeString)!, arguments: ["abc", userControlledString]) // $ MISSING: Alert
+
+	_ = try? Process.run(URL(string: mySafeString)!, arguments: [], terminationHandler: nil) // GOOD
+	_ = try? Process.run(URL(string: userControlledString)!, arguments: [], terminationHandler: nil) // $ Alert
 
 	let task8 = try! NSUserScriptTask(url: URL(string: mySafeString)!) // GOOD
 	task8.execute()
