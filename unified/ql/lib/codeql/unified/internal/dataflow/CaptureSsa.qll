@@ -21,7 +21,7 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
   Callable basicBlockGetEnclosingCallable(BasicBlock bb) { result = bb.getEnclosingCallable() }
 
   class CapturedVariable extends LocalVariable {
-    CapturedVariable() { this.isCaptured() }
+    CapturedVariable() { this.isCaptured() and not this instanceof ComputedLocalVariable }
 
     Callable getCallable() { result = super.getDeclaringCallable() }
   }
