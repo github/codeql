@@ -8,7 +8,6 @@
  */
 
 private import codeql.files.FileSystem
-private import codeql.rust.controlflow.internal.ControlFlowGraphImpl
 private import codeql.rust.controlflow.ControlFlowGraph
 
 /**
@@ -32,7 +31,7 @@ external int selectedSourceColumn();
 
 private predicate selectedSourceColumnAlias = selectedSourceColumn/0;
 
-private module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
+private module ViewCfgQueryInput implements ControlFlow::ViewCfgQueryInputSig<File> {
   predicate selectedSourceFile = selectedSourceFileAlias/0;
 
   predicate selectedSourceLine = selectedSourceLineAlias/0;
@@ -47,4 +46,4 @@ private module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
   }
 }
 
-import ViewCfgQuery<File, ViewCfgQueryInput>
+import ControlFlow::ViewCfgQuery<File, ViewCfgQueryInput>

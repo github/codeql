@@ -9,7 +9,6 @@ module Ssa {
   private import rust
   private import codeql.rust.controlflow.BasicBlocks
   private import codeql.rust.controlflow.ControlFlowGraph
-  private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as CfgImpl
   private import internal.SsaImpl as SsaImpl
 
   class Variable = SsaImpl::SsaInput::SourceVariable;
@@ -269,20 +268,7 @@ module Ssa {
       inp = SsaImpl::phiHasInputFromBlock(this, bb)
     }
 
-    private string getSplitString() {
-      result = this.getBasicBlock().getFirstNode().(CfgImpl::AstCfgNode).getSplitsString()
-    }
-
-    override string toString() {
-      exists(string prefix |
-        prefix = "[" + this.getSplitString() + "] "
-        or
-        not exists(this.getSplitString()) and
-        prefix = ""
-      |
-        result = prefix + SsaImpl::PhiDefinition.super.toString()
-      )
-    }
+    override string toString() { result = SsaImpl::PhiDefinition.super.toString() }
 
     /*
      * The location of a phi definition is the same as the location of the first node

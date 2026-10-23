@@ -11,68 +11,117 @@
 
 import rust
 import codeql.rust.controlflow.ControlFlowGraph
-import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 
 /**
- * Successor relation that includes unreachable AST nodes.
+ * Gets the AST node represented by `n`, ignoring transparent parentheses.
  */
-private predicate succ(AstNode a, AstNode b) {
-  exists(ControlFlowGraphImpl::ControlFlowTree cft | cft.succ(a, b, _))
-}
-
-/**
- * Gets a node we'd prefer not to report as unreachable. These will be removed
- * from the AST for the purposes of this query, with successor links being
- * made across them where appropriate.
- */
-predicate hiddenNode(AstNode n) {
-  // isolated node (not intended to be part of the CFG)
-  not succ(n, _) and
-  not succ(_, n)
+private AstNode desugar(AstNode n) {
+  result = desugar(n.(ParenExpr).getExpr())
   or
-  n instanceof ControlFlowGraphImpl::PostOrderTree and // location is counter-intuitive
-  not n instanceof MacroExpr
+  result = desugar(n.(ParenPat).getPat())
   or
-  n.isFromMacroExpansion()
+  not n instanceof ParenExpr and
+  not n instanceof ParenPat and
+  result = n
 }
 
 /**
- * Successor relation for edges out of `hiddenNode`s.
+ * Holds if `n` has a node in the reachable control-flow graph.
+ *
+ * The shared control-flow library only creates nodes for reachable code.
  */
-private predicate succHidden(AstNode a, AstNode b) {
-  hiddenNode(a) and
-  succ(a, b)
+private predicate reachable(AstNode n) { any(CfgNode cfg).getAstNode() = desugar(n) }
+
+/** Holds if normal execution of `n` reaches its after-node. */
+private predicate reachesAfter(AstNode n) { any(CfgNode cfg).isAfter(desugar(n)) }
+
+/** Holds if `n` is a direct element of a statement list. */
+private predicate statementListElement(AstNode n) { n = any(StmtList list).getStmtOrExpr(_) }
+
+/** Holds if `n` is a statement-list element that executes at runtime. */
+private predicate runtimeStatementListElement(AstNode n) {
+  statementListElement(n) and
+  not n instanceof Const and
+  not n instanceof Static
 }
 
-/**
- * Successor relation that removes / links over `hiddenNode`s.
- */
-private predicate succWithHiding(AstNode a, AstNode b) {
-  exists(AstNode mid |
-    not hiddenNode(a) and
-    succ(a, mid) and
-    succHidden*(mid, b) and
-    not hiddenNode(b)
+/** Gets the runtime statement-list element immediately preceding `n`, if any. */
+private AstNode getPreviousRuntimeStatementListElement(AstNode n) {
+  exists(StmtList list, int i |
+    n = list.getStmtOrExpr(i) and
+    (
+      result = list.getStmtOrExpr(i - 1) and runtimeStatementListElement(result)
+      or
+      not runtimeStatementListElement(list.getStmtOrExpr(i - 1)) and
+      result = getPreviousRuntimeStatementListElement(list.getStmtOrExpr(i - 1))
+    )
   )
 }
 
 /**
- * An AST node that is reachable.
+ * Holds if `n` is an `if` expression, possibly wrapped in an expression
+ * statement, with an unreachable branch.
  */
-predicate reachable(AstNode n) { n = any(CfgNode cfn).getAstNode() }
+private predicate hasUnreachableIfBranch(AstNode n) {
+  exists(IfExpr ifExpr, AstNode child |
+    (
+      ifExpr = n
+      or
+      ifExpr = n.(ExprStmt).getExpr()
+    ) and
+    statementListElement(child) and
+    child.getParentNode+() = ifExpr and
+    not reachable(child)
+  )
+}
 
 /**
- * Holds if `n` is an AST node that's unreachable, and any predecessors
- * of it are reachable (to avoid duplicate results).
+ * Holds if `n` is the first unreachable element in a run of unreachable
+ * statement-list elements.
  */
-private predicate firstUnreachable(AstNode n) {
+private predicate firstUnreachableStatementListElement(AstNode n) {
+  runtimeStatementListElement(n) and
   not reachable(n) and
-  not hiddenNode(n) and
-  forall(AstNode pred | succWithHiding(pred, n) | reachable(pred))
+  (
+    not exists(getPreviousRuntimeStatementListElement(n))
+    or
+    reachesAfter(getPreviousRuntimeStatementListElement(n))
+    or
+    reachable(getPreviousRuntimeStatementListElement(n)) and
+    not hasUnreachableIfBranch(getPreviousRuntimeStatementListElement(n))
+  )
+}
+
+/**
+ * Holds if `macro` is an unreachable macro expression inside a reachable
+ * statement-list element. This captures unreachable right-hand sides of
+ * short-circuiting expressions without reporting every unreachable subexpression.
+ */
+private predicate unreachableNestedMacro(MacroExpr macro) {
+  not statementListElement(macro) and
+  not reachable(macro) and
+  exists(AstNode enclosing |
+    statementListElement(enclosing) and
+    macro.getParentNode*() = enclosing and
+    reachable(enclosing)
+  ) and
+  not exists(AstNode enclosing |
+    statementListElement(enclosing) and
+    macro.getParentNode*() = enclosing and
+    not reachable(enclosing)
+  )
+}
+
+/** Holds if `n` is the first useful AST node to report as unreachable. */
+private predicate firstUnreachable(AstNode n) {
+  firstUnreachableStatementListElement(n)
+  or
+  n instanceof MacroExpr and unreachableNestedMacro(n)
 }
 
 from AstNode n
 where
   firstUnreachable(n) and
+  not n.isFromMacroExpansion() and
   exists(n.getFile().getRelativePath()) // in source
 select n, "This code is never reached."

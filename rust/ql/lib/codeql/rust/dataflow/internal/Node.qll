@@ -127,10 +127,6 @@ abstract class AstNodeNode extends Node {
 /**
  * A node in the data flow graph that corresponds to an expression in the
  * AST.
- *
- * Note that because of control flow splitting, one `Expr` may correspond
- * to multiple `ExprNode`s, just like it may correspond to multiple
- * `ControlFlow::Node`s.
  */
 class ExprNode extends AstNodeNode, TExprNode {
   override Expr n;
@@ -473,7 +469,13 @@ abstract class ReturnNode extends Node {
 }
 
 final class ExprReturnNode extends ExprNode, ReturnNode {
-  ExprReturnNode() { n.getACfgNode().getASuccessor() instanceof AnnotatedExitCfgNode }
+  ExprReturnNode() {
+    n.getACfgNode().getASuccessor() instanceof AnnotatedExitCfgNode
+    or
+    n = any(Callable callable).getBody()
+    or
+    n = any(AsyncBlockExpr block).getStmtList().getTailExpr()
+  }
 
   override ReturnKind getKind() { result = TNormalReturnKind() }
 }
