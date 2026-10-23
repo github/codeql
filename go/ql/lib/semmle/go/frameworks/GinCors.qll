@@ -45,7 +45,7 @@ module GinCors {
     override GinConfig getConfig() {
       exists(GinConfig gc |
         (
-          gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
+          gc.getV().getBaseDefinition().(SsaExplicitWrite).getDefinition().getRhs() =
             base.asInstruction() or
           gc.getV().getAUse() = base
         ) and
@@ -79,7 +79,7 @@ module GinCors {
     override GinConfig getConfig() {
       exists(GinConfig gc |
         (
-          gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
+          gc.getV().getBaseDefinition().(SsaExplicitWrite).getDefinition().getRhs() =
             base.asInstruction() or
           gc.getV().getAUse() = base
         ) and
@@ -111,7 +111,7 @@ module GinCors {
      * Get config variable holding header values
      */
     override GinConfig getConfig() {
-      result.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
+      result.getV().getBaseDefinition().(SsaExplicitWrite).getDefinition().getRhs() =
         base.asInstruction() or
       result.getV().getAUse() = base
     }
@@ -124,7 +124,7 @@ module GinCors {
     SsaWithFields v;
 
     GinConfig() {
-      this = v.getBaseVariable().getSourceVariable() and
+      this = v.getBaseDefinition().getSourceVariable() and
       v.getType().hasQualifiedName(packagePath(), "Config")
     }
 

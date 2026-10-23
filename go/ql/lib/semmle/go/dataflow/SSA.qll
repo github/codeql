@@ -6,6 +6,8 @@ module;
 
 import go
 private import SsaImpl
+import SsaImpl::Ssa as Ssa
+import Ssa
 
 /**
  * A variable that can be SSA converted, that is, a local variable, but not a variable
@@ -61,10 +63,15 @@ private predicate unresolvedIdentifier(Ident id, string name) {
 }
 
 /**
+ * DEPRECATED: Use `SsaDefinition` instead.
+ *
  * An SSA variable.
  */
-class SsaVariable extends Definition {
-  /** Gets the (unique) definition of this SSA variable. */
+deprecated class SsaVariable extends SsaDefinition {
+  /** Gets the SSA variable defined by this definition. */
+  SsaVariable getVariable() { result = this }
+
+  /** Gets the unique definition of this SSA variable. */
   SsaDefinition getDefinition() { result = this }
 
   /** Gets the type of this SSA variable. */
@@ -79,146 +86,116 @@ class SsaVariable extends Definition {
     )
   }
 
-  /** Gets a use that refers to this SSA variable. */
-  IR::Instruction getAUse() { result = this.getAUseIn(_) }
+  /**
+   * DEPRECATED: Use `getARead()` instead.
+   *
+   * Gets a use that refers to this SSA variable.
+   */
+  deprecated IR::Instruction getAUse() { result = this.getAUseIn(_) }
+
+  /** Gets the innermost function or file to which this SSA variable belongs. */
+  ControlFlow::Root getRoot() { result = this.getBasicBlock().getScope() }
 
   /**
-   * DEPRECATED: Use `getLocation()` instead.
-   *
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   * Gets the first instruction that the value of this SSA variable can reach without passing
+   * through any other instructions, but possibly through phi nodes.
    */
-  deprecated predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-}
-
-/**
- * An SSA definition.
- */
-class SsaDefinition extends Definition {
-  /** Gets the SSA variable defined by this definition. */
-  SsaVariable getVariable() { result = this }
-
-  /** Gets the innermost function or file to which this SSA definition belongs. */
-  ControlFlow::Root getRoot() { result = this.getBasicBlock().getScope() }
+  IR::Instruction getAFirstUse() { firstUse(this, result) }
 
   /**
    * INTERNAL: Do not use.
    *
-   * Gets a short string identifying the kind of this SSA definition,
-   * used in reference formatting (e.g., `"def"`, `"capture"`, `"phi"`).
+   * Gets a short string identifying the kind of this SSA variable.
    */
-  string getKind() { none() }
+  string getKind() {
+    this instanceof SsaExplicitWrite and result = "def"
+    or
+    this instanceof SsaUncertainWrite and result = "capture"
+    or
+    this instanceof SsaPhiDefinition and result = "phi"
+  }
 
   /**
    * DEPRECATED: Use `getLocation()` instead.
    *
    * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
-
-  /**
-   * Gets the first instruction that the value of this `SsaDefinition` can
-   * reach without passing through any other instructions, but possibly through
-   * phi nodes.
-   */
-  IR::Instruction getAFirstUse() { firstUse(this, result) }
 }
 
 /**
+ * DEPRECATED: Use `SsaExplicitWrite` instead.
+ *
  * An SSA definition that corresponds to an explicit assignment or other variable definition.
  */
-class SsaExplicitDefinition extends SsaDefinition, WriteDefinition {
-  SsaExplicitDefinition() {
-    exists(BasicBlock bb, int i, SsaSourceVariable v |
-      this.definesAt(v, bb, i) and
-      defAt(bb, i, v)
-    )
-  }
-
+deprecated class SsaExplicitDefinition extends SsaVariable instanceof SsaExplicitWrite {
   /** Gets the instruction where the definition happens. */
-  IR::Instruction getInstruction() {
-    exists(BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(i))
-  }
+  IR::Instruction getInstruction() { result = this.(SsaExplicitWrite).getDefinition() }
 
   /** Gets the right-hand side of the definition. */
-  IR::Instruction getRhs() { this.getInstruction().writes(_, result) }
-
-  override string getKind() { result = "def" }
+  IR::Instruction getRhs() { result = this.getInstruction().(IR::WriteInstruction).getRhs() }
 }
 
-/** Provides a helper predicate for working with explicit SSA definitions. */
-module SsaExplicitDefinition {
-  /**
-   * Gets the SSA definition corresponding to definition `def`.
-   */
+/** Provides a deprecated helper for working with explicit SSA definitions. */
+deprecated module SsaExplicitDefinition {
+  /** Gets the SSA definition corresponding to definition `def`. */
   SsaExplicitDefinition of(IR::Instruction def) { result.getInstruction() = def }
 }
 
 /**
+ * DEPRECATED: Use `SsaUncertainWrite` or `SsaPhiDefinition` instead.
+ *
  * An SSA definition that does not correspond to an explicit variable definition.
  */
-abstract class SsaImplicitDefinition extends SsaDefinition { }
+deprecated class SsaImplicitDefinition extends SsaVariable {
+  SsaImplicitDefinition() { this instanceof SsaUncertainWrite or this instanceof SsaPhiDefinition }
+}
 
 /**
- * An SSA definition representing the capturing of an SSA-convertible variable
- * in the closure of a nested function.
+ * DEPRECATED: Use `SsaUncertainWrite` instead.
  *
- * Capturing definitions appear at the beginning of such functions, as well as
- * at any function call that may affect the value of the variable.
+ * An SSA definition representing the capturing of an SSA-convertible variable.
  */
-class SsaVariableCapture extends SsaImplicitDefinition, UncertainWriteDefinition {
-  override string getKind() { result = "capture" }
+deprecated class SsaVariableCapture extends SsaImplicitDefinition instanceof SsaUncertainWrite { }
+
+/**
+ * DEPRECATED: Use `SsaPhiDefinition` instead.
+ *
+ * An SSA definition that merges data flow.
+ */
+deprecated class SsaPseudoDefinition extends SsaImplicitDefinition instanceof SsaPhiDefinition {
+  /** Gets an input of this pseudo-definition. */
+  SsaVariable getAnInput() { result = this.(SsaPhiDefinition).getAnInput() }
 }
 
 /**
- * An SSA definition such as a phi node that has no actual semantics, but simply serves to
- * merge or filter data flow.
+ * DEPRECATED: Use `SsaPhiDefinition` instead.
+ *
+ * An SSA phi definition.
  */
-abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
-  /**
-   * Gets an input of this pseudo-definition.
-   */
-  abstract SsaVariable getAnInput();
-}
-
-/**
- * An SSA phi node, that is, a pseudo-definition for a variable at a point
- * in the flow graph where otherwise two or more definitions for the variable
- * would be visible.
- */
-class SsaPhiNode extends SsaPseudoDefinition, PhiNode {
-  override SsaVariable getAnInput() { phiHasInputFromBlock(this, result, _) }
-
-  override string getKind() { result = "phi" }
-}
+deprecated class SsaPhiNode extends SsaPseudoDefinition { }
 
 /**
  * An SSA variable, possibly with a chain of field reads on it.
  */
 private newtype TSsaWithFields =
-  TRoot(SsaVariable v) or
+  TRoot(SsaDefinition def) or
   TStep(SsaWithFields base, Field f) { exists(accessPathAux(base, f)) }
 
 /**
  * Gets a representation of `insn` as an ssa-with-fields value if there is one.
  */
 private TSsaWithFields accessPath(IR::Instruction insn) {
-  exists(SsaVariable v | insn = v.getAUse() | result = TRoot(v))
+  exists(SsaDefinition def, BasicBlock bb, int i |
+    insn = bb.getNode(i) and
+    ssaDefReachesRead(def.getSourceVariable(), def, bb, i) and
+    useAt(bb, i, def.getSourceVariable()) and
+    result = TRoot(def)
+  )
   or
   exists(SsaWithFields base, Field f | insn = accessPathAux(base, f) | result = TStep(base, f))
 }
@@ -246,10 +223,10 @@ class SsaWithFields extends TSsaWithFields {
    * For example, the SSA variable corresponding to `a` for the SSA variable with fields
    * corresponding to `a.b`.
    */
-  SsaVariable getBaseVariable() {
+  SsaDefinition getBaseDefinition() {
     this = TRoot(result)
     or
-    exists(SsaWithFields base | this = TStep(base, _) | result = base.getBaseVariable())
+    exists(SsaWithFields base | this = TStep(base, _) | result = base.getBaseDefinition())
   }
 
   /** Gets a use that refers to this SSA variable with fields. */
@@ -257,14 +234,14 @@ class SsaWithFields extends TSsaWithFields {
 
   /** Gets the type of this SSA variable with fields. */
   Type getType() {
-    exists(SsaVariable var | this = TRoot(var) | result = var.getType())
+    exists(SsaDefinition def | this = TRoot(def) | result = def.getSourceVariable().getType())
     or
     exists(Field f | this = TStep(_, f) | result = f.getType())
   }
 
   /** Gets a textual representation of this element. */
   string toString() {
-    exists(SsaVariable var | this = TRoot(var) | result = "(" + var + ")")
+    exists(SsaDefinition def | this = TRoot(def) | result = "(" + def + ")")
     or
     exists(SsaWithFields base, Field f | this = TStep(base, f) | result = base + "." + f.getName())
   }
@@ -274,7 +251,7 @@ class SsaWithFields extends TSsaWithFields {
    * sense that it has the same root variable and the same sequence of field accesses.
    */
   SsaWithFields similar() {
-    result.getBaseVariable().getSourceVariable() = this.getBaseVariable().getSourceVariable() and
+    result.getBaseDefinition().getSourceVariable() = this.getBaseDefinition().getSourceVariable() and
     result.getQualifiedName() = this.getQualifiedName()
   }
 
@@ -285,7 +262,7 @@ class SsaWithFields extends TSsaWithFields {
    * `"a.b"`.
    */
   string getQualifiedName() {
-    exists(SsaVariable v | this = TRoot(v) and result = v.getSourceVariable().getName())
+    exists(SsaDefinition def | this = TRoot(def) and result = def.getSourceVariable().getName())
     or
     exists(SsaWithFields base, Field f | this = TStep(base, f) |
       result = base.getQualifiedName() + "." + f.getName()
@@ -293,7 +270,7 @@ class SsaWithFields extends TSsaWithFields {
   }
 
   /** Gets the location of this SSA variable with fields. */
-  Location getLocation() { result = this.getBaseVariable().getLocation() }
+  Location getLocation() { result = this.getBaseDefinition().getLocation() }
 
   /**
    * DEPRECATED: Use `getLocation()` instead.
