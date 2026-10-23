@@ -986,6 +986,22 @@ private predicate isMatchObjectProperty(string name) {
   name in ["length", "index", "input", "groups"]
 }
 
+/** Gets an API node representing a `LinkifyIt` instance. */
+private API::Node linkifyItInstance() {
+  result = API::moduleImport("linkify-it").getMember("exports").getMember("LinkifyIt").getInstance()
+  or
+  result = API::moduleImport("linkify-it").getMember("LinkifyIt").getInstance()
+  or
+  result = API::moduleImport("linkify-it").getMember("exports").getMember("linkifyit").getReturn()
+  or
+  result = API::moduleImport("linkify-it").getMember("linkifyit").getReturn()
+  or
+  // Before version 6, the module export was the factory function.
+  result = API::moduleImport("linkify-it").getReturn()
+  or
+  result = linkifyItInstance().getMember(["add", "set", "tlds"]).getReturn()
+}
+
 /** Holds if `call` is a call to `match` whose result is used in a way that is incompatible with Match objects. */
 overlay[global]
 private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
@@ -1006,6 +1022,8 @@ private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
     call.asExpr() = any(ExprStmt stmt).getExpr()
     or
     call = API::moduleImport("sinon").getMember("match").getACall()
+    or
+    call = linkifyItInstance().getMember("match").getACall()
   )
 }
 
