@@ -48,7 +48,7 @@ func GetEnvGoVersion() string {
 		// Go version in tests and also allows users to override the system default more generally.
 		_, hasToolchainVar := os.LookupEnv("GOTOOLCHAIN")
 		if !hasToolchainVar {
-			cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+			cmd.AppendEnv("GOTOOLCHAIN=local")
 		}
 
 		out, err := cmd.CombinedOutput()
@@ -82,10 +82,10 @@ func InstallVersion(workingDir string, version util.SemVer) bool {
 	// should then work even with an invalid version that's still in `go.mod`
 	toolchainArg := "GOTOOLCHAIN=go" + version.String()[1:]
 	versionCmd := Version()
-	versionCmd.Dir = workingDir
-	versionCmd.Env = append(os.Environ(), toolchainArg)
-	versionCmd.Stdout = os.Stdout
-	versionCmd.Stderr = os.Stderr
+	versionCmd.SetDir(workingDir)
+	versionCmd.AppendEnv(toolchainArg)
+	versionCmd.SetStdout(os.Stdout)
+	versionCmd.SetStderr(os.Stderr)
 
 	log.Printf(
 		"Trying to install Go %s using its canonical representation in `%s`.",
@@ -99,7 +99,7 @@ func InstallVersion(workingDir string, version util.SemVer) bool {
 		log.Printf(
 			"Failed to invoke `%s go version` in %s: %s\n",
 			toolchainArg,
-			versionCmd.Dir,
+			workingDir,
 			versionErr.Error(),
 		)
 
@@ -145,21 +145,20 @@ func SupportsWorkspaces() bool {
 }
 
 // Constructs a `*exec.Cmd` for `go` with the specified arguments.
-func GoCommand(arg ...string) *exec.Cmd {
-	cmd := exec.Command("go", arg...)
-	registries.ApplyProxyEnvVars(cmd)
+func GoCommand(arg ...string) *registries.ProxiedCmd {
+	cmd := registries.Command("go", arg...)
 	return cmd
 }
 
 // Run `go mod tidy -e` in the directory given by `path`.
-func TidyModule(path string) *exec.Cmd {
+func TidyModule(path string) *registries.ProxiedCmd {
 	cmd := GoCommand("mod", "tidy", "-e")
-	cmd.Dir = path
+	cmd.SetDir(path)
 	return cmd
 }
 
 // Run `go mod init` in the directory given by `path`.
-func InitModule(path string) *exec.Cmd {
+func InitModule(path string) *registries.ProxiedCmd {
 	moduleName := "codeql/auto-project"
 
 	if importpath := util.GetImportPath(); importpath != "" {
@@ -174,19 +173,19 @@ func InitModule(path string) *exec.Cmd {
 	}
 
 	modInit := GoCommand("mod", "init", moduleName)
-	modInit.Dir = path
+	modInit.SetDir(path)
 	return modInit
 }
 
 // Constructs a command to run `go mod vendor -e` in the directory given by `path`.
-func VendorModule(path string) *exec.Cmd {
+func VendorModule(path string) *registries.ProxiedCmd {
 	modVendor := GoCommand("mod", "vendor", "-e")
-	modVendor.Dir = path
+	modVendor.SetDir(path)
 	return modVendor
 }
 
 // Constructs a command to run `go version`.
-func Version() *exec.Cmd {
+func Version() *registries.ProxiedCmd {
 	version := GoCommand("version")
 	return version
 }
@@ -197,7 +196,7 @@ func RunList(format string, patterns []string, flags ...string) (string, error) 
 }
 
 // Constructs a `go list` command with `format`, `patterns`, and `flags` for the respective inputs.
-func List(format string, patterns []string, flags ...string) *exec.Cmd {
+func List(format string, patterns []string, flags ...string) *registries.ProxiedCmd {
 	return ListWithEnv(format, patterns, nil, flags...)
 }
 
@@ -220,11 +219,11 @@ func RunListWithEnv(format string, patterns []string, additionalEnv []string, fl
 
 // Constructs a `go list` command with `format`, `patterns`, and `flags` for the respective inputs
 // and the extra environment variables given by `additionalEnv`.
-func ListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) *exec.Cmd {
+func ListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) *registries.ProxiedCmd {
 	args := append([]string{"list", "-e", "-f", format}, flags...)
 	args = append(args, patterns...)
 	cmd := GoCommand(args...)
-	cmd.Env = append(os.Environ(), additionalEnv...)
+	cmd.AppendEnv(additionalEnv...)
 	return cmd
 }
 

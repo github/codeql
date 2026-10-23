@@ -3,6 +3,7 @@ package registries
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"log/slog"
 	"net/url"
 	"os"
@@ -10,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/github/codeql-go/extractor/diagnostics"
+	"github.com/github/codeql-go/extractor/util"
 )
 
 const PROXY_HOST = "CODEQL_PROXY_HOST"
@@ -64,6 +66,57 @@ func parseRegistryConfigs(str string) ([]RegistryConfig, error) {
 	}
 
 	return configs, nil
+}
+
+// The previous `http.sslCAInfo` setting that should be restored after a command is run, if any.
+var previous_sslCAInfo string = ""
+
+// Tries to identify a current value for the `http.sslCAInfo` setting.
+func getCurrentGitSslInfo() string {
+	slog.Debug("Checking for current `git` certificate configuration")
+	cmd := exec.Command("git", "config", "--global", "--get", "http.sslCAInfo")
+	out, err := cmd.CombinedOutput()
+
+	if err == nil {
+		val := strings.TrimSpace(string(out))
+
+		if val != "" {
+			slog.Info("Determined current `git` certificate configuration", slog.String("value", val))
+			return val
+		}
+	} else {
+		slog.Warn("Unable to determine current `git` certificate configuration", slog.String("error", err.Error()))
+	}
+
+	return ""
+}
+
+// Applies a `http.sslCAInfo` setting for `git`.
+func applyGitSslInfo(val string) {
+	cmd := exec.Command("git", "config", "--global", "http.sslCAInfo", val)
+
+	out, cmdErr := cmd.CombinedOutput()
+	slog.Info(string(out))
+
+	if cmdErr != nil {
+		slog.Error("Failed to configure `http.sslCAInfo` for `git`", slog.String("path", val), slog.String("error", cmdErr.Error()))
+	}
+}
+
+// Configures `git` to trust the registry proxy.
+func applyProxyCertificateToGit() {
+	slog.Info("Configuring `git` to use proxy certificate", slog.String("path", proxy_cert_file))
+	applyGitSslInfo(proxy_cert_file)
+}
+
+// Restores the `http.sslCAInfo` setting for `git` to its original setting, if any.
+func RestoreGitSslInfo() {
+	if previous_sslCAInfo == "" {
+		return
+	}
+
+	slog.Info("Restoring `http.sslCAInfo` setting for `git`", slog.String("path", previous_sslCAInfo))
+	applyGitSslInfo(previous_sslCAInfo)
 }
 
 func getEnvVars() []string {
@@ -161,17 +214,8 @@ func getEnvVars() []string {
 			if len(git_sources) > 0 {
 				goprivate = append(goprivate, git_sources...)
 
-				if proxy_cert_file != "" {
-					slog.Info("Configuring `git` to use proxy certificate", slog.String("path", proxy_cert_file))
-					cmd := exec.Command("git", "config", "--global", "http.sslCAInfo", proxy_cert_file)
-
-					out, cmdErr := cmd.CombinedOutput()
-					slog.Info(string(out))
-
-					if cmdErr != nil {
-						slog.Error("Failed to configure `git` to accept the certificate file", slog.String("error", cmdErr.Error()))
-					}
-				}
+				// Determine if `git` has an existing `http.sslCAInfo` config and store it.
+				previous_sslCAInfo = getCurrentGitSslInfo()
 			}
 
 			result = append(result, fmt.Sprintf("GOPRIVATE=%s", strings.Join(goprivate, ",")))
@@ -182,7 +226,7 @@ func getEnvVars() []string {
 }
 
 // Applies private package proxy related environment variables to `cmd`.
-func ApplyProxyEnvVars(cmd *exec.Cmd) {
+func applyProxyEnvVars(cmd *exec.Cmd) {
 	// If we haven't done so yet, check whether the proxy environment variables are set
 	// and extract information from them.
 	if !proxy_vars_checked {
@@ -194,7 +238,7 @@ func ApplyProxyEnvVars(cmd *exec.Cmd) {
 	// variables to the existing environment to preserve those environment variables.
 	// If `cmd.Env` is not changed, then the existing environment is also preserved.
 	if proxy_vars != nil {
-		cmd.Env = append(os.Environ(), proxy_vars...)
+		cmd.Env = append(cmd.Environ(), proxy_vars...)
 	}
 
 	slog.Debug(
@@ -202,4 +246,86 @@ func ApplyProxyEnvVars(cmd *exec.Cmd) {
 		slog.String("cmd_args", strings.Join(cmd.Args, " ")),
 		slog.String("proxy_vars", strings.Join(proxy_vars, ",")),
 	)
+}
+
+// Wrapper around [exec.Cmd] for commands that need proxy setup and cleanup.
+type ProxiedCmd struct {
+	cmd *exec.Cmd
+}
+
+// Constructs a new [ProxiedCmd].
+func Command(name string, arg ...string) *ProxiedCmd {
+	cmd := exec.Command(name, arg...)
+	return &ProxiedCmd{cmd}
+}
+
+// Applies proxy-related environment variables to the command, installs a clean-up handler and runs `fn`
+// with the underlying command as argument.
+func run[R any](proxiedCmd *ProxiedCmd, fn func(cmd *exec.Cmd) R) R {
+	// Apply registry proxy environment variables to the command.
+	applyProxyEnvVars(proxiedCmd.cmd)
+
+	// If there are `git_source` registries, configure `git` to trust the proxy certificate.
+	if len(git_sources) > 0 && proxy_cert_file != "" {
+		applyProxyCertificateToGit()
+	}
+
+	// Clean up after the command has run.
+	defer func() {
+		// Restore the previous `http.sslCAInfo` config for `git` if there was one.
+		RestoreGitSslInfo()
+	}()
+
+	return fn(proxiedCmd.cmd)
+}
+
+// Runs the command and waits for it to complete.
+func (self ProxiedCmd) Run() error {
+	return run[error](&self, func(cmd *exec.Cmd) error { return cmd.Run() })
+}
+
+// Runs the command and waits for it to complete. Returns a boolean indicating whether the command was successful
+// and logs errors if any occur.
+func (self ProxiedCmd) RunCmd() bool {
+	return run[bool](&self, util.RunCmd)
+}
+
+type Output struct {
+	data []byte
+	err  error
+}
+
+func (self ProxiedCmd) Output() ([]byte, error) {
+	result := run[Output](&self, func(cmd *exec.Cmd) Output {
+		data, err := cmd.Output()
+		return Output{data, err}
+	})
+
+	return result.data, result.err
+}
+
+// Runs the command and returns its combined standard output and standard error.
+func (self ProxiedCmd) CombinedOutput() ([]byte, error) {
+	result := run[Output](&self, func(cmd *exec.Cmd) Output {
+		data, err := cmd.CombinedOutput()
+		return Output{data, err}
+	})
+
+	return result.data, result.err
+}
+
+func (self ProxiedCmd) AppendEnv(kvps ...string) {
+	self.cmd.Env = append(self.cmd.Environ(), kvps...)
+}
+
+func (self ProxiedCmd) SetDir(workingDir string) {
+	self.cmd.Dir = workingDir
+}
+
+func (self ProxiedCmd) SetStdout(writer io.Writer) {
+	self.cmd.Stdout = writer
+}
+
+func (self ProxiedCmd) SetStderr(writer io.Writer) {
+	self.cmd.Stderr = writer
 }

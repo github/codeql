@@ -69,7 +69,7 @@ func restoreRepoLayout(fromDir string, dirEntries []string, scratchDirName strin
 // addVersionToMod add a go version directive, e.g. `go 1.14` to a `go.mod` file.
 func addVersionToMod(version string) bool {
 	cmd := toolchain.GoCommand("mod", "edit", "-go="+version)
-	return util.RunCmd(cmd)
+	return cmd.RunCmd()
 }
 
 // checkVendor tests to see whether a vendor directory is inconsistent according to the go frontend
@@ -170,7 +170,7 @@ func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 
 			// run `go mod tidy -e`
 			cmd := goMod.Tidy()
-			res := util.RunCmd(cmd)
+			res := cmd.RunCmd()
 
 			if !res {
 				log.Printf("Failed to run `go mod tidy -e` in %s\n", goModDir)
@@ -436,13 +436,13 @@ func installDependencies(workspace project.GoWorkspace) {
 			if util.DirExists(filepath.Join(path, "vendor")) {
 				vendor := module.Vendor()
 				log.Printf("Synchronizing vendor file using `go mod vendor` in %s.\n", path)
-				util.RunCmd(vendor)
+				vendor.RunCmd()
 			}
 
-			install = toolchain.GoCommand("get", "-v", "./...")
-			install.Dir = path
+			goGet := toolchain.GoCommand("get", "-v", "./...")
+			goGet.SetDir(path)
 			log.Printf("Installing dependencies using `go get -v ./...` in `%s`.\n", path)
-			util.RunCmd(install)
+			goGet.RunCmd()
 		}
 	}
 }
