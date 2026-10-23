@@ -299,6 +299,26 @@ module DataFlow {
   }
 
   /**
+   * A synthetic node representing an input edge to an SSA phi node.
+   */
+  private class SsaPhiInputNode extends Node, TSsaPhiInputNode {
+    SsaPhiNode phi;
+    BasicBlock input;
+
+    SsaPhiInputNode() { this = TSsaPhiInputNode(phi, input) }
+
+    override BasicBlock getBasicBlock() { result = input }
+
+    override Location getLocation() { result = input.getLocation() }
+
+    override string toString() { result = "[input] " + phi.getSourceVariable().getName() }
+
+    override File getFile() { result = input.getFile() }
+
+    override AstNode getAstNode() { none() }
+  }
+
+  /**
    * A node in the data flow graph which corresponds to a `@property`.
    */
   private class PropNode extends Node, TPropNode {
@@ -1743,7 +1763,18 @@ module DataFlow {
     // Flow through implicit SSA nodes
     exists(SsaImplicitDefinition ssa | succ = TSsaDefNode(ssa) |
       // from the inputs of phi and pi nodes into the node itself
+      not ssa instanceof SsaPhiNode and
       pred = TSsaDefNode(ssa.(SsaPseudoDefinition).getAnInput().getDefinition())
+    )
+    or
+    exists(SsaPhiNode phi, BasicBlock input, SsaVariable inputVar |
+      inputVar = phi.getInputFromBlock(input)
+    |
+      pred = TSsaDefNode(inputVar.getDefinition()) and
+      succ = TSsaPhiInputNode(phi, input)
+      or
+      pred = TSsaPhiInputNode(phi, input) and
+      succ = TSsaDefNode(phi)
     )
     or
     exists(Expr predExpr, Expr succExpr |
