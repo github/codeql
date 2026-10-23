@@ -1,0 +1,44 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.javalin.http", "Context", true, "basicAuthCredentials", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "body", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "bodyAsBytes", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "bodyAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "bodyInputStream", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "bodyStreamAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "cookie", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "cookieMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "header", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "headerMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "formParam", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "formParams", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "formParamMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "formParamAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "formParamsAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "pathParam", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "pathParamAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "pathParamMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryParam", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryParams", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryParamAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryParamsAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryParamMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryString", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "uploadedFile", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "uploadedFiles", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "uploadedFileMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "url", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "fullUrl", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "contentType", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "userAgent", "", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.javalin.http", "UploadedFile", True, "content", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.javalin.http", "UploadedFile", True, "contentType", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.javalin.http", "UploadedFile", True, "extension", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.javalin.http", "UploadedFile", True, "filename", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
