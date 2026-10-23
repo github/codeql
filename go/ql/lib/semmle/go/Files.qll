@@ -48,6 +48,16 @@ class Folder extends Container, Impl::Folder {
   Folder getASubFolder() { result = this.getAChildContainer() }
 }
 
+/**
+ * Holds if `file` contains at least one build constraint.
+ *
+ * This is evaluated bottom-up to avoid propagating bound-file demands through location predicates.
+ */
+pragma[nomagic]
+private predicate buildConstrainedFile(ExtractedOrExternalFile file) {
+  exists(BuildConstraintComment bc | file = bc.getFile())
+}
+
 /** A file, including files that have not been extracted but are referred to as locations for errors. */
 class ExtractedOrExternalFile extends Container, Impl::File, Documentable, ExprParent,
   GoModExprParent, DeclParent, ScopeNode
@@ -69,7 +79,7 @@ class ExtractedOrExternalFile extends Container, Impl::File, Documentable, ExprP
 
   /** Holds if this file contains at least one build constraint. */
   pragma[noinline]
-  predicate hasBuildConstraints() { exists(BuildConstraintComment bc | this = bc.getFile()) }
+  predicate hasBuildConstraints() { buildConstrainedFile(this) }
 
   /**
    * Holds if this file contains build constraints that ensure that it
