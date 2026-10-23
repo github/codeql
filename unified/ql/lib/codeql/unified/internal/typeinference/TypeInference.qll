@@ -340,10 +340,8 @@ module Input3 implements InputSig3 {
     result = M3::inferFieldAccessReceiverTypeContextualDefault(_, receiver, path)
   }
 
-  class Return extends Expr {
-    Return() { isReturnedExpr(_, this) }
-
-    Expr getExpr() { result = this }
+  class Return extends ReturnExpr {
+    Expr getExpr() { result = this.getValue() }
   }
 
   class Parameter extends VariableDeclarationImpl, TParameterExDeclaration {
