@@ -508,6 +508,32 @@ inferCertainType
 | blanket_impl.rs:299:44:299:44 | c |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
 | blanket_impl.rs:299:47:299:67 | "SELECT * FROM users" |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:299:47:299:67 | "SELECT * FROM users" | TRef | {EXTERNAL LOCATION} | str |
+| cfg.rs:1:22:7:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:2:9:2:12 | unix |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:2:16:2:25 | MacroExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:2:20:2:25 | CfgPredExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:3:9:3:15 | windows |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:3:19:3:45 | MacroExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:3:23:3:45 | CfgPredExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:4:9:4:14 | either |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:4:18:4:55 | MacroExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:4:22:4:55 | CfgPredExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:5:9:5:14 | always |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:5:18:5:28 | MacroExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:5:22:5:28 | CfgPredExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:6:9:6:13 | never |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:6:17:6:27 | MacroExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:6:21:6:27 | CfgPredExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:12:9:12:18 | MacroPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:12:13:12:18 | CfgPredPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:12:23:12:24 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:13:9:13:35 | MacroPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:13:13:13:35 | CfgPredPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:13:40:13:41 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:14:9:14:46 | MacroPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:14:13:14:46 | CfgPredPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:14:51:14:52 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:15:14:15:15 | TupleExpr |  | {EXTERNAL LOCATION} | () |
 | closure.rs:4:19:39:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | closure.rs:6:13:6:22 | my_closure |  | {EXTERNAL LOCATION} | dyn Fn |
 | closure.rs:6:13:6:22 | my_closure | dyn(Args) | {EXTERNAL LOCATION} | (T_2) |
@@ -6003,6 +6029,38 @@ inferType
 | blanket_impl.rs:299:44:299:44 | c |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
 | blanket_impl.rs:299:47:299:67 | "SELECT * FROM users" |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:299:47:299:67 | "SELECT * FROM users" | TRef | {EXTERNAL LOCATION} | str |
+| cfg.rs:1:22:7:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:2:9:2:12 | unix |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:2:16:2:25 | MacroExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:2:20:2:25 | CfgPredExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:3:9:3:15 | windows |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:3:19:3:45 | MacroExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:3:23:3:45 | CfgPredExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:4:9:4:14 | either |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:4:18:4:55 | MacroExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:4:22:4:55 | CfgPredExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:5:9:5:14 | always |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:5:18:5:28 | MacroExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:5:22:5:28 | CfgPredExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:6:9:6:13 | never |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:6:17:6:27 | MacroExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:6:21:6:27 | CfgPredExpr |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:9:19:17:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:10:9:10:13 | value |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:10:17:10:34 | ...::default(...) |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:11:5:16:5 | match value { ... } |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:11:11:11:15 | value |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:12:9:12:18 | MacroPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:12:13:12:18 | CfgPredPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:12:23:12:24 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:13:9:13:35 | MacroPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:13:13:13:35 | CfgPredPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:13:40:13:41 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:14:9:14:46 | MacroPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:14:13:14:46 | CfgPredPat |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:14:51:14:52 | TupleExpr |  | {EXTERNAL LOCATION} | () |
+| cfg.rs:15:9:15:9 | _ |  | {EXTERNAL LOCATION} | bool |
+| cfg.rs:15:14:15:15 | TupleExpr |  | {EXTERNAL LOCATION} | () |
 | closure.rs:4:19:39:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | closure.rs:6:13:6:22 | my_closure |  | {EXTERNAL LOCATION} | dyn Fn |
 | closure.rs:6:13:6:22 | my_closure | dyn(Args) | {EXTERNAL LOCATION} | (T_2) |

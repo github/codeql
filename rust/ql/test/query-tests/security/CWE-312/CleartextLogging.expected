@@ -231,9 +231,9 @@ models
 | 3 | Sink: <core::result::Result as log_err::LogErrResult>::log_expect; Argument[0]; log-injection |
 | 4 | Sink: <core::result::Result as log_err::LogErrResult>::log_expect; Argument[self].Field[core::result::Result::Err(0)]; log-injection |
 | 5 | Sink: <core::result::Result as log_err::LogErrResult>::log_unwrap; Argument[self].Field[core::result::Result::Err(0)]; log-injection |
-| 6 | Sink: <std::io::stdio::StderrLock as std::io::Write>::write; Argument[0]; log-injection |
-| 7 | Sink: <std::io::stdio::StdoutLock as std::io::Write>::write; Argument[0]; log-injection |
-| 8 | Sink: <std::io::stdio::StdoutLock as std::io::Write>::write_all; Argument[0]; log-injection |
+| 6 | Sink: <std::io::stdio::StderrLock as core::io::write::Write>::write; Argument[0]; log-injection |
+| 7 | Sink: <std::io::stdio::StdoutLock as core::io::write::Write>::write; Argument[0]; log-injection |
+| 8 | Sink: <std::io::stdio::StdoutLock as core::io::write::Write>::write_all; Argument[0]; log-injection |
 | 9 | Sink: core::panicking::assert_failed; Argument[3].Field[core::option::Option::Some(0)]; log-injection |
 | 10 | Sink: core::panicking::panic_fmt; Argument[0]; log-injection |
 | 11 | Sink: log::__private_api::log; Argument[1]; log-injection |

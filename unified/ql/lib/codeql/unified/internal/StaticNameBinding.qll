@@ -811,6 +811,22 @@ NameBinding getStaticBindingTargetFromRef(AstNode access) {
 }
 
 /**
+ * Gets the type being accessed by `access`, if any.
+ */
+Identifier getTypeFromRef(AstNode access) {
+  result = getStaticBindingTargetFromRef(access) and
+  (
+    result = any(ClassLikeDeclaration c).getNameNode()
+    or
+    result = any(TypeAliasDeclaration t).getNameNode()
+    or
+    result = any(TypeParameter t).getNameNode()
+    or
+    result = any(AssociatedTypeDeclaration t).getNameNode()
+  )
+}
+
+/**
  * Gets the name of the implicit receiver parameter in scope at `callable` (possibly declared by an outer callable).
  *
  * Note that we only propagate the name, not the LocalVariable, since capture-declarations and Swift's `guard let self` statements

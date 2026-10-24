@@ -41,6 +41,7 @@ supertypes:
     - bulk_importing_pattern
     - ignore_pattern
     - generic_type_expr
+    - modified_type_expr
     - inferred_type_expr
   # An element of an `unresolved_operator_sequence`: either an operand (`expr`)
   # or one of the infix operators separating the operands.
@@ -552,6 +553,12 @@ named:
   generic_type_expr:
     base: expr
     type_argument*: expr
+
+  # A type with a modifier. In Swift this can be specifiers or attributes, such
+  # as `inout T`, `sending T` or `@escaping () -> Void`.
+  modified_type_expr:
+    modifier*: modifier
+    type: expr
 
   # A modifier such as 'static', 'public', or 'async'. For now this is just a leaf node with a string value.
   modifier:

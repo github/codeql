@@ -11,8 +11,14 @@ private module Plugins {
 }
 
 class DataFlowPlugin extends Unit {
+  /**
+   * Holds if there is flow from `expr1` to `expr2` and the post-updated value of `expr2` (if any) should propagate back to
+   * the post-update for `expr1`.
+   */
+  predicate exprStep(Expr expr1, Expr expr2, boolean mustFlow) { none() }
+
   /** Holds if there is a language-specific step from `node1 -> step -> node2`. */
-  predicate step(Node node1, Step step, Node node2) { none() }
+  predicate step(BuilderNode node1, Step step, BuilderNode node2) { none() }
 
   /**
    * Holds if a read/store step with the given `contents` should be converted to a value step.
@@ -26,3 +32,11 @@ class DataFlowPlugin extends Unit {
  * Holds if a read/store step with the given `contents` should be converted to a value step.
  */
 predicate bypassContentSet(ContentSet contents) { any(DataFlowPlugin p).bypassContentSet(contents) }
+
+/**
+ * Holds if there is flow from `expr1` to `expr2` and the post-updated value of `expr2` (if any) should propagate back to
+ * the post-update for `expr1`.
+ */
+predicate exprStep(Expr expr1, Expr expr2, boolean mustFlow) {
+  any(DataFlowPlugin p).exprStep(expr1, expr2, mustFlow)
+}

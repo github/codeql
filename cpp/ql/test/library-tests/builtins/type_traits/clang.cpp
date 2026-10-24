@@ -122,10 +122,20 @@ bool b_is_scoped_enum2 = __is_scoped_enum(int);
 bool b_is_trivially_relocatable1 = __is_trivially_relocatable(int);
 bool b_is_trivially_relocatable2 = __is_trivially_relocatable(void);
 
-struct S3{
+struct S3 {
     S3(S3 &);
     S3& operator=(S3&);
 };
 
-bool bok_is_bitwise_cloneable1 = __is_bitwise_cloneable(int);
-bool bok_is_bitwise_cloneable2 = __is_bitwise_cloneable(S3);
+bool b_is_bitwise_cloneable1 = __is_bitwise_cloneable(int);
+bool b_is_bitwise_cloneable2 = __is_bitwise_cloneable(S3);
+
+struct S4 : virtual S3 {
+    ~S4() = delete;
+};
+
+bool b_is_virtual_base_of1 = __builtin_is_virtual_base_of(int, S4);
+bool b_is_virtual_base_of2 = __builtin_is_virtual_base_of(S3, S4);
+
+bool b_is_implicit_lifetime1 = __builtin_is_implicit_lifetime(int);
+bool b_is_implicit_lifetime2 = __builtin_is_implicit_lifetime(S4);

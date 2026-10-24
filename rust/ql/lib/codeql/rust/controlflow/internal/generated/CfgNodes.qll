@@ -776,6 +776,79 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasTypeRepr() { exists(this.getTypeRepr()) }
     }
 
+    final private class ParentCfgPredExpr extends ParentAstNode, CfgPredExpr {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     * A configuration predicate expression resulting from expansion of a `cfg!` macro call.
+     * It has type `bool` and evaluates to whether the configuration predicate holds.
+     *
+     * Rust-analyzer expands `cfg!(...)` in expression position to its internal `builtin#cfg(...)`
+     * syntax, as illustrated below:
+     * ```rust
+     * builtin#cfg(unix);
+     * builtin#cfg(target_os = "windows");
+     * builtin#cfg(any(unix, target_os = "windows"));
+     * ```
+     */
+    final class CfgPredExprCfgNode extends CfgNodeFinal, ExprCfgNode {
+      private CfgPredExpr node;
+
+      CfgPredExprCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `CfgPredExpr`. */
+      CfgPredExpr getCfgPredExpr() { result = node }
+
+      /**
+       * Gets the cfg predicate of this cfg pred expression, if it exists.
+       */
+      CfgPredicate getCfgPredicate() { result = node.getCfgPredicate() }
+
+      /**
+       * Holds if `getCfgPredicate()` exists.
+       */
+      predicate hasCfgPredicate() { exists(this.getCfgPredicate()) }
+    }
+
+    final private class ParentCfgPredPat extends ParentAstNode, CfgPredPat {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     * A configuration predicate pattern resulting from expansion of a `cfg!` macro call.
+     * It matches `true` when the configuration predicate holds and `false` otherwise.
+     *
+     * Rust-analyzer expands `cfg!(...)` in pattern position to its internal `builtin#cfg(...)`
+     * syntax, as illustrated below:
+     * ```rust
+     * match true {
+     *     builtin#cfg(unix) => (),
+     *     builtin#cfg(target_os = "windows") => (),
+     *     builtin#cfg(any(unix, target_os = "windows")) => (),
+     *     _ => (),
+     * };
+     * ```
+     */
+    final class CfgPredPatCfgNode extends CfgNodeFinal, PatCfgNode {
+      private CfgPredPat node;
+
+      CfgPredPatCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `CfgPredPat`. */
+      CfgPredPat getCfgPredPat() { result = node }
+
+      /**
+       * Gets the cfg predicate of this cfg pred pattern, if it exists.
+       */
+      CfgPredicate getCfgPredicate() { result = node.getCfgPredicate() }
+
+      /**
+       * Holds if `getCfgPredicate()` exists.
+       */
+      predicate hasCfgPredicate() { exists(this.getCfgPredicate()) }
+    }
+
     final private class ParentConstBlockPat extends ParentAstNode, ConstBlockPat {
       override predicate relevantChild(AstNode child) {
         none()

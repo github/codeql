@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: barrierGuardModel
+    data:
+      - ["github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/Guards", "", False, "modelBoolGuard", "", "", "Argument[0]", "true", "model-bool", "manual"]
+      - ["github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/Guards", "", False, "modelZeroGuard", "", "", "Argument[0]", "zero", "model-zero", "manual"]
+      - ["github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/Guards", "", False, "modelNotZeroGuard", "", "", "Argument[0]", "not-zero", "model-not-zero", "manual"]
+      - ["github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/Guards", "", False, "modelNullGuard", "", "", "Argument[0]", "null", "model-null", "manual"]
+      - ["github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/Guards", "", False, "modelNotNullGuard", "", "", "Argument[0]", "not-null", "model-not-null", "manual"]
+      - ["github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/Guards", "", False, "modelExceptionGuard", "", "", "Argument[0]", "no-exception", "model-no-exception", "manual"]

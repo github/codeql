@@ -1,9 +1,13 @@
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 
+mod ast;
+mod lower;
 mod parse;
+mod rule_parse;
+mod template_parse;
 
-/// Proc macro for constructing a `QueryNode` from a tree-sitter-inspired pattern.
+/// Proc macro for constructing a tree-sitter-inspired `yeast::query::QueryNode`.
 ///
 /// # Syntax
 ///
@@ -19,11 +23,24 @@ mod parse;
 /// (pattern) @capture           - capture the matched node
 /// "literal" @capture           - capture an unnamed token
 /// _ @capture                   - capture any node
-/// (pattern)* @capture          - capture each repeated match
-/// (pattern)?                   - zero or one
+/// (kind)* @capture             - capture each repeated named-node match
+/// "literal"* @capture          - capture each repeated unnamed-token match
+/// (kind)?                      - zero or one named node
 /// ```
 ///
 /// Named fields and bare child patterns may be intermixed in any order.
+///
+/// A parenthesized query whose first element is a node kind is always parsed as
+/// that node pattern. Otherwise, two or more sibling patterns form a sequence.
+/// A sequence may be repeated, but cannot itself be captured because it does
+/// not represent one node:
+///
+/// ```text
+/// ((identifier) @items (integer) @items)*  // valid: explicit node captures
+/// ((identifier) (integer))* @items         // invalid: sequence capture
+/// ("+" ",")*                               // valid: repeated token sequence
+/// (_ ",")*                                 // valid: repeated wildcard/token sequence
+/// ```
 #[proc_macro]
 pub fn query(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
@@ -48,6 +65,8 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// field: {expr}                - extend a named field with `{expr}`'s ids
 /// field: (kind ...)?           - set the field only if every `#{expr}`
 ///                                beneath it has a value (see below)
+/// location: {expr}             - override this node's source range with the
+///                                span of one or more nodes; may be repeated
 /// ```
 ///
 /// # Optional fields
@@ -103,38 +122,6 @@ pub fn tree(input: TokenStream) -> TokenStream {
 pub fn trees(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
     match parse::parse_trees_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
-/// Build one AST node whose root uses another node's source range.
-///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// tree_at!(source, (kind ...))
-/// ```
-#[proc_macro]
-pub fn tree_at(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_tree_at_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
-/// Build one AST node whose root spans a collection of nodes.
-///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// tree_spanning!(sources, (kind ...))
-/// ```
-#[proc_macro]
-pub fn tree_spanning(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_tree_spanning_top(input2) {
         Ok(output) => output.into(),
         Err(err) => err.to_compile_error().into(),
     }

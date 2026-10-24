@@ -13,6 +13,7 @@
  */
 
 import go
+private import semmle.go.controlflow.Guards
 
 /**
  * Holds if `pattern` is a regular expression pattern for URLs with a host matched by `hostPart`,
@@ -70,12 +71,12 @@ predicate regexpGuardsHandler(RegexpPattern regexp, Http::RequestHandler handler
 
 /** Holds if `regexp` guards an HTTP error write. */
 predicate regexpGuardsError(RegexpPattern regexp) {
-  exists(ControlFlow::ConditionGuardNode cond, RegexpMatchFunction match, DataFlow::CallNode call |
+  exists(Guard cond, RegexpMatchFunction match, DataFlow::CallNode call |
     call.getTarget() = match and
     match.getRegexp(call) = regexp
   |
-    cond.ensures(match.getResult().getNode(call).getASuccessor*(), true) and
-    cond.dominates(any(ReachableBasicBlock b | writesHttpError(b)))
+    cond = match.getResult().getNode(call).getASuccessor*().asExpr() and
+    cond.controls(any(ReachableBasicBlock b | writesHttpError(b)), true)
   )
 }
 

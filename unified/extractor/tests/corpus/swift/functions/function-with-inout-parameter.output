@@ -66,7 +66,10 @@ top_level source="⟨body⟩"
           parameter:
             parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
               external_name_node: identifier "_" source="_"
-              type: unsupported_node "inout Int" source="inout Int"
+              type:
+                modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                  modifier: modifier "inout" source="inout"
+                  type: identifier "Int" source="Int"
               pattern: identifier "x" source="x"
           body:
             block source="{\n  ⟨stmt⟩\n}"

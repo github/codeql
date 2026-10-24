@@ -152,7 +152,31 @@ queries, are not supported.
 (_)+                   // one or more
 (_)?                   // zero or one
 (identifier)* @names   // capture each repeated match
+"+"* @operators        // repeat and capture an unnamed token
 ```
+
+When a parenthesized query starts with a node-kind identifier, it is always
+parsed as that node pattern, and every remaining token must belong to that
+node's fields or children. Otherwise, two or more sibling patterns form a
+sequence. A sequence may be repeated, but it cannot itself be captured because
+the sequence does not correspond to one AST node:
+
+```rust
+((identifier) @items (integer) @items)*  // explicit flattened captures
+((identifier) (integer))* @items         // error: sequence capture
+```
+
+Literal- and wildcard-led sequences are valid and unambiguous because neither
+can introduce node fields:
+
+```rust
+("+" ",")*  // repeat a two-token sequence
+(_ ",")*    // repeat a wildcard followed by a comma
+```
+
+Single-pattern and empty query groups are rejected as redundant or meaningless.
+This does not affect the empty output template `()`, which intentionally means
+“emit no replacement nodes.”
 
 ## Template language
 
@@ -247,29 +271,9 @@ same broad range to every synthetic descendant. A transform that simply
 returns a translated capture does not widen that capture to the wrapper's
 range.
 
-The following macros can be used to explicitly set the location associated
-with a newly-created node. They assign a location only to the root of their
-template; nested nodes still derive their locations normally.
-
-`tree_at!` assigns the range of one captured input node to the template root:
-
-```rust
-rule!(
-    (wrapper
-        source: (_) @source_node
-        child: (_) @child)
-    =>
-    synthetic_node {
-        tree_at!(
-            source_node,
-            (synthetic_node child: (nested value: {child}))
-        )
-    }
-)
-```
-
-`tree_spanning!` assigns the smallest range containing several captured input
-nodes:
+The special `location` field overrides the location of the node on which it
+appears. Its value must be a Rust block and uses the same node-splicing rules
+as an ordinary field block, but is metadata and is not added to the output AST:
 
 ```rust
 rule!(
@@ -278,14 +282,23 @@ rule!(
         second: (_) @second
         child: (_) @child)
     =>
-    synthetic_node {
-        tree_spanning!(
-            [first, second],
-            (synthetic_node child: {child})
-        )
-    }
+    (synthetic_node
+        child: {child}
+        location: {[first, second]})
 )
 ```
+
+If a `location` value yields several nodes, their locations are combined into
+the smallest range containing all of them. Multiple `location` fields on the
+same node are combined in the same way. The field can also be used on literal
+leaf nodes:
+
+```rust
+(identifier "synthetic" location: {source_node})
+```
+
+The override applies only to the node carrying the `location` field; nested
+nodes still derive their locations normally.
 
 For input fields whose leading or trailing syntax should never belong to rule
 results, configure them once with

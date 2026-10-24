@@ -232,10 +232,9 @@ func t25() {
 }
 
 func t26() {
-    // TODO: This flow requires reverse-read through the "!" operator
     var opt = Optional.some(("x", "y"))
     opt!.0 = source("t26.1")
-    sink(opt!.0)  // $ MISSING: hasValueFlow=t26.1
+    sink(opt!.0)  // $ hasValueFlow=t26.1
 }
 
 func t27() {
@@ -255,4 +254,13 @@ func t28() {
     }
     sink(getOptional() ?? "default")  // $ hasValueFlow=t28.1
     sink("safe" ?? getOptional())  // $ hasValueFlow=t28.1
+}
+
+func t29() {
+    class Box {
+        var field: String = ""
+    }
+    let box = Box()
+    (box as! Box).field = source("t29.1")
+    sink(box.field)  // $ hasValueFlow=t29.1
 }

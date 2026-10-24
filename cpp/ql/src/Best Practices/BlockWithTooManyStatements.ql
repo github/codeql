@@ -5,9 +5,11 @@
  * @problem.severity recommendation
  * @precision high
  * @id cpp/complex-block
- * @tags testability
+ * @tags quality
+ *       testability
  *       readability
  *       maintainability
+ *       complexity
  */
 
 import cpp

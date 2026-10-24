@@ -32,15 +32,11 @@ predicate isInTypeContext(Expr expr) {
   or
   expr = any(GenericTypeExpr gte).getATypeArgument()
   or
+  expr = any(ModifiedTypeExpr m).getType()
+  or
   expr.getParent() instanceof TypeConstraint
   or
-  exists(Identifier id | id = NameBinding::getStaticBindingTargetFromRef(expr) |
-    id = any(ClassLikeDeclaration c).getNameNode()
-    or
-    id = any(TypeAliasDeclaration t).getNameNode()
-    or
-    id = any(TypeParameter t).getNameNode()
-  )
+  exists(NameBinding::getTypeFromRef(expr))
   or
   any(ExprPositionsPlugin p).isInTypeContext(expr)
   or
