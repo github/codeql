@@ -4,3 +4,7 @@ qltest_dependencies:
     - serde = { version = "1", features = ["derive"] }
     - serde_json = { version = "1" }
     - bincode = { version = "1" }
+    - rmp-serde = { version = "1" }
+    - ciborium = { version = "0.2" }
+    - serde_yaml = { version = "0.9" }
+    - toml = { version = "0.8" }

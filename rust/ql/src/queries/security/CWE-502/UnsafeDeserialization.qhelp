@@ -39,8 +39,7 @@ A safer approach validates the input size and uses strict deserialization settin
 </example>
 <references>
 
-<li>OWASP: <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/16-Testing_for_HTTP_Incoming_Requests">Deserialization of untrusted data</a>.</li>
-<li>CWE-502: <a href="https://cwe.mitre.org/data/definitions/502.html">Deserialization of Untrusted Data</a>.</li>
+<li>OWASP: <a href="https://community.owasp.org/vulnerabilities/Deserialization_of_untrusted_data">Deserialization of untrusted data</a>.</li>
 
 </references>
 </qhelp>
