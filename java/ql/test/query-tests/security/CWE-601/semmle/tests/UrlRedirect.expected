@@ -20,6 +20,57 @@
 | MicronautUrlRedirect.java:28:47:28:64 | create(...) | MicronautUrlRedirect.java:27:45:27:69 | target : String | MicronautUrlRedirect.java:28:47:28:64 | create(...) | Untrusted URL redirection depends on a $@. | MicronautUrlRedirect.java:27:45:27:69 | target | user-provided value |
 | MicronautUrlRedirect.java:33:38:33:55 | create(...) | MicronautUrlRedirect.java:32:44:32:68 | target : String | MicronautUrlRedirect.java:33:38:33:55 | create(...) | Untrusted URL redirection depends on a $@. | MicronautUrlRedirect.java:32:44:32:68 | target | user-provided value |
 | MicronautUrlRedirect.java:38:47:38:64 | create(...) | MicronautUrlRedirect.java:37:45:37:69 | target : String | MicronautUrlRedirect.java:38:47:38:64 | create(...) | Untrusted URL redirection depends on a $@. | MicronautUrlRedirect.java:37:45:37:69 | target | user-provided value |
+| SpringUrlRedirect.java:39:30:39:33 | next | SpringUrlRedirect.java:38:23:38:50 | getHeader(...) : String | SpringUrlRedirect.java:39:30:39:33 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:38:23:38:50 | getHeader(...) | user-provided value |
+| SpringUrlRedirect.java:45:47:45:50 | next | SpringUrlRedirect.java:44:23:44:50 | getHeader(...) : String | SpringUrlRedirect.java:45:47:45:50 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:44:23:44:50 | getHeader(...) | user-provided value |
+| SpringUrlRedirect.java:51:33:51:36 | next | SpringUrlRedirect.java:50:23:50:50 | getHeader(...) : String | SpringUrlRedirect.java:51:33:51:36 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:50:23:50:50 | getHeader(...) | user-provided value |
+| SpringUrlRedirect.java:57:16:57:29 | redirect(...) | SpringUrlRedirect.java:56:23:56:50 | getHeader(...) : String | SpringUrlRedirect.java:57:16:57:29 | redirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:56:23:56:50 | getHeader(...) | user-provided value |
+| SpringUrlRedirect.java:64:21:64:24 | next | SpringUrlRedirect.java:62:23:62:50 | getParameter(...) : String | SpringUrlRedirect.java:64:21:64:24 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:62:23:62:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:71:33:71:36 | next | SpringUrlRedirect.java:70:23:70:50 | getParameter(...) : String | SpringUrlRedirect.java:71:33:71:36 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:70:23:70:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:185:33:185:46 | redirect(...) | SpringUrlRedirect.java:184:23:184:50 | getParameter(...) : String | SpringUrlRedirect.java:185:33:185:46 | redirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:184:23:184:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:191:33:191:46 | redirect(...) | SpringUrlRedirect.java:190:23:190:50 | getParameter(...) : String | SpringUrlRedirect.java:191:33:191:46 | redirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:190:23:190:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:197:30:197:33 | next | SpringUrlRedirect.java:196:23:196:50 | getParameter(...) : String | SpringUrlRedirect.java:197:30:197:33 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:196:23:196:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:203:41:203:44 | next | SpringUrlRedirect.java:202:23:202:50 | getParameter(...) : String | SpringUrlRedirect.java:203:41:203:44 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:202:23:202:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:284:46:284:49 | next | SpringUrlRedirect.java:283:23:283:50 | getParameter(...) : String | SpringUrlRedirect.java:284:46:284:49 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:283:23:283:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:293:21:293:24 | next | SpringUrlRedirect.java:291:23:291:50 | getParameter(...) : String | SpringUrlRedirect.java:293:21:293:24 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:291:23:291:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:301:60:301:63 | next | SpringUrlRedirect.java:300:23:300:50 | getParameter(...) : String | SpringUrlRedirect.java:301:60:301:63 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:300:23:300:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:314:33:314:36 | next | SpringUrlRedirect.java:313:23:313:50 | getParameter(...) : String | SpringUrlRedirect.java:314:33:314:36 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:313:23:313:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:321:47:321:50 | next | SpringUrlRedirect.java:320:23:320:50 | getParameter(...) : String | SpringUrlRedirect.java:321:47:321:50 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:320:23:320:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:328:33:328:46 | redirect(...) | SpringUrlRedirect.java:327:23:327:50 | getParameter(...) : String | SpringUrlRedirect.java:328:33:328:46 | redirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:327:23:327:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:338:33:338:36 | next | SpringUrlRedirect.java:337:23:337:50 | getParameter(...) : String | SpringUrlRedirect.java:338:33:338:36 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:337:23:337:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:344:47:344:50 | next | SpringUrlRedirect.java:343:23:343:50 | getParameter(...) : String | SpringUrlRedirect.java:344:47:344:50 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:343:23:343:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:350:33:350:46 | redirect(...) | SpringUrlRedirect.java:349:23:349:50 | getParameter(...) : String | SpringUrlRedirect.java:350:33:350:46 | redirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:349:23:349:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:357:21:357:24 | next | SpringUrlRedirect.java:355:23:355:50 | getParameter(...) : String | SpringUrlRedirect.java:357:21:357:24 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:355:23:355:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:364:33:364:36 | next | SpringUrlRedirect.java:363:23:363:50 | getParameter(...) : String | SpringUrlRedirect.java:364:33:364:36 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:363:23:363:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:373:46:373:49 | next | SpringUrlRedirect.java:372:23:372:50 | getParameter(...) : String | SpringUrlRedirect.java:373:46:373:49 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:372:23:372:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:383:46:383:49 | next | SpringUrlRedirect.java:382:23:382:50 | getParameter(...) : String | SpringUrlRedirect.java:383:46:383:49 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:382:23:382:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:392:46:392:49 | next | SpringUrlRedirect.java:391:23:391:50 | getParameter(...) : String | SpringUrlRedirect.java:392:46:392:49 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:391:23:391:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:401:46:401:49 | next | SpringUrlRedirect.java:400:23:400:50 | getParameter(...) : String | SpringUrlRedirect.java:401:46:401:49 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:400:23:400:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:410:46:410:49 | next | SpringUrlRedirect.java:409:23:409:50 | getParameter(...) : String | SpringUrlRedirect.java:410:46:410:49 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:409:23:409:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:421:46:421:49 | next | SpringUrlRedirect.java:420:23:420:50 | getParameter(...) : String | SpringUrlRedirect.java:421:46:421:49 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:420:23:420:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:423:21:423:24 | next | SpringUrlRedirect.java:420:23:420:50 | getParameter(...) : String | SpringUrlRedirect.java:423:21:423:24 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:420:23:420:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:444:60:444:63 | next | SpringUrlRedirect.java:443:23:443:50 | getParameter(...) : String | SpringUrlRedirect.java:444:60:444:63 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:443:23:443:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:476:46:476:49 | next | SpringUrlRedirect.java:475:23:475:50 | getParameter(...) : String | SpringUrlRedirect.java:476:46:476:49 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:475:23:475:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:497:16:497:51 | branchingRedirect(...) | SpringUrlRedirect.java:496:23:496:50 | getParameter(...) : String | SpringUrlRedirect.java:497:16:497:51 | branchingRedirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:496:23:496:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:503:33:503:68 | branchingRedirect(...) | SpringUrlRedirect.java:502:23:502:50 | getParameter(...) : String | SpringUrlRedirect.java:503:33:503:68 | branchingRedirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:502:23:502:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:543:33:543:66 | internallySourcedRedirect(...) | SpringUrlRedirect.java:517:23:517:50 | getHeader(...) : String | SpringUrlRedirect.java:543:33:543:66 | internallySourcedRedirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:517:23:517:50 | getHeader(...) | user-provided value |
+| SpringUrlRedirect.java:549:33:549:61 | secondRedirect(...) | SpringUrlRedirect.java:548:23:548:50 | getParameter(...) : String | SpringUrlRedirect.java:549:33:549:61 | secondRedirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:548:23:548:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:561:48:561:51 | next | SpringUrlRedirect.java:560:23:560:50 | getParameter(...) : String | SpringUrlRedirect.java:561:48:561:51 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:560:23:560:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:577:46:577:49 | next | SpringUrlRedirect.java:576:23:576:50 | getParameter(...) : String | SpringUrlRedirect.java:577:46:577:49 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:576:23:576:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:597:33:597:76 | branchingFallbackRedirect(...) | SpringUrlRedirect.java:596:23:596:50 | getParameter(...) : String | SpringUrlRedirect.java:597:33:597:76 | branchingFallbackRedirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:596:23:596:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:613:33:613:36 | next | SpringUrlRedirect.java:612:23:612:50 | getParameter(...) : String | SpringUrlRedirect.java:613:33:613:36 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:612:23:612:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:620:47:620:50 | next | SpringUrlRedirect.java:619:23:619:50 | getParameter(...) : String | SpringUrlRedirect.java:620:47:620:50 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:619:23:619:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:629:88:629:104 | redirect(...) | SpringUrlRedirect.java:628:26:628:53 | getHeader(...) : String | SpringUrlRedirect.java:629:88:629:104 | redirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:628:26:628:53 | getHeader(...) | user-provided value |
+| SpringUrlRedirect.java:635:44:635:47 | next | SpringUrlRedirect.java:634:23:634:50 | getParameter(...) : String | SpringUrlRedirect.java:635:44:635:47 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:634:23:634:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:643:34:643:37 | next | SpringUrlRedirect.java:640:23:640:50 | getParameter(...) : String | SpringUrlRedirect.java:643:34:643:37 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:640:23:640:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:655:20:655:33 | redirect(...) | SpringUrlRedirect.java:652:23:652:50 | getParameter(...) : String | SpringUrlRedirect.java:655:20:655:33 | redirect(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:652:23:652:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:666:25:666:28 | next | SpringUrlRedirect.java:664:23:664:50 | getParameter(...) : String | SpringUrlRedirect.java:666:25:666:28 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:664:23:664:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:677:33:677:55 | localPrefixHelper(...) | SpringUrlRedirect.java:676:23:676:50 | getParameter(...) : String | SpringUrlRedirect.java:677:33:677:55 | localPrefixHelper(...) | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:676:23:676:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:684:25:684:28 | next | SpringUrlRedirect.java:682:23:682:50 | getParameter(...) : String | SpringUrlRedirect.java:684:25:684:28 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:682:23:682:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:727:38:727:41 | next | SpringUrlRedirect.java:725:23:725:50 | getParameter(...) : String | SpringUrlRedirect.java:727:38:727:41 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:725:23:725:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:734:39:734:42 | host | SpringUrlRedirect.java:732:23:732:50 | getParameter(...) : String | SpringUrlRedirect.java:734:39:734:42 | host | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:732:23:732:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:743:50:743:53 | next | SpringUrlRedirect.java:742:23:742:50 | getParameter(...) : String | SpringUrlRedirect.java:743:50:743:53 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:742:23:742:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:750:21:750:24 | next | SpringUrlRedirect.java:748:23:748:50 | getParameter(...) : String | SpringUrlRedirect.java:750:21:750:24 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:748:23:748:50 | getParameter(...) | user-provided value |
+| SpringUrlRedirect.java:757:46:757:49 | next | SpringUrlRedirect.java:756:23:756:50 | getParameter(...) : String | SpringUrlRedirect.java:757:46:757:49 | next | Untrusted URL redirection depends on a $@. | SpringUrlRedirect.java:756:23:756:50 | getParameter(...) | user-provided value |
 | UrlRedirect2.java:27:25:27:54 | getParameter(...) | UrlRedirect2.java:27:25:27:54 | getParameter(...) | UrlRedirect2.java:27:25:27:54 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect2.java:27:25:27:54 | getParameter(...) | user-provided value |
 | UrlRedirect.java:23:25:23:54 | getParameter(...) | UrlRedirect.java:23:25:23:54 | getParameter(...) | UrlRedirect.java:23:25:23:54 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:23:25:23:54 | getParameter(...) | user-provided value |
 | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:32:37:32:66 | getParameter(...) | user-provided value |
@@ -28,69 +79,153 @@
 | mad/Test.java:14:22:14:38 | (...)... | mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:22:14:38 | (...)... | Untrusted URL redirection depends on a $@. | mad/Test.java:9:16:9:41 | getParameter(...) | user-provided value |
 edges
 | HostComparisonRedirect.java:8:19:8:54 | new URI(...) : URI | HostComparisonRedirect.java:9:31:9:33 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:8:27:8:53 | getParameter(...) : String | HostComparisonRedirect.java:8:19:8:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:9:31:9:33 | uri : URI | HostComparisonRedirect.java:9:31:9:44 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:8:27:8:53 | getParameter(...) : String | HostComparisonRedirect.java:8:19:8:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:9:31:9:33 | uri : URI | HostComparisonRedirect.java:9:31:9:44 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:50:19:50:54 | new URI(...) : URI | HostComparisonRedirect.java:52:35:52:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:50:27:50:53 | getParameter(...) : String | HostComparisonRedirect.java:50:19:50:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:52:35:52:37 | uri : URI | HostComparisonRedirect.java:52:35:52:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:50:27:50:53 | getParameter(...) : String | HostComparisonRedirect.java:50:19:50:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:52:35:52:37 | uri : URI | HostComparisonRedirect.java:52:35:52:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:57:19:57:54 | new URI(...) : URI | HostComparisonRedirect.java:59:35:59:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:57:27:57:53 | getParameter(...) : String | HostComparisonRedirect.java:57:19:57:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:59:35:59:37 | uri : URI | HostComparisonRedirect.java:59:35:59:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:57:27:57:53 | getParameter(...) : String | HostComparisonRedirect.java:57:19:57:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:59:35:59:37 | uri : URI | HostComparisonRedirect.java:59:35:59:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:68:19:68:54 | new URI(...) : URI | HostComparisonRedirect.java:70:35:70:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:68:27:68:53 | getParameter(...) : String | HostComparisonRedirect.java:68:19:68:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:70:35:70:37 | uri : URI | HostComparisonRedirect.java:70:35:70:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:68:27:68:53 | getParameter(...) : String | HostComparisonRedirect.java:68:19:68:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:70:35:70:37 | uri : URI | HostComparisonRedirect.java:70:35:70:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:84:19:84:54 | new URI(...) : URI | HostComparisonRedirect.java:86:35:86:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:84:27:84:53 | getParameter(...) : String | HostComparisonRedirect.java:84:19:84:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:86:35:86:37 | uri : URI | HostComparisonRedirect.java:86:35:86:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:84:27:84:53 | getParameter(...) : String | HostComparisonRedirect.java:84:19:84:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:86:35:86:37 | uri : URI | HostComparisonRedirect.java:86:35:86:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:92:20:92:55 | new URI(...) : URI | HostComparisonRedirect.java:94:35:94:38 | used : URI | provenance |  |
-| HostComparisonRedirect.java:92:28:92:54 | getParameter(...) : String | HostComparisonRedirect.java:92:20:92:55 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:94:35:94:38 | used : URI | HostComparisonRedirect.java:94:35:94:49 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:92:28:92:54 | getParameter(...) : String | HostComparisonRedirect.java:92:20:92:55 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:94:35:94:38 | used : URI | HostComparisonRedirect.java:94:35:94:49 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:103:19:103:54 | new URI(...) : URI | HostComparisonRedirect.java:105:35:105:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:103:27:103:53 | getParameter(...) : String | HostComparisonRedirect.java:103:19:103:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:105:35:105:37 | uri : URI | HostComparisonRedirect.java:105:35:105:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:103:27:103:53 | getParameter(...) : String | HostComparisonRedirect.java:103:19:103:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:105:35:105:37 | uri : URI | HostComparisonRedirect.java:105:35:105:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:111:20:111:55 | new URI(...) : URI | HostComparisonRedirect.java:113:35:113:38 | used : URI | provenance |  |
-| HostComparisonRedirect.java:111:28:111:54 | getParameter(...) : String | HostComparisonRedirect.java:111:20:111:55 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:113:35:113:38 | used : URI | HostComparisonRedirect.java:113:35:113:49 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:111:28:111:54 | getParameter(...) : String | HostComparisonRedirect.java:111:20:111:55 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:113:35:113:38 | used : URI | HostComparisonRedirect.java:113:35:113:49 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:118:19:118:54 | new URI(...) : URI | HostComparisonRedirect.java:122:35:122:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:118:27:118:53 | getParameter(...) : String | HostComparisonRedirect.java:118:19:118:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:122:35:122:37 | uri : URI | HostComparisonRedirect.java:122:35:122:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:118:27:118:53 | getParameter(...) : String | HostComparisonRedirect.java:118:19:118:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:122:35:122:37 | uri : URI | HostComparisonRedirect.java:122:35:122:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:127:19:127:54 | new URI(...) : URI | HostComparisonRedirect.java:133:35:133:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:127:27:127:53 | getParameter(...) : String | HostComparisonRedirect.java:127:19:127:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:133:35:133:37 | uri : URI | HostComparisonRedirect.java:133:35:133:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:127:27:127:53 | getParameter(...) : String | HostComparisonRedirect.java:127:19:127:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:133:35:133:37 | uri : URI | HostComparisonRedirect.java:133:35:133:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:140:15:140:50 | new URI(...) : URI | HostComparisonRedirect.java:142:35:142:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:140:23:140:49 | getParameter(...) : String | HostComparisonRedirect.java:140:15:140:50 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:142:35:142:37 | uri : URI | HostComparisonRedirect.java:142:35:142:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:140:23:140:49 | getParameter(...) : String | HostComparisonRedirect.java:140:15:140:50 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:142:35:142:37 | uri : URI | HostComparisonRedirect.java:142:35:142:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:147:19:147:54 | new URI(...) : URI | HostComparisonRedirect.java:149:35:149:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:147:27:147:53 | getParameter(...) : String | HostComparisonRedirect.java:147:19:147:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:149:35:149:37 | uri : URI | HostComparisonRedirect.java:149:35:149:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:147:27:147:53 | getParameter(...) : String | HostComparisonRedirect.java:147:19:147:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:149:35:149:37 | uri : URI | HostComparisonRedirect.java:149:35:149:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:154:19:154:54 | new URI(...) : URI | HostComparisonRedirect.java:156:35:156:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:154:27:154:53 | getParameter(...) : String | HostComparisonRedirect.java:154:19:154:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:156:35:156:37 | uri : URI | HostComparisonRedirect.java:156:35:156:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:154:27:154:53 | getParameter(...) : String | HostComparisonRedirect.java:154:19:154:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:156:35:156:37 | uri : URI | HostComparisonRedirect.java:156:35:156:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:177:19:177:54 | new URI(...) : URI | HostComparisonRedirect.java:184:39:184:41 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:177:27:177:53 | getParameter(...) : String | HostComparisonRedirect.java:177:19:177:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:184:39:184:41 | uri : URI | HostComparisonRedirect.java:184:39:184:52 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:177:27:177:53 | getParameter(...) : String | HostComparisonRedirect.java:177:19:177:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:184:39:184:41 | uri : URI | HostComparisonRedirect.java:184:39:184:52 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:207:19:207:54 | new URI(...) : URI | HostComparisonRedirect.java:210:35:210:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:207:27:207:53 | getParameter(...) : String | HostComparisonRedirect.java:207:19:207:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:210:35:210:37 | uri : URI | HostComparisonRedirect.java:210:35:210:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:207:27:207:53 | getParameter(...) : String | HostComparisonRedirect.java:207:19:207:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:210:35:210:37 | uri : URI | HostComparisonRedirect.java:210:35:210:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:232:19:232:54 | new URI(...) : URI | HostComparisonRedirect.java:236:35:236:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:232:27:232:53 | getParameter(...) : String | HostComparisonRedirect.java:232:19:232:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:236:35:236:37 | uri : URI | HostComparisonRedirect.java:236:35:236:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:232:27:232:53 | getParameter(...) : String | HostComparisonRedirect.java:232:19:232:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:236:35:236:37 | uri : URI | HostComparisonRedirect.java:236:35:236:48 | toString(...) | provenance | MaD:12 |
 | HostComparisonRedirect.java:241:19:241:54 | new URI(...) : URI | HostComparisonRedirect.java:245:35:245:37 | uri : URI | provenance |  |
-| HostComparisonRedirect.java:241:27:241:53 | getParameter(...) : String | HostComparisonRedirect.java:241:19:241:54 | new URI(...) : URI | provenance | Src:MaD:6 MaD:8 |
-| HostComparisonRedirect.java:245:35:245:37 | uri : URI | HostComparisonRedirect.java:245:35:245:48 | toString(...) | provenance | MaD:10 |
+| HostComparisonRedirect.java:241:27:241:53 | getParameter(...) : String | HostComparisonRedirect.java:241:19:241:54 | new URI(...) : URI | provenance | Src:MaD:8 MaD:10 |
+| HostComparisonRedirect.java:245:35:245:37 | uri : URI | HostComparisonRedirect.java:245:35:245:48 | toString(...) | provenance | MaD:12 |
 | MicronautUrlRedirect.java:12:39:12:63 | target : String | MicronautUrlRedirect.java:14:49:14:54 | target : String | provenance |  |
-| MicronautUrlRedirect.java:14:49:14:54 | target : String | MicronautUrlRedirect.java:14:38:14:55 | create(...) | provenance | MaD:9 Sink:MaD:2 |
+| MicronautUrlRedirect.java:14:49:14:54 | target : String | MicronautUrlRedirect.java:14:38:14:55 | create(...) | provenance | MaD:11 Sink:MaD:2 |
 | MicronautUrlRedirect.java:27:45:27:69 | target : String | MicronautUrlRedirect.java:28:58:28:63 | target : String | provenance |  |
-| MicronautUrlRedirect.java:28:58:28:63 | target : String | MicronautUrlRedirect.java:28:47:28:64 | create(...) | provenance | MaD:9 Sink:MaD:1 |
+| MicronautUrlRedirect.java:28:58:28:63 | target : String | MicronautUrlRedirect.java:28:47:28:64 | create(...) | provenance | MaD:11 Sink:MaD:1 |
 | MicronautUrlRedirect.java:32:44:32:68 | target : String | MicronautUrlRedirect.java:33:49:33:54 | target : String | provenance |  |
-| MicronautUrlRedirect.java:33:49:33:54 | target : String | MicronautUrlRedirect.java:33:38:33:55 | create(...) | provenance | MaD:9 Sink:MaD:3 |
+| MicronautUrlRedirect.java:33:49:33:54 | target : String | MicronautUrlRedirect.java:33:38:33:55 | create(...) | provenance | MaD:11 Sink:MaD:3 |
 | MicronautUrlRedirect.java:37:45:37:69 | target : String | MicronautUrlRedirect.java:38:58:38:63 | target : String | provenance |  |
-| MicronautUrlRedirect.java:38:58:38:63 | target : String | MicronautUrlRedirect.java:38:47:38:64 | create(...) | provenance | MaD:9 Sink:MaD:4 |
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance | Src:MaD:6 MaD:7 |
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance | Src:MaD:6  |
+| MicronautUrlRedirect.java:38:58:38:63 | target : String | MicronautUrlRedirect.java:38:47:38:64 | create(...) | provenance | MaD:11 Sink:MaD:4 |
+| SpringUrlRedirect.java:12:31:12:41 | path : String | SpringUrlRedirect.java:13:16:13:33 | ... + ... : String | provenance |  |
+| SpringUrlRedirect.java:38:23:38:50 | getHeader(...) : String | SpringUrlRedirect.java:39:30:39:33 | next | provenance | Src:MaD:7  |
+| SpringUrlRedirect.java:44:23:44:50 | getHeader(...) : String | SpringUrlRedirect.java:45:47:45:50 | next | provenance | Src:MaD:7  |
+| SpringUrlRedirect.java:50:23:50:50 | getHeader(...) : String | SpringUrlRedirect.java:51:33:51:36 | next | provenance | Src:MaD:7  |
+| SpringUrlRedirect.java:56:23:56:50 | getHeader(...) : String | SpringUrlRedirect.java:57:25:57:28 | next : String | provenance | Src:MaD:7  |
+| SpringUrlRedirect.java:57:25:57:28 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | provenance |  |
+| SpringUrlRedirect.java:57:25:57:28 | next : String | SpringUrlRedirect.java:57:16:57:29 | redirect(...) | provenance |  |
+| SpringUrlRedirect.java:62:23:62:50 | getParameter(...) : String | SpringUrlRedirect.java:64:21:64:24 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:70:23:70:50 | getParameter(...) : String | SpringUrlRedirect.java:71:33:71:36 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:184:23:184:50 | getParameter(...) : String | SpringUrlRedirect.java:185:42:185:45 | next : String | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:185:42:185:45 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | provenance |  |
+| SpringUrlRedirect.java:185:42:185:45 | next : String | SpringUrlRedirect.java:185:33:185:46 | redirect(...) | provenance | Sink:MaD:6 |
+| SpringUrlRedirect.java:190:23:190:50 | getParameter(...) : String | SpringUrlRedirect.java:191:42:191:45 | next : String | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:191:42:191:45 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | provenance |  |
+| SpringUrlRedirect.java:191:42:191:45 | next : String | SpringUrlRedirect.java:191:33:191:46 | redirect(...) | provenance | Sink:MaD:6 |
+| SpringUrlRedirect.java:196:23:196:50 | getParameter(...) : String | SpringUrlRedirect.java:197:30:197:33 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:202:23:202:50 | getParameter(...) : String | SpringUrlRedirect.java:203:41:203:44 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:283:23:283:50 | getParameter(...) : String | SpringUrlRedirect.java:284:46:284:49 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:291:23:291:50 | getParameter(...) : String | SpringUrlRedirect.java:293:21:293:24 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:300:23:300:50 | getParameter(...) : String | SpringUrlRedirect.java:301:60:301:63 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:313:23:313:50 | getParameter(...) : String | SpringUrlRedirect.java:314:33:314:36 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:320:23:320:50 | getParameter(...) : String | SpringUrlRedirect.java:321:47:321:50 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:327:23:327:50 | getParameter(...) : String | SpringUrlRedirect.java:328:42:328:45 | next : String | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:328:42:328:45 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | provenance |  |
+| SpringUrlRedirect.java:328:42:328:45 | next : String | SpringUrlRedirect.java:328:33:328:46 | redirect(...) | provenance | Sink:MaD:6 |
+| SpringUrlRedirect.java:337:23:337:50 | getParameter(...) : String | SpringUrlRedirect.java:338:33:338:36 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:343:23:343:50 | getParameter(...) : String | SpringUrlRedirect.java:344:47:344:50 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:349:23:349:50 | getParameter(...) : String | SpringUrlRedirect.java:350:42:350:45 | next : String | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:350:42:350:45 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | provenance |  |
+| SpringUrlRedirect.java:350:42:350:45 | next : String | SpringUrlRedirect.java:350:33:350:46 | redirect(...) | provenance | Sink:MaD:6 |
+| SpringUrlRedirect.java:355:23:355:50 | getParameter(...) : String | SpringUrlRedirect.java:357:21:357:24 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:363:23:363:50 | getParameter(...) : String | SpringUrlRedirect.java:364:33:364:36 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:372:23:372:50 | getParameter(...) : String | SpringUrlRedirect.java:373:46:373:49 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:382:23:382:50 | getParameter(...) : String | SpringUrlRedirect.java:383:46:383:49 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:391:23:391:50 | getParameter(...) : String | SpringUrlRedirect.java:392:46:392:49 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:400:23:400:50 | getParameter(...) : String | SpringUrlRedirect.java:401:46:401:49 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:409:23:409:50 | getParameter(...) : String | SpringUrlRedirect.java:410:46:410:49 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:420:23:420:50 | getParameter(...) : String | SpringUrlRedirect.java:421:46:421:49 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:420:23:420:50 | getParameter(...) : String | SpringUrlRedirect.java:423:21:423:24 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:443:23:443:50 | getParameter(...) : String | SpringUrlRedirect.java:444:60:444:63 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:457:40:457:50 | path : String | SpringUrlRedirect.java:461:16:461:33 | ... + ... : String | provenance |  |
+| SpringUrlRedirect.java:475:23:475:50 | getParameter(...) : String | SpringUrlRedirect.java:476:46:476:49 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:496:23:496:50 | getParameter(...) : String | SpringUrlRedirect.java:497:34:497:37 | next : String | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:497:34:497:37 | next : String | SpringUrlRedirect.java:457:40:457:50 | path : String | provenance |  |
+| SpringUrlRedirect.java:497:34:497:37 | next : String | SpringUrlRedirect.java:497:16:497:51 | branchingRedirect(...) | provenance |  |
+| SpringUrlRedirect.java:502:23:502:50 | getParameter(...) : String | SpringUrlRedirect.java:503:51:503:54 | next : String | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:503:51:503:54 | next : String | SpringUrlRedirect.java:457:40:457:50 | path : String | provenance |  |
+| SpringUrlRedirect.java:503:51:503:54 | next : String | SpringUrlRedirect.java:503:33:503:68 | branchingRedirect(...) | provenance | Sink:MaD:6 |
+| SpringUrlRedirect.java:517:23:517:50 | getHeader(...) : String | SpringUrlRedirect.java:518:16:518:33 | ... + ... : String | provenance | Src:MaD:7  |
+| SpringUrlRedirect.java:518:16:518:33 | ... + ... : String | SpringUrlRedirect.java:543:33:543:66 | internallySourcedRedirect(...) | provenance | Sink:MaD:6 |
+| SpringUrlRedirect.java:521:37:521:51 | paths : String[] [[]] : String | SpringUrlRedirect.java:522:30:522:34 | paths : String[] [[]] : String | provenance |  |
+| SpringUrlRedirect.java:522:30:522:34 | paths : String[] [[]] : String | SpringUrlRedirect.java:522:30:522:37 | ...[...] : String | provenance |  |
+| SpringUrlRedirect.java:522:30:522:37 | ...[...] : String | SpringUrlRedirect.java:522:16:522:37 | ... + ... : String | provenance |  |
+| SpringUrlRedirect.java:548:23:548:50 | getParameter(...) : String | SpringUrlRedirect.java:549:57:549:60 | next : String | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:549:33:549:61 | new ..[] { .. } : String[] [[]] : String | SpringUrlRedirect.java:521:37:521:51 | paths : String[] [[]] : String | provenance |  |
+| SpringUrlRedirect.java:549:33:549:61 | new ..[] { .. } : String[] [[]] : String | SpringUrlRedirect.java:549:33:549:61 | secondRedirect(...) | provenance | Sink:MaD:6 |
+| SpringUrlRedirect.java:549:57:549:60 | next : String | SpringUrlRedirect.java:549:33:549:61 | new ..[] { .. } : String[] [[]] : String | provenance |  |
+| SpringUrlRedirect.java:560:23:560:50 | getParameter(...) : String | SpringUrlRedirect.java:561:48:561:51 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:576:23:576:50 | getParameter(...) : String | SpringUrlRedirect.java:577:46:577:49 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:587:48:587:58 | path : String | SpringUrlRedirect.java:589:20:589:37 | ... + ... : String | provenance |  |
+| SpringUrlRedirect.java:596:23:596:50 | getParameter(...) : String | SpringUrlRedirect.java:597:59:597:62 | next : String | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:597:59:597:62 | next : String | SpringUrlRedirect.java:587:48:587:58 | path : String | provenance |  |
+| SpringUrlRedirect.java:597:59:597:62 | next : String | SpringUrlRedirect.java:597:33:597:76 | branchingFallbackRedirect(...) | provenance | Sink:MaD:6 |
+| SpringUrlRedirect.java:612:23:612:50 | getParameter(...) : String | SpringUrlRedirect.java:613:33:613:36 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:619:23:619:50 | getParameter(...) : String | SpringUrlRedirect.java:620:47:620:50 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:628:26:628:53 | getHeader(...) : String | SpringUrlRedirect.java:629:97:629:103 | referer : String | provenance | Src:MaD:7  |
+| SpringUrlRedirect.java:629:97:629:103 | referer : String | SpringUrlRedirect.java:12:31:12:41 | path : String | provenance |  |
+| SpringUrlRedirect.java:629:97:629:103 | referer : String | SpringUrlRedirect.java:629:88:629:104 | redirect(...) | provenance |  |
+| SpringUrlRedirect.java:634:23:634:50 | getParameter(...) : String | SpringUrlRedirect.java:635:44:635:47 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:640:23:640:50 | getParameter(...) : String | SpringUrlRedirect.java:643:34:643:37 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:652:23:652:50 | getParameter(...) : String | SpringUrlRedirect.java:655:29:655:32 | next : String | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:655:29:655:32 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | provenance |  |
+| SpringUrlRedirect.java:655:29:655:32 | next : String | SpringUrlRedirect.java:655:20:655:33 | redirect(...) | provenance |  |
+| SpringUrlRedirect.java:664:23:664:50 | getParameter(...) : String | SpringUrlRedirect.java:666:25:666:28 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:669:40:669:50 | next : String | SpringUrlRedirect.java:671:16:671:28 | ... + ... : String | provenance |  |
+| SpringUrlRedirect.java:676:23:676:50 | getParameter(...) : String | SpringUrlRedirect.java:677:51:677:54 | next : String | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:677:51:677:54 | next : String | SpringUrlRedirect.java:669:40:669:50 | next : String | provenance |  |
+| SpringUrlRedirect.java:677:51:677:54 | next : String | SpringUrlRedirect.java:677:33:677:55 | localPrefixHelper(...) | provenance | Sink:MaD:6 |
+| SpringUrlRedirect.java:682:23:682:50 | getParameter(...) : String | SpringUrlRedirect.java:684:25:684:28 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:725:23:725:50 | getParameter(...) : String | SpringUrlRedirect.java:727:38:727:41 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:732:23:732:50 | getParameter(...) : String | SpringUrlRedirect.java:734:39:734:42 | host | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:742:23:742:50 | getParameter(...) : String | SpringUrlRedirect.java:743:50:743:53 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:748:23:748:50 | getParameter(...) : String | SpringUrlRedirect.java:750:21:750:24 | next | provenance | Src:MaD:8  |
+| SpringUrlRedirect.java:756:23:756:50 | getParameter(...) : String | SpringUrlRedirect.java:757:46:757:49 | next | provenance | Src:MaD:8  |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance | Src:MaD:8 MaD:9 |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance | Src:MaD:8  |
 | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:14 | input : String | provenance |  |
-| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance | MaD:7 |
-| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance | Src:MaD:6  |
+| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance | MaD:9 |
+| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance | Src:MaD:8  |
 | mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance | Sink:MaD:5 |
 models
 | 1 | Sink: io.micronaut.http; HttpResponse; true; permanentRedirect; (URI); ; Argument[0]; url-redirection; manual |
@@ -98,11 +233,13 @@ models
 | 3 | Sink: io.micronaut.http; HttpResponse; true; seeOther; (URI); ; Argument[0]; url-redirection; manual |
 | 4 | Sink: io.micronaut.http; HttpResponse; true; temporaryRedirect; (URI); ; Argument[0]; url-redirection; manual |
 | 5 | Sink: org.kohsuke.stapler; HttpResponses; true; redirectTo; (String); ; Argument[0]; url-redirection; ai-manual |
-| 6 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
-| 7 | Summary: java.lang; String; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
-| 8 | Summary: java.net; URI; false; URI; (String); ; Argument[0]; Argument[this]; taint; manual |
-| 9 | Summary: java.net; URI; false; create; ; ; Argument[0]; ReturnValue; taint; manual |
-| 10 | Summary: java.net; URI; false; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Sink: org.springframework.web.servlet; ModelAndView; false; ModelAndView; ; ; Argument[0]; url-forward; manual |
+| 7 | Source: javax.servlet.http; HttpServletRequest; false; getHeader; (String); ; ReturnValue; remote; manual |
+| 8 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 9 | Summary: java.lang; String; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: java.net; URI; false; URI; (String); ; Argument[0]; Argument[this]; taint; manual |
+| 11 | Summary: java.net; URI; false; create; ; ; Argument[0]; ReturnValue; taint; manual |
+| 12 | Summary: java.net; URI; false; toString; ; ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | HostComparisonRedirect.java:8:19:8:54 | new URI(...) : URI | semmle.label | new URI(...) : URI |
 | HostComparisonRedirect.java:8:27:8:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -184,6 +321,133 @@ nodes
 | MicronautUrlRedirect.java:37:45:37:69 | target : String | semmle.label | target : String |
 | MicronautUrlRedirect.java:38:47:38:64 | create(...) | semmle.label | create(...) |
 | MicronautUrlRedirect.java:38:58:38:63 | target : String | semmle.label | target : String |
+| SpringUrlRedirect.java:12:31:12:41 | path : String | semmle.label | path : String |
+| SpringUrlRedirect.java:13:16:13:33 | ... + ... : String | semmle.label | ... + ... : String |
+| SpringUrlRedirect.java:38:23:38:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| SpringUrlRedirect.java:39:30:39:33 | next | semmle.label | next |
+| SpringUrlRedirect.java:44:23:44:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| SpringUrlRedirect.java:45:47:45:50 | next | semmle.label | next |
+| SpringUrlRedirect.java:50:23:50:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| SpringUrlRedirect.java:51:33:51:36 | next | semmle.label | next |
+| SpringUrlRedirect.java:56:23:56:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| SpringUrlRedirect.java:57:16:57:29 | redirect(...) | semmle.label | redirect(...) |
+| SpringUrlRedirect.java:57:25:57:28 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:62:23:62:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:64:21:64:24 | next | semmle.label | next |
+| SpringUrlRedirect.java:70:23:70:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:71:33:71:36 | next | semmle.label | next |
+| SpringUrlRedirect.java:184:23:184:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:185:33:185:46 | redirect(...) | semmle.label | redirect(...) |
+| SpringUrlRedirect.java:185:42:185:45 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:190:23:190:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:191:33:191:46 | redirect(...) | semmle.label | redirect(...) |
+| SpringUrlRedirect.java:191:42:191:45 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:196:23:196:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:197:30:197:33 | next | semmle.label | next |
+| SpringUrlRedirect.java:202:23:202:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:203:41:203:44 | next | semmle.label | next |
+| SpringUrlRedirect.java:283:23:283:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:284:46:284:49 | next | semmle.label | next |
+| SpringUrlRedirect.java:291:23:291:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:293:21:293:24 | next | semmle.label | next |
+| SpringUrlRedirect.java:300:23:300:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:301:60:301:63 | next | semmle.label | next |
+| SpringUrlRedirect.java:313:23:313:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:314:33:314:36 | next | semmle.label | next |
+| SpringUrlRedirect.java:320:23:320:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:321:47:321:50 | next | semmle.label | next |
+| SpringUrlRedirect.java:327:23:327:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:328:33:328:46 | redirect(...) | semmle.label | redirect(...) |
+| SpringUrlRedirect.java:328:42:328:45 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:337:23:337:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:338:33:338:36 | next | semmle.label | next |
+| SpringUrlRedirect.java:343:23:343:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:344:47:344:50 | next | semmle.label | next |
+| SpringUrlRedirect.java:349:23:349:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:350:33:350:46 | redirect(...) | semmle.label | redirect(...) |
+| SpringUrlRedirect.java:350:42:350:45 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:355:23:355:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:357:21:357:24 | next | semmle.label | next |
+| SpringUrlRedirect.java:363:23:363:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:364:33:364:36 | next | semmle.label | next |
+| SpringUrlRedirect.java:372:23:372:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:373:46:373:49 | next | semmle.label | next |
+| SpringUrlRedirect.java:382:23:382:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:383:46:383:49 | next | semmle.label | next |
+| SpringUrlRedirect.java:391:23:391:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:392:46:392:49 | next | semmle.label | next |
+| SpringUrlRedirect.java:400:23:400:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:401:46:401:49 | next | semmle.label | next |
+| SpringUrlRedirect.java:409:23:409:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:410:46:410:49 | next | semmle.label | next |
+| SpringUrlRedirect.java:420:23:420:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:421:46:421:49 | next | semmle.label | next |
+| SpringUrlRedirect.java:423:21:423:24 | next | semmle.label | next |
+| SpringUrlRedirect.java:443:23:443:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:444:60:444:63 | next | semmle.label | next |
+| SpringUrlRedirect.java:457:40:457:50 | path : String | semmle.label | path : String |
+| SpringUrlRedirect.java:461:16:461:33 | ... + ... : String | semmle.label | ... + ... : String |
+| SpringUrlRedirect.java:475:23:475:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:476:46:476:49 | next | semmle.label | next |
+| SpringUrlRedirect.java:496:23:496:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:497:16:497:51 | branchingRedirect(...) | semmle.label | branchingRedirect(...) |
+| SpringUrlRedirect.java:497:34:497:37 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:502:23:502:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:503:33:503:68 | branchingRedirect(...) | semmle.label | branchingRedirect(...) |
+| SpringUrlRedirect.java:503:51:503:54 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:517:23:517:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| SpringUrlRedirect.java:518:16:518:33 | ... + ... : String | semmle.label | ... + ... : String |
+| SpringUrlRedirect.java:521:37:521:51 | paths : String[] [[]] : String | semmle.label | paths : String[] [[]] : String |
+| SpringUrlRedirect.java:522:16:522:37 | ... + ... : String | semmle.label | ... + ... : String |
+| SpringUrlRedirect.java:522:30:522:34 | paths : String[] [[]] : String | semmle.label | paths : String[] [[]] : String |
+| SpringUrlRedirect.java:522:30:522:37 | ...[...] : String | semmle.label | ...[...] : String |
+| SpringUrlRedirect.java:543:33:543:66 | internallySourcedRedirect(...) | semmle.label | internallySourcedRedirect(...) |
+| SpringUrlRedirect.java:548:23:548:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:549:33:549:61 | new ..[] { .. } : String[] [[]] : String | semmle.label | new ..[] { .. } : String[] [[]] : String |
+| SpringUrlRedirect.java:549:33:549:61 | secondRedirect(...) | semmle.label | secondRedirect(...) |
+| SpringUrlRedirect.java:549:57:549:60 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:560:23:560:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:561:48:561:51 | next | semmle.label | next |
+| SpringUrlRedirect.java:576:23:576:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:577:46:577:49 | next | semmle.label | next |
+| SpringUrlRedirect.java:587:48:587:58 | path : String | semmle.label | path : String |
+| SpringUrlRedirect.java:589:20:589:37 | ... + ... : String | semmle.label | ... + ... : String |
+| SpringUrlRedirect.java:596:23:596:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:597:33:597:76 | branchingFallbackRedirect(...) | semmle.label | branchingFallbackRedirect(...) |
+| SpringUrlRedirect.java:597:59:597:62 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:612:23:612:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:613:33:613:36 | next | semmle.label | next |
+| SpringUrlRedirect.java:619:23:619:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:620:47:620:50 | next | semmle.label | next |
+| SpringUrlRedirect.java:628:26:628:53 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| SpringUrlRedirect.java:629:88:629:104 | redirect(...) | semmle.label | redirect(...) |
+| SpringUrlRedirect.java:629:97:629:103 | referer : String | semmle.label | referer : String |
+| SpringUrlRedirect.java:634:23:634:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:635:44:635:47 | next | semmle.label | next |
+| SpringUrlRedirect.java:640:23:640:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:643:34:643:37 | next | semmle.label | next |
+| SpringUrlRedirect.java:652:23:652:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:655:20:655:33 | redirect(...) | semmle.label | redirect(...) |
+| SpringUrlRedirect.java:655:29:655:32 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:664:23:664:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:666:25:666:28 | next | semmle.label | next |
+| SpringUrlRedirect.java:669:40:669:50 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:671:16:671:28 | ... + ... : String | semmle.label | ... + ... : String |
+| SpringUrlRedirect.java:676:23:676:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:677:33:677:55 | localPrefixHelper(...) | semmle.label | localPrefixHelper(...) |
+| SpringUrlRedirect.java:677:51:677:54 | next : String | semmle.label | next : String |
+| SpringUrlRedirect.java:682:23:682:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:684:25:684:28 | next | semmle.label | next |
+| SpringUrlRedirect.java:725:23:725:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:727:38:727:41 | next | semmle.label | next |
+| SpringUrlRedirect.java:732:23:732:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:734:39:734:42 | host | semmle.label | host |
+| SpringUrlRedirect.java:742:23:742:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:743:50:743:53 | next | semmle.label | next |
+| SpringUrlRedirect.java:748:23:748:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:750:21:750:24 | next | semmle.label | next |
+| SpringUrlRedirect.java:756:23:756:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SpringUrlRedirect.java:757:46:757:49 | next | semmle.label | next |
 | UrlRedirect2.java:27:25:27:54 | getParameter(...) | semmle.label | getParameter(...) |
 | UrlRedirect.java:23:25:23:54 | getParameter(...) | semmle.label | getParameter(...) |
 | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | semmle.label | weakCleanup(...) |
@@ -197,4 +461,16 @@ nodes
 | mad/Test.java:14:22:14:38 | (...)... | semmle.label | (...)... |
 | mad/Test.java:14:31:14:38 | source(...) : String | semmle.label | source(...) : String |
 subpaths
+| SpringUrlRedirect.java:57:25:57:28 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | SpringUrlRedirect.java:13:16:13:33 | ... + ... : String | SpringUrlRedirect.java:57:16:57:29 | redirect(...) |
+| SpringUrlRedirect.java:185:42:185:45 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | SpringUrlRedirect.java:13:16:13:33 | ... + ... : String | SpringUrlRedirect.java:185:33:185:46 | redirect(...) |
+| SpringUrlRedirect.java:191:42:191:45 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | SpringUrlRedirect.java:13:16:13:33 | ... + ... : String | SpringUrlRedirect.java:191:33:191:46 | redirect(...) |
+| SpringUrlRedirect.java:328:42:328:45 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | SpringUrlRedirect.java:13:16:13:33 | ... + ... : String | SpringUrlRedirect.java:328:33:328:46 | redirect(...) |
+| SpringUrlRedirect.java:350:42:350:45 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | SpringUrlRedirect.java:13:16:13:33 | ... + ... : String | SpringUrlRedirect.java:350:33:350:46 | redirect(...) |
+| SpringUrlRedirect.java:497:34:497:37 | next : String | SpringUrlRedirect.java:457:40:457:50 | path : String | SpringUrlRedirect.java:461:16:461:33 | ... + ... : String | SpringUrlRedirect.java:497:16:497:51 | branchingRedirect(...) |
+| SpringUrlRedirect.java:503:51:503:54 | next : String | SpringUrlRedirect.java:457:40:457:50 | path : String | SpringUrlRedirect.java:461:16:461:33 | ... + ... : String | SpringUrlRedirect.java:503:33:503:68 | branchingRedirect(...) |
+| SpringUrlRedirect.java:549:33:549:61 | new ..[] { .. } : String[] [[]] : String | SpringUrlRedirect.java:521:37:521:51 | paths : String[] [[]] : String | SpringUrlRedirect.java:522:16:522:37 | ... + ... : String | SpringUrlRedirect.java:549:33:549:61 | secondRedirect(...) |
+| SpringUrlRedirect.java:597:59:597:62 | next : String | SpringUrlRedirect.java:587:48:587:58 | path : String | SpringUrlRedirect.java:589:20:589:37 | ... + ... : String | SpringUrlRedirect.java:597:33:597:76 | branchingFallbackRedirect(...) |
+| SpringUrlRedirect.java:629:97:629:103 | referer : String | SpringUrlRedirect.java:12:31:12:41 | path : String | SpringUrlRedirect.java:13:16:13:33 | ... + ... : String | SpringUrlRedirect.java:629:88:629:104 | redirect(...) |
+| SpringUrlRedirect.java:655:29:655:32 | next : String | SpringUrlRedirect.java:12:31:12:41 | path : String | SpringUrlRedirect.java:13:16:13:33 | ... + ... : String | SpringUrlRedirect.java:655:20:655:33 | redirect(...) |
+| SpringUrlRedirect.java:677:51:677:54 | next : String | SpringUrlRedirect.java:669:40:669:50 | next : String | SpringUrlRedirect.java:671:16:671:28 | ... + ... : String | SpringUrlRedirect.java:677:33:677:55 | localPrefixHelper(...) |
 | UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) |
