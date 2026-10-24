@@ -15,6 +15,7 @@ var { LinkifyIt } = require("linkify-it");
 app.get('/findLinks', function(req, res) {
   var text = req.param("text");
   var scanner = new LinkifyIt().set({ fuzzyLink: false });
+  // OK - LinkifyIt scans text; its argument is not a regular expression.
   var matches = scanner.match(text);
   res.json(matches);
 });

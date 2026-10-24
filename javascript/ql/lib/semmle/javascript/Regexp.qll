@@ -988,11 +988,7 @@ private predicate isMatchObjectProperty(string name) {
 
 /** Gets an API node representing a `LinkifyIt` instance. */
 private API::Node linkifyItInstance() {
-  result = API::moduleImport("linkify-it").getMember("exports").getMember("LinkifyIt").getInstance()
-  or
   result = API::moduleImport("linkify-it").getMember("LinkifyIt").getInstance()
-  or
-  result = API::moduleImport("linkify-it").getMember("exports").getMember("linkifyit").getReturn()
   or
   result = API::moduleImport("linkify-it").getMember("linkifyit").getReturn()
   or
