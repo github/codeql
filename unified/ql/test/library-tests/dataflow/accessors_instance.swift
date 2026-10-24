@@ -71,7 +71,7 @@ func t7() {
     var c = C()
     sink(c.x)  // no flow
     c.field = source("t7.1")
-    sink(c.x)  // $ MISSING: hasValueFlow=t7.1
+    sink(c.x)  // $ hasValueFlow=t7.1
 }
 
 func t8() {

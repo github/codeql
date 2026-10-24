@@ -186,13 +186,21 @@ class BuilderNode extends TDataFlowNodeStage1 {
   }
 
   /** Holds if this node represents the receiver argument passed to `call`. */
-  predicate isReceiverArgument(CallExpr call) {
-    this.isImplicitArgument(toDataFlowCall(call), any(ArgumentPosition p | p.isReceiver()), false)
+  predicate isReceiverArgumentEx(DataFlowCall call) {
+    this.isImplicitArgument(call, any(ArgumentPosition p | p.isReceiver()), false)
   }
+
+  /** Holds if this node represents the receiver argument passed to `call`. */
+  predicate isReceiverArgument(CallExpr call) { this.isReceiverArgumentEx(toDataFlowCall(call)) }
 
   /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
   predicate isReceiverPostUpdate(CallExpr call) {
-    this.isImplicitArgument(toDataFlowCall(call), any(ArgumentPosition p | p.isReceiver()), true)
+    this.isReceiverPostUpdateEx(toDataFlowCall(call))
+  }
+
+  /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
+  predicate isReceiverPostUpdateEx(DataFlowCall call) {
+    this.isImplicitArgument(call, any(ArgumentPosition p | p.isReceiver()), true)
   }
 
   /** Holds if this is the canonical representative for the given `callable`. */
