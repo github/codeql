@@ -8,10 +8,8 @@ import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.ApacheHttp
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSinks
-private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.controlflow.Dominance
 private import semmle.code.java.frameworks.JaxWS
 private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.security.RequestForgery
@@ -58,10 +56,9 @@ private class ApacheUrlRedirectSink extends UrlRedirectSink {
 /** An expression appended to a Spring `"redirect:"` view-name returned by a request handler. */
 private class SpringUrlRedirectPrefixSink extends UrlRedirectSink {
   SpringUrlRedirectPrefixSink() {
-    exists(Expr name, SpringRedirectPrefix prefix |
+    exists(Expr name |
       (isSpringMvcReturnedString(name) or isSpringModelAndViewName(name)) and
-      prefix = getViewNamePrefix(name) and
-      appendedToRedirectPrefix(prefix, this) and
+      this.asExpr() = getRedirectTarget(name) and
       TaintTracking::localTaint(this, DataFlow::exprNode(name))
     )
   }
@@ -79,15 +76,9 @@ private class SpringUrlRedirectHelperSink extends UrlRedirectSink {
   }
 }
 
-pragma[nomagic]
-private predicate appendedToRedirectPrefix(SpringRedirectPrefix prefix, DataFlow::ExprNode exprNode) {
-  exprNode.asExpr() = prefix.getAnAppendedExpression()
-}
-
-private class SpringRedirectPrefix extends InterestingPrefix {
+/** The exact Spring redirect prefix, without a fixed target path or host. */
+private class SpringRedirectPrefix extends CompileTimeConstantExpr {
   SpringRedirectPrefix() { this.getStringValue() = "redirect:" }
-
-  override int getOffset() { result = 0 }
 }
 
 /** Relates a local read to its reaching SSA definitions. */
@@ -96,137 +87,69 @@ private predicate localViewDefinition(Expr value, SsaDefinition def) {
   def.getARead() = value.getUnderlyingExpr()
 }
 
-/** Gets a terminal local value, retaining unknown or merged definitions as unknown reads. */
+/** Gets a possible local view-name value, following conditional branches and SSA inputs. */
 pragma[nomagic]
-private Expr getALocalViewValue(Expr value) {
+private Expr getAViewNameValue(Expr value) {
   result = value.getUnderlyingExpr() and
+  not result instanceof ConditionalExpr and
   (
     not exists(SsaDefinition def | localViewDefinition(value, def))
     or
     exists(SsaDefinition def |
       localViewDefinition(value, def) and
-      not exists(def.(SsaExplicitWrite).getValue())
+      not exists(def.getAnUltimateDefinition().(SsaExplicitWrite).getValue())
     )
   )
   or
-  exists(SsaExplicitWrite def |
+  exists(SsaDefinition def |
     localViewDefinition(value, def) and
-    result = getALocalViewValue(def.getValue())
+    result = getAViewNameValue(def.getAnUltimateDefinition().(SsaExplicitWrite).getValue())
   )
+  or
+  result = getAViewNameValue(value.getUnderlyingExpr().(ConditionalExpr).getABranchExpr())
 }
 
-/** Gets the unique local value, excluding uncertain origins. */
-private Expr getLocalViewValue(Expr value) {
-  result = unique(Expr terminal | terminal = getALocalViewValue(value))
-}
-
-/** Gets the leading expression of a complete view name, following only left-hand concatenation. */
+/** Gets a possible leading expression, following only left-hand concatenation. */
 pragma[nomagic]
 private Expr getViewNamePrefix(Expr value) {
-  result = getLocalViewValue(value) and not result instanceof AddExpr
+  result = getAViewNameValue(value) and not result instanceof AddExpr
   or
-  result = getViewNamePrefix(getLocalViewValue(value).(AddExpr).getLeftOperand())
+  result = getViewNamePrefix(getAViewNameValue(value).(AddExpr).getLeftOperand())
 }
 
-/** Holds if a call writes the URL or view-name property of a Spring view. */
-private predicate isSpringViewPropertyWrite(MethodCall call, string property) {
-  property = "url" and
-  call.getMethod()
-      .getSourceDeclaration()
-      .hasQualifiedName("org.springframework.web.servlet.view", "AbstractUrlBasedView", "setUrl")
-  or
-  property = "view" and
-  call.getMethod()
-      .getSourceDeclaration()
-      .hasQualifiedName("org.springframework.web.servlet", "ModelAndView",
-        ["setViewName", "setView"])
-}
-
-/** Gets the definite local allocation behind `value`, excluding ambiguous or merged values. */
-private ClassInstanceExpr getViewAllocation(Expr value) { result = getLocalViewValue(value) }
-
-/** Holds if an allocation can be changed outside the local, recognized property writes. */
-private predicate viewEscapes(ClassInstanceExpr allocation, string property) {
-  property = ["url", "view"] and
-  (
-    exists(Call call |
-      DataFlow::localFlow(DataFlow::exprNode(allocation), DataFlow::exprNode(call.getAnArgument()))
-    )
+/** Gets the target appended to an exact redirect prefix at the start of a view name. */
+pragma[nomagic]
+private Expr getRedirectTarget(Expr value) {
+  exists(AddExpr add | add = getAViewNameValue(value) |
+    getViewNamePrefix(add.getLeftOperand()) instanceof SpringRedirectPrefix and
+    result = add.getRightOperand()
     or
-    exists(MethodCall call |
-      DataFlow::localFlow(DataFlow::exprNode(allocation), DataFlow::exprNode(call.getQualifier())) and
-      not isSpringViewPropertyWrite(call, property)
-    )
-    or
-    exists(AssignExpr assign |
-      (assign.getDest() instanceof FieldAccess or assign.getDest() instanceof ArrayAccess) and
-      DataFlow::localFlow(DataFlow::exprNode(allocation), DataFlow::exprNode(assign.getSource()))
-    )
-    or
-    exists(ArrayInit init |
-      DataFlow::localFlow(DataFlow::exprNode(allocation), DataFlow::exprNode(init.getAnInit()))
-    )
-    or
-    exists(MemberRefExpr reference |
-      DataFlow::localFlow(DataFlow::exprNode(allocation),
-        DataFlow::exprNode(reference.getReceiverExpr()))
-    )
-    or
-    exists(LocalScopeVariable variable, VarAccess access |
-      access.getVariable() = variable and
-      DataFlow::localFlow(DataFlow::exprNode(allocation), DataFlow::exprNode(access)) and
-      variable.getAnAccess().getEnclosingCallable() != variable.getCallable()
-    )
-  )
-}
-
-/** Holds if a constant property replacement completes before this particular returned view. */
-private predicate viewPropertyReplacedBeforeReturn(
-  Call write, Expr value, ReturnStmt ret, string property
-) {
-  exists(ClassInstanceExpr allocation, MethodCall replacement |
-    allocation = getViewAllocation(value) and
-    allocation = getViewAllocation(ret.getExpr()) and
-    not viewEscapes(allocation, property) and
-    (
-      property = "url" and
-      allocation
-          .getConstructedType()
-          .hasQualifiedName("org.springframework.web.servlet.view", "RedirectView")
-      or
-      property = "view" and
-      allocation
-          .getConstructedType()
-          .hasQualifiedName("org.springframework.web.servlet", "ModelAndView")
-    ) and
-    isSpringViewPropertyWrite(replacement, property) and
-    exists(replacement.getArgument(0).(CompileTimeConstantExpr).getStringValue()) and
-    getViewAllocation(replacement.getQualifier()) = allocation and
-    not allocation.getParent*() instanceof LoopStmt and
-    not replacement.getParent*() instanceof LoopStmt and
-    not ret.getParent*() instanceof LoopStmt and
-    strictlyDominates(write.getControlFlowNode(), replacement.getControlFlowNode()) and
-    dominates(replacement.getControlFlowNode(), ret.getControlFlowNode()) and
-    dominates(replacement.getControlFlowNode().getANormalSuccessor(), ret.getControlFlowNode()) and
-    // A later or unordered write may replace the constant again. Possible aliases suffice here.
-    not exists(MethodCall other |
-      other != replacement and
-      isSpringViewPropertyWrite(other, property) and
-      DataFlow::localFlow(DataFlow::exprNode(allocation), DataFlow::exprNode(other.getQualifier())) and
-      not strictlyDominates(other.getControlFlowNode(), replacement.getControlFlowNode())
-    )
+    result = getRedirectTarget(add.getLeftOperand())
   )
 }
 
 /** Holds if `value` contributes to a view returned from a Spring MVC request handler. */
 pragma[nomagic]
-private predicate isSpringMvcViewResult(Expr value, Call write, string property) {
-  property = ["url", "view"] and
+private predicate isSpringMvcViewResult(Expr value) {
   exists(ReturnStmt ret |
     ret.getEnclosingCallable() = value.getEnclosingCallable() and
     ret.getEnclosingCallable() instanceof SpringRequestMappingMethod and
-    DataFlow::localFlow(DataFlow::exprNode(value), DataFlow::exprNode(ret.getExpr())) and
-    not viewPropertyReplacedBeforeReturn(write, value, ret, property)
+    DataFlow::localFlow(DataFlow::exprNode(value), DataFlow::exprNode(ret.getExpr()))
+  )
+  or
+  exists(ClassInstanceExpr newModelAndView |
+    newModelAndView
+        .getConstructedType()
+        .hasQualifiedName("org.springframework.web.servlet", "ModelAndView") and
+    newModelAndView
+        .getConstructor()
+        .getParameter(0)
+        .getType()
+        .(RefType)
+        .hasQualifiedName("org.springframework.web.servlet", "View") and
+    DataFlow::localFlow(DataFlow::exprNode(value),
+      DataFlow::exprNode(newModelAndView.getArgument(0))) and
+    isSpringMvcViewResult(newModelAndView)
   )
 }
 
@@ -249,35 +172,38 @@ private predicate isSpringModelAndViewName(Expr name) {
         .hasQualifiedName("org.springframework.web.servlet", "ModelAndView") and
     newModelAndView.getConstructor().getParameter(0).getType() instanceof TypeString and
     name = newModelAndView.getArgument(0) and
-    isSpringMvcViewResult(newModelAndView, newModelAndView, "view")
+    isSpringMvcViewResult(newModelAndView)
   )
 }
 
 /** Holds if a name is constant or is constructed from the exact redirect prefix. */
 private predicate isConstantOrRedirectViewName(Expr name) {
-  exists(getLocalViewValue(name).(CompileTimeConstantExpr).getStringValue())
-  or
-  getViewNamePrefix(name) instanceof SpringRedirectPrefix
+  exists(getAViewNameValue(name)) and
+  forall(Expr value | value = getAViewNameValue(name) |
+    exists(value.(CompileTimeConstantExpr).getStringValue())
+    or
+    exists(getViewNamePrefix(value)) and
+    forall(Expr prefix | prefix = getViewNamePrefix(value) | prefix instanceof SpringRedirectPrefix)
+  )
 }
 
 /** Holds if `callable` returns redirect names without mixing in other dynamic view names. */
 pragma[nomagic]
 private predicate returnsRedirectViewName(Callable callable) {
-  exists(SpringRedirectPrefix prefix, DataFlow::ExprNode appended, ReturnStmt ret |
+  exists(Expr target, ReturnStmt ret |
     callable.(Method).getReturnType() instanceof TypeString and
     forall(ReturnStmt r | r.getEnclosingCallable() = callable |
       isConstantOrRedirectViewName(r.getExpr())
     ) and
     ret.getEnclosingCallable() = callable and
-    prefix = getViewNamePrefix(ret.getExpr()) and
-    appendedToRedirectPrefix(prefix, appended) and
-    TaintTracking::localTaint(appended, DataFlow::exprNode(ret.getExpr()))
+    target = getRedirectTarget(ret.getExpr()) and
+    TaintTracking::localTaint(DataFlow::exprNode(target), DataFlow::exprNode(ret.getExpr()))
   )
   or
   exists(MethodCall call, ReturnStmt ret |
     callable.(Method).getReturnType() instanceof TypeString and
     ret = unique(ReturnStmt r | r.getEnclosingCallable() = callable) and
-    call = getViewNamePrefix(ret.getExpr()) and
+    call = unique(Expr prefix | prefix = getViewNamePrefix(ret.getExpr())) and
     returnsRedirectViewName(call.getCallee().getSourceDeclaration())
   )
 }
@@ -289,7 +215,7 @@ private class SpringRedirectViewSink extends UrlRedirectSink {
       newRedirectView
           .getConstructedType()
           .hasQualifiedName("org.springframework.web.servlet.view", "RedirectView") and
-      isSpringMvcViewResult(newRedirectView, newRedirectView, "url") and
+      isSpringMvcViewResult(newRedirectView) and
       this.asExpr() = newRedirectView.getArgument(0)
     )
   }
@@ -309,7 +235,7 @@ private class SpringRedirectViewSetUrlSink extends UrlRedirectSink {
           .(RefType)
           .getASupertype*()
           .hasQualifiedName("org.springframework.web.servlet.view", "RedirectView") and
-      isSpringMvcViewResult(setUrl.getQualifier(), setUrl, "url") and
+      isSpringMvcViewResult(setUrl.getQualifier()) and
       this.asExpr() = setUrl.getArgument(0)
     )
   }
